@@ -44,6 +44,7 @@ node ./bin/cautilus doctor --repo-root .
 - [docs/contracts/scenario-proposal-sources.md](/home/ubuntu/cautilus/docs/contracts/scenario-proposal-sources.md)
 - [docs/contracts/scenario-proposal-inputs.md](/home/ubuntu/cautilus/docs/contracts/scenario-proposal-inputs.md)
 - [docs/contracts/scenario-proposal-normalization.md](/home/ubuntu/cautilus/docs/contracts/scenario-proposal-normalization.md)
+- [docs/contracts/chatbot-normalization.md](/home/ubuntu/cautilus/docs/contracts/chatbot-normalization.md)
 
 ## Workflow
 
@@ -67,6 +68,9 @@ node ./bin/cautilus review variants \
    a checked-in proposal packet instead of hand-drafting scenario JSON:
 
 ```bash
+node ./bin/cautilus scenario normalize chatbot \
+  --input ./fixtures/scenario-proposals/chatbot-input.json
+
 node ./bin/cautilus scenario prepare-input \
   --candidates ./fixtures/scenario-proposals/candidates.json \
   --registry ./fixtures/scenario-proposals/registry.json \

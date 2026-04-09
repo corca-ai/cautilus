@@ -384,3 +384,126 @@ test("cautilus scenario prepare-input builds a proposal input packet from split 
 		rmSync(root, { recursive: true, force: true });
 	}
 });
+
+test("cautilus scenario normalize chatbot produces proposal candidates that chain into prepare-input and propose", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-bin-chatbot-normalize-"));
+	try {
+		const chatbotInputPath = join(root, "chatbot-input.json");
+		const candidatesPath = join(root, "chatbot-candidates.json");
+		const proposalInputPath = join(root, "scenario-proposal-input.json");
+		const proposalOutputPath = join(root, "scenario-proposals.json");
+		const registryPath = join(root, "registry.json");
+		const coveragePath = join(root, "coverage.json");
+
+		writeFileSync(
+			chatbotInputPath,
+			`${JSON.stringify(
+				{
+					schemaVersion: "cautilus.chatbot_normalization_inputs.v1",
+					conversationSummaries: [
+						{
+							threadKey: "thread-chatbot-1",
+							lastObservedAt: "2026-04-11T00:00:00.000Z",
+							records: [
+								{ actorKind: "user", text: "repo review 해주세요" },
+								{ actorKind: "user", text: "지금 이 저장소 기준으로 봐주세요" },
+							],
+						},
+					],
+					runSummaries: [
+						{
+							runId: "run-chatbot-1",
+							threadKey: "thread-chatbot-2",
+							startedAt: "2026-04-11T00:00:00.000Z",
+							textPreview: "네, 그대로 진행해주세요.",
+							blockedReason: "ambiguous_confirmation_without_thread_context",
+						},
+					],
+				},
+				null,
+				2,
+			)}\n`,
+			"utf-8",
+		);
+		writeFileSync(
+			registryPath,
+			`${JSON.stringify(
+				[
+					{
+						scenarioId: "repo-review-needs-target-clarification",
+						scenarioKey: "repo-review-needs-target-clarification",
+						family: "fast_regression",
+					},
+				],
+				null,
+				2,
+			)}\n`,
+			"utf-8",
+		);
+		writeFileSync(
+			coveragePath,
+			`${JSON.stringify(
+				[
+					{
+						scenarioKey: "repo-review-needs-target-clarification",
+						recentResultCount: 2,
+					},
+				],
+				null,
+				2,
+			)}\n`,
+			"utf-8",
+		);
+
+		const normalize = spawnSync(
+			"node",
+			[BIN_PATH, "scenario", "normalize", "chatbot", "--input", chatbotInputPath, "--output", candidatesPath],
+			{
+				cwd: process.cwd(),
+				encoding: "utf-8",
+			},
+		);
+		assert.equal(normalize.status, 0, normalize.stderr);
+		const candidates = JSON.parse(readFileSync(candidatesPath, "utf-8"));
+		assert.equal(candidates.length, 2);
+
+		const prepare = spawnSync(
+			"node",
+			[
+				BIN_PATH,
+				"scenario",
+				"prepare-input",
+				"--candidates",
+				candidatesPath,
+				"--registry",
+				registryPath,
+				"--coverage",
+				coveragePath,
+				"--family",
+				"fast_regression",
+				"--window-days",
+				"14",
+				"--now",
+				"2026-04-11T00:00:00.000Z",
+				"--output",
+				proposalInputPath,
+			],
+			{
+				cwd: process.cwd(),
+				encoding: "utf-8",
+			},
+		);
+		assert.equal(prepare.status, 0, prepare.stderr);
+
+		const propose = spawnSync("node", [BIN_PATH, "scenario", "propose", "--input", proposalInputPath, "--output", proposalOutputPath], {
+			cwd: process.cwd(),
+			encoding: "utf-8",
+		});
+		assert.equal(propose.status, 0, propose.stderr);
+		const proposals = JSON.parse(readFileSync(proposalOutputPath, "utf-8"));
+		assert.equal(proposals.proposals.length, 2);
+		assert.equal(proposals.proposals[0].family, "fast_regression");
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});

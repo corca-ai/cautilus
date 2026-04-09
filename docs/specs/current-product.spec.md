@@ -23,6 +23,8 @@
 | bin/cautilus | file_exists |  |
 | bin/cautilus | fixed | adapter resolve |
 | bin/cautilus | fixed | cautilus doctor |
+| bin/cautilus | fixed | scenario normalize chatbot |
+| bin/cautilus | fixed | scenario prepare-input |
 | bin/cautilus | fixed | scenario propose |
 | bin/cautilus | fixed | review variants |
 | bin/cautilus.test.mjs | file_exists |  |
@@ -42,6 +44,8 @@
 | scripts/agent-runtime/scenario-history.mjs | fixed | SCENARIO_HISTORY_SCHEMA |
 | scripts/agent-runtime/chatbot-proposal-candidates.mjs | file_exists |  |
 | scripts/agent-runtime/chatbot-proposal-candidates.mjs | fixed | normalizeChatbotProposalCandidates |
+| scripts/agent-runtime/normalize-chatbot-proposals.mjs | file_exists |  |
+| scripts/agent-runtime/normalize-chatbot-proposals.mjs | fixed | CHATBOT_NORMALIZATION_INPUTS_SCHEMA |
 | scripts/agent-runtime/scenario-proposals.mjs | file_exists |  |
 | scripts/agent-runtime/scenario-proposals.mjs | fixed | SCENARIO_PROPOSALS_SCHEMA |
 | scripts/agent-runtime/build-scenario-proposal-input.mjs | file_exists |  |
@@ -67,6 +71,7 @@
 - target repo의 adapter readiness doctor
 - scenario profile and graduation history helpers
 - chatbot proposal-candidate normalization helper
+- chatbot normalization command
 - scenario proposal input packet assembly command
 - scenario proposal ranking and draft-scenario helpers
 - scenario proposal packet generation command
@@ -90,6 +95,7 @@ local repo에서 최소 surface는 다음 명령으로 확인할 수 있어야 �
 ```run:shell
 $ node ./bin/cautilus adapter resolve --repo-root .
 $ node ./bin/cautilus doctor --repo-root . || true
+$ node ./bin/cautilus scenario normalize chatbot --input ./fixtures/scenario-proposals/chatbot-input.json
 $ node ./bin/cautilus scenario prepare-input --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json --family fast_regression --window-days 14 --now 2026-04-11T00:00:00.000Z
 $ node ./bin/cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json
 $ node --test ./bin/cautilus.test.mjs
