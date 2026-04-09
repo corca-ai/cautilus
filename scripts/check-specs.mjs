@@ -42,6 +42,7 @@ function main() {
 		"docs/workflow.md",
 		"docs/contracts/adapter-contract.md",
 		"docs/contracts/reporting.md",
+		"docs/contracts/scenario-history.md",
 		"docs/master-plan.md",
 		"bin/cautilus",
 		"skills/cautilus/SKILL.md",

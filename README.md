@@ -41,6 +41,8 @@ Ceal remains a proving-ground consumer, not the product boundary.
   adapter schema and executor-variant contract
 - [docs/contracts/reporting.md](/home/ubuntu/cautilus/docs/contracts/reporting.md):
   minimum report packet shape
+- [docs/contracts/scenario-history.md](/home/ubuntu/cautilus/docs/contracts/scenario-history.md):
+  profile, graduation, and baseline-cache contract
 - [docs/specs/index.spec.md](/home/ubuntu/cautilus/docs/specs/index.spec.md):
   active product specs
 - [docs/master-plan.md](/home/ubuntu/cautilus/docs/master-plan.md): roadmap

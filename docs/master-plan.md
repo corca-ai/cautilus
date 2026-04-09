@@ -28,6 +28,8 @@ The target product is:
   without Ceal-owned paths.
 - Ceal now repoints generic adapter-resolution and review-variant runner seams
   to `Cautilus` as a consumer.
+- A first generic scenario/history contract draft now exists in
+  `docs/contracts/scenario-history.md`.
 - Ceal still owns richer prompt-benchmark history logic, audit-workbench
   storage, scenario proposal generation, and operator web surfaces.
 
@@ -101,5 +103,5 @@ Formalize the DSPy-like product story:
 
 1. Keep the standalone binary and bundled skill aligned on one checked-in
    workflow surface.
-2. Write a generic scenario/history contract spec that lifts the reusable parts
-   of Ceal's prompt-benchmark profile engine.
+2. Design a repo-agnostic scenario-proposal source contract before importing
+   Ceal's current log-mining code.
