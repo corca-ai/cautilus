@@ -3,6 +3,20 @@
 This repo is the standalone product boundary for `Cautilus`, extracted from
 Ceal's `workbench`.
 
+## Operating Stance
+
+- Use the actual available skills for this turn before improvising a local
+  workflow.
+- Keep manually maintained docs in English.
+  Exceptions: [docs/handoff.md](/home/ubuntu/cautilus/docs/handoff.md),
+  executable specs under [docs/specs/](/home/ubuntu/cautilus/docs/specs), and
+  temporary product-planning notes while they are being rewritten.
+- Speak to this user in Korean unless they ask otherwise.
+- Prefer the source of truth over copied checklists.
+  Deterministic behavior belongs in code, scripts, adapters, tests, and specs.
+- Optimize for `Cautilus` as an independent binary plus bundled skill before
+  optimizing Ceal or another host repo as a consumer.
+
 ## Product Intent
 
 - `Cautilus` owns generic evaluation workflow contracts.
@@ -19,7 +33,20 @@ Ceal's `workbench`.
 - Minimal runtime runners live under
   [scripts/agent-runtime/](/home/ubuntu/cautilus/scripts/agent-runtime).
 - The CLI entrypoint lives at [bin/cautilus](/home/ubuntu/cautilus/bin/cautilus).
+- The bundled standalone skill lives under
+  [skills/cautilus/](/home/ubuntu/cautilus/skills/cautilus).
 - Product roadmap lives at [docs/master-plan.md](/home/ubuntu/cautilus/docs/master-plan.md).
+
+## Repo Memory
+
+- [docs/handoff.md](/home/ubuntu/cautilus/docs/handoff.md): next-session pickup
+  and volatile state
+- [docs/master-plan.md](/home/ubuntu/cautilus/docs/master-plan.md): durable
+  product direction and priority order
+- [docs/specs/index.spec.md](/home/ubuntu/cautilus/docs/specs/index.spec.md):
+  currently claimed product surface
+- [docs/ceal-workbench-extraction.md](/home/ubuntu/cautilus/docs/ceal-workbench-extraction.md):
+  Ceal extraction and consumer migration notes
 
 ## Working Rules
 
@@ -30,6 +57,15 @@ Ceal's `workbench`.
 - If Ceal has gained generic workbench knowledge, bring it here rather than
   letting the contracts drift.
 - When adding a new runtime surface, add at least one executable test.
+
+## Commit Discipline
+
+- After each meaningful unit of work, create a git commit before moving on.
+- Write commit messages so later announcements can recover intent without
+  guessing.
+- Prefer commit subjects that state user-facing or operator-facing purpose, not
+  mechanism.
+- Add a short body when it clarifies the trigger, boundary, or behavior change.
 
 ## Local Checks
 

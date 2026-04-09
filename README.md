@@ -4,6 +4,8 @@
 It is meant to become the repo-agnostic layer that helps a host repo evaluate
 agent runtime changes with bounded loops, explicit baselines, held-out
 validation, comparison summaries, and independent review variants.
+The product target is a standalone binary plus a bundled skill that a host repo
+can adopt without inheriting Ceal's private runtime surfaces.
 
 The intended product shape is:
 
@@ -26,10 +28,10 @@ survives evaluation.
 This repo is still early.
 It already owns the generic workflow and adapter contracts plus bootstrap
 scripts.
-It now also includes a minimal CLI, executor-variant runners, and local tests
-for the adapter and review-variant surfaces.
-Ceal is still the live proving ground for richer prompt-benchmark history,
-audit-workbench storage, and scenario-proposal flows.
+It now also includes a minimal CLI, a bundled `cautilus` skill surface,
+executor-variant runners, and local tests for the adapter and review-variant
+surfaces.
+Ceal remains a proving-ground consumer, not the product boundary.
 
 ## Repo Layout
 
@@ -43,6 +45,8 @@ audit-workbench storage, and scenario-proposal flows.
   active product specs
 - [docs/master-plan.md](/home/ubuntu/cautilus/docs/master-plan.md): roadmap
   from extraction scaffold to standalone product
+- [skills/cautilus/SKILL.md](/home/ubuntu/cautilus/skills/cautilus/SKILL.md):
+  bundled standalone skill entrypoint
 - [scripts/resolve_adapter.py](/home/ubuntu/cautilus/scripts/resolve_adapter.py):
   adapter resolution and validation
 - [scripts/init_adapter.py](/home/ubuntu/cautilus/scripts/init_adapter.py):
@@ -84,6 +88,11 @@ python3 scripts/resolve_adapter.py --repo-root .
 python3 scripts/init_adapter.py --repo-root .
 node scripts/agent-runtime/run-workbench-executor-variants.mjs --workspace . --output-dir /tmp/cautilus-review
 ```
+
+The bundled skill surface lives at
+[skills/cautilus/SKILL.md](/home/ubuntu/cautilus/skills/cautilus/SKILL.md).
+Use it when the host environment supports checked-in local skills and you want
+the same workflow surface as the standalone binary.
 
 ## Dev
 

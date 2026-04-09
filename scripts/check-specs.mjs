@@ -44,6 +44,8 @@ function main() {
 		"docs/contracts/reporting.md",
 		"docs/master-plan.md",
 		"bin/cautilus",
+		"skills/cautilus/SKILL.md",
+		"skills/cautilus/agents/openai.yaml",
 		"scripts/resolve_adapter.py",
 		"scripts/init_adapter.py",
 		"scripts/agent-runtime/run-workbench-review-variant.sh",

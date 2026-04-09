@@ -7,7 +7,7 @@ product for agent runtime work.
 
 The target product is:
 
-- a small installable CLI plus reusable skill or adapter contract
+- a standalone installable CLI plus bundled reusable skill
 - host-repo adapters that define baselines, iterate loops, held-out checks,
   compare passes, and full gates
 - optional executor-variant runners for bounded external review
@@ -22,6 +22,7 @@ The target product is:
 - Generic workflow, adapter, and reporting contracts are already extracted.
 - Python adapter bootstrap scripts are already extracted.
 - Minimal CLI and executor-variant runners now exist in this repo.
+- A repo-local bundled `cautilus` skill surface now exists beside the CLI.
 - Ceal still owns richer prompt-benchmark history logic, audit-workbench
   storage, scenario proposal generation, and operator web surfaces.
 
@@ -37,15 +38,17 @@ Done or nearly done:
 - provide lint and test surfaces
 - stop relying on external Python YAML libraries
 
-### Phase 2: Runtime Contract Hardening
+### Phase 2: Standalone Product Hardening
 
 Next:
 
-- generalize the executor-variant runners and keep them well tested
+- make the binary and bundled skill feel like one product surface
+- add one `doctor` or `validate` command that checks adapter readiness
+- add a standalone smoke test that proves a temp repo can adopt `Cautilus`
+  without Ceal-owned paths
 - decide the durable runtime boundary for review prompts, schemas, and compare
   artifacts
 - define a stable report packet file shape, not only a narrative shape
-- add one `doctor` or `validate` command that checks adapter readiness
 
 ### Phase 3: Evaluation Engine
 
@@ -85,7 +88,7 @@ Formalize the DSPy-like product story:
 - prompt revisions are acceptable if held-out and human review survive
 - skill or runtime dogfooding becomes a first-class use case, not a side path
 
-### Phase 6: Ceal Repoint And External Consumers
+### Phase 6: Consumer Repoint And External Consumers
 
 - repoint Ceal's generic workbench paths to `Cautilus`
 - keep Ceal adapters, prompts, and operator policy local to Ceal
@@ -94,10 +97,12 @@ Formalize the DSPy-like product story:
 
 ## Immediate Next Moves
 
-1. Repoint Ceal's generic adapter-resolution and review-variant tests to use
-   `Cautilus`.
+1. Keep the standalone binary and bundled skill aligned on one checked-in
+   workflow surface.
 2. Add a generic `validate` or `doctor` runtime command.
-3. Write a generic scenario/history contract spec that lifts the reusable parts
+3. Add a standalone smoke test that exercises `Cautilus` against a temp repo
+   without Ceal-owned paths.
+4. Repoint Ceal's generic adapter-resolution and review-variant tests to use
+   `Cautilus` as one consumer.
+5. Write a generic scenario/history contract spec that lifts the reusable parts
    of Ceal's prompt-benchmark profile engine.
-4. Design a repo-agnostic scenario-proposal source contract before importing
-   Ceal's current log-mining code.

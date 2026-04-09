@@ -10,6 +10,8 @@ source-level guard를 담는다.
 
 - [Current Product](current-product.spec.md)
   현재 repo가 실제로 제공하는 contract, CLI, runtime runner, 문서 경계를 정의한다.
+- [Standalone Surface](standalone-surface.spec.md)
+  standalone binary와 bundled skill이 같은 제품 표면을 가리키는지 정의한다.
 
 ## Source Sanity
 
@@ -23,6 +25,8 @@ $ test -f docs/workflow.md
 $ test -f docs/contracts/adapter-contract.md
 $ test -f docs/contracts/reporting.md
 $ test -f docs/master-plan.md
+$ test -f skills/cautilus/SKILL.md
+$ test -f skills/cautilus/agents/openai.yaml
 $ test -f scripts/resolve_adapter.py
 $ test -f scripts/init_adapter.py
 $ test -f scripts/agent-runtime/run-workbench-review-variant.sh
