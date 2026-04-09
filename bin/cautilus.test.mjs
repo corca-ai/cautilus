@@ -1,11 +1,18 @@
 import assert from "node:assert/strict";
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { chmodSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 import test from "node:test";
 
 const BIN_PATH = join(process.cwd(), "bin", "cautilus");
+
+function writeExecutable(root, name, body) {
+	const filePath = join(root, name);
+	writeFileSync(filePath, body, "utf-8");
+	chmodSync(filePath, 0o755);
+	return filePath;
+}
 
 test("cautilus adapter resolve delegates to the bundled resolver", () => {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-bin-resolve-"));
@@ -113,6 +120,86 @@ test("cautilus doctor fails when the adapter is invalid", () => {
 		assert.equal(payload.ready, false);
 		assert.equal(payload.status, "invalid_adapter");
 		assert.ok(payload.errors.length > 0);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("standalone temp repo can adopt cautilus without Ceal-owned paths", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-standalone-smoke-"));
+	try {
+		writeFileSync(
+			join(root, "package.json"),
+			JSON.stringify(
+				{
+					name: "standalone-smoke",
+					private: true,
+					scripts: {
+						check: "echo ok",
+					},
+				},
+				null,
+				2,
+			),
+			"utf-8",
+		);
+		mkdirSync(join(root, "fixtures"), { recursive: true });
+		writeFileSync(join(root, "fixtures", "review.prompt.md"), "standalone smoke prompt\n", "utf-8");
+		writeFileSync(join(root, "fixtures", "review.schema.json"), '{"type":"object"}\n', "utf-8");
+		writeExecutable(
+			root,
+			"variant.sh",
+			`#!/bin/sh
+output_file="$1"
+printf '{"verdict":"pass","summary":"standalone smoke","findings":[{"severity":"pass","message":"standalone","path":"variant/sh"}]}\\n' > "$output_file"
+`,
+		);
+
+		const init = spawnSync("node", [BIN_PATH, "adapter", "init", "--repo-root", root], {
+			cwd: process.cwd(),
+			encoding: "utf-8",
+		});
+		assert.equal(init.status, 0, init.stderr);
+		const adapterPath = join(root, ".agents", "workbench-adapter.yaml");
+		const adapterText =
+			readFileSync(adapterPath, "utf-8") +
+			[
+				"default_prompt_file: fixtures/review.prompt.md",
+				"default_schema_file: fixtures/review.schema.json",
+				"executor_variants:",
+				"  - id: standalone",
+				"    tool: command",
+				"    purpose: standalone smoke variant",
+				"    command_template: sh {candidate_repo}/variant.sh {output_file}",
+				"",
+			].join("\n");
+		writeFileSync(adapterPath, adapterText, "utf-8");
+
+		const doctor = spawnSync("node", [BIN_PATH, "doctor", "--repo-root", root], {
+			cwd: process.cwd(),
+			encoding: "utf-8",
+		});
+		assert.equal(doctor.status, 0, doctor.stderr);
+		const doctorPayload = JSON.parse(doctor.stdout);
+		assert.equal(doctorPayload.ready, true);
+		assert.equal(doctorPayload.status, "ready");
+
+		const outputDir = join(root, "outputs");
+		const review = spawnSync(
+			"node",
+			[BIN_PATH, "review", "variants", "--repo-root", root, "--workspace", root, "--output-dir", outputDir],
+			{
+				cwd: process.cwd(),
+				encoding: "utf-8",
+			},
+		);
+		assert.equal(review.status, 0, review.stderr);
+		const summary = JSON.parse(readFileSync(review.stdout.trim(), "utf-8"));
+		assert.equal(summary.repoRoot, root);
+		assert.equal(summary.variants.length, 1);
+		assert.equal(summary.variants[0].status, "passed");
+		assert.equal(summary.variants[0].output.summary, "standalone smoke");
+		assert.doesNotMatch(JSON.stringify(summary), /\/home\/ubuntu\/ceal\//);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

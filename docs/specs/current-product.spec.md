@@ -24,6 +24,7 @@
 | bin/cautilus | fixed | adapter resolve |
 | bin/cautilus | fixed | cautilus doctor |
 | bin/cautilus | fixed | review variants |
+| bin/cautilus.test.mjs | file_exists |  |
 | skills/cautilus/SKILL.md | file_exists |  |
 | skills/cautilus/agents/openai.yaml | file_exists |  |
 | docs/workflow.md | fixed | Meta Eval |
@@ -64,6 +65,7 @@ local repo에서 최소 surface는 다음 명령으로 확인할 수 있어야 �
 ```run:shell
 $ node ./bin/cautilus adapter resolve --repo-root .
 $ node ./bin/cautilus doctor --repo-root . || true
+$ node --test ./bin/cautilus.test.mjs
 $ python3 ./scripts/init_adapter.py --repo-root /tmp/cautilus-spec-check --output /tmp/cautilus-spec-check/workbench-adapter.yaml --force
 $ test -f ./skills/cautilus/SKILL.md
 $ npm run lint

@@ -24,6 +24,8 @@ The target product is:
 - Minimal CLI and executor-variant runners now exist in this repo.
 - A repo-local bundled `cautilus` skill surface now exists beside the CLI.
 - A standalone `doctor` command now checks adapter readiness for host repos.
+- A temp-repo smoke test now proves `adapter init -> doctor -> review variants`
+  without Ceal-owned paths.
 - Ceal still owns richer prompt-benchmark history logic, audit-workbench
   storage, scenario proposal generation, and operator web surfaces.
 
@@ -44,8 +46,6 @@ Done or nearly done:
 Next:
 
 - make the binary and bundled skill feel like one product surface
-- add a standalone smoke test that proves a temp repo can adopt `Cautilus`
-  without Ceal-owned paths
 - decide the durable runtime boundary for review prompts, schemas, and compare
   artifacts
 - define a stable report packet file shape, not only a narrative shape
@@ -99,9 +99,7 @@ Formalize the DSPy-like product story:
 
 1. Keep the standalone binary and bundled skill aligned on one checked-in
    workflow surface.
-2. Add a standalone smoke test that exercises `Cautilus` against a temp repo
-   without Ceal-owned paths.
-3. Repoint Ceal's generic adapter-resolution and review-variant tests to use
+2. Repoint Ceal's generic adapter-resolution and review-variant tests to use
    `Cautilus` as one consumer.
-4. Write a generic scenario/history contract spec that lifts the reusable parts
+3. Write a generic scenario/history contract spec that lifts the reusable parts
    of Ceal's prompt-benchmark profile engine.

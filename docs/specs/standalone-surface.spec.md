@@ -15,6 +15,8 @@ Ceal의 기존 `workbench` 시나리오는 여전히 유용한 dogfood 입력이
 | AGENTS.md | fixed | independent binary plus bundled skill |
 | bin/cautilus | file_exists |  |
 | bin/cautilus | fixed | cautilus doctor |
+| bin/cautilus.test.mjs | file_exists |  |
+| bin/cautilus.test.mjs | fixed | standalone temp repo can adopt cautilus without Ceal-owned paths |
 | skills/cautilus/SKILL.md | file_exists |  |
 | skills/cautilus/SKILL.md | fixed | node ./bin/cautilus adapter resolve --repo-root . |
 | skills/cautilus/SKILL.md | fixed | node ./bin/cautilus doctor --repo-root . |
@@ -34,6 +36,7 @@ Ceal의 기존 `workbench` 시나리오는 여전히 유용한 dogfood 입력이
 ```run:shell
 $ node ./bin/cautilus --help
 $ node ./bin/cautilus doctor --repo-root . || true
+$ node --test ./bin/cautilus.test.mjs
 $ test -f skills/cautilus/SKILL.md
 $ test -f skills/cautilus/agents/openai.yaml
 ```
