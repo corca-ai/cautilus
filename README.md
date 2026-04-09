@@ -49,6 +49,10 @@ Ceal remains a proving-ground consumer, not the product boundary.
   normalized input packet consumed by `cautilus scenario propose`
 - [docs/contracts/scenario-proposal-normalization.md](/home/ubuntu/cautilus/docs/contracts/scenario-proposal-normalization.md):
   host-owned reference seam that assembles split normalized sources
+- [docs/contracts/chatbot-normalization.md](/home/ubuntu/cautilus/docs/contracts/chatbot-normalization.md):
+  planned `chatbot` helper boundary for conversation-driven proposal candidates
+- [docs/contracts/skill-normalization.md](/home/ubuntu/cautilus/docs/contracts/skill-normalization.md):
+  planned `skill` helper boundary for durable workflow and validation candidates
 - [fixtures/scenario-proposals/input.schema.json](/home/ubuntu/cautilus/fixtures/scenario-proposals/input.schema.json):
   checked-in schema for `cautilus.scenario_proposal_inputs.v1`
 - [fixtures/scenario-proposals/proposals.schema.json](/home/ubuntu/cautilus/fixtures/scenario-proposals/proposals.schema.json):

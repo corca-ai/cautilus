@@ -46,6 +46,8 @@ function main() {
 		"docs/contracts/scenario-proposal-sources.md",
 		"docs/contracts/scenario-proposal-inputs.md",
 		"docs/contracts/scenario-proposal-normalization.md",
+		"docs/contracts/chatbot-normalization.md",
+		"docs/contracts/skill-normalization.md",
 		"docs/master-plan.md",
 		"bin/cautilus",
 		"skills/cautilus/SKILL.md",

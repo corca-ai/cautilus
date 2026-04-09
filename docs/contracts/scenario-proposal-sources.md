@@ -26,6 +26,16 @@ This contract does not yet own:
 - raw host-specific heuristics that convert activity logs into normalized
   proposal candidates
 
+Two use-case-specific normalization helpers are now in scope as future
+product-owned layers:
+
+- `chatbot`
+- `skill`
+
+Those helpers should sit between source-port ingestion and proposal packet
+generation. They are product-owned only at the normalized-helper layer, not at
+the storage-reader layer.
+
 ## Source Ports
 
 The proposal engine should read from four source ports.
@@ -193,6 +203,8 @@ possible pattern.
   repo file traversal baked into `Cautilus`.
 - The first standalone CLI surface starts after host-specific mining and reads a
   normalized proposal-candidate packet plus scenario registry and coverage.
+- If `Cautilus` grows pre-candidate helpers, they should be use-case-specific
+  normalization helpers such as `chatbot` or `skill`, not raw source readers.
 - Existing scenario registry and recent scenario coverage are separate inputs.
   One says whether a key exists; the other says whether it is exercised enough.
 - Proposal output should embed a draft scenario, not only a prose suggestion.

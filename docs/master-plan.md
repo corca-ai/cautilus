@@ -42,6 +42,8 @@ The target product is:
   `cautilus scenario propose`.
 - A file-based `scenario prepare-input` reference surface now demonstrates the
   host-owned normalization seam before proposal generation.
+- The next design step now treats `chatbot` and `skill` as the first
+  use-case-specific normalization helpers worth productizing.
 - Ceal still owns richer prompt-benchmark history logic, audit-workbench
   storage, scenario proposal generation, and operator web surfaces.
 
@@ -94,6 +96,14 @@ Generalize the operator loop currently proven in Ceal:
 The extracted version should describe generic source ports rather than binding
 itself to Slack or Ceal storage conventions.
 
+The first helper targets should be:
+
+- `chatbot`
+  - Ceal-like conversation continuity and blocked-follow-up patterns
+- `skill`
+  - charness-like validation scenarios plus crill-like durable workflow
+    artifact regressions
+
 ### Phase 5: Intent-First Optimization Surface
 
 Formalize the DSPy-like product story:
@@ -115,5 +125,7 @@ Formalize the DSPy-like product story:
 
 1. Keep the standalone binary and bundled skill aligned on one checked-in
    workflow surface.
-2. Decide whether any generic helper should exist before normalized candidate
-   packets, or whether that entire step stays consumer-owned.
+2. Implement `chatbot` normalization as the first product-owned pre-candidate
+   helper.
+3. Keep `skill` normalization as the next helper, using `charness` and `crill`
+   fixtures to prove the boundary before any repo-specific reader logic lands.

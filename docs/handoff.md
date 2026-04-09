@@ -25,6 +25,7 @@
 - [scenario-proposal-inputs.md](/home/ubuntu/cautilus/docs/contracts/scenario-proposal-inputs.md) 가 추가돼 `scenario propose` 앞단의 host-owned packet boundary를 이제 제품 계약으로 설명할 수 있다.
 - `scenario prepare-input` reference command와 split fixtures가 추가돼 host-owned normalization seam도 file-based executable surface로 설명할 수 있다.
 - proposal input/output schema fixture가 추가돼 packet contract를 narrative만이 아니라 checked-in artifact로도 검증하기 시작했다.
+- `chatbot` / `skill`을 첫 use-case-specific normalization helper 후보로 잡는 방향이 정리됐다. Ceal은 `chatbot` primary reference, charness는 `skill` primary reference, crill은 durable workflow edge-case reference로 본다.
 - `fullCheck`는 scenario selection은 전체로 열되 `trainRunCount`나 graduation history는 전진시키지 않는 규칙으로 고정됐다.
 - Ceal에서 generic runtime seam으로 볼 수 있는 executor-variant 러너와 검증용 테스트, review verdict schema를 가져왔다.
 - [scripts/init_adapter.py](/home/ubuntu/cautilus/scripts/init_adapter.py)는 `PyYAML` 의존성을 제거하고 stdlib-only YAML writer로 바뀌었다.
@@ -33,12 +34,14 @@
 - `Cautilus` resolver는 Ceal의 `skill-smoke`, `code-quality` adapter를 이미 읽을 수 있어 consumer repoint의 전제는 갖췄다.
 - 아직 없는 것:
   - host-specific recent activity / blocked run mining adapter
-  - raw source port에서 normalized candidate로 가는 generic helper 여부에 대한 정리
+  - `chatbot` normalization helper 구현
+  - `skill` normalization helper 구현
 
 ## Next Session
 
-1. raw source port에서 normalized candidate로 가는 단계 중 어떤 부분까지를 generic helper로 둘지 정리한다.
-2. 필요하면 `Cautilus` 안에 두지 말아야 할 host-specific mining 예시를 Ceal consumer 문서로만 남긴다.
+1. Ceal형 normalized conversation/run summary를 받는 `chatbot` helper fixture와 pure helper를 추가한다.
+2. 그 출력이 기존 `scenario prepare-input -> scenario propose` 체인으로 바로 이어지는지 증명한다.
+3. 그 다음 `charness`/`crill` reference를 반영한 `skill` helper fixture와 contract로 확장한다.
 
 ## Discuss
 
