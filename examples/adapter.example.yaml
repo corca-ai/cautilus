@@ -1,0 +1,60 @@
+version: 1
+repo: example-repo
+evaluation_surfaces:
+  - prompt behavior
+  - workflow behavior
+baseline_options:
+  - baseline git ref in the same repo via {baseline_ref}
+required_prerequisites:
+  - choose a real baseline before comparing results
+preflight_commands:
+  - npm run check
+iterate_command_templates:
+  - npm run bench:train -- --baseline-ref {baseline_ref} --history-file {history_file} --samples {iterate_samples}
+held_out_command_templates:
+  - npm run bench:test -- --baseline-ref {baseline_ref} --samples {held_out_samples}
+comparison_command_templates:
+  - npm run bench:compare -- --baseline-ref {baseline_ref} --profile {profile} --split {split} --samples {comparison_samples}
+full_gate_command_templates:
+  - npm run bench:full -- --baseline-ref {baseline_ref} --history-file {history_file} --samples {full_gate_samples}
+executor_variants:
+  - id: codex-review
+    tool: codex_exec
+    purpose: Independent structured review pass
+    command_template: 'cat {prompt_file} | codex exec -C {candidate_repo} --sandbox read-only --ephemeral --output-schema {schema_file} -o {output_file} -'
+    required_prerequisites:
+      - Render the review prompt into {prompt_file} before execution.
+      - Point {candidate_repo} at the exact checkout or temp workspace being judged.
+    safety_notes:
+      - Prefer a clean worktree or read-only temp copy over a dirty live checkout.
+      - Do not add bypass-approval or danger-full-access flags to review-only loops.
+      - Keep the verdict schema in {schema_file} and the final JSON in {output_file}.
+  - id: claude-review
+    tool: claude_print
+    purpose: Independent structured review pass
+    command_template: 'claude -p --no-session-persistence --tools "" --output-format json --json-schema "$(cat {schema_file})" < {prompt_file} > {output_file}'
+    required_prerequisites:
+      - Render the review prompt into {prompt_file} before execution.
+      - Run only inside a trusted checkout because -p skips the trust dialog.
+    safety_notes:
+      - Keep tools disabled unless the prompt truly needs repo reads.
+      - Normalize structured_output if the JSON response is wrapped.
+      - Prefer a checked-in wrapper script if quoting or schema injection becomes brittle.
+      - Keep the prompt self-contained or attach only bounded context.
+artifact_paths:
+  - docs/evaluation-plan.md
+report_paths:
+  - reports/workbench/latest.json
+comparison_questions:
+  - Which scenarios improved, regressed, or stayed noisy after repeated samples?
+human_review_prompts:
+  - id: real-user
+    prompt: Where would a real user still judge the candidate worse despite benchmark wins?
+iterate_samples_default: 2
+held_out_samples_default: 2
+comparison_samples_default: 2
+full_gate_samples_default: 2
+history_file_hint: /tmp/workbench-history.json
+profile_default: default
+default_prompt_file: fixtures/workbench/skill-smoke.prompt.md
+default_schema_file: fixtures/workbench/review-verdict.schema.json
