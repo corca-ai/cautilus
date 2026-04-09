@@ -50,9 +50,9 @@ Ceal remains a proving-ground consumer, not the product boundary.
 - [docs/contracts/scenario-proposal-normalization.md](/home/ubuntu/cautilus/docs/contracts/scenario-proposal-normalization.md):
   host-owned reference seam that assembles split normalized sources
 - [docs/contracts/chatbot-normalization.md](/home/ubuntu/cautilus/docs/contracts/chatbot-normalization.md):
-  planned `chatbot` helper boundary for conversation-driven proposal candidates
+  product-owned `chatbot` helper boundary for conversation-driven proposal candidates
 - [docs/contracts/skill-normalization.md](/home/ubuntu/cautilus/docs/contracts/skill-normalization.md):
-  planned `skill` helper boundary for durable workflow and validation candidates
+  product-owned `skill` helper boundary for durable workflow and validation candidates
 - [fixtures/scenario-proposals/input.schema.json](/home/ubuntu/cautilus/fixtures/scenario-proposals/input.schema.json):
   checked-in schema for `cautilus.scenario_proposal_inputs.v1`
 - [fixtures/scenario-proposals/proposals.schema.json](/home/ubuntu/cautilus/fixtures/scenario-proposals/proposals.schema.json):
@@ -73,6 +73,8 @@ Ceal remains a proving-ground consumer, not the product boundary.
   scenario selection, graduation, and history helpers
 - [scripts/agent-runtime/chatbot-proposal-candidates.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/chatbot-proposal-candidates.mjs):
   Ceal-shaped conversation and blocked-run summaries to proposal-candidate helper
+- [scripts/agent-runtime/skill-proposal-candidates.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/skill-proposal-candidates.mjs):
+  charness- and crill-shaped validation summaries to proposal-candidate helper
 - [scripts/agent-runtime/scenario-proposals.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/scenario-proposals.mjs):
   proposal ranking and draft-scenario payload helpers
 - [scripts/agent-runtime/generate-scenario-proposals.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/generate-scenario-proposals.mjs):
@@ -101,6 +103,20 @@ Check whether a repo is ready for standalone `Cautilus` evaluation:
 
 ```bash
 node ./bin/cautilus doctor --repo-root /path/to/repo
+```
+
+Normalize chatbot-style conversational summaries into proposal candidates:
+
+```bash
+node ./bin/cautilus scenario normalize chatbot \
+  --input ./fixtures/scenario-proposals/chatbot-input.json
+```
+
+Normalize skill- or workflow-evaluation summaries into proposal candidates:
+
+```bash
+node ./bin/cautilus scenario normalize skill \
+  --input ./fixtures/scenario-proposals/skill-input.json
 ```
 
 Generate a scenario proposal packet from normalized candidate input:
@@ -138,6 +154,8 @@ Direct script usage is also supported:
 python3 scripts/resolve_adapter.py --repo-root .
 python3 scripts/init_adapter.py --repo-root .
 node scripts/agent-runtime/run-workbench-executor-variants.mjs --workspace . --output-dir /tmp/cautilus-review
+node scripts/agent-runtime/normalize-chatbot-proposals.mjs --input ./fixtures/scenario-proposals/chatbot-input.json
+node scripts/agent-runtime/normalize-skill-proposals.mjs --input ./fixtures/scenario-proposals/skill-input.json
 node scripts/agent-runtime/build-scenario-proposal-input.mjs --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json --family fast_regression
 node scripts/agent-runtime/generate-scenario-proposals.mjs --input ./fixtures/scenario-proposals/standalone-input.json
 ```

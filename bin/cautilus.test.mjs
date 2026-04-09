@@ -507,3 +507,130 @@ test("cautilus scenario normalize chatbot produces proposal candidates that chai
 		rmSync(root, { recursive: true, force: true });
 	}
 });
+
+test("cautilus scenario normalize skill produces proposal candidates that chain into prepare-input and propose", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-bin-skill-normalize-"));
+	try {
+		const skillInputPath = join(root, "skill-input.json");
+		const candidatesPath = join(root, "skill-candidates.json");
+		const proposalInputPath = join(root, "scenario-proposal-input.json");
+		const proposalOutputPath = join(root, "scenario-proposals.json");
+		const registryPath = join(root, "registry.json");
+		const coveragePath = join(root, "coverage.json");
+
+		writeFileSync(
+			skillInputPath,
+			`${JSON.stringify(
+				{
+					schemaVersion: "cautilus.skill_normalization_inputs.v1",
+					evaluationRuns: [
+						{
+							targetKind: "public_skill",
+							targetId: "impl",
+							displayName: "impl",
+							surface: "smoke_scenario",
+							startedAt: "2026-04-11T00:00:00.000Z",
+							status: "failed",
+							summary: "The impl smoke scenario stopped producing a bounded execution plan.",
+						},
+						{
+							targetKind: "cli_workflow",
+							targetId: "scan-settings-seed",
+							displayName: "Scan Settings Seed",
+							surface: "replay_seed",
+							startedAt: "2026-04-11T01:00:00.000Z",
+							status: "blocked",
+							summary: "Replay seed stalled on the same settings screen after two retries.",
+							blockerKind: "repeated_screen_no_progress",
+							blockedSteps: ["open_settings", "open_settings"],
+						},
+					],
+				},
+				null,
+				2,
+			)}\n`,
+			"utf-8",
+		);
+		writeFileSync(
+			registryPath,
+			`${JSON.stringify(
+				[
+					{
+						scenarioId: "public-skill-impl-smoke-scenario-regression",
+						scenarioKey: "public-skill-impl-smoke-scenario-regression",
+						family: "fast_regression",
+					},
+				],
+				null,
+				2,
+			)}\n`,
+			"utf-8",
+		);
+		writeFileSync(
+			coveragePath,
+			`${JSON.stringify(
+				[
+					{
+						scenarioKey: "public-skill-impl-smoke-scenario-regression",
+						recentResultCount: 1,
+					},
+				],
+				null,
+				2,
+			)}\n`,
+			"utf-8",
+		);
+
+		const normalize = spawnSync(
+			"node",
+			[BIN_PATH, "scenario", "normalize", "skill", "--input", skillInputPath, "--output", candidatesPath],
+			{
+				cwd: process.cwd(),
+				encoding: "utf-8",
+			},
+		);
+		assert.equal(normalize.status, 0, normalize.stderr);
+		const candidates = JSON.parse(readFileSync(candidatesPath, "utf-8"));
+		assert.equal(candidates.length, 2);
+		assert.equal(candidates[0].family, "fast_regression");
+
+		const prepare = spawnSync(
+			"node",
+			[
+				BIN_PATH,
+				"scenario",
+				"prepare-input",
+				"--candidates",
+				candidatesPath,
+				"--registry",
+				registryPath,
+				"--coverage",
+				coveragePath,
+				"--family",
+				"fast_regression",
+				"--window-days",
+				"14",
+				"--now",
+				"2026-04-11T00:00:00.000Z",
+				"--output",
+				proposalInputPath,
+			],
+			{
+				cwd: process.cwd(),
+				encoding: "utf-8",
+			},
+		);
+		assert.equal(prepare.status, 0, prepare.stderr);
+
+		const propose = spawnSync("node", [BIN_PATH, "scenario", "propose", "--input", proposalInputPath, "--output", proposalOutputPath], {
+			cwd: process.cwd(),
+			encoding: "utf-8",
+		});
+		assert.equal(propose.status, 0, propose.stderr);
+		const proposals = JSON.parse(readFileSync(proposalOutputPath, "utf-8"));
+		assert.equal(proposals.proposals.length, 2);
+		assert.equal(proposals.proposals[0].family, "fast_regression");
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});

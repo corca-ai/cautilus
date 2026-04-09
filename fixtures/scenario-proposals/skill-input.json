@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "cautilus.skill_normalization_inputs.v1",
+  "evaluationRuns": [
+    {
+      "targetKind": "public_skill",
+      "targetId": "impl",
+      "displayName": "impl",
+      "surface": "smoke_scenario",
+      "startedAt": "2026-04-11T00:00:00.000Z",
+      "status": "failed",
+      "summary": "The impl smoke scenario stopped producing a bounded execution plan.",
+      "artifactRefs": [
+        {
+          "kind": "eval_fixture",
+          "path": "evals/fixtures/impl-smoke.json"
+        }
+      ]
+    },
+    {
+      "targetKind": "cli_workflow",
+      "targetId": "scan-settings-seed",
+      "displayName": "Scan Settings Seed",
+      "surface": "replay_seed",
+      "startedAt": "2026-04-11T01:00:00.000Z",
+      "status": "blocked",
+      "summary": "Replay seed stalled on the same settings screen after two retries.",
+      "blockerKind": "repeated_screen_no_progress",
+      "blockedSteps": [
+        "open_settings",
+        "open_settings"
+      ],
+      "metrics": {
+        "blocked_steps": 2,
+        "unique_states_discovered": 4
+      }
+    }
+  ]
+}

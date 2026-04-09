@@ -28,11 +28,13 @@ and before generic proposal ranking:
 
 ## Current Slice
 
-Define the canonical input/output contract for the first `chatbot`
-normalization helper.
+The first `chatbot` normalization helper now exists as:
 
-This slice is design-only. It should make implementation straightforward
-without claiming that the helper already exists.
+- [chatbot-proposal-candidates.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/chatbot-proposal-candidates.mjs)
+- [normalize-chatbot-proposals.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/normalize-chatbot-proposals.mjs)
+
+This slice fixes the initial contract that turns normalized conversation/run
+summaries into `proposalCandidates`.
 
 ## Representative Consumers
 
@@ -141,7 +143,6 @@ conversation logs:
 
 ## Deferred Decisions
 
-- exact CLI surface name, likely `cautilus scenario normalize chatbot`
 - fixture directory and schema names for chatbot-normalization packets
 
 ## Non-Goals
@@ -182,11 +183,11 @@ conversation logs:
 
 ## First Implementation Slice
 
-- add the first chatbot normalization input fixture
-- implement a pure helper that maps normalized conversation/run packets to
-  `proposalCandidates`
-- expose it through a narrow CLI surface only after the fixture and helper
-  agree
+- keep the first checked-in fixture and helper aligned
+- widen beyond the initial Ceal-proven patterns only when another chatbot
+  consumer needs the added surface
+- add a dedicated checked-in input schema artifact once both `chatbot` and
+  `skill` helper packet shapes settle
 
 ## Source References
 

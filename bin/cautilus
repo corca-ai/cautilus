@@ -34,6 +34,7 @@ const CHATBOT_NORMALIZER = join(
 	"agent-runtime",
 	"normalize-chatbot-proposals.mjs",
 );
+const SKILL_NORMALIZER = join(REPO_ROOT, "scripts", "agent-runtime", "normalize-skill-proposals.mjs");
 
 function usage(exitCode = 0) {
 	const text = [
@@ -42,6 +43,7 @@ function usage(exitCode = 0) {
 		"  cautilus adapter init [args]",
 		"  cautilus doctor [args]",
 		"  cautilus scenario normalize chatbot [args]",
+		"  cautilus scenario normalize skill [args]",
 		"  cautilus scenario prepare-input [args]",
 		"  cautilus scenario propose [args]",
 		"  cautilus review variants [args]",
@@ -51,6 +53,7 @@ function usage(exitCode = 0) {
 		"  cautilus adapter init --repo-root .",
 		"  cautilus doctor --repo-root .",
 		"  cautilus scenario normalize chatbot --input ./fixtures/scenario-proposals/chatbot-input.json",
+		"  cautilus scenario normalize skill --input ./fixtures/scenario-proposals/skill-input.json",
 		"  cautilus scenario prepare-input --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json",
 		"  cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json",
 		"  cautilus review variants --repo-root . --workspace . --output-dir /tmp/cautilus-review",
@@ -92,6 +95,10 @@ if (area === "scenario" && action === "propose") {
 
 if (area === "scenario" && action === "normalize" && rest[0] === "chatbot") {
 	run("node", [CHATBOT_NORMALIZER, ...rest.slice(1)]);
+}
+
+if (area === "scenario" && action === "normalize" && rest[0] === "skill") {
+	run("node", [SKILL_NORMALIZER, ...rest.slice(1)]);
 }
 
 if (area === "scenario" && action === "prepare-input") {

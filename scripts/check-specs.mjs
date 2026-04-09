@@ -57,6 +57,9 @@ function main() {
 		"scripts/doctor.py",
 		"scripts/agent-runtime/scenario-history.mjs",
 		"scripts/agent-runtime/chatbot-proposal-candidates.mjs",
+		"scripts/agent-runtime/normalize-chatbot-proposals.mjs",
+		"scripts/agent-runtime/skill-proposal-candidates.mjs",
+		"scripts/agent-runtime/normalize-skill-proposals.mjs",
 		"scripts/agent-runtime/scenario-proposals.mjs",
 		"scripts/agent-runtime/build-scenario-proposal-input.mjs",
 		"scripts/agent-runtime/generate-scenario-proposals.mjs",
@@ -68,6 +71,8 @@ function main() {
 		"fixtures/scenario-proposals/input.schema.json",
 		"fixtures/scenario-proposals/proposals.schema.json",
 		"fixtures/scenario-proposals/standalone-input.json",
+		"fixtures/scenario-proposals/chatbot-input.json",
+		"fixtures/scenario-proposals/skill-input.json",
 		"fixtures/workbench/review-verdict.schema.json",
 	].forEach(requireFile);
 	validateSpecIndex();

@@ -38,6 +38,9 @@ $ test -f scripts/init_adapter.py
 $ test -f scripts/doctor.py
 $ test -f scripts/agent-runtime/scenario-history.mjs
 $ test -f scripts/agent-runtime/chatbot-proposal-candidates.mjs
+$ test -f scripts/agent-runtime/normalize-chatbot-proposals.mjs
+$ test -f scripts/agent-runtime/skill-proposal-candidates.mjs
+$ test -f scripts/agent-runtime/normalize-skill-proposals.mjs
 $ test -f scripts/agent-runtime/scenario-proposals.mjs
 $ test -f scripts/agent-runtime/build-scenario-proposal-input.mjs
 $ test -f scripts/agent-runtime/generate-scenario-proposals.mjs
@@ -49,5 +52,7 @@ $ test -f fixtures/scenario-proposals/coverage.json
 $ test -f fixtures/scenario-proposals/input.schema.json
 $ test -f fixtures/scenario-proposals/proposals.schema.json
 $ test -f fixtures/scenario-proposals/standalone-input.json
+$ test -f fixtures/scenario-proposals/chatbot-input.json
+$ test -f fixtures/scenario-proposals/skill-input.json
 $ test -f fixtures/workbench/review-verdict.schema.json
 ```

@@ -26,8 +26,8 @@ This contract does not yet own:
 - raw host-specific heuristics that convert activity logs into normalized
   proposal candidates
 
-Two use-case-specific normalization helpers are now in scope as future
-product-owned layers:
+Two use-case-specific normalization helpers are now in scope as product-owned
+layers:
 
 - `chatbot`
 - `skill`
@@ -35,6 +35,11 @@ product-owned layers:
 Those helpers should sit between source-port ingestion and proposal packet
 generation. They are product-owned only at the normalized-helper layer, not at
 the storage-reader layer.
+
+The first checked-in helper entrypoints now exist as:
+
+- `cautilus scenario normalize chatbot`
+- `cautilus scenario normalize skill`
 
 ## Source Ports
 
@@ -146,6 +151,8 @@ Allowed source kinds:
 
 - `human_conversation`
 - `agent_run`
+- `skill_evaluation`
+- `workflow_run`
 
 Recommended evidence payloads:
 
@@ -168,6 +175,33 @@ Recommended evidence payloads:
   "observedAt": "2026-04-09T21:00:00.000Z",
   "textPreview": "네, 그대로 진행해주세요.",
   "blockedReason": "ambiguous_confirmation_without_thread_context"
+}
+```
+
+```json
+{
+  "sourceKind": "skill_evaluation",
+  "title": "smoke scenario regression",
+  "targetKind": "public_skill",
+  "targetId": "impl",
+  "surface": "smoke_scenario",
+  "status": "failed",
+  "observedAt": "2026-04-11T00:00:00.000Z",
+  "summary": "The impl smoke scenario stopped producing a bounded execution plan."
+}
+```
+
+```json
+{
+  "sourceKind": "workflow_run",
+  "title": "replay seed recovery regression",
+  "targetKind": "cli_workflow",
+  "targetId": "scan-settings-seed",
+  "surface": "replay_seed",
+  "status": "blocked",
+  "observedAt": "2026-04-11T01:00:00.000Z",
+  "summary": "Replay seed stalled on the same settings screen after two retries.",
+  "blockerKind": "repeated_screen_no_progress"
 }
 ```
 

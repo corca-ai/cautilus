@@ -48,6 +48,11 @@ The target product is:
   Ceal-shaped conversation and blocked-run summaries.
 - A standalone `scenario normalize chatbot` command now emits proposal
   candidates from a checked-in chatbot input packet.
+- A first product-owned `skill` normalization runtime seam now exists for
+  charness-like validation regressions and crill-like blocked workflow
+  artifacts.
+- A standalone `scenario normalize skill` command now emits proposal
+  candidates from a checked-in skill/workflow input packet.
 - Ceal still owns richer prompt-benchmark history logic, audit-workbench
   storage, scenario proposal generation, and operator web surfaces.
 
@@ -129,7 +134,7 @@ Formalize the DSPy-like product story:
 
 1. Keep the standalone binary and bundled skill aligned on one checked-in
    workflow surface.
-2. Keep `chatbot` normalization wired into the `prepare-input -> propose`
-   standalone chain with checked-in fixtures.
-3. Implement `skill` normalization next, using `charness` and `crill` fixtures
-   to prove the boundary before any repo-specific reader logic lands.
+2. Keep both `chatbot` and `skill` normalization wired into the
+   `prepare-input -> propose` standalone chain with checked-in fixtures.
+3. Add dedicated input schema artifacts for the use-case helper packets once
+   the current `chatbot` and `skill` packet shapes settle.

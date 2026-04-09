@@ -29,10 +29,13 @@ The product boundary should instead be:
 
 ## Current Slice
 
-Define the canonical input/output contract for the first `skill`
-normalization helper.
+The first `skill` normalization helper now exists as:
 
-This slice is design-only. It fixes the boundary before code exists.
+- [skill-proposal-candidates.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/skill-proposal-candidates.mjs)
+- [normalize-skill-proposals.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/normalize-skill-proposals.mjs)
+
+This slice fixes the initial contract for turning normalized evaluation and
+workflow summaries into `proposalCandidates`.
 
 ## Representative Consumers
 
@@ -57,16 +60,12 @@ This slice is design-only. It fixes the boundary before code exists.
 The first helper should consume normalized summaries, not raw repo files or
 command execution.
 
-Minimum input classes:
+Minimum input class:
 
-- `workflowTargets`
-  - `targetKind`
-    - examples: `public_skill`, `profile`, `integration`, `cli_workflow`
-  - `targetId`
-  - `displayName`
 - `evaluationRuns`
   - `targetKind`
   - `targetId`
+  - optional `displayName`
   - `surface`
     - examples: `smoke_scenario`, `bootstrap`, `real_device_acceptance`,
       `replay_seed`
@@ -77,9 +76,6 @@ Minimum input classes:
   - optional `blockerKind`
   - optional `artifactRefs`
   - optional `metrics`
-- `existingSkillScenarios`
-  - current checked-in scenario or eval identifiers already associated with the
-    target
 
 The helper must not:
 
@@ -92,16 +88,12 @@ The helper must not:
 The helper must emit `proposalCandidates` compatible with
 [scenario-proposal-inputs.md](/home/ubuntu/cautilus/docs/contracts/scenario-proposal-inputs.md).
 
-Likely candidate families for the first helper:
+Current candidate family for the first helper:
 
 - `fast_regression`
   - deterministic skill/eval regressions
-- `operator_recovery`
-  - blocked workflow or resumability regressions
-
-The family names above are helper-level concepts, not raw repo labels. The
-final set may be adjusted during implementation, but the output still has to
-fit the current `proposalCandidates` contract.
+  - blocked workflow or resumability regressions, tagged with
+    `operator-recovery`
 
 ## Pattern Classes In Scope
 
@@ -140,17 +132,15 @@ shape is durable operator workflow evaluation rather than chat continuity.
 
 ## Probe Questions
 
-- Should `operator_recovery` become a first-class benchmark family, or stay a
-  tag on top of `fast_regression` for the first version?
-- Should the helper accept one generic `evaluationRuns` packet, or separate
-  packets for skill validation and workflow artifact summaries?
+- Should `operator_recovery` eventually become a first-class benchmark family
+  instead of a tag on top of `fast_regression`?
 - Does `crill` eventually justify a third dedicated helper, or is the shared
   durable-workflow contract enough?
 
 ## Deferred Decisions
 
-- exact CLI surface name, likely `cautilus scenario normalize skill`
-- exact normalized packet schema for `workflowTargets` and `evaluationRuns`
+- exact checked-in input schema artifact for
+  `cautilus.skill_normalization_inputs.v1`
 
 ## Non-Goals
 
@@ -193,11 +183,9 @@ shape is durable operator workflow evaluation rather than chat continuity.
 
 ## First Implementation Slice
 
-- fix the normalized summary packet shape for one `charness`-like fixture and
-  one `crill`-like fixture
-- implement a pure helper that converts those summaries into
-  `proposalCandidates`
-- add CLI only after fixtures and helper logic are stable
+- keep one `charness`-like fixture and one `crill`-like fixture checked in
+- maintain the pure helper and CLI against those fixtures
+- add a dedicated input schema artifact once the packet shape settles
 
 ## Source References
 
