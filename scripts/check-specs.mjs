@@ -60,6 +60,7 @@ function main() {
 		"scripts/agent-runtime/normalize-chatbot-proposals.mjs",
 		"scripts/agent-runtime/skill-proposal-candidates.mjs",
 		"scripts/agent-runtime/normalize-skill-proposals.mjs",
+		"scripts/agent-runtime/consumer-example-fixtures.test.mjs",
 		"scripts/agent-runtime/scenario-proposals.mjs",
 		"scripts/agent-runtime/build-scenario-proposal-input.mjs",
 		"scripts/agent-runtime/generate-scenario-proposals.mjs",
@@ -75,6 +76,9 @@ function main() {
 		"fixtures/scenario-proposals/standalone-input.json",
 		"fixtures/scenario-proposals/chatbot-input.json",
 		"fixtures/scenario-proposals/skill-input.json",
+		"fixtures/scenario-proposals/ceal-chatbot-input.json",
+		"fixtures/scenario-proposals/charness-skill-input.json",
+		"fixtures/scenario-proposals/crill-skill-input.json",
 		"fixtures/workbench/review-verdict.schema.json",
 	].forEach(requireFile);
 	validateSpecIndex();

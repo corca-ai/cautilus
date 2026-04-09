@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "cautilus.chatbot_normalization_inputs.v1",
+  "conversationSummaries": [
+    {
+      "threadKey": "ceal-thread-review-clarification",
+      "lastObservedAt": "2026-04-11T00:00:00.000Z",
+      "records": [
+        {
+          "actorKind": "user",
+          "text": "repo review 해주세요"
+        },
+        {
+          "actorKind": "user",
+          "text": "지금 이 저장소 기준으로 봐주세요"
+        }
+      ]
+    },
+    {
+      "threadKey": "ceal-thread-event-followup",
+      "lastObservedAt": "2026-04-11T00:10:00.000Z",
+      "records": [
+        {
+          "actorKind": "user",
+          "text": "CI 깨졌어요",
+          "eventType": "app_mention"
+        },
+        {
+          "actorKind": "user",
+          "text": "그대로 이어서 진행해줘요"
+        }
+      ]
+    }
+  ],
+  "runSummaries": [
+    {
+      "runId": "ceal-run-ambiguous-confirmation",
+      "threadKey": "ceal-thread-ambiguous",
+      "startedAt": "2026-04-11T00:20:00.000Z",
+      "textPreview": "네, 그대로 진행해주세요.",
+      "blockedReason": "ambiguous_confirmation_without_thread_context"
+    }
+  ]
+}

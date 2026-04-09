@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "cautilus.skill_normalization_inputs.v1",
+  "evaluationRuns": [
+    {
+      "targetKind": "cli_workflow",
+      "targetId": "scan-settings-seed",
+      "displayName": "Scan Settings Seed",
+      "surface": "replay_seed",
+      "startedAt": "2026-04-11T01:00:00.000Z",
+      "status": "blocked",
+      "summary": "Replay seed stalled on the same settings screen after two retries.",
+      "blockerKind": "repeated_screen_no_progress",
+      "blockedSteps": [
+        "open_settings",
+        "open_settings"
+      ],
+      "artifactRefs": [
+        {
+          "kind": "scenario_yaml",
+          "path": "runs/scan-settings-seed/scenario.yaml"
+        }
+      ],
+      "metrics": {
+        "blocked_steps": 2,
+        "unique_states_discovered": 4
+      }
+    }
+  ]
+}

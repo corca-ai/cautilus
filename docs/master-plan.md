@@ -55,6 +55,9 @@ The target product is:
   candidates from a checked-in skill/workflow input packet.
 - Checked-in schema artifacts now pin the `chatbot` and `skill` helper input
   packets beside their fixtures.
+- Checked-in `ceal`, `charness`, and `crill` shaped packet examples now show
+  what consumer-owned normalized input should look like without importing raw
+  reader logic.
 - Ceal still owns richer prompt-benchmark history logic, audit-workbench
   storage, scenario proposal generation, and operator web surfaces.
 
@@ -138,5 +141,5 @@ Formalize the DSPy-like product story:
    workflow surface.
 2. Keep both `chatbot` and `skill` normalization wired into the
    `prepare-input -> propose` standalone chain with checked-in fixtures.
-3. Add consumer-shaped packet examples for `ceal`, `charness`, and `crill`
-   without importing their raw reader logic into the product.
+3. Decide which next pattern classes are generic enough to widen beyond the
+   current Ceal/charness/crill example set without importing raw reader logic.

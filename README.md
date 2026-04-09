@@ -61,6 +61,12 @@ Ceal remains a proving-ground consumer, not the product boundary.
   checked-in schema for `cautilus.chatbot_normalization_inputs.v1`
 - [fixtures/scenario-proposals/skill-input.schema.json](/home/ubuntu/cautilus/fixtures/scenario-proposals/skill-input.schema.json):
   checked-in schema for `cautilus.skill_normalization_inputs.v1`
+- [fixtures/scenario-proposals/ceal-chatbot-input.json](/home/ubuntu/cautilus/fixtures/scenario-proposals/ceal-chatbot-input.json):
+  Ceal-shaped `chatbot` normalization example packet
+- [fixtures/scenario-proposals/charness-skill-input.json](/home/ubuntu/cautilus/fixtures/scenario-proposals/charness-skill-input.json):
+  charness-shaped `skill` normalization example packet
+- [fixtures/scenario-proposals/crill-skill-input.json](/home/ubuntu/cautilus/fixtures/scenario-proposals/crill-skill-input.json):
+  crill-shaped `skill` normalization example packet
 - [docs/specs/index.spec.md](/home/ubuntu/cautilus/docs/specs/index.spec.md):
   active product specs
 - [docs/master-plan.md](/home/ubuntu/cautilus/docs/master-plan.md): roadmap
@@ -79,6 +85,8 @@ Ceal remains a proving-ground consumer, not the product boundary.
   Ceal-shaped conversation and blocked-run summaries to proposal-candidate helper
 - [scripts/agent-runtime/skill-proposal-candidates.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/skill-proposal-candidates.mjs):
   charness- and crill-shaped validation summaries to proposal-candidate helper
+- [scripts/agent-runtime/consumer-example-fixtures.test.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/consumer-example-fixtures.test.mjs):
+  executable proof that Ceal/charness/crill-shaped packets normalize cleanly
 - [scripts/agent-runtime/scenario-proposals.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/scenario-proposals.mjs):
   proposal ranking and draft-scenario payload helpers
 - [scripts/agent-runtime/generate-scenario-proposals.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/generate-scenario-proposals.mjs):

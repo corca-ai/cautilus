@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "cautilus.skill_normalization_inputs.v1",
+  "evaluationRuns": [
+    {
+      "targetKind": "public_skill",
+      "targetId": "impl",
+      "displayName": "impl",
+      "surface": "smoke_scenario",
+      "startedAt": "2026-04-11T00:00:00.000Z",
+      "status": "failed",
+      "summary": "The impl smoke scenario stopped producing a bounded execution plan.",
+      "artifactRefs": [
+        {
+          "kind": "eval_fixture",
+          "path": "evals/fixtures/impl-smoke.json"
+        }
+      ]
+    },
+    {
+      "targetKind": "profile",
+      "targetId": "engineering-quality",
+      "displayName": "Engineering Quality",
+      "surface": "bootstrap",
+      "startedAt": "2026-04-11T00:05:00.000Z",
+      "status": "degraded",
+      "summary": "Profile bootstrap passed structurally but no longer keeps the expected quality gate command surface."
+    }
+  ]
+}
