@@ -1,0 +1,31 @@
+# Cautilus Current Specs
+
+이 index는 현재 `Cautilus`가 실제로 주장하는 제품 경계와, 그 주장을 지키기 위해 유지해야 하는
+source-level guard를 담는다.
+
+아직 구현하지 않은 방향은 [master-plan.md](/home/ubuntu/cautilus/docs/master-plan.md)에 둔다.
+현재 검증 대상은 이 index에 링크된 문서들이다.
+
+## Current Documents
+
+- [Current Product](current-product.spec.md)
+  현재 repo가 실제로 제공하는 contract, CLI, runtime runner, 문서 경계를 정의한다.
+
+## Source Sanity
+
+```run:shell
+$ test -f README.md
+$ test -f AGENTS.md
+$ test -f package.json
+$ test -f eslint.config.mjs
+$ test -f bin/cautilus
+$ test -f docs/workflow.md
+$ test -f docs/contracts/adapter-contract.md
+$ test -f docs/contracts/reporting.md
+$ test -f docs/master-plan.md
+$ test -f scripts/resolve_adapter.py
+$ test -f scripts/init_adapter.py
+$ test -f scripts/agent-runtime/run-workbench-review-variant.sh
+$ test -f scripts/agent-runtime/run-workbench-executor-variants.mjs
+$ test -f fixtures/workbench/review-verdict.schema.json
+```

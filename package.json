@@ -1,0 +1,24 @@
+{
+  "name": "cautilus",
+  "private": true,
+  "type": "module",
+  "description": "Adapter-driven evaluation toolkit for agent runtime changes",
+  "engines": {
+    "node": ">=22"
+  },
+  "bin": {
+    "cautilus": "./bin/cautilus"
+  },
+  "scripts": {
+    "lint": "npm run lint:eslint && npm run lint:specs",
+    "lint:eslint": "eslint .",
+    "lint:specs": "node scripts/check-specs.mjs",
+    "test": "node --test bin/*.test.mjs scripts/agent-runtime/*.test.mjs",
+    "verify": "npm run lint && npm run test"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.24.0",
+    "eslint": "^9.24.0",
+    "eslint-plugin-sonarjs": "^4.0.2"
+  }
+}

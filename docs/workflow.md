@@ -139,6 +139,9 @@ values back to the user. Do not hide them behind "same as usual."
    Require structured findings such as `blocker`, `concern`, or `pass`.
    If the adapter defines `executor_variants`, use those checked-in command
    templates instead of retyping ad-hoc `codex exec` or `claude -p` commands.
+   When the repo keeps a runner such as
+   `scripts/agent-runtime/run-workbench-executor-variants.mjs`, prefer that
+   checked-in fanout path over manual per-variant shell invocations.
 9. If the user wants a repeatable local evaluator and none exists, create a
    checked-in bounded runner first.
    Prefer a repo script with fixed inputs, fixed prompt variants, and a small
@@ -167,6 +170,34 @@ values back to the user. Do not hide them behind "same as usual."
   If the candidate still fails after a few bounded passes, report that the
   current design is not converging.
 
+## Meta Eval
+
+`Cautilus` is allowed to evaluate another skill, adapter, workflow, or
+runtime seam.
+This is often the right shape when the real question is "does this evaluator
+or operator path produce the kind of change we want?"
+
+Typical examples:
+
+- evaluate whether a skill reduces the intended operator cost instead of only
+  passing one synthetic brief
+- smoke-test whether a skill invocation path reaches the intended files or
+  commands
+- compare an old and new adapter or prompt set on the same bounded brief set
+- run a fake operator task to see whether a workflow converges cleanly before
+  using it for real
+
+For this pattern:
+
+- use a dedicated named adapter such as `code-quality`, `skill-smoke`, or
+  `meta-eval`
+- keep the candidate and baseline explicit
+- keep the task briefs fixed and checked in when possible
+- judge both artifact quality and operator experience
+- prefer adapter-local command templates over one-off shell transcripts
+- prefer checked-in prompt/schema fixtures plus a checked-in variant runner
+  over hand-assembled terminal commands
+
 ## Executor Variants
 
 Use `executor_variants` when the evaluation needs an external judge or a
@@ -185,6 +216,50 @@ terminal-backed reviewer such as `codex exec` or `claude -p`.
   stdout still looks superficially usable.
 - Keep these variants bounded and read-mostly.
   Review variants should inspect the candidate, not mutate the repo.
+
+### Codex Exec Guardrails
+
+- Prefer `codex exec` with `--sandbox read-only` for review-only passes.
+- Use `--ephemeral` so repeated review loops do not depend on hidden session
+  state.
+- Feed the prompt from a file over stdin and use `--output-schema` plus `-o`
+  for machine-readable output.
+- `Reading additional input from stdin...` can be normal when stdin is
+  redirected from a file.
+  Treat it as a problem only if the process is attached to an open terminal
+  stdin instead of a bounded file redirect.
+- Keep stderr.
+  Past sessions showed `codex exec` can emit fatal skill-loading errors on
+  stderr while the final process exit still looks successful.
+- Do not assume older approval-policy flags exist.
+  Pick the sandbox mode explicitly instead of inventing legacy approval
+  controls.
+- Do not force minimal reasoning by default.
+  Past sessions showed that overly aggressive effort overrides can conflict
+  with tool surfaces that the prompt or skill still needs.
+- Avoid `--dangerously-bypass-approvals-and-sandbox` for evaluation loops.
+- Point `-C` at the exact workspace under review, ideally a clean worktree or
+  read-only temp copy rather than a dirty live checkout.
+
+### Claude Print Guardrails
+
+- Use `--no-session-persistence` so one pass does not silently inherit
+  another.
+- Keep tool access off unless the review genuinely needs file reads.
+- Use `--bare` only when the auth path is explicit and intentional.
+  Past sessions showed `--bare` can disable the local OAuth or keychain path
+  and fail with `Not logged in`.
+- Use `--output-format json` with `--json-schema` and redirect stdout to a
+  fixed output file.
+- Normalize the output file.
+  In JSON mode, `claude -p` can wrap the verdict under `structured_output`
+  instead of printing the schema payload as the top-level object.
+- Bound the run with an external timeout or wrapper default.
+  Past sessions showed `claude -p` can look silent for a while and tempt
+  operators into manual polling or abort loops.
+- Remember that `-p` skips the trust dialog.
+  Run it only inside a trusted checkout or temp workspace you prepared
+  deliberately.
 
 ## Reply Expectations
 

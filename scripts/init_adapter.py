@@ -6,8 +6,6 @@ import sys
 from pathlib import Path
 from typing import Any
 
-import yaml
-
 SCRIPT_DIR = Path(__file__).resolve().parent
 
 
@@ -22,6 +20,85 @@ def _load_resolver() -> Any:
 
 
 resolve_adapter = _load_resolver()
+
+
+def _yaml_scalar(value: Any) -> str:
+    if value is None:
+        return "null"
+    if isinstance(value, bool):
+        return "true" if value else "false"
+    if isinstance(value, int):
+        return str(value)
+    text = str(value)
+    if text == "":
+        return '""'
+    if any(char in text for char in [":", "#", "{", "}", "[", "]", "\n"]) or text.strip() != text:
+        escaped = text.replace("\\", "\\\\").replace('"', '\\"').replace("\n", "\\n")
+        return f'"{escaped}"'
+    return text
+
+
+def _dump_yaml(value: Any, indent: int = 0) -> list[str]:
+    prefix = " " * indent
+    if isinstance(value, dict):
+        lines: list[str] = []
+        for key, item in value.items():
+            if isinstance(item, (dict, list)):
+                if isinstance(item, list) and not item:
+                    lines.append(f"{prefix}{key}: []")
+                    continue
+                lines.append(f"{prefix}{key}:")
+                lines.extend(_dump_yaml(item, indent + 2))
+                continue
+            lines.append(f"{prefix}{key}: {_yaml_scalar(item)}")
+        return lines
+    if isinstance(value, list):
+        lines = []
+        for item in value:
+            if isinstance(item, dict):
+                lines.extend(_dump_yaml_list_item(item, indent))
+                continue
+            if isinstance(item, list):
+                lines.append(f"{prefix}-")
+                lines.extend(_dump_yaml(item, indent + 2))
+                continue
+            lines.append(f"{prefix}- {_yaml_scalar(item)}")
+        return lines
+    return [f"{prefix}{_yaml_scalar(value)}"]
+
+
+def _dump_yaml_list_item(value: dict[str, Any], indent: int) -> list[str]:
+    prefix = " " * indent
+    lines: list[str] = []
+    first = True
+    for key, item in value.items():
+        if isinstance(item, (dict, list)):
+            if isinstance(item, list) and not item:
+                if first:
+                    lines.append(f"{prefix}- {key}: []")
+                else:
+                    lines.append(f"{prefix}  {key}: []")
+                first = False
+                continue
+            if first:
+                lines.append(f"{prefix}- {key}:")
+            else:
+                lines.append(f"{prefix}  {key}:")
+            lines.extend(_dump_yaml(item, indent + 4))
+            first = False
+            continue
+        if first:
+            lines.append(f"{prefix}- {key}: {_yaml_scalar(item)}")
+            first = False
+            continue
+        lines.append(f"{prefix}  {key}: {_yaml_scalar(item)}")
+    if not lines:
+        lines.append(f"{prefix}- {{}}")
+    return lines
+
+
+def dump_yaml_document(data: dict[str, Any]) -> str:
+    return "\n".join(_dump_yaml(data)) + "\n"
 
 
 def scaffold_adapter(repo_root: Path, repo_name: str) -> dict[str, Any]:
@@ -87,7 +164,7 @@ def main() -> None:
 
     output.parent.mkdir(parents=True, exist_ok=True)
     adapter = scaffold_adapter(repo_root, args.repo_name or repo_root.name)
-    output.write_text(yaml.safe_dump(adapter, allow_unicode=True, sort_keys=False), encoding="utf-8")
+    output.write_text(dump_yaml_document(adapter), encoding="utf-8")
     sys.stdout.write(f"{output}\n")
 
 

@@ -1,0 +1,104 @@
+# Cautilus
+
+`Cautilus` is an evaluation product extracted from Ceal's `workbench`.
+It is meant to become the repo-agnostic layer that helps a host repo evaluate
+agent runtime changes with bounded loops, explicit baselines, held-out
+validation, comparison summaries, and independent review variants.
+
+The intended product shape is:
+
+- a small CLI or runtime entrypoint for adapter-driven evaluation
+- repo-local adapters that define how a host repo runs iterate, held-out,
+  comparison, and full-gate checks
+- optional executor-variant runners for structured `codex exec`,
+  `claude -p`, or other bounded review passes
+- a contract that separates training surfaces from held-out surfaces
+- a path to propose new scenarios from runtime logs instead of hand-authoring
+  every benchmark case forever
+
+The longer-term direction is closer to the workflow philosophy behind DSPy:
+intent and evaluation contracts matter more than preserving one prompt
+verbatim, and prompts should be allowed to improve as long as the behavior
+survives evaluation.
+
+## Current Status
+
+This repo is still early.
+It already owns the generic workflow and adapter contracts plus bootstrap
+scripts.
+It now also includes a minimal CLI, executor-variant runners, and local tests
+for the adapter and review-variant surfaces.
+Ceal is still the live proving ground for richer prompt-benchmark history,
+audit-workbench storage, and scenario-proposal flows.
+
+## Repo Layout
+
+- [docs/workflow.md](/home/ubuntu/cautilus/docs/workflow.md): canonical
+  evaluation workflow
+- [docs/contracts/adapter-contract.md](/home/ubuntu/cautilus/docs/contracts/adapter-contract.md):
+  adapter schema and executor-variant contract
+- [docs/contracts/reporting.md](/home/ubuntu/cautilus/docs/contracts/reporting.md):
+  minimum report packet shape
+- [docs/specs/index.spec.md](/home/ubuntu/cautilus/docs/specs/index.spec.md):
+  active product specs
+- [docs/master-plan.md](/home/ubuntu/cautilus/docs/master-plan.md): roadmap
+  from extraction scaffold to standalone product
+- [scripts/resolve_adapter.py](/home/ubuntu/cautilus/scripts/resolve_adapter.py):
+  adapter resolution and validation
+- [scripts/init_adapter.py](/home/ubuntu/cautilus/scripts/init_adapter.py):
+  adapter scaffold creation
+- [scripts/agent-runtime/run-workbench-review-variant.sh](/home/ubuntu/cautilus/scripts/agent-runtime/run-workbench-review-variant.sh):
+  bounded single-variant runner
+- [scripts/agent-runtime/run-workbench-executor-variants.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/run-workbench-executor-variants.mjs):
+  adapter-driven variant fanout runner
+- [bin/cautilus](/home/ubuntu/cautilus/bin/cautilus): minimal CLI entrypoint
+
+## Quick Start
+
+Resolve an adapter in a target repo:
+
+```bash
+node ./bin/cautilus adapter resolve --repo-root /path/to/repo
+```
+
+Scaffold a new adapter:
+
+```bash
+node ./bin/cautilus adapter init --repo-root /path/to/repo
+```
+
+Run every executor variant defined by an adapter:
+
+```bash
+node ./bin/cautilus review variants \
+  --repo-root /path/to/repo \
+  --adapter-name code-quality \
+  --workspace /path/to/repo \
+  --output-dir /tmp/cautilus-review
+```
+
+Direct script usage is also supported:
+
+```bash
+python3 scripts/resolve_adapter.py --repo-root .
+python3 scripts/init_adapter.py --repo-root .
+node scripts/agent-runtime/run-workbench-executor-variants.mjs --workspace . --output-dir /tmp/cautilus-review
+```
+
+## Dev
+
+Install the local Node tooling:
+
+```bash
+npm install
+```
+
+Run checks:
+
+```bash
+npm run lint
+npm run test
+npm run verify
+```
+
+`init_adapter.py` no longer needs `PyYAML`; the Python surface is stdlib-only.

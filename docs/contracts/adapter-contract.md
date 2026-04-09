@@ -55,6 +55,18 @@ executor_variants:
       - prefer a clean worktree or read-only temp copy over the live checkout
       - keep the verdict schema in {schema_file} and the final JSON in {output_file}
       - do not use bypass-approval or danger-full-access flags for review-only loops
+  - id: claude-review
+    tool: claude_print
+    purpose: independent structured review pass
+    command_template: 'claude -p --no-session-persistence --tools "" --output-format json --json-schema "$(cat {schema_file})" < {prompt_file} > {output_file}'
+    required_prerequisites:
+      - render the review instructions into {prompt_file} before execution
+      - run only inside a trusted checkout because -p skips the trust dialog
+    safety_notes:
+      - prefer self-contained prompts or explicitly bounded attached context
+      - keep tools disabled unless the prompt truly needs repo reads
+      - do not use dangerously-skip-permissions flags for review-only loops
+      - normalize structured_output if the JSON response is wrapped
 artifact_paths:
   - docs/evaluation-plan.md
 report_paths:
@@ -111,6 +123,91 @@ default_schema_file: fixtures/workbench/review-verdict.schema.json
 - `default_schema_file`: optional checked-in schema path for executor-variant
   review runs.
 
+## Dogfooding Pattern
+
+To evaluate a skill, adapter, or workflow with `Cautilus` itself, add a named
+adapter instead of overloading the repo's default adapter.
+
+Example names:
+
+- `code-quality`
+- `skill-smoke`
+- `meta-eval`
+
+Each named adapter should define its own:
+
+- task surface
+- command templates
+- artifacts to inspect
+- human review prompts
+
+This keeps prompt benchmarking, code-quality benchmarking, and workflow smoke
+tests from collapsing into one overloaded adapter file.
+When a repo runs review variants repeatedly, add a checked-in runner that
+loads the adapter and fans out `executor_variants` instead of asking operators
+to retype each shell command by hand.
+
+### Compare Artifact Pattern
+
+A named adapter whose `comparison_command_templates` produce rich
+scenario-by-scenario signals should also persist them as files so executor
+variants and human reviewers can ground their verdicts on the same numbers.
+
+Recommended shape:
+
+- emit `compare-report.md` and `compare-report.json` into a repo-local path
+- compute one verdict per entry in `comparison_questions` and include the
+  supporting signals inline in both artifacts
+- point review prompts at the same path so human and machine review can refer
+  to the same compare output
+
+## Executor Variant Shape
+
+Each executor variant should make the execution surface and the safety
+contract explicit:
+
+```yaml
+executor_variants:
+  - id: codex-review
+    tool: codex_exec
+    purpose: independent structured review pass
+    command_template: bash scripts/agent-runtime/run-workbench-review-variant.sh --backend codex_exec --workspace {candidate_repo} --prompt-file {prompt_file} --schema-file {schema_file} --output-file {output_file}
+    required_prerequisites:
+      - render the review instructions into {prompt_file} before execution
+      - point {candidate_repo} at the exact workspace under review
+    safety_notes:
+      - prefer wrapper scripts over raw shell when schema injection or quoting gets brittle
+      - keep review loops read-only and bounded
+      - leave a companion stderr file such as {output_file}.stderr
+```
+
+Required fields:
+
+- `id`: stable identifier used in reports
+- `tool`: executor family, for example `codex_exec`, `claude_print`, or
+  `command`
+- `command_template`: checked-in command or wrapper invocation
+
+Optional fields:
+
+- `purpose`: what this variant is judging
+- `required_prerequisites`: concise preconditions the operator should satisfy
+  before running it
+- `safety_notes`: concise mistakes to avoid for this variant
+
+## Human Review Prompt Shape
+
+Each review prompt should point at human-visible failure:
+
+```yaml
+human_review_prompts:
+  - id: operator
+    prompt: Where would an operator still conclude the workflow is misleading or brittle?
+```
+
+Prefer prompts about user-visible failure, operator trust, portability, or
+overfitting. Avoid generic code-style prompts.
+
 ## Placeholder Discipline
 
 Template placeholders should stay obvious and few. Good placeholders:
@@ -130,6 +227,29 @@ Template placeholders should stay obvious and few. Good placeholders:
 - `{full_gate_samples}`
 
 If a value can be inferred cheaply every time, do not add a placeholder for it.
+
+For `codex exec`, do not invent approval-policy flags from older wrappers.
+Use `--sandbox` and your surrounding runtime sandbox instead.
+For stdin-driven commands, prefer file redirection or a checked-in wrapper so
+the process receives EOF and does not wait on an open terminal pipe.
+`Reading additional input from stdin...` is expected when the process is
+reading from a bounded file redirect. It is only a bug when stdin is left
+attached to an interactive terminal and never closes.
+When using `--output-schema`, keep object item schemas conservative.
+Past runs showed some CLIs can reject schemas that declare object properties
+without also listing them in `required`, even when plain JSON Schema would
+allow them as optional.
+For skill-aware smoke tests, treat stderr as part of the contract.
+Past sessions showed `codex exec` can emit skill-load errors on stderr while
+still returning a successful exit code.
+For `claude -p`, prefer `--no-session-persistence` plus explicit tool
+settings.
+Use `--bare` only when the auth path is explicit because `--bare` can disable
+the local OAuth or keychain path.
+In JSON mode, normalize the response and extract `structured_output` if
+present instead of assuming the verdict is top-level.
+Also keep the run bounded with an external timeout or wrapper default because
+`claude -p` can look silent for a while before eventually completing.
 
 Malformed adapters should fail loudly. A found adapter that does not validate
 is worse than no adapter because it creates false confidence.

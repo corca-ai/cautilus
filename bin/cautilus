@@ -1,0 +1,62 @@
+#!/usr/bin/env node
+
+import { spawnSync } from "node:child_process";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+import process from "node:process";
+
+const BIN_DIR = dirname(fileURLToPath(import.meta.url));
+const REPO_ROOT = join(BIN_DIR, "..");
+const RESOLVE_SCRIPT = join(REPO_ROOT, "scripts", "resolve_adapter.py");
+const INIT_SCRIPT = join(REPO_ROOT, "scripts", "init_adapter.py");
+const VARIANT_RUNNER = join(
+	REPO_ROOT,
+	"scripts",
+	"agent-runtime",
+	"run-workbench-executor-variants.mjs",
+);
+
+function usage(exitCode = 0) {
+	const text = [
+		"Usage:",
+		"  cautilus adapter resolve [args]",
+		"  cautilus adapter init [args]",
+		"  cautilus review variants [args]",
+		"",
+		"Examples:",
+		"  cautilus adapter resolve --repo-root .",
+		"  cautilus adapter init --repo-root .",
+		"  cautilus review variants --repo-root . --workspace . --output-dir /tmp/cautilus-review",
+	].join("\n");
+	const out = exitCode === 0 ? process.stdout : process.stderr;
+	out.write(`${text}\n`);
+	process.exit(exitCode);
+}
+
+function run(command, args) {
+	const result = spawnSync(command, args, {
+		cwd: process.cwd(),
+		stdio: "inherit",
+	});
+	process.exit(result.status ?? 1);
+}
+
+const [, , area, action, ...rest] = process.argv;
+
+if (!area || area === "-h" || area === "--help") {
+	usage(0);
+}
+
+if (area === "adapter" && action === "resolve") {
+	run("python3", [RESOLVE_SCRIPT, ...rest]);
+}
+
+if (area === "adapter" && action === "init") {
+	run("python3", [INIT_SCRIPT, ...rest]);
+}
+
+if (area === "review" && action === "variants") {
+	run("node", [VARIANT_RUNNER, ...rest]);
+}
+
+usage(1);
