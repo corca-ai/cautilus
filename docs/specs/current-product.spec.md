@@ -40,6 +40,8 @@
 | scripts/init_adapter.py | fixed | dump_yaml_document |
 | scripts/agent-runtime/scenario-history.mjs | file_exists |  |
 | scripts/agent-runtime/scenario-history.mjs | fixed | SCENARIO_HISTORY_SCHEMA |
+| scripts/agent-runtime/chatbot-proposal-candidates.mjs | file_exists |  |
+| scripts/agent-runtime/chatbot-proposal-candidates.mjs | fixed | normalizeChatbotProposalCandidates |
 | scripts/agent-runtime/scenario-proposals.mjs | file_exists |  |
 | scripts/agent-runtime/scenario-proposals.mjs | fixed | SCENARIO_PROPOSALS_SCHEMA |
 | scripts/agent-runtime/build-scenario-proposal-input.mjs | file_exists |  |
@@ -64,6 +66,7 @@
 - target repo의 adapter scaffold
 - target repo의 adapter readiness doctor
 - scenario profile and graduation history helpers
+- chatbot proposal-candidate normalization helper
 - scenario proposal input packet assembly command
 - scenario proposal ranking and draft-scenario helpers
 - scenario proposal packet generation command
@@ -90,6 +93,7 @@ $ node ./bin/cautilus doctor --repo-root . || true
 $ node ./bin/cautilus scenario prepare-input --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json --family fast_regression --window-days 14 --now 2026-04-11T00:00:00.000Z
 $ node ./bin/cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json
 $ node --test ./bin/cautilus.test.mjs
+$ node --test ./scripts/agent-runtime/chatbot-proposal-candidates.test.mjs
 $ node --test ./scripts/agent-runtime/scenario-proposal-schemas.test.mjs
 $ python3 ./scripts/init_adapter.py --repo-root /tmp/cautilus-spec-check --output /tmp/cautilus-spec-check/workbench-adapter.yaml --force
 $ node --test ./scripts/agent-runtime/scenario-history.test.mjs

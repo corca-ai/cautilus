@@ -37,6 +37,7 @@ $ test -f scripts/resolve_adapter.py
 $ test -f scripts/init_adapter.py
 $ test -f scripts/doctor.py
 $ test -f scripts/agent-runtime/scenario-history.mjs
+$ test -f scripts/agent-runtime/chatbot-proposal-candidates.mjs
 $ test -f scripts/agent-runtime/scenario-proposals.mjs
 $ test -f scripts/agent-runtime/build-scenario-proposal-input.mjs
 $ test -f scripts/agent-runtime/generate-scenario-proposals.mjs

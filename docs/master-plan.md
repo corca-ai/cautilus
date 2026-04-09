@@ -44,6 +44,8 @@ The target product is:
   host-owned normalization seam before proposal generation.
 - The next design step now treats `chatbot` and `skill` as the first
   use-case-specific normalization helpers worth productizing.
+- A first product-owned `chatbot` normalization runtime seam now exists for
+  Ceal-shaped conversation and blocked-run summaries.
 - Ceal still owns richer prompt-benchmark history logic, audit-workbench
   storage, scenario proposal generation, and operator web surfaces.
 
@@ -125,7 +127,7 @@ Formalize the DSPy-like product story:
 
 1. Keep the standalone binary and bundled skill aligned on one checked-in
    workflow surface.
-2. Implement `chatbot` normalization as the first product-owned pre-candidate
-   helper.
+2. Expose the `chatbot` normalization seam through a narrow standalone input
+   shape and CLI surface.
 3. Keep `skill` normalization as the next helper, using `charness` and `crill`
    fixtures to prove the boundary before any repo-specific reader logic lands.

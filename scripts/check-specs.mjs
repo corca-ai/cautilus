@@ -56,6 +56,7 @@ function main() {
 		"scripts/init_adapter.py",
 		"scripts/doctor.py",
 		"scripts/agent-runtime/scenario-history.mjs",
+		"scripts/agent-runtime/chatbot-proposal-candidates.mjs",
 		"scripts/agent-runtime/scenario-proposals.mjs",
 		"scripts/agent-runtime/build-scenario-proposal-input.mjs",
 		"scripts/agent-runtime/generate-scenario-proposals.mjs",
