@@ -31,6 +31,7 @@ $ test -f docs/contracts/scenario-proposal-normalization.md
 $ test -f docs/contracts/chatbot-normalization.md
 $ test -f docs/contracts/skill-normalization.md
 $ test -f docs/master-plan.md
+$ test -f docs/consumer-readiness.md
 $ test -f skills/cautilus/SKILL.md
 $ test -f skills/cautilus/agents/openai.yaml
 $ test -f scripts/resolve_adapter.py

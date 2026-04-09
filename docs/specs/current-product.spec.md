@@ -39,6 +39,8 @@
 | docs/contracts/scenario-proposal-inputs.md | fixed | cautilus.scenario_proposal_inputs.v1 |
 | docs/contracts/scenario-proposal-normalization.md | file_exists |  |
 | docs/contracts/scenario-proposal-normalization.md | fixed | scenario prepare-input |
+| docs/consumer-readiness.md | file_exists |  |
+| docs/consumer-readiness.md | fixed | ceal is the live adapter consumer |
 | scripts/resolve_adapter.py | fixed | workbench-adapter.yaml |
 | scripts/init_adapter.py | fixed | dump_yaml_document |
 | scripts/agent-runtime/scenario-history.mjs | file_exists |  |

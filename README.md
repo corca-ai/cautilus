@@ -71,6 +71,9 @@ Ceal remains a proving-ground consumer, not the product boundary.
   active product specs
 - [docs/master-plan.md](/home/ubuntu/cautilus/docs/master-plan.md): roadmap
   from extraction scaffold to standalone product
+- [docs/consumer-readiness.md](/home/ubuntu/cautilus/docs/consumer-readiness.md):
+  current live-consumer vs normalization-reference status for Ceal, charness,
+  and crill
 - [skills/cautilus/SKILL.md](/home/ubuntu/cautilus/skills/cautilus/SKILL.md):
   bundled standalone skill entrypoint
 - [scripts/resolve_adapter.py](/home/ubuntu/cautilus/scripts/resolve_adapter.py):

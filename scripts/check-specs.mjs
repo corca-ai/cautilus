@@ -49,6 +49,7 @@ function main() {
 		"docs/contracts/chatbot-normalization.md",
 		"docs/contracts/skill-normalization.md",
 		"docs/master-plan.md",
+		"docs/consumer-readiness.md",
 		"bin/cautilus",
 		"skills/cautilus/SKILL.md",
 		"skills/cautilus/agents/openai.yaml",
