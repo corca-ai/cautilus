@@ -61,6 +61,8 @@ Ceal remains a proving-ground consumer, not the product boundary.
   scenario selection, graduation, and history helpers
 - [scripts/agent-runtime/scenario-proposals.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/scenario-proposals.mjs):
   proposal ranking and draft-scenario payload helpers
+- [scripts/agent-runtime/generate-scenario-proposals.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/generate-scenario-proposals.mjs):
+  standalone proposal packet generator for normalized inputs
 - [scripts/agent-runtime/run-workbench-review-variant.sh](/home/ubuntu/cautilus/scripts/agent-runtime/run-workbench-review-variant.sh):
   bounded single-variant runner
 - [scripts/agent-runtime/run-workbench-executor-variants.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/run-workbench-executor-variants.mjs):
@@ -87,6 +89,13 @@ Check whether a repo is ready for standalone `Cautilus` evaluation:
 node ./bin/cautilus doctor --repo-root /path/to/repo
 ```
 
+Generate a scenario proposal packet from normalized candidate input:
+
+```bash
+node ./bin/cautilus scenario propose \
+  --input ./fixtures/scenario-proposals/standalone-input.json
+```
+
 Run every executor variant defined by an adapter:
 
 ```bash
@@ -103,6 +112,7 @@ Direct script usage is also supported:
 python3 scripts/resolve_adapter.py --repo-root .
 python3 scripts/init_adapter.py --repo-root .
 node scripts/agent-runtime/run-workbench-executor-variants.mjs --workspace . --output-dir /tmp/cautilus-review
+node scripts/agent-runtime/generate-scenario-proposals.mjs --input ./fixtures/scenario-proposals/standalone-input.json
 ```
 
 The bundled skill surface lives at

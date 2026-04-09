@@ -16,6 +16,12 @@ const VARIANT_RUNNER = join(
 	"agent-runtime",
 	"run-workbench-executor-variants.mjs",
 );
+const SCENARIO_PROPOSAL_RUNNER = join(
+	REPO_ROOT,
+	"scripts",
+	"agent-runtime",
+	"generate-scenario-proposals.mjs",
+);
 
 function usage(exitCode = 0) {
 	const text = [
@@ -23,12 +29,14 @@ function usage(exitCode = 0) {
 		"  cautilus adapter resolve [args]",
 		"  cautilus adapter init [args]",
 		"  cautilus doctor [args]",
+		"  cautilus scenario propose [args]",
 		"  cautilus review variants [args]",
 		"",
 		"Examples:",
 		"  cautilus adapter resolve --repo-root .",
 		"  cautilus adapter init --repo-root .",
 		"  cautilus doctor --repo-root .",
+		"  cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json",
 		"  cautilus review variants --repo-root . --workspace . --output-dir /tmp/cautilus-review",
 	].join("\n");
 	const out = exitCode === 0 ? process.stdout : process.stderr;
@@ -60,6 +68,10 @@ if (area === "adapter" && action === "init") {
 
 if (area === "doctor") {
 	run("python3", [DOCTOR_SCRIPT, action, ...rest].filter(Boolean));
+}
+
+if (area === "scenario" && action === "propose") {
+	run("node", [SCENARIO_PROPOSAL_RUNNER, ...rest]);
 }
 
 if (area === "review" && action === "variants") {

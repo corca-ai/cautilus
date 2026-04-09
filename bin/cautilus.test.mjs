@@ -204,3 +204,72 @@ printf '{"verdict":"pass","summary":"standalone smoke","findings":[{"severity":"
 		rmSync(root, { recursive: true, force: true });
 	}
 });
+
+test("cautilus scenario propose generates a standalone proposal packet from normalized input", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-bin-scenario-propose-"));
+	try {
+		const inputPath = join(root, "scenario-proposal-input.json");
+		const outputPath = join(root, "scenario-proposals.json");
+		writeFileSync(
+			inputPath,
+			`${JSON.stringify(
+				{
+					schemaVersion: "cautilus.scenario_proposal_inputs.v1",
+					windowDays: 14,
+					families: ["fast_regression"],
+					proposalCandidates: [
+						{
+							proposalKey: "review-after-retro",
+							title: "Refresh review-after-retro scenario from recent activity",
+							family: "fast_regression",
+							name: "Review After Retro",
+							description: "The user pivots from retro back to review in one thread.",
+							brief: "Recent activity shows a retro turn followed by a review turn.",
+							simulatorTurns: ["retro 먼저 해주세요", "이제 review로 돌아가죠"],
+							evidence: [
+								{
+									sourceKind: "human_conversation",
+									title: "review after retro",
+									threadKey: "thread-1",
+									observedAt: "2026-04-09T21:00:00.000Z",
+									messages: ["retro 먼저 해주세요", "이제 review로 돌아가죠"],
+								},
+							],
+						},
+					],
+					existingScenarioRegistry: [
+						{
+							scenarioId: "review-after-retro",
+							scenarioKey: "review-after-retro",
+							family: "fast_regression",
+						},
+					],
+					scenarioCoverage: [
+						{
+							scenarioKey: "review-after-retro",
+							recentResultCount: 2,
+						},
+					],
+					now: "2026-04-11T00:00:00.000Z",
+				},
+				null,
+				2,
+			)}\n`,
+			"utf-8",
+		);
+
+		const result = spawnSync("node", [BIN_PATH, "scenario", "propose", "--input", inputPath, "--output", outputPath], {
+			cwd: process.cwd(),
+			encoding: "utf-8",
+		});
+		assert.equal(result.status, 0, result.stderr);
+		assert.equal(result.stdout, "");
+		const payload = JSON.parse(readFileSync(outputPath, "utf-8"));
+		assert.equal(payload.schemaVersion, "cautilus.scenario_proposals.v1");
+		assert.equal(payload.proposals.length, 1);
+		assert.equal(payload.proposals[0].action, "refresh_existing_scenario");
+		assert.equal(payload.proposals[0].draftScenario.schemaVersion, "cautilus.scenario.v1");
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});

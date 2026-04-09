@@ -53,8 +53,10 @@ function main() {
 		"scripts/doctor.py",
 		"scripts/agent-runtime/scenario-history.mjs",
 		"scripts/agent-runtime/scenario-proposals.mjs",
+		"scripts/agent-runtime/generate-scenario-proposals.mjs",
 		"scripts/agent-runtime/run-workbench-review-variant.sh",
 		"scripts/agent-runtime/run-workbench-executor-variants.mjs",
+		"fixtures/scenario-proposals/standalone-input.json",
 		"fixtures/workbench/review-verdict.schema.json",
 	].forEach(requireFile);
 	validateSpecIndex();

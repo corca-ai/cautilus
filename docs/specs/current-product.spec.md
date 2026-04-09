@@ -23,6 +23,7 @@
 | bin/cautilus | file_exists |  |
 | bin/cautilus | fixed | adapter resolve |
 | bin/cautilus | fixed | cautilus doctor |
+| bin/cautilus | fixed | scenario propose |
 | bin/cautilus | fixed | review variants |
 | bin/cautilus.test.mjs | file_exists |  |
 | skills/cautilus/SKILL.md | file_exists |  |
@@ -37,6 +38,8 @@
 | scripts/agent-runtime/scenario-history.mjs | fixed | SCENARIO_HISTORY_SCHEMA |
 | scripts/agent-runtime/scenario-proposals.mjs | file_exists |  |
 | scripts/agent-runtime/scenario-proposals.mjs | fixed | SCENARIO_PROPOSALS_SCHEMA |
+| scripts/agent-runtime/generate-scenario-proposals.mjs | file_exists |  |
+| scripts/agent-runtime/generate-scenario-proposals.mjs | fixed | SCENARIO_PROPOSAL_INPUTS_SCHEMA |
 | scripts/agent-runtime/run-workbench-review-variant.sh | file_exists |  |
 | scripts/agent-runtime/run-workbench-review-variant.sh | fixed | WORKBENCH_REVIEW_TIMEOUT_SECONDS |
 | scripts/agent-runtime/run-workbench-executor-variants.mjs | file_exists |  |
@@ -52,6 +55,7 @@
 - target repo의 adapter readiness doctor
 - scenario profile and graduation history helpers
 - scenario proposal ranking and draft-scenario helpers
+- scenario proposal packet generation command
 - adapter-defined executor variants fanout
 - checked-in standalone skill entrypoint
 - structured review verdict schema
@@ -71,6 +75,7 @@ local repo에서 최소 surface는 다음 명령으로 확인할 수 있어야 �
 ```run:shell
 $ node ./bin/cautilus adapter resolve --repo-root .
 $ node ./bin/cautilus doctor --repo-root . || true
+$ node ./bin/cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json
 $ node --test ./bin/cautilus.test.mjs
 $ python3 ./scripts/init_adapter.py --repo-root /tmp/cautilus-spec-check --output /tmp/cautilus-spec-check/workbench-adapter.yaml --force
 $ node --test ./scripts/agent-runtime/scenario-history.test.mjs

@@ -20,6 +20,8 @@
 - generic scenario proposal source contract 초안이 [scenario-proposal-sources.md](/home/ubuntu/cautilus/docs/contracts/scenario-proposal-sources.md) 로 추가돼 recent activity, blocked run, coverage source port를 제품 경계로 분리하기 시작했다.
 - [scenario-history.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/scenario-history.mjs) 가 추가돼 selection, graduation, history persistence helper가 이제 제품-owned runtime seam으로 존재한다.
 - [scenario-proposals.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/scenario-proposals.mjs) 가 추가돼 normalized proposal candidate를 merge, rank, draft scenario payload로 바꾸는 첫 product-owned runtime seam이 생겼다.
+- minimal CLI [bin/cautilus](/home/ubuntu/cautilus/bin/cautilus)에 `scenario propose`가 추가돼 normalized input packet에서 standalone proposal packet을 직접 만들 수 있다.
+- checked-in example input [fixtures/scenario-proposals/standalone-input.json](/home/ubuntu/cautilus/fixtures/scenario-proposals/standalone-input.json) 과 `bin/cautilus` test가 붙어 proposal generation도 Ceal-owned path 없이 검증된다.
 - `fullCheck`는 scenario selection은 전체로 열되 `trainRunCount`나 graduation history는 전진시키지 않는 규칙으로 고정됐다.
 - Ceal에서 generic runtime seam으로 볼 수 있는 executor-variant 러너와 검증용 테스트, review verdict schema를 가져왔다.
 - [scripts/init_adapter.py](/home/ubuntu/cautilus/scripts/init_adapter.py)는 `PyYAML` 의존성을 제거하고 stdlib-only YAML writer로 바뀌었다.
@@ -27,13 +29,13 @@
 - `npm install`, `npm run lint`, `npm run test`, `npm run verify`가 모두 통과했다.
 - `Cautilus` resolver는 Ceal의 `skill-smoke`, `code-quality` adapter를 이미 읽을 수 있어 consumer repoint의 전제는 갖췄다.
 - 아직 없는 것:
-  - normalized source-port input file을 받아 proposal packet을 내보내는 standalone CLI surface
   - host-specific recent activity / blocked run mining adapter
+  - host-owned normalized proposal-candidate packet contract 문서
 
 ## Next Session
 
-1. normalized source-port input file을 읽어 scenario proposal packet을 출력하는 standalone CLI command를 `Cautilus`에 추가한다.
-2. temp repo나 fixture input만으로 proposal generation이 끝까지 도는 executable test를 추가한다.
+1. host repo가 `scenario propose`에 넘겨야 하는 normalized proposal-candidate packet contract를 별도 문서로 고정한다.
+2. recent human activity / blocked run / coverage source port에서 그 packet으로 이어지는 host-owned normalization seam을 정의한다.
 
 ## Discuss
 

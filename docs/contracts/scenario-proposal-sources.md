@@ -23,6 +23,8 @@ This contract does not yet own:
 - prompt text used to draft proposals
 - the final scenario store file path
 - UI workflow for accepting or rejecting proposals
+- raw host-specific heuristics that convert activity logs into normalized
+  proposal candidates
 
 ## Source Ports
 
@@ -189,6 +191,8 @@ possible pattern.
 
 - Proposal generation should depend on normalized source ports, not direct host
   repo file traversal baked into `Cautilus`.
+- The first standalone CLI surface starts after host-specific mining and reads a
+  normalized proposal-candidate packet plus scenario registry and coverage.
 - Existing scenario registry and recent scenario coverage are separate inputs.
   One says whether a key exists; the other says whether it is exercised enough.
 - Proposal output should embed a draft scenario, not only a prose suggestion.

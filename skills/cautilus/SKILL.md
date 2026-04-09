@@ -41,6 +41,7 @@ node ./bin/cautilus doctor --repo-root .
 - [docs/workflow.md](/home/ubuntu/cautilus/docs/workflow.md)
 - [docs/contracts/adapter-contract.md](/home/ubuntu/cautilus/docs/contracts/adapter-contract.md)
 - [docs/contracts/reporting.md](/home/ubuntu/cautilus/docs/contracts/reporting.md)
+- [docs/contracts/scenario-proposal-sources.md](/home/ubuntu/cautilus/docs/contracts/scenario-proposal-sources.md)
 
 ## Workflow
 
@@ -60,6 +61,13 @@ node ./bin/cautilus review variants \
 ```
 
 5. Report exact commands, exact placeholder values, and the final recommendation.
+6. When the repo already has normalized scenario proposal candidates, generate
+   a checked-in proposal packet instead of hand-drafting scenario JSON:
+
+```bash
+node ./bin/cautilus scenario propose \
+  --input ./fixtures/scenario-proposals/standalone-input.json
+```
 
 ## Guardrails
 

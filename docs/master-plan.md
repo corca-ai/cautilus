@@ -36,6 +36,8 @@ The target product is:
   `scripts/agent-runtime/scenario-history.mjs`.
 - A first product-owned scenario-proposal runtime seam now exists in
   `scripts/agent-runtime/scenario-proposals.mjs`.
+- A standalone `scenario propose` command now turns normalized proposal input
+  packets into operator-reviewable proposal packets.
 - Ceal still owns richer prompt-benchmark history logic, audit-workbench
   storage, scenario proposal generation, and operator web surfaces.
 
@@ -109,5 +111,5 @@ Formalize the DSPy-like product story:
 
 1. Keep the standalone binary and bundled skill aligned on one checked-in
    workflow surface.
-2. Expose the scenario-proposal runtime seam through a standalone CLI command
-   that reads normalized source-port inputs.
+2. Define the host-owned normalization boundary that produces proposal-input
+   packets for `cautilus scenario propose`.
