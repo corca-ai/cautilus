@@ -193,6 +193,8 @@ possible pattern.
   One says whether a key exists; the other says whether it is exercised enough.
 - Proposal output should embed a draft scenario, not only a prose suggestion.
 - Evidence should stay attached to each proposal so operator review is grounded.
+- The first product-owned payload uses `cautilus.scenario_proposals.v1`.
+- The first product-owned draft scenario payload uses `cautilus.scenario.v1`.
 
 ## Probe Questions
 
@@ -205,7 +207,6 @@ possible pattern.
 
 ## Deferred Decisions
 
-- exact draft scenario schema version strings
 - operator acceptance workflow and persistence path
 - host-specific heuristics for detecting topic shift, clarification, memory
   preference, or event-triggered wake-up patterns

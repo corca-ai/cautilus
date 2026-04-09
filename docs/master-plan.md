@@ -34,6 +34,8 @@ The target product is:
   `docs/contracts/scenario-proposal-sources.md`.
 - A first product-owned scenario/history runtime seam now exists in
   `scripts/agent-runtime/scenario-history.mjs`.
+- A first product-owned scenario-proposal runtime seam now exists in
+  `scripts/agent-runtime/scenario-proposals.mjs`.
 - Ceal still owns richer prompt-benchmark history logic, audit-workbench
   storage, scenario proposal generation, and operator web surfaces.
 
@@ -107,5 +109,5 @@ Formalize the DSPy-like product story:
 
 1. Keep the standalone binary and bundled skill aligned on one checked-in
    workflow surface.
-2. Implement the first product-owned scenario proposal runtime seam from the
-   normalized source-port contract.
+2. Expose the scenario-proposal runtime seam through a standalone CLI command
+   that reads normalized source-port inputs.

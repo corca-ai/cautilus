@@ -59,6 +59,8 @@ Ceal remains a proving-ground consumer, not the product boundary.
   adapter readiness diagnosis
 - [scripts/agent-runtime/scenario-history.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/scenario-history.mjs):
   scenario selection, graduation, and history helpers
+- [scripts/agent-runtime/scenario-proposals.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/scenario-proposals.mjs):
+  proposal ranking and draft-scenario payload helpers
 - [scripts/agent-runtime/run-workbench-review-variant.sh](/home/ubuntu/cautilus/scripts/agent-runtime/run-workbench-review-variant.sh):
   bounded single-variant runner
 - [scripts/agent-runtime/run-workbench-executor-variants.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/run-workbench-executor-variants.mjs):

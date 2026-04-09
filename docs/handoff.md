@@ -19,6 +19,7 @@
 - generic scenario/history contract 초안이 [scenario-history.md](/home/ubuntu/cautilus/docs/contracts/scenario-history.md) 로 추가돼 profile, graduation, baseline-cache 규칙을 제품 경계로 분리하기 시작했다.
 - generic scenario proposal source contract 초안이 [scenario-proposal-sources.md](/home/ubuntu/cautilus/docs/contracts/scenario-proposal-sources.md) 로 추가돼 recent activity, blocked run, coverage source port를 제품 경계로 분리하기 시작했다.
 - [scenario-history.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/scenario-history.mjs) 가 추가돼 selection, graduation, history persistence helper가 이제 제품-owned runtime seam으로 존재한다.
+- [scenario-proposals.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/scenario-proposals.mjs) 가 추가돼 normalized proposal candidate를 merge, rank, draft scenario payload로 바꾸는 첫 product-owned runtime seam이 생겼다.
 - `fullCheck`는 scenario selection은 전체로 열되 `trainRunCount`나 graduation history는 전진시키지 않는 규칙으로 고정됐다.
 - Ceal에서 generic runtime seam으로 볼 수 있는 executor-variant 러너와 검증용 테스트, review verdict schema를 가져왔다.
 - [scripts/init_adapter.py](/home/ubuntu/cautilus/scripts/init_adapter.py)는 `PyYAML` 의존성을 제거하고 stdlib-only YAML writer로 바뀌었다.
@@ -26,12 +27,13 @@
 - `npm install`, `npm run lint`, `npm run test`, `npm run verify`가 모두 통과했다.
 - `Cautilus` resolver는 Ceal의 `skill-smoke`, `code-quality` adapter를 이미 읽을 수 있어 consumer repoint의 전제는 갖췄다.
 - 아직 없는 것:
-  - runtime log 기반 scenario proposal engine의 generic contract와 구현
+  - normalized source-port input file을 받아 proposal packet을 내보내는 standalone CLI surface
+  - host-specific recent activity / blocked run mining adapter
 
 ## Next Session
 
-1. normalized source port를 받아 proposal payload를 만드는 첫 product-owned scenario proposal runtime seam을 `Cautilus`에 구현한다.
-2. recent human activity, blocked run summary, scenario coverage를 받는 최소 test fixture를 추가해 Ceal 없이도 proposal ranking이 도는지 증명한다.
+1. normalized source-port input file을 읽어 scenario proposal packet을 출력하는 standalone CLI command를 `Cautilus`에 추가한다.
+2. temp repo나 fixture input만으로 proposal generation이 끝까지 도는 executable test를 추가한다.
 
 ## Discuss
 

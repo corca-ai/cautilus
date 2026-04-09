@@ -33,6 +33,7 @@ $ test -f scripts/resolve_adapter.py
 $ test -f scripts/init_adapter.py
 $ test -f scripts/doctor.py
 $ test -f scripts/agent-runtime/scenario-history.mjs
+$ test -f scripts/agent-runtime/scenario-proposals.mjs
 $ test -f scripts/agent-runtime/run-workbench-review-variant.sh
 $ test -f scripts/agent-runtime/run-workbench-executor-variants.mjs
 $ test -f fixtures/workbench/review-verdict.schema.json
