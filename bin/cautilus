@@ -22,6 +22,12 @@ const SCENARIO_PROPOSAL_RUNNER = join(
 	"agent-runtime",
 	"generate-scenario-proposals.mjs",
 );
+const SCENARIO_INPUT_BUILDER = join(
+	REPO_ROOT,
+	"scripts",
+	"agent-runtime",
+	"build-scenario-proposal-input.mjs",
+);
 
 function usage(exitCode = 0) {
 	const text = [
@@ -29,6 +35,7 @@ function usage(exitCode = 0) {
 		"  cautilus adapter resolve [args]",
 		"  cautilus adapter init [args]",
 		"  cautilus doctor [args]",
+		"  cautilus scenario prepare-input [args]",
 		"  cautilus scenario propose [args]",
 		"  cautilus review variants [args]",
 		"",
@@ -36,6 +43,7 @@ function usage(exitCode = 0) {
 		"  cautilus adapter resolve --repo-root .",
 		"  cautilus adapter init --repo-root .",
 		"  cautilus doctor --repo-root .",
+		"  cautilus scenario prepare-input --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json",
 		"  cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json",
 		"  cautilus review variants --repo-root . --workspace . --output-dir /tmp/cautilus-review",
 	].join("\n");
@@ -72,6 +80,10 @@ if (area === "doctor") {
 
 if (area === "scenario" && action === "propose") {
 	run("node", [SCENARIO_PROPOSAL_RUNNER, ...rest]);
+}
+
+if (area === "scenario" && action === "prepare-input") {
+	run("node", [SCENARIO_INPUT_BUILDER, ...rest]);
 }
 
 if (area === "review" && action === "variants") {

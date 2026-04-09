@@ -1,0 +1,26 @@
+[
+  {
+    "proposalKey": "review-after-retro",
+    "title": "Refresh review-after-retro scenario from recent activity",
+    "family": "fast_regression",
+    "name": "Review After Retro",
+    "description": "The user pivots from retro back to review in one thread.",
+    "brief": "Recent activity shows a retro turn followed by a review turn.",
+    "simulatorTurns": [
+      "retro 먼저 해주세요",
+      "이제 review로 돌아가죠"
+    ],
+    "evidence": [
+      {
+        "sourceKind": "human_conversation",
+        "title": "review after retro",
+        "threadKey": "thread-1",
+        "observedAt": "2026-04-09T21:00:00.000Z",
+        "messages": [
+          "retro 먼저 해주세요",
+          "이제 review로 돌아가죠"
+        ]
+      }
+    ]
+  }
+]

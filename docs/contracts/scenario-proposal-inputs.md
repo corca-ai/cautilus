@@ -144,5 +144,7 @@ The product-owned `scenario propose` command then:
 ## Source References
 
 - [scenario-proposal-sources.md](/home/ubuntu/cautilus/docs/contracts/scenario-proposal-sources.md)
+- [scenario-proposal-normalization.md](/home/ubuntu/cautilus/docs/contracts/scenario-proposal-normalization.md)
+- [build-scenario-proposal-input.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/build-scenario-proposal-input.mjs)
 - [generate-scenario-proposals.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/generate-scenario-proposals.mjs)
 - [standalone-input.json](/home/ubuntu/cautilus/fixtures/scenario-proposals/standalone-input.json)

@@ -42,6 +42,8 @@ node ./bin/cautilus doctor --repo-root .
 - [docs/contracts/adapter-contract.md](/home/ubuntu/cautilus/docs/contracts/adapter-contract.md)
 - [docs/contracts/reporting.md](/home/ubuntu/cautilus/docs/contracts/reporting.md)
 - [docs/contracts/scenario-proposal-sources.md](/home/ubuntu/cautilus/docs/contracts/scenario-proposal-sources.md)
+- [docs/contracts/scenario-proposal-inputs.md](/home/ubuntu/cautilus/docs/contracts/scenario-proposal-inputs.md)
+- [docs/contracts/scenario-proposal-normalization.md](/home/ubuntu/cautilus/docs/contracts/scenario-proposal-normalization.md)
 
 ## Workflow
 
@@ -65,6 +67,12 @@ node ./bin/cautilus review variants \
    a checked-in proposal packet instead of hand-drafting scenario JSON:
 
 ```bash
+node ./bin/cautilus scenario prepare-input \
+  --candidates ./fixtures/scenario-proposals/candidates.json \
+  --registry ./fixtures/scenario-proposals/registry.json \
+  --coverage ./fixtures/scenario-proposals/coverage.json \
+  --family fast_regression
+
 node ./bin/cautilus scenario propose \
   --input ./fixtures/scenario-proposals/standalone-input.json
 ```

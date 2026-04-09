@@ -273,3 +273,114 @@ test("cautilus scenario propose generates a standalone proposal packet from norm
 		rmSync(root, { recursive: true, force: true });
 	}
 });
+
+test("cautilus scenario prepare-input builds a proposal input packet from split normalized sources", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-bin-scenario-prepare-"));
+	try {
+		const candidatesPath = join(root, "candidates.json");
+		const registryPath = join(root, "registry.json");
+		const coveragePath = join(root, "coverage.json");
+		const inputPath = join(root, "scenario-proposal-input.json");
+		const outputPath = join(root, "scenario-proposals.json");
+
+		writeFileSync(
+			candidatesPath,
+			`${JSON.stringify(
+				[
+					{
+						proposalKey: "review-after-retro",
+						title: "Refresh review-after-retro scenario from recent activity",
+						family: "fast_regression",
+						name: "Review After Retro",
+						description: "The user pivots from retro back to review in one thread.",
+						brief: "Recent activity shows a retro turn followed by a review turn.",
+						simulatorTurns: ["retro 먼저 해주세요", "이제 review로 돌아가죠"],
+						evidence: [
+							{
+								sourceKind: "human_conversation",
+								title: "review after retro",
+								threadKey: "thread-1",
+								observedAt: "2026-04-09T21:00:00.000Z",
+								messages: ["retro 먼저 해주세요", "이제 review로 돌아가죠"],
+							},
+						],
+					},
+				],
+				null,
+				2,
+			)}\n`,
+			"utf-8",
+		);
+		writeFileSync(
+			registryPath,
+			`${JSON.stringify(
+				[
+					{
+						scenarioId: "review-after-retro",
+						scenarioKey: "review-after-retro",
+						family: "fast_regression",
+					},
+				],
+				null,
+				2,
+			)}\n`,
+			"utf-8",
+		);
+		writeFileSync(
+			coveragePath,
+			`${JSON.stringify(
+				[
+					{
+						scenarioKey: "review-after-retro",
+						recentResultCount: 2,
+					},
+				],
+				null,
+				2,
+			)}\n`,
+			"utf-8",
+		);
+
+		const prepare = spawnSync(
+			"node",
+			[
+				BIN_PATH,
+				"scenario",
+				"prepare-input",
+				"--candidates",
+				candidatesPath,
+				"--registry",
+				registryPath,
+				"--coverage",
+				coveragePath,
+				"--family",
+				"fast_regression",
+				"--window-days",
+				"14",
+				"--now",
+				"2026-04-11T00:00:00.000Z",
+				"--output",
+				inputPath,
+			],
+			{
+				cwd: process.cwd(),
+				encoding: "utf-8",
+			},
+		);
+		assert.equal(prepare.status, 0, prepare.stderr);
+		const prepared = JSON.parse(readFileSync(inputPath, "utf-8"));
+		assert.equal(prepared.schemaVersion, "cautilus.scenario_proposal_inputs.v1");
+		assert.equal(prepared.proposalCandidates.length, 1);
+
+		const propose = spawnSync("node", [BIN_PATH, "scenario", "propose", "--input", inputPath, "--output", outputPath], {
+			cwd: process.cwd(),
+			encoding: "utf-8",
+		});
+		assert.equal(propose.status, 0, propose.stderr);
+		const payload = JSON.parse(readFileSync(outputPath, "utf-8"));
+		assert.equal(payload.proposals.length, 1);
+		assert.equal(payload.proposals[0].proposalKey, "review-after-retro");
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});

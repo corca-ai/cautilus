@@ -1,5 +1,7 @@
 import { readFileSync, writeFileSync } from "node:fs";
+import { resolve } from "node:path";
 import process from "node:process";
+import { pathToFileURL } from "node:url";
 
 import { generateScenarioProposals } from "./scenario-proposals.mjs";
 
@@ -109,7 +111,7 @@ function parseNow(value) {
 	return now;
 }
 
-function buildScenarioProposalPacket(input) {
+export function buildScenarioProposalPacket(input) {
 	if (input.schemaVersion !== SCENARIO_PROPOSAL_INPUTS_SCHEMA) {
 		throw new Error(`schemaVersion must be ${SCENARIO_PROPOSAL_INPUTS_SCHEMA}`);
 	}
@@ -126,9 +128,9 @@ function buildScenarioProposalPacket(input) {
 	});
 }
 
-function main() {
+export function main(argv = process.argv.slice(2)) {
 	try {
-		const { inputPath, outputPath } = parseArgs(process.argv.slice(2));
+		const { inputPath, outputPath } = parseArgs(argv);
 		const input = parseJsonFile(inputPath);
 		const packet = buildScenarioProposalPacket(input);
 		const text = `${JSON.stringify(packet, null, 2)}\n`;
@@ -143,4 +145,7 @@ function main() {
 	}
 }
 
-main();
+const entryHref = process.argv[1] ? pathToFileURL(resolve(process.argv[1])).href : "";
+if (import.meta.url === entryHref) {
+	main();
+}

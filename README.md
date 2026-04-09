@@ -47,6 +47,8 @@ Ceal remains a proving-ground consumer, not the product boundary.
   runtime-activity source ports for draft scenario proposals
 - [docs/contracts/scenario-proposal-inputs.md](/home/ubuntu/cautilus/docs/contracts/scenario-proposal-inputs.md):
   normalized input packet consumed by `cautilus scenario propose`
+- [docs/contracts/scenario-proposal-normalization.md](/home/ubuntu/cautilus/docs/contracts/scenario-proposal-normalization.md):
+  host-owned reference seam that assembles split normalized sources
 - [docs/specs/index.spec.md](/home/ubuntu/cautilus/docs/specs/index.spec.md):
   active product specs
 - [docs/master-plan.md](/home/ubuntu/cautilus/docs/master-plan.md): roadmap
@@ -98,6 +100,18 @@ node ./bin/cautilus scenario propose \
   --input ./fixtures/scenario-proposals/standalone-input.json
 ```
 
+Assemble that input packet from split normalized source files:
+
+```bash
+node ./bin/cautilus scenario prepare-input \
+  --candidates ./fixtures/scenario-proposals/candidates.json \
+  --registry ./fixtures/scenario-proposals/registry.json \
+  --coverage ./fixtures/scenario-proposals/coverage.json \
+  --family fast_regression \
+  --window-days 14 \
+  --now 2026-04-11T00:00:00.000Z
+```
+
 Run every executor variant defined by an adapter:
 
 ```bash
@@ -114,6 +128,7 @@ Direct script usage is also supported:
 python3 scripts/resolve_adapter.py --repo-root .
 python3 scripts/init_adapter.py --repo-root .
 node scripts/agent-runtime/run-workbench-executor-variants.mjs --workspace . --output-dir /tmp/cautilus-review
+node scripts/agent-runtime/build-scenario-proposal-input.mjs --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json --family fast_regression
 node scripts/agent-runtime/generate-scenario-proposals.mjs --input ./fixtures/scenario-proposals/standalone-input.json
 ```
 

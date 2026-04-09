@@ -27,6 +27,7 @@ $ test -f docs/contracts/reporting.md
 $ test -f docs/contracts/scenario-history.md
 $ test -f docs/contracts/scenario-proposal-sources.md
 $ test -f docs/contracts/scenario-proposal-inputs.md
+$ test -f docs/contracts/scenario-proposal-normalization.md
 $ test -f docs/master-plan.md
 $ test -f skills/cautilus/SKILL.md
 $ test -f skills/cautilus/agents/openai.yaml
@@ -35,9 +36,13 @@ $ test -f scripts/init_adapter.py
 $ test -f scripts/doctor.py
 $ test -f scripts/agent-runtime/scenario-history.mjs
 $ test -f scripts/agent-runtime/scenario-proposals.mjs
+$ test -f scripts/agent-runtime/build-scenario-proposal-input.mjs
 $ test -f scripts/agent-runtime/generate-scenario-proposals.mjs
 $ test -f scripts/agent-runtime/run-workbench-review-variant.sh
 $ test -f scripts/agent-runtime/run-workbench-executor-variants.mjs
+$ test -f fixtures/scenario-proposals/candidates.json
+$ test -f fixtures/scenario-proposals/registry.json
+$ test -f fixtures/scenario-proposals/coverage.json
 $ test -f fixtures/scenario-proposals/standalone-input.json
 $ test -f fixtures/workbench/review-verdict.schema.json
 ```
