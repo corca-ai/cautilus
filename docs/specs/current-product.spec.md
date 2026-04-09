@@ -46,6 +46,10 @@
 | scripts/agent-runtime/build-scenario-proposal-input.mjs | fixed | buildScenarioProposalInput |
 | scripts/agent-runtime/generate-scenario-proposals.mjs | file_exists |  |
 | scripts/agent-runtime/generate-scenario-proposals.mjs | fixed | SCENARIO_PROPOSAL_INPUTS_SCHEMA |
+| fixtures/scenario-proposals/input.schema.json | file_exists |  |
+| fixtures/scenario-proposals/input.schema.json | fixed | cautilus.scenario_proposal_inputs.v1 |
+| fixtures/scenario-proposals/proposals.schema.json | file_exists |  |
+| fixtures/scenario-proposals/proposals.schema.json | fixed | cautilus.scenario_proposals.v1 |
 | scripts/agent-runtime/run-workbench-review-variant.sh | file_exists |  |
 | scripts/agent-runtime/run-workbench-review-variant.sh | fixed | WORKBENCH_REVIEW_TIMEOUT_SECONDS |
 | scripts/agent-runtime/run-workbench-executor-variants.mjs | file_exists |  |
@@ -63,6 +67,7 @@
 - scenario proposal input packet assembly command
 - scenario proposal ranking and draft-scenario helpers
 - scenario proposal packet generation command
+- checked-in schema artifacts for proposal input/output packets
 - adapter-defined executor variants fanout
 - checked-in standalone skill entrypoint
 - structured review verdict schema
@@ -85,6 +90,7 @@ $ node ./bin/cautilus doctor --repo-root . || true
 $ node ./bin/cautilus scenario prepare-input --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json --family fast_regression --window-days 14 --now 2026-04-11T00:00:00.000Z
 $ node ./bin/cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json
 $ node --test ./bin/cautilus.test.mjs
+$ node --test ./scripts/agent-runtime/scenario-proposal-schemas.test.mjs
 $ python3 ./scripts/init_adapter.py --repo-root /tmp/cautilus-spec-check --output /tmp/cautilus-spec-check/workbench-adapter.yaml --force
 $ node --test ./scripts/agent-runtime/scenario-history.test.mjs
 $ node --test ./scripts/agent-runtime/scenario-proposals.test.mjs

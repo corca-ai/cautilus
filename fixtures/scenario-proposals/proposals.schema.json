@@ -1,0 +1,194 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cautilus.scenario_proposals.v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "generatedAt",
+    "windowDays",
+    "families",
+    "proposals"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "cautilus.scenario_proposals.v1"
+    },
+    "generatedAt": {
+      "type": "string"
+    },
+    "windowDays": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "families": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "proposals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "proposalKey",
+          "title",
+          "action",
+          "family",
+          "recommendedBackends",
+          "existingCoverage",
+          "rationale",
+          "evidence",
+          "draftScenario"
+        ],
+        "properties": {
+          "proposalKey": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "add_new_scenario",
+              "refresh_existing_scenario"
+            ]
+          },
+          "family": {
+            "type": "string"
+          },
+          "recommendedBackends": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "existingCoverage": {
+            "type": "object",
+            "required": [
+              "scenarioKeyExists",
+              "recentResultCount"
+            ],
+            "properties": {
+              "scenarioKeyExists": {
+                "type": "boolean"
+              },
+              "recentResultCount": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          },
+          "rationale": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "sourceKind",
+                "title",
+                "observedAt"
+              ],
+              "properties": {
+                "sourceKind": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "observedAt": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "draftScenario": {
+            "type": "object",
+            "required": [
+              "schemaVersion",
+              "scenarioId",
+              "name",
+              "description",
+              "brief",
+              "benchmark",
+              "maxTurns",
+              "runner",
+              "sideEffectsMode",
+              "simulator"
+            ],
+            "properties": {
+              "schemaVersion": {
+                "type": "string",
+                "const": "cautilus.scenario.v1"
+              },
+              "scenarioId": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "brief": {
+                "type": "string"
+              },
+              "benchmark": {
+                "type": "object",
+                "required": [
+                  "family",
+                  "scenarioKey",
+                  "backend",
+                  "tags"
+                ],
+                "properties": {
+                  "family": {
+                    "type": "string"
+                  },
+                  "scenarioKey": {
+                    "type": "string"
+                  },
+                  "backend": {
+                    "type": "string"
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "maxTurns": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "runner": {
+                "type": "object"
+              },
+              "sideEffectsMode": {
+                "type": "string"
+              },
+              "simulator": {
+                "type": "object",
+                "required": [
+                  "kind"
+                ],
+                "properties": {
+                  "kind": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,152 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cautilus.scenario_proposal_inputs.v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "windowDays",
+    "families",
+    "proposalCandidates",
+    "existingScenarioRegistry",
+    "scenarioCoverage"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "cautilus.scenario_proposal_inputs.v1"
+    },
+    "windowDays": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "families": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "proposalCandidates": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "proposalKey",
+          "title",
+          "family",
+          "name",
+          "description",
+          "brief",
+          "evidence"
+        ],
+        "properties": {
+          "proposalKey": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "family": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "brief": {
+            "type": "string"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "maxTurns": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "simulatorTurns": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "eventType": {
+            "type": "string"
+          },
+          "conversationAuditScenario": {
+            "type": "object"
+          },
+          "evidence": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": [
+                "sourceKind",
+                "title",
+                "observedAt"
+              ],
+              "properties": {
+                "sourceKind": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "observedAt": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "existingScenarioRegistry": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "scenarioKey"
+        ],
+        "properties": {
+          "scenarioId": {
+            "type": "string"
+          },
+          "scenarioKey": {
+            "type": "string"
+          },
+          "family": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "scenarioCoverage": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "scenarioKey",
+          "recentResultCount"
+        ],
+        "properties": {
+          "scenarioKey": {
+            "type": "string"
+          },
+          "recentResultCount": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "now": {
+      "type": "string"
+    }
+  }
+}

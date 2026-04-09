@@ -24,6 +24,7 @@
 - checked-in example input [fixtures/scenario-proposals/standalone-input.json](/home/ubuntu/cautilus/fixtures/scenario-proposals/standalone-input.json) 과 `bin/cautilus` test가 붙어 proposal generation도 Ceal-owned path 없이 검증된다.
 - [scenario-proposal-inputs.md](/home/ubuntu/cautilus/docs/contracts/scenario-proposal-inputs.md) 가 추가돼 `scenario propose` 앞단의 host-owned packet boundary를 이제 제품 계약으로 설명할 수 있다.
 - `scenario prepare-input` reference command와 split fixtures가 추가돼 host-owned normalization seam도 file-based executable surface로 설명할 수 있다.
+- proposal input/output schema fixture가 추가돼 packet contract를 narrative만이 아니라 checked-in artifact로도 검증하기 시작했다.
 - `fullCheck`는 scenario selection은 전체로 열되 `trainRunCount`나 graduation history는 전진시키지 않는 규칙으로 고정됐다.
 - Ceal에서 generic runtime seam으로 볼 수 있는 executor-variant 러너와 검증용 테스트, review verdict schema를 가져왔다.
 - [scripts/init_adapter.py](/home/ubuntu/cautilus/scripts/init_adapter.py)는 `PyYAML` 의존성을 제거하고 stdlib-only YAML writer로 바뀌었다.

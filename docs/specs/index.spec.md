@@ -43,6 +43,8 @@ $ test -f scripts/agent-runtime/run-workbench-executor-variants.mjs
 $ test -f fixtures/scenario-proposals/candidates.json
 $ test -f fixtures/scenario-proposals/registry.json
 $ test -f fixtures/scenario-proposals/coverage.json
+$ test -f fixtures/scenario-proposals/input.schema.json
+$ test -f fixtures/scenario-proposals/proposals.schema.json
 $ test -f fixtures/scenario-proposals/standalone-input.json
 $ test -f fixtures/workbench/review-verdict.schema.json
 ```

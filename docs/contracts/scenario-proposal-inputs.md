@@ -138,7 +138,6 @@ The product-owned `scenario propose` command then:
 
 ## Deferred Decisions
 
-- a checked-in JSON Schema file for `cautilus.scenario_proposal_inputs.v1`
 - generic helpers, if any, for host-side normalization before the packet exists
 
 ## Source References
@@ -147,4 +146,5 @@ The product-owned `scenario propose` command then:
 - [scenario-proposal-normalization.md](/home/ubuntu/cautilus/docs/contracts/scenario-proposal-normalization.md)
 - [build-scenario-proposal-input.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/build-scenario-proposal-input.mjs)
 - [generate-scenario-proposals.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/generate-scenario-proposals.mjs)
+- [input.schema.json](/home/ubuntu/cautilus/fixtures/scenario-proposals/input.schema.json)
 - [standalone-input.json](/home/ubuntu/cautilus/fixtures/scenario-proposals/standalone-input.json)

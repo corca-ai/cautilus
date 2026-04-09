@@ -62,6 +62,8 @@ function main() {
 		"fixtures/scenario-proposals/candidates.json",
 		"fixtures/scenario-proposals/registry.json",
 		"fixtures/scenario-proposals/coverage.json",
+		"fixtures/scenario-proposals/input.schema.json",
+		"fixtures/scenario-proposals/proposals.schema.json",
 		"fixtures/scenario-proposals/standalone-input.json",
 		"fixtures/workbench/review-verdict.schema.json",
 	].forEach(requireFile);
