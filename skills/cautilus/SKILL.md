@@ -30,7 +30,13 @@ node ./bin/cautilus adapter resolve --repo-root . --adapter-name code-quality
 node ./bin/cautilus adapter init --repo-root .
 ```
 
-3. Read the canonical workflow and contracts before widening the surface:
+3. Check whether the repo is already ready for standalone `Cautilus` use:
+
+```bash
+node ./bin/cautilus doctor --repo-root .
+```
+
+4. Read the canonical workflow and contracts before widening the surface:
 
 - [docs/workflow.md](/home/ubuntu/cautilus/docs/workflow.md)
 - [docs/contracts/adapter-contract.md](/home/ubuntu/cautilus/docs/contracts/adapter-contract.md)

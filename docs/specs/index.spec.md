@@ -29,6 +29,7 @@ $ test -f skills/cautilus/SKILL.md
 $ test -f skills/cautilus/agents/openai.yaml
 $ test -f scripts/resolve_adapter.py
 $ test -f scripts/init_adapter.py
+$ test -f scripts/doctor.py
 $ test -f scripts/agent-runtime/run-workbench-review-variant.sh
 $ test -f scripts/agent-runtime/run-workbench-executor-variants.mjs
 $ test -f fixtures/workbench/review-verdict.schema.json

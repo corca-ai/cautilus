@@ -82,5 +82,6 @@ Key direct commands:
 ```bash
 node ./bin/cautilus adapter resolve --repo-root .
 node ./bin/cautilus adapter init --repo-root .
+node ./bin/cautilus doctor --repo-root .
 node ./bin/cautilus review variants --repo-root . --workspace . --output-dir /tmp/cautilus-review
 ```

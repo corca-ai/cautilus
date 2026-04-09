@@ -22,6 +22,7 @@
 | eslint.config.mjs | file_exists |  |
 | bin/cautilus | file_exists |  |
 | bin/cautilus | fixed | adapter resolve |
+| bin/cautilus | fixed | cautilus doctor |
 | bin/cautilus | fixed | review variants |
 | skills/cautilus/SKILL.md | file_exists |  |
 | skills/cautilus/agents/openai.yaml | file_exists |  |
@@ -43,6 +44,7 @@
 
 - target repo의 adapter resolve
 - target repo의 adapter scaffold
+- target repo의 adapter readiness doctor
 - adapter-defined executor variants fanout
 - checked-in standalone skill entrypoint
 - structured review verdict schema
@@ -61,6 +63,7 @@ local repo에서 최소 surface는 다음 명령으로 확인할 수 있어야 �
 
 ```run:shell
 $ node ./bin/cautilus adapter resolve --repo-root .
+$ node ./bin/cautilus doctor --repo-root . || true
 $ python3 ./scripts/init_adapter.py --repo-root /tmp/cautilus-spec-check --output /tmp/cautilus-spec-check/workbench-adapter.yaml --force
 $ test -f ./skills/cautilus/SKILL.md
 $ npm run lint

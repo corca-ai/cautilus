@@ -9,6 +9,7 @@ const BIN_DIR = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = join(BIN_DIR, "..");
 const RESOLVE_SCRIPT = join(REPO_ROOT, "scripts", "resolve_adapter.py");
 const INIT_SCRIPT = join(REPO_ROOT, "scripts", "init_adapter.py");
+const DOCTOR_SCRIPT = join(REPO_ROOT, "scripts", "doctor.py");
 const VARIANT_RUNNER = join(
 	REPO_ROOT,
 	"scripts",
@@ -21,11 +22,13 @@ function usage(exitCode = 0) {
 		"Usage:",
 		"  cautilus adapter resolve [args]",
 		"  cautilus adapter init [args]",
+		"  cautilus doctor [args]",
 		"  cautilus review variants [args]",
 		"",
 		"Examples:",
 		"  cautilus adapter resolve --repo-root .",
 		"  cautilus adapter init --repo-root .",
+		"  cautilus doctor --repo-root .",
 		"  cautilus review variants --repo-root . --workspace . --output-dir /tmp/cautilus-review",
 	].join("\n");
 	const out = exitCode === 0 ? process.stdout : process.stderr;
@@ -53,6 +56,10 @@ if (area === "adapter" && action === "resolve") {
 
 if (area === "adapter" && action === "init") {
 	run("python3", [INIT_SCRIPT, ...rest]);
+}
+
+if (area === "doctor") {
+	run("python3", [DOCTOR_SCRIPT, action, ...rest].filter(Boolean));
 }
 
 if (area === "review" && action === "variants") {

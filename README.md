@@ -51,6 +51,8 @@ Ceal remains a proving-ground consumer, not the product boundary.
   adapter resolution and validation
 - [scripts/init_adapter.py](/home/ubuntu/cautilus/scripts/init_adapter.py):
   adapter scaffold creation
+- [scripts/doctor.py](/home/ubuntu/cautilus/scripts/doctor.py):
+  adapter readiness diagnosis
 - [scripts/agent-runtime/run-workbench-review-variant.sh](/home/ubuntu/cautilus/scripts/agent-runtime/run-workbench-review-variant.sh):
   bounded single-variant runner
 - [scripts/agent-runtime/run-workbench-executor-variants.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/run-workbench-executor-variants.mjs):
@@ -69,6 +71,12 @@ Scaffold a new adapter:
 
 ```bash
 node ./bin/cautilus adapter init --repo-root /path/to/repo
+```
+
+Check whether a repo is ready for standalone `Cautilus` evaluation:
+
+```bash
+node ./bin/cautilus doctor --repo-root /path/to/repo
 ```
 
 Run every executor variant defined by an adapter:

@@ -23,6 +23,7 @@ The target product is:
 - Python adapter bootstrap scripts are already extracted.
 - Minimal CLI and executor-variant runners now exist in this repo.
 - A repo-local bundled `cautilus` skill surface now exists beside the CLI.
+- A standalone `doctor` command now checks adapter readiness for host repos.
 - Ceal still owns richer prompt-benchmark history logic, audit-workbench
   storage, scenario proposal generation, and operator web surfaces.
 
@@ -43,7 +44,6 @@ Done or nearly done:
 Next:
 
 - make the binary and bundled skill feel like one product surface
-- add one `doctor` or `validate` command that checks adapter readiness
 - add a standalone smoke test that proves a temp repo can adopt `Cautilus`
   without Ceal-owned paths
 - decide the durable runtime boundary for review prompts, schemas, and compare
@@ -99,10 +99,9 @@ Formalize the DSPy-like product story:
 
 1. Keep the standalone binary and bundled skill aligned on one checked-in
    workflow surface.
-2. Add a generic `validate` or `doctor` runtime command.
-3. Add a standalone smoke test that exercises `Cautilus` against a temp repo
+2. Add a standalone smoke test that exercises `Cautilus` against a temp repo
    without Ceal-owned paths.
-4. Repoint Ceal's generic adapter-resolution and review-variant tests to use
+3. Repoint Ceal's generic adapter-resolution and review-variant tests to use
    `Cautilus` as one consumer.
-5. Write a generic scenario/history contract spec that lifts the reusable parts
+4. Write a generic scenario/history contract spec that lifts the reusable parts
    of Ceal's prompt-benchmark profile engine.
