@@ -143,7 +143,8 @@ conversation logs:
 
 ## Deferred Decisions
 
-- fixture directory and schema names for chatbot-normalization packets
+- whether helper-specific input schemas should eventually share one common
+  versioning or migration policy
 
 ## Non-Goals
 
@@ -186,8 +187,7 @@ conversation logs:
 - keep the first checked-in fixture and helper aligned
 - widen beyond the initial Ceal-proven patterns only when another chatbot
   consumer needs the added surface
-- add a dedicated checked-in input schema artifact once both `chatbot` and
-  `skill` helper packet shapes settle
+- maintain the dedicated checked-in input schema artifact beside the fixture
 
 ## Source References
 

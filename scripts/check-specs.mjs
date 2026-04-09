@@ -70,6 +70,8 @@ function main() {
 		"fixtures/scenario-proposals/coverage.json",
 		"fixtures/scenario-proposals/input.schema.json",
 		"fixtures/scenario-proposals/proposals.schema.json",
+		"fixtures/scenario-proposals/chatbot-input.schema.json",
+		"fixtures/scenario-proposals/skill-input.schema.json",
 		"fixtures/scenario-proposals/standalone-input.json",
 		"fixtures/scenario-proposals/chatbot-input.json",
 		"fixtures/scenario-proposals/skill-input.json",

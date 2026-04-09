@@ -51,6 +51,8 @@ $ test -f fixtures/scenario-proposals/registry.json
 $ test -f fixtures/scenario-proposals/coverage.json
 $ test -f fixtures/scenario-proposals/input.schema.json
 $ test -f fixtures/scenario-proposals/proposals.schema.json
+$ test -f fixtures/scenario-proposals/chatbot-input.schema.json
+$ test -f fixtures/scenario-proposals/skill-input.schema.json
 $ test -f fixtures/scenario-proposals/standalone-input.json
 $ test -f fixtures/scenario-proposals/chatbot-input.json
 $ test -f fixtures/scenario-proposals/skill-input.json

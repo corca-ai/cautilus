@@ -139,8 +139,8 @@ shape is durable operator workflow evaluation rather than chat continuity.
 
 ## Deferred Decisions
 
-- exact checked-in input schema artifact for
-  `cautilus.skill_normalization_inputs.v1`
+- whether helper-specific input schemas should eventually share one common
+  versioning or migration policy
 
 ## Non-Goals
 
@@ -185,7 +185,7 @@ shape is durable operator workflow evaluation rather than chat continuity.
 
 - keep one `charness`-like fixture and one `crill`-like fixture checked in
 - maintain the pure helper and CLI against those fixtures
-- add a dedicated input schema artifact once the packet shape settles
+- maintain the dedicated checked-in input schema artifact beside the fixture
 
 ## Source References
 

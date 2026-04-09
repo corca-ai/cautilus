@@ -57,6 +57,10 @@ Ceal remains a proving-ground consumer, not the product boundary.
   checked-in schema for `cautilus.scenario_proposal_inputs.v1`
 - [fixtures/scenario-proposals/proposals.schema.json](/home/ubuntu/cautilus/fixtures/scenario-proposals/proposals.schema.json):
   checked-in schema for `cautilus.scenario_proposals.v1`
+- [fixtures/scenario-proposals/chatbot-input.schema.json](/home/ubuntu/cautilus/fixtures/scenario-proposals/chatbot-input.schema.json):
+  checked-in schema for `cautilus.chatbot_normalization_inputs.v1`
+- [fixtures/scenario-proposals/skill-input.schema.json](/home/ubuntu/cautilus/fixtures/scenario-proposals/skill-input.schema.json):
+  checked-in schema for `cautilus.skill_normalization_inputs.v1`
 - [docs/specs/index.spec.md](/home/ubuntu/cautilus/docs/specs/index.spec.md):
   active product specs
 - [docs/master-plan.md](/home/ubuntu/cautilus/docs/master-plan.md): roadmap

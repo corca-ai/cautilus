@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cautilus.chatbot_normalization_inputs.v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "conversationSummaries",
+    "runSummaries"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "cautilus.chatbot_normalization_inputs.v1"
+    },
+    "conversationSummaries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "threadKey",
+          "lastObservedAt",
+          "records"
+        ],
+        "properties": {
+          "threadKey": {
+            "type": "string"
+          },
+          "lastObservedAt": {
+            "type": "string"
+          },
+          "records": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "actorKind",
+                "text"
+              ],
+              "properties": {
+                "actorKind": {
+                  "type": "string"
+                },
+                "text": {
+                  "type": "string"
+                },
+                "eventType": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "runSummaries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "runId",
+          "threadKey",
+          "startedAt"
+        ],
+        "properties": {
+          "runId": {
+            "type": "string"
+          },
+          "threadKey": {
+            "type": "string"
+          },
+          "startedAt": {
+            "type": "string"
+          },
+          "textPreview": {
+            "type": "string"
+          },
+          "blockedReason": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

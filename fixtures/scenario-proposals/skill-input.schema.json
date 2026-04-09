@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cautilus.skill_normalization_inputs.v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "evaluationRuns"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "cautilus.skill_normalization_inputs.v1"
+    },
+    "evaluationRuns": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "targetKind",
+          "targetId",
+          "surface",
+          "startedAt",
+          "status",
+          "summary"
+        ],
+        "properties": {
+          "targetKind": {
+            "type": "string"
+          },
+          "targetId": {
+            "type": "string"
+          },
+          "displayName": {
+            "type": "string"
+          },
+          "surface": {
+            "type": "string"
+          },
+          "startedAt": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "blockerKind": {
+            "type": "string"
+          },
+          "blockedSteps": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "artifactRefs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "kind",
+                "path"
+              ],
+              "properties": {
+                "kind": {
+                  "type": "string"
+                },
+                "path": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "metrics": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  }
+}

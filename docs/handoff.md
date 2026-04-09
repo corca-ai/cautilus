@@ -30,6 +30,7 @@
 - `scenario normalize chatbot` command와 checked-in input fixture가 추가돼 `chatbot` helper도 이제 standalone binary surface로 바로 부를 수 있다.
 - [skill-proposal-candidates.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/skill-proposal-candidates.mjs) 가 추가돼 `charness`형 smoke/validation failure와 `crill`형 blocked workflow artifact를 같은 generic `proposalCandidates` contract로 바꾸는 첫 `skill` helper seam이 생겼다.
 - `scenario normalize skill` command와 checked-in input fixture가 추가돼 `skill` helper도 이제 standalone binary surface로 바로 부를 수 있다.
+- `chatbot` / `skill` helper input packet용 checked-in JSON Schema artifact가 추가돼 use-case helper boundary도 fixture와 함께 executable contract가 됐다.
 - `fullCheck`는 scenario selection은 전체로 열되 `trainRunCount`나 graduation history는 전진시키지 않는 규칙으로 고정됐다.
 - Ceal에서 generic runtime seam으로 볼 수 있는 executor-variant 러너와 검증용 테스트, review verdict schema를 가져왔다.
 - [scripts/init_adapter.py](/home/ubuntu/cautilus/scripts/init_adapter.py)는 `PyYAML` 의존성을 제거하고 stdlib-only YAML writer로 바뀌었다.
@@ -38,13 +39,13 @@
 - `Cautilus` resolver는 Ceal의 `skill-smoke`, `code-quality` adapter를 이미 읽을 수 있어 consumer repoint의 전제는 갖췄다.
 - 아직 없는 것:
   - host-specific recent activity / blocked run mining adapter
-  - `chatbot` / `skill` helper input packet용 dedicated JSON Schema artifact
+  - `ceal`, `charness`, `crill`를 직접 닮은 consumer packet example 세트
 
 ## Next Session
 
 1. `chatbot`, `skill` normalized input fixture 둘 다에서 `scenario normalize -> scenario prepare-input -> scenario propose` standalone e2e를 유지한다.
-2. 그 다음 use-case helper input packet을 별도 JSON Schema artifact로 고정한다.
-3. 필요하면 `charness`나 `crill` consumer packet example을 더 추가해 helper boundary를 넓히기 전에 contract를 먼저 고정한다.
+2. 그 다음 `ceal`, `charness`, `crill` shaped packet example을 추가해 helper boundary를 widening 전에 consumer shape로 고정한다.
+3. 필요하면 consumer example 위에서 새로운 pattern class를 늘리고, raw reader logic은 여전히 consumer-owned로 남긴다.
 
 ## Discuss
 

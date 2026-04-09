@@ -61,6 +61,10 @@
 | fixtures/scenario-proposals/input.schema.json | fixed | cautilus.scenario_proposal_inputs.v1 |
 | fixtures/scenario-proposals/proposals.schema.json | file_exists |  |
 | fixtures/scenario-proposals/proposals.schema.json | fixed | cautilus.scenario_proposals.v1 |
+| fixtures/scenario-proposals/chatbot-input.schema.json | file_exists |  |
+| fixtures/scenario-proposals/chatbot-input.schema.json | fixed | cautilus.chatbot_normalization_inputs.v1 |
+| fixtures/scenario-proposals/skill-input.schema.json | file_exists |  |
+| fixtures/scenario-proposals/skill-input.schema.json | fixed | cautilus.skill_normalization_inputs.v1 |
 | scripts/agent-runtime/run-workbench-review-variant.sh | file_exists |  |
 | scripts/agent-runtime/run-workbench-review-variant.sh | fixed | WORKBENCH_REVIEW_TIMEOUT_SECONDS |
 | scripts/agent-runtime/run-workbench-executor-variants.mjs | file_exists |  |
@@ -82,7 +86,7 @@
 - scenario proposal input packet assembly command
 - scenario proposal ranking and draft-scenario helpers
 - scenario proposal packet generation command
-- checked-in schema artifacts for proposal input/output packets
+- checked-in schema artifacts for proposal and helper input/output packets
 - adapter-defined executor variants fanout
 - checked-in standalone skill entrypoint
 - structured review verdict schema

@@ -65,6 +65,18 @@ test("scenario proposal input schema matches the standalone input fixture", () =
 	validateAgainstSchema(schema, fixture);
 });
 
+test("chatbot normalization input schema matches the chatbot fixture", () => {
+	const schema = readJson("chatbot-input.schema.json");
+	const fixture = readJson("chatbot-input.json");
+	validateAgainstSchema(schema, fixture);
+});
+
+test("skill normalization input schema matches the skill fixture", () => {
+	const schema = readJson("skill-input.schema.json");
+	const fixture = readJson("skill-input.json");
+	validateAgainstSchema(schema, fixture);
+});
+
 test("scenario proposal output schema matches the generated proposal packet", () => {
 	const inputSchema = readJson("input.schema.json");
 	const outputSchema = readJson("proposals.schema.json");
