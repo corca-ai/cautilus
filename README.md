@@ -57,6 +57,8 @@ Ceal remains a proving-ground consumer, not the product boundary.
   adapter scaffold creation
 - [scripts/doctor.py](/home/ubuntu/cautilus/scripts/doctor.py):
   adapter readiness diagnosis
+- [scripts/agent-runtime/scenario-history.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/scenario-history.mjs):
+  scenario selection, graduation, and history helpers
 - [scripts/agent-runtime/run-workbench-review-variant.sh](/home/ubuntu/cautilus/scripts/agent-runtime/run-workbench-review-variant.sh):
   bounded single-variant runner
 - [scripts/agent-runtime/run-workbench-executor-variants.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/run-workbench-executor-variants.mjs):

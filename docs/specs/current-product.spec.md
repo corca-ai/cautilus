@@ -33,6 +33,8 @@
 | docs/contracts/adapter-contract.md | fixed | Executor Variant Shape |
 | scripts/resolve_adapter.py | fixed | workbench-adapter.yaml |
 | scripts/init_adapter.py | fixed | dump_yaml_document |
+| scripts/agent-runtime/scenario-history.mjs | file_exists |  |
+| scripts/agent-runtime/scenario-history.mjs | fixed | SCENARIO_HISTORY_SCHEMA |
 | scripts/agent-runtime/run-workbench-review-variant.sh | file_exists |  |
 | scripts/agent-runtime/run-workbench-review-variant.sh | fixed | WORKBENCH_REVIEW_TIMEOUT_SECONDS |
 | scripts/agent-runtime/run-workbench-executor-variants.mjs | file_exists |  |
@@ -46,6 +48,7 @@
 - target repo의 adapter resolve
 - target repo의 adapter scaffold
 - target repo의 adapter readiness doctor
+- scenario profile and graduation history helpers
 - adapter-defined executor variants fanout
 - checked-in standalone skill entrypoint
 - structured review verdict schema
@@ -67,6 +70,7 @@ $ node ./bin/cautilus adapter resolve --repo-root .
 $ node ./bin/cautilus doctor --repo-root . || true
 $ node --test ./bin/cautilus.test.mjs
 $ python3 ./scripts/init_adapter.py --repo-root /tmp/cautilus-spec-check --output /tmp/cautilus-spec-check/workbench-adapter.yaml --force
+$ node --test ./scripts/agent-runtime/scenario-history.test.mjs
 $ test -f ./skills/cautilus/SKILL.md
 $ npm run lint
 $ npm run test

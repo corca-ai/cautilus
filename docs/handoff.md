@@ -18,6 +18,8 @@
 - Ceal 1차 consumer repoint가 진행돼 generic adapter-resolution test, generic variant runner, skill bootstrap command, `skill-smoke` iterate command이 `Cautilus` surface를 보게 됐다.
 - generic scenario/history contract 초안이 [scenario-history.md](/home/ubuntu/cautilus/docs/contracts/scenario-history.md) 로 추가돼 profile, graduation, baseline-cache 규칙을 제품 경계로 분리하기 시작했다.
 - generic scenario proposal source contract 초안이 [scenario-proposal-sources.md](/home/ubuntu/cautilus/docs/contracts/scenario-proposal-sources.md) 로 추가돼 recent activity, blocked run, coverage source port를 제품 경계로 분리하기 시작했다.
+- [scenario-history.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/scenario-history.mjs) 가 추가돼 selection, graduation, history persistence helper가 이제 제품-owned runtime seam으로 존재한다.
+- `fullCheck`는 scenario selection은 전체로 열되 `trainRunCount`나 graduation history는 전진시키지 않는 규칙으로 고정됐다.
 - Ceal에서 generic runtime seam으로 볼 수 있는 executor-variant 러너와 검증용 테스트, review verdict schema를 가져왔다.
 - [scripts/init_adapter.py](/home/ubuntu/cautilus/scripts/init_adapter.py)는 `PyYAML` 의존성을 제거하고 stdlib-only YAML writer로 바뀌었다.
 - [workflow.md](/home/ubuntu/cautilus/docs/workflow.md)와 [adapter-contract.md](/home/ubuntu/cautilus/docs/contracts/adapter-contract.md)는 Ceal 최신 generic knowledge를 반영하도록 보강됐다.
@@ -28,8 +30,8 @@
 
 ## Next Session
 
-1. scenario/history contract의 probe 항목 중 `fullCheck`가 `trainRunCount`를 전진시킬지 여부를 구현 전에 확정한다.
-2. 그 결정을 반영해 첫 product-owned scenario/history runtime seam을 `Cautilus`에 구현한다.
+1. normalized source port를 받아 proposal payload를 만드는 첫 product-owned scenario proposal runtime seam을 `Cautilus`에 구현한다.
+2. recent human activity, blocked run summary, scenario coverage를 받는 최소 test fixture를 추가해 Ceal 없이도 proposal ranking이 도는지 증명한다.
 
 ## Discuss
 
@@ -52,6 +54,7 @@
 - [scenario-history.md](/home/ubuntu/cautilus/docs/contracts/scenario-history.md)
 - [scenario-proposal-sources.md](/home/ubuntu/cautilus/docs/contracts/scenario-proposal-sources.md)
 - [current-product.spec.md](/home/ubuntu/cautilus/docs/specs/current-product.spec.md)
+- [scenario-history.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/scenario-history.mjs)
 - [adapter.example.yaml](/home/ubuntu/cautilus/examples/adapter.example.yaml)
 - [review-verdict.schema.json](/home/ubuntu/cautilus/fixtures/workbench/review-verdict.schema.json)
 - [cautilus](/home/ubuntu/cautilus/bin/cautilus)

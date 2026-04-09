@@ -136,8 +136,10 @@ After a run finishes, update history with these rules:
 
 1. Only scenarios that belong to the profile's `train` split affect graduation.
 2. If no train scenarios were selected, leave history unchanged.
-3. Otherwise increment `trainRunCount` by one and append one `recentRuns` row.
-4. For each selected train scenario:
+3. If the run is a full check, leave history unchanged even when train
+   scenarios were selected.
+4. Otherwise increment `trainRunCount` by one and append one `recentRuns` row.
+5. For each selected train scenario:
    - record `lastTrainRunIndex`
    - append one recent train result row
    - if the result is perfect, widen cadence by one step up to
@@ -192,14 +194,13 @@ Cache invalidation should happen when any key field changes.
   data, not from ad-hoc shell lists.
 - Graduation is a train-only cost control, not a held-out shortcut.
 - Full checks bypass graduation for selection.
+- Full checks do not advance `trainRunCount` or scenario graduation history.
 - History must be profile-scoped.
 - Baseline cache keys must include scenario-definition identity, not only repo
   identity.
 
 ## Probe Questions
 
-- Should a full check that includes train scenarios also advance
-  `trainRunCount`, or should only ordinary train iterations move graduation?
 - Should perfect-result thresholds stay fixed at `100` and `1.0`, or become
   adapter-configurable once multiple evaluation backends exist?
 - Should `split: all` stay explicit in profile data, or remain a runtime union

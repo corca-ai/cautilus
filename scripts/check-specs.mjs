@@ -51,6 +51,7 @@ function main() {
 		"scripts/resolve_adapter.py",
 		"scripts/init_adapter.py",
 		"scripts/doctor.py",
+		"scripts/agent-runtime/scenario-history.mjs",
 		"scripts/agent-runtime/run-workbench-review-variant.sh",
 		"scripts/agent-runtime/run-workbench-executor-variants.mjs",
 		"fixtures/workbench/review-verdict.schema.json",
