@@ -32,6 +32,8 @@
 | docs/workflow.md | fixed | Executor Variants |
 | docs/contracts/adapter-contract.md | fixed | Dogfooding Pattern |
 | docs/contracts/adapter-contract.md | fixed | Executor Variant Shape |
+| docs/contracts/scenario-proposal-inputs.md | file_exists |  |
+| docs/contracts/scenario-proposal-inputs.md | fixed | cautilus.scenario_proposal_inputs.v1 |
 | scripts/resolve_adapter.py | fixed | workbench-adapter.yaml |
 | scripts/init_adapter.py | fixed | dump_yaml_document |
 | scripts/agent-runtime/scenario-history.mjs | file_exists |  |

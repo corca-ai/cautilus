@@ -45,6 +45,8 @@ Ceal remains a proving-ground consumer, not the product boundary.
   profile, graduation, and baseline-cache contract
 - [docs/contracts/scenario-proposal-sources.md](/home/ubuntu/cautilus/docs/contracts/scenario-proposal-sources.md):
   runtime-activity source ports for draft scenario proposals
+- [docs/contracts/scenario-proposal-inputs.md](/home/ubuntu/cautilus/docs/contracts/scenario-proposal-inputs.md):
+  normalized input packet consumed by `cautilus scenario propose`
 - [docs/specs/index.spec.md](/home/ubuntu/cautilus/docs/specs/index.spec.md):
   active product specs
 - [docs/master-plan.md](/home/ubuntu/cautilus/docs/master-plan.md): roadmap

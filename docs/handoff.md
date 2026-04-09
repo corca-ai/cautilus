@@ -22,6 +22,7 @@
 - [scenario-proposals.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/scenario-proposals.mjs) 가 추가돼 normalized proposal candidate를 merge, rank, draft scenario payload로 바꾸는 첫 product-owned runtime seam이 생겼다.
 - minimal CLI [bin/cautilus](/home/ubuntu/cautilus/bin/cautilus)에 `scenario propose`가 추가돼 normalized input packet에서 standalone proposal packet을 직접 만들 수 있다.
 - checked-in example input [fixtures/scenario-proposals/standalone-input.json](/home/ubuntu/cautilus/fixtures/scenario-proposals/standalone-input.json) 과 `bin/cautilus` test가 붙어 proposal generation도 Ceal-owned path 없이 검증된다.
+- [scenario-proposal-inputs.md](/home/ubuntu/cautilus/docs/contracts/scenario-proposal-inputs.md) 가 추가돼 `scenario propose` 앞단의 host-owned packet boundary를 이제 제품 계약으로 설명할 수 있다.
 - `fullCheck`는 scenario selection은 전체로 열되 `trainRunCount`나 graduation history는 전진시키지 않는 규칙으로 고정됐다.
 - Ceal에서 generic runtime seam으로 볼 수 있는 executor-variant 러너와 검증용 테스트, review verdict schema를 가져왔다.
 - [scripts/init_adapter.py](/home/ubuntu/cautilus/scripts/init_adapter.py)는 `PyYAML` 의존성을 제거하고 stdlib-only YAML writer로 바뀌었다.
@@ -30,12 +31,12 @@
 - `Cautilus` resolver는 Ceal의 `skill-smoke`, `code-quality` adapter를 이미 읽을 수 있어 consumer repoint의 전제는 갖췄다.
 - 아직 없는 것:
   - host-specific recent activity / blocked run mining adapter
-  - host-owned normalized proposal-candidate packet contract 문서
+  - host-owned normalization seam의 executable reference surface
 
 ## Next Session
 
-1. host repo가 `scenario propose`에 넘겨야 하는 normalized proposal-candidate packet contract를 별도 문서로 고정한다.
-2. recent human activity / blocked run / coverage source port에서 그 packet으로 이어지는 host-owned normalization seam을 정의한다.
+1. recent human activity / blocked run / coverage source port에서 proposal input packet으로 이어지는 host-owned normalization seam을 별도 계약으로 정의한다.
+2. 그 seam을 설명하는 최소 executable reference surface를 fixture나 helper로 추가한다.
 
 ## Discuss
 

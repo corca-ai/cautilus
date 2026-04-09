@@ -38,6 +38,8 @@ The target product is:
   `scripts/agent-runtime/scenario-proposals.mjs`.
 - A standalone `scenario propose` command now turns normalized proposal input
   packets into operator-reviewable proposal packets.
+- A checked-in contract now describes the normalized input packet consumed by
+  `cautilus scenario propose`.
 - Ceal still owns richer prompt-benchmark history logic, audit-workbench
   storage, scenario proposal generation, and operator web surfaces.
 
@@ -111,5 +113,5 @@ Formalize the DSPy-like product story:
 
 1. Keep the standalone binary and bundled skill aligned on one checked-in
    workflow surface.
-2. Define the host-owned normalization boundary that produces proposal-input
-   packets for `cautilus scenario propose`.
+2. Define the host-owned normalization boundary and reference surface that
+   produce proposal-input packets for `cautilus scenario propose`.

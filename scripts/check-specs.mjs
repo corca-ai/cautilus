@@ -44,6 +44,7 @@ function main() {
 		"docs/contracts/reporting.md",
 		"docs/contracts/scenario-history.md",
 		"docs/contracts/scenario-proposal-sources.md",
+		"docs/contracts/scenario-proposal-inputs.md",
 		"docs/master-plan.md",
 		"bin/cautilus",
 		"skills/cautilus/SKILL.md",
