@@ -15,20 +15,20 @@
 - bundled standalone skill [skills/cautilus/SKILL.md](/home/ubuntu/cautilus/skills/cautilus/SKILL.md)이 추가돼 binary와 같은 workflow surface를 문서화하기 시작했다.
 - standalone `doctor` command가 추가돼 host repo의 adapter readiness를 deterministic하게 검사할 수 있다.
 - temp repo smoke test가 추가돼 `adapter init -> doctor -> review variants`가 Ceal-owned path 없이 끝까지 도는지 검증한다.
+- Ceal 1차 consumer repoint가 진행돼 generic adapter-resolution test, generic variant runner, skill bootstrap command, `skill-smoke` iterate command이 `Cautilus` surface를 보게 됐다.
 - Ceal에서 generic runtime seam으로 볼 수 있는 executor-variant 러너와 검증용 테스트, review verdict schema를 가져왔다.
 - [scripts/init_adapter.py](/home/ubuntu/cautilus/scripts/init_adapter.py)는 `PyYAML` 의존성을 제거하고 stdlib-only YAML writer로 바뀌었다.
 - [workflow.md](/home/ubuntu/cautilus/docs/workflow.md)와 [adapter-contract.md](/home/ubuntu/cautilus/docs/contracts/adapter-contract.md)는 Ceal 최신 generic knowledge를 반영하도록 보강됐다.
 - `npm install`, `npm run lint`, `npm run test`, `npm run verify`가 모두 통과했다.
 - `Cautilus` resolver는 Ceal의 `skill-smoke`, `code-quality` adapter를 이미 읽을 수 있어 consumer repoint의 전제는 갖췄다.
 - 아직 없는 것:
-  - Ceal가 `Cautilus`를 실제로 소비하는 repoint
   - scenario/history contract의 generic extraction
   - runtime log 기반 scenario proposal engine의 generic contract와 구현
 
 ## Next Session
 
-1. Ceal의 generic 테스트와 invocation surface를 `Cautilus` consumer 경로로 repoint하는 1차 패치를 만든다.
-2. 이어서 Ceal의 `prompt-benchmark-profile`에서 generic한 scenario/history logic를 별도 contract/spec로 승격할 범위를 정한다.
+1. Ceal의 `prompt-benchmark-profile`에서 generic한 scenario/history logic를 별도 contract/spec로 승격할 범위를 정한다.
+2. train/held-out/full-gate/history update semantics 중 product-owned 규칙과 Ceal-local policy를 분리해 첫 generic spec 초안을 쓴다.
 
 ## Discuss
 

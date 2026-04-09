@@ -26,6 +26,8 @@ The target product is:
 - A standalone `doctor` command now checks adapter readiness for host repos.
 - A temp-repo smoke test now proves `adapter init -> doctor -> review variants`
   without Ceal-owned paths.
+- Ceal now repoints generic adapter-resolution and review-variant runner seams
+  to `Cautilus` as a consumer.
 - Ceal still owns richer prompt-benchmark history logic, audit-workbench
   storage, scenario proposal generation, and operator web surfaces.
 
@@ -99,7 +101,5 @@ Formalize the DSPy-like product story:
 
 1. Keep the standalone binary and bundled skill aligned on one checked-in
    workflow surface.
-2. Repoint Ceal's generic adapter-resolution and review-variant tests to use
-   `Cautilus` as one consumer.
-3. Write a generic scenario/history contract spec that lifts the reusable parts
+2. Write a generic scenario/history contract spec that lifts the reusable parts
    of Ceal's prompt-benchmark profile engine.
