@@ -43,6 +43,8 @@ Ceal remains a proving-ground consumer, not the product boundary.
   minimum report packet shape
 - [docs/contracts/scenario-history.md](/home/ubuntu/cautilus/docs/contracts/scenario-history.md):
   profile, graduation, and baseline-cache contract
+- [docs/contracts/scenario-proposal-sources.md](/home/ubuntu/cautilus/docs/contracts/scenario-proposal-sources.md):
+  runtime-activity source ports for draft scenario proposals
 - [docs/specs/index.spec.md](/home/ubuntu/cautilus/docs/specs/index.spec.md):
   active product specs
 - [docs/master-plan.md](/home/ubuntu/cautilus/docs/master-plan.md): roadmap

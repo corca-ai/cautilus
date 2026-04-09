@@ -25,6 +25,7 @@ $ test -f docs/workflow.md
 $ test -f docs/contracts/adapter-contract.md
 $ test -f docs/contracts/reporting.md
 $ test -f docs/contracts/scenario-history.md
+$ test -f docs/contracts/scenario-proposal-sources.md
 $ test -f docs/master-plan.md
 $ test -f skills/cautilus/SKILL.md
 $ test -f skills/cautilus/agents/openai.yaml

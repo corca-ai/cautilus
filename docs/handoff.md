@@ -17,6 +17,7 @@
 - temp repo smoke test가 추가돼 `adapter init -> doctor -> review variants`가 Ceal-owned path 없이 끝까지 도는지 검증한다.
 - Ceal 1차 consumer repoint가 진행돼 generic adapter-resolution test, generic variant runner, skill bootstrap command, `skill-smoke` iterate command이 `Cautilus` surface를 보게 됐다.
 - generic scenario/history contract 초안이 [scenario-history.md](/home/ubuntu/cautilus/docs/contracts/scenario-history.md) 로 추가돼 profile, graduation, baseline-cache 규칙을 제품 경계로 분리하기 시작했다.
+- generic scenario proposal source contract 초안이 [scenario-proposal-sources.md](/home/ubuntu/cautilus/docs/contracts/scenario-proposal-sources.md) 로 추가돼 recent activity, blocked run, coverage source port를 제품 경계로 분리하기 시작했다.
 - Ceal에서 generic runtime seam으로 볼 수 있는 executor-variant 러너와 검증용 테스트, review verdict schema를 가져왔다.
 - [scripts/init_adapter.py](/home/ubuntu/cautilus/scripts/init_adapter.py)는 `PyYAML` 의존성을 제거하고 stdlib-only YAML writer로 바뀌었다.
 - [workflow.md](/home/ubuntu/cautilus/docs/workflow.md)와 [adapter-contract.md](/home/ubuntu/cautilus/docs/contracts/adapter-contract.md)는 Ceal 최신 generic knowledge를 반영하도록 보강됐다.
@@ -27,8 +28,8 @@
 
 ## Next Session
 
-1. runtime log 기반 scenario proposal engine에서 generic source port와 Ceal-local storage/prompt policy를 분리하는 contract 초안을 쓴다.
-2. scenario/history contract의 probe 항목 중 `fullCheck`가 `trainRunCount`를 전진시킬지 여부를 구현 전에 확정한다.
+1. scenario/history contract의 probe 항목 중 `fullCheck`가 `trainRunCount`를 전진시킬지 여부를 구현 전에 확정한다.
+2. 그 결정을 반영해 첫 product-owned scenario/history runtime seam을 `Cautilus`에 구현한다.
 
 ## Discuss
 
@@ -49,6 +50,7 @@
 - [adapter-contract.md](/home/ubuntu/cautilus/docs/contracts/adapter-contract.md)
 - [reporting.md](/home/ubuntu/cautilus/docs/contracts/reporting.md)
 - [scenario-history.md](/home/ubuntu/cautilus/docs/contracts/scenario-history.md)
+- [scenario-proposal-sources.md](/home/ubuntu/cautilus/docs/contracts/scenario-proposal-sources.md)
 - [current-product.spec.md](/home/ubuntu/cautilus/docs/specs/current-product.spec.md)
 - [adapter.example.yaml](/home/ubuntu/cautilus/examples/adapter.example.yaml)
 - [review-verdict.schema.json](/home/ubuntu/cautilus/fixtures/workbench/review-verdict.schema.json)
