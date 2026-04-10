@@ -1,0 +1,20 @@
+{
+  "name": "cautilus-local",
+  "interface": {
+    "displayName": "Cautilus Local Plugins"
+  },
+  "plugins": [
+    {
+      "name": "cautilus",
+      "source": {
+        "source": "local",
+        "path": "./"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

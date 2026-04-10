@@ -1,3 +1,8 @@
+---
+name: cautilus
+description: "Use when intentful behavior evaluation itself is the task and the repo should run Cautilus's checked-in workflow instead of reconstructing compare, held-out, and review commands by hand."
+---
+
 # Cautilus
 
 Use this bundled skill when intentful behavior evaluation itself is the task

@@ -1,0 +1,34 @@
+{
+  "name": "cautilus",
+  "version": "0.1.0",
+  "description": "Standalone intentful behavior evaluation CLI and bundled skill.",
+  "author": {
+    "name": "Corca",
+    "url": "https://github.com/corca-ai"
+  },
+  "homepage": "https://github.com/corca-ai/cautilus",
+  "repository": "https://github.com/corca-ai/cautilus",
+  "license": "MIT",
+  "keywords": [
+    "evaluation",
+    "baseline",
+    "skill",
+    "cli"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Cautilus",
+    "shortDescription": "Intentful behavior evaluation with bounded review gates.",
+    "longDescription": "Install the Cautilus skill and workflow surface for adapter-driven baseline comparison, held-out validation, and bounded review variants.",
+    "developerName": "Corca",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/corca-ai/cautilus",
+    "defaultPrompt": [
+      "Use Cautilus to evaluate the current change, workflow, or skill against an explicit baseline with held-out validation and bounded review variants."
+    ]
+  }
+}

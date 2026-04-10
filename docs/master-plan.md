@@ -27,6 +27,7 @@ Current `core validated surface`:
 - generic workflow, adapter, and reporting contracts
 - Python adapter bootstrap scripts
 - a minimal CLI plus bundled `cautilus` skill entrypoint
+- repo-local Codex plugin manifest and marketplace wiring for the bundled skill
 - adapter readiness checks through `doctor`
 - bounded runtime execution through `mode evaluate`
 - scenario-history-aware profile selection and history updates for
@@ -149,8 +150,8 @@ The current release boundary is documented in
 
 ## Immediate Next Moves
 
-1. Keep the standalone binary, bundled skill, and installer surface aligned on
-   one checked-in workflow story.
+1. Keep the standalone binary, bundled skill, Codex plugin wiring, and
+   installer surface aligned on one checked-in workflow story.
 2. Keep expanding normalization-pattern coverage while preserving one official
    adapter contract: `cautilus-adapter.yaml`.
 3. Keep expanding scenario-history beyond the first profile-backed comparison

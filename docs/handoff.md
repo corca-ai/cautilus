@@ -21,6 +21,10 @@
   - `scenario summarize-telemetry`
   - `evidence prepare-input`, `evidence bundle`
   - `optimize prepare-input`, `optimize propose`
+- Codex install surface의 최소 골격도 이제 repo root에 들어갔다.
+  - [.codex-plugin/plugin.json](/home/ubuntu/cautilus/.codex-plugin/plugin.json)
+  - [.agents/plugins/marketplace.json](/home/ubuntu/cautilus/.agents/plugins/marketplace.json)
+  - `skills/cautilus/SKILL.md` 는 installable skill 규약용 frontmatter를 가진다.
 - product-facing 문서는 repo-agnostic surface vocabulary로 정리돼 있다. repo 이름은 migration/evidence appendix 쪽으로 내렸다.
 - scenario-history 첫 runtime integration은 이미 들어갔다.
   - profile-backed mode run에서 scenario selection/history update 수행
@@ -29,7 +33,7 @@
   - [prune-workspace-artifacts.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/prune-workspace-artifacts.mjs)
   - `cautilus workspace prune-artifacts --root <dir> --keep-last <n> [--max-age-days <n>] [--dry-run]`
   - 현재 철학은 `log rotate`보다 `artifact-root pruning` 이다.
-- 현재 남아 있는 실제 gap은 “run artifact를 어떻게 자동으로 구조화할지”와 “bundled skill을 어떻게 host-installable plugin surface로 올릴지”다.
+- 현재 남아 있는 실제 gap은 “run artifact를 어떻게 자동으로 구조화할지”와 “Codex surface 다음으로 Claude surface까지 어떻게 맞출지”다.
 - 최근 핵심 커밋:
   - `97c5d93` `Wire scenario history into mode evaluation`
   - `4a3e906` `Materialize comparison baseline cache seeds`
@@ -41,37 +45,37 @@
 1. artifact-root story를 자동화할지 결정한다.
    - 가장 유력한 다음 slice는 `mode evaluate` / `review variants` 에 `--artifact-root` 또는 equivalent option을 넣어서 매 run마다 timestamped subdirectory를 자동 생성하게 하는 것이다.
    - 지금 `prune-artifacts`는 이미 있지만, run dir naming/layout은 아직 operator 책임이다.
-2. `Cautilus`를 실제 installable plugin/skill surface로 올리는 작업을 시작한다.
-   - Codex target:
-     - OpenAI 공식 문서 https://developers.openai.com/codex/plugins/build 기준으로 `.codex-plugin/plugin.json` + `skills/` 구조를 가져야 한다.
-     - repo-local testing/install을 위해 `.agents/plugins/marketplace.json` wiring도 필요하다.
-   - Claude Code target:
-     - `/home/ubuntu/claude-plugins` 레포의 실제 shape를 참조한다.
-     - 특히 [/home/ubuntu/claude-plugins/plugins/cwf/.claude-plugin/plugin.json](/home/ubuntu/claude-plugins/plugins/cwf/.claude-plugin/plugin.json) 과 [/home/ubuntu/claude-plugins/.claude-plugin/marketplace.json](/home/ubuntu/claude-plugins/.claude-plugin/marketplace.json) 을 참고해 Claude install surface를 맞춘다.
-   - 목표는 “지금의 bundled skill”을 문서상 skill에 머무르게 하지 않고, Codex CLI와 Claude Code 양쪽에서 실제 설치 가능한 product surface로 만드는 것이다.
-3. plugin/install surface를 설계할 때 host coupling을 피한다.
+2. Codex install surface를 실제로 한 번 읽어서 local install/readiness를 spot-check 한다.
+   - 현재 repo root가 Codex plugin root 역할을 한다.
+     - [.codex-plugin/plugin.json](/home/ubuntu/cautilus/.codex-plugin/plugin.json)
+     - [.agents/plugins/marketplace.json](/home/ubuntu/cautilus/.agents/plugins/marketplace.json)
+   - OpenAI 공식 문서 https://developers.openai.com/codex/plugins/build 기준으로 현재 shape가 깨지지 않는지만 확인하면 된다.
+3. Claude Code target을 추가한다.
+   - `/home/ubuntu/claude-plugins` 레포의 실제 shape를 참조한다.
+   - 특히 [/home/ubuntu/claude-plugins/plugins/cwf/.claude-plugin/plugin.json](/home/ubuntu/claude-plugins/plugins/cwf/.claude-plugin/plugin.json) 과 [/home/ubuntu/claude-plugins/.claude-plugin/marketplace.json](/home/ubuntu/claude-plugins/.claude-plugin/marketplace.json) 을 참고해 Claude install surface를 맞춘다.
+   - 목표는 Codex CLI와 Claude Code 양쪽에서 실제 설치 가능한 product surface를 갖추는 것이다.
+4. plugin/install surface를 설계할 때 host coupling을 피한다.
    - `cautilus` plugin/package 안에는 repo-agnostic product assets만 넣는다.
    - consumer-specific adapter, prompt, output path, policy는 넣지 않는다.
-4. packaging 첫 slice를 고르면 아래 순서로 간다.
-   - minimal Codex plugin package
+5. packaging 다음 slice는 아래 순서가 맞다.
    - minimal Claude plugin package
    - local install/readiness check
    - 필요하면 README / standalone spec / handoff 동기화
-5. 제품 변경 후에는 항상 `npm run lint`, `npm run test`, `npm run verify` 를 다시 돌린다.
+6. 제품 변경 후에는 항상 `npm run lint`, `npm run test`, `npm run verify` 를 다시 돌린다.
 
 ## Discuss
 
 - `prune-artifacts` 다음으로는 `artifact-root auto layout` 이 가장 자연스러운 후속이다.
 - plugin/install surface는 이제 deferred가 아니라 실제 roadmap item으로 올려야 한다.
-- 특히 Codex 쪽은 “한 repo / 한 개인 workflow면 local skill부터 시작”이라는 공식 권고가 있지만, `Cautilus`는 공유 가능한 stable package를 목표로 하므로 plugin packaging까지 가는 편이 맞다.
+- Codex 쪽 minimal package는 이제 들어갔으므로, 다음 판단 포인트는 Claude 쪽도 같은 제품 경계로 묶을지와 local install smoke check를 어디까지 자동화할지다.
 - Claude Code / Codex CLI 둘 다에서 설치 가능한 surface를 만들되, product noun은 여전히 `Cautilus` 하나로 유지해야 한다.
 
 ## Premortem
 
 - 다음 세션에서 가장 쉬운 오해는 `workspace prune-artifacts`가 이미 artifact layout까지 해결했다고 생각하는 것이다.
   실제로는 pruning helper만 생겼고, run directory naming/creation policy는 아직 없다.
-- 또 다른 쉬운 오해는 Codex skill만 있으면 plugin 문제도 끝났다고 보는 것이다.
-  지금 `skills/cautilus/SKILL.md` 는 bundled skill일 뿐이고, 공식 plugin/install surface는 아직 없다.
+- 또 다른 쉬운 오해는 Codex plugin 골격이 들어갔으니 install story 전체가 끝났다고 보는 것이다.
+  지금은 Codex repo-local surface만 최소한으로 생겼고, Claude surface와 실제 install smoke check는 아직 남아 있다.
 - Claude용 packaging을 만들면서 `claude-plugins` 구조를 그대로 복붙하면 product boundary가 흐려질 수 있다.
   참조는 하되, `Cautilus`는 repo-agnostic single-product package여야 한다.
 - plugin packaging을 consumer repo adapter bundling으로 잘못 확장할 위험이 있다.
@@ -86,6 +90,8 @@
 - [docs/specs/current-product.spec.md](/home/ubuntu/cautilus/docs/specs/current-product.spec.md)
 - [docs/specs/standalone-surface.spec.md](/home/ubuntu/cautilus/docs/specs/standalone-surface.spec.md)
 - [skills/cautilus/SKILL.md](/home/ubuntu/cautilus/skills/cautilus/SKILL.md)
+- [.codex-plugin/plugin.json](/home/ubuntu/cautilus/.codex-plugin/plugin.json)
+- [.agents/plugins/marketplace.json](/home/ubuntu/cautilus/.agents/plugins/marketplace.json)
 - [bin/cautilus](/home/ubuntu/cautilus/bin/cautilus)
 - [evaluate-adapter-mode.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/evaluate-adapter-mode.mjs)
 - [scenario-history.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/scenario-history.mjs)

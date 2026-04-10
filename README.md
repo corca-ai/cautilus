@@ -9,6 +9,9 @@ It now also includes a product-owned helper that prepares clean baseline and
 candidate git worktrees for explicit A/B evaluation runs.
 The product target is a standalone binary plus a bundled skill that a host repo
 can adopt without inheriting another repo's private runtime surfaces.
+This repo now also carries a minimal Codex plugin manifest and repo-local
+marketplace wiring so that the same checked-in skill can be installed without
+copying it into another local scaffold first.
 
 The intended product shape is:
 
@@ -35,7 +38,8 @@ This repo is still early.
 It already owns the generic workflow and adapter contracts plus bootstrap
 scripts.
 It now also includes a minimal CLI, a bundled `cautilus` skill surface,
-executor-variant runners, and local tests for the bounded evaluation surface.
+executor-variant runners, local Codex plugin packaging metadata, and local
+tests for the bounded evaluation surface.
 It also now includes checked-in GitHub workflows for `verify` and tagged
 release artifacts, so the release/install surface is not only prose.
 
@@ -53,6 +57,7 @@ Current `core validated surface`:
 - report assembly, review packet assembly, and review-variant fanout
 - bounded CLI behavior evaluation through `cli evaluate`
 - standalone install surface, local gates, and checked-in release helpers
+- repo-local Codex plugin manifest and marketplace wiring for local skill install
 
 Current `product-owned helper surface`:
 
@@ -129,6 +134,10 @@ Dogfood and migration evidence is tracked separately in
   tagged-release checksum, archive, and tap publication workflow
 - [install.sh](/home/ubuntu/cautilus/install.sh):
   curl-install surface for tagged GitHub releases
+- [.codex-plugin/plugin.json](/home/ubuntu/cautilus/.codex-plugin/plugin.json):
+  Codex plugin manifest for the repo-root install surface
+- [.agents/plugins/marketplace.json](/home/ubuntu/cautilus/.agents/plugins/marketplace.json):
+  repo-local marketplace entry that points Codex at this repo root
 - [docs/consumer-readiness.md](/home/ubuntu/cautilus/docs/consumer-readiness.md):
   dogfood and live-consumer evidence appendix
 - [skills/cautilus/SKILL.md](/home/ubuntu/cautilus/skills/cautilus/SKILL.md):
@@ -178,6 +187,11 @@ Install from a tagged GitHub release:
 ```bash
 curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh | sh
 ```
+
+For Codex local install testing, this repo now exposes the repo root through
+[.agents/plugins/marketplace.json](/home/ubuntu/cautilus/.agents/plugins/marketplace.json)
+and the plugin manifest at
+[.codex-plugin/plugin.json](/home/ubuntu/cautilus/.codex-plugin/plugin.json).
 
 Resolve an adapter in a target repo:
 
@@ -367,7 +381,10 @@ node scripts/agent-runtime/evaluate-cli-intent.mjs --input ./fixtures/cli-evalua
 The bundled skill surface lives at
 [skills/cautilus/SKILL.md](/home/ubuntu/cautilus/skills/cautilus/SKILL.md).
 Use it when the host environment supports checked-in local skills and you want
-the same workflow surface as the standalone binary.
+the same workflow surface as the standalone binary. For Codex local install
+testing, the repo root now also exposes that same skill through
+[.codex-plugin/plugin.json](/home/ubuntu/cautilus/.codex-plugin/plugin.json)
+and [.agents/plugins/marketplace.json](/home/ubuntu/cautilus/.agents/plugins/marketplace.json).
 
 ## Dev
 
