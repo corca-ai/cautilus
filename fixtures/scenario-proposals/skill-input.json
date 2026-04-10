@@ -4,6 +4,19 @@
     {
       "targetKind": "public_skill",
       "targetId": "impl",
+      "intentProfile": {
+        "schemaVersion": "cautilus.behavior_intent.v1",
+        "intentId": "intent-impl-smoke-validation",
+        "summary": "impl should keep the smoke scenario validation surface passing.",
+        "behaviorSurface": "skill_validation",
+        "successDimensions": [
+          {
+            "id": "smoke-validation-pass",
+            "summary": "Keep the smoke scenario validation bar green."
+          }
+        ],
+        "guardrailDimensions": []
+      },
       "displayName": "impl",
       "surface": "smoke_scenario",
       "startedAt": "2026-04-11T00:00:00.000Z",
@@ -19,6 +32,19 @@
     {
       "targetKind": "cli_workflow",
       "targetId": "scan-settings-seed",
+      "intentProfile": {
+        "schemaVersion": "cautilus.behavior_intent.v1",
+        "intentId": "intent-scan-settings-seed-recovery",
+        "summary": "Scan Settings Seed should recover cleanly when the replay seed workflow hits the same blocker.",
+        "behaviorSurface": "operator_workflow_recovery",
+        "successDimensions": [
+          {
+            "id": "workflow-recovery",
+            "summary": "Recover cleanly from the repeated replay-seed blocker."
+          }
+        ],
+        "guardrailDimensions": []
+      },
       "displayName": "Scan Settings Seed",
       "surface": "replay_seed",
       "startedAt": "2026-04-11T01:00:00.000Z",

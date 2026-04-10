@@ -27,6 +27,9 @@
           "targetKind": {
             "type": "string"
           },
+          "intentProfile": {
+            "type": "object"
+          },
           "targetId": {
             "type": "string"
           },

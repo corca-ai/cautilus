@@ -1,3 +1,5 @@
+import { buildBehaviorIntentProfile } from "./behavior-intent.mjs";
+
 function normalizeText(text) {
 	return String(text || "").trim().toLowerCase();
 }
@@ -72,6 +74,14 @@ function buildRunEvidence(summary, title) {
 	};
 }
 
+function buildChatbotIntentProfile(intent, intentProfile, fallbackBehaviorSurface) {
+	return buildBehaviorIntentProfile({
+		intent,
+		intentProfile,
+		fallbackBehaviorSurface,
+	});
+}
+
 function buildReviewClarificationCandidate(conversation, userMessages) {
 	if (userMessages.length < 2) {
 		return null;
@@ -86,6 +96,11 @@ function buildReviewClarificationCandidate(conversation, userMessages) {
 		proposalKey: "repo-review-needs-target-clarification",
 		title: "Refresh repo review clarification scenario from recent operator logs",
 		family: "fast_regression",
+		intentProfile: buildChatbotIntentProfile(
+			"Clarify the concrete repo target before starting a broad repo review workflow.",
+			conversation.intentProfile,
+			"workflow_conversation",
+		),
 		name: "Repo Review Needs Target Clarification",
 		description: "A broad review request is followed by one concrete repo-target clarification.",
 		brief: `Recent operator logs show a broad review ask followed by a repo-target clarification: first "${userMessages[0]}", then "${userMessages[1]}".`,
@@ -107,6 +122,11 @@ function buildEventTriggeredFollowupCandidate(conversation, userMessages) {
 		proposalKey: "event-triggered-followup",
 		title: "Refresh event-triggered follow-up scenario from recent operator logs",
 		family: "fast_regression",
+		intentProfile: buildChatbotIntentProfile(
+			"Continue the active thread cleanly after an event-triggered wake-up.",
+			conversation.intentProfile,
+			"thread_followup",
+		),
 		name: "Event Triggered Follow-Up",
 		description: "An app mention wakes the assistant and the user continues with a plain follow-up in the same active thread.",
 		brief: `Recent operator logs show an app-mention wake-up followed by a plain thread follow-up: "${userMessages[0]}" then "${userMessages[1]}".`,
@@ -126,6 +146,11 @@ function buildAmbiguousConfirmationCandidate(summary) {
 		proposalKey: "ambiguous-confirmation-needs-context",
 		title: "Add ambiguous confirmation without thread context scenario",
 		family: "fast_regression",
+		intentProfile: buildChatbotIntentProfile(
+			"Ask one clarification when a bare confirmation lacks thread context.",
+			summary.intentProfile,
+			"thread_context_recovery",
+		),
 		name: "Ambiguous Confirmation Needs Context",
 		description: "A bare confirmation without thread context should trigger one clarification instead of blind execution.",
 		brief: `Recent agent runs were blocked by ambiguous confirmations without thread context. One example message was "${preview}".`,

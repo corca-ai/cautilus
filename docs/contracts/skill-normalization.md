@@ -65,6 +65,7 @@ Minimum input class:
 - `evaluationRuns`
   - `targetKind`
   - `targetId`
+  - optional `intentProfile`
   - optional `displayName`
   - `surface`
     - examples: `smoke_scenario`, `bootstrap`, `real_device_acceptance`,
@@ -94,6 +95,13 @@ Current candidate family for the first helper:
   - deterministic skill/eval regressions
   - blocked workflow or resumability regressions, tagged with
     `operator-recovery`
+
+The helper may emit an optional shared `intentProfile` using
+`cautilus.behavior_intent.v1`.
+When the host does not declare one, the helper may derive a thin profile for:
+
+- `skill_validation`
+- `operator_workflow_recovery`
 
 ## Pattern Classes In Scope
 

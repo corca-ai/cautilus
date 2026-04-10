@@ -55,11 +55,13 @@ Minimum input classes:
 
 - `conversationSummaries`
   - `threadKey`
+  - optional `intentProfile`
   - `lastObservedAt`
   - `records[]` with normalized `actorKind`, `text`, and optional `eventType`
 - `runSummaries`
   - `runId`
   - `threadKey`
+  - optional `intentProfile`
   - `startedAt`
   - `textPreview`
   - `blockedReason`
@@ -89,6 +91,7 @@ Required output properties remain:
 
 Optional conversational fields that the first helper may populate:
 
+- `intentProfile` using `cautilus.behavior_intent.v1`
 - `simulatorTurns`
 - `eventType`
 - `maxTurns`
@@ -98,6 +101,13 @@ Optional conversational fields that the first helper may populate:
 `conversationAuditScenario` must stay optional and opaque. `Cautilus` may pass
 it through, but the helper must not depend on one consumer's audit schema for
 its core value.
+
+When the host only provides normalized conversation or run summaries, the
+helper may derive a thin intent profile for the detected pattern class:
+
+- `workflow_conversation`
+- `thread_followup`
+- `thread_context_recovery`
 
 ## Pattern Classes In Scope
 

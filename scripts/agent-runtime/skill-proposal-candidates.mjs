@@ -1,3 +1,5 @@
+import { buildBehaviorIntentProfile } from "./behavior-intent.mjs";
+
 function normalizeText(text) {
 	return String(text || "").trim().toLowerCase();
 }
@@ -103,6 +105,14 @@ function buildWorkflowEvidence(run, title) {
 	};
 }
 
+function buildSkillIntentProfile(intent, intentProfile, fallbackBehaviorSurface) {
+	return buildBehaviorIntentProfile({
+		intent,
+		intentProfile,
+		fallbackBehaviorSurface,
+	});
+}
+
 function isSkillValidationRun(run) {
 	return ["public_skill", "profile", "integration"].includes(run.targetKind) && ["failed", "degraded"].includes(run.status);
 }
@@ -135,6 +145,11 @@ function buildSkillValidationCandidate(run) {
 		proposalKey: `${slugify(run.targetKind)}-${slugify(run.targetId)}-${slugify(run.surface)}-regression`,
 		title: `Refresh ${displayName} ${surfaceLabel} validation coverage`,
 		family: "fast_regression",
+		intentProfile: buildSkillIntentProfile(
+			`${displayName} should keep the ${surfaceLabel} validation surface passing.`,
+			run.intentProfile,
+			"skill_validation",
+		),
 		name: `${displayName} ${titleCase(surfaceLabel)} Regression`,
 		description: `${targetLabel} ${displayName} regressed on the ${surfaceLabel} evaluation surface and should keep a durable passing scenario.`,
 		brief: `Recent ${surfaceLabel} runs for ${displayName} are ${run.status}. Latest summary: "${run.summary}".`,
@@ -158,6 +173,11 @@ function buildWorkflowRecoveryCandidate(run) {
 		proposalKey: `${slugify(run.targetKind)}-${slugify(run.targetId)}-${slugify(run.surface)}-${blockerSlug}`,
 		title: `Refresh ${displayName} ${surfaceLabel} recovery scenario`,
 		family: "fast_regression",
+		intentProfile: buildSkillIntentProfile(
+			`${displayName} should recover cleanly when the ${surfaceLabel} workflow hits the same blocker.`,
+			run.intentProfile,
+			"operator_workflow_recovery",
+		),
 		name: `${displayName} ${titleCase(surfaceLabel)} Recovery`,
 		description: `${displayName} should recover cleanly when the ${surfaceLabel} workflow hits the same operator-facing blocker.`,
 		brief: `Recent ${surfaceLabel} runs for ${displayName} were ${run.status} with ${blockedCountText}. Latest summary: "${run.summary}".`,

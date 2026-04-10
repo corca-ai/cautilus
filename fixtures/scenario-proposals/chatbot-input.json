@@ -3,6 +3,19 @@
   "conversationSummaries": [
     {
       "threadKey": "thread-chatbot-1",
+      "intentProfile": {
+        "schemaVersion": "cautilus.behavior_intent.v1",
+        "intentId": "intent-repo-review-target-clarification",
+        "summary": "Clarify the concrete repo target before starting a broad repo review workflow.",
+        "behaviorSurface": "workflow_conversation",
+        "successDimensions": [
+          {
+            "id": "target-clarification",
+            "summary": "Ask for the concrete repo target before starting review."
+          }
+        ],
+        "guardrailDimensions": []
+      },
       "lastObservedAt": "2026-04-11T00:00:00.000Z",
       "records": [
         {
@@ -17,6 +30,19 @@
     },
     {
       "threadKey": "thread-chatbot-2",
+      "intentProfile": {
+        "schemaVersion": "cautilus.behavior_intent.v1",
+        "intentId": "intent-event-triggered-followup",
+        "summary": "Continue the active thread cleanly after an event-triggered wake-up.",
+        "behaviorSurface": "thread_followup",
+        "successDimensions": [
+          {
+            "id": "wake-up-continuity",
+            "summary": "Continue the same active thread after the wake-up event."
+          }
+        ],
+        "guardrailDimensions": []
+      },
       "lastObservedAt": "2026-04-11T00:00:00.000Z",
       "records": [
         {
@@ -35,6 +61,19 @@
     {
       "runId": "run-chatbot-1",
       "threadKey": "thread-chatbot-3",
+      "intentProfile": {
+        "schemaVersion": "cautilus.behavior_intent.v1",
+        "intentId": "intent-ambiguous-confirmation-context-recovery",
+        "summary": "Ask one clarification when a bare confirmation lacks thread context.",
+        "behaviorSurface": "thread_context_recovery",
+        "successDimensions": [
+          {
+            "id": "clarify-before-action",
+            "summary": "Ask for missing context before acting on the confirmation."
+          }
+        ],
+        "guardrailDimensions": []
+      },
       "startedAt": "2026-04-11T00:00:00.000Z",
       "textPreview": "네, 그대로 진행해주세요.",
       "blockedReason": "ambiguous_confirmation_without_thread_context"

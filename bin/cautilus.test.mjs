@@ -1323,6 +1323,7 @@ test("cautilus scenario normalize chatbot produces proposal candidates that chai
 		assert.equal(normalize.status, 0, normalize.stderr);
 		const candidates = JSON.parse(readFileSync(candidatesPath, "utf-8"));
 		assert.equal(candidates.length, 2);
+		assert.equal(candidates[0].intentProfile.schemaVersion, "cautilus.behavior_intent.v1");
 
 		const prepare = spawnSync(
 			"node",
@@ -1359,6 +1360,7 @@ test("cautilus scenario normalize chatbot produces proposal candidates that chai
 		assert.equal(propose.status, 0, propose.stderr);
 		const proposals = JSON.parse(readFileSync(proposalOutputPath, "utf-8"));
 		assert.equal(proposals.proposals.length, 2);
+		assert.equal(proposals.proposals[0].draftScenario.intentProfile.schemaVersion, "cautilus.behavior_intent.v1");
 		assert.equal(proposals.proposals[0].family, "fast_regression");
 	} finally {
 		rmSync(root, { recursive: true, force: true });
@@ -1449,6 +1451,7 @@ test("cautilus scenario normalize skill produces proposal candidates that chain 
 		assert.equal(normalize.status, 0, normalize.stderr);
 		const candidates = JSON.parse(readFileSync(candidatesPath, "utf-8"));
 		assert.equal(candidates.length, 2);
+		assert.equal(candidates[0].intentProfile.schemaVersion, "cautilus.behavior_intent.v1");
 		assert.equal(candidates[0].family, "fast_regression");
 
 		const prepare = spawnSync(
@@ -1486,6 +1489,7 @@ test("cautilus scenario normalize skill produces proposal candidates that chain 
 		assert.equal(propose.status, 0, propose.stderr);
 		const proposals = JSON.parse(readFileSync(proposalOutputPath, "utf-8"));
 		assert.equal(proposals.proposals.length, 2);
+		assert.equal(proposals.proposals[0].draftScenario.intentProfile.schemaVersion, "cautilus.behavior_intent.v1");
 		assert.equal(proposals.proposals[0].family, "fast_regression");
 	} finally {
 		rmSync(root, { recursive: true, force: true });

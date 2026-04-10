@@ -21,6 +21,7 @@ test("normalizeSkillProposalCandidates emits a deterministic regression candidat
 	assert.equal(candidates.length, 1);
 	assert.equal(candidates[0].proposalKey, "public-skill-impl-smoke-scenario-regression");
 	assert.equal(candidates[0].family, "fast_regression");
+	assert.equal(candidates[0].intentProfile.behaviorSurface, "skill_validation");
 	assert.equal(candidates[0].evidence[0].sourceKind, "skill_evaluation");
 });
 
@@ -43,6 +44,7 @@ test("normalizeSkillProposalCandidates emits an operator-recovery candidate for 
 	});
 	assert.equal(candidates.length, 1);
 	assert.equal(candidates[0].proposalKey, "cli-workflow-scan-settings-seed-replay-seed-repeated-screen-no-progress");
+	assert.equal(candidates[0].intentProfile.behaviorSurface, "operator_workflow_recovery");
 	assert.match(candidates[0].brief, /2 blocked step\(s\)/);
 	assert.equal(candidates[0].evidence[0].sourceKind, "workflow_run");
 });
@@ -72,5 +74,6 @@ test("normalizeSkillProposalCandidates merges duplicate proposal keys and keeps 
 	});
 	assert.equal(candidates.length, 1);
 	assert.equal(candidates[0].evidence.length, 2);
+	assert.equal(candidates[0].intentProfile.behaviorSurface, "skill_validation");
 	assert.equal(candidates[0].evidence[0].summary, "Newer failure.");
 });

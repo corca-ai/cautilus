@@ -25,6 +25,9 @@
           "threadKey": {
             "type": "string"
           },
+          "intentProfile": {
+            "type": "object"
+          },
           "lastObservedAt": {
             "type": "string"
           },
@@ -64,6 +67,9 @@
         "properties": {
           "runId": {
             "type": "string"
+          },
+          "intentProfile": {
+            "type": "object"
           },
           "threadKey": {
             "type": "string"
