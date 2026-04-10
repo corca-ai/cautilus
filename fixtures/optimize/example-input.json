@@ -3,6 +3,16 @@
   "generatedAt": "2026-04-11T00:05:00.000Z",
   "repoRoot": "/tmp/cautilus-optimize",
   "optimizationTarget": "prompt",
+  "optimizer": {
+    "kind": "reflection",
+    "budget": "medium",
+    "plan": {
+      "evidenceLimit": 5,
+      "suggestedChangeLimit": 3,
+      "reviewVariantLimit": 2,
+      "historySignalLimit": 2
+    }
+  },
   "targetFile": {
     "path": "/tmp/cautilus-optimize/prompt.md",
     "exists": true

@@ -119,7 +119,7 @@ function usage(exitCode = 0) {
 		"  cautilus evidence bundle --input /tmp/cautilus-evidence/input.json",
 		"  cautilus report build --input ./fixtures/reports/report-input.json",
 		"  cautilus mode evaluate --repo-root . --mode held_out --intent 'CLI behavior should remain legible.' --baseline-ref origin/main --output-dir /tmp/cautilus-mode",
-		"  cautilus optimize prepare-input --report-file /tmp/cautilus-mode/report.json --target prompt",
+		"  cautilus optimize prepare-input --report-file /tmp/cautilus-mode/report.json --target prompt --optimizer reflection --budget medium",
 		"  cautilus optimize propose --input /tmp/cautilus-optimize/input.json",
 		"  cautilus review prepare-input --repo-root . --report-file /tmp/cautilus-mode/report.json",
 		"  cautilus review build-prompt-input --review-packet /tmp/cautilus-mode/review.json",

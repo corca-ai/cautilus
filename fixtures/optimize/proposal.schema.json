@@ -7,12 +7,14 @@
     "schemaVersion",
     "generatedAt",
     "optimizationTarget",
+    "optimizer",
     "reportRecommendation",
     "decision",
     "rationale",
     "prioritizedEvidence",
     "suggestedChanges",
     "revisionBrief",
+    "trialTelemetry",
     "stopConditions",
     "followUpChecks"
   ],
@@ -32,6 +34,9 @@
         "prompt",
         "adapter"
       ]
+    },
+    "optimizer": {
+      "type": "object"
     },
     "targetFile": {
       "type": "object"
@@ -58,6 +63,9 @@
     },
     "revisionBrief": {
       "type": "string"
+    },
+    "trialTelemetry": {
+      "type": "object"
     },
     "stopConditions": {
       "type": "array"

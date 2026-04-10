@@ -3,21 +3,24 @@
   "generatedAt": "2026-04-11T00:06:00.000Z",
   "inputFile": "/tmp/cautilus-optimize/input.json",
   "optimizationTarget": "prompt",
+  "optimizer": {
+    "kind": "reflection",
+    "budget": "medium",
+    "plan": {
+      "evidenceLimit": 5,
+      "suggestedChangeLimit": 3,
+      "reviewVariantLimit": 2,
+      "historySignalLimit": 2
+    }
+  },
   "targetFile": {
     "path": "/tmp/cautilus-optimize/prompt.md",
     "exists": true
   },
   "reportRecommendation": "defer",
   "decision": "revise",
-  "rationale": "The next revision is bounded by 2 high-signal issue(s) and 4 total evidence item(s).",
+  "rationale": "The next revision is bounded by 2 high-signal issue(s) selected under the medium reflection plan.",
   "prioritizedEvidence": [
-    {
-      "source": "report.regressed",
-      "key": "operator-recovery",
-      "severity": "high",
-      "summary": "Regressed scenario: operator-recovery",
-      "message": "operator-recovery regressed in the current report."
-    },
     {
       "source": "review.finding",
       "key": "codex-review:variant/codex-review",
@@ -25,21 +28,44 @@
       "summary": "codex-review blocker: The operator still cannot tell whether retry is safe.",
       "message": "The operator still cannot tell whether retry is safe.",
       "path": "variant/codex-review",
-      "variantId": "codex-review"
+      "variantId": "codex-review",
+      "provenance": {
+        "packet": "reviewSummary",
+        "locator": "variants.codex-review.findings.variant/codex-review"
+      }
     },
     {
       "source": "report.noisy",
       "key": "workflow-retry-budget",
       "severity": "medium",
       "summary": "Noisy scenario: workflow-retry-budget",
-      "message": "workflow-retry-budget needs more signal before calling the change better."
+      "message": "workflow-retry-budget needs more signal before calling the change better.",
+      "provenance": {
+        "packet": "report",
+        "locator": "noisy.workflow-retry-budget"
+      }
+    },
+    {
+      "source": "report.regressed",
+      "key": "operator-recovery",
+      "severity": "high",
+      "summary": "Regressed scenario: operator-recovery",
+      "message": "operator-recovery regressed in the current report.",
+      "provenance": {
+        "packet": "report",
+        "locator": "regressed.operator-recovery"
+      }
     },
     {
       "source": "scenario_history",
       "key": "operator-recovery",
       "severity": "medium",
       "summary": "operator-recovery remains unstable in recent train history",
-      "message": "operator-recovery last train result was failed with score 80."
+      "message": "operator-recovery last train result was failed with score 80.",
+      "provenance": {
+        "packet": "scenarioHistory",
+        "locator": "scenarioStats.operator-recovery"
+      }
     }
   ],
   "suggestedChanges": [
@@ -91,7 +117,26 @@
       ]
     }
   ],
-  "revisionBrief": "Revise the prompt in one bounded pass. Revise the prompt to repair the cited failures before widening scope. Evidence: Regressed scenario: operator-recovery; codex-review blocker: The operator still cannot tell whether retry is safe.; Noisy scenario: workflow-retry-budget. Do not weaken held-out, comparison, or review gates.",
+  "revisionBrief": "Revise the prompt in one bounded pass. Revise the prompt to repair the cited failures before widening scope. Evidence: codex-review blocker: The operator still cannot tell whether retry is safe.; Noisy scenario: workflow-retry-budget; Regressed scenario: operator-recovery. Do not weaken held-out, comparison, or review gates.",
+  "trialTelemetry": {
+    "evidenceItemsSeen": 4,
+    "prioritizedEvidenceCount": 4,
+    "highSignalEvidenceCount": 2,
+    "suggestedChangeCount": 3,
+    "sourceCounts": {
+      "regressed": 1,
+      "reviewFindings": 1,
+      "noisy": 1,
+      "historySignals": 1,
+      "improved": 0
+    },
+    "plan": {
+      "evidenceLimit": 5,
+      "suggestedChangeLimit": 3,
+      "reviewVariantLimit": 2,
+      "historySignalLimit": 2
+    }
+  },
   "stopConditions": [
     "Stop after one bounded revision.",
     "Do not weaken held-out, comparison, or structured review gates to make the candidate pass.",

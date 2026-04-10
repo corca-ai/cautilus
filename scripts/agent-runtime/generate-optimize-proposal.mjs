@@ -8,6 +8,40 @@ import {
 	OPTIMIZE_PROPOSAL_SCHEMA,
 } from "./contract-versions.mjs";
 
+const OPTIMIZER_KINDS = ["repair", "reflection", "history_followup"];
+const OPTIMIZER_BUDGETS = {
+	light: {
+		evidenceLimit: 3,
+		suggestedChangeLimit: 2,
+		reviewVariantLimit: 1,
+		historySignalLimit: 1,
+	},
+	medium: {
+		evidenceLimit: 5,
+		suggestedChangeLimit: 3,
+		reviewVariantLimit: 2,
+		historySignalLimit: 2,
+	},
+	heavy: {
+		evidenceLimit: 8,
+		suggestedChangeLimit: 4,
+		reviewVariantLimit: 3,
+		historySignalLimit: 4,
+	},
+};
+const OPTIMIZER_SOURCE_PRIORITY = {
+	repair: ["report.regressed", "review.finding", "report.noisy", "scenario_history", "report.improved"],
+	reflection: ["review.finding", "report.noisy", "report.regressed", "scenario_history", "report.improved"],
+	history_followup: ["scenario_history", "report.regressed", "review.finding", "report.noisy", "report.improved"],
+};
+const SEVERITY_PRIORITY = {
+	blocker: 0,
+	high: 1,
+	medium: 2,
+	concern: 2,
+	low: 3,
+};
+
 function usage(exitCode = 0) {
 	const text = [
 		"Usage:",
@@ -76,11 +110,23 @@ function normalizeSeverity(value) {
 	return typeof value === "string" ? value.toLowerCase() : "concern";
 }
 
-function gatherReviewFindings(reviewSummary) {
+function normalizeOptimizer(inputOptimizer) {
+	const kind = OPTIMIZER_KINDS.includes(inputOptimizer?.kind) ? inputOptimizer.kind : "repair";
+	const budget = Object.prototype.hasOwnProperty.call(OPTIMIZER_BUDGETS, inputOptimizer?.budget)
+		? inputOptimizer.budget
+		: "medium";
+	const plan = {
+		...OPTIMIZER_BUDGETS[budget],
+		...(inputOptimizer?.plan && typeof inputOptimizer.plan === "object" ? inputOptimizer.plan : {}),
+	};
+	return { kind, budget, plan };
+}
+
+function gatherReviewFindings(reviewSummary, reviewVariantLimit) {
 	if (!reviewSummary || !Array.isArray(reviewSummary.variants)) {
 		return [];
 	}
-	return reviewSummary.variants.flatMap((variant) => {
+	return reviewSummary.variants.slice(0, reviewVariantLimit).flatMap((variant) => {
 		const findings = Array.isArray(variant?.output?.findings) ? variant.output.findings : [];
 		return findings
 			.filter((finding) => typeof finding?.message === "string" && finding.message.length > 0)
@@ -92,11 +138,15 @@ function gatherReviewFindings(reviewSummary) {
 				message: finding.message,
 				path: finding.path || null,
 				variantId: variant.id || null,
+				provenance: {
+					packet: "reviewSummary",
+					locator: `variants.${variant.id || "variant"}.findings.${finding.path || index}`,
+				},
 			}));
 	});
 }
 
-function gatherHistorySignals(scenarioHistory) {
+function gatherHistorySignals(scenarioHistory, historySignalLimit) {
 	if (!scenarioHistory || typeof scenarioHistory !== "object" || scenarioHistory === null) {
 		return [];
 	}
@@ -117,25 +167,32 @@ function gatherHistorySignals(scenarioHistory) {
 				severity: "medium",
 				summary: `${scenarioId} remains unstable in recent train history`,
 				message: `${scenarioId} last train result was ${latest.status || "unknown"} with score ${latest.overallScore ?? "n/a"}.`,
+				provenance: {
+					packet: "scenarioHistory",
+					locator: `scenarioStats.${scenarioId}`,
+				},
 			},
 		];
-	});
+	}).slice(0, historySignalLimit);
 }
 
-function buildEvidence(packet) {
+function buildEvidenceUniverse(packet, optimizer) {
 	const report = packet.report || {};
 	const regressed = Array.isArray(report.regressed) ? report.regressed : [];
 	const noisy = Array.isArray(report.noisy) ? report.noisy : [];
-	const improved = Array.isArray(report.improved) ? report.improved : [];
-	const reviewFindings = gatherReviewFindings(packet.reviewSummary);
-	const historySignals = gatherHistorySignals(packet.scenarioHistory);
-	const evidence = [
+	const reviewFindings = gatherReviewFindings(packet.reviewSummary, optimizer.plan.reviewVariantLimit);
+	const historySignals = gatherHistorySignals(packet.scenarioHistory, optimizer.plan.historySignalLimit);
+	return [
 		...regressed.map((scenarioId) => ({
 			source: "report.regressed",
 			key: scenarioId,
 			severity: "high",
 			summary: `Regressed scenario: ${scenarioId}`,
 			message: `${scenarioId} regressed in the current report.`,
+			provenance: {
+				packet: "report",
+				locator: `regressed.${scenarioId}`,
+			},
 		})),
 		...reviewFindings,
 		...noisy.map((scenarioId) => ({
@@ -144,19 +201,118 @@ function buildEvidence(packet) {
 			severity: "medium",
 			summary: `Noisy scenario: ${scenarioId}`,
 			message: `${scenarioId} needs more signal before calling the change better.`,
+			provenance: {
+				packet: "report",
+				locator: `noisy.${scenarioId}`,
+			},
 		})),
 		...historySignals,
 	];
-	if (evidence.length === 0 && improved.length > 0) {
-		evidence.push({
+}
+
+function rankEvidence(evidence, optimizerKind) {
+	const sourcePriority = OPTIMIZER_SOURCE_PRIORITY[optimizerKind] || OPTIMIZER_SOURCE_PRIORITY.repair;
+	return [...evidence].sort((left, right) => {
+		const leftSourceRank = sourcePriority.indexOf(left.source);
+		const rightSourceRank = sourcePriority.indexOf(right.source);
+		if (leftSourceRank !== rightSourceRank) {
+			return leftSourceRank - rightSourceRank;
+		}
+		const leftSeverity = SEVERITY_PRIORITY[left.severity] ?? SEVERITY_PRIORITY.concern;
+		const rightSeverity = SEVERITY_PRIORITY[right.severity] ?? SEVERITY_PRIORITY.concern;
+		if (leftSeverity !== rightSeverity) {
+			return leftSeverity - rightSeverity;
+		}
+		return left.summary.localeCompare(right.summary);
+	});
+}
+
+function buildPrioritizedEvidence(packet, optimizer) {
+	const evidenceUniverse = buildEvidenceUniverse(packet, optimizer);
+	if (evidenceUniverse.length === 0) {
+		const improved = Array.isArray(packet.report?.improved) ? packet.report.improved : [];
+		if (improved.length > 0) {
+			evidenceUniverse.push({
+				source: "report.improved",
+				key: improved[0],
+				severity: "low",
+				summary: `Improved scenario: ${improved[0]}`,
+				message: `${improved[0]} improved, and no blocking evidence was surfaced.`,
+				provenance: {
+					packet: "report",
+					locator: `improved.${improved[0]}`,
+				},
+			});
+		}
+	}
+	return {
+		evidenceUniverse,
+		prioritizedEvidence: rankEvidence(evidenceUniverse, optimizer.kind).slice(0, optimizer.plan.evidenceLimit),
+	};
+}
+
+function buildSourceCounts(evidenceUniverse) {
+	return evidenceUniverse.reduce(
+		(counts, item) => {
+			if (item.source === "report.regressed") {
+				counts.regressed += 1;
+			}
+			if (item.source === "review.finding") {
+				counts.reviewFindings += 1;
+			}
+			if (item.source === "report.noisy") {
+				counts.noisy += 1;
+			}
+			if (item.source === "scenario_history") {
+				counts.historySignals += 1;
+			}
+			if (item.source === "report.improved") {
+				counts.improved += 1;
+			}
+			return counts;
+		},
+		{
+			regressed: 0,
+			reviewFindings: 0,
+			noisy: 0,
+			historySignals: 0,
+			improved: 0,
+		},
+	);
+}
+
+function buildTrialTelemetry(optimizer, evidenceUniverse, prioritizedEvidence, suggestedChanges) {
+	return {
+		evidenceItemsSeen: evidenceUniverse.length,
+		prioritizedEvidenceCount: prioritizedEvidence.length,
+		highSignalEvidenceCount: countHighSignalEvidence(prioritizedEvidence),
+		suggestedChangeCount: suggestedChanges.length,
+		sourceCounts: buildSourceCounts(evidenceUniverse),
+		plan: {
+			evidenceLimit: optimizer.plan.evidenceLimit,
+			suggestedChangeLimit: optimizer.plan.suggestedChangeLimit,
+			reviewVariantLimit: optimizer.plan.reviewVariantLimit,
+			historySignalLimit: optimizer.plan.historySignalLimit,
+		},
+	};
+}
+
+function buildFallbackEvidence(packet) {
+	const improved = Array.isArray(packet.report?.improved) ? packet.report.improved : [];
+	if (improved.length > 0) {
+		return [{
 			source: "report.improved",
 			key: improved[0],
 			severity: "low",
 			summary: `Improved scenario: ${improved[0]}`,
 			message: `${improved[0]} improved, and no blocking evidence was surfaced.`,
-		});
+			provenance: {
+				packet: "report",
+				locator: `improved.${improved[0]}`,
+			},
+		}];
 	}
-	return evidence;
+	return [];
 }
 
 function countHighSignalEvidence(evidence) {
@@ -260,25 +416,30 @@ function buildRevisionBrief(packet, decision, evidence, suggestedChanges) {
 }
 
 export function generateOptimizeProposal(packet, { now = new Date(), inputFile = null } = {}) {
-	const evidence = buildEvidence(packet);
-	const suggestedChanges = buildSuggestedChanges(packet, evidence);
+	const optimizer = normalizeOptimizer(packet.optimizer);
+	const { evidenceUniverse, prioritizedEvidence } = buildPrioritizedEvidence(packet, optimizer);
+	const evidence = prioritizedEvidence.length > 0 ? prioritizedEvidence : buildFallbackEvidence(packet);
+	const suggestedChanges = buildSuggestedChanges(packet, evidence).slice(0, optimizer.plan.suggestedChangeLimit);
 	const decision = buildDecision(packet, evidence);
 	const reportRecommendation = packet.report?.recommendation || "defer";
+	const trialTelemetry = buildTrialTelemetry(optimizer, evidenceUniverse, evidence, suggestedChanges);
 	return {
 		schemaVersion: OPTIMIZE_PROPOSAL_SCHEMA,
 		generatedAt: now.toISOString(),
 		...(inputFile ? { inputFile } : {}),
 		optimizationTarget: packet.optimizationTarget,
+		optimizer,
 		...(packet.targetFile ? { targetFile: packet.targetFile } : {}),
 		reportRecommendation,
 		decision,
 		rationale:
 			decision === "hold"
 				? "Current evidence does not justify another bounded revision."
-				: `The next revision is bounded by ${countHighSignalEvidence(evidence)} high-signal issue(s) and ${evidence.length} total evidence item(s).`,
+				: `The next revision is bounded by ${countHighSignalEvidence(evidence)} high-signal issue(s) selected under the ${optimizer.budget} ${optimizer.kind} plan.`,
 		prioritizedEvidence: evidence,
 		suggestedChanges,
 		revisionBrief: buildRevisionBrief(packet, decision, evidence, suggestedChanges),
+		trialTelemetry,
 		stopConditions: [
 			"Stop after one bounded revision.",
 			"Do not weaken held-out, comparison, or structured review gates to make the candidate pass.",

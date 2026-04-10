@@ -17,11 +17,32 @@ const OPTIMIZATION_CONSTRAINTS = [
 	"Use scenario history only to focus the next bounded probe, not to justify overfitting.",
 	"Stop after one bounded revision and rerun the relevant gates.",
 ];
+const OPTIMIZER_KINDS = ["repair", "reflection", "history_followup"];
+const OPTIMIZER_BUDGETS = {
+	light: {
+		evidenceLimit: 3,
+		suggestedChangeLimit: 2,
+		reviewVariantLimit: 1,
+		historySignalLimit: 1,
+	},
+	medium: {
+		evidenceLimit: 5,
+		suggestedChangeLimit: 3,
+		reviewVariantLimit: 2,
+		historySignalLimit: 2,
+	},
+	heavy: {
+		evidenceLimit: 8,
+		suggestedChangeLimit: 4,
+		reviewVariantLimit: 3,
+		historySignalLimit: 4,
+	},
+};
 
 function usage(exitCode = 0) {
 	const text = [
 		"Usage:",
-		"  node ./scripts/agent-runtime/build-optimize-input.mjs --report-file <file> [--review-summary <file>] [--history-file <file>] [--repo-root <dir>] [--target <prompt|adapter>] [--target-file <file>] [--output <file>]",
+		"  node ./scripts/agent-runtime/build-optimize-input.mjs --report-file <file> [--review-summary <file>] [--history-file <file>] [--repo-root <dir>] [--target <prompt|adapter>] [--target-file <file>] [--optimizer <repair|reflection|history_followup>] [--budget <light|medium|heavy>] [--output <file>]",
 		"",
 		"Output packet:",
 		`  schemaVersion: ${OPTIMIZE_INPUTS_SCHEMA}`,
@@ -52,6 +73,8 @@ function parseArgs(argv) {
 		historyFile: null,
 		target: "prompt",
 		targetFile: null,
+		optimizer: "repair",
+		budget: "medium",
 		output: null,
 	};
 	for (let index = 0; index < argv.length; index += 1) {
@@ -66,6 +89,8 @@ function parseArgs(argv) {
 			"--history-file": "historyFile",
 			"--target": "target",
 			"--target-file": "targetFile",
+			"--optimizer": "optimizer",
+			"--budget": "budget",
 			"--output": "output",
 		}[arg];
 		if (!field) {
@@ -79,6 +104,12 @@ function parseArgs(argv) {
 	}
 	if (!["prompt", "adapter"].includes(options.target)) {
 		fail("--target must be prompt or adapter");
+	}
+	if (!OPTIMIZER_KINDS.includes(options.optimizer)) {
+		fail(`--optimizer must be one of: ${OPTIMIZER_KINDS.join(", ")}`);
+	}
+	if (!Object.prototype.hasOwnProperty.call(OPTIMIZER_BUDGETS, options.budget)) {
+		fail(`--budget must be one of: ${Object.keys(OPTIMIZER_BUDGETS).join(", ")}`);
 	}
 	return options;
 }
@@ -137,6 +168,16 @@ function summarizeTargetFile(repoRoot, targetFile) {
 	};
 }
 
+function buildOptimizerPlan(kind, budget) {
+	return {
+		kind,
+		budget,
+		plan: {
+			...OPTIMIZER_BUDGETS[budget],
+		},
+	};
+}
+
 export function buildOptimizeInput(inputOptions, { now = new Date() } = {}) {
 	const options = parseArgs(inputOptions);
 	const repoRoot = resolve(options.repoRoot);
@@ -144,11 +185,13 @@ export function buildOptimizeInput(inputOptions, { now = new Date() } = {}) {
 	const reviewSummary = options.reviewSummary ? parseReviewSummaryFile(options.reviewSummary) : null;
 	const scenarioHistory = options.historyFile ? parseHistoryFile(options.historyFile) : null;
 	const targetFile = summarizeTargetFile(repoRoot, options.targetFile);
+	const optimizer = buildOptimizerPlan(options.optimizer, options.budget);
 	return {
 		schemaVersion: OPTIMIZE_INPUTS_SCHEMA,
 		generatedAt: now.toISOString(),
 		repoRoot,
 		optimizationTarget: options.target,
+		optimizer,
 		...(targetFile ? { targetFile } : {}),
 		reportFile: report.path,
 		report: report.packet,

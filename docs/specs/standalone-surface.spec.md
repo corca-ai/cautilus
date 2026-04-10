@@ -92,7 +92,7 @@ $ node ./bin/cautilus evidence prepare-input --report-file ./fixtures/reports/re
 $ node ./bin/cautilus evidence bundle --input ./fixtures/evidence/example-input.json
 $ node ./bin/cautilus report build --input ./fixtures/reports/report-input.json
 $ node ./bin/cautilus mode evaluate --repo-root . --mode held_out --intent "CLI behavior should remain legible." --baseline-ref origin/main --output-dir /tmp/cautilus-mode || true
-$ node ./bin/cautilus optimize prepare-input --report-file ./fixtures/reports/report-input.json --target prompt || true
+$ node ./bin/cautilus optimize prepare-input --report-file ./fixtures/reports/report-input.json --target prompt --optimizer repair --budget light || true
 $ node ./bin/cautilus optimize propose --input ./fixtures/optimize/example-input.json
 $ node ./bin/cautilus cli evaluate --input ./fixtures/cli-evaluation/doctor-missing-adapter.json
 $ node ./bin/cautilus review prepare-input --repo-root . --report-file ./fixtures/reports/report-input.json || true

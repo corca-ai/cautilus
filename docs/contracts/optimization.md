@@ -8,6 +8,71 @@ The goal is to turn explicit evaluation evidence into one conservative next
 revision brief that still respects held-out, comparison, and structured review
 gates.
 
+## Problem
+
+The current optimization seam can propose one bounded revision brief, but it
+does not yet make three things explicit enough:
+
+- which optimization style is being used
+- how much evidence and review surface the optimizer is allowed to consume
+- why a specific subset of evidence was selected for the brief
+
+This makes the proposal less reproducible than the surrounding evaluation
+packets and leaves too much optimizer behavior implicit.
+
+## Current Slice
+
+This slice adds a small DSPy-inspired control surface without importing a DSPy
+runtime:
+
+- a declared optimizer kind
+- a declared bounded budget
+- a materialized trial plan derived from that budget
+- proposal telemetry that explains how much evidence was seen, selected, and
+  converted into the next bounded revision brief
+- evidence provenance so later review can trace each proposal back to an
+  explicit packet and locator
+
+## Fixed Decisions
+
+- Optimization stays packet-first and file-based.
+- `Cautilus` does not own a prompt-programming runtime or LM module framework.
+- The optimizer still emits one bounded next-revision brief, not a compile
+  loop.
+- Consumer prompts, adapter files, and policy remain consumer-owned targets.
+- Review findings, compare results, and scenario history remain the evidence
+  sources for this seam.
+
+## Probe Questions
+
+- Is evidence weighting by optimizer kind enough, or does the next slice need a
+  first-class intent/signature contract above `optimize`?
+- Should a later slice persist a standalone revision artifact packet instead of
+  only the proposal packet?
+
+## Deferred Decisions
+
+- a reusable intent/signature contract shared by `review`, `optimize`, and
+  scenario proposal
+- a judge-library-like catalog of reusable evaluation dimensions
+- consumer-integrated fine-tuning or weight-update orchestration
+
+## Non-Goals
+
+- importing DSPy's `Module`, `Predict`, `ReAct`, or teleprompt runtime
+- automatic prompt edits or automatic adapter patches
+- an unbounded retry loop
+- host-owned raw log mining or storage-reader logic
+
+## Constraints
+
+- keep the existing `optimize prepare-input` and `optimize propose` command
+  shape
+- preserve `cautilus.optimize_inputs.v1` and
+  `cautilus.optimize_proposal.v1` schema ids
+- keep the default optimizer behavior conservative when the operator does not
+  specify new fields
+
 ## Input Packet
 
 Use `cautilus.optimize_inputs.v1` for the prepare-input boundary.
@@ -21,6 +86,11 @@ The packet should include:
 - optional executor-variant review summary
 - optional `cautilus.scenario_history.v1`
 - product-owned objective and guardrail constraints
+- optimizer configuration
+  - `kind`: `repair`, `reflection`, or `history_followup`
+  - `budget`: `light`, `medium`, or `heavy`
+  - `plan`: bounded limits derived from the budget, such as evidence and review
+    consumption caps
 
 Current surface:
 
@@ -29,7 +99,9 @@ node ./bin/cautilus optimize prepare-input \
   --report-file /tmp/cautilus-mode/report.json \
   --review-summary /tmp/cautilus-review/summary.json \
   --history-file /tmp/cautilus-history/history.json \
-  --target prompt
+  --target prompt \
+  --optimizer reflection \
+  --budget medium
 ```
 
 ## Proposal Packet
@@ -39,13 +111,20 @@ Use `cautilus.optimize_proposal.v1` for the deterministic next-revision brief.
 The proposal should include:
 
 - optimization target and optional target file reference
+- optimizer configuration copied from the input packet
 - current report recommendation
 - a bounded decision: `hold`, `revise`, or `investigate`
 - prioritized evidence derived from regressions, review findings, noisy
   surfaces, and recent history misses
+- evidence provenance that points back to the source packet and locator
 - suggested changes with explicit change kinds such as `prompt_revision`,
   `adapter_revision`, `sampling_increase`, or `history_followup`
 - one revision brief
+- trial telemetry
+  - how many evidence items were seen
+  - how many were selected under the current budget
+  - how many high-signal items bound the brief
+  - how many suggestions survived the bounded plan
 - stop conditions and follow-up checks
 
 Current surface:
@@ -54,6 +133,32 @@ Current surface:
 node ./bin/cautilus optimize propose \
   --input /tmp/cautilus-optimize/input.json
 ```
+
+## Success Criteria
+
+- `optimize prepare-input` can declare optimizer kind and budget explicitly.
+- The input packet materializes a bounded plan instead of leaving budget
+  behavior implicit.
+- `optimize propose` records optimizer telemetry that explains why the final
+  revision brief is bounded the way it is.
+- Prioritized evidence includes source provenance for later audit.
+
+## Acceptance Checks
+
+- `node ./bin/cautilus optimize prepare-input --report-file ./fixtures/reports/report-input.json --target prompt --optimizer repair --budget light`
+- `node ./bin/cautilus optimize propose --input ./fixtures/optimize/example-input.json`
+- `node --test ./scripts/agent-runtime/optimize-flow.test.mjs`
+
+## Canonical Artifact
+
+This document is the canonical contract for the optimization seam in this
+slice.
+
+## First Implementation Slice
+
+Update the optimize input builder, optimize proposal generator, schemas,
+fixtures, and flow tests so the new optimizer plan and trial telemetry become
+the checked-in product surface.
 
 ## Guardrails
 

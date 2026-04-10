@@ -229,7 +229,8 @@ standalone product여야 한다.
 - normalized evidence-bundle input and merge helpers above host-owned raw
   readers
 - bounded optimizer input and proposal helpers above explicit
-  report/review/history evidence
+  report/review/history evidence, with optimizer kind, budget, and trial
+  telemetry
 - chatbot proposal-candidate normalization helper
 - chatbot normalization command
 - cli proposal-candidate normalization helper
@@ -276,7 +277,7 @@ $ node ./bin/cautilus report build --input ./fixtures/reports/report-input.json
 $ node ./bin/cautilus mode evaluate --repo-root . --mode held_out --intent "CLI behavior should remain legible." --baseline-ref origin/main --output-dir /tmp/cautilus-mode || true
 $ node ./bin/cautilus evidence prepare-input --report-file ./fixtures/reports/report-input.json --scenario-results-file ./fixtures/scenario-results/example-results.json || true
 $ node ./bin/cautilus evidence bundle --input ./fixtures/evidence/example-input.json
-$ node ./bin/cautilus optimize prepare-input --report-file ./fixtures/reports/report-input.json --target prompt || true
+$ node ./bin/cautilus optimize prepare-input --report-file ./fixtures/reports/report-input.json --target prompt --optimizer repair --budget light || true
 $ node ./bin/cautilus optimize propose --input ./fixtures/optimize/example-input.json
 $ node ./bin/cautilus cli evaluate --input ./fixtures/cli-evaluation/doctor-missing-adapter.json
 $ node ./bin/cautilus review prepare-input --repo-root . --report-file ./fixtures/reports/report-input.json || true

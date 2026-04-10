@@ -108,11 +108,18 @@ test("buildOptimizeInput assembles a bounded optimization packet from explicit e
 				"prompt",
 				"--target-file",
 				targetFile,
+				"--optimizer",
+				"reflection",
+				"--budget",
+				"heavy",
 			],
 			{ now: new Date("2026-04-11T00:05:00.000Z") },
 		);
 		assert.equal(packet.schemaVersion, "cautilus.optimize_inputs.v1");
 		assert.equal(packet.optimizationTarget, "prompt");
+		assert.equal(packet.optimizer.kind, "reflection");
+		assert.equal(packet.optimizer.budget, "heavy");
+		assert.equal(packet.optimizer.plan.evidenceLimit, 8);
 		assert.equal(packet.targetFile.exists, true);
 		assert.equal(packet.report.regressed[0], "operator-recovery");
 		assert.equal(packet.reviewSummary.variants[0].id, "codex-review");
@@ -139,6 +146,10 @@ test("generateOptimizeProposal turns explicit evidence into one bounded revision
 				"prompt",
 				"--target-file",
 				targetFile,
+				"--optimizer",
+				"reflection",
+				"--budget",
+				"light",
 			],
 			{ now: new Date("2026-04-11T00:05:00.000Z") },
 		);
@@ -148,9 +159,14 @@ test("generateOptimizeProposal turns explicit evidence into one bounded revision
 		});
 		assert.equal(proposal.schemaVersion, "cautilus.optimize_proposal.v1");
 		assert.equal(proposal.decision, "revise");
+		assert.equal(proposal.optimizer.kind, "reflection");
+		assert.equal(proposal.optimizer.budget, "light");
+		assert.equal(proposal.trialTelemetry.plan.evidenceLimit, 3);
+		assert.equal(proposal.prioritizedEvidence.length, 3);
+		assert.equal(proposal.prioritizedEvidence[0].source, "review.finding");
 		assert.equal(proposal.suggestedChanges[0].changeKind, "prompt_revision");
 		assert.match(proposal.revisionBrief, /bounded pass/);
-		assert.equal(proposal.prioritizedEvidence[0].source, "report.regressed");
+		assert.equal(proposal.trialTelemetry.suggestedChangeCount, 2);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

@@ -8,6 +8,7 @@
     "generatedAt",
     "repoRoot",
     "optimizationTarget",
+    "optimizer",
     "reportFile",
     "report",
     "objective"
@@ -28,6 +29,57 @@
         "prompt",
         "adapter"
       ]
+    },
+    "optimizer": {
+      "type": "object",
+      "required": [
+        "kind",
+        "budget",
+        "plan"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "repair",
+            "reflection",
+            "history_followup"
+          ]
+        },
+        "budget": {
+          "type": "string",
+          "enum": [
+            "light",
+            "medium",
+            "heavy"
+          ]
+        },
+        "plan": {
+          "type": "object",
+          "required": [
+            "evidenceLimit",
+            "suggestedChangeLimit",
+            "reviewVariantLimit",
+            "historySignalLimit"
+          ],
+          "properties": {
+            "evidenceLimit": {
+              "type": "integer"
+            },
+            "suggestedChangeLimit": {
+              "type": "integer"
+            },
+            "reviewVariantLimit": {
+              "type": "integer"
+            },
+            "historySignalLimit": {
+              "type": "integer"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
     },
     "targetFile": {
       "type": "object",
