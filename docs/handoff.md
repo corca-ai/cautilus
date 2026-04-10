@@ -2,55 +2,66 @@
 
 ## Workflow Trigger
 
-- 다음 세션에서 이 문서를 멘션하면 `impl`로 이어서 `ceal` 또는 남은 deeper consumer verification부터 시작한다.
-- 시작 직후 [README.md](/home/ubuntu/cautilus/README.md), [AGENTS.md](/home/ubuntu/cautilus/AGENTS.md), [docs/master-plan.md](/home/ubuntu/cautilus/docs/master-plan.md), [docs/workflow.md](/home/ubuntu/cautilus/docs/workflow.md), [docs/consumer-readiness.md](/home/ubuntu/cautilus/docs/consumer-readiness.md)를 읽는다.
-- 작업 시작점은 [cautilus](/home/ubuntu/cautilus) repo다. 여기서 binary와 contracts를 기준으로 판단하고, [crill](/home/ubuntu/crill) 에 official `cautilus-adapter` 기준으로 `doctor`, relevant mode/review/cli paths를 실제 consumer 검증으로 태운다.
-- gap이 product-owned runtime/contract 문제면 먼저 [cautilus](/home/ubuntu/cautilus) 에서 고치고, consumer-owned adapter/artifact/policy 문제면 [crill](/home/ubuntu/crill) 에서 고친다.
+- 다음 세션에서 이 문서를 멘션하면 [README.md](/home/ubuntu/cautilus/README.md), [AGENTS.md](/home/ubuntu/cautilus/AGENTS.md), [docs/master-plan.md](/home/ubuntu/cautilus/docs/master-plan.md), [docs/workflow.md](/home/ubuntu/cautilus/docs/workflow.md), [docs/consumer-readiness.md](/home/ubuntu/cautilus/docs/consumer-readiness.md)를 먼저 읽는다.
+- 시작 workflow는 `impl` 직행이 아니라 `quality` 스킬 선행이다. 현재 quality bar와 existing gates를 먼저 점검한 뒤, 그 결과를 바탕으로 같은 세션에서 `impl`로 이어서 구현한다.
+- 작업 시작 repo는 [cautilus](/home/ubuntu/cautilus) 이고, `crill`은 consumer 검증용 reference repo로 계속 쓴다.
+- gap이 product-owned runtime/contract/helper 문제면 [cautilus](/home/ubuntu/cautilus) 에서 먼저 고치고, consumer-owned adapter/artifact/policy 문제면 [crill](/home/ubuntu/crill) 에서 고친다.
 
 ## Current State
 
-- `Cautilus`는 standalone binary + bundled skill 제품 경계를 거의 닫았다.
-- 공식 adapter contract는 `cautilus-adapter.yaml` / `cautilus-adapters/` 로 고정됐다.
-- standalone surface는 `adapter resolve/init`, `doctor`, `workspace prepare-compare`, `mode evaluate`, `review prepare-input`, `review build-prompt-input`, `review render-prompt`, `review variants`, `cli evaluate`, `scenario normalize chatbot|cli|skill`, `scenario prepare-input`, `scenario propose`, `scenario summarize-telemetry` 까지 다 있다.
-- `review variants` runner는 이제 `--report-file`만으로 review packet, prompt-input, rendered prompt를 합성할 수 있다.
-- scenario proposal helper는 `chatbot`, `cli`, `skill` 세 유즈케이스를 모두 first-class로 가진다.
-- release/install surface는 [install.sh](/home/ubuntu/cautilus/install.sh), [docs/releasing.md](/home/ubuntu/cautilus/docs/releasing.md), [scripts/release/fetch-github-archive-sha256.mjs](/home/ubuntu/cautilus/scripts/release/fetch-github-archive-sha256.mjs), [scripts/release/render-homebrew-formula.mjs](/home/ubuntu/cautilus/scripts/release/render-homebrew-formula.mjs), [scripts/release/resolve-release-targets.mjs](/home/ubuntu/cautilus/scripts/release/resolve-release-targets.mjs), [verify.yml](/home/ubuntu/cautilus/.github/workflows/verify.yml), [release-artifacts.yml](/home/ubuntu/cautilus/.github/workflows/release-artifacts.yml) 까지 checked-in 상태다.
-- release target 기본값은 `origin`에서 유도한다. 현재 source repo는 `corca-ai/cautilus`, tap target은 `corca-ai/homebrew-tap` 이다.
-- 현재 `cautilus` main은 standalone A/B helper, explicit report/review surfaces, and deeper `crill` consumer coverage를 모두 포함한 상태다.
-- `ceal`, `charness`, `crill` 모두 readiness 문서상 official adapter consumer이지만, 아직 남은 핵심은 실제 multi-consumer verification이다.
-- 이번 세션에서 `crill` consumer verification은 실제로 닫았다.
-  root adapter `full_gate`는 `accept-now`를 냈고, `/home/ubuntu/crill/.agents/cautilus-adapters/cli-smoke.yaml` 와 `/home/ubuntu/crill/.agents/cautilus-adapters/operator-recovery.yaml` 도 각각 `full_gate`로 통과했다.
-- `crill`은 이제 explicit `cli evaluate` packet도 가진다.
-  `node ./bin/cautilus cli evaluate --input /home/ubuntu/crill/tests/fixtures/cautilus/cli-help.json`
-  이 `accept-now`를 냈다.
-- `crill operator-recovery` 는 이제 report-driven `review variants`도 실제로 돈다.
-  `WORKBENCH_REVIEW_TIMEOUT_SECONDS=180 node ./bin/cautilus review variants --repo-root /home/ubuntu/crill --adapter-name operator-recovery --workspace /home/ubuntu/crill --report-file /tmp/cautilus-crill-operator-recovery-review/report.json --output-dir /tmp/cautilus-crill-operator-review`
-  이 one-variant passing summary를 남겼다.
-- A/B 비교는 이제 product-owned helper로도 닫혔다.
-  `node ./bin/cautilus workspace prepare-compare --repo-root . --baseline-ref origin/main --output-dir /tmp/cautilus-compare`
-  가 baseline/candidate git worktree를 준비해 준다.
-- `crill`도 compare/A-B consumer artifact를 이제 checked-in named adapter로 가진다.
-  `consumer-artifacts` adapter와 repo-owned compare runner를 통해
-  `origin/main -> current` 비교에서 compare artifact verdict `improved` 를 실제로 남긴다.
+- `Cautilus` main은 standalone binary + bundled skill 경계를 거의 닫았고, `workspace prepare-compare`, `mode evaluate`, `review variants`, `cli evaluate`, `scenario normalize chatbot|cli|skill`, `scenario prepare-input`, `scenario propose`, `scenario summarize-telemetry` 까지 제품 표면이 있다.
+- 공식 adapter contract는 `cautilus-adapter.yaml` / `cautilus-adapters/` 로 고정돼 있다.
+- `crill` consumer depth는 현재 핵심 표면 기준으로 충분히 검증됐다.
+  - root adapter `full_gate`: `accept-now`
+  - named adapter `cli-smoke`: 통과
+  - named adapter `operator-recovery`: 통과
+  - explicit CLI packet [cli-help.json](/home/ubuntu/crill/tests/fixtures/cautilus/cli-help.json): `accept-now`
+  - report-driven `review variants`: passing `codex-review`
+  - named compare adapter [consumer-artifacts.yaml](/home/ubuntu/crill/.agents/cautilus-adapters/consumer-artifacts.yaml): compare artifact verdict `improved`
+- 그래서 `crill`은 “현재 claim을 입증하기 위한 core consumer verification” 기준으로는 이미 닫혔다. 다음 `crill` 검증은 새 제품 surface가 추가될 때 그 surface를 소비자로 다시 태우는 용도다.
+- 다음 제품 설계의 우선순위는 두 가지다.
+  - raw-evidence mining helper: host raw log reader는 host가 소유하고, `Cautilus`는 normalized evidence bundle contract + helper script + bundled skill reference meta-prompt를 준다.
+  - bounded optimizer helper: report/review/compare/history packet을 읽고 다음 prompt/adapter revision을 제안하는 bounded optimization loop를 제품이 helper로 준다.
+- HTML report는 필요하지만 지금은 deferred다. SoT는 계속 JSON/YAML packet이다.
+- [docs/master-plan.md](/home/ubuntu/cautilus/docs/master-plan.md), [docs/consumer-readiness.md](/home/ubuntu/cautilus/docs/consumer-readiness.md) 는 위 방향으로 이미 갱신돼 있다.
+- 현재 `cautilus` HEAD는 `a56cffa`, `crill` HEAD는 `af5b40a` 이다.
+- 이번 상태에서 `npm run lint`, `npm run test`, `npm run verify` 는 다시 통과했다.
 
 ## Next Session
 
-1. `ceal` consumer verification을 다시 열지, 아니면 새 우선순위인 raw-evidence mining / bounded optimizer helper 설계를 먼저 구체화할지 선택한다.
-2. `crill` 쪽을 더 밀면 current named adapters와 explicit packet을 기준으로 시작한다.
-   - `cli-smoke`
-   - `operator-recovery`
-   - `consumer-artifacts`
-   - `tests/fixtures/cautilus/cli-help.json`
-3. compare/A-B consumer artifact는 이제 `crill`에서 닫혔다.
-   다음 큰 설계 축은 raw log mining과 bounded prompt optimizer를 bundled skill의 meta-prompt/reference surface + product-owned helper script로 어떻게 자를지다.
-4. HTML report는 지금 당장 구현하지 말고 roadmap 상 deferred item으로만 유지한다.
-5. 다음 결과를 [docs/consumer-readiness.md](/home/ubuntu/cautilus/docs/consumer-readiness.md) 와 이 handoff에 계속 반영한다.
+1. `quality` 스킬부터 발동해서 현재 repo의 gate surface와 missing deterministic checks를 점검한다.
+2. report 작업은 현재 checkout에서 바로 하지 말고 별도 git worktree를 만든 뒤 그 worktree에서 진행한다.
+   report 작업은 HTML/report UX 쪽 실험이므로 main checkout의 helper/contract 작업과 분리한다.
+3. quality 결과를 본 뒤 같은 세션에서 `impl`로 이어서 다음 둘 중 하나를 먼저 자른다.
+   - evidence bundle / prepare-evidence helper
+   - optimize prepare-input / optimize propose helper
+4. 새 surface를 추가하면 그때만 `crill` consumer 검증을 다시 돈다.
+   현재 재사용할 consumer surface:
+   - [cli-smoke.yaml](/home/ubuntu/crill/.agents/cautilus-adapters/cli-smoke.yaml)
+   - [operator-recovery.yaml](/home/ubuntu/crill/.agents/cautilus-adapters/operator-recovery.yaml)
+   - [consumer-artifacts.yaml](/home/ubuntu/crill/.agents/cautilus-adapters/consumer-artifacts.yaml)
+   - [cli-help.json](/home/ubuntu/crill/tests/fixtures/cautilus/cli-help.json)
+5. report worktree에서 UI/report 작업을 하더라도, product-owned contract/helper 변경이 생기면 마지막에는 [consumer-readiness.md](/home/ubuntu/cautilus/docs/consumer-readiness.md) 와 이 handoff를 다시 맞춘다.
+
+## Premortem
+
+- 다음 세션에서 가장 쉬운 오해는 `crill` 검증을 처음부터 다시 여는 것이다.
+  현재 core verification은 충분하다. 새 surface를 추가하지 않았다면 `crill`은 full rerun 대상이 아니라 spot-check 대상이다.
+- report 작업을 main checkout에서 바로 시작하면 helper/contract 변경과 섞여서 경계가 흐려진다.
+  report 실험은 separate worktree에서 시작해야 한다.
+- raw log mining을 제품이 직접 읽는 방향으로 잘못 확장할 수 있다.
+  raw reader는 host-owned이고, `Cautilus`는 normalized evidence bundle과 meta-prompt/helper까지만 소유해야 한다.
+- optimizer를 “자동 무한 개선 루프”로 오해할 수 있다.
+  다음 surface는 bounded loop여야 하고, held_out/comparison/review gate를 통과하는 범위에서만 revision을 제안해야 한다.
+- `quality`를 형식적 점검으로만 끝내고 바로 구현으로 넘어갈 수 있다.
+  다음 세션의 `quality`는 실제 next gate를 고르기 위한 선행 작업이므로, 그 결과가 다음 구현 slice 선택을 바꿀 수 있다는 점을 잊지 말아야 한다.
 
 ## Discuss
 
-- 현재 큰 제품 설계 결정은 대부분 끝났지만, 다음 큰 확장은 raw-evidence mining helper와 bounded optimizer helper를 product-owned seams로 추가하는 일이다.
-- `crill` root/named adapter, explicit CLI packet, review variants, compare artifact까지 닫은 뒤 남는 큰 축은 `ceal` migration 심화, meta-prompt helper 설계, 그리고 실제 release cadence 운영 정리다.
-- tap target은 더 이상 미정이 아니다. 남은 것은 tap repo 운영 절차이지 target discovery가 아니다.
+- 다음 `crill` 검증은 “더 해야만 하는 일”은 아니다.
+  현재 claim을 위한 검증은 충분하다. 다만 evidence helper, optimizer, report surface처럼 새 제품 seam을 만들면 그 seam을 `crill` consumer artifact로 다시 태우는 것이 좋다.
+- `ceal`은 여전히 deepest live consumer라서, 다음 큰 consumer 검증 후보는 `ceal`이다.
+- release/install surface는 이미 살아 있으므로, 다음 무게중심은 release ops보다 helper seams와 report worktree 분리다.
 
 ## References
 
@@ -59,10 +70,8 @@
 - [docs/master-plan.md](/home/ubuntu/cautilus/docs/master-plan.md)
 - [docs/workflow.md](/home/ubuntu/cautilus/docs/workflow.md)
 - [docs/consumer-readiness.md](/home/ubuntu/cautilus/docs/consumer-readiness.md)
-- [docs/consumer-migration.md](/home/ubuntu/cautilus/docs/consumer-migration.md)
-- [docs/releasing.md](/home/ubuntu/cautilus/docs/releasing.md)
+- [skills/cautilus/SKILL.md](/home/ubuntu/cautilus/skills/cautilus/SKILL.md)
 - [bin/cautilus](/home/ubuntu/cautilus/bin/cautilus)
-- [scripts/agent-runtime/run-workbench-executor-variants.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/run-workbench-executor-variants.mjs)
-- [scripts/release/resolve-release-targets.mjs](/home/ubuntu/cautilus/scripts/release/resolve-release-targets.mjs)
 - [/home/ubuntu/crill/.agents/cautilus-adapter.yaml](/home/ubuntu/crill/.agents/cautilus-adapter.yaml)
-- [/home/ubuntu/crill](/home/ubuntu/crill)
+- [/home/ubuntu/crill/.agents/cautilus-adapters/consumer-artifacts.yaml](/home/ubuntu/crill/.agents/cautilus-adapters/consumer-artifacts.yaml)
+- [/home/ubuntu/crill/tests/fixtures/cautilus/cli-help.json](/home/ubuntu/crill/tests/fixtures/cautilus/cli-help.json)
