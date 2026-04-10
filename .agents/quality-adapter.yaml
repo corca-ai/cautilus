@@ -12,7 +12,5 @@ concept_paths:
 preflight_commands:
 - node ./bin/cautilus adapter resolve --repo-root .
 gate_commands:
-- npm run lint
-- npm run test
 - npm run verify
 security_commands: []

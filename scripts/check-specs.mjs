@@ -1,135 +1,174 @@
-import { existsSync, readFileSync } from "node:fs";
-import { dirname, resolve } from "node:path";
+import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
+import { resolve } from "node:path";
 import process from "node:process";
 
 const repoRoot = process.cwd();
+const specsDir = resolve(repoRoot, "docs", "specs");
+const indexPath = resolve(specsDir, "index.spec.md");
 
 function fail(message) {
 	process.stderr.write(`${message}\n`);
 	process.exit(1);
 }
 
-function requireFile(pathname) {
-	const fullPath = resolve(repoRoot, pathname);
-	if (!existsSync(fullPath)) {
-		fail(`Missing required file: ${pathname}`);
+function readRequiredFile(pathname) {
+	if (!existsSync(pathname)) {
+		fail(`Missing required file: ${pathname.slice(repoRoot.length + 1)}`);
 	}
-	return fullPath;
+	return readFileSync(pathname, "utf-8");
 }
 
-function validateSpecIndex() {
-	const indexPath = requireFile("docs/specs/index.spec.md");
-	const content = readFileSync(indexPath, "utf-8");
-	const linkPattern = /\[[^\]]+\]\(([^)]+)\)/g;
-	for (const match of content.matchAll(linkPattern)) {
-		const target = match[1];
+function listSpecFiles() {
+	if (!existsSync(specsDir) || !statSync(specsDir).isDirectory()) {
+		fail("Missing required directory: docs/specs");
+	}
+
+	return readdirSync(specsDir)
+		.filter((entry) => entry.endsWith(".spec.md"))
+		.sort()
+		.map((entry) => resolve(specsDir, entry));
+}
+
+function parseMarkdownLinks(content) {
+	return [...content.matchAll(/\[[^\]]+\]\(([^)]+)\)/g)].map((match) => match[1]);
+}
+
+function validateRelativeLinks(specPath, content) {
+	for (const target of parseMarkdownLinks(content)) {
 		if (target.startsWith("http://") || target.startsWith("https://") || target.startsWith("/")) {
 			continue;
 		}
-		const resolved = resolve(dirname(indexPath), target);
+		const resolved = resolve(specPath, "..", target);
 		if (!existsSync(resolved)) {
-			fail(`Broken spec link in docs/specs/index.spec.md: ${target}`);
+			fail(`Broken spec link in ${specPath.slice(repoRoot.length + 1)}: ${target}`);
 		}
+	}
+}
+
+function validateIndexCoverage(specFiles, indexContent) {
+	const linkedSpecPaths = new Set(
+		parseMarkdownLinks(indexContent)
+			.filter((target) => target.endsWith(".spec.md"))
+			.map((target) => resolve(indexPath, "..", target)),
+	);
+
+	for (const specPath of specFiles) {
+		if (specPath === indexPath) {
+			continue;
+		}
+		if (!linkedSpecPaths.has(specPath)) {
+			fail(`Spec index does not link ${specPath.slice(repoRoot.length + 1)}`);
+		}
+	}
+}
+
+function parseTableRow(line, specPath) {
+	const columns = line
+		.split("|")
+		.slice(1, -1)
+		.map((value) => value.trim());
+	if (columns.length !== 3) {
+		fail(`Malformed source_guard row in ${specPath.slice(repoRoot.length + 1)}: ${line}`);
+	}
+	return {
+		specPath,
+		pathname: columns[0],
+		mode: columns[1],
+		pattern: columns[2],
+	};
+}
+
+function findSourceGuardTableStart(lines, startIndex, specPath) {
+	let rowIndex = startIndex + 1;
+	while (rowIndex < lines.length && lines[rowIndex].trim().length === 0) {
+		rowIndex += 1;
+	}
+
+	if (rowIndex >= lines.length || !lines[rowIndex].trim().startsWith("| file | mode | pattern |")) {
+		fail(`Malformed source_guard header in ${specPath.slice(repoRoot.length + 1)}`);
+	}
+
+	return rowIndex + 2;
+}
+
+function readSourceGuardRows(lines, startIndex, specPath) {
+	const rows = [];
+	let rowIndex = startIndex;
+
+	for (; rowIndex < lines.length; rowIndex += 1) {
+		const line = lines[rowIndex].trim();
+		if (!line.startsWith("|")) {
+			break;
+		}
+		rows.push(parseTableRow(line, specPath));
+	}
+
+	return {
+		nextIndex: rowIndex,
+		rows,
+	};
+}
+
+function parseSourceGuardRows(specPath, content) {
+	const lines = content.split("\n");
+	const rows = [];
+
+	for (let index = 0; index < lines.length; index += 1) {
+		if (lines[index].trim() !== "> check:source_guard") {
+			continue;
+		}
+		const tableStart = findSourceGuardTableStart(lines, index, specPath);
+		const parsed = readSourceGuardRows(lines, tableStart, specPath);
+		rows.push(...parsed.rows);
+		index = parsed.nextIndex - 1;
+	}
+
+	return rows;
+}
+
+function validateSourceGuardRows(rows) {
+	if (rows.length === 0) {
+		fail("No check:source_guard table found in docs/specs");
+	}
+
+	for (const row of rows) {
+		const targetPath = resolve(repoRoot, row.pathname);
+		if (row.mode === "file_exists") {
+			if (!existsSync(targetPath)) {
+				fail(`Missing required file from ${row.specPath.slice(repoRoot.length + 1)}: ${row.pathname}`);
+			}
+			continue;
+		}
+
+		if (row.mode === "fixed") {
+			const content = readRequiredFile(targetPath);
+			if (!content.includes(row.pattern)) {
+				fail(
+					`Missing fixed pattern from ${row.specPath.slice(repoRoot.length + 1)}: ${row.pathname} -> ${row.pattern}`,
+				);
+			}
+			continue;
+		}
+
+		fail(`Unsupported source_guard mode in ${row.specPath.slice(repoRoot.length + 1)}: ${row.mode}`);
 	}
 }
 
 function main() {
-	[
-		"README.md",
-		"AGENTS.md",
-		"LICENSE",
-		"package.json",
-		"eslint.config.mjs",
-		".github/workflows/verify.yml",
-		".github/workflows/release-artifacts.yml",
-		"docs/workflow.md",
-		"docs/contracts/adapter-contract.md",
-		"docs/contracts/reporting.md",
-		"docs/contracts/scenario-results.md",
-		"docs/contracts/scenario-history.md",
-		"docs/contracts/scenario-proposal-sources.md",
-		"docs/contracts/scenario-proposal-inputs.md",
-		"docs/contracts/scenario-proposal-normalization.md",
-		"docs/contracts/chatbot-normalization.md",
-		"docs/contracts/cli-normalization.md",
-		"docs/contracts/skill-normalization.md",
-		"docs/contracts/evidence-bundle.md",
-		"docs/contracts/review-prompt-inputs.md",
-		"docs/contracts/optimization.md",
-		"docs/contracts/revision-artifact.md",
-		"docs/master-plan.md",
-		"docs/release-boundary.md",
-		"docs/releasing.md",
-		"docs/consumer-readiness.md",
-		"install.sh",
-		"bin/cautilus",
-		".claude-plugin/marketplace.json",
-		".agents/plugins/marketplace.json",
-		"plugins/cautilus/.claude-plugin/plugin.json",
-		"plugins/cautilus/.codex-plugin/plugin.json",
-		"skills/cautilus/SKILL.md",
-		"skills/cautilus/agents/openai.yaml",
-		"scripts/resolve_adapter.py",
-		"scripts/init_adapter.py",
-		"scripts/doctor.py",
-		"scripts/release/render-homebrew-formula.mjs",
-		"scripts/release/fetch-github-archive-sha256.mjs",
-		"scripts/release/resolve-release-targets.mjs",
-		"scripts/agent-runtime/contract-versions.mjs",
-		"scripts/agent-runtime/scenario-history.mjs",
-		"scripts/agent-runtime/scenario-results.mjs",
-		"scripts/agent-runtime/chatbot-proposal-candidates.mjs",
-		"scripts/agent-runtime/normalize-chatbot-proposals.mjs",
-		"scripts/agent-runtime/cli-proposal-candidates.mjs",
-		"scripts/agent-runtime/normalize-cli-proposals.mjs",
-		"scripts/agent-runtime/skill-proposal-candidates.mjs",
-		"scripts/agent-runtime/normalize-skill-proposals.mjs",
-		"scripts/agent-runtime/consumer-example-fixtures.test.mjs",
-		"scripts/agent-runtime/scenario-proposals.mjs",
-		"scripts/agent-runtime/build-scenario-proposal-input.mjs",
-		"scripts/agent-runtime/generate-scenario-proposals.mjs",
-		"scripts/agent-runtime/build-evidence-input.mjs",
-		"scripts/agent-runtime/build-evidence-bundle.mjs",
-		"scripts/agent-runtime/build-review-prompt-input.mjs",
-		"scripts/agent-runtime/render-review-prompt.mjs",
-		"scripts/agent-runtime/build-optimize-input.mjs",
-		"scripts/agent-runtime/generate-optimize-proposal.mjs",
-		"scripts/agent-runtime/build-revision-artifact.mjs",
-		"scripts/agent-runtime/run-workbench-review-variant.sh",
-		"scripts/agent-runtime/run-workbench-executor-variants.mjs",
-		"scripts/agent-runtime/prune-workspace-artifacts.mjs",
-		"fixtures/scenario-proposals/candidates.json",
-		"fixtures/scenario-proposals/registry.json",
-		"fixtures/scenario-proposals/coverage.json",
-		"fixtures/scenario-proposals/input.schema.json",
-		"fixtures/scenario-proposals/proposals.schema.json",
-		"fixtures/scenario-proposals/chatbot-input.schema.json",
-		"fixtures/scenario-proposals/cli-input.schema.json",
-		"fixtures/scenario-proposals/skill-input.schema.json",
-		"fixtures/scenario-proposals/standalone-input.json",
-		"fixtures/scenario-proposals/chatbot-input.json",
-		"fixtures/scenario-proposals/cli-input.json",
-		"fixtures/scenario-proposals/skill-input.json",
-		"fixtures/evidence/input.schema.json",
-		"fixtures/evidence/bundle.schema.json",
-		"fixtures/evidence/example-input.json",
-		"fixtures/evidence/example-bundle.json",
-		"fixtures/scenario-results/example-results.json",
-		"fixtures/scenario-results/results.schema.json",
-		"fixtures/review/prompt-input.schema.json",
-		"fixtures/optimize/input.schema.json",
-		"fixtures/optimize/proposal.schema.json",
-		"fixtures/optimize/revision-artifact.schema.json",
-		"fixtures/optimize/example-input.json",
-		"fixtures/optimize/example-proposal.json",
-		"fixtures/optimize/example-revision-artifact.json",
-		"fixtures/scenario-proposals/ceal-chatbot-input.json",
-		"fixtures/scenario-proposals/charness-skill-input.json",
-		"fixtures/scenario-proposals/crill-skill-input.json",
-		"fixtures/workbench/review-verdict.schema.json",
-	].forEach(requireFile);
-	validateSpecIndex();
-	process.stdout.write("spec checks passed\n");
+	const specFiles = listSpecFiles();
+	const allRows = [];
+
+	for (const specPath of specFiles) {
+		const content = readRequiredFile(specPath);
+		validateRelativeLinks(specPath, content);
+		if (specPath === indexPath) {
+			validateIndexCoverage(specFiles, content);
+		}
+		allRows.push(...parseSourceGuardRows(specPath, content));
+	}
+
+	validateSourceGuardRows(allRows);
+	process.stdout.write(`spec checks passed (${specFiles.length} specs, ${allRows.length} guard rows)\n`);
 }
 
 main();

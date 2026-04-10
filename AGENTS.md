@@ -72,10 +72,11 @@ Ceal's `workbench`.
 Use these before stopping:
 
 ```bash
-npm run lint
-npm run test
 npm run verify
 ```
+
+Use `npm run lint` and `npm run test` directly when iterating on one seam, but
+do not require all three in sequence before stopping.
 
 Key direct commands:
 

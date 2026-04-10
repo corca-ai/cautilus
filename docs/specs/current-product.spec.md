@@ -17,9 +17,11 @@ standalone product여야 한다.
 | README.md | fixed | intentful behavior |
 | AGENTS.md | file_exists |  |
 | AGENTS.md | fixed | standalone product boundary |
+| AGENTS.md | fixed | npm run verify |
 | package.json | file_exists |  |
 | package.json | fixed | "lint" |
 | package.json | fixed | "test" |
+| package.json | fixed | "verify" |
 | eslint.config.mjs | file_exists |  |
 | .github/workflows/verify.yml | file_exists |  |
 | .github/workflows/verify.yml | fixed | npm run verify |
@@ -129,11 +131,12 @@ standalone product여야 한다.
 | docs/releasing.md | file_exists |  |
 | docs/releasing.md | fixed | fetch-github-archive-sha256 |
 | docs/consumer-readiness.md | file_exists |  |
-| docs/consumer-readiness.md | fixed | all three target repos have an official cautilus-adapter |
+| docs/consumer-readiness.md | fixed | All three repos now expose an official `cautilus-adapter` |
 | docs/consumer-migration.md | file_exists |  |
 | docs/consumer-migration.md | fixed | cautilus-adapter.yaml |
+| scripts/check-specs.mjs | file_exists |  |
 | scripts/agent-runtime/scenario-result-telemetry.mjs | file_exists |  |
-| scripts/agent-runtime/scenario-result-telemetry.mjs | fixed | cautilus.scenario_telemetry_summary.v1 |
+| scripts/agent-runtime/scenario-result-telemetry.mjs | fixed | SCENARIO_TELEMETRY_SUMMARY_SCHEMA |
 | scripts/agent-runtime/summarize-scenario-telemetry.mjs | file_exists |  |
 | fixtures/scenario-proposals/results.json | file_exists |  |
 | fixtures/scenario-results/example-results.json | file_exists |  |
@@ -205,6 +208,8 @@ standalone product여야 한다.
 ## Runtime Expectations
 
 `Cautilus`는 현재 surface를 두 층으로 설명한다.
+여기서 `Source Guard`는 standing cheap gate이고, 아래 `Functional Check`는
+경계 수준의 실행 예시다. unit-suite 상세 나열은 `npm run test` 아래로 내린다.
 
 ### Core Validated Surface
 
@@ -294,31 +299,7 @@ $ node ./bin/cautilus cli evaluate --input ./fixtures/cli-evaluation/doctor-miss
 $ node ./bin/cautilus review prepare-input --repo-root . --report-file ./fixtures/reports/report-input.json || true
 $ node ./bin/cautilus review build-prompt-input --review-packet /tmp/cautilus-mode/review.json || true
 $ node ./bin/cautilus review render-prompt --input /tmp/cautilus-mode/review-prompt-input.json || true
-$ node ./bin/cautilus --version
-$ node --test ./bin/cautilus.test.mjs
-$ node --test ./scripts/agent-runtime/consumer-example-fixtures.test.mjs
-$ node --test ./scripts/agent-runtime/chatbot-proposal-candidates.test.mjs
-$ node --test ./scripts/agent-runtime/cli-proposal-candidates.test.mjs
-$ node --test ./scripts/agent-runtime/skill-proposal-candidates.test.mjs
-$ node --test ./scripts/agent-runtime/scenario-proposal-schemas.test.mjs
 $ python3 ./scripts/init_adapter.py --repo-root /tmp/cautilus-spec-check --output /tmp/cautilus-spec-check/cautilus-adapter.yaml --force
-$ node --test ./scripts/agent-runtime/scenario-history.test.mjs
-$ node --test ./scripts/agent-runtime/scenario-proposals.test.mjs
-$ node --test ./scripts/agent-runtime/build-report-packet.test.mjs
-$ node --test ./scripts/agent-runtime/evaluate-adapter-mode.test.mjs
-$ node --test ./scripts/agent-runtime/prepare-compare-worktrees.test.mjs
-$ node --test ./scripts/agent-runtime/prune-workspace-artifacts.test.mjs
-$ node --test ./scripts/agent-runtime/evaluate-cli-intent.test.mjs
-$ node --test ./scripts/agent-runtime/build-review-packet.test.mjs
-$ node --test ./scripts/agent-runtime/review-prompt-flow.test.mjs
-$ node --test ./scripts/agent-runtime/evidence-bundle-flow.test.mjs
-$ node --test ./scripts/agent-runtime/evidence-contract-schemas.test.mjs
-$ node --test ./scripts/agent-runtime/optimize-flow.test.mjs
-$ node --test ./scripts/agent-runtime/optimization-contract-schemas.test.mjs
-$ node --test ./scripts/agent-runtime/reporting-contract-schemas.test.mjs
-$ node --test ./scripts/release/distribution-surface.test.mjs
-$ bash -n ./install.sh
-$ test -f ./skills/cautilus/SKILL.md
-$ npm run lint
-$ npm run test
+$ node ./bin/cautilus --version
+$ npm run verify
 ```

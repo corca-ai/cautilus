@@ -5,6 +5,10 @@ source-level guard를 담는다.
 
 아직 구현하지 않은 방향은 [master-plan.md](/home/ubuntu/cautilus/docs/master-plan.md)에 둔다.
 현재 검증 대상은 이 index에 링크된 문서들이다.
+`npm run lint:specs`는 이 index에 링크된 `.spec.md` 문서만 standing spec으로 읽고,
+각 문서의 `check:source_guard` 표를 직접 검증한다.
+비싼 CLI 흐름이나 broad test suite는 각 스펙의 `Functional Check`에 남기되,
+standing spec gate에서는 다시 실행하지 않는다.
 
 ## Current Documents
 
@@ -12,84 +16,3 @@ source-level guard를 담는다.
   현재 repo가 실제로 제공하는 contract, CLI, runtime runner, 문서 경계를 정의한다.
 - [Standalone Surface](standalone-surface.spec.md)
   standalone binary와 bundled skill이 같은 제품 표면을 가리키는지 정의한다.
-
-## Source Sanity
-
-```run:shell
-$ test -f README.md
-$ test -f AGENTS.md
-$ test -f package.json
-$ test -f eslint.config.mjs
-$ test -f .github/workflows/verify.yml
-$ test -f .github/workflows/release-artifacts.yml
-$ test -f bin/cautilus
-$ test -f .claude-plugin/marketplace.json
-$ test -f .agents/plugins/marketplace.json
-$ test -f plugins/cautilus/.claude-plugin/plugin.json
-$ test -f plugins/cautilus/.codex-plugin/plugin.json
-$ test -f docs/workflow.md
-$ test -f docs/contracts/adapter-contract.md
-$ test -f docs/contracts/reporting.md
-$ test -f docs/contracts/scenario-history.md
-$ test -f docs/contracts/scenario-proposal-sources.md
-$ test -f docs/contracts/scenario-proposal-inputs.md
-$ test -f docs/contracts/scenario-proposal-normalization.md
-$ test -f docs/contracts/chatbot-normalization.md
-$ test -f docs/contracts/cli-normalization.md
-$ test -f docs/contracts/skill-normalization.md
-$ test -f docs/contracts/evidence-bundle.md
-$ test -f docs/contracts/optimization.md
-$ test -f docs/contracts/revision-artifact.md
-$ test -f docs/master-plan.md
-$ test -f docs/consumer-readiness.md
-$ test -f skills/cautilus/SKILL.md
-$ test -f skills/cautilus/agents/openai.yaml
-$ test -f scripts/resolve_adapter.py
-$ test -f scripts/init_adapter.py
-$ test -f scripts/doctor.py
-$ test -f scripts/release/resolve-release-targets.mjs
-$ test -f scripts/agent-runtime/scenario-history.mjs
-$ test -f scripts/agent-runtime/chatbot-proposal-candidates.mjs
-$ test -f scripts/agent-runtime/normalize-chatbot-proposals.mjs
-$ test -f scripts/agent-runtime/cli-proposal-candidates.mjs
-$ test -f scripts/agent-runtime/normalize-cli-proposals.mjs
-$ test -f scripts/agent-runtime/skill-proposal-candidates.mjs
-$ test -f scripts/agent-runtime/normalize-skill-proposals.mjs
-$ test -f scripts/agent-runtime/consumer-example-fixtures.test.mjs
-$ test -f scripts/agent-runtime/scenario-proposals.mjs
-$ test -f scripts/agent-runtime/build-scenario-proposal-input.mjs
-$ test -f scripts/agent-runtime/generate-scenario-proposals.mjs
-$ test -f scripts/agent-runtime/build-evidence-input.mjs
-$ test -f scripts/agent-runtime/build-evidence-bundle.mjs
-$ test -f scripts/agent-runtime/build-optimize-input.mjs
-$ test -f scripts/agent-runtime/generate-optimize-proposal.mjs
-$ test -f scripts/agent-runtime/build-revision-artifact.mjs
-$ test -f scripts/agent-runtime/run-workbench-review-variant.sh
-$ test -f scripts/agent-runtime/run-workbench-executor-variants.mjs
-$ test -f fixtures/scenario-proposals/candidates.json
-$ test -f fixtures/scenario-proposals/registry.json
-$ test -f fixtures/scenario-proposals/coverage.json
-$ test -f fixtures/scenario-proposals/input.schema.json
-$ test -f fixtures/scenario-proposals/proposals.schema.json
-$ test -f fixtures/scenario-proposals/chatbot-input.schema.json
-$ test -f fixtures/scenario-proposals/cli-input.schema.json
-$ test -f fixtures/scenario-proposals/skill-input.schema.json
-$ test -f fixtures/scenario-proposals/standalone-input.json
-$ test -f fixtures/scenario-proposals/chatbot-input.json
-$ test -f fixtures/scenario-proposals/cli-input.json
-$ test -f fixtures/scenario-proposals/skill-input.json
-$ test -f fixtures/evidence/input.schema.json
-$ test -f fixtures/evidence/bundle.schema.json
-$ test -f fixtures/evidence/example-input.json
-$ test -f fixtures/evidence/example-bundle.json
-$ test -f fixtures/optimize/input.schema.json
-$ test -f fixtures/optimize/proposal.schema.json
-$ test -f fixtures/optimize/revision-artifact.schema.json
-$ test -f fixtures/optimize/example-input.json
-$ test -f fixtures/optimize/example-proposal.json
-$ test -f fixtures/optimize/example-revision-artifact.json
-$ test -f fixtures/scenario-proposals/ceal-chatbot-input.json
-$ test -f fixtures/scenario-proposals/charness-skill-input.json
-$ test -f fixtures/scenario-proposals/crill-skill-input.json
-$ test -f fixtures/workbench/review-verdict.schema.json
-```

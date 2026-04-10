@@ -10,13 +10,13 @@
   "bin": {
     "cautilus": "./bin/cautilus"
   },
-  "scripts": {
-    "lint": "npm run lint:eslint && npm run lint:specs",
-    "lint:eslint": "eslint .",
-    "lint:specs": "node scripts/check-specs.mjs",
-    "test": "node --test bin/*.test.mjs scripts/agent-runtime/*.test.mjs scripts/release/*.test.mjs",
-    "verify": "npm run lint && npm run test"
-  },
+	"scripts": {
+		"lint": "npm run lint:eslint && npm run lint:specs",
+		"lint:eslint": "eslint .",
+		"lint:specs": "node scripts/check-specs.mjs",
+		"test": "node --test bin/*.test.mjs scripts/*.test.mjs scripts/agent-runtime/*.test.mjs scripts/release/*.test.mjs",
+		"verify": "npm run lint && npm run test"
+	},
   "devDependencies": {
     "@eslint/js": "^9.24.0",
     "eslint": "^9.24.0",

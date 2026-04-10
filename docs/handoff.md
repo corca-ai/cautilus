@@ -34,8 +34,6 @@
 - repo-bundled skill과 packaged skill copy는 다시 sync 상태다.
 - 현재 working tree는 clean 이다.
 - local proof:
-  - `npm run lint` 통과
-  - `npm run test` 통과
   - `npm run verify` 통과
 
 ## Next Session
@@ -50,7 +48,7 @@
    - fixture/test 동기화
 4. 그 다음에만 broader roadmap으로 돌아간다.
    - `artifact-root auto layout`은 여전히 유효한 제품 gap이지만, 현재 세션 흐름상 우선순위는 intent contract가 더 자연스럽다.
-5. 변경 후에는 항상 `npm run lint`, `npm run test`, `npm run verify`를 다시 돌린다.
+5. 변경 후에는 항상 `npm run verify`를 다시 돌린다.
 
 ## Discuss
 

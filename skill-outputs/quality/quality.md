@@ -4,49 +4,49 @@ Date: 2026-04-10
 
 ## Scope
 
-Repo-wide quality pass to:
-
-- confirm the current executable gate surface
-- close missing repo-local quality SoT for this repo
-- choose the next product-owned helper slice honestly
+Reduce duplicated end-of-work execution and make `docs/specs` the real
+source-of-truth for source-level guards instead of a parallel hard-coded list.
 
 ## Commands Run
 
-- `node ./bin/cautilus adapter resolve --repo-root .`
-- `npm run lint`
-- `npm run test`
 - `npm run verify`
+- `/usr/bin/time -p npm run verify`
+
+## Runtime Signals
+
+- `npm run lint:specs` now validates linked spec docs directly and passed with
+  `3 specs, 250 guard rows`.
+- `npm run verify` passed after the spec runner change and test addition.
+- Measured wall-clock for `npm run verify`: `real 7.72`.
 
 ## Healthy
 
-- The canonical local gates are green: `npm run lint`, `npm run test`, and
-  `npm run verify` all pass.
-- The repo now has a checked-in `.agents/quality-adapter.yaml`, so the current
-  quality gate surface is no longer only implied by `AGENTS.md` and
-  `package.json`.
-- Standalone product SoT now stays aligned across the CLI, bundled skill,
-  README, specs, fixture schemas, and contract docs for the new optimizer
-  seam.
-- The first bounded optimizer surface is now product-owned and deterministic:
-  `optimize prepare-input` assembles explicit evidence, and `optimize propose`
-  turns that packet into one bounded revision brief.
+- Final local gate now has one canonical command: `npm run verify`.
+- `AGENTS.md`, `README.md`, `docs/handoff.md`, and
+  `.agents/quality-adapter.yaml` now agree on that final gate.
+- `scripts/check-specs.mjs` now reads `docs/specs/*.spec.md` directly, validates
+  index coverage, checks relative links, and enforces `check:source_guard`
+  tables instead of maintaining a duplicate file list in code.
+- A repo-owned executable test now covers the spec runner, including the
+  failure mode where an active spec is missing from the index.
+- `docs/specs/index.spec.md` is back to being an index plus guardrail note,
+  not a second copy of the source inventory.
 
 ## Weak
 
-- The new optimizer seam is product-owned and tested locally, but it is not yet
-  proven through a live consumer such as `crill` or `ceal`.
+- `current-product.spec.md` still carries a broad `source_guard` table. It is
+  now executable, but some rows are still closer to inventory than acceptance
+  boundary.
 
 ## Missing
 
-- No product-owned evidence-bundle helper exists yet for host-normalized raw
-  evidence mining.
+- No lightweight way exists yet to classify or budget slow boundary tests by
+  seam; timing still relies on ad-hoc measurement.
 
 ## Recommended Next Gates
 
-- `AUTO_EXISTING`: keep `.agents/quality-adapter.yaml` pointed at
-  `npm run lint`, `npm run test`, and `npm run verify` so local and documented
-  quality surfaces stay aligned.
-- `AUTO_CANDIDATE`: add one consumer-level proof for the optimizer seam after a
-  repo such as `crill` gains a checked-in optimize input artifact.
-- `DEFER`: keep HTML report work in a separate worktree so it does not blur the
-  contract/helper boundary in the main checkout.
+- `AUTO_EXISTING`: keep `npm run verify` as the only stop-before-finish gate.
+- `AUTO_CANDIDATE`: trim `current-product.spec.md` guard rows further so specs
+  stay boundary-focused and cheaper to maintain.
+- `AUTO_CANDIDATE`: add a small timing reporter or threshold check for the
+  heaviest CLI-bound test files if test latency becomes a recurring issue.

@@ -5,6 +5,8 @@ skill로 설명 가능해야 한다.
 
 Ceal의 기존 `workbench` 시나리오는 여전히 유용한 dogfood 입력이지만,
 제품의 canonical surface는 이 repo 안에서 닫혀 있어야 한다.
+여기서 `Source Guard`는 standing cheap gate이고, `Functional Check`는
+standalone acceptance boundary만 남긴다.
 
 ## Source Guard
 
@@ -103,6 +105,4 @@ $ node ./bin/cautilus review build-prompt-input --review-packet /tmp/cautilus-mo
 $ node ./bin/cautilus review render-prompt --input /tmp/cautilus-mode/review-prompt-input.json || true
 $ node ./bin/cautilus --version
 $ node --test ./bin/cautilus.test.mjs
-$ test -f skills/cautilus/SKILL.md
-$ test -f skills/cautilus/agents/openai.yaml
 ```

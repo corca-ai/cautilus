@@ -428,9 +428,9 @@ npm install
 Run checks:
 
 ```bash
-npm run lint
-npm run test
 npm run verify
 ```
+
+Use `npm run lint` or `npm run test` directly only when iterating on one seam.
 
 `init_adapter.py` no longer needs `PyYAML`; the Python surface is stdlib-only.
