@@ -4,7 +4,8 @@
 
 - 다음 세션에서 이 문서를 멘션하면 `impl`로 이어서 `crill` consumer verification부터 시작한다.
 - 시작 직후 [README.md](/home/ubuntu/cautilus/README.md), [AGENTS.md](/home/ubuntu/cautilus/AGENTS.md), [docs/master-plan.md](/home/ubuntu/cautilus/docs/master-plan.md), [docs/workflow.md](/home/ubuntu/cautilus/docs/workflow.md), [docs/consumer-readiness.md](/home/ubuntu/cautilus/docs/consumer-readiness.md)를 읽는다.
-- 그 다음 [crill](/home/ubuntu/crill) 에서 official `cautilus-adapter` 기준으로 `doctor`, relevant mode/review/cli paths를 실제 consumer 검증으로 태운다.
+- 작업 시작점은 [cautilus](/home/ubuntu/cautilus) repo다. 여기서 binary와 contracts를 기준으로 판단하고, [crill](/home/ubuntu/crill) 에 official `cautilus-adapter` 기준으로 `doctor`, relevant mode/review/cli paths를 실제 consumer 검증으로 태운다.
+- gap이 product-owned runtime/contract 문제면 먼저 [cautilus](/home/ubuntu/cautilus) 에서 고치고, consumer-owned adapter/artifact/policy 문제면 [crill](/home/ubuntu/crill) 에서 고친다.
 
 ## Current State
 
@@ -30,6 +31,8 @@
    후보는 `mode evaluate`, `review prepare-input`, `review variants`, `cli evaluate` 중 `crill` adapter가 실제로 제공하는 surface다.
 4. `crill`에서 발견되는 gap을 분류한다.
    `Cautilus` product gap인지, `crill` adapter gap인지, `crill` consumer-owned artifact gap인지 분리한다.
+   product gap이면 [cautilus](/home/ubuntu/cautilus) 에서 먼저 수정하고 다시 `crill`에 against-run 한다.
+   consumer gap이면 [crill](/home/ubuntu/crill) 에서 수정한다.
 5. 검증 결과를 [docs/consumer-readiness.md](/home/ubuntu/cautilus/docs/consumer-readiness.md) 와 이 handoff에 반영한다.
 
 ## Discuss
