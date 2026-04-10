@@ -53,6 +53,8 @@ The target product is:
 - A first tagged-release install story now exists through `install.sh`,
   `cautilus --version`, and a Homebrew formula renderer.
 - A first release-ops checksum helper now exists for tagged GitHub archives.
+- Checked-in GitHub workflows now run `verify` on pushes/PRs and publish tagged
+  release checksum/formula artifacts on `v*` tags.
 - Ceal now repoints generic adapter-resolution and review-variant runner seams
   to `Cautilus` as a consumer.
 - A first generic scenario/history contract draft now exists in

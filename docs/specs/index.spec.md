@@ -20,6 +20,8 @@ $ test -f README.md
 $ test -f AGENTS.md
 $ test -f package.json
 $ test -f eslint.config.mjs
+$ test -f .github/workflows/verify.yml
+$ test -f .github/workflows/release-artifacts.yml
 $ test -f bin/cautilus
 $ test -f docs/workflow.md
 $ test -f docs/contracts/adapter-contract.md

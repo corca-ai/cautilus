@@ -91,6 +91,10 @@
   [fetch-github-archive-sha256.mjs](/home/ubuntu/cautilus/scripts/release/fetch-github-archive-sha256.mjs)
   가 추가돼 tagged archive checksum과 tap publication 절차를 checked-in
   release-ops surface로 설명할 수 있다.
+- [.github/workflows/verify.yml](/home/ubuntu/cautilus/.github/workflows/verify.yml) 와
+  [.github/workflows/release-artifacts.yml](/home/ubuntu/cautilus/.github/workflows/release-artifacts.yml)
+  가 추가돼 `verify`와 tagged release artifact publication이 public GitHub
+  기준으로도 checked-in automation surface가 됐다.
 - `npm install`, `npm run lint`, `npm run test`, `npm run verify`가 모두 통과했다.
 - `Cautilus` resolver는 Ceal의 `skill-smoke`, `code-quality` adapter를 이미 읽을 수 있어 consumer repoint의 전제는 갖췄다.
 - 아직 없는 것:
@@ -99,12 +103,13 @@
 
 ## Next Session
 
-1. tagged release/checksum/Homebrew tap publication을 실제 운영 절차로
-   닫는다. 지금은 installer와 formula renderer만 있다.
-2. Ceal migration을 다시 자르고, product-owned runtime seam과
+1. Ceal migration을 다시 자르고, product-owned runtime seam과
    consumer-owned storage/operator seam을 더 명확히 분리한다.
-3. 필요하면 consumer example 위에서 새로운 pattern class를 늘리고, raw
+2. 필요하면 consumer example 위에서 새로운 pattern class를 늘리고, raw
    reader logic은 여전히 consumer-owned로 남긴다.
+3. tap repo와 실제 공개 release cadence를 운영 규칙까지 포함해 더
+   명시적으로 닫는다. workflow는 생겼지만 publish policy는 여전히 사람
+   절차가 남아 있다.
 4. master plan의 남은 항목이 current-product spec / release docs /
    handoff로 흡수 가능한지 계속 확인한다.
 

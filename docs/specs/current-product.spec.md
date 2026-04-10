@@ -20,6 +20,10 @@
 | package.json | fixed | "lint" |
 | package.json | fixed | "test" |
 | eslint.config.mjs | file_exists |  |
+| .github/workflows/verify.yml | file_exists |  |
+| .github/workflows/verify.yml | fixed | npm run verify |
+| .github/workflows/release-artifacts.yml | file_exists |  |
+| .github/workflows/release-artifacts.yml | fixed | render-homebrew-formula.mjs |
 | bin/cautilus | file_exists |  |
 | bin/cautilus | fixed | adapter resolve |
 | bin/cautilus | fixed | cautilus doctor |

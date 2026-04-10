@@ -1,0 +1,40 @@
+name: release-artifacts
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release-artifacts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npm run verify
+      - name: Build release artifacts
+        run: |
+          mkdir -p dist
+          VERSION="${GITHUB_REF_NAME}"
+          node ./scripts/release/fetch-github-archive-sha256.mjs --version "$VERSION" --output "dist/cautilus-${VERSION}.sha256"
+          SHA256="$(tr -d '\n' < "dist/cautilus-${VERSION}.sha256")"
+          node ./scripts/release/render-homebrew-formula.mjs --version "$VERSION" --sha256 "$SHA256" --output dist/Cautilus.rb
+          {
+            echo "# Cautilus ${VERSION}"
+            echo
+            echo "- source archive checksum: \`${SHA256}\`"
+            echo "- formula artifact: \`Cautilus.rb\`"
+          } > "dist/release-notes-${VERSION}.md"
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/*.sha256
+            dist/Cautilus.rb
+            dist/release-notes-*.md

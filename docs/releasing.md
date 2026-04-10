@@ -26,6 +26,11 @@ git tag v0.1.0
 git push origin main --tags
 ```
 
+The checked-in release workflow at
+[release-artifacts.yml](/home/ubuntu/cautilus/.github/workflows/release-artifacts.yml)
+will re-run `verify`, compute the tagged archive checksum, render the Homebrew
+formula, and attach those artifacts to the GitHub release.
+
 4. After GitHub exposes the release archive, compute the checksum:
 
 ```bash

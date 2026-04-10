@@ -36,6 +36,8 @@ scripts.
 It now also includes a minimal CLI, a bundled `cautilus` skill surface,
 executor-variant runners, and local tests for the adapter and review-variant
 surfaces.
+It also now includes checked-in GitHub workflows for `verify` and tagged
+release artifacts, so the release/install surface is not only prose.
 Ceal remains a proving-ground consumer, not the product boundary.
 
 ## Repo Layout

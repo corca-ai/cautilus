@@ -40,6 +40,8 @@ function main() {
 		"LICENSE",
 		"package.json",
 		"eslint.config.mjs",
+		".github/workflows/verify.yml",
+		".github/workflows/release-artifacts.yml",
 		"docs/workflow.md",
 		"docs/contracts/adapter-contract.md",
 		"docs/contracts/reporting.md",
