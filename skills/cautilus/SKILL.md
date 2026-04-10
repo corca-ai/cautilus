@@ -49,6 +49,7 @@ node ./bin/cautilus doctor --repo-root .
 - [docs/contracts/scenario-proposal-normalization.md](/home/ubuntu/cautilus/docs/contracts/scenario-proposal-normalization.md)
 - [docs/contracts/chatbot-normalization.md](/home/ubuntu/cautilus/docs/contracts/chatbot-normalization.md)
 - [docs/contracts/skill-normalization.md](/home/ubuntu/cautilus/docs/contracts/skill-normalization.md)
+- [docs/contracts/cli-evaluation.md](/home/ubuntu/cautilus/docs/contracts/cli-evaluation.md)
 
 ## Workflow
 
@@ -92,6 +93,9 @@ node ./bin/cautilus scenario summarize-telemetry \
 
 node ./bin/cautilus report build \
   --input ./fixtures/reports/report-input.json
+
+node ./bin/cautilus cli evaluate \
+  --input ./fixtures/cli-evaluation/doctor-missing-adapter.json
 ```
 
 ## Guardrails

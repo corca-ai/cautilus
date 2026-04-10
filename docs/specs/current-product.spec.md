@@ -28,6 +28,7 @@
 | bin/cautilus | fixed | scenario prepare-input |
 | bin/cautilus | fixed | scenario propose |
 | bin/cautilus | fixed | report build |
+| bin/cautilus | fixed | cli evaluate |
 | bin/cautilus | fixed | review variants |
 | bin/cautilus.test.mjs | file_exists |  |
 | skills/cautilus/SKILL.md | file_exists |  |
@@ -43,10 +44,16 @@
 | fixtures/reports/report.schema.json | file_exists |  |
 | scripts/agent-runtime/build-report-packet.mjs | file_exists |  |
 | scripts/agent-runtime/build-report-packet.mjs | fixed | REPORT_PACKET_SCHEMA |
+| fixtures/cli-evaluation/doctor-missing-adapter.json | file_exists |  |
+| fixtures/cli-evaluation/input.schema.json | file_exists |  |
+| scripts/agent-runtime/evaluate-cli-intent.mjs | file_exists |  |
+| scripts/agent-runtime/evaluate-cli-intent.mjs | fixed | CLI_EVALUATION_PACKET_SCHEMA |
 | docs/contracts/scenario-proposal-inputs.md | file_exists |  |
 | docs/contracts/scenario-proposal-inputs.md | fixed | cautilus.scenario_proposal_inputs.v1 |
 | docs/contracts/scenario-proposal-normalization.md | file_exists |  |
 | docs/contracts/scenario-proposal-normalization.md | fixed | scenario prepare-input |
+| docs/contracts/cli-evaluation.md | file_exists |  |
+| docs/contracts/cli-evaluation.md | fixed | cautilus.cli_evaluation_packet.v1 |
 | docs/contracts/scenario-history.md | fixed | durationMs |
 | docs/consumer-readiness.md | file_exists |  |
 | docs/consumer-readiness.md | fixed | all three target repos have an official cautilus-adapter |
@@ -111,6 +118,7 @@
 - scenario proposal packet generation command
 - checked-in schema artifacts for proposal and helper input/output packets
 - machine-readable report packet builder for held-out and full-gate telemetry
+- bounded CLI intent evaluation surface with stdout/stderr/exit code and side-effect checks
 - checked-in consumer-shaped normalization example packets for Ceal, charness,
   and crill
 - adapter-defined executor variants fanout
@@ -140,6 +148,7 @@ $ node ./bin/cautilus scenario normalize skill --input ./fixtures/scenario-propo
 $ node ./bin/cautilus scenario prepare-input --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json --family fast_regression --window-days 14 --now 2026-04-11T00:00:00.000Z
 $ node ./bin/cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json
 $ node ./bin/cautilus report build --input ./fixtures/reports/report-input.json
+$ node ./bin/cautilus cli evaluate --input ./fixtures/cli-evaluation/doctor-missing-adapter.json
 $ node --test ./bin/cautilus.test.mjs
 $ node --test ./scripts/agent-runtime/consumer-example-fixtures.test.mjs
 $ node --test ./scripts/agent-runtime/chatbot-proposal-candidates.test.mjs
@@ -149,6 +158,7 @@ $ python3 ./scripts/init_adapter.py --repo-root /tmp/cautilus-spec-check --outpu
 $ node --test ./scripts/agent-runtime/scenario-history.test.mjs
 $ node --test ./scripts/agent-runtime/scenario-proposals.test.mjs
 $ node --test ./scripts/agent-runtime/build-report-packet.test.mjs
+$ node --test ./scripts/agent-runtime/evaluate-cli-intent.test.mjs
 $ test -f ./skills/cautilus/SKILL.md
 $ npm run lint
 $ npm run test

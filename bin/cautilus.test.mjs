@@ -383,6 +383,51 @@ test("cautilus report build emits a machine-readable report packet with mode tel
 	}
 });
 
+test("cautilus cli evaluate executes an intent packet and emits a report-backed summary", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-bin-cli-eval-"));
+	try {
+		const repoRoot = process.cwd();
+		const workspace = join(root, "workspace");
+		mkdirSync(workspace, { recursive: true });
+		const inputPath = join(root, "cli-input.json");
+		writeFileSync(
+			inputPath,
+			`${JSON.stringify(
+				{
+					schemaVersion: "cautilus.cli_evaluation_inputs.v1",
+					candidate: "current-cautilus-cli",
+					baseline: "current-doctor-contract",
+					intent: "The doctor command should explain missing adapter setup.",
+					surfaceId: "doctor-missing-adapter",
+					mode: "held_out",
+					workingDirectory: repoRoot,
+					command: ["node", join(repoRoot, "bin", "cautilus"), "doctor", "--repo-root", workspace],
+					expectations: {
+						exitCode: 1,
+						stdoutContains: ["missing_adapter", "adapter init"],
+						stderrNotContains: ["Traceback"],
+					},
+				},
+				null,
+				2,
+			)}\n`,
+			"utf-8",
+		);
+		const result = spawnSync("node", [BIN_PATH, "cli", "evaluate", "--input", inputPath], {
+			cwd: process.cwd(),
+			encoding: "utf-8",
+		});
+		assert.equal(result.status, 0, result.stderr);
+		const payload = JSON.parse(result.stdout);
+		assert.equal(payload.schemaVersion, "cautilus.cli_evaluation_packet.v1");
+		assert.equal(payload.summary.recommendation, "accept-now");
+		assert.equal(payload.report.schemaVersion, "cautilus.report_packet.v1");
+		assert.equal(payload.report.modesRun[0], "held_out");
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
 test("cautilus scenario prepare-input builds a proposal input packet from split normalized sources", () => {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-bin-scenario-prepare-"));
 	try {

@@ -198,6 +198,14 @@ Typical examples:
 - run a fake operator task to see whether a workflow converges cleanly before
   using it for real
 
+For CLI-specific packets, prefer one checked-in intent packet over hand-run
+transcripts:
+
+```bash
+node ./bin/cautilus cli evaluate \
+  --input ./fixtures/cli-evaluation/doctor-missing-adapter.json
+```
+
 For this pattern:
 
 - use a dedicated named adapter such as `code-quality`, `skill-smoke`, or

@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Cautilus CLI Evaluation Inputs",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "candidate",
+    "baseline",
+    "intent",
+    "surfaceId",
+    "mode",
+    "command",
+    "expectations"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "cautilus.cli_evaluation_inputs.v1"
+    },
+    "candidate": {
+      "type": "string"
+    },
+    "baseline": {
+      "type": "string"
+    },
+    "intent": {
+      "type": "string"
+    },
+    "surfaceId": {
+      "type": "string"
+    },
+    "mode": {
+      "type": "string"
+    },
+    "workingDirectory": {
+      "type": "string"
+    },
+    "command": {
+      "type": "array"
+    },
+    "expectations": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}

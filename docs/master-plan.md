@@ -27,6 +27,9 @@ The target product is:
 - A standalone `doctor` command now checks adapter readiness for host repos.
 - A temp-repo smoke test now proves `adapter init -> doctor -> review variants`
   without Ceal-owned paths.
+- A first standalone `cli evaluate` command now checks one bounded command
+  packet against operator-facing intent, stdout/stderr expectations, and side
+  effects.
 - Ceal now repoints generic adapter-resolution and review-variant runner seams
   to `Cautilus` as a consumer.
 - A first generic scenario/history contract draft now exists in

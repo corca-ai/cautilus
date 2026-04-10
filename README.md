@@ -58,6 +58,8 @@ Ceal remains a proving-ground consumer, not the product boundary.
   product-owned `chatbot` helper boundary for conversation-driven proposal candidates
 - [docs/contracts/skill-normalization.md](/home/ubuntu/cautilus/docs/contracts/skill-normalization.md):
   product-owned `skill` helper boundary for durable workflow and validation candidates
+- [docs/contracts/cli-evaluation.md](/home/ubuntu/cautilus/docs/contracts/cli-evaluation.md):
+  product-owned bounded evaluation packet for operator-facing CLI behavior
 - [fixtures/scenario-proposals/input.schema.json](/home/ubuntu/cautilus/fixtures/scenario-proposals/input.schema.json):
   checked-in schema for `cautilus.scenario_proposal_inputs.v1`
 - [fixtures/scenario-proposals/proposals.schema.json](/home/ubuntu/cautilus/fixtures/scenario-proposals/proposals.schema.json):
@@ -161,6 +163,13 @@ node ./bin/cautilus report build \
   --input ./fixtures/reports/report-input.json
 ```
 
+Evaluate one operator-facing CLI behavior from an explicit intent packet:
+
+```bash
+node ./bin/cautilus cli evaluate \
+  --input ./fixtures/cli-evaluation/doctor-missing-adapter.json
+```
+
 Assemble that input packet from split normalized source files:
 
 ```bash
@@ -195,6 +204,7 @@ node scripts/agent-runtime/build-scenario-proposal-input.mjs --candidates ./fixt
 node scripts/agent-runtime/generate-scenario-proposals.mjs --input ./fixtures/scenario-proposals/standalone-input.json
 node scripts/agent-runtime/summarize-scenario-telemetry.mjs --results ./fixtures/scenario-proposals/results.json
 node scripts/agent-runtime/build-report-packet.mjs --input ./fixtures/reports/report-input.json
+node scripts/agent-runtime/evaluate-cli-intent.mjs --input ./fixtures/cli-evaluation/doctor-missing-adapter.json
 ```
 
 The bundled skill surface lives at

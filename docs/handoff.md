@@ -8,7 +8,7 @@
 
 ## Current State
 
-- `Cautilus`는 Ceal `workbench`를 떼어내는 별도 evaluation product로 잡혔다.
+- `Cautilus`는 Ceal `workbench`를 떼어내는 별도 intentful behavior evaluation product로 잡혔다.
 - [ceal-workbench-extraction.md](/home/ubuntu/cautilus/docs/ceal-workbench-extraction.md)에 extraction source-of-truth와 import sequence가 정리돼 있다.
 - `README.md`, `AGENTS.md`, `docs/specs/`, `docs/master-plan.md`, `package.json`, `eslint.config.mjs`가 추가돼 이제 이 리포만의 제품 문서와 품질 바닥이 생겼다.
 - minimal CLI [bin/cautilus](/home/ubuntu/cautilus/bin/cautilus)가 추가돼 `adapter resolve`, `adapter init`, `review variants`를 직접 호출할 수 있다.
@@ -38,10 +38,25 @@
 - [consumer-migration.md](/home/ubuntu/cautilus/docs/consumer-migration.md)가 추가돼
   `charness`, `crill` 같은 target repo를 공식 `cautilus-adapter`
   contract로 올리는 순서가 문서화됐다.
+- `README.md`, `workflow.md`, `master-plan.md`, bundled skill이 이제
+  `intentful behavior evaluation`을 제품 프레이밍으로 직접 설명한다.
+- [adapter-contract.md](/home/ubuntu/cautilus/docs/contracts/adapter-contract.md)와
+  [consumer-migration.md](/home/ubuntu/cautilus/docs/consumer-migration.md)에
+  root `cautilus-adapter.yaml`를 언제 named `cautilus-adapters/`로 분리할지
+  explicit split criteria가 추가됐다.
 - `fullCheck`는 scenario selection은 전체로 열되 `trainRunCount`나 graduation history는 전진시키지 않는 규칙으로 고정됐다.
 - `scenario summarize-telemetry` command가 추가돼 explicit scenario result
   packet이나 persisted history에서 scenario별 cost/token/duration summary를
   바로 만들 수 있다.
+- `report build` command와 checked-in report fixture/schema가 추가돼
+  held-out/full-gate mode run과 scenario telemetry를
+  `cautilus.report_packet.v1`로 올릴 수 있다.
+- `cli evaluate` command와 checked-in CLI fixture/schema가 추가돼
+  bounded command packet 하나를 실행하고 stdout/stderr/exit code/side
+  effect expectation을 검사한 뒤 embedded report packet까지 만들 수 있다.
+- [cli-evaluation.md](/home/ubuntu/cautilus/docs/contracts/cli-evaluation.md)가
+  추가돼 CLI evaluation이 범용 test runner가 아니라 bounded intent packet
+  surface라는 점을 제품 계약으로 고정했다.
 - Ceal에서 generic runtime seam으로 볼 수 있는 executor-variant 러너와 검증용 테스트, review verdict schema를 가져왔다.
 - [scripts/init_adapter.py](/home/ubuntu/cautilus/scripts/init_adapter.py)는 `PyYAML` 의존성을 제거하고 stdlib-only YAML writer로 바뀌었다.
 - [workflow.md](/home/ubuntu/cautilus/docs/workflow.md)와 [adapter-contract.md](/home/ubuntu/cautilus/docs/contracts/adapter-contract.md)는 Ceal 최신 generic knowledge를 반영하도록 보강됐다.
@@ -57,12 +72,16 @@
 
 ## Next Session
 
-1. `chatbot`, `skill` normalized input fixture 둘 다에서 `scenario normalize -> scenario prepare-input -> scenario propose` standalone e2e를 유지한다.
-2. `consumer-readiness.md` 기준으로 `charness`, `crill`의 root adapter를 언제 named `cautilus-adapters/`로 분리할지 기준을 구체화한다.
-3. 필요하면 consumer example 위에서 새로운 pattern class를 늘리고, raw reader logic은 여전히 consumer-owned로 남긴다.
-4. telemetry를 `review variants` 밖의 다른 runtime packet에도 올리고,
-   scenario-level summary가 held-out/full-gate까지 자연스럽게 이어지게
-   할지 검토한다.
+1. adapter-driven `iterate` / `held_out` / `full_gate` 실행이 직접
+   `cautilus.report_inputs.v1` 또는 `cautilus.report_packet.v1`를 남기게 할
+   최소 runtime seam을 설계한다.
+2. `cli evaluate`를 chatbot/skill use case와 어떻게 연결할지 정한다.
+   다음 후보는 `cli` normalization helper, CLI-specific human-review prompt
+   seam, compare artifact 연동이다.
+3. 필요하면 consumer example 위에서 새로운 pattern class를 늘리고, raw
+   reader logic은 여전히 consumer-owned로 남긴다.
+4. Ceal migration을 handoff와 plan 기준으로 다시 자르고, product-owned
+   runtime seam과 consumer-owned storage/operator seam을 명확히 나눈다.
 
 ## Discuss
 
@@ -70,7 +89,7 @@
 - standalone skill 배포 경로를 repo-local `skills/`로만 둘지, 추후 installable package 형태까지 같이 정의할지 정해야 한다.
 - Ceal repoint를 한 번에 할지, tests/review-variant/adapter-resolution부터 단계적으로 할지 정해야 한다.
 - scenario proposal engine을 Slack/Ceal storage model에서 얼마나 빨리 분리할지 결정이 필요하다.
-- cost/latency telemetry를 `doctor`, `iterate`, `held-out`, `full gate` 어디까지 공식 packet으로 승격할지 정해야 한다.
+- cost/latency telemetry를 adapter-driven mode execution이 직접 report packet으로 남길지, 중간 input packet을 남긴 뒤 report를 조립할지 정해야 한다.
 - `charness`나 다른 consumer에 공개할 release boundary를 언제 처음 만들지 정해야 한다.
 
 ## References
@@ -84,10 +103,15 @@
 - [adapter-contract.md](/home/ubuntu/cautilus/docs/contracts/adapter-contract.md)
 - [consumer-migration.md](/home/ubuntu/cautilus/docs/consumer-migration.md)
 - [reporting.md](/home/ubuntu/cautilus/docs/contracts/reporting.md)
+- [cli-evaluation.md](/home/ubuntu/cautilus/docs/contracts/cli-evaluation.md)
 - [scenario-history.md](/home/ubuntu/cautilus/docs/contracts/scenario-history.md)
 - [scenario-proposal-sources.md](/home/ubuntu/cautilus/docs/contracts/scenario-proposal-sources.md)
 - [current-product.spec.md](/home/ubuntu/cautilus/docs/specs/current-product.spec.md)
 - [scenario-history.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/scenario-history.mjs)
+- [build-report-packet.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/build-report-packet.mjs)
+- [evaluate-cli-intent.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/evaluate-cli-intent.mjs)
+- [report-input.json](/home/ubuntu/cautilus/fixtures/reports/report-input.json)
+- [doctor-missing-adapter.json](/home/ubuntu/cautilus/fixtures/cli-evaluation/doctor-missing-adapter.json)
 - [adapter.example.yaml](/home/ubuntu/cautilus/examples/adapter.example.yaml)
 - [review-verdict.schema.json](/home/ubuntu/cautilus/fixtures/workbench/review-verdict.schema.json)
 - [cautilus](/home/ubuntu/cautilus/bin/cautilus)
