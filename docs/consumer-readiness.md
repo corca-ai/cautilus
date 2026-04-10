@@ -69,17 +69,23 @@ Evidence:
 
 - `node ./bin/cautilus doctor --repo-root /home/ubuntu/crill`
   returns `ready`
+- `node ./bin/cautilus mode evaluate --repo-root /home/ubuntu/crill --mode full_gate --intent 'Crill root validation entrypoint should run cleanly as the official Cautilus consumer gate.' --baseline-ref origin/main --output-dir /tmp/cautilus-crill-full-gate`
+  returns a report with recommendation `accept-now`
 - checked-in `Cautilus` adapter:
   [/home/ubuntu/crill/.agents/cautilus-adapter.yaml](/home/ubuntu/crill/.agents/cautilus-adapter.yaml)
-- existing repo-local adapter assets include:
-  [/home/ubuntu/crill/.agents/concept-review-adapter.yaml](/home/ubuntu/crill/.agents/concept-review-adapter.yaml)
-  and other single-purpose `*-adapter.yaml` files
+- checked-in named `Cautilus` adapters:
+  [/home/ubuntu/crill/.agents/cautilus-adapters/cli-smoke.yaml](/home/ubuntu/crill/.agents/cautilus-adapters/cli-smoke.yaml)
+  and
+  [/home/ubuntu/crill/.agents/cautilus-adapters/operator-recovery.yaml](/home/ubuntu/crill/.agents/cautilus-adapters/operator-recovery.yaml)
 
 What this means:
 
 - `crill` now satisfies the official adapter discovery contract.
-- Its current root adapter lifts repo-wide validation and workflow review into
-  one official `Cautilus` entrypoint.
+- Its current root adapter now proves repo-wide validation and workflow review
+  as one passing official `Cautilus` entrypoint, not only a `doctor`-ready
+  config.
+- It also now exposes narrower named `Cautilus` consumers for the CLI surface
+  and operator-recovery/runtime seam.
 - It remains the strongest reference for blocked durable workflow artifacts,
   replay seed regressions, and operator-recovery patterns.
 
@@ -100,5 +106,6 @@ layer in multiple real repos with different product shapes.
 1. Keep proving the deepest binary/skill behavior against `ceal`.
 2. Keep checked-in consumer-shaped normalized packet examples for
    `ceal`, `charness`, and `crill`.
-3. Deepen `charness` and `crill` from root-adapter readiness into richer named
-   adapters or scenario surfaces where needed.
+3. `crill` now has first named-adapter depth beyond root readiness; the next
+   step is to decide whether `review variants` or explicit `cli evaluate`
+   packets should become checked-in consumer artifacts there.
