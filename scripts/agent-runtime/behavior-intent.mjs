@@ -1,5 +1,18 @@
 import { BEHAVIOR_INTENT_SCHEMA } from "./contract-versions.mjs";
 
+export const BEHAVIOR_SURFACES = {
+	OPERATOR_BEHAVIOR: "operator_behavior",
+	OPERATOR_CLI: "operator_cli",
+	WORKFLOW_CONVERSATION: "workflow_conversation",
+	THREAD_FOLLOWUP: "thread_followup",
+	THREAD_CONTEXT_RECOVERY: "thread_context_recovery",
+	SKILL_VALIDATION: "skill_validation",
+	OPERATOR_WORKFLOW_RECOVERY: "operator_workflow_recovery",
+	REVIEW_VARIANT_WORKFLOW: "review_variant_workflow",
+};
+
+const KNOWN_BEHAVIOR_SURFACES = new Set(Object.values(BEHAVIOR_SURFACES));
+
 function normalizeNonEmptyString(value, field) {
 	if (typeof value !== "string" || !value.trim()) {
 		throw new Error(`${field} must be a non-empty string`);
@@ -73,9 +86,13 @@ function resolveIntentId(intentProfile, summary) {
 }
 
 function resolveBehaviorSurface(intentProfile, fallbackBehaviorSurface) {
-	return intentProfile?.behaviorSurface !== undefined
+	const value = intentProfile?.behaviorSurface !== undefined
 		? normalizeNonEmptyString(intentProfile.behaviorSurface, "intentProfile.behaviorSurface")
 		: normalizeNonEmptyString(fallbackBehaviorSurface, "fallbackBehaviorSurface");
+	if (!KNOWN_BEHAVIOR_SURFACES.has(value)) {
+		throw new Error(`behaviorSurface must be one of: ${[...KNOWN_BEHAVIOR_SURFACES].join(", ")}`);
+	}
+	return value;
 }
 
 export function buildBehaviorIntentProfile({

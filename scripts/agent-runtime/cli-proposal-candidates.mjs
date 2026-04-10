@@ -1,4 +1,4 @@
-import { buildBehaviorIntentProfile } from "./behavior-intent.mjs";
+import { BEHAVIOR_SURFACES, buildBehaviorIntentProfile } from "./behavior-intent.mjs";
 
 function normalizeText(text) {
 	return String(text || "").trim().toLowerCase();
@@ -72,7 +72,7 @@ function buildCliIntentProfile(run) {
 	return buildBehaviorIntentProfile({
 		intent: run.intent,
 		intentProfile: run.intentProfile,
-		fallbackBehaviorSurface: "operator_cli",
+		fallbackBehaviorSurface: BEHAVIOR_SURFACES.OPERATOR_CLI,
 	});
 }
 

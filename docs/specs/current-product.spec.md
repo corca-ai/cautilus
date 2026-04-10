@@ -63,6 +63,8 @@ standalone product여야 한다.
 | docs/contracts/adapter-contract.md | fixed | Executor Variant Shape |
 | docs/contracts/behavior-intent.md | file_exists |  |
 | docs/contracts/behavior-intent.md | fixed | cautilus.behavior_intent.v1 |
+| docs/contracts/behavior-intent.md | fixed | operator_behavior |
+| docs/contracts/behavior-intent.md | fixed | operator_workflow_recovery |
 | docs/contracts/reporting.md | fixed | duration_ms |
 | docs/contracts/reporting.md | fixed | cautilus.report_packet.v1 |
 | docs/contracts/reporting.md | fixed | command_observations |
@@ -99,6 +101,8 @@ standalone product여야 한다.
 | scripts/agent-runtime/build-revision-artifact.mjs | fixed | REVISION_ARTIFACT_SCHEMA |
 | scripts/agent-runtime/scenario-results.mjs | file_exists |  |
 | scripts/agent-runtime/scenario-results.mjs | fixed | SCENARIO_RESULTS_SCHEMA |
+| scripts/agent-runtime/behavior-intent.mjs | file_exists |  |
+| scripts/agent-runtime/behavior-intent.mjs | fixed | BEHAVIOR_SURFACES |
 | scripts/agent-runtime/contract-versions.mjs | file_exists |  |
 | scripts/agent-runtime/contract-versions.mjs | fixed | BEHAVIOR_INTENT_SCHEMA |
 | scripts/agent-runtime/contract-versions.mjs | fixed | REVIEW_PROMPT_INPUTS_SCHEMA |

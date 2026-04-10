@@ -1,4 +1,4 @@
-import { buildBehaviorIntentProfile } from "./behavior-intent.mjs";
+import { BEHAVIOR_SURFACES, buildBehaviorIntentProfile } from "./behavior-intent.mjs";
 
 function normalizeText(text) {
 	return String(text || "").trim().toLowerCase();
@@ -99,7 +99,7 @@ function buildReviewClarificationCandidate(conversation, userMessages) {
 		intentProfile: buildChatbotIntentProfile(
 			"Clarify the concrete repo target before starting a broad repo review workflow.",
 			conversation.intentProfile,
-			"workflow_conversation",
+			BEHAVIOR_SURFACES.WORKFLOW_CONVERSATION,
 		),
 		name: "Repo Review Needs Target Clarification",
 		description: "A broad review request is followed by one concrete repo-target clarification.",
@@ -125,7 +125,7 @@ function buildEventTriggeredFollowupCandidate(conversation, userMessages) {
 		intentProfile: buildChatbotIntentProfile(
 			"Continue the active thread cleanly after an event-triggered wake-up.",
 			conversation.intentProfile,
-			"thread_followup",
+			BEHAVIOR_SURFACES.THREAD_FOLLOWUP,
 		),
 		name: "Event Triggered Follow-Up",
 		description: "An app mention wakes the assistant and the user continues with a plain follow-up in the same active thread.",
@@ -149,7 +149,7 @@ function buildAmbiguousConfirmationCandidate(summary) {
 		intentProfile: buildChatbotIntentProfile(
 			"Ask one clarification when a bare confirmation lacks thread context.",
 			summary.intentProfile,
-			"thread_context_recovery",
+			BEHAVIOR_SURFACES.THREAD_CONTEXT_RECOVERY,
 		),
 		name: "Ambiguous Confirmation Needs Context",
 		description: "A bare confirmation without thread context should trigger one clarification instead of blind execution.",

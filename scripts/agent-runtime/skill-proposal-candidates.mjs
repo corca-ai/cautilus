@@ -1,4 +1,4 @@
-import { buildBehaviorIntentProfile } from "./behavior-intent.mjs";
+import { BEHAVIOR_SURFACES, buildBehaviorIntentProfile } from "./behavior-intent.mjs";
 
 function normalizeText(text) {
 	return String(text || "").trim().toLowerCase();
@@ -148,7 +148,7 @@ function buildSkillValidationCandidate(run) {
 		intentProfile: buildSkillIntentProfile(
 			`${displayName} should keep the ${surfaceLabel} validation surface passing.`,
 			run.intentProfile,
-			"skill_validation",
+			BEHAVIOR_SURFACES.SKILL_VALIDATION,
 		),
 		name: `${displayName} ${titleCase(surfaceLabel)} Regression`,
 		description: `${targetLabel} ${displayName} regressed on the ${surfaceLabel} evaluation surface and should keep a durable passing scenario.`,
@@ -176,7 +176,7 @@ function buildWorkflowRecoveryCandidate(run) {
 		intentProfile: buildSkillIntentProfile(
 			`${displayName} should recover cleanly when the ${surfaceLabel} workflow hits the same blocker.`,
 			run.intentProfile,
-			"operator_workflow_recovery",
+			BEHAVIOR_SURFACES.OPERATOR_WORKFLOW_RECOVERY,
 		),
 		name: `${displayName} ${titleCase(surfaceLabel)} Recovery`,
 		description: `${displayName} should recover cleanly when the ${surfaceLabel} workflow hits the same operator-facing blocker.`,

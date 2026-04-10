@@ -26,6 +26,34 @@ Each dimension should stay small:
 - `id`
 - `summary`
 
+## Behavior Surface Catalog
+
+Current product-owned catalog:
+
+- `operator_behavior`
+  generic fallback when the seam knows the behavior is operator-facing but does
+  not know a narrower product-owned class yet
+- `operator_cli`
+  operator-visible CLI guidance or behavior contract
+- `workflow_conversation`
+  multi-turn workflow continuity in a conversation
+- `thread_followup`
+  follow-up continuity inside an already active thread
+- `thread_context_recovery`
+  clarification or recovery when the thread context is insufficient
+- `skill_validation`
+  deterministic skill, profile, or integration validation surface
+- `operator_workflow_recovery`
+  durable workflow recovery or resumability surface
+- `review_variant_workflow`
+  review prompt or executor-variant workflow surface
+
+Current rule:
+
+- product-owned runtimes only emit catalog values
+- host-declared profiles should also use catalog values
+- unknown `behaviorSurface` values are rejected by the current runtime
+
 ## Current Slice
 
 This slice keeps the contract intentionally thin.
@@ -48,7 +76,7 @@ Two acquisition modes are allowed in the current product.
 The host or normalization helper provides an explicit `intentProfile`.
 
 Use this when the behavior surface or success dimensions are already known in a
-stable operator-facing form.
+stable operator-facing form and fit the product-owned catalog.
 
 ### Default-Derived Profile
 
