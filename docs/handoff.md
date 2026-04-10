@@ -3,9 +3,9 @@
 ## Workflow Trigger
 
 - 다음 세션에서 이 문서를 멘션하면 [README.md](/home/ubuntu/cautilus/README.md), [AGENTS.md](/home/ubuntu/cautilus/AGENTS.md), [docs/master-plan.md](/home/ubuntu/cautilus/docs/master-plan.md), [docs/workflow.md](/home/ubuntu/cautilus/docs/workflow.md), [docs/consumer-readiness.md](/home/ubuntu/cautilus/docs/consumer-readiness.md)를 먼저 읽는다.
-- 다음 세션 목표가 `charness` consumer 검증이면 위 파일들을 읽은 직후 [charness/docs/handoff.md](/home/ubuntu/charness/docs/handoff.md)를 추가로 읽고 그 pickup을 우선한다.
+- 다음 세션 목표가 operator feedback / runner UX 후속 작업이면 [command-progress.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/command-progress.mjs), [evaluate-adapter-mode.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/evaluate-adapter-mode.mjs), [run-workbench-executor-variants.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/run-workbench-executor-variants.mjs)를 바로 읽고 같은 seam을 이어서 다룬다.
 - 시작 workflow는 `impl` 직행이 아니라 `quality` 스킬 선행이다. 현재 quality bar와 existing gates를 먼저 점검한 뒤, 그 결과를 바탕으로 같은 세션에서 `impl`로 이어서 구현한다.
-- 작업 시작 repo는 [cautilus](/home/ubuntu/cautilus) 이고, 다음 primary consumer target은 `crill` 다음으로 `charness`다.
+- 작업 시작 repo는 [cautilus](/home/ubuntu/cautilus) 이다. `charness` live failure는 이번 시점에서 consumer-owned follow-up으로 넘겼고, 다음 제품 작업은 다시 `cautilus` 내부 seam을 우선한다.
 - gap이 product-owned runtime/contract/helper 문제면 [cautilus](/home/ubuntu/cautilus) 에서 먼저 고치고, consumer-owned adapter/artifact/policy 문제면 해당 consumer repo(`crill` 또는 `charness`)에서 고친다.
 
 ## Current State
@@ -27,41 +27,49 @@
   - fixtures/tests: [fixtures/optimize/](/home/ubuntu/cautilus/fixtures/optimize), [optimize-flow.test.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/optimize-flow.test.mjs)
 - evidence bundle helper seam(`evidence prepare-input`, `evidence bundle`)은 제품 표면으로 들어갔다.
 - optimizer seam의 첫 live consumer proof는 `crill` 비교 표면에서 닫혔다.
-- 다음 consumer 검증 우선순위는 `charness`다. 목표는 `charness`에서 현재 Cautilus claim이 동일하게 통과하는지 확인하고, 실패를 consumer-owned vs product-owned으로 분리하는 것이다.
+- 이번 세션에서 operator feedback 철학을 실행기 표면으로 실제 반영했다.
+  - 공용 progress/heartbeat helper: [command-progress.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/command-progress.mjs)
+  - `mode evaluate`: `stderr` progress + heartbeat + failure diagnostics + ownership hint, `stdout`은 최종 `report.json` path 유지, `--quiet` 지원
+  - `review variants`: 같은 progress contract 적용, variant별 `.stdout` / `.stderr` artifact 실제 기록, `stdout`은 최종 `summary.json` path 유지, `--quiet` 지원
+- 관련 커밋:
+  - `d57408f` `Add progress feedback to mode evaluation`
+  - `77dd522` `Add heartbeat feedback to evaluation runners`
+- 이번 상태에서 `npm run lint`, `npm run test`, `npm run verify` 는 다시 통과했다.
+- `charness`는 한 번 `accept-now` snapshot이 있었지만, latest live rerun은 consumer-owned broken link 때문에 `reject`였다.
+  - failing file: [charness/docs/handoff.md](/home/ubuntu/charness/docs/handoff.md)
+  - failure signal: broken absolute link `/home/ubuntu/charness/docs/skill-migration-map.md`
+  - ownership: `charness` consumer-owned 문서 문제
+  - 사용자가 이제 이 follow-up은 `charness`가 직접 처리한다고 명시했다.
 - HTML report는 계속 deferred다. SoT는 JSON/YAML packet이다.
 - [docs/master-plan.md](/home/ubuntu/cautilus/docs/master-plan.md), [docs/consumer-readiness.md](/home/ubuntu/cautilus/docs/consumer-readiness.md) 는 위 방향으로 이미 갱신돼 있다.
-- 이번 상태에서 `npm run lint`, `npm run test`, `npm run verify` 는 다시 통과했다.
 
 ## Next Session
 
-1. [charness/docs/handoff.md](/home/ubuntu/charness/docs/handoff.md)를 먼저 읽고 `charness`의 현재 pickup과 blocker를 확정한다.
-2. `charness`에서 Cautilus adapter 상태를 확인한다.
-   - `node /home/ubuntu/cautilus/bin/cautilus adapter resolve --repo-root /home/ubuntu/charness`
-   - adapter가 없으면 `node /home/ubuntu/cautilus/bin/cautilus adapter init --repo-root /home/ubuntu/charness`
-   - `node /home/ubuntu/cautilus/bin/cautilus doctor --repo-root /home/ubuntu/charness`
-3. `charness` primary consumer proof를 실행한다.
-   - `node /home/ubuntu/cautilus/bin/cautilus mode evaluate --repo-root /home/ubuntu/charness --mode full_gate --intent 'Charness should validate cleanly as the next standalone Cautilus consumer.' --baseline-ref origin/main --output-dir /tmp/cautilus-charness-full-gate`
-4. 실패가 나오면 먼저 ownership을 분리한다.
-   - consumer-owned(어댑터/픽스처/정책): `/home/ubuntu/charness`에서 수정
-   - product-owned(runtime/contract/helper): `/home/ubuntu/cautilus`에서 수정
-5. 수정 후 동일 명령으로 재검증하고, 결과를 `charness` handoff와 이 handoff 둘 다에 resume command까지 남긴다.
-6. `cautilus`를 수정했다면 마지막에 `npm run lint`, `npm run test`, `npm run verify`를 다시 통과시킨다.
+1. 다음 제품 slice가 정말 필요한지 먼저 판단한다. 현재 `mode evaluate`와 `review variants`에는 early feedback contract가 들어갔고, `charness` follow-up은 consumer 쪽으로 넘겨졌다.
+2. 후속 작업이 필요하면 `frequent feedback` 철학을 더 넓힐지 결정한다.
+   - 후보 A: 다른 long-running entrypoint에도 [command-progress.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/command-progress.mjs) 재사용
+   - 후보 B: heartbeat를 단순 liveness에서 더 풍부한 stage-specific signal로 확장
+   - 후보 C: ownership hint를 packet이나 structured exit metadata까지 승격
+3. 다음 slice를 고르면 shared helper 우선으로 구현하고, `stdout final artifact path / stderr progress` 계약을 유지한다.
+4. 제품 변경이 생기면 `npm run lint`, `npm run test`, `npm run verify`를 다시 통과시킨다.
 
 ## Premortem
 
-- 다음 세션에서 가장 쉬운 오해는 `crill`을 다시 처음부터 검증하는 것이다.
-  현재 우선순위는 `charness` consumer proof다.
-- `charness` failure를 곧바로 `cautilus` 결함으로 단정할 수 있다.
-  먼저 consumer-owned vs product-owned ownership 분리가 필요하다.
-- `charness` handoff를 읽지 않고 명령부터 실행하면 이미 알려진 blocker를 반복할 가능성이 높다.
+- 다음 세션에서 가장 쉬운 오해는 `charness` broken link를 다시 `cautilus`에서 고치려는 것이다.
+  그 failure는 consumer-owned이고, 사용자도 `charness`가 직접 처리한다고 명시했다.
+- 또 다른 쉬운 오해는 `stdout`에 progress를 더 얹어도 된다고 생각하는 것이다.
+  현재 자동화/테스트 계약은 `stdout = final artifact path`다.
+- heartbeat를 progress percentage로 과해석할 수 있다.
+  지금 heartbeat는 “살아 있다”는 신호이지 세부 진행률 계약은 아니다.
 - `optimize`/`evidence` seam을 무한 루프로 확장할 위험이 있다.
   현재 claim은 bounded loop와 explicit gate 유지다.
 
 ## Discuss
 
-- 다음 consumer 검증의 1순위는 `charness`다.
+- 현재 열린 제품 질문은 “feedback 철학을 다른 실행 surface로 더 넓힐지”다.
+- `stdout final artifact path / stderr progress` 계약은 유지하는 편이 맞다.
 - `crill`은 새 제품 seam이 생길 때만 spot-check 성격으로 다시 태운다.
-- `ceal`은 여전히 깊은 consumer이지만, 바로 다음 실행 단위는 `charness` 검증 결과를 먼저 닫는 것이다.
+- `charness` live failure는 consumer-owned follow-up으로 넘겼다.
 
 ## References
 
@@ -73,6 +81,9 @@
 - [docs/contracts/optimization.md](/home/ubuntu/cautilus/docs/contracts/optimization.md)
 - [skill-outputs/quality/quality.md](/home/ubuntu/cautilus/skill-outputs/quality/quality.md)
 - [skills/cautilus/SKILL.md](/home/ubuntu/cautilus/skills/cautilus/SKILL.md)
+- [command-progress.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/command-progress.mjs)
+- [evaluate-adapter-mode.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/evaluate-adapter-mode.mjs)
+- [run-workbench-executor-variants.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/run-workbench-executor-variants.mjs)
 - [bin/cautilus](/home/ubuntu/cautilus/bin/cautilus)
 - [/home/ubuntu/crill/.agents/cautilus-adapter.yaml](/home/ubuntu/crill/.agents/cautilus-adapter.yaml)
 - [/home/ubuntu/crill/.agents/cautilus-adapters/consumer-artifacts.yaml](/home/ubuntu/crill/.agents/cautilus-adapters/consumer-artifacts.yaml)
