@@ -3,9 +3,10 @@
 ## Workflow Trigger
 
 - 다음 세션에서 이 문서를 멘션하면 [README.md](/home/ubuntu/cautilus/README.md), [AGENTS.md](/home/ubuntu/cautilus/AGENTS.md), [docs/master-plan.md](/home/ubuntu/cautilus/docs/master-plan.md), [docs/workflow.md](/home/ubuntu/cautilus/docs/workflow.md), [docs/consumer-readiness.md](/home/ubuntu/cautilus/docs/consumer-readiness.md)를 먼저 읽는다.
+- 다음 세션 목표가 `charness` consumer 검증이면 위 파일들을 읽은 직후 [charness/docs/handoff.md](/home/ubuntu/charness/docs/handoff.md)를 추가로 읽고 그 pickup을 우선한다.
 - 시작 workflow는 `impl` 직행이 아니라 `quality` 스킬 선행이다. 현재 quality bar와 existing gates를 먼저 점검한 뒤, 그 결과를 바탕으로 같은 세션에서 `impl`로 이어서 구현한다.
-- 작업 시작 repo는 [cautilus](/home/ubuntu/cautilus) 이고, `crill`은 consumer 검증용 reference repo로 계속 쓴다.
-- gap이 product-owned runtime/contract/helper 문제면 [cautilus](/home/ubuntu/cautilus) 에서 먼저 고치고, consumer-owned adapter/artifact/policy 문제면 [crill](/home/ubuntu/crill) 에서 고친다.
+- 작업 시작 repo는 [cautilus](/home/ubuntu/cautilus) 이고, 다음 primary consumer target은 `crill` 다음으로 `charness`다.
+- gap이 product-owned runtime/contract/helper 문제면 [cautilus](/home/ubuntu/cautilus) 에서 먼저 고치고, consumer-owned adapter/artifact/policy 문제면 해당 consumer repo(`crill` 또는 `charness`)에서 고친다.
 
 ## Current State
 
@@ -24,49 +25,43 @@
   - product-owned contract: [docs/contracts/optimization.md](/home/ubuntu/cautilus/docs/contracts/optimization.md)
   - runtime: [build-optimize-input.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/build-optimize-input.mjs), [generate-optimize-proposal.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/generate-optimize-proposal.mjs)
   - fixtures/tests: [fixtures/optimize/](/home/ubuntu/cautilus/fixtures/optimize), [optimize-flow.test.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/optimize-flow.test.mjs)
-- 남은 다음 제품 우선순위는 두 가지다.
-  - raw-evidence mining helper: host raw log reader는 host가 소유하고, `Cautilus`는 normalized evidence bundle contract + helper script + bundled skill reference meta-prompt를 준다.
-  - optimizer consumer proof: 새 `optimize` seam을 `crill` 또는 `ceal` consumer artifact로 한 번 태워서 live-consumer claim으로 올린다.
-- HTML report는 필요하지만 지금은 deferred다. SoT는 계속 JSON/YAML packet이다.
+- evidence bundle helper seam(`evidence prepare-input`, `evidence bundle`)은 제품 표면으로 들어갔다.
+- optimizer seam의 첫 live consumer proof는 `crill` 비교 표면에서 닫혔다.
+- 다음 consumer 검증 우선순위는 `charness`다. 목표는 `charness`에서 현재 Cautilus claim이 동일하게 통과하는지 확인하고, 실패를 consumer-owned vs product-owned으로 분리하는 것이다.
+- HTML report는 계속 deferred다. SoT는 JSON/YAML packet이다.
 - [docs/master-plan.md](/home/ubuntu/cautilus/docs/master-plan.md), [docs/consumer-readiness.md](/home/ubuntu/cautilus/docs/consumer-readiness.md) 는 위 방향으로 이미 갱신돼 있다.
 - 이번 상태에서 `npm run lint`, `npm run test`, `npm run verify` 는 다시 통과했다.
 
 ## Next Session
 
-1. `quality` 스킬부터 발동해서 현재 repo의 gate surface와 missing deterministic checks를 점검한다.
-2. report 작업은 현재 checkout에서 바로 하지 말고 별도 git worktree를 만든 뒤 그 worktree에서 진행한다.
-   report 작업은 HTML/report UX 쪽 실험이므로 main checkout의 helper/contract 작업과 분리한다.
-3. quality 결과를 본 뒤 같은 세션에서 `impl`로 이어서 evidence bundle / prepare-evidence helper를 먼저 자른다.
-4. evidence helper를 추가하지 않고 optimizer 쪽을 더 만질 경우, 다음 구현 priority는 기능 추가가 아니라 consumer proof다.
-   - `crill` 또는 `ceal` 쪽에 checked-in optimize input artifact를 만들고
-   - 새 `optimize` seam이 실제 consumer packet으로도 도는지 확인한다.
-5. 새 surface를 추가하면 그때만 `crill` consumer 검증을 다시 돈다.
-   현재 재사용할 consumer surface:
-   - [cli-smoke.yaml](/home/ubuntu/crill/.agents/cautilus-adapters/cli-smoke.yaml)
-   - [operator-recovery.yaml](/home/ubuntu/crill/.agents/cautilus-adapters/operator-recovery.yaml)
-   - [consumer-artifacts.yaml](/home/ubuntu/crill/.agents/cautilus-adapters/consumer-artifacts.yaml)
-   - [cli-help.json](/home/ubuntu/crill/tests/fixtures/cautilus/cli-help.json)
-6. report worktree에서 UI/report 작업을 하더라도, product-owned contract/helper 변경이 생기면 마지막에는 [consumer-readiness.md](/home/ubuntu/cautilus/docs/consumer-readiness.md) 와 이 handoff를 다시 맞춘다.
+1. [charness/docs/handoff.md](/home/ubuntu/charness/docs/handoff.md)를 먼저 읽고 `charness`의 현재 pickup과 blocker를 확정한다.
+2. `charness`에서 Cautilus adapter 상태를 확인한다.
+   - `node /home/ubuntu/cautilus/bin/cautilus adapter resolve --repo-root /home/ubuntu/charness`
+   - adapter가 없으면 `node /home/ubuntu/cautilus/bin/cautilus adapter init --repo-root /home/ubuntu/charness`
+   - `node /home/ubuntu/cautilus/bin/cautilus doctor --repo-root /home/ubuntu/charness`
+3. `charness` primary consumer proof를 실행한다.
+   - `node /home/ubuntu/cautilus/bin/cautilus mode evaluate --repo-root /home/ubuntu/charness --mode full_gate --intent 'Charness should validate cleanly as the next standalone Cautilus consumer.' --baseline-ref origin/main --output-dir /tmp/cautilus-charness-full-gate`
+4. 실패가 나오면 먼저 ownership을 분리한다.
+   - consumer-owned(어댑터/픽스처/정책): `/home/ubuntu/charness`에서 수정
+   - product-owned(runtime/contract/helper): `/home/ubuntu/cautilus`에서 수정
+5. 수정 후 동일 명령으로 재검증하고, 결과를 `charness` handoff와 이 handoff 둘 다에 resume command까지 남긴다.
+6. `cautilus`를 수정했다면 마지막에 `npm run lint`, `npm run test`, `npm run verify`를 다시 통과시킨다.
 
 ## Premortem
 
-- 다음 세션에서 가장 쉬운 오해는 `crill` 검증을 처음부터 다시 여는 것이다.
-  현재 core verification은 충분하다. 새 surface를 추가하지 않았다면 `crill`은 full rerun 대상이 아니라 spot-check 대상이다.
-- report 작업을 main checkout에서 바로 시작하면 helper/contract 변경과 섞여서 경계가 흐려진다.
-  report 실험은 separate worktree에서 시작해야 한다.
-- raw log mining을 제품이 직접 읽는 방향으로 잘못 확장할 수 있다.
-  raw reader는 host-owned이고, `Cautilus`는 normalized evidence bundle과 meta-prompt/helper까지만 소유해야 한다.
-- optimizer를 “자동 무한 개선 루프”로 오해할 수 있다.
-  이미 추가된 `optimize` surface도 bounded loop 전제다. held_out/comparison/review gate를 약화하는 방향으로 쓰면 안 된다.
-- `quality`를 형식적 점검으로만 끝내고 바로 구현으로 넘어갈 수 있다.
-  다음 세션의 `quality`는 실제 next gate를 고르기 위한 선행 작업이므로, 그 결과가 다음 구현 slice 선택을 바꿀 수 있다는 점을 잊지 말아야 한다.
+- 다음 세션에서 가장 쉬운 오해는 `crill`을 다시 처음부터 검증하는 것이다.
+  현재 우선순위는 `charness` consumer proof다.
+- `charness` failure를 곧바로 `cautilus` 결함으로 단정할 수 있다.
+  먼저 consumer-owned vs product-owned ownership 분리가 필요하다.
+- `charness` handoff를 읽지 않고 명령부터 실행하면 이미 알려진 blocker를 반복할 가능성이 높다.
+- `optimize`/`evidence` seam을 무한 루프로 확장할 위험이 있다.
+  현재 claim은 bounded loop와 explicit gate 유지다.
 
 ## Discuss
 
-- 다음 `crill` 검증은 “더 해야만 하는 일”은 아니다.
-  현재 claim을 위한 검증은 충분하다. 다만 evidence helper, optimizer, report surface처럼 새 제품 seam을 만들면 그 seam을 `crill` consumer artifact로 다시 태우는 것이 좋다.
-- `ceal`은 여전히 deepest live consumer라서, 다음 큰 consumer 검증 후보는 `ceal`이다.
-- release/install surface는 이미 살아 있으므로, 다음 무게중심은 release ops보다 helper seams와 report worktree 분리다.
+- 다음 consumer 검증의 1순위는 `charness`다.
+- `crill`은 새 제품 seam이 생길 때만 spot-check 성격으로 다시 태운다.
+- `ceal`은 여전히 깊은 consumer이지만, 바로 다음 실행 단위는 `charness` 검증 결과를 먼저 닫는 것이다.
 
 ## References
 
@@ -82,3 +77,4 @@
 - [/home/ubuntu/crill/.agents/cautilus-adapter.yaml](/home/ubuntu/crill/.agents/cautilus-adapter.yaml)
 - [/home/ubuntu/crill/.agents/cautilus-adapters/consumer-artifacts.yaml](/home/ubuntu/crill/.agents/cautilus-adapters/consumer-artifacts.yaml)
 - [/home/ubuntu/crill/tests/fixtures/cautilus/cli-help.json](/home/ubuntu/crill/tests/fixtures/cautilus/cli-help.json)
+- [charness/docs/handoff.md](/home/ubuntu/charness/docs/handoff.md)
