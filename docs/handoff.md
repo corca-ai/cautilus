@@ -95,6 +95,8 @@
   [.github/workflows/release-artifacts.yml](/home/ubuntu/cautilus/.github/workflows/release-artifacts.yml)
   가 추가돼 `verify`와 tagged release artifact publication이 public GitHub
   기준으로도 checked-in automation surface가 됐다.
+- release target 기본값은 이제 `origin` remote에서 유도한다. 현재 repo는
+  `corca-ai/cautilus` 이고 기본 tap target은 `corca-ai/homebrew-tap` 이다.
 - `npm install`, `npm run lint`, `npm run test`, `npm run verify`가 모두 통과했다.
 - `Cautilus` resolver는 Ceal의 `skill-smoke`, `code-quality` adapter를 이미 읽을 수 있어 consumer repoint의 전제는 갖췄다.
 - 아직 없는 것:
@@ -107,7 +109,7 @@
    consumer-owned storage/operator seam을 더 명확히 분리한다.
 2. 필요하면 consumer example 위에서 새로운 pattern class를 늘리고, raw
    reader logic은 여전히 consumer-owned로 남긴다.
-3. tap repo와 실제 공개 release cadence를 운영 규칙까지 포함해 더
+3. tap repo update와 실제 공개 release cadence를 운영 규칙까지 포함해 더
    명시적으로 닫는다. workflow는 생겼지만 publish policy는 여전히 사람
    절차가 남아 있다.
 4. master plan의 남은 항목이 current-product spec / release docs /

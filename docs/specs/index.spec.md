@@ -40,6 +40,7 @@ $ test -f skills/cautilus/agents/openai.yaml
 $ test -f scripts/resolve_adapter.py
 $ test -f scripts/init_adapter.py
 $ test -f scripts/doctor.py
+$ test -f scripts/release/resolve-release-targets.mjs
 $ test -f scripts/agent-runtime/scenario-history.mjs
 $ test -f scripts/agent-runtime/chatbot-proposal-candidates.mjs
 $ test -f scripts/agent-runtime/normalize-chatbot-proposals.mjs

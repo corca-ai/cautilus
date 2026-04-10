@@ -2,6 +2,12 @@
 
 `Cautilus` publishes through tagged GitHub releases, not npm.
 
+The default release targets come from the current `origin` remote. In this
+repo today that resolves to:
+
+- source repo: `corca-ai/cautilus`
+- tap repo: `corca-ai/homebrew-tap`
+
 ## Preconditions
 
 - [LICENSE](/home/ubuntu/cautilus/LICENSE) stays in sync with the public repo
@@ -46,6 +52,7 @@ node ./scripts/release/render-homebrew-formula.mjs \
 ```
 
 6. Update the Homebrew tap repo with the rendered formula.
+   The default target for this repo is `corca-ai/homebrew-tap`.
 7. Verify the public installer path:
 
 ```bash

@@ -67,6 +67,7 @@ function main() {
 		"scripts/doctor.py",
 		"scripts/release/render-homebrew-formula.mjs",
 		"scripts/release/fetch-github-archive-sha256.mjs",
+		"scripts/release/resolve-release-targets.mjs",
 		"scripts/agent-runtime/contract-versions.mjs",
 		"scripts/agent-runtime/scenario-history.mjs",
 		"scripts/agent-runtime/scenario-results.mjs",

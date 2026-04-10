@@ -109,6 +109,8 @@
 | scripts/release/render-homebrew-formula.mjs | fixed | renderHomebrewFormula |
 | scripts/release/fetch-github-archive-sha256.mjs | file_exists |  |
 | scripts/release/fetch-github-archive-sha256.mjs | fixed | fetchArchiveSha256 |
+| scripts/release/resolve-release-targets.mjs | file_exists |  |
+| scripts/release/resolve-release-targets.mjs | fixed | resolveReleaseTargets |
 | scripts/resolve_adapter.py | fixed | cautilus-adapter.yaml |
 | scripts/init_adapter.py | fixed | dump_yaml_document |
 | scripts/agent-runtime/scenario-history.mjs | file_exists |  |

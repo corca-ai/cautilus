@@ -3,6 +3,8 @@ import { resolve } from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
 
+import { resolveReleaseTargets } from "./resolve-release-targets.mjs";
+
 const PACKAGE_JSON_PATH = resolve(process.cwd(), "package.json");
 
 function usage(exitCode = 0) {
@@ -25,9 +27,10 @@ function readRequiredValue(argv, index, option) {
 
 function parseArgs(argv) {
 	const pkg = JSON.parse(readFileSync(PACKAGE_JSON_PATH, "utf-8"));
+	const targets = resolveReleaseTargets();
 	const options = {
 		version: `v${pkg.version}`,
-		repo: "corca-ai/cautilus",
+		repo: targets.sourceRepo,
 		sha256: "",
 		output: "",
 	};

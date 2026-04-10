@@ -6,6 +6,7 @@ import test from "node:test";
 
 import { renderArchiveUrl } from "./fetch-github-archive-sha256.mjs";
 import { renderHomebrewFormula } from "./render-homebrew-formula.mjs";
+import { deriveTapRepo, parseGitHubRemoteUrl, resolveReleaseTargets } from "./resolve-release-targets.mjs";
 
 const REPO_ROOT = process.cwd();
 
@@ -44,4 +45,20 @@ test("github archive URL renderer targets tagged source archives", () => {
 		renderArchiveUrl({ repo: "corca-ai/cautilus", version: "v0.1.0" }),
 		"https://github.com/corca-ai/cautilus/archive/refs/tags/v0.1.0.tar.gz",
 	);
+});
+
+test("release target helpers parse the current GitHub remote and derive the default tap repo", () => {
+	assert.deepEqual(parseGitHubRemoteUrl("https://github.com/corca-ai/cautilus"), {
+		owner: "corca-ai",
+		repo: "cautilus",
+	});
+	assert.deepEqual(parseGitHubRemoteUrl("git@github.com:corca-ai/cautilus.git"), {
+		owner: "corca-ai",
+		repo: "cautilus",
+	});
+	assert.equal(deriveTapRepo("corca-ai/cautilus"), "corca-ai/homebrew-tap");
+	assert.deepEqual(resolveReleaseTargets({ remoteUrl: "https://github.com/corca-ai/cautilus" }), {
+		sourceRepo: "corca-ai/cautilus",
+		tapRepo: "corca-ai/homebrew-tap",
+	});
 });

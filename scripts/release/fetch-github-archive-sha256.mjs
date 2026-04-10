@@ -4,6 +4,8 @@ import { resolve } from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
 
+import { resolveReleaseTargets } from "./resolve-release-targets.mjs";
+
 function usage(exitCode = 0) {
 	const text = [
 		"Usage:",
@@ -23,9 +25,10 @@ function readRequiredValue(argv, index, option) {
 }
 
 function parseArgs(argv) {
+	const targets = resolveReleaseTargets();
 	const options = {
 		version: "",
-		repo: "corca-ai/cautilus",
+		repo: targets.sourceRepo,
 		output: "",
 	};
 	for (let index = 0; index < argv.length; index += 1) {
