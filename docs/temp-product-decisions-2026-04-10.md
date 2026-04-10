@@ -77,7 +77,24 @@ recommended decision:
 - 아니면 다음 구현 우선순위 1번으로 올려 current product claim에 맞게 실제 loop에 연결할지 결정한다.
 
 status:
-- open
+- decided
+
+decision:
+- `scenario-history`는 다음 구현 우선순위 1번으로 올린다.
+- 현재 claim을 낮추는 대신, 실제 runtime loop에 연결하는 방향으로 간다.
+
+follow-up effect:
+- 다음 implementation slice는 `scenario-history`를 pure helper로만 두지 않고,
+  공식 실행 경로 하나에 연결해야 한다.
+- 다만 첫 slice는 작게 유지한다.
+  - 포함:
+    - checked-in profile read
+    - mode-aware scenario selection
+    - explicit scenario results 기반 history update
+  - 제외:
+    - baseline cache 완성
+    - scenario authoring UX
+    - HTML/UI 확장
 
 ### D3. Consumer Readiness Vocabulary
 
@@ -118,8 +135,8 @@ status:
 
 ## Next Decision
 
-다음은 D2만 결정한다.
+다음은 D3만 결정한다.
 
 질문:
-- `scenario-history`를 당장 `implemented helper, not yet core runtime` 으로 분류할지,
-  아니면 다음 구현 우선순위 1번으로 올려 current product claim에 맞게 실제 loop에 연결할지
+- consumer-readiness 문서와 관련 설명에서 `deepest consumer` 같은 단일 표현을 유지할지,
+  아니면 surface별 역할 vocabulary로 다시 쓸지
