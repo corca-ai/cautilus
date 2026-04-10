@@ -5,6 +5,8 @@ import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 import test from "node:test";
 
+import { COMPARE_ARTIFACT_SCHEMA, SCENARIO_RESULTS_SCHEMA } from "../scripts/agent-runtime/contract-versions.mjs";
+
 const BIN_PATH = join(process.cwd(), "bin", "cautilus");
 
 function writeExecutable(root, name, body) {
@@ -280,18 +282,22 @@ test("cautilus scenario summarize-telemetry aggregates scenario costs from resul
 		const inputPath = join(root, "results.json");
 		writeFileSync(
 			inputPath,
-			`${JSON.stringify([
-				{
-					scenarioId: "alpha",
-					durationMs: 100,
-					telemetry: { total_tokens: 120, cost_usd: 0.01 },
-				},
-				{
-					scenarioId: "beta",
-					durationMs: 200,
-					telemetry: { total_tokens: 220, cost_usd: 0.02 },
-				},
-			])}\n`,
+			`${JSON.stringify({
+				schemaVersion: SCENARIO_RESULTS_SCHEMA,
+				mode: "held_out",
+				results: [
+					{
+						scenarioId: "alpha",
+						durationMs: 100,
+						telemetry: { total_tokens: 120, cost_usd: 0.01 },
+					},
+					{
+						scenarioId: "beta",
+						durationMs: 200,
+						telemetry: { total_tokens: 220, cost_usd: 0.02 },
+					},
+				],
+			})}\n`,
 			"utf-8",
 		);
 		const result = spawnSync("node", [BIN_PATH, "scenario", "summarize-telemetry", "--results", inputPath], {
@@ -332,16 +338,26 @@ test("cautilus report build emits a machine-readable report packet with mode tel
 							mode: "held_out",
 							status: "passed",
 							durationMs: 10000,
-							candidateResults: [
-								{
-									scenarioId: "doctor-missing-adapter",
-									durationMs: 1200,
-									telemetry: {
-										total_tokens: 200,
-										cost_usd: 0.02,
+							scenarioResults: {
+								schemaVersion: SCENARIO_RESULTS_SCHEMA,
+								mode: "held_out",
+								results: [
+									{
+										scenarioId: "doctor-missing-adapter",
+										durationMs: 1200,
+										telemetry: {
+											total_tokens: 200,
+											cost_usd: 0.02,
+										},
 									},
+								],
+								compareArtifact: {
+									schemaVersion: COMPARE_ARTIFACT_SCHEMA,
+									summary: "Missing-adapter messaging improved.",
+									verdict: "improved",
+									improved: ["doctor-missing-adapter"],
 								},
-							],
+							},
 						},
 						{
 							mode: "full_gate",
@@ -378,6 +394,7 @@ test("cautilus report build emits a machine-readable report packet with mode tel
 		assert.equal(payload.telemetry.cost_usd, 0.05);
 		assert.equal(payload.telemetry.durationMs, 25000);
 		assert.equal(payload.modeSummaries[0].scenarioTelemetrySummary.overall.total_tokens, 200);
+		assert.equal(payload.modeSummaries[0].compareArtifact.verdict, "improved");
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}
@@ -439,19 +456,31 @@ test("cautilus mode evaluate executes adapter command templates and writes a rep
 			workspace,
 			"bench.sh",
 			`#!/bin/sh
-candidate_results_file="$1"
-cat > "$candidate_results_file" <<'JSON'
-[
-  {
-    "scenarioId": "doctor-missing-adapter",
-    "status": "passed",
-    "durationMs": 90,
-    "telemetry": {
-      "total_tokens": 21,
-      "cost_usd": 0.005
+scenario_results_file="$1"
+cat > "$scenario_results_file" <<'JSON'
+{
+  "schemaVersion": "cautilus.scenario_results.v1",
+  "mode": "held_out",
+  "results": [
+    {
+      "scenarioId": "doctor-missing-adapter",
+      "status": "passed",
+      "durationMs": 90,
+      "telemetry": {
+        "total_tokens": 21,
+        "cost_usd": 0.005
+      }
     }
+  ],
+  "compareArtifact": {
+    "schemaVersion": "cautilus.compare_artifact.v1",
+    "summary": "CLI doctor recovery stayed explicit.",
+    "verdict": "improved",
+    "improved": [
+      "doctor-missing-adapter"
+    ]
   }
-]
+}
 JSON
 echo ok
 `,
@@ -466,7 +495,7 @@ echo ok
 				"baseline_options:",
 				"  - baseline git ref via {baseline_ref}",
 				"held_out_command_templates:",
-				"  - sh {candidate_repo}/bench.sh {candidate_results_file}",
+				"  - sh {candidate_repo}/bench.sh {scenario_results_file}",
 				"",
 			].join("\n"),
 			"utf-8",
@@ -502,6 +531,7 @@ echo ok
 		assert.equal(report.recommendation, "defer");
 		assert.equal(report.commandObservations.length, 1);
 		assert.equal(report.modeSummaries[0].scenarioTelemetrySummary.overall.total_tokens, 21);
+		assert.equal(report.modeSummaries[0].compareArtifact.verdict, "improved");
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}
@@ -581,6 +611,102 @@ test("cautilus review prepare-input builds a review packet from adapter review s
 		assert.equal(packet.schemaVersion, "cautilus.review_packet.v1");
 		assert.equal(packet.artifactFiles[0].exists, true);
 		assert.equal(packet.humanReviewPrompts[0].id, "operator");
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("cautilus review build-prompt-input and render-prompt close the generic meta-prompt seam", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-bin-review-prompt-"));
+	try {
+		const reviewPacketPath = join(root, "review-packet.json");
+		const promptPath = join(root, "review.prompt.md");
+		const promptInputPath = join(root, "review-prompt-input.json");
+		mkdirSync(join(root, "fixtures"), { recursive: true });
+		writeFileSync(join(root, "fixtures", "consumer.prompt.md"), "Prefer operator-visible evidence.\n", "utf-8");
+		writeFileSync(
+			reviewPacketPath,
+			`${JSON.stringify(
+				{
+					schemaVersion: "cautilus.review_packet.v1",
+					generatedAt: "2026-04-11T00:03:00.000Z",
+					repoRoot: root,
+					adapterPath: join(root, ".agents", "cautilus-adapter.yaml"),
+					reportFile: join(root, "report.json"),
+					report: {
+						schemaVersion: "cautilus.report_packet.v1",
+						generatedAt: "2026-04-11T00:02:00.000Z",
+						candidate: "feature/cli",
+						baseline: "origin/main",
+						intent: "The CLI should explain missing adapter setup without operator guesswork.",
+						commands: [],
+						commandObservations: [],
+						modesRun: ["held_out"],
+						modeSummaries: [
+							{
+								mode: "held_out",
+								status: "passed",
+								summary: "held_out completed across 1 command.",
+								compareArtifact: {
+									schemaVersion: COMPARE_ARTIFACT_SCHEMA,
+									summary: "Held-out doctor messaging improved.",
+									verdict: "improved",
+									improved: ["doctor-missing-adapter"],
+								},
+							},
+						],
+						telemetry: { modeCount: 1 },
+						improved: ["doctor-missing-adapter"],
+						regressed: [],
+						unchanged: [],
+						noisy: [],
+						humanReviewFindings: [],
+						recommendation: "defer",
+					},
+					defaultPromptFile: {
+						relativePath: "fixtures/consumer.prompt.md",
+						absolutePath: join(root, "fixtures", "consumer.prompt.md"),
+						exists: true,
+					},
+					defaultSchemaFile: null,
+					artifactFiles: [],
+					reportArtifacts: [],
+					comparisonQuestions: ["Which scenario-level deltas actually matter to a real operator?"],
+					humanReviewPrompts: [
+						{
+							id: "real-user",
+							prompt: "Where would a real user still judge the candidate worse despite benchmark wins?",
+						},
+					],
+				},
+				null,
+				2,
+			)}\n`,
+			"utf-8",
+		);
+		const buildResult = spawnSync(
+			"node",
+			[BIN_PATH, "review", "build-prompt-input", "--review-packet", reviewPacketPath, "--output", promptInputPath],
+			{
+				cwd: process.cwd(),
+				encoding: "utf-8",
+			},
+		);
+		assert.equal(buildResult.status, 0, buildResult.stderr);
+		const promptInput = JSON.parse(readFileSync(promptInputPath, "utf-8"));
+		assert.equal(promptInput.schemaVersion, "cautilus.review_prompt_inputs.v1");
+		const renderResult = spawnSync(
+			"node",
+			[BIN_PATH, "review", "render-prompt", "--input", promptInputPath, "--output", promptPath],
+			{
+				cwd: process.cwd(),
+				encoding: "utf-8",
+			},
+		);
+		assert.equal(renderResult.status, 0, renderResult.stderr);
+		const prompt = readFileSync(promptPath, "utf-8");
+		assert.match(prompt, /Held-out doctor messaging improved\./);
+		assert.match(prompt, /Prefer operator-visible evidence\./);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

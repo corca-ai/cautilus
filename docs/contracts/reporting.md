@@ -35,6 +35,8 @@ The standalone builder should start from an explicit input packet:
 - `commands`: explicit mode-to-command mapping
 - optional `commandObservations`: bounded executed-command records
 - `modeRuns`: checked-in or persisted mode execution records
+  Each mode run may include one `scenarioResults` packet using
+  `cautilus.scenario_results.v1`.
 - optional `improved`, `regressed`, `unchanged`, `noisy`
 - optional `humanReviewFindings`
 - `recommendation`
@@ -82,7 +84,8 @@ scenario-level telemetry and lift it into a machine-readable report packet.
 That packet should summarize both:
 
 - per-mode telemetry
-- per-mode scenario telemetry when candidate results are available
+- per-mode scenario telemetry when explicit scenario results are available
+- per-mode compare-artifact summaries when compare output exists
 - overall report telemetry across all included modes
 
 ## Interpretation Rules

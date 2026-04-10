@@ -28,7 +28,54 @@
       "type": "array"
     },
     "modeRuns": {
-      "type": "array"
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "mode"
+        ],
+        "properties": {
+          "mode": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "startedAt": {
+            "type": "string"
+          },
+          "completedAt": {
+            "type": "string"
+          },
+          "durationMs": {
+            "type": "number"
+          },
+          "telemetry": {
+            "type": "object"
+          },
+          "scenarioResults": {
+            "type": "object",
+            "required": [
+              "schemaVersion",
+              "results"
+            ],
+            "properties": {
+              "schemaVersion": {
+                "const": "cautilus.scenario_results.v1"
+              },
+              "results": {
+                "type": "array"
+              },
+              "compareArtifact": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
     },
     "improved": {
       "type": "array"

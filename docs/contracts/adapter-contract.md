@@ -253,7 +253,8 @@ Template placeholders should stay obvious and few. Good placeholders:
 - `{comparison_samples}`
 - `{full_gate_samples}`
 - `{output_dir}`
-- `{candidate_results_file}`
+- `{scenario_results_file}`
+- `{candidate_results_file}` for migration-only compatibility
 - `{report_input_file}`
 - `{report_file}`
 
@@ -262,8 +263,10 @@ If a value can be inferred cheaply every time, do not add a placeholder for it.
 For adapter-driven mode execution, `Cautilus` may also supply:
 
 - `{output_dir}`: bounded artifact directory for this invocation
-- `{candidate_results_file}`: JSON file the command may write with scenario
-  result records
+- `{scenario_results_file}`: JSON file the command should write using
+  `cautilus.scenario_results.v1`
+- `{candidate_results_file}`: compatibility alias for
+  `{scenario_results_file}` while older adapters migrate
 - `{report_input_file}`: path where `Cautilus` will persist the intermediate
   report input packet
 - `{report_file}`: path where `Cautilus` will persist the final report packet

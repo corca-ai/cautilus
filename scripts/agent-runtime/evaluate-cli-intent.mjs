@@ -4,10 +4,14 @@ import { spawnSync } from "node:child_process";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
 
+import {
+	CLI_EVALUATION_INPUTS_SCHEMA,
+	CLI_EVALUATION_PACKET_SCHEMA,
+	SCENARIO_RESULTS_SCHEMA,
+} from "./contract-versions.mjs";
 import { REPORT_INPUTS_SCHEMA, buildReportPacket } from "./build-report-packet.mjs";
 
-export const CLI_EVALUATION_INPUTS_SCHEMA = "cautilus.cli_evaluation_inputs.v1";
-export const CLI_EVALUATION_PACKET_SCHEMA = "cautilus.cli_evaluation_packet.v1";
+export { CLI_EVALUATION_INPUTS_SCHEMA, CLI_EVALUATION_PACKET_SCHEMA } from "./contract-versions.mjs";
 
 const MODE_VALUES = new Set(["iterate", "held_out", "comparison", "full_gate"]);
 
@@ -344,16 +348,21 @@ function buildCliReport(input, observation, expectationResults, now) {
 					startedAt: observation.startedAt,
 					completedAt: observation.completedAt,
 					durationMs: observation.durationMs,
-					candidateResults: [
-						{
-							scenarioId: input.surfaceId,
-							status: passed ? "passed" : "failed",
-							timestamp: observation.completedAt,
-							startedAt: observation.startedAt,
-							completedAt: observation.completedAt,
-							durationMs: observation.durationMs,
-						},
-					],
+					scenarioResults: {
+						schemaVersion: SCENARIO_RESULTS_SCHEMA,
+						mode: input.mode,
+						source: "cli_evaluate",
+						results: [
+							{
+								scenarioId: input.surfaceId,
+								status: passed ? "passed" : "failed",
+								timestamp: observation.completedAt,
+								startedAt: observation.startedAt,
+								completedAt: observation.completedAt,
+								durationMs: observation.durationMs,
+							},
+						],
+					},
 				},
 			],
 			improved: passed ? [input.surfaceId] : [],

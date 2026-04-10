@@ -31,7 +31,10 @@
 | bin/cautilus | fixed | mode evaluate |
 | bin/cautilus | fixed | cli evaluate |
 | bin/cautilus | fixed | review prepare-input |
+| bin/cautilus | fixed | review build-prompt-input |
+| bin/cautilus | fixed | review render-prompt |
 | bin/cautilus | fixed | review variants |
+| bin/cautilus | fixed | --version |
 | bin/cautilus.test.mjs | file_exists |  |
 | skills/cautilus/SKILL.md | file_exists |  |
 | skills/cautilus/agents/openai.yaml | file_exists |  |
@@ -55,6 +58,14 @@
 | scripts/agent-runtime/evaluate-cli-intent.mjs | fixed | CLI_EVALUATION_PACKET_SCHEMA |
 | scripts/agent-runtime/build-review-packet.mjs | file_exists |  |
 | scripts/agent-runtime/build-review-packet.mjs | fixed | REVIEW_PACKET_SCHEMA |
+| scripts/agent-runtime/build-review-prompt-input.mjs | file_exists |  |
+| scripts/agent-runtime/build-review-prompt-input.mjs | fixed | REVIEW_PROMPT_INPUTS_SCHEMA |
+| scripts/agent-runtime/render-review-prompt.mjs | file_exists |  |
+| scripts/agent-runtime/render-review-prompt.mjs | fixed | renderReviewPrompt |
+| scripts/agent-runtime/scenario-results.mjs | file_exists |  |
+| scripts/agent-runtime/scenario-results.mjs | fixed | SCENARIO_RESULTS_SCHEMA |
+| scripts/agent-runtime/contract-versions.mjs | file_exists |  |
+| scripts/agent-runtime/contract-versions.mjs | fixed | REVIEW_PROMPT_INPUTS_SCHEMA |
 | docs/contracts/scenario-proposal-inputs.md | file_exists |  |
 | docs/contracts/scenario-proposal-inputs.md | fixed | cautilus.scenario_proposal_inputs.v1 |
 | docs/contracts/scenario-proposal-normalization.md | file_exists |  |
@@ -63,9 +74,14 @@
 | docs/contracts/cli-evaluation.md | fixed | cautilus.cli_evaluation_packet.v1 |
 | docs/contracts/review-packet.md | file_exists |  |
 | docs/contracts/review-packet.md | fixed | cautilus.review_packet.v1 |
+| docs/contracts/review-prompt-inputs.md | file_exists |  |
+| docs/contracts/review-prompt-inputs.md | fixed | cautilus.review_prompt_inputs.v1 |
+| docs/contracts/scenario-results.md | file_exists |  |
+| docs/contracts/scenario-results.md | fixed | cautilus.scenario_results.v1 |
 | docs/contracts/scenario-history.md | fixed | durationMs |
 | docs/release-boundary.md | file_exists |  |
 | docs/release-boundary.md | fixed | Product-Owned Surface |
+| docs/release-boundary.md | fixed | install.sh |
 | docs/consumer-readiness.md | file_exists |  |
 | docs/consumer-readiness.md | fixed | all three target repos have an official cautilus-adapter |
 | docs/consumer-migration.md | file_exists |  |
@@ -74,7 +90,14 @@
 | scripts/agent-runtime/scenario-result-telemetry.mjs | fixed | cautilus.scenario_telemetry_summary.v1 |
 | scripts/agent-runtime/summarize-scenario-telemetry.mjs | file_exists |  |
 | fixtures/scenario-proposals/results.json | file_exists |  |
+| fixtures/scenario-results/example-results.json | file_exists |  |
+| fixtures/scenario-results/results.schema.json | file_exists |  |
+| fixtures/review/prompt-input.schema.json | file_exists |  |
 | bin/cautilus | fixed | scenario summarize-telemetry |
+| install.sh | file_exists |  |
+| install.sh | fixed | CAUTILUS_VERSION |
+| scripts/release/render-homebrew-formula.mjs | file_exists |  |
+| scripts/release/render-homebrew-formula.mjs | fixed | renderHomebrewFormula |
 | scripts/resolve_adapter.py | fixed | cautilus-adapter.yaml |
 | scripts/init_adapter.py | fixed | dump_yaml_document |
 | scripts/agent-runtime/scenario-history.mjs | file_exists |  |
@@ -121,6 +144,8 @@
 - target repo의 adapter readiness doctor
 - adapter-defined mode execution that emits report packets directly
 - review packet assembly for compare artifacts and human-review prompts
+- explicit scenario-results packets and compare-artifact propagation through report/review flow
+- review meta-prompt input packet and prompt renderer above the review packet boundary
 - scenario profile and graduation history helpers
 - chatbot proposal-candidate normalization helper
 - chatbot normalization command
@@ -140,6 +165,7 @@
 - explicit latency telemetry in executor-variant summaries
 - scenario-level telemetry summaries for cost and token transparency
 - intentful behavior framing for chatbot, skill, and CLI surfaces
+- tagged-release curl installer plus Homebrew formula render surface
 - local lint/test surface
 
 아직 이 단계에서 강제하지 않는 것:
@@ -160,10 +186,14 @@ $ node ./bin/cautilus scenario normalize chatbot --input ./fixtures/scenario-pro
 $ node ./bin/cautilus scenario normalize skill --input ./fixtures/scenario-proposals/skill-input.json
 $ node ./bin/cautilus scenario prepare-input --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json --family fast_regression --window-days 14 --now 2026-04-11T00:00:00.000Z
 $ node ./bin/cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json
+$ node ./bin/cautilus scenario summarize-telemetry --results ./fixtures/scenario-results/example-results.json
 $ node ./bin/cautilus report build --input ./fixtures/reports/report-input.json
 $ node ./bin/cautilus mode evaluate --repo-root . --mode held_out --intent "CLI behavior should remain legible." --baseline-ref origin/main --output-dir /tmp/cautilus-mode || true
 $ node ./bin/cautilus cli evaluate --input ./fixtures/cli-evaluation/doctor-missing-adapter.json
 $ node ./bin/cautilus review prepare-input --repo-root . --report-file ./fixtures/reports/report-input.json || true
+$ node ./bin/cautilus review build-prompt-input --review-packet /tmp/cautilus-mode/review.json || true
+$ node ./bin/cautilus review render-prompt --input /tmp/cautilus-mode/review-prompt-input.json || true
+$ node ./bin/cautilus --version
 $ node --test ./bin/cautilus.test.mjs
 $ node --test ./scripts/agent-runtime/consumer-example-fixtures.test.mjs
 $ node --test ./scripts/agent-runtime/chatbot-proposal-candidates.test.mjs
@@ -176,6 +206,10 @@ $ node --test ./scripts/agent-runtime/build-report-packet.test.mjs
 $ node --test ./scripts/agent-runtime/evaluate-adapter-mode.test.mjs
 $ node --test ./scripts/agent-runtime/evaluate-cli-intent.test.mjs
 $ node --test ./scripts/agent-runtime/build-review-packet.test.mjs
+$ node --test ./scripts/agent-runtime/review-prompt-flow.test.mjs
+$ node --test ./scripts/agent-runtime/reporting-contract-schemas.test.mjs
+$ node --test ./scripts/release/distribution-surface.test.mjs
+$ bash -n ./install.sh
 $ test -f ./skills/cautilus/SKILL.md
 $ npm run lint
 $ npm run test

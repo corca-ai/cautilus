@@ -13,6 +13,8 @@ These are part of the reusable release boundary:
 - [scripts/init_adapter.py](/home/ubuntu/cautilus/scripts/init_adapter.py)
 - [scripts/doctor.py](/home/ubuntu/cautilus/scripts/doctor.py)
 - [scripts/agent-runtime/](/home/ubuntu/cautilus/scripts/agent-runtime)
+- [install.sh](/home/ubuntu/cautilus/install.sh)
+- [scripts/release/](/home/ubuntu/cautilus/scripts/release)
 - [docs/contracts/](/home/ubuntu/cautilus/docs/contracts)
 - [fixtures/workbench/review-verdict.schema.json](/home/ubuntu/cautilus/fixtures/workbench/review-verdict.schema.json)
 - checked-in product example fixtures under
@@ -34,13 +36,15 @@ These stay in the host repo:
 
 The current honest install story is:
 
-1. check out `Cautilus`
-2. run `npm install`
-3. call `node ./bin/cautilus ...` directly or use the bundled skill
+1. either check out `Cautilus` and run `npm install`
+2. or install from a tagged GitHub release with [install.sh](/home/ubuntu/cautilus/install.sh)
+3. call `cautilus --version` or `cautilus ...` directly
 4. keep adapters and repo-local assets in the consumer repo
+5. when cutting a tagged release, render the Homebrew formula body with
+   [render-homebrew-formula.mjs](/home/ubuntu/cautilus/scripts/release/render-homebrew-formula.mjs)
 
-This repo is not yet claiming npm publication, Homebrew packaging, or a
-cross-repo skill installer contract.
+This repo is still not claiming npm publication or a cross-repo skill
+installer contract.
 
 ## Versioning Discipline
 

@@ -3,9 +3,10 @@ import { resolve } from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
 
+import { CHATBOT_NORMALIZATION_INPUTS_SCHEMA } from "./contract-versions.mjs";
 import { normalizeChatbotProposalCandidates } from "./chatbot-proposal-candidates.mjs";
 
-export const CHATBOT_NORMALIZATION_INPUTS_SCHEMA = "cautilus.chatbot_normalization_inputs.v1";
+export { CHATBOT_NORMALIZATION_INPUTS_SCHEMA } from "./contract-versions.mjs";
 
 function usage(exitCode = 0) {
 	const text = [

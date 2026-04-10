@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cautilus.scenario_results.v1",
+  "title": "Cautilus Scenario Results",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "results"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "cautilus.scenario_results.v1"
+    },
+    "generatedAt": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "iterate",
+        "held_out",
+        "comparison",
+        "full_gate"
+      ]
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "scenarioId"
+        ],
+        "properties": {
+          "scenarioId": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "passed",
+              "failed",
+              "improved",
+              "regressed",
+              "unchanged",
+              "noisy",
+              "missing"
+            ]
+          },
+          "overallScore": {
+            "type": "number",
+            "minimum": 0
+          },
+          "passRate": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "timestamp": {
+            "type": "string"
+          },
+          "startedAt": {
+            "type": "string"
+          },
+          "completedAt": {
+            "type": "string"
+          },
+          "durationMs": {
+            "type": "number",
+            "minimum": 0
+          },
+          "telemetry": {
+            "type": "object"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "compareArtifact": {
+      "type": "object",
+      "required": [
+        "schemaVersion",
+        "summary"
+      ],
+      "properties": {
+        "schemaVersion": {
+          "const": "cautilus.compare_artifact.v1"
+        },
+        "generatedAt": {
+          "type": "string"
+        },
+        "verdict": {
+          "type": "string",
+          "enum": [
+            "improved",
+            "regressed",
+            "mixed",
+            "unchanged",
+            "inconclusive"
+          ]
+        },
+        "summary": {
+          "type": "string"
+        },
+        "improved": {
+          "type": "array"
+        },
+        "regressed": {
+          "type": "array"
+        },
+        "unchanged": {
+          "type": "array"
+        },
+        "noisy": {
+          "type": "array"
+        },
+        "deltas": {
+          "type": "array"
+        },
+        "artifactPaths": {
+          "type": "array"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

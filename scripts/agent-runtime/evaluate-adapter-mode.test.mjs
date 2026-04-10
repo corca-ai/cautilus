@@ -5,6 +5,8 @@ import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 import test from "node:test";
 
+import { COMPARE_ARTIFACT_SCHEMA } from "./contract-versions.mjs";
+
 const SCRIPT_PATH = join(process.cwd(), "scripts", "agent-runtime", "evaluate-adapter-mode.mjs");
 
 function writeExecutable(root, name, body) {
@@ -25,19 +27,31 @@ function createRepo() {
 		"bench.sh",
 		`#!/bin/sh
 mode="$1"
-candidate_results_file="$2"
-cat > "$candidate_results_file" <<'JSON'
-[
-  {
-    "scenarioId": "doctor-missing-adapter",
-    "status": "passed",
-    "durationMs": 110,
-    "telemetry": {
-      "total_tokens": 42,
-      "cost_usd": 0.01
+scenario_results_file="$2"
+cat > "$scenario_results_file" <<JSON
+{
+  "schemaVersion": "cautilus.scenario_results.v1",
+  "mode": "$mode",
+  "results": [
+    {
+      "scenarioId": "doctor-missing-adapter",
+      "status": "passed",
+      "durationMs": 110,
+      "telemetry": {
+        "total_tokens": 42,
+        "cost_usd": 0.01
+      }
     }
+  ],
+  "compareArtifact": {
+    "schemaVersion": "cautilus.compare_artifact.v1",
+    "summary": "Held-out doctor messaging improved.",
+    "verdict": "improved",
+    "improved": [
+      "doctor-missing-adapter"
+    ]
   }
-]
+}
 JSON
 echo "$mode ok"
 `,
@@ -61,9 +75,9 @@ echo preflight-ok
 			"preflight_commands:",
 			"  - sh {candidate_repo}/preflight.sh",
 			"held_out_command_templates:",
-			"  - sh {candidate_repo}/bench.sh held_out {candidate_results_file}",
+			"  - sh {candidate_repo}/bench.sh held_out {scenario_results_file}",
 			"full_gate_command_templates:",
-			"  - sh {candidate_repo}/bench.sh full_gate {candidate_results_file}",
+			"  - sh {candidate_repo}/bench.sh full_gate {scenario_results_file}",
 			"held_out_samples_default: 2",
 			"full_gate_samples_default: 2",
 			"",
@@ -106,6 +120,7 @@ test("evaluate-adapter-mode executes held_out commands and emits a report packet
 		assert.equal(report.commandObservations.length, 2);
 		assert.equal(report.modeSummaries[0].scenarioTelemetrySummary.overall.total_tokens, 42);
 		assert.equal(report.modeSummaries[0].scenarioTelemetrySummary.overall.cost_usd, 0.01);
+		assert.equal(report.modeSummaries[0].compareArtifact.schemaVersion, COMPARE_ARTIFACT_SCHEMA);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

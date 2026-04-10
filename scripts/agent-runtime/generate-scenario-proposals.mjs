@@ -3,9 +3,10 @@ import { resolve } from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
 
+import { SCENARIO_PROPOSAL_INPUTS_SCHEMA } from "./contract-versions.mjs";
 import { generateScenarioProposals } from "./scenario-proposals.mjs";
 
-export const SCENARIO_PROPOSAL_INPUTS_SCHEMA = "cautilus.scenario_proposal_inputs.v1";
+export { SCENARIO_PROPOSAL_INPUTS_SCHEMA } from "./contract-versions.mjs";
 
 function usage(exitCode = 0) {
 	const text = [

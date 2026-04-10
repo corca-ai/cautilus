@@ -111,6 +111,9 @@ Command templates may contain placeholders such as:
 - `{held_out_samples}`
 - `{comparison_samples}`
 - `{full_gate_samples}`
+- `{scenario_results_file}`
+- `{report_input_file}`
+- `{report_file}`
 
 Replace placeholders with concrete values before execution and report those
 values back to the user. Do not hide them behind "same as usual."
@@ -169,6 +172,16 @@ node ./bin/cautilus report build --input ./fixtures/reports/report-input.json
 node ./bin/cautilus review prepare-input \
   --repo-root . \
   --report-file /tmp/cautilus-mode/report.json
+```
+   Then prefer the product-owned meta-prompt seam before hand-written prompt
+   glue:
+
+```bash
+node ./bin/cautilus review build-prompt-input \
+  --review-packet /tmp/cautilus-mode/review.json
+
+node ./bin/cautilus review render-prompt \
+  --input /tmp/cautilus-mode/review-prompt-input.json
 ```
 9. If the user wants a repeatable local evaluator and none exists, create a
    checked-in bounded runner first.

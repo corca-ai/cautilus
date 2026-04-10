@@ -1,4 +1,7 @@
-export const SCENARIO_TELEMETRY_SUMMARY_SCHEMA = "cautilus.scenario_telemetry_summary.v1";
+import { SCENARIO_TELEMETRY_SUMMARY_SCHEMA } from "./contract-versions.mjs";
+import { normalizeScenarioResult } from "./scenario-results.mjs";
+
+export { SCENARIO_TELEMETRY_SUMMARY_SCHEMA } from "./contract-versions.mjs";
 
 const TELEMETRY_NUMERIC_FIELDS = [
 	"prompt_tokens",
@@ -10,112 +13,6 @@ const TELEMETRY_NUMERIC_FIELDS = [
 function parseIsoTime(value) {
 	const millis = Date.parse(String(value || ""));
 	return Number.isFinite(millis) ? millis : 0;
-}
-
-function normalizeNonNegativeNumber(value, field) {
-	if (value === undefined || value === null) {
-		return null;
-	}
-	if (typeof value !== "number" || !Number.isFinite(value) || value < 0) {
-		throw new Error(`${field} must be a non-negative number`);
-	}
-	return value;
-}
-
-function normalizeIsoTimestamp(value, field) {
-	if (value === undefined || value === null) {
-		return null;
-	}
-	if (typeof value !== "string" || !Number.isFinite(Date.parse(value))) {
-		throw new Error(`${field} must be a valid ISO timestamp`);
-	}
-	return value;
-}
-
-function setOptionalStringField(target, source, field, label) {
-	if (source[field] === undefined) {
-		return;
-	}
-	if (typeof source[field] !== "string" || !source[field].trim()) {
-		throw new Error(`${label}.${field} must be a non-empty string`);
-	}
-	target[field] = source[field];
-}
-
-function setOptionalNumberField(target, source, field, label) {
-	if (source[field] === undefined) {
-		return;
-	}
-	if (typeof source[field] !== "number" || !Number.isFinite(source[field])) {
-		throw new Error(`${label}.${field} must be a number`);
-	}
-	target[field] = source[field];
-}
-
-function readTelemetryStringFields(value, field, telemetry) {
-	for (const key of ["provider", "model"]) {
-		setOptionalStringField(telemetry, value, key, field);
-	}
-}
-
-function readTelemetryNumericFields(value, field, telemetry) {
-	for (const key of TELEMETRY_NUMERIC_FIELDS) {
-		const normalized = normalizeNonNegativeNumber(value[key], `${field}.${key}`);
-		if (normalized !== null) {
-			telemetry[key] = normalized;
-		}
-	}
-}
-
-function normalizeTelemetry(value, field) {
-	if (value === undefined || value === null) {
-		return null;
-	}
-	if (!value || typeof value !== "object" || Array.isArray(value)) {
-		throw new Error(`${field} must be an object`);
-	}
-	const telemetry = {};
-	readTelemetryStringFields(value, field, telemetry);
-	readTelemetryNumericFields(value, field, telemetry);
-	return Object.keys(telemetry).length > 0 ? telemetry : null;
-}
-
-function setOptionalIsoField(target, source, field, label) {
-	const value = normalizeIsoTimestamp(source[field], `${label}.${field}`);
-	if (value) {
-		target[field] = value;
-	}
-}
-
-function setOptionalDurationField(target, source, label) {
-	const durationMs = normalizeNonNegativeNumber(source.durationMs, `${label}.durationMs`);
-	if (durationMs !== null) {
-		target.durationMs = durationMs;
-	}
-}
-
-export function normalizeScenarioResult(result, label = "result") {
-	if (!result || typeof result !== "object" || Array.isArray(result)) {
-		throw new Error(`${label} must be an object`);
-	}
-	if (typeof result.scenarioId !== "string" || !result.scenarioId.trim()) {
-		throw new Error(`${label}.scenarioId must be a non-empty string`);
-	}
-	const normalized = {
-		scenarioId: result.scenarioId,
-	};
-	setOptionalStringField(normalized, result, "status", label);
-	setOptionalNumberField(normalized, result, "overallScore", label);
-	setOptionalNumberField(normalized, result, "passRate", label);
-	setOptionalIsoField(normalized, result, "timestamp", label);
-	setOptionalIsoField(normalized, result, "startedAt", label);
-	setOptionalIsoField(normalized, result, "completedAt", label);
-	setOptionalDurationField(normalized, result, label);
-	const telemetry = normalizeTelemetry(result.telemetry, `${label}.telemetry`);
-	if (telemetry) {
-		normalized.telemetry = telemetry;
-	}
-	return normalized;
 }
 
 function readEntryValue(entry, field, source) {

@@ -62,6 +62,10 @@ Ceal remains a proving-ground consumer, not the product boundary.
   product-owned bounded evaluation packet for operator-facing CLI behavior
 - [docs/contracts/review-packet.md](/home/ubuntu/cautilus/docs/contracts/review-packet.md):
   product-owned packet that binds report artifacts to comparison questions and review prompts
+- [docs/contracts/review-prompt-inputs.md](/home/ubuntu/cautilus/docs/contracts/review-prompt-inputs.md):
+  product-owned meta-prompt packet above the review packet boundary
+- [docs/contracts/scenario-results.md](/home/ubuntu/cautilus/docs/contracts/scenario-results.md):
+  explicit per-mode scenario-results and compare-artifact contract
 - [fixtures/scenario-proposals/input.schema.json](/home/ubuntu/cautilus/fixtures/scenario-proposals/input.schema.json):
   checked-in schema for `cautilus.scenario_proposal_inputs.v1`
 - [fixtures/scenario-proposals/proposals.schema.json](/home/ubuntu/cautilus/fixtures/scenario-proposals/proposals.schema.json):
@@ -82,6 +86,8 @@ Ceal remains a proving-ground consumer, not the product boundary.
   from extraction scaffold to standalone product
 - [docs/release-boundary.md](/home/ubuntu/cautilus/docs/release-boundary.md):
   current standalone release surface and compatibility discipline
+- [install.sh](/home/ubuntu/cautilus/install.sh):
+  curl-install surface for tagged GitHub releases
 - [docs/consumer-readiness.md](/home/ubuntu/cautilus/docs/consumer-readiness.md):
   current live-consumer vs normalization-reference status for Ceal, charness,
   and crill
@@ -105,6 +111,10 @@ Ceal remains a proving-ground consumer, not the product boundary.
   proposal ranking and draft-scenario payload helpers
 - [scripts/agent-runtime/generate-scenario-proposals.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/generate-scenario-proposals.mjs):
   standalone proposal packet generator for normalized inputs
+- [scripts/agent-runtime/build-review-prompt-input.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/build-review-prompt-input.mjs):
+  explicit review meta-prompt input builder
+- [scripts/agent-runtime/render-review-prompt.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/render-review-prompt.mjs):
+  generic review meta-prompt renderer
 - [scripts/agent-runtime/run-workbench-review-variant.sh](/home/ubuntu/cautilus/scripts/agent-runtime/run-workbench-review-variant.sh):
   bounded single-variant runner
 - [scripts/agent-runtime/run-workbench-executor-variants.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/run-workbench-executor-variants.mjs):
@@ -112,6 +122,12 @@ Ceal remains a proving-ground consumer, not the product boundary.
 - [bin/cautilus](/home/ubuntu/cautilus/bin/cautilus): minimal CLI entrypoint
 
 ## Quick Start
+
+Install from a tagged GitHub release:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh | sh
+```
 
 Resolve an adapter in a target repo:
 
@@ -157,7 +173,7 @@ result packets:
 
 ```bash
 node ./bin/cautilus scenario summarize-telemetry \
-  --results ./fixtures/scenario-proposals/results.json
+  --results ./fixtures/scenario-results/example-results.json
 ```
 
 Build a machine-readable evaluation report packet from explicit mode runs:
@@ -184,6 +200,16 @@ Assemble a durable review packet around a report before running review variants:
 node ./bin/cautilus review prepare-input \
   --repo-root . \
   --report-file /tmp/cautilus-mode/report.json
+```
+
+Build the product-owned meta-prompt packet and render a review prompt:
+
+```bash
+node ./bin/cautilus review build-prompt-input \
+  --review-packet /tmp/cautilus-mode/review.json
+
+node ./bin/cautilus review render-prompt \
+  --input /tmp/cautilus-mode/review-prompt-input.json
 ```
 
 Evaluate one operator-facing CLI behavior from an explicit intent packet:

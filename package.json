@@ -1,6 +1,7 @@
 {
   "name": "cautilus",
   "private": true,
+  "version": "0.1.0",
   "type": "module",
   "description": "Adapter-driven intentful behavior evaluation toolkit",
   "engines": {
@@ -13,7 +14,7 @@
     "lint": "npm run lint:eslint && npm run lint:specs",
     "lint:eslint": "eslint .",
     "lint:specs": "node scripts/check-specs.mjs",
-    "test": "node --test bin/*.test.mjs scripts/agent-runtime/*.test.mjs",
+    "test": "node --test bin/*.test.mjs scripts/agent-runtime/*.test.mjs scripts/release/*.test.mjs",
     "verify": "npm run lint && npm run test"
   },
   "devDependencies": {

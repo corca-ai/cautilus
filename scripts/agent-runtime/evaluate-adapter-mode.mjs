@@ -4,9 +4,15 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import process from "node:process";
 
-import { REPORT_INPUTS_SCHEMA, buildReportPacket } from "./build-report-packet.mjs";
+import {
+	ADAPTER_MODE_EVALUATION_PACKET_SCHEMA,
+	REPORT_INPUTS_SCHEMA,
+	SCENARIO_RESULTS_SCHEMA,
+} from "./contract-versions.mjs";
+import { buildReportPacket } from "./build-report-packet.mjs";
+import { normalizeScenarioResultsPacket } from "./scenario-results.mjs";
 
-export const ADAPTER_MODE_EVALUATION_PACKET_SCHEMA = "cautilus.adapter_mode_evaluation.v1";
+export { ADAPTER_MODE_EVALUATION_PACKET_SCHEMA } from "./contract-versions.mjs";
 
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 const TOOL_ROOT = resolve(SCRIPT_DIR, "..", "..");
@@ -36,7 +42,8 @@ const VALUE_OPTION_FIELDS = {
 	"--profile": "profile",
 	"--split": "split",
 	"--output-dir": "outputDir",
-	"--candidate-results-file": "candidateResultsFile",
+	"--candidate-results-file": "scenarioResultsFile",
+	"--scenario-results-file": "scenarioResultsFile",
 	"--recommendation-on-pass": "recommendationOnPass",
 };
 const DEFAULT_SPLIT_BY_MODE = {
@@ -49,7 +56,7 @@ const DEFAULT_SPLIT_BY_MODE = {
 function usage(exitCode = 0) {
 	const text = [
 		"Usage:",
-		"  node ./scripts/agent-runtime/evaluate-adapter-mode.mjs --repo-root <dir> --mode <iterate|held_out|comparison|full_gate> --intent <text> --output-dir <dir> [--baseline-ref <ref>] [--baseline-repo <dir>] [--candidate-repo <dir>] [--adapter <path> | --adapter-name <name>] [--history-file <path>] [--profile <name>] [--split <name>] [--candidate-results-file <path>] [--skip-preflight]",
+		"  node ./scripts/agent-runtime/evaluate-adapter-mode.mjs --repo-root <dir> --mode <iterate|held_out|comparison|full_gate> --intent <text> --output-dir <dir> [--baseline-ref <ref>] [--baseline-repo <dir>] [--candidate-repo <dir>] [--adapter <path> | --adapter-name <name>] [--history-file <path>] [--profile <name>] [--split <name>] [--scenario-results-file <path>] [--skip-preflight]",
 	].join("\n");
 	const out = exitCode === 0 ? process.stdout : process.stderr;
 	out.write(`${text}\n`);
@@ -91,7 +98,7 @@ function createDefaultOptions() {
 		profile: null,
 		split: null,
 		outputDir: null,
-		candidateResultsFile: null,
+		scenarioResultsFile: null,
 		recommendationOnPass: null,
 		skipPreflight: false,
 		iterateSamples: null,
@@ -203,18 +210,25 @@ function recommendationOnPass(mode, explicitValue) {
 	return mode === "full_gate" ? "accept-now" : "defer";
 }
 
-function readCandidateResults(path) {
+function emptyScenarioResultsPacket(mode) {
+	return {
+		schemaVersion: SCENARIO_RESULTS_SCHEMA,
+		source: `mode_evaluate:${mode}`,
+		mode,
+		results: [],
+	};
+}
+
+function readScenarioResults(path, mode) {
 	if (!existsSync(path)) {
-		return [];
+		return emptyScenarioResultsPacket(mode);
 	}
 	const parsed = JSON.parse(readFileSync(path, "utf-8"));
-	if (Array.isArray(parsed)) {
-		return parsed;
+	const normalized = normalizeScenarioResultsPacket(parsed, "scenarioResults");
+	if (normalized.mode && normalized.mode !== mode) {
+		fail(`scenario results mode ${normalized.mode} does not match requested mode ${mode}`);
 	}
-	if (parsed && typeof parsed === "object" && Array.isArray(parsed.candidateResults)) {
-		return parsed.candidateResults;
-	}
-	fail(`candidate results file must be an array or an object with candidateResults: ${path}`);
+	return normalized.mode ? normalized : { ...normalized, mode };
 }
 
 function runShellCommand({ repoRoot, command, stdoutFile, stderrFile }) {
@@ -260,30 +274,58 @@ function aggregateDuration(observations) {
 	return observations.reduce((total, entry) => total + (entry.durationMs || 0), 0);
 }
 
-function classifyScenarioBuckets(candidateResults) {
+function compareArtifactBuckets(scenarioResults) {
+	if (!scenarioResults.compareArtifact) {
+		return null;
+	}
+	return {
+		improved: scenarioResults.compareArtifact.improved || [],
+		regressed: scenarioResults.compareArtifact.regressed || [],
+		unchanged: scenarioResults.compareArtifact.unchanged || [],
+		noisy: scenarioResults.compareArtifact.noisy || [],
+	};
+}
+
+function classifyScenarioStatus(status) {
+	switch (status) {
+		case "passed":
+		case "improved":
+			return "improved";
+		case "unchanged":
+			return "unchanged";
+		case "noisy":
+			return "noisy";
+		default:
+			return "regressed";
+	}
+}
+
+function classifyScenarioBuckets(scenarioResults) {
+	const compareBuckets = compareArtifactBuckets(scenarioResults);
+	if (compareBuckets) {
+		return compareBuckets;
+	}
 	const improved = [];
 	const regressed = [];
 	const unchanged = [];
 	const noisy = [];
-	for (const result of candidateResults) {
+	for (const result of scenarioResults.results) {
 		const scenarioId = typeof result.scenarioId === "string" ? result.scenarioId : null;
 		if (!scenarioId) {
 			continue;
 		}
-		switch (result.status) {
-			case "passed":
+		switch (classifyScenarioStatus(result.status)) {
 			case "improved":
 				improved.push(scenarioId);
-				break;
+				continue;
 			case "unchanged":
 				unchanged.push(scenarioId);
-				break;
+				continue;
 			case "noisy":
 				noisy.push(scenarioId);
-				break;
+				continue;
 			default:
 				regressed.push(scenarioId);
-				break;
 		}
 	}
 	return { improved, regressed, unchanged, noisy };
@@ -311,7 +353,8 @@ function buildReplacements(options, adapterData, context) {
 		),
 		full_gate_samples: String(sampleValue(options.fullGateSamples, adapterData.full_gate_samples_default, 2)),
 		output_dir: shellEscape(context.outputDir),
-		candidate_results_file: shellEscape(context.candidateResultsFile),
+		candidate_results_file: shellEscape(context.scenarioResultsFile),
+		scenario_results_file: shellEscape(context.scenarioResultsFile),
 		report_input_file: shellEscape(context.reportInputFile),
 		report_file: shellEscape(context.reportFile),
 	};
@@ -334,8 +377,8 @@ function resolveModeContext(options, adapterPayload) {
 		candidateRepo: resolve(options.candidateRepo || repoRoot),
 		baselineRepo: resolve(options.baselineRepo || repoRoot),
 		historyFile: resolveHistoryFile(repoRoot, adapterData, options.historyFile),
-		candidateResultsFile: resolve(
-			options.candidateResultsFile || join(outputDir, `${options.mode}-candidate-results.json`),
+		scenarioResultsFile: resolve(
+			options.scenarioResultsFile || join(outputDir, `${options.mode}-scenario-results.json`),
 		),
 		reportInputFile: join(outputDir, "report-input.json"),
 		reportFile: join(outputDir, "report.json"),
@@ -377,8 +420,8 @@ function executePreflight(options, context) {
 
 function buildModeReportInput(options, context, modeObservations, commandObservations) {
 	const modeStatus = modeObservations.every((entry) => entry.status === "passed") ? "passed" : "failed";
-	const candidateResults = readCandidateResults(context.candidateResultsFile);
-	const scenarioBuckets = classifyScenarioBuckets(candidateResults);
+	const scenarioResults = readScenarioResults(context.scenarioResultsFile, options.mode);
+	const scenarioBuckets = classifyScenarioBuckets(scenarioResults);
 	const modeRun = {
 		mode: options.mode,
 		status: modeStatus,
@@ -386,7 +429,7 @@ function buildModeReportInput(options, context, modeObservations, commandObserva
 		...(modeObservations[0]?.startedAt ? { startedAt: modeObservations[0].startedAt } : {}),
 		...(modeObservations.at(-1)?.completedAt ? { completedAt: modeObservations.at(-1).completedAt } : {}),
 		durationMs: aggregateDuration(modeObservations),
-		candidateResults,
+		scenarioResults,
 	};
 	return {
 		schemaVersion: REPORT_INPUTS_SCHEMA,

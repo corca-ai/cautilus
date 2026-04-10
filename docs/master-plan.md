@@ -36,6 +36,14 @@ The target product is:
 - A first standalone `review prepare-input` command now assembles one durable
   review packet around a report, adapter review prompts, and compare
   questions.
+- A first explicit `cautilus.scenario_results.v1` packet now carries
+  scenario-level outcomes and compare artifacts through mode/report/review
+  surfaces.
+- A first standalone `review build-prompt-input` plus
+  `review render-prompt` chain now owns the generic meta-prompt layer above
+  the review packet boundary.
+- A first tagged-release install story now exists through `install.sh`,
+  `cautilus --version`, and a Homebrew formula renderer.
 - Ceal now repoints generic adapter-resolution and review-variant runner seams
   to `Cautilus` as a consumer.
 - A first generic scenario/history contract draft now exists in
@@ -90,12 +98,13 @@ Done or nearly done:
 
 ### Phase 2: Standalone Product Hardening
 
-Next:
+Done or nearly done:
 
 - make the binary and bundled skill feel like one product surface
-- decide the durable runtime boundary for review prompts, schemas, and compare
+- define a durable runtime boundary for review prompts, schemas, and compare
   artifacts
 - define a stable report packet file shape, not only a narrative shape
+- establish a first tagged-release installer surface without npm publication
 
 ### Phase 3: Evaluation Engine
 
@@ -160,17 +169,15 @@ The current release boundary is documented in
 
 ## Immediate Next Moves
 
-1. Keep the standalone binary and bundled skill aligned on one checked-in
-   workflow surface.
-2. Keep both `chatbot` and `skill` normalization wired into the
-   `prepare-input -> propose` standalone chain with checked-in fixtures.
+1. Keep the standalone binary, bundled skill, and installer surface aligned on
+   one checked-in workflow story.
+2. Wire `review render-prompt` into real executor-variant loops so the
+   meta-prompt seam is not only a standalone helper.
 3. Keep expanding normalization-pattern coverage while preserving one official
    adapter contract: `cautilus-adapter.yaml`.
 4. Prepare explicit deepening steps for `charness` and `crill` beyond the new
    root adapter surface instead of widening discovery rules.
-5. Decide whether review prompt generation stays consumer-owned or becomes a
-   product-owned runtime on top of `cautilus.review_packet.v1`.
-6. Tighten the candidate result packet and compare artifact contracts so
-   `mode evaluate` and `review prepare-input` can compose without repo lore.
-7. Turn the documented release boundary into a real distribution story before
-   wider external reuse.
+5. Turn the first install story into a real release discipline: tagged
+   archives, checksums, tap publication, and public-repo release docs.
+6. Keep moving Ceal-specific runtime seams out of the product boundary and
+   into consumer-owned adapters, prompts, and storage readers.

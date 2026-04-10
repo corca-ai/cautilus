@@ -51,6 +51,7 @@ node ./bin/cautilus doctor --repo-root .
 - [docs/contracts/skill-normalization.md](/home/ubuntu/cautilus/docs/contracts/skill-normalization.md)
 - [docs/contracts/cli-evaluation.md](/home/ubuntu/cautilus/docs/contracts/cli-evaluation.md)
 - [docs/contracts/review-packet.md](/home/ubuntu/cautilus/docs/contracts/review-packet.md)
+- [docs/contracts/review-prompt-inputs.md](/home/ubuntu/cautilus/docs/contracts/review-prompt-inputs.md)
 
 ## Workflow
 
@@ -105,6 +106,12 @@ node ./bin/cautilus mode evaluate \
 node ./bin/cautilus review prepare-input \
   --repo-root . \
   --report-file /tmp/cautilus-mode/report.json
+
+node ./bin/cautilus review build-prompt-input \
+  --review-packet /tmp/cautilus-mode/review.json
+
+node ./bin/cautilus review render-prompt \
+  --input /tmp/cautilus-mode/review-prompt-input.json
 
 node ./bin/cautilus cli evaluate \
   --input ./fixtures/cli-evaluation/doctor-missing-adapter.json

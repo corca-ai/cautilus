@@ -3,10 +3,11 @@ import { resolve } from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
 
+import { REPORT_INPUTS_SCHEMA, REPORT_PACKET_SCHEMA } from "./contract-versions.mjs";
+import { normalizeScenarioResultsPacket } from "./scenario-results.mjs";
 import { summarizeScenarioTelemetryEntries } from "./scenario-result-telemetry.mjs";
 
-export const REPORT_INPUTS_SCHEMA = "cautilus.report_inputs.v1";
-export const REPORT_PACKET_SCHEMA = "cautilus.report_packet.v1";
+export { REPORT_INPUTS_SCHEMA, REPORT_PACKET_SCHEMA } from "./contract-versions.mjs";
 
 const MODE_VALUES = new Set(["iterate", "held_out", "comparison", "full_gate"]);
 const NUMERIC_TELEMETRY_FIELDS = ["prompt_tokens", "completion_tokens", "total_tokens", "cost_usd"];
@@ -224,6 +225,9 @@ function normalizeModeRun(entry, index) {
 	if (!entry || typeof entry !== "object" || Array.isArray(entry)) {
 		throw new Error(`modeRuns[${index}] must be an object`);
 	}
+	if ("candidateResults" in entry) {
+		throw new Error(`modeRuns[${index}].candidateResults is no longer supported; use scenarioResults`);
+	}
 	return {
 		mode: normalizeMode(entry.mode, `modeRuns[${index}].mode`),
 		status: normalizeOptionalString(entry.status, `modeRuns[${index}].status`) || "completed",
@@ -242,7 +246,14 @@ function normalizeModeRun(entry, index) {
 		...(entry.telemetry !== undefined
 			? { telemetry: normalizeTelemetry(entry.telemetry, `modeRuns[${index}].telemetry`) }
 			: {}),
-		candidateResults: assertArray(entry.candidateResults, `modeRuns[${index}].candidateResults`),
+		...(entry.scenarioResults !== undefined
+			? {
+				scenarioResults: normalizeScenarioResultsPacket(
+					entry.scenarioResults,
+					`modeRuns[${index}].scenarioResults`,
+				),
+			}
+			: {}),
 	};
 }
 
@@ -365,8 +376,9 @@ export function buildReportPacket(input, { now = new Date() } = {}) {
 	}
 	const modeRuns = assertArray(input.modeRuns, "modeRuns").map((entry, index) => normalizeModeRun(entry, index));
 	const modeSummaries = modeRuns.map((modeRun) => {
-		const scenarioTelemetrySummary = modeRun.candidateResults.length > 0
-			? summarizeScenarioTelemetryEntries(modeRun.candidateResults, {
+		const scenarioResults = modeRun.scenarioResults?.results || [];
+		const scenarioTelemetrySummary = scenarioResults.length > 0
+			? summarizeScenarioTelemetryEntries(scenarioResults, {
 				now,
 				source: `report_mode:${modeRun.mode}`,
 			})
@@ -380,6 +392,9 @@ export function buildReportPacket(input, { now = new Date() } = {}) {
 			...(typeof modeRun.durationMs === "number" ? { durationMs: modeRun.durationMs } : {}),
 			...(createModeTelemetry(modeRun, scenarioTelemetrySummary)
 				? { telemetry: createModeTelemetry(modeRun, scenarioTelemetrySummary) }
+				: {}),
+			...(modeRun.scenarioResults?.compareArtifact
+				? { compareArtifact: modeRun.scenarioResults.compareArtifact }
 				: {}),
 			...(scenarioTelemetrySummary ? { scenarioTelemetrySummary } : {}),
 		};

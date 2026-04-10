@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cautilus.review_prompt_inputs.v1",
+  "title": "Cautilus Review Prompt Inputs",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "generatedAt",
+    "reviewPacketFile",
+    "repoRoot",
+    "adapterPath",
+    "intent",
+    "candidate",
+    "baseline",
+    "automatedRecommendation",
+    "modeSummaries",
+    "comparisonQuestions",
+    "humanReviewPrompts",
+    "artifactFiles",
+    "reportArtifacts",
+    "metaPrompt"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "cautilus.review_prompt_inputs.v1"
+    },
+    "generatedAt": {
+      "type": "string"
+    },
+    "reviewPacketFile": {
+      "type": "string"
+    },
+    "repoRoot": {
+      "type": "string"
+    },
+    "adapterPath": {
+      "type": "string"
+    },
+    "intent": {
+      "type": "string"
+    },
+    "candidate": {
+      "type": "string"
+    },
+    "baseline": {
+      "type": "string"
+    },
+    "automatedRecommendation": {
+      "type": "string"
+    },
+    "modeSummaries": {
+      "type": "array"
+    },
+    "comparisonQuestions": {
+      "type": "array"
+    },
+    "humanReviewPrompts": {
+      "type": "array"
+    },
+    "artifactFiles": {
+      "type": "array"
+    },
+    "reportArtifacts": {
+      "type": "array"
+    },
+    "defaultPromptFile": {
+      "type": "object"
+    },
+    "defaultSchemaFile": {
+      "type": "object"
+    },
+    "metaPrompt": {
+      "type": "object",
+      "required": [
+        "objective",
+        "instructions"
+      ],
+      "properties": {
+        "objective": {
+          "type": "string"
+        },
+        "instructions": {
+          "type": "array"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -60,6 +60,12 @@
 - `review prepare-input` command가 추가돼 report packet, adapter
   `comparison_questions`, `human_review_prompts`, artifact/report paths를 한
   review packet으로 묶을 수 있다.
+- `cautilus.scenario_results.v1` / `cautilus.compare_artifact.v1` 계약이
+  추가돼 `mode evaluate`, `report build`, `scenario summarize-telemetry`,
+  review flow가 더 이상 loose result array에 기대지 않는다.
+- `review build-prompt-input` / `review render-prompt` command가 추가돼
+  review packet 위의 generic meta-prompt seam이 product-owned runtime으로
+  올라왔다.
 - `cli evaluate` command와 checked-in CLI fixture/schema가 추가돼
   bounded command packet 하나를 실행하고 stdout/stderr/exit code/side
   effect expectation을 검사한 뒤 embedded report packet까지 만들 수 있다.
@@ -73,6 +79,9 @@
   checked-in wrapper가 주면 optional cost/token telemetry도 함께 남긴다.
 - `review variants` summary는 variant별 telemetry를 보존하면서, top-level
   aggregate cost/token/latency도 함께 쓴다.
+- `install.sh`, `cautilus --version`, `render-homebrew-formula.mjs`, `LICENSE`
+  가 추가돼 npm 없이 tagged GitHub release 기반 install story의 첫
+  executable surface가 생겼다.
 - `npm install`, `npm run lint`, `npm run test`, `npm run verify`가 모두 통과했다.
 - `Cautilus` resolver는 Ceal의 `skill-smoke`, `code-quality` adapter를 이미 읽을 수 있어 consumer repoint의 전제는 갖췄다.
 - 아직 없는 것:
@@ -81,29 +90,32 @@
 
 ## Next Session
 
-1. `review prepare-input` 위에 prompt generation/runtime을 product-owned로
-   올릴지, 계속 consumer-owned로 둘지 결정한다.
-2. `mode evaluate`가 읽는 candidate result packet과 compare artifact
-   contract를 더 엄격히 고정한다.
-3. `cli evaluate`를 chatbot/skill use case와 어떻게 연결할지 정한다.
-   다음 후보는 `cli` normalization helper, CLI-specific human-review prompt
-   seam, compare artifact 연동이다.
-4. 필요하면 consumer example 위에서 새로운 pattern class를 늘리고, raw
+1. `review render-prompt`를 `review variants` 실제 실행 경로와 어떻게
+   결합할지 정한다. 지금은 seam이 product-owned가 됐지만 fanout default는
+   아직 consumer가 고를 여지가 있다.
+2. `cli evaluate`를 chatbot/skill처럼 first-class normalization helper로
+   키울지 결정한다. 다음 후보는 `cli` normalization helper와
+   CLI-specific human-review lens다.
+3. tagged release/checksum/Homebrew tap publication을 실제 운영 절차로
+   닫는다. 지금은 installer와 formula renderer만 있다.
+4. Ceal migration을 다시 자르고, product-owned runtime seam과
+   consumer-owned storage/operator seam을 더 명확히 분리한다.
+5. 필요하면 consumer example 위에서 새로운 pattern class를 늘리고, raw
    reader logic은 여전히 consumer-owned로 남긴다.
-5. Ceal migration을 handoff와 plan 기준으로 다시 자르고, product-owned
-   runtime seam과 consumer-owned storage/operator seam을 명확히 나눈다.
-6. wider reuse 전에 `release-boundary.md` 기준으로 package/install story를
-   실제 배포 surface로 바꿀지 결정한다.
+6. master plan의 남은 항목이 current-product spec / release docs /
+   handoff로 흡수 가능한지 계속 확인한다.
 
 ## Discuss
 
 - official adapter naming은 `cautilus-adapter.yaml` 과 `cautilus-adapters/` 로 고정한다.
-- standalone skill 배포 경로를 repo-local `skills/`로만 둘지, 추후 installable package 형태까지 같이 정의할지 정해야 한다.
+- npm package는 목표가 아니다. install story는 tagged GitHub release +
+  `install.sh` + Homebrew tap 쪽으로 간다.
 - Ceal repoint를 한 번에 할지, tests/review-variant/adapter-resolution부터 단계적으로 할지 정해야 한다.
 - scenario proposal engine을 Slack/Ceal storage model에서 얼마나 빨리 분리할지 결정이 필요하다.
 - cost/latency telemetry를 adapter-driven mode execution이 직접 report packet으로 남길지, 중간 input packet을 남긴 뒤 report를 조립할지 정해야 한다.
 - `charness`나 다른 consumer에 공개할 release boundary를 언제 처음 만들지 정해야 한다.
-- npm package, Homebrew, skill installer 같은 배포 채널은 아직 정의하지 않았다.
+- Homebrew formula renderer는 생겼지만 실제 tap publication 절차와 checksum
+  discipline은 아직 release ops로 남아 있다.
 
 ## References
 

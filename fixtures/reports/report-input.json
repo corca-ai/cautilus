@@ -20,19 +20,34 @@
       "startedAt": "2026-04-11T00:00:00.000Z",
       "completedAt": "2026-04-11T00:00:10.000Z",
       "durationMs": 10000,
-      "candidateResults": [
-        {
-          "scenarioId": "doctor-missing-adapter",
-          "status": "passed",
-          "durationMs": 1200,
-          "telemetry": {
-            "provider": "openai",
-            "model": "gpt-5.4",
-            "total_tokens": 200,
-            "cost_usd": 0.02
+      "scenarioResults": {
+        "schemaVersion": "cautilus.scenario_results.v1",
+        "generatedAt": "2026-04-11T00:00:10.000Z",
+        "source": "fixture",
+        "mode": "held_out",
+        "results": [
+          {
+            "scenarioId": "doctor-missing-adapter",
+            "status": "passed",
+            "durationMs": 1200,
+            "telemetry": {
+              "provider": "openai",
+              "model": "gpt-5.4",
+              "total_tokens": 200,
+              "cost_usd": 0.02
+            }
           }
+        ],
+        "compareArtifact": {
+          "schemaVersion": "cautilus.compare_artifact.v1",
+          "generatedAt": "2026-04-11T00:00:10.000Z",
+          "verdict": "improved",
+          "summary": "The candidate keeps the missing-adapter recovery path explicit.",
+          "improved": [
+            "doctor-missing-adapter"
+          ]
         }
-      ]
+      }
     },
     {
       "mode": "full_gate",
@@ -46,13 +61,31 @@
         "total_tokens": 500,
         "cost_usd": 0.04
       },
-      "candidateResults": [
-        {
-          "scenarioId": "review-variant-safety",
-          "status": "failed",
-          "durationMs": 1500
+      "scenarioResults": {
+        "schemaVersion": "cautilus.scenario_results.v1",
+        "generatedAt": "2026-04-11T00:01:25.000Z",
+        "source": "fixture",
+        "mode": "full_gate",
+        "results": [
+          {
+            "scenarioId": "review-variant-safety",
+            "status": "failed",
+            "durationMs": 1500
+          }
+        ],
+        "compareArtifact": {
+          "schemaVersion": "cautilus.compare_artifact.v1",
+          "generatedAt": "2026-04-11T00:01:25.000Z",
+          "verdict": "regressed",
+          "summary": "The full gate still exposes review-variant regressions.",
+          "regressed": [
+            {
+              "scenarioId": "review-variant-safety",
+              "reason": "full gate failed"
+            }
+          ]
         }
-      ]
+      }
     }
   ],
   "improved": [

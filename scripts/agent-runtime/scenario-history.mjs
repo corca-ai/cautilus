@@ -1,11 +1,17 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 
-import { normalizeScenarioResult } from "./scenario-result-telemetry.mjs";
+import {
+	SCENARIO_HISTORY_SCHEMA,
+	SCENARIO_PROFILE_SCHEMA,
+} from "./contract-versions.mjs";
+import { normalizeScenarioResult } from "./scenario-results.mjs";
 
-export const SCENARIO_PROFILE_SCHEMA = "cautilus.scenario_profile.v1";
-export const SCENARIO_HISTORY_SCHEMA = "cautilus.scenario_history.v1";
-export const SCENARIO_BASELINE_CACHE_SCHEMA = "cautilus.scenario_baseline_cache.v1";
+export {
+	SCENARIO_BASELINE_CACHE_SCHEMA,
+	SCENARIO_HISTORY_SCHEMA,
+	SCENARIO_PROFILE_SCHEMA,
+} from "./contract-versions.mjs";
 
 const DEFAULT_HISTORY_POLICY = {
 	maxGraduationInterval: 5,

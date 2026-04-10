@@ -3,7 +3,9 @@ import { resolve } from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
 
+import { SCENARIO_RESULTS_SCHEMA } from "./contract-versions.mjs";
 import { SCENARIO_HISTORY_SCHEMA } from "./scenario-history.mjs";
+import { normalizeScenarioResultsPacket } from "./scenario-results.mjs";
 import {
 	summarizeScenarioTelemetryEntries,
 	summarizeScenarioTelemetryFromHistory,
@@ -16,7 +18,7 @@ function usage(exitCode = 0) {
 		"  node ./scripts/agent-runtime/summarize-scenario-telemetry.mjs --history <file> [--output <file>]",
 		"",
 		"Input forms:",
-		"  --results: JSON array of candidateResults, or { candidateResults: [...] }",
+		`  --results: ${SCENARIO_RESULTS_SCHEMA} packet`,
 		`  --history: ${SCENARIO_HISTORY_SCHEMA} packet`,
 	].join("\n");
 	const out = exitCode === 0 ? process.stdout : process.stderr;
@@ -72,19 +74,9 @@ function parseJsonFile(path) {
 	}
 }
 
-function readCandidateResults(value) {
-	if (Array.isArray(value)) {
-		return value;
-	}
-	if (value && typeof value === "object" && Array.isArray(value.candidateResults)) {
-		return value.candidateResults;
-	}
-	throw new Error("results input must be an array or an object with candidateResults");
-}
-
 export function buildScenarioTelemetrySummary({ resultsInput, historyInput }) {
 	if (resultsInput !== undefined) {
-		return summarizeScenarioTelemetryEntries(readCandidateResults(resultsInput));
+		return summarizeScenarioTelemetryEntries(normalizeScenarioResultsPacket(resultsInput).results);
 	}
 	if (historyInput?.schemaVersion !== SCENARIO_HISTORY_SCHEMA) {
 		throw new Error(`history input must use schemaVersion ${SCENARIO_HISTORY_SCHEMA}`);

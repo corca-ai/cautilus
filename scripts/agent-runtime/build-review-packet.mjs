@@ -4,7 +4,10 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import process from "node:process";
 
-export const REVIEW_PACKET_SCHEMA = "cautilus.review_packet.v1";
+import { REPORT_PACKET_SCHEMA, REVIEW_PACKET_SCHEMA } from "./contract-versions.mjs";
+
+export { REVIEW_PACKET_SCHEMA } from "./contract-versions.mjs";
+
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 const TOOL_ROOT = resolve(SCRIPT_DIR, "..", "..");
 const RESOLVE_ADAPTER_SCRIPT = resolve(TOOL_ROOT, "scripts", "resolve_adapter.py");
@@ -96,8 +99,8 @@ function parseReportFile(path) {
 		fail(`Report file not found: ${resolved}`);
 	}
 	const parsed = JSON.parse(readFileSync(resolved, "utf-8"));
-	if (parsed?.schemaVersion !== "cautilus.report_packet.v1") {
-		fail("report file must use schemaVersion cautilus.report_packet.v1");
+	if (parsed?.schemaVersion !== REPORT_PACKET_SCHEMA) {
+		fail(`report file must use schemaVersion ${REPORT_PACKET_SCHEMA}`);
 	}
 	return { path: resolved, packet: parsed };
 }

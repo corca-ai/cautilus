@@ -36,12 +36,12 @@ This packet is the intended bridge between:
 
 - adapter-driven mode execution
 - compare/report artifacts
-- prompt generation for bounded review variants
+- product-owned meta-prompt rendering for bounded review variants
 
 ## Guardrails
 
 - Keep artifact discovery adapter-driven and explicit.
 - Do not scrape arbitrary repo files outside `artifact_paths` and `report_paths`
   in this product-owned layer.
-- Keep prompt authoring consumer-owned even when packet assembly is
-  product-owned.
+- Keep domain-specific prompt authoring consumer-owned even when packet
+  assembly and meta-prompt framing are product-owned.

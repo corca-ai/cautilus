@@ -1,5 +1,6 @@
-export const SCENARIO_PROPOSALS_SCHEMA = "cautilus.scenario_proposals.v1";
-export const DRAFT_SCENARIO_SCHEMA = "cautilus.scenario.v1";
+import { DRAFT_SCENARIO_SCHEMA, SCENARIO_PROPOSALS_SCHEMA } from "./contract-versions.mjs";
+
+export { DRAFT_SCENARIO_SCHEMA, SCENARIO_PROPOSALS_SCHEMA } from "./contract-versions.mjs";
 
 function parseIsoTime(value) {
 	const millis = Date.parse(String(value || ""));

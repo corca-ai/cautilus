@@ -3,9 +3,10 @@ import { resolve } from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
 
+import { SKILL_NORMALIZATION_INPUTS_SCHEMA } from "./contract-versions.mjs";
 import { normalizeSkillProposalCandidates } from "./skill-proposal-candidates.mjs";
 
-export const SKILL_NORMALIZATION_INPUTS_SCHEMA = "cautilus.skill_normalization_inputs.v1";
+export { SKILL_NORMALIZATION_INPUTS_SCHEMA } from "./contract-versions.mjs";
 
 function usage(exitCode = 0) {
 	const text = [
