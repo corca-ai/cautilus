@@ -20,19 +20,26 @@
 - `ceal`, `charness`, `crill` 모두 readiness 문서상 official adapter consumer이지만, 아직 남은 핵심은 실제 multi-consumer verification이다.
 - 이번 세션에서 `crill` consumer verification은 실제로 닫았다.
   root adapter `full_gate`는 `accept-now`를 냈고, `/home/ubuntu/crill/.agents/cautilus-adapters/cli-smoke.yaml` 와 `/home/ubuntu/crill/.agents/cautilus-adapters/operator-recovery.yaml` 도 각각 `full_gate`로 통과했다.
+- `crill`은 이제 explicit `cli evaluate` packet도 가진다.
+  `node ./bin/cautilus cli evaluate --input /home/ubuntu/crill/tests/fixtures/cautilus/cli-help.json`
+  이 `accept-now`를 냈다.
+- `crill operator-recovery` 는 이제 report-driven `review variants`도 실제로 돈다.
+  `WORKBENCH_REVIEW_TIMEOUT_SECONDS=180 node ./bin/cautilus review variants --repo-root /home/ubuntu/crill --adapter-name operator-recovery --workspace /home/ubuntu/crill --report-file /tmp/cautilus-crill-operator-recovery-review/report.json --output-dir /tmp/cautilus-crill-operator-review`
+  이 one-variant passing summary를 남겼다.
 - A/B 비교는 이제 product-owned helper로도 닫혔다.
   `node ./bin/cautilus workspace prepare-compare --repo-root . --baseline-ref origin/main --output-dir /tmp/cautilus-compare`
   가 baseline/candidate git worktree를 준비해 준다.
 
 ## Next Session
 
-1. `ceal` consumer verification을 다시 열지, 아니면 `crill`의 다음 깊이인 `review variants` / explicit `cli evaluate` packet을 체크인할지 선택한다.
-2. `crill` 쪽을 더 밀면 current named adapters를 기준으로 시작한다.
+1. `ceal` consumer verification을 다시 열지, 아니면 `crill`의 다음 깊이인 compare/A-B consumer artifacts를 체크인할지 선택한다.
+2. `crill` 쪽을 더 밀면 current named adapters와 explicit packet을 기준으로 시작한다.
    - `cli-smoke`
    - `operator-recovery`
-3. `review variants` 를 consumer-owned로 실제 붙일지 판단한다.
-   지금 `crill`은 named adapter depth는 생겼지만 `executor_variants` 는 아직 안 붙었다.
-4. explicit CLI packet이 필요하면 `crill` repo에 checked-in `cli evaluate` input을 추가해 standalone command help / operator guidance expectations를 더 직접 평가한다.
+   - `tests/fixtures/cautilus/cli-help.json`
+3. `crill`은 이제 `review variants` 와 explicit CLI packet까지 있다.
+   다음 남은 축은 compare/A-B 를 consumer-owned artifact로 올릴지 여부다.
+4. 필요하면 `workspace prepare-compare` 와 named adapter `comparison_command_templates` 를 묶어 `crill` compare surface를 체크인한다.
 5. 다음 결과를 [docs/consumer-readiness.md](/home/ubuntu/cautilus/docs/consumer-readiness.md) 와 이 handoff에 계속 반영한다.
 
 ## Discuss
