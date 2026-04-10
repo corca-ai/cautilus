@@ -40,10 +40,16 @@
 | docs/contracts/scenario-proposal-inputs.md | fixed | cautilus.scenario_proposal_inputs.v1 |
 | docs/contracts/scenario-proposal-normalization.md | file_exists |  |
 | docs/contracts/scenario-proposal-normalization.md | fixed | scenario prepare-input |
+| docs/contracts/scenario-history.md | fixed | durationMs |
 | docs/consumer-readiness.md | file_exists |  |
 | docs/consumer-readiness.md | fixed | all three target repos have an official cautilus-adapter |
 | docs/consumer-migration.md | file_exists |  |
 | docs/consumer-migration.md | fixed | cautilus-adapter.yaml |
+| scripts/agent-runtime/scenario-result-telemetry.mjs | file_exists |  |
+| scripts/agent-runtime/scenario-result-telemetry.mjs | fixed | cautilus.scenario_telemetry_summary.v1 |
+| scripts/agent-runtime/summarize-scenario-telemetry.mjs | file_exists |  |
+| fixtures/scenario-proposals/results.json | file_exists |  |
+| bin/cautilus | fixed | scenario summarize-telemetry |
 | scripts/resolve_adapter.py | fixed | cautilus-adapter.yaml |
 | scripts/init_adapter.py | fixed | dump_yaml_document |
 | scripts/agent-runtime/scenario-history.mjs | file_exists |  |
@@ -103,6 +109,7 @@
 - checked-in standalone skill entrypoint
 - structured review verdict schema
 - explicit latency telemetry in executor-variant summaries
+- scenario-level telemetry summaries for cost and token transparency
 - local lint/test surface
 
 아직 이 단계에서 강제하지 않는 것:

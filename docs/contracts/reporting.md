@@ -46,6 +46,10 @@ For `review variants`, the summary packet should also aggregate any explicit
 numeric telemetry across variants so operators can inspect one top-level view
 without scraping each verdict file separately.
 
+For scenario-driven evaluation, the same rule applies one level lower:
+scenario result packets should preserve per-scenario telemetry so `Cautilus`
+can answer which scenarios are currently the slowest or most expensive.
+
 ## Interpretation Rules
 
 - Prefer scenario-level deltas over single headline scores.

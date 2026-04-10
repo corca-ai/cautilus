@@ -83,6 +83,9 @@ node ./bin/cautilus scenario prepare-input \
 
 node ./bin/cautilus scenario propose \
   --input ./fixtures/scenario-proposals/standalone-input.json
+
+node ./bin/cautilus scenario summarize-telemetry \
+  --results ./fixtures/scenario-proposals/results.json
 ```
 
 ## Guardrails

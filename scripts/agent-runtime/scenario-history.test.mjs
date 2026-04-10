@@ -90,6 +90,36 @@ test("updateScenarioHistory resets cadence after an imperfect train result", () 
 	assert.equal(reset.scenarioStats["probe-a"].graduationInterval, 1);
 });
 
+test("updateScenarioHistory preserves scenario-level telemetry for later analysis", () => {
+	const profile = createProfile();
+	const history = updateScenarioHistory({
+		profile,
+		history: createEmptyScenarioHistory(profile),
+		selectedScenarioIds: ["probe-a"],
+		candidateResults: [
+			{
+				scenarioId: "probe-a",
+				status: "passed",
+				overallScore: 100,
+				passRate: 1,
+				durationMs: 250,
+				telemetry: {
+					provider: "openai",
+					model: "gpt-5.4",
+					total_tokens: 320,
+					cost_usd: 0.024,
+				},
+			},
+		],
+		timestamp: "2026-04-09T21:00:00.000Z",
+		split: "train",
+		fullCheck: false,
+	});
+	assert.equal(history.scenarioStats["probe-a"].recentTrainResults[0].durationMs, 250);
+	assert.equal(history.scenarioStats["probe-a"].recentTrainResults[0].telemetry.total_tokens, 320);
+	assert.equal(history.scenarioStats["probe-a"].recentTrainResults[0].telemetry.cost_usd, 0.024);
+});
+
 test("full checks bypass graduation for selection and do not advance train history", () => {
 	const profile = createProfile();
 	const initialHistory = createEmptyScenarioHistory(profile);

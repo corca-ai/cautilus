@@ -274,6 +274,41 @@ test("cautilus scenario propose generates a standalone proposal packet from norm
 	}
 });
 
+test("cautilus scenario summarize-telemetry aggregates scenario costs from results", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-bin-scenario-telemetry-"));
+	try {
+		const inputPath = join(root, "results.json");
+		writeFileSync(
+			inputPath,
+			`${JSON.stringify([
+				{
+					scenarioId: "alpha",
+					durationMs: 100,
+					telemetry: { total_tokens: 120, cost_usd: 0.01 },
+				},
+				{
+					scenarioId: "beta",
+					durationMs: 200,
+					telemetry: { total_tokens: 220, cost_usd: 0.02 },
+				},
+			])}\n`,
+			"utf-8",
+		);
+		const result = spawnSync("node", [BIN_PATH, "scenario", "summarize-telemetry", "--results", inputPath], {
+			cwd: process.cwd(),
+			encoding: "utf-8",
+		});
+		assert.equal(result.status, 0, result.stderr);
+		const payload = JSON.parse(result.stdout);
+		assert.equal(payload.overall.runCount, 2);
+		assert.equal(payload.overall.total_tokens, 340);
+		assert.equal(payload.overall.cost_usd, 0.03);
+		assert.equal(payload.scenarios[0].scenarioId, "beta");
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
 test("cautilus scenario prepare-input builds a proposal input packet from split normalized sources", () => {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-bin-scenario-prepare-"));
 	try {

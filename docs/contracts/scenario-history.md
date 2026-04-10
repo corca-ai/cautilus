@@ -98,7 +98,14 @@ Persisted history should be profile-scoped and append-only at the run level.
           "overallScore": 100,
           "passRate": 1,
           "status": "passed",
-          "fullCheck": false
+          "fullCheck": false,
+          "durationMs": 420,
+          "telemetry": {
+            "provider": "openai",
+            "model": "gpt-5.4",
+            "total_tokens": 380,
+            "cost_usd": 0.031
+          }
         }
       ]
     }
@@ -156,6 +163,21 @@ Current proven imperfect-result rule:
 - any other score or pass rate
 - missing result
 - non-passing status
+
+Optional scenario-result telemetry fields:
+
+- `durationMs`
+- `startedAt`
+- `completedAt`
+- `telemetry.provider`
+- `telemetry.model`
+- `telemetry.prompt_tokens`
+- `telemetry.completion_tokens`
+- `telemetry.total_tokens`
+- `telemetry.cost_usd`
+
+This data should come from explicit scenario-result payloads, not from
+retroactive log scraping.
 
 ## Baseline Cache Shape
 

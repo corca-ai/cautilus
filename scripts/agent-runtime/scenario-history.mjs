@@ -1,6 +1,8 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 
+import { normalizeScenarioResult } from "./scenario-result-telemetry.mjs";
+
 export const SCENARIO_PROFILE_SCHEMA = "cautilus.scenario_profile.v1";
 export const SCENARIO_HISTORY_SCHEMA = "cautilus.scenario_history.v1";
 export const SCENARIO_BASELINE_CACHE_SCHEMA = "cautilus.scenario_baseline_cache.v1";
@@ -139,14 +141,28 @@ function isPerfectResult(result) {
 	return result?.passRate === 1 && result?.overallScore === 100;
 }
 
+function trainResultTelemetryFields(result) {
+	if (!result) {
+		return {};
+	}
+	return {
+		...(result.startedAt ? { startedAt: result.startedAt } : {}),
+		...(result.completedAt ? { completedAt: result.completedAt } : {}),
+		...(typeof result.durationMs === "number" ? { durationMs: result.durationMs } : {}),
+		...(result.telemetry ? { telemetry: result.telemetry } : {}),
+	};
+}
+
 function createTrainResultRecord(result, runIndex, input) {
+	const normalized = result ? normalizeScenarioResult(result, "candidateResults entry") : null;
 	return {
 		runIndex,
 		timestamp: input.timestamp,
-		overallScore: result?.overallScore ?? null,
-		passRate: result?.passRate ?? 0,
-		status: result?.status ?? "missing",
+		overallScore: normalized?.overallScore ?? null,
+		passRate: normalized?.passRate ?? 0,
+		status: normalized?.status ?? "missing",
 		fullCheck: false,
+		...trainResultTelemetryFields(normalized),
 	};
 }
 
@@ -196,7 +212,12 @@ export function updateScenarioHistory(input) {
 		return history;
 	}
 	const policy = scenarioHistoryPolicy(input.profile);
-	const resultsById = new Map((input.candidateResults || []).map((result) => [result.scenarioId, result]));
+	const resultsById = new Map(
+		(input.candidateResults || []).map((result, index) => {
+			const normalized = normalizeScenarioResult(result, `candidateResults[${index}]`);
+			return [normalized.scenarioId, normalized];
+		}),
+	);
 	history.trainRunCount += 1;
 	const runIndex = history.trainRunCount;
 	history.scenarioStats = history.scenarioStats || {};

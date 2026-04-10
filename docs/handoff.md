@@ -39,6 +39,9 @@
   `charness`, `crill` 같은 target repo를 공식 `cautilus-adapter`
   contract로 올리는 순서가 문서화됐다.
 - `fullCheck`는 scenario selection은 전체로 열되 `trainRunCount`나 graduation history는 전진시키지 않는 규칙으로 고정됐다.
+- `scenario summarize-telemetry` command가 추가돼 explicit scenario result
+  packet이나 persisted history에서 scenario별 cost/token/duration summary를
+  바로 만들 수 있다.
 - Ceal에서 generic runtime seam으로 볼 수 있는 executor-variant 러너와 검증용 테스트, review verdict schema를 가져왔다.
 - [scripts/init_adapter.py](/home/ubuntu/cautilus/scripts/init_adapter.py)는 `PyYAML` 의존성을 제거하고 stdlib-only YAML writer로 바뀌었다.
 - [workflow.md](/home/ubuntu/cautilus/docs/workflow.md)와 [adapter-contract.md](/home/ubuntu/cautilus/docs/contracts/adapter-contract.md)는 Ceal 최신 generic knowledge를 반영하도록 보강됐다.
@@ -57,7 +60,9 @@
 1. `chatbot`, `skill` normalized input fixture 둘 다에서 `scenario normalize -> scenario prepare-input -> scenario propose` standalone e2e를 유지한다.
 2. `consumer-readiness.md` 기준으로 `charness`, `crill`의 root adapter를 언제 named `cautilus-adapters/`로 분리할지 기준을 구체화한다.
 3. 필요하면 consumer example 위에서 새로운 pattern class를 늘리고, raw reader logic은 여전히 consumer-owned로 남긴다.
-4. telemetry를 `review variants` 밖의 다른 runtime packet에도 올릴지 검토한다.
+4. telemetry를 `review variants` 밖의 다른 runtime packet에도 올리고,
+   scenario-level summary가 held-out/full-gate까지 자연스럽게 이어지게
+   할지 검토한다.
 
 ## Discuss
 

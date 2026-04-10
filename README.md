@@ -141,6 +141,14 @@ node ./bin/cautilus scenario propose \
   --input ./fixtures/scenario-proposals/standalone-input.json
 ```
 
+Summarize scenario-level cost, token, and duration telemetry from explicit
+result packets:
+
+```bash
+node ./bin/cautilus scenario summarize-telemetry \
+  --results ./fixtures/scenario-proposals/results.json
+```
+
 Assemble that input packet from split normalized source files:
 
 ```bash
@@ -173,6 +181,7 @@ node scripts/agent-runtime/normalize-chatbot-proposals.mjs --input ./fixtures/sc
 node scripts/agent-runtime/normalize-skill-proposals.mjs --input ./fixtures/scenario-proposals/skill-input.json
 node scripts/agent-runtime/build-scenario-proposal-input.mjs --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json --family fast_regression
 node scripts/agent-runtime/generate-scenario-proposals.mjs --input ./fixtures/scenario-proposals/standalone-input.json
+node scripts/agent-runtime/summarize-scenario-telemetry.mjs --results ./fixtures/scenario-proposals/results.json
 ```
 
 The bundled skill surface lives at

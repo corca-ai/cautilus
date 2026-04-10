@@ -269,5 +269,6 @@ When you finish, report:
 - mode used: iterate, held-out, comparison, and/or full gate
 - command templates rendered with concrete values
 - improved, regressed, unchanged, and noisy scenarios
+- which scenarios were materially slower or more expensive when telemetry is available
 - human review findings
 - final recommendation: `accept-now`, `defer`, or `reject`
