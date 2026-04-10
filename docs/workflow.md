@@ -134,6 +134,17 @@ values back to the user. Do not hide them behind "same as usual."
    If the held-out split regresses, do not bury that behind training wins.
 7. Run full gate commands for ship/no-ship decisions.
    This should be the final automatic check, not an optional bonus.
+   When the adapter command itself is the thing to run, prefer the checked-in
+   mode runner over ad-hoc manual rendering:
+
+```bash
+node ./bin/cautilus mode evaluate \
+  --repo-root . \
+  --mode held_out \
+  --intent "CLI behavior should remain legible." \
+  --baseline-ref origin/main \
+  --output-dir /tmp/cautilus-mode
+```
 8. Review artifacts and run the adapter's `human_review_prompts`.
    Benchmark wins do not override obvious human-visible failures.
    When useful, run 2-3 independent review variants that judge the same

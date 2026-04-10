@@ -30,6 +30,9 @@ The target product is:
 - A first standalone `cli evaluate` command now checks one bounded command
   packet against operator-facing intent, stdout/stderr expectations, and side
   effects.
+- A first standalone `mode evaluate` command now runs adapter-defined iterate,
+  held-out, comparison, or full-gate command templates and leaves a report
+  packet plus command observations behind.
 - Ceal now repoints generic adapter-resolution and review-variant runner seams
   to `Cautilus` as a consumer.
 - A first generic scenario/history contract draft now exists in
@@ -149,6 +152,9 @@ Formalize the DSPy-like product story:
 - add external-consumer instructions for repos like `charness`
 - define release and versioning discipline before wider reuse
 
+The current release boundary is documented in
+[release-boundary.md](/home/ubuntu/cautilus/docs/release-boundary.md).
+
 ## Immediate Next Moves
 
 1. Keep the standalone binary and bundled skill aligned on one checked-in
@@ -161,3 +167,5 @@ Formalize the DSPy-like product story:
    root adapter surface instead of widening discovery rules.
 5. Add a first checked-in CLI evaluation packet and bounded runtime surface
    without turning `Cautilus` into a generic test runner.
+6. Make adapter-driven mode execution leave report packets directly instead of
+   depending only on post-hoc report assembly.

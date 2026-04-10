@@ -28,6 +28,7 @@
 | bin/cautilus | fixed | scenario prepare-input |
 | bin/cautilus | fixed | scenario propose |
 | bin/cautilus | fixed | report build |
+| bin/cautilus | fixed | mode evaluate |
 | bin/cautilus | fixed | cli evaluate |
 | bin/cautilus | fixed | review variants |
 | bin/cautilus.test.mjs | file_exists |  |
@@ -39,11 +40,14 @@
 | docs/contracts/adapter-contract.md | fixed | Executor Variant Shape |
 | docs/contracts/reporting.md | fixed | duration_ms |
 | docs/contracts/reporting.md | fixed | cautilus.report_packet.v1 |
+| docs/contracts/reporting.md | fixed | command_observations |
 | fixtures/reports/report-input.json | file_exists |  |
 | fixtures/reports/report-input.schema.json | file_exists |  |
 | fixtures/reports/report.schema.json | file_exists |  |
 | scripts/agent-runtime/build-report-packet.mjs | file_exists |  |
 | scripts/agent-runtime/build-report-packet.mjs | fixed | REPORT_PACKET_SCHEMA |
+| scripts/agent-runtime/evaluate-adapter-mode.mjs | file_exists |  |
+| scripts/agent-runtime/evaluate-adapter-mode.mjs | fixed | ADAPTER_MODE_EVALUATION_PACKET_SCHEMA |
 | fixtures/cli-evaluation/doctor-missing-adapter.json | file_exists |  |
 | fixtures/cli-evaluation/input.schema.json | file_exists |  |
 | scripts/agent-runtime/evaluate-cli-intent.mjs | file_exists |  |
@@ -55,6 +59,8 @@
 | docs/contracts/cli-evaluation.md | file_exists |  |
 | docs/contracts/cli-evaluation.md | fixed | cautilus.cli_evaluation_packet.v1 |
 | docs/contracts/scenario-history.md | fixed | durationMs |
+| docs/release-boundary.md | file_exists |  |
+| docs/release-boundary.md | fixed | Product-Owned Surface |
 | docs/consumer-readiness.md | file_exists |  |
 | docs/consumer-readiness.md | fixed | all three target repos have an official cautilus-adapter |
 | docs/consumer-migration.md | file_exists |  |
@@ -108,6 +114,7 @@
 - target repo의 adapter resolve
 - target repo의 adapter scaffold
 - target repo의 adapter readiness doctor
+- adapter-defined mode execution that emits report packets directly
 - scenario profile and graduation history helpers
 - chatbot proposal-candidate normalization helper
 - chatbot normalization command
@@ -148,6 +155,7 @@ $ node ./bin/cautilus scenario normalize skill --input ./fixtures/scenario-propo
 $ node ./bin/cautilus scenario prepare-input --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json --family fast_regression --window-days 14 --now 2026-04-11T00:00:00.000Z
 $ node ./bin/cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json
 $ node ./bin/cautilus report build --input ./fixtures/reports/report-input.json
+$ node ./bin/cautilus mode evaluate --repo-root . --mode held_out --intent "CLI behavior should remain legible." --baseline-ref origin/main --output-dir /tmp/cautilus-mode || true
 $ node ./bin/cautilus cli evaluate --input ./fixtures/cli-evaluation/doctor-missing-adapter.json
 $ node --test ./bin/cautilus.test.mjs
 $ node --test ./scripts/agent-runtime/consumer-example-fixtures.test.mjs
@@ -158,6 +166,7 @@ $ python3 ./scripts/init_adapter.py --repo-root /tmp/cautilus-spec-check --outpu
 $ node --test ./scripts/agent-runtime/scenario-history.test.mjs
 $ node --test ./scripts/agent-runtime/scenario-proposals.test.mjs
 $ node --test ./scripts/agent-runtime/build-report-packet.test.mjs
+$ node --test ./scripts/agent-runtime/evaluate-adapter-mode.test.mjs
 $ node --test ./scripts/agent-runtime/evaluate-cli-intent.test.mjs
 $ test -f ./skills/cautilus/SKILL.md
 $ npm run lint

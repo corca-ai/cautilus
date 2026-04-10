@@ -13,6 +13,8 @@
 - `intent`: the operator-visible behavior or decision being evaluated
 - `modes_run`: iterate, held-out, comparison, full gate
 - `commands`: rendered commands with concrete placeholder values
+- optional `command_observations`: executed command records with timing,
+  exit code, and stdout/stderr artifact paths
 - optional `telemetry`: wall-clock latency plus any adapter- or provider-owned
   cost and token metrics
 - `improved`: scenarios or metrics that improved
@@ -31,6 +33,7 @@ The standalone builder should start from an explicit input packet:
 - `baseline`
 - `intent`
 - `commands`: explicit mode-to-command mapping
+- optional `commandObservations`: bounded executed-command records
 - `modeRuns`: checked-in or persisted mode execution records
 - optional `improved`, `regressed`, `unchanged`, `noisy`
 - optional `humanReviewFindings`
@@ -39,6 +42,9 @@ The standalone builder should start from an explicit input packet:
 This keeps report assembly deterministic.
 `Cautilus` should not scrape shell history or infer report structure from
 loose logs.
+When `Cautilus` itself executes adapter-defined mode commands, it should write
+those command observations into the report input so the final packet preserves
+how the evidence was gathered.
 
 ## Telemetry Shape
 

@@ -170,6 +170,44 @@ function normalizeReviewFinding(entry, index) {
 	};
 }
 
+function normalizeCommandObservation(entry, index) {
+	if (!entry || typeof entry !== "object" || Array.isArray(entry)) {
+		throw new Error(`commandObservations[${index}] must be an object`);
+	}
+	return {
+		stage: normalizeNonEmptyString(entry.stage, `commandObservations[${index}].stage`),
+		index: normalizeNonNegativeNumber(entry.index, `commandObservations[${index}].index`) ?? index + 1,
+		status: normalizeNonEmptyString(entry.status, `commandObservations[${index}].status`),
+		command: normalizeNonEmptyString(entry.command, `commandObservations[${index}].command`),
+		...(entry.startedAt !== undefined
+			? { startedAt: normalizeIsoTimestamp(entry.startedAt, `commandObservations[${index}].startedAt`) }
+			: {}),
+		...(entry.completedAt !== undefined
+			? { completedAt: normalizeIsoTimestamp(entry.completedAt, `commandObservations[${index}].completedAt`) }
+			: {}),
+		...(entry.durationMs !== undefined
+			? {
+				durationMs: normalizeNonNegativeNumber(
+					entry.durationMs,
+					`commandObservations[${index}].durationMs`,
+				),
+			}
+			: {}),
+		...(entry.exitCode !== undefined
+			? { exitCode: normalizeNonNegativeNumber(entry.exitCode, `commandObservations[${index}].exitCode`) }
+			: {}),
+		...(entry.signal !== undefined
+			? { signal: normalizeNonEmptyString(entry.signal, `commandObservations[${index}].signal`) }
+			: {}),
+		...(entry.stdoutFile !== undefined
+			? { stdoutFile: normalizeNonEmptyString(entry.stdoutFile, `commandObservations[${index}].stdoutFile`) }
+			: {}),
+		...(entry.stderrFile !== undefined
+			? { stderrFile: normalizeNonEmptyString(entry.stderrFile, `commandObservations[${index}].stderrFile`) }
+			: {}),
+	};
+}
+
 function normalizeScenarioBuckets(entries, field) {
 	return assertArray(entries, field).map((entry, index) => {
 		if (typeof entry === "string") {
@@ -353,6 +391,9 @@ export function buildReportPacket(input, { now = new Date() } = {}) {
 		baseline: normalizeNonEmptyString(input.baseline, "baseline"),
 		intent: normalizeNonEmptyString(input.intent, "intent"),
 		commands: assertArray(input.commands, "commands").map((entry, index) => normalizeCommand(entry, index)),
+		commandObservations: assertArray(input.commandObservations, "commandObservations").map((entry, index) =>
+			normalizeCommandObservation(entry, index),
+		),
 		modesRun: modeSummaries.map((entry) => entry.mode),
 		modeSummaries,
 		telemetry: summarizeReportTelemetry(modeSummaries),

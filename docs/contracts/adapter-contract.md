@@ -252,8 +252,21 @@ Template placeholders should stay obvious and few. Good placeholders:
 - `{held_out_samples}`
 - `{comparison_samples}`
 - `{full_gate_samples}`
+- `{output_dir}`
+- `{candidate_results_file}`
+- `{report_input_file}`
+- `{report_file}`
 
 If a value can be inferred cheaply every time, do not add a placeholder for it.
+
+For adapter-driven mode execution, `Cautilus` may also supply:
+
+- `{output_dir}`: bounded artifact directory for this invocation
+- `{candidate_results_file}`: JSON file the command may write with scenario
+  result records
+- `{report_input_file}`: path where `Cautilus` will persist the intermediate
+  report input packet
+- `{report_file}`: path where `Cautilus` will persist the final report packet
 
 For `codex exec`, do not invent approval-policy flags from older wrappers.
 Use `--sandbox` and your surrounding runtime sandbox instead.

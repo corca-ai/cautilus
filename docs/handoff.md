@@ -40,6 +40,9 @@
   contract로 올리는 순서가 문서화됐다.
 - `README.md`, `workflow.md`, `master-plan.md`, bundled skill이 이제
   `intentful behavior evaluation`을 제품 프레이밍으로 직접 설명한다.
+- [release-boundary.md](/home/ubuntu/cautilus/docs/release-boundary.md)가 추가돼
+  지금 단계의 standalone install surface와 consumer-owned surface가
+  명시됐다.
 - [adapter-contract.md](/home/ubuntu/cautilus/docs/contracts/adapter-contract.md)와
   [consumer-migration.md](/home/ubuntu/cautilus/docs/consumer-migration.md)에
   root `cautilus-adapter.yaml`를 언제 named `cautilus-adapters/`로 분리할지
@@ -51,6 +54,9 @@
 - `report build` command와 checked-in report fixture/schema가 추가돼
   held-out/full-gate mode run과 scenario telemetry를
   `cautilus.report_packet.v1`로 올릴 수 있다.
+- `mode evaluate` command가 추가돼 adapter-defined iterate/held-out/
+  comparison/full-gate command template를 직접 실행하고, command
+  observation + report input + final report packet을 한 번에 남길 수 있다.
 - `cli evaluate` command와 checked-in CLI fixture/schema가 추가돼
   bounded command packet 하나를 실행하고 stdout/stderr/exit code/side
   effect expectation을 검사한 뒤 embedded report packet까지 만들 수 있다.
@@ -82,6 +88,11 @@
    reader logic은 여전히 consumer-owned로 남긴다.
 4. Ceal migration을 handoff와 plan 기준으로 다시 자르고, product-owned
    runtime seam과 consumer-owned storage/operator seam을 명확히 나눈다.
+5. wider reuse 전에 `release-boundary.md` 기준으로 package/install story를
+   실제 배포 surface로 바꿀지 결정한다.
+6. 필요하면 `mode evaluate`가 읽는 candidate result packet contract를 더
+   엄격히 고정하고, compare artifact/human-review prompt와 어떻게 연결할지
+   정한다.
 
 ## Discuss
 
@@ -91,6 +102,7 @@
 - scenario proposal engine을 Slack/Ceal storage model에서 얼마나 빨리 분리할지 결정이 필요하다.
 - cost/latency telemetry를 adapter-driven mode execution이 직접 report packet으로 남길지, 중간 input packet을 남긴 뒤 report를 조립할지 정해야 한다.
 - `charness`나 다른 consumer에 공개할 release boundary를 언제 처음 만들지 정해야 한다.
+- npm package, Homebrew, skill installer 같은 배포 채널은 아직 정의하지 않았다.
 
 ## References
 
@@ -109,6 +121,7 @@
 - [current-product.spec.md](/home/ubuntu/cautilus/docs/specs/current-product.spec.md)
 - [scenario-history.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/scenario-history.mjs)
 - [build-report-packet.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/build-report-packet.mjs)
+- [evaluate-adapter-mode.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/evaluate-adapter-mode.mjs)
 - [evaluate-cli-intent.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/evaluate-cli-intent.mjs)
 - [report-input.json](/home/ubuntu/cautilus/fixtures/reports/report-input.json)
 - [doctor-missing-adapter.json](/home/ubuntu/cautilus/fixtures/cli-evaluation/doctor-missing-adapter.json)

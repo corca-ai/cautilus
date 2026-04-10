@@ -78,6 +78,8 @@ Ceal remains a proving-ground consumer, not the product boundary.
   active product specs
 - [docs/master-plan.md](/home/ubuntu/cautilus/docs/master-plan.md): roadmap
   from extraction scaffold to standalone product
+- [docs/release-boundary.md](/home/ubuntu/cautilus/docs/release-boundary.md):
+  current standalone release surface and compatibility discipline
 - [docs/consumer-readiness.md](/home/ubuntu/cautilus/docs/consumer-readiness.md):
   current live-consumer vs normalization-reference status for Ceal, charness,
   and crill
@@ -163,6 +165,17 @@ node ./bin/cautilus report build \
   --input ./fixtures/reports/report-input.json
 ```
 
+Execute one adapter-defined mode directly and emit a report packet:
+
+```bash
+node ./bin/cautilus mode evaluate \
+  --repo-root . \
+  --mode held_out \
+  --intent "CLI behavior should remain legible." \
+  --baseline-ref origin/main \
+  --output-dir /tmp/cautilus-mode
+```
+
 Evaluate one operator-facing CLI behavior from an explicit intent packet:
 
 ```bash
@@ -204,6 +217,7 @@ node scripts/agent-runtime/build-scenario-proposal-input.mjs --candidates ./fixt
 node scripts/agent-runtime/generate-scenario-proposals.mjs --input ./fixtures/scenario-proposals/standalone-input.json
 node scripts/agent-runtime/summarize-scenario-telemetry.mjs --results ./fixtures/scenario-proposals/results.json
 node scripts/agent-runtime/build-report-packet.mjs --input ./fixtures/reports/report-input.json
+node scripts/agent-runtime/evaluate-adapter-mode.mjs --repo-root . --mode held_out --intent "CLI behavior should remain legible." --baseline-ref origin/main --output-dir /tmp/cautilus-mode
 node scripts/agent-runtime/evaluate-cli-intent.mjs --input ./fixtures/cli-evaluation/doctor-missing-adapter.json
 ```
 

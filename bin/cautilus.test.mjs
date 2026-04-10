@@ -428,6 +428,85 @@ test("cautilus cli evaluate executes an intent packet and emits a report-backed 
 	}
 });
 
+test("cautilus mode evaluate executes adapter command templates and writes a report packet", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-bin-mode-eval-"));
+	try {
+		const adapterDir = join(root, ".agents");
+		const workspace = join(root, "workspace");
+		mkdirSync(adapterDir, { recursive: true });
+		mkdirSync(workspace, { recursive: true });
+		writeExecutable(
+			workspace,
+			"bench.sh",
+			`#!/bin/sh
+candidate_results_file="$1"
+cat > "$candidate_results_file" <<'JSON'
+[
+  {
+    "scenarioId": "doctor-missing-adapter",
+    "status": "passed",
+    "durationMs": 90,
+    "telemetry": {
+      "total_tokens": 21,
+      "cost_usd": 0.005
+    }
+  }
+]
+JSON
+echo ok
+`,
+		);
+		writeFileSync(
+			join(adapterDir, "cautilus-adapter.yaml"),
+			[
+				"version: 1",
+				"repo: temp",
+				"evaluation_surfaces:",
+				"  - cli behavior",
+				"baseline_options:",
+				"  - baseline git ref via {baseline_ref}",
+				"held_out_command_templates:",
+				"  - sh {candidate_repo}/bench.sh {candidate_results_file}",
+				"",
+			].join("\n"),
+			"utf-8",
+		);
+		const outputDir = join(root, "outputs");
+		const result = spawnSync(
+			"node",
+			[
+				BIN_PATH,
+				"mode",
+				"evaluate",
+				"--repo-root",
+				root,
+				"--candidate-repo",
+				workspace,
+				"--mode",
+				"held_out",
+				"--intent",
+				"CLI behavior should remain legible.",
+				"--baseline-ref",
+				"origin/main",
+				"--output-dir",
+				outputDir,
+			],
+			{
+				cwd: process.cwd(),
+				encoding: "utf-8",
+			},
+		);
+		assert.equal(result.status, 0, result.stderr);
+		const report = JSON.parse(readFileSync(result.stdout.trim(), "utf-8"));
+		assert.equal(report.schemaVersion, "cautilus.report_packet.v1");
+		assert.equal(report.recommendation, "defer");
+		assert.equal(report.commandObservations.length, 1);
+		assert.equal(report.modeSummaries[0].scenarioTelemetrySummary.overall.total_tokens, 21);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
 test("cautilus scenario prepare-input builds a proposal input packet from split normalized sources", () => {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-bin-scenario-prepare-"));
 	try {

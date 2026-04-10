@@ -94,6 +94,13 @@ node ./bin/cautilus scenario summarize-telemetry \
 node ./bin/cautilus report build \
   --input ./fixtures/reports/report-input.json
 
+node ./bin/cautilus mode evaluate \
+  --repo-root . \
+  --mode held_out \
+  --intent "CLI behavior should remain legible." \
+  --baseline-ref origin/main \
+  --output-dir /tmp/cautilus-mode
+
 node ./bin/cautilus cli evaluate \
   --input ./fixtures/cli-evaluation/doctor-missing-adapter.json
 ```
