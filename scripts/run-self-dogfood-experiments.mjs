@@ -5,6 +5,7 @@ import { spawnSync } from "node:child_process";
 import process from "node:process";
 
 import { pruneWorkspaceArtifacts } from "./agent-runtime/prune-workspace-artifacts.mjs";
+import { enrichExperimentPrompt } from "./self-dogfood-experiment-prompt.mjs";
 
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(SCRIPT_DIR, "..");
@@ -136,6 +137,13 @@ function runCautilus(repoRoot, args, quiet, timeoutMs = null) {
 	});
 }
 
+function expectSuccess(result, label) {
+	if (result.status === 0) {
+		return;
+	}
+	fail(`${label} failed.\n${result.stderr}`);
+}
+
 function readJsonFile(path, label) {
 	if (!existsSync(path)) {
 		fail(`${label} not found: ${path}`);
@@ -239,6 +247,68 @@ function syntheticReviewSummary(reviewDir, timeoutMs, reviewAdapterName) {
 	return { summaryPath, summary };
 }
 
+function prepareExperimentPrompt(repoRoot, reportPath, reviewDir, adapterName, options) {
+	const reviewPacketPath = join(reviewDir, "review-packet.json");
+	const promptInputPath = join(reviewDir, "review-prompt-input.json");
+	const promptPath = join(reviewDir, "review.prompt.md");
+	expectSuccess(
+		runCautilus(
+			repoRoot,
+			[
+				"review",
+				"prepare-input",
+				"--repo-root",
+				repoRoot,
+				"--report-file",
+				reportPath,
+				"--adapter-name",
+				adapterName,
+				"--output",
+				reviewPacketPath,
+			],
+			options.quiet,
+		),
+		`review prepare-input (${adapterName})`,
+	);
+	expectSuccess(
+		runCautilus(
+			repoRoot,
+			[
+				"review",
+				"build-prompt-input",
+				"--review-packet",
+				reviewPacketPath,
+				"--output",
+				promptInputPath,
+			],
+			options.quiet,
+		),
+		`review build-prompt-input (${adapterName})`,
+	);
+	expectSuccess(
+		runCautilus(
+			repoRoot,
+			[
+				"review",
+				"render-prompt",
+				"--input",
+				promptInputPath,
+				"--output",
+				promptPath,
+			],
+			options.quiet,
+		),
+		`review render-prompt (${adapterName})`,
+	);
+	enrichExperimentPrompt({
+		promptPath,
+		promptInputPath,
+		adapterName,
+		reviewTimeoutMs: options.reviewTimeoutMs,
+	});
+	return { promptPath, reviewPacketPath, promptInputPath };
+}
+
 function writeLatestArtifacts(runDir, latestDir) {
 	rmSync(latestDir, { recursive: true, force: true });
 	mkdirSync(dirname(latestDir), { recursive: true });
@@ -312,6 +382,7 @@ function runModeEvaluation(repoRoot, workspace, modeDir, options) {
 
 function runExperimentReview(repoRoot, workspace, reportPath, reviewDir, adapterName, options) {
 	mkdirSync(reviewDir, { recursive: true });
+	const promptArtifacts = prepareExperimentPrompt(repoRoot, reportPath, reviewDir, adapterName, options);
 	const args = [
 		"review",
 		"variants",
@@ -319,8 +390,8 @@ function runExperimentReview(repoRoot, workspace, reportPath, reviewDir, adapter
 		repoRoot,
 		"--workspace",
 		workspace,
-		"--report-file",
-		reportPath,
+		"--prompt-file",
+		promptArtifacts.promptPath,
 		"--output-dir",
 		reviewDir,
 		"--adapter-name",
