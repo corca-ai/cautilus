@@ -14,7 +14,7 @@ references.
 
 ## Snapshot
 
-The checks below were recorded on 2026-04-09 UTC with the current
+The checks below were recorded on 2026-04-10 UTC with the current
 `/home/ubuntu/cautilus/bin/cautilus` binary.
 
 ## Ceal
@@ -26,11 +26,11 @@ Evidence:
 - `node ./bin/cautilus doctor --repo-root /home/ubuntu/ceal`
   returns `ready`
 - checked-in adapter:
-  [/home/ubuntu/ceal/.agents/workbench-adapter.yaml](/home/ubuntu/ceal/.agents/workbench-adapter.yaml)
+  [/home/ubuntu/ceal/.agents/cautilus-adapter.yaml](/home/ubuntu/ceal/.agents/cautilus-adapter.yaml)
 - checked-in named adapters:
-  [/home/ubuntu/ceal/.agents/workbench-adapters/code-quality.yaml](/home/ubuntu/ceal/.agents/workbench-adapters/code-quality.yaml)
+  [/home/ubuntu/ceal/.agents/cautilus-adapters/code-quality.yaml](/home/ubuntu/ceal/.agents/cautilus-adapters/code-quality.yaml)
   and
-  [/home/ubuntu/ceal/.agents/workbench-adapters/skill-smoke.yaml](/home/ubuntu/ceal/.agents/workbench-adapters/skill-smoke.yaml)
+  [/home/ubuntu/ceal/.agents/cautilus-adapters/skill-smoke.yaml](/home/ubuntu/ceal/.agents/cautilus-adapters/skill-smoke.yaml)
 
 What this means:
 
@@ -52,20 +52,17 @@ Evidence:
 - checked-in adapter-like asset:
   [/home/ubuntu/charness/.agents/quality-adapter.yaml](/home/ubuntu/charness/.agents/quality-adapter.yaml)
 - no checked-in
-  [/home/ubuntu/charness/.agents/workbench-adapter.yaml](/home/ubuntu/charness/.agents/workbench-adapter.yaml)
+  [/home/ubuntu/charness/.agents/cautilus-adapter.yaml](/home/ubuntu/charness/.agents/cautilus-adapter.yaml)
 
 What this means:
 
 - `charness` already contains durable evaluation and adapter-shaped metadata,
-  but not in the current `workbench-adapter` discovery path that `Cautilus`
+  but not in the current `cautilus-adapter` discovery path that `Cautilus`
   expects.
 - It is a valid reference for `skill` normalization inputs, especially public
   skill, profile, and validation drift patterns.
-- It should not yet be described as a full standalone binary consumer without
-  either:
-  - adding a real `workbench-adapter` surface, or
-  - explicitly broadening `Cautilus` discovery rules beyond the current
-    contract
+- It should not yet be described as a full standalone binary consumer until it
+  adds a real `cautilus-adapter` surface.
 
 ## crill
 
@@ -80,7 +77,7 @@ Evidence:
   [/home/ubuntu/crill/.agents/concept-review-adapter.yaml](/home/ubuntu/crill/.agents/concept-review-adapter.yaml)
   and other single-purpose `*-adapter.yaml` files
 - no checked-in
-  [/home/ubuntu/crill/.agents/workbench-adapter.yaml](/home/ubuntu/crill/.agents/workbench-adapter.yaml)
+  [/home/ubuntu/crill/.agents/cautilus-adapter.yaml](/home/ubuntu/crill/.agents/cautilus-adapter.yaml)
 
 What this means:
 
@@ -109,5 +106,4 @@ layer in multiple real repos.
 2. Keep checked-in consumer-shaped normalized packet examples for
    `ceal`, `charness`, and `crill`.
 3. Do not claim `charness` or `crill` are full adapter consumers until the
-   adapter-discovery contract is intentionally widened or those repos gain a
-   real `workbench-adapter` surface.
+   repos gain a real `cautilus-adapter` surface.

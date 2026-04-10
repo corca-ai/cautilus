@@ -14,6 +14,8 @@
 - minimal CLI [bin/cautilus](/home/ubuntu/cautilus/bin/cautilus)가 추가돼 `adapter resolve`, `adapter init`, `review variants`를 직접 호출할 수 있다.
 - bundled standalone skill [skills/cautilus/SKILL.md](/home/ubuntu/cautilus/skills/cautilus/SKILL.md)이 추가돼 binary와 같은 workflow surface를 문서화하기 시작했다.
 - standalone `doctor` command가 추가돼 host repo의 adapter readiness를 deterministic하게 검사할 수 있다.
+- official adapter contract는 `cautilus-adapter.yaml` 과
+  `cautilus-adapters/` 로 고정됐다.
 - temp repo smoke test가 추가돼 `adapter init -> doctor -> review variants`가 Ceal-owned path 없이 끝까지 도는지 검증한다.
 - Ceal 1차 consumer repoint가 진행돼 generic adapter-resolution test, generic variant runner, skill bootstrap command, `skill-smoke` iterate command이 `Cautilus` surface를 보게 됐다.
 - generic scenario/history contract 초안이 [scenario-history.md](/home/ubuntu/cautilus/docs/contracts/scenario-history.md) 로 추가돼 profile, graduation, baseline-cache 규칙을 제품 경계로 분리하기 시작했다.
@@ -37,25 +39,28 @@
 - Ceal에서 generic runtime seam으로 볼 수 있는 executor-variant 러너와 검증용 테스트, review verdict schema를 가져왔다.
 - [scripts/init_adapter.py](/home/ubuntu/cautilus/scripts/init_adapter.py)는 `PyYAML` 의존성을 제거하고 stdlib-only YAML writer로 바뀌었다.
 - [workflow.md](/home/ubuntu/cautilus/docs/workflow.md)와 [adapter-contract.md](/home/ubuntu/cautilus/docs/contracts/adapter-contract.md)는 Ceal 최신 generic knowledge를 반영하도록 보강됐다.
+- executor-variant summary는 이제 wall-clock latency를 항상 남기고,
+  checked-in wrapper가 주면 optional cost/token telemetry도 함께 남긴다.
 - `npm install`, `npm run lint`, `npm run test`, `npm run verify`가 모두 통과했다.
 - `Cautilus` resolver는 Ceal의 `skill-smoke`, `code-quality` adapter를 이미 읽을 수 있어 consumer repoint의 전제는 갖췄다.
 - 아직 없는 것:
   - host-specific recent activity / blocked run mining adapter
-  - adapter-discovery widening 여부에 대한 결정
   - example set을 넘는 다음 generic pattern class 확장 기준
 
 ## Next Session
 
 1. `chatbot`, `skill` normalized input fixture 둘 다에서 `scenario normalize -> scenario prepare-input -> scenario propose` standalone e2e를 유지한다.
-2. `consumer-readiness.md` 기준으로 다음 consumer move가 adapter-discovery widening인지, normalization-pattern widening인지 고른다.
+2. `consumer-readiness.md` 기준으로 `charness`, `crill`을 live consumer로 올리기 위한 `cautilus-adapter` migration checklist를 구체화한다.
 3. 필요하면 consumer example 위에서 새로운 pattern class를 늘리고, raw reader logic은 여전히 consumer-owned로 남긴다.
+4. telemetry를 `review variants` 밖의 다른 runtime packet에도 올릴지 검토한다.
 
 ## Discuss
 
-- adapter file naming을 당장은 `workbench-adapter`로 유지할지, 어느 시점에 `cautilus` naming으로 바꿀지 정해야 한다.
+- official adapter naming은 `cautilus-adapter.yaml` 과 `cautilus-adapters/` 로 고정한다.
 - standalone skill 배포 경로를 repo-local `skills/`로만 둘지, 추후 installable package 형태까지 같이 정의할지 정해야 한다.
 - Ceal repoint를 한 번에 할지, tests/review-variant/adapter-resolution부터 단계적으로 할지 정해야 한다.
 - scenario proposal engine을 Slack/Ceal storage model에서 얼마나 빨리 분리할지 결정이 필요하다.
+- cost/latency telemetry를 `doctor`, `iterate`, `held-out`, `full gate` 어디까지 공식 packet으로 승격할지 정해야 한다.
 - `charness`나 다른 consumer에 공개할 release boundary를 언제 처음 만들지 정해야 한다.
 
 ## References
@@ -85,9 +90,9 @@
 - [run-workbench-executor-variants.test.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/run-workbench-executor-variants.test.mjs)
 - [WORKBENCH_PRODUCT_EXTRACTION_PLAN.md](/home/ubuntu/ceal/WORKBENCH_PRODUCT_EXTRACTION_PLAN.md)
 - [/home/ubuntu/ceal/.agents/skills/workbench/SKILL.md](/home/ubuntu/ceal/.agents/skills/workbench/SKILL.md)
-- `/home/ubuntu/ceal/.agents/workbench-adapter.yaml`
-- `/home/ubuntu/ceal/.agents/workbench-adapters/code-quality.yaml`
-- `/home/ubuntu/ceal/.agents/workbench-adapters/skill-smoke.yaml`
+- `/home/ubuntu/ceal/.agents/cautilus-adapter.yaml`
+- `/home/ubuntu/ceal/.agents/cautilus-adapters/code-quality.yaml`
+- `/home/ubuntu/ceal/.agents/cautilus-adapters/skill-smoke.yaml`
 - `/home/ubuntu/ceal/scripts/agent-runtime/prompt-benchmark-profile.mjs`
 - `/home/ubuntu/ceal/scripts/agent-runtime/propose-audit-scenarios.mjs`
 - `python3 /home/ubuntu/cautilus/scripts/resolve_adapter.py --repo-root /home/ubuntu/ceal`

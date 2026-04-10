@@ -14,19 +14,19 @@ _stdlib_yaml = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(_stdlib_yaml)
 
 ADAPTER_CANDIDATES = (
-    Path(".agents/workbench-adapter.yaml"),
-    Path(".codex/workbench-adapter.yaml"),
-    Path(".claude/workbench-adapter.yaml"),
-    Path("docs/workbench-adapter.yaml"),
-    Path("workbench-adapter.yaml"),
+    Path(".agents/cautilus-adapter.yaml"),
+    Path(".codex/cautilus-adapter.yaml"),
+    Path(".claude/cautilus-adapter.yaml"),
+    Path("docs/cautilus-adapter.yaml"),
+    Path("cautilus-adapter.yaml"),
 )
 
 NAMED_ADAPTER_DIRS = (
-    Path(".agents/workbench-adapters"),
-    Path(".codex/workbench-adapters"),
-    Path(".claude/workbench-adapters"),
-    Path("docs/workbench-adapters"),
-    Path("workbench-adapters"),
+    Path(".agents/cautilus-adapters"),
+    Path(".codex/cautilus-adapters"),
+    Path(".claude/cautilus-adapters"),
+    Path("docs/cautilus-adapters"),
+    Path("cautilus-adapters"),
 )
 
 STRING_LIST_FIELDS = (
@@ -261,10 +261,10 @@ def load_adapter(
 
     if adapter_path is None:
         inferred = infer_repo_defaults(repo_root)
-        warnings = ["No workbench adapter found. Falling back to inferred defaults."]
+        warnings = ["No cautilus adapter found. Falling back to inferred defaults."]
         if adapter_name:
             warnings = [
-                f"No named workbench adapter '{adapter_name}' found. Falling back to inferred defaults."
+                f"No named cautilus adapter '{adapter_name}' found. Falling back to inferred defaults."
             ]
         return {
             "found": False,

@@ -153,9 +153,9 @@ def main() -> None:
 
     repo_root = args.repo_root.resolve()
     default_output = (
-        Path(".agents/workbench-adapters") / f"{args.adapter_name}.yaml"
+        Path(".agents/cautilus-adapters") / f"{args.adapter_name}.yaml"
         if args.adapter_name
-        else Path(".agents/workbench-adapter.yaml")
+        else Path(".agents/cautilus-adapter.yaml")
     )
     chosen_output = args.output or default_output
     output = chosen_output if chosen_output.is_absolute() else repo_root / chosen_output

@@ -35,13 +35,14 @@
 | docs/workflow.md | fixed | Executor Variants |
 | docs/contracts/adapter-contract.md | fixed | Dogfooding Pattern |
 | docs/contracts/adapter-contract.md | fixed | Executor Variant Shape |
+| docs/contracts/reporting.md | fixed | duration_ms |
 | docs/contracts/scenario-proposal-inputs.md | file_exists |  |
 | docs/contracts/scenario-proposal-inputs.md | fixed | cautilus.scenario_proposal_inputs.v1 |
 | docs/contracts/scenario-proposal-normalization.md | file_exists |  |
 | docs/contracts/scenario-proposal-normalization.md | fixed | scenario prepare-input |
 | docs/consumer-readiness.md | file_exists |  |
 | docs/consumer-readiness.md | fixed | ceal is the live adapter consumer |
-| scripts/resolve_adapter.py | fixed | workbench-adapter.yaml |
+| scripts/resolve_adapter.py | fixed | cautilus-adapter.yaml |
 | scripts/init_adapter.py | fixed | dump_yaml_document |
 | scripts/agent-runtime/scenario-history.mjs | file_exists |  |
 | scripts/agent-runtime/scenario-history.mjs | fixed | SCENARIO_HISTORY_SCHEMA |
@@ -99,6 +100,7 @@
 - adapter-defined executor variants fanout
 - checked-in standalone skill entrypoint
 - structured review verdict schema
+- explicit latency telemetry in executor-variant summaries
 - local lint/test surface
 
 아직 이 단계에서 강제하지 않는 것:
@@ -124,7 +126,7 @@ $ node --test ./scripts/agent-runtime/consumer-example-fixtures.test.mjs
 $ node --test ./scripts/agent-runtime/chatbot-proposal-candidates.test.mjs
 $ node --test ./scripts/agent-runtime/skill-proposal-candidates.test.mjs
 $ node --test ./scripts/agent-runtime/scenario-proposal-schemas.test.mjs
-$ python3 ./scripts/init_adapter.py --repo-root /tmp/cautilus-spec-check --output /tmp/cautilus-spec-check/workbench-adapter.yaml --force
+$ python3 ./scripts/init_adapter.py --repo-root /tmp/cautilus-spec-check --output /tmp/cautilus-spec-check/cautilus-adapter.yaml --force
 $ node --test ./scripts/agent-runtime/scenario-history.test.mjs
 $ node --test ./scripts/agent-runtime/scenario-proposals.test.mjs
 $ test -f ./skills/cautilus/SKILL.md

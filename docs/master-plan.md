@@ -60,8 +60,8 @@ The target product is:
   reader logic.
 - [consumer-readiness.md](/home/ubuntu/cautilus/docs/consumer-readiness.md)
   now fixes the honest live-consumer status: `ceal` is ready today, while
-  `charness` and `crill` are normalization references until adapter discovery
-  is widened or those repos gain a real `workbench-adapter` surface.
+  `charness` and `crill` are normalization references until those repos gain a
+  real `cautilus-adapter` surface.
 - Ceal still owns richer prompt-benchmark history logic, audit-workbench
   storage, scenario proposal generation, and operator web surfaces.
 
@@ -145,6 +145,7 @@ Formalize the DSPy-like product story:
    workflow surface.
 2. Keep both `chatbot` and `skill` normalization wired into the
    `prepare-input -> propose` standalone chain with checked-in fixtures.
-3. Decide whether the next consumer move is adapter-discovery widening for
-   repos like `charness` and `crill`, or more normalization-pattern coverage
-   on top of the current example set.
+3. Keep expanding normalization-pattern coverage while preserving one official
+   adapter contract: `cautilus-adapter.yaml`.
+4. Prepare explicit consumer migration steps for `charness` and `crill`
+   instead of widening discovery rules.

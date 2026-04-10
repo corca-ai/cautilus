@@ -27,7 +27,7 @@ output_file="$2"
 prompt_file="$3"
 schema_file="$4"
 prompt_text="$(cat "$prompt_file")"
-printf '{"verdict":"pass","summary":"%s: %s","findings":[{"severity":"pass","message":"%s","path":"variant/%s"}]}\\n' "$variant_id" "$prompt_text" "$schema_file" "$variant_id" > "$output_file"
+printf '{"verdict":"pass","summary":"%s: %s","telemetry":{"provider":"mock","model":"mock-%s","total_tokens":42,"cost_usd":0.01},"findings":[{"severity":"pass","message":"%s","path":"variant/%s"}]}\\n' "$variant_id" "$prompt_text" "$variant_id" "$schema_file" "$variant_id" > "$output_file"
 `,
 	);
 	const adapterPath = join(root, "adapter.yaml");
@@ -93,6 +93,8 @@ test("run-workbench-executor-variants executes every adapter-defined variant and
 		assert.equal(summary.variants.length, 2);
 		assert.equal(summary.variants[0].status, "passed");
 		assert.equal(summary.variants[1].status, "passed");
+		assert.ok(summary.variants[0].durationMs >= 0);
+		assert.equal(summary.variants[0].telemetry.provider, "mock");
 		assert.match(summary.variants[0].output.summary, /^alpha:/);
 		assert.match(summary.variants[1].output.summary, /^beta:/);
 	} finally {

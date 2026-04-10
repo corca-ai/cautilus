@@ -20,7 +20,7 @@ test("cautilus adapter resolve delegates to the bundled resolver", () => {
 		const adapterDir = join(root, ".agents");
 		mkdirSync(adapterDir, { recursive: true });
 		writeFileSync(
-			join(adapterDir, "workbench-adapter.yaml"),
+			join(adapterDir, "cautilus-adapter.yaml"),
 			[
 				"version: 1",
 				"repo: temp",
@@ -51,7 +51,7 @@ test("cautilus doctor reports ready when a valid adapter declares an execution s
 		const adapterDir = join(root, ".agents");
 		mkdirSync(adapterDir, { recursive: true });
 		writeFileSync(
-			join(adapterDir, "workbench-adapter.yaml"),
+			join(adapterDir, "cautilus-adapter.yaml"),
 			[
 				"version: 1",
 				"repo: temp",
@@ -73,7 +73,7 @@ test("cautilus doctor reports ready when a valid adapter declares an execution s
 		const payload = JSON.parse(result.stdout);
 		assert.equal(payload.ready, true);
 		assert.equal(payload.status, "ready");
-		assert.equal(payload.adapter_path, join(root, ".agents", "workbench-adapter.yaml"));
+		assert.equal(payload.adapter_path, join(root, ".agents", "cautilus-adapter.yaml"));
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}
@@ -102,7 +102,7 @@ test("cautilus doctor fails when the adapter is invalid", () => {
 		const adapterDir = join(root, ".agents");
 		mkdirSync(adapterDir, { recursive: true });
 		writeFileSync(
-			join(adapterDir, "workbench-adapter.yaml"),
+			join(adapterDir, "cautilus-adapter.yaml"),
 			[
 				"version: one",
 				"repo: temp",
@@ -160,7 +160,7 @@ printf '{"verdict":"pass","summary":"standalone smoke","findings":[{"severity":"
 			encoding: "utf-8",
 		});
 		assert.equal(init.status, 0, init.stderr);
-		const adapterPath = join(root, ".agents", "workbench-adapter.yaml");
+		const adapterPath = join(root, ".agents", "cautilus-adapter.yaml");
 		const adapterText =
 			readFileSync(adapterPath, "utf-8") +
 			[

@@ -8,19 +8,19 @@ named adapters when the repo needs extra surfaces such as `code-quality`,
 
 Search order:
 
-1. `.agents/workbench-adapter.yaml`
-2. `.codex/workbench-adapter.yaml`
-3. `.claude/workbench-adapter.yaml`
-4. `docs/workbench-adapter.yaml`
-5. `workbench-adapter.yaml`
+1. `.agents/cautilus-adapter.yaml`
+2. `.codex/cautilus-adapter.yaml`
+3. `.claude/cautilus-adapter.yaml`
+4. `docs/cautilus-adapter.yaml`
+5. `cautilus-adapter.yaml`
 
 Named adapter search order for `--adapter-name <name>`:
 
-1. `.agents/workbench-adapters/<name>.yaml`
-2. `.codex/workbench-adapters/<name>.yaml`
-3. `.claude/workbench-adapters/<name>.yaml`
-4. `docs/workbench-adapters/<name>.yaml`
-5. `workbench-adapters/<name>.yaml`
+1. `.agents/cautilus-adapters/<name>.yaml`
+2. `.codex/cautilus-adapters/<name>.yaml`
+3. `.claude/cautilus-adapters/<name>.yaml`
+4. `docs/cautilus-adapters/<name>.yaml`
+5. `cautilus-adapters/<name>.yaml`
 
 ## Minimal Shape
 
@@ -194,6 +194,10 @@ Optional fields:
 - `required_prerequisites`: concise preconditions the operator should satisfy
   before running it
 - `safety_notes`: concise mistakes to avoid for this variant
+
+If a checked-in wrapper can observe provider cost or token usage, let it emit
+an optional `telemetry` object in the structured verdict payload instead of
+hiding that data in stderr text.
 
 ## Human Review Prompt Shape
 

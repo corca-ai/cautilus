@@ -116,15 +116,21 @@ function renderTemplate(template, replacements) {
 }
 
 function runVariant(repoRoot, variant, replacements) {
+	const startedAt = new Date();
+	const startedAtMs = Date.now();
 	const command = renderTemplate(variant.command_template, replacements);
 	const result = spawnSync("bash", ["-lc", command], {
 		cwd: repoRoot,
 		encoding: "utf-8",
 	});
+	const completedAt = new Date();
 	return {
 		id: variant.id,
 		tool: variant.tool,
 		command,
+		startedAt: startedAt.toISOString(),
+		completedAt: completedAt.toISOString(),
+		durationMs: completedAt.getTime() - startedAtMs,
 		exitCode: result.status,
 		signal: result.signal,
 		stdout: result.stdout,
@@ -203,6 +209,9 @@ function main() {
 				id: result.id,
 				tool: result.tool,
 				status: result.status,
+				startedAt: result.startedAt,
+				completedAt: result.completedAt,
+				durationMs: result.durationMs,
 				exitCode: result.exitCode,
 				signal: result.signal,
 				outputFile: result.outputFile,
@@ -210,6 +219,7 @@ function main() {
 				command: result.command,
 				stdout: result.stdout,
 				stderr: result.stderr,
+				telemetry: output && typeof output.telemetry === "object" ? output.telemetry : null,
 				output,
 			};
 		}),

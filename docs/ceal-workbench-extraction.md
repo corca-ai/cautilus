@@ -24,9 +24,9 @@ Current source files:
 
 Ceal-owned adapters and repo-local usage surfaces that should stay in Ceal:
 
-- `/home/ubuntu/ceal/.agents/workbench-adapter.yaml`
-- `/home/ubuntu/ceal/.agents/workbench-adapters/code-quality.yaml`
-- `/home/ubuntu/ceal/.agents/workbench-adapters/skill-smoke.yaml`
+- `/home/ubuntu/ceal/.agents/cautilus-adapter.yaml`
+- `/home/ubuntu/ceal/.agents/cautilus-adapters/code-quality.yaml`
+- `/home/ubuntu/ceal/.agents/cautilus-adapters/skill-smoke.yaml`
 
 ## Product Boundary
 
@@ -71,8 +71,8 @@ Copy these artifacts first, with semantics preserved:
 
 Do not move these in the first extraction wave:
 
-- `.agents/workbench-adapter.yaml`
-- `.agents/workbench-adapters/*.yaml`
+- `.agents/cautilus-adapter.yaml`
+- `.agents/cautilus-adapters/*.yaml`
 - Ceal report output paths
 - Ceal prompt fixtures and review prompts
 - Ceal docs that tell operators when to trust or distrust a run
@@ -150,9 +150,9 @@ stable instead of inventing the runtime surface first.
 | `.agents/skills/workbench/scripts/init_adapter.py` | `scripts/init_adapter.py` | Cautilus |
 | `.agents/skills/workbench/scripts/_stdlib_yaml.py` | `scripts/_stdlib_yaml.py` | Cautilus |
 | `.agents/skills/workbench/adapter.example.yaml` | `examples/adapter.example.yaml` | Cautilus |
-| `.agents/workbench-adapter.yaml` | keep in place | Ceal |
-| `.agents/workbench-adapters/code-quality.yaml` | keep in place | Ceal |
-| `.agents/workbench-adapters/skill-smoke.yaml` | keep in place | Ceal |
+| `.agents/cautilus-adapter.yaml` | keep in place | Ceal |
+| `.agents/cautilus-adapters/code-quality.yaml` | keep in place | Ceal |
+| `.agents/cautilus-adapters/skill-smoke.yaml` | keep in place | Ceal |
 
 ## Acceptance Criteria For The First Real Extraction
 

@@ -1,4 +1,4 @@
-"""Minimal stdlib YAML loader for workbench adapters.
+"""Minimal stdlib YAML loader for Cautilus adapters.
 
 Supports:
   - top-level scalars (string, int, bool, null)

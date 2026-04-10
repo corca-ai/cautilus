@@ -17,10 +17,10 @@ function runPython(args, workdir = process.cwd()) {
 	return result.stdout;
 }
 
-test("resolve_adapter loads a named workbench adapter from the repo", () => {
+test("resolve_adapter loads a named cautilus adapter from the repo", () => {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-workbench-adapter-load-"));
 	try {
-		const adapterDir = join(root, ".agents", "workbench-adapters");
+		const adapterDir = join(root, ".agents", "cautilus-adapters");
 		mkdirSync(adapterDir, { recursive: true });
 		writeFileSync(
 			join(adapterDir, "code-quality.yaml"),
@@ -39,7 +39,7 @@ test("resolve_adapter loads a named workbench adapter from the repo", () => {
 		const stdout = runPython([RESOLVE_SCRIPT, "--repo-root", root, "--adapter-name", "code-quality"]);
 		const payload = JSON.parse(stdout);
 		assert.equal(payload.valid, true);
-		assert.match(payload.path, /\.agents\/workbench-adapters\/code-quality\.yaml$/);
+		assert.match(payload.path, /\.agents\/cautilus-adapters\/code-quality\.yaml$/);
 		assert.equal(payload.data.profile_default, "code-quality");
 	} finally {
 		rmSync(root, { recursive: true, force: true });
@@ -82,7 +82,7 @@ test("init_adapter scaffolds a named adapter into the named adapter directory", 
 			"utf-8",
 		);
 		runPython([INIT_SCRIPT, "--repo-root", root, "--adapter-name", "skill-smoke"]);
-		const outputPath = join(root, ".agents", "workbench-adapters", "skill-smoke.yaml");
+		const outputPath = join(root, ".agents", "cautilus-adapters", "skill-smoke.yaml");
 		assert.equal(existsSync(outputPath), true);
 		const created = readFileSync(outputPath, "utf-8");
 		assert.match(created, new RegExp(`repo: ${root.split("/").at(-1)}`));

@@ -27,7 +27,7 @@ python3 scripts/resolve_adapter.py --repo-root . --adapter-name code-quality
 2. If the adapter is missing, scaffold one before benchmarking:
 
 ```bash
-python3 scripts/init_adapter.py --repo-root . --output .agents/workbench-adapter.yaml
+python3 scripts/init_adapter.py --repo-root . --output .agents/cautilus-adapter.yaml
 ```
 
 For a named alternate adapter:
@@ -62,19 +62,19 @@ Keep repo-specific execution details in the adapter.
 
 Search order:
 
-1. `.agents/workbench-adapter.yaml`
-2. `.codex/workbench-adapter.yaml`
-3. `.claude/workbench-adapter.yaml`
-4. `docs/workbench-adapter.yaml`
-5. `workbench-adapter.yaml`
+1. `.agents/cautilus-adapter.yaml`
+2. `.codex/cautilus-adapter.yaml`
+3. `.claude/cautilus-adapter.yaml`
+4. `docs/cautilus-adapter.yaml`
+5. `cautilus-adapter.yaml`
 
 Named adapters:
 
-- `.agents/workbench-adapters/<name>.yaml`
-- `.codex/workbench-adapters/<name>.yaml`
-- `.claude/workbench-adapters/<name>.yaml`
-- `docs/workbench-adapters/<name>.yaml`
-- `workbench-adapters/<name>.yaml`
+- `.agents/cautilus-adapters/<name>.yaml`
+- `.codex/cautilus-adapters/<name>.yaml`
+- `.claude/cautilus-adapters/<name>.yaml`
+- `docs/cautilus-adapters/<name>.yaml`
+- `cautilus-adapters/<name>.yaml`
 
 The adapter may define:
 
