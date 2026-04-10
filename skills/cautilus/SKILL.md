@@ -48,6 +48,7 @@ node ./bin/cautilus doctor --repo-root .
 - [docs/contracts/scenario-proposal-inputs.md](/home/ubuntu/cautilus/docs/contracts/scenario-proposal-inputs.md)
 - [docs/contracts/scenario-proposal-normalization.md](/home/ubuntu/cautilus/docs/contracts/scenario-proposal-normalization.md)
 - [docs/contracts/chatbot-normalization.md](/home/ubuntu/cautilus/docs/contracts/chatbot-normalization.md)
+- [docs/contracts/cli-normalization.md](/home/ubuntu/cautilus/docs/contracts/cli-normalization.md)
 - [docs/contracts/skill-normalization.md](/home/ubuntu/cautilus/docs/contracts/skill-normalization.md)
 - [docs/contracts/cli-evaluation.md](/home/ubuntu/cautilus/docs/contracts/cli-evaluation.md)
 - [docs/contracts/review-packet.md](/home/ubuntu/cautilus/docs/contracts/review-packet.md)
@@ -77,6 +78,9 @@ node ./bin/cautilus review variants \
 ```bash
 node ./bin/cautilus scenario normalize chatbot \
   --input ./fixtures/scenario-proposals/chatbot-input.json
+
+node ./bin/cautilus scenario normalize cli \
+  --input ./fixtures/scenario-proposals/cli-input.json
 
 node ./bin/cautilus scenario normalize skill \
   --input ./fixtures/scenario-proposals/skill-input.json
@@ -112,6 +116,12 @@ node ./bin/cautilus review build-prompt-input \
 
 node ./bin/cautilus review render-prompt \
   --input /tmp/cautilus-mode/review-prompt-input.json
+
+node ./bin/cautilus review variants \
+  --repo-root . \
+  --workspace . \
+  --report-file /tmp/cautilus-mode/report.json \
+  --output-dir /tmp/cautilus-review
 
 node ./bin/cautilus cli evaluate \
   --input ./fixtures/cli-evaluation/doctor-missing-adapter.json

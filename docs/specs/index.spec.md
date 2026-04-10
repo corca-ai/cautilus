@@ -29,6 +29,7 @@ $ test -f docs/contracts/scenario-proposal-sources.md
 $ test -f docs/contracts/scenario-proposal-inputs.md
 $ test -f docs/contracts/scenario-proposal-normalization.md
 $ test -f docs/contracts/chatbot-normalization.md
+$ test -f docs/contracts/cli-normalization.md
 $ test -f docs/contracts/skill-normalization.md
 $ test -f docs/master-plan.md
 $ test -f docs/consumer-readiness.md
@@ -40,6 +41,8 @@ $ test -f scripts/doctor.py
 $ test -f scripts/agent-runtime/scenario-history.mjs
 $ test -f scripts/agent-runtime/chatbot-proposal-candidates.mjs
 $ test -f scripts/agent-runtime/normalize-chatbot-proposals.mjs
+$ test -f scripts/agent-runtime/cli-proposal-candidates.mjs
+$ test -f scripts/agent-runtime/normalize-cli-proposals.mjs
 $ test -f scripts/agent-runtime/skill-proposal-candidates.mjs
 $ test -f scripts/agent-runtime/normalize-skill-proposals.mjs
 $ test -f scripts/agent-runtime/consumer-example-fixtures.test.mjs
@@ -54,9 +57,11 @@ $ test -f fixtures/scenario-proposals/coverage.json
 $ test -f fixtures/scenario-proposals/input.schema.json
 $ test -f fixtures/scenario-proposals/proposals.schema.json
 $ test -f fixtures/scenario-proposals/chatbot-input.schema.json
+$ test -f fixtures/scenario-proposals/cli-input.schema.json
 $ test -f fixtures/scenario-proposals/skill-input.schema.json
 $ test -f fixtures/scenario-proposals/standalone-input.json
 $ test -f fixtures/scenario-proposals/chatbot-input.json
+$ test -f fixtures/scenario-proposals/cli-input.json
 $ test -f fixtures/scenario-proposals/skill-input.json
 $ test -f fixtures/scenario-proposals/ceal-chatbot-input.json
 $ test -f fixtures/scenario-proposals/charness-skill-input.json

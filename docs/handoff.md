@@ -32,7 +32,9 @@
 - `scenario normalize chatbot` command와 checked-in input fixture가 추가돼 `chatbot` helper도 이제 standalone binary surface로 바로 부를 수 있다.
 - [skill-proposal-candidates.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/skill-proposal-candidates.mjs) 가 추가돼 `charness`형 smoke/validation failure와 `crill`형 blocked workflow artifact를 같은 generic `proposalCandidates` contract로 바꾸는 첫 `skill` helper seam이 생겼다.
 - `scenario normalize skill` command와 checked-in input fixture가 추가돼 `skill` helper도 이제 standalone binary surface로 바로 부를 수 있다.
-- `chatbot` / `skill` helper input packet용 checked-in JSON Schema artifact가 추가돼 use-case helper boundary도 fixture와 함께 executable contract가 됐다.
+- [cli-proposal-candidates.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/cli-proposal-candidates.mjs) 가 추가돼 repeated operator guidance drift와 side-effect regression을 같은 generic `proposalCandidates` contract로 바꾸는 첫 `cli` helper seam이 생겼다.
+- `scenario normalize cli` command와 checked-in input fixture가 추가돼 `cli` helper도 이제 standalone binary surface로 바로 부를 수 있다.
+- `chatbot` / `cli` / `skill` helper input packet용 checked-in JSON Schema artifact가 추가돼 use-case helper boundary도 fixture와 함께 executable contract가 됐다.
 - `ceal`, `charness`, `crill` shaped normalized packet example도 checked-in fixture/test로 추가돼 consumer-owned reader와 product-owned helper boundary를 repo 안에서 바로 보여줄 수 있다.
 - [consumer-readiness.md](/home/ubuntu/cautilus/docs/consumer-readiness.md) 가 추가돼 현재 honest consumer status가 고정됐다. 지금은 `ceal`, `charness`, `crill` 모두 official `cautilus-adapter` 기준 live consumer이고, 각 repo는 동시에 다른 normalization reference 역할도 가진다.
 - [consumer-migration.md](/home/ubuntu/cautilus/docs/consumer-migration.md)가 추가돼
@@ -66,6 +68,9 @@
 - `review build-prompt-input` / `review render-prompt` command가 추가돼
   review packet 위의 generic meta-prompt seam이 product-owned runtime으로
   올라왔다.
+- `review variants` runner는 이제 `--report-file`만 있어도 review packet,
+  review prompt input, rendered prompt를 output dir 안에서 합성할 수 있어
+  standalone meta-prompt seam이 실제 fanout 경로와도 연결됐다.
 - `cli evaluate` command와 checked-in CLI fixture/schema가 추가돼
   bounded command packet 하나를 실행하고 stdout/stderr/exit code/side
   effect expectation을 검사한 뒤 embedded report packet까지 만들 수 있다.
@@ -82,6 +87,10 @@
 - `install.sh`, `cautilus --version`, `render-homebrew-formula.mjs`, `LICENSE`
   가 추가돼 npm 없이 tagged GitHub release 기반 install story의 첫
   executable surface가 생겼다.
+- [releasing.md](/home/ubuntu/cautilus/docs/releasing.md) 와
+  [fetch-github-archive-sha256.mjs](/home/ubuntu/cautilus/scripts/release/fetch-github-archive-sha256.mjs)
+  가 추가돼 tagged archive checksum과 tap publication 절차를 checked-in
+  release-ops surface로 설명할 수 있다.
 - `npm install`, `npm run lint`, `npm run test`, `npm run verify`가 모두 통과했다.
 - `Cautilus` resolver는 Ceal의 `skill-smoke`, `code-quality` adapter를 이미 읽을 수 있어 consumer repoint의 전제는 갖췄다.
 - 아직 없는 것:
@@ -90,19 +99,13 @@
 
 ## Next Session
 
-1. `review render-prompt`를 `review variants` 실제 실행 경로와 어떻게
-   결합할지 정한다. 지금은 seam이 product-owned가 됐지만 fanout default는
-   아직 consumer가 고를 여지가 있다.
-2. `cli evaluate`를 chatbot/skill처럼 first-class normalization helper로
-   키울지 결정한다. 다음 후보는 `cli` normalization helper와
-   CLI-specific human-review lens다.
-3. tagged release/checksum/Homebrew tap publication을 실제 운영 절차로
+1. tagged release/checksum/Homebrew tap publication을 실제 운영 절차로
    닫는다. 지금은 installer와 formula renderer만 있다.
-4. Ceal migration을 다시 자르고, product-owned runtime seam과
+2. Ceal migration을 다시 자르고, product-owned runtime seam과
    consumer-owned storage/operator seam을 더 명확히 분리한다.
-5. 필요하면 consumer example 위에서 새로운 pattern class를 늘리고, raw
+3. 필요하면 consumer example 위에서 새로운 pattern class를 늘리고, raw
    reader logic은 여전히 consumer-owned로 남긴다.
-6. master plan의 남은 항목이 current-product spec / release docs /
+4. master plan의 남은 항목이 current-product spec / release docs /
    handoff로 흡수 가능한지 계속 확인한다.
 
 ## Discuss

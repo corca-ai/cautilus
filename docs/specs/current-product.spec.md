@@ -24,6 +24,7 @@
 | bin/cautilus | fixed | adapter resolve |
 | bin/cautilus | fixed | cautilus doctor |
 | bin/cautilus | fixed | scenario normalize chatbot |
+| bin/cautilus | fixed | scenario normalize cli |
 | bin/cautilus | fixed | scenario normalize skill |
 | bin/cautilus | fixed | scenario prepare-input |
 | bin/cautilus | fixed | scenario propose |
@@ -70,6 +71,8 @@
 | docs/contracts/scenario-proposal-inputs.md | fixed | cautilus.scenario_proposal_inputs.v1 |
 | docs/contracts/scenario-proposal-normalization.md | file_exists |  |
 | docs/contracts/scenario-proposal-normalization.md | fixed | scenario prepare-input |
+| docs/contracts/cli-normalization.md | file_exists |  |
+| docs/contracts/cli-normalization.md | fixed | cautilus.cli_normalization_inputs.v1 |
 | docs/contracts/cli-evaluation.md | file_exists |  |
 | docs/contracts/cli-evaluation.md | fixed | cautilus.cli_evaluation_packet.v1 |
 | docs/contracts/review-packet.md | file_exists |  |
@@ -82,6 +85,8 @@
 | docs/release-boundary.md | file_exists |  |
 | docs/release-boundary.md | fixed | Product-Owned Surface |
 | docs/release-boundary.md | fixed | install.sh |
+| docs/releasing.md | file_exists |  |
+| docs/releasing.md | fixed | fetch-github-archive-sha256 |
 | docs/consumer-readiness.md | file_exists |  |
 | docs/consumer-readiness.md | fixed | all three target repos have an official cautilus-adapter |
 | docs/consumer-migration.md | file_exists |  |
@@ -98,6 +103,8 @@
 | install.sh | fixed | CAUTILUS_VERSION |
 | scripts/release/render-homebrew-formula.mjs | file_exists |  |
 | scripts/release/render-homebrew-formula.mjs | fixed | renderHomebrewFormula |
+| scripts/release/fetch-github-archive-sha256.mjs | file_exists |  |
+| scripts/release/fetch-github-archive-sha256.mjs | fixed | fetchArchiveSha256 |
 | scripts/resolve_adapter.py | fixed | cautilus-adapter.yaml |
 | scripts/init_adapter.py | fixed | dump_yaml_document |
 | scripts/agent-runtime/scenario-history.mjs | file_exists |  |
@@ -106,6 +113,10 @@
 | scripts/agent-runtime/chatbot-proposal-candidates.mjs | fixed | normalizeChatbotProposalCandidates |
 | scripts/agent-runtime/normalize-chatbot-proposals.mjs | file_exists |  |
 | scripts/agent-runtime/normalize-chatbot-proposals.mjs | fixed | CHATBOT_NORMALIZATION_INPUTS_SCHEMA |
+| scripts/agent-runtime/cli-proposal-candidates.mjs | file_exists |  |
+| scripts/agent-runtime/cli-proposal-candidates.mjs | fixed | normalizeCliProposalCandidates |
+| scripts/agent-runtime/normalize-cli-proposals.mjs | file_exists |  |
+| scripts/agent-runtime/normalize-cli-proposals.mjs | fixed | CLI_NORMALIZATION_INPUTS_SCHEMA |
 | scripts/agent-runtime/skill-proposal-candidates.mjs | file_exists |  |
 | scripts/agent-runtime/skill-proposal-candidates.mjs | fixed | normalizeSkillProposalCandidates |
 | scripts/agent-runtime/normalize-skill-proposals.mjs | file_exists |  |
@@ -124,6 +135,8 @@
 | fixtures/scenario-proposals/proposals.schema.json | fixed | cautilus.scenario_proposals.v1 |
 | fixtures/scenario-proposals/chatbot-input.schema.json | file_exists |  |
 | fixtures/scenario-proposals/chatbot-input.schema.json | fixed | cautilus.chatbot_normalization_inputs.v1 |
+| fixtures/scenario-proposals/cli-input.schema.json | file_exists |  |
+| fixtures/scenario-proposals/cli-input.schema.json | fixed | cautilus.cli_normalization_inputs.v1 |
 | fixtures/scenario-proposals/skill-input.schema.json | file_exists |  |
 | fixtures/scenario-proposals/skill-input.schema.json | fixed | cautilus.skill_normalization_inputs.v1 |
 | fixtures/scenario-proposals/ceal-chatbot-input.json | file_exists |  |
@@ -149,6 +162,8 @@
 - scenario profile and graduation history helpers
 - chatbot proposal-candidate normalization helper
 - chatbot normalization command
+- cli proposal-candidate normalization helper
+- cli normalization command
 - skill proposal-candidate normalization helper
 - skill normalization command
 - scenario proposal input packet assembly command
@@ -183,6 +198,7 @@ local repo에서 최소 surface는 다음 명령으로 확인할 수 있어야 �
 $ node ./bin/cautilus adapter resolve --repo-root .
 $ node ./bin/cautilus doctor --repo-root . || true
 $ node ./bin/cautilus scenario normalize chatbot --input ./fixtures/scenario-proposals/chatbot-input.json
+$ node ./bin/cautilus scenario normalize cli --input ./fixtures/scenario-proposals/cli-input.json
 $ node ./bin/cautilus scenario normalize skill --input ./fixtures/scenario-proposals/skill-input.json
 $ node ./bin/cautilus scenario prepare-input --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json --family fast_regression --window-days 14 --now 2026-04-11T00:00:00.000Z
 $ node ./bin/cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json
@@ -197,6 +213,7 @@ $ node ./bin/cautilus --version
 $ node --test ./bin/cautilus.test.mjs
 $ node --test ./scripts/agent-runtime/consumer-example-fixtures.test.mjs
 $ node --test ./scripts/agent-runtime/chatbot-proposal-candidates.test.mjs
+$ node --test ./scripts/agent-runtime/cli-proposal-candidates.test.mjs
 $ node --test ./scripts/agent-runtime/skill-proposal-candidates.test.mjs
 $ node --test ./scripts/agent-runtime/scenario-proposal-schemas.test.mjs
 $ python3 ./scripts/init_adapter.py --repo-root /tmp/cautilus-spec-check --output /tmp/cautilus-spec-check/cautilus-adapter.yaml --force

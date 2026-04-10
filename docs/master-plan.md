@@ -30,6 +30,11 @@ The target product is:
 - A first standalone `cli evaluate` command now checks one bounded command
   packet against operator-facing intent, stdout/stderr expectations, and side
   effects.
+- A first product-owned `cli` normalization runtime seam now exists for
+  operator-guidance and behavior-contract regressions surfaced by bounded CLI
+  evaluation.
+- A standalone `scenario normalize cli` command now emits proposal candidates
+  from a checked-in CLI input packet.
 - A first standalone `mode evaluate` command now runs adapter-defined iterate,
   held-out, comparison, or full-gate command templates and leaves a report
   packet plus command observations behind.
@@ -42,8 +47,12 @@ The target product is:
 - A first standalone `review build-prompt-input` plus
   `review render-prompt` chain now owns the generic meta-prompt layer above
   the review packet boundary.
+- The executor-variant runner can now synthesize a review packet, prompt-input
+  packet, and rendered review prompt directly from a report packet when no
+  checked-in prompt file is supplied.
 - A first tagged-release install story now exists through `install.sh`,
   `cautilus --version`, and a Homebrew formula renderer.
+- A first release-ops checksum helper now exists for tagged GitHub archives.
 - Ceal now repoints generic adapter-resolution and review-variant runner seams
   to `Cautilus` as a consumer.
 - A first generic scenario/history contract draft now exists in
@@ -136,14 +145,14 @@ itself to Slack or Ceal storage conventions.
 
 The first helper targets should be:
 
-- `chatbot`
+ - `chatbot`
   - Ceal-like conversation continuity and blocked-follow-up patterns
+- `cli`
+  - operator-facing command intent plus guidance/behavior-contract regressions
+    in bounded fixture environments
 - `skill`
   - charness-like validation scenarios plus crill-like durable workflow
     artifact regressions
-- `cli`
-  - operator-facing command intent and output clarity in bounded fixture
-    environments
 
 ### Phase 5: Intent-First Optimization Surface
 
@@ -171,13 +180,11 @@ The current release boundary is documented in
 
 1. Keep the standalone binary, bundled skill, and installer surface aligned on
    one checked-in workflow story.
-2. Wire `review render-prompt` into real executor-variant loops so the
-   meta-prompt seam is not only a standalone helper.
-3. Keep expanding normalization-pattern coverage while preserving one official
+2. Keep expanding normalization-pattern coverage while preserving one official
    adapter contract: `cautilus-adapter.yaml`.
-4. Prepare explicit deepening steps for `charness` and `crill` beyond the new
+3. Prepare explicit deepening steps for `charness` and `crill` beyond the new
    root adapter surface instead of widening discovery rules.
-5. Turn the first install story into a real release discipline: tagged
+4. Turn the first install story into a real release discipline: tagged
    archives, checksums, tap publication, and public-repo release docs.
-6. Keep moving Ceal-specific runtime seams out of the product boundary and
+5. Keep moving Ceal-specific runtime seams out of the product boundary and
    into consumer-owned adapters, prompts, and storage readers.

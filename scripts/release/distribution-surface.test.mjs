@@ -4,6 +4,7 @@ import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 import test from "node:test";
 
+import { renderArchiveUrl } from "./fetch-github-archive-sha256.mjs";
 import { renderHomebrewFormula } from "./render-homebrew-formula.mjs";
 
 const REPO_ROOT = process.cwd();
@@ -36,4 +37,11 @@ test("homebrew formula renderer produces a stable formula body", () => {
 	assert.match(formula, /https:\/\/github.com\/corca-ai\/cautilus\/archive\/refs\/tags\/v0.1.0.tar.gz/);
 	assert.match(formula, /sha256 "abc123"/);
 	assert.match(formula, /cautilus --version/);
+});
+
+test("github archive URL renderer targets tagged source archives", () => {
+	assert.equal(
+		renderArchiveUrl({ repo: "corca-ai/cautilus", version: "v0.1.0" }),
+		"https://github.com/corca-ai/cautilus/archive/refs/tags/v0.1.0.tar.gz",
+	);
 });

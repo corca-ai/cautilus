@@ -77,6 +77,12 @@ test("skill normalization input schema matches the skill fixture", () => {
 	validateAgainstSchema(schema, fixture);
 });
 
+test("cli normalization input schema matches the cli fixture", () => {
+	const schema = readJson("cli-input.schema.json");
+	const fixture = readJson("cli-input.json");
+	validateAgainstSchema(schema, fixture);
+});
+
 test("scenario proposal output schema matches the generated proposal packet", () => {
 	const inputSchema = readJson("input.schema.json");
 	const outputSchema = readJson("proposals.schema.json");

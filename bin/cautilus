@@ -53,6 +53,7 @@ const CHATBOT_NORMALIZER = join(
 	"agent-runtime",
 	"normalize-chatbot-proposals.mjs",
 );
+const CLI_NORMALIZER = join(REPO_ROOT, "scripts", "agent-runtime", "normalize-cli-proposals.mjs");
 const SKILL_NORMALIZER = join(REPO_ROOT, "scripts", "agent-runtime", "normalize-skill-proposals.mjs");
 
 function usage(exitCode = 0) {
@@ -62,6 +63,7 @@ function usage(exitCode = 0) {
 		"  cautilus adapter init [args]",
 		"  cautilus doctor [args]",
 		"  cautilus scenario normalize chatbot [args]",
+		"  cautilus scenario normalize cli [args]",
 		"  cautilus scenario normalize skill [args]",
 		"  cautilus scenario summarize-telemetry [args]",
 		"  cautilus scenario prepare-input [args]",
@@ -79,6 +81,7 @@ function usage(exitCode = 0) {
 		"  cautilus adapter init --repo-root .",
 		"  cautilus doctor --repo-root .",
 		"  cautilus scenario normalize chatbot --input ./fixtures/scenario-proposals/chatbot-input.json",
+		"  cautilus scenario normalize cli --input ./fixtures/scenario-proposals/cli-input.json",
 		"  cautilus scenario normalize skill --input ./fixtures/scenario-proposals/skill-input.json",
 		"  cautilus scenario summarize-telemetry --results ./results.json",
 		"  cautilus scenario prepare-input --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json",
@@ -133,6 +136,10 @@ if (area === "scenario" && action === "propose") {
 
 if (area === "scenario" && action === "normalize" && rest[0] === "chatbot") {
 	run("node", [CHATBOT_NORMALIZER, ...rest.slice(1)]);
+}
+
+if (area === "scenario" && action === "normalize" && rest[0] === "cli") {
+	run("node", [CLI_NORMALIZER, ...rest.slice(1)]);
 }
 
 if (area === "scenario" && action === "normalize" && rest[0] === "skill") {

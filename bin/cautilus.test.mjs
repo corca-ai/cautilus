@@ -1072,3 +1072,130 @@ test("cautilus scenario normalize skill produces proposal candidates that chain 
 		rmSync(root, { recursive: true, force: true });
 	}
 });
+
+test("cautilus scenario normalize cli produces proposal candidates that chain into prepare-input and propose", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-bin-cli-normalize-"));
+	try {
+		const cliInputPath = join(root, "cli-input.json");
+		const candidatesPath = join(root, "cli-candidates.json");
+		const proposalInputPath = join(root, "scenario-proposal-input.json");
+		const proposalOutputPath = join(root, "scenario-proposals.json");
+		const registryPath = join(root, "registry.json");
+		const coveragePath = join(root, "coverage.json");
+
+		writeFileSync(
+			cliInputPath,
+			`${JSON.stringify(
+				{
+					schemaVersion: "cautilus.cli_normalization_inputs.v1",
+					cliRuns: [
+						{
+							surfaceId: "doctor_missing_adapter",
+							commandId: "doctor-no-adapter",
+							displayName: "cautilus doctor",
+							startedAt: "2026-04-11T00:00:00.000Z",
+							status: "failed",
+							intent: "Explain how to add the official adapter when none is present.",
+							summary: "The command no longer mentioned adapter init or the official adapter path.",
+							failureKinds: ["stdout_missing_expected_guidance", "ambiguous_next_step"],
+						},
+						{
+							surfaceId: "adapter_init_scaffold",
+							commandId: "adapter-init-default",
+							displayName: "cautilus adapter init",
+							startedAt: "2026-04-11T01:00:00.000Z",
+							status: "failed",
+							intent: "Scaffold the official adapter in the default .agents location.",
+							summary: "The command exited 0 but did not create .agents/cautilus-adapter.yaml.",
+							failureKinds: ["missing_side_effect"],
+						},
+					],
+				},
+				null,
+				2,
+			)}\n`,
+			"utf-8",
+		);
+		writeFileSync(
+			registryPath,
+			`${JSON.stringify(
+				[
+					{
+						scenarioId: "cli-doctor-missing-adapter-doctor-no-adapter-operator-guidance",
+						scenarioKey: "cli-doctor-missing-adapter-doctor-no-adapter-operator-guidance",
+						family: "fast_regression",
+					},
+				],
+				null,
+				2,
+			)}\n`,
+			"utf-8",
+		);
+		writeFileSync(
+			coveragePath,
+			`${JSON.stringify(
+				[
+					{
+						scenarioKey: "cli-doctor-missing-adapter-doctor-no-adapter-operator-guidance",
+						recentResultCount: 1,
+					},
+				],
+				null,
+				2,
+			)}\n`,
+			"utf-8",
+		);
+
+		const normalize = spawnSync(
+			"node",
+			[BIN_PATH, "scenario", "normalize", "cli", "--input", cliInputPath, "--output", candidatesPath],
+			{
+				cwd: process.cwd(),
+				encoding: "utf-8",
+			},
+		);
+		assert.equal(normalize.status, 0, normalize.stderr);
+		const candidates = JSON.parse(readFileSync(candidatesPath, "utf-8"));
+		assert.equal(candidates.length, 2);
+		assert.equal(candidates[0].family, "fast_regression");
+
+		const prepare = spawnSync(
+			"node",
+			[
+				BIN_PATH,
+				"scenario",
+				"prepare-input",
+				"--candidates",
+				candidatesPath,
+				"--registry",
+				registryPath,
+				"--coverage",
+				coveragePath,
+				"--family",
+				"fast_regression",
+				"--window-days",
+				"14",
+				"--now",
+				"2026-04-11T00:00:00.000Z",
+				"--output",
+				proposalInputPath,
+			],
+			{
+				cwd: process.cwd(),
+				encoding: "utf-8",
+			},
+		);
+		assert.equal(prepare.status, 0, prepare.stderr);
+
+		const propose = spawnSync("node", [BIN_PATH, "scenario", "propose", "--input", proposalInputPath, "--output", proposalOutputPath], {
+			cwd: process.cwd(),
+			encoding: "utf-8",
+		});
+		assert.equal(propose.status, 0, propose.stderr);
+		const proposals = JSON.parse(readFileSync(proposalOutputPath, "utf-8"));
+		assert.equal(proposals.proposals.length, 2);
+		assert.equal(proposals.proposals[0].family, "fast_regression");
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});

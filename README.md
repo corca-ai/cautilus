@@ -18,7 +18,7 @@ The intended product shape is:
 - optional executor-variant runners for structured `codex exec`,
   `claude -p`, or other bounded review passes
 - a contract that separates training surfaces from held-out surfaces
-- first-class use-case helpers for `chatbot`, `skill`, and eventually `cli`
+- first-class use-case helpers for `chatbot`, `cli`, and `skill`
   evaluation packets
 - a path to propose new scenarios from runtime logs instead of hand-authoring
   every benchmark case forever
@@ -56,6 +56,8 @@ Ceal remains a proving-ground consumer, not the product boundary.
   host-owned reference seam that assembles split normalized sources
 - [docs/contracts/chatbot-normalization.md](/home/ubuntu/cautilus/docs/contracts/chatbot-normalization.md):
   product-owned `chatbot` helper boundary for conversation-driven proposal candidates
+- [docs/contracts/cli-normalization.md](/home/ubuntu/cautilus/docs/contracts/cli-normalization.md):
+  product-owned `cli` helper boundary for operator-guidance and behavior-contract candidates
 - [docs/contracts/skill-normalization.md](/home/ubuntu/cautilus/docs/contracts/skill-normalization.md):
   product-owned `skill` helper boundary for durable workflow and validation candidates
 - [docs/contracts/cli-evaluation.md](/home/ubuntu/cautilus/docs/contracts/cli-evaluation.md):
@@ -72,6 +74,8 @@ Ceal remains a proving-ground consumer, not the product boundary.
   checked-in schema for `cautilus.scenario_proposals.v1`
 - [fixtures/scenario-proposals/chatbot-input.schema.json](/home/ubuntu/cautilus/fixtures/scenario-proposals/chatbot-input.schema.json):
   checked-in schema for `cautilus.chatbot_normalization_inputs.v1`
+- [fixtures/scenario-proposals/cli-input.schema.json](/home/ubuntu/cautilus/fixtures/scenario-proposals/cli-input.schema.json):
+  checked-in schema for `cautilus.cli_normalization_inputs.v1`
 - [fixtures/scenario-proposals/skill-input.schema.json](/home/ubuntu/cautilus/fixtures/scenario-proposals/skill-input.schema.json):
   checked-in schema for `cautilus.skill_normalization_inputs.v1`
 - [fixtures/scenario-proposals/ceal-chatbot-input.json](/home/ubuntu/cautilus/fixtures/scenario-proposals/ceal-chatbot-input.json):
@@ -86,6 +90,8 @@ Ceal remains a proving-ground consumer, not the product boundary.
   from extraction scaffold to standalone product
 - [docs/release-boundary.md](/home/ubuntu/cautilus/docs/release-boundary.md):
   current standalone release surface and compatibility discipline
+- [docs/releasing.md](/home/ubuntu/cautilus/docs/releasing.md):
+  tagged-release checksum, archive, and tap publication workflow
 - [install.sh](/home/ubuntu/cautilus/install.sh):
   curl-install surface for tagged GitHub releases
 - [docs/consumer-readiness.md](/home/ubuntu/cautilus/docs/consumer-readiness.md):
@@ -159,6 +165,13 @@ Normalize skill- or workflow-evaluation summaries into proposal candidates:
 ```bash
 node ./bin/cautilus scenario normalize skill \
   --input ./fixtures/scenario-proposals/skill-input.json
+```
+
+Normalize CLI intent/evaluation summaries into proposal candidates:
+
+```bash
+node ./bin/cautilus scenario normalize cli \
+  --input ./fixtures/scenario-proposals/cli-input.json
 ```
 
 Generate a scenario proposal packet from normalized candidate input:
@@ -248,6 +261,7 @@ python3 scripts/resolve_adapter.py --repo-root .
 python3 scripts/init_adapter.py --repo-root .
 node scripts/agent-runtime/run-workbench-executor-variants.mjs --workspace . --output-dir /tmp/cautilus-review
 node scripts/agent-runtime/normalize-chatbot-proposals.mjs --input ./fixtures/scenario-proposals/chatbot-input.json
+node scripts/agent-runtime/normalize-cli-proposals.mjs --input ./fixtures/scenario-proposals/cli-input.json
 node scripts/agent-runtime/normalize-skill-proposals.mjs --input ./fixtures/scenario-proposals/skill-input.json
 node scripts/agent-runtime/build-scenario-proposal-input.mjs --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json --family fast_regression
 node scripts/agent-runtime/generate-scenario-proposals.mjs --input ./fixtures/scenario-proposals/standalone-input.json

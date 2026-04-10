@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["schemaVersion", "cliRuns"],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "cautilus.cli_normalization_inputs.v1"
+    },
+    "cliRuns": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["surfaceId", "commandId", "startedAt", "status", "intent", "summary"],
+        "properties": {
+          "surfaceId": { "type": "string" },
+          "commandId": { "type": "string" },
+          "displayName": { "type": "string" },
+          "startedAt": { "type": "string" },
+          "status": {
+            "type": "string",
+            "enum": ["passed", "failed", "degraded", "blocked"]
+          },
+          "intent": { "type": "string" },
+          "summary": { "type": "string" },
+          "commandPreview": { "type": "string" },
+          "failureKinds": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "expectationFailures": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    }
+  }
+}

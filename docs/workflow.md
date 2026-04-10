@@ -158,6 +158,16 @@ node ./bin/cautilus mode evaluate \
    When the repo keeps a runner such as
    `scripts/agent-runtime/run-workbench-executor-variants.mjs`, prefer that
    checked-in fanout path over manual per-variant shell invocations.
+   When the repo already has a report packet but no fixed prompt file, let the
+   runner synthesize the review packet and meta-prompt artifacts directly:
+
+```bash
+node ./bin/cautilus review variants \
+  --repo-root . \
+  --workspace . \
+  --report-file /tmp/cautilus-mode/report.json \
+  --output-dir /tmp/cautilus-review
+```
    When the repo already has explicit mode results, assemble one checked-in
    report packet instead of leaving held-out and full-gate telemetry spread
    across ad-hoc files:
@@ -236,6 +246,14 @@ transcripts:
 ```bash
 node ./bin/cautilus cli evaluate \
   --input ./fixtures/cli-evaluation/doctor-missing-adapter.json
+```
+
+When repeated CLI failures should become durable scenario coverage, prefer the
+checked-in `cli` normalization helper over repo-local one-off shapers:
+
+```bash
+node ./bin/cautilus scenario normalize cli \
+  --input ./fixtures/scenario-proposals/cli-input.json
 ```
 
 For this pattern:

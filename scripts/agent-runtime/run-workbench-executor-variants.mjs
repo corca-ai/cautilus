@@ -4,6 +4,11 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import process from "node:process";
 
+import { buildReviewPacket } from "./build-review-packet.mjs";
+import { buildReviewPromptInput } from "./build-review-prompt-input.mjs";
+import { REVIEW_PROMPT_INPUTS_SCHEMA } from "./contract-versions.mjs";
+import { renderReviewPrompt } from "./render-review-prompt.mjs";
+
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 const TOOL_ROOT = resolve(SCRIPT_DIR, "..", "..");
 const RESOLVE_ADAPTER_SCRIPT = join(TOOL_ROOT, "scripts", "resolve_adapter.py");
@@ -15,6 +20,9 @@ const VALUE_OPTIONS = new Map([
 	["--prompt-file", "promptFile"],
 	["--schema-file", "schemaFile"],
 	["--output-dir", "outputDir"],
+	["--report-file", "reportFile"],
+	["--review-packet", "reviewPacketFile"],
+	["--review-prompt-input", "reviewPromptInputFile"],
 ]);
 const REQUIRED_FIELDS = ["workspace", "outputDir"];
 
@@ -25,7 +33,7 @@ function fail(message) {
 
 function printUsage() {
 	process.stdout.write(
-		"Usage: node scripts/agent-runtime/run-workbench-executor-variants.mjs [--repo-root DIR] [--adapter PATH | --adapter-name NAME] --workspace DIR --prompt-file FILE --schema-file FILE --output-dir DIR [--variant-id ID]\n",
+		"Usage: node scripts/agent-runtime/run-workbench-executor-variants.mjs [--repo-root DIR] [--adapter PATH | --adapter-name NAME] --workspace DIR [--prompt-file FILE | --report-file FILE | --review-packet FILE | --review-prompt-input FILE] [--schema-file FILE] --output-dir DIR [--variant-id ID]\n",
 	);
 }
 
@@ -57,6 +65,9 @@ function parseArgs(argv) {
 		promptFile: null,
 		schemaFile: null,
 		outputDir: null,
+		reportFile: null,
+		reviewPacketFile: null,
+		reviewPromptInputFile: null,
 		variantIds: [],
 	};
 	for (let index = 0; index < argv.length; index += 1) {
@@ -165,6 +176,78 @@ function sumTelemetryField(variants, field) {
 	return seen ? total : null;
 }
 
+function renderPromptFromInputFile(reviewPromptInputFile, outputDir) {
+	const promptInput = JSON.parse(readFileSync(reviewPromptInputFile, "utf-8"));
+	if (promptInput?.schemaVersion !== REVIEW_PROMPT_INPUTS_SCHEMA) {
+		fail(`review prompt input must use schemaVersion ${REVIEW_PROMPT_INPUTS_SCHEMA}`);
+	}
+	const renderedPromptFile = join(outputDir, "review.prompt.md");
+	writeFileSync(renderedPromptFile, renderReviewPrompt(promptInput), "utf-8");
+	return renderedPromptFile;
+}
+
+function resolvePromptFromReviewPacket(options, adapterPayload, repoRoot, outputDir) {
+	const reviewPacketFile = resolveReviewPacket(options, adapterPayload, repoRoot, outputDir);
+	const reviewPromptInputFile = join(outputDir, "review-prompt-input.json");
+	const promptInput = buildReviewPromptInput(
+		["--review-packet", reviewPacketFile],
+		{ now: new Date() },
+	);
+	writeFileSync(reviewPromptInputFile, `${JSON.stringify(promptInput, null, 2)}\n`, "utf-8");
+	return {
+		promptFile: renderPromptFromInputFile(reviewPromptInputFile, outputDir),
+		reviewPacketFile,
+		reviewPromptInputFile,
+	};
+}
+
+function resolvePromptArtifacts(options, adapterPayload, repoRoot, outputDir) {
+	const promptFile = options.promptFile
+		? resolve(repoRoot, options.promptFile)
+		: adapterPayload.data.default_prompt_file
+			? resolve(repoRoot, adapterPayload.data.default_prompt_file)
+			: null;
+	if (promptFile) {
+		return {
+			promptFile,
+			reviewPacketFile: options.reviewPacketFile ? resolve(repoRoot, options.reviewPacketFile) : null,
+			reviewPromptInputFile: options.reviewPromptInputFile ? resolve(repoRoot, options.reviewPromptInputFile) : null,
+		};
+	}
+	if (options.reviewPromptInputFile) {
+		const reviewPromptInputFile = resolve(repoRoot, options.reviewPromptInputFile);
+		return {
+			promptFile: renderPromptFromInputFile(reviewPromptInputFile, outputDir),
+			reviewPacketFile: options.reviewPacketFile ? resolve(repoRoot, options.reviewPacketFile) : null,
+			reviewPromptInputFile,
+		};
+	}
+	return resolvePromptFromReviewPacket(options, adapterPayload, repoRoot, outputDir);
+}
+
+function resolveReviewPacket(options, adapterPayload, repoRoot, outputDir) {
+	if (options.reviewPacketFile) {
+		return resolve(repoRoot, options.reviewPacketFile);
+	}
+	if (!options.reportFile) {
+		fail("Provide --prompt-file, adapter default_prompt_file, --review-prompt-input, --review-packet, or --report-file");
+	}
+	const reviewPacketFile = join(outputDir, "review-packet.json");
+	const packet = buildReviewPacket(
+		[
+			"--repo-root",
+			repoRoot,
+			"--report-file",
+			resolve(repoRoot, options.reportFile),
+			...(options.adapter ? ["--adapter", options.adapter] : []),
+			...(options.adapterName ? ["--adapter-name", options.adapterName] : []),
+		],
+		{ now: new Date() },
+	);
+	writeFileSync(reviewPacketFile, `${JSON.stringify(packet, null, 2)}\n`, "utf-8");
+	return reviewPacketFile;
+}
+
 function summarizeTelemetry(variants) {
 	if (variants.length === 0) {
 		return null;
@@ -229,12 +312,6 @@ function main() {
 		fail("No executor variants matched the requested --variant-id values.");
 	}
 	const workspace = resolve(options.workspace);
-	const promptFile = resolveRequiredPath(
-		options.promptFile,
-		adapterPayload.data.default_prompt_file,
-		"promptFile",
-		repoRoot,
-	);
 	const schemaFile = resolveRequiredPath(
 		options.schemaFile,
 		adapterPayload.data.default_schema_file,
@@ -243,6 +320,8 @@ function main() {
 	);
 	const outputDir = resolve(options.outputDir);
 	mkdirSync(outputDir, { recursive: true });
+	const promptArtifacts = resolvePromptArtifacts(options, adapterPayload, repoRoot, outputDir);
+	const promptFile = promptArtifacts.promptFile;
 
 	const results = [];
 	for (const variant of selectedVariants) {
@@ -286,6 +365,8 @@ function main() {
 		adapterPath: adapterPayload.path,
 		workspace,
 		promptFile,
+		reviewPacketFile: promptArtifacts.reviewPacketFile,
+		reviewPromptInputFile: promptArtifacts.reviewPromptInputFile,
 		schemaFile,
 		outputDir,
 		telemetry: summarizeTelemetry(variantSummaries),
