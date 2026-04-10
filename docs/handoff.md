@@ -35,6 +35,9 @@
 - `chatbot` / `skill` helper input packet용 checked-in JSON Schema artifact가 추가돼 use-case helper boundary도 fixture와 함께 executable contract가 됐다.
 - `ceal`, `charness`, `crill` shaped normalized packet example도 checked-in fixture/test로 추가돼 consumer-owned reader와 product-owned helper boundary를 repo 안에서 바로 보여줄 수 있다.
 - [consumer-readiness.md](/home/ubuntu/cautilus/docs/consumer-readiness.md) 가 추가돼 현재 honest consumer status가 고정됐다. 지금은 `ceal`만 live adapter consumer이고, `charness`/`crill`은 normalization reference다.
+- [consumer-migration.md](/home/ubuntu/cautilus/docs/consumer-migration.md)가 추가돼
+  `charness`, `crill` 같은 target repo를 공식 `cautilus-adapter`
+  contract로 올리는 순서가 문서화됐다.
 - `fullCheck`는 scenario selection은 전체로 열되 `trainRunCount`나 graduation history는 전진시키지 않는 규칙으로 고정됐다.
 - Ceal에서 generic runtime seam으로 볼 수 있는 executor-variant 러너와 검증용 테스트, review verdict schema를 가져왔다.
 - [scripts/init_adapter.py](/home/ubuntu/cautilus/scripts/init_adapter.py)는 `PyYAML` 의존성을 제거하고 stdlib-only YAML writer로 바뀌었다.
@@ -74,6 +77,7 @@
 - [master-plan.md](/home/ubuntu/cautilus/docs/master-plan.md)
 - [workflow.md](/home/ubuntu/cautilus/docs/workflow.md)
 - [adapter-contract.md](/home/ubuntu/cautilus/docs/contracts/adapter-contract.md)
+- [consumer-migration.md](/home/ubuntu/cautilus/docs/consumer-migration.md)
 - [reporting.md](/home/ubuntu/cautilus/docs/contracts/reporting.md)
 - [scenario-history.md](/home/ubuntu/cautilus/docs/contracts/scenario-history.md)
 - [scenario-proposal-sources.md](/home/ubuntu/cautilus/docs/contracts/scenario-proposal-sources.md)
