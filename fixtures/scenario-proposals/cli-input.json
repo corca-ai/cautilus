@@ -8,6 +8,19 @@
       "startedAt": "2026-04-11T00:00:00.000Z",
       "status": "failed",
       "intent": "Explain how to add the official adapter when none is present.",
+      "intentProfile": {
+        "schemaVersion": "cautilus.behavior_intent.v1",
+        "intentId": "intent-add-official-adapter-guidance",
+        "summary": "Explain how to add the official adapter when none is present.",
+        "behaviorSurface": "operator_cli",
+        "successDimensions": [
+          {
+            "id": "official-adapter-guidance",
+            "summary": "Tell the operator how to add the official adapter."
+          }
+        ],
+        "guardrailDimensions": []
+      },
       "summary": "The command no longer mentioned adapter init or the official adapter path.",
       "commandPreview": "node ./bin/cautilus doctor --repo-root /tmp/missing-adapter",
       "failureKinds": [
@@ -26,6 +39,19 @@
       "startedAt": "2026-04-11T01:00:00.000Z",
       "status": "failed",
       "intent": "Scaffold the official adapter in the default .agents location.",
+      "intentProfile": {
+        "schemaVersion": "cautilus.behavior_intent.v1",
+        "intentId": "intent-scaffold-official-adapter",
+        "summary": "Scaffold the official adapter in the default .agents location.",
+        "behaviorSurface": "operator_cli",
+        "successDimensions": [
+          {
+            "id": "adapter-scaffold-created",
+            "summary": "Create the checked-in adapter scaffold in the default path."
+          }
+        ],
+        "guardrailDimensions": []
+      },
       "summary": "The command exited 0 but did not create .agents/cautilus-adapter.yaml.",
       "commandPreview": "node ./bin/cautilus adapter init --repo-root /tmp/repo",
       "failureKinds": [

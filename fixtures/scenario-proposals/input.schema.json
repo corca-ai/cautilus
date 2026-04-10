@@ -49,6 +49,9 @@
           "family": {
             "type": "string"
           },
+          "intentProfile": {
+            "type": "object"
+          },
           "name": {
             "type": "string"
           },

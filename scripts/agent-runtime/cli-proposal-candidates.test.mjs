@@ -22,6 +22,8 @@ test("normalizeCliProposalCandidates emits an operator-guidance candidate for re
 	assert.equal(candidates.length, 1);
 	assert.equal(candidates[0].proposalKey, "cli-doctor-missing-adapter-doctor-no-adapter-operator-guidance");
 	assert.equal(candidates[0].family, "fast_regression");
+	assert.equal(candidates[0].intentProfile.intentId, "intent-explain-how-to-add-the-official-adapter-when-none-is-present");
+	assert.equal(candidates[0].intentProfile.behaviorSurface, "operator_cli");
 	assert.equal(candidates[0].evidence[0].sourceKind, "cli_evaluation");
 });
 
@@ -43,6 +45,7 @@ test("normalizeCliProposalCandidates emits a behavior-contract candidate for mis
 	});
 	assert.equal(candidates.length, 1);
 	assert.equal(candidates[0].proposalKey, "cli-adapter-init-scaffold-adapter-init-default-behavior-contract");
+	assert.equal(candidates[0].intentProfile.intentId, "intent-scaffold-the-official-adapter-in-the-default-agents-location");
 	assert.ok(candidates[0].tags.includes("behavior-contract"));
 });
 
@@ -73,5 +76,6 @@ test("normalizeCliProposalCandidates merges duplicate proposal keys and keeps ne
 	});
 	assert.equal(candidates.length, 1);
 	assert.equal(candidates[0].evidence.length, 2);
+	assert.equal(candidates[0].intentProfile.intentId, "intent-explain-how-to-add-the-official-adapter-when-none-is-present");
 	assert.equal(candidates[0].evidence[0].summary, "Newer guidance drift.");
 });

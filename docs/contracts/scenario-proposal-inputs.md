@@ -83,6 +83,7 @@ Each entry in `proposalCandidates` must provide:
 
 Optional fields currently supported by the product-owned draft builder:
 
+- `intentProfile` using `cautilus.behavior_intent.v1`
 - `tags`
 - `maxTurns`
 - `simulatorTurns`
@@ -119,6 +120,7 @@ The product-owned `scenario propose` command then:
 - merges duplicate `proposalKey` entries
 - ranks proposals
 - emits `cautilus.scenario_proposals.v1`
+- preserves `intentProfile` when the candidate already carries one
 
 ## Fixed Decisions
 
@@ -127,6 +129,8 @@ The product-owned `scenario propose` command then:
   pattern-mining heuristics.
 - Product-owned proposal generation starts at candidate merge and ranking.
 - Registry presence and recent coverage remain separate inputs.
+- `intentProfile` stays optional so non-intent-aware candidate miners do not
+  have to invent fake dimensions.
 
 ## Probe Questions
 

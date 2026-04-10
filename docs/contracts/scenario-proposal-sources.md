@@ -194,6 +194,10 @@ Recommended evidence payloads:
 }
 ```
 
+Proposal candidates and draft scenarios may also carry an optional
+`intentProfile` when the normalized source already knows the intended behavior
+behind the reusable scenario.
+
 ```json
 {
   "sourceKind": "skill_evaluation",

@@ -14,6 +14,19 @@ function createCandidate(overrides = {}) {
 		proposalKey: "review-after-retro",
 		title: "Refresh review-after-retro scenario from recent activity",
 		family: "fast_regression",
+		intentProfile: {
+			schemaVersion: "cautilus.behavior_intent.v1",
+			intentId: "intent-review-after-retro",
+			summary: "The workflow should support pivoting from retro back to review in one thread.",
+			behaviorSurface: "workflow_conversation",
+			successDimensions: [
+				{
+					id: "pivot-continuity",
+					summary: "Carry thread context across the retro-to-review pivot.",
+				},
+			],
+			guardrailDimensions: [],
+		},
 		name: "Review After Retro",
 		description: "The user pivots from retro back to review in one thread.",
 		brief: "Recent activity shows a retro turn followed by a review turn.",
@@ -55,6 +68,7 @@ test("buildDraftScenario emits a product-owned normalized draft scenario", () =>
 	const scenario = buildDraftScenario(createCandidate(), new Set(["review-after-retro"]));
 	assert.equal(scenario.schemaVersion, DRAFT_SCENARIO_SCHEMA);
 	assert.equal(scenario.scenarioId, "review-after-retro--ops-log-refresh");
+	assert.equal(scenario.intentProfile.intentId, "intent-review-after-retro");
 	assert.equal(scenario.benchmark.backend, "scripted");
 	assert.equal(scenario.simulator.kind, "scripted");
 });
@@ -66,6 +80,19 @@ test("generateScenarioProposals ranks merged candidates by evidence count and re
 			createCandidate({
 				proposalKey: "memory-preference-followup",
 				title: "Refresh memory preference follow-up",
+				intentProfile: {
+					schemaVersion: "cautilus.behavior_intent.v1",
+					intentId: "intent-memory-preference-followup",
+					summary: "The workflow should remember a newly taught preference within the same thread.",
+					behaviorSurface: "workflow_conversation",
+					successDimensions: [
+						{
+							id: "preference-reuse",
+							summary: "Reuse the newly taught preference in the immediate follow-up.",
+						},
+					],
+					guardrailDimensions: [],
+				},
 				name: "Memory Preference Follow-Up",
 				description: "The user teaches a preference and immediately reuses it.",
 				brief: "Recent activity shows a preference turn followed by reuse.",
@@ -97,6 +124,7 @@ test("generateScenarioProposals ranks merged candidates by evidence count and re
 	assert.equal(result.schemaVersion, SCENARIO_PROPOSALS_SCHEMA);
 	assert.equal(result.proposals.length, 2);
 	assert.equal(result.proposals[0].proposalKey, "memory-preference-followup");
+	assert.equal(result.proposals[0].intentProfile.intentId, "intent-memory-preference-followup");
 	assert.equal(result.proposals[1].action, "refresh_existing_scenario");
 });
 

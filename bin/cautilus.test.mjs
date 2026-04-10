@@ -1576,6 +1576,7 @@ test("cautilus scenario normalize cli produces proposal candidates that chain in
 		assert.equal(normalize.status, 0, normalize.stderr);
 		const candidates = JSON.parse(readFileSync(candidatesPath, "utf-8"));
 		assert.equal(candidates.length, 2);
+		assert.equal(candidates[0].intentProfile.behaviorSurface, "operator_cli");
 		assert.equal(candidates[0].family, "fast_regression");
 
 		const prepare = spawnSync(
@@ -1613,6 +1614,7 @@ test("cautilus scenario normalize cli produces proposal candidates that chain in
 		assert.equal(propose.status, 0, propose.stderr);
 		const proposals = JSON.parse(readFileSync(proposalOutputPath, "utf-8"));
 		assert.equal(proposals.proposals.length, 2);
+		assert.equal(proposals.proposals[0].draftScenario.intentProfile.behaviorSurface, "operator_cli");
 		assert.equal(proposals.proposals[0].family, "fast_regression");
 	} finally {
 		rmSync(root, { recursive: true, force: true });

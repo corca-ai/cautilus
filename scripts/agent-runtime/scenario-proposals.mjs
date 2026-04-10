@@ -97,6 +97,7 @@ export function buildDraftScenario(candidate, existingScenarioKeys = new Set()) 
 		runner: { mode: "live" },
 		sideEffectsMode: "shadow",
 		simulator: buildSimulator(candidate),
+		...(candidate.intentProfile ? { intentProfile: candidate.intentProfile } : {}),
 		...(candidate.conversationAuditScenario ? { conversationAuditScenario: candidate.conversationAuditScenario } : {}),
 		...(candidate.eventType
 			? { conversation: { userId: "U_AUDIT_WORKBENCH", channelId: "D_AUDIT_WORKBENCH", eventType: candidate.eventType } }
@@ -111,6 +112,7 @@ export function buildScenarioProposal(candidate, existingScenarioKeys, recentCov
 		title: candidate.title,
 		action: scenarioKeyExists ? "refresh_existing_scenario" : "add_new_scenario",
 		family: candidate.family,
+		...(candidate.intentProfile ? { intentProfile: candidate.intentProfile } : {}),
 		recommendedBackends: recommendedBackends(candidate.family),
 		existingCoverage: {
 			scenarioKeyExists,

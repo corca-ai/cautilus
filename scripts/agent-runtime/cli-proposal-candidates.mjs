@@ -1,3 +1,5 @@
+import { buildBehaviorIntentProfile } from "./behavior-intent.mjs";
+
 function normalizeText(text) {
 	return String(text || "").trim().toLowerCase();
 }
@@ -66,6 +68,14 @@ function buildCliEvaluationEvidence(run, title) {
 	};
 }
 
+function buildCliIntentProfile(run) {
+	return buildBehaviorIntentProfile({
+		intent: run.intent,
+		intentProfile: run.intentProfile,
+		fallbackBehaviorSurface: "operator_cli",
+	});
+}
+
 function hasFailureKind(run, patterns) {
 	return toArray(run.failureKinds).some((entry) => patterns.includes(entry));
 }
@@ -97,6 +107,7 @@ function buildGuidanceCandidate(run) {
 		proposalKey: `cli-${slugify(run.surfaceId)}-${slugify(run.commandId)}-operator-guidance`,
 		title: `Refresh ${name} operator guidance scenario`,
 		family: "fast_regression",
+		intentProfile: buildCliIntentProfile(run),
 		name: `${name} Operator Guidance`,
 		description: `${name} should explain the next operator action clearly when the command hits the same intent boundary.`,
 		brief: `Recent CLI evaluations show operator guidance drift for ${name}. Latest summary: "${run.summary}".`,
@@ -118,6 +129,7 @@ function buildBehaviorContractCandidate(run) {
 		proposalKey: `cli-${slugify(run.surfaceId)}-${slugify(run.commandId)}-behavior-contract`,
 		title: `Refresh ${name} behavior contract scenario`,
 		family: "fast_regression",
+		intentProfile: buildCliIntentProfile(run),
 		name: `${name} Behavior Contract`,
 		description: `${name} should preserve its operator-visible exit, output, and side-effect contract for the same intent.`,
 		brief: `Recent CLI evaluations show a behavior-contract regression for ${name}. Latest summary: "${run.summary}".`,

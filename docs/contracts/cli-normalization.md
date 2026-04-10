@@ -52,6 +52,7 @@ Minimum input class:
   - `startedAt`
   - `status`
   - `intent`
+  - optional `intentProfile`
   - `summary`
   - optional `commandPreview`
   - optional `failureKinds`
@@ -67,6 +68,9 @@ CLI-evaluation records into this normalized input.
 
 The helper emits `proposalCandidates` compatible with
 [scenario-proposal-inputs.md](/home/ubuntu/cautilus/docs/contracts/scenario-proposal-inputs.md).
+
+When the host only provides a plain `intent` string, the helper may derive a
+thin `cautilus.behavior_intent.v1` with `behaviorSurface: operator_cli`.
 
 Current candidate family for the first helper:
 

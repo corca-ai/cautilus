@@ -9,6 +9,19 @@
       "proposalKey": "review-after-retro",
       "title": "Refresh review-after-retro scenario from recent activity",
       "family": "fast_regression",
+      "intentProfile": {
+        "schemaVersion": "cautilus.behavior_intent.v1",
+        "intentId": "intent-review-after-retro",
+        "summary": "The workflow should support pivoting from retro back to review in one thread.",
+        "behaviorSurface": "workflow_conversation",
+        "successDimensions": [
+          {
+            "id": "pivot-continuity",
+            "summary": "Carry thread context across the retro-to-review pivot."
+          }
+        ],
+        "guardrailDimensions": []
+      },
       "name": "Review After Retro",
       "description": "The user pivots from retro back to review in one thread.",
       "brief": "Recent activity shows a retro turn followed by a review turn.",

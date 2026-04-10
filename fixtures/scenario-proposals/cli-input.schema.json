@@ -23,6 +23,7 @@
             "enum": ["passed", "failed", "degraded", "blocked"]
           },
           "intent": { "type": "string" },
+          "intentProfile": { "type": "object" },
           "summary": { "type": "string" },
           "commandPreview": { "type": "string" },
           "failureKinds": {

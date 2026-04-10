@@ -36,6 +36,32 @@ This slice keeps the contract intentionally thin.
   add default guardrails from optimization constraints when none were declared
 - `revision artifact` carries the same object forward so the next operator can
   see what behavior the bounded revision is trying to repair
+- `scenario proposal` may now carry the same object when a normalization helper
+  or host packet already knows the intended behavior behind a reusable scenario
+
+## Ownership
+
+Two acquisition modes are allowed in the current product.
+
+### Host-Declared Profile
+
+The host or normalization helper provides an explicit `intentProfile`.
+
+Use this when the behavior surface or success dimensions are already known in a
+stable operator-facing form.
+
+### Default-Derived Profile
+
+The product derives a minimal profile from a plain `intent` string.
+
+Current derivation rules stay conservative:
+
+- `intentId` is slug-derived from the summary
+- `summary` copies the explicit intent text
+- `behaviorSurface` falls back to one product-owned default for the seam
+- `successDimensions` falls back to one dimension that matches the summary
+- `guardrailDimensions` stay empty unless the seam has explicit product-owned
+  defaults, such as optimize objective constraints
 
 ## Guardrails
 
