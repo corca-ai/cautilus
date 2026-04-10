@@ -34,7 +34,7 @@
 - `scenario normalize skill` command와 checked-in input fixture가 추가돼 `skill` helper도 이제 standalone binary surface로 바로 부를 수 있다.
 - `chatbot` / `skill` helper input packet용 checked-in JSON Schema artifact가 추가돼 use-case helper boundary도 fixture와 함께 executable contract가 됐다.
 - `ceal`, `charness`, `crill` shaped normalized packet example도 checked-in fixture/test로 추가돼 consumer-owned reader와 product-owned helper boundary를 repo 안에서 바로 보여줄 수 있다.
-- [consumer-readiness.md](/home/ubuntu/cautilus/docs/consumer-readiness.md) 가 추가돼 현재 honest consumer status가 고정됐다. 지금은 `ceal`만 live adapter consumer이고, `charness`/`crill`은 normalization reference다.
+- [consumer-readiness.md](/home/ubuntu/cautilus/docs/consumer-readiness.md) 가 추가돼 현재 honest consumer status가 고정됐다. 지금은 `ceal`, `charness`, `crill` 모두 official `cautilus-adapter` 기준 live consumer이고, 각 repo는 동시에 다른 normalization reference 역할도 가진다.
 - [consumer-migration.md](/home/ubuntu/cautilus/docs/consumer-migration.md)가 추가돼
   `charness`, `crill` 같은 target repo를 공식 `cautilus-adapter`
   contract로 올리는 순서가 문서화됐다.
@@ -55,7 +55,7 @@
 ## Next Session
 
 1. `chatbot`, `skill` normalized input fixture 둘 다에서 `scenario normalize -> scenario prepare-input -> scenario propose` standalone e2e를 유지한다.
-2. `consumer-readiness.md` 기준으로 `charness`, `crill`을 live consumer로 올리기 위한 `cautilus-adapter` migration checklist를 구체화한다.
+2. `consumer-readiness.md` 기준으로 `charness`, `crill`의 root adapter를 언제 named `cautilus-adapters/`로 분리할지 기준을 구체화한다.
 3. 필요하면 consumer example 위에서 새로운 pattern class를 늘리고, raw reader logic은 여전히 consumer-owned로 남긴다.
 4. telemetry를 `review variants` 밖의 다른 runtime packet에도 올릴지 검토한다.
 

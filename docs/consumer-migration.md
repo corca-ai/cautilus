@@ -39,16 +39,20 @@ and skill without widening adapter discovery.
 
 ### Charness
 
-- current role: primary `skill` normalization reference
-- likely first migration step: derive `.agents/cautilus-adapter.yaml` from the
-  existing quality-validation surface
-- do not treat current `quality-adapter.yaml` as a product contract
+- current role: live consumer and primary `skill` normalization reference
+- current state: root `cautilus-adapter` exists and points at the repo-owned
+  quality gate
+- next likely step: split richer evaluator surfaces into named
+  `cautilus-adapters/`
+- do not treat `quality-adapter.yaml` as the product contract
 
 ### Crill
 
-- current role: durable-workflow normalization reference
-- likely first migration step: create one root `cautilus-adapter.yaml` that
-  points at the most representative review or workflow validation path
+- current role: live consumer and durable-workflow normalization reference
+- current state: root `cautilus-adapter` exists and points at repo-wide
+  validation plus workflow review
+- next likely step: split more targeted evaluator surfaces out of the root
+  adapter only when the default surface becomes overloaded
 - keep single-purpose local adapters if they help operators, but wire one
   explicit `Cautilus` entrypoint
 

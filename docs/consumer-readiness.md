@@ -8,9 +8,8 @@ targets under `~/`:
 - `crill`
 
 The goal is to keep product claims honest.
-`Cautilus` should not pretend every reference repo is already a full live
-consumer when some of them currently serve only as normalization-shape
-references.
+All three repos now expose an official `cautilus-adapter`, but they do not yet
+exercise the same depth of evaluator surface.
 
 ## Snapshot
 
@@ -42,68 +41,64 @@ What this means:
 
 ## charness
 
-Current role: normalization-shape reference, not yet a live `Cautilus`
-consumer
+Current role: live consumer and primary `skill` normalization reference
 
 Evidence:
 
 - `node ./bin/cautilus doctor --repo-root /home/ubuntu/charness`
-  returns `missing_adapter`
-- checked-in adapter-like asset:
-  [/home/ubuntu/charness/.agents/quality-adapter.yaml](/home/ubuntu/charness/.agents/quality-adapter.yaml)
-- no checked-in
+  returns `ready`
+- checked-in `Cautilus` adapter:
   [/home/ubuntu/charness/.agents/cautilus-adapter.yaml](/home/ubuntu/charness/.agents/cautilus-adapter.yaml)
+- existing repo-local adapter asset:
+  [/home/ubuntu/charness/.agents/quality-adapter.yaml](/home/ubuntu/charness/.agents/quality-adapter.yaml)
 
 What this means:
 
-- `charness` already contains durable evaluation and adapter-shaped metadata,
-  but not in the current `cautilus-adapter` discovery path that `Cautilus`
-  expects.
-- It is a valid reference for `skill` normalization inputs, especially public
-  skill, profile, and validation drift patterns.
-- It should not yet be described as a full standalone binary consumer until it
-  adds a real `cautilus-adapter` surface.
+- `charness` now satisfies the official adapter discovery contract.
+- Its current root adapter is intentionally narrow: it lifts the repo-owned
+  `quality` gate into one official `Cautilus` entrypoint.
+- It remains the primary reference for `skill` normalization inputs, especially
+  public skill, profile, and validation drift patterns.
 
 ## crill
 
-Current role: normalization-shape reference, not yet a live `Cautilus`
-consumer
+Current role: live consumer and primary durable-workflow normalization
+reference
 
 Evidence:
 
 - `node ./bin/cautilus doctor --repo-root /home/ubuntu/crill`
-  returns `missing_adapter`
-- checked-in adapter-like assets include:
+  returns `ready`
+- checked-in `Cautilus` adapter:
+  [/home/ubuntu/crill/.agents/cautilus-adapter.yaml](/home/ubuntu/crill/.agents/cautilus-adapter.yaml)
+- existing repo-local adapter assets include:
   [/home/ubuntu/crill/.agents/concept-review-adapter.yaml](/home/ubuntu/crill/.agents/concept-review-adapter.yaml)
   and other single-purpose `*-adapter.yaml` files
-- no checked-in
-  [/home/ubuntu/crill/.agents/cautilus-adapter.yaml](/home/ubuntu/crill/.agents/cautilus-adapter.yaml)
 
 What this means:
 
-- `crill` is a strong reference for blocked durable workflow artifacts, replay
-  seed regressions, and operator-recovery patterns.
-- It is not yet a live adapter consumer under the current `Cautilus`
-  discovery rules.
-- The repo is useful now as a `skill` normalization reference, not as proof
-  that the current adapter contract is already sufficient for every consumer.
+- `crill` now satisfies the official adapter discovery contract.
+- Its current root adapter lifts repo-wide validation and workflow review into
+  one official `Cautilus` entrypoint.
+- It remains the strongest reference for blocked durable workflow artifacts,
+  replay seed regressions, and operator-recovery patterns.
 
 ## Product Positioning
 
 Right now the honest product stance is:
 
-- `ceal` is the live adapter consumer
-- `charness` is the primary skill-validation normalization reference
-- `crill` is the primary durable-workflow normalization reference
+- `ceal` is the deepest live consumer and the primary `chatbot` reference
+- `charness` is a live consumer and the primary skill-validation reference
+- `crill` is a live consumer and the primary durable-workflow reference
 
 This split is acceptable.
-It keeps the product boundary clean while still grounding the normalization
-layer in multiple real repos.
+It keeps one official adapter contract while still grounding the normalization
+layer in multiple real repos with different product shapes.
 
 ## Near-Term Implications
 
-1. Keep proving live binary/skill behavior against `ceal`.
+1. Keep proving the deepest binary/skill behavior against `ceal`.
 2. Keep checked-in consumer-shaped normalized packet examples for
    `ceal`, `charness`, and `crill`.
-3. Do not claim `charness` or `crill` are full adapter consumers until the
-   repos gain a real `cautilus-adapter` surface.
+3. Deepen `charness` and `crill` from root-adapter readiness into richer named
+   adapters or scenario surfaces where needed.

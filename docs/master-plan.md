@@ -59,9 +59,10 @@ The target product is:
   what consumer-owned normalized input should look like without importing raw
   reader logic.
 - [consumer-readiness.md](/home/ubuntu/cautilus/docs/consumer-readiness.md)
-  now fixes the honest live-consumer status: `ceal` is ready today, while
-  `charness` and `crill` are normalization references until those repos gain a
-  real `cautilus-adapter` surface.
+  now fixes the honest live-consumer status: all three target repos have an
+  official `cautilus-adapter`, while `ceal` remains the deepest runtime
+  consumer and `charness` / `crill` remain the primary normalization
+  references for their respective use cases.
 - Ceal still owns richer prompt-benchmark history logic, audit-workbench
   storage, scenario proposal generation, and operator web surfaces.
 
@@ -147,5 +148,5 @@ Formalize the DSPy-like product story:
    `prepare-input -> propose` standalone chain with checked-in fixtures.
 3. Keep expanding normalization-pattern coverage while preserving one official
    adapter contract: `cautilus-adapter.yaml`.
-4. Prepare explicit consumer migration steps for `charness` and `crill`
-   instead of widening discovery rules.
+4. Prepare explicit deepening steps for `charness` and `crill` beyond the new
+   root adapter surface instead of widening discovery rules.
