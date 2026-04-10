@@ -59,6 +59,8 @@ without forcing the operator to mentally sort multiple unrelated workflows.
 - current role: live consumer and primary `skill` normalization reference
 - current state: root `cautilus-adapter` exists and points at the repo-owned
   quality gate
+- boundary note:
+  [docs/charness-consumer-boundary.md](/home/ubuntu/cautilus/docs/charness-consumer-boundary.md)
 - split trigger: add named adapters once charness needs a second operator
   decision beyond the current default quality gate
 - do not treat `quality-adapter.yaml` as the product contract
