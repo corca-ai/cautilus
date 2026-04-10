@@ -138,6 +138,10 @@ scenario set before execution, persist the selected ids as
 `{selected_scenario_ids_file}`, and pass a filtered profile file through
 `{profile}` for that invocation.
 
+When that run is `comparison`, `Cautilus` also materializes a
+`baseline-cache.json` seed beside the mode-evaluation packet so later bounded
+compare flows can reuse a stable cache key instead of guessing it ad hoc.
+
 ## Workflow
 
 1. Resolve the adapter and restate what is being evaluated.

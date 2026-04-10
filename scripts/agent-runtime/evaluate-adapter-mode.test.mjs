@@ -16,6 +16,14 @@ function writeExecutable(root, name, body) {
 	return filePath;
 }
 
+function git(root, args) {
+	const result = spawnSync("git", ["-C", root, ...args], {
+		encoding: "utf-8",
+	});
+	assert.equal(result.status, 0, result.stderr);
+	return result.stdout.trim();
+}
+
 function createRepo({ failMode = "" } = {}) {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-mode-eval-"));
 	const adapterDir = join(root, ".agents");
@@ -182,12 +190,20 @@ echo "$mode ok"
 			"  - baseline git ref via {baseline_ref}",
 			"iterate_command_templates:",
 			"  - sh {candidate_repo}/bench-history.sh iterate {scenario_results_file} {profile} {selected_scenario_ids_file} {output_dir}/selection.txt",
+			"comparison_command_templates:",
+			"  - sh {candidate_repo}/bench-history.sh comparison {scenario_results_file} {profile} {selected_scenario_ids_file} {output_dir}/selection.txt",
+			"comparison_samples_default: 4",
 			"profile_default: profiles/default-train.json",
 			"history_file_hint: .cautilus/history.json",
 			"",
 		].join("\n"),
 		"utf-8",
 	);
+	git(root, ["init"]);
+	git(root, ["config", "user.name", "Cautilus Test"]);
+	git(root, ["config", "user.email", "test@example.com"]);
+	git(root, ["add", "."]);
+	git(root, ["commit", "-m", "fixture"]);
 	return { root, workspace };
 }
 
@@ -442,6 +458,51 @@ test("evaluate-adapter-mode selects scenarios from a checked-in profile and upda
 		const secondHistory = JSON.parse(readFileSync(historyPath, "utf-8"));
 		assert.equal(secondHistory.trainRunCount, 2);
 		assert.deepEqual(secondHistory.recentRuns.at(-1).selectedScenarioIds, ["control-a"]);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("evaluate-adapter-mode materializes a baseline cache seed for profile-backed comparison runs", () => {
+	const { root, workspace } = createScenarioHistoryRepo();
+	try {
+		const outputDir = join(root, "comparison");
+		const result = spawnSync(
+			"node",
+			[
+				SCRIPT_PATH,
+				"--repo-root",
+				root,
+				"--candidate-repo",
+				workspace,
+				"--mode",
+				"comparison",
+				"--intent",
+				"Comparison runs should materialize a reusable baseline cache seed.",
+				"--baseline-ref",
+				"origin/main",
+				"--comparison-samples",
+				"5",
+				"--output-dir",
+				outputDir,
+			],
+			{
+				cwd: process.cwd(),
+				encoding: "utf-8",
+			},
+		);
+		assert.equal(result.status, 0, result.stderr);
+		const modePacket = JSON.parse(
+			readFileSync(join(outputDir, "report.mode-evaluation.json"), "utf-8"),
+		);
+		const baselineCache = JSON.parse(readFileSync(join(outputDir, "baseline-cache.json"), "utf-8"));
+		assert.equal(modePacket.baselineCacheFile, join(outputDir, "baseline-cache.json"));
+		assert.equal(modePacket.baselineCache.schemaVersion, "cautilus.scenario_baseline_cache.v1");
+		assert.equal(baselineCache.cacheKey.profileId, "default-train");
+		assert.equal(baselineCache.cacheKey.cacheSampleCount, 5);
+		assert.deepEqual(baselineCache.cacheKey.scenarioIds, ["control-a", "held-out-a", "probe-a"]);
+		assert.match(baselineCache.baselineRepoLabel, /^origin\/main@[0-9a-f]{12}$/);
+		assert.equal(baselineCache.results.length, 0);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

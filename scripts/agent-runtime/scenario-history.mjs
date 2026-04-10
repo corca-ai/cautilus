@@ -1,7 +1,9 @@
+import { createHash } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 
 import {
+	SCENARIO_BASELINE_CACHE_SCHEMA,
 	SCENARIO_HISTORY_SCHEMA,
 	SCENARIO_PROFILE_SCHEMA,
 } from "./contract-versions.mjs";
@@ -62,6 +64,31 @@ export function loadScenarioProfile(profileRef) {
 	return profile;
 }
 
+function normalizeCacheSampleCount(value) {
+	if (!Number.isInteger(value) || value <= 0) {
+		throw new Error("cacheSampleCount must be a positive integer");
+	}
+	return value;
+}
+
+function stableJsonValue(value) {
+	if (Array.isArray(value)) {
+		return value.map((entry) => stableJsonValue(entry));
+	}
+	if (value && typeof value === "object") {
+		return Object.fromEntries(
+			Object.keys(value)
+				.sort()
+				.map((key) => [key, stableJsonValue(value[key])]),
+		);
+	}
+	return value;
+}
+
+function jsonFingerprint(value) {
+	return createHash("sha256").update(JSON.stringify(stableJsonValue(value))).digest("hex");
+}
+
 function scenarioHistoryPolicy(profile) {
 	return {
 		...DEFAULT_HISTORY_POLICY,
@@ -72,6 +99,76 @@ function scenarioHistoryPolicy(profile) {
 export function buildScenarioMetadataMap(profile) {
 	validateScenarioProfile(profile);
 	return Object.fromEntries(profile.scenarios.map((scenario) => [scenario.scenarioId, scenario]));
+}
+
+function normalizeSelectedScenarioIds(profile, selectedScenarioIds) {
+	validateScenarioProfile(profile);
+	if (!Array.isArray(selectedScenarioIds)) {
+		throw new Error("selectedScenarioIds must be an array");
+	}
+	const scenarioMetadata = buildScenarioMetadataMap(profile);
+	const uniqueScenarioIds = [...new Set(selectedScenarioIds)];
+	for (const [index, scenarioId] of uniqueScenarioIds.entries()) {
+		if (typeof scenarioId !== "string" || !scenarioId.trim()) {
+			throw new Error(`selectedScenarioIds[${index}] must be a non-empty string`);
+		}
+		if (!scenarioMetadata[scenarioId]) {
+			throw new Error(`selectedScenarioIds[${index}] is not present in profile.scenarios`);
+		}
+	}
+	return uniqueScenarioIds.sort();
+}
+
+export function buildScenarioBaselineCacheKey({
+	profile,
+	selectedScenarioIds,
+	baselineFingerprint,
+	cacheSampleCount,
+}) {
+	validateScenarioProfile(profile);
+	if (typeof baselineFingerprint !== "string" || !baselineFingerprint.trim()) {
+		throw new Error("baselineFingerprint must be a non-empty string");
+	}
+	const scenarioIds = normalizeSelectedScenarioIds(profile, selectedScenarioIds);
+	const scenarioMetadata = buildScenarioMetadataMap(profile);
+	const scenarioFingerprint = jsonFingerprint(
+		scenarioIds.map((scenarioId) => scenarioMetadata[scenarioId]),
+	);
+	return {
+		baselineFingerprint,
+		profileId: profile.profileId,
+		scenarioIds,
+		scenarioFingerprint,
+		cacheSampleCount: normalizeCacheSampleCount(cacheSampleCount),
+	};
+}
+
+export function createScenarioBaselineCacheSeed({
+	profile,
+	selectedScenarioIds,
+	baselineFingerprint,
+	cacheSampleCount,
+	baselineRepoLabel,
+	createdAt = new Date().toISOString(),
+}) {
+	if (typeof baselineRepoLabel !== "string" || !baselineRepoLabel.trim()) {
+		throw new Error("baselineRepoLabel must be a non-empty string");
+	}
+	if (typeof createdAt !== "string" || !Number.isFinite(Date.parse(createdAt))) {
+		throw new Error("createdAt must be a valid ISO timestamp");
+	}
+	return {
+		schemaVersion: SCENARIO_BASELINE_CACHE_SCHEMA,
+		cacheKey: buildScenarioBaselineCacheKey({
+			profile,
+			selectedScenarioIds,
+			baselineFingerprint,
+			cacheSampleCount,
+		}),
+		createdAt,
+		baselineRepoLabel,
+		results: [],
+	};
 }
 
 export function listProfileScenarioIds(profile, split = "train") {

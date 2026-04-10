@@ -1,4 +1,5 @@
 import { execFileSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -16,6 +17,7 @@ import {
 	runBashCommandWithProgress,
 } from "./command-progress.mjs";
 import {
+	createScenarioBaselineCacheSeed,
 	loadScenarioHistory,
 	loadScenarioProfile,
 	saveScenarioHistory,
@@ -226,7 +228,6 @@ function recommendationOnPass(mode, explicitValue) {
 	}
 	return mode === "full_gate" ? "accept-now" : "defer";
 }
-
 function profileReference(options, adapterData) {
 	return options.profile || adapterData.profile_default || "default";
 }
@@ -294,6 +295,19 @@ function compareArtifactBuckets(scenarioResults) {
 		noisy: scenarioResults.compareArtifact.noisy || [],
 	};
 }
+function sha256(value) {
+	return createHash("sha256").update(value).digest("hex");
+}
+function resolveBaselineFingerprint(context, options) {
+	try {
+		return execFileSync("git", ["-C", context.baselineRepo, "rev-parse", "HEAD"], {
+			encoding: "utf-8",
+		}).trim();
+	} catch {
+		return sha256(JSON.stringify({ baselineRepo: context.baselineRepo, baselineRef: options.baselineRef || "HEAD" }));
+	}
+}
+function baselineRepoLabel(context, options, baselineFingerprint) { return `${options.baselineRef || "HEAD"}@${baselineFingerprint.slice(0, 12)}`; }
 
 function classifyScenarioStatus(status) {
 	switch (status) {
@@ -400,6 +414,7 @@ function resolveModeContext(options, adapterPayload) {
 		),
 		reportInputFile: join(outputDir, "report-input.json"),
 		reportFile: join(outputDir, "report.json"),
+		baselineCacheFile: join(outputDir, "baseline-cache.json"),
 	};
 	if (scenarioProfileInput) {
 		const history = loadScenarioHistory(historyFile, scenarioProfileInput.profile);
@@ -522,6 +537,25 @@ function persistModeReport(context, reportInput) {
 	writeFileSync(context.reportFile, `${JSON.stringify(report, null, 2)}\n`, "utf-8");
 	return report;
 }
+function persistBaselineCacheIfNeeded(context, options) {
+	if (options.mode !== "comparison" || !context.scenarioProfile || context.selectedScenarioIds.length === 0) {
+		return null;
+	}
+	const baselineFingerprint = resolveBaselineFingerprint(context, options);
+	const cacheSeed = createScenarioBaselineCacheSeed({
+		profile: context.scenarioProfile,
+		selectedScenarioIds: context.selectedScenarioIds,
+		baselineFingerprint,
+		cacheSampleCount: sampleValue(
+			options.comparisonSamples,
+			context.adapterData.comparison_samples_default,
+			2,
+		),
+		baselineRepoLabel: baselineRepoLabel(context, options, baselineFingerprint),
+	});
+	writeFileSync(context.baselineCacheFile, `${JSON.stringify(cacheSeed, null, 2)}\n`, "utf-8");
+	return cacheSeed;
+}
 
 function persistScenarioHistoryIfNeeded(context, options) {
 	if (!context.scenarioProfile) {
@@ -556,6 +590,7 @@ export async function evaluateAdapterMode(inputOptions) {
 	const commandObservations = [...preflightObservations, ...modeObservations];
 	const reportInput = buildModeReportInput(options, context, modeObservations, commandObservations);
 	const report = persistModeReport(context, reportInput);
+	const baselineCache = persistBaselineCacheIfNeeded(context, options);
 	const scenarioHistory = persistScenarioHistoryIfNeeded(context, options);
 	log(`mode evaluate complete: status=${report.recommendation} report=${context.reportFile}`);
 	return {
@@ -567,7 +602,9 @@ export async function evaluateAdapterMode(inputOptions) {
 		reportFile: context.reportFile,
 		historyFile: context.scenarioProfile ? context.historyFile : null,
 		selectedScenarioIds: context.selectedScenarioIds,
+		baselineCacheFile: baselineCache ? context.baselineCacheFile : null,
 		commandObservations,
+		...(baselineCache ? { baselineCache } : {}),
 		...(scenarioHistory ? { scenarioHistory } : {}),
 		report,
 	};

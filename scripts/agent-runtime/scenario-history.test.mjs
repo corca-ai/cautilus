@@ -5,8 +5,11 @@ import { join } from "node:path";
 import test from "node:test";
 
 import {
+	SCENARIO_BASELINE_CACHE_SCHEMA,
 	SCENARIO_HISTORY_SCHEMA,
 	SCENARIO_PROFILE_SCHEMA,
+	buildScenarioBaselineCacheKey,
+	createScenarioBaselineCacheSeed,
 	createEmptyScenarioHistory,
 	loadScenarioHistory,
 	saveScenarioHistory,
@@ -159,4 +162,47 @@ test("saveScenarioHistory and loadScenarioHistory round-trip valid history and r
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}
+});
+
+test("scenario baseline cache keys stay stable across id order and change when scenario definitions change", () => {
+	const profile = createProfile();
+	const first = buildScenarioBaselineCacheKey({
+		profile,
+		selectedScenarioIds: ["control-a", "probe-a"],
+		baselineFingerprint: "abc123",
+		cacheSampleCount: 5,
+	});
+	const reordered = buildScenarioBaselineCacheKey({
+		profile,
+		selectedScenarioIds: ["probe-a", "control-a"],
+		baselineFingerprint: "abc123",
+		cacheSampleCount: 5,
+	});
+	assert.deepEqual(first, reordered);
+
+	const changedProfile = createProfile();
+	changedProfile.scenarios[0].cadence = "always";
+	const changed = buildScenarioBaselineCacheKey({
+		profile: changedProfile,
+		selectedScenarioIds: ["probe-a", "control-a"],
+		baselineFingerprint: "abc123",
+		cacheSampleCount: 5,
+	});
+	assert.notEqual(changed.scenarioFingerprint, first.scenarioFingerprint);
+});
+
+test("createScenarioBaselineCacheSeed returns a materializable cache seed payload", () => {
+	const profile = createProfile();
+	const seed = createScenarioBaselineCacheSeed({
+		profile,
+		selectedScenarioIds: ["probe-a"],
+		baselineFingerprint: "abc123",
+		cacheSampleCount: 3,
+		baselineRepoLabel: "origin/main@abc123",
+		createdAt: "2026-04-10T00:00:00.000Z",
+	});
+	assert.equal(seed.schemaVersion, SCENARIO_BASELINE_CACHE_SCHEMA);
+	assert.equal(seed.cacheKey.profileId, "default-train");
+	assert.deepEqual(seed.cacheKey.scenarioIds, ["probe-a"]);
+	assert.deepEqual(seed.results, []);
 });

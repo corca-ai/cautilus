@@ -199,6 +199,8 @@ standalone product여야 한다.
 - adapter-defined mode execution that emits report packets directly
 - checked-in scenario profile를 쓰는 mode run에서 scenario selection과
   history update를 product-owned path로 수행
+- checked-in scenario profile를 쓰는 comparison run에서 baseline-cache
+  seed와 cache key를 materialize
 - review packet assembly for compare artifacts and human-review prompts
 - explicit scenario-results packets and compare-artifact propagation through
   report/review flow
@@ -235,9 +237,10 @@ standalone product여야 한다.
 - scenario-level telemetry summaries for cost and token transparency
 - intentful behavior framing for chatbot, skill, and CLI surfaces
 
-현재 baseline cache semantics는 아직 helper/contract 단계에 더 가깝다.
-scenario-history의 첫 runtime integration은 들어갔지만, baseline cache와
-broader compare ownership은 아직 다음 step이다.
+현재 baseline cache는 reusable result store까지는 아직 아니다.
+다만 scenario-history의 comparison path는 baseline-cache seed와 cache key를
+runtime이 직접 materialize한다. reusable baseline results와 broader
+compare ownership은 아직 다음 step이다.
 
 아직 이 단계에서 강제하지 않는 것:
 

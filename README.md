@@ -48,6 +48,7 @@ Current `core validated surface`:
 - bounded runtime execution through `mode evaluate`
 - scenario-history-aware profile selection and history updates for
   profile-backed mode runs
+- comparison-mode baseline-cache seed materialization for profile-backed runs
 - report assembly, review packet assembly, and review-variant fanout
 - bounded CLI behavior evaluation through `cli evaluate`
 - standalone install surface, local gates, and checked-in release helpers

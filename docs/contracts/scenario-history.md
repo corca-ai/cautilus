@@ -210,6 +210,13 @@ Recommended cache payload:
 
 Cache invalidation should happen when any key field changes.
 
+Current runtime note:
+
+- profile-backed `comparison` runs now materialize a `baseline-cache.json`
+  seed with this cache key shape
+- the current seed records key identity and baseline label, but does not yet
+  populate cached baseline results
+
 ## Fixed Decisions
 
 - Train, held-out, and full-gate selection should come from checked-in profile

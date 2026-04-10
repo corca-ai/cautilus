@@ -31,6 +31,7 @@ Current `core validated surface`:
 - bounded runtime execution through `mode evaluate`
 - scenario-history-aware profile selection and history updates for
   profile-backed mode runs
+- comparison-mode baseline-cache seed materialization for profile-backed runs
 - explicit workspace preparation through `workspace prepare-compare`
 - report packet assembly, review packet assembly, and review-variant fanout
 - bounded CLI behavior evaluation through `cli evaluate`
@@ -151,8 +152,9 @@ The current release boundary is documented in
    one checked-in workflow story.
 2. Keep expanding normalization-pattern coverage while preserving one official
    adapter contract: `cautilus-adapter.yaml`.
-3. Keep expanding scenario-history beyond the first profile-backed runtime path,
-   especially around compare semantics and baseline cache ownership.
+3. Keep expanding scenario-history beyond the first profile-backed comparison
+   cache-key path, especially toward reusable baseline results and broader
+   compare ownership.
 4. Turn raw-evidence mining into bundled-skill reference prompts plus
    product-owned helper scripts instead of letting each host reinvent the same
    meta-prompt orchestration.
