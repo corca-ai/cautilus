@@ -113,18 +113,22 @@ test("evaluate-adapter-mode executes held_out commands and emits a report packet
 				encoding: "utf-8",
 			},
 		);
-		assert.equal(result.status, 0, result.stderr);
-		const report = JSON.parse(readFileSync(result.stdout.trim(), "utf-8"));
-		assert.equal(report.schemaVersion, "cautilus.report_packet.v1");
-		assert.equal(report.recommendation, "defer");
-		assert.equal(report.commandObservations.length, 2);
-		assert.equal(report.modeSummaries[0].scenarioTelemetrySummary.overall.total_tokens, 42);
-		assert.equal(report.modeSummaries[0].scenarioTelemetrySummary.overall.cost_usd, 0.01);
-		assert.equal(report.modeSummaries[0].compareArtifact.schemaVersion, COMPARE_ARTIFACT_SCHEMA);
-	} finally {
-		rmSync(root, { recursive: true, force: true });
-	}
-});
+			assert.equal(result.status, 0, result.stderr);
+			const report = JSON.parse(readFileSync(result.stdout.trim(), "utf-8"));
+			assert.equal(report.schemaVersion, "cautilus.report_packet.v1");
+			assert.equal(report.recommendation, "defer");
+			assert.equal(report.commandObservations.length, 2);
+			assert.equal(report.modeSummaries[0].scenarioTelemetrySummary.overall.total_tokens, 42);
+			assert.equal(report.modeSummaries[0].scenarioTelemetrySummary.overall.cost_usd, 0.01);
+			assert.equal(report.modeSummaries[0].compareArtifact.schemaVersion, COMPARE_ARTIFACT_SCHEMA);
+			assert.match(result.stderr, /mode evaluate start: mode=held_out/);
+			assert.match(result.stderr, /preflight 1\/1 start:/);
+			assert.match(result.stderr, /held_out 1\/1 passed in /);
+			assert.match(result.stderr, /mode evaluate complete: status=defer report=/);
+		} finally {
+			rmSync(root, { recursive: true, force: true });
+		}
+	});
 
 test("evaluate-adapter-mode promotes a passing full_gate run to accept-now", () => {
 	const { root, workspace } = createRepo();
@@ -152,10 +156,79 @@ test("evaluate-adapter-mode promotes a passing full_gate run to accept-now", () 
 				encoding: "utf-8",
 			},
 		);
+			assert.equal(result.status, 0, result.stderr);
+			const report = JSON.parse(readFileSync(result.stdout.trim(), "utf-8"));
+			assert.equal(report.recommendation, "accept-now");
+			assert.equal(report.modesRun[0], "full_gate");
+		} finally {
+			rmSync(root, { recursive: true, force: true });
+		}
+	});
+
+test("evaluate-adapter-mode keeps stdout machine-readable when progress logs are enabled", () => {
+	const { root, workspace } = createRepo();
+	try {
+		const outputDir = join(root, "stdout-contract");
+		const result = spawnSync(
+			"node",
+			[
+				SCRIPT_PATH,
+				"--repo-root",
+				root,
+				"--candidate-repo",
+				workspace,
+				"--mode",
+				"full_gate",
+				"--intent",
+				"Full gate should keep stdout machine-readable.",
+				"--baseline-ref",
+				"origin/main",
+				"--output-dir",
+				outputDir,
+			],
+			{
+				cwd: process.cwd(),
+				encoding: "utf-8",
+			},
+		);
 		assert.equal(result.status, 0, result.stderr);
-		const report = JSON.parse(readFileSync(result.stdout.trim(), "utf-8"));
-		assert.equal(report.recommendation, "accept-now");
-		assert.equal(report.modesRun[0], "full_gate");
+		assert.equal(result.stdout.trim(), join(outputDir, "report.json"));
+		assert.match(result.stderr, /mode evaluate start: mode=full_gate/);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("evaluate-adapter-mode suppresses progress logs with --quiet", () => {
+	const { root, workspace } = createRepo();
+	try {
+		const outputDir = join(root, "quiet-outputs");
+		const result = spawnSync(
+			"node",
+			[
+				SCRIPT_PATH,
+				"--repo-root",
+				root,
+				"--candidate-repo",
+				workspace,
+				"--mode",
+				"held_out",
+				"--intent",
+				"Quiet mode should suppress progress logs.",
+				"--baseline-ref",
+				"origin/main",
+				"--output-dir",
+				outputDir,
+				"--quiet",
+			],
+			{
+				cwd: process.cwd(),
+				encoding: "utf-8",
+			},
+		);
+		assert.equal(result.status, 0, result.stderr);
+		assert.equal(result.stderr, "");
+		assert.equal(result.stdout.trim(), join(outputDir, "report.json"));
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

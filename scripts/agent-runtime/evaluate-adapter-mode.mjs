@@ -56,7 +56,7 @@ const DEFAULT_SPLIT_BY_MODE = {
 function usage(exitCode = 0) {
 	const text = [
 		"Usage:",
-		"  node ./scripts/agent-runtime/evaluate-adapter-mode.mjs --repo-root <dir> --mode <iterate|held_out|comparison|full_gate> --intent <text> --output-dir <dir> [--baseline-ref <ref>] [--baseline-repo <dir>] [--candidate-repo <dir>] [--adapter <path> | --adapter-name <name>] [--history-file <path>] [--profile <name>] [--split <name>] [--scenario-results-file <path>] [--skip-preflight]",
+		"  node ./scripts/agent-runtime/evaluate-adapter-mode.mjs --repo-root <dir> --mode <iterate|held_out|comparison|full_gate> --intent <text> --output-dir <dir> [--baseline-ref <ref>] [--baseline-repo <dir>] [--candidate-repo <dir>] [--adapter <path> | --adapter-name <name>] [--history-file <path>] [--profile <name>] [--split <name>] [--scenario-results-file <path>] [--skip-preflight] [--quiet]",
 	].join("\n");
 	const out = exitCode === 0 ? process.stdout : process.stderr;
 	out.write(`${text}\n`);
@@ -100,6 +100,7 @@ function createDefaultOptions() {
 		outputDir: null,
 		scenarioResultsFile: null,
 		recommendationOnPass: null,
+		quiet: false,
 		skipPreflight: false,
 		iterateSamples: null,
 		heldOutSamples: null,
@@ -115,6 +116,10 @@ function applyArgument(options, argv, index) {
 	}
 	if (arg === "--skip-preflight") {
 		options.skipPreflight = true;
+		return index;
+	}
+	if (arg === "--quiet") {
+		options.quiet = true;
 		return index;
 	}
 	if (SAMPLE_OPTION_FIELDS[arg]) {
@@ -274,6 +279,23 @@ function aggregateDuration(observations) {
 	return observations.reduce((total, entry) => total + (entry.durationMs || 0), 0);
 }
 
+function formatDuration(durationMs) {
+	if (typeof durationMs !== "number" || Number.isNaN(durationMs)) {
+		return "unknown";
+	}
+	if (durationMs < 1000) {
+		return `${durationMs}ms`;
+	}
+	return `${(durationMs / 1000).toFixed(1)}s`;
+}
+
+function logProgress(options, message) {
+	if (options.quiet) {
+		return;
+	}
+	process.stderr.write(`${message}\n`);
+}
+
 function compareArtifactBuckets(scenarioResults) {
 	if (!scenarioResults.compareArtifact) {
 		return null;
@@ -387,10 +409,11 @@ function resolveModeContext(options, adapterPayload) {
 	return context;
 }
 
-function executeTemplateSeries(templates, stage, context) {
+function executeTemplateSeries(templates, stage, context, options) {
 	const observations = [];
 	for (const [index, template] of templates.entries()) {
 		const command = renderTemplate(template, context.replacements);
+		logProgress(options, `${stage} ${index + 1}/${templates.length} start: ${command}`);
 		const result = runShellCommand({
 			repoRoot: context.repoRoot,
 			command,
@@ -399,6 +422,10 @@ function executeTemplateSeries(templates, stage, context) {
 		});
 		const observation = createObservation(stage, index + 1, result);
 		observations.push(observation);
+		logProgress(
+			options,
+			`${stage} ${index + 1}/${templates.length} ${result.status} in ${formatDuration(result.durationMs)}`,
+		);
 		if (result.status !== "passed") {
 			break;
 		}
@@ -408,9 +435,10 @@ function executeTemplateSeries(templates, stage, context) {
 
 function executePreflight(options, context) {
 	if (options.skipPreflight) {
+		logProgress(options, "preflight skipped");
 		return [];
 	}
-	const observations = executeTemplateSeries(context.adapterData.preflight_commands ?? [], "preflight", context);
+	const observations = executeTemplateSeries(context.adapterData.preflight_commands ?? [], "preflight", context, options);
 	const failedObservation = observations.find((entry) => entry.status !== "passed");
 	if (failedObservation) {
 		fail(`Preflight command failed: ${failedObservation.command}`);
@@ -466,11 +494,19 @@ export function evaluateAdapterMode(inputOptions) {
 	const options = parseArgs(inputOptions);
 	const adapterPayload = loadAdapter(options);
 	const context = resolveModeContext(options, adapterPayload);
+	logProgress(
+		options,
+		`mode evaluate start: mode=${options.mode} repo=${context.repoRoot} output=${context.outputDir}`,
+	);
 	const preflightObservations = executePreflight(options, context);
-	const modeObservations = executeTemplateSeries(context.templates, options.mode, context);
+	const modeObservations = executeTemplateSeries(context.templates, options.mode, context, options);
 	const commandObservations = [...preflightObservations, ...modeObservations];
 	const reportInput = buildModeReportInput(options, context, modeObservations, commandObservations);
 	const report = persistModeReport(context, reportInput);
+	logProgress(
+		options,
+		`mode evaluate complete: status=${report.recommendation} report=${context.reportFile}`,
+	);
 	return {
 		schemaVersion: ADAPTER_MODE_EVALUATION_PACKET_SCHEMA,
 		repoRoot: context.repoRoot,
