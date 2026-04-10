@@ -41,6 +41,8 @@
 - [workflow.md](/home/ubuntu/cautilus/docs/workflow.md)와 [adapter-contract.md](/home/ubuntu/cautilus/docs/contracts/adapter-contract.md)는 Ceal 최신 generic knowledge를 반영하도록 보강됐다.
 - executor-variant summary는 이제 wall-clock latency를 항상 남기고,
   checked-in wrapper가 주면 optional cost/token telemetry도 함께 남긴다.
+- `review variants` summary는 variant별 telemetry를 보존하면서, top-level
+  aggregate cost/token/latency도 함께 쓴다.
 - `npm install`, `npm run lint`, `npm run test`, `npm run verify`가 모두 통과했다.
 - `Cautilus` resolver는 Ceal의 `skill-smoke`, `code-quality` adapter를 이미 읽을 수 있어 consumer repoint의 전제는 갖췄다.
 - 아직 없는 것:

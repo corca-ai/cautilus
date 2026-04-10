@@ -93,6 +93,12 @@ test("run-workbench-executor-variants executes every adapter-defined variant and
 		assert.equal(summary.variants.length, 2);
 		assert.equal(summary.variants[0].status, "passed");
 		assert.equal(summary.variants[1].status, "passed");
+		assert.equal(summary.telemetry.variantCount, 2);
+		assert.equal(summary.telemetry.passedVariantCount, 2);
+		assert.ok(summary.telemetry.durationMs >= 0);
+		assert.equal(summary.telemetry.total_tokens, 84);
+		assert.equal(summary.telemetry.cost_usd, 0.02);
+		assert.deepEqual(summary.telemetry.providers, ["mock"]);
 		assert.ok(summary.variants[0].durationMs >= 0);
 		assert.equal(summary.variants[0].telemetry.provider, "mock");
 		assert.match(summary.variants[0].output.summary, /^alpha:/);

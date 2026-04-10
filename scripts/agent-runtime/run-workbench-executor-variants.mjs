@@ -149,6 +149,70 @@ function resolveRequiredPath(cliValue, adapterValue, fieldName, repoRoot) {
 	return resolve(repoRoot, value);
 }
 
+function sumTelemetryField(variants, field) {
+	let seen = false;
+	let total = 0;
+	for (const variant of variants) {
+		const value = variant.telemetry && typeof variant.telemetry[field] === "number"
+			? variant.telemetry[field]
+			: null;
+		if (value === null) {
+			continue;
+		}
+		seen = true;
+		total += value;
+	}
+	return seen ? total : null;
+}
+
+function summarizeTelemetry(variants) {
+	if (variants.length === 0) {
+		return null;
+	}
+	const providers = Array.from(
+		new Set(
+			variants
+				.map((variant) => variant.telemetry && variant.telemetry.provider)
+				.filter((value) => typeof value === "string" && value.length > 0),
+		),
+	);
+	const models = Array.from(
+		new Set(
+			variants
+				.map((variant) => variant.telemetry && variant.telemetry.model)
+				.filter((value) => typeof value === "string" && value.length > 0),
+		),
+	);
+	const summary = {
+		startedAt: variants[0].startedAt,
+		completedAt: variants[variants.length - 1].completedAt,
+		durationMs: variants.reduce((total, variant) => total + variant.durationMs, 0),
+		averageVariantDurationMs:
+			variants.reduce((total, variant) => total + variant.durationMs, 0) / variants.length,
+		variantCount: variants.length,
+		passedVariantCount: variants.filter((variant) => variant.status === "passed").length,
+		failedVariantCount: variants.filter((variant) => variant.status !== "passed").length,
+	};
+	if (providers.length > 0) {
+		summary.providers = providers;
+	}
+	if (models.length > 0) {
+		summary.models = models;
+	}
+	for (const field of [
+		"prompt_tokens",
+		"completion_tokens",
+		"total_tokens",
+		"cost_usd",
+	]) {
+		const total = sumTelemetryField(variants, field);
+		if (total !== null) {
+			summary[field] = total;
+		}
+	}
+	return summary;
+}
+
 function main() {
 	const options = parseArgs(process.argv.slice(2));
 	const repoRoot = resolve(options.repoRoot);
@@ -194,6 +258,29 @@ function main() {
 		results.push(runVariant(repoRoot, variant, replacements));
 	}
 
+	const variantSummaries = results.map((result) => {
+		const output = existsSync(result.outputFile)
+			? JSON.parse(readFileSync(result.outputFile, "utf-8"))
+			: null;
+		return {
+			id: result.id,
+			tool: result.tool,
+			status: result.status,
+			startedAt: result.startedAt,
+			completedAt: result.completedAt,
+			durationMs: result.durationMs,
+			exitCode: result.exitCode,
+			signal: result.signal,
+			outputFile: result.outputFile,
+			stderrFile: result.stderrFile,
+			command: result.command,
+			stdout: result.stdout,
+			stderr: result.stderr,
+			telemetry: output && typeof output.telemetry === "object" ? output.telemetry : null,
+			output,
+		};
+	});
+
 	const summary = {
 		repoRoot,
 		adapterPath: adapterPayload.path,
@@ -201,28 +288,8 @@ function main() {
 		promptFile,
 		schemaFile,
 		outputDir,
-		variants: results.map((result) => {
-			const output = existsSync(result.outputFile)
-				? JSON.parse(readFileSync(result.outputFile, "utf-8"))
-				: null;
-			return {
-				id: result.id,
-				tool: result.tool,
-				status: result.status,
-				startedAt: result.startedAt,
-				completedAt: result.completedAt,
-				durationMs: result.durationMs,
-				exitCode: result.exitCode,
-				signal: result.signal,
-				outputFile: result.outputFile,
-				stderrFile: result.stderrFile,
-				command: result.command,
-				stdout: result.stdout,
-				stderr: result.stderr,
-				telemetry: output && typeof output.telemetry === "object" ? output.telemetry : null,
-				output,
-			};
-		}),
+		telemetry: summarizeTelemetry(variantSummaries),
+		variants: variantSummaries,
 	};
 	const summaryFile = join(outputDir, "summary.json");
 	writeFileSync(summaryFile, `${JSON.stringify(summary, null, 2)}\n`, "utf-8");
