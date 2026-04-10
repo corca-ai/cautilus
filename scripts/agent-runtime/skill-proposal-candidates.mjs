@@ -1,4 +1,4 @@
-import { BEHAVIOR_SURFACES, buildBehaviorIntentProfile } from "./behavior-intent.mjs";
+import { BEHAVIOR_DIMENSIONS, BEHAVIOR_SURFACES, buildBehaviorIntentProfile } from "./behavior-intent.mjs";
 
 function normalizeText(text) {
 	return String(text || "").trim().toLowerCase();
@@ -105,11 +105,12 @@ function buildWorkflowEvidence(run, title) {
 	};
 }
 
-function buildSkillIntentProfile(intent, intentProfile, fallbackBehaviorSurface) {
+function buildSkillIntentProfile(intent, intentProfile, fallbackBehaviorSurface, defaultSuccessDimensions) {
 	return buildBehaviorIntentProfile({
 		intent,
 		intentProfile,
 		fallbackBehaviorSurface,
+		defaultSuccessDimensions,
 	});
 }
 
@@ -149,6 +150,7 @@ function buildSkillValidationCandidate(run) {
 			`${displayName} should keep the ${surfaceLabel} validation surface passing.`,
 			run.intentProfile,
 			BEHAVIOR_SURFACES.SKILL_VALIDATION,
+			[BEHAVIOR_DIMENSIONS.VALIDATION_INTEGRITY],
 		),
 		name: `${displayName} ${titleCase(surfaceLabel)} Regression`,
 		description: `${targetLabel} ${displayName} regressed on the ${surfaceLabel} evaluation surface and should keep a durable passing scenario.`,
@@ -177,6 +179,7 @@ function buildWorkflowRecoveryCandidate(run) {
 			`${displayName} should recover cleanly when the ${surfaceLabel} workflow hits the same blocker.`,
 			run.intentProfile,
 			BEHAVIOR_SURFACES.OPERATOR_WORKFLOW_RECOVERY,
+			[BEHAVIOR_DIMENSIONS.WORKFLOW_RECOVERY, BEHAVIOR_DIMENSIONS.RECOVERY_NEXT_STEP],
 		),
 		name: `${displayName} ${titleCase(surfaceLabel)} Recovery`,
 		description: `${displayName} should recover cleanly when the ${surfaceLabel} workflow hits the same operator-facing blocker.`,

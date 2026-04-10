@@ -5,6 +5,7 @@ import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 import test from "node:test";
 
+import { BEHAVIOR_DIMENSIONS } from "../scripts/agent-runtime/behavior-intent.mjs";
 import { COMPARE_ARTIFACT_SCHEMA, SCENARIO_RESULTS_SCHEMA } from "../scripts/agent-runtime/contract-versions.mjs";
 
 const BIN_PATH = join(process.cwd(), "bin", "cautilus");
@@ -416,8 +417,8 @@ test("cautilus report build emits a machine-readable report packet with mode tel
 						behaviorSurface: "operator_cli",
 						successDimensions: [
 							{
-								id: "missing-adapter-clarity",
-								summary: "Explain what adapter is missing.",
+								id: BEHAVIOR_DIMENSIONS.FAILURE_CAUSE_CLARITY,
+								summary: "Explain the concrete failure cause or missing prerequisite.",
 							},
 						],
 						guardrailDimensions: [],
@@ -757,8 +758,8 @@ test("cautilus review build-prompt-input and render-prompt close the generic met
 							behaviorSurface: "operator_cli",
 							successDimensions: [
 								{
-									id: "missing-adapter-clarity",
-									summary: "Explain what adapter is missing.",
+									id: BEHAVIOR_DIMENSIONS.FAILURE_CAUSE_CLARITY,
+									summary: "Explain the concrete failure cause or missing prerequisite.",
 								},
 							],
 							guardrailDimensions: [],
@@ -864,8 +865,8 @@ test("cautilus optimize prepare-input and propose turn explicit evidence into a 
 						behaviorSurface: "operator_cli",
 						successDimensions: [
 							{
-								id: "recovery-guidance-clarity",
-								summary: "The operator can tell whether retry is safe and what to do next.",
+								id: BEHAVIOR_DIMENSIONS.RECOVERY_NEXT_STEP,
+								summary: "Make the next safe recovery step explicit without operator guesswork.",
 							},
 						],
 						guardrailDimensions: [],

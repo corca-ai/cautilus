@@ -103,6 +103,9 @@ When the host does not declare one, the helper may derive a thin profile for:
 - `skill_validation`
 - `operator_workflow_recovery`
 
+Those derived profiles should use the shared product-owned dimension catalog
+instead of repo-specific validation IDs.
+
 ## Pattern Classes In Scope
 
 The first `skill` helper should cover two proven subtypes.

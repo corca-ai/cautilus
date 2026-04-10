@@ -10,18 +10,18 @@
     "behaviorSurface": "operator_cli",
     "successDimensions": [
       {
-        "id": "failure-cause-clarity",
-        "summary": "Explain what setup is missing."
+        "id": "failure_cause_clarity",
+        "summary": "Explain the concrete failure cause or missing prerequisite."
       },
       {
-        "id": "recovery-guidance",
-        "summary": "Explain the next recovery step without operator guesswork."
+        "id": "recovery_next_step",
+        "summary": "Make the next safe recovery step explicit without operator guesswork."
       }
     ],
     "guardrailDimensions": [
       {
-        "id": "workflow-truthfulness",
-        "summary": "Do not imply that adapter setup already succeeded."
+        "id": "operator_state_truthfulness",
+        "summary": "Do not imply success, configuration, or completion state that has not happened."
       }
     ]
   },

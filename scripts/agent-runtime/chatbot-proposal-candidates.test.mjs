@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
+import { BEHAVIOR_DIMENSIONS } from "./behavior-intent.mjs";
 import { normalizeChatbotProposalCandidates } from "./chatbot-proposal-candidates.mjs";
 
 test("normalizeChatbotProposalCandidates emits review clarification candidate from normalized user turns", () => {
@@ -20,6 +21,7 @@ test("normalizeChatbotProposalCandidates emits review clarification candidate fr
 	assert.equal(candidates[0].proposalKey, "repo-review-needs-target-clarification");
 	assert.equal(candidates[0].family, "fast_regression");
 	assert.equal(candidates[0].intentProfile.behaviorSurface, "workflow_conversation");
+	assert.equal(candidates[0].intentProfile.successDimensions[0].id, BEHAVIOR_DIMENSIONS.TARGET_CLARIFICATION);
 	assert.equal(candidates[0].evidence[0].sourceKind, "human_conversation");
 });
 
@@ -39,6 +41,7 @@ test("normalizeChatbotProposalCandidates emits event-triggered follow-up candida
 	assert.equal(candidates.length, 1);
 	assert.equal(candidates[0].proposalKey, "event-triggered-followup");
 	assert.equal(candidates[0].intentProfile.behaviorSurface, "thread_followup");
+	assert.equal(candidates[0].intentProfile.successDimensions[0].id, BEHAVIOR_DIMENSIONS.WORKFLOW_CONTINUITY);
 	assert.equal(candidates[0].simulatorTurns[0].eventType, "app_mention");
 });
 
@@ -57,6 +60,7 @@ test("normalizeChatbotProposalCandidates emits blocked-run candidate for ambiguo
 	assert.equal(candidates.length, 1);
 	assert.equal(candidates[0].proposalKey, "ambiguous-confirmation-needs-context");
 	assert.equal(candidates[0].intentProfile.behaviorSurface, "thread_context_recovery");
+	assert.equal(candidates[0].intentProfile.successDimensions[0].id, BEHAVIOR_DIMENSIONS.TARGET_CLARIFICATION);
 	assert.equal(candidates[0].evidence[0].sourceKind, "agent_run");
 });
 

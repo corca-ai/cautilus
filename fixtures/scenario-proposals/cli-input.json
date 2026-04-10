@@ -15,8 +15,8 @@
         "behaviorSurface": "operator_cli",
         "successDimensions": [
           {
-            "id": "official-adapter-guidance",
-            "summary": "Tell the operator how to add the official adapter."
+            "id": "operator_guidance_clarity",
+            "summary": "Keep the operator-facing guidance explicit and easy to follow."
           }
         ],
         "guardrailDimensions": []
@@ -46,8 +46,8 @@
         "behaviorSurface": "operator_cli",
         "successDimensions": [
           {
-            "id": "adapter-scaffold-created",
-            "summary": "Create the checked-in adapter scaffold in the default path."
+            "id": "contract_integrity",
+            "summary": "Preserve the expected exit, output, and side-effect contract."
           }
         ],
         "guardrailDimensions": []

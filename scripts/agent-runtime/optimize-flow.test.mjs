@@ -5,6 +5,7 @@ import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 import test from "node:test";
 
+import { BEHAVIOR_DIMENSIONS } from "./behavior-intent.mjs";
 import { buildOptimizeInput } from "./build-optimize-input.mjs";
 import { buildRevisionArtifact } from "./build-revision-artifact.mjs";
 import { generateOptimizeProposal } from "./generate-optimize-proposal.mjs";
@@ -32,8 +33,8 @@ function createOptimizeFixtureRoot() {
 			behaviorSurface: "operator_cli",
 			successDimensions: [
 				{
-					id: "recovery-guidance-clarity",
-					summary: "The operator can tell whether retry is safe and what to do next.",
+					id: BEHAVIOR_DIMENSIONS.RECOVERY_NEXT_STEP,
+					summary: "Make the next safe recovery step explicit without operator guesswork.",
 				},
 			],
 			guardrailDimensions: [],

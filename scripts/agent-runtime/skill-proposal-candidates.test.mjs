@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
+import { BEHAVIOR_DIMENSIONS } from "./behavior-intent.mjs";
 import { normalizeSkillProposalCandidates } from "./skill-proposal-candidates.mjs";
 
 test("normalizeSkillProposalCandidates emits a deterministic regression candidate for failed public-skill smoke runs", () => {
@@ -22,6 +23,7 @@ test("normalizeSkillProposalCandidates emits a deterministic regression candidat
 	assert.equal(candidates[0].proposalKey, "public-skill-impl-smoke-scenario-regression");
 	assert.equal(candidates[0].family, "fast_regression");
 	assert.equal(candidates[0].intentProfile.behaviorSurface, "skill_validation");
+	assert.equal(candidates[0].intentProfile.successDimensions[0].id, BEHAVIOR_DIMENSIONS.VALIDATION_INTEGRITY);
 	assert.equal(candidates[0].evidence[0].sourceKind, "skill_evaluation");
 });
 
@@ -45,6 +47,10 @@ test("normalizeSkillProposalCandidates emits an operator-recovery candidate for 
 	assert.equal(candidates.length, 1);
 	assert.equal(candidates[0].proposalKey, "cli-workflow-scan-settings-seed-replay-seed-repeated-screen-no-progress");
 	assert.equal(candidates[0].intentProfile.behaviorSurface, "operator_workflow_recovery");
+	assert.deepEqual(
+		candidates[0].intentProfile.successDimensions.map((entry) => entry.id),
+		[BEHAVIOR_DIMENSIONS.WORKFLOW_RECOVERY, BEHAVIOR_DIMENSIONS.RECOVERY_NEXT_STEP],
+	);
 	assert.match(candidates[0].brief, /2 blocked step\(s\)/);
 	assert.equal(candidates[0].evidence[0].sourceKind, "workflow_run");
 });

@@ -5,6 +5,7 @@ import { join } from "node:path";
 import test from "node:test";
 
 import { buildReviewPromptInput } from "./build-review-prompt-input.mjs";
+import { BEHAVIOR_DIMENSIONS } from "./behavior-intent.mjs";
 import { REVIEW_PROMPT_INPUTS_SCHEMA } from "./contract-versions.mjs";
 import { renderReviewPrompt } from "./render-review-prompt.mjs";
 
@@ -68,14 +69,14 @@ function createReviewPacketFixture() {
 						behaviorSurface: "operator_cli",
 						successDimensions: [
 							{
-								id: "missing-adapter-clarity",
-								summary: "Explain what adapter is missing.",
+								id: BEHAVIOR_DIMENSIONS.FAILURE_CAUSE_CLARITY,
+								summary: "Explain the concrete failure cause or missing prerequisite.",
 							},
 						],
 						guardrailDimensions: [
 							{
-								id: "no-false-success",
-								summary: "Do not imply setup already succeeded.",
+								id: BEHAVIOR_DIMENSIONS.OPERATOR_STATE_TRUTHFULNESS,
+								summary: "Do not imply success, configuration, or completion state that has not happened.",
 							},
 						],
 					},

@@ -65,6 +65,8 @@ standalone product여야 한다.
 | docs/contracts/behavior-intent.md | fixed | cautilus.behavior_intent.v1 |
 | docs/contracts/behavior-intent.md | fixed | operator_behavior |
 | docs/contracts/behavior-intent.md | fixed | operator_workflow_recovery |
+| docs/contracts/behavior-intent.md | fixed | operator_guidance_clarity |
+| docs/contracts/behavior-intent.md | fixed | repair_explicit_regressions_first |
 | docs/contracts/reporting.md | fixed | duration_ms |
 | docs/contracts/reporting.md | fixed | cautilus.report_packet.v1 |
 | docs/contracts/reporting.md | fixed | command_observations |
@@ -103,6 +105,7 @@ standalone product여야 한다.
 | scripts/agent-runtime/scenario-results.mjs | fixed | SCENARIO_RESULTS_SCHEMA |
 | scripts/agent-runtime/behavior-intent.mjs | file_exists |  |
 | scripts/agent-runtime/behavior-intent.mjs | fixed | BEHAVIOR_SURFACES |
+| scripts/agent-runtime/behavior-intent.mjs | fixed | BEHAVIOR_DIMENSIONS |
 | scripts/agent-runtime/contract-versions.mjs | file_exists |  |
 | scripts/agent-runtime/contract-versions.mjs | fixed | BEHAVIOR_INTENT_SCHEMA |
 | scripts/agent-runtime/contract-versions.mjs | fixed | REVIEW_PROMPT_INPUTS_SCHEMA |

@@ -84,6 +84,7 @@ Each entry in `proposalCandidates` must provide:
 Optional fields currently supported by the product-owned draft builder:
 
 - `intentProfile` using `cautilus.behavior_intent.v1`
+  with product-owned `behaviorSurface` and dimension IDs
 - `tags`
 - `maxTurns`
 - `simulatorTurns`
@@ -121,6 +122,7 @@ The product-owned `scenario propose` command then:
 - ranks proposals
 - emits `cautilus.scenario_proposals.v1`
 - preserves `intentProfile` when the candidate already carries one
+  and normalizes it against the shared behavior-intent catalog
 
 ## Fixed Decisions
 

@@ -70,7 +70,8 @@ The helper emits `proposalCandidates` compatible with
 [scenario-proposal-inputs.md](/home/ubuntu/cautilus/docs/contracts/scenario-proposal-inputs.md).
 
 When the host only provides a plain `intent` string, the helper may derive a
-thin `cautilus.behavior_intent.v1` with `behaviorSurface: operator_cli`.
+thin `cautilus.behavior_intent.v1` with `behaviorSurface: operator_cli` and
+product-owned default success dimensions for the detected subtype.
 
 Current candidate family for the first helper:
 

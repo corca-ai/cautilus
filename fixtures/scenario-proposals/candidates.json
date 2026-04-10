@@ -10,8 +10,8 @@
       "behaviorSurface": "workflow_conversation",
       "successDimensions": [
         {
-          "id": "pivot-continuity",
-          "summary": "Carry thread context across the retro-to-review pivot."
+          "id": "workflow_continuity",
+          "summary": "Carry the active workflow context cleanly into the next turn."
         }
       ],
       "guardrailDimensions": []

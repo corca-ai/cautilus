@@ -3,6 +3,7 @@ import test from "node:test";
 
 import { COMPARE_ARTIFACT_SCHEMA, SCENARIO_RESULTS_SCHEMA } from "./contract-versions.mjs";
 import { REPORT_INPUTS_SCHEMA, REPORT_PACKET_SCHEMA, buildReportPacket } from "./build-report-packet.mjs";
+import { BEHAVIOR_DIMENSIONS } from "./behavior-intent.mjs";
 
 test("buildReportPacket aggregates mode telemetry and scenario summaries", () => {
 	const report = buildReportPacket(
@@ -18,14 +19,14 @@ test("buildReportPacket aggregates mode telemetry and scenario summaries", () =>
 				behaviorSurface: "operator_cli",
 				successDimensions: [
 					{
-						id: "missing-adapter-clarity",
-						summary: "Explain what adapter is missing.",
+						id: BEHAVIOR_DIMENSIONS.FAILURE_CAUSE_CLARITY,
+						summary: "Explain the concrete failure cause or missing prerequisite.",
 					},
 				],
 				guardrailDimensions: [
 					{
-						id: "no-false-success",
-						summary: "Do not imply that the repo is already configured.",
+						id: BEHAVIOR_DIMENSIONS.OPERATOR_STATE_TRUTHFULNESS,
+						summary: "Do not imply success, configuration, or completion state that has not happened.",
 					},
 				],
 			},

@@ -1,4 +1,4 @@
-import { BEHAVIOR_SURFACES, buildBehaviorIntentProfile } from "./behavior-intent.mjs";
+import { BEHAVIOR_DIMENSIONS, BEHAVIOR_SURFACES, buildBehaviorIntentProfile } from "./behavior-intent.mjs";
 
 function normalizeText(text) {
 	return String(text || "").trim().toLowerCase();
@@ -68,11 +68,12 @@ function buildCliEvaluationEvidence(run, title) {
 	};
 }
 
-function buildCliIntentProfile(run) {
+function buildCliIntentProfile(run, defaultSuccessDimensions) {
 	return buildBehaviorIntentProfile({
 		intent: run.intent,
 		intentProfile: run.intentProfile,
 		fallbackBehaviorSurface: BEHAVIOR_SURFACES.OPERATOR_CLI,
+		defaultSuccessDimensions,
 	});
 }
 
@@ -107,7 +108,10 @@ function buildGuidanceCandidate(run) {
 		proposalKey: `cli-${slugify(run.surfaceId)}-${slugify(run.commandId)}-operator-guidance`,
 		title: `Refresh ${name} operator guidance scenario`,
 		family: "fast_regression",
-		intentProfile: buildCliIntentProfile(run),
+		intentProfile: buildCliIntentProfile(run, [
+			BEHAVIOR_DIMENSIONS.OPERATOR_GUIDANCE_CLARITY,
+			BEHAVIOR_DIMENSIONS.RECOVERY_NEXT_STEP,
+		]),
 		name: `${name} Operator Guidance`,
 		description: `${name} should explain the next operator action clearly when the command hits the same intent boundary.`,
 		brief: `Recent CLI evaluations show operator guidance drift for ${name}. Latest summary: "${run.summary}".`,
@@ -129,7 +133,7 @@ function buildBehaviorContractCandidate(run) {
 		proposalKey: `cli-${slugify(run.surfaceId)}-${slugify(run.commandId)}-behavior-contract`,
 		title: `Refresh ${name} behavior contract scenario`,
 		family: "fast_regression",
-		intentProfile: buildCliIntentProfile(run),
+		intentProfile: buildCliIntentProfile(run, [BEHAVIOR_DIMENSIONS.CONTRACT_INTEGRITY]),
 		name: `${name} Behavior Contract`,
 		description: `${name} should preserve its operator-visible exit, output, and side-effect contract for the same intent.`,
 		brief: `Recent CLI evaluations show a behavior-contract regression for ${name}. Latest summary: "${run.summary}".`,

@@ -11,8 +11,8 @@
         "behaviorSurface": "skill_validation",
         "successDimensions": [
           {
-            "id": "smoke-validation-pass",
-            "summary": "Keep the smoke scenario validation bar green."
+            "id": "validation_integrity",
+            "summary": "Keep the declared validation surface passing and legible."
           }
         ],
         "guardrailDimensions": []
@@ -39,8 +39,8 @@
         "behaviorSurface": "operator_workflow_recovery",
         "successDimensions": [
           {
-            "id": "workflow-recovery",
-            "summary": "Recover cleanly from the repeated replay-seed blocker."
+            "id": "workflow_recovery",
+            "summary": "Recover the workflow cleanly when the known blocker reappears."
           }
         ],
         "guardrailDimensions": []

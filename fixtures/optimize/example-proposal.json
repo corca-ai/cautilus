@@ -10,25 +10,25 @@
     "behaviorSurface": "operator_cli",
     "successDimensions": [
       {
-        "id": "recovery-guidance-clarity",
-        "summary": "The operator can tell whether retry is safe and what to do next."
+        "id": "recovery_next_step",
+        "summary": "Make the next safe recovery step explicit without operator guesswork."
       }
     ],
     "guardrailDimensions": [
       {
-        "id": "guardrail-prefer-repairing-explicit-regressions-over-widening-scope",
+        "id": "repair_explicit_regressions_first",
         "summary": "Prefer repairing explicit regressions over widening scope."
       },
       {
-        "id": "guardrail-treat-review-findings-as-first-class-evidence-not-optional-commentary",
+        "id": "review_findings_binding",
         "summary": "Treat review findings as first-class evidence, not optional commentary."
       },
       {
-        "id": "guardrail-use-scenario-history-only-to-focus-the-next-bounded-probe-not-to-justify-overfit",
+        "id": "history_focuses_next_probe",
         "summary": "Use scenario history only to focus the next bounded probe, not to justify overfitting."
       },
       {
-        "id": "guardrail-stop-after-one-bounded-revision-and-rerun-the-relevant-gates",
+        "id": "rerun_relevant_gates",
         "summary": "Stop after one bounded revision and rerun the relevant gates."
       }
     ]

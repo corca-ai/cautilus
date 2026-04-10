@@ -10,8 +10,8 @@
         "behaviorSurface": "workflow_conversation",
         "successDimensions": [
           {
-            "id": "target-clarification",
-            "summary": "Ask for the concrete repo target before starting review."
+            "id": "target_clarification",
+            "summary": "Ask for the minimum concrete target or missing context before acting."
           }
         ],
         "guardrailDimensions": []
@@ -37,8 +37,8 @@
         "behaviorSurface": "thread_followup",
         "successDimensions": [
           {
-            "id": "wake-up-continuity",
-            "summary": "Continue the same active thread after the wake-up event."
+            "id": "workflow_continuity",
+            "summary": "Carry the active workflow context cleanly into the next turn."
           }
         ],
         "guardrailDimensions": []
@@ -68,8 +68,8 @@
         "behaviorSurface": "thread_context_recovery",
         "successDimensions": [
           {
-            "id": "clarify-before-action",
-            "summary": "Ask for missing context before acting on the confirmation."
+            "id": "target_clarification",
+            "summary": "Ask for the minimum concrete target or missing context before acting."
           }
         ],
         "guardrailDimensions": []

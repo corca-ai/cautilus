@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
+import { BEHAVIOR_DIMENSIONS } from "./behavior-intent.mjs";
 import {
 	DRAFT_SCENARIO_SCHEMA,
 	SCENARIO_PROPOSALS_SCHEMA,
@@ -21,8 +22,8 @@ function createCandidate(overrides = {}) {
 			behaviorSurface: "workflow_conversation",
 			successDimensions: [
 				{
-					id: "pivot-continuity",
-					summary: "Carry thread context across the retro-to-review pivot.",
+					id: BEHAVIOR_DIMENSIONS.WORKFLOW_CONTINUITY,
+					summary: "Carry the active workflow context cleanly into the next turn.",
 				},
 			],
 			guardrailDimensions: [],
@@ -87,8 +88,8 @@ test("generateScenarioProposals ranks merged candidates by evidence count and re
 					behaviorSurface: "workflow_conversation",
 					successDimensions: [
 						{
-							id: "preference-reuse",
-							summary: "Reuse the newly taught preference in the immediate follow-up.",
+							id: BEHAVIOR_DIMENSIONS.PREFERENCE_REUSE,
+							summary: "Reuse the preference or constraint the user just established in-thread.",
 						},
 					],
 					guardrailDimensions: [],

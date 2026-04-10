@@ -109,6 +109,9 @@ helper may derive a thin intent profile for the detected pattern class:
 - `thread_followup`
 - `thread_context_recovery`
 
+Those derived profiles should use the shared product-owned dimension catalog
+instead of host-specific dimension IDs.
+
 ## Pattern Classes In Scope
 
 The first `chatbot` helper should cover patterns already proven in Ceal-like

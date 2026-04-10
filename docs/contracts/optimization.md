@@ -50,7 +50,6 @@ runtime:
   still keeping review and optimize packets aligned?
 ## Deferred Decisions
 
-- a judge-library-like catalog of reusable evaluation dimensions
 - consumer-integrated fine-tuning or weight-update orchestration
 
 ## Non-Goals
@@ -78,6 +77,7 @@ The packet should include:
 - repo root
 - optimization target: `prompt` or `adapter`
 - shared behavior intent profile: `cautilus.behavior_intent.v1`
+  - uses the product-owned `behaviorSurface` and dimension catalogs
 - optional current target file reference
 - one explicit `cautilus.report_packet.v1`
 - optional executor-variant review summary

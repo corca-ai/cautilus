@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
+import { BEHAVIOR_DIMENSIONS } from "./behavior-intent.mjs";
 import { normalizeCliProposalCandidates } from "./cli-proposal-candidates.mjs";
 
 test("normalizeCliProposalCandidates emits an operator-guidance candidate for repeated CLI guidance drift", () => {
@@ -24,6 +25,10 @@ test("normalizeCliProposalCandidates emits an operator-guidance candidate for re
 	assert.equal(candidates[0].family, "fast_regression");
 	assert.equal(candidates[0].intentProfile.intentId, "intent-explain-how-to-add-the-official-adapter-when-none-is-present");
 	assert.equal(candidates[0].intentProfile.behaviorSurface, "operator_cli");
+	assert.deepEqual(
+		candidates[0].intentProfile.successDimensions.map((entry) => entry.id),
+		[BEHAVIOR_DIMENSIONS.OPERATOR_GUIDANCE_CLARITY, BEHAVIOR_DIMENSIONS.RECOVERY_NEXT_STEP],
+	);
 	assert.equal(candidates[0].evidence[0].sourceKind, "cli_evaluation");
 });
 
@@ -46,6 +51,9 @@ test("normalizeCliProposalCandidates emits a behavior-contract candidate for mis
 	assert.equal(candidates.length, 1);
 	assert.equal(candidates[0].proposalKey, "cli-adapter-init-scaffold-adapter-init-default-behavior-contract");
 	assert.equal(candidates[0].intentProfile.intentId, "intent-scaffold-the-official-adapter-in-the-default-agents-location");
+	assert.deepEqual(candidates[0].intentProfile.successDimensions.map((entry) => entry.id), [
+		BEHAVIOR_DIMENSIONS.CONTRACT_INTEGRITY,
+	]);
 	assert.ok(candidates[0].tags.includes("behavior-contract"));
 });
 

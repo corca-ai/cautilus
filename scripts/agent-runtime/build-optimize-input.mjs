@@ -3,7 +3,7 @@ import { resolve } from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
 
-import { buildBehaviorIntentProfile } from "./behavior-intent.mjs";
+import { BEHAVIOR_DIMENSIONS, buildBehaviorIntentProfile } from "./behavior-intent.mjs";
 import {
 	OPTIMIZE_INPUTS_SCHEMA,
 	REPORT_PACKET_SCHEMA,
@@ -17,6 +17,12 @@ const OPTIMIZATION_CONSTRAINTS = [
 	"Treat review findings as first-class evidence, not optional commentary.",
 	"Use scenario history only to focus the next bounded probe, not to justify overfitting.",
 	"Stop after one bounded revision and rerun the relevant gates.",
+];
+const OPTIMIZATION_GUARDRAIL_DIMENSIONS = [
+	BEHAVIOR_DIMENSIONS.REPAIR_EXPLICIT_REGRESSIONS_FIRST,
+	BEHAVIOR_DIMENSIONS.REVIEW_FINDINGS_BINDING,
+	BEHAVIOR_DIMENSIONS.HISTORY_FOCUSES_NEXT_PROBE,
+	BEHAVIOR_DIMENSIONS.RERUN_RELEVANT_GATES,
 ];
 const OPTIMIZER_KINDS = ["repair", "reflection", "history_followup"];
 const OPTIMIZER_BUDGETS = {
@@ -195,7 +201,7 @@ export function buildOptimizeInput(inputOptions, { now = new Date() } = {}) {
 		intentProfile: buildBehaviorIntentProfile({
 			intent: report.packet.intent,
 			intentProfile: report.packet.intentProfile,
-			defaultGuardrailDimensions: OPTIMIZATION_CONSTRAINTS,
+			defaultGuardrailDimensions: OPTIMIZATION_GUARDRAIL_DIMENSIONS,
 		}),
 		optimizer,
 		...(targetFile ? { targetFile } : {}),
