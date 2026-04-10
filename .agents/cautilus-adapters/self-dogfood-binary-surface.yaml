@@ -1,0 +1,31 @@
+version: 1
+repo: cautilus
+evaluation_surfaces:
+  - focused review of the standalone binary surface
+baseline_options:
+  - baseline git ref in the same repo via {baseline_ref}
+required_prerequisites:
+  - refresh the current full-gate report before running review variants
+review_timeout_ms: 15000
+executor_variants:
+  - id: codex-review-binary-surface
+    tool: codex_exec
+    purpose: bounded review of whether the standalone binary surface is actually trustworthy
+    command_template: WORKBENCH_CODEX_MODEL=gpt-5.4-mini WORKBENCH_CODEX_REASONING_EFFORT=low bash scripts/agent-runtime/run-workbench-review-variant.sh --backend codex_exec --workspace {candidate_repo} --prompt-file {prompt_file} --schema-file {schema_file} --output-file {output_file}
+    required_prerequisites:
+      - generate the latest full-gate report before review variants
+    safety_notes:
+      - focus on the checked-in binary surface and product-owned smoke coverage, not unrelated repo docs
+artifact_paths:
+  - README.md
+  - docs/specs/self-dogfood.spec.md
+  - bin/cautilus
+  - bin/cautilus.test.mjs
+comparison_questions:
+  - Does the standalone binary surface give operators a trustworthy path for explicit self-dogfood and root self-consumer checks?
+human_review_prompts:
+  - id: binary-surface
+    prompt: Where would an operator still conclude the standalone binary surface is brittle, underspecified, or not actually covered by product-owned checks despite the current full-gate report?
+  - id: stale-latest
+    prompt: Ignore artifacts/self-dogfood/latest from previous completed runs. Only judge the current report packet and the listed product files for this run.
+default_schema_file: fixtures/workbench/review-verdict.schema.json

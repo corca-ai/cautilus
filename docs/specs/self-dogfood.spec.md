@@ -8,6 +8,11 @@ operator가 quality를 명시적으로 돌릴 때만 실행한다.
 specdown은 expensive run을 다시 실행하는 대신, 마지막 recorded result의
 artifact 위치를 현재 계약으로 보여준다.
 
+canonical latest report의 claim은 좁아야 한다. 기본 `dogfood:self`는
+"self-dogfood result를 정직하게 기록하고 surfaced 하는가"를 말하고,
+standalone binary 또는 bundled skill 같은 stronger surface claim은
+named experiment adapter에서 따로 다룬다.
+
 ## Source Guard
 
 > check:source_guard
@@ -20,6 +25,8 @@ artifact 위치를 현재 계약으로 보여준다.
 | .agents/cautilus-adapters/self-dogfood.yaml | fixed | executor_variants |
 | .agents/cautilus-adapters/self-dogfood.yaml | fixed | codex-review |
 | .agents/cautilus-adapters/self-dogfood.yaml | fixed | review_timeout_ms |
+| .agents/cautilus-adapters/self-dogfood.yaml | fixed | scripts/run-self-dogfood.mjs |
+| .agents/cautilus-adapters/self-dogfood-binary-surface.yaml | file_exists |  |
 | .agents/cautilus-adapters/self-dogfood-gate-honesty-a.yaml | file_exists |  |
 | .agents/cautilus-adapters/self-dogfood-gate-honesty-b.yaml | file_exists |  |
 | .agents/cautilus-adapters/self-dogfood-skill-surface.yaml | file_exists |  |
@@ -38,6 +45,7 @@ artifact 위치를 현재 계약으로 보여준다.
 | scripts/run-self-dogfood-experiments.mjs | fixed | gateRecommendation |
 | scripts/run-self-dogfood-experiments.mjs | fixed | reportRecommendation |
 | scripts/run-self-dogfood-experiments.test.mjs | file_exists |  |
+| scripts/self-dogfood-experiment-prompt.mjs | file_exists |  |
 | README.md | fixed | npm run dogfood:self |
 | README.md | fixed | artifacts/self-dogfood/latest/ |
 | README.md | fixed | npm run dogfood:self:experiments |
@@ -80,3 +88,10 @@ recommendation from the final self-dogfood recommendation:
 - `gateRecommendation`: what the cheap mode gate recommended on its own
 - `reportRecommendation`: what operators should trust after the explicit
   self-dogfood verdict is folded in
+
+Named experiments may carry stronger claims such as:
+
+- gate honesty
+- standalone binary surface
+- bundled skill surface
+- review completion

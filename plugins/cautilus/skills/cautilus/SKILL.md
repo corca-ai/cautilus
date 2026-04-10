@@ -114,6 +114,10 @@ A/B loops:
 npm run dogfood:self:experiments
 ```
 
+Treat `dogfood:self` as the canonical operator-facing record of the current
+self-dogfood result. Treat `dogfood:self:experiments` as the place for stronger
+claims such as binary-surface, skill-surface, and gate-honesty probes.
+
 7. Report exact commands, exact placeholder values, and the final recommendation.
 8. When the repo already has normalized scenario proposal candidates, generate
    a checked-in proposal packet instead of hand-drafting scenario JSON:

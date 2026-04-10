@@ -456,10 +456,14 @@ the checked-in `.githooks` directory, where `pre-push` runs `npm run verify`.
 
 `dogfood:self` is explicit quality work, not a standing pre-push or CI gate.
 It refreshes the latest self-dogfood bundle under
-`artifacts/self-dogfood/latest/`.
+`artifacts/self-dogfood/latest/`. Its canonical claim is intentionally narrow:
+it should tell operators whether Cautilus is recording and surfacing its own
+self-dogfood result honestly, not whether every stronger binary or skill claim
+has already been proven.
 
 `dogfood:self:experiments` is the tuning path for named A/B and split-surface
-reviews. It writes aggregate experiment results under
+reviews, including stronger binary and skill surface claims. It writes aggregate
+experiment results under
 `artifacts/self-dogfood/experiments/latest/`.
 
 `init_adapter.py` no longer needs `PyYAML`; the Python surface is stdlib-only.

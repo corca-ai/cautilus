@@ -1,11 +1,17 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 
 function adapterExcerptPatterns(adapterName) {
+	if (adapterName === "self-dogfood") {
+		return ["reportRecommendation", "gateRecommendation", "dogfood:self", "self-dogfood", "latest.md", "review-summary"];
+	}
 	if (adapterName.includes("gate-honesty")) {
 		return ["self-dogfood", "verify", "hooks:check", "doctor", "adapter"];
 	}
 	if (adapterName.includes("review-completion")) {
 		return ["reviewTimeoutMs", "dogfood:self", "latest.md", "timeout", "WORKBENCH_CODEX", "self-dogfood"];
+	}
+	if (adapterName.includes("binary-surface")) {
+		return ["bin/cautilus", "--repo-root", "doctor", "dogfood:self", "standalone binary", "self-dogfood"];
 	}
 	if (adapterName.includes("skill-surface")) {
 		return ["dogfood:self", "dogfood:self:experiments", "self-dogfood", "quality path", "bundled skill"];
@@ -84,9 +90,18 @@ function renderExperimentContext(adapterName, reviewTimeoutMs) {
 		lines.push("- judge whether this bounded review surface can leave usable operator evidence without inspecting git diff or baseline history");
 		lines.push("- do not run git diff or compare commits unless the prompt is missing a strictly required fact");
 	}
+	if (adapterName === "self-dogfood") {
+		lines.push("- judge the canonical operator-facing self-dogfood claim, not stronger binary-surface or skill-surface claims");
+		lines.push("- treat gateRecommendation as the raw deterministic signal and reportRecommendation as the operator-facing recommendation that should stay honest");
+		lines.push("- ignore stale files under artifacts/self-dogfood/latest unless the prompt explicitly inlines them for the current run");
+	}
 	if (adapterName.includes("gate-honesty")) {
 		lines.push("- judge the honesty of the standing gate claim from the current report and inlined excerpts, not from repo-wide exploration");
 		lines.push("- do not inspect unrelated docs or git history unless the prompt is missing a strictly required fact");
+	}
+	if (adapterName.includes("binary-surface")) {
+		lines.push("- judge whether the standalone binary surface is discoverable and covered by product-owned checks from the current excerpts");
+		lines.push("- do not widen into bundled-skill or repo-wide quality claims unless the prompt is missing a strictly required fact");
 	}
 	if (adapterName.includes("skill-surface")) {
 		lines.push("- judge whether operators can follow the skill path from the current docs and bundled skill surfaces");

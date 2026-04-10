@@ -51,6 +51,9 @@ What this means:
   tuning without mutating the canonical self-dogfood contract.
 - The honest product claim is now that `Cautilus` can declare and run its own
   self-consumer quality path, not only validate other repos.
+- Stronger claims about the standalone binary surface or bundled skill surface
+  are kept in named experiment adapters instead of being smuggled into the
+  canonical latest report.
 
 ## Ceal
 

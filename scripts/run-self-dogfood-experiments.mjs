@@ -20,6 +20,7 @@ const DEFAULT_REVIEW_TIMEOUT_MS = 20000;
 const DEFAULT_EXPERIMENT_ADAPTERS = [
 	"self-dogfood-gate-honesty-a",
 	"self-dogfood-gate-honesty-b",
+	"self-dogfood-binary-surface",
 	"self-dogfood-skill-surface",
 	"self-dogfood-review-completion",
 ];
@@ -62,7 +63,7 @@ function defaultOptions() {
 		artifactRoot: null,
 		baselineRef: "origin/main",
 		intent:
-			"Cautilus should validate its own standalone binary and bundled skill honestly before operators trust broader consumer runs.",
+			"Cautilus should keep stronger self-dogfood claims proportional to the evidence each surface actually proves.",
 		gateAdapter: null,
 		gateAdapterName: null,
 		experimentAdapterNames: [],

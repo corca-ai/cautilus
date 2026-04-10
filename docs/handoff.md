@@ -60,12 +60,14 @@
   - explicit self-dogfood now lives outside pre-push/CI and should refresh `artifacts/self-dogfood/latest/`
   - canonical self-dogfood summary now separates `gateRecommendation` from final `reportRecommendation`
   - named self-dogfood adapters can now carry their own `review_timeout_ms`
+  - canonical `dogfood:self` now uses the same bounded prompt-enrichment path as experiments and currently passes with `accept-now`
+  - latest experiments still block on stronger claims: `gate-honesty-a=blocker`, `gate-honesty-b=concern`, `binary-surface=concern`, `skill-surface=pass`, `review-completion=pass`
 
 ## Next Session
 
-1. latest experiments 기준으로 `skill-surface`와 `review-completion`은 pass지만 `gate-honesty-a`는 concern, `gate-honesty-b`는 blocker다.
-2. 다음 slice는 canonical self-dogfood를 더 바꾸기보다, `gate-honesty-*` prompt/evidence를 더 좁혀서 어느 수준의 self-claim까지 accept 가능한지 찾는 것이다.
-3. 그 다음 binary-surface를 별도 experiment adapter로 쪼갤지 본다.
+1. canonical self-dogfood claim은 이제 "self-dogfood result를 정직하게 기록하고 surfaced 하는가"로 유지한다.
+2. stronger claim은 named experiments에서 다룬다. 현재 next target은 `binary-surface`, `gate-honesty-*`의 증거 범위를 더 깎는 것이다.
+3. latest experiments를 다시 보고 `binary-surface`가 `skill-surface`처럼 stable pass인지 확인한다.
 4. `quality` workflow가 canonical dogfood와 experiments를 어떻게 함께 요약해야 좋은지 본다.
 5. 변경 후에는 항상 `npm run verify`를 다시 돌린다.
 

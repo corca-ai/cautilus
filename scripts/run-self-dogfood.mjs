@@ -5,6 +5,7 @@ import { spawnSync } from "node:child_process";
 import process from "node:process";
 
 import { pruneWorkspaceArtifacts } from "./agent-runtime/prune-workspace-artifacts.mjs";
+import { enrichExperimentPrompt } from "./self-dogfood-experiment-prompt.mjs";
 
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(SCRIPT_DIR, "..");
@@ -55,7 +56,7 @@ function defaultOptions() {
 		artifactRoot: null,
 		baselineRef: "origin/main",
 		intent:
-			"Cautilus should validate its own standalone binary and bundled skill honestly before operators trust broader consumer runs.",
+			"Cautilus should record and surface its own self-dogfood result honestly before operators trust broader consumer runs.",
 		reviewAdapter: null,
 		reviewAdapterName: null,
 		gateAdapter: null,
@@ -415,7 +416,53 @@ function runModeEvaluation(repoRoot, workspace, modeDir, options) {
 	};
 }
 
+function prepareReviewPrompt(repoRoot, modeReportPath, reviewDir, options) {
+	const reviewPacketPath = join(reviewDir, "review-packet.json");
+	const promptInputPath = join(reviewDir, "review-prompt-input.json");
+	const promptPath = join(reviewDir, "review.prompt.md");
+	const reviewPrepareArgs = [
+		"review",
+		"prepare-input",
+		"--repo-root",
+		repoRoot,
+		"--report-file",
+		modeReportPath,
+		"--output",
+		reviewPacketPath,
+		...(options.reviewAdapter ? ["--adapter", options.reviewAdapter] : []),
+		...(options.reviewAdapterName ? ["--adapter-name", options.reviewAdapterName] : []),
+	];
+	const reviewPrepare = runCautilus(repoRoot, reviewPrepareArgs, options.quiet);
+	if (reviewPrepare.status !== 0) {
+		fail(`review prepare-input failed.\n${reviewPrepare.stderr}`);
+	}
+	const promptInputResult = runCautilus(
+		repoRoot,
+		["review", "build-prompt-input", "--review-packet", reviewPacketPath, "--output", promptInputPath],
+		options.quiet,
+	);
+	if (promptInputResult.status !== 0) {
+		fail(`review build-prompt-input failed.\n${promptInputResult.stderr}`);
+	}
+	const renderPromptResult = runCautilus(
+		repoRoot,
+		["review", "render-prompt", "--input", promptInputPath, "--output", promptPath],
+		options.quiet,
+	);
+	if (renderPromptResult.status !== 0) {
+		fail(`review render-prompt failed.\n${renderPromptResult.stderr}`);
+	}
+	enrichExperimentPrompt({
+		promptPath,
+		promptInputPath,
+		adapterName: options.reviewAdapterName ?? "self-dogfood",
+		reviewTimeoutMs: options.reviewTimeoutMs,
+	});
+	return { reviewPacketPath, promptInputPath, promptPath };
+}
+
 function runReviewVariants(repoRoot, workspace, reviewDir, modeReportPath, options) {
+	const promptArtifacts = prepareReviewPrompt(repoRoot, modeReportPath, reviewDir, options);
 	const args = [
 		"review",
 		"variants",
@@ -423,8 +470,8 @@ function runReviewVariants(repoRoot, workspace, reviewDir, modeReportPath, optio
 		repoRoot,
 		"--workspace",
 		workspace,
-		"--report-file",
-		modeReportPath,
+		"--prompt-file",
+		promptArtifacts.promptPath,
 		"--output-dir",
 		reviewDir,
 		...(options.reviewAdapter ? ["--adapter", options.reviewAdapter] : []),

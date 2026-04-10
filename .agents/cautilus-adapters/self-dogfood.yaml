@@ -1,7 +1,7 @@
 version: 1
 repo: cautilus
 evaluation_surfaces:
-  - explicit self-dogfood review of the standalone binary and bundled skill
+  - explicit self-dogfood review of whether Cautilus records and surfaces its own quality path honestly
 baseline_options:
   - baseline git ref in the same repo via {baseline_ref}
 required_prerequisites:
@@ -22,16 +22,16 @@ artifact_paths:
   - README.md
   - docs/workflow.md
   - docs/specs/self-dogfood.spec.md
+  - scripts/run-self-dogfood.mjs
   - skills/cautilus/SKILL.md
   - plugins/cautilus/skills/cautilus/SKILL.md
 comparison_questions:
-  - Does the current full-gate report support the claim that Cautilus can evaluate its own binary and bundled skill honestly?
+  - Does the current full-gate report support the narrower claim that Cautilus records and surfaces its own self-dogfood result honestly for operators?
+  - Treat stronger standalone-binary or bundled-skill coverage claims as experiment surfaces unless the current report packet proves them directly.
   - Judge from the current report file and the listed product artifacts, not from stale files under artifacts/self-dogfood/latest while the new review is still running.
 human_review_prompts:
-  - id: binary-surface
-    prompt: Where would an operator still conclude the standalone binary surface is brittle or misleading despite the current full-gate report?
-  - id: skill-surface
-    prompt: Where would an operator still conclude the bundled skill path is stale, underspecified, or not actually usable despite the current full-gate report?
+  - id: operator-honesty
+    prompt: Where would an operator still conclude the latest self-dogfood bundle overstates what the current evidence actually proves?
   - id: stale-latest
     prompt: Ignore artifacts/self-dogfood/latest from previous completed runs. Only judge the current report packet and the listed product files for this run.
 default_schema_file: fixtures/workbench/review-verdict.schema.json
