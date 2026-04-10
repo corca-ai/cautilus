@@ -18,10 +18,16 @@ standalone product여야 한다.
 | AGENTS.md | file_exists |  |
 | AGENTS.md | fixed | standalone product boundary |
 | AGENTS.md | fixed | npm run verify |
+| AGENTS.md | fixed | npm run hooks:install |
+| AGENTS.md | fixed | npm run hooks:check |
 | package.json | file_exists |  |
+| package.json | fixed | "hooks:install" |
+| package.json | fixed | "hooks:check" |
 | package.json | fixed | "lint" |
 | package.json | fixed | "test" |
 | package.json | fixed | "verify" |
+| .githooks/pre-push | file_exists |  |
+| .githooks/pre-push | fixed | npm run verify |
 | eslint.config.mjs | file_exists |  |
 | .github/workflows/verify.yml | file_exists |  |
 | .github/workflows/verify.yml | fixed | npm run verify |
@@ -112,6 +118,11 @@ standalone product여야 한다.
 | scripts/agent-runtime/contract-versions.mjs | fixed | EVIDENCE_BUNDLE_SCHEMA |
 | scripts/agent-runtime/contract-versions.mjs | fixed | OPTIMIZE_PROPOSAL_SCHEMA |
 | scripts/agent-runtime/contract-versions.mjs | fixed | REVISION_ARTIFACT_SCHEMA |
+| scripts/install-git-hooks.mjs | file_exists |  |
+| scripts/install-git-hooks.mjs | fixed | core.hooksPath |
+| scripts/check-git-hooks.mjs | file_exists |  |
+| scripts/check-git-hooks.mjs | fixed | hooks_path_configured |
+| scripts/check-git-hooks.test.mjs | file_exists |  |
 | docs/contracts/scenario-proposal-inputs.md | file_exists |  |
 | docs/contracts/scenario-proposal-inputs.md | fixed | cautilus.scenario_proposal_inputs.v1 |
 | docs/contracts/scenario-proposal-normalization.md | file_exists |  |

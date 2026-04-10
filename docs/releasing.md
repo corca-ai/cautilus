@@ -11,6 +11,7 @@ repo today that resolves to:
 ## Preconditions
 
 - [LICENSE](/home/ubuntu/cautilus/LICENSE) stays in sync with the public repo
+- `npm run hooks:check` passes in the maintainer clone
 - `npm run verify` passes on `main`
 - [release-boundary.md](/home/ubuntu/cautilus/docs/release-boundary.md) still
   matches the product-owned surface
@@ -21,6 +22,7 @@ repo today that resolves to:
 2. Run:
 
 ```bash
+npm run hooks:check
 npm run verify
 node ./bin/cautilus --version
 ```

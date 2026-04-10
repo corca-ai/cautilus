@@ -11,6 +11,8 @@
     "cautilus": "./bin/cautilus"
   },
 	"scripts": {
+		"hooks:install": "node scripts/install-git-hooks.mjs",
+		"hooks:check": "node scripts/check-git-hooks.mjs",
 		"lint": "npm run lint:eslint && npm run lint:specs",
 		"lint:eslint": "eslint .",
 		"lint:specs": "node scripts/check-specs.mjs",

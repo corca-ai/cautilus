@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+set -eu
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+printf 'pre-push: running npm run verify\n'
+cd "$REPO_ROOT"
+npm run verify

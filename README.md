@@ -423,14 +423,19 @@ Install the local Node tooling:
 
 ```bash
 npm install
+npm run hooks:install
 ```
 
 Run checks:
 
 ```bash
 npm run verify
+npm run hooks:check
 ```
 
 Use `npm run lint` or `npm run test` directly only when iterating on one seam.
+
+`hooks:install` is a once-per-clone setup step that points `core.hooksPath` at
+the checked-in `.githooks` directory, where `pre-push` runs `npm run verify`.
 
 `init_adapter.py` no longer needs `PyYAML`; the Python surface is stdlib-only.

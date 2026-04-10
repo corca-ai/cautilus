@@ -69,10 +69,17 @@ Ceal's `workbench`.
 
 ## Local Checks
 
+Once per clone, install the checked-in Git hooks:
+
+```bash
+npm run hooks:install
+```
+
 Use these before stopping:
 
 ```bash
 npm run verify
+npm run hooks:check
 ```
 
 Use `npm run lint` and `npm run test` directly when iterating on one seam, but
