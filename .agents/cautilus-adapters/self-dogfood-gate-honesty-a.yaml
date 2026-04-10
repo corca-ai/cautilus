@@ -1,0 +1,29 @@
+version: 1
+repo: cautilus
+evaluation_surfaces:
+  - fast A review of whether the self-consumer gate tells the truth
+baseline_options:
+  - baseline git ref in the same repo via {baseline_ref}
+required_prerequisites:
+  - refresh the current full-gate report before running review variants
+executor_variants:
+  - id: codex-review-fast-a
+    tool: codex_exec
+    purpose: cheap A-side review of gate honesty
+    command_template: WORKBENCH_CODEX_MODEL=gpt-5.4-mini WORKBENCH_CODEX_REASONING_EFFORT=low bash scripts/agent-runtime/run-workbench-review-variant.sh --backend codex_exec --workspace {candidate_repo} --prompt-file {prompt_file} --schema-file {schema_file} --output-file {output_file}
+    required_prerequisites:
+      - generate the latest full-gate report before review variants
+    safety_notes:
+      - judge only the current report packet and listed product files
+artifact_paths:
+  - .agents/cautilus-adapter.yaml
+  - README.md
+  - docs/specs/self-dogfood.spec.md
+comparison_questions:
+  - Does the current deterministic self-consumer gate justify the claim that Cautilus can evaluate itself honestly?
+human_review_prompts:
+  - id: gate-honesty
+    prompt: Judge whether npm run verify plus the root self-consumer adapter is enough evidence for the self-consumer claim.
+  - id: stale-latest
+    prompt: Ignore artifacts/self-dogfood/latest from previous completed runs. Only judge the current report packet and the listed product files for this run.
+default_schema_file: fixtures/workbench/review-verdict.schema.json

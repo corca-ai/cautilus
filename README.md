@@ -238,6 +238,13 @@ artifacts:
 npm run dogfood:self
 ```
 
+Run the self-dogfood tuning experiments without changing the canonical latest
+bundle:
+
+```bash
+npm run dogfood:self:experiments
+```
+
 Prepare clean baseline and candidate git worktrees for a compare run:
 
 ```bash
@@ -439,6 +446,7 @@ Run checks:
 npm run verify
 npm run hooks:check
 npm run dogfood:self
+npm run dogfood:self:experiments
 ```
 
 Use `npm run lint` or `npm run test` directly only when iterating on one seam.
@@ -449,5 +457,9 @@ the checked-in `.githooks` directory, where `pre-push` runs `npm run verify`.
 `dogfood:self` is explicit quality work, not a standing pre-push or CI gate.
 It refreshes the latest self-dogfood bundle under
 `artifacts/self-dogfood/latest/`.
+
+`dogfood:self:experiments` is the tuning path for named A/B and split-surface
+reviews. It writes aggregate experiment results under
+`artifacts/self-dogfood/experiments/latest/`.
 
 `init_adapter.py` no longer needs `PyYAML`; the Python surface is stdlib-only.

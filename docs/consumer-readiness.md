@@ -38,6 +38,8 @@ Evidence:
   [/home/ubuntu/cautilus/.agents/cautilus-adapters/self-dogfood.yaml](/home/ubuntu/cautilus/.agents/cautilus-adapters/self-dogfood.yaml)
 - explicit self-dogfood command:
   `npm run dogfood:self`
+- explicit tuning command:
+  `npm run dogfood:self:experiments`
 
 What this means:
 
@@ -45,6 +47,8 @@ What this means:
 - The repo keeps cheap deterministic proof in the root adapter and one explicit
   LLM-backed self-dogfood path in a named adapter instead of overloading CI or
   pre-push with expensive review work.
+- The repo also keeps named experiment adapters for A/B and split-surface
+  tuning without mutating the canonical self-dogfood contract.
 - The honest product claim is now that `Cautilus` can declare and run its own
   self-consumer quality path, not only validate other repos.
 

@@ -19,15 +19,25 @@ artifact 위치를 현재 계약으로 보여준다.
 | .agents/cautilus-adapters/self-dogfood.yaml | file_exists |  |
 | .agents/cautilus-adapters/self-dogfood.yaml | fixed | executor_variants |
 | .agents/cautilus-adapters/self-dogfood.yaml | fixed | codex-review |
+| .agents/cautilus-adapters/self-dogfood-gate-honesty-a.yaml | file_exists |  |
+| .agents/cautilus-adapters/self-dogfood-gate-honesty-b.yaml | file_exists |  |
+| .agents/cautilus-adapters/self-dogfood-skill-surface.yaml | file_exists |  |
+| .agents/cautilus-adapters/self-dogfood-review-completion.yaml | file_exists |  |
 | .agents/quality-adapter.yaml | file_exists |  |
 | .agents/quality-adapter.yaml | fixed | npm run dogfood:self |
 | package.json | fixed | "dogfood:self" |
+| package.json | fixed | "dogfood:self:experiments" |
 | scripts/run-self-dogfood.mjs | file_exists |  |
 | scripts/run-self-dogfood.mjs | fixed | latest.md |
 | scripts/run-self-dogfood.test.mjs | file_exists |  |
+| scripts/run-self-dogfood-experiments.mjs | file_exists |  |
+| scripts/run-self-dogfood-experiments.mjs | fixed | DEFAULT_EXPERIMENT_ADAPTERS |
+| scripts/run-self-dogfood-experiments.test.mjs | file_exists |  |
 | README.md | fixed | npm run dogfood:self |
 | README.md | fixed | artifacts/self-dogfood/latest/ |
+| README.md | fixed | npm run dogfood:self:experiments |
 | skills/cautilus/SKILL.md | fixed | npm run dogfood:self |
+| skills/cautilus/SKILL.md | fixed | npm run dogfood:self:experiments |
 | .gitignore | fixed | artifacts/self-dogfood/ |
 
 ## Functional Check
@@ -38,6 +48,7 @@ Self-dogfood는 standing gate가 아니라 explicit quality path다.
 ```run:shell
 $ node ./bin/cautilus doctor --repo-root .
 $ npm run dogfood:self
+$ npm run dogfood:self:experiments
 ```
 
 ## Latest Recorded Result
@@ -49,6 +60,11 @@ paths:
 - `artifacts/self-dogfood/latest/report.json`
 - `artifacts/self-dogfood/latest/review-summary.json`
 - `artifacts/self-dogfood/latest/latest.md`
+
+The latest experiment bundle should be written to these stable paths:
+
+- `artifacts/self-dogfood/experiments/latest/summary.json`
+- `artifacts/self-dogfood/experiments/latest/latest.md`
 
 The standing spec gate does not rerun the LLM-backed review. It only keeps the
 contract, command surface, and latest-artifact paths honest.

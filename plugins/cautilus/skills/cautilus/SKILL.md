@@ -106,6 +106,14 @@ self-dogfood command over rebuilding the same mode/report/review chain by hand:
 npm run dogfood:self
 ```
 
+When the job is tuning the self-dogfood review budget or comparing review
+surfaces, use the checked-in experiment runner instead of inventing ad hoc
+A/B loops:
+
+```bash
+npm run dogfood:self:experiments
+```
+
 7. Report exact commands, exact placeholder values, and the final recommendation.
 8. When the repo already has normalized scenario proposal candidates, generate
    a checked-in proposal packet instead of hand-drafting scenario JSON:

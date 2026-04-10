@@ -61,10 +61,10 @@
 
 ## Next Session
 
-1. 다음 slice는 self-dogfood artifact shape와 latest report presentation이 실제 운영에 충분한지 점검하는 것이다.
-2. 필요하면 `artifacts/self-dogfood/latest/latest.md`를 더 operator-facing 하게 다듬는다.
-3. 그 다음 root adapter에 더 좁은 named dogfood surfaces가 필요한지 본다.
-4. `quality` workflow가 explicit dogfood failure를 어떻게 요약해야 좋은지 본다.
+1. 다음 slice는 `artifacts/self-dogfood/experiments/latest/` 결과를 보고 어떤 experiment adapter를 canonical self-dogfood로 승격할지 판단하는 것이다.
+2. 필요하면 `self-dogfood-gate-honesty-*` A/B를 더 좁게 하거나 timeout budget을 조정한다.
+3. 그 다음 binary-surface를 별도 experiment adapter로 쪼갤지 본다.
+4. `quality` workflow가 canonical dogfood와 experiments를 어떻게 함께 요약해야 좋은지 본다.
 5. 변경 후에는 항상 `npm run verify`를 다시 돌린다.
 
 ## Discuss

@@ -16,6 +16,7 @@ standalone product여야 한다.
 | README.md | fixed | held-out |
 | README.md | fixed | intentful behavior |
 | README.md | fixed | npm run dogfood:self |
+| README.md | fixed | npm run dogfood:self:experiments |
 | AGENTS.md | file_exists |  |
 | AGENTS.md | fixed | standalone product boundary |
 | AGENTS.md | fixed | npm run verify |
@@ -25,6 +26,7 @@ standalone product여야 한다.
 | package.json | fixed | "hooks:install" |
 | package.json | fixed | "hooks:check" |
 | package.json | fixed | "dogfood:self" |
+| package.json | fixed | "dogfood:self:experiments" |
 | package.json | fixed | "lint" |
 | package.json | fixed | "test" |
 | package.json | fixed | "verify" |
@@ -32,6 +34,10 @@ standalone product여야 한다.
 | .agents/cautilus-adapter.yaml | fixed | npm run verify |
 | .agents/cautilus-adapters/self-dogfood.yaml | file_exists |  |
 | .agents/cautilus-adapters/self-dogfood.yaml | fixed | codex-review |
+| .agents/cautilus-adapters/self-dogfood-gate-honesty-a.yaml | file_exists |  |
+| .agents/cautilus-adapters/self-dogfood-gate-honesty-b.yaml | file_exists |  |
+| .agents/cautilus-adapters/self-dogfood-skill-surface.yaml | file_exists |  |
+| .agents/cautilus-adapters/self-dogfood-review-completion.yaml | file_exists |  |
 | .agents/quality-adapter.yaml | file_exists |  |
 | .agents/quality-adapter.yaml | fixed | npm run dogfood:self |
 | .githooks/pre-push | file_exists |  |
@@ -73,6 +79,7 @@ standalone product여야 한다.
 | bin/cautilus.test.mjs | file_exists |  |
 | skills/cautilus/SKILL.md | file_exists |  |
 | skills/cautilus/SKILL.md | fixed | npm run dogfood:self |
+| skills/cautilus/SKILL.md | fixed | npm run dogfood:self:experiments |
 | skills/cautilus/agents/openai.yaml | file_exists |  |
 | docs/workflow.md | fixed | Meta Eval |
 | docs/workflow.md | fixed | Executor Variants |
@@ -138,6 +145,9 @@ standalone product여야 한다.
 | scripts/run-self-dogfood.mjs | file_exists |  |
 | scripts/run-self-dogfood.mjs | fixed | latest.md |
 | scripts/run-self-dogfood.test.mjs | file_exists |  |
+| scripts/run-self-dogfood-experiments.mjs | file_exists |  |
+| scripts/run-self-dogfood-experiments.mjs | fixed | DEFAULT_EXPERIMENT_ADAPTERS |
+| scripts/run-self-dogfood-experiments.test.mjs | file_exists |  |
 | docs/contracts/scenario-proposal-inputs.md | file_exists |  |
 | docs/contracts/scenario-proposal-inputs.md | fixed | cautilus.scenario_proposal_inputs.v1 |
 | docs/contracts/scenario-proposal-normalization.md | file_exists |  |
@@ -269,6 +279,7 @@ standalone product여야 한다.
   side-effect checks
 - adapter-defined executor variants fanout
 - explicit self-dogfood runner that refreshes the latest local report bundle
+- explicit self-dogfood experiment runner that compares named tuning adapters
 - checked-in standalone skill entrypoint
 - structured review verdict schema
 - explicit latency telemetry in executor-variant summaries
@@ -340,4 +351,5 @@ $ python3 ./scripts/init_adapter.py --repo-root /tmp/cautilus-spec-check --outpu
 $ node ./bin/cautilus --version
 $ npm run verify
 $ npm run dogfood:self
+$ npm run dogfood:self:experiments
 ```

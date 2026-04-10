@@ -1,0 +1,29 @@
+version: 1
+repo: cautilus
+evaluation_surfaces:
+  - focused review of whether explicit self-dogfood completes with usable evidence
+baseline_options:
+  - baseline git ref in the same repo via {baseline_ref}
+required_prerequisites:
+  - refresh the current full-gate report before running review variants
+executor_variants:
+  - id: codex-review-completion
+    tool: codex_exec
+    purpose: bounded review of review completion and operator evidence quality
+    command_template: WORKBENCH_CODEX_MODEL=gpt-5.4-mini WORKBENCH_CODEX_REASONING_EFFORT=low bash scripts/agent-runtime/run-workbench-review-variant.sh --backend codex_exec --workspace {candidate_repo} --prompt-file {prompt_file} --schema-file {schema_file} --output-file {output_file}
+    required_prerequisites:
+      - generate the latest full-gate report before review variants
+    safety_notes:
+      - focus on completion and evidence quality, not broader product roadmap questions
+artifact_paths:
+  - docs/specs/self-dogfood.spec.md
+  - scripts/run-self-dogfood.mjs
+  - scripts/agent-runtime/run-workbench-review-variant.sh
+comparison_questions:
+  - Does the explicit self-dogfood path complete within the bounded budget and leave usable evidence for operators?
+human_review_prompts:
+  - id: review-completion
+    prompt: Judge whether the current explicit self-dogfood path completes reliably enough to be trusted as an operator-facing quality signal.
+  - id: stale-latest
+    prompt: Ignore artifacts/self-dogfood/latest from previous completed runs. Only judge the current report packet and the listed product files for this run.
+default_schema_file: fixtures/workbench/review-verdict.schema.json
