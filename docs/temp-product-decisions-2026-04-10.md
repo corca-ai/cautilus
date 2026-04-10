@@ -142,27 +142,6 @@ follow-up effect:
   - [docs/specs/current-product.spec.md](/home/ubuntu/cautilus/docs/specs/current-product.spec.md)
 - consumer repo 이름이 필요하면 제품 개념 설명 본문이 아니라 증거 문맥에만 둔다.
 
-### D4. Helper Admission Rule
-
-current claim:
-- `chatbot`, `cli`, `skill` helper는 이미 제품에 들어왔다.
-
-actual proof:
-- 현재 셋은 각자 real reference가 있고 packet/test가 있다.
-- 하지만 다음 helper를 어떤 기준으로 productize 하는지는 문서에 명시돼 있지 않다.
-
-recommended decision:
-- 새 helper는 아래 둘 중 하나를 만족할 때만 productize 한다.
-- 두 consumer 이상이 같은 normalized pattern을 공유한다.
-- 또는 `Cautilus` 자신이 first-class dogfood consumer다.
-
-status:
-- open
-
 ## Next Decision
 
-다음은 D4만 결정한다.
-
-질문:
-- 새 helper를 productize 하는 admission rule을 명시적으로 둘지,
-  두면 어떤 기준으로 둘지
+다음 decision item은 아직 정하지 않았다.
