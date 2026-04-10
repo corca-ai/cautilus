@@ -23,6 +23,16 @@
   [docs/consumer-migration.md](/home/ubuntu/cautilus/docs/consumer-migration.md),
   [docs/charness-consumer-boundary.md](/home/ubuntu/cautilus/docs/charness-consumer-boundary.md)
 
+### Repo-Agnostic Product Framing
+
+- `Cautilus`의 제품 설명은 repo name 중심이 아니라 repo-agnostic surface
+  archetype 중심이어야 한다.
+- 제품 문서에서는 `chatbot`, `skill`, `cli`, `workflow`, `agent runtime`
+  같은 generic surface를 먼저 설명한다.
+- 특정 consumer repo 이름은 product positioning의 중심이 아니라 dogfood
+  evidence 또는 migration note에만 제한적으로 남긴다.
+- 특정 repo의 현재 구조를 그대로 product concept로 승격하지 않는다.
+
 ### Product Boundary
 
 - `Cautilus`는 generic workflow contract, CLI, normalization helper를 owning surface로 둔다.
@@ -99,19 +109,23 @@ follow-up effect:
 ### D3. Consumer Readiness Vocabulary
 
 current claim:
-- 일부 문서는 `ceal`을 deepest consumer처럼 읽게 하고, 다른 문서는 `crill`의 증거가 더 깊다.
+- 일부 문서는 특정 repo 이름을 중심으로 consumer 역할을 설명한다.
+- 이 framing은 현재 dogfood provenance는 보여주지만, product positioning을
+  repo-coupled 하게 만들 위험이 있다.
 
 actual proof:
-- `ceal`: adapter/review-variant/chatbot reference 성격이 강하다.
-- `crill`: mode/cli/review variants/compare까지 더 넓은 runtime proof가 있다.
-- `charness`: skill normalization reference와 narrow root adapter proof가 핵심이다.
+- 현재 dogfood evidence는 여러 consumer repo에 분산돼 있다.
+- 하지만 그 evidence가 product abstraction의 기준이 되어야 하는 것은 아니다.
+- 제품이 지켜야 할 기준은 특정 repo가 아니라 generic surface archetype이다.
 
 recommended decision:
-- `deepest consumer` 같은 단일 표현 대신 surface별 역할로 다시 쓴다.
-- 예:
-  - `ceal`: primary chatbot reference
-  - `crill`: deepest evaluated workflow consumer
-  - `charness`: primary skill normalization reference
+- product-facing 문서에서는 repo 이름 중심 vocabulary를 버린다.
+- `chatbot`, `skill`, `cli`, `workflow`, `agent runtime` 같은
+  repo-agnostic surface vocabulary로 다시 쓴다.
+- 특정 repo 이름은 아래로 내린다.
+  - migration evidence
+  - dogfood provenance
+  - consumer readiness appendix
 
 status:
 - open
@@ -138,5 +152,6 @@ status:
 다음은 D3만 결정한다.
 
 질문:
-- consumer-readiness 문서와 관련 설명에서 `deepest consumer` 같은 단일 표현을 유지할지,
-  아니면 surface별 역할 vocabulary로 다시 쓸지
+- consumer-facing evidence 문서를 제외한 product 설명에서
+  repo name 중심 framing을 버리고 repo-agnostic surface vocabulary로
+  다시 쓸지
