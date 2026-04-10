@@ -55,6 +55,16 @@ node ./bin/cautilus workspace prepare-compare \
 The helper emits machine-readable baseline and candidate paths you can pass
 back into `mode evaluate` or `review variants`.
 
+If repeated bounded runs are accumulating too many artifact directories under
+one artifact root, prune older recognized bundles instead of letting stdout,
+stderr, review packets, and compare workspaces grow forever:
+
+```bash
+node ./bin/cautilus workspace prune-artifacts \
+  --root /tmp/cautilus-runs \
+  --keep-last 20
+```
+
 If interpretation or reporting is getting sloppy, read
 [reporting.md](/home/ubuntu/cautilus/docs/contracts/reporting.md) before
 continuing.

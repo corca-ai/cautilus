@@ -70,10 +70,20 @@ node ./bin/cautilus workspace prepare-compare \
   --output-dir /tmp/cautilus-compare
 ```
 
-3. Run adapter-defined preflight commands before long evaluations.
-4. Use iterate mode for tuning, held-out mode for validation, and full gate for
+3. If the repo keeps one artifact root with one subdirectory per run, prune
+   older Cautilus bundles instead of letting logs and compare workspaces grow
+   forever:
+
+```bash
+node ./bin/cautilus workspace prune-artifacts \
+  --root /tmp/cautilus-runs \
+  --keep-last 20
+```
+
+4. Run adapter-defined preflight commands before long evaluations.
+5. Use iterate mode for tuning, held-out mode for validation, and full gate for
    ship decisions.
-5. When the adapter defines `executor_variants`, run the checked-in review
+6. When the adapter defines `executor_variants`, run the checked-in review
    runner instead of retyping ad-hoc shell commands:
 
 ```bash
@@ -83,8 +93,8 @@ node ./bin/cautilus review variants \
   --output-dir /tmp/cautilus-review
 ```
 
-6. Report exact commands, exact placeholder values, and the final recommendation.
-7. When the repo already has normalized scenario proposal candidates, generate
+7. Report exact commands, exact placeholder values, and the final recommendation.
+8. When the repo already has normalized scenario proposal candidates, generate
    a checked-in proposal packet instead of hand-drafting scenario JSON:
 
 ```bash

@@ -45,6 +45,7 @@ Current `core validated surface`:
 
 - adapter-driven CLI entrypoints for `resolve`, `init`, and `doctor`
 - explicit A/B workspace preparation through `workspace prepare-compare`
+- artifact-root retention through `workspace prune-artifacts`
 - bounded runtime execution through `mode evaluate`
 - scenario-history-aware profile selection and history updates for
   profile-backed mode runs
@@ -203,6 +204,14 @@ node ./bin/cautilus workspace prepare-compare \
   --repo-root /path/to/repo \
   --baseline-ref origin/main \
   --output-dir /tmp/cautilus-compare
+```
+
+Prune older Cautilus artifact bundles from a dedicated artifact root:
+
+```bash
+node ./bin/cautilus workspace prune-artifacts \
+  --root /tmp/cautilus-runs \
+  --keep-last 20
 ```
 
 Normalize chatbot-style conversational summaries into proposal candidates:

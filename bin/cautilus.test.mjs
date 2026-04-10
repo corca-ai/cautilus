@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { chmodSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { chmodSync, mkdirSync, mkdtempSync, readFileSync, rmSync, utimesSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
@@ -250,6 +250,40 @@ test("cautilus workspace prepare-compare creates baseline and candidate worktree
 		const payload = JSON.parse(result.stdout);
 		assert.equal(readFileSync(join(payload.baseline.path, "sample.txt"), "utf-8"), "baseline\n");
 		assert.equal(readFileSync(join(payload.candidate.path, "sample.txt"), "utf-8"), "candidate\n");
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("cautilus workspace prune-artifacts prunes older recognized artifact directories", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-bin-prune-artifacts-"));
+	try {
+		const artifactRoot = join(root, "artifacts");
+		const oldRun = join(artifactRoot, "run-old");
+		const newRun = join(artifactRoot, "run-new");
+		mkdirSync(oldRun, { recursive: true });
+		mkdirSync(newRun, { recursive: true });
+		writeFileSync(join(oldRun, "report.json"), "{}\n", "utf-8");
+		writeFileSync(join(newRun, "report.json"), "{}\n", "utf-8");
+		const older = new Date("2026-04-01T00:00:00.000Z");
+		const newer = new Date("2026-04-09T00:00:00.000Z");
+		utimesSync(oldRun, older, older);
+		utimesSync(newRun, newer, newer);
+
+		const result = spawnSync(
+			"node",
+			[BIN_PATH, "workspace", "prune-artifacts", "--root", artifactRoot, "--keep-last", "1"],
+			{
+				cwd: process.cwd(),
+				encoding: "utf-8",
+			},
+		);
+		assert.equal(result.status, 0, result.stderr);
+		const payload = JSON.parse(result.stdout);
+		assert.equal(payload.pruned.length, 1);
+		assert.equal(payload.pruned[0].path, oldRun);
+		assert.equal(payload.kept.length, 1);
+		assert.equal(readFileSync(join(newRun, "report.json"), "utf-8"), "{}\n");
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

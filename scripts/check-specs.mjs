@@ -91,6 +91,7 @@ function main() {
 		"scripts/agent-runtime/generate-optimize-proposal.mjs",
 		"scripts/agent-runtime/run-workbench-review-variant.sh",
 		"scripts/agent-runtime/run-workbench-executor-variants.mjs",
+		"scripts/agent-runtime/prune-workspace-artifacts.mjs",
 		"fixtures/scenario-proposals/candidates.json",
 		"fixtures/scenario-proposals/registry.json",
 		"fixtures/scenario-proposals/coverage.json",
