@@ -23,6 +23,8 @@ Ceal의 기존 `workbench` 시나리오는 여전히 유용한 dogfood 입력이
 | bin/cautilus | fixed | scenario summarize-telemetry |
 | bin/cautilus | fixed | scenario prepare-input |
 | bin/cautilus | fixed | scenario propose |
+| bin/cautilus | fixed | evidence prepare-input |
+| bin/cautilus | fixed | evidence bundle |
 | bin/cautilus | fixed | report build |
 | bin/cautilus | fixed | mode evaluate |
 | bin/cautilus | fixed | optimize prepare-input |
@@ -44,6 +46,8 @@ Ceal의 기존 `workbench` 시나리오는 여전히 유용한 dogfood 입력이
 | skills/cautilus/SKILL.md | fixed | node ./bin/cautilus scenario summarize-telemetry |
 | skills/cautilus/SKILL.md | fixed | node ./bin/cautilus scenario prepare-input |
 | skills/cautilus/SKILL.md | fixed | node ./bin/cautilus scenario propose |
+| skills/cautilus/SKILL.md | fixed | node ./bin/cautilus evidence prepare-input |
+| skills/cautilus/SKILL.md | fixed | node ./bin/cautilus evidence bundle |
 | skills/cautilus/SKILL.md | fixed | node ./bin/cautilus report build |
 | skills/cautilus/SKILL.md | fixed | node ./bin/cautilus mode evaluate |
 | skills/cautilus/SKILL.md | fixed | node ./bin/cautilus optimize prepare-input |
@@ -63,7 +67,7 @@ Ceal의 기존 `workbench` 시나리오는 여전히 유용한 dogfood 입력이
 현재 단계에서 standalone surface는 최소한 아래를 만족해야 한다.
 
 - binary와 bundled skill이 같은 workflow entrypoint를 가리킨다.
-- adapter resolve/init/doctor/workspace prepare-compare/scenario normalize chatbot/scenario normalize cli/scenario normalize skill/scenario summarize-telemetry/scenario prepare-input/scenario propose/report build/mode evaluate/optimize prepare-input/optimize propose/cli evaluate/review prepare-input/review build-prompt-input/review render-prompt/review variants는 Ceal-local script path 없이 설명된다.
+- adapter resolve/init/doctor/workspace prepare-compare/scenario normalize chatbot/scenario normalize cli/scenario normalize skill/scenario summarize-telemetry/scenario prepare-input/scenario propose/evidence prepare-input/evidence bundle/report build/mode evaluate/optimize prepare-input/optimize propose/cli evaluate/review prepare-input/review build-prompt-input/review render-prompt/review variants는 Ceal-local script path 없이 설명된다.
 - Ceal repoint는 제품 정의가 아니라 consumer migration 단계로 남아 있다.
 
 ```run:shell
@@ -76,6 +80,8 @@ $ node ./bin/cautilus scenario normalize skill --input ./fixtures/scenario-propo
 $ node ./bin/cautilus scenario summarize-telemetry --results ./fixtures/scenario-results/example-results.json || true
 $ node ./bin/cautilus scenario prepare-input --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json --family fast_regression --window-days 14 --now 2026-04-11T00:00:00.000Z
 $ node ./bin/cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json
+$ node ./bin/cautilus evidence prepare-input --report-file ./fixtures/reports/report-input.json --scenario-results-file ./fixtures/scenario-results/example-results.json || true
+$ node ./bin/cautilus evidence bundle --input ./fixtures/evidence/example-input.json
 $ node ./bin/cautilus report build --input ./fixtures/reports/report-input.json
 $ node ./bin/cautilus mode evaluate --repo-root . --mode held_out --intent "CLI behavior should remain legible." --baseline-ref origin/main --output-dir /tmp/cautilus-mode || true
 $ node ./bin/cautilus optimize prepare-input --report-file ./fixtures/reports/report-input.json --target prompt || true

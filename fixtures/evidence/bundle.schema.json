@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cautilus.evidence_bundle.v1",
+  "title": "Cautilus Evidence Bundle",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "generatedAt",
+    "repoRoot",
+    "sources",
+    "summary",
+    "signals",
+    "guidance"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "cautilus.evidence_bundle.v1"
+    },
+    "generatedAt": {
+      "type": "string"
+    },
+    "inputFile": {
+      "type": "string"
+    },
+    "repoRoot": {
+      "type": "string"
+    },
+    "sources": {
+      "type": "array"
+    },
+    "summary": {
+      "type": "object",
+      "required": [
+        "signalCount",
+        "highSignalCount",
+        "mediumSignalCount",
+        "lowSignalCount",
+        "sourceKinds"
+      ],
+      "properties": {
+        "signalCount": {
+          "type": "number"
+        },
+        "highSignalCount": {
+          "type": "number"
+        },
+        "mediumSignalCount": {
+          "type": "number"
+        },
+        "lowSignalCount": {
+          "type": "number"
+        },
+        "sourceKinds": {
+          "type": "array"
+        }
+      },
+      "additionalProperties": false
+    },
+    "signals": {
+      "type": "array"
+    },
+    "guidance": {
+      "type": "object",
+      "required": [
+        "miningFocus",
+        "loopRules"
+      ],
+      "properties": {
+        "miningFocus": {
+          "type": "array"
+        },
+        "loopRules": {
+          "type": "array"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -39,6 +39,8 @@ const SCENARIO_TELEMETRY_SUMMARIZER = join(
 const REPORT_PACKET_BUILDER = join(REPO_ROOT, "scripts", "agent-runtime", "build-report-packet.mjs");
 const CLI_INTENT_EVALUATOR = join(REPO_ROOT, "scripts", "agent-runtime", "evaluate-cli-intent.mjs");
 const ADAPTER_MODE_EVALUATOR = join(REPO_ROOT, "scripts", "agent-runtime", "evaluate-adapter-mode.mjs");
+const EVIDENCE_INPUT_BUILDER = join(REPO_ROOT, "scripts", "agent-runtime", "build-evidence-input.mjs");
+const EVIDENCE_BUNDLE_BUILDER = join(REPO_ROOT, "scripts", "agent-runtime", "build-evidence-bundle.mjs");
 const COMPARE_WORKTREE_PREPARER = join(
 	REPO_ROOT,
 	"scripts",
@@ -82,6 +84,8 @@ function usage(exitCode = 0) {
 		"  cautilus scenario summarize-telemetry [args]",
 		"  cautilus scenario prepare-input [args]",
 		"  cautilus scenario propose [args]",
+		"  cautilus evidence prepare-input [args]",
+		"  cautilus evidence bundle [args]",
 		"  cautilus report build [args]",
 		"  cautilus mode evaluate [args]",
 		"  cautilus optimize prepare-input [args]",
@@ -103,6 +107,8 @@ function usage(exitCode = 0) {
 		"  cautilus scenario summarize-telemetry --results ./results.json",
 		"  cautilus scenario prepare-input --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json",
 		"  cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json",
+		"  cautilus evidence prepare-input --report-file /tmp/cautilus-mode/report.json --scenario-results-file ./fixtures/scenario-results/example-results.json",
+		"  cautilus evidence bundle --input /tmp/cautilus-evidence/input.json",
 		"  cautilus report build --input ./fixtures/reports/report-input.json",
 		"  cautilus mode evaluate --repo-root . --mode held_out --intent 'CLI behavior should remain legible.' --baseline-ref origin/main --output-dir /tmp/cautilus-mode",
 		"  cautilus optimize prepare-input --report-file /tmp/cautilus-mode/report.json --target prompt",
@@ -175,6 +181,14 @@ if (area === "scenario" && action === "prepare-input") {
 
 if (area === "scenario" && action === "summarize-telemetry") {
 	run("node", [SCENARIO_TELEMETRY_SUMMARIZER, ...rest]);
+}
+
+if (area === "evidence" && action === "prepare-input") {
+	run("node", [EVIDENCE_INPUT_BUILDER, ...rest]);
+}
+
+if (area === "evidence" && action === "bundle") {
+	run("node", [EVIDENCE_BUNDLE_BUILDER, ...rest]);
 }
 
 if (area === "report" && action === "build") {

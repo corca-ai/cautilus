@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "cautilus.evidence_bundle.v1",
+  "generatedAt": "2026-04-11T00:11:00.000Z",
+  "inputFile": "/tmp/cautilus-evidence/input.json",
+  "repoRoot": "/tmp/cautilus-evidence",
+  "sources": [
+    {
+      "kind": "report",
+      "file": "/tmp/cautilus-evidence/report.json"
+    },
+    {
+      "kind": "scenario_results",
+      "file": "/tmp/cautilus-evidence/scenario-results.json"
+    },
+    {
+      "kind": "run_audit",
+      "file": "/tmp/cautilus-evidence/run-audit.json"
+    }
+  ],
+  "summary": {
+    "signalCount": 5,
+    "highSignalCount": 3,
+    "mediumSignalCount": 2,
+    "lowSignalCount": 0,
+    "sourceKinds": [
+      "report.regressed",
+      "report.noisy",
+      "run_audit.depth",
+      "run_audit.warning",
+      "scenario_results"
+    ]
+  },
+  "signals": [
+    {
+      "id": "report.regressed:operator-recovery",
+      "sourceKind": "report.regressed",
+      "severity": "high",
+      "summary": "Regressed evidence: operator-recovery"
+    },
+    {
+      "id": "run_audit:slow_llm_runs",
+      "sourceKind": "run_audit.warning",
+      "severity": "high",
+      "summary": "Slow LLM warnings detected (1)"
+    },
+    {
+      "id": "scenario_results:operator-recovery",
+      "sourceKind": "scenario_results",
+      "severity": "high",
+      "summary": "Scenario result failed: operator-recovery"
+    },
+    {
+      "id": "report.noisy:workflow-retry-budget",
+      "sourceKind": "report.noisy",
+      "severity": "medium",
+      "summary": "Noisy evidence: workflow-retry-budget"
+    },
+    {
+      "id": "run_audit:launch_only_runs",
+      "sourceKind": "run_audit.depth",
+      "severity": "medium",
+      "summary": "Launch-only runs present (1)"
+    }
+  ],
+  "guidance": {
+    "miningFocus": [
+      "Regressed evidence: operator-recovery",
+      "Slow LLM warnings detected (1)",
+      "Scenario result failed: operator-recovery",
+      "Noisy evidence: workflow-retry-budget",
+      "Launch-only runs present (1)"
+    ],
+    "loopRules": [
+      "Keep source ownership explicit: hosts own raw readers and storage access.",
+      "Use this bundle to propose one bounded next slice, not an open-ended retry loop.",
+      "Do not weaken held-out, comparison, or review gates when acting on this bundle."
+    ]
+  }
+}

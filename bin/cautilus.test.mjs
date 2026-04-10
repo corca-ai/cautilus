@@ -901,6 +901,128 @@ test("cautilus optimize prepare-input and propose turn explicit evidence into a 
 	}
 });
 
+test("cautilus evidence prepare-input and bundle produce a normalized evidence packet", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-bin-evidence-"));
+	try {
+		const reportPath = join(root, "report.json");
+		const scenarioResultsPath = join(root, "scenario-results.json");
+		const runAuditPath = join(root, "run-audit.json");
+		const inputPath = join(root, "evidence-input.json");
+		const bundlePath = join(root, "evidence-bundle.json");
+		writeFileSync(
+			reportPath,
+			`${JSON.stringify(
+				{
+					schemaVersion: "cautilus.report_packet.v1",
+					generatedAt: "2026-04-11T00:02:00.000Z",
+					candidate: "feature/cli",
+					baseline: "origin/main",
+					intent: "CLI recovery guidance should stay legible.",
+					commands: [],
+					commandObservations: [],
+					modesRun: ["held_out"],
+					modeSummaries: [],
+					telemetry: {},
+					improved: [],
+					regressed: ["operator-recovery"],
+					unchanged: [],
+					noisy: [],
+					humanReviewFindings: [],
+					recommendation: "defer",
+				},
+				null,
+				2,
+			)}\n`,
+			"utf-8",
+		);
+		writeFileSync(
+			scenarioResultsPath,
+			`${JSON.stringify(
+				{
+					schemaVersion: "cautilus.scenario_results.v1",
+					generatedAt: "2026-04-11T00:00:10.000Z",
+					source: "fixture",
+					mode: "held_out",
+					results: [
+						{
+							scenarioId: "operator-recovery",
+							status: "failed",
+							durationMs: 1200,
+						},
+					],
+				},
+				null,
+				2,
+			)}\n`,
+			"utf-8",
+		);
+		writeFileSync(
+			runAuditPath,
+			`${JSON.stringify(
+				{
+					summary: {
+						totals: {
+							runs: 2,
+							launch_only_runs: 1,
+						},
+						warnings: {
+							slow_llm_runs: 1,
+							slow_transition_runs: 0,
+							high_token_runs: 0,
+						},
+					},
+				},
+				null,
+				2,
+			)}\n`,
+			"utf-8",
+		);
+
+		const prepare = spawnSync(
+			"node",
+			[
+				BIN_PATH,
+				"evidence",
+				"prepare-input",
+				"--repo-root",
+				root,
+				"--report-file",
+				reportPath,
+				"--scenario-results-file",
+				scenarioResultsPath,
+				"--run-audit-file",
+				runAuditPath,
+				"--output",
+				inputPath,
+			],
+			{
+				cwd: process.cwd(),
+				encoding: "utf-8",
+			},
+		);
+		assert.equal(prepare.status, 0, prepare.stderr);
+		const prepared = JSON.parse(readFileSync(inputPath, "utf-8"));
+		assert.equal(prepared.schemaVersion, "cautilus.evidence_bundle_inputs.v1");
+		assert.equal(prepared.sources.length, 3);
+
+		const bundle = spawnSync(
+			"node",
+			[BIN_PATH, "evidence", "bundle", "--input", inputPath, "--output", bundlePath],
+			{
+				cwd: process.cwd(),
+				encoding: "utf-8",
+			},
+		);
+		assert.equal(bundle.status, 0, bundle.stderr);
+		const payload = JSON.parse(readFileSync(bundlePath, "utf-8"));
+		assert.equal(payload.schemaVersion, "cautilus.evidence_bundle.v1");
+		assert.ok(payload.summary.highSignalCount >= 1);
+		assert.equal(payload.signals[0].severity, "high");
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
 test("cautilus scenario prepare-input builds a proposal input packet from split normalized sources", () => {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-bin-scenario-prepare-"));
 	try {

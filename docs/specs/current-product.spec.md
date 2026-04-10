@@ -33,6 +33,8 @@
 | bin/cautilus | fixed | scenario normalize skill |
 | bin/cautilus | fixed | scenario prepare-input |
 | bin/cautilus | fixed | scenario propose |
+| bin/cautilus | fixed | evidence prepare-input |
+| bin/cautilus | fixed | evidence bundle |
 | bin/cautilus | fixed | report build |
 | bin/cautilus | fixed | mode evaluate |
 | bin/cautilus | fixed | optimize prepare-input |
@@ -72,6 +74,10 @@
 | scripts/agent-runtime/build-review-prompt-input.mjs | fixed | REVIEW_PROMPT_INPUTS_SCHEMA |
 | scripts/agent-runtime/render-review-prompt.mjs | file_exists |  |
 | scripts/agent-runtime/render-review-prompt.mjs | fixed | renderReviewPrompt |
+| scripts/agent-runtime/build-evidence-input.mjs | file_exists |  |
+| scripts/agent-runtime/build-evidence-input.mjs | fixed | EVIDENCE_BUNDLE_INPUTS_SCHEMA |
+| scripts/agent-runtime/build-evidence-bundle.mjs | file_exists |  |
+| scripts/agent-runtime/build-evidence-bundle.mjs | fixed | EVIDENCE_BUNDLE_SCHEMA |
 | scripts/agent-runtime/build-optimize-input.mjs | file_exists |  |
 | scripts/agent-runtime/build-optimize-input.mjs | fixed | OPTIMIZE_INPUTS_SCHEMA |
 | scripts/agent-runtime/generate-optimize-proposal.mjs | file_exists |  |
@@ -80,6 +86,7 @@
 | scripts/agent-runtime/scenario-results.mjs | fixed | SCENARIO_RESULTS_SCHEMA |
 | scripts/agent-runtime/contract-versions.mjs | file_exists |  |
 | scripts/agent-runtime/contract-versions.mjs | fixed | REVIEW_PROMPT_INPUTS_SCHEMA |
+| scripts/agent-runtime/contract-versions.mjs | fixed | EVIDENCE_BUNDLE_SCHEMA |
 | scripts/agent-runtime/contract-versions.mjs | fixed | OPTIMIZE_PROPOSAL_SCHEMA |
 | docs/contracts/scenario-proposal-inputs.md | file_exists |  |
 | docs/contracts/scenario-proposal-inputs.md | fixed | cautilus.scenario_proposal_inputs.v1 |
@@ -93,6 +100,9 @@
 | docs/contracts/review-packet.md | fixed | cautilus.review_packet.v1 |
 | docs/contracts/review-prompt-inputs.md | file_exists |  |
 | docs/contracts/review-prompt-inputs.md | fixed | cautilus.review_prompt_inputs.v1 |
+| docs/contracts/evidence-bundle.md | file_exists |  |
+| docs/contracts/evidence-bundle.md | fixed | cautilus.evidence_bundle_inputs.v1 |
+| docs/contracts/evidence-bundle.md | fixed | cautilus.evidence_bundle.v1 |
 | docs/contracts/optimization.md | file_exists |  |
 | docs/contracts/optimization.md | fixed | cautilus.optimize_inputs.v1 |
 | docs/contracts/optimization.md | fixed | cautilus.optimize_proposal.v1 |
@@ -115,6 +125,10 @@
 | fixtures/scenario-results/example-results.json | file_exists |  |
 | fixtures/scenario-results/results.schema.json | file_exists |  |
 | fixtures/review/prompt-input.schema.json | file_exists |  |
+| fixtures/evidence/input.schema.json | file_exists |  |
+| fixtures/evidence/input.schema.json | fixed | cautilus.evidence_bundle_inputs.v1 |
+| fixtures/evidence/bundle.schema.json | file_exists |  |
+| fixtures/evidence/bundle.schema.json | fixed | cautilus.evidence_bundle.v1 |
 | fixtures/optimize/input.schema.json | file_exists |  |
 | fixtures/optimize/input.schema.json | fixed | cautilus.optimize_inputs.v1 |
 | fixtures/optimize/proposal.schema.json | file_exists |  |
@@ -183,6 +197,7 @@
 - review packet assembly for compare artifacts and human-review prompts
 - explicit scenario-results packets and compare-artifact propagation through report/review flow
 - review meta-prompt input packet and prompt renderer above the review packet boundary
+- normalized evidence-bundle input and merge helpers above host-owned raw readers
 - bounded optimizer input and proposal helpers above explicit report/review/history evidence
 - scenario profile and graduation history helpers
 - chatbot proposal-candidate normalization helper
@@ -231,6 +246,8 @@ $ node ./bin/cautilus scenario propose --input ./fixtures/scenario-proposals/sta
 $ node ./bin/cautilus scenario summarize-telemetry --results ./fixtures/scenario-results/example-results.json
 $ node ./bin/cautilus report build --input ./fixtures/reports/report-input.json
 $ node ./bin/cautilus mode evaluate --repo-root . --mode held_out --intent "CLI behavior should remain legible." --baseline-ref origin/main --output-dir /tmp/cautilus-mode || true
+$ node ./bin/cautilus evidence prepare-input --report-file ./fixtures/reports/report-input.json --scenario-results-file ./fixtures/scenario-results/example-results.json || true
+$ node ./bin/cautilus evidence bundle --input ./fixtures/evidence/example-input.json
 $ node ./bin/cautilus optimize prepare-input --report-file ./fixtures/reports/report-input.json --target prompt || true
 $ node ./bin/cautilus optimize propose --input ./fixtures/optimize/example-input.json
 $ node ./bin/cautilus cli evaluate --input ./fixtures/cli-evaluation/doctor-missing-adapter.json
@@ -253,6 +270,8 @@ $ node --test ./scripts/agent-runtime/prepare-compare-worktrees.test.mjs
 $ node --test ./scripts/agent-runtime/evaluate-cli-intent.test.mjs
 $ node --test ./scripts/agent-runtime/build-review-packet.test.mjs
 $ node --test ./scripts/agent-runtime/review-prompt-flow.test.mjs
+$ node --test ./scripts/agent-runtime/evidence-bundle-flow.test.mjs
+$ node --test ./scripts/agent-runtime/evidence-contract-schemas.test.mjs
 $ node --test ./scripts/agent-runtime/optimize-flow.test.mjs
 $ node --test ./scripts/agent-runtime/optimization-contract-schemas.test.mjs
 $ node --test ./scripts/agent-runtime/reporting-contract-schemas.test.mjs

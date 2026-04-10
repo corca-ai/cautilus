@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "cautilus.evidence_bundle_inputs.v1",
+  "generatedAt": "2026-04-11T00:10:00.000Z",
+  "repoRoot": "/tmp/cautilus-evidence",
+  "sources": [
+    {
+      "kind": "report",
+      "file": "/tmp/cautilus-evidence/report.json"
+    },
+    {
+      "kind": "scenario_results",
+      "file": "/tmp/cautilus-evidence/scenario-results.json"
+    },
+    {
+      "kind": "run_audit",
+      "file": "/tmp/cautilus-evidence/run-audit.json"
+    }
+  ],
+  "reportFile": "/tmp/cautilus-evidence/report.json",
+  "report": {
+    "schemaVersion": "cautilus.report_packet.v1",
+    "generatedAt": "2026-04-11T00:02:00.000Z",
+    "candidate": "feature/cli",
+    "baseline": "origin/main",
+    "intent": "CLI recovery guidance should stay legible.",
+    "commands": [],
+    "commandObservations": [],
+    "modesRun": [
+      "held_out"
+    ],
+    "modeSummaries": [],
+    "telemetry": {},
+    "improved": [],
+    "regressed": [
+      "operator-recovery"
+    ],
+    "unchanged": [],
+    "noisy": [
+      "workflow-retry-budget"
+    ],
+    "humanReviewFindings": [],
+    "recommendation": "defer"
+  },
+  "scenarioResultsFile": "/tmp/cautilus-evidence/scenario-results.json",
+  "scenarioResults": {
+    "schemaVersion": "cautilus.scenario_results.v1",
+    "generatedAt": "2026-04-11T00:00:10.000Z",
+    "source": "fixture",
+    "mode": "held_out",
+    "results": [
+      {
+        "scenarioId": "operator-recovery",
+        "status": "failed",
+        "durationMs": 1200
+      }
+    ]
+  },
+  "runAuditFile": "/tmp/cautilus-evidence/run-audit.json",
+  "runAudit": {
+    "summary": {
+      "totals": {
+        "runs": 2,
+        "launch_only_runs": 1
+      },
+      "warnings": {
+        "slow_llm_runs": 1,
+        "slow_transition_runs": 0,
+        "high_token_runs": 0
+      }
+    }
+  },
+  "objective": {
+    "summary": "Bundle host-normalized evidence into one machine-readable packet before mining scenarios or revisions.",
+    "constraints": [
+      "Keep raw log readers and storage access host-owned.",
+      "Treat this packet as normalized evidence, not inferred narrative.",
+      "Prefer explicit report, scenario-result, audit, and history files over ad-hoc shell history."
+    ]
+  }
+}

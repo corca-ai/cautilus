@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cautilus.evidence_bundle_inputs.v1",
+  "title": "Cautilus Evidence Bundle Inputs",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "generatedAt",
+    "repoRoot",
+    "sources",
+    "objective"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "cautilus.evidence_bundle_inputs.v1"
+    },
+    "generatedAt": {
+      "type": "string"
+    },
+    "repoRoot": {
+      "type": "string"
+    },
+    "sources": {
+      "type": "array"
+    },
+    "reportFile": {
+      "type": "string"
+    },
+    "report": {
+      "type": "object"
+    },
+    "scenarioResultsFile": {
+      "type": "string"
+    },
+    "scenarioResults": {
+      "type": "object"
+    },
+    "runAuditFile": {
+      "type": "string"
+    },
+    "runAudit": {
+      "type": "object"
+    },
+    "scenarioHistoryFile": {
+      "type": "string"
+    },
+    "scenarioHistory": {
+      "type": "object"
+    },
+    "objective": {
+      "type": "object",
+      "required": [
+        "summary",
+        "constraints"
+      ],
+      "properties": {
+        "summary": {
+          "type": "string"
+        },
+        "constraints": {
+          "type": "array"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

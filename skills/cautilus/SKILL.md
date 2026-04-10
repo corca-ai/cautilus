@@ -53,6 +53,7 @@ node ./bin/cautilus doctor --repo-root .
 - [docs/contracts/cli-evaluation.md](/home/ubuntu/cautilus/docs/contracts/cli-evaluation.md)
 - [docs/contracts/review-packet.md](/home/ubuntu/cautilus/docs/contracts/review-packet.md)
 - [docs/contracts/review-prompt-inputs.md](/home/ubuntu/cautilus/docs/contracts/review-prompt-inputs.md)
+- [docs/contracts/evidence-bundle.md](/home/ubuntu/cautilus/docs/contracts/evidence-bundle.md)
 - [docs/contracts/optimization.md](/home/ubuntu/cautilus/docs/contracts/optimization.md)
 
 ## Workflow
@@ -127,6 +128,15 @@ node ./bin/cautilus review build-prompt-input \
 
 node ./bin/cautilus review render-prompt \
   --input /tmp/cautilus-mode/review-prompt-input.json
+
+node ./bin/cautilus evidence prepare-input \
+  --report-file /tmp/cautilus-mode/report.json \
+  --scenario-results-file /tmp/cautilus-mode/scenario-results.json \
+  --run-audit-file /tmp/cautilus-run-audit/summary.json \
+  --history-file /tmp/cautilus-history/history.json
+
+node ./bin/cautilus evidence bundle \
+  --input /tmp/cautilus-evidence/input.json
 
 node ./bin/cautilus optimize prepare-input \
   --report-file /tmp/cautilus-mode/report.json \
