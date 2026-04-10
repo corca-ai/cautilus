@@ -5,6 +5,15 @@ adapter instead of hardcoding benchmark runners into the workflow.
 Use one default adapter for the repo's primary benchmark surface, then add
 named adapters when the repo needs extra surfaces such as `code-quality`,
 `skill-smoke`, or `meta-eval`.
+When the operator wants clean git-ref A/B workspaces, use the product-owned
+helper instead of copying repo-local `git worktree` shell glue:
+
+```bash
+node ./bin/cautilus workspace prepare-compare \
+  --repo-root . \
+  --baseline-ref origin/main \
+  --output-dir /tmp/cautilus-compare
+```
 
 Search order:
 

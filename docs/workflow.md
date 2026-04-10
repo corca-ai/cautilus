@@ -42,6 +42,19 @@ python3 scripts/init_adapter.py --repo-root . --adapter-name code-quality
 4. Run any adapter-defined `preflight_commands` before spending time on long
    runs.
 
+If the run should compare clean git refs rather than a live checkout, prepare
+the explicit A/B worktrees first:
+
+```bash
+node ./bin/cautilus workspace prepare-compare \
+  --repo-root . \
+  --baseline-ref origin/main \
+  --output-dir /tmp/cautilus-compare
+```
+
+The helper emits machine-readable baseline and candidate paths you can pass
+back into `mode evaluate` or `review variants`.
+
 If interpretation or reporting is getting sloppy, read
 [reporting.md](/home/ubuntu/cautilus/docs/contracts/reporting.md) before
 continuing.

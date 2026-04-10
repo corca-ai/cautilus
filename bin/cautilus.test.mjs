@@ -207,6 +207,54 @@ printf '{"verdict":"pass","summary":"standalone smoke","findings":[{"severity":"
 	}
 });
 
+test("cautilus workspace prepare-compare creates baseline and candidate worktrees", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-bin-compare-worktrees-"));
+	try {
+		const git = (args) => {
+			const result = spawnSync("git", ["-C", root, ...args], {
+				encoding: "utf-8",
+			});
+			assert.equal(result.status, 0, result.stderr);
+			return result.stdout.trim();
+		};
+		git(["init"]);
+		git(["config", "user.name", "Cautilus Test"]);
+		git(["config", "user.email", "test@example.com"]);
+		writeFileSync(join(root, "sample.txt"), "baseline\n", "utf-8");
+		git(["add", "sample.txt"]);
+		git(["commit", "-m", "baseline"]);
+		const baselineCommit = git(["rev-parse", "HEAD"]);
+		writeFileSync(join(root, "sample.txt"), "candidate\n", "utf-8");
+		git(["commit", "-am", "candidate"]);
+		const outputDir = join(root, "compare");
+
+		const result = spawnSync(
+			"node",
+			[
+				BIN_PATH,
+				"workspace",
+				"prepare-compare",
+				"--repo-root",
+				root,
+				"--baseline-ref",
+				baselineCommit,
+				"--output-dir",
+				outputDir,
+			],
+			{
+				cwd: process.cwd(),
+				encoding: "utf-8",
+			},
+		);
+		assert.equal(result.status, 0, result.stderr);
+		const payload = JSON.parse(result.stdout);
+		assert.equal(readFileSync(join(payload.baseline.path, "sample.txt"), "utf-8"), "baseline\n");
+		assert.equal(readFileSync(join(payload.candidate.path, "sample.txt"), "utf-8"), "candidate\n");
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
 test("cautilus scenario propose generates a standalone proposal packet from normalized input", () => {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-bin-scenario-propose-"));
 	try {

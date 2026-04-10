@@ -16,6 +16,7 @@ Ceal의 기존 `workbench` 시나리오는 여전히 유용한 dogfood 입력이
 | AGENTS.md | fixed | independent binary plus bundled skill |
 | bin/cautilus | file_exists |  |
 | bin/cautilus | fixed | cautilus doctor |
+| bin/cautilus | fixed | workspace prepare-compare |
 | bin/cautilus | fixed | scenario normalize chatbot |
 | bin/cautilus | fixed | scenario normalize cli |
 | bin/cautilus | fixed | scenario normalize skill |
@@ -34,6 +35,7 @@ Ceal의 기존 `workbench` 시나리오는 여전히 유용한 dogfood 입력이
 | skills/cautilus/SKILL.md | file_exists |  |
 | skills/cautilus/SKILL.md | fixed | node ./bin/cautilus adapter resolve --repo-root . |
 | skills/cautilus/SKILL.md | fixed | node ./bin/cautilus doctor --repo-root . |
+| skills/cautilus/SKILL.md | fixed | node ./bin/cautilus workspace prepare-compare |
 | skills/cautilus/SKILL.md | fixed | node ./bin/cautilus scenario normalize chatbot |
 | skills/cautilus/SKILL.md | fixed | node ./bin/cautilus scenario normalize cli |
 | skills/cautilus/SKILL.md | fixed | node ./bin/cautilus scenario normalize skill |
@@ -57,12 +59,13 @@ Ceal의 기존 `workbench` 시나리오는 여전히 유용한 dogfood 입력이
 현재 단계에서 standalone surface는 최소한 아래를 만족해야 한다.
 
 - binary와 bundled skill이 같은 workflow entrypoint를 가리킨다.
-- adapter resolve/init/doctor/scenario normalize chatbot/scenario normalize cli/scenario normalize skill/scenario summarize-telemetry/scenario prepare-input/scenario propose/report build/mode evaluate/cli evaluate/review prepare-input/review build-prompt-input/review render-prompt/review variants는 Ceal-local script path 없이 설명된다.
+- adapter resolve/init/doctor/workspace prepare-compare/scenario normalize chatbot/scenario normalize cli/scenario normalize skill/scenario summarize-telemetry/scenario prepare-input/scenario propose/report build/mode evaluate/cli evaluate/review prepare-input/review build-prompt-input/review render-prompt/review variants는 Ceal-local script path 없이 설명된다.
 - Ceal repoint는 제품 정의가 아니라 consumer migration 단계로 남아 있다.
 
 ```run:shell
 $ node ./bin/cautilus --help
 $ node ./bin/cautilus doctor --repo-root . || true
+$ node ./bin/cautilus workspace prepare-compare --repo-root . --baseline-ref origin/main --output-dir /tmp/cautilus-compare || true
 $ node ./bin/cautilus scenario normalize chatbot --input ./fixtures/scenario-proposals/chatbot-input.json
 $ node ./bin/cautilus scenario normalize cli --input ./fixtures/scenario-proposals/cli-input.json
 $ node ./bin/cautilus scenario normalize skill --input ./fixtures/scenario-proposals/skill-input.json

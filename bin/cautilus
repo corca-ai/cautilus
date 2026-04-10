@@ -39,6 +39,12 @@ const SCENARIO_TELEMETRY_SUMMARIZER = join(
 const REPORT_PACKET_BUILDER = join(REPO_ROOT, "scripts", "agent-runtime", "build-report-packet.mjs");
 const CLI_INTENT_EVALUATOR = join(REPO_ROOT, "scripts", "agent-runtime", "evaluate-cli-intent.mjs");
 const ADAPTER_MODE_EVALUATOR = join(REPO_ROOT, "scripts", "agent-runtime", "evaluate-adapter-mode.mjs");
+const COMPARE_WORKTREE_PREPARER = join(
+	REPO_ROOT,
+	"scripts",
+	"agent-runtime",
+	"prepare-compare-worktrees.mjs",
+);
 const REVIEW_PACKET_BUILDER = join(REPO_ROOT, "scripts", "agent-runtime", "build-review-packet.mjs");
 const REVIEW_PROMPT_INPUT_BUILDER = join(
 	REPO_ROOT,
@@ -62,6 +68,7 @@ function usage(exitCode = 0) {
 		"  cautilus adapter resolve [args]",
 		"  cautilus adapter init [args]",
 		"  cautilus doctor [args]",
+		"  cautilus workspace prepare-compare [args]",
 		"  cautilus scenario normalize chatbot [args]",
 		"  cautilus scenario normalize cli [args]",
 		"  cautilus scenario normalize skill [args]",
@@ -80,6 +87,7 @@ function usage(exitCode = 0) {
 		"  cautilus adapter resolve --repo-root .",
 		"  cautilus adapter init --repo-root .",
 		"  cautilus doctor --repo-root .",
+		"  cautilus workspace prepare-compare --repo-root . --baseline-ref origin/main --output-dir /tmp/cautilus-compare",
 		"  cautilus scenario normalize chatbot --input ./fixtures/scenario-proposals/chatbot-input.json",
 		"  cautilus scenario normalize cli --input ./fixtures/scenario-proposals/cli-input.json",
 		"  cautilus scenario normalize skill --input ./fixtures/scenario-proposals/skill-input.json",
@@ -128,6 +136,10 @@ if (area === "adapter" && action === "init") {
 
 if (area === "doctor") {
 	run("python3", [DOCTOR_SCRIPT, action, ...rest].filter(Boolean));
+}
+
+if (area === "workspace" && action === "prepare-compare") {
+	run("node", [COMPARE_WORKTREE_PREPARER, ...rest]);
 }
 
 if (area === "scenario" && action === "propose") {

@@ -58,10 +58,20 @@ node ./bin/cautilus doctor --repo-root .
 
 1. Resolve the adapter and restate the candidate, baseline, and intended
    decision.
-2. Run adapter-defined preflight commands before long evaluations.
-3. Use iterate mode for tuning, held-out mode for validation, and full gate for
+2. When the run needs clean git-ref A/B workspaces, prepare them with the
+   product-owned helper:
+
+```bash
+node ./bin/cautilus workspace prepare-compare \
+  --repo-root . \
+  --baseline-ref origin/main \
+  --output-dir /tmp/cautilus-compare
+```
+
+3. Run adapter-defined preflight commands before long evaluations.
+4. Use iterate mode for tuning, held-out mode for validation, and full gate for
    ship decisions.
-4. When the adapter defines `executor_variants`, run the checked-in review
+5. When the adapter defines `executor_variants`, run the checked-in review
    runner instead of retyping ad-hoc shell commands:
 
 ```bash
@@ -71,8 +81,8 @@ node ./bin/cautilus review variants \
   --output-dir /tmp/cautilus-review
 ```
 
-5. Report exact commands, exact placeholder values, and the final recommendation.
-6. When the repo already has normalized scenario proposal candidates, generate
+6. Report exact commands, exact placeholder values, and the final recommendation.
+7. When the repo already has normalized scenario proposal candidates, generate
    a checked-in proposal packet instead of hand-drafting scenario JSON:
 
 ```bash

@@ -27,6 +27,7 @@
 | bin/cautilus | file_exists |  |
 | bin/cautilus | fixed | adapter resolve |
 | bin/cautilus | fixed | cautilus doctor |
+| bin/cautilus | fixed | workspace prepare-compare |
 | bin/cautilus | fixed | scenario normalize chatbot |
 | bin/cautilus | fixed | scenario normalize cli |
 | bin/cautilus | fixed | scenario normalize skill |
@@ -57,6 +58,8 @@
 | scripts/agent-runtime/build-report-packet.mjs | fixed | REPORT_PACKET_SCHEMA |
 | scripts/agent-runtime/evaluate-adapter-mode.mjs | file_exists |  |
 | scripts/agent-runtime/evaluate-adapter-mode.mjs | fixed | ADAPTER_MODE_EVALUATION_PACKET_SCHEMA |
+| scripts/agent-runtime/prepare-compare-worktrees.mjs | file_exists |  |
+| scripts/agent-runtime/prepare-compare-worktrees.mjs | fixed | --baseline-ref |
 | fixtures/cli-evaluation/doctor-missing-adapter.json | file_exists |  |
 | fixtures/cli-evaluation/input.schema.json | file_exists |  |
 | scripts/agent-runtime/evaluate-cli-intent.mjs | file_exists |  |
@@ -161,6 +164,7 @@
 - target repo의 adapter resolve
 - target repo의 adapter scaffold
 - target repo의 adapter readiness doctor
+- explicit baseline/candidate git worktree preparation for A/B runs
 - adapter-defined mode execution that emits report packets directly
 - review packet assembly for compare artifacts and human-review prompts
 - explicit scenario-results packets and compare-artifact propagation through report/review flow
@@ -203,6 +207,7 @@ local repo에서 최소 surface는 다음 명령으로 확인할 수 있어야 �
 ```run:shell
 $ node ./bin/cautilus adapter resolve --repo-root .
 $ node ./bin/cautilus doctor --repo-root . || true
+$ node ./bin/cautilus workspace prepare-compare --repo-root . --baseline-ref origin/main --output-dir /tmp/cautilus-compare || true
 $ node ./bin/cautilus scenario normalize chatbot --input ./fixtures/scenario-proposals/chatbot-input.json
 $ node ./bin/cautilus scenario normalize cli --input ./fixtures/scenario-proposals/cli-input.json
 $ node ./bin/cautilus scenario normalize skill --input ./fixtures/scenario-proposals/skill-input.json
@@ -227,6 +232,7 @@ $ node --test ./scripts/agent-runtime/scenario-history.test.mjs
 $ node --test ./scripts/agent-runtime/scenario-proposals.test.mjs
 $ node --test ./scripts/agent-runtime/build-report-packet.test.mjs
 $ node --test ./scripts/agent-runtime/evaluate-adapter-mode.test.mjs
+$ node --test ./scripts/agent-runtime/prepare-compare-worktrees.test.mjs
 $ node --test ./scripts/agent-runtime/evaluate-cli-intent.test.mjs
 $ node --test ./scripts/agent-runtime/build-review-packet.test.mjs
 $ node --test ./scripts/agent-runtime/review-prompt-flow.test.mjs

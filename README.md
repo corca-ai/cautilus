@@ -6,6 +6,8 @@ It is meant to become the repo-agnostic layer that helps a host repo evaluate
 agent runtimes, skills, and operator-facing command surfaces with bounded
 loops, explicit baselines, held-out validation, comparison summaries, and
 independent review variants.
+It now also includes a product-owned helper that prepares clean baseline and
+candidate git worktrees for explicit A/B evaluation runs.
 The product target is a standalone binary plus a bundled skill that a host repo
 can adopt without inheriting Ceal's private runtime surfaces.
 
@@ -153,6 +155,15 @@ Check whether a repo is ready for standalone `Cautilus` evaluation:
 
 ```bash
 node ./bin/cautilus doctor --repo-root /path/to/repo
+```
+
+Prepare clean baseline and candidate git worktrees for a compare run:
+
+```bash
+node ./bin/cautilus workspace prepare-compare \
+  --repo-root /path/to/repo \
+  --baseline-ref origin/main \
+  --output-dir /tmp/cautilus-compare
 ```
 
 Normalize chatbot-style conversational summaries into proposal candidates:
