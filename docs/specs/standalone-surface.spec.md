@@ -34,6 +34,7 @@ Ceal의 기존 `workbench` 시나리오는 여전히 유용한 dogfood 입력이
 | bin/cautilus | fixed | mode evaluate |
 | bin/cautilus | fixed | optimize prepare-input |
 | bin/cautilus | fixed | optimize propose |
+| bin/cautilus | fixed | optimize build-artifact |
 | bin/cautilus | fixed | cli evaluate |
 | bin/cautilus | fixed | review prepare-input |
 | bin/cautilus | fixed | review build-prompt-input |
@@ -58,6 +59,7 @@ Ceal의 기존 `workbench` 시나리오는 여전히 유용한 dogfood 입력이
 | skills/cautilus/SKILL.md | fixed | node ./bin/cautilus mode evaluate |
 | skills/cautilus/SKILL.md | fixed | node ./bin/cautilus optimize prepare-input |
 | skills/cautilus/SKILL.md | fixed | node ./bin/cautilus optimize propose |
+| skills/cautilus/SKILL.md | fixed | node ./bin/cautilus optimize build-artifact |
 | skills/cautilus/SKILL.md | fixed | node ./bin/cautilus cli evaluate |
 | skills/cautilus/SKILL.md | fixed | node ./bin/cautilus review prepare-input |
 | skills/cautilus/SKILL.md | fixed | node ./bin/cautilus review build-prompt-input |
@@ -74,7 +76,7 @@ Ceal의 기존 `workbench` 시나리오는 여전히 유용한 dogfood 입력이
 
 - binary와 bundled skill이 같은 workflow entrypoint를 가리킨다.
 - packaged local skill surface는 repo-local Codex/Claude marketplace로도 설명된다.
-- adapter resolve/init/doctor/workspace prepare-compare/workspace prune-artifacts/scenario normalize chatbot/scenario normalize cli/scenario normalize skill/scenario summarize-telemetry/scenario prepare-input/scenario propose/evidence prepare-input/evidence bundle/report build/mode evaluate/optimize prepare-input/optimize propose/cli evaluate/review prepare-input/review build-prompt-input/review render-prompt/review variants는 Ceal-local script path 없이 설명된다.
+- adapter resolve/init/doctor/workspace prepare-compare/workspace prune-artifacts/scenario normalize chatbot/scenario normalize cli/scenario normalize skill/scenario summarize-telemetry/scenario prepare-input/scenario propose/evidence prepare-input/evidence bundle/report build/mode evaluate/optimize prepare-input/optimize propose/optimize build-artifact/cli evaluate/review prepare-input/review build-prompt-input/review render-prompt/review variants는 Ceal-local script path 없이 설명된다.
 - Ceal repoint는 제품 정의가 아니라 consumer migration 단계로 남아 있다.
 
 ```run:shell
@@ -94,6 +96,7 @@ $ node ./bin/cautilus report build --input ./fixtures/reports/report-input.json
 $ node ./bin/cautilus mode evaluate --repo-root . --mode held_out --intent "CLI behavior should remain legible." --baseline-ref origin/main --output-dir /tmp/cautilus-mode || true
 $ node ./bin/cautilus optimize prepare-input --report-file ./fixtures/reports/report-input.json --target prompt --optimizer repair --budget light || true
 $ node ./bin/cautilus optimize propose --input ./fixtures/optimize/example-input.json
+$ node ./bin/cautilus optimize build-artifact --proposal-file ./fixtures/optimize/example-proposal.json --input-file ./fixtures/optimize/example-input.json
 $ node ./bin/cautilus cli evaluate --input ./fixtures/cli-evaluation/doctor-missing-adapter.json
 $ node ./bin/cautilus review prepare-input --repo-root . --report-file ./fixtures/reports/report-input.json || true
 $ node ./bin/cautilus review build-prompt-input --review-packet /tmp/cautilus-mode/review.json || true

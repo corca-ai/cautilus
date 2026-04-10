@@ -68,6 +68,12 @@ const OPTIMIZE_PROPOSAL_GENERATOR = join(
 	"agent-runtime",
 	"generate-optimize-proposal.mjs",
 );
+const REVISION_ARTIFACT_BUILDER = join(
+	REPO_ROOT,
+	"scripts",
+	"agent-runtime",
+	"build-revision-artifact.mjs",
+);
 const CHATBOT_NORMALIZER = join(
 	REPO_ROOT,
 	"scripts",
@@ -97,6 +103,7 @@ function usage(exitCode = 0) {
 		"  cautilus mode evaluate [args]",
 		"  cautilus optimize prepare-input [args]",
 		"  cautilus optimize propose [args]",
+		"  cautilus optimize build-artifact [args]",
 		"  cautilus review prepare-input [args]",
 		"  cautilus review build-prompt-input [args]",
 		"  cautilus review render-prompt [args]",
@@ -121,6 +128,7 @@ function usage(exitCode = 0) {
 		"  cautilus mode evaluate --repo-root . --mode held_out --intent 'CLI behavior should remain legible.' --baseline-ref origin/main --output-dir /tmp/cautilus-mode",
 		"  cautilus optimize prepare-input --report-file /tmp/cautilus-mode/report.json --target prompt --optimizer reflection --budget medium",
 		"  cautilus optimize propose --input /tmp/cautilus-optimize/input.json",
+		"  cautilus optimize build-artifact --proposal-file /tmp/cautilus-optimize/proposal.json",
 		"  cautilus review prepare-input --repo-root . --report-file /tmp/cautilus-mode/report.json",
 		"  cautilus review build-prompt-input --review-packet /tmp/cautilus-mode/review.json",
 		"  cautilus review render-prompt --input /tmp/cautilus-mode/review-prompt-input.json",
@@ -217,6 +225,10 @@ if (area === "optimize" && action === "prepare-input") {
 
 if (area === "optimize" && action === "propose") {
 	run("node", [OPTIMIZE_PROPOSAL_GENERATOR, ...rest]);
+}
+
+if (area === "optimize" && action === "build-artifact") {
+	run("node", [REVISION_ARTIFACT_BUILDER, ...rest]);
 }
 
 if (area === "review" && action === "prepare-input") {

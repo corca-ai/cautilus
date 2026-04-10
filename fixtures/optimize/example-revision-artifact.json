@@ -1,0 +1,337 @@
+{
+  "schemaVersion": "cautilus.revision_artifact.v1",
+  "generatedAt": "2026-04-11T00:07:00.000Z",
+  "proposalFile": "/tmp/cautilus-optimize/proposal.json",
+  "proposal": {
+    "schemaVersion": "cautilus.optimize_proposal.v1",
+    "generatedAt": "2026-04-11T00:06:00.000Z",
+    "inputFile": "/tmp/cautilus-optimize/input.json",
+    "optimizationTarget": "prompt",
+    "optimizer": {
+      "kind": "reflection",
+      "budget": "medium",
+      "plan": {
+        "evidenceLimit": 5,
+        "suggestedChangeLimit": 3,
+        "reviewVariantLimit": 2,
+        "historySignalLimit": 2
+      }
+    },
+    "targetFile": {
+      "path": "/tmp/cautilus-optimize/prompt.md",
+      "exists": true
+    },
+    "reportRecommendation": "defer",
+    "decision": "revise",
+    "rationale": "The next revision is bounded by 2 high-signal issue(s) selected under the medium reflection plan.",
+    "prioritizedEvidence": [
+      {
+        "source": "review.finding",
+        "key": "codex-review:variant/codex-review",
+        "severity": "blocker",
+        "summary": "codex-review blocker: The operator still cannot tell whether retry is safe.",
+        "message": "The operator still cannot tell whether retry is safe.",
+        "path": "variant/codex-review",
+        "variantId": "codex-review",
+        "provenance": {
+          "packet": "reviewSummary",
+          "locator": "variants.codex-review.findings.variant/codex-review"
+        }
+      },
+      {
+        "source": "report.noisy",
+        "key": "workflow-retry-budget",
+        "severity": "medium",
+        "summary": "Noisy scenario: workflow-retry-budget",
+        "message": "workflow-retry-budget needs more signal before calling the change better.",
+        "provenance": {
+          "packet": "report",
+          "locator": "noisy.workflow-retry-budget"
+        }
+      },
+      {
+        "source": "report.regressed",
+        "key": "operator-recovery",
+        "severity": "high",
+        "summary": "Regressed scenario: operator-recovery",
+        "message": "operator-recovery regressed in the current report.",
+        "provenance": {
+          "packet": "report",
+          "locator": "regressed.operator-recovery"
+        }
+      },
+      {
+        "source": "scenario_history",
+        "key": "operator-recovery",
+        "severity": "medium",
+        "summary": "operator-recovery remains unstable in recent train history",
+        "message": "operator-recovery last train result was failed with score 80.",
+        "provenance": {
+          "packet": "scenarioHistory",
+          "locator": "scenarioStats.operator-recovery"
+        }
+      }
+    ],
+    "suggestedChanges": [
+      {
+        "id": "repair-known-failures",
+        "changeKind": "prompt_revision",
+        "target": "prompt",
+        "summary": "Revise the prompt to repair the cited failures before widening scope.",
+        "rationale": "1 regressed scenario(s) and 1 review finding(s) currently bound the next revision.",
+        "evidence": [
+          {
+            "source": "report.regressed",
+            "key": "operator-recovery",
+            "summary": "Regressed scenario: operator-recovery"
+          },
+          {
+            "source": "review.finding",
+            "key": "codex-review:variant/codex-review",
+            "summary": "codex-review blocker: The operator still cannot tell whether retry is safe."
+          }
+        ]
+      },
+      {
+        "id": "increase-signal",
+        "changeKind": "sampling_increase",
+        "target": "adapter",
+        "summary": "Increase signal on noisy scenarios before calling the candidate better.",
+        "rationale": "1 scenario(s) are still noisy.",
+        "evidence": [
+          {
+            "source": "report.noisy",
+            "key": "workflow-retry-budget",
+            "summary": "Noisy scenario: workflow-retry-budget"
+          }
+        ]
+      },
+      {
+        "id": "focus-unstable-history",
+        "changeKind": "history_followup",
+        "target": "workflow",
+        "summary": "Use recent scenario-history misses to choose the next bounded probe.",
+        "rationale": "1 scenario(s) still look unstable in recent train history.",
+        "evidence": [
+          {
+            "source": "scenario_history",
+            "key": "operator-recovery",
+            "summary": "operator-recovery remains unstable in recent train history"
+          }
+        ]
+      }
+    ],
+    "revisionBrief": "Revise the prompt in one bounded pass. Revise the prompt to repair the cited failures before widening scope. Evidence: codex-review blocker: The operator still cannot tell whether retry is safe.; Noisy scenario: workflow-retry-budget; Regressed scenario: operator-recovery. Do not weaken held-out, comparison, or review gates.",
+    "trialTelemetry": {
+      "evidenceItemsSeen": 4,
+      "prioritizedEvidenceCount": 4,
+      "highSignalEvidenceCount": 2,
+      "suggestedChangeCount": 3,
+      "sourceCounts": {
+        "regressed": 1,
+        "reviewFindings": 1,
+        "noisy": 1,
+        "historySignals": 1,
+        "improved": 0
+      },
+      "plan": {
+        "evidenceLimit": 5,
+        "suggestedChangeLimit": 3,
+        "reviewVariantLimit": 2,
+        "historySignalLimit": 2
+      }
+    },
+    "stopConditions": [
+      "Stop after one bounded revision.",
+      "Do not weaken held-out, comparison, or structured review gates to make the candidate pass.",
+      "If the cited evidence still regresses after the next bounded revision, defer instead of retrying indefinitely."
+    ],
+    "followUpChecks": [
+      "Rerun the bounded iterate probe on the cited surfaces first.",
+      "Rerun held-out before accepting the revision.",
+      "Rerun comparison and review variants when those surfaces exist for the target repo."
+    ]
+  },
+  "optimizeInputFile": "/tmp/cautilus-optimize/input.json",
+  "repoRoot": "/tmp/cautilus-optimize",
+  "optimizationTarget": "prompt",
+  "optimizer": {
+    "kind": "reflection",
+    "budget": "medium",
+    "plan": {
+      "evidenceLimit": 5,
+      "suggestedChangeLimit": 3,
+      "reviewVariantLimit": 2,
+      "historySignalLimit": 2
+    }
+  },
+  "objective": {
+    "summary": "Propose one bounded next revision without weakening held-out, comparison, or review discipline.",
+    "constraints": [
+      "Prefer repairing explicit regressions over widening scope.",
+      "Treat review findings as first-class evidence, not optional commentary.",
+      "Use scenario history only to focus the next bounded probe, not to justify overfitting.",
+      "Stop after one bounded revision and rerun the relevant gates."
+    ]
+  },
+  "targetFile": {
+    "path": "/tmp/cautilus-optimize/prompt.md",
+    "exists": true
+  },
+  "sourceFiles": {
+    "reportFile": {
+      "path": "/tmp/cautilus-optimize/report.json",
+      "exists": false
+    },
+    "reviewSummaryFile": {
+      "path": "/tmp/cautilus-optimize/summary.json",
+      "exists": false
+    },
+    "scenarioHistoryFile": {
+      "path": "/tmp/cautilus-optimize/history.json",
+      "exists": false
+    }
+  },
+  "reportContext": {
+    "candidate": "feature/cli",
+    "baseline": "origin/main",
+    "intent": "CLI guidance should stay legible under recovery pressure.",
+    "recommendation": "defer",
+    "regressed": [
+      "operator-recovery"
+    ],
+    "noisy": [
+      "workflow-retry-budget"
+    ],
+    "improved": []
+  },
+  "decision": "revise",
+  "reportRecommendation": "defer",
+  "revisionBrief": "Revise the prompt in one bounded pass. Revise the prompt to repair the cited failures before widening scope. Evidence: codex-review blocker: The operator still cannot tell whether retry is safe.; Noisy scenario: workflow-retry-budget; Regressed scenario: operator-recovery. Do not weaken held-out, comparison, or review gates.",
+  "prioritizedEvidence": [
+    {
+      "source": "review.finding",
+      "key": "codex-review:variant/codex-review",
+      "severity": "blocker",
+      "summary": "codex-review blocker: The operator still cannot tell whether retry is safe.",
+      "message": "The operator still cannot tell whether retry is safe.",
+      "path": "variant/codex-review",
+      "variantId": "codex-review",
+      "provenance": {
+        "packet": "reviewSummary",
+        "locator": "variants.codex-review.findings.variant/codex-review"
+      }
+    },
+    {
+      "source": "report.noisy",
+      "key": "workflow-retry-budget",
+      "severity": "medium",
+      "summary": "Noisy scenario: workflow-retry-budget",
+      "message": "workflow-retry-budget needs more signal before calling the change better.",
+      "provenance": {
+        "packet": "report",
+        "locator": "noisy.workflow-retry-budget"
+      }
+    },
+    {
+      "source": "report.regressed",
+      "key": "operator-recovery",
+      "severity": "high",
+      "summary": "Regressed scenario: operator-recovery",
+      "message": "operator-recovery regressed in the current report.",
+      "provenance": {
+        "packet": "report",
+        "locator": "regressed.operator-recovery"
+      }
+    },
+    {
+      "source": "scenario_history",
+      "key": "operator-recovery",
+      "severity": "medium",
+      "summary": "operator-recovery remains unstable in recent train history",
+      "message": "operator-recovery last train result was failed with score 80.",
+      "provenance": {
+        "packet": "scenarioHistory",
+        "locator": "scenarioStats.operator-recovery"
+      }
+    }
+  ],
+  "suggestedChanges": [
+    {
+      "id": "repair-known-failures",
+      "changeKind": "prompt_revision",
+      "target": "prompt",
+      "summary": "Revise the prompt to repair the cited failures before widening scope.",
+      "rationale": "1 regressed scenario(s) and 1 review finding(s) currently bound the next revision.",
+      "evidence": [
+        {
+          "source": "report.regressed",
+          "key": "operator-recovery",
+          "summary": "Regressed scenario: operator-recovery"
+        },
+        {
+          "source": "review.finding",
+          "key": "codex-review:variant/codex-review",
+          "summary": "codex-review blocker: The operator still cannot tell whether retry is safe."
+        }
+      ]
+    },
+    {
+      "id": "increase-signal",
+      "changeKind": "sampling_increase",
+      "target": "adapter",
+      "summary": "Increase signal on noisy scenarios before calling the candidate better.",
+      "rationale": "1 scenario(s) are still noisy.",
+      "evidence": [
+        {
+          "source": "report.noisy",
+          "key": "workflow-retry-budget",
+          "summary": "Noisy scenario: workflow-retry-budget"
+        }
+      ]
+    },
+    {
+      "id": "focus-unstable-history",
+      "changeKind": "history_followup",
+      "target": "workflow",
+      "summary": "Use recent scenario-history misses to choose the next bounded probe.",
+      "rationale": "1 scenario(s) still look unstable in recent train history.",
+      "evidence": [
+        {
+          "source": "scenario_history",
+          "key": "operator-recovery",
+          "summary": "operator-recovery remains unstable in recent train history"
+        }
+      ]
+    }
+  ],
+  "stopConditions": [
+    "Stop after one bounded revision.",
+    "Do not weaken held-out, comparison, or structured review gates to make the candidate pass.",
+    "If the cited evidence still regresses after the next bounded revision, defer instead of retrying indefinitely."
+  ],
+  "followUpChecks": [
+    "Rerun the bounded iterate probe on the cited surfaces first.",
+    "Rerun held-out before accepting the revision.",
+    "Rerun comparison and review variants when those surfaces exist for the target repo."
+  ],
+  "trialTelemetry": {
+    "evidenceItemsSeen": 4,
+    "prioritizedEvidenceCount": 4,
+    "highSignalEvidenceCount": 2,
+    "suggestedChangeCount": 3,
+    "sourceCounts": {
+      "regressed": 1,
+      "reviewFindings": 1,
+      "noisy": 1,
+      "historySignals": 1,
+      "improved": 0
+    },
+    "plan": {
+      "evidenceLimit": 5,
+      "suggestedChangeLimit": 3,
+      "reviewVariantLimit": 2,
+      "historySignalLimit": 2
+    }
+  }
+}

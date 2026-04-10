@@ -803,6 +803,7 @@ test("cautilus optimize prepare-input and propose turn explicit evidence into a 
 		const targetPath = join(root, "prompt.md");
 		const inputPath = join(root, "optimize-input.json");
 		const proposalPath = join(root, "optimize-proposal.json");
+		const artifactPath = join(root, "revision-artifact.json");
 		writeFileSync(targetPath, "Keep operator guidance explicit.\n", "utf-8");
 		writeFileSync(
 			reportPath,
@@ -930,6 +931,20 @@ test("cautilus optimize prepare-input and propose turn explicit evidence into a 
 		assert.equal(proposal.schemaVersion, "cautilus.optimize_proposal.v1");
 		assert.equal(proposal.decision, "revise");
 		assert.match(proposal.revisionBrief, /Do not weaken held-out, comparison, or review gates\./);
+
+		const artifact = spawnSync(
+			"node",
+			[BIN_PATH, "optimize", "build-artifact", "--proposal-file", proposalPath, "--output", artifactPath],
+			{
+				cwd: process.cwd(),
+				encoding: "utf-8",
+			},
+		);
+		assert.equal(artifact.status, 0, artifact.stderr);
+		const revisionArtifact = JSON.parse(readFileSync(artifactPath, "utf-8"));
+		assert.equal(revisionArtifact.schemaVersion, "cautilus.revision_artifact.v1");
+		assert.equal(revisionArtifact.reportContext.candidate, "feature/cli");
+		assert.equal(revisionArtifact.targetSnapshot.sha256.length, 64);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

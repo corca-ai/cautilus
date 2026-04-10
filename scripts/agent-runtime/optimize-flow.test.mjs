@@ -6,6 +6,7 @@ import { spawnSync } from "node:child_process";
 import test from "node:test";
 
 import { buildOptimizeInput } from "./build-optimize-input.mjs";
+import { buildRevisionArtifact } from "./build-revision-artifact.mjs";
 import { generateOptimizeProposal } from "./generate-optimize-proposal.mjs";
 
 function writeJson(path, value) {
@@ -167,6 +168,58 @@ test("generateOptimizeProposal turns explicit evidence into one bounded revision
 		assert.equal(proposal.suggestedChanges[0].changeKind, "prompt_revision");
 		assert.match(proposal.revisionBrief, /bounded pass/);
 		assert.equal(proposal.trialTelemetry.suggestedChangeCount, 2);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("buildRevisionArtifact materializes one durable revision packet from proposal and input", () => {
+	const { root, reportFile, reviewSummaryFile, historyFile, targetFile } = createOptimizeFixtureRoot();
+	try {
+		const input = buildOptimizeInput(
+			[
+				"--repo-root",
+				root,
+				"--report-file",
+				reportFile,
+				"--review-summary",
+				reviewSummaryFile,
+				"--history-file",
+				historyFile,
+				"--target",
+				"prompt",
+				"--target-file",
+				targetFile,
+				"--optimizer",
+				"repair",
+				"--budget",
+				"medium",
+			],
+			{ now: new Date("2026-04-11T00:05:00.000Z") },
+		);
+		const inputPath = join(root, "optimize-input.json");
+		const proposalPath = join(root, "optimize-proposal.json");
+		writeJson(inputPath, input);
+		writeJson(
+			proposalPath,
+			generateOptimizeProposal(input, {
+				now: new Date("2026-04-11T00:06:00.000Z"),
+				inputFile: inputPath,
+			}),
+		);
+		const artifact = buildRevisionArtifact(
+			[
+				"--proposal-file",
+				proposalPath,
+			],
+			{ now: new Date("2026-04-11T00:07:00.000Z") },
+		);
+		assert.equal(artifact.schemaVersion, "cautilus.revision_artifact.v1");
+		assert.equal(artifact.optimizeInputFile, inputPath);
+		assert.equal(artifact.repoRoot, root);
+		assert.equal(artifact.targetSnapshot.sha256.length, 64);
+		assert.equal(artifact.sourceFiles.reportFile.exists, true);
+		assert.equal(artifact.decision, "revise");
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

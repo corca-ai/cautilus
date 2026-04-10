@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cautilus.revision_artifact.v1",
+  "title": "Cautilus Revision Artifact",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "generatedAt",
+    "proposalFile",
+    "proposal",
+    "optimizeInputFile",
+    "repoRoot",
+    "optimizationTarget",
+    "optimizer",
+    "objective",
+    "sourceFiles",
+    "reportContext",
+    "decision",
+    "reportRecommendation",
+    "revisionBrief",
+    "prioritizedEvidence",
+    "suggestedChanges",
+    "stopConditions",
+    "followUpChecks",
+    "trialTelemetry"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "cautilus.revision_artifact.v1"
+    },
+    "generatedAt": {
+      "type": "string"
+    },
+    "proposalFile": {
+      "type": "string"
+    },
+    "proposal": {
+      "type": "object"
+    },
+    "optimizeInputFile": {
+      "type": "string"
+    },
+    "repoRoot": {
+      "type": "string"
+    },
+    "optimizationTarget": {
+      "type": "string",
+      "enum": [
+        "prompt",
+        "adapter"
+      ]
+    },
+    "optimizer": {
+      "type": "object"
+    },
+    "objective": {
+      "type": "object"
+    },
+    "targetFile": {
+      "type": "object"
+    },
+    "targetSnapshot": {
+      "type": "object"
+    },
+    "sourceFiles": {
+      "type": "object"
+    },
+    "reportContext": {
+      "type": "object"
+    },
+    "decision": {
+      "type": "string",
+      "enum": [
+        "hold",
+        "revise",
+        "investigate"
+      ]
+    },
+    "reportRecommendation": {
+      "type": "string"
+    },
+    "revisionBrief": {
+      "type": "string"
+    },
+    "prioritizedEvidence": {
+      "type": "array"
+    },
+    "suggestedChanges": {
+      "type": "array"
+    },
+    "stopConditions": {
+      "type": "array"
+    },
+    "followUpChecks": {
+      "type": "array"
+    },
+    "trialTelemetry": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": false
+}

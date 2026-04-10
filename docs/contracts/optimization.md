@@ -32,6 +32,7 @@ runtime:
   converted into the next bounded revision brief
 - evidence provenance so later review can trace each proposal back to an
   explicit packet and locator
+- one durable revision artifact packet above the proposal
 
 ## Fixed Decisions
 
@@ -47,9 +48,6 @@ runtime:
 
 - Is evidence weighting by optimizer kind enough, or does the next slice need a
   first-class intent/signature contract above `optimize`?
-- Should a later slice persist a standalone revision artifact packet instead of
-  only the proposal packet?
-
 ## Deferred Decisions
 
 - a reusable intent/signature contract shared by `review`, `optimize`, and
@@ -134,6 +132,13 @@ node ./bin/cautilus optimize propose \
   --input /tmp/cautilus-optimize/input.json
 ```
 
+The resulting proposal can be materialized into one durable revision artifact:
+
+```bash
+node ./bin/cautilus optimize build-artifact \
+  --proposal-file /tmp/cautilus-optimize/proposal.json
+```
+
 ## Success Criteria
 
 - `optimize prepare-input` can declare optimizer kind and budget explicitly.
@@ -142,11 +147,14 @@ node ./bin/cautilus optimize propose \
 - `optimize propose` records optimizer telemetry that explains why the final
   revision brief is bounded the way it is.
 - Prioritized evidence includes source provenance for later audit.
+- `optimize build-artifact` emits one durable packet that can be reopened
+  without rediscovering optimize inputs by hand.
 
 ## Acceptance Checks
 
 - `node ./bin/cautilus optimize prepare-input --report-file ./fixtures/reports/report-input.json --target prompt --optimizer repair --budget light`
 - `node ./bin/cautilus optimize propose --input ./fixtures/optimize/example-input.json`
+- `node ./bin/cautilus optimize build-artifact --proposal-file ./fixtures/optimize/example-proposal.json --input-file ./fixtures/optimize/example-input.json`
 - `node --test ./scripts/agent-runtime/optimize-flow.test.mjs`
 
 ## Canonical Artifact
@@ -156,9 +164,9 @@ slice.
 
 ## First Implementation Slice
 
-Update the optimize input builder, optimize proposal generator, schemas,
-fixtures, and flow tests so the new optimizer plan and trial telemetry become
-the checked-in product surface.
+Update the optimize input builder, optimize proposal generator, revision
+artifact builder, schemas, fixtures, and flow tests so the optimize seam keeps
+one durable packet for the next bounded revision.
 
 ## Guardrails
 

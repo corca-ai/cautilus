@@ -9,6 +9,7 @@ export const EVIDENCE_BUNDLE_INPUTS_SCHEMA = "cautilus.evidence_bundle_inputs.v1
 export const EVIDENCE_BUNDLE_SCHEMA = "cautilus.evidence_bundle.v1";
 export const OPTIMIZE_INPUTS_SCHEMA = "cautilus.optimize_inputs.v1";
 export const OPTIMIZE_PROPOSAL_SCHEMA = "cautilus.optimize_proposal.v1";
+export const REVISION_ARTIFACT_SCHEMA = "cautilus.revision_artifact.v1";
 export const REPORT_INPUTS_SCHEMA = "cautilus.report_inputs.v1";
 export const REPORT_PACKET_SCHEMA = "cautilus.report_packet.v1";
 export const REVIEW_PACKET_SCHEMA = "cautilus.review_packet.v1";

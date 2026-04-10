@@ -39,6 +39,7 @@ $ test -f docs/contracts/cli-normalization.md
 $ test -f docs/contracts/skill-normalization.md
 $ test -f docs/contracts/evidence-bundle.md
 $ test -f docs/contracts/optimization.md
+$ test -f docs/contracts/revision-artifact.md
 $ test -f docs/master-plan.md
 $ test -f docs/consumer-readiness.md
 $ test -f skills/cautilus/SKILL.md
@@ -62,6 +63,7 @@ $ test -f scripts/agent-runtime/build-evidence-input.mjs
 $ test -f scripts/agent-runtime/build-evidence-bundle.mjs
 $ test -f scripts/agent-runtime/build-optimize-input.mjs
 $ test -f scripts/agent-runtime/generate-optimize-proposal.mjs
+$ test -f scripts/agent-runtime/build-revision-artifact.mjs
 $ test -f scripts/agent-runtime/run-workbench-review-variant.sh
 $ test -f scripts/agent-runtime/run-workbench-executor-variants.mjs
 $ test -f fixtures/scenario-proposals/candidates.json
@@ -82,8 +84,10 @@ $ test -f fixtures/evidence/example-input.json
 $ test -f fixtures/evidence/example-bundle.json
 $ test -f fixtures/optimize/input.schema.json
 $ test -f fixtures/optimize/proposal.schema.json
+$ test -f fixtures/optimize/revision-artifact.schema.json
 $ test -f fixtures/optimize/example-input.json
 $ test -f fixtures/optimize/example-proposal.json
+$ test -f fixtures/optimize/example-revision-artifact.json
 $ test -f fixtures/scenario-proposals/ceal-chatbot-input.json
 $ test -f fixtures/scenario-proposals/charness-skill-input.json
 $ test -f fixtures/scenario-proposals/crill-skill-input.json

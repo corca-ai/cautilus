@@ -60,6 +60,7 @@ node ./bin/cautilus doctor --repo-root .
 - [docs/contracts/review-prompt-inputs.md](/home/ubuntu/cautilus/docs/contracts/review-prompt-inputs.md)
 - [docs/contracts/evidence-bundle.md](/home/ubuntu/cautilus/docs/contracts/evidence-bundle.md)
 - [docs/contracts/optimization.md](/home/ubuntu/cautilus/docs/contracts/optimization.md)
+- [docs/contracts/revision-artifact.md](/home/ubuntu/cautilus/docs/contracts/revision-artifact.md)
 
 ## Workflow
 
@@ -157,10 +158,15 @@ node ./bin/cautilus optimize prepare-input \
   --report-file /tmp/cautilus-mode/report.json \
   --review-summary /tmp/cautilus-review/summary.json \
   --history-file /tmp/cautilus-history/history.json \
-  --target prompt
+  --target prompt \
+  --optimizer reflection \
+  --budget medium
 
 node ./bin/cautilus optimize propose \
   --input /tmp/cautilus-optimize/input.json
+
+node ./bin/cautilus optimize build-artifact \
+  --proposal-file /tmp/cautilus-optimize/proposal.json
 
 node ./bin/cautilus review variants \
   --repo-root . \

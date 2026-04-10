@@ -45,6 +45,7 @@ standalone product여야 한다.
 | bin/cautilus | fixed | mode evaluate |
 | bin/cautilus | fixed | optimize prepare-input |
 | bin/cautilus | fixed | optimize propose |
+| bin/cautilus | fixed | optimize build-artifact |
 | bin/cautilus | fixed | cli evaluate |
 | bin/cautilus | fixed | review prepare-input |
 | bin/cautilus | fixed | review build-prompt-input |
@@ -90,12 +91,15 @@ standalone product여야 한다.
 | scripts/agent-runtime/build-optimize-input.mjs | fixed | OPTIMIZE_INPUTS_SCHEMA |
 | scripts/agent-runtime/generate-optimize-proposal.mjs | file_exists |  |
 | scripts/agent-runtime/generate-optimize-proposal.mjs | fixed | OPTIMIZE_PROPOSAL_SCHEMA |
+| scripts/agent-runtime/build-revision-artifact.mjs | file_exists |  |
+| scripts/agent-runtime/build-revision-artifact.mjs | fixed | REVISION_ARTIFACT_SCHEMA |
 | scripts/agent-runtime/scenario-results.mjs | file_exists |  |
 | scripts/agent-runtime/scenario-results.mjs | fixed | SCENARIO_RESULTS_SCHEMA |
 | scripts/agent-runtime/contract-versions.mjs | file_exists |  |
 | scripts/agent-runtime/contract-versions.mjs | fixed | REVIEW_PROMPT_INPUTS_SCHEMA |
 | scripts/agent-runtime/contract-versions.mjs | fixed | EVIDENCE_BUNDLE_SCHEMA |
 | scripts/agent-runtime/contract-versions.mjs | fixed | OPTIMIZE_PROPOSAL_SCHEMA |
+| scripts/agent-runtime/contract-versions.mjs | fixed | REVISION_ARTIFACT_SCHEMA |
 | docs/contracts/scenario-proposal-inputs.md | file_exists |  |
 | docs/contracts/scenario-proposal-inputs.md | fixed | cautilus.scenario_proposal_inputs.v1 |
 | docs/contracts/scenario-proposal-normalization.md | file_exists |  |
@@ -114,6 +118,8 @@ standalone product여야 한다.
 | docs/contracts/optimization.md | file_exists |  |
 | docs/contracts/optimization.md | fixed | cautilus.optimize_inputs.v1 |
 | docs/contracts/optimization.md | fixed | cautilus.optimize_proposal.v1 |
+| docs/contracts/revision-artifact.md | file_exists |  |
+| docs/contracts/revision-artifact.md | fixed | cautilus.revision_artifact.v1 |
 | docs/contracts/scenario-results.md | file_exists |  |
 | docs/contracts/scenario-results.md | fixed | cautilus.scenario_results.v1 |
 | docs/contracts/scenario-history.md | fixed | durationMs |
@@ -141,6 +147,9 @@ standalone product여야 한다.
 | fixtures/optimize/input.schema.json | fixed | cautilus.optimize_inputs.v1 |
 | fixtures/optimize/proposal.schema.json | file_exists |  |
 | fixtures/optimize/proposal.schema.json | fixed | cautilus.optimize_proposal.v1 |
+| fixtures/optimize/revision-artifact.schema.json | file_exists |  |
+| fixtures/optimize/revision-artifact.schema.json | fixed | cautilus.revision_artifact.v1 |
+| fixtures/optimize/example-revision-artifact.json | file_exists |  |
 | bin/cautilus | fixed | scenario summarize-telemetry |
 | install.sh | file_exists |  |
 | install.sh | fixed | CAUTILUS_VERSION |
@@ -231,6 +240,7 @@ standalone product여야 한다.
 - bounded optimizer input and proposal helpers above explicit
   report/review/history evidence, with optimizer kind, budget, and trial
   telemetry
+- durable revision-artifact builder above optimize proposals
 - chatbot proposal-candidate normalization helper
 - chatbot normalization command
 - cli proposal-candidate normalization helper
@@ -279,6 +289,7 @@ $ node ./bin/cautilus evidence prepare-input --report-file ./fixtures/reports/re
 $ node ./bin/cautilus evidence bundle --input ./fixtures/evidence/example-input.json
 $ node ./bin/cautilus optimize prepare-input --report-file ./fixtures/reports/report-input.json --target prompt --optimizer repair --budget light || true
 $ node ./bin/cautilus optimize propose --input ./fixtures/optimize/example-input.json
+$ node ./bin/cautilus optimize build-artifact --proposal-file ./fixtures/optimize/example-proposal.json --input-file ./fixtures/optimize/example-input.json
 $ node ./bin/cautilus cli evaluate --input ./fixtures/cli-evaluation/doctor-missing-adapter.json
 $ node ./bin/cautilus review prepare-input --repo-root . --report-file ./fixtures/reports/report-input.json || true
 $ node ./bin/cautilus review build-prompt-input --review-packet /tmp/cautilus-mode/review.json || true

@@ -45,7 +45,8 @@ function validateAgainstSchema(schema, value, path = "root") {
 	}
 }
 
-test("optimize input and proposal examples match the checked-in schemas", () => {
+test("optimize input, proposal, and revision artifact examples match the checked-in schemas", () => {
 	validateAgainstSchema(readJson("input.schema.json"), readJson("example-input.json"));
 	validateAgainstSchema(readJson("proposal.schema.json"), readJson("example-proposal.json"));
+	validateAgainstSchema(readJson("revision-artifact.schema.json"), readJson("example-revision-artifact.json"));
 });
