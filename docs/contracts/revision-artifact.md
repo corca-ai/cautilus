@@ -23,6 +23,7 @@ The artifact should include:
 - the source `cautilus.optimize_proposal.v1` file reference and packet
 - the source `cautilus.optimize_inputs.v1` file reference
 - repo root
+- shared behavior intent profile: `cautilus.behavior_intent.v1`
 - optimization target and optimizer configuration
 - optimization objective and guardrails
 - target file reference and optional target snapshot fingerprint

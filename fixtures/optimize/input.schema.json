@@ -8,6 +8,7 @@
     "generatedAt",
     "repoRoot",
     "optimizationTarget",
+    "intentProfile",
     "optimizer",
     "reportFile",
     "report",
@@ -29,6 +30,9 @@
         "prompt",
         "adapter"
       ]
+    },
+    "intentProfile": {
+      "type": "object"
     },
     "optimizer": {
       "type": "object",

@@ -11,6 +11,7 @@ The packet should include:
 
 - resolved adapter identity
 - the `cautilus.report_packet.v1` under review
+- the report's `cautilus.behavior_intent.v1`
 - referenced `artifact_paths`
 - referenced `report_paths`
 - adapter `comparison_questions`

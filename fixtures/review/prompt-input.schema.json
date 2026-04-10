@@ -10,6 +10,7 @@
     "repoRoot",
     "adapterPath",
     "intent",
+    "intentProfile",
     "candidate",
     "baseline",
     "automatedRecommendation",
@@ -38,6 +39,9 @@
     },
     "intent": {
       "type": "string"
+    },
+    "intentProfile": {
+      "type": "object"
     },
     "candidate": {
       "type": "string"

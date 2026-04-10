@@ -3,6 +3,7 @@ import { resolve } from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
 
+import { buildBehaviorIntentProfile } from "./behavior-intent.mjs";
 import { REPORT_INPUTS_SCHEMA, REPORT_PACKET_SCHEMA } from "./contract-versions.mjs";
 import { normalizeScenarioResultsPacket } from "./scenario-results.mjs";
 import { summarizeScenarioTelemetryEntries } from "./scenario-result-telemetry.mjs";
@@ -405,6 +406,10 @@ export function buildReportPacket(input, { now = new Date() } = {}) {
 		candidate: normalizeNonEmptyString(input.candidate, "candidate"),
 		baseline: normalizeNonEmptyString(input.baseline, "baseline"),
 		intent: normalizeNonEmptyString(input.intent, "intent"),
+		intentProfile: buildBehaviorIntentProfile({
+			intent: input.intent,
+			intentProfile: input.intentProfile,
+		}),
 		commands: assertArray(input.commands, "commands").map((entry, index) => normalizeCommand(entry, index)),
 		commandObservations: assertArray(input.commandObservations, "commandObservations").map((entry, index) =>
 			normalizeCommandObservation(entry, index),

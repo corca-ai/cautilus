@@ -3,6 +3,28 @@
   "candidate": "feature/intentful-cli",
   "baseline": "origin/main",
   "intent": "The operator should understand why adapter setup failed and how to recover.",
+  "intentProfile": {
+    "schemaVersion": "cautilus.behavior_intent.v1",
+    "intentId": "intent-adapter-setup-recovery",
+    "summary": "The operator should understand why adapter setup failed and how to recover.",
+    "behaviorSurface": "operator_cli",
+    "successDimensions": [
+      {
+        "id": "failure-cause-clarity",
+        "summary": "Explain what setup is missing."
+      },
+      {
+        "id": "recovery-guidance",
+        "summary": "Explain the next recovery step without operator guesswork."
+      }
+    ],
+    "guardrailDimensions": [
+      {
+        "id": "workflow-truthfulness",
+        "summary": "Do not imply that adapter setup already succeeded."
+      }
+    ]
+  },
   "commands": [
     {
       "mode": "held_out",

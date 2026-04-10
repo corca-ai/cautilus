@@ -4,6 +4,7 @@ import { resolve } from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
 
+import { buildBehaviorIntentProfile } from "./behavior-intent.mjs";
 import {
 	OPTIMIZE_INPUTS_SCHEMA,
 	OPTIMIZE_PROPOSAL_SCHEMA,
@@ -115,6 +116,10 @@ function buildReportContext(report) {
 		candidate: report.candidate ?? null,
 		baseline: report.baseline ?? null,
 		intent: report.intent ?? null,
+		intentProfile: buildBehaviorIntentProfile({
+			intent: report.intent,
+			intentProfile: report.intentProfile,
+		}),
 		recommendation: report.recommendation ?? null,
 		regressed: Array.isArray(report.regressed) ? report.regressed : [],
 		noisy: Array.isArray(report.noisy) ? report.noisy : [],
@@ -132,11 +137,29 @@ function resolveInputFile(options, proposal) {
 	fail("optimize proposal must carry inputFile or use --input-file");
 }
 
+function resolveRevisionIntentProfile(proposalPacket, optimizeInputPacket) {
+	return buildBehaviorIntentProfile({
+		intent: optimizeInputPacket.report?.intent ?? optimizeInputPacket.intentProfile?.summary,
+		intentProfile: proposalPacket.intentProfile ?? optimizeInputPacket.intentProfile,
+		defaultGuardrailDimensions: optimizeInputPacket.objective?.constraints ?? [],
+	});
+}
+
+function buildArtifactSourceFiles(optimizeInputPacket) {
+	return {
+		reportFile: collectOptionalFile(optimizeInputPacket.reportFile),
+		reviewSummaryFile: collectOptionalFile(optimizeInputPacket.reviewSummaryFile),
+		scenarioHistoryFile: collectOptionalFile(optimizeInputPacket.scenarioHistoryFile),
+	};
+}
+
 export function buildRevisionArtifact(inputOptions, { now = new Date() } = {}) {
 	const options = parseArgs(inputOptions);
 	const proposal = parseJsonFile(options.proposalFile, OPTIMIZE_PROPOSAL_SCHEMA, "optimize proposal");
 	const inputFile = resolveInputFile(options, proposal.packet);
 	const optimizeInput = parseJsonFile(inputFile, OPTIMIZE_INPUTS_SCHEMA, "optimize input");
+	const intentProfile = resolveRevisionIntentProfile(proposal.packet, optimizeInput.packet);
+	const targetFile = proposal.packet.targetFile ?? optimizeInput.packet.targetFile ?? null;
 	return {
 		schemaVersion: REVISION_ARTIFACT_SCHEMA,
 		generatedAt: now.toISOString(),
@@ -145,15 +168,12 @@ export function buildRevisionArtifact(inputOptions, { now = new Date() } = {}) {
 		optimizeInputFile: optimizeInput.path,
 		repoRoot: optimizeInput.packet.repoRoot,
 		optimizationTarget: proposal.packet.optimizationTarget,
+		intentProfile,
 		optimizer: proposal.packet.optimizer ?? optimizeInput.packet.optimizer ?? null,
 		objective: optimizeInput.packet.objective,
-		targetFile: proposal.packet.targetFile ?? optimizeInput.packet.targetFile ?? null,
-		targetSnapshot: collectTargetSnapshot(proposal.packet.targetFile ?? optimizeInput.packet.targetFile),
-		sourceFiles: {
-			reportFile: collectOptionalFile(optimizeInput.packet.reportFile),
-			reviewSummaryFile: collectOptionalFile(optimizeInput.packet.reviewSummaryFile),
-			scenarioHistoryFile: collectOptionalFile(optimizeInput.packet.scenarioHistoryFile),
-		},
+		targetFile,
+		targetSnapshot: collectTargetSnapshot(targetFile),
+		sourceFiles: buildArtifactSourceFiles(optimizeInput.packet),
 		reportContext: buildReportContext(optimizeInput.packet.report),
 		decision: proposal.packet.decision,
 		reportRecommendation: proposal.packet.reportRecommendation,

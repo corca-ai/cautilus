@@ -3,6 +3,36 @@
   "generatedAt": "2026-04-11T00:06:00.000Z",
   "inputFile": "/tmp/cautilus-optimize/input.json",
   "optimizationTarget": "prompt",
+  "intentProfile": {
+    "schemaVersion": "cautilus.behavior_intent.v1",
+    "intentId": "intent-cli-recovery-guidance",
+    "summary": "CLI guidance should stay legible under recovery pressure.",
+    "behaviorSurface": "operator_cli",
+    "successDimensions": [
+      {
+        "id": "recovery-guidance-clarity",
+        "summary": "The operator can tell whether retry is safe and what to do next."
+      }
+    ],
+    "guardrailDimensions": [
+      {
+        "id": "guardrail-prefer-repairing-explicit-regressions-over-widening-scope",
+        "summary": "Prefer repairing explicit regressions over widening scope."
+      },
+      {
+        "id": "guardrail-treat-review-findings-as-first-class-evidence-not-optional-commentary",
+        "summary": "Treat review findings as first-class evidence, not optional commentary."
+      },
+      {
+        "id": "guardrail-use-scenario-history-only-to-focus-the-next-bounded-probe-not-to-justify-overfit",
+        "summary": "Use scenario history only to focus the next bounded probe, not to justify overfitting."
+      },
+      {
+        "id": "guardrail-stop-after-one-bounded-revision-and-rerun-the-relevant-gates",
+        "summary": "Stop after one bounded revision and rerun the relevant gates."
+      }
+    ]
+  },
   "optimizer": {
     "kind": "reflection",
     "budget": "medium",
@@ -117,7 +147,7 @@
       ]
     }
   ],
-  "revisionBrief": "Revise the prompt in one bounded pass. Revise the prompt to repair the cited failures before widening scope. Evidence: codex-review blocker: The operator still cannot tell whether retry is safe.; Noisy scenario: workflow-retry-budget; Regressed scenario: operator-recovery. Do not weaken held-out, comparison, or review gates.",
+  "revisionBrief": "Revise the prompt in one bounded pass for \"CLI guidance should stay legible under recovery pressure.\". Revise the prompt to repair the cited failures before widening scope. Evidence: codex-review blocker: The operator still cannot tell whether retry is safe.; Noisy scenario: workflow-retry-budget; Regressed scenario: operator-recovery. Do not weaken held-out, comparison, or review gates.",
   "trialTelemetry": {
     "evidenceItemsSeen": 4,
     "prioritizedEvidenceCount": 4,

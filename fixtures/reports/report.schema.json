@@ -8,6 +8,7 @@
     "candidate",
     "baseline",
     "intent",
+    "intentProfile",
     "commands",
     "modesRun",
     "modeSummaries",
@@ -29,6 +30,9 @@
     },
     "intent": {
       "type": "string"
+    },
+    "intentProfile": {
+      "type": "object"
     },
     "commands": {
       "type": "array"

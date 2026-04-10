@@ -25,6 +25,19 @@ function createOptimizeFixtureRoot() {
 		candidate: "feature/cli",
 		baseline: "origin/main",
 		intent: "CLI guidance should stay legible under recovery pressure.",
+		intentProfile: {
+			schemaVersion: "cautilus.behavior_intent.v1",
+			intentId: "intent-cli-recovery-guidance",
+			summary: "CLI guidance should stay legible under recovery pressure.",
+			behaviorSurface: "operator_cli",
+			successDimensions: [
+				{
+					id: "recovery-guidance-clarity",
+					summary: "The operator can tell whether retry is safe and what to do next.",
+				},
+			],
+			guardrailDimensions: [],
+		},
 		commands: [],
 		commandObservations: [],
 		modesRun: ["held_out", "comparison"],
@@ -118,6 +131,8 @@ test("buildOptimizeInput assembles a bounded optimization packet from explicit e
 		);
 		assert.equal(packet.schemaVersion, "cautilus.optimize_inputs.v1");
 		assert.equal(packet.optimizationTarget, "prompt");
+		assert.equal(packet.intentProfile.intentId, "intent-cli-recovery-guidance");
+		assert.equal(packet.intentProfile.guardrailDimensions.length, 4);
 		assert.equal(packet.optimizer.kind, "reflection");
 		assert.equal(packet.optimizer.budget, "heavy");
 		assert.equal(packet.optimizer.plan.evidenceLimit, 8);
@@ -160,13 +175,14 @@ test("generateOptimizeProposal turns explicit evidence into one bounded revision
 		});
 		assert.equal(proposal.schemaVersion, "cautilus.optimize_proposal.v1");
 		assert.equal(proposal.decision, "revise");
+		assert.equal(proposal.intentProfile.intentId, "intent-cli-recovery-guidance");
 		assert.equal(proposal.optimizer.kind, "reflection");
 		assert.equal(proposal.optimizer.budget, "light");
 		assert.equal(proposal.trialTelemetry.plan.evidenceLimit, 3);
 		assert.equal(proposal.prioritizedEvidence.length, 3);
 		assert.equal(proposal.prioritizedEvidence[0].source, "review.finding");
 		assert.equal(proposal.suggestedChanges[0].changeKind, "prompt_revision");
-		assert.match(proposal.revisionBrief, /bounded pass/);
+		assert.match(proposal.revisionBrief, /CLI guidance should stay legible under recovery pressure/);
 		assert.equal(proposal.trialTelemetry.suggestedChangeCount, 2);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
@@ -217,6 +233,8 @@ test("buildRevisionArtifact materializes one durable revision packet from propos
 		assert.equal(artifact.schemaVersion, "cautilus.revision_artifact.v1");
 		assert.equal(artifact.optimizeInputFile, inputPath);
 		assert.equal(artifact.repoRoot, root);
+		assert.equal(artifact.intentProfile.intentId, "intent-cli-recovery-guidance");
+		assert.equal(artifact.reportContext.intentProfile.intentId, "intent-cli-recovery-guidance");
 		assert.equal(artifact.targetSnapshot.sha256.length, 64);
 		assert.equal(artifact.sourceFiles.reportFile.exists, true);
 		assert.equal(artifact.decision, "revise");
@@ -236,6 +254,19 @@ test("build-optimize-input CLI rejects review summaries without variants", () =>
 			candidate: "feature/cli",
 			baseline: "origin/main",
 			intent: "CLI behavior should stay legible.",
+			intentProfile: {
+				schemaVersion: "cautilus.behavior_intent.v1",
+				intentId: "intent-cli-behavior-legibility",
+				summary: "CLI behavior should stay legible.",
+				behaviorSurface: "operator_cli",
+				successDimensions: [
+					{
+						id: "legibility",
+						summary: "Operators can understand the next step.",
+					},
+				],
+				guardrailDimensions: [],
+			},
 			commands: [],
 			modesRun: [],
 			modeSummaries: [],

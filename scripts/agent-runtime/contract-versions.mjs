@@ -1,4 +1,5 @@
 export const ADAPTER_MODE_EVALUATION_PACKET_SCHEMA = "cautilus.adapter_mode_evaluation.v1";
+export const BEHAVIOR_INTENT_SCHEMA = "cautilus.behavior_intent.v1";
 export const CHATBOT_NORMALIZATION_INPUTS_SCHEMA = "cautilus.chatbot_normalization_inputs.v1";
 export const CLI_EVALUATION_INPUTS_SCHEMA = "cautilus.cli_evaluation_inputs.v1";
 export const CLI_EVALUATION_PACKET_SCHEMA = "cautilus.cli_evaluation_packet.v1";

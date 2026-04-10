@@ -11,6 +11,7 @@
 - `candidate`: ref, branch, or path under evaluation
 - `baseline`: exact baseline ref or repo path
 - `intent`: the operator-visible behavior or decision being evaluated
+- `intent_profile`: `cautilus.behavior_intent.v1` for the same behavior
 - `modes_run`: iterate, held-out, comparison, full gate
 - `commands`: rendered commands with concrete placeholder values
 - optional `command_observations`: executed command records with timing,
@@ -32,6 +33,7 @@ The standalone builder should start from an explicit input packet:
 - `candidate`
 - `baseline`
 - `intent`
+- optional `intentProfile`
 - `commands`: explicit mode-to-command mapping
 - optional `commandObservations`: bounded executed-command records
 - `modeRuns`: checked-in or persisted mode execution records

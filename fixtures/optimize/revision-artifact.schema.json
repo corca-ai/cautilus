@@ -11,6 +11,7 @@
     "optimizeInputFile",
     "repoRoot",
     "optimizationTarget",
+    "intentProfile",
     "optimizer",
     "objective",
     "sourceFiles",
@@ -49,6 +50,9 @@
         "prompt",
         "adapter"
       ]
+    },
+    "intentProfile": {
+      "type": "object"
     },
     "optimizer": {
       "type": "object"

@@ -3,6 +3,7 @@ import { resolve } from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
 
+import { buildBehaviorIntentProfile } from "./behavior-intent.mjs";
 import {
 	OPTIMIZE_INPUTS_SCHEMA,
 	REPORT_PACKET_SCHEMA,
@@ -191,6 +192,11 @@ export function buildOptimizeInput(inputOptions, { now = new Date() } = {}) {
 		generatedAt: now.toISOString(),
 		repoRoot,
 		optimizationTarget: options.target,
+		intentProfile: buildBehaviorIntentProfile({
+			intent: report.packet.intent,
+			intentProfile: report.packet.intentProfile,
+			defaultGuardrailDimensions: OPTIMIZATION_CONSTRAINTS,
+		}),
 		optimizer,
 		...(targetFile ? { targetFile } : {}),
 		reportFile: report.path,

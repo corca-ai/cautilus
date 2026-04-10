@@ -98,6 +98,19 @@ function renderModeSummary(modeSummary) {
 	return lines.join("\n");
 }
 
+function renderIntentProfile(intentProfile) {
+	if (!intentProfile || typeof intentProfile !== "object") {
+		return [];
+	}
+	return [
+		"## Intent Profile",
+		`- intent id: ${intentProfile.intentId}`,
+		`- behavior surface: ${intentProfile.behaviorSurface}`,
+		...((intentProfile.successDimensions || []).map((entry) => `- success: ${entry.id} -> ${entry.summary}`)),
+		...((intentProfile.guardrailDimensions || []).map((entry) => `- guardrail: ${entry.id} -> ${entry.summary}`)),
+	];
+}
+
 function renderFileList(title, files) {
 	const presentFiles = files.filter((entry) => entry && entry.absolutePath);
 	if (presentFiles.length === 0) {
@@ -140,6 +153,8 @@ export function renderReviewPrompt(promptInput) {
 		`- candidate: ${promptInput.candidate}`,
 		`- baseline: ${promptInput.baseline}`,
 		`- automated recommendation: ${promptInput.automatedRecommendation}`,
+		"",
+		...renderIntentProfile(promptInput.intentProfile),
 		"",
 		"## Mode Summaries",
 		...(promptInput.modeSummaries || []).flatMap((entry) => renderModeSummary(entry).split("\n")),

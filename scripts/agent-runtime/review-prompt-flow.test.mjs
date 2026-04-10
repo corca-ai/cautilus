@@ -61,6 +61,24 @@ function createReviewPacketFixture() {
 					candidate: "feature/cli",
 					baseline: "origin/main",
 					intent: "The CLI should explain missing adapter setup without operator guesswork.",
+					intentProfile: {
+						schemaVersion: "cautilus.behavior_intent.v1",
+						intentId: "intent-missing-adapter-guidance",
+						summary: "The CLI should explain missing adapter setup without operator guesswork.",
+						behaviorSurface: "operator_cli",
+						successDimensions: [
+							{
+								id: "missing-adapter-clarity",
+								summary: "Explain what adapter is missing.",
+							},
+						],
+						guardrailDimensions: [
+							{
+								id: "no-false-success",
+								summary: "Do not imply setup already succeeded.",
+							},
+						],
+					},
 					commands: [],
 					commandObservations: [],
 					modesRun: ["held_out"],
@@ -140,6 +158,7 @@ test("buildReviewPromptInput emits the explicit meta-prompt contract", () => {
 		});
 		assert.equal(packet.schemaVersion, REVIEW_PROMPT_INPUTS_SCHEMA);
 		validateAgainstSchema(readJson(schemaPath), packet);
+		assert.equal(packet.intentProfile.intentId, "intent-missing-adapter-guidance");
 		assert.equal(packet.modeSummaries[0].compareArtifact.verdict, "improved");
 		assert.equal(packet.metaPrompt.instructions.length, 4);
 	} finally {
@@ -155,6 +174,8 @@ test("renderReviewPrompt turns review prompt inputs into a portable meta-prompt"
 		});
 		const prompt = renderReviewPrompt(packet);
 		assert.match(prompt, /# Cautilus Review/);
+		assert.match(prompt, /## Intent Profile/);
+		assert.match(prompt, /behavior surface: operator_cli/);
 		assert.match(prompt, /Which scenario-level deltas actually matter to a real operator/);
 		assert.match(prompt, /Held-out doctor messaging improved\./);
 		assert.match(prompt, /## Consumer Prompt Addendum/);

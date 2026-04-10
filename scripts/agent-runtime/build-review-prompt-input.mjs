@@ -3,6 +3,7 @@ import { resolve } from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
 
+import { buildBehaviorIntentProfile } from "./behavior-intent.mjs";
 import { REVIEW_PACKET_SCHEMA, REVIEW_PROMPT_INPUTS_SCHEMA } from "./contract-versions.mjs";
 
 const META_PROMPT_OBJECTIVE =
@@ -110,6 +111,10 @@ export function buildReviewPromptInput(inputOptions, { now = new Date() } = {}) 
 		repoRoot: reviewPacket.packet.repoRoot,
 		adapterPath: reviewPacket.packet.adapterPath,
 		intent: report.intent,
+		intentProfile: buildBehaviorIntentProfile({
+			intent: report.intent,
+			intentProfile: report.intentProfile,
+		}),
 		candidate: report.candidate,
 		baseline: report.baseline,
 		automatedRecommendation: report.recommendation,

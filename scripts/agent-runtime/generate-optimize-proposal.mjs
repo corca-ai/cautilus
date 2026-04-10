@@ -3,6 +3,7 @@ import { resolve } from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
 
+import { buildBehaviorIntentProfile } from "./behavior-intent.mjs";
 import {
 	OPTIMIZE_INPUTS_SCHEMA,
 	OPTIMIZE_PROPOSAL_SCHEMA,
@@ -412,11 +413,37 @@ function buildRevisionBrief(packet, decision, evidence, suggestedChanges) {
 	const targetLabel = packet.optimizationTarget === "adapter" ? "adapter" : "prompt";
 	const keyEvidence = evidence.slice(0, 3).map((item) => item.summary).join("; ");
 	const primaryChange = suggestedChanges[0]?.summary || `Revise the ${targetLabel} conservatively.`;
-	return `Revise the ${targetLabel} in one bounded pass. ${primaryChange} Evidence: ${keyEvidence}. Do not weaken held-out, comparison, or review gates.`;
+	const intentSummary = packet.intentProfile?.summary || packet.report?.intent || "the stated behavior intent";
+	return `Revise the ${targetLabel} in one bounded pass for "${intentSummary}". ${primaryChange} Evidence: ${keyEvidence}. Do not weaken held-out, comparison, or review gates.`;
+}
+
+function resolveProposalIntentProfile(packet) {
+	return buildBehaviorIntentProfile({
+		intent: packet.report?.intent ?? packet.intentProfile?.summary,
+		intentProfile: packet.intentProfile ?? packet.report?.intentProfile,
+		defaultGuardrailDimensions: packet.objective?.constraints ?? [],
+	});
+}
+
+function buildProposalRationale(decision, optimizer, evidence) {
+	return decision === "hold"
+		? "Current evidence does not justify another bounded revision."
+		: `The next revision is bounded by ${countHighSignalEvidence(evidence)} high-signal issue(s) selected under the ${optimizer.budget} ${optimizer.kind} plan.`;
+}
+
+function buildProposalFollowUpChecks(decision) {
+	return decision === "hold"
+		? ["Preserve the current candidate as the next baseline."]
+		: [
+			"Rerun the bounded iterate probe on the cited surfaces first.",
+			"Rerun held-out before accepting the revision.",
+			"Rerun comparison and review variants when those surfaces exist for the target repo.",
+		];
 }
 
 export function generateOptimizeProposal(packet, { now = new Date(), inputFile = null } = {}) {
 	const optimizer = normalizeOptimizer(packet.optimizer);
+	const intentProfile = resolveProposalIntentProfile(packet);
 	const { evidenceUniverse, prioritizedEvidence } = buildPrioritizedEvidence(packet, optimizer);
 	const evidence = prioritizedEvidence.length > 0 ? prioritizedEvidence : buildFallbackEvidence(packet);
 	const suggestedChanges = buildSuggestedChanges(packet, evidence).slice(0, optimizer.plan.suggestedChangeLimit);
@@ -428,14 +455,12 @@ export function generateOptimizeProposal(packet, { now = new Date(), inputFile =
 		generatedAt: now.toISOString(),
 		...(inputFile ? { inputFile } : {}),
 		optimizationTarget: packet.optimizationTarget,
+		intentProfile,
 		optimizer,
 		...(packet.targetFile ? { targetFile: packet.targetFile } : {}),
 		reportRecommendation,
 		decision,
-		rationale:
-			decision === "hold"
-				? "Current evidence does not justify another bounded revision."
-				: `The next revision is bounded by ${countHighSignalEvidence(evidence)} high-signal issue(s) selected under the ${optimizer.budget} ${optimizer.kind} plan.`,
+		rationale: buildProposalRationale(decision, optimizer, evidence),
 		prioritizedEvidence: evidence,
 		suggestedChanges,
 		revisionBrief: buildRevisionBrief(packet, decision, evidence, suggestedChanges),
@@ -445,14 +470,7 @@ export function generateOptimizeProposal(packet, { now = new Date(), inputFile =
 			"Do not weaken held-out, comparison, or structured review gates to make the candidate pass.",
 			"If the cited evidence still regresses after the next bounded revision, defer instead of retrying indefinitely.",
 		],
-		followUpChecks:
-			decision === "hold"
-				? ["Preserve the current candidate as the next baseline."]
-				: [
-					"Rerun the bounded iterate probe on the cited surfaces first.",
-					"Rerun held-out before accepting the revision.",
-					"Rerun comparison and review variants when those surfaces exist for the target repo.",
-				],
+		followUpChecks: buildProposalFollowUpChecks(decision),
 	};
 }
 

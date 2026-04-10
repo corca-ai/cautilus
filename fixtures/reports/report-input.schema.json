@@ -24,6 +24,9 @@
     "intent": {
       "type": "string"
     },
+    "intentProfile": {
+      "type": "object"
+    },
     "commands": {
       "type": "array"
     },

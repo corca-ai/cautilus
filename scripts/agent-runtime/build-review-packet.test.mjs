@@ -58,6 +58,19 @@ test("build-review-packet collects adapter review surfaces around a report packe
 					candidate: "feature/cli",
 					baseline: "origin/main",
 					intent: "CLI behavior should stay legible.",
+					intentProfile: {
+						schemaVersion: "cautilus.behavior_intent.v1",
+						intentId: "intent-cli-behavior-legibility",
+						summary: "CLI behavior should stay legible.",
+						behaviorSurface: "operator_cli",
+						successDimensions: [
+							{
+								id: "legibility",
+								summary: "Operators can understand the next step.",
+							},
+						],
+						guardrailDimensions: [],
+					},
 					commands: [],
 					modesRun: [],
 					modeSummaries: [],
@@ -96,6 +109,7 @@ test("build-review-packet collects adapter review surfaces around a report packe
 		assert.equal(packet.comparisonQuestions[0], "Which scenarios improved?");
 		assert.equal(packet.humanReviewPrompts[0].id, "operator");
 		assert.equal(packet.defaultPromptFile.exists, true);
+		assert.equal(packet.report.intentProfile.intentId, "intent-cli-behavior-legibility");
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

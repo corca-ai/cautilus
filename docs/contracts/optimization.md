@@ -46,12 +46,10 @@ runtime:
 
 ## Probe Questions
 
-- Is evidence weighting by optimizer kind enough, or does the next slice need a
-  first-class intent/signature contract above `optimize`?
+- Is the shared behavior-intent profile thin enough to stay repo-agnostic while
+  still keeping review and optimize packets aligned?
 ## Deferred Decisions
 
-- a reusable intent/signature contract shared by `review`, `optimize`, and
-  scenario proposal
 - a judge-library-like catalog of reusable evaluation dimensions
 - consumer-integrated fine-tuning or weight-update orchestration
 
@@ -79,6 +77,7 @@ The packet should include:
 
 - repo root
 - optimization target: `prompt` or `adapter`
+- shared behavior intent profile: `cautilus.behavior_intent.v1`
 - optional current target file reference
 - one explicit `cautilus.report_packet.v1`
 - optional executor-variant review summary
@@ -109,6 +108,7 @@ Use `cautilus.optimize_proposal.v1` for the deterministic next-revision brief.
 The proposal should include:
 
 - optimization target and optional target file reference
+- shared behavior intent profile copied from the input packet
 - optimizer configuration copied from the input packet
 - current report recommendation
 - a bounded decision: `hold`, `revise`, or `investigate`
@@ -142,6 +142,8 @@ node ./bin/cautilus optimize build-artifact \
 ## Success Criteria
 
 - `optimize prepare-input` can declare optimizer kind and budget explicitly.
+- `optimize prepare-input` keeps a shared behavior-intent profile above raw
+  prompt or adapter mechanics.
 - The input packet materializes a bounded plan instead of leaving budget
   behavior implicit.
 - `optimize propose` records optimizer telemetry that explains why the final

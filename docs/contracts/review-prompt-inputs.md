@@ -12,6 +12,7 @@ The packet should include:
 
 - repo and adapter identity
 - candidate, baseline, and evaluation intent
+- the shared `cautilus.behavior_intent.v1`
 - the automated recommendation from the report packet
 - mode summaries, including compare-artifact and scenario-telemetry summaries
 - adapter `comparison_questions`

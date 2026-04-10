@@ -409,6 +409,19 @@ test("cautilus report build emits a machine-readable report packet with mode tel
 					candidate: "feature/intentful-cli",
 					baseline: "origin/main",
 					intent: "The CLI should explain missing adapter setup without operator guesswork.",
+					intentProfile: {
+						schemaVersion: "cautilus.behavior_intent.v1",
+						intentId: "intent-missing-adapter-guidance",
+						summary: "The CLI should explain missing adapter setup without operator guesswork.",
+						behaviorSurface: "operator_cli",
+						successDimensions: [
+							{
+								id: "missing-adapter-clarity",
+								summary: "Explain what adapter is missing.",
+							},
+						],
+						guardrailDimensions: [],
+					},
 					commands: [
 						{
 							mode: "held_out",
@@ -471,6 +484,7 @@ test("cautilus report build emits a machine-readable report packet with mode tel
 		assert.equal(result.status, 0, result.stderr);
 		const payload = JSON.parse(result.stdout);
 		assert.equal(payload.schemaVersion, "cautilus.report_packet.v1");
+		assert.equal(payload.intentProfile.intentId, "intent-missing-adapter-guidance");
 		assert.deepEqual(payload.modesRun, ["held_out", "full_gate"]);
 		assert.equal(payload.telemetry.total_tokens, 500);
 		assert.equal(payload.telemetry.cost_usd, 0.05);
@@ -521,6 +535,7 @@ test("cautilus cli evaluate executes an intent packet and emits a report-backed 
 		assert.equal(payload.schemaVersion, "cautilus.cli_evaluation_packet.v1");
 		assert.equal(payload.summary.recommendation, "accept-now");
 		assert.equal(payload.report.schemaVersion, "cautilus.report_packet.v1");
+		assert.equal(payload.report.intentProfile.intentId, "intent-the-doctor-command-should-explain-missing-adapter-setup");
 		assert.equal(payload.report.modesRun[0], "held_out");
 	} finally {
 		rmSync(root, { recursive: true, force: true });
@@ -664,6 +679,19 @@ test("cautilus review prepare-input builds a review packet from adapter review s
 					candidate: "feature/cli",
 					baseline: "origin/main",
 					intent: "CLI behavior should stay legible.",
+					intentProfile: {
+						schemaVersion: "cautilus.behavior_intent.v1",
+						intentId: "intent-cli-behavior-legibility",
+						summary: "CLI behavior should stay legible.",
+						behaviorSurface: "operator_cli",
+						successDimensions: [
+							{
+								id: "legibility",
+								summary: "Operators can understand the next step.",
+							},
+						],
+						guardrailDimensions: [],
+					},
 					commands: [],
 					modesRun: [],
 					modeSummaries: [],
@@ -693,6 +721,7 @@ test("cautilus review prepare-input builds a review packet from adapter review s
 		assert.equal(packet.schemaVersion, "cautilus.review_packet.v1");
 		assert.equal(packet.artifactFiles[0].exists, true);
 		assert.equal(packet.humanReviewPrompts[0].id, "operator");
+		assert.equal(packet.report.intentProfile.intentId, "intent-cli-behavior-legibility");
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}
@@ -721,6 +750,19 @@ test("cautilus review build-prompt-input and render-prompt close the generic met
 						candidate: "feature/cli",
 						baseline: "origin/main",
 						intent: "The CLI should explain missing adapter setup without operator guesswork.",
+						intentProfile: {
+							schemaVersion: "cautilus.behavior_intent.v1",
+							intentId: "intent-missing-adapter-guidance",
+							summary: "The CLI should explain missing adapter setup without operator guesswork.",
+							behaviorSurface: "operator_cli",
+							successDimensions: [
+								{
+									id: "missing-adapter-clarity",
+									summary: "Explain what adapter is missing.",
+								},
+							],
+							guardrailDimensions: [],
+						},
 						commands: [],
 						commandObservations: [],
 						modesRun: ["held_out"],
@@ -788,6 +830,7 @@ test("cautilus review build-prompt-input and render-prompt close the generic met
 		assert.equal(renderResult.status, 0, renderResult.stderr);
 		const prompt = readFileSync(promptPath, "utf-8");
 		assert.match(prompt, /Held-out doctor messaging improved\./);
+		assert.match(prompt, /## Intent Profile/);
 		assert.match(prompt, /Prefer operator-visible evidence\./);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
@@ -814,6 +857,19 @@ test("cautilus optimize prepare-input and propose turn explicit evidence into a 
 					candidate: "feature/cli",
 					baseline: "origin/main",
 					intent: "CLI recovery guidance should stay legible.",
+					intentProfile: {
+						schemaVersion: "cautilus.behavior_intent.v1",
+						intentId: "intent-cli-recovery-guidance",
+						summary: "CLI recovery guidance should stay legible.",
+						behaviorSurface: "operator_cli",
+						successDimensions: [
+							{
+								id: "recovery-guidance-clarity",
+								summary: "The operator can tell whether retry is safe and what to do next.",
+							},
+						],
+						guardrailDimensions: [],
+					},
 					commands: [],
 					commandObservations: [],
 					modesRun: ["held_out"],
@@ -917,6 +973,7 @@ test("cautilus optimize prepare-input and propose turn explicit evidence into a 
 		const prepared = JSON.parse(readFileSync(inputPath, "utf-8"));
 		assert.equal(prepared.schemaVersion, "cautilus.optimize_inputs.v1");
 		assert.equal(prepared.optimizationTarget, "prompt");
+		assert.equal(prepared.intentProfile.intentId, "intent-cli-recovery-guidance");
 
 		const propose = spawnSync(
 			"node",
@@ -930,6 +987,7 @@ test("cautilus optimize prepare-input and propose turn explicit evidence into a 
 		const proposal = JSON.parse(readFileSync(proposalPath, "utf-8"));
 		assert.equal(proposal.schemaVersion, "cautilus.optimize_proposal.v1");
 		assert.equal(proposal.decision, "revise");
+		assert.equal(proposal.intentProfile.intentId, "intent-cli-recovery-guidance");
 		assert.match(proposal.revisionBrief, /Do not weaken held-out, comparison, or review gates\./);
 
 		const artifact = spawnSync(
@@ -944,6 +1002,7 @@ test("cautilus optimize prepare-input and propose turn explicit evidence into a 
 		const revisionArtifact = JSON.parse(readFileSync(artifactPath, "utf-8"));
 		assert.equal(revisionArtifact.schemaVersion, "cautilus.revision_artifact.v1");
 		assert.equal(revisionArtifact.reportContext.candidate, "feature/cli");
+		assert.equal(revisionArtifact.intentProfile.intentId, "intent-cli-recovery-guidance");
 		assert.equal(revisionArtifact.targetSnapshot.sha256.length, 64);
 	} finally {
 		rmSync(root, { recursive: true, force: true });

@@ -11,6 +11,24 @@ test("buildReportPacket aggregates mode telemetry and scenario summaries", () =>
 			candidate: "feature/intentful-cli",
 			baseline: "origin/main",
 			intent: "The CLI should explain missing adapter setup without operator guesswork.",
+			intentProfile: {
+				schemaVersion: "cautilus.behavior_intent.v1",
+				intentId: "intent-missing-adapter-guidance",
+				summary: "The CLI should explain missing adapter setup without operator guesswork.",
+				behaviorSurface: "operator_cli",
+				successDimensions: [
+					{
+						id: "missing-adapter-clarity",
+						summary: "Explain what adapter is missing.",
+					},
+				],
+				guardrailDimensions: [
+					{
+						id: "no-false-success",
+						summary: "Do not imply that the repo is already configured.",
+					},
+				],
+			},
 			commands: [
 				{
 					mode: "held_out",
@@ -93,6 +111,8 @@ test("buildReportPacket aggregates mode telemetry and scenario summaries", () =>
 		{ now: new Date("2026-04-11T00:02:00.000Z") },
 	);
 	assert.equal(report.schemaVersion, REPORT_PACKET_SCHEMA);
+	assert.equal(report.intentProfile.intentId, "intent-missing-adapter-guidance");
+	assert.equal(report.intentProfile.behaviorSurface, "operator_cli");
 	assert.equal(report.modesRun.length, 2);
 	assert.equal(report.modeSummaries[0].scenarioTelemetrySummary.overall.total_tokens, 200);
 	assert.equal(report.modeSummaries[0].compareArtifact.verdict, "improved");
