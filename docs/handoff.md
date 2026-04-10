@@ -16,7 +16,7 @@
 - scenario proposal helper는 `chatbot`, `cli`, `skill` 세 유즈케이스를 모두 first-class로 가진다.
 - release/install surface는 [install.sh](/home/ubuntu/cautilus/install.sh), [docs/releasing.md](/home/ubuntu/cautilus/docs/releasing.md), [scripts/release/fetch-github-archive-sha256.mjs](/home/ubuntu/cautilus/scripts/release/fetch-github-archive-sha256.mjs), [scripts/release/render-homebrew-formula.mjs](/home/ubuntu/cautilus/scripts/release/render-homebrew-formula.mjs), [scripts/release/resolve-release-targets.mjs](/home/ubuntu/cautilus/scripts/release/resolve-release-targets.mjs), [verify.yml](/home/ubuntu/cautilus/.github/workflows/verify.yml), [release-artifacts.yml](/home/ubuntu/cautilus/.github/workflows/release-artifacts.yml) 까지 checked-in 상태다.
 - release target 기본값은 `origin`에서 유도한다. 현재 source repo는 `corca-ai/cautilus`, tap target은 `corca-ai/homebrew-tap` 이다.
-- 최신 `cautilus` 커밋은 `73dacf0` (`Add product-owned A/B worktree preparation`) 이고, 이번 상태에서 `npm run verify`는 통과했다.
+- 현재 `cautilus` main은 standalone A/B helper, explicit report/review surfaces, and deeper `crill` consumer coverage를 모두 포함한 상태다.
 - `ceal`, `charness`, `crill` 모두 readiness 문서상 official adapter consumer이지만, 아직 남은 핵심은 실제 multi-consumer verification이다.
 - 이번 세션에서 `crill` consumer verification은 실제로 닫았다.
   root adapter `full_gate`는 `accept-now`를 냈고, `/home/ubuntu/crill/.agents/cautilus-adapters/cli-smoke.yaml` 와 `/home/ubuntu/crill/.agents/cautilus-adapters/operator-recovery.yaml` 도 각각 `full_gate`로 통과했다.
@@ -29,23 +29,27 @@
 - A/B 비교는 이제 product-owned helper로도 닫혔다.
   `node ./bin/cautilus workspace prepare-compare --repo-root . --baseline-ref origin/main --output-dir /tmp/cautilus-compare`
   가 baseline/candidate git worktree를 준비해 준다.
+- `crill`도 compare/A-B consumer artifact를 이제 checked-in named adapter로 가진다.
+  `consumer-artifacts` adapter와 repo-owned compare runner를 통해
+  `origin/main -> current` 비교에서 compare artifact verdict `improved` 를 실제로 남긴다.
 
 ## Next Session
 
-1. `ceal` consumer verification을 다시 열지, 아니면 `crill`의 다음 깊이인 compare/A-B consumer artifacts를 체크인할지 선택한다.
+1. `ceal` consumer verification을 다시 열지, 아니면 새 우선순위인 raw-evidence mining / bounded optimizer helper 설계를 먼저 구체화할지 선택한다.
 2. `crill` 쪽을 더 밀면 current named adapters와 explicit packet을 기준으로 시작한다.
    - `cli-smoke`
    - `operator-recovery`
+   - `consumer-artifacts`
    - `tests/fixtures/cautilus/cli-help.json`
-3. `crill`은 이제 `review variants` 와 explicit CLI packet까지 있다.
-   다음 남은 축은 compare/A-B 를 consumer-owned artifact로 올릴지 여부다.
-4. 필요하면 `workspace prepare-compare` 와 named adapter `comparison_command_templates` 를 묶어 `crill` compare surface를 체크인한다.
+3. compare/A-B consumer artifact는 이제 `crill`에서 닫혔다.
+   다음 큰 설계 축은 raw log mining과 bounded prompt optimizer를 bundled skill의 meta-prompt/reference surface + product-owned helper script로 어떻게 자를지다.
+4. HTML report는 지금 당장 구현하지 말고 roadmap 상 deferred item으로만 유지한다.
 5. 다음 결과를 [docs/consumer-readiness.md](/home/ubuntu/cautilus/docs/consumer-readiness.md) 와 이 handoff에 계속 반영한다.
 
 ## Discuss
 
-- 현재 큰 제품 설계 결정은 대부분 끝났다. 다음 세션의 중심은 새 설계가 아니라 남은 consumer depth (`ceal` 또는 `crill review variants` / explicit CLI packet) 다.
-- `crill` root/named adapter 검증 후 남는 큰 축은 `ceal` migration 심화, `crill review variants` 같은 더 깊은 consumer surface, 그리고 실제 release cadence 운영 정리다.
+- 현재 큰 제품 설계 결정은 대부분 끝났지만, 다음 큰 확장은 raw-evidence mining helper와 bounded optimizer helper를 product-owned seams로 추가하는 일이다.
+- `crill` root/named adapter, explicit CLI packet, review variants, compare artifact까지 닫은 뒤 남는 큰 축은 `ceal` migration 심화, meta-prompt helper 설계, 그리고 실제 release cadence 운영 정리다.
 - tap target은 더 이상 미정이 아니다. 남은 것은 tap repo 운영 절차이지 target discovery가 아니다.
 
 ## References

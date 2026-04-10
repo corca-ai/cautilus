@@ -75,12 +75,18 @@ Evidence:
   returns `accept-now`
 - `WORKBENCH_REVIEW_TIMEOUT_SECONDS=180 node ./bin/cautilus review variants --repo-root /home/ubuntu/crill --adapter-name operator-recovery --workspace /home/ubuntu/crill --report-file /tmp/cautilus-crill-operator-recovery-review/report.json --output-dir /tmp/cautilus-crill-operator-review`
   returns a summary with one passing `codex-review` variant
+- `node ./bin/cautilus workspace prepare-compare --repo-root /home/ubuntu/crill --baseline-ref origin/main --output-dir /tmp/cautilus-crill-compare --force`
+  followed by
+  `node ./bin/cautilus mode evaluate --repo-root /home/ubuntu/crill --adapter-name consumer-artifacts --mode comparison --intent 'Crill should keep widening its checked-in Cautilus consumer surfaces honestly.' --baseline-ref origin/main --baseline-repo /tmp/cautilus-crill-compare/baseline --candidate-repo /tmp/cautilus-crill-compare/candidate --output-dir /tmp/cautilus-crill-consumer-compare`
+  returns a report whose compare artifact verdict is `improved`
 - checked-in `Cautilus` adapter:
   [/home/ubuntu/crill/.agents/cautilus-adapter.yaml](/home/ubuntu/crill/.agents/cautilus-adapter.yaml)
 - checked-in named `Cautilus` adapters:
   [/home/ubuntu/crill/.agents/cautilus-adapters/cli-smoke.yaml](/home/ubuntu/crill/.agents/cautilus-adapters/cli-smoke.yaml)
   and
   [/home/ubuntu/crill/.agents/cautilus-adapters/operator-recovery.yaml](/home/ubuntu/crill/.agents/cautilus-adapters/operator-recovery.yaml)
+  and
+  [/home/ubuntu/crill/.agents/cautilus-adapters/consumer-artifacts.yaml](/home/ubuntu/crill/.agents/cautilus-adapters/consumer-artifacts.yaml)
 - checked-in explicit `cli evaluate` packet:
   [/home/ubuntu/crill/tests/fixtures/cautilus/cli-help.json](/home/ubuntu/crill/tests/fixtures/cautilus/cli-help.json)
 
@@ -93,8 +99,9 @@ What this means:
 - It also now exposes narrower named `Cautilus` consumers for the CLI surface
   and operator-recovery/runtime seam.
 - It now also has one checked-in explicit CLI intent packet plus one passing
-  report-driven `review variants` path, so the honest product claim is no
-  longer limited to `mode evaluate` depth.
+  report-driven `review variants` path plus one passing explicit comparison
+  path, so the honest product claim is no longer limited to `mode evaluate`
+  depth.
 - It remains the strongest reference for blocked durable workflow artifacts,
   replay seed regressions, and operator-recovery patterns.
 
@@ -115,6 +122,6 @@ layer in multiple real repos with different product shapes.
 1. Keep proving the deepest binary/skill behavior against `ceal`.
 2. Keep checked-in consumer-shaped normalized packet examples for
    `ceal`, `charness`, and `crill`.
-3. `crill` now has first named-adapter depth plus one explicit CLI packet and
-   one passing `review variants` path; the next step is whether compare/A-B
-   consumer artifacts should be checked in there too.
+3. `crill` now covers root and named adapters, explicit CLI packets, review
+   variants, and checked-in compare/A-B consumer artifacts; the next depth is
+   product-owned helper guidance for evidence mining and bounded optimization.

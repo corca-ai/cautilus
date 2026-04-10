@@ -11,6 +11,8 @@ The target product is:
 - host-repo adapters that define baselines, iterate loops, held-out checks,
   compare passes, and full gates
 - optional executor-variant runners for bounded external review
+- product-owned helper scripts and bundled-skill references for bounded
+  evidence mining and optimization loops
 - train-vs-held-out discipline backed by scenario history
 - scenario proposal flows that mine runtime logs and audit traces into draft
   evaluation cases
@@ -38,6 +40,8 @@ The target product is:
 - A first standalone `mode evaluate` command now runs adapter-defined iterate,
   held-out, comparison, or full-gate command templates and leaves a report
   packet plus command observations behind.
+- A product-owned `workspace prepare-compare` helper now owns clean git-ref
+  baseline-versus-candidate workspace preparation.
 - A first standalone `review prepare-input` command now assembles one durable
   review packet around a report, adapter review prompts, and compare
   questions.
@@ -92,6 +96,9 @@ The target product is:
   official `cautilus-adapter`, while `ceal` remains the deepest runtime
   consumer and `charness` / `crill` remain the primary normalization
   references for their respective use cases.
+- `crill` now also proves the deeper consumer path: root and named adapters,
+  explicit CLI intent packets, review variants, and a checked-in comparison
+  artifact runner all execute through the standalone binary.
 - Ceal still owns richer prompt-benchmark history logic, audit-workbench
   storage, scenario proposal generation, and operator web surfaces.
 
@@ -141,6 +148,11 @@ Generalize the operator loop currently proven in Ceal:
 - propose `refresh` vs `net-new` scenarios separately
 - emit evidence-backed draft scenario JSON
 - keep promotion as an explicit operator action
+- keep raw log readers, storage access, and host-specific trace retrieval
+  consumer-owned
+- ship bundled-skill reference prompts plus product-owned helper scripts that
+  teach agents how to mine host-normalized evidence bundles into proposal
+  inputs without each host copying the same meta-prompt loop
 
 The extracted version should describe generic source ports rather than binding
 itself to Slack or Ceal storage conventions.
@@ -167,6 +179,14 @@ Formalize the DSPy-like product story:
 - compare runs report whether behavior improved, regressed, or overfit
 - prompt revisions are acceptable if held-out and human review survive
 - skill or runtime dogfooding becomes a first-class use case, not a side path
+- bundled-skill meta-prompts should be able to read report packets, compare
+  artifacts, review verdicts, and scenario history and propose the next
+  bounded prompt or adapter revision
+- product-owned helper scripts should carry the repetitive orchestration for
+  bounded optimization loops so hosts do not re-implement the same control
+  plane
+- any optimizer surface must stay explicitly bounded by held-out,
+  comparison, and structured review gates rather than open-ended retries
 
 ### Phase 6: Consumer Repoint And External Consumers
 
@@ -184,9 +204,18 @@ The current release boundary is documented in
    one checked-in workflow story.
 2. Keep expanding normalization-pattern coverage while preserving one official
    adapter contract: `cautilus-adapter.yaml`.
-3. Prepare explicit deepening steps for `charness` and `crill` beyond the new
+3. Turn raw-evidence mining into bundled-skill reference prompts plus
+   product-owned helper scripts instead of letting each host reinvent the same
+   meta-prompt orchestration.
+4. Add bounded optimization helpers that can propose prompt or adapter changes
+   from report, compare, and review packets without weakening held-out
+   discipline.
+5. Keep HTML report rendering on the roadmap, but defer product-owned HTML
+   output until the JSON/YAML packet and report boundaries stay stable across
+   multiple consumers.
+6. Prepare explicit deepening steps for `charness` and `crill` beyond the new
    root adapter surface instead of widening discovery rules.
-4. Turn the first install story into a real release discipline: tagged
+7. Turn the first install story into a real release discipline: tagged
    archives, checksums, tap publication, and public-repo release docs.
-5. Keep moving Ceal-specific runtime seams out of the product boundary and
+8. Keep moving Ceal-specific runtime seams out of the product boundary and
    into consumer-owned adapters, prompts, and storage readers.
