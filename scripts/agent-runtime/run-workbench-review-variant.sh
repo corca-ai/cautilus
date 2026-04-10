@@ -10,6 +10,8 @@ CLI guardrails.
 The script intentionally keeps the argument surface small so operators do not
 re-introduce fragile approval, stdin, or permission flags ad hoc.
 Default timeout: 900 seconds. Override with WORKBENCH_REVIEW_TIMEOUT_SECONDS.
+Set WORKBENCH_CODEX_MODEL or WORKBENCH_CODEX_REASONING_EFFORT to override the
+Codex review model configuration for bounded review surfaces.
 EOF
 }
 
@@ -20,6 +22,8 @@ schema_file=""
 output_file=""
 stderr_file=""
 timeout_seconds="${WORKBENCH_REVIEW_TIMEOUT_SECONDS:-900}"
+codex_model="${WORKBENCH_CODEX_MODEL:-}"
+codex_reasoning_effort="${WORKBENCH_CODEX_REASONING_EFFORT:-}"
 
 while [[ $# -gt 0 ]]; do
 	case "$1" in
@@ -87,15 +91,24 @@ run_with_timeout() {
 
 case "$backend" in
 	codex_exec)
+		codex_args=(
+			exec
+			-C "$workspace"
+			--sandbox read-only
+			--ephemeral
+			--output-schema "$schema_file"
+			-o "$output_file"
+		)
+		if [[ -n "$codex_model" ]]; then
+			codex_args+=(--model "$codex_model")
+		fi
+		if [[ -n "$codex_reasoning_effort" ]]; then
+			codex_args+=(-c "model_reasoning_effort=\"$codex_reasoning_effort\"")
+		fi
+		codex_args+=(-)
 		(
 			cd "$workspace"
-			run_with_timeout codex exec \
-				-C "$workspace" \
-				--sandbox read-only \
-				--ephemeral \
-				--output-schema "$schema_file" \
-				-o "$output_file" \
-				- < "$prompt_file"
+			run_with_timeout codex "${codex_args[@]}" < "$prompt_file"
 		) 2> "$stderr_file"
 		if grep -Eq '^(failed to load skill|ERROR: .*invalid_request_error)' "$stderr_file"; then
 			echo "codex_exec emitted a fatal stderr pattern; see $stderr_file" >&2

@@ -62,6 +62,49 @@ function runVariant(root, backend, outputName = `${backend}-output.json`) {
 	return { result, outputFile };
 }
 
+function runVariantWithEnv(root, backend, env, outputName = `${backend}-output.json`) {
+	const workspace = join(root, "workspace");
+	mkdirSync(workspace, { recursive: true });
+	const promptFile = join(root, `${backend}-prompt.txt`);
+	const schemaFile = writeJson(root, `${backend}-schema.json`, {
+		type: "object",
+		additionalProperties: false,
+		required: ["kind"],
+		properties: {
+			kind: { type: "string" },
+			reason: { type: "string" },
+		},
+	});
+	const outputFile = join(root, outputName);
+	writeFileSync(promptFile, "Return the structured verdict.\n", "utf-8");
+	const result = spawnSync(
+		"bash",
+		[
+			SCRIPT_PATH,
+			"--backend",
+			backend,
+			"--workspace",
+			workspace,
+			"--prompt-file",
+			promptFile,
+			"--schema-file",
+			schemaFile,
+			"--output-file",
+			outputFile,
+		],
+		{
+			cwd: process.cwd(),
+			env: {
+				...process.env,
+				...env,
+				PATH: `${root}:${process.env.PATH ?? ""}`,
+			},
+			encoding: "utf-8",
+		},
+	);
+	return { result, outputFile };
+}
+
 test("codex_exec wrapper closes stdin and writes structured output to the requested file", () => {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-workbench-codex-"));
 	try {
@@ -149,6 +192,49 @@ printf '%s\\n' '{"kind":"stop","reason":"goal_satisfied"}' > "$out"
 		assert.notEqual(result.status, 0);
 		assert.match(result.stderr, /fatal stderr pattern/);
 		assert.match(readFileSync(`${outputFile}.stderr`, "utf-8"), /failed to load skill/);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("codex_exec wrapper forwards optional model config from environment", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-workbench-codex-config-"));
+	try {
+		const argsFile = join(root, "codex-args.txt");
+		writeExecutable(
+			root,
+			"codex",
+			`#!/bin/sh
+printf '%s\n' "$@" > "${argsFile}"
+out=""
+while [ "$#" -gt 0 ]; do
+  if [ "$1" = "-o" ]; then
+    out="$2"
+    shift 2
+    continue
+  fi
+  shift
+done
+cat >/dev/null
+printf '%s\\n' '{"kind":"stop","reason":"goal_satisfied"}' > "$out"
+`,
+		);
+		const { result } = runVariantWithEnv(
+			root,
+			"codex_exec",
+			{
+				WORKBENCH_CODEX_MODEL: "gpt-5.4",
+				WORKBENCH_CODEX_REASONING_EFFORT: "low",
+			},
+			"codex-config-output.json",
+		);
+		assert.equal(result.status, 0, result.stderr);
+		const args = readFileSync(argsFile, "utf-8");
+		assert.match(args, /^exec$/m);
+		assert.match(args, /^--model$/m);
+		assert.match(args, /^gpt-5\.4$/m);
+		assert.match(args, /^-c$/m);
+		assert.match(args, /^model_reasoning_effort="low"$/m);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

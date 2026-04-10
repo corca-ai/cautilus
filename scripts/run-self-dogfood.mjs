@@ -204,6 +204,16 @@ function buildSummary({ repoRoot, workspace, artifactRoot, runId, baselineRef, i
 }
 
 function renderMarkdown(summary) {
+	const hasTimeout = summary.reviewVariants.some((variant) =>
+		variant.executionStatus === "failed"
+			&& typeof variant.summary === "string"
+			&& variant.summary.includes("timed out"),
+	);
+	const nextAction = summary.overallStatus === "pass"
+		? "No immediate action. The last explicit self-dogfood run is green."
+		: hasTimeout
+			? "Increase --review-timeout-ms or trim the named self-dogfood review surface before trusting the latest report."
+			: "Inspect review-summary.json before trusting the automated recommendation.";
 	const lines = [
 		"# Cautilus Self-Dogfood",
 		"",
@@ -216,6 +226,12 @@ function renderMarkdown(summary) {
 		"## Intent",
 		"",
 		summary.intent,
+		"",
+		"## Current Reading",
+		"",
+		`- deterministic gate: ${summary.reportRecommendation === "accept-now" ? "passed" : summary.reportRecommendation}`,
+		`- explicit review: ${summary.overallStatus}`,
+		`- next action: ${nextAction}`,
 		"",
 		"## Review Variants",
 		"",
