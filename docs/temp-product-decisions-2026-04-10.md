@@ -128,7 +128,19 @@ recommended decision:
   - consumer readiness appendix
 
 status:
-- open
+- decided
+
+decision:
+- 앞으로 product-facing 문서에서는 repo name 중심 framing을 쓰지 않는다.
+- 제품 설명은 generic surface archetype 중심으로 쓴다.
+- 특정 repo 이름은 migration, dogfood evidence, appendix 층으로만 내린다.
+
+follow-up effect:
+- 이후 문서 정리에서는 아래 문서부터 repo-agnostic 표현으로 재작성한다.
+  - [README.md](/home/ubuntu/cautilus/README.md)
+  - [docs/master-plan.md](/home/ubuntu/cautilus/docs/master-plan.md)
+  - [docs/specs/current-product.spec.md](/home/ubuntu/cautilus/docs/specs/current-product.spec.md)
+- consumer repo 이름이 필요하면 제품 개념 설명 본문이 아니라 증거 문맥에만 둔다.
 
 ### D4. Helper Admission Rule
 
@@ -149,9 +161,8 @@ status:
 
 ## Next Decision
 
-다음은 D3만 결정한다.
+다음은 D4만 결정한다.
 
 질문:
-- consumer-facing evidence 문서를 제외한 product 설명에서
-  repo name 중심 framing을 버리고 repo-agnostic surface vocabulary로
-  다시 쓸지
+- 새 helper를 productize 하는 admission rule을 명시적으로 둘지,
+  두면 어떤 기준으로 둘지
