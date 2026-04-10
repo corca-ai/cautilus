@@ -30,6 +30,7 @@
 | bin/cautilus | fixed | report build |
 | bin/cautilus | fixed | mode evaluate |
 | bin/cautilus | fixed | cli evaluate |
+| bin/cautilus | fixed | review prepare-input |
 | bin/cautilus | fixed | review variants |
 | bin/cautilus.test.mjs | file_exists |  |
 | skills/cautilus/SKILL.md | file_exists |  |
@@ -52,12 +53,16 @@
 | fixtures/cli-evaluation/input.schema.json | file_exists |  |
 | scripts/agent-runtime/evaluate-cli-intent.mjs | file_exists |  |
 | scripts/agent-runtime/evaluate-cli-intent.mjs | fixed | CLI_EVALUATION_PACKET_SCHEMA |
+| scripts/agent-runtime/build-review-packet.mjs | file_exists |  |
+| scripts/agent-runtime/build-review-packet.mjs | fixed | REVIEW_PACKET_SCHEMA |
 | docs/contracts/scenario-proposal-inputs.md | file_exists |  |
 | docs/contracts/scenario-proposal-inputs.md | fixed | cautilus.scenario_proposal_inputs.v1 |
 | docs/contracts/scenario-proposal-normalization.md | file_exists |  |
 | docs/contracts/scenario-proposal-normalization.md | fixed | scenario prepare-input |
 | docs/contracts/cli-evaluation.md | file_exists |  |
 | docs/contracts/cli-evaluation.md | fixed | cautilus.cli_evaluation_packet.v1 |
+| docs/contracts/review-packet.md | file_exists |  |
+| docs/contracts/review-packet.md | fixed | cautilus.review_packet.v1 |
 | docs/contracts/scenario-history.md | fixed | durationMs |
 | docs/release-boundary.md | file_exists |  |
 | docs/release-boundary.md | fixed | Product-Owned Surface |
@@ -115,6 +120,7 @@
 - target repo의 adapter scaffold
 - target repo의 adapter readiness doctor
 - adapter-defined mode execution that emits report packets directly
+- review packet assembly for compare artifacts and human-review prompts
 - scenario profile and graduation history helpers
 - chatbot proposal-candidate normalization helper
 - chatbot normalization command
@@ -157,6 +163,7 @@ $ node ./bin/cautilus scenario propose --input ./fixtures/scenario-proposals/sta
 $ node ./bin/cautilus report build --input ./fixtures/reports/report-input.json
 $ node ./bin/cautilus mode evaluate --repo-root . --mode held_out --intent "CLI behavior should remain legible." --baseline-ref origin/main --output-dir /tmp/cautilus-mode || true
 $ node ./bin/cautilus cli evaluate --input ./fixtures/cli-evaluation/doctor-missing-adapter.json
+$ node ./bin/cautilus review prepare-input --repo-root . --report-file ./fixtures/reports/report-input.json || true
 $ node --test ./bin/cautilus.test.mjs
 $ node --test ./scripts/agent-runtime/consumer-example-fixtures.test.mjs
 $ node --test ./scripts/agent-runtime/chatbot-proposal-candidates.test.mjs
@@ -168,6 +175,7 @@ $ node --test ./scripts/agent-runtime/scenario-proposals.test.mjs
 $ node --test ./scripts/agent-runtime/build-report-packet.test.mjs
 $ node --test ./scripts/agent-runtime/evaluate-adapter-mode.test.mjs
 $ node --test ./scripts/agent-runtime/evaluate-cli-intent.test.mjs
+$ node --test ./scripts/agent-runtime/build-review-packet.test.mjs
 $ test -f ./skills/cautilus/SKILL.md
 $ npm run lint
 $ npm run test

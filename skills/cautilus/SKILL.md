@@ -50,6 +50,7 @@ node ./bin/cautilus doctor --repo-root .
 - [docs/contracts/chatbot-normalization.md](/home/ubuntu/cautilus/docs/contracts/chatbot-normalization.md)
 - [docs/contracts/skill-normalization.md](/home/ubuntu/cautilus/docs/contracts/skill-normalization.md)
 - [docs/contracts/cli-evaluation.md](/home/ubuntu/cautilus/docs/contracts/cli-evaluation.md)
+- [docs/contracts/review-packet.md](/home/ubuntu/cautilus/docs/contracts/review-packet.md)
 
 ## Workflow
 
@@ -100,6 +101,10 @@ node ./bin/cautilus mode evaluate \
   --intent "CLI behavior should remain legible." \
   --baseline-ref origin/main \
   --output-dir /tmp/cautilus-mode
+
+node ./bin/cautilus review prepare-input \
+  --repo-root . \
+  --report-file /tmp/cautilus-mode/report.json
 
 node ./bin/cautilus cli evaluate \
   --input ./fixtures/cli-evaluation/doctor-missing-adapter.json

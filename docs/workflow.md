@@ -162,6 +162,14 @@ node ./bin/cautilus mode evaluate \
 ```bash
 node ./bin/cautilus report build --input ./fixtures/reports/report-input.json
 ```
+   Before generating or selecting a review prompt, prefer one durable review
+   packet that binds the report, artifact paths, and review questions:
+
+```bash
+node ./bin/cautilus review prepare-input \
+  --repo-root . \
+  --report-file /tmp/cautilus-mode/report.json
+```
 9. If the user wants a repeatable local evaluator and none exists, create a
    checked-in bounded runner first.
    Prefer a repo script with fixed inputs, fixed prompt variants, and a small

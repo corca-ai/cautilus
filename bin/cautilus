@@ -37,6 +37,7 @@ const SCENARIO_TELEMETRY_SUMMARIZER = join(
 const REPORT_PACKET_BUILDER = join(REPO_ROOT, "scripts", "agent-runtime", "build-report-packet.mjs");
 const CLI_INTENT_EVALUATOR = join(REPO_ROOT, "scripts", "agent-runtime", "evaluate-cli-intent.mjs");
 const ADAPTER_MODE_EVALUATOR = join(REPO_ROOT, "scripts", "agent-runtime", "evaluate-adapter-mode.mjs");
+const REVIEW_PACKET_BUILDER = join(REPO_ROOT, "scripts", "agent-runtime", "build-review-packet.mjs");
 const CHATBOT_NORMALIZER = join(
 	REPO_ROOT,
 	"scripts",
@@ -58,6 +59,7 @@ function usage(exitCode = 0) {
 		"  cautilus scenario propose [args]",
 		"  cautilus report build [args]",
 		"  cautilus mode evaluate [args]",
+		"  cautilus review prepare-input [args]",
 		"  cautilus cli evaluate [args]",
 		"  cautilus review variants [args]",
 		"",
@@ -72,6 +74,7 @@ function usage(exitCode = 0) {
 		"  cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json",
 		"  cautilus report build --input ./fixtures/reports/report-input.json",
 		"  cautilus mode evaluate --repo-root . --mode held_out --intent 'CLI behavior should remain legible.' --baseline-ref origin/main --output-dir /tmp/cautilus-mode",
+		"  cautilus review prepare-input --repo-root . --report-file /tmp/cautilus-mode/report.json",
 		"  cautilus cli evaluate --input ./fixtures/cli-evaluation/doctor-missing-adapter.json",
 		"  cautilus review variants --repo-root . --workspace . --output-dir /tmp/cautilus-review",
 	].join("\n");
@@ -132,6 +135,10 @@ if (area === "report" && action === "build") {
 
 if (area === "mode" && action === "evaluate") {
 	run("node", [ADAPTER_MODE_EVALUATOR, ...rest]);
+}
+
+if (area === "review" && action === "prepare-input") {
+	run("node", [REVIEW_PACKET_BUILDER, ...rest]);
 }
 
 if (area === "cli" && action === "evaluate") {

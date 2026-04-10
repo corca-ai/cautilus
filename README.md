@@ -60,6 +60,8 @@ Ceal remains a proving-ground consumer, not the product boundary.
   product-owned `skill` helper boundary for durable workflow and validation candidates
 - [docs/contracts/cli-evaluation.md](/home/ubuntu/cautilus/docs/contracts/cli-evaluation.md):
   product-owned bounded evaluation packet for operator-facing CLI behavior
+- [docs/contracts/review-packet.md](/home/ubuntu/cautilus/docs/contracts/review-packet.md):
+  product-owned packet that binds report artifacts to comparison questions and review prompts
 - [fixtures/scenario-proposals/input.schema.json](/home/ubuntu/cautilus/fixtures/scenario-proposals/input.schema.json):
   checked-in schema for `cautilus.scenario_proposal_inputs.v1`
 - [fixtures/scenario-proposals/proposals.schema.json](/home/ubuntu/cautilus/fixtures/scenario-proposals/proposals.schema.json):
@@ -174,6 +176,14 @@ node ./bin/cautilus mode evaluate \
   --intent "CLI behavior should remain legible." \
   --baseline-ref origin/main \
   --output-dir /tmp/cautilus-mode
+```
+
+Assemble a durable review packet around a report before running review variants:
+
+```bash
+node ./bin/cautilus review prepare-input \
+  --repo-root . \
+  --report-file /tmp/cautilus-mode/report.json
 ```
 
 Evaluate one operator-facing CLI behavior from an explicit intent packet:

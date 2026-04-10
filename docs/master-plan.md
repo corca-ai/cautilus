@@ -33,6 +33,9 @@ The target product is:
 - A first standalone `mode evaluate` command now runs adapter-defined iterate,
   held-out, comparison, or full-gate command templates and leaves a report
   packet plus command observations behind.
+- A first standalone `review prepare-input` command now assembles one durable
+  review packet around a report, adapter review prompts, and compare
+  questions.
 - Ceal now repoints generic adapter-resolution and review-variant runner seams
   to `Cautilus` as a consumer.
 - A first generic scenario/history contract draft now exists in
@@ -165,7 +168,9 @@ The current release boundary is documented in
    adapter contract: `cautilus-adapter.yaml`.
 4. Prepare explicit deepening steps for `charness` and `crill` beyond the new
    root adapter surface instead of widening discovery rules.
-5. Add a first checked-in CLI evaluation packet and bounded runtime surface
-   without turning `Cautilus` into a generic test runner.
-6. Make adapter-driven mode execution leave report packets directly instead of
-   depending only on post-hoc report assembly.
+5. Decide whether review prompt generation stays consumer-owned or becomes a
+   product-owned runtime on top of `cautilus.review_packet.v1`.
+6. Tighten the candidate result packet and compare artifact contracts so
+   `mode evaluate` and `review prepare-input` can compose without repo lore.
+7. Turn the documented release boundary into a real distribution story before
+   wider external reuse.

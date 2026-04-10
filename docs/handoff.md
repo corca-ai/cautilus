@@ -57,6 +57,9 @@
 - `mode evaluate` command가 추가돼 adapter-defined iterate/held-out/
   comparison/full-gate command template를 직접 실행하고, command
   observation + report input + final report packet을 한 번에 남길 수 있다.
+- `review prepare-input` command가 추가돼 report packet, adapter
+  `comparison_questions`, `human_review_prompts`, artifact/report paths를 한
+  review packet으로 묶을 수 있다.
 - `cli evaluate` command와 checked-in CLI fixture/schema가 추가돼
   bounded command packet 하나를 실행하고 stdout/stderr/exit code/side
   effect expectation을 검사한 뒤 embedded report packet까지 만들 수 있다.
@@ -78,21 +81,19 @@
 
 ## Next Session
 
-1. adapter-driven `iterate` / `held_out` / `full_gate` 실행이 직접
-   `cautilus.report_inputs.v1` 또는 `cautilus.report_packet.v1`를 남기게 할
-   최소 runtime seam을 설계한다.
-2. `cli evaluate`를 chatbot/skill use case와 어떻게 연결할지 정한다.
+1. `review prepare-input` 위에 prompt generation/runtime을 product-owned로
+   올릴지, 계속 consumer-owned로 둘지 결정한다.
+2. `mode evaluate`가 읽는 candidate result packet과 compare artifact
+   contract를 더 엄격히 고정한다.
+3. `cli evaluate`를 chatbot/skill use case와 어떻게 연결할지 정한다.
    다음 후보는 `cli` normalization helper, CLI-specific human-review prompt
    seam, compare artifact 연동이다.
-3. 필요하면 consumer example 위에서 새로운 pattern class를 늘리고, raw
+4. 필요하면 consumer example 위에서 새로운 pattern class를 늘리고, raw
    reader logic은 여전히 consumer-owned로 남긴다.
-4. Ceal migration을 handoff와 plan 기준으로 다시 자르고, product-owned
+5. Ceal migration을 handoff와 plan 기준으로 다시 자르고, product-owned
    runtime seam과 consumer-owned storage/operator seam을 명확히 나눈다.
-5. wider reuse 전에 `release-boundary.md` 기준으로 package/install story를
+6. wider reuse 전에 `release-boundary.md` 기준으로 package/install story를
    실제 배포 surface로 바꿀지 결정한다.
-6. 필요하면 `mode evaluate`가 읽는 candidate result packet contract를 더
-   엄격히 고정하고, compare artifact/human-review prompt와 어떻게 연결할지
-   정한다.
 
 ## Discuss
 
@@ -121,6 +122,7 @@
 - [current-product.spec.md](/home/ubuntu/cautilus/docs/specs/current-product.spec.md)
 - [scenario-history.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/scenario-history.mjs)
 - [build-report-packet.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/build-report-packet.mjs)
+- [build-review-packet.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/build-review-packet.mjs)
 - [evaluate-adapter-mode.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/evaluate-adapter-mode.mjs)
 - [evaluate-cli-intent.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/evaluate-cli-intent.mjs)
 - [report-input.json](/home/ubuntu/cautilus/fixtures/reports/report-input.json)

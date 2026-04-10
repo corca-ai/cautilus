@@ -24,6 +24,7 @@ Ceal의 기존 `workbench` 시나리오는 여전히 유용한 dogfood 입력이
 | bin/cautilus | fixed | report build |
 | bin/cautilus | fixed | mode evaluate |
 | bin/cautilus | fixed | cli evaluate |
+| bin/cautilus | fixed | review prepare-input |
 | bin/cautilus.test.mjs | file_exists |  |
 | bin/cautilus.test.mjs | fixed | standalone temp repo can adopt cautilus without Ceal-owned paths |
 | skills/cautilus/SKILL.md | file_exists |  |
@@ -37,6 +38,7 @@ Ceal의 기존 `workbench` 시나리오는 여전히 유용한 dogfood 입력이
 | skills/cautilus/SKILL.md | fixed | node ./bin/cautilus report build |
 | skills/cautilus/SKILL.md | fixed | node ./bin/cautilus mode evaluate |
 | skills/cautilus/SKILL.md | fixed | node ./bin/cautilus cli evaluate |
+| skills/cautilus/SKILL.md | fixed | node ./bin/cautilus review prepare-input |
 | skills/cautilus/SKILL.md | fixed | node ./bin/cautilus review variants |
 | skills/cautilus/agents/openai.yaml | file_exists |  |
 | skills/cautilus/agents/openai.yaml | fixed | Cautilus |
@@ -48,7 +50,7 @@ Ceal의 기존 `workbench` 시나리오는 여전히 유용한 dogfood 입력이
 현재 단계에서 standalone surface는 최소한 아래를 만족해야 한다.
 
 - binary와 bundled skill이 같은 workflow entrypoint를 가리킨다.
-- adapter resolve/init/doctor/scenario normalize chatbot/scenario normalize skill/scenario summarize-telemetry/scenario prepare-input/scenario propose/report build/mode evaluate/cli evaluate/review variants는 Ceal-local script path 없이 설명된다.
+- adapter resolve/init/doctor/scenario normalize chatbot/scenario normalize skill/scenario summarize-telemetry/scenario prepare-input/scenario propose/report build/mode evaluate/cli evaluate/review prepare-input/review variants는 Ceal-local script path 없이 설명된다.
 - Ceal repoint는 제품 정의가 아니라 consumer migration 단계로 남아 있다.
 
 ```run:shell
@@ -62,6 +64,7 @@ $ node ./bin/cautilus scenario propose --input ./fixtures/scenario-proposals/sta
 $ node ./bin/cautilus report build --input ./fixtures/reports/report-input.json
 $ node ./bin/cautilus mode evaluate --repo-root . --mode held_out --intent "CLI behavior should remain legible." --baseline-ref origin/main --output-dir /tmp/cautilus-mode || true
 $ node ./bin/cautilus cli evaluate --input ./fixtures/cli-evaluation/doctor-missing-adapter.json
+$ node ./bin/cautilus review prepare-input --repo-root . --report-file ./fixtures/reports/report-input.json || true
 $ node --test ./bin/cautilus.test.mjs
 $ test -f skills/cautilus/SKILL.md
 $ test -f skills/cautilus/agents/openai.yaml
