@@ -143,6 +143,7 @@ Example names:
 
 - `code-quality`
 - `skill-smoke`
+- `self-dogfood`
 - `meta-eval`
 
 Each named adapter should define its own:

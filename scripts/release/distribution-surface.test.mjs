@@ -20,6 +20,18 @@ test("cautilus --version matches package.json", () => {
 	assert.equal(result.stdout.trim(), pkg.version);
 });
 
+test("repo root exposes an official self-consumer adapter and doctor returns ready", () => {
+	const result = spawnSync("node", [join(REPO_ROOT, "bin", "cautilus"), "doctor", "--repo-root", REPO_ROOT], {
+		cwd: REPO_ROOT,
+		encoding: "utf-8",
+	});
+	assert.equal(result.status, 0, result.stderr);
+	const payload = JSON.parse(result.stdout);
+	assert.equal(payload.ready, true);
+	assert.equal(payload.status, "ready");
+	assert.equal(payload.adapter_path, join(REPO_ROOT, ".agents", "cautilus-adapter.yaml"));
+});
+
 test("install.sh remains syntactically valid shell", () => {
 	const result = spawnSync("bash", ["-n", join(REPO_ROOT, "install.sh")], {
 		cwd: REPO_ROOT,

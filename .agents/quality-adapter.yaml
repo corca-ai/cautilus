@@ -7,10 +7,12 @@ concept_paths:
 - docs/master-plan.md
 - docs/workflow.md
 - docs/consumer-readiness.md
+- docs/specs/self-dogfood.spec.md
 - docs/handoff.md
 - skill-outputs/quality/quality.md
 preflight_commands:
 - node ./bin/cautilus adapter resolve --repo-root .
 gate_commands:
 - npm run verify
+- npm run dogfood:self
 security_commands: []

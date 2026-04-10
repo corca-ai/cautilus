@@ -1,0 +1,23 @@
+version: 1
+repo: cautilus
+evaluation_surfaces:
+  - standalone binary and bundled skill self-consumer gate
+baseline_options:
+  - baseline git ref in the same repo via {baseline_ref}
+required_prerequisites:
+  - install local dependencies with npm install before running evaluation
+  - install the checked-in git hooks with npm run hooks:install before relying on maintainer-local checks
+preflight_commands:
+  - npm run hooks:check
+full_gate_command_templates:
+  - npm run verify
+artifact_paths:
+  - README.md
+  - docs/workflow.md
+  - docs/specs/self-dogfood.spec.md
+  - skills/cautilus/SKILL.md
+comparison_questions:
+  - Does the current repo still behave like a credible self-consumer for the standalone binary and bundled skill?
+human_review_prompts:
+  - id: operator
+    prompt: Where would an operator still conclude that Cautilus cannot validate its own repo honestly even if npm run verify passes?

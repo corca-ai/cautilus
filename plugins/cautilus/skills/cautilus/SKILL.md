@@ -99,6 +99,13 @@ node ./bin/cautilus review variants \
   --output-dir /tmp/cautilus-review
 ```
 
+When the target repo is `Cautilus` itself, prefer the checked-in explicit
+self-dogfood command over rebuilding the same mode/report/review chain by hand:
+
+```bash
+npm run dogfood:self
+```
+
 7. Report exact commands, exact placeholder values, and the final recommendation.
 8. When the repo already has normalized scenario proposal candidates, generate
    a checked-in proposal packet instead of hand-drafting scenario JSON:

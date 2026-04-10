@@ -231,6 +231,13 @@ Check whether a repo is ready for standalone `Cautilus` evaluation:
 node ./bin/cautilus doctor --repo-root /path/to/repo
 ```
 
+Run the explicit self-dogfood pass for this repo and refresh the latest local
+artifacts:
+
+```bash
+npm run dogfood:self
+```
+
 Prepare clean baseline and candidate git worktrees for a compare run:
 
 ```bash
@@ -431,11 +438,16 @@ Run checks:
 ```bash
 npm run verify
 npm run hooks:check
+npm run dogfood:self
 ```
 
 Use `npm run lint` or `npm run test` directly only when iterating on one seam.
 
 `hooks:install` is a once-per-clone setup step that points `core.hooksPath` at
 the checked-in `.githooks` directory, where `pre-push` runs `npm run verify`.
+
+`dogfood:self` is explicit quality work, not a standing pre-push or CI gate.
+It refreshes the latest self-dogfood bundle under
+`artifacts/self-dogfood/latest/`.
 
 `init_adapter.py` no longer needs `PyYAML`; the Python surface is stdlib-only.

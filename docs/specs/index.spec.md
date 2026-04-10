@@ -16,3 +16,6 @@ standing spec gate에서는 다시 실행하지 않는다.
   현재 repo가 실제로 제공하는 contract, CLI, runtime runner, 문서 경계를 정의한다.
 - [Standalone Surface](standalone-surface.spec.md)
   standalone binary와 bundled skill이 같은 제품 표면을 가리키는지 정의한다.
+- [Self Dogfood](self-dogfood.spec.md)
+  explicit quality 시점에만 돌리는 self-dogfood contract와 latest artifact
+  path를 정의한다.

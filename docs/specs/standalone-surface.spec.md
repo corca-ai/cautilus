@@ -83,7 +83,7 @@ standalone acceptance boundary만 남긴다.
 
 ```run:shell
 $ node ./bin/cautilus --help
-$ node ./bin/cautilus doctor --repo-root . || true
+$ node ./bin/cautilus doctor --repo-root .
 $ node ./bin/cautilus workspace prepare-compare --repo-root . --baseline-ref origin/main --output-dir /tmp/cautilus-compare || true
 $ node ./bin/cautilus workspace prune-artifacts --root /tmp/cautilus-runs --keep-last 20 || true
 $ node ./bin/cautilus scenario normalize chatbot --input ./fixtures/scenario-proposals/chatbot-input.json

@@ -1,0 +1,33 @@
+version: 1
+repo: cautilus
+evaluation_surfaces:
+  - explicit self-dogfood review of the standalone binary and bundled skill
+baseline_options:
+  - baseline git ref in the same repo via {baseline_ref}
+required_prerequisites:
+  - refresh the current full-gate report before running review variants
+executor_variants:
+  - id: codex-review
+    tool: codex_exec
+    purpose: bounded structured review of the latest self-dogfood report
+    command_template: bash scripts/agent-runtime/run-workbench-review-variant.sh --backend codex_exec --workspace {candidate_repo} --prompt-file {prompt_file} --schema-file {schema_file} --output-file {output_file}
+    required_prerequisites:
+      - generate the latest full-gate report before review variants
+      - keep the candidate workspace on the exact checkout under evaluation
+    safety_notes:
+      - prefer the checked-in review verdict schema over free-form output
+      - keep the review loop bounded to the generated self-dogfood prompt and report packet
+artifact_paths:
+  - README.md
+  - docs/workflow.md
+  - docs/specs/self-dogfood.spec.md
+  - skills/cautilus/SKILL.md
+  - plugins/cautilus/skills/cautilus/SKILL.md
+comparison_questions:
+  - Does the current full-gate report support the claim that Cautilus can evaluate its own binary and bundled skill honestly?
+human_review_prompts:
+  - id: binary-surface
+    prompt: Where would an operator still conclude the standalone binary surface is brittle or misleading despite the current full-gate report?
+  - id: skill-surface
+    prompt: Where would an operator still conclude the bundled skill path is stale, underspecified, or not actually usable despite the current full-gate report?
+default_schema_file: fixtures/workbench/review-verdict.schema.json

@@ -7,21 +7,46 @@ Product-facing docs should describe repo-agnostic surfaces such as `chatbot`,
 `skill`, `cli`, `workflow`, and `agent runtime` first, then point here for
 concrete checked-in host evidence.
 
-This note records how `Cautilus` currently maps onto the three intended test
+This note records how `Cautilus` currently maps onto the four intended test
 targets under `~/`:
 
+- `cautilus`
 - `ceal`
 - `charness`
 - `crill`
 
 The goal is to keep product claims honest.
-All three repos now expose an official `cautilus-adapter`, but they do not yet
+All four repos now expose an official `cautilus-adapter`, but they do not yet
 exercise the same depth of evaluator surface.
 
 ## Snapshot
 
 The checks below were recorded on 2026-04-10 UTC with the current
 `/home/ubuntu/cautilus/bin/cautilus` binary.
+
+## Cautilus
+
+Current role: product repo self-consumer
+
+Evidence:
+
+- `node ./bin/cautilus doctor --repo-root /home/ubuntu/cautilus`
+  returns `ready`
+- checked-in root adapter:
+  [/home/ubuntu/cautilus/.agents/cautilus-adapter.yaml](/home/ubuntu/cautilus/.agents/cautilus-adapter.yaml)
+- checked-in named adapter:
+  [/home/ubuntu/cautilus/.agents/cautilus-adapters/self-dogfood.yaml](/home/ubuntu/cautilus/.agents/cautilus-adapters/self-dogfood.yaml)
+- explicit self-dogfood command:
+  `npm run dogfood:self`
+
+What this means:
+
+- `cautilus` now satisfies its own official adapter discovery contract.
+- The repo keeps cheap deterministic proof in the root adapter and one explicit
+  LLM-backed self-dogfood path in a named adapter instead of overloading CI or
+  pre-push with expensive review work.
+- The honest product claim is now that `Cautilus` can declare and run its own
+  self-consumer quality path, not only validate other repos.
 
 ## Ceal
 
@@ -116,6 +141,7 @@ What this means:
 
 Right now the honest product stance is:
 
+- `cautilus` is the product repo self-consumer and explicit self-dogfood target
 - `ceal` is the deepest live consumer and the primary `chatbot` reference
 - `charness` is a live consumer and the primary skill-validation reference
 - `crill` is a live consumer and the primary durable-workflow reference

@@ -53,16 +53,18 @@
 - host-declared profile도 이제 product-owned dimension ids를 써야 하며 summary는 canonicalized 된다.
 - local proof:
   - `npm run verify` 통과
+  - `node ./bin/cautilus doctor --repo-root .` is now expected to return `ready`
 - quality pass:
   - existing deterministic gate (`npm run verify`) is sufficient for this slice
   - biggest residual risk is that JSON schema does not enumerate the catalog; runtime validation is the enforcing layer
+  - explicit self-dogfood now lives outside pre-push/CI and should refresh `artifacts/self-dogfood/latest/`
 
 ## Next Session
 
-1. 다음 slice는 `artifact-root auto layout`이다.
-2. 먼저 product-owned artifact-root rules를 문서에 적는다.
-3. 그 다음 CLI/runtime이 default root와 run-type subdirectory를 materialize하게 한다.
-4. `workspace prune-artifacts`와 naming 충돌이 없는지 바로 테스트로 고정한다.
+1. 다음 slice는 self-dogfood artifact shape와 latest report presentation이 실제 운영에 충분한지 점검하는 것이다.
+2. 필요하면 `artifacts/self-dogfood/latest/latest.md`를 더 operator-facing 하게 다듬는다.
+3. 그 다음 root adapter에 더 좁은 named dogfood surfaces가 필요한지 본다.
+4. `quality` workflow가 explicit dogfood failure를 어떻게 요약해야 좋은지 본다.
 5. 변경 후에는 항상 `npm run verify`를 다시 돌린다.
 
 ## Discuss
