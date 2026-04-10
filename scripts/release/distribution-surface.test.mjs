@@ -62,3 +62,35 @@ test("release target helpers parse the current GitHub remote and derive the defa
 		tapRepo: "corca-ai/homebrew-tap",
 	});
 });
+
+test("repo marketplace points Codex at the packaged cautilus plugin subtree", () => {
+	const marketplace = JSON.parse(
+		readFileSync(join(REPO_ROOT, ".agents", "plugins", "marketplace.json"), "utf-8"),
+	);
+	assert.equal(marketplace.plugins[0].name, "cautilus");
+	assert.equal(marketplace.plugins[0].source.source, "local");
+	assert.equal(marketplace.plugins[0].source.path, "./plugins/cautilus");
+});
+
+test("packaged cautilus plugin manifest points at its bundled skills directory", () => {
+	const manifest = JSON.parse(
+		readFileSync(join(REPO_ROOT, "plugins", "cautilus", ".codex-plugin", "plugin.json"), "utf-8"),
+	);
+	assert.equal(manifest.name, "cautilus");
+	assert.equal(manifest.skills, "./skills/");
+});
+
+test("packaged cautilus skill stays in sync with the repo-bundled skill source", () => {
+	const repoSkill = readFileSync(join(REPO_ROOT, "skills", "cautilus", "SKILL.md"), "utf-8");
+	const packagedSkill = readFileSync(
+		join(REPO_ROOT, "plugins", "cautilus", "skills", "cautilus", "SKILL.md"),
+		"utf-8",
+	);
+	const repoAgent = readFileSync(join(REPO_ROOT, "skills", "cautilus", "agents", "openai.yaml"), "utf-8");
+	const packagedAgent = readFileSync(
+		join(REPO_ROOT, "plugins", "cautilus", "skills", "cautilus", "agents", "openai.yaml"),
+		"utf-8",
+	);
+	assert.equal(packagedSkill, repoSkill);
+	assert.equal(packagedAgent, repoAgent);
+});

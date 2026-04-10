@@ -17,11 +17,16 @@
 ## Current State
 
 - 워크트리는 clean 상태다.
-- 최신 핵심 커밋은 `8fff243` `Add repo-local Codex plugin surface for Cautilus` 이다.
-- Codex용 최소 install surface는 이제 실제 파일로 존재한다.
-  - [.codex-plugin/plugin.json](/home/ubuntu/cautilus/.codex-plugin/plugin.json)
+- Codex local install/readiness spot-check 결과, repo marketplace는 실제로 읽히지만
+  기존 `source.path: "./"` 는 Codex 0.118.0 app-server `plugin/list` 기준 invalid 였다.
+  - 실제 에러: `local plugin source path must not be empty`
+- 그래서 Codex용 local install surface를 repo-root pseudo plugin이 아니라
+  subtree package로 고쳤다.
+  - [plugins/cautilus/.codex-plugin/plugin.json](/home/ubuntu/cautilus/plugins/cautilus/.codex-plugin/plugin.json)
   - [.agents/plugins/marketplace.json](/home/ubuntu/cautilus/.agents/plugins/marketplace.json)
-  - [skills/cautilus/SKILL.md](/home/ubuntu/cautilus/skills/cautilus/SKILL.md) frontmatter
+  - [plugins/cautilus/skills/cautilus/SKILL.md](/home/ubuntu/cautilus/plugins/cautilus/skills/cautilus/SKILL.md)
+  - [scripts/release/check-codex-marketplace.mjs](/home/ubuntu/cautilus/scripts/release/check-codex-marketplace.mjs)
+- packaged skill copy는 현재 repo-bundled skill과 exact sync test로 묶었다.
 - 기존 standalone surface는 계속 유효하다.
   - `workspace prepare-compare`
   - `workspace prune-artifacts`
@@ -37,42 +42,44 @@
 - 아직 남아 있는 실제 제품 gap은 두 가지다.
   - run artifact auto layout 부재
   - Claude install surface 부재
-- `npm run lint`, `npm run test`, `npm run verify` 는 `8fff243` 이후 다시 통과했다.
+- local proof는 이미 확보됐다.
+  - `node ./scripts/release/check-codex-marketplace.mjs --repo-root .` 통과
+  - `npm run lint`, `npm run test`, `npm run verify` 통과
 
 ## Next Session
 
-1. Codex local install/readiness를 한 번 spot-check 한다.
-   - 현재 repo root가 plugin root 역할을 한다.
-   - 확인 대상:
-     - [.codex-plugin/plugin.json](/home/ubuntu/cautilus/.codex-plugin/plugin.json)
-     - [.agents/plugins/marketplace.json](/home/ubuntu/cautilus/.agents/plugins/marketplace.json)
-   - 목표는 “구조가 맞다”를 문서 추론으로 끝내지 않고, local install path가 실제로 읽히는지 확인하는 것이다.
-2. Claude install surface의 최소 shape를 추가한다.
+1. Claude install surface의 최소 shape를 추가한다.
    - 참조:
      - [/home/ubuntu/claude-plugins/plugins/cwf/.claude-plugin/plugin.json](/home/ubuntu/claude-plugins/plugins/cwf/.claude-plugin/plugin.json)
      - [/home/ubuntu/claude-plugins/.claude-plugin/marketplace.json](/home/ubuntu/claude-plugins/.claude-plugin/marketplace.json)
    - guardrail:
      - `Cautilus` product assets만 포함
      - consumer adapter/prompt/policy는 포함하지 않음
-3. packaging surface를 건드린 뒤 필요하면
+2. packaging surface를 건드린 뒤 필요하면
    [README.md](/home/ubuntu/cautilus/README.md),
    [docs/release-boundary.md](/home/ubuntu/cautilus/docs/release-boundary.md),
    [docs/master-plan.md](/home/ubuntu/cautilus/docs/master-plan.md)
    를 같은 work unit에서 동기화한다.
-4. packaging 흐름이 잠잠해지면 artifact-root auto layout slice로 돌아간다.
+3. packaging 흐름이 잠잠해지면 artifact-root auto layout slice로 돌아간다.
    - 가장 자연스러운 다음 구현은 `mode evaluate` / `review variants` 에 `--artifact-root` 또는 equivalent option을 넣고 timestamped run subdirectory를 자동 생성하는 것이다.
-5. 변경 후에는 항상 `npm run lint`, `npm run test`, `npm run verify` 를 다시 돌린다.
+4. 변경 후에는 항상 `npm run lint`, `npm run test`, `npm run verify` 를 다시 돌린다.
 
 ## Discuss
 
-- 지금 가장 먼저 확인할 것은 “Codex minimal package가 실제 install/readiness path에서도 맞는가”다.
-- 그 다음 판단 포인트는 Claude packaging을 repo root shared surface로 둘지, 별도 package subtree로 둘지다.
+- Codex 쪽 판단은 이미 나왔다. repo root shared surface는 현재 Codex 규칙과 맞지 않고,
+  별도 package subtree가 맞다.
+- 다음 판단 포인트는 Claude packaging도 repo root shared surface가 아니라
+  subtree package shape로 바로 맞출지다.
 - artifact pruning은 이미 있으므로, artifact auto layout이 다음 runtime slice로 가장 자연스럽다.
 
 ## Premortem
 
-- 가장 쉬운 오해는 Codex plugin 파일이 생겼으니 install story 전체가 끝났다고 보는 것이다.
-  실제로는 Codex repo-local surface만 최소로 생겼고, Claude surface와 real smoke check는 아직 남아 있다.
+- 가장 쉬운 오해는 Codex marketplace가 문서상 있으니 실제 install path도 된다고
+  생각하는 것이다. 이번 spot-check로 `./` root source는 실제로 invalid 였다는 게
+  확인됐다.
+- 다음 쉬운 오해는 subtree package를 만들었으니 root skill과 packaged skill이
+  자동으로 sync 된다고 보는 것이다. 현재는 copy + sync test 방식이므로 둘 중 하나만
+  고치면 gate가 깨진다.
 - 또 다른 쉬운 오해는 `workspace prune-artifacts`가 run layout까지 해결했다고 생각하는 것이다.
   실제로는 pruning helper만 있고, run directory naming/creation policy는 아직 없다.
 - Claude packaging에서 참조 repo 구조를 그대로 복붙하면 product boundary가 흐려질 수 있다.
@@ -88,8 +95,10 @@
 - [docs/release-boundary.md](/home/ubuntu/cautilus/docs/release-boundary.md)
 - [docs/workflow.md](/home/ubuntu/cautilus/docs/workflow.md)
 - [skills/cautilus/SKILL.md](/home/ubuntu/cautilus/skills/cautilus/SKILL.md)
-- [.codex-plugin/plugin.json](/home/ubuntu/cautilus/.codex-plugin/plugin.json)
+- [plugins/cautilus/.codex-plugin/plugin.json](/home/ubuntu/cautilus/plugins/cautilus/.codex-plugin/plugin.json)
+- [plugins/cautilus/skills/cautilus/SKILL.md](/home/ubuntu/cautilus/plugins/cautilus/skills/cautilus/SKILL.md)
 - [.agents/plugins/marketplace.json](/home/ubuntu/cautilus/.agents/plugins/marketplace.json)
+- [check-codex-marketplace.mjs](/home/ubuntu/cautilus/scripts/release/check-codex-marketplace.mjs)
 - [bin/cautilus](/home/ubuntu/cautilus/bin/cautilus)
 - [prune-workspace-artifacts.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/prune-workspace-artifacts.mjs)
 - [evaluate-adapter-mode.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/evaluate-adapter-mode.mjs)

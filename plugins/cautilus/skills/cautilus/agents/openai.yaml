@@ -1,0 +1,4 @@
+interface:
+  display_name: "Cautilus"
+  short_description: "Adapter-driven evaluation with bounded review gates."
+  default_prompt: "Use $cautilus to evaluate the current change, workflow, or skill against a concrete baseline with adapter-defined iterate runs, held-out validation, comparison summaries, and bounded review variants before calling it ready."

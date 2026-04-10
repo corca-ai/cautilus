@@ -8,7 +8,7 @@
       "name": "cautilus",
       "source": {
         "source": "local",
-        "path": "./"
+        "path": "./plugins/cautilus"
       },
       "policy": {
         "installation": "AVAILABLE",

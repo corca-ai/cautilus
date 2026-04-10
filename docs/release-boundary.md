@@ -8,8 +8,8 @@ wider consumer rollout.
 These are part of the reusable release boundary:
 
 - [bin/cautilus](/home/ubuntu/cautilus/bin/cautilus)
-- [.codex-plugin/plugin.json](/home/ubuntu/cautilus/.codex-plugin/plugin.json)
 - [.agents/plugins/marketplace.json](/home/ubuntu/cautilus/.agents/plugins/marketplace.json)
+- [plugins/cautilus/](/home/ubuntu/cautilus/plugins/cautilus)
 - [skills/cautilus/](/home/ubuntu/cautilus/skills/cautilus)
 - [scripts/resolve_adapter.py](/home/ubuntu/cautilus/scripts/resolve_adapter.py)
 - [scripts/init_adapter.py](/home/ubuntu/cautilus/scripts/init_adapter.py)
@@ -17,6 +17,7 @@ These are part of the reusable release boundary:
 - [scripts/agent-runtime/](/home/ubuntu/cautilus/scripts/agent-runtime)
 - [install.sh](/home/ubuntu/cautilus/install.sh)
 - [scripts/release/](/home/ubuntu/cautilus/scripts/release)
+- [scripts/release/check-codex-marketplace.mjs](/home/ubuntu/cautilus/scripts/release/check-codex-marketplace.mjs)
 - [docs/contracts/](/home/ubuntu/cautilus/docs/contracts)
 - [fixtures/workbench/review-verdict.schema.json](/home/ubuntu/cautilus/fixtures/workbench/review-verdict.schema.json)
 - checked-in product example fixtures under
@@ -39,14 +40,16 @@ These stay in the host repo:
 The current honest install story is:
 
 1. either check out `Cautilus` and run `npm install`
-2. for local Codex testing, expose the repo root through
+2. for local Codex testing, expose the repo marketplace through
    [.agents/plugins/marketplace.json](/home/ubuntu/cautilus/.agents/plugins/marketplace.json)
-   and install the `cautilus` plugin from that repo-local marketplace
-3. or install the standalone CLI from a tagged GitHub release with
+   so Codex resolves `./plugins/cautilus` as the installable local plugin
+3. verify the repo-local marketplace with
+   [check-codex-marketplace.mjs](/home/ubuntu/cautilus/scripts/release/check-codex-marketplace.mjs)
+4. or install the standalone CLI from a tagged GitHub release with
    [install.sh](/home/ubuntu/cautilus/install.sh)
-4. call `cautilus --version` or `cautilus ...` directly
-5. keep adapters and repo-local assets in the consumer repo
-6. when cutting a tagged release, render the Homebrew formula body with
+5. call `cautilus --version` or `cautilus ...` directly
+6. keep adapters and repo-local assets in the consumer repo
+7. when cutting a tagged release, render the Homebrew formula body with
    [render-homebrew-formula.mjs](/home/ubuntu/cautilus/scripts/release/render-homebrew-formula.mjs)
 
 This repo is still not claiming npm publication, a public Codex plugin
