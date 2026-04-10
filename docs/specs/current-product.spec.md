@@ -26,6 +26,10 @@ standalone product여야 한다.
 | .github/workflows/release-artifacts.yml | file_exists |  |
 | .github/workflows/release-artifacts.yml | fixed | render-homebrew-formula.mjs |
 | bin/cautilus | file_exists |  |
+| .claude-plugin/marketplace.json | file_exists |  |
+| .agents/plugins/marketplace.json | file_exists |  |
+| plugins/cautilus/.claude-plugin/plugin.json | file_exists |  |
+| plugins/cautilus/.codex-plugin/plugin.json | file_exists |  |
 | bin/cautilus | fixed | adapter resolve |
 | bin/cautilus | fixed | cautilus doctor |
 | bin/cautilus | fixed | workspace prepare-compare |

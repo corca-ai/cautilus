@@ -23,6 +23,10 @@ $ test -f eslint.config.mjs
 $ test -f .github/workflows/verify.yml
 $ test -f .github/workflows/release-artifacts.yml
 $ test -f bin/cautilus
+$ test -f .claude-plugin/marketplace.json
+$ test -f .agents/plugins/marketplace.json
+$ test -f plugins/cautilus/.claude-plugin/plugin.json
+$ test -f plugins/cautilus/.codex-plugin/plugin.json
 $ test -f docs/workflow.md
 $ test -f docs/contracts/adapter-contract.md
 $ test -f docs/contracts/reporting.md

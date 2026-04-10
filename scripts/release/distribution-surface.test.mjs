@@ -72,12 +72,30 @@ test("repo marketplace points Codex at the packaged cautilus plugin subtree", ()
 	assert.equal(marketplace.plugins[0].source.path, "./plugins/cautilus");
 });
 
+test("repo marketplace points Claude at the packaged cautilus plugin subtree", () => {
+	const marketplace = JSON.parse(
+		readFileSync(join(REPO_ROOT, ".claude-plugin", "marketplace.json"), "utf-8"),
+	);
+	assert.equal(marketplace.plugins[0].name, "cautilus");
+	assert.equal(marketplace.plugins[0].source, "./plugins/cautilus");
+	assert.equal(marketplace.plugins[0].version, "0.1.0");
+});
+
 test("packaged cautilus plugin manifest points at its bundled skills directory", () => {
 	const manifest = JSON.parse(
 		readFileSync(join(REPO_ROOT, "plugins", "cautilus", ".codex-plugin", "plugin.json"), "utf-8"),
 	);
 	assert.equal(manifest.name, "cautilus");
 	assert.equal(manifest.skills, "./skills/");
+});
+
+test("packaged cautilus Claude plugin manifest carries stable product metadata", () => {
+	const manifest = JSON.parse(
+		readFileSync(join(REPO_ROOT, "plugins", "cautilus", ".claude-plugin", "plugin.json"), "utf-8"),
+	);
+	assert.equal(manifest.name, "cautilus");
+	assert.equal(manifest.version, "0.1.0");
+	assert.equal(manifest.repository, "https://github.com/corca-ai/cautilus");
 });
 
 test("packaged cautilus skill stays in sync with the repo-bundled skill source", () => {

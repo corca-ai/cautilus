@@ -1,0 +1,10 @@
+{
+  "name": "cautilus",
+  "description": "Standalone intentful behavior evaluation CLI and bundled skill.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Corca",
+    "url": "https://github.com/corca-ai"
+  },
+  "repository": "https://github.com/corca-ai/cautilus"
+}

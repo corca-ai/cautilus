@@ -8,8 +8,10 @@ wider consumer rollout.
 These are part of the reusable release boundary:
 
 - [bin/cautilus](/home/ubuntu/cautilus/bin/cautilus)
+- [.claude-plugin/marketplace.json](/home/ubuntu/cautilus/.claude-plugin/marketplace.json)
 - [.agents/plugins/marketplace.json](/home/ubuntu/cautilus/.agents/plugins/marketplace.json)
 - [plugins/cautilus/](/home/ubuntu/cautilus/plugins/cautilus)
+- [plugins/cautilus/.claude-plugin/plugin.json](/home/ubuntu/cautilus/plugins/cautilus/.claude-plugin/plugin.json)
 - [skills/cautilus/](/home/ubuntu/cautilus/skills/cautilus)
 - [scripts/resolve_adapter.py](/home/ubuntu/cautilus/scripts/resolve_adapter.py)
 - [scripts/init_adapter.py](/home/ubuntu/cautilus/scripts/init_adapter.py)
@@ -45,15 +47,21 @@ The current honest install story is:
    so Codex resolves `./plugins/cautilus` as the installable local plugin
 3. verify the repo-local marketplace with
    [check-codex-marketplace.mjs](/home/ubuntu/cautilus/scripts/release/check-codex-marketplace.mjs)
-4. or install the standalone CLI from a tagged GitHub release with
+4. for local Claude testing, expose the repo marketplace through
+   [.claude-plugin/marketplace.json](/home/ubuntu/cautilus/.claude-plugin/marketplace.json)
+   so Claude resolves `./plugins/cautilus` as the installable local plugin
+5. validate the checked-in Claude marketplace and plugin manifests with
+   `claude plugins validate ./.claude-plugin/marketplace.json`
+   and `claude plugins validate ./plugins/cautilus/.claude-plugin/plugin.json`
+6. or install the standalone CLI from a tagged GitHub release with
    [install.sh](/home/ubuntu/cautilus/install.sh)
-5. call `cautilus --version` or `cautilus ...` directly
-6. keep adapters and repo-local assets in the consumer repo
-7. when cutting a tagged release, render the Homebrew formula body with
+7. call `cautilus --version` or `cautilus ...` directly
+8. keep adapters and repo-local assets in the consumer repo
+9. when cutting a tagged release, render the Homebrew formula body with
    [render-homebrew-formula.mjs](/home/ubuntu/cautilus/scripts/release/render-homebrew-formula.mjs)
 
-This repo is still not claiming npm publication, a public Codex plugin
-distribution flow, or a Claude plugin installer contract.
+This repo is still not claiming npm publication or a public Codex/Claude
+plugin distribution flow. The current plugin install story is repo-local.
 
 ## Versioning Discipline
 

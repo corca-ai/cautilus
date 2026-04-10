@@ -1,0 +1,12 @@
+version: 1
+repo: cautilus
+language: en
+output_dir: skill-outputs/impl
+preset_id: portable-defaults
+customized_from: portable-defaults
+verification_tools:
+  - npm run lint
+  - npm run test
+  - npm run verify
+ui_verification_tools: []
+verification_install_proposals: []

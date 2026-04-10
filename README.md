@@ -9,9 +9,9 @@ It now also includes a product-owned helper that prepares clean baseline and
 candidate git worktrees for explicit A/B evaluation runs.
 The product target is a standalone binary plus a bundled skill that a host repo
 can adopt without inheriting another repo's private runtime surfaces.
-This repo now also carries a minimal Codex plugin manifest and repo-local
-marketplace wiring so that the same checked-in skill can be installed without
-copying it into another local scaffold first.
+This repo now also carries minimal Codex and Claude plugin manifests plus
+repo-local marketplace wiring so that the same checked-in skill can be
+installed without copying it into another local scaffold first.
 
 The intended product shape is:
 
@@ -38,8 +38,8 @@ This repo is still early.
 It already owns the generic workflow and adapter contracts plus bootstrap
 scripts.
 It now also includes a minimal CLI, a bundled `cautilus` skill surface,
-executor-variant runners, local Codex plugin packaging metadata, and local
-tests for the bounded evaluation surface.
+executor-variant runners, local Codex and Claude plugin packaging metadata,
+and local tests for the bounded evaluation surface.
 It also now includes checked-in GitHub workflows for `verify` and tagged
 release artifacts, so the release/install surface is not only prose.
 
@@ -57,7 +57,8 @@ Current `core validated surface`:
 - report assembly, review packet assembly, and review-variant fanout
 - bounded CLI behavior evaluation through `cli evaluate`
 - standalone install surface, local gates, and checked-in release helpers
-- repo-local Codex plugin package and marketplace wiring for local skill install
+- repo-local Codex and Claude plugin package and marketplace wiring for local
+  skill install
 
 Current `product-owned helper surface`:
 
@@ -134,6 +135,10 @@ Dogfood and migration evidence is tracked separately in
   tagged-release checksum, archive, and tap publication workflow
 - [install.sh](/home/ubuntu/cautilus/install.sh):
   curl-install surface for tagged GitHub releases
+- [.claude-plugin/marketplace.json](/home/ubuntu/cautilus/.claude-plugin/marketplace.json):
+  repo-local Claude marketplace entry that points at `./plugins/cautilus`
+- [plugins/cautilus/.claude-plugin/plugin.json](/home/ubuntu/cautilus/plugins/cautilus/.claude-plugin/plugin.json):
+  Claude plugin manifest for the packaged local install surface
 - [plugins/cautilus/.codex-plugin/plugin.json](/home/ubuntu/cautilus/plugins/cautilus/.codex-plugin/plugin.json):
   Codex plugin manifest for the packaged local install surface
 - [.agents/plugins/marketplace.json](/home/ubuntu/cautilus/.agents/plugins/marketplace.json):
@@ -195,6 +200,18 @@ subtree through
 [.agents/plugins/marketplace.json](/home/ubuntu/cautilus/.agents/plugins/marketplace.json)
 and
 [plugins/cautilus/.codex-plugin/plugin.json](/home/ubuntu/cautilus/plugins/cautilus/.codex-plugin/plugin.json).
+
+For Claude local install testing, this repo also exposes a repo-local
+marketplace through
+[.claude-plugin/marketplace.json](/home/ubuntu/cautilus/.claude-plugin/marketplace.json)
+and
+[plugins/cautilus/.claude-plugin/plugin.json](/home/ubuntu/cautilus/plugins/cautilus/.claude-plugin/plugin.json).
+Validate the checked-in Claude surface with:
+
+```bash
+claude plugins validate ./.claude-plugin/marketplace.json
+claude plugins validate ./plugins/cautilus/.claude-plugin/plugin.json
+```
 
 Resolve an adapter in a target repo:
 
@@ -391,6 +408,14 @@ and [.agents/plugins/marketplace.json](/home/ubuntu/cautilus/.agents/plugins/mar
 Use
 [`node ./scripts/release/check-codex-marketplace.mjs --repo-root .`](/home/ubuntu/cautilus/scripts/release/check-codex-marketplace.mjs)
 to verify that Codex can actually discover the repo marketplace entry.
+For Claude local install testing, the same packaged subtree is also exposed
+through
+[plugins/cautilus/.claude-plugin/plugin.json](/home/ubuntu/cautilus/plugins/cautilus/.claude-plugin/plugin.json)
+and
+[.claude-plugin/marketplace.json](/home/ubuntu/cautilus/.claude-plugin/marketplace.json).
+Use `claude plugins validate ./.claude-plugin/marketplace.json` and
+`claude plugins validate ./plugins/cautilus/.claude-plugin/plugin.json` to
+verify the checked-in Claude manifest shapes.
 
 ## Dev
 

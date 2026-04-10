@@ -15,6 +15,10 @@ Ceal의 기존 `workbench` 시나리오는 여전히 유용한 dogfood 입력이
 | README.md | fixed | intentful behavior evaluation |
 | AGENTS.md | fixed | independent binary plus bundled skill |
 | bin/cautilus | file_exists |  |
+| .claude-plugin/marketplace.json | file_exists |  |
+| .agents/plugins/marketplace.json | file_exists |  |
+| plugins/cautilus/.claude-plugin/plugin.json | file_exists |  |
+| plugins/cautilus/.codex-plugin/plugin.json | file_exists |  |
 | bin/cautilus | fixed | cautilus doctor |
 | bin/cautilus | fixed | workspace prepare-compare |
 | bin/cautilus | fixed | workspace prune-artifacts |
@@ -69,6 +73,7 @@ Ceal의 기존 `workbench` 시나리오는 여전히 유용한 dogfood 입력이
 현재 단계에서 standalone surface는 최소한 아래를 만족해야 한다.
 
 - binary와 bundled skill이 같은 workflow entrypoint를 가리킨다.
+- packaged local skill surface는 repo-local Codex/Claude marketplace로도 설명된다.
 - adapter resolve/init/doctor/workspace prepare-compare/workspace prune-artifacts/scenario normalize chatbot/scenario normalize cli/scenario normalize skill/scenario summarize-telemetry/scenario prepare-input/scenario propose/evidence prepare-input/evidence bundle/report build/mode evaluate/optimize prepare-input/optimize propose/cli evaluate/review prepare-input/review build-prompt-input/review render-prompt/review variants는 Ceal-local script path 없이 설명된다.
 - Ceal repoint는 제품 정의가 아니라 consumer migration 단계로 남아 있다.
 
