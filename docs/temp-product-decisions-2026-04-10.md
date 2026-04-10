@@ -49,7 +49,19 @@ recommended decision:
 - `product-owned helper surface`
 
 status:
-- open
+- decided
+
+decision:
+- 현재 문서에서 `Cautilus` surface를 `core validated surface` 와
+  `product-owned helper surface` 로 명시적으로 분리한다.
+
+follow-up effect:
+- 이후 문서 정리에서는 helper seam이 current repo 안에 구현되어 있어도,
+  consumer proof와 runtime centrality가 다르면 core와 같은 강도로 쓰지 않는다.
+- 다음 문서 정리 후보:
+  - [README.md](/home/ubuntu/cautilus/README.md)
+  - [docs/specs/current-product.spec.md](/home/ubuntu/cautilus/docs/specs/current-product.spec.md)
+  - [docs/consumer-readiness.md](/home/ubuntu/cautilus/docs/consumer-readiness.md)
 
 ### D2. Scenario History Status
 
@@ -106,7 +118,8 @@ status:
 
 ## Next Decision
 
-먼저 D1부터 결정한다.
+다음은 D2만 결정한다.
 
 질문:
-- 현재 `Cautilus` 문서에서 `core validated surface` 와 `product-owned helper surface` 를 명시적으로 나누는 쪽으로 갈지 여부
+- `scenario-history`를 당장 `implemented helper, not yet core runtime` 으로 분류할지,
+  아니면 다음 구현 우선순위 1번으로 올려 current product claim에 맞게 실제 loop에 연결할지
