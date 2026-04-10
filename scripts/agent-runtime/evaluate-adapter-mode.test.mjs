@@ -98,6 +98,99 @@ echo preflight-ok
 	return { root, workspace };
 }
 
+function createScenarioHistoryRepo() {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-mode-history-"));
+	const adapterDir = join(root, ".agents");
+	const workspace = join(root, "workspace");
+	const profilesDir = join(root, "profiles");
+	mkdirSync(adapterDir, { recursive: true });
+	mkdirSync(workspace, { recursive: true });
+	mkdirSync(profilesDir, { recursive: true });
+	writeExecutable(
+		workspace,
+		"bench-history.sh",
+		`#!/bin/sh
+mode="$1"
+scenario_results_file="$2"
+profile_file="$3"
+selected_ids_file="$4"
+selection_snapshot="$5"
+python3 - "$profile_file" "$selected_ids_file" "$scenario_results_file" "$selection_snapshot" "$mode" <<'PY'
+import json
+import sys
+
+profile_file, selected_ids_file, scenario_results_file, selection_snapshot, mode = sys.argv[1:]
+with open(profile_file, "r", encoding="utf-8") as handle:
+    profile = json.load(handle)
+with open(selected_ids_file, "r", encoding="utf-8") as handle:
+    selected_ids = json.load(handle)
+scenario_ids = [entry["scenarioId"] for entry in profile["scenarios"]]
+with open(selection_snapshot, "w", encoding="utf-8") as handle:
+    handle.write(",".join(scenario_ids))
+results = [
+    {
+        "scenarioId": scenario_id,
+        "status": "passed",
+        "overallScore": 100,
+        "passRate": 1
+    }
+    for scenario_id in scenario_ids
+]
+packet = {
+    "schemaVersion": "cautilus.scenario_results.v1",
+    "mode": mode,
+    "results": results
+}
+with open(scenario_results_file, "w", encoding="utf-8") as handle:
+    json.dump(packet, handle)
+    handle.write("\\n")
+if scenario_ids != selected_ids:
+    raise SystemExit(f"profile scenarios {scenario_ids} did not match selected ids {selected_ids}")
+PY
+echo "$mode ok"
+`,
+	);
+	writeFileSync(
+		join(profilesDir, "default-train.json"),
+		JSON.stringify(
+			{
+				schemaVersion: "cautilus.scenario_profile.v1",
+				profileId: "default-train",
+				historyPolicy: {
+					maxGraduationInterval: 5,
+					recentResultsLimit: 12,
+				},
+				scenarios: [
+					{ scenarioId: "probe-a", split: "train", cadence: "graduated", cohort: "probe" },
+					{ scenarioId: "control-a", split: "train", cadence: "always", cohort: "control" },
+					{ scenarioId: "held-out-a", split: "test", cadence: "always", cohort: "held-out" },
+				],
+			},
+			null,
+			2,
+		),
+		"utf-8",
+	);
+	writeFileSync(
+		join(adapterDir, "cautilus-adapter.yaml"),
+		[
+			"version: 1",
+			"repo: temp",
+			"evaluation_surfaces:",
+			"  - prompt behavior",
+			"baseline_options:",
+			"  - baseline git ref via {baseline_ref}",
+			"iterate_command_templates:",
+			"  - sh {candidate_repo}/bench-history.sh iterate {scenario_results_file} {profile} {selected_scenario_ids_file} {output_dir}/selection.txt",
+			"profile_default: profiles/default-train.json",
+			"history_file_hint: .cautilus/history.json",
+			"",
+		].join("\n"),
+		"utf-8",
+	);
+	return { root, workspace };
+}
+
 	test("evaluate-adapter-mode executes held_out commands and emits a report packet", () => {
 	const { root, workspace } = createRepo();
 	try {
@@ -283,6 +376,72 @@ test("evaluate-adapter-mode emits heartbeat and ownership hints for failed comma
 		assert.match(result.stderr, /full_gate 1\/1 artifacts: stdout=.*stderr=.*/);
 		assert.match(result.stderr, /full_gate 1\/1 failure signal: repo-local failure for full_gate/);
 		assert.match(result.stderr, /full_gate 1\/1 ownership hint: Repo-local adapter, artifact, or policy failures are usually consumer-owned/);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("evaluate-adapter-mode selects scenarios from a checked-in profile and updates history", () => {
+	const { root, workspace } = createScenarioHistoryRepo();
+	try {
+		const firstOutputDir = join(root, "iterate-1");
+		const secondOutputDir = join(root, "iterate-2");
+		const first = spawnSync(
+			"node",
+			[
+				SCRIPT_PATH,
+				"--repo-root",
+				root,
+				"--candidate-repo",
+				workspace,
+				"--mode",
+				"iterate",
+				"--intent",
+				"Train scenario selection should honor checked-in profile history.",
+				"--baseline-ref",
+				"origin/main",
+				"--output-dir",
+				firstOutputDir,
+			],
+			{
+				cwd: process.cwd(),
+				encoding: "utf-8",
+			},
+		);
+		assert.equal(first.status, 0, first.stderr);
+		assert.equal(readFileSync(join(firstOutputDir, "selection.txt"), "utf-8"), "probe-a,control-a");
+		const historyPath = join(root, ".cautilus", "history.json");
+		const firstHistory = JSON.parse(readFileSync(historyPath, "utf-8"));
+		assert.equal(firstHistory.trainRunCount, 1);
+		assert.equal(firstHistory.scenarioStats["probe-a"].graduationInterval, 2);
+
+		const second = spawnSync(
+			"node",
+			[
+				SCRIPT_PATH,
+				"--repo-root",
+				root,
+				"--candidate-repo",
+				workspace,
+				"--mode",
+				"iterate",
+				"--intent",
+				"Train scenario selection should respect graduated cadence.",
+				"--baseline-ref",
+				"origin/main",
+				"--output-dir",
+				secondOutputDir,
+			],
+			{
+				cwd: process.cwd(),
+				encoding: "utf-8",
+			},
+		);
+		assert.equal(second.status, 0, second.stderr);
+		assert.equal(readFileSync(join(secondOutputDir, "selection.txt"), "utf-8"), "control-a");
+		const secondHistory = JSON.parse(readFileSync(historyPath, "utf-8"));
+		assert.equal(secondHistory.trainRunCount, 2);
+		assert.deepEqual(secondHistory.recentRuns.at(-1).selectedScenarioIds, ["control-a"]);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

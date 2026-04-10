@@ -1,5 +1,12 @@
 # Consumer Readiness
 
+This note is an evidence appendix.
+It records current dogfood and live-consumer proof for `Cautilus`, but it is
+not the canonical product vocabulary.
+Product-facing docs should describe repo-agnostic surfaces such as `chatbot`,
+`skill`, `cli`, `workflow`, and `agent runtime` first, then point here for
+concrete checked-in host evidence.
+
 This note records how `Cautilus` currently maps onto the three intended test
 targets under `~/`:
 

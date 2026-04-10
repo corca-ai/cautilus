@@ -125,8 +125,10 @@ default_schema_file: fixtures/workbench/review-verdict.schema.json
 - `full_gate_samples_default`: default sample count for full gate runs.
 - `history_file_hint`: default history file path when the workflow uses
   graduation or cadence.
-- `profile_default`: default scenario profile when the backend supports
-  profiles.
+- `profile_default`: default scenario profile reference when the backend
+  supports profiles. This may stay an opaque profile label, or it may point at
+  a checked-in `cautilus.scenario_profile.v1` file for product-owned
+  selection/history integration.
 - `default_prompt_file`: optional checked-in prompt path for executor-variant
   review runs.
 - `default_schema_file`: optional checked-in schema path for executor-variant
@@ -253,6 +255,7 @@ Template placeholders should stay obvious and few. Good placeholders:
 - `{candidate_repo}`
 - `{history_file}`
 - `{profile}`
+- `{selected_scenario_ids_file}`
 - `{split}`
 - `{prompt_file}`
 - `{schema_file}`
@@ -279,6 +282,15 @@ For adapter-driven mode execution, `Cautilus` may also supply:
 - `{report_input_file}`: path where `Cautilus` will persist the intermediate
   report input packet
 - `{report_file}`: path where `Cautilus` will persist the final report packet
+- `{selected_scenario_ids_file}`: JSON file containing the selected scenario ids
+  for this invocation when `Cautilus` is driving a checked-in scenario profile
+
+When `profile_default` or `--profile` points at a checked-in
+`cautilus.scenario_profile.v1` file, `Cautilus` may materialize a selected
+profile file for the current invocation and pass that path through `{profile}`
+instead of the original reference. This lets the runtime keep selection and
+history ownership product-side while leaving the actual benchmark command
+consumer-owned.
 
 For `codex exec`, do not invent approval-policy flags from older wrappers.
 Use `--sandbox` and your surrounding runtime sandbox instead.

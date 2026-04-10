@@ -2,7 +2,7 @@
 
 ## Goal
 
-Turn `Cautilus` from a Ceal extraction scaffold into a standalone intentful
+Turn `Cautilus` from an extraction scaffold into a standalone intentful
 behavior evaluation product.
 
 The target product is:
@@ -22,88 +22,33 @@ The target product is:
 
 ## Current State
 
-- Generic workflow, adapter, and reporting contracts are already extracted.
-- Python adapter bootstrap scripts are already extracted.
-- Minimal CLI and executor-variant runners now exist in this repo.
-- A repo-local bundled `cautilus` skill surface now exists beside the CLI.
-- A standalone `doctor` command now checks adapter readiness for host repos.
-- A temp-repo smoke test now proves `adapter init -> doctor -> review variants`
-  without Ceal-owned paths.
-- A first standalone `cli evaluate` command now checks one bounded command
-  packet against operator-facing intent, stdout/stderr expectations, and side
-  effects.
-- A first product-owned `cli` normalization runtime seam now exists for
-  operator-guidance and behavior-contract regressions surfaced by bounded CLI
-  evaluation.
-- A standalone `scenario normalize cli` command now emits proposal candidates
-  from a checked-in CLI input packet.
-- A first standalone `mode evaluate` command now runs adapter-defined iterate,
-  held-out, comparison, or full-gate command templates and leaves a report
-  packet plus command observations behind.
-- A product-owned `workspace prepare-compare` helper now owns clean git-ref
-  baseline-versus-candidate workspace preparation.
-- A first standalone `review prepare-input` command now assembles one durable
-  review packet around a report, adapter review prompts, and compare
-  questions.
-- A first standalone `optimize prepare-input` plus `optimize propose` chain now
-  turns explicit report, review-summary, and history evidence into one bounded
-  next-revision brief for prompt or adapter work.
-- A first explicit `cautilus.scenario_results.v1` packet now carries
-  scenario-level outcomes and compare artifacts through mode/report/review
-  surfaces.
-- A first standalone `review build-prompt-input` plus
-  `review render-prompt` chain now owns the generic meta-prompt layer above
-  the review packet boundary.
-- The executor-variant runner can now synthesize a review packet, prompt-input
-  packet, and rendered review prompt directly from a report packet when no
-  checked-in prompt file is supplied.
-- A first tagged-release install story now exists through `install.sh`,
-  `cautilus --version`, and a Homebrew formula renderer.
-- A first release-ops checksum helper now exists for tagged GitHub archives.
-- Checked-in GitHub workflows now run `verify` on pushes/PRs and publish tagged
-  release checksum/formula artifacts on `v*` tags.
-- Ceal now repoints generic adapter-resolution and review-variant runner seams
-  to `Cautilus` as a consumer.
-- A first generic scenario/history contract draft now exists in
-  `docs/contracts/scenario-history.md`.
-- A first generic scenario-proposal source contract draft now exists in
-  `docs/contracts/scenario-proposal-sources.md`.
-- A first product-owned scenario/history runtime seam now exists in
-  `scripts/agent-runtime/scenario-history.mjs`.
-- A first product-owned scenario-proposal runtime seam now exists in
-  `scripts/agent-runtime/scenario-proposals.mjs`.
-- A standalone `scenario propose` command now turns normalized proposal input
-  packets into operator-reviewable proposal packets.
-- A checked-in contract now describes the normalized input packet consumed by
-  `cautilus scenario propose`.
-- A file-based `scenario prepare-input` reference surface now demonstrates the
-  host-owned normalization seam before proposal generation.
-- The next design step now treats `chatbot` and `skill` as the first
-  use-case-specific normalization helpers worth productizing.
-- A first product-owned `chatbot` normalization runtime seam now exists for
-  Ceal-shaped conversation and blocked-run summaries.
-- A standalone `scenario normalize chatbot` command now emits proposal
-  candidates from a checked-in chatbot input packet.
-- A first product-owned `skill` normalization runtime seam now exists for
-  charness-like validation regressions and crill-like blocked workflow
-  artifacts.
-- A standalone `scenario normalize skill` command now emits proposal
-  candidates from a checked-in skill/workflow input packet.
-- Checked-in schema artifacts now pin the `chatbot` and `skill` helper input
-  packets beside their fixtures.
-- Checked-in `ceal`, `charness`, and `crill` shaped packet examples now show
-  what consumer-owned normalized input should look like without importing raw
-  reader logic.
-- [consumer-readiness.md](/home/ubuntu/cautilus/docs/consumer-readiness.md)
-  now fixes the honest live-consumer status: all three target repos have an
-  official `cautilus-adapter`, while `ceal` remains the deepest runtime
-  consumer and `charness` / `crill` remain the primary normalization
-  references for their respective use cases.
-- `crill` now also proves the deeper consumer path: root and named adapters,
-  explicit CLI intent packets, review variants, and a checked-in comparison
-  artifact runner all execute through the standalone binary.
-- Ceal still owns richer prompt-benchmark history logic, audit-workbench
-  storage, scenario proposal generation, and operator web surfaces.
+Current `core validated surface`:
+
+- generic workflow, adapter, and reporting contracts
+- Python adapter bootstrap scripts
+- a minimal CLI plus bundled `cautilus` skill entrypoint
+- adapter readiness checks through `doctor`
+- bounded runtime execution through `mode evaluate`
+- scenario-history-aware profile selection and history updates for
+  profile-backed mode runs
+- explicit workspace preparation through `workspace prepare-compare`
+- report packet assembly, review packet assembly, and review-variant fanout
+- bounded CLI behavior evaluation through `cli evaluate`
+- tagged-release install and release-helper surfaces
+- checked-in local gates and GitHub workflows that run `verify`
+
+Current `product-owned helper surface`:
+
+- `chatbot`, `cli`, and `skill` normalization helpers
+- scenario proposal packet assembly and proposal generation
+- scenario telemetry summaries
+- normalized evidence-bundle input and merge helpers
+- bounded optimization input and proposal helpers
+
+Dogfood and migration evidence now lives separately from the product concept.
+Use [consumer-readiness.md](/home/ubuntu/cautilus/docs/consumer-readiness.md)
+for checked-in host evidence instead of treating any one consumer repo as the
+product definition.
 
 ## Phase Plan
 
@@ -129,7 +74,7 @@ Done or nearly done:
 
 ### Phase 3: Evaluation Engine
 
-Move generic logic out of Ceal:
+Move generic logic into the product runtime:
 
 - scenario split selection rules
 - train vs held-out vs full-gate execution semantics
@@ -139,12 +84,12 @@ Move generic logic out of Ceal:
 
 Guardrail:
 
-- do not import Ceal's built-in benchmark profiles unchanged if they encode
-  Ceal-specific scenario packs
+- do not import a host repo's built-in benchmark profiles unchanged if they
+  encode host-specific scenario packs
 
 ### Phase 4: Scenario Proposal Engine
 
-Generalize the operator loop currently proven in Ceal:
+Generalize the operator loop without binding to one host repo:
 
 - mine recent human conversations, recent live agent runs, and recent scenario
   coverage
@@ -157,19 +102,18 @@ Generalize the operator loop currently proven in Ceal:
   teach agents how to mine host-normalized evidence bundles into proposal
   inputs without each host copying the same meta-prompt loop
 
-The extracted version should describe generic source ports rather than binding
-itself to Slack or Ceal storage conventions.
+The product should describe generic source ports rather than binding itself to
+one chat transport, one audit store, or one host storage convention.
 
 The first helper targets should be:
 
  - `chatbot`
-  - Ceal-like conversation continuity and blocked-follow-up patterns
+  - conversation continuity and blocked-follow-up patterns
 - `cli`
   - operator-facing command intent plus guidance/behavior-contract regressions
     in bounded fixture environments
 - `skill`
-  - charness-like validation scenarios plus crill-like durable workflow
-    artifact regressions
+  - validation scenarios plus durable workflow artifact regressions
 
 ### Phase 5: Intent-First Optimization Surface
 
@@ -193,9 +137,9 @@ Formalize the DSPy-like product story:
 
 ### Phase 6: Consumer Repoint And External Consumers
 
-- repoint Ceal's generic workbench paths to `Cautilus`
-- keep Ceal adapters, prompts, and operator policy local to Ceal
-- add external-consumer instructions for repos like `charness`
+- repoint legacy host workbench paths to `Cautilus`
+- keep host adapters, prompts, and operator policy local to each host repo
+- add external-consumer instructions for reusable host archetypes
 - define release and versioning discipline before wider reuse
 
 The current release boundary is documented in
@@ -207,18 +151,18 @@ The current release boundary is documented in
    one checked-in workflow story.
 2. Keep expanding normalization-pattern coverage while preserving one official
    adapter contract: `cautilus-adapter.yaml`.
-3. Turn raw-evidence mining into bundled-skill reference prompts plus
+3. Keep expanding scenario-history beyond the first profile-backed runtime path,
+   especially around compare semantics and baseline cache ownership.
+4. Turn raw-evidence mining into bundled-skill reference prompts plus
    product-owned helper scripts instead of letting each host reinvent the same
    meta-prompt orchestration.
-4. Add bounded optimization helpers that can propose prompt or adapter changes
+5. Add bounded optimization helpers that can propose prompt or adapter changes
    from report, compare, review, and history packets without weakening held-out
    discipline.
-5. Keep HTML report rendering on the roadmap, but defer product-owned HTML
+6. Keep HTML report rendering on the roadmap, but defer product-owned HTML
    output until the JSON/YAML packet and report boundaries stay stable across
    multiple consumers.
-6. Prepare explicit deepening steps for `charness` and `crill` beyond the new
-   root adapter surface instead of widening discovery rules.
 7. Turn the first install story into a real release discipline: tagged
    archives, checksums, tap publication, and public-repo release docs.
-8. Keep moving Ceal-specific runtime seams out of the product boundary and
-   into consumer-owned adapters, prompts, and storage readers.
+8. Keep moving host-specific runtime seams out of the product boundary and into
+   consumer-owned adapters, prompts, and storage readers.

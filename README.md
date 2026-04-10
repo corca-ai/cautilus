@@ -1,15 +1,14 @@
 # Cautilus
 
-`Cautilus` is an intentful behavior evaluation product extracted from Ceal's
-`workbench`.
-It is meant to become the repo-agnostic layer that helps a host repo evaluate
+`Cautilus` is a repo-agnostic intentful behavior evaluation product.
+It is meant to help a host repo evaluate
 agent runtimes, skills, and operator-facing command surfaces with bounded
 loops, explicit baselines, held-out validation, comparison summaries, and
 independent review variants.
 It now also includes a product-owned helper that prepares clean baseline and
 candidate git worktrees for explicit A/B evaluation runs.
 The product target is a standalone binary plus a bundled skill that a host repo
-can adopt without inheriting Ceal's private runtime surfaces.
+can adopt without inheriting another repo's private runtime surfaces.
 
 The intended product shape is:
 
@@ -36,11 +35,34 @@ This repo is still early.
 It already owns the generic workflow and adapter contracts plus bootstrap
 scripts.
 It now also includes a minimal CLI, a bundled `cautilus` skill surface,
-executor-variant runners, and local tests for the adapter and review-variant
-surfaces.
+executor-variant runners, and local tests for the bounded evaluation surface.
 It also now includes checked-in GitHub workflows for `verify` and tagged
 release artifacts, so the release/install surface is not only prose.
-Ceal remains a proving-ground consumer, not the product boundary.
+
+## Current Product Surface
+
+Current `core validated surface`:
+
+- adapter-driven CLI entrypoints for `resolve`, `init`, and `doctor`
+- explicit A/B workspace preparation through `workspace prepare-compare`
+- bounded runtime execution through `mode evaluate`
+- scenario-history-aware profile selection and history updates for
+  profile-backed mode runs
+- report assembly, review packet assembly, and review-variant fanout
+- bounded CLI behavior evaluation through `cli evaluate`
+- standalone install surface, local gates, and checked-in release helpers
+
+Current `product-owned helper surface`:
+
+- `chatbot`, `cli`, and `skill` normalization helpers
+- scenario proposal packet assembly and proposal generation
+- scenario telemetry summaries
+- normalized evidence bundling
+- bounded optimization input and proposal helpers
+
+Dogfood and migration evidence is tracked separately in
+[consumer-readiness.md](/home/ubuntu/cautilus/docs/consumer-readiness.md) and
+[consumer-migration.md](/home/ubuntu/cautilus/docs/consumer-migration.md).
 
 ## Repo Layout
 
@@ -87,11 +109,14 @@ Ceal remains a proving-ground consumer, not the product boundary.
 - [fixtures/scenario-proposals/skill-input.schema.json](/home/ubuntu/cautilus/fixtures/scenario-proposals/skill-input.schema.json):
   checked-in schema for `cautilus.skill_normalization_inputs.v1`
 - [fixtures/scenario-proposals/ceal-chatbot-input.json](/home/ubuntu/cautilus/fixtures/scenario-proposals/ceal-chatbot-input.json):
-  Ceal-shaped `chatbot` normalization example packet
+  chatbot-shaped normalization example packet from one checked-in dogfood
+  source
 - [fixtures/scenario-proposals/charness-skill-input.json](/home/ubuntu/cautilus/fixtures/scenario-proposals/charness-skill-input.json):
-  charness-shaped `skill` normalization example packet
+  skill-validation-shaped normalization example packet from one checked-in
+  dogfood source
 - [fixtures/scenario-proposals/crill-skill-input.json](/home/ubuntu/cautilus/fixtures/scenario-proposals/crill-skill-input.json):
-  crill-shaped `skill` normalization example packet
+  durable-workflow-shaped normalization example packet from one checked-in
+  dogfood source
 - [docs/specs/index.spec.md](/home/ubuntu/cautilus/docs/specs/index.spec.md):
   active product specs
 - [docs/master-plan.md](/home/ubuntu/cautilus/docs/master-plan.md): roadmap
@@ -103,8 +128,7 @@ Ceal remains a proving-ground consumer, not the product boundary.
 - [install.sh](/home/ubuntu/cautilus/install.sh):
   curl-install surface for tagged GitHub releases
 - [docs/consumer-readiness.md](/home/ubuntu/cautilus/docs/consumer-readiness.md):
-  current live-consumer vs normalization-reference status for Ceal, charness,
-  and crill
+  dogfood and live-consumer evidence appendix
 - [skills/cautilus/SKILL.md](/home/ubuntu/cautilus/skills/cautilus/SKILL.md):
   bundled standalone skill entrypoint
 - [scripts/resolve_adapter.py](/home/ubuntu/cautilus/scripts/resolve_adapter.py):
@@ -116,11 +140,13 @@ Ceal remains a proving-ground consumer, not the product boundary.
 - [scripts/agent-runtime/scenario-history.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/scenario-history.mjs):
   scenario selection, graduation, and history helpers
 - [scripts/agent-runtime/chatbot-proposal-candidates.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/chatbot-proposal-candidates.mjs):
-  Ceal-shaped conversation and blocked-run summaries to proposal-candidate helper
+  chatbot-shaped conversation and blocked-run summaries to proposal-candidate
+  helper
 - [scripts/agent-runtime/skill-proposal-candidates.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/skill-proposal-candidates.mjs):
-  charness- and crill-shaped validation summaries to proposal-candidate helper
+  skill-validation and durable-workflow summaries to proposal-candidate helper
 - [scripts/agent-runtime/consumer-example-fixtures.test.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/consumer-example-fixtures.test.mjs):
-  executable proof that Ceal/charness/crill-shaped packets normalize cleanly
+  executable proof that multiple checked-in dogfood packet shapes normalize
+  cleanly
 - [scripts/agent-runtime/scenario-proposals.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/scenario-proposals.mjs):
   proposal ranking and draft-scenario payload helpers
 - [scripts/agent-runtime/generate-scenario-proposals.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/generate-scenario-proposals.mjs):

@@ -15,6 +15,13 @@ import {
 	ownershipHintForRepo,
 	runBashCommandWithProgress,
 } from "./command-progress.mjs";
+import {
+	loadScenarioHistory,
+	loadScenarioProfile,
+	saveScenarioHistory,
+	selectProfileScenarioIds,
+	updateScenarioHistory,
+} from "./scenario-history.mjs";
 import { normalizeScenarioResultsPacket } from "./scenario-results.mjs";
 
 export { ADAPTER_MODE_EVALUATION_PACKET_SCHEMA } from "./contract-versions.mjs";
@@ -220,6 +227,21 @@ function recommendationOnPass(mode, explicitValue) {
 	return mode === "full_gate" ? "accept-now" : "defer";
 }
 
+function profileReference(options, adapterData) {
+	return options.profile || adapterData.profile_default || "default";
+}
+
+function resolveScenarioProfile(repoRoot, reference) {
+	const candidatePath = resolve(repoRoot, reference);
+	if (!existsSync(candidatePath)) {
+		return null;
+	}
+	return {
+		path: candidatePath,
+		profile: loadScenarioProfile(candidatePath),
+	};
+}
+
 function emptyScenarioResultsPacket(mode) {
 	return {
 		schemaVersion: SCENARIO_RESULTS_SCHEMA,
@@ -331,8 +353,9 @@ function buildReplacements(options, adapterData, context) {
 		baseline_repo: shellEscape(context.baselineRepo),
 		candidate_repo: shellEscape(context.candidateRepo),
 		history_file: shellEscape(context.historyFile),
-		profile: shellEscape(options.profile || adapterData.profile_default || "default"),
+		profile: shellEscape(context.profileArgument),
 		split: shellEscape(options.split || DEFAULT_SPLIT_BY_MODE[options.mode]),
+		selected_scenario_ids_file: shellEscape(context.selectedScenarioIdsFile),
 		iterate_samples: String(sampleValue(options.iterateSamples, adapterData.iterate_samples_default, 2)),
 		held_out_samples: String(sampleValue(options.heldOutSamples, adapterData.held_out_samples_default, 2)),
 		comparison_samples: String(
@@ -356,6 +379,11 @@ function resolveModeContext(options, adapterPayload) {
 	}
 	const outputDir = resolve(options.outputDir);
 	mkdirSync(outputDir, { recursive: true });
+	const selectedSplit = options.split || DEFAULT_SPLIT_BY_MODE[options.mode];
+	const profileRef = profileReference(options, adapterData);
+	const scenarioProfileInput = resolveScenarioProfile(repoRoot, profileRef);
+	const historyFile = resolveHistoryFile(repoRoot, adapterData, options.historyFile);
+	const selectedScenarioIdsFile = join(outputDir, "selected-scenario-ids.json");
 	const context = {
 		repoRoot,
 		adapterData,
@@ -363,13 +391,46 @@ function resolveModeContext(options, adapterPayload) {
 		outputDir,
 		candidateRepo: resolve(options.candidateRepo || repoRoot),
 		baselineRepo: resolve(options.baselineRepo || repoRoot),
-		historyFile: resolveHistoryFile(repoRoot, adapterData, options.historyFile),
+		historyFile,
+		profileRef,
+		selectedSplit,
+		selectedScenarioIdsFile,
 		scenarioResultsFile: resolve(
 			options.scenarioResultsFile || join(outputDir, `${options.mode}-scenario-results.json`),
 		),
 		reportInputFile: join(outputDir, "report-input.json"),
 		reportFile: join(outputDir, "report.json"),
 	};
+	if (scenarioProfileInput) {
+		const history = loadScenarioHistory(historyFile, scenarioProfileInput.profile);
+		const selectedScenarioIds = selectProfileScenarioIds({
+			profile: scenarioProfileInput.profile,
+			split: selectedSplit,
+			history,
+			fullCheck: options.mode === "full_gate",
+		});
+		const selectedProfileFile = join(outputDir, "selected-profile.json");
+		const filteredProfile = {
+			...scenarioProfileInput.profile,
+			scenarios: scenarioProfileInput.profile.scenarios.filter((scenario) =>
+				selectedScenarioIds.includes(scenario.scenarioId)
+			),
+		};
+		writeFileSync(selectedProfileFile, `${JSON.stringify(filteredProfile, null, 2)}\n`, "utf-8");
+		writeFileSync(selectedScenarioIdsFile, `${JSON.stringify(selectedScenarioIds, null, 2)}\n`, "utf-8");
+		context.scenarioProfile = scenarioProfileInput.profile;
+		context.scenarioProfileFile = scenarioProfileInput.path;
+		context.selectedProfileFile = selectedProfileFile;
+		context.selectedScenarioIds = selectedScenarioIds;
+		context.loadedHistory = history;
+		context.profileArgument = selectedProfileFile;
+	} else {
+		writeFileSync(selectedScenarioIdsFile, "[]\n", "utf-8");
+		context.scenarioProfile = null;
+		context.selectedScenarioIds = [];
+		context.loadedHistory = null;
+		context.profileArgument = profileRef;
+	}
 	context.replacements = buildReplacements(options, adapterData, context);
 	return context;
 }
@@ -462,6 +523,28 @@ function persistModeReport(context, reportInput) {
 	return report;
 }
 
+function persistScenarioHistoryIfNeeded(context, options) {
+	if (!context.scenarioProfile) {
+		return null;
+	}
+	const scenarioResults = readScenarioResults(context.scenarioResultsFile, options.mode);
+	const timestamp =
+		scenarioResults.completedAt ||
+		scenarioResults.timestamp ||
+		new Date().toISOString();
+	const updatedHistory = updateScenarioHistory({
+		profile: context.scenarioProfile,
+		history: context.loadedHistory,
+		selectedScenarioIds: context.selectedScenarioIds,
+		candidateResults: scenarioResults.results,
+		timestamp,
+		split: context.selectedSplit,
+		fullCheck: options.mode === "full_gate",
+	});
+	saveScenarioHistory(context.historyFile, updatedHistory);
+	return updatedHistory;
+}
+
 export async function evaluateAdapterMode(inputOptions) {
 	const options = parseArgs(inputOptions);
 	const adapterPayload = loadAdapter(options);
@@ -473,6 +556,7 @@ export async function evaluateAdapterMode(inputOptions) {
 	const commandObservations = [...preflightObservations, ...modeObservations];
 	const reportInput = buildModeReportInput(options, context, modeObservations, commandObservations);
 	const report = persistModeReport(context, reportInput);
+	const scenarioHistory = persistScenarioHistoryIfNeeded(context, options);
 	log(`mode evaluate complete: status=${report.recommendation} report=${context.reportFile}`);
 	return {
 		schemaVersion: ADAPTER_MODE_EVALUATION_PACKET_SCHEMA,
@@ -481,7 +565,10 @@ export async function evaluateAdapterMode(inputOptions) {
 		mode: options.mode,
 		reportInputFile: context.reportInputFile,
 		reportFile: context.reportFile,
+		historyFile: context.scenarioProfile ? context.historyFile : null,
+		selectedScenarioIds: context.selectedScenarioIds,
 		commandObservations,
+		...(scenarioHistory ? { scenarioHistory } : {}),
 		report,
 	};
 }

@@ -1,6 +1,7 @@
 # Cautilus Current Product
 
-`Cautilus`는 현재 Ceal `workbench`에서 generic evaluation seam을 떼어낸 초기 standalone product여야 한다.
+`Cautilus`는 현재 repo-agnostic generic evaluation seam을 담는 초기
+standalone product여야 한다.
 
 지금 단계의 제품은 큰 admin UI나 scenario store가 아니라, contract + bootstrap + bounded runtime surface에 집중한다.
 
@@ -187,19 +188,38 @@
 
 ## Runtime Expectations
 
-`Cautilus`는 최소한 다음 runtime seam을 제공해야 한다.
+`Cautilus`는 현재 surface를 두 층으로 설명한다.
+
+### Core Validated Surface
 
 - target repo의 adapter resolve
 - target repo의 adapter scaffold
 - target repo의 adapter readiness doctor
 - explicit baseline/candidate git worktree preparation for A/B runs
 - adapter-defined mode execution that emits report packets directly
+- checked-in scenario profile를 쓰는 mode run에서 scenario selection과
+  history update를 product-owned path로 수행
 - review packet assembly for compare artifacts and human-review prompts
-- explicit scenario-results packets and compare-artifact propagation through report/review flow
-- review meta-prompt input packet and prompt renderer above the review packet boundary
-- normalized evidence-bundle input and merge helpers above host-owned raw readers
-- bounded optimizer input and proposal helpers above explicit report/review/history evidence
-- scenario profile and graduation history helpers
+- explicit scenario-results packets and compare-artifact propagation through
+  report/review flow
+- review meta-prompt input packet and prompt renderer above the review packet
+  boundary
+- machine-readable report packet builder for held-out and full-gate telemetry
+- bounded CLI intent evaluation surface with stdout/stderr/exit code and
+  side-effect checks
+- adapter-defined executor variants fanout
+- checked-in standalone skill entrypoint
+- structured review verdict schema
+- explicit latency telemetry in executor-variant summaries
+- tagged-release curl installer plus Homebrew formula render surface
+- local lint/test surface
+
+### Product-Owned Helper Surface
+
+- normalized evidence-bundle input and merge helpers above host-owned raw
+  readers
+- bounded optimizer input and proposal helpers above explicit
+  report/review/history evidence
 - chatbot proposal-candidate normalization helper
 - chatbot normalization command
 - cli proposal-candidate normalization helper
@@ -210,18 +230,14 @@
 - scenario proposal ranking and draft-scenario helpers
 - scenario proposal packet generation command
 - checked-in schema artifacts for proposal and helper input/output packets
-- machine-readable report packet builder for held-out and full-gate telemetry
-- bounded CLI intent evaluation surface with stdout/stderr/exit code and side-effect checks
-- checked-in consumer-shaped normalization example packets for Ceal, charness,
-  and crill
-- adapter-defined executor variants fanout
-- checked-in standalone skill entrypoint
-- structured review verdict schema
-- explicit latency telemetry in executor-variant summaries
+- checked-in dogfood packet examples across chatbot, skill-validation, and
+  durable-workflow archetypes
 - scenario-level telemetry summaries for cost and token transparency
 - intentful behavior framing for chatbot, skill, and CLI surfaces
-- tagged-release curl installer plus Homebrew formula render surface
-- local lint/test surface
+
+현재 baseline cache semantics는 아직 helper/contract 단계에 더 가깝다.
+scenario-history의 첫 runtime integration은 들어갔지만, baseline cache와
+broader compare ownership은 아직 다음 step이다.
 
 아직 이 단계에서 강제하지 않는 것:
 

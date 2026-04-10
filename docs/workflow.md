@@ -116,6 +116,7 @@ Command templates may contain placeholders such as:
 - `{candidate_repo}`
 - `{history_file}`
 - `{profile}`
+- `{selected_scenario_ids_file}`
 - `{split}`
 - `{prompt_file}`
 - `{schema_file}`
@@ -130,6 +131,12 @@ Command templates may contain placeholders such as:
 
 Replace placeholders with concrete values before execution and report those
 values back to the user. Do not hide them behind "same as usual."
+
+When `--profile` or adapter `profile_default` points at a checked-in
+`cautilus.scenario_profile.v1` file, `Cautilus` may resolve the selected
+scenario set before execution, persist the selected ids as
+`{selected_scenario_ids_file}`, and pass a filtered profile file through
+`{profile}` for that invocation.
 
 ## Workflow
 
