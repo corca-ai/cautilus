@@ -2,7 +2,7 @@
   "name": "cautilus",
   "private": true,
   "type": "module",
-  "description": "Adapter-driven evaluation toolkit for agent runtime changes",
+  "description": "Adapter-driven intentful behavior evaluation toolkit",
   "engines": {
     "node": ">=22"
   },

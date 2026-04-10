@@ -19,12 +19,12 @@ Ceal's `workbench`.
 
 ## Product Intent
 
-- `Cautilus` owns generic evaluation workflow contracts.
+- `Cautilus` owns generic intentful behavior evaluation workflow contracts.
 - Host repos own adapter instances, fixtures, prompts, and policy.
 - The product should prefer explicit baselines, held-out validation, bounded
   loops, and structured review over ad-hoc benchmark narratives.
-- The long-term direction is intent-first evaluation: prompts can change if
-  the evaluated behavior gets better.
+- The long-term direction is intent-first and intentful behavior evaluation:
+  prompts can change if the evaluated behavior gets better.
 
 ## Current Boundaries
 

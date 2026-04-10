@@ -1,12 +1,15 @@
 # Cautilus
 
-Use this bundled skill when evaluation itself is the task and the repo wants to
-run the checked-in `Cautilus` workflow instead of rebuilding commands by hand.
+Use this bundled skill when intentful behavior evaluation itself is the task
+and the repo wants to run the checked-in `Cautilus` workflow instead of
+rebuilding commands by hand.
 
 `Cautilus` should stay usable as a standalone product:
 
 - resolve or scaffold repo-local adapters
 - run bounded review variants through the bundled CLI
+- evaluate operator-facing behavior, including CLI surfaces, with explicit
+  intent packets
 - keep held-out evaluation and review prompts explicit
 - keep host-repo fixtures, prompts, and policy outside the product boundary
 

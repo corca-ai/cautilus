@@ -28,6 +28,23 @@ and skill without widening adapter discovery.
 7. Keep host-specific mining, storage, audit UI, and operator policy in the
    consumer repo until they are intentionally generalized.
 
+## Root Adapter Split Rule
+
+The root `cautilus-adapter.yaml` should stay the default operator entrypoint.
+Move work into named `cautilus-adapters/` when:
+
+- the repo needs two different default decisions, for example release gating
+  versus workflow-smoke diagnosis
+- one surface needs different prompts, schemas, executor variants, or report
+  paths than the default surface
+- the root adapter starts mixing unrelated artifacts or human-review questions
+- operators would need repo lore to know which commands in the root adapter
+  actually matter for the default path
+
+Keep the root adapter lean.
+It should answer "what is the default `Cautilus` evaluation for this repo?"
+without forcing the operator to mentally sort multiple unrelated workflows.
+
 ## Repo Notes
 
 ### Ceal
@@ -42,8 +59,8 @@ and skill without widening adapter discovery.
 - current role: live consumer and primary `skill` normalization reference
 - current state: root `cautilus-adapter` exists and points at the repo-owned
   quality gate
-- next likely step: split richer evaluator surfaces into named
-  `cautilus-adapters/`
+- split trigger: add named adapters once charness needs a second operator
+  decision beyond the current default quality gate
 - do not treat `quality-adapter.yaml` as the product contract
 
 ### Crill
@@ -51,8 +68,8 @@ and skill without widening adapter discovery.
 - current role: live consumer and durable-workflow normalization reference
 - current state: root `cautilus-adapter` exists and points at repo-wide
   validation plus workflow review
-- next likely step: split more targeted evaluator surfaces out of the root
-  adapter only when the default surface becomes overloaded
+- split trigger: add named adapters once repo-wide validation and workflow
+  review need distinct prompts, report paths, or recommendation logic
 - keep single-purpose local adapters if they help operators, but wire one
   explicit `Cautilus` entrypoint
 

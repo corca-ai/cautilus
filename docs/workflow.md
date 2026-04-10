@@ -1,10 +1,11 @@
 # Cautilus Workflow
 
-Use this workflow when evaluation itself is the task.
+Use this workflow when intentful behavior evaluation itself is the task.
 
 The point is not to find a flattering benchmark slice. The point is to decide
 whether the candidate change survives comparison, held-out checks, and human
-review with enough evidence to ship.
+review with enough evidence to ship for the behavior the operator actually
+cares about.
 When the user wants a repeated quality bar, prefer a bounded evaluation loop
 with explicit stop conditions over an open-ended "retry until clean" loop.
 
@@ -51,6 +52,7 @@ Produce a defensible evaluation packet containing:
 
 - the candidate under test
 - the exact baseline used
+- the intended behavior under evaluation
 - the commands and concrete placeholder values used
 - improved, regressed, unchanged, and noisy scenarios
 - human-review findings that contradict or qualify benchmark wins
@@ -183,6 +185,8 @@ Typical examples:
   passing one synthetic brief
 - smoke-test whether a skill invocation path reaches the intended files or
   commands
+- evaluate whether a CLI command's stdout, stderr, exit code, and side effects
+  match operator intent inside a bounded fixture environment
 - compare an old and new adapter or prompt set on the same bounded brief set
 - run a fake operator task to see whether a workflow converges cleanly before
   using it for real

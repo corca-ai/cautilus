@@ -13,7 +13,7 @@
 | --- | --- | --- |
 | README.md | file_exists |  |
 | README.md | fixed | held-out |
-| README.md | fixed | intent |
+| README.md | fixed | intentful behavior |
 | AGENTS.md | file_exists |  |
 | AGENTS.md | fixed | standalone product boundary |
 | package.json | file_exists |  |
@@ -110,6 +110,7 @@
 - structured review verdict schema
 - explicit latency telemetry in executor-variant summaries
 - scenario-level telemetry summaries for cost and token transparency
+- intentful behavior framing for chatbot, skill, and CLI surfaces
 - local lint/test surface
 
 아직 이 단계에서 강제하지 않는 것:

@@ -147,6 +147,29 @@ When a repo runs review variants repeatedly, add a checked-in runner that
 loads the adapter and fans out `executor_variants` instead of asking operators
 to retype each shell command by hand.
 
+## Split Criteria
+
+Keep one root `cautilus-adapter.yaml` only while it stays the repo's obvious
+default evaluation entrypoint.
+Split work into named `cautilus-adapters/` when one or more of these become
+true:
+
+- the root file is trying to represent more than one operator decision, such
+  as release gating and workflow smoke validation
+- different evaluation surfaces need different prompt/schema bundles or
+  different `executor_variants`
+- iterate, held-out, or full-gate commands stop sharing the same baseline and
+  artifact interpretation story
+- one surface would benefit from a narrower default recommendation or a
+  different human-review lens
+- operators can no longer tell which command path is the safe default without
+  reading the whole adapter file
+
+Do not split just because a repo already has other host-local `*-adapter.yaml`
+files.
+Split only when `Cautilus` itself would become less legible or less bounded if
+the root adapter kept absorbing more surfaces.
+
 ### Compare Artifact Pattern
 
 A named adapter whose `comparison_command_templates` produce rich

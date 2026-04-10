@@ -12,6 +12,7 @@ Ceal의 기존 `workbench` 시나리오는 여전히 유용한 dogfood 입력이
 | file | mode | pattern |
 | --- | --- | --- |
 | README.md | fixed | standalone binary plus a bundled skill |
+| README.md | fixed | intentful behavior evaluation |
 | AGENTS.md | fixed | independent binary plus bundled skill |
 | bin/cautilus | file_exists |  |
 | bin/cautilus | fixed | cautilus doctor |
@@ -34,6 +35,7 @@ Ceal의 기존 `workbench` 시나리오는 여전히 유용한 dogfood 입력이
 | skills/cautilus/agents/openai.yaml | file_exists |  |
 | skills/cautilus/agents/openai.yaml | fixed | Cautilus |
 | docs/master-plan.md | fixed | standalone installable CLI plus bundled reusable skill |
+| docs/master-plan.md | fixed | CLI behavior |
 
 ## Functional Check
 

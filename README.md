@@ -1,20 +1,25 @@
 # Cautilus
 
-`Cautilus` is an evaluation product extracted from Ceal's `workbench`.
+`Cautilus` is an intentful behavior evaluation product extracted from Ceal's
+`workbench`.
 It is meant to become the repo-agnostic layer that helps a host repo evaluate
-agent runtime changes with bounded loops, explicit baselines, held-out
-validation, comparison summaries, and independent review variants.
+agent runtimes, skills, and operator-facing command surfaces with bounded
+loops, explicit baselines, held-out validation, comparison summaries, and
+independent review variants.
 The product target is a standalone binary plus a bundled skill that a host repo
 can adopt without inheriting Ceal's private runtime surfaces.
 
 The intended product shape is:
 
-- a small CLI or runtime entrypoint for adapter-driven evaluation
+- a small CLI or runtime entrypoint for adapter-driven intentful behavior
+  evaluation
 - repo-local adapters that define how a host repo runs iterate, held-out,
   comparison, and full-gate checks
 - optional executor-variant runners for structured `codex exec`,
   `claude -p`, or other bounded review passes
 - a contract that separates training surfaces from held-out surfaces
+- first-class use-case helpers for `chatbot`, `skill`, and eventually `cli`
+  evaluation packets
 - a path to propose new scenarios from runtime logs instead of hand-authoring
   every benchmark case forever
 
@@ -147,6 +152,13 @@ result packets:
 ```bash
 node ./bin/cautilus scenario summarize-telemetry \
   --results ./fixtures/scenario-proposals/results.json
+```
+
+Build a machine-readable evaluation report packet from explicit mode runs:
+
+```bash
+node ./bin/cautilus report build \
+  --input ./fixtures/reports/report-input.json
 ```
 
 Assemble that input packet from split normalized source files:

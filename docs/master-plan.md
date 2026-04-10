@@ -2,8 +2,8 @@
 
 ## Goal
 
-Turn `Cautilus` from a Ceal extraction scaffold into a standalone evaluation
-product for agent runtime work.
+Turn `Cautilus` from a Ceal extraction scaffold into a standalone intentful
+behavior evaluation product.
 
 The target product is:
 
@@ -14,6 +14,7 @@ The target product is:
 - train-vs-held-out discipline backed by scenario history
 - scenario proposal flows that mine runtime logs and audit traces into draft
   evaluation cases
+- first-class evaluation surfaces for chatbot, skill, and CLI behavior
 - an intent-first workflow where prompts are mutable implementation details and
   evaluation contracts define success
 
@@ -122,12 +123,17 @@ The first helper targets should be:
 - `skill`
   - charness-like validation scenarios plus crill-like durable workflow
     artifact regressions
+- `cli`
+  - operator-facing command intent and output clarity in bounded fixture
+    environments
 
 ### Phase 5: Intent-First Optimization Surface
 
 Formalize the DSPy-like product story:
 
 - evaluation contracts and scenario families define intent
+- intentful behavior includes operator-visible CLI surfaces, not only agent
+  transcripts
 - prompts, reducers, and wrappers are tunable artifacts
 - compare runs report whether behavior improved, regressed, or overfit
 - prompt revisions are acceptable if held-out and human review survive
@@ -150,3 +156,5 @@ Formalize the DSPy-like product story:
    adapter contract: `cautilus-adapter.yaml`.
 4. Prepare explicit deepening steps for `charness` and `crill` beyond the new
    root adapter surface instead of widening discovery rules.
+5. Add a first checked-in CLI evaluation packet and bounded runtime surface
+   without turning `Cautilus` into a generic test runner.
