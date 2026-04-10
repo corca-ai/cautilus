@@ -6,97 +6,80 @@
   [README.md](/home/ubuntu/cautilus/README.md),
   [AGENTS.md](/home/ubuntu/cautilus/AGENTS.md),
   [docs/master-plan.md](/home/ubuntu/cautilus/docs/master-plan.md),
-  [docs/release-boundary.md](/home/ubuntu/cautilus/docs/release-boundary.md),
+  [docs/contracts/optimization.md](/home/ubuntu/cautilus/docs/contracts/optimization.md),
+  [docs/contracts/revision-artifact.md](/home/ubuntu/cautilus/docs/contracts/revision-artifact.md),
   [skills/cautilus/SKILL.md](/home/ubuntu/cautilus/skills/cautilus/SKILL.md)
   를 읽는다.
 - 시작 workflow는 `impl` 기준이다.
-- plugin/install surface를 건드리면 packaging shape를 3-5줄로 먼저 적고 구현에 들어간다.
-- 작업 시작 repo는 항상 [cautilus](/home/ubuntu/cautilus) 이다. consumer repo 검증은 새 surface를 붙인 뒤 spot-check 용도로만 쓴다.
-- product-owned seam이면 `cautilus`에서 먼저 고친다. host adapter, prompt, policy, consumer artifact 문제는 해당 consumer repo 소유다.
+- 현재 이어서 할 일은 `DSPy`에서 가져온 개념을 `optimize` seam 위에서 더 일반화하는 것이다.
+- product-owned seam이면 `cautilus`에서 먼저 고친다. host adapter, prompt, policy, consumer artifact는 host 소유다.
 
 ## Current State
 
-- Codex local install/readiness spot-check 결과, repo marketplace는 실제로 읽히지만
-  기존 `source.path: "./"` 는 Codex 0.118.0 app-server `plugin/list` 기준 invalid 였다.
-  - 실제 에러: `local plugin source path must not be empty`
-- 그래서 local install surface는 repo-root pseudo plugin이 아니라
-  subtree package로 정리됐다.
-  - [plugins/cautilus/.codex-plugin/plugin.json](/home/ubuntu/cautilus/plugins/cautilus/.codex-plugin/plugin.json)
-  - [.agents/plugins/marketplace.json](/home/ubuntu/cautilus/.agents/plugins/marketplace.json)
-  - [plugins/cautilus/.claude-plugin/plugin.json](/home/ubuntu/cautilus/plugins/cautilus/.claude-plugin/plugin.json)
-  - [.claude-plugin/marketplace.json](/home/ubuntu/cautilus/.claude-plugin/marketplace.json)
-  - [plugins/cautilus/skills/cautilus/SKILL.md](/home/ubuntu/cautilus/plugins/cautilus/skills/cautilus/SKILL.md)
-  - [scripts/release/check-codex-marketplace.mjs](/home/ubuntu/cautilus/scripts/release/check-codex-marketplace.mjs)
-- packaged skill copy는 현재 repo-bundled skill과 exact sync test로 묶었다.
-- 기존 standalone surface는 계속 유효하다.
-  - `workspace prepare-compare`
-  - `workspace prune-artifacts`
-  - `mode evaluate`
-  - `review variants`
-  - `cli evaluate`
-  - `scenario normalize chatbot|cli|skill`
-  - `scenario prepare-input`
-  - `scenario propose`
-  - `scenario summarize-telemetry`
-  - `evidence prepare-input`, `evidence bundle`
-  - `optimize prepare-input`, `optimize propose`
-- 아직 남아 있는 실제 제품 gap은 한 가지다.
-  - run artifact auto layout 부재
-- local proof는 현재 이렇게 확보됐다.
-  - `node ./scripts/release/check-codex-marketplace.mjs --repo-root .` 통과
-  - `claude plugins validate ./.claude-plugin/marketplace.json` 통과
-  - `claude plugins validate ./plugins/cautilus/.claude-plugin/plugin.json` 통과
-  - `npm run lint`, `npm run test`, `npm run verify` 통과
+- `optimize` seam에 `optimizer kind`, `budget`, `trial telemetry`, `evidence provenance`가 들어갔다.
+  - 커밋: `aa7e41c` `Make optimize proposals bounded and auditable`
+- 그 위에 durable revision artifact surface를 추가했다.
+  - 새 계약:
+    [optimization.md](/home/ubuntu/cautilus/docs/contracts/optimization.md),
+    [revision-artifact.md](/home/ubuntu/cautilus/docs/contracts/revision-artifact.md)
+  - 새 CLI:
+    `cautilus optimize build-artifact`
+  - 새 구현:
+    [build-revision-artifact.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/build-revision-artifact.mjs)
+  - 커밋: `fcce47e` `Add durable artifacts for optimize revisions`
+- standalone/product surface는 현재 여기까지 설명된다.
+  - `optimize prepare-input`
+  - `optimize propose`
+  - `optimize build-artifact`
+- repo-bundled skill과 packaged skill copy는 다시 sync 상태다.
+- 현재 working tree는 clean 이다.
+- local proof:
+  - `npm run lint` 통과
+  - `npm run test` 통과
+  - `npm run verify` 통과
 
 ## Next Session
 
-1. artifact-root auto layout slice로 돌아간다.
-   - 가장 자연스러운 다음 구현은 `mode evaluate` / `review variants` 에 `--artifact-root` 또는 equivalent option을 넣고 timestamped run subdirectory를 자동 생성하는 것이다.
-2. 현재 pruning helper와 충돌하지 않게 run directory naming policy를 먼저 짧게 고정한다.
-3. 변경 후에는 항상 `npm run lint`, `npm run test`, `npm run verify` 를 다시 돌린다.
+1. `intent/signature-like contract`를 `optimize` 위에 얇게 추가하는 slice로 간다.
+   - 목표는 `prompt`/`adapter`보다 한 단계 위의 “무슨 행동을 고치려는가”를 packet으로 고정하는 것이다.
+2. 범위는 `review`, `optimize`, `revision artifact`가 공유할 수 있는 최소 공통면으로 제한한다.
+   - 예: `intent_id`, `behavior_surface`, `success dimensions`, `guardrail dimensions`
+3. 구현은 문서부터 시작한다.
+   - 새 contract 문서 1개
+   - optimize input/proposal/artifact 중 필요한 최소 필드만 확장
+   - fixture/test 동기화
+4. 그 다음에만 broader roadmap으로 돌아간다.
+   - `artifact-root auto layout`은 여전히 유효한 제품 gap이지만, 현재 세션 흐름상 우선순위는 intent contract가 더 자연스럽다.
+5. 변경 후에는 항상 `npm run lint`, `npm run test`, `npm run verify`를 다시 돌린다.
 
 ## Discuss
 
-- Codex 쪽 판단은 이미 나왔다. repo root shared surface는 현재 Codex 규칙과 맞지 않고,
-  별도 package subtree가 맞다.
-- Claude도 같은 결론이다. local install surface는 root shared surface보다
-  subtree package shape가 product boundary를 더 잘 지킨다.
-- artifact pruning은 이미 있으므로, artifact auto layout이 다음 runtime slice로 가장 자연스럽다.
+- 지금 `optimizer kind`는 서로 다른 탐색 알고리즘이라기보다 evidence weighting plan에 가깝다.
+- 그래서 다음 slice의 핵심은 optimizer를 더 복잡하게 만드는 것이 아니라, optimizer가 겨누는 `intent`를 더 명시적으로 만드는 것이다.
+- `revision artifact`는 이미 durable object가 됐으므로, 다음에는 “무엇을 왜 고치는가”를 더 잘 설명하는 계약층이 필요하다.
+- packaging/install surface는 현재 안정적이다. 당분간 주 작업축이 아니다.
 
 ## Premortem
 
-- 가장 쉬운 오해는 Codex marketplace가 문서상 있으니 실제 install path도 된다고
-  생각하는 것이다. 이번 spot-check로 `./` root source는 실제로 invalid 였다는 게
-  확인됐다.
-- 다음 쉬운 오해는 subtree package를 만들었으니 root skill과 packaged skill이
-  자동으로 sync 된다고 보는 것이다. 현재는 copy + sync test 방식이므로 둘 중 하나만
-  고치면 gate가 깨진다.
-- 또 다른 쉬운 오해는 `workspace prune-artifacts`가 run layout까지 해결했다고 생각하는 것이다.
-  실제로는 pruning helper만 있고, run directory naming/creation policy는 아직 없다.
-- Claude validate 통과를 실제 install/discovery proof와 동일시하는 것도 쉬운 오해다.
-  지금은 checked-in manifest shape proof까지 확보된 상태이고, 실제 end-to-end install smoke는
-  필요할 때 별도 spot-check로 다루면 된다.
-- packaging을 consumer adapter bundling으로 확장하기 시작하면 경계가 무너진다.
-  adapter, prompt, policy는 host-owned 상태를 유지한다.
+- 가장 쉬운 오해는 `optimize build-artifact`가 자동 수정 표면이라고 보는 것이다.
+  아니다. 현재도 proposal/artifact는 bounded operator packet일 뿐이다.
+- 다음 쉬운 오해는 `optimizer kind`가 실제 optimizer algorithm을 뜻한다고 보는 것이다.
+  현재는 evidence prioritization plan에 더 가깝다.
+- 또 다른 쉬운 오해는 revision artifact가 생겼으니 intent contract는 없어도 된다고 보는 것이다.
+  실제로는 반대다. 이제 durable object가 생겼기 때문에, 그 object가 표현하는 행동 intent를 더 엄밀히 적어야 한다.
+- packaged skill copy를 다시 잊고 repo-bundled skill만 수정하면 distribution-surface test가 깨진다.
 
 ## References
 
 - [README.md](/home/ubuntu/cautilus/README.md)
 - [AGENTS.md](/home/ubuntu/cautilus/AGENTS.md)
 - [docs/master-plan.md](/home/ubuntu/cautilus/docs/master-plan.md)
-- [docs/release-boundary.md](/home/ubuntu/cautilus/docs/release-boundary.md)
-- [docs/workflow.md](/home/ubuntu/cautilus/docs/workflow.md)
+- [docs/contracts/optimization.md](/home/ubuntu/cautilus/docs/contracts/optimization.md)
+- [docs/contracts/revision-artifact.md](/home/ubuntu/cautilus/docs/contracts/revision-artifact.md)
+- [docs/specs/current-product.spec.md](/home/ubuntu/cautilus/docs/specs/current-product.spec.md)
 - [skills/cautilus/SKILL.md](/home/ubuntu/cautilus/skills/cautilus/SKILL.md)
-- [plugins/cautilus/.codex-plugin/plugin.json](/home/ubuntu/cautilus/plugins/cautilus/.codex-plugin/plugin.json)
-- [plugins/cautilus/.claude-plugin/plugin.json](/home/ubuntu/cautilus/plugins/cautilus/.claude-plugin/plugin.json)
 - [plugins/cautilus/skills/cautilus/SKILL.md](/home/ubuntu/cautilus/plugins/cautilus/skills/cautilus/SKILL.md)
-- [.agents/plugins/marketplace.json](/home/ubuntu/cautilus/.agents/plugins/marketplace.json)
-- [.claude-plugin/marketplace.json](/home/ubuntu/cautilus/.claude-plugin/marketplace.json)
-- [check-codex-marketplace.mjs](/home/ubuntu/cautilus/scripts/release/check-codex-marketplace.mjs)
 - [bin/cautilus](/home/ubuntu/cautilus/bin/cautilus)
-- [prune-workspace-artifacts.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/prune-workspace-artifacts.mjs)
-- [evaluate-adapter-mode.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/evaluate-adapter-mode.mjs)
-- [scenario-history.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/scenario-history.mjs)
-- https://developers.openai.com/codex/plugins/build
-- [/home/ubuntu/claude-plugins/plugins/cwf/.claude-plugin/plugin.json](/home/ubuntu/claude-plugins/plugins/cwf/.claude-plugin/plugin.json)
-- [/home/ubuntu/claude-plugins/.claude-plugin/marketplace.json](/home/ubuntu/claude-plugins/.claude-plugin/marketplace.json)
+- [build-optimize-input.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/build-optimize-input.mjs)
+- [generate-optimize-proposal.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/generate-optimize-proposal.mjs)
+- [build-revision-artifact.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/build-revision-artifact.mjs)
