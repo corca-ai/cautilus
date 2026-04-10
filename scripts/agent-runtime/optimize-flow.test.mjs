@@ -1,0 +1,201 @@
+import assert from "node:assert/strict";
+import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { spawnSync } from "node:child_process";
+import test from "node:test";
+
+import { buildOptimizeInput } from "./build-optimize-input.mjs";
+import { generateOptimizeProposal } from "./generate-optimize-proposal.mjs";
+
+function writeJson(path, value) {
+	writeFileSync(path, `${JSON.stringify(value, null, 2)}\n`, "utf-8");
+}
+
+function createOptimizeFixtureRoot() {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-optimize-flow-"));
+	const reportFile = join(root, "report.json");
+	const reviewSummaryFile = join(root, "summary.json");
+	const historyFile = join(root, "history.json");
+	const targetFile = join(root, "prompt.md");
+	writeJson(reportFile, {
+		schemaVersion: "cautilus.report_packet.v1",
+		generatedAt: "2026-04-11T00:02:00.000Z",
+		candidate: "feature/cli",
+		baseline: "origin/main",
+		intent: "CLI guidance should stay legible under recovery pressure.",
+		commands: [],
+		commandObservations: [],
+		modesRun: ["held_out", "comparison"],
+		modeSummaries: [
+			{
+				mode: "comparison",
+				status: "failed",
+				summary: "comparison found a regression in recovery messaging.",
+				compareArtifact: {
+					schemaVersion: "cautilus.compare_artifact.v1",
+					verdict: "regressed",
+					summary: "Recovery guidance regressed.",
+					regressed: ["operator-recovery"],
+				},
+			},
+		],
+		telemetry: { modeCount: 2 },
+		improved: [],
+		regressed: ["operator-recovery"],
+		unchanged: [],
+		noisy: ["workflow-retry-budget"],
+		humanReviewFindings: [],
+		recommendation: "defer",
+	});
+	writeJson(reviewSummaryFile, {
+		variants: [
+			{
+				id: "codex-review",
+				status: "failed",
+				output: {
+					findings: [
+						{
+							severity: "blocker",
+							message: "The operator still cannot tell whether retry is safe.",
+							path: "variant/codex-review",
+						},
+					],
+				},
+			},
+		],
+	});
+	writeJson(historyFile, {
+		schemaVersion: "cautilus.scenario_history.v1",
+		profileId: "default-train",
+		trainRunCount: 3,
+		scenarioStats: {
+			"operator-recovery": {
+				lastTrainRunIndex: 3,
+				graduationInterval: 1,
+				recentTrainResults: [
+					{
+						runIndex: 3,
+						timestamp: "2026-04-10T23:58:00.000Z",
+						overallScore: 80,
+						passRate: 0,
+						status: "failed",
+						fullCheck: false,
+					},
+				],
+			},
+		},
+		recentRuns: [],
+	});
+	writeFileSync(targetFile, "Keep instructions explicit.\n", "utf-8");
+	return { root, reportFile, reviewSummaryFile, historyFile, targetFile };
+}
+
+test("buildOptimizeInput assembles a bounded optimization packet from explicit evidence", () => {
+	const { root, reportFile, reviewSummaryFile, historyFile, targetFile } = createOptimizeFixtureRoot();
+	try {
+		const packet = buildOptimizeInput(
+			[
+				"--repo-root",
+				root,
+				"--report-file",
+				reportFile,
+				"--review-summary",
+				reviewSummaryFile,
+				"--history-file",
+				historyFile,
+				"--target",
+				"prompt",
+				"--target-file",
+				targetFile,
+			],
+			{ now: new Date("2026-04-11T00:05:00.000Z") },
+		);
+		assert.equal(packet.schemaVersion, "cautilus.optimize_inputs.v1");
+		assert.equal(packet.optimizationTarget, "prompt");
+		assert.equal(packet.targetFile.exists, true);
+		assert.equal(packet.report.regressed[0], "operator-recovery");
+		assert.equal(packet.reviewSummary.variants[0].id, "codex-review");
+		assert.equal(packet.scenarioHistory.scenarioStats["operator-recovery"].recentTrainResults[0].status, "failed");
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("generateOptimizeProposal turns explicit evidence into one bounded revision plan", () => {
+	const { root, reportFile, reviewSummaryFile, historyFile, targetFile } = createOptimizeFixtureRoot();
+	try {
+		const input = buildOptimizeInput(
+			[
+				"--repo-root",
+				root,
+				"--report-file",
+				reportFile,
+				"--review-summary",
+				reviewSummaryFile,
+				"--history-file",
+				historyFile,
+				"--target",
+				"prompt",
+				"--target-file",
+				targetFile,
+			],
+			{ now: new Date("2026-04-11T00:05:00.000Z") },
+		);
+		const proposal = generateOptimizeProposal(input, {
+			now: new Date("2026-04-11T00:06:00.000Z"),
+			inputFile: join(root, "optimize-input.json"),
+		});
+		assert.equal(proposal.schemaVersion, "cautilus.optimize_proposal.v1");
+		assert.equal(proposal.decision, "revise");
+		assert.equal(proposal.suggestedChanges[0].changeKind, "prompt_revision");
+		assert.match(proposal.revisionBrief, /bounded pass/);
+		assert.equal(proposal.prioritizedEvidence[0].source, "report.regressed");
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("build-optimize-input CLI rejects review summaries without variants", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-optimize-invalid-"));
+	try {
+		const reportFile = join(root, "report.json");
+		const summaryFile = join(root, "summary.json");
+		writeJson(reportFile, {
+			schemaVersion: "cautilus.report_packet.v1",
+			generatedAt: "2026-04-11T00:02:00.000Z",
+			candidate: "feature/cli",
+			baseline: "origin/main",
+			intent: "CLI behavior should stay legible.",
+			commands: [],
+			modesRun: [],
+			modeSummaries: [],
+			telemetry: {},
+			improved: [],
+			regressed: [],
+			unchanged: [],
+			noisy: [],
+			humanReviewFindings: [],
+			recommendation: "accept-now",
+		});
+		writeJson(summaryFile, { status: "failed" });
+		const result = spawnSync(
+			"node",
+			[
+				join(process.cwd(), "scripts", "agent-runtime", "build-optimize-input.mjs"),
+				"--report-file",
+				reportFile,
+				"--review-summary",
+				summaryFile,
+			],
+			{
+				cwd: process.cwd(),
+				encoding: "utf-8",
+			},
+		);
+		assert.equal(result.status, 1);
+		assert.match(result.stderr, /variants array/);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});

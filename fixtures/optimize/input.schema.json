@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cautilus.optimize_inputs.v1",
+  "title": "Cautilus Optimize Inputs",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "generatedAt",
+    "repoRoot",
+    "optimizationTarget",
+    "reportFile",
+    "report",
+    "objective"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "cautilus.optimize_inputs.v1"
+    },
+    "generatedAt": {
+      "type": "string"
+    },
+    "repoRoot": {
+      "type": "string"
+    },
+    "optimizationTarget": {
+      "type": "string",
+      "enum": [
+        "prompt",
+        "adapter"
+      ]
+    },
+    "targetFile": {
+      "type": "object",
+      "required": [
+        "path",
+        "exists"
+      ],
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "exists": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "reportFile": {
+      "type": "string"
+    },
+    "report": {
+      "type": "object"
+    },
+    "reviewSummaryFile": {
+      "type": "string"
+    },
+    "reviewSummary": {
+      "type": "object"
+    },
+    "scenarioHistoryFile": {
+      "type": "string"
+    },
+    "scenarioHistory": {
+      "type": "object"
+    },
+    "objective": {
+      "type": "object",
+      "required": [
+        "summary",
+        "constraints"
+      ],
+      "properties": {
+        "summary": {
+          "type": "string"
+        },
+        "constraints": {
+          "type": "array"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -53,6 +53,13 @@ const REVIEW_PROMPT_INPUT_BUILDER = join(
 	"build-review-prompt-input.mjs",
 );
 const REVIEW_PROMPT_RENDERER = join(REPO_ROOT, "scripts", "agent-runtime", "render-review-prompt.mjs");
+const OPTIMIZE_INPUT_BUILDER = join(REPO_ROOT, "scripts", "agent-runtime", "build-optimize-input.mjs");
+const OPTIMIZE_PROPOSAL_GENERATOR = join(
+	REPO_ROOT,
+	"scripts",
+	"agent-runtime",
+	"generate-optimize-proposal.mjs",
+);
 const CHATBOT_NORMALIZER = join(
 	REPO_ROOT,
 	"scripts",
@@ -77,6 +84,8 @@ function usage(exitCode = 0) {
 		"  cautilus scenario propose [args]",
 		"  cautilus report build [args]",
 		"  cautilus mode evaluate [args]",
+		"  cautilus optimize prepare-input [args]",
+		"  cautilus optimize propose [args]",
 		"  cautilus review prepare-input [args]",
 		"  cautilus review build-prompt-input [args]",
 		"  cautilus review render-prompt [args]",
@@ -96,6 +105,8 @@ function usage(exitCode = 0) {
 		"  cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json",
 		"  cautilus report build --input ./fixtures/reports/report-input.json",
 		"  cautilus mode evaluate --repo-root . --mode held_out --intent 'CLI behavior should remain legible.' --baseline-ref origin/main --output-dir /tmp/cautilus-mode",
+		"  cautilus optimize prepare-input --report-file /tmp/cautilus-mode/report.json --target prompt",
+		"  cautilus optimize propose --input /tmp/cautilus-optimize/input.json",
 		"  cautilus review prepare-input --repo-root . --report-file /tmp/cautilus-mode/report.json",
 		"  cautilus review build-prompt-input --review-packet /tmp/cautilus-mode/review.json",
 		"  cautilus review render-prompt --input /tmp/cautilus-mode/review-prompt-input.json",
@@ -172,6 +183,14 @@ if (area === "report" && action === "build") {
 
 if (area === "mode" && action === "evaluate") {
 	run("node", [ADAPTER_MODE_EVALUATOR, ...rest]);
+}
+
+if (area === "optimize" && action === "prepare-input") {
+	run("node", [OPTIMIZE_INPUT_BUILDER, ...rest]);
+}
+
+if (area === "optimize" && action === "propose") {
+	run("node", [OPTIMIZE_PROPOSAL_GENERATOR, ...rest]);
 }
 
 if (area === "review" && action === "prepare-input") {

@@ -53,6 +53,7 @@ node ./bin/cautilus doctor --repo-root .
 - [docs/contracts/cli-evaluation.md](/home/ubuntu/cautilus/docs/contracts/cli-evaluation.md)
 - [docs/contracts/review-packet.md](/home/ubuntu/cautilus/docs/contracts/review-packet.md)
 - [docs/contracts/review-prompt-inputs.md](/home/ubuntu/cautilus/docs/contracts/review-prompt-inputs.md)
+- [docs/contracts/optimization.md](/home/ubuntu/cautilus/docs/contracts/optimization.md)
 
 ## Workflow
 
@@ -127,6 +128,15 @@ node ./bin/cautilus review build-prompt-input \
 node ./bin/cautilus review render-prompt \
   --input /tmp/cautilus-mode/review-prompt-input.json
 
+node ./bin/cautilus optimize prepare-input \
+  --report-file /tmp/cautilus-mode/report.json \
+  --review-summary /tmp/cautilus-review/summary.json \
+  --history-file /tmp/cautilus-history/history.json \
+  --target prompt
+
+node ./bin/cautilus optimize propose \
+  --input /tmp/cautilus-optimize/input.json
+
 node ./bin/cautilus review variants \
   --repo-root . \
   --workspace . \
@@ -142,6 +152,7 @@ node ./bin/cautilus cli evaluate \
 - Do not treat Ceal-local prompts, adapters, or report paths as product-owned
   defaults.
 - Do not turn review loops into open-ended retries.
+- Do not turn optimizer output into an open-ended retry loop.
 - Keep held-out evaluation held out unless the benchmark itself is being
   changed deliberately.
 - Prefer checked-in wrapper scripts and schemas over inline shell quoting.

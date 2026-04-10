@@ -125,3 +125,6 @@ layer in multiple real repos with different product shapes.
 3. `crill` now covers root and named adapters, explicit CLI packets, review
    variants, and checked-in compare/A-B consumer artifacts; the next depth is
    product-owned helper guidance for evidence mining and bounded optimization.
+4. `Cautilus` now has a first product-owned bounded optimizer seam in-tree, but
+   it still needs consumer-level proof in `crill` or `ceal` before it should be
+   treated as a validated live-consumer claim.

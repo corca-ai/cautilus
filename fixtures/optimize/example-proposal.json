@@ -1,0 +1,105 @@
+{
+  "schemaVersion": "cautilus.optimize_proposal.v1",
+  "generatedAt": "2026-04-11T00:06:00.000Z",
+  "inputFile": "/tmp/cautilus-optimize/input.json",
+  "optimizationTarget": "prompt",
+  "targetFile": {
+    "path": "/tmp/cautilus-optimize/prompt.md",
+    "exists": true
+  },
+  "reportRecommendation": "defer",
+  "decision": "revise",
+  "rationale": "The next revision is bounded by 2 high-signal issue(s) and 4 total evidence item(s).",
+  "prioritizedEvidence": [
+    {
+      "source": "report.regressed",
+      "key": "operator-recovery",
+      "severity": "high",
+      "summary": "Regressed scenario: operator-recovery",
+      "message": "operator-recovery regressed in the current report."
+    },
+    {
+      "source": "review.finding",
+      "key": "codex-review:variant/codex-review",
+      "severity": "blocker",
+      "summary": "codex-review blocker: The operator still cannot tell whether retry is safe.",
+      "message": "The operator still cannot tell whether retry is safe.",
+      "path": "variant/codex-review",
+      "variantId": "codex-review"
+    },
+    {
+      "source": "report.noisy",
+      "key": "workflow-retry-budget",
+      "severity": "medium",
+      "summary": "Noisy scenario: workflow-retry-budget",
+      "message": "workflow-retry-budget needs more signal before calling the change better."
+    },
+    {
+      "source": "scenario_history",
+      "key": "operator-recovery",
+      "severity": "medium",
+      "summary": "operator-recovery remains unstable in recent train history",
+      "message": "operator-recovery last train result was failed with score 80."
+    }
+  ],
+  "suggestedChanges": [
+    {
+      "id": "repair-known-failures",
+      "changeKind": "prompt_revision",
+      "target": "prompt",
+      "summary": "Revise the prompt to repair the cited failures before widening scope.",
+      "rationale": "1 regressed scenario(s) and 1 review finding(s) currently bound the next revision.",
+      "evidence": [
+        {
+          "source": "report.regressed",
+          "key": "operator-recovery",
+          "summary": "Regressed scenario: operator-recovery"
+        },
+        {
+          "source": "review.finding",
+          "key": "codex-review:variant/codex-review",
+          "summary": "codex-review blocker: The operator still cannot tell whether retry is safe."
+        }
+      ]
+    },
+    {
+      "id": "increase-signal",
+      "changeKind": "sampling_increase",
+      "target": "adapter",
+      "summary": "Increase signal on noisy scenarios before calling the candidate better.",
+      "rationale": "1 scenario(s) are still noisy.",
+      "evidence": [
+        {
+          "source": "report.noisy",
+          "key": "workflow-retry-budget",
+          "summary": "Noisy scenario: workflow-retry-budget"
+        }
+      ]
+    },
+    {
+      "id": "focus-unstable-history",
+      "changeKind": "history_followup",
+      "target": "workflow",
+      "summary": "Use recent scenario-history misses to choose the next bounded probe.",
+      "rationale": "1 scenario(s) still look unstable in recent train history.",
+      "evidence": [
+        {
+          "source": "scenario_history",
+          "key": "operator-recovery",
+          "summary": "operator-recovery remains unstable in recent train history"
+        }
+      ]
+    }
+  ],
+  "revisionBrief": "Revise the prompt in one bounded pass. Revise the prompt to repair the cited failures before widening scope. Evidence: Regressed scenario: operator-recovery; codex-review blocker: The operator still cannot tell whether retry is safe.; Noisy scenario: workflow-retry-budget. Do not weaken held-out, comparison, or review gates.",
+  "stopConditions": [
+    "Stop after one bounded revision.",
+    "Do not weaken held-out, comparison, or structured review gates to make the candidate pass.",
+    "If the cited evidence still regresses after the next bounded revision, defer instead of retrying indefinitely."
+  ],
+  "followUpChecks": [
+    "Rerun the bounded iterate probe on the cited surfaces first.",
+    "Rerun held-out before accepting the revision.",
+    "Rerun comparison and review variants when those surfaces exist for the target repo."
+  ]
+}

@@ -1,0 +1,18 @@
+version: 1
+repo: cautilus
+language: en
+output_dir: skill-outputs/quality
+concept_paths:
+- README.md
+- docs/master-plan.md
+- docs/workflow.md
+- docs/consumer-readiness.md
+- docs/handoff.md
+- skill-outputs/quality/quality.md
+preflight_commands:
+- node ./bin/cautilus adapter resolve --repo-root .
+gate_commands:
+- npm run lint
+- npm run test
+- npm run verify
+security_commands: []

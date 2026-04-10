@@ -760,6 +760,147 @@ test("cautilus review build-prompt-input and render-prompt close the generic met
 	}
 });
 
+test("cautilus optimize prepare-input and propose turn explicit evidence into a bounded revision brief", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-bin-optimize-"));
+	try {
+		const reportPath = join(root, "report.json");
+		const reviewSummaryPath = join(root, "summary.json");
+		const historyPath = join(root, "history.json");
+		const targetPath = join(root, "prompt.md");
+		const inputPath = join(root, "optimize-input.json");
+		const proposalPath = join(root, "optimize-proposal.json");
+		writeFileSync(targetPath, "Keep operator guidance explicit.\n", "utf-8");
+		writeFileSync(
+			reportPath,
+			`${JSON.stringify(
+				{
+					schemaVersion: "cautilus.report_packet.v1",
+					generatedAt: "2026-04-11T00:02:00.000Z",
+					candidate: "feature/cli",
+					baseline: "origin/main",
+					intent: "CLI recovery guidance should stay legible.",
+					commands: [],
+					commandObservations: [],
+					modesRun: ["held_out"],
+					modeSummaries: [],
+					telemetry: {},
+					improved: [],
+					regressed: ["operator-recovery"],
+					unchanged: [],
+					noisy: [],
+					humanReviewFindings: [],
+					recommendation: "defer",
+				},
+				null,
+				2,
+			)}\n`,
+			"utf-8",
+		);
+		writeFileSync(
+			reviewSummaryPath,
+			`${JSON.stringify(
+				{
+					variants: [
+						{
+							id: "codex-review",
+							status: "failed",
+							output: {
+								findings: [
+									{
+										severity: "blocker",
+										message: "Retry guidance is still ambiguous.",
+										path: "variant/codex-review",
+									},
+								],
+							},
+						},
+					],
+				},
+				null,
+				2,
+			)}\n`,
+			"utf-8",
+		);
+		writeFileSync(
+			historyPath,
+			`${JSON.stringify(
+				{
+					schemaVersion: "cautilus.scenario_history.v1",
+					profileId: "default-train",
+					trainRunCount: 1,
+					scenarioStats: {
+						"operator-recovery": {
+							lastTrainRunIndex: 1,
+							graduationInterval: 1,
+							recentTrainResults: [
+								{
+									runIndex: 1,
+									timestamp: "2026-04-10T23:58:00.000Z",
+									overallScore: 80,
+									passRate: 0,
+									status: "failed",
+									fullCheck: false,
+								},
+							],
+						},
+					},
+					recentRuns: [],
+				},
+				null,
+				2,
+			)}\n`,
+			"utf-8",
+		);
+
+		const prepare = spawnSync(
+			"node",
+			[
+				BIN_PATH,
+				"optimize",
+				"prepare-input",
+				"--repo-root",
+				root,
+				"--report-file",
+				reportPath,
+				"--review-summary",
+				reviewSummaryPath,
+				"--history-file",
+				historyPath,
+				"--target",
+				"prompt",
+				"--target-file",
+				targetPath,
+				"--output",
+				inputPath,
+			],
+			{
+				cwd: process.cwd(),
+				encoding: "utf-8",
+			},
+		);
+		assert.equal(prepare.status, 0, prepare.stderr);
+		const prepared = JSON.parse(readFileSync(inputPath, "utf-8"));
+		assert.equal(prepared.schemaVersion, "cautilus.optimize_inputs.v1");
+		assert.equal(prepared.optimizationTarget, "prompt");
+
+		const propose = spawnSync(
+			"node",
+			[BIN_PATH, "optimize", "propose", "--input", inputPath, "--output", proposalPath],
+			{
+				cwd: process.cwd(),
+				encoding: "utf-8",
+			},
+		);
+		assert.equal(propose.status, 0, propose.stderr);
+		const proposal = JSON.parse(readFileSync(proposalPath, "utf-8"));
+		assert.equal(proposal.schemaVersion, "cautilus.optimize_proposal.v1");
+		assert.equal(proposal.decision, "revise");
+		assert.match(proposal.revisionBrief, /Do not weaken held-out, comparison, or review gates\./);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
 test("cautilus scenario prepare-input builds a proposal input packet from split normalized sources", () => {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-bin-scenario-prepare-"));
 	try {

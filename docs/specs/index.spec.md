@@ -33,6 +33,7 @@ $ test -f docs/contracts/scenario-proposal-normalization.md
 $ test -f docs/contracts/chatbot-normalization.md
 $ test -f docs/contracts/cli-normalization.md
 $ test -f docs/contracts/skill-normalization.md
+$ test -f docs/contracts/optimization.md
 $ test -f docs/master-plan.md
 $ test -f docs/consumer-readiness.md
 $ test -f skills/cautilus/SKILL.md
@@ -52,6 +53,8 @@ $ test -f scripts/agent-runtime/consumer-example-fixtures.test.mjs
 $ test -f scripts/agent-runtime/scenario-proposals.mjs
 $ test -f scripts/agent-runtime/build-scenario-proposal-input.mjs
 $ test -f scripts/agent-runtime/generate-scenario-proposals.mjs
+$ test -f scripts/agent-runtime/build-optimize-input.mjs
+$ test -f scripts/agent-runtime/generate-optimize-proposal.mjs
 $ test -f scripts/agent-runtime/run-workbench-review-variant.sh
 $ test -f scripts/agent-runtime/run-workbench-executor-variants.mjs
 $ test -f fixtures/scenario-proposals/candidates.json
@@ -66,6 +69,10 @@ $ test -f fixtures/scenario-proposals/standalone-input.json
 $ test -f fixtures/scenario-proposals/chatbot-input.json
 $ test -f fixtures/scenario-proposals/cli-input.json
 $ test -f fixtures/scenario-proposals/skill-input.json
+$ test -f fixtures/optimize/input.schema.json
+$ test -f fixtures/optimize/proposal.schema.json
+$ test -f fixtures/optimize/example-input.json
+$ test -f fixtures/optimize/example-proposal.json
 $ test -f fixtures/scenario-proposals/ceal-chatbot-input.json
 $ test -f fixtures/scenario-proposals/charness-skill-input.json
 $ test -f fixtures/scenario-proposals/crill-skill-input.json

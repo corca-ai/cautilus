@@ -45,6 +45,9 @@ The target product is:
 - A first standalone `review prepare-input` command now assembles one durable
   review packet around a report, adapter review prompts, and compare
   questions.
+- A first standalone `optimize prepare-input` plus `optimize propose` chain now
+  turns explicit report, review-summary, and history evidence into one bounded
+  next-revision brief for prompt or adapter work.
 - A first explicit `cautilus.scenario_results.v1` packet now carries
   scenario-level outcomes and compare artifacts through mode/report/review
   surfaces.
@@ -208,7 +211,7 @@ The current release boundary is documented in
    product-owned helper scripts instead of letting each host reinvent the same
    meta-prompt orchestration.
 4. Add bounded optimization helpers that can propose prompt or adapter changes
-   from report, compare, and review packets without weakening held-out
+   from report, compare, review, and history packets without weakening held-out
    discipline.
 5. Keep HTML report rendering on the roadmap, but defer product-owned HTML
    output until the JSON/YAML packet and report boundaries stay stable across

@@ -9,8 +9,9 @@
 
 ## Current State
 
-- `Cautilus` main은 standalone binary + bundled skill 경계를 거의 닫았고, `workspace prepare-compare`, `mode evaluate`, `review variants`, `cli evaluate`, `scenario normalize chatbot|cli|skill`, `scenario prepare-input`, `scenario propose`, `scenario summarize-telemetry` 까지 제품 표면이 있다.
+- `Cautilus` main은 standalone binary + bundled skill 경계를 거의 닫았고, `workspace prepare-compare`, `mode evaluate`, `review variants`, `cli evaluate`, `scenario normalize chatbot|cli|skill`, `scenario prepare-input`, `scenario propose`, `scenario summarize-telemetry`, `optimize prepare-input`, `optimize propose` 까지 제품 표면이 있다.
 - 공식 adapter contract는 `cautilus-adapter.yaml` / `cautilus-adapters/` 로 고정돼 있다.
+- 이번 세션에서 `quality` 선행 workflow를 실제로 돌렸고, `.agents/quality-adapter.yaml` + [skill-outputs/quality/quality.md](/home/ubuntu/cautilus/skill-outputs/quality/quality.md) 가 현재 repo quality SoT로 추가됐다.
 - `crill` consumer depth는 현재 핵심 표면 기준으로 충분히 검증됐다.
   - root adapter `full_gate`: `accept-now`
   - named adapter `cli-smoke`: 통과
@@ -19,12 +20,15 @@
   - report-driven `review variants`: passing `codex-review`
   - named compare adapter [consumer-artifacts.yaml](/home/ubuntu/crill/.agents/cautilus-adapters/consumer-artifacts.yaml): compare artifact verdict `improved`
 - 그래서 `crill`은 “현재 claim을 입증하기 위한 core consumer verification” 기준으로는 이미 닫혔다. 다음 `crill` 검증은 새 제품 surface가 추가될 때 그 surface를 소비자로 다시 태우는 용도다.
-- 다음 제품 설계의 우선순위는 두 가지다.
+- bounded optimizer helper의 첫 slice는 이제 제품 표면에 들어갔다.
+  - product-owned contract: [docs/contracts/optimization.md](/home/ubuntu/cautilus/docs/contracts/optimization.md)
+  - runtime: [build-optimize-input.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/build-optimize-input.mjs), [generate-optimize-proposal.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/generate-optimize-proposal.mjs)
+  - fixtures/tests: [fixtures/optimize/](/home/ubuntu/cautilus/fixtures/optimize), [optimize-flow.test.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/optimize-flow.test.mjs)
+- 남은 다음 제품 우선순위는 두 가지다.
   - raw-evidence mining helper: host raw log reader는 host가 소유하고, `Cautilus`는 normalized evidence bundle contract + helper script + bundled skill reference meta-prompt를 준다.
-  - bounded optimizer helper: report/review/compare/history packet을 읽고 다음 prompt/adapter revision을 제안하는 bounded optimization loop를 제품이 helper로 준다.
+  - optimizer consumer proof: 새 `optimize` seam을 `crill` 또는 `ceal` consumer artifact로 한 번 태워서 live-consumer claim으로 올린다.
 - HTML report는 필요하지만 지금은 deferred다. SoT는 계속 JSON/YAML packet이다.
 - [docs/master-plan.md](/home/ubuntu/cautilus/docs/master-plan.md), [docs/consumer-readiness.md](/home/ubuntu/cautilus/docs/consumer-readiness.md) 는 위 방향으로 이미 갱신돼 있다.
-- 현재 `cautilus` HEAD는 `a56cffa`, `crill` HEAD는 `af5b40a` 이다.
 - 이번 상태에서 `npm run lint`, `npm run test`, `npm run verify` 는 다시 통과했다.
 
 ## Next Session
@@ -32,16 +36,17 @@
 1. `quality` 스킬부터 발동해서 현재 repo의 gate surface와 missing deterministic checks를 점검한다.
 2. report 작업은 현재 checkout에서 바로 하지 말고 별도 git worktree를 만든 뒤 그 worktree에서 진행한다.
    report 작업은 HTML/report UX 쪽 실험이므로 main checkout의 helper/contract 작업과 분리한다.
-3. quality 결과를 본 뒤 같은 세션에서 `impl`로 이어서 다음 둘 중 하나를 먼저 자른다.
-   - evidence bundle / prepare-evidence helper
-   - optimize prepare-input / optimize propose helper
-4. 새 surface를 추가하면 그때만 `crill` consumer 검증을 다시 돈다.
+3. quality 결과를 본 뒤 같은 세션에서 `impl`로 이어서 evidence bundle / prepare-evidence helper를 먼저 자른다.
+4. evidence helper를 추가하지 않고 optimizer 쪽을 더 만질 경우, 다음 구현 priority는 기능 추가가 아니라 consumer proof다.
+   - `crill` 또는 `ceal` 쪽에 checked-in optimize input artifact를 만들고
+   - 새 `optimize` seam이 실제 consumer packet으로도 도는지 확인한다.
+5. 새 surface를 추가하면 그때만 `crill` consumer 검증을 다시 돈다.
    현재 재사용할 consumer surface:
    - [cli-smoke.yaml](/home/ubuntu/crill/.agents/cautilus-adapters/cli-smoke.yaml)
    - [operator-recovery.yaml](/home/ubuntu/crill/.agents/cautilus-adapters/operator-recovery.yaml)
    - [consumer-artifacts.yaml](/home/ubuntu/crill/.agents/cautilus-adapters/consumer-artifacts.yaml)
    - [cli-help.json](/home/ubuntu/crill/tests/fixtures/cautilus/cli-help.json)
-5. report worktree에서 UI/report 작업을 하더라도, product-owned contract/helper 변경이 생기면 마지막에는 [consumer-readiness.md](/home/ubuntu/cautilus/docs/consumer-readiness.md) 와 이 handoff를 다시 맞춘다.
+6. report worktree에서 UI/report 작업을 하더라도, product-owned contract/helper 변경이 생기면 마지막에는 [consumer-readiness.md](/home/ubuntu/cautilus/docs/consumer-readiness.md) 와 이 handoff를 다시 맞춘다.
 
 ## Premortem
 
@@ -52,7 +57,7 @@
 - raw log mining을 제품이 직접 읽는 방향으로 잘못 확장할 수 있다.
   raw reader는 host-owned이고, `Cautilus`는 normalized evidence bundle과 meta-prompt/helper까지만 소유해야 한다.
 - optimizer를 “자동 무한 개선 루프”로 오해할 수 있다.
-  다음 surface는 bounded loop여야 하고, held_out/comparison/review gate를 통과하는 범위에서만 revision을 제안해야 한다.
+  이미 추가된 `optimize` surface도 bounded loop 전제다. held_out/comparison/review gate를 약화하는 방향으로 쓰면 안 된다.
 - `quality`를 형식적 점검으로만 끝내고 바로 구현으로 넘어갈 수 있다.
   다음 세션의 `quality`는 실제 next gate를 고르기 위한 선행 작업이므로, 그 결과가 다음 구현 slice 선택을 바꿀 수 있다는 점을 잊지 말아야 한다.
 
@@ -70,6 +75,8 @@
 - [docs/master-plan.md](/home/ubuntu/cautilus/docs/master-plan.md)
 - [docs/workflow.md](/home/ubuntu/cautilus/docs/workflow.md)
 - [docs/consumer-readiness.md](/home/ubuntu/cautilus/docs/consumer-readiness.md)
+- [docs/contracts/optimization.md](/home/ubuntu/cautilus/docs/contracts/optimization.md)
+- [skill-outputs/quality/quality.md](/home/ubuntu/cautilus/skill-outputs/quality/quality.md)
 - [skills/cautilus/SKILL.md](/home/ubuntu/cautilus/skills/cautilus/SKILL.md)
 - [bin/cautilus](/home/ubuntu/cautilus/bin/cautilus)
 - [/home/ubuntu/crill/.agents/cautilus-adapter.yaml](/home/ubuntu/crill/.agents/cautilus-adapter.yaml)

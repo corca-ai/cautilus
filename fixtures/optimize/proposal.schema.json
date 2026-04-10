@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cautilus.optimize_proposal.v1",
+  "title": "Cautilus Optimize Proposal",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "generatedAt",
+    "optimizationTarget",
+    "reportRecommendation",
+    "decision",
+    "rationale",
+    "prioritizedEvidence",
+    "suggestedChanges",
+    "revisionBrief",
+    "stopConditions",
+    "followUpChecks"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "cautilus.optimize_proposal.v1"
+    },
+    "generatedAt": {
+      "type": "string"
+    },
+    "inputFile": {
+      "type": "string"
+    },
+    "optimizationTarget": {
+      "type": "string",
+      "enum": [
+        "prompt",
+        "adapter"
+      ]
+    },
+    "targetFile": {
+      "type": "object"
+    },
+    "reportRecommendation": {
+      "type": "string"
+    },
+    "decision": {
+      "type": "string",
+      "enum": [
+        "hold",
+        "revise",
+        "investigate"
+      ]
+    },
+    "rationale": {
+      "type": "string"
+    },
+    "prioritizedEvidence": {
+      "type": "array"
+    },
+    "suggestedChanges": {
+      "type": "array"
+    },
+    "revisionBrief": {
+      "type": "string"
+    },
+    "stopConditions": {
+      "type": "array"
+    },
+    "followUpChecks": {
+      "type": "array"
+    }
+  },
+  "additionalProperties": false
+}

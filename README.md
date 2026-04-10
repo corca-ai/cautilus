@@ -70,6 +70,8 @@ Ceal remains a proving-ground consumer, not the product boundary.
   product-owned packet that binds report artifacts to comparison questions and review prompts
 - [docs/contracts/review-prompt-inputs.md](/home/ubuntu/cautilus/docs/contracts/review-prompt-inputs.md):
   product-owned meta-prompt packet above the review packet boundary
+- [docs/contracts/optimization.md](/home/ubuntu/cautilus/docs/contracts/optimization.md):
+  product-owned bounded optimizer input/proposal seam
 - [docs/contracts/scenario-results.md](/home/ubuntu/cautilus/docs/contracts/scenario-results.md):
   explicit per-mode scenario-results and compare-artifact contract
 - [fixtures/scenario-proposals/input.schema.json](/home/ubuntu/cautilus/fixtures/scenario-proposals/input.schema.json):
@@ -125,6 +127,10 @@ Ceal remains a proving-ground consumer, not the product boundary.
   explicit review meta-prompt input builder
 - [scripts/agent-runtime/render-review-prompt.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/render-review-prompt.mjs):
   generic review meta-prompt renderer
+- [scripts/agent-runtime/build-optimize-input.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/build-optimize-input.mjs):
+  bounded optimizer input builder around explicit report, review, and history evidence
+- [scripts/agent-runtime/generate-optimize-proposal.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/generate-optimize-proposal.mjs):
+  deterministic bounded revision proposal generator
 - [scripts/agent-runtime/run-workbench-review-variant.sh](/home/ubuntu/cautilus/scripts/agent-runtime/run-workbench-review-variant.sh):
   bounded single-variant runner
 - [scripts/agent-runtime/run-workbench-executor-variants.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/run-workbench-executor-variants.mjs):
@@ -238,6 +244,20 @@ node ./bin/cautilus review render-prompt \
   --input /tmp/cautilus-mode/review-prompt-input.json
 ```
 
+Prepare one bounded optimization packet and generate a deterministic revision
+brief from explicit evidence:
+
+```bash
+node ./bin/cautilus optimize prepare-input \
+  --report-file /tmp/cautilus-mode/report.json \
+  --review-summary /tmp/cautilus-review/summary.json \
+  --history-file /tmp/cautilus-history/history.json \
+  --target prompt
+
+node ./bin/cautilus optimize propose \
+  --input /tmp/cautilus-optimize/input.json
+```
+
 Evaluate one operator-facing CLI behavior from an explicit intent packet:
 
 ```bash
@@ -278,6 +298,8 @@ node scripts/agent-runtime/normalize-cli-proposals.mjs --input ./fixtures/scenar
 node scripts/agent-runtime/normalize-skill-proposals.mjs --input ./fixtures/scenario-proposals/skill-input.json
 node scripts/agent-runtime/build-scenario-proposal-input.mjs --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json --family fast_regression
 node scripts/agent-runtime/generate-scenario-proposals.mjs --input ./fixtures/scenario-proposals/standalone-input.json
+node scripts/agent-runtime/build-optimize-input.mjs --report-file /tmp/cautilus-mode/report.json --target prompt
+node scripts/agent-runtime/generate-optimize-proposal.mjs --input /tmp/cautilus-optimize/input.json
 node scripts/agent-runtime/summarize-scenario-telemetry.mjs --results ./fixtures/scenario-proposals/results.json
 node scripts/agent-runtime/build-report-packet.mjs --input ./fixtures/reports/report-input.json
 node scripts/agent-runtime/evaluate-adapter-mode.mjs --repo-root . --mode held_out --intent "CLI behavior should remain legible." --baseline-ref origin/main --output-dir /tmp/cautilus-mode
