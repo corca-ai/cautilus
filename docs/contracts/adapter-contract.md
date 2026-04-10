@@ -89,6 +89,7 @@ iterate_samples_default: 2
 held_out_samples_default: 2
 comparison_samples_default: 2
 full_gate_samples_default: 2
+review_timeout_ms: 30000
 history_file_hint: /tmp/workbench-history.json
 profile_default: default
 default_prompt_file: fixtures/workbench/skill-smoke.prompt.md
@@ -123,6 +124,8 @@ default_schema_file: fixtures/workbench/review-verdict.schema.json
 - `held_out_samples_default`: default sample count for held-out runs.
 - `comparison_samples_default`: default sample count for explicit compare runs.
 - `full_gate_samples_default`: default sample count for full gate runs.
+- `review_timeout_ms`: optional bounded timeout for executor-variant review
+  runs that this adapter expects by default.
 - `history_file_hint`: default history file path when the workflow uses
   graduation or cadence.
 - `profile_default`: default scenario profile reference when the backend

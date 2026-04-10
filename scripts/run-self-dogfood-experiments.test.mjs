@@ -122,6 +122,7 @@ EOF
 			"  - experiment timeout",
 			"baseline_options:",
 			"  - baseline git ref via {baseline_ref}",
+			"review_timeout_ms: 10",
 			"executor_variants:",
 			"  - id: timeout-review",
 			"    tool: command",
@@ -164,6 +165,8 @@ test("run-self-dogfood-experiments writes latest artifacts and summarizes select
 		assert.equal(summary.experiments[0].adapterName, "exp-pass");
 		assert.equal(summary.experiments[1].adapterName, "exp-concern");
 		assert.equal(summary.overallStatus, "concern");
+		assert.equal(summary.reportRecommendation, "defer");
+		assert.equal(summary.gateRecommendation, "accept-now");
 		assert.ok(existsSync(join(artifactRoot, "latest", "latest.md")));
 		assert.deepEqual(readdirSync(join(artifactRoot, "runs")), ["exp-run"]);
 	} finally {
@@ -185,8 +188,6 @@ test("run-self-dogfood-experiments records timeout blockers without aborting the
 				artifactRoot,
 				"--run-id",
 				"timeout-run",
-				"--review-timeout-ms",
-				"10",
 				"--experiment-adapter-name",
 				"exp-timeout",
 			],
@@ -198,6 +199,8 @@ test("run-self-dogfood-experiments records timeout blockers without aborting the
 		assert.equal(result.status, 1);
 		const summary = JSON.parse(readFileSync(result.stdout.trim(), "utf-8"));
 		assert.equal(summary.overallStatus, "blocker");
+		assert.equal(summary.reportRecommendation, "reject");
+		assert.equal(summary.gateRecommendation, "accept-now");
 		assert.equal(summary.experiments[0].adapterName, "exp-timeout");
 		assert.equal(summary.experiments[0].executionStatus, "failed");
 		assert.match(readFileSync(join(artifactRoot, "latest", "latest.md"), "utf-8"), /timed out/);

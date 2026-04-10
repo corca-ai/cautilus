@@ -19,6 +19,7 @@ artifact 위치를 현재 계약으로 보여준다.
 | .agents/cautilus-adapters/self-dogfood.yaml | file_exists |  |
 | .agents/cautilus-adapters/self-dogfood.yaml | fixed | executor_variants |
 | .agents/cautilus-adapters/self-dogfood.yaml | fixed | codex-review |
+| .agents/cautilus-adapters/self-dogfood.yaml | fixed | review_timeout_ms |
 | .agents/cautilus-adapters/self-dogfood-gate-honesty-a.yaml | file_exists |  |
 | .agents/cautilus-adapters/self-dogfood-gate-honesty-b.yaml | file_exists |  |
 | .agents/cautilus-adapters/self-dogfood-skill-surface.yaml | file_exists |  |
@@ -29,9 +30,13 @@ artifact 위치를 현재 계약으로 보여준다.
 | package.json | fixed | "dogfood:self:experiments" |
 | scripts/run-self-dogfood.mjs | file_exists |  |
 | scripts/run-self-dogfood.mjs | fixed | latest.md |
+| scripts/run-self-dogfood.mjs | fixed | gateRecommendation |
+| scripts/run-self-dogfood.mjs | fixed | reportRecommendation |
 | scripts/run-self-dogfood.test.mjs | file_exists |  |
 | scripts/run-self-dogfood-experiments.mjs | file_exists |  |
 | scripts/run-self-dogfood-experiments.mjs | fixed | DEFAULT_EXPERIMENT_ADAPTERS |
+| scripts/run-self-dogfood-experiments.mjs | fixed | gateRecommendation |
+| scripts/run-self-dogfood-experiments.mjs | fixed | reportRecommendation |
 | scripts/run-self-dogfood-experiments.test.mjs | file_exists |  |
 | README.md | fixed | npm run dogfood:self |
 | README.md | fixed | artifacts/self-dogfood/latest/ |
@@ -68,3 +73,10 @@ The latest experiment bundle should be written to these stable paths:
 
 The standing spec gate does not rerun the LLM-backed review. It only keeps the
 contract, command surface, and latest-artifact paths honest.
+
+The latest summaries should distinguish the raw deterministic gate
+recommendation from the final self-dogfood recommendation:
+
+- `gateRecommendation`: what the cheap mode gate recommended on its own
+- `reportRecommendation`: what operators should trust after the explicit
+  self-dogfood verdict is folded in

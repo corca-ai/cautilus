@@ -49,6 +49,7 @@ INTEGER_FIELDS = (
     "held_out_samples_default",
     "comparison_samples_default",
     "full_gate_samples_default",
+    "review_timeout_ms",
 )
 
 STRING_FIELDS = (

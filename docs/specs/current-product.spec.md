@@ -34,6 +34,7 @@ standalone product여야 한다.
 | .agents/cautilus-adapter.yaml | fixed | npm run verify |
 | .agents/cautilus-adapters/self-dogfood.yaml | file_exists |  |
 | .agents/cautilus-adapters/self-dogfood.yaml | fixed | codex-review |
+| .agents/cautilus-adapters/self-dogfood.yaml | fixed | review_timeout_ms |
 | .agents/cautilus-adapters/self-dogfood-gate-honesty-a.yaml | file_exists |  |
 | .agents/cautilus-adapters/self-dogfood-gate-honesty-b.yaml | file_exists |  |
 | .agents/cautilus-adapters/self-dogfood-skill-surface.yaml | file_exists |  |
@@ -144,9 +145,13 @@ standalone product여야 한다.
 | scripts/check-git-hooks.test.mjs | file_exists |  |
 | scripts/run-self-dogfood.mjs | file_exists |  |
 | scripts/run-self-dogfood.mjs | fixed | latest.md |
+| scripts/run-self-dogfood.mjs | fixed | gateRecommendation |
+| scripts/run-self-dogfood.mjs | fixed | reportRecommendation |
 | scripts/run-self-dogfood.test.mjs | file_exists |  |
 | scripts/run-self-dogfood-experiments.mjs | file_exists |  |
 | scripts/run-self-dogfood-experiments.mjs | fixed | DEFAULT_EXPERIMENT_ADAPTERS |
+| scripts/run-self-dogfood-experiments.mjs | fixed | gateRecommendation |
+| scripts/run-self-dogfood-experiments.mjs | fixed | reportRecommendation |
 | scripts/run-self-dogfood-experiments.test.mjs | file_exists |  |
 | docs/contracts/scenario-proposal-inputs.md | file_exists |  |
 | docs/contracts/scenario-proposal-inputs.md | fixed | cautilus.scenario_proposal_inputs.v1 |

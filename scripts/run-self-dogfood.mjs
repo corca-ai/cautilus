@@ -9,11 +9,13 @@ import { pruneWorkspaceArtifacts } from "./agent-runtime/prune-workspace-artifac
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(SCRIPT_DIR, "..");
 const BIN_PATH = join(REPO_ROOT, "bin", "cautilus");
+const RESOLVE_ADAPTER_SCRIPT = join(REPO_ROOT, "scripts", "resolve_adapter.py");
 const STATUS_RANK = new Map([
 	["pass", 0],
 	["concern", 1],
 	["blocker", 2],
 ]);
+const DEFAULT_REVIEW_TIMEOUT_MS = 120000;
 
 function usage(exitCode = 0) {
 	const text = [
@@ -60,7 +62,7 @@ function defaultOptions() {
 		gateAdapterName: null,
 		runId: null,
 		keepLast: 5,
-		reviewTimeoutMs: 120000,
+		reviewTimeoutMs: null,
 		quiet: false,
 	};
 }
@@ -132,6 +134,32 @@ function runCautilus(repoRoot, args, quiet, timeoutMs = null) {
 	});
 }
 
+function loadAdapter(repoRoot, adapter, adapterName) {
+	const args = [RESOLVE_ADAPTER_SCRIPT, "--repo-root", repoRoot];
+	if (adapter) {
+		args.push("--adapter", adapter);
+	}
+	if (adapterName) {
+		args.push("--adapter-name", adapterName);
+	}
+	const result = spawnSync("python3", args, {
+		cwd: repoRoot,
+		encoding: "utf-8",
+	});
+	if (result.status !== 0) {
+		fail(`adapter resolve failed.\n${result.stderr}`);
+	}
+	return JSON.parse(result.stdout);
+}
+
+function resolveReviewTimeoutMs(options, repoRoot) {
+	if (options.reviewTimeoutMs !== null) {
+		return options.reviewTimeoutMs;
+	}
+	const adapterPayload = loadAdapter(repoRoot, options.reviewAdapter, options.reviewAdapterName);
+	return adapterPayload.data.review_timeout_ms ?? DEFAULT_REVIEW_TIMEOUT_MS;
+}
+
 function readJsonFile(path, label) {
 	if (!existsSync(path)) {
 		fail(`${label} not found: ${path}`);
@@ -165,6 +193,16 @@ function statusFromRecommendation(recommendation) {
 	return "blocker";
 }
 
+function recommendationFromStatus(status) {
+	if (status === "pass") {
+		return "accept-now";
+	}
+	if (status === "concern") {
+		return "defer";
+	}
+	return "reject";
+}
+
 function statusFromVariant(variant) {
 	if (variant.status !== "passed") {
 		return "blocker";
@@ -187,7 +225,8 @@ function buildSummary({ repoRoot, workspace, artifactRoot, runId, baselineRef, i
 		baselineRef,
 		intent,
 		overallStatus,
-		reportRecommendation: report.recommendation,
+		reportRecommendation: recommendationFromStatus(overallStatus),
+		gateRecommendation: report.recommendation,
 		reportPath,
 		reviewSummaryPath,
 		reviewTelemetry: reviewSummary.telemetry ?? null,
@@ -222,6 +261,7 @@ function renderMarkdown(summary) {
 		`- baselineRef: ${summary.baselineRef}`,
 		`- overallStatus: ${summary.overallStatus}`,
 		`- reportRecommendation: ${summary.reportRecommendation}`,
+		`- gateRecommendation: ${summary.gateRecommendation}`,
 		"",
 		"## Intent",
 		"",
@@ -229,7 +269,7 @@ function renderMarkdown(summary) {
 		"",
 		"## Current Reading",
 		"",
-		`- deterministic gate: ${summary.reportRecommendation === "accept-now" ? "passed" : summary.reportRecommendation}`,
+		`- deterministic gate: ${summary.gateRecommendation === "accept-now" ? "passed" : summary.gateRecommendation}`,
 		`- explicit review: ${summary.overallStatus}`,
 		`- next action: ${nextAction}`,
 		"",
@@ -422,10 +462,17 @@ function finalizeRun(paths, summary, keepLast) {
 function main(argv = process.argv.slice(2)) {
 	const options = parseArgs(argv);
 	const paths = resolveRuntimePaths(options);
+	const reviewTimeoutMs = resolveReviewTimeoutMs(options, paths.repoRoot);
 	ensureRunDirectories(paths);
 
 	const { reportPath, report } = runModeEvaluation(paths.repoRoot, paths.workspace, paths.modeDir, options);
-	const reviewArtifacts = runReviewVariants(paths.repoRoot, paths.workspace, paths.reviewDir, reportPath, options);
+	const reviewArtifacts = runReviewVariants(
+		paths.repoRoot,
+		paths.workspace,
+		paths.reviewDir,
+		reportPath,
+		{ ...options, reviewTimeoutMs },
+	);
 	const reviewSummary = reviewArtifacts.summary;
 	const summary = buildSummary({
 		repoRoot: paths.repoRoot,

@@ -21,7 +21,7 @@ function writeFile(root, relativePath, content) {
 	writeFileSync(filePath, content, "utf-8");
 }
 
-function createDogfoodRepo() {
+function createDogfoodRepo({ reviewTimeoutMs = null } = {}) {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-self-dogfood-"));
 	writeFile(root, "README.md", "# temp\n");
 	writeFile(root, "docs/workflow.md", "# workflow\n");
@@ -87,6 +87,7 @@ EOF
 			"  - self dogfood review",
 			"baseline_options:",
 			"  - baseline git ref via {baseline_ref}",
+			...(reviewTimeoutMs === null ? [] : [`review_timeout_ms: ${reviewTimeoutMs}`]),
 			"executor_variants:",
 			"  - id: mock-review",
 			"    tool: command",
@@ -156,30 +157,25 @@ test("run-self-dogfood keeps latest artifacts even when review returns concern",
 		assert.equal(result.status, 1);
 		const summary = JSON.parse(readFileSync(result.stdout.trim(), "utf-8"));
 		assert.equal(summary.overallStatus, "concern");
+		assert.equal(summary.reportRecommendation, "defer");
+		assert.equal(summary.gateRecommendation, "accept-now");
 		assert.ok(existsSync(join(artifactRoot, "latest", "latest.md")));
-		assert.match(readFileSync(join(artifactRoot, "latest", "latest.md"), "utf-8"), /overallStatus: concern/);
+		const latest = readFileSync(join(artifactRoot, "latest", "latest.md"), "utf-8");
+		assert.match(latest, /overallStatus: concern/);
+		assert.match(latest, /reportRecommendation: defer/);
+		assert.match(latest, /gateRecommendation: accept-now/);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}
 });
 
 test("run-self-dogfood writes a blocker summary when review variants time out", () => {
-	const root = createDogfoodRepo();
+	const root = createDogfoodRepo({ reviewTimeoutMs: 10 });
 	try {
 		const artifactRoot = join(root, "artifacts");
 		const result = spawnSync(
 			"node",
-			[
-				SCRIPT_PATH,
-				"--repo-root",
-				root,
-				"--artifact-root",
-				artifactRoot,
-				"--run-id",
-				"timeout-run",
-				"--review-timeout-ms",
-				"10",
-			],
+			[SCRIPT_PATH, "--repo-root", root, "--artifact-root", artifactRoot, "--run-id", "timeout-run"],
 			{
 				cwd: process.cwd(),
 				encoding: "utf-8",
@@ -192,8 +188,12 @@ test("run-self-dogfood writes a blocker summary when review variants time out", 
 		assert.equal(result.status, 1);
 		const summary = JSON.parse(readFileSync(result.stdout.trim(), "utf-8"));
 		assert.equal(summary.overallStatus, "blocker");
+		assert.equal(summary.reportRecommendation, "reject");
+		assert.equal(summary.gateRecommendation, "accept-now");
 		assert.equal(summary.reviewVariants[0].id, "review-timeout");
-		assert.match(readFileSync(join(artifactRoot, "latest", "latest.md"), "utf-8"), /overallStatus: blocker/);
+		const latest = readFileSync(join(artifactRoot, "latest", "latest.md"), "utf-8");
+		assert.match(latest, /overallStatus: blocker/);
+		assert.match(latest, /gateRecommendation: accept-now/);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

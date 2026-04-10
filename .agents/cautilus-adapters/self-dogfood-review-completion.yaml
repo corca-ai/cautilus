@@ -6,6 +6,7 @@ baseline_options:
   - baseline git ref in the same repo via {baseline_ref}
 required_prerequisites:
   - refresh the current full-gate report before running review variants
+review_timeout_ms: 20000
 executor_variants:
   - id: codex-review-completion
     tool: codex_exec

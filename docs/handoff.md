@@ -58,11 +58,13 @@
   - existing deterministic gate (`npm run verify`) is sufficient for this slice
   - biggest residual risk is that JSON schema does not enumerate the catalog; runtime validation is the enforcing layer
   - explicit self-dogfood now lives outside pre-push/CI and should refresh `artifacts/self-dogfood/latest/`
+  - canonical self-dogfood summary now separates `gateRecommendation` from final `reportRecommendation`
+  - named self-dogfood adapters can now carry their own `review_timeout_ms`
 
 ## Next Session
 
-1. 다음 slice는 `artifacts/self-dogfood/experiments/latest/` 결과를 보고 어떤 experiment adapter를 canonical self-dogfood로 승격할지 판단하는 것이다.
-2. 필요하면 `self-dogfood-gate-honesty-*` A/B를 더 좁게 하거나 timeout budget을 조정한다.
+1. latest experiments 기준으로 `skill-surface`와 `review-completion`은 pass지만 `gate-honesty-a`는 concern, `gate-honesty-b`는 blocker다.
+2. 다음 slice는 canonical self-dogfood를 더 바꾸기보다, `gate-honesty-*` prompt/evidence를 더 좁혀서 어느 수준의 self-claim까지 accept 가능한지 찾는 것이다.
 3. 그 다음 binary-surface를 별도 experiment adapter로 쪼갤지 본다.
 4. `quality` workflow가 canonical dogfood와 experiments를 어떻게 함께 요약해야 좋은지 본다.
 5. 변경 후에는 항상 `npm run verify`를 다시 돌린다.

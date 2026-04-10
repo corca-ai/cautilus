@@ -10,11 +10,13 @@ import { enrichExperimentPrompt } from "./self-dogfood-experiment-prompt.mjs";
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(SCRIPT_DIR, "..");
 const BIN_PATH = join(REPO_ROOT, "bin", "cautilus");
+const RESOLVE_ADAPTER_SCRIPT = join(REPO_ROOT, "scripts", "resolve_adapter.py");
 const STATUS_RANK = new Map([
 	["pass", 0],
 	["concern", 1],
 	["blocker", 2],
 ]);
+const DEFAULT_REVIEW_TIMEOUT_MS = 20000;
 const DEFAULT_EXPERIMENT_ADAPTERS = [
 	"self-dogfood-gate-honesty-a",
 	"self-dogfood-gate-honesty-b",
@@ -66,7 +68,7 @@ function defaultOptions() {
 		experimentAdapterNames: [],
 		runId: null,
 		keepLast: 5,
-		reviewTimeoutMs: 20000,
+		reviewTimeoutMs: null,
 		quiet: false,
 	};
 }
@@ -137,6 +139,24 @@ function runCautilus(repoRoot, args, quiet, timeoutMs = null) {
 	});
 }
 
+function loadAdapter(repoRoot, adapter, adapterName) {
+	const args = [RESOLVE_ADAPTER_SCRIPT, "--repo-root", repoRoot];
+	if (adapter) {
+		args.push("--adapter", adapter);
+	}
+	if (adapterName) {
+		args.push("--adapter-name", adapterName);
+	}
+	const result = spawnSync("python3", args, {
+		cwd: repoRoot,
+		encoding: "utf-8",
+	});
+	if (result.status !== 0) {
+		fail(`adapter resolve failed.\n${result.stderr}`);
+	}
+	return JSON.parse(result.stdout);
+}
+
 function expectSuccess(result, label) {
 	if (result.status === 0) {
 		return;
@@ -175,6 +195,16 @@ function statusFromRecommendation(recommendation) {
 		return "concern";
 	}
 	return "blocker";
+}
+
+function recommendationFromStatus(status) {
+	if (status === "pass") {
+		return "accept-now";
+	}
+	if (status === "concern") {
+		return "defer";
+	}
+	return "reject";
 }
 
 function statusFromVariant(variant) {
@@ -247,7 +277,7 @@ function syntheticReviewSummary(reviewDir, timeoutMs, reviewAdapterName) {
 	return { summaryPath, summary };
 }
 
-function prepareExperimentPrompt(repoRoot, reportPath, reviewDir, adapterName, options) {
+function prepareExperimentPrompt(repoRoot, reportPath, reviewDir, adapterName, timeoutMs, options) {
 	const reviewPacketPath = join(reviewDir, "review-packet.json");
 	const promptInputPath = join(reviewDir, "review-prompt-input.json");
 	const promptPath = join(reviewDir, "review.prompt.md");
@@ -304,7 +334,7 @@ function prepareExperimentPrompt(repoRoot, reportPath, reviewDir, adapterName, o
 		promptPath,
 		promptInputPath,
 		adapterName,
-		reviewTimeoutMs: options.reviewTimeoutMs,
+		reviewTimeoutMs: timeoutMs,
 	});
 	return { promptPath, reviewPacketPath, promptInputPath };
 }
@@ -382,7 +412,9 @@ function runModeEvaluation(repoRoot, workspace, modeDir, options) {
 
 function runExperimentReview(repoRoot, workspace, reportPath, reviewDir, adapterName, options) {
 	mkdirSync(reviewDir, { recursive: true });
-	const promptArtifacts = prepareExperimentPrompt(repoRoot, reportPath, reviewDir, adapterName, options);
+	const adapterPayload = loadAdapter(repoRoot, null, adapterName);
+	const timeoutMs = options.reviewTimeoutMs ?? adapterPayload.data.review_timeout_ms ?? DEFAULT_REVIEW_TIMEOUT_MS;
+	const promptArtifacts = prepareExperimentPrompt(repoRoot, reportPath, reviewDir, adapterName, timeoutMs, options);
 	const args = [
 		"review",
 		"variants",
@@ -398,9 +430,9 @@ function runExperimentReview(repoRoot, workspace, reportPath, reviewDir, adapter
 		adapterName,
 		...(options.quiet ? ["--quiet"] : []),
 	];
-	const result = runCautilus(repoRoot, args, options.quiet, options.reviewTimeoutMs);
+	const result = runCautilus(repoRoot, args, options.quiet, timeoutMs);
 	if (timedOut(result)) {
-		return syntheticReviewSummary(reviewDir, options.reviewTimeoutMs, adapterName);
+		return syntheticReviewSummary(reviewDir, timeoutMs, adapterName);
 	}
 	const summaryPath = readJsonPathFromStdout(result, `review variants (${adapterName})`);
 	return {
@@ -446,7 +478,8 @@ function buildSummary({ repoRoot, workspace, artifactRoot, runId, baselineRef, i
 		baselineRef,
 		intent,
 		overallStatus,
-		reportRecommendation: report.recommendation,
+		reportRecommendation: recommendationFromStatus(overallStatus),
+		gateRecommendation: report.recommendation,
 		reportPath,
 		modeTelemetry: report.telemetry ?? null,
 		experiments,
@@ -473,6 +506,7 @@ function renderMarkdown(summary) {
 		`- baselineRef: ${summary.baselineRef}`,
 		`- overallStatus: ${summary.overallStatus}`,
 		`- reportRecommendation: ${summary.reportRecommendation}`,
+		`- gateRecommendation: ${summary.gateRecommendation}`,
 		"",
 		"## Intent",
 		"",
@@ -480,7 +514,7 @@ function renderMarkdown(summary) {
 		"",
 		"## Current Reading",
 		"",
-		`- deterministic gate: ${summary.reportRecommendation === "accept-now" ? "passed" : summary.reportRecommendation}`,
+		`- deterministic gate: ${summary.gateRecommendation === "accept-now" ? "passed" : summary.gateRecommendation}`,
 		`- experiments overall: ${summary.overallStatus}`,
 		`- next action: ${nextAction}`,
 		"",
