@@ -27,6 +27,7 @@
 | bin/cautilus | fixed | scenario normalize skill |
 | bin/cautilus | fixed | scenario prepare-input |
 | bin/cautilus | fixed | scenario propose |
+| bin/cautilus | fixed | report build |
 | bin/cautilus | fixed | review variants |
 | bin/cautilus.test.mjs | file_exists |  |
 | skills/cautilus/SKILL.md | file_exists |  |
@@ -36,6 +37,12 @@
 | docs/contracts/adapter-contract.md | fixed | Dogfooding Pattern |
 | docs/contracts/adapter-contract.md | fixed | Executor Variant Shape |
 | docs/contracts/reporting.md | fixed | duration_ms |
+| docs/contracts/reporting.md | fixed | cautilus.report_packet.v1 |
+| fixtures/reports/report-input.json | file_exists |  |
+| fixtures/reports/report-input.schema.json | file_exists |  |
+| fixtures/reports/report.schema.json | file_exists |  |
+| scripts/agent-runtime/build-report-packet.mjs | file_exists |  |
+| scripts/agent-runtime/build-report-packet.mjs | fixed | REPORT_PACKET_SCHEMA |
 | docs/contracts/scenario-proposal-inputs.md | file_exists |  |
 | docs/contracts/scenario-proposal-inputs.md | fixed | cautilus.scenario_proposal_inputs.v1 |
 | docs/contracts/scenario-proposal-normalization.md | file_exists |  |
@@ -103,6 +110,7 @@
 - scenario proposal ranking and draft-scenario helpers
 - scenario proposal packet generation command
 - checked-in schema artifacts for proposal and helper input/output packets
+- machine-readable report packet builder for held-out and full-gate telemetry
 - checked-in consumer-shaped normalization example packets for Ceal, charness,
   and crill
 - adapter-defined executor variants fanout
@@ -131,6 +139,7 @@ $ node ./bin/cautilus scenario normalize chatbot --input ./fixtures/scenario-pro
 $ node ./bin/cautilus scenario normalize skill --input ./fixtures/scenario-proposals/skill-input.json
 $ node ./bin/cautilus scenario prepare-input --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json --family fast_regression --window-days 14 --now 2026-04-11T00:00:00.000Z
 $ node ./bin/cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json
+$ node ./bin/cautilus report build --input ./fixtures/reports/report-input.json
 $ node --test ./bin/cautilus.test.mjs
 $ node --test ./scripts/agent-runtime/consumer-example-fixtures.test.mjs
 $ node --test ./scripts/agent-runtime/chatbot-proposal-candidates.test.mjs
@@ -139,6 +148,7 @@ $ node --test ./scripts/agent-runtime/scenario-proposal-schemas.test.mjs
 $ python3 ./scripts/init_adapter.py --repo-root /tmp/cautilus-spec-check --output /tmp/cautilus-spec-check/cautilus-adapter.yaml --force
 $ node --test ./scripts/agent-runtime/scenario-history.test.mjs
 $ node --test ./scripts/agent-runtime/scenario-proposals.test.mjs
+$ node --test ./scripts/agent-runtime/build-report-packet.test.mjs
 $ test -f ./skills/cautilus/SKILL.md
 $ npm run lint
 $ npm run test

@@ -194,6 +194,7 @@ node scripts/agent-runtime/normalize-skill-proposals.mjs --input ./fixtures/scen
 node scripts/agent-runtime/build-scenario-proposal-input.mjs --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json --family fast_regression
 node scripts/agent-runtime/generate-scenario-proposals.mjs --input ./fixtures/scenario-proposals/standalone-input.json
 node scripts/agent-runtime/summarize-scenario-telemetry.mjs --results ./fixtures/scenario-proposals/results.json
+node scripts/agent-runtime/build-report-packet.mjs --input ./fixtures/reports/report-input.json
 ```
 
 The bundled skill surface lives at

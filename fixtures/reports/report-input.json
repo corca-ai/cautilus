@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "cautilus.report_inputs.v1",
+  "candidate": "feature/intentful-cli",
+  "baseline": "origin/main",
+  "intent": "The operator should understand why adapter setup failed and how to recover.",
+  "commands": [
+    {
+      "mode": "held_out",
+      "command": "node ./bin/cautilus doctor --repo-root /tmp/repo"
+    },
+    {
+      "mode": "full_gate",
+      "command": "node ./bin/cautilus review variants --repo-root /tmp/repo --workspace /tmp/repo --output-dir /tmp/out"
+    }
+  ],
+  "modeRuns": [
+    {
+      "mode": "held_out",
+      "status": "passed",
+      "startedAt": "2026-04-11T00:00:00.000Z",
+      "completedAt": "2026-04-11T00:00:10.000Z",
+      "durationMs": 10000,
+      "candidateResults": [
+        {
+          "scenarioId": "doctor-missing-adapter",
+          "status": "passed",
+          "durationMs": 1200,
+          "telemetry": {
+            "provider": "openai",
+            "model": "gpt-5.4",
+            "total_tokens": 200,
+            "cost_usd": 0.02
+          }
+        }
+      ]
+    },
+    {
+      "mode": "full_gate",
+      "status": "failed",
+      "startedAt": "2026-04-11T00:01:00.000Z",
+      "completedAt": "2026-04-11T00:01:25.000Z",
+      "durationMs": 25000,
+      "telemetry": {
+        "provider": "anthropic",
+        "model": "claude-3.7",
+        "total_tokens": 500,
+        "cost_usd": 0.04
+      },
+      "candidateResults": [
+        {
+          "scenarioId": "review-variant-safety",
+          "status": "failed",
+          "durationMs": 1500
+        }
+      ]
+    }
+  ],
+  "improved": [
+    "doctor-missing-adapter"
+  ],
+  "regressed": [
+    {
+      "scenarioId": "review-variant-safety",
+      "reason": "full gate failed"
+    }
+  ],
+  "unchanged": [],
+  "noisy": [],
+  "humanReviewFindings": [
+    {
+      "severity": "concern",
+      "message": "The CLI output is still terse for first-time operators.",
+      "path": "bin/cautilus"
+    }
+  ],
+  "recommendation": "defer"
+}

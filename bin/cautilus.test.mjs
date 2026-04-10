@@ -309,6 +309,80 @@ test("cautilus scenario summarize-telemetry aggregates scenario costs from resul
 	}
 });
 
+test("cautilus report build emits a machine-readable report packet with mode telemetry", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-bin-report-build-"));
+	try {
+		const inputPath = join(root, "report-input.json");
+		writeFileSync(
+			inputPath,
+			`${JSON.stringify(
+				{
+					schemaVersion: "cautilus.report_inputs.v1",
+					candidate: "feature/intentful-cli",
+					baseline: "origin/main",
+					intent: "The CLI should explain missing adapter setup without operator guesswork.",
+					commands: [
+						{
+							mode: "held_out",
+							command: "node ./bin/cautilus doctor --repo-root /tmp/repo",
+						},
+					],
+					modeRuns: [
+						{
+							mode: "held_out",
+							status: "passed",
+							durationMs: 10000,
+							candidateResults: [
+								{
+									scenarioId: "doctor-missing-adapter",
+									durationMs: 1200,
+									telemetry: {
+										total_tokens: 200,
+										cost_usd: 0.02,
+									},
+								},
+							],
+						},
+						{
+							mode: "full_gate",
+							status: "failed",
+							durationMs: 15000,
+							telemetry: {
+								total_tokens: 300,
+								cost_usd: 0.03,
+							},
+						},
+					],
+					humanReviewFindings: [
+						{
+							severity: "concern",
+							message: "CLI wording is still terse",
+						},
+					],
+					recommendation: "defer",
+				},
+				null,
+				2,
+			)}\n`,
+			"utf-8",
+		);
+		const result = spawnSync("node", [BIN_PATH, "report", "build", "--input", inputPath], {
+			cwd: process.cwd(),
+			encoding: "utf-8",
+		});
+		assert.equal(result.status, 0, result.stderr);
+		const payload = JSON.parse(result.stdout);
+		assert.equal(payload.schemaVersion, "cautilus.report_packet.v1");
+		assert.deepEqual(payload.modesRun, ["held_out", "full_gate"]);
+		assert.equal(payload.telemetry.total_tokens, 500);
+		assert.equal(payload.telemetry.cost_usd, 0.05);
+		assert.equal(payload.telemetry.durationMs, 25000);
+		assert.equal(payload.modeSummaries[0].scenarioTelemetrySummary.overall.total_tokens, 200);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
 test("cautilus scenario prepare-input builds a proposal input packet from split normalized sources", () => {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-bin-scenario-prepare-"));
 	try {

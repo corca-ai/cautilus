@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Cautilus Report Packet",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "generatedAt",
+    "candidate",
+    "baseline",
+    "intent",
+    "commands",
+    "modesRun",
+    "modeSummaries",
+    "telemetry",
+    "recommendation"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "cautilus.report_packet.v1"
+    },
+    "generatedAt": {
+      "type": "string"
+    },
+    "candidate": {
+      "type": "string"
+    },
+    "baseline": {
+      "type": "string"
+    },
+    "intent": {
+      "type": "string"
+    },
+    "commands": {
+      "type": "array"
+    },
+    "modesRun": {
+      "type": "array"
+    },
+    "modeSummaries": {
+      "type": "array"
+    },
+    "telemetry": {
+      "type": "object"
+    },
+    "improved": {
+      "type": "array"
+    },
+    "regressed": {
+      "type": "array"
+    },
+    "unchanged": {
+      "type": "array"
+    },
+    "noisy": {
+      "type": "array"
+    },
+    "humanReviewFindings": {
+      "type": "array"
+    },
+    "recommendation": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

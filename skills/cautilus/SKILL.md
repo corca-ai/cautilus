@@ -89,6 +89,9 @@ node ./bin/cautilus scenario propose \
 
 node ./bin/cautilus scenario summarize-telemetry \
   --results ./fixtures/scenario-proposals/results.json
+
+node ./bin/cautilus report build \
+  --input ./fixtures/reports/report-input.json
 ```
 
 ## Guardrails

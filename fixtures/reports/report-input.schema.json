@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Cautilus Report Inputs",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "candidate",
+    "baseline",
+    "intent",
+    "commands",
+    "modeRuns",
+    "recommendation"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "cautilus.report_inputs.v1"
+    },
+    "candidate": {
+      "type": "string"
+    },
+    "baseline": {
+      "type": "string"
+    },
+    "intent": {
+      "type": "string"
+    },
+    "commands": {
+      "type": "array"
+    },
+    "modeRuns": {
+      "type": "array"
+    },
+    "improved": {
+      "type": "array"
+    },
+    "regressed": {
+      "type": "array"
+    },
+    "unchanged": {
+      "type": "array"
+    },
+    "noisy": {
+      "type": "array"
+    },
+    "humanReviewFindings": {
+      "type": "array"
+    },
+    "recommendation": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

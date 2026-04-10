@@ -6,8 +6,11 @@
 
 ## Minimum Report Shape
 
+- `schemaVersion`: `cautilus.report_packet.v1`
+- `generatedAt`: when the packet was assembled
 - `candidate`: ref, branch, or path under evaluation
 - `baseline`: exact baseline ref or repo path
+- `intent`: the operator-visible behavior or decision being evaluated
 - `modes_run`: iterate, held-out, comparison, full gate
 - `commands`: rendered commands with concrete placeholder values
 - optional `telemetry`: wall-clock latency plus any adapter- or provider-owned
@@ -18,6 +21,24 @@
 - `noisy`: scenarios that require more samples
 - `human_review_findings`: failures that benchmarks miss
 - `recommendation`: `accept-now`, `defer`, or `reject`
+
+## Input Packet
+
+The standalone builder should start from an explicit input packet:
+
+- `schemaVersion`: `cautilus.report_inputs.v1`
+- `candidate`
+- `baseline`
+- `intent`
+- `commands`: explicit mode-to-command mapping
+- `modeRuns`: checked-in or persisted mode execution records
+- optional `improved`, `regressed`, `unchanged`, `noisy`
+- optional `humanReviewFindings`
+- `recommendation`
+
+This keeps report assembly deterministic.
+`Cautilus` should not scrape shell history or infer report structure from
+loose logs.
 
 ## Telemetry Shape
 
@@ -49,6 +70,14 @@ without scraping each verdict file separately.
 For scenario-driven evaluation, the same rule applies one level lower:
 scenario result packets should preserve per-scenario telemetry so `Cautilus`
 can answer which scenarios are currently the slowest or most expensive.
+
+For held-out and full-gate reporting, mode runs should preserve that same
+scenario-level telemetry and lift it into a machine-readable report packet.
+That packet should summarize both:
+
+- per-mode telemetry
+- per-mode scenario telemetry when candidate results are available
+- overall report telemetry across all included modes
 
 ## Interpretation Rules
 

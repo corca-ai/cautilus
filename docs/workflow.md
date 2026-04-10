@@ -144,6 +144,13 @@ values back to the user. Do not hide them behind "same as usual."
    When the repo keeps a runner such as
    `scripts/agent-runtime/run-workbench-executor-variants.mjs`, prefer that
    checked-in fanout path over manual per-variant shell invocations.
+   When the repo already has explicit mode results, assemble one checked-in
+   report packet instead of leaving held-out and full-gate telemetry spread
+   across ad-hoc files:
+
+```bash
+node ./bin/cautilus report build --input ./fixtures/reports/report-input.json
+```
 9. If the user wants a repeatable local evaluator and none exists, create a
    checked-in bounded runner first.
    Prefer a repo script with fixed inputs, fixed prompt variants, and a small

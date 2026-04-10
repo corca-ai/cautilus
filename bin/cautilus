@@ -34,6 +34,7 @@ const SCENARIO_TELEMETRY_SUMMARIZER = join(
 	"agent-runtime",
 	"summarize-scenario-telemetry.mjs",
 );
+const REPORT_PACKET_BUILDER = join(REPO_ROOT, "scripts", "agent-runtime", "build-report-packet.mjs");
 const CHATBOT_NORMALIZER = join(
 	REPO_ROOT,
 	"scripts",
@@ -53,6 +54,7 @@ function usage(exitCode = 0) {
 		"  cautilus scenario summarize-telemetry [args]",
 		"  cautilus scenario prepare-input [args]",
 		"  cautilus scenario propose [args]",
+		"  cautilus report build [args]",
 		"  cautilus review variants [args]",
 		"",
 		"Examples:",
@@ -64,6 +66,7 @@ function usage(exitCode = 0) {
 		"  cautilus scenario summarize-telemetry --results ./results.json",
 		"  cautilus scenario prepare-input --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json",
 		"  cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json",
+		"  cautilus report build --input ./fixtures/reports/report-input.json",
 		"  cautilus review variants --repo-root . --workspace . --output-dir /tmp/cautilus-review",
 	].join("\n");
 	const out = exitCode === 0 ? process.stdout : process.stderr;
@@ -115,6 +118,10 @@ if (area === "scenario" && action === "prepare-input") {
 
 if (area === "scenario" && action === "summarize-telemetry") {
 	run("node", [SCENARIO_TELEMETRY_SUMMARIZER, ...rest]);
+}
+
+if (area === "report" && action === "build") {
+	run("node", [REPORT_PACKET_BUILDER, ...rest]);
 }
 
 if (area === "review" && action === "variants") {

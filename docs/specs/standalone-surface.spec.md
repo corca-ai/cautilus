@@ -21,6 +21,7 @@ Ceal의 기존 `workbench` 시나리오는 여전히 유용한 dogfood 입력이
 | bin/cautilus | fixed | scenario summarize-telemetry |
 | bin/cautilus | fixed | scenario prepare-input |
 | bin/cautilus | fixed | scenario propose |
+| bin/cautilus | fixed | report build |
 | bin/cautilus.test.mjs | file_exists |  |
 | bin/cautilus.test.mjs | fixed | standalone temp repo can adopt cautilus without Ceal-owned paths |
 | skills/cautilus/SKILL.md | file_exists |  |
@@ -31,6 +32,7 @@ Ceal의 기존 `workbench` 시나리오는 여전히 유용한 dogfood 입력이
 | skills/cautilus/SKILL.md | fixed | node ./bin/cautilus scenario summarize-telemetry |
 | skills/cautilus/SKILL.md | fixed | node ./bin/cautilus scenario prepare-input |
 | skills/cautilus/SKILL.md | fixed | node ./bin/cautilus scenario propose |
+| skills/cautilus/SKILL.md | fixed | node ./bin/cautilus report build |
 | skills/cautilus/SKILL.md | fixed | node ./bin/cautilus review variants |
 | skills/cautilus/agents/openai.yaml | file_exists |  |
 | skills/cautilus/agents/openai.yaml | fixed | Cautilus |
@@ -42,7 +44,7 @@ Ceal의 기존 `workbench` 시나리오는 여전히 유용한 dogfood 입력이
 현재 단계에서 standalone surface는 최소한 아래를 만족해야 한다.
 
 - binary와 bundled skill이 같은 workflow entrypoint를 가리킨다.
-- adapter resolve/init/doctor/scenario normalize chatbot/scenario normalize skill/scenario summarize-telemetry/scenario prepare-input/scenario propose/review variants는 Ceal-local script path 없이 설명된다.
+- adapter resolve/init/doctor/scenario normalize chatbot/scenario normalize skill/scenario summarize-telemetry/scenario prepare-input/scenario propose/report build/review variants는 Ceal-local script path 없이 설명된다.
 - Ceal repoint는 제품 정의가 아니라 consumer migration 단계로 남아 있다.
 
 ```run:shell
@@ -53,6 +55,7 @@ $ node ./bin/cautilus scenario normalize skill --input ./fixtures/scenario-propo
 $ node ./bin/cautilus scenario summarize-telemetry --results ./fixtures/scenario-proposals/results.json || true
 $ node ./bin/cautilus scenario prepare-input --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json --family fast_regression --window-days 14 --now 2026-04-11T00:00:00.000Z
 $ node ./bin/cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json
+$ node ./bin/cautilus report build --input ./fixtures/reports/report-input.json
 $ node --test ./bin/cautilus.test.mjs
 $ test -f skills/cautilus/SKILL.md
 $ test -f skills/cautilus/agents/openai.yaml
