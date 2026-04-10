@@ -1,4 +1,4 @@
-import { execFileSync, spawnSync } from "node:child_process";
+import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -10,6 +10,11 @@ import {
 	SCENARIO_RESULTS_SCHEMA,
 } from "./contract-versions.mjs";
 import { buildReportPacket } from "./build-report-packet.mjs";
+import {
+	createProgressLogger,
+	ownershipHintForRepo,
+	runBashCommandWithProgress,
+} from "./command-progress.mjs";
 import { normalizeScenarioResultsPacket } from "./scenario-results.mjs";
 
 export { ADAPTER_MODE_EVALUATION_PACKET_SCHEMA } from "./contract-versions.mjs";
@@ -236,29 +241,6 @@ function readScenarioResults(path, mode) {
 	return normalized.mode ? normalized : { ...normalized, mode };
 }
 
-function runShellCommand({ repoRoot, command, stdoutFile, stderrFile }) {
-	const startedAt = new Date();
-	const startedAtMs = Date.now();
-	const result = spawnSync("bash", ["-lc", command], {
-		cwd: repoRoot,
-		encoding: "utf-8",
-	});
-	const completedAt = new Date();
-	writeFileSync(stdoutFile, result.stdout || "", "utf-8");
-	writeFileSync(stderrFile, result.stderr || "", "utf-8");
-	return {
-		command,
-		startedAt: startedAt.toISOString(),
-		completedAt: completedAt.toISOString(),
-		durationMs: completedAt.getTime() - startedAtMs,
-		...(typeof result.status === "number" ? { exitCode: result.status } : {}),
-		...(result.signal ? { signal: result.signal } : {}),
-		status: result.status === 0 ? "passed" : "failed",
-		stdoutFile,
-		stderrFile,
-	};
-}
-
 function createObservation(stage, index, commandResult) {
 	return {
 		stage,
@@ -277,23 +259,6 @@ function createObservation(stage, index, commandResult) {
 
 function aggregateDuration(observations) {
 	return observations.reduce((total, entry) => total + (entry.durationMs || 0), 0);
-}
-
-function formatDuration(durationMs) {
-	if (typeof durationMs !== "number" || Number.isNaN(durationMs)) {
-		return "unknown";
-	}
-	if (durationMs < 1000) {
-		return `${durationMs}ms`;
-	}
-	return `${(durationMs / 1000).toFixed(1)}s`;
-}
-
-function logProgress(options, message) {
-	if (options.quiet) {
-		return;
-	}
-	process.stderr.write(`${message}\n`);
 }
 
 function compareArtifactBuckets(scenarioResults) {
@@ -409,23 +374,24 @@ function resolveModeContext(options, adapterPayload) {
 	return context;
 }
 
-function executeTemplateSeries(templates, stage, context, options) {
+async function executeTemplateSeries(templates, stage, context, options, log) {
 	const observations = [];
 	for (const [index, template] of templates.entries()) {
 		const command = renderTemplate(template, context.replacements);
-		logProgress(options, `${stage} ${index + 1}/${templates.length} start: ${command}`);
-		const result = runShellCommand({
+		const label = `${stage} ${index + 1}/${templates.length}`;
+		const result = await runBashCommandWithProgress({
 			repoRoot: context.repoRoot,
 			command,
 			stdoutFile: join(context.outputDir, `${stage}-${index + 1}.stdout`),
 			stderrFile: join(context.outputDir, `${stage}-${index + 1}.stderr`),
+			log,
+			startMessage: `${label} start: ${command}`,
+			heartbeatMessage: `${label} still running`,
+			completionLabel: label,
+			ownershipHint: ownershipHintForRepo(TOOL_ROOT, context.repoRoot),
 		});
 		const observation = createObservation(stage, index + 1, result);
 		observations.push(observation);
-		logProgress(
-			options,
-			`${stage} ${index + 1}/${templates.length} ${result.status} in ${formatDuration(result.durationMs)}`,
-		);
 		if (result.status !== "passed") {
 			break;
 		}
@@ -433,12 +399,18 @@ function executeTemplateSeries(templates, stage, context, options) {
 	return observations;
 }
 
-function executePreflight(options, context) {
+async function executePreflight(options, context, log) {
 	if (options.skipPreflight) {
-		logProgress(options, "preflight skipped");
+		log("preflight skipped");
 		return [];
 	}
-	const observations = executeTemplateSeries(context.adapterData.preflight_commands ?? [], "preflight", context, options);
+	const observations = await executeTemplateSeries(
+		context.adapterData.preflight_commands ?? [],
+		"preflight",
+		context,
+		options,
+		log,
+	);
 	const failedObservation = observations.find((entry) => entry.status !== "passed");
 	if (failedObservation) {
 		fail(`Preflight command failed: ${failedObservation.command}`);
@@ -490,23 +462,18 @@ function persistModeReport(context, reportInput) {
 	return report;
 }
 
-export function evaluateAdapterMode(inputOptions) {
+export async function evaluateAdapterMode(inputOptions) {
 	const options = parseArgs(inputOptions);
 	const adapterPayload = loadAdapter(options);
 	const context = resolveModeContext(options, adapterPayload);
-	logProgress(
-		options,
-		`mode evaluate start: mode=${options.mode} repo=${context.repoRoot} output=${context.outputDir}`,
-	);
-	const preflightObservations = executePreflight(options, context);
-	const modeObservations = executeTemplateSeries(context.templates, options.mode, context, options);
+	const log = createProgressLogger({ quiet: options.quiet });
+	log(`mode evaluate start: mode=${options.mode} repo=${context.repoRoot} output=${context.outputDir}`);
+	const preflightObservations = await executePreflight(options, context, log);
+	const modeObservations = await executeTemplateSeries(context.templates, options.mode, context, options, log);
 	const commandObservations = [...preflightObservations, ...modeObservations];
 	const reportInput = buildModeReportInput(options, context, modeObservations, commandObservations);
 	const report = persistModeReport(context, reportInput);
-	logProgress(
-		options,
-		`mode evaluate complete: status=${report.recommendation} report=${context.reportFile}`,
-	);
+	log(`mode evaluate complete: status=${report.recommendation} report=${context.reportFile}`);
 	return {
 		schemaVersion: ADAPTER_MODE_EVALUATION_PACKET_SCHEMA,
 		repoRoot: context.repoRoot,
@@ -519,9 +486,9 @@ export function evaluateAdapterMode(inputOptions) {
 	};
 }
 
-export function main(argv = process.argv.slice(2)) {
+export async function main(argv = process.argv.slice(2)) {
 	try {
-		const packet = evaluateAdapterMode(argv);
+		const packet = await evaluateAdapterMode(argv);
 		writeFileSync(
 			packet.reportFile.replace(/\.json$/, ".mode-evaluation.json"),
 			`${JSON.stringify(packet, null, 2)}\n`,

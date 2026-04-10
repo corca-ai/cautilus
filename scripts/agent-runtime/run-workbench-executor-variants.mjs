@@ -1,4 +1,4 @@
-import { execFileSync, spawnSync } from "node:child_process";
+import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -6,6 +6,11 @@ import process from "node:process";
 
 import { buildReviewPacket } from "./build-review-packet.mjs";
 import { buildReviewPromptInput } from "./build-review-prompt-input.mjs";
+import {
+	createProgressLogger,
+	ownershipHintForRepo,
+	runBashCommandWithProgress,
+} from "./command-progress.mjs";
 import { REVIEW_PROMPT_INPUTS_SCHEMA } from "./contract-versions.mjs";
 import { renderReviewPrompt } from "./render-review-prompt.mjs";
 
@@ -33,7 +38,7 @@ function fail(message) {
 
 function printUsage() {
 	process.stdout.write(
-		"Usage: node scripts/agent-runtime/run-workbench-executor-variants.mjs [--repo-root DIR] [--adapter PATH | --adapter-name NAME] --workspace DIR [--prompt-file FILE | --report-file FILE | --review-packet FILE | --review-prompt-input FILE] [--schema-file FILE] --output-dir DIR [--variant-id ID]\n",
+		"Usage: node scripts/agent-runtime/run-workbench-executor-variants.mjs [--repo-root DIR] [--adapter PATH | --adapter-name NAME] --workspace DIR [--prompt-file FILE | --report-file FILE | --review-packet FILE | --review-prompt-input FILE] [--schema-file FILE] --output-dir DIR [--variant-id ID] [--quiet]\n",
 	);
 }
 
@@ -69,6 +74,7 @@ function parseArgs(argv) {
 		reviewPacketFile: null,
 		reviewPromptInputFile: null,
 		variantIds: [],
+		quiet: false,
 	};
 	for (let index = 0; index < argv.length; index += 1) {
 		const arg = argv[index];
@@ -81,6 +87,10 @@ function parseArgs(argv) {
 		if (arg === "--variant-id") {
 			options.variantIds.push(readRequiredValue(argv, index + 1, arg));
 			index += 1;
+			continue;
+		}
+		if (arg === "--quiet") {
+			options.quiet = true;
 			continue;
 		}
 		if (arg === "-h" || arg === "--help") {
@@ -126,29 +136,35 @@ function renderTemplate(template, replacements) {
 	});
 }
 
-function runVariant(repoRoot, variant, replacements) {
-	const startedAt = new Date();
-	const startedAtMs = Date.now();
+async function runVariant(repoRoot, variant, replacements, log) {
 	const command = renderTemplate(variant.command_template, replacements);
-	const result = spawnSync("bash", ["-lc", command], {
-		cwd: repoRoot,
-		encoding: "utf-8",
+	const label = `variant ${variant.id}`;
+	const result = await runBashCommandWithProgress({
+		repoRoot,
+		command,
+		stdoutFile: `${replacements.output_file_raw}.stdout`,
+		stderrFile: `${replacements.output_file_raw}.stderr`,
+		log,
+		startMessage: `${label} start: ${command}`,
+		heartbeatMessage: `${label} still running`,
+		completionLabel: label,
+		ownershipHint: ownershipHintForRepo(TOOL_ROOT, repoRoot),
 	});
-	const completedAt = new Date();
 	return {
 		id: variant.id,
 		tool: variant.tool,
 		command,
-		startedAt: startedAt.toISOString(),
-		completedAt: completedAt.toISOString(),
-		durationMs: completedAt.getTime() - startedAtMs,
-		exitCode: result.status,
+		startedAt: result.startedAt,
+		completedAt: result.completedAt,
+		durationMs: result.durationMs,
+		exitCode: result.exitCode,
 		signal: result.signal,
 		stdout: result.stdout,
 		stderr: result.stderr,
 		outputFile: replacements.output_file_raw,
-		stderrFile: `${replacements.output_file_raw}.stderr`,
-		status: result.status === 0 ? "passed" : "failed",
+		stdoutFile: result.stdoutFile,
+		stderrFile: result.stderrFile,
+		status: result.status,
 	};
 }
 
@@ -296,9 +312,11 @@ function summarizeTelemetry(variants) {
 	return summary;
 }
 
-function main() {
+async function main() {
 	const options = parseArgs(process.argv.slice(2));
+	const log = createProgressLogger({ quiet: options.quiet });
 	const repoRoot = resolve(options.repoRoot);
+	log(`review variants start: repo=${repoRoot} workspace=${resolve(options.workspace)} output=${resolve(options.outputDir)}`);
 	const adapterPayload = loadAdapter(options);
 	const variants = adapterPayload.data.executor_variants ?? [];
 	if (variants.length === 0) {
@@ -322,6 +340,7 @@ function main() {
 	mkdirSync(outputDir, { recursive: true });
 	const promptArtifacts = resolvePromptArtifacts(options, adapterPayload, repoRoot, outputDir);
 	const promptFile = promptArtifacts.promptFile;
+	log(`review variants artifacts ready: prompt=${promptFile} schema=${schemaFile}`);
 
 	const results = [];
 	for (const variant of selectedVariants) {
@@ -334,7 +353,7 @@ function main() {
 			output_file_raw: outputFile,
 			variant_id: shellEscape(variant.id),
 		};
-		results.push(runVariant(repoRoot, variant, replacements));
+		results.push(await runVariant(repoRoot, variant, replacements, log));
 	}
 
 	const variantSummaries = results.map((result) => {
@@ -348,12 +367,13 @@ function main() {
 			startedAt: result.startedAt,
 			completedAt: result.completedAt,
 			durationMs: result.durationMs,
-			exitCode: result.exitCode,
-			signal: result.signal,
-			outputFile: result.outputFile,
-			stderrFile: result.stderrFile,
-			command: result.command,
-			stdout: result.stdout,
+				exitCode: result.exitCode,
+				signal: result.signal,
+				outputFile: result.outputFile,
+				stdoutFile: result.stdoutFile,
+				stderrFile: result.stderrFile,
+				command: result.command,
+				stdout: result.stdout,
 			stderr: result.stderr,
 			telemetry: output && typeof output.telemetry === "object" ? output.telemetry : null,
 			output,
@@ -374,6 +394,9 @@ function main() {
 	};
 	const summaryFile = join(outputDir, "summary.json");
 	writeFileSync(summaryFile, `${JSON.stringify(summary, null, 2)}\n`, "utf-8");
+	log(
+		`review variants complete: status=${results.every((result) => result.status === "passed") ? "passed" : "failed"} summary=${summaryFile}`,
+	);
 	process.stdout.write(`${summaryFile}\n`);
 	if (results.some((result) => result.status !== "passed")) {
 		process.exit(1);

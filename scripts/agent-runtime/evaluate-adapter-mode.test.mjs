@@ -16,18 +16,29 @@ function writeExecutable(root, name, body) {
 	return filePath;
 }
 
-function createRepo() {
+function createRepo({ failMode = "" } = {}) {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-mode-eval-"));
 	const adapterDir = join(root, ".agents");
 	const workspace = join(root, "workspace");
 	mkdirSync(adapterDir, { recursive: true });
 	mkdirSync(workspace, { recursive: true });
 	writeExecutable(
-		workspace,
-		"bench.sh",
-		`#!/bin/sh
+			workspace,
+			"bench.sh",
+			`#!/bin/sh
 mode="$1"
 scenario_results_file="$2"
+if [ -n "$CAUTILUS_TEST_SLEEP_MS" ]; then
+  python3 - "$CAUTILUS_TEST_SLEEP_MS" <<'PY'
+import sys
+import time
+time.sleep(int(sys.argv[1]) / 1000)
+PY
+fi
+if [ "$mode" = "${failMode}" ]; then
+  echo "repo-local failure for $mode" >&2
+  exit 1
+fi
 cat > "$scenario_results_file" <<JSON
 {
   "schemaVersion": "cautilus.scenario_results.v1",
@@ -87,7 +98,7 @@ echo preflight-ok
 	return { root, workspace };
 }
 
-test("evaluate-adapter-mode executes held_out commands and emits a report packet", () => {
+	test("evaluate-adapter-mode executes held_out commands and emits a report packet", () => {
 	const { root, workspace } = createRepo();
 	try {
 		const outputDir = join(root, "outputs");
@@ -113,22 +124,22 @@ test("evaluate-adapter-mode executes held_out commands and emits a report packet
 				encoding: "utf-8",
 			},
 		);
-			assert.equal(result.status, 0, result.stderr);
-			const report = JSON.parse(readFileSync(result.stdout.trim(), "utf-8"));
-			assert.equal(report.schemaVersion, "cautilus.report_packet.v1");
-			assert.equal(report.recommendation, "defer");
-			assert.equal(report.commandObservations.length, 2);
-			assert.equal(report.modeSummaries[0].scenarioTelemetrySummary.overall.total_tokens, 42);
-			assert.equal(report.modeSummaries[0].scenarioTelemetrySummary.overall.cost_usd, 0.01);
-			assert.equal(report.modeSummaries[0].compareArtifact.schemaVersion, COMPARE_ARTIFACT_SCHEMA);
-			assert.match(result.stderr, /mode evaluate start: mode=held_out/);
-			assert.match(result.stderr, /preflight 1\/1 start:/);
-			assert.match(result.stderr, /held_out 1\/1 passed in /);
-			assert.match(result.stderr, /mode evaluate complete: status=defer report=/);
-		} finally {
-			rmSync(root, { recursive: true, force: true });
-		}
-	});
+		assert.equal(result.status, 0, result.stderr);
+		const report = JSON.parse(readFileSync(result.stdout.trim(), "utf-8"));
+		assert.equal(report.schemaVersion, "cautilus.report_packet.v1");
+		assert.equal(report.recommendation, "defer");
+		assert.equal(report.commandObservations.length, 2);
+		assert.equal(report.modeSummaries[0].scenarioTelemetrySummary.overall.total_tokens, 42);
+		assert.equal(report.modeSummaries[0].scenarioTelemetrySummary.overall.cost_usd, 0.01);
+		assert.equal(report.modeSummaries[0].compareArtifact.schemaVersion, COMPARE_ARTIFACT_SCHEMA);
+		assert.match(result.stderr, /mode evaluate start: mode=held_out/);
+		assert.match(result.stderr, /preflight 1\/1 start:/);
+		assert.match(result.stderr, /held_out 1\/1 passed in /);
+		assert.match(result.stderr, /mode evaluate complete: status=defer report=/);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
 
 test("evaluate-adapter-mode promotes a passing full_gate run to accept-now", () => {
 	const { root, workspace } = createRepo();
@@ -156,14 +167,14 @@ test("evaluate-adapter-mode promotes a passing full_gate run to accept-now", () 
 				encoding: "utf-8",
 			},
 		);
-			assert.equal(result.status, 0, result.stderr);
-			const report = JSON.parse(readFileSync(result.stdout.trim(), "utf-8"));
-			assert.equal(report.recommendation, "accept-now");
-			assert.equal(report.modesRun[0], "full_gate");
-		} finally {
-			rmSync(root, { recursive: true, force: true });
-		}
-	});
+		assert.equal(result.status, 0, result.stderr);
+		const report = JSON.parse(readFileSync(result.stdout.trim(), "utf-8"));
+		assert.equal(report.recommendation, "accept-now");
+		assert.equal(report.modesRun[0], "full_gate");
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
 
 test("evaluate-adapter-mode keeps stdout machine-readable when progress logs are enabled", () => {
 	const { root, workspace } = createRepo();
@@ -229,6 +240,49 @@ test("evaluate-adapter-mode suppresses progress logs with --quiet", () => {
 		assert.equal(result.status, 0, result.stderr);
 		assert.equal(result.stderr, "");
 		assert.equal(result.stdout.trim(), join(outputDir, "report.json"));
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("evaluate-adapter-mode emits heartbeat and ownership hints for failed commands", () => {
+	const { root, workspace } = createRepo({ failMode: "full_gate" });
+	try {
+		const outputDir = join(root, "failed-outputs");
+		const result = spawnSync(
+			"node",
+			[
+				SCRIPT_PATH,
+				"--repo-root",
+				root,
+				"--candidate-repo",
+				workspace,
+				"--mode",
+				"full_gate",
+				"--intent",
+				"Full gate failures should surface early feedback.",
+				"--baseline-ref",
+				"origin/main",
+				"--output-dir",
+				outputDir,
+			],
+			{
+				cwd: process.cwd(),
+				encoding: "utf-8",
+				env: {
+					...process.env,
+					CAUTILUS_PROGRESS_HEARTBEAT_MS: "20",
+					CAUTILUS_TEST_SLEEP_MS: "80",
+				},
+			},
+		);
+		assert.equal(result.status, 0, result.stderr);
+		const report = JSON.parse(readFileSync(result.stdout.trim(), "utf-8"));
+		assert.equal(report.recommendation, "reject");
+		assert.match(result.stderr, /full_gate 1\/1 still running after /);
+		assert.match(result.stderr, /full_gate 1\/1 artifacts: stdout=.*stderr=.*/);
+		assert.match(result.stderr, /full_gate 1\/1 failure signal: repo-local failure for full_gate/);
+		assert.match(result.stderr, /full_gate 1\/1 ownership hint: Repo-local adapter, artifact, or policy failures are usually consumer-owned/);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

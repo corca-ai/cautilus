@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { chmodSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { chmodSync, existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
@@ -14,18 +14,29 @@ function writeExecutable(root, name, body) {
 	return filePath;
 }
 
-function createAdapterRepo() {
+function createAdapterRepo({ failVariantId = "" } = {}) {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-workbench-runner-"));
 	const workspace = join(root, "workspace");
 	mkdirSync(workspace, { recursive: true });
 	writeExecutable(
-		workspace,
-		"variant.sh",
-		`#!/bin/sh
+			workspace,
+			"variant.sh",
+			`#!/bin/sh
 variant_id="$1"
 output_file="$2"
 prompt_file="$3"
 schema_file="$4"
+if [ -n "$CAUTILUS_TEST_SLEEP_MS" ]; then
+  python3 - "$CAUTILUS_TEST_SLEEP_MS" <<'PY'
+import sys
+import time
+time.sleep(int(sys.argv[1]) / 1000)
+PY
+fi
+if [ "$variant_id" = "${failVariantId}" ]; then
+  echo "repo-local variant failure for $variant_id" >&2
+  exit 1
+fi
 node - "$variant_id" "$output_file" "$prompt_file" "$schema_file" <<'EOF'
 const [variantId, outputFile, promptFile, schemaFile] = process.argv.slice(2);
 const { readFileSync, writeFileSync } = await import("node:fs");
@@ -154,15 +165,22 @@ test("run-workbench-executor-variants executes every adapter-defined variant and
 		assert.equal(summary.telemetry.passedVariantCount, 2);
 		assert.ok(summary.telemetry.durationMs >= 0);
 		assert.equal(summary.telemetry.total_tokens, 84);
-		assert.equal(summary.telemetry.cost_usd, 0.02);
-		assert.deepEqual(summary.telemetry.providers, ["mock"]);
-		assert.ok(summary.variants[0].durationMs >= 0);
-		assert.equal(summary.variants[0].telemetry.provider, "mock");
-		assert.match(summary.variants[0].output.summary, /^alpha:/);
-		assert.match(summary.variants[1].output.summary, /^beta:/);
-	} finally {
-		rmSync(root, { recursive: true, force: true });
-	}
+			assert.equal(summary.telemetry.cost_usd, 0.02);
+			assert.deepEqual(summary.telemetry.providers, ["mock"]);
+			assert.ok(summary.variants[0].durationMs >= 0);
+			assert.equal(summary.variants[0].telemetry.provider, "mock");
+			assert.match(summary.variants[0].output.summary, /^alpha:/);
+			assert.match(summary.variants[1].output.summary, /^beta:/);
+			assert.match(result.stderr, /review variants start: repo=/);
+			assert.match(result.stderr, /variant alpha start:/);
+			assert.match(result.stderr, /variant beta passed in /);
+			assert.match(result.stderr, /review variants complete: status=passed summary=/);
+			assert.ok(summary.variants[0].stdoutFile.endsWith(".stdout"));
+			assert.ok(existsSync(summary.variants[0].stdoutFile));
+			assert.ok(existsSync(summary.variants[0].stderrFile));
+		} finally {
+			rmSync(root, { recursive: true, force: true });
+		}
 });
 
 test("run-workbench-executor-variants falls back to adapter default prompt and schema files", () => {
@@ -197,9 +215,9 @@ test("run-workbench-executor-variants falls back to adapter default prompt and s
 		);
 		assert.equal(result.status, 0, result.stderr);
 		const summary = JSON.parse(readFileSync(result.stdout.trim(), "utf-8"));
-		assert.equal(summary.promptFile, promptFile);
-		assert.equal(summary.schemaFile, schemaFile);
-		assert.equal(summary.variants.length, 2);
+			assert.equal(summary.promptFile, promptFile);
+			assert.equal(summary.schemaFile, schemaFile);
+			assert.equal(summary.variants.length, 2);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}
@@ -237,10 +255,89 @@ test("run-workbench-executor-variants can render a prompt from a report file whe
 		);
 		assert.equal(result.status, 0, result.stderr);
 		const summary = JSON.parse(readFileSync(result.stdout.trim(), "utf-8"));
-		assert.equal(summary.variants.length, 2);
-		assert.match(readFileSync(summary.promptFile, "utf-8"), /Held-out doctor messaging improved\./);
-		assert.ok(summary.reviewPacketFile.endsWith("review-packet.json"));
-		assert.ok(summary.reviewPromptInputFile.endsWith("review-prompt-input.json"));
+			assert.equal(summary.variants.length, 2);
+			assert.match(readFileSync(summary.promptFile, "utf-8"), /Held-out doctor messaging improved\./);
+			assert.ok(summary.reviewPacketFile.endsWith("review-packet.json"));
+			assert.ok(summary.reviewPromptInputFile.endsWith("review-prompt-input.json"));
+		} finally {
+			rmSync(root, { recursive: true, force: true });
+		}
+	});
+
+test("run-workbench-executor-variants suppresses progress logs with --quiet", () => {
+	const { root, workspace, adapterPath, promptFile, schemaFile } = createAdapterRepo();
+	try {
+		const outputDir = join(root, "quiet-outputs");
+		const result = spawnSync(
+			"node",
+			[
+				SCRIPT_PATH,
+				"--repo-root",
+				root,
+				"--adapter",
+				adapterPath,
+				"--workspace",
+				workspace,
+				"--prompt-file",
+				promptFile,
+				"--schema-file",
+				schemaFile,
+				"--output-dir",
+				outputDir,
+				"--quiet",
+			],
+			{
+				cwd: process.cwd(),
+				encoding: "utf-8",
+			},
+		);
+		assert.equal(result.status, 0, result.stderr);
+		assert.equal(result.stderr, "");
+		assert.equal(result.stdout.trim(), join(outputDir, "summary.json"));
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("run-workbench-executor-variants emits heartbeat and ownership hints for failed variants", () => {
+	const { root, workspace, adapterPath, promptFile, schemaFile } = createAdapterRepo({ failVariantId: "beta" });
+	try {
+		const outputDir = join(root, "failing-outputs");
+		const result = spawnSync(
+			"node",
+			[
+				SCRIPT_PATH,
+				"--repo-root",
+				root,
+				"--adapter",
+				adapterPath,
+				"--workspace",
+				workspace,
+				"--prompt-file",
+				promptFile,
+				"--schema-file",
+				schemaFile,
+				"--output-dir",
+				outputDir,
+			],
+			{
+				cwd: process.cwd(),
+				encoding: "utf-8",
+				env: {
+					...process.env,
+					CAUTILUS_PROGRESS_HEARTBEAT_MS: "20",
+					CAUTILUS_TEST_SLEEP_MS: "80",
+				},
+			},
+		);
+		assert.equal(result.status, 1, result.stderr);
+		const summary = JSON.parse(readFileSync(result.stdout.trim(), "utf-8"));
+		assert.equal(summary.variants[1].status, "failed");
+		assert.match(result.stderr, /variant beta still running after /);
+		assert.match(result.stderr, /variant beta artifacts: stdout=.*stderr=.*/);
+		assert.match(result.stderr, /variant beta failure signal: repo-local variant failure for beta/);
+		assert.match(result.stderr, /variant beta ownership hint: Repo-local adapter, artifact, or policy failures are usually consumer-owned/);
+		assert.match(result.stderr, /review variants complete: status=failed summary=/);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}
