@@ -99,6 +99,13 @@
     consumer repo or compiled binary context without `CAUTILUS_TOOL_ROOT`;
     only `skills install` and remaining Node-script fallbacks still require the
     product source root to locate bundled assets/scripts.
+  - product-owned CLI smoke coverage is no longer only in
+    `bin/cautilus.test.mjs`. `internal/app/cli_smoke_test.go` now carries the
+    Go-side acceptance tests for root self-consumer doctor, adapter resolve,
+    doctor ready/missing/invalid, standalone temp-repo adoption,
+    `skills install`, workspace compare/prune, and scenario proposal/telemetry.
+    JS acceptance is still present, but ownership has started to move with the
+    Go runtime instead of staying anchored to the Node shim.
   - `cautilus --version` no longer depends only on `package.json` in the source
     tree. It now prefers `CAUTILUS_VERSION`, then Go build info, and only falls
     back to `package.json` when a source checkout is available. This hardens the
@@ -366,6 +373,7 @@
     `run.json` metadata 확장과 shell flavor surface 같은 operator ergonomics다.
 - local proof (Node v22.22.2, Go 1.26.1 기준, 이번 세션 마지막 측정값):
   - `go run ./cmd/cautilus --version`: `0.2.0`
+  - `go test ./internal/app -run 'TestCLI'`: green
   - `go build -o /tmp/cautilus-go-port-smoke ./cmd/cautilus` 후 source root
     밖 임시 repo에서
     `CAUTILUS_VERSION=v0.2.0 CAUTILUS_CALLER_CWD=<temp> /tmp/cautilus-go-port-smoke --version`
@@ -407,8 +415,9 @@
   - repo-root/version discovery hardening is now done for native handlers and
     `--version`
   - decide whether the next seam is command execution abstraction, skill asset
-    embedding / install-root discovery for `skills install`, or a second ported
-    product-owned command body
+    embedding / install-root discovery for `skills install`, or moving the
+    remaining report/review/optimize/evidence CLI acceptance cases out of
+    `bin/cautilus.test.mjs` and into Go tests
   - preserve the existing command contract and fixture names unless a break is
     clearly worth it
   - prefer replacing product-owned runtime seams before touching host-facing

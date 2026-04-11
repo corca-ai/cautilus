@@ -35,6 +35,10 @@ standalone acceptance boundary만 남긴다.
 | bin/cautilus.test.mjs | file_exists |  |
 | bin/cautilus.test.mjs | fixed | root self-consumer repo stays doctor-ready |
 | bin/cautilus.test.mjs | fixed | standalone temp repo can adopt cautilus without Ceal-owned paths |
+| internal/app/cli_smoke_test.go | file_exists |  |
+| internal/app/cli_smoke_test.go | fixed | TestCLIRootSelfConsumerRepoStaysDoctorReady |
+| internal/app/cli_smoke_test.go | fixed | TestCLIStandaloneTempRepoCanAdoptCautilusWithoutCealPaths |
+| internal/app/cli_smoke_test.go | fixed | TestCLISkillsInstallCreatesRepoLocalCanonicalSkill |
 | scripts/install-skills.mjs | file_exists |  |
 | scripts/install-skills.mjs | fixed | Installed skill expects `cautilus` to be available on PATH. |
 | skills/cautilus/SKILL.md | file_exists |  |
