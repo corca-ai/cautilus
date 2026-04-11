@@ -115,6 +115,12 @@ standalone product여야 한다.
 | scripts/agent-runtime/new-workspace-run.mjs | fixed | cautilus.workspace_run_manifest.v1 |
 | scripts/agent-runtime/new-workspace-run.mjs | fixed | RUN_MANIFEST_SCHEMA |
 | scripts/agent-runtime/new-workspace-run.test.mjs | file_exists |  |
+| scripts/agent-runtime/active-run.mjs | file_exists |  |
+| scripts/agent-runtime/active-run.mjs | fixed | ACTIVE_RUN_ENV_VAR |
+| scripts/agent-runtime/active-run.mjs | fixed | CAUTILUS_RUN_DIR |
+| scripts/agent-runtime/active-run.mjs | fixed | DEFAULT_RUNS_ROOT |
+| scripts/agent-runtime/active-run.mjs | fixed | resolveRunDir |
+| scripts/agent-runtime/active-run.test.mjs | file_exists |  |
 | fixtures/cli-evaluation/doctor-missing-adapter.json | file_exists |  |
 | fixtures/cli-evaluation/input.schema.json | file_exists |  |
 | scripts/agent-runtime/evaluate-cli-intent.mjs | file_exists |  |
