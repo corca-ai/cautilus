@@ -68,7 +68,9 @@ node ./bin/cautilus doctor --repo-root .
 1. Resolve the adapter and restate the candidate, baseline, and intended
    decision.
 2. When the run needs clean git-ref A/B workspaces, prepare them with the
-   product-owned helper:
+   product-owned helper. `--output-dir` is optional when `workspace start`
+   has already pinned `CAUTILUS_RUN_DIR`; the helper will drop `baseline/`
+   and `candidate/` inside that active `runDir`:
 
 ```bash
 node ./bin/cautilus workspace prepare-compare \

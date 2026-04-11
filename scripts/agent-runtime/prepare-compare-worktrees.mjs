@@ -1,7 +1,9 @@
 import { execFileSync } from "node:child_process";
-import { existsSync, mkdirSync, rmSync } from "node:fs";
+import { existsSync, rmSync } from "node:fs";
 import { resolve, join } from "node:path";
 import process from "node:process";
+
+import { resolveRunDir } from "./active-run.mjs";
 
 function fail(message) {
 	process.stderr.write(`${message}\n`);
@@ -11,7 +13,7 @@ function fail(message) {
 function printUsage(exitCode = 0) {
 	const text = [
 		"Usage:",
-		"  node ./scripts/agent-runtime/prepare-compare-worktrees.mjs --repo-root <dir> --baseline-ref <ref> --output-dir <dir> [--candidate-ref <ref> | --use-current-candidate] [--force]",
+		"  node ./scripts/agent-runtime/prepare-compare-worktrees.mjs --repo-root <dir> --baseline-ref <ref> [--output-dir <dir>] [--candidate-ref <ref> | --use-current-candidate] [--force]",
 	].join("\n");
 	const out = exitCode === 0 ? process.stdout : process.stderr;
 	out.write(`${text}\n`);
@@ -68,9 +70,6 @@ function parseArgs(argv) {
 	if (!options.baselineRef) {
 		fail("--baseline-ref is required");
 	}
-	if (!options.outputDir) {
-		fail("--output-dir is required");
-	}
 	if (options.useCurrentCandidate && options.candidateRef !== "HEAD") {
 		fail("Use either --candidate-ref or --use-current-candidate, not both.");
 	}
@@ -81,12 +80,6 @@ function runGit(repoRoot, args) {
 	return execFileSync("git", ["-C", repoRoot, ...args], {
 		encoding: "utf-8",
 	}).trim();
-}
-
-function ensureDirectory(path) {
-	if (!existsSync(path)) {
-		mkdirSync(path, { recursive: true });
-	}
 }
 
 function prepareWorktreeDirectory(path, force) {
@@ -160,10 +153,13 @@ function main(argv) {
 	const options = parseArgs(argv);
 	const repoRoot = resolve(options.repoRoot);
 	const gitRoot = runGit(repoRoot, ["rev-parse", "--show-toplevel"]);
-	const outputDir = resolve(options.outputDir);
+	const resolvedRun = resolveRunDir({ outputDir: options.outputDir });
+	if (resolvedRun.source === "auto") {
+		process.stderr.write(`Active run: ${resolvedRun.runDir}\n`);
+	}
+	const outputDir = resolvedRun.runDir;
 	const baselinePath = join(outputDir, "baseline");
 	const candidatePath = join(outputDir, "candidate");
-	ensureDirectory(outputDir);
 
 	const baseline = createDetachedWorktree(gitRoot, baselinePath, options.baselineRef, options.force);
 	const candidate = options.useCurrentCandidate

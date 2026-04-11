@@ -270,6 +270,12 @@ node ./bin/cautilus workspace prepare-compare \
   --output-dir /tmp/cautilus-compare
 ```
 
+`--output-dir` is optional. When `CAUTILUS_RUN_DIR` is already pinned by
+`cautilus workspace start`, `workspace prepare-compare` materializes
+`baseline/` and `candidate/` under that active `runDir`; if nothing is pinned
+it auto-materializes a fresh `runDir` under `./.cautilus/runs/` and prints
+`Active run: <path>` to stderr.
+
 Prune older Cautilus artifact bundles from a dedicated artifact root:
 
 ```bash

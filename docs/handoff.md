@@ -21,10 +21,10 @@
 - `artifact-root auto layout` slice는 active-run env var contract로
   정착되었다. 기본 pickup은 아래 Next Session 순서를 따른다. active-run
   helper, `workspace start` entry, `docs/contracts/active-run.md` 모두
-  확정된 상태. `mode evaluate`는 이제 `resolveRunDir`을 통해 env var
-  contract에 wired 되어 있다 (slice 3). 다음 작업은 남은 consumer 명령들
-  (`workspace prepare-compare`, `review prepare-input`, `review variants`)을
-  같은 helper에 하나씩 wiring하는 것이다.
+  확정된 상태. `mode evaluate` (slice 3)와 `workspace prepare-compare`
+  (slice 4) 둘 다 `resolveRunDir`을 통해 env var contract에 wired 되어
+  있다. 다음 작업은 남은 consumer 명령들 (`review prepare-input`,
+  `review variants`)을 같은 helper에 하나씩 wiring하는 것이다.
 - 세션을 시작하기 전에 `node --version`이 `v22.x` 이상인지 먼저 본다.
   Node 20에서는 self-dogfood test fixture가 `node - <<EOF ... await import()`
   패턴 때문에 깨진다. `.n`이 깔려 있다면 `N_PREFIX=/home/ubuntu/.n n install 22`로
@@ -147,6 +147,32 @@
   stronger-claim 상태는 여전히 `gate-honesty-a=blocker`,
   `gate-honesty-b=concern`, `binary-surface=concern`, `skill-surface=pass`,
   `review-completion=pass`이다.
+- slice 4 (`workspace prepare-compare` active-run wiring) 완료 상태:
+  - `scripts/agent-runtime/prepare-compare-worktrees.mjs`가 `resolveRunDir`을
+    import해서 `--output-dir`을 옵션으로 다룬다. precedence는 slice 3과
+    동일하다 (`explicit > CAUTILUS_RUN_DIR > auto-materialize`).
+    auto-materialize 경로에서는 stderr에 `Active run: <abs runDir>` 한 줄을
+    찍는다. explicit과 env var 경로는 조용히 동작한다.
+  - 기존 `ensureDirectory` helper는 `resolveRunDir`이 내부에서 `mkdirSync`를
+    호출하므로 dead code가 되어 제거했다.
+  - canonical filename은 `baseline/`, `candidate/` 디렉터리다. active run
+    내부 retry 시나리오에서는 `removeExistingWorktree`가 git worktree
+    registration을 먼저 푼 뒤 다시 붙인다. 같은 runDir에 두 번 호출해도
+    `--force` 없이 collision-free로 동작한다. `run.json` marker와
+    `baseline/`, `candidate/`는 한 runDir 안에서 공존한다.
+  - `scripts/agent-runtime/prepare-compare-worktrees.test.mjs`에 4개
+    regression test 추가: env var path, auto-materialize + `Active run:`
+    banner, 같은 runDir retry 시 git worktree re-attach, explicit override가
+    inherited `CAUTILUS_RUN_DIR`을 이기는 경로. 기존 2 test는 explicit
+    `--output-dir` regression guard로 그대로 유지.
+  - README, `docs/workflow.md`, bundled + packaged `skills/cautilus/SKILL.md`
+    에 "--output-dir는 active run이 pinned 되어 있으면 생략 가능" 한 단락
+    (README/workflow) 또는 한 문장(bundled/packaged SKILL.md)을 mirror.
+  - `docs/contracts/active-run.md`의 `### Wired Consumers` 표에서
+    `workspace prepare-compare` 행을 `wired`로 바꾸고 retry 시 git worktree
+    re-attach가 자동이라는 note를 붙였다.
+  - self-dogfood script는 `prepare-compare`를 직접 부르지 않으므로 parent
+    shell에서 오염될 리스크가 없다.
 - slice 3 (`mode evaluate` active-run wiring) 완료 상태:
   - `scripts/agent-runtime/evaluate-adapter-mode.mjs`가 `active-run.mjs`의
     `resolveRunDir`을 import해서 `--output-dir`을 옵션으로 다룬다.
@@ -176,32 +202,29 @@
 
 ## Next Session
 
-1. **Slice 4: `workspace prepare-compare` active-run wiring**. 구체 작업:
-   - `scripts/agent-runtime/prepare-compare-worktrees.mjs`에서 `--output-dir`
-     처리를 옵셔널로 바꾼다. `active-run.mjs`의 `resolveRunDir`을 import해서
-     slice 3과 동일한 precedence (explicit > env var > auto-materialize)를
-     따르도록 만든다.
-   - canonical filename은 `baseline/`과 `candidate/` 디렉터리다. runDir 안에
-     이미 `report.json`, `run.json`, `<mode>-scenario-results.json` 등이
-     공존할 수 있으므로 worktree 디렉터리 이름은 그대로 유지한다.
-   - auto-materialize 경로에서 stderr에 `Active run: <abs runDir>` 한 줄을
-     찍는다 (slice 3의 패턴 그대로).
-   - test 네 개 추가: env var path, auto-materialize + `Active run:`,
-     same-runDir retry (기존 baseline/ 덮어쓰기 허용 여부는 구현 시 결정),
-     explicit override 경로.
-   - 끝날 때 `docs/contracts/active-run.md`의 `### Wired Consumers` 표에서
-     `workspace prepare-compare` 행을 `wired`로 바꾼다.
-2. **Slice 5: `review prepare-input` active-run wiring**. `--output` flag가
-   단일 파일(`review-packet.json`)이라 패턴이 약간 다르다. explicit
-   `--output`이면 그 파일로, 없으면 runDir 안의 `review-packet.json`으로
-   떨어지도록 구현한다. report 입력 경로(`--report-file`)도 active run 안의
-   `report.json`을 default로 잡을지 결정한다 (contract doc Probe Questions
-   참고).
-3. **Slice 6: `review variants` active-run wiring**. 현재 `--output-dir`이
-   required다. slice 3과 같은 패턴으로 옵셔널화하고, canonical filename 표의
-   `variant-*.json`과 `<stage>-<index>.stdout/stderr`를 `wired`로 마킹한다.
-   review variants가 이미 runDir 안에 `review-packet.json`이 있으면 그것을
-   default로 읽는 옵션도 같이 고민한다.
+1. **Slice 5: `review prepare-input` active-run wiring**. 다른 slice들과 달리
+   output이 단일 파일(`review-packet.json`)이라 패턴이 약간 다르다. 구체
+   작업:
+   - `scripts/agent-runtime/build-review-packet.mjs` (또는 명령 구현 파일)
+     에서 `--output` flag를 옵션으로 다룬다. explicit `--output`이면 그
+     파일로, 없으면 runDir 안의 `review-packet.json`으로 떨어진다.
+   - report 입력 경로(`--report-file`)도 active run 안의 `report.json`을
+     default로 잡을지 결정해야 한다 — contract doc Probe Questions 섹션의
+     file-in/file-out 질문이 여기에 걸려 있다. slice 시작 시 결정한 답을
+     contract doc에 기록한다.
+   - auto-materialize 경로에서 `Active run: <abs runDir>` stderr banner.
+   - test 네 개 추가 (env var path, auto-materialize + banner, retry 시
+     review-packet.json overwrite, explicit `--output` override).
+   - `docs/contracts/active-run.md`의 `### Wired Consumers` 표에서
+     `review prepare-input` 행을 `wired`로 바꾼다.
+2. **Slice 6: `review variants` active-run wiring**. 현재 `--output-dir`이
+   required다. slice 3/4와 같은 패턴으로 옵셔널화하고, canonical filename
+   표의 `variant-*.json`과 `<stage>-<index>.stdout/stderr`를 `wired`로
+   마킹한다. review variants가 이미 runDir 안에 `review-packet.json`이
+   있으면 그것을 default로 읽는 옵션도 같이 고민한다. self-dogfood script
+   (`scripts/run-self-dogfood.mjs` line 485)가 `--output-dir`을 explicit
+   하게 넘기므로 slice 3의 precedence rule 1 regression test와 같은 것을
+   이 slice에도 건다.
 4. **Slice 후반: file-in/file-out helper 결정**. `evidence prepare-input`,
    `optimize prepare-input`, `report build`, `evidence bundle`,
    `optimize propose`, `optimize build-artifact` 같은 helper들도 active run
@@ -313,6 +336,8 @@
 - [scripts/agent-runtime/active-run.test.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/active-run.test.mjs)
 - [scripts/agent-runtime/evaluate-adapter-mode.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/evaluate-adapter-mode.mjs)
 - [scripts/agent-runtime/evaluate-adapter-mode.test.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/evaluate-adapter-mode.test.mjs)
+- [scripts/agent-runtime/prepare-compare-worktrees.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/prepare-compare-worktrees.mjs)
+- [scripts/agent-runtime/prepare-compare-worktrees.test.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/prepare-compare-worktrees.test.mjs)
 - [scripts/agent-runtime/prune-workspace-artifacts.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/prune-workspace-artifacts.mjs)
 - [scripts/render-self-dogfood-html.mjs](/home/ubuntu/cautilus/scripts/render-self-dogfood-html.mjs)
 - [scripts/render-self-dogfood-html.test.mjs](/home/ubuntu/cautilus/scripts/render-self-dogfood-html.test.mjs)

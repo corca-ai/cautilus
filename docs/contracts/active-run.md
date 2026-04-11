@@ -131,7 +131,7 @@ to stderr exactly once when they auto-materialize.
 | Consumer              | Status     | Canonical rows                                                      | Notes                                                         |
 | --------------------- | ---------- | ------------------------------------------------------------------- | ------------------------------------------------------------- |
 | `mode evaluate`       | wired      | `report-input.json`, `report.json`, `<mode>-scenario-results.json`, `selected-profile.json`, `selected-scenario-ids.json`, `baseline-cache.json`, `<stage>-<index>.stdout/stderr` | `--output-dir` is optional. Mode-prefixed scenario-results keeps multi-mode coexistence inside one `runDir`. |
-| `workspace prepare-compare` | not yet | `baseline/`, `candidate/`                                        | Scheduled for a follow-up slice.                              |
+| `workspace prepare-compare` | wired  | `baseline/`, `candidate/`                                        | `--output-dir` is optional. Retries inside one active `runDir` reuse the git worktree registrations and rebuild `baseline/` and `candidate/` without requiring `--force`. |
 | `review prepare-input`      | not yet | `review-packet.json`                                             | Scheduled for a follow-up slice; `--output` is the override.  |
 | `review variants`           | not yet | `variant-*.json`, `<stage>-<index>.stdout/stderr`                | Scheduled for a follow-up slice.                              |
 
