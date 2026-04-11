@@ -178,6 +178,14 @@
      대한 second invocation일 때 collision 없이 동작해야 한다 (동일 runDir
      안에서 `report.json`을 **덮어쓰는 게 정상**이다 — 같은 workflow의 retry
      시나리오). 이 케이스 test도 하나 추가한다.
+   - **자기회귀 체크**: `scripts/run-self-dogfood.mjs`(line 415, 485)와
+     `scripts/run-self-dogfood-experiments.mjs`(line 400, 428)는 모두
+     `evaluate-adapter-mode.mjs`를 `--output-dir`로 explicit하게 부른다.
+     slice 3는 precedence rule 1(explicit override wins)을 정확히 지켜서
+     기존 self-dogfood 경로가 inherited `CAUTILUS_RUN_DIR`에 영향받지
+     않도록 보장해야 한다. `active-run.test.mjs`에 이미 그 regression은
+     걸려 있지만 `evaluate-adapter-mode.test.mjs` 수준에서도 한 번 더
+     확인하는 게 안전하다.
    - 문서 mirror: `README.md`/`docs/workflow.md`/`skills/cautilus/SKILL.md`/
      `plugins/cautilus/skills/cautilus/SKILL.md`의 `mode evaluate` 예시에서
      `--output-dir /tmp/cautilus-mode`를 제거하거나, "active run이 있으면
@@ -187,27 +195,29 @@
      표식을 붙이거나, 표 아래에 `### Wired Slices` 섹션을 두어 기록). spec
      source_guard가 깨지지 않도록 `Canonical Filenames` 섹션 제목은 그대로
      둔다.
-2. **Slice 4+**: `workspace prepare-compare`, `review prepare-input`,
-   `review variants`가 남은 consumer 명령이다. slice 3에서 잡힌 패턴을
-   그대로 복붙해서 각 명령마다 한 슬라이스씩 친다. `review prepare-input`은
-   output이 단일 파일(`review-packet.json`)이라 약간 다르게 다뤄야 한다 —
-   `--output`이 explicit override면 그 파일로, 없으면 runDir 안의
-   `review-packet.json`으로 떨어진다.
-3. **Slice 후반**: `evidence prepare-input`, `optimize prepare-input`,
-   `report build`, `evidence bundle`, `optimize propose`,
-   `optimize build-artifact` 같은 file-in/file-out helper들도 active run
+2. **Slice 4+: 나머지 consumer wiring**. `workspace prepare-compare`,
+   `review prepare-input`, `review variants`가 남은 consumer 명령이다.
+   slice 3에서 잡힌 패턴을 그대로 복붙해서 각 명령마다 한 슬라이스씩 친다.
+   `review prepare-input`은 output이 단일 파일(`review-packet.json`)이라
+   약간 다르게 다뤄야 한다 — `--output`이 explicit override면 그 파일로,
+   없으면 runDir 안의 `review-packet.json`으로 떨어진다. 각 slice가
+   끝날 때마다 `docs/contracts/active-run.md`의 canonical filenames 표의
+   해당 행을 "wired"로 마킹한다.
+3. **Slice 후반: file-in/file-out helper 결정**. `evidence prepare-input`,
+   `optimize prepare-input`, `report build`, `evidence bundle`,
+   `optimize propose`, `optimize build-artifact` 같은 helper들도 active run
    안에서는 canonical filename을 default로 삼을지 결정한다. contract doc의
    Probe Questions 섹션이 이 결정을 기다리고 있다. 필요하면 contract 표에
    row를 더 추가하면서 slice별로 풀어간다.
-2. HTML view follow-ups는 다음 우선순위로 내려간다.
+4. HTML view follow-ups는 다음 우선순위로 내려간다.
    - `artifacts/self-dogfood/experiments/latest/` 번들이 다시 쓰이기 시작하면
      그때 HTML view를 experiments surface까지 확장할지 결정한다. 지금은 해당
      디렉터리가 비어 있어서 defer.
-3. `binary-surface` experiment가 `skill-surface`처럼 stable pass로 떨어졌는지
+5. `binary-surface` experiment가 `skill-surface`처럼 stable pass로 떨어졌는지
    다시 본다. 필요하면 enrichment prompt를 더 깎는다.
-4. `quality` workflow가 canonical dogfood와 experiments를 어떻게 함께 요약해야
+6. `quality` workflow가 canonical dogfood와 experiments를 어떻게 함께 요약해야
    operator에게 덜 거짓말 같은지 결론을 낸다.
-5. 변경 후에는 항상 `npm run verify`를 다시 돌린다. 실행 전에 Node 22가 활성화
+7. 변경 후에는 항상 `npm run verify`를 다시 돌린다. 실행 전에 Node 22가 활성화
    되어 있는지 먼저 확인한다.
 
 ## Discuss
