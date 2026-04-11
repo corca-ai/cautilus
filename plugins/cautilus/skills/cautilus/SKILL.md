@@ -47,6 +47,7 @@ node ./bin/cautilus doctor --repo-root .
 4. Read the canonical workflow and contracts before widening the surface:
 
 - [docs/workflow.md](/home/ubuntu/cautilus/docs/workflow.md)
+- [docs/contracts/active-run.md](/home/ubuntu/cautilus/docs/contracts/active-run.md)
 - [docs/contracts/adapter-contract.md](/home/ubuntu/cautilus/docs/contracts/adapter-contract.md)
 - [docs/contracts/reporting.md](/home/ubuntu/cautilus/docs/contracts/reporting.md)
 - [docs/contracts/scenario-proposal-sources.md](/home/ubuntu/cautilus/docs/contracts/scenario-proposal-sources.md)

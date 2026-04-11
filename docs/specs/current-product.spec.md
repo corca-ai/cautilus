@@ -125,6 +125,12 @@ standalone product여야 한다.
 | scripts/agent-runtime/active-run.mjs | fixed | DEFAULT_RUNS_ROOT |
 | scripts/agent-runtime/active-run.mjs | fixed | resolveRunDir |
 | scripts/agent-runtime/active-run.test.mjs | file_exists |  |
+| docs/contracts/active-run.md | file_exists |  |
+| docs/contracts/active-run.md | fixed | CAUTILUS_RUN_DIR |
+| docs/contracts/active-run.md | fixed | One Workflow = One runDir |
+| docs/contracts/active-run.md | fixed | Canonical Filenames |
+| docs/contracts/active-run.md | fixed | Rejected Alternatives |
+| docs/contracts/active-run.md | fixed | cautilus.workspace_run_manifest.v1 |
 | fixtures/cli-evaluation/doctor-missing-adapter.json | file_exists |  |
 | fixtures/cli-evaluation/input.schema.json | file_exists |  |
 | scripts/agent-runtime/evaluate-cli-intent.mjs | file_exists |  |

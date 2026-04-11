@@ -6,18 +6,23 @@
   [README.md](/home/ubuntu/cautilus/README.md),
   [AGENTS.md](/home/ubuntu/cautilus/AGENTS.md),
   [docs/master-plan.md](/home/ubuntu/cautilus/docs/master-plan.md),
+  [docs/contracts/active-run.md](/home/ubuntu/cautilus/docs/contracts/active-run.md),
   [docs/contracts/behavior-intent.md](/home/ubuntu/cautilus/docs/contracts/behavior-intent.md),
   [docs/contracts/scenario-proposal-inputs.md](/home/ubuntu/cautilus/docs/contracts/scenario-proposal-inputs.md),
   [docs/specs/self-dogfood.spec.md](/home/ubuntu/cautilus/docs/specs/self-dogfood.spec.md),
+  [scripts/agent-runtime/active-run.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/active-run.mjs),
+  [scripts/agent-runtime/workspace-start.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/workspace-start.mjs),
+  [scripts/agent-runtime/evaluate-adapter-mode.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/evaluate-adapter-mode.mjs),
   [skills/cautilus/SKILL.md](/home/ubuntu/cautilus/skills/cautilus/SKILL.md)
   를 읽는다.
 - 시작 workflow는 `impl` 기준이다.
 - product-owned seam이면 `cautilus`에서 먼저 고친다. host adapter, prompt,
   policy, consumer artifact는 host 소유다.
 - `artifact-root auto layout` slice는 active-run env var contract로
-  진화 중이다. 기본 pickup은 아래 Next Session 순서를 따른다. consumer
-  명령들의 active-run resolver wiring은 진행 중이고, 지금은 helper와
-  `workspace start` entry까지 들어와 있다.
+  정착되었다. 기본 pickup은 아래 Next Session 순서를 따른다. active-run
+  helper, `workspace start` entry, `docs/contracts/active-run.md` 모두
+  확정된 상태. 다음 작업은 consumer 명령들을 이 helper에 하나씩 wiring하는
+  것이다.
 - 세션을 시작하기 전에 `node --version`이 `v22.x` 이상인지 먼저 본다.
   Node 20에서는 self-dogfood test fixture가 `node - <<EOF ... await import()`
   패턴 때문에 깨진다. `.n`이 깔려 있다면 `N_PREFIX=/home/ubuntu/.n n install 22`로
@@ -34,7 +39,6 @@
   - `scripts/release/distribution-surface.test.mjs`의 `packaged cautilus skill
     stays in sync` test는 그대로 byte-equal을 보장한다. 이제 spec source_guard와
     distribution test 두 곳에서 packaged copy 누락을 잡는다.
-  - `node ./scripts/check-specs.mjs`는 380 guard rows로 통과한다 (이전 354).
 - `cautilus workspace start`가 active-run env var contract의 happy-path
   entry로 들어왔다. `workspace new-run`은 `workspace start --json`로
   완전히 흡수되었다. parallel period 없이 single source of truth.
@@ -62,6 +66,25 @@
     `docs/workflow.md`, `docs/master-plan.md`, bundled + packaged
     `skills/cautilus/SKILL.md`, `docs/specs/current-product.spec.md`,
     `docs/specs/standalone-surface.spec.md` 모두 새 surface로 갱신됨.
+- active-run env var contract가 durable 문서로 잠겼다.
+  - `docs/contracts/active-run.md`가 env var 이름(`CAUTILUS_RUN_DIR`),
+    precedence rule (`explicit --output-dir > env var > auto-materialize`),
+    default root (`./.cautilus/runs/`, cwd 상대, 자동 생성), stdout
+    shell-export 포맷, canonical filename 표(`report.json`,
+    `<mode>-scenario-results.json`, `baseline/`, `candidate/`,
+    `review-packet.json`, `evidence-input.json`, `optimize-proposal.json`,
+    `variant-*.json`, `*.stdout`/`*.stderr` 등), "한 workflow = 한 runDir"
+    invariant, 거절된 대안(Option D / state file / mtime-latest /
+    zero-ceremony / bundled jq)의 이유를 한 파일에 고정한다.
+  - `docs/specs/current-product.spec.md`가 이 파일을 `check:source_guard`
+    (file_exists + `CAUTILUS_RUN_DIR`, `One Workflow = One runDir`,
+    `Canonical Filenames`, `Rejected Alternatives`,
+    `cautilus.workspace_run_manifest.v1` fixed pattern)로 잠근다. 섹션
+    제목을 고치면 spec gate가 깨져서 drift를 잡는다.
+  - 다음 세션의 consumer wiring 슬라이스들은 canonical filename 표를
+    contract로 보고 slice 별 열린 항목(예: `<mode>-scenario-results.json`
+    그대로 유지할지 `scenario-results.json`으로 고정할지)을 표 자체를
+    갱신하는 형태로 확정한다.
 - self-dogfood `latest/` 위에 product-owned 정적 HTML 뷰가 들어왔다.
   - `scripts/render-self-dogfood-html.mjs`가 `summary.json`, `report.json`,
     `review-summary.json`을 읽어 self-contained `index.html`을 쓴다.
@@ -111,9 +134,9 @@
 - canonical self-dogfood claim은 "self-dogfood result를 정직하게 기록하고
   surfaced 하는가"로 계속 좁혀져 있다. `latest` summary는
   `gateRecommendation`과 `reportRecommendation`을 계속 분리한다.
-- local proof (Node v22.22.2 기준):
-  - `npm run verify`: 시점에 따라 변동, slice 종료 시 전부 green
-  - `node ./scripts/check-specs.mjs`: spec source_guard 모두 통과
+- local proof (Node v22.22.2 기준, 이번 세션 마지막 측정값):
+  - `npm run verify`: 150/150 green
+  - `node ./scripts/check-specs.mjs`: `spec checks passed (4 specs, 396 guard rows)`
   - `node ./bin/cautilus doctor --repo-root .`: `ready`
   - 빠른 happy-path smoke:
     `eval "$(node ./bin/cautilus workspace start --label smoke)"` →
@@ -125,15 +148,57 @@
 
 ## Next Session
 
-1. 기본 pickup은 consumer 명령들의 active-run wiring이다. `mode evaluate`
-   부터 `resolveRunDir` helper를 적용해서 `--output-dir`을 옵셔널 override로
-   바꾸고, `CAUTILUS_RUN_DIR`이 set 되어 있으면 그걸 쓰고, 아니면
-   auto-materialize fallback을 쓴다. 첫 명령이 가장 무거운 test mass를
-   가지고 있으니 거기 패턴이 잡히면 `workspace prepare-compare`,
-   `review variants`, `review prepare-input`, `evidence prepare-input`,
-   `optimize prepare-input` 등 나머지 consumer는 같은 패턴 복붙으로 끝낸다.
-   canonical filename convention(예: `report.json`, `review-packet.json`,
-   `baseline/`, `candidate/`)도 같이 잠근다.
+1. **Slice 3: `mode evaluate` active-run wiring**. 구체 작업:
+   - `scripts/agent-runtime/evaluate-adapter-mode.mjs`의 `--output-dir` 처리를
+     옵셔널로 바꾼다. 지금은 `line 162: fail("--output-dir is required");`이다.
+     이걸 제거하고, `scripts/agent-runtime/active-run.mjs`에서 `resolveRunDir`을
+     import해 context 해결 단계(line 394 `const outputDir = resolve(options.outputDir);`)를
+     `resolveRunDir({ outputDir: options.outputDir })`가 돌려주는 `runDir`로
+     교체한다. 이후 `join(outputDir, "...")` 사용처(line 413, 415-417, 427,
+     461-462 등)는 그대로 둔다.
+     precedence는 `docs/contracts/active-run.md`의 Env Var Contract 섹션 그대로:
+     `explicit --output-dir > CAUTILUS_RUN_DIR > auto-materialize`.
+   - auto-materialize 경로일 때 stderr에 `Active run: <abs runDir>` 한 줄을
+     찍는다 (`docs/contracts/active-run.md`의 Env Var Contract 규칙 3).
+     explicit과 env var 경로는 조용히 동작한다.
+   - canonical filename 확정: 현재 `${mode}-scenario-results.json`이
+     `evaluate-adapter-mode.mjs` line 413에 하드코드돼 있다. 여러 mode가
+     한 runDir에 공존할 수 있어야 하므로 그대로 유지한다. 이걸 canonical로
+     확정하고 필요하면 contract doc 표의 해당 row에 주석을 강화한다.
+   - `scripts/agent-runtime/evaluate-adapter-mode.test.mjs`와
+     `bin/cautilus.test.mjs`의 `"cautilus mode evaluate executes adapter ..."`
+     test(line 546)는 모두 explicit `--output-dir`을 넘긴다. 기존 테스트는
+     그대로 두고(explicit override 경로의 regression 보호), 아래 두 test를
+     추가한다:
+     - env var이 set이면 `--output-dir` 없이도 그 디렉터리에 report.json이
+       떨어지는지
+     - env var 없고 `--output-dir` 없으면 `./.cautilus/runs/`(임시 cwd) 아래
+       fresh runDir이 materialize되고 stderr에 `Active run:` 라인이 찍히는지
+   - `evaluate-adapter-mode.mjs`가 `CAUTILUS_RUN_DIR`이 set이지만 동일 runDir에
+     대한 second invocation일 때 collision 없이 동작해야 한다 (동일 runDir
+     안에서 `report.json`을 **덮어쓰는 게 정상**이다 — 같은 workflow의 retry
+     시나리오). 이 케이스 test도 하나 추가한다.
+   - 문서 mirror: `README.md`/`docs/workflow.md`/`skills/cautilus/SKILL.md`/
+     `plugins/cautilus/skills/cautilus/SKILL.md`의 `mode evaluate` 예시에서
+     `--output-dir /tmp/cautilus-mode`를 제거하거나, "active run이 있으면
+     생략 가능"이라는 한 줄 주석을 달아둔다. bundled/packaged mirror 동일.
+   - slice 종료 후 `docs/contracts/active-run.md`의 canonical filenames
+     표에서 `mode evaluate` 관련 항목은 "wired" 상태로 마킹(표 왼쪽에 ✅ 같은
+     표식을 붙이거나, 표 아래에 `### Wired Slices` 섹션을 두어 기록). spec
+     source_guard가 깨지지 않도록 `Canonical Filenames` 섹션 제목은 그대로
+     둔다.
+2. **Slice 4+**: `workspace prepare-compare`, `review prepare-input`,
+   `review variants`가 남은 consumer 명령이다. slice 3에서 잡힌 패턴을
+   그대로 복붙해서 각 명령마다 한 슬라이스씩 친다. `review prepare-input`은
+   output이 단일 파일(`review-packet.json`)이라 약간 다르게 다뤄야 한다 —
+   `--output`이 explicit override면 그 파일로, 없으면 runDir 안의
+   `review-packet.json`으로 떨어진다.
+3. **Slice 후반**: `evidence prepare-input`, `optimize prepare-input`,
+   `report build`, `evidence bundle`, `optimize propose`,
+   `optimize build-artifact` 같은 file-in/file-out helper들도 active run
+   안에서는 canonical filename을 default로 삼을지 결정한다. contract doc의
+   Probe Questions 섹션이 이 결정을 기다리고 있다. 필요하면 contract 표에
+   row를 더 추가하면서 slice별로 풀어간다.
 2. HTML view follow-ups는 다음 우선순위로 내려간다.
    - `artifacts/self-dogfood/experiments/latest/` 번들이 다시 쓰이기 시작하면
      그때 HTML view를 experiments surface까지 확장할지 결정한다. 지금은 해당

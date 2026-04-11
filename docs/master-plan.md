@@ -37,8 +37,10 @@ Current `core validated surface`:
 - explicit workspace preparation through `workspace prepare-compare`
 - explicit artifact-root pruning through `workspace prune-artifacts`
 - explicit per-run artifact-root materialization through `workspace start`,
-  with a `CAUTILUS_RUN_DIR` env var contract that consumer commands resolve
-  automatically
+  with a `CAUTILUS_RUN_DIR` env var contract documented in
+  [active-run.md](/home/ubuntu/cautilus/docs/contracts/active-run.md).
+  Consumer commands are being wired into `resolveRunDir` one slice at a
+  time; `mode evaluate` is the first target.
 - report packet assembly, review packet assembly, and review-variant fanout
 - bounded CLI behavior evaluation through `cli evaluate`
 - tagged-release install and release-helper surfaces

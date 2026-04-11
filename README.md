@@ -76,6 +76,9 @@ Dogfood and migration evidence is tracked separately in
 
 - [docs/workflow.md](/home/ubuntu/cautilus/docs/workflow.md): canonical
   evaluation workflow
+- [docs/contracts/active-run.md](/home/ubuntu/cautilus/docs/contracts/active-run.md):
+  active-run env var contract, default root, and canonical filenames
+  that consumer commands default to inside a single workflow
 - [docs/contracts/adapter-contract.md](/home/ubuntu/cautilus/docs/contracts/adapter-contract.md):
   adapter schema and executor-variant contract
 - [docs/contracts/reporting.md](/home/ubuntu/cautilus/docs/contracts/reporting.md):
