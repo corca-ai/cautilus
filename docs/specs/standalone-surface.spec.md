@@ -71,6 +71,32 @@ standalone acceptance boundary만 남긴다.
 | skills/cautilus/SKILL.md | fixed | node ./bin/cautilus review variants |
 | skills/cautilus/agents/openai.yaml | file_exists |  |
 | skills/cautilus/agents/openai.yaml | fixed | Cautilus |
+| plugins/cautilus/skills/cautilus/SKILL.md | file_exists |  |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus adapter resolve --repo-root . |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus doctor --repo-root . |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus workspace prepare-compare |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus workspace prune-artifacts |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus workspace new-run |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus scenario normalize chatbot |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus scenario normalize cli |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus scenario normalize skill |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus scenario summarize-telemetry |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus scenario prepare-input |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus scenario propose |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus evidence prepare-input |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus evidence bundle |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus report build |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus mode evaluate |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus optimize prepare-input |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus optimize propose |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus optimize build-artifact |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus cli evaluate |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus review prepare-input |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus review build-prompt-input |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus review render-prompt |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus review variants |
+| plugins/cautilus/skills/cautilus/agents/openai.yaml | file_exists |  |
+| plugins/cautilus/skills/cautilus/agents/openai.yaml | fixed | Cautilus |
 | docs/master-plan.md | fixed | standalone installable CLI plus bundled reusable skill |
 | docs/master-plan.md | fixed | CLI behavior |
 

@@ -24,6 +24,16 @@
 
 ## Current State
 
+- packaged SKILL.md drift는 이제 spec layer에서도 이중 차단된다.
+  - `docs/specs/standalone-surface.spec.md`의 `check:source_guard`에
+    `plugins/cautilus/skills/cautilus/SKILL.md`(file_exists + 23개 명령 pattern)와
+    `plugins/cautilus/skills/cautilus/agents/openai.yaml`(file_exists + `Cautilus`)
+    row가 추가되었다. bundled `skills/cautilus/SKILL.md` block 바로 다음에
+    같은 순서로 mirror 되어 있다.
+  - `scripts/release/distribution-surface.test.mjs`의 `packaged cautilus skill
+    stays in sync` test는 그대로 byte-equal을 보장한다. 이제 spec source_guard와
+    distribution test 두 곳에서 packaged copy 누락을 잡는다.
+  - `node ./scripts/check-specs.mjs`는 380 guard rows로 통과한다 (이전 354).
 - `cautilus workspace new-run`이 product-owned per-run artifact-root
   materializer로 들어왔다.
   - `scripts/agent-runtime/new-workspace-run.mjs`가 `--root <dir>`와 optional
@@ -95,8 +105,8 @@
   surfaced 하는가"로 계속 좁혀져 있다. `latest` summary는
   `gateRecommendation`과 `reportRecommendation`을 계속 분리한다.
 - local proof (Node v22.22.2 기준):
-  - `npm run verify`: 134/134 green (artifact-root auto layout slice가 test
-    10개 추가)
+  - `npm run verify`: 134/134 green
+  - `node ./scripts/check-specs.mjs`: `spec checks passed (4 specs, 380 guard rows)`
   - `node ./bin/cautilus doctor --repo-root .`: `ready`
 - 이번 세션에서 experiments를 다시 돌리지는 않았다. 마지막으로 기록된
   stronger-claim 상태는 여전히 `gate-honesty-a=blocker`,
@@ -105,30 +115,21 @@
 
 ## Next Session
 
-1. 기본 pickup은 packaged SKILL.md drift 이중 차단이다.
-   `scripts/release/distribution-surface.test.mjs`의
-   `packaged cautilus skill stays in sync` test가 이미 돌지만,
-   `docs/specs/self-dogfood.spec.md` 또는 `docs/specs/standalone-surface.spec.md`의
-   `check:source_guard` rows에 `plugins/cautilus/skills/cautilus/SKILL.md`의
-   핵심 패턴(예: `node ./bin/cautilus workspace new-run`)을 추가해
-   bundled/packaged 두 곳이 같은 지시를 가지는지 spec layer에서도 고정할지
-   결정한다. 이번 slice에서 두 파일을 손으로 mirror 했기 때문에 drift가 한
-   번만 어긋나면 바로 깨진다.
-2. consumer-side `--artifact-root` 통합(Option D)은 defer 그대로 유지한다.
+1. 기본 pickup은 consumer-side `--artifact-root` 통합(Option D) 결정이다. defer 그대로 유지한다.
    `mode evaluate`, `workspace prepare-compare`, `review variants`,
    `review prepare-input`이 각자 `--output-dir`을 그대로 쓰는 동안 operator는
    `workspace new-run`의 `runDir`을 stdin JSON에서 뽑아 넘긴다. 실제로 한
    workflow에서 여러 consumer가 같은 `runDir`을 공유했을 때 marker 충돌이
    나지 않는지 한 번 더 확인한다.
-3. HTML view follow-ups는 다음 우선순위로 내려간다.
+2. HTML view follow-ups는 다음 우선순위로 내려간다.
    - `artifacts/self-dogfood/experiments/latest/` 번들이 다시 쓰이기 시작하면
      그때 HTML view를 experiments surface까지 확장할지 결정한다. 지금은 해당
      디렉터리가 비어 있어서 defer.
-4. `binary-surface` experiment가 `skill-surface`처럼 stable pass로 떨어졌는지
+3. `binary-surface` experiment가 `skill-surface`처럼 stable pass로 떨어졌는지
    다시 본다. 필요하면 enrichment prompt를 더 깎는다.
-5. `quality` workflow가 canonical dogfood와 experiments를 어떻게 함께 요약해야
+4. `quality` workflow가 canonical dogfood와 experiments를 어떻게 함께 요약해야
    operator에게 덜 거짓말 같은지 결론을 낸다.
-6. 변경 후에는 항상 `npm run verify`를 다시 돌린다. 실행 전에 Node 22가 활성화
+5. 변경 후에는 항상 `npm run verify`를 다시 돌린다. 실행 전에 Node 22가 활성화
    되어 있는지 먼저 확인한다.
 
 ## Discuss
