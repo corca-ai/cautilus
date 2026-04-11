@@ -14,6 +14,7 @@
 		"dogfood:self": "node scripts/run-self-dogfood.mjs",
 		"dogfood:self:experiments": "node scripts/run-self-dogfood-experiments.mjs",
 		"dogfood:self:html": "node scripts/render-self-dogfood-html.mjs",
+		"dogfood:self:experiments:html": "node scripts/render-self-dogfood-experiments-html.mjs",
 		"hooks:install": "node scripts/install-git-hooks.mjs",
 		"hooks:check": "node scripts/check-git-hooks.mjs",
 		"lint": "npm run lint:eslint && npm run lint:specs",

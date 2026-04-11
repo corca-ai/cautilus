@@ -36,6 +36,7 @@ named experiment adapter에서 따로 다룬다.
 | package.json | fixed | "dogfood:self" |
 | package.json | fixed | "dogfood:self:experiments" |
 | package.json | fixed | "dogfood:self:html" |
+| package.json | fixed | "dogfood:self:experiments:html" |
 | scripts/run-self-dogfood.mjs | file_exists |  |
 | scripts/run-self-dogfood.mjs | fixed | latest.md |
 | scripts/run-self-dogfood.mjs | fixed | index.html |
@@ -49,15 +50,21 @@ named experiment adapter에서 따로 다룬다.
 | scripts/run-self-dogfood-experiments.mjs | fixed | DEFAULT_EXPERIMENT_ADAPTERS |
 | scripts/run-self-dogfood-experiments.mjs | fixed | gateRecommendation |
 | scripts/run-self-dogfood-experiments.mjs | fixed | reportRecommendation |
+| scripts/run-self-dogfood-experiments.mjs | fixed | index.html |
 | scripts/run-self-dogfood-experiments.test.mjs | file_exists |  |
+| scripts/render-self-dogfood-experiments-html.mjs | file_exists |  |
+| scripts/render-self-dogfood-experiments-html.mjs | fixed | A/B Comparison |
+| scripts/render-self-dogfood-experiments-html.test.mjs | file_exists |  |
 | scripts/self-dogfood-experiment-prompt.mjs | file_exists |  |
 | README.md | fixed | npm run dogfood:self |
 | README.md | fixed | artifacts/self-dogfood/latest/ |
 | README.md | fixed | npm run dogfood:self:experiments |
 | README.md | fixed | npm run dogfood:self:html |
+| README.md | fixed | npm run dogfood:self:experiments:html |
 | skills/cautilus/SKILL.md | fixed | npm run dogfood:self |
 | skills/cautilus/SKILL.md | fixed | npm run dogfood:self:experiments |
 | skills/cautilus/SKILL.md | fixed | npm run dogfood:self:html |
+| skills/cautilus/SKILL.md | fixed | npm run dogfood:self:experiments:html |
 | .gitignore | fixed | !artifacts/self-dogfood/latest/summary.json |
 | .gitignore | fixed | !artifacts/self-dogfood/latest/index.html |
 
@@ -103,7 +110,14 @@ than being copied into the checked-in latest snapshot.
 The latest experiment bundle should be written to these stable paths:
 
 - `artifacts/self-dogfood/experiments/latest/summary.json`
+- `artifacts/self-dogfood/experiments/latest/report.json`
 - `artifacts/self-dogfood/experiments/latest/latest.md`
+- `artifacts/self-dogfood/experiments/latest/index.html`
+
+When experiments are present, the surface must let operators compare the
+deterministic gate baseline and each named experiment in one place. A/B results
+must not be surfaced only as isolated per-adapter summaries that require manual
+diffing.
 
 The standing spec gate does not rerun the LLM-backed review. It only keeps the
 contract, command surface, and latest-artifact paths honest.

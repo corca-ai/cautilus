@@ -248,6 +248,13 @@ bundle:
 npm run dogfood:self:experiments
 ```
 
+Refresh only the static HTML comparison view of the current latest experiments
+bundle, without replaying the experiment reviews:
+
+```bash
+npm run dogfood:self:experiments:html
+```
+
 Refresh only the static HTML view of the current checked-in self-dogfood
 bundle, without replaying the LLM-backed review:
 
@@ -260,6 +267,13 @@ The rendered HTML is written alongside the other published files at
 time `npm run dogfood:self` rewrites the latest bundle. It is a read-only view
 of `summary.json`, `report.json`, and `review-summary.json`, so the JSON files
 remain the source of truth.
+
+The experiments HTML comparison view is written to
+`artifacts/self-dogfood/experiments/latest/index.html` and is automatically
+refreshed every time `npm run dogfood:self:experiments` rewrites the latest
+experiments bundle. It exists so the deterministic gate baseline and named
+experiment adapters can be compared side by side without reconstructing an A/B
+diff by hand.
 
 Prepare clean baseline and candidate git worktrees for a compare run:
 
@@ -508,5 +522,8 @@ the LLM-backed review.
 reviews, including stronger binary and skill surface claims. It writes aggregate
 experiment results under
 `artifacts/self-dogfood/experiments/latest/`.
+That bundle now includes a static `index.html` comparison view for the same
+summary/report data, and `npm run dogfood:self:experiments:html` can refresh
+that view without rerunning the experiment reviews.
 
 `init_adapter.py` no longer needs `PyYAML`; the Python surface is stdlib-only.

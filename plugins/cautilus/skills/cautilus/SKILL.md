@@ -133,6 +133,13 @@ A/B loops:
 npm run dogfood:self:experiments
 ```
 
+When the job only needs to refresh the static HTML comparison view of the
+current latest experiments bundle, use:
+
+```bash
+npm run dogfood:self:experiments:html
+```
+
 When the job only needs to refresh the static HTML view of the current
 checked-in self-dogfood bundle (for example after hand-editing the markdown
 narrative or regenerating JSON offline), use:
@@ -144,6 +151,8 @@ npm run dogfood:self:html
 Treat `dogfood:self` as the canonical operator-facing record of the current
 self-dogfood result. Treat `dogfood:self:experiments` as the place for stronger
 claims such as binary-surface, skill-surface, and gate-honesty probes.
+Treat the experiments `index.html` as a read-only compare view of the latest
+experiment summary/report bundle so A/B outcomes are visible side by side.
 Treat `dogfood:self:html` as a read-only view of the checked-in JSON bundle,
 not as a separate source of truth.
 

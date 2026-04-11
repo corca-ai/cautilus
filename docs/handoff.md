@@ -231,14 +231,15 @@
 
 ## Next Session
 
-1. HTML view follow-ups는 다음 우선순위로 내려간다.
-   - `artifacts/self-dogfood/experiments/latest/` 번들이 다시 쓰이기 시작하면
-     그때 HTML view를 experiments surface까지 확장할지 결정한다. 지금은 해당
-     디렉터리가 비어 있어서 defer.
-2. `binary-surface` experiment가 `skill-surface`처럼 stable pass로 떨어졌는지
+1. `binary-surface` experiment가 `skill-surface`처럼 stable pass로 떨어졌는지
    다시 본다. 필요하면 enrichment prompt를 더 깎는다.
-3. `quality` workflow가 canonical dogfood와 experiments를 어떻게 함께 요약해야
+2. `quality` workflow가 canonical dogfood와 experiments를 어떻게 함께 요약해야
    operator에게 덜 거짓말 같은지 결론을 낸다.
+3. experiments compare surface를 더 product-owned CLI로 끌어올릴지 본다.
+   지금은 `scripts/render-self-dogfood-experiments-html.mjs`와
+   `npm run dogfood:self:experiments:html`로 read-only compare view를 제공한다.
+   다음 결정은 이 surface를 self-dogfood 전용 helper로 둘지, 더 generic한
+   report/experiment html CLI로 승격할지다.
 4. 변경 후에는 항상 `npm run verify`를 다시 돌린다. 실행 전에 Node 22가 활성화
    되어 있는지 먼저 확인한다.
 
@@ -263,12 +264,16 @@
   - scenario results는 `<mode>-scenario-results.json`을 유지하고,
     `evidence prepare-input`은 `--scenario-mode`가 있을 때만 해당 canonical
     file을 default로 읽는다. 없으면 추측하지 않는다.
-- HTML view는 self-dogfood latest surface 안에서만 materialize 되었다.
-  다음 결정은 두 가지다:
-  - `experiments/`에도 같은 뷰를 낼지 (지금은 defer, 데이터가 없다)
-  - host-agnostic `cautilus report html` CLI를 본격적으로 product-owned
-    시킬지 (master plan item 6의 defer 조건, 즉 JSON/YAML report boundary가
-    여러 consumer에서 이미 안정화되었는가를 먼저 검증해야 한다)
+- HTML view는 이제 self-dogfood latest와 experiments latest 둘 다에
+  materialize 된다.
+  - `scripts/render-self-dogfood-experiments-html.mjs`가
+    `artifacts/self-dogfood/experiments/latest/index.html`을 만든다.
+  - experiments compare view의 load-bearing rule은 "A/B 결과는 한 화면에서
+    baseline gate와 experiment adapter를 비교 가능하게 보여야 한다"이다.
+  - 다음 결정은 host-agnostic `cautilus report html` CLI를 본격적으로
+    product-owned 시킬지 여부다 (master plan item 6의 defer 조건, 즉
+    JSON/YAML report boundary가 여러 consumer에서 이미 안정화되었는가를
+    먼저 검증해야 한다).
 - behavior intent catalog는 여전히 닫혀 있다. 다음 결정은 intent taxonomy
   확장 여부가 아니라 active-run wiring을 어디까지 끌고 갈지다.
 - schema까지 catalog enum을 밀어넣을지는 여전히 deferred다. 지금 enforcing
@@ -349,7 +354,10 @@
 - [scripts/agent-runtime/prune-workspace-artifacts.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/prune-workspace-artifacts.mjs)
 - [scripts/render-self-dogfood-html.mjs](/home/ubuntu/cautilus/scripts/render-self-dogfood-html.mjs)
 - [scripts/render-self-dogfood-html.test.mjs](/home/ubuntu/cautilus/scripts/render-self-dogfood-html.test.mjs)
+- [scripts/render-self-dogfood-experiments-html.mjs](/home/ubuntu/cautilus/scripts/render-self-dogfood-experiments-html.mjs)
+- [scripts/render-self-dogfood-experiments-html.test.mjs](/home/ubuntu/cautilus/scripts/render-self-dogfood-experiments-html.test.mjs)
 - [scripts/run-self-dogfood.mjs](/home/ubuntu/cautilus/scripts/run-self-dogfood.mjs)
+- [scripts/run-self-dogfood-experiments.mjs](/home/ubuntu/cautilus/scripts/run-self-dogfood-experiments.mjs)
 - [artifacts/self-dogfood/latest/index.html](/home/ubuntu/cautilus/artifacts/self-dogfood/latest/index.html)
 - [scripts/agent-runtime/behavior-intent.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/behavior-intent.mjs)
 - [scripts/agent-runtime/cli-proposal-candidates.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/cli-proposal-candidates.mjs)

@@ -168,6 +168,8 @@ test("run-self-dogfood-experiments writes latest artifacts and summarizes select
 		assert.equal(summary.reportRecommendation, "defer");
 		assert.equal(summary.gateRecommendation, "accept-now");
 		assert.ok(existsSync(join(artifactRoot, "latest", "latest.md")));
+		assert.ok(existsSync(join(artifactRoot, "latest", "index.html")));
+		assert.match(readFileSync(join(artifactRoot, "latest", "index.html"), "utf-8"), /A\/B Comparison/);
 		assert.deepEqual(readdirSync(join(artifactRoot, "runs")), ["exp-run"]);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
@@ -204,6 +206,7 @@ test("run-self-dogfood-experiments records timeout blockers without aborting the
 		assert.equal(summary.experiments[0].adapterName, "exp-timeout");
 		assert.equal(summary.experiments[0].executionStatus, "failed");
 		assert.match(readFileSync(join(artifactRoot, "latest", "latest.md"), "utf-8"), /timed out/);
+		assert.match(readFileSync(join(artifactRoot, "latest", "index.html"), "utf-8"), /exp-timeout/);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

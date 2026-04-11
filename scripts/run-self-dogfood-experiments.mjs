@@ -5,6 +5,7 @@ import { spawnSync } from "node:child_process";
 import process from "node:process";
 
 import { pruneWorkspaceArtifacts } from "./agent-runtime/prune-workspace-artifacts.mjs";
+import { writeSelfDogfoodExperimentsHtml } from "./render-self-dogfood-experiments-html.mjs";
 import { enrichExperimentPrompt } from "./self-dogfood-experiment-prompt.mjs";
 
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
@@ -545,6 +546,7 @@ function writeRunArtifacts(paths, report, summary) {
 	writeFileSync(join(paths.runDir, "report.json"), `${JSON.stringify(report, null, 2)}\n`, "utf-8");
 	writeFileSync(join(paths.runDir, "summary.json"), `${JSON.stringify(summary, null, 2)}\n`, "utf-8");
 	writeFileSync(join(paths.runDir, "latest.md"), renderMarkdown(summary), "utf-8");
+	writeSelfDogfoodExperimentsHtml(paths.runDir, join(paths.runDir, "index.html"));
 }
 
 function finalizeRun(paths, summary, keepLast) {
