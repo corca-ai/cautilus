@@ -223,19 +223,35 @@
 
 ## Next Session
 
-1. **Canonical filename decision for multi-source optional inputs.**
-   이번 세션은 single canonical filename이 이미 있는 input/output만 active run
-   default로 연결했다. 다음에 결정할 질문:
-   - `review variants` summary에 product-owned canonical filename
-     (`review-summary.json` 같은 이름)을 줄 것인가? 현재 runner는
-     generic `summary.json`을 쓴다. `optimize prepare-input`의
-     `--review-summary`를 active run default로 만들려면 먼저 이 이름을
-     잠가야 한다.
-   - scenario history를 repo-level persistent state로 계속 둘 것인가,
-     아니면 active run의 canonical artifact도 함께 만들 것인가?
-   - `evidence prepare-input`이 `<mode>-scenario-results.json` 중 하나를
-     자동 선택하게 할 것인가? 한다면 어떤 rule이 operator에게 덜 거짓말 같은가.
-   - run-audit summary에 product-owned canonical filename을 줄 것인가?
+1. **Canonical filename follow-up은 설계 확정 후 구현으로 바로 간다.**
+   이번 세션 말미에 방향 합의가 끝났다. 다음 턴은 아래를 그대로 구현한다.
+   - `review variants` summary의 product-owned canonical filename을
+     `review-summary.json`으로 고정한다.
+     현재 generic `summary.json`을 대체하고,
+     `optimize prepare-input --review-summary`의 active-run default는
+     이 파일로 잡는다.
+   - run-audit summary의 product-owned canonical filename을
+     `run-audit-summary.json`으로 고정한다.
+     `evidence prepare-input --run-audit-file`의 active-run default는
+     이 파일로 잡는다.
+   - scenario history는 **source of truth는 repo-level persistent state로
+     유지**하되, active run 안에는 `scenario-history.snapshot.json`을
+     canonical snapshot artifact로 추가한다.
+     다음 턴은 repo-level history를 계속 갱신하면서, 같은 시점의 snapshot도
+     runDir 안에 materialize하는 쪽으로 구현한다.
+     `optimize prepare-input --history-file`의 active-run default는
+     `scenario-history.snapshot.json`으로 잡는다.
+   - scenario results는 기존 product-owned canonical 이름
+     `<mode>-scenario-results.json`을 유지한다. 다만
+     `evidence prepare-input --scenario-results-file`의 active-run default를
+     가능하게 하려면 선택 규칙이 필요하다.
+     다음 턴은 `--scenario-mode <iterate|held_out|comparison|full_gate>`를
+     추가하고, active run에서 `--scenario-results-file`이 비어 있으면
+     `<scenario-mode>-scenario-results.json`을 읽게 한다.
+     `--scenario-mode`가 없으면 조용히 추측하지 말고 explicit path를
+     계속 요구한다.
+   - 위 네 결정이 들어가면 `docs/contracts/active-run.md` Canonical
+     Filenames 표와 Wired Consumers Notes를 함께 갱신한다.
 2. HTML view follow-ups는 다음 우선순위로 내려간다.
    - `artifacts/self-dogfood/experiments/latest/` 번들이 다시 쓰이기 시작하면
      그때 HTML view를 experiments surface까지 확장할지 결정한다. 지금은 해당
@@ -260,6 +276,17 @@
     name)를 더 담을지. 지금은 `schemaVersion`, `label`, `startedAt`만이다.
   - fish shell 사용자를 위해 `--shell fish` 같은 flavor 옵션을 추가할지.
     지금은 POSIX `export` 한 줄만 emit한다.
+- multi-source optional input canonicalization의 방향은 이제 합의되었다.
+  다음 턴에서 다시 설계 논쟁하지 말고 구현으로 바로 간다.
+  - `summary.json`은 generic해서 product-owned contract로 쓰기 애매하다.
+    review variant summary는 `review-summary.json`으로 승격한다.
+  - run-audit summary도 `run-audit-summary.json`으로 승격한다.
+  - history는 repo-level persistent state를 유지하되,
+    runDir에는 `scenario-history.snapshot.json` snapshot을 추가한다.
+  - scenario results는 `<mode>-scenario-results.json`이 이미 canonical이라
+    이름을 바꾸지 않는다. 대신 `evidence prepare-input`에
+    `--scenario-mode`를 넣어 어떤 canonical file을 읽을지 operator가
+    명시하게 한다. `--scenario-mode`가 없으면 추측하지 않는다.
 - HTML view는 self-dogfood latest surface 안에서만 materialize 되었다.
   다음 결정은 두 가지다:
   - `experiments/`에도 같은 뷰를 낼지 (지금은 defer, 데이터가 없다)
