@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
 import process from "node:process";
 
+import { loadAdapter as loadAdapterPayload } from "./resolve_adapter.mjs";
 import { pruneWorkspaceArtifacts } from "./agent-runtime/prune-workspace-artifacts.mjs";
 import { writeSelfDogfoodExperimentsHtml } from "./render-self-dogfood-experiments-html.mjs";
 import { enrichExperimentPrompt } from "./self-dogfood-experiment-prompt.mjs";
@@ -11,7 +12,6 @@ import { enrichExperimentPrompt } from "./self-dogfood-experiment-prompt.mjs";
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(SCRIPT_DIR, "..");
 const BIN_PATH = join(REPO_ROOT, "bin", "cautilus");
-const RESOLVE_ADAPTER_SCRIPT = join(REPO_ROOT, "scripts", "resolve_adapter.py");
 const STATUS_RANK = new Map([
 	["pass", 0],
 	["concern", 1],
@@ -142,21 +142,7 @@ function runCautilus(repoRoot, args, quiet, timeoutMs = null) {
 }
 
 function loadAdapter(repoRoot, adapter, adapterName) {
-	const args = [RESOLVE_ADAPTER_SCRIPT, "--repo-root", repoRoot];
-	if (adapter) {
-		args.push("--adapter", adapter);
-	}
-	if (adapterName) {
-		args.push("--adapter-name", adapterName);
-	}
-	const result = spawnSync("python3", args, {
-		cwd: repoRoot,
-		encoding: "utf-8",
-	});
-	if (result.status !== 0) {
-		fail(`adapter resolve failed.\n${result.stderr}`);
-	}
-	return JSON.parse(result.stdout);
+	return loadAdapterPayload(repoRoot, { adapter, adapterName });
 }
 
 function expectSuccess(result, label) {

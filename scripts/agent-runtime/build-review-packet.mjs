@@ -1,18 +1,14 @@
-import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
-import { dirname, join, resolve } from "node:path";
-import { fileURLToPath, pathToFileURL } from "node:url";
+import { join, resolve } from "node:path";
+import { pathToFileURL } from "node:url";
 import process from "node:process";
 
+import { loadAdapter as loadAdapterPayload } from "../resolve_adapter.mjs";
 import { REVIEW_PACKET_SCHEMA } from "./contract-versions.mjs";
 import { readActiveRunDir } from "./active-run.mjs";
 import { validateReportPacket } from "./report-packet.mjs";
 
 export { REVIEW_PACKET_SCHEMA } from "./contract-versions.mjs";
-
-const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
-const TOOL_ROOT = resolve(SCRIPT_DIR, "..", "..");
-const RESOLVE_ADAPTER_SCRIPT = resolve(TOOL_ROOT, "scripts", "resolve_adapter.py");
 
 function usage(exitCode = 0) {
 	const text = [
@@ -91,18 +87,10 @@ function resolveCommandOptions(options, { env = process.env } = {}) {
 
 function loadAdapter(options) {
 	const repoRoot = resolve(options.repoRoot);
-	const args = [RESOLVE_ADAPTER_SCRIPT, "--repo-root", repoRoot];
-	if (options.adapter) {
-		args.push("--adapter", options.adapter);
-	}
-	if (options.adapterName) {
-		args.push("--adapter-name", options.adapterName);
-	}
-	const stdout = execFileSync("python3", args, {
-		cwd: repoRoot,
-		encoding: "utf-8",
+	const payload = loadAdapterPayload(repoRoot, {
+		adapter: options.adapter,
+		adapterName: options.adapterName,
 	});
-	const payload = JSON.parse(stdout);
 	if (!payload.found) {
 		fail(`Adapter not found for repo ${repoRoot}`);
 	}

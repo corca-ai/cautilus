@@ -1,9 +1,9 @@
-import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import process from "node:process";
 
+import { loadAdapter as loadAdapterPayload } from "../resolve_adapter.mjs";
 import { buildReviewPacket } from "./build-review-packet.mjs";
 import { buildReviewPromptInput } from "./build-review-prompt-input.mjs";
 import {
@@ -17,7 +17,6 @@ import { resolveRunDir } from "./active-run.mjs";
 
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 const TOOL_ROOT = resolve(SCRIPT_DIR, "..", "..");
-const RESOLVE_ADAPTER_SCRIPT = join(TOOL_ROOT, "scripts", "resolve_adapter.py");
 const VALUE_OPTIONS = new Map([
 	["--repo-root", "repoRoot"],
 	["--adapter", "adapter"],
@@ -106,18 +105,10 @@ function parseArgs(argv) {
 
 function loadAdapter(options) {
 	const repoRoot = resolve(options.repoRoot);
-	const args = [RESOLVE_ADAPTER_SCRIPT, "--repo-root", repoRoot];
-	if (options.adapter) {
-		args.push("--adapter", options.adapter);
-	}
-	if (options.adapterName) {
-		args.push("--adapter-name", options.adapterName);
-	}
-	const stdout = execFileSync("python3", args, {
-		cwd: repoRoot,
-		encoding: "utf-8",
+	const payload = loadAdapterPayload(repoRoot, {
+		adapter: options.adapter,
+		adapterName: options.adapterName,
 	});
-	const payload = JSON.parse(stdout);
 	if (!payload.valid) {
 		fail(`Adapter is invalid: ${JSON.stringify(payload.errors ?? [])}`);
 	}

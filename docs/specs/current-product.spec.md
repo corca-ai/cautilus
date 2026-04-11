@@ -244,8 +244,8 @@ standalone product여야 한다.
 | scripts/release/fetch-github-archive-sha256.mjs | fixed | fetchArchiveSha256 |
 | scripts/release/resolve-release-targets.mjs | file_exists |  |
 | scripts/release/resolve-release-targets.mjs | fixed | resolveReleaseTargets |
-| scripts/resolve_adapter.py | fixed | cautilus-adapter.yaml |
-| scripts/init_adapter.py | fixed | dump_yaml_document |
+| scripts/resolve_adapter.mjs | fixed | cautilus-adapter.yaml |
+| scripts/init_adapter.mjs | fixed | dumpYamlDocument |
 | scripts/agent-runtime/scenario-history.mjs | file_exists |  |
 | scripts/agent-runtime/scenario-history.mjs | fixed | SCENARIO_HISTORY_SCHEMA |
 | scripts/agent-runtime/chatbot-proposal-candidates.mjs | file_exists |  |
@@ -387,7 +387,7 @@ $ cautilus cli evaluate --input ./fixtures/cli-evaluation/doctor-missing-adapter
 $ cautilus review prepare-input --repo-root . --report-file ./fixtures/reports/report-input.json || true
 $ cautilus review build-prompt-input --review-packet /tmp/cautilus-mode/review.json || true
 $ cautilus review render-prompt --input /tmp/cautilus-mode/review-prompt-input.json || true
-$ python3 ./scripts/init_adapter.py --repo-root /tmp/cautilus-spec-check --output /tmp/cautilus-spec-check/cautilus-adapter.yaml --force
+$ node ./scripts/init_adapter.mjs --repo-root /tmp/cautilus-spec-check --output /tmp/cautilus-spec-check/cautilus-adapter.yaml --force
 $ cautilus --version
 $ npm run verify
 $ npm run dogfood:self

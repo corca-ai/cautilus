@@ -5,6 +5,7 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import process from "node:process";
 
+import { loadAdapter as loadAdapterPayload } from "../resolve_adapter.mjs";
 import {
 	ADAPTER_MODE_EVALUATION_PACKET_SCHEMA,
 	REPORT_INPUTS_SCHEMA,
@@ -31,7 +32,6 @@ export { ADAPTER_MODE_EVALUATION_PACKET_SCHEMA } from "./contract-versions.mjs";
 
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 const TOOL_ROOT = resolve(SCRIPT_DIR, "..", "..");
-const RESOLVE_ADAPTER_SCRIPT = join(TOOL_ROOT, "scripts", "resolve_adapter.py");
 const MODE_FIELD_BY_NAME = {
 	iterate: "iterate_command_templates",
 	held_out: "held_out_command_templates",
@@ -172,18 +172,10 @@ function parseArgs(argv) {
 
 function loadAdapter(options) {
 	const repoRoot = resolve(options.repoRoot);
-	const args = [RESOLVE_ADAPTER_SCRIPT, "--repo-root", repoRoot];
-	if (options.adapter) {
-		args.push("--adapter", options.adapter);
-	}
-	if (options.adapterName) {
-		args.push("--adapter-name", options.adapterName);
-	}
-	const stdout = execFileSync("python3", args, {
-		cwd: repoRoot,
-		encoding: "utf-8",
+	const payload = loadAdapterPayload(repoRoot, {
+		adapter: options.adapter,
+		adapterName: options.adapterName,
 	});
-	const payload = JSON.parse(stdout);
 	if (!payload.found) {
 		fail(`Adapter not found for repo ${repoRoot}`);
 	}

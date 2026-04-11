@@ -5,11 +5,11 @@ import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 import test from "node:test";
 
-const RESOLVE_SCRIPT = join(process.cwd(), "scripts", "resolve_adapter.py");
-const INIT_SCRIPT = join(process.cwd(), "scripts", "init_adapter.py");
+const RESOLVE_SCRIPT = join(process.cwd(), "scripts", "resolve_adapter.mjs");
+const INIT_SCRIPT = join(process.cwd(), "scripts", "init_adapter.mjs");
 
-function runPython(args, workdir = process.cwd()) {
-	const result = spawnSync("python3", args, {
+function runNode(args, workdir = process.cwd()) {
+	const result = spawnSync("node", args, {
 		cwd: workdir,
 		encoding: "utf-8",
 	});
@@ -36,7 +36,7 @@ test("resolve_adapter loads a named cautilus adapter from the repo", () => {
 			].join("\n"),
 			"utf-8",
 		);
-		const stdout = runPython([RESOLVE_SCRIPT, "--repo-root", root, "--adapter-name", "code-quality"]);
+		const stdout = runNode([RESOLVE_SCRIPT, "--repo-root", root, "--adapter-name", "code-quality"]);
 		const payload = JSON.parse(stdout);
 		assert.equal(payload.valid, true);
 		assert.match(payload.path, /\.agents\/cautilus-adapters\/code-quality\.yaml$/);
@@ -63,7 +63,7 @@ test("resolve_adapter can load an explicit adapter path", () => {
 			].join("\n"),
 			"utf-8",
 		);
-		const stdout = runPython([RESOLVE_SCRIPT, "--repo-root", root, "--adapter", adapterPath]);
+		const stdout = runNode([RESOLVE_SCRIPT, "--repo-root", root, "--adapter", adapterPath]);
 		const payload = JSON.parse(stdout);
 		assert.equal(payload.valid, true);
 		assert.equal(payload.path, adapterPath);
@@ -81,7 +81,7 @@ test("init_adapter scaffolds a named adapter into the named adapter directory", 
 			JSON.stringify({ name: "temp", scripts: { check: "echo ok" } }, null, 2),
 			"utf-8",
 		);
-		runPython([INIT_SCRIPT, "--repo-root", root, "--adapter-name", "skill-smoke"]);
+		runNode([INIT_SCRIPT, "--repo-root", root, "--adapter-name", "skill-smoke"]);
 		const outputPath = join(root, ".agents", "cautilus-adapters", "skill-smoke.yaml");
 		assert.equal(existsSync(outputPath), true);
 		const created = readFileSync(outputPath, "utf-8");

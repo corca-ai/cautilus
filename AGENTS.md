@@ -29,7 +29,7 @@ Ceal's `workbench`.
 ## Current Boundaries
 
 - Generic contracts live under [docs/](./docs).
-- Bootstrap Python helpers live under [scripts/](./scripts).
+- Bootstrap adapter helpers live under [scripts/](./scripts).
 - Minimal runtime runners live under
   [scripts/agent-runtime/](./scripts/agent-runtime).
 - The CLI entrypoint lives at [bin/cautilus](./bin/cautilus).

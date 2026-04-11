@@ -146,9 +146,9 @@ stable instead of inventing the runtime surface first.
 | `.agents/skills/workbench/SKILL.md` | `docs/workflow.md` | Cautilus |
 | `.agents/skills/workbench/references/adapter-contract.md` | `docs/contracts/adapter-contract.md` | Cautilus |
 | `.agents/skills/workbench/references/reporting.md` | `docs/contracts/reporting.md` | Cautilus |
-| `.agents/skills/workbench/scripts/resolve_adapter.py` | `scripts/resolve_adapter.py` | Cautilus |
-| `.agents/skills/workbench/scripts/init_adapter.py` | `scripts/init_adapter.py` | Cautilus |
-| `.agents/skills/workbench/scripts/_stdlib_yaml.py` | `scripts/_stdlib_yaml.py` | Cautilus |
+| `.agents/skills/workbench/scripts/resolve_adapter.py` | `scripts/resolve_adapter.mjs` | Cautilus |
+| `.agents/skills/workbench/scripts/init_adapter.py` | `scripts/init_adapter.mjs` | Cautilus |
+| `.agents/skills/workbench/scripts/_stdlib_yaml.py` | `scripts/_stdlib_yaml.mjs` | Cautilus |
 | `.agents/skills/workbench/adapter.example.yaml` | `examples/adapter.example.yaml` | Cautilus |
 | `.agents/cautilus-adapter.yaml` | keep in place | Ceal |
 | `.agents/cautilus-adapters/code-quality.yaml` | keep in place | Ceal |

@@ -152,11 +152,11 @@ Dogfood and migration evidence is tracked separately in
   dogfood and live-consumer evidence appendix
 - [skills/cautilus/SKILL.md](./skills/cautilus/SKILL.md):
   bundled standalone skill entrypoint
-- [scripts/resolve_adapter.py](./scripts/resolve_adapter.py):
+- [scripts/resolve_adapter.mjs](./scripts/resolve_adapter.mjs):
   adapter resolution and validation
-- [scripts/init_adapter.py](./scripts/init_adapter.py):
+- [scripts/init_adapter.mjs](./scripts/init_adapter.mjs):
   adapter scaffold creation
-- [scripts/doctor.py](./scripts/doctor.py):
+- [scripts/doctor.mjs](./scripts/doctor.mjs):
   adapter readiness diagnosis
 - [scripts/agent-runtime/scenario-history.mjs](./scripts/agent-runtime/scenario-history.mjs):
   scenario selection, graduation, and history helpers
@@ -460,8 +460,8 @@ cautilus review variants \
 Direct script usage is also supported:
 
 ```bash
-python3 scripts/resolve_adapter.py --repo-root .
-python3 scripts/init_adapter.py --repo-root .
+node scripts/resolve_adapter.mjs --repo-root .
+node scripts/init_adapter.mjs --repo-root .
 node scripts/agent-runtime/run-workbench-executor-variants.mjs --workspace . --output-dir /tmp/cautilus-review
 node scripts/agent-runtime/normalize-chatbot-proposals.mjs --input ./fixtures/scenario-proposals/chatbot-input.json
 node scripts/agent-runtime/normalize-cli-proposals.mjs --input ./fixtures/scenario-proposals/cli-input.json
@@ -541,4 +541,6 @@ That bundle now includes a static `index.html` comparison view for the same
 summary/report data, and `npm run dogfood:self:experiments:html` can refresh
 that view without rerunning the experiment reviews.
 
-`init_adapter.py` no longer needs `PyYAML`; the Python surface is stdlib-only.
+Adapter bootstrap and readiness helpers now live in Node `.mjs` entrypoints, so
+the standalone CLI no longer depends on `python3` for `resolve`, `init`, and
+`doctor`.

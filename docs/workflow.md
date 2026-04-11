@@ -16,25 +16,25 @@ Every invocation starts here.
 1. Resolve the adapter from the target repo:
 
 ```bash
-python3 scripts/resolve_adapter.py --repo-root .
+node scripts/resolve_adapter.mjs --repo-root .
 ```
 
 If the repo keeps multiple evaluation adapters, select one explicitly:
 
 ```bash
-python3 scripts/resolve_adapter.py --repo-root . --adapter-name code-quality
+node scripts/resolve_adapter.mjs --repo-root . --adapter-name code-quality
 ```
 
 2. If the adapter is missing, scaffold one before benchmarking:
 
 ```bash
-python3 scripts/init_adapter.py --repo-root . --output .agents/cautilus-adapter.yaml
+node scripts/init_adapter.mjs --repo-root . --output .agents/cautilus-adapter.yaml
 ```
 
 For a named alternate adapter:
 
 ```bash
-python3 scripts/init_adapter.py --repo-root . --adapter-name code-quality
+node scripts/init_adapter.mjs --repo-root . --adapter-name code-quality
 ```
 
 3. If the adapter is invalid, repair it using

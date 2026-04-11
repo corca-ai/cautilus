@@ -25,7 +25,7 @@ The target product is:
 Current `core validated surface`:
 
 - generic workflow, adapter, and reporting contracts
-- Python adapter bootstrap scripts
+- Node adapter bootstrap scripts
 - a minimal CLI plus bundled `cautilus` skill entrypoint
 - repo-local Codex and Claude plugin packages, marketplace wiring, and local
   proof paths for the bundled skill
@@ -69,7 +69,7 @@ Done or nearly done:
 - own bootstrap scripts
 - provide a repo-local CLI entrypoint
 - provide lint and test surfaces
-- stop relying on external Python YAML libraries
+- keep adapter bootstrap and readiness helpers inside the product-owned Node runtime
 
 ### Phase 2: Standalone Product Hardening
 

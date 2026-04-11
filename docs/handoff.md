@@ -57,6 +57,10 @@
     `docs/release-boundary.md`, `docs/specs/current-product.spec.md`가
     모두 같은 install story를 말한다. plugin marketplace surface는
     canonical consumer install contract가 아니라 local test fixture다.
+  - adapter bootstrap seam도 product-owned Node runtime으로 수렴했다.
+    `resolve`, `init`, `doctor`는 이제 `python3`가 아니라
+    `scripts/resolve_adapter.mjs`, `scripts/init_adapter.mjs`,
+    `scripts/doctor.mjs`를 통해 동작한다.
 - report boundary contract도 pre-public breaking change로 정리되었다.
   - current report packet은 `cautilus.report_packet.v2`다.
   - `review prepare-input`, `evidence prepare-input`,
