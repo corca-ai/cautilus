@@ -18,11 +18,24 @@
   ],
   "reportFile": "/tmp/cautilus-evidence/report.json",
   "report": {
-    "schemaVersion": "cautilus.report_packet.v1",
+    "schemaVersion": "cautilus.report_packet.v2",
     "generatedAt": "2026-04-11T00:02:00.000Z",
     "candidate": "feature/cli",
     "baseline": "origin/main",
     "intent": "CLI recovery guidance should stay legible.",
+    "intentProfile": {
+      "schemaVersion": "cautilus.behavior_intent.v1",
+      "intentId": "intent-cli-recovery-guidance",
+      "summary": "CLI recovery guidance should stay legible.",
+      "behaviorSurface": "operator_cli",
+      "successDimensions": [
+        {
+          "id": "recovery_next_step",
+          "summary": "Make the next safe recovery step explicit without operator guesswork."
+        }
+      ],
+      "guardrailDimensions": []
+    },
     "commands": [],
     "commandObservations": [],
     "modesRun": [

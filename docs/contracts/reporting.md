@@ -6,13 +6,14 @@
 
 ## Minimum Report Shape
 
-- `schemaVersion`: `cautilus.report_packet.v1`
+- `schemaVersion`: `cautilus.report_packet.v2`
 - `generatedAt`: when the packet was assembled
 - `candidate`: ref, branch, or path under evaluation
 - `baseline`: exact baseline ref or repo path
 - `intent`: the operator-visible behavior or decision being evaluated
 - `intent_profile`: `cautilus.behavior_intent.v1` for the same behavior
   using the product-owned `behaviorSurface` and dimension catalogs
+  `intent_profile.summary` must exactly match `intent`
 - `modes_run`: iterate, held-out, comparison, full gate
 - `commands`: rendered commands with concrete placeholder values
 - optional `command_observations`: executed command records with timing,
@@ -51,6 +52,18 @@ loose logs.
 When `Cautilus` itself executes adapter-defined mode commands, it should write
 those command observations into the report input so the final packet preserves
 how the evidence was gathered.
+
+## Versioning
+
+`cautilus.report_packet.v2` is the current report contract.
+
+- `review prepare-input`
+- `evidence prepare-input`
+- `optimize prepare-input`
+
+all reject legacy `cautilus.report_packet.v1` packets at the boundary.
+Rebuild checked-in examples and consumer artifacts with `cautilus report build`
+instead of relying on deep fallback behavior.
 
 ## Telemetry Shape
 

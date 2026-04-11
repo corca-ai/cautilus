@@ -102,7 +102,7 @@ standalone product여야 한다.
 | docs/contracts/behavior-intent.md | fixed | operator_guidance_clarity |
 | docs/contracts/behavior-intent.md | fixed | repair_explicit_regressions_first |
 | docs/contracts/reporting.md | fixed | duration_ms |
-| docs/contracts/reporting.md | fixed | cautilus.report_packet.v1 |
+| docs/contracts/reporting.md | fixed | cautilus.report_packet.v2 |
 | docs/contracts/reporting.md | fixed | command_observations |
 | fixtures/reports/report-input.json | file_exists |  |
 | fixtures/reports/report-input.schema.json | file_exists |  |

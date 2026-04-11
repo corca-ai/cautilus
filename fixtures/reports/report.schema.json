@@ -17,7 +17,7 @@
   ],
   "properties": {
     "schemaVersion": {
-      "const": "cautilus.report_packet.v1"
+      "const": "cautilus.report_packet.v2"
     },
     "generatedAt": {
       "type": "string"
@@ -32,7 +32,27 @@
       "type": "string"
     },
     "intentProfile": {
-      "type": "object"
+      "type": "object",
+      "required": [
+        "schemaVersion",
+        "intentId",
+        "summary",
+        "behaviorSurface"
+      ],
+      "properties": {
+        "schemaVersion": {
+          "const": "cautilus.behavior_intent.v1"
+        },
+        "intentId": {
+          "type": "string"
+        },
+        "summary": {
+          "type": "string"
+        },
+        "behaviorSurface": {
+          "type": "string"
+        }
+      }
     },
     "commands": {
       "type": "array"

@@ -55,7 +55,7 @@ The packet should preserve:
 - the captured observation: stdout, stderr, exit code, timing
 - one result per bounded expectation
 - a summary recommendation
-- an embedded `cautilus.report_packet.v1` report so CLI evaluation fits the
+- an embedded `cautilus.report_packet.v2` report so CLI evaluation fits the
   same reporting surface as other `Cautilus` runtime modes
 
 ## Guardrails

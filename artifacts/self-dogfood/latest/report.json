@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "cautilus.report_packet.v1",
+  "schemaVersion": "cautilus.report_packet.v2",
   "generatedAt": "2026-04-11T00:29:17.651Z",
   "candidate": ".",
   "baseline": "origin/main",

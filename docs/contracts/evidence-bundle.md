@@ -17,7 +17,7 @@ Use `cautilus.evidence_bundle_inputs.v1` for explicit normalized inputs.
 
 The packet may include:
 
-- `cautilus.report_packet.v1`
+- `cautilus.report_packet.v2`
 - `cautilus.scenario_results.v1`
 - host-normalized run-audit JSON summary
 - `cautilus.scenario_history.v1`

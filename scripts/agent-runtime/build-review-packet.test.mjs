@@ -5,6 +5,7 @@ import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 import test from "node:test";
 import { ACTIVE_RUN_ENV_VAR } from "./active-run.mjs";
+import { BEHAVIOR_DIMENSIONS } from "./behavior-intent.mjs";
 
 const SCRIPT_PATH = join(process.cwd(), "scripts", "agent-runtime", "build-review-packet.mjs");
 
@@ -16,7 +17,7 @@ function createRepo() {
 	mkdirSync(join(root, "reports"), { recursive: true });
 	writeFileSync(join(root, "fixtures", "review.prompt.md"), "review prompt\n", "utf-8");
 	writeFileSync(join(root, "fixtures", "review.schema.json"), '{"type":"object"}\n', "utf-8");
-	writeFileSync(join(root, "reports", "latest.json"), '{"schemaVersion":"cautilus.report_packet.v1"}\n', "utf-8");
+	writeFileSync(join(root, "reports", "latest.json"), '{"schemaVersion":"cautilus.report_packet.v2"}\n', "utf-8");
 	writeFileSync(
 		join(adapterDir, "cautilus-adapter.yaml"),
 		[
@@ -51,7 +52,7 @@ function writeValidReport(reportFile) {
 		reportFile,
 		JSON.stringify(
 			{
-				schemaVersion: "cautilus.report_packet.v1",
+				schemaVersion: "cautilus.report_packet.v2",
 				generatedAt: "2026-04-11T00:00:00.000Z",
 				candidate: "feature/cli",
 				baseline: "origin/main",
@@ -63,8 +64,8 @@ function writeValidReport(reportFile) {
 					behaviorSurface: "operator_cli",
 					successDimensions: [
 						{
-							id: "legibility",
-							summary: "Operators can understand the next step.",
+							id: BEHAVIOR_DIMENSIONS.OPERATOR_GUIDANCE_CLARITY,
+							summary: "Keep the operator-facing guidance explicit and easy to follow.",
 						},
 					],
 					guardrailDimensions: [],
@@ -147,6 +148,26 @@ test("build-review-packet fails loudly when the active run report is missing", (
 		});
 		assert.equal(result.status, 1);
 		assert.match(result.stderr, /Report file not found:/);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("build-review-packet rejects legacy report packet schema versions at the boundary", () => {
+	const root = createRepo();
+	try {
+		const reportFile = join(root, "reports", "legacy.json");
+		writeFileSync(
+			reportFile,
+			JSON.stringify({
+				schemaVersion: "cautilus.report_packet.v1",
+			}),
+			"utf-8",
+		);
+		const result = runBuildReviewPacket(["--repo-root", root, "--report-file", reportFile]);
+		assert.equal(result.status, 1);
+		assert.match(result.stderr, /legacy schemaVersion cautilus\.report_packet\.v1/);
+		assert.match(result.stderr, /cautilus report build/);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

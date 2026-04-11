@@ -591,7 +591,7 @@ test("cautilus report build emits a machine-readable report packet with mode tel
 		});
 		assert.equal(result.status, 0, result.stderr);
 		const payload = JSON.parse(result.stdout);
-		assert.equal(payload.schemaVersion, "cautilus.report_packet.v1");
+		assert.equal(payload.schemaVersion, "cautilus.report_packet.v2");
 		assert.equal(payload.intentProfile.intentId, "intent-missing-adapter-guidance");
 		assert.deepEqual(payload.modesRun, ["held_out", "full_gate"]);
 		assert.equal(payload.telemetry.total_tokens, 500);
@@ -642,7 +642,7 @@ test("cautilus cli evaluate executes an intent packet and emits a report-backed 
 		const payload = JSON.parse(result.stdout);
 		assert.equal(payload.schemaVersion, "cautilus.cli_evaluation_packet.v1");
 		assert.equal(payload.summary.recommendation, "accept-now");
-		assert.equal(payload.report.schemaVersion, "cautilus.report_packet.v1");
+		assert.equal(payload.report.schemaVersion, "cautilus.report_packet.v2");
 		assert.equal(payload.report.intentProfile.intentId, "intent-the-doctor-command-should-explain-missing-adapter-setup");
 		assert.equal(payload.report.modesRun[0], "held_out");
 	} finally {
@@ -732,7 +732,7 @@ echo ok
 		);
 		assert.equal(result.status, 0, result.stderr);
 		const report = JSON.parse(readFileSync(result.stdout.trim(), "utf-8"));
-		assert.equal(report.schemaVersion, "cautilus.report_packet.v1");
+		assert.equal(report.schemaVersion, "cautilus.report_packet.v2");
 		assert.equal(report.recommendation, "defer");
 		assert.equal(report.commandObservations.length, 1);
 		assert.equal(report.modeSummaries[0].scenarioTelemetrySummary.overall.total_tokens, 21);
@@ -782,7 +782,7 @@ test("cautilus review prepare-input builds a review packet from adapter review s
 			reportFile,
 			`${JSON.stringify(
 				{
-					schemaVersion: "cautilus.report_packet.v1",
+					schemaVersion: "cautilus.report_packet.v2",
 					generatedAt: "2026-04-11T00:00:00.000Z",
 					candidate: "feature/cli",
 					baseline: "origin/main",
@@ -794,8 +794,8 @@ test("cautilus review prepare-input builds a review packet from adapter review s
 						behaviorSurface: "operator_cli",
 						successDimensions: [
 							{
-								id: "legibility",
-								summary: "Operators can understand the next step.",
+								id: BEHAVIOR_DIMENSIONS.OPERATOR_GUIDANCE_CLARITY,
+								summary: "Keep the operator-facing guidance explicit and easy to follow.",
 							},
 						],
 						guardrailDimensions: [],
@@ -853,7 +853,7 @@ test("cautilus review build-prompt-input and render-prompt close the generic met
 					adapterPath: join(root, ".agents", "cautilus-adapter.yaml"),
 					reportFile: join(root, "report.json"),
 					report: {
-						schemaVersion: "cautilus.report_packet.v1",
+						schemaVersion: "cautilus.report_packet.v2",
 						generatedAt: "2026-04-11T00:02:00.000Z",
 						candidate: "feature/cli",
 						baseline: "origin/main",
@@ -960,7 +960,7 @@ test("cautilus optimize prepare-input and propose turn explicit evidence into a 
 			reportPath,
 			`${JSON.stringify(
 				{
-					schemaVersion: "cautilus.report_packet.v1",
+					schemaVersion: "cautilus.report_packet.v2",
 					generatedAt: "2026-04-11T00:02:00.000Z",
 					candidate: "feature/cli",
 					baseline: "origin/main",
@@ -1129,11 +1129,24 @@ test("cautilus evidence prepare-input and bundle produce a normalized evidence p
 			reportPath,
 			`${JSON.stringify(
 				{
-					schemaVersion: "cautilus.report_packet.v1",
+					schemaVersion: "cautilus.report_packet.v2",
 					generatedAt: "2026-04-11T00:02:00.000Z",
 					candidate: "feature/cli",
 					baseline: "origin/main",
 					intent: "CLI recovery guidance should stay legible.",
+					intentProfile: {
+						schemaVersion: "cautilus.behavior_intent.v1",
+						intentId: "intent-cli-recovery-guidance",
+						summary: "CLI recovery guidance should stay legible.",
+						behaviorSurface: "operator_cli",
+						successDimensions: [
+							{
+								id: BEHAVIOR_DIMENSIONS.RECOVERY_NEXT_STEP,
+								summary: "Make the next safe recovery step explicit without operator guesswork.",
+							},
+						],
+						guardrailDimensions: [],
+					},
 					commands: [],
 					commandObservations: [],
 					modesRun: ["held_out"],

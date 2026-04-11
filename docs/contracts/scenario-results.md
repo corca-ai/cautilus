@@ -52,7 +52,7 @@ one shared machine-readable compare surface.
 The current standalone chain is:
 
 1. `mode evaluate` asks the adapter command to write one scenario-results file
-2. `report build` lifts that packet into `cautilus.report_packet.v1`
+2. `report build` lifts that packet into `cautilus.report_packet.v2`
 3. `review prepare-input` and `review build-prompt-input` keep the same compare
    surface visible to review variants
 

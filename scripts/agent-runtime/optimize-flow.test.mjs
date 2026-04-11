@@ -36,7 +36,7 @@ function createOptimizeFixtureRoot() {
 	const historyFile = join(root, "scenario-history.snapshot.json");
 	const targetFile = join(root, "prompt.md");
 	writeJson(reportFile, {
-		schemaVersion: "cautilus.report_packet.v1",
+		schemaVersion: "cautilus.report_packet.v2",
 		generatedAt: "2026-04-11T00:02:00.000Z",
 		candidate: "feature/cli",
 		baseline: "origin/main",
@@ -265,7 +265,7 @@ test("build-optimize-input CLI rejects review summaries without variants", () =>
 		const reportFile = join(root, "report.json");
 		const summaryFile = join(root, "review-summary.json");
 		writeJson(reportFile, {
-			schemaVersion: "cautilus.report_packet.v1",
+			schemaVersion: "cautilus.report_packet.v2",
 			generatedAt: "2026-04-11T00:02:00.000Z",
 			candidate: "feature/cli",
 			baseline: "origin/main",
@@ -277,8 +277,8 @@ test("build-optimize-input CLI rejects review summaries without variants", () =>
 				behaviorSurface: "operator_cli",
 				successDimensions: [
 					{
-						id: "legibility",
-						summary: "Operators can understand the next step.",
+						id: BEHAVIOR_DIMENSIONS.OPERATOR_GUIDANCE_CLARITY,
+						summary: "Keep the operator-facing guidance explicit and easy to follow.",
 					},
 				],
 				guardrailDimensions: [],
@@ -311,6 +311,25 @@ test("build-optimize-input CLI rejects review summaries without variants", () =>
 		);
 		assert.equal(result.status, 1);
 		assert.match(result.stderr, /variants array/);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("build-optimize-input CLI rejects legacy report packet schema versions at the boundary", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-optimize-legacy-report-"));
+	try {
+		const reportFile = join(root, "report.json");
+		writeJson(reportFile, {
+			schemaVersion: "cautilus.report_packet.v1",
+		});
+		const result = spawnSync("node", [BUILD_OPTIMIZE_INPUT, "--report-file", reportFile], {
+			cwd: process.cwd(),
+			encoding: "utf-8",
+		});
+		assert.equal(result.status, 1);
+		assert.match(result.stderr, /legacy schemaVersion cautilus\.report_packet\.v1/);
+		assert.match(result.stderr, /cautilus report build/);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

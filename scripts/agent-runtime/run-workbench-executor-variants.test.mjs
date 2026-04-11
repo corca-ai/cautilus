@@ -6,6 +6,7 @@ import { spawnSync } from "node:child_process";
 import test from "node:test";
 
 import { ACTIVE_RUN_ENV_VAR, DEFAULT_RUNS_ROOT } from "./active-run.mjs";
+import { BEHAVIOR_DIMENSIONS } from "./behavior-intent.mjs";
 
 const SCRIPT_PATH = join(process.cwd(), "scripts", "agent-runtime", "run-workbench-executor-variants.mjs");
 
@@ -94,11 +95,24 @@ EOF
 		reportFile,
 		`${JSON.stringify(
 			{
-				schemaVersion: "cautilus.report_packet.v1",
+				schemaVersion: "cautilus.report_packet.v2",
 				generatedAt: "2026-04-11T00:02:00.000Z",
 				candidate: "feature/cli",
 				baseline: "origin/main",
 				intent: "The CLI should explain missing adapter setup without operator guesswork.",
+				intentProfile: {
+					schemaVersion: "cautilus.behavior_intent.v1",
+					intentId: "intent-cli-missing-adapter-guidance",
+					summary: "The CLI should explain missing adapter setup without operator guesswork.",
+					behaviorSurface: "operator_cli",
+					successDimensions: [
+						{
+							id: BEHAVIOR_DIMENSIONS.FAILURE_CAUSE_CLARITY,
+							summary: "Explain the concrete failure cause or missing prerequisite.",
+						},
+					],
+					guardrailDimensions: [],
+				},
 				commands: [],
 				commandObservations: [],
 				modesRun: ["held_out"],

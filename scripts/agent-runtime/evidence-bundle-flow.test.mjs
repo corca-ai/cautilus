@@ -24,11 +24,24 @@ function createEvidenceFixtureRoot() {
 	const historyFile = join(root, "scenario-history.snapshot.json");
 
 	writeJson(reportFile, {
-		schemaVersion: "cautilus.report_packet.v1",
+		schemaVersion: "cautilus.report_packet.v2",
 		generatedAt: "2026-04-11T00:02:00.000Z",
 		candidate: "feature/cli",
 		baseline: "origin/main",
 		intent: "CLI guidance should stay legible under recovery pressure.",
+		intentProfile: {
+			schemaVersion: "cautilus.behavior_intent.v1",
+			intentId: "intent-cli-recovery-guidance",
+			summary: "CLI guidance should stay legible under recovery pressure.",
+			behaviorSurface: "operator_cli",
+			successDimensions: [
+				{
+					id: "recovery_next_step",
+					summary: "Make the next safe recovery step explicit without operator guesswork.",
+				},
+			],
+			guardrailDimensions: [],
+		},
 		commands: [],
 		commandObservations: [],
 		modesRun: ["held_out"],
@@ -141,6 +154,25 @@ test("buildEvidenceBundle summarizes prioritized evidence signals", () => {
 		assert.ok(bundle.summary.signalCount >= 3);
 		assert.ok(bundle.summary.highSignalCount >= 1);
 		assert.equal(bundle.signals[0].severity, "high");
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("build-evidence-input rejects legacy report packet schema versions at the boundary", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-evidence-legacy-report-"));
+	try {
+		const reportFile = join(root, "report.json");
+		writeJson(reportFile, {
+			schemaVersion: "cautilus.report_packet.v1",
+		});
+		const result = spawnSync("node", [BUILD_EVIDENCE_INPUT, "--report-file", reportFile], {
+			cwd: process.cwd(),
+			encoding: "utf-8",
+		});
+		assert.equal(result.status, 1);
+		assert.match(result.stderr, /legacy schemaVersion cautilus\.report_packet\.v1/);
+		assert.match(result.stderr, /cautilus report build/);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

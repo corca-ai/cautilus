@@ -7,9 +7,9 @@ import { readActiveRunDir } from "./active-run.mjs";
 import { BEHAVIOR_DIMENSIONS, buildBehaviorIntentProfile } from "./behavior-intent.mjs";
 import {
 	OPTIMIZE_INPUTS_SCHEMA,
-	REPORT_PACKET_SCHEMA,
 	SCENARIO_HISTORY_SCHEMA,
 } from "./contract-versions.mjs";
+import { validateReportPacket } from "./report-packet.mjs";
 
 const OPTIMIZATION_OBJECTIVE =
 	"Propose one bounded next revision without weakening held-out, comparison, or review discipline.";
@@ -168,8 +168,10 @@ function parseJsonFile(path, label) {
 
 function parseReportFile(path) {
 	const report = parseJsonFile(path, "report file");
-	if (report.packet?.schemaVersion !== REPORT_PACKET_SCHEMA) {
-		fail(`report file must use schemaVersion ${REPORT_PACKET_SCHEMA}`);
+	try {
+		validateReportPacket(report.packet);
+	} catch (error) {
+		fail(`${report.path}: ${error.message}`);
 	}
 	return report;
 }

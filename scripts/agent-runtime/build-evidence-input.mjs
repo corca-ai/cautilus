@@ -6,10 +6,10 @@ import { pathToFileURL } from "node:url";
 import { readActiveRunDir } from "./active-run.mjs";
 import {
 	EVIDENCE_BUNDLE_INPUTS_SCHEMA,
-	REPORT_PACKET_SCHEMA,
 	SCENARIO_HISTORY_SCHEMA,
 	SCENARIO_RESULTS_SCHEMA,
 } from "./contract-versions.mjs";
+import { validateReportPacket } from "./report-packet.mjs";
 
 const EVIDENCE_OBJECTIVE =
 	"Bundle host-normalized evidence into one machine-readable packet before mining scenarios or revisions.";
@@ -154,8 +154,10 @@ function parseJsonFile(path, label) {
 
 function parseReportFile(path) {
 	const report = parseJsonFile(path, "report file");
-	if (report.packet?.schemaVersion !== REPORT_PACKET_SCHEMA) {
-		fail(`report file must use schemaVersion ${REPORT_PACKET_SCHEMA}`);
+	try {
+		validateReportPacket(report.packet);
+	} catch (error) {
+		fail(`${report.path}: ${error.message}`);
 	}
 	return report;
 }

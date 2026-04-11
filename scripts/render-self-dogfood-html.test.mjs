@@ -46,7 +46,7 @@ function stageLatestBundle({
 		],
 	});
 	writeJson(latestDir, "report.json", {
-		schemaVersion: "cautilus.report_packet.v1",
+		schemaVersion: "cautilus.report_packet.v2",
 		intent,
 		intentProfile: {
 			schemaVersion: "cautilus.behavior_intent.v1",

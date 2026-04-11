@@ -57,7 +57,7 @@ function createReviewPacketFixture() {
 				adapterPath: join(root, ".agents", "cautilus-adapter.yaml"),
 				reportFile: join(root, "reports", "latest.json"),
 				report: {
-					schemaVersion: "cautilus.report_packet.v1",
+					schemaVersion: "cautilus.report_packet.v2",
 					generatedAt: "2026-04-11T00:02:00.000Z",
 					candidate: "feature/cli",
 					baseline: "origin/main",

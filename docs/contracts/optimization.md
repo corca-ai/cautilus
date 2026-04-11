@@ -79,7 +79,7 @@ The packet should include:
 - shared behavior intent profile: `cautilus.behavior_intent.v1`
   - uses the product-owned `behaviorSurface` and dimension catalogs
 - optional current target file reference
-- one explicit `cautilus.report_packet.v1`
+- one explicit `cautilus.report_packet.v2`
 - optional executor-variant review summary
 - optional `cautilus.scenario_history.v1`
 - product-owned objective and guardrail constraints

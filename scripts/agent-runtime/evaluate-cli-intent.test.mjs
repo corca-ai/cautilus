@@ -51,7 +51,7 @@ exit 1
 		assert.equal(packet.schemaVersion, CLI_EVALUATION_PACKET_SCHEMA);
 		assert.equal(packet.summary.failedExpectationCount, 0);
 		assert.equal(packet.summary.recommendation, "accept-now");
-		assert.equal(packet.report.schemaVersion, "cautilus.report_packet.v1");
+		assert.equal(packet.report.schemaVersion, "cautilus.report_packet.v2");
 		assert.equal(packet.report.modeSummaries[0].scenarioTelemetrySummary.overall.totalDurationMs, packet.observation.durationMs);
 	} finally {
 		rmSync(root, { recursive: true, force: true });

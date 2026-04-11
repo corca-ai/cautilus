@@ -101,7 +101,7 @@ as overrides for automation and tests.
 | --------------------------------- | ----------------------------------- | ----------------------------------------------------------- | --------------------------------------------------- |
 | `run.json`                        | `workspace start`                   | `workspace prune-artifacts`                                 | Manifest marker. `cautilus.workspace_run_manifest.v1`. |
 | `report-input.json`               | `mode evaluate` (intermediate)      | `report build` (optional)                                   | Assembled report packet inputs. Defaults here when `CAUTILUS_RUN_DIR` is pinned and `report build --input` is omitted. |
-| `report.json`                     | `mode evaluate`, `report build`     | `review prepare-input`, `evidence prepare-input`, `optimize prepare-input` | `cautilus.report_packet.v1`. Defaults here when an active-run-aware helper omits `--report-file`. |
+| `report.json`                     | `mode evaluate`, `report build`     | `review prepare-input`, `evidence prepare-input`, `optimize prepare-input` | `cautilus.report_packet.v2`. Defaults here when an active-run-aware helper omits `--report-file`. |
 | `<mode>-scenario-results.json`    | `mode evaluate`                     | `report build`, `evidence prepare-input`                    | Mode-prefixed so multiple modes coexist.            |
 | `selected-profile.json`           | `mode evaluate` (profile-backed)    | internal                                                    | Scenario profile selection snapshot.                |
 | `selected-scenario-ids.json`      | `mode evaluate` (profile-backed)    | internal                                                    | Materialized scenario id list.                      |

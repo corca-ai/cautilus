@@ -236,7 +236,7 @@ echo "$mode ok"
 		);
 		assert.equal(result.status, 0, result.stderr);
 		const report = JSON.parse(readFileSync(result.stdout.trim(), "utf-8"));
-		assert.equal(report.schemaVersion, "cautilus.report_packet.v1");
+		assert.equal(report.schemaVersion, "cautilus.report_packet.v2");
 		assert.equal(report.recommendation, "defer");
 		assert.equal(report.commandObservations.length, 2);
 		assert.equal(report.modeSummaries[0].scenarioTelemetrySummary.overall.total_tokens, 42);
@@ -546,7 +546,7 @@ test("evaluate-adapter-mode honors CAUTILUS_RUN_DIR when --output-dir is omitted
 		assert.equal(result.status, 0, result.stderr);
 		assert.equal(result.stdout.trim(), join(activeRun, "report.json"));
 		const report = JSON.parse(readFileSync(join(activeRun, "report.json"), "utf-8"));
-		assert.equal(report.schemaVersion, "cautilus.report_packet.v1");
+		assert.equal(report.schemaVersion, "cautilus.report_packet.v2");
 		// env var path is quiet — no "Active run:" banner
 		assert.doesNotMatch(result.stderr, /Active run:/);
 	} finally {
@@ -635,7 +635,7 @@ test("evaluate-adapter-mode overwrites report.json on retry inside the same acti
 		assert.equal(second.status, 0, second.stderr);
 		assert.equal(second.stdout.trim(), firstReportPath);
 		const secondReport = JSON.parse(readFileSync(firstReportPath, "utf-8"));
-		assert.equal(secondReport.schemaVersion, "cautilus.report_packet.v1");
+		assert.equal(secondReport.schemaVersion, "cautilus.report_packet.v2");
 		assert.equal(secondReport.intent, firstIntent);
 	} finally {
 		rmSync(root, { recursive: true, force: true });

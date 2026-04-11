@@ -6,7 +6,7 @@
 
 ## Minimum Report Shape
 
-- `schemaVersion`: `cautilus.report_packet.v1`
+- `schemaVersion`: `cautilus.report_packet.v2`
 - `generatedAt`: when the packet was assembled
 - `candidate`: ref, branch, or path under evaluation
 - `baseline`: exact baseline ref or repo path

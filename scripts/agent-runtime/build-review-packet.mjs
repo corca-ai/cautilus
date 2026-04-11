@@ -4,8 +4,9 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import process from "node:process";
 
-import { REPORT_PACKET_SCHEMA, REVIEW_PACKET_SCHEMA } from "./contract-versions.mjs";
+import { REVIEW_PACKET_SCHEMA } from "./contract-versions.mjs";
 import { readActiveRunDir } from "./active-run.mjs";
+import { validateReportPacket } from "./report-packet.mjs";
 
 export { REVIEW_PACKET_SCHEMA } from "./contract-versions.mjs";
 
@@ -117,8 +118,10 @@ function parseReportFile(path) {
 		fail(`Report file not found: ${resolved}`);
 	}
 	const parsed = JSON.parse(readFileSync(resolved, "utf-8"));
-	if (parsed?.schemaVersion !== REPORT_PACKET_SCHEMA) {
-		fail(`report file must use schemaVersion ${REPORT_PACKET_SCHEMA}`);
+	try {
+		validateReportPacket(parsed);
+	} catch (error) {
+		fail(`${resolved}: ${error.message}`);
 	}
 	return { path: resolved, packet: parsed };
 }
