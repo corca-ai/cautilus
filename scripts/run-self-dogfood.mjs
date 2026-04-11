@@ -128,7 +128,7 @@ function createRunId(now = new Date()) {
 }
 
 function runCautilus(repoRoot, args, quiet, timeoutMs = null) {
-	return spawnSync("node", [BIN_PATH, ...args], {
+	return spawnSync(BIN_PATH, args, {
 		cwd: repoRoot,
 		encoding: "utf-8",
 		env: process.env,

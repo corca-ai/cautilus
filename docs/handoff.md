@@ -78,9 +78,9 @@
     `.github/workflows/verify.yml` sets up Go `1.26.1` before running the
     existing Node-based verify flow.
 - public CLI dispatch no longer depends on the Node command scripts.
-  - `bin/cautilus` is now only a thin Node shim that shells into
-    `go run ./cmd/cautilus` with the caller cwd + tool root preserved through
-    env vars. All commands listed in
+  - `bin/cautilus` is now a thin POSIX repo shim that shells into
+    `go -C <repo-root> run ./cmd/cautilus` with the caller cwd + tool root
+    preserved through env vars. All commands listed in
     [internal/cli/command-registry.json](../internal/cli/command-registry.json)
     now have Go native handlers, and a Go test now fails if any registry
     command loses its native handler coverage.
@@ -97,8 +97,8 @@
   - `internal/app.Run` now resolves the Cautilus source root lazily instead of
     requiring it before every invocation. Native Go handlers can run from a
     consumer repo or compiled binary context without `CAUTILUS_TOOL_ROOT`;
-    only `skills install` and remaining Node-script fallbacks still require the
-    product source root to locate bundled assets/scripts.
+    only `skills install` still requires the product source root to locate
+    bundled assets.
   - product-owned CLI smoke coverage is no longer only in
     `bin/cautilus.test.mjs`. `internal/app/cli_smoke_test.go` now carries the
     Go-side acceptance tests for root self-consumer doctor, adapter resolve,
@@ -106,8 +106,8 @@
     `skills install`, workspace compare/prune, report/cli-evaluate/mode-evaluate,
     review prompt flow, optimize, evidence, scenario prepare, and scenario
     normalize chatbot/skill/cli. `bin/cautilus.test.mjs` is now only a thin
-    shim gate for version forwarding, caller cwd preservation, and bundled skill
-    install through the Node entrypoint.
+    repo-shim gate for version forwarding, caller cwd preservation, and bundled
+    skill install through the repo entrypoint.
   - `cautilus --version` no longer depends only on `package.json` in the source
     tree. It now prefers `CAUTILUS_VERSION`, then Go build info, and only falls
     back to `package.json` when a source checkout is available. This hardens the
@@ -379,7 +379,7 @@
     authoritative status. active-run 쪽 open question은 이제 filename naming보다
     `run.json` metadata 확장과 shell flavor surface 같은 operator ergonomics다.
 - local proof (Node v22.22.2, Go 1.26.1 기준, 이번 세션 마지막 측정값):
-  - `go run ./cmd/cautilus --version`: `0.2.0`
+  - `./bin/cautilus --version`: `0.2.0`
   - `go test ./internal/app -run 'TestCLI'`: green
   - `go build -o /tmp/cautilus-go-port-smoke ./cmd/cautilus` 후 source root
     밖 임시 repo에서
@@ -390,7 +390,7 @@
   - `go test ./cmd/... ./internal/...`: green
   - `node --test bin/cautilus.test.mjs`: 3/3 green
   - `node --test scripts/agent-runtime/run-workbench-executor-variants.test.mjs`: 8/8 green
-  - `npm run verify`: 190/190 green
+  - `npm run verify`: 171/171 green
   - `node ./scripts/check-specs.mjs`: `spec checks passed (4 specs, 416 guard rows)`
   - `cautilus doctor --repo-root .`: `ready`
   - `npm run hooks:check`: `ready`
@@ -421,9 +421,9 @@
 2. keep the second Go slice narrow and product-owned.
   - repo-root/version discovery hardening is now done for native handlers and
     `--version`
-  - decide whether the next seam is command execution abstraction, skill asset
-    embedding / install-root discovery for `skills install`, or eliminating the
-    remaining `bin/cautilus` shim path itself
+  - repo-local `bin/cautilus` shim is now POSIX shell, not Node
+  - the next seam is skill asset embedding / install-root discovery for
+    `skills install`, then prebuilt binary asset distribution
   - preserve the existing command contract and fixture names unless a break is
     clearly worth it
   - prefer replacing product-owned runtime seams before touching host-facing
@@ -444,7 +444,7 @@
      path
 5. 변경 후에는 항상 `npm run verify`를 다시 돌린다. 실행 전에 Node 22가
    활성화되어 있는지 먼저 확인한다. 현재 Go baseline은 `go1.26.1`이고,
-   최소 smoke/build command는 `go run ./cmd/cautilus --version`,
+   최소 smoke/build command는 `./bin/cautilus --version`,
    test command는 `go test ./cmd/... ./internal/...`다.
 
 ## Discuss
@@ -486,10 +486,11 @@
 ## Premortem
 
 - 가장 쉬운 새 오해: "Go CLI가 이미 standalone install surface를 대체했다."
-  지금은 절반만 맞다. 실제 public install contract는 여전히 tagged release +
-  `install.sh`지만, installer runtime은 이제 Node가 아니라 local `go build`
-  다. 아직 미완인 것은 prebuilt binary asset과 `bin/cautilus` repo-local shim
-  제거이지, public installer가 Node를 요구하는 건 아니다.
+  지금은 거의 맞지만 아직 끝은 아니다. 실제 public install contract는 tagged
+  release + `install.sh`이고, installer runtime은 이제 Node가 아니라 local
+  `go build`다. 아직 미완인 것은 prebuilt binary asset과 single-binary
+  distribution이지, public installer가 Node를 요구하거나 repo-local
+  `bin/cautilus`가 product runtime을 대신 소유하는 건 아니다.
 - 두 번째 새 오해: "`bin/cautilus`와 Go entry가 각각 자기 route table을
   가져도 된다." 아니다. 이제 source of truth는
   `internal/cli/command-registry.json` 하나다. 새 명령이나 usage example을

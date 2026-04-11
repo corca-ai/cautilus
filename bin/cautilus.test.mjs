@@ -7,8 +7,8 @@ import test from "node:test";
 
 const BIN_PATH = join(process.cwd(), "bin", "cautilus");
 
-test("node shim forwards --version to the Go CLI entry", () => {
-	const result = spawnSync("node", [BIN_PATH, "--version"], {
+test("repo shim forwards --version to the Go CLI entry", () => {
+	const result = spawnSync(BIN_PATH, ["--version"], {
 		cwd: process.cwd(),
 		encoding: "utf-8",
 	});
@@ -17,8 +17,8 @@ test("node shim forwards --version to the Go CLI entry", () => {
 	assert.equal(result.stdout.trim(), packageJSON.version);
 });
 
-test("node shim preserves caller cwd while resolving doctor against a consumer repo", () => {
-	const root = mkdtempSync(join(tmpdir(), "cautilus-node-shim-doctor-"));
+test("repo shim preserves caller cwd while resolving doctor against a consumer repo", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-repo-shim-doctor-"));
 	try {
 		const adapterDir = join(root, ".agents");
 		mkdirSync(adapterDir, { recursive: true });
@@ -38,7 +38,7 @@ test("node shim preserves caller cwd while resolving doctor against a consumer r
 			"utf-8",
 		);
 
-		const result = spawnSync("node", [BIN_PATH, "doctor", "--repo-root", "."], {
+		const result = spawnSync(BIN_PATH, ["doctor", "--repo-root", "."], {
 			cwd: root,
 			encoding: "utf-8",
 		});
@@ -52,10 +52,10 @@ test("node shim preserves caller cwd while resolving doctor against a consumer r
 	}
 });
 
-test("node shim keeps bundled skills install working from a consumer repo", () => {
-	const root = mkdtempSync(join(tmpdir(), "cautilus-node-shim-skill-install-"));
+test("repo shim keeps bundled skills install working from a consumer repo", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-repo-shim-skill-install-"));
 	try {
-		const install = spawnSync("node", [BIN_PATH, "skills", "install"], {
+		const install = spawnSync(BIN_PATH, ["skills", "install"], {
 			cwd: root,
 			encoding: "utf-8",
 		});

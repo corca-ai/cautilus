@@ -22,7 +22,7 @@
         "guardrailDimensions": []
       },
       "summary": "The command no longer mentioned adapter init or the official adapter path.",
-      "commandPreview": "node ./bin/cautilus doctor --repo-root /tmp/missing-adapter",
+      "commandPreview": "cautilus doctor --repo-root /tmp/missing-adapter",
       "failureKinds": [
         "stdout_missing_expected_guidance",
         "ambiguous_next_step"
@@ -53,7 +53,7 @@
         "guardrailDimensions": []
       },
       "summary": "The command exited 0 but did not create .agents/cautilus-adapter.yaml.",
-      "commandPreview": "node ./bin/cautilus adapter init --repo-root /tmp/repo",
+      "commandPreview": "cautilus adapter init --repo-root /tmp/repo",
       "failureKinds": [
         "missing_side_effect"
       ],

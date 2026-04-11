@@ -1,20 +1,19 @@
-#!/usr/bin/env node
+#!/bin/sh
 
-import { spawnSync } from "node:child_process";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
-import process from "node:process";
+set -eu
 
-const BIN_DIR = dirname(fileURLToPath(import.meta.url));
-const REPO_ROOT = join(BIN_DIR, "..");
-const result = spawnSync("go", ["-C", REPO_ROOT, "run", "./cmd/cautilus", ...process.argv.slice(2)], {
-	cwd: REPO_ROOT,
-	stdio: "inherit",
-	env: {
-		...process.env,
-		CAUTILUS_TOOL_ROOT: REPO_ROOT,
-		CAUTILUS_CALLER_CWD: process.cwd(),
-	},
-});
+BIN_DIR=$(
+  CDPATH= cd -- "$(dirname -- "$0")"
+  pwd
+)
+REPO_ROOT=$(
+  CDPATH= cd -- "$BIN_DIR/.."
+  pwd
+)
 
-process.exit(result.status ?? 1);
+: "${CAUTILUS_TOOL_ROOT:=$REPO_ROOT}"
+: "${CAUTILUS_CALLER_CWD:=$PWD}"
+export CAUTILUS_TOOL_ROOT
+export CAUTILUS_CALLER_CWD
+
+exec go -C "$REPO_ROOT" run ./cmd/cautilus "$@"

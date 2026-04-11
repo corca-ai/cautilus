@@ -33,7 +33,7 @@ function readTree(root) {
 
 test("cautilus --version matches package.json", () => {
 	const pkg = JSON.parse(readFileSync(join(REPO_ROOT, "package.json"), "utf-8"));
-	const result = spawnSync("node", [join(REPO_ROOT, "bin", "cautilus"), "--version"], {
+	const result = spawnSync(join(REPO_ROOT, "bin", "cautilus"), ["--version"], {
 		cwd: REPO_ROOT,
 		encoding: "utf-8",
 	});
@@ -42,7 +42,7 @@ test("cautilus --version matches package.json", () => {
 });
 
 test("repo root exposes an official self-consumer adapter and doctor returns ready", () => {
-	const result = spawnSync("node", [join(REPO_ROOT, "bin", "cautilus"), "doctor", "--repo-root", REPO_ROOT], {
+	const result = spawnSync(join(REPO_ROOT, "bin", "cautilus"), ["doctor", "--repo-root", REPO_ROOT], {
 		cwd: REPO_ROOT,
 		encoding: "utf-8",
 	});

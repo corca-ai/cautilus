@@ -472,7 +472,7 @@ func DoctorRepo(repoRoot string, adapterPath *string, adapterName *string) (map[
 	}
 	if !payload.Found {
 		checks = append(checks, map[string]any{"id": "adapter_found", "ok": false, "detail": "No checked-in adapter was found."})
-		command := fmt.Sprintf("node ./bin/cautilus adapter init --repo-root %s", repoRoot)
+		command := fmt.Sprintf("cautilus adapter init --repo-root %s", repoRoot)
 		if adapterName != nil && strings.TrimSpace(*adapterName) != "" {
 			command += " --adapter-name " + *adapterName
 		}

@@ -28,11 +28,11 @@
   "commands": [
     {
       "mode": "held_out",
-      "command": "node ./bin/cautilus doctor --repo-root /tmp/repo"
+      "command": "cautilus doctor --repo-root /tmp/repo"
     },
     {
       "mode": "full_gate",
-      "command": "node ./bin/cautilus review variants --repo-root /tmp/repo --workspace /tmp/repo --output-dir /tmp/out"
+      "command": "cautilus review variants --repo-root /tmp/repo --workspace /tmp/repo --output-dir /tmp/out"
     }
   ],
   "modeRuns": [
