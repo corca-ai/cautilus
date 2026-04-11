@@ -6,6 +6,7 @@
   [README.md](../README.md),
   [AGENTS.md](../AGENTS.md),
   [docs/master-plan.md](./master-plan.md),
+  [docs/cli-distribution.md](./cli-distribution.md),
   [docs/contracts/reporting.md](./contracts/reporting.md),
   [docs/consumer-migration.md](./consumer-migration.md),
   [docs/release-boundary.md](./release-boundary.md),
@@ -46,6 +47,21 @@
 
 ## Current State
 
+- `v0.2.0` standalone release is live and the repo has already pivoted to the
+  next branch for the Go port.
+  - GitHub release: `https://github.com/corca-ai/cautilus/releases/tag/v0.2.0`
+  - release commits that matter for the new baseline:
+    `455db0c Make adapter bootstrap commands Node-only`,
+    `ec7d6ee Drop the last product-owned Python runtime seam`,
+    `e9df35a Cut the 0.2.0 standalone release surface`
+  - current working branch is `go-port`, tracking `origin/go-port`
+  - Homebrew publication is intentionally deferred until after the Go port.
+    The current release still uploads `Cautilus.rb` as an artifact for
+    reference only; do not treat it as the public install contract yet.
+- binary / CLI distribution research is now written down in one durable place:
+  [docs/cli-distribution.md](./cli-distribution.md).
+  Next session should use that note as the rationale baseline instead of
+  re-litigating prebuilt binary vs source archive vs Homebrew from scratch.
 - standalone install/skill contract가 product-owned canonical surface로
   다시 고정되었다.
   - `bin/cautilus`에 `cautilus skills install`이 들어왔고, host repo 기준
@@ -311,25 +327,32 @@
 
 ## Next Session
 
-1. live consumer follow-up을 `cautilus` 쪽에서 추적한다.
-   우선순위는 `crill`이고, 확인 대상은 다음 두 seam이다.
-   - standalone install contract: consumer runner default가 절대 경로가 아니라
-     `cautilus` on `PATH`를 전제하는가
-   - report boundary contract: checked-in report fixture가
-     `cautilus.report_packet.v2` + valid `intentProfile`로 올라왔는가
-2. `crill` follow-up이 끝나면 `ceal`과 `charness`도 같은 두 seam으로 빠르게
-   훑는다. `docs/consumer-migration.md`의 live-consumer claim이 실제 host repo
-   state와 어긋나면 그때 문서/claim을 같이 조정한다.
-3. consumer migration 반복이 커지면 `cautilus report build` 또는 별도
-   migration helper를 product surface로 올릴지 판단한다.
-   지금은 의도적으로 fallback을 넣지 않았고 strict boundary를 택했다.
-   따라서 helper를 추가하더라도 "legacy 자동 수용"이 아니라
-   "명시적 rebuild 도구"여야 한다.
-4. self-dogfood HTML / experiments compare 후속은 당장 기본 pickup이 아니다.
-   consumer sync가 닫힌 뒤에만 `quality` workflow와 generic report HTML 승격
-   여부를 다시 검토한다.
+1. start the Go port on `go-port`, not another consumer sync pass.
+   The release line is already cut at `v0.2.0`, the Node-only standalone
+   surface is stable enough, and Homebrew is intentionally waiting on the Go
+   binary story.
+2. keep the first Go slice narrow and product-owned.
+   - port the CLI entry / argument routing layer first
+   - preserve the existing command contract and fixture names unless a break is
+     clearly worth it
+   - prefer replacing product-owned runtime seams before touching host-facing
+     adapters or docs-heavy operator surfaces
+3. use [docs/cli-distribution.md](./cli-distribution.md) as the release
+   rationale baseline.
+   The current product decision is:
+   - `install.sh` should not install system dependencies
+   - Homebrew should wait until the Go port is real
+   - Go is preferred over Rust for this product boundary
+4. after the first Go slice lands, re-evaluate the release surface in this
+   order:
+   - can `cautilus` be shipped as a single binary
+   - does `install.sh` switch from tagged source archive install to binary asset
+     download
+   - is Homebrew now honest enough to publish as the default polished install
+     path
 5. 변경 후에는 항상 `npm run verify`를 다시 돌린다. 실행 전에 Node 22가
-   활성화되어 있는지 먼저 확인한다.
+   활성화되어 있는지 먼저 확인한다. Go toolchain을 도입하면 그 버전과 build
+   command도 이 문서에 바로 기록한다.
 
 ## Discuss
 
