@@ -9,6 +9,7 @@ import { renderHomebrewFormula } from "./render-homebrew-formula.mjs";
 import { deriveTapRepo, parseGitHubRemoteUrl, resolveReleaseTargets } from "./resolve-release-targets.mjs";
 
 const REPO_ROOT = process.cwd();
+const PACKAGE_VERSION = JSON.parse(readFileSync(join(REPO_ROOT, "package.json"), "utf-8")).version;
 
 function readTree(root) {
 	const entries = [];
@@ -62,20 +63,20 @@ test("install.sh remains syntactically valid shell", () => {
 
 test("homebrew formula renderer produces a stable formula body", () => {
 	const formula = renderHomebrewFormula({
-		version: "v0.1.0",
+		version: `v${PACKAGE_VERSION}`,
 		repo: "corca-ai/cautilus",
 		sha256: "abc123",
 	});
 	assert.match(formula, /class Cautilus < Formula/);
-	assert.match(formula, /https:\/\/github.com\/corca-ai\/cautilus\/archive\/refs\/tags\/v0.1.0.tar.gz/);
+	assert.match(formula, new RegExp(`https://github.com/corca-ai/cautilus/archive/refs/tags/v${PACKAGE_VERSION}\\.tar\\.gz`));
 	assert.match(formula, /sha256 "abc123"/);
 	assert.match(formula, /cautilus --version/);
 });
 
 test("github archive URL renderer targets tagged source archives", () => {
 	assert.equal(
-		renderArchiveUrl({ repo: "corca-ai/cautilus", version: "v0.1.0" }),
-		"https://github.com/corca-ai/cautilus/archive/refs/tags/v0.1.0.tar.gz",
+		renderArchiveUrl({ repo: "corca-ai/cautilus", version: `v${PACKAGE_VERSION}` }),
+		`https://github.com/corca-ai/cautilus/archive/refs/tags/v${PACKAGE_VERSION}.tar.gz`,
 	);
 });
 
@@ -110,7 +111,7 @@ test("repo marketplace points Claude at the packaged cautilus plugin subtree", (
 	);
 	assert.equal(marketplace.plugins[0].name, "cautilus");
 	assert.equal(marketplace.plugins[0].source, "./plugins/cautilus");
-	assert.equal(marketplace.plugins[0].version, "0.1.0");
+	assert.equal(marketplace.plugins[0].version, PACKAGE_VERSION);
 });
 
 test("packaged cautilus plugin manifest points at its bundled skills directory", () => {
@@ -126,7 +127,7 @@ test("packaged cautilus Claude plugin manifest carries stable product metadata",
 		readFileSync(join(REPO_ROOT, "plugins", "cautilus", ".claude-plugin", "plugin.json"), "utf-8"),
 	);
 	assert.equal(manifest.name, "cautilus");
-	assert.equal(manifest.version, "0.1.0");
+	assert.equal(manifest.version, PACKAGE_VERSION);
 	assert.equal(manifest.repository, "https://github.com/corca-ai/cautilus");
 });
 

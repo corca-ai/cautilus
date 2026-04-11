@@ -10,7 +10,7 @@ const PACKAGE_JSON_PATH = resolve(process.cwd(), "package.json");
 function usage(exitCode = 0) {
 	const text = [
 		"Usage:",
-		"  node ./scripts/release/render-homebrew-formula.mjs --sha256 <value> [--version <v0.1.0>] [--repo <owner/name>] [--output <file>]",
+		"  node ./scripts/release/render-homebrew-formula.mjs --sha256 <value> [--version <v0.2.0>] [--repo <owner/name>] [--output <file>]",
 	].join("\n");
 	const out = exitCode === 0 ? process.stdout : process.stderr;
 	out.write(`${text}\n`);

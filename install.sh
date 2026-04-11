@@ -12,7 +12,7 @@ Usage:
   curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh | sh
 
 Environment:
-  CAUTILUS_VERSION      install a specific tag such as v0.1.0
+  CAUTILUS_VERSION      install a specific tag such as v0.2.0
   CAUTILUS_REPO         GitHub repo, default corca-ai/cautilus
   CAUTILUS_INSTALL_ROOT install root, default ~/.local/share/cautilus
   CAUTILUS_BIN_DIR      wrapper bin dir, default ~/.local/bin

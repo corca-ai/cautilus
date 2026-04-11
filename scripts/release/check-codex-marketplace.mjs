@@ -124,7 +124,7 @@ async function callPluginList({ repoRoot }) {
 							clientInfo: {
 								name: "cautilus-marketplace-check",
 								title: "cautilus-marketplace-check",
-								version: "0.1.0",
+								version: "0.2.0",
 							},
 							capabilities: {
 								experimentalApi: true,

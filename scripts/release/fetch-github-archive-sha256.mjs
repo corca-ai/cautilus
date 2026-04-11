@@ -9,7 +9,7 @@ import { resolveReleaseTargets } from "./resolve-release-targets.mjs";
 function usage(exitCode = 0) {
 	const text = [
 		"Usage:",
-		"  node ./scripts/release/fetch-github-archive-sha256.mjs --version <v0.1.0> [--repo <owner/name>] [--output <file>]",
+		"  node ./scripts/release/fetch-github-archive-sha256.mjs --version <v0.2.0> [--repo <owner/name>] [--output <file>]",
 	].join("\n");
 	const out = exitCode === 0 ? process.stdout : process.stderr;
 	out.write(`${text}\n`);

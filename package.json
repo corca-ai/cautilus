@@ -1,7 +1,7 @@
 {
   "name": "cautilus",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "description": "Adapter-driven intentful behavior evaluation toolkit",
   "engines": {
@@ -10,19 +10,19 @@
   "bin": {
     "cautilus": "./bin/cautilus"
   },
-	"scripts": {
-		"dogfood:self": "node scripts/run-self-dogfood.mjs",
-		"dogfood:self:experiments": "node scripts/run-self-dogfood-experiments.mjs",
-		"dogfood:self:html": "node scripts/render-self-dogfood-html.mjs",
-		"dogfood:self:experiments:html": "node scripts/render-self-dogfood-experiments-html.mjs",
-		"hooks:install": "node scripts/install-git-hooks.mjs",
-		"hooks:check": "node scripts/check-git-hooks.mjs",
-		"lint": "npm run lint:eslint && npm run lint:specs",
-		"lint:eslint": "eslint .",
-		"lint:specs": "node scripts/check-specs.mjs",
-		"test": "node --test bin/*.test.mjs scripts/*.test.mjs scripts/agent-runtime/*.test.mjs scripts/release/*.test.mjs",
-		"verify": "npm run lint && npm run test"
-	},
+  "scripts": {
+    "dogfood:self": "node scripts/run-self-dogfood.mjs",
+    "dogfood:self:experiments": "node scripts/run-self-dogfood-experiments.mjs",
+    "dogfood:self:html": "node scripts/render-self-dogfood-html.mjs",
+    "dogfood:self:experiments:html": "node scripts/render-self-dogfood-experiments-html.mjs",
+    "hooks:install": "node scripts/install-git-hooks.mjs",
+    "hooks:check": "node scripts/check-git-hooks.mjs",
+    "lint": "npm run lint:eslint && npm run lint:specs",
+    "lint:eslint": "eslint .",
+    "lint:specs": "node scripts/check-specs.mjs",
+    "test": "node --test bin/*.test.mjs scripts/*.test.mjs scripts/agent-runtime/*.test.mjs scripts/release/*.test.mjs",
+    "verify": "npm run lint && npm run test"
+  },
   "devDependencies": {
     "@eslint/js": "^9.24.0",
     "eslint": "^9.24.0",

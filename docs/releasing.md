@@ -30,7 +30,7 @@ cautilus --version
 3. Commit and tag:
 
 ```bash
-git tag v0.1.0
+git tag v0.2.0
 git push origin main --tags
 ```
 
@@ -42,14 +42,14 @@ formula, and attach those artifacts to the GitHub release.
 4. After GitHub exposes the release archive, compute the checksum:
 
 ```bash
-node ./scripts/release/fetch-github-archive-sha256.mjs --version v0.1.0
+node ./scripts/release/fetch-github-archive-sha256.mjs --version v0.2.0
 ```
 
 5. Render the Homebrew formula body:
 
 ```bash
 node ./scripts/release/render-homebrew-formula.mjs \
-  --version v0.1.0 \
+  --version v0.2.0 \
   --sha256 <sha256>
 ```
 
