@@ -5,6 +5,7 @@ import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 import test from "node:test";
 
+// Product-owned proof for the explicit root self-consumer quality path.
 const SCRIPT_PATH = join(process.cwd(), "scripts", "run-self-dogfood.mjs");
 
 function writeExecutable(root, relativePath, body) {
@@ -102,7 +103,7 @@ EOF
 	return root;
 }
 
-test("run-self-dogfood writes latest artifacts and prunes older runs", () => {
+test("run-self-dogfood proves the root self-consumer quality path and writes latest artifacts", () => {
 	const root = createDogfoodRepo();
 	try {
 		const artifactRoot = join(root, "artifacts");

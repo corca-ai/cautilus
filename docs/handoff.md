@@ -118,6 +118,19 @@
     `summary.json`, `report.json`, `latest.md`, `index.html` 네 개로 고정하고,
     "A/B 결과는 비교 가능하게 surfaced 해야 한다"는 rule을 source-of-truth
     spec으로 잠갔다.
+- `binary-surface` stronger-claim experiment는 이제 stable `pass`로 떨어진다.
+  - `.agents/cautilus-adapters/self-dogfood-binary-surface.yaml`이
+    `docs/consumer-readiness.md`, `scripts/run-self-dogfood.mjs`,
+    `scripts/run-self-dogfood.test.mjs`까지 artifact surface에 포함해서
+    root self-consumer evidence를 함께 본다.
+  - `scripts/self-dogfood-experiment-prompt.mjs`의 binary-surface excerpt
+    패턴은 `run-self-dogfood`, `root self-consumer`,
+    `consumer-readiness`, `latest artifacts`를 우선 잡아서 prompt 상단에서
+    evidentiary seam이 드러나게 바뀌었다.
+  - `bin/cautilus.test.mjs`에
+    `cautilus root self-consumer repo stays doctor-ready and keeps the named self-dogfood adapter`
+    smoke가 추가되었고, `scripts/run-self-dogfood.test.mjs`의 첫 test 이름도
+    root self-consumer quality path를 직접 말하도록 바뀌었다.
 - `cautilus.behavior_intent.v1`은 여전히 closed product-owned `behaviorSurface`
   catalog와 reusable dimension catalog를 가진다.
   - `operator_behavior`
@@ -228,10 +241,13 @@
     authoritative status. active-run 쪽 open question은 이제 filename naming보다
     `run.json` metadata 확장과 shell flavor surface 같은 operator ergonomics다.
 - local proof (Node v22.22.2 기준, 이번 세션 마지막 측정값):
-  - `npm run verify`: 184/184 green
-  - `node ./scripts/check-specs.mjs`: `spec checks passed (4 specs, 403 guard rows)`
+  - `npm run verify`: 185/185 green
+  - `node ./scripts/check-specs.mjs`: `spec checks passed (4 specs, 411 guard rows)`
   - `node ./bin/cautilus doctor --repo-root .`: `ready`
   - `npm run hooks:check`: `ready`
+  - `node ./scripts/run-self-dogfood-experiments.mjs --experiment-adapter-name self-dogfood-binary-surface --quiet`:
+    exit `0`, latest summary `overallStatus=pass`,
+    `experiments[0].overallStatus=pass`
   - `git push origin main`: success. 최근 push에는
     `0c758dc Finish active-run canonical filename defaults`와
     `6f4ba44 Add A/B compare views for self-dogfood experiments`가 포함된다.
@@ -242,22 +258,24 @@
     `workspace start` → `workspace prepare-compare --baseline-ref HEAD~1
     --candidate-ref HEAD` (no `--output-dir`) → `$CAUTILUS_RUN_DIR` 안에
     `baseline`, `candidate`, `run.json`이 동시 존재.
-- 이번 세션에서 experiments를 다시 돌리지는 않았다. 마지막으로 기록된
-  stronger-claim 상태는 여전히 `gate-honesty-a=blocker`,
-  `gate-honesty-b=concern`, `binary-surface=concern`, `skill-surface=pass`,
+- 이번 세션에서 `binary-surface` experiment를 다시 돌렸고 현재 기록된
+  stronger-claim 상태는 `gate-honesty-a=blocker`,
+  `gate-honesty-b=concern`, `binary-surface=pass`, `skill-surface=pass`,
   `review-completion=pass`이다.
 
 ## Next Session
 
-1. `binary-surface` experiment가 `skill-surface`처럼 stable pass로 떨어졌는지
-   다시 본다. 필요하면 enrichment prompt를 더 깎는다.
-2. `quality` workflow가 canonical dogfood와 experiments를 어떻게 함께 요약해야
+1. `quality` workflow가 canonical dogfood와 experiments를 어떻게 함께 요약해야
    operator에게 덜 거짓말 같은지 결론을 낸다.
-3. experiments compare surface를 더 product-owned CLI로 끌어올릴지 본다.
+2. experiments compare surface를 더 product-owned CLI로 끌어올릴지 본다.
    지금은 `scripts/render-self-dogfood-experiments-html.mjs`와
    `npm run dogfood:self:experiments:html`로 read-only compare view를 제공한다.
    다음 결정은 이 surface를 self-dogfood 전용 helper로 둘지, 더 generic한
    report/experiment html CLI로 승격할지다.
+3. `binary-surface`를 pass로 만든 evidentiary pattern을
+   `gate-honesty-b`나 다른 stronger-claim adapter에도 미러링할지 본다.
+   핵심은 "명령 존재"가 아니라 "product-owned proof가 prompt 상단 excerpt에
+   실제로 드러나는가"다.
 4. 변경 후에는 항상 `npm run verify`를 다시 돌린다. 실행 전에 Node 22가 활성화
    되어 있는지 먼저 확인한다.
 
@@ -357,10 +375,12 @@
 - [README.md](/home/ubuntu/cautilus/README.md)
 - [AGENTS.md](/home/ubuntu/cautilus/AGENTS.md)
 - [docs/master-plan.md](/home/ubuntu/cautilus/docs/master-plan.md)
+- [docs/consumer-readiness.md](/home/ubuntu/cautilus/docs/consumer-readiness.md)
 - [docs/contracts/active-run.md](/home/ubuntu/cautilus/docs/contracts/active-run.md)
 - [docs/contracts/behavior-intent.md](/home/ubuntu/cautilus/docs/contracts/behavior-intent.md)
 - [docs/contracts/scenario-proposal-inputs.md](/home/ubuntu/cautilus/docs/contracts/scenario-proposal-inputs.md)
 - [docs/specs/self-dogfood.spec.md](/home/ubuntu/cautilus/docs/specs/self-dogfood.spec.md)
+- [bin/cautilus.test.mjs](/home/ubuntu/cautilus/bin/cautilus.test.mjs)
 - [scripts/agent-runtime/workspace-start.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/workspace-start.mjs)
 - [scripts/agent-runtime/workspace-start.test.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/workspace-start.test.mjs)
 - [scripts/agent-runtime/active-run.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/active-run.mjs)
@@ -375,7 +395,9 @@
 - [scripts/render-self-dogfood-experiments-html.mjs](/home/ubuntu/cautilus/scripts/render-self-dogfood-experiments-html.mjs)
 - [scripts/render-self-dogfood-experiments-html.test.mjs](/home/ubuntu/cautilus/scripts/render-self-dogfood-experiments-html.test.mjs)
 - [scripts/run-self-dogfood.mjs](/home/ubuntu/cautilus/scripts/run-self-dogfood.mjs)
+- [scripts/run-self-dogfood.test.mjs](/home/ubuntu/cautilus/scripts/run-self-dogfood.test.mjs)
 - [scripts/run-self-dogfood-experiments.mjs](/home/ubuntu/cautilus/scripts/run-self-dogfood-experiments.mjs)
+- [scripts/self-dogfood-experiment-prompt.mjs](/home/ubuntu/cautilus/scripts/self-dogfood-experiment-prompt.mjs)
 - [artifacts/self-dogfood/latest/index.html](/home/ubuntu/cautilus/artifacts/self-dogfood/latest/index.html)
 - [scripts/agent-runtime/behavior-intent.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/behavior-intent.mjs)
 - [scripts/agent-runtime/cli-proposal-candidates.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/cli-proposal-candidates.mjs)

@@ -37,6 +37,8 @@ standalone product여야 한다.
 | .agents/cautilus-adapters/self-dogfood.yaml | fixed | review_timeout_ms |
 | .agents/cautilus-adapters/self-dogfood.yaml | fixed | scripts/run-self-dogfood.mjs |
 | .agents/cautilus-adapters/self-dogfood-binary-surface.yaml | file_exists |  |
+| .agents/cautilus-adapters/self-dogfood-binary-surface.yaml | fixed | docs/consumer-readiness.md |
+| .agents/cautilus-adapters/self-dogfood-binary-surface.yaml | fixed | scripts/run-self-dogfood.test.mjs |
 | .agents/cautilus-adapters/self-dogfood-gate-honesty-a.yaml | file_exists |  |
 | .agents/cautilus-adapters/self-dogfood-gate-honesty-b.yaml | file_exists |  |
 | .agents/cautilus-adapters/self-dogfood-skill-surface.yaml | file_exists |  |
@@ -81,6 +83,7 @@ standalone product여야 한다.
 | bin/cautilus | fixed | review variants |
 | bin/cautilus | fixed | --version |
 | bin/cautilus.test.mjs | file_exists |  |
+| bin/cautilus.test.mjs | fixed | root self-consumer repo stays doctor-ready |
 | skills/cautilus/SKILL.md | file_exists |  |
 | skills/cautilus/SKILL.md | fixed | npm run dogfood:self |
 | skills/cautilus/SKILL.md | fixed | npm run dogfood:self:experiments |
@@ -172,6 +175,7 @@ standalone product여야 한다.
 | scripts/run-self-dogfood.mjs | fixed | gateRecommendation |
 | scripts/run-self-dogfood.mjs | fixed | reportRecommendation |
 | scripts/run-self-dogfood.test.mjs | file_exists |  |
+| scripts/run-self-dogfood.test.mjs | fixed | root self-consumer quality path |
 | scripts/run-self-dogfood-experiments.mjs | file_exists |  |
 | scripts/run-self-dogfood-experiments.mjs | fixed | DEFAULT_EXPERIMENT_ADAPTERS |
 | scripts/run-self-dogfood-experiments.mjs | fixed | gateRecommendation |

@@ -44,6 +44,7 @@ standalone acceptance boundary만 남긴다.
 | bin/cautilus | fixed | review render-prompt |
 | bin/cautilus | fixed | --version |
 | bin/cautilus.test.mjs | file_exists |  |
+| bin/cautilus.test.mjs | fixed | root self-consumer repo stays doctor-ready |
 | bin/cautilus.test.mjs | fixed | standalone temp repo can adopt cautilus without Ceal-owned paths |
 | skills/cautilus/SKILL.md | file_exists |  |
 | skills/cautilus/SKILL.md | fixed | node ./bin/cautilus adapter resolve --repo-root . |

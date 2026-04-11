@@ -11,7 +11,18 @@ function adapterExcerptPatterns(adapterName) {
 		return ["reviewTimeoutMs", "dogfood:self", "latest.md", "timeout", "WORKBENCH_CODEX", "self-dogfood"];
 	}
 	if (adapterName.includes("binary-surface")) {
-		return ["bin/cautilus", "--repo-root", "doctor", "dogfood:self", "standalone binary", "self-dogfood"];
+		return [
+			"standalone binary",
+			"dogfood:self",
+			"run-self-dogfood",
+			"root self-consumer",
+			"consumer-readiness",
+			"latest artifacts",
+			"bin/cautilus",
+			"--repo-root",
+			"doctor",
+			"self-dogfood",
+		];
 	}
 	if (adapterName.includes("skill-surface")) {
 		return ["dogfood:self", "dogfood:self:experiments", "self-dogfood", "quality path", "bundled skill"];

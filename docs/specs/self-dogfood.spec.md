@@ -27,6 +27,8 @@ named experiment adapter에서 따로 다룬다.
 | .agents/cautilus-adapters/self-dogfood.yaml | fixed | review_timeout_ms |
 | .agents/cautilus-adapters/self-dogfood.yaml | fixed | scripts/run-self-dogfood.mjs |
 | .agents/cautilus-adapters/self-dogfood-binary-surface.yaml | file_exists |  |
+| .agents/cautilus-adapters/self-dogfood-binary-surface.yaml | fixed | docs/consumer-readiness.md |
+| .agents/cautilus-adapters/self-dogfood-binary-surface.yaml | fixed | scripts/run-self-dogfood.test.mjs |
 | .agents/cautilus-adapters/self-dogfood-gate-honesty-a.yaml | file_exists |  |
 | .agents/cautilus-adapters/self-dogfood-gate-honesty-b.yaml | file_exists |  |
 | .agents/cautilus-adapters/self-dogfood-skill-surface.yaml | file_exists |  |
@@ -43,6 +45,7 @@ named experiment adapter에서 따로 다룬다.
 | scripts/run-self-dogfood.mjs | fixed | gateRecommendation |
 | scripts/run-self-dogfood.mjs | fixed | reportRecommendation |
 | scripts/run-self-dogfood.test.mjs | file_exists |  |
+| scripts/run-self-dogfood.test.mjs | fixed | root self-consumer quality path |
 | scripts/render-self-dogfood-html.mjs | file_exists |  |
 | scripts/render-self-dogfood-html.mjs | fixed | renderHtml |
 | scripts/render-self-dogfood-html.test.mjs | file_exists |  |

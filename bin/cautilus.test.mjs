@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { chmodSync, mkdirSync, mkdtempSync, readFileSync, rmSync, utimesSync, writeFileSync } from "node:fs";
+import { chmodSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, utimesSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
@@ -16,6 +16,19 @@ function writeExecutable(root, name, body) {
 	chmodSync(filePath, 0o755);
 	return filePath;
 }
+
+test("cautilus root self-consumer repo stays doctor-ready and keeps the named self-dogfood adapter", () => {
+	const root = process.cwd();
+	const result = spawnSync("node", [BIN_PATH, "doctor", "--repo-root", root], {
+		cwd: root,
+		encoding: "utf-8",
+	});
+	assert.equal(result.status, 0, result.stderr);
+	const payload = JSON.parse(result.stdout);
+	assert.equal(payload.ready, true);
+	assert.equal(payload.status, "ready");
+	assert.equal(existsSync(join(root, ".agents", "cautilus-adapters", "self-dogfood.yaml")), true);
+});
 
 test("cautilus adapter resolve delegates to the bundled resolver", () => {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-bin-resolve-"));
