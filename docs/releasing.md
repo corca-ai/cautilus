@@ -65,7 +65,7 @@ cautilus --version
 
 ## Guardrails
 
-- Keep release artifacts source-based unless a stronger binary distribution
+- Keep release artifacts source-built unless a stronger binary distribution
   contract is added explicitly.
 - If the installer contract changes, update [README.md](../README.md),
   [docs/handoff.md](./handoff.md), and

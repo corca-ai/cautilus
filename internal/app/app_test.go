@@ -7,6 +7,8 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+
+	"github.com/corca-ai/cautilus/internal/cli"
 )
 
 func TestRunVersionUsesEnvVersionWithoutToolRoot(t *testing.T) {
@@ -80,5 +82,17 @@ func TestRunSkillsInstallStillRequiresToolRoot(t *testing.T) {
 	}
 	if !strings.Contains(stderr.String(), "could not locate cautilus source root") {
 		t.Fatalf("unexpected stderr: %q", stderr.String())
+	}
+}
+
+func TestEveryRegisteredCommandHasAGoHandler(t *testing.T) {
+	registry, err := cli.LoadRegistry()
+	if err != nil {
+		t.Fatalf("LoadRegistry returned error: %v", err)
+	}
+	for _, command := range registry.Commands {
+		if nativeHandler(command.Path) == nil {
+			t.Fatalf("missing Go handler for registry command %q", strings.Join(command.Path, " "))
+		}
 	}
 }

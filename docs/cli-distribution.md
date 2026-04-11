@@ -5,8 +5,8 @@ repos do not have to rediscover the same tradeoffs.
 
 ## Current Position
 
-`Cautilus` is still shipping as a standalone Node CLI plus a bundled skill, not
-as a native prebuilt binary.
+`Cautilus` is now shipping as a standalone Go CLI built from the tagged source
+archive plus a bundled skill, not yet as a native prebuilt binary asset.
 
 As of the current release line:
 
@@ -15,29 +15,32 @@ As of the current release line:
   [`install.sh`](../install.sh)
 - `install.sh` should install `Cautilus` itself, not operating-system
   dependencies
+- `install.sh` now builds the Go CLI locally from the tagged source archive
 - Homebrew remains a deferred install surface until the CLI runtime settles
   further
 
 That means the honest operator story today is:
 
 1. install a tagged release with `install.sh`
-2. ensure `node` and `npm` are already present
+2. ensure `go` is already present
 3. confirm `cautilus --version`
 4. in each consumer repo, run `cautilus skills install`
 
 ## Why The First Public Release Is Not Homebrew-First
 
 Homebrew can work on both macOS and Linux, and it is a good long-term consumer
-path. It is not the first release path for `Cautilus` because the current CLI
-is still a Node program that installs from a source archive.
+path. It is not the first release path for `Cautilus` because the current
+public installer still builds from a tagged source archive instead of
+downloading a prebuilt release artifact.
 
 That creates a few problems:
 
-- the formula would still need to express runtime dependencies such as `node`
-- the install contract would still be source-oriented rather than
+- the formula would still need to express a build dependency such as `go`
+- the install contract is still source-oriented rather than
   prebuilt-artifact-oriented
 - the team is already planning a Go port, so locking in a source-based Homebrew
-  formula now would create an install story that is likely to change soon
+  formula before the binary-release shape settles would create an install story
+  that is likely to change soon
 
 The release surface is simpler if the first public contract stays:
 
@@ -81,8 +84,9 @@ That extraction bias was pragmatic: preserve proven behavior first, then reduce
 runtime seams later.
 
 The product-owned Python seam has now been removed from the standalone CLI
-surface. Historical references to the old Python files remain in extraction
-notes because they describe where the product came from.
+surface, and the public installer no longer depends on the old Node runtime
+surface either. Historical references to the old Python and Node files remain
+in extraction notes because they describe where the product came from.
 
 ## Prebuilt Binary Tradeoffs
 
@@ -127,9 +131,9 @@ the higher rewrite and maintenance cost.
 
 Use this order unless the product direction changes:
 
-1. ship the first public release from the Node-only standalone CLI surface
+1. ship the first public release from the source-built standalone Go CLI surface
 2. keep GitHub releases and `install.sh` as the canonical consumer path
-3. port the CLI/runtime to Go on a new branch
+3. add prebuilt release binaries once the artifact shape is stable
 4. add Homebrew after the Go release artifact shape is stable
 5. revisit stronger binary distribution claims only after the Go release path is
    proven in public

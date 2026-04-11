@@ -33,8 +33,9 @@ standalone acceptance boundary만 남긴다.
 | plugins/cautilus/.codex-plugin/plugin.json | file_exists |  |
 | bin/cautilus | fixed | CAUTILUS_CALLER_CWD |
 | bin/cautilus.test.mjs | file_exists |  |
-| bin/cautilus.test.mjs | fixed | root self-consumer repo stays doctor-ready |
-| bin/cautilus.test.mjs | fixed | standalone temp repo can adopt cautilus without Ceal-owned paths |
+| bin/cautilus.test.mjs | fixed | node shim forwards --version to the Go CLI entry |
+| bin/cautilus.test.mjs | fixed | node shim preserves caller cwd while resolving doctor against a consumer repo |
+| bin/cautilus.test.mjs | fixed | node shim keeps bundled skills install working from a consumer repo |
 | internal/app/cli_smoke_test.go | file_exists |  |
 | internal/app/cli_smoke_test.go | fixed | TestCLIRootSelfConsumerRepoStaysDoctorReady |
 | internal/app/cli_smoke_test.go | fixed | TestCLIStandaloneTempRepoCanAdoptCautilusWithoutCealPaths |

@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -74,12 +73,8 @@ func Run(args []string, stdout io.Writer, stderr io.Writer) int {
 		}
 		return invokeHandler(handler, toolRoot, cwd, match.ForwardedArgs, stdout, stderr)
 	}
-	toolRoot, err := requiredToolRoot(cwd)
-	if err != nil {
-		_, _ = fmt.Fprintf(stderr, "%s\n", err)
-		return 1
-	}
-	return runNodeFallback(toolRoot, cwd, match.Command.Script, match.ForwardedArgs, stdout, stderr)
+	_, _ = fmt.Fprintf(stderr, "command is listed in the registry but has no Go handler: %s\n", strings.Join(match.Command.Path, " "))
+	return 1
 }
 
 //nolint:errcheck // CLI panic recovery writes are best-effort.
@@ -188,24 +183,6 @@ func requiredToolRoot(cwd string) (string, error) {
 }
 
 //nolint:errcheck // CLI stderr reporting is best-effort.
-func runNodeFallback(repoRoot string, cwd string, script string, args []string, stdout io.Writer, stderr io.Writer) int {
-	command := exec.Command("node", append([]string{filepath.Join(repoRoot, filepath.FromSlash(script))}, args...)...)
-	command.Dir = cwd
-	command.Stdin = os.Stdin
-	command.Stdout = stdout
-	command.Stderr = stderr
-	command.Env = os.Environ()
-	if err := command.Run(); err != nil {
-		var exitErr *exec.ExitError
-		if errors.As(err, &exitErr) {
-			return exitErr.ExitCode()
-		}
-		_, _ = fmt.Fprintf(stderr, "%s\n", err)
-		return 1
-	}
-	return 0
-}
-
 type adapterArgs struct {
 	repoRoot    *string
 	adapter     *string

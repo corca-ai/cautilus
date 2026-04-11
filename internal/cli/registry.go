@@ -129,7 +129,3 @@ func FindRepoRoot(start string) (string, error) {
 		current = parent
 	}
 }
-
-func ScriptPath(repoRoot string, command CommandEntry) string {
-	return filepath.Join(repoRoot, filepath.FromSlash(command.Script))
-}

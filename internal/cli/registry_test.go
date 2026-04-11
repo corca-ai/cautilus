@@ -78,10 +78,3 @@ func TestFindRepoRootFromNestedPath(t *testing.T) {
 		t.Fatalf("expected %s, got %s", repoRoot, resolved)
 	}
 }
-
-func TestScriptPathUsesRepoRoot(t *testing.T) {
-	path := ScriptPath("/tmp/cautilus", CommandEntry{Script: "scripts/doctor.mjs"})
-	if path != filepath.Join("/tmp/cautilus", "scripts", "doctor.mjs") {
-		t.Fatalf("unexpected script path: %s", path)
-	}
-}

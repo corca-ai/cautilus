@@ -82,8 +82,8 @@
     `go run ./cmd/cautilus` with the caller cwd + tool root preserved through
     env vars. All commands listed in
     [internal/cli/command-registry.json](../internal/cli/command-registry.json)
-    now have Go native handlers, so `runNodeFallback` is no longer on the
-    production path for known commands.
+    now have Go native handlers, and a Go test now fails if any registry
+    command loses its native handler coverage.
   - `internal/app/` now owns the full CLI surface:
     adapter/doctor/workspace/scenario/report/review/evidence/optimize plus
     `workspace prepare-compare`, `workspace prune-artifacts`,
@@ -103,9 +103,11 @@
     `bin/cautilus.test.mjs`. `internal/app/cli_smoke_test.go` now carries the
     Go-side acceptance tests for root self-consumer doctor, adapter resolve,
     doctor ready/missing/invalid, standalone temp-repo adoption,
-    `skills install`, workspace compare/prune, and scenario proposal/telemetry.
-    JS acceptance is still present, but ownership has started to move with the
-    Go runtime instead of staying anchored to the Node shim.
+    `skills install`, workspace compare/prune, report/cli-evaluate/mode-evaluate,
+    review prompt flow, optimize, evidence, scenario prepare, and scenario
+    normalize chatbot/skill/cli. `bin/cautilus.test.mjs` is now only a thin
+    shim gate for version forwarding, caller cwd preservation, and bundled skill
+    install through the Node entrypoint.
   - `cautilus --version` no longer depends only on `package.json` in the source
     tree. It now prefers `CAUTILUS_VERSION`, then Go build info, and only falls
     back to `package.json` when a source checkout is available. This hardens the
@@ -134,6 +136,11 @@
   - `bin/cautilus`에 `cautilus skills install`이 들어왔고, host repo 기준
     `.agents/skills/cautilus/`를 canonical checked-in path로 materialize한다.
     `.claude/skills -> ../.agents/skills`는 compatibility shim이다.
+  - public installer도 이제 Node/npm install path가 아니다.
+    `install.sh`는 tagged source archive를 내려받은 뒤 그 안에서
+    `go build ./cmd/cautilus`로 product binary를 만들고,
+    wrapper가 `CAUTILUS_TOOL_ROOT`와 caller cwd를 넘겨서 installed binary가
+    bundled skill/assets를 계속 찾게 한다.
   - bundled skill과 packaged plugin skill은 이제 repo-local
     `node ./bin/cautilus`가 아니라 standalone `cautilus` command를 호출한다.
   - `README.md`, `docs/consumer-migration.md`,
@@ -258,10 +265,10 @@
     패턴은 `run-self-dogfood`, `root self-consumer`,
     `consumer-readiness`, `latest artifacts`를 우선 잡아서 prompt 상단에서
     evidentiary seam이 드러나게 바뀌었다.
-  - `bin/cautilus.test.mjs`에
-    `cautilus root self-consumer repo stays doctor-ready and keeps the named self-dogfood adapter`
-    smoke가 추가되었고, `scripts/run-self-dogfood.test.mjs`의 첫 test 이름도
-    root self-consumer quality path를 직접 말하도록 바뀌었다.
+  - `scripts/run-self-dogfood.test.mjs`의 첫 test 이름도 root self-consumer
+    quality path를 직접 말하도록 바뀌었다. product-owned CLI smoke는 이제
+    `internal/app/cli_smoke_test.go`가 주 경로고, `bin/cautilus.test.mjs`는
+    shim-only acceptance로 축소되었다.
 - `cautilus.behavior_intent.v1`은 여전히 closed product-owned `behaviorSurface`
   catalog와 reusable dimension catalog를 가진다.
   - `operator_behavior`
@@ -381,10 +388,10 @@
     `CAUTILUS_CALLER_CWD=<temp> /tmp/cautilus-go-port-smoke doctor --repo-root .`
     → `ready`
   - `go test ./cmd/... ./internal/...`: green
-  - `node --test bin/cautilus.test.mjs`: 23/23 green
+  - `node --test bin/cautilus.test.mjs`: 3/3 green
   - `node --test scripts/agent-runtime/run-workbench-executor-variants.test.mjs`: 8/8 green
   - `npm run verify`: 190/190 green
-  - `node ./scripts/check-specs.mjs`: `spec checks passed (4 specs, 405 guard rows)`
+  - `node ./scripts/check-specs.mjs`: `spec checks passed (4 specs, 416 guard rows)`
   - `cautilus doctor --repo-root .`: `ready`
   - `npm run hooks:check`: `ready`
   - `node ./scripts/run-self-dogfood-experiments.mjs --experiment-adapter-name self-dogfood-binary-surface --quiet`:
@@ -415,9 +422,8 @@
   - repo-root/version discovery hardening is now done for native handlers and
     `--version`
   - decide whether the next seam is command execution abstraction, skill asset
-    embedding / install-root discovery for `skills install`, or moving the
-    remaining report/review/optimize/evidence CLI acceptance cases out of
-    `bin/cautilus.test.mjs` and into Go tests
+    embedding / install-root discovery for `skills install`, or eliminating the
+    remaining `bin/cautilus` shim path itself
   - preserve the existing command contract and fixture names unless a break is
     clearly worth it
   - prefer replacing product-owned runtime seams before touching host-facing
@@ -426,6 +432,7 @@
    rationale baseline.
    The current product decision is:
    - `install.sh` should not install system dependencies
+   - `install.sh` may require `go`, but it should not install `go` for the host
    - Homebrew should wait until the Go port is real
    - Go is preferred over Rust for this product boundary
 4. after the first Go slice lands, re-evaluate the release surface in this
@@ -479,9 +486,10 @@
 ## Premortem
 
 - 가장 쉬운 새 오해: "Go CLI가 이미 standalone install surface를 대체했다."
-  아니다. 현재 `cmd/cautilus/main.go`는 repo 안에서 첫 dispatcher slice를
-  고정한 것이다. 실제 public install contract는 아직 tagged release +
-  `install.sh` + Node runtime이다.
+  지금은 절반만 맞다. 실제 public install contract는 여전히 tagged release +
+  `install.sh`지만, installer runtime은 이제 Node가 아니라 local `go build`
+  다. 아직 미완인 것은 prebuilt binary asset과 `bin/cautilus` repo-local shim
+  제거이지, public installer가 Node를 요구하는 건 아니다.
 - 두 번째 새 오해: "`bin/cautilus`와 Go entry가 각각 자기 route table을
   가져도 된다." 아니다. 이제 source of truth는
   `internal/cli/command-registry.json` 하나다. 새 명령이나 usage example을

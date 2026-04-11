@@ -43,23 +43,25 @@ The current honest install story is:
 
 1. install the standalone CLI from a tagged GitHub release with
    [install.sh](../install.sh)
-2. require `cautilus --version` to work on `PATH`
-3. in each consumer repo, run `cautilus skills install`
-4. treat `.agents/skills/cautilus/` as the canonical checked-in skill path and
+2. require `go` to already be installed so `install.sh` can build the CLI from
+   the tagged source archive
+3. require `cautilus --version` to work on `PATH`
+4. in each consumer repo, run `cautilus skills install`
+5. treat `.agents/skills/cautilus/` as the canonical checked-in skill path and
    `.claude/skills -> ../.agents/skills` as the Claude compatibility shim
-5. keep adapters and repo-local assets in the consumer repo
-6. for local Codex plugin testing, expose the repo marketplace through
+6. keep adapters and repo-local assets in the consumer repo
+7. for local Codex plugin testing, expose the repo marketplace through
    [.agents/plugins/marketplace.json](../.agents/plugins/marketplace.json)
    so Codex resolves `./plugins/cautilus` as the installable local plugin
-7. verify the repo-local marketplace with
+8. verify the repo-local marketplace with
    [check-codex-marketplace.mjs](../scripts/release/check-codex-marketplace.mjs)
-8. for local Claude plugin testing, expose the repo marketplace through
+9. for local Claude plugin testing, expose the repo marketplace through
    [.claude-plugin/marketplace.json](../.claude-plugin/marketplace.json)
    so Claude resolves `./plugins/cautilus` as the installable local plugin
-9. validate the checked-in Claude marketplace and plugin manifests with
+10. validate the checked-in Claude marketplace and plugin manifests with
    `claude plugins validate ./.claude-plugin/marketplace.json`
    and `claude plugins validate ./plugins/cautilus/.claude-plugin/plugin.json`
-10. when cutting a tagged release, render the Homebrew formula body with
+11. when cutting a tagged release, render the Homebrew formula body with
    [render-homebrew-formula.mjs](../scripts/release/render-homebrew-formula.mjs)
 
 This repo is still not claiming npm publication or a public Codex/Claude

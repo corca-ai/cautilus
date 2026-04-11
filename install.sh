@@ -36,8 +36,7 @@ resolve_version() {
 
 need_cmd curl
 need_cmd tar
-need_cmd node
-need_cmd npm
+need_cmd go
 need_cmd sed
 
 if [ "${1:-}" = "--help" ]; then
@@ -69,15 +68,19 @@ mv "$EXTRACTED_DIR" "$TARGET_DIR"
 
 (
 	cd "$TARGET_DIR"
-	npm install --omit=dev --ignore-scripts
+	mkdir -p "$TARGET_DIR/bin"
+	go build -o "$TARGET_DIR/bin/cautilus-real" ./cmd/cautilus
 )
 
 cat > "$BIN_DIR/cautilus" <<EOF
 #!/usr/bin/env sh
-exec node "$TARGET_DIR/bin/cautilus" "\$@"
+CAUTILUS_TOOL_ROOT="$TARGET_DIR" \
+CAUTILUS_CALLER_CWD="\$(pwd)" \
+exec "$TARGET_DIR/bin/cautilus-real" "\$@"
 EOF
 chmod +x "$BIN_DIR/cautilus"
 
 printf 'Installed to %s\n' "$TARGET_DIR"
+printf 'Binary written to %s/bin/cautilus-real\n' "$TARGET_DIR"
 printf 'Wrapper written to %s/cautilus\n' "$BIN_DIR"
 printf 'Ensure %s is on PATH\n' "$BIN_DIR"
