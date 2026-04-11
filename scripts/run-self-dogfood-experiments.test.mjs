@@ -39,11 +39,7 @@ schema_file="$3"
 verdict="\${CAUTILUS_TEST_VARIANT_VERDICT:-pass}"
 summary="\${CAUTILUS_TEST_VARIANT_SUMMARY:-experiment ok}"
 if [ -n "\${CAUTILUS_TEST_SLEEP_MS:-}" ]; then
-  python3 - "$CAUTILUS_TEST_SLEEP_MS" <<'PY'
-import sys
-import time
-time.sleep(int(sys.argv[1]) / 1000)
-PY
+  node -e "setTimeout(() => {}, Number(process.argv[1]))" "$CAUTILUS_TEST_SLEEP_MS"
 fi
 node - "$output_file" "$prompt_file" "$schema_file" "$verdict" "$summary" <<'EOF'
 const [outputFile, promptFile, schemaFile, verdict, summary] = process.argv.slice(2);

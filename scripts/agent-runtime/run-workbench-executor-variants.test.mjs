@@ -30,11 +30,7 @@ output_file="$2"
 prompt_file="$3"
 schema_file="$4"
 if [ -n "$CAUTILUS_TEST_SLEEP_MS" ]; then
-  python3 - "$CAUTILUS_TEST_SLEEP_MS" <<'PY'
-import sys
-import time
-time.sleep(int(sys.argv[1]) / 1000)
-PY
+  node -e "setTimeout(() => {}, Number(process.argv[1]))" "$CAUTILUS_TEST_SLEEP_MS"
 fi
 if [ "$variant_id" = "${failVariantId}" ]; then
   echo "repo-local variant failure for $variant_id" >&2

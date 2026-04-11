@@ -38,11 +38,7 @@ function createRepo({ failMode = "" } = {}) {
 mode="$1"
 scenario_results_file="$2"
 if [ -n "$CAUTILUS_TEST_SLEEP_MS" ]; then
-  python3 - "$CAUTILUS_TEST_SLEEP_MS" <<'PY'
-import sys
-import time
-time.sleep(int(sys.argv[1]) / 1000)
-PY
+  node -e "setTimeout(() => {}, Number(process.argv[1]))" "$CAUTILUS_TEST_SLEEP_MS"
 fi
 if [ "$mode" = "${failMode}" ]; then
   echo "repo-local failure for $mode" >&2
@@ -124,38 +120,30 @@ scenario_results_file="$2"
 profile_file="$3"
 selected_ids_file="$4"
 selection_snapshot="$5"
-python3 - "$profile_file" "$selected_ids_file" "$scenario_results_file" "$selection_snapshot" "$mode" <<'PY'
-import json
-import sys
-
-profile_file, selected_ids_file, scenario_results_file, selection_snapshot, mode = sys.argv[1:]
-with open(profile_file, "r", encoding="utf-8") as handle:
-    profile = json.load(handle)
-with open(selected_ids_file, "r", encoding="utf-8") as handle:
-    selected_ids = json.load(handle)
-scenario_ids = [entry["scenarioId"] for entry in profile["scenarios"]]
-with open(selection_snapshot, "w", encoding="utf-8") as handle:
-    handle.write(",".join(scenario_ids))
-results = [
-    {
-        "scenarioId": scenario_id,
-        "status": "passed",
-        "overallScore": 100,
-        "passRate": 1
-    }
-    for scenario_id in scenario_ids
-]
-packet = {
-    "schemaVersion": "cautilus.scenario_results.v1",
-    "mode": mode,
-    "results": results
+node - "$profile_file" "$selected_ids_file" "$scenario_results_file" "$selection_snapshot" "$mode" <<'EOF'
+const [profileFile, selectedIdsFile, scenarioResultsFile, selectionSnapshot, mode] = process.argv.slice(2);
+const { readFileSync, writeFileSync } = await import("node:fs");
+const profile = JSON.parse(readFileSync(profileFile, "utf-8"));
+const selectedIds = JSON.parse(readFileSync(selectedIdsFile, "utf-8"));
+const scenarioIds = profile.scenarios.map((entry) => entry.scenarioId);
+writeFileSync(selectionSnapshot, scenarioIds.join(","), "utf-8");
+const packet = {
+  schemaVersion: "cautilus.scenario_results.v1",
+  mode,
+  results: scenarioIds.map((scenarioId) => ({
+    scenarioId,
+    status: "passed",
+    overallScore: 100,
+    passRate: 1,
+  })),
+};
+writeFileSync(scenarioResultsFile, JSON.stringify(packet) + "\\n", "utf-8");
+if (JSON.stringify(scenarioIds) !== JSON.stringify(selectedIds)) {
+  throw new Error(
+    "profile scenarios " + JSON.stringify(scenarioIds) + " did not match selected ids " + JSON.stringify(selectedIds),
+  );
 }
-with open(scenario_results_file, "w", encoding="utf-8") as handle:
-    json.dump(packet, handle)
-    handle.write("\\n")
-if scenario_ids != selected_ids:
-    raise SystemExit(f"profile scenarios {scenario_ids} did not match selected ids {selected_ids}")
-PY
+EOF
 echo "$mode ok"
 `,
 	);

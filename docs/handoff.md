@@ -61,6 +61,9 @@
     `resolve`, `init`, `doctor`는 이제 `python3`가 아니라
     `scripts/resolve_adapter.mjs`, `scripts/init_adapter.mjs`,
     `scripts/doctor.mjs`를 통해 동작한다.
+  - review variant JSON handling도 `scripts/agent-runtime/review-variant-json.mjs`
+    로 옮겨가서 standalone release surface에 product-owned Python runtime
+    dependency가 남지 않는다.
 - report boundary contract도 pre-public breaking change로 정리되었다.
   - current report packet은 `cautilus.report_packet.v2`다.
   - `review prepare-input`, `evidence prepare-input`,

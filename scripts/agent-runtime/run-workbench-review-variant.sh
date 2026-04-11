@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+json_helper="$script_dir/review-variant-json.mjs"
+
 usage() {
 	cat <<'EOF'
 Usage: run-workbench-review-variant.sh --backend codex_exec|claude_p --workspace DIR --prompt-file FILE --schema-file FILE --output-file FILE
@@ -116,7 +119,7 @@ case "$backend" in
 		fi
 		;;
 	claude_p)
-		schema_json="$(python3 -c 'import json,sys; print(json.dumps(json.load(open(sys.argv[1], encoding="utf-8")), separators=(",", ":")))' "$schema_file")"
+		schema_json="$(node "$json_helper" schema-json "$schema_file")"
 		raw_output_file="${output_file}.raw"
 		rm -f "$raw_output_file"
 		(
@@ -128,21 +131,7 @@ case "$backend" in
 				--json-schema "$schema_json" \
 				< "$prompt_file" > "$raw_output_file"
 		) 2> "$stderr_file"
-		python3 - "$raw_output_file" "$output_file" <<'PY'
-import json
-import sys
-from pathlib import Path
-
-raw_path = Path(sys.argv[1])
-output_path = Path(sys.argv[2])
-payload = json.loads(raw_path.read_text(encoding="utf-8"))
-if payload.get("is_error"):
-    raise SystemExit(payload.get("result") or "claude -p returned is_error=true")
-structured = payload.get("structured_output")
-normalized = structured if isinstance(structured, dict) else payload
-output_path.write_text(json.dumps(normalized, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-raw_path.unlink(missing_ok=True)
-PY
+		node "$json_helper" normalize-claude-output "$raw_output_file" "$output_file"
 		;;
 	*)
 		echo "Unsupported backend: $backend" >&2

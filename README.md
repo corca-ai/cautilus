@@ -134,6 +134,8 @@ Dogfood and migration evidence is tracked separately in
   from extraction scaffold to standalone product
 - [docs/release-boundary.md](./docs/release-boundary.md):
   current standalone release surface and compatibility discipline
+- [docs/cli-distribution.md](./docs/cli-distribution.md):
+  durable install, distribution, and Go-port tradeoffs for the standalone CLI
 - [docs/releasing.md](./docs/releasing.md):
   tagged-release checksum, archive, and tap publication workflow
 - [install.sh](./install.sh):
@@ -541,6 +543,6 @@ That bundle now includes a static `index.html` comparison view for the same
 summary/report data, and `npm run dogfood:self:experiments:html` can refresh
 that view without rerunning the experiment reviews.
 
-Adapter bootstrap and readiness helpers now live in Node `.mjs` entrypoints, so
-the standalone CLI no longer depends on `python3` for `resolve`, `init`, and
-`doctor`.
+Adapter bootstrap, readiness, and review-variant JSON helpers now live inside
+the product-owned Node runtime. The standalone release surface no longer
+depends on `python3`.
