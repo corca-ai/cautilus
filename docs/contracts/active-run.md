@@ -123,17 +123,67 @@ as overrides for automation and tests.
 ### Wired Consumers
 
 Consumer commands marked **wired** resolve their target `runDir` through
-`resolveRunDir` from `scripts/agent-runtime/active-run.mjs`. They honor the
-full precedence chain (explicit `--output-dir` > `CAUTILUS_RUN_DIR` >
-auto-materialize under `./.cautilus/runs/`) and emit `Active run: <abs path>`
-to stderr exactly once when they auto-materialize.
+one of two helpers in `scripts/agent-runtime/active-run.mjs`:
+
+- **Workflow-creating commands** call `resolveRunDir` and honor the
+  full precedence chain (explicit `--output-dir` > `CAUTILUS_RUN_DIR` >
+  auto-materialize under `./.cautilus/runs/`). They emit `Active run:
+  <abs path>` to stderr exactly once when they auto-materialize.
+  Currently wired: `mode evaluate`, `workspace prepare-compare`.
+- **Consume-only file-in/file-out helpers** call `readActiveRunDir`
+  instead. They never mint a fresh `runDir`, never auto-materialize,
+  and never emit the `Active run:` banner. The `### Consume-Only
+  Helpers` subsection documents the exact rule. Scheduled to land on
+  this pattern: `review prepare-input` and the rest of the
+  consume-only list below.
+
+`review variants` is not yet classified and will pick its pattern as
+part of its own slice (see Probe Questions).
 
 | Consumer              | Status     | Canonical rows                                                      | Notes                                                         |
 | --------------------- | ---------- | ------------------------------------------------------------------- | ------------------------------------------------------------- |
 | `mode evaluate`       | wired      | `report-input.json`, `report.json`, `<mode>-scenario-results.json`, `selected-profile.json`, `selected-scenario-ids.json`, `baseline-cache.json`, `<stage>-<index>.stdout/stderr` | `--output-dir` is optional. Mode-prefixed scenario-results keeps multi-mode coexistence inside one `runDir`. |
 | `workspace prepare-compare` | wired  | `baseline/`, `candidate/`                                        | `--output-dir` is optional. Retries inside one active `runDir` reuse the git worktree registrations and rebuild `baseline/` and `candidate/` without requiring `--force`. |
-| `review prepare-input`      | not yet | `review-packet.json`                                             | Scheduled for a follow-up slice; `--output` is the override.  |
+| `review prepare-input`      | not yet | `review-packet.json`                                             | Scheduled next. Consume-only helper — see `### Consume-Only Helpers` below. |
 | `review variants`           | not yet | `variant-*.json`, `<stage>-<index>.stdout/stderr`                | Scheduled for a follow-up slice.                              |
+
+### Consume-Only Helpers
+
+File-in/file-out helpers that read and write inside an existing `runDir`
+do **not** reuse the `resolveRunDir` helper. They use a separate
+`readActiveRunDir({ env = process.env })` helper from
+`scripts/agent-runtime/active-run.mjs` that returns the absolute path in
+`CAUTILUS_RUN_DIR` when it is set and points at an existing directory,
+throws loud if the env var is set but the path is missing or is not a
+directory, and returns `null` when the env var is unset.
+
+This separation is load-bearing because consume-only helpers must never
+mint a fresh `runDir`. Only `mode evaluate` and `workspace
+prepare-compare` are permitted to start a workflow; every other
+runDir-aware command reads an existing active run or falls back to
+command-specific legacy behavior when no active run is pinned and the
+operator did not thread explicit paths.
+
+Consume-only helpers also do **not** emit the `Active run:` stderr
+banner. The banner is a workflow-creation signal, and consume-only
+commands never create a workflow.
+
+Commands that follow this pattern:
+
+- `review prepare-input` (slice 5)
+- `evidence prepare-input` (follow-up slice)
+- `optimize prepare-input` (follow-up slice)
+- `report build` (follow-up slice)
+- `evidence bundle` (follow-up slice)
+- `optimize propose` (follow-up slice)
+- `optimize build-artifact` (follow-up slice)
+
+Each consume-only slice decides which canonical filenames become the
+default for its `--input`-style and `--output`-style flags, records the
+decision inline in the Canonical Filenames table above, and preserves
+whatever pre-active-run backwards-compatible behavior the command
+already had (for example, `review prepare-input` keeps writing to stdout
+when neither an active run nor an explicit `--output` is available).
 
 ## Entry Surface
 
@@ -193,8 +243,25 @@ Record these so future sessions do not re-propose them:
 - Should `evidence prepare-input`, `optimize prepare-input`, `report
   build`, `optimize propose`, and sibling helpers auto-resolve their
   `--input` / `--output` to canonical names inside the active run?
-  Scheduled: the consumer-wiring slices after `mode evaluate` will decide
-  each individually and extend the canonical filenames table above.
+  **Resolved (slice 5 decision)**: yes, via a new `readActiveRunDir`
+  helper rather than `resolveRunDir`. The full rule is captured in the
+  `### Consume-Only Helpers` subsection above. Each consume-only slice
+  decides its own canonical defaults and its own legacy fallback
+  behavior, but the helper shape, the loud-fail validation rule, and
+  the "no workflow minting, no `Active run:` banner" invariants are
+  fixed for every file-in/file-out consumer after `mode evaluate` and
+  `workspace prepare-compare`.
+- Is `review variants` a workflow-creating command that mints runDirs
+  (and therefore uses `resolveRunDir`), or is it a consume-only
+  command that only reads an existing active run (and therefore uses
+  `readActiveRunDir`)? The ambiguity is real: it reads an existing
+  `review-packet.json` but writes many new `variant-*.json` +
+  `<stage>-<index>.stdout/stderr` outputs. The slice 6 session should
+  decide by answering: "can an operator legitimately run `review
+  variants` standalone (with a hand-rolled prompt file, no prior
+  mode evaluate or review prepare-input) and expect it to mint a
+  fresh runDir for its outputs?" If yes, workflow-creating. If no,
+  consume-only. Record the answer here when slice 6 starts.
 
 ## Source References
 
