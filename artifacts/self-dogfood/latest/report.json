@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "cautilus.report_packet.v1",
+  "generatedAt": "2026-04-11T00:29:17.651Z",
+  "candidate": ".",
+  "baseline": "origin/main",
+  "intent": "Cautilus should record and surface its own self-dogfood result honestly before operators trust broader consumer runs.",
+  "intentProfile": {
+    "schemaVersion": "cautilus.behavior_intent.v1",
+    "intentId": "intent-cautilus-should-record-and-surface-its-own-self-dogfood-result-honestly-before-o",
+    "summary": "Cautilus should record and surface its own self-dogfood result honestly before operators trust broader consumer runs.",
+    "behaviorSurface": "operator_behavior",
+    "successDimensions": [
+      {
+        "id": "operator_guidance_clarity",
+        "summary": "Keep the operator-facing guidance explicit and easy to follow."
+      }
+    ],
+    "guardrailDimensions": []
+  },
+  "commands": [
+    {
+      "mode": "full_gate",
+      "command": "npm run verify",
+      "label": "full_gate-1"
+    }
+  ],
+  "commandObservations": [
+    {
+      "stage": "preflight",
+      "index": 1,
+      "status": "passed",
+      "command": "npm run hooks:check",
+      "startedAt": "2026-04-11T00:29:09.116Z",
+      "completedAt": "2026-04-11T00:29:09.300Z",
+      "durationMs": 184,
+      "exitCode": 0
+    },
+    {
+      "stage": "full_gate",
+      "index": 1,
+      "status": "passed",
+      "command": "npm run verify",
+      "startedAt": "2026-04-11T00:29:09.301Z",
+      "completedAt": "2026-04-11T00:29:17.650Z",
+      "durationMs": 8349,
+      "exitCode": 0
+    }
+  ],
+  "modesRun": [
+    "full_gate"
+  ],
+  "modeSummaries": [
+    {
+      "mode": "full_gate",
+      "status": "passed",
+      "summary": "full_gate completed across 1 command.",
+      "startedAt": "2026-04-11T00:29:09.301Z",
+      "completedAt": "2026-04-11T00:29:17.650Z",
+      "durationMs": 8349,
+      "telemetry": {
+        "startedAt": "2026-04-11T00:29:09.301Z",
+        "completedAt": "2026-04-11T00:29:17.650Z",
+        "durationMs": 8349
+      }
+    }
+  ],
+  "telemetry": {
+    "modeCount": 1,
+    "modesWithScenarioResults": 0,
+    "startedAt": "2026-04-11T00:29:09.301Z",
+    "completedAt": "2026-04-11T00:29:17.650Z",
+    "durationMs": 8349
+  },
+  "improved": [],
+  "regressed": [],
+  "unchanged": [],
+  "noisy": [],
+  "humanReviewFindings": [],
+  "recommendation": "accept-now"
+}

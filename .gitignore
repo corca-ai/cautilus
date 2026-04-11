@@ -3,4 +3,10 @@ __pycache__/
 node_modules/
 coverage/
 .DS_Store
-artifacts/self-dogfood/
+artifacts/self-dogfood/*
+!artifacts/self-dogfood/latest/
+artifacts/self-dogfood/latest/*
+!artifacts/self-dogfood/latest/summary.json
+!artifacts/self-dogfood/latest/report.json
+!artifacts/self-dogfood/latest/review-summary.json
+!artifacts/self-dogfood/latest/latest.md

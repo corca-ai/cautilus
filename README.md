@@ -460,6 +460,9 @@ It refreshes the latest self-dogfood bundle under
 it should tell operators whether Cautilus is recording and surfacing its own
 self-dogfood result honestly, not whether every stronger binary or skill claim
 has already been proven.
+That `latest/` bundle is the published snapshot meant to be checked into Git,
+so CI or a static HTML report can inspect the latest result without replaying
+the LLM-backed review.
 
 `dogfood:self:experiments` is the tuning path for named A/B and split-surface
 reviews, including stronger binary and skill surface claims. It writes aggregate

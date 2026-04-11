@@ -1,0 +1,34 @@
+{
+  "generatedAt": "2026-04-11T00:29:26.763Z",
+  "repoRoot": ".",
+  "workspace": ".",
+  "artifactRoot": "artifacts/self-dogfood",
+  "runId": "2026-04-11T00-29-08.947Z",
+  "baselineRef": "origin/main",
+  "intent": "Cautilus should record and surface its own self-dogfood result honestly before operators trust broader consumer runs.",
+  "overallStatus": "concern",
+  "reportRecommendation": "defer",
+  "gateRecommendation": "accept-now",
+  "reportPath": "artifacts/self-dogfood/latest/report.json",
+  "reviewSummaryPath": "artifacts/self-dogfood/latest/review-summary.json",
+  "reviewTelemetry": {
+    "startedAt": "2026-04-11T00:29:18.059Z",
+    "completedAt": "2026-04-11T00:29:26.753Z",
+    "durationMs": 8694,
+    "averageVariantDurationMs": 8694,
+    "variantCount": 1,
+    "passedVariantCount": 1,
+    "failedVariantCount": 0
+  },
+  "reviewVariants": [
+    {
+      "id": "codex-review",
+      "tool": "codex_exec",
+      "executionStatus": "passed",
+      "verdict": "concern",
+      "summary": "The current artifacts support the narrow operator-facing contract for `dogfood:self` as an honest record of the self-dogfood result, but they do not by themselves prove the current full-gate packet actually demonstrated that claim. The docs and script clearly constrain the claim and separate stronger binary/skill-surface experiments, so the automated `accept-now` recommendation looks a bit ahead of the evidence rather than clearly wrong.",
+      "findingsCount": 3,
+      "outputFile": null
+    }
+  ]
+}

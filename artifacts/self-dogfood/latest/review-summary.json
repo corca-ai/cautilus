@@ -1,0 +1,58 @@
+{
+  "repoRoot": ".",
+  "adapterPath": ".agents/cautilus-adapters/self-dogfood.yaml",
+  "workspace": ".",
+  "promptFile": null,
+  "reviewPacketFile": null,
+  "reviewPromptInputFile": null,
+  "schemaFile": "fixtures/workbench/review-verdict.schema.json",
+  "outputDir": null,
+  "telemetry": {
+    "startedAt": "2026-04-11T00:29:18.059Z",
+    "completedAt": "2026-04-11T00:29:26.753Z",
+    "durationMs": 8694,
+    "averageVariantDurationMs": 8694,
+    "variantCount": 1,
+    "passedVariantCount": 1,
+    "failedVariantCount": 0
+  },
+  "variants": [
+    {
+      "id": "codex-review",
+      "tool": "codex_exec",
+      "status": "passed",
+      "startedAt": "2026-04-11T00:29:18.059Z",
+      "completedAt": "2026-04-11T00:29:26.753Z",
+      "durationMs": 8694,
+      "exitCode": 0,
+      "outputFile": null,
+      "stdoutFile": null,
+      "stderrFile": null,
+      "command": null,
+      "stdout": "",
+      "stderr": "",
+      "telemetry": null,
+      "output": {
+        "verdict": "concern",
+        "summary": "The current artifacts support the narrow operator-facing contract for `dogfood:self` as an honest record of the self-dogfood result, but they do not by themselves prove the current full-gate packet actually demonstrated that claim. The docs and script clearly constrain the claim and separate stronger binary/skill-surface experiments, so the automated `accept-now` recommendation looks a bit ahead of the evidence rather than clearly wrong.",
+        "findings": [
+          {
+            "severity": "pass",
+            "message": "The spec explicitly narrows the canonical claim to honest recording and surfacing of the self-dogfood result, and it separates stronger binary-surface / skill-surface claims into experiments. That matches the review prompt’s operator-facing scope.",
+            "path": "docs/specs/self-dogfood.spec.md"
+          },
+          {
+            "severity": "pass",
+            "message": "`run-self-dogfood.mjs` treats `reportRecommendation` as derived from the recorded overall status, which is consistent with surfacing the result rather than overstating it.",
+            "path": "scripts/run-self-dogfood.mjs"
+          },
+          {
+            "severity": "concern",
+            "message": "The provided evidence does not include the current report packet contents, so I cannot independently verify that the latest full-gate run honestly reported its own outcome instead of relying on the contract text alone. That makes `accept-now` slightly stronger than the evidence shown here.",
+            "path": "."
+          }
+        ]
+      }
+    }
+  ]
+}

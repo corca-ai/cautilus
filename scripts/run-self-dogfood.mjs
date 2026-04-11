@@ -1,10 +1,11 @@
-import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
 import process from "node:process";
 
 import { pruneWorkspaceArtifacts } from "./agent-runtime/prune-workspace-artifacts.mjs";
+import { buildPublishedReport, buildPublishedReviewSummary, buildPublishedSummary } from "./self-dogfood-published-snapshot.mjs";
 import { enrichExperimentPrompt } from "./self-dogfood-experiment-prompt.mjs";
 
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
@@ -345,10 +346,13 @@ function syntheticReviewSummary(reviewDir, timeoutMs, reviewAdapterName) {
 	return { summaryPath, summary };
 }
 
-function writeLatestArtifacts(runDir, latestDir) {
+function writeLatestArtifacts(latestDir, { summary, report, reviewSummary, latestMarkdown }) {
 	rmSync(latestDir, { recursive: true, force: true });
-	mkdirSync(dirname(latestDir), { recursive: true });
-	cpSync(runDir, latestDir, { recursive: true });
+	mkdirSync(latestDir, { recursive: true });
+	writeFileSync(join(latestDir, "summary.json"), `${JSON.stringify(summary, null, 2)}\n`, "utf-8");
+	writeFileSync(join(latestDir, "report.json"), `${JSON.stringify(report, null, 2)}\n`, "utf-8");
+	writeFileSync(join(latestDir, "review-summary.json"), `${JSON.stringify(reviewSummary, null, 2)}\n`, "utf-8");
+	writeFileSync(join(latestDir, "latest.md"), latestMarkdown, "utf-8");
 }
 
 function pruneRuns(runsRoot, keepLast) {
@@ -500,7 +504,21 @@ function persistRunArtifacts(paths, report, reviewSummary, summary) {
 }
 
 function finalizeRun(paths, summary, keepLast) {
-	writeLatestArtifacts(paths.runDir, paths.latestRoot);
+	const publishedSummary = buildPublishedSummary(paths.repoRoot, paths.artifactRoot, summary);
+	const publishedReport = buildPublishedReport(
+		paths.repoRoot,
+		readJsonFile(join(paths.runDir, "report.json"), "run report"),
+	);
+	const publishedReviewSummary = buildPublishedReviewSummary(
+		paths.repoRoot,
+		readJsonFile(join(paths.runDir, "review-summary.json"), "run review summary"),
+	);
+	writeLatestArtifacts(paths.latestRoot, {
+		summary: publishedSummary,
+		report: publishedReport,
+		reviewSummary: publishedReviewSummary,
+		latestMarkdown: renderMarkdown(publishedSummary),
+	});
 	pruneRuns(paths.runsRoot, keepLast);
 	process.stdout.write(`${join(paths.latestRoot, "summary.json")}\n`);
 	process.exit(reportExitCode(summary));

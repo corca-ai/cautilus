@@ -46,7 +46,7 @@ standalone product여야 한다.
 | .githooks/pre-push | file_exists |  |
 | .githooks/pre-push | fixed | npm run verify |
 | .gitignore | file_exists |  |
-| .gitignore | fixed | artifacts/self-dogfood/ |
+| .gitignore | fixed | !artifacts/self-dogfood/latest/summary.json |
 | eslint.config.mjs | file_exists |  |
 | .github/workflows/verify.yml | file_exists |  |
 | .github/workflows/verify.yml | fixed | npm run verify |

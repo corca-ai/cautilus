@@ -51,7 +51,7 @@ named experiment adapter에서 따로 다룬다.
 | README.md | fixed | npm run dogfood:self:experiments |
 | skills/cautilus/SKILL.md | fixed | npm run dogfood:self |
 | skills/cautilus/SKILL.md | fixed | npm run dogfood:self:experiments |
-| .gitignore | fixed | artifacts/self-dogfood/ |
+| .gitignore | fixed | !artifacts/self-dogfood/latest/summary.json |
 
 ## Functional Check
 
@@ -73,6 +73,15 @@ paths:
 - `artifacts/self-dogfood/latest/report.json`
 - `artifacts/self-dogfood/latest/review-summary.json`
 - `artifacts/self-dogfood/latest/latest.md`
+
+These four files are the published latest snapshot.
+They should be stable enough to check into Git so CI, GitHub, and HTML report
+renderers can inspect the latest self-dogfood result without replaying the
+expensive review run.
+
+Per-run mode stdout/stderr, prompt artifacts, and review scratch files should
+stay under `artifacts/self-dogfood/runs/` as local generated artifacts rather
+than being copied into the checked-in latest snapshot.
 
 The latest experiment bundle should be written to these stable paths:
 
