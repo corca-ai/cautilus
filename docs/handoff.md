@@ -6,10 +6,16 @@
   [README.md](../README.md),
   [AGENTS.md](../AGENTS.md),
   [docs/master-plan.md](./master-plan.md),
+  [docs/contracts/reporting.md](./contracts/reporting.md),
+  [docs/consumer-migration.md](./consumer-migration.md),
+  [docs/release-boundary.md](./release-boundary.md),
   [docs/contracts/active-run.md](./contracts/active-run.md),
   [docs/contracts/behavior-intent.md](./contracts/behavior-intent.md),
   [docs/contracts/scenario-proposal-inputs.md](./contracts/scenario-proposal-inputs.md),
   [docs/specs/self-dogfood.spec.md](./specs/self-dogfood.spec.md),
+  [docs/specs/current-product.spec.md](./specs/current-product.spec.md),
+  [bin/cautilus](../bin/cautilus),
+  [scripts/agent-runtime/report-packet.mjs](../scripts/agent-runtime/report-packet.mjs),
   [scripts/agent-runtime/active-run.mjs](../scripts/agent-runtime/active-run.mjs),
   [scripts/agent-runtime/workspace-start.mjs](../scripts/agent-runtime/workspace-start.mjs),
   [scripts/agent-runtime/evaluate-adapter-mode.mjs](../scripts/agent-runtime/evaluate-adapter-mode.mjs),
@@ -19,7 +25,10 @@
   를 읽는다. `evaluate-adapter-mode.mjs`와 `prepare-compare-worktrees.mjs`는
   workflow-creating wiring exemplar고, `build-review-packet.mjs`는
   consume-only wiring exemplar다. `run-workbench-executor-variants.mjs`
-  역시 이제 workflow-creating exemplar로 쓸 수 있다.
+  역시 이제 workflow-creating exemplar로 쓸 수 있다. 이번 세션 이후
+  standalone install contract는 `cautilus` on `PATH` +
+  `cautilus skills install`이고, report boundary는
+  `cautilus.report_packet.v2`만 허용된다는 점을 먼저 기억한다.
 - 시작 workflow는 `impl` 기준이다.
 - product-owned seam이면 `cautilus`에서 먼저 고친다. host adapter, prompt,
   policy, consumer artifact는 host 소유다.
@@ -37,6 +46,34 @@
 
 ## Current State
 
+- standalone install/skill contract가 product-owned canonical surface로
+  다시 고정되었다.
+  - `bin/cautilus`에 `cautilus skills install`이 들어왔고, host repo 기준
+    `.agents/skills/cautilus/`를 canonical checked-in path로 materialize한다.
+    `.claude/skills -> ../.agents/skills`는 compatibility shim이다.
+  - bundled skill과 packaged plugin skill은 이제 repo-local
+    `node ./bin/cautilus`가 아니라 standalone `cautilus` command를 호출한다.
+  - `README.md`, `docs/consumer-migration.md`,
+    `docs/release-boundary.md`, `docs/specs/current-product.spec.md`가
+    모두 같은 install story를 말한다. plugin marketplace surface는
+    canonical consumer install contract가 아니라 local test fixture다.
+- report boundary contract도 pre-public breaking change로 정리되었다.
+  - current report packet은 `cautilus.report_packet.v2`다.
+  - `review prepare-input`, `evidence prepare-input`,
+    `optimize prepare-input`은 legacy
+    `cautilus.report_packet.v1`을 boundary에서 바로 거절한다.
+    deep fallback이나 implicit migration은 없다.
+  - shared validator는
+    [scripts/agent-runtime/report-packet.mjs](../scripts/agent-runtime/report-packet.mjs)에
+    있고, 최소 required shape는 `generatedAt`, `candidate`, `baseline`,
+    `intent`, `intentProfile`, `recommendation`이다.
+    `intentProfile.summary`는 `intent`와 정확히 같아야 하고,
+    behavior-intent catalog도 runtime에서 검증된다.
+- `crill` handoff는 이미 새 contract 기준으로 갱신됐다.
+  다음 operator가 consumer follow-up을 바로 집을 수 있게
+  `docs/handoff.md` 기본 pickup을 Linux consumer sync로 바꿨고,
+  stale file 다섯 개 (`run-optimize-smoke.sh`, `run-evidence-smoke.sh`,
+  `run-consumer-compare.py`, 두 report fixture)를 명시했다.
 - packaged SKILL.md drift는 이제 spec layer에서도 이중 차단된다.
   - `docs/specs/standalone-surface.spec.md`의 `check:source_guard`에
     `plugins/cautilus/skills/cautilus/SKILL.md`(file_exists + 23개 명령 pattern)와
@@ -241,16 +278,18 @@
     authoritative status. active-run 쪽 open question은 이제 filename naming보다
     `run.json` metadata 확장과 shell flavor surface 같은 operator ergonomics다.
 - local proof (Node v22.22.2 기준, 이번 세션 마지막 측정값):
-  - `npm run verify`: 185/185 green
-  - `node ./scripts/check-specs.mjs`: `spec checks passed (4 specs, 411 guard rows)`
+  - `node --test bin/cautilus.test.mjs`: 23/23 green
+  - `node --test scripts/agent-runtime/run-workbench-executor-variants.test.mjs`: 8/8 green
+  - `npm run verify`: 190/190 green
+  - `node ./scripts/check-specs.mjs`: `spec checks passed (4 specs, 416 guard rows)`
   - `cautilus doctor --repo-root .`: `ready`
   - `npm run hooks:check`: `ready`
   - `node ./scripts/run-self-dogfood-experiments.mjs --experiment-adapter-name self-dogfood-binary-surface --quiet`:
     exit `0`, latest summary `overallStatus=pass`,
     `experiments[0].overallStatus=pass`
   - `git push origin main`: success. 최근 push에는
-    `0c758dc Finish active-run canonical filename defaults`와
-    `6f4ba44 Add A/B compare views for self-dogfood experiments`가 포함된다.
+    `c660470 Make PATH-based install and repo-local skills the canonical surface`와
+    `85666ee Make report packet v2 explicit at runtime boundaries`가 포함된다.
   - 빠른 happy-path smoke:
     `eval "$(cautilus workspace start --label smoke)"` →
     `CAUTILUS_RUN_DIR`이 현재 shell에 박히고 `run.json` 마커가 생긴다.
@@ -265,19 +304,25 @@
 
 ## Next Session
 
-1. `quality` workflow가 canonical dogfood와 experiments를 어떻게 함께 요약해야
-   operator에게 덜 거짓말 같은지 결론을 낸다.
-2. experiments compare surface를 더 product-owned CLI로 끌어올릴지 본다.
-   지금은 `scripts/render-self-dogfood-experiments-html.mjs`와
-   `npm run dogfood:self:experiments:html`로 read-only compare view를 제공한다.
-   다음 결정은 이 surface를 self-dogfood 전용 helper로 둘지, 더 generic한
-   report/experiment html CLI로 승격할지다.
-3. `binary-surface`를 pass로 만든 evidentiary pattern을
-   `gate-honesty-b`나 다른 stronger-claim adapter에도 미러링할지 본다.
-   핵심은 "명령 존재"가 아니라 "product-owned proof가 prompt 상단 excerpt에
-   실제로 드러나는가"다.
-4. 변경 후에는 항상 `npm run verify`를 다시 돌린다. 실행 전에 Node 22가 활성화
-   되어 있는지 먼저 확인한다.
+1. live consumer follow-up을 `cautilus` 쪽에서 추적한다.
+   우선순위는 `crill`이고, 확인 대상은 다음 두 seam이다.
+   - standalone install contract: consumer runner default가 절대 경로가 아니라
+     `cautilus` on `PATH`를 전제하는가
+   - report boundary contract: checked-in report fixture가
+     `cautilus.report_packet.v2` + valid `intentProfile`로 올라왔는가
+2. `crill` follow-up이 끝나면 `ceal`과 `charness`도 같은 두 seam으로 빠르게
+   훑는다. `docs/consumer-migration.md`의 live-consumer claim이 실제 host repo
+   state와 어긋나면 그때 문서/claim을 같이 조정한다.
+3. consumer migration 반복이 커지면 `cautilus report build` 또는 별도
+   migration helper를 product surface로 올릴지 판단한다.
+   지금은 의도적으로 fallback을 넣지 않았고 strict boundary를 택했다.
+   따라서 helper를 추가하더라도 "legacy 자동 수용"이 아니라
+   "명시적 rebuild 도구"여야 한다.
+4. self-dogfood HTML / experiments compare 후속은 당장 기본 pickup이 아니다.
+   consumer sync가 닫힌 뒤에만 `quality` workflow와 generic report HTML 승격
+   여부를 다시 검토한다.
+5. 변경 후에는 항상 `npm run verify`를 다시 돌린다. 실행 전에 Node 22가
+   활성화되어 있는지 먼저 확인한다.
 
 ## Discuss
 
