@@ -1,8 +1,9 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { join, resolve } from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
 
+import { readActiveRunDir } from "./active-run.mjs";
 import { BEHAVIOR_DIMENSIONS, buildBehaviorIntentProfile } from "./behavior-intent.mjs";
 import {
 	OPTIMIZE_INPUTS_SCHEMA,
@@ -106,9 +107,6 @@ function parseArgs(argv) {
 		options[field] = readRequiredValue(argv, index + 1, arg);
 		index += 1;
 	}
-	if (!options.reportFile) {
-		fail("--report-file is required");
-	}
 	if (!["prompt", "adapter"].includes(options.target)) {
 		fail("--target must be prompt or adapter");
 	}
@@ -119,6 +117,28 @@ function parseArgs(argv) {
 		fail(`--budget must be one of: ${Object.keys(OPTIMIZER_BUDGETS).join(", ")}`);
 	}
 	return options;
+}
+
+function resolveCommandOptions(options, { env = process.env } = {}) {
+	const activeRunDir = readActiveRunDir({ env });
+	const resolved = {
+		...options,
+		repoRoot: resolve(options.repoRoot),
+		reportFile: options.reportFile,
+		reviewSummary: options.reviewSummary,
+		historyFile: options.historyFile,
+		output: options.output,
+	};
+	if (!resolved.reportFile && activeRunDir) {
+		resolved.reportFile = join(activeRunDir, "report.json");
+	}
+	if (!resolved.reportFile) {
+		fail("--report-file is required");
+	}
+	if (!resolved.output && activeRunDir) {
+		resolved.output = join(activeRunDir, "optimize-input.json");
+	}
+	return resolved;
 }
 
 function parseJsonFile(path, label) {
@@ -186,8 +206,8 @@ function buildOptimizerPlan(kind, budget) {
 }
 
 export function buildOptimizeInput(inputOptions, { now = new Date() } = {}) {
-	const options = parseArgs(inputOptions);
-	const repoRoot = resolve(options.repoRoot);
+	const options = resolveCommandOptions(parseArgs(inputOptions));
+	const repoRoot = options.repoRoot;
 	const report = parseReportFile(options.reportFile);
 	const reviewSummary = options.reviewSummary ? parseReviewSummaryFile(options.reviewSummary) : null;
 	const scenarioHistory = options.historyFile ? parseHistoryFile(options.historyFile) : null;
@@ -228,7 +248,7 @@ export function buildOptimizeInput(inputOptions, { now = new Date() } = {}) {
 
 export function main(argv = process.argv.slice(2)) {
 	try {
-		const options = parseArgs(argv);
+		const options = resolveCommandOptions(parseArgs(argv));
 		const packet = buildOptimizeInput(argv);
 		const text = `${JSON.stringify(packet, null, 2)}\n`;
 		if (options.output) {

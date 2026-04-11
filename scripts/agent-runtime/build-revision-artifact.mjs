@@ -1,9 +1,10 @@
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync, statSync, writeFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { join, resolve } from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
 
+import { readActiveRunDir } from "./active-run.mjs";
 import { buildBehaviorIntentProfile } from "./behavior-intent.mjs";
 import {
 	OPTIMIZE_INPUTS_SCHEMA,
@@ -59,10 +60,27 @@ function parseArgs(argv) {
 		options[field] = readRequiredValue(argv, index + 1, arg);
 		index += 1;
 	}
-	if (!options.proposalFile) {
+	return options;
+}
+
+function resolveCommandOptions(options, { env = process.env } = {}) {
+	const activeRunDir = readActiveRunDir({ env });
+	const resolved = {
+		...options,
+		proposalFile: options.proposalFile,
+		inputFile: options.inputFile,
+		output: options.output,
+	};
+	if (!resolved.proposalFile && activeRunDir) {
+		resolved.proposalFile = join(activeRunDir, "optimize-proposal.json");
+	}
+	if (!resolved.proposalFile) {
 		fail("--proposal-file is required");
 	}
-	return options;
+	if (!resolved.output && activeRunDir) {
+		resolved.output = join(activeRunDir, "revision-artifact.json");
+	}
+	return resolved;
 }
 
 function parseJsonFile(path, schemaVersion, label) {
@@ -154,7 +172,7 @@ function buildArtifactSourceFiles(optimizeInputPacket) {
 }
 
 export function buildRevisionArtifact(inputOptions, { now = new Date() } = {}) {
-	const options = parseArgs(inputOptions);
+	const options = resolveCommandOptions(parseArgs(inputOptions));
 	const proposal = parseJsonFile(options.proposalFile, OPTIMIZE_PROPOSAL_SCHEMA, "optimize proposal");
 	const inputFile = resolveInputFile(options, proposal.packet);
 	const optimizeInput = parseJsonFile(inputFile, OPTIMIZE_INPUTS_SCHEMA, "optimize input");
@@ -188,7 +206,7 @@ export function buildRevisionArtifact(inputOptions, { now = new Date() } = {}) {
 
 export function main(argv = process.argv.slice(2)) {
 	try {
-		const options = parseArgs(argv);
+		const options = resolveCommandOptions(parseArgs(argv));
 		const packet = buildRevisionArtifact(argv);
 		const text = `${JSON.stringify(packet, null, 2)}\n`;
 		if (options.output) {

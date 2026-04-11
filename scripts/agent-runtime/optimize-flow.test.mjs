@@ -1,14 +1,29 @@
 import assert from "node:assert/strict";
-import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 import test from "node:test";
 
+import { ACTIVE_RUN_ENV_VAR } from "./active-run.mjs";
 import { BEHAVIOR_DIMENSIONS } from "./behavior-intent.mjs";
 import { buildOptimizeInput } from "./build-optimize-input.mjs";
 import { buildRevisionArtifact } from "./build-revision-artifact.mjs";
 import { generateOptimizeProposal } from "./generate-optimize-proposal.mjs";
+
+const BUILD_OPTIMIZE_INPUT = join(process.cwd(), "scripts", "agent-runtime", "build-optimize-input.mjs");
+const GENERATE_OPTIMIZE_PROPOSAL = join(
+	process.cwd(),
+	"scripts",
+	"agent-runtime",
+	"generate-optimize-proposal.mjs",
+);
+const BUILD_REVISION_ARTIFACT = join(
+	process.cwd(),
+	"scripts",
+	"agent-runtime",
+	"build-revision-artifact.mjs",
+);
 
 function writeJson(path, value) {
 	writeFileSync(path, `${JSON.stringify(value, null, 2)}\n`, "utf-8");
@@ -283,7 +298,7 @@ test("build-optimize-input CLI rejects review summaries without variants", () =>
 		const result = spawnSync(
 			"node",
 			[
-				join(process.cwd(), "scripts", "agent-runtime", "build-optimize-input.mjs"),
+				BUILD_OPTIMIZE_INPUT,
 				"--report-file",
 				reportFile,
 				"--review-summary",
@@ -296,6 +311,105 @@ test("build-optimize-input CLI rejects review summaries without variants", () =>
 		);
 		assert.equal(result.status, 1);
 		assert.match(result.stderr, /variants array/);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("build-optimize-input defaults report.json and optimize-input.json inside the active run", () => {
+	const { root, reportFile } = createOptimizeFixtureRoot();
+	try {
+		const runDir = join(root, "active-run");
+		mkdirSync(runDir, { recursive: true });
+		writeJson(join(runDir, "report.json"), JSON.parse(readFileSync(reportFile, "utf-8")));
+		const result = spawnSync("node", [BUILD_OPTIMIZE_INPUT], {
+			cwd: root,
+			encoding: "utf-8",
+			env: { ...process.env, [ACTIVE_RUN_ENV_VAR]: runDir },
+		});
+		assert.equal(result.status, 0, result.stderr);
+		const inputPath = join(runDir, "optimize-input.json");
+		assert.equal(existsSync(inputPath), true);
+		const packet = JSON.parse(readFileSync(inputPath, "utf-8"));
+		assert.equal(packet.reportFile, join(runDir, "report.json"));
+		assert.equal(packet.schemaVersion, "cautilus.optimize_inputs.v1");
+		assert.equal(result.stdout, "");
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("generate-optimize-proposal defaults optimize-input.json and optimize-proposal.json inside the active run", () => {
+	const { root, reportFile } = createOptimizeFixtureRoot();
+	try {
+		const runDir = join(root, "active-run");
+		mkdirSync(runDir, { recursive: true });
+		writeJson(
+			join(runDir, "optimize-input.json"),
+			buildOptimizeInput(
+				[
+					"--repo-root",
+					root,
+					"--report-file",
+					reportFile,
+				],
+				{ now: new Date("2026-04-11T00:05:00.000Z") },
+			),
+		);
+		const result = spawnSync("node", [GENERATE_OPTIMIZE_PROPOSAL], {
+			cwd: root,
+			encoding: "utf-8",
+			env: { ...process.env, [ACTIVE_RUN_ENV_VAR]: runDir },
+		});
+		assert.equal(result.status, 0, result.stderr);
+		const proposalPath = join(runDir, "optimize-proposal.json");
+		assert.equal(existsSync(proposalPath), true);
+		const proposal = JSON.parse(readFileSync(proposalPath, "utf-8"));
+		assert.equal(proposal.inputFile, join(runDir, "optimize-input.json"));
+		assert.equal(proposal.schemaVersion, "cautilus.optimize_proposal.v1");
+		assert.equal(result.stdout, "");
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("build-revision-artifact defaults optimize-proposal.json and revision-artifact.json inside the active run", () => {
+	const { root, reportFile } = createOptimizeFixtureRoot();
+	try {
+		const runDir = join(root, "active-run");
+		mkdirSync(runDir, { recursive: true });
+		const inputPath = join(runDir, "optimize-input.json");
+		const proposalPath = join(runDir, "optimize-proposal.json");
+		const input = buildOptimizeInput(
+			[
+				"--repo-root",
+				root,
+				"--report-file",
+				reportFile,
+			],
+			{ now: new Date("2026-04-11T00:05:00.000Z") },
+		);
+		writeJson(inputPath, input);
+		writeJson(
+			proposalPath,
+			generateOptimizeProposal(input, {
+				now: new Date("2026-04-11T00:06:00.000Z"),
+				inputFile: inputPath,
+			}),
+		);
+		const result = spawnSync("node", [BUILD_REVISION_ARTIFACT], {
+			cwd: root,
+			encoding: "utf-8",
+			env: { ...process.env, [ACTIVE_RUN_ENV_VAR]: runDir },
+		});
+		assert.equal(result.status, 0, result.stderr);
+		const artifactPath = join(runDir, "revision-artifact.json");
+		assert.equal(existsSync(artifactPath), true);
+		const artifact = JSON.parse(readFileSync(artifactPath, "utf-8"));
+		assert.equal(artifact.proposalFile, proposalPath);
+		assert.equal(artifact.optimizeInputFile, inputPath);
+		assert.equal(artifact.schemaVersion, "cautilus.revision_artifact.v1");
+		assert.equal(result.stdout, "");
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

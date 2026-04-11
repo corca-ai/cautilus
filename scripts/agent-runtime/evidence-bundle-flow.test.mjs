@@ -1,12 +1,16 @@
 import assert from "node:assert/strict";
-import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 import test from "node:test";
 
+import { ACTIVE_RUN_ENV_VAR } from "./active-run.mjs";
 import { buildEvidenceInput } from "./build-evidence-input.mjs";
 import { buildEvidenceBundle } from "./build-evidence-bundle.mjs";
+
+const BUILD_EVIDENCE_INPUT = join(process.cwd(), "scripts", "agent-runtime", "build-evidence-input.mjs");
+const BUILD_EVIDENCE_BUNDLE = join(process.cwd(), "scripts", "agent-runtime", "build-evidence-bundle.mjs");
 
 function writeJson(path, value) {
 	writeFileSync(path, `${JSON.stringify(value, null, 2)}\n`, "utf-8");
@@ -122,9 +126,7 @@ test("buildEvidenceBundle summarizes prioritized evidence signals", () => {
 test("build-evidence-input requires at least one source", () => {
 	const result = spawnSync(
 		"node",
-		[
-			join(process.cwd(), "scripts", "agent-runtime", "build-evidence-input.mjs"),
-		],
+		[BUILD_EVIDENCE_INPUT],
 		{
 			cwd: process.cwd(),
 			encoding: "utf-8",
@@ -132,4 +134,66 @@ test("build-evidence-input requires at least one source", () => {
 	);
 	assert.equal(result.status, 1);
 	assert.match(result.stderr, /At least one evidence source/);
+});
+
+test("build-evidence-input defaults report.json and evidence-input.json inside the active run", () => {
+	const { root, reportFile } = createEvidenceFixtureRoot();
+	try {
+		const runDir = join(root, "active-run");
+		mkdirSync(runDir, { recursive: true });
+		writeJson(join(runDir, "report.json"), JSON.parse(readFileSync(reportFile, "utf-8")));
+		const result = spawnSync("node", [BUILD_EVIDENCE_INPUT], {
+			cwd: root,
+			encoding: "utf-8",
+			env: { ...process.env, [ACTIVE_RUN_ENV_VAR]: runDir },
+		});
+		assert.equal(result.status, 0, result.stderr);
+		const packetPath = join(runDir, "evidence-input.json");
+		assert.equal(existsSync(packetPath), true);
+		const packet = JSON.parse(readFileSync(packetPath, "utf-8"));
+		assert.equal(packet.reportFile, join(runDir, "report.json"));
+		assert.equal(packet.schemaVersion, "cautilus.evidence_bundle_inputs.v1");
+		assert.equal(result.stdout, "");
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("build-evidence-bundle defaults evidence-input.json and evidence-bundle.json inside the active run", () => {
+	const { root, reportFile, scenarioResultsFile, runAuditFile } = createEvidenceFixtureRoot();
+	try {
+		const runDir = join(root, "active-run");
+		mkdirSync(runDir, { recursive: true });
+		const inputPath = join(runDir, "evidence-input.json");
+		writeJson(
+			inputPath,
+			buildEvidenceInput(
+				[
+					"--repo-root",
+					root,
+					"--report-file",
+					reportFile,
+					"--scenario-results-file",
+					scenarioResultsFile,
+					"--run-audit-file",
+					runAuditFile,
+				],
+				{ now: new Date("2026-04-11T00:10:00.000Z") },
+			),
+		);
+		const result = spawnSync("node", [BUILD_EVIDENCE_BUNDLE], {
+			cwd: root,
+			encoding: "utf-8",
+			env: { ...process.env, [ACTIVE_RUN_ENV_VAR]: runDir },
+		});
+		assert.equal(result.status, 0, result.stderr);
+		const bundlePath = join(runDir, "evidence-bundle.json");
+		assert.equal(existsSync(bundlePath), true);
+		const bundle = JSON.parse(readFileSync(bundlePath, "utf-8"));
+		assert.equal(bundle.inputFile, inputPath);
+		assert.equal(bundle.schemaVersion, "cautilus.evidence_bundle.v1");
+		assert.equal(result.stdout, "");
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
 });

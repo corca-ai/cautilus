@@ -1,8 +1,9 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { join, resolve } from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
 
+import { readActiveRunDir } from "./active-run.mjs";
 import { buildBehaviorIntentProfile } from "./behavior-intent.mjs";
 import {
 	OPTIMIZE_INPUTS_SCHEMA,
@@ -89,10 +90,26 @@ function parseArgs(argv) {
 		options[field] = readRequiredValue(argv, index + 1, arg);
 		index += 1;
 	}
-	if (!options.input) {
+	return options;
+}
+
+function resolveCommandOptions(options, { env = process.env } = {}) {
+	const activeRunDir = readActiveRunDir({ env });
+	const resolved = {
+		...options,
+		input: options.input,
+		output: options.output,
+	};
+	if (!resolved.input && activeRunDir) {
+		resolved.input = join(activeRunDir, "optimize-input.json");
+	}
+	if (!resolved.input) {
 		fail("--input is required");
 	}
-	return options;
+	if (!resolved.output && activeRunDir) {
+		resolved.output = join(activeRunDir, "optimize-proposal.json");
+	}
+	return resolved;
 }
 
 function parseInputFile(path) {
@@ -476,7 +493,7 @@ export function generateOptimizeProposal(packet, { now = new Date(), inputFile =
 
 export function main(argv = process.argv.slice(2)) {
 	try {
-		const options = parseArgs(argv);
+		const options = resolveCommandOptions(parseArgs(argv));
 		const input = parseInputFile(options.input);
 		const proposal = generateOptimizeProposal(input.packet, {
 			now: new Date(),

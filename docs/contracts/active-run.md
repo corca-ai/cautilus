@@ -100,8 +100,8 @@ as overrides for automation and tests.
 | File or subdirectory              | Written by                          | Consumed by                                                 | Notes                                               |
 | --------------------------------- | ----------------------------------- | ----------------------------------------------------------- | --------------------------------------------------- |
 | `run.json`                        | `workspace start`                   | `workspace prune-artifacts`                                 | Manifest marker. `cautilus.workspace_run_manifest.v1`. |
-| `report-input.json`               | `mode evaluate` (intermediate)      | `report build` (optional)                                   | Assembled report packet inputs.                     |
-| `report.json`                     | `mode evaluate`, `report build`     | `review prepare-input`, `evidence prepare-input`, `optimize prepare-input` | `cautilus.report_packet.v1`.                        |
+| `report-input.json`               | `mode evaluate` (intermediate)      | `report build` (optional)                                   | Assembled report packet inputs. Defaults here when `CAUTILUS_RUN_DIR` is pinned and `report build --input` is omitted. |
+| `report.json`                     | `mode evaluate`, `report build`     | `review prepare-input`, `evidence prepare-input`, `optimize prepare-input` | `cautilus.report_packet.v1`. Defaults here when an active-run-aware helper omits `--report-file`. |
 | `<mode>-scenario-results.json`    | `mode evaluate`                     | `report build`, `evidence prepare-input`                    | Mode-prefixed so multiple modes coexist.            |
 | `selected-profile.json`           | `mode evaluate` (profile-backed)    | internal                                                    | Scenario profile selection snapshot.                |
 | `selected-scenario-ids.json`      | `mode evaluate` (profile-backed)    | internal                                                    | Materialized scenario id list.                      |
@@ -111,11 +111,11 @@ as overrides for automation and tests.
 | `review-packet.json`              | `review prepare-input`              | `review build-prompt-input`, `review variants`              | `cautilus.review_packet.v1`. Defaults here when `CAUTILUS_RUN_DIR` is pinned and `--output` is omitted. |
 | `review-prompt-input.json`        | `review build-prompt-input`         | `review render-prompt`                                      | `cautilus.review_prompt_inputs.v1`.                 |
 | `review.prompt.md`                | `review render-prompt`              | executor variants (optional)                                | Rendered meta-prompt.                               |
-| `evidence-input.json`             | `evidence prepare-input`            | `evidence bundle`                                           | `cautilus.evidence_bundle_inputs.v1`.               |
-| `evidence-bundle.json`            | `evidence bundle`                   | `optimize prepare-input` (optional)                         | `cautilus.evidence_bundle.v1`.                      |
-| `optimize-input.json`             | `optimize prepare-input`            | `optimize propose`                                          | `cautilus.optimize_inputs.v1`.                      |
-| `optimize-proposal.json`          | `optimize propose`                  | `optimize build-artifact`                                   | `cautilus.optimize_proposal.v1`.                    |
-| `revision-artifact.json`          | `optimize build-artifact`           | operator                                                    | `cautilus.revision_artifact.v1`.                    |
+| `evidence-input.json`             | `evidence prepare-input`            | `evidence bundle`                                           | `cautilus.evidence_bundle_inputs.v1`. Defaults here when `CAUTILUS_RUN_DIR` is pinned and `evidence prepare-input --output` or `evidence bundle --input` is omitted. |
+| `evidence-bundle.json`            | `evidence bundle`                   | `optimize prepare-input` (optional)                         | `cautilus.evidence_bundle.v1`. Defaults here when `CAUTILUS_RUN_DIR` is pinned and `evidence bundle --output` is omitted. |
+| `optimize-input.json`             | `optimize prepare-input`            | `optimize propose`                                          | `cautilus.optimize_inputs.v1`. Defaults here when `CAUTILUS_RUN_DIR` is pinned and `optimize prepare-input --output` or `optimize propose --input` is omitted. |
+| `optimize-proposal.json`          | `optimize propose`                  | `optimize build-artifact`                                   | `cautilus.optimize_proposal.v1`. Defaults here when `CAUTILUS_RUN_DIR` is pinned and `optimize propose --output` or `optimize build-artifact --proposal-file` is omitted. |
+| `revision-artifact.json`          | `optimize build-artifact`           | operator                                                    | `cautilus.revision_artifact.v1`. Defaults here when `CAUTILUS_RUN_DIR` is pinned and `optimize build-artifact --output` is omitted. |
 | `variant-*.json`                  | `review variants`                   | operator / review                                           | One file per executor variant.                      |
 | `<stage>-<index>.stdout`          | `review variants`, `mode evaluate`  | debug, audit                                                | Captured process stdout.                            |
 | `<stage>-<index>.stderr`          | `review variants`, `mode evaluate`  | debug, audit                                                | Captured process stderr.                            |
@@ -144,7 +144,13 @@ part of its own slice (see Probe Questions).
 | --------------------- | ---------- | ------------------------------------------------------------------- | ------------------------------------------------------------- |
 | `mode evaluate`       | wired      | `report-input.json`, `report.json`, `<mode>-scenario-results.json`, `selected-profile.json`, `selected-scenario-ids.json`, `baseline-cache.json`, `<stage>-<index>.stdout/stderr` | `--output-dir` is optional. Mode-prefixed scenario-results keeps multi-mode coexistence inside one `runDir`. |
 | `workspace prepare-compare` | wired  | `baseline/`, `candidate/`                                        | `--output-dir` is optional. Retries inside one active `runDir` reuse the git worktree registrations and rebuild `baseline/` and `candidate/` without requiring `--force`. |
+| `report build`               | wired   | `report-input.json`, `report.json`                              | Consume-only helper. Defaults `--input` to `report-input.json` and `--output` to `report.json` inside the active run; keeps stdout fallback when no active run is pinned. |
 | `review prepare-input`      | wired   | `review-packet.json`                                             | Consume-only helper. Defaults `--report-file` to `report.json` and `--output` to `review-packet.json` inside the active run; keeps stdout fallback when no active run is pinned. |
+| `evidence prepare-input`    | wired   | `evidence-input.json`                                            | Consume-only helper. Defaults `--report-file` to `report.json` and `--output` to `evidence-input.json` inside the active run. `--scenario-results-file`, `--run-audit-file`, and `--history-file` stay explicit until they have single canonical runDir filenames. |
+| `evidence bundle`           | wired   | `evidence-bundle.json`                                           | Consume-only helper. Defaults `--input` to `evidence-input.json` and `--output` to `evidence-bundle.json` inside the active run; keeps stdout fallback when no active run is pinned. |
+| `optimize prepare-input`    | wired   | `optimize-input.json`                                            | Consume-only helper. Defaults `--report-file` to `report.json` and `--output` to `optimize-input.json` inside the active run. `--review-summary` and `--history-file` stay explicit until they have single canonical runDir filenames. |
+| `optimize propose`          | wired   | `optimize-proposal.json`                                         | Consume-only helper. Defaults `--input` to `optimize-input.json` and `--output` to `optimize-proposal.json` inside the active run; keeps stdout fallback when no active run is pinned. |
+| `optimize build-artifact`   | wired   | `revision-artifact.json`                                         | Consume-only helper. Defaults `--proposal-file` to `optimize-proposal.json` and `--output` to `revision-artifact.json` inside the active run; preserves the proposal-carried `inputFile` fallback. |
 | `review variants`           | wired    | `variant-*.json`, `<stage>-<index>.stdout/stderr`               | Workflow-creating helper. `--output-dir` is optional; explicit path wins, otherwise it uses `CAUTILUS_RUN_DIR`, otherwise it auto-materializes a fresh runDir and emits `Active run:` once. |
 
 ### Consume-Only Helpers
@@ -171,12 +177,12 @@ commands never create a workflow.
 Commands that follow this pattern:
 
 - `review prepare-input` (wired in slice 5)
-- `evidence prepare-input` (follow-up slice)
-- `optimize prepare-input` (follow-up slice)
-- `report build` (follow-up slice)
-- `evidence bundle` (follow-up slice)
-- `optimize propose` (follow-up slice)
-- `optimize build-artifact` (follow-up slice)
+- `evidence prepare-input` (wired with report/output defaults; multi-source optional inputs remain explicit)
+- `optimize prepare-input` (wired with report/output defaults; review summary and history remain explicit)
+- `report build` (wired)
+- `evidence bundle` (wired)
+- `optimize propose` (wired)
+- `optimize build-artifact` (wired)
 
 Each consume-only slice decides which canonical filenames become the
 default for its `--input`-style and `--output`-style flags, records the
@@ -184,6 +190,13 @@ decision inline in the Canonical Filenames table above, and preserves
 whatever pre-active-run backwards-compatible behavior the command
 already had (for example, `review prepare-input` keeps writing to stdout
 when neither an active run nor an explicit `--output` is available).
+
+The conservative rule is load-bearing: only helpers whose source and
+destination filenames are already singular and product-owned get
+automatic active-run defaults. Inputs that still have multiple plausible
+runDir candidates, such as mode-prefixed scenario-results files or
+review/history artifacts that do not yet have canonical product-owned
+filenames, stay explicit until the contract names them.
 
 ## Entry Surface
 

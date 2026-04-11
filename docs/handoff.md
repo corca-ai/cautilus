@@ -23,8 +23,10 @@
 - 시작 workflow는 `impl` 기준이다.
 - product-owned seam이면 `cautilus`에서 먼저 고친다. host adapter, prompt,
   policy, consumer artifact는 host 소유다.
-- active-run env var contract는 정착되었고 현재 wired consumer는 네 개다
-  (`mode evaluate`, `workspace prepare-compare`, `review prepare-input`,
+- active-run env var contract는 정착되었고 현재 wired consumer는 열 개다
+  (`mode evaluate`, `workspace prepare-compare`, `report build`,
+  `review prepare-input`, `evidence prepare-input`, `evidence bundle`,
+  `optimize prepare-input`, `optimize propose`, `optimize build-artifact`,
   `review variants`).
   `docs/contracts/active-run.md`의 `### Wired Consumers` 표가 authoritative
   status고, 다음 pickup은 아래 Next Session 순서를 따른다.
@@ -60,7 +62,8 @@
     `EXACT_MARKERS`에 이미 등록되어 있다.
   - `scripts/agent-runtime/active-run.mjs`에는 이제 workflow-creating용
     `resolveRunDir`과 consume-only용 `readActiveRunDir`이 함께 있다.
-    consumer wiring은 slice 3/4/5/6까지 들어왔다 (아래 wiring state).
+    consumer wiring은 slice 3/4/5/6 plus consume-only helper follow-up까지
+    들어왔다 (아래 wiring state).
   - `bin/cautilus workspace start` subcommand로 wiring 완료. README,
     `docs/workflow.md`, `docs/master-plan.md`, bundled + packaged
     `skills/cautilus/SKILL.md`, `docs/specs/current-product.spec.md`,
@@ -152,6 +155,25 @@
     `--output-dir` > `CAUTILUS_RUN_DIR` > auto-materialize 순서를 따르고,
     auto-materialize 때만 stderr에 `Active run: <abs runDir>` 한 줄을 찍는다.
     env var 경로와 explicit 경로는 조용하다.
+  - wired consume-only helpers: `report build`, `evidence prepare-input`,
+    `evidence bundle`, `optimize prepare-input`, `optimize propose`,
+    `optimize build-artifact`.
+    - `report build`: active run 안에서는 `report-input.json` →
+      `report.json` default, no active run이면 기존 stdout fallback 유지.
+    - `evidence prepare-input`: active run 안에서는 `report.json` →
+      `evidence-input.json` default. 다만 mode-prefixed
+      `scenario-results`, `run-audit`, `history`는 single canonical
+      runDir filename이 아직 없어서 explicit 유지.
+    - `evidence bundle`: active run 안에서는 `evidence-input.json` →
+      `evidence-bundle.json` default, no active run이면 stdout fallback 유지.
+    - `optimize prepare-input`: active run 안에서는 `report.json` →
+      `optimize-input.json` default. `review summary`와 `history`는 아직
+      canonical runDir filename이 없어 explicit 유지.
+    - `optimize propose`: active run 안에서는 `optimize-input.json` →
+      `optimize-proposal.json` default, no active run이면 stdout fallback 유지.
+    - `optimize build-artifact`: active run 안에서는
+      `optimize-proposal.json` → `revision-artifact.json` default. proposal이
+      들고 있는 `inputFile` fallback은 그대로 유지.
   - mode evaluate의 canonical output은 `${mode}-scenario-results.json` +
     `report.json` + `report-input.json` 등 mode-prefixed 구조 그대로 유지해서
     한 runDir 안에 여러 mode가 공존할 수 있다.
@@ -168,6 +190,11 @@
   - slice 6은 `run-workbench-executor-variants`에 env var / auto-materialize
     + banner / explicit-over-env regression을 추가했다. 기존 explicit
     `--output-dir` 경로 test들은 그대로 유지된다.
+  - consume-only helper follow-up slice는 가장 보수적인 자동화 규칙으로
+    마감했다. single canonical filename이 이미 있는 input/output만
+    active run default로 연결했고, 아직 canonical 이름이 잠기지 않은
+    `scenario-results`, `review summary`, `history`, `run-audit`는 explicit
+    path를 유지했다.
   - self-dogfood script들 (`scripts/run-self-dogfood.mjs`,
     `scripts/run-self-dogfood-experiments.mjs`)은 여전히 `--output-dir`을
     explicit하게 넘긴다. parent shell의 stray `CAUTILUS_RUN_DIR`이
@@ -175,10 +202,10 @@
     오염되지 않는다. 이건 load-bearing regression이라 slice 6에서도 동일한
     explicit-override test를 건다.
   - `docs/contracts/active-run.md`의 `### Wired Consumers` 표가
-    authoritative status. active-run 쪽 next pickup은 이제 file-in/file-out
-    helper follow-up slice다.
+    authoritative status. active-run 쪽 남은 질문은 multi-source optional
+    input들에 single canonical runDir filename을 부여할지 여부다.
 - local proof (Node v22.22.2 기준, 이번 세션 마지막 측정값):
-  - `npm run verify`: 171/171 green
+  - `npm run verify`: 178/178 green
   - `node ./scripts/check-specs.mjs`: `spec checks passed (4 specs, 396 guard rows)`
   - `node ./bin/cautilus doctor --repo-root .`: `ready`
   - `npm run hooks:check`: `ready`
@@ -196,12 +223,19 @@
 
 ## Next Session
 
-1. **Slice 후반: file-in/file-out helper 결정.** `evidence prepare-input`,
-   `optimize prepare-input`, `report build`, `evidence bundle`,
-   `optimize propose`, `optimize build-artifact` 같은 helper들도 active run
-   안에서는 canonical filename을 default로 삼을지 slice 5의 probe 답변에
-   맞춰 각각 결정한다. 필요하면 contract 표에 row를 더 추가하면서 slice별로
-   풀어간다.
+1. **Canonical filename decision for multi-source optional inputs.**
+   이번 세션은 single canonical filename이 이미 있는 input/output만 active run
+   default로 연결했다. 다음에 결정할 질문:
+   - `review variants` summary에 product-owned canonical filename
+     (`review-summary.json` 같은 이름)을 줄 것인가? 현재 runner는
+     generic `summary.json`을 쓴다. `optimize prepare-input`의
+     `--review-summary`를 active run default로 만들려면 먼저 이 이름을
+     잠가야 한다.
+   - scenario history를 repo-level persistent state로 계속 둘 것인가,
+     아니면 active run의 canonical artifact도 함께 만들 것인가?
+   - `evidence prepare-input`이 `<mode>-scenario-results.json` 중 하나를
+     자동 선택하게 할 것인가? 한다면 어떤 rule이 operator에게 덜 거짓말 같은가.
+   - run-audit summary에 product-owned canonical filename을 줄 것인가?
 2. HTML view follow-ups는 다음 우선순위로 내려간다.
    - `artifacts/self-dogfood/experiments/latest/` 번들이 다시 쓰이기 시작하면
      그때 HTML view를 experiments surface까지 확장할지 결정한다. 지금은 해당

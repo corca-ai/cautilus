@@ -1,8 +1,9 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { join, resolve } from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
 
+import { readActiveRunDir } from "./active-run.mjs";
 import {
 	EVIDENCE_BUNDLE_INPUTS_SCHEMA,
 	REPORT_PACKET_SCHEMA,
@@ -72,15 +73,35 @@ function parseArgs(argv) {
 		options[field] = readRequiredValue(argv, index + 1, arg);
 		index += 1;
 	}
+	return options;
+}
+
+function resolveCommandOptions(options, { env = process.env } = {}) {
+	const activeRunDir = readActiveRunDir({ env });
+	const resolved = {
+		...options,
+		repoRoot: resolve(options.repoRoot),
+		reportFile: options.reportFile,
+		scenarioResultsFile: options.scenarioResultsFile,
+		runAuditFile: options.runAuditFile,
+		historyFile: options.historyFile,
+		output: options.output,
+	};
+	if (!resolved.reportFile && activeRunDir) {
+		resolved.reportFile = join(activeRunDir, "report.json");
+	}
+	if (!resolved.output && activeRunDir) {
+		resolved.output = join(activeRunDir, "evidence-input.json");
+	}
 	if (
-		!options.reportFile &&
-		!options.scenarioResultsFile &&
-		!options.runAuditFile &&
-		!options.historyFile
+		!resolved.reportFile &&
+		!resolved.scenarioResultsFile &&
+		!resolved.runAuditFile &&
+		!resolved.historyFile
 	) {
 		fail("At least one evidence source must be provided.");
 	}
-	return options;
+	return resolved;
 }
 
 function parseJsonFile(path, label) {
@@ -169,8 +190,8 @@ function addSource(sources, kind, filePath) {
 }
 
 export function buildEvidenceInput(inputOptions, { now = new Date() } = {}) {
-	const options = parseArgs(inputOptions);
-	const repoRoot = resolve(options.repoRoot);
+	const options = resolveCommandOptions(parseArgs(inputOptions));
+	const repoRoot = options.repoRoot;
 	const sources = [];
 	const parsedSources = {};
 
@@ -209,7 +230,7 @@ export function buildEvidenceInput(inputOptions, { now = new Date() } = {}) {
 
 export function main(argv = process.argv.slice(2)) {
 	try {
-		const options = parseArgs(argv);
+		const options = resolveCommandOptions(parseArgs(argv));
 		const packet = buildEvidenceInput(argv);
 		const text = `${JSON.stringify(packet, null, 2)}\n`;
 		if (options.output) {

@@ -1,10 +1,11 @@
 import { readFileSync, writeFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { join, resolve } from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
 
 import { buildBehaviorIntentProfile } from "./behavior-intent.mjs";
 import { REPORT_INPUTS_SCHEMA, REPORT_PACKET_SCHEMA } from "./contract-versions.mjs";
+import { readActiveRunDir } from "./active-run.mjs";
 import { normalizeScenarioResultsPacket } from "./scenario-results.mjs";
 import { summarizeScenarioTelemetryEntries } from "./scenario-result-telemetry.mjs";
 
@@ -58,10 +59,26 @@ function parseArgs(argv) {
 		}
 		throw new Error(`Unknown argument: ${arg}`);
 	}
-	if (!inputPath) {
+	return { inputPath, outputPath };
+}
+
+function resolveCommandOptions(options, { env = process.env } = {}) {
+	const activeRunDir = readActiveRunDir({ env });
+	const resolved = {
+		...options,
+		inputPath: options.inputPath,
+		outputPath: options.outputPath,
+	};
+	if (!resolved.inputPath && activeRunDir) {
+		resolved.inputPath = join(activeRunDir, "report-input.json");
+	}
+	if (!resolved.inputPath) {
 		throw new Error("--input is required");
 	}
-	return { inputPath, outputPath };
+	if (!resolved.outputPath && activeRunDir) {
+		resolved.outputPath = join(activeRunDir, "report.json");
+	}
+	return resolved;
 }
 
 function parseJsonFile(path) {
@@ -430,7 +447,7 @@ export function buildReportPacket(input, { now = new Date() } = {}) {
 
 export function main(argv = process.argv.slice(2)) {
 	try {
-		const { inputPath, outputPath } = parseArgs(argv);
+		const { inputPath, outputPath } = resolveCommandOptions(parseArgs(argv));
 		const packet = buildReportPacket(parseJsonFile(inputPath));
 		const text = `${JSON.stringify(packet, null, 2)}\n`;
 		if (outputPath) {

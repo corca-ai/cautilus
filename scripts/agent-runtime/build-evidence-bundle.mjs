@@ -1,8 +1,9 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { join, resolve } from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
 
+import { readActiveRunDir } from "./active-run.mjs";
 import {
 	EVIDENCE_BUNDLE_INPUTS_SCHEMA,
 	EVIDENCE_BUNDLE_SCHEMA,
@@ -74,10 +75,26 @@ function parseArgs(argv) {
 		options[field] = readRequiredValue(argv, index + 1, arg);
 		index += 1;
 	}
-	if (!options.input) {
+	return options;
+}
+
+function resolveCommandOptions(options, { env = process.env } = {}) {
+	const activeRunDir = readActiveRunDir({ env });
+	const resolved = {
+		...options,
+		input: options.input,
+		output: options.output,
+	};
+	if (!resolved.input && activeRunDir) {
+		resolved.input = join(activeRunDir, "evidence-input.json");
+	}
+	if (!resolved.input) {
 		fail("--input is required");
 	}
-	return options;
+	if (!resolved.output && activeRunDir) {
+		resolved.output = join(activeRunDir, "evidence-bundle.json");
+	}
+	return resolved;
 }
 
 function parseInputFile(path) {
@@ -354,7 +371,7 @@ export function buildEvidenceBundle(packet, { now = new Date(), inputFile = null
 
 export function main(argv = process.argv.slice(2)) {
 	try {
-		const options = parseArgs(argv);
+		const options = resolveCommandOptions(parseArgs(argv));
 		const input = parseInputFile(options.input);
 		const bundle = buildEvidenceBundle(input.packet, {
 			now: new Date(),
