@@ -85,6 +85,8 @@ standalone product여야 한다.
 | bin/cautilus.test.mjs | fixed | repo shim forwards --version to the Go CLI entry |
 | bin/cautilus.test.mjs | fixed | repo shim preserves caller cwd while resolving doctor against a consumer repo |
 | bin/cautilus.test.mjs | fixed | repo shim keeps bundled skills install working from a consumer repo |
+| skills/bundled.go | file_exists |  |
+| skills/bundled.go | fixed | go:embed cautilus |
 | internal/app/cli_smoke_test.go | file_exists |  |
 | internal/app/cli_smoke_test.go | fixed | TestCLIRootSelfConsumerRepoStaysDoctorReady |
 | internal/app/cli_smoke_test.go | fixed | TestCLIStandaloneTempRepoCanAdoptCautilusWithoutCealPaths |

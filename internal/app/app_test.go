@@ -70,18 +70,22 @@ func TestRunDoctorDoesNotRequireToolRootForNativeCommands(t *testing.T) {
 	}
 }
 
-func TestRunSkillsInstallStillRequiresToolRoot(t *testing.T) {
-	t.Setenv("CAUTILUS_CALLER_CWD", t.TempDir())
+func TestRunSkillsInstallDoesNotRequireToolRoot(t *testing.T) {
+	repoRoot := t.TempDir()
+	t.Setenv("CAUTILUS_CALLER_CWD", repoRoot)
 	t.Setenv("CAUTILUS_TOOL_ROOT", "")
 
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
 	exitCode := Run([]string{"skills", "install"}, &stdout, &stderr)
-	if exitCode != 1 {
-		t.Fatalf("expected exit code 1, got %d", exitCode)
+	if exitCode != 0 {
+		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
 	}
-	if !strings.Contains(stderr.String(), "could not locate cautilus source root") {
-		t.Fatalf("unexpected stderr: %q", stderr.String())
+	if !strings.Contains(stdout.String(), ".agents/skills/cautilus") {
+		t.Fatalf("unexpected stdout: %q", stdout.String())
+	}
+	if _, err := os.Stat(filepath.Join(repoRoot, ".agents", "skills", "cautilus", "SKILL.md")); err != nil {
+		t.Fatalf("expected installed bundled skill: %v", err)
 	}
 }
 

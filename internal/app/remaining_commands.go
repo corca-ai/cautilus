@@ -18,6 +18,7 @@ import (
 
 	"github.com/corca-ai/cautilus/internal/contracts"
 	"github.com/corca-ai/cautilus/internal/runtime"
+	bundledskills "github.com/corca-ai/cautilus/skills"
 )
 
 //nolint:errcheck // CLI stderr reporting is best-effort.
@@ -140,7 +141,7 @@ func handleSkillsInstall(repoRoot string, cwd string, args []string, stdout io.W
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
-	if err := copyDirectory(filepath.Join(repoRoot, "skills", "cautilus"), destinationDir); err != nil {
+	if err := bundledskills.InstallCautilus(destinationDir); err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
@@ -985,34 +986,6 @@ func runGitStrict(repoRoot string, args []string) (string, error) {
 		return "", fmt.Errorf("%s", strings.TrimSpace(string(output)))
 	}
 	return strings.TrimSpace(string(output)), nil
-}
-
-func copyDirectory(sourceDir string, destinationDir string) error {
-	entries, err := os.ReadDir(sourceDir)
-	if err != nil {
-		return err
-	}
-	for _, entry := range entries {
-		sourcePath := filepath.Join(sourceDir, entry.Name())
-		destinationPath := filepath.Join(destinationDir, entry.Name())
-		if entry.IsDir() {
-			if err := os.MkdirAll(destinationPath, 0o755); err != nil {
-				return err
-			}
-			if err := copyDirectory(sourcePath, destinationPath); err != nil {
-				return err
-			}
-			continue
-		}
-		payload, err := os.ReadFile(sourcePath)
-		if err != nil {
-			return err
-		}
-		if err := os.WriteFile(destinationPath, payload, 0o644); err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 func migrateLegacyClaudeSkillsDir(repoRoot string, stdout io.Writer) error {

@@ -63,15 +63,7 @@ func Run(args []string, stdout io.Writer, stderr io.Writer) int {
 	}
 
 	if handler := nativeHandler(match.Command.Path); handler != nil {
-		toolRoot := ""
-		if nativeHandlerNeedsToolRoot(match.Command.Path) {
-			toolRoot, err = requiredToolRoot(cwd)
-			if err != nil {
-				_, _ = fmt.Fprintf(stderr, "%s\n", err)
-				return 1
-			}
-		}
-		return invokeHandler(handler, toolRoot, cwd, match.ForwardedArgs, stdout, stderr)
+		return invokeHandler(handler, "", cwd, match.ForwardedArgs, stdout, stderr)
 	}
 	_, _ = fmt.Fprintf(stderr, "command is listed in the registry but has no Go handler: %s\n", strings.Join(match.Command.Path, " "))
 	return 1
@@ -145,15 +137,6 @@ func nativeHandler(path []string) handlerFunc {
 	}
 }
 
-func nativeHandlerNeedsToolRoot(path []string) bool {
-	switch strings.Join(path, " ") {
-	case "skills install":
-		return true
-	default:
-		return false
-	}
-}
-
 func resolveCallerCWD() (string, error) {
 	cwd := strings.TrimSpace(os.Getenv("CAUTILUS_CALLER_CWD"))
 	if cwd == "" {
@@ -172,14 +155,6 @@ func optionalToolRoot(cwd string) string {
 		return ""
 	}
 	return toolRoot
-}
-
-func requiredToolRoot(cwd string) (string, error) {
-	toolRoot := optionalToolRoot(cwd)
-	if toolRoot != "" {
-		return toolRoot, nil
-	}
-	return "", cli.ErrRepoRootMissing()
 }
 
 //nolint:errcheck // CLI stderr reporting is best-effort.

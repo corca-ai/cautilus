@@ -28,10 +28,10 @@ func repoToolRoot(t *testing.T) string {
 	return root
 }
 
-func runCLI(t *testing.T, cwd string, toolRoot string, args ...string) (string, string, int) {
+func runCLI(t *testing.T, cwd string, args ...string) (string, string, int) {
 	t.Helper()
 	t.Setenv("CAUTILUS_CALLER_CWD", cwd)
-	t.Setenv("CAUTILUS_TOOL_ROOT", toolRoot)
+	t.Setenv("CAUTILUS_TOOL_ROOT", "")
 
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
@@ -105,7 +105,7 @@ func writeJSONFile(t *testing.T, path string, value any) {
 
 func TestCLIRootSelfConsumerRepoStaysDoctorReady(t *testing.T) {
 	root := repoToolRoot(t)
-	stdout, stderr, exitCode := runCLI(t, root, "", "doctor", "--repo-root", root)
+	stdout, stderr, exitCode := runCLI(t, root, "doctor", "--repo-root", root)
 	if exitCode != 0 {
 		t.Fatalf("Run returned exit code %d, stderr=%s", exitCode, stderr)
 	}
@@ -140,7 +140,7 @@ func TestCLIAdapterResolveDelegatesToBundledResolver(t *testing.T) {
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
 
-	stdout, stderr, exitCode := runCLI(t, root, "", "adapter", "resolve", "--repo-root", root)
+	stdout, stderr, exitCode := runCLI(t, root, "adapter", "resolve", "--repo-root", root)
 	if exitCode != 0 {
 		t.Fatalf("Run returned exit code %d, stderr=%s", exitCode, stderr)
 	}
@@ -175,7 +175,7 @@ func TestCLIDoctorReportsReadyWithExecutionSurface(t *testing.T) {
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
 
-	stdout, stderr, exitCode := runCLI(t, root, "", "doctor", "--repo-root", root)
+	stdout, stderr, exitCode := runCLI(t, root, "doctor", "--repo-root", root)
 	if exitCode != 0 {
 		t.Fatalf("Run returned exit code %d, stderr=%s", exitCode, stderr)
 	}
@@ -190,7 +190,7 @@ func TestCLIDoctorReportsReadyWithExecutionSurface(t *testing.T) {
 
 func TestCLIDoctorFailsWithoutCheckedInAdapter(t *testing.T) {
 	root := t.TempDir()
-	stdout, stderr, exitCode := runCLI(t, root, "", "doctor", "--repo-root", root)
+	stdout, stderr, exitCode := runCLI(t, root, "doctor", "--repo-root", root)
 	if exitCode != 1 {
 		t.Fatalf("expected exit code 1, got %d, stderr=%s", exitCode, stderr)
 	}
@@ -220,7 +220,7 @@ func TestCLIDoctorFailsWhenAdapterIsInvalid(t *testing.T) {
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
 
-	stdout, stderr, exitCode := runCLI(t, root, "", "doctor", "--repo-root", root)
+	stdout, stderr, exitCode := runCLI(t, root, "doctor", "--repo-root", root)
 	if exitCode != 1 {
 		t.Fatalf("expected exit code 1, got %d, stderr=%s", exitCode, stderr)
 	}
@@ -261,7 +261,7 @@ output_file="$1"
 printf '{"verdict":"pass","summary":"standalone smoke","findings":[{"severity":"pass","message":"standalone","path":"variant/sh"}]}\n' > "$output_file"
 `)
 
-	if _, stderr, exitCode := runCLI(t, root, "", "adapter", "init", "--repo-root", root); exitCode != 0 {
+	if _, stderr, exitCode := runCLI(t, root, "adapter", "init", "--repo-root", root); exitCode != 0 {
 		t.Fatalf("adapter init failed: %s", stderr)
 	}
 	adapterPath := filepath.Join(root, ".agents", "cautilus-adapter.yaml")
@@ -283,7 +283,7 @@ printf '{"verdict":"pass","summary":"standalone smoke","findings":[{"severity":"
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
 
-	stdout, stderr, exitCode := runCLI(t, root, "", "doctor", "--repo-root", root)
+	stdout, stderr, exitCode := runCLI(t, root, "doctor", "--repo-root", root)
 	if exitCode != 0 {
 		t.Fatalf("doctor failed: %s", stderr)
 	}
@@ -293,7 +293,7 @@ printf '{"verdict":"pass","summary":"standalone smoke","findings":[{"severity":"
 	}
 
 	outputDir := filepath.Join(root, "outputs")
-	stdout, stderr, exitCode = runCLI(t, root, "", "review", "variants", "--repo-root", root, "--workspace", root, "--output-dir", outputDir)
+	stdout, stderr, exitCode = runCLI(t, root, "review", "variants", "--repo-root", root, "--workspace", root, "--output-dir", outputDir)
 	if exitCode != 0 {
 		t.Fatalf("review variants failed: %s", stderr)
 	}
@@ -320,9 +320,8 @@ printf '{"verdict":"pass","summary":"standalone smoke","findings":[{"severity":"
 
 func TestCLISkillsInstallCreatesRepoLocalCanonicalSkill(t *testing.T) {
 	root := t.TempDir()
-	toolRoot := repoToolRoot(t)
 
-	stdout, stderr, exitCode := runCLI(t, root, toolRoot, "skills", "install")
+	stdout, stderr, exitCode := runCLI(t, root, "skills", "install")
 	if exitCode != 0 {
 		t.Fatalf("skills install failed: %s", stderr)
 	}
@@ -367,7 +366,7 @@ func TestCLISkillsInstallCreatesRepoLocalCanonicalSkill(t *testing.T) {
 		t.Fatalf("unexpected symlink target: %s", target)
 	}
 
-	_, stderr, exitCode = runCLI(t, root, toolRoot, "skills", "install")
+	_, stderr, exitCode = runCLI(t, root, "skills", "install")
 	if exitCode != 1 || !strings.Contains(stderr, "already exists") {
 		t.Fatalf("expected already exists failure, got exit=%d stderr=%q", exitCode, stderr)
 	}
@@ -375,7 +374,6 @@ func TestCLISkillsInstallCreatesRepoLocalCanonicalSkill(t *testing.T) {
 
 func TestCLISkillsInstallMigratesLegacyClaudeSkills(t *testing.T) {
 	root := t.TempDir()
-	toolRoot := repoToolRoot(t)
 	legacyDir := filepath.Join(root, ".claude", "skills", "legacy")
 	if err := os.MkdirAll(legacyDir, 0o755); err != nil {
 		t.Fatalf("MkdirAll returned error: %v", err)
@@ -384,7 +382,7 @@ func TestCLISkillsInstallMigratesLegacyClaudeSkills(t *testing.T) {
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
 
-	_, stderr, exitCode := runCLI(t, root, toolRoot, "skills", "install", "--overwrite")
+	_, stderr, exitCode := runCLI(t, root, "skills", "install", "--overwrite")
 	if exitCode != 0 {
 		t.Fatalf("skills install --overwrite failed: %s", stderr)
 	}
@@ -417,7 +415,7 @@ func TestCLIWorkspacePrepareCompareCreatesBaselineAndCandidateWorktrees(t *testi
 	runGit(t, root, "commit", "-am", "candidate")
 	outputDir := filepath.Join(root, "compare")
 
-	stdout, stderr, exitCode := runCLI(t, root, "", "workspace", "prepare-compare", "--repo-root", root, "--baseline-ref", baselineCommit, "--output-dir", outputDir)
+	stdout, stderr, exitCode := runCLI(t, root, "workspace", "prepare-compare", "--repo-root", root, "--baseline-ref", baselineCommit, "--output-dir", outputDir)
 	if exitCode != 0 {
 		t.Fatalf("prepare-compare failed: %s", stderr)
 	}
@@ -469,7 +467,7 @@ func TestCLIWorkspacePruneArtifactsPrunesOlderRecognizedDirectories(t *testing.T
 		t.Fatalf("Chtimes returned error: %v", err)
 	}
 
-	stdout, stderr, exitCode := runCLI(t, root, "", "workspace", "prune-artifacts", "--root", artifactRoot, "--keep-last", "1")
+	stdout, stderr, exitCode := runCLI(t, root, "workspace", "prune-artifacts", "--root", artifactRoot, "--keep-last", "1")
 	if exitCode != 0 {
 		t.Fatalf("prune-artifacts failed: %s", stderr)
 	}
@@ -537,7 +535,7 @@ func TestCLIScenarioProposeGeneratesStandaloneProposalPacket(t *testing.T) {
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
 
-	_, stderr, exitCode := runCLI(t, root, "", "scenario", "propose", "--input", inputPath, "--output", outputPath)
+	_, stderr, exitCode := runCLI(t, root, "scenario", "propose", "--input", inputPath, "--output", outputPath)
 	if exitCode != 0 {
 		t.Fatalf("scenario propose failed: %s", stderr)
 	}
@@ -585,7 +583,7 @@ func TestCLIScenarioSummarizeTelemetryAggregatesScenarioCosts(t *testing.T) {
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
 
-	stdout, stderr, exitCode := runCLI(t, root, "", "scenario", "summarize-telemetry", "--results", inputPath)
+	stdout, stderr, exitCode := runCLI(t, root, "scenario", "summarize-telemetry", "--results", inputPath)
 	if exitCode != 0 {
 		t.Fatalf("summarize-telemetry failed: %s", stderr)
 	}
@@ -675,7 +673,7 @@ func TestCLIReportBuildEmitsMachineReadableReportPacket(t *testing.T) {
 		"recommendation": "defer",
 	})
 
-	stdout, stderr, exitCode := runCLI(t, root, "", "report", "build", "--input", inputPath)
+	stdout, stderr, exitCode := runCLI(t, root, "report", "build", "--input", inputPath)
 	if exitCode != 0 {
 		t.Fatalf("report build failed: %s", stderr)
 	}
@@ -727,7 +725,7 @@ func TestCLICliEvaluateExecutesIntentPacketAndEmitsReportBackedSummary(t *testin
 		},
 	})
 
-	stdout, stderr, exitCode := runCLI(t, root, "", "cli", "evaluate", "--input", inputPath)
+	stdout, stderr, exitCode := runCLI(t, root, "cli", "evaluate", "--input", inputPath)
 	if exitCode != 0 {
 		t.Fatalf("cli evaluate failed: %s", stderr)
 	}
@@ -802,7 +800,7 @@ echo ok
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
 	outputDir := filepath.Join(root, "outputs")
-	stdout, stderr, exitCode := runCLI(t, root, "", "mode", "evaluate", "--repo-root", root, "--candidate-repo", workspace, "--mode", "held_out", "--intent", "CLI behavior should remain legible.", "--baseline-ref", "origin/main", "--output-dir", outputDir)
+	stdout, stderr, exitCode := runCLI(t, root, "mode", "evaluate", "--repo-root", root, "--candidate-repo", workspace, "--mode", "held_out", "--intent", "CLI behavior should remain legible.", "--baseline-ref", "origin/main", "--output-dir", outputDir)
 	if exitCode != 0 {
 		t.Fatalf("mode evaluate failed: %s", stderr)
 	}
@@ -904,7 +902,7 @@ func TestCLIReviewPrepareInputBuildsReviewPacketFromAdapterSurfacesAndReport(t *
 		"recommendation":      "defer",
 	})
 
-	stdout, stderr, exitCode := runCLI(t, root, "", "review", "prepare-input", "--repo-root", root, "--report-file", reportFile)
+	stdout, stderr, exitCode := runCLI(t, root, "review", "prepare-input", "--repo-root", root, "--report-file", reportFile)
 	if exitCode != 0 {
 		t.Fatalf("review prepare-input failed: %s", stderr)
 	}
@@ -1004,7 +1002,7 @@ func TestCLIReviewBuildPromptInputAndRenderPromptCloseMetaPromptSeam(t *testing.
 		},
 	})
 
-	_, stderr, exitCode := runCLI(t, root, "", "review", "build-prompt-input", "--review-packet", reviewPacketPath, "--output", promptInputPath)
+	_, stderr, exitCode := runCLI(t, root, "review", "build-prompt-input", "--review-packet", reviewPacketPath, "--output", promptInputPath)
 	if exitCode != 0 {
 		t.Fatalf("review build-prompt-input failed: %s", stderr)
 	}
@@ -1012,7 +1010,7 @@ func TestCLIReviewBuildPromptInputAndRenderPromptCloseMetaPromptSeam(t *testing.
 	if promptInput["schemaVersion"] != contracts.ReviewPromptInputsSchema {
 		t.Fatalf("unexpected prompt input schema: %#v", promptInput["schemaVersion"])
 	}
-	_, stderr, exitCode = runCLI(t, root, "", "review", "render-prompt", "--input", promptInputPath, "--output", promptPath)
+	_, stderr, exitCode = runCLI(t, root, "review", "render-prompt", "--input", promptInputPath, "--output", promptPath)
 	if exitCode != 0 {
 		t.Fatalf("review render-prompt failed: %s", stderr)
 	}
@@ -1109,7 +1107,7 @@ func TestCLIOptimizePrepareInputProposeAndBuildArtifact(t *testing.T) {
 		"recentRuns": []any{},
 	})
 
-	_, stderr, exitCode := runCLI(t, root, "", "optimize", "prepare-input", "--repo-root", root, "--report-file", reportPath, "--review-summary", reviewSummaryPath, "--history-file", historyPath, "--target", "prompt", "--target-file", targetPath, "--output", inputPath)
+	_, stderr, exitCode := runCLI(t, root, "optimize", "prepare-input", "--repo-root", root, "--report-file", reportPath, "--review-summary", reviewSummaryPath, "--history-file", historyPath, "--target", "prompt", "--target-file", targetPath, "--output", inputPath)
 	if exitCode != 0 {
 		t.Fatalf("optimize prepare-input failed: %s", stderr)
 	}
@@ -1125,7 +1123,7 @@ func TestCLIOptimizePrepareInputProposeAndBuildArtifact(t *testing.T) {
 		t.Fatalf("unexpected optimize input intent profile: %#v", intentProfile)
 	}
 
-	_, stderr, exitCode = runCLI(t, root, "", "optimize", "propose", "--input", inputPath, "--output", proposalPath)
+	_, stderr, exitCode = runCLI(t, root, "optimize", "propose", "--input", inputPath, "--output", proposalPath)
 	if exitCode != 0 {
 		t.Fatalf("optimize propose failed: %s", stderr)
 	}
@@ -1140,7 +1138,7 @@ func TestCLIOptimizePrepareInputProposeAndBuildArtifact(t *testing.T) {
 		t.Fatalf("unexpected revision brief: %#v", proposal["revisionBrief"])
 	}
 
-	_, stderr, exitCode = runCLI(t, root, "", "optimize", "build-artifact", "--proposal-file", proposalPath, "--output", artifactPath)
+	_, stderr, exitCode = runCLI(t, root, "optimize", "build-artifact", "--proposal-file", proposalPath, "--output", artifactPath)
 	if exitCode != 0 {
 		t.Fatalf("optimize build-artifact failed: %s", stderr)
 	}
@@ -1226,7 +1224,7 @@ func TestCLIEvidencePrepareInputAndBundleProduceNormalizedEvidencePacket(t *test
 		},
 	})
 
-	_, stderr, exitCode := runCLI(t, root, "", "evidence", "prepare-input", "--repo-root", root, "--report-file", reportPath, "--scenario-results-file", scenarioResultsPath, "--run-audit-file", runAuditPath, "--output", inputPath)
+	_, stderr, exitCode := runCLI(t, root, "evidence", "prepare-input", "--repo-root", root, "--report-file", reportPath, "--scenario-results-file", scenarioResultsPath, "--run-audit-file", runAuditPath, "--output", inputPath)
 	if exitCode != 0 {
 		t.Fatalf("evidence prepare-input failed: %s", stderr)
 	}
@@ -1239,7 +1237,7 @@ func TestCLIEvidencePrepareInputAndBundleProduceNormalizedEvidencePacket(t *test
 		t.Fatalf("unexpected evidence sources: %#v", sources)
 	}
 
-	_, stderr, exitCode = runCLI(t, root, "", "evidence", "bundle", "--input", inputPath, "--output", bundlePath)
+	_, stderr, exitCode = runCLI(t, root, "evidence", "bundle", "--input", inputPath, "--output", bundlePath)
 	if exitCode != 0 {
 		t.Fatalf("evidence bundle failed: %s", stderr)
 	}
@@ -1298,7 +1296,7 @@ func TestCLIScenarioPrepareInputBuildsProposalPacketFromSplitNormalizedSources(t
 		},
 	})
 
-	_, stderr, exitCode := runCLI(t, root, "", "scenario", "prepare-input", "--candidates", candidatesPath, "--registry", registryPath, "--coverage", coveragePath, "--family", "fast_regression", "--window-days", "14", "--now", "2026-04-11T00:00:00.000Z", "--output", inputPath)
+	_, stderr, exitCode := runCLI(t, root, "scenario", "prepare-input", "--candidates", candidatesPath, "--registry", registryPath, "--coverage", coveragePath, "--family", "fast_regression", "--window-days", "14", "--now", "2026-04-11T00:00:00.000Z", "--output", inputPath)
 	if exitCode != 0 {
 		t.Fatalf("scenario prepare-input failed: %s", stderr)
 	}
@@ -1310,7 +1308,7 @@ func TestCLIScenarioPrepareInputBuildsProposalPacketFromSplitNormalizedSources(t
 		t.Fatalf("unexpected proposal candidates: %#v", prepared["proposalCandidates"])
 	}
 
-	_, stderr, exitCode = runCLI(t, root, "", "scenario", "propose", "--input", inputPath, "--output", outputPath)
+	_, stderr, exitCode = runCLI(t, root, "scenario", "propose", "--input", inputPath, "--output", outputPath)
 	if exitCode != 0 {
 		t.Fatalf("scenario propose failed: %s", stderr)
 	}
@@ -1368,7 +1366,7 @@ func TestCLIScenarioNormalizeChatbotProducesCandidatesThatChainIntoPrepareAndPro
 		},
 	})
 
-	_, stderr, exitCode := runCLI(t, root, "", "scenario", "normalize", "chatbot", "--input", chatbotInputPath, "--output", candidatesPath)
+	_, stderr, exitCode := runCLI(t, root, "scenario", "normalize", "chatbot", "--input", chatbotInputPath, "--output", candidatesPath)
 	if exitCode != 0 {
 		t.Fatalf("scenario normalize chatbot failed: %s", stderr)
 	}
@@ -1380,11 +1378,11 @@ func TestCLIScenarioNormalizeChatbotProducesCandidatesThatChainIntoPrepareAndPro
 		t.Fatalf("unexpected intent profile: %#v", candidates[0])
 	}
 
-	_, stderr, exitCode = runCLI(t, root, "", "scenario", "prepare-input", "--candidates", candidatesPath, "--registry", registryPath, "--coverage", coveragePath, "--family", "fast_regression", "--window-days", "14", "--now", "2026-04-11T00:00:00.000Z", "--output", proposalInputPath)
+	_, stderr, exitCode = runCLI(t, root, "scenario", "prepare-input", "--candidates", candidatesPath, "--registry", registryPath, "--coverage", coveragePath, "--family", "fast_regression", "--window-days", "14", "--now", "2026-04-11T00:00:00.000Z", "--output", proposalInputPath)
 	if exitCode != 0 {
 		t.Fatalf("scenario prepare-input failed: %s", stderr)
 	}
-	_, stderr, exitCode = runCLI(t, root, "", "scenario", "propose", "--input", proposalInputPath, "--output", proposalOutputPath)
+	_, stderr, exitCode = runCLI(t, root, "scenario", "propose", "--input", proposalInputPath, "--output", proposalOutputPath)
 	if exitCode != 0 {
 		t.Fatalf("scenario propose failed: %s", stderr)
 	}
@@ -1449,7 +1447,7 @@ func TestCLIScenarioNormalizeSkillProducesCandidatesThatChainIntoPrepareAndPropo
 		},
 	})
 
-	_, stderr, exitCode := runCLI(t, root, "", "scenario", "normalize", "skill", "--input", skillInputPath, "--output", candidatesPath)
+	_, stderr, exitCode := runCLI(t, root, "scenario", "normalize", "skill", "--input", skillInputPath, "--output", candidatesPath)
 	if exitCode != 0 {
 		t.Fatalf("scenario normalize skill failed: %s", stderr)
 	}
@@ -1462,11 +1460,11 @@ func TestCLIScenarioNormalizeSkillProducesCandidatesThatChainIntoPrepareAndPropo
 		t.Fatalf("unexpected first candidate: %#v", firstCandidate)
 	}
 
-	_, stderr, exitCode = runCLI(t, root, "", "scenario", "prepare-input", "--candidates", candidatesPath, "--registry", registryPath, "--coverage", coveragePath, "--family", "fast_regression", "--window-days", "14", "--now", "2026-04-11T00:00:00.000Z", "--output", proposalInputPath)
+	_, stderr, exitCode = runCLI(t, root, "scenario", "prepare-input", "--candidates", candidatesPath, "--registry", registryPath, "--coverage", coveragePath, "--family", "fast_regression", "--window-days", "14", "--now", "2026-04-11T00:00:00.000Z", "--output", proposalInputPath)
 	if exitCode != 0 {
 		t.Fatalf("scenario prepare-input failed: %s", stderr)
 	}
-	_, stderr, exitCode = runCLI(t, root, "", "scenario", "propose", "--input", proposalInputPath, "--output", proposalOutputPath)
+	_, stderr, exitCode = runCLI(t, root, "scenario", "propose", "--input", proposalInputPath, "--output", proposalOutputPath)
 	if exitCode != 0 {
 		t.Fatalf("scenario propose failed: %s", stderr)
 	}
@@ -1528,7 +1526,7 @@ func TestCLIScenarioNormalizeCLIProducesCandidatesThatChainIntoPrepareAndPropose
 		},
 	})
 
-	_, stderr, exitCode := runCLI(t, root, "", "scenario", "normalize", "cli", "--input", cliInputPath, "--output", candidatesPath)
+	_, stderr, exitCode := runCLI(t, root, "scenario", "normalize", "cli", "--input", cliInputPath, "--output", candidatesPath)
 	if exitCode != 0 {
 		t.Fatalf("scenario normalize cli failed: %s", stderr)
 	}
@@ -1542,11 +1540,11 @@ func TestCLIScenarioNormalizeCLIProducesCandidatesThatChainIntoPrepareAndPropose
 		t.Fatalf("unexpected first candidate: %#v", firstCandidate)
 	}
 
-	_, stderr, exitCode = runCLI(t, root, "", "scenario", "prepare-input", "--candidates", candidatesPath, "--registry", registryPath, "--coverage", coveragePath, "--family", "fast_regression", "--window-days", "14", "--now", "2026-04-11T00:00:00.000Z", "--output", proposalInputPath)
+	_, stderr, exitCode = runCLI(t, root, "scenario", "prepare-input", "--candidates", candidatesPath, "--registry", registryPath, "--coverage", coveragePath, "--family", "fast_regression", "--window-days", "14", "--now", "2026-04-11T00:00:00.000Z", "--output", proposalInputPath)
 	if exitCode != 0 {
 		t.Fatalf("scenario prepare-input failed: %s", stderr)
 	}
-	_, stderr, exitCode = runCLI(t, root, "", "scenario", "propose", "--input", proposalInputPath, "--output", proposalOutputPath)
+	_, stderr, exitCode = runCLI(t, root, "scenario", "propose", "--input", proposalInputPath, "--output", proposalOutputPath)
 	if exitCode != 0 {
 		t.Fatalf("scenario propose failed: %s", stderr)
 	}

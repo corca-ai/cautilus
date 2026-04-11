@@ -74,7 +74,7 @@ mv "$EXTRACTED_DIR" "$TARGET_DIR"
 
 cat > "$BIN_DIR/cautilus" <<EOF
 #!/usr/bin/env sh
-CAUTILUS_TOOL_ROOT="$TARGET_DIR" \
+CAUTILUS_VERSION="$VERSION" \
 CAUTILUS_CALLER_CWD="\$(pwd)" \
 exec "$TARGET_DIR/bin/cautilus-real" "\$@"
 EOF

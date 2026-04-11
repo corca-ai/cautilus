@@ -96,9 +96,9 @@
     legacy JS path.
   - `internal/app.Run` now resolves the Cautilus source root lazily instead of
     requiring it before every invocation. Native Go handlers can run from a
-    consumer repo or compiled binary context without `CAUTILUS_TOOL_ROOT`;
-    only `skills install` still requires the product source root to locate
-    bundled assets.
+    consumer repo or compiled binary context without `CAUTILUS_TOOL_ROOT`.
+    `skills install` now copies its bundled assets from the compiled Go binary
+    instead of reopening the product source tree.
   - product-owned CLI smoke coverage is no longer only in
     `bin/cautilus.test.mjs`. `internal/app/cli_smoke_test.go` now carries the
     Go-side acceptance tests for root self-consumer doctor, adapter resolve,
@@ -139,8 +139,8 @@
   - public installer도 이제 Node/npm install path가 아니다.
     `install.sh`는 tagged source archive를 내려받은 뒤 그 안에서
     `go build ./cmd/cautilus`로 product binary를 만들고,
-    wrapper가 `CAUTILUS_TOOL_ROOT`와 caller cwd를 넘겨서 installed binary가
-    bundled skill/assets를 계속 찾게 한다.
+    wrapper가 `CAUTILUS_VERSION`와 caller cwd를 넘겨서 installed binary가
+    source tree discovery 없이도 stable `--version`을 유지하게 한다.
   - bundled skill과 packaged plugin skill은 이제 repo-local
     `node ./bin/cautilus`가 아니라 standalone `cautilus` command를 호출한다.
   - `README.md`, `docs/consumer-migration.md`,
@@ -391,7 +391,7 @@
   - `node --test bin/cautilus.test.mjs`: 3/3 green
   - `node --test scripts/agent-runtime/run-workbench-executor-variants.test.mjs`: 8/8 green
   - `npm run verify`: 171/171 green
-  - `node ./scripts/check-specs.mjs`: `spec checks passed (4 specs, 416 guard rows)`
+  - `node ./scripts/check-specs.mjs`: `spec checks passed (4 specs, 420 guard rows)`
   - `cautilus doctor --repo-root .`: `ready`
   - `npm run hooks:check`: `ready`
   - `node ./scripts/run-self-dogfood-experiments.mjs --experiment-adapter-name self-dogfood-binary-surface --quiet`:
@@ -422,8 +422,10 @@
   - repo-root/version discovery hardening is now done for native handlers and
     `--version`
   - repo-local `bin/cautilus` shim is now POSIX shell, not Node
-  - the next seam is skill asset embedding / install-root discovery for
-    `skills install`, then prebuilt binary asset distribution
+  - skill asset embedding / install-root discovery for `skills install` is now
+    done
+  - the next seam is prebuilt binary asset distribution plus the release
+    automation/documentation needed to make that install story honest
   - preserve the existing command contract and fixture names unless a break is
     clearly worth it
   - prefer replacing product-owned runtime seams before touching host-facing

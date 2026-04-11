@@ -61,13 +61,13 @@ test("install.sh remains syntactically valid shell", () => {
 	assert.equal(result.status, 0, result.stderr);
 });
 
-test("install.sh builds the Go CLI locally and writes a wrapper that preserves tool root context", () => {
+test("install.sh builds the Go CLI locally and writes a wrapper that preserves version and caller context", () => {
 	const installer = readFileSync(join(REPO_ROOT, "install.sh"), "utf-8");
 	assert.match(installer, /need_cmd go/);
 	assert.doesNotMatch(installer, /need_cmd node/);
 	assert.doesNotMatch(installer, /npm install --omit=dev/);
 	assert.match(installer, /go build -o "\$TARGET_DIR\/bin\/cautilus-real" \.\/cmd\/cautilus/);
-	assert.match(installer, /CAUTILUS_TOOL_ROOT="\$TARGET_DIR"/);
+	assert.match(installer, /CAUTILUS_VERSION="\$VERSION"/);
 	assert.match(installer, /CAUTILUS_CALLER_CWD="\\\$\(pwd\)"/);
 	assert.match(installer, /exec "\$TARGET_DIR\/bin\/cautilus-real" "\\\$@"/);
 });
