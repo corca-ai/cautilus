@@ -1,10 +1,11 @@
 import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
-import { dirname, resolve } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import process from "node:process";
 
 import { REPORT_PACKET_SCHEMA, REVIEW_PACKET_SCHEMA } from "./contract-versions.mjs";
+import { readActiveRunDir } from "./active-run.mjs";
 
 export { REVIEW_PACKET_SCHEMA } from "./contract-versions.mjs";
 
@@ -64,10 +65,27 @@ function parseArgs(argv) {
 	if (options.adapter && options.adapterName) {
 		fail("Use either --adapter or --adapter-name, not both.");
 	}
-	if (!options.reportFile) {
+	return options;
+}
+
+function resolveCommandOptions(options, { env = process.env } = {}) {
+	const activeRunDir = readActiveRunDir({ env });
+	const resolved = {
+		...options,
+		repoRoot: resolve(options.repoRoot),
+		reportFile: options.reportFile,
+		output: options.output,
+	};
+	if (!resolved.reportFile && activeRunDir) {
+		resolved.reportFile = join(activeRunDir, "report.json");
+	}
+	if (!resolved.reportFile) {
 		fail("--report-file is required");
 	}
-	return options;
+	if (!resolved.output && activeRunDir) {
+		resolved.output = join(activeRunDir, "review-packet.json");
+	}
+	return resolved;
 }
 
 function loadAdapter(options) {
@@ -129,8 +147,8 @@ function collectOptionalFile(repoRoot, relativePath) {
 }
 
 export function buildReviewPacket(inputOptions, { now = new Date() } = {}) {
-	const options = parseArgs(inputOptions);
-	const repoRoot = resolve(options.repoRoot);
+	const options = resolveCommandOptions(parseArgs(inputOptions));
+	const repoRoot = options.repoRoot;
 	const adapterPayload = loadAdapter(options);
 	const report = parseReportFile(options.reportFile);
 	const adapterData = adapterPayload.data;
@@ -152,7 +170,7 @@ export function buildReviewPacket(inputOptions, { now = new Date() } = {}) {
 
 export function main(argv = process.argv.slice(2)) {
 	try {
-		const options = parseArgs(argv);
+		const options = resolveCommandOptions(parseArgs(argv));
 		const packet = buildReviewPacket(argv);
 		const text = `${JSON.stringify(packet, null, 2)}\n`;
 		if (options.output) {

@@ -108,7 +108,7 @@ as overrides for automation and tests.
 | `baseline-cache.json`             | `mode evaluate` (comparison)        | internal                                                    | Baseline cache seed key.                            |
 | `baseline/`                       | `workspace prepare-compare`         | adapter commands                                            | Git worktree. Directory marker.                     |
 | `candidate/`                      | `workspace prepare-compare`         | adapter commands                                            | Git worktree. Directory marker.                     |
-| `review-packet.json`              | `review prepare-input`              | `review build-prompt-input`, `review variants`              | `cautilus.review_packet.v1`.                        |
+| `review-packet.json`              | `review prepare-input`              | `review build-prompt-input`, `review variants`              | `cautilus.review_packet.v1`. Defaults here when `CAUTILUS_RUN_DIR` is pinned and `--output` is omitted. |
 | `review-prompt-input.json`        | `review build-prompt-input`         | `review render-prompt`                                      | `cautilus.review_prompt_inputs.v1`.                 |
 | `review.prompt.md`                | `review render-prompt`              | executor variants (optional)                                | Rendered meta-prompt.                               |
 | `evidence-input.json`             | `evidence prepare-input`            | `evidence bundle`                                           | `cautilus.evidence_bundle_inputs.v1`.               |
@@ -144,7 +144,7 @@ part of its own slice (see Probe Questions).
 | --------------------- | ---------- | ------------------------------------------------------------------- | ------------------------------------------------------------- |
 | `mode evaluate`       | wired      | `report-input.json`, `report.json`, `<mode>-scenario-results.json`, `selected-profile.json`, `selected-scenario-ids.json`, `baseline-cache.json`, `<stage>-<index>.stdout/stderr` | `--output-dir` is optional. Mode-prefixed scenario-results keeps multi-mode coexistence inside one `runDir`. |
 | `workspace prepare-compare` | wired  | `baseline/`, `candidate/`                                        | `--output-dir` is optional. Retries inside one active `runDir` reuse the git worktree registrations and rebuild `baseline/` and `candidate/` without requiring `--force`. |
-| `review prepare-input`      | not yet | `review-packet.json`                                             | Scheduled next. Consume-only helper — see `### Consume-Only Helpers` below. |
+| `review prepare-input`      | wired   | `review-packet.json`                                             | Consume-only helper. Defaults `--report-file` to `report.json` and `--output` to `review-packet.json` inside the active run; keeps stdout fallback when no active run is pinned. |
 | `review variants`           | not yet | `variant-*.json`, `<stage>-<index>.stdout/stderr`                | Scheduled for a follow-up slice.                              |
 
 ### Consume-Only Helpers
@@ -170,7 +170,7 @@ commands never create a workflow.
 
 Commands that follow this pattern:
 
-- `review prepare-input` (slice 5)
+- `review prepare-input` (wired in slice 5)
 - `evidence prepare-input` (follow-up slice)
 - `optimize prepare-input` (follow-up slice)
 - `report build` (follow-up slice)

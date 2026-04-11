@@ -6,6 +6,7 @@ import test from "node:test";
 import {
 	ACTIVE_RUN_ENV_VAR,
 	DEFAULT_RUNS_ROOT,
+	readActiveRunDir,
 	resolveRunDir,
 } from "./active-run.mjs";
 import { RUN_MANIFEST_NAME } from "./workspace-start.mjs";
@@ -58,6 +59,41 @@ test("env var is used when no explicit outputDir is provided", () => {
 		assert.equal(result.source, "active");
 		assert.equal(result.created, false);
 		assert.equal(result.runDir, resolve(active));
+	});
+});
+
+test("readActiveRunDir returns null when the env var is unset", () => {
+	assert.equal(readActiveRunDir({ env: {} }), null);
+});
+
+test("readActiveRunDir resolves an existing env var directory to an absolute path", () => {
+	withTempBase((base) => {
+		const active = join(base, "active-from-env");
+		mkdirSync(active, { recursive: true });
+		assert.equal(
+			readActiveRunDir({ env: { [ACTIVE_RUN_ENV_VAR]: active } }),
+			resolve(active),
+		);
+	});
+});
+
+test("readActiveRunDir fails loudly when the env var points at a missing directory", () => {
+	withTempBase((base) => {
+		assert.throws(
+			() => readActiveRunDir({ env: { [ACTIVE_RUN_ENV_VAR]: join(base, "missing") } }),
+			new RegExp(`${ACTIVE_RUN_ENV_VAR} does not exist`),
+		);
+	});
+});
+
+test("readActiveRunDir fails loudly when the env var points at a regular file", () => {
+	withTempBase((base) => {
+		const filePath = join(base, "not-a-dir");
+		writeFileSync(filePath, "regular file", "utf-8");
+		assert.throws(
+			() => readActiveRunDir({ env: { [ACTIVE_RUN_ENV_VAR]: filePath } }),
+			new RegExp(`${ACTIVE_RUN_ENV_VAR} must be a directory`),
+		);
 	});
 });
 

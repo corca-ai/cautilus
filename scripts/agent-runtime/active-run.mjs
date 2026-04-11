@@ -18,6 +18,16 @@ function ensureExistingDirectory(path, label) {
 	}
 }
 
+export function readActiveRunDir({ env = process.env } = {}) {
+	const fromEnv = env?.[ACTIVE_RUN_ENV_VAR];
+	if (!fromEnv) {
+		return null;
+	}
+	const resolved = resolve(fromEnv);
+	ensureExistingDirectory(resolved, ACTIVE_RUN_ENV_VAR);
+	return resolved;
+}
+
 export function resolveRunDir({
 	outputDir = null,
 	root = null,
@@ -40,10 +50,9 @@ export function resolveRunDir({
 
 	const fromEnv = env?.[ACTIVE_RUN_ENV_VAR];
 	if (fromEnv) {
-		const resolved = resolve(cwd, fromEnv);
-		ensureExistingDirectory(resolved, ACTIVE_RUN_ENV_VAR);
+		const runDir = readActiveRunDir({ env: { [ACTIVE_RUN_ENV_VAR]: resolve(cwd, fromEnv) } });
 		return {
-			runDir: resolved,
+			runDir,
 			source: "active",
 			created: false,
 			label: null,

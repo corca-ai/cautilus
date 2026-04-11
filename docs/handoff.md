@@ -16,13 +16,15 @@
   [scripts/agent-runtime/prepare-compare-worktrees.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/prepare-compare-worktrees.mjs),
   [scripts/agent-runtime/build-review-packet.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/build-review-packet.mjs),
   [skills/cautilus/SKILL.md](/home/ubuntu/cautilus/skills/cautilus/SKILL.md)
-  를 읽는다. `evaluate-adapter-mode.mjs`와 `prepare-compare-worktrees.mjs`가
-  slice 5/6의 wiring 패턴 exemplar다 — 복사 후 파일별 특수성만 조정한다.
+  를 읽는다. `evaluate-adapter-mode.mjs`와 `prepare-compare-worktrees.mjs`는
+  workflow-creating wiring exemplar고, `build-review-packet.mjs`는
+  consume-only wiring exemplar다 — 다음 slice에서는 둘 중 맞는 패턴만
+  복사하고 파일별 특수성만 조정한다.
 - 시작 workflow는 `impl` 기준이다.
 - product-owned seam이면 `cautilus`에서 먼저 고친다. host adapter, prompt,
   policy, consumer artifact는 host 소유다.
-- active-run env var contract는 정착되었고 현재 wired consumer는 두 개다
-  (`mode evaluate`, `workspace prepare-compare`).
+- active-run env var contract는 정착되었고 현재 wired consumer는 세 개다
+  (`mode evaluate`, `workspace prepare-compare`, `review prepare-input`).
   `docs/contracts/active-run.md`의 `### Wired Consumers` 표가 authoritative
   status고, 다음 pickup은 아래 Next Session 순서를 따른다.
 - 세션을 시작하기 전에 `node --version`이 `v22.x` 이상인지 먼저 본다.
@@ -55,9 +57,9 @@
     auto-create. `--label` 기본값은 `run`. 안에 `run.json` manifest
     (`cautilus.workspace_run_manifest.v1`)가 쓰이고 pruner의
     `EXACT_MARKERS`에 이미 등록되어 있다.
-  - `scripts/agent-runtime/active-run.mjs`의 `resolveRunDir` helper가
-    explicit `outputDir` > env var > auto-materialize 순으로 runDir을
-    해결한다. consumer wiring은 slice 3/4로 시작되었다 (아래 wiring state).
+  - `scripts/agent-runtime/active-run.mjs`에는 이제 workflow-creating용
+    `resolveRunDir`과 consume-only용 `readActiveRunDir`이 함께 있다.
+    consumer wiring은 slice 3/4/5까지 들어왔다 (아래 wiring state).
   - `bin/cautilus workspace start` subcommand로 wiring 완료. README,
     `docs/workflow.md`, `docs/master-plan.md`, bundled + packaged
     `skills/cautilus/SKILL.md`, `docs/specs/current-product.spec.md`,
@@ -130,13 +132,19 @@
 - canonical self-dogfood claim은 "self-dogfood result를 정직하게 기록하고
   surfaced 하는가"로 계속 좁혀져 있다. `latest` summary는
   `gateRecommendation`과 `reportRecommendation`을 계속 분리한다.
-- active-run consumer wiring state (slice 3/4 landed, commit `cdf9192` +
-  `e9d7310`):
-  - wired: `mode evaluate`, `workspace prepare-compare`. 둘 다
+- active-run consumer wiring state:
+  - wired workflow-creating consumers: `mode evaluate`,
+    `workspace prepare-compare`. 둘 다
     `resolveRunDir`을 호출해서 precedence (`explicit --output-dir >
     CAUTILUS_RUN_DIR > auto-materialize under ./.cautilus/runs/`)를 지키고,
     auto-materialize 경로일 때만 stderr에 `Active run: <abs runDir>` 한 줄을
     찍는다. explicit과 env var 경로는 조용히 동작한다.
+  - wired consume-only helper: `review prepare-input`.
+    `readActiveRunDir`을 호출해서 active run이 pin되어 있으면
+    `report.json`을 `--report-file` 기본값으로, `review-packet.json`을
+    `--output` 기본값으로 사용한다. env var가 없으면 기존처럼 explicit
+    `--report-file`을 요구하고 stdout fallback을 유지한다. consume-only
+    rule에 따라 `Active run:` stderr banner는 찍지 않는다.
   - mode evaluate의 canonical output은 `${mode}-scenario-results.json` +
     `report.json` + `report-input.json` 등 mode-prefixed 구조 그대로 유지해서
     한 runDir 안에 여러 mode가 공존할 수 있다.
@@ -144,9 +152,12 @@
     registration을 먼저 풀기 때문에 같은 runDir에 두 번 호출해도 `--force`
     없이 collision-free다. `run.json` marker와 `baseline/`, `candidate/`가
     한 runDir 안에 공존한다.
-  - 두 slice 각각 4개의 regression test를 새로 걸었다 (env var / auto-materialize
-    + banner / same-runDir retry / explicit-over-env). 기존 test는 explicit
-    `--output-dir` regression guard로 그대로 유지.
+  - slice 3/4는 기존처럼 env var / auto-materialize + banner /
+    same-runDir retry / explicit-over-env를 고정한다. slice 5는
+    `readActiveRunDir` helper validation 4개와 `build-review-packet`
+    regression 6개를 추가해서 default-in-runDir / missing report /
+    stdout fallback / explicit-over-env / missing `--report-file` /
+    missing active-run dir를 고정한다.
   - self-dogfood script들 (`scripts/run-self-dogfood.mjs`,
     `scripts/run-self-dogfood-experiments.mjs`)은 여전히 `--output-dir`을
     explicit하게 넘긴다. parent shell의 stray `CAUTILUS_RUN_DIR`이
@@ -154,12 +165,12 @@
     오염되지 않는다. 이건 load-bearing regression이라 slice 6에서도 동일한
     explicit-override test를 건다.
   - `docs/contracts/active-run.md`의 `### Wired Consumers` 표가
-    authoritative status. 나머지 `review prepare-input`, `review variants`
-    두 개가 `not yet`이다.
+    authoritative status. 현재 `review variants`만 `not yet`이다.
 - local proof (Node v22.22.2 기준, 이번 세션 마지막 측정값):
-  - `npm run verify`: 158/158 green
+  - `npm run verify`: 168/168 green
   - `node ./scripts/check-specs.mjs`: `spec checks passed (4 specs, 396 guard rows)`
   - `node ./bin/cautilus doctor --repo-root .`: `ready`
+  - `npm run hooks:check`: `ready`
   - 빠른 happy-path smoke:
     `eval "$(node ./bin/cautilus workspace start --label smoke)"` →
     `CAUTILUS_RUN_DIR`이 현재 shell에 박히고 `run.json` 마커가 생긴다.
@@ -174,70 +185,7 @@
 
 ## Next Session
 
-1. **Slice 5: `review prepare-input` active-run wiring.** 구현 파일은
-   `scripts/agent-runtime/build-review-packet.mjs`다. 모든 design 결정은
-   이미 `docs/contracts/active-run.md`의 `### Consume-Only Helpers`
-   서브섹션과 Probe Questions(`Resolved (slice 5 decision)`)에 박혀 있다.
-   다음 세션은 그 계약을 코드로 옮기기만 하면 된다. 요약:
-
-   **Helper 추가 (slice 5 첫 작업):** `scripts/agent-runtime/active-run.mjs`에
-   새 export를 추가한다. 같은 파일의 기존 `ensureExistingDirectory`
-   file-scoped helper를 재사용할 수 있다.
-   ```js
-   export function readActiveRunDir({ env = process.env } = {}) {
-     const value = env?.[ACTIVE_RUN_ENV_VAR];
-     if (!value) return null;
-     const resolved = resolve(value);
-     ensureExistingDirectory(resolved, ACTIVE_RUN_ENV_VAR);
-     return resolved;
-   }
-   ```
-   `resolveRunDir`은 건드리지 않는다. 둘은 대등한 siblings다 —
-   `resolveRunDir`은 workflow를 start하는 명령이 쓰고, `readActiveRunDir`은
-   consume-only helper가 쓴다.
-
-   **`scripts/agent-runtime/active-run.test.mjs` 확장:** 새 helper를 위해
-   test 네 개 추가: (a) env var unset이면 `null`, (b) env var이 존재하는
-   dir을 가리키면 absolute path, (c) env var이 missing path면 throw,
-   (d) env var이 regular file이면 throw.
-
-   **`build-review-packet.mjs` 변경:** `readActiveRunDir`을 import한 뒤
-   `parseArgs` 이후에 한 번 호출해서 `activeRunDir`을 구한다. 그 다음:
-   - `options.reportFile`이 unset이고 `activeRunDir`이 존재하면
-     `options.reportFile = join(activeRunDir, "report.json")`.
-   - `options.reportFile`이 여전히 unset이면 기존 `--report-file is required`
-     fail 그대로.
-   - `options.output`이 unset이고 `activeRunDir`이 존재하면
-     `options.output = join(activeRunDir, "review-packet.json")`.
-   - 기존 `if (options.output) writeFileSync ... else stdout` 분기는 그대로.
-   - **`Active run:` stderr banner는 찍지 않는다** (contract doc의
-     Consume-Only Helpers 규칙).
-
-   **Test cases** (`build-review-packet.test.mjs`에 이미 있는 test 파일에
-   추가하거나 없으면 새로 만든다):
-   (a) env var set + report.json이 runDir에 있음 + `--report-file`/`--output`
-       둘 다 생략 → runDir 안의 `report.json`을 읽고 `review-packet.json`을
-       쓴다.
-   (b) env var set + runDir 안에 `report.json`이 없음 → loud fail.
-   (c) no env var + explicit `--report-file` + no `--output` → 현재 stdout
-       backwards-compat 동작 유지.
-   (d) env var set + explicit `--output <path>` → explicit 경로로 쓴다
-       (explicit-over-env regression).
-   (e) no env var + no `--report-file` → 여전히 `--report-file is required`
-       loud fail.
-   (f) env var이 set인데 missing dir을 가리킴 → loud fail.
-
-   **Load-bearing self-dogfood regression:** `scripts/run-self-dogfood.mjs`의
-   `prepareReviewPrompt` (line 429-445)는 `review prepare-input`에
-   `--report-file`과 `--output`을 **둘 다 explicit하게** 넘긴다. test (d)가
-   이 경로의 regression guard다.
-
-   **끝나면:** `docs/contracts/active-run.md`의 `### Wired Consumers` 표에서
-   `review prepare-input` 행을 `wired`로 바꾸고 review-packet.json row의
-   Notes 칼럼에 canonical default를 명시한다. `### Consume-Only Helpers`
-   섹션에서 `review prepare-input` 항목에 "wired" 표식만 추가한다 (다른
-   항목들은 follow-up slice 대상).
-2. **Slice 6: `review variants` active-run wiring.** 구현 파일은
+1. **Slice 6: `review variants` active-run wiring.** 구현 파일은
    `scripts/agent-runtime/run-workbench-executor-variants.mjs` (CLI 진입점)
    이고, 현재 `--output-dir`이 required다.
 
@@ -258,13 +206,13 @@
    slice 3의 `explicit --output-dir overrides an inherited CAUTILUS_RUN_DIR`
    test와 동일한 것을 `run-workbench-executor-variants.test.mjs` 수준에
    꼭 건다. 이 regression은 패턴 선택과 무관하게 load-bearing이다.
-3. **Slice 후반: file-in/file-out helper 결정.** `evidence prepare-input`,
+2. **Slice 후반: file-in/file-out helper 결정.** `evidence prepare-input`,
    `optimize prepare-input`, `report build`, `evidence bundle`,
    `optimize propose`, `optimize build-artifact` 같은 helper들도 active run
    안에서는 canonical filename을 default로 삼을지 slice 5의 probe 답변에
    맞춰 각각 결정한다. 필요하면 contract 표에 row를 더 추가하면서 slice별로
    풀어간다.
-4. HTML view follow-ups는 다음 우선순위로 내려간다.
+3. HTML view follow-ups는 다음 우선순위로 내려간다.
    - `artifacts/self-dogfood/experiments/latest/` 번들이 다시 쓰이기 시작하면
      그때 HTML view를 experiments surface까지 확장할지 결정한다. 지금은 해당
      디렉터리가 비어 있어서 defer.

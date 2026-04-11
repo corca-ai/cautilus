@@ -1,9 +1,10 @@
 import assert from "node:assert/strict";
-import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 import test from "node:test";
+import { ACTIVE_RUN_ENV_VAR } from "./active-run.mjs";
 
 const SCRIPT_PATH = join(process.cwd(), "scripts", "agent-runtime", "build-review-packet.mjs");
 
@@ -45,62 +46,61 @@ function createRepo() {
 	return root;
 }
 
+function writeValidReport(reportFile) {
+	writeFileSync(
+		reportFile,
+		JSON.stringify(
+			{
+				schemaVersion: "cautilus.report_packet.v1",
+				generatedAt: "2026-04-11T00:00:00.000Z",
+				candidate: "feature/cli",
+				baseline: "origin/main",
+				intent: "CLI behavior should stay legible.",
+				intentProfile: {
+					schemaVersion: "cautilus.behavior_intent.v1",
+					intentId: "intent-cli-behavior-legibility",
+					summary: "CLI behavior should stay legible.",
+					behaviorSurface: "operator_cli",
+					successDimensions: [
+						{
+							id: "legibility",
+							summary: "Operators can understand the next step.",
+						},
+					],
+					guardrailDimensions: [],
+				},
+				commands: [],
+				modesRun: [],
+				modeSummaries: [],
+				telemetry: {},
+				improved: [],
+				regressed: [],
+				unchanged: [],
+				noisy: [],
+				humanReviewFindings: [],
+				recommendation: "defer",
+			},
+			null,
+			2,
+		),
+		"utf-8",
+	);
+}
+
+function runBuildReviewPacket(args, { env = process.env } = {}) {
+	return spawnSync("node", [SCRIPT_PATH, ...args], {
+		cwd: process.cwd(),
+		encoding: "utf-8",
+		env,
+	});
+}
+
 test("build-review-packet collects adapter review surfaces around a report packet", () => {
 	const root = createRepo();
 	try {
 		const reportFile = join(root, "reports", "latest.json");
-		writeFileSync(
-			reportFile,
-			JSON.stringify(
-				{
-					schemaVersion: "cautilus.report_packet.v1",
-					generatedAt: "2026-04-11T00:00:00.000Z",
-					candidate: "feature/cli",
-					baseline: "origin/main",
-					intent: "CLI behavior should stay legible.",
-					intentProfile: {
-						schemaVersion: "cautilus.behavior_intent.v1",
-						intentId: "intent-cli-behavior-legibility",
-						summary: "CLI behavior should stay legible.",
-						behaviorSurface: "operator_cli",
-						successDimensions: [
-							{
-								id: "legibility",
-								summary: "Operators can understand the next step.",
-							},
-						],
-						guardrailDimensions: [],
-					},
-					commands: [],
-					modesRun: [],
-					modeSummaries: [],
-					telemetry: {},
-					improved: [],
-					regressed: [],
-					unchanged: [],
-					noisy: [],
-					humanReviewFindings: [],
-					recommendation: "defer",
-				},
-				null,
-				2,
-			),
-			"utf-8",
-		);
-		const result = spawnSync(
-			"node",
-			[
-				SCRIPT_PATH,
-				"--repo-root",
-				root,
-				"--report-file",
-				reportFile,
-			],
-			{
-				cwd: process.cwd(),
-				encoding: "utf-8",
-			},
-		);
+		writeValidReport(reportFile);
+		const result = runBuildReviewPacket(["--repo-root", root, "--report-file", reportFile]);
 		assert.equal(result.status, 0, result.stderr);
 		const packet = JSON.parse(result.stdout);
 		assert.equal(packet.schemaVersion, "cautilus.review_packet.v1");
@@ -110,6 +110,108 @@ test("build-review-packet collects adapter review surfaces around a report packe
 		assert.equal(packet.humanReviewPrompts[0].id, "operator");
 		assert.equal(packet.defaultPromptFile.exists, true);
 		assert.equal(packet.report.intentProfile.intentId, "intent-cli-behavior-legibility");
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("build-review-packet defaults to the active run report and review-packet paths", () => {
+	const root = createRepo();
+	try {
+		const runDir = join(root, "active-run");
+		mkdirSync(runDir, { recursive: true });
+		writeValidReport(join(runDir, "report.json"));
+		const result = runBuildReviewPacket(["--repo-root", root], {
+			env: { ...process.env, [ACTIVE_RUN_ENV_VAR]: runDir },
+		});
+		assert.equal(result.status, 0, result.stderr);
+		assert.equal(result.stdout, "");
+		assert.doesNotMatch(result.stderr, /Active run:/);
+		const packetPath = join(runDir, "review-packet.json");
+		assert.equal(existsSync(packetPath), true);
+		const packet = JSON.parse(readFileSync(packetPath, "utf-8"));
+		assert.equal(packet.reportFile, join(runDir, "report.json"));
+		assert.equal(packet.schemaVersion, "cautilus.review_packet.v1");
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("build-review-packet fails loudly when the active run report is missing", () => {
+	const root = createRepo();
+	try {
+		const runDir = join(root, "active-run");
+		mkdirSync(runDir, { recursive: true });
+		const result = runBuildReviewPacket(["--repo-root", root], {
+			env: { ...process.env, [ACTIVE_RUN_ENV_VAR]: runDir },
+		});
+		assert.equal(result.status, 1);
+		assert.match(result.stderr, /Report file not found:/);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("build-review-packet preserves stdout behavior without an active run", () => {
+	const root = createRepo();
+	try {
+		const reportFile = join(root, "reports", "latest.json");
+		writeValidReport(reportFile);
+		const result = runBuildReviewPacket(["--repo-root", root, "--report-file", reportFile], {
+			env: { ...process.env, [ACTIVE_RUN_ENV_VAR]: "" },
+		});
+		assert.equal(result.status, 0, result.stderr);
+		const packet = JSON.parse(result.stdout);
+		assert.equal(packet.reportFile, reportFile);
+		assert.equal(result.stderr, "");
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("build-review-packet lets an explicit output path override the active run default", () => {
+	const root = createRepo();
+	try {
+		const runDir = join(root, "active-run");
+		mkdirSync(runDir, { recursive: true });
+		writeValidReport(join(runDir, "report.json"));
+		const explicitOutput = join(root, "reports", "explicit-review-packet.json");
+		const result = runBuildReviewPacket(
+			["--repo-root", root, "--output", explicitOutput],
+			{
+				env: { ...process.env, [ACTIVE_RUN_ENV_VAR]: runDir },
+			},
+		);
+		assert.equal(result.status, 0, result.stderr);
+		assert.equal(existsSync(explicitOutput), true);
+		assert.equal(existsSync(join(runDir, "review-packet.json")), false);
+		const packet = JSON.parse(readFileSync(explicitOutput, "utf-8"));
+		assert.equal(packet.reportFile, join(runDir, "report.json"));
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("build-review-packet still requires --report-file when no active run is pinned", () => {
+	const root = createRepo();
+	try {
+		const result = runBuildReviewPacket(["--repo-root", root]);
+		assert.equal(result.status, 1);
+		assert.match(result.stderr, /--report-file is required/);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("build-review-packet fails loudly when the active run directory is missing", () => {
+	const root = createRepo();
+	try {
+		const missingDir = join(root, "missing-run");
+		const result = runBuildReviewPacket(["--repo-root", root], {
+			env: { ...process.env, [ACTIVE_RUN_ENV_VAR]: missingDir },
+		});
+		assert.equal(result.status, 1);
+		assert.match(result.stderr, new RegExp(`${ACTIVE_RUN_ENV_VAR} does not exist`));
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}
