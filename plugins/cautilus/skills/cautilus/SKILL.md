@@ -114,9 +114,19 @@ A/B loops:
 npm run dogfood:self:experiments
 ```
 
+When the job only needs to refresh the static HTML view of the current
+checked-in self-dogfood bundle (for example after hand-editing the markdown
+narrative or regenerating JSON offline), use:
+
+```bash
+npm run dogfood:self:html
+```
+
 Treat `dogfood:self` as the canonical operator-facing record of the current
 self-dogfood result. Treat `dogfood:self:experiments` as the place for stronger
 claims such as binary-surface, skill-surface, and gate-honesty probes.
+Treat `dogfood:self:html` as a read-only view of the checked-in JSON bundle,
+not as a separate source of truth.
 
 7. Report exact commands, exact placeholder values, and the final recommendation.
 8. When the repo already has normalized scenario proposal candidates, generate

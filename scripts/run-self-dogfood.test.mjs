@@ -119,7 +119,7 @@ test("run-self-dogfood writes latest artifacts and prunes older runs", () => {
 		assert.equal(firstSummary.runId, "run-1");
 		assert.equal(firstSummary.overallStatus, "pass");
 		assert.ok(existsSync(join(artifactRoot, "latest", "latest.md")));
-		assert.deepEqual(readdirSync(join(artifactRoot, "latest")).sort(), ["latest.md", "report.json", "review-summary.json", "summary.json"]);
+		assert.deepEqual(readdirSync(join(artifactRoot, "latest")).sort(), ["index.html", "latest.md", "report.json", "review-summary.json", "summary.json"]);
 		const publishedSummary = JSON.parse(readFileSync(join(artifactRoot, "latest", "summary.json"), "utf-8"));
 		assert.equal(publishedSummary.repoRoot, ".");
 		assert.equal(publishedSummary.reportPath, "artifacts/self-dogfood/latest/report.json");
@@ -139,7 +139,7 @@ test("run-self-dogfood writes latest artifacts and prunes older runs", () => {
 		const secondSummary = JSON.parse(readFileSync(second.stdout.trim(), "utf-8"));
 		assert.equal(secondSummary.runId, "run-2");
 		assert.deepEqual(readdirSync(join(artifactRoot, "runs")), ["run-2"]);
-		assert.deepEqual(readdirSync(join(artifactRoot, "latest")).sort(), ["latest.md", "report.json", "review-summary.json", "summary.json"]);
+		assert.deepEqual(readdirSync(join(artifactRoot, "latest")).sort(), ["index.html", "latest.md", "report.json", "review-summary.json", "summary.json"]);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

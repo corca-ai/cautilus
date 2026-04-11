@@ -245,6 +245,19 @@ bundle:
 npm run dogfood:self:experiments
 ```
 
+Refresh only the static HTML view of the current checked-in self-dogfood
+bundle, without replaying the LLM-backed review:
+
+```bash
+npm run dogfood:self:html
+```
+
+The rendered HTML is written alongside the other published files at
+`artifacts/self-dogfood/latest/index.html` and is automatically refreshed every
+time `npm run dogfood:self` rewrites the latest bundle. It is a read-only view
+of `summary.json`, `report.json`, and `review-summary.json`, so the JSON files
+remain the source of truth.
+
 Prepare clean baseline and candidate git worktrees for a compare run:
 
 ```bash

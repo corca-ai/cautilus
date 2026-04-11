@@ -7,6 +7,7 @@ import process from "node:process";
 import { pruneWorkspaceArtifacts } from "./agent-runtime/prune-workspace-artifacts.mjs";
 import { buildPublishedReport, buildPublishedReviewSummary, buildPublishedSummary } from "./self-dogfood-published-snapshot.mjs";
 import { enrichExperimentPrompt } from "./self-dogfood-experiment-prompt.mjs";
+import { renderHtml as renderSelfDogfoodHtml } from "./render-self-dogfood-html.mjs";
 
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(SCRIPT_DIR, "..");
@@ -353,6 +354,11 @@ function writeLatestArtifacts(latestDir, { summary, report, reviewSummary, lates
 	writeFileSync(join(latestDir, "report.json"), `${JSON.stringify(report, null, 2)}\n`, "utf-8");
 	writeFileSync(join(latestDir, "review-summary.json"), `${JSON.stringify(reviewSummary, null, 2)}\n`, "utf-8");
 	writeFileSync(join(latestDir, "latest.md"), latestMarkdown, "utf-8");
+	writeFileSync(
+		join(latestDir, "index.html"),
+		renderSelfDogfoodHtml({ summary, report, reviewSummary }),
+		"utf-8",
+	);
 }
 
 function pruneRuns(runsRoot, keepLast) {
