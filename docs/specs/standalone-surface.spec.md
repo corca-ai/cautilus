@@ -17,36 +17,25 @@ standalone acceptance boundary만 남긴다.
 | README.md | fixed | intentful behavior evaluation |
 | AGENTS.md | fixed | independent binary plus bundled skill |
 | bin/cautilus | file_exists |  |
+| go.mod | file_exists |  |
+| go.mod | fixed | module github.com/corca-ai/cautilus |
+| cmd/cautilus/main.go | file_exists |  |
+| cmd/cautilus/main.go | fixed | cli.FindRepoRoot |
+| cmd/cautilus/main.go | fixed | exec.Command("node" |
+| internal/cli/command-registry.json | file_exists |  |
+| internal/cli/command-registry.json | fixed | cautilus doctor [args] |
+| internal/cli/command-registry.json | fixed | scripts/install-skills.mjs |
+| internal/cli/command-registry.json | fixed | scripts/agent-runtime/summarize-scenario-telemetry.mjs |
 | .claude-plugin/marketplace.json | file_exists |  |
 | .agents/plugins/marketplace.json | file_exists |  |
 | plugins/cautilus/.claude-plugin/plugin.json | file_exists |  |
 | plugins/cautilus/.codex-plugin/plugin.json | file_exists |  |
-| bin/cautilus | fixed | cautilus doctor |
-| bin/cautilus | fixed | workspace prepare-compare |
-| bin/cautilus | fixed | workspace prune-artifacts |
-| bin/cautilus | fixed | workspace start |
-| bin/cautilus | fixed | scenario normalize chatbot |
-| bin/cautilus | fixed | scenario normalize cli |
-| bin/cautilus | fixed | scenario normalize skill |
-| bin/cautilus | fixed | scenario summarize-telemetry |
-| bin/cautilus | fixed | scenario prepare-input |
-| bin/cautilus | fixed | scenario propose |
-| bin/cautilus | fixed | evidence prepare-input |
-| bin/cautilus | fixed | evidence bundle |
-| bin/cautilus | fixed | report build |
-| bin/cautilus | fixed | mode evaluate |
-| bin/cautilus | fixed | skills install |
-| bin/cautilus | fixed | optimize prepare-input |
-| bin/cautilus | fixed | optimize propose |
-| bin/cautilus | fixed | optimize build-artifact |
-| bin/cautilus | fixed | cli evaluate |
-| bin/cautilus | fixed | review prepare-input |
-| bin/cautilus | fixed | review build-prompt-input |
-| bin/cautilus | fixed | review render-prompt |
 | bin/cautilus | fixed | --version |
 | bin/cautilus.test.mjs | file_exists |  |
 | bin/cautilus.test.mjs | fixed | root self-consumer repo stays doctor-ready |
 | bin/cautilus.test.mjs | fixed | standalone temp repo can adopt cautilus without Ceal-owned paths |
+| scripts/install-skills.mjs | file_exists |  |
+| scripts/install-skills.mjs | fixed | Installed skill expects `cautilus` to be available on PATH. |
 | skills/cautilus/SKILL.md | file_exists |  |
 | skills/cautilus/SKILL.md | fixed | cautilus skills install |
 | skills/cautilus/SKILL.md | fixed | cautilus adapter resolve --repo-root . |

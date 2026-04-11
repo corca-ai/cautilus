@@ -1,0 +1,158 @@
+{
+  "usage": [
+    "cautilus adapter resolve [args]",
+    "cautilus adapter init [args]",
+    "cautilus doctor [args]",
+    "cautilus workspace prepare-compare [args]",
+    "cautilus workspace prune-artifacts [args]",
+    "cautilus workspace start [args]",
+    "cautilus scenario normalize chatbot [args]",
+    "cautilus scenario normalize cli [args]",
+    "cautilus scenario normalize skill [args]",
+    "cautilus scenario summarize-telemetry [args]",
+    "cautilus scenario prepare-input [args]",
+    "cautilus scenario propose [args]",
+    "cautilus evidence prepare-input [args]",
+    "cautilus evidence bundle [args]",
+    "cautilus report build [args]",
+    "cautilus mode evaluate [args]",
+    "cautilus skills install [--overwrite]",
+    "cautilus optimize prepare-input [args]",
+    "cautilus optimize propose [args]",
+    "cautilus optimize build-artifact [args]",
+    "cautilus review prepare-input [args]",
+    "cautilus review build-prompt-input [args]",
+    "cautilus review render-prompt [args]",
+    "cautilus cli evaluate [args]",
+    "cautilus review variants [args]"
+  ],
+  "examples": [
+    "cautilus adapter resolve --repo-root .",
+    "cautilus adapter init --repo-root .",
+    "cautilus doctor --repo-root .",
+    "cautilus workspace prepare-compare --repo-root . --baseline-ref origin/main --output-dir /tmp/cautilus-compare",
+    "cautilus workspace prune-artifacts --root /tmp/cautilus-runs --keep-last 20",
+    "eval \"$(cautilus workspace start --label mode-held-out)\"",
+    "cautilus scenario normalize chatbot --input ./fixtures/scenario-proposals/chatbot-input.json",
+    "cautilus scenario normalize cli --input ./fixtures/scenario-proposals/cli-input.json",
+    "cautilus scenario normalize skill --input ./fixtures/scenario-proposals/skill-input.json",
+    "cautilus scenario summarize-telemetry --results ./results.json",
+    "cautilus scenario prepare-input --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json",
+    "cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json",
+    "cautilus evidence prepare-input --report-file /tmp/cautilus-mode/report.json --scenario-results-file /tmp/cautilus-mode/held_out-scenario-results.json --run-audit-file /tmp/cautilus-run-audit/run-audit-summary.json",
+    "cautilus evidence bundle --input /tmp/cautilus-evidence/input.json",
+    "cautilus report build --input ./fixtures/reports/report-input.json",
+    "cautilus mode evaluate --repo-root . --mode held_out --intent 'CLI behavior should remain legible.' --baseline-ref origin/main --output-dir /tmp/cautilus-mode",
+    "cautilus skills install",
+    "cautilus optimize prepare-input --report-file /tmp/cautilus-mode/report.json --review-summary /tmp/cautilus-review/review-summary.json --history-file /tmp/cautilus-history/scenario-history.snapshot.json --target prompt --optimizer reflection --budget medium",
+    "cautilus optimize propose --input /tmp/cautilus-optimize/input.json",
+    "cautilus optimize build-artifact --proposal-file /tmp/cautilus-optimize/proposal.json",
+    "cautilus review prepare-input --repo-root . --report-file /tmp/cautilus-mode/report.json",
+    "cautilus review build-prompt-input --review-packet /tmp/cautilus-mode/review.json",
+    "cautilus review render-prompt --input /tmp/cautilus-mode/review-prompt-input.json",
+    "cautilus cli evaluate --input ./fixtures/cli-evaluation/doctor-missing-adapter.json",
+    "cautilus review variants --repo-root . --workspace . --output-dir /tmp/cautilus-review"
+  ],
+  "commands": [
+    {
+      "path": ["adapter", "resolve"],
+      "script": "scripts/resolve_adapter.mjs"
+    },
+    {
+      "path": ["adapter", "init"],
+      "script": "scripts/init_adapter.mjs"
+    },
+    {
+      "path": ["doctor"],
+      "script": "scripts/doctor.mjs"
+    },
+    {
+      "path": ["workspace", "prepare-compare"],
+      "script": "scripts/agent-runtime/prepare-compare-worktrees.mjs"
+    },
+    {
+      "path": ["workspace", "prune-artifacts"],
+      "script": "scripts/agent-runtime/prune-workspace-artifacts.mjs"
+    },
+    {
+      "path": ["workspace", "start"],
+      "script": "scripts/agent-runtime/workspace-start.mjs"
+    },
+    {
+      "path": ["scenario", "normalize", "chatbot"],
+      "script": "scripts/agent-runtime/normalize-chatbot-proposals.mjs"
+    },
+    {
+      "path": ["scenario", "normalize", "cli"],
+      "script": "scripts/agent-runtime/normalize-cli-proposals.mjs"
+    },
+    {
+      "path": ["scenario", "normalize", "skill"],
+      "script": "scripts/agent-runtime/normalize-skill-proposals.mjs"
+    },
+    {
+      "path": ["scenario", "summarize-telemetry"],
+      "script": "scripts/agent-runtime/summarize-scenario-telemetry.mjs"
+    },
+    {
+      "path": ["scenario", "prepare-input"],
+      "script": "scripts/agent-runtime/build-scenario-proposal-input.mjs"
+    },
+    {
+      "path": ["scenario", "propose"],
+      "script": "scripts/agent-runtime/generate-scenario-proposals.mjs"
+    },
+    {
+      "path": ["evidence", "prepare-input"],
+      "script": "scripts/agent-runtime/build-evidence-input.mjs"
+    },
+    {
+      "path": ["evidence", "bundle"],
+      "script": "scripts/agent-runtime/build-evidence-bundle.mjs"
+    },
+    {
+      "path": ["report", "build"],
+      "script": "scripts/agent-runtime/build-report-packet.mjs"
+    },
+    {
+      "path": ["mode", "evaluate"],
+      "script": "scripts/agent-runtime/evaluate-adapter-mode.mjs"
+    },
+    {
+      "path": ["skills", "install"],
+      "script": "scripts/install-skills.mjs"
+    },
+    {
+      "path": ["optimize", "prepare-input"],
+      "script": "scripts/agent-runtime/build-optimize-input.mjs"
+    },
+    {
+      "path": ["optimize", "propose"],
+      "script": "scripts/agent-runtime/generate-optimize-proposal.mjs"
+    },
+    {
+      "path": ["optimize", "build-artifact"],
+      "script": "scripts/agent-runtime/build-revision-artifact.mjs"
+    },
+    {
+      "path": ["review", "prepare-input"],
+      "script": "scripts/agent-runtime/build-review-packet.mjs"
+    },
+    {
+      "path": ["review", "build-prompt-input"],
+      "script": "scripts/agent-runtime/build-review-prompt-input.mjs"
+    },
+    {
+      "path": ["review", "render-prompt"],
+      "script": "scripts/agent-runtime/render-review-prompt.mjs"
+    },
+    {
+      "path": ["cli", "evaluate"],
+      "script": "scripts/agent-runtime/evaluate-cli-intent.mjs"
+    },
+    {
+      "path": ["review", "variants"],
+      "script": "scripts/agent-runtime/run-workbench-executor-variants.mjs"
+    }
+  ]
+}

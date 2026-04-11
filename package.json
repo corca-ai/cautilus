@@ -20,7 +20,9 @@
     "lint": "npm run lint:eslint && npm run lint:specs",
     "lint:eslint": "eslint .",
     "lint:specs": "node scripts/check-specs.mjs",
-    "test": "node --test bin/*.test.mjs scripts/*.test.mjs scripts/agent-runtime/*.test.mjs scripts/release/*.test.mjs",
+    "test:go": "go test ./cmd/... ./internal/...",
+    "test:node": "node --test bin/*.test.mjs scripts/*.test.mjs scripts/agent-runtime/*.test.mjs scripts/release/*.test.mjs",
+    "test": "npm run test:go && npm run test:node",
     "verify": "npm run lint && npm run test"
   },
   "devDependencies": {

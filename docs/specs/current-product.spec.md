@@ -28,6 +28,7 @@ standalone product여야 한다.
 | package.json | fixed | "dogfood:self" |
 | package.json | fixed | "dogfood:self:experiments" |
 | package.json | fixed | "lint" |
+| package.json | fixed | "test:go" |
 | package.json | fixed | "test" |
 | package.json | fixed | "verify" |
 | .agents/cautilus-adapter.yaml | file_exists |  |
@@ -51,40 +52,30 @@ standalone product여야 한다.
 | .gitignore | fixed | !artifacts/self-dogfood/latest/summary.json |
 | eslint.config.mjs | file_exists |  |
 | .github/workflows/verify.yml | file_exists |  |
+| .github/workflows/verify.yml | fixed | actions/setup-go@v5 |
 | .github/workflows/verify.yml | fixed | npm run verify |
 | .github/workflows/release-artifacts.yml | file_exists |  |
 | .github/workflows/release-artifacts.yml | fixed | render-homebrew-formula.mjs |
+| go.mod | file_exists |  |
+| go.mod | fixed | module github.com/corca-ai/cautilus |
+| cmd/cautilus/main.go | file_exists |  |
+| cmd/cautilus/main.go | fixed | cli.FindRepoRoot |
+| cmd/cautilus/main.go | fixed | exec.Command("node" |
+| internal/cli/command-registry.json | file_exists |  |
+| internal/cli/command-registry.json | fixed | scripts/install-skills.mjs |
+| internal/cli/command-registry.json | fixed | scripts/agent-runtime/workspace-start.mjs |
+| internal/cli/command-registry.json | fixed | scripts/agent-runtime/run-workbench-executor-variants.mjs |
+| internal/cli/command-registry.json | fixed | cautilus skills install [--overwrite] |
 | bin/cautilus | file_exists |  |
 | .claude-plugin/marketplace.json | file_exists |  |
 | .agents/plugins/marketplace.json | file_exists |  |
 | plugins/cautilus/.claude-plugin/plugin.json | file_exists |  |
 | plugins/cautilus/.codex-plugin/plugin.json | file_exists |  |
-| bin/cautilus | fixed | adapter resolve |
-| bin/cautilus | fixed | cautilus doctor |
-| bin/cautilus | fixed | workspace prepare-compare |
-| bin/cautilus | fixed | workspace prune-artifacts |
-| bin/cautilus | fixed | workspace start |
-| bin/cautilus | fixed | scenario normalize chatbot |
-| bin/cautilus | fixed | scenario normalize cli |
-| bin/cautilus | fixed | scenario normalize skill |
-| bin/cautilus | fixed | scenario prepare-input |
-| bin/cautilus | fixed | scenario propose |
-| bin/cautilus | fixed | evidence prepare-input |
-| bin/cautilus | fixed | evidence bundle |
-| bin/cautilus | fixed | report build |
-| bin/cautilus | fixed | mode evaluate |
-| bin/cautilus | fixed | skills install |
-| bin/cautilus | fixed | optimize prepare-input |
-| bin/cautilus | fixed | optimize propose |
-| bin/cautilus | fixed | optimize build-artifact |
-| bin/cautilus | fixed | cli evaluate |
-| bin/cautilus | fixed | review prepare-input |
-| bin/cautilus | fixed | review build-prompt-input |
-| bin/cautilus | fixed | review render-prompt |
-| bin/cautilus | fixed | review variants |
 | bin/cautilus | fixed | --version |
 | bin/cautilus.test.mjs | file_exists |  |
 | bin/cautilus.test.mjs | fixed | root self-consumer repo stays doctor-ready |
+| scripts/install-skills.mjs | file_exists |  |
+| scripts/install-skills.mjs | fixed | Installed skill expects `cautilus` to be available on PATH. |
 | skills/cautilus/SKILL.md | file_exists |  |
 | skills/cautilus/SKILL.md | fixed | cautilus skills install |
 | skills/cautilus/SKILL.md | fixed | npm run dogfood:self |
@@ -235,7 +226,6 @@ standalone product여야 한다.
 | fixtures/optimize/revision-artifact.schema.json | file_exists |  |
 | fixtures/optimize/revision-artifact.schema.json | fixed | cautilus.revision_artifact.v1 |
 | fixtures/optimize/example-revision-artifact.json | file_exists |  |
-| bin/cautilus | fixed | scenario summarize-telemetry |
 | install.sh | file_exists |  |
 | install.sh | fixed | CAUTILUS_VERSION |
 | scripts/release/render-homebrew-formula.mjs | file_exists |  |

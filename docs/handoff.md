@@ -16,6 +16,11 @@
   [docs/specs/self-dogfood.spec.md](./specs/self-dogfood.spec.md),
   [docs/specs/current-product.spec.md](./specs/current-product.spec.md),
   [bin/cautilus](../bin/cautilus),
+  [cmd/cautilus/main.go](../cmd/cautilus/main.go),
+  [go.mod](../go.mod),
+  [internal/cli/command-registry.json](../internal/cli/command-registry.json),
+  [scripts/cli-registry.mjs](../scripts/cli-registry.mjs),
+  [scripts/install-skills.mjs](../scripts/install-skills.mjs),
   [scripts/agent-runtime/report-packet.mjs](../scripts/agent-runtime/report-packet.mjs),
   [scripts/agent-runtime/active-run.mjs](../scripts/agent-runtime/active-run.mjs),
   [scripts/agent-runtime/workspace-start.mjs](../scripts/agent-runtime/workspace-start.mjs),
@@ -58,6 +63,20 @@
   - Homebrew publication is intentionally deferred until after the Go port.
     The current release still uploads `Cautilus.rb` as an artifact for
     reference only; do not treat it as the public install contract yet.
+- first Go slice for the CLI entry layer has landed on `go-port`.
+  - `go.mod` now pins the repo to Go `1.26`, and `cmd/cautilus/main.go`
+    provides a Go CLI entry that preserves the existing command contract while
+    still delegating execution to the current Node scripts.
+  - `internal/cli/command-registry.json` is now the source of truth for
+    command usage lines, examples, and script routing. Both `bin/cautilus`
+    and the Go entry read the same registry instead of hand-maintaining two
+    route tables.
+  - `scripts/install-skills.mjs` now owns the `skills install` implementation,
+    so the Node CLI no longer has a one-off built-in command body that blocks
+    the dispatcher port.
+  - `npm run verify` now includes `go test ./cmd/... ./internal/...`, and
+    `.github/workflows/verify.yml` sets up Go `1.26.1` before running the
+    existing Node-based verify flow.
 - binary / CLI distribution research is now written down in one durable place:
   [docs/cli-distribution.md](./cli-distribution.md).
   Next session should use that note as the rationale baseline instead of
@@ -73,6 +92,10 @@
     `docs/release-boundary.md`, `docs/specs/current-product.spec.md`가
     모두 같은 install story를 말한다. plugin marketplace surface는
     canonical consumer install contract가 아니라 local test fixture다.
+  - CLI routing source of truth는 이제 `bin/cautilus` 안의 hard-coded
+    branch chain이 아니라 `internal/cli/command-registry.json`이다.
+    Node entry는 `scripts/cli-registry.mjs`를 통해 registry를 읽고,
+    Go entry도 같은 registry를 embed해서 help/dispatch drift를 막는다.
   - adapter bootstrap seam도 product-owned Node runtime으로 수렴했다.
     `resolve`, `init`, `doctor`는 이제 `python3`가 아니라
     `scripts/resolve_adapter.mjs`, `scripts/init_adapter.mjs`,
@@ -300,11 +323,13 @@
   - `docs/contracts/active-run.md`의 `### Wired Consumers` 표가
     authoritative status. active-run 쪽 open question은 이제 filename naming보다
     `run.json` metadata 확장과 shell flavor surface 같은 operator ergonomics다.
-- local proof (Node v22.22.2 기준, 이번 세션 마지막 측정값):
+- local proof (Node v22.22.2, Go 1.26.1 기준, 이번 세션 마지막 측정값):
+  - `go run ./cmd/cautilus --version`: `0.2.0`
+  - `go test ./cmd/... ./internal/...`: green
   - `node --test bin/cautilus.test.mjs`: 23/23 green
   - `node --test scripts/agent-runtime/run-workbench-executor-variants.test.mjs`: 8/8 green
   - `npm run verify`: 190/190 green
-  - `node ./scripts/check-specs.mjs`: `spec checks passed (4 specs, 416 guard rows)`
+  - `node ./scripts/check-specs.mjs`: `spec checks passed (4 specs, 395 guard rows)`
   - `cautilus doctor --repo-root .`: `ready`
   - `npm run hooks:check`: `ready`
   - `node ./scripts/run-self-dogfood-experiments.mjs --experiment-adapter-name self-dogfood-binary-surface --quiet`:
@@ -328,11 +353,13 @@
 ## Next Session
 
 1. start the Go port on `go-port`, not another consumer sync pass.
-   The release line is already cut at `v0.2.0`, the Node-only standalone
-   surface is stable enough, and Homebrew is intentionally waiting on the Go
-   binary story.
-2. keep the first Go slice narrow and product-owned.
-   - port the CLI entry / argument routing layer first
+   The release line is already cut at `v0.2.0`, the first CLI-routing slice is
+   now in the tree, and Homebrew is intentionally waiting on the Go binary
+   story.
+2. keep the second Go slice narrow and product-owned.
+   - decide whether the next seam is repo-root/version discovery hardening,
+     command execution abstraction, or a second ported product-owned command
+     body
    - preserve the existing command contract and fixture names unless a break is
      clearly worth it
    - prefer replacing product-owned runtime seams before touching host-facing
@@ -351,8 +378,9 @@
    - is Homebrew now honest enough to publish as the default polished install
      path
 5. 변경 후에는 항상 `npm run verify`를 다시 돌린다. 실행 전에 Node 22가
-   활성화되어 있는지 먼저 확인한다. Go toolchain을 도입하면 그 버전과 build
-   command도 이 문서에 바로 기록한다.
+   활성화되어 있는지 먼저 확인한다. 현재 Go baseline은 `go1.26.1`이고,
+   최소 smoke/build command는 `go run ./cmd/cautilus --version`,
+   test command는 `go test ./cmd/... ./internal/...`다.
 
 ## Discuss
 
@@ -392,6 +420,14 @@
 
 ## Premortem
 
+- 가장 쉬운 새 오해: "Go CLI가 이미 standalone install surface를 대체했다."
+  아니다. 현재 `cmd/cautilus/main.go`는 repo 안에서 첫 dispatcher slice를
+  고정한 것이다. 실제 public install contract는 아직 tagged release +
+  `install.sh` + Node runtime이다.
+- 두 번째 새 오해: "`bin/cautilus`와 Go entry가 각각 자기 route table을
+  가져도 된다." 아니다. 이제 source of truth는
+  `internal/cli/command-registry.json` 하나다. 새 명령이나 usage example을
+  추가할 때는 registry를 먼저 바꿔야 한다.
 - 가장 쉬운 오해: "`index.html`이 self-dogfood의 source of truth다"라고
   착각해서 JSON을 손대지 않고 HTML을 직접 수정한다.
   아니다. footer와 spec 모두 read-only view라고 명시되어 있고, 어차피 다음
@@ -455,6 +491,11 @@
 - [docs/contracts/behavior-intent.md](./contracts/behavior-intent.md)
 - [docs/contracts/scenario-proposal-inputs.md](./contracts/scenario-proposal-inputs.md)
 - [docs/specs/self-dogfood.spec.md](./specs/self-dogfood.spec.md)
+- [cmd/cautilus/main.go](../cmd/cautilus/main.go)
+- [go.mod](../go.mod)
+- [internal/cli/command-registry.json](../internal/cli/command-registry.json)
+- [scripts/cli-registry.mjs](../scripts/cli-registry.mjs)
+- [scripts/install-skills.mjs](../scripts/install-skills.mjs)
 - [bin/cautilus.test.mjs](../bin/cautilus.test.mjs)
 - [scripts/agent-runtime/workspace-start.mjs](../scripts/agent-runtime/workspace-start.mjs)
 - [scripts/agent-runtime/workspace-start.test.mjs](../scripts/agent-runtime/workspace-start.test.mjs)
