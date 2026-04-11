@@ -9,19 +9,24 @@ import (
 	"strings"
 )
 
+var buildVersion string
+
 func PackageVersion(toolRoot string) (string, error) {
-	buildVersion := ""
+	buildInfoVersion := ""
 	if info, ok := debug.ReadBuildInfo(); ok && info != nil {
-		buildVersion = info.Main.Version
+		buildInfoVersion = info.Main.Version
 	}
-	return resolvePackageVersion(toolRoot, buildVersion, os.Getenv("CAUTILUS_VERSION"))
+	return resolvePackageVersion(toolRoot, buildVersion, buildInfoVersion, os.Getenv("CAUTILUS_VERSION"))
 }
 
-func resolvePackageVersion(toolRoot string, buildVersion string, envVersion string) (string, error) {
+func resolvePackageVersion(toolRoot string, linkedVersion string, buildInfoVersion string, envVersion string) (string, error) {
 	if version := normalizeVersionString(envVersion); version != "" {
 		return version, nil
 	}
-	if version := normalizeVersionString(buildVersion); version != "" {
+	if version := normalizeVersionString(linkedVersion); version != "" {
+		return version, nil
+	}
+	if version := normalizeVersionString(buildInfoVersion); version != "" {
 		return version, nil
 	}
 	if strings.TrimSpace(toolRoot) == "" {

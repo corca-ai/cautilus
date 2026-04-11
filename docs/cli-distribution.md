@@ -5,8 +5,8 @@ repos do not have to rediscover the same tradeoffs.
 
 ## Current Position
 
-`Cautilus` is now shipping as a standalone Go CLI built from the tagged source
-archive plus a bundled skill, not yet as a native prebuilt binary asset.
+`Cautilus` is now shipping as a standalone Go CLI through tagged prebuilt
+binary assets plus a bundled skill.
 
 As of the current release line:
 
@@ -15,32 +15,34 @@ As of the current release line:
   [`install.sh`](../install.sh)
 - `install.sh` should install `Cautilus` itself, not operating-system
   dependencies
-- `install.sh` now builds the Go CLI locally from the tagged source archive
+- `install.sh` now downloads the matching tagged binary asset for the host
+  platform
+- `install.sh` verifies the downloaded asset against the tagged checksum
+  manifest before unpacking it
 - Homebrew remains a deferred install surface until the CLI runtime settles
   further
 
 That means the honest operator story today is:
 
 1. install a tagged release with `install.sh`
-2. ensure `go` is already present
-3. confirm `cautilus --version`
-4. in each consumer repo, run `cautilus skills install`
+2. confirm `cautilus --version`
+3. in each consumer repo, run `cautilus skills install`
 
 ## Why The First Public Release Is Not Homebrew-First
 
 Homebrew can work on both macOS and Linux, and it is a good long-term consumer
 path. It is not the first release path for `Cautilus` because the current
-public installer still builds from a tagged source archive instead of
-downloading a prebuilt release artifact.
+public installer already provides one checked-in binary-download contract and
+the Homebrew story is still reference-only.
 
 That creates a few problems:
 
-- the formula would still need to express a build dependency such as `go`
-- the install contract is still source-oriented rather than
-  prebuilt-artifact-oriented
-- the team is already planning a Go port, so locking in a source-based Homebrew
-  formula before the binary-release shape settles would create an install story
-  that is likely to change soon
+- the tap repo is still deferred, so claiming Homebrew as primary would be
+  premature
+- per-platform binary assets need one stable naming and checksum contract before
+  a polished Homebrew story is honest
+- the checked-in installer already closes the main operator path without
+  introducing tap-specific release work
 
 The release surface is simpler if the first public contract stays:
 
@@ -48,8 +50,8 @@ The release surface is simpler if the first public contract stays:
 - one checked-in installer script
 - one runtime family to explain in operator docs
 
-After the Go port, Homebrew becomes much cleaner because the formula can point
-at release tarballs that already contain the final CLI artifact.
+Homebrew becomes cleaner only after the binary-release contract has proven
+stable enough to support tap automation without immediately changing again.
 
 ## Why `install.sh` Should Not Install System Dependencies
 
@@ -131,9 +133,8 @@ the higher rewrite and maintenance cost.
 
 Use this order unless the product direction changes:
 
-1. ship the first public release from the source-built standalone Go CLI surface
-2. keep GitHub releases and `install.sh` as the canonical consumer path
-3. add prebuilt release binaries once the artifact shape is stable
-4. add Homebrew after the Go release artifact shape is stable
-5. revisit stronger binary distribution claims only after the Go release path is
+1. keep GitHub releases and `install.sh` as the canonical consumer path
+2. keep the tagged binary asset matrix stable across releases
+3. add Homebrew after the binary release artifact shape is stable
+4. revisit stronger binary distribution claims only after the release path is
    proven in public

@@ -43,8 +43,8 @@ The current honest install story is:
 
 1. install the standalone CLI from a tagged GitHub release with
    [install.sh](../install.sh)
-2. require `go` to already be installed so `install.sh` can build the CLI from
-   the tagged source archive
+2. let `install.sh` detect the host OS and architecture and download the
+   matching tagged binary asset
 3. require `cautilus --version` to work on `PATH`
 4. in each consumer repo, run `cautilus skills install`
 5. treat `.agents/skills/cautilus/` as the canonical checked-in skill path and

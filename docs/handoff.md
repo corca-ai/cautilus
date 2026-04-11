@@ -137,10 +137,9 @@
     `.agents/skills/cautilus/`를 canonical checked-in path로 materialize한다.
     `.claude/skills -> ../.agents/skills`는 compatibility shim이다.
   - public installer도 이제 Node/npm install path가 아니다.
-    `install.sh`는 tagged source archive를 내려받은 뒤 그 안에서
-    `go build ./cmd/cautilus`로 product binary를 만들고,
-    wrapper가 `CAUTILUS_VERSION`와 caller cwd를 넘겨서 installed binary가
-    source tree discovery 없이도 stable `--version`을 유지하게 한다.
+    `install.sh`는 host OS/arch에 맞는 tagged binary asset을 내려받고,
+    wrapper는 caller cwd만 넘겨서 installed binary가 standalone surface로
+    실행되게 한다.
   - bundled skill과 packaged plugin skill은 이제 repo-local
     `node ./bin/cautilus`가 아니라 standalone `cautilus` command를 호출한다.
   - `README.md`, `docs/consumer-migration.md`,
@@ -390,8 +389,8 @@
   - `go test ./cmd/... ./internal/...`: green
   - `node --test bin/cautilus.test.mjs`: 3/3 green
   - `node --test scripts/agent-runtime/run-workbench-executor-variants.test.mjs`: 8/8 green
-  - `npm run verify`: 171/171 green
-  - `node ./scripts/check-specs.mjs`: `spec checks passed (4 specs, 420 guard rows)`
+  - `npm run verify`: 175/175 green
+  - `node ./scripts/check-specs.mjs`: `spec checks passed (4 specs, 427 guard rows)`
   - `cautilus doctor --repo-root .`: `ready`
   - `npm run hooks:check`: `ready`
   - `node ./scripts/run-self-dogfood-experiments.mjs --experiment-adapter-name self-dogfood-binary-surface --quiet`:
@@ -424,8 +423,10 @@
   - repo-local `bin/cautilus` shim is now POSIX shell, not Node
   - skill asset embedding / install-root discovery for `skills install` is now
     done
-  - the next seam is prebuilt binary asset distribution plus the release
-    automation/documentation needed to make that install story honest
+  - prebuilt binary asset distribution과 release automation/documentation은
+    이제 기본 경로로 들어왔다
+  - the next seam is Homebrew/tap honesty plus stronger release provenance such
+    as signing or attestations
   - preserve the existing command contract and fixture names unless a break is
     clearly worth it
   - prefer replacing product-owned runtime seams before touching host-facing
@@ -434,14 +435,12 @@
    rationale baseline.
    The current product decision is:
    - `install.sh` should not install system dependencies
-   - `install.sh` may require `go`, but it should not install `go` for the host
-   - Homebrew should wait until the Go port is real
+   - `install.sh` should not require `go` on the host
+   - Homebrew should wait until the binary release and tap story are honest
    - Go is preferred over Rust for this product boundary
-4. after the first Go slice lands, re-evaluate the release surface in this
-   order:
-   - can `cautilus` be shipped as a single binary
-   - does `install.sh` switch from tagged source archive install to binary asset
-     download
+4. after the binary release path lands, re-evaluate the release surface in
+   this order:
+   - binary asset naming/checksum contract가 충분히 durable한가
    - is Homebrew now honest enough to publish as the default polished install
      path
 5. 변경 후에는 항상 `npm run verify`를 다시 돌린다. 실행 전에 Node 22가
@@ -489,10 +488,10 @@
 
 - 가장 쉬운 새 오해: "Go CLI가 이미 standalone install surface를 대체했다."
   지금은 거의 맞지만 아직 끝은 아니다. 실제 public install contract는 tagged
-  release + `install.sh`이고, installer runtime은 이제 Node가 아니라 local
-  `go build`다. 아직 미완인 것은 prebuilt binary asset과 single-binary
-  distribution이지, public installer가 Node를 요구하거나 repo-local
-  `bin/cautilus`가 product runtime을 대신 소유하는 건 아니다.
+  release + `install.sh`이고, installer runtime은 이제 tagged binary
+  download다. 아직 미완인 것은 Homebrew/tap honesty와 stronger provenance
+  story (signing/attestations)이지, public installer가 Node나 Go toolchain을 요구하거나
+  repo-local `bin/cautilus`가 product runtime을 대신 소유하는 건 아니다.
 - 두 번째 새 오해: "`bin/cautilus`와 Go entry가 각각 자기 route table을
   가져도 된다." 아니다. 이제 source of truth는
   `internal/cli/command-registry.json` 하나다. 새 명령이나 usage example을

@@ -34,9 +34,22 @@ resolve_version() {
 	curl -fsSLI -o /dev/null -w '%{url_effective}' "https://github.com/$REPO/releases/latest" | sed 's#.*/##'
 }
 
+sha256_file() {
+	if command -v sha256sum >/dev/null 2>&1; then
+		sha256sum "$1" | awk '{print $1}'
+		return
+	fi
+	if command -v shasum >/dev/null 2>&1; then
+		shasum -a 256 "$1" | awk '{print $1}'
+		return
+	fi
+	printf 'Missing required command: sha256sum or shasum\n' >&2
+	exit 1
+}
+
 need_cmd curl
 need_cmd tar
-need_cmd go
+need_cmd uname
 need_cmd sed
 
 if [ "${1:-}" = "--help" ]; then
@@ -45,36 +58,57 @@ if [ "${1:-}" = "--help" ]; then
 fi
 
 VERSION="$(resolve_version)"
-ARCHIVE_URL="https://github.com/$REPO/archive/refs/tags/$VERSION.tar.gz"
+VERSION_TRIMMED="$(printf '%s' "$VERSION" | sed 's/^v//')"
 TMPDIR="$(mktemp -d)"
 ARCHIVE_PATH="$TMPDIR/cautilus.tar.gz"
-EXTRACT_ROOT="$TMPDIR/extract"
 TARGET_DIR="$INSTALL_ROOT/$VERSION"
 
-mkdir -p "$EXTRACT_ROOT" "$INSTALL_ROOT" "$BIN_DIR"
+case "$(uname -s)" in
+	Linux) ASSET_OS="linux" ;;
+	Darwin) ASSET_OS="darwin" ;;
+	*)
+		printf 'Unsupported operating system: %s\n' "$(uname -s)" >&2
+		exit 1
+		;;
+esac
+
+case "$(uname -m)" in
+	x86_64|amd64) ASSET_ARCH="x64" ;;
+	arm64|aarch64) ASSET_ARCH="arm64" ;;
+	*)
+		printf 'Unsupported architecture: %s\n' "$(uname -m)" >&2
+		exit 1
+		;;
+esac
+
+ASSET_NAME="cautilus_${VERSION_TRIMMED}_${ASSET_OS}_${ASSET_ARCH}.tar.gz"
+ARCHIVE_URL="https://github.com/$REPO/releases/download/$VERSION/$ASSET_NAME"
+CHECKSUMS_URL="https://github.com/$REPO/releases/download/$VERSION/cautilus-$VERSION-checksums.txt"
+CHECKSUMS_PATH="$TMPDIR/checksums.txt"
+
+mkdir -p "$INSTALL_ROOT" "$BIN_DIR"
 
 printf 'Installing Cautilus %s from %s\n' "$VERSION" "$ARCHIVE_URL"
 curl -fsSL "$ARCHIVE_URL" -o "$ARCHIVE_PATH"
-tar -xzf "$ARCHIVE_PATH" -C "$EXTRACT_ROOT"
-
-EXTRACTED_DIR="$(find "$EXTRACT_ROOT" -mindepth 1 -maxdepth 1 -type d | head -n 1)"
-if [ -z "$EXTRACTED_DIR" ]; then
-	printf 'Failed to extract release archive.\n' >&2
+curl -fsSL "$CHECKSUMS_URL" -o "$CHECKSUMS_PATH"
+EXPECTED_SHA256="$(grep "  $ASSET_NAME\$" "$CHECKSUMS_PATH" | awk '{print $1}')"
+if [ -z "$EXPECTED_SHA256" ]; then
+	printf 'Failed to find %s in %s\n' "$ASSET_NAME" "$CHECKSUMS_URL" >&2
+	exit 1
+fi
+ACTUAL_SHA256="$(sha256_file "$ARCHIVE_PATH")"
+if [ "$ACTUAL_SHA256" != "$EXPECTED_SHA256" ]; then
+	printf 'Checksum mismatch for %s\nexpected %s\ngot %s\n' "$ASSET_NAME" "$EXPECTED_SHA256" "$ACTUAL_SHA256" >&2
 	exit 1
 fi
 
 rm -rf "$TARGET_DIR"
-mv "$EXTRACTED_DIR" "$TARGET_DIR"
-
-(
-	cd "$TARGET_DIR"
-	mkdir -p "$TARGET_DIR/bin"
-	go build -o "$TARGET_DIR/bin/cautilus-real" ./cmd/cautilus
-)
+mkdir -p "$TARGET_DIR/bin"
+tar -xzf "$ARCHIVE_PATH" -C "$TARGET_DIR/bin"
+mv "$TARGET_DIR/bin/cautilus" "$TARGET_DIR/bin/cautilus-real"
 
 cat > "$BIN_DIR/cautilus" <<EOF
 #!/usr/bin/env sh
-CAUTILUS_VERSION="$VERSION" \
 CAUTILUS_CALLER_CWD="\$(pwd)" \
 exec "$TARGET_DIR/bin/cautilus-real" "\$@"
 EOF

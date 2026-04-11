@@ -98,6 +98,10 @@ standalone acceptance boundary만 남긴다.
 | plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus review variants |
 | plugins/cautilus/skills/cautilus/agents/openai.yaml | file_exists |  |
 | plugins/cautilus/skills/cautilus/agents/openai.yaml | fixed | Cautilus |
+| install.sh | fixed | releases/download/$VERSION/$ASSET_NAME |
+| install.sh | fixed | need_cmd uname |
+| scripts/release/binary-assets.mjs | file_exists |  |
+| scripts/release/binary-assets.mjs | fixed | binaryAssetName |
 | docs/master-plan.md | fixed | standalone installable CLI plus bundled reusable skill |
 | docs/master-plan.md | fixed | CLI behavior |
 

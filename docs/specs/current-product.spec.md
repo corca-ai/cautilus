@@ -244,7 +244,10 @@ standalone product여야 한다.
 | fixtures/optimize/revision-artifact.schema.json | fixed | cautilus.revision_artifact.v1 |
 | fixtures/optimize/example-revision-artifact.json | file_exists |  |
 | install.sh | file_exists |  |
-| install.sh | fixed | CAUTILUS_VERSION |
+| install.sh | fixed | releases/download/$VERSION/$ASSET_NAME |
+| install.sh | fixed | need_cmd uname |
+| scripts/release/binary-assets.mjs | file_exists |  |
+| scripts/release/binary-assets.mjs | fixed | binaryAssetName |
 | scripts/release/render-homebrew-formula.mjs | file_exists |  |
 | scripts/release/render-homebrew-formula.mjs | fixed | renderHomebrewFormula |
 | scripts/release/fetch-github-archive-sha256.mjs | file_exists |  |

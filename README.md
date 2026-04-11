@@ -201,8 +201,9 @@ curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh |
 cautilus --version
 ```
 
-The installer builds a local Go CLI from the tagged source archive, so `go`
-must already be installed on the host.
+The installer downloads the tagged binary asset that matches the host OS and
+architecture, so no local Go toolchain is required for the public install
+path.
 
 Install the bundled skill into a host repo:
 
