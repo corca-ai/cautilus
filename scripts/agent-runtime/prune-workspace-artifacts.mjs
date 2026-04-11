@@ -9,6 +9,7 @@ const EXACT_MARKERS = new Set([
 	"review-packet.json",
 	"review-prompt-input.json",
 	"review.prompt.md",
+	"run.json",
 	"summary.json",
 	"selected-profile.json",
 	"selected-scenario-ids.json",

@@ -53,6 +53,12 @@ const WORKSPACE_ARTIFACT_PRUNER = join(
 	"agent-runtime",
 	"prune-workspace-artifacts.mjs",
 );
+const WORKSPACE_NEW_RUN = join(
+	REPO_ROOT,
+	"scripts",
+	"agent-runtime",
+	"new-workspace-run.mjs",
+);
 const REVIEW_PACKET_BUILDER = join(REPO_ROOT, "scripts", "agent-runtime", "build-review-packet.mjs");
 const REVIEW_PROMPT_INPUT_BUILDER = join(
 	REPO_ROOT,
@@ -91,6 +97,7 @@ function usage(exitCode = 0) {
 		"  cautilus doctor [args]",
 		"  cautilus workspace prepare-compare [args]",
 		"  cautilus workspace prune-artifacts [args]",
+		"  cautilus workspace new-run [args]",
 		"  cautilus scenario normalize chatbot [args]",
 		"  cautilus scenario normalize cli [args]",
 		"  cautilus scenario normalize skill [args]",
@@ -116,6 +123,7 @@ function usage(exitCode = 0) {
 		"  cautilus doctor --repo-root .",
 		"  cautilus workspace prepare-compare --repo-root . --baseline-ref origin/main --output-dir /tmp/cautilus-compare",
 		"  cautilus workspace prune-artifacts --root /tmp/cautilus-runs --keep-last 20",
+		"  cautilus workspace new-run --root /tmp/cautilus-runs --label mode-held-out",
 		"  cautilus scenario normalize chatbot --input ./fixtures/scenario-proposals/chatbot-input.json",
 		"  cautilus scenario normalize cli --input ./fixtures/scenario-proposals/cli-input.json",
 		"  cautilus scenario normalize skill --input ./fixtures/scenario-proposals/skill-input.json",
@@ -177,6 +185,10 @@ if (area === "workspace" && action === "prepare-compare") {
 
 if (area === "workspace" && action === "prune-artifacts") {
 	run("node", [WORKSPACE_ARTIFACT_PRUNER, ...rest]);
+}
+
+if (area === "workspace" && action === "new-run") {
+	run("node", [WORKSPACE_NEW_RUN, ...rest]);
 }
 
 if (area === "scenario" && action === "propose") {

@@ -61,6 +61,7 @@ standalone product여야 한다.
 | bin/cautilus | fixed | cautilus doctor |
 | bin/cautilus | fixed | workspace prepare-compare |
 | bin/cautilus | fixed | workspace prune-artifacts |
+| bin/cautilus | fixed | workspace new-run |
 | bin/cautilus | fixed | scenario normalize chatbot |
 | bin/cautilus | fixed | scenario normalize cli |
 | bin/cautilus | fixed | scenario normalize skill |
@@ -109,6 +110,11 @@ standalone product여야 한다.
 | scripts/agent-runtime/prepare-compare-worktrees.mjs | fixed | --baseline-ref |
 | scripts/agent-runtime/prune-workspace-artifacts.mjs | file_exists |  |
 | scripts/agent-runtime/prune-workspace-artifacts.mjs | fixed | --keep-last |
+| scripts/agent-runtime/prune-workspace-artifacts.mjs | fixed | run.json |
+| scripts/agent-runtime/new-workspace-run.mjs | file_exists |  |
+| scripts/agent-runtime/new-workspace-run.mjs | fixed | cautilus.workspace_run_manifest.v1 |
+| scripts/agent-runtime/new-workspace-run.mjs | fixed | RUN_MANIFEST_SCHEMA |
+| scripts/agent-runtime/new-workspace-run.test.mjs | file_exists |  |
 | fixtures/cli-evaluation/doctor-missing-adapter.json | file_exists |  |
 | fixtures/cli-evaluation/input.schema.json | file_exists |  |
 | scripts/agent-runtime/evaluate-cli-intent.mjs | file_exists |  |
@@ -272,6 +278,8 @@ standalone product여야 한다.
 - target repo의 adapter readiness doctor
 - explicit baseline/candidate git worktree preparation for A/B runs
 - explicit artifact-root pruning for accumulated Cautilus run outputs
+- explicit per-run workspace directory materialization under one artifact root,
+  so consumer commands share a single `--output-dir` convention
 - adapter-defined mode execution that emits report packets directly
 - checked-in scenario profile를 쓰는 mode run에서 scenario selection과
   history update를 product-owned path로 수행
@@ -338,6 +346,8 @@ $ node ./bin/cautilus adapter resolve --repo-root .
 $ node ./bin/cautilus doctor --repo-root .
 $ node ./bin/cautilus workspace prepare-compare --repo-root . --baseline-ref origin/main --output-dir /tmp/cautilus-compare || true
 $ node ./bin/cautilus workspace prune-artifacts --root /tmp/cautilus-runs --keep-last 20 || true
+$ mkdir -p /tmp/cautilus-runs
+$ node ./bin/cautilus workspace new-run --root /tmp/cautilus-runs --label mode-held-out || true
 $ node ./bin/cautilus scenario normalize chatbot --input ./fixtures/scenario-proposals/chatbot-input.json
 $ node ./bin/cautilus scenario normalize cli --input ./fixtures/scenario-proposals/cli-input.json
 $ node ./bin/cautilus scenario normalize skill --input ./fixtures/scenario-proposals/skill-input.json

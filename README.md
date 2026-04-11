@@ -275,6 +275,15 @@ node ./bin/cautilus workspace prune-artifacts \
   --keep-last 20
 ```
 
+Materialize a fresh per-run subdirectory under one stable artifact root and
+use its `runDir` as `--output-dir` for subsequent commands:
+
+```bash
+node ./bin/cautilus workspace new-run \
+  --root /tmp/cautilus-runs \
+  --label mode-held-out
+```
+
 Normalize chatbot-style conversational summaries into proposal candidates:
 
 ```bash
