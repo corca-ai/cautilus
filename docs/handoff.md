@@ -77,6 +77,27 @@
   - `npm run verify` now includes `go test ./cmd/... ./internal/...`, and
     `.github/workflows/verify.yml` sets up Go `1.26.1` before running the
     existing Node-based verify flow.
+- public CLI dispatch no longer depends on the Node command scripts.
+  - `bin/cautilus` is now only a thin Node shim that shells into
+    `go run ./cmd/cautilus` with the caller cwd + tool root preserved through
+    env vars. All commands listed in
+    [internal/cli/command-registry.json](../internal/cli/command-registry.json)
+    now have Go native handlers, so `runNodeFallback` is no longer on the
+    production path for known commands.
+  - `internal/app/` now owns the full CLI surface:
+    adapter/doctor/workspace/scenario/report/review/evidence/optimize plus
+    `workspace prepare-compare`, `workspace prune-artifacts`,
+    `skills install`, `cli evaluate`, `mode evaluate`, and
+    `review variants`.
+  - `internal/runtime/` now also carries Go ports for the contract-heavy
+    normalization/report/review/evidence/optimize logic, and adapter YAML
+    loading now tolerates duplicate top-level keys with last-key-wins semantics
+    so existing append-style test fixtures still parse the same way as the
+    legacy JS path.
+  - checked-in `scripts/*.mjs` and `scripts/agent-runtime/*.mjs` still exist
+    as compatibility / parity surfaces for the current Node unit tests and
+    release fixtures, but the user-facing `cautilus ...` surface is now fully
+    Go-owned.
 - binary / CLI distribution research is now written down in one durable place:
   [docs/cli-distribution.md](./cli-distribution.md).
   Next session should use that note as the rationale baseline instead of

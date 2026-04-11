@@ -59,8 +59,9 @@ standalone product여야 한다.
 | go.mod | file_exists |  |
 | go.mod | fixed | module github.com/corca-ai/cautilus |
 | cmd/cautilus/main.go | file_exists |  |
-| cmd/cautilus/main.go | fixed | cli.FindRepoRoot |
-| cmd/cautilus/main.go | fixed | exec.Command("node" |
+| cmd/cautilus/main.go | fixed | app.Run |
+| bin/cautilus | fixed | CAUTILUS_TOOL_ROOT |
+| bin/cautilus | fixed | go", ["-C" |
 | internal/cli/command-registry.json | file_exists |  |
 | internal/cli/command-registry.json | fixed | scripts/install-skills.mjs |
 | internal/cli/command-registry.json | fixed | scripts/agent-runtime/workspace-start.mjs |
@@ -71,7 +72,7 @@ standalone product여야 한다.
 | .agents/plugins/marketplace.json | file_exists |  |
 | plugins/cautilus/.claude-plugin/plugin.json | file_exists |  |
 | plugins/cautilus/.codex-plugin/plugin.json | file_exists |  |
-| bin/cautilus | fixed | --version |
+| bin/cautilus | fixed | CAUTILUS_CALLER_CWD |
 | bin/cautilus.test.mjs | file_exists |  |
 | bin/cautilus.test.mjs | fixed | root self-consumer repo stays doctor-ready |
 | scripts/install-skills.mjs | file_exists |  |
