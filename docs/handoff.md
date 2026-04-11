@@ -103,6 +103,21 @@
     갱신되어 있다.
   - master plan item 6의 generic `cautilus report html` CLI는 여전히 defer다.
     이 slice는 self-dogfood surface 안으로 좁게 고정되어 있다.
+- self-dogfood `experiments/latest/`에도 compare-first 정적 HTML 뷰가 들어왔다.
+  - `scripts/render-self-dogfood-experiments-html.mjs`가
+    `summary.json`과 `report.json`을 읽어 `index.html`을 만든다.
+    baseline gate와 named experiment adapter들을 한 화면에서 비교 가능하게
+    보여주는 게 load-bearing rule이다. A/B 결과를 isolated summary들로만
+    남겨 operator가 머리로 diff하지 않게 한다.
+  - `npm run dogfood:self:experiments`는 latest bundle을 갱신할 때
+    `index.html`도 같이 다시 쓴다.
+  - `npm run dogfood:self:experiments:html`은 read-only refresh 경로다.
+    experiment review를 다시 돌리지 않고 현재 latest bundle에서만 HTML compare
+    view를 다시 뽑는다.
+  - `docs/specs/self-dogfood.spec.md`는 experiments latest stable path를
+    `summary.json`, `report.json`, `latest.md`, `index.html` 네 개로 고정하고,
+    "A/B 결과는 비교 가능하게 surfaced 해야 한다"는 rule을 source-of-truth
+    spec으로 잠갔다.
 - `cautilus.behavior_intent.v1`은 여전히 closed product-owned `behaviorSurface`
   catalog와 reusable dimension catalog를 가진다.
   - `operator_behavior`
@@ -213,10 +228,13 @@
     authoritative status. active-run 쪽 open question은 이제 filename naming보다
     `run.json` metadata 확장과 shell flavor surface 같은 operator ergonomics다.
 - local proof (Node v22.22.2 기준, 이번 세션 마지막 측정값):
-  - `npm run verify`: 178/178 green
-  - `node ./scripts/check-specs.mjs`: `spec checks passed (4 specs, 396 guard rows)`
+  - `npm run verify`: 184/184 green
+  - `node ./scripts/check-specs.mjs`: `spec checks passed (4 specs, 403 guard rows)`
   - `node ./bin/cautilus doctor --repo-root .`: `ready`
   - `npm run hooks:check`: `ready`
+  - `git push origin main`: success. 최근 push에는
+    `0c758dc Finish active-run canonical filename defaults`와
+    `6f4ba44 Add A/B compare views for self-dogfood experiments`가 포함된다.
   - 빠른 happy-path smoke:
     `eval "$(node ./bin/cautilus workspace start --label smoke)"` →
     `CAUTILUS_RUN_DIR`이 현재 shell에 박히고 `run.json` 마커가 생긴다.
