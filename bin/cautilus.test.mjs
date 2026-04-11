@@ -842,8 +842,8 @@ test("cautilus optimize prepare-input and propose turn explicit evidence into a 
 	const root = mkdtempSync(join(tmpdir(), "cautilus-bin-optimize-"));
 	try {
 		const reportPath = join(root, "report.json");
-		const reviewSummaryPath = join(root, "summary.json");
-		const historyPath = join(root, "history.json");
+		const reviewSummaryPath = join(root, "review-summary.json");
+		const historyPath = join(root, "scenario-history.snapshot.json");
 		const targetPath = join(root, "prompt.md");
 		const inputPath = join(root, "optimize-input.json");
 		const proposalPath = join(root, "optimize-proposal.json");
@@ -1015,7 +1015,7 @@ test("cautilus evidence prepare-input and bundle produce a normalized evidence p
 	try {
 		const reportPath = join(root, "report.json");
 		const scenarioResultsPath = join(root, "scenario-results.json");
-		const runAuditPath = join(root, "run-audit.json");
+		const runAuditPath = join(root, "run-audit-summary.json");
 		const inputPath = join(root, "evidence-input.json");
 		const bundlePath = join(root, "evidence-bundle.json");
 		writeFileSync(

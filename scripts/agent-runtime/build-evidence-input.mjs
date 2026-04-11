@@ -22,7 +22,7 @@ const EVIDENCE_CONSTRAINTS = [
 function usage(exitCode = 0) {
 	const text = [
 		"Usage:",
-		"  node ./scripts/agent-runtime/build-evidence-input.mjs [--repo-root <dir>] [--report-file <file>] [--scenario-results-file <file>] [--run-audit-file <file>] [--history-file <file>] [--output <file>]",
+		"  node ./scripts/agent-runtime/build-evidence-input.mjs [--repo-root <dir>] [--report-file <file>] [--scenario-results-file <file>] [--scenario-mode <iterate|held_out|comparison|full_gate>] [--run-audit-file <file>] [--history-file <file>] [--output <file>]",
 		"",
 		"Output packet:",
 		`  schemaVersion: ${EVIDENCE_BUNDLE_INPUTS_SCHEMA}`,
@@ -50,6 +50,7 @@ function parseArgs(argv) {
 		repoRoot: process.cwd(),
 		reportFile: null,
 		scenarioResultsFile: null,
+		scenarioMode: null,
 		runAuditFile: null,
 		historyFile: null,
 		output: null,
@@ -63,6 +64,7 @@ function parseArgs(argv) {
 			"--repo-root": "repoRoot",
 			"--report-file": "reportFile",
 			"--scenario-results-file": "scenarioResultsFile",
+			"--scenario-mode": "scenarioMode",
 			"--run-audit-file": "runAuditFile",
 			"--history-file": "historyFile",
 			"--output": "output",
@@ -73,32 +75,63 @@ function parseArgs(argv) {
 		options[field] = readRequiredValue(argv, index + 1, arg);
 		index += 1;
 	}
+	if (
+		options.scenarioMode &&
+		!["iterate", "held_out", "comparison", "full_gate"].includes(options.scenarioMode)
+	) {
+		fail("--scenario-mode must be one of: iterate, held_out, comparison, full_gate");
+	}
 	return options;
+}
+
+function maybeUseExistingActiveRunFile(activeRunDir, relativePath) {
+	if (!activeRunDir) {
+		return null;
+	}
+	const candidate = join(activeRunDir, relativePath);
+	return existsSync(candidate) ? candidate : null;
+}
+
+function resolveActiveRunScenarioResults(activeRunDir, scenarioMode) {
+	if (!activeRunDir || !scenarioMode) {
+		return null;
+	}
+	return join(activeRunDir, `${scenarioMode}-scenario-results.json`);
+}
+
+function applyActiveRunDefaults(resolved, activeRunDir) {
+	if (!activeRunDir) {
+		return resolved;
+	}
+	if (!resolved.reportFile) {
+		resolved.reportFile = join(activeRunDir, "report.json");
+	}
+	resolved.scenarioResultsFile ||= resolveActiveRunScenarioResults(activeRunDir, resolved.scenarioMode);
+	resolved.runAuditFile ||= maybeUseExistingActiveRunFile(activeRunDir, "run-audit-summary.json");
+	resolved.historyFile ||= maybeUseExistingActiveRunFile(activeRunDir, "scenario-history.snapshot.json");
+	if (!resolved.output) {
+		resolved.output = join(activeRunDir, "evidence-input.json");
+	}
+	return resolved;
+}
+
+function hasNoEvidenceSources(options) {
+	return !options.reportFile && !options.scenarioResultsFile && !options.runAuditFile && !options.historyFile;
 }
 
 function resolveCommandOptions(options, { env = process.env } = {}) {
 	const activeRunDir = readActiveRunDir({ env });
-	const resolved = {
+	const resolved = applyActiveRunDefaults({
 		...options,
 		repoRoot: resolve(options.repoRoot),
 		reportFile: options.reportFile,
 		scenarioResultsFile: options.scenarioResultsFile,
+		scenarioMode: options.scenarioMode,
 		runAuditFile: options.runAuditFile,
 		historyFile: options.historyFile,
 		output: options.output,
-	};
-	if (!resolved.reportFile && activeRunDir) {
-		resolved.reportFile = join(activeRunDir, "report.json");
-	}
-	if (!resolved.output && activeRunDir) {
-		resolved.output = join(activeRunDir, "evidence-input.json");
-	}
-	if (
-		!resolved.reportFile &&
-		!resolved.scenarioResultsFile &&
-		!resolved.runAuditFile &&
-		!resolved.historyFile
-	) {
+	}, activeRunDir);
+	if (hasNoEvidenceSources(resolved)) {
 		fail("At least one evidence source must be provided.");
 	}
 	return resolved;

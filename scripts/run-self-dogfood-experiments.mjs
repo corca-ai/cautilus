@@ -230,7 +230,7 @@ function summarizeExperimentStatus(summary) {
 }
 
 function syntheticReviewSummary(reviewDir, timeoutMs, reviewAdapterName) {
-	const summaryPath = join(reviewDir, "summary.json");
+	const summaryPath = join(reviewDir, "review-summary.json");
 	const message = `Self-dogfood experiment timed out after ${timeoutMs}ms.`;
 	const summary = {
 		repoRoot: null,

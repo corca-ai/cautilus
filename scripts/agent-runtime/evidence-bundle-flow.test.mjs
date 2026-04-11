@@ -20,7 +20,8 @@ function createEvidenceFixtureRoot() {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-evidence-flow-"));
 	const reportFile = join(root, "report.json");
 	const scenarioResultsFile = join(root, "scenario-results.json");
-	const runAuditFile = join(root, "run-audit.json");
+	const runAuditFile = join(root, "run-audit-summary.json");
+	const historyFile = join(root, "scenario-history.snapshot.json");
 
 	writeJson(reportFile, {
 		schemaVersion: "cautilus.report_packet.v1",
@@ -66,7 +67,29 @@ function createEvidenceFixtureRoot() {
 			},
 		},
 	});
-	return { root, reportFile, scenarioResultsFile, runAuditFile };
+	writeJson(historyFile, {
+		schemaVersion: "cautilus.scenario_history.v1",
+		profileId: "default-train",
+		trainRunCount: 1,
+		scenarioStats: {
+			"operator-recovery": {
+				lastTrainRunIndex: 1,
+				graduationInterval: 1,
+				recentTrainResults: [
+					{
+						runIndex: 1,
+						timestamp: "2026-04-11T00:00:00.000Z",
+						overallScore: 80,
+						passRate: 0,
+						status: "failed",
+						fullCheck: false,
+					},
+				],
+			},
+		},
+		recentRuns: [],
+	});
+	return { root, reportFile, scenarioResultsFile, runAuditFile, historyFile };
 }
 
 test("buildEvidenceInput assembles explicit report, scenario, and audit sources", () => {
@@ -137,12 +160,15 @@ test("build-evidence-input requires at least one source", () => {
 });
 
 test("build-evidence-input defaults report.json and evidence-input.json inside the active run", () => {
-	const { root, reportFile } = createEvidenceFixtureRoot();
+	const { root, reportFile, scenarioResultsFile, runAuditFile, historyFile } = createEvidenceFixtureRoot();
 	try {
 		const runDir = join(root, "active-run");
 		mkdirSync(runDir, { recursive: true });
 		writeJson(join(runDir, "report.json"), JSON.parse(readFileSync(reportFile, "utf-8")));
-		const result = spawnSync("node", [BUILD_EVIDENCE_INPUT], {
+		writeJson(join(runDir, "held_out-scenario-results.json"), JSON.parse(readFileSync(scenarioResultsFile, "utf-8")));
+		writeJson(join(runDir, "run-audit-summary.json"), JSON.parse(readFileSync(runAuditFile, "utf-8")));
+		writeJson(join(runDir, "scenario-history.snapshot.json"), JSON.parse(readFileSync(historyFile, "utf-8")));
+		const result = spawnSync("node", [BUILD_EVIDENCE_INPUT, "--scenario-mode", "held_out"], {
 			cwd: root,
 			encoding: "utf-8",
 			env: { ...process.env, [ACTIVE_RUN_ENV_VAR]: runDir },
@@ -152,6 +178,9 @@ test("build-evidence-input defaults report.json and evidence-input.json inside t
 		assert.equal(existsSync(packetPath), true);
 		const packet = JSON.parse(readFileSync(packetPath, "utf-8"));
 		assert.equal(packet.reportFile, join(runDir, "report.json"));
+		assert.equal(packet.scenarioResultsFile, join(runDir, "held_out-scenario-results.json"));
+		assert.equal(packet.runAuditFile, join(runDir, "run-audit-summary.json"));
+		assert.equal(packet.scenarioHistoryFile, join(runDir, "scenario-history.snapshot.json"));
 		assert.equal(packet.schemaVersion, "cautilus.evidence_bundle_inputs.v1");
 		assert.equal(result.stdout, "");
 	} finally {

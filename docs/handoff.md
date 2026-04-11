@@ -138,7 +138,7 @@
   `gateRecommendation`과 `reportRecommendation`을 계속 분리한다.
 - active-run consumer wiring state:
   - wired workflow-creating consumers: `mode evaluate`,
-    `workspace prepare-compare`. 둘 다
+    `workspace prepare-compare`, `review variants`. 셋 다
     `resolveRunDir`을 호출해서 precedence (`explicit --output-dir >
     CAUTILUS_RUN_DIR > auto-materialize under ./.cautilus/runs/`)를 지키고,
     auto-materialize 경로일 때만 stderr에 `Active run: <abs runDir>` 한 줄을
@@ -154,21 +154,27 @@
     run이 가능하다고 보고 `resolveRunDir` 패턴으로 분류했다. explicit
     `--output-dir` > `CAUTILUS_RUN_DIR` > auto-materialize 순서를 따르고,
     auto-materialize 때만 stderr에 `Active run: <abs runDir>` 한 줄을 찍는다.
-    env var 경로와 explicit 경로는 조용하다.
+    env var 경로와 explicit 경로는 조용하다. canonical summary filename은 이제
+    `review-summary.json`이다.
   - wired consume-only helpers: `report build`, `evidence prepare-input`,
     `evidence bundle`, `optimize prepare-input`, `optimize propose`,
     `optimize build-artifact`.
     - `report build`: active run 안에서는 `report-input.json` →
       `report.json` default, no active run이면 기존 stdout fallback 유지.
     - `evidence prepare-input`: active run 안에서는 `report.json` →
-      `evidence-input.json` default. 다만 mode-prefixed
-      `scenario-results`, `run-audit`, `history`는 single canonical
-      runDir filename이 아직 없어서 explicit 유지.
+      `evidence-input.json` default. optional input 중
+      `run-audit-summary.json`과 `scenario-history.snapshot.json`은 파일이
+      실제로 있을 때만 각각 `--run-audit-file`, `--history-file` default로
+      잡힌다. scenario results는 이름을 바꾸지 않고
+      `<mode>-scenario-results.json`을 유지한다. 대신 operator가
+      `--scenario-mode <iterate|held_out|comparison|full_gate>`를 넘겼을 때만
+      같은 active run 안의 해당 canonical file을 기본값으로 읽는다.
     - `evidence bundle`: active run 안에서는 `evidence-input.json` →
       `evidence-bundle.json` default, no active run이면 stdout fallback 유지.
     - `optimize prepare-input`: active run 안에서는 `report.json` →
-      `optimize-input.json` default. `review summary`와 `history`는 아직
-      canonical runDir filename이 없어 explicit 유지.
+      `optimize-input.json` default. optional input 중
+      `review-summary.json`과 `scenario-history.snapshot.json`은 파일이 있을 때
+      각각 `--review-summary`, `--history-file` default로 잡힌다.
     - `optimize propose`: active run 안에서는 `optimize-input.json` →
       `optimize-proposal.json` default, no active run이면 stdout fallback 유지.
     - `optimize build-artifact`: active run 안에서는
@@ -176,7 +182,9 @@
       들고 있는 `inputFile` fallback은 그대로 유지.
   - mode evaluate의 canonical output은 `${mode}-scenario-results.json` +
     `report.json` + `report-input.json` 등 mode-prefixed 구조 그대로 유지해서
-    한 runDir 안에 여러 mode가 공존할 수 있다.
+    한 runDir 안에 여러 mode가 공존할 수 있다. profile-backed run이면
+    repo-level history source of truth를 갱신한 직후 같은 시점의 snapshot을
+    `scenario-history.snapshot.json`으로도 materialize한다.
   - prepare-compare의 retry는 `removeExistingWorktree`가 git worktree
     registration을 먼저 풀기 때문에 같은 runDir에 두 번 호출해도 `--force`
     없이 collision-free다. `run.json` marker와 `baseline/`, `candidate/`가
@@ -190,11 +198,11 @@
   - slice 6은 `run-workbench-executor-variants`에 env var / auto-materialize
     + banner / explicit-over-env regression을 추가했다. 기존 explicit
     `--output-dir` 경로 test들은 그대로 유지된다.
-  - consume-only helper follow-up slice는 가장 보수적인 자동화 규칙으로
-    마감했다. single canonical filename이 이미 있는 input/output만
-    active run default로 연결했고, 아직 canonical 이름이 잠기지 않은
-    `scenario-results`, `review summary`, `history`, `run-audit`는 explicit
-    path를 유지했다.
+  - consume-only helper filename follow-up slice는 구현까지 끝났다.
+    `review-summary.json`, `run-audit-summary.json`,
+    `scenario-history.snapshot.json`이 product-owned canonical filename으로
+    정착되었고, multi-source ambiguity가 남는 scenario results만
+    `--scenario-mode`를 통해 operator가 선택하게 했다.
   - self-dogfood script들 (`scripts/run-self-dogfood.mjs`,
     `scripts/run-self-dogfood-experiments.mjs`)은 여전히 `--output-dir`을
     explicit하게 넘긴다. parent shell의 stray `CAUTILUS_RUN_DIR`이
@@ -202,8 +210,8 @@
     오염되지 않는다. 이건 load-bearing regression이라 slice 6에서도 동일한
     explicit-override test를 건다.
   - `docs/contracts/active-run.md`의 `### Wired Consumers` 표가
-    authoritative status. active-run 쪽 남은 질문은 multi-source optional
-    input들에 single canonical runDir filename을 부여할지 여부다.
+    authoritative status. active-run 쪽 open question은 이제 filename naming보다
+    `run.json` metadata 확장과 shell flavor surface 같은 operator ergonomics다.
 - local proof (Node v22.22.2 기준, 이번 세션 마지막 측정값):
   - `npm run verify`: 178/178 green
   - `node ./scripts/check-specs.mjs`: `spec checks passed (4 specs, 396 guard rows)`
@@ -223,44 +231,15 @@
 
 ## Next Session
 
-1. **Canonical filename follow-up은 설계 확정 후 구현으로 바로 간다.**
-   이번 세션 말미에 방향 합의가 끝났다. 다음 턴은 아래를 그대로 구현한다.
-   - `review variants` summary의 product-owned canonical filename을
-     `review-summary.json`으로 고정한다.
-     현재 generic `summary.json`을 대체하고,
-     `optimize prepare-input --review-summary`의 active-run default는
-     이 파일로 잡는다.
-   - run-audit summary의 product-owned canonical filename을
-     `run-audit-summary.json`으로 고정한다.
-     `evidence prepare-input --run-audit-file`의 active-run default는
-     이 파일로 잡는다.
-   - scenario history는 **source of truth는 repo-level persistent state로
-     유지**하되, active run 안에는 `scenario-history.snapshot.json`을
-     canonical snapshot artifact로 추가한다.
-     다음 턴은 repo-level history를 계속 갱신하면서, 같은 시점의 snapshot도
-     runDir 안에 materialize하는 쪽으로 구현한다.
-     `optimize prepare-input --history-file`의 active-run default는
-     `scenario-history.snapshot.json`으로 잡는다.
-   - scenario results는 기존 product-owned canonical 이름
-     `<mode>-scenario-results.json`을 유지한다. 다만
-     `evidence prepare-input --scenario-results-file`의 active-run default를
-     가능하게 하려면 선택 규칙이 필요하다.
-     다음 턴은 `--scenario-mode <iterate|held_out|comparison|full_gate>`를
-     추가하고, active run에서 `--scenario-results-file`이 비어 있으면
-     `<scenario-mode>-scenario-results.json`을 읽게 한다.
-     `--scenario-mode`가 없으면 조용히 추측하지 말고 explicit path를
-     계속 요구한다.
-   - 위 네 결정이 들어가면 `docs/contracts/active-run.md` Canonical
-     Filenames 표와 Wired Consumers Notes를 함께 갱신한다.
-2. HTML view follow-ups는 다음 우선순위로 내려간다.
+1. HTML view follow-ups는 다음 우선순위로 내려간다.
    - `artifacts/self-dogfood/experiments/latest/` 번들이 다시 쓰이기 시작하면
      그때 HTML view를 experiments surface까지 확장할지 결정한다. 지금은 해당
      디렉터리가 비어 있어서 defer.
-4. `binary-surface` experiment가 `skill-surface`처럼 stable pass로 떨어졌는지
+2. `binary-surface` experiment가 `skill-surface`처럼 stable pass로 떨어졌는지
    다시 본다. 필요하면 enrichment prompt를 더 깎는다.
-5. `quality` workflow가 canonical dogfood와 experiments를 어떻게 함께 요약해야
+3. `quality` workflow가 canonical dogfood와 experiments를 어떻게 함께 요약해야
    operator에게 덜 거짓말 같은지 결론을 낸다.
-6. 변경 후에는 항상 `npm run verify`를 다시 돌린다. 실행 전에 Node 22가 활성화
+4. 변경 후에는 항상 `npm run verify`를 다시 돌린다. 실행 전에 Node 22가 활성화
    되어 있는지 먼저 확인한다.
 
 ## Discuss
@@ -276,17 +255,14 @@
     name)를 더 담을지. 지금은 `schemaVersion`, `label`, `startedAt`만이다.
   - fish shell 사용자를 위해 `--shell fish` 같은 flavor 옵션을 추가할지.
     지금은 POSIX `export` 한 줄만 emit한다.
-- multi-source optional input canonicalization의 방향은 이제 합의되었다.
-  다음 턴에서 다시 설계 논쟁하지 말고 구현으로 바로 간다.
-  - `summary.json`은 generic해서 product-owned contract로 쓰기 애매하다.
-    review variant summary는 `review-summary.json`으로 승격한다.
-  - run-audit summary도 `run-audit-summary.json`으로 승격한다.
-  - history는 repo-level persistent state를 유지하되,
-    runDir에는 `scenario-history.snapshot.json` snapshot을 추가한다.
-  - scenario results는 `<mode>-scenario-results.json`이 이미 canonical이라
-    이름을 바꾸지 않는다. 대신 `evidence prepare-input`에
-    `--scenario-mode`를 넣어 어떤 canonical file을 읽을지 operator가
-    명시하게 한다. `--scenario-mode`가 없으면 추측하지 않는다.
+- multi-source optional input canonicalization은 구현까지 끝났다.
+  - `review variants` summary는 `review-summary.json`으로 승격되었다.
+  - run-audit summary는 `run-audit-summary.json`으로 승격되었다.
+  - history는 repo-level persistent state를 유지하고, runDir에는 같은 시점의
+    `scenario-history.snapshot.json`을 materialize한다.
+  - scenario results는 `<mode>-scenario-results.json`을 유지하고,
+    `evidence prepare-input`은 `--scenario-mode`가 있을 때만 해당 canonical
+    file을 default로 읽는다. 없으면 추측하지 않는다.
 - HTML view는 self-dogfood latest surface 안에서만 materialize 되었다.
   다음 결정은 두 가지다:
   - `experiments/`에도 같은 뷰를 낼지 (지금은 defer, 데이터가 없다)

@@ -119,6 +119,14 @@ function parseArgs(argv) {
 	return options;
 }
 
+function maybeUseExistingActiveRunFile(activeRunDir, relativePath) {
+	if (!activeRunDir) {
+		return null;
+	}
+	const candidate = join(activeRunDir, relativePath);
+	return existsSync(candidate) ? candidate : null;
+}
+
 function resolveCommandOptions(options, { env = process.env } = {}) {
 	const activeRunDir = readActiveRunDir({ env });
 	const resolved = {
@@ -135,6 +143,8 @@ function resolveCommandOptions(options, { env = process.env } = {}) {
 	if (!resolved.reportFile) {
 		fail("--report-file is required");
 	}
+	resolved.reviewSummary ||= maybeUseExistingActiveRunFile(activeRunDir, "review-summary.json");
+	resolved.historyFile ||= maybeUseExistingActiveRunFile(activeRunDir, "scenario-history.snapshot.json");
 	if (!resolved.output && activeRunDir) {
 		resolved.output = join(activeRunDir, "optimize-input.json");
 	}

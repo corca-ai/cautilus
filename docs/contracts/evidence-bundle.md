@@ -28,9 +28,9 @@ Current surface:
 ```bash
 node ./bin/cautilus evidence prepare-input \
   --report-file /tmp/cautilus-mode/report.json \
-  --scenario-results-file /tmp/cautilus-mode/scenario-results.json \
-  --run-audit-file /tmp/cautilus-run-audit/summary.json \
-  --history-file /tmp/cautilus-history/history.json
+  --scenario-results-file /tmp/cautilus-mode/held_out-scenario-results.json \
+  --run-audit-file /tmp/cautilus-run-audit/run-audit-summary.json \
+  --history-file /tmp/cautilus-history/scenario-history.snapshot.json
 ```
 
 ## Bundle Packet

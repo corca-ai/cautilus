@@ -563,10 +563,7 @@ function persistScenarioHistoryIfNeeded(context, options) {
 		return null;
 	}
 	const scenarioResults = readScenarioResults(context.scenarioResultsFile, options.mode);
-	const timestamp =
-		scenarioResults.completedAt ||
-		scenarioResults.timestamp ||
-		new Date().toISOString();
+	const timestamp = scenarioResults.completedAt || scenarioResults.timestamp || new Date().toISOString();
 	const updatedHistory = updateScenarioHistory({
 		profile: context.scenarioProfile,
 		history: context.loadedHistory,
@@ -577,6 +574,7 @@ function persistScenarioHistoryIfNeeded(context, options) {
 		fullCheck: options.mode === "full_gate",
 	});
 	saveScenarioHistory(context.historyFile, updatedHistory);
+	writeFileSync(join(context.outputDir, "scenario-history.snapshot.json"), `${JSON.stringify(updatedHistory, null, 2)}\n`, "utf-8");
 	return updatedHistory;
 }
 

@@ -299,7 +299,7 @@ function renderMarkdown(summary) {
 }
 
 function syntheticReviewSummary(reviewDir, timeoutMs, reviewAdapterName) {
-	const summaryPath = join(reviewDir, "summary.json");
+	const summaryPath = join(reviewDir, "review-summary.json");
 	const message = `Self-dogfood review variants timed out after ${timeoutMs}ms.`;
 	const summary = {
 		repoRoot: null,

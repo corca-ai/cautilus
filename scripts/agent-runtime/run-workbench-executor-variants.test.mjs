@@ -279,7 +279,7 @@ test("run-workbench-executor-variants suppresses progress logs with --quiet", ()
 		);
 		assert.equal(result.status, 0, result.stderr);
 		assert.equal(result.stderr, "");
-		assert.equal(result.stdout.trim(), join(outputDir, "summary.json"));
+		assert.equal(result.stdout.trim(), join(outputDir, "review-summary.json"));
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}
@@ -348,7 +348,7 @@ test("run-workbench-executor-variants honors CAUTILUS_RUN_DIR when --output-dir 
 			},
 		);
 		assert.equal(result.status, 0, result.stderr);
-		assert.equal(result.stdout.trim(), join(activeRunDir, "summary.json"));
+		assert.equal(result.stdout.trim(), join(activeRunDir, "review-summary.json"));
 		assert.doesNotMatch(result.stderr, /Active run:/);
 		const summary = JSON.parse(readFileSync(result.stdout.trim(), "utf-8"));
 		assert.equal(summary.outputDir, activeRunDir);
@@ -383,7 +383,7 @@ test("run-workbench-executor-variants auto-materializes a fresh runDir under the
 		assert.equal(result.status, 0, result.stderr);
 		assert.match(result.stderr, /Active run: /);
 		const summaryPath = result.stdout.trim();
-		assert.match(summaryPath, new RegExp(`^${resolve(root, DEFAULT_RUNS_ROOT).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}.+/summary\\.json$`));
+		assert.match(summaryPath, new RegExp(`^${resolve(root, DEFAULT_RUNS_ROOT).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}.+/review-summary\\.json$`));
 		const summary = JSON.parse(readFileSync(summaryPath, "utf-8"));
 		assert.equal(summary.outputDir, resolve(summary.outputDir));
 		assert.equal(existsSync(join(summary.outputDir, "run.json")), true);
@@ -420,7 +420,7 @@ test("run-workbench-executor-variants explicit --output-dir overrides an inherit
 			},
 		);
 		assert.equal(result.status, 0, result.stderr);
-		assert.equal(result.stdout.trim(), join(explicitOutputDir, "summary.json"));
+		assert.equal(result.stdout.trim(), join(explicitOutputDir, "review-summary.json"));
 		assert.equal(existsSync(join(explicitOutputDir, "alpha.json")), true);
 		assert.equal(existsSync(join(activeRunDir, "alpha.json")), false);
 		assert.doesNotMatch(result.stderr, /Active run:/);

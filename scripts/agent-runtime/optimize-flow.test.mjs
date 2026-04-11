@@ -32,8 +32,8 @@ function writeJson(path, value) {
 function createOptimizeFixtureRoot() {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-optimize-flow-"));
 	const reportFile = join(root, "report.json");
-	const reviewSummaryFile = join(root, "summary.json");
-	const historyFile = join(root, "history.json");
+	const reviewSummaryFile = join(root, "review-summary.json");
+	const historyFile = join(root, "scenario-history.snapshot.json");
 	const targetFile = join(root, "prompt.md");
 	writeJson(reportFile, {
 		schemaVersion: "cautilus.report_packet.v1",
@@ -263,7 +263,7 @@ test("build-optimize-input CLI rejects review summaries without variants", () =>
 	const root = mkdtempSync(join(tmpdir(), "cautilus-optimize-invalid-"));
 	try {
 		const reportFile = join(root, "report.json");
-		const summaryFile = join(root, "summary.json");
+		const summaryFile = join(root, "review-summary.json");
 		writeJson(reportFile, {
 			schemaVersion: "cautilus.report_packet.v1",
 			generatedAt: "2026-04-11T00:02:00.000Z",
@@ -317,11 +317,13 @@ test("build-optimize-input CLI rejects review summaries without variants", () =>
 });
 
 test("build-optimize-input defaults report.json and optimize-input.json inside the active run", () => {
-	const { root, reportFile } = createOptimizeFixtureRoot();
+	const { root, reportFile, reviewSummaryFile, historyFile } = createOptimizeFixtureRoot();
 	try {
 		const runDir = join(root, "active-run");
 		mkdirSync(runDir, { recursive: true });
 		writeJson(join(runDir, "report.json"), JSON.parse(readFileSync(reportFile, "utf-8")));
+		writeJson(join(runDir, "review-summary.json"), JSON.parse(readFileSync(reviewSummaryFile, "utf-8")));
+		writeJson(join(runDir, "scenario-history.snapshot.json"), JSON.parse(readFileSync(historyFile, "utf-8")));
 		const result = spawnSync("node", [BUILD_OPTIMIZE_INPUT], {
 			cwd: root,
 			encoding: "utf-8",
@@ -332,6 +334,8 @@ test("build-optimize-input defaults report.json and optimize-input.json inside t
 		assert.equal(existsSync(inputPath), true);
 		const packet = JSON.parse(readFileSync(inputPath, "utf-8"));
 		assert.equal(packet.reportFile, join(runDir, "report.json"));
+		assert.equal(packet.reviewSummaryFile, join(runDir, "review-summary.json"));
+		assert.equal(packet.scenarioHistoryFile, join(runDir, "scenario-history.snapshot.json"));
 		assert.equal(packet.schemaVersion, "cautilus.optimize_inputs.v1");
 		assert.equal(result.stdout, "");
 	} finally {

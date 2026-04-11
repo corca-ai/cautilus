@@ -399,7 +399,7 @@ async function main() {
 		telemetry: summarizeTelemetry(variantSummaries),
 		variants: variantSummaries,
 	};
-	const summaryFile = join(outputDir, "summary.json");
+	const summaryFile = join(outputDir, "review-summary.json");
 	writeFileSync(summaryFile, `${JSON.stringify(summary, null, 2)}\n`, "utf-8");
 	log(
 		`review variants complete: status=${results.every((result) => result.status === "passed") ? "passed" : "failed"} summary=${summaryFile}`,

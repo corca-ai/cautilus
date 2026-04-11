@@ -94,8 +94,8 @@ Current surface:
 ```bash
 node ./bin/cautilus optimize prepare-input \
   --report-file /tmp/cautilus-mode/report.json \
-  --review-summary /tmp/cautilus-review/summary.json \
-  --history-file /tmp/cautilus-history/history.json \
+  --review-summary /tmp/cautilus-review/review-summary.json \
+  --history-file /tmp/cautilus-history/scenario-history.snapshot.json \
   --target prompt \
   --optimizer reflection \
   --budget medium

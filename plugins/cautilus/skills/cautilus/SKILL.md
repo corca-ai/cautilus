@@ -199,17 +199,17 @@ node ./bin/cautilus review render-prompt \
 
 node ./bin/cautilus evidence prepare-input \
   --report-file /tmp/cautilus-mode/report.json \
-  --scenario-results-file /tmp/cautilus-mode/scenario-results.json \
-  --run-audit-file /tmp/cautilus-run-audit/summary.json \
-  --history-file /tmp/cautilus-history/history.json
+  --scenario-results-file /tmp/cautilus-mode/held_out-scenario-results.json \
+  --run-audit-file /tmp/cautilus-run-audit/run-audit-summary.json \
+  --history-file /tmp/cautilus-history/scenario-history.snapshot.json
 
 node ./bin/cautilus evidence bundle \
   --input /tmp/cautilus-evidence/input.json
 
 node ./bin/cautilus optimize prepare-input \
   --report-file /tmp/cautilus-mode/report.json \
-  --review-summary /tmp/cautilus-review/summary.json \
-  --history-file /tmp/cautilus-history/history.json \
+  --review-summary /tmp/cautilus-review/review-summary.json \
+  --history-file /tmp/cautilus-history/scenario-history.snapshot.json \
   --target prompt \
   --optimizer reflection \
   --budget medium

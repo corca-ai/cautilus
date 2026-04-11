@@ -429,7 +429,9 @@ test("evaluate-adapter-mode selects scenarios from a checked-in profile and upda
 		assert.equal(readFileSync(join(firstOutputDir, "selection.txt"), "utf-8"), "probe-a,control-a");
 		const historyPath = join(root, ".cautilus", "history.json");
 		const firstHistory = JSON.parse(readFileSync(historyPath, "utf-8"));
+		const firstSnapshot = JSON.parse(readFileSync(join(firstOutputDir, "scenario-history.snapshot.json"), "utf-8"));
 		assert.equal(firstHistory.trainRunCount, 1);
+		assert.equal(firstSnapshot.trainRunCount, 1);
 		assert.equal(firstHistory.scenarioStats["probe-a"].graduationInterval, 2);
 
 		const second = spawnSync(
@@ -457,8 +459,11 @@ test("evaluate-adapter-mode selects scenarios from a checked-in profile and upda
 		assert.equal(second.status, 0, second.stderr);
 		assert.equal(readFileSync(join(secondOutputDir, "selection.txt"), "utf-8"), "control-a");
 		const secondHistory = JSON.parse(readFileSync(historyPath, "utf-8"));
+		const secondSnapshot = JSON.parse(readFileSync(join(secondOutputDir, "scenario-history.snapshot.json"), "utf-8"));
 		assert.equal(secondHistory.trainRunCount, 2);
+		assert.equal(secondSnapshot.trainRunCount, 2);
 		assert.deepEqual(secondHistory.recentRuns.at(-1).selectedScenarioIds, ["control-a"]);
+		assert.deepEqual(secondSnapshot.recentRuns.at(-1).selectedScenarioIds, ["control-a"]);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}
