@@ -77,7 +77,7 @@ Self-dogfood는 standing gate가 아니라 explicit quality path다.
 최소한 아래 command surface가 현재 repo에서 설명 가능해야 한다.
 
 ```run:shell
-$ node ./bin/cautilus doctor --repo-root .
+$ cautilus doctor --repo-root .
 $ npm run dogfood:self
 $ npm run dogfood:self:experiments
 ```

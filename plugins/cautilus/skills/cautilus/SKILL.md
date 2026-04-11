@@ -9,6 +9,10 @@ Use this bundled skill when intentful behavior evaluation itself is the task
 and the repo wants to run the checked-in `Cautilus` workflow instead of
 rebuilding commands by hand.
 
+The installed skill assumes `cautilus` is already available on `PATH`.
+If it is not, install the CLI first and verify with `cautilus --version`.
+To materialize this skill in a host repo, run `cautilus skills install`.
+
 `Cautilus` should stay usable as a standalone product:
 
 - resolve or scaffold repo-local adapters
@@ -23,45 +27,45 @@ rebuilding commands by hand.
 1. Resolve the adapter from the target repo:
 
 ```bash
-node ./bin/cautilus adapter resolve --repo-root .
+cautilus adapter resolve --repo-root .
 ```
 
 For a named adapter:
 
 ```bash
-node ./bin/cautilus adapter resolve --repo-root . --adapter-name code-quality
+cautilus adapter resolve --repo-root . --adapter-name code-quality
 ```
 
 2. If the repo does not have an adapter yet, scaffold one:
 
 ```bash
-node ./bin/cautilus adapter init --repo-root .
+cautilus adapter init --repo-root .
 ```
 
 3. Check whether the repo is already ready for standalone `Cautilus` use:
 
 ```bash
-node ./bin/cautilus doctor --repo-root .
+cautilus doctor --repo-root .
 ```
 
 4. Read the canonical workflow and contracts before widening the surface:
 
-- [docs/workflow.md](/home/ubuntu/cautilus/docs/workflow.md)
-- [docs/contracts/active-run.md](/home/ubuntu/cautilus/docs/contracts/active-run.md)
-- [docs/contracts/adapter-contract.md](/home/ubuntu/cautilus/docs/contracts/adapter-contract.md)
-- [docs/contracts/reporting.md](/home/ubuntu/cautilus/docs/contracts/reporting.md)
-- [docs/contracts/scenario-proposal-sources.md](/home/ubuntu/cautilus/docs/contracts/scenario-proposal-sources.md)
-- [docs/contracts/scenario-proposal-inputs.md](/home/ubuntu/cautilus/docs/contracts/scenario-proposal-inputs.md)
-- [docs/contracts/scenario-proposal-normalization.md](/home/ubuntu/cautilus/docs/contracts/scenario-proposal-normalization.md)
-- [docs/contracts/chatbot-normalization.md](/home/ubuntu/cautilus/docs/contracts/chatbot-normalization.md)
-- [docs/contracts/cli-normalization.md](/home/ubuntu/cautilus/docs/contracts/cli-normalization.md)
-- [docs/contracts/skill-normalization.md](/home/ubuntu/cautilus/docs/contracts/skill-normalization.md)
-- [docs/contracts/cli-evaluation.md](/home/ubuntu/cautilus/docs/contracts/cli-evaluation.md)
-- [docs/contracts/review-packet.md](/home/ubuntu/cautilus/docs/contracts/review-packet.md)
-- [docs/contracts/review-prompt-inputs.md](/home/ubuntu/cautilus/docs/contracts/review-prompt-inputs.md)
-- [docs/contracts/evidence-bundle.md](/home/ubuntu/cautilus/docs/contracts/evidence-bundle.md)
-- [docs/contracts/optimization.md](/home/ubuntu/cautilus/docs/contracts/optimization.md)
-- [docs/contracts/revision-artifact.md](/home/ubuntu/cautilus/docs/contracts/revision-artifact.md)
+- [workflow.md](references/workflow.md)
+- [active-run.md](references/active-run.md)
+- [adapter-contract.md](references/adapter-contract.md)
+- [reporting.md](references/reporting.md)
+- [scenario-proposal-sources.md](references/scenario-proposal-sources.md)
+- [scenario-proposal-inputs.md](references/scenario-proposal-inputs.md)
+- [scenario-proposal-normalization.md](references/scenario-proposal-normalization.md)
+- [chatbot-normalization.md](references/chatbot-normalization.md)
+- [cli-normalization.md](references/cli-normalization.md)
+- [skill-normalization.md](references/skill-normalization.md)
+- [cli-evaluation.md](references/cli-evaluation.md)
+- [review-packet.md](references/review-packet.md)
+- [review-prompt-inputs.md](references/review-prompt-inputs.md)
+- [evidence-bundle.md](references/evidence-bundle.md)
+- [optimization.md](references/optimization.md)
+- [revision-artifact.md](references/revision-artifact.md)
 
 ## Workflow
 
@@ -73,7 +77,7 @@ node ./bin/cautilus doctor --repo-root .
    and `candidate/` inside that active `runDir`:
 
 ```bash
-node ./bin/cautilus workspace prepare-compare \
+cautilus workspace prepare-compare \
   --repo-root . \
   --baseline-ref origin/main \
   --output-dir /tmp/cautilus-compare
@@ -86,7 +90,7 @@ node ./bin/cautilus workspace prepare-compare \
    single shell-evalable line, so `eval` is the happy path:
 
 ```bash
-eval "$(node ./bin/cautilus workspace start --label mode-held-out)"
+eval "$(cautilus workspace start --label mode-held-out)"
 ```
 
    `workspace start` defaults `--root` to `./.cautilus/runs/` (auto-created
@@ -100,7 +104,7 @@ eval "$(node ./bin/cautilus workspace start --label mode-held-out)"
    machine-readable payload.
 
 ```bash
-node ./bin/cautilus workspace prune-artifacts \
+cautilus workspace prune-artifacts \
   --root ./.cautilus/runs \
   --keep-last 20
 ```
@@ -112,7 +116,7 @@ node ./bin/cautilus workspace prune-artifacts \
    runner instead of retyping ad-hoc shell commands:
 
 ```bash
-node ./bin/cautilus review variants \
+cautilus review variants \
   --repo-root . \
   --workspace . \
   --output-dir /tmp/cautilus-review
@@ -161,61 +165,61 @@ not as a separate source of truth.
    a checked-in proposal packet instead of hand-drafting scenario JSON:
 
 ```bash
-node ./bin/cautilus scenario normalize chatbot \
+cautilus scenario normalize chatbot \
   --input ./fixtures/scenario-proposals/chatbot-input.json
 
-node ./bin/cautilus scenario normalize cli \
+cautilus scenario normalize cli \
   --input ./fixtures/scenario-proposals/cli-input.json
 
-node ./bin/cautilus scenario normalize skill \
+cautilus scenario normalize skill \
   --input ./fixtures/scenario-proposals/skill-input.json
 
-node ./bin/cautilus scenario prepare-input \
+cautilus scenario prepare-input \
   --candidates ./fixtures/scenario-proposals/candidates.json \
   --registry ./fixtures/scenario-proposals/registry.json \
   --coverage ./fixtures/scenario-proposals/coverage.json \
   --family fast_regression
 
-node ./bin/cautilus scenario propose \
+cautilus scenario propose \
   --input ./fixtures/scenario-proposals/standalone-input.json
 
-node ./bin/cautilus scenario summarize-telemetry \
+cautilus scenario summarize-telemetry \
   --results ./fixtures/scenario-proposals/results.json
 
-node ./bin/cautilus report build \
+cautilus report build \
   --input ./fixtures/reports/report-input.json
 
 # --output-dir is optional when cautilus workspace start has already pinned
 # CAUTILUS_RUN_DIR. Pass it explicitly only when you need to override the
 # active run (for example, inside a self-dogfood script that mints its own
 # curated bundle path).
-node ./bin/cautilus mode evaluate \
+cautilus mode evaluate \
   --repo-root . \
   --mode held_out \
   --intent "CLI behavior should remain legible." \
   --baseline-ref origin/main \
   --output-dir /tmp/cautilus-mode
 
-node ./bin/cautilus review prepare-input \
+cautilus review prepare-input \
   --repo-root . \
   --report-file /tmp/cautilus-mode/report.json
 
-node ./bin/cautilus review build-prompt-input \
+cautilus review build-prompt-input \
   --review-packet /tmp/cautilus-mode/review.json
 
-node ./bin/cautilus review render-prompt \
+cautilus review render-prompt \
   --input /tmp/cautilus-mode/review-prompt-input.json
 
-node ./bin/cautilus evidence prepare-input \
+cautilus evidence prepare-input \
   --report-file /tmp/cautilus-mode/report.json \
   --scenario-results-file /tmp/cautilus-mode/held_out-scenario-results.json \
   --run-audit-file /tmp/cautilus-run-audit/run-audit-summary.json \
   --history-file /tmp/cautilus-history/scenario-history.snapshot.json
 
-node ./bin/cautilus evidence bundle \
+cautilus evidence bundle \
   --input /tmp/cautilus-evidence/input.json
 
-node ./bin/cautilus optimize prepare-input \
+cautilus optimize prepare-input \
   --report-file /tmp/cautilus-mode/report.json \
   --review-summary /tmp/cautilus-review/review-summary.json \
   --history-file /tmp/cautilus-history/scenario-history.snapshot.json \
@@ -223,19 +227,19 @@ node ./bin/cautilus optimize prepare-input \
   --optimizer reflection \
   --budget medium
 
-node ./bin/cautilus optimize propose \
+cautilus optimize propose \
   --input /tmp/cautilus-optimize/input.json
 
-node ./bin/cautilus optimize build-artifact \
+cautilus optimize build-artifact \
   --proposal-file /tmp/cautilus-optimize/proposal.json
 
-node ./bin/cautilus review variants \
+cautilus review variants \
   --repo-root . \
   --workspace . \
   --report-file /tmp/cautilus-mode/report.json \
   --output-dir /tmp/cautilus-review
 
-node ./bin/cautilus cli evaluate \
+cautilus cli evaluate \
   --input ./fixtures/cli-evaluation/doctor-missing-adapter.json
 ```
 

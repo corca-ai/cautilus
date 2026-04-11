@@ -3,19 +3,19 @@
 ## Workflow Trigger
 
 - 다음 세션에서 이 문서를 멘션하면 먼저
-  [README.md](/home/ubuntu/cautilus/README.md),
-  [AGENTS.md](/home/ubuntu/cautilus/AGENTS.md),
-  [docs/master-plan.md](/home/ubuntu/cautilus/docs/master-plan.md),
-  [docs/contracts/active-run.md](/home/ubuntu/cautilus/docs/contracts/active-run.md),
-  [docs/contracts/behavior-intent.md](/home/ubuntu/cautilus/docs/contracts/behavior-intent.md),
-  [docs/contracts/scenario-proposal-inputs.md](/home/ubuntu/cautilus/docs/contracts/scenario-proposal-inputs.md),
-  [docs/specs/self-dogfood.spec.md](/home/ubuntu/cautilus/docs/specs/self-dogfood.spec.md),
-  [scripts/agent-runtime/active-run.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/active-run.mjs),
-  [scripts/agent-runtime/workspace-start.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/workspace-start.mjs),
-  [scripts/agent-runtime/evaluate-adapter-mode.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/evaluate-adapter-mode.mjs),
-  [scripts/agent-runtime/prepare-compare-worktrees.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/prepare-compare-worktrees.mjs),
-  [scripts/agent-runtime/build-review-packet.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/build-review-packet.mjs),
-  [skills/cautilus/SKILL.md](/home/ubuntu/cautilus/skills/cautilus/SKILL.md)
+  [README.md](../README.md),
+  [AGENTS.md](../AGENTS.md),
+  [docs/master-plan.md](./master-plan.md),
+  [docs/contracts/active-run.md](./contracts/active-run.md),
+  [docs/contracts/behavior-intent.md](./contracts/behavior-intent.md),
+  [docs/contracts/scenario-proposal-inputs.md](./contracts/scenario-proposal-inputs.md),
+  [docs/specs/self-dogfood.spec.md](./specs/self-dogfood.spec.md),
+  [scripts/agent-runtime/active-run.mjs](../scripts/agent-runtime/active-run.mjs),
+  [scripts/agent-runtime/workspace-start.mjs](../scripts/agent-runtime/workspace-start.mjs),
+  [scripts/agent-runtime/evaluate-adapter-mode.mjs](../scripts/agent-runtime/evaluate-adapter-mode.mjs),
+  [scripts/agent-runtime/prepare-compare-worktrees.mjs](../scripts/agent-runtime/prepare-compare-worktrees.mjs),
+  [scripts/agent-runtime/build-review-packet.mjs](../scripts/agent-runtime/build-review-packet.mjs),
+  [skills/cautilus/SKILL.md](../skills/cautilus/SKILL.md)
   를 읽는다. `evaluate-adapter-mode.mjs`와 `prepare-compare-worktrees.mjs`는
   workflow-creating wiring exemplar고, `build-review-packet.mjs`는
   consume-only wiring exemplar다. `run-workbench-executor-variants.mjs`
@@ -243,7 +243,7 @@
 - local proof (Node v22.22.2 기준, 이번 세션 마지막 측정값):
   - `npm run verify`: 185/185 green
   - `node ./scripts/check-specs.mjs`: `spec checks passed (4 specs, 411 guard rows)`
-  - `node ./bin/cautilus doctor --repo-root .`: `ready`
+  - `cautilus doctor --repo-root .`: `ready`
   - `npm run hooks:check`: `ready`
   - `node ./scripts/run-self-dogfood-experiments.mjs --experiment-adapter-name self-dogfood-binary-surface --quiet`:
     exit `0`, latest summary `overallStatus=pass`,
@@ -252,7 +252,7 @@
     `0c758dc Finish active-run canonical filename defaults`와
     `6f4ba44 Add A/B compare views for self-dogfood experiments`가 포함된다.
   - 빠른 happy-path smoke:
-    `eval "$(node ./bin/cautilus workspace start --label smoke)"` →
+    `eval "$(cautilus workspace start --label smoke)"` →
     `CAUTILUS_RUN_DIR`이 현재 shell에 박히고 `run.json` 마커가 생긴다.
   - end-to-end smoke (이번 세션에서 한 번 확인): 임시 git repo에서
     `workspace start` → `workspace prepare-compare --baseline-ref HEAD~1
@@ -372,34 +372,34 @@
 
 ## References
 
-- [README.md](/home/ubuntu/cautilus/README.md)
-- [AGENTS.md](/home/ubuntu/cautilus/AGENTS.md)
-- [docs/master-plan.md](/home/ubuntu/cautilus/docs/master-plan.md)
-- [docs/consumer-readiness.md](/home/ubuntu/cautilus/docs/consumer-readiness.md)
-- [docs/contracts/active-run.md](/home/ubuntu/cautilus/docs/contracts/active-run.md)
-- [docs/contracts/behavior-intent.md](/home/ubuntu/cautilus/docs/contracts/behavior-intent.md)
-- [docs/contracts/scenario-proposal-inputs.md](/home/ubuntu/cautilus/docs/contracts/scenario-proposal-inputs.md)
-- [docs/specs/self-dogfood.spec.md](/home/ubuntu/cautilus/docs/specs/self-dogfood.spec.md)
-- [bin/cautilus.test.mjs](/home/ubuntu/cautilus/bin/cautilus.test.mjs)
-- [scripts/agent-runtime/workspace-start.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/workspace-start.mjs)
-- [scripts/agent-runtime/workspace-start.test.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/workspace-start.test.mjs)
-- [scripts/agent-runtime/active-run.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/active-run.mjs)
-- [scripts/agent-runtime/active-run.test.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/active-run.test.mjs)
-- [scripts/agent-runtime/evaluate-adapter-mode.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/evaluate-adapter-mode.mjs)
-- [scripts/agent-runtime/evaluate-adapter-mode.test.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/evaluate-adapter-mode.test.mjs)
-- [scripts/agent-runtime/prepare-compare-worktrees.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/prepare-compare-worktrees.mjs)
-- [scripts/agent-runtime/prepare-compare-worktrees.test.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/prepare-compare-worktrees.test.mjs)
-- [scripts/agent-runtime/prune-workspace-artifacts.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/prune-workspace-artifacts.mjs)
-- [scripts/render-self-dogfood-html.mjs](/home/ubuntu/cautilus/scripts/render-self-dogfood-html.mjs)
-- [scripts/render-self-dogfood-html.test.mjs](/home/ubuntu/cautilus/scripts/render-self-dogfood-html.test.mjs)
-- [scripts/render-self-dogfood-experiments-html.mjs](/home/ubuntu/cautilus/scripts/render-self-dogfood-experiments-html.mjs)
-- [scripts/render-self-dogfood-experiments-html.test.mjs](/home/ubuntu/cautilus/scripts/render-self-dogfood-experiments-html.test.mjs)
-- [scripts/run-self-dogfood.mjs](/home/ubuntu/cautilus/scripts/run-self-dogfood.mjs)
-- [scripts/run-self-dogfood.test.mjs](/home/ubuntu/cautilus/scripts/run-self-dogfood.test.mjs)
-- [scripts/run-self-dogfood-experiments.mjs](/home/ubuntu/cautilus/scripts/run-self-dogfood-experiments.mjs)
-- [scripts/self-dogfood-experiment-prompt.mjs](/home/ubuntu/cautilus/scripts/self-dogfood-experiment-prompt.mjs)
-- [artifacts/self-dogfood/latest/index.html](/home/ubuntu/cautilus/artifacts/self-dogfood/latest/index.html)
-- [scripts/agent-runtime/behavior-intent.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/behavior-intent.mjs)
-- [scripts/agent-runtime/cli-proposal-candidates.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/cli-proposal-candidates.mjs)
-- [scripts/agent-runtime/chatbot-proposal-candidates.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/chatbot-proposal-candidates.mjs)
-- [scripts/agent-runtime/skill-proposal-candidates.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/skill-proposal-candidates.mjs)
+- [README.md](../README.md)
+- [AGENTS.md](../AGENTS.md)
+- [docs/master-plan.md](./master-plan.md)
+- [docs/consumer-readiness.md](./consumer-readiness.md)
+- [docs/contracts/active-run.md](./contracts/active-run.md)
+- [docs/contracts/behavior-intent.md](./contracts/behavior-intent.md)
+- [docs/contracts/scenario-proposal-inputs.md](./contracts/scenario-proposal-inputs.md)
+- [docs/specs/self-dogfood.spec.md](./specs/self-dogfood.spec.md)
+- [bin/cautilus.test.mjs](../bin/cautilus.test.mjs)
+- [scripts/agent-runtime/workspace-start.mjs](../scripts/agent-runtime/workspace-start.mjs)
+- [scripts/agent-runtime/workspace-start.test.mjs](../scripts/agent-runtime/workspace-start.test.mjs)
+- [scripts/agent-runtime/active-run.mjs](../scripts/agent-runtime/active-run.mjs)
+- [scripts/agent-runtime/active-run.test.mjs](../scripts/agent-runtime/active-run.test.mjs)
+- [scripts/agent-runtime/evaluate-adapter-mode.mjs](../scripts/agent-runtime/evaluate-adapter-mode.mjs)
+- [scripts/agent-runtime/evaluate-adapter-mode.test.mjs](../scripts/agent-runtime/evaluate-adapter-mode.test.mjs)
+- [scripts/agent-runtime/prepare-compare-worktrees.mjs](../scripts/agent-runtime/prepare-compare-worktrees.mjs)
+- [scripts/agent-runtime/prepare-compare-worktrees.test.mjs](../scripts/agent-runtime/prepare-compare-worktrees.test.mjs)
+- [scripts/agent-runtime/prune-workspace-artifacts.mjs](../scripts/agent-runtime/prune-workspace-artifacts.mjs)
+- [scripts/render-self-dogfood-html.mjs](../scripts/render-self-dogfood-html.mjs)
+- [scripts/render-self-dogfood-html.test.mjs](../scripts/render-self-dogfood-html.test.mjs)
+- [scripts/render-self-dogfood-experiments-html.mjs](../scripts/render-self-dogfood-experiments-html.mjs)
+- [scripts/render-self-dogfood-experiments-html.test.mjs](../scripts/render-self-dogfood-experiments-html.test.mjs)
+- [scripts/run-self-dogfood.mjs](../scripts/run-self-dogfood.mjs)
+- [scripts/run-self-dogfood.test.mjs](../scripts/run-self-dogfood.test.mjs)
+- [scripts/run-self-dogfood-experiments.mjs](../scripts/run-self-dogfood-experiments.mjs)
+- [scripts/self-dogfood-experiment-prompt.mjs](../scripts/self-dogfood-experiment-prompt.mjs)
+- [artifacts/self-dogfood/latest/index.html](../artifacts/self-dogfood/latest/index.html)
+- [scripts/agent-runtime/behavior-intent.mjs](../scripts/agent-runtime/behavior-intent.mjs)
+- [scripts/agent-runtime/cli-proposal-candidates.mjs](../scripts/agent-runtime/cli-proposal-candidates.mjs)
+- [scripts/agent-runtime/chatbot-proposal-candidates.mjs](../scripts/agent-runtime/chatbot-proposal-candidates.mjs)
+- [scripts/agent-runtime/skill-proposal-candidates.mjs](../scripts/agent-runtime/skill-proposal-candidates.mjs)

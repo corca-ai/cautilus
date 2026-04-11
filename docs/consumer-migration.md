@@ -5,6 +5,8 @@ and skill without widening adapter discovery.
 
 ## Fixed Rules
 
+- `cautilus --version` must work on `PATH` before any consumer adapter or skill
+  wiring is treated as valid.
 - The only official root adapter name is `cautilus-adapter.yaml`.
 - The only official named-adapter directory is `cautilus-adapters/`.
 - Host repos keep prompts, fixtures, wrappers, policy, and operator-facing
@@ -21,11 +23,13 @@ and skill without widening adapter discovery.
    tools. Do not rely on them for `Cautilus` discovery.
 4. Point the root adapter at checked-in host-owned prompt files, schema files,
    wrappers, and command templates.
-5. Run `node ./bin/cautilus doctor --repo-root <repo>` from the `Cautilus`
-   repo and require `ready` before claiming live-consumer status.
-6. Add at least one repo-local executable check that exercises the adapter
+5. Install the repo-local skill surface with `cautilus skills install` when
+   the host environment wants a checked-in reusable `Cautilus` skill.
+6. Run `cautilus doctor --repo-root <repo>` and require `ready`
+   before claiming live-consumer status.
+7. Add at least one repo-local executable check that exercises the adapter
    through `Cautilus` rather than only validating static YAML.
-7. Keep host-specific mining, storage, audit UI, and operator policy in the
+8. Keep host-specific mining, storage, audit UI, and operator policy in the
    consumer repo until they are intentionally generalized.
 
 ## Root Adapter Split Rule
@@ -60,7 +64,7 @@ without forcing the operator to mentally sort multiple unrelated workflows.
 - current state: root `cautilus-adapter` exists and points at the repo-owned
   quality gate
 - boundary note:
-  [docs/charness-consumer-boundary.md](/home/ubuntu/cautilus/docs/charness-consumer-boundary.md)
+  [docs/charness-consumer-boundary.md](./charness-consumer-boundary.md)
 - split trigger: add named adapters once charness needs a second operator
   decision beyond the current default quality gate
 - do not treat `quality-adapter.yaml` as the product contract

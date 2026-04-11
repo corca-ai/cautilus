@@ -8,8 +8,8 @@ Ceal's `workbench`.
 - Use the actual available skills for this turn before improvising a local
   workflow.
 - Keep manually maintained docs in English.
-  Exceptions: [docs/handoff.md](/home/ubuntu/cautilus/docs/handoff.md),
-  executable specs under [docs/specs/](/home/ubuntu/cautilus/docs/specs), and
+  Exceptions: [docs/handoff.md](./docs/handoff.md),
+  executable specs under [docs/specs/](./docs/specs), and
   temporary product-planning notes while they are being rewritten.
 - Speak to this user in Korean unless they ask otherwise.
 - Prefer the source of truth over copied checklists.
@@ -28,24 +28,24 @@ Ceal's `workbench`.
 
 ## Current Boundaries
 
-- Generic contracts live under [docs/](/home/ubuntu/cautilus/docs).
-- Bootstrap Python helpers live under [scripts/](/home/ubuntu/cautilus/scripts).
+- Generic contracts live under [docs/](./docs).
+- Bootstrap Python helpers live under [scripts/](./scripts).
 - Minimal runtime runners live under
-  [scripts/agent-runtime/](/home/ubuntu/cautilus/scripts/agent-runtime).
-- The CLI entrypoint lives at [bin/cautilus](/home/ubuntu/cautilus/bin/cautilus).
+  [scripts/agent-runtime/](./scripts/agent-runtime).
+- The CLI entrypoint lives at [bin/cautilus](./bin/cautilus).
 - The bundled standalone skill lives under
-  [skills/cautilus/](/home/ubuntu/cautilus/skills/cautilus).
-- Product roadmap lives at [docs/master-plan.md](/home/ubuntu/cautilus/docs/master-plan.md).
+  [skills/cautilus/](./skills/cautilus).
+- Product roadmap lives at [docs/master-plan.md](./docs/master-plan.md).
 
 ## Repo Memory
 
-- [docs/handoff.md](/home/ubuntu/cautilus/docs/handoff.md): next-session pickup
+- [docs/handoff.md](./docs/handoff.md): next-session pickup
   and volatile state
-- [docs/master-plan.md](/home/ubuntu/cautilus/docs/master-plan.md): durable
+- [docs/master-plan.md](./docs/master-plan.md): durable
   product direction and priority order
-- [docs/specs/index.spec.md](/home/ubuntu/cautilus/docs/specs/index.spec.md):
+- [docs/specs/index.spec.md](./docs/specs/index.spec.md):
   currently claimed product surface
-- [docs/ceal-workbench-extraction.md](/home/ubuntu/cautilus/docs/ceal-workbench-extraction.md):
+- [docs/ceal-workbench-extraction.md](./docs/ceal-workbench-extraction.md):
   Ceal extraction and consumer migration notes
 
 ## Working Rules
@@ -88,8 +88,8 @@ do not require all three in sequence before stopping.
 Key direct commands:
 
 ```bash
-node ./bin/cautilus adapter resolve --repo-root .
-node ./bin/cautilus adapter init --repo-root .
-node ./bin/cautilus doctor --repo-root .
-node ./bin/cautilus review variants --repo-root . --workspace . --output-dir /tmp/cautilus-review
+cautilus adapter resolve --repo-root .
+cautilus adapter init --repo-root .
+cautilus doctor --repo-root .
+cautilus review variants --repo-root . --workspace . --output-dir /tmp/cautilus-review
 ```

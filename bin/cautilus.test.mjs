@@ -1,5 +1,16 @@
 import assert from "node:assert/strict";
-import { chmodSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, utimesSync, writeFileSync } from "node:fs";
+import {
+	chmodSync,
+	existsSync,
+	lstatSync,
+	mkdirSync,
+	mkdtempSync,
+	readFileSync,
+	readlinkSync,
+	rmSync,
+	utimesSync,
+	writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
@@ -216,6 +227,89 @@ printf '{"verdict":"pass","summary":"standalone smoke","findings":[{"severity":"
 		assert.equal(summary.variants[0].status, "passed");
 		assert.equal(summary.variants[0].output.summary, "standalone smoke");
 		assert.doesNotMatch(JSON.stringify(summary), /\/home\/ubuntu\/ceal\//);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("cautilus skills install creates a repo-local canonical skill and Claude compatibility symlink", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-skill-install-"));
+	const wrapperDir = join(root, "bin");
+	try {
+		mkdirSync(wrapperDir, { recursive: true });
+		writeExecutable(
+			wrapperDir,
+			"cautilus",
+			`#!/bin/sh
+exec node "${BIN_PATH}" "$@"
+`,
+		);
+		const env = {
+			...process.env,
+			PATH: `${wrapperDir}:${process.env.PATH}`,
+		};
+
+		const install = spawnSync("node", [BIN_PATH, "skills", "install"], {
+			cwd: root,
+			encoding: "utf-8",
+			env,
+		});
+		assert.equal(install.status, 0, install.stderr);
+		assert.match(install.stdout, /Installed .*\.agents\/skills\/cautilus/);
+
+		const skillPath = join(root, ".agents", "skills", "cautilus", "SKILL.md");
+		const referencesPath = join(root, ".agents", "skills", "cautilus", "references", "workflow.md");
+		assert.equal(existsSync(skillPath), true);
+		assert.equal(existsSync(referencesPath), true);
+
+		const skill = readFileSync(skillPath, "utf-8");
+		assert.match(skill, /cautilus skills install/);
+		assert.match(skill, /cautilus doctor --repo-root \./);
+		assert.doesNotMatch(skill, /node \.\/bin\/cautilus/);
+
+		const claudeSkills = join(root, ".claude", "skills");
+		assert.equal(lstatSync(claudeSkills).isSymbolicLink(), true);
+		assert.equal(readlinkSync(claudeSkills), "../.agents/skills");
+
+		const secondInstall = spawnSync("node", [BIN_PATH, "skills", "install"], {
+			cwd: root,
+			encoding: "utf-8",
+			env,
+		});
+		assert.equal(secondInstall.status, 1);
+		assert.match(secondInstall.stderr, /already exists/);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("cautilus skills install migrates legacy .claude/skills into .agents/skills", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-skill-migrate-"));
+	const wrapperDir = join(root, "bin");
+	try {
+		const legacyDir = join(root, ".claude", "skills", "legacy");
+		mkdirSync(legacyDir, { recursive: true });
+		writeFileSync(join(legacyDir, "SKILL.md"), "legacy\n", "utf-8");
+		mkdirSync(wrapperDir, { recursive: true });
+		writeExecutable(
+			wrapperDir,
+			"cautilus",
+			`#!/bin/sh
+exec node "${BIN_PATH}" "$@"
+`,
+		);
+
+		const install = spawnSync("node", [BIN_PATH, "skills", "install", "--overwrite"], {
+			cwd: root,
+			encoding: "utf-8",
+			env: {
+				...process.env,
+				PATH: `${wrapperDir}:${process.env.PATH}`,
+			},
+		});
+		assert.equal(install.status, 0, install.stderr);
+		assert.equal(existsSync(join(root, ".agents", "skills", "legacy", "SKILL.md")), true);
+		assert.equal(lstatSync(join(root, ".claude", "skills")).isSymbolicLink(), true);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

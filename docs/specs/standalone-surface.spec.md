@@ -35,6 +35,7 @@ standalone acceptance boundary만 남긴다.
 | bin/cautilus | fixed | evidence bundle |
 | bin/cautilus | fixed | report build |
 | bin/cautilus | fixed | mode evaluate |
+| bin/cautilus | fixed | skills install |
 | bin/cautilus | fixed | optimize prepare-input |
 | bin/cautilus | fixed | optimize propose |
 | bin/cautilus | fixed | optimize build-artifact |
@@ -47,55 +48,57 @@ standalone acceptance boundary만 남긴다.
 | bin/cautilus.test.mjs | fixed | root self-consumer repo stays doctor-ready |
 | bin/cautilus.test.mjs | fixed | standalone temp repo can adopt cautilus without Ceal-owned paths |
 | skills/cautilus/SKILL.md | file_exists |  |
-| skills/cautilus/SKILL.md | fixed | node ./bin/cautilus adapter resolve --repo-root . |
-| skills/cautilus/SKILL.md | fixed | node ./bin/cautilus doctor --repo-root . |
-| skills/cautilus/SKILL.md | fixed | node ./bin/cautilus workspace prepare-compare |
-| skills/cautilus/SKILL.md | fixed | node ./bin/cautilus workspace prune-artifacts |
-| skills/cautilus/SKILL.md | fixed | eval "$(node ./bin/cautilus workspace start --label mode-held-out)" |
-| skills/cautilus/SKILL.md | fixed | node ./bin/cautilus scenario normalize chatbot |
-| skills/cautilus/SKILL.md | fixed | node ./bin/cautilus scenario normalize cli |
-| skills/cautilus/SKILL.md | fixed | node ./bin/cautilus scenario normalize skill |
-| skills/cautilus/SKILL.md | fixed | node ./bin/cautilus scenario summarize-telemetry |
-| skills/cautilus/SKILL.md | fixed | node ./bin/cautilus scenario prepare-input |
-| skills/cautilus/SKILL.md | fixed | node ./bin/cautilus scenario propose |
-| skills/cautilus/SKILL.md | fixed | node ./bin/cautilus evidence prepare-input |
-| skills/cautilus/SKILL.md | fixed | node ./bin/cautilus evidence bundle |
-| skills/cautilus/SKILL.md | fixed | node ./bin/cautilus report build |
-| skills/cautilus/SKILL.md | fixed | node ./bin/cautilus mode evaluate |
-| skills/cautilus/SKILL.md | fixed | node ./bin/cautilus optimize prepare-input |
-| skills/cautilus/SKILL.md | fixed | node ./bin/cautilus optimize propose |
-| skills/cautilus/SKILL.md | fixed | node ./bin/cautilus optimize build-artifact |
-| skills/cautilus/SKILL.md | fixed | node ./bin/cautilus cli evaluate |
-| skills/cautilus/SKILL.md | fixed | node ./bin/cautilus review prepare-input |
-| skills/cautilus/SKILL.md | fixed | node ./bin/cautilus review build-prompt-input |
-| skills/cautilus/SKILL.md | fixed | node ./bin/cautilus review render-prompt |
-| skills/cautilus/SKILL.md | fixed | node ./bin/cautilus review variants |
+| skills/cautilus/SKILL.md | fixed | cautilus skills install |
+| skills/cautilus/SKILL.md | fixed | cautilus adapter resolve --repo-root . |
+| skills/cautilus/SKILL.md | fixed | cautilus doctor --repo-root . |
+| skills/cautilus/SKILL.md | fixed | cautilus workspace prepare-compare |
+| skills/cautilus/SKILL.md | fixed | cautilus workspace prune-artifacts |
+| skills/cautilus/SKILL.md | fixed | eval "$(cautilus workspace start --label mode-held-out)" |
+| skills/cautilus/SKILL.md | fixed | cautilus scenario normalize chatbot |
+| skills/cautilus/SKILL.md | fixed | cautilus scenario normalize cli |
+| skills/cautilus/SKILL.md | fixed | cautilus scenario normalize skill |
+| skills/cautilus/SKILL.md | fixed | cautilus scenario summarize-telemetry |
+| skills/cautilus/SKILL.md | fixed | cautilus scenario prepare-input |
+| skills/cautilus/SKILL.md | fixed | cautilus scenario propose |
+| skills/cautilus/SKILL.md | fixed | cautilus evidence prepare-input |
+| skills/cautilus/SKILL.md | fixed | cautilus evidence bundle |
+| skills/cautilus/SKILL.md | fixed | cautilus report build |
+| skills/cautilus/SKILL.md | fixed | cautilus mode evaluate |
+| skills/cautilus/SKILL.md | fixed | cautilus optimize prepare-input |
+| skills/cautilus/SKILL.md | fixed | cautilus optimize propose |
+| skills/cautilus/SKILL.md | fixed | cautilus optimize build-artifact |
+| skills/cautilus/SKILL.md | fixed | cautilus cli evaluate |
+| skills/cautilus/SKILL.md | fixed | cautilus review prepare-input |
+| skills/cautilus/SKILL.md | fixed | cautilus review build-prompt-input |
+| skills/cautilus/SKILL.md | fixed | cautilus review render-prompt |
+| skills/cautilus/SKILL.md | fixed | cautilus review variants |
 | skills/cautilus/agents/openai.yaml | file_exists |  |
 | skills/cautilus/agents/openai.yaml | fixed | Cautilus |
 | plugins/cautilus/skills/cautilus/SKILL.md | file_exists |  |
-| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus adapter resolve --repo-root . |
-| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus doctor --repo-root . |
-| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus workspace prepare-compare |
-| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus workspace prune-artifacts |
-| plugins/cautilus/skills/cautilus/SKILL.md | fixed | eval "$(node ./bin/cautilus workspace start --label mode-held-out)" |
-| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus scenario normalize chatbot |
-| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus scenario normalize cli |
-| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus scenario normalize skill |
-| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus scenario summarize-telemetry |
-| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus scenario prepare-input |
-| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus scenario propose |
-| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus evidence prepare-input |
-| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus evidence bundle |
-| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus report build |
-| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus mode evaluate |
-| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus optimize prepare-input |
-| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus optimize propose |
-| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus optimize build-artifact |
-| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus cli evaluate |
-| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus review prepare-input |
-| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus review build-prompt-input |
-| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus review render-prompt |
-| plugins/cautilus/skills/cautilus/SKILL.md | fixed | node ./bin/cautilus review variants |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus skills install |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus adapter resolve --repo-root . |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus doctor --repo-root . |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus workspace prepare-compare |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus workspace prune-artifacts |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | eval "$(cautilus workspace start --label mode-held-out)" |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus scenario normalize chatbot |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus scenario normalize cli |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus scenario normalize skill |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus scenario summarize-telemetry |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus scenario prepare-input |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus scenario propose |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus evidence prepare-input |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus evidence bundle |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus report build |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus mode evaluate |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus optimize prepare-input |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus optimize propose |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus optimize build-artifact |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus cli evaluate |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus review prepare-input |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus review build-prompt-input |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus review render-prompt |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus review variants |
 | plugins/cautilus/skills/cautilus/agents/openai.yaml | file_exists |  |
 | plugins/cautilus/skills/cautilus/agents/openai.yaml | fixed | Cautilus |
 | docs/master-plan.md | fixed | standalone installable CLI plus bundled reusable skill |
@@ -106,34 +109,35 @@ standalone acceptance boundary만 남긴다.
 현재 단계에서 standalone surface는 최소한 아래를 만족해야 한다.
 
 - binary와 bundled skill이 같은 workflow entrypoint를 가리킨다.
+- host repo는 `cautilus skills install`로 canonical `.agents/skills/cautilus` surface를 materialize할 수 있다.
 - packaged local skill surface는 repo-local Codex/Claude marketplace로도 설명된다.
 - adapter resolve/init/doctor/workspace prepare-compare/workspace prune-artifacts/workspace start/scenario normalize chatbot/scenario normalize cli/scenario normalize skill/scenario summarize-telemetry/scenario prepare-input/scenario propose/evidence prepare-input/evidence bundle/report build/mode evaluate/optimize prepare-input/optimize propose/optimize build-artifact/cli evaluate/review prepare-input/review build-prompt-input/review render-prompt/review variants는 Ceal-local script path 없이 설명된다.
 - Ceal repoint는 제품 정의가 아니라 consumer migration 단계로 남아 있다.
 
 ```run:shell
-$ node ./bin/cautilus --help
-$ node ./bin/cautilus doctor --repo-root .
-$ node ./bin/cautilus workspace prepare-compare --repo-root . --baseline-ref origin/main --output-dir /tmp/cautilus-compare || true
-$ node ./bin/cautilus workspace prune-artifacts --root /tmp/cautilus-runs --keep-last 20 || true
+$ cautilus --help
+$ cautilus doctor --repo-root .
+$ cautilus workspace prepare-compare --repo-root . --baseline-ref origin/main --output-dir /tmp/cautilus-compare || true
+$ cautilus workspace prune-artifacts --root /tmp/cautilus-runs --keep-last 20 || true
 $ mkdir -p /tmp/cautilus-runs
-$ node ./bin/cautilus workspace start --root /tmp/cautilus-runs --label mode-held-out --json || true
-$ node ./bin/cautilus scenario normalize chatbot --input ./fixtures/scenario-proposals/chatbot-input.json
-$ node ./bin/cautilus scenario normalize cli --input ./fixtures/scenario-proposals/cli-input.json
-$ node ./bin/cautilus scenario normalize skill --input ./fixtures/scenario-proposals/skill-input.json
-$ node ./bin/cautilus scenario summarize-telemetry --results ./fixtures/scenario-results/example-results.json || true
-$ node ./bin/cautilus scenario prepare-input --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json --family fast_regression --window-days 14 --now 2026-04-11T00:00:00.000Z
-$ node ./bin/cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json
-$ node ./bin/cautilus evidence prepare-input --report-file ./fixtures/reports/report-input.json --scenario-results-file ./fixtures/scenario-results/example-results.json || true
-$ node ./bin/cautilus evidence bundle --input ./fixtures/evidence/example-input.json
-$ node ./bin/cautilus report build --input ./fixtures/reports/report-input.json
-$ node ./bin/cautilus mode evaluate --repo-root . --mode held_out --intent "CLI behavior should remain legible." --baseline-ref origin/main --output-dir /tmp/cautilus-mode || true
-$ node ./bin/cautilus optimize prepare-input --report-file ./fixtures/reports/report-input.json --target prompt --optimizer repair --budget light || true
-$ node ./bin/cautilus optimize propose --input ./fixtures/optimize/example-input.json
-$ node ./bin/cautilus optimize build-artifact --proposal-file ./fixtures/optimize/example-proposal.json --input-file ./fixtures/optimize/example-input.json
-$ node ./bin/cautilus cli evaluate --input ./fixtures/cli-evaluation/doctor-missing-adapter.json
-$ node ./bin/cautilus review prepare-input --repo-root . --report-file ./fixtures/reports/report-input.json || true
-$ node ./bin/cautilus review build-prompt-input --review-packet /tmp/cautilus-mode/review.json || true
-$ node ./bin/cautilus review render-prompt --input /tmp/cautilus-mode/review-prompt-input.json || true
-$ node ./bin/cautilus --version
+$ cautilus workspace start --root /tmp/cautilus-runs --label mode-held-out --json || true
+$ cautilus scenario normalize chatbot --input ./fixtures/scenario-proposals/chatbot-input.json
+$ cautilus scenario normalize cli --input ./fixtures/scenario-proposals/cli-input.json
+$ cautilus scenario normalize skill --input ./fixtures/scenario-proposals/skill-input.json
+$ cautilus scenario summarize-telemetry --results ./fixtures/scenario-results/example-results.json || true
+$ cautilus scenario prepare-input --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json --family fast_regression --window-days 14 --now 2026-04-11T00:00:00.000Z
+$ cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json
+$ cautilus evidence prepare-input --report-file ./fixtures/reports/report-input.json --scenario-results-file ./fixtures/scenario-results/example-results.json || true
+$ cautilus evidence bundle --input ./fixtures/evidence/example-input.json
+$ cautilus report build --input ./fixtures/reports/report-input.json
+$ cautilus mode evaluate --repo-root . --mode held_out --intent "CLI behavior should remain legible." --baseline-ref origin/main --output-dir /tmp/cautilus-mode || true
+$ cautilus optimize prepare-input --report-file ./fixtures/reports/report-input.json --target prompt --optimizer repair --budget light || true
+$ cautilus optimize propose --input ./fixtures/optimize/example-input.json
+$ cautilus optimize build-artifact --proposal-file ./fixtures/optimize/example-proposal.json --input-file ./fixtures/optimize/example-input.json
+$ cautilus cli evaluate --input ./fixtures/cli-evaluation/doctor-missing-adapter.json
+$ cautilus review prepare-input --repo-root . --report-file ./fixtures/reports/report-input.json || true
+$ cautilus review build-prompt-input --review-packet /tmp/cautilus-mode/review.json || true
+$ cautilus review render-prompt --input /tmp/cautilus-mode/review-prompt-input.json || true
+$ cautilus --version
 $ node --test ./bin/cautilus.test.mjs
 ```

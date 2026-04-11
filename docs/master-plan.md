@@ -38,7 +38,7 @@ Current `core validated surface`:
 - explicit artifact-root pruning through `workspace prune-artifacts`
 - explicit per-run artifact-root materialization through `workspace start`,
   with a `CAUTILUS_RUN_DIR` env var contract documented in
-  [active-run.md](/home/ubuntu/cautilus/docs/contracts/active-run.md).
+  [active-run.md](./contracts/active-run.md).
   Consumer commands are being wired into `resolveRunDir` one slice at a
   time; `mode evaluate` is the first target.
 - report packet assembly, review packet assembly, and review-variant fanout
@@ -55,7 +55,7 @@ Current `product-owned helper surface`:
 - bounded optimization input and proposal helpers
 
 Dogfood and migration evidence now lives separately from the product concept.
-Use [consumer-readiness.md](/home/ubuntu/cautilus/docs/consumer-readiness.md)
+Use [consumer-readiness.md](./consumer-readiness.md)
 for checked-in host evidence instead of treating any one consumer repo as the
 product definition.
 
@@ -152,7 +152,7 @@ Formalize the DSPy-like product story:
 - define release and versioning discipline before wider reuse
 
 The current release boundary is documented in
-[release-boundary.md](/home/ubuntu/cautilus/docs/release-boundary.md).
+[release-boundary.md](./release-boundary.md).
 
 ## Immediate Next Moves
 

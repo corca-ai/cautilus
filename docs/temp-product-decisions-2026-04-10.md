@@ -20,8 +20,8 @@
 - `charness`의 root `cautilus-adapter.yaml`는 현재 intentionally narrow 한 default evaluator entrypoint다.
 - `Cautilus`는 `charness` repo hygiene script를 흡수하지 않는다.
 - 출처:
-  [docs/consumer-migration.md](/home/ubuntu/cautilus/docs/consumer-migration.md),
-  [docs/charness-consumer-boundary.md](/home/ubuntu/cautilus/docs/charness-consumer-boundary.md)
+  [docs/consumer-migration.md](./consumer-migration.md),
+  [docs/charness-consumer-boundary.md](./charness-consumer-boundary.md)
 
 ### Repo-Agnostic Product Framing
 
@@ -69,9 +69,9 @@ follow-up effect:
 - 이후 문서 정리에서는 helper seam이 current repo 안에 구현되어 있어도,
   consumer proof와 runtime centrality가 다르면 core와 같은 강도로 쓰지 않는다.
 - 다음 문서 정리 후보:
-  - [README.md](/home/ubuntu/cautilus/README.md)
-  - [docs/specs/current-product.spec.md](/home/ubuntu/cautilus/docs/specs/current-product.spec.md)
-  - [docs/consumer-readiness.md](/home/ubuntu/cautilus/docs/consumer-readiness.md)
+  - [README.md](../README.md)
+  - [docs/specs/current-product.spec.md](./specs/current-product.spec.md)
+  - [docs/consumer-readiness.md](./consumer-readiness.md)
 
 ### D2. Scenario History Status
 
@@ -79,8 +79,8 @@ current claim:
 - 문서상으로는 scenario split selection, graduation history, baseline cache가 evaluation engine의 중심처럼 읽힌다.
 
 actual proof:
-- [scripts/agent-runtime/scenario-history.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/scenario-history.mjs) 에 pure helper는 있다.
-- 하지만 현재 [scripts/agent-runtime/evaluate-adapter-mode.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/evaluate-adapter-mode.mjs) 는 이 로직을 orchestration loop에 직접 연결하지 않는다.
+- [scripts/agent-runtime/scenario-history.mjs](../scripts/agent-runtime/scenario-history.mjs) 에 pure helper는 있다.
+- 하지만 현재 [scripts/agent-runtime/evaluate-adapter-mode.mjs](../scripts/agent-runtime/evaluate-adapter-mode.mjs) 는 이 로직을 orchestration loop에 직접 연결하지 않는다.
 
 recommended decision:
 - 당장은 `scenario-history`를 `implemented helper, not yet core runtime` 으로 분류할지,
@@ -137,9 +137,9 @@ decision:
 
 follow-up effect:
 - 이후 문서 정리에서는 아래 문서부터 repo-agnostic 표현으로 재작성한다.
-  - [README.md](/home/ubuntu/cautilus/README.md)
-  - [docs/master-plan.md](/home/ubuntu/cautilus/docs/master-plan.md)
-  - [docs/specs/current-product.spec.md](/home/ubuntu/cautilus/docs/specs/current-product.spec.md)
+  - [README.md](../README.md)
+  - [docs/master-plan.md](./master-plan.md)
+  - [docs/specs/current-product.spec.md](./specs/current-product.spec.md)
 - consumer repo 이름이 필요하면 제품 개념 설명 본문이 아니라 증거 문맥에만 둔다.
 
 ## Next Decision

@@ -73,6 +73,7 @@ standalone product여야 한다.
 | bin/cautilus | fixed | evidence bundle |
 | bin/cautilus | fixed | report build |
 | bin/cautilus | fixed | mode evaluate |
+| bin/cautilus | fixed | skills install |
 | bin/cautilus | fixed | optimize prepare-input |
 | bin/cautilus | fixed | optimize propose |
 | bin/cautilus | fixed | optimize build-artifact |
@@ -85,6 +86,7 @@ standalone product여야 한다.
 | bin/cautilus.test.mjs | file_exists |  |
 | bin/cautilus.test.mjs | fixed | root self-consumer repo stays doctor-ready |
 | skills/cautilus/SKILL.md | file_exists |  |
+| skills/cautilus/SKILL.md | fixed | cautilus skills install |
 | skills/cautilus/SKILL.md | fixed | npm run dogfood:self |
 | skills/cautilus/SKILL.md | fixed | npm run dogfood:self:experiments |
 | skills/cautilus/agents/openai.yaml | file_exists |  |
@@ -362,31 +364,31 @@ compare ownership은 아직 다음 step이다.
 local repo에서 최소 surface는 다음 명령으로 확인할 수 있어야 한다.
 
 ```run:shell
-$ node ./bin/cautilus adapter resolve --repo-root .
-$ node ./bin/cautilus doctor --repo-root .
-$ node ./bin/cautilus workspace prepare-compare --repo-root . --baseline-ref origin/main --output-dir /tmp/cautilus-compare || true
-$ node ./bin/cautilus workspace prune-artifacts --root /tmp/cautilus-runs --keep-last 20 || true
+$ cautilus adapter resolve --repo-root .
+$ cautilus doctor --repo-root .
+$ cautilus workspace prepare-compare --repo-root . --baseline-ref origin/main --output-dir /tmp/cautilus-compare || true
+$ cautilus workspace prune-artifacts --root /tmp/cautilus-runs --keep-last 20 || true
 $ mkdir -p /tmp/cautilus-runs
-$ node ./bin/cautilus workspace start --root /tmp/cautilus-runs --label mode-held-out --json || true
-$ node ./bin/cautilus scenario normalize chatbot --input ./fixtures/scenario-proposals/chatbot-input.json
-$ node ./bin/cautilus scenario normalize cli --input ./fixtures/scenario-proposals/cli-input.json
-$ node ./bin/cautilus scenario normalize skill --input ./fixtures/scenario-proposals/skill-input.json
-$ node ./bin/cautilus scenario prepare-input --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json --family fast_regression --window-days 14 --now 2026-04-11T00:00:00.000Z
-$ node ./bin/cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json
-$ node ./bin/cautilus scenario summarize-telemetry --results ./fixtures/scenario-results/example-results.json
-$ node ./bin/cautilus report build --input ./fixtures/reports/report-input.json
-$ node ./bin/cautilus mode evaluate --repo-root . --mode held_out --intent "CLI behavior should remain legible." --baseline-ref origin/main --output-dir /tmp/cautilus-mode || true
-$ node ./bin/cautilus evidence prepare-input --report-file ./fixtures/reports/report-input.json --scenario-results-file ./fixtures/scenario-results/example-results.json || true
-$ node ./bin/cautilus evidence bundle --input ./fixtures/evidence/example-input.json
-$ node ./bin/cautilus optimize prepare-input --report-file ./fixtures/reports/report-input.json --target prompt --optimizer repair --budget light || true
-$ node ./bin/cautilus optimize propose --input ./fixtures/optimize/example-input.json
-$ node ./bin/cautilus optimize build-artifact --proposal-file ./fixtures/optimize/example-proposal.json --input-file ./fixtures/optimize/example-input.json
-$ node ./bin/cautilus cli evaluate --input ./fixtures/cli-evaluation/doctor-missing-adapter.json
-$ node ./bin/cautilus review prepare-input --repo-root . --report-file ./fixtures/reports/report-input.json || true
-$ node ./bin/cautilus review build-prompt-input --review-packet /tmp/cautilus-mode/review.json || true
-$ node ./bin/cautilus review render-prompt --input /tmp/cautilus-mode/review-prompt-input.json || true
+$ cautilus workspace start --root /tmp/cautilus-runs --label mode-held-out --json || true
+$ cautilus scenario normalize chatbot --input ./fixtures/scenario-proposals/chatbot-input.json
+$ cautilus scenario normalize cli --input ./fixtures/scenario-proposals/cli-input.json
+$ cautilus scenario normalize skill --input ./fixtures/scenario-proposals/skill-input.json
+$ cautilus scenario prepare-input --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json --family fast_regression --window-days 14 --now 2026-04-11T00:00:00.000Z
+$ cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json
+$ cautilus scenario summarize-telemetry --results ./fixtures/scenario-results/example-results.json
+$ cautilus report build --input ./fixtures/reports/report-input.json
+$ cautilus mode evaluate --repo-root . --mode held_out --intent "CLI behavior should remain legible." --baseline-ref origin/main --output-dir /tmp/cautilus-mode || true
+$ cautilus evidence prepare-input --report-file ./fixtures/reports/report-input.json --scenario-results-file ./fixtures/scenario-results/example-results.json || true
+$ cautilus evidence bundle --input ./fixtures/evidence/example-input.json
+$ cautilus optimize prepare-input --report-file ./fixtures/reports/report-input.json --target prompt --optimizer repair --budget light || true
+$ cautilus optimize propose --input ./fixtures/optimize/example-input.json
+$ cautilus optimize build-artifact --proposal-file ./fixtures/optimize/example-proposal.json --input-file ./fixtures/optimize/example-input.json
+$ cautilus cli evaluate --input ./fixtures/cli-evaluation/doctor-missing-adapter.json
+$ cautilus review prepare-input --repo-root . --report-file ./fixtures/reports/report-input.json || true
+$ cautilus review build-prompt-input --review-packet /tmp/cautilus-mode/review.json || true
+$ cautilus review render-prompt --input /tmp/cautilus-mode/review-prompt-input.json || true
 $ python3 ./scripts/init_adapter.py --repo-root /tmp/cautilus-spec-check --output /tmp/cautilus-spec-check/cautilus-adapter.yaml --force
-$ node ./bin/cautilus --version
+$ cautilus --version
 $ npm run verify
 $ npm run dogfood:self
 $ npm run dogfood:self:experiments

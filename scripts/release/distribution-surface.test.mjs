@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 import test from "node:test";
@@ -9,6 +9,26 @@ import { renderHomebrewFormula } from "./render-homebrew-formula.mjs";
 import { deriveTapRepo, parseGitHubRemoteUrl, resolveReleaseTargets } from "./resolve-release-targets.mjs";
 
 const REPO_ROOT = process.cwd();
+
+function readTree(root) {
+	const entries = [];
+	function visit(current, relative = "") {
+		for (const entry of readdirSync(current, { withFileTypes: true })) {
+			const entryRelative = relative ? join(relative, entry.name) : entry.name;
+			const fullPath = join(current, entry.name);
+			if (entry.isDirectory()) {
+				visit(fullPath, entryRelative);
+				continue;
+			}
+			entries.push({
+				path: entryRelative,
+				content: readFileSync(fullPath, "utf-8"),
+			});
+		}
+	}
+	visit(root);
+	return entries.sort((a, b) => a.path.localeCompare(b.path));
+}
 
 test("cautilus --version matches package.json", () => {
 	const pkg = JSON.parse(readFileSync(join(REPO_ROOT, "package.json"), "utf-8"));
@@ -111,16 +131,9 @@ test("packaged cautilus Claude plugin manifest carries stable product metadata",
 });
 
 test("packaged cautilus skill stays in sync with the repo-bundled skill source", () => {
-	const repoSkill = readFileSync(join(REPO_ROOT, "skills", "cautilus", "SKILL.md"), "utf-8");
-	const packagedSkill = readFileSync(
-		join(REPO_ROOT, "plugins", "cautilus", "skills", "cautilus", "SKILL.md"),
-		"utf-8",
+	const repoTree = readTree(join(REPO_ROOT, "skills", "cautilus"));
+	const packagedTree = readTree(
+		join(REPO_ROOT, "plugins", "cautilus", "skills", "cautilus"),
 	);
-	const repoAgent = readFileSync(join(REPO_ROOT, "skills", "cautilus", "agents", "openai.yaml"), "utf-8");
-	const packagedAgent = readFileSync(
-		join(REPO_ROOT, "plugins", "cautilus", "skills", "cautilus", "agents", "openai.yaml"),
-		"utf-8",
-	);
-	assert.equal(packagedSkill, repoSkill);
-	assert.equal(packagedAgent, repoAgent);
+	assert.deepEqual(packagedTree, repoTree);
 });

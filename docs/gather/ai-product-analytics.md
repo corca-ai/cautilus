@@ -11,7 +11,7 @@
 
 ## Canonical Asset
 
-- [ai-product-analytics.md](/home/ubuntu/cautilus/docs/gather/ai-product-analytics.md)
+- [ai-product-analytics.md](./ai-product-analytics.md)
 
 ## Freshness
 

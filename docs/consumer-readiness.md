@@ -22,7 +22,7 @@ exercise the same depth of evaluator surface.
 ## Snapshot
 
 The checks below were recorded on 2026-04-10 UTC with the current
-`/home/ubuntu/cautilus/bin/cautilus` binary.
+`cautilus` CLI on `PATH`.
 
 ## Cautilus
 
@@ -30,12 +30,12 @@ Current role: product repo self-consumer
 
 Evidence:
 
-- `node ./bin/cautilus doctor --repo-root /home/ubuntu/cautilus`
+- `cautilus doctor --repo-root /path/to/cautilus`
   returns `ready`
 - checked-in root adapter:
-  [/home/ubuntu/cautilus/.agents/cautilus-adapter.yaml](/home/ubuntu/cautilus/.agents/cautilus-adapter.yaml)
+  [.agents/cautilus-adapter.yaml](../.agents/cautilus-adapter.yaml)
 - checked-in named adapter:
-  [/home/ubuntu/cautilus/.agents/cautilus-adapters/self-dogfood.yaml](/home/ubuntu/cautilus/.agents/cautilus-adapters/self-dogfood.yaml)
+  [.agents/cautilus-adapters/self-dogfood.yaml](../.agents/cautilus-adapters/self-dogfood.yaml)
 - explicit self-dogfood command:
   `npm run dogfood:self`
 - explicit tuning command:
@@ -61,7 +61,7 @@ Current role: live consumer
 
 Evidence:
 
-- `node ./bin/cautilus doctor --repo-root /home/ubuntu/ceal`
+- `cautilus doctor --repo-root /home/ubuntu/ceal`
   returns `ready`
 - checked-in adapter:
   [/home/ubuntu/ceal/.agents/cautilus-adapter.yaml](/home/ubuntu/ceal/.agents/cautilus-adapter.yaml)
@@ -84,7 +84,7 @@ Current role: live consumer and primary `skill` normalization reference
 
 Evidence:
 
-- `node ./bin/cautilus doctor --repo-root /home/ubuntu/charness`
+- `cautilus doctor --repo-root /home/ubuntu/charness`
   returns `ready`
 - checked-in `Cautilus` adapter:
   [/home/ubuntu/charness/.agents/cautilus-adapter.yaml](/home/ubuntu/charness/.agents/cautilus-adapter.yaml)
@@ -106,17 +106,17 @@ reference
 
 Evidence:
 
-- `node ./bin/cautilus doctor --repo-root /home/ubuntu/crill`
+- `cautilus doctor --repo-root /home/ubuntu/crill`
   returns `ready`
-- `node ./bin/cautilus mode evaluate --repo-root /home/ubuntu/crill --mode full_gate --intent 'Crill root validation entrypoint should run cleanly as the official Cautilus consumer gate.' --baseline-ref origin/main --output-dir /tmp/cautilus-crill-full-gate`
+- `cautilus mode evaluate --repo-root /home/ubuntu/crill --mode full_gate --intent 'Crill root validation entrypoint should run cleanly as the official Cautilus consumer gate.' --baseline-ref origin/main --output-dir /tmp/cautilus-crill-full-gate`
   returns a report with recommendation `accept-now`
-- `node ./bin/cautilus cli evaluate --input /home/ubuntu/crill/tests/fixtures/cautilus/cli-help.json`
+- `cautilus cli evaluate --input /home/ubuntu/crill/tests/fixtures/cautilus/cli-help.json`
   returns `accept-now`
-- `WORKBENCH_REVIEW_TIMEOUT_SECONDS=180 node ./bin/cautilus review variants --repo-root /home/ubuntu/crill --adapter-name operator-recovery --workspace /home/ubuntu/crill --report-file /tmp/cautilus-crill-operator-recovery-review/report.json --output-dir /tmp/cautilus-crill-operator-review`
+- `WORKBENCH_REVIEW_TIMEOUT_SECONDS=180 cautilus review variants --repo-root /home/ubuntu/crill --adapter-name operator-recovery --workspace /home/ubuntu/crill --report-file /tmp/cautilus-crill-operator-recovery-review/report.json --output-dir /tmp/cautilus-crill-operator-review`
   returns a summary with one passing `codex-review` variant
-- `node ./bin/cautilus workspace prepare-compare --repo-root /home/ubuntu/crill --baseline-ref origin/main --output-dir /tmp/cautilus-crill-compare --force`
+- `cautilus workspace prepare-compare --repo-root /home/ubuntu/crill --baseline-ref origin/main --output-dir /tmp/cautilus-crill-compare --force`
   followed by
-  `node ./bin/cautilus mode evaluate --repo-root /home/ubuntu/crill --adapter-name consumer-artifacts --mode comparison --intent 'Crill should keep widening its checked-in Cautilus consumer surfaces honestly.' --baseline-ref origin/main --baseline-repo /tmp/cautilus-crill-compare/baseline --candidate-repo /tmp/cautilus-crill-compare/candidate --output-dir /tmp/cautilus-crill-consumer-compare`
+  `cautilus mode evaluate --repo-root /home/ubuntu/crill --adapter-name consumer-artifacts --mode comparison --intent 'Crill should keep widening its checked-in Cautilus consumer surfaces honestly.' --baseline-ref origin/main --baseline-repo /tmp/cautilus-crill-compare/baseline --candidate-repo /tmp/cautilus-crill-compare/candidate --output-dir /tmp/cautilus-crill-consumer-compare`
   returns a report whose compare artifact verdict is `improved`
 - checked-in `Cautilus` adapter:
   [/home/ubuntu/crill/.agents/cautilus-adapter.yaml](/home/ubuntu/crill/.agents/cautilus-adapter.yaml)
