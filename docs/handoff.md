@@ -18,13 +18,14 @@
   [skills/cautilus/SKILL.md](/home/ubuntu/cautilus/skills/cautilus/SKILL.md)
   를 읽는다. `evaluate-adapter-mode.mjs`와 `prepare-compare-worktrees.mjs`는
   workflow-creating wiring exemplar고, `build-review-packet.mjs`는
-  consume-only wiring exemplar다 — 다음 slice에서는 둘 중 맞는 패턴만
-  복사하고 파일별 특수성만 조정한다.
+  consume-only wiring exemplar다. `run-workbench-executor-variants.mjs`
+  역시 이제 workflow-creating exemplar로 쓸 수 있다.
 - 시작 workflow는 `impl` 기준이다.
 - product-owned seam이면 `cautilus`에서 먼저 고친다. host adapter, prompt,
   policy, consumer artifact는 host 소유다.
-- active-run env var contract는 정착되었고 현재 wired consumer는 세 개다
-  (`mode evaluate`, `workspace prepare-compare`, `review prepare-input`).
+- active-run env var contract는 정착되었고 현재 wired consumer는 네 개다
+  (`mode evaluate`, `workspace prepare-compare`, `review prepare-input`,
+  `review variants`).
   `docs/contracts/active-run.md`의 `### Wired Consumers` 표가 authoritative
   status고, 다음 pickup은 아래 Next Session 순서를 따른다.
 - 세션을 시작하기 전에 `node --version`이 `v22.x` 이상인지 먼저 본다.
@@ -59,7 +60,7 @@
     `EXACT_MARKERS`에 이미 등록되어 있다.
   - `scripts/agent-runtime/active-run.mjs`에는 이제 workflow-creating용
     `resolveRunDir`과 consume-only용 `readActiveRunDir`이 함께 있다.
-    consumer wiring은 slice 3/4/5까지 들어왔다 (아래 wiring state).
+    consumer wiring은 slice 3/4/5/6까지 들어왔다 (아래 wiring state).
   - `bin/cautilus workspace start` subcommand로 wiring 완료. README,
     `docs/workflow.md`, `docs/master-plan.md`, bundled + packaged
     `skills/cautilus/SKILL.md`, `docs/specs/current-product.spec.md`,
@@ -145,6 +146,12 @@
     `--output` 기본값으로 사용한다. env var가 없으면 기존처럼 explicit
     `--report-file`을 요구하고 stdout fallback을 유지한다. consume-only
     rule에 따라 `Active run:` stderr banner는 찍지 않는다.
+  - wired workflow-creating helper: `review variants`.
+    hand-rolled `--prompt-file` + `--schema-file`만으로도 정당한 standalone
+    run이 가능하다고 보고 `resolveRunDir` 패턴으로 분류했다. explicit
+    `--output-dir` > `CAUTILUS_RUN_DIR` > auto-materialize 순서를 따르고,
+    auto-materialize 때만 stderr에 `Active run: <abs runDir>` 한 줄을 찍는다.
+    env var 경로와 explicit 경로는 조용하다.
   - mode evaluate의 canonical output은 `${mode}-scenario-results.json` +
     `report.json` + `report-input.json` 등 mode-prefixed 구조 그대로 유지해서
     한 runDir 안에 여러 mode가 공존할 수 있다.
@@ -158,6 +165,9 @@
     regression 6개를 추가해서 default-in-runDir / missing report /
     stdout fallback / explicit-over-env / missing `--report-file` /
     missing active-run dir를 고정한다.
+  - slice 6은 `run-workbench-executor-variants`에 env var / auto-materialize
+    + banner / explicit-over-env regression을 추가했다. 기존 explicit
+    `--output-dir` 경로 test들은 그대로 유지된다.
   - self-dogfood script들 (`scripts/run-self-dogfood.mjs`,
     `scripts/run-self-dogfood-experiments.mjs`)은 여전히 `--output-dir`을
     explicit하게 넘긴다. parent shell의 stray `CAUTILUS_RUN_DIR`이
@@ -165,9 +175,10 @@
     오염되지 않는다. 이건 load-bearing regression이라 slice 6에서도 동일한
     explicit-override test를 건다.
   - `docs/contracts/active-run.md`의 `### Wired Consumers` 표가
-    authoritative status. 현재 `review variants`만 `not yet`이다.
+    authoritative status. active-run 쪽 next pickup은 이제 file-in/file-out
+    helper follow-up slice다.
 - local proof (Node v22.22.2 기준, 이번 세션 마지막 측정값):
-  - `npm run verify`: 168/168 green
+  - `npm run verify`: 171/171 green
   - `node ./scripts/check-specs.mjs`: `spec checks passed (4 specs, 396 guard rows)`
   - `node ./bin/cautilus doctor --repo-root .`: `ready`
   - `npm run hooks:check`: `ready`
@@ -185,42 +196,21 @@
 
 ## Next Session
 
-1. **Slice 6: `review variants` active-run wiring.** 구현 파일은
-   `scripts/agent-runtime/run-workbench-executor-variants.mjs` (CLI 진입점)
-   이고, 현재 `--output-dir`이 required다.
-
-   **Slice 6 첫 결정 (probe):** `docs/contracts/active-run.md`의 Probe
-   Questions 섹션 마지막 항목이 이 결정을 기다린다 — `review variants`가
-   workflow-creating(→ `resolveRunDir` + `Active run:` banner + auto-materialize)
-   인지, consume-only(→ `readActiveRunDir` + no banner + no auto-materialize)
-   인지. 판단 기준: "hand-rolled prompt file과 hand-rolled workspace만으로
-   `review variants`를 독립 실행하는 operator가 fresh runDir을 mint하길
-   기대하는가?" slice 6 세션은 이 질문을 먼저 답하고 contract doc에 기록한
-   다음 구현에 들어간다. slice 3/4와 slice 5가 양쪽 exemplar다 — 결정에
-   따라 한쪽 패턴을 복사한다.
-
-   **공통 작업:** canonical rows는 `variant-*.json`과
-   `<stage>-<index>.stdout/stderr`. 결정된 패턴에 맞춰 test를 건다.
-   **load-bearing regression:** `scripts/run-self-dogfood.mjs`가
-   `review variants`를 `--output-dir`로 explicit하게 호출하므로 (line 485),
-   slice 3의 `explicit --output-dir overrides an inherited CAUTILUS_RUN_DIR`
-   test와 동일한 것을 `run-workbench-executor-variants.test.mjs` 수준에
-   꼭 건다. 이 regression은 패턴 선택과 무관하게 load-bearing이다.
-2. **Slice 후반: file-in/file-out helper 결정.** `evidence prepare-input`,
+1. **Slice 후반: file-in/file-out helper 결정.** `evidence prepare-input`,
    `optimize prepare-input`, `report build`, `evidence bundle`,
    `optimize propose`, `optimize build-artifact` 같은 helper들도 active run
    안에서는 canonical filename을 default로 삼을지 slice 5의 probe 답변에
    맞춰 각각 결정한다. 필요하면 contract 표에 row를 더 추가하면서 slice별로
    풀어간다.
-3. HTML view follow-ups는 다음 우선순위로 내려간다.
+2. HTML view follow-ups는 다음 우선순위로 내려간다.
    - `artifacts/self-dogfood/experiments/latest/` 번들이 다시 쓰이기 시작하면
      그때 HTML view를 experiments surface까지 확장할지 결정한다. 지금은 해당
      디렉터리가 비어 있어서 defer.
-5. `binary-surface` experiment가 `skill-surface`처럼 stable pass로 떨어졌는지
+4. `binary-surface` experiment가 `skill-surface`처럼 stable pass로 떨어졌는지
    다시 본다. 필요하면 enrichment prompt를 더 깎는다.
-6. `quality` workflow가 canonical dogfood와 experiments를 어떻게 함께 요약해야
+5. `quality` workflow가 canonical dogfood와 experiments를 어떻게 함께 요약해야
    operator에게 덜 거짓말 같은지 결론을 낸다.
-7. 변경 후에는 항상 `npm run verify`를 다시 돌린다. 실행 전에 Node 22가 활성화
+6. 변경 후에는 항상 `npm run verify`를 다시 돌린다. 실행 전에 Node 22가 활성화
    되어 있는지 먼저 확인한다.
 
 ## Discuss

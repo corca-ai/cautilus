@@ -1,9 +1,11 @@
 import assert from "node:assert/strict";
 import { chmodSync, existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 import test from "node:test";
+
+import { ACTIVE_RUN_ENV_VAR, DEFAULT_RUNS_ROOT } from "./active-run.mjs";
 
 const SCRIPT_PATH = join(process.cwd(), "scripts", "agent-runtime", "run-workbench-executor-variants.mjs");
 
@@ -129,14 +131,20 @@ EOF
 	return { root, workspace, adapterPath, promptFile, schemaFile, reportFile };
 }
 
+function runReviewVariants(args, { cwd = process.cwd(), env = process.env } = {}) {
+	return spawnSync("node", [SCRIPT_PATH, ...args], {
+		cwd,
+		encoding: "utf-8",
+		env,
+	});
+}
+
 test("run-workbench-executor-variants executes every adapter-defined variant and writes a summary", () => {
 	const { root, workspace, adapterPath, promptFile, schemaFile } = createAdapterRepo();
 	try {
 		const outputDir = join(root, "outputs");
-		const result = spawnSync(
-			"node",
+		const result = runReviewVariants(
 			[
-				SCRIPT_PATH,
 				"--repo-root",
 				root,
 				"--adapter",
@@ -150,10 +158,6 @@ test("run-workbench-executor-variants executes every adapter-defined variant and
 				"--output-dir",
 				outputDir,
 			],
-			{
-				cwd: process.cwd(),
-				encoding: "utf-8",
-			},
 		);
 		assert.equal(result.status, 0, result.stderr);
 		const summaryPath = result.stdout.trim();
@@ -195,10 +199,8 @@ test("run-workbench-executor-variants falls back to adapter default prompt and s
 			"utf-8",
 		);
 		const outputDir = join(root, "default-outputs");
-		const result = spawnSync(
-			"node",
+		const result = runReviewVariants(
 			[
-				SCRIPT_PATH,
 				"--repo-root",
 				root,
 				"--adapter",
@@ -208,10 +210,6 @@ test("run-workbench-executor-variants falls back to adapter default prompt and s
 				"--output-dir",
 				outputDir,
 			],
-			{
-				cwd: process.cwd(),
-				encoding: "utf-8",
-			},
 		);
 		assert.equal(result.status, 0, result.stderr);
 		const summary = JSON.parse(readFileSync(result.stdout.trim(), "utf-8"));
@@ -233,10 +231,8 @@ test("run-workbench-executor-variants can render a prompt from a report file whe
 			"utf-8",
 		);
 		const outputDir = join(root, "report-driven-outputs");
-		const result = spawnSync(
-			"node",
+		const result = runReviewVariants(
 			[
-				SCRIPT_PATH,
 				"--repo-root",
 				root,
 				"--adapter",
@@ -248,10 +244,6 @@ test("run-workbench-executor-variants can render a prompt from a report file whe
 				"--output-dir",
 				outputDir,
 			],
-			{
-				cwd: process.cwd(),
-				encoding: "utf-8",
-			},
 		);
 		assert.equal(result.status, 0, result.stderr);
 		const summary = JSON.parse(readFileSync(result.stdout.trim(), "utf-8"));
@@ -268,10 +260,8 @@ test("run-workbench-executor-variants suppresses progress logs with --quiet", ()
 	const { root, workspace, adapterPath, promptFile, schemaFile } = createAdapterRepo();
 	try {
 		const outputDir = join(root, "quiet-outputs");
-		const result = spawnSync(
-			"node",
+		const result = runReviewVariants(
 			[
-				SCRIPT_PATH,
 				"--repo-root",
 				root,
 				"--adapter",
@@ -286,10 +276,6 @@ test("run-workbench-executor-variants suppresses progress logs with --quiet", ()
 				outputDir,
 				"--quiet",
 			],
-			{
-				cwd: process.cwd(),
-				encoding: "utf-8",
-			},
 		);
 		assert.equal(result.status, 0, result.stderr);
 		assert.equal(result.stderr, "");
@@ -303,10 +289,8 @@ test("run-workbench-executor-variants emits heartbeat and ownership hints for fa
 	const { root, workspace, adapterPath, promptFile, schemaFile } = createAdapterRepo({ failVariantId: "beta" });
 	try {
 		const outputDir = join(root, "failing-outputs");
-		const result = spawnSync(
-			"node",
+		const result = runReviewVariants(
 			[
-				SCRIPT_PATH,
 				"--repo-root",
 				root,
 				"--adapter",
@@ -321,8 +305,6 @@ test("run-workbench-executor-variants emits heartbeat and ownership hints for fa
 				outputDir,
 			],
 			{
-				cwd: process.cwd(),
-				encoding: "utf-8",
 				env: {
 					...process.env,
 					CAUTILUS_PROGRESS_HEARTBEAT_MS: "20",
@@ -338,6 +320,110 @@ test("run-workbench-executor-variants emits heartbeat and ownership hints for fa
 		assert.match(result.stderr, /variant beta failure signal: repo-local variant failure for beta/);
 		assert.match(result.stderr, /variant beta ownership hint: Repo-local adapter, artifact, or policy failures are usually consumer-owned/);
 		assert.match(result.stderr, /review variants complete: status=failed summary=/);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("run-workbench-executor-variants honors CAUTILUS_RUN_DIR when --output-dir is omitted", () => {
+	const { root, workspace, adapterPath, promptFile, schemaFile } = createAdapterRepo();
+	try {
+		const activeRunDir = join(root, "active-run");
+		mkdirSync(activeRunDir, { recursive: true });
+		const result = runReviewVariants(
+			[
+				"--repo-root",
+				root,
+				"--adapter",
+				adapterPath,
+				"--workspace",
+				workspace,
+				"--prompt-file",
+				promptFile,
+				"--schema-file",
+				schemaFile,
+			],
+			{
+				env: { ...process.env, [ACTIVE_RUN_ENV_VAR]: activeRunDir },
+			},
+		);
+		assert.equal(result.status, 0, result.stderr);
+		assert.equal(result.stdout.trim(), join(activeRunDir, "summary.json"));
+		assert.doesNotMatch(result.stderr, /Active run:/);
+		const summary = JSON.parse(readFileSync(result.stdout.trim(), "utf-8"));
+		assert.equal(summary.outputDir, activeRunDir);
+		assert.equal(existsSync(join(activeRunDir, "alpha.json")), true);
+		assert.equal(existsSync(join(activeRunDir, "beta.json")), true);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("run-workbench-executor-variants auto-materializes a fresh runDir under the default root and logs Active run", () => {
+	const { root, workspace, adapterPath, promptFile, schemaFile } = createAdapterRepo();
+	try {
+		const result = runReviewVariants(
+			[
+				"--repo-root",
+				root,
+				"--adapter",
+				adapterPath,
+				"--workspace",
+				workspace,
+				"--prompt-file",
+				promptFile,
+				"--schema-file",
+				schemaFile,
+			],
+			{
+				cwd: root,
+				env: { ...process.env, [ACTIVE_RUN_ENV_VAR]: "" },
+			},
+		);
+		assert.equal(result.status, 0, result.stderr);
+		assert.match(result.stderr, /Active run: /);
+		const summaryPath = result.stdout.trim();
+		assert.match(summaryPath, new RegExp(`^${resolve(root, DEFAULT_RUNS_ROOT).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}.+/summary\\.json$`));
+		const summary = JSON.parse(readFileSync(summaryPath, "utf-8"));
+		assert.equal(summary.outputDir, resolve(summary.outputDir));
+		assert.equal(existsSync(join(summary.outputDir, "run.json")), true);
+		assert.equal(existsSync(join(summary.outputDir, "alpha.json")), true);
+		assert.equal(existsSync(join(summary.outputDir, "beta.json")), true);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("run-workbench-executor-variants explicit --output-dir overrides an inherited CAUTILUS_RUN_DIR", () => {
+	const { root, workspace, adapterPath, promptFile, schemaFile } = createAdapterRepo();
+	try {
+		const activeRunDir = join(root, "active-run");
+		mkdirSync(activeRunDir, { recursive: true });
+		const explicitOutputDir = join(root, "explicit-output");
+		const result = runReviewVariants(
+			[
+				"--repo-root",
+				root,
+				"--adapter",
+				adapterPath,
+				"--workspace",
+				workspace,
+				"--prompt-file",
+				promptFile,
+				"--schema-file",
+				schemaFile,
+				"--output-dir",
+				explicitOutputDir,
+			],
+			{
+				env: { ...process.env, [ACTIVE_RUN_ENV_VAR]: activeRunDir },
+			},
+		);
+		assert.equal(result.status, 0, result.stderr);
+		assert.equal(result.stdout.trim(), join(explicitOutputDir, "summary.json"));
+		assert.equal(existsSync(join(explicitOutputDir, "alpha.json")), true);
+		assert.equal(existsSync(join(activeRunDir, "alpha.json")), false);
+		assert.doesNotMatch(result.stderr, /Active run:/);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

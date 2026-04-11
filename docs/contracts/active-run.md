@@ -145,7 +145,7 @@ part of its own slice (see Probe Questions).
 | `mode evaluate`       | wired      | `report-input.json`, `report.json`, `<mode>-scenario-results.json`, `selected-profile.json`, `selected-scenario-ids.json`, `baseline-cache.json`, `<stage>-<index>.stdout/stderr` | `--output-dir` is optional. Mode-prefixed scenario-results keeps multi-mode coexistence inside one `runDir`. |
 | `workspace prepare-compare` | wired  | `baseline/`, `candidate/`                                        | `--output-dir` is optional. Retries inside one active `runDir` reuse the git worktree registrations and rebuild `baseline/` and `candidate/` without requiring `--force`. |
 | `review prepare-input`      | wired   | `review-packet.json`                                             | Consume-only helper. Defaults `--report-file` to `report.json` and `--output` to `review-packet.json` inside the active run; keeps stdout fallback when no active run is pinned. |
-| `review variants`           | not yet | `variant-*.json`, `<stage>-<index>.stdout/stderr`                | Scheduled for a follow-up slice.                              |
+| `review variants`           | wired    | `variant-*.json`, `<stage>-<index>.stdout/stderr`               | Workflow-creating helper. `--output-dir` is optional; explicit path wins, otherwise it uses `CAUTILUS_RUN_DIR`, otherwise it auto-materializes a fresh runDir and emits `Active run:` once. |
 
 ### Consume-Only Helpers
 
@@ -254,14 +254,15 @@ Record these so future sessions do not re-propose them:
 - Is `review variants` a workflow-creating command that mints runDirs
   (and therefore uses `resolveRunDir`), or is it a consume-only
   command that only reads an existing active run (and therefore uses
-  `readActiveRunDir`)? The ambiguity is real: it reads an existing
-  `review-packet.json` but writes many new `variant-*.json` +
-  `<stage>-<index>.stdout/stderr` outputs. The slice 6 session should
-  decide by answering: "can an operator legitimately run `review
-  variants` standalone (with a hand-rolled prompt file, no prior
-  mode evaluate or review prepare-input) and expect it to mint a
-  fresh runDir for its outputs?" If yes, workflow-creating. If no,
-  consume-only. Record the answer here when slice 6 starts.
+  `readActiveRunDir`)?
+  **Resolved (slice 6 decision)**: workflow-creating. An operator can
+  legitimately run `review variants` standalone with a hand-rolled
+  `--prompt-file` plus `--schema-file`, no prior `mode evaluate`, and
+  expect a fresh runDir for the resulting `variant-*.json` outputs.
+  The command therefore follows the same precedence chain as other
+  workflow-creating helpers (explicit `--output-dir` >
+  `CAUTILUS_RUN_DIR` > auto-materialize under `./.cautilus/runs/`) and
+  emits `Active run: <abs path>` once only when it auto-materializes.
 
 ## Source References
 

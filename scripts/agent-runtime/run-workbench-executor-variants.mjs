@@ -13,6 +13,7 @@ import {
 } from "./command-progress.mjs";
 import { REVIEW_PROMPT_INPUTS_SCHEMA } from "./contract-versions.mjs";
 import { renderReviewPrompt } from "./render-review-prompt.mjs";
+import { resolveRunDir } from "./active-run.mjs";
 
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 const TOOL_ROOT = resolve(SCRIPT_DIR, "..", "..");
@@ -29,7 +30,7 @@ const VALUE_OPTIONS = new Map([
 	["--review-packet", "reviewPacketFile"],
 	["--review-prompt-input", "reviewPromptInputFile"],
 ]);
-const REQUIRED_FIELDS = ["workspace", "outputDir"];
+const REQUIRED_FIELDS = ["workspace"];
 
 function fail(message) {
 	process.stderr.write(`${message}\n`);
@@ -38,7 +39,7 @@ function fail(message) {
 
 function printUsage() {
 	process.stdout.write(
-		"Usage: node scripts/agent-runtime/run-workbench-executor-variants.mjs [--repo-root DIR] [--adapter PATH | --adapter-name NAME] --workspace DIR [--prompt-file FILE | --report-file FILE | --review-packet FILE | --review-prompt-input FILE] [--schema-file FILE] --output-dir DIR [--variant-id ID] [--quiet]\n",
+		"Usage: node scripts/agent-runtime/run-workbench-executor-variants.mjs [--repo-root DIR] [--adapter PATH | --adapter-name NAME] --workspace DIR [--prompt-file FILE | --report-file FILE | --review-packet FILE | --review-prompt-input FILE] [--schema-file FILE] [--output-dir DIR] [--variant-id ID] [--quiet]\n",
 	);
 }
 
@@ -316,7 +317,13 @@ async function main() {
 	const options = parseArgs(process.argv.slice(2));
 	const log = createProgressLogger({ quiet: options.quiet });
 	const repoRoot = resolve(options.repoRoot);
-	log(`review variants start: repo=${repoRoot} workspace=${resolve(options.workspace)} output=${resolve(options.outputDir)}`);
+	const resolvedRun = resolveRunDir({ outputDir: options.outputDir });
+	if (resolvedRun.source === "auto") {
+		process.stderr.write(`Active run: ${resolvedRun.runDir}\n`);
+	}
+	log(
+		`review variants start: repo=${repoRoot} workspace=${resolve(options.workspace)} output=${resolvedRun.runDir}`,
+	);
 	const adapterPayload = loadAdapter(options);
 	const variants = adapterPayload.data.executor_variants ?? [];
 	if (variants.length === 0) {
@@ -336,7 +343,7 @@ async function main() {
 		"schemaFile",
 		repoRoot,
 	);
-	const outputDir = resolve(options.outputDir);
+	const outputDir = resolvedRun.runDir;
 	mkdirSync(outputDir, { recursive: true });
 	const promptArtifacts = resolvePromptArtifacts(options, adapterPayload, repoRoot, outputDir);
 	const promptFile = promptArtifacts.promptFile;
