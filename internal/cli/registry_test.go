@@ -47,6 +47,26 @@ func TestRenderUsageIncludesSkillsInstall(t *testing.T) {
 	}
 }
 
+func TestDecodeRegistryRejectsUnknownCommandFields(t *testing.T) {
+	var registry Registry
+	err := decodeRegistry([]byte(`{
+		"usage": ["cautilus doctor [args]"],
+		"examples": ["cautilus doctor --repo-root ."],
+		"commands": [
+			{
+				"path": ["skills", "install"],
+				"script": "scripts/install-skills.mjs"
+			}
+		]
+	}`), &registry)
+	if err == nil {
+		t.Fatal("expected decodeRegistry to reject unknown fields")
+	}
+	if !strings.Contains(err.Error(), "unknown field") {
+		t.Fatalf("expected unknown field error, got %v", err)
+	}
+}
+
 func TestFindRepoRootFromNestedPath(t *testing.T) {
 	wd := t.TempDir()
 	repoRoot := filepath.Join(wd, "repo")

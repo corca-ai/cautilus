@@ -25,8 +25,8 @@ standalone acceptance boundary만 남긴다.
 | bin/cautilus | fixed | exec go -C |
 | internal/cli/command-registry.json | file_exists |  |
 | internal/cli/command-registry.json | fixed | cautilus doctor [args] |
-| internal/cli/command-registry.json | fixed | scripts/install-skills.mjs |
-| internal/cli/command-registry.json | fixed | scripts/agent-runtime/summarize-scenario-telemetry.mjs |
+| internal/cli/command-registry.json | fixed | "path": ["skills", "install"] |
+| internal/cli/command-registry.json | fixed | "path": ["scenario", "summarize-telemetry"] |
 | .claude-plugin/marketplace.json | file_exists |  |
 | .agents/plugins/marketplace.json | file_exists |  |
 | plugins/cautilus/.claude-plugin/plugin.json | file_exists |  |
@@ -42,8 +42,6 @@ standalone acceptance boundary만 남긴다.
 | internal/app/cli_smoke_test.go | fixed | TestCLIRootSelfConsumerRepoStaysDoctorReady |
 | internal/app/cli_smoke_test.go | fixed | TestCLIStandaloneTempRepoCanAdoptCautilusWithoutCealPaths |
 | internal/app/cli_smoke_test.go | fixed | TestCLISkillsInstallCreatesRepoLocalCanonicalSkill |
-| scripts/install-skills.mjs | file_exists |  |
-| scripts/install-skills.mjs | fixed | Installed skill expects `cautilus` to be available on PATH. |
 | skills/cautilus/SKILL.md | file_exists |  |
 | skills/cautilus/SKILL.md | fixed | cautilus skills install |
 | skills/cautilus/SKILL.md | fixed | cautilus adapter resolve --repo-root . |

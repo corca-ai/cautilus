@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 import test from "node:test";
@@ -77,6 +77,20 @@ test("install.sh downloads a tagged binary asset and writes a wrapper that prese
 	assert.match(installer, /mv "\$TARGET_DIR\/bin\/cautilus" "\$TARGET_DIR\/bin\/cautilus-real"/);
 	assert.match(installer, /CAUTILUS_CALLER_CWD="\\\$\(pwd\)"/);
 	assert.match(installer, /exec "\$TARGET_DIR\/bin\/cautilus-real" "\\\$@"/);
+});
+
+test("release workflow attaches provenance attestations for the public binary matrix", () => {
+	const workflow = readFileSync(join(REPO_ROOT, ".github", "workflows", "release-artifacts.yml"), "utf-8");
+	assert.match(workflow, /id-token: write/);
+	assert.match(workflow, /attestations: write/);
+	assert.match(workflow, /artifact-metadata: write/);
+	assert.match(workflow, /uses: actions\/attest@v4/);
+	assert.match(workflow, /subject-checksums: dist\/cautilus-\$\{\{ github\.ref_name \}\}-checksums\.txt/);
+});
+
+test("dead runtime compatibility shims stay deleted", () => {
+	assert.equal(existsSync(join(REPO_ROOT, "scripts", "install-skills.mjs")), false);
+	assert.equal(existsSync(join(REPO_ROOT, "scripts", "cli-registry.mjs")), false);
 });
 
 test("homebrew formula renderer produces a stable formula body", () => {

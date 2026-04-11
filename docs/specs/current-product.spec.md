@@ -64,6 +64,8 @@ standalone product여야 한다.
 | .github/workflows/release-artifacts.yml | file_exists |  |
 | .github/workflows/release-artifacts.yml | fixed | actions/setup-go@v5 |
 | .github/workflows/release-artifacts.yml | fixed | render-homebrew-formula.mjs |
+| .github/workflows/release-artifacts.yml | fixed | actions/attest@v4 |
+| .github/workflows/release-artifacts.yml | fixed | subject-checksums: dist/cautilus-${{ github.ref_name }}-checksums.txt |
 | go.mod | file_exists |  |
 | go.mod | fixed | module github.com/corca-ai/cautilus |
 | cmd/cautilus/main.go | file_exists |  |
@@ -71,9 +73,9 @@ standalone product여야 한다.
 | bin/cautilus | fixed | CAUTILUS_TOOL_ROOT |
 | bin/cautilus | fixed | exec go -C |
 | internal/cli/command-registry.json | file_exists |  |
-| internal/cli/command-registry.json | fixed | scripts/install-skills.mjs |
-| internal/cli/command-registry.json | fixed | scripts/agent-runtime/workspace-start.mjs |
-| internal/cli/command-registry.json | fixed | scripts/agent-runtime/run-workbench-executor-variants.mjs |
+| internal/cli/command-registry.json | fixed | "path": ["skills", "install"] |
+| internal/cli/command-registry.json | fixed | "path": ["workspace", "start"] |
+| internal/cli/command-registry.json | fixed | "path": ["review", "variants"] |
 | internal/cli/command-registry.json | fixed | cautilus skills install [--overwrite] |
 | bin/cautilus | file_exists |  |
 | .claude-plugin/marketplace.json | file_exists |  |
@@ -91,8 +93,6 @@ standalone product여야 한다.
 | internal/app/cli_smoke_test.go | fixed | TestCLIRootSelfConsumerRepoStaysDoctorReady |
 | internal/app/cli_smoke_test.go | fixed | TestCLIStandaloneTempRepoCanAdoptCautilusWithoutCealPaths |
 | internal/app/cli_smoke_test.go | fixed | TestCLISkillsInstallCreatesRepoLocalCanonicalSkill |
-| scripts/install-skills.mjs | file_exists |  |
-| scripts/install-skills.mjs | fixed | Installed skill expects `cautilus` to be available on PATH. |
 | skills/cautilus/SKILL.md | file_exists |  |
 | skills/cautilus/SKILL.md | fixed | cautilus skills install |
 | skills/cautilus/SKILL.md | fixed | npm run dogfood:self |
@@ -220,6 +220,7 @@ standalone product여야 한다.
 | docs/release-boundary.md | fixed | install.sh |
 | docs/releasing.md | file_exists |  |
 | docs/releasing.md | fixed | fetch-github-archive-sha256 |
+| docs/releasing.md | fixed | gh attestation verify |
 | docs/consumer-readiness.md | file_exists |  |
 | docs/consumer-readiness.md | fixed | All four repos now expose an official `cautilus-adapter` |
 | docs/consumer-migration.md | file_exists |  |

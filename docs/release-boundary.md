@@ -61,7 +61,10 @@ The current honest install story is:
 10. validate the checked-in Claude marketplace and plugin manifests with
    `claude plugins validate ./.claude-plugin/marketplace.json`
    and `claude plugins validate ./plugins/cautilus/.claude-plugin/plugin.json`
-11. when cutting a tagged release, render the Homebrew formula body with
+11. when cutting a tagged release, keep the checksum manifest and GitHub
+    artifact attestations as the public provenance surface for the binary
+    assets
+12. when cutting a tagged release, render the Homebrew formula body with
    [render-homebrew-formula.mjs](../scripts/release/render-homebrew-formula.mjs)
 
 This repo is still not claiming npm publication or a public Codex/Claude

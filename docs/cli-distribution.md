@@ -19,6 +19,8 @@ As of the current release line:
   platform
 - `install.sh` verifies the downloaded asset against the tagged checksum
   manifest before unpacking it
+- tagged release binaries now also carry GitHub artifact attestations derived
+  from the checksum manifest
 - Homebrew remains a deferred install surface until the CLI runtime settles
   further
 
@@ -106,8 +108,8 @@ Costs:
 
 - more release automation and artifact management
 - more platform-specific CI coverage
-- stricter expectations around checksums, signatures, and reproducible release
-  behavior
+- stricter expectations around checksums, provenance attestations, and
+  reproducible release behavior
 
 For `Cautilus`, the main argument for a prebuilt binary is operational
 simplicity, not benchmark speed.
@@ -135,6 +137,7 @@ Use this order unless the product direction changes:
 
 1. keep GitHub releases and `install.sh` as the canonical consumer path
 2. keep the tagged binary asset matrix stable across releases
-3. add Homebrew after the binary release artifact shape is stable
-4. revisit stronger binary distribution claims only after the release path is
+3. keep checksum plus attestation verification as the default provenance story
+4. add Homebrew after the binary release artifact shape is stable
+5. revisit stronger binary distribution claims only after the release path is
    proven in public

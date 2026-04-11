@@ -7,6 +7,9 @@ on:
 
 permissions:
   contents: write
+  id-token: write
+  attestations: write
+  artifact-metadata: write
 
 jobs:
   release-artifacts:
@@ -56,6 +59,10 @@ jobs:
             echo "- binary checksum manifest: \`cautilus-${VERSION}-checksums.txt\`"
             echo "- formula artifact: \`Cautilus.rb\`"
           } > "dist/release-notes-${VERSION}.md"
+      - name: Attest binary release artifacts
+        uses: actions/attest@v4
+        with:
+          subject-checksums: dist/cautilus-${{ github.ref_name }}-checksums.txt
       - uses: softprops/action-gh-release@v2
         with:
           files: |

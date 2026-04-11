@@ -173,6 +173,7 @@ The current release boundary is documented in
    output until the JSON/YAML packet and report boundaries stay stable across
    multiple consumers.
 7. Turn the first install story into a real release discipline: tagged
-   archives, checksums, tap publication, and public-repo release docs.
+   archives, checksums, attestations, tap publication, and public-repo release
+   docs.
 8. Keep moving host-specific runtime seams out of the product boundary and into
    consumer-owned adapters, prompts, and storage readers.

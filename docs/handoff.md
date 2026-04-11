@@ -19,8 +19,6 @@
   [cmd/cautilus/main.go](../cmd/cautilus/main.go),
   [go.mod](../go.mod),
   [internal/cli/command-registry.json](../internal/cli/command-registry.json),
-  [scripts/cli-registry.mjs](../scripts/cli-registry.mjs),
-  [scripts/install-skills.mjs](../scripts/install-skills.mjs),
   [scripts/agent-runtime/report-packet.mjs](../scripts/agent-runtime/report-packet.mjs),
   [scripts/agent-runtime/active-run.mjs](../scripts/agent-runtime/active-run.mjs),
   [scripts/agent-runtime/workspace-start.mjs](../scripts/agent-runtime/workspace-start.mjs),
@@ -63,20 +61,18 @@
   - Homebrew publication is intentionally deferred until after the Go port.
     The current release still uploads `Cautilus.rb` as an artifact for
     reference only; do not treat it as the public install contract yet.
-- first Go slice for the CLI entry layer has landed on `go-port`.
-  - `go.mod` now pins the repo to Go `1.26`, and `cmd/cautilus/main.go`
-    provides a Go CLI entry that preserves the existing command contract while
-    still delegating execution to the current Node scripts.
+- the Go CLI/runtime port now owns the public `cautilus ...` surface.
+  - `go.mod` now pins the repo to Go `1.26`, `cmd/cautilus/main.go` is the
+    CLI entry, and `bin/cautilus` is only a POSIX repo shim into the Go entry.
   - `internal/cli/command-registry.json` is now the source of truth for
-    command usage lines, examples, and script routing. Both `bin/cautilus`
-    and the Go entry read the same registry instead of hand-maintaining two
-    route tables.
-  - `scripts/install-skills.mjs` now owns the `skills install` implementation,
-    so the Node CLI no longer has a one-off built-in command body that blocks
-    the dispatcher port.
+    command usage lines, examples, and path matching. It no longer carries
+    stale Node script-routing metadata.
+  - dead compatibility files `scripts/install-skills.mjs` and
+    `scripts/cli-registry.mjs` are gone; `skills install` is authoritative in
+    Go through bundled assets.
   - `npm run verify` now includes `go test ./cmd/... ./internal/...`, and
     `.github/workflows/verify.yml` sets up Go `1.26.1` before running the
-    existing Node-based verify flow.
+    existing maintainer-facing verify flow.
 - public CLI dispatch no longer depends on the Node command scripts.
   - `bin/cautilus` is now a thin POSIX repo shim that shells into
     `go -C <repo-root> run ./cmd/cautilus` with the caller cwd + tool root
@@ -113,9 +109,9 @@
     back to `package.json` when a source checkout is available. This hardens the
     future single-binary path without changing the current repo-root output
     (`0.2.0`).
-  - checked-in `scripts/*.mjs` and `scripts/agent-runtime/*.mjs` still exist
-    as compatibility / parity surfaces for the current Node unit tests and
-    release fixtures, but the user-facing `cautilus ...` surface is now fully
+  - checked-in `scripts/*.mjs` and `scripts/agent-runtime/*.mjs` now survive
+    only where they still own maintainer tooling, release helpers, or bounded
+    product support flows. The user-facing `cautilus ...` surface is fully
     Go-owned.
 - Go quality gates now match the new runtime ownership boundary.
   - `.golangci.yml` is checked in with the correctness-focused subset of the
@@ -148,8 +144,8 @@
     canonical consumer install contract가 아니라 local test fixture다.
   - CLI routing source of truth는 이제 `bin/cautilus` 안의 hard-coded
     branch chain이 아니라 `internal/cli/command-registry.json`이다.
-    Node entry는 `scripts/cli-registry.mjs`를 통해 registry를 읽고,
-    Go entry도 같은 registry를 embed해서 help/dispatch drift를 막는다.
+    registry는 usage/example/path truth만 담고, Go entry가 이를 embed해서
+    help/dispatch drift를 막는다.
   - adapter bootstrap seam도 product-owned Node runtime으로 수렴했다.
     `resolve`, `init`, `doctor`는 이제 `python3`가 아니라
     `scripts/resolve_adapter.mjs`, `scripts/init_adapter.mjs`,
@@ -425,8 +421,10 @@
     done
   - prebuilt binary asset distribution과 release automation/documentation은
     이제 기본 경로로 들어왔다
-  - the next seam is Homebrew/tap honesty plus stronger release provenance such
-    as signing or attestations
+  - checksum-driven GitHub artifact attestations are now part of the release
+    workflow
+  - the next seam is still Homebrew/tap honesty after this provenance baseline
+    settles
   - preserve the existing command contract and fixture names unless a break is
     clearly worth it
   - prefer replacing product-owned runtime seams before touching host-facing
@@ -487,11 +485,11 @@
 ## Premortem
 
 - 가장 쉬운 새 오해: "Go CLI가 이미 standalone install surface를 대체했다."
-  지금은 거의 맞지만 아직 끝은 아니다. 실제 public install contract는 tagged
-  release + `install.sh`이고, installer runtime은 이제 tagged binary
-  download다. 아직 미완인 것은 Homebrew/tap honesty와 stronger provenance
-  story (signing/attestations)이지, public installer가 Node나 Go toolchain을 요구하거나
-  repo-local `bin/cautilus`가 product runtime을 대신 소유하는 건 아니다.
+  지금은 public runtime 기준으로는 맞다. 다만 release story는 tagged
+  release + `install.sh` + checksum/attestation verification까지 같이 봐야
+  끝난다. 남은 미완은 Homebrew/tap honesty이지, public installer가 Node나
+  Go toolchain을 요구하거나 repo-local `bin/cautilus`가 product runtime을
+  소유하는 문제는 아니다.
 - 두 번째 새 오해: "`bin/cautilus`와 Go entry가 각각 자기 route table을
   가져도 된다." 아니다. 이제 source of truth는
   `internal/cli/command-registry.json` 하나다. 새 명령이나 usage example을
@@ -562,8 +560,6 @@
 - [cmd/cautilus/main.go](../cmd/cautilus/main.go)
 - [go.mod](../go.mod)
 - [internal/cli/command-registry.json](../internal/cli/command-registry.json)
-- [scripts/cli-registry.mjs](../scripts/cli-registry.mjs)
-- [scripts/install-skills.mjs](../scripts/install-skills.mjs)
 - [bin/cautilus.test.mjs](../bin/cautilus.test.mjs)
 - [scripts/agent-runtime/workspace-start.mjs](../scripts/agent-runtime/workspace-start.mjs)
 - [scripts/agent-runtime/workspace-start.test.mjs](../scripts/agent-runtime/workspace-start.test.mjs)

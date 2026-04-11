@@ -55,104 +55,79 @@
   ],
   "commands": [
     {
-      "path": ["adapter", "resolve"],
-      "script": "scripts/resolve_adapter.mjs"
+      "path": ["adapter", "resolve"]
     },
     {
-      "path": ["adapter", "init"],
-      "script": "scripts/init_adapter.mjs"
+      "path": ["adapter", "init"]
     },
     {
-      "path": ["doctor"],
-      "script": "scripts/doctor.mjs"
+      "path": ["doctor"]
     },
     {
-      "path": ["workspace", "prepare-compare"],
-      "script": "scripts/agent-runtime/prepare-compare-worktrees.mjs"
+      "path": ["workspace", "prepare-compare"]
     },
     {
-      "path": ["workspace", "prune-artifacts"],
-      "script": "scripts/agent-runtime/prune-workspace-artifacts.mjs"
+      "path": ["workspace", "prune-artifacts"]
     },
     {
-      "path": ["workspace", "start"],
-      "script": "scripts/agent-runtime/workspace-start.mjs"
+      "path": ["workspace", "start"]
     },
     {
-      "path": ["scenario", "normalize", "chatbot"],
-      "script": "scripts/agent-runtime/normalize-chatbot-proposals.mjs"
+      "path": ["scenario", "normalize", "chatbot"]
     },
     {
-      "path": ["scenario", "normalize", "cli"],
-      "script": "scripts/agent-runtime/normalize-cli-proposals.mjs"
+      "path": ["scenario", "normalize", "cli"]
     },
     {
-      "path": ["scenario", "normalize", "skill"],
-      "script": "scripts/agent-runtime/normalize-skill-proposals.mjs"
+      "path": ["scenario", "normalize", "skill"]
     },
     {
-      "path": ["scenario", "summarize-telemetry"],
-      "script": "scripts/agent-runtime/summarize-scenario-telemetry.mjs"
+      "path": ["scenario", "summarize-telemetry"]
     },
     {
-      "path": ["scenario", "prepare-input"],
-      "script": "scripts/agent-runtime/build-scenario-proposal-input.mjs"
+      "path": ["scenario", "prepare-input"]
     },
     {
-      "path": ["scenario", "propose"],
-      "script": "scripts/agent-runtime/generate-scenario-proposals.mjs"
+      "path": ["scenario", "propose"]
     },
     {
-      "path": ["evidence", "prepare-input"],
-      "script": "scripts/agent-runtime/build-evidence-input.mjs"
+      "path": ["evidence", "prepare-input"]
     },
     {
-      "path": ["evidence", "bundle"],
-      "script": "scripts/agent-runtime/build-evidence-bundle.mjs"
+      "path": ["evidence", "bundle"]
     },
     {
-      "path": ["report", "build"],
-      "script": "scripts/agent-runtime/build-report-packet.mjs"
+      "path": ["report", "build"]
     },
     {
-      "path": ["mode", "evaluate"],
-      "script": "scripts/agent-runtime/evaluate-adapter-mode.mjs"
+      "path": ["mode", "evaluate"]
     },
     {
-      "path": ["skills", "install"],
-      "script": "scripts/install-skills.mjs"
+      "path": ["skills", "install"]
     },
     {
-      "path": ["optimize", "prepare-input"],
-      "script": "scripts/agent-runtime/build-optimize-input.mjs"
+      "path": ["optimize", "prepare-input"]
     },
     {
-      "path": ["optimize", "propose"],
-      "script": "scripts/agent-runtime/generate-optimize-proposal.mjs"
+      "path": ["optimize", "propose"]
     },
     {
-      "path": ["optimize", "build-artifact"],
-      "script": "scripts/agent-runtime/build-revision-artifact.mjs"
+      "path": ["optimize", "build-artifact"]
     },
     {
-      "path": ["review", "prepare-input"],
-      "script": "scripts/agent-runtime/build-review-packet.mjs"
+      "path": ["review", "prepare-input"]
     },
     {
-      "path": ["review", "build-prompt-input"],
-      "script": "scripts/agent-runtime/build-review-prompt-input.mjs"
+      "path": ["review", "build-prompt-input"]
     },
     {
-      "path": ["review", "render-prompt"],
-      "script": "scripts/agent-runtime/render-review-prompt.mjs"
+      "path": ["review", "render-prompt"]
     },
     {
-      "path": ["cli", "evaluate"],
-      "script": "scripts/agent-runtime/evaluate-cli-intent.mjs"
+      "path": ["cli", "evaluate"]
     },
     {
-      "path": ["review", "variants"],
-      "script": "scripts/agent-runtime/run-workbench-executor-variants.mjs"
+      "path": ["review", "variants"]
     }
   ]
 }

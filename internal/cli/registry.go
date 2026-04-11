@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"bytes"
 	"embed"
 	"encoding/json"
 	"errors"
@@ -17,8 +18,7 @@ type Registry struct {
 }
 
 type CommandEntry struct {
-	Path   []string `json:"path"`
-	Script string   `json:"script"`
+	Path []string `json:"path"`
 }
 
 type Match struct {
@@ -52,11 +52,17 @@ func LoadRegistry() (Registry, error) {
 		registryLoadErr = err
 		return Registry{}, err
 	}
-	if err := json.Unmarshal(bytes, &registry); err != nil {
+	if err := decodeRegistry(bytes, &registry); err != nil {
 		registryLoadErr = err
 		return Registry{}, err
 	}
 	return registry, nil
+}
+
+func decodeRegistry(content []byte, target *Registry) error {
+	decoder := json.NewDecoder(bytes.NewReader(content))
+	decoder.DisallowUnknownFields()
+	return decoder.Decode(target)
 }
 
 func MatchCommand(args []string) (*Match, error) {
