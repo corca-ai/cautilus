@@ -36,6 +36,10 @@ var (
 	errRepoRootMissing = errors.New("could not locate cautilus source root from the current working directory")
 )
 
+func ErrRepoRootMissing() error {
+	return errRepoRootMissing
+}
+
 func LoadRegistry() (Registry, error) {
 	if registryLoadErr != nil {
 		return Registry{}, registryLoadErr
@@ -128,22 +132,4 @@ func FindRepoRoot(start string) (string, error) {
 
 func ScriptPath(repoRoot string, command CommandEntry) string {
 	return filepath.Join(repoRoot, filepath.FromSlash(command.Script))
-}
-
-func PackageVersion(repoRoot string) (string, error) {
-	type packageJSON struct {
-		Version string `json:"version"`
-	}
-	var pkg packageJSON
-	bytes, err := os.ReadFile(filepath.Join(repoRoot, "package.json"))
-	if err != nil {
-		return "", err
-	}
-	if err := json.Unmarshal(bytes, &pkg); err != nil {
-		return "", err
-	}
-	if pkg.Version == "" {
-		return "", errors.New("package.json version is empty")
-	}
-	return pkg.Version, nil
 }

@@ -32,30 +32,14 @@ func Run(args []string, stdout io.Writer, stderr io.Writer) int {
 		return 0
 	}
 
-	cwd := strings.TrimSpace(os.Getenv("CAUTILUS_CALLER_CWD"))
-	if cwd == "" {
-		cwd, err = os.Getwd()
-		if err != nil {
-			_, _ = fmt.Fprintf(stderr, "%s\n", err)
-			return 1
-		}
-	} else {
-		cwd = filepath.Clean(cwd)
-	}
-
-	repoRoot := strings.TrimSpace(os.Getenv("CAUTILUS_TOOL_ROOT"))
-	if repoRoot == "" {
-		repoRoot, err = cli.FindRepoRoot(cwd)
-		if err != nil {
-			_, _ = fmt.Fprintf(stderr, "%s\n", err)
-			return 1
-		}
-	} else {
-		repoRoot = filepath.Clean(repoRoot)
+	cwd, err := resolveCallerCWD()
+	if err != nil {
+		_, _ = fmt.Fprintf(stderr, "%s\n", err)
+		return 1
 	}
 
 	if args[0] == "--version" || args[0] == "-v" || args[0] == "version" {
-		version, err := cli.PackageVersion(repoRoot)
+		version, err := cli.PackageVersion(optionalToolRoot(cwd))
 		if err != nil {
 			_, _ = fmt.Fprintf(stderr, "%s\n", err)
 			return 1
@@ -80,9 +64,22 @@ func Run(args []string, stdout io.Writer, stderr io.Writer) int {
 	}
 
 	if handler := nativeHandler(match.Command.Path); handler != nil {
-		return invokeHandler(handler, repoRoot, cwd, match.ForwardedArgs, stdout, stderr)
+		toolRoot := ""
+		if nativeHandlerNeedsToolRoot(match.Command.Path) {
+			toolRoot, err = requiredToolRoot(cwd)
+			if err != nil {
+				_, _ = fmt.Fprintf(stderr, "%s\n", err)
+				return 1
+			}
+		}
+		return invokeHandler(handler, toolRoot, cwd, match.ForwardedArgs, stdout, stderr)
 	}
-	return runNodeFallback(repoRoot, cwd, match.Command.Script, match.ForwardedArgs, stdout, stderr)
+	toolRoot, err := requiredToolRoot(cwd)
+	if err != nil {
+		_, _ = fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	return runNodeFallback(toolRoot, cwd, match.Command.Script, match.ForwardedArgs, stdout, stderr)
 }
 
 //nolint:errcheck // CLI panic recovery writes are best-effort.
@@ -151,6 +148,43 @@ func nativeHandler(path []string) handlerFunc {
 	default:
 		return nil
 	}
+}
+
+func nativeHandlerNeedsToolRoot(path []string) bool {
+	switch strings.Join(path, " ") {
+	case "skills install":
+		return true
+	default:
+		return false
+	}
+}
+
+func resolveCallerCWD() (string, error) {
+	cwd := strings.TrimSpace(os.Getenv("CAUTILUS_CALLER_CWD"))
+	if cwd == "" {
+		return os.Getwd()
+	}
+	return filepath.Clean(cwd), nil
+}
+
+func optionalToolRoot(cwd string) string {
+	toolRoot := strings.TrimSpace(os.Getenv("CAUTILUS_TOOL_ROOT"))
+	if toolRoot != "" {
+		return filepath.Clean(toolRoot)
+	}
+	toolRoot, err := cli.FindRepoRoot(cwd)
+	if err != nil {
+		return ""
+	}
+	return toolRoot
+}
+
+func requiredToolRoot(cwd string) (string, error) {
+	toolRoot := optionalToolRoot(cwd)
+	if toolRoot != "" {
+		return toolRoot, nil
+	}
+	return "", cli.ErrRepoRootMissing()
 }
 
 //nolint:errcheck // CLI stderr reporting is best-effort.

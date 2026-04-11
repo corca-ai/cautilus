@@ -1,0 +1,57 @@
+package cli
+
+import (
+	"encoding/json"
+	"errors"
+	"os"
+	"path/filepath"
+	"runtime/debug"
+	"strings"
+)
+
+func PackageVersion(toolRoot string) (string, error) {
+	buildVersion := ""
+	if info, ok := debug.ReadBuildInfo(); ok && info != nil {
+		buildVersion = info.Main.Version
+	}
+	return resolvePackageVersion(toolRoot, buildVersion, os.Getenv("CAUTILUS_VERSION"))
+}
+
+func resolvePackageVersion(toolRoot string, buildVersion string, envVersion string) (string, error) {
+	if version := normalizeVersionString(envVersion); version != "" {
+		return version, nil
+	}
+	if version := normalizeVersionString(buildVersion); version != "" {
+		return version, nil
+	}
+	if strings.TrimSpace(toolRoot) == "" {
+		return "", errors.New("could not determine cautilus version")
+	}
+	return readPackageVersion(toolRoot)
+}
+
+func readPackageVersion(toolRoot string) (string, error) {
+	type packageJSON struct {
+		Version string `json:"version"`
+	}
+	var pkg packageJSON
+	bytes, err := os.ReadFile(filepath.Join(toolRoot, "package.json"))
+	if err != nil {
+		return "", err
+	}
+	if err := json.Unmarshal(bytes, &pkg); err != nil {
+		return "", err
+	}
+	if version := normalizeVersionString(pkg.Version); version != "" {
+		return version, nil
+	}
+	return "", errors.New("package.json version is empty")
+}
+
+func normalizeVersionString(version string) string {
+	version = strings.TrimSpace(version)
+	if version == "" || version == "(devel)" {
+		return ""
+	}
+	return strings.TrimPrefix(version, "v")
+}

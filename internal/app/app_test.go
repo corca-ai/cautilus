@@ -1,0 +1,84 @@
+package app
+
+import (
+	"bytes"
+	"encoding/json"
+	"os"
+	"path/filepath"
+	"strings"
+	"testing"
+)
+
+func TestRunVersionUsesEnvVersionWithoutToolRoot(t *testing.T) {
+	t.Setenv("CAUTILUS_CALLER_CWD", t.TempDir())
+	t.Setenv("CAUTILUS_TOOL_ROOT", "")
+	t.Setenv("CAUTILUS_VERSION", "v9.8.7")
+
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	exitCode := Run([]string{"--version"}, &stdout, &stderr)
+	if exitCode != 0 {
+		t.Fatalf("Run returned exit code %d, stderr=%s", exitCode, stderr.String())
+	}
+	if stdout.String() != "9.8.7\n" {
+		t.Fatalf("unexpected stdout: %q", stdout.String())
+	}
+	if stderr.Len() != 0 {
+		t.Fatalf("unexpected stderr: %q", stderr.String())
+	}
+}
+
+func TestRunDoctorDoesNotRequireToolRootForNativeCommands(t *testing.T) {
+	repoRoot := t.TempDir()
+	agentsDir := filepath.Join(repoRoot, ".agents")
+	if err := os.MkdirAll(agentsDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	adapter := strings.Join([]string{
+		"version: 1",
+		"repo: temp",
+		"evaluation_surfaces:",
+		"  - smoke",
+		"baseline_options:",
+		"  - baseline git ref via {baseline_ref}",
+		"iterate_command_templates:",
+		"  - npm run check",
+		"",
+	}, "\n")
+	if err := os.WriteFile(filepath.Join(agentsDir, "cautilus-adapter.yaml"), []byte(adapter), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+
+	t.Setenv("CAUTILUS_CALLER_CWD", repoRoot)
+	t.Setenv("CAUTILUS_TOOL_ROOT", "")
+	t.Setenv("CAUTILUS_VERSION", "")
+
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	exitCode := Run([]string{"doctor", "--repo-root", "."}, &stdout, &stderr)
+	if exitCode != 0 {
+		t.Fatalf("Run returned exit code %d, stderr=%s", exitCode, stderr.String())
+	}
+	var payload map[string]any
+	if err := json.Unmarshal(stdout.Bytes(), &payload); err != nil {
+		t.Fatalf("Unmarshal returned error: %v", err)
+	}
+	if ready, ok := payload["ready"].(bool); !ok || !ready {
+		t.Fatalf("expected ready doctor payload, got %#v", payload)
+	}
+}
+
+func TestRunSkillsInstallStillRequiresToolRoot(t *testing.T) {
+	t.Setenv("CAUTILUS_CALLER_CWD", t.TempDir())
+	t.Setenv("CAUTILUS_TOOL_ROOT", "")
+
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	exitCode := Run([]string{"skills", "install"}, &stdout, &stderr)
+	if exitCode != 1 {
+		t.Fatalf("expected exit code 1, got %d", exitCode)
+	}
+	if !strings.Contains(stderr.String(), "could not locate cautilus source root") {
+		t.Fatalf("unexpected stderr: %q", stderr.String())
+	}
+}

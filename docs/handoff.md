@@ -94,6 +94,16 @@
     loading now tolerates duplicate top-level keys with last-key-wins semantics
     so existing append-style test fixtures still parse the same way as the
     legacy JS path.
+  - `internal/app.Run` now resolves the Cautilus source root lazily instead of
+    requiring it before every invocation. Native Go handlers can run from a
+    consumer repo or compiled binary context without `CAUTILUS_TOOL_ROOT`;
+    only `skills install` and remaining Node-script fallbacks still require the
+    product source root to locate bundled assets/scripts.
+  - `cautilus --version` no longer depends only on `package.json` in the source
+    tree. It now prefers `CAUTILUS_VERSION`, then Go build info, and only falls
+    back to `package.json` when a source checkout is available. This hardens the
+    future single-binary path without changing the current repo-root output
+    (`0.2.0`).
   - checked-in `scripts/*.mjs` and `scripts/agent-runtime/*.mjs` still exist
     as compatibility / parity surfaces for the current Node unit tests and
     release fixtures, but the user-facing `cautilus ...` surface is now fully
@@ -356,11 +366,17 @@
     `run.json` metadata 확장과 shell flavor surface 같은 operator ergonomics다.
 - local proof (Node v22.22.2, Go 1.26.1 기준, 이번 세션 마지막 측정값):
   - `go run ./cmd/cautilus --version`: `0.2.0`
+  - `go build -o /tmp/cautilus-go-port-smoke ./cmd/cautilus` 후 source root
+    밖 임시 repo에서
+    `CAUTILUS_VERSION=v0.2.0 CAUTILUS_CALLER_CWD=<temp> /tmp/cautilus-go-port-smoke --version`
+    → `0.2.0`,
+    `CAUTILUS_CALLER_CWD=<temp> /tmp/cautilus-go-port-smoke doctor --repo-root .`
+    → `ready`
   - `go test ./cmd/... ./internal/...`: green
   - `node --test bin/cautilus.test.mjs`: 23/23 green
   - `node --test scripts/agent-runtime/run-workbench-executor-variants.test.mjs`: 8/8 green
   - `npm run verify`: 190/190 green
-  - `node ./scripts/check-specs.mjs`: `spec checks passed (4 specs, 395 guard rows)`
+  - `node ./scripts/check-specs.mjs`: `spec checks passed (4 specs, 405 guard rows)`
   - `cautilus doctor --repo-root .`: `ready`
   - `npm run hooks:check`: `ready`
   - `node ./scripts/run-self-dogfood-experiments.mjs --experiment-adapter-name self-dogfood-binary-surface --quiet`:
@@ -388,12 +404,14 @@
    now in the tree, and Homebrew is intentionally waiting on the Go binary
    story.
 2. keep the second Go slice narrow and product-owned.
-   - decide whether the next seam is repo-root/version discovery hardening,
-     command execution abstraction, or a second ported product-owned command
-     body
-   - preserve the existing command contract and fixture names unless a break is
-     clearly worth it
-   - prefer replacing product-owned runtime seams before touching host-facing
+  - repo-root/version discovery hardening is now done for native handlers and
+    `--version`
+  - decide whether the next seam is command execution abstraction, skill asset
+    embedding / install-root discovery for `skills install`, or a second ported
+    product-owned command body
+  - preserve the existing command contract and fixture names unless a break is
+    clearly worth it
+  - prefer replacing product-owned runtime seams before touching host-facing
      adapters or docs-heavy operator surfaces
 3. use [docs/cli-distribution.md](./cli-distribution.md) as the release
    rationale baseline.
