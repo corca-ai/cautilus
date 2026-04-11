@@ -1,6 +1,6 @@
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import process from "node:process";
@@ -10,6 +10,7 @@ import {
 	REPORT_INPUTS_SCHEMA,
 	SCENARIO_RESULTS_SCHEMA,
 } from "./contract-versions.mjs";
+import { resolveRunDir } from "./active-run.mjs";
 import { buildReportPacket } from "./build-report-packet.mjs";
 import {
 	createProgressLogger,
@@ -70,7 +71,7 @@ const DEFAULT_SPLIT_BY_MODE = {
 function usage(exitCode = 0) {
 	const text = [
 		"Usage:",
-		"  node ./scripts/agent-runtime/evaluate-adapter-mode.mjs --repo-root <dir> --mode <iterate|held_out|comparison|full_gate> --intent <text> --output-dir <dir> [--baseline-ref <ref>] [--baseline-repo <dir>] [--candidate-repo <dir>] [--adapter <path> | --adapter-name <name>] [--history-file <path>] [--profile <name>] [--split <name>] [--scenario-results-file <path>] [--skip-preflight] [--quiet]",
+		"  node ./scripts/agent-runtime/evaluate-adapter-mode.mjs --repo-root <dir> --mode <iterate|held_out|comparison|full_gate> --intent <text> [--output-dir <dir>] [--baseline-ref <ref>] [--baseline-repo <dir>] [--candidate-repo <dir>] [--adapter <path> | --adapter-name <name>] [--history-file <path>] [--profile <name>] [--split <name>] [--scenario-results-file <path>] [--skip-preflight] [--quiet]",
 	].join("\n");
 	const out = exitCode === 0 ? process.stdout : process.stderr;
 	out.write(`${text}\n`);
@@ -157,9 +158,6 @@ function validateOptions(options) {
 	}
 	if (!options.intent) {
 		fail("--intent is required");
-	}
-	if (!options.outputDir) {
-		fail("--output-dir is required");
 	}
 }
 
@@ -391,8 +389,11 @@ function resolveModeContext(options, adapterPayload) {
 	if (!Array.isArray(templates) || templates.length === 0) {
 		fail(`Adapter does not define ${MODE_FIELD_BY_NAME[options.mode]}`);
 	}
-	const outputDir = resolve(options.outputDir);
-	mkdirSync(outputDir, { recursive: true });
+	const resolvedRun = resolveRunDir({ outputDir: options.outputDir });
+	if (resolvedRun.source === "auto") {
+		process.stderr.write(`Active run: ${resolvedRun.runDir}\n`);
+	}
+	const outputDir = resolvedRun.runDir;
 	const selectedSplit = options.split || DEFAULT_SPLIT_BY_MODE[options.mode];
 	const profileRef = profileReference(options, adapterData);
 	const scenarioProfileInput = resolveScenarioProfile(repoRoot, profileRef);

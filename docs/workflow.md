@@ -200,6 +200,12 @@ node ./bin/cautilus mode evaluate \
   --baseline-ref origin/main \
   --output-dir /tmp/cautilus-mode
 ```
+
+   `--output-dir` is optional. When `cautilus workspace start` has already
+   pinned `CAUTILUS_RUN_DIR`, omit it and `mode evaluate` writes its report
+   packet into that active `runDir`. When nothing is pinned, `mode evaluate`
+   auto-materializes a fresh `runDir` under `./.cautilus/runs/` and prints
+   `Active run: <path>` to stderr.
 8. Review artifacts and run the adapter's `human_review_prompts`.
    Benchmark wins do not override obvious human-visible failures.
    When useful, run 2-3 independent review variants that judge the same

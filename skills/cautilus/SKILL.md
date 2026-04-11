@@ -174,6 +174,10 @@ node ./bin/cautilus scenario summarize-telemetry \
 node ./bin/cautilus report build \
   --input ./fixtures/reports/report-input.json
 
+# --output-dir is optional when cautilus workspace start has already pinned
+# CAUTILUS_RUN_DIR. Pass it explicitly only when you need to override the
+# active run (for example, inside a self-dogfood script that mints its own
+# curated bundle path).
 node ./bin/cautilus mode evaluate \
   --repo-root . \
   --mode held_out \

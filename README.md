@@ -344,6 +344,12 @@ node ./bin/cautilus mode evaluate \
   --output-dir /tmp/cautilus-mode
 ```
 
+`--output-dir` is optional. When `CAUTILUS_RUN_DIR` is already pinned by
+`cautilus workspace start`, `mode evaluate` drops its artifacts into that
+active `runDir`; if nothing is pinned it auto-materializes a fresh `runDir`
+under `./.cautilus/runs/` and prints `Active run: <path>` to stderr so the
+operator still sees where the artifacts landed.
+
 Assemble a durable review packet around a report before running review variants:
 
 ```bash

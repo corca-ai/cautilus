@@ -1,11 +1,12 @@
 import assert from "node:assert/strict";
-import { chmodSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { chmodSync, existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 import test from "node:test";
 
 import { COMPARE_ARTIFACT_SCHEMA } from "./contract-versions.mjs";
+import { ACTIVE_RUN_ENV_VAR, DEFAULT_RUNS_ROOT } from "./active-run.mjs";
 
 const SCRIPT_PATH = join(process.cwd(), "scripts", "agent-runtime", "evaluate-adapter-mode.mjs");
 
@@ -503,6 +504,177 @@ test("evaluate-adapter-mode materializes a baseline cache seed for profile-backe
 		assert.deepEqual(baselineCache.cacheKey.scenarioIds, ["control-a", "held-out-a", "probe-a"]);
 		assert.match(baselineCache.baselineRepoLabel, /^origin\/main@[0-9a-f]{12}$/);
 		assert.equal(baselineCache.results.length, 0);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("evaluate-adapter-mode honors CAUTILUS_RUN_DIR when --output-dir is omitted", () => {
+	const { root, workspace } = createRepo();
+	try {
+		const activeRun = join(root, "active-from-env");
+		mkdirSync(activeRun, { recursive: true });
+		const env = { ...process.env };
+		delete env[ACTIVE_RUN_ENV_VAR];
+		env[ACTIVE_RUN_ENV_VAR] = activeRun;
+		const result = spawnSync(
+			"node",
+			[
+				SCRIPT_PATH,
+				"--repo-root",
+				root,
+				"--candidate-repo",
+				workspace,
+				"--mode",
+				"held_out",
+				"--intent",
+				"CLI behavior should remain legible.",
+				"--baseline-ref",
+				"origin/main",
+			],
+			{
+				cwd: process.cwd(),
+				encoding: "utf-8",
+				env,
+			},
+		);
+		assert.equal(result.status, 0, result.stderr);
+		assert.equal(result.stdout.trim(), join(activeRun, "report.json"));
+		const report = JSON.parse(readFileSync(join(activeRun, "report.json"), "utf-8"));
+		assert.equal(report.schemaVersion, "cautilus.report_packet.v1");
+		// env var path is quiet — no "Active run:" banner
+		assert.doesNotMatch(result.stderr, /Active run:/);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("evaluate-adapter-mode auto-materializes a fresh runDir under the default root and logs Active run", () => {
+	const { root, workspace } = createRepo();
+	const sandboxCwd = mkdtempSync(join(tmpdir(), "cautilus-mode-auto-"));
+	try {
+		const env = { ...process.env };
+		delete env[ACTIVE_RUN_ENV_VAR];
+		const result = spawnSync(
+			"node",
+			[
+				SCRIPT_PATH,
+				"--repo-root",
+				root,
+				"--candidate-repo",
+				workspace,
+				"--mode",
+				"held_out",
+				"--intent",
+				"Auto-materialized runDir should stay explicit.",
+				"--baseline-ref",
+				"origin/main",
+			],
+			{
+				cwd: sandboxCwd,
+				encoding: "utf-8",
+				env,
+			},
+		);
+		assert.equal(result.status, 0, result.stderr);
+		const defaultRoot = join(sandboxCwd, DEFAULT_RUNS_ROOT);
+		assert.equal(existsSync(defaultRoot), true);
+		const runDirs = readdirSync(defaultRoot);
+		assert.equal(runDirs.length, 1, `expected exactly one auto runDir, saw ${runDirs.join(", ")}`);
+		const runDir = join(defaultRoot, runDirs[0]);
+		assert.equal(existsSync(join(runDir, "run.json")), true);
+		assert.equal(result.stdout.trim(), join(runDir, "report.json"));
+		assert.match(result.stderr, new RegExp(`Active run: ${runDir.replace(/[\\^$*+?.()|[\]{}]/g, "\\$&")}`));
+	} finally {
+		rmSync(sandboxCwd, { recursive: true, force: true });
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("evaluate-adapter-mode overwrites report.json on retry inside the same active runDir", () => {
+	const { root, workspace } = createRepo();
+	try {
+		const activeRun = join(root, "retry-run");
+		mkdirSync(activeRun, { recursive: true });
+		const env = { ...process.env };
+		delete env[ACTIVE_RUN_ENV_VAR];
+		env[ACTIVE_RUN_ENV_VAR] = activeRun;
+		const runOnce = () =>
+			spawnSync(
+				"node",
+				[
+					SCRIPT_PATH,
+					"--repo-root",
+					root,
+					"--candidate-repo",
+					workspace,
+					"--mode",
+					"held_out",
+					"--intent",
+					"Same workflow retry should overwrite report.json cleanly.",
+					"--baseline-ref",
+					"origin/main",
+				],
+				{
+					cwd: process.cwd(),
+					encoding: "utf-8",
+					env,
+				},
+			);
+		const first = runOnce();
+		assert.equal(first.status, 0, first.stderr);
+		const firstReportPath = first.stdout.trim();
+		assert.equal(firstReportPath, join(activeRun, "report.json"));
+		const firstIntent = JSON.parse(readFileSync(firstReportPath, "utf-8")).intent;
+		const second = runOnce();
+		assert.equal(second.status, 0, second.stderr);
+		assert.equal(second.stdout.trim(), firstReportPath);
+		const secondReport = JSON.parse(readFileSync(firstReportPath, "utf-8"));
+		assert.equal(secondReport.schemaVersion, "cautilus.report_packet.v1");
+		assert.equal(secondReport.intent, firstIntent);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("evaluate-adapter-mode explicit --output-dir overrides an inherited CAUTILUS_RUN_DIR", () => {
+	const { root, workspace } = createRepo();
+	try {
+		const inheritedRun = join(root, "inherited-run");
+		mkdirSync(inheritedRun, { recursive: true });
+		const explicitOutputDir = join(root, "explicit-out");
+		const env = { ...process.env };
+		delete env[ACTIVE_RUN_ENV_VAR];
+		env[ACTIVE_RUN_ENV_VAR] = inheritedRun;
+		const result = spawnSync(
+			"node",
+			[
+				SCRIPT_PATH,
+				"--repo-root",
+				root,
+				"--candidate-repo",
+				workspace,
+				"--mode",
+				"held_out",
+				"--intent",
+				"Explicit --output-dir should beat inherited CAUTILUS_RUN_DIR.",
+				"--baseline-ref",
+				"origin/main",
+				"--output-dir",
+				explicitOutputDir,
+			],
+			{
+				cwd: process.cwd(),
+				encoding: "utf-8",
+				env,
+			},
+		);
+		assert.equal(result.status, 0, result.stderr);
+		assert.equal(result.stdout.trim(), join(explicitOutputDir, "report.json"));
+		assert.equal(existsSync(join(explicitOutputDir, "report.json")), true);
+		assert.equal(existsSync(join(inheritedRun, "report.json")), false);
+		// explicit path is quiet — no "Active run:" banner
+		assert.doesNotMatch(result.stderr, /Active run:/);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}
