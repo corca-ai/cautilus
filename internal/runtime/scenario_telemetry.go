@@ -28,13 +28,13 @@ func SummarizeScenarioTelemetryEntries(entries []any, now time.Time, source stri
 		scenarios = append(scenarios, buildTelemetryBreakdown(scenarioEntries, &scenarioID))
 	}
 	sort.Slice(scenarios, func(left, right int) bool {
-		leftCost := readTelemetryNumber(scenarios[left], "cost_usd", -1)
-		rightCost := readTelemetryNumber(scenarios[right], "cost_usd", -1)
+		leftCost := readTelemetryNumber(scenarios[left], "cost_usd")
+		rightCost := readTelemetryNumber(scenarios[right], "cost_usd")
 		if leftCost != rightCost {
 			return rightCost < leftCost
 		}
-		leftTokens := readTelemetryNumber(scenarios[left], "total_tokens", -1)
-		rightTokens := readTelemetryNumber(scenarios[right], "total_tokens", -1)
+		leftTokens := readTelemetryNumber(scenarios[left], "total_tokens")
+		rightTokens := readTelemetryNumber(scenarios[right], "total_tokens")
 		if leftTokens != rightTokens {
 			return rightTokens < leftTokens
 		}
@@ -150,9 +150,9 @@ func uniqueTelemetryValues(entries []map[string]any, field string) []string {
 	return uniqueStrings(values)
 }
 
-func readTelemetryNumber(record map[string]any, field string, fallback float64) float64 {
+func readTelemetryNumber(record map[string]any, field string) float64 {
 	if number, ok := toFloat(record[field]); ok {
 		return number
 	}
-	return fallback
+	return -1
 }

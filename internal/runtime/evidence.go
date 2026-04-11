@@ -53,7 +53,7 @@ func BuildEvidenceInput(repoRoot string, reportFile *string, scenarioResultsFile
 		}
 	}
 	if resolvedReportFile == nil && resolvedScenarioResultsFile == nil && resolvedRunAuditFile == nil && resolvedHistoryFile == nil {
-		return nil, fmt.Errorf("At least one evidence source must be provided.")
+		return nil, fmt.Errorf("at least one evidence source must be provided")
 	}
 	packet := map[string]any{
 		"schemaVersion": contracts.EvidenceBundleInputsSchema,

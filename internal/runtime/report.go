@@ -160,10 +160,18 @@ func normalizeModeRun(value any, index int) (map[string]any, error) {
 		"mode":   mode,
 		"status": status,
 	}
-	copyNormalizedOptionalString(record, normalized, "summary", fmt.Sprintf("modeRuns[%d]", index))
-	copyNormalizedOptionalTime(record, normalized, "startedAt", fmt.Sprintf("modeRuns[%d]", index))
-	copyNormalizedOptionalTime(record, normalized, "completedAt", fmt.Sprintf("modeRuns[%d]", index))
-	copyNormalizedOptionalNumber(record, normalized, "durationMs", fmt.Sprintf("modeRuns[%d]", index))
+	if err := copyNormalizedOptionalString(record, normalized, "summary", fmt.Sprintf("modeRuns[%d]", index)); err != nil {
+		return nil, err
+	}
+	if err := copyNormalizedOptionalTime(record, normalized, "startedAt", fmt.Sprintf("modeRuns[%d]", index)); err != nil {
+		return nil, err
+	}
+	if err := copyNormalizedOptionalTime(record, normalized, "completedAt", fmt.Sprintf("modeRuns[%d]", index)); err != nil {
+		return nil, err
+	}
+	if err := copyNormalizedOptionalNumber(record, normalized, "durationMs", fmt.Sprintf("modeRuns[%d]", index)); err != nil {
+		return nil, err
+	}
 	if telemetry, err := normalizeScenarioTelemetry(record["telemetry"], fmt.Sprintf("modeRuns[%d].telemetry", index)); err != nil {
 		return nil, err
 	} else if telemetry != nil {
@@ -247,13 +255,19 @@ func normalizeCommandObservations(value any) ([]any, error) {
 			normalized["index"] = *explicitIndex
 		}
 		for _, field := range []string{"startedAt", "completedAt"} {
-			copyNormalizedOptionalTime(record, normalized, field, fmt.Sprintf("commandObservations[%d]", index))
+			if err := copyNormalizedOptionalTime(record, normalized, field, fmt.Sprintf("commandObservations[%d]", index)); err != nil {
+				return nil, err
+			}
 		}
 		for _, field := range []string{"durationMs", "exitCode"} {
-			copyNormalizedOptionalNumber(record, normalized, field, fmt.Sprintf("commandObservations[%d]", index))
+			if err := copyNormalizedOptionalNumber(record, normalized, field, fmt.Sprintf("commandObservations[%d]", index)); err != nil {
+				return nil, err
+			}
 		}
 		for _, field := range []string{"signal", "stdoutFile", "stderrFile"} {
-			copyNormalizedOptionalString(record, normalized, field, fmt.Sprintf("commandObservations[%d]", index))
+			if err := copyNormalizedOptionalString(record, normalized, field, fmt.Sprintf("commandObservations[%d]", index)); err != nil {
+				return nil, err
+			}
 		}
 		result = append(result, normalized)
 	}
@@ -280,7 +294,9 @@ func normalizeReviewFindings(value any) ([]any, error) {
 			return nil, err
 		}
 		normalized := map[string]any{"severity": severity, "message": message}
-		copyNormalizedOptionalString(record, normalized, "path", fmt.Sprintf("humanReviewFindings[%d]", index))
+		if err := copyNormalizedOptionalString(record, normalized, "path", fmt.Sprintf("humanReviewFindings[%d]", index)); err != nil {
+			return nil, err
+		}
 		result = append(result, normalized)
 	}
 	return result, nil

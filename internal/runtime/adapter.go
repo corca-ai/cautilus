@@ -138,7 +138,7 @@ func FindAdapter(repoRoot string, candidates []string) string {
 
 func LoadAdapter(repoRoot string, adapterPath *string, adapterName *string) (*AdapterPayload, error) {
 	if adapterPath != nil && adapterName != nil {
-		return nil, fmt.Errorf("Use either adapter or adapterName, not both.")
+		return nil, fmt.Errorf("use either adapter or adapterName, not both")
 	}
 	var resolvedPath string
 	searchedPaths := []string{}
@@ -182,8 +182,8 @@ func adapterFilePayload(adapterPath string, searchedPaths []string) (*AdapterPay
 	if err != nil {
 		return nil, err
 	}
-	raw := map[string]any{}
 	warnings := []string{}
+	var raw map[string]any
 	var document yaml.Node
 	if err := yaml.Unmarshal(payload, &document); err != nil {
 		warnings = append(warnings, "Adapter file did not contain a mapping. Using empty data.")
@@ -253,16 +253,16 @@ func yamlNodeToAny(node *yaml.Node) (any, error) {
 			return strings.EqualFold(node.Value, "true"), nil
 		case "!!int":
 			parsed, err := strconv.Atoi(node.Value)
-			if err != nil {
-				return node.Value, nil
+			if err == nil {
+				return parsed, nil
 			}
-			return parsed, nil
+			return node.Value, nil
 		case "!!float":
 			parsed, err := strconv.ParseFloat(node.Value, 64)
-			if err != nil {
-				return node.Value, nil
+			if err == nil {
+				return parsed, nil
 			}
-			return parsed, nil
+			return node.Value, nil
 		default:
 			return node.Value, nil
 		}

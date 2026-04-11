@@ -1,15 +1,12 @@
 package runtime
 
 import (
-	"crypto/sha256"
-	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"math"
 	"os"
 	"path/filepath"
-	"sort"
 	"strconv"
 	"strings"
 	"time"
@@ -210,49 +207,4 @@ func stringSliceFromAny(values []any, field string) ([]string, error) {
 		result = append(result, text)
 	}
 	return result, nil
-}
-
-func stableJSONFingerprint(value any) (string, error) {
-	normalized, err := stableJSONValue(value)
-	if err != nil {
-		return "", err
-	}
-	payload, err := json.Marshal(normalized)
-	if err != nil {
-		return "", err
-	}
-	sum := sha256.Sum256(payload)
-	return hex.EncodeToString(sum[:]), nil
-}
-
-func stableJSONValue(value any) (any, error) {
-	switch typed := value.(type) {
-	case []any:
-		items := make([]any, 0, len(typed))
-		for _, entry := range typed {
-			normalized, err := stableJSONValue(entry)
-			if err != nil {
-				return nil, err
-			}
-			items = append(items, normalized)
-		}
-		return items, nil
-	case map[string]any:
-		keys := make([]string, 0, len(typed))
-		for key := range typed {
-			keys = append(keys, key)
-		}
-		sort.Strings(keys)
-		normalized := make(map[string]any, len(keys))
-		for _, key := range keys {
-			value, err := stableJSONValue(typed[key])
-			if err != nil {
-				return nil, err
-			}
-			normalized[key] = value
-		}
-		return normalized, nil
-	default:
-		return typed, nil
-	}
 }

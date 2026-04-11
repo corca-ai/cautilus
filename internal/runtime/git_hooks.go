@@ -79,15 +79,15 @@ func CheckGitHooks(repoRoot string) map[string]any {
 func InstallGitHooks(repoRoot string) (map[string]any, error) {
 	prePushHook := filepath.Join(repoRoot, PrePushPath)
 	if !fileExists(prePushHook) {
-		return nil, fmt.Errorf("Missing checked-in hook: %s", PrePushPath)
+		return nil, fmt.Errorf("missing checked-in hook: %s", PrePushPath)
 	}
-	if _, _, err := runGitStrict(repoRoot, []string{"rev-parse", "--show-toplevel"}); err != nil {
+	if err := runGitStrict(repoRoot, []string{"rev-parse", "--show-toplevel"}); err != nil {
 		return nil, err
 	}
 	if err := os.Chmod(prePushHook, 0o755); err != nil {
 		return nil, err
 	}
-	if _, _, err := runGitStrict(repoRoot, []string{"config", "--local", "core.hooksPath", HooksPath}); err != nil {
+	if err := runGitStrict(repoRoot, []string{"config", "--local", "core.hooksPath", HooksPath}); err != nil {
 		return nil, err
 	}
 	return map[string]any{
@@ -107,13 +107,13 @@ func runGit(repoRoot string, args []string) (bool, string) {
 	return true, strings.TrimSpace(string(payload))
 }
 
-func runGitStrict(repoRoot string, args []string) (string, string, error) {
+func runGitStrict(repoRoot string, args []string) error {
 	command := exec.Command("git", append([]string{"-C", repoRoot}, args...)...)
 	payload, err := command.CombinedOutput()
 	if err != nil {
-		return "", strings.TrimSpace(string(payload)), fmt.Errorf("%s", strings.TrimSpace(string(payload)))
+		return fmt.Errorf("%s", strings.TrimSpace(string(payload)))
 	}
-	return strings.TrimSpace(string(payload)), "", nil
+	return nil
 }
 
 func isExecutable(path string) bool {

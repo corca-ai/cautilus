@@ -85,7 +85,7 @@ func CreateRun(root string, label *string, now time.Time) (*WorkspaceRun, error)
 	startedAt := now.UTC().Format(time.RFC3339Nano)
 	runDir := filepath.Join(resolvedRoot, fmt.Sprintf("%s-%s", FormatRunTimestamp(now), slug))
 	if fileExists(runDir) {
-		return nil, fmt.Errorf("Run directory already exists: %s", runDir)
+		return nil, fmt.Errorf("run directory already exists: %s", runDir)
 	}
 	if err := os.Mkdir(runDir, 0o755); err != nil {
 		return nil, err

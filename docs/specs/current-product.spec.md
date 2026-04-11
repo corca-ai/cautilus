@@ -28,8 +28,11 @@ standalone product여야 한다.
 | package.json | fixed | "dogfood:self" |
 | package.json | fixed | "dogfood:self:experiments" |
 | package.json | fixed | "lint" |
+| package.json | fixed | "lint:go" |
 | package.json | fixed | "test:go" |
+| package.json | fixed | "test:go:race" |
 | package.json | fixed | "test" |
+| package.json | fixed | "vet:go" |
 | package.json | fixed | "verify" |
 | .agents/cautilus-adapter.yaml | file_exists |  |
 | .agents/cautilus-adapter.yaml | fixed | npm run verify |
@@ -51,10 +54,15 @@ standalone product여야 한다.
 | .gitignore | file_exists |  |
 | .gitignore | fixed | !artifacts/self-dogfood/latest/summary.json |
 | eslint.config.mjs | file_exists |  |
+| .golangci.yml | file_exists |  |
+| .golangci.yml | fixed | staticcheck |
+| .golangci.yml | fixed | errorlint |
 | .github/workflows/verify.yml | file_exists |  |
 | .github/workflows/verify.yml | fixed | actions/setup-go@v5 |
+| .github/workflows/verify.yml | fixed | golangci/golangci-lint-action@ |
 | .github/workflows/verify.yml | fixed | npm run verify |
 | .github/workflows/release-artifacts.yml | file_exists |  |
+| .github/workflows/release-artifacts.yml | fixed | actions/setup-go@v5 |
 | .github/workflows/release-artifacts.yml | fixed | render-homebrew-formula.mjs |
 | go.mod | file_exists |  |
 | go.mod | fixed | module github.com/corca-ai/cautilus |

@@ -20,6 +20,7 @@ import (
 	"github.com/corca-ai/cautilus/internal/runtime"
 )
 
+//nolint:errcheck // CLI stderr reporting is best-effort.
 func handleWorkspacePrepareCompare(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
 	options, err := parseWorkspacePrepareCompareArgs(args, cwd)
 	if err != nil {
@@ -92,6 +93,7 @@ func handleWorkspacePrepareCompare(repoRoot string, cwd string, args []string, s
 	return 0
 }
 
+//nolint:errcheck // CLI stderr reporting is best-effort.
 func handleWorkspacePruneArtifacts(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
 	options, err := parseWorkspacePruneArtifactsArgs(args, cwd)
 	if err != nil {
@@ -110,6 +112,7 @@ func handleWorkspacePruneArtifacts(repoRoot string, cwd string, args []string, s
 	return 0
 }
 
+//nolint:errcheck // CLI stdout/stderr reporting is best-effort.
 func handleSkillsInstall(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
 	overwrite := false
 	for _, arg := range args {
@@ -146,10 +149,11 @@ func handleSkillsInstall(repoRoot string, cwd string, args []string, stdout io.W
 		return 1
 	}
 	fmt.Fprintf(stdout, "Installed %s\n", destinationDir)
-	fmt.Fprintln(stdout, "Installed skill expects `cautilus` to be available on PATH.")
+	_, _ = fmt.Fprintln(stdout, "Installed skill expects `cautilus` to be available on PATH.")
 	return 0
 }
 
+//nolint:errcheck // CLI stderr reporting is best-effort.
 func handleCliEvaluate(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
 	options, err := parseInputOutputArgs(args)
 	if err != nil {
@@ -174,6 +178,7 @@ func handleCliEvaluate(repoRoot string, cwd string, args []string, stdout io.Wri
 	return 0
 }
 
+//nolint:errcheck // CLI stdout/stderr reporting is best-effort.
 func handleReviewVariants(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
 	options, err := parseReviewVariantsArgs(args, cwd)
 	if err != nil {
@@ -206,7 +211,7 @@ func handleReviewVariants(repoRoot string, cwd string, args []string, stdout io.
 			}
 		}
 		if len(filtered) == 0 {
-			fmt.Fprintln(stderr, "No executor variants matched the requested --variant-id values.")
+			_, _ = fmt.Fprintln(stderr, "No executor variants matched the requested --variant-id values.")
 			return 1
 		}
 		variants = filtered
@@ -251,11 +256,7 @@ func handleReviewVariants(repoRoot string, cwd string, args []string, stdout io.
 			fmt.Fprintf(stderr, "%s\n", err)
 			return 1
 		}
-		result, err := runShellCommand(options.repoRoot, commandText, filepath.Join(outputDir, id+".json.stdout"), filepath.Join(outputDir, id+".json.stderr"), log, "variant "+id)
-		if err != nil {
-			fmt.Fprintf(stderr, "%s\n", err)
-			return 1
-		}
+		result := runShellCommand(options.repoRoot, commandText, filepath.Join(outputDir, id+".json.stdout"), filepath.Join(outputDir, id+".json.stderr"), log, "variant "+id)
 		output := map[string]any(nil)
 		if pathExists(outputFile) {
 			output, _ = readJSONObject(outputFile)
@@ -312,6 +313,7 @@ func handleReviewVariants(repoRoot string, cwd string, args []string, stdout io.
 	return 0
 }
 
+//nolint:errcheck // CLI stdout/stderr reporting is best-effort.
 func handleModeEvaluate(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
 	options, err := parseModeEvaluateArgs(args, cwd)
 	if err != nil {
@@ -405,11 +407,7 @@ func handleModeEvaluate(repoRoot string, cwd string, args []string, stdout io.Wr
 				fmt.Fprintf(stderr, "%s\n", err)
 				return 1
 			}
-			result, err := runShellCommand(options.repoRoot, commandText, filepath.Join(outputDir, fmt.Sprintf("preflight-%d.stdout", index+1)), filepath.Join(outputDir, fmt.Sprintf("preflight-%d.stderr", index+1)), log, fmt.Sprintf("preflight %d/%d", index+1, len(stringArray(adapterPayload.Data["preflight_commands"]))))
-			if err != nil {
-				fmt.Fprintf(stderr, "%s\n", err)
-				return 1
-			}
+			result := runShellCommand(options.repoRoot, commandText, filepath.Join(outputDir, fmt.Sprintf("preflight-%d.stdout", index+1)), filepath.Join(outputDir, fmt.Sprintf("preflight-%d.stderr", index+1)), log, fmt.Sprintf("preflight %d/%d", index+1, len(stringArray(adapterPayload.Data["preflight_commands"]))))
 			commandObservations = append(commandObservations, commandObservation("preflight", index+1, result, commandText))
 			if anyString(result["status"]) != "passed" {
 				fmt.Fprintf(stderr, "Preflight command failed: %s\n", commandText)
@@ -426,11 +424,7 @@ func handleModeEvaluate(repoRoot string, cwd string, args []string, stdout io.Wr
 			fmt.Fprintf(stderr, "%s\n", err)
 			return 1
 		}
-		result, err := runShellCommand(options.repoRoot, commandText, filepath.Join(outputDir, fmt.Sprintf("%s-%d.stdout", options.mode, index+1)), filepath.Join(outputDir, fmt.Sprintf("%s-%d.stderr", options.mode, index+1)), log, fmt.Sprintf("%s %d/%d", options.mode, index+1, len(templates)))
-		if err != nil {
-			fmt.Fprintf(stderr, "%s\n", err)
-			return 1
-		}
+		result := runShellCommand(options.repoRoot, commandText, filepath.Join(outputDir, fmt.Sprintf("%s-%d.stdout", options.mode, index+1)), filepath.Join(outputDir, fmt.Sprintf("%s-%d.stderr", options.mode, index+1)), log, fmt.Sprintf("%s %d/%d", options.mode, index+1, len(templates)))
 		observation := commandObservation(options.mode, index+1, result, commandText)
 		modeObservations = append(modeObservations, observation)
 		commandObservations = append(commandObservations, observation)
@@ -620,14 +614,14 @@ func parseWorkspacePrepareCompareArgs(args []string, cwd string) (*workspacePrep
 			resolved := resolvePath(cwd, value)
 			options.outputDir = &resolved
 		default:
-			return nil, fmt.Errorf("Unknown argument: %s", arg)
+			return nil, fmt.Errorf("unknown argument: %s", arg)
 		}
 	}
 	if options.baselineRef == "" {
 		return nil, fmt.Errorf("--baseline-ref is required")
 	}
 	if options.useCurrentCandidate && options.candidateRef != "HEAD" {
-		return nil, fmt.Errorf("Use either --candidate-ref or --use-current-candidate, not both.")
+		return nil, fmt.Errorf("use either --candidate-ref or --use-current-candidate, not both")
 	}
 	return options, nil
 }
@@ -669,14 +663,14 @@ func parseWorkspacePruneArtifactsArgs(args []string, cwd string) (*workspacePrun
 			}
 			options.maxAgeDays = &parsed
 		default:
-			return nil, fmt.Errorf("Unknown argument: %s", arg)
+			return nil, fmt.Errorf("unknown argument: %s", arg)
 		}
 	}
 	if options.root == "" {
 		return nil, fmt.Errorf("--root is required")
 	}
 	if options.keepLast == nil && options.maxAgeDays == nil {
-		return nil, fmt.Errorf("Provide --keep-last, --max-age-days, or both.")
+		return nil, fmt.Errorf("provide --keep-last, --max-age-days, or both")
 	}
 	return options, nil
 }
@@ -767,14 +761,14 @@ func parseReviewVariantsArgs(args []string, cwd string) (*reviewVariantsArgs, er
 			index = next
 			options.reviewPromptInput = &value
 		default:
-			return nil, fmt.Errorf("Unknown argument: %s", arg)
+			return nil, fmt.Errorf("unknown argument: %s", arg)
 		}
 	}
 	if options.adapter != nil && options.adapterName != nil {
-		return nil, fmt.Errorf("Use either --adapter or --adapter-name, not both.")
+		return nil, fmt.Errorf("use either --adapter or --adapter-name, not both")
 	}
 	if options.workspace == "" {
-		return nil, fmt.Errorf("Missing required argument: workspace")
+		return nil, fmt.Errorf("missing required argument: workspace")
 	}
 	return options, nil
 }
@@ -932,11 +926,11 @@ func parseModeEvaluateArgs(args []string, cwd string) (*modeEvaluateArgs, error)
 			}
 			options.fullGateSamples = &parsed
 		default:
-			return nil, fmt.Errorf("Unknown argument: %s", arg)
+			return nil, fmt.Errorf("unknown argument: %s", arg)
 		}
 	}
 	if options.adapter != nil && options.adapterName != nil {
-		return nil, fmt.Errorf("Use either --adapter or --adapter-name, not both.")
+		return nil, fmt.Errorf("use either --adapter or --adapter-name, not both")
 	}
 	if _, ok := map[string]struct{}{"iterate": {}, "held_out": {}, "comparison": {}, "full_gate": {}}[options.mode]; !ok {
 		return nil, fmt.Errorf("--mode must be one of iterate, held_out, comparison, full_gate")
@@ -951,7 +945,7 @@ func createDetachedWorktree(repoRoot string, path string, ref string, force bool
 	_ = removeExistingWorktree(repoRoot, path)
 	if pathExists(path) {
 		if !force {
-			return nil, fmt.Errorf("Destination already exists: %s. Re-run with --force to replace it.", path)
+			return nil, fmt.Errorf("destination already exists: %s; re-run with --force to replace it", path)
 		}
 		_ = os.RemoveAll(path)
 	}
@@ -1043,7 +1037,7 @@ func migrateLegacyClaudeSkillsDir(repoRoot string, stdout io.Writer) error {
 	if err := os.Rename(claudeSkills, agentsSkills); err != nil {
 		return err
 	}
-	fmt.Fprintf(stdout, "Migrated %s -> %s\n", claudeSkills, agentsSkills)
+	_, _ = fmt.Fprintf(stdout, "Migrated %s -> %s\n", claudeSkills, agentsSkills)
 	return nil
 }
 
@@ -1065,11 +1059,11 @@ func progressLogger(quiet bool, stderr io.Writer) func(string) {
 		if quiet {
 			return
 		}
-		fmt.Fprintln(stderr, message)
+		_, _ = fmt.Fprintln(stderr, message)
 	}
 }
 
-func runShellCommand(repoRoot string, commandText string, stdoutFile string, stderrFile string, log func(string), label string) (map[string]any, error) {
+func runShellCommand(repoRoot string, commandText string, stdoutFile string, stderrFile string, log func(string), label string) map[string]any {
 	startedAt := time.Now()
 	log(fmt.Sprintf("%s start: %s", label, commandText))
 	command := exec.Command("bash", "-lc", commandText)
@@ -1093,13 +1087,14 @@ func runShellCommand(repoRoot string, commandText string, stdoutFile string, std
 		"stderrFile":  stderrFile,
 		"status":      ternaryString(err == nil, "passed", "failed"),
 	}
-	if exitErr, ok := err.(*exec.ExitError); ok {
+	var exitErr *exec.ExitError
+	if errors.As(err, &exitErr) {
 		result["exitCode"] = exitErr.ExitCode()
 	} else if err == nil {
 		result["exitCode"] = 0
 	}
 	log(fmt.Sprintf("%s %s in %dms", label, result["status"], result["durationMs"]))
-	return result, nil
+	return result
 }
 
 func renderTemplate(template string, replacements map[string]string) (string, error) {
@@ -1108,12 +1103,12 @@ func renderTemplate(template string, replacements map[string]string) (string, er
 		if template[index] == '{' {
 			end := strings.IndexByte(template[index:], '}')
 			if end < 0 {
-				return "", fmt.Errorf("Unknown placeholder in command template: %s", template[index:])
+				return "", fmt.Errorf("unknown placeholder in command template: %s", template[index:])
 			}
 			key := template[index+1 : index+end]
 			value, ok := replacements[key]
 			if !ok {
-				return "", fmt.Errorf("Unknown placeholder in command template: {%s}", key)
+				return "", fmt.Errorf("unknown placeholder in command template: {%s}", key)
 			}
 			builder.WriteString(value)
 			index += end
@@ -1259,7 +1254,8 @@ func runCLIProcess(commandParts []string, workingDirectory string, extraEnv map[
 	completedAt := time.Now()
 	exitCode := 0
 	signal := ""
-	if exitErr, ok := runErr.(*exec.ExitError); ok {
+	var exitErr *exec.ExitError
+	if errors.As(runErr, &exitErr) {
 		exitCode = exitErr.ExitCode()
 	}
 	if runErr != nil && exitCode == 0 {
@@ -1364,7 +1360,7 @@ func resolveReviewVariantPromptArtifacts(options *reviewVariantsArgs, adapterPay
 		reviewPacketFile = resolvePath(repoRoot, *options.reviewPacketFile)
 	} else {
 		if options.reportFile == nil {
-			return nil, fmt.Errorf("Provide --prompt-file, adapter default_prompt_file, --review-prompt-input, --review-packet, or --report-file")
+			return nil, fmt.Errorf("provide --prompt-file, adapter default_prompt_file, --review-prompt-input, --review-packet, or --report-file")
 		}
 		reportFile := resolvePath(repoRoot, *options.reportFile)
 		report, err := readJSONObject(reportFile)
@@ -1413,7 +1409,7 @@ func resolveReviewSchemaFile(options *reviewVariantsArgs, adapterPayload *runtim
 	if schemaFile, ok := adapterPayload.Data["default_schema_file"].(string); ok && strings.TrimSpace(schemaFile) != "" {
 		return resolvePath(options.repoRoot, schemaFile), nil
 	}
-	return "", fmt.Errorf("Missing required argument or adapter default: schemaFile")
+	return "", fmt.Errorf("missing required argument or adapter default: schemaFile")
 }
 
 func summarizeVariantTelemetry(summaries []any) any {
@@ -1448,10 +1444,10 @@ func summarizeVariantTelemetry(summaries []any) any {
 func pruneWorkspaceArtifacts(options *workspacePruneArtifactsArgs, now time.Time) (map[string]any, error) {
 	info, err := os.Stat(options.root)
 	if err != nil {
-		return nil, fmt.Errorf("Root does not exist: %s", options.root)
+		return nil, fmt.Errorf("root does not exist: %s", options.root)
 	}
 	if !info.IsDir() {
-		return nil, fmt.Errorf("Root must be a directory: %s", options.root)
+		return nil, fmt.Errorf("root must be a directory: %s", options.root)
 	}
 	recognized, skipped, err := classifyArtifactEntries(options.root)
 	if err != nil {

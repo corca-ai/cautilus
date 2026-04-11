@@ -11,6 +11,7 @@ repo today that resolves to:
 ## Preconditions
 
 - [LICENSE](../LICENSE) stays in sync with the public repo
+- Go `1.26.x` and `golangci-lint` are installed in the maintainer clone
 - `npm run hooks:check` passes in the maintainer clone
 - `npm run verify` passes on `main`
 - [release-boundary.md](./release-boundary.md) still

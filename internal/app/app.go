@@ -25,10 +25,10 @@ func Run(args []string, stdout io.Writer, stderr io.Writer) int {
 	if len(args) == 0 || args[0] == "-h" || args[0] == "--help" {
 		usage, err := cli.RenderUsage()
 		if err != nil {
-			fmt.Fprintf(stderr, "%s\n", err)
+			_, _ = fmt.Fprintf(stderr, "%s\n", err)
 			return 1
 		}
-		fmt.Fprintf(stdout, "%s\n", usage)
+		_, _ = fmt.Fprintf(stdout, "%s\n", usage)
 		return 0
 	}
 
@@ -36,7 +36,7 @@ func Run(args []string, stdout io.Writer, stderr io.Writer) int {
 	if cwd == "" {
 		cwd, err = os.Getwd()
 		if err != nil {
-			fmt.Fprintf(stderr, "%s\n", err)
+			_, _ = fmt.Fprintf(stderr, "%s\n", err)
 			return 1
 		}
 	} else {
@@ -47,7 +47,7 @@ func Run(args []string, stdout io.Writer, stderr io.Writer) int {
 	if repoRoot == "" {
 		repoRoot, err = cli.FindRepoRoot(cwd)
 		if err != nil {
-			fmt.Fprintf(stderr, "%s\n", err)
+			_, _ = fmt.Fprintf(stderr, "%s\n", err)
 			return 1
 		}
 	} else {
@@ -57,25 +57,25 @@ func Run(args []string, stdout io.Writer, stderr io.Writer) int {
 	if args[0] == "--version" || args[0] == "-v" || args[0] == "version" {
 		version, err := cli.PackageVersion(repoRoot)
 		if err != nil {
-			fmt.Fprintf(stderr, "%s\n", err)
+			_, _ = fmt.Fprintf(stderr, "%s\n", err)
 			return 1
 		}
-		fmt.Fprintf(stdout, "%s\n", version)
+		_, _ = fmt.Fprintf(stdout, "%s\n", version)
 		return 0
 	}
 
 	match, err := cli.MatchCommand(args)
 	if err != nil {
-		fmt.Fprintf(stderr, "%s\n", err)
+		_, _ = fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
 	if match == nil {
 		usage, usageErr := cli.RenderUsage()
 		if usageErr != nil {
-			fmt.Fprintf(stderr, "%s\n", usageErr)
+			_, _ = fmt.Fprintf(stderr, "%s\n", usageErr)
 			return 1
 		}
-		fmt.Fprintf(stderr, "%s\n", usage)
+		_, _ = fmt.Fprintf(stderr, "%s\n", usage)
 		return 1
 	}
 
@@ -85,10 +85,11 @@ func Run(args []string, stdout io.Writer, stderr io.Writer) int {
 	return runNodeFallback(repoRoot, cwd, match.Command.Script, match.ForwardedArgs, stdout, stderr)
 }
 
+//nolint:errcheck // CLI panic recovery writes are best-effort.
 func invokeHandler(handler handlerFunc, repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) (exitCode int) {
 	defer func() {
 		if recovered := recover(); recovered != nil {
-			fmt.Fprintf(stderr, "%v\n", recovered)
+			_, _ = fmt.Fprintf(stderr, "%v\n", recovered)
 			exitCode = 1
 		}
 	}()
@@ -152,6 +153,7 @@ func nativeHandler(path []string) handlerFunc {
 	}
 }
 
+//nolint:errcheck // CLI stderr reporting is best-effort.
 func runNodeFallback(repoRoot string, cwd string, script string, args []string, stdout io.Writer, stderr io.Writer) int {
 	command := exec.Command("node", append([]string{filepath.Join(repoRoot, filepath.FromSlash(script))}, args...)...)
 	command.Dir = cwd
@@ -164,7 +166,7 @@ func runNodeFallback(repoRoot string, cwd string, script string, args []string, 
 		if errors.As(err, &exitErr) {
 			return exitErr.ExitCode()
 		}
-		fmt.Fprintf(stderr, "%s\n", err)
+		_, _ = fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
 	return 0
@@ -252,38 +254,40 @@ type optimizeBuildArtifactArgs struct {
 	output       *string
 }
 
+//nolint:errcheck // CLI stderr reporting is best-effort.
 func handleAdapterResolve(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
 	options, err := parseAdapterArgs(args)
 	if err != nil {
-		fmt.Fprintf(stderr, "%s\n", err)
+		_, _ = fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
 	payload, err := runtime.LoadAdapter(resolveRepoRoot(cwd, options.repoRoot), options.adapter, options.adapterName)
 	if err != nil {
-		fmt.Fprintf(stderr, "%s\n", err)
+		_, _ = fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
 	if err := writeJSON(stdout, payload); err != nil {
-		fmt.Fprintf(stderr, "%s\n", err)
+		_, _ = fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
 	return 0
 }
 
+//nolint:errcheck // CLI stderr/stdout reporting is best-effort.
 func handleAdapterInit(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
 	options, err := parseInitArgs(args)
 	if err != nil {
-		fmt.Fprintf(stderr, "%s\n", err)
+		_, _ = fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
 	resolvedRoot := resolveRepoRoot(cwd, options.repoRoot)
 	outputPath := defaultAdapterOutputPath(resolvedRoot, options.output, options.adapterName)
 	if pathExists(outputPath) && !options.force {
-		fmt.Fprintf(stderr, "Adapter already exists at %s. Use --force to overwrite.\n", outputPath)
+		_, _ = fmt.Fprintf(stderr, "Adapter already exists at %s. Use --force to overwrite.\n", outputPath)
 		return 1
 	}
 	if err := os.MkdirAll(filepath.Dir(outputPath), 0o755); err != nil {
-		fmt.Fprintf(stderr, "%s\n", err)
+		_, _ = fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
 	repoName := filepath.Base(resolvedRoot)
@@ -292,29 +296,30 @@ func handleAdapterInit(repoRoot string, cwd string, args []string, stdout io.Wri
 	}
 	document, err := runtime.DumpYAMLDocument(runtime.ScaffoldAdapter(resolvedRoot, repoName))
 	if err != nil {
-		fmt.Fprintf(stderr, "%s\n", err)
+		_, _ = fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
 	if !strings.HasSuffix(document, "\n") {
 		document += "\n"
 	}
 	if err := os.WriteFile(outputPath, []byte(document), 0o644); err != nil {
-		fmt.Fprintf(stderr, "%s\n", err)
+		_, _ = fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
-	fmt.Fprintf(stdout, "%s\n", outputPath)
+	_, _ = fmt.Fprintf(stdout, "%s\n", outputPath)
 	return 0
 }
 
+//nolint:errcheck // CLI stderr reporting is best-effort.
 func handleDoctor(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
 	options, err := parseAdapterArgs(args)
 	if err != nil {
-		fmt.Fprintf(stderr, "%s\n", err)
+		_, _ = fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
 	result, exitCode, err := runtime.DoctorRepo(resolveRepoRoot(cwd, options.repoRoot), options.adapter, options.adapterName)
 	if err != nil {
-		fmt.Fprintf(stderr, "%s\n", err)
+		_, _ = fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
 	if err := writeJSON(stdout, result); err != nil {
@@ -324,6 +329,7 @@ func handleDoctor(repoRoot string, cwd string, args []string, stdout io.Writer, 
 	return exitCode
 }
 
+//nolint:errcheck // CLI stdout/stderr reporting is best-effort.
 func handleWorkspaceStart(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
 	options, err := parseWorkspaceStartArgs(args)
 	if err != nil {
@@ -342,7 +348,7 @@ func handleWorkspaceStart(repoRoot string, cwd string, args []string, stdout io.
 		}
 		return 0
 	}
-	fmt.Fprint(stdout, runtime.RenderShellExport(run.RunDir))
+	_, _ = fmt.Fprint(stdout, runtime.RenderShellExport(run.RunDir))
 	return 0
 }
 
@@ -358,6 +364,7 @@ func handleScenarioNormalizeSkill(repoRoot string, cwd string, args []string, st
 	return handleScenarioNormalize(args, cwd, stdout, stderr, "skill")
 }
 
+//nolint:errcheck // CLI stderr reporting is best-effort.
 func handleScenarioNormalize(args []string, cwd string, stdout io.Writer, stderr io.Writer, kind string) int {
 	options, err := parseInputOutputArgs(args)
 	if err != nil {
@@ -404,6 +411,7 @@ func handleScenarioNormalize(args []string, cwd string, stdout io.Writer, stderr
 	return 0
 }
 
+//nolint:errcheck // CLI stderr reporting is best-effort.
 func handleScenarioSummarizeTelemetry(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
 	options, err := parseScenarioSummarizeTelemetryArgs(args)
 	if err != nil {
@@ -450,6 +458,7 @@ func handleScenarioSummarizeTelemetry(repoRoot string, cwd string, args []string
 	return 0
 }
 
+//nolint:errcheck // CLI stderr reporting is best-effort.
 func handleScenarioPrepareInput(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
 	options, err := parseScenarioPrepareInputArgs(args)
 	if err != nil {
@@ -483,6 +492,7 @@ func handleScenarioPrepareInput(repoRoot string, cwd string, args []string, stdo
 	return 0
 }
 
+//nolint:errcheck // CLI stderr reporting is best-effort.
 func handleScenarioPropose(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
 	options, err := parseInputOutputArgs(args)
 	if err != nil {
@@ -506,6 +516,7 @@ func handleScenarioPropose(repoRoot string, cwd string, args []string, stdout io
 	return 0
 }
 
+//nolint:errcheck // CLI stderr reporting is best-effort.
 func handleReportBuild(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
 	options, err := parseInputOutputOrActiveRunArgs(args, cwd, "report-input.json", "report.json")
 	if err != nil {
@@ -529,6 +540,7 @@ func handleReportBuild(repoRoot string, cwd string, args []string, stdout io.Wri
 	return 0
 }
 
+//nolint:errcheck // CLI stderr reporting is best-effort.
 func handleReviewPrepareInput(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
 	options, err := parseReviewPrepareArgs(args, cwd)
 	if err != nil {
@@ -569,6 +581,7 @@ func handleReviewPrepareInput(repoRoot string, cwd string, args []string, stdout
 	return 0
 }
 
+//nolint:errcheck // CLI stderr reporting is best-effort.
 func handleReviewBuildPromptInput(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
 	options, err := parseReviewBuildPromptArgs(args)
 	if err != nil {
@@ -596,6 +609,7 @@ func handleReviewBuildPromptInput(repoRoot string, cwd string, args []string, st
 	return 0
 }
 
+//nolint:errcheck // CLI stdout/stderr reporting is best-effort.
 func handleReviewRenderPrompt(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
 	options, err := parseInputOutputArgs(args)
 	if err != nil {
@@ -620,10 +634,11 @@ func handleReviewRenderPrompt(repoRoot string, cwd string, args []string, stdout
 		}
 		return 0
 	}
-	fmt.Fprint(stdout, prompt)
+	_, _ = fmt.Fprint(stdout, prompt)
 	return 0
 }
 
+//nolint:errcheck // CLI stderr reporting is best-effort.
 func handleEvidencePrepareInput(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
 	options, err := parseEvidencePrepareArgs(args, cwd)
 	if err != nil {
@@ -647,6 +662,7 @@ func handleEvidencePrepareInput(repoRoot string, cwd string, args []string, stdo
 	return 0
 }
 
+//nolint:errcheck // CLI stderr reporting is best-effort.
 func handleEvidenceBundle(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
 	options, err := parseInputOutputOrActiveRunArgs(args, cwd, "evidence-input.json", "evidence-bundle.json")
 	if err != nil {
@@ -670,6 +686,7 @@ func handleEvidenceBundle(repoRoot string, cwd string, args []string, stdout io.
 	return 0
 }
 
+//nolint:errcheck // CLI stderr reporting is best-effort.
 func handleOptimizePrepareInput(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
 	options, err := parseOptimizePrepareArgs(args, cwd)
 	if err != nil {
@@ -693,6 +710,7 @@ func handleOptimizePrepareInput(repoRoot string, cwd string, args []string, stdo
 	return 0
 }
 
+//nolint:errcheck // CLI stderr reporting is best-effort.
 func handleOptimizePropose(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
 	options, err := parseInputOutputOrActiveRunArgs(args, cwd, "optimize-input.json", "optimize-proposal.json")
 	if err != nil {
@@ -720,6 +738,7 @@ func handleOptimizePropose(repoRoot string, cwd string, args []string, stdout io
 	return 0
 }
 
+//nolint:errcheck // CLI stderr reporting is best-effort.
 func handleOptimizeBuildArtifact(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
 	options, err := parseOptimizeBuildArtifactArgs(args, cwd)
 	if err != nil {
@@ -743,7 +762,7 @@ func handleOptimizeBuildArtifact(repoRoot string, cwd string, args []string, std
 		}
 	}
 	if inputFile == nil {
-		fmt.Fprintln(stderr, "optimize proposal must carry inputFile or use --input-file")
+		_, _ = fmt.Fprintln(stderr, "optimize proposal must carry inputFile or use --input-file")
 		return 1
 	}
 	input, err := readJSONObject(*inputFile)
@@ -797,11 +816,11 @@ func parseAdapterArgs(args []string) (*adapterArgs, error) {
 			index = next
 			options.adapterName = &value
 		default:
-			return nil, fmt.Errorf("Unknown argument: %s", arg)
+			return nil, fmt.Errorf("unknown argument: %s", arg)
 		}
 	}
 	if options.adapter != nil && options.adapterName != nil {
-		return nil, fmt.Errorf("Use either adapter or adapterName, not both.")
+		return nil, fmt.Errorf("use either adapter or adapterName, not both")
 	}
 	return options, nil
 }
@@ -842,7 +861,7 @@ func parseInitArgs(args []string) (*initArgs, error) {
 			index = next
 			options.output = &value
 		default:
-			return nil, fmt.Errorf("Unknown argument: %s", arg)
+			return nil, fmt.Errorf("unknown argument: %s", arg)
 		}
 	}
 	return options, nil
@@ -870,7 +889,7 @@ func parseWorkspaceStartArgs(args []string) (*workspaceStartArgs, error) {
 			index = next
 			options.label = &value
 		default:
-			return nil, fmt.Errorf("Unknown argument: %s", arg)
+			return nil, fmt.Errorf("unknown argument: %s", arg)
 		}
 	}
 	return options, nil
@@ -896,7 +915,7 @@ func parseInputOutputArgs(args []string) (*inputOutputArgs, error) {
 			index = next
 			options.output = &value
 		default:
-			return nil, fmt.Errorf("Unknown argument: %s", arg)
+			return nil, fmt.Errorf("unknown argument: %s", arg)
 		}
 	}
 	if strings.TrimSpace(options.input) == "" {
@@ -926,7 +945,7 @@ func parseInputOutputOrActiveRunArgs(args []string, cwd string, defaultInputName
 			resolved := resolvePath(cwd, value)
 			options.output = &resolved
 		default:
-			return nil, fmt.Errorf("Unknown argument: %s", arg)
+			return nil, fmt.Errorf("unknown argument: %s", arg)
 		}
 	}
 	activeRunDir, err := readActiveRunDir()
@@ -973,11 +992,11 @@ func parseScenarioSummarizeTelemetryArgs(args []string) (*scenarioSummarizeTelem
 			index = next
 			options.output = &value
 		default:
-			return nil, fmt.Errorf("Unknown argument: %s", arg)
+			return nil, fmt.Errorf("unknown argument: %s", arg)
 		}
 	}
 	if (options.results == nil && options.history == nil) || (options.results != nil && options.history != nil) {
-		return nil, fmt.Errorf("Use exactly one of --results or --history")
+		return nil, fmt.Errorf("use exactly one of --results or --history")
 	}
 	return options, nil
 }
@@ -1048,7 +1067,7 @@ func parseScenarioPrepareInputArgs(args []string) (*scenarioPrepareInputArgs, er
 			index = next
 			options.output = &value
 		default:
-			return nil, fmt.Errorf("Unknown argument: %s", arg)
+			return nil, fmt.Errorf("unknown argument: %s", arg)
 		}
 	}
 	for _, required := range []struct {
@@ -1108,7 +1127,7 @@ func parseReviewPrepareArgs(args []string, cwd string) (*reviewPrepareArgs, erro
 			resolved := resolvePath(cwd, value)
 			options.output = &resolved
 		default:
-			return nil, fmt.Errorf("Unknown argument: %s", arg)
+			return nil, fmt.Errorf("unknown argument: %s", arg)
 		}
 	}
 	activeRunDir, err := readActiveRunDir()
@@ -1126,7 +1145,7 @@ func parseReviewPrepareArgs(args []string, cwd string) (*reviewPrepareArgs, erro
 		options.output = &value
 	}
 	if options.adapter != nil && options.adapterName != nil {
-		return nil, fmt.Errorf("Use either --adapter or --adapter-name, not both.")
+		return nil, fmt.Errorf("use either --adapter or --adapter-name, not both")
 	}
 	return options, nil
 }
@@ -1151,7 +1170,7 @@ func parseReviewBuildPromptArgs(args []string) (*reviewBuildPromptArgs, error) {
 			index = next
 			options.output = &value
 		default:
-			return nil, fmt.Errorf("Unknown argument: %s", arg)
+			return nil, fmt.Errorf("unknown argument: %s", arg)
 		}
 	}
 	if strings.TrimSpace(options.reviewPacket) == "" {
@@ -1223,7 +1242,7 @@ func parseEvidencePrepareArgs(args []string, cwd string) (*evidencePrepareArgs, 
 			resolved := resolvePath(cwd, value)
 			options.output = &resolved
 		default:
-			return nil, fmt.Errorf("Unknown argument: %s", arg)
+			return nil, fmt.Errorf("unknown argument: %s", arg)
 		}
 	}
 	activeRunDir, err := readActiveRunDir()
@@ -1235,7 +1254,7 @@ func parseEvidencePrepareArgs(args []string, cwd string) (*evidencePrepareArgs, 
 		options.output = &value
 	}
 	if options.reportFile == nil && options.scenarioResultsFile == nil && options.runAuditFile == nil && options.historyFile == nil && activeRunDir == nil {
-		return nil, fmt.Errorf("At least one evidence source must be provided.")
+		return nil, fmt.Errorf("at least one evidence source must be provided")
 	}
 	return options, nil
 }
@@ -1327,7 +1346,7 @@ func parseOptimizePrepareArgs(args []string, cwd string) (*optimizePrepareArgs, 
 			resolved := resolvePath(cwd, value)
 			options.output = &resolved
 		default:
-			return nil, fmt.Errorf("Unknown argument: %s", arg)
+			return nil, fmt.Errorf("unknown argument: %s", arg)
 		}
 	}
 	activeRunDir, err := readActiveRunDir()
@@ -1376,7 +1395,7 @@ func parseOptimizeBuildArtifactArgs(args []string, cwd string) (*optimizeBuildAr
 			resolved := resolvePath(cwd, value)
 			options.output = &resolved
 		default:
-			return nil, fmt.Errorf("Unknown argument: %s", arg)
+			return nil, fmt.Errorf("unknown argument: %s", arg)
 		}
 	}
 	activeRunDir, err := readActiveRunDir()
@@ -1458,7 +1477,7 @@ func readJSONArray(path string, label string) ([]any, error) {
 	decoder.UseNumber()
 	var value []any
 	if err := decoder.Decode(&value); err != nil {
-		return nil, fmt.Errorf("Failed to read JSON from %s: %w", path, err)
+		return nil, fmt.Errorf("failed to read JSON from %s: %w", path, err)
 	}
 	if value == nil {
 		return nil, fmt.Errorf("%s must be a JSON array", label)

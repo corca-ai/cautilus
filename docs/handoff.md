@@ -98,6 +98,16 @@
     as compatibility / parity surfaces for the current Node unit tests and
     release fixtures, but the user-facing `cautilus ...` surface is now fully
     Go-owned.
+- Go quality gates now match the new runtime ownership boundary.
+  - `.golangci.yml` is checked in with the correctness-focused subset of the
+    `specdown` baseline (`errcheck`, `govet`, `staticcheck`, `unused`,
+    `ineffassign`, `bodyclose`, `nilerr`, `errorlint`, `unparam`,
+    `unconvert`). `gocritic`/`gocognit` are intentionally deferred until the
+    first Go CLI port settles enough to ratchet complexity and style without
+    burying bug-oriented signals.
+  - `npm run lint` now includes `golangci-lint run` and `go vet`,
+    `npm run verify` adds `go test -race`, and both GitHub Actions workflows
+    install Go plus `golangci-lint` before running the standing verify path.
 - binary / CLI distribution research is now written down in one durable place:
   [docs/cli-distribution.md](./cli-distribution.md).
   Next session should use that note as the rationale baseline instead of
