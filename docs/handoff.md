@@ -14,9 +14,10 @@
 - 시작 workflow는 `impl` 기준이다.
 - product-owned seam이면 `cautilus`에서 먼저 고친다. host adapter, prompt,
   policy, consumer artifact는 host 소유다.
-- `artifact-root auto layout` slice는 per-run materializer로 닫혔다. 기본
-  pickup은 이제 아래 Next Session의 순서를 따른다. consumer-side
-  `--artifact-root` 통합은 여전히 defer다.
+- `artifact-root auto layout` slice는 active-run env var contract로
+  진화 중이다. 기본 pickup은 아래 Next Session 순서를 따른다. consumer
+  명령들의 active-run resolver wiring은 진행 중이고, 지금은 helper와
+  `workspace start` entry까지 들어와 있다.
 - 세션을 시작하기 전에 `node --version`이 `v22.x` 이상인지 먼저 본다.
   Node 20에서는 self-dogfood test fixture가 `node - <<EOF ... await import()`
   패턴 때문에 깨진다. `.n`이 깔려 있다면 `N_PREFIX=/home/ubuntu/.n n install 22`로
@@ -34,27 +35,33 @@
     stays in sync` test는 그대로 byte-equal을 보장한다. 이제 spec source_guard와
     distribution test 두 곳에서 packaged copy 누락을 잡는다.
   - `node ./scripts/check-specs.mjs`는 380 guard rows로 통과한다 (이전 354).
-- `cautilus workspace new-run`이 product-owned per-run artifact-root
-  materializer로 들어왔다.
-  - `scripts/agent-runtime/new-workspace-run.mjs`가 `--root <dir>`와 optional
-    `--label <name>`을 받아 `<YYYYMMDDTHHMMSSmmmZ>-<slug>/` 디렉터리를 한 번만
-    만든다. label은 slugify되고, 비거나 unsafe하면 `run`으로 fallback한다.
-  - 안에 `run.json` manifest(`cautilus.workspace_run_manifest.v1`,
-    `startedAt`, `label`)가 쓰이고, `prune-workspace-artifacts.mjs`의
-    `EXACT_MARKERS`에 `run.json`이 추가돼서 빈 bundle도 pruner가 곧바로
-    recognize한다.
-  - collision, missing root, non-directory root는 모두 loud fail이다. CLI는
-    resolved `runDir`을 포함한 JSON 한 덩어리를 stdout으로 내보낸다.
-  - consumer CLI (`mode evaluate`, `workspace prepare-compare`,
-    `review variants`, `review prepare-input`)는 손대지 않았다. operator가
-    `runDir`을 받아 `--output-dir`에 직접 넘긴다.
-  - `bin/cautilus workspace new-run` subcommand로 wiring 완료. README,
-    `docs/workflow.md`, bundled + packaged `skills/cautilus/SKILL.md`,
-    `docs/specs/current-product.spec.md`, `docs/specs/standalone-surface.spec.md`
-    모두 같은 prose/guard를 가진다.
-  - `scripts/agent-runtime/new-workspace-run.test.mjs`는 slugifier,
-    timestamp formatter, createRun happy/edge path, CLI smoke, pruner
-    integration까지 10개 test로 고정한다.
+- `cautilus workspace start`가 active-run env var contract의 happy-path
+  entry로 들어왔다. `workspace new-run`은 `workspace start --json`로
+  완전히 흡수되었다. parallel period 없이 single source of truth.
+  - `scripts/agent-runtime/workspace-start.mjs`가 default mode에서
+    `export CAUTILUS_RUN_DIR='<abs runDir>'` 한 줄을 stdout으로 찍는다.
+    사용자/skill agent는 `eval "$(cautilus workspace start --label X)"`
+    한 줄로 active run을 현재 shell에 박는다. JSON parser나 jq 의존 없음.
+  - `--json`은 자동화 path. test와 internal script가 spawn해서 결과를
+    받을 때만 쓴다. 기존 `new-workspace-run.mjs`의 JSON shape를 그대로
+    유지한다.
+  - `--root` 기본값은 `./.cautilus/runs/` (cwd 상대). 없으면 recursive로
+    auto-create. `--label` 기본값은 `run`. 안에 `run.json` manifest
+    (`cautilus.workspace_run_manifest.v1`)가 쓰이고 pruner의
+    `EXACT_MARKERS`에 이미 등록되어 있다.
+  - `scripts/agent-runtime/active-run.mjs`의 `resolveRunDir` helper가
+    explicit `outputDir` > env var > auto-materialize 순으로 runDir을
+    해결한다. consumer 명령들은 이걸 wiring하기 시작하면 path-threading이
+    사라진다 (다음 슬라이스).
+  - `scripts/agent-runtime/workspace-start.test.mjs`는 slugifier,
+    timestamp formatter, shell single-quote escaping, shell-export rendering,
+    createRun happy/edge path, default-root fallback, CLI shell-export 모드,
+    `--json` 모드, default-root 자동 생성, pruner integration까지 17 test로
+    고정한다. `active-run.test.mjs`는 helper 자체를 11 test로 잠근다.
+  - `bin/cautilus workspace start` subcommand로 wiring 완료. README,
+    `docs/workflow.md`, `docs/master-plan.md`, bundled + packaged
+    `skills/cautilus/SKILL.md`, `docs/specs/current-product.spec.md`,
+    `docs/specs/standalone-surface.spec.md` 모두 새 surface로 갱신됨.
 - self-dogfood `latest/` 위에 product-owned 정적 HTML 뷰가 들어왔다.
   - `scripts/render-self-dogfood-html.mjs`가 `summary.json`, `report.json`,
     `review-summary.json`을 읽어 self-contained `index.html`을 쓴다.
@@ -105,9 +112,12 @@
   surfaced 하는가"로 계속 좁혀져 있다. `latest` summary는
   `gateRecommendation`과 `reportRecommendation`을 계속 분리한다.
 - local proof (Node v22.22.2 기준):
-  - `npm run verify`: 134/134 green
-  - `node ./scripts/check-specs.mjs`: `spec checks passed (4 specs, 380 guard rows)`
+  - `npm run verify`: 시점에 따라 변동, slice 종료 시 전부 green
+  - `node ./scripts/check-specs.mjs`: spec source_guard 모두 통과
   - `node ./bin/cautilus doctor --repo-root .`: `ready`
+  - 빠른 happy-path smoke:
+    `eval "$(node ./bin/cautilus workspace start --label smoke)"` →
+    `CAUTILUS_RUN_DIR`이 현재 shell에 박히고 `run.json` 마커가 생긴다.
 - 이번 세션에서 experiments를 다시 돌리지는 않았다. 마지막으로 기록된
   stronger-claim 상태는 여전히 `gate-honesty-a=blocker`,
   `gate-honesty-b=concern`, `binary-surface=concern`, `skill-surface=pass`,
@@ -115,12 +125,15 @@
 
 ## Next Session
 
-1. 기본 pickup은 consumer-side `--artifact-root` 통합(Option D) 결정이다. defer 그대로 유지한다.
-   `mode evaluate`, `workspace prepare-compare`, `review variants`,
-   `review prepare-input`이 각자 `--output-dir`을 그대로 쓰는 동안 operator는
-   `workspace new-run`의 `runDir`을 stdin JSON에서 뽑아 넘긴다. 실제로 한
-   workflow에서 여러 consumer가 같은 `runDir`을 공유했을 때 marker 충돌이
-   나지 않는지 한 번 더 확인한다.
+1. 기본 pickup은 consumer 명령들의 active-run wiring이다. `mode evaluate`
+   부터 `resolveRunDir` helper를 적용해서 `--output-dir`을 옵셔널 override로
+   바꾸고, `CAUTILUS_RUN_DIR`이 set 되어 있으면 그걸 쓰고, 아니면
+   auto-materialize fallback을 쓴다. 첫 명령이 가장 무거운 test mass를
+   가지고 있으니 거기 패턴이 잡히면 `workspace prepare-compare`,
+   `review variants`, `review prepare-input`, `evidence prepare-input`,
+   `optimize prepare-input` 등 나머지 consumer는 같은 패턴 복붙으로 끝낸다.
+   canonical filename convention(예: `report.json`, `review-packet.json`,
+   `baseline/`, `candidate/`)도 같이 잠근다.
 2. HTML view follow-ups는 다음 우선순위로 내려간다.
    - `artifacts/self-dogfood/experiments/latest/` 번들이 다시 쓰이기 시작하면
      그때 HTML view를 experiments surface까지 확장할지 결정한다. 지금은 해당
@@ -134,13 +147,17 @@
 
 ## Discuss
 
-- artifact-root 결정은 per-run materializer(`workspace new-run`)까지 좁혔다.
-  아직 열려 있는 후속 질문:
-  - consumer CLI에 `--artifact-root` flag를 심어서 new-run 호출 자체도
-    product가 내부에서 하도록 만들지 (Option D). 지금은 defer — 네 CLI를
-    동시에 건드려야 하고 `--output-dir`과의 coexistence 규칙이 커진다.
+- artifact-root 결정은 active-run env var contract로 정착되었다 — 한
+  workflow = 한 runDir, `CAUTILUS_RUN_DIR`이 그 sticky reference. consumer
+  명령에 `--artifact-root` flag를 심는 Option D는 polymorphic하게 고려했다
+  가 폐기되었다. 이유: 각 consumer 명령이 자기 runDir을 mint하면 sibling
+  runDir이 생겨서 "한 workflow = 한 runDir" load-bearing 가정이 깨진다.
+  active run env var이 그 가정을 자연스럽게 보존하면서 path threading을
+  없앤다. 아직 열려 있는 질문:
   - `run.json` manifest에 workflow metadata(mode, baseline ref, adapter
     name)를 더 담을지. 지금은 `schemaVersion`, `label`, `startedAt`만이다.
+  - fish shell 사용자를 위해 `--shell fish` 같은 flavor 옵션을 추가할지.
+    지금은 POSIX `export` 한 줄만 emit한다.
 - HTML view는 self-dogfood latest surface 안에서만 materialize 되었다.
   다음 결정은 두 가지다:
   - `experiments/`에도 같은 뷰를 낼지 (지금은 defer, 데이터가 없다)
@@ -148,7 +165,7 @@
     시킬지 (master plan item 6의 defer 조건, 즉 JSON/YAML report boundary가
     여러 consumer에서 이미 안정화되었는가를 먼저 검증해야 한다)
 - behavior intent catalog는 여전히 닫혀 있다. 다음 결정은 intent taxonomy
-  확장 여부가 아니라 위의 `--artifact-root` consumer 통합을 할지다.
+  확장 여부가 아니라 active-run wiring을 어디까지 끌고 갈지다.
 - schema까지 catalog enum을 밀어넣을지는 여전히 deferred다. 지금 enforcing
   layer는 runtime과 tests다.
 
@@ -177,14 +194,20 @@
 - 여섯 번째 오해: "catalog를 닫았으니 helper defaults를 더 늘릴 때 문서 업데이트
   없이 code만 바꿔도 된다." 아니다. behavior-intent doc과 normalization docs를
   같이 바꿔야 drift가 없다.
-- 일곱 번째 오해: "`workspace new-run`을 consumer 명령마다 한 번씩 새로
+- 일곱 번째 오해: "`workspace start`를 consumer 명령마다 한 번씩 새로
   호출해야 한다." 아니다. 한 workflow = 한 `runDir`이 기본이고, 그 아래
   `report.json`, `baseline/`, `candidate/`, `review-packet.json` 같은 서로
-  다른 marker가 공존하도록 설계되어 있다. `run.json` manifest는 pruner가
-  empty bundle을 recognize 하기 위한 marker일 뿐 workflow metadata가 아니다.
+  다른 marker가 공존하도록 설계되어 있다. workflow 시작 시 한 번
+  `eval "$(cautilus workspace start --label X)"`만 한다. `run.json`
+  manifest는 pruner가 empty bundle을 recognize 하기 위한 marker일 뿐
+  workflow metadata가 아니다.
 - 여덟 번째 오해: "`runDir`이 pruner가 알아서 관리하니까 operator는
   `--keep-last`를 넘길 필요가 없다." 아니다. `workspace prune-artifacts`는
-  여전히 explicit opt-in이다. `new-run`만으로는 정리되지 않는다.
+  여전히 explicit opt-in이다. `workspace start`만으로는 정리되지 않는다.
+- 아홉 번째 오해: "`workspace start` stdout이 JSON이니까 `jq`로 파싱해야
+  한다." 아니다. default stdout은 `export CAUTILUS_RUN_DIR='...'` 한 줄
+  shell-evalable string이다. `eval "$(...)"` 한 줄로 끝. JSON이 정말로
+  필요한 자동화 path만 `--json` flag를 명시적으로 켠다.
 
 ## References
 
@@ -194,8 +217,10 @@
 - [docs/contracts/behavior-intent.md](/home/ubuntu/cautilus/docs/contracts/behavior-intent.md)
 - [docs/contracts/scenario-proposal-inputs.md](/home/ubuntu/cautilus/docs/contracts/scenario-proposal-inputs.md)
 - [docs/specs/self-dogfood.spec.md](/home/ubuntu/cautilus/docs/specs/self-dogfood.spec.md)
-- [scripts/agent-runtime/new-workspace-run.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/new-workspace-run.mjs)
-- [scripts/agent-runtime/new-workspace-run.test.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/new-workspace-run.test.mjs)
+- [scripts/agent-runtime/workspace-start.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/workspace-start.mjs)
+- [scripts/agent-runtime/workspace-start.test.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/workspace-start.test.mjs)
+- [scripts/agent-runtime/active-run.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/active-run.mjs)
+- [scripts/agent-runtime/active-run.test.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/active-run.test.mjs)
 - [scripts/agent-runtime/prune-workspace-artifacts.mjs](/home/ubuntu/cautilus/scripts/agent-runtime/prune-workspace-artifacts.mjs)
 - [scripts/render-self-dogfood-html.mjs](/home/ubuntu/cautilus/scripts/render-self-dogfood-html.mjs)
 - [scripts/render-self-dogfood-html.test.mjs](/home/ubuntu/cautilus/scripts/render-self-dogfood-html.test.mjs)

@@ -1,10 +1,13 @@
 import { existsSync, mkdirSync, statSync } from "node:fs";
 import { resolve } from "node:path";
 import process from "node:process";
-import { createRun } from "./new-workspace-run.mjs";
+import {
+	ACTIVE_RUN_ENV_VAR,
+	DEFAULT_RUNS_ROOT,
+	createRun,
+} from "./workspace-start.mjs";
 
-export const ACTIVE_RUN_ENV_VAR = "CAUTILUS_RUN_DIR";
-export const DEFAULT_RUNS_ROOT = ".cautilus/runs";
+export { ACTIVE_RUN_ENV_VAR, DEFAULT_RUNS_ROOT };
 
 function ensureExistingDirectory(path, label) {
 	if (!existsSync(path)) {

@@ -76,27 +76,29 @@ node ./bin/cautilus workspace prepare-compare \
   --output-dir /tmp/cautilus-compare
 ```
 
-3. Keep artifact-root hygiene under one stable root. Materialize a fresh
-   per-run subdirectory with `workspace new-run` instead of inventing
-   `--output-dir` paths by hand, and prune older recognized bundles with
-   `workspace prune-artifacts` instead of letting logs and compare workspaces
-   grow forever:
+3. Pin one active run for the workflow with `workspace start` instead of
+   inventing `--output-dir` paths by hand, and prune older recognized bundles
+   with `workspace prune-artifacts` instead of letting logs and compare
+   workspaces grow forever. The default stdout of `workspace start` is a
+   single shell-evalable line, so `eval` is the happy path:
 
 ```bash
-node ./bin/cautilus workspace new-run \
-  --root /tmp/cautilus-runs \
-  --label mode-held-out
+eval "$(node ./bin/cautilus workspace start --label mode-held-out)"
 ```
 
-   The resulting `runDir` prints as JSON on stdout and can be passed back as
-   `--output-dir` to `mode evaluate`, `review variants`, `review prepare-input`,
-   or `workspace prepare-compare`. The generated directory carries a `run.json`
-   manifest so the pruner recognizes it even before any other bundle file is
-   written.
+   `workspace start` defaults `--root` to `./.cautilus/runs/` (auto-created
+   on first use) and writes a `run.json` manifest inside the new directory so
+   the pruner recognizes it even before any other bundle file is written.
+   After the `eval`, `CAUTILUS_RUN_DIR` is set in the current shell and
+   consumer commands like `mode evaluate`, `review variants`, `review
+   prepare-input`, and `workspace prepare-compare` resolve their runDir from
+   that env var. Operators do not need to pipe a JSON payload or thread paths
+   between commands. Pass `--json` instead of `eval` if a script needs the
+   machine-readable payload.
 
 ```bash
 node ./bin/cautilus workspace prune-artifacts \
-  --root /tmp/cautilus-runs \
+  --root ./.cautilus/runs \
   --keep-last 20
 ```
 

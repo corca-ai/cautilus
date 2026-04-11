@@ -65,21 +65,23 @@ node ./bin/cautilus workspace prune-artifacts \
   --keep-last 20
 ```
 
-When a new bounded run should land under the same artifact root, materialize
-one fresh per-run subdirectory with the product-owned helper instead of
-inventing `--output-dir` values by hand. The helper writes a `run.json`
-manifest inside the new directory so the pruner recognizes it even before any
-other bundle file is written:
+When a new bounded run should land under the same artifact root, start a
+fresh per-run subdirectory and pin it as the active run with `workspace
+start`. Default stdout is a single shell-evalable line so `eval` is the
+happy path; the helper also writes a `run.json` manifest inside the new
+directory so the pruner recognizes it even before any other bundle file is
+written:
 
 ```bash
-node ./bin/cautilus workspace new-run \
-  --root /tmp/cautilus-runs \
-  --label mode-held-out
+eval "$(node ./bin/cautilus workspace start --label mode-held-out)"
 ```
 
-Pass the resulting `runDir` from the JSON payload as `--output-dir` to
-`mode evaluate`, `review variants`, `review prepare-input`, or
-`workspace prepare-compare`.
+`workspace start` defaults `--root` to `./.cautilus/runs/` (auto-created on
+first use). After the `eval`, `CAUTILUS_RUN_DIR` is set in the current shell
+and consumer commands like `mode evaluate`, `review variants`, `review
+prepare-input`, and `workspace prepare-compare` resolve their runDir from
+that env var without operator path-threading. Pass `--json` instead of
+`eval` if a script needs the machine-readable payload.
 
 If interpretation or reporting is getting sloppy, read
 [reporting.md](/home/ubuntu/cautilus/docs/contracts/reporting.md) before

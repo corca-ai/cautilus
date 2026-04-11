@@ -9,18 +9,23 @@ import {
 	writeFileSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 import test from "node:test";
 import {
+	ACTIVE_RUN_ENV_VAR,
+	DEFAULT_RUNS_ROOT,
 	DEFAULT_RUN_LABEL,
 	RUN_MANIFEST_NAME,
 	RUN_MANIFEST_SCHEMA,
 	createRun,
 	formatRunTimestamp,
+	renderShellExport,
+	shellSingleQuote,
 	slugifyLabel,
-} from "./new-workspace-run.mjs";
+	startWorkspaceRun,
+} from "./workspace-start.mjs";
 
-const SCRIPT_PATH = join(process.cwd(), "scripts", "agent-runtime", "new-workspace-run.mjs");
+const SCRIPT_PATH = join(process.cwd(), "scripts", "agent-runtime", "workspace-start.mjs");
 const PRUNE_SCRIPT_PATH = join(
 	process.cwd(),
 	"scripts",
@@ -29,11 +34,20 @@ const PRUNE_SCRIPT_PATH = join(
 );
 
 function withTempRoot(fn) {
-	const base = mkdtempSync(join(tmpdir(), "cautilus-new-run-"));
+	const base = mkdtempSync(join(tmpdir(), "cautilus-workspace-start-"));
 	try {
 		const root = join(base, "artifacts");
 		mkdirSync(root, { recursive: true });
-		fn(root);
+		fn(root, base);
+	} finally {
+		rmSync(base, { recursive: true, force: true });
+	}
+}
+
+function withTempBase(fn) {
+	const base = mkdtempSync(join(tmpdir(), "cautilus-workspace-start-base-"));
+	try {
+		fn(base);
 	} finally {
 		rmSync(base, { recursive: true, force: true });
 	}
@@ -54,6 +68,20 @@ test("formatRunTimestamp produces a compact chronologically sortable stamp", () 
 	const earlier = formatRunTimestamp(new Date("2026-04-11T10:32:15.000Z"));
 	const later = formatRunTimestamp(new Date("2026-04-11T10:32:16.000Z"));
 	assert.ok(earlier < later);
+});
+
+test("shellSingleQuote escapes embedded single quotes for POSIX shells", () => {
+	assert.equal(shellSingleQuote("/tmp/plain"), "'/tmp/plain'");
+	assert.equal(shellSingleQuote("/tmp/with space"), "'/tmp/with space'");
+	assert.equal(shellSingleQuote("/tmp/it's"), "'/tmp/it'\\''s'");
+});
+
+test("renderShellExport emits a single eval-friendly export line", () => {
+	const line = renderShellExport("/tmp/cautilus-runs/20260411T103215123Z-fresh");
+	assert.equal(
+		line,
+		`export ${ACTIVE_RUN_ENV_VAR}='/tmp/cautilus-runs/20260411T103215123Z-fresh'\n`,
+	);
 });
 
 test("createRun materializes a per-run directory with a recognized manifest", () => {
@@ -113,44 +141,98 @@ test("createRun fails when the root is not a directory", () => {
 	});
 });
 
-test("new-workspace-run CLI emits JSON on stdout and creates the run directory", () => {
-	withTempRoot((root) => {
+test("startWorkspaceRun creates the explicit root recursively when missing", () => {
+	withTempBase((base) => {
+		const root = join(base, "nested", "missing", "root");
+		const result = startWorkspaceRun({
+			root,
+			label: "fresh",
+			now: new Date("2026-04-11T10:32:15.000Z"),
+		});
+		assert.equal(existsSync(root), true);
+		assert.equal(existsSync(result.runDir), true);
+		assert.equal(result.label, "fresh");
+	});
+});
+
+test("startWorkspaceRun falls back to the default root relative to cwd", () => {
+	withTempBase((base) => {
+		const result = startWorkspaceRun({
+			cwd: base,
+			label: "fallback",
+			now: new Date("2026-04-11T10:32:15.000Z"),
+		});
+		assert.equal(result.root, resolve(base, DEFAULT_RUNS_ROOT));
+		assert.equal(result.runDir, resolve(base, DEFAULT_RUNS_ROOT, "20260411T103215000Z-fallback"));
+		assert.equal(existsSync(result.runDir), true);
+	});
+});
+
+test("workspace-start CLI emits a shell export line by default", () => {
+	withTempBase((base) => {
 		const result = spawnSync(
 			"node",
-			[SCRIPT_PATH, "--root", root, "--label", "mode-held-out"],
+			[SCRIPT_PATH, "--root", join(base, "runs"), "--label", "mode-held-out"],
+			{ encoding: "utf-8" },
+		);
+		assert.equal(result.status, 0, result.stderr);
+		const lines = result.stdout.trim().split("\n");
+		assert.equal(lines.length, 1);
+		const match = lines[0].match(
+			new RegExp(`^export ${ACTIVE_RUN_ENV_VAR}='([^']+)'$`),
+		);
+		assert.ok(match, `expected eval-friendly export, got: ${lines[0]}`);
+		const runDir = match[1];
+		assert.match(runDir, /\/\d{8}T\d{9}Z-mode-held-out$/);
+		assert.equal(existsSync(runDir), true);
+		assert.equal(existsSync(join(runDir, RUN_MANIFEST_NAME)), true);
+	});
+});
+
+test("workspace-start CLI auto-creates the default root when missing", () => {
+	withTempBase((base) => {
+		const result = spawnSync("node", [SCRIPT_PATH, "--label", "default-root"], {
+			cwd: base,
+			encoding: "utf-8",
+		});
+		assert.equal(result.status, 0, result.stderr);
+		const match = result.stdout
+			.trim()
+			.match(new RegExp(`^export ${ACTIVE_RUN_ENV_VAR}='([^']+)'$`));
+		assert.ok(match, result.stdout);
+		const runDir = match[1];
+		assert.equal(runDir.startsWith(resolve(base, DEFAULT_RUNS_ROOT)), true);
+		assert.equal(existsSync(runDir), true);
+	});
+});
+
+test("workspace-start CLI emits JSON when --json is passed", () => {
+	withTempBase((base) => {
+		const result = spawnSync(
+			"node",
+			[SCRIPT_PATH, "--root", join(base, "runs"), "--label", "json-mode", "--json"],
 			{ encoding: "utf-8" },
 		);
 		assert.equal(result.status, 0, result.stderr);
 		const payload = JSON.parse(result.stdout);
-		assert.equal(payload.root, root);
-		assert.equal(payload.label, "mode-held-out");
+		assert.equal(payload.schemaVersion, RUN_MANIFEST_SCHEMA);
+		assert.equal(payload.label, "json-mode");
 		assert.equal(payload.manifest, RUN_MANIFEST_NAME);
-		assert.match(payload.runDir, /\/\d{8}T\d{9}Z-mode-held-out$/);
 		assert.equal(existsSync(payload.runDir), true);
 		assert.equal(existsSync(join(payload.runDir, RUN_MANIFEST_NAME)), true);
 	});
 });
 
-test("new-workspace-run CLI reports a friendly error when the root is missing", () => {
-	withTempRoot((root) => {
-		const missing = join(root, "missing");
-		const result = spawnSync("node", [SCRIPT_PATH, "--root", missing], {
-			encoding: "utf-8",
-		});
-		assert.notEqual(result.status, 0);
-		assert.match(result.stderr, /Root does not exist/);
-	});
-});
-
-test("new-workspace-run integrates with prune-workspace-artifacts recognition", () => {
-	withTempRoot((root) => {
-		const newRun = spawnSync(
+test("workspace-start CLI integrates with prune-workspace-artifacts recognition", () => {
+	withTempBase((base) => {
+		const root = join(base, "runs");
+		const start = spawnSync(
 			"node",
-			[SCRIPT_PATH, "--root", root, "--label", "integration"],
+			[SCRIPT_PATH, "--root", root, "--label", "integration", "--json"],
 			{ encoding: "utf-8" },
 		);
-		assert.equal(newRun.status, 0, newRun.stderr);
-		const payload = JSON.parse(newRun.stdout);
+		assert.equal(start.status, 0, start.stderr);
+		const payload = JSON.parse(start.stdout);
 
 		const prune = spawnSync(
 			"node",

@@ -36,7 +36,9 @@ Current `core validated surface`:
 - comparison-mode baseline-cache seed materialization for profile-backed runs
 - explicit workspace preparation through `workspace prepare-compare`
 - explicit artifact-root pruning through `workspace prune-artifacts`
-- explicit per-run artifact-root materialization through `workspace new-run`
+- explicit per-run artifact-root materialization through `workspace start`,
+  with a `CAUTILUS_RUN_DIR` env var contract that consumer commands resolve
+  automatically
 - report packet assembly, review packet assembly, and review-variant fanout
 - bounded CLI behavior evaluation through `cli evaluate`
 - tagged-release install and release-helper surfaces

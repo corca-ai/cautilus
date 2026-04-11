@@ -8,7 +8,7 @@ import {
 	DEFAULT_RUNS_ROOT,
 	resolveRunDir,
 } from "./active-run.mjs";
-import { RUN_MANIFEST_NAME } from "./new-workspace-run.mjs";
+import { RUN_MANIFEST_NAME } from "./workspace-start.mjs";
 
 function withTempBase(fn) {
 	const base = mkdtempSync(join(tmpdir(), "cautilus-active-run-"));

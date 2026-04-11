@@ -6,6 +6,8 @@ import process from "node:process";
 export const RUN_MANIFEST_NAME = "run.json";
 export const RUN_MANIFEST_SCHEMA = "cautilus.workspace_run_manifest.v1";
 export const DEFAULT_RUN_LABEL = "run";
+export const DEFAULT_RUNS_ROOT = ".cautilus/runs";
+export const ACTIVE_RUN_ENV_VAR = "CAUTILUS_RUN_DIR";
 const LABEL_MAX_LENGTH = 64;
 
 function fail(message) {
@@ -16,13 +18,17 @@ function fail(message) {
 function usage(exitCode = 0) {
 	const text = [
 		"Usage:",
-		"  node ./scripts/agent-runtime/new-workspace-run.mjs --root <dir> [--label <name>]",
+		"  node ./scripts/agent-runtime/workspace-start.mjs [--root <dir>] [--label <name>] [--json]",
 		"",
 		"Notes:",
-		"  - The root must already exist.",
+		"  - Default root is .cautilus/runs/ under the current working directory.",
+		"  - The root is created if it does not already exist.",
 		"  - One fresh <timestamp>-<label> directory is created under the root.",
 		"  - A run.json manifest is written inside so prune-workspace-artifacts recognizes it.",
-		"  - The resulting runDir is emitted as JSON on stdout for --output-dir piping.",
+		"  - Default stdout is a shell-evalable export line:",
+		"      export CAUTILUS_RUN_DIR='/abs/path/to/run-dir'",
+		"    Use it directly with eval, e.g. eval \"$(cautilus workspace start --label foo)\".",
+		"  - Pass --json to emit a machine-readable JSON payload instead.",
 	].join("\n");
 	const out = exitCode === 0 ? process.stdout : process.stderr;
 	out.write(`${text}\n`);
@@ -50,16 +56,17 @@ function applyArgument(options, argv, index) {
 		options.label = readRequiredValue(argv, index + 1, arg);
 		return index + 1;
 	}
+	if (arg === "--json") {
+		options.json = true;
+		return index;
+	}
 	fail(`Unknown argument: ${arg}`);
 }
 
 export function parseArgs(argv) {
-	const options = { root: null, label: null };
+	const options = { root: null, label: null, json: false };
 	for (let index = 0; index < argv.length; index += 1) {
 		index = applyArgument(options, argv, index);
-	}
-	if (!options.root) {
-		fail("--root is required");
 	}
 	return options;
 }
@@ -84,6 +91,14 @@ export function formatRunTimestamp(date) {
 		`T${iso.slice(11, 13)}${iso.slice(14, 16)}${iso.slice(17, 19)}` +
 		`${iso.slice(20, 23)}Z`
 	);
+}
+
+export function shellSingleQuote(value) {
+	return `'${String(value).replace(/'/g, "'\\''")}'`;
+}
+
+export function renderShellExport(runDir) {
+	return `export ${ACTIVE_RUN_ENV_VAR}=${shellSingleQuote(runDir)}\n`;
 }
 
 export function createRun({ root, label, now }) {
@@ -129,10 +144,22 @@ export function createRun({ root, label, now }) {
 	};
 }
 
-export function newWorkspaceRun(argv = process.argv.slice(2), now = new Date()) {
+export function startWorkspaceRun({
+	root = null,
+	label = null,
+	now = new Date(),
+	cwd = process.cwd(),
+} = {}) {
+	const rootPath = resolve(cwd, root ?? DEFAULT_RUNS_ROOT);
+	mkdirSync(rootPath, { recursive: true });
+	return createRun({ root: rootPath, label, now });
+}
+
+export function workspaceStartCli(argv = process.argv.slice(2), now = new Date()) {
 	const options = parseArgs(argv);
 	try {
-		return createRun({ root: options.root, label: options.label, now });
+		const result = startWorkspaceRun({ root: options.root, label: options.label, now });
+		return { result, json: options.json };
 	} catch (error) {
 		fail(error instanceof Error ? error.message : String(error));
 		return undefined;
@@ -141,6 +168,11 @@ export function newWorkspaceRun(argv = process.argv.slice(2), now = new Date()) 
 
 const entryHref = process.argv[1] ? pathToFileURL(resolve(process.argv[1])).href : "";
 if (import.meta.url === entryHref) {
-	const result = newWorkspaceRun();
-	process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
+	const cli = workspaceStartCli();
+	if (cli) {
+		const payload = cli.json
+			? `${JSON.stringify(cli.result, null, 2)}\n`
+			: renderShellExport(cli.result.runDir);
+		process.stdout.write(payload);
+	}
 }

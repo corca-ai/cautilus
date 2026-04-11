@@ -275,14 +275,17 @@ node ./bin/cautilus workspace prune-artifacts \
   --keep-last 20
 ```
 
-Materialize a fresh per-run subdirectory under one stable artifact root and
-use its `runDir` as `--output-dir` for subsequent commands:
+Start a fresh per-run subdirectory under one stable artifact root and pin it
+as the active run for subsequent consumer commands. The default stdout is a
+single shell-evalable line, so `eval` is the happy path:
 
 ```bash
-node ./bin/cautilus workspace new-run \
-  --root /tmp/cautilus-runs \
-  --label mode-held-out
+eval "$(node ./bin/cautilus workspace start --label mode-held-out)"
 ```
+
+`workspace start` defaults `--root` to `./.cautilus/runs/` (auto-created on
+first use) and prints `export CAUTILUS_RUN_DIR=<absolute runDir>`. Pass
+`--json` instead of `eval` if a script needs the machine-readable payload.
 
 Normalize chatbot-style conversational summaries into proposal candidates:
 
