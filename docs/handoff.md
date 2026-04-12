@@ -82,6 +82,19 @@
 - self-dogfood latest와 experiments latest는 둘 다 checked-in HTML view를 가진다.
   - source of truth는 여전히 JSON bundle이다.
   - generic `cautilus report html` 승격은 아직 defer다.
+- self-dogfood honesty surface는 이번 세션 기준으로 다시 녹색이다.
+  - review prompt input은 이제 current report file과 compact
+    command observations를 포함한다.
+  - self-dogfood prompt는 projected `summary.json` /
+    `review-summary.json`까지 현재 run evidence로 보여준다.
+  - latest bundle은 지금 `overallStatus: pass`,
+    `reportRecommendation: accept-now`,
+    `gateRecommendation: accept-now`다.
+- repo-owned Go security gate가 들어왔다.
+  - `npm run lint`는 이제 `npm run security:govulncheck`를 포함한다.
+  - `npm run verify`와 GitHub workflows는 같은 gate를 재사용한다.
+  - baseline은 `go.mod`의 `toolchain go1.26.2`와
+    workflow `go-version: "1.26.2"`다.
 - bundled skill과 packaged plugin skill sync는 계속 load-bearing이다.
   - [skills/cautilus/SKILL.md](../skills/cautilus/SKILL.md)를 바꾸면
     packaged copy도 같이 맞춰야 한다.
@@ -124,6 +137,7 @@
    - `go test ./cmd/... ./internal/...`
    - `npm run verify`
    - `npm run hooks:check`
+   - release/install honesty에 영향이 있으면 `npm run dogfood:self`
 
 ## Discuss
 
@@ -143,6 +157,9 @@
 
 - 가장 쉬운 새 오해: "Go port가 끝났으니 이제 release story도 끝났다."
   아니다. 남은 핵심은 Homebrew/tap honesty와 update guidance 정합성이다.
+- 새로 쉬운 오해: "`npm run verify`가 녹색이면 어떤 Go 1.26.x라도 괜찮다."
+  아니다. repo는 현재 `toolchain go1.26.2` baseline과 `govulncheck`
+  녹색을 전제로 한다.
 - 두 번째 오해: "`bin/cautilus`와 Go entry가 각자 route table을 가져도 된다."
   아니다. source of truth는
   [internal/cli/command-registry.json](../internal/cli/command-registry.json)
