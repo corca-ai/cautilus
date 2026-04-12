@@ -1,23 +1,23 @@
 {
-  "generatedAt": "2026-04-12T04:53:44.661Z",
+  "generatedAt": "2026-04-12T05:26:38.665Z",
   "repoRoot": ".",
   "workspace": ".",
   "artifactRoot": "artifacts/self-dogfood",
-  "runId": "2026-04-12T04-53-20.041Z",
+  "runId": "2026-04-12T05-25-38.076Z",
   "baselineRef": "origin/main",
   "intent": "Cautilus should record and surface its own self-dogfood result honestly before operators trust broader consumer runs.",
-  "overallStatus": "concern",
-  "reportRecommendation": "defer",
+  "overallStatus": "pass",
+  "reportRecommendation": "accept-now",
   "gateRecommendation": "accept-now",
   "reportPath": "artifacts/self-dogfood/latest/report.json",
   "reviewSummaryPath": "artifacts/self-dogfood/latest/review-summary.json",
   "reviewTelemetry": {
-    "averageVariantDurationMs": 11857,
-    "completedAt": "2026-04-12T04:53:44.650907809Z",
-    "durationMs": 11857,
+    "averageVariantDurationMs": 17769,
+    "completedAt": "2026-04-12T05:26:38.657108471Z",
+    "durationMs": 17769,
     "failedVariantCount": 0,
     "passedVariantCount": 1,
-    "startedAt": "2026-04-12T04:53:32.793005264Z",
+    "startedAt": "2026-04-12T05:26:20.887636715Z",
     "variantCount": 1
   },
   "reviewVariants": [
@@ -25,9 +25,9 @@
       "id": "codex-review",
       "tool": "codex_exec",
       "executionStatus": "passed",
-      "verdict": "concern",
-      "summary": "The candidate looks directionally better than `origin/main` on the operator-facing self-dogfood contract: the docs and scripts explicitly narrow `dogfood:self` to recording and surfacing the self-dogfood result, and they separate `gateRecommendation` from `reportRecommendation`. But the supplied report packet excerpt does not include the current run’s actual summary/report/review values, so I cannot verify that the latest bundle honestly reflects the result rather than merely exposing the plumbing for it. That makes the automated `accept-now` recommendation too strong for the evidence shown.",
-      "findingsCount": 2,
+      "verdict": "pass",
+      "summary": "Current evidence supports the narrow operator-facing claim: the self-dogfood run was recorded, the standing checks passed, and the report packet surfaces the result without introducing regressions or review findings. I agree with the automated accept-now recommendation for this claim, while treating stronger binary-surface or bundled-skill claims as out of scope for this report.",
+      "findingsCount": 3,
       "outputFile": null
     }
   ]

@@ -98,6 +98,18 @@ function summarizeMode(modeSummary) {
 	};
 }
 
+function summarizeCommandObservation(observation) {
+	return {
+		...(observation.stage ? { stage: observation.stage } : {}),
+		...(observation.command ? { command: observation.command } : {}),
+		...(observation.status ? { status: observation.status } : {}),
+		...(observation.exitCode !== undefined ? { exitCode: observation.exitCode } : {}),
+		...(observation.durationMs !== undefined ? { durationMs: observation.durationMs } : {}),
+		...(observation.startedAt ? { startedAt: observation.startedAt } : {}),
+		...(observation.completedAt ? { completedAt: observation.completedAt } : {}),
+	};
+}
+
 export function buildReviewPromptInput(inputOptions, { now = new Date() } = {}) {
 	const options = parseArgs(inputOptions);
 	const reviewPacket = parseReviewPacket(options.reviewPacket);
@@ -118,6 +130,12 @@ export function buildReviewPromptInput(inputOptions, { now = new Date() } = {}) 
 		candidate: report.candidate,
 		baseline: report.baseline,
 		automatedRecommendation: report.recommendation,
+		currentReportEvidence: {
+			reportFile: reviewPacket.packet.reportFile,
+			reportGeneratedAt: report.generatedAt,
+			automatedRecommendation: report.recommendation,
+			commandObservations: (report.commandObservations || []).map((entry) => summarizeCommandObservation(entry)),
+		},
 		modeSummaries: (report.modeSummaries || []).map((entry) => summarizeMode(entry)),
 		comparisonQuestions: reviewPacket.packet.comparisonQuestions || [],
 		humanReviewPrompts: reviewPacket.packet.humanReviewPrompts || [],

@@ -123,6 +123,10 @@ test("run-self-dogfood proves the root self-consumer quality path and writes lat
 		const publishedReviewSummary = JSON.parse(readFileSync(join(artifactRoot, "latest", "review-summary.json"), "utf-8"));
 		assert.equal(publishedReviewSummary.repoRoot, ".");
 		assert.equal(publishedReviewSummary.variants[0].outputFile, null);
+		const reviewPrompt = readFileSync(join(artifactRoot, "runs", "run-1", "review", "review.prompt.md"), "utf-8");
+		assert.match(reviewPrompt, /## Current Run Evidence/);
+		assert.match(reviewPrompt, /current gateRecommendation: accept-now/);
+		assert.match(reviewPrompt, /projected summary\.json:/);
 
 		const second = spawnSync(
 			"node",

@@ -38,7 +38,8 @@
   `### Wired Consumers` 표를 신뢰한다.
 - 세션 시작 전에 환경부터 확인한다.
   - `node --version`은 `v22.x` 이상이어야 한다.
-  - `go version`은 현재 baseline인 `go1.26.x`를 기대한다.
+  - repo root 안에서 `go env GOVERSION`은 현재 baseline인 `go1.26.2+`를
+    가리켜야 한다.
 
 ## Current State
 
@@ -93,12 +94,13 @@
 
 - local environment
   - `node --version` -> `v22.22.2`
-  - `go version` -> `go1.26.1 linux/amd64`
+  - `go env GOVERSION` -> `go1.26.2`
 - quick runtime sanity
   - `./bin/cautilus --version` -> `0.2.0`
 - stop-before-leaving checks
   - `npm run verify`
   - `npm run hooks:check`
+  - `npm run dogfood:self`
 
 ## Next Session
 

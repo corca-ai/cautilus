@@ -98,6 +98,47 @@ function renderModeSummary(modeSummary) {
 	return lines.join("\n");
 }
 
+function renderCommandObservation(observation) {
+	const parts = [];
+	if (observation.stage) {
+		parts.push(observation.stage);
+	}
+	if (observation.status) {
+		parts.push(observation.status);
+	}
+	if (observation.command) {
+		parts.push(observation.command);
+	}
+	if (observation.exitCode !== undefined) {
+		parts.push(`exitCode=${observation.exitCode}`);
+	}
+	if (observation.durationMs !== undefined) {
+		parts.push(`durationMs=${observation.durationMs}`);
+	}
+	return `- ${parts.join(" | ")}`;
+}
+
+function renderCurrentReportEvidence(evidence) {
+	if (!evidence || typeof evidence !== "object") {
+		return [];
+	}
+	const lines = ["## Current Report Evidence"];
+	if (evidence.reportFile) {
+		lines.push(`- report file: ${evidence.reportFile}`);
+	}
+	if (evidence.reportGeneratedAt) {
+		lines.push(`- report generatedAt: ${evidence.reportGeneratedAt}`);
+	}
+	if (evidence.automatedRecommendation) {
+		lines.push(`- current automated recommendation: ${evidence.automatedRecommendation}`);
+	}
+	if (Array.isArray(evidence.commandObservations) && evidence.commandObservations.length > 0) {
+		lines.push("- current command observations:");
+		lines.push(...evidence.commandObservations.map((entry) => `  ${renderCommandObservation(entry).slice(2)}`));
+	}
+	return lines;
+}
+
 function renderIntentProfile(intentProfile) {
 	if (!intentProfile || typeof intentProfile !== "object") {
 		return [];
@@ -153,6 +194,8 @@ export function renderReviewPrompt(promptInput) {
 		`- candidate: ${promptInput.candidate}`,
 		`- baseline: ${promptInput.baseline}`,
 		`- automated recommendation: ${promptInput.automatedRecommendation}`,
+		"",
+		...renderCurrentReportEvidence(promptInput.currentReportEvidence),
 		"",
 		...renderIntentProfile(promptInput.intentProfile),
 		"",

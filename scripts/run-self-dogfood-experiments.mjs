@@ -323,6 +323,9 @@ function prepareExperimentPrompt(repoRoot, reportPath, reviewDir, adapterName, t
 		promptInputPath,
 		adapterName,
 		reviewTimeoutMs: timeoutMs,
+		currentReportPath: reportPath,
+		projectedReviewSummaryPath: join(reviewDir, "review-summary.json"),
+		projectedSummaryPath: join(reviewDir, "..", "summary.json"),
 	});
 	return { promptPath, reviewPacketPath, promptInputPath };
 }

@@ -29,6 +29,7 @@ standalone product여야 한다.
 | package.json | fixed | "dogfood:self:experiments" |
 | package.json | fixed | "lint" |
 | package.json | fixed | "lint:go" |
+| package.json | fixed | "security:govulncheck" |
 | package.json | fixed | "test:go" |
 | package.json | fixed | "test:go:race" |
 | package.json | fixed | "test" |
@@ -60,15 +61,20 @@ standalone product여야 한다.
 | .golangci.yml | fixed | errorlint |
 | .github/workflows/verify.yml | file_exists |  |
 | .github/workflows/verify.yml | fixed | actions/setup-go@v5 |
+| .github/workflows/verify.yml | fixed | go-version: "1.26.2" |
 | .github/workflows/verify.yml | fixed | golangci/golangci-lint-action@ |
+| .github/workflows/verify.yml | fixed | govulncheck@v1.1.4 |
 | .github/workflows/verify.yml | fixed | npm run verify |
 | .github/workflows/release-artifacts.yml | file_exists |  |
 | .github/workflows/release-artifacts.yml | fixed | actions/setup-go@v5 |
+| .github/workflows/release-artifacts.yml | fixed | go-version: "1.26.2" |
+| .github/workflows/release-artifacts.yml | fixed | govulncheck@v1.1.4 |
 | .github/workflows/release-artifacts.yml | fixed | render-homebrew-formula.mjs |
 | .github/workflows/release-artifacts.yml | fixed | actions/attest@v4 |
 | .github/workflows/release-artifacts.yml | fixed | subject-checksums: dist/cautilus-${{ github.ref_name }}-checksums.txt |
 | go.mod | file_exists |  |
 | go.mod | fixed | module github.com/corca-ai/cautilus |
+| go.mod | fixed | toolchain go1.26.2 |
 | cmd/cautilus/main.go | file_exists |  |
 | cmd/cautilus/main.go | fixed | app.Run |
 | bin/cautilus | fixed | CAUTILUS_TOOL_ROOT |
@@ -183,10 +189,17 @@ standalone product여야 한다.
 | scripts/check-git-hooks.mjs | file_exists |  |
 | scripts/check-git-hooks.mjs | fixed | hooks_path_configured |
 | scripts/check-git-hooks.test.mjs | file_exists |  |
+| scripts/run-govulncheck.mjs | file_exists |  |
+| scripts/run-govulncheck.mjs | fixed | govulncheck was not found. |
+| scripts/run-govulncheck.test.mjs | file_exists |  |
 | scripts/run-self-dogfood.mjs | file_exists |  |
 | scripts/run-self-dogfood.mjs | fixed | latest.md |
 | scripts/run-self-dogfood.mjs | fixed | gateRecommendation |
 | scripts/run-self-dogfood.mjs | fixed | reportRecommendation |
+| scripts/self-dogfood-experiment-prompt.mjs | file_exists |  |
+| scripts/self-dogfood-experiment-prompt.mjs | fixed | Current Run Evidence |
+| scripts/self-dogfood-experiment-prompt.mjs | fixed | projected summary.json |
+| scripts/self-dogfood-experiment-prompt.mjs | fixed | gateRecommendation |
 | scripts/run-self-dogfood.test.mjs | file_exists |  |
 | scripts/run-self-dogfood.test.mjs | fixed | root self-consumer quality path |
 | scripts/run-self-dogfood-experiments.mjs | file_exists |  |

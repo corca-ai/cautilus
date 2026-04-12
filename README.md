@@ -510,14 +510,16 @@ verify the checked-in Claude manifest shapes.
 
 ## Dev
 
-Install the local Node tooling, and make sure Go `1.26.x` plus
-`golangci-lint` are available on `PATH`:
+Install the local Node tooling, and make sure Go `1.26.2+`,
+`golangci-lint`, and `govulncheck` are available on `PATH` (or under
+`$(go env GOPATH)/bin`):
 
 ```bash
 npm install
 npm run hooks:install
 go version
 golangci-lint --version
+govulncheck --version
 ```
 
 Run checks:
@@ -530,7 +532,7 @@ npm run dogfood:self:experiments
 ```
 
 Use `npm run lint` or `npm run test` directly only when iterating on one seam.
-`npm run lint` includes `golangci-lint run` and `go vet`, while
+`npm run lint` includes `golangci-lint run`, `go vet`, and `govulncheck`, while
 `npm run verify` additionally runs `go test -race` before the Node test suite.
 
 `hooks:install` is a once-per-clone setup step that points `core.hooksPath` at

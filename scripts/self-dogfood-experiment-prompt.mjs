@@ -120,12 +120,40 @@ function renderExperimentContext(adapterName, reviewTimeoutMs) {
 	return `${lines.join("\n")}\n`;
 }
 
-export function enrichExperimentPrompt({ promptPath, promptInputPath, adapterName, reviewTimeoutMs }) {
+function renderCurrentRunEvidence(promptInput, adapterName, currentReportPath, projectedReviewSummaryPath, projectedSummaryPath) {
+	if (adapterName !== "self-dogfood") {
+		return "";
+	}
+	const evidence = promptInput.currentReportEvidence ?? {};
+	const lines = [
+		"",
+		"## Current Run Evidence",
+		"",
+		`- current report file: ${currentReportPath ?? evidence.reportFile ?? "n/a"}`,
+		`- projected review-summary.json: ${projectedReviewSummaryPath ?? "n/a"}`,
+		`- projected summary.json: ${projectedSummaryPath ?? "n/a"}`,
+		`- current gateRecommendation: ${evidence.automatedRecommendation ?? "n/a"}`,
+		"- summary.json is written after this review from the current report plus your structured verdict.",
+		"- gateRecommendation should stay equal to the current automated recommendation from report.json.",
+		"- reportRecommendation should reflect the stronger of the deterministic gate result and your verdict (`pass -> accept-now`, `concern -> defer`, `blocker -> reject`).",
+	];
+	return `${lines.join("\n")}\n`;
+}
+
+export function enrichExperimentPrompt({
+	promptPath,
+	promptInputPath,
+	adapterName,
+	reviewTimeoutMs,
+	currentReportPath = null,
+	projectedReviewSummaryPath = null,
+	projectedSummaryPath = null,
+}) {
 	const promptInput = JSON.parse(readFileSync(promptInputPath, "utf-8"));
 	const rendered = readFileSync(promptPath, "utf-8");
 	writeFileSync(
 		promptPath,
-		`${rendered.trimEnd()}\n${renderExperimentContext(adapterName, reviewTimeoutMs)}${renderArtifactExcerpts(promptInput, adapterName)}`,
+		`${rendered.trimEnd()}\n${renderExperimentContext(adapterName, reviewTimeoutMs)}${renderCurrentRunEvidence(promptInput, adapterName, currentReportPath, projectedReviewSummaryPath, projectedSummaryPath)}${renderArtifactExcerpts(promptInput, adapterName)}`,
 		"utf-8",
 	);
 }

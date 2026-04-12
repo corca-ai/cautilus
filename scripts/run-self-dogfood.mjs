@@ -453,6 +453,9 @@ function prepareReviewPrompt(repoRoot, modeReportPath, reviewDir, options) {
 		promptInputPath,
 		adapterName: options.reviewAdapterName ?? "self-dogfood",
 		reviewTimeoutMs: options.reviewTimeoutMs,
+		currentReportPath: modeReportPath,
+		projectedReviewSummaryPath: join(reviewDir, "review-summary.json"),
+		projectedSummaryPath: join(reviewDir, "..", "summary.json"),
 	});
 	return { reviewPacketPath, promptInputPath, promptPath };
 }

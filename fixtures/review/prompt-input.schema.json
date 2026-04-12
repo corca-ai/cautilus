@@ -14,6 +14,7 @@
     "candidate",
     "baseline",
     "automatedRecommendation",
+    "currentReportEvidence",
     "modeSummaries",
     "comparisonQuestions",
     "humanReviewPrompts",
@@ -51,6 +52,30 @@
     },
     "automatedRecommendation": {
       "type": "string"
+    },
+    "currentReportEvidence": {
+      "type": "object",
+      "required": [
+        "reportFile",
+        "reportGeneratedAt",
+        "automatedRecommendation",
+        "commandObservations"
+      ],
+      "properties": {
+        "reportFile": {
+          "type": "string"
+        },
+        "reportGeneratedAt": {
+          "type": "string"
+        },
+        "automatedRecommendation": {
+          "type": "string"
+        },
+        "commandObservations": {
+          "type": "array"
+        }
+      },
+      "additionalProperties": false
     },
     "modeSummaries": {
       "type": "array"

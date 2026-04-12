@@ -45,6 +45,10 @@ named experiment adapter에서 따로 다룬다.
 | scripts/run-self-dogfood.mjs | fixed | index.html |
 | scripts/run-self-dogfood.mjs | fixed | gateRecommendation |
 | scripts/run-self-dogfood.mjs | fixed | reportRecommendation |
+| scripts/self-dogfood-experiment-prompt.mjs | file_exists |  |
+| scripts/self-dogfood-experiment-prompt.mjs | fixed | Current Run Evidence |
+| scripts/self-dogfood-experiment-prompt.mjs | fixed | projected summary.json |
+| scripts/self-dogfood-experiment-prompt.mjs | fixed | gateRecommendation |
 | scripts/run-self-dogfood.test.mjs | file_exists |  |
 | scripts/run-self-dogfood.test.mjs | fixed | root self-consumer quality path |
 | scripts/render-self-dogfood-html.mjs | file_exists |  |

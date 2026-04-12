@@ -961,9 +961,17 @@ func TestCLIReviewBuildPromptInputAndRenderPromptCloseMetaPromptSeam(t *testing.
 				},
 				"guardrailDimensions": []any{},
 			},
-			"commands":            []any{},
-			"commandObservations": []any{},
-			"modesRun":            []string{"held_out"},
+			"commands": []any{},
+			"commandObservations": []any{
+				map[string]any{
+					"stage":      "full_gate",
+					"command":    "npm run verify",
+					"status":     "passed",
+					"exitCode":   0,
+					"durationMs": 1234,
+				},
+			},
+			"modesRun": []string{"held_out"},
 			"modeSummaries": []map[string]any{
 				{
 					"mode":    "held_out",
@@ -1010,6 +1018,10 @@ func TestCLIReviewBuildPromptInputAndRenderPromptCloseMetaPromptSeam(t *testing.
 	if promptInput["schemaVersion"] != contracts.ReviewPromptInputsSchema {
 		t.Fatalf("unexpected prompt input schema: %#v", promptInput["schemaVersion"])
 	}
+	currentReportEvidence := promptInput["currentReportEvidence"].(map[string]any)
+	if currentReportEvidence["reportFile"] != filepath.Join(root, "report.json") {
+		t.Fatalf("unexpected current report evidence: %#v", currentReportEvidence)
+	}
 	_, stderr, exitCode = runCLI(t, root, "review", "render-prompt", "--input", promptInputPath, "--output", promptPath)
 	if exitCode != 0 {
 		t.Fatalf("review render-prompt failed: %s", stderr)
@@ -1019,7 +1031,7 @@ func TestCLIReviewBuildPromptInputAndRenderPromptCloseMetaPromptSeam(t *testing.
 		t.Fatalf("ReadFile returned error: %v", err)
 	}
 	prompt := string(promptBytes)
-	if !strings.Contains(prompt, "Held-out doctor messaging improved.") || !strings.Contains(prompt, "## Intent Profile") || !strings.Contains(prompt, "Prefer operator-visible evidence.") {
+	if !strings.Contains(prompt, "Held-out doctor messaging improved.") || !strings.Contains(prompt, "## Intent Profile") || !strings.Contains(prompt, "Prefer operator-visible evidence.") || !strings.Contains(prompt, "## Current Report Evidence") || !strings.Contains(prompt, "npm run verify") {
 		t.Fatalf("unexpected rendered prompt: %s", prompt)
 	}
 }

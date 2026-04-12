@@ -59,11 +59,17 @@ func BuildReviewPromptInput(reviewPacket map[string]any, reviewPacketFile string
 		"candidate":               report["candidate"],
 		"baseline":                report["baseline"],
 		"automatedRecommendation": report["recommendation"],
-		"modeSummaries":           summarizeModeSummaries(reviewPacket),
-		"comparisonQuestions":     arrayOrEmpty(reviewPacket["comparisonQuestions"]),
-		"humanReviewPrompts":      arrayOrEmpty(reviewPacket["humanReviewPrompts"]),
-		"artifactFiles":           summarizeFileRecords(reviewPacket["artifactFiles"]),
-		"reportArtifacts":         summarizeFileRecords(reviewPacket["reportArtifacts"]),
+		"currentReportEvidence": map[string]any{
+			"reportFile":              reviewPacket["reportFile"],
+			"reportGeneratedAt":       report["generatedAt"],
+			"automatedRecommendation": report["recommendation"],
+			"commandObservations":     summarizeCommandObservations(report["commandObservations"]),
+		},
+		"modeSummaries":       summarizeModeSummaries(reviewPacket),
+		"comparisonQuestions": arrayOrEmpty(reviewPacket["comparisonQuestions"]),
+		"humanReviewPrompts":  arrayOrEmpty(reviewPacket["humanReviewPrompts"]),
+		"artifactFiles":       summarizeFileRecords(reviewPacket["artifactFiles"]),
+		"reportArtifacts":     summarizeFileRecords(reviewPacket["reportArtifacts"]),
 		"metaPrompt": map[string]any{
 			"objective":    metaPromptObjective,
 			"instructions": metaPromptInstructions,
@@ -100,6 +106,10 @@ func RenderReviewPrompt(promptInput map[string]any) (string, error) {
 		"- automated recommendation: "+stringOrEmpty(promptInput["automatedRecommendation"]),
 		"",
 	)
+	if evidenceLines := renderCurrentReportEvidence(asMap(promptInput["currentReportEvidence"])); len(evidenceLines) > 0 {
+		lines = append(lines, evidenceLines...)
+		lines = append(lines, "")
+	}
 	intentLines := renderIntentProfile(asMap(promptInput["intentProfile"]))
 	lines = append(lines, intentLines...)
 	lines = append(lines, "", "## Mode Summaries")
@@ -184,6 +194,22 @@ func summarizeFileRecords(value any) []any {
 	return result
 }
 
+func summarizeCommandObservations(value any) []any {
+	result := make([]any, 0)
+	for _, raw := range arrayOrEmpty(value) {
+		record := asMap(raw)
+		if len(record) == 0 {
+			continue
+		}
+		summary := map[string]any{}
+		copyIfPresent(record, summary, "stage", "command", "status", "exitCode", "durationMs", "startedAt", "completedAt")
+		if len(summary) > 0 {
+			result = append(result, summary)
+		}
+	}
+	return result
+}
+
 func summarizeOneFileRecord(value any) any {
 	record := asMap(value)
 	absolutePath := stringOrEmpty(record["absolutePath"])
@@ -215,6 +241,50 @@ func renderIntentProfile(intentProfile map[string]any) []string {
 		lines = append(lines, fmt.Sprintf("- guardrail: %s -> %s", stringOrEmpty(record["id"]), stringOrEmpty(record["summary"])))
 	}
 	return lines
+}
+
+func renderCurrentReportEvidence(evidence map[string]any) []string {
+	if len(evidence) == 0 {
+		return nil
+	}
+	lines := []string{"## Current Report Evidence"}
+	if reportFile := stringOrEmpty(evidence["reportFile"]); reportFile != "" {
+		lines = append(lines, "- report file: "+reportFile)
+	}
+	if generatedAt := stringOrEmpty(evidence["reportGeneratedAt"]); generatedAt != "" {
+		lines = append(lines, "- report generatedAt: "+generatedAt)
+	}
+	if recommendation := stringOrEmpty(evidence["automatedRecommendation"]); recommendation != "" {
+		lines = append(lines, "- current automated recommendation: "+recommendation)
+	}
+	commandObservations := arrayOrEmpty(evidence["commandObservations"])
+	if len(commandObservations) > 0 {
+		lines = append(lines, "- current command observations:")
+		for _, raw := range commandObservations {
+			lines = append(lines, "  "+renderCommandObservation(asMap(raw)))
+		}
+	}
+	return lines
+}
+
+func renderCommandObservation(observation map[string]any) string {
+	parts := []string{}
+	if stage := stringOrEmpty(observation["stage"]); stage != "" {
+		parts = append(parts, stage)
+	}
+	if status := stringOrEmpty(observation["status"]); status != "" {
+		parts = append(parts, status)
+	}
+	if command := stringOrEmpty(observation["command"]); command != "" {
+		parts = append(parts, command)
+	}
+	if exitCode, ok := toFloat(observation["exitCode"]); ok {
+		parts = append(parts, fmt.Sprintf("exitCode=%v", exitCode))
+	}
+	if duration, ok := toFloat(observation["durationMs"]); ok {
+		parts = append(parts, fmt.Sprintf("durationMs=%v", duration))
+	}
+	return strings.Join(parts, " | ")
 }
 
 func renderModeSummary(modeSummary map[string]any) []string {

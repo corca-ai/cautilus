@@ -81,7 +81,15 @@ function createReviewPacketFixture() {
 						],
 					},
 					commands: [],
-					commandObservations: [],
+					commandObservations: [
+						{
+							stage: "full_gate",
+							command: "npm run verify",
+							status: "passed",
+							exitCode: 0,
+							durationMs: 1234,
+						},
+					],
 					modesRun: ["held_out"],
 					modeSummaries: [
 						{
@@ -161,6 +169,8 @@ test("buildReviewPromptInput emits the explicit meta-prompt contract", () => {
 		validateAgainstSchema(readJson(schemaPath), packet);
 		assert.equal(packet.intentProfile.intentId, "intent-missing-adapter-guidance");
 		assert.equal(packet.modeSummaries[0].compareArtifact.verdict, "improved");
+		assert.equal(packet.currentReportEvidence.reportFile, join(root, "reports", "latest.json"));
+		assert.equal(packet.currentReportEvidence.commandObservations[0].command, "npm run verify");
 		assert.equal(packet.metaPrompt.instructions.length, 4);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
@@ -175,6 +185,8 @@ test("renderReviewPrompt turns review prompt inputs into a portable meta-prompt"
 		});
 		const prompt = renderReviewPrompt(packet);
 		assert.match(prompt, /# Cautilus Review/);
+		assert.match(prompt, /## Current Report Evidence/);
+		assert.match(prompt, /npm run verify/);
 		assert.match(prompt, /## Intent Profile/);
 		assert.match(prompt, /behavior surface: operator_cli/);
 		assert.match(prompt, /Which scenario-level deltas actually matter to a real operator/);
