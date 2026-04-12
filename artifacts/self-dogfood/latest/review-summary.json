@@ -1,58 +1,53 @@
 {
-  "repoRoot": ".",
   "adapterPath": ".agents/cautilus-adapters/self-dogfood.yaml",
-  "workspace": ".",
+  "outputDir": null,
   "promptFile": null,
+  "repoRoot": ".",
   "reviewPacketFile": null,
   "reviewPromptInputFile": null,
   "schemaFile": "fixtures/workbench/review-verdict.schema.json",
-  "outputDir": null,
   "telemetry": {
-    "startedAt": "2026-04-11T00:29:18.059Z",
-    "completedAt": "2026-04-11T00:29:26.753Z",
-    "durationMs": 8694,
-    "averageVariantDurationMs": 8694,
-    "variantCount": 1,
+    "averageVariantDurationMs": 11857,
+    "completedAt": "2026-04-12T04:53:44.650907809Z",
+    "durationMs": 11857,
+    "failedVariantCount": 0,
     "passedVariantCount": 1,
-    "failedVariantCount": 0
+    "startedAt": "2026-04-12T04:53:32.793005264Z",
+    "variantCount": 1
   },
   "variants": [
     {
-      "id": "codex-review",
-      "tool": "codex_exec",
-      "status": "passed",
-      "startedAt": "2026-04-11T00:29:18.059Z",
-      "completedAt": "2026-04-11T00:29:26.753Z",
-      "durationMs": 8694,
-      "exitCode": 0,
-      "outputFile": null,
-      "stdoutFile": null,
-      "stderrFile": null,
       "command": null,
-      "stdout": "",
-      "stderr": "",
-      "telemetry": null,
+      "completedAt": "2026-04-12T04:53:44.650907809Z",
+      "durationMs": 11857,
+      "exitCode": 0,
+      "id": "codex-review",
       "output": {
-        "verdict": "concern",
-        "summary": "The current artifacts support the narrow operator-facing contract for `dogfood:self` as an honest record of the self-dogfood result, but they do not by themselves prove the current full-gate packet actually demonstrated that claim. The docs and script clearly constrain the claim and separate stronger binary/skill-surface experiments, so the automated `accept-now` recommendation looks a bit ahead of the evidence rather than clearly wrong.",
         "findings": [
           {
-            "severity": "pass",
-            "message": "The spec explicitly narrows the canonical claim to honest recording and surfacing of the self-dogfood result, and it separates stronger binary-surface / skill-surface claims into experiments. That matches the review prompt’s operator-facing scope.",
-            "path": "docs/specs/self-dogfood.spec.md"
+            "message": "The evidence establishes the contract and artifact layout, but not the actual current run result. Without the current `summary.json`/`report.json`/`review-summary.json` contents, the narrow claim that Cautilus \"records and surfaces its own self-dogfood result honestly\" is only partially supported.",
+            "path": "docs/specs/self-dogfood.spec.md",
+            "severity": "concern"
           },
           {
-            "severity": "pass",
-            "message": "`run-self-dogfood.mjs` treats `reportRecommendation` as derived from the recorded overall status, which is consistent with surfacing the result rather than overstating it.",
-            "path": "scripts/run-self-dogfood.mjs"
-          },
-          {
-            "severity": "concern",
-            "message": "The provided evidence does not include the current report packet contents, so I cannot independently verify that the latest full-gate run honestly reported its own outcome instead of relying on the contract text alone. That makes `accept-now` slightly stronger than the evidence shown here.",
-            "path": "."
+            "message": "The implementation explicitly distinguishes `gateRecommendation` from `reportRecommendation`, which is good, but the excerpts do not show the emitted values for this run. An operator could still over-read the presence of the fields as proof of honesty without seeing the concrete packet.",
+            "path": "scripts/run-self-dogfood.mjs",
+            "severity": "concern"
           }
-        ]
-      }
+        ],
+        "summary": "The candidate looks directionally better than `origin/main` on the operator-facing self-dogfood contract: the docs and scripts explicitly narrow `dogfood:self` to recording and surfacing the self-dogfood result, and they separate `gateRecommendation` from `reportRecommendation`. But the supplied report packet excerpt does not include the current run’s actual summary/report/review values, so I cannot verify that the latest bundle honestly reflects the result rather than merely exposing the plumbing for it. That makes the automated `accept-now` recommendation too strong for the evidence shown.",
+        "verdict": "concern"
+      },
+      "outputFile": null,
+      "signal": null,
+      "startedAt": "2026-04-12T04:53:32.793005264Z",
+      "status": "passed",
+      "stderr": "",
+      "stderrFile": null,
+      "stdout": "",
+      "stdoutFile": null,
+      "tool": "codex_exec"
     }
-  ]
+  ],
+  "workspace": "."
 }

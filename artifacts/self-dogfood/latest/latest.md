@@ -1,7 +1,7 @@
 # Cautilus Self-Dogfood
 
-- generatedAt: 2026-04-11T00:29:26.763Z
-- runId: 2026-04-11T00-29-08.947Z
+- generatedAt: 2026-04-12T04:53:44.661Z
+- runId: 2026-04-12T04-53-20.041Z
 - baselineRef: origin/main
 - overallStatus: concern
 - reportRecommendation: defer
@@ -19,8 +19,8 @@ Cautilus should record and surface its own self-dogfood result honestly before o
 
 ## Review Variants
 
-- codex-review: execution=passed, verdict=concern, findings=3
-  summary: The current artifacts support the narrow operator-facing contract for `dogfood:self` as an honest record of the self-dogfood result, but they do not by themselves prove the current full-gate packet actually demonstrated that claim. The docs and script clearly constrain the claim and separate stronger binary/skill-surface experiments, so the automated `accept-now` recommendation looks a bit ahead of the evidence rather than clearly wrong.
+- codex-review: execution=passed, verdict=concern, findings=2
+  summary: The candidate looks directionally better than `origin/main` on the operator-facing self-dogfood contract: the docs and scripts explicitly narrow `dogfood:self` to recording and surfacing the self-dogfood result, and they separate `gateRecommendation` from `reportRecommendation`. But the supplied report packet excerpt does not include the current run’s actual summary/report/review values, so I cannot verify that the latest bundle honestly reflects the result rather than merely exposing the plumbing for it. That makes the automated `accept-now` recommendation too strong for the evidence shown.
 
 ## Artifacts
 

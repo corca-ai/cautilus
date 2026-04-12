@@ -11,7 +11,7 @@ concept_paths:
 - docs/handoff.md
 - skill-outputs/quality/quality.md
 preflight_commands:
-- node ./bin/cautilus adapter resolve --repo-root .
+- ./bin/cautilus adapter resolve --repo-root .
 gate_commands:
 - npm run verify
 - npm run dogfood:self

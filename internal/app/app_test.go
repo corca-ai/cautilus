@@ -123,6 +123,46 @@ func TestRunSkillsInstallDoesNotRequireToolRoot(t *testing.T) {
 	}
 }
 
+func TestRunShellCommandDoesNotLeakShimContextEnv(t *testing.T) {
+	t.Setenv("CAUTILUS_CALLER_CWD", "/tmp/caller")
+	t.Setenv("CAUTILUS_TOOL_ROOT", "/tmp/tool")
+
+	result := runShellCommand(
+		t.TempDir(),
+		"printf '%s|%s' \"${CAUTILUS_CALLER_CWD-}\" \"${CAUTILUS_TOOL_ROOT-}\"",
+		filepath.Join(t.TempDir(), "stdout.txt"),
+		filepath.Join(t.TempDir(), "stderr.txt"),
+		func(string) {},
+		"env scrub",
+	)
+
+	if status := result["status"]; status != "passed" {
+		t.Fatalf("expected passed status, got %#v", result)
+	}
+	if stdout := result["stdout"]; stdout != "|" {
+		t.Fatalf("expected shim env to be scrubbed, got %#v", stdout)
+	}
+}
+
+func TestRunCLIProcessDoesNotLeakShimContextEnv(t *testing.T) {
+	t.Setenv("CAUTILUS_CALLER_CWD", "/tmp/caller")
+	t.Setenv("CAUTILUS_TOOL_ROOT", "/tmp/tool")
+
+	observation, err := runCLIProcess(
+		[]string{"bash", "-lc", "printf '%s|%s|%s' \"${CAUTILUS_CALLER_CWD-}\" \"${CAUTILUS_TOOL_ROOT-}\" \"${EXTRA_FLAG-}\""},
+		t.TempDir(),
+		map[string]string{"EXTRA_FLAG": "present"},
+		"",
+		1000,
+	)
+	if err != nil {
+		t.Fatalf("runCLIProcess returned error: %v", err)
+	}
+	if stdout := observation["stdout"]; stdout != "||present" {
+		t.Fatalf("expected shim env to be scrubbed while preserving extra env, got %#v", stdout)
+	}
+}
+
 func TestEveryRegisteredCommandHasAGoHandler(t *testing.T) {
 	registry, err := cli.LoadRegistry()
 	if err != nil {

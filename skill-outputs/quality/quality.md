@@ -1,73 +1,110 @@
 # Quality Review
 
-Date: 2026-04-10
+Date: 2026-04-12
 
 ## Scope
 
-Review repo-wide quality posture with emphasis on missing `pre-push`, test
-coverage confidence, and duplicate tests or code.
+Review repo-wide quality posture with emphasis on repo-owned gate honesty,
+maintainer-local enforcement, and whether self-dogfood still proves the narrow
+operator-facing claim after the Go shim port.
 
-## Commands Run
+## Current Gates
 
-- `git status --short`
-- `node ./bin/cautilus adapter resolve --repo-root .`
-- `node ./bin/cautilus doctor --repo-root .`
 - `npm run verify`
-- `node --test --experimental-test-coverage bin/*.test.mjs scripts/*.test.mjs scripts/agent-runtime/*.test.mjs scripts/release/*.test.mjs`
-- ad-hoc duplicate-shingle scans across `*.mjs` and `*.test.mjs`
+- `npm run hooks:check`
+- `npm run dogfood:self`
+- checked-in `.githooks/pre-push` running `npm run verify`
+- GitHub Actions `verify` workflow on PRs and pushes to `main`
 
 ## Runtime Signals
 
-- `npm run verify` passed with `111` tests and `spec checks passed (3 specs,
-  271 guard rows)`.
-- `doctor` failed only because this repo intentionally has no checked-in
-  `cautilus` adapter; that is product state, not a broken repo gate.
-- Test coverage from Node's built-in reporter reached `88.47%` lines,
-  `64.82%` branches, `92.12%` functions overall.
-- Lowest-confidence runtime seams are release helpers
-  (`fetch-github-archive-sha256.mjs` `21.88%` lines,
-  `render-homebrew-formula.mjs` `36.28%`) and several proposal/evidence CLI
-  wrappers in the `67-78%` range.
-- Duplicate-window scans showed real structural repetition:
-  `normalize-{chatbot,cli,skill}-proposals.mjs` are near-clones, and schema
-  contract tests share one repeated harness shape.
+- `./bin/cautilus adapter resolve --repo-root .` passed.
+- `npm run hooks:check` passed with `core.hooksPath=.githooks` and an
+  executable checked-in `pre-push`.
+- `go test ./internal/app` passed after adding regression coverage for command
+  env scrubbing.
+- `npm run verify` passed with `177` Node tests and
+  `spec checks passed (4 specs, 434 guard rows)`.
+- `npm run dogfood:self` now reaches `gateRecommendation: accept-now`; it still
+  exits `1` because the structured review returns `concern`, not because the
+  full-gate run fails.
+- Root cause fixed: internal shim env
+  (`CAUTILUS_CALLER_CWD`, `CAUTILUS_TOOL_ROOT`) had leaked into nested shell
+  commands, so `dogfood:self` could fail its internal `npm run verify` while a
+  direct `npm run verify` still passed.
+- Quality adapter preflight had drifted to `node ./bin/cautilus ...`; that was
+  invalid once `bin/cautilus` became a POSIX shim and is now fixed to
+  `./bin/cautilus ...`.
+
+## Maintainer-Local Enforcement
+
+- `healthy`: repo-owned `hooks:install`, `hooks:check`, and checked-in
+  `.githooks/pre-push` make the stop-before-push gate deterministic.
+- `healthy`: CI re-runs the same `npm run verify` surface instead of a parallel
+  bespoke workflow.
+
+## Enforcement Triage
+
+- `AUTO_EXISTING`: `npm run verify`, `npm run hooks:check`, checked-in
+  `pre-push`, GitHub `verify` workflow.
+- `AUTO_CANDIDATE`: source-guard the quality-adapter preflight command so the
+  shim invocation cannot drift again. Implemented.
+- `AUTO_CANDIDATE`: regression-test command-runner env scrubbing so internal
+  shim context cannot taint nested evaluations. Implemented.
+- `NON_AUTOMATABLE`: decide whether the self-dogfood review packet now shows
+  enough current-run evidence for an operator to trust the latest bundle. The
+  current structured reviewer still says no.
 
 ## Healthy
 
-- The standing repo gate remains cheap and real: `npm run verify`.
-- A checked-in `.githooks/pre-push` now runs `npm run verify` from repo root.
-- Repo-owned `hooks:install` and `hooks:check` scripts plus executable tests
-  now make maintainer-local hook setup deterministic instead of tribal
-  knowledge.
-- Existing test volume is broad at the boundary level: CLI entrypoints,
-  contract builders, spec checks, packaging, and distribution surfaces all have
-  executable coverage.
+- The shared repo gate is real and currently green.
+- Maintainer-local enforcement is repo-owned, checked in, and validated.
+- Go and Node test coverage both exercise product-owned runtime seams.
+- Release automation reuses the repo gate and keeps provenance attestation in
+  the published path.
 
 ## Weak
 
-- Overall line coverage looks healthy, but branch coverage at `64.82%` leaves
-  plenty of unhappy-path logic unproved.
-- `bin/cautilus.test.mjs` is `1627` lines, which makes boundary confidence
-  dense but hard to maintain and easy to duplicate incidentally.
-- Release helper tests are still mostly renderer/syntax checks rather than
-  behavior-heavy proof.
-- Schema contract tests repeat the same harness pattern across multiple files.
+- `npm run dogfood:self` still ends in `overallStatus: concern` because the
+  review packet does not yet prove enough current-run evidence for the narrow
+  honesty claim.
+- Self-dogfood honesty still depends on human-style review judgment rather than
+  a deterministic packet-completeness gate.
+- No repo-owned vulnerability audit gate is configured.
 
 ## Missing
 
-- No deterministic duplicate-budget gate exists yet for repeated helper shells
-  or repeated schema-test harnesses.
-- No coverage threshold gate exists, so low-value files can stay undercovered
-  as long as the suite stays green.
+- No deterministic check asserts that the self-dogfood review packet includes
+  the current run's concrete summary/report/review recommendation fields.
+- No checked-in security audit gate such as `govulncheck ./...` exists yet.
+
+## Deferred
+
+- Duplicate-budget and coverage-threshold follow-ups from the 2026-04-10
+  review still matter, but they are no longer the highest-leverage next move
+  after fixing the self-dogfood false negative.
+
+## Commands Run
+
+- `python3 ".../skills/quality/scripts/resolve_adapter.py" --repo-root .`
+- `git status --short`
+- `git config --get core.hooksPath`
+- `find .git/hooks -maxdepth 1 -type f`
+- `./bin/cautilus adapter resolve --repo-root .`
+- `npm run hooks:check`
+- `go test ./internal/app`
+- `node ./scripts/check-specs.mjs`
+- `npm run verify`
+- `npm run dogfood:self`
 
 ## Recommended Next Gates
 
-- `AUTO_EXISTING`: keep `npm run verify` as the shared code/test gate and
-  `npm run hooks:check` as the maintainer-local hook validator.
-- `AUTO_CANDIDATE`: extract one shared normalization CLI wrapper behind
-  `normalize-{chatbot,cli,skill}-proposals.mjs` to remove a measured duplicate
-  seam.
-- `AUTO_CANDIDATE`: collapse repeated schema contract tests into one shared
-  test helper so new schema families add assertions, not another full harness.
-- `AUTO_CANDIDATE`: add a narrow coverage floor for the weakest maintained
-  seams first, especially release helpers and proposal/evidence CLI wrappers.
+- `AUTO_CANDIDATE`: add one deterministic test/spec assertion that the
+  self-dogfood review prompt or packet includes the current run's emitted
+  `summary.json`, `report.json`, and recommendation values, not only the
+  artifact layout.
+- `AUTO_CANDIDATE`: add `govulncheck ./...` once the maintainer toolchain
+  baseline explicitly includes it.
+- `NON_AUTOMATABLE`: after strengthening self-dogfood evidence, re-run
+  `npm run dogfood:self` and confirm the structured reviewer can accept the
+  narrowed honesty claim.

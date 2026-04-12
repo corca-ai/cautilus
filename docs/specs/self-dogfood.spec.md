@@ -34,6 +34,7 @@ named experiment adapter에서 따로 다룬다.
 | .agents/cautilus-adapters/self-dogfood-skill-surface.yaml | file_exists |  |
 | .agents/cautilus-adapters/self-dogfood-review-completion.yaml | file_exists |  |
 | .agents/quality-adapter.yaml | file_exists |  |
+| .agents/quality-adapter.yaml | fixed | ./bin/cautilus adapter resolve --repo-root . |
 | .agents/quality-adapter.yaml | fixed | npm run dogfood:self |
 | package.json | fixed | "dogfood:self" |
 | package.json | fixed | "dogfood:self:experiments" |

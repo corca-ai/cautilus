@@ -1,8 +1,38 @@
 {
-  "schemaVersion": "cautilus.report_packet.v2",
-  "generatedAt": "2026-04-11T00:29:17.651Z",
-  "candidate": ".",
   "baseline": "origin/main",
+  "candidate": ".",
+  "commandObservations": [
+    {
+      "command": "npm run hooks:check",
+      "completedAt": "2026-04-12T04:53:20.430844575Z",
+      "durationMs": 218,
+      "exitCode": 0,
+      "index": 1,
+      "stage": "preflight",
+      "startedAt": "2026-04-12T04:53:20.212410599Z",
+      "status": "passed"
+    },
+    {
+      "command": "npm run verify",
+      "completedAt": "2026-04-12T04:53:31.998024367Z",
+      "durationMs": 11566,
+      "exitCode": 0,
+      "index": 1,
+      "stage": "full_gate",
+      "startedAt": "2026-04-12T04:53:20.431041394Z",
+      "status": "passed"
+    }
+  ],
+  "commands": [
+    {
+      "command": "npm run verify",
+      "label": "full_gate-1",
+      "mode": "full_gate"
+    }
+  ],
+  "generatedAt": "2026-04-12T04:53:31.998758928Z",
+  "humanReviewFindings": [],
+  "improved": [],
   "intent": "Cautilus should record and surface its own self-dogfood result honestly before operators trust broader consumer runs.",
   "intentProfile": {
     "schemaVersion": "cautilus.behavior_intent.v1",
@@ -17,64 +47,34 @@
     ],
     "guardrailDimensions": []
   },
-  "commands": [
+  "modeSummaries": [
     {
+      "completedAt": "2026-04-12T04:53:31.998024367Z",
+      "durationMs": 11566,
       "mode": "full_gate",
-      "command": "npm run verify",
-      "label": "full_gate-1"
-    }
-  ],
-  "commandObservations": [
-    {
-      "stage": "preflight",
-      "index": 1,
+      "startedAt": "2026-04-12T04:53:20.431041394Z",
       "status": "passed",
-      "command": "npm run hooks:check",
-      "startedAt": "2026-04-11T00:29:09.116Z",
-      "completedAt": "2026-04-11T00:29:09.300Z",
-      "durationMs": 184,
-      "exitCode": 0
-    },
-    {
-      "stage": "full_gate",
-      "index": 1,
-      "status": "passed",
-      "command": "npm run verify",
-      "startedAt": "2026-04-11T00:29:09.301Z",
-      "completedAt": "2026-04-11T00:29:17.650Z",
-      "durationMs": 8349,
-      "exitCode": 0
+      "summary": "full_gate completed across 1 command.",
+      "telemetry": {
+        "completedAt": "2026-04-12T04:53:31.998024367Z",
+        "durationMs": 11566,
+        "startedAt": "2026-04-12T04:53:20.431041394Z"
+      }
     }
   ],
   "modesRun": [
     "full_gate"
   ],
-  "modeSummaries": [
-    {
-      "mode": "full_gate",
-      "status": "passed",
-      "summary": "full_gate completed across 1 command.",
-      "startedAt": "2026-04-11T00:29:09.301Z",
-      "completedAt": "2026-04-11T00:29:17.650Z",
-      "durationMs": 8349,
-      "telemetry": {
-        "startedAt": "2026-04-11T00:29:09.301Z",
-        "completedAt": "2026-04-11T00:29:17.650Z",
-        "durationMs": 8349
-      }
-    }
-  ],
+  "noisy": [],
+  "recommendation": "accept-now",
+  "regressed": [],
+  "schemaVersion": "cautilus.report_packet.v2",
   "telemetry": {
+    "completedAt": "2026-04-12T04:53:31.998024367Z",
+    "durationMs": 11566,
     "modeCount": 1,
     "modesWithScenarioResults": 0,
-    "startedAt": "2026-04-11T00:29:09.301Z",
-    "completedAt": "2026-04-11T00:29:17.650Z",
-    "durationMs": 8349
+    "startedAt": "2026-04-12T04:53:20.431041394Z"
   },
-  "improved": [],
-  "regressed": [],
-  "unchanged": [],
-  "noisy": [],
-  "humanReviewFindings": [],
-  "recommendation": "accept-now"
+  "unchanged": []
 }

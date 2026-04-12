@@ -48,6 +48,7 @@ standalone product여야 한다.
 | .agents/cautilus-adapters/self-dogfood-skill-surface.yaml | file_exists |  |
 | .agents/cautilus-adapters/self-dogfood-review-completion.yaml | file_exists |  |
 | .agents/quality-adapter.yaml | file_exists |  |
+| .agents/quality-adapter.yaml | fixed | ./bin/cautilus adapter resolve --repo-root . |
 | .agents/quality-adapter.yaml | fixed | npm run dogfood:self |
 | .githooks/pre-push | file_exists |  |
 | .githooks/pre-push | fixed | npm run verify |

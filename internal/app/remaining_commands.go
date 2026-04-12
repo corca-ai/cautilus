@@ -1041,7 +1041,7 @@ func runShellCommand(repoRoot string, commandText string, stdoutFile string, std
 	log(fmt.Sprintf("%s start: %s", label, commandText))
 	command := exec.Command("bash", "-lc", commandText)
 	command.Dir = repoRoot
-	command.Env = os.Environ()
+	command.Env = externalCommandEnv(nil)
 	var stdoutBuffer bytes.Buffer
 	var stderrBuffer bytes.Buffer
 	command.Stdout = &stdoutBuffer
@@ -1214,10 +1214,7 @@ func runCLIProcess(commandParts []string, workingDirectory string, extraEnv map[
 	startedAt := time.Now()
 	command := exec.CommandContext(ctx, commandParts[0], commandParts[1:]...)
 	command.Dir = workingDirectory
-	command.Env = os.Environ()
-	for key, value := range extraEnv {
-		command.Env = append(command.Env, key+"="+value)
-	}
+	command.Env = externalCommandEnv(extraEnv)
 	command.Stdin = strings.NewReader(stdinText)
 	var stdoutBuffer bytes.Buffer
 	var stderrBuffer bytes.Buffer

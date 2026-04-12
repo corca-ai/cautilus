@@ -1602,6 +1602,28 @@ func environmentMap() map[string]string {
 	return result
 }
 
+func externalCommandEnv(extraEnv map[string]string) []string {
+	blocked := map[string]struct{}{
+		"CAUTILUS_CALLER_CWD": {},
+		"CAUTILUS_TOOL_ROOT":  {},
+	}
+	env := make([]string, 0, len(os.Environ())+len(extraEnv))
+	for _, entry := range os.Environ() {
+		parts := strings.SplitN(entry, "=", 2)
+		if len(parts) != 2 {
+			continue
+		}
+		if _, blockedKey := blocked[parts[0]]; blockedKey {
+			continue
+		}
+		env = append(env, entry)
+	}
+	for key, value := range extraEnv {
+		env = append(env, key+"="+value)
+	}
+	return env
+}
+
 func toJSONString(value any) string {
 	payload, err := json.Marshal(value)
 	if err != nil {
