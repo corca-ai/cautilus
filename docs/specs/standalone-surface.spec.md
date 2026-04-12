@@ -17,36 +17,32 @@ standalone acceptance boundary만 남긴다.
 | README.md | fixed | intentful behavior evaluation |
 | AGENTS.md | fixed | independent binary plus bundled skill |
 | bin/cautilus | file_exists |  |
+| go.mod | file_exists |  |
+| go.mod | fixed | module github.com/corca-ai/cautilus |
+| cmd/cautilus/main.go | file_exists |  |
+| cmd/cautilus/main.go | fixed | app.Run |
+| bin/cautilus | fixed | CAUTILUS_TOOL_ROOT |
+| bin/cautilus | fixed | exec go -C |
+| internal/cli/command-registry.json | file_exists |  |
+| internal/cli/command-registry.json | fixed | cautilus doctor [args] |
+| internal/cli/command-registry.json | fixed | "path": ["version"] |
+| internal/cli/command-registry.json | fixed | "path": ["skills", "install"] |
+| internal/cli/command-registry.json | fixed | "path": ["scenario", "summarize-telemetry"] |
 | .claude-plugin/marketplace.json | file_exists |  |
 | .agents/plugins/marketplace.json | file_exists |  |
 | plugins/cautilus/.claude-plugin/plugin.json | file_exists |  |
 | plugins/cautilus/.codex-plugin/plugin.json | file_exists |  |
-| bin/cautilus | fixed | cautilus doctor |
-| bin/cautilus | fixed | workspace prepare-compare |
-| bin/cautilus | fixed | workspace prune-artifacts |
-| bin/cautilus | fixed | workspace start |
-| bin/cautilus | fixed | scenario normalize chatbot |
-| bin/cautilus | fixed | scenario normalize cli |
-| bin/cautilus | fixed | scenario normalize skill |
-| bin/cautilus | fixed | scenario summarize-telemetry |
-| bin/cautilus | fixed | scenario prepare-input |
-| bin/cautilus | fixed | scenario propose |
-| bin/cautilus | fixed | evidence prepare-input |
-| bin/cautilus | fixed | evidence bundle |
-| bin/cautilus | fixed | report build |
-| bin/cautilus | fixed | mode evaluate |
-| bin/cautilus | fixed | skills install |
-| bin/cautilus | fixed | optimize prepare-input |
-| bin/cautilus | fixed | optimize propose |
-| bin/cautilus | fixed | optimize build-artifact |
-| bin/cautilus | fixed | cli evaluate |
-| bin/cautilus | fixed | review prepare-input |
-| bin/cautilus | fixed | review build-prompt-input |
-| bin/cautilus | fixed | review render-prompt |
-| bin/cautilus | fixed | --version |
+| bin/cautilus | fixed | CAUTILUS_CALLER_CWD |
 | bin/cautilus.test.mjs | file_exists |  |
-| bin/cautilus.test.mjs | fixed | root self-consumer repo stays doctor-ready |
-| bin/cautilus.test.mjs | fixed | standalone temp repo can adopt cautilus without Ceal-owned paths |
+| bin/cautilus.test.mjs | fixed | repo shim forwards --version to the Go CLI entry |
+| bin/cautilus.test.mjs | fixed | repo shim preserves caller cwd while resolving doctor against a consumer repo |
+| bin/cautilus.test.mjs | fixed | repo shim keeps bundled skills install working from a consumer repo |
+| skills/bundled.go | file_exists |  |
+| skills/bundled.go | fixed | go:embed cautilus |
+| internal/app/cli_smoke_test.go | file_exists |  |
+| internal/app/cli_smoke_test.go | fixed | TestCLIRootSelfConsumerRepoStaysDoctorReady |
+| internal/app/cli_smoke_test.go | fixed | TestCLIStandaloneTempRepoCanAdoptCautilusWithoutCealPaths |
+| internal/app/cli_smoke_test.go | fixed | TestCLISkillsInstallCreatesRepoLocalCanonicalSkill |
 | skills/cautilus/SKILL.md | file_exists |  |
 | skills/cautilus/SKILL.md | fixed | cautilus skills install |
 | skills/cautilus/SKILL.md | fixed | cautilus adapter resolve --repo-root . |
@@ -101,6 +97,10 @@ standalone acceptance boundary만 남긴다.
 | plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus review variants |
 | plugins/cautilus/skills/cautilus/agents/openai.yaml | file_exists |  |
 | plugins/cautilus/skills/cautilus/agents/openai.yaml | fixed | Cautilus |
+| install.sh | fixed | releases/download/$VERSION/$ASSET_NAME |
+| install.sh | fixed | need_cmd uname |
+| scripts/release/binary-assets.mjs | file_exists |  |
+| scripts/release/binary-assets.mjs | fixed | binaryAssetName |
 | docs/master-plan.md | fixed | standalone installable CLI plus bundled reusable skill |
 | docs/master-plan.md | fixed | CLI behavior |
 
@@ -139,5 +139,6 @@ $ cautilus review prepare-input --repo-root . --report-file ./fixtures/reports/r
 $ cautilus review build-prompt-input --review-packet /tmp/cautilus-mode/review.json || true
 $ cautilus review render-prompt --input /tmp/cautilus-mode/review-prompt-input.json || true
 $ cautilus --version
+$ cautilus version --verbose
 $ node --test ./bin/cautilus.test.mjs
 ```

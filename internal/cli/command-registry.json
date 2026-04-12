@@ -1,0 +1,138 @@
+{
+  "usage": [
+    "cautilus adapter resolve [args]",
+    "cautilus adapter init [args]",
+    "cautilus version [--verbose] [--check]",
+    "cautilus doctor [args]",
+    "cautilus workspace prepare-compare [args]",
+    "cautilus workspace prune-artifacts [args]",
+    "cautilus workspace start [args]",
+    "cautilus scenario normalize chatbot [args]",
+    "cautilus scenario normalize cli [args]",
+    "cautilus scenario normalize skill [args]",
+    "cautilus scenario summarize-telemetry [args]",
+    "cautilus scenario prepare-input [args]",
+    "cautilus scenario propose [args]",
+    "cautilus evidence prepare-input [args]",
+    "cautilus evidence bundle [args]",
+    "cautilus report build [args]",
+    "cautilus mode evaluate [args]",
+    "cautilus skills install [--overwrite]",
+    "cautilus optimize prepare-input [args]",
+    "cautilus optimize propose [args]",
+    "cautilus optimize build-artifact [args]",
+    "cautilus review prepare-input [args]",
+    "cautilus review build-prompt-input [args]",
+    "cautilus review render-prompt [args]",
+    "cautilus cli evaluate [args]",
+    "cautilus review variants [args]"
+  ],
+  "examples": [
+    "cautilus adapter resolve --repo-root .",
+    "cautilus adapter init --repo-root .",
+    "cautilus version --verbose --check",
+    "cautilus doctor --repo-root .",
+    "cautilus workspace prepare-compare --repo-root . --baseline-ref origin/main --output-dir /tmp/cautilus-compare",
+    "cautilus workspace prune-artifacts --root /tmp/cautilus-runs --keep-last 20",
+    "eval \"$(cautilus workspace start --label mode-held-out)\"",
+    "cautilus scenario normalize chatbot --input ./fixtures/scenario-proposals/chatbot-input.json",
+    "cautilus scenario normalize cli --input ./fixtures/scenario-proposals/cli-input.json",
+    "cautilus scenario normalize skill --input ./fixtures/scenario-proposals/skill-input.json",
+    "cautilus scenario summarize-telemetry --results ./results.json",
+    "cautilus scenario prepare-input --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json",
+    "cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json",
+    "cautilus evidence prepare-input --report-file /tmp/cautilus-mode/report.json --scenario-results-file /tmp/cautilus-mode/held_out-scenario-results.json --run-audit-file /tmp/cautilus-run-audit/run-audit-summary.json",
+    "cautilus evidence bundle --input /tmp/cautilus-evidence/input.json",
+    "cautilus report build --input ./fixtures/reports/report-input.json",
+    "cautilus mode evaluate --repo-root . --mode held_out --intent 'CLI behavior should remain legible.' --baseline-ref origin/main --output-dir /tmp/cautilus-mode",
+    "cautilus skills install",
+    "cautilus optimize prepare-input --report-file /tmp/cautilus-mode/report.json --review-summary /tmp/cautilus-review/review-summary.json --history-file /tmp/cautilus-history/scenario-history.snapshot.json --target prompt --optimizer reflection --budget medium",
+    "cautilus optimize propose --input /tmp/cautilus-optimize/input.json",
+    "cautilus optimize build-artifact --proposal-file /tmp/cautilus-optimize/proposal.json",
+    "cautilus review prepare-input --repo-root . --report-file /tmp/cautilus-mode/report.json",
+    "cautilus review build-prompt-input --review-packet /tmp/cautilus-mode/review.json",
+    "cautilus review render-prompt --input /tmp/cautilus-mode/review-prompt-input.json",
+    "cautilus cli evaluate --input ./fixtures/cli-evaluation/doctor-missing-adapter.json",
+    "cautilus review variants --repo-root . --workspace . --output-dir /tmp/cautilus-review"
+  ],
+  "commands": [
+    {
+      "path": ["adapter", "resolve"]
+    },
+    {
+      "path": ["adapter", "init"]
+    },
+    {
+      "path": ["version"]
+    },
+    {
+      "path": ["doctor"]
+    },
+    {
+      "path": ["workspace", "prepare-compare"]
+    },
+    {
+      "path": ["workspace", "prune-artifacts"]
+    },
+    {
+      "path": ["workspace", "start"]
+    },
+    {
+      "path": ["scenario", "normalize", "chatbot"]
+    },
+    {
+      "path": ["scenario", "normalize", "cli"]
+    },
+    {
+      "path": ["scenario", "normalize", "skill"]
+    },
+    {
+      "path": ["scenario", "summarize-telemetry"]
+    },
+    {
+      "path": ["scenario", "prepare-input"]
+    },
+    {
+      "path": ["scenario", "propose"]
+    },
+    {
+      "path": ["evidence", "prepare-input"]
+    },
+    {
+      "path": ["evidence", "bundle"]
+    },
+    {
+      "path": ["report", "build"]
+    },
+    {
+      "path": ["mode", "evaluate"]
+    },
+    {
+      "path": ["skills", "install"]
+    },
+    {
+      "path": ["optimize", "prepare-input"]
+    },
+    {
+      "path": ["optimize", "propose"]
+    },
+    {
+      "path": ["optimize", "build-artifact"]
+    },
+    {
+      "path": ["review", "prepare-input"]
+    },
+    {
+      "path": ["review", "build-prompt-input"]
+    },
+    {
+      "path": ["review", "render-prompt"]
+    },
+    {
+      "path": ["cli", "evaluate"]
+    },
+    {
+      "path": ["review", "variants"]
+    }
+  ]
+}

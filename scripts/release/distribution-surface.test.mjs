@@ -1,9 +1,10 @@
 import assert from "node:assert/strict";
-import { readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 import test from "node:test";
 
+import { binaryAssetName, renderBinaryAssetUrl } from "./binary-assets.mjs";
 import { renderArchiveUrl } from "./fetch-github-archive-sha256.mjs";
 import { renderHomebrewFormula } from "./render-homebrew-formula.mjs";
 import { deriveTapRepo, parseGitHubRemoteUrl, resolveReleaseTargets } from "./resolve-release-targets.mjs";
@@ -33,7 +34,7 @@ function readTree(root) {
 
 test("cautilus --version matches package.json", () => {
 	const pkg = JSON.parse(readFileSync(join(REPO_ROOT, "package.json"), "utf-8"));
-	const result = spawnSync("node", [join(REPO_ROOT, "bin", "cautilus"), "--version"], {
+	const result = spawnSync(join(REPO_ROOT, "bin", "cautilus"), ["--version"], {
 		cwd: REPO_ROOT,
 		encoding: "utf-8",
 	});
@@ -42,7 +43,7 @@ test("cautilus --version matches package.json", () => {
 });
 
 test("repo root exposes an official self-consumer adapter and doctor returns ready", () => {
-	const result = spawnSync("node", [join(REPO_ROOT, "bin", "cautilus"), "doctor", "--repo-root", REPO_ROOT], {
+	const result = spawnSync(join(REPO_ROOT, "bin", "cautilus"), ["doctor", "--repo-root", REPO_ROOT], {
 		cwd: REPO_ROOT,
 		encoding: "utf-8",
 	});
@@ -61,6 +62,37 @@ test("install.sh remains syntactically valid shell", () => {
 	assert.equal(result.status, 0, result.stderr);
 });
 
+test("install.sh downloads a tagged binary asset and writes a wrapper that preserves caller context", () => {
+	const installer = readFileSync(join(REPO_ROOT, "install.sh"), "utf-8");
+	assert.match(installer, /need_cmd uname/);
+	assert.doesNotMatch(installer, /need_cmd node/);
+	assert.doesNotMatch(installer, /npm install --omit=dev/);
+	assert.doesNotMatch(installer, /go build -o "\$TARGET_DIR\/bin\/cautilus-real"/);
+	assert.match(installer, /ASSET_NAME="cautilus_\$\{VERSION_TRIMMED\}_\$\{ASSET_OS\}_\$\{ASSET_ARCH\}\.tar\.gz"/);
+	assert.match(installer, /releases\/download\/\$VERSION\/\$ASSET_NAME/);
+	assert.match(installer, /releases\/download\/\$VERSION\/cautilus-\$VERSION-checksums\.txt/);
+	assert.match(installer, /sha256sum "\$1" \| awk '\{print \$1\}'/);
+	assert.match(installer, /shasum -a 256 "\$1" \| awk '\{print \$1\}'/);
+	assert.match(installer, /Checksum mismatch for %s/);
+	assert.match(installer, /mv "\$TARGET_DIR\/bin\/cautilus" "\$TARGET_DIR\/bin\/cautilus-real"/);
+	assert.match(installer, /CAUTILUS_CALLER_CWD="\\\$\(pwd\)"/);
+	assert.match(installer, /exec "\$TARGET_DIR\/bin\/cautilus-real" "\\\$@"/);
+});
+
+test("release workflow attaches provenance attestations for the public binary matrix", () => {
+	const workflow = readFileSync(join(REPO_ROOT, ".github", "workflows", "release-artifacts.yml"), "utf-8");
+	assert.match(workflow, /id-token: write/);
+	assert.match(workflow, /attestations: write/);
+	assert.match(workflow, /artifact-metadata: write/);
+	assert.match(workflow, /uses: actions\/attest@v4/);
+	assert.match(workflow, /subject-checksums: dist\/cautilus-\$\{\{ github\.ref_name \}\}-checksums\.txt/);
+});
+
+test("dead runtime compatibility shims stay deleted", () => {
+	assert.equal(existsSync(join(REPO_ROOT, "scripts", "install-skills.mjs")), false);
+	assert.equal(existsSync(join(REPO_ROOT, "scripts", "cli-registry.mjs")), false);
+});
+
 test("homebrew formula renderer produces a stable formula body", () => {
 	const formula = renderHomebrewFormula({
 		version: `v${PACKAGE_VERSION}`,
@@ -70,6 +102,9 @@ test("homebrew formula renderer produces a stable formula body", () => {
 	assert.match(formula, /class Cautilus < Formula/);
 	assert.match(formula, new RegExp(`https://github.com/corca-ai/cautilus/archive/refs/tags/v${PACKAGE_VERSION}\\.tar\\.gz`));
 	assert.match(formula, /sha256 "abc123"/);
+	assert.match(formula, /depends_on "go" => :build/);
+	assert.doesNotMatch(formula, /depends_on "node"/);
+	assert.match(formula, /system "go", "build"/);
 	assert.match(formula, /cautilus --version/);
 });
 
@@ -77,6 +112,17 @@ test("github archive URL renderer targets tagged source archives", () => {
 	assert.equal(
 		renderArchiveUrl({ repo: "corca-ai/cautilus", version: `v${PACKAGE_VERSION}` }),
 		`https://github.com/corca-ai/cautilus/archive/refs/tags/v${PACKAGE_VERSION}.tar.gz`,
+	);
+});
+
+test("binary release asset helpers target tagged GitHub release assets", () => {
+	assert.equal(
+		binaryAssetName({ version: `v${PACKAGE_VERSION}`, goos: "linux", goarch: "amd64" }),
+		`cautilus_${PACKAGE_VERSION}_linux_x64.tar.gz`,
+	);
+	assert.equal(
+		renderBinaryAssetUrl({ repo: "corca-ai/cautilus", version: `v${PACKAGE_VERSION}`, goos: "darwin", goarch: "arm64" }),
+		`https://github.com/corca-ai/cautilus/releases/download/v${PACKAGE_VERSION}/cautilus_${PACKAGE_VERSION}_darwin_arm64.tar.gz`,
 	);
 });
 

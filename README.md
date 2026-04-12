@@ -199,7 +199,13 @@ Install from a tagged GitHub release:
 ```bash
 curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh | sh
 cautilus --version
+cautilus version --verbose
 ```
+
+The installer downloads the tagged binary asset that matches the host OS and
+architecture, so no local Go toolchain is required for the public install
+path. `cautilus version --verbose` shows the local version provenance plus the
+last cached update-check state for the installed binary.
 
 Install the bundled skill into a host repo:
 
@@ -504,11 +510,14 @@ verify the checked-in Claude manifest shapes.
 
 ## Dev
 
-Install the local Node tooling:
+Install the local Node tooling, and make sure Go `1.26.x` plus
+`golangci-lint` are available on `PATH`:
 
 ```bash
 npm install
 npm run hooks:install
+go version
+golangci-lint --version
 ```
 
 Run checks:
@@ -521,6 +530,8 @@ npm run dogfood:self:experiments
 ```
 
 Use `npm run lint` or `npm run test` directly only when iterating on one seam.
+`npm run lint` includes `golangci-lint run` and `go vet`, while
+`npm run verify` additionally runs `go test -race` before the Node test suite.
 
 `hooks:install` is a once-per-clone setup step that points `core.hooksPath` at
 the checked-in `.githooks` directory, where `pre-push` runs `npm run verify`.

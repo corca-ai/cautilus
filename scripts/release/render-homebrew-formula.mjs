@@ -75,14 +75,11 @@ export function renderHomebrewFormula({ version, repo, sha256 }) {
   sha256 "${sha256}"
   license "MIT"
 
-  depends_on "node"
+  depends_on "go" => :build
 
   def install
-    libexec.install Dir["*"]
-    cd libexec do
-      system "npm", "install", "--omit=dev", "--ignore-scripts"
-    end
-    (bin/"cautilus").write_env_script libexec/"bin/cautilus", PATH: ENV["PATH"]
+    ldflags = "-X github.com/corca-ai/cautilus/internal/cli.buildVersion=${version}"
+    system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/cautilus"
   end
 
   test do

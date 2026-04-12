@@ -7,16 +7,25 @@ on:
 
 permissions:
   contents: write
+  id-token: write
+  attestations: write
+  artifact-metadata: write
 
 jobs:
   release-artifacts:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.26.1"
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
           cache: npm
+      - uses: golangci/golangci-lint-action@v8
+        with:
+          version: v2.1
       - run: npm ci
       - run: npm run verify
       - name: Build release artifacts
@@ -26,15 +35,39 @@ jobs:
           node ./scripts/release/fetch-github-archive-sha256.mjs --version "$VERSION" --output "dist/cautilus-${VERSION}.sha256"
           SHA256="$(tr -d '\n' < "dist/cautilus-${VERSION}.sha256")"
           node ./scripts/release/render-homebrew-formula.mjs --version "$VERSION" --sha256 "$SHA256" --output dist/Cautilus.rb
+          while read -r GOOS GOARCH ASSET_OS ASSET_ARCH; do
+            ASSET_NAME="cautilus_${VERSION#v}_${ASSET_OS}_${ASSET_ARCH}.tar.gz"
+            STAGE_DIR="dist/stage/${ASSET_OS}_${ASSET_ARCH}"
+            mkdir -p "$STAGE_DIR"
+            GOOS="$GOOS" GOARCH="$GOARCH" CGO_ENABLED=0 \
+              go build -ldflags="-X github.com/corca-ai/cautilus/internal/cli.buildVersion=${VERSION}" -o "$STAGE_DIR/cautilus" ./cmd/cautilus
+            tar -czf "dist/${ASSET_NAME}" -C "$STAGE_DIR" cautilus
+            rm -rf "$STAGE_DIR"
+          done <<'EOF'
+          darwin amd64 darwin x64
+          darwin arm64 darwin arm64
+          linux amd64 linux x64
+          linux arm64 linux arm64
+          EOF
+          sha256sum dist/cautilus_*.tar.gz > "dist/cautilus-${VERSION}-checksums.txt"
           {
             echo "# Cautilus ${VERSION}"
             echo
             echo "- source archive checksum: \`${SHA256}\`"
+            echo "- binary artifacts:"
+            ls dist/cautilus_*.tar.gz | sed 's#dist/##' | sed 's#^#  - `#' | sed 's#$#`#'
+            echo "- binary checksum manifest: \`cautilus-${VERSION}-checksums.txt\`"
             echo "- formula artifact: \`Cautilus.rb\`"
           } > "dist/release-notes-${VERSION}.md"
+      - name: Attest binary release artifacts
+        uses: actions/attest@v4
+        with:
+          subject-checksums: dist/cautilus-${{ github.ref_name }}-checksums.txt
       - uses: softprops/action-gh-release@v2
         with:
           files: |
             dist/*.sha256
+            dist/cautilus_*.tar.gz
+            dist/cautilus-*-checksums.txt
             dist/Cautilus.rb
             dist/release-notes-*.md

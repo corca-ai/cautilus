@@ -28,7 +28,11 @@ standalone product여야 한다.
 | package.json | fixed | "dogfood:self" |
 | package.json | fixed | "dogfood:self:experiments" |
 | package.json | fixed | "lint" |
+| package.json | fixed | "lint:go" |
+| package.json | fixed | "test:go" |
+| package.json | fixed | "test:go:race" |
 | package.json | fixed | "test" |
+| package.json | fixed | "vet:go" |
 | package.json | fixed | "verify" |
 | .agents/cautilus-adapter.yaml | file_exists |  |
 | .agents/cautilus-adapter.yaml | fixed | npm run verify |
@@ -50,41 +54,47 @@ standalone product여야 한다.
 | .gitignore | file_exists |  |
 | .gitignore | fixed | !artifacts/self-dogfood/latest/summary.json |
 | eslint.config.mjs | file_exists |  |
+| .golangci.yml | file_exists |  |
+| .golangci.yml | fixed | staticcheck |
+| .golangci.yml | fixed | errorlint |
 | .github/workflows/verify.yml | file_exists |  |
+| .github/workflows/verify.yml | fixed | actions/setup-go@v5 |
+| .github/workflows/verify.yml | fixed | golangci/golangci-lint-action@ |
 | .github/workflows/verify.yml | fixed | npm run verify |
 | .github/workflows/release-artifacts.yml | file_exists |  |
+| .github/workflows/release-artifacts.yml | fixed | actions/setup-go@v5 |
 | .github/workflows/release-artifacts.yml | fixed | render-homebrew-formula.mjs |
+| .github/workflows/release-artifacts.yml | fixed | actions/attest@v4 |
+| .github/workflows/release-artifacts.yml | fixed | subject-checksums: dist/cautilus-${{ github.ref_name }}-checksums.txt |
+| go.mod | file_exists |  |
+| go.mod | fixed | module github.com/corca-ai/cautilus |
+| cmd/cautilus/main.go | file_exists |  |
+| cmd/cautilus/main.go | fixed | app.Run |
+| bin/cautilus | fixed | CAUTILUS_TOOL_ROOT |
+| bin/cautilus | fixed | exec go -C |
+| internal/cli/command-registry.json | file_exists |  |
+| internal/cli/command-registry.json | fixed | "path": ["version"] |
+| internal/cli/command-registry.json | fixed | "path": ["skills", "install"] |
+| internal/cli/command-registry.json | fixed | "path": ["workspace", "start"] |
+| internal/cli/command-registry.json | fixed | "path": ["review", "variants"] |
+| internal/cli/command-registry.json | fixed | cautilus version [--verbose] [--check] |
+| internal/cli/command-registry.json | fixed | cautilus skills install [--overwrite] |
 | bin/cautilus | file_exists |  |
 | .claude-plugin/marketplace.json | file_exists |  |
 | .agents/plugins/marketplace.json | file_exists |  |
 | plugins/cautilus/.claude-plugin/plugin.json | file_exists |  |
 | plugins/cautilus/.codex-plugin/plugin.json | file_exists |  |
-| bin/cautilus | fixed | adapter resolve |
-| bin/cautilus | fixed | cautilus doctor |
-| bin/cautilus | fixed | workspace prepare-compare |
-| bin/cautilus | fixed | workspace prune-artifacts |
-| bin/cautilus | fixed | workspace start |
-| bin/cautilus | fixed | scenario normalize chatbot |
-| bin/cautilus | fixed | scenario normalize cli |
-| bin/cautilus | fixed | scenario normalize skill |
-| bin/cautilus | fixed | scenario prepare-input |
-| bin/cautilus | fixed | scenario propose |
-| bin/cautilus | fixed | evidence prepare-input |
-| bin/cautilus | fixed | evidence bundle |
-| bin/cautilus | fixed | report build |
-| bin/cautilus | fixed | mode evaluate |
-| bin/cautilus | fixed | skills install |
-| bin/cautilus | fixed | optimize prepare-input |
-| bin/cautilus | fixed | optimize propose |
-| bin/cautilus | fixed | optimize build-artifact |
-| bin/cautilus | fixed | cli evaluate |
-| bin/cautilus | fixed | review prepare-input |
-| bin/cautilus | fixed | review build-prompt-input |
-| bin/cautilus | fixed | review render-prompt |
-| bin/cautilus | fixed | review variants |
-| bin/cautilus | fixed | --version |
+| bin/cautilus | fixed | CAUTILUS_CALLER_CWD |
 | bin/cautilus.test.mjs | file_exists |  |
-| bin/cautilus.test.mjs | fixed | root self-consumer repo stays doctor-ready |
+| bin/cautilus.test.mjs | fixed | repo shim forwards --version to the Go CLI entry |
+| bin/cautilus.test.mjs | fixed | repo shim preserves caller cwd while resolving doctor against a consumer repo |
+| bin/cautilus.test.mjs | fixed | repo shim keeps bundled skills install working from a consumer repo |
+| skills/bundled.go | file_exists |  |
+| skills/bundled.go | fixed | go:embed cautilus |
+| internal/app/cli_smoke_test.go | file_exists |  |
+| internal/app/cli_smoke_test.go | fixed | TestCLIRootSelfConsumerRepoStaysDoctorReady |
+| internal/app/cli_smoke_test.go | fixed | TestCLIStandaloneTempRepoCanAdoptCautilusWithoutCealPaths |
+| internal/app/cli_smoke_test.go | fixed | TestCLISkillsInstallCreatesRepoLocalCanonicalSkill |
 | skills/cautilus/SKILL.md | file_exists |  |
 | skills/cautilus/SKILL.md | fixed | cautilus skills install |
 | skills/cautilus/SKILL.md | fixed | npm run dogfood:self |
@@ -210,8 +220,12 @@ standalone product여야 한다.
 | docs/release-boundary.md | file_exists |  |
 | docs/release-boundary.md | fixed | Product-Owned Surface |
 | docs/release-boundary.md | fixed | install.sh |
+| docs/version-provenance.md | file_exists |  |
+| docs/version-provenance.md | fixed | CAUTILUS_NO_UPDATE_CHECK |
+| docs/version-provenance.md | fixed | cautilus version --verbose |
 | docs/releasing.md | file_exists |  |
 | docs/releasing.md | fixed | fetch-github-archive-sha256 |
+| docs/releasing.md | fixed | gh attestation verify |
 | docs/consumer-readiness.md | file_exists |  |
 | docs/consumer-readiness.md | fixed | All four repos now expose an official `cautilus-adapter` |
 | docs/consumer-migration.md | file_exists |  |
@@ -235,9 +249,11 @@ standalone product여야 한다.
 | fixtures/optimize/revision-artifact.schema.json | file_exists |  |
 | fixtures/optimize/revision-artifact.schema.json | fixed | cautilus.revision_artifact.v1 |
 | fixtures/optimize/example-revision-artifact.json | file_exists |  |
-| bin/cautilus | fixed | scenario summarize-telemetry |
 | install.sh | file_exists |  |
-| install.sh | fixed | CAUTILUS_VERSION |
+| install.sh | fixed | releases/download/$VERSION/$ASSET_NAME |
+| install.sh | fixed | need_cmd uname |
+| scripts/release/binary-assets.mjs | file_exists |  |
+| scripts/release/binary-assets.mjs | fixed | binaryAssetName |
 | scripts/release/render-homebrew-formula.mjs | file_exists |  |
 | scripts/release/render-homebrew-formula.mjs | fixed | renderHomebrewFormula |
 | scripts/release/fetch-github-archive-sha256.mjs | file_exists |  |
@@ -389,6 +405,7 @@ $ cautilus review build-prompt-input --review-packet /tmp/cautilus-mode/review.j
 $ cautilus review render-prompt --input /tmp/cautilus-mode/review-prompt-input.json || true
 $ node ./scripts/init_adapter.mjs --repo-root /tmp/cautilus-spec-check --output /tmp/cautilus-spec-check/cautilus-adapter.yaml --force
 $ cautilus --version
+$ cautilus version --verbose
 $ npm run verify
 $ npm run dogfood:self
 $ npm run dogfood:self:experiments

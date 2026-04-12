@@ -5,8 +5,8 @@ repos do not have to rediscover the same tradeoffs.
 
 ## Current Position
 
-`Cautilus` is still shipping as a standalone Node CLI plus a bundled skill, not
-as a native prebuilt binary.
+`Cautilus` is now shipping as a standalone Go CLI through tagged prebuilt
+binary assets plus a bundled skill.
 
 As of the current release line:
 
@@ -15,29 +15,40 @@ As of the current release line:
   [`install.sh`](../install.sh)
 - `install.sh` should install `Cautilus` itself, not operating-system
   dependencies
+- `install.sh` now downloads the matching tagged binary asset for the host
+  platform
+- `install.sh` verifies the downloaded asset against the tagged checksum
+  manifest before unpacking it
+- tagged release binaries now also carry GitHub artifact attestations derived
+  from the checksum manifest
+- installed binaries can cache latest-release checks and surface interactive
+  update notices without changing the non-interactive CLI contract
 - Homebrew remains a deferred install surface until the CLI runtime settles
   further
 
 That means the honest operator story today is:
 
 1. install a tagged release with `install.sh`
-2. ensure `node` and `npm` are already present
-3. confirm `cautilus --version`
+2. confirm `cautilus --version`
+3. use `cautilus version --verbose` when you need local version provenance and
+   cached update-check state
 4. in each consumer repo, run `cautilus skills install`
 
 ## Why The First Public Release Is Not Homebrew-First
 
 Homebrew can work on both macOS and Linux, and it is a good long-term consumer
-path. It is not the first release path for `Cautilus` because the current CLI
-is still a Node program that installs from a source archive.
+path. It is not the first release path for `Cautilus` because the current
+public installer already provides one checked-in binary-download contract and
+the Homebrew story is still reference-only.
 
 That creates a few problems:
 
-- the formula would still need to express runtime dependencies such as `node`
-- the install contract would still be source-oriented rather than
-  prebuilt-artifact-oriented
-- the team is already planning a Go port, so locking in a source-based Homebrew
-  formula now would create an install story that is likely to change soon
+- the tap repo is still deferred, so claiming Homebrew as primary would be
+  premature
+- per-platform binary assets need one stable naming and checksum contract before
+  a polished Homebrew story is honest
+- the checked-in installer already closes the main operator path without
+  introducing tap-specific release work
 
 The release surface is simpler if the first public contract stays:
 
@@ -45,8 +56,8 @@ The release surface is simpler if the first public contract stays:
 - one checked-in installer script
 - one runtime family to explain in operator docs
 
-After the Go port, Homebrew becomes much cleaner because the formula can point
-at release tarballs that already contain the final CLI artifact.
+Homebrew becomes cleaner only after the binary-release contract has proven
+stable enough to support tap automation without immediately changing again.
 
 ## Why `install.sh` Should Not Install System Dependencies
 
@@ -81,8 +92,9 @@ That extraction bias was pragmatic: preserve proven behavior first, then reduce
 runtime seams later.
 
 The product-owned Python seam has now been removed from the standalone CLI
-surface. Historical references to the old Python files remain in extraction
-notes because they describe where the product came from.
+surface, and the public installer no longer depends on the old Node runtime
+surface either. Historical references to the old Python and Node files remain
+in extraction notes because they describe where the product came from.
 
 ## Prebuilt Binary Tradeoffs
 
@@ -100,8 +112,8 @@ Costs:
 
 - more release automation and artifact management
 - more platform-specific CI coverage
-- stricter expectations around checksums, signatures, and reproducible release
-  behavior
+- stricter expectations around checksums, provenance attestations, and
+  reproducible release behavior
 
 For `Cautilus`, the main argument for a prebuilt binary is operational
 simplicity, not benchmark speed.
@@ -127,9 +139,9 @@ the higher rewrite and maintenance cost.
 
 Use this order unless the product direction changes:
 
-1. ship the first public release from the Node-only standalone CLI surface
-2. keep GitHub releases and `install.sh` as the canonical consumer path
-3. port the CLI/runtime to Go on a new branch
-4. add Homebrew after the Go release artifact shape is stable
-5. revisit stronger binary distribution claims only after the Go release path is
+1. keep GitHub releases and `install.sh` as the canonical consumer path
+2. keep the tagged binary asset matrix stable across releases
+3. keep checksum plus attestation verification as the default provenance story
+4. add Homebrew after the binary release artifact shape is stable
+5. revisit stronger binary distribution claims only after the release path is
    proven in public

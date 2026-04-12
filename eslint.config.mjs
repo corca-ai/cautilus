@@ -23,7 +23,7 @@ export default [
 	},
 	js.configs.recommended,
 	{
-		files: ["**/*.mjs", "bin/cautilus"],
+		files: ["**/*.mjs"],
 		plugins: { sonarjs },
 		languageOptions: {
 			sourceType: "module",

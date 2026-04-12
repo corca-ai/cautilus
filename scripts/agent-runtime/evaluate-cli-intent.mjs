@@ -27,7 +27,7 @@ function usage(exitCode = 0) {
 		"  intent: <string>",
 		"  surfaceId: <string>",
 		"  mode: held_out | full_gate | iterate | comparison",
-		"  command: [\"node\", \"./bin/cautilus\", \"--help\"]",
+		"  command: [\"cautilus\", \"--help\"]",
 	].join("\n");
 	const out = exitCode === 0 ? process.stdout : process.stderr;
 	out.write(`${text}\n`);
