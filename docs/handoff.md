@@ -419,41 +419,45 @@
 
 ## Next Session
 
-1. start the Go port on `go-port`, not another consumer sync pass.
-   The release line is already cut at `v0.2.0`, the first CLI-routing slice is
-   now in the tree, and Homebrew is intentionally waiting on the Go binary
-   story.
-2. keep the second Go slice narrow and product-owned.
-  - repo-root/version discovery hardening is now done for native handlers and
-    `--version`
-  - repo-local `bin/cautilus` shim is now POSIX shell, not Node
-  - skill asset embedding / install-root discovery for `skills install` is now
-    done
-  - prebuilt binary asset distribution과 release automation/documentation은
-    이제 기본 경로로 들어왔다
-  - checksum-driven GitHub artifact attestations are now part of the release
-    workflow
-  - the next seam is still Homebrew/tap honesty after this provenance baseline
-    settles
-  - preserve the existing command contract and fixture names unless a break is
-    clearly worth it
-  - prefer replacing product-owned runtime seams before touching host-facing
-     adapters or docs-heavy operator surfaces
-3. use [docs/cli-distribution.md](./cli-distribution.md) as the release
-   rationale baseline.
+1. keep work on `go-port`; the user-facing Go runtime port is effectively done.
+   The public runtime surface now covers CLI dispatch, bundled skills,
+   version provenance, cached update hints, and tagged binary installs.
+2. the next primary seam is release-channel honesty, not more generic Go port
+   churn.
+  - the remaining product-facing decision is Homebrew/tap honesty
+  - keep `GitHub release + install.sh + checksum/attestation verify` as the
+    default install story until the tap repo and formula automation are truly
+    supportable
+  - if Homebrew work starts, require one honest answer for all three:
+    tap ownership, formula update automation, and user-facing update guidance
+3. if a narrower slice is needed before Homebrew, use the version-provenance
+   surface rather than reopening old runtime seams.
+  - plausible thin follow-ups:
+    `doctor` exposing version/install provenance,
+    tightening install-kind detection,
+    deciding whether attestation verification timestamps should be stored
+  - do not add always-on non-interactive network checks
+  - keep `cautilus --version` machine-friendly and `cautilus version
+    --verbose/--check` as the richer inspection path
+4. use [docs/cli-distribution.md](./cli-distribution.md) and
+   [docs/version-provenance.md](./version-provenance.md) as the rationale
+   baseline before changing release UX.
    The current product decision is:
    - `install.sh` should not install system dependencies
    - `install.sh` should not require `go` on the host
    - Homebrew should wait until the binary release and tap story are honest
+   - cached update hints should stay interactive-only and opt-out capable
    - Go is preferred over Rust for this product boundary
-4. after the binary release path lands, re-evaluate the release surface in
-   this order:
-   - binary asset naming/checksum contract가 충분히 durable한가
+5. after any release-surface change, re-evaluate in this order:
+   - binary asset naming/checksum/attestation contract가 충분히 durable한가
+   - is install/update guidance still honest for both `install.sh` users and
+     any future Homebrew users
    - is Homebrew now honest enough to publish as the default polished install
      path
-5. 변경 후에는 항상 `npm run verify`를 다시 돌린다. 실행 전에 Node 22가
+6. 변경 후에는 항상 `npm run verify`를 다시 돌린다. 실행 전에 Node 22가
    활성화되어 있는지 먼저 확인한다. 현재 Go baseline은 `go1.26.1`이고,
    최소 smoke/build command는 `./bin/cautilus --version`,
+   richer smoke는 `./bin/cautilus version --verbose`,
    test command는 `go test ./cmd/... ./internal/...`다.
 
 ## Discuss
