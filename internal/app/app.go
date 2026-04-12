@@ -37,16 +37,11 @@ func Run(args []string, stdout io.Writer, stderr io.Writer) int {
 		return 1
 	}
 
-	if args[0] == "--version" || args[0] == "-v" || args[0] == "version" {
-		version, err := cli.PackageVersion(optionalToolRoot(cwd))
-		if err != nil {
-			_, _ = fmt.Fprintf(stderr, "%s\n", err)
-			return 1
-		}
-		_, _ = fmt.Fprintf(stdout, "%s\n", version)
-		return 0
+	if args[0] == "--version" || args[0] == "-v" {
+		args = append([]string{"version"}, args[1:]...)
 	}
 
+	toolRoot := optionalToolRoot(cwd)
 	match, err := cli.MatchCommand(args)
 	if err != nil {
 		_, _ = fmt.Fprintf(stderr, "%s\n", err)
@@ -63,7 +58,20 @@ func Run(args []string, stdout io.Writer, stderr io.Writer) int {
 	}
 
 	if handler := nativeHandler(match.Command.Path); handler != nil {
-		return invokeHandler(handler, "", cwd, match.ForwardedArgs, stdout, stderr)
+		if strings.Join(match.Command.Path, " ") != "version" {
+			_, _ = cli.InspectVersionState(toolRoot, cli.VersionStateOptions{Now: time.Now()})
+		}
+		exitCode := invokeHandler(handler, toolRoot, cwd, match.ForwardedArgs, stdout, stderr)
+		if strings.Join(match.Command.Path, " ") != "version" {
+			notice, noticeErr := cli.MaybeCheckForUpdates(toolRoot, cli.AutoUpdateOptions{
+				Now:         time.Now(),
+				Interactive: detectInteractiveSession(stdout, stderr),
+			})
+			if noticeErr == nil && notice != "" {
+				_, _ = fmt.Fprintf(stderr, "%s\n", notice)
+			}
+		}
+		return exitCode
 	}
 	_, _ = fmt.Fprintf(stderr, "command is listed in the registry but has no Go handler: %s\n", strings.Join(match.Command.Path, " "))
 	return 1
@@ -86,6 +94,8 @@ func nativeHandler(path []string) handlerFunc {
 		return handleAdapterResolve
 	case "adapter init":
 		return handleAdapterInit
+	case "version":
+		return handleVersion
 	case "doctor":
 		return handleDoctor
 	case "workspace prepare-compare":
@@ -157,6 +167,22 @@ func optionalToolRoot(cwd string) string {
 	return toolRoot
 }
 
+func detectInteractiveSession(stdout io.Writer, stderr io.Writer) bool {
+	return isInteractiveWriter(stdout) && isInteractiveWriter(stderr)
+}
+
+func isInteractiveWriter(writer io.Writer) bool {
+	file, ok := writer.(*os.File)
+	if !ok {
+		return false
+	}
+	info, err := file.Stat()
+	if err != nil {
+		return false
+	}
+	return (info.Mode() & os.ModeCharDevice) != 0
+}
+
 //nolint:errcheck // CLI stderr reporting is best-effort.
 type adapterArgs struct {
 	repoRoot    *string
@@ -170,6 +196,11 @@ type initArgs struct {
 	repoName    *string
 	output      *string
 	force       bool
+}
+
+type versionArgs struct {
+	verbose bool
+	check   bool
 }
 
 type workspaceStartArgs struct {
@@ -253,6 +284,32 @@ func handleAdapterResolve(repoRoot string, cwd string, args []string, stdout io.
 		return 1
 	}
 	if err := writeJSON(stdout, payload); err != nil {
+		_, _ = fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	return 0
+}
+
+func handleVersion(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	options, err := parseVersionArgs(args)
+	if err != nil {
+		_, _ = fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	state, err := cli.InspectVersionState(repoRoot, cli.VersionStateOptions{
+		Now:              time.Now(),
+		AllowRemoteCheck: false,
+		ForceRemoteCheck: options.check,
+	})
+	if err != nil {
+		_, _ = fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	if !options.verbose {
+		_, _ = fmt.Fprintf(stdout, "%s\n", state.Current.Version)
+		return 0
+	}
+	if err := writeJSON(stdout, state); err != nil {
 		_, _ = fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
@@ -848,6 +905,22 @@ func parseInitArgs(args []string) (*initArgs, error) {
 			options.output = &value
 		default:
 			return nil, fmt.Errorf("unknown argument: %s", arg)
+		}
+	}
+	return options, nil
+}
+
+func parseVersionArgs(args []string) (*versionArgs, error) {
+	options := &versionArgs{}
+	for index := 0; index < len(args); index++ {
+		switch args[index] {
+		case "--verbose":
+			options.verbose = true
+		case "--check":
+			options.check = true
+			options.verbose = true
+		default:
+			return nil, fmt.Errorf("unexpected argument %q", args[index])
 		}
 	}
 	return options, nil

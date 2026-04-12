@@ -2,6 +2,7 @@
   "usage": [
     "cautilus adapter resolve [args]",
     "cautilus adapter init [args]",
+    "cautilus version [--verbose] [--check]",
     "cautilus doctor [args]",
     "cautilus workspace prepare-compare [args]",
     "cautilus workspace prune-artifacts [args]",
@@ -29,6 +30,7 @@
   "examples": [
     "cautilus adapter resolve --repo-root .",
     "cautilus adapter init --repo-root .",
+    "cautilus version --verbose --check",
     "cautilus doctor --repo-root .",
     "cautilus workspace prepare-compare --repo-root . --baseline-ref origin/main --output-dir /tmp/cautilus-compare",
     "cautilus workspace prune-artifacts --root /tmp/cautilus-runs --keep-last 20",
@@ -59,6 +61,9 @@
     },
     {
       "path": ["adapter", "init"]
+    },
+    {
+      "path": ["version"]
     },
     {
       "path": ["doctor"]

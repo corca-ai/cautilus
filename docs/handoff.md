@@ -7,6 +7,7 @@
   [AGENTS.md](../AGENTS.md),
   [docs/master-plan.md](./master-plan.md),
   [docs/cli-distribution.md](./cli-distribution.md),
+  [docs/version-provenance.md](./version-provenance.md),
   [docs/contracts/reporting.md](./contracts/reporting.md),
   [docs/consumer-migration.md](./consumer-migration.md),
   [docs/release-boundary.md](./release-boundary.md),
@@ -109,6 +110,15 @@
     back to `package.json` when a source checkout is available. This hardens the
     future single-binary path without changing the current repo-root output
     (`0.2.0`).
+  - `cautilus version` is now a real Go command in the registry. Plain
+    `cautilus version`/`--version` stays machine-friendly, while
+    `cautilus version --verbose` exposes local version provenance and cached
+    latest-release state and `cautilus version --check` forces a fresh release
+    lookup.
+  - installed binaries now record version provenance in the user cache and can
+    emit 24-hour cached update notices for interactive sessions. CI,
+    non-interactive runs, source checkouts, and `CAUTILUS_NO_UPDATE_CHECK=1`
+    skip the remote check path.
   - checked-in `scripts/*.mjs` and `scripts/agent-runtime/*.mjs` now survive
     only where they still own maintainer tooling, release helpers, or bounded
     product support flows. The user-facing `cautilus ...` surface is fully

@@ -21,6 +21,8 @@ As of the current release line:
   manifest before unpacking it
 - tagged release binaries now also carry GitHub artifact attestations derived
   from the checksum manifest
+- installed binaries can cache latest-release checks and surface interactive
+  update notices without changing the non-interactive CLI contract
 - Homebrew remains a deferred install surface until the CLI runtime settles
   further
 
@@ -28,7 +30,9 @@ That means the honest operator story today is:
 
 1. install a tagged release with `install.sh`
 2. confirm `cautilus --version`
-3. in each consumer repo, run `cautilus skills install`
+3. use `cautilus version --verbose` when you need local version provenance and
+   cached update-check state
+4. in each consumer repo, run `cautilus skills install`
 
 ## Why The First Public Release Is Not Homebrew-First
 

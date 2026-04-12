@@ -199,11 +199,13 @@ Install from a tagged GitHub release:
 ```bash
 curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh | sh
 cautilus --version
+cautilus version --verbose
 ```
 
 The installer downloads the tagged binary asset that matches the host OS and
 architecture, so no local Go toolchain is required for the public install
-path.
+path. `cautilus version --verbose` shows the local version provenance plus the
+last cached update-check state for the installed binary.
 
 Install the bundled skill into a host repo:
 

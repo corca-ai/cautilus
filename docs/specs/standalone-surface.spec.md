@@ -25,6 +25,7 @@ standalone acceptance boundary만 남긴다.
 | bin/cautilus | fixed | exec go -C |
 | internal/cli/command-registry.json | file_exists |  |
 | internal/cli/command-registry.json | fixed | cautilus doctor [args] |
+| internal/cli/command-registry.json | fixed | "path": ["version"] |
 | internal/cli/command-registry.json | fixed | "path": ["skills", "install"] |
 | internal/cli/command-registry.json | fixed | "path": ["scenario", "summarize-telemetry"] |
 | .claude-plugin/marketplace.json | file_exists |  |
@@ -138,5 +139,6 @@ $ cautilus review prepare-input --repo-root . --report-file ./fixtures/reports/r
 $ cautilus review build-prompt-input --review-packet /tmp/cautilus-mode/review.json || true
 $ cautilus review render-prompt --input /tmp/cautilus-mode/review-prompt-input.json || true
 $ cautilus --version
+$ cautilus version --verbose
 $ node --test ./bin/cautilus.test.mjs
 ```

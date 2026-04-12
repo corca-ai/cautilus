@@ -73,9 +73,11 @@ standalone product여야 한다.
 | bin/cautilus | fixed | CAUTILUS_TOOL_ROOT |
 | bin/cautilus | fixed | exec go -C |
 | internal/cli/command-registry.json | file_exists |  |
+| internal/cli/command-registry.json | fixed | "path": ["version"] |
 | internal/cli/command-registry.json | fixed | "path": ["skills", "install"] |
 | internal/cli/command-registry.json | fixed | "path": ["workspace", "start"] |
 | internal/cli/command-registry.json | fixed | "path": ["review", "variants"] |
+| internal/cli/command-registry.json | fixed | cautilus version [--verbose] [--check] |
 | internal/cli/command-registry.json | fixed | cautilus skills install [--overwrite] |
 | bin/cautilus | file_exists |  |
 | .claude-plugin/marketplace.json | file_exists |  |
@@ -218,6 +220,9 @@ standalone product여야 한다.
 | docs/release-boundary.md | file_exists |  |
 | docs/release-boundary.md | fixed | Product-Owned Surface |
 | docs/release-boundary.md | fixed | install.sh |
+| docs/version-provenance.md | file_exists |  |
+| docs/version-provenance.md | fixed | CAUTILUS_NO_UPDATE_CHECK |
+| docs/version-provenance.md | fixed | cautilus version --verbose |
 | docs/releasing.md | file_exists |  |
 | docs/releasing.md | fixed | fetch-github-archive-sha256 |
 | docs/releasing.md | fixed | gh attestation verify |
@@ -400,6 +405,7 @@ $ cautilus review build-prompt-input --review-packet /tmp/cautilus-mode/review.j
 $ cautilus review render-prompt --input /tmp/cautilus-mode/review-prompt-input.json || true
 $ node ./scripts/init_adapter.mjs --repo-root /tmp/cautilus-spec-check --output /tmp/cautilus-spec-check/cautilus-adapter.yaml --force
 $ cautilus --version
+$ cautilus version --verbose
 $ npm run verify
 $ npm run dogfood:self
 $ npm run dogfood:self:experiments

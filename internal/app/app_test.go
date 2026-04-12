@@ -30,6 +30,34 @@ func TestRunVersionUsesEnvVersionWithoutToolRoot(t *testing.T) {
 	}
 }
 
+func TestRunVersionVerboseEmitsVersionStateJSON(t *testing.T) {
+	t.Setenv("CAUTILUS_CALLER_CWD", t.TempDir())
+	t.Setenv("CAUTILUS_TOOL_ROOT", "")
+	t.Setenv("CAUTILUS_VERSION", "v9.8.7")
+	t.Setenv("XDG_CACHE_HOME", t.TempDir())
+
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	exitCode := Run([]string{"version", "--verbose"}, &stdout, &stderr)
+	if exitCode != 0 {
+		t.Fatalf("Run returned exit code %d, stderr=%s", exitCode, stderr.String())
+	}
+	var payload map[string]any
+	if err := json.Unmarshal(stdout.Bytes(), &payload); err != nil {
+		t.Fatalf("Unmarshal returned error: %v", err)
+	}
+	current, ok := payload["current"].(map[string]any)
+	if !ok {
+		t.Fatalf("expected current object, got %#v", payload)
+	}
+	if current["version"] != "9.8.7" {
+		t.Fatalf("expected version 9.8.7, got %#v", current["version"])
+	}
+	if current["source"] != string(cli.VersionSourceEnv) {
+		t.Fatalf("expected env source, got %#v", current["source"])
+	}
+}
+
 func TestRunDoctorDoesNotRequireToolRootForNativeCommands(t *testing.T) {
 	repoRoot := t.TempDir()
 	agentsDir := filepath.Join(repoRoot, ".agents")
@@ -74,6 +102,9 @@ func TestRunSkillsInstallDoesNotRequireToolRoot(t *testing.T) {
 	repoRoot := t.TempDir()
 	t.Setenv("CAUTILUS_CALLER_CWD", repoRoot)
 	t.Setenv("CAUTILUS_TOOL_ROOT", "")
+	t.Setenv("CAUTILUS_VERSION", "v9.8.7")
+	cacheRoot := t.TempDir()
+	t.Setenv("XDG_CACHE_HOME", cacheRoot)
 
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
@@ -86,6 +117,9 @@ func TestRunSkillsInstallDoesNotRequireToolRoot(t *testing.T) {
 	}
 	if _, err := os.Stat(filepath.Join(repoRoot, ".agents", "skills", "cautilus", "SKILL.md")); err != nil {
 		t.Fatalf("expected installed bundled skill: %v", err)
+	}
+	if _, err := os.Stat(filepath.Join(cacheRoot, "cautilus", "version-state.json")); err != nil {
+		t.Fatalf("expected version state cache to be recorded: %v", err)
 	}
 }
 

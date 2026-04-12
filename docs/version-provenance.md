@@ -119,7 +119,8 @@ docs.
 1. Add a Go-owned version metadata resolver that reports both version and
    provenance source.
 2. Add a user-cache-backed release-check store with a 24 hour TTL.
-3. Add `cautilus version --verbose` as the explicit inspection surface.
+3. Add `cautilus version --verbose` plus `cautilus version --check` as the
+   explicit inspection and refresh surfaces.
 4. Add interactive-only cached update notices for installed standalone binary
    usage.
 5. Keep `cautilus --version` unchanged as the minimal machine-readable path.
