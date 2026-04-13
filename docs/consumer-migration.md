@@ -23,7 +23,7 @@ and skill without widening adapter discovery.
    tools. Do not rely on them for `Cautilus` discovery.
 4. Point the root adapter at checked-in host-owned prompt files, schema files,
    wrappers, and command templates.
-5. Install the repo-local skill surface with `cautilus skills install` when
+5. Install the repo-local skill surface with `cautilus install --repo-root .` when
    the host environment wants a checked-in reusable `Cautilus` skill.
 6. Run `cautilus doctor --repo-root <repo>` and require `ready`
    before claiming live-consumer status.

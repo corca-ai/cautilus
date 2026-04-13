@@ -11,14 +11,13 @@ rebuilding commands by hand.
 
 The installed skill assumes `cautilus` is already available on `PATH`.
 If it is not, install the CLI first and verify with `cautilus --version`.
-To materialize this skill in a host repo, run `cautilus skills install`.
+To materialize this skill in a host repo, run `cautilus install --repo-root .`.
 
 `Cautilus` should stay usable as a standalone product:
 
 - resolve or scaffold repo-local adapters
 - run bounded review variants through the bundled CLI
-- evaluate operator-facing behavior, including CLI surfaces, with explicit
-  intent packets
+- evaluate operator-facing behavior with explicit intent packets
 - keep held-out evaluation and review prompts explicit
 - keep host-repo fixtures, prompts, and policy outside the product boundary
 

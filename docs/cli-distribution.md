@@ -12,7 +12,7 @@ As of the current release line:
 
 - the product-owned runtime no longer depends on `python3`
 - the canonical public install surface is tagged GitHub releases plus
-  [`install.sh`](../install.sh)
+  [`install.sh`](../install.sh) and Homebrew
 - `install.sh` should install `Cautilus` itself, not operating-system
   dependencies
 - `install.sh` now downloads the matching tagged binary asset for the host
@@ -23,41 +23,35 @@ As of the current release line:
   from the checksum manifest
 - installed binaries can cache latest-release checks and surface interactive
   update notices without changing the non-interactive CLI contract
-- Homebrew remains a deferred install surface until the CLI runtime settles
-  further
+- `cautilus install` is the canonical repo-local skill/bootstrap command after
+  the binary is already present on `PATH`
+- `cautilus update` is the canonical explicit lifecycle update command
 
 That means the honest operator story today is:
 
 1. install a tagged release with `install.sh`
-2. confirm `cautilus --version`
-3. use `cautilus version --verbose` when you need local version provenance and
+2. or install with `brew install corca-ai/tap/cautilus`
+3. confirm `cautilus --version`
+4. use `cautilus version --verbose` when you need local version provenance and
    cached update-check state
-4. in each consumer repo, run `cautilus skills install`
+5. in each consumer repo, run `cautilus install --repo-root .`
+6. use `cautilus update` when you want the CLI to apply its supported update
+   path explicitly
 
-## Why The First Public Release Is Not Homebrew-First
+## Why Homebrew Is Now Honest
 
-Homebrew can work on both macOS and Linux, and it is a good long-term consumer
-path. It is not the first release path for `Cautilus` because the current
-public installer already provides one checked-in binary-download contract and
-the Homebrew story is still reference-only.
+Homebrew is now an honest install surface because the standalone release path
+has a stable tagged archive contract, a checked-in formula renderer, and a tap
+publication workflow that updates the formula alongside the GitHub release.
 
-That creates a few problems:
+That means the operator story can support both channels without inventing a
+second release dialect:
 
-- the tap repo is still deferred, so claiming Homebrew as primary would be
-  premature
-- per-platform binary assets need one stable naming and checksum contract before
-  a polished Homebrew story is honest
-- the checked-in installer already closes the main operator path without
-  introducing tap-specific release work
-
-The release surface is simpler if the first public contract stays:
-
-- GitHub releases as the source of truth
-- one checked-in installer script
-- one runtime family to explain in operator docs
-
-Homebrew becomes cleaner only after the binary-release contract has proven
-stable enough to support tap automation without immediately changing again.
+- GitHub releases stay the source of truth for tagged binaries and checksums
+- `install.sh` stays the zero-state bootstrap path
+- Homebrew stays a supported package-manager path for operators who prefer tap
+  installs
+- `cautilus update` keeps the post-install lifecycle inside the Go CLI surface
 
 ## Why `install.sh` Should Not Install System Dependencies
 
@@ -139,9 +133,9 @@ the higher rewrite and maintenance cost.
 
 Use this order unless the product direction changes:
 
-1. keep GitHub releases and `install.sh` as the canonical consumer path
+1. keep GitHub releases and `install.sh` as the zero-state consumer path
 2. keep the tagged binary asset matrix stable across releases
 3. keep checksum plus attestation verification as the default provenance story
-4. add Homebrew after the binary release artifact shape is stable
-5. revisit stronger binary distribution claims only after the release path is
-   proven in public
+4. keep Homebrew publication automated from the same tagged release workflow
+5. keep `cautilus install` and `cautilus update` as the canonical lifecycle
+   surface after the binary exists on the machine

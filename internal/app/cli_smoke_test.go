@@ -2,6 +2,7 @@ package app
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"os"
 	"os/exec"
@@ -341,8 +342,8 @@ func TestCLISkillsInstallCreatesRepoLocalCanonicalSkill(t *testing.T) {
 	if err != nil {
 		t.Fatalf("ReadFile returned error: %v", err)
 	}
-	if !strings.Contains(string(skill), "cautilus skills install") {
-		t.Fatalf("expected skills install guidance in skill")
+	if !strings.Contains(string(skill), "cautilus install --repo-root .") {
+		t.Fatalf("expected install guidance in skill")
 	}
 	if !strings.Contains(string(skill), "cautilus doctor --repo-root .") {
 		t.Fatalf("expected doctor guidance in skill")
@@ -372,6 +373,31 @@ func TestCLISkillsInstallCreatesRepoLocalCanonicalSkill(t *testing.T) {
 	}
 }
 
+func TestCLIInstallCreatesRepoLocalCanonicalSkillAndReportsCurrentCLI(t *testing.T) {
+	root := t.TempDir()
+	t.Setenv("CAUTILUS_VERSION", "v1.2.3")
+
+	stdout, stderr, exitCode := runCLI(t, root, "install", "--repo-root", ".", "--json")
+	if exitCode != 0 {
+		t.Fatalf("install failed: %s", stderr)
+	}
+	summary := parseJSONObject(t, stdout)
+	if summary["status"] != "installed" {
+		t.Fatalf("expected installed status, got %#v", summary["status"])
+	}
+	current := summary["current"].(map[string]any)
+	if current["version"] != "1.2.3" {
+		t.Fatalf("expected version 1.2.3, got %#v", current["version"])
+	}
+	skill := summary["skill"].(map[string]any)
+	if skill["destinationDir"] != filepath.Join(root, ".agents", "skills", "cautilus") {
+		t.Fatalf("unexpected destinationDir: %#v", skill["destinationDir"])
+	}
+	if _, err := os.Stat(filepath.Join(root, ".agents", "skills", "cautilus", "SKILL.md")); err != nil {
+		t.Fatalf("expected installed skill: %v", err)
+	}
+}
+
 func TestCLISkillsInstallMigratesLegacyClaudeSkills(t *testing.T) {
 	root := t.TempDir()
 	legacyDir := filepath.Join(root, ".claude", "skills", "legacy")
@@ -395,6 +421,53 @@ func TestCLISkillsInstallMigratesLegacyClaudeSkills(t *testing.T) {
 	}
 	if info.Mode()&os.ModeSymlink == 0 {
 		t.Fatalf("expected .claude/skills to be a symlink after migration")
+	}
+}
+
+func TestCLIUpdateRefreshesStandaloneInstallAndRepoSkill(t *testing.T) {
+	root := t.TempDir()
+	t.Setenv("CAUTILUS_VERSION", "v1.2.3")
+
+	previousLatest := latestReleaseMetadataForLifecycle
+	previousInstall := installManagedReleaseForLifecycle
+	t.Cleanup(func() {
+		latestReleaseMetadataForLifecycle = previousLatest
+		installManagedReleaseForLifecycle = previousInstall
+	})
+
+	latestReleaseMetadataForLifecycle = func(ctx context.Context) (cli.ReleaseMetadata, error) {
+		return cli.ReleaseMetadata{
+			Version:    "1.2.4",
+			ReleaseURL: "https://example.invalid/releases/v1.2.4",
+		}, nil
+	}
+	installManagedReleaseForLifecycle = func(options cli.ReleaseInstallOptions) (cli.ReleaseInstallResult, error) {
+		if options.Version != "v1.2.4" {
+			t.Fatalf("expected install version v1.2.4, got %q", options.Version)
+		}
+		return cli.ReleaseInstallResult{
+			Version:     "1.2.4",
+			WrapperPath: filepath.Join(root, ".local", "bin", "cautilus"),
+		}, nil
+	}
+
+	stdout, stderr, exitCode := runCLI(t, root, "update", "--repo-root", ".", "--json")
+	if exitCode != 0 {
+		t.Fatalf("update failed: %s", stderr)
+	}
+	summary := parseJSONObject(t, stdout)
+	if summary["status"] != "updated" {
+		t.Fatalf("expected updated status, got %#v", summary["status"])
+	}
+	if summary["updated"] != true {
+		t.Fatalf("expected updated=true, got %#v", summary["updated"])
+	}
+	installResult := summary["installResult"].(map[string]any)
+	if installResult["wrapperPath"] != filepath.Join(root, ".local", "bin", "cautilus") {
+		t.Fatalf("unexpected wrapperPath: %#v", installResult["wrapperPath"])
+	}
+	if _, err := os.Stat(filepath.Join(root, ".agents", "skills", "cautilus", "SKILL.md")); err != nil {
+		t.Fatalf("expected refreshed skill: %v", err)
 	}
 }
 

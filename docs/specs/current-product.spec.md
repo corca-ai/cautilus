@@ -81,10 +81,14 @@ standalone product여야 한다.
 | bin/cautilus | fixed | exec go -C |
 | internal/cli/command-registry.json | file_exists |  |
 | internal/cli/command-registry.json | fixed | "path": ["version"] |
+| internal/cli/command-registry.json | fixed | "path": ["install"] |
+| internal/cli/command-registry.json | fixed | "path": ["update"] |
 | internal/cli/command-registry.json | fixed | "path": ["skills", "install"] |
 | internal/cli/command-registry.json | fixed | "path": ["workspace", "start"] |
 | internal/cli/command-registry.json | fixed | "path": ["review", "variants"] |
 | internal/cli/command-registry.json | fixed | cautilus version [--verbose] [--check] |
+| internal/cli/command-registry.json | fixed | cautilus install [--repo-root <path>] [--overwrite] [--json] |
+| internal/cli/command-registry.json | fixed | cautilus update [--repo-root <path>] [--json] |
 | internal/cli/command-registry.json | fixed | cautilus skills install [--overwrite] |
 | bin/cautilus | file_exists |  |
 | .claude-plugin/marketplace.json | file_exists |  |
@@ -95,7 +99,7 @@ standalone product여야 한다.
 | bin/cautilus.test.mjs | file_exists |  |
 | bin/cautilus.test.mjs | fixed | repo shim forwards --version to the Go CLI entry |
 | bin/cautilus.test.mjs | fixed | repo shim preserves caller cwd while resolving doctor against a consumer repo |
-| bin/cautilus.test.mjs | fixed | repo shim keeps bundled skills install working from a consumer repo |
+| bin/cautilus.test.mjs | fixed | repo shim keeps lifecycle install working from a consumer repo |
 | skills/bundled.go | file_exists |  |
 | skills/bundled.go | fixed | go:embed cautilus |
 | internal/app/cli_smoke_test.go | file_exists |  |
@@ -103,7 +107,7 @@ standalone product여야 한다.
 | internal/app/cli_smoke_test.go | fixed | TestCLIStandaloneTempRepoCanAdoptCautilusWithoutHostSpecificPaths |
 | internal/app/cli_smoke_test.go | fixed | TestCLISkillsInstallCreatesRepoLocalCanonicalSkill |
 | skills/cautilus/SKILL.md | file_exists |  |
-| skills/cautilus/SKILL.md | fixed | cautilus skills install |
+| skills/cautilus/SKILL.md | fixed | cautilus install --repo-root . |
 | skills/cautilus/SKILL.md | fixed | npm run dogfood:self |
 | skills/cautilus/SKILL.md | fixed | npm run dogfood:self:experiments |
 | skills/cautilus/agents/openai.yaml | file_exists |  |

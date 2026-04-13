@@ -26,6 +26,13 @@
   - public command surface source of truth는
     [internal/cli/command-registry.json](../internal/cli/command-registry.json) 하나다.
   - [bin/cautilus](../bin/cautilus)는 repo-local shim이다.
+- install/update lifecycle은 이제 Go CLI가 직접 소유한다.
+  - `cautilus install --repo-root .`
+  - `cautilus update --repo-root .`
+  - `cautilus skills install`은 low-level compatibility seam으로만 남아 있다.
+- Homebrew는 더 이상 deferred note가 아니다.
+  - release workflow가 formula artifact를 만들고
+    `HOMEBREW_TAP_TOKEN`이 있으면 tap publish까지 수행한다.
 - `CLI product evaluation` surface는 `cautilus`에서 제거됐다.
   - `cli evaluate`
   - `scenario normalize cli`
@@ -47,6 +54,7 @@
 
 - `go test ./internal/app ./internal/runtime ./internal/cli`
 - `node --test scripts/agent-runtime/*.test.mjs`
+- `node --test bin/*.test.mjs scripts/release/*.test.mjs`
 - `npm run verify`
 - `npm run hooks:check`
 - CLI-eval 잔흔 검색:
@@ -55,14 +63,11 @@
 
 ## Next Session
 
-1. `cautilus`에서 새 구현을 시작하기 전에 이 repo에 정말 남은 product question이 있는지 다시 확인한다.
-2. 실질적인 다음 구현이 필요하면 우선 `crill`에서
+1. 실제 zero-state machine이나 clean shell에서 `install.sh`, `brew install`, `cautilus update`를 한번씩 smoke한다.
+2. `cautilus` 바이너리 설치 surface가 실제로 안정적이면 그 다음 `crill`에서
    `scripts/cautilus/cli-product-scan/` seed를 실제 확장으로 다듬는다.
-3. `cautilus`에서 후속 정리가 필요하다면 history note 정리 정도만 본다.
+3. `cautilus`에서 남은 정리는 history note 정리 정도다.
    - [docs/temp-product-decisions-2026-04-10.md](./temp-product-decisions-2026-04-10.md)
-4. decision log 기준으로 남은 점검 포인트는 repo-agnostic framing의 잔여물뿐이다.
-   - product-facing 본문에 repo name이 개념 설명 중심으로 새어 나오지 않는지 본다.
-   - consumer evidence appendix에서의 repo-specific naming은 허용된다.
 
 ## Discuss
 

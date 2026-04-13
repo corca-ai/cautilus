@@ -4,6 +4,8 @@
     "cautilus adapter init [args]",
     "cautilus version [--verbose] [--check]",
     "cautilus doctor [args]",
+    "cautilus install [--repo-root <path>] [--overwrite] [--json]",
+    "cautilus update [--repo-root <path>] [--json]",
     "cautilus workspace prepare-compare [args]",
     "cautilus workspace prune-artifacts [args]",
     "cautilus workspace start [args]",
@@ -30,6 +32,8 @@
     "cautilus adapter init --repo-root .",
     "cautilus version --verbose --check",
     "cautilus doctor --repo-root .",
+    "cautilus install --repo-root .",
+    "cautilus update --repo-root .",
     "cautilus workspace prepare-compare --repo-root . --baseline-ref origin/main --output-dir /tmp/cautilus-compare",
     "cautilus workspace prune-artifacts --root /tmp/cautilus-runs --keep-last 20",
     "eval \"$(cautilus workspace start --label mode-held-out)\"",
@@ -63,6 +67,12 @@
     },
     {
       "path": ["doctor"]
+    },
+    {
+      "path": ["install"]
+    },
+    {
+      "path": ["update"]
     },
     {
       "path": ["workspace", "prepare-compare"]

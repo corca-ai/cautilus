@@ -16,9 +16,16 @@ import (
 	"strings"
 	"time"
 
+	"github.com/corca-ai/cautilus/internal/cli"
 	"github.com/corca-ai/cautilus/internal/contracts"
 	"github.com/corca-ai/cautilus/internal/runtime"
 	bundledskills "github.com/corca-ai/cautilus/skills"
+)
+
+var (
+	latestReleaseMetadataForLifecycle = cli.LatestReleaseMetadata
+	installManagedReleaseForLifecycle = cli.InstallManagedRelease
+	runLifecycleCommandForUpdate      = runLifecycleCommand
 )
 
 //nolint:errcheck // CLI stderr reporting is best-effort.
@@ -114,43 +121,187 @@ func handleWorkspacePruneArtifacts(repoRoot string, cwd string, args []string, s
 }
 
 //nolint:errcheck // CLI stdout/stderr reporting is best-effort.
-func handleSkillsInstall(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
-	overwrite := false
-	for _, arg := range args {
-		if arg == "--overwrite" {
-			overwrite = true
-			continue
+func handleInstall(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	options, err := parseInstallArgs(args, cwd)
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	targetRepo := resolveRepoRoot(cwd, options.repoRoot)
+	var logBuffer bytes.Buffer
+	skill, err := installBundledSkill(targetRepo, options.overwrite, &logBuffer)
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	state, err := cli.InspectVersionState(repoRoot, cli.VersionStateOptions{Now: time.Now()})
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	summary := map[string]any{
+		"schemaVersion": "cautilus.install_summary.v1",
+		"status":        ternaryString(skill.Overwrote, "reinstalled", "installed"),
+		"repoRoot":      targetRepo,
+		"current":       state.Current,
+		"skill":         skill,
+		"messages":      logLines(logBuffer.String()),
+		"nextSteps": []string{
+			fmt.Sprintf("cautilus doctor --repo-root %s", targetRepo),
+		},
+	}
+	if options.json {
+		if err := writeJSON(stdout, summary); err != nil {
+			fmt.Fprintf(stderr, "%s\n", err)
+			return 1
 		}
-		fmt.Fprintf(stderr, "Unknown argument: %s\n", arg)
-		return 1
+		return 0
 	}
-	destinationDir := filepath.Join(cwd, ".agents", "skills", "cautilus")
-	destinationSkill := filepath.Join(destinationDir, "SKILL.md")
-	if err := migrateLegacyClaudeSkillsDir(cwd, stdout); err != nil {
+	writeLifecycleMessages(stdout, logLines(logBuffer.String()))
+	fmt.Fprintf(stdout, "Installed %s\n", skill.DestinationDir)
+	fmt.Fprintf(stdout, "Current CLI: v%s (%s)\n", state.Current.Version, state.Current.InstallKind)
+	fmt.Fprintf(stdout, "Next: cautilus doctor --repo-root %s\n", targetRepo)
+	return 0
+}
+
+//nolint:errcheck // CLI stdout/stderr reporting is best-effort.
+func handleSkillsInstall(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	options, err := parseInstallArgs(args, cwd)
+	if err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
-	if pathExists(destinationSkill) && !overwrite {
-		fmt.Fprintf(stderr, "%s already exists\nhint: use --overwrite to replace existing files\n", destinationSkill)
-		return 1
-	}
-	if overwrite {
-		_ = os.RemoveAll(destinationDir)
-	}
-	if err := os.MkdirAll(destinationDir, 0o755); err != nil {
+	var logBuffer bytes.Buffer
+	targetRepo := resolveRepoRoot(cwd, options.repoRoot)
+	skill, err := installBundledSkill(targetRepo, options.overwrite, &logBuffer)
+	if err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
-	if err := bundledskills.InstallCautilus(destinationDir); err != nil {
-		fmt.Fprintf(stderr, "%s\n", err)
-		return 1
-	}
-	if err := ensureClaudeSkillsSymlink(cwd); err != nil {
-		fmt.Fprintf(stderr, "%s\n", err)
-		return 1
-	}
-	fmt.Fprintf(stdout, "Installed %s\n", destinationDir)
+	writeLifecycleMessages(stdout, logLines(logBuffer.String()))
+	fmt.Fprintf(stdout, "Installed %s\n", skill.DestinationDir)
 	_, _ = fmt.Fprintln(stdout, "Installed skill expects `cautilus` to be available on PATH.")
+	return 0
+}
+
+//nolint:errcheck // CLI stdout/stderr reporting is best-effort.
+func handleUpdate(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	options, err := parseUpdateArgs(args, cwd)
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	current, err := cli.PackageVersionInfo(repoRoot)
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	latest, err := latestReleaseMetadataForLifecycle(ctx)
+	if err != nil {
+		fmt.Fprintf(stderr, "failed to resolve latest release: %s\n", err)
+		return 1
+	}
+	targetRepo := ""
+	if options.repoRoot != nil {
+		targetRepo = resolveRepoRoot(cwd, options.repoRoot)
+	}
+	summary := map[string]any{
+		"schemaVersion": "cautilus.update_summary.v1",
+		"current":       current,
+		"latest":        latest,
+	}
+	var nextSteps []string
+	var messages []string
+
+	if current.InstallKind == cli.InstallKindSourceCheckout {
+		summary["status"] = "manual_source_checkout"
+		summary["updated"] = false
+		nextSteps = append(nextSteps, "source checkout installs are updated by pulling the repo and rebuilding the CLI")
+		if targetRepo != "" {
+			skill, installErr := installBundledSkill(targetRepo, true, io.Discard)
+			if installErr != nil {
+				fmt.Fprintf(stderr, "%s\n", installErr)
+				return 1
+			}
+			summary["skill"] = skill
+			nextSteps = append(nextSteps, fmt.Sprintf("cautilus doctor --repo-root %s", targetRepo))
+		}
+		if options.json {
+			summary["nextSteps"] = nextSteps
+			if err := writeJSON(stdout, summary); err != nil {
+				fmt.Fprintf(stderr, "%s\n", err)
+				return 1
+			}
+			return 0
+		}
+		fmt.Fprintf(stdout, "Source checkout detected. Pull the repo and rebuild to update the CLI.\n")
+		if targetRepo != "" {
+			fmt.Fprintf(stdout, "Refreshed bundled skill in %s\n", targetRepo)
+			fmt.Fprintf(stdout, "Next: cautilus doctor --repo-root %s\n", targetRepo)
+		}
+		return 0
+	}
+
+	if cli.CompareVersions(latest.Version, current.Version) > 0 {
+		switch current.InstallKind {
+		case cli.InstallKindHomebrew:
+			output, runErr := runLifecycleCommandForUpdate("brew", "upgrade", "cautilus")
+			if runErr != nil {
+				fmt.Fprintf(stderr, "%s\n", runErr)
+				return 1
+			}
+			summary["channel"] = "homebrew"
+			summary["channelCommand"] = []string{"brew", "upgrade", "cautilus"}
+			summary["channelOutput"] = output
+			messages = append(messages, strings.TrimSpace(output))
+		case cli.InstallKindInstallScript, cli.InstallKindStandalone, cli.InstallKindUnknown:
+			installResult, installErr := installManagedReleaseForLifecycle(cli.ReleaseInstallOptions{
+				Version: "v" + latest.Version,
+			})
+			if installErr != nil {
+				fmt.Fprintf(stderr, "%s\n", installErr)
+				return 1
+			}
+			summary["channel"] = "managed_release"
+			summary["installResult"] = installResult
+			messages = append(messages, fmt.Sprintf("Installed Cautilus v%s to %s", installResult.Version, installResult.WrapperPath))
+			nextSteps = append(nextSteps, fmt.Sprintf("ensure %s is on PATH", filepath.Dir(installResult.WrapperPath)))
+		default:
+			nextSteps = append(nextSteps, "download the latest tagged release")
+		}
+		summary["status"] = "updated"
+		summary["updated"] = true
+	} else {
+		summary["status"] = "current"
+		summary["updated"] = false
+		messages = append(messages, fmt.Sprintf("Cautilus is already current at v%s", current.Version))
+	}
+
+	if targetRepo != "" {
+		skill, installErr := installBundledSkill(targetRepo, true, io.Discard)
+		if installErr != nil {
+			fmt.Fprintf(stderr, "%s\n", installErr)
+			return 1
+		}
+		summary["skill"] = skill
+		nextSteps = append(nextSteps, fmt.Sprintf("cautilus doctor --repo-root %s", targetRepo))
+	}
+	summary["messages"] = messages
+	summary["nextSteps"] = nextSteps
+
+	if options.json {
+		if err := writeJSON(stdout, summary); err != nil {
+			fmt.Fprintf(stderr, "%s\n", err)
+			return 1
+		}
+		return 0
+	}
+	writeLifecycleMessages(stdout, messages)
+	for _, step := range nextSteps {
+		fmt.Fprintf(stdout, "Next: %s\n", step)
+	}
 	return 0
 }
 
@@ -963,30 +1114,78 @@ func runGitStrict(repoRoot string, args []string) (string, error) {
 	return strings.TrimSpace(string(output)), nil
 }
 
-func migrateLegacyClaudeSkillsDir(repoRoot string, stdout io.Writer) error {
+type bundledSkillInstallResult struct {
+	DestinationDir       string `json:"destinationDir"`
+	DestinationSkill     string `json:"destinationSkill"`
+	ClaudeSkillsLink     string `json:"claudeSkillsLink"`
+	Overwrote            bool   `json:"overwrote"`
+	LegacyMigrated       bool   `json:"legacyMigrated"`
+	LegacySource         string `json:"legacySource,omitempty"`
+	LegacyDestination    string `json:"legacyDestination,omitempty"`
+	RequiresBinaryOnPath bool   `json:"requiresBinaryOnPath"`
+}
+
+func installBundledSkill(repoRoot string, overwrite bool, log io.Writer) (*bundledSkillInstallResult, error) {
+	destinationDir := filepath.Join(repoRoot, ".agents", "skills", "cautilus")
+	destinationSkill := filepath.Join(destinationDir, "SKILL.md")
+	migrated, err := migrateLegacyClaudeSkillsDir(repoRoot, log)
+	if err != nil {
+		return nil, err
+	}
+	if pathExists(destinationSkill) && !overwrite {
+		return nil, fmt.Errorf("%s already exists\nhint: use --overwrite to replace existing files", destinationSkill)
+	}
+	if overwrite {
+		_ = os.RemoveAll(destinationDir)
+	}
+	if err := os.MkdirAll(destinationDir, 0o755); err != nil {
+		return nil, err
+	}
+	if err := bundledskills.InstallCautilus(destinationDir); err != nil {
+		return nil, err
+	}
+	if err := ensureClaudeSkillsSymlink(repoRoot); err != nil {
+		return nil, err
+	}
+	result := &bundledSkillInstallResult{
+		DestinationDir:       destinationDir,
+		DestinationSkill:     destinationSkill,
+		ClaudeSkillsLink:     filepath.Join(repoRoot, ".claude", "skills"),
+		Overwrote:            overwrite,
+		RequiresBinaryOnPath: true,
+	}
+	if migrated {
+		result.LegacyMigrated = true
+		result.LegacySource = filepath.Join(repoRoot, ".claude", "skills")
+		result.LegacyDestination = filepath.Join(repoRoot, ".agents", "skills")
+	}
+	return result, nil
+}
+
+func migrateLegacyClaudeSkillsDir(repoRoot string, stdout io.Writer) (bool, error) {
 	claudeSkills := filepath.Join(repoRoot, ".claude", "skills")
 	agentsSkills := filepath.Join(repoRoot, ".agents", "skills")
 	info, err := os.Lstat(claudeSkills)
 	if err != nil {
 		if errors.Is(err, fs.ErrNotExist) {
-			return nil
+			return false, nil
 		}
-		return err
+		return false, err
 	}
 	if !info.IsDir() || info.Mode()&os.ModeSymlink != 0 {
-		return nil
+		return false, nil
 	}
 	if pathExists(agentsSkills) {
-		return os.RemoveAll(claudeSkills)
+		return true, os.RemoveAll(claudeSkills)
 	}
 	if err := os.MkdirAll(filepath.Join(repoRoot, ".agents"), 0o755); err != nil {
-		return err
+		return false, err
 	}
 	if err := os.Rename(claudeSkills, agentsSkills); err != nil {
-		return err
+		return false, err
 	}
 	_, _ = fmt.Fprintf(stdout, "Migrated %s -> %s\n", claudeSkills, agentsSkills)
-	return nil
+	return true, nil
 }
 
 func ensureClaudeSkillsSymlink(repoRoot string) error {
@@ -1000,6 +1199,33 @@ func ensureClaudeSkillsSymlink(repoRoot string) error {
 		return err
 	}
 	return os.Symlink(relativeTarget, claudeSkills)
+}
+
+func runLifecycleCommand(name string, args ...string) (string, error) {
+	command := exec.Command(name, args...)
+	output, err := command.CombinedOutput()
+	if err != nil {
+		return "", fmt.Errorf("%s", strings.TrimSpace(string(output)))
+	}
+	return strings.TrimSpace(string(output)), nil
+}
+
+func logLines(content string) []string {
+	lines := []string{}
+	for _, line := range strings.Split(strings.TrimSpace(content), "\n") {
+		trimmed := strings.TrimSpace(line)
+		if trimmed == "" {
+			continue
+		}
+		lines = append(lines, trimmed)
+	}
+	return lines
+}
+
+func writeLifecycleMessages(stdout io.Writer, messages []string) {
+	for _, message := range messages {
+		_, _ = fmt.Fprintln(stdout, message)
+	}
 }
 
 func progressLogger(quiet bool, stderr io.Writer) func(string) {

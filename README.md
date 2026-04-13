@@ -200,16 +200,30 @@ architecture, so no local Go toolchain is required for the public install
 path. `cautilus version --verbose` shows the local version provenance plus the
 last cached update-check state for the installed binary.
 
-Install the bundled skill into a host repo:
+Homebrew is also an official install path:
+
+```bash
+brew install corca-ai/tap/cautilus
+```
+
+Install or refresh the bundled skill into a host repo:
 
 ```bash
 cd /path/to/host-repo
-cautilus skills install
+cautilus install --repo-root .
 ```
 
 This creates `.agents/skills/cautilus/` as the canonical checked-in skill path
 and `.claude/skills -> ../.agents/skills` for Claude compatibility. The
-installed skill assumes `cautilus` is already on `PATH`.
+installed skill assumes `cautilus` is already on `PATH`. The lower-level
+compatibility command `cautilus skills install` remains available, but
+`cautilus install` is the canonical lifecycle entrypoint.
+
+Refresh the installed CLI and optionally the checked-in bundled skill:
+
+```bash
+cautilus update --repo-root /path/to/host-repo
+```
 
 Resolve an adapter in a target repo:
 
@@ -465,9 +479,11 @@ node scripts/agent-runtime/evaluate-adapter-mode.mjs --repo-root . --mode held_o
 
 The bundled skill surface lives at
 [skills/cautilus/SKILL.md](./skills/cautilus/SKILL.md).
-Use `cautilus skills install` to materialize that same bundled surface into a
-host repo under `.agents/skills/cautilus/`, with `.claude/skills` symlinked to
-`.agents/skills` for Claude compatibility.
+Use `cautilus install --repo-root .` to materialize that same bundled surface
+into a host repo under `.agents/skills/cautilus/`, with `.claude/skills`
+symlinked to `.agents/skills` for Claude compatibility. The lower-level
+compatibility command `cautilus skills install` remains available when a
+workflow needs to call the skill installer directly.
 
 For Codex local plugin testing, the repo also exposes a packaged copy of that
 skill through

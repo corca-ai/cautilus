@@ -39,8 +39,9 @@ git push origin main --tags
 The checked-in release workflow at
 [release-artifacts.yml](../.github/workflows/release-artifacts.yml)
 will re-run `verify`, build the tagged binary assets, compute checksums, render
-the Homebrew formula, generate GitHub artifact attestations from the checksum
-manifest, and attach those artifacts to the GitHub release.
+the Homebrew formula, publish the formula to the tap repo when
+`HOMEBREW_TAP_TOKEN` is available, generate GitHub artifact attestations from
+the checksum manifest, and attach those artifacts to the GitHub release.
 
 4. After GitHub exposes the release assets, verify the public installer path:
 
@@ -60,7 +61,7 @@ gh attestation verify \
   --repo corca-ai/cautilus
 ```
 
-7. If you need the source-archive checksum for the reference Homebrew formula:
+7. If you need the source-archive checksum for the Homebrew formula manually:
 
 ```bash
 node ./scripts/release/fetch-github-archive-sha256.mjs --version v0.2.0
@@ -74,7 +75,7 @@ node ./scripts/release/render-homebrew-formula.mjs \
   --sha256 <sha256>
 ```
 
-9. Update the Homebrew tap repo with the rendered formula.
+9. Confirm the Homebrew tap repo was updated with the rendered formula.
    The default target for this repo is `corca-ai/homebrew-tap`.
 
 ## Guardrails
@@ -88,5 +89,5 @@ node ./scripts/release/render-homebrew-formula.mjs \
   [docs/handoff.md](./handoff.md), and
   [docs/release-boundary.md](./release-boundary.md)
   in the same work unit.
-- Do not claim Homebrew tap publication until the tap repo actually exists and
-  points at tagged GitHub archives.
+- Keep the tap publication token name aligned with the shared org secret:
+  `HOMEBREW_TAP_TOKEN`.

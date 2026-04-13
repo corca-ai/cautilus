@@ -98,6 +98,10 @@ func nativeHandler(path []string) handlerFunc {
 		return handleVersion
 	case "doctor":
 		return handleDoctor
+	case "install":
+		return handleInstall
+	case "update":
+		return handleUpdate
 	case "workspace prepare-compare":
 		return handleWorkspacePrepareCompare
 	case "workspace prune-artifacts":
@@ -197,6 +201,17 @@ type initArgs struct {
 type versionArgs struct {
 	verbose bool
 	check   bool
+}
+
+type installArgs struct {
+	repoRoot  *string
+	overwrite bool
+	json      bool
+}
+
+type updateArgs struct {
+	repoRoot *string
+	json     bool
 }
 
 type workspaceStartArgs struct {
@@ -907,6 +922,52 @@ func parseVersionArgs(args []string) (*versionArgs, error) {
 			options.verbose = true
 		default:
 			return nil, fmt.Errorf("unexpected argument %q", args[index])
+		}
+	}
+	return options, nil
+}
+
+func parseInstallArgs(args []string, cwd string) (*installArgs, error) {
+	options := &installArgs{}
+	for index := 0; index < len(args); index++ {
+		arg := args[index]
+		switch arg {
+		case "--overwrite":
+			options.overwrite = true
+		case "--json":
+			options.json = true
+		case "--repo-root":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			resolved := resolvePath(cwd, value)
+			options.repoRoot = &resolved
+		default:
+			return nil, fmt.Errorf("unknown argument: %s", arg)
+		}
+	}
+	return options, nil
+}
+
+func parseUpdateArgs(args []string, cwd string) (*updateArgs, error) {
+	options := &updateArgs{}
+	for index := 0; index < len(args); index++ {
+		arg := args[index]
+		switch arg {
+		case "--json":
+			options.json = true
+		case "--repo-root":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			resolved := resolvePath(cwd, value)
+			options.repoRoot = &resolved
+		default:
+			return nil, fmt.Errorf("unknown argument: %s", arg)
 		}
 	}
 	return options, nil

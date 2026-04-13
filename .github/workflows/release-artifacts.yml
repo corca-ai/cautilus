@@ -64,6 +64,16 @@ jobs:
         uses: actions/attest@v4
         with:
           subject-checksums: dist/cautilus-${{ github.ref_name }}-checksums.txt
+      - name: Publish Homebrew formula
+        if: ${{ secrets.HOMEBREW_TAP_TOKEN != '' }}
+        env:
+          HOMEBREW_TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+        run: |
+          TAP_REPO="$(node -e 'import("./scripts/release/resolve-release-targets.mjs").then((mod) => process.stdout.write(mod.resolveReleaseTargets().tapRepo))')"
+          node ./scripts/release/publish-homebrew-formula.mjs \
+            --tap-repo "$TAP_REPO" \
+            --formula-file dist/Cautilus.rb \
+            --version "${GITHUB_REF_NAME}"
       - uses: softprops/action-gh-release@v2
         with:
           files: |

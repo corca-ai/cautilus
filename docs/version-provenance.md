@@ -25,8 +25,7 @@ Define one product-owned contract for:
 - cached latest-release checks
 - interactive update notices
 - install-channel-aware upgrade guidance
-
-This slice does not include in-place self-update or package-manager mutation.
+- explicit `cautilus update` behavior for supported install channels
 
 ## Fixed Decisions
 
@@ -47,12 +46,14 @@ This slice does not include in-place self-update or package-manager mutation.
 - Update messaging should be install-channel-aware when the install surface can
   be detected honestly:
   - Homebrew users should be told to use `brew upgrade`
-  - raw binary / `install.sh` users should be told to reinstall through the
-    binary release path
+  - raw binary / `install.sh` users should be told that `cautilus update`
+    re-materializes the managed binary release wrapper
 - The current public trust model stays:
   - tagged GitHub binary assets
   - checksum verification
   - GitHub artifact attestations
+- `cautilus update` may mutate the explicit install channel only when the
+  operator asked for that command directly.
 
 ## Probe Questions
 
@@ -65,14 +66,14 @@ This slice does not include in-place self-update or package-manager mutation.
 
 ## Deferred Decisions
 
-- In-place `cautilus self update`
+- full source-checkout update orchestration
 - Mandatory signing beyond the current checksum + GitHub attestation baseline
 - Background daemons, cron jobs, or always-on polling
 - Cross-repo shared library extraction for this logic
 
 ## Non-Goals
 
-- mutate Homebrew, apt, npm, or other host package managers automatically
+- mutate package managers during unrelated commands or background checks
 - add network traffic to non-interactive automation by default
 - block command execution on release API availability
 - infer install provenance from fragile heuristics when the runtime does not
@@ -123,4 +124,6 @@ docs.
    explicit inspection and refresh surfaces.
 4. Add interactive-only cached update notices for installed standalone binary
    usage.
-5. Keep `cautilus --version` unchanged as the minimal machine-readable path.
+5. Add explicit `cautilus update` handling for Homebrew and managed release
+   installs.
+6. Keep `cautilus --version` unchanged as the minimal machine-readable path.

@@ -25,7 +25,11 @@ standalone acceptance boundary만 남긴다.
 | bin/cautilus | fixed | exec go -C |
 | internal/cli/command-registry.json | file_exists |  |
 | internal/cli/command-registry.json | fixed | cautilus doctor [args] |
+| internal/cli/command-registry.json | fixed | cautilus install [--repo-root <path>] [--overwrite] [--json] |
+| internal/cli/command-registry.json | fixed | cautilus update [--repo-root <path>] [--json] |
 | internal/cli/command-registry.json | fixed | "path": ["version"] |
+| internal/cli/command-registry.json | fixed | "path": ["install"] |
+| internal/cli/command-registry.json | fixed | "path": ["update"] |
 | internal/cli/command-registry.json | fixed | "path": ["skills", "install"] |
 | internal/cli/command-registry.json | fixed | "path": ["scenario", "summarize-telemetry"] |
 | .claude-plugin/marketplace.json | file_exists |  |
@@ -36,7 +40,7 @@ standalone acceptance boundary만 남긴다.
 | bin/cautilus.test.mjs | file_exists |  |
 | bin/cautilus.test.mjs | fixed | repo shim forwards --version to the Go CLI entry |
 | bin/cautilus.test.mjs | fixed | repo shim preserves caller cwd while resolving doctor against a consumer repo |
-| bin/cautilus.test.mjs | fixed | repo shim keeps bundled skills install working from a consumer repo |
+| bin/cautilus.test.mjs | fixed | repo shim keeps lifecycle install working from a consumer repo |
 | skills/bundled.go | file_exists |  |
 | skills/bundled.go | fixed | go:embed cautilus |
 | internal/app/cli_smoke_test.go | file_exists |  |
@@ -44,7 +48,7 @@ standalone acceptance boundary만 남긴다.
 | internal/app/cli_smoke_test.go | fixed | TestCLIStandaloneTempRepoCanAdoptCautilusWithoutHostSpecificPaths |
 | internal/app/cli_smoke_test.go | fixed | TestCLISkillsInstallCreatesRepoLocalCanonicalSkill |
 | skills/cautilus/SKILL.md | file_exists |  |
-| skills/cautilus/SKILL.md | fixed | cautilus skills install |
+| skills/cautilus/SKILL.md | fixed | cautilus install --repo-root . |
 | skills/cautilus/SKILL.md | fixed | cautilus adapter resolve --repo-root . |
 | skills/cautilus/SKILL.md | fixed | cautilus doctor --repo-root . |
 | skills/cautilus/SKILL.md | fixed | cautilus workspace prepare-compare |
@@ -69,7 +73,7 @@ standalone acceptance boundary만 남긴다.
 | skills/cautilus/agents/openai.yaml | file_exists |  |
 | skills/cautilus/agents/openai.yaml | fixed | Cautilus |
 | plugins/cautilus/skills/cautilus/SKILL.md | file_exists |  |
-| plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus skills install |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus install --repo-root . |
 | plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus adapter resolve --repo-root . |
 | plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus doctor --repo-root . |
 | plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus workspace prepare-compare |
@@ -105,7 +109,7 @@ standalone acceptance boundary만 남긴다.
 현재 단계에서 standalone surface는 최소한 아래를 만족해야 한다.
 
 - binary와 bundled skill이 같은 workflow entrypoint를 가리킨다.
-- host repo는 `cautilus skills install`로 canonical `.agents/skills/cautilus` surface를 materialize할 수 있다.
+- host repo는 `cautilus install --repo-root .`로 canonical `.agents/skills/cautilus` surface를 materialize할 수 있다.
 - packaged local skill surface는 repo-local Codex/Claude marketplace로도 설명된다.
 - adapter resolve/init/doctor/workspace prepare-compare/workspace prune-artifacts/workspace start/scenario normalize chatbot/scenario normalize skill/scenario summarize-telemetry/scenario prepare-input/scenario propose/evidence prepare-input/evidence bundle/report build/mode evaluate/optimize prepare-input/optimize propose/optimize build-artifact/review prepare-input/review build-prompt-input/review render-prompt/review variants는 host-local script path 없이 설명된다.
 - host repo repoint는 제품 정의가 아니라 consumer migration 단계로 남아 있다.

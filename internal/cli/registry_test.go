@@ -34,13 +34,19 @@ func TestMatchCommandReturnsNilForUnknownCommand(t *testing.T) {
 	}
 }
 
-func TestRenderUsageIncludesSkillsInstall(t *testing.T) {
+func TestRenderUsageIncludesLifecycleCommands(t *testing.T) {
 	usage, err := RenderUsage()
 	if err != nil {
 		t.Fatalf("RenderUsage returned error: %v", err)
 	}
+	if !strings.Contains(usage, "cautilus install [--repo-root <path>] [--overwrite] [--json]") {
+		t.Fatalf("usage missing install line:\n%s", usage)
+	}
 	if !strings.Contains(usage, "cautilus skills install [--overwrite]") {
 		t.Fatalf("usage missing skills install line:\n%s", usage)
+	}
+	if !strings.Contains(usage, "cautilus update [--repo-root <path>] [--json]") {
+		t.Fatalf("usage missing update line:\n%s", usage)
 	}
 	if !strings.Contains(usage, "cautilus review variants --repo-root . --workspace . --output-dir /tmp/cautilus-review") {
 		t.Fatalf("usage missing review variants example:\n%s", usage)
