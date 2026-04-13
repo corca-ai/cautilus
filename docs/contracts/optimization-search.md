@@ -352,7 +352,8 @@ review-admissible parents and should prefer:
 
 - stronger combined held-out frontier coverage first
 - then explicit candidate signals such as `expectedImprovements`,
-  `preservedStrengths`, and lower `riskNotes`
+  `preservedStrengths`, and lower `riskNotes`, with scenario-aware weighting
+  toward the weakest current frontier scenarios
 - then cost and duration telemetry as late tie-breakers
 
 `final_only` should be the default because it preserves the bounded search
@@ -485,8 +486,8 @@ The current bounded slice already proves:
 - optional bounded merge generation from complementary frontier parents
 - optional frontier-promotion review checkpoint execution
 - checkpoint rejection feedback reinjection into later mutation prompts
-- system-aware two-parent merge selection using candidate metadata and
-  telemetry tie-breakers
+- scenario-aware two-parent merge selection using candidate metadata,
+  weakest-frontier weighting, and telemetry tie-breakers
 - final-only full-gate checkpoint execution with ranked-frontier fallback
 - selected-candidate emission and proposal bridging back into the existing
   optimize artifact flow

@@ -1274,6 +1274,53 @@ test("selectMergeParents prefers lower-risk metadata when held-out pair metrics 
 	assert.deepEqual(selected?.map((candidate) => candidate.id), ["seed", "g1-stable"]);
 });
 
+test("selectMergeParents weights metadata toward the weakest frontier scenario", () => {
+	const scenarioIds = [
+		"scenario-1",
+		"scenario-2",
+		"scenario-3",
+		"scenario-4",
+		"scenario-5",
+		"scenario-6",
+		"scenario-7",
+		"scenario-8",
+		"scenario-9",
+		"scenario-10",
+	];
+	const seed = {
+		id: "seed",
+		heldOutEntries: scenarioIds.map((scenarioId, index) => ({
+			scenarioId,
+			score: index === scenarioIds.length - 1 ? 60 : 96,
+		})),
+		telemetry: { totalCostUsd: 0.03, totalDurationMs: 2000 },
+	};
+	const broadPolish = {
+		id: "g1-broad",
+		expectedImprovements: ["scenario-1"],
+		preservedStrengths: ["keeps the broad operator framing crisp"],
+		riskNotes: ["held-out should confirm the broader framing stays concise"],
+		heldOutEntries: scenarioIds.map((scenarioId, index) => ({
+			scenarioId,
+			score: index === scenarioIds.length - 1 ? 89 : 95,
+		})),
+		telemetry: { totalCostUsd: 0.05, totalDurationMs: 2100 },
+	};
+	const weakestRepair = {
+		id: "g1-weakest",
+		expectedImprovements: ["scenario-10"],
+		preservedStrengths: ["keeps the narrow recovery path explicit"],
+		riskNotes: ["scenario-3 may still need held-out confirmation"],
+		heldOutEntries: scenarioIds.map((scenarioId, index) => ({
+			scenarioId,
+			score: index === scenarioIds.length - 1 ? 89 : 95,
+		})),
+		telemetry: { totalCostUsd: 0.05, totalDurationMs: 2100 },
+	};
+	const selected = selectMergeParents([seed, broadPolish, weakestRepair], scenarioIds);
+	assert.deepEqual(selected?.map((candidate) => candidate.id), ["seed", "g1-weakest"]);
+});
+
 test("run-optimize-search falls back to the next frontier candidate when final review rejects the leader", () => {
 	const { root, artifactRoot, optimizeInputPath, heldOutResultsPath } = createCheckpointFallbackFixture({
 		includeReviewVariants: true,
