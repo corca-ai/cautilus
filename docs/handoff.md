@@ -26,6 +26,7 @@
   - reflective mutation
   - multi-generation Pareto frontier retention
   - optional bounded merge candidate
+  - system-aware 2-parent merge selection
   - optional `frontier_promotions` review checkpoint execution
   - checkpoint rejection feedback reinjection into later mutation prompts
   - final-only full-gate checkpoint execution
@@ -53,11 +54,11 @@
 - `npm run lint:specs`
 - `npm run verify`
 - `npm run hooks:check`
-- latest full verify after frontier-promotion review checkpoint slice: passed
+- latest full verify after system-aware merge selection slice: passed
 
 ## Next Session
 
-1. merge parent selection을 더 system-aware하게 만들지, 아니면 multi-parent synthesis를 먼저 열지 결정한다.
+1. multi-parent synthesis를 먼저 열지, 아니면 현재 2-parent merge selection에 scenario-aware weighting을 더 얹을지 결정한다.
 2. `medium`/`heavy` budget의 기본 review checkpoint policy를 올릴지 운영 비용 기준으로 판단한다.
 3. checkpoint feedback를 scenario-aware하게 더 잘 매핑할지, 아니면 현재처럼 candidate-level feedback으로 둘지 정한다.
 4. 마지막으로 frontier candidate pruning이 review-rejected lineage를 얼마나 오래 유지할지 운영 비용 기준으로 판단한다.
@@ -79,8 +80,8 @@
   아니다. 현재는 strong `v1.5`다.
 - 두 번째 오해: 현재 feedback reinjection이 scenario-aware root cause까지 이미 푼다는 해석.
   아니다. 지금은 frontier review rejection을 candidate-level feedback으로 다음 mutation prompt에 다시 주입하는 수준이다.
-- 세 번째 오해: merge가 이미 fully system-aware하다는 해석.
-  아니다. 현재 merge는 bounded 2-parent synthesis다.
+- 세 번째 오해: merge가 이미 multi-parent나 scenario-aware root cause까지 푼다는 해석.
+  아니다. 현재 merge는 system-aware tie-break가 들어간 bounded 2-parent synthesis다.
 
 ## References
 

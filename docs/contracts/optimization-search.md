@@ -347,6 +347,14 @@ In v1, review checkpoint policy means:
   - review-rejected frontier candidates may still seed later mutation, but
     merge-parent selection remains limited to review-admissible candidates
 
+In the current bounded slice, merge-parent selection stays bounded to two
+review-admissible parents and should prefer:
+
+- stronger combined held-out frontier coverage first
+- then explicit candidate signals such as `expectedImprovements`,
+  `preservedStrengths`, and lower `riskNotes`
+- then cost and duration telemetry as late tie-breakers
+
 `final_only` should be the default because it preserves the bounded search
 shape at lower cost while existing report and review evidence still constrain
 mutation.
@@ -477,6 +485,8 @@ The current bounded slice already proves:
 - optional bounded merge generation from complementary frontier parents
 - optional frontier-promotion review checkpoint execution
 - checkpoint rejection feedback reinjection into later mutation prompts
+- system-aware two-parent merge selection using candidate metadata and
+  telemetry tie-breakers
 - final-only full-gate checkpoint execution with ranked-frontier fallback
 - selected-candidate emission and proposal bridging back into the existing
   optimize artifact flow

@@ -6,6 +6,7 @@ import { execFileSync, spawnSync } from "node:child_process";
 import test from "node:test";
 
 import { buildOptimizeSearchInput } from "./build-optimize-search-input.mjs";
+import { selectMergeParents } from "./optimize-search-merge.mjs";
 import { runOptimizeSearch } from "./run-optimize-search.mjs";
 
 function writeJson(path, value) {
@@ -1235,6 +1236,42 @@ EOF
 		rmSync(root, { recursive: true, force: true });
 		rmSync(artifactRoot, { recursive: true, force: true });
 	}
+});
+
+test("selectMergeParents prefers lower-risk metadata when held-out pair metrics tie", () => {
+	const scenarioIds = ["operator-recovery", "operator-follow-up"];
+	const seed = {
+		id: "seed",
+		heldOutEntries: [
+			{ scenarioId: "operator-recovery", score: 95 },
+			{ scenarioId: "operator-follow-up", score: 55 },
+		],
+		telemetry: { totalCostUsd: 0.03, totalDurationMs: 2000 },
+	};
+	const noisyFollowup = {
+		id: "g1-noisy",
+		expectedImprovements: ["operator-follow-up"],
+		preservedStrengths: ["adds an exhaustive follow-up appendix"],
+		riskNotes: ["operator-follow-up may become too verbose", "operator recovery focus may blur"],
+		heldOutEntries: [
+			{ scenarioId: "operator-recovery", score: 55 },
+			{ scenarioId: "operator-follow-up", score: 96 },
+		],
+		telemetry: { totalCostUsd: 0.07, totalDurationMs: 1900 },
+	};
+	const stableFollowup = {
+		id: "g1-stable",
+		expectedImprovements: ["operator-follow-up"],
+		preservedStrengths: ["keeps the follow-up handoff map crisp"],
+		riskNotes: ["held-out should confirm the shorter handoff stays sufficient"],
+		heldOutEntries: [
+			{ scenarioId: "operator-recovery", score: 55 },
+			{ scenarioId: "operator-follow-up", score: 96 },
+		],
+		telemetry: { totalCostUsd: 0.07, totalDurationMs: 1900 },
+	};
+	const selected = selectMergeParents([seed, noisyFollowup, stableFollowup], scenarioIds);
+	assert.deepEqual(selected?.map((candidate) => candidate.id), ["seed", "g1-stable"]);
 });
 
 test("run-optimize-search falls back to the next frontier candidate when final review rejects the leader", () => {

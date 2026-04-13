@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { execFileSync, spawnSync } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, relative, resolve } from "node:path";
+import { selectMergeParents } from "./optimize-search-merge.mjs";
 import { buildMergePrompt, buildMutationPrompt } from "./optimize-search-prompts.mjs";
 
 const TOOL_ROOT = resolve(dirname(new URL(import.meta.url).pathname), "..", "..");
@@ -356,58 +357,6 @@ function generateCandidate({ packet, artifactRoot, parentCandidate, promptText, 
 			outputFile,
 		},
 	};
-}
-
-function candidateCoverageScore(candidate, scenarioIds) {
-	return scenarioIds.reduce((count, scenarioId) => {
-		const score = heldOutScoreForCandidate(candidate, scenarioId);
-		return count + (typeof score === "number" && score >= 90 ? 1 : 0);
-	}, 0);
-}
-
-function pairScenarioStats(left, right, scenarioIds) {
-	let coverage = 0;
-	let average = 0;
-	for (const scenarioId of scenarioIds) {
-		const leftScore = heldOutScoreForCandidate(left, scenarioId) ?? Number.NEGATIVE_INFINITY;
-		const rightScore = heldOutScoreForCandidate(right, scenarioId) ?? Number.NEGATIVE_INFINITY;
-		const bestScore = Math.max(leftScore, rightScore);
-		if (bestScore > Number.NEGATIVE_INFINITY) {
-			coverage += 1;
-		}
-		average += bestScore;
-	}
-	return { coverage, average };
-}
-
-function pairCandidateMetrics(left, right, scenarioIds) {
-	const scenarioStats = pairScenarioStats(left, right, scenarioIds);
-	return {
-		coverage: scenarioStats.coverage + candidateCoverageScore(left, scenarioIds) + candidateCoverageScore(right, scenarioIds),
-		average: scenarioStats.average,
-	};
-}
-
-function selectMergeParents(frontierCandidates, scenarioIds) {
-	if (frontierCandidates.length < 2) {
-		return null;
-	}
-	let bestPair = null;
-	let bestCoverage = -1;
-	let bestAverage = -1;
-	for (let leftIndex = 0; leftIndex < frontierCandidates.length; leftIndex += 1) {
-		for (let rightIndex = leftIndex + 1; rightIndex < frontierCandidates.length; rightIndex += 1) {
-			const left = frontierCandidates[leftIndex];
-			const right = frontierCandidates[rightIndex];
-			const metrics = pairCandidateMetrics(left, right, scenarioIds);
-			if (metrics.coverage > bestCoverage || (metrics.coverage === bestCoverage && metrics.average > bestAverage)) {
-				bestCoverage = metrics.coverage;
-				bestAverage = metrics.average;
-				bestPair = [left, right];
-			}
-		}
-	}
-	return bestPair;
 }
 
 function mergeBackend(packet) {
