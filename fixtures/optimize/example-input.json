@@ -5,9 +5,9 @@
   "optimizationTarget": "prompt",
   "intentProfile": {
     "schemaVersion": "cautilus.behavior_intent.v1",
-    "intentId": "intent-cli-recovery-guidance",
-    "summary": "CLI guidance should stay legible under recovery pressure.",
-    "behaviorSurface": "operator_cli",
+    "intentId": "intent-operator-recovery-guidance",
+    "summary": "Operator guidance should stay legible under recovery pressure.",
+    "behaviorSurface": "operator_behavior",
     "successDimensions": [
       {
         "id": "recovery_next_step",
@@ -51,14 +51,14 @@
   "report": {
     "schemaVersion": "cautilus.report_packet.v2",
     "generatedAt": "2026-04-11T00:02:00.000Z",
-    "candidate": "feature/cli",
+    "candidate": "feature/operator-guidance",
     "baseline": "origin/main",
-    "intent": "CLI guidance should stay legible under recovery pressure.",
+    "intent": "Operator guidance should stay legible under recovery pressure.",
     "intentProfile": {
       "schemaVersion": "cautilus.behavior_intent.v1",
-      "intentId": "intent-cli-recovery-guidance",
-      "summary": "CLI guidance should stay legible under recovery pressure.",
-      "behaviorSurface": "operator_cli",
+      "intentId": "intent-operator-recovery-guidance",
+      "summary": "Operator guidance should stay legible under recovery pressure.",
+      "behaviorSurface": "operator_behavior",
       "successDimensions": [
         {
           "id": "recovery_next_step",

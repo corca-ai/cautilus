@@ -154,31 +154,6 @@ func handleSkillsInstall(repoRoot string, cwd string, args []string, stdout io.W
 	return 0
 }
 
-//nolint:errcheck // CLI stderr reporting is best-effort.
-func handleCliEvaluate(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
-	options, err := parseInputOutputArgs(args)
-	if err != nil {
-		fmt.Fprintf(stderr, "%s\n", err)
-		return 1
-	}
-	inputPath := resolvePath(cwd, options.input)
-	packet, err := readJSONObject(inputPath)
-	if err != nil {
-		fmt.Fprintf(stderr, "Failed to read JSON from %s: %s\n", options.input, err)
-		return 1
-	}
-	evaluation, err := evaluateCLIIntent(packet, filepath.Dir(inputPath), time.Now())
-	if err != nil {
-		fmt.Fprintf(stderr, "%s\n", err)
-		return 1
-	}
-	if err := writeOutput(stdout, cwd, options.output, evaluation); err != nil {
-		fmt.Fprintf(stderr, "%s\n", err)
-		return 1
-	}
-	return 0
-}
-
 //nolint:errcheck // CLI stdout/stderr reporting is best-effort.
 func handleReviewVariants(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
 	options, err := parseReviewVariantsArgs(args, cwd)
@@ -1092,119 +1067,7 @@ func renderTemplate(template string, replacements map[string]string) (string, er
 	return builder.String(), nil
 }
 
-func evaluateCLIIntent(input map[string]any, baseDir string, now time.Time) (map[string]any, error) {
-	if input["schemaVersion"] != contracts.CliEvaluationInputsSchema {
-		return nil, fmt.Errorf("schemaVersion must be %s", contracts.CliEvaluationInputsSchema)
-	}
-	commandParts := stringArray(input["command"])
-	if len(commandParts) == 0 {
-		return nil, fmt.Errorf("command must be a non-empty array")
-	}
-	workingDirectory := resolvePath(baseDir, firstNonEmpty(anyString(input["workingDirectory"]), "."))
-	env := map[string]string{}
-	for key, value := range asStringMap(input["environment"]) {
-		env[key] = value
-	}
-	stdinText := anyString(input["stdinText"])
-	timeoutMs := intFromAny(input["timeoutMs"], 30000)
-	observation, err := runCLIProcess(commandParts, workingDirectory, env, stdinText, timeoutMs)
-	if err != nil {
-		return nil, err
-	}
-	expectationResults, err := evaluateCLIExpectations(asMapAny(input["expectations"]), observation, workingDirectory)
-	if err != nil {
-		return nil, err
-	}
-	recommendation := "reject"
-	failedCount := 0
-	for _, raw := range expectationResults {
-		if anyString(raw.(map[string]any)["status"]) != "passed" {
-			failedCount++
-		}
-	}
-	if failedCount == 0 {
-		recommendation = "accept-now"
-	}
-	observationExitCode := intFromAny(observation["exitCode"], 0)
-	expectedExitCode := intFromAny(asMapAny(input["expectations"])["exitCode"], observationExitCode)
-	reportInput := map[string]any{
-		"schemaVersion": contracts.ReportInputsSchema,
-		"candidate":     input["candidate"],
-		"baseline":      input["baseline"],
-		"intent":        input["intent"],
-		"commands": []any{
-			map[string]any{
-				"mode":    input["mode"],
-				"command": strings.Join(commandParts, " "),
-				"label":   input["surfaceId"],
-			},
-		},
-		"commandObservations": []any{
-			map[string]any{
-				"stage":       input["mode"],
-				"index":       1,
-				"status":      ternaryString(observationExitCode == expectedExitCode, "passed", "failed"),
-				"command":     strings.Join(commandParts, " "),
-				"startedAt":   observation["startedAt"],
-				"completedAt": observation["completedAt"],
-				"durationMs":  observation["durationMs"],
-				"exitCode":    observation["exitCode"],
-			},
-		},
-		"modeRuns": []any{
-			map[string]any{
-				"mode":       input["mode"],
-				"status":     ternaryString(failedCount == 0, "passed", "failed"),
-				"durationMs": observation["durationMs"],
-				"scenarioResults": map[string]any{
-					"schemaVersion": contracts.ScenarioResultsSchema,
-					"source":        "cli_evaluate",
-					"mode":          input["mode"],
-					"results": []any{
-						map[string]any{
-							"scenarioId":  input["surfaceId"],
-							"status":      ternaryString(failedCount == 0, "passed", "failed"),
-							"durationMs":  observation["durationMs"],
-							"startedAt":   observation["startedAt"],
-							"completedAt": observation["completedAt"],
-						},
-					},
-				},
-			},
-		},
-		"improved":            ternarySlice(failedCount == 0, []any{input["surfaceId"]}, []any{}),
-		"regressed":           ternarySlice(failedCount == 0, []any{}, []any{input["surfaceId"]}),
-		"unchanged":           []any{},
-		"noisy":               []any{},
-		"humanReviewFindings": []any{},
-		"recommendation":      recommendation,
-	}
-	report, err := runtime.BuildReportPacket(reportInput, now)
-	if err != nil {
-		return nil, err
-	}
-	return map[string]any{
-		"schemaVersion":      contracts.CliEvaluationPacketSchema,
-		"generatedAt":        now.UTC().Format(time.RFC3339Nano),
-		"candidate":          input["candidate"],
-		"baseline":           input["baseline"],
-		"intent":             input["intent"],
-		"surfaceId":          input["surfaceId"],
-		"mode":               input["mode"],
-		"workingDirectory":   workingDirectory,
-		"command":            commandParts,
-		"observation":        observation,
-		"expectationResults": expectationResults,
-		"summary": map[string]any{
-			"passedExpectationCount": len(expectationResults) - failedCount,
-			"failedExpectationCount": failedCount,
-			"recommendation":         recommendation,
-		},
-		"report": report,
-	}, nil
-}
-
-func runCLIProcess(commandParts []string, workingDirectory string, extraEnv map[string]string, stdinText string, timeoutMs int) (map[string]any, error) {
+func runCommandProcess(commandParts []string, workingDirectory string, extraEnv map[string]string, stdinText string, timeoutMs int) (map[string]any, error) {
 	ctx := context.Background()
 	if timeoutMs > 0 {
 		var cancel context.CancelFunc
@@ -1241,61 +1104,6 @@ func runCLIProcess(commandParts []string, workingDirectory string, extraEnv map[
 		"stderr":      stderrBuffer.String(),
 		"error":       nilIfEmpty(errorString(runErr)),
 	}, nil
-}
-
-func evaluateCLIExpectations(expectations map[string]any, observation map[string]any, workingDirectory string) ([]any, error) {
-	results := []any{}
-	if exitCode, ok := anyInt(expectations["exitCode"]); ok {
-		actual := intFromAny(observation["exitCode"], -1)
-		results = append(results, expectationResult("exit-code", actual == exitCode, fmt.Sprintf("Expected exit code %d, saw %d.", exitCode, actual), fmt.Sprintf("Exit code matched %d.", exitCode)))
-	}
-	for index, entry := range stringArray(expectations["stdoutContains"]) {
-		results = append(results, containsExpectation(fmt.Sprintf("stdout-contains-%d", index+1), anyString(observation["stdout"]), entry, true))
-	}
-	for index, entry := range stringArray(expectations["stderrContains"]) {
-		results = append(results, containsExpectation(fmt.Sprintf("stderr-contains-%d", index+1), anyString(observation["stderr"]), entry, true))
-	}
-	for index, entry := range stringArray(expectations["stdoutNotContains"]) {
-		results = append(results, containsExpectation(fmt.Sprintf("stdout-not-contains-%d", index+1), anyString(observation["stdout"]), entry, false))
-	}
-	for index, entry := range stringArray(expectations["stderrNotContains"]) {
-		results = append(results, containsExpectation(fmt.Sprintf("stderr-not-contains-%d", index+1), anyString(observation["stderr"]), entry, false))
-	}
-	for index, entry := range stringArray(expectations["filesExist"]) {
-		path := resolvePath(workingDirectory, entry)
-		results = append(results, expectationResult(fmt.Sprintf("file-exists-%d", index+1), pathExists(path), fmt.Sprintf("Expected file %s to exist.", entry), fmt.Sprintf("File exists: %s.", entry)))
-	}
-	for index, raw := range arrayOrEmpty(expectations["filesContain"]) {
-		record := asMapAny(raw)
-		path := resolvePath(workingDirectory, anyString(record["path"]))
-		content, err := os.ReadFile(path)
-		if err != nil {
-			results = append(results, expectationResult(fmt.Sprintf("file-contains-%d", index+1), false, fmt.Sprintf("Expected file %s to contain %q.", anyString(record["path"]), anyString(record["text"])), fmt.Sprintf("File %s contained %q.", anyString(record["path"]), anyString(record["text"]))))
-			continue
-		}
-		text := string(content)
-		needle := anyString(record["text"])
-		results = append(results, expectationResult(fmt.Sprintf("file-contains-%d", index+1), strings.Contains(text, needle), fmt.Sprintf("Expected file %s to contain %q.", anyString(record["path"]), needle), fmt.Sprintf("File %s contained %q.", anyString(record["path"]), needle)))
-	}
-	if len(results) == 0 {
-		return nil, fmt.Errorf("expectations must declare at least one bounded check")
-	}
-	return results, nil
-}
-
-func expectationResult(id string, passed bool, failedMessage string, passedMessage string) map[string]any {
-	if passed {
-		return map[string]any{"id": id, "status": "passed", "message": passedMessage}
-	}
-	return map[string]any{"id": id, "status": "failed", "message": failedMessage}
-}
-
-func containsExpectation(id string, haystack string, needle string, shouldContain bool) map[string]any {
-	contains := strings.Contains(haystack, needle)
-	if shouldContain {
-		return expectationResult(id, contains, fmt.Sprintf("Expected output to contain %q.", needle), fmt.Sprintf("Output contained %q.", needle))
-	}
-	return expectationResult(id, !contains, fmt.Sprintf("Expected output not to contain %q.", needle), fmt.Sprintf("Output did not contain %q.", needle))
 }
 
 func resolveReviewVariantPromptArtifacts(options *reviewVariantsArgs, adapterPayload *runtime.AdapterPayload, outputDir string) (*reviewPromptArtifacts, error) {
@@ -1701,17 +1509,6 @@ func asMapAny(value any) map[string]any {
 	return record
 }
 
-func asStringMap(value any) map[string]string {
-	record := asMapAny(value)
-	result := map[string]string{}
-	for key, raw := range record {
-		if text, ok := raw.(string); ok {
-			result[key] = text
-		}
-	}
-	return result
-}
-
 func intOrDefault(value *int, fallback int) int {
 	if value == nil {
 		return fallback
@@ -1768,13 +1565,6 @@ func firstNonEmpty(values ...string) string {
 }
 
 func ternaryString(condition bool, yes string, no string) string {
-	if condition {
-		return yes
-	}
-	return no
-}
-
-func ternarySlice(condition bool, yes []any, no []any) []any {
 	if condition {
 		return yes
 	}

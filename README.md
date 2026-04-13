@@ -2,8 +2,8 @@
 
 `Cautilus` is a repo-agnostic intentful behavior evaluation product.
 It is meant to help a host repo evaluate
-agent runtimes, skills, and operator-facing command surfaces with bounded
-loops, explicit baselines, held-out validation, comparison summaries, and
+agent runtimes, skills, and operator-facing workflows with bounded loops,
+explicit baselines, held-out validation, comparison summaries, and
 independent review variants.
 It now also includes a product-owned helper that prepares clean baseline and
 candidate git worktrees for explicit A/B evaluation runs.
@@ -22,7 +22,7 @@ The intended product shape is:
 - optional executor-variant runners for structured `codex exec`,
   `claude -p`, or other bounded review passes
 - a contract that separates training surfaces from held-out surfaces
-- first-class use-case helpers for `chatbot`, `cli`, and `skill`
+- first-class use-case helpers for `chatbot` and `skill`
   evaluation packets
 - a path to propose new scenarios from runtime logs instead of hand-authoring
   every benchmark case forever
@@ -55,14 +55,13 @@ Current `core validated surface`:
   profile-backed mode runs
 - comparison-mode baseline-cache seed materialization for profile-backed runs
 - report assembly, review packet assembly, and review-variant fanout
-- bounded CLI behavior evaluation through `cli evaluate`
 - standalone install surface, local gates, and checked-in release helpers
 - repo-local Codex and Claude plugin package and marketplace wiring for local
   skill install
 
 Current `product-owned helper surface`:
 
-- `chatbot`, `cli`, and `skill` normalization helpers
+- `chatbot` and `skill` normalization helpers
 - scenario proposal packet assembly and proposal generation
 - scenario telemetry summaries
 - normalized evidence bundling
@@ -93,12 +92,8 @@ Dogfood and migration evidence is tracked separately in
   host-owned reference seam that assembles split normalized sources
 - [docs/contracts/chatbot-normalization.md](./docs/contracts/chatbot-normalization.md):
   product-owned `chatbot` helper boundary for conversation-driven proposal candidates
-- [docs/contracts/cli-normalization.md](./docs/contracts/cli-normalization.md):
-  product-owned `cli` helper boundary for operator-guidance and behavior-contract candidates
 - [docs/contracts/skill-normalization.md](./docs/contracts/skill-normalization.md):
   product-owned `skill` helper boundary for durable workflow and validation candidates
-- [docs/contracts/cli-evaluation.md](./docs/contracts/cli-evaluation.md):
-  product-owned bounded evaluation packet for operator-facing CLI behavior
 - [docs/contracts/review-packet.md](./docs/contracts/review-packet.md):
   product-owned packet that binds report artifacts to comparison questions and review prompts
 - [docs/contracts/review-prompt-inputs.md](./docs/contracts/review-prompt-inputs.md):
@@ -115,8 +110,6 @@ Dogfood and migration evidence is tracked separately in
   checked-in schema for `cautilus.scenario_proposals.v1`
 - [fixtures/scenario-proposals/chatbot-input.schema.json](./fixtures/scenario-proposals/chatbot-input.schema.json):
   checked-in schema for `cautilus.chatbot_normalization_inputs.v1`
-- [fixtures/scenario-proposals/cli-input.schema.json](./fixtures/scenario-proposals/cli-input.schema.json):
-  checked-in schema for `cautilus.cli_normalization_inputs.v1`
 - [fixtures/scenario-proposals/skill-input.schema.json](./fixtures/scenario-proposals/skill-input.schema.json):
   checked-in schema for `cautilus.skill_normalization_inputs.v1`
 - [fixtures/scenario-proposals/ceal-chatbot-input.json](./fixtures/scenario-proposals/ceal-chatbot-input.json):
@@ -344,13 +337,6 @@ cautilus scenario normalize skill \
   --input ./fixtures/scenario-proposals/skill-input.json
 ```
 
-Normalize CLI intent/evaluation summaries into proposal candidates:
-
-```bash
-cautilus scenario normalize cli \
-  --input ./fixtures/scenario-proposals/cli-input.json
-```
-
 Generate a scenario proposal packet from normalized candidate input:
 
 ```bash
@@ -379,7 +365,7 @@ Execute one adapter-defined mode directly and emit a report packet:
 cautilus mode evaluate \
   --repo-root . \
   --mode held_out \
-  --intent "CLI behavior should remain legible." \
+  --intent "Operator-facing behavior should remain legible." \
   --baseline-ref origin/main \
   --output-dir /tmp/cautilus-mode
 ```
@@ -436,13 +422,6 @@ cautilus optimize propose \
   --input /tmp/cautilus-optimize/input.json
 ```
 
-Evaluate one operator-facing CLI behavior from an explicit intent packet:
-
-```bash
-cautilus cli evaluate \
-  --input ./fixtures/cli-evaluation/doctor-missing-adapter.json
-```
-
 Assemble that input packet from split normalized source files:
 
 ```bash
@@ -472,7 +451,6 @@ node scripts/resolve_adapter.mjs --repo-root .
 node scripts/init_adapter.mjs --repo-root .
 node scripts/agent-runtime/run-workbench-executor-variants.mjs --workspace . --output-dir /tmp/cautilus-review
 node scripts/agent-runtime/normalize-chatbot-proposals.mjs --input ./fixtures/scenario-proposals/chatbot-input.json
-node scripts/agent-runtime/normalize-cli-proposals.mjs --input ./fixtures/scenario-proposals/cli-input.json
 node scripts/agent-runtime/normalize-skill-proposals.mjs --input ./fixtures/scenario-proposals/skill-input.json
 node scripts/agent-runtime/build-scenario-proposal-input.mjs --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json --family fast_regression
 node scripts/agent-runtime/generate-scenario-proposals.mjs --input ./fixtures/scenario-proposals/standalone-input.json
@@ -482,8 +460,7 @@ node scripts/agent-runtime/build-optimize-input.mjs --report-file /tmp/cautilus-
 node scripts/agent-runtime/generate-optimize-proposal.mjs --input /tmp/cautilus-optimize/input.json
 node scripts/agent-runtime/summarize-scenario-telemetry.mjs --results ./fixtures/scenario-proposals/results.json
 node scripts/agent-runtime/build-report-packet.mjs --input ./fixtures/reports/report-input.json
-node scripts/agent-runtime/evaluate-adapter-mode.mjs --repo-root . --mode held_out --intent "CLI behavior should remain legible." --baseline-ref origin/main --output-dir /tmp/cautilus-mode
-node scripts/agent-runtime/evaluate-cli-intent.mjs --input ./fixtures/cli-evaluation/doctor-missing-adapter.json
+node scripts/agent-runtime/evaluate-adapter-mode.mjs --repo-root . --mode held_out --intent "Operator-facing behavior should remain legible." --baseline-ref origin/main --output-dir /tmp/cautilus-mode
 ```
 
 The bundled skill surface lives at

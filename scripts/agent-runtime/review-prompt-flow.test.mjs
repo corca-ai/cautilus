@@ -59,14 +59,14 @@ function createReviewPacketFixture() {
 				report: {
 					schemaVersion: "cautilus.report_packet.v2",
 					generatedAt: "2026-04-11T00:02:00.000Z",
-					candidate: "feature/cli",
+					candidate: "feature/operator-guidance",
 					baseline: "origin/main",
-					intent: "The CLI should explain missing adapter setup without operator guesswork.",
+					intent: "The operator should understand a failed workflow step without operator guesswork.",
 					intentProfile: {
 						schemaVersion: "cautilus.behavior_intent.v1",
-						intentId: "intent-missing-adapter-guidance",
-						summary: "The CLI should explain missing adapter setup without operator guesswork.",
-						behaviorSurface: "operator_cli",
+						intentId: "intent-operator-workflow-recovery",
+						summary: "The operator should understand a failed workflow step without operator guesswork.",
+						behaviorSurface: "operator_behavior",
 						successDimensions: [
 							{
 								id: BEHAVIOR_DIMENSIONS.FAILURE_CAUSE_CLARITY,
@@ -98,9 +98,9 @@ function createReviewPacketFixture() {
 							summary: "held_out completed across 1 command.",
 							compareArtifact: {
 								schemaVersion: "cautilus.compare_artifact.v1",
-								summary: "Held-out doctor messaging improved.",
+								summary: "Held-out operator guidance improved.",
 								verdict: "improved",
-								improved: ["doctor-missing-adapter"],
+								improved: ["operator-guidance-smoke"],
 							},
 							scenarioTelemetrySummary: {
 								schemaVersion: "cautilus.scenario_telemetry_summary.v1",
@@ -112,7 +112,7 @@ function createReviewPacketFixture() {
 						},
 					],
 					telemetry: { modeCount: 1 },
-					improved: ["doctor-missing-adapter"],
+					improved: ["operator-guidance-smoke"],
 					regressed: [],
 					unchanged: [],
 					noisy: [],
@@ -167,7 +167,7 @@ test("buildReviewPromptInput emits the explicit meta-prompt contract", () => {
 		});
 		assert.equal(packet.schemaVersion, REVIEW_PROMPT_INPUTS_SCHEMA);
 		validateAgainstSchema(readJson(schemaPath), packet);
-		assert.equal(packet.intentProfile.intentId, "intent-missing-adapter-guidance");
+		assert.equal(packet.intentProfile.intentId, "intent-operator-workflow-recovery");
 		assert.equal(packet.modeSummaries[0].compareArtifact.verdict, "improved");
 		assert.equal(packet.currentReportEvidence.reportFile, join(root, "reports", "latest.json"));
 		assert.equal(packet.currentReportEvidence.commandObservations[0].command, "npm run verify");
@@ -188,9 +188,9 @@ test("renderReviewPrompt turns review prompt inputs into a portable meta-prompt"
 		assert.match(prompt, /## Current Report Evidence/);
 		assert.match(prompt, /npm run verify/);
 		assert.match(prompt, /## Intent Profile/);
-		assert.match(prompt, /behavior surface: operator_cli/);
+		assert.match(prompt, /behavior surface: operator_behavior/);
 		assert.match(prompt, /Which scenario-level deltas actually matter to a real operator/);
-		assert.match(prompt, /Held-out doctor messaging improved\./);
+		assert.match(prompt, /Held-out operator guidance improved\./);
 		assert.match(prompt, /## Consumer Prompt Addendum/);
 		assert.match(prompt, /Prefer concrete operator-facing evidence\./);
 	} finally {

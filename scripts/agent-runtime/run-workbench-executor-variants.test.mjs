@@ -93,14 +93,14 @@ EOF
 			{
 				schemaVersion: "cautilus.report_packet.v2",
 				generatedAt: "2026-04-11T00:02:00.000Z",
-				candidate: "feature/cli",
+				candidate: "feature/operator-guidance",
 				baseline: "origin/main",
-				intent: "The CLI should explain missing adapter setup without operator guesswork.",
+				intent: "The operator should understand a failed workflow step without operator guesswork.",
 				intentProfile: {
 					schemaVersion: "cautilus.behavior_intent.v1",
-					intentId: "intent-cli-missing-adapter-guidance",
-					summary: "The CLI should explain missing adapter setup without operator guesswork.",
-					behaviorSurface: "operator_cli",
+					intentId: "intent-operator-workflow-recovery",
+					summary: "The operator should understand a failed workflow step without operator guesswork.",
+					behaviorSurface: "operator_behavior",
 					successDimensions: [
 						{
 							id: BEHAVIOR_DIMENSIONS.FAILURE_CAUSE_CLARITY,
@@ -119,14 +119,14 @@ EOF
 						summary: "held_out completed across 1 command.",
 						compareArtifact: {
 							schemaVersion: "cautilus.compare_artifact.v1",
-							summary: "Held-out doctor messaging improved.",
+							summary: "Held-out operator guidance improved.",
 							verdict: "improved",
-							improved: ["doctor-missing-adapter"],
+							improved: ["operator-guidance-smoke"],
 						},
 					},
 				],
 				telemetry: { modeCount: 1 },
-				improved: ["doctor-missing-adapter"],
+				improved: ["operator-guidance-smoke"],
 				regressed: [],
 				unchanged: [],
 				noisy: [],
@@ -258,7 +258,7 @@ test("run-workbench-executor-variants can render a prompt from a report file whe
 		assert.equal(result.status, 0, result.stderr);
 		const summary = JSON.parse(readFileSync(result.stdout.trim(), "utf-8"));
 			assert.equal(summary.variants.length, 2);
-			assert.match(readFileSync(summary.promptFile, "utf-8"), /Held-out doctor messaging improved\./);
+			assert.match(readFileSync(summary.promptFile, "utf-8"), /Held-out operator guidance improved\./);
 			assert.ok(summary.reviewPacketFile.endsWith("review-packet.json"));
 			assert.ok(summary.reviewPromptInputFile.endsWith("review-prompt-input.json"));
 		} finally {

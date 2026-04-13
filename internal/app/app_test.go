@@ -144,11 +144,11 @@ func TestRunShellCommandDoesNotLeakShimContextEnv(t *testing.T) {
 	}
 }
 
-func TestRunCLIProcessDoesNotLeakShimContextEnv(t *testing.T) {
+func TestRunCommandProcessDoesNotLeakShimContextEnv(t *testing.T) {
 	t.Setenv("CAUTILUS_CALLER_CWD", "/tmp/caller")
 	t.Setenv("CAUTILUS_TOOL_ROOT", "/tmp/tool")
 
-	observation, err := runCLIProcess(
+	observation, err := runCommandProcess(
 		[]string{"bash", "-lc", "printf '%s|%s|%s' \"${CAUTILUS_CALLER_CWD-}\" \"${CAUTILUS_TOOL_ROOT-}\" \"${EXTRA_FLAG-}\""},
 		t.TempDir(),
 		map[string]string{"EXTRA_FLAG": "present"},
@@ -156,7 +156,7 @@ func TestRunCLIProcessDoesNotLeakShimContextEnv(t *testing.T) {
 		1000,
 	)
 	if err != nil {
-		t.Fatalf("runCLIProcess returned error: %v", err)
+		t.Fatalf("runCommandProcess returned error: %v", err)
 	}
 	if stdout := observation["stdout"]; stdout != "||present" {
 		t.Fatalf("expected shim env to be scrubbed while preserving extra env, got %#v", stdout)

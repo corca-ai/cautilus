@@ -38,14 +38,14 @@ function createOptimizeFixtureRoot() {
 	writeJson(reportFile, {
 		schemaVersion: "cautilus.report_packet.v2",
 		generatedAt: "2026-04-11T00:02:00.000Z",
-		candidate: "feature/cli",
+		candidate: "feature/operator-guidance",
 		baseline: "origin/main",
-		intent: "CLI guidance should stay legible under recovery pressure.",
+		intent: "Operator guidance should stay legible under recovery pressure.",
 		intentProfile: {
 			schemaVersion: "cautilus.behavior_intent.v1",
-			intentId: "intent-cli-recovery-guidance",
-			summary: "CLI guidance should stay legible under recovery pressure.",
-			behaviorSurface: "operator_cli",
+			intentId: "intent-operator-recovery-guidance",
+			summary: "Operator guidance should stay legible under recovery pressure.",
+			behaviorSurface: "operator_behavior",
 			successDimensions: [
 				{
 					id: BEHAVIOR_DIMENSIONS.RECOVERY_NEXT_STEP,
@@ -147,7 +147,7 @@ test("buildOptimizeInput assembles a bounded optimization packet from explicit e
 		);
 		assert.equal(packet.schemaVersion, "cautilus.optimize_inputs.v1");
 		assert.equal(packet.optimizationTarget, "prompt");
-		assert.equal(packet.intentProfile.intentId, "intent-cli-recovery-guidance");
+		assert.equal(packet.intentProfile.intentId, "intent-operator-recovery-guidance");
 		assert.equal(packet.intentProfile.guardrailDimensions.length, 4);
 		assert.equal(packet.optimizer.kind, "reflection");
 		assert.equal(packet.optimizer.budget, "heavy");
@@ -191,14 +191,14 @@ test("generateOptimizeProposal turns explicit evidence into one bounded revision
 		});
 		assert.equal(proposal.schemaVersion, "cautilus.optimize_proposal.v1");
 		assert.equal(proposal.decision, "revise");
-		assert.equal(proposal.intentProfile.intentId, "intent-cli-recovery-guidance");
+		assert.equal(proposal.intentProfile.intentId, "intent-operator-recovery-guidance");
 		assert.equal(proposal.optimizer.kind, "reflection");
 		assert.equal(proposal.optimizer.budget, "light");
 		assert.equal(proposal.trialTelemetry.plan.evidenceLimit, 3);
 		assert.equal(proposal.prioritizedEvidence.length, 3);
 		assert.equal(proposal.prioritizedEvidence[0].source, "review.finding");
 		assert.equal(proposal.suggestedChanges[0].changeKind, "prompt_revision");
-		assert.match(proposal.revisionBrief, /CLI guidance should stay legible under recovery pressure/);
+		assert.match(proposal.revisionBrief, /Operator guidance should stay legible under recovery pressure/);
 		assert.equal(proposal.trialTelemetry.suggestedChangeCount, 2);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
@@ -249,8 +249,8 @@ test("buildRevisionArtifact materializes one durable revision packet from propos
 		assert.equal(artifact.schemaVersion, "cautilus.revision_artifact.v1");
 		assert.equal(artifact.optimizeInputFile, inputPath);
 		assert.equal(artifact.repoRoot, root);
-		assert.equal(artifact.intentProfile.intentId, "intent-cli-recovery-guidance");
-		assert.equal(artifact.reportContext.intentProfile.intentId, "intent-cli-recovery-guidance");
+		assert.equal(artifact.intentProfile.intentId, "intent-operator-recovery-guidance");
+		assert.equal(artifact.reportContext.intentProfile.intentId, "intent-operator-recovery-guidance");
 		assert.equal(artifact.targetSnapshot.sha256.length, 64);
 		assert.equal(artifact.sourceFiles.reportFile.exists, true);
 		assert.equal(artifact.decision, "revise");
@@ -267,14 +267,14 @@ test("build-optimize-input CLI rejects review summaries without variants", () =>
 		writeJson(reportFile, {
 			schemaVersion: "cautilus.report_packet.v2",
 			generatedAt: "2026-04-11T00:02:00.000Z",
-			candidate: "feature/cli",
+			candidate: "feature/operator-guidance",
 			baseline: "origin/main",
-			intent: "CLI behavior should stay legible.",
+			intent: "Operator-facing behavior should stay legible.",
 			intentProfile: {
 				schemaVersion: "cautilus.behavior_intent.v1",
-				intentId: "intent-cli-behavior-legibility",
-				summary: "CLI behavior should stay legible.",
-				behaviorSurface: "operator_cli",
+				intentId: "intent-operator-behavior-legibility",
+				summary: "Operator-facing behavior should stay legible.",
+				behaviorSurface: "operator_behavior",
 				successDimensions: [
 					{
 						id: BEHAVIOR_DIMENSIONS.OPERATOR_GUIDANCE_CLARITY,

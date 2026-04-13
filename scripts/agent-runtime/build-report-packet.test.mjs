@@ -19,14 +19,14 @@ function writeJson(path, value) {
 function createReportInputFixture() {
 	return {
 		schemaVersion: REPORT_INPUTS_SCHEMA,
-		candidate: "feature/intentful-cli",
+		candidate: "feature/operator-guidance",
 		baseline: "origin/main",
-		intent: "The CLI should explain missing adapter setup without operator guesswork.",
+		intent: "The operator should understand a failed workflow step without guesswork.",
 		intentProfile: {
 			schemaVersion: "cautilus.behavior_intent.v1",
-			intentId: "intent-missing-adapter-guidance",
-			summary: "The CLI should explain missing adapter setup without operator guesswork.",
-			behaviorSurface: "operator_cli",
+			intentId: "intent-operator-workflow-recovery",
+			summary: "The operator should understand a failed workflow step without guesswork.",
+			behaviorSurface: "operator_behavior",
 			successDimensions: [
 				{
 					id: BEHAVIOR_DIMENSIONS.FAILURE_CAUSE_CLARITY,
@@ -62,7 +62,7 @@ function createReportInputFixture() {
 					mode: "held_out",
 					results: [
 						{
-							scenarioId: "doctor-missing-adapter",
+							scenarioId: "operator-guidance-smoke",
 							status: "passed",
 							durationMs: 1200,
 							telemetry: {
@@ -75,9 +75,9 @@ function createReportInputFixture() {
 					],
 					compareArtifact: {
 						schemaVersion: COMPARE_ARTIFACT_SCHEMA,
-						summary: "Held-out missing-adapter messaging improved.",
+						summary: "Held-out operator guidance improved.",
 						verdict: "improved",
-						improved: ["doctor-missing-adapter"],
+						improved: ["operator-guidance-smoke"],
 					},
 				},
 			},
@@ -106,14 +106,14 @@ function createReportInputFixture() {
 				},
 			},
 		],
-		improved: ["doctor-missing-adapter"],
+		improved: ["operator-guidance-smoke"],
 		regressed: [{ scenarioId: "review-variant-safety", reason: "full gate failed" }],
 		unchanged: [],
 		noisy: [],
 		humanReviewFindings: [
 			{
 				severity: "concern",
-				message: "The CLI output is still terse for first-time operators.",
+				message: "The operator guidance is still terse for first-time operators.",
 				path: "bin/cautilus",
 			},
 		],
@@ -127,8 +127,8 @@ test("buildReportPacket aggregates mode telemetry and scenario summaries", () =>
 		{ now: new Date("2026-04-11T00:02:00.000Z") },
 	);
 	assert.equal(report.schemaVersion, REPORT_PACKET_SCHEMA);
-	assert.equal(report.intentProfile.intentId, "intent-missing-adapter-guidance");
-	assert.equal(report.intentProfile.behaviorSurface, "operator_cli");
+	assert.equal(report.intentProfile.intentId, "intent-operator-workflow-recovery");
+	assert.equal(report.intentProfile.behaviorSurface, "operator_behavior");
 	assert.equal(report.modesRun.length, 2);
 	assert.equal(report.modeSummaries[0].scenarioTelemetrySummary.overall.total_tokens, 200);
 	assert.equal(report.modeSummaries[0].compareArtifact.verdict, "improved");

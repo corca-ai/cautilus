@@ -30,7 +30,6 @@ Two use-case-specific normalization helpers are now in scope as product-owned
 layers:
 
 - `chatbot`
-- `cli`
 - `skill`
 
 Those helpers should sit between source-port ingestion and proposal packet
@@ -40,7 +39,6 @@ the storage-reader layer.
 The first checked-in helper entrypoints now exist as:
 
 - `cautilus scenario normalize chatbot`
-- `cautilus scenario normalize cli`
 - `cautilus scenario normalize skill`
 
 ## Source Ports
@@ -153,7 +151,6 @@ Allowed source kinds:
 
 - `human_conversation`
 - `agent_run`
-- `cli_evaluation`
 - `skill_evaluation`
 - `workflow_run`
 
@@ -178,19 +175,6 @@ Recommended evidence payloads:
   "observedAt": "2026-04-09T21:00:00.000Z",
   "textPreview": "네, 그대로 진행해주세요.",
   "blockedReason": "ambiguous_confirmation_without_thread_context"
-}
-```
-
-```json
-{
-  "sourceKind": "cli_evaluation",
-  "title": "operator guidance regression",
-  "surfaceId": "doctor_missing_adapter",
-  "commandId": "doctor-no-adapter",
-  "status": "failed",
-  "observedAt": "2026-04-11T00:00:00.000Z",
-  "intent": "Explain how to add the official adapter when none is present.",
-  "summary": "The command no longer mentioned adapter init or the official adapter path."
 }
 ```
 

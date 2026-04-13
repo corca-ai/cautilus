@@ -50,7 +50,7 @@ cat > "$scenario_results_file" <<JSON
   "mode": "$mode",
   "results": [
     {
-      "scenarioId": "doctor-missing-adapter",
+      "scenarioId": "operator-guidance-smoke",
       "status": "passed",
       "durationMs": 110,
       "telemetry": {
@@ -61,10 +61,10 @@ cat > "$scenario_results_file" <<JSON
   ],
   "compareArtifact": {
     "schemaVersion": "cautilus.compare_artifact.v1",
-    "summary": "Held-out doctor messaging improved.",
+    "summary": "Held-out operator guidance improved.",
     "verdict": "improved",
     "improved": [
-      "doctor-missing-adapter"
+      "operator-guidance-smoke"
     ]
   }
 }
@@ -85,7 +85,7 @@ echo preflight-ok
 			"version: 1",
 			"repo: temp",
 			"evaluation_surfaces:",
-			"  - cli behavior",
+			"  - operator workflow",
 			"baseline_options:",
 			"  - baseline git ref via {baseline_ref}",
 			"preflight_commands:",
@@ -211,7 +211,7 @@ echo "$mode ok"
 				"--mode",
 				"held_out",
 				"--intent",
-				"CLI recovery behavior should stay legible.",
+				"Operator recovery behavior should stay legible.",
 				"--baseline-ref",
 				"origin/main",
 				"--output-dir",
@@ -254,7 +254,7 @@ test("evaluate-adapter-mode promotes a passing full_gate run to accept-now", () 
 				"--mode",
 				"full_gate",
 				"--intent",
-				"CLI full gate should still pass.",
+				"Operator full gate should still pass.",
 				"--baseline-ref",
 				"origin/main",
 				"--output-dir",
@@ -521,7 +521,7 @@ test("evaluate-adapter-mode honors CAUTILUS_RUN_DIR when --output-dir is omitted
 				"--mode",
 				"held_out",
 				"--intent",
-				"CLI behavior should remain legible.",
+				"Operator-facing behavior should remain legible.",
 				"--baseline-ref",
 				"origin/main",
 			],

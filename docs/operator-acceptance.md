@@ -101,45 +101,38 @@ spec source guard) + Go race test + Node test를 모두 포함한다.
 | # | 명령 | 통과 조건 | 실행자 |
 |---|---|---|---|
 | 3.7 | `cautilus scenario normalize chatbot --input ./fixtures/scenario-proposals/chatbot-input.json` | JSON 출력, exit 0 | 기계적 |
-| 3.8 | `cautilus scenario normalize cli --input ./fixtures/scenario-proposals/cli-input.json` | JSON 출력, exit 0 | 기계적 |
-| 3.9 | `cautilus scenario normalize skill --input ./fixtures/scenario-proposals/skill-input.json` | JSON 출력, exit 0 | 기계적 |
-| 3.10 | `cautilus scenario prepare-input --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json --family fast_regression --window-days 14 --now 2026-04-11T00:00:00.000Z` | JSON 출력, exit 0 | 기계적 |
-| 3.11 | `cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json` | JSON 출력, exit 0 | 기계적 |
-| 3.12 | `cautilus scenario summarize-telemetry --results ./fixtures/scenario-results/example-results.json` | JSON 출력, exit 0 | 기계적 |
+| 3.8 | `cautilus scenario normalize skill --input ./fixtures/scenario-proposals/skill-input.json` | JSON 출력, exit 0 | 기계적 |
+| 3.9 | `cautilus scenario prepare-input --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json --family fast_regression --window-days 14 --now 2026-04-11T00:00:00.000Z` | JSON 출력, exit 0 | 기계적 |
+| 3.10 | `cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json` | JSON 출력, exit 0 | 기계적 |
+| 3.11 | `cautilus scenario summarize-telemetry --results ./fixtures/scenario-results/example-results.json` | JSON 출력, exit 0 | 기계적 |
 
 ### 3d. Report 및 Evidence
 
 | # | 명령 | 통과 조건 | 실행자 |
 |---|---|---|---|
-| 3.13 | `cautilus report build --input ./fixtures/reports/report-input.json` | JSON 출력에 `cautilus.report_packet.v2` 포함, exit 0 | 기계적 |
-| 3.14 | `cautilus evidence prepare-input --report-file ./fixtures/reports/report-input.json --scenario-results-file ./fixtures/scenario-results/example-results.json` | JSON 출력, exit 0 | 기계적 |
-| 3.15 | `cautilus evidence bundle --input ./fixtures/evidence/example-input.json` | JSON 출력, exit 0 | 기계적 |
+| 3.12 | `cautilus report build --input ./fixtures/reports/report-input.json` | JSON 출력에 `cautilus.report_packet.v2` 포함, exit 0 | 기계적 |
+| 3.13 | `cautilus evidence prepare-input --report-file ./fixtures/reports/report-input.json --scenario-results-file ./fixtures/scenario-results/example-results.json` | JSON 출력, exit 0 | 기계적 |
+| 3.14 | `cautilus evidence bundle --input ./fixtures/evidence/example-input.json` | JSON 출력, exit 0 | 기계적 |
 
 ### 3e. Optimize
 
 | # | 명령 | 통과 조건 | 실행자 |
 |---|---|---|---|
-| 3.16 | `cautilus optimize prepare-input --report-file ./fixtures/reports/report-input.json --target prompt --optimizer repair --budget light` | JSON 출력, exit 0 | 기계적 |
-| 3.17 | `cautilus optimize propose --input ./fixtures/optimize/example-input.json` | JSON 출력, exit 0 | 기계적 |
-| 3.18 | `cautilus optimize build-artifact --proposal-file ./fixtures/optimize/example-proposal.json --input-file ./fixtures/optimize/example-input.json` | JSON 출력, exit 0 | 기계적 |
+| 3.15 | `cautilus optimize prepare-input --report-file ./fixtures/reports/report-input.json --target prompt --optimizer repair --budget light` | JSON 출력, exit 0 | 기계적 |
+| 3.16 | `cautilus optimize propose --input ./fixtures/optimize/example-input.json` | JSON 출력, exit 0 | 기계적 |
+| 3.17 | `cautilus optimize build-artifact --proposal-file ./fixtures/optimize/example-proposal.json --input-file ./fixtures/optimize/example-input.json` | JSON 출력, exit 0 | 기계적 |
 
-### 3f. CLI Evaluate
-
-| # | 명령 | 통과 조건 | 실행자 |
-|---|---|---|---|
-| 3.19 | `cautilus cli evaluate --input ./fixtures/cli-evaluation/doctor-missing-adapter.json` | JSON 출력, exit 0 | 기계적 |
-
-### 3g. Review (fixture 기반, LLM 없음)
+### 3f. Review (fixture 기반, LLM 없음)
 
 의존: 3.13의 report 출력이 필요하므로, 먼저 mode evaluate를 통해 review
 입력을 만들거나 fixture를 사용한다.
 
 | # | 명령 | 통과 조건 | 실행자 |
 |---|---|---|---|
-| 3.20 | `cautilus mode evaluate --repo-root . --mode held_out --intent "CLI behavior should remain legible." --baseline-ref origin/main --output-dir /tmp/cautilus-oa-mode` | report.json 생성, exit 0 | 기계적 |
-| 3.21 | `cautilus review prepare-input --repo-root . --report-file /tmp/cautilus-oa-mode/report.json` | review.json 생성, exit 0. 의존: 3.20 | 기계적 |
-| 3.22 | `cautilus review build-prompt-input --review-packet /tmp/cautilus-oa-mode/review.json` | review-prompt-input.json 생성, exit 0. 의존: 3.21 | 기계적 |
-| 3.23 | `cautilus review render-prompt --input /tmp/cautilus-oa-mode/review-prompt-input.json` | 프롬프트 텍스트 출력, exit 0. 의존: 3.22 | 기계적 |
+| 3.18 | `cautilus mode evaluate --repo-root . --mode held_out --intent "Operator-facing behavior should remain legible." --baseline-ref origin/main --output-dir /tmp/cautilus-oa-mode` | report.json 생성, exit 0 | 기계적 |
+| 3.19 | `cautilus review prepare-input --repo-root . --report-file /tmp/cautilus-oa-mode/report.json` | review.json 생성, exit 0. 의존: 3.18 | 기계적 |
+| 3.20 | `cautilus review build-prompt-input --review-packet /tmp/cautilus-oa-mode/review.json` | review-prompt-input.json 생성, exit 0. 의존: 3.19 | 기계적 |
+| 3.21 | `cautilus review render-prompt --input /tmp/cautilus-oa-mode/review-prompt-input.json` | 프롬프트 텍스트 출력, exit 0. 의존: 3.20 | 기계적 |
 
 ---
 
@@ -213,8 +206,7 @@ consumer-readiness.md에 기록된 deeper evidence path. 전부 돌릴 필요는
 | # | 대상 | 명령 예시 | 통과 조건 | 비용 |
 |---|---|---|---|---|
 | 5.3 | crill | `cautilus mode evaluate --repo-root ~/crill --mode full_gate --intent '...' --baseline-ref origin/main --output-dir /tmp/cautilus-crill-full-gate` | report의 recommendation이 `accept-now` | 무료 |
-| 5.4 | crill | `cautilus cli evaluate --input ~/crill/tests/fixtures/cautilus/cli-help.json` | `accept-now` | 무료 |
-| 5.5 | crill | `cautilus review variants --repo-root ~/crill --adapter-name operator-recovery ...` | review summary에 passing variant 존재 | LLM |
+| 5.4 | crill | `cautilus review variants --repo-root ~/crill --adapter-name operator-recovery ...` | review summary에 passing variant 존재 | LLM |
 
 ---
 

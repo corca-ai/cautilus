@@ -106,8 +106,6 @@ func nativeHandler(path []string) handlerFunc {
 		return handleWorkspaceStart
 	case "scenario normalize chatbot":
 		return handleScenarioNormalizeChatbot
-	case "scenario normalize cli":
-		return handleScenarioNormalizeCLI
 	case "scenario normalize skill":
 		return handleScenarioNormalizeSkill
 	case "scenario summarize-telemetry":
@@ -130,8 +128,6 @@ func nativeHandler(path []string) handlerFunc {
 		return handleReviewRenderPrompt
 	case "review variants":
 		return handleReviewVariants
-	case "cli evaluate":
-		return handleCliEvaluate
 	case "evidence prepare-input":
 		return handleEvidencePrepareInput
 	case "evidence bundle":
@@ -399,10 +395,6 @@ func handleScenarioNormalizeChatbot(repoRoot string, cwd string, args []string, 
 	return handleScenarioNormalize(args, cwd, stdout, stderr, "chatbot")
 }
 
-func handleScenarioNormalizeCLI(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
-	return handleScenarioNormalize(args, cwd, stdout, stderr, "cli")
-}
-
 func handleScenarioNormalizeSkill(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
 	return handleScenarioNormalize(args, cwd, stdout, stderr, "skill")
 }
@@ -428,12 +420,6 @@ func handleScenarioNormalize(args []string, cwd string, stdout io.Writer, stderr
 			return 1
 		}
 		candidates, err = runtime.NormalizeChatbotProposalCandidates(arrayOrEmpty(input["conversationSummaries"]), arrayOrEmpty(input["runSummaries"]))
-	case "cli":
-		if input["schemaVersion"] != contracts.CliNormalizationInputsSchema {
-			fmt.Fprintf(stderr, "schemaVersion must be %s\n", contracts.CliNormalizationInputsSchema)
-			return 1
-		}
-		candidates, err = runtime.NormalizeCliProposalCandidates(arrayOrEmpty(input["cliRuns"]))
 	case "skill":
 		if input["schemaVersion"] != contracts.SkillNormalizationInputsSchema {
 			fmt.Fprintf(stderr, "schemaVersion must be %s\n", contracts.SkillNormalizationInputsSchema)

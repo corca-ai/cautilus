@@ -24,7 +24,7 @@ function createRepo() {
 			"version: 1",
 			"repo: temp",
 			"evaluation_surfaces:",
-			"  - cli behavior",
+			"  - operator workflow",
 			"baseline_options:",
 			"  - baseline git ref via {baseline_ref}",
 			"held_out_command_templates:",
@@ -54,14 +54,14 @@ function writeValidReport(reportFile) {
 			{
 				schemaVersion: "cautilus.report_packet.v2",
 				generatedAt: "2026-04-11T00:00:00.000Z",
-				candidate: "feature/cli",
+				candidate: "feature/operator-guidance",
 				baseline: "origin/main",
-				intent: "CLI behavior should stay legible.",
+				intent: "Operator-facing behavior should stay legible.",
 				intentProfile: {
 					schemaVersion: "cautilus.behavior_intent.v1",
-					intentId: "intent-cli-behavior-legibility",
-					summary: "CLI behavior should stay legible.",
-					behaviorSurface: "operator_cli",
+					intentId: "intent-operator-behavior-legibility",
+					summary: "Operator-facing behavior should stay legible.",
+					behaviorSurface: "operator_behavior",
 					successDimensions: [
 						{
 							id: BEHAVIOR_DIMENSIONS.OPERATOR_GUIDANCE_CLARITY,
@@ -110,7 +110,7 @@ test("build-review-packet collects adapter review surfaces around a report packe
 		assert.equal(packet.comparisonQuestions[0], "Which scenarios improved?");
 		assert.equal(packet.humanReviewPrompts[0].id, "operator");
 		assert.equal(packet.defaultPromptFile.exists, true);
-		assert.equal(packet.report.intentProfile.intentId, "intent-cli-behavior-legibility");
+		assert.equal(packet.report.intentProfile.intentId, "intent-operator-behavior-legibility");
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

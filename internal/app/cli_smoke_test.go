@@ -606,14 +606,14 @@ func TestCLIReportBuildEmitsMachineReadableReportPacket(t *testing.T) {
 	inputPath := filepath.Join(root, "report-input.json")
 	writeJSONFile(t, inputPath, map[string]any{
 		"schemaVersion": contracts.ReportInputsSchema,
-		"candidate":     "feature/intentful-cli",
+		"candidate":     "feature/operator-guidance",
 		"baseline":      "origin/main",
-		"intent":        "The CLI should explain missing adapter setup without operator guesswork.",
+		"intent":        "The workflow should explain missing adapter setup without operator guesswork.",
 		"intentProfile": map[string]any{
 			"schemaVersion":   contracts.BehaviorIntentSchema,
 			"intentId":        "intent-missing-adapter-guidance",
-			"summary":         "The CLI should explain missing adapter setup without operator guesswork.",
-			"behaviorSurface": cautilusruntime.BehaviorSurfaces["OPERATOR_CLI"],
+			"summary":         "The workflow should explain missing adapter setup without operator guesswork.",
+			"behaviorSurface": cautilusruntime.BehaviorSurfaces["OPERATOR_BEHAVIOR"],
 			"successDimensions": []map[string]any{
 				{
 					"id":      cautilusruntime.BehaviorDimensions["FAILURE_CAUSE_CLARITY"],
@@ -638,7 +638,7 @@ func TestCLIReportBuildEmitsMachineReadableReportPacket(t *testing.T) {
 					"mode":          "held_out",
 					"results": []map[string]any{
 						{
-							"scenarioId": "doctor-missing-adapter",
+							"scenarioId": "operator-guidance-smoke",
 							"durationMs": 1200,
 							"telemetry": map[string]any{
 								"total_tokens": 200,
@@ -650,7 +650,7 @@ func TestCLIReportBuildEmitsMachineReadableReportPacket(t *testing.T) {
 						"schemaVersion": contracts.CompareArtifactSchema,
 						"summary":       "Missing-adapter messaging improved.",
 						"verdict":       "improved",
-						"improved":      []string{"doctor-missing-adapter"},
+						"improved":      []string{"operator-guidance-smoke"},
 					},
 				},
 			},
@@ -667,7 +667,7 @@ func TestCLIReportBuildEmitsMachineReadableReportPacket(t *testing.T) {
 		"humanReviewFindings": []map[string]any{
 			{
 				"severity": "concern",
-				"message":  "CLI wording is still terse",
+				"message":  "Operator guidance is still terse",
 			},
 		},
 		"recommendation": "defer",
@@ -701,52 +701,6 @@ func TestCLIReportBuildEmitsMachineReadableReportPacket(t *testing.T) {
 	}
 }
 
-func TestCLICliEvaluateExecutesIntentPacketAndEmitsReportBackedSummary(t *testing.T) {
-	root := t.TempDir()
-	repoRoot := repoToolRoot(t)
-	workspace := filepath.Join(root, "workspace")
-	if err := os.MkdirAll(workspace, 0o755); err != nil {
-		t.Fatalf("MkdirAll returned error: %v", err)
-	}
-	inputPath := filepath.Join(root, "cli-input.json")
-	writeJSONFile(t, inputPath, map[string]any{
-		"schemaVersion":    contracts.CliEvaluationInputsSchema,
-		"candidate":        "current-cautilus-cli",
-		"baseline":         "current-doctor-contract",
-		"intent":           "The doctor command should explain missing adapter setup.",
-		"surfaceId":        "doctor-missing-adapter",
-		"mode":             "held_out",
-		"workingDirectory": repoRoot,
-		"command":          []string{"go", "run", "./cmd/cautilus", "doctor", "--repo-root", workspace},
-		"expectations": map[string]any{
-			"exitCode":          1,
-			"stdoutContains":    []string{"missing_adapter", "adapter init"},
-			"stderrNotContains": []string{"Traceback"},
-		},
-	})
-
-	stdout, stderr, exitCode := runCLI(t, root, "cli", "evaluate", "--input", inputPath)
-	if exitCode != 0 {
-		t.Fatalf("cli evaluate failed: %s", stderr)
-	}
-	payload := parseJSONObject(t, stdout)
-	if payload["schemaVersion"] != contracts.CliEvaluationPacketSchema {
-		t.Fatalf("unexpected cli evaluation schema: %#v", payload["schemaVersion"])
-	}
-	summary := payload["summary"].(map[string]any)
-	if summary["recommendation"] != "accept-now" {
-		t.Fatalf("unexpected summary: %#v", summary)
-	}
-	report := payload["report"].(map[string]any)
-	if report["schemaVersion"] != contracts.ReportPacketSchema {
-		t.Fatalf("unexpected report schema: %#v", report["schemaVersion"])
-	}
-	reportIntentProfile := report["intentProfile"].(map[string]any)
-	if reportIntentProfile["intentId"] != "intent-the-doctor-command-should-explain-missing-adapter-setup" {
-		t.Fatalf("unexpected report intent profile: %#v", reportIntentProfile)
-	}
-}
-
 func TestCLIModeEvaluateExecutesAdapterCommandTemplatesAndWritesReportPacket(t *testing.T) {
 	root := t.TempDir()
 	adapterDir := filepath.Join(root, ".agents")
@@ -765,7 +719,7 @@ cat > "$scenario_results_file" <<'JSON'
   "mode": "held_out",
   "results": [
     {
-      "scenarioId": "doctor-missing-adapter",
+      "scenarioId": "operator-guidance-smoke",
       "status": "passed",
       "durationMs": 90,
       "telemetry": {
@@ -776,10 +730,10 @@ cat > "$scenario_results_file" <<'JSON'
   ],
   "compareArtifact": {
     "schemaVersion": "cautilus.compare_artifact.v1",
-    "summary": "CLI doctor recovery stayed explicit.",
+    "summary": "Operator guidance stayed explicit.",
     "verdict": "improved",
     "improved": [
-      "doctor-missing-adapter"
+      "operator-guidance-smoke"
     ]
   }
 }
@@ -790,7 +744,7 @@ echo ok
 		"version: 1",
 		"repo: temp",
 		"evaluation_surfaces:",
-		"  - cli behavior",
+		"  - operator workflow",
 		"baseline_options:",
 		"  - baseline git ref via {baseline_ref}",
 		"held_out_command_templates:",
@@ -800,7 +754,7 @@ echo ok
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
 	outputDir := filepath.Join(root, "outputs")
-	stdout, stderr, exitCode := runCLI(t, root, "mode", "evaluate", "--repo-root", root, "--candidate-repo", workspace, "--mode", "held_out", "--intent", "CLI behavior should remain legible.", "--baseline-ref", "origin/main", "--output-dir", outputDir)
+	stdout, stderr, exitCode := runCLI(t, root, "mode", "evaluate", "--repo-root", root, "--candidate-repo", workspace, "--mode", "held_out", "--intent", "Operator-facing behavior should remain legible.", "--baseline-ref", "origin/main", "--output-dir", outputDir)
 	if exitCode != 0 {
 		t.Fatalf("mode evaluate failed: %s", stderr)
 	}
@@ -850,7 +804,7 @@ func TestCLIReviewPrepareInputBuildsReviewPacketFromAdapterSurfacesAndReport(t *
 		"version: 1",
 		"repo: temp",
 		"evaluation_surfaces:",
-		"  - cli behavior",
+		"  - operator workflow",
 		"baseline_options:",
 		"  - baseline git ref via {baseline_ref}",
 		"held_out_command_templates:",
@@ -874,14 +828,14 @@ func TestCLIReviewPrepareInputBuildsReviewPacketFromAdapterSurfacesAndReport(t *
 	writeJSONFile(t, reportFile, map[string]any{
 		"schemaVersion": contracts.ReportPacketSchema,
 		"generatedAt":   "2026-04-11T00:00:00.000Z",
-		"candidate":     "feature/cli",
+		"candidate":     "feature/operator-guidance",
 		"baseline":      "origin/main",
-		"intent":        "CLI behavior should stay legible.",
+		"intent":        "Operator-facing behavior should stay legible.",
 		"intentProfile": map[string]any{
 			"schemaVersion":   contracts.BehaviorIntentSchema,
-			"intentId":        "intent-cli-behavior-legibility",
-			"summary":         "CLI behavior should stay legible.",
-			"behaviorSurface": cautilusruntime.BehaviorSurfaces["OPERATOR_CLI"],
+			"intentId":        "intent-operator-behavior-legibility",
+			"summary":         "Operator-facing behavior should stay legible.",
+			"behaviorSurface": cautilusruntime.BehaviorSurfaces["OPERATOR_BEHAVIOR"],
 			"successDimensions": []map[string]any{
 				{
 					"id":      cautilusruntime.BehaviorDimensions["OPERATOR_GUIDANCE_CLARITY"],
@@ -920,7 +874,7 @@ func TestCLIReviewPrepareInputBuildsReviewPacketFromAdapterSurfacesAndReport(t *
 	}
 	report := packet["report"].(map[string]any)
 	intentProfile := report["intentProfile"].(map[string]any)
-	if intentProfile["intentId"] != "intent-cli-behavior-legibility" {
+	if intentProfile["intentId"] != "intent-operator-behavior-legibility" {
 		t.Fatalf("unexpected report intent profile: %#v", intentProfile)
 	}
 }
@@ -945,14 +899,14 @@ func TestCLIReviewBuildPromptInputAndRenderPromptCloseMetaPromptSeam(t *testing.
 		"report": map[string]any{
 			"schemaVersion": contracts.ReportPacketSchema,
 			"generatedAt":   "2026-04-11T00:02:00.000Z",
-			"candidate":     "feature/cli",
+			"candidate":     "feature/operator-guidance",
 			"baseline":      "origin/main",
-			"intent":        "The CLI should explain missing adapter setup without operator guesswork.",
+			"intent":        "The workflow should explain missing adapter setup without operator guesswork.",
 			"intentProfile": map[string]any{
 				"schemaVersion":   contracts.BehaviorIntentSchema,
 				"intentId":        "intent-missing-adapter-guidance",
-				"summary":         "The CLI should explain missing adapter setup without operator guesswork.",
-				"behaviorSurface": cautilusruntime.BehaviorSurfaces["OPERATOR_CLI"],
+				"summary":         "The workflow should explain missing adapter setup without operator guesswork.",
+				"behaviorSurface": cautilusruntime.BehaviorSurfaces["OPERATOR_BEHAVIOR"],
 				"successDimensions": []map[string]any{
 					{
 						"id":      cautilusruntime.BehaviorDimensions["FAILURE_CAUSE_CLARITY"],
@@ -979,14 +933,14 @@ func TestCLIReviewBuildPromptInputAndRenderPromptCloseMetaPromptSeam(t *testing.
 					"summary": "held_out completed across 1 command.",
 					"compareArtifact": map[string]any{
 						"schemaVersion": contracts.CompareArtifactSchema,
-						"summary":       "Held-out doctor messaging improved.",
+						"summary":       "Held-out operator guidance improved.",
 						"verdict":       "improved",
-						"improved":      []string{"doctor-missing-adapter"},
+						"improved":      []string{"operator-guidance-smoke"},
 					},
 				},
 			},
 			"telemetry":           map[string]any{"modeCount": 1},
-			"improved":            []string{"doctor-missing-adapter"},
+			"improved":            []string{"operator-guidance-smoke"},
 			"regressed":           []any{},
 			"unchanged":           []any{},
 			"noisy":               []any{},
@@ -1031,7 +985,7 @@ func TestCLIReviewBuildPromptInputAndRenderPromptCloseMetaPromptSeam(t *testing.
 		t.Fatalf("ReadFile returned error: %v", err)
 	}
 	prompt := string(promptBytes)
-	if !strings.Contains(prompt, "Held-out doctor messaging improved.") || !strings.Contains(prompt, "## Intent Profile") || !strings.Contains(prompt, "Prefer operator-visible evidence.") || !strings.Contains(prompt, "## Current Report Evidence") || !strings.Contains(prompt, "npm run verify") {
+	if !strings.Contains(prompt, "Held-out operator guidance improved.") || !strings.Contains(prompt, "## Intent Profile") || !strings.Contains(prompt, "Prefer operator-visible evidence.") || !strings.Contains(prompt, "## Current Report Evidence") || !strings.Contains(prompt, "npm run verify") {
 		t.Fatalf("unexpected rendered prompt: %s", prompt)
 	}
 }
@@ -1051,14 +1005,14 @@ func TestCLIOptimizePrepareInputProposeAndBuildArtifact(t *testing.T) {
 	writeJSONFile(t, reportPath, map[string]any{
 		"schemaVersion": contracts.ReportPacketSchema,
 		"generatedAt":   "2026-04-11T00:02:00.000Z",
-		"candidate":     "feature/cli",
+		"candidate":     "feature/operator-guidance",
 		"baseline":      "origin/main",
-		"intent":        "CLI recovery guidance should stay legible.",
+		"intent":        "Operator recovery guidance should stay legible.",
 		"intentProfile": map[string]any{
 			"schemaVersion":   contracts.BehaviorIntentSchema,
-			"intentId":        "intent-cli-recovery-guidance",
-			"summary":         "CLI recovery guidance should stay legible.",
-			"behaviorSurface": cautilusruntime.BehaviorSurfaces["OPERATOR_CLI"],
+			"intentId":        "intent-operator-workflow-recovery",
+			"summary":         "Operator recovery guidance should stay legible.",
+			"behaviorSurface": cautilusruntime.BehaviorSurfaces["OPERATOR_BEHAVIOR"],
 			"successDimensions": []map[string]any{
 				{
 					"id":      cautilusruntime.BehaviorDimensions["RECOVERY_NEXT_STEP"],
@@ -1131,7 +1085,7 @@ func TestCLIOptimizePrepareInputProposeAndBuildArtifact(t *testing.T) {
 		t.Fatalf("unexpected optimization target: %#v", prepared["optimizationTarget"])
 	}
 	intentProfile := prepared["intentProfile"].(map[string]any)
-	if intentProfile["intentId"] != "intent-cli-recovery-guidance" {
+	if intentProfile["intentId"] != "intent-operator-workflow-recovery" {
 		t.Fatalf("unexpected optimize input intent profile: %#v", intentProfile)
 	}
 
@@ -1143,7 +1097,7 @@ func TestCLIOptimizePrepareInputProposeAndBuildArtifact(t *testing.T) {
 	if proposal["schemaVersion"] != contracts.OptimizeProposalSchema || proposal["decision"] != "revise" {
 		t.Fatalf("unexpected proposal: %#v", proposal)
 	}
-	if proposal["intentProfile"].(map[string]any)["intentId"] != "intent-cli-recovery-guidance" {
+	if proposal["intentProfile"].(map[string]any)["intentId"] != "intent-operator-workflow-recovery" {
 		t.Fatalf("unexpected proposal intent profile: %#v", proposal["intentProfile"])
 	}
 	if !strings.Contains(anyToString(proposal["revisionBrief"]), "Do not weaken held-out, comparison, or review gates.") {
@@ -1159,10 +1113,10 @@ func TestCLIOptimizePrepareInputProposeAndBuildArtifact(t *testing.T) {
 		t.Fatalf("unexpected revision artifact schema: %#v", revisionArtifact["schemaVersion"])
 	}
 	reportContext := revisionArtifact["reportContext"].(map[string]any)
-	if reportContext["candidate"] != "feature/cli" {
+	if reportContext["candidate"] != "feature/operator-guidance" {
 		t.Fatalf("unexpected report context: %#v", reportContext)
 	}
-	if revisionArtifact["intentProfile"].(map[string]any)["intentId"] != "intent-cli-recovery-guidance" {
+	if revisionArtifact["intentProfile"].(map[string]any)["intentId"] != "intent-operator-workflow-recovery" {
 		t.Fatalf("unexpected revision artifact intent profile: %#v", revisionArtifact["intentProfile"])
 	}
 	targetSnapshot := revisionArtifact["targetSnapshot"].(map[string]any)
@@ -1181,14 +1135,14 @@ func TestCLIEvidencePrepareInputAndBundleProduceNormalizedEvidencePacket(t *test
 	writeJSONFile(t, reportPath, map[string]any{
 		"schemaVersion": contracts.ReportPacketSchema,
 		"generatedAt":   "2026-04-11T00:02:00.000Z",
-		"candidate":     "feature/cli",
+		"candidate":     "feature/operator-guidance",
 		"baseline":      "origin/main",
-		"intent":        "CLI recovery guidance should stay legible.",
+		"intent":        "Operator recovery guidance should stay legible.",
 		"intentProfile": map[string]any{
 			"schemaVersion":   contracts.BehaviorIntentSchema,
-			"intentId":        "intent-cli-recovery-guidance",
-			"summary":         "CLI recovery guidance should stay legible.",
-			"behaviorSurface": cautilusruntime.BehaviorSurfaces["OPERATOR_CLI"],
+			"intentId":        "intent-operator-workflow-recovery",
+			"summary":         "Operator recovery guidance should stay legible.",
+			"behaviorSurface": cautilusruntime.BehaviorSurfaces["OPERATOR_BEHAVIOR"],
 			"successDimensions": []map[string]any{
 				{
 					"id":      cautilusruntime.BehaviorDimensions["RECOVERY_NEXT_STEP"],
@@ -1487,87 +1441,6 @@ func TestCLIScenarioNormalizeSkillProducesCandidatesThatChainIntoPrepareAndPropo
 	}
 	firstProposal := proposalList[0].(map[string]any)
 	if firstProposal["draftScenario"].(map[string]any)["intentProfile"].(map[string]any)["schemaVersion"] != contracts.BehaviorIntentSchema || firstProposal["family"] != "fast_regression" {
-		t.Fatalf("unexpected first proposal: %#v", firstProposal)
-	}
-}
-
-func TestCLIScenarioNormalizeCLIProducesCandidatesThatChainIntoPrepareAndPropose(t *testing.T) {
-	root := t.TempDir()
-	cliInputPath := filepath.Join(root, "cli-input.json")
-	candidatesPath := filepath.Join(root, "cli-candidates.json")
-	proposalInputPath := filepath.Join(root, "scenario-proposal-input.json")
-	proposalOutputPath := filepath.Join(root, "scenario-proposals.json")
-	registryPath := filepath.Join(root, "registry.json")
-	coveragePath := filepath.Join(root, "coverage.json")
-	writeJSONFile(t, cliInputPath, map[string]any{
-		"schemaVersion": contracts.CliNormalizationInputsSchema,
-		"cliRuns": []map[string]any{
-			{
-				"surfaceId":    "doctor_missing_adapter",
-				"commandId":    "doctor-no-adapter",
-				"displayName":  "cautilus doctor",
-				"startedAt":    "2026-04-11T00:00:00.000Z",
-				"status":       "failed",
-				"intent":       "Explain how to add the official adapter when none is present.",
-				"summary":      "The command no longer mentioned adapter init or the official adapter path.",
-				"failureKinds": []string{"stdout_missing_expected_guidance", "ambiguous_next_step"},
-			},
-			{
-				"surfaceId":    "adapter_init_scaffold",
-				"commandId":    "adapter-init-default",
-				"displayName":  "cautilus adapter init",
-				"startedAt":    "2026-04-11T01:00:00.000Z",
-				"status":       "failed",
-				"intent":       "Scaffold the official adapter in the default .agents location.",
-				"summary":      "The command exited 0 but did not create .agents/cautilus-adapter.yaml.",
-				"failureKinds": []string{"missing_side_effect"},
-			},
-		},
-	})
-	writeJSONFile(t, registryPath, []map[string]any{
-		{
-			"scenarioId":  "cli-doctor-missing-adapter-doctor-no-adapter-operator-guidance",
-			"scenarioKey": "cli-doctor-missing-adapter-doctor-no-adapter-operator-guidance",
-			"family":      "fast_regression",
-		},
-	})
-	writeJSONFile(t, coveragePath, []map[string]any{
-		{
-			"scenarioKey":       "cli-doctor-missing-adapter-doctor-no-adapter-operator-guidance",
-			"recentResultCount": 1,
-		},
-	})
-
-	_, stderr, exitCode := runCLI(t, root, "scenario", "normalize", "cli", "--input", cliInputPath, "--output", candidatesPath)
-	if exitCode != 0 {
-		t.Fatalf("scenario normalize cli failed: %s", stderr)
-	}
-	candidates := readJSONArrayFile(t, candidatesPath)
-	if len(candidates) != 2 {
-		t.Fatalf("unexpected candidates: %#v", candidates)
-	}
-	firstCandidate := candidates[0].(map[string]any)
-	intentProfile := firstCandidate["intentProfile"].(map[string]any)
-	if intentProfile["behaviorSurface"] != cautilusruntime.BehaviorSurfaces["OPERATOR_CLI"] || firstCandidate["family"] != "fast_regression" {
-		t.Fatalf("unexpected first candidate: %#v", firstCandidate)
-	}
-
-	_, stderr, exitCode = runCLI(t, root, "scenario", "prepare-input", "--candidates", candidatesPath, "--registry", registryPath, "--coverage", coveragePath, "--family", "fast_regression", "--window-days", "14", "--now", "2026-04-11T00:00:00.000Z", "--output", proposalInputPath)
-	if exitCode != 0 {
-		t.Fatalf("scenario prepare-input failed: %s", stderr)
-	}
-	_, stderr, exitCode = runCLI(t, root, "scenario", "propose", "--input", proposalInputPath, "--output", proposalOutputPath)
-	if exitCode != 0 {
-		t.Fatalf("scenario propose failed: %s", stderr)
-	}
-	proposals := readJSONObjectFile(t, proposalOutputPath)
-	proposalList := proposals["proposals"].([]any)
-	if len(proposalList) != 2 {
-		t.Fatalf("unexpected proposals: %#v", proposalList)
-	}
-	firstProposal := proposalList[0].(map[string]any)
-	draftScenario := firstProposal["draftScenario"].(map[string]any)
-	if draftScenario["intentProfile"].(map[string]any)["behaviorSurface"] != cautilusruntime.BehaviorSurfaces["OPERATOR_CLI"] || firstProposal["family"] != "fast_regression" {
 		t.Fatalf("unexpected first proposal: %#v", firstProposal)
 	}
 }

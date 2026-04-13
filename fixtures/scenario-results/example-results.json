@@ -5,7 +5,7 @@
   "mode": "held_out",
   "results": [
     {
-      "scenarioId": "doctor-missing-adapter",
+      "scenarioId": "operator-guidance-smoke",
       "status": "passed",
       "durationMs": 1200,
       "telemetry": {
@@ -22,7 +22,7 @@
     "verdict": "improved",
     "summary": "The candidate keeps the missing-adapter recovery path explicit.",
     "improved": [
-      "doctor-missing-adapter"
+      "operator-guidance-smoke"
     ],
     "artifactPaths": [
       "reports/doctor-compare.md"

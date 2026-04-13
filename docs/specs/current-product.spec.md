@@ -153,10 +153,6 @@ standalone product여야 한다.
 | docs/contracts/active-run.md | fixed | Canonical Filenames |
 | docs/contracts/active-run.md | fixed | Rejected Alternatives |
 | docs/contracts/active-run.md | fixed | cautilus.workspace_run_manifest.v1 |
-| fixtures/cli-evaluation/doctor-missing-adapter.json | file_exists |  |
-| fixtures/cli-evaluation/input.schema.json | file_exists |  |
-| scripts/agent-runtime/evaluate-cli-intent.mjs | file_exists |  |
-| scripts/agent-runtime/evaluate-cli-intent.mjs | fixed | CLI_EVALUATION_PACKET_SCHEMA |
 | scripts/agent-runtime/build-review-packet.mjs | file_exists |  |
 | scripts/agent-runtime/build-review-packet.mjs | fixed | REVIEW_PACKET_SCHEMA |
 | scripts/agent-runtime/build-review-prompt-input.mjs | file_exists |  |
@@ -212,10 +208,6 @@ standalone product여야 한다.
 | docs/contracts/scenario-proposal-inputs.md | fixed | cautilus.scenario_proposal_inputs.v1 |
 | docs/contracts/scenario-proposal-normalization.md | file_exists |  |
 | docs/contracts/scenario-proposal-normalization.md | fixed | scenario prepare-input |
-| docs/contracts/cli-normalization.md | file_exists |  |
-| docs/contracts/cli-normalization.md | fixed | cautilus.cli_normalization_inputs.v1 |
-| docs/contracts/cli-evaluation.md | file_exists |  |
-| docs/contracts/cli-evaluation.md | fixed | cautilus.cli_evaluation_packet.v1 |
 | docs/contracts/review-packet.md | file_exists |  |
 | docs/contracts/review-packet.md | fixed | cautilus.review_packet.v1 |
 | docs/contracts/review-prompt-inputs.md | file_exists |  |
@@ -282,10 +274,6 @@ standalone product여야 한다.
 | scripts/agent-runtime/chatbot-proposal-candidates.mjs | fixed | normalizeChatbotProposalCandidates |
 | scripts/agent-runtime/normalize-chatbot-proposals.mjs | file_exists |  |
 | scripts/agent-runtime/normalize-chatbot-proposals.mjs | fixed | CHATBOT_NORMALIZATION_INPUTS_SCHEMA |
-| scripts/agent-runtime/cli-proposal-candidates.mjs | file_exists |  |
-| scripts/agent-runtime/cli-proposal-candidates.mjs | fixed | normalizeCliProposalCandidates |
-| scripts/agent-runtime/normalize-cli-proposals.mjs | file_exists |  |
-| scripts/agent-runtime/normalize-cli-proposals.mjs | fixed | CLI_NORMALIZATION_INPUTS_SCHEMA |
 | scripts/agent-runtime/skill-proposal-candidates.mjs | file_exists |  |
 | scripts/agent-runtime/skill-proposal-candidates.mjs | fixed | normalizeSkillProposalCandidates |
 | scripts/agent-runtime/normalize-skill-proposals.mjs | file_exists |  |
@@ -304,8 +292,6 @@ standalone product여야 한다.
 | fixtures/scenario-proposals/proposals.schema.json | fixed | cautilus.scenario_proposals.v1 |
 | fixtures/scenario-proposals/chatbot-input.schema.json | file_exists |  |
 | fixtures/scenario-proposals/chatbot-input.schema.json | fixed | cautilus.chatbot_normalization_inputs.v1 |
-| fixtures/scenario-proposals/cli-input.schema.json | file_exists |  |
-| fixtures/scenario-proposals/cli-input.schema.json | fixed | cautilus.cli_normalization_inputs.v1 |
 | fixtures/scenario-proposals/skill-input.schema.json | file_exists |  |
 | fixtures/scenario-proposals/skill-input.schema.json | fixed | cautilus.skill_normalization_inputs.v1 |
 | fixtures/scenario-proposals/ceal-chatbot-input.json | file_exists |  |
@@ -343,8 +329,6 @@ standalone product여야 한다.
 - review meta-prompt input packet and prompt renderer above the review packet
   boundary
 - machine-readable report packet builder for held-out and full-gate telemetry
-- bounded CLI intent evaluation surface with stdout/stderr/exit code and
-  side-effect checks
 - adapter-defined executor variants fanout
 - explicit self-dogfood runner that refreshes the latest local report bundle
 - explicit self-dogfood experiment runner that compares named tuning adapters
@@ -364,8 +348,6 @@ standalone product여야 한다.
 - durable revision-artifact builder above optimize proposals
 - chatbot proposal-candidate normalization helper
 - chatbot normalization command
-- cli proposal-candidate normalization helper
-- cli normalization command
 - skill proposal-candidate normalization helper
 - skill normalization command
 - scenario proposal input packet assembly command
@@ -375,7 +357,7 @@ standalone product여야 한다.
 - checked-in dogfood packet examples across chatbot, skill-validation, and
   durable-workflow archetypes
 - scenario-level telemetry summaries for cost and token transparency
-- intentful behavior framing for chatbot, skill, and CLI surfaces
+- intentful behavior framing for chatbot, skill, and durable-workflow surfaces
 
 현재 baseline cache는 reusable result store까지는 아직 아니다.
 다만 scenario-history의 comparison path는 baseline-cache seed와 cache key를
@@ -401,19 +383,17 @@ $ cautilus workspace prune-artifacts --root /tmp/cautilus-runs --keep-last 20 ||
 $ mkdir -p /tmp/cautilus-runs
 $ cautilus workspace start --root /tmp/cautilus-runs --label mode-held-out --json || true
 $ cautilus scenario normalize chatbot --input ./fixtures/scenario-proposals/chatbot-input.json
-$ cautilus scenario normalize cli --input ./fixtures/scenario-proposals/cli-input.json
 $ cautilus scenario normalize skill --input ./fixtures/scenario-proposals/skill-input.json
 $ cautilus scenario prepare-input --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json --family fast_regression --window-days 14 --now 2026-04-11T00:00:00.000Z
 $ cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json
 $ cautilus scenario summarize-telemetry --results ./fixtures/scenario-results/example-results.json
 $ cautilus report build --input ./fixtures/reports/report-input.json
-$ cautilus mode evaluate --repo-root . --mode held_out --intent "CLI behavior should remain legible." --baseline-ref origin/main --output-dir /tmp/cautilus-mode || true
+$ cautilus mode evaluate --repo-root . --mode held_out --intent "Operator-facing behavior should remain legible." --baseline-ref origin/main --output-dir /tmp/cautilus-mode || true
 $ cautilus evidence prepare-input --report-file ./fixtures/reports/report-input.json --scenario-results-file ./fixtures/scenario-results/example-results.json || true
 $ cautilus evidence bundle --input ./fixtures/evidence/example-input.json
 $ cautilus optimize prepare-input --report-file ./fixtures/reports/report-input.json --target prompt --optimizer repair --budget light || true
 $ cautilus optimize propose --input ./fixtures/optimize/example-input.json
 $ cautilus optimize build-artifact --proposal-file ./fixtures/optimize/example-proposal.json --input-file ./fixtures/optimize/example-input.json
-$ cautilus cli evaluate --input ./fixtures/cli-evaluation/doctor-missing-adapter.json
 $ cautilus review prepare-input --repo-root . --report-file ./fixtures/reports/report-input.json || true
 $ cautilus review build-prompt-input --review-packet /tmp/cautilus-mode/review.json || true
 $ cautilus review render-prompt --input /tmp/cautilus-mode/review-prompt-input.json || true

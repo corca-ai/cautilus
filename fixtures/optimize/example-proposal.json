@@ -5,9 +5,9 @@
   "optimizationTarget": "prompt",
   "intentProfile": {
     "schemaVersion": "cautilus.behavior_intent.v1",
-    "intentId": "intent-cli-recovery-guidance",
-    "summary": "CLI guidance should stay legible under recovery pressure.",
-    "behaviorSurface": "operator_cli",
+    "intentId": "intent-operator-recovery-guidance",
+    "summary": "Operator guidance should stay legible under recovery pressure.",
+    "behaviorSurface": "operator_behavior",
     "successDimensions": [
       {
         "id": "recovery_next_step",

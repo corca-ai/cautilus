@@ -32,8 +32,6 @@ Current product-owned catalog:
 - `operator_behavior`
   generic fallback when the seam knows the behavior is operator-facing but does
   not know a narrower product-owned class yet
-- `operator_cli`
-  operator-visible CLI guidance or behavior contract
 - `workflow_conversation`
   multi-turn workflow continuity in a conversation
 - `thread_followup`
@@ -61,8 +59,6 @@ Current success-dimension catalog:
   Explain the concrete failure cause or missing prerequisite.
 - `recovery_next_step`
   Make the next safe recovery step explicit without operator guesswork.
-- `contract_integrity`
-  Preserve the expected exit, output, and side-effect contract.
 - `workflow_continuity`
   Carry the active workflow context cleanly into the next turn.
 - `target_clarification`
@@ -127,13 +123,6 @@ Current seam-level defaults:
 - report/review generic fallback
   - `operator_behavior`
   - `operator_guidance_clarity`
-- cli guidance candidate
-  - `operator_cli`
-  - `operator_guidance_clarity`
-  - `recovery_next_step`
-- cli behavior-contract candidate
-  - `operator_cli`
-  - `contract_integrity`
 - chatbot clarification candidate
   - `workflow_conversation`
   - `target_clarification`

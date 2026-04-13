@@ -16,7 +16,7 @@ The target product is:
 - train-vs-held-out discipline backed by scenario history
 - scenario proposal flows that mine runtime logs and audit traces into draft
   evaluation cases
-- first-class evaluation surfaces for chatbot, skill, and CLI behavior
+- first-class evaluation surfaces for chatbot, skill, and durable workflow behavior
 - an intent-first workflow where prompts are mutable implementation details and
   evaluation contracts define success
 
@@ -42,13 +42,12 @@ Current `core validated surface`:
   Consumer commands are being wired into `resolveRunDir` one slice at a
   time; `mode evaluate` is the first target.
 - report packet assembly, review packet assembly, and review-variant fanout
-- bounded CLI behavior evaluation through `cli evaluate`
 - tagged-release install and release-helper surfaces
 - checked-in local gates and GitHub workflows that run `verify`
 
 Current `product-owned helper surface`:
 
-- `chatbot`, `cli`, and `skill` normalization helpers
+- `chatbot` and `skill` normalization helpers
 - scenario proposal packet assembly and proposal generation
 - scenario telemetry summaries
 - normalized evidence-bundle input and merge helpers
@@ -116,11 +115,8 @@ one chat transport, one audit store, or one host storage convention.
 
 The first helper targets should be:
 
- - `chatbot`
+- `chatbot`
   - conversation continuity and blocked-follow-up patterns
-- `cli`
-  - operator-facing command intent plus guidance/behavior-contract regressions
-    in bounded fixture environments
 - `skill`
   - validation scenarios plus durable workflow artifact regressions
 
@@ -129,7 +125,7 @@ The first helper targets should be:
 Formalize the DSPy-like product story:
 
 - evaluation contracts and scenario families define intent
-- intentful behavior includes operator-visible CLI surfaces, not only agent
+- intentful behavior includes operator-visible workflow seams, not only agent
   transcripts
 - prompts, reducers, and wrappers are tunable artifacts
 - compare runs report whether behavior improved, regressed, or overfit

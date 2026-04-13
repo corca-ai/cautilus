@@ -15,7 +15,6 @@ const (
 
 var BehaviorSurfaces = map[string]string{
 	"OPERATOR_BEHAVIOR":          "operator_behavior",
-	"OPERATOR_CLI":               "operator_cli",
 	"WORKFLOW_CONVERSATION":      "workflow_conversation",
 	"THREAD_FOLLOWUP":            "thread_followup",
 	"THREAD_CONTEXT_RECOVERY":    "thread_context_recovery",
@@ -28,7 +27,6 @@ var BehaviorDimensions = map[string]string{
 	"OPERATOR_GUIDANCE_CLARITY":         "operator_guidance_clarity",
 	"FAILURE_CAUSE_CLARITY":             "failure_cause_clarity",
 	"RECOVERY_NEXT_STEP":                "recovery_next_step",
-	"CONTRACT_INTEGRITY":                "contract_integrity",
 	"WORKFLOW_CONTINUITY":               "workflow_continuity",
 	"TARGET_CLARIFICATION":              "target_clarification",
 	"PREFERENCE_REUSE":                  "preference_reuse",
@@ -66,32 +64,20 @@ var behaviorDimensionCatalog = map[string]dimensionCatalogEntry{
 	BehaviorDimensions["OPERATOR_GUIDANCE_CLARITY"]: {
 		Kind:    DimensionKindSuccess,
 		Summary: "Keep the operator-facing guidance explicit and easy to follow.",
-		Surfaces: []string{
-			BehaviorSurfaces["OPERATOR_BEHAVIOR"],
-			BehaviorSurfaces["OPERATOR_CLI"],
-		},
+		Surfaces: []string{BehaviorSurfaces["OPERATOR_BEHAVIOR"]},
 	},
 	BehaviorDimensions["FAILURE_CAUSE_CLARITY"]: {
 		Kind:    DimensionKindSuccess,
 		Summary: "Explain the concrete failure cause or missing prerequisite.",
-		Surfaces: []string{
-			BehaviorSurfaces["OPERATOR_BEHAVIOR"],
-			BehaviorSurfaces["OPERATOR_CLI"],
-		},
+		Surfaces: []string{BehaviorSurfaces["OPERATOR_BEHAVIOR"]},
 	},
 	BehaviorDimensions["RECOVERY_NEXT_STEP"]: {
 		Kind:    DimensionKindSuccess,
 		Summary: "Make the next safe recovery step explicit without operator guesswork.",
 		Surfaces: []string{
 			BehaviorSurfaces["OPERATOR_BEHAVIOR"],
-			BehaviorSurfaces["OPERATOR_CLI"],
 			BehaviorSurfaces["OPERATOR_WORKFLOW_RECOVERY"],
 		},
-	},
-	BehaviorDimensions["CONTRACT_INTEGRITY"]: {
-		Kind:     DimensionKindSuccess,
-		Summary:  "Preserve the expected exit, output, and side-effect contract.",
-		Surfaces: []string{BehaviorSurfaces["OPERATOR_CLI"]},
 	},
 	BehaviorDimensions["WORKFLOW_CONTINUITY"]: {
 		Kind:    DimensionKindSuccess,
@@ -134,7 +120,6 @@ var behaviorDimensionCatalog = map[string]dimensionCatalogEntry{
 		Summary: "Do not imply success, configuration, or completion state that has not happened.",
 		Surfaces: []string{
 			BehaviorSurfaces["OPERATOR_BEHAVIOR"],
-			BehaviorSurfaces["OPERATOR_CLI"],
 			BehaviorSurfaces["OPERATOR_WORKFLOW_RECOVERY"],
 		},
 	},
@@ -162,7 +147,6 @@ var behaviorDimensionCatalog = map[string]dimensionCatalogEntry{
 
 var defaultSuccessDimensionsBySurface = map[string][]string{
 	BehaviorSurfaces["OPERATOR_BEHAVIOR"]:          {BehaviorDimensions["OPERATOR_GUIDANCE_CLARITY"]},
-	BehaviorSurfaces["OPERATOR_CLI"]:               {BehaviorDimensions["OPERATOR_GUIDANCE_CLARITY"]},
 	BehaviorSurfaces["WORKFLOW_CONVERSATION"]:      {BehaviorDimensions["WORKFLOW_CONTINUITY"]},
 	BehaviorSurfaces["THREAD_FOLLOWUP"]:            {BehaviorDimensions["WORKFLOW_CONTINUITY"]},
 	BehaviorSurfaces["THREAD_CONTEXT_RECOVERY"]:    {BehaviorDimensions["TARGET_CLARIFICATION"]},

@@ -58,9 +58,7 @@ cautilus doctor --repo-root .
 - [scenario-proposal-inputs.md](references/scenario-proposal-inputs.md)
 - [scenario-proposal-normalization.md](references/scenario-proposal-normalization.md)
 - [chatbot-normalization.md](references/chatbot-normalization.md)
-- [cli-normalization.md](references/cli-normalization.md)
 - [skill-normalization.md](references/skill-normalization.md)
-- [cli-evaluation.md](references/cli-evaluation.md)
 - [review-packet.md](references/review-packet.md)
 - [review-prompt-inputs.md](references/review-prompt-inputs.md)
 - [evidence-bundle.md](references/evidence-bundle.md)
@@ -168,9 +166,6 @@ not as a separate source of truth.
 cautilus scenario normalize chatbot \
   --input ./fixtures/scenario-proposals/chatbot-input.json
 
-cautilus scenario normalize cli \
-  --input ./fixtures/scenario-proposals/cli-input.json
-
 cautilus scenario normalize skill \
   --input ./fixtures/scenario-proposals/skill-input.json
 
@@ -196,7 +191,7 @@ cautilus report build \
 cautilus mode evaluate \
   --repo-root . \
   --mode held_out \
-  --intent "CLI behavior should remain legible." \
+  --intent "Operator-facing behavior should remain legible." \
   --baseline-ref origin/main \
   --output-dir /tmp/cautilus-mode
 
@@ -239,8 +234,6 @@ cautilus review variants \
   --report-file /tmp/cautilus-mode/report.json \
   --output-dir /tmp/cautilus-review
 
-cautilus cli evaluate \
-  --input ./fixtures/cli-evaluation/doctor-missing-adapter.json
 ```
 
 ## Guardrails

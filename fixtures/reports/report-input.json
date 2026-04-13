@@ -1,13 +1,13 @@
 {
   "schemaVersion": "cautilus.report_inputs.v1",
-  "candidate": "feature/intentful-cli",
+  "candidate": "feature/operator-guidance",
   "baseline": "origin/main",
-  "intent": "The operator should understand why adapter setup failed and how to recover.",
+  "intent": "The operator should understand why a workflow step failed and how to recover.",
   "intentProfile": {
     "schemaVersion": "cautilus.behavior_intent.v1",
-    "intentId": "intent-adapter-setup-recovery",
-    "summary": "The operator should understand why adapter setup failed and how to recover.",
-    "behaviorSurface": "operator_cli",
+    "intentId": "intent-operator-workflow-recovery",
+    "summary": "The operator should understand why a workflow step failed and how to recover.",
+    "behaviorSurface": "operator_behavior",
     "successDimensions": [
       {
         "id": "failure_cause_clarity",
@@ -49,7 +49,7 @@
         "mode": "held_out",
         "results": [
           {
-            "scenarioId": "doctor-missing-adapter",
+            "scenarioId": "operator-guidance-smoke",
             "status": "passed",
             "durationMs": 1200,
             "telemetry": {
@@ -64,9 +64,9 @@
           "schemaVersion": "cautilus.compare_artifact.v1",
           "generatedAt": "2026-04-11T00:00:10.000Z",
           "verdict": "improved",
-          "summary": "The candidate keeps the missing-adapter recovery path explicit.",
+          "summary": "The candidate keeps the operator recovery path explicit.",
           "improved": [
-            "doctor-missing-adapter"
+            "operator-guidance-smoke"
           ]
         }
       }
@@ -111,7 +111,7 @@
     }
   ],
   "improved": [
-    "doctor-missing-adapter"
+    "operator-guidance-smoke"
   ],
   "regressed": [
     {
@@ -124,7 +124,7 @@
   "humanReviewFindings": [
     {
       "severity": "concern",
-      "message": "The CLI output is still terse for first-time operators.",
+      "message": "The operator guidance is still terse for first-time operators.",
       "path": "bin/cautilus"
     }
   ],

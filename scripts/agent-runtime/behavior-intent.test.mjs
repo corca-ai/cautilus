@@ -12,11 +12,11 @@ test("buildBehaviorIntentProfile accepts known product-owned behavior surfaces",
 		intent: "Explain the next operator step clearly.",
 		intentProfile: {
 			summary: "Explain the next operator step clearly.",
-			behaviorSurface: BEHAVIOR_SURFACES.OPERATOR_CLI,
+			behaviorSurface: BEHAVIOR_SURFACES.OPERATOR_BEHAVIOR,
 			successDimensions: [BEHAVIOR_DIMENSIONS.RECOVERY_NEXT_STEP],
 		},
 	});
-	assert.equal(profile.behaviorSurface, BEHAVIOR_SURFACES.OPERATOR_CLI);
+	assert.equal(profile.behaviorSurface, BEHAVIOR_SURFACES.OPERATOR_BEHAVIOR);
 	assert.equal(profile.successDimensions[0].id, BEHAVIOR_DIMENSIONS.RECOVERY_NEXT_STEP);
 });
 
@@ -49,7 +49,7 @@ test("buildBehaviorIntentProfile rejects dimensions outside the product-owned ca
 				intent: "Reject an unknown dimension id.",
 				intentProfile: {
 					summary: "Reject an unknown dimension id.",
-					behaviorSurface: BEHAVIOR_SURFACES.OPERATOR_CLI,
+					behaviorSurface: BEHAVIOR_SURFACES.OPERATOR_BEHAVIOR,
 					successDimensions: [{ id: "custom_dimension" }],
 				},
 			}),
@@ -61,13 +61,13 @@ test("buildBehaviorIntentProfile rejects dimensions that do not match the surfac
 	assert.throws(
 		() =>
 			buildBehaviorIntentProfile({
-				intent: "Do not allow review-only dimensions on CLI surfaces.",
+				intent: "Do not allow review-only dimensions on generic operator surfaces.",
 				intentProfile: {
-					summary: "Do not allow review-only dimensions on CLI surfaces.",
-					behaviorSurface: BEHAVIOR_SURFACES.OPERATOR_CLI,
+					summary: "Do not allow review-only dimensions on generic operator surfaces.",
+					behaviorSurface: BEHAVIOR_SURFACES.OPERATOR_BEHAVIOR,
 					successDimensions: [BEHAVIOR_DIMENSIONS.REVIEW_EVIDENCE_LEGIBILITY],
 				},
 			}),
-		/is not allowed for behaviorSurface operator_cli/,
+		/is not allowed for behaviorSurface operator_behavior/,
 	);
 });

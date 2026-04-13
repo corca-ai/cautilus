@@ -9,14 +9,14 @@ import (
 )
 
 func TestMatchCommandPrefersLongestPath(t *testing.T) {
-	match, err := MatchCommand([]string{"scenario", "normalize", "cli", "--input", "fixture.json"})
+	match, err := MatchCommand([]string{"scenario", "normalize", "skill", "--input", "fixture.json"})
 	if err != nil {
 		t.Fatalf("MatchCommand returned error: %v", err)
 	}
 	if match == nil {
 		t.Fatal("expected a command match")
 	}
-	if !slices.Equal(match.Command.Path, []string{"scenario", "normalize", "cli"}) {
+	if !slices.Equal(match.Command.Path, []string{"scenario", "normalize", "skill"}) {
 		t.Fatalf("unexpected path: %#v", match.Command.Path)
 	}
 	if !slices.Equal(match.ForwardedArgs, []string{"--input", "fixture.json"}) {

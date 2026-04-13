@@ -20,14 +20,14 @@
   "report": {
     "schemaVersion": "cautilus.report_packet.v2",
     "generatedAt": "2026-04-11T00:02:00.000Z",
-    "candidate": "feature/cli",
+    "candidate": "feature/operator-guidance",
     "baseline": "origin/main",
-    "intent": "CLI recovery guidance should stay legible.",
+    "intent": "Operator recovery guidance should stay legible.",
     "intentProfile": {
       "schemaVersion": "cautilus.behavior_intent.v1",
-      "intentId": "intent-cli-recovery-guidance",
-      "summary": "CLI recovery guidance should stay legible.",
-      "behaviorSurface": "operator_cli",
+      "intentId": "intent-operator-recovery-guidance",
+      "summary": "Operator recovery guidance should stay legible.",
+      "behaviorSurface": "operator_behavior",
       "successDimensions": [
         {
           "id": "recovery_next_step",

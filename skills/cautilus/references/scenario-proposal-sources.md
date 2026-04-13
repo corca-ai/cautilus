@@ -40,7 +40,6 @@ the storage-reader layer.
 The first checked-in helper entrypoints now exist as:
 
 - `cautilus scenario normalize chatbot`
-- `cautilus scenario normalize cli`
 - `cautilus scenario normalize skill`
 
 ## Source Ports

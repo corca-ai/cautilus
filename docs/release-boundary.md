@@ -24,8 +24,7 @@ These are part of the reusable release boundary:
 - [fixtures/workbench/review-verdict.schema.json](../fixtures/workbench/review-verdict.schema.json)
 - checked-in product example fixtures under
   [fixtures/scenario-proposals/](../fixtures/scenario-proposals),
-  [fixtures/reports/](../fixtures/reports), and
-  [fixtures/cli-evaluation/](../fixtures/cli-evaluation)
+  and [fixtures/reports/](../fixtures/reports)
 
 ## Consumer-Owned Surface
 

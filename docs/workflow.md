@@ -202,7 +202,7 @@ compare flows can reuse a stable cache key instead of guessing it ad hoc.
 cautilus mode evaluate \
   --repo-root . \
   --mode held_out \
-  --intent "CLI behavior should remain legible." \
+  --intent "Operator-facing behavior should remain legible." \
   --baseline-ref origin/main \
   --output-dir /tmp/cautilus-mode
 ```
@@ -298,26 +298,16 @@ Typical examples:
   passing one synthetic brief
 - smoke-test whether a skill invocation path reaches the intended files or
   commands
-- evaluate whether a CLI command's stdout, stderr, exit code, and side effects
-  match operator intent inside a bounded fixture environment
 - compare an old and new adapter or prompt set on the same bounded brief set
 - run a fake operator task to see whether a workflow converges cleanly before
   using it for real
 
-For CLI-specific packets, prefer one checked-in intent packet over hand-run
-transcripts:
+When repeated workflow failures should become durable scenario coverage, prefer
+the checked-in `skill` normalization helper over repo-local one-off shapers:
 
 ```bash
-cautilus cli evaluate \
-  --input ./fixtures/cli-evaluation/doctor-missing-adapter.json
-```
-
-When repeated CLI failures should become durable scenario coverage, prefer the
-checked-in `cli` normalization helper over repo-local one-off shapers:
-
-```bash
-cautilus scenario normalize cli \
-  --input ./fixtures/scenario-proposals/cli-input.json
+cautilus scenario normalize skill \
+  --input ./fixtures/scenario-proposals/skill-input.json
 ```
 
 For this pattern:
