@@ -1,23 +1,23 @@
 {
-  "generatedAt": "2026-04-12T05:26:38.665Z",
+  "generatedAt": "2026-04-13T20:18:21.317Z",
   "repoRoot": ".",
   "workspace": ".",
   "artifactRoot": "artifacts/self-dogfood",
-  "runId": "2026-04-12T05-25-38.076Z",
+  "runId": "2026-04-13T20-17-22.443Z",
   "baselineRef": "origin/main",
   "intent": "Cautilus should record and surface its own self-dogfood result honestly before operators trust broader consumer runs.",
-  "overallStatus": "pass",
-  "reportRecommendation": "accept-now",
+  "overallStatus": "concern",
+  "reportRecommendation": "defer",
   "gateRecommendation": "accept-now",
   "reportPath": "artifacts/self-dogfood/latest/report.json",
   "reviewSummaryPath": "artifacts/self-dogfood/latest/review-summary.json",
   "reviewTelemetry": {
-    "averageVariantDurationMs": 17769,
-    "completedAt": "2026-04-12T05:26:38.657108471Z",
-    "durationMs": 17769,
+    "averageVariantDurationMs": 9524,
+    "completedAt": "2026-04-13T20:18:21.307987266Z",
+    "durationMs": 9524,
     "failedVariantCount": 0,
     "passedVariantCount": 1,
-    "startedAt": "2026-04-12T05:26:20.887636715Z",
+    "startedAt": "2026-04-13T20:18:11.783656318Z",
     "variantCount": 1
   },
   "reviewVariants": [
@@ -25,9 +25,9 @@
       "id": "codex-review",
       "tool": "codex_exec",
       "executionStatus": "passed",
-      "verdict": "pass",
-      "summary": "Current evidence supports the narrow operator-facing claim: the self-dogfood run was recorded, the standing checks passed, and the report packet surfaces the result without introducing regressions or review findings. I agree with the automated accept-now recommendation for this claim, while treating stronger binary-surface or bundled-skill claims as out of scope for this report.",
-      "findingsCount": 3,
+      "verdict": "concern",
+      "summary": "The current run shows the standing gates passed, but the report packet does not yet prove the narrower operator-facing claim that Cautilus honestly records and surfaces its own self-dogfood result. The evidence is enough for a defer, not an accept-now, because the report JSON has no surfaced artifact location and the claim is not directly demonstrated beyond passing verify/hooks.",
+      "findingsCount": 2,
       "outputFile": null
     }
   ]

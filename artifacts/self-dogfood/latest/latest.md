@@ -1,10 +1,10 @@
 # Cautilus Self-Dogfood
 
-- generatedAt: 2026-04-12T05:26:38.665Z
-- runId: 2026-04-12T05-25-38.076Z
+- generatedAt: 2026-04-13T20:18:21.317Z
+- runId: 2026-04-13T20-17-22.443Z
 - baselineRef: origin/main
-- overallStatus: pass
-- reportRecommendation: accept-now
+- overallStatus: concern
+- reportRecommendation: defer
 - gateRecommendation: accept-now
 
 ## Intent
@@ -14,13 +14,13 @@ Cautilus should record and surface its own self-dogfood result honestly before o
 ## Current Reading
 
 - deterministic gate: passed
-- explicit review: pass
-- next action: No immediate action. The last explicit self-dogfood run is green.
+- explicit review: concern
+- next action: Inspect review-summary.json before trusting the automated recommendation.
 
 ## Review Variants
 
-- codex-review: execution=passed, verdict=pass, findings=3
-  summary: Current evidence supports the narrow operator-facing claim: the self-dogfood run was recorded, the standing checks passed, and the report packet surfaces the result without introducing regressions or review findings. I agree with the automated accept-now recommendation for this claim, while treating stronger binary-surface or bundled-skill claims as out of scope for this report.
+- codex-review: execution=passed, verdict=concern, findings=2
+  summary: The current run shows the standing gates passed, but the report packet does not yet prove the narrower operator-facing claim that Cautilus honestly records and surfaces its own self-dogfood result. The evidence is enough for a defer, not an accept-now, because the report JSON has no surfaced artifact location and the claim is not directly demonstrated beyond passing verify/hooks.
 
 ## Artifacts
 

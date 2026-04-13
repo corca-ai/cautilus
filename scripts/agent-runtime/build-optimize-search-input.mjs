@@ -31,6 +31,12 @@ const ARG_FIELDS = {
 	"--optimize-input": "optimizeInput",
 	"--target-file": "targetFile",
 	"--held-out-results-file": "heldOutResultsFile",
+	"--adapter": "adapter",
+	"--adapter-name": "adapterName",
+	"--intent": "intent",
+	"--baseline-ref": "baselineRef",
+	"--profile": "profile",
+	"--split": "split",
 	"--budget": "budget",
 	"--output": "output",
 };
@@ -79,6 +85,12 @@ function parseArgs(argv) {
 		inputJson: null,
 		targetFile: null,
 		heldOutResultsFile: null,
+		adapter: null,
+		adapterName: null,
+		intent: null,
+		baselineRef: null,
+		profile: null,
+		split: null,
 		budget: "medium",
 		output: null,
 		json: false,
@@ -89,6 +101,9 @@ function parseArgs(argv) {
 	}
 	if (options.optimizeInput && options.inputJson) {
 		fail("Use either --optimize-input or --input-json, not both");
+	}
+	if (options.adapter && options.adapterName) {
+		fail("Use either --adapter or --adapter-name, not both");
 	}
 	if (!options.optimizeInput && !options.inputJson) {
 		fail("Use one of --optimize-input or --input-json");
@@ -200,6 +215,35 @@ function buildSearchConfig(budget) {
 	};
 }
 
+function defaultMutationBackends(budget) {
+	if (budget === "light") {
+		return [
+			{
+				id: "codex-mutate",
+				backend: "codex_exec",
+			},
+		];
+	}
+	return [
+		{
+			id: "codex-mutate",
+			backend: "codex_exec",
+		},
+		{
+			id: "claude-mutate",
+			backend: "claude_p",
+		},
+	];
+}
+
+function buildMutationConfig(budget, packet) {
+	return {
+		backends: defaultMutationBackends(budget),
+		trainScenarioLimit: Math.max(1, packet.searchConfig.mutationBatchSize - 1),
+		promptVariantLimit: packet.searchConfig.mutationBatchSize,
+	};
+}
+
 function collectTargetSnapshot(targetPath) {
 	if (!targetPath || !existsSync(targetPath)) {
 		return null;
@@ -234,11 +278,24 @@ function buildTargetRef(targetPath) {
 	};
 }
 
-function buildCanonicalPacket({ optimizeInputFile, optimizeInput, targetFileOverride, budget, now = new Date() }) {
+function resolveEvaluationContext(optimizeInput, options) {
+	const report = optimizeInput.report || {};
+	return {
+		mode: "held_out",
+		adapter: options.adapter,
+		adapterName: options.adapterName,
+		intent: options.intent || report.intent || optimizeInput.intentProfile?.summary || "",
+		baselineRef: options.baselineRef || report.baseline || "HEAD",
+		profile: options.profile || null,
+		split: options.split || null,
+	};
+}
+
+function buildCanonicalPacket({ optimizeInputFile, optimizeInput, targetFileOverride, budget, evaluationOptions, now = new Date() }) {
 	ensurePromptSearchTarget(optimizeInput);
 	const targetPath = resolveTargetPath(optimizeInput, targetFileOverride);
 	const targetFile = buildTargetRef(targetPath);
-	return {
+	const packet = {
 		schemaVersion: OPTIMIZE_SEARCH_INPUTS_SCHEMA,
 		generatedAt: now.toISOString(),
 		repoRoot: optimizeInput.repoRoot,
@@ -266,8 +323,11 @@ function buildCanonicalPacket({ optimizeInputFile, optimizeInput, targetFileOver
 			reviewSummaryFile: optimizeInput.reviewSummaryFile || null,
 			scenarioHistoryFile: optimizeInput.scenarioHistoryFile || null,
 		},
+		evaluationContext: resolveEvaluationContext(optimizeInput, evaluationOptions),
 		objective: optimizeInput.objective,
 	};
+	packet.mutationConfig = buildMutationConfig(budget, packet);
+	return packet;
 }
 
 function deriveRawInputPath(outputPath) {
@@ -287,6 +347,12 @@ function resolveFromRawInput(rawInput, options) {
 		optimizeInputFile,
 		targetFile: typeof rawInput.targetFile === "string" ? rawInput.targetFile : options.targetFile,
 		heldOutResultsFile: typeof rawInput.heldOutResultsFile === "string" ? rawInput.heldOutResultsFile : options.heldOutResultsFile,
+		adapter: typeof rawInput.adapter === "string" ? rawInput.adapter : options.adapter,
+		adapterName: typeof rawInput.adapterName === "string" ? rawInput.adapterName : options.adapterName,
+		intent: typeof rawInput.intent === "string" ? rawInput.intent : options.intent,
+		baselineRef: typeof rawInput.baselineRef === "string" ? rawInput.baselineRef : options.baselineRef,
+		profile: typeof rawInput.profile === "string" ? rawInput.profile : options.profile,
+		split: typeof rawInput.split === "string" ? rawInput.split : options.split,
 		budget: typeof rawInput.budget === "string" ? rawInput.budget : options.budget,
 	};
 }
@@ -321,6 +387,14 @@ export function buildOptimizeSearchInput(argv, { now = new Date(), env = process
 	let optimizeInputFile = options.optimizeInput;
 	let targetFile = options.targetFile;
 	let heldOutResultsFile = options.heldOutResultsFile;
+	let evaluationOptions = {
+		adapter: options.adapter,
+		adapterName: options.adapterName,
+		intent: options.intent,
+		baselineRef: options.baselineRef,
+		profile: options.profile,
+		split: options.split,
+	};
 	let budget = options.budget;
 	if (options.inputJson) {
 		rawInput = options.inputJson;
@@ -328,6 +402,14 @@ export function buildOptimizeSearchInput(argv, { now = new Date(), env = process
 		optimizeInputFile = resolved.optimizeInputFile;
 		targetFile = resolved.targetFile;
 		heldOutResultsFile = resolved.heldOutResultsFile;
+		evaluationOptions = {
+			adapter: resolved.adapter,
+			adapterName: resolved.adapterName,
+			intent: resolved.intent,
+			baselineRef: resolved.baselineRef,
+			profile: resolved.profile,
+			split: resolved.split,
+		};
 		budget = resolved.budget;
 		if (!Object.prototype.hasOwnProperty.call(SEARCH_BUDGETS, budget)) {
 			fail(`budget must be one of: ${Object.keys(SEARCH_BUDGETS).join(", ")}`);
@@ -339,6 +421,7 @@ export function buildOptimizeSearchInput(argv, { now = new Date(), env = process
 		optimizeInput: parsedOptimizeInput.packet,
 		targetFileOverride: targetFile,
 		budget,
+		evaluationOptions,
 		now,
 	});
 	if (heldOutResultsFile) {

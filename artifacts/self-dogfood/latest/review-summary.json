@@ -7,45 +7,40 @@
   "reviewPromptInputFile": null,
   "schemaFile": "fixtures/workbench/review-verdict.schema.json",
   "telemetry": {
-    "averageVariantDurationMs": 17769,
-    "completedAt": "2026-04-12T05:26:38.657108471Z",
-    "durationMs": 17769,
+    "averageVariantDurationMs": 9524,
+    "completedAt": "2026-04-13T20:18:21.307987266Z",
+    "durationMs": 9524,
     "failedVariantCount": 0,
     "passedVariantCount": 1,
-    "startedAt": "2026-04-12T05:26:20.887636715Z",
+    "startedAt": "2026-04-13T20:18:11.783656318Z",
     "variantCount": 1
   },
   "variants": [
     {
       "command": null,
-      "completedAt": "2026-04-12T05:26:38.657108471Z",
-      "durationMs": 17769,
+      "completedAt": "2026-04-13T20:18:21.307987266Z",
+      "durationMs": 9524,
       "exitCode": 0,
       "id": "codex-review",
       "output": {
         "findings": [
           {
-            "message": "`npm run hooks:check` and `npm run verify` both passed in the current run, so the report has a concrete, current gate basis rather than a stale or inferred one.",
-            "path": "artifacts/self-dogfood/runs/2026-04-12T05-25-38.076Z/mode/report.json",
-            "severity": "pass"
+            "message": "`report.json` only shows `full_gate` passing and leaves `gateRecommendation`, `reportRecommendation`, `artifactRoot`, and `reportPath` as null, so the packet does not directly prove that the self-dogfood result was recorded and surfaced for operators in the current run.",
+            "path": "artifacts/self-dogfood/runs/2026-04-13T20-17-22.443Z/mode/report.json",
+            "severity": "concern"
           },
           {
-            "message": "The report packet is aligned with the narrow intent: it records the self-dogfood result for operators, and the human review findings list is empty, so there is no evidence here that the surfaced result overstates what was actually checked.",
-            "path": "artifacts/self-dogfood/runs/2026-04-12T05-25-38.076Z/mode/report.json",
-            "severity": "pass"
-          },
-          {
-            "message": "I did not find evidence in the current packet to justify downgrading the operator-facing recommendation; the stronger claims called out in the prompt remain experiment surfaces, not part of this acceptance decision.",
+            "message": "The automated `accept-now` recommendation is stronger than the evidence here. Passing `npm run verify` and `npm run hooks:check` supports baseline health, but it does not by itself establish the honesty/surfacing contract described in `docs/specs/self-dogfood.spec.md`.",
             "path": "docs/specs/self-dogfood.spec.md",
-            "severity": "pass"
+            "severity": "concern"
           }
         ],
-        "summary": "Current evidence supports the narrow operator-facing claim: the self-dogfood run was recorded, the standing checks passed, and the report packet surfaces the result without introducing regressions or review findings. I agree with the automated accept-now recommendation for this claim, while treating stronger binary-surface or bundled-skill claims as out of scope for this report.",
-        "verdict": "pass"
+        "summary": "The current run shows the standing gates passed, but the report packet does not yet prove the narrower operator-facing claim that Cautilus honestly records and surfaces its own self-dogfood result. The evidence is enough for a defer, not an accept-now, because the report JSON has no surfaced artifact location and the claim is not directly demonstrated beyond passing verify/hooks.",
+        "verdict": "concern"
       },
       "outputFile": null,
       "signal": null,
-      "startedAt": "2026-04-12T05:26:20.887636715Z",
+      "startedAt": "2026-04-13T20:18:11.783656318Z",
       "status": "passed",
       "stderr": "",
       "stderrFile": null,

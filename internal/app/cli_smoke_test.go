@@ -33,7 +33,7 @@ func repoToolRoot(t *testing.T) string {
 func runCLI(t *testing.T, cwd string, args ...string) (string, string, int) {
 	t.Helper()
 	t.Setenv("CAUTILUS_CALLER_CWD", cwd)
-	t.Setenv("CAUTILUS_TOOL_ROOT", "")
+	t.Setenv("CAUTILUS_TOOL_ROOT", repoToolRoot(t))
 
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
@@ -1394,6 +1394,221 @@ func TestCLIOptimizeSearchPrepareInputJSONAndBlockedRunReturnMachineReadablePayl
 	reasonCodes, ok := blocked["reasonCodes"].([]any)
 	if !ok || len(reasonCodes) < 2 {
 		t.Fatalf("unexpected reason codes: %#v", blocked["reasonCodes"])
+	}
+}
+
+func TestCLIOptimizeSearchRunGeneratesAndSelectsReflectiveMutationCandidate(t *testing.T) {
+	root := t.TempDir()
+	artifactRoot := t.TempDir()
+	targetPath := filepath.Join(root, "prompt.md")
+	heldOutResultsPath := filepath.Join(root, "held-out-results.json")
+	optimizeInputPath := filepath.Join(root, "optimize-input.json")
+	searchInputPath := filepath.Join(root, "optimize-search-input.json")
+	searchResultPath := filepath.Join(artifactRoot, "optimize-search-result.json")
+
+	if err := os.MkdirAll(filepath.Join(root, ".agents"), 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.WriteFile(targetPath, []byte("Keep recovery instructions explicit.\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	writeExecutableFile(t, root, "evaluate.sh", `#!/bin/sh
+output="$1"
+score=40
+status="failed"
+if grep -q "detailed recovery checklist" prompt.md; then
+  score=95
+  status="passed"
+fi
+cat >"$output" <<EOF
+{
+  "schemaVersion": "cautilus.scenario_results.v1",
+  "mode": "held_out",
+  "results": [
+    {
+      "scenarioId": "operator-recovery",
+      "status": "$status",
+      "overallScore": $score,
+      "telemetry": {
+        "cost_usd": 0.05,
+        "durationMs": 1300
+      }
+    }
+  ]
+}
+EOF
+`)
+	writeExecutableFile(t, root, "codex", fmt.Sprintf(`#!/bin/sh
+out=""
+while [ "$#" -gt 0 ]; do
+  if [ "$1" = "-o" ]; then
+    out="$2"
+    shift 2
+    continue
+  fi
+  shift
+done
+cat >/dev/null
+printf '%%s\n' '%s' > "$out"
+`, toJSONString(map[string]any{
+		"promptMarkdown":       "Keep recovery instructions explicit with a detailed recovery checklist.\n",
+		"rationaleSummary":     "Expand the recovery instructions with a concrete next-step checklist.",
+		"expectedImprovements": []string{"operator-recovery"},
+		"preservedStrengths":   []string{"keeps the original recovery framing"},
+		"riskNotes":            []string{"held-out still needs to confirm the extra detail is not too verbose"},
+	})))
+	if err := os.WriteFile(filepath.Join(root, ".agents", "cautilus-adapter.yaml"), []byte(strings.Join([]string{
+		"version: 1",
+		"repo: temp-optimize-search",
+		"evaluation_surfaces:",
+		"  - prompt behavior",
+		"baseline_options:",
+		"  - baseline git ref in the same repo via {baseline_ref}",
+		"required_prerequisites: []",
+		"held_out_command_templates:",
+		"  - sh evaluate.sh {scenario_results_file}",
+		"comparison_questions:",
+		"  - Did the held-out score improve?",
+		"human_review_prompts:",
+		"  - id: operator",
+		"    prompt: Where would the prompt still leave the operator stuck?",
+		"",
+	}, "\n")), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	writeJSONFile(t, heldOutResultsPath, map[string]any{
+		"schemaVersion": contracts.ScenarioResultsSchema,
+		"mode":          "held_out",
+		"results": []map[string]any{
+			{
+				"scenarioId":   "operator-recovery",
+				"status":       "failed",
+				"overallScore": 40,
+				"telemetry": map[string]any{
+					"cost_usd":   0.02,
+					"durationMs": 1200,
+				},
+			},
+		},
+	})
+	writeJSONFile(t, optimizeInputPath, map[string]any{
+		"schemaVersion":      contracts.OptimizeInputsSchema,
+		"generatedAt":        "2026-04-13T09:58:00.000Z",
+		"repoRoot":           root,
+		"optimizationTarget": "prompt",
+		"intentProfile": map[string]any{
+			"schemaVersion":   contracts.BehaviorIntentSchema,
+			"intentId":        "intent-operator-recovery-guidance",
+			"summary":         "Operator guidance should stay legible under recovery pressure.",
+			"behaviorSurface": cautilusruntime.BehaviorSurfaces["OPERATOR_BEHAVIOR"],
+		},
+		"optimizer": map[string]any{
+			"kind":   "reflection",
+			"budget": "light",
+			"plan": map[string]any{
+				"evidenceLimit":       3,
+				"suggestedChangeLimit": 2,
+				"reviewVariantLimit":  1,
+				"historySignalLimit":  1,
+			},
+		},
+		"targetFile": map[string]any{
+			"path":   targetPath,
+			"exists": true,
+		},
+		"reportFile": filepath.Join(root, "report.json"),
+		"report": map[string]any{
+			"schemaVersion": contracts.ReportPacketSchema,
+			"generatedAt":   "2026-04-13T09:57:00.000Z",
+			"candidate":     root,
+			"baseline":      "HEAD",
+			"intent":        "Operator guidance should stay legible under recovery pressure.",
+			"intentProfile": map[string]any{
+				"schemaVersion":   contracts.BehaviorIntentSchema,
+				"intentId":        "intent-operator-recovery-guidance",
+				"summary":         "Operator guidance should stay legible under recovery pressure.",
+				"behaviorSurface": cautilusruntime.BehaviorSurfaces["OPERATOR_BEHAVIOR"],
+			},
+			"commands":            []any{},
+			"commandObservations": []any{},
+			"modesRun":            []any{},
+			"modeSummaries":       []any{},
+			"telemetry": map[string]any{
+				"modeCount": 0,
+			},
+			"improved": []any{},
+			"regressed": []any{
+				"operator-recovery",
+			},
+			"unchanged": []any{},
+			"noisy":     []any{},
+			"humanReviewFindings": []any{
+				map[string]any{
+					"severity": "concern",
+					"message":  "operator-recovery still needs a detailed recovery checklist",
+				},
+			},
+			"recommendation": "defer",
+		},
+		"reviewSummaryFile": filepath.Join(root, "review-summary.json"),
+		"reviewSummary": map[string]any{
+			"variants": []any{},
+		},
+		"scenarioHistoryFile": filepath.Join(root, "history.json"),
+		"scenarioHistory": map[string]any{
+			"schemaVersion": contracts.ScenarioHistorySchema,
+			"scenarioStats": map[string]any{
+				"operator-recovery": map[string]any{
+					"recentTrainResults": []any{
+						map[string]any{
+							"status":       "failed",
+							"overallScore": 80,
+							"passRate":     0,
+						},
+					},
+				},
+			},
+		},
+		"objective": map[string]any{
+			"summary":     "Propose one bounded next revision without weakening held-out, comparison, or review discipline.",
+			"constraints": []any{"Prefer repairing explicit regressions over widening scope."},
+		},
+	})
+
+	runGit(t, root, "init")
+	runGit(t, root, "config", "user.email", "test@example.com")
+	runGit(t, root, "config", "user.name", "Cautilus Test")
+	runGit(t, root, "add", ".")
+	runGit(t, root, "commit", "-m", "initial")
+	t.Setenv("PATH", root+string(os.PathListSeparator)+os.Getenv("PATH"))
+
+	_, stderr, exitCode := runCLI(t, root, "optimize", "search", "prepare-input", "--optimize-input", optimizeInputPath, "--held-out-results-file", heldOutResultsPath, "--budget", "light", "--output", searchInputPath)
+	if exitCode != 0 {
+		t.Fatalf("optimize search prepare-input failed: %s", stderr)
+	}
+	_, stderr, exitCode = runCLI(t, root, "optimize", "search", "run", "--input", searchInputPath, "--output", searchResultPath)
+	if exitCode != 0 {
+		t.Fatalf("optimize search run failed: %s", stderr)
+	}
+	searchResult := readJSONObjectFile(t, searchResultPath)
+	if searchResult["status"] != "completed" {
+		t.Fatalf("unexpected search result status: %#v", searchResult)
+	}
+	if searchResult["selectedCandidateId"] == "seed" {
+		t.Fatalf("expected reflective mutation candidate, got %#v", searchResult["selectedCandidateId"])
+	}
+	searchTelemetry := searchResult["searchTelemetry"].(map[string]any)
+	if searchTelemetry["generationCount"] != float64(1) {
+		t.Fatalf("unexpected generation count: %#v", searchTelemetry)
+	}
+	proposalBridge := searchResult["proposalBridge"].(map[string]any)
+	selectedTargetFile := proposalBridge["selectedTargetFile"].(map[string]any)["path"].(string)
+	payload, err := os.ReadFile(selectedTargetFile)
+	if err != nil {
+		t.Fatalf("ReadFile returned error: %v", err)
+	}
+	if !strings.Contains(string(payload), "detailed recovery checklist") {
+		t.Fatalf("expected selected candidate prompt to include checklist, got %q", string(payload))
 	}
 }
 

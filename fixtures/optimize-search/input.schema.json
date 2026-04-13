@@ -13,9 +13,11 @@
     "targetFile",
     "seedCandidate",
     "searchConfig",
+    "mutationConfig",
     "mutationEvidencePolicy",
     "scenarioSets",
     "evaluationFiles",
+    "evaluationContext",
     "objective"
   ],
   "properties": {
@@ -49,6 +51,9 @@
     "searchConfig": {
       "type": "object"
     },
+    "mutationConfig": {
+      "type": "object"
+    },
     "mutationEvidencePolicy": {
       "type": "object"
     },
@@ -56,6 +61,9 @@
       "type": "object"
     },
     "evaluationFiles": {
+      "type": "object"
+    },
+    "evaluationContext": {
       "type": "object"
     },
     "objective": {

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="generator" content="scripts/render-self-dogfood-html.mjs">
-<title>Cautilus Self-Dogfood — pass</title>
+<title>Cautilus Self-Dogfood — concern</title>
 <style>
 :root { color-scheme: light dark; }
 body {
@@ -91,12 +91,12 @@ code { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, mo
 <body>
 <main>
 
-<header class="banner" style="border-left:8px solid #1b7f3a">
+<header class="banner" style="border-left:8px solid #a65d00">
 	<div class="banner-title">Cautilus Self-Dogfood</div>
 	<div class="banner-status">
-		<span class="chip" data-status="overallStatus" style="background:#1b7f3a">pass</span>
-		<span class="banner-meta">runId 2026-04-12T05-25-38.076Z</span>
-		<span class="banner-meta">generatedAt 2026-04-12T05:26:38.665Z</span>
+		<span class="chip" data-status="overallStatus" style="background:#a65d00">concern</span>
+		<span class="banner-meta">runId 2026-04-13T20-17-22.443Z</span>
+		<span class="banner-meta">generatedAt 2026-04-13T20:18:21.317Z</span>
 	</div>
 </header>
 
@@ -105,11 +105,11 @@ code { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, mo
 	<p class="intent-text" data-field="intent">Cautilus should record and surface its own self-dogfood result honestly before operators trust broader consumer runs.</p>
 	<dl class="meta-grid">
 		<dt>overallStatus</dt>
-		<dd><span class="chip" data-status="overallStatusChip" style="background:#1b7f3a">pass</span></dd>
+		<dd><span class="chip" data-status="overallStatusChip" style="background:#a65d00">concern</span></dd>
 		<dt>gateRecommendation</dt>
 		<dd data-field="gateRecommendation">accept-now</dd>
 		<dt>reportRecommendation</dt>
-		<dd data-field="reportRecommendation">accept-now</dd>
+		<dd data-field="reportRecommendation">defer</dd>
 		<dt>baselineRef</dt>
 		<dd>origin/main</dd>
 		<dd><strong>behaviorSurface:</strong> operator_behavior</dd><dd><strong>successDimensions:</strong> <code>operator_guidance_clarity</code></dd>
@@ -135,7 +135,7 @@ code { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, mo
 			<td>1</td>
 			<td><span class="chip" style="background:#1b7f3a">passed</span></td>
 			<td><code>npm run hooks:check</code></td>
-			<td>217ms</td>
+			<td>210ms</td>
 			<td>0</td>
 		</tr>
 		<tr data-observation="full_gate-1">
@@ -143,7 +143,7 @@ code { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, mo
 			<td>1</td>
 			<td><span class="chip" style="background:#1b7f3a">passed</span></td>
 			<td><code>npm run verify</code></td>
-			<td>41.59s</td>
+			<td>48.10s</td>
 			<td>0</td>
 		</tr>
 		</tbody>
@@ -152,38 +152,31 @@ code { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, mo
 
 <section class="panel" aria-labelledby="review-heading">
 	<h2 id="review-heading">Review Variants</h2>
-	<p class="telemetry">variants 1 · passed 1 · failed 0 · total 17.77s</p>
+	<p class="telemetry">variants 1 · passed 1 · failed 0 · total 9.52s</p>
 	
 	<article class="variant" data-variant="codex-review">
 		<header class="variant-header">
 			<h3>codex-review <small>(codex_exec)</small></h3>
 			<div class="variant-chips">
 				<span class="chip" data-status="executionStatus" style="background:#1b7f3a">execution: passed</span>
-				<span class="chip" data-status="verdict" style="background:#1b7f3a">verdict: pass</span>
-				<span class="chip neutral">findings: 3</span>
-				<span class="chip neutral">duration: 17.77s</span>
+				<span class="chip" data-status="verdict" style="background:#a65d00">verdict: concern</span>
+				<span class="chip neutral">findings: 2</span>
+				<span class="chip neutral">duration: 9.52s</span>
 			</div>
 		</header>
-		<p class="variant-summary">Current evidence supports the narrow operator-facing claim: the self-dogfood run was recorded, the standing checks passed, and the report packet surfaces the result without introducing regressions or review findings. I agree with the automated accept-now recommendation for this claim, while treating stronger binary-surface or bundled-skill claims as out of scope for this report.</p>
+		<p class="variant-summary">The current run shows the standing gates passed, but the report packet does not yet prove the narrower operator-facing claim that Cautilus honestly records and surfaces its own self-dogfood result. The evidence is enough for a defer, not an accept-now, because the report JSON has no surfaced artifact location and the claim is not directly demonstrated beyond passing verify/hooks.</p>
 		<ul class="findings">
-		<li class="finding" data-severity="pass">
-			<span class="chip" style="background:#1b7f3a">pass</span>
+		<li class="finding" data-severity="concern">
+			<span class="chip" style="background:#a65d00">concern</span>
 			<div class="finding-body">
-				<div class="finding-message">`npm run hooks:check` and `npm run verify` both passed in the current run, so the report has a concrete, current gate basis rather than a stale or inferred one.</div>
-				<div class="finding-path"><code>artifacts/self-dogfood/runs/2026-04-12T05-25-38.076Z/mode/report.json</code></div>
+				<div class="finding-message">`report.json` only shows `full_gate` passing and leaves `gateRecommendation`, `reportRecommendation`, `artifactRoot`, and `reportPath` as null, so the packet does not directly prove that the self-dogfood result was recorded and surfaced for operators in the current run.</div>
+				<div class="finding-path"><code>artifacts/self-dogfood/runs/2026-04-13T20-17-22.443Z/mode/report.json</code></div>
 			</div>
 		</li>
-		<li class="finding" data-severity="pass">
-			<span class="chip" style="background:#1b7f3a">pass</span>
+		<li class="finding" data-severity="concern">
+			<span class="chip" style="background:#a65d00">concern</span>
 			<div class="finding-body">
-				<div class="finding-message">The report packet is aligned with the narrow intent: it records the self-dogfood result for operators, and the human review findings list is empty, so there is no evidence here that the surfaced result overstates what was actually checked.</div>
-				<div class="finding-path"><code>artifacts/self-dogfood/runs/2026-04-12T05-25-38.076Z/mode/report.json</code></div>
-			</div>
-		</li>
-		<li class="finding" data-severity="pass">
-			<span class="chip" style="background:#1b7f3a">pass</span>
-			<div class="finding-body">
-				<div class="finding-message">I did not find evidence in the current packet to justify downgrading the operator-facing recommendation; the stronger claims called out in the prompt remain experiment surfaces, not part of this acceptance decision.</div>
+				<div class="finding-message">The automated `accept-now` recommendation is stronger than the evidence here. Passing `npm run verify` and `npm run hooks:check` supports baseline health, but it does not by itself establish the honesty/surfacing contract described in `docs/specs/self-dogfood.spec.md`.</div>
 				<div class="finding-path"><code>docs/specs/self-dogfood.spec.md</code></div>
 			</div>
 		</li>

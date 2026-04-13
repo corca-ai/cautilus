@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -286,16 +287,24 @@ type optimizePrepareArgs struct {
 	output        *string
 }
 
+//nolint:unused // retained for command-parser parity while optimize search delegates to the Node runtime
 type optimizeSearchPrepareArgs struct {
 	optimizeInputFile  string
 	inputJSON          map[string]any
 	targetFile         *string
 	heldOutResultsFile *string
+	adapter            *string
+	adapterName        *string
+	intent             *string
+	baselineRef        *string
+	profile            *string
+	split              *string
 	budget             string
 	output             *string
 	json               bool
 }
 
+//nolint:unused // retained for command-parser parity while optimize search delegates to the Node runtime
 type optimizeSearchRunArgs struct {
 	input  string
 	output *string
@@ -849,134 +858,12 @@ func handleOptimizePropose(repoRoot string, cwd string, args []string, stdout io
 
 //nolint:errcheck // CLI stderr reporting is best-effort.
 func handleOptimizeSearchPrepareInput(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
-	options, err := parseOptimizeSearchPrepareArgs(args, cwd)
-	if err != nil {
-		fmt.Fprintf(stderr, "%s\n", err)
-		return 1
-	}
-	optimizeInputFile := options.optimizeInputFile
-	targetFile := options.targetFile
-	heldOutResultsFile := options.heldOutResultsFile
-	budget := options.budget
-	var rawInputFile *string
-	if len(options.inputJSON) > 0 {
-		if optimizeInputFile == "" {
-			rawOptimizeInputFile := anyString(options.inputJSON["optimizeInputFile"])
-			if rawOptimizeInputFile == "" {
-				fmt.Fprintf(stderr, "input JSON must include optimizeInputFile\n")
-				return 1
-			}
-			optimizeInputFile = resolvePath(cwd, rawOptimizeInputFile)
-		}
-		if targetFile == nil {
-			if rawTargetFile := anyString(options.inputJSON["targetFile"]); rawTargetFile != "" {
-				resolved := resolvePath(cwd, rawTargetFile)
-				targetFile = &resolved
-			}
-		}
-		if heldOutResultsFile == nil {
-			if rawHeldOutResultsFile := anyString(options.inputJSON["heldOutResultsFile"]); rawHeldOutResultsFile != "" {
-				resolved := resolvePath(cwd, rawHeldOutResultsFile)
-				heldOutResultsFile = &resolved
-			}
-		}
-		if rawBudget := anyString(options.inputJSON["budget"]); rawBudget != "" {
-			budget = rawBudget
-		}
-	}
-	input, err := readJSONObject(optimizeInputFile)
-	if err != nil {
-		fmt.Fprintf(stderr, "Failed to read JSON from %s: %s\n", optimizeInputFile, err)
-		return 1
-	}
-	var heldOutResults map[string]any
-	if heldOutResultsFile != nil {
-		heldOutResults, err = readJSONObject(*heldOutResultsFile)
-		if err != nil {
-			fmt.Fprintf(stderr, "Failed to read JSON from %s: %s\n", *heldOutResultsFile, err)
-			return 1
-		}
-	}
-	packet, err := runtime.BuildOptimizeSearchInput(input, optimizeInputFile, heldOutResultsFile, heldOutResults, targetFile, budget, time.Now())
-	if err != nil {
-		fmt.Fprintf(stderr, "%s\n", err)
-		return 1
-	}
-	if options.output != nil {
-		if len(options.inputJSON) > 0 {
-			rawPath := deriveSiblingRawJSONPath(*options.output)
-			if err := writeOutputResolved(stdout, &rawPath, options.inputJSON); err != nil {
-				fmt.Fprintf(stderr, "%s\n", err)
-				return 1
-			}
-			rawInputFile = &rawPath
-		}
-		if err := writeOutputResolved(stdout, options.output, packet); err != nil {
-			fmt.Fprintf(stderr, "%s\n", err)
-			return 1
-		}
-	}
-	if options.json {
-		payload := map[string]any{
-			"status": "ready",
-		}
-		if options.output != nil {
-			payload["inputFile"] = *options.output
-		}
-		if rawInputFile != nil {
-			payload["rawInputFile"] = *rawInputFile
-		}
-		if err := writeJSON(stdout, payload); err != nil {
-			fmt.Fprintf(stderr, "%s\n", err)
-			return 1
-		}
-		return 0
-	}
-	if options.output == nil {
-		if err := writeJSON(stdout, packet); err != nil {
-			fmt.Fprintf(stderr, "%s\n", err)
-			return 1
-		}
-	}
-	return 0
+	return runAgentRuntimeNodeScript(repoRoot, cwd, "build-optimize-search-input.mjs", args, stdout, stderr)
 }
 
 //nolint:errcheck // CLI stderr reporting is best-effort.
 func handleOptimizeSearchRun(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
-	options, err := parseOptimizeSearchRunArgs(args, cwd)
-	if err != nil {
-		fmt.Fprintf(stderr, "%s\n", err)
-		return 1
-	}
-	input, err := readJSONObject(options.input)
-	if err != nil {
-		fmt.Fprintf(stderr, "Failed to read JSON from %s: %s\n", options.input, err)
-		return 1
-	}
-	if input["schemaVersion"] != contracts.OptimizeSearchInputsSchema {
-		fmt.Fprintf(stderr, "search input must use schemaVersion %s\n", contracts.OptimizeSearchInputsSchema)
-		return 1
-	}
-	result := runtime.RunOptimizeSearch(input, options.input, time.Now())
-	if options.output != nil {
-		if err := writeOutputResolved(stdout, options.output, result); err != nil {
-			fmt.Fprintf(stderr, "%s\n", err)
-			return 1
-		}
-	}
-	if options.json || options.output == nil {
-		if err := writeJSON(stdout, result); err != nil {
-			fmt.Fprintf(stderr, "%s\n", err)
-			return 1
-		}
-	}
-	if anyString(result["status"]) == "blocked" {
-		if !options.json {
-			fmt.Fprintf(stderr, "search blocked: %s\n", strings.Join(stringSliceOrEmpty(result["reasonCodes"]), ", "))
-		}
-		return 1
-	}
-	return 0
+	return runAgentRuntimeNodeScript(repoRoot, cwd, "run-optimize-search.mjs", args, stdout, stderr)
 }
 
 //nolint:errcheck // CLI stderr reporting is best-effort.
@@ -1669,6 +1556,7 @@ func parseOptimizePrepareArgs(args []string, cwd string) (*optimizePrepareArgs, 
 	return options, nil
 }
 
+//nolint:unused // retained for command-parser parity while optimize search delegates to the Node runtime
 func parseOptimizeSearchPrepareArgs(args []string, cwd string) (*optimizeSearchPrepareArgs, error) {
 	options := &optimizeSearchPrepareArgs{
 		budget: "medium",
@@ -1705,6 +1593,49 @@ func parseOptimizeSearchPrepareArgs(args []string, cwd string) (*optimizeSearchP
 			index = next
 			resolved := resolvePath(cwd, value)
 			options.targetFile = &resolved
+		case "--adapter":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			resolved := resolvePath(cwd, value)
+			options.adapter = &resolved
+		case "--adapter-name":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.adapterName = &value
+		case "--intent":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.intent = &value
+		case "--baseline-ref":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.baselineRef = &value
+		case "--profile":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.profile = &value
+		case "--split":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.split = &value
 		case "--held-out-results-file":
 			value, next, err := requiredValue(args, index, arg)
 			if err != nil {
@@ -1743,6 +1674,9 @@ func parseOptimizeSearchPrepareArgs(args []string, cwd string) (*optimizeSearchP
 	if strings.TrimSpace(options.optimizeInputFile) == "" && len(options.inputJSON) == 0 {
 		return nil, fmt.Errorf("use one of --optimize-input or --input-json")
 	}
+	if options.adapter != nil && options.adapterName != nil {
+		return nil, fmt.Errorf("use either --adapter or --adapter-name, not both")
+	}
 	activeRunDir, err := readActiveRunDir()
 	if err != nil {
 		return nil, err
@@ -1757,6 +1691,7 @@ func parseOptimizeSearchPrepareArgs(args []string, cwd string) (*optimizeSearchP
 	return options, nil
 }
 
+//nolint:unused // retained for command-parser parity while optimize search delegates to the Node runtime
 func parseOptimizeSearchRunArgs(args []string, cwd string) (*optimizeSearchRunArgs, error) {
 	options := &optimizeSearchRunArgs{}
 	for index := 0; index < len(args); index++ {
@@ -1932,6 +1867,7 @@ func resolvePath(base string, value string) string {
 	return filepath.Clean(filepath.Join(base, value))
 }
 
+//nolint:unused // retained for command-parser parity while optimize search delegates to the Node runtime
 func deriveSiblingRawJSONPath(path string) string {
 	if strings.HasSuffix(path, ".json") {
 		return strings.TrimSuffix(path, ".json") + ".raw.json"
@@ -2029,6 +1965,7 @@ func mapOrEmpty(value any) map[string]any {
 	return record
 }
 
+//nolint:unused // retained for command-parser parity while optimize search delegates to the Node runtime
 func stringSliceOrEmpty(value any) []string {
 	result := []string{}
 	for _, raw := range arrayOrEmpty(value) {
@@ -2074,6 +2011,34 @@ func externalCommandEnv(extraEnv map[string]string) []string {
 		env = append(env, key+"="+value)
 	}
 	return env
+}
+
+func runAgentRuntimeNodeScript(toolRoot string, cwd string, scriptName string, args []string, stdout io.Writer, stderr io.Writer) int {
+	if strings.TrimSpace(toolRoot) == "" {
+		_, _ = fmt.Fprintf(stderr, "agent runtime script %s requires CAUTILUS_TOOL_ROOT or a source checkout tool root\n", scriptName)
+		return 1
+	}
+	scriptPath := filepath.Join(toolRoot, "scripts", "agent-runtime", scriptName)
+	if !pathExists(scriptPath) {
+		_, _ = fmt.Fprintf(stderr, "agent runtime script not found: %s\n", scriptPath)
+		return 1
+	}
+	command := exec.Command("node", append([]string{scriptPath}, args...)...)
+	command.Dir = cwd
+	command.Env = externalCommandEnv(map[string]string{
+		"CAUTILUS_TOOL_ROOT": toolRoot,
+	})
+	command.Stdout = stdout
+	command.Stderr = stderr
+	if err := command.Run(); err != nil {
+		var exitErr *exec.ExitError
+		if errors.As(err, &exitErr) {
+			return exitErr.ExitCode()
+		}
+		_, _ = fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	return 0
 }
 
 func toJSONString(value any) string {

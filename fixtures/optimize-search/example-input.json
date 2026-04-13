@@ -138,6 +138,16 @@
     },
     "mergeEnabled": false
   },
+  "mutationConfig": {
+    "backends": [
+      {
+        "id": "codex-mutate",
+        "backend": "codex_exec"
+      }
+    ],
+    "trainScenarioLimit": 2,
+    "promptVariantLimit": 3
+  },
   "mutationEvidencePolicy": {
     "reportBuckets": [
       "regressed",
@@ -160,6 +170,15 @@
     "reviewSummaryFile": "/tmp/cautilus-optimize-search/review-summary.json",
     "scenarioHistoryFile": "/tmp/cautilus-optimize-search/history.json",
     "heldOutResultsFile": "/tmp/cautilus-optimize-search/held-out-results.json"
+  },
+  "evaluationContext": {
+    "mode": "held_out",
+    "adapter": null,
+    "adapterName": null,
+    "intent": "Operator guidance should stay legible under recovery pressure.",
+    "baselineRef": "origin/main",
+    "profile": null,
+    "split": null
   },
   "heldOutResults": {
     "schemaVersion": "cautilus.scenario_results.v1",

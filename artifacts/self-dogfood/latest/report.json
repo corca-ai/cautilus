@@ -4,22 +4,22 @@
   "commandObservations": [
     {
       "command": "npm run hooks:check",
-      "completedAt": "2026-04-12T05:25:38.475322359Z",
-      "durationMs": 217,
+      "completedAt": "2026-04-13T20:17:22.82069197Z",
+      "durationMs": 210,
       "exitCode": 0,
       "index": 1,
       "stage": "preflight",
-      "startedAt": "2026-04-12T05:25:38.258246963Z",
+      "startedAt": "2026-04-13T20:17:22.610020272Z",
       "status": "passed"
     },
     {
       "command": "npm run verify",
-      "completedAt": "2026-04-12T05:26:20.061143275Z",
-      "durationMs": 41585,
+      "completedAt": "2026-04-13T20:18:10.926120509Z",
+      "durationMs": 48105,
       "exitCode": 0,
       "index": 1,
       "stage": "full_gate",
-      "startedAt": "2026-04-12T05:25:38.475614841Z",
+      "startedAt": "2026-04-13T20:17:22.82095763Z",
       "status": "passed"
     }
   ],
@@ -30,7 +30,7 @@
       "mode": "full_gate"
     }
   ],
-  "generatedAt": "2026-04-12T05:26:20.061919278Z",
+  "generatedAt": "2026-04-13T20:18:10.926679702Z",
   "humanReviewFindings": [],
   "improved": [],
   "intent": "Cautilus should record and surface its own self-dogfood result honestly before operators trust broader consumer runs.",
@@ -49,16 +49,16 @@
   },
   "modeSummaries": [
     {
-      "completedAt": "2026-04-12T05:26:20.061143275Z",
-      "durationMs": 41585,
+      "completedAt": "2026-04-13T20:18:10.926120509Z",
+      "durationMs": 48105,
       "mode": "full_gate",
-      "startedAt": "2026-04-12T05:25:38.475614841Z",
+      "startedAt": "2026-04-13T20:17:22.82095763Z",
       "status": "passed",
       "summary": "full_gate completed across 1 command.",
       "telemetry": {
-        "completedAt": "2026-04-12T05:26:20.061143275Z",
-        "durationMs": 41585,
-        "startedAt": "2026-04-12T05:25:38.475614841Z"
+        "completedAt": "2026-04-13T20:18:10.926120509Z",
+        "durationMs": 48105,
+        "startedAt": "2026-04-13T20:17:22.82095763Z"
       }
     }
   ],
@@ -70,11 +70,11 @@
   "regressed": [],
   "schemaVersion": "cautilus.report_packet.v2",
   "telemetry": {
-    "completedAt": "2026-04-12T05:26:20.061143275Z",
-    "durationMs": 41585,
+    "completedAt": "2026-04-13T20:18:10.926120509Z",
+    "durationMs": 48105,
     "modeCount": 1,
     "modesWithScenarioResults": 0,
-    "startedAt": "2026-04-12T05:25:38.475614841Z"
+    "startedAt": "2026-04-13T20:17:22.82095763Z"
   },
   "unchanged": []
 }
