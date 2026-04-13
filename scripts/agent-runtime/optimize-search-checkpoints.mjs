@@ -65,6 +65,22 @@ function reviewRejectionReasons(summary) {
 	});
 }
 
+function reviewFeedbackMessages(summary) {
+	return (Array.isArray(summary?.variants) ? summary.variants : []).flatMap((variant) => {
+		const findings = Array.isArray(variant?.output?.findings) ? variant.output.findings : [];
+		const messages = findings
+			.map((finding) => finding?.message)
+			.filter((message) => typeof message === "string" && message.length > 0);
+		if (messages.length > 0) {
+			return messages;
+		}
+		if (typeof variant?.output?.summary === "string" && variant.output.summary.length > 0) {
+			return [variant.output.summary];
+		}
+		return [];
+	});
+}
+
 function hasExecutorVariants(payload) {
 	return Array.isArray(payload?.data?.executor_variants) && payload.data.executor_variants.length > 0;
 }
@@ -155,12 +171,14 @@ export function runReviewCheckpoint(packet, artifactRoot, candidate, env) {
 	}
 	const summary = readJson(summaryFile);
 	const rejectionReasons = reviewRejectionReasons(summary);
+	const feedbackMessages = reviewFeedbackMessages(summary);
 	return {
 		type: "review",
 		candidateId: candidate.id,
 		status: result.status === 0 ? "passed" : "failed",
 		admissible: rejectionReasons.length === 0,
 		rejectionReasons,
+		feedbackMessages,
 		outputDir,
 		summaryFile,
 		telemetry: summary.telemetry || null,

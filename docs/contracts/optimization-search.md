@@ -94,7 +94,6 @@ This slice defines a first `GEPA`-inspired search contract for `Cautilus`:
 - automatic prompt patch application to consumer-owned files
 - richer merge-parent selection, >2-parent synthesis, and smarter crossover
   heuristics
-- feeding checkpoint rejection reasons back into later-generation mutation
 
 ## Non-Goals
 
@@ -170,6 +169,8 @@ The packet should include:
   - which report buckets can seed mutation
   - how many review findings can enter one reflective batch
   - whether scenario history can appear in reflective feedback
+  - whether frontier-promotion checkpoint feedback should be reinjected into
+    later mutation prompts
 - explicit scenario sets
   - `trainScenarioSet`
   - `heldOutScenarioSet`
@@ -340,6 +341,11 @@ In v1, review checkpoint policy means:
 - `frontier_promotions`
   - run review variants whenever a candidate is promoted onto the held-out
     frontier
+  - if the review rejects that candidate, preserve the rejection reasons and
+    feedback messages on the candidate record and inject them into that
+    candidate's later mutation prompts
+  - review-rejected frontier candidates may still seed later mutation, but
+    merge-parent selection remains limited to review-admissible candidates
 
 `final_only` should be the default because it preserves the bounded search
 shape at lower cost while existing report and review evidence still constrain
@@ -470,13 +476,14 @@ The current bounded slice already proves:
 - reflective mutation from explicit evidence
 - optional bounded merge generation from complementary frontier parents
 - optional frontier-promotion review checkpoint execution
+- checkpoint rejection feedback reinjection into later mutation prompts
 - final-only full-gate checkpoint execution with ranked-frontier fallback
 - selected-candidate emission and proposal bridging back into the existing
   optimize artifact flow
 
 The next slice can build on this by feeding checkpoint rejections back into
-later mutation and making merge selection more system-aware, without
-reshaping the packet boundary.
+specific scenarios or merge selection more system-aware, without reshaping the
+packet boundary.
 
 ## Guardrails
 

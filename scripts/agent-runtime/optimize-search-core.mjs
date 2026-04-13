@@ -162,6 +162,7 @@ function candidateRegistry(candidates) {
 		...(candidate.expectedImprovements ? { expectedImprovements: candidate.expectedImprovements } : {}),
 		...(candidate.preservedStrengths ? { preservedStrengths: candidate.preservedStrengths } : {}),
 		...(candidate.riskNotes ? { riskNotes: candidate.riskNotes } : {}),
+		...(candidate.checkpointFeedback ? { checkpointFeedback: candidate.checkpointFeedback } : {}),
 		...(candidate.artifacts ? { artifacts: candidate.artifacts } : {}),
 		...(candidate.evaluationArtifacts ? { evaluationArtifacts: candidate.evaluationArtifacts } : {}),
 		...(candidate.evaluationError ? { evaluationError: candidate.evaluationError } : {}),
@@ -185,6 +186,14 @@ function recordCheckpointOutcome(collection, outcome) {
 function shouldReviewFrontierPromotions(packet) { return packet.searchConfig?.reviewCheckpointPolicy === "frontier_promotions"; }
 function candidatePassedPromotionReview(candidate) { return candidate?.promotionReviewOutcome?.admissible !== false; }
 
+function buildCheckpointFeedback(reviewOutcome) {
+	return [{
+		source: "frontier_promotion_review",
+		rejectionReasons: Array.isArray(reviewOutcome?.rejectionReasons) ? reviewOutcome.rejectionReasons : [],
+		feedbackMessages: Array.isArray(reviewOutcome?.feedbackMessages) ? reviewOutcome.feedbackMessages : [],
+	}];
+}
+
 function recordFrontierPromotionReviews(packet, artifactRoot, candidates, scenarioIds, checkpointLedger, env) {
 	if (!shouldReviewFrontierPromotions(packet)) {
 		return;
@@ -198,6 +207,9 @@ function recordFrontierPromotionReviews(packet, artifactRoot, candidates, scenar
 		}
 		const outcome = runReviewCheckpoint(packet, artifactRoot, candidate, env);
 		candidate.promotionReviewOutcome = outcome;
+		if (!outcome.admissible) {
+			candidate.checkpointFeedback = buildCheckpointFeedback(outcome);
+		}
 		recordCheckpointOutcome(checkpointLedger.review, outcome);
 	}
 }
@@ -389,23 +401,21 @@ function buildSeedSearchCandidate(packet) {
 	};
 }
 
-function nextGenerationParents(packet, allCandidates, scenarioIds) {
+function nextGenerationCandidates(packet, allCandidates, scenarioIds) {
 	const matrix = allCandidates.flatMap((candidate) => candidate.heldOutEntries || []);
 	const candidateIds = allCandidates.map((candidate) => candidate.id);
 	const frontierIds = frontierCandidateIds(matrix, candidateIds, scenarioIds);
-	const parentFrontierIds = shouldReviewFrontierPromotions(packet)
-		? frontierIds.filter((candidateId) => {
-			const candidate = allCandidates.find((item) => item.id === candidateId);
-			return candidatePassedPromotionReview(candidate);
-		})
-		: frontierIds;
-	return retainParentCandidates(
-		parentFrontierIds,
+	const mutationParents = retainParentCandidates(
+		frontierIds,
 		matrix,
 		allCandidates,
 		scenarioIds,
 		packet.searchConfig.populationLimit,
 	);
+	const mergeParents = shouldReviewFrontierPromotions(packet)
+		? mutationParents.filter(candidatePassedPromotionReview)
+		: mutationParents;
+	return { mutationParents, mergeParents };
 }
 
 function appendGenerationSummary(allCandidates, generationSummaries, generationIndex, evaluatedCandidates, parentCandidates, scenarioIds) {
@@ -426,11 +436,11 @@ function runGenerations(packet, artifactRoot, seedCandidate, readiness, checkpoi
 	let stopReason = "seed_only";
 	recordFrontierPromotionReviews(packet, artifactRoot, allCandidates, scenarioIds, checkpointLedger, env);
 	for (let generationIndex = 1; generationIndex <= packet.searchConfig.generationLimit; generationIndex += 1) {
-		const parentCandidates = nextGenerationParents(packet, allCandidates, scenarioIds);
-		const evaluatedCandidates = evaluateMutationCandidates(packet, artifactRoot, parentCandidates, readiness.feedbackSignals, env, {
+		const { mutationParents, mergeParents } = nextGenerationCandidates(packet, allCandidates, scenarioIds);
+		const evaluatedCandidates = evaluateMutationCandidates(packet, artifactRoot, mutationParents, readiness.feedbackSignals, env, {
 			generationIndex,
 			existingCandidates: allCandidates,
-			frontierCandidates: parentCandidates,
+			frontierCandidates: mergeParents,
 		});
 		if (evaluatedCandidates.length === 0) {
 			return {
@@ -441,7 +451,7 @@ function runGenerations(packet, artifactRoot, seedCandidate, readiness, checkpoi
 		}
 		allCandidates.push(...evaluatedCandidates);
 		recordFrontierPromotionReviews(packet, artifactRoot, allCandidates, scenarioIds, checkpointLedger, env);
-		appendGenerationSummary(allCandidates, generationSummaries, generationIndex, evaluatedCandidates, parentCandidates, scenarioIds);
+		appendGenerationSummary(allCandidates, generationSummaries, generationIndex, evaluatedCandidates, mutationParents, scenarioIds);
 		stopReason = generationIndex === packet.searchConfig.generationLimit ? "generation_limit" : "frontier_continue";
 	}
 	return { allCandidates, generationSummaries, stopReason };

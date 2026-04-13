@@ -7,7 +7,7 @@ function promptContext(packet) {
 	};
 }
 
-export function buildMutationPrompt(packet, parentCandidate, parentPrompt, reflectionBatch, backend) {
+export function buildMutationPrompt(packet, parentCandidate, parentPrompt, reflectionBatch, checkpointFeedback, backend) {
 	const { objective, constraints, heldOutScenarios, targetPath } = promptContext(packet);
 	return [
 		"# Task",
@@ -19,6 +19,7 @@ export function buildMutationPrompt(packet, parentCandidate, parentPrompt, refle
 		"- Preserve working behavior unless the evidence explicitly says it is harmful.",
 		"- Prefer concrete operator-facing recovery guidance over generic wording.",
 		"- Do not optimize for lower cost by merely making the prompt shorter.",
+		"- If checkpoint feedback exists, repair that rejection before widening scope.",
 		"",
 		"## Search Context",
 		`- backend: ${backend}`,
@@ -34,6 +35,9 @@ export function buildMutationPrompt(packet, parentCandidate, parentPrompt, refle
 		"",
 		"## Reflection Batch",
 		JSON.stringify(reflectionBatch, null, 2),
+		"",
+		"## Checkpoint Feedback",
+		JSON.stringify(Array.isArray(checkpointFeedback) ? checkpointFeedback : [], null, 2),
 		"",
 		"## Current Prompt",
 		"```md",

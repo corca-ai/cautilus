@@ -328,6 +328,7 @@ function buildCanonicalPacket({
 			reportBuckets: ["regressed", "noisy"],
 			reviewFindingLimit: optimizeInput.optimizer?.plan?.reviewVariantLimit ?? 1,
 			includeScenarioHistory: Boolean(optimizeInput.scenarioHistory),
+			includeCheckpointFeedback: reviewCheckpointPolicy === "frontier_promotions",
 		},
 		scenarioSets: {
 			trainScenarioSet: deriveTrainScenarioSet(optimizeInput),

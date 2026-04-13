@@ -88,9 +88,9 @@ This is intentionally a bounded first slice, not the final word on prompt
 evolution.
 The current implementation closes multi-generation reflective mutation,
 bounded merge synthesis, held-out reevaluation, frontier-promotion review
-checkpoints, final-only checkpoint fallback, search-readiness blocking, and
-proposal bridging.
-Later slices can still add checkpoint-feedback reinjection, richer merge
+checkpoints, checkpoint-feedback reinjection, final-only checkpoint fallback,
+search-readiness blocking, and proposal bridging.
+Later slices can still add richer merge
 heuristics, and stronger self-dogfood loops.
 
 ## Current Status

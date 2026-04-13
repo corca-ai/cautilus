@@ -268,11 +268,12 @@ function markUniqueCandidate(candidate, seenFingerprints) {
 function buildMutationCandidate(packet, artifactRoot, parentCandidate, feedbackSignals, generationIndex, candidateIndex, backend, env) {
 	const parentPrompt = readPromptBody(parentCandidate.targetFile.path);
 	const reflectionBatch = buildReflectionBatch(packet, parentCandidate, feedbackSignals);
+	const checkpointFeedback = Array.isArray(parentCandidate.checkpointFeedback) ? parentCandidate.checkpointFeedback : [];
 	return generateCandidate({
 		packet,
 		artifactRoot,
 		parentCandidate,
-		promptText: buildMutationPrompt(packet, parentCandidate, parentPrompt, reflectionBatch, backend),
+		promptText: buildMutationPrompt(packet, parentCandidate, parentPrompt, reflectionBatch, checkpointFeedback, backend),
 		backend,
 		generationIndex,
 		candidateIndex,

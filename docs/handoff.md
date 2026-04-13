@@ -27,6 +27,7 @@
   - multi-generation Pareto frontier retention
   - optional bounded merge candidate
   - optional `frontier_promotions` review checkpoint execution
+  - checkpoint rejection feedback reinjection into later mutation prompts
   - final-only full-gate checkpoint execution
   - ranked-frontier fallback when the leader fails final checkpoints
   - blocked result when no checkpoint-admissible finalist survives
@@ -56,28 +57,28 @@
 
 ## Next Session
 
-1. `v2` 범위를 `checkpoint-to-mutation feedback` 중심으로 짧게 다시 고정한다.
-2. `frontier_promotions`에서 나온 rejection reason을 다음 generation mutation feedback에 재주입할 계약과 artifact shape를 정한다.
-3. 그 다음 merge parent selection을 더 system-aware하게 만들지, 아니면 multi-parent synthesis를 먼저 열지 결정한다.
-4. 마지막으로 `medium`/`heavy` budget의 기본 review checkpoint policy를 올릴지 운영 비용 기준으로 판단한다.
+1. merge parent selection을 더 system-aware하게 만들지, 아니면 multi-parent synthesis를 먼저 열지 결정한다.
+2. `medium`/`heavy` budget의 기본 review checkpoint policy를 올릴지 운영 비용 기준으로 판단한다.
+3. checkpoint feedback를 scenario-aware하게 더 잘 매핑할지, 아니면 현재처럼 candidate-level feedback으로 둘지 정한다.
+4. 마지막으로 frontier candidate pruning이 review-rejected lineage를 얼마나 오래 유지할지 운영 비용 기준으로 판단한다.
 
 ## Discuss
 
 - 아직 `v2`는 아니다.
-- 지금 닫힌 것은 “bounded GEPA slice with optional frontier-promotion review + final-only full-gate fallback”이다.
+- 지금 닫힌 것은 “bounded GEPA slice with frontier-promotion review feedback reinjection + final-only full-gate fallback”이다.
 - 다음 세션의 첫 결정은 이것이다:
-  - `v2`를 `checkpoint-to-mutation feedback`까지로 자를지
-  - 아니면 merge intelligence까지 한 번에 넣을지
+  - merge intelligence를 먼저 열지
+  - 아니면 review cost policy를 먼저 조일지
 - 제 추천은 먼저
-  - checkpoint feedback reinjection
-  를 `v2` 핵심으로 자르고, merge intelligence는 그 다음 slice로 두는 것이다.
+  - merge parent selection intelligence
+  를 다음 핵심 slice로 두고, review cost policy는 그 다음에 판단하는 것이다.
 
 ## Premortem
 
 - 가장 쉬운 오해: “GEPA 반영이 완전히 끝났다”는 해석.
   아니다. 현재는 strong `v1.5`다.
-- 두 번째 오해: 현재 search가 generation 중간 checkpoint와 mutation feedback reinjection까지 모두 닫혔다는 해석.
-  아니다. 지금은 frontier 승격 시 review 실행까지만 닫혔고, rejection feedback reinjection은 아직 없다.
+- 두 번째 오해: 현재 feedback reinjection이 scenario-aware root cause까지 이미 푼다는 해석.
+  아니다. 지금은 frontier review rejection을 candidate-level feedback으로 다음 mutation prompt에 다시 주입하는 수준이다.
 - 세 번째 오해: merge가 이미 fully system-aware하다는 해석.
   아니다. 현재 merge는 bounded 2-parent synthesis다.
 

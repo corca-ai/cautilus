@@ -497,6 +497,7 @@ test("build-optimize-search-input assembles a canonical packet from optimize inp
 		assert.equal(packet.schemaVersion, "cautilus.optimize_search_inputs.v1");
 		assert.equal(packet.optimizationTarget, "prompt");
 		assert.equal(packet.searchConfig.reviewCheckpointPolicy, "frontier_promotions");
+		assert.equal(packet.mutationEvidencePolicy.includeCheckpointFeedback, true);
 		assert.deepEqual(packet.searchConfig.selectionPolicy.tieBreakers, ["lower_cost", "lower_latency"]);
 		assert.deepEqual(packet.scenarioSets.heldOutScenarioSet, ["operator-recovery"]);
 		assert.equal(packet.evaluationContext.mode, "held_out");
@@ -1312,6 +1313,69 @@ test("run-optimize-search reuses frontier-promotion review checkpoints before fi
 		assert.deepEqual(result.selectionTelemetry.rejectedFinalistCandidateIds, ["g1-1-codex-exec"]);
 		assert.deepEqual(result.selectionTelemetry.rejectionReasons["g1-1-codex-exec"], ["review:operator-review:blocker"]);
 		assert.equal(result.selectedCandidateId, "g1-2-claude-p");
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+		rmSync(artifactRoot, { recursive: true, force: true });
+	}
+});
+
+test("run-optimize-search reinjects frontier-promotion review feedback into the next mutation prompt", () => {
+	const { root, artifactRoot, optimizeInputPath, heldOutResultsPath } = createCheckpointFallbackFixture({
+		includeReviewVariants: true,
+		gateFailsOnChecklist: false,
+	});
+	try {
+		createProgrammableCodex(root, [
+			{
+				matchAll: ["review:operator-review:blocker", "Checklist candidate still leaves operator follow-up under-specified."],
+				currentPromptMatchAll: ["detailed recovery checklist"],
+				output: {
+					promptMarkdown: "Keep recovery instructions explicit with a detailed recovery checklist and a follow-up handoff map.\n",
+					rationaleSummary: "Repair the rejected checklist variant by adding the missing follow-up handoff path.",
+					expectedImprovements: ["operator-recovery", "operator-follow-up"],
+					preservedStrengths: ["keeps the detailed recovery checklist"],
+					riskNotes: ["held-out should confirm the repaired prompt stays concise"],
+				},
+			},
+			{
+				output: {
+					promptMarkdown: "Keep recovery instructions explicit with a detailed recovery checklist.\n",
+					rationaleSummary: "Strengthen the recovery path first.",
+					expectedImprovements: ["operator-recovery"],
+					preservedStrengths: ["keeps the original recovery framing"],
+					riskNotes: ["operator-follow-up may still remain weak"],
+				},
+			},
+		]);
+		const { packet } = buildOptimizeSearchInput(
+			["--optimize-input", optimizeInputPath, "--held-out-results-file", heldOutResultsPath, "--budget", "medium"],
+			{ now: new Date("2026-04-13T10:00:00.000Z") },
+		);
+		packet.searchConfig.reviewCheckpointPolicy = "frontier_promotions";
+		packet.searchConfig.generationLimit = 2;
+		packet.searchConfig.mergeEnabled = false;
+		packet.mutationConfig.backends = [{ id: "codex-mutate", backend: "codex_exec" }];
+		const result = runOptimizeSearch(packet, {
+			inputFile: join(root, "optimize-search-input.json"),
+			outputFile: join(artifactRoot, "optimize-search-result.json"),
+			now: new Date("2026-04-13T10:01:00.000Z"),
+			env: {
+				...process.env,
+				PATH: `${root}:${process.env.PATH ?? ""}`,
+			},
+		});
+		assert.equal(result.status, "completed");
+		assert.equal(result.selectedCandidateId, "g2-1-codex-exec");
+		const rejectedCandidate = result.candidateRegistry.find((candidate) => candidate.id === "g1-1-codex-exec");
+		assert.deepEqual(rejectedCandidate.checkpointFeedback, [{
+			source: "frontier_promotion_review",
+			rejectionReasons: ["review:operator-review:blocker"],
+			feedbackMessages: ["Checklist candidate still leaves operator follow-up under-specified."],
+		}]);
+		const repairedCandidate = result.candidateRegistry.find((candidate) => candidate.id === "g2-1-codex-exec");
+		assert.match(readFileSync(repairedCandidate.artifacts.promptFile, "utf-8"), /review:operator-review:blocker/);
+		assert.match(readFileSync(repairedCandidate.artifacts.promptFile, "utf-8"), /Checklist candidate still leaves operator follow-up under-specified\./);
+		assert.match(readFileSync(result.proposalBridge.selectedTargetFile.path, "utf-8"), /follow-up handoff map/);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 		rmSync(artifactRoot, { recursive: true, force: true });
