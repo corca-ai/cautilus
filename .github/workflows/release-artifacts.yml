@@ -5,9 +5,6 @@ on:
     tags:
       - "v*"
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
-
 permissions:
   contents: write
   id-token: write
@@ -18,11 +15,11 @@ jobs:
   release-artifacts:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-go@v6
         with:
           go-version: "1.26.2"
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: "22"
           cache: npm
@@ -78,7 +75,7 @@ jobs:
             --tap-repo "$TAP_REPO" \
             --formula-file dist/Cautilus.rb \
             --version "${GITHUB_REF_NAME}"
-      - uses: softprops/action-gh-release@v2
+      - uses: softprops/action-gh-release@v3
         with:
           files: |
             dist/*.sha256

@@ -60,13 +60,13 @@ standalone product여야 한다.
 | .golangci.yml | fixed | staticcheck |
 | .golangci.yml | fixed | errorlint |
 | .github/workflows/verify.yml | file_exists |  |
-| .github/workflows/verify.yml | fixed | actions/setup-go@v5 |
+| .github/workflows/verify.yml | fixed | actions/setup-go@v6 |
 | .github/workflows/verify.yml | fixed | go-version: "1.26.2" |
 | .github/workflows/verify.yml | fixed | go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.1.6 |
 | .github/workflows/verify.yml | fixed | govulncheck@v1.1.4 |
 | .github/workflows/verify.yml | fixed | npm run verify |
 | .github/workflows/release-artifacts.yml | file_exists |  |
-| .github/workflows/release-artifacts.yml | fixed | actions/setup-go@v5 |
+| .github/workflows/release-artifacts.yml | fixed | actions/setup-go@v6 |
 | .github/workflows/release-artifacts.yml | fixed | go-version: "1.26.2" |
 | .github/workflows/release-artifacts.yml | fixed | go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.1.6 |
 | .github/workflows/release-artifacts.yml | fixed | govulncheck@v1.1.4 |
