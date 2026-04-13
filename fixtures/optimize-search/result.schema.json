@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cautilus.optimize_search_result.v1",
+  "title": "Cautilus Optimize Search Result",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "generatedAt",
+    "status",
+    "inputFile",
+    "repoRoot",
+    "optimizeInputFile",
+    "searchConfig",
+    "candidateRegistry",
+    "generationSummaries",
+    "heldOutEvaluationMatrix",
+    "pareto",
+    "checkpointOutcomes",
+    "searchTelemetry",
+    "proposalBridge"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "cautilus.optimize_search_result.v1"
+    },
+    "generatedAt": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "blocked",
+        "completed"
+      ]
+    },
+    "inputFile": {
+      "type": "string"
+    },
+    "repoRoot": {
+      "type": "string"
+    },
+    "optimizeInputFile": {
+      "type": "string"
+    },
+    "searchConfig": {
+      "type": "object"
+    },
+    "selectedCandidateId": {
+      "type": "string"
+    },
+    "candidateRegistry": {
+      "type": "array"
+    },
+    "generationSummaries": {
+      "type": "array"
+    },
+    "heldOutEvaluationMatrix": {
+      "type": "array"
+    },
+    "pareto": {
+      "type": "object"
+    },
+    "checkpointOutcomes": {
+      "type": "object"
+    },
+    "searchTelemetry": {
+      "type": "object"
+    },
+    "proposalBridge": {
+      "type": "object"
+    },
+    "reasonCodes": {
+      "type": "array"
+    },
+    "missingEvidence": {
+      "type": "array"
+    },
+    "suggestedNextSteps": {
+      "type": "array"
+    }
+  },
+  "additionalProperties": false
+}

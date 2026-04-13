@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cautilus.optimize_search_inputs.v1",
+  "title": "Cautilus Optimize Search Inputs",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "generatedAt",
+    "repoRoot",
+    "optimizeInputFile",
+    "optimizeInput",
+    "optimizationTarget",
+    "targetFile",
+    "seedCandidate",
+    "searchConfig",
+    "mutationEvidencePolicy",
+    "scenarioSets",
+    "evaluationFiles",
+    "objective"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "cautilus.optimize_search_inputs.v1"
+    },
+    "generatedAt": {
+      "type": "string"
+    },
+    "repoRoot": {
+      "type": "string"
+    },
+    "optimizeInputFile": {
+      "type": "string"
+    },
+    "optimizeInput": {
+      "type": "object"
+    },
+    "optimizationTarget": {
+      "type": "string",
+      "enum": [
+        "prompt"
+      ]
+    },
+    "targetFile": {
+      "type": "object"
+    },
+    "seedCandidate": {
+      "type": "object"
+    },
+    "searchConfig": {
+      "type": "object"
+    },
+    "mutationEvidencePolicy": {
+      "type": "object"
+    },
+    "scenarioSets": {
+      "type": "object"
+    },
+    "evaluationFiles": {
+      "type": "object"
+    },
+    "objective": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": false
+}

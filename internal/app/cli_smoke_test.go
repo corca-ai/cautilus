@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"fmt"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -1195,6 +1196,204 @@ func TestCLIOptimizePrepareInputProposeAndBuildArtifact(t *testing.T) {
 	targetSnapshot := revisionArtifact["targetSnapshot"].(map[string]any)
 	if len(anyToString(targetSnapshot["sha256"])) != 64 {
 		t.Fatalf("unexpected target snapshot hash: %#v", targetSnapshot)
+	}
+}
+
+func TestCLIOptimizeSearchPrepareRunAndProposeFromSearch(t *testing.T) {
+	root := t.TempDir()
+	reportPath := filepath.Join(root, "report.json")
+	reviewSummaryPath := filepath.Join(root, "review-summary.json")
+	historyPath := filepath.Join(root, "scenario-history.snapshot.json")
+	targetPath := filepath.Join(root, "review.prompt.md")
+	optimizeInputPath := filepath.Join(root, "optimize-input.json")
+	heldOutResultsPath := filepath.Join(root, "held-out-results.json")
+	searchInputPath := filepath.Join(root, "optimize-search-input.json")
+	searchResultPath := filepath.Join(root, "optimize-search-result.json")
+	proposalPath := filepath.Join(root, "optimize-proposal.json")
+	if err := os.WriteFile(targetPath, []byte("Keep recovery instructions explicit.\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	writeJSONFile(t, reportPath, map[string]any{
+		"schemaVersion": contracts.ReportPacketSchema,
+		"generatedAt":   "2026-04-13T00:02:00.000Z",
+		"candidate":     "feature/operator-guidance",
+		"baseline":      "origin/main",
+		"intent":        "Operator recovery guidance should stay legible.",
+		"intentProfile": map[string]any{
+			"schemaVersion":   contracts.BehaviorIntentSchema,
+			"intentId":        "intent-operator-workflow-recovery",
+			"summary":         "Operator recovery guidance should stay legible.",
+			"behaviorSurface": cautilusruntime.BehaviorSurfaces["OPERATOR_BEHAVIOR"],
+		},
+		"commands":            []any{},
+		"commandObservations": []any{},
+		"modesRun":            []string{"held_out"},
+		"modeSummaries":       []any{},
+		"telemetry":           map[string]any{},
+		"improved":            []any{},
+		"regressed":           []string{"operator-recovery"},
+		"unchanged":           []any{},
+		"noisy":               []any{},
+		"humanReviewFindings": []map[string]any{{"severity": "concern", "message": "Recovery next step is still terse."}},
+		"recommendation":      "defer",
+	})
+	writeJSONFile(t, reviewSummaryPath, map[string]any{
+		"variants": []map[string]any{
+			{
+				"id":     "codex-review",
+				"status": "failed",
+				"output": map[string]any{
+					"findings": []map[string]any{
+						{
+							"severity": "blocker",
+							"message":  "Retry safety remains unclear.",
+						},
+					},
+				},
+			},
+		},
+	})
+	writeJSONFile(t, historyPath, map[string]any{
+		"schemaVersion": contracts.ScenarioHistorySchema,
+		"profileId":     "default-train",
+		"trainRunCount": 1,
+		"scenarioStats": map[string]any{
+			"operator-recovery": map[string]any{
+				"recentTrainResults": []map[string]any{
+					{
+						"status":       "failed",
+						"overallScore": 80,
+						"passRate":     0,
+					},
+				},
+			},
+		},
+		"recentRuns": []any{},
+	})
+	writeJSONFile(t, heldOutResultsPath, map[string]any{
+		"schemaVersion": contracts.ScenarioResultsSchema,
+		"mode":          "held_out",
+		"results": []map[string]any{
+			{
+				"scenarioId":   "operator-recovery",
+				"status":       "failed",
+				"overallScore": 40,
+				"telemetry": map[string]any{
+					"cost_usd":   0.02,
+					"durationMs": 1200,
+				},
+			},
+		},
+	})
+
+	_, stderr, exitCode := runCLI(t, root, "optimize", "prepare-input", "--repo-root", root, "--report-file", reportPath, "--review-summary", reviewSummaryPath, "--history-file", historyPath, "--target", "prompt", "--target-file", targetPath, "--output", optimizeInputPath)
+	if exitCode != 0 {
+		t.Fatalf("optimize prepare-input failed: %s", stderr)
+	}
+	_, stderr, exitCode = runCLI(t, root, "optimize", "search", "prepare-input", "--optimize-input", optimizeInputPath, "--held-out-results-file", heldOutResultsPath, "--target-file", targetPath, "--output", searchInputPath)
+	if exitCode != 0 {
+		t.Fatalf("optimize search prepare-input failed: %s", stderr)
+	}
+	searchInput := readJSONObjectFile(t, searchInputPath)
+	if searchInput["schemaVersion"] != contracts.OptimizeSearchInputsSchema {
+		t.Fatalf("unexpected search input schema: %#v", searchInput["schemaVersion"])
+	}
+	if len(searchInput["scenarioSets"].(map[string]any)["heldOutScenarioSet"].([]any)) != 1 {
+		t.Fatalf("unexpected held-out scenario set: %#v", searchInput["scenarioSets"])
+	}
+
+	_, stderr, exitCode = runCLI(t, root, "optimize", "search", "run", "--input", searchInputPath, "--output", searchResultPath)
+	if exitCode != 0 {
+		t.Fatalf("optimize search run failed: %s", stderr)
+	}
+	searchResult := readJSONObjectFile(t, searchResultPath)
+	if searchResult["schemaVersion"] != contracts.OptimizeSearchResultSchema || searchResult["status"] != "completed" {
+		t.Fatalf("unexpected search result: %#v", searchResult)
+	}
+	if searchResult["selectedCandidateId"] != "seed" {
+		t.Fatalf("unexpected selected candidate: %#v", searchResult["selectedCandidateId"])
+	}
+
+	_, stderr, exitCode = runCLI(t, root, "optimize", "propose", "--from-search", searchResultPath, "--output", proposalPath)
+	if exitCode != 0 {
+		t.Fatalf("optimize propose --from-search failed: %s", stderr)
+	}
+	proposal := readJSONObjectFile(t, proposalPath)
+	if proposal["schemaVersion"] != contracts.OptimizeProposalSchema {
+		t.Fatalf("unexpected proposal schema: %#v", proposal["schemaVersion"])
+	}
+	if proposal["searchResultFile"] != searchResultPath {
+		t.Fatalf("unexpected searchResultFile: %#v", proposal["searchResultFile"])
+	}
+	if proposal["targetFile"].(map[string]any)["path"] != targetPath {
+		t.Fatalf("unexpected target file: %#v", proposal["targetFile"])
+	}
+}
+
+func TestCLIOptimizeSearchPrepareInputJSONAndBlockedRunReturnMachineReadablePayload(t *testing.T) {
+	root := t.TempDir()
+	reportPath := filepath.Join(root, "report.json")
+	targetPath := filepath.Join(root, "review.prompt.md")
+	optimizeInputPath := filepath.Join(root, "optimize-input.json")
+	searchInputPath := filepath.Join(root, "optimize-search-input.json")
+	if err := os.WriteFile(targetPath, []byte("Keep recovery instructions explicit.\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	writeJSONFile(t, reportPath, map[string]any{
+		"schemaVersion": contracts.ReportPacketSchema,
+		"generatedAt":   "2026-04-13T00:02:00.000Z",
+		"candidate":     "feature/operator-guidance",
+		"baseline":      "origin/main",
+		"intent":        "Operator recovery guidance should stay legible.",
+		"intentProfile": map[string]any{
+			"schemaVersion":   contracts.BehaviorIntentSchema,
+			"intentId":        "intent-operator-workflow-recovery",
+			"summary":         "Operator recovery guidance should stay legible.",
+			"behaviorSurface": cautilusruntime.BehaviorSurfaces["OPERATOR_BEHAVIOR"],
+		},
+		"commands":            []any{},
+		"commandObservations": []any{},
+		"modesRun":            []string{"held_out"},
+		"modeSummaries":       []any{},
+		"telemetry":           map[string]any{},
+		"improved":            []any{},
+		"regressed":           []string{"operator-recovery"},
+		"unchanged":           []any{},
+		"noisy":               []any{},
+		"humanReviewFindings": []any{},
+		"recommendation":      "defer",
+	})
+	_, stderr, exitCode := runCLI(t, root, "optimize", "prepare-input", "--repo-root", root, "--report-file", reportPath, "--target", "prompt", "--target-file", targetPath, "--output", optimizeInputPath)
+	if exitCode != 0 {
+		t.Fatalf("optimize prepare-input failed: %s", stderr)
+	}
+
+	stdout, stderr, exitCode := runCLI(t, root, "optimize", "search", "prepare-input", "--input-json", fmt.Sprintf("{\"optimizeInputFile\":%q}", optimizeInputPath), "--output", searchInputPath, "--json")
+	if exitCode != 0 {
+		t.Fatalf("optimize search prepare-input --input-json failed: %s", stderr)
+	}
+	preparePayload := parseJSONObject(t, stdout)
+	if preparePayload["status"] != "ready" {
+		t.Fatalf("unexpected prepare payload: %#v", preparePayload)
+	}
+	if preparePayload["inputFile"] != searchInputPath {
+		t.Fatalf("unexpected input file: %#v", preparePayload["inputFile"])
+	}
+	if _, err := os.Stat(filepath.Join(root, "optimize-search-input.raw.json")); err != nil {
+		t.Fatalf("expected raw input file to exist: %v", err)
+	}
+
+	stdout, stderr, exitCode = runCLI(t, root, "optimize", "search", "run", "--input", searchInputPath, "--json")
+	if exitCode != 1 {
+		t.Fatalf("expected blocked exit code, got %d, stderr=%s", exitCode, stderr)
+	}
+	blocked := parseJSONObject(t, stdout)
+	if blocked["status"] != "blocked" {
+		t.Fatalf("unexpected blocked payload: %#v", blocked)
+	}
+	reasonCodes, ok := blocked["reasonCodes"].([]any)
+	if !ok || len(reasonCodes) < 2 {
+		t.Fatalf("unexpected reason codes: %#v", blocked["reasonCodes"])
 	}
 }
 

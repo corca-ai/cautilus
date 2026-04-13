@@ -139,6 +139,40 @@ cautilus optimize build-artifact \
   --proposal-file /tmp/cautilus-optimize/proposal.json
 ```
 
+## Search Extension
+
+When the repo has search-ready held-out evidence, use the bounded search seam
+documented in [optimization-search.md](./optimization-search.md).
+
+Current surface:
+
+```bash
+cautilus optimize search prepare-input \
+  --optimize-input /tmp/cautilus-optimize/input.json \
+  --held-out-results-file /tmp/cautilus-mode/held_out-scenario-results.json \
+  --target-file ./prompts/system.md \
+  --budget light
+
+cautilus optimize search run \
+  --input /tmp/cautilus-optimize/search-input.json \
+  --json
+
+cautilus optimize propose \
+  --from-search /tmp/cautilus-optimize/search-result.json
+```
+
+This current slice keeps the search seam honest and file-based without
+claiming reflective mutation yet. It closes:
+
+- canonical search-input packet assembly
+- blocked-vs-ready search readiness reporting
+- seed candidate scoring and selection packet output
+- proposal bridging from a selected search candidate into the existing bounded
+  revision seam
+
+Reflective mutation, crossover, and LLM-authored frontier synthesis are
+deferred to a later slice.
+
 ## Success Criteria
 
 - `optimize prepare-input` can declare optimizer kind and budget explicitly.
@@ -155,6 +189,9 @@ cautilus optimize build-artifact \
 ## Acceptance Checks
 
 - `cautilus optimize prepare-input --report-file ./fixtures/reports/report-input.json --target prompt --optimizer repair --budget light`
+- `cautilus optimize search prepare-input --optimize-input ./fixtures/optimize/example-input.json --held-out-results-file ./fixtures/scenario-results/example-results.json --target-file ./fixtures/prompts/example.prompt.md --budget light`
+- `cautilus optimize search run --input ./fixtures/optimize-search/example-input.json`
+- `cautilus optimize propose --from-search ./fixtures/optimize-search/example-result.json`
 - `cautilus optimize propose --input ./fixtures/optimize/example-input.json`
 - `cautilus optimize build-artifact --proposal-file ./fixtures/optimize/example-proposal.json --input-file ./fixtures/optimize/example-input.json`
 - `node --test ./scripts/agent-runtime/optimize-flow.test.mjs`

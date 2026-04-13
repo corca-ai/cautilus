@@ -29,6 +29,9 @@
     "inputFile": {
       "type": "string"
     },
+    "searchResultFile": {
+      "type": "string"
+    },
     "optimizationTarget": {
       "type": "string",
       "enum": [

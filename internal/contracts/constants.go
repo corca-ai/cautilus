@@ -10,6 +10,8 @@ const (
 	EvidenceBundleSchema              = "cautilus.evidence_bundle.v1"
 	OptimizeInputsSchema              = "cautilus.optimize_inputs.v1"
 	OptimizeProposalSchema            = "cautilus.optimize_proposal.v1"
+	OptimizeSearchInputsSchema        = "cautilus.optimize_search_inputs.v1"
+	OptimizeSearchResultSchema        = "cautilus.optimize_search_result.v1"
 	RevisionArtifactSchema            = "cautilus.revision_artifact.v1"
 	ReportInputsSchema                = "cautilus.report_inputs.v1"
 	ReportPacketSchema                = "cautilus.report_packet.v2"

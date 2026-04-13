@@ -62,6 +62,7 @@ cautilus doctor --repo-root .
 - [review-prompt-inputs.md](references/review-prompt-inputs.md)
 - [evidence-bundle.md](references/evidence-bundle.md)
 - [optimization.md](references/optimization.md)
+- [optimization-search.md](references/optimization-search.md)
 - [revision-artifact.md](references/revision-artifact.md)
 
 ## Workflow
@@ -221,8 +222,21 @@ cautilus optimize prepare-input \
   --optimizer reflection \
   --budget medium
 
+cautilus optimize search prepare-input \
+  --optimize-input /tmp/cautilus-optimize/input.json \
+  --held-out-results-file /tmp/cautilus-mode/held_out-scenario-results.json \
+  --target-file ./prompts/system.md \
+  --budget light
+
+cautilus optimize search run \
+  --input /tmp/cautilus-optimize/search-input.json \
+  --json
+
 cautilus optimize propose \
   --input /tmp/cautilus-optimize/input.json
+
+cautilus optimize propose \
+  --from-search /tmp/cautilus-optimize/search-result.json
 
 cautilus optimize build-artifact \
   --proposal-file /tmp/cautilus-optimize/proposal.json
@@ -241,6 +255,8 @@ cautilus review variants \
   defaults.
 - Do not turn review loops into open-ended retries.
 - Do not turn optimizer output into an open-ended retry loop.
+- When search readiness is blocked, stop and discuss the missing held-out
+  evidence or intent surface before inventing prompt mutations.
 - Keep held-out evaluation held out unless the benchmark itself is being
   changed deliberately.
 - Prefer checked-in wrapper scripts and schemas over inline shell quoting.

@@ -8,6 +8,7 @@ import { buildBehaviorIntentProfile } from "./behavior-intent.mjs";
 import {
 	OPTIMIZE_INPUTS_SCHEMA,
 	OPTIMIZE_PROPOSAL_SCHEMA,
+	OPTIMIZE_SEARCH_RESULT_SCHEMA,
 } from "./contract-versions.mjs";
 
 const OPTIMIZER_KINDS = ["repair", "reflection", "history_followup"];
@@ -73,6 +74,7 @@ function readRequiredValue(argv, index, option) {
 function parseArgs(argv) {
 	const options = {
 		input: null,
+		fromSearch: null,
 		output: null,
 	};
 	for (let index = 0; index < argv.length; index += 1) {
@@ -82,6 +84,7 @@ function parseArgs(argv) {
 		}
 		const field = {
 			"--input": "input",
+			"--from-search": "fromSearch",
 			"--output": "output",
 		}[arg];
 		if (!field) {
@@ -89,6 +92,9 @@ function parseArgs(argv) {
 		}
 		options[field] = readRequiredValue(argv, index + 1, arg);
 		index += 1;
+	}
+	if (options.input && options.fromSearch) {
+		fail("Use either --input or --from-search, not both");
 	}
 	return options;
 }
@@ -103,8 +109,8 @@ function resolveCommandOptions(options, { env = process.env } = {}) {
 	if (!resolved.input && activeRunDir) {
 		resolved.input = join(activeRunDir, "optimize-input.json");
 	}
-	if (!resolved.input) {
-		fail("--input is required");
+	if (!resolved.input && !resolved.fromSearch) {
+		fail("Use one of --input or --from-search");
 	}
 	if (!resolved.output && activeRunDir) {
 		resolved.output = join(activeRunDir, "optimize-proposal.json");
@@ -120,6 +126,18 @@ function parseInputFile(path) {
 	const parsed = JSON.parse(readFileSync(resolved, "utf-8"));
 	if (parsed?.schemaVersion !== OPTIMIZE_INPUTS_SCHEMA) {
 		fail(`optimize input must use schemaVersion ${OPTIMIZE_INPUTS_SCHEMA}`);
+	}
+	return { path: resolved, packet: parsed };
+}
+
+function parseSearchResultFile(path) {
+	const resolved = resolve(path);
+	if (!existsSync(resolved)) {
+		fail(`search result not found: ${resolved}`);
+	}
+	const parsed = JSON.parse(readFileSync(resolved, "utf-8"));
+	if (parsed?.schemaVersion !== OPTIMIZE_SEARCH_RESULT_SCHEMA) {
+		fail(`search result must use schemaVersion ${OPTIMIZE_SEARCH_RESULT_SCHEMA}`);
 	}
 	return { path: resolved, packet: parsed };
 }
@@ -491,14 +509,56 @@ export function generateOptimizeProposal(packet, { now = new Date(), inputFile =
 	};
 }
 
+export function generateOptimizeProposalFromSearch(searchResult, optimizeInput, {
+	now = new Date(),
+	inputFile = null,
+	searchResultFile = null,
+} = {}) {
+	const proposal = generateOptimizeProposal(optimizeInput, { now, inputFile });
+	const selectedTargetFile = resolveSelectedTargetFile(searchResult);
+	const selectedCandidateId = resolveSelectedCandidateId(searchResult);
+	return {
+		...proposal,
+		...(searchResultFile ? { searchResultFile } : {}),
+		...(selectedTargetFile ? { targetFile: selectedTargetFile } : {}),
+		rationale: `${proposal.rationale} Selected candidate: ${selectedCandidateId}.`,
+	};
+}
+
+function resolveSelectedTargetFile(searchResult) {
+	return searchResult?.proposalBridge?.selectedTargetFile || null;
+}
+
+function resolveSelectedCandidateId(searchResult) {
+	return searchResult?.proposalBridge?.selectedCandidateId || searchResult?.selectedCandidateId || "unknown";
+}
+
 export function main(argv = process.argv.slice(2)) {
 	try {
 		const options = resolveCommandOptions(parseArgs(argv));
-		const input = parseInputFile(options.input);
-		const proposal = generateOptimizeProposal(input.packet, {
-			now: new Date(),
-			inputFile: input.path,
-		});
+		let proposal;
+		if (options.fromSearch) {
+			const searchResult = parseSearchResultFile(options.fromSearch);
+			if (searchResult.packet.status !== "completed") {
+				fail("search result must be completed before generating a proposal from it");
+			}
+			const optimizeInputFile = searchResult.packet.proposalBridge?.optimizeInputFile || searchResult.packet.optimizeInputFile;
+			if (typeof optimizeInputFile !== "string" || optimizeInputFile.length === 0) {
+				fail("search result must carry proposalBridge.optimizeInputFile");
+			}
+			const input = parseInputFile(optimizeInputFile);
+			proposal = generateOptimizeProposalFromSearch(searchResult.packet, input.packet, {
+				now: new Date(),
+				inputFile: input.path,
+				searchResultFile: searchResult.path,
+			});
+		} else {
+			const input = parseInputFile(options.input);
+			proposal = generateOptimizeProposal(input.packet, {
+				now: new Date(),
+				inputFile: input.path,
+			});
+		}
 		const text = `${JSON.stringify(proposal, null, 2)}\n`;
 		if (options.output) {
 			writeFileSync(resolve(options.output), text, "utf-8");

@@ -1,0 +1,194 @@
+{
+  "schemaVersion": "cautilus.optimize_search_inputs.v1",
+  "generatedAt": "2026-04-13T10:00:00.000Z",
+  "repoRoot": "/tmp/cautilus-optimize-search",
+  "optimizeInputFile": "/tmp/cautilus-optimize-search/optimize-input.json",
+  "optimizeInput": {
+    "schemaVersion": "cautilus.optimize_inputs.v1",
+    "generatedAt": "2026-04-13T09:58:00.000Z",
+    "repoRoot": "/tmp/cautilus-optimize-search",
+    "optimizationTarget": "prompt",
+    "intentProfile": {
+      "schemaVersion": "cautilus.behavior_intent.v1",
+      "intentId": "intent-operator-recovery-guidance",
+      "summary": "Operator guidance should stay legible under recovery pressure.",
+      "behaviorSurface": "operator_behavior"
+    },
+    "optimizer": {
+      "kind": "reflection",
+      "budget": "light",
+      "plan": {
+        "evidenceLimit": 3,
+        "suggestedChangeLimit": 2,
+        "reviewVariantLimit": 1,
+        "historySignalLimit": 1
+      }
+    },
+    "targetFile": {
+      "path": "/tmp/cautilus-optimize-search/prompt.md",
+      "exists": true
+    },
+    "reportFile": "/tmp/cautilus-optimize-search/report.json",
+    "report": {
+      "schemaVersion": "cautilus.report_packet.v2",
+      "generatedAt": "2026-04-13T09:57:00.000Z",
+      "candidate": "feature/operator-guidance",
+      "baseline": "origin/main",
+      "intent": "Operator guidance should stay legible under recovery pressure.",
+      "intentProfile": {
+        "schemaVersion": "cautilus.behavior_intent.v1",
+        "intentId": "intent-operator-recovery-guidance",
+        "summary": "Operator guidance should stay legible under recovery pressure.",
+        "behaviorSurface": "operator_behavior"
+      },
+      "commands": [],
+      "commandObservations": [],
+      "modesRun": [],
+      "modeSummaries": [],
+      "telemetry": {
+        "modeCount": 1
+      },
+      "improved": [],
+      "regressed": [
+        "operator-recovery"
+      ],
+      "unchanged": [],
+      "noisy": [],
+      "humanReviewFindings": [
+        {
+          "severity": "concern",
+          "message": "The recovery step is still terse."
+        }
+      ],
+      "recommendation": "defer"
+    },
+    "reviewSummaryFile": "/tmp/cautilus-optimize-search/review-summary.json",
+    "reviewSummary": {
+      "variants": [
+        {
+          "id": "codex-review",
+          "status": "failed",
+          "output": {
+            "findings": [
+              {
+                "severity": "blocker",
+                "message": "Retry safety remains unclear."
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "scenarioHistoryFile": "/tmp/cautilus-optimize-search/history.json",
+    "scenarioHistory": {
+      "schemaVersion": "cautilus.scenario_history.v1",
+      "scenarioStats": {
+        "operator-recovery": {
+          "recentTrainResults": [
+            {
+              "status": "failed",
+              "overallScore": 80,
+              "passRate": 0
+            }
+          ]
+        }
+      }
+    },
+    "objective": {
+      "summary": "Propose one bounded next revision without weakening held-out, comparison, or review discipline.",
+      "constraints": [
+        "Prefer repairing explicit regressions over widening scope."
+      ]
+    }
+  },
+  "optimizationTarget": "prompt",
+  "targetFile": {
+    "path": "/tmp/cautilus-optimize-search/prompt.md",
+    "exists": true
+  },
+  "seedCandidate": {
+    "id": "seed",
+    "targetFile": {
+      "path": "/tmp/cautilus-optimize-search/prompt.md",
+      "exists": true
+    },
+    "targetSnapshot": {
+      "path": "/tmp/cautilus-optimize-search/prompt.md",
+      "exists": true,
+      "sizeBytes": 28,
+      "lineCount": 1
+    }
+  },
+  "searchConfig": {
+    "algorithm": "reflective_pareto",
+    "budget": "light",
+    "generationLimit": 1,
+    "populationLimit": 3,
+    "mutationBatchSize": 3,
+    "candidateSelection": "pareto",
+    "reviewCheckpointPolicy": "final_only",
+    "fullGateCheckpointPolicy": "final_only",
+    "selectionPolicy": {
+      "primaryObjective": "held_out_behavior",
+      "tieBreakers": [
+        "lower_cost",
+        "lower_latency"
+      ],
+      "constraintCaps": {}
+    },
+    "mergeEnabled": false
+  },
+  "mutationEvidencePolicy": {
+    "reportBuckets": [
+      "regressed",
+      "noisy"
+    ],
+    "reviewFindingLimit": 1,
+    "includeScenarioHistory": true
+  },
+  "scenarioSets": {
+    "trainScenarioSet": [
+      "operator-recovery"
+    ],
+    "heldOutScenarioSet": [
+      "operator-recovery",
+      "operator-follow-up"
+    ]
+  },
+  "evaluationFiles": {
+    "reportFile": "/tmp/cautilus-optimize-search/report.json",
+    "reviewSummaryFile": "/tmp/cautilus-optimize-search/review-summary.json",
+    "scenarioHistoryFile": "/tmp/cautilus-optimize-search/history.json",
+    "heldOutResultsFile": "/tmp/cautilus-optimize-search/held-out-results.json"
+  },
+  "heldOutResults": {
+    "schemaVersion": "cautilus.scenario_results.v1",
+    "mode": "held_out",
+    "results": [
+      {
+        "scenarioId": "operator-recovery",
+        "status": "failed",
+        "overallScore": 40,
+        "telemetry": {
+          "cost_usd": 0.02,
+          "durationMs": 1200
+        }
+      },
+      {
+        "scenarioId": "operator-follow-up",
+        "status": "passed",
+        "overallScore": 95,
+        "telemetry": {
+          "cost_usd": 0.01,
+          "durationMs": 900
+        }
+      }
+    ]
+  },
+  "objective": {
+    "summary": "Propose one bounded next revision without weakening held-out, comparison, or review discipline.",
+    "constraints": [
+      "Prefer repairing explicit regressions over widening scope."
+    ]
+  }
+}
