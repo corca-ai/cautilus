@@ -379,7 +379,8 @@ standalone product여야 한다.
   telemetry
 - GEPA-style bounded prompt-search helpers above explicit optimize and
   held-out evidence, including multi-generation reflective mutation, optional
-  bounded merge synthesis, readiness blocking, and proposal bridging
+  bounded merge synthesis, final-only review/full-gate checkpoint fallback,
+  readiness blocking, and proposal bridging
 - durable revision-artifact builder above optimize proposals
 - chatbot proposal-candidate normalization helper
 - chatbot normalization command

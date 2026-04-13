@@ -92,6 +92,252 @@ process.stdin.resume();
 	);
 }
 
+function createCheckpointFallbackFixture({ includeReviewVariants = true, gateFailsOnChecklist = false } = {}) {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-optimize-search-checkpoints-"));
+	const artifactRoot = mkdtempSync(join(tmpdir(), "cautilus-optimize-search-checkpoints-artifacts-"));
+	const originalPath = join(root, "prompt.md");
+	const heldOutResultsPath = join(root, "held-out-results.json");
+	const optimizeInputPath = join(root, "optimize-input.json");
+	const schemaPath = join(root, "review-schema.json");
+	mkdirSync(join(root, ".agents"), { recursive: true });
+	writeFileSync(originalPath, "Keep recovery instructions explicit.\n", "utf-8");
+	writeJson(schemaPath, { type: "object" });
+	writeExecutable(
+		join(root, "evaluate.sh"),
+		`#!/bin/sh
+output="$1"
+recovery_score=40
+recovery_status="failed"
+followup_score=55
+followup_status="failed"
+if grep -q "detailed recovery checklist" prompt.md; then
+  recovery_score=98
+  recovery_status="passed"
+  followup_score=88
+  followup_status="failed"
+fi
+if grep -q "follow-up handoff map" prompt.md; then
+  recovery_score=91
+  recovery_status="passed"
+  followup_score=92
+  followup_status="passed"
+fi
+cat >"$output" <<EOF
+{
+  "schemaVersion": "cautilus.scenario_results.v1",
+  "mode": "held_out",
+  "results": [
+    {
+      "scenarioId": "operator-recovery",
+      "status": "$recovery_status",
+      "overallScore": $recovery_score,
+      "telemetry": { "cost_usd": 0.04, "durationMs": 1000 }
+    },
+    {
+      "scenarioId": "operator-follow-up",
+      "status": "$followup_status",
+      "overallScore": $followup_score,
+      "telemetry": { "cost_usd": 0.03, "durationMs": 900 }
+    }
+  ]
+}
+EOF
+`,
+	);
+	writeExecutable(
+		join(root, "full-gate.sh"),
+		`#!/bin/sh
+workspace="$1"
+output="$2"
+status=0
+if ${gateFailsOnChecklist ? "grep -q \"detailed recovery checklist\" \"$workspace/prompt.md\" && ! grep -q \"follow-up handoff map\" \"$workspace/prompt.md\"" : "false"}; then
+  status=1
+fi
+cat >"$output" <<EOF
+{
+  "schemaVersion": "cautilus.scenario_results.v1",
+  "mode": "full_gate",
+  "results": [
+    {
+      "scenarioId": "operator-full-gate",
+      "status": "$( [ "$status" -eq 0 ] && echo passed || echo failed )",
+      "overallScore": $( [ "$status" -eq 0 ] && echo 100 || echo 0 )
+    }
+  ]
+}
+EOF
+exit "$status"
+`,
+	);
+	if (includeReviewVariants) {
+		writeExecutable(
+			join(root, "review-variant.sh"),
+			`#!/bin/sh
+workspace="$1"
+output="$2"
+verdict="pass"
+severity="pass"
+summary="Candidate stays operator-safe."
+if grep -q "detailed recovery checklist" "$workspace/prompt.md" && ! grep -q "follow-up handoff map" "$workspace/prompt.md"; then
+  verdict="blocker"
+  severity="blocker"
+  summary="Checklist candidate still leaves operator follow-up under-specified."
+fi
+cat >"$output" <<EOF
+{
+  "verdict": "$verdict",
+  "summary": "$summary",
+  "findings": [
+    {
+      "severity": "$severity",
+      "message": "$summary",
+      "path": "variant/operator-review"
+    }
+  ]
+}
+EOF
+`,
+		);
+	}
+	writeJson(heldOutResultsPath, {
+		schemaVersion: "cautilus.scenario_results.v1",
+		mode: "held_out",
+		results: [
+			{
+				scenarioId: "operator-recovery",
+				status: "failed",
+				overallScore: 40,
+				telemetry: { cost_usd: 0.02, durationMs: 1200 },
+			},
+			{
+				scenarioId: "operator-follow-up",
+				status: "failed",
+				overallScore: 55,
+				telemetry: { cost_usd: 0.01, durationMs: 800 },
+			},
+		],
+	});
+	writeFileSync(
+		join(root, ".agents", "cautilus-adapter.yaml"),
+		[
+			"version: 1",
+			"repo: temp-optimize-search",
+			"evaluation_surfaces:",
+			"  - prompt behavior",
+			"baseline_options:",
+			"  - baseline git ref in the same repo via {baseline_ref}",
+			"required_prerequisites: []",
+			"default_schema_file: review-schema.json",
+			"held_out_command_templates:",
+			"  - sh evaluate.sh {scenario_results_file}",
+			"full_gate_command_templates:",
+			"  - sh full-gate.sh {candidate_repo} {scenario_results_file}",
+			"comparison_questions:",
+			"  - Did the held-out score improve?",
+			"human_review_prompts:",
+			"  - id: operator",
+			"    prompt: Where would the prompt still leave the operator stuck?",
+			...(includeReviewVariants
+				? [
+					"executor_variants:",
+					"  - id: operator-review",
+					"    tool: mock",
+					"    command_template: sh review-variant.sh {candidate_repo} {output_file}",
+				]
+				: []),
+		].join("\n"),
+		"utf-8",
+	);
+	writeJson(optimizeInputPath, {
+		schemaVersion: "cautilus.optimize_inputs.v1",
+		generatedAt: "2026-04-13T09:58:00.000Z",
+		repoRoot: root,
+		optimizationTarget: "prompt",
+		intentProfile: {
+			schemaVersion: "cautilus.behavior_intent.v1",
+			intentId: "intent-operator-recovery-guidance",
+			summary: "Operator guidance should stay legible under recovery pressure.",
+			behaviorSurface: "operator_behavior",
+		},
+		optimizer: {
+			kind: "reflection",
+			budget: "medium",
+			plan: {
+				evidenceLimit: 4,
+				suggestedChangeLimit: 3,
+				reviewVariantLimit: 1,
+				historySignalLimit: 1,
+			},
+		},
+		targetFile: {
+			path: originalPath,
+			exists: true,
+		},
+		reportFile: join(root, "report.json"),
+		report: {
+			schemaVersion: "cautilus.report_packet.v2",
+			generatedAt: "2026-04-13T09:57:00.000Z",
+			candidate: root,
+			baseline: "origin/main",
+			intent: "Operator guidance should stay legible under recovery pressure.",
+			intentProfile: {
+				schemaVersion: "cautilus.behavior_intent.v1",
+				intentId: "intent-operator-recovery-guidance",
+				summary: "Operator guidance should stay legible under recovery pressure.",
+				behaviorSurface: "operator_behavior",
+			},
+			commands: [],
+			commandObservations: [],
+			modesRun: [],
+			modeSummaries: [],
+			telemetry: { modeCount: 0 },
+			improved: [],
+			regressed: ["operator-recovery", "operator-follow-up"],
+			unchanged: [],
+			noisy: [],
+			humanReviewFindings: [
+				{
+					severity: "concern",
+					message: "The prompt needs both stronger recovery detail and a clearer operator follow-up path.",
+				},
+			],
+			recommendation: "defer",
+		},
+		reviewSummaryFile: join(root, "review-summary.json"),
+		reviewSummary: { variants: [] },
+		scenarioHistoryFile: join(root, "history.json"),
+		scenarioHistory: {
+			schemaVersion: "cautilus.scenario_history.v1",
+			scenarioStats: {
+				"operator-recovery": {
+					recentTrainResults: [{ status: "failed", overallScore: 80, passRate: 0 }],
+				},
+				"operator-follow-up": {
+					recentTrainResults: [{ status: "failed", overallScore: 70, passRate: 0 }],
+				},
+			},
+		},
+		objective: {
+			summary: "Propose one bounded next revision without weakening held-out, comparison, or review discipline.",
+			constraints: ["Prefer repairing explicit regressions over widening scope."],
+		},
+	});
+	initGitRepo(root);
+	createProgrammableCodex(root, [
+		{
+			output: {
+				promptMarkdown: "Keep recovery instructions explicit with a detailed recovery checklist.\n",
+				rationaleSummary: "Strengthen the recovery path first.",
+				expectedImprovements: ["operator-recovery"],
+				preservedStrengths: ["keeps the original recovery framing"],
+				riskNotes: ["operator-follow-up may still remain weak"],
+			},
+		},
+	]);
+	createFakeClaude(root, "Keep recovery instructions explicit with a follow-up handoff map.\n");
+	return { root, artifactRoot, originalPath, heldOutResultsPath, optimizeInputPath };
+}
+
 function initGitRepo(root) {
 	execFileSync("git", ["-C", root, "init"], { stdio: "pipe" });
 	execFileSync("git", ["-C", root, "config", "user.email", "test@example.com"], { stdio: "pipe" });
@@ -982,6 +1228,120 @@ EOF
 		assert.deepEqual(selected.parentCandidateIds.length, 2);
 		assert.match(readFileSync(result.proposalBridge.selectedTargetFile.path, "utf-8"), /detailed recovery checklist/);
 		assert.match(readFileSync(result.proposalBridge.selectedTargetFile.path, "utf-8"), /follow-up handoff map/);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+		rmSync(artifactRoot, { recursive: true, force: true });
+	}
+});
+
+test("run-optimize-search falls back to the next frontier candidate when final review rejects the leader", () => {
+	const { root, artifactRoot, optimizeInputPath, heldOutResultsPath } = createCheckpointFallbackFixture({
+		includeReviewVariants: true,
+		gateFailsOnChecklist: false,
+	});
+	try {
+		const { packet } = buildOptimizeSearchInput(
+			["--optimize-input", optimizeInputPath, "--held-out-results-file", heldOutResultsPath, "--budget", "medium"],
+			{ now: new Date("2026-04-13T10:00:00.000Z") },
+		);
+		packet.searchConfig.generationLimit = 1;
+		packet.searchConfig.mergeEnabled = false;
+		packet.mutationConfig.backends = [
+			{ id: "codex-mutate", backend: "codex_exec" },
+			{ id: "claude-mutate", backend: "claude_p" },
+		];
+		const result = runOptimizeSearch(packet, {
+			inputFile: join(root, "optimize-search-input.json"),
+			outputFile: join(artifactRoot, "optimize-search-result.json"),
+			now: new Date("2026-04-13T10:01:00.000Z"),
+			env: {
+				...process.env,
+				PATH: `${root}:${process.env.PATH ?? ""}`,
+			},
+		});
+		assert.equal(result.status, "completed");
+		assert.equal(result.searchTelemetry.reviewCheckpointCount, 2);
+		assert.equal(result.searchTelemetry.fullGateCheckpointCount, 1);
+		assert.deepEqual(result.selectionTelemetry.rejectedFinalistCandidateIds, ["g1-1-codex-exec"]);
+		assert.deepEqual(result.selectionTelemetry.rejectionReasons["g1-1-codex-exec"], ["review:operator-review:blocker"]);
+		assert.equal(result.selectedCandidateId, "g1-2-claude-p");
+		assert.match(readFileSync(result.proposalBridge.selectedTargetFile.path, "utf-8"), /follow-up handoff map/);
+		assert.equal(result.checkpointOutcomes.review[0].admissible, false);
+		assert.equal(result.checkpointOutcomes.review[1].admissible, true);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+		rmSync(artifactRoot, { recursive: true, force: true });
+	}
+});
+
+test("run-optimize-search falls back to the next frontier candidate when full gate rejects the leader", () => {
+	const { root, artifactRoot, optimizeInputPath, heldOutResultsPath } = createCheckpointFallbackFixture({
+		includeReviewVariants: false,
+		gateFailsOnChecklist: true,
+	});
+	try {
+		const { packet } = buildOptimizeSearchInput(
+			["--optimize-input", optimizeInputPath, "--held-out-results-file", heldOutResultsPath, "--budget", "medium"],
+			{ now: new Date("2026-04-13T10:00:00.000Z") },
+		);
+		packet.searchConfig.generationLimit = 1;
+		packet.searchConfig.mergeEnabled = false;
+		packet.mutationConfig.backends = [
+			{ id: "codex-mutate", backend: "codex_exec" },
+			{ id: "claude-mutate", backend: "claude_p" },
+		];
+		const result = runOptimizeSearch(packet, {
+			inputFile: join(root, "optimize-search-input.json"),
+			outputFile: join(artifactRoot, "optimize-search-result.json"),
+			now: new Date("2026-04-13T10:01:00.000Z"),
+			env: {
+				...process.env,
+				PATH: `${root}:${process.env.PATH ?? ""}`,
+			},
+		});
+		assert.equal(result.status, "completed");
+		assert.equal(result.searchTelemetry.reviewCheckpointCount, 0);
+		assert.equal(result.searchTelemetry.fullGateCheckpointCount, 2);
+		assert.deepEqual(result.selectionTelemetry.rejectedFinalistCandidateIds, ["g1-1-codex-exec"]);
+		assert.deepEqual(result.selectionTelemetry.rejectionReasons["g1-1-codex-exec"], ["full_gate:reject"]);
+		assert.equal(result.selectedCandidateId, "g1-2-claude-p");
+		assert.match(readFileSync(result.proposalBridge.selectedTargetFile.path, "utf-8"), /follow-up handoff map/);
+		assert.equal(result.checkpointOutcomes.fullGate[0].admissible, false);
+		assert.equal(result.checkpointOutcomes.fullGate[1].admissible, true);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+		rmSync(artifactRoot, { recursive: true, force: true });
+	}
+});
+
+test("run-optimize-search blocks when every frontier candidate fails the final checkpoints", () => {
+	const { root, artifactRoot, optimizeInputPath, heldOutResultsPath } = createCheckpointFallbackFixture({
+		includeReviewVariants: false,
+		gateFailsOnChecklist: true,
+	});
+	try {
+		const { packet } = buildOptimizeSearchInput(
+			["--optimize-input", optimizeInputPath, "--held-out-results-file", heldOutResultsPath, "--budget", "light"],
+			{ now: new Date("2026-04-13T10:00:00.000Z") },
+		);
+		packet.searchConfig.generationLimit = 1;
+		packet.searchConfig.mergeEnabled = false;
+		packet.mutationConfig.backends = [{ id: "codex-mutate", backend: "codex_exec" }];
+		const result = runOptimizeSearch(packet, {
+			inputFile: join(root, "optimize-search-input.json"),
+			outputFile: join(artifactRoot, "optimize-search-result.json"),
+			now: new Date("2026-04-13T10:01:00.000Z"),
+			env: {
+				...process.env,
+				PATH: `${root}:${process.env.PATH ?? ""}`,
+			},
+		});
+		assert.equal(result.status, "blocked");
+		assert.deepEqual(result.reasonCodes, ["no_checkpoint_admissible_candidate"]);
+		assert.equal("selectedCandidateId" in result, false);
+		assert.deepEqual(result.selectionTelemetry.rejectedFinalistCandidateIds, ["g1-1-codex-exec"]);
+		assert.equal(result.searchTelemetry.fullGateCheckpointCount, 1);
+		assert.equal(result.checkpointOutcomes.fullGate[0].admissible, false);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 		rmSync(artifactRoot, { recursive: true, force: true });

@@ -73,8 +73,9 @@ Current search behavior:
 - `cautilus optimize search run` keeps a seed candidate, evolves a bounded
   multi-generation frontier with reflective prompt mutations, can synthesize
   one bounded merge candidate from complementary parents, reevaluates
-  candidates on held-out scenarios, and selects from a Pareto-style frontier
-  over per-scenario scores
+  candidates on held-out scenarios, runs final-only review/full-gate
+  checkpoints across ranked frontier finalists, and selects from a
+  Pareto-style frontier over per-scenario scores
 - cost and latency are recorded as telemetry and tie-break signals rather than
   dominating the primary behavior objective
 - sparse evidence blocks search early with machine-readable JSON so an agent or
@@ -85,10 +86,10 @@ Current search behavior:
 This is intentionally a bounded first slice, not the final word on prompt
 evolution.
 The current implementation closes multi-generation reflective mutation,
-bounded merge synthesis, held-out reevaluation, search-readiness blocking, and
-proposal bridging.
-Later slices can still add executed review/full-gate checkpoints, richer
-merge heuristics, and stronger self-dogfood loops.
+bounded merge synthesis, held-out reevaluation, final-only checkpoint fallback,
+search-readiness blocking, and proposal bridging.
+Later slices can still add frontier-promotion checkpoints, richer merge
+heuristics, and stronger self-dogfood loops.
 
 ## Current Status
 

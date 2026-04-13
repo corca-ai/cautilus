@@ -44,7 +44,7 @@ This slice defines a first `GEPA`-inspired search contract for `Cautilus`:
 - candidate selection is Pareto-based over per-scenario validation scores
 - the current implementation closes packet assembly, readiness gating,
   multi-generation reflective mutation, bounded merge synthesis, held-out
-  reevaluation, and the proposal bridge
+  reevaluation, final-only checkpoint fallback, and the proposal bridge
 - reflective mutation is evidence-aware rewriting, not random string editing
 - the search output stays reopenable as a durable artifact and can feed the
   existing bounded `optimize propose` seam
@@ -93,8 +93,8 @@ This slice defines a first `GEPA`-inspired search contract for `Cautilus`:
 - automatic prompt patch application to consumer-owned files
 - richer merge-parent selection, >2-parent synthesis, and smarter crossover
   heuristics
-- executing declared review/full-gate checkpoint policies inside the search
-  loop rather than only carrying them in the contract
+- executing `frontier_promotions` review checkpoints inside the loop
+- feeding checkpoint rejection reasons back into later-generation mutation
 
 ## Non-Goals
 
@@ -113,7 +113,7 @@ This slice defines a first `GEPA`-inspired search contract for `Cautilus`:
 - keep consumer prompts, adapters, and policy language consumer-owned
 - prefer explicit candidate snapshot files and fingerprints over inlining large
   prompt bodies into search packets
-- keep the packet shape extensible to richer frontier heuristics and explicit
+- keep the packet shape extensible to richer frontier heuristics and broader
   checkpoint execution later
 - when JSON is provided directly over CLI or stdin, materialize the raw input
   and the normalized canonical packet under the active run before running
@@ -315,23 +315,27 @@ The bounded loop should work like this:
      frontier parents
    - evaluate generated candidates on held-out scenarios
    - update the Pareto frontier using held-out per-scenario scores
-   - record checkpoint intent according to the declared policy
+   - defer non-final checkpoints unless the operator enables a stricter policy
 4. Stop when the budget, generation limit, or stop condition is reached.
-5. Emit one selected best next candidate plus the durable search record.
+5. Evaluate ranked frontier finalists against the declared final checkpoints.
+6. Emit one selected best next candidate plus the durable search record, or a
+   blocked result when no checkpoint-admissible finalist survives.
 
 Current implementation note:
 
 - v1 executes the bounded multi-generation loop, including reflective mutation,
-  optional merge generation, held-out reevaluation, frontier retention, and
-  proposal bridging
-- declared review and full-gate checkpoint policies are not yet executed
-  inside `optimize search run`; checkpoint outcome slots remain present so the
-  later seam can land without reshaping the packet
+  optional merge generation, held-out reevaluation, frontier retention,
+  final-only review/full-gate checkpoints, and proposal bridging
+- when the frontier leader fails a final checkpoint, `optimize search run`
+  falls back to the next ranked frontier candidate
+- when every frontier finalist fails the final checkpoints, `optimize search
+  run` emits a blocked result with checkpoint rejection reasons
 
 In v1, review checkpoint policy means:
 
 - `final_only`
-  - run review variants only for the final selected candidate
+  - run review variants and full-gate evaluation while walking the ranked
+    frontier finalists
 - `frontier_promotions`
   - run review variants whenever a candidate is promoted onto the held-out
     frontier
@@ -386,13 +390,14 @@ The packet should include:
   - optional frontier coverage counts
 - checkpoint outcomes
   - review checkpoint results
-  - full-gate checkpoint result for the final candidate when run
+  - full-gate checkpoint result for each attempted finalist when run
 - search telemetry
   - candidate count
   - generation count
   - mutation invocation count
   - held-out evaluation count
   - review checkpoint count
+  - full-gate checkpoint count
   - stop reason
 - proposal bridge
   - the selected candidate snapshot reference
@@ -441,6 +446,9 @@ search before the final proposal.
   - multi-generation frontier evolution is preserved
   - optional merge candidates preserve multiple parents
   - Pareto frontier metadata is emitted
+  - final review rejection can fall back to the next frontier candidate
+  - final full-gate rejection can fall back to the next frontier candidate
+  - no checkpoint-admissible finalist yields a blocked result
   - the selected candidate remains reopenable as a bounded revision artifact
   - blocked readiness emits machine-readable reason codes and the canonical
     input file path
@@ -460,12 +468,15 @@ The current bounded slice already proves:
 - multi-generation Pareto frontier retention over per-scenario scores
 - reflective mutation from explicit evidence
 - optional bounded merge generation from complementary frontier parents
+- final-only review/full-gate checkpoint execution with ranked-frontier
+  fallback
 - selected-candidate emission and proposal bridging back into the existing
   optimize artifact flow
 
-The next slice can build on this by executing review/full-gate checkpoints
-inside the loop and by making merge selection more system-aware, without
-reshaping the packet boundary.
+The next slice can build on this by executing `frontier_promotions` review
+checkpoints inside the loop, feeding checkpoint rejections back into later
+mutation, and making merge selection more system-aware, without reshaping the
+packet boundary.
 
 ## Guardrails
 
