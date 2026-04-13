@@ -83,12 +83,16 @@ standalone product여야 한다.
 | bin/cautilus | fixed | CAUTILUS_TOOL_ROOT |
 | bin/cautilus | fixed | exec go -C |
 | internal/cli/command-registry.json | file_exists |  |
+| internal/cli/command-registry.json | fixed | "path": ["commands"] |
+| internal/cli/command-registry.json | fixed | "path": ["healthcheck"] |
 | internal/cli/command-registry.json | fixed | "path": ["version"] |
 | internal/cli/command-registry.json | fixed | "path": ["install"] |
 | internal/cli/command-registry.json | fixed | "path": ["update"] |
 | internal/cli/command-registry.json | fixed | "path": ["skills", "install"] |
 | internal/cli/command-registry.json | fixed | "path": ["workspace", "start"] |
 | internal/cli/command-registry.json | fixed | "path": ["review", "variants"] |
+| internal/cli/command-registry.json | fixed | cautilus commands [--json] |
+| internal/cli/command-registry.json | fixed | cautilus healthcheck [--json] |
 | internal/cli/command-registry.json | fixed | cautilus version [--verbose] [--check] |
 | internal/cli/command-registry.json | fixed | cautilus install [--repo-root <path>] [--overwrite] [--json] |
 | internal/cli/command-registry.json | fixed | cautilus update [--repo-root <path>] [--json] |
@@ -338,7 +342,10 @@ standalone product여야 한다.
 
 - target repo의 adapter resolve
 - target repo의 adapter scaffold
+- binary healthcheck separate from repo readiness
+- registry-backed command discovery for safe probing and wrapper tooling
 - target repo의 adapter readiness doctor
+- target repo의 local agent-surface readiness doctor
 - explicit baseline/candidate git worktree preparation for A/B runs
 - explicit artifact-root pruning for accumulated Cautilus run outputs
 - explicit per-run workspace directory materialization under one artifact root,

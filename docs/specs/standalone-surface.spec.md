@@ -24,9 +24,13 @@ standalone acceptance boundary만 남긴다.
 | bin/cautilus | fixed | CAUTILUS_TOOL_ROOT |
 | bin/cautilus | fixed | exec go -C |
 | internal/cli/command-registry.json | file_exists |  |
+| internal/cli/command-registry.json | fixed | cautilus commands [--json] |
+| internal/cli/command-registry.json | fixed | cautilus healthcheck [--json] |
 | internal/cli/command-registry.json | fixed | cautilus doctor [args] |
 | internal/cli/command-registry.json | fixed | cautilus install [--repo-root <path>] [--overwrite] [--json] |
 | internal/cli/command-registry.json | fixed | cautilus update [--repo-root <path>] [--json] |
+| internal/cli/command-registry.json | fixed | "path": ["commands"] |
+| internal/cli/command-registry.json | fixed | "path": ["healthcheck"] |
 | internal/cli/command-registry.json | fixed | "path": ["version"] |
 | internal/cli/command-registry.json | fixed | "path": ["install"] |
 | internal/cli/command-registry.json | fixed | "path": ["update"] |
@@ -109,6 +113,7 @@ standalone acceptance boundary만 남긴다.
 현재 단계에서 standalone surface는 최소한 아래를 만족해야 한다.
 
 - binary와 bundled skill이 같은 workflow entrypoint를 가리킨다.
+- binary health, command discovery, repo readiness, and local agent-surface readiness are separate probe surfaces.
 - host repo는 `cautilus install --repo-root .`로 canonical `.agents/skills/cautilus` surface를 materialize할 수 있다.
 - packaged local skill surface는 repo-local Codex/Claude marketplace로도 설명된다.
 - adapter resolve/init/doctor/workspace prepare-compare/workspace prune-artifacts/workspace start/scenario normalize chatbot/scenario normalize skill/scenario summarize-telemetry/scenario prepare-input/scenario propose/evidence prepare-input/evidence bundle/report build/mode evaluate/optimize prepare-input/optimize propose/optimize build-artifact/review prepare-input/review build-prompt-input/review render-prompt/review variants는 host-local script path 없이 설명된다.
@@ -116,7 +121,12 @@ standalone acceptance boundary만 남긴다.
 
 ```run:shell
 $ cautilus --help
+$ cautilus commands --json
+$ cautilus healthcheck --json
+$ cautilus doctor --help
+$ cautilus optimize search --help
 $ cautilus doctor --repo-root .
+$ cautilus doctor --repo-root . --scope agent-surface || true
 $ cautilus workspace prepare-compare --repo-root . --baseline-ref origin/main --output-dir /tmp/cautilus-compare || true
 $ cautilus workspace prune-artifacts --root /tmp/cautilus-runs --keep-last 20 || true
 $ mkdir -p /tmp/cautilus-runs

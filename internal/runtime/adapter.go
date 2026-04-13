@@ -524,6 +524,75 @@ func DoctorRepo(repoRoot string, adapterPath *string, adapterName *string) (map[
 	return result, 1, nil
 }
 
+func DoctorAgentSurface(repoRoot string) (map[string]any, int, error) {
+	type surfaceCheck struct {
+		id         string
+		path       string
+		okDetail   string
+		failDetail string
+		suggestion string
+	}
+
+	checkDefinitions := []surfaceCheck{
+		{
+			id:         "skill_installed",
+			path:       filepath.Join(repoRoot, ".agents", "skills", "cautilus", "SKILL.md"),
+			okDetail:   "Installed bundled skill is present under .agents/skills/cautilus.",
+			failDetail: "Installed bundled skill is missing under .agents/skills/cautilus.",
+			suggestion: fmt.Sprintf("Run cautilus install --repo-root %s to materialize the local agent skill surface.", repoRoot),
+		},
+		{
+			id:         "claude_skills_link",
+			path:       filepath.Join(repoRoot, ".claude", "skills"),
+			okDetail:   "Claude compatibility skills link is present.",
+			failDetail: "Claude compatibility skills link is missing.",
+			suggestion: fmt.Sprintf("Run cautilus install --repo-root %s to refresh the Claude skills link.", repoRoot),
+		},
+	}
+
+	checks := []any{}
+	suggestions := []any{}
+	artifactPaths := map[string]any{}
+	for _, definition := range checkDefinitions {
+		_, err := os.Lstat(definition.path)
+		ok := err == nil
+		detail := definition.failDetail
+		if ok {
+			detail = definition.okDetail
+			artifactPaths[definition.id] = definition.path
+		}
+		checks = append(checks, map[string]any{
+			"id":     definition.id,
+			"ok":     ok,
+			"detail": detail,
+		})
+		if !ok {
+			suggestions = append(suggestions, definition.suggestion)
+		}
+	}
+
+	ready := allChecksReady(checks)
+	result := map[string]any{
+		"repo_root":      repoRoot,
+		"scope":          "agent-surface",
+		"checks":         checks,
+		"suggestions":    suggestions,
+		"warnings":       []any{},
+		"errors":         []any{},
+		"artifact_paths": artifactPaths,
+	}
+	if ready {
+		result["status"] = "ready"
+		result["ready"] = true
+		result["summary"] = "Local agent-consumable skill surface is materialized."
+		return result, 0, nil
+	}
+	result["status"] = "missing_agent_surface"
+	result["ready"] = false
+	result["summary"] = "Local agent-consumable skill surface is not materialized yet."
+	return result, 1, nil
+}
+
 func appendFieldCheck(checks *[]any, suggestions *[]any, id string, ok bool, okDetail string, missingDetail string, suggestion string) {
 	detail := missingDetail
 	if ok {

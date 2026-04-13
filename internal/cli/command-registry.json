@@ -1,5 +1,7 @@
 {
   "usage": [
+    "cautilus commands [--json]",
+    "cautilus healthcheck [--json]",
     "cautilus adapter resolve [args]",
     "cautilus adapter init [args]",
     "cautilus version [--verbose] [--check]",
@@ -30,6 +32,8 @@
     "cautilus review variants [args]"
   ],
   "examples": [
+    "cautilus commands --json",
+    "cautilus healthcheck --json",
     "cautilus adapter resolve --repo-root .",
     "cautilus adapter init --repo-root .",
     "cautilus version --verbose --check",
@@ -60,6 +64,12 @@
     "cautilus review variants --repo-root . --workspace . --output-dir /tmp/cautilus-review"
   ],
   "commands": [
+    {
+      "path": ["commands"]
+    },
+    {
+      "path": ["healthcheck"]
+    },
     {
       "path": ["adapter", "resolve"]
     },

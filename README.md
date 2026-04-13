@@ -305,6 +305,26 @@ Check whether a repo is ready for standalone `Cautilus` evaluation:
 cautilus doctor --repo-root /path/to/repo
 ```
 
+Use the probe surfaces according to what you are actually verifying:
+
+```bash
+# binary health, no repo required
+cautilus healthcheck --json
+
+# command discovery, safe for wrapper tooling and agent runtimes
+cautilus commands --json
+
+# repo readiness for evaluation
+cautilus doctor --repo-root /path/to/repo
+
+# local agent-skill discoverability in a consumer repo
+cautilus doctor --repo-root /path/to/repo --scope agent-surface
+```
+
+`cautilus <subcommand> --help` is expected to exit `0` for the registered
+native command surface, including grouped topics such as
+`cautilus optimize search --help`.
+
 For Codex local plugin testing, this repo also exposes a packaged plugin
 subtree through
 [.agents/plugins/marketplace.json](.agents/plugins/marketplace.json)

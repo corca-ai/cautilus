@@ -39,6 +39,12 @@ func TestRenderUsageIncludesLifecycleCommands(t *testing.T) {
 	if err != nil {
 		t.Fatalf("RenderUsage returned error: %v", err)
 	}
+	if !strings.Contains(usage, "cautilus commands [--json]") {
+		t.Fatalf("usage missing commands line:\n%s", usage)
+	}
+	if !strings.Contains(usage, "cautilus healthcheck [--json]") {
+		t.Fatalf("usage missing healthcheck line:\n%s", usage)
+	}
 	if !strings.Contains(usage, "cautilus install [--repo-root <path>] [--overwrite] [--json]") {
 		t.Fatalf("usage missing install line:\n%s", usage)
 	}
@@ -50,6 +56,35 @@ func TestRenderUsageIncludesLifecycleCommands(t *testing.T) {
 	}
 	if !strings.Contains(usage, "cautilus review variants --repo-root . --workspace . --output-dir /tmp/cautilus-review") {
 		t.Fatalf("usage missing review variants example:\n%s", usage)
+	}
+}
+
+func TestRenderTopicUsageIncludesLeafCommandUsageAndExamples(t *testing.T) {
+	usage, err := RenderTopicUsage([]string{"doctor"})
+	if err != nil {
+		t.Fatalf("RenderTopicUsage returned error: %v", err)
+	}
+	if !strings.Contains(usage, "cautilus doctor [args]") {
+		t.Fatalf("topic usage missing doctor usage:\n%s", usage)
+	}
+	if !strings.Contains(usage, "cautilus doctor --repo-root .") {
+		t.Fatalf("topic usage missing doctor example:\n%s", usage)
+	}
+}
+
+func TestRenderTopicUsageIncludesGroupedSubcommandsForPrefixes(t *testing.T) {
+	usage, err := RenderTopicUsage([]string{"optimize", "search"})
+	if err != nil {
+		t.Fatalf("RenderTopicUsage returned error: %v", err)
+	}
+	if !strings.Contains(usage, "cautilus optimize search prepare-input [args]") {
+		t.Fatalf("topic usage missing optimize search prepare-input usage:\n%s", usage)
+	}
+	if !strings.Contains(usage, "Subcommands:") {
+		t.Fatalf("topic usage missing subcommands section:\n%s", usage)
+	}
+	if !strings.Contains(usage, "cautilus optimize search run") {
+		t.Fatalf("topic usage missing optimize search run subcommand:\n%s", usage)
 	}
 }
 

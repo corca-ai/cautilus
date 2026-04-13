@@ -98,6 +98,83 @@ func TestRunDoctorDoesNotRequireToolRootForNativeCommands(t *testing.T) {
 	}
 }
 
+func TestRunDoctorHelpReturnsZeroAndUsage(t *testing.T) {
+	t.Setenv("CAUTILUS_CALLER_CWD", t.TempDir())
+	t.Setenv("CAUTILUS_TOOL_ROOT", "")
+
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	exitCode := Run([]string{"doctor", "--help"}, &stdout, &stderr)
+	if exitCode != 0 {
+		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
+	}
+	if !strings.Contains(stdout.String(), "cautilus doctor [args]") {
+		t.Fatalf("expected doctor usage, got %q", stdout.String())
+	}
+	if stderr.Len() != 0 {
+		t.Fatalf("unexpected stderr: %q", stderr.String())
+	}
+}
+
+func TestRunCommandsJSONReturnsRegistry(t *testing.T) {
+	t.Setenv("CAUTILUS_CALLER_CWD", t.TempDir())
+	t.Setenv("CAUTILUS_TOOL_ROOT", "")
+
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	exitCode := Run([]string{"commands", "--json"}, &stdout, &stderr)
+	if exitCode != 0 {
+		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
+	}
+	var payload map[string]any
+	if err := json.Unmarshal(stdout.Bytes(), &payload); err != nil {
+		t.Fatalf("Unmarshal returned error: %v", err)
+	}
+	if payload["schemaVersion"] != "cautilus.commands.v1" {
+		t.Fatalf("unexpected schemaVersion: %#v", payload["schemaVersion"])
+	}
+	commands, ok := payload["commands"].([]any)
+	if !ok || len(commands) == 0 {
+		t.Fatalf("expected commands payload, got %#v", payload)
+	}
+}
+
+func TestRunHealthcheckJSONReturnsHealthyPayload(t *testing.T) {
+	t.Setenv("CAUTILUS_CALLER_CWD", t.TempDir())
+	t.Setenv("CAUTILUS_TOOL_ROOT", "")
+	t.Setenv("CAUTILUS_VERSION", "v9.8.7")
+	t.Setenv("XDG_CACHE_HOME", t.TempDir())
+
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	exitCode := Run([]string{"healthcheck", "--json"}, &stdout, &stderr)
+	if exitCode != 0 {
+		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
+	}
+	var payload map[string]any
+	if err := json.Unmarshal(stdout.Bytes(), &payload); err != nil {
+		t.Fatalf("Unmarshal returned error: %v", err)
+	}
+	if payload["status"] != "healthy" || payload["healthy"] != true {
+		t.Fatalf("expected healthy payload, got %#v", payload)
+	}
+}
+
+func TestRunPrefixHelpWorksForCommandGroups(t *testing.T) {
+	t.Setenv("CAUTILUS_CALLER_CWD", t.TempDir())
+	t.Setenv("CAUTILUS_TOOL_ROOT", "")
+
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	exitCode := Run([]string{"optimize", "search", "--help"}, &stdout, &stderr)
+	if exitCode != 0 {
+		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
+	}
+	if !strings.Contains(stdout.String(), "cautilus optimize search prepare-input [args]") {
+		t.Fatalf("expected grouped optimize search help, got %q", stdout.String())
+	}
+}
+
 func TestRunSkillsInstallDoesNotRequireToolRoot(t *testing.T) {
 	repoRoot := t.TempDir()
 	t.Setenv("CAUTILUS_CALLER_CWD", repoRoot)

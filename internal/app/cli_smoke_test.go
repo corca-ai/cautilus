@@ -123,6 +123,82 @@ func TestCLIRootSelfConsumerRepoStaysDoctorReady(t *testing.T) {
 	}
 }
 
+func TestCLICommandsJSONListsRegisteredCommandSurface(t *testing.T) {
+	root := repoToolRoot(t)
+	stdout, stderr, exitCode := runCLI(t, root, "commands", "--json")
+	if exitCode != 0 {
+		t.Fatalf("Run returned exit code %d, stderr=%s", exitCode, stderr)
+	}
+	payload := parseJSONObject(t, stdout)
+	if payload["schemaVersion"] != "cautilus.commands.v1" {
+		t.Fatalf("unexpected schemaVersion: %#v", payload["schemaVersion"])
+	}
+	commands, ok := payload["commands"].([]any)
+	if !ok {
+		t.Fatalf("expected commands array, got %#v", payload["commands"])
+	}
+	foundHealthcheck := false
+	for _, raw := range commands {
+		command, ok := raw.(map[string]any)
+		if !ok {
+			continue
+		}
+		path, ok := command["path"].([]any)
+		if !ok || len(path) != 1 {
+			continue
+		}
+		if anyToString(path[0]) == "healthcheck" {
+			foundHealthcheck = true
+			break
+		}
+	}
+	if !foundHealthcheck {
+		t.Fatalf("expected healthcheck command in registry payload: %s", stdout)
+	}
+}
+
+func TestCLIHealthcheckReturnsHealthyPayload(t *testing.T) {
+	root := repoToolRoot(t)
+	stdout, stderr, exitCode := runCLI(t, root, "healthcheck", "--json")
+	if exitCode != 0 {
+		t.Fatalf("Run returned exit code %d, stderr=%s", exitCode, stderr)
+	}
+	payload := parseJSONObject(t, stdout)
+	if payload["status"] != "healthy" || payload["healthy"] != true {
+		t.Fatalf("expected healthy payload, got %#v", payload)
+	}
+}
+
+func TestCLIDoctorScopeAgentSurfaceTracksInstalledSkillSurface(t *testing.T) {
+	root := t.TempDir()
+	stdout, stderr, exitCode := runCLI(t, root, "doctor", "--repo-root", root, "--scope", "agent-surface")
+	if exitCode != 1 {
+		t.Fatalf("expected exit code 1 before install, got %d, stderr=%s", exitCode, stderr)
+	}
+	payload := parseJSONObject(t, stdout)
+	if payload["status"] != "missing_agent_surface" || payload["ready"] != false {
+		t.Fatalf("expected missing_agent_surface payload, got %#v", payload)
+	}
+	suggestions, ok := payload["suggestions"].([]any)
+	if !ok || len(suggestions) == 0 || !strings.Contains(anyToString(suggestions[0]), "cautilus install") {
+		t.Fatalf("expected install suggestion, got %#v", payload["suggestions"])
+	}
+
+	installStdout, installStderr, installExitCode := runCLI(t, root, "install", "--repo-root", root, "--json")
+	if installExitCode != 0 {
+		t.Fatalf("install failed: %s%s", installStdout, installStderr)
+	}
+
+	stdout, stderr, exitCode = runCLI(t, root, "doctor", "--repo-root", root, "--scope", "agent-surface")
+	if exitCode != 0 {
+		t.Fatalf("expected exit code 0 after install, got %d, stderr=%s", exitCode, stderr)
+	}
+	payload = parseJSONObject(t, stdout)
+	if payload["status"] != "ready" || payload["ready"] != true {
+		t.Fatalf("expected ready payload after install, got %#v", payload)
+	}
+}
+
 func TestCLIAdapterResolveDelegatesToBundledResolver(t *testing.T) {
 	root := t.TempDir()
 	adapterDir := filepath.Join(root, ".agents")
@@ -1506,10 +1582,10 @@ printf '%%s\n' '%s' > "$out"
 			"kind":   "reflection",
 			"budget": "light",
 			"plan": map[string]any{
-				"evidenceLimit":       3,
+				"evidenceLimit":        3,
 				"suggestedChangeLimit": 2,
-				"reviewVariantLimit":  1,
-				"historySignalLimit":  1,
+				"reviewVariantLimit":   1,
+				"historySignalLimit":   1,
 			},
 		},
 		"targetFile": map[string]any{

@@ -49,6 +49,15 @@ func Run(args []string, stdout io.Writer, stderr io.Writer) int {
 		return 1
 	}
 	if match == nil {
+		if topicArgs, ok := helpTopicArgs(args); ok {
+			usage, helpErr := cli.RenderTopicUsage(topicArgs)
+			if helpErr != nil {
+				_, _ = fmt.Fprintf(stderr, "%s\n", helpErr)
+				return 1
+			}
+			_, _ = fmt.Fprintf(stdout, "%s\n", usage)
+			return 0
+		}
 		usage, usageErr := cli.RenderUsage()
 		if usageErr != nil {
 			_, _ = fmt.Fprintf(stderr, "%s\n", usageErr)
@@ -58,12 +67,22 @@ func Run(args []string, stdout io.Writer, stderr io.Writer) int {
 		return 1
 	}
 
+	if helpRequested(match.ForwardedArgs) {
+		usage, helpErr := cli.RenderTopicUsage(match.Command.Path)
+		if helpErr != nil {
+			_, _ = fmt.Fprintf(stderr, "%s\n", helpErr)
+			return 1
+		}
+		_, _ = fmt.Fprintf(stdout, "%s\n", usage)
+		return 0
+	}
+
 	if handler := nativeHandler(match.Command.Path); handler != nil {
-		if strings.Join(match.Command.Path, " ") != "version" {
+		if shouldPrimeVersionState(match.Command.Path) {
 			_, _ = cli.InspectVersionState(toolRoot, cli.VersionStateOptions{Now: time.Now()})
 		}
 		exitCode := invokeHandler(handler, toolRoot, cwd, match.ForwardedArgs, stdout, stderr)
-		if strings.Join(match.Command.Path, " ") != "version" {
+		if shouldCheckForUpdates(match.Command.Path) {
 			notice, noticeErr := cli.MaybeCheckForUpdates(toolRoot, cli.AutoUpdateOptions{
 				Now:         time.Now(),
 				Interactive: detectInteractiveSession(stdout, stderr),
@@ -89,8 +108,48 @@ func invokeHandler(handler handlerFunc, repoRoot string, cwd string, args []stri
 	return handler(repoRoot, cwd, args, stdout, stderr)
 }
 
+func shouldPrimeVersionState(path []string) bool {
+	return strings.Join(path, " ") != "version"
+}
+
+func shouldCheckForUpdates(path []string) bool {
+	switch strings.Join(path, " ") {
+	case "version", "commands", "healthcheck":
+		return false
+	default:
+		return true
+	}
+}
+
+func helpRequested(args []string) bool {
+	for _, arg := range args {
+		if arg == "-h" || arg == "--help" {
+			return true
+		}
+	}
+	return false
+}
+
+func helpTopicArgs(args []string) ([]string, bool) {
+	if len(args) == 0 || !helpRequested(args) {
+		return nil, false
+	}
+	topic := []string{}
+	for _, arg := range args {
+		if arg == "-h" || arg == "--help" {
+			continue
+		}
+		topic = append(topic, arg)
+	}
+	return topic, true
+}
+
 func nativeHandler(path []string) handlerFunc {
 	switch strings.Join(path, " ") {
+	case "commands":
+		return handleCommands
+	case "healthcheck":
+		return handleHealthcheck
 	case "adapter resolve":
 		return handleAdapterResolve
 	case "adapter init":
@@ -208,10 +267,25 @@ type versionArgs struct {
 	check   bool
 }
 
+type commandsArgs struct {
+	json bool
+}
+
+type healthcheckArgs struct {
+	json bool
+}
+
 type installArgs struct {
 	repoRoot  *string
 	overwrite bool
 	json      bool
+}
+
+type doctorArgs struct {
+	repoRoot    *string
+	adapter     *string
+	adapterName *string
+	scope       string
 }
 
 type updateArgs struct {
@@ -362,6 +436,79 @@ func handleVersion(repoRoot string, cwd string, args []string, stdout io.Writer,
 	return 0
 }
 
+func handleCommands(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	options, err := parseCommandsArgs(args)
+	if err != nil {
+		_, _ = fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	registry, err := cli.LoadRegistry()
+	if err != nil {
+		_, _ = fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	if options.json {
+		payload := map[string]any{
+			"schemaVersion": "cautilus.commands.v1",
+			"usage":         registry.Usage,
+			"examples":      registry.Examples,
+			"commands":      registry.Commands,
+		}
+		if err := writeJSON(stdout, payload); err != nil {
+			_, _ = fmt.Fprintf(stderr, "%s\n", err)
+			return 1
+		}
+		return 0
+	}
+	usage, err := cli.RenderUsage()
+	if err != nil {
+		_, _ = fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	_, _ = fmt.Fprintf(stdout, "%s\n", usage)
+	return 0
+}
+
+func handleHealthcheck(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	options, err := parseHealthcheckArgs(args)
+	if err != nil {
+		_, _ = fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	state, err := cli.InspectVersionState(repoRoot, cli.VersionStateOptions{
+		Now:              time.Now(),
+		AllowRemoteCheck: false,
+	})
+	if err != nil {
+		_, _ = fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	registry, err := cli.LoadRegistry()
+	if err != nil {
+		_, _ = fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	payload := map[string]any{
+		"schemaVersion": "cautilus.healthcheck.v1",
+		"status":        "healthy",
+		"healthy":       true,
+		"checks": []any{
+			map[string]any{"id": "version_state", "ok": true, "detail": fmt.Sprintf("Resolved Cautilus v%s.", state.Current.Version)},
+			map[string]any{"id": "command_registry", "ok": true, "detail": fmt.Sprintf("Loaded %d registered commands.", len(registry.Commands))},
+		},
+		"current": state.Current,
+	}
+	if options.json {
+		if err := writeJSON(stdout, payload); err != nil {
+			_, _ = fmt.Fprintf(stderr, "%s\n", err)
+			return 1
+		}
+		return 0
+	}
+	_, _ = fmt.Fprintf(stdout, "healthy\n")
+	return 0
+}
+
 //nolint:errcheck // CLI stderr/stdout reporting is best-effort.
 func handleAdapterInit(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
 	options, err := parseInitArgs(args)
@@ -401,12 +548,22 @@ func handleAdapterInit(repoRoot string, cwd string, args []string, stdout io.Wri
 
 //nolint:errcheck // CLI stderr reporting is best-effort.
 func handleDoctor(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
-	options, err := parseAdapterArgs(args)
+	options, err := parseDoctorArgs(args)
 	if err != nil {
 		_, _ = fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
-	result, exitCode, err := runtime.DoctorRepo(resolveRepoRoot(cwd, options.repoRoot), options.adapter, options.adapterName)
+	resolvedRepoRoot := resolveRepoRoot(cwd, options.repoRoot)
+	var result map[string]any
+	var exitCode int
+	switch options.scope {
+	case "repo":
+		result, exitCode, err = runtime.DoctorRepo(resolvedRepoRoot, options.adapter, options.adapterName)
+	case "agent-surface":
+		result, exitCode, err = runtime.DoctorAgentSurface(resolvedRepoRoot)
+	default:
+		err = fmt.Errorf("unsupported doctor scope: %s", options.scope)
+	}
 	if err != nil {
 		_, _ = fmt.Fprintf(stderr, "%s\n", err)
 		return 1
@@ -918,9 +1075,6 @@ func parseAdapterArgs(args []string) (*adapterArgs, error) {
 	options := &adapterArgs{}
 	for index := 0; index < len(args); index++ {
 		arg := args[index]
-		if arg == "-h" || arg == "--help" {
-			return nil, errors.New("help is not implemented for native subcommands yet")
-		}
 		switch arg {
 		case "--repo-root":
 			value, next, err := requiredValue(args, index, arg)
@@ -949,6 +1103,54 @@ func parseAdapterArgs(args []string) (*adapterArgs, error) {
 	}
 	if options.adapter != nil && options.adapterName != nil {
 		return nil, fmt.Errorf("use either adapter or adapterName, not both")
+	}
+	return options, nil
+}
+
+func parseDoctorArgs(args []string) (*doctorArgs, error) {
+	options := &doctorArgs{
+		scope: "repo",
+	}
+	for index := 0; index < len(args); index++ {
+		arg := args[index]
+		switch arg {
+		case "--repo-root":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.repoRoot = &value
+		case "--adapter":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.adapter = &value
+		case "--adapter-name":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.adapterName = &value
+		case "--scope":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.scope = strings.TrimSpace(value)
+		default:
+			return nil, fmt.Errorf("unknown argument: %s", arg)
+		}
+	}
+	if options.adapter != nil && options.adapterName != nil {
+		return nil, fmt.Errorf("use either adapter or adapterName, not both")
+	}
+	if options.scope == "" {
+		return nil, fmt.Errorf("--scope requires a value")
 	}
 	return options, nil
 }
@@ -1004,6 +1206,32 @@ func parseVersionArgs(args []string) (*versionArgs, error) {
 		case "--check":
 			options.check = true
 			options.verbose = true
+		default:
+			return nil, fmt.Errorf("unexpected argument %q", args[index])
+		}
+	}
+	return options, nil
+}
+
+func parseCommandsArgs(args []string) (*commandsArgs, error) {
+	options := &commandsArgs{}
+	for index := 0; index < len(args); index++ {
+		switch args[index] {
+		case "--json":
+			options.json = true
+		default:
+			return nil, fmt.Errorf("unexpected argument %q", args[index])
+		}
+	}
+	return options, nil
+}
+
+func parseHealthcheckArgs(args []string) (*healthcheckArgs, error) {
+	options := &healthcheckArgs{}
+	for index := 0; index < len(args); index++ {
+		switch args[index] {
+		case "--json":
+			options.json = true
 		default:
 			return nil, fmt.Errorf("unexpected argument %q", args[index])
 		}

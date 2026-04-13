@@ -13,6 +13,14 @@ The installed skill assumes `cautilus` is already available on `PATH`.
 If it is not, install the CLI first and verify with `cautilus --version`.
 To materialize this skill in a host repo, run `cautilus install --repo-root .`.
 
+When a consumer repo or wrapper wants to probe the CLI surface safely, use:
+
+```bash
+cautilus healthcheck --json
+cautilus commands --json
+cautilus doctor --repo-root . --scope agent-surface
+```
+
 `Cautilus` should stay usable as a standalone product:
 
 - resolve or scaffold repo-local adapters

@@ -26,6 +26,13 @@ type Match struct {
 	ForwardedArgs []string
 }
 
+type TopicHelp struct {
+	Topic         []string
+	Usage         []string
+	Examples      []string
+	ChildCommands []CommandEntry
+}
+
 //go:embed command-registry.json
 var embeddedFiles embed.FS
 
@@ -113,6 +120,133 @@ func RenderUsage() (string, error) {
 		lines = append(lines, fmt.Sprintf("  %s", exampleLine))
 	}
 	return strings.Join(lines, "\n"), nil
+}
+
+func RenderTopicUsage(topic []string) (string, error) {
+	loaded, err := LoadRegistry()
+	if err != nil {
+		return "", err
+	}
+	help, ok := findTopicHelp(loaded, topic)
+	if !ok {
+		return "", fmt.Errorf("unknown command topic: %s", strings.Join(topic, " "))
+	}
+	lines := []string{"Usage:"}
+	for _, usageLine := range help.Usage {
+		lines = append(lines, fmt.Sprintf("  %s", usageLine))
+	}
+	if len(help.ChildCommands) > 0 {
+		lines = append(lines, "", "Subcommands:")
+		for _, child := range help.ChildCommands {
+			lines = append(lines, fmt.Sprintf("  cautilus %s", strings.Join(child.Path, " ")))
+		}
+	}
+	if len(help.Examples) > 0 {
+		lines = append(lines, "", "Examples:")
+		for _, exampleLine := range help.Examples {
+			lines = append(lines, fmt.Sprintf("  %s", exampleLine))
+		}
+	}
+	return strings.Join(lines, "\n"), nil
+}
+
+func FindTopicHelp(topic []string) (*TopicHelp, bool, error) {
+	loaded, err := LoadRegistry()
+	if err != nil {
+		return nil, false, err
+	}
+	help, ok := findTopicHelp(loaded, topic)
+	if !ok {
+		return nil, false, nil
+	}
+	return &help, true, nil
+}
+
+func findTopicHelp(loaded Registry, topic []string) (TopicHelp, bool) {
+	prefix := strings.TrimSpace(strings.Join(topic, " "))
+	usage := []string{}
+	examples := []string{}
+	children := []CommandEntry{}
+	seenUsage := map[string]struct{}{}
+	seenExamples := map[string]struct{}{}
+	seenChildren := map[string]struct{}{}
+
+	for _, usageLine := range loaded.Usage {
+		if !matchesRegistryLine(usageLine, prefix) {
+			continue
+		}
+		if _, ok := seenUsage[usageLine]; ok {
+			continue
+		}
+		seenUsage[usageLine] = struct{}{}
+		usage = append(usage, usageLine)
+	}
+	for _, exampleLine := range loaded.Examples {
+		if !matchesRegistryLine(exampleLine, prefix) {
+			continue
+		}
+		if _, ok := seenExamples[exampleLine]; ok {
+			continue
+		}
+		seenExamples[exampleLine] = struct{}{}
+		examples = append(examples, exampleLine)
+	}
+	for _, command := range loaded.Commands {
+		if len(topic) == 0 {
+			key := strings.Join(command.Path, "\x00")
+			if _, ok := seenChildren[key]; ok {
+				continue
+			}
+			seenChildren[key] = struct{}{}
+			children = append(children, command)
+			continue
+		}
+		if hasPathPrefix(command.Path, topic) && len(command.Path) > len(topic) {
+			key := strings.Join(command.Path, "\x00")
+			if _, ok := seenChildren[key]; ok {
+				continue
+			}
+			seenChildren[key] = struct{}{}
+			children = append(children, command)
+		}
+	}
+
+	if len(topic) > 0 && len(usage) == 0 && len(children) == 0 {
+		return TopicHelp{}, false
+	}
+	return TopicHelp{
+		Topic:         append([]string{}, topic...),
+		Usage:         usage,
+		Examples:      examples,
+		ChildCommands: children,
+	}, true
+}
+
+func matchesRegistryLine(line string, prefix string) bool {
+	if prefix == "" {
+		return true
+	}
+	expectedPrefix := "cautilus " + prefix
+	if !strings.HasPrefix(line, expectedPrefix) {
+		return false
+	}
+	if len(line) == len(expectedPrefix) {
+		return true
+	}
+	next := line[len(expectedPrefix)]
+	return next == ' ' || next == '['
+}
+
+func hasPathPrefix(path []string, prefix []string) bool {
+	if len(prefix) > len(path) {
+		return false
+	}
+	for index, segment := range prefix {
+		if path[index] != segment {
+			return false
+		}
+	}
+	return true
 }
 
 func FindRepoRoot(start string) (string, error) {
