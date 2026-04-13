@@ -75,7 +75,7 @@ What this does:
 Optional environment variables:
 
 ```bash
-CAUTILUS_VERSION=v0.2.2
+CAUTILUS_VERSION=v0.2.3
 CAUTILUS_INSTALL_ROOT="$HOME/.local/share/cautilus"
 CAUTILUS_BIN_DIR="$HOME/.local/bin"
 CAUTILUS_REPO=corca-ai/cautilus
