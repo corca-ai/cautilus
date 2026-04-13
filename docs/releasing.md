@@ -20,19 +20,34 @@ repo today that resolves to:
 
 ## Release Steps
 
-1. Bump [package.json](../package.json) version.
+1. Prepare the checked-in release metadata with the target version.
+
+```bash
+npm run release:prepare -- 0.2.4
+```
+
+This updates the maintained version surfaces together:
+
+- [package.json](../package.json)
+- [package-lock.json](../package-lock.json)
+- [.claude-plugin/marketplace.json](../.claude-plugin/marketplace.json)
+- [plugins/cautilus/.claude-plugin/plugin.json](../plugins/cautilus/.claude-plugin/plugin.json)
+- [plugins/cautilus/.codex-plugin/plugin.json](../plugins/cautilus/.codex-plugin/plugin.json)
+- [install.md](../install.md)
+
 2. Run:
 
 ```bash
 npm run hooks:check
 npm run verify
+npm run test:on-demand
 cautilus --version
 ```
 
 3. Commit and tag:
 
 ```bash
-git tag v0.2.0
+git tag v0.2.4
 git push origin main --tags
 ```
 

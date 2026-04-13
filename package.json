@@ -15,6 +15,7 @@
     "dogfood:self:experiments": "node scripts/run-self-dogfood-experiments.mjs",
     "dogfood:self:html": "node scripts/render-self-dogfood-html.mjs",
     "dogfood:self:experiments:html": "node scripts/render-self-dogfood-experiments-html.mjs",
+    "release:prepare": "node scripts/release/bump-version.mjs",
     "hooks:install": "node scripts/install-git-hooks.mjs",
     "hooks:check": "node scripts/check-git-hooks.mjs",
     "lint": "npm run lint:eslint && npm run lint:specs && npm run lint:go && npm run vet:go && npm run security:govulncheck",
@@ -25,7 +26,9 @@
     "test:go": "go test ./cmd/... ./internal/...",
     "test:go:race": "go test -race ./cmd/... ./internal/...",
     "test:node": "node --test bin/*.test.mjs scripts/*.test.mjs scripts/agent-runtime/*.test.mjs scripts/release/*.test.mjs",
+    "test:node:on-demand": "node --test scripts/on-demand/*.test.mjs",
     "test": "npm run test:go && npm run test:node",
+    "test:on-demand": "npm run test:node:on-demand",
     "verify": "npm run lint && npm run test:go:race && npm run test:node",
     "vet:go": "go vet ./cmd/... ./internal/..."
   },

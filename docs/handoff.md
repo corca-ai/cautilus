@@ -33,6 +33,7 @@
 - Homebrew는 더 이상 deferred note가 아니다.
   - release workflow가 formula artifact를 만들고
     `HOMEBREW_TAP_TOKEN`이 있으면 tap publish까지 수행한다.
+  - latest verified public release: `v0.2.3`
 - 다른 머신용 operator install guide를 추가했다.
   - [install.md](../install.md)
 - 이 머신에는 user-local fallback prefix로 Homebrew를 미리 설치했다.
@@ -54,30 +55,43 @@
   - history update
   - comparison baseline-cache seed materialization
 - packaged plugin skill copy는 repo skill source와 다시 sync돼 있다.
+- release prep is now a checked-in helper, not a manual checklist.
+  - `npm run release:prepare -- <version>`
+  - current helper updates package/plugin/install version surfaces together
+- standing gate and on-demand gate are now separated.
+  - standing: `npm run verify`
+  - on-demand: `npm run test:on-demand`
+  - heavy self-dogfood workflow script tests moved under `scripts/on-demand/`
+- GitHub Actions workflow majors are now Node 24-ready.
+  - `actions/checkout@v6`
+  - `actions/setup-go@v6`
+  - `actions/setup-node@v6`
+  - `softprops/action-gh-release@v3`
+- shared follow-up was filed in `charness`.
+  - issue: `corca-ai/charness#5`
 
 ## Last Verified
 
 - `go test ./internal/app ./internal/runtime ./internal/cli`
-- `node --test scripts/agent-runtime/*.test.mjs`
-- `node --test bin/*.test.mjs scripts/release/*.test.mjs`
 - `npm run verify`
+- `npm run test:on-demand`
 - `npm run hooks:check`
-- 실제 release install smoke:
-  - `CAUTILUS_VERSION=v0.2.1 ./install.sh`
-  - installed wrapper 경유 `cautilus --version`
-- login shell에서 `brew --version`
-- CLI-eval 잔흔 검색:
-  history note인 [docs/temp-product-decisions-2026-04-10.md](./temp-product-decisions-2026-04-10.md)만 남고,
-  제품 surface 쪽 검색은 비웠다.
+- release/install smoke:
+  - GitHub release `v0.2.3`
+  - Homebrew tap formula updated to `v0.2.3`
+  - local `brew upgrade corca-ai/tap/cautilus` succeeded
+  - installed binary `cautilus --version` returned `0.2.3`
+  - installed binary `cautilus update` returned already current
+- latest `main` verify workflow succeeded after upgrading action majors to Node 24-ready versions.
 
 ## Next Session
 
-1. unreleased install-surface fixes를 patch release로 묶는다.
-   - `install.sh` checksum manifest의 `dist/` prefix 허용
-   - Go managed installer도 같은 형식을 허용
-2. 새 tag에서 release workflow를 다시 태워 Homebrew tap publish를 확인한다.
-   - org secret `HOMEBREW_TAP_TOKEN`은 이미 추가됐다고 들은 상태다.
-3. 그 다음 실제 zero-state machine이나 clean shell에서 `brew install`, `cautilus update`를 smoke한다.
+1. `crill`에서 `scripts/cautilus/cli-product-scan/` seed를 실제 consumer-owned
+   feature/test surface로 승격할지 결정한다.
+2. `cautilus`에서 다음 release를 만들 때는 manual bump 대신
+   `npm run release:prepare -- <version>`을 쓴다.
+3. self-dogfood workflow나 operator-facing quality record를 건드릴 때는
+   `npm run test:on-demand`도 같이 돌린다.
 4. `cautilus` 바이너리 설치 surface가 실제로 안정적이면 그 다음 `crill`에서
    `scripts/cautilus/cli-product-scan/` seed를 실제 확장으로 다듬는다.
 5. `cautilus`에서 남은 정리는 history note 정리 정도다.
@@ -106,6 +120,9 @@
   를 따른다.
 - 세 번째 오해: `crill` seed 보존이 곧 `cautilus` product surface 유지라는 해석.
   아니다. ownership은 이미 `crill` 쪽 확장 아이디어로 분리했다.
+- 네 번째 오해: `npm run verify`가 self-dogfood workflow script tests까지
+  여전히 포함한다고 보는 것.
+  아니다. 그 무거운 테스트는 `npm run test:on-demand`로 분리했다.
 
 ## References
 

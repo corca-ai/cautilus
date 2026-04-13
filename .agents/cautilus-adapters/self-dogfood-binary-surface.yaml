@@ -23,7 +23,7 @@ artifact_paths:
   - bin/cautilus
   - bin/cautilus.test.mjs
   - scripts/run-self-dogfood.mjs
-  - scripts/run-self-dogfood.test.mjs
+  - scripts/on-demand/run-self-dogfood.test.mjs
 comparison_questions:
   - Does the standalone binary surface give operators a trustworthy path for explicit self-dogfood and root self-consumer checks?
 human_review_prompts:

@@ -88,6 +88,16 @@ npm run hooks:check
 Use `npm run lint` and `npm run test` directly when iterating on one seam, but
 do not require all three in sequence before stopping.
 
+On-demand checks:
+
+```bash
+npm run test:on-demand
+```
+
+`npm run test:on-demand` currently owns the heavier self-dogfood workflow
+script tests. Run it when changing release-prep flow, self-dogfood workflow
+scripts, or operator-facing quality record behavior.
+
 Key direct commands:
 
 ```bash

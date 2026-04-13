@@ -525,13 +525,19 @@ Run checks:
 ```bash
 npm run verify
 npm run hooks:check
+npm run test:on-demand
 npm run dogfood:self
 npm run dogfood:self:experiments
 ```
 
 Use `npm run lint` or `npm run test` directly only when iterating on one seam.
 `npm run lint` includes `golangci-lint run`, `go vet`, and `govulncheck`, while
-`npm run verify` additionally runs `go test -race` before the Node test suite.
+`npm run verify` additionally runs `go test -race` before the standing Node
+test suite.
+
+`npm run test:on-demand` is not part of the standing gate. It exists for the
+heavier self-dogfood workflow script tests that prove operator-facing quality
+record behavior without paying that cost on every `pre-push` and CI verify run.
 
 `hooks:install` is a once-per-clone setup step that points `core.hooksPath` at
 the checked-in `.githooks` directory, where `pre-push` runs `npm run verify`.

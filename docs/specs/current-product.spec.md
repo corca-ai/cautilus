@@ -27,11 +27,13 @@ standalone product여야 한다.
 | package.json | fixed | "hooks:check" |
 | package.json | fixed | "dogfood:self" |
 | package.json | fixed | "dogfood:self:experiments" |
+| package.json | fixed | "release:prepare" |
 | package.json | fixed | "lint" |
 | package.json | fixed | "lint:go" |
 | package.json | fixed | "security:govulncheck" |
 | package.json | fixed | "test:go" |
 | package.json | fixed | "test:go:race" |
+| package.json | fixed | "test:on-demand" |
 | package.json | fixed | "test" |
 | package.json | fixed | "vet:go" |
 | package.json | fixed | "verify" |
@@ -43,7 +45,7 @@ standalone product여야 한다.
 | .agents/cautilus-adapters/self-dogfood.yaml | fixed | scripts/run-self-dogfood.mjs |
 | .agents/cautilus-adapters/self-dogfood-binary-surface.yaml | file_exists |  |
 | .agents/cautilus-adapters/self-dogfood-binary-surface.yaml | fixed | docs/consumer-readiness.md |
-| .agents/cautilus-adapters/self-dogfood-binary-surface.yaml | fixed | scripts/run-self-dogfood.test.mjs |
+| .agents/cautilus-adapters/self-dogfood-binary-surface.yaml | fixed | scripts/on-demand/run-self-dogfood.test.mjs |
 | .agents/cautilus-adapters/self-dogfood-gate-honesty-a.yaml | file_exists |  |
 | .agents/cautilus-adapters/self-dogfood-gate-honesty-b.yaml | file_exists |  |
 | .agents/cautilus-adapters/self-dogfood-skill-surface.yaml | file_exists |  |
@@ -193,6 +195,9 @@ standalone product여야 한다.
 | scripts/run-govulncheck.mjs | file_exists |  |
 | scripts/run-govulncheck.mjs | fixed | govulncheck was not found. |
 | scripts/run-govulncheck.test.mjs | file_exists |  |
+| scripts/release/bump-version.mjs | file_exists |  |
+| scripts/release/bump-version.mjs | fixed | applyVersionBump |
+| scripts/release/bump-version.test.mjs | file_exists |  |
 | scripts/run-self-dogfood.mjs | file_exists |  |
 | scripts/run-self-dogfood.mjs | fixed | latest.md |
 | scripts/run-self-dogfood.mjs | fixed | gateRecommendation |
@@ -201,13 +206,13 @@ standalone product여야 한다.
 | scripts/self-dogfood-experiment-prompt.mjs | fixed | Current Run Evidence |
 | scripts/self-dogfood-experiment-prompt.mjs | fixed | projected summary.json |
 | scripts/self-dogfood-experiment-prompt.mjs | fixed | gateRecommendation |
-| scripts/run-self-dogfood.test.mjs | file_exists |  |
-| scripts/run-self-dogfood.test.mjs | fixed | root self-consumer quality path |
+| scripts/on-demand/run-self-dogfood.test.mjs | file_exists |  |
+| scripts/on-demand/run-self-dogfood.test.mjs | fixed | root self-consumer quality path |
 | scripts/run-self-dogfood-experiments.mjs | file_exists |  |
 | scripts/run-self-dogfood-experiments.mjs | fixed | DEFAULT_EXPERIMENT_ADAPTERS |
 | scripts/run-self-dogfood-experiments.mjs | fixed | gateRecommendation |
 | scripts/run-self-dogfood-experiments.mjs | fixed | reportRecommendation |
-| scripts/run-self-dogfood-experiments.test.mjs | file_exists |  |
+| scripts/on-demand/run-self-dogfood-experiments.test.mjs | file_exists |  |
 | scripts/self-dogfood-experiment-prompt.mjs | file_exists |  |
 | docs/contracts/scenario-proposal-inputs.md | file_exists |  |
 | docs/contracts/scenario-proposal-inputs.md | fixed | cautilus.scenario_proposal_inputs.v1 |
