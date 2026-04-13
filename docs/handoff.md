@@ -33,6 +33,7 @@
   - scenario-aware checkpoint rejection feedback reinjection into later mutation prompts
   - one-generation retention before stale review-rejected lineage is pruned from mutation parents
   - final-only full-gate checkpoint execution
+  - selection-cap breach keeps candidates in frontier search but makes them final-selection ineligible
   - ranked-frontier fallback when the leader fails final checkpoints
   - blocked result when no checkpoint-admissible finalist survives
 - 이 흐름은 현재 README/spec/current contract와 sync되어 있다.
@@ -61,10 +62,10 @@
 
 ## Next Session
 
-1. bounded multi-parent synthesis는 닫혔으니, review-rejected lineage를 한 generation보다 더 짧게 자를지, 아니면 checkpoint severity별로 retention을 다르게 둘지 판단한다.
-2. cost/latency constraint breach를 promotion reject로 볼지, final selection ineligible로만 둘지 정한다.
-3. 마지막으로 merge prompt 자체에도 scenario-aware feedback를 더 직접 실을지 판단한다.
-4. 필요하면 bounded 3-parent merge를 언제 2-parent보다 먼저 허용할지 policy knob로 뺄지 판단한다.
+1. review-rejected lineage를 한 generation보다 더 짧게 자를지, 아니면 checkpoint severity별로 retention을 다르게 둘지 판단한다.
+2. 마지막으로 merge prompt 자체에도 scenario-aware feedback를 더 직접 실을지 판단한다.
+3. 필요하면 bounded 3-parent merge를 언제 2-parent보다 먼저 허용할지 policy knob로 뺄지 판단한다.
+4. selection-cap breach reason code를 public contract로 고정할지, 아니면 implementation detail로 둘지 판단한다.
 
 ## Discuss
 
@@ -72,7 +73,7 @@
 - 지금 닫힌 것은 “bounded GEPA slice with frontier-promotion review feedback reinjection + final-only full-gate fallback”이다.
 - 다음 세션의 첫 결정은 이것이다:
   - frontier pruning policy를 severity-aware하게 더 조일지
-  - 아니면 cost/latency constraint breach semantics를 먼저 닫을지
+  - 아니면 merge prompt feedback를 더 직접 연결할지
 - 제 추천은 먼저
   - frontier pruning policy
   를 다음 핵심 slice로 두는 것이다.

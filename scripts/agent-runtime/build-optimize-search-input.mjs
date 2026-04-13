@@ -209,7 +209,48 @@ function deriveSelectionPolicy() {
 	};
 }
 
-function buildSearchConfig(budget, reviewCheckpointPolicy) {
+function normalizeTieBreakers(value) {
+	if (value === undefined) {
+		return deriveSelectionPolicy().tieBreakers;
+	}
+	if (!Array.isArray(value) || value.some((item) => typeof item !== "string" || item.length === 0)) {
+		fail("selectionPolicy.tieBreakers must be an array of strings");
+	}
+	return value;
+}
+
+function normalizeConstraintCaps(value) {
+	if (value === undefined) {
+		return {};
+	}
+	if (!value || typeof value !== "object" || Array.isArray(value)) {
+		fail("selectionPolicy.constraintCaps must be an object");
+	}
+	const normalized = {};
+	for (const [key, cap] of Object.entries(value)) {
+		if (typeof cap !== "number" || !Number.isFinite(cap) || cap < 0) {
+			fail(`selectionPolicy.constraintCaps.${key} must be a non-negative number`);
+		}
+		normalized[key] = cap;
+	}
+	return normalized;
+}
+
+function resolveSelectionPolicy(value) {
+	if (value === undefined) {
+		return deriveSelectionPolicy();
+	}
+	if (!value || typeof value !== "object" || Array.isArray(value)) {
+		fail("selectionPolicy must be an object");
+	}
+	return {
+		primaryObjective: typeof value.primaryObjective === "string" ? value.primaryObjective : "held_out_behavior",
+		tieBreakers: normalizeTieBreakers(value.tieBreakers),
+		constraintCaps: normalizeConstraintCaps(value.constraintCaps),
+	};
+}
+
+function buildSearchConfig(budget, reviewCheckpointPolicy, selectionPolicy = deriveSelectionPolicy()) {
 	return {
 		algorithm: "reflective_pareto",
 		budget,
@@ -217,7 +258,7 @@ function buildSearchConfig(budget, reviewCheckpointPolicy) {
 		candidateSelection: "pareto",
 		reviewCheckpointPolicy,
 		fullGateCheckpointPolicy: "final_only",
-		selectionPolicy: deriveSelectionPolicy(),
+		selectionPolicy,
 		mergeEnabled: false,
 	};
 }
@@ -308,6 +349,7 @@ function buildCanonicalPacket({
 	targetFileOverride,
 	budget,
 	reviewCheckpointPolicy,
+	selectionPolicy,
 	evaluationOptions,
 	now = new Date(),
 }) {
@@ -327,7 +369,7 @@ function buildCanonicalPacket({
 			targetFile,
 			targetSnapshot: collectTargetSnapshot(targetPath),
 		},
-		searchConfig: buildSearchConfig(budget, reviewCheckpointPolicy),
+		searchConfig: buildSearchConfig(budget, reviewCheckpointPolicy, selectionPolicy),
 		mutationEvidencePolicy: {
 			reportBuckets: ["regressed", "noisy"],
 			reviewFindingLimit: optimizeInput.optimizer?.plan?.reviewVariantLimit ?? 1,
@@ -382,6 +424,7 @@ function resolveFromRawInput(rawInput, options) {
 			rawInput.reviewCheckpointPolicy,
 			options.reviewCheckpointPolicy || defaultReviewCheckpointPolicy(preferRawString(rawInput.budget, options.budget)),
 		),
+		selectionPolicy: resolveSelectionPolicy(rawInput.selectionPolicy),
 	};
 }
 
@@ -402,6 +445,7 @@ function resolveInputOverrides(options) {
 			},
 			budget: options.budget,
 			reviewCheckpointPolicy: options.reviewCheckpointPolicy || defaultReviewCheckpointPolicy(options.budget),
+			selectionPolicy: deriveSelectionPolicy(),
 		};
 	}
 	const rawInput = options.inputJson;
@@ -427,6 +471,7 @@ function resolveInputOverrides(options) {
 		},
 		budget: resolved.budget,
 		reviewCheckpointPolicy: resolved.reviewCheckpointPolicy,
+		selectionPolicy: resolved.selectionPolicy,
 	};
 }
 
@@ -464,6 +509,7 @@ export function buildOptimizeSearchInput(argv, { now = new Date(), env = process
 		evaluationOptions,
 		budget,
 		reviewCheckpointPolicy,
+		selectionPolicy,
 	} = resolveInputOverrides(options);
 	const parsedOptimizeInput = parseOptimizeInputFile(optimizeInputFile);
 	const packet = buildCanonicalPacket({
@@ -472,6 +518,7 @@ export function buildOptimizeSearchInput(argv, { now = new Date(), env = process
 		targetFileOverride: targetFile,
 		budget,
 		reviewCheckpointPolicy,
+		selectionPolicy,
 		evaluationOptions,
 		now,
 	});

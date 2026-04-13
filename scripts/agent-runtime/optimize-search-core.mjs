@@ -6,6 +6,7 @@ import {
 } from "./optimize-search-mutation.mjs";
 import { evaluateCandidateCheckpoints, runReviewCheckpoint } from "./optimize-search-checkpoints.mjs";
 import { collectFeedbackSignals, collectSeedHeldOutEntries } from "./optimize-search-readiness.mjs";
+import { candidateConstraintRejectionReasons } from "./optimize-search-selection.mjs";
 import { dirname } from "node:path";
 function buildBlockedResult(input, inputFile, reasons, missingEvidence, schemaVersion, now = new Date()) {
 	return {
@@ -50,24 +51,12 @@ function buildBlockedResult(input, inputFile, reasons, missingEvidence, schemaVe
 
 function buildSeedCandidate(packet) {
 	const heldOutEntries = collectSeedHeldOutEntries(packet);
-	return {
-		id: "seed",
-		generationIndex: 0,
-		parentCandidateIds: [],
-		origin: "seed",
-		targetFile: packet.targetFile,
-		targetSnapshot: packet.seedCandidate?.targetSnapshot || collectTargetSnapshot(packet.targetFile?.path),
-		mutationRationale: "Use the current target prompt file as the seed candidate.",
-		telemetry: summarizeCandidateTelemetry(heldOutEntries),
-	};
+	return { id: "seed", generationIndex: 0, parentCandidateIds: [], origin: "seed", targetFile: packet.targetFile, targetSnapshot: packet.seedCandidate?.targetSnapshot || collectTargetSnapshot(packet.targetFile?.path), mutationRationale: "Use the current target prompt file as the seed candidate.", telemetry: summarizeCandidateTelemetry(heldOutEntries) };
 }
 
 function scenarioIdsForPacket(packet, matrix) {
 	const explicit = Array.isArray(packet.scenarioSets?.heldOutScenarioSet) ? packet.scenarioSets.heldOutScenarioSet : [];
-	if (explicit.length > 0) {
-		return explicit;
-	}
-	return [...new Set(matrix.map((entry) => entry.scenarioId))];
+	return explicit.length > 0 ? explicit : [...new Set(matrix.map((entry) => entry.scenarioId))];
 }
 
 function scoreForCandidate(matrix, candidateId, scenarioId) {
@@ -136,17 +125,8 @@ function perScenarioBestCandidateIds(matrix, scenarioIds, candidateIds) {
 	});
 }
 
-function averageHeldOutScore(matrix, candidateId, scenarioIds) {
-	let total = 0;
-	for (const scenarioId of scenarioIds) {
-		total += scoreForCandidate(matrix, candidateId, scenarioId);
-	}
-	return total / Math.max(1, scenarioIds.length);
-}
-
-function numericTelemetry(value) {
-	return typeof value === "number" ? value : Number.POSITIVE_INFINITY;
-}
+function averageHeldOutScore(matrix, candidateId, scenarioIds) { let total = 0; for (const scenarioId of scenarioIds) total += scoreForCandidate(matrix, candidateId, scenarioId); return total / Math.max(1, scenarioIds.length); }
+function numericTelemetry(value) { return typeof value === "number" ? value : Number.POSITIVE_INFINITY; }
 
 function candidateRegistry(candidates) {
 	return candidates.map((candidate) => ({
@@ -314,10 +294,18 @@ function selectionOutcomeFor(packet, artifactRoot, candidates, rankedFrontierIds
 		fullGate: [...checkpointLedger.fullGate],
 	};
 	const rejectedFinalistCandidateIds = [];
+	const selectionConstraintIneligibleCandidateIds = [];
 	const rejectionReasons = {};
 	for (const candidateId of rankedFrontierIds) {
 		const candidate = candidates.find((item) => item.id === candidateId);
 		if (!candidate) {
+			continue;
+		}
+		const constraintRejectionReasons = candidateConstraintRejectionReasons(packet, candidate);
+		if (constraintRejectionReasons.length > 0) {
+			rejectedFinalistCandidateIds.push(candidateId);
+			selectionConstraintIneligibleCandidateIds.push(candidateId);
+			rejectionReasons[candidateId] = constraintRejectionReasons;
 			continue;
 		}
 		const checkpointOutcome = evaluateCandidateCheckpoints(packet, artifactRoot, candidate, env);
@@ -334,6 +322,7 @@ function selectionOutcomeFor(packet, artifactRoot, candidates, rankedFrontierIds
 				selectionTelemetry: {
 					rankedFrontierCandidateIds: rankedFrontierIds,
 					rejectedFinalistCandidateIds,
+					selectionConstraintIneligibleCandidateIds,
 					rejectionReasons,
 				},
 				status: "completed",
@@ -349,10 +338,13 @@ function selectionOutcomeFor(packet, artifactRoot, candidates, rankedFrontierIds
 		selectionTelemetry: {
 			rankedFrontierCandidateIds: rankedFrontierIds,
 			rejectedFinalistCandidateIds,
+			selectionConstraintIneligibleCandidateIds,
 			rejectionReasons,
 		},
 		status: "blocked",
-		reasonCodes: ["no_checkpoint_admissible_candidate"],
+		reasonCodes: selectionConstraintIneligibleCandidateIds.length === rankedFrontierIds.length
+			? ["no_selection_policy_eligible_candidate"]
+			: ["no_checkpoint_admissible_candidate"],
 	};
 }
 

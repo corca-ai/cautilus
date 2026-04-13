@@ -68,6 +68,9 @@ This slice defines a first `GEPA`-inspired search contract for `Cautilus`:
   scores, not only one aggregate score.
 - Cost and latency telemetry are mandatory when available, but are not primary
   Pareto frontier dimensions in v1.
+- Declared selection `constraintCaps` keep a candidate eligible for frontier
+  search, mutation, and merge, but make it ineligible for final selection when
+  the candidate breaches the cap.
 - Prompt mutation is reflective prompt rewriting based on explicit evidence,
   not random token- or substring-level crossover.
 - The search output recommends a best next candidate and preserves lineage, but
@@ -79,9 +82,6 @@ This slice defines a first `GEPA`-inspired search contract for `Cautilus`:
 
 ## Probe Questions
 
-- When cost or latency constraints are declared, should v1 reject candidate
-  promotion immediately on constraint breach, or keep the candidate in search
-  but mark it ineligible for final selection?
 - Which blocked reason codes should be stable public contract versus
   implementation detail?
 
@@ -326,7 +326,8 @@ Current implementation note:
 - v1 executes the bounded multi-generation loop, including reflective mutation,
   optional merge generation, held-out reevaluation, frontier retention,
   optional frontier-promotion review checkpoints, final-only full-gate
-  checkpoints, and proposal bridging
+  checkpoints, declared selection-cap filtering across ranked frontier
+  finalists, and proposal bridging
 - when the frontier leader fails a final checkpoint, `optimize search run`
   falls back to the next ranked frontier candidate
 - when every frontier finalist fails the final checkpoints, `optimize search
@@ -382,6 +383,9 @@ In v1:
 - they should act as:
   - explicit constraint caps
   - or tie-breakers between behaviorally similar candidates
+- when a declared `constraintCaps` limit is breached, the candidate stays in
+  the frontier search record but becomes ineligible for final selection in the
+  ranked-frontier walk
 
 This avoids selecting a prompt merely because it is short or cheap when the
 behavior objective is worse.

@@ -536,6 +536,37 @@ test("build-optimize-search-input materializes raw and canonical files for direc
 	}
 });
 
+test("build-optimize-search-input preserves selection constraint caps from direct JSON ingress", () => {
+	const { root, optimizeInputPath, heldOutResultsPath } = createSearchFixtureRoot();
+	try {
+		const { packet } = buildOptimizeSearchInput(
+			[
+				"--input-json",
+				JSON.stringify({
+					optimizeInputFile: optimizeInputPath,
+					heldOutResultsFile: heldOutResultsPath,
+					budget: "medium",
+					selectionPolicy: {
+						constraintCaps: {
+							maxCostUsd: 0.08,
+							maxDurationMs: 1600,
+						},
+					},
+				}),
+				"--output",
+				join(root, "optimize-search-input.json"),
+			],
+			{ now: new Date("2026-04-13T10:00:00.000Z") },
+		);
+		assert.deepEqual(packet.searchConfig.selectionPolicy.constraintCaps, {
+			maxCostUsd: 0.08,
+			maxDurationMs: 1600,
+		});
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
 test("build-optimize-search-input defaults medium budget to frontier-promotion review checkpoints", () => {
 	const { root, optimizeInputPath, heldOutResultsPath } = createSearchFixtureRoot();
 	try {
@@ -1377,6 +1408,210 @@ test("selectMergeParents can pick a bounded three-parent merge when coverage exp
 	};
 	const selected = selectMergeParents([recovery, followUp, escalation], scenarioIds);
 	assert.deepEqual(selected?.map((candidate) => candidate.id), ["g1-recovery", "g1-followup", "g1-escalation"]);
+});
+
+test("run-optimize-search treats constraint-cap breaches as final-selection ineligible", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-optimize-search-constraints-"));
+	const artifactRoot = mkdtempSync(join(tmpdir(), "cautilus-optimize-search-constraints-artifacts-"));
+	const originalPath = join(root, "prompt.md");
+	const heldOutResultsPath = join(root, "held-out-results.json");
+	const optimizeInputPath = join(root, "optimize-input.json");
+	mkdirSync(join(root, ".agents"), { recursive: true });
+	try {
+		writeFileSync(originalPath, "Keep recovery instructions explicit.\n", "utf-8");
+		writeExecutable(
+			join(root, "evaluate.sh"),
+			`#!/bin/sh
+output="$1"
+recovery_score=40
+recovery_cost=0.02
+followup_score=55
+followup_cost=0.02
+if grep -q "deep recovery appendix" prompt.md; then
+  recovery_score=99
+  recovery_cost=0.09
+  followup_score=91
+  followup_cost=0.03
+fi
+if grep -q "follow-up handoff map" prompt.md; then
+  recovery_score=92
+  recovery_cost=0.03
+  followup_score=96
+  followup_cost=0.02
+fi
+cat >"$output" <<EOF
+{
+  "schemaVersion": "cautilus.scenario_results.v1",
+  "mode": "held_out",
+  "results": [
+    {
+      "scenarioId": "operator-recovery",
+      "status": "passed",
+      "overallScore": $recovery_score,
+      "telemetry": {
+        "cost_usd": $recovery_cost,
+        "durationMs": 900
+      }
+    },
+    {
+      "scenarioId": "operator-follow-up",
+      "status": "passed",
+      "overallScore": $followup_score,
+      "telemetry": {
+        "cost_usd": $followup_cost,
+        "durationMs": 700
+      }
+    }
+  ]
+}
+EOF
+`,
+		);
+		writeJson(heldOutResultsPath, {
+			schemaVersion: "cautilus.scenario_results.v1",
+			mode: "held_out",
+			results: [
+				{
+					scenarioId: "operator-recovery",
+					status: "failed",
+					overallScore: 40,
+					telemetry: { cost_usd: 0.02, durationMs: 900 },
+				},
+				{
+					scenarioId: "operator-follow-up",
+					status: "failed",
+					overallScore: 55,
+					telemetry: { cost_usd: 0.02, durationMs: 700 },
+				},
+			],
+		});
+		writeFileSync(
+			join(root, ".agents", "cautilus-adapter.yaml"),
+			[
+				"version: 1",
+				"repo: temp-optimize-search",
+				"evaluation_surfaces:",
+				"  - prompt behavior",
+				"baseline_options:",
+				"  - baseline git ref in the same repo via {baseline_ref}",
+				"required_prerequisites: []",
+				"held_out_command_templates:",
+				"  - sh evaluate.sh {scenario_results_file}",
+				"comparison_questions:",
+				"  - Did the held-out score improve?",
+			].join("\n"),
+			"utf-8",
+		);
+		writeJson(optimizeInputPath, {
+			schemaVersion: "cautilus.optimize_inputs.v1",
+			generatedAt: "2026-04-13T09:58:00.000Z",
+			repoRoot: root,
+			optimizationTarget: "prompt",
+			intentProfile: {
+				schemaVersion: "cautilus.behavior_intent.v1",
+				intentId: "intent-operator-recovery-guidance",
+				summary: "Operator guidance should stay legible under recovery pressure.",
+				behaviorSurface: "operator_behavior",
+			},
+			optimizer: {
+				kind: "reflection",
+				budget: "medium",
+				plan: {
+					evidenceLimit: 4,
+					suggestedChangeLimit: 3,
+					reviewVariantLimit: 1,
+					historySignalLimit: 1,
+				},
+			},
+			targetFile: { path: originalPath, exists: true },
+			reportFile: join(root, "report.json"),
+			report: {
+				schemaVersion: "cautilus.report_packet.v2",
+				generatedAt: "2026-04-13T09:57:00.000Z",
+				candidate: root,
+				baseline: "origin/main",
+				intent: "Operator guidance should stay legible under recovery pressure.",
+				intentProfile: {
+					schemaVersion: "cautilus.behavior_intent.v1",
+					intentId: "intent-operator-recovery-guidance",
+					summary: "Operator guidance should stay legible under recovery pressure.",
+					behaviorSurface: "operator_behavior",
+				},
+				commands: [],
+				commandObservations: [],
+				modesRun: [],
+				modeSummaries: [],
+				telemetry: { modeCount: 0 },
+				improved: [],
+				regressed: ["operator-recovery", "operator-follow-up"],
+				unchanged: [],
+				noisy: [],
+				humanReviewFindings: [
+					{
+						severity: "concern",
+						message: "The prompt needs either a deep recovery appendix or a follow-up handoff map.",
+					},
+				],
+				recommendation: "defer",
+			},
+			reviewSummaryFile: join(root, "review-summary.json"),
+			reviewSummary: { variants: [] },
+			scenarioHistoryFile: join(root, "history.json"),
+			scenarioHistory: {
+				schemaVersion: "cautilus.scenario_history.v1",
+				scenarioStats: {
+					"operator-recovery": { recentTrainResults: [{ status: "failed", overallScore: 80, passRate: 0 }] },
+					"operator-follow-up": { recentTrainResults: [{ status: "failed", overallScore: 70, passRate: 0 }] },
+				},
+			},
+			objective: {
+				summary: "Propose one bounded next revision without weakening held-out, comparison, or review discipline.",
+				constraints: ["Prefer repairing explicit regressions over widening scope."],
+			},
+		});
+		initGitRepo(root);
+		createProgrammableCodex(root, [
+			{
+				output: {
+					promptMarkdown: "Keep recovery instructions explicit with a deep recovery appendix.\n",
+					rationaleSummary: "Bias toward the strongest recovery improvement.",
+					expectedImprovements: ["operator-recovery"],
+					preservedStrengths: ["keeps the operator framing explicit"],
+					riskNotes: ["held-out should confirm the appendix cost stays acceptable"],
+				},
+			},
+		]);
+		createFakeClaude(root, "Keep recovery instructions explicit with a follow-up handoff map.\n");
+		const { packet } = buildOptimizeSearchInput(
+			["--optimize-input", optimizeInputPath, "--held-out-results-file", heldOutResultsPath, "--budget", "medium"],
+			{ now: new Date("2026-04-13T10:00:00.000Z") },
+		);
+		packet.searchConfig.generationLimit = 1;
+		packet.searchConfig.mergeEnabled = false;
+		packet.searchConfig.selectionPolicy.constraintCaps = { maxCostUsd: 0.08 };
+		packet.mutationConfig.backends = [
+			{ id: "codex-mutate", backend: "codex_exec" },
+			{ id: "claude-mutate", backend: "claude_p" },
+		];
+		const result = runOptimizeSearch(packet, {
+			inputFile: join(root, "optimize-search-input.json"),
+			outputFile: join(artifactRoot, "optimize-search-result.json"),
+			now: new Date("2026-04-13T10:01:00.000Z"),
+			env: {
+				...process.env,
+				PATH: `${root}:${process.env.PATH ?? ""}`,
+			},
+		});
+		assert.equal(result.status, "completed");
+		const selected = result.candidateRegistry.find((candidate) => candidate.id === result.selectedCandidateId);
+		assert.match(readFileSync(result.proposalBridge.selectedTargetFile.path, "utf-8"), /follow-up handoff map/);
+		assert.equal(selected.telemetry.totalCostUsd <= 0.08, true);
+		assert.deepEqual(result.selectionTelemetry.selectionConstraintIneligibleCandidateIds, ["g1-1-codex-exec"]);
+		assert.deepEqual(result.selectionTelemetry.rejectionReasons["g1-1-codex-exec"], ["selection_constraint_max_cost_exceeded"]);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+		rmSync(artifactRoot, { recursive: true, force: true });
+	}
 });
 
 test("run-optimize-search can synthesize a bounded three-parent frontier candidate", () => {

@@ -78,7 +78,9 @@ Current search behavior:
   full-gate checkpoints across ranked frontier finalists, and selects from a
   Pareto-style frontier over per-scenario scores
 - cost and latency are recorded as telemetry and tie-break signals rather than
-  dominating the primary behavior objective
+  dominating the primary behavior objective, and declared selection caps make
+  over-budget candidates ineligible for final selection without removing them
+  from the frontier search record
 - sparse evidence blocks search early with machine-readable JSON so an agent or
   operator can discuss what is missing before generating candidates
 - the selected candidate bridges back into the bounded
@@ -91,6 +93,7 @@ bounded two- or three-parent merge synthesis, held-out reevaluation,
 frontier-promotion review checkpoints, scenario-aware checkpoint-feedback
 reinjection, scenario-aware bounded merge selection, one-generation retention
 for review-rejected lineage, final-only checkpoint fallback,
+selection-cap filtering across ranked frontier finalists,
 search-readiness blocking, and proposal bridging.
 Later slices can still add richer merge
 heuristics, and stronger self-dogfood loops.
