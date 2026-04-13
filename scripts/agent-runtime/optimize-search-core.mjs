@@ -188,6 +188,27 @@ function frontierCandidateIds(matrix, candidateIds, scenarioIds) {
 	);
 }
 
+function rankCandidateIds(candidateIds, matrix, candidates, scenarioIds) {
+	const telemetryById = new Map(candidates.map((candidate) => [candidate.id, candidate.telemetry || {}]));
+	return [...candidateIds].sort((left, right) => {
+		const scoreDelta = averageHeldOutScore(matrix, right, scenarioIds) - averageHeldOutScore(matrix, left, scenarioIds);
+		if (scoreDelta !== 0) {
+			return scoreDelta;
+		}
+		const leftTelemetry = telemetryById.get(left) || {};
+		const rightTelemetry = telemetryById.get(right) || {};
+		const costDelta = numericTelemetry(leftTelemetry.totalCostUsd) - numericTelemetry(rightTelemetry.totalCostUsd);
+		if (costDelta !== 0) {
+			return costDelta;
+		}
+		const durationDelta = numericTelemetry(leftTelemetry.totalDurationMs) - numericTelemetry(rightTelemetry.totalDurationMs);
+		if (durationDelta !== 0) {
+			return durationDelta;
+		}
+		return left.localeCompare(right);
+	});
+}
+
 function perScenarioBestCandidateIds(matrix, scenarioIds, candidateIds) {
 	return scenarioIds.map((scenarioId) => {
 		let bestScore = Number.NEGATIVE_INFINITY;
@@ -220,34 +241,15 @@ function numericTelemetry(value) {
 }
 
 function selectBestCandidate(frontierIds, matrix, candidates, scenarioIds) {
-	const telemetryById = new Map(candidates.map((candidate) => [candidate.id, candidate.telemetry || {}]));
-	return [...frontierIds].sort((left, right) => {
-		const scoreDelta = averageHeldOutScore(matrix, right, scenarioIds) - averageHeldOutScore(matrix, left, scenarioIds);
-		if (scoreDelta !== 0) {
-			return scoreDelta;
-		}
-		const leftTelemetry = telemetryById.get(left) || {};
-		const rightTelemetry = telemetryById.get(right) || {};
-		const costDelta = numericTelemetry(leftTelemetry.totalCostUsd) - numericTelemetry(rightTelemetry.totalCostUsd);
-		if (costDelta !== 0) {
-			return costDelta;
-		}
-		const durationDelta = numericTelemetry(leftTelemetry.totalDurationMs) - numericTelemetry(rightTelemetry.totalDurationMs);
-		if (durationDelta !== 0) {
-			return durationDelta;
-		}
-		return left.localeCompare(right);
-	})[0];
+	return rankCandidateIds(frontierIds, matrix, candidates, scenarioIds)[0];
 }
 
-function buildCompletedResult(packet, inputFile, candidates, schemaVersion, stopReason, now = new Date()) {
-	const matrix = [
-		...collectSeedHeldOutEntries(packet),
-		...candidates.slice(1).flatMap((candidate) => candidate.heldOutEntries || []),
-	];
+function buildCompletedResult(packet, inputFile, candidates, schemaVersion, stopReason, generationSummaries = [], now = new Date()) {
+	const matrix = candidates.flatMap((candidate) => candidate.heldOutEntries || []);
 	const scenarioIds = scenarioIdsForPacket(packet, matrix);
 	const candidateIds = candidates.map((candidate) => candidate.id);
 	const frontierIds = frontierCandidateIds(matrix, candidateIds, scenarioIds);
+	const rankedFrontierIds = rankCandidateIds(frontierIds, matrix, candidates, scenarioIds);
 	const selectedCandidateId = selectBestCandidate(frontierIds, matrix, candidates, scenarioIds) || "seed";
 	const selectedCandidate = candidates.find((candidate) => candidate.id === selectedCandidateId) || candidates[0];
 	const mutatedCandidates = candidates.filter((candidate) => candidate.id !== "seed");
@@ -276,7 +278,7 @@ function buildCompletedResult(packet, inputFile, candidates, schemaVersion, stop
 			...(candidate.evaluationArtifacts ? { evaluationArtifacts: candidate.evaluationArtifacts } : {}),
 			...(candidate.evaluationError ? { evaluationError: candidate.evaluationError } : {}),
 		})),
-		generationSummaries: mutatedCandidates.length > 0 ? [buildGenerationSummary(mutatedCandidates, frontierIds)] : [],
+		generationSummaries,
 		heldOutEvaluationMatrix: matrix,
 		pareto: {
 			frontierCandidateIds: frontierIds,
@@ -288,8 +290,9 @@ function buildCompletedResult(packet, inputFile, candidates, schemaVersion, stop
 		},
 		searchTelemetry: {
 			candidateCount: candidates.length,
-			generationCount: mutatedCandidates.length > 0 ? 1 : 0,
-			mutationInvocationCount: mutatedCandidates.length,
+			generationCount: generationSummaries.length,
+			mutationInvocationCount: mutatedCandidates.filter((candidate) => candidate.origin === "mutation").length,
+			mergeInvocationCount: mutatedCandidates.filter((candidate) => candidate.origin === "merge").length,
 			heldOutEvaluationCount: 1 + mutatedCandidates.filter((candidate) => (candidate.heldOutEntries || []).length > 0).length,
 			reviewCheckpointCount: 0,
 			stopReason,
@@ -299,18 +302,87 @@ function buildCompletedResult(packet, inputFile, candidates, schemaVersion, stop
 			selectedCandidateId,
 			selectedTargetFile: selectedCandidate.targetFile,
 		},
+		selectionTelemetry: {
+			rankedFrontierCandidateIds: rankedFrontierIds,
+		},
 	};
 }
 
-function buildGenerationSummary(mutatedCandidates, frontierIds) {
+function buildGenerationSummary(generationIndex, proposedCandidates, frontierIds, parentFrontierCandidateIds) {
 	return {
-		generationIndex: 1,
-		proposedCandidateIds: mutatedCandidates.map((candidate) => candidate.id),
-		promotedCandidateIds: mutatedCandidates
+		generationIndex,
+		parentFrontierCandidateIds,
+		proposedCandidateIds: proposedCandidates.map((candidate) => candidate.id),
+		promotedCandidateIds: proposedCandidates
 			.filter((candidate) => Array.isArray(candidate.heldOutEntries) && candidate.heldOutEntries.length > 0)
 			.map((candidate) => candidate.id),
 		frontierCandidateIds: frontierIds,
 	};
+}
+
+function retainParentCandidates(frontierIds, matrix, candidates, scenarioIds, populationLimit) {
+	const ranked = rankCandidateIds(frontierIds, matrix, candidates, scenarioIds);
+	return ranked
+		.slice(0, Math.max(1, populationLimit))
+		.map((candidateId) => candidates.find((candidate) => candidate.id === candidateId))
+		.filter(Boolean);
+}
+
+function buildSeedSearchCandidate(packet) {
+	return {
+		...buildSeedCandidate(packet),
+		heldOutEntries: collectSeedHeldOutEntries(packet),
+	};
+}
+
+function nextGenerationParents(packet, allCandidates, scenarioIds) {
+	const matrix = allCandidates.flatMap((candidate) => candidate.heldOutEntries || []);
+	const candidateIds = allCandidates.map((candidate) => candidate.id);
+	const frontierIds = frontierCandidateIds(matrix, candidateIds, scenarioIds);
+	return retainParentCandidates(
+		frontierIds,
+		matrix,
+		allCandidates,
+		scenarioIds,
+		packet.searchConfig.populationLimit,
+	);
+}
+
+function appendGenerationSummary(allCandidates, generationSummaries, generationIndex, evaluatedCandidates, parentCandidates, scenarioIds) {
+	const nextMatrix = allCandidates.flatMap((candidate) => candidate.heldOutEntries || []);
+	const nextFrontierIds = frontierCandidateIds(nextMatrix, allCandidates.map((candidate) => candidate.id), scenarioIds);
+	generationSummaries.push(buildGenerationSummary(
+		generationIndex,
+		evaluatedCandidates,
+		nextFrontierIds,
+		parentCandidates.map((candidate) => candidate.id),
+	));
+}
+
+function runGenerations(packet, artifactRoot, seedCandidate, readiness, env) {
+	const scenarioIds = scenarioIdsForPacket(packet, seedCandidate.heldOutEntries);
+	const allCandidates = [seedCandidate];
+	const generationSummaries = [];
+	let stopReason = "seed_only";
+	for (let generationIndex = 1; generationIndex <= packet.searchConfig.generationLimit; generationIndex += 1) {
+		const parentCandidates = nextGenerationParents(packet, allCandidates, scenarioIds);
+		const evaluatedCandidates = evaluateMutationCandidates(packet, artifactRoot, parentCandidates, readiness.feedbackSignals, env, {
+			generationIndex,
+			existingCandidates: allCandidates,
+			frontierCandidates: parentCandidates,
+		});
+		if (evaluatedCandidates.length === 0) {
+			return {
+				allCandidates,
+				generationSummaries,
+				stopReason: generationIndex === 1 ? "seed_only" : "no_new_candidates",
+			};
+		}
+		allCandidates.push(...evaluatedCandidates);
+		appendGenerationSummary(allCandidates, generationSummaries, generationIndex, evaluatedCandidates, parentCandidates, scenarioIds);
+		stopReason = generationIndex === packet.searchConfig.generationLimit ? "generation_limit" : "frontier_continue";
+	}
+	return { allCandidates, generationSummaries, stopReason };
 }
 
 export function runOptimizeSearch(packet, {
@@ -324,18 +396,24 @@ export function runOptimizeSearch(packet, {
 	if (readiness.reasons.length > 0) {
 		return buildBlockedResult(packet, inputFile, readiness.reasons, readiness.missingEvidence, schemaVersion, now);
 	}
-	const seedCandidate = buildSeedCandidate(packet);
+	const seedCandidate = buildSeedSearchCandidate(packet);
 	if (!canRunMutation(packet)) {
-		return buildCompletedResult(packet, inputFile, [seedCandidate], schemaVersion, "seed_only", now);
+		return buildCompletedResult(packet, inputFile, [seedCandidate], schemaVersion, "seed_only", [], now);
 	}
 	const artifactRoot = dirname(outputFile || inputFile || packet.optimizeInputFile);
 	try {
-		const evaluatedCandidates = evaluateMutationCandidates(packet, artifactRoot, seedCandidate, readiness.feedbackSignals, env);
-		const allCandidates = [seedCandidate, ...evaluatedCandidates];
-		const stopReason = evaluatedCandidates.length > 0 ? "generation_limit" : "seed_only";
-		return buildCompletedResult(packet, inputFile, allCandidates, schemaVersion, stopReason, now);
+		const result = runGenerations(packet, artifactRoot, seedCandidate, readiness, env);
+		return buildCompletedResult(
+			packet,
+			inputFile,
+			result.allCandidates,
+			schemaVersion,
+			result.stopReason,
+			result.generationSummaries,
+			now,
+		);
 	} catch {
-		return buildCompletedResult(packet, inputFile, [seedCandidate], schemaVersion, "seed_only", now);
+		return buildCompletedResult(packet, inputFile, [seedCandidate], schemaVersion, "seed_only", [], now);
 	}
 }
 

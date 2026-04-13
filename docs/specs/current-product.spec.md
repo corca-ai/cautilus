@@ -378,8 +378,8 @@ standalone product여야 한다.
   report/review/history evidence, with optimizer kind, budget, and trial
   telemetry
 - GEPA-style bounded prompt-search helpers above explicit optimize and
-  held-out evidence, including reflective mutation, readiness blocking, and
-  proposal bridging
+  held-out evidence, including multi-generation reflective mutation, optional
+  bounded merge synthesis, readiness blocking, and proposal bridging
 - durable revision-artifact builder above optimize proposals
 - chatbot proposal-candidate normalization helper
 - chatbot normalization command

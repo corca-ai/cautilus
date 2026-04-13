@@ -42,11 +42,10 @@ This slice defines a first `GEPA`-inspired search contract for `Cautilus`:
 - search remains packet-first and file-based
 - candidate evaluation is bounded by declared budgets and checkpoint policies
 - candidate selection is Pareto-based over per-scenario validation scores
-- the current non-LLM scaffold closes packet assembly, readiness gating,
-  seed-candidate scoring, and the proposal bridge before reflective mutation is
-  wired in
-- when reflective mutation arrives, it should be reflective, not random string
-  editing
+- the current implementation closes packet assembly, readiness gating,
+  multi-generation reflective mutation, bounded merge synthesis, held-out
+  reevaluation, and the proposal bridge
+- reflective mutation is evidence-aware rewriting, not random string editing
 - the search output stays reopenable as a durable artifact and can feed the
   existing bounded `optimize propose` seam
 
@@ -92,7 +91,10 @@ This slice defines a first `GEPA`-inspired search contract for `Cautilus`:
 - `adapter` target search
 - weight updates, fine-tuning, or external trainer orchestration
 - automatic prompt patch application to consumer-owned files
-- fully system-aware merge or crossover in the first implementation slice
+- richer merge-parent selection, >2-parent synthesis, and smarter crossover
+  heuristics
+- executing declared review/full-gate checkpoint policies inside the search
+  loop rather than only carrying them in the contract
 
 ## Non-Goals
 
@@ -111,8 +113,8 @@ This slice defines a first `GEPA`-inspired search contract for `Cautilus`:
 - keep consumer prompts, adapters, and policy language consumer-owned
 - prefer explicit candidate snapshot files and fingerprints over inlining large
   prompt bodies into search packets
-- allow a small first generation sequence while keeping the packet shape
-  extensible to frontier retention and merge later
+- keep the packet shape extensible to richer frontier heuristics and explicit
+  checkpoint execution later
 - when JSON is provided directly over CLI or stdin, materialize the raw input
   and the normalized canonical packet under the active run before running
   readiness checks or search
@@ -132,8 +134,8 @@ This slice defines a first `GEPA`-inspired search contract for `Cautilus`:
   held-out scenario
 - `reflective mutation`: rewriting the target prompt using structured evidence
   about where a candidate succeeded or failed
-- `merge`: a later seam that synthesizes one new prompt from complementary
-  frontier strengths without raw string splicing
+- `merge`: bounded synthesis of one new prompt from complementary frontier
+  strengths without raw string splicing
 
 This keeps the useful GEPA shape while staying honest about `Cautilus`'s
 different product boundary.
@@ -263,7 +265,7 @@ Candidate metadata should include:
 - candidate origin
   - `seed`
   - `mutation`
-  - later `merge`
+  - `merge`
 - target file snapshot path
 - fingerprint
 - concise mutation rationale
@@ -304,28 +306,27 @@ The bounded loop should work like this:
 2. Evaluate the seed candidate on the held-out scenario set to establish the
    initial per-scenario score vector and frontier.
 3. For each generation:
-   - sample one candidate from the current Pareto frontier
-   - sample one bounded reflection batch from the train scenario set
+   - retain a bounded parent set from the current Pareto frontier
+   - sample one bounded reflection batch per parent from the train scenario
+     set
    - build a reflective dataset from explicit evidence
-   - generate one or more mutated prompt candidates
-   - evaluate mutated candidates on the train scenario batch
-   - promote only promising candidates to held-out evaluation
+   - generate one or more mutated prompt candidates from frontier parents
+   - optionally generate one bounded merge candidate from complementary
+     frontier parents
+   - evaluate generated candidates on held-out scenarios
    - update the Pareto frontier using held-out per-scenario scores
-   - run review checkpoints according to the declared policy
+   - record checkpoint intent according to the declared policy
 4. Stop when the budget, generation limit, or stop condition is reached.
 5. Emit one selected best next candidate plus the durable search record.
 
 Current implementation note:
 
-- the non-LLM scaffold currently executes steps 1, 2, 4, and 5 for the seed
-  candidate
-- reflective mutation and multi-candidate promotion remain the next slice
-
-In v1, "promising" should mean:
-
-- not worse than the parent on the sampled train batch
-- not in conflict with bound review findings already attached to the mutation
-  batch
+- v1 executes the bounded multi-generation loop, including reflective mutation,
+  optional merge generation, held-out reevaluation, frontier retention, and
+  proposal bridging
+- declared review and full-gate checkpoint policies are not yet executed
+  inside `optimize search run`; checkpoint outcome slots remain present so the
+  later seam can land without reshaping the packet
 
 In v1, review checkpoint policy means:
 
@@ -437,6 +438,8 @@ search before the final proposal.
 - `cautilus optimize propose --from-search ./fixtures/optimize/search-result.json`
 - one checked-in flow test that proves:
   - candidate lineage is preserved
+  - multi-generation frontier evolution is preserved
+  - optional merge candidates preserve multiple parents
   - Pareto frontier metadata is emitted
   - the selected candidate remains reopenable as a bounded revision artifact
   - blocked readiness emits machine-readable reason codes and the canonical
@@ -447,29 +450,22 @@ search before the final proposal.
 This document is the canonical contract for the bounded prompt-search seam in
 this slice.
 
-## First Implementation Slice
+## Implemented Bounded Slice
 
-Implement the smallest generation sequence that can later grow into fuller
-GEPA-style search:
+The current bounded slice already proves:
 
-- one seed candidate
+- one explicit seed candidate plus durable descendant candidates
 - explicit search input and result packets
 - held-out readiness blocking with machine-readable JSON output
-- held-out Pareto retention for the seed candidate
-- selected-candidate emission
-- proposal bridge back into the existing optimize artifact flow
-- no merge in this slice
-- no reflective mutation in this slice
-- proposal bridge back into the existing optimize artifact flow
+- multi-generation Pareto frontier retention over per-scenario scores
+- reflective mutation from explicit evidence
+- optional bounded merge generation from complementary frontier parents
+- selected-candidate emission and proposal bridging back into the existing
+  optimize artifact flow
 
-This first slice should prove the shape of:
-
-- explicit candidate lineage
-- per-scenario held-out score vectors
-- durable search artifacts
-- blocked readiness reasoning
-
-without claiming reflective mutation or merge-aware GEPA behavior yet.
+The next slice can build on this by executing review/full-gate checkpoints
+inside the loop and by making merge selection more system-aware, without
+reshaping the packet boundary.
 
 ## Guardrails
 

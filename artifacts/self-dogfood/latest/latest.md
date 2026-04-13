@@ -1,7 +1,7 @@
 # Cautilus Self-Dogfood
 
-- generatedAt: 2026-04-13T20:32:50.312Z
-- runId: 2026-04-13T20-32-28.429Z
+- generatedAt: 2026-04-13T21:35:32.327Z
+- runId: 2026-04-13T21-34-42.833Z
 - baselineRef: origin/main
 - overallStatus: pass
 - reportRecommendation: accept-now
@@ -19,8 +19,8 @@ Cautilus should record and surface its own self-dogfood result honestly before o
 
 ## Review Variants
 
-- codex-review: execution=passed, verdict=pass, findings=2
-  summary: The current report supports the narrow operator-facing claim: it records the self-dogfood run, shows the only executed mode (`full_gate`) passed, and surfaces the raw recommendation (`accept-now`) without inflating that evidence into stronger binary-surface or skill-surface claims. The report stays honest about scope by exposing only what this run actually proved, and the spec explicitly says the canonical latest claim should be this narrow.
+- codex-review: execution=passed, verdict=pass, findings=3
+  summary: The current report packet supports the narrow operator-facing claim: it records the self-dogfood run, surfaces the current gate outcome, and keeps the recommendation aligned with the deterministic gate signal. `npm run hooks:check` and `npm run verify` both passed, and the report does not overclaim broader binary-surface or bundled-skill behavior. The automated `accept-now` recommendation is consistent with this evidence.
 
 ## Artifacts
 

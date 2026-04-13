@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { execFileSync, spawnSync } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, relative, resolve } from "node:path";
+import { buildMergePrompt, buildMutationPrompt } from "./optimize-search-prompts.mjs";
 
 const TOOL_ROOT = resolve(dirname(new URL(import.meta.url).pathname), "..", "..");
 const BIN_PATH = join(TOOL_ROOT, "bin", "cautilus");
@@ -115,6 +116,12 @@ function collectScenarioFeedback(packet, signals, scenarioId) {
 	};
 }
 
+function heldOutScoreForCandidate(candidate, scenarioId) {
+	const entries = Array.isArray(candidate?.heldOutEntries) ? candidate.heldOutEntries : [];
+	const match = entries.find((entry) => entry.scenarioId === scenarioId);
+	return typeof match?.score === "number" ? match.score : null;
+}
+
 function scenarioSignalMap(packet, feedbackSignals) {
 	const report = packet.optimizeInput?.report || {};
 	const signals = new Map();
@@ -155,14 +162,28 @@ function addFeedbackSignals(signals, feedbackSignals, trainScenarioSet) {
 	}
 }
 
-function buildReflectionBatch(packet, feedbackSignals) {
+function buildReflectionBatch(packet, parentCandidate, feedbackSignals) {
 	const scenarioIds = Array.isArray(packet.scenarioSets?.trainScenarioSet) ? packet.scenarioSets.trainScenarioSet : [];
 	const limit = Math.max(1, packet.mutationConfig?.trainScenarioLimit || 1);
 	const signals = scenarioSignalMap(packet, feedbackSignals);
-	return scenarioIds.slice(0, limit).map((scenarioId) => collectScenarioFeedback(packet, signals, scenarioId));
+	const rankedScenarioIds = [...scenarioIds].sort((left, right) => {
+		const leftScore = heldOutScoreForCandidate(parentCandidate, left);
+		const rightScore = heldOutScoreForCandidate(parentCandidate, right);
+		if (typeof leftScore === "number" && typeof rightScore === "number" && leftScore !== rightScore) {
+			return leftScore - rightScore;
+		}
+		if (typeof leftScore === "number" && typeof rightScore !== "number") {
+			return -1;
+		}
+		if (typeof leftScore !== "number" && typeof rightScore === "number") {
+			return 1;
+		}
+		return left.localeCompare(right);
+	});
+	return rankedScenarioIds.slice(0, limit).map((scenarioId) => collectScenarioFeedback(packet, signals, scenarioId));
 }
 
-function mutationOutputSchema() {
+function candidateOutputSchema() {
 	return {
 		type: "object",
 		additionalProperties: false,
@@ -181,50 +202,6 @@ function mutationOutputSchema() {
 			riskNotes: { type: "array", items: { type: "string" } },
 		},
 	};
-}
-
-function buildMutationPrompt(packet, parentCandidate, parentPrompt, reflectionBatch, backend) {
-	const objective = packet.objective?.summary || "Improve the target prompt without weakening the validated behavior objective.";
-	const constraints = Array.isArray(packet.objective?.constraints) ? packet.objective.constraints : [];
-	const heldOutScenarios = Array.isArray(packet.scenarioSets?.heldOutScenarioSet) ? packet.scenarioSets.heldOutScenarioSet : [];
-	return [
-		"# Task",
-		"Return one improved prompt candidate as structured JSON.",
-		"",
-		"## Constraints",
-		"- Output valid JSON matching the provided schema.",
-		"- Rewrite the prompt body only; do not describe shell commands or repo edits.",
-		"- Preserve working behavior unless the evidence explicitly says it is harmful.",
-		"- Prefer concrete operator-facing recovery guidance over generic wording.",
-		"- Do not optimize for lower cost by merely making the prompt shorter.",
-		"",
-		"## Search Context",
-		`- backend: ${backend}`,
-		`- objective: ${objective}`,
-		`- parentCandidateId: ${parentCandidate.id}`,
-		`- targetFile: ${packet.targetFile?.path || "unknown"}`,
-		`- heldOutScenarioSet: ${heldOutScenarios.join(", ") || "none"}`,
-		"",
-		"## Guardrails",
-		...constraints.map((constraint) => `- ${constraint}`),
-		"- Keep the prompt self-contained and legible.",
-		"- Do not claim success that the evidence does not support.",
-		"",
-		"## Reflection Batch",
-		JSON.stringify(reflectionBatch, null, 2),
-		"",
-		"## Current Prompt",
-		"```md",
-		parentPrompt,
-		"```",
-		"",
-		"## Response Shape",
-		"- promptMarkdown: full revised prompt body",
-		"- rationaleSummary: 1-2 sentence explanation of what changed and why",
-		"- expectedImprovements: list of scenarios or failure modes this candidate should improve",
-		"- preservedStrengths: list of strengths intentionally kept from the parent candidate",
-		"- riskNotes: list of residual risks that still need held-out validation",
-	].join("\n");
 }
 
 function runMutationBackend({ backend, workspace, promptFile, schemaFile, outputFile, env }) {
@@ -266,42 +243,87 @@ function readPromptBody(targetPath) {
 	return readFileSync(targetPath, "utf-8");
 }
 
-function makeCandidateId(index, backend) {
-	return `g1-${index + 1}-${backend.replace(/[^a-z0-9]+/giu, "-")}`;
+function configuredBackends(packet) {
+	return Array.isArray(packet.mutationConfig?.backends) ? packet.mutationConfig.backends : [];
 }
 
-function generateMutationCandidates(packet, artifactRoot, seedCandidate, feedbackSignals, env) {
-	const reflectionBatch = buildReflectionBatch(packet, feedbackSignals);
-	const backends = Array.isArray(packet.mutationConfig?.backends) ? packet.mutationConfig.backends : [];
+function candidateFingerprint(candidate) {
+	return candidate?.targetSnapshot?.sha256 || null;
+}
+
+function appendUniqueCandidate(candidates, candidate, seenFingerprints) {
+	const fingerprint = candidateFingerprint(candidate);
+	if (!candidate || !fingerprint || seenFingerprints.has(fingerprint)) {
+		return false;
+	}
+	seenFingerprints.add(fingerprint);
+	candidates.push(candidate);
+	return true;
+}
+
+function markUniqueCandidate(candidate, seenFingerprints) {
+	return appendUniqueCandidate([], candidate, seenFingerprints);
+}
+
+function buildMutationCandidate(packet, artifactRoot, parentCandidate, feedbackSignals, generationIndex, candidateIndex, backend, env) {
+	const parentPrompt = readPromptBody(parentCandidate.targetFile.path);
+	const reflectionBatch = buildReflectionBatch(packet, parentCandidate, feedbackSignals);
+	return generateCandidate({
+		packet,
+		artifactRoot,
+		parentCandidate,
+		promptText: buildMutationPrompt(packet, parentCandidate, parentPrompt, reflectionBatch, backend),
+		backend,
+		generationIndex,
+		candidateIndex,
+		origin: "mutation",
+	}, env);
+}
+
+function generateMutationCandidates(packet, artifactRoot, parentCandidates, feedbackSignals, generationIndex, seenFingerprints, env) {
+	const backends = configuredBackends(packet);
 	if (backends.length === 0) {
 		return [];
 	}
-	const seedPrompt = readPromptBody(seedCandidate.targetFile.path);
+	const promptVariantLimit = Math.max(1, packet.mutationConfig?.promptVariantLimit || backends.length);
 	const candidates = [];
-	const seenFingerprints = new Set([collectTargetSnapshot(seedCandidate.targetFile.path)?.sha256].filter(Boolean));
-	for (const [index, backendConfig] of backends.entries()) {
-		const backend = backendConfig?.backend;
-		if (!backend) {
-			continue;
+	let candidateIndex = 0;
+	for (const parentCandidate of parentCandidates) {
+		for (const backendConfig of backends) {
+			if (candidates.length >= promptVariantLimit) {
+				return candidates;
+			}
+			const backend = backendConfig?.backend;
+			if (!backend) {
+				continue;
+			}
+			const candidate = buildMutationCandidate(
+				packet,
+				artifactRoot,
+				parentCandidate,
+				feedbackSignals,
+				generationIndex,
+				candidateIndex,
+				backend,
+				env,
+			);
+			candidateIndex += 1;
+			appendUniqueCandidate(candidates, candidate, seenFingerprints);
 		}
-		const candidate = generateCandidate(packet, artifactRoot, seedCandidate, reflectionBatch, seedPrompt, backend, index, env);
-		if (!candidate || seenFingerprints.has(candidate.targetSnapshot?.sha256)) {
-			continue;
-		}
-		seenFingerprints.add(candidate.targetSnapshot.sha256);
-		candidates.push(candidate);
 	}
 	return candidates;
 }
 
-function generateCandidate(packet, artifactRoot, seedCandidate, reflectionBatch, seedPrompt, backend, index, env) {
-	const candidateId = makeCandidateId(index, backend);
+function generateCandidate({ packet, artifactRoot, parentCandidate, promptText, backend, generationIndex, candidateIndex, origin }, env) {
+	const candidateId = origin === "merge"
+		? `g${generationIndex}-merge-${candidateIndex + 1}-${backend.replace(/[^a-z0-9]+/giu, "-")}`
+		: `g${generationIndex}-${candidateIndex + 1}-${backend.replace(/[^a-z0-9]+/giu, "-")}`;
 	const candidateRoot = candidateArtifactRoot(artifactRoot, candidateId);
 	const promptFile = join(candidateRoot, "mutation.prompt.md");
 	const schemaFile = join(candidateRoot, "mutation.schema.json");
 	const outputFile = join(candidateRoot, "mutation.output.json");
-	writeText(promptFile, buildMutationPrompt(packet, seedCandidate, seedPrompt, reflectionBatch, backend));
-	writeJson(schemaFile, mutationOutputSchema());
+	writeText(promptFile, promptText);
+	writeJson(schemaFile, candidateOutputSchema());
 	const result = runMutationBackend({ backend, workspace: packet.repoRoot, promptFile, schemaFile, outputFile, env });
 	if (result.status !== 0) {
 		return null;
@@ -314,9 +336,9 @@ function generateCandidate(packet, artifactRoot, seedCandidate, reflectionBatch,
 	writeText(candidatePromptPath, mutationOutput.promptMarkdown);
 	return {
 		id: candidateId,
-		generationIndex: 1,
-		parentCandidateIds: ["seed"],
-		origin: "mutation",
+		generationIndex,
+		parentCandidateIds: [parentCandidate.id],
+		origin,
 		targetFile: {
 			path: candidatePromptPath,
 			exists: true,
@@ -333,6 +355,111 @@ function generateCandidate(packet, artifactRoot, seedCandidate, reflectionBatch,
 			outputFile,
 		},
 	};
+}
+
+function candidateCoverageScore(candidate, scenarioIds) {
+	return scenarioIds.reduce((count, scenarioId) => {
+		const score = heldOutScoreForCandidate(candidate, scenarioId);
+		return count + (typeof score === "number" && score >= 90 ? 1 : 0);
+	}, 0);
+}
+
+function pairScenarioStats(left, right, scenarioIds) {
+	let coverage = 0;
+	let average = 0;
+	for (const scenarioId of scenarioIds) {
+		const leftScore = heldOutScoreForCandidate(left, scenarioId) ?? Number.NEGATIVE_INFINITY;
+		const rightScore = heldOutScoreForCandidate(right, scenarioId) ?? Number.NEGATIVE_INFINITY;
+		const bestScore = Math.max(leftScore, rightScore);
+		if (bestScore > Number.NEGATIVE_INFINITY) {
+			coverage += 1;
+		}
+		average += bestScore;
+	}
+	return { coverage, average };
+}
+
+function pairCandidateMetrics(left, right, scenarioIds) {
+	const scenarioStats = pairScenarioStats(left, right, scenarioIds);
+	return {
+		coverage: scenarioStats.coverage + candidateCoverageScore(left, scenarioIds) + candidateCoverageScore(right, scenarioIds),
+		average: scenarioStats.average,
+	};
+}
+
+function selectMergeParents(frontierCandidates, scenarioIds) {
+	if (frontierCandidates.length < 2) {
+		return null;
+	}
+	let bestPair = null;
+	let bestCoverage = -1;
+	let bestAverage = -1;
+	for (let leftIndex = 0; leftIndex < frontierCandidates.length; leftIndex += 1) {
+		for (let rightIndex = leftIndex + 1; rightIndex < frontierCandidates.length; rightIndex += 1) {
+			const left = frontierCandidates[leftIndex];
+			const right = frontierCandidates[rightIndex];
+			const metrics = pairCandidateMetrics(left, right, scenarioIds);
+			if (metrics.coverage > bestCoverage || (metrics.coverage === bestCoverage && metrics.average > bestAverage)) {
+				bestCoverage = metrics.coverage;
+				bestAverage = metrics.average;
+				bestPair = [left, right];
+			}
+		}
+	}
+	return bestPair;
+}
+
+function mergeBackend(packet) {
+	return configuredBackends(packet)[0]?.backend || null;
+}
+
+function buildMergeCandidate(packet, artifactRoot, leftCandidate, rightCandidate, generationIndex, backend, scenarioIds, env) {
+	const leftPrompt = readPromptBody(leftCandidate.targetFile.path);
+	const rightPrompt = readPromptBody(rightCandidate.targetFile.path);
+	const candidate = generateCandidate({
+		packet,
+		artifactRoot,
+		parentCandidate: leftCandidate,
+		promptText: buildMergePrompt(packet, leftCandidate, rightCandidate, leftPrompt, rightPrompt, backend, scenarioIds),
+		backend,
+		generationIndex,
+		candidateIndex: 0,
+		origin: "merge",
+	}, env);
+	if (candidate) {
+		candidate.parentCandidateIds = [leftCandidate.id, rightCandidate.id];
+	}
+	return candidate;
+}
+
+function generateMergeCandidates(packet, artifactRoot, frontierCandidates, generationIndex, seenFingerprints, env) {
+	if (!packet.searchConfig?.mergeEnabled) {
+		return [];
+	}
+	const backend = mergeBackend(packet);
+	if (!backend) {
+		return [];
+	}
+	const scenarioIds = Array.isArray(packet.scenarioSets?.heldOutScenarioSet) ? packet.scenarioSets.heldOutScenarioSet : [];
+	const parents = selectMergeParents(frontierCandidates, scenarioIds);
+	if (!parents) {
+		return [];
+	}
+	const [leftCandidate, rightCandidate] = parents;
+	const candidate = buildMergeCandidate(
+		packet,
+		artifactRoot,
+		leftCandidate,
+		rightCandidate,
+		generationIndex,
+		backend,
+		scenarioIds,
+		env,
+	);
+	if (!markUniqueCandidate(candidate, seenFingerprints)) {
+		return [];
+	}
+	return [candidate];
 }
 
 function relativeTargetPath(repoRoot, targetPath) {
@@ -427,7 +554,33 @@ export function canRunMutation(packet) {
 		&& evaluationContext.baselineRef.length > 0;
 }
 
-export function evaluateMutationCandidates(packet, artifactRoot, seedCandidate, feedbackSignals, env) {
-	const generatedCandidates = generateMutationCandidates(packet, artifactRoot, seedCandidate, feedbackSignals, env);
+export function evaluateMutationCandidates(packet, artifactRoot, parentCandidates, feedbackSignals, env, {
+	generationIndex = 1,
+	existingCandidates = [],
+	frontierCandidates = parentCandidates,
+} = {}) {
+	const seenFingerprints = new Set(
+		existingCandidates
+			.map((candidate) => candidate?.targetSnapshot?.sha256)
+			.filter((fingerprint) => typeof fingerprint === "string" && fingerprint.length > 0),
+	);
+	const generatedMutationCandidates = generateMutationCandidates(
+		packet,
+		artifactRoot,
+		parentCandidates,
+		feedbackSignals,
+		generationIndex,
+		seenFingerprints,
+		env,
+	);
+	const generatedMergeCandidates = generateMergeCandidates(
+		packet,
+		artifactRoot,
+		frontierCandidates,
+		generationIndex,
+		seenFingerprints,
+		env,
+	);
+	const generatedCandidates = [...generatedMutationCandidates, ...generatedMergeCandidates];
 	return generatedCandidates.map((candidate) => evaluateCandidate(packet, artifactRoot, candidate, env));
 }

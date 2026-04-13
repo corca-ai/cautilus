@@ -7,40 +7,45 @@
   "reviewPromptInputFile": null,
   "schemaFile": "fixtures/workbench/review-verdict.schema.json",
   "telemetry": {
-    "averageVariantDurationMs": 12935,
-    "completedAt": "2026-04-13T20:32:50.303049569Z",
-    "durationMs": 12935,
+    "averageVariantDurationMs": 9635,
+    "completedAt": "2026-04-13T21:35:32.317589251Z",
+    "durationMs": 9635,
     "failedVariantCount": 0,
     "passedVariantCount": 1,
-    "startedAt": "2026-04-13T20:32:37.367248538Z",
+    "startedAt": "2026-04-13T21:35:22.682154517Z",
     "variantCount": 1
   },
   "variants": [
     {
       "command": null,
-      "completedAt": "2026-04-13T20:32:50.303049569Z",
-      "durationMs": 12935,
+      "completedAt": "2026-04-13T21:35:32.317589251Z",
+      "durationMs": 9635,
       "exitCode": 0,
       "id": "codex-review",
       "output": {
         "findings": [
           {
-            "message": "[artifacts/self-dogfood/runs/2026-04-13T20-32-28.429Z/mode/report.json] shows the self-dogfood packet with `recommendation: accept-now`, `full_gate` passing, and no human-review findings or regressions, which is consistent with an honest surfaced result for operators.",
-            "path": "artifacts/self-dogfood/runs/2026-04-13T20-32-28.429Z/mode/report.json",
+            "message": "The current report packet is internally consistent for the narrow self-dogfood claim: it captures the run, shows the passed preflight and full gate, and exposes the recommendation without contradiction.",
+            "path": "artifacts/self-dogfood/runs/2026-04-13T21-34-42.833Z/mode/report.json",
             "severity": "pass"
           },
           {
-            "message": "[docs/specs/self-dogfood.spec.md] narrows the canonical latest claim to \"record and surface its own self-dogfood result honestly\" and treats stronger standalone-binary or bundled-skill claims as separate experiment surfaces; this report matches that boundary.",
+            "message": "The evidence does not support the stronger experiment-surface claims, but the report/spec framing explicitly treats those as separate surfaces, so this does not weaken the operator-facing self-dogfood claim.",
             "path": "docs/specs/self-dogfood.spec.md",
+            "severity": "pass"
+          },
+          {
+            "message": "The current automated recommendation matches the observed gate result and there is no human-review finding in the packet that would justify downgrading it.",
+            "path": "artifacts/self-dogfood/runs/2026-04-13T21-34-42.833Z/mode/report.json",
             "severity": "pass"
           }
         ],
-        "summary": "The current report supports the narrow operator-facing claim: it records the self-dogfood run, shows the only executed mode (`full_gate`) passed, and surfaces the raw recommendation (`accept-now`) without inflating that evidence into stronger binary-surface or skill-surface claims. The report stays honest about scope by exposing only what this run actually proved, and the spec explicitly says the canonical latest claim should be this narrow.",
+        "summary": "The current report packet supports the narrow operator-facing claim: it records the self-dogfood run, surfaces the current gate outcome, and keeps the recommendation aligned with the deterministic gate signal. `npm run hooks:check` and `npm run verify` both passed, and the report does not overclaim broader binary-surface or bundled-skill behavior. The automated `accept-now` recommendation is consistent with this evidence.",
         "verdict": "pass"
       },
       "outputFile": null,
       "signal": null,
-      "startedAt": "2026-04-13T20:32:37.367248538Z",
+      "startedAt": "2026-04-13T21:35:22.682154517Z",
       "status": "passed",
       "stderr": "",
       "stderrFile": null,
