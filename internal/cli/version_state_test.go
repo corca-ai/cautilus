@@ -138,6 +138,7 @@ func TestMaybeCheckForUpdatesSkipsNonInteractiveSessions(t *testing.T) {
 
 func TestMaybeCheckForUpdatesReturnsInstallAwareNotice(t *testing.T) {
 	t.Setenv("CAUTILUS_VERSION", "v1.2.3")
+	t.Setenv("CI", "")
 	notice, err := MaybeCheckForUpdates("", AutoUpdateOptions{
 		Now:         time.Date(2026, time.April, 12, 7, 0, 0, 0, time.UTC),
 		Interactive: true,
