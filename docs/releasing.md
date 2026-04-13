@@ -65,10 +65,31 @@ curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh |
 cautilus --version
 ```
 
-5. Confirm the tagged checksum manifest was attached alongside the binary
+5. Verify the supported install smoke matrix before treating the release line
+   as closed:
+
+- native macOS + `install.sh`
+- native macOS + `brew install corca-ai/tap/cautilus`
+- native Linux + `install.sh`
+- native Linux + `brew install corca-ai/tap/cautilus`
+
+On each machine, at minimum confirm:
+
+```bash
+cautilus --version
+cautilus version --verbose
+```
+
+For Homebrew installs, also confirm:
+
+```bash
+cautilus update
+```
+
+6. Confirm the tagged checksum manifest was attached alongside the binary
    assets.
 
-6. Verify the public provenance for one released binary with GitHub CLI:
+7. Verify the public provenance for one released binary with GitHub CLI:
 
 ```bash
 gh attestation verify \
@@ -76,13 +97,13 @@ gh attestation verify \
   --repo corca-ai/cautilus
 ```
 
-7. If you need the source-archive checksum for the Homebrew formula manually:
+8. If you need the source-archive checksum for the Homebrew formula manually:
 
 ```bash
 node ./scripts/release/fetch-github-archive-sha256.mjs --version v0.2.0
 ```
 
-8. Render the Homebrew formula body:
+9. Render the Homebrew formula body:
 
 ```bash
 node ./scripts/release/render-homebrew-formula.mjs \
@@ -90,7 +111,7 @@ node ./scripts/release/render-homebrew-formula.mjs \
   --sha256 <sha256>
 ```
 
-9. Confirm the Homebrew tap repo was updated with the rendered formula.
+10. Confirm the Homebrew tap repo was updated with the rendered formula.
    The default target for this repo is `corca-ai/homebrew-tap`.
 
 ## Guardrails

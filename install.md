@@ -35,6 +35,9 @@ Use one of these two public install paths:
 
 If you want the fewest moving parts, use `install.sh`.
 
+Both of these are first-class install channels for native macOS and native
+Linux hosts. They are not "best effort" side paths.
+
 ## OS Notes
 
 `install.sh` already chooses the correct tagged binary asset for the current
@@ -118,6 +121,10 @@ Default Homebrew prefixes:
 On Linux, if you cannot use Homebrew's default prefix cleanly, prefer
 `install.sh`. Do not treat an arbitrary untar-anywhere Homebrew install as the
 recommended operator path for `Cautilus`.
+
+For supported native macOS and native Linux hosts, `brew install` and
+`cautilus update` are part of the intended operator story, not a secondary
+compatibility seam.
 
 ## Install The Bundled Skill Into A Host Repo
 

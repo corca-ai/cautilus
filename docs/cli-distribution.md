@@ -40,6 +40,13 @@ That means the honest operator story today is:
 6. use `cautilus update` when you want the CLI to apply its supported update
    path explicitly
 
+The current supported native-host matrix is:
+
+- macOS + `install.sh`
+- macOS + Homebrew
+- Linux + `install.sh`
+- Linux + Homebrew
+
 ## Why Homebrew Is Now Honest
 
 Homebrew is now an honest install surface because the standalone release path
@@ -54,6 +61,9 @@ second release dialect:
 - Homebrew stays a supported package-manager path for operators who prefer tap
   installs
 - `cautilus update` keeps the post-install lifecycle inside the Go CLI surface
+
+That means the right question is no longer "is Homebrew only aspirational?" but
+"did this release line pass the expected smoke matrix?"
 
 ## Why `install.sh` Should Not Install System Dependencies
 
