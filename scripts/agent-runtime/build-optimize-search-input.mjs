@@ -95,7 +95,7 @@ function parseArgs(argv) {
 		profile: null,
 		split: null,
 		budget: "medium",
-		reviewCheckpointPolicy: "final_only",
+		reviewCheckpointPolicy: null,
 		output: null,
 		json: false,
 	};
@@ -115,7 +115,7 @@ function parseArgs(argv) {
 	if (!Object.prototype.hasOwnProperty.call(SEARCH_BUDGETS, options.budget)) {
 		fail(`--budget must be one of: ${Object.keys(SEARCH_BUDGETS).join(", ")}`);
 	}
-	if (!REVIEW_CHECKPOINT_POLICIES.has(options.reviewCheckpointPolicy)) {
+	if (options.reviewCheckpointPolicy && !REVIEW_CHECKPOINT_POLICIES.has(options.reviewCheckpointPolicy)) {
 		fail(`--review-checkpoint-policy must be one of: ${[...REVIEW_CHECKPOINT_POLICIES].join(", ")}`);
 	}
 	return options;
@@ -278,6 +278,10 @@ function resolveTargetPath(optimizeInput, targetFileOverride) {
 	return resolve(targetRawPath);
 }
 
+function defaultReviewCheckpointPolicy(budget) {
+	return budget === "light" ? "final_only" : "frontier_promotions";
+}
+
 function buildTargetRef(targetPath) {
 	return {
 		path: targetPath,
@@ -374,7 +378,55 @@ function resolveFromRawInput(rawInput, options) {
 		profile: preferRawString(rawInput.profile, options.profile),
 		split: preferRawString(rawInput.split, options.split),
 		budget: preferRawString(rawInput.budget, options.budget),
-		reviewCheckpointPolicy: preferRawString(rawInput.reviewCheckpointPolicy, options.reviewCheckpointPolicy),
+		reviewCheckpointPolicy: preferRawString(
+			rawInput.reviewCheckpointPolicy,
+			options.reviewCheckpointPolicy || defaultReviewCheckpointPolicy(preferRawString(rawInput.budget, options.budget)),
+		),
+	};
+}
+
+function resolveInputOverrides(options) {
+	if (!options.inputJson) {
+		return {
+			rawInput: null,
+			optimizeInputFile: options.optimizeInput,
+			targetFile: options.targetFile,
+			heldOutResultsFile: options.heldOutResultsFile,
+			evaluationOptions: {
+				adapter: options.adapter,
+				adapterName: options.adapterName,
+				intent: options.intent,
+				baselineRef: options.baselineRef,
+				profile: options.profile,
+				split: options.split,
+			},
+			budget: options.budget,
+			reviewCheckpointPolicy: options.reviewCheckpointPolicy || defaultReviewCheckpointPolicy(options.budget),
+		};
+	}
+	const rawInput = options.inputJson;
+	const resolved = resolveFromRawInput(rawInput, options);
+	if (!Object.prototype.hasOwnProperty.call(SEARCH_BUDGETS, resolved.budget)) {
+		fail(`budget must be one of: ${Object.keys(SEARCH_BUDGETS).join(", ")}`);
+	}
+	if (!REVIEW_CHECKPOINT_POLICIES.has(resolved.reviewCheckpointPolicy)) {
+		fail(`reviewCheckpointPolicy must be one of: ${[...REVIEW_CHECKPOINT_POLICIES].join(", ")}`);
+	}
+	return {
+		rawInput,
+		optimizeInputFile: resolved.optimizeInputFile,
+		targetFile: resolved.targetFile,
+		heldOutResultsFile: resolved.heldOutResultsFile,
+		evaluationOptions: {
+			adapter: resolved.adapter,
+			adapterName: resolved.adapterName,
+			intent: resolved.intent,
+			baselineRef: resolved.baselineRef,
+			profile: resolved.profile,
+			split: resolved.split,
+		},
+		budget: resolved.budget,
+		reviewCheckpointPolicy: resolved.reviewCheckpointPolicy,
 	};
 }
 
@@ -404,43 +456,15 @@ function resolveCommandOptions(options, { env = process.env } = {}) {
 
 export function buildOptimizeSearchInput(argv, { now = new Date(), env = process.env } = {}) {
 	const options = resolveCommandOptions(parseArgs(argv), { env });
-	let rawInput = null;
-	let optimizeInputFile = options.optimizeInput;
-	let targetFile = options.targetFile;
-	let heldOutResultsFile = options.heldOutResultsFile;
-	let evaluationOptions = {
-		adapter: options.adapter,
-		adapterName: options.adapterName,
-		intent: options.intent,
-		baselineRef: options.baselineRef,
-		profile: options.profile,
-		split: options.split,
-	};
-	let budget = options.budget;
-	let reviewCheckpointPolicy = options.reviewCheckpointPolicy;
-	if (options.inputJson) {
-		rawInput = options.inputJson;
-		const resolved = resolveFromRawInput(rawInput, options);
-		optimizeInputFile = resolved.optimizeInputFile;
-		targetFile = resolved.targetFile;
-		heldOutResultsFile = resolved.heldOutResultsFile;
-		evaluationOptions = {
-			adapter: resolved.adapter,
-			adapterName: resolved.adapterName,
-			intent: resolved.intent,
-			baselineRef: resolved.baselineRef,
-			profile: resolved.profile,
-			split: resolved.split,
-		};
-		budget = resolved.budget;
-		reviewCheckpointPolicy = resolved.reviewCheckpointPolicy;
-		if (!Object.prototype.hasOwnProperty.call(SEARCH_BUDGETS, budget)) {
-			fail(`budget must be one of: ${Object.keys(SEARCH_BUDGETS).join(", ")}`);
-		}
-		if (!REVIEW_CHECKPOINT_POLICIES.has(reviewCheckpointPolicy)) {
-			fail(`reviewCheckpointPolicy must be one of: ${[...REVIEW_CHECKPOINT_POLICIES].join(", ")}`);
-		}
-	}
+	const {
+		rawInput,
+		optimizeInputFile,
+		targetFile,
+		heldOutResultsFile,
+		evaluationOptions,
+		budget,
+		reviewCheckpointPolicy,
+	} = resolveInputOverrides(options);
 	const parsedOptimizeInput = parseOptimizeInputFile(optimizeInputFile);
 	const packet = buildCanonicalPacket({
 		optimizeInputFile: parsedOptimizeInput.path,

@@ -530,6 +530,22 @@ test("build-optimize-search-input materializes raw and canonical files for direc
 		assert.equal(result.inputFile, output);
 		assert.equal(existsSync(output), true);
 		assert.equal(existsSync(join(root, "optimize-search-input.raw.json")), true);
+		assert.equal(result.packet.searchConfig.reviewCheckpointPolicy, "final_only");
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("build-optimize-search-input defaults medium budget to frontier-promotion review checkpoints", () => {
+	const { root, optimizeInputPath, heldOutResultsPath } = createSearchFixtureRoot();
+	try {
+		const { packet } = buildOptimizeSearchInput(
+			["--optimize-input", optimizeInputPath, "--held-out-results-file", heldOutResultsPath],
+			{ now: new Date("2026-04-13T10:00:00.000Z") },
+		);
+		assert.equal(packet.searchConfig.budget, "medium");
+		assert.equal(packet.searchConfig.reviewCheckpointPolicy, "frontier_promotions");
+		assert.equal(packet.mutationEvidencePolicy.includeCheckpointFeedback, true);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

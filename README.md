@@ -531,8 +531,7 @@ Run the GEPA-style bounded prompt search seam above that optimize packet:
 cautilus optimize search prepare-input \
   --optimize-input /tmp/cautilus-optimize/input.json \
   --held-out-results-file /tmp/cautilus-mode/held_out-scenario-results.json \
-  --budget light \
-  --review-checkpoint-policy frontier_promotions
+  --budget medium
 
 cautilus optimize search run \
   --input /tmp/cautilus-run/optimize-search-input.json
@@ -544,6 +543,10 @@ cautilus optimize propose \
 If the repo is not search-ready yet, `optimize search run` returns a blocked
 machine-readable result instead of improvising candidate prompts from weak
 evidence.
+
+For `light` searches, the default review checkpoint policy stays
+`final_only`. For `medium` and `heavy`, it defaults to
+`frontier_promotions` unless you override it explicitly.
 
 Assemble that input packet from split normalized source files:
 

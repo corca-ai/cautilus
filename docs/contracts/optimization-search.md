@@ -62,7 +62,8 @@ This slice defines a first `GEPA`-inspired search contract for `Cautilus`:
   training material.
 - Review findings are binding evidence for search checkpoints and candidate
   selection.
-- The default review checkpoint policy is `final_only`.
+- The default review checkpoint policy is budget-aware:
+  `final_only` for `light`, `frontier_promotions` for `medium` and `heavy`.
 - Candidate retention uses a Pareto frontier over per-scenario validation
   scores, not only one aggregate score.
 - Cost and latency telemetry are mandatory when available, but are not primary
@@ -78,8 +79,6 @@ This slice defines a first `GEPA`-inspired search contract for `Cautilus`:
 
 ## Probe Questions
 
-- Should `medium` and `heavy` budgets default to `frontier_promotions` once
-  operator cost expectations are better calibrated?
 - When cost or latency constraints are declared, should v1 reject candidate
   promotion immediately on constraint breach, or keep the candidate in search
   but mark it ineligible for final selection?
@@ -356,9 +355,10 @@ review-admissible parents and should prefer:
   toward the weakest current frontier scenarios
 - then cost and duration telemetry as late tie-breakers
 
-`final_only` should be the default because it preserves the bounded search
-shape at lower cost while existing report and review evidence still constrain
-mutation.
+The current bounded default is budget-aware: `light` stays `final_only` to
+preserve a cheaper bounded path, while `medium` and `heavy` default to
+`frontier_promotions` so larger searches reinvest their extra budget into
+earlier review-bound pruning and feedback reinjection.
 
 ## Cost And Latency
 

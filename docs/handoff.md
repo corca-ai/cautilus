@@ -27,7 +27,9 @@
   - multi-generation Pareto frontier retention
   - optional bounded merge candidate
   - scenario-aware 2-parent merge selection
-  - optional `frontier_promotions` review checkpoint execution
+  - budget-aware default review checkpoint policy
+    - `light` -> `final_only`
+    - `medium`/`heavy` -> `frontier_promotions`
   - checkpoint rejection feedback reinjection into later mutation prompts
   - final-only full-gate checkpoint execution
   - ranked-frontier fallback when the leader fails final checkpoints
@@ -54,14 +56,14 @@
 - `npm run lint:specs`
 - `npm run verify`
 - `npm run hooks:check`
-- latest full verify after scenario-aware merge weighting slice: passed
+- latest full verify after budget-aware review default slice: passed
 
 ## Next Session
 
-1. multi-parent synthesis를 먼저 열지, 아니면 review checkpoint policy default를 먼저 올릴지 결정한다.
-2. `medium`/`heavy` budget의 기본 review checkpoint policy를 올릴지 운영 비용 기준으로 판단한다.
-3. checkpoint feedback를 scenario-aware하게 더 잘 매핑할지, 아니면 현재처럼 candidate-level feedback으로 둘지 정한다.
-4. 마지막으로 frontier candidate pruning이 review-rejected lineage를 얼마나 오래 유지할지 운영 비용 기준으로 판단한다.
+1. multi-parent synthesis를 먼저 열지, 아니면 checkpoint feedback mapping을 더 scenario-aware하게 만들지 결정한다.
+2. checkpoint feedback를 scenario-aware하게 더 잘 매핑할지, 아니면 현재처럼 candidate-level feedback으로 둘지 정한다.
+3. frontier candidate pruning이 review-rejected lineage를 얼마나 오래 유지할지 운영 비용 기준으로 판단한다.
+4. 마지막으로 cost/latency constraint breach를 promotion reject로 볼지, final selection ineligible로만 둘지 정한다.
 
 ## Discuss
 
@@ -69,10 +71,10 @@
 - 지금 닫힌 것은 “bounded GEPA slice with frontier-promotion review feedback reinjection + final-only full-gate fallback”이다.
 - 다음 세션의 첫 결정은 이것이다:
   - multi-parent synthesis를 먼저 열지
-  - 아니면 review cost policy를 먼저 조일지
+  - 아니면 checkpoint feedback mapping을 먼저 더 scenario-aware하게 열지
 - 제 추천은 먼저
-  - review checkpoint policy default
-  를 다음 핵심 slice로 두고, multi-parent synthesis는 그 다음에 판단하는 것이다.
+  - checkpoint feedback mapping
+  을 다음 핵심 slice로 두고, multi-parent synthesis는 그 다음에 판단하는 것이다.
 
 ## Premortem
 
