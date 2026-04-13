@@ -58,23 +58,29 @@ This slice defines a first `GEPA`-inspired search contract for `Cautilus`:
   training material.
 - Review findings are binding evidence for search checkpoints and candidate
   selection.
+- The default review checkpoint policy is `final_only`.
 - Candidate retention uses a Pareto frontier over per-scenario validation
   scores, not only one aggregate score.
+- Cost and latency telemetry are mandatory when available, but are not primary
+  Pareto frontier dimensions in v1.
 - Prompt mutation is reflective prompt rewriting based on explicit evidence,
   not random token- or substring-level crossover.
 - The search output recommends a best next candidate and preserves lineage, but
   does not auto-apply prompt edits.
+- If search-readiness evidence is insufficient, `Cautilus` must stop before
+  candidate generation and emit a machine-readable blocked result.
+- Inline JSON ingress is allowed, but `Cautilus` must materialize it into a
+  canonical input file before continuing.
 
 ## Probe Questions
 
-- Should review variants run only for the final candidate, or for every
-  candidate promoted onto the held-out frontier?
-- Should v1 validation use only scenario success/failure scores, or should it
-  also include explicit cost and latency objectives when those metrics are
-  available?
-- When the host repo has sparse scenario telemetry, should `Cautilus` fall
-  back to compare-artifact verdicts and human-review findings only, or require
-  richer scenario packets before enabling search?
+- Should `medium` and `heavy` budgets allow `frontier_promotions` review
+  checkpoints once the simpler `final_only` path is proven?
+- When cost or latency constraints are declared, should v1 reject candidate
+  promotion immediately on constraint breach, or keep the candidate in search
+  but mark it ineligible for final selection?
+- Which blocked reason codes should be stable public contract versus
+  implementation detail?
 
 ## Deferred Decisions
 
@@ -103,6 +109,9 @@ This slice defines a first `GEPA`-inspired search contract for `Cautilus`:
   prompt bodies into search packets
 - allow a small first generation sequence while keeping the packet shape
   extensible to frontier retention and merge later
+- when JSON is provided directly over CLI or stdin, materialize the raw input
+  and the normalized canonical packet under the active run before running
+  readiness checks or search
 
 ## Reference Mapping
 
@@ -146,6 +155,10 @@ The packet should include:
   - `candidateSelection`: `pareto`
   - `reviewCheckpointPolicy`: `final_only` or `frontier_promotions`
   - `fullGateCheckpointPolicy`: `final_only`
+  - optional `selectionPolicy`
+    - `primaryObjective`: `held_out_behavior`
+    - optional `tieBreakers`, such as `lower_cost` and `lower_latency`
+    - optional `constraintCaps`, such as `maxCostUsd` or `maxDurationMs`
   - optional `mergeEnabled`
 - mutation evidence policy
   - which report buckets can seed mutation
@@ -169,6 +182,66 @@ cautilus optimize search prepare-input \
   --optimize-input /tmp/cautilus-optimize/input.json \
   --target-file .agents/review.prompt.md \
   --budget light
+```
+
+For agent-driven ingress, `Cautilus` may also accept direct JSON input, but it
+must immediately materialize:
+
+- the raw input payload
+- the normalized canonical search input packet
+
+under the active run directory before returning success or blocked status.
+
+This keeps the ingress convenient without giving up replayable file-based
+artifacts.
+
+## Search Readiness
+
+`Cautilus` should refuse candidate generation when the repo is not
+search-ready.
+
+The minimum search-ready evidence for v1 is:
+
+- held-out scenario ids
+- per-scenario score or pass/fail outcomes for the selected evaluation surface
+- at least one textual feedback source that can ground reflective mutation
+  - compare-artifact reason
+  - human-review finding
+  - scenario-history instability note
+
+If these are missing, `Cautilus` must stop before candidate generation and
+emit a blocked result with:
+
+- non-zero exit status in normal CLI mode
+- a machine-readable JSON payload when `--json` is requested
+- a canonical input file reference so an operator or agent can reopen the same
+  blocked state and discuss what evidence should be created next
+
+The blocked payload should make the next discussion possible instead of merely
+reporting generic failure.
+
+Example shape:
+
+```json
+{
+  "status": "blocked",
+  "inputFile": "/tmp/cautilus-run/optimize-search-input.json",
+  "reasonCodes": [
+    "missing_held_out_scenarios",
+    "missing_per_scenario_scores",
+    "missing_textual_feedback"
+  ],
+  "missingEvidence": [
+    "held_out scenario ids",
+    "per-scenario score or pass/fail records",
+    "compareArtifact reasons or humanReviewFindings"
+  ],
+  "suggestedNextSteps": [
+    "run held_out evaluation with scenario results enabled",
+    "build a report packet with compare artifacts",
+    "collect at least one review summary for the target behavior"
+  ]
+}
 ```
 
 ## Candidate Artifact
@@ -241,6 +314,37 @@ In v1, "promising" should mean:
 - not worse than the parent on the sampled train batch
 - not in conflict with bound review findings already attached to the mutation
   batch
+
+In v1, review checkpoint policy means:
+
+- `final_only`
+  - run review variants only for the final selected candidate
+- `frontier_promotions`
+  - run review variants whenever a candidate is promoted onto the held-out
+    frontier
+
+`final_only` should be the default because it preserves the bounded search
+shape at lower cost while existing report and review evidence still constrain
+mutation.
+
+## Cost And Latency
+
+Cost and latency telemetry should be recorded for every candidate whenever the
+evaluation surface exposes them.
+
+In v1:
+
+- they are mandatory telemetry when available
+- they are not primary Pareto frontier dimensions by default
+- they should act as:
+  - explicit constraint caps
+  - or tie-breakers between behaviorally similar candidates
+
+This avoids selecting a prompt merely because it is short or cheap when the
+behavior objective is worse.
+
+If two candidates are behaviorally near-equivalent on held-out scenarios and
+review checkpoints, the cheaper or faster one may win final selection.
 
 ## Search Result Packet
 
@@ -315,12 +419,15 @@ search before the final proposal.
 ## Acceptance Checks
 
 - `cautilus optimize search prepare-input --optimize-input ./fixtures/optimize/example-input.json --target-file ./fixtures/prompts/example.prompt.md --budget light`
+- `cautilus optimize search prepare-input --input-json '{...}' --json`
 - `cautilus optimize search run --input ./fixtures/optimize/search-input.json`
 - `cautilus optimize propose --from-search ./fixtures/optimize/search-result.json`
 - one checked-in flow test that proves:
   - candidate lineage is preserved
   - Pareto frontier metadata is emitted
   - the selected candidate remains reopenable as a bounded revision artifact
+  - blocked readiness emits machine-readable reason codes and the canonical
+    input file path
 
 ## Canonical Artifact
 
@@ -359,3 +466,4 @@ without claiming full merge-aware GEPA behavior yet.
 - Do not let the search loop auto-apply consumer-owned prompt edits.
 - Do not weaken held-out, comparison, or structured review gates to make a
   frontier candidate survive.
+- Do not silently continue past sparse-evidence readiness failures.
