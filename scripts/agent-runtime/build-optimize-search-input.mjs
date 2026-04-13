@@ -27,6 +27,8 @@ const SEARCH_BUDGETS = {
 	},
 };
 
+const REVIEW_CHECKPOINT_POLICIES = new Set(["final_only", "frontier_promotions"]);
+
 const ARG_FIELDS = {
 	"--optimize-input": "optimizeInput",
 	"--target-file": "targetFile",
@@ -38,13 +40,14 @@ const ARG_FIELDS = {
 	"--profile": "profile",
 	"--split": "split",
 	"--budget": "budget",
+	"--review-checkpoint-policy": "reviewCheckpointPolicy",
 	"--output": "output",
 };
 
 function usage(exitCode = 0) {
 	const text = [
 		"Usage:",
-		"  node ./scripts/agent-runtime/build-optimize-search-input.mjs --optimize-input <file> [--target-file <file>] [--held-out-results-file <file>] [--budget <light|medium|heavy>] [--output <file>] [--json]",
+		"  node ./scripts/agent-runtime/build-optimize-search-input.mjs --optimize-input <file> [--target-file <file>] [--held-out-results-file <file>] [--budget <light|medium|heavy>] [--review-checkpoint-policy <final_only|frontier_promotions>] [--output <file>] [--json]",
 		"  node ./scripts/agent-runtime/build-optimize-search-input.mjs --input-json '<json>' [--output <file>] [--json]",
 		"",
 		"Output packet:",
@@ -92,6 +95,7 @@ function parseArgs(argv) {
 		profile: null,
 		split: null,
 		budget: "medium",
+		reviewCheckpointPolicy: "final_only",
 		output: null,
 		json: false,
 	};
@@ -110,6 +114,9 @@ function parseArgs(argv) {
 	}
 	if (!Object.prototype.hasOwnProperty.call(SEARCH_BUDGETS, options.budget)) {
 		fail(`--budget must be one of: ${Object.keys(SEARCH_BUDGETS).join(", ")}`);
+	}
+	if (!REVIEW_CHECKPOINT_POLICIES.has(options.reviewCheckpointPolicy)) {
+		fail(`--review-checkpoint-policy must be one of: ${[...REVIEW_CHECKPOINT_POLICIES].join(", ")}`);
 	}
 	return options;
 }
@@ -202,13 +209,13 @@ function deriveSelectionPolicy() {
 	};
 }
 
-function buildSearchConfig(budget) {
+function buildSearchConfig(budget, reviewCheckpointPolicy) {
 	return {
 		algorithm: "reflective_pareto",
 		budget,
 		...SEARCH_BUDGETS[budget],
 		candidateSelection: "pareto",
-		reviewCheckpointPolicy: "final_only",
+		reviewCheckpointPolicy,
 		fullGateCheckpointPolicy: "final_only",
 		selectionPolicy: deriveSelectionPolicy(),
 		mergeEnabled: false,
@@ -291,7 +298,15 @@ function resolveEvaluationContext(optimizeInput, options) {
 	};
 }
 
-function buildCanonicalPacket({ optimizeInputFile, optimizeInput, targetFileOverride, budget, evaluationOptions, now = new Date() }) {
+function buildCanonicalPacket({
+	optimizeInputFile,
+	optimizeInput,
+	targetFileOverride,
+	budget,
+	reviewCheckpointPolicy,
+	evaluationOptions,
+	now = new Date(),
+}) {
 	ensurePromptSearchTarget(optimizeInput);
 	const targetPath = resolveTargetPath(optimizeInput, targetFileOverride);
 	const targetFile = buildTargetRef(targetPath);
@@ -308,7 +323,7 @@ function buildCanonicalPacket({ optimizeInputFile, optimizeInput, targetFileOver
 			targetFile,
 			targetSnapshot: collectTargetSnapshot(targetPath),
 		},
-		searchConfig: buildSearchConfig(budget),
+		searchConfig: buildSearchConfig(budget, reviewCheckpointPolicy),
 		mutationEvidencePolicy: {
 			reportBuckets: ["regressed", "noisy"],
 			reviewFindingLimit: optimizeInput.optimizer?.plan?.reviewVariantLimit ?? 1,
@@ -338,22 +353,27 @@ function deriveRawInputPath(outputPath) {
 	return `${resolved}.raw.json`;
 }
 
+function preferRawString(rawValue, fallback) {
+	return typeof rawValue === "string" ? rawValue : fallback;
+}
+
 function resolveFromRawInput(rawInput, options) {
-	const optimizeInputFile = typeof rawInput.optimizeInputFile === "string" ? rawInput.optimizeInputFile : options.optimizeInput;
+	const optimizeInputFile = preferRawString(rawInput.optimizeInputFile, options.optimizeInput);
 	if (!optimizeInputFile) {
 		fail("input JSON must include optimizeInputFile");
 	}
 	return {
 		optimizeInputFile,
-		targetFile: typeof rawInput.targetFile === "string" ? rawInput.targetFile : options.targetFile,
-		heldOutResultsFile: typeof rawInput.heldOutResultsFile === "string" ? rawInput.heldOutResultsFile : options.heldOutResultsFile,
-		adapter: typeof rawInput.adapter === "string" ? rawInput.adapter : options.adapter,
-		adapterName: typeof rawInput.adapterName === "string" ? rawInput.adapterName : options.adapterName,
-		intent: typeof rawInput.intent === "string" ? rawInput.intent : options.intent,
-		baselineRef: typeof rawInput.baselineRef === "string" ? rawInput.baselineRef : options.baselineRef,
-		profile: typeof rawInput.profile === "string" ? rawInput.profile : options.profile,
-		split: typeof rawInput.split === "string" ? rawInput.split : options.split,
-		budget: typeof rawInput.budget === "string" ? rawInput.budget : options.budget,
+		targetFile: preferRawString(rawInput.targetFile, options.targetFile),
+		heldOutResultsFile: preferRawString(rawInput.heldOutResultsFile, options.heldOutResultsFile),
+		adapter: preferRawString(rawInput.adapter, options.adapter),
+		adapterName: preferRawString(rawInput.adapterName, options.adapterName),
+		intent: preferRawString(rawInput.intent, options.intent),
+		baselineRef: preferRawString(rawInput.baselineRef, options.baselineRef),
+		profile: preferRawString(rawInput.profile, options.profile),
+		split: preferRawString(rawInput.split, options.split),
+		budget: preferRawString(rawInput.budget, options.budget),
+		reviewCheckpointPolicy: preferRawString(rawInput.reviewCheckpointPolicy, options.reviewCheckpointPolicy),
 	};
 }
 
@@ -396,6 +416,7 @@ export function buildOptimizeSearchInput(argv, { now = new Date(), env = process
 		split: options.split,
 	};
 	let budget = options.budget;
+	let reviewCheckpointPolicy = options.reviewCheckpointPolicy;
 	if (options.inputJson) {
 		rawInput = options.inputJson;
 		const resolved = resolveFromRawInput(rawInput, options);
@@ -411,8 +432,12 @@ export function buildOptimizeSearchInput(argv, { now = new Date(), env = process
 			split: resolved.split,
 		};
 		budget = resolved.budget;
+		reviewCheckpointPolicy = resolved.reviewCheckpointPolicy;
 		if (!Object.prototype.hasOwnProperty.call(SEARCH_BUDGETS, budget)) {
 			fail(`budget must be one of: ${Object.keys(SEARCH_BUDGETS).join(", ")}`);
+		}
+		if (!REVIEW_CHECKPOINT_POLICIES.has(reviewCheckpointPolicy)) {
+			fail(`reviewCheckpointPolicy must be one of: ${[...REVIEW_CHECKPOINT_POLICIES].join(", ")}`);
 		}
 	}
 	const parsedOptimizeInput = parseOptimizeInputFile(optimizeInputFile);
@@ -421,6 +446,7 @@ export function buildOptimizeSearchInput(argv, { now = new Date(), env = process
 		optimizeInput: parsedOptimizeInput.packet,
 		targetFileOverride: targetFile,
 		budget,
+		reviewCheckpointPolicy,
 		evaluationOptions,
 		now,
 	});

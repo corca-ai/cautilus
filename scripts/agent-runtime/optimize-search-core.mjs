@@ -1,104 +1,12 @@
 import {
 	canRunMutation,
-	collectModeRunEntries,
 	collectTargetSnapshot,
 	evaluateMutationCandidates,
 	summarizeCandidateTelemetry,
 } from "./optimize-search-mutation.mjs";
-import { evaluateCandidateCheckpoints } from "./optimize-search-checkpoints.mjs";
+import { evaluateCandidateCheckpoints, runReviewCheckpoint } from "./optimize-search-checkpoints.mjs";
+import { collectFeedbackSignals, collectSeedHeldOutEntries } from "./optimize-search-readiness.mjs";
 import { dirname } from "node:path";
-
-function collectFindingMessages(items, field = "message") {
-	const source = Array.isArray(items) ? items : [];
-	return source
-		.map((item) => item?.[field])
-		.filter((value) => typeof value === "string" && value.length > 0);
-}
-
-function collectCompareSignals(modeRuns) {
-	const signals = [];
-	for (const modeRun of modeRuns) {
-		const compareArtifact = modeRun?.scenarioResults?.compareArtifact;
-		if (typeof compareArtifact?.summary === "string" && compareArtifact.summary.length > 0) {
-			signals.push(compareArtifact.summary);
-		}
-		signals.push(...collectFindingMessages(compareArtifact?.regressed, "reason"));
-		signals.push(...collectFindingMessages(compareArtifact?.noisy, "reason"));
-	}
-	return signals;
-}
-
-function collectReviewSignals(input) {
-	const reportFindings = collectFindingMessages(input.optimizeInput?.report?.humanReviewFindings);
-	const variants = Array.isArray(input.optimizeInput?.reviewSummary?.variants)
-		? input.optimizeInput.reviewSummary.variants
-		: [];
-	const variantFindings = variants.flatMap((variant) => collectFindingMessages(variant?.output?.findings));
-	return [...reportFindings, ...variantFindings];
-}
-
-function collectHistorySignals(input) {
-	const signals = [];
-	for (const [scenarioId, stats] of Object.entries(input.optimizeInput?.scenarioHistory?.scenarioStats || {})) {
-		const latest = Array.isArray(stats?.recentTrainResults) ? stats.recentTrainResults[0] : null;
-		if (!latest) {
-			continue;
-		}
-		if (latest.status !== "passed" || latest.overallScore !== 100 || latest.passRate !== 1) {
-			signals.push(`${scenarioId} remains unstable in recent train history`);
-		}
-	}
-	return signals;
-}
-
-export function collectFeedbackSignals(input) {
-	const modeRuns = Array.isArray(input.optimizeInput?.report?.modeRuns) ? input.optimizeInput.report.modeRuns : [];
-	return [
-		...collectCompareSignals(modeRuns),
-		...collectReviewSignals(input),
-		...collectHistorySignals(input),
-	];
-}
-
-export function collectSeedHeldOutEntries(packet) {
-	if (packet?.heldOutResults?.results) {
-		return collectHeldOutEntriesFromResults(packet.heldOutResults, "seed");
-	}
-	const modeRuns = Array.isArray(packet?.optimizeInput?.report?.modeRuns) ? packet.optimizeInput.report.modeRuns : [];
-	return modeRuns.flatMap((modeRun) => collectModeRunEntries(modeRun, "seed"));
-}
-
-function inferScenarioScore(result) {
-	if (typeof result?.overallScore === "number") {
-		return result.overallScore;
-	}
-	if (typeof result?.passRate === "number") {
-		return result.passRate * 100;
-	}
-	if (typeof result?.status === "string") {
-		return result.status === "passed" ? 100 : 0;
-	}
-	return null;
-}
-
-function toHeldOutEntry(result, mode, candidateId) {
-	return {
-		candidateId,
-		scenarioId: result.scenarioId,
-		mode,
-		score: inferScenarioScore(result),
-		status: result.status || null,
-		telemetry: result.telemetry || {},
-	};
-}
-
-function collectHeldOutEntriesFromResults(resultsPacket, candidateId) {
-	const results = Array.isArray(resultsPacket?.results) ? resultsPacket.results : [];
-	const mode = resultsPacket?.mode || "held_out";
-	return results
-		.filter((result) => typeof result?.scenarioId === "string" && result.scenarioId.length > 0)
-		.map((result) => toHeldOutEntry(result, mode, candidateId));
-}
 
 function buildBlockedResult(input, inputFile, reasons, missingEvidence, schemaVersion, now = new Date()) {
 	return {
@@ -260,6 +168,40 @@ function candidateRegistry(candidates) {
 	}));
 }
 
+function createCheckpointLedger() { return { review: [], fullGate: [] }; }
+function checkpointKey(outcome) { return `${outcome?.type || "unknown"}:${outcome?.candidateId || "unknown"}`; }
+
+function recordCheckpointOutcome(collection, outcome) {
+	if (!outcome || outcome.status === "skipped") {
+		return;
+	}
+	const key = checkpointKey(outcome);
+	if (collection.some((item) => checkpointKey(item) === key)) {
+		return;
+	}
+	collection.push(outcome);
+}
+
+function shouldReviewFrontierPromotions(packet) { return packet.searchConfig?.reviewCheckpointPolicy === "frontier_promotions"; }
+function candidatePassedPromotionReview(candidate) { return candidate?.promotionReviewOutcome?.admissible !== false; }
+
+function recordFrontierPromotionReviews(packet, artifactRoot, candidates, scenarioIds, checkpointLedger, env) {
+	if (!shouldReviewFrontierPromotions(packet)) {
+		return;
+	}
+	const matrix = candidates.flatMap((candidate) => candidate.heldOutEntries || []);
+	const frontierIds = frontierCandidateIds(matrix, candidates.map((candidate) => candidate.id), scenarioIds);
+	for (const candidateId of frontierIds) {
+		const candidate = candidates.find((item) => item.id === candidateId);
+		if (!candidate || candidate.promotionReviewOutcome) {
+			continue;
+		}
+		const outcome = runReviewCheckpoint(packet, artifactRoot, candidate, env);
+		candidate.promotionReviewOutcome = outcome;
+		recordCheckpointOutcome(checkpointLedger.review, outcome);
+	}
+}
+
 function countExecutedCheckpoints(items) {
 	return items.filter((item) => item?.status && item.status !== "skipped").length;
 }
@@ -279,10 +221,10 @@ function selectionContext(packet, candidates) {
 	};
 }
 
-function selectionOutcomeFor(packet, artifactRoot, candidates, rankedFrontierIds, env) {
+function selectionOutcomeFor(packet, artifactRoot, candidates, rankedFrontierIds, env, checkpointLedger) {
 	const checkpointOutcomes = {
-		review: [],
-		fullGate: [],
+		review: [...checkpointLedger.review],
+		fullGate: [...checkpointLedger.fullGate],
 	};
 	const rejectedFinalistCandidateIds = [];
 	const rejectionReasons = {};
@@ -292,8 +234,12 @@ function selectionOutcomeFor(packet, artifactRoot, candidates, rankedFrontierIds
 			continue;
 		}
 		const checkpointOutcome = evaluateCandidateCheckpoints(packet, artifactRoot, candidate, env);
-		checkpointOutcomes.review.push(checkpointOutcome.review);
-		checkpointOutcomes.fullGate.push(checkpointOutcome.fullGate);
+		if (checkpointOutcome.executed?.review) {
+			recordCheckpointOutcome(checkpointOutcomes.review, checkpointOutcome.review);
+		}
+		if (checkpointOutcome.executed?.fullGate) {
+			recordCheckpointOutcome(checkpointOutcomes.fullGate, checkpointOutcome.fullGate);
+		}
 		if (checkpointOutcome.admissible) {
 			return {
 				selectedCandidateId: candidateId,
@@ -447,8 +393,14 @@ function nextGenerationParents(packet, allCandidates, scenarioIds) {
 	const matrix = allCandidates.flatMap((candidate) => candidate.heldOutEntries || []);
 	const candidateIds = allCandidates.map((candidate) => candidate.id);
 	const frontierIds = frontierCandidateIds(matrix, candidateIds, scenarioIds);
+	const parentFrontierIds = shouldReviewFrontierPromotions(packet)
+		? frontierIds.filter((candidateId) => {
+			const candidate = allCandidates.find((item) => item.id === candidateId);
+			return candidatePassedPromotionReview(candidate);
+		})
+		: frontierIds;
 	return retainParentCandidates(
-		frontierIds,
+		parentFrontierIds,
 		matrix,
 		allCandidates,
 		scenarioIds,
@@ -467,11 +419,12 @@ function appendGenerationSummary(allCandidates, generationSummaries, generationI
 	));
 }
 
-function runGenerations(packet, artifactRoot, seedCandidate, readiness, env) {
+function runGenerations(packet, artifactRoot, seedCandidate, readiness, checkpointLedger, env) {
 	const scenarioIds = scenarioIdsForPacket(packet, seedCandidate.heldOutEntries);
 	const allCandidates = [seedCandidate];
 	const generationSummaries = [];
 	let stopReason = "seed_only";
+	recordFrontierPromotionReviews(packet, artifactRoot, allCandidates, scenarioIds, checkpointLedger, env);
 	for (let generationIndex = 1; generationIndex <= packet.searchConfig.generationLimit; generationIndex += 1) {
 		const parentCandidates = nextGenerationParents(packet, allCandidates, scenarioIds);
 		const evaluatedCandidates = evaluateMutationCandidates(packet, artifactRoot, parentCandidates, readiness.feedbackSignals, env, {
@@ -487,15 +440,16 @@ function runGenerations(packet, artifactRoot, seedCandidate, readiness, env) {
 			};
 		}
 		allCandidates.push(...evaluatedCandidates);
+		recordFrontierPromotionReviews(packet, artifactRoot, allCandidates, scenarioIds, checkpointLedger, env);
 		appendGenerationSummary(allCandidates, generationSummaries, generationIndex, evaluatedCandidates, parentCandidates, scenarioIds);
 		stopReason = generationIndex === packet.searchConfig.generationLimit ? "generation_limit" : "frontier_continue";
 	}
 	return { allCandidates, generationSummaries, stopReason };
 }
 
-function finalizeSearchResult(packet, inputFile, artifactRoot, candidates, schemaVersion, stopReason, generationSummaries, env, now) {
+function finalizeSearchResult(packet, inputFile, artifactRoot, candidates, schemaVersion, stopReason, generationSummaries, checkpointLedger, env, now) {
 	const context = selectionContext(packet, candidates);
-	const selectionOutcome = selectionOutcomeFor(packet, artifactRoot, candidates, context.rankedFrontierIds, env);
+	const selectionOutcome = selectionOutcomeFor(packet, artifactRoot, candidates, context.rankedFrontierIds, env, checkpointLedger);
 	if (selectionOutcome.status === "blocked") {
 		return buildCheckpointBlockedResult(
 			packet,
@@ -533,9 +487,10 @@ export function runOptimizeSearch(packet, {
 	}
 	const seedCandidate = buildSeedSearchCandidate(packet);
 	const artifactRoot = dirname(outputFile || inputFile || packet.optimizeInputFile);
+	const checkpointLedger = createCheckpointLedger();
 	try {
 		const result = canRunMutation(packet)
-			? runGenerations(packet, artifactRoot, seedCandidate, readiness, env)
+			? runGenerations(packet, artifactRoot, seedCandidate, readiness, checkpointLedger, env)
 			: { allCandidates: [seedCandidate], generationSummaries: [], stopReason: "seed_only" };
 		return finalizeSearchResult(
 			packet,
@@ -545,11 +500,23 @@ export function runOptimizeSearch(packet, {
 			schemaVersion,
 			result.stopReason,
 			result.generationSummaries,
+			checkpointLedger,
 			env,
 			now,
 		);
 	} catch {
-		return finalizeSearchResult(packet, inputFile, artifactRoot, [seedCandidate], schemaVersion, "seed_only", [], env, now);
+		return finalizeSearchResult(
+			packet,
+			inputFile,
+			artifactRoot,
+			[seedCandidate],
+			schemaVersion,
+			"seed_only",
+			[],
+			checkpointLedger,
+			env,
+			now,
+		);
 	}
 }
 

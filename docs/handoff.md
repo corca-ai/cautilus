@@ -26,7 +26,8 @@
   - reflective mutation
   - multi-generation Pareto frontier retention
   - optional bounded merge candidate
-  - final-only review/full-gate checkpoint execution
+  - optional `frontier_promotions` review checkpoint execution
+  - final-only full-gate checkpoint execution
   - ranked-frontier fallback when the leader fails final checkpoints
   - blocked result when no checkpoint-admissible finalist survives
 - 이 흐름은 현재 README/spec/current contract와 sync되어 있다.
@@ -51,33 +52,32 @@
 - `npm run lint:specs`
 - `npm run verify`
 - `npm run hooks:check`
-- latest full verify after checkpoint fallback commit: passed
+- latest full verify after frontier-promotion review checkpoint slice: passed
 
 ## Next Session
 
-1. `v2` 범위를 먼저 spec으로 짧게 고정한다.
-2. 우선순위는 `frontier_promotions` review checkpoint 실행이다.
-3. 그 다음 checkpoint rejection reason을 다음 generation mutation feedback에 다시 주입할지 정한다.
-4. 마지막으로 merge parent selection을 더 system-aware하게 만들지, 아니면 multi-parent synthesis를 먼저 열지 결정한다.
+1. `v2` 범위를 `checkpoint-to-mutation feedback` 중심으로 짧게 다시 고정한다.
+2. `frontier_promotions`에서 나온 rejection reason을 다음 generation mutation feedback에 재주입할 계약과 artifact shape를 정한다.
+3. 그 다음 merge parent selection을 더 system-aware하게 만들지, 아니면 multi-parent synthesis를 먼저 열지 결정한다.
+4. 마지막으로 `medium`/`heavy` budget의 기본 review checkpoint policy를 올릴지 운영 비용 기준으로 판단한다.
 
 ## Discuss
 
 - 아직 `v2`는 아니다.
-- 지금 닫힌 것은 “bounded GEPA slice with final-only checkpoint fallback”이다.
+- 지금 닫힌 것은 “bounded GEPA slice with optional frontier-promotion review + final-only full-gate fallback”이다.
 - 다음 세션의 첫 결정은 이것이다:
-  - `v2`를 `frontier_promotions + checkpoint-to-mutation feedback`까지로 자를지
+  - `v2`를 `checkpoint-to-mutation feedback`까지로 자를지
   - 아니면 merge intelligence까지 한 번에 넣을지
 - 제 추천은 먼저
-  - `frontier_promotions`
   - checkpoint feedback reinjection
-  두 개를 `v2` 핵심으로 자르고, merge intelligence는 그 다음 slice로 두는 것이다.
+  를 `v2` 핵심으로 자르고, merge intelligence는 그 다음 slice로 두는 것이다.
 
 ## Premortem
 
 - 가장 쉬운 오해: “GEPA 반영이 완전히 끝났다”는 해석.
   아니다. 현재는 strong `v1.5`다.
-- 두 번째 오해: 현재 search가 generation 중간 checkpoint까지 이미 돈다는 해석.
-  아니다. 지금은 `final_only`만 실행한다.
+- 두 번째 오해: 현재 search가 generation 중간 checkpoint와 mutation feedback reinjection까지 모두 닫혔다는 해석.
+  아니다. 지금은 frontier 승격 시 review 실행까지만 닫혔고, rejection feedback reinjection은 아직 없다.
 - 세 번째 오해: merge가 이미 fully system-aware하다는 해석.
   아니다. 현재 merge는 bounded 2-parent synthesis다.
 

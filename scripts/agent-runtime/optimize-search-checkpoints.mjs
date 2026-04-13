@@ -106,6 +106,24 @@ function reviewFailureOutcome(candidate, outputDir, summaryFile, result, reason)
 	};
 }
 
+function reviewOutcomeForSelection(packet, artifactRoot, candidate, env) {
+	if (packet.searchConfig?.reviewCheckpointPolicy === "frontier_promotions") {
+		if (candidate.promotionReviewOutcome) {
+			return {
+				outcome: candidate.promotionReviewOutcome,
+				executed: false,
+			};
+		}
+		const outcome = runReviewCheckpoint(packet, artifactRoot, candidate, env);
+		candidate.promotionReviewOutcome = outcome;
+		return { outcome, executed: true };
+	}
+	return {
+		outcome: runReviewCheckpoint(packet, artifactRoot, candidate, env),
+		executed: true,
+	};
+}
+
 export function runReviewCheckpoint(packet, artifactRoot, candidate, env) {
 	const payload = adapterPayload(packet);
 	if (!payload.found || !payload.valid || !hasExecutorVariants(payload)) {
@@ -217,15 +235,18 @@ export function runFullGateCheckpoint(packet, artifactRoot, candidate, env) {
 }
 
 export function evaluateCandidateCheckpoints(packet, artifactRoot, candidate, env) {
-	const review = packet.searchConfig?.reviewCheckpointPolicy === "final_only"
-		? runReviewCheckpoint(packet, artifactRoot, candidate, env)
-		: skipOutcome("review", candidate, "policy_disabled");
+	const reviewResult = reviewOutcomeForSelection(packet, artifactRoot, candidate, env);
+	const review = reviewResult.outcome;
 	if (!review.admissible) {
 		return {
 			admissible: false,
 			rejectionReasons: review.rejectionReasons,
 			review,
 			fullGate: skipOutcome("full_gate", candidate, "review_rejected"),
+			executed: {
+				review: reviewResult.executed,
+				fullGate: false,
+			},
 		};
 	}
 	const fullGate = packet.searchConfig?.fullGateCheckpointPolicy === "final_only"
@@ -236,5 +257,9 @@ export function evaluateCandidateCheckpoints(packet, artifactRoot, candidate, en
 		rejectionReasons: [...review.rejectionReasons, ...fullGate.rejectionReasons],
 		review,
 		fullGate,
+		executed: {
+			review: reviewResult.executed,
+			fullGate: fullGate.status !== "skipped",
+		},
 	};
 }

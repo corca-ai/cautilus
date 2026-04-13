@@ -44,7 +44,8 @@ This slice defines a first `GEPA`-inspired search contract for `Cautilus`:
 - candidate selection is Pareto-based over per-scenario validation scores
 - the current implementation closes packet assembly, readiness gating,
   multi-generation reflective mutation, bounded merge synthesis, held-out
-  reevaluation, final-only checkpoint fallback, and the proposal bridge
+  reevaluation, frontier-promotion review execution, final-only checkpoint
+  fallback, and the proposal bridge
 - reflective mutation is evidence-aware rewriting, not random string editing
 - the search output stays reopenable as a durable artifact and can feed the
   existing bounded `optimize propose` seam
@@ -77,8 +78,8 @@ This slice defines a first `GEPA`-inspired search contract for `Cautilus`:
 
 ## Probe Questions
 
-- Should `medium` and `heavy` budgets allow `frontier_promotions` review
-  checkpoints once the simpler `final_only` path is proven?
+- Should `medium` and `heavy` budgets default to `frontier_promotions` once
+  operator cost expectations are better calibrated?
 - When cost or latency constraints are declared, should v1 reject candidate
   promotion immediately on constraint breach, or keep the candidate in search
   but mark it ineligible for final selection?
@@ -93,7 +94,6 @@ This slice defines a first `GEPA`-inspired search contract for `Cautilus`:
 - automatic prompt patch application to consumer-owned files
 - richer merge-parent selection, >2-parent synthesis, and smarter crossover
   heuristics
-- executing `frontier_promotions` review checkpoints inside the loop
 - feeding checkpoint rejection reasons back into later-generation mutation
 
 ## Non-Goals
@@ -325,7 +325,8 @@ Current implementation note:
 
 - v1 executes the bounded multi-generation loop, including reflective mutation,
   optional merge generation, held-out reevaluation, frontier retention,
-  final-only review/full-gate checkpoints, and proposal bridging
+  optional frontier-promotion review checkpoints, final-only full-gate
+  checkpoints, and proposal bridging
 - when the frontier leader fails a final checkpoint, `optimize search run`
   falls back to the next ranked frontier candidate
 - when every frontier finalist fails the final checkpoints, `optimize search
@@ -468,15 +469,14 @@ The current bounded slice already proves:
 - multi-generation Pareto frontier retention over per-scenario scores
 - reflective mutation from explicit evidence
 - optional bounded merge generation from complementary frontier parents
-- final-only review/full-gate checkpoint execution with ranked-frontier
-  fallback
+- optional frontier-promotion review checkpoint execution
+- final-only full-gate checkpoint execution with ranked-frontier fallback
 - selected-candidate emission and proposal bridging back into the existing
   optimize artifact flow
 
-The next slice can build on this by executing `frontier_promotions` review
-checkpoints inside the loop, feeding checkpoint rejections back into later
-mutation, and making merge selection more system-aware, without reshaping the
-packet boundary.
+The next slice can build on this by feeding checkpoint rejections back into
+later mutation and making merge selection more system-aware, without
+reshaping the packet boundary.
 
 ## Guardrails
 

@@ -489,12 +489,14 @@ test("build-optimize-search-input assembles a canonical packet from optimize inp
 				heldOutResultsPath,
 				"--budget",
 				"light",
+				"--review-checkpoint-policy",
+				"frontier_promotions",
 			],
 			{ now: new Date("2026-04-13T10:00:00.000Z") },
 		);
 		assert.equal(packet.schemaVersion, "cautilus.optimize_search_inputs.v1");
 		assert.equal(packet.optimizationTarget, "prompt");
-		assert.equal(packet.searchConfig.reviewCheckpointPolicy, "final_only");
+		assert.equal(packet.searchConfig.reviewCheckpointPolicy, "frontier_promotions");
 		assert.deepEqual(packet.searchConfig.selectionPolicy.tieBreakers, ["lower_cost", "lower_latency"]);
 		assert.deepEqual(packet.scenarioSets.heldOutScenarioSet, ["operator-recovery"]);
 		assert.equal(packet.evaluationContext.mode, "held_out");
@@ -1268,6 +1270,48 @@ test("run-optimize-search falls back to the next frontier candidate when final r
 		assert.match(readFileSync(result.proposalBridge.selectedTargetFile.path, "utf-8"), /follow-up handoff map/);
 		assert.equal(result.checkpointOutcomes.review[0].admissible, false);
 		assert.equal(result.checkpointOutcomes.review[1].admissible, true);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+		rmSync(artifactRoot, { recursive: true, force: true });
+	}
+});
+
+test("run-optimize-search reuses frontier-promotion review checkpoints before final selection", () => {
+	const { root, artifactRoot, optimizeInputPath, heldOutResultsPath } = createCheckpointFallbackFixture({
+		includeReviewVariants: true,
+		gateFailsOnChecklist: false,
+	});
+	try {
+		const { packet } = buildOptimizeSearchInput(
+			["--optimize-input", optimizeInputPath, "--held-out-results-file", heldOutResultsPath, "--budget", "medium"],
+			{ now: new Date("2026-04-13T10:00:00.000Z") },
+		);
+		packet.searchConfig.reviewCheckpointPolicy = "frontier_promotions";
+		packet.searchConfig.generationLimit = 1;
+		packet.searchConfig.mergeEnabled = false;
+		packet.mutationConfig.backends = [
+			{ id: "codex-mutate", backend: "codex_exec" },
+			{ id: "claude-mutate", backend: "claude_p" },
+		];
+		const result = runOptimizeSearch(packet, {
+			inputFile: join(root, "optimize-search-input.json"),
+			outputFile: join(artifactRoot, "optimize-search-result.json"),
+			now: new Date("2026-04-13T10:01:00.000Z"),
+			env: {
+				...process.env,
+				PATH: `${root}:${process.env.PATH ?? ""}`,
+			},
+		});
+		assert.equal(result.status, "completed");
+		assert.equal(result.searchTelemetry.reviewCheckpointCount, 2);
+		assert.equal(result.searchTelemetry.fullGateCheckpointCount, 1);
+		assert.deepEqual(
+			result.checkpointOutcomes.review.map((outcome) => outcome.candidateId),
+			["g1-1-codex-exec", "g1-2-claude-p"],
+		);
+		assert.deepEqual(result.selectionTelemetry.rejectedFinalistCandidateIds, ["g1-1-codex-exec"]);
+		assert.deepEqual(result.selectionTelemetry.rejectionReasons["g1-1-codex-exec"], ["review:operator-review:blocker"]);
+		assert.equal(result.selectedCandidateId, "g1-2-claude-p");
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 		rmSync(artifactRoot, { recursive: true, force: true });
