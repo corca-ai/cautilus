@@ -33,6 +33,11 @@
 - Homebrew는 더 이상 deferred note가 아니다.
   - release workflow가 formula artifact를 만들고
     `HOMEBREW_TAP_TOKEN`이 있으면 tap publish까지 수행한다.
+- 다른 머신용 operator install guide를 추가했다.
+  - [install.md](../install.md)
+- 이 머신에는 user-local fallback prefix로 Homebrew를 미리 설치했다.
+  - `~/.linuxbrew/bin/brew`
+  - `~/.zshrc`에서 `brew shellenv`를 로드한다.
 - `CLI product evaluation` surface는 `cautilus`에서 제거됐다.
   - `cli evaluate`
   - `scenario normalize cli`
@@ -57,16 +62,25 @@
 - `node --test bin/*.test.mjs scripts/release/*.test.mjs`
 - `npm run verify`
 - `npm run hooks:check`
+- 실제 release install smoke:
+  - `CAUTILUS_VERSION=v0.2.1 ./install.sh`
+  - installed wrapper 경유 `cautilus --version`
+- login shell에서 `brew --version`
 - CLI-eval 잔흔 검색:
   history note인 [docs/temp-product-decisions-2026-04-10.md](./temp-product-decisions-2026-04-10.md)만 남고,
   제품 surface 쪽 검색은 비웠다.
 
 ## Next Session
 
-1. 실제 zero-state machine이나 clean shell에서 `install.sh`, `brew install`, `cautilus update`를 한번씩 smoke한다.
-2. `cautilus` 바이너리 설치 surface가 실제로 안정적이면 그 다음 `crill`에서
+1. unreleased install-surface fixes를 patch release로 묶는다.
+   - `install.sh` checksum manifest의 `dist/` prefix 허용
+   - Go managed installer도 같은 형식을 허용
+2. 새 tag에서 release workflow를 다시 태워 Homebrew tap publish를 확인한다.
+   - org secret `HOMEBREW_TAP_TOKEN`은 이미 추가됐다고 들은 상태다.
+3. 그 다음 실제 zero-state machine이나 clean shell에서 `brew install`, `cautilus update`를 smoke한다.
+4. `cautilus` 바이너리 설치 surface가 실제로 안정적이면 그 다음 `crill`에서
    `scripts/cautilus/cli-product-scan/` seed를 실제 확장으로 다듬는다.
-3. `cautilus`에서 남은 정리는 history note 정리 정도다.
+5. `cautilus`에서 남은 정리는 history note 정리 정도다.
    - [docs/temp-product-decisions-2026-04-10.md](./temp-product-decisions-2026-04-10.md)
 
 ## Discuss

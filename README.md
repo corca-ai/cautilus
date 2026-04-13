@@ -127,6 +127,8 @@ Dogfood and migration evidence is tracked separately in
   from extraction scaffold to standalone product
 - [docs/release-boundary.md](./docs/release-boundary.md):
   current standalone release surface and compatibility discipline
+- [install.md](./install.md):
+  operator-facing install and update guide for another machine
 - [docs/cli-distribution.md](./docs/cli-distribution.md):
   durable install, distribution, and Go-port tradeoffs for the standalone CLI
 - [docs/releasing.md](./docs/releasing.md):
@@ -186,6 +188,9 @@ Dogfood and migration evidence is tracked separately in
 - [bin/cautilus](./bin/cautilus): minimal CLI entrypoint
 
 ## Quick Start
+
+For the operator-facing install flow on another machine, start with
+[install.md](./install.md).
 
 Install from a tagged GitHub release:
 

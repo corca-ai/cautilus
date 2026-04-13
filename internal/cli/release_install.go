@@ -243,7 +243,7 @@ func findExpectedSHA256(checksums string, assetName string) (string, error) {
 		if len(fields) != 2 {
 			continue
 		}
-		if fields[1] == assetName {
+		if filepath.Base(fields[1]) == assetName {
 			return fields[0], nil
 		}
 	}

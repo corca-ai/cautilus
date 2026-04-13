@@ -86,6 +86,7 @@ node ./scripts/release/render-homebrew-formula.mjs \
   release workflow shape changes, update the verification example above in the
   same change.
 - If the installer contract changes, update [README.md](../README.md),
+  [install.md](../install.md),
   [docs/handoff.md](./handoff.md), and
   [docs/release-boundary.md](./release-boundary.md)
   in the same work unit.

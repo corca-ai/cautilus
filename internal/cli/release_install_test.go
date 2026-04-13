@@ -17,7 +17,7 @@ import (
 func TestInstallManagedReleaseWritesManagedWrapperAndBinary(t *testing.T) {
 	archiveBytes := buildReleaseArchive(t, "binary\n")
 	archiveSHA256 := sha256.Sum256(archiveBytes)
-	checksums := fmt.Sprintf("%s  cautilus_1.2.4_linux_x64.tar.gz\n", hex.EncodeToString(archiveSHA256[:]))
+	checksums := fmt.Sprintf("%s  dist/cautilus_1.2.4_linux_x64.tar.gz\n", hex.EncodeToString(archiveSHA256[:]))
 
 	installRoot := filepath.Join(t.TempDir(), "install-root")
 	binDir := filepath.Join(t.TempDir(), "bin")
@@ -90,6 +90,34 @@ func TestInstallManagedReleaseRejectsChecksumMismatch(t *testing.T) {
 	}
 	if !strings.Contains(err.Error(), "checksum mismatch") {
 		t.Fatalf("expected checksum mismatch, got %v", err)
+	}
+}
+
+func TestInstallManagedReleaseAcceptsChecksumManifestWithoutPathPrefix(t *testing.T) {
+	archiveBytes := buildReleaseArchive(t, "binary\n")
+	archiveSHA256 := sha256.Sum256(archiveBytes)
+	checksums := fmt.Sprintf("%s  cautilus_1.2.4_linux_x64.tar.gz\n", hex.EncodeToString(archiveSHA256[:]))
+
+	_, err := InstallManagedRelease(ReleaseInstallOptions{
+		Version:     "v1.2.4",
+		Repo:        "corca-ai/cautilus",
+		InstallRoot: filepath.Join(t.TempDir(), "install-root"),
+		BinDir:      filepath.Join(t.TempDir(), "bin"),
+		OS:          "linux",
+		Arch:        "amd64",
+		Download: func(ctx context.Context, url string) ([]byte, error) {
+			switch {
+			case strings.HasSuffix(url, ".tar.gz"):
+				return archiveBytes, nil
+			case strings.HasSuffix(url, "checksums.txt"):
+				return []byte(checksums), nil
+			default:
+				return nil, fmt.Errorf("unexpected URL: %s", url)
+			}
+		},
+	})
+	if err != nil {
+		t.Fatalf("InstallManagedRelease returned error: %v", err)
 	}
 }
 

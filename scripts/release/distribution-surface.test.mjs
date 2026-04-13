@@ -71,6 +71,8 @@ test("install.sh downloads a tagged binary asset and writes a wrapper that prese
 	assert.match(installer, /ASSET_NAME="cautilus_\$\{VERSION_TRIMMED\}_\$\{ASSET_OS\}_\$\{ASSET_ARCH\}\.tar\.gz"/);
 	assert.match(installer, /releases\/download\/\$VERSION\/\$ASSET_NAME/);
 	assert.match(installer, /releases\/download\/\$VERSION\/cautilus-\$VERSION-checksums\.txt/);
+	assert.match(installer, /path = \$2/);
+	assert.match(installer, /if \(path == asset\)/);
 	assert.match(installer, /sha256sum "\$1" \| awk '\{print \$1\}'/);
 	assert.match(installer, /shasum -a 256 "\$1" \| awk '\{print \$1\}'/);
 	assert.match(installer, /Checksum mismatch for %s/);

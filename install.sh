@@ -91,7 +91,18 @@ mkdir -p "$INSTALL_ROOT" "$BIN_DIR"
 printf 'Installing Cautilus %s from %s\n' "$VERSION" "$ARCHIVE_URL"
 curl -fsSL "$ARCHIVE_URL" -o "$ARCHIVE_PATH"
 curl -fsSL "$CHECKSUMS_URL" -o "$CHECKSUMS_PATH"
-EXPECTED_SHA256="$(grep "  $ASSET_NAME\$" "$CHECKSUMS_PATH" | awk '{print $1}')"
+EXPECTED_SHA256="$(
+	awk -v asset="$ASSET_NAME" '
+		{
+			path = $2
+			sub(/^.*\//, "", path)
+			if (path == asset) {
+				print $1
+				exit
+			}
+		}
+	' "$CHECKSUMS_PATH"
+)"
 if [ -z "$EXPECTED_SHA256" ]; then
 	printf 'Failed to find %s in %s\n' "$ASSET_NAME" "$CHECKSUMS_URL" >&2
 	exit 1

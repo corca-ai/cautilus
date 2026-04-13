@@ -13,6 +13,8 @@ As of the current release line:
 - the product-owned runtime no longer depends on `python3`
 - the canonical public install surface is tagged GitHub releases plus
   [`install.sh`](../install.sh) and Homebrew
+- the operator-facing step-by-step install guide lives in
+  [install.md](../install.md)
 - `install.sh` should install `Cautilus` itself, not operating-system
   dependencies
 - `install.sh` now downloads the matching tagged binary asset for the host
