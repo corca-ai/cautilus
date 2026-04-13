@@ -37,6 +37,28 @@ export function buildPublishedReport(repoRoot, report) {
 	};
 }
 
+export function buildPublishedSelfDogfoodReport(repoRoot, artifactRoot, report, summary) {
+	return {
+		...buildPublishedReport(repoRoot, report),
+		selfDogfoodPublication: {
+			schemaVersion: "cautilus.self_dogfood_publication.v1",
+			artifactRoot: makeRepoRelative(repoRoot, artifactRoot),
+			latestBundle: {
+				summaryPath: "artifacts/self-dogfood/latest/summary.json",
+				reportPath: "artifacts/self-dogfood/latest/report.json",
+				reviewSummaryPath: "artifacts/self-dogfood/latest/review-summary.json",
+				latestMarkdownPath: "artifacts/self-dogfood/latest/latest.md",
+				indexPath: "artifacts/self-dogfood/latest/index.html",
+			},
+			runId: summary.runId ?? null,
+			intent: summary.intent ?? report.intent ?? null,
+			overallStatus: summary.overallStatus ?? null,
+			gateRecommendation: summary.gateRecommendation ?? report.recommendation ?? null,
+			reportRecommendation: summary.reportRecommendation ?? null,
+		},
+	};
+}
+
 export function buildPublishedReviewSummary(repoRoot, reviewSummary) {
 	return {
 		...reviewSummary,

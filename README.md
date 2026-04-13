@@ -32,6 +32,61 @@ intent and evaluation contracts matter more than preserving one prompt
 verbatim, and prompts should be allowed to improve as long as the behavior
 survives evaluation.
 
+## Mental Model
+
+`Cautilus` is not primarily a prompt manager or a benchmark scrapbook.
+It treats prompts as mutable implementation detail and treats the evaluated
+behavior contract as the source of truth.
+
+The practical stance is:
+
+- define the intended behavior explicitly
+- separate iterate/train surfaces from held-out validation
+- keep evidence, review, and decisions in durable files
+- prefer bounded search and bounded revision over open-ended autonomous loops
+- let prompts change when held-out behavior and review discipline improve
+
+## Design Principles
+
+- `Intent-first`: the product centers the behavior being protected, not one
+  frozen prompt string.
+- `Packet-first`: every important boundary should be reopenable from files,
+  not reconstructed from shell history.
+- `Held-out honesty`: train and held-out serve different purposes and should
+  not silently collapse into one score.
+- `Structured review`: benchmark wins are not enough when operator-facing
+  behavior can still be misleading.
+- `Bounded autonomy`: search and revision should stop on explicit budgets,
+  checkpoints, and blocked-readiness conditions.
+
+## GEPA-Style Prompt Search
+
+`Cautilus` now includes a bounded search seam above the older one-shot
+optimization flow.
+It is inspired by DSPy's `GEPA`, but adapted to `Cautilus`'s file-based,
+consumer-owned boundary rather than importing DSPy's runtime directly.
+
+Current search behavior:
+
+- `cautilus optimize search prepare-input` materializes a canonical search
+  packet from explicit optimize, held-out, and review evidence
+- `cautilus optimize search run` keeps a seed candidate, generates reflective
+  prompt mutations, reevaluates them on held-out scenarios, and selects from a
+  Pareto-style frontier over per-scenario scores
+- cost and latency are recorded as telemetry and tie-break signals rather than
+  dominating the primary behavior objective
+- sparse evidence blocks search early with machine-readable JSON so an agent or
+  operator can discuss what is missing before generating candidates
+- the selected candidate bridges back into the bounded
+  `cautilus optimize propose` and `cautilus optimize build-artifact` flow
+
+This is intentionally a bounded first slice, not the final word on prompt
+evolution.
+The current implementation closes reflective mutation, held-out reevaluation,
+search-readiness blocking, and proposal bridging.
+Later slices can still add richer frontier management, merge/crossover, and
+stronger self-dogfood loops.
+
 ## Current Status
 
 This repo is still early.
@@ -66,6 +121,8 @@ Current `product-owned helper surface`:
 - scenario telemetry summaries
 - normalized evidence bundling
 - bounded optimization input and proposal helpers
+- GEPA-style bounded prompt search with reflective mutation and held-out
+  candidate reevaluation
 
 Dogfood and migration evidence is tracked separately in
 [consumer-readiness.md](./docs/consumer-readiness.md) and
@@ -440,6 +497,25 @@ cautilus optimize prepare-input \
 cautilus optimize propose \
   --input /tmp/cautilus-optimize/input.json
 ```
+
+Run the GEPA-style bounded prompt search seam above that optimize packet:
+
+```bash
+cautilus optimize search prepare-input \
+  --optimize-input /tmp/cautilus-optimize/input.json \
+  --held-out-results-file /tmp/cautilus-mode/held_out-scenario-results.json \
+  --budget light
+
+cautilus optimize search run \
+  --input /tmp/cautilus-run/optimize-search-input.json
+
+cautilus optimize propose \
+  --from-search /tmp/cautilus-run/optimize-search-result.json
+```
+
+If the repo is not search-ready yet, `optimize search run` returns a blocked
+machine-readable result instead of improvising candidate prompts from weak
+evidence.
 
 Assemble that input packet from split normalized source files:
 

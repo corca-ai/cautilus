@@ -7,40 +7,40 @@
   "reviewPromptInputFile": null,
   "schemaFile": "fixtures/workbench/review-verdict.schema.json",
   "telemetry": {
-    "averageVariantDurationMs": 9524,
-    "completedAt": "2026-04-13T20:18:21.307987266Z",
-    "durationMs": 9524,
+    "averageVariantDurationMs": 12935,
+    "completedAt": "2026-04-13T20:32:50.303049569Z",
+    "durationMs": 12935,
     "failedVariantCount": 0,
     "passedVariantCount": 1,
-    "startedAt": "2026-04-13T20:18:11.783656318Z",
+    "startedAt": "2026-04-13T20:32:37.367248538Z",
     "variantCount": 1
   },
   "variants": [
     {
       "command": null,
-      "completedAt": "2026-04-13T20:18:21.307987266Z",
-      "durationMs": 9524,
+      "completedAt": "2026-04-13T20:32:50.303049569Z",
+      "durationMs": 12935,
       "exitCode": 0,
       "id": "codex-review",
       "output": {
         "findings": [
           {
-            "message": "`report.json` only shows `full_gate` passing and leaves `gateRecommendation`, `reportRecommendation`, `artifactRoot`, and `reportPath` as null, so the packet does not directly prove that the self-dogfood result was recorded and surfaced for operators in the current run.",
-            "path": "artifacts/self-dogfood/runs/2026-04-13T20-17-22.443Z/mode/report.json",
-            "severity": "concern"
+            "message": "[artifacts/self-dogfood/runs/2026-04-13T20-32-28.429Z/mode/report.json] shows the self-dogfood packet with `recommendation: accept-now`, `full_gate` passing, and no human-review findings or regressions, which is consistent with an honest surfaced result for operators.",
+            "path": "artifacts/self-dogfood/runs/2026-04-13T20-32-28.429Z/mode/report.json",
+            "severity": "pass"
           },
           {
-            "message": "The automated `accept-now` recommendation is stronger than the evidence here. Passing `npm run verify` and `npm run hooks:check` supports baseline health, but it does not by itself establish the honesty/surfacing contract described in `docs/specs/self-dogfood.spec.md`.",
+            "message": "[docs/specs/self-dogfood.spec.md] narrows the canonical latest claim to \"record and surface its own self-dogfood result honestly\" and treats stronger standalone-binary or bundled-skill claims as separate experiment surfaces; this report matches that boundary.",
             "path": "docs/specs/self-dogfood.spec.md",
-            "severity": "concern"
+            "severity": "pass"
           }
         ],
-        "summary": "The current run shows the standing gates passed, but the report packet does not yet prove the narrower operator-facing claim that Cautilus honestly records and surfaces its own self-dogfood result. The evidence is enough for a defer, not an accept-now, because the report JSON has no surfaced artifact location and the claim is not directly demonstrated beyond passing verify/hooks.",
-        "verdict": "concern"
+        "summary": "The current report supports the narrow operator-facing claim: it records the self-dogfood run, shows the only executed mode (`full_gate`) passed, and surfaces the raw recommendation (`accept-now`) without inflating that evidence into stronger binary-surface or skill-surface claims. The report stays honest about scope by exposing only what this run actually proved, and the spec explicitly says the canonical latest claim should be this narrow.",
+        "verdict": "pass"
       },
       "outputFile": null,
       "signal": null,
-      "startedAt": "2026-04-13T20:18:11.783656318Z",
+      "startedAt": "2026-04-13T20:32:37.367248538Z",
       "status": "passed",
       "stderr": "",
       "stderrFile": null,

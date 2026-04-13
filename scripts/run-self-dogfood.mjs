@@ -6,7 +6,11 @@ import process from "node:process";
 
 import { loadAdapter as loadAdapterPayload } from "./resolve_adapter.mjs";
 import { pruneWorkspaceArtifacts } from "./agent-runtime/prune-workspace-artifacts.mjs";
-import { buildPublishedReport, buildPublishedReviewSummary, buildPublishedSummary } from "./self-dogfood-published-snapshot.mjs";
+import {
+	buildPublishedReviewSummary,
+	buildPublishedSelfDogfoodReport,
+	buildPublishedSummary,
+} from "./self-dogfood-published-snapshot.mjs";
 import { enrichExperimentPrompt } from "./self-dogfood-experiment-prompt.mjs";
 import { renderHtml as renderSelfDogfoodHtml } from "./render-self-dogfood-html.mjs";
 
@@ -454,6 +458,7 @@ function prepareReviewPrompt(repoRoot, modeReportPath, reviewDir, options) {
 		adapterName: options.reviewAdapterName ?? "self-dogfood",
 		reviewTimeoutMs: options.reviewTimeoutMs,
 		currentReportPath: modeReportPath,
+		projectedReportPath: join(reviewDir, "..", "report.json"),
 		projectedReviewSummaryPath: join(reviewDir, "review-summary.json"),
 		projectedSummaryPath: join(reviewDir, "..", "summary.json"),
 	});
@@ -500,9 +505,11 @@ function persistRunArtifacts(paths, report, reviewSummary, summary) {
 
 function finalizeRun(paths, summary, keepLast) {
 	const publishedSummary = buildPublishedSummary(paths.repoRoot, paths.artifactRoot, summary);
-	const publishedReport = buildPublishedReport(
+	const publishedReport = buildPublishedSelfDogfoodReport(
 		paths.repoRoot,
+		paths.artifactRoot,
 		readJsonFile(join(paths.runDir, "report.json"), "run report"),
+		publishedSummary,
 	);
 	const publishedReviewSummary = buildPublishedReviewSummary(
 		paths.repoRoot,

@@ -120,13 +120,21 @@ test("run-self-dogfood proves the root self-consumer quality path and writes lat
 		const publishedSummary = JSON.parse(readFileSync(join(artifactRoot, "latest", "summary.json"), "utf-8"));
 		assert.equal(publishedSummary.repoRoot, ".");
 		assert.equal(publishedSummary.reportPath, "artifacts/self-dogfood/latest/report.json");
+		const publishedReport = JSON.parse(readFileSync(join(artifactRoot, "latest", "report.json"), "utf-8"));
+		assert.equal(publishedReport.selfDogfoodPublication.schemaVersion, "cautilus.self_dogfood_publication.v1");
+		assert.equal(publishedReport.selfDogfoodPublication.artifactRoot, "artifacts");
+		assert.equal(publishedReport.selfDogfoodPublication.latestBundle.reviewSummaryPath, "artifacts/self-dogfood/latest/review-summary.json");
+		assert.equal(publishedReport.selfDogfoodPublication.gateRecommendation, "accept-now");
+		assert.equal(publishedReport.selfDogfoodPublication.reportRecommendation, "accept-now");
 		const publishedReviewSummary = JSON.parse(readFileSync(join(artifactRoot, "latest", "review-summary.json"), "utf-8"));
 		assert.equal(publishedReviewSummary.repoRoot, ".");
 		assert.equal(publishedReviewSummary.variants[0].outputFile, null);
 		const reviewPrompt = readFileSync(join(artifactRoot, "runs", "run-1", "review", "review.prompt.md"), "utf-8");
 		assert.match(reviewPrompt, /## Current Run Evidence/);
 		assert.match(reviewPrompt, /current gateRecommendation: accept-now/);
+		assert.match(reviewPrompt, /projected published report\.json:/);
 		assert.match(reviewPrompt, /projected summary\.json:/);
+		assert.match(reviewPrompt, /selfDogfoodPublication/);
 
 		const second = spawnSync(
 			"node",
@@ -173,6 +181,9 @@ test("run-self-dogfood keeps latest artifacts even when review returns concern",
 		assert.match(latest, /overallStatus: concern/);
 		assert.match(latest, /reportRecommendation: defer/);
 		assert.match(latest, /gateRecommendation: accept-now/);
+		const publishedReport = JSON.parse(readFileSync(join(artifactRoot, "latest", "report.json"), "utf-8"));
+		assert.equal(publishedReport.selfDogfoodPublication.overallStatus, "concern");
+		assert.equal(publishedReport.selfDogfoodPublication.reportRecommendation, "defer");
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

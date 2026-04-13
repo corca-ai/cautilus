@@ -1,23 +1,23 @@
 {
-  "generatedAt": "2026-04-13T20:18:21.317Z",
+  "generatedAt": "2026-04-13T20:32:50.312Z",
   "repoRoot": ".",
   "workspace": ".",
   "artifactRoot": "artifacts/self-dogfood",
-  "runId": "2026-04-13T20-17-22.443Z",
+  "runId": "2026-04-13T20-32-28.429Z",
   "baselineRef": "origin/main",
   "intent": "Cautilus should record and surface its own self-dogfood result honestly before operators trust broader consumer runs.",
-  "overallStatus": "concern",
-  "reportRecommendation": "defer",
+  "overallStatus": "pass",
+  "reportRecommendation": "accept-now",
   "gateRecommendation": "accept-now",
   "reportPath": "artifacts/self-dogfood/latest/report.json",
   "reviewSummaryPath": "artifacts/self-dogfood/latest/review-summary.json",
   "reviewTelemetry": {
-    "averageVariantDurationMs": 9524,
-    "completedAt": "2026-04-13T20:18:21.307987266Z",
-    "durationMs": 9524,
+    "averageVariantDurationMs": 12935,
+    "completedAt": "2026-04-13T20:32:50.303049569Z",
+    "durationMs": 12935,
     "failedVariantCount": 0,
     "passedVariantCount": 1,
-    "startedAt": "2026-04-13T20:18:11.783656318Z",
+    "startedAt": "2026-04-13T20:32:37.367248538Z",
     "variantCount": 1
   },
   "reviewVariants": [
@@ -25,8 +25,8 @@
       "id": "codex-review",
       "tool": "codex_exec",
       "executionStatus": "passed",
-      "verdict": "concern",
-      "summary": "The current run shows the standing gates passed, but the report packet does not yet prove the narrower operator-facing claim that Cautilus honestly records and surfaces its own self-dogfood result. The evidence is enough for a defer, not an accept-now, because the report JSON has no surfaced artifact location and the claim is not directly demonstrated beyond passing verify/hooks.",
+      "verdict": "pass",
+      "summary": "The current report supports the narrow operator-facing claim: it records the self-dogfood run, shows the only executed mode (`full_gate`) passed, and surfaces the raw recommendation (`accept-now`) without inflating that evidence into stronger binary-surface or skill-surface claims. The report stays honest about scope by exposing only what this run actually proved, and the spec explicitly says the canonical latest claim should be this narrow.",
       "findingsCount": 2,
       "outputFile": null
     }

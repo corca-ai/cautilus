@@ -172,8 +172,16 @@ standalone product여야 한다.
 | scripts/agent-runtime/build-evidence-bundle.mjs | fixed | EVIDENCE_BUNDLE_SCHEMA |
 | scripts/agent-runtime/build-optimize-input.mjs | file_exists |  |
 | scripts/agent-runtime/build-optimize-input.mjs | fixed | OPTIMIZE_INPUTS_SCHEMA |
+| scripts/agent-runtime/build-optimize-search-input.mjs | file_exists |  |
+| scripts/agent-runtime/build-optimize-search-input.mjs | fixed | OPTIMIZE_SEARCH_INPUTS_SCHEMA |
 | scripts/agent-runtime/generate-optimize-proposal.mjs | file_exists |  |
 | scripts/agent-runtime/generate-optimize-proposal.mjs | fixed | OPTIMIZE_PROPOSAL_SCHEMA |
+| scripts/agent-runtime/run-optimize-search.mjs | file_exists |  |
+| scripts/agent-runtime/run-optimize-search.mjs | fixed | OPTIMIZE_SEARCH_RESULT_SCHEMA |
+| scripts/agent-runtime/optimize-search-core.mjs | file_exists |  |
+| scripts/agent-runtime/optimize-search-core.mjs | fixed | selectedCandidateId |
+| scripts/agent-runtime/optimize-search-mutation.mjs | file_exists |  |
+| scripts/agent-runtime/optimize-search-mutation.mjs | fixed | evaluateMutationCandidates |
 | scripts/agent-runtime/build-revision-artifact.mjs | file_exists |  |
 | scripts/agent-runtime/build-revision-artifact.mjs | fixed | REVISION_ARTIFACT_SCHEMA |
 | scripts/agent-runtime/scenario-results.mjs | file_exists |  |
@@ -228,6 +236,9 @@ standalone product여야 한다.
 | docs/contracts/optimization.md | file_exists |  |
 | docs/contracts/optimization.md | fixed | cautilus.optimize_inputs.v1 |
 | docs/contracts/optimization.md | fixed | cautilus.optimize_proposal.v1 |
+| docs/contracts/optimization-search.md | file_exists |  |
+| docs/contracts/optimization-search.md | fixed | cautilus.optimize_search_inputs.v1 |
+| docs/contracts/optimization-search.md | fixed | cautilus.optimize_search_result.v1 |
 | docs/contracts/revision-artifact.md | file_exists |  |
 | docs/contracts/revision-artifact.md | fixed | cautilus.revision_artifact.v1 |
 | docs/contracts/scenario-results.md | file_exists |  |
@@ -260,6 +271,10 @@ standalone product여야 한다.
 | fixtures/evidence/bundle.schema.json | fixed | cautilus.evidence_bundle.v1 |
 | fixtures/optimize/input.schema.json | file_exists |  |
 | fixtures/optimize/input.schema.json | fixed | cautilus.optimize_inputs.v1 |
+| fixtures/optimize-search/input.schema.json | file_exists |  |
+| fixtures/optimize-search/input.schema.json | fixed | cautilus.optimize_search_inputs.v1 |
+| fixtures/optimize-search/result.schema.json | file_exists |  |
+| fixtures/optimize-search/result.schema.json | fixed | cautilus.optimize_search_result.v1 |
 | fixtures/optimize/proposal.schema.json | file_exists |  |
 | fixtures/optimize/proposal.schema.json | fixed | cautilus.optimize_proposal.v1 |
 | fixtures/optimize/revision-artifact.schema.json | file_exists |  |
@@ -355,6 +370,9 @@ standalone product여야 한다.
 - bounded optimizer input and proposal helpers above explicit
   report/review/history evidence, with optimizer kind, budget, and trial
   telemetry
+- GEPA-style bounded prompt-search helpers above explicit optimize and
+  held-out evidence, including reflective mutation, readiness blocking, and
+  proposal bridging
 - durable revision-artifact builder above optimize proposals
 - chatbot proposal-candidate normalization helper
 - chatbot normalization command

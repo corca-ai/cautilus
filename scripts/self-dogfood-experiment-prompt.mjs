@@ -120,7 +120,7 @@ function renderExperimentContext(adapterName, reviewTimeoutMs) {
 	return `${lines.join("\n")}\n`;
 }
 
-function renderCurrentRunEvidence(promptInput, adapterName, currentReportPath, projectedReviewSummaryPath, projectedSummaryPath) {
+function renderCurrentRunEvidence(promptInput, adapterName, currentReportPath, projectedReportPath, projectedReviewSummaryPath, projectedSummaryPath) {
 	if (adapterName !== "self-dogfood") {
 		return "";
 	}
@@ -130,10 +130,12 @@ function renderCurrentRunEvidence(promptInput, adapterName, currentReportPath, p
 		"## Current Run Evidence",
 		"",
 		`- current report file: ${currentReportPath ?? evidence.reportFile ?? "n/a"}`,
+		`- projected published report.json: ${projectedReportPath ?? "n/a"}`,
 		`- projected review-summary.json: ${projectedReviewSummaryPath ?? "n/a"}`,
 		`- projected summary.json: ${projectedSummaryPath ?? "n/a"}`,
 		`- current gateRecommendation: ${evidence.automatedRecommendation ?? "n/a"}`,
 		"- summary.json is written after this review from the current report plus your structured verdict.",
+		"- the published latest report.json will embed selfDogfoodPublication with the latest bundle paths, overallStatus, gateRecommendation, and folded reportRecommendation.",
 		"- gateRecommendation should stay equal to the current automated recommendation from report.json.",
 		"- reportRecommendation should reflect the stronger of the deterministic gate result and your verdict (`pass -> accept-now`, `concern -> defer`, `blocker -> reject`).",
 	];
@@ -146,6 +148,7 @@ export function enrichExperimentPrompt({
 	adapterName,
 	reviewTimeoutMs,
 	currentReportPath = null,
+	projectedReportPath = null,
 	projectedReviewSummaryPath = null,
 	projectedSummaryPath = null,
 }) {
@@ -153,7 +156,7 @@ export function enrichExperimentPrompt({
 	const rendered = readFileSync(promptPath, "utf-8");
 	writeFileSync(
 		promptPath,
-		`${rendered.trimEnd()}\n${renderExperimentContext(adapterName, reviewTimeoutMs)}${renderCurrentRunEvidence(promptInput, adapterName, currentReportPath, projectedReviewSummaryPath, projectedSummaryPath)}${renderArtifactExcerpts(promptInput, adapterName)}`,
+		`${rendered.trimEnd()}\n${renderExperimentContext(adapterName, reviewTimeoutMs)}${renderCurrentRunEvidence(promptInput, adapterName, currentReportPath, projectedReportPath, projectedReviewSummaryPath, projectedSummaryPath)}${renderArtifactExcerpts(promptInput, adapterName)}`,
 		"utf-8",
 	);
 }
