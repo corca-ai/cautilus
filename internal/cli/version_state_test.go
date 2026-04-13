@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"bytes"
 	"context"
 	"path/filepath"
 	"strings"
@@ -178,5 +179,24 @@ func TestMaybeCheckForUpdatesHonorsOptOut(t *testing.T) {
 	}
 	if fetchCalls != 0 {
 		t.Fatalf("expected no remote fetch, got %d calls", fetchCalls)
+	}
+}
+
+func TestDecodeLatestReleaseMetadataIgnoresUnknownGitHubFields(t *testing.T) {
+	payload := []byte(`{
+  "url": "https://api.github.com/repos/corca-ai/cautilus/releases/1",
+  "tag_name": "v1.2.4",
+  "html_url": "https://github.com/corca-ai/cautilus/releases/tag/v1.2.4"
+}`)
+
+	metadata, err := decodeLatestReleaseMetadata(bytes.NewReader(payload))
+	if err != nil {
+		t.Fatalf("decodeLatestReleaseMetadata returned error: %v", err)
+	}
+	if metadata.Version != "1.2.4" {
+		t.Fatalf("expected version 1.2.4, got %q", metadata.Version)
+	}
+	if metadata.ReleaseURL != "https://github.com/corca-ai/cautilus/releases/tag/v1.2.4" {
+		t.Fatalf("unexpected release url: %q", metadata.ReleaseURL)
 	}
 }

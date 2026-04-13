@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -284,12 +285,15 @@ func fetchLatestRelease(ctx context.Context) (ReleaseMetadata, error) {
 		return ReleaseMetadata{}, fmt.Errorf("latest release lookup returned %s", response.Status)
 	}
 
+	return decodeLatestReleaseMetadata(response.Body)
+}
+
+func decodeLatestReleaseMetadata(reader io.Reader) (ReleaseMetadata, error) {
 	var payload struct {
 		TagName string `json:"tag_name"`
 		HTMLURL string `json:"html_url"`
 	}
-	decoder := json.NewDecoder(response.Body)
-	decoder.DisallowUnknownFields()
+	decoder := json.NewDecoder(reader)
 	if err := decoder.Decode(&payload); err != nil {
 		return ReleaseMetadata{}, err
 	}
