@@ -186,12 +186,87 @@ function recordCheckpointOutcome(collection, outcome) {
 function shouldReviewFrontierPromotions(packet) { return packet.searchConfig?.reviewCheckpointPolicy === "frontier_promotions"; }
 function candidatePassedPromotionReview(candidate) { return candidate?.promotionReviewOutcome?.admissible !== false; }
 
-function buildCheckpointFeedback(reviewOutcome) {
-	return [{
+function checkpointScenarioIds(packet) {
+	return [...new Set([
+		...(Array.isArray(packet.scenarioSets?.trainScenarioSet) ? packet.scenarioSets.trainScenarioSet : []),
+		...(Array.isArray(packet.scenarioSets?.heldOutScenarioSet) ? packet.scenarioSets.heldOutScenarioSet : []),
+	])]
+		.filter((scenarioId) => typeof scenarioId === "string" && scenarioId.length > 0);
+}
+
+function normalizeScenarioMatchText(value) {
+	return String(value)
+		.toLowerCase()
+		.replace(/[^a-z0-9]+/giu, " ")
+		.trim();
+}
+
+function feedbackScenarioIds(message, scenarioIds) {
+	if (typeof message !== "string" || message.length === 0) {
+		return [];
+	}
+	const normalized = normalizeScenarioMatchText(message);
+	return scenarioIds.filter((scenarioId) => normalized.includes(normalizeScenarioMatchText(scenarioId)));
+}
+
+function collectCheckpointFeedbackBuckets(feedbackMessages, scenarioIds) {
+	const feedbackByScenarioId = new Map();
+	const genericMessages = [];
+	for (const message of feedbackMessages) {
+		const matchedScenarioIds = feedbackScenarioIds(message, scenarioIds);
+		if (matchedScenarioIds.length === 0) {
+			genericMessages.push(message);
+			continue;
+		}
+		for (const scenarioId of matchedScenarioIds) {
+			const messages = feedbackByScenarioId.get(scenarioId) || [];
+			messages.push(message);
+			feedbackByScenarioId.set(scenarioId, messages);
+		}
+	}
+	return { feedbackByScenarioId, genericMessages };
+}
+
+function scenarioCheckpointEntries(scenarioIds, feedbackByScenarioId, rejectionReasons) {
+	return scenarioIds.flatMap((scenarioId) => {
+		const messages = feedbackByScenarioId.get(scenarioId) || [];
+		if (messages.length === 0) {
+			return [];
+		}
+		return [{
+			source: "frontier_promotion_review",
+			scope: "scenario",
+			scenarioIds: [scenarioId],
+			rejectionReasons,
+			feedbackMessages: messages,
+		}];
+	});
+}
+
+function genericCheckpointEntry(entries, genericMessages, feedbackMessages, rejectionReasons) {
+	if (genericMessages.length === 0 && entries.length > 0) {
+		return null;
+	}
+	return {
 		source: "frontier_promotion_review",
-		rejectionReasons: Array.isArray(reviewOutcome?.rejectionReasons) ? reviewOutcome.rejectionReasons : [],
-		feedbackMessages: Array.isArray(reviewOutcome?.feedbackMessages) ? reviewOutcome.feedbackMessages : [],
-	}];
+		scope: entries.length === 0 ? "candidate" : "generic",
+		scenarioIds: [],
+		rejectionReasons,
+		feedbackMessages: genericMessages.length > 0 ? genericMessages : feedbackMessages,
+	};
+}
+
+function buildCheckpointFeedback(packet, reviewOutcome) {
+	const rejectionReasons = Array.isArray(reviewOutcome?.rejectionReasons) ? reviewOutcome.rejectionReasons : [];
+	const feedbackMessages = Array.isArray(reviewOutcome?.feedbackMessages) ? reviewOutcome.feedbackMessages : [];
+	const scenarioIds = checkpointScenarioIds(packet);
+	const { feedbackByScenarioId, genericMessages } = collectCheckpointFeedbackBuckets(feedbackMessages, scenarioIds);
+	const entries = scenarioCheckpointEntries(scenarioIds, feedbackByScenarioId, rejectionReasons);
+	const genericEntry = genericCheckpointEntry(entries, genericMessages, feedbackMessages, rejectionReasons);
+	if (genericEntry) {
+		entries.push(genericEntry);
+	}
+	return entries;
 }
 
 function recordFrontierPromotionReviews(packet, artifactRoot, candidates, scenarioIds, checkpointLedger, env) {
@@ -208,7 +283,7 @@ function recordFrontierPromotionReviews(packet, artifactRoot, candidates, scenar
 		const outcome = runReviewCheckpoint(packet, artifactRoot, candidate, env);
 		candidate.promotionReviewOutcome = outcome;
 		if (!outcome.admissible) {
-			candidate.checkpointFeedback = buildCheckpointFeedback(outcome);
+			candidate.checkpointFeedback = buildCheckpointFeedback(packet, outcome);
 		}
 		recordCheckpointOutcome(checkpointLedger.review, outcome);
 	}

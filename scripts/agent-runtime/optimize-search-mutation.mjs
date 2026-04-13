@@ -266,10 +266,29 @@ function markUniqueCandidate(candidate, seenFingerprints) {
 	return appendUniqueCandidate([], candidate, seenFingerprints);
 }
 
+function filterCheckpointFeedback(checkpointFeedback, reflectionBatch) {
+	const entries = Array.isArray(checkpointFeedback) ? checkpointFeedback : [];
+	if (entries.length === 0) {
+		return [];
+	}
+	const selectedScenarioIds = new Set(
+		(Array.isArray(reflectionBatch) ? reflectionBatch : [])
+			.map((entry) => entry?.scenarioId)
+			.filter((scenarioId) => typeof scenarioId === "string" && scenarioId.length > 0),
+	);
+	if (selectedScenarioIds.size === 0) {
+		return entries;
+	}
+	return entries.filter((entry) => {
+		const scopedScenarioIds = Array.isArray(entry?.scenarioIds) ? entry.scenarioIds : [];
+		return scopedScenarioIds.length === 0 || scopedScenarioIds.some((scenarioId) => selectedScenarioIds.has(scenarioId));
+	});
+}
+
 function buildMutationCandidate(packet, artifactRoot, parentCandidate, feedbackSignals, generationIndex, candidateIndex, backend, env) {
 	const parentPrompt = readPromptBody(parentCandidate.targetFile.path);
 	const reflectionBatch = buildReflectionBatch(packet, parentCandidate, feedbackSignals);
-	const checkpointFeedback = Array.isArray(parentCandidate.checkpointFeedback) ? parentCandidate.checkpointFeedback : [];
+	const checkpointFeedback = filterCheckpointFeedback(parentCandidate.checkpointFeedback, reflectionBatch);
 	return generateCandidate({
 		packet,
 		artifactRoot,

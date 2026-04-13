@@ -341,8 +341,13 @@ In v1, review checkpoint policy means:
   - run review variants whenever a candidate is promoted onto the held-out
     frontier
   - if the review rejects that candidate, preserve the rejection reasons and
-    feedback messages on the candidate record and inject them into that
-    candidate's later mutation prompts
+    feedback messages on the candidate record
+  - when a rejection message names one or more known scenarios, preserve it as
+    scenario-scoped checkpoint feedback and inject only the relevant scenario
+    entries into that candidate's later mutation prompts
+  - when a rejection message does not name a known scenario, preserve it as
+    candidate-scoped checkpoint feedback and keep it eligible for later
+    mutation prompts
   - review-rejected frontier candidates may still seed later mutation, but
     merge-parent selection remains limited to review-admissible candidates
 
@@ -485,7 +490,8 @@ The current bounded slice already proves:
 - reflective mutation from explicit evidence
 - optional bounded merge generation from complementary frontier parents
 - optional frontier-promotion review checkpoint execution
-- checkpoint rejection feedback reinjection into later mutation prompts
+- scenario-aware checkpoint rejection feedback reinjection into later mutation
+  prompts
 - scenario-aware two-parent merge selection using candidate metadata,
   weakest-frontier weighting, and telemetry tie-breakers
 - final-only full-gate checkpoint execution with ranked-frontier fallback

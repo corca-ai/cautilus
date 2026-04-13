@@ -380,9 +380,9 @@ standalone product여야 한다.
 - GEPA-style bounded prompt-search helpers above explicit optimize and
   held-out evidence, including multi-generation reflective mutation, optional
   bounded merge synthesis, optional frontier-promotion review checkpoints,
-  checkpoint-feedback reinjection, scenario-aware two-parent merge selection,
-  final-only full-gate checkpoint fallback, readiness blocking, and proposal
-  bridging
+  scenario-aware checkpoint-feedback reinjection, scenario-aware two-parent
+  merge selection, final-only full-gate checkpoint fallback, readiness
+  blocking, and proposal bridging
 - durable revision-artifact builder above optimize proposals
 - chatbot proposal-candidate normalization helper
 - chatbot normalization command

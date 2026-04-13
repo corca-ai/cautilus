@@ -182,7 +182,7 @@ summary="Candidate stays operator-safe."
 if grep -q "detailed recovery checklist" "$workspace/prompt.md" && ! grep -q "follow-up handoff map" "$workspace/prompt.md"; then
   verdict="blocker"
   severity="blocker"
-  summary="Checklist candidate still leaves operator follow-up under-specified."
+  summary="Checklist candidate still leaves operator-follow-up under-specified."
 fi
 cat >"$output" <<EOF
 {
@@ -1427,7 +1427,7 @@ test("run-optimize-search reinjects frontier-promotion review feedback into the 
 	try {
 		createProgrammableCodex(root, [
 			{
-				matchAll: ["review:operator-review:blocker", "Checklist candidate still leaves operator follow-up under-specified."],
+				matchAll: ["review:operator-review:blocker", "Checklist candidate still leaves operator-follow-up under-specified."],
 				currentPromptMatchAll: ["detailed recovery checklist"],
 				output: {
 					promptMarkdown: "Keep recovery instructions explicit with a detailed recovery checklist and a follow-up handoff map.\n",
@@ -1455,6 +1455,7 @@ test("run-optimize-search reinjects frontier-promotion review feedback into the 
 		packet.searchConfig.generationLimit = 2;
 		packet.searchConfig.mergeEnabled = false;
 		packet.mutationConfig.backends = [{ id: "codex-mutate", backend: "codex_exec" }];
+		packet.mutationConfig.trainScenarioLimit = 1;
 		const result = runOptimizeSearch(packet, {
 			inputFile: join(root, "optimize-search-input.json"),
 			outputFile: join(artifactRoot, "optimize-search-result.json"),
@@ -1469,13 +1470,131 @@ test("run-optimize-search reinjects frontier-promotion review feedback into the 
 		const rejectedCandidate = result.candidateRegistry.find((candidate) => candidate.id === "g1-1-codex-exec");
 		assert.deepEqual(rejectedCandidate.checkpointFeedback, [{
 			source: "frontier_promotion_review",
+			scope: "scenario",
+			scenarioIds: ["operator-follow-up"],
 			rejectionReasons: ["review:operator-review:blocker"],
-			feedbackMessages: ["Checklist candidate still leaves operator follow-up under-specified."],
+			feedbackMessages: ["Checklist candidate still leaves operator-follow-up under-specified."],
 		}]);
 		const repairedCandidate = result.candidateRegistry.find((candidate) => candidate.id === "g2-1-codex-exec");
 		assert.match(readFileSync(repairedCandidate.artifacts.promptFile, "utf-8"), /review:operator-review:blocker/);
-		assert.match(readFileSync(repairedCandidate.artifacts.promptFile, "utf-8"), /Checklist candidate still leaves operator follow-up under-specified\./);
+		assert.match(readFileSync(repairedCandidate.artifacts.promptFile, "utf-8"), /Checklist candidate still leaves operator-follow-up under-specified\./);
 		assert.match(readFileSync(result.proposalBridge.selectedTargetFile.path, "utf-8"), /follow-up handoff map/);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+		rmSync(artifactRoot, { recursive: true, force: true });
+	}
+});
+
+test("run-optimize-search filters checkpoint feedback to the reflected scenarios", () => {
+	const { root, artifactRoot, optimizeInputPath, heldOutResultsPath } = createCheckpointFallbackFixture({
+		includeReviewVariants: true,
+	});
+	try {
+		writeExecutable(
+			join(root, "review-variant.sh"),
+			`#!/bin/sh
+workspace="$1"
+output="$2"
+verdict="pass"
+severity="pass"
+summary="Candidate stays operator-safe."
+if grep -q "detailed recovery checklist" "$workspace/prompt.md" && ! grep -q "follow-up handoff map" "$workspace/prompt.md"; then
+  verdict="blocker"
+  severity="blocker"
+  summary="Checklist candidate still leaves operator-follow-up under-specified."
+fi
+cat >"$output" <<EOF
+{
+  "verdict": "$verdict",
+  "summary": "$summary",
+  "findings": [
+    {
+      "severity": "$severity",
+      "message": "Checklist candidate still leaves operator-follow-up under-specified.",
+      "path": "variant/operator-review"
+    },
+    {
+      "severity": "$severity",
+      "message": "Checklist candidate still leaves operator-recovery sequencing too implicit.",
+      "path": "variant/operator-review"
+    }
+  ]
+}
+EOF
+`,
+		);
+		createProgrammableCodex(root, [
+			{
+				currentPromptMatchNone: ["detailed recovery checklist"],
+				output: {
+					promptMarkdown: "Keep recovery instructions explicit with a detailed recovery checklist.\n",
+					rationaleSummary: "Strengthen the recovery path first.",
+					expectedImprovements: ["operator-recovery"],
+					preservedStrengths: ["keeps the original recovery framing"],
+					riskNotes: ["operator-follow-up may still remain weak"],
+				},
+			},
+			{
+				currentPromptMatchAll: ["detailed recovery checklist"],
+				matchAll: ["operator-follow-up under-specified."],
+				output: {
+					promptMarkdown: "Keep recovery instructions explicit with a follow-up handoff map.\n",
+					rationaleSummary: "Repair the follow-up gap the checkpoint still flagged.",
+					expectedImprovements: ["operator-follow-up"],
+					preservedStrengths: ["keeps the detailed recovery checklist"],
+					riskNotes: ["held-out should confirm the repaired handoff stays concise"],
+				},
+			},
+			{
+				output: {
+					promptMarkdown: "Keep recovery instructions explicit with a generic escalation note.\n",
+					rationaleSummary: "Fallback mutation output.",
+					expectedImprovements: ["operator-follow-up"],
+					preservedStrengths: ["keeps the detailed recovery checklist"],
+					riskNotes: ["held-out should confirm the fallback stays sufficient"],
+				},
+			},
+		]);
+		const { packet } = buildOptimizeSearchInput(
+			["--optimize-input", optimizeInputPath, "--held-out-results-file", heldOutResultsPath, "--budget", "medium"],
+			{ now: new Date("2026-04-13T10:00:00.000Z") },
+		);
+		packet.searchConfig.reviewCheckpointPolicy = "frontier_promotions";
+		packet.searchConfig.generationLimit = 2;
+		packet.searchConfig.mergeEnabled = false;
+		packet.mutationConfig.backends = [{ id: "codex-mutate", backend: "codex_exec" }];
+		packet.mutationConfig.trainScenarioLimit = 1;
+		const result = runOptimizeSearch(packet, {
+			inputFile: join(root, "optimize-search-input.json"),
+			outputFile: join(artifactRoot, "optimize-search-result.json"),
+			now: new Date("2026-04-13T10:01:00.000Z"),
+			env: {
+				...process.env,
+				PATH: `${root}:${process.env.PATH ?? ""}`,
+			},
+		});
+		assert.equal(result.status, "completed");
+		const rejectedCandidate = result.candidateRegistry.find((candidate) => candidate.id === "g1-1-codex-exec");
+		assert.deepEqual(rejectedCandidate.checkpointFeedback, [
+			{
+				source: "frontier_promotion_review",
+				scope: "scenario",
+				scenarioIds: ["operator-recovery"],
+				rejectionReasons: ["review:operator-review:blocker"],
+				feedbackMessages: ["Checklist candidate still leaves operator-recovery sequencing too implicit."],
+			},
+			{
+				source: "frontier_promotion_review",
+				scope: "scenario",
+				scenarioIds: ["operator-follow-up"],
+				rejectionReasons: ["review:operator-review:blocker"],
+				feedbackMessages: ["Checklist candidate still leaves operator-follow-up under-specified."],
+			},
+		]);
+		const repairedCandidate = result.candidateRegistry.find((candidate) => candidate.id === "g2-1-codex-exec");
+		const mutationPrompt = readFileSync(repairedCandidate.artifacts.promptFile, "utf-8");
+		assert.match(mutationPrompt, /operator-follow-up under-specified\./);
+		assert.doesNotMatch(mutationPrompt, /operator-recovery sequencing too implicit\./);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 		rmSync(artifactRoot, { recursive: true, force: true });
