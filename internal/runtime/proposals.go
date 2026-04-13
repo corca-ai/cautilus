@@ -377,7 +377,7 @@ func buildChatbotIntentProfile(intent string, intentProfile map[string]any, fall
 }
 
 func buildReviewClarificationCandidate(conversation map[string]any, userMessages []string) map[string]any {
-	if len(userMessages) < 2 || !includesAny(userMessages[0], []string{"review", "리뷰", "저장소", "repo"}) || !includesAny(userMessages[1], []string{"checkout", "현재", "기준", "ceal", "저장소", "repo"}) {
+	if len(userMessages) < 2 || !includesAny(userMessages[0], []string{"review", "리뷰", "저장소", "repo"}) || !includesAny(userMessages[1], []string{"checkout", "현재", "기준", "저장소", "repo"}) {
 		return nil
 	}
 	return map[string]any{

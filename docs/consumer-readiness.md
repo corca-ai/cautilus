@@ -1,28 +1,18 @@
 # Consumer Readiness
 
 This note is an evidence appendix.
-It records current dogfood and live-consumer proof for `Cautilus`, but it is
-not the canonical product vocabulary.
+It records the current dogfood and external-consumer proof for `Cautilus`, but
+it is not the canonical product vocabulary.
 Product-facing docs should describe repo-agnostic surfaces such as `chatbot`,
-`skill`, `cli`, `workflow`, and `agent runtime` first, then point here for
-concrete checked-in host evidence.
+`skill`, `workflow`, and `agent runtime` first, then point here for checked-in
+evidence shapes and proof expectations.
 
-This note records how `Cautilus` currently maps onto the four intended test
-targets under `~/`:
-
-- `cautilus`
-- `ceal`
-- `charness`
-- `crill`
-
-The goal is to keep product claims honest.
-All four repos now expose an official `cautilus-adapter`, but they do not yet
-exercise the same depth of evaluator surface.
+This note intentionally groups evidence by consumer archetype rather than by
+specific private repo name.
 
 ## Snapshot
 
-The checks below were recorded on 2026-04-10 UTC with the current
-`cautilus` CLI on `PATH`.
+The checks below describe the current readiness split as of 2026-04-13 UTC.
 
 ## Cautilus
 
@@ -30,8 +20,7 @@ Current role: product repo self-consumer
 
 Evidence:
 
-- `cautilus doctor --repo-root /path/to/cautilus`
-  returns `ready`
+- `cautilus doctor --repo-root /path/to/cautilus` returns `ready`
 - checked-in root adapter:
   [.agents/cautilus-adapter.yaml](../.agents/cautilus-adapter.yaml)
 - checked-in named adapter:
@@ -43,123 +32,90 @@ Evidence:
 
 What this means:
 
-- `cautilus` now satisfies its own official adapter discovery contract.
-- The repo keeps cheap deterministic proof in the root adapter and one explicit
-  LLM-backed self-dogfood path in a named adapter instead of overloading CI or
-  pre-push with expensive review work.
-- The repo also keeps named experiment adapters for A/B and split-surface
-  tuning without mutating the canonical self-dogfood contract.
-- The honest product claim is now that `Cautilus` can declare and run its own
-  self-consumer quality path, not only validate other repos.
-- Stronger claims about the standalone binary surface or bundled skill surface
-  are kept in named experiment adapters instead of being smuggled into the
-  canonical latest report.
+- `cautilus` satisfies its own official adapter discovery contract.
+- The repo keeps cheap deterministic proof in the root adapter and one
+  explicit LLM-backed self-dogfood path in a named adapter.
+- Stronger binary or bundled-skill claims stay in named experiment adapters
+  instead of being smuggled into the canonical latest report.
 
-## Ceal
+## Chatbot Consumer
 
-Current role: live consumer
+Current role: external conversational consumer archetype
 
 Evidence:
 
-- `cautilus doctor --repo-root /home/ubuntu/ceal`
-  returns `ready`
-- checked-in adapter:
-  [/home/ubuntu/ceal/.agents/cautilus-adapter.yaml](/home/ubuntu/ceal/.agents/cautilus-adapter.yaml)
-- checked-in named adapters:
-  [/home/ubuntu/ceal/.agents/cautilus-adapters/code-quality.yaml](/home/ubuntu/ceal/.agents/cautilus-adapters/code-quality.yaml)
-  and
-  [/home/ubuntu/ceal/.agents/cautilus-adapters/skill-smoke.yaml](/home/ubuntu/ceal/.agents/cautilus-adapters/skill-smoke.yaml)
+- `chatbot` normalization has a checked-in consumer-shaped fixture:
+  [fixtures/scenario-proposals/chatbot-consumer-input.json](../fixtures/scenario-proposals/chatbot-consumer-input.json)
+- the checked-in consumer fixture feeds the normalization helper and proposal
+  chain without host-specific rewriting
+- the external proof bar remains:
+  `cautilus doctor --repo-root <chatbot-consumer-path>` returns `ready`
 
 What this means:
 
-- `ceal` is the first repo that already satisfies the current adapter discovery
-  contract.
-- It remains the primary live test target for adapter resolve/init/doctor and
-  review-variant surfaces.
-- It is also the primary reference for `chatbot` normalization behavior.
+- `Cautilus` has a reusable `chatbot` normalization contract that does not
+  require one named repo's storage ownership.
+- The product claim is about the archetype, not about one privileged chatbot
+  host repo.
 
-## charness
+## Skill-Validation Consumer
 
-Current role: live consumer and primary `skill` normalization reference
+Current role: external skill and validation archetype
 
 Evidence:
 
-- `cautilus doctor --repo-root /home/ubuntu/charness`
-  returns `ready`
-- checked-in `Cautilus` adapter:
-  [/home/ubuntu/charness/.agents/cautilus-adapter.yaml](/home/ubuntu/charness/.agents/cautilus-adapter.yaml)
-- existing repo-local adapter asset:
-  [/home/ubuntu/charness/.agents/quality-adapter.yaml](/home/ubuntu/charness/.agents/quality-adapter.yaml)
+- `skill` normalization has a checked-in validation-shaped fixture:
+  [fixtures/scenario-proposals/skill-validation-input.json](../fixtures/scenario-proposals/skill-validation-input.json)
+- the checked-in consumer fixture produces stable validation-regression
+  candidates
+- the external proof bar remains:
+  `cautilus doctor --repo-root <skill-consumer-path>` returns `ready`
 
 What this means:
 
-- `charness` now satisfies the official adapter discovery contract.
-- Its current root adapter is intentionally narrow: it lifts the repo-owned
-  `quality` gate into one official `Cautilus` entrypoint.
-- It remains the primary reference for `skill` normalization inputs, especially
-  public skill, profile, and validation drift patterns.
+- `Cautilus` can normalize public-skill, profile, and validation drift without
+  binding the product to one named repo's layout.
 
-## crill
+## Workflow Consumer
 
-Current role: live consumer and primary durable-workflow normalization
-reference
+Current role: external durable-workflow archetype
 
 Evidence:
 
-- `cautilus doctor --repo-root /home/ubuntu/crill`
-  returns `ready`
-- `cautilus mode evaluate --repo-root /home/ubuntu/crill --mode full_gate --intent 'Crill root validation entrypoint should run cleanly as the official Cautilus consumer gate.' --baseline-ref origin/main --output-dir /tmp/cautilus-crill-full-gate`
-  returns a report with recommendation `accept-now`
-- `WORKBENCH_REVIEW_TIMEOUT_SECONDS=180 cautilus review variants --repo-root /home/ubuntu/crill --adapter-name operator-recovery --workspace /home/ubuntu/crill --report-file /tmp/cautilus-crill-operator-recovery-review/report.json --output-dir /tmp/cautilus-crill-operator-review`
-  returns a summary with one passing `codex-review` variant
-- `cautilus workspace prepare-compare --repo-root /home/ubuntu/crill --baseline-ref origin/main --output-dir /tmp/cautilus-crill-compare --force`
-  followed by
-  `cautilus mode evaluate --repo-root /home/ubuntu/crill --adapter-name consumer-artifacts --mode comparison --intent 'Crill should keep widening its checked-in Cautilus consumer surfaces honestly.' --baseline-ref origin/main --baseline-repo /tmp/cautilus-crill-compare/baseline --candidate-repo /tmp/cautilus-crill-compare/candidate --output-dir /tmp/cautilus-crill-consumer-compare`
-  returns a report whose compare artifact verdict is `improved`
-- checked-in `Cautilus` adapter:
-  [/home/ubuntu/crill/.agents/cautilus-adapter.yaml](/home/ubuntu/crill/.agents/cautilus-adapter.yaml)
-- checked-in named `Cautilus` adapters:
-  [/home/ubuntu/crill/.agents/cautilus-adapters/cli-smoke.yaml](/home/ubuntu/crill/.agents/cautilus-adapters/cli-smoke.yaml)
-  and
-  [/home/ubuntu/crill/.agents/cautilus-adapters/operator-recovery.yaml](/home/ubuntu/crill/.agents/cautilus-adapters/operator-recovery.yaml)
-  and
-  [/home/ubuntu/crill/.agents/cautilus-adapters/consumer-artifacts.yaml](/home/ubuntu/crill/.agents/cautilus-adapters/consumer-artifacts.yaml)
+- `skill` normalization also has a checked-in durable-workflow fixture:
+  [fixtures/scenario-proposals/workflow-recovery-input.json](../fixtures/scenario-proposals/workflow-recovery-input.json)
+- `mode evaluate`, `review variants`, and comparison flows are all exercised
+  in-tree against workflow-shaped packets and adapters
+- the external proof bar remains:
+  - `cautilus doctor --repo-root <workflow-consumer-path>` returns `ready`
+  - one deep path such as `mode evaluate` or `review variants` passes against
+    that consumer before release
 
 What this means:
 
-- `crill` now satisfies the official adapter discovery contract.
-- Its current root adapter now proves repo-wide validation and workflow review
-  as one passing official `Cautilus` entrypoint, not only a `doctor`-ready
-  config.
-- It also now exposes narrower named `Cautilus` consumers for the CLI surface
-  and operator-recovery/runtime seam.
-- It now also has one passing report-driven `review variants` path plus one
-  passing explicit comparison path, so the honest product claim is no longer
-  limited to `mode evaluate` depth.
-- It remains the strongest reference for blocked durable workflow artifacts,
-  replay seed regressions, and operator-recovery patterns.
+- The durable-workflow claim is about a reusable archetype, not about one
+  named repo becoming part of the product definition.
 
 ## Product Positioning
 
 Right now the honest product stance is:
 
 - `cautilus` is the product repo self-consumer and explicit self-dogfood target
-- `ceal` is the deepest live consumer and the primary `chatbot` reference
-- `charness` is a live consumer and the primary skill-validation reference
-- `crill` is a live consumer and the primary durable-workflow reference
+- `chatbot consumer` is the primary conversational reference archetype
+- `skill-validation consumer` is the primary validation reference archetype
+- `workflow consumer` is the primary durable-workflow reference archetype
 
 This split is acceptable.
 It keeps one official adapter contract while still grounding the normalization
-layer in multiple real repos with different product shapes.
+layer in multiple checked-in consumer shapes.
 
 ## Near-Term Implications
 
-1. Keep proving the deepest binary/skill behavior against `ceal`.
-2. Keep checked-in consumer-shaped normalized packet examples for
-   `ceal`, `charness`, and `crill`.
-3. `crill` now covers root and named adapters, explicit CLI packets, review
-   variants, and checked-in compare/A-B consumer artifacts; the next depth is
-   product-owned helper guidance for evidence mining and bounded optimization.
-4. `Cautilus` now has a first product-owned bounded optimizer seam in-tree, but
-   it still needs consumer-level proof in `crill` or `ceal` before it should be
-   treated as a validated live-consumer claim.
+1. Keep proving the deepest binary and bundled-skill behavior against
+   `cautilus` itself.
+2. Keep checked-in consumer-shaped normalized packet examples for the chatbot,
+   skill-validation, and durable-workflow archetypes.
+3. Treat external consumer proof as archetype validation, not as named-repo
+   product ownership.
+4. If a stronger claim needs one real external consumer, record that proof as
+   an appendix update without turning the named repo into canonical vocabulary.

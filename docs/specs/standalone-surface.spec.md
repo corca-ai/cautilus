@@ -1,9 +1,9 @@
 # Cautilus Standalone Surface
 
-`Cautilus`는 Ceal consumer migration 이전에 standalone binary와 bundled
+`Cautilus`는 특정 host repo migration 맥락 없이도 standalone binary와 bundled
 skill로 설명 가능해야 한다.
 
-Ceal의 기존 `workbench` 시나리오는 여전히 유용한 dogfood 입력이지만,
+기존 host repo에서 가져온 dogfood 시나리오는 여전히 유용할 수 있지만,
 제품의 canonical surface는 이 repo 안에서 닫혀 있어야 한다.
 여기서 `Source Guard`는 standing cheap gate이고, `Functional Check`는
 standalone acceptance boundary만 남긴다.
@@ -41,7 +41,7 @@ standalone acceptance boundary만 남긴다.
 | skills/bundled.go | fixed | go:embed cautilus |
 | internal/app/cli_smoke_test.go | file_exists |  |
 | internal/app/cli_smoke_test.go | fixed | TestCLIRootSelfConsumerRepoStaysDoctorReady |
-| internal/app/cli_smoke_test.go | fixed | TestCLIStandaloneTempRepoCanAdoptCautilusWithoutCealPaths |
+| internal/app/cli_smoke_test.go | fixed | TestCLIStandaloneTempRepoCanAdoptCautilusWithoutHostSpecificPaths |
 | internal/app/cli_smoke_test.go | fixed | TestCLISkillsInstallCreatesRepoLocalCanonicalSkill |
 | skills/cautilus/SKILL.md | file_exists |  |
 | skills/cautilus/SKILL.md | fixed | cautilus skills install |
@@ -107,8 +107,8 @@ standalone acceptance boundary만 남긴다.
 - binary와 bundled skill이 같은 workflow entrypoint를 가리킨다.
 - host repo는 `cautilus skills install`로 canonical `.agents/skills/cautilus` surface를 materialize할 수 있다.
 - packaged local skill surface는 repo-local Codex/Claude marketplace로도 설명된다.
-- adapter resolve/init/doctor/workspace prepare-compare/workspace prune-artifacts/workspace start/scenario normalize chatbot/scenario normalize skill/scenario summarize-telemetry/scenario prepare-input/scenario propose/evidence prepare-input/evidence bundle/report build/mode evaluate/optimize prepare-input/optimize propose/optimize build-artifact/review prepare-input/review build-prompt-input/review render-prompt/review variants는 Ceal-local script path 없이 설명된다.
-- Ceal repoint는 제품 정의가 아니라 consumer migration 단계로 남아 있다.
+- adapter resolve/init/doctor/workspace prepare-compare/workspace prune-artifacts/workspace start/scenario normalize chatbot/scenario normalize skill/scenario summarize-telemetry/scenario prepare-input/scenario propose/evidence prepare-input/evidence bundle/report build/mode evaluate/optimize prepare-input/optimize propose/optimize build-artifact/review prepare-input/review build-prompt-input/review render-prompt/review variants는 host-local script path 없이 설명된다.
+- host repo repoint는 제품 정의가 아니라 consumer migration 단계로 남아 있다.
 
 ```run:shell
 $ cautilus --help

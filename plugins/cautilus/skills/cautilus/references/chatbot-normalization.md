@@ -4,7 +4,7 @@
 turns already-summarized conversational activity into scenario proposal
 candidates.
 
-This helper exists because conversational consumers such as Ceal repeatedly
+This helper exists because conversational consumers repeatedly
 need the same layer:
 
 - continuity pivots across turns
@@ -38,10 +38,9 @@ summaries into `proposalCandidates`.
 
 ## Representative Consumers
 
-- `ceal`
-  - recent human thread summaries and blocked run summaries already drive
-    candidate shaping in
-    [/home/ubuntu/ceal/scripts/agent-runtime/propose-audit-scenarios.mjs](/home/ubuntu/ceal/scripts/agent-runtime/propose-audit-scenarios.mjs)
+- one checked-in chatbot-consumer fixture
+  - proves the first normalized conversation and blocked-run patterns without
+    making one host repo canonical
 - future chatbot consumers
   - should be able to reuse the same normalization helper as long as they can
     produce generic conversation and run-summary packets
@@ -71,7 +70,7 @@ This input is intentionally downstream of source ingestion.
 The helper must not:
 
 - read Slack APIs
-- traverse Ceal audit storage directly
+- traverse one host repo's audit storage directly
 - discover host file paths implicitly
 
 ## Output Boundary
@@ -114,8 +113,8 @@ instead of host-specific dimension IDs.
 
 ## Pattern Classes In Scope
 
-The first `chatbot` helper should cover patterns already proven in Ceal-like
-conversation logs:
+The first `chatbot` helper should cover patterns already proven in checked-in
+conversation fixtures:
 
 - workflow pivot follow-ups
   - example: retro followed by repo review
@@ -176,7 +175,7 @@ conversation logs:
 
 ## Success Criteria
 
-- A Ceal-like consumer can replace bespoke conversational candidate shaping
+- A conversational consumer can replace bespoke candidate shaping
   with the helper without giving `Cautilus` Slack storage ownership.
 - The helper output is reusable by another chatbot repo that has different
   storage but the same conversational patterns.
@@ -198,7 +197,7 @@ conversation logs:
 ## First Implementation Slice
 
 - keep the first checked-in fixture and helper aligned
-- widen beyond the initial Ceal-proven patterns only when another chatbot
+- widen beyond the initial checked-in patterns only when another chatbot
   consumer needs the added surface
 - maintain the dedicated checked-in input schema artifact beside the fixture
 
@@ -206,4 +205,4 @@ conversation logs:
 
 - [scenario-proposal-sources.md](./scenario-proposal-sources.md)
 - [scenario-proposal-inputs.md](./scenario-proposal-inputs.md)
-- [/home/ubuntu/ceal/scripts/agent-runtime/propose-audit-scenarios.mjs](/home/ubuntu/ceal/scripts/agent-runtime/propose-audit-scenarios.mjs)
+- [scenario-proposal-sources.md](./scenario-proposal-sources.md)

@@ -4,8 +4,8 @@
 turns durable skill- or workflow-evaluation summaries into scenario proposal
 candidates.
 
-This helper is needed because repos such as `charness` and `crill` do not look
-like chatbot-thread stores, but they still produce the same kind of reusable
+This helper is needed because some consumers do not look like chatbot-thread
+stores, but they still produce the same kind of reusable
 evaluation signals:
 
 - deterministic validation or smoke-scenario failures
@@ -39,21 +39,12 @@ workflow summaries into `proposalCandidates`.
 
 ## Representative Consumers
 
-- `charness`
-  - repo-owned eval scenarios in
-    [/home/ubuntu/charness/scripts/eval_registry.py](/home/ubuntu/charness/scripts/eval_registry.py)
-  - validation tiers and smoke scenario expectations in
-    [/home/ubuntu/charness/docs/public-skill-validation.md](/home/ubuntu/charness/docs/public-skill-validation.md)
-  - profile `validation.smoke_scenarios` contracts in
-    [/home/ubuntu/charness/profiles/profile.schema.json](/home/ubuntu/charness/profiles/profile.schema.json)
-- `crill`
-  - persisted `scenario.yaml` and `replay-result.json` style artifacts in
-    [/home/ubuntu/crill/docs/architecture.md](/home/ubuntu/crill/docs/architecture.md)
-  - blocked-step and replay-seed metadata in
-    [/home/ubuntu/crill/src/crill/output/scan_scenario.py](/home/ubuntu/crill/src/crill/output/scan_scenario.py)
-- `ceal`
-  - skill-like adapter consumers such as `skill-smoke` still matter as later
-    dogfood, but are not the only design center
+- one checked-in skill-validation fixture
+  - captures deterministic validation and smoke-scenario drift
+- one checked-in workflow-recovery fixture
+  - captures blocked durable workflow and replay-seed regressions
+- future mixed consumers
+  - may reuse the same helper as long as they emit normalized summaries
 
 ## Input Boundary
 
@@ -112,7 +103,7 @@ The first `skill` helper should cover two proven subtypes.
 
 ### 1. Skill And Validation Drift
 
-Seen in `charness`:
+Seen in the validation-shaped fixture:
 
 - checked-in adapter bootstrap regressions
 - smoke scenario failures for public-skill or profile validation
@@ -120,15 +111,15 @@ Seen in `charness`:
 
 ### 2. Durable Operator Workflow Regressions
 
-Seen in `crill`:
+Seen in the workflow-recovery fixture:
 
 - blocked or degraded persisted workflow artifacts
 - repeated blocked-step waste in replay-seed scenarios
 - operator guidance regressions where a durable workflow should become an
   evaluation case instead of recurring prose
 
-`crill` is not a skill repo, but it is a valid reference because the shared
-shape is durable operator workflow evaluation rather than chat continuity.
+The workflow-shaped fixture is still a valid reference because the shared shape
+is durable operator workflow evaluation rather than chat continuity.
 
 ## Fixed Decisions
 
@@ -136,8 +127,10 @@ shape is durable operator workflow evaluation rather than chat continuity.
   stay consumer-owned.
 - The helper consumes normalized workflow summaries, not repo-local scans of
   `skills/`, `profiles/`, `runs/`, or CI logs.
-- `charness` is the primary reference for skill/profile validation shape.
-- `crill` is the primary reference for blocked durable workflow artifacts.
+- the validation-shaped fixture is the primary reference for skill/profile
+  validation shape
+- the workflow-shaped fixture is the primary reference for blocked durable
+  workflow artifacts
 - The helper should output proposal candidates that can feed the existing
   `scenario prepare-input` and `scenario propose` chain unchanged.
 
@@ -145,7 +138,7 @@ shape is durable operator workflow evaluation rather than chat continuity.
 
 - Should `operator_recovery` eventually become a first-class benchmark family
   instead of a tag on top of `fast_regression`?
-- Does `crill` eventually justify a third dedicated helper, or is the shared
+- Does a future workflow-heavy consumer eventually justify a third dedicated helper, or is the shared
   durable-workflow contract enough?
 
 ## Deferred Decisions
@@ -165,15 +158,15 @@ shape is durable operator workflow evaluation rather than chat continuity.
 - no hidden repo discovery
 - no network or command execution inside the helper
 - input/output remain deterministic and file-based
-- helper output must stay reusable across `charness`, `crill`, and later
-  consumers
+- helper output must stay reusable across validation-heavy, workflow-heavy, and
+  later consumers
 
 ## Success Criteria
 
-- `charness` can normalize failed smoke-scenario or validation summaries into
+- a validation-heavy consumer can normalize failed smoke-scenario or validation summaries into
   reusable proposal candidates without teaching `Cautilus` how to read the
   whole repo.
-- `crill` can normalize blocked persisted workflow summaries into reusable
+- a workflow-heavy consumer can normalize blocked persisted workflow summaries into reusable
   proposal candidates without giving `Cautilus` Appium or iOS runtime ownership.
 - The same helper contract can describe both skill validation and durable
   workflow artifact regressions without collapsing back into one repo's file
@@ -181,9 +174,9 @@ shape is durable operator workflow evaluation rather than chat continuity.
 
 ## Acceptance Checks
 
-- fixture: `charness`-like failed smoke scenario for a public skill becomes a
+- fixture: validation-shaped failed smoke scenario for a public skill becomes a
   candidate with stable `proposalKey`
-- fixture: `crill`-like degraded run with `blocked_steps` evidence becomes a
+- fixture: workflow-shaped degraded run with `blocked_steps` evidence becomes a
   candidate with operator-recovery rationale
 - fixture: helper output feeds directly into `scenario prepare-input` or
   `scenario propose` without extra mapping
@@ -194,7 +187,7 @@ shape is durable operator workflow evaluation rather than chat continuity.
 
 ## First Implementation Slice
 
-- keep one `charness`-like fixture and one `crill`-like fixture checked in
+- keep one validation-shaped fixture and one workflow-shaped fixture checked in
 - maintain the pure helper and CLI against those fixtures
 - maintain the dedicated checked-in input schema artifact beside the fixture
 
@@ -202,8 +195,4 @@ shape is durable operator workflow evaluation rather than chat continuity.
 
 - [scenario-proposal-sources.md](./scenario-proposal-sources.md)
 - [scenario-proposal-inputs.md](./scenario-proposal-inputs.md)
-- [/home/ubuntu/charness/docs/public-skill-validation.md](/home/ubuntu/charness/docs/public-skill-validation.md)
-- [/home/ubuntu/charness/scripts/eval_registry.py](/home/ubuntu/charness/scripts/eval_registry.py)
-- [/home/ubuntu/charness/profiles/profile.schema.json](/home/ubuntu/charness/profiles/profile.schema.json)
-- [/home/ubuntu/crill/docs/architecture.md](/home/ubuntu/crill/docs/architecture.md)
-- [/home/ubuntu/crill/src/crill/output/scan_scenario.py](/home/ubuntu/crill/src/crill/output/scan_scenario.py)
+- [scenario-proposal-sources.md](./scenario-proposal-sources.md)

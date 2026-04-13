@@ -2,7 +2,7 @@
   "schemaVersion": "cautilus.chatbot_normalization_inputs.v1",
   "conversationSummaries": [
     {
-      "threadKey": "ceal-thread-review-clarification",
+      "threadKey": "chatbot-thread-review-clarification",
       "lastObservedAt": "2026-04-11T00:00:00.000Z",
       "records": [
         {
@@ -16,7 +16,7 @@
       ]
     },
     {
-      "threadKey": "ceal-thread-event-followup",
+      "threadKey": "chatbot-thread-event-followup",
       "lastObservedAt": "2026-04-11T00:10:00.000Z",
       "records": [
         {
@@ -33,8 +33,8 @@
   ],
   "runSummaries": [
     {
-      "runId": "ceal-run-ambiguous-confirmation",
-      "threadKey": "ceal-thread-ambiguous",
+      "runId": "chatbot-run-ambiguous-confirmation",
+      "threadKey": "chatbot-thread-ambiguous",
       "startedAt": "2026-04-11T00:20:00.000Z",
       "textPreview": "네, 그대로 진행해주세요.",
       "blockedReason": "ambiguous_confirmation_without_thread_context"

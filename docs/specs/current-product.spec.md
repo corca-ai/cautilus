@@ -100,7 +100,7 @@ standalone product여야 한다.
 | skills/bundled.go | fixed | go:embed cautilus |
 | internal/app/cli_smoke_test.go | file_exists |  |
 | internal/app/cli_smoke_test.go | fixed | TestCLIRootSelfConsumerRepoStaysDoctorReady |
-| internal/app/cli_smoke_test.go | fixed | TestCLIStandaloneTempRepoCanAdoptCautilusWithoutCealPaths |
+| internal/app/cli_smoke_test.go | fixed | TestCLIStandaloneTempRepoCanAdoptCautilusWithoutHostSpecificPaths |
 | internal/app/cli_smoke_test.go | fixed | TestCLISkillsInstallCreatesRepoLocalCanonicalSkill |
 | skills/cautilus/SKILL.md | file_exists |  |
 | skills/cautilus/SKILL.md | fixed | cautilus skills install |
@@ -233,7 +233,7 @@ standalone product여야 한다.
 | docs/releasing.md | fixed | fetch-github-archive-sha256 |
 | docs/releasing.md | fixed | gh attestation verify |
 | docs/consumer-readiness.md | file_exists |  |
-| docs/consumer-readiness.md | fixed | All four repos now expose an official `cautilus-adapter` |
+| docs/consumer-readiness.md | fixed | This note intentionally groups evidence by consumer archetype |
 | docs/consumer-migration.md | file_exists |  |
 | docs/consumer-migration.md | fixed | cautilus-adapter.yaml |
 | scripts/check-specs.mjs | file_exists |  |
@@ -279,7 +279,7 @@ standalone product여야 한다.
 | scripts/agent-runtime/normalize-skill-proposals.mjs | file_exists |  |
 | scripts/agent-runtime/normalize-skill-proposals.mjs | fixed | SKILL_NORMALIZATION_INPUTS_SCHEMA |
 | scripts/agent-runtime/consumer-example-fixtures.test.mjs | file_exists |  |
-| scripts/agent-runtime/consumer-example-fixtures.test.mjs | fixed | Ceal-shaped chatbot packet produces the expected proposal keys |
+| scripts/agent-runtime/consumer-example-fixtures.test.mjs | fixed | chatbot-consumer packet produces the expected proposal keys |
 | scripts/agent-runtime/scenario-proposals.mjs | file_exists |  |
 | scripts/agent-runtime/scenario-proposals.mjs | fixed | SCENARIO_PROPOSALS_SCHEMA |
 | scripts/agent-runtime/build-scenario-proposal-input.mjs | file_exists |  |
@@ -294,9 +294,9 @@ standalone product여야 한다.
 | fixtures/scenario-proposals/chatbot-input.schema.json | fixed | cautilus.chatbot_normalization_inputs.v1 |
 | fixtures/scenario-proposals/skill-input.schema.json | file_exists |  |
 | fixtures/scenario-proposals/skill-input.schema.json | fixed | cautilus.skill_normalization_inputs.v1 |
-| fixtures/scenario-proposals/ceal-chatbot-input.json | file_exists |  |
-| fixtures/scenario-proposals/charness-skill-input.json | file_exists |  |
-| fixtures/scenario-proposals/crill-skill-input.json | file_exists |  |
+| fixtures/scenario-proposals/chatbot-consumer-input.json | file_exists |  |
+| fixtures/scenario-proposals/skill-validation-input.json | file_exists |  |
+| fixtures/scenario-proposals/workflow-recovery-input.json | file_exists |  |
 | scripts/agent-runtime/run-workbench-review-variant.sh | file_exists |  |
 | scripts/agent-runtime/run-workbench-review-variant.sh | fixed | WORKBENCH_REVIEW_TIMEOUT_SECONDS |
 | scripts/agent-runtime/run-workbench-executor-variants.mjs | file_exists |  |
@@ -369,7 +369,7 @@ compare ownership은 아직 다음 step이다.
 - admin web surface
 - scenario persistence UI
 - runtime-log mining implementation
-- Ceal-specific prompt benchmark profiles
+- host-specific prompt benchmark profiles
 
 ## Functional Check
 

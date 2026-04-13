@@ -12,8 +12,8 @@ function readJson(name) {
 	return JSON.parse(readFileSync(join(FIXTURE_ROOT, name), "utf-8"));
 }
 
-test("Ceal-shaped chatbot packet produces the expected proposal keys", () => {
-	const candidates = buildChatbotProposalCandidates(readJson("ceal-chatbot-input.json"));
+test("chatbot-consumer packet produces the expected proposal keys", () => {
+	const candidates = buildChatbotProposalCandidates(readJson("chatbot-consumer-input.json"));
 	assert.deepEqual(
 		candidates.map((candidate) => candidate.proposalKey).sort(),
 		[
@@ -24,8 +24,8 @@ test("Ceal-shaped chatbot packet produces the expected proposal keys", () => {
 	);
 });
 
-test("charness-shaped skill packet produces deterministic validation regression candidates", () => {
-	const candidates = buildSkillProposalCandidates(readJson("charness-skill-input.json"));
+test("skill-validation packet produces deterministic validation regression candidates", () => {
+	const candidates = buildSkillProposalCandidates(readJson("skill-validation-input.json"));
 	assert.deepEqual(
 		candidates.map((candidate) => candidate.proposalKey).sort(),
 		[
@@ -35,8 +35,8 @@ test("charness-shaped skill packet produces deterministic validation regression 
 	);
 });
 
-test("crill-shaped workflow packet produces an operator-recovery candidate", () => {
-	const candidates = buildSkillProposalCandidates(readJson("crill-skill-input.json"));
+test("workflow-recovery packet produces an operator-recovery candidate", () => {
+	const candidates = buildSkillProposalCandidates(readJson("workflow-recovery-input.json"));
 	assert.equal(candidates.length, 1);
 	assert.equal(candidates[0].proposalKey, "cli-workflow-scan-settings-seed-replay-seed-repeated-screen-no-progress");
 	assert.ok(candidates[0].tags.includes("operator-recovery"));

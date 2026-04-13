@@ -112,13 +112,13 @@ Dogfood and migration evidence is tracked separately in
   checked-in schema for `cautilus.chatbot_normalization_inputs.v1`
 - [fixtures/scenario-proposals/skill-input.schema.json](./fixtures/scenario-proposals/skill-input.schema.json):
   checked-in schema for `cautilus.skill_normalization_inputs.v1`
-- [fixtures/scenario-proposals/ceal-chatbot-input.json](./fixtures/scenario-proposals/ceal-chatbot-input.json):
-  chatbot-shaped normalization example packet from one checked-in dogfood
-  source
-- [fixtures/scenario-proposals/charness-skill-input.json](./fixtures/scenario-proposals/charness-skill-input.json):
+- [fixtures/scenario-proposals/chatbot-consumer-input.json](./fixtures/scenario-proposals/chatbot-consumer-input.json):
+  chatbot-consumer-shaped normalization example packet from one checked-in
+  dogfood source
+- [fixtures/scenario-proposals/skill-validation-input.json](./fixtures/scenario-proposals/skill-validation-input.json):
   skill-validation-shaped normalization example packet from one checked-in
   dogfood source
-- [fixtures/scenario-proposals/crill-skill-input.json](./fixtures/scenario-proposals/crill-skill-input.json):
+- [fixtures/scenario-proposals/workflow-recovery-input.json](./fixtures/scenario-proposals/workflow-recovery-input.json):
   durable-workflow-shaped normalization example packet from one checked-in
   dogfood source
 - [docs/specs/index.spec.md](./docs/specs/index.spec.md):

@@ -189,14 +189,14 @@ source of truth다.
 | 5.1 | `cautilus doctor --repo-root <repo-path>` | `ready` 출력, exit 0 | 기계적 |
 | 5.2 | `cautilus adapter resolve --repo-root <repo-path>` | adapter 경로 출력, exit 0 | 기계적 |
 
-현재 등록된 consumer repo:
+현재 확인 중인 consumer archetype:
 
-| repo | 역할 | 경로 (이 머신 기준) |
+| target | 역할 | 경로 예시 |
 |---|---|---|
 | cautilus | self-consumer | `.` (이 repo) |
-| ceal | live consumer, chatbot 참조 | `~/ceal` |
-| charness | live consumer, skill 참조 | `~/charness` |
-| crill | live consumer, durable-workflow 참조 | `~/crill` |
+| chatbot consumer | live consumer, chatbot 참조 | `<chatbot-consumer-path>` |
+| skill-validation consumer | live consumer, skill 참조 | `<skill-consumer-path>` |
+| workflow consumer | live consumer, durable-workflow 참조 | `<workflow-consumer-path>` |
 
 ### 5b. 깊은 검증 (인간 판단, 선택적)
 
@@ -205,8 +205,8 @@ consumer-readiness.md에 기록된 deeper evidence path. 전부 돌릴 필요는
 
 | # | 대상 | 명령 예시 | 통과 조건 | 비용 |
 |---|---|---|---|---|
-| 5.3 | crill | `cautilus mode evaluate --repo-root ~/crill --mode full_gate --intent '...' --baseline-ref origin/main --output-dir /tmp/cautilus-crill-full-gate` | report의 recommendation이 `accept-now` | 무료 |
-| 5.4 | crill | `cautilus review variants --repo-root ~/crill --adapter-name operator-recovery ...` | review summary에 passing variant 존재 | LLM |
+| 5.3 | workflow consumer | `cautilus mode evaluate --repo-root <workflow-consumer-path> --mode full_gate --intent '...' --baseline-ref origin/main --output-dir /tmp/cautilus-workflow-full-gate` | report의 recommendation이 `accept-now` | 무료 |
+| 5.4 | workflow consumer | `cautilus review variants --repo-root <workflow-consumer-path> --adapter-name operator-recovery ...` | review summary에 passing variant 존재 | LLM |
 
 ---
 

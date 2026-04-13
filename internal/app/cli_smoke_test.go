@@ -234,7 +234,7 @@ func TestCLIDoctorFailsWhenAdapterIsInvalid(t *testing.T) {
 	}
 }
 
-func TestCLIStandaloneTempRepoCanAdoptCautilusWithoutCealPaths(t *testing.T) {
+func TestCLIStandaloneTempRepoCanAdoptCautilusWithoutHostSpecificPaths(t *testing.T) {
 	root := t.TempDir()
 	packageJSON, err := json.MarshalIndent(map[string]any{
 		"name":    "standalone-smoke",
@@ -313,8 +313,8 @@ printf '{"verdict":"pass","summary":"standalone smoke","findings":[{"severity":"
 	if output["summary"] != "standalone smoke" {
 		t.Fatalf("expected standalone smoke summary, got %#v", output["summary"])
 	}
-	if strings.Contains(string(mustJSONMarshal(t, summary)), "/home/ubuntu/ceal/") {
-		t.Fatalf("unexpected Ceal-local path leak in %#v", summary)
+	if strings.Contains(string(mustJSONMarshal(t, summary)), "/home/ubuntu/") {
+		t.Fatalf("unexpected host-local path leak in %#v", summary)
 	}
 }
 

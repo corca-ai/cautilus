@@ -19,7 +19,7 @@ This seam owns:
 This seam does not own:
 
 - raw log mining or clustering heuristics
-- storage-specific readers for Slack, Ceal audit logs, or other host systems
+- storage-specific readers for Slack, host audit logs, or other host systems
 
 ## Reference Command
 

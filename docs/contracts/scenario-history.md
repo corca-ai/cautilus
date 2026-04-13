@@ -5,8 +5,8 @@ iterate, held-out, and full-gate evaluation, and how repeated train runs
 change scenario cadence over time.
 
 This document extracts the generic scenario-profile, history, and baseline-cache
-rules proven in Ceal's prompt benchmark workflow without importing Ceal's
-scenario packs, instance paths, or audit storage model.
+rules proven in earlier prompt benchmark workflows without importing one
+consumer's scenario packs, instance paths, or audit storage model.
 
 ## Scope
 
@@ -19,7 +19,7 @@ This contract owns:
 
 This contract does not yet own:
 
-- Ceal's built-in scenario ids or prompt profiles
+- one consumer's built-in scenario ids or prompt profiles
 - scenario authoring UX
 - scenario proposal or mining from runtime logs
 - admin web storage or visualization
@@ -244,6 +244,4 @@ Current runtime note:
 
 ## Source References
 
-- `/home/ubuntu/ceal/scripts/agent-runtime/prompt-benchmark-profile.mjs`
-- `/home/ubuntu/ceal/scripts/agent-runtime/compare-prompt-worktrees.mjs`
-- `/home/ubuntu/ceal/docs/prompt-benchmarking.md`
+- [scenario-proposal-sources.md](./scenario-proposal-sources.md)

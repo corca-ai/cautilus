@@ -5,7 +5,7 @@ recent operator activity and recent runtime outcomes, but the product boundary
 must stay independent from any one host repo's storage layout.
 
 This contract defines the source ports and output payload that a scenario
-proposal engine can rely on before `Cautilus` imports any Ceal-specific log
+proposal engine can rely on before `Cautilus` imports any host-specific log
 mining code.
 
 ## Scope
@@ -242,8 +242,7 @@ possible pattern.
 - The first standalone CLI surface starts after host-specific mining and reads a
   normalized proposal-candidate packet plus scenario registry and coverage.
 - If `Cautilus` grows pre-candidate helpers, they should be use-case-specific
-  normalization helpers such as `chatbot`, `cli`, or `skill`, not raw source
-  readers.
+  normalization helpers such as `chatbot` or `skill`, not raw source readers.
 - Existing scenario registry and recent scenario coverage are separate inputs.
   One says whether a key exists; the other says whether it is exercised enough.
 - Proposal output should embed a draft scenario, not only a prose suggestion.
@@ -268,5 +267,5 @@ possible pattern.
 
 ## Source References
 
-- `/home/ubuntu/ceal/scripts/agent-runtime/propose-audit-scenarios.mjs`
-- `/home/ubuntu/ceal/docs/troubleshooting.md`
+- [chatbot-normalization.md](./chatbot-normalization.md)
+- [skill-normalization.md](./skill-normalization.md)

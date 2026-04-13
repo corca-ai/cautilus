@@ -90,7 +90,7 @@ function buildReviewClarificationCandidate(conversation, userMessages) {
 	if (!includesAny(userMessages[0], [/\breview\b/, /리뷰/, /저장소/, /\brepo\b/])) {
 		return null;
 	}
-	if (!includesAny(userMessages[1], [/checkout/, /현재/, /기준/, /ceal/, /저장소/, /\brepo\b/])) {
+	if (!includesAny(userMessages[1], [/checkout/, /현재/, /기준/, /저장소/, /\brepo\b/])) {
 		return null;
 	}
 	return {

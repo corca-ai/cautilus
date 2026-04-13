@@ -238,7 +238,7 @@ cautilus review variants \
 
 ## Guardrails
 
-- Do not treat Ceal-local prompts, adapters, or report paths as product-owned
+- Do not treat one host repo's prompts, adapters, or report paths as product-owned
   defaults.
 - Do not turn review loops into open-ended retries.
 - Do not turn optimizer output into an open-ended retry loop.
