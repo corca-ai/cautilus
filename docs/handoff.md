@@ -1,8 +1,7 @@
 # Cautilus Handoff
 
-이 문서는 다음 세션 pickup과 branch-local volatile state만 적는다.
-지속되어야 하는 결정은 가능한 한 원본 문서와 spec에 남기고,
-여기에는 "지금 어디까지 왔는가"와 "다음에 어디를 볼 것인가"만 남긴다.
+이 문서는 다음 세션 pickup에 필요한 현재 상태와 다음 한 수만 남긴다.
+지속 결정은 원본 문서와 spec에 남기고, 여기에는 branch-local baton pass만 적는다.
 
 ## Workflow Trigger
 
@@ -10,194 +9,94 @@
   [README.md](../README.md),
   [AGENTS.md](../AGENTS.md),
   [docs/master-plan.md](./master-plan.md),
-  [docs/cli-distribution.md](./cli-distribution.md),
-  [docs/version-provenance.md](./version-provenance.md),
-  [docs/contracts/active-run.md](./contracts/active-run.md),
-  [docs/contracts/reporting.md](./contracts/reporting.md),
-  [docs/contracts/behavior-intent.md](./contracts/behavior-intent.md),
-  [docs/contracts/scenario-proposal-inputs.md](./contracts/scenario-proposal-inputs.md),
-  [docs/release-boundary.md](./release-boundary.md),
-  [docs/consumer-migration.md](./consumer-migration.md),
   [docs/specs/current-product.spec.md](./specs/current-product.spec.md),
-  [docs/specs/self-dogfood.spec.md](./specs/self-dogfood.spec.md),
-  [bin/cautilus](../bin/cautilus),
-  [cmd/cautilus/main.go](../cmd/cautilus/main.go),
-  [go.mod](../go.mod),
+  [docs/temp-product-decisions-2026-04-10.md](./temp-product-decisions-2026-04-10.md),
   [internal/cli/command-registry.json](../internal/cli/command-registry.json),
-  [scripts/agent-runtime/report-packet.mjs](../scripts/agent-runtime/report-packet.mjs),
-  [scripts/agent-runtime/active-run.mjs](../scripts/agent-runtime/active-run.mjs),
-  [scripts/agent-runtime/workspace-start.mjs](../scripts/agent-runtime/workspace-start.mjs),
+  [internal/app/cli_smoke_test.go](../internal/app/cli_smoke_test.go),
+  [scripts/agent-runtime/evaluate-adapter-mode.mjs](../scripts/agent-runtime/evaluate-adapter-mode.mjs),
   [skills/cautilus/SKILL.md](../skills/cautilus/SKILL.md)
   를 읽는다.
-- 시작 branch는 현재 `go-port`다. public `cautilus ...` surface는 사실상
-  Go runtime이 소유하고 있고, `bin/cautilus`는 repo-local POSIX shim이다.
-- product-owned seam이면 `cautilus`에서 먼저 고친다. host adapter, prompt,
-  fixture, consumer artifact는 host 소유다.
-- active-run 상태는 handoff prose보다
-  [docs/contracts/active-run.md](./contracts/active-run.md)의
-  `### Wired Consumers` 표를 신뢰한다.
-- 세션 시작 전에 환경부터 확인한다.
-  - `node --version`은 `v22.x` 이상이어야 한다.
-  - repo root 안에서 `go env GOVERSION`은 현재 baseline인 `go1.26.2+`를
-    가리켜야 한다.
+- 시작 branch는 현재 `main`이다.
+- product-owned seam이면 `cautilus`에서 먼저 고친다. consumer adapter, prompt,
+  consumer proof expansion은 각 consumer repo 소유다.
 
 ## Current State
 
-- `v0.2.0` standalone release는 이미 나갔고, 현재 작업 branch는 `go-port`
-  (`origin/go-port` tracking)다.
-- public CLI/runtime ownership은 이제 Go 쪽으로 넘어왔다.
-  - entrypoint는 [cmd/cautilus/main.go](../cmd/cautilus/main.go)다.
-  - `bin/cautilus`는 `go -C <repo-root> run ./cmd/cautilus`로 연결하는
-    thin shim이다.
-  - command usage/example/path source of truth는
-    [internal/cli/command-registry.json](../internal/cli/command-registry.json)
-    하나다.
-- standalone install story는 현재 아래가 canonical이다.
-  - tagged GitHub binary assets + [install.sh](../install.sh)
-  - install 후 `cautilus --version`
-  - consumer repo 안에서 `cautilus skills install`
-  - Homebrew는 tap ownership / formula automation / update guidance가
-    정직해질 때까지 defer다.
-- version provenance / update check surface도 product-owned contract로 정리됐다.
-  - `cautilus version`은 real command다.
-  - `cautilus version --verbose`는 local provenance + cached release state를
-    보여준다.
-  - `cautilus version --check`는 fresh lookup을 강제한다.
-  - automatic update hint는 interactive installed-binary usage에서만 돈다.
-    CI, non-interactive, source checkout, `CAUTILUS_NO_UPDATE_CHECK=1`은
-    remote check를 건너뛴다.
-- report boundary는 strict하다.
-  - 허용되는 packet schema는 `cautilus.report_packet.v2`뿐이다.
-  - `review prepare-input`, `evidence prepare-input`,
-    `optimize prepare-input`은 legacy `v1`을 boundary에서 바로 거절한다.
-  - shared validator는
-    [scripts/agent-runtime/report-packet.mjs](../scripts/agent-runtime/report-packet.mjs)
-    에 있다.
-- active-run contract는 정착됐다.
-  - 시작점은 `cautilus workspace start`다.
-  - sticky reference는 `CAUTILUS_RUN_DIR`이다.
-  - precedence는 `explicit --output-dir > env var > auto-materialize`다.
-  - wired consumer status는 handoff 본문이 아니라
-    [docs/contracts/active-run.md](./contracts/active-run.md) 표가 authoritative다.
-- self-dogfood latest와 experiments latest는 둘 다 checked-in HTML view를 가진다.
-  - source of truth는 여전히 JSON bundle이다.
-  - generic `cautilus report html` 승격은 아직 defer다.
-- self-dogfood honesty surface는 이번 세션 기준으로 다시 녹색이다.
-  - review prompt input은 이제 current report file과 compact
-    command observations를 포함한다.
-  - self-dogfood prompt는 projected `summary.json` /
-    `review-summary.json`까지 현재 run evidence로 보여준다.
-  - latest bundle은 지금 `overallStatus: pass`,
-    `reportRecommendation: accept-now`,
-    `gateRecommendation: accept-now`다.
-- repo-owned Go security gate가 들어왔다.
-  - `npm run lint`는 이제 `npm run security:govulncheck`를 포함한다.
-  - `npm run verify`와 GitHub workflows는 같은 gate를 재사용한다.
-  - baseline은 `go.mod`의 `toolchain go1.26.2`와
-    workflow `go-version: "1.26.2"`다.
-- bundled skill과 packaged plugin skill sync는 계속 load-bearing이다.
-  - [skills/cautilus/SKILL.md](../skills/cautilus/SKILL.md)를 바꾸면
-    packaged copy도 같이 맞춰야 한다.
-- public CLI smoke / acceptance의 주 경로는 이제 Go tests다.
-  - [internal/app/cli_smoke_test.go](../internal/app/cli_smoke_test.go)가
-    native CLI acceptance coverage를 가진다.
-  - [bin/cautilus.test.mjs](../bin/cautilus.test.mjs)는 repo shim 쪽 gate다.
+- `Cautilus`는 계속 standalone Go CLI다.
+  - public command surface source of truth는
+    [internal/cli/command-registry.json](../internal/cli/command-registry.json) 하나다.
+  - [bin/cautilus](../bin/cautilus)는 repo-local shim이다.
+- `CLI product evaluation` surface는 `cautilus`에서 제거됐다.
+  - `cli evaluate`
+  - `scenario normalize cli`
+  - 관련 contracts, fixtures, Node helpers, Go handlers, acceptance tests
+- 제거 전에 보존이 필요한 seed는 `crill`로 먼저 옮겼다.
+  - `../crill/scripts/cautilus/cli-product-scan/`
+  - `crill` commit: `09a1705` (`Preserve extracted Cautilus CLI scan seed`)
+- `cautilus` 쪽 cleanup commit은 끝났다.
+  - commit: `7669158` (`Drop CLI product evaluation from Cautilus`)
+- 현재 `cautilus`에서 살아 있는 product framing은
+  `agent runtime`, `chatbot`, `skill`, `durable workflow` 쪽이다.
+- scenario-history decision은 이미 runtime에 연결돼 있다.
+  - profile-backed selection
+  - history update
+  - comparison baseline-cache seed materialization
+- packaged plugin skill copy는 repo skill source와 다시 sync돼 있다.
 
 ## Last Verified
 
-- local environment
-  - `node --version` -> `v22.22.2`
-  - `go env GOVERSION` -> `go1.26.2`
-- quick runtime sanity
-  - `./bin/cautilus --version` -> `0.2.0`
-- stop-before-leaving checks
-  - `npm run verify`
-  - `npm run hooks:check`
-  - `npm run dogfood:self`
+- `go test ./internal/app ./internal/runtime ./internal/cli`
+- `node --test scripts/agent-runtime/*.test.mjs`
+- `npm run verify`
+- `npm run hooks:check`
+- CLI-eval 잔흔 검색:
+  history note인 [docs/temp-product-decisions-2026-04-10.md](./temp-product-decisions-2026-04-10.md)만 남고,
+  제품 surface 쪽 검색은 비웠다.
 
 ## Next Session
 
-1. `go-port`에서 계속 작업한다. public runtime port 자체는 사실상 닫혔고,
-   다음 우선순위는 release-channel honesty다.
-2. release UX를 건드릴 때는 먼저
-   [docs/cli-distribution.md](./cli-distribution.md)와
-   [docs/version-provenance.md](./version-provenance.md)를 baseline으로 본다.
-3. 현재 가장 product-facing한 open question은 Homebrew/tap honesty다.
-   작업을 열면 세 가지를 한 번에 답해야 한다.
-   - tap ownership
-   - formula update automation
-   - user-facing update guidance
-4. Homebrew 전의 얇은 follow-up이 필요하면 old runtime seam을 다시 열지 말고
-   version-provenance surface에서 자른다.
-   - `doctor`가 install/version provenance를 얼마나 드러낼지
-   - install-kind detection을 더 조일지
-   - attestation verification timestamp를 cache에 남길지
-5. release-surface change 이후에는 항상 최소한 아래를 다시 돌린다.
-   - `./bin/cautilus --version`
-   - `go test ./cmd/... ./internal/...`
-   - `npm run verify`
-   - `npm run hooks:check`
-   - release/install honesty에 영향이 있으면 `npm run dogfood:self`
+1. `cautilus`에서 새 구현을 시작하기 전에 이 repo에 정말 남은 product question이 있는지 다시 확인한다.
+2. 실질적인 다음 구현이 필요하면 우선 `crill`에서
+   `scripts/cautilus/cli-product-scan/` seed를 실제 확장으로 다듬는다.
+3. `cautilus`에서 후속 정리가 필요하다면 history note 정리 정도만 본다.
+   - [docs/temp-product-decisions-2026-04-10.md](./temp-product-decisions-2026-04-10.md)
+4. decision log 기준으로 남은 점검 포인트는 repo-agnostic framing의 잔여물뿐이다.
+   - product-facing 본문에 repo name이 개념 설명 중심으로 새어 나오지 않는지 본다.
+   - consumer evidence appendix에서의 repo-specific naming은 허용된다.
 
 ## Discuss
 
-- active-run 쪽에서 아직 열려 있는 결정은 주로 operator ergonomics다.
-  - `run.json` manifest에 workflow metadata를 더 넣을지
-  - POSIX export 외에 `--shell fish` 같은 flavor surface를 열지
-- generic HTML report surface는 여전히 defer다.
-  - 현재 product-owned HTML은 self-dogfood latest / experiments latest에만
-    좁게 고정되어 있다.
-  - `cautilus report html`을 열기 전에 JSON/YAML report boundary가
-    여러 consumer에서 안정적인지부터 다시 봐야 한다.
-- behavior intent catalog는 여전히 closed catalog다.
-  - schema enum까지 올릴지는 defer다.
-  - 실제 enforcing layer는 runtime + tests다.
+- `cautilus` 쪽에서 사실상 닫힌 것:
+  - CLI product evaluation surface 복구
+  - `cautilus`로 `cautilus` CLI를 평가하는 seam
+- 아직 판단 여지가 있는 것:
+  - `crill`에서 옮겨간 seed를 preservation artifact로 둘지, 실제 consumer feature로 승격할지
+  - history note를 얼마나 적극적으로 archive/trim할지
 
 ## Premortem
 
-- 가장 쉬운 새 오해: "Go port가 끝났으니 이제 release story도 끝났다."
-  아니다. 남은 핵심은 Homebrew/tap honesty와 update guidance 정합성이다.
-- 새로 쉬운 오해: "`npm run verify`가 녹색이면 어떤 Go 1.26.x라도 괜찮다."
-  아니다. repo는 현재 `toolchain go1.26.2` baseline과 `govulncheck`
-  녹색을 전제로 한다.
-- 두 번째 오해: "`bin/cautilus`와 Go entry가 각자 route table을 가져도 된다."
-  아니다. source of truth는
-  [internal/cli/command-registry.json](../internal/cli/command-registry.json)
-  하나다.
-- 세 번째 오해: "self-dogfood HTML이 source of truth다."
-  아니다. 다음 refresh가 덮어쓰므로 JSON bundle을 먼저 고친다.
-- 네 번째 오해: "bundled skill만 고치면 된다."
-  아니다. packaged skill copy도 같이 맞춰야 한다.
-- 다섯 번째 오해: "Node 20으로도 test가 대체로 돌 것이다."
-  아니다. current self-dogfood / executor-variant fixture는 Node 22 baseline에
-  기대고 있다.
-- 여섯 번째 오해: "`workspace start`를 consumer command마다 새로 해야 한다."
-  아니다. 한 workflow = 한 runDir가 기본이다.
-- 일곱 번째 오해: "self-dogfood script에서 `--output-dir`을 빼도 된다."
-  아니다. stray `CAUTILUS_RUN_DIR` 오염을 막는 explicit override가
-  load-bearing이다.
+- 가장 쉬운 오해: `Cautilus`가 더 이상 CLI가 아니라는 해석.
+  아니다. 없앤 것은 `CLI를 평가 대상 제품 surface로 취급하던 seam`이지,
+  Go 기반 `cautilus` CLI 자체가 아니다.
+- 두 번째 오해: `docs/temp-product-decisions-2026-04-10.md`의 예전 CLI-eval
+  서술을 현재 contract로 읽는 것.
+  아니다. 현재 contract는
+  [README.md](../README.md),
+  [docs/master-plan.md](./master-plan.md),
+  [docs/specs/current-product.spec.md](./specs/current-product.spec.md)
+  를 따른다.
+- 세 번째 오해: `crill` seed 보존이 곧 `cautilus` product surface 유지라는 해석.
+  아니다. ownership은 이미 `crill` 쪽 확장 아이디어로 분리했다.
 
 ## References
 
 - [README.md](../README.md)
 - [AGENTS.md](../AGENTS.md)
 - [docs/master-plan.md](./master-plan.md)
-- [docs/cli-distribution.md](./cli-distribution.md)
-- [docs/version-provenance.md](./version-provenance.md)
-- [docs/consumer-readiness.md](./consumer-readiness.md)
-- [docs/contracts/active-run.md](./contracts/active-run.md)
-- [docs/contracts/reporting.md](./contracts/reporting.md)
-- [docs/contracts/behavior-intent.md](./contracts/behavior-intent.md)
-- [docs/contracts/scenario-proposal-inputs.md](./contracts/scenario-proposal-inputs.md)
-- [docs/release-boundary.md](./release-boundary.md)
 - [docs/specs/current-product.spec.md](./specs/current-product.spec.md)
-- [docs/specs/self-dogfood.spec.md](./specs/self-dogfood.spec.md)
-- [bin/cautilus](../bin/cautilus)
-- [cmd/cautilus/main.go](../cmd/cautilus/main.go)
-- [go.mod](../go.mod)
+- [docs/temp-product-decisions-2026-04-10.md](./temp-product-decisions-2026-04-10.md)
+- [docs/consumer-readiness.md](./consumer-readiness.md)
 - [internal/cli/command-registry.json](../internal/cli/command-registry.json)
 - [internal/app/cli_smoke_test.go](../internal/app/cli_smoke_test.go)
-- [scripts/agent-runtime/report-packet.mjs](../scripts/agent-runtime/report-packet.mjs)
-- [scripts/agent-runtime/active-run.mjs](../scripts/agent-runtime/active-run.mjs)
-- [scripts/agent-runtime/workspace-start.mjs](../scripts/agent-runtime/workspace-start.mjs)
+- [scripts/agent-runtime/evaluate-adapter-mode.mjs](../scripts/agent-runtime/evaluate-adapter-mode.mjs)
 - [skills/cautilus/SKILL.md](../skills/cautilus/SKILL.md)
