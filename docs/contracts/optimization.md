@@ -8,6 +8,9 @@ The goal is to turn explicit evaluation evidence into one conservative next
 revision brief that still respects held-out, comparison, and structured review
 gates.
 
+For a bounded `GEPA`-inspired prompt-search seam that sits above this contract,
+see [optimization-search.md](./optimization-search.md).
+
 ## Problem
 
 The current optimization seam can propose one bounded revision brief, but it
