@@ -89,8 +89,9 @@ evolution.
 The current implementation closes multi-generation reflective mutation,
 bounded merge synthesis, held-out reevaluation, frontier-promotion review
 checkpoints, scenario-aware checkpoint-feedback reinjection, scenario-aware
-two-parent merge selection, final-only checkpoint fallback, search-readiness
-blocking, and proposal bridging.
+two-parent merge selection, one-generation retention for review-rejected
+lineage, final-only checkpoint fallback, search-readiness blocking, and
+proposal bridging.
 Later slices can still add richer merge
 heuristics, and stronger self-dogfood loops.
 

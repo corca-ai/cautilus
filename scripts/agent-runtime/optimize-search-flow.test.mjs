@@ -1601,6 +1601,87 @@ EOF
 	}
 });
 
+test("run-optimize-search prunes stale review-rejected lineage after one repair generation", () => {
+	const { root, artifactRoot, optimizeInputPath, heldOutResultsPath } = createCheckpointFallbackFixture({
+		includeReviewVariants: true,
+		gateFailsOnChecklist: false,
+	});
+	try {
+		createProgrammableCodex(root, [
+			{
+				currentPromptMatchNone: ["detailed recovery checklist"],
+				output: {
+					promptMarkdown: "Keep recovery instructions explicit with a detailed recovery checklist.\n",
+					rationaleSummary: "First repair pass adds the checklist.",
+					expectedImprovements: ["operator-recovery"],
+					preservedStrengths: ["keeps the original recovery framing"],
+					riskNotes: ["operator-follow-up may still remain weak"],
+				},
+			},
+			{
+				currentPromptMatchAll: ["detailed recovery checklist"],
+				currentPromptMatchNone: ["operator timeline"],
+				output: {
+					promptMarkdown: "Keep recovery instructions explicit with a detailed recovery checklist and operator timeline.\n",
+					rationaleSummary: "Second repair pass keeps the checklist but still misses follow-up.",
+					expectedImprovements: ["operator-recovery"],
+					preservedStrengths: ["keeps the detailed recovery checklist"],
+					riskNotes: ["operator-follow-up may still remain weak"],
+				},
+			},
+			{
+				currentPromptMatchAll: ["operator timeline"],
+				output: {
+					promptMarkdown: "Keep recovery instructions explicit with a detailed recovery checklist, operator timeline, and escalation ladder.\n",
+					rationaleSummary: "Third repair pass continues from the newest rejected lineage only.",
+					expectedImprovements: ["operator-recovery"],
+					preservedStrengths: ["keeps the detailed recovery checklist"],
+					riskNotes: ["operator-follow-up may still remain weak"],
+				},
+			},
+		]);
+		const { packet } = buildOptimizeSearchInput(
+			["--optimize-input", optimizeInputPath, "--held-out-results-file", heldOutResultsPath, "--budget", "medium"],
+			{ now: new Date("2026-04-13T10:00:00.000Z") },
+		);
+		packet.searchConfig.reviewCheckpointPolicy = "frontier_promotions";
+		packet.searchConfig.generationLimit = 3;
+		packet.searchConfig.mergeEnabled = false;
+		packet.mutationConfig.backends = [{ id: "codex-mutate", backend: "codex_exec" }];
+		packet.mutationConfig.trainScenarioLimit = 1;
+		const result = runOptimizeSearch(packet, {
+			inputFile: join(root, "optimize-search-input.json"),
+			outputFile: join(artifactRoot, "optimize-search-result.json"),
+			now: new Date("2026-04-13T10:01:00.000Z"),
+			env: {
+				...process.env,
+				PATH: `${root}:${process.env.PATH ?? ""}`,
+			},
+		});
+		assert.equal(result.status, "blocked");
+		assert.equal(result.searchTelemetry.generationCount, 3);
+		assert.deepEqual(
+			result.generationSummaries.map((summary) => summary.parentFrontierCandidateIds),
+			[
+				["seed"],
+				["g1-1-codex-exec"],
+				["g2-1-codex-exec"],
+			],
+		);
+		assert.deepEqual(
+			result.generationSummaries.map((summary) => summary.proposedCandidateIds),
+			[
+				["g1-1-codex-exec"],
+				["g2-1-codex-exec"],
+				["g3-1-codex-exec"],
+			],
+		);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+		rmSync(artifactRoot, { recursive: true, force: true });
+	}
+});
+
 test("run-optimize-search falls back to the next frontier candidate when full gate rejects the leader", () => {
 	const { root, artifactRoot, optimizeInputPath, heldOutResultsPath } = createCheckpointFallbackFixture({
 		includeReviewVariants: false,

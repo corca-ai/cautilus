@@ -7,7 +7,6 @@ import {
 import { evaluateCandidateCheckpoints, runReviewCheckpoint } from "./optimize-search-checkpoints.mjs";
 import { collectFeedbackSignals, collectSeedHeldOutEntries } from "./optimize-search-readiness.mjs";
 import { dirname } from "node:path";
-
 function buildBlockedResult(input, inputFile, reasons, missingEvidence, schemaVersion, now = new Date()) {
 	return {
 		schemaVersion,
@@ -183,8 +182,8 @@ function recordCheckpointOutcome(collection, outcome) {
 	collection.push(outcome);
 }
 
-function shouldReviewFrontierPromotions(packet) { return packet.searchConfig?.reviewCheckpointPolicy === "frontier_promotions"; }
-function candidatePassedPromotionReview(candidate) { return candidate?.promotionReviewOutcome?.admissible !== false; }
+function shouldReviewFrontierPromotions(packet) { return packet.searchConfig?.reviewCheckpointPolicy === "frontier_promotions"; } function candidatePassedPromotionReview(candidate) { return candidate?.promotionReviewOutcome?.admissible !== false; }
+function candidateCanSeedMutation(candidate, nextGenerationIndex) { return !candidate || candidatePassedPromotionReview(candidate) || nextGenerationIndex <= ((candidate.promotionReviewOutcome?.reviewedAtGeneration ?? candidate.generationIndex) + 1); }
 
 function checkpointScenarioIds(packet) {
 	return [...new Set([
@@ -281,6 +280,7 @@ function recordFrontierPromotionReviews(packet, artifactRoot, candidates, scenar
 			continue;
 		}
 		const outcome = runReviewCheckpoint(packet, artifactRoot, candidate, env);
+		outcome.reviewedAtGeneration = candidate.generationIndex;
 		candidate.promotionReviewOutcome = outcome;
 		if (!outcome.admissible) {
 			candidate.checkpointFeedback = buildCheckpointFeedback(packet, outcome);
@@ -476,17 +476,18 @@ function buildSeedSearchCandidate(packet) {
 	};
 }
 
-function nextGenerationCandidates(packet, allCandidates, scenarioIds) {
+function nextGenerationCandidates(packet, allCandidates, scenarioIds, nextGenerationIndex) {
 	const matrix = allCandidates.flatMap((candidate) => candidate.heldOutEntries || []);
 	const candidateIds = allCandidates.map((candidate) => candidate.id);
 	const frontierIds = frontierCandidateIds(matrix, candidateIds, scenarioIds);
-	const mutationParents = retainParentCandidates(
+	const rankedMutationParents = retainParentCandidates(
 		frontierIds,
 		matrix,
 		allCandidates,
 		scenarioIds,
 		packet.searchConfig.populationLimit,
 	);
+	const mutationParents = rankedMutationParents.filter((candidate) => candidateCanSeedMutation(candidate, nextGenerationIndex));
 	const mergeParents = shouldReviewFrontierPromotions(packet)
 		? mutationParents.filter(candidatePassedPromotionReview)
 		: mutationParents;
@@ -511,7 +512,7 @@ function runGenerations(packet, artifactRoot, seedCandidate, readiness, checkpoi
 	let stopReason = "seed_only";
 	recordFrontierPromotionReviews(packet, artifactRoot, allCandidates, scenarioIds, checkpointLedger, env);
 	for (let generationIndex = 1; generationIndex <= packet.searchConfig.generationLimit; generationIndex += 1) {
-		const { mutationParents, mergeParents } = nextGenerationCandidates(packet, allCandidates, scenarioIds);
+		const { mutationParents, mergeParents } = nextGenerationCandidates(packet, allCandidates, scenarioIds, generationIndex);
 		const evaluatedCandidates = evaluateMutationCandidates(packet, artifactRoot, mutationParents, readiness.feedbackSignals, env, {
 			generationIndex,
 			existingCandidates: allCandidates,

@@ -381,7 +381,8 @@ standalone product여야 한다.
   held-out evidence, including multi-generation reflective mutation, optional
   bounded merge synthesis, optional frontier-promotion review checkpoints,
   scenario-aware checkpoint-feedback reinjection, scenario-aware two-parent
-  merge selection, final-only full-gate checkpoint fallback, readiness
+  merge selection, one-generation retention before stale review-rejected
+  lineage is pruned, final-only full-gate checkpoint fallback, readiness
   blocking, and proposal bridging
 - durable revision-artifact builder above optimize proposals
 - chatbot proposal-candidate normalization helper
