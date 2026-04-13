@@ -382,21 +382,20 @@ function mergeBackend(packet) {
 	return configuredBackends(packet)[0]?.backend || null;
 }
 
-function buildMergeCandidate(packet, artifactRoot, leftCandidate, rightCandidate, generationIndex, backend, scenarioIds, env) {
-	const leftPrompt = readPromptBody(leftCandidate.targetFile.path);
-	const rightPrompt = readPromptBody(rightCandidate.targetFile.path);
+function buildMergeCandidate(packet, artifactRoot, parentCandidates, generationIndex, backend, scenarioIds, env) {
+	const parentPrompts = parentCandidates.map((candidate) => readPromptBody(candidate.targetFile.path));
 	const candidate = generateCandidate({
 		packet,
 		artifactRoot,
-		parentCandidate: leftCandidate,
-		promptText: buildMergePrompt(packet, leftCandidate, rightCandidate, leftPrompt, rightPrompt, backend, scenarioIds),
+		parentCandidate: parentCandidates[0],
+		promptText: buildMergePrompt(packet, parentCandidates, parentPrompts, backend, scenarioIds),
 		backend,
 		generationIndex,
 		candidateIndex: 0,
 		origin: "merge",
 	}, env);
 	if (candidate) {
-		candidate.parentCandidateIds = [leftCandidate.id, rightCandidate.id];
+		candidate.parentCandidateIds = parentCandidates.map((parentCandidate) => parentCandidate.id);
 	}
 	return candidate;
 }
@@ -414,12 +413,10 @@ function generateMergeCandidates(packet, artifactRoot, frontierCandidates, gener
 	if (!parents) {
 		return [];
 	}
-	const [leftCandidate, rightCandidate] = parents;
 	const candidate = buildMergeCandidate(
 		packet,
 		artifactRoot,
-		leftCandidate,
-		rightCandidate,
+		parents,
 		generationIndex,
 		backend,
 		scenarioIds,

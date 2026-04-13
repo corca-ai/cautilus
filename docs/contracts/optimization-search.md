@@ -91,8 +91,8 @@ This slice defines a first `GEPA`-inspired search contract for `Cautilus`:
 - `adapter` target search
 - weight updates, fine-tuning, or external trainer orchestration
 - automatic prompt patch application to consumer-owned files
-- richer merge-parent selection, >2-parent synthesis, and smarter crossover
-  heuristics
+- richer merge selection beyond the current bounded two- or three-parent
+  synthesis and smarter crossover heuristics
 
 ## Non-Goals
 
@@ -354,10 +354,12 @@ In v1, review checkpoint policy means:
     generation as a mutation parent before frontier parent selection prunes
     that stale rejected lineage
 
-In the current bounded slice, merge-parent selection stays bounded to two
+In the current bounded slice, merge synthesis stays bounded to two or three
 review-admissible parents and should prefer:
 
 - stronger combined held-out frontier coverage first
+- then smaller parent sets unless an extra parent materially expands combined
+  held-out coverage
 - then explicit candidate signals such as `expectedImprovements`,
   `preservedStrengths`, and lower `riskNotes`, with scenario-aware weighting
   toward the weakest current frontier scenarios
@@ -495,8 +497,8 @@ The current bounded slice already proves:
 - optional frontier-promotion review checkpoint execution
 - scenario-aware checkpoint rejection feedback reinjection into later mutation
   prompts
-- scenario-aware two-parent merge selection using candidate metadata,
-  weakest-frontier weighting, and telemetry tie-breakers
+- scenario-aware bounded two- or three-parent merge selection using candidate
+  metadata, weakest-frontier weighting, and telemetry tie-breakers
 - one-generation retention before stale review-rejected lineage is pruned from
   mutation-parent selection
 - final-only full-gate checkpoint execution with ranked-frontier fallback

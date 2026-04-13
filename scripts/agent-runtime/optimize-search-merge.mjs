@@ -4,13 +4,6 @@ function heldOutScoreForCandidate(candidate, scenarioId) {
 	return typeof match?.score === "number" ? match.score : null;
 }
 
-function candidateCoverageScore(candidate, scenarioIds) {
-	return scenarioIds.reduce((count, scenarioId) => {
-		const score = heldOutScoreForCandidate(candidate, scenarioId);
-		return count + (typeof score === "number" && score >= 90 ? 1 : 0);
-	}, 0);
-}
-
 function normalizedList(items) {
 	return (Array.isArray(items) ? items : [])
 		.filter((item) => typeof item === "string" && item.length > 0);
@@ -55,44 +48,54 @@ function scenarioPriorityWeights(frontierCandidates, scenarioIds) {
 	return weights;
 }
 
-function pairScenarioStats(left, right, scenarioIds) {
+function groupScenarioStats(candidates, scenarioIds) {
 	let coverage = 0;
 	let average = 0;
+	let weakestScore = Number.POSITIVE_INFINITY;
 	for (const scenarioId of scenarioIds) {
-		const leftScore = heldOutScoreForCandidate(left, scenarioId) ?? Number.NEGATIVE_INFINITY;
-		const rightScore = heldOutScoreForCandidate(right, scenarioId) ?? Number.NEGATIVE_INFINITY;
-		const bestScore = Math.max(leftScore, rightScore);
+		const bestScore = candidates.reduce((score, candidate) => (
+			Math.max(score, heldOutScoreForCandidate(candidate, scenarioId) ?? Number.NEGATIVE_INFINITY)
+		), Number.NEGATIVE_INFINITY);
 		if (bestScore > Number.NEGATIVE_INFINITY) {
 			coverage += 1;
+			weakestScore = Math.min(weakestScore, bestScore);
 		}
 		average += bestScore;
 	}
-	return { coverage, average };
+	return {
+		coverage,
+		average,
+		weakestScore: weakestScore === Number.POSITIVE_INFINITY ? Number.NEGATIVE_INFINITY : weakestScore,
+	};
 }
 
-function pairCandidateMetrics(left, right, scenarioIds, scenarioWeights) {
-	const scenarioStats = pairScenarioStats(left, right, scenarioIds);
-	const expectedImprovements = [...normalizedList(left.expectedImprovements), ...normalizedList(right.expectedImprovements)];
-	const preservedStrengths = [...normalizedList(left.preservedStrengths), ...normalizedList(right.preservedStrengths)];
-	const riskNotes = [...normalizedList(left.riskNotes), ...normalizedList(right.riskNotes)];
+function groupCandidateMetrics(candidates, scenarioIds, scenarioWeights) {
+	const scenarioStats = groupScenarioStats(candidates, scenarioIds);
+	const expectedImprovements = candidates.flatMap((candidate) => normalizedList(candidate.expectedImprovements));
+	const preservedStrengths = candidates.flatMap((candidate) => normalizedList(candidate.preservedStrengths));
+	const riskNotes = candidates.flatMap((candidate) => normalizedList(candidate.riskNotes));
 	return {
-		coverage: scenarioStats.coverage + candidateCoverageScore(left, scenarioIds) + candidateCoverageScore(right, scenarioIds),
+		coverage: scenarioStats.coverage,
+		weakestScore: scenarioStats.weakestScore,
 		priorityImprovementWeight: weightedScenarioMentions(expectedImprovements, scenarioIds, scenarioWeights),
 		improvementCoverage: countScenarioMentions(expectedImprovements, scenarioIds),
 		improvementDiversity: uniqueCount(expectedImprovements),
 		strengthCount: uniqueCount(preservedStrengths),
+		parentCount: candidates.length,
 		priorityRiskPenalty: weightedScenarioMentions(riskNotes, scenarioIds, scenarioWeights),
 		riskPenalty: riskNotes.length,
 		average: scenarioStats.average,
-		totalCostUsd: numericTelemetryValue(left, "totalCostUsd") + numericTelemetryValue(right, "totalCostUsd"),
-		totalDurationMs: numericTelemetryValue(left, "totalDurationMs") + numericTelemetryValue(right, "totalDurationMs"),
+		totalCostUsd: candidates.reduce((total, candidate) => total + numericTelemetryValue(candidate, "totalCostUsd"), 0),
+		totalDurationMs: candidates.reduce((total, candidate) => total + numericTelemetryValue(candidate, "totalDurationMs"), 0),
 	};
 }
 
 function comparePairMetrics(left, right) {
 	for (const [field, direction] of [
 		["coverage", "desc"],
+		["weakestScore", "desc"],
 		["average", "desc"],
+		["parentCount", "asc"],
 		["priorityImprovementWeight", "desc"],
 		["improvementCoverage", "desc"],
 		["improvementDiversity", "desc"],
@@ -113,20 +116,31 @@ function comparePairMetrics(left, right) {
 	return 0;
 }
 
-export function selectMergeParents(frontierCandidates, scenarioIds) {
+function combinationGroups(items, size, startIndex = 0, prefix = [], groups = []) {
+	if (prefix.length === size) {
+		groups.push(prefix);
+		return groups;
+	}
+	for (let index = startIndex; index <= items.length - (size - prefix.length); index += 1) {
+		combinationGroups(items, size, index + 1, [...prefix, items[index]], groups);
+	}
+	return groups;
+}
+
+export function selectMergeParents(frontierCandidates, scenarioIds, { maxParents = 3 } = {}) {
 	if (frontierCandidates.length < 2) {
 		return null;
 	}
 	const scenarioWeights = scenarioPriorityWeights(frontierCandidates, scenarioIds);
 	let best = null;
-	for (let leftIndex = 0; leftIndex < frontierCandidates.length; leftIndex += 1) {
-		for (let rightIndex = leftIndex + 1; rightIndex < frontierCandidates.length; rightIndex += 1) {
-			const pair = [frontierCandidates[leftIndex], frontierCandidates[rightIndex]];
-			const metrics = pairCandidateMetrics(pair[0], pair[1], scenarioIds, scenarioWeights);
+	const boundedMaxParents = Math.max(2, Math.min(maxParents, frontierCandidates.length));
+	for (let size = 2; size <= boundedMaxParents; size += 1) {
+		for (const group of combinationGroups(frontierCandidates, size)) {
+			const metrics = groupCandidateMetrics(group, scenarioIds, scenarioWeights);
 			if (!best || comparePairMetrics(metrics, best.metrics) > 0) {
-				best = { pair, metrics };
+				best = { group, metrics };
 			}
 		}
 	}
-	return best?.pair || null;
+	return best?.group || null;
 }

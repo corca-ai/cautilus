@@ -62,8 +62,10 @@ function mergeParentDescriptor(candidate) {
 	};
 }
 
-export function buildMergePrompt(packet, leftCandidate, rightCandidate, leftPrompt, rightPrompt, backend, scenarioIds) {
+export function buildMergePrompt(packet, parentCandidates, parentPrompts, backend, scenarioIds) {
 	const { objective, constraints, heldOutScenarios, targetPath } = promptContext(packet);
+	const parentIds = parentCandidates.map((candidate) => candidate.id);
+	const promptByParentId = new Map(parentCandidates.map((candidate, index) => [candidate.id, parentPrompts[index]]));
 	return [
 		"# Task",
 		"Return one merged prompt candidate as structured JSON.",
@@ -78,30 +80,27 @@ export function buildMergePrompt(packet, leftCandidate, rightCandidate, leftProm
 		"## Search Context",
 		`- backend: ${backend}`,
 		`- objective: ${objective}`,
-		`- leftParentCandidateId: ${leftCandidate.id}`,
-		`- rightParentCandidateId: ${rightCandidate.id}`,
+		`- parentCandidateIds: ${parentIds.join(", ")}`,
 		`- targetFile: ${targetPath}`,
 		`- heldOutScenarioSet: ${heldOutScenarios.join(", ") || "none"}`,
 		"",
 		"## Merge Goal",
 		`- combine complementary held-out strengths across: ${scenarioIds.join(", ") || "none"}`,
+		`- keep the synthesis bounded to ${parentCandidates.length} frontier parents`,
 		"",
 		"## Guardrails",
 		...constraints.map((constraint) => `- ${constraint}`),
 		"- Keep the prompt self-contained and legible.",
 		"- Do not claim success that the evidence does not support.",
 		"",
-		"## Left Parent",
-		JSON.stringify(mergeParentDescriptor(leftCandidate), null, 2),
-		"```md",
-		leftPrompt,
-		"```",
-		"",
-		"## Right Parent",
-		JSON.stringify(mergeParentDescriptor(rightCandidate), null, 2),
-		"```md",
-		rightPrompt,
-		"```",
+		...parentCandidates.flatMap((candidate) => [
+			`## Parent ${candidate.id}`,
+			JSON.stringify(mergeParentDescriptor(candidate), null, 2),
+			"```md",
+			promptByParentId.get(candidate.id) || "",
+			"```",
+			"",
+		]),
 		"",
 		"## Response Shape",
 		"- promptMarkdown: full revised prompt body",
