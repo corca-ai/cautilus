@@ -31,7 +31,9 @@
     - `light` -> `final_only`
     - `medium`/`heavy` -> `frontier_promotions`
   - scenario-aware checkpoint rejection feedback reinjection into later mutation prompts
-  - one-generation retention before stale review-rejected lineage is pruned from mutation parents
+  - severity-aware frontier pruning
+    - concern -> one repair generation
+    - blocker -> prune before the next generation
   - final-only full-gate checkpoint execution
   - selection-cap breach keeps candidates in frontier search but makes them final-selection ineligible
   - ranked-frontier fallback when the leader fails final checkpoints
@@ -58,24 +60,24 @@
 - `npm run lint:specs`
 - `npm run verify`
 - `npm run hooks:check`
-- latest full verify after frontier pruning retention slice: passed
+- latest full verify after severity-aware frontier pruning slice: passed
 
 ## Next Session
 
-1. review-rejected lineage를 한 generation보다 더 짧게 자를지, 아니면 checkpoint severity별로 retention을 다르게 둘지 판단한다.
-2. 마지막으로 merge prompt 자체에도 scenario-aware feedback를 더 직접 실을지 판단한다.
-3. 필요하면 bounded 3-parent merge를 언제 2-parent보다 먼저 허용할지 policy knob로 뺄지 판단한다.
-4. selection-cap breach reason code를 public contract로 고정할지, 아니면 implementation detail로 둘지 판단한다.
+1. merge prompt 자체에도 scenario-aware feedback를 더 직접 실을지 판단한다.
+2. 필요하면 bounded 3-parent merge를 언제 2-parent보다 먼저 허용할지 policy knob로 뺄지 판단한다.
+3. selection-cap breach reason code를 public contract로 고정할지, 아니면 implementation detail로 둘지 판단한다.
+4. concern/blocker보다 더 세밀한 pruning bucket이 필요한지 판단한다.
 
 ## Discuss
 
 - 아직 `v2`는 아니다.
 - 지금 닫힌 것은 “bounded GEPA slice with frontier-promotion review feedback reinjection + final-only full-gate fallback”이다.
 - 다음 세션의 첫 결정은 이것이다:
-  - frontier pruning policy를 severity-aware하게 더 조일지
-  - 아니면 merge prompt feedback를 더 직접 연결할지
+  - merge prompt feedback를 더 직접 연결할지
+  - 아니면 bounded 3-parent activation policy를 따로 뺄지
 - 제 추천은 먼저
-  - frontier pruning policy
+  - merge prompt feedback
   를 다음 핵심 slice로 두는 것이다.
 
 ## Premortem
@@ -87,7 +89,7 @@
 - 세 번째 오해: merge가 무제한 multi-parent나 scenario-aware root cause까지 푼다는 해석.
   아니다. 현재 merge는 weakest-frontier weighting이 들어간 bounded 2-3 parent synthesis다.
 - 네 번째 오해: review-rejected lineage가 frontier parent pool에 무기한 남는다는 해석.
-  아니다. 지금은 한 번의 repair generation 뒤에는 stale rejected lineage를 mutation parent selection에서 뺀다.
+  아니다. 지금은 concern이면 한 번의 repair generation만 남고, blocker면 다음 generation 전에 바로 mutation parent selection에서 뺀다.
 
 ## References
 

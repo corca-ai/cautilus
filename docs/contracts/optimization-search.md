@@ -351,9 +351,11 @@ In v1, review checkpoint policy means:
     mutation prompts
   - review-rejected frontier candidates may still seed later mutation, but
     merge-parent selection remains limited to review-admissible candidates
-  - a review-rejected frontier candidate gets at most one later repair
-    generation as a mutation parent before frontier parent selection prunes
-    that stale rejected lineage
+  - a concern-level review rejection gets at most one later repair generation
+    as a mutation parent before frontier parent selection prunes that stale
+    rejected lineage
+  - a blocker-level review rejection is pruned from mutation-parent selection
+    before the next generation
 
 In the current bounded slice, merge synthesis stays bounded to two or three
 review-admissible parents and should prefer:
@@ -503,8 +505,9 @@ The current bounded slice already proves:
   prompts
 - scenario-aware bounded two- or three-parent merge selection using candidate
   metadata, weakest-frontier weighting, and telemetry tie-breakers
-- one-generation retention before stale review-rejected lineage is pruned from
-  mutation-parent selection
+- severity-aware retention for review-rejected lineage: one repair generation
+  for concern-level review rejection, immediate pruning for blocker-level
+  rejection
 - final-only full-gate checkpoint execution with ranked-frontier fallback
 - selected-candidate emission and proposal bridging back into the existing
   optimize artifact flow

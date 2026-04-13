@@ -5,6 +5,7 @@ import {
 	summarizeCandidateTelemetry,
 } from "./optimize-search-mutation.mjs";
 import { evaluateCandidateCheckpoints, runReviewCheckpoint } from "./optimize-search-checkpoints.mjs";
+import { candidateCanSeedMutation } from "./optimize-search-pruning.mjs";
 import { collectFeedbackSignals, collectSeedHeldOutEntries } from "./optimize-search-readiness.mjs";
 import { candidateConstraintRejectionReasons } from "./optimize-search-selection.mjs";
 import { dirname } from "node:path";
@@ -163,7 +164,6 @@ function recordCheckpointOutcome(collection, outcome) {
 }
 
 function shouldReviewFrontierPromotions(packet) { return packet.searchConfig?.reviewCheckpointPolicy === "frontier_promotions"; } function candidatePassedPromotionReview(candidate) { return candidate?.promotionReviewOutcome?.admissible !== false; }
-function candidateCanSeedMutation(candidate, nextGenerationIndex) { return !candidate || candidatePassedPromotionReview(candidate) || nextGenerationIndex <= ((candidate.promotionReviewOutcome?.reviewedAtGeneration ?? candidate.generationIndex) + 1); }
 
 function checkpointScenarioIds(packet) {
 	return [...new Set([
