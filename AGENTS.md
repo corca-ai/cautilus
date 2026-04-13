@@ -9,6 +9,7 @@ Ceal's `workbench`.
   workflow.
 - Keep manually maintained docs in English.
   Exceptions: [docs/handoff.md](./docs/handoff.md),
+  [docs/operator-acceptance.md](./docs/operator-acceptance.md),
   executable specs under [docs/specs/](./docs/specs), and
   temporary product-planning notes while they are being rewritten.
 - Speak to this user in Korean unless they ask otherwise.
@@ -45,6 +46,8 @@ Ceal's `workbench`.
   product direction and priority order
 - [docs/specs/index.spec.md](./docs/specs/index.spec.md):
   currently claimed product surface
+- [docs/operator-acceptance.md](./docs/operator-acceptance.md):
+  tiered human acceptance checklist
 - [docs/ceal-workbench-extraction.md](./docs/ceal-workbench-extraction.md):
   Ceal extraction and consumer migration notes
 
