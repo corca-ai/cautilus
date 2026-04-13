@@ -1,7 +1,6 @@
 # Cautilus Handoff
 
-이 문서는 다음 세션 pickup에 필요한 현재 상태와 다음 한 수만 남긴다.
-지속 결정은 원본 문서와 spec에 남기고, 여기에는 branch-local baton pass만 적는다.
+이 문서는 다음 세션이 바로 이어야 할 한 수만 남긴다.
 
 ## Workflow Trigger
 
@@ -10,129 +9,85 @@
   [AGENTS.md](../AGENTS.md),
   [docs/master-plan.md](./master-plan.md),
   [docs/specs/current-product.spec.md](./specs/current-product.spec.md),
-  [docs/temp-product-decisions-2026-04-10.md](./temp-product-decisions-2026-04-10.md),
-  [internal/cli/command-registry.json](../internal/cli/command-registry.json),
-  [internal/app/cli_smoke_test.go](../internal/app/cli_smoke_test.go),
-  [scripts/agent-runtime/evaluate-adapter-mode.mjs](../scripts/agent-runtime/evaluate-adapter-mode.mjs),
-  [skills/cautilus/SKILL.md](../skills/cautilus/SKILL.md)
+  [docs/contracts/optimization-search.md](./contracts/optimization-search.md),
+  [scripts/agent-runtime/optimize-search-core.mjs](../scripts/agent-runtime/optimize-search-core.mjs),
+  [scripts/agent-runtime/optimize-search-mutation.mjs](../scripts/agent-runtime/optimize-search-mutation.mjs),
+  [scripts/agent-runtime/optimize-search-checkpoints.mjs](../scripts/agent-runtime/optimize-search-checkpoints.mjs),
+  [scripts/agent-runtime/optimize-search-flow.test.mjs](../scripts/agent-runtime/optimize-search-flow.test.mjs)
   를 읽는다.
 - 시작 branch는 현재 `main`이다.
-- product-owned seam이면 `cautilus`에서 먼저 고친다. consumer adapter, prompt,
-  consumer proof expansion은 각 consumer repo 소유다.
+- product-owned seam이면 `cautilus`에서 먼저 고친다.
 
 ## Current State
 
-- `Cautilus`는 계속 standalone Go CLI다.
-  - public command surface source of truth는
-    [internal/cli/command-registry.json](../internal/cli/command-registry.json) 하나다.
-  - [bin/cautilus](../bin/cautilus)는 repo-local shim이다.
-- install/update lifecycle은 이제 Go CLI가 직접 소유한다.
-  - `cautilus install --repo-root .`
-  - `cautilus update --repo-root .`
-  - `cautilus skills install`은 low-level compatibility seam으로만 남아 있다.
-- Homebrew는 더 이상 deferred note가 아니다.
-  - release workflow가 formula artifact를 만들고
-    `HOMEBREW_TAP_TOKEN`이 있으면 tap publish까지 수행한다.
-  - latest verified public release: `v0.2.3`
-- 다른 머신용 operator install guide를 추가했다.
-  - [install.md](../install.md)
-- 이 머신에는 user-local fallback prefix로 Homebrew를 미리 설치했다.
-  - `~/.linuxbrew/bin/brew`
-  - `~/.zshrc`에서 `brew shellenv`를 로드한다.
-- `CLI product evaluation` surface는 `cautilus`에서 제거됐다.
-  - `cli evaluate`
-  - `scenario normalize cli`
-  - 관련 contracts, fixtures, Node helpers, Go handlers, acceptance tests
-- 제거 전에 보존이 필요한 seed는 `crill`로 먼저 옮겼다.
-  - `../crill/scripts/cautilus/cli-product-scan/`
-  - `crill` commit: `09a1705` (`Preserve extracted Cautilus CLI scan seed`)
-- `cautilus` 쪽 cleanup commit은 끝났다.
-  - commit: `7669158` (`Drop CLI product evaluation from Cautilus`)
-- 현재 `cautilus`에서 살아 있는 product framing은
-  `agent runtime`, `chatbot`, `skill`, `durable workflow` 쪽이다.
-- scenario-history decision은 이미 runtime에 연결돼 있다.
-  - profile-backed selection
-  - history update
-  - comparison baseline-cache seed materialization
-- packaged plugin skill copy는 repo skill source와 다시 sync돼 있다.
-- release prep is now a checked-in helper, not a manual checklist.
-  - `npm run release:prepare -- <version>`
-  - current helper updates package/plugin/install version surfaces together
-- standing gate and on-demand gate are now separated.
-  - standing: `npm run verify`
-  - on-demand: `npm run test:on-demand`
-  - heavy self-dogfood workflow script tests moved under `scripts/on-demand/`
-- GitHub Actions workflow majors are now Node 24-ready.
-  - `actions/checkout@v6`
-  - `actions/setup-go@v6`
-  - `actions/setup-node@v6`
-  - `softprops/action-gh-release@v3`
-- shared follow-up was filed in `charness`.
-  - issue: `corca-ai/charness#5`
+- `Cautilus`의 GEPA-style optimize search는 현재 `v1.5` 정도까지 닫혔다.
+  - file-first search input/result seam
+  - sparse-evidence blocked readiness with JSON
+  - reflective mutation
+  - multi-generation Pareto frontier retention
+  - optional bounded merge candidate
+  - final-only review/full-gate checkpoint execution
+  - ranked-frontier fallback when the leader fails final checkpoints
+  - blocked result when no checkpoint-admissible finalist survives
+- 이 흐름은 현재 README/spec/current contract와 sync되어 있다.
+- CLI probe/readiness 구조 분리도 끝났다.
+  - `cautilus <subcommand> --help`
+  - `cautilus commands --json`
+  - `cautilus healthcheck --json`
+  - `cautilus doctor --scope agent-surface`
+- latest self-dogfood published bundle는 `pass / accept-now` 상태다.
+  - [artifacts/self-dogfood/latest/summary.json](../artifacts/self-dogfood/latest/summary.json)
+- 최근 관련 커밋:
+  - `c283e72` bounded optimize search scaffolding
+  - `7f0f3bb` reflective mutation loop
+  - `66ef983` self-dogfood evidence + README story
+  - `7095a27` CLI probe/readiness split
+  - `fd62b0c` frontier evolution + merge
+  - `58ac144` final review/full-gate checkpoint fallback
 
 ## Last Verified
 
-- `go test ./internal/app ./internal/runtime ./internal/cli`
+- `node --test scripts/agent-runtime/optimize-search-flow.test.mjs scripts/agent-runtime/optimize-search-contract-schemas.test.mjs`
+- `npm run lint:specs`
 - `npm run verify`
-- `npm run test:on-demand`
 - `npm run hooks:check`
-- release/install smoke:
-  - GitHub release `v0.2.3`
-  - Homebrew tap formula updated to `v0.2.3`
-  - local `brew upgrade corca-ai/tap/cautilus` succeeded
-  - installed binary `cautilus --version` returned `0.2.3`
-  - installed binary `cautilus update` returned already current
-- latest `main` verify workflow succeeded after upgrading action majors to Node 24-ready versions.
+- latest full verify after checkpoint fallback commit: passed
 
 ## Next Session
 
-1. `crill`에서 `scripts/cautilus/cli-product-scan/` seed를 실제 consumer-owned
-   feature/test surface로 승격할지 결정한다.
-2. `cautilus`에서 다음 release를 만들 때는 manual bump 대신
-   `npm run release:prepare -- <version>`을 쓴다.
-3. self-dogfood workflow나 operator-facing quality record를 건드릴 때는
-   `npm run test:on-demand`도 같이 돌린다.
-4. `cautilus` 바이너리 설치 surface가 실제로 안정적이면 그 다음 `crill`에서
-   `scripts/cautilus/cli-product-scan/` seed를 실제 확장으로 다듬는다.
-5. `cautilus`에서 남은 정리는 history note 정리 정도다.
-   - [docs/temp-product-decisions-2026-04-10.md](./temp-product-decisions-2026-04-10.md)
+1. `v2` 범위를 먼저 spec으로 짧게 고정한다.
+2. 우선순위는 `frontier_promotions` review checkpoint 실행이다.
+3. 그 다음 checkpoint rejection reason을 다음 generation mutation feedback에 다시 주입할지 정한다.
+4. 마지막으로 merge parent selection을 더 system-aware하게 만들지, 아니면 multi-parent synthesis를 먼저 열지 결정한다.
 
 ## Discuss
 
-- `cautilus` 쪽에서 사실상 닫힌 것:
-  - CLI product evaluation surface 복구
-  - `cautilus`로 `cautilus` CLI를 평가하는 seam
-- 아직 판단 여지가 있는 것:
-  - `crill`에서 옮겨간 seed를 preservation artifact로 둘지, 실제 consumer feature로 승격할지
-  - history note를 얼마나 적극적으로 archive/trim할지
+- 아직 `v2`는 아니다.
+- 지금 닫힌 것은 “bounded GEPA slice with final-only checkpoint fallback”이다.
+- 다음 세션의 첫 결정은 이것이다:
+  - `v2`를 `frontier_promotions + checkpoint-to-mutation feedback`까지로 자를지
+  - 아니면 merge intelligence까지 한 번에 넣을지
+- 제 추천은 먼저
+  - `frontier_promotions`
+  - checkpoint feedback reinjection
+  두 개를 `v2` 핵심으로 자르고, merge intelligence는 그 다음 slice로 두는 것이다.
 
 ## Premortem
 
-- 가장 쉬운 오해: `Cautilus`가 더 이상 CLI가 아니라는 해석.
-  아니다. 없앤 것은 `CLI를 평가 대상 제품 surface로 취급하던 seam`이지,
-  Go 기반 `cautilus` CLI 자체가 아니다.
-- 두 번째 오해: `docs/temp-product-decisions-2026-04-10.md`의 예전 CLI-eval
-  서술을 현재 contract로 읽는 것.
-  아니다. 현재 contract는
-  [README.md](../README.md),
-  [docs/master-plan.md](./master-plan.md),
-  [docs/specs/current-product.spec.md](./specs/current-product.spec.md)
-  를 따른다.
-- 세 번째 오해: `crill` seed 보존이 곧 `cautilus` product surface 유지라는 해석.
-  아니다. ownership은 이미 `crill` 쪽 확장 아이디어로 분리했다.
-- 네 번째 오해: `npm run verify`가 self-dogfood workflow script tests까지
-  여전히 포함한다고 보는 것.
-  아니다. 그 무거운 테스트는 `npm run test:on-demand`로 분리했다.
+- 가장 쉬운 오해: “GEPA 반영이 완전히 끝났다”는 해석.
+  아니다. 현재는 strong `v1.5`다.
+- 두 번째 오해: 현재 search가 generation 중간 checkpoint까지 이미 돈다는 해석.
+  아니다. 지금은 `final_only`만 실행한다.
+- 세 번째 오해: merge가 이미 fully system-aware하다는 해석.
+  아니다. 현재 merge는 bounded 2-parent synthesis다.
 
 ## References
 
 - [README.md](../README.md)
-- [AGENTS.md](../AGENTS.md)
 - [docs/master-plan.md](./master-plan.md)
 - [docs/specs/current-product.spec.md](./specs/current-product.spec.md)
-- [docs/temp-product-decisions-2026-04-10.md](./temp-product-decisions-2026-04-10.md)
-- [docs/consumer-readiness.md](./consumer-readiness.md)
-- [internal/cli/command-registry.json](../internal/cli/command-registry.json)
-- [internal/app/cli_smoke_test.go](../internal/app/cli_smoke_test.go)
-- [scripts/agent-runtime/evaluate-adapter-mode.mjs](../scripts/agent-runtime/evaluate-adapter-mode.mjs)
-- [skills/cautilus/SKILL.md](../skills/cautilus/SKILL.md)
+- [docs/contracts/optimization-search.md](./contracts/optimization-search.md)
+- [scripts/agent-runtime/optimize-search-core.mjs](../scripts/agent-runtime/optimize-search-core.mjs)
+- [scripts/agent-runtime/optimize-search-mutation.mjs](../scripts/agent-runtime/optimize-search-mutation.mjs)
+- [scripts/agent-runtime/optimize-search-checkpoints.mjs](../scripts/agent-runtime/optimize-search-checkpoints.mjs)
+- [scripts/agent-runtime/optimize-search-flow.test.mjs](../scripts/agent-runtime/optimize-search-flow.test.mjs)
