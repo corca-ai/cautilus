@@ -39,8 +39,8 @@ be:
 ## Current Slice
 
 The shipped `skill` normalization helper is `NormalizeSkillProposalCandidates`
-in `internal/runtime/proposals.go`, exposed on the CLI as
-`cautilus scenario normalize skill`.
+in [internal/runtime/proposals.go](../../internal/runtime/proposals.go),
+exposed on the CLI as `cautilus scenario normalize skill`.
 
 This slice accepts `cautilus.skill_normalization_inputs.v2` or the newer
 `cautilus.skill_evaluation_summary.v1` summary packet. It rejects

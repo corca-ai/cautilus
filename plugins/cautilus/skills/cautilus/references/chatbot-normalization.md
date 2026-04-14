@@ -29,9 +29,10 @@ and before generic proposal ranking:
 ## Current Slice
 
 The shipped `chatbot` normalization helper is `NormalizeChatbotProposalCandidates`
-in `internal/runtime/proposals.go`, exposed on the CLI as
-`cautilus scenario normalize chatbot`. That Go helper is the single source of
-truth that turns normalized conversation/run summaries into `proposalCandidates`.
+in [internal/runtime/proposals.go](../../internal/runtime/proposals.go),
+exposed on the CLI as `cautilus scenario normalize chatbot`. That Go helper
+is the single source of truth that turns normalized conversation/run summaries
+into `proposalCandidates`.
 
 ## Representative Consumers
 
