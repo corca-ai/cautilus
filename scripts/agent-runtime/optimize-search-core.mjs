@@ -483,7 +483,7 @@ function nextGenerationCandidates(packet, allCandidates, scenarioIds, nextGenera
 	const mergeParents = shouldReviewFrontierPromotions(packet)
 		? mutationParents.filter(candidatePassedPromotionReview)
 		: mutationParents;
-	return { mutationParents, mergeParents };
+	return { mutationParents, mergeParents, mergeFeedbackCandidates: rankedMutationParents };
 }
 
 function appendGenerationSummary(allCandidates, generationSummaries, generationIndex, evaluatedCandidates, parentCandidates, scenarioIds) {
@@ -504,11 +504,12 @@ function runGenerations(packet, artifactRoot, seedCandidate, readiness, checkpoi
 	let stopReason = "seed_only";
 	recordFrontierPromotionReviews(packet, artifactRoot, allCandidates, scenarioIds, checkpointLedger, env);
 	for (let generationIndex = 1; generationIndex <= packet.searchConfig.generationLimit; generationIndex += 1) {
-		const { mutationParents, mergeParents } = nextGenerationCandidates(packet, allCandidates, scenarioIds, generationIndex);
+		const { mutationParents, mergeParents, mergeFeedbackCandidates } = nextGenerationCandidates(packet, allCandidates, scenarioIds, generationIndex);
 		const evaluatedCandidates = evaluateMutationCandidates(packet, artifactRoot, mutationParents, readiness.feedbackSignals, env, {
 			generationIndex,
 			existingCandidates: allCandidates,
 			frontierCandidates: mergeParents,
+			mergeFeedbackCandidates,
 		});
 		if (evaluatedCandidates.length === 0) {
 			return {

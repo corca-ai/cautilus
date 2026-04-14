@@ -1869,6 +1869,283 @@ EOF
 	}
 });
 
+test("run-optimize-search carries relevant frontier checkpoint feedback into merge prompts", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-optimize-search-merge-feedback-"));
+	const artifactRoot = mkdtempSync(join(tmpdir(), "cautilus-optimize-search-merge-feedback-artifacts-"));
+	const originalPath = join(root, "prompt.md");
+	const heldOutResultsPath = join(root, "held-out-results.json");
+	const optimizeInputPath = join(root, "optimize-input.json");
+	const schemaPath = join(root, "review-schema.json");
+	mkdirSync(join(root, ".agents"), { recursive: true });
+	try {
+		writeFileSync(originalPath, "Keep recovery instructions explicit with an escalation ladder.\n", "utf-8");
+		writeJson(schemaPath, { type: "object" });
+		writeExecutable(
+			join(root, "evaluate.sh"),
+			`#!/bin/sh
+output="$1"
+recovery_score=40
+recovery_status="failed"
+followup_score=55
+followup_status="failed"
+escalation_score=96
+escalation_status="passed"
+if grep -q "detailed recovery checklist" prompt.md && ! grep -q "follow-up handoff map" prompt.md; then
+  recovery_score=98
+  recovery_status="passed"
+  followup_score=70
+  followup_status="failed"
+  escalation_score=80
+  escalation_status="failed"
+fi
+if grep -q "follow-up handoff map" prompt.md && ! grep -q "detailed recovery checklist" prompt.md; then
+  recovery_score=60
+  recovery_status="failed"
+  followup_score=96
+  followup_status="passed"
+  escalation_score=82
+  escalation_status="failed"
+fi
+if grep -q "detailed recovery checklist" prompt.md && grep -q "follow-up handoff map" prompt.md; then
+  recovery_score=97
+  recovery_status="passed"
+  followup_score=97
+  followup_status="passed"
+  escalation_score=96
+  escalation_status="passed"
+fi
+cat >"$output" <<EOF
+{
+  "schemaVersion": "cautilus.scenario_results.v1",
+  "mode": "held_out",
+  "results": [
+    {
+      "scenarioId": "operator-recovery",
+      "status": "$recovery_status",
+      "overallScore": $recovery_score,
+      "telemetry": { "cost_usd": 0.05, "durationMs": 1100 }
+    },
+    {
+      "scenarioId": "operator-follow-up",
+      "status": "$followup_status",
+      "overallScore": $followup_score,
+      "telemetry": { "cost_usd": 0.03, "durationMs": 900 }
+    },
+    {
+      "scenarioId": "operator-escalation",
+      "status": "$escalation_status",
+      "overallScore": $escalation_score,
+      "telemetry": { "cost_usd": 0.02, "durationMs": 700 }
+    }
+  ]
+}
+EOF
+`,
+		);
+		writeExecutable(
+			join(root, "full-gate.sh"),
+			`#!/bin/sh
+workspace="$1"
+output="$2"
+cat >"$output" <<EOF
+{
+  "schemaVersion": "cautilus.scenario_results.v1",
+  "mode": "full_gate",
+  "results": [
+    {
+      "scenarioId": "operator-full-gate",
+      "status": "passed",
+      "overallScore": 100
+    }
+  ]
+}
+EOF
+`,
+		);
+		writeExecutable(
+			join(root, "review-variant.sh"),
+			`#!/bin/sh
+workspace="$1"
+output="$2"
+verdict="pass"
+severity="pass"
+summary="Candidate stays operator-safe."
+if grep -q "detailed recovery checklist" "$workspace/prompt.md" && ! grep -q "follow-up handoff map" "$workspace/prompt.md"; then
+  verdict="concern"
+  severity="concern"
+  summary="Checklist candidate still leaves operator-follow-up under-specified."
+fi
+cat >"$output" <<EOF
+{
+  "verdict": "$verdict",
+  "summary": "$summary",
+  "findings": [
+    {
+      "severity": "$severity",
+      "message": "$summary",
+      "path": "variant/operator-review"
+    }
+  ]
+}
+EOF
+`,
+		);
+		writeJson(heldOutResultsPath, {
+			schemaVersion: "cautilus.scenario_results.v1",
+			mode: "held_out",
+			results: [
+				{ scenarioId: "operator-recovery", status: "failed", overallScore: 40, telemetry: { cost_usd: 0.02, durationMs: 1200 } },
+				{ scenarioId: "operator-follow-up", status: "failed", overallScore: 55, telemetry: { cost_usd: 0.01, durationMs: 800 } },
+				{ scenarioId: "operator-escalation", status: "passed", overallScore: 96, telemetry: { cost_usd: 0.01, durationMs: 700 } },
+			],
+		});
+		writeFileSync(
+			join(root, ".agents", "cautilus-adapter.yaml"),
+			[
+				"version: 1",
+				"repo: temp-optimize-search",
+				"evaluation_surfaces:",
+				"  - prompt behavior",
+				"baseline_options:",
+				"  - baseline git ref in the same repo via {baseline_ref}",
+				"required_prerequisites: []",
+				"default_schema_file: review-schema.json",
+				"held_out_command_templates:",
+				"  - sh evaluate.sh {scenario_results_file}",
+				"full_gate_command_templates:",
+				"  - sh full-gate.sh {candidate_repo} {scenario_results_file}",
+				"comparison_questions:",
+				"  - Did the held-out score improve?",
+				"human_review_prompts:",
+				"  - id: operator",
+				"    prompt: Where would the prompt still leave the operator stuck?",
+				"executor_variants:",
+				"  - id: operator-review",
+				"    tool: mock",
+				"    command_template: sh review-variant.sh {candidate_repo} {output_file}",
+			].join("\n"),
+			"utf-8",
+		);
+		writeJson(optimizeInputPath, {
+			schemaVersion: "cautilus.optimize_inputs.v1",
+			generatedAt: "2026-04-13T09:58:00.000Z",
+			repoRoot: root,
+			optimizationTarget: "prompt",
+			intentProfile: {
+				schemaVersion: "cautilus.behavior_intent.v1",
+				intentId: "intent-operator-recovery-guidance",
+				summary: "Operator guidance should stay legible under recovery pressure.",
+				behaviorSurface: "operator_behavior",
+			},
+			optimizer: {
+				kind: "reflection",
+				budget: "medium",
+				plan: { evidenceLimit: 4, suggestedChangeLimit: 3, reviewVariantLimit: 1, historySignalLimit: 1 },
+			},
+			targetFile: { path: originalPath, exists: true },
+			reportFile: join(root, "report.json"),
+			report: {
+				schemaVersion: "cautilus.report_packet.v2",
+				generatedAt: "2026-04-13T09:57:00.000Z",
+				candidate: root,
+				baseline: "origin/main",
+				intent: "Operator guidance should stay legible under recovery pressure.",
+				intentProfile: {
+					schemaVersion: "cautilus.behavior_intent.v1",
+					intentId: "intent-operator-recovery-guidance",
+					summary: "Operator guidance should stay legible under recovery pressure.",
+					behaviorSurface: "operator_behavior",
+				},
+				commands: [],
+				commandObservations: [],
+				modesRun: [],
+				modeSummaries: [],
+				telemetry: { modeCount: 0 },
+				improved: [],
+				regressed: ["operator-recovery", "operator-follow-up"],
+				unchanged: [],
+				noisy: [],
+				humanReviewFindings: [
+					{
+						severity: "concern",
+						message: "The prompt needs a detailed recovery checklist and a follow-up handoff map without losing the escalation ladder.",
+					},
+				],
+				recommendation: "defer",
+			},
+			reviewSummaryFile: join(root, "review-summary.json"),
+			reviewSummary: { variants: [] },
+			scenarioHistoryFile: join(root, "history.json"),
+			scenarioHistory: {
+				schemaVersion: "cautilus.scenario_history.v1",
+				scenarioStats: {
+					"operator-recovery": { recentTrainResults: [{ status: "failed", overallScore: 80, passRate: 0 }] },
+					"operator-follow-up": { recentTrainResults: [{ status: "failed", overallScore: 70, passRate: 0 }] },
+					"operator-escalation": { recentTrainResults: [{ status: "passed", overallScore: 95, passRate: 1 }] },
+				},
+			},
+			objective: {
+				summary: "Propose one bounded next revision without weakening held-out, comparison, or review discipline.",
+				constraints: ["Prefer repairing explicit regressions over widening scope."],
+			},
+		});
+		initGitRepo(root);
+		createProgrammableCodex(root, [
+			{
+				matchAll: ["## Frontier Checkpoint Feedback", "review:operator-review:concern", "Checklist candidate still leaves operator-follow-up under-specified."],
+				output: {
+					promptMarkdown: "Keep recovery instructions explicit with a detailed recovery checklist, a follow-up handoff map, and an escalation ladder.\n",
+					rationaleSummary: "Merge the admissible frontier strengths while repairing the sibling checkpoint concern.",
+					expectedImprovements: ["operator-recovery", "operator-follow-up", "operator-escalation"],
+					preservedStrengths: ["keeps the escalation ladder", "keeps the handoff map"],
+					riskNotes: ["held-out should confirm the merged prompt stays concise"],
+				},
+			},
+			{
+				output: {
+					promptMarkdown: "Keep recovery instructions explicit with a detailed recovery checklist.\n",
+					rationaleSummary: "Strengthen the recovery path first.",
+					expectedImprovements: ["operator-recovery"],
+					preservedStrengths: ["keeps the original recovery framing"],
+					riskNotes: ["operator-follow-up may still remain weak"],
+				},
+			},
+		]);
+		createFakeClaude(root, "Keep recovery instructions explicit with a follow-up handoff map and an escalation ladder.\n");
+		const { packet } = buildOptimizeSearchInput(
+			["--optimize-input", optimizeInputPath, "--held-out-results-file", heldOutResultsPath, "--budget", "medium"],
+			{ now: new Date("2026-04-13T10:00:00.000Z") },
+		);
+		packet.searchConfig.reviewCheckpointPolicy = "frontier_promotions";
+		packet.searchConfig.generationLimit = 2;
+		packet.searchConfig.mergeEnabled = true;
+		packet.mutationConfig.backends = [
+			{ id: "codex-mutate", backend: "codex_exec" },
+			{ id: "claude-mutate", backend: "claude_p" },
+		];
+		const result = runOptimizeSearch(packet, {
+			inputFile: join(root, "optimize-search-input.json"),
+			outputFile: join(artifactRoot, "optimize-search-result.json"),
+			now: new Date("2026-04-13T10:01:00.000Z"),
+			env: {
+				...process.env,
+				PATH: `${root}:${process.env.PATH ?? ""}`,
+			},
+		});
+		assert.equal(result.status, "completed");
+		const mergeCandidate = result.candidateRegistry.find((candidate) => candidate.origin === "merge");
+		assert.equal(Boolean(mergeCandidate), true);
+		const mergePrompt = readFileSync(mergeCandidate.artifacts.promptFile, "utf-8");
+		assert.match(mergePrompt, /## Frontier Checkpoint Feedback/);
+		assert.match(mergePrompt, /review:operator-review:concern/);
+		assert.match(mergePrompt, /Checklist candidate still leaves operator-follow-up under-specified\./);
+		assert.match(mergePrompt, /sourceCandidateId/);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+		rmSync(artifactRoot, { recursive: true, force: true });
+	}
+});
+
 test("run-optimize-search falls back to the next frontier candidate when final review rejects the leader", () => {
 	const { root, artifactRoot, optimizeInputPath, heldOutResultsPath } = createCheckpointFallbackFixture({
 		includeReviewVariants: true,

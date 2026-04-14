@@ -62,7 +62,7 @@ function mergeParentDescriptor(candidate) {
 	};
 }
 
-export function buildMergePrompt(packet, parentCandidates, parentPrompts, backend, scenarioIds) {
+export function buildMergePrompt(packet, parentCandidates, parentPrompts, backend, scenarioIds, mergeCheckpointFeedback) {
 	const { objective, constraints, heldOutScenarios, targetPath } = promptContext(packet);
 	const parentIds = parentCandidates.map((candidate) => candidate.id);
 	const promptByParentId = new Map(parentCandidates.map((candidate, index) => [candidate.id, parentPrompts[index]]));
@@ -92,6 +92,9 @@ export function buildMergePrompt(packet, parentCandidates, parentPrompts, backen
 		...constraints.map((constraint) => `- ${constraint}`),
 		"- Keep the prompt self-contained and legible.",
 		"- Do not claim success that the evidence does not support.",
+		"",
+		"## Frontier Checkpoint Feedback",
+		JSON.stringify(Array.isArray(mergeCheckpointFeedback) ? mergeCheckpointFeedback : [], null, 2),
 		"",
 		...parentCandidates.flatMap((candidate) => [
 			`## Parent ${candidate.id}`,

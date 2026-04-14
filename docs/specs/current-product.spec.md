@@ -381,7 +381,8 @@ standalone product여야 한다.
   held-out evidence, including multi-generation reflective mutation, optional
   bounded two- or three-parent merge synthesis, optional frontier-promotion
   review checkpoints, scenario-aware checkpoint-feedback reinjection,
-  scenario-aware bounded merge selection, severity-aware retention for
+  scenario-aware bounded merge selection, scenario-aware merge-prompt
+  feedback from rejected frontier siblings, severity-aware retention for
   review-rejected lineage, final-only full-gate checkpoint fallback,
   selection-cap filtering across ranked frontier finalists,
   readiness blocking, and proposal bridging

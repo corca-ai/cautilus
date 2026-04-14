@@ -285,6 +285,31 @@ function filterCheckpointFeedback(checkpointFeedback, reflectionBatch) {
 	});
 }
 
+function filterScenarioCheckpointFeedback(checkpointFeedback, scenarioIds) {
+	const entries = Array.isArray(checkpointFeedback) ? checkpointFeedback : [];
+	if (entries.length === 0) {
+		return [];
+	}
+	const selectedScenarioIds = new Set((Array.isArray(scenarioIds) ? scenarioIds : [])
+		.filter((scenarioId) => typeof scenarioId === "string" && scenarioId.length > 0));
+	if (selectedScenarioIds.size === 0) {
+		return entries;
+	}
+	return entries.filter((entry) => {
+		const scopedScenarioIds = Array.isArray(entry?.scenarioIds) ? entry.scenarioIds : [];
+		return scopedScenarioIds.length === 0 || scopedScenarioIds.some((scenarioId) => selectedScenarioIds.has(scenarioId));
+	});
+}
+
+function collectMergeCheckpointFeedback(candidates, scenarioIds) {
+	return (Array.isArray(candidates) ? candidates : []).flatMap((candidate) => (
+		filterScenarioCheckpointFeedback(candidate?.checkpointFeedback, scenarioIds).map((entry) => ({
+			...entry,
+			sourceCandidateId: candidate.id,
+		}))
+	));
+}
+
 function buildMutationCandidate(packet, artifactRoot, parentCandidate, feedbackSignals, generationIndex, candidateIndex, backend, env) {
 	const parentPrompt = readPromptBody(parentCandidate.targetFile.path);
 	const reflectionBatch = buildReflectionBatch(packet, parentCandidate, feedbackSignals);
@@ -382,13 +407,14 @@ function mergeBackend(packet) {
 	return configuredBackends(packet)[0]?.backend || null;
 }
 
-function buildMergeCandidate(packet, artifactRoot, parentCandidates, generationIndex, backend, scenarioIds, env) {
+function buildMergeCandidate(packet, artifactRoot, parentCandidates, mergeFeedbackCandidates, generationIndex, backend, scenarioIds, env) {
 	const parentPrompts = parentCandidates.map((candidate) => readPromptBody(candidate.targetFile.path));
+	const mergeCheckpointFeedback = collectMergeCheckpointFeedback(mergeFeedbackCandidates, scenarioIds);
 	const candidate = generateCandidate({
 		packet,
 		artifactRoot,
 		parentCandidate: parentCandidates[0],
-		promptText: buildMergePrompt(packet, parentCandidates, parentPrompts, backend, scenarioIds),
+		promptText: buildMergePrompt(packet, parentCandidates, parentPrompts, backend, scenarioIds, mergeCheckpointFeedback),
 		backend,
 		generationIndex,
 		candidateIndex: 0,
@@ -400,7 +426,7 @@ function buildMergeCandidate(packet, artifactRoot, parentCandidates, generationI
 	return candidate;
 }
 
-function generateMergeCandidates(packet, artifactRoot, frontierCandidates, generationIndex, seenFingerprints, env) {
+function generateMergeCandidates(packet, artifactRoot, frontierCandidates, mergeFeedbackCandidates, generationIndex, seenFingerprints, env) {
 	if (!packet.searchConfig?.mergeEnabled) {
 		return [];
 	}
@@ -417,6 +443,7 @@ function generateMergeCandidates(packet, artifactRoot, frontierCandidates, gener
 		packet,
 		artifactRoot,
 		parents,
+		mergeFeedbackCandidates,
 		generationIndex,
 		backend,
 		scenarioIds,
@@ -524,6 +551,7 @@ export function evaluateMutationCandidates(packet, artifactRoot, parentCandidate
 	generationIndex = 1,
 	existingCandidates = [],
 	frontierCandidates = parentCandidates,
+	mergeFeedbackCandidates = frontierCandidates,
 } = {}) {
 	const seenFingerprints = new Set(
 		existingCandidates
@@ -543,6 +571,7 @@ export function evaluateMutationCandidates(packet, artifactRoot, parentCandidate
 		packet,
 		artifactRoot,
 		frontierCandidates,
+		mergeFeedbackCandidates,
 		generationIndex,
 		seenFingerprints,
 		env,

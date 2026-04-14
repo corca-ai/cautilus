@@ -60,24 +60,24 @@
 - `npm run lint:specs`
 - `npm run verify`
 - `npm run hooks:check`
-- latest full verify after severity-aware frontier pruning slice: passed
+- latest full verify after merge-prompt frontier-feedback slice: passed
 
 ## Next Session
 
-1. merge prompt 자체에도 scenario-aware feedback를 더 직접 실을지 판단한다.
-2. 필요하면 bounded 3-parent merge를 언제 2-parent보다 먼저 허용할지 policy knob로 뺄지 판단한다.
-3. selection-cap breach reason code를 public contract로 고정할지, 아니면 implementation detail로 둘지 판단한다.
-4. concern/blocker보다 더 세밀한 pruning bucket이 필요한지 판단한다.
+1. 필요하면 bounded 3-parent merge를 언제 2-parent보다 먼저 허용할지 policy knob로 뺄지 판단한다.
+2. selection-cap breach reason code를 public contract로 고정할지, 아니면 implementation detail로 둘지 판단한다.
+3. concern/blocker보다 더 세밀한 pruning bucket이 필요한지 판단한다.
+4. merge prompt가 rejected sibling feedback를 얼마나 많이 실을지 cap을 따로 둘지 판단한다.
 
 ## Discuss
 
 - 아직 `v2`는 아니다.
 - 지금 닫힌 것은 “bounded GEPA slice with frontier-promotion review feedback reinjection + final-only full-gate fallback”이다.
 - 다음 세션의 첫 결정은 이것이다:
-  - merge prompt feedback를 더 직접 연결할지
-  - 아니면 bounded 3-parent activation policy를 따로 뺄지
+  - bounded 3-parent activation policy를 따로 뺄지
+  - 아니면 selection-cap reason code를 public contract로 고정할지
 - 제 추천은 먼저
-  - merge prompt feedback
+  - bounded 3-parent activation policy
   를 다음 핵심 slice로 두는 것이다.
 
 ## Premortem
@@ -87,7 +87,7 @@
 - 두 번째 오해: 현재 feedback reinjection이 scenario-aware root cause까지 완전히 풀었다는 해석.
   아니다. 지금은 named scenario가 드러나는 review rejection만 scenario-scoped로 다시 주입하는 수준이다.
 - 세 번째 오해: merge가 무제한 multi-parent나 scenario-aware root cause까지 푼다는 해석.
-  아니다. 현재 merge는 weakest-frontier weighting이 들어간 bounded 2-3 parent synthesis다.
+  아니다. 현재 merge는 weakest-frontier weighting이 들어간 bounded 2-3 parent synthesis이고, rejected sibling feedback도 bounded context로만 실린다.
 - 네 번째 오해: review-rejected lineage가 frontier parent pool에 무기한 남는다는 해석.
   아니다. 지금은 concern이면 한 번의 repair generation만 남고, blocker면 다음 generation 전에 바로 mutation parent selection에서 뺀다.
 

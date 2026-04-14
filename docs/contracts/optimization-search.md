@@ -366,6 +366,9 @@ review-admissible parents and should prefer:
 - then explicit candidate signals such as `expectedImprovements`,
   `preservedStrengths`, and lower `riskNotes`, with scenario-aware weighting
   toward the weakest current frontier scenarios
+- when the frontier also contains review-rejected siblings, the merge prompt
+  may carry their scenario-relevant checkpoint feedback forward as bounded
+  context so the synthesis can avoid repeating the same rejected gap
 - then cost and duration telemetry as late tie-breakers
 
 The current bounded default is budget-aware: `light` stays `final_only` to
@@ -505,6 +508,8 @@ The current bounded slice already proves:
   prompts
 - scenario-aware bounded two- or three-parent merge selection using candidate
   metadata, weakest-frontier weighting, and telemetry tie-breakers
+- scenario-aware merge-prompt checkpoint feedback from relevant rejected
+  frontier siblings
 - severity-aware retention for review-rejected lineage: one repair generation
   for concern-level review rejection, immediate pruning for blocker-level
   rejection
