@@ -11,7 +11,9 @@
   [docs/specs/index.spec.md](./specs/index.spec.md),
   [docs/specs/archetype-boundary.spec.md](./specs/archetype-boundary.spec.md),
   [docs/specs/current-product.spec.md](./specs/current-product.spec.md)
-  를 읽는다.
+  를 읽고, 이 핸드오프의 `## Working Patterns` 섹션도 확인한다. 그
+  패턴들은 이번 세션에서 효과가 입증됐으니, 새 결정·변경 시 **자동으로
+  적용**한다.
 - 시작 branch는 현재 `main`이다.
 - product-owned seam이면 `cautilus`에서 먼저 고친다.
 
@@ -90,8 +92,10 @@
        포함) 모두 스펙 follow-up #13에 기록됨.
    - 스펙 범위 밖: skill 내부 sub-drift 재검토 (`archetype-boundary.spec.md`
      "Why skill stays unified" 참고, 필요 시 재의결)
-3. `corca-ai/charness`에 narrative / quality 스킬 개선 이슈는 이미
-   등록됨. 다음 세션에서는 issue #22, #23에 후속 업데이트만 필요 시 남긴다.
+3. `corca-ai/charness` 등록된 이슈: #22 (narrative scenario block +
+   inline glossary), #23 (quality flat-help + cross-archetype schema
+   overlap), #24 (premortem 스킬 신설 + spec/quality 확장). 다음 세션에
+   후속 댓글이 필요할 때만 남긴다.
 
 ## Consumer Migration (v0.3.x → v0.4.0)
 
@@ -130,7 +134,42 @@
   - 한국어 `README.ko.md` (영문 자체를 먼저 쉽게 만들기로 결정)
   - backward-compat shim (깔끔히 깼음)
 
-## Premortem
+## Working Patterns
+
+지난 세션들에서 실제로 효과가 컸던 운영 패턴. 다음 세션도 non-trivial한
+결정·변경을 할 때 아래를 자동으로 적용한다. 상세 논의와 다른 repo에
+이식할 제안은 `corca-ai/charness#24`에 있다.
+
+- **결정 전 premortem (다각도 서브에이전트).**
+  대상: 스펙 확정 직전, 브레이킹 체인지 직전, 삭제·리네임 슬라이스 직전,
+  이중 구현을 한쪽으로 합치는 결정 등.
+  방법: 일반 general-purpose 에이전트 3-4개를 **명시적으로 다른 각도**
+  (예: 코드 무결성, 외부 사용자, 스펙 드리프트, 블라스트 반경, devil's
+  advocate, 문서 카스케이드)로 병렬 실행. 각 프롬프트는 self-contained
+  하게 — 이전 대화 맥락 없이도 읽혀야 한다. 이미 follow-up에 잡힌
+  항목은 프롬프트에 "DO NOT report these"로 명시.
+- **premortem 직후 카운터웨이트 1회.**
+  여러 에이전트 결과가 쌓이면 **하나의 카운터웨이트 에이전트**에게
+  "과한 걱정 / YAGNI / premature optimization을 솔직히 지적해줘"라고
+  돌린다. 이 단계 없으면 paranoid backlog가 쌓이고 결정이 마비된다.
+  카운터웨이트는 각 finding을 (a) 출시 전 반드시 고침, (b) 같은
+  변경에 끼워넣기 cheap, (c) 과한 걱정 → 무시, (d) 유효하지만 defer로
+  분류해야 한다.
+- **스펙에 `Deliberately not doing` 섹션을 박는다.**
+  결정을 기록할 때 채택한 것만이 아니라 **고려하고 기각한 대안 + 기각
+  사유**도 같이 적는다. `archetype-boundary.spec.md` follow-up 13의
+  `### Deliberately not doing` 블록이 레퍼런스 형식. 6개월 뒤
+  재논의를 막고, 다음 세션이 "왜 이건 안 했지?"를 바로 판단할 수 있다.
+- **Iterative premortem.**
+  한 번에 끝내려 하지 말 것. 라운드 1 결과 일부 반영 → 거기서 생긴 **새
+  결정**에 대해 라운드 2 다시. Node 제거 결정이 그 과정으로 합의됐다.
+- **Breaking change의 actionable error 계약.**
+  스키마·서브커맨드 리네임 시 옛 경로는 `actionable error`로 새 경로를
+  가리켜야 한다. 이번 세션에 `cautilus scenario normalize skill`이
+  workflow 인풋을 받았을 때 `...use cautilus scenario normalize workflow
+  instead.`로 답한 것이 표준. 리네임/삭제 슬라이스 작업 시 자동 적용.
+
+## Premortem Hazards
 
 - 가장 쉬운 오해: 아키타입 확장을 미리 많이 해두려는 욕심. 세 번째가 들어
   왔으니 네 번째(예: `tool_use`, `pipeline`)도 지금 만들자는 유혹. 하지
@@ -138,7 +177,11 @@
   schema + helper + CLI + contract + fixture + README 블록을 한
   슬라이스에 같이 가져올 때만 추가한다.
 - 가장 쉬운 실수: 다음 세션이 `0.4.0` 릴리즈 태그를 안 찍고 follow-up
-  슬라이스부터 진행하는 것. 태그와 공개 검증이 먼저다.
+  슬라이스부터 진행하는 것. 태그와 공개 검증이 먼저다. (2026-04-15
+  현재 태그는 푸시 완료, 공개 검증만 남음.)
+- follow-up 13(Node 제거)을 picks한다면: 반드시 **선행 관문의
+  regex 수정 → parity 확인**을 삭제 이전에 통과시킨다. 통과 전 삭제는
+  word-boundary 회귀를 그대로 shipped 상태로 두는 결과가 된다.
 
 ## References
 
