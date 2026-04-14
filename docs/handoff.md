@@ -12,7 +12,7 @@
   [docs/contracts/optimization-search.md](./contracts/optimization-search.md),
   [scripts/agent-runtime/optimize-search-core.mjs](../scripts/agent-runtime/optimize-search-core.mjs),
   [scripts/agent-runtime/optimize-search-mutation.mjs](../scripts/agent-runtime/optimize-search-mutation.mjs),
-  [scripts/agent-runtime/optimize-search-checkpoints.mjs](../scripts/agent-runtime/optimize-search-checkpoints.mjs),
+  [scripts/agent-runtime/optimize-search-merge.mjs](../scripts/agent-runtime/optimize-search-merge.mjs),
   [scripts/agent-runtime/optimize-search-flow.test.mjs](../scripts/agent-runtime/optimize-search-flow.test.mjs)
   를 읽는다.
 - 시작 branch는 현재 `main`이다.
@@ -20,96 +20,59 @@
 
 ## Current State
 
-- `Cautilus`의 GEPA-style optimize search는 현재 `v1.5` 정도까지 닫혔다.
-  - file-first search input/result seam
-  - sparse-evidence blocked readiness with JSON
-  - reflective mutation
-  - multi-generation Pareto frontier retention
-  - optional bounded merge candidate
-  - scenario-aware bounded 2-3 parent merge selection
-  - rejected sibling scenario-scoped checkpoint feedback can bias merge selection
-  - explicit `threeParentPolicy`
-    - default `coverage_expansion`
-    - `disabled` override
-  - budget-aware default review checkpoint policy
-    - `light` -> `final_only`
-    - `medium`/`heavy` -> `frontier_promotions`
-  - scenario-aware checkpoint rejection feedback reinjection into later mutation prompts
-  - scenario-scoped checkpoint feedback can reprioritize the next reflection batch
-  - merge prompt rejected sibling feedback stays implicitly bounded
-    - no separate explicit feedback-entry cap
-    - bounded today by frontier parent retention + scenario filtering
-  - severity-aware frontier pruning
-    - concern -> one repair generation
-    - blocker -> prune before the next generation
-    - no finer pruning bucket yet
-  - final-only full-gate checkpoint execution
-  - selection-cap breach keeps candidates in frontier search but makes them final-selection ineligible
-  - selection-cap rejection reason codes are public contract
-    - top-level `no_selection_policy_eligible_candidate`
-    - per-candidate `selection_constraint_max_cost_exceeded`
-    - per-candidate `selection_constraint_max_duration_exceeded`
-  - ranked-frontier fallback when the leader fails final checkpoints
-  - blocked result when no checkpoint-admissible finalist survives
-- 이 흐름은 현재 README/spec/current contract와 sync되어 있다.
-- CLI probe/readiness 구조 분리도 끝났다.
-  - `cautilus <subcommand> --help`
-  - `cautilus commands --json`
-  - `cautilus healthcheck --json`
-  - `cautilus doctor --scope agent-surface`
+- `Cautilus`의 GEPA-style optimize search는 현재 strong `v1.5`다.
+- 지금 닫힌 핵심:
+  - reflective mutation + multi-generation Pareto frontier
+  - frontier-promotion review feedback reinjection
+  - scenario-scoped checkpoint feedback의 다음 reflection batch 우선순위 반영
+  - bounded 2-3 parent merge + `threeParentPolicy`
+  - rejected sibling scenario-scoped checkpoint feedback의 merge selection weighting 반영
+  - selection-cap public reason codes
+  - concern/blocker 2-bucket pruning
+  - final-only full-gate fallback
+- 아직 `v2`는 아니다.
+  - 현재는 checkpoint signal을 `weighting`과 `prompt context`에는 반영하지만,
+    merge/mutation policy가 그 signal을 더 직접적으로 해석하는 단계는 아직 덜 닫혔다.
 - latest self-dogfood published bundle는 `pass / accept-now` 상태다.
   - [artifacts/self-dogfood/latest/summary.json](../artifacts/self-dogfood/latest/summary.json)
 - 최근 관련 커밋:
-  - `c283e72` bounded optimize search scaffolding
-  - `7f0f3bb` reflective mutation loop
-  - `66ef983` self-dogfood evidence + README story
-  - `7095a27` CLI probe/readiness split
-  - `fd62b0c` frontier evolution + merge
-  - `58ac144` final review/full-gate checkpoint fallback
+  - `df9b4d1` rejected sibling signals bias merge selection
+  - `fe99139` checkpointed scenarios prioritized in repair
+  - `ff07f6b` pruning stays bounded to concern/blocker
+  - `3943bd4` selection-cap reason codes stabilized
+  - `95fd2fd` three-parent policy exposed
 
 ## Last Verified
 
-- `node --test scripts/agent-runtime/optimize-search-flow.test.mjs scripts/agent-runtime/optimize-search-contract-schemas.test.mjs`
-- `npm run lint:specs`
 - `npm run verify`
 - `npm run hooks:check`
-- latest full verify after merge-prompt frontier-feedback slice: passed
 
 ## Next Session
 
-1. merge selection을 rejected sibling checkpoint signals beyond scenario weighting까지 더 system-aware하게 만들지 판단한다.
+1. merge selection이 rejected sibling checkpoint signal을 `scenario weighting` 이상으로 직접 해석해야 하는지 결정한다.
+2. 그 방향이 맞으면 가장 작은 policy를 구현한다.
+   예: 특정 rejection reason이 있으면 특정 parent group을 명시적으로 밀어주는 규칙
+3. 그 구현 후 `npm run verify`, `npm run hooks:check`로 다시 닫는다.
 
 ## Discuss
 
-- 아직 `v2`는 아니다.
-- 지금 닫힌 것은 “bounded GEPA slice with frontier-promotion review feedback reinjection + final-only full-gate fallback”이다.
-- bounded 3-parent activation policy는 이제 product surface로 뺐다.
-  - 기본값은 `coverage_expansion`
-  - 즉, 3-parent는 held-out frontier coverage를 실제로 넓힐 때만 2-parent보다 먼저 허용한다.
-- selection-cap reason code는 이제 public contract로 고정했다.
-  - top-level blocked code는 `no_selection_policy_eligible_candidate`
-  - per-candidate cap rejection code는 open set이지만 현재 stable set은
-    `selection_constraint_max_cost_exceeded`,
-    `selection_constraint_max_duration_exceeded`다.
-- pruning bucket은 현재 `concern` / `blocker` 2단계 유지로 두기로 했다.
-  - 이유: 현재 bounded budget에선 “한 번 repair vs 즉시 prune” 결정만으로 충분하다.
-  - finer bucket은 더 큰 search budget이나 반복 telemetry 패턴이 생길 때 다시 본다.
-- merge prompt rejected sibling feedback는 별도 explicit cap을 두지 않기로 했다.
-  - 현재는 frontier parent retention, scenario filtering, review-admissible merge-parent selection으로 충분히 bounded하다고 본다.
-- rejected sibling scenario-scoped checkpoint feedback는 이제 merge selection에서도 scenario weighting에 반영한다.
-- 다음 세션의 첫 product decision은 merge selection이 scenario weighting을 넘어서
-  rejected sibling checkpoint signals를 더 직접적으로 해석해야 하는지 여부다.
+- `v2` 완료로 볼 최소 기준:
+  - checkpoint rejection이 단순 prompt context나 weighting이 아니라
+    merge/mutation decision policy에도 명시적으로 반영된다.
+  - 이 추가 정책이 packet boundary를 흔들지 않고 기존 bounded search를 더
+    system-aware하게 만든다.
+- 아직 의도적으로 안 하는 것:
+  - multi-prompt or multi-component coupled updates
+  - fine-tuning or trainer orchestration
+  - consumer prompt auto-apply
 
 ## Premortem
 
 - 가장 쉬운 오해: “GEPA 반영이 완전히 끝났다”는 해석.
   아니다. 현재는 strong `v1.5`다.
-- 두 번째 오해: 현재 feedback reinjection이 scenario-aware root cause까지 완전히 풀었다는 해석.
-  아니다. 지금은 named scenario가 드러나는 review rejection만 scenario-scoped로 다시 주입하는 수준이다.
-- 세 번째 오해: merge가 무제한 multi-parent나 scenario-aware root cause까지 푼다는 해석.
-  아니다. 현재 merge는 weakest-frontier weighting이 들어간 bounded 2-3 parent synthesis이고, rejected sibling feedback도 bounded context로만 실린다.
-- 네 번째 오해: review-rejected lineage가 frontier parent pool에 무기한 남는다는 해석.
-  아니다. 지금은 concern이면 한 번의 repair generation만 남고, blocker면 다음 generation 전에 바로 mutation parent selection에서 뺀다.
+- 다음 세션에서 가장 쉬운 실수: merge prompt feedback와 merge selection
+  policy를 같은 문제로 섞어 scope를 넓히는 것.
+  다음 slice는 `selection policy`에만 집중하는 편이 맞다.
 
 ## References
 
@@ -119,5 +82,5 @@
 - [docs/contracts/optimization-search.md](./contracts/optimization-search.md)
 - [scripts/agent-runtime/optimize-search-core.mjs](../scripts/agent-runtime/optimize-search-core.mjs)
 - [scripts/agent-runtime/optimize-search-mutation.mjs](../scripts/agent-runtime/optimize-search-mutation.mjs)
-- [scripts/agent-runtime/optimize-search-checkpoints.mjs](../scripts/agent-runtime/optimize-search-checkpoints.mjs)
+- [scripts/agent-runtime/optimize-search-merge.mjs](../scripts/agent-runtime/optimize-search-merge.mjs)
 - [scripts/agent-runtime/optimize-search-flow.test.mjs](../scripts/agent-runtime/optimize-search-flow.test.mjs)
