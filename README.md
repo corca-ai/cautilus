@@ -212,6 +212,8 @@ Dogfood and migration evidence is tracked separately in
   durable install, distribution, and Go-port tradeoffs for the standalone CLI
 - [docs/releasing.md](./docs/releasing.md):
   tagged-release checksum, archive, and tap publication workflow
+- [scripts/release/run-install-smoke.mjs](./scripts/release/run-install-smoke.mjs):
+  install.sh or Homebrew install smoke helper for release verification
 - [install.sh](./install.sh):
   curl-install surface for tagged GitHub releases
 - [.claude-plugin/marketplace.json](.claude-plugin/marketplace.json):

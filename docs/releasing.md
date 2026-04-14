@@ -78,9 +78,15 @@ This checks the tagged GitHub release for:
 5. Verify the public installer path:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh | sh
-cautilus --version
+npm run release:smoke-install -- --channel install_sh --version v0.3.0
 ```
+
+This runs the public `install.sh` flow inside an isolated temp install root,
+then verifies:
+
+- `cautilus --version`
+- `cautilus version --verbose`
+- `cautilus update`
 
 6. Verify the supported install smoke matrix before treating the release line
    as closed:
@@ -101,6 +107,13 @@ For Homebrew installs, also confirm:
 
 ```bash
 cautilus update
+```
+
+The product-owned smoke helper can also drive the Homebrew path, but it
+requires explicit opt-in because it mutates the host package-manager state:
+
+```bash
+npm run release:smoke-install -- --channel homebrew --version v0.3.0 --allow-system-mutation
 ```
 
 7. Verify the public provenance for one released binary with GitHub CLI:

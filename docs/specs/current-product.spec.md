@@ -29,6 +29,7 @@ standalone product여야 한다.
 | package.json | fixed | "dogfood:self:experiments" |
 | package.json | fixed | "release:prepare" |
 | package.json | fixed | "release:verify-public" |
+| package.json | fixed | "release:smoke-install" |
 | package.json | fixed | "lint" |
 | package.json | fixed | "lint:go" |
 | package.json | fixed | "security:govulncheck" |
@@ -285,6 +286,7 @@ standalone product여야 한다.
 | docs/releasing.md | fixed | fetch-github-archive-sha256 |
 | docs/releasing.md | fixed | gh attestation verify |
 | docs/releasing.md | fixed | release:verify-public |
+| docs/releasing.md | fixed | release:smoke-install |
 | docs/consumer-readiness.md | file_exists |  |
 | docs/consumer-readiness.md | fixed | This note intentionally groups evidence by consumer archetype |
 | docs/consumer-migration.md | file_exists |  |
@@ -325,6 +327,8 @@ standalone product여야 한다.
 | scripts/release/resolve-release-targets.mjs | fixed | resolveReleaseTargets |
 | scripts/release/verify-public-release.mjs | file_exists |  |
 | scripts/release/verify-public-release.mjs | fixed | verifyPublicRelease |
+| scripts/release/run-install-smoke.mjs | file_exists |  |
+| scripts/release/run-install-smoke.mjs | fixed | runInstallSmoke |
 | scripts/resolve_adapter.mjs | fixed | cautilus-adapter.yaml |
 | scripts/init_adapter.mjs | fixed | dumpYamlDocument |
 | scripts/agent-runtime/scenario-history.mjs | file_exists |  |

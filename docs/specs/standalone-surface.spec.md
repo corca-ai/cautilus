@@ -111,6 +111,8 @@ standalone acceptance boundary만 남긴다.
 | scripts/release/binary-assets.mjs | fixed | binaryAssetName |
 | scripts/release/verify-public-release.mjs | file_exists |  |
 | scripts/release/verify-public-release.mjs | fixed | verifyPublicRelease |
+| scripts/release/run-install-smoke.mjs | file_exists |  |
+| scripts/release/run-install-smoke.mjs | fixed | runInstallSmoke |
 | docs/master-plan.md | fixed | standalone installable CLI plus bundled reusable skill |
 | docs/master-plan.md | fixed | durable workflow behavior |
 
