@@ -16,17 +16,26 @@ The target product is:
 - train-vs-held-out discipline backed by scenario history
 - scenario proposal flows that mine runtime logs and audit traces into draft
   evaluation cases
-- first-class evaluation surfaces for chatbot, skill, and durable workflow behavior
-- an intent-first workflow where prompts are mutable implementation details and
-  evaluation contracts define success
+- first-class evaluation surfaces for chatbot, skill, and
+  durable workflow behavior
+- an intent-first workflow where prompts are mutable implementation details
+  and evaluation contracts define success
 
 ## Current State
 
 Current `core validated surface`:
 
 - generic workflow, adapter, and reporting contracts
+- `cautilus.behavior_intent.v1` contract scoring operator-facing behavior
+  surfaces (`operator_behavior`, `operator_workflow_recovery`,
+  `operator_guidance_clarity`, `repair_explicit_regressions_first`)
+- Go CLI entrypoint (`toolchain go1.26.2`) with checked-in `golangci-lint`,
+  `govulncheck`, and an attestation-backed release artifact workflow
+- registry-backed command discovery (`cautilus commands`,
+  `cautilus healthcheck`) for safe probing and wrapper tooling
 - Node adapter bootstrap scripts
-- a minimal CLI plus bundled `cautilus` skill entrypoint
+- a minimal CLI plus a bundled `cautilus` skill entrypoint embedded through
+  `skills/bundled.go`
 - repo-local Codex and Claude plugin packages, marketplace wiring, and local
   proof paths for the bundled skill
 - adapter readiness checks through `doctor`
@@ -38,140 +47,168 @@ Current `core validated surface`:
 - explicit artifact-root pruning through `workspace prune-artifacts`
 - explicit per-run artifact-root materialization through `workspace start`,
   with a `CAUTILUS_RUN_DIR` env var contract documented in
-  [active-run.md](./contracts/active-run.md).
-  Consumer commands are being wired into `resolveRunDir` one slice at a
-  time; `mode evaluate` is the first target.
+  [active-run.md](./contracts/active-run.md). `mode evaluate` is wired into
+  `resolveRunDir`; remaining consumer commands are being pulled in one slice
+  at a time.
 - report packet assembly, review packet assembly, and review-variant fanout
-- tagged-release install and release-helper surfaces
-- checked-in local gates and GitHub workflows that run `verify`
+- native self-dogfood HTML rendering through
+  `cautilus self-dogfood render-html` and `render-experiments-html`
+- tagged-release install surface (curl installer, Homebrew formula render and
+  tap publication, checksum + `actions/attest` subject attestation) plus
+  product-owned `release:verify-public` and `release:smoke-install` helpers
+- checked-in local gates, GitHub workflows that run `verify`, and an external
+  consumer onboarding smoke (`consumer:onboard:smoke`) that proves
+  install → adapter init → minimal wiring → adapter resolve → doctor ready
 
 Current `product-owned helper surface`:
 
-- `skill test` workflow seam above adapter-owned local skill runners
-- `skill evaluate` packet summarizer for trigger and execution behavior
+- `skill test` workflow seam above adapter-owned local skill runners,
+  including consensus-based repeated tests and output-review warning surfacing
+- `skill evaluate` packet summarizer
+  (`cautilus.skill_evaluation_summary.v1`) for trigger and execution behavior
 - `chatbot` and `skill` normalization helpers
 - scenario proposal packet assembly and proposal generation
-- scenario telemetry summaries
+- scenario-level telemetry summaries for cost and token transparency
 - normalized evidence-bundle input and merge helpers
 - bounded optimization input and proposal helpers
+- durable revision-artifact builder (`cautilus.revision_artifact.v1`) above
+  optimize proposals
+- GEPA-style bounded prompt-search helpers (`optimize-search v2`) with
+  multi-generation reflective mutation, optional bounded two- or three-parent
+  merge synthesis, frontier-promotion review checkpoints, scenario-aware
+  checkpoint feedback reinjection, severity-aware rejected-sibling merge
+  tie-breaking, concern-level repair-first mutation prioritization,
+  selection-cap reason codes, and final-only full-gate fallback
 
 Dogfood and migration evidence now lives separately from the product concept.
-Use [consumer-readiness.md](./consumer-readiness.md)
-for checked-in host evidence instead of treating any one consumer repo as the
-product definition.
+Use [consumer-readiness.md](./consumer-readiness.md) for checked-in host
+evidence instead of treating any one consumer repo as the product definition.
 
 ## Phase Plan
 
-### Phase 1: Product Baseline
-
-Done or nearly done:
+### Phase 1: Product Baseline — done
 
 - own generic workflow and contract docs
 - own bootstrap scripts
 - provide a repo-local CLI entrypoint
 - provide lint and test surfaces
-- keep adapter bootstrap and readiness helpers inside the product-owned Node runtime
+- keep adapter bootstrap and readiness helpers inside the product-owned
+  runtime
 
-### Phase 2: Standalone Product Hardening
+### Phase 2: Standalone Product Hardening — done
 
-Done or nearly done:
+- standalone Go binary and bundled skill feel like one product surface
+- durable runtime boundary for review prompts, schemas, and compare artifacts
+- stable versioned JSON contracts (`cautilus.report_packet.v2`,
+  review/evidence/optimize/revision/scenario variants)
+- tagged-release installer surface without npm publication, including
+  checksums, attestations, Homebrew tap, and post-release verification helpers
 
-- make the binary and bundled skill feel like one product surface
-- define a durable runtime boundary for review prompts, schemas, and compare
-  artifacts
-- define a stable report packet file shape, not only a narrative shape
-- establish a first tagged-release installer surface without npm publication
+### Phase 3: Evaluation Engine — mostly done
 
-### Phase 3: Evaluation Engine
+Moved into the product runtime:
 
-Move generic logic into the product runtime:
+- scenario split selection rules (train / held-out / full-gate)
+- history update and scenario graduation logic for profile-backed runs
+- baseline-cache key materialization for profile-backed comparison runs
+- compare artifact conventions shared by `mode evaluate` and
+  `review variants`
 
-- scenario split selection rules
-- train vs held-out vs full-gate execution semantics
-- history update and scenario graduation logic
-- baseline cache semantics where they are genuinely generic
-- compare artifact conventions that downstream review prompts can reuse
+Still open:
 
-Guardrail:
+- reusable baseline result store beyond the first profile-backed cache-key
+  path
+- broader compare ownership (more scenario-history entry points plus reusable
+  baseline results)
 
-- do not import a host repo's built-in benchmark profiles unchanged if they
-  encode host-specific scenario packs
+Guardrail: do not import a host repo's built-in benchmark profiles unchanged
+if they encode host-specific scenario packs.
 
-### Phase 4: Scenario Proposal Engine
+### Phase 4: Scenario Proposal Engine — mostly done
 
-Generalize the operator loop without binding to one host repo:
+Product-owned pieces shipped:
 
-- mine recent human conversations, recent live agent runs, and recent scenario
-  coverage
-- propose `refresh` vs `net-new` scenarios separately
-- emit evidence-backed draft scenario JSON
-- keep promotion as an explicit operator action
+- `chatbot` and `skill` normalization commands plus candidate helpers
+- `scenario prepare-input`, `scenario propose`,
+  `scenario summarize-telemetry`
+- checked-in schema artifacts and archetype fixtures (chatbot,
+  skill-validation, durable-workflow)
+- bundled-skill reference prompts point at these helpers
+
+Still open:
+
 - keep raw log readers, storage access, and host-specific trace retrieval
   consumer-owned
-- ship bundled-skill reference prompts plus product-owned helper scripts that
-  teach agents how to mine host-normalized evidence bundles into proposal
-  inputs without each host copying the same meta-prompt loop
+- expand normalization coverage as new consumer archetypes show up
 
-The product should describe generic source ports rather than binding itself to
-one chat transport, one audit store, or one host storage convention.
+### Phase 5: Intent-First Optimization Surface — mostly done
 
-The first helper targets should be:
+Product-owned pieces shipped:
 
-- `chatbot`
-  - conversation continuity and blocked-follow-up patterns
-- `skill`
-  - validation scenarios plus durable workflow artifact regressions
+- `cautilus.behavior_intent.v1` framing for chatbot, skill, and
+  durable-workflow
+- report, compare, review, history, evidence, optimize, and revision packets
+  flow end-to-end
+- GEPA-style `optimize-search v2` with reflective mutation, bounded merge,
+  checkpoint feedback, severity-aware rejected-sibling handling, and
+  selection caps — implementation and dogfood evidence both closed
+- bundled-skill meta-prompts read report packets, compare artifacts, review
+  verdicts, and scenario history
+- product-owned helper scripts carry the bounded optimization loop
+  orchestration (input build, propose, build-artifact)
 
-### Phase 5: Intent-First Optimization Surface
+Still open:
 
-Formalize the DSPy-like product story:
+- decide whether richer merge heuristics are actually needed — dogfood
+  evidence should justify the next seam rather than adding heuristics
+  speculatively
+- keep every optimizer surface bounded by held-out, comparison, and
+  structured review gates
 
-- evaluation contracts and scenario families define intent
-- intentful behavior includes operator-visible workflow seams, not only agent
-  transcripts
-- prompts, reducers, and wrappers are tunable artifacts
-- compare runs report whether behavior improved, regressed, or overfit
-- prompt revisions are acceptable if held-out and human review survive
-- skill or runtime dogfooding becomes a first-class use case, not a side path
-- bundled-skill meta-prompts should be able to read report packets, compare
-  artifacts, review verdicts, and scenario history and propose the next
-  bounded prompt or adapter revision
-- product-owned helper scripts should carry the repetitive orchestration for
-  bounded optimization loops so hosts do not re-implement the same control
-  plane
-- any optimizer surface must stay explicitly bounded by held-out,
-  comparison, and structured review gates rather than open-ended retries
+Still intentionally excluded:
 
-### Phase 6: Consumer Repoint And External Consumers
+- multi-prompt or multi-component coupled updates
+- fine-tuning or trainer orchestration
+- consumer prompt auto-apply
 
-- repoint legacy host workbench paths to `Cautilus`
-- keep host adapters, prompts, and operator policy local to each host repo
-- add external-consumer instructions for reusable host archetypes
-- define release and versioning discipline before wider reuse
+### Phase 6: Consumer Repoint And External Consumers — in progress
 
-The current release boundary is documented in
-[release-boundary.md](./release-boundary.md).
+Shipped:
+
+- [docs/external-consumer-onboarding.md](./external-consumer-onboarding.md)
+  plus `npm run consumer:onboard:smoke` prove install → adapter init →
+  minimal runnable wiring → adapter resolve → doctor ready in a temp git repo
+- [docs/consumer-migration.md](./consumer-migration.md) captures the generic
+  migration path
+- release discipline boundary documented in
+  [release-boundary.md](./release-boundary.md)
+
+Still open:
+
+- archetype-specific starter kits beyond the generic onboarding smoke
+- optional managed Homebrew install smoke helper (current smoke covers
+  `install.sh`)
+- continue moving host-specific runtime seams (raw log readers, host storage
+  conventions) out of the product boundary
 
 ## Immediate Next Moves
 
-1. Keep the standalone binary, bundled skill, Codex and Claude plugin
-   packaging, and installer surface aligned on one checked-in workflow story.
-2. Keep expanding normalization-pattern coverage while preserving one official
-   adapter contract: `cautilus-adapter.yaml`.
-3. Keep expanding scenario-history beyond the first profile-backed comparison
-   cache-key path, especially toward reusable baseline results and broader
-   compare ownership.
-4. Turn raw-evidence mining into bundled-skill reference prompts plus
-   product-owned helper scripts instead of letting each host reinvent the same
-   meta-prompt orchestration.
-5. Add bounded optimization helpers that can propose prompt or adapter changes
-   from report, compare, review, and history packets without weakening held-out
-   discipline.
-6. Keep HTML report rendering on the roadmap, but defer product-owned HTML
-   output until the JSON/YAML packet and report boundaries stay stable across
+1. Pick the next bounded improvement seam for the optimization layer: either
+   close a specific richer merge heuristic that dogfood evidence asks for, or
+   move to another roadmap slice rather than extending heuristics
+   speculatively.
+2. Expand scenario-history beyond the first profile-backed comparison
+   cache-key path toward reusable baseline results and broader compare
+   ownership.
+3. Continue moving host-specific runtime seams out of the product boundary
+   into consumer-owned adapters, prompts, and storage readers.
+4. Keep expanding normalization-pattern coverage as new consumer archetypes
+   appear, while preserving one official adapter contract
+   (`cautilus-adapter.yaml`).
+5. Decide whether to grow external-consumer onboarding into archetype-specific
+   starter kits, and whether to upgrade the Homebrew install smoke into a
+   managed helper.
+6. Keep wider HTML report rendering on the roadmap (self-dogfood HTML is
+   already native), deferring product-owned HTML output for other packet
+   types until the JSON/YAML packet and report boundaries stay stable across
    multiple consumers.
-7. Turn the first install story into a real release discipline: tagged
-   archives, checksums, attestations, tap publication, and public-repo release
-   docs.
-8. Keep moving host-specific runtime seams out of the product boundary and into
-   consumer-owned adapters, prompts, and storage readers.

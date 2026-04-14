@@ -1,7 +1,6 @@
 # AGENTS
 
-This repo is the standalone product boundary for `Cautilus`, extracted from
-Ceal's `workbench`.
+This repo is the standalone product boundary for `Cautilus`.
 
 ## Operating Stance
 
@@ -16,7 +15,7 @@ Ceal's `workbench`.
 - Prefer the source of truth over copied checklists.
   Deterministic behavior belongs in code, scripts, adapters, tests, and specs.
 - Optimize for `Cautilus` as an independent binary plus bundled skill before
-  optimizing Ceal or another host repo as a consumer.
+  optimizing any host repo as a consumer.
 
 ## Product Intent
 
@@ -48,17 +47,17 @@ Ceal's `workbench`.
   currently claimed product surface
 - [docs/operator-acceptance.md](./docs/operator-acceptance.md):
   tiered human acceptance checklist
-- [docs/ceal-workbench-extraction.md](./docs/ceal-workbench-extraction.md):
-  Ceal extraction and consumer migration notes
+- [docs/consumer-migration.md](./docs/consumer-migration.md):
+  generic consumer adoption path
 
 ## Working Rules
 
 - Keep the adapter schema repo-agnostic.
-- Do not import Ceal-specific adapters, prompts, output paths, or audit UI
+- Do not import host-specific adapters, prompts, output paths, or audit UI
   unless they are being explicitly generalized.
 - Prefer adding small bounded runtimes over large operator surfaces.
-- If Ceal has gained generic workbench knowledge, bring it here rather than
-  letting the contracts drift.
+- If a consumer repo has gained generic evaluation knowledge, bring it here
+  rather than letting the contracts drift.
 - When adding a new runtime surface, add at least one executable test.
 
 ## Commit Discipline

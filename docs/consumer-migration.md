@@ -52,35 +52,10 @@ Keep the root adapter lean.
 It should answer "what is the default `Cautilus` evaluation for this repo?"
 without forcing the operator to mentally sort multiple unrelated workflows.
 
-## Repo Notes
-
-### Ceal
-
-- current role: primary live consumer
-- keep using it to prove `adapter resolve`, `adapter init`, `doctor`, and
-  `review variants`
-- migrate generic runtime seams first, not Ceal's storage or audit surfaces
-
-### Charness
-
-- current role: live consumer and primary `skill` normalization reference
-- current state: root `cautilus-adapter` exists and points at the repo-owned
-  quality gate
-- boundary note:
-  [docs/charness-consumer-boundary.md](./charness-consumer-boundary.md)
-- split trigger: add named adapters once charness needs a second operator
-  decision beyond the current default quality gate
-- do not treat `quality-adapter.yaml` as the product contract
-
-### Crill
-
-- current role: live consumer and durable-workflow normalization reference
-- current state: root `cautilus-adapter` exists and points at repo-wide
-  validation plus workflow review
-- split trigger: add named adapters once repo-wide validation and workflow
-  review need distinct prompts, report paths, or recommendation logic
-- keep single-purpose local adapters if they help operators, but wire one
-  explicit `Cautilus` entrypoint
+Consumer archetype evidence (chatbot, skill-validation, durable-workflow) is
+grouped in [consumer-readiness.md](./consumer-readiness.md). Specific consumer
+repo names stay in that appendix rather than becoming part of the product
+vocabulary here.
 
 ## Acceptance
 

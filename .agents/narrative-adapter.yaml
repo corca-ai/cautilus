@@ -11,13 +11,13 @@ source_documents:
 - docs/specs/current-product.spec.md
 - docs/consumer-readiness.md
 - docs/external-consumer-onboarding.md
-- docs/charness-consumer-boundary.md
+- docs/consumer-migration.md
 - docs/handoff.md
 mutable_documents:
 - README.md
 - docs/master-plan.md
 - docs/consumer-readiness.md
-- docs/charness-consumer-boundary.md
+- docs/consumer-migration.md
 - docs/handoff.md
 brief_template:
 - One-Line Summary
