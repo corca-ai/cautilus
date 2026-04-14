@@ -34,6 +34,8 @@ Minimum shape:
 
 - `skillId`
 - optional `skillDisplayName`
+- optional suite-level `repeatCount`
+- optional suite-level `minConsensusCount`
 - `cases`
   - `caseId`
   - optional `targetKind`
@@ -47,6 +49,14 @@ Minimum shape:
     - `must_invoke`
     - `must_not_invoke`
   - optional execution `thresholds`
+  - optional `repeatCount`
+  - optional `minConsensusCount`
+
+When `repeatCount` is greater than `1`, the adapter-owned runner should
+execute that case multiple times and emit one aggregated observed evaluation
+result. `minConsensusCount` is the minimum number of matching runs required for
+that aggregated result to count as a clean pass. If omitted, it defaults to
+`repeatCount`.
 
 The checked-in case suite owns the prompts and expectations.
 The adapter-owned runner still owns:
@@ -82,6 +92,7 @@ raw artifacts beside the generated input packet.
 - `skill-candidates.json`
 - per-command stdout/stderr artifacts
 - any adapter-owned raw runner artifacts
+- per-case aggregate artifacts when repeated runs are used
 
 The summary and candidates should be product-owned outputs even when the
 adapter-owned runner produced the raw observed packet.

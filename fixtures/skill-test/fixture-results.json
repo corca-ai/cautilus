@@ -1,12 +1,19 @@
 {
-  "trigger-cautilus-test-request": {
-    "invoked": true,
-    "summary": "The prompt explicitly called for the cautilus skill and the agent used it.",
-    "duration_ms": 1800
-  },
+  "trigger-cautilus-test-request": [
+    {
+      "invoked": true,
+      "summary": "The prompt explicitly called for the cautilus skill and the agent used it.",
+      "duration_ms": 1800
+    },
+    {
+      "invoked": true,
+      "summary": "A second trigger run also used the cautilus skill for the local fixture workflow.",
+      "duration_ms": 1900
+    }
+  ],
   "execution-cautilus-test-request": {
     "invoked": true,
-    "summary": "The agent used the cautilus skill to run the checked-in impl fixture and summarized the defer recommendation.",
+    "summary": "The agent used the cautilus skill to run the checked-in impl fixture and summarized the accept-now recommendation.",
     "outcome": "passed",
     "duration_ms": 2600
   }

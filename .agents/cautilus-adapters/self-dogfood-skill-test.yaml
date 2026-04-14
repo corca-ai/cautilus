@@ -11,7 +11,7 @@ preflight_commands:
   - ./bin/cautilus doctor --repo-root . --scope agent-surface
 skill_cases_default: fixtures/skill-test/cases.json
 skill_test_command_templates:
-  - node ./scripts/agent-runtime/run-local-skill-test.mjs --repo-root . --workspace {candidate_repo} --cases-file {skill_cases_file} --output-file {skill_eval_input_file} --artifact-dir {output_dir}/local-skill-test --backend codex_exec --sandbox read-only --timeout-ms 120000
+  - node ./scripts/agent-runtime/run-local-skill-test.mjs --repo-root . --workspace {candidate_repo} --cases-file {skill_cases_file} --output-file {skill_eval_input_file} --artifact-dir {output_dir}/local-skill-test --backend codex_exec --sandbox workspace-write --timeout-ms 90000 --model gpt-5.4-mini --reasoning-effort low
 artifact_paths:
   - skills/cautilus/SKILL.md
   - skills/cautilus/references/skill-evaluation.md

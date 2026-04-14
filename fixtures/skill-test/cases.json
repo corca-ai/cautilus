@@ -7,12 +7,14 @@
       "caseId": "trigger-cautilus-test-request",
       "evaluationKind": "trigger",
       "prompt": "Use $cautilus to test the local impl skill with the checked-in fixture and report the exact command path and recommendation.",
-      "expectedTrigger": "must_invoke"
+      "expectedTrigger": "must_invoke",
+      "repeatCount": 2,
+      "minConsensusCount": 2
     },
     {
       "caseId": "execution-cautilus-test-request",
       "evaluationKind": "execution",
-      "prompt": "Use $cautilus to test the local impl skill with the checked-in fixture at ./fixtures/skill-evaluation/input.json and summarize the recommendation.",
+      "prompt": "Use $cautilus to test the local impl skill with the checked-in fixture at ./fixtures/skill-evaluation/accept-now-input.json and summarize the recommendation.",
       "thresholds": {
         "max_duration_ms": 120000
       }

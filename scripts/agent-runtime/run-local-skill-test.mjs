@@ -6,8 +6,10 @@ import { pathToFileURL } from "node:url";
 
 import {
 	SKILL_EVALUATION_INPUTS_SCHEMA,
-	SKILL_TEST_CASES_SCHEMA,
 } from "./contract-versions.mjs";
+import { normalizeSkillTestCaseSuite } from "./skill-test-case-suite.mjs";
+
+export { normalizeSkillTestCaseSuite } from "./skill-test-case-suite.mjs";
 
 function usage(exitCode = 0) {
 	const text = [
@@ -151,78 +153,6 @@ function assertString(value, field) {
 	return value;
 }
 
-function optionalString(value, field) {
-	if (value === undefined || value === null) {
-		return null;
-	}
-	if (typeof value !== "string") {
-		throw new Error(`${field} must be a string`);
-	}
-	if (!value.trim()) {
-		throw new Error(`${field} must be a non-empty string`);
-	}
-	return value;
-}
-
-function nonNegativeMetricObject(value, field) {
-	if (value === undefined || value === null) {
-		return null;
-	}
-	const record = assertObject(value, field);
-	const normalized = {};
-	for (const key of ["max_total_tokens", "max_duration_ms", "max_cost_usd"]) {
-		if (!(key in record)) {
-			continue;
-		}
-		const number = Number(record[key]);
-		if (!Number.isFinite(number) || number < 0) {
-			throw new Error(`${field}.${key} must be a non-negative number`);
-		}
-		normalized[key] = key === "max_cost_usd" ? number : Math.trunc(number);
-	}
-	return Object.keys(normalized).length > 0 ? normalized : null;
-}
-
-export function normalizeSkillTestCaseSuite(input) {
-	if (input?.schemaVersion !== SKILL_TEST_CASES_SCHEMA) {
-		throw new Error(`schemaVersion must be ${SKILL_TEST_CASES_SCHEMA}`);
-	}
-	const skillId = assertString(input.skillId, "skillId");
-	const skillDisplayName = optionalString(input.skillDisplayName, "skillDisplayName") ?? skillId;
-	if (!Array.isArray(input.cases) || input.cases.length === 0) {
-		throw new Error("cases must be a non-empty array");
-	}
-	const cases = input.cases.map((entry, index) => {
-		const record = assertObject(entry, `cases[${index}]`);
-		const evaluationKind = assertString(record.evaluationKind, `cases[${index}].evaluationKind`);
-		if (!["trigger", "execution"].includes(evaluationKind)) {
-			throw new Error(`cases[${index}].evaluationKind must be trigger or execution`);
-		}
-		const targetKind = optionalString(record.targetKind, `cases[${index}].targetKind`) ?? "public_skill";
-		if (!["public_skill", "profile", "integration"].includes(targetKind)) {
-			throw new Error(`cases[${index}].targetKind must be public_skill, profile, or integration`);
-		}
-		const expectedTrigger = optionalString(record.expectedTrigger, `cases[${index}].expectedTrigger`);
-		if (evaluationKind === "trigger" && !["must_invoke", "must_not_invoke"].includes(expectedTrigger ?? "")) {
-			throw new Error("trigger cases must set expectedTrigger to must_invoke or must_not_invoke");
-		}
-		if (evaluationKind === "execution" && expectedTrigger) {
-			throw new Error("execution cases must not set expectedTrigger");
-		}
-		return {
-			caseId: assertString(record.caseId, `cases[${index}].caseId`),
-			targetKind,
-			targetId: optionalString(record.targetId, `cases[${index}].targetId`) ?? skillId,
-			displayName: optionalString(record.displayName, `cases[${index}].displayName`) ?? skillDisplayName,
-			evaluationKind,
-			prompt: assertString(record.prompt, `cases[${index}].prompt`),
-			expectedTrigger,
-			thresholds: nonNegativeMetricObject(record.thresholds, `cases[${index}].thresholds`),
-		};
-	});
-	return { skillId, skillDisplayName, cases };
-}
-
 function baseSchema(evaluationKind) {
 	if (evaluationKind === "trigger") {
 		return {
@@ -279,6 +209,13 @@ function renderPrompt(skillId, testCase) {
 
 function artifactRef(kind, path) {
 	return { kind, path };
+}
+
+function sampleDir(caseDir, sampleIndex, repeatCount) {
+	if (repeatCount <= 1) {
+		return caseDir;
+	}
+	return join(caseDir, `sample-${sampleIndex + 1}`);
 }
 
 function codexArgs(options, schemaFile, outputFile) {
@@ -355,23 +292,43 @@ function normalizeObservedResult(testCase, observed, durationMs, artifactRefs) {
 	return result;
 }
 
-function runFixtureCase(testCase, fixtureResults, artifactDir) {
+function fixtureResultForSample(testCase, fixtureResults, sampleIndex) {
+	const raw = fixtureResults[testCase.caseId];
+	if (Array.isArray(raw)) {
+		const observed = raw[sampleIndex];
+		if (observed === undefined) {
+			throw new Error(`fixtureResults.${testCase.caseId}[${sampleIndex}] must exist`);
+		}
+		return observed;
+	}
+	if (raw === undefined) {
+		throw new Error(`fixtureResults.${testCase.caseId} must exist`);
+	}
+	return raw;
+}
+
+function runFixtureSample(testCase, fixtureResults, artifactDir, sampleIndex) {
 	const caseDir = join(artifactDir, testCase.caseId);
-	mkdirSync(caseDir, { recursive: true });
-	const promptFile = join(caseDir, "prompt.md");
+	const outputDir = sampleDir(caseDir, sampleIndex, testCase.repeatCount);
+	mkdirSync(outputDir, { recursive: true });
+	const promptFile = join(outputDir, "prompt.md");
 	writeFileSync(promptFile, renderPrompt(testCase.targetId, testCase));
-	const observed = assertObject(fixtureResults[testCase.caseId], `fixtureResults.${testCase.caseId}`);
+	const observed = assertObject(
+		fixtureResultForSample(testCase, fixtureResults, sampleIndex),
+		`fixtureResults.${testCase.caseId}`,
+	);
 	const artifactRefs = [artifactRef("prompt", promptFile)];
 	return normalizeObservedResult(testCase, observed, Number(observed.duration_ms ?? 0), artifactRefs);
 }
 
-function runCodexCase(options, testCase, artifactDir) {
+function runCodexSample(options, testCase, artifactDir, sampleIndex) {
 	const caseDir = join(artifactDir, testCase.caseId);
-	mkdirSync(caseDir, { recursive: true });
-	const promptFile = join(caseDir, "prompt.md");
-	const schemaFile = join(caseDir, "schema.json");
-	const outputFile = join(caseDir, "result.json");
-	const stderrFile = join(caseDir, "result.stderr");
+	const outputDir = sampleDir(caseDir, sampleIndex, testCase.repeatCount);
+	mkdirSync(outputDir, { recursive: true });
+	const promptFile = join(outputDir, "prompt.md");
+	const schemaFile = join(outputDir, "schema.json");
+	const outputFile = join(outputDir, "result.json");
+	const stderrFile = join(outputDir, "result.stderr");
 	const prompt = renderPrompt(testCase.targetId, testCase);
 	writeFileSync(promptFile, prompt);
 	writeFileSync(schemaFile, `${JSON.stringify(baseSchema(testCase.evaluationKind), null, 2)}\n`);
@@ -410,13 +367,150 @@ function runCodexCase(options, testCase, artifactDir) {
 	return normalizeObservedResult(testCase, observed, durationMs, artifactRefs);
 }
 
+function numericMetricValues(results, metricKey) {
+	return results
+		.map((result) => Number(result?.metrics?.[metricKey]))
+		.filter((value) => Number.isFinite(value));
+}
+
+function median(values) {
+	if (values.length === 0) {
+		return null;
+	}
+	const sorted = [...values].sort((left, right) => left - right);
+	const mid = Math.floor(sorted.length / 2);
+	if (sorted.length % 2 === 1) {
+		return sorted[mid];
+	}
+	return (sorted[mid - 1] + sorted[mid]) / 2;
+}
+
+function aggregateMetrics(results) {
+	const aggregates = {};
+	for (const metricKey of ["duration_ms", "total_tokens", "cost_usd"]) {
+		const values = numericMetricValues(results, metricKey);
+		if (values.length === 0) {
+			continue;
+		}
+		const value = median(values);
+		if (value === null) {
+			continue;
+		}
+		aggregates[metricKey] = metricKey === "cost_usd" ? value : Math.round(value);
+	}
+	return Object.keys(aggregates).length > 0 ? aggregates : null;
+}
+
+function summarizeStatusCounts(statusCounts) {
+	return ["passed", "degraded", "blocked", "failed"]
+		.filter((status) => Number(statusCounts[status] ?? 0) > 0)
+		.map((status) => `${status}=${statusCounts[status]}`)
+		.join(", ");
+}
+
+function writeAggregateArtifact(caseDir, payload) {
+	const aggregateFile = join(caseDir, "aggregate.json");
+	writeFileSync(aggregateFile, `${JSON.stringify(payload, null, 2)}\n`);
+	return aggregateFile;
+}
+
+function aggregateTriggerSamples(testCase, sampleResults, artifactDir) {
+	const matchedRuns = sampleResults.filter((result) => (
+		testCase.expectedTrigger === "must_invoke" ? result.invoked : !result.invoked
+	)).length;
+	const consensusReached = matchedRuns >= testCase.minConsensusCount;
+	const caseDir = join(artifactDir, testCase.caseId);
+	const aggregatePayload = {
+		evaluationKind: testCase.evaluationKind,
+		repeatCount: testCase.repeatCount,
+		minConsensusCount: testCase.minConsensusCount,
+		expectedTrigger: testCase.expectedTrigger,
+		consensusReached,
+		matchedRuns,
+		sampleSummaries: sampleResults.map((result, index) => ({
+			sampleIndex: index + 1,
+			invoked: result.invoked,
+			summary: result.summary,
+			metrics: result.metrics ?? null,
+		})),
+	};
+	const aggregateFile = writeAggregateArtifact(caseDir, aggregatePayload);
+	const artifactRefs = sampleResults.flatMap((result) => result.artifactRefs ?? []);
+	artifactRefs.push(artifactRef("aggregate", aggregateFile));
+	const aggregateSummary = consensusReached
+		? `Trigger consensus matched ${testCase.expectedTrigger} in ${matchedRuns}/${testCase.repeatCount} run(s).`
+		: `Trigger consensus failed for ${testCase.expectedTrigger}: only ${matchedRuns}/${testCase.repeatCount} run(s) matched.`;
+	return {
+		invoked: consensusReached ? testCase.expectedTrigger === "must_invoke" : testCase.expectedTrigger !== "must_invoke",
+		summary: `${aggregateSummary} ${sampleResults[0]?.summary ?? ""}`.trim(),
+		expectedTrigger: testCase.expectedTrigger,
+		metrics: aggregateMetrics(sampleResults),
+		artifactRefs,
+	};
+}
+
+function aggregateExecutionSamples(testCase, sampleResults, artifactDir) {
+	const invokedRuns = sampleResults.filter((result) => result.invoked).length;
+	const statusCounts = { passed: 0, degraded: 0, blocked: 0, failed: 0 };
+	for (const result of sampleResults) {
+		if (result.outcome) {
+			statusCounts[result.outcome] += 1;
+		}
+	}
+	const consensusOutcome = ["passed", "failed", "blocked", "degraded"]
+		.find((status) => statusCounts[status] >= testCase.minConsensusCount)
+		?? (invokedRuns >= testCase.minConsensusCount ? "degraded" : "blocked");
+	const consensusReached = statusCounts[consensusOutcome] >= testCase.minConsensusCount;
+	const caseDir = join(artifactDir, testCase.caseId);
+	const aggregatePayload = {
+		evaluationKind: testCase.evaluationKind,
+		repeatCount: testCase.repeatCount,
+		minConsensusCount: testCase.minConsensusCount,
+		consensusReached,
+		invokedRuns,
+		statusCounts,
+		sampleSummaries: sampleResults.map((result, index) => ({
+			sampleIndex: index + 1,
+			invoked: result.invoked,
+			outcome: result.outcome ?? null,
+			summary: result.summary,
+			metrics: result.metrics ?? null,
+		})),
+	};
+	const aggregateFile = writeAggregateArtifact(caseDir, aggregatePayload);
+	const artifactRefs = sampleResults.flatMap((result) => result.artifactRefs ?? []);
+	artifactRefs.push(artifactRef("aggregate", aggregateFile));
+	const prefix = consensusReached
+		? `Execution consensus reached ${consensusOutcome} in ${statusCounts[consensusOutcome]}/${testCase.repeatCount} run(s).`
+		: `Execution results were unstable across ${testCase.repeatCount} run(s): ${summarizeStatusCounts(statusCounts)}.`;
+	return {
+		invoked: invokedRuns >= testCase.minConsensusCount,
+		summary: `${prefix} ${sampleResults[0]?.summary ?? ""}`.trim(),
+		outcome: consensusOutcome,
+		metrics: aggregateMetrics(sampleResults),
+		thresholds: testCase.thresholds ?? null,
+		artifactRefs,
+	};
+}
+
+function runCaseSamples(options, testCase, fixtureResults) {
+	const sampleResults = [];
+	for (let sampleIndex = 0; sampleIndex < testCase.repeatCount; sampleIndex += 1) {
+		const observed = options.backend === "fixture"
+			? runFixtureSample(testCase, fixtureResults, options.artifactDir, sampleIndex)
+			: runCodexSample(options, testCase, options.artifactDir, sampleIndex);
+		sampleResults.push(observed);
+	}
+	return testCase.evaluationKind === "trigger"
+		? aggregateTriggerSamples(testCase, sampleResults, options.artifactDir)
+		: aggregateExecutionSamples(testCase, sampleResults, options.artifactDir);
+}
+
 export function buildObservedSkillEvaluationInput(options) {
 	const suite = normalizeSkillTestCaseSuite(readJson(options.casesFile));
 	const fixtureResults = options.fixtureResultsFile ? readJson(options.fixtureResultsFile) : null;
 	const evaluations = suite.cases.map((testCase) => {
-		const observed = options.backend === "fixture"
-			? runFixtureCase(testCase, fixtureResults, options.artifactDir)
-			: runCodexCase(options, testCase, options.artifactDir);
+		const observed = runCaseSamples(options, testCase, fixtureResults);
 		return {
 			evaluationId: testCase.caseId,
 			targetKind: testCase.targetKind,

@@ -16,6 +16,8 @@ suite with:
 
 - `skillId`
 - optional `skillDisplayName`
+- optional suite-level `repeatCount`
+- optional suite-level `minConsensusCount`
 - `cases`
   - `caseId`
   - `evaluationKind`
@@ -24,6 +26,12 @@ suite with:
   - `prompt`
   - trigger-only `expectedTrigger`
   - optional execution `thresholds`
+  - optional `repeatCount`
+  - optional `minConsensusCount`
+
+Repeated cases should be run multiple times by the checked-in runner and
+collapsed into one observed evaluation result. `minConsensusCount` is the
+number of matching runs needed before that collapsed result counts as a pass.
 
 ## Adapter Hooks
 
@@ -51,6 +59,7 @@ observation.
 - `skill-evaluation-summary.json`
 - `skill-candidates.json`
 - stdout/stderr artifacts for preflight and runner commands
+- per-case aggregate artifacts when repeated runs are used
 
 ## Guardrails
 

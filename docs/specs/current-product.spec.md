@@ -161,7 +161,8 @@ standalone product여야 한다.
 | scripts/agent-runtime/evaluate-adapter-mode.mjs | file_exists |  |
 | scripts/agent-runtime/evaluate-adapter-mode.mjs | fixed | ADAPTER_MODE_EVALUATION_PACKET_SCHEMA |
 | scripts/agent-runtime/run-local-skill-test.mjs | file_exists |  |
-| scripts/agent-runtime/run-local-skill-test.mjs | fixed | SKILL_TEST_CASES_SCHEMA |
+| scripts/agent-runtime/skill-test-case-suite.mjs | file_exists |  |
+| scripts/agent-runtime/skill-test-case-suite.mjs | fixed | SKILL_TEST_CASES_SCHEMA |
 | scripts/agent-runtime/run-local-skill-test.test.mjs | file_exists |  |
 | scripts/agent-runtime/skill-test-schemas.test.mjs | file_exists |  |
 | scripts/agent-runtime/prepare-compare-worktrees.mjs | file_exists |  |
