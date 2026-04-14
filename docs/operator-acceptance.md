@@ -188,6 +188,7 @@ source of truth다.
 
 | # | 명령 (각 repo에서) | 통과 조건 | 실행자 |
 |---|---|---|---|
+| 5.0 | `npm run consumer:onboard:smoke` | temp consumer repo가 `install -> adapter init -> doctor ready`까지 통과, exit 0 | 기계적 |
 | 5.1 | `cautilus doctor --repo-root <repo-path>` | `ready` 출력, exit 0 | 기계적 |
 | 5.2 | `cautilus adapter resolve --repo-root <repo-path>` | adapter 경로 출력, exit 0 | 기계적 |
 

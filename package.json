@@ -10,8 +10,9 @@
   "scripts": {
     "dogfood:self": "node scripts/run-self-dogfood.mjs",
     "dogfood:self:experiments": "node scripts/run-self-dogfood-experiments.mjs",
-    "dogfood:self:html": "./bin/cautilus self-dogfood render-html",
+		"dogfood:self:html": "./bin/cautilus self-dogfood render-html",
 		"dogfood:self:experiments:html": "./bin/cautilus self-dogfood render-experiments-html",
+		"consumer:onboard:smoke": "node scripts/on-demand/smoke-external-consumer.mjs",
 		"skills:sync-packaged": "node scripts/release/sync-packaged-skill.mjs",
 		"release:prepare": "npm run skills:sync-packaged && node scripts/release/bump-version.mjs",
 		"release:verify-public": "node scripts/release/verify-public-release.mjs",

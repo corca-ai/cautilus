@@ -3,6 +3,9 @@
 This note describes how a host repo adopts `Cautilus` as a standalone binary
 and skill without widening adapter discovery.
 
+For the shortest end-to-end onboarding path, see
+[external-consumer-onboarding.md](./external-consumer-onboarding.md).
+
 ## Fixed Rules
 
 - `cautilus --version` must work on `PATH` before any consumer adapter or skill

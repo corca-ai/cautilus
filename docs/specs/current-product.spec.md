@@ -30,6 +30,7 @@ standalone product여야 한다.
 | package.json | fixed | "release:prepare" |
 | package.json | fixed | "release:verify-public" |
 | package.json | fixed | "release:smoke-install" |
+| package.json | fixed | "consumer:onboard:smoke" |
 | package.json | fixed | "lint" |
 | package.json | fixed | "lint:go" |
 | package.json | fixed | "security:govulncheck" |
@@ -291,6 +292,8 @@ standalone product여야 한다.
 | docs/consumer-readiness.md | fixed | This note intentionally groups evidence by consumer archetype |
 | docs/consumer-migration.md | file_exists |  |
 | docs/consumer-migration.md | fixed | cautilus-adapter.yaml |
+| docs/external-consumer-onboarding.md | file_exists |  |
+| docs/external-consumer-onboarding.md | fixed | npm run consumer:onboard:smoke |
 | scripts/check-specs.mjs | file_exists |  |
 | scripts/agent-runtime/scenario-result-telemetry.mjs | file_exists |  |
 | scripts/agent-runtime/scenario-result-telemetry.mjs | fixed | SCENARIO_TELEMETRY_SUMMARY_SCHEMA |
@@ -329,6 +332,8 @@ standalone product여야 한다.
 | scripts/release/verify-public-release.mjs | fixed | verifyPublicRelease |
 | scripts/release/run-install-smoke.mjs | file_exists |  |
 | scripts/release/run-install-smoke.mjs | fixed | runInstallSmoke |
+| scripts/on-demand/smoke-external-consumer.mjs | file_exists |  |
+| scripts/on-demand/smoke-external-consumer.mjs | fixed | runExternalConsumerOnboardingSmoke |
 | scripts/resolve_adapter.mjs | fixed | cautilus-adapter.yaml |
 | scripts/init_adapter.mjs | fixed | dumpYamlDocument |
 | scripts/agent-runtime/scenario-history.mjs | file_exists |  |

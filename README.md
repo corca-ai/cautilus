@@ -139,8 +139,9 @@ Current `product-owned helper surface`:
   candidate reevaluation
 
 Dogfood and migration evidence is tracked separately in
-[consumer-readiness.md](./docs/consumer-readiness.md) and
-[consumer-migration.md](./docs/consumer-migration.md).
+[consumer-readiness.md](./docs/consumer-readiness.md),
+[consumer-migration.md](./docs/consumer-migration.md), and
+[external-consumer-onboarding.md](./docs/external-consumer-onboarding.md).
 
 ## Repo Layout
 
@@ -228,6 +229,8 @@ Dogfood and migration evidence is tracked separately in
   packaged skill copy consumed by the local Codex plugin install flow
 - [docs/consumer-readiness.md](./docs/consumer-readiness.md):
   dogfood and live-consumer evidence appendix
+- [docs/external-consumer-onboarding.md](./docs/external-consumer-onboarding.md):
+  shortest end-to-end path for adopting a fresh consumer repo
 - [skills/cautilus/SKILL.md](./skills/cautilus/SKILL.md):
   bundled standalone skill entrypoint
 - [scripts/resolve_adapter.mjs](./scripts/resolve_adapter.mjs):
@@ -304,6 +307,12 @@ and `.claude/skills -> ../.agents/skills` for Claude compatibility. The
 installed skill assumes `cautilus` is already on `PATH`. The lower-level
 compatibility command `cautilus skills install` remains available, but
 `cautilus install` is the canonical lifecycle entrypoint.
+
+To prove that a fresh consumer repo can still adopt the product end-to-end:
+
+```bash
+npm run consumer:onboard:smoke
+```
 
 Refresh the installed CLI and optionally the checked-in bundled skill:
 
