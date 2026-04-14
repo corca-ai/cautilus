@@ -88,9 +88,24 @@ The key rule is that cost telemetry must come from an explicit checked-in
 wrapper or output payload. `Cautilus` should not guess cost from opaque CLI
 logs.
 
-For `review variants`, the summary packet should also aggregate any explicit
-numeric telemetry across variants so operators can inspect one top-level view
-without scraping each verdict file separately.
+For `review variants`, the summary packet should use
+`cautilus.review_summary.v1`, and each per-variant file should use
+`cautilus.review_variant_result.v1`.
+
+The product-owned execution contract is:
+
+- per-variant execution `status`: `passed`, `blocked`, or `failed`
+- per-variant review `verdict`: optional host-level judgment such as
+  `blocker`, `concern`, or `pass`
+- `blocked` should carry machine-readable reason codes and a concrete reason
+  instead of free-form prose-only failure
+- invalid or missing host JSON should be rewritten into a `failed`
+  product-owned packet so downstream tools never have to guess whether the
+  executor actually produced a usable object
+
+The summary packet should also aggregate any explicit numeric telemetry across
+variants so operators can inspect one top-level view without scraping each
+verdict file separately.
 
 For scenario-driven evaluation, the same rule applies one level lower:
 scenario result packets should preserve per-scenario telemetry so `Cautilus`

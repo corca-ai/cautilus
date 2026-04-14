@@ -575,6 +575,12 @@ cautilus review variants \
   --output-dir /tmp/cautilus-review
 ```
 
+`review variants` now writes a product-owned `review-summary.json`
+(`cautilus.review_summary.v1`) plus one per-variant
+`cautilus.review_variant_result.v1` file. A variant can finish as
+`passed`, `blocked`, or `failed`; blocked runs are expected to carry machine
+readable reason codes instead of prose-only abort text.
+
 Direct script usage is also supported:
 
 ```bash

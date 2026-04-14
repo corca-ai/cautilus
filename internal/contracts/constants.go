@@ -17,6 +17,8 @@ const (
 	ReportPacketSchema                = "cautilus.report_packet.v2"
 	ReviewPacketSchema                = "cautilus.review_packet.v1"
 	ReviewPromptInputsSchema          = "cautilus.review_prompt_inputs.v1"
+	ReviewSummarySchema               = "cautilus.review_summary.v1"
+	ReviewVariantResultSchema         = "cautilus.review_variant_result.v1"
 	ScenarioBaselineCacheSchema       = "cautilus.scenario_baseline_cache.v1"
 	ScenarioHistorySchema             = "cautilus.scenario_history.v1"
 	ScenarioProfileSchema             = "cautilus.scenario_profile.v1"

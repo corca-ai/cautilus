@@ -12,6 +12,10 @@ import {
 	runBashCommandWithProgress,
 } from "./command-progress.mjs";
 import { REVIEW_PROMPT_INPUTS_SCHEMA } from "./contract-versions.mjs";
+import {
+	buildReviewSummaryPacket,
+	normalizeReviewVariantResult,
+} from "./review-variant-contract.mjs";
 import { renderReviewPrompt } from "./render-review-prompt.mjs";
 import { resolveRunDir } from "./active-run.mjs";
 
@@ -168,22 +172,6 @@ function resolveRequiredPath(cliValue, adapterValue, fieldName, repoRoot) {
 	return resolve(repoRoot, value);
 }
 
-function sumTelemetryField(variants, field) {
-	let seen = false;
-	let total = 0;
-	for (const variant of variants) {
-		const value = variant.telemetry && typeof variant.telemetry[field] === "number"
-			? variant.telemetry[field]
-			: null;
-		if (value === null) {
-			continue;
-		}
-		seen = true;
-		total += value;
-	}
-	return seen ? total : null;
-}
-
 function renderPromptFromInputFile(reviewPromptInputFile, outputDir) {
 	const promptInput = JSON.parse(readFileSync(reviewPromptInputFile, "utf-8"));
 	if (promptInput?.schemaVersion !== REVIEW_PROMPT_INPUTS_SCHEMA) {
@@ -256,54 +244,6 @@ function resolveReviewPacket(options, adapterPayload, repoRoot, outputDir) {
 	return reviewPacketFile;
 }
 
-function summarizeTelemetry(variants) {
-	if (variants.length === 0) {
-		return null;
-	}
-	const providers = Array.from(
-		new Set(
-			variants
-				.map((variant) => variant.telemetry && variant.telemetry.provider)
-				.filter((value) => typeof value === "string" && value.length > 0),
-		),
-	);
-	const models = Array.from(
-		new Set(
-			variants
-				.map((variant) => variant.telemetry && variant.telemetry.model)
-				.filter((value) => typeof value === "string" && value.length > 0),
-		),
-	);
-	const summary = {
-		startedAt: variants[0].startedAt,
-		completedAt: variants[variants.length - 1].completedAt,
-		durationMs: variants.reduce((total, variant) => total + variant.durationMs, 0),
-		averageVariantDurationMs:
-			variants.reduce((total, variant) => total + variant.durationMs, 0) / variants.length,
-		variantCount: variants.length,
-		passedVariantCount: variants.filter((variant) => variant.status === "passed").length,
-		failedVariantCount: variants.filter((variant) => variant.status !== "passed").length,
-	};
-	if (providers.length > 0) {
-		summary.providers = providers;
-	}
-	if (models.length > 0) {
-		summary.models = models;
-	}
-	for (const field of [
-		"prompt_tokens",
-		"completion_tokens",
-		"total_tokens",
-		"cost_usd",
-	]) {
-		const total = sumTelemetryField(variants, field);
-		if (total !== null) {
-			summary[field] = total;
-		}
-	}
-	return summary;
-}
-
 async function main() {
 	const options = parseArgs(process.argv.slice(2));
 	const log = createProgressLogger({ quiet: options.quiet });
@@ -355,30 +295,40 @@ async function main() {
 	}
 
 	const variantSummaries = results.map((result) => {
-		const output = existsSync(result.outputFile)
-			? JSON.parse(readFileSync(result.outputFile, "utf-8"))
-			: null;
+		let rawOutput = null;
+		let rawOutputError = null;
+		if (existsSync(result.outputFile)) {
+			try {
+				rawOutput = JSON.parse(readFileSync(result.outputFile, "utf-8"));
+			} catch (error) {
+				rawOutputError = error;
+			}
+		}
+		const output = normalizeReviewVariantResult(result, rawOutput, rawOutputError);
+		writeFileSync(result.outputFile, `${JSON.stringify(output, null, 2)}\n`, "utf-8");
 		return {
 			id: result.id,
 			tool: result.tool,
-			status: result.status,
+			status: output.status,
+			executionStatus: result.status,
 			startedAt: result.startedAt,
 			completedAt: result.completedAt,
 			durationMs: result.durationMs,
-				exitCode: result.exitCode,
-				signal: result.signal,
-				outputFile: result.outputFile,
-				stdoutFile: result.stdoutFile,
-				stderrFile: result.stderrFile,
-				command: result.command,
-				stdout: result.stdout,
+			exitCode: result.exitCode,
+			signal: result.signal,
+			outputFile: result.outputFile,
+			stdoutFile: result.stdoutFile,
+			stderrFile: result.stderrFile,
+			command: result.command,
+			stdout: result.stdout,
 			stderr: result.stderr,
 			telemetry: output && typeof output.telemetry === "object" ? output.telemetry : null,
 			output,
+			...(Array.isArray(output.reasonCodes) && output.reasonCodes.length > 0 ? { reasonCodes: output.reasonCodes } : {}),
 		};
 	});
 
-	const summary = {
+	const summary = buildReviewSummaryPacket({
 		repoRoot,
 		adapterPath: adapterPayload.path,
 		workspace,
@@ -387,16 +337,15 @@ async function main() {
 		reviewPromptInputFile: promptArtifacts.reviewPromptInputFile,
 		schemaFile,
 		outputDir,
-		telemetry: summarizeTelemetry(variantSummaries),
 		variants: variantSummaries,
-	};
+	});
 	const summaryFile = join(outputDir, "review-summary.json");
 	writeFileSync(summaryFile, `${JSON.stringify(summary, null, 2)}\n`, "utf-8");
 	log(
-		`review variants complete: status=${results.every((result) => result.status === "passed") ? "passed" : "failed"} summary=${summaryFile}`,
+		`review variants complete: status=${summary.status} summary=${summaryFile}`,
 	);
 	process.stdout.write(`${summaryFile}\n`);
-	if (results.some((result) => result.status !== "passed")) {
+	if (summary.status !== "passed") {
 		process.exit(1);
 	}
 }

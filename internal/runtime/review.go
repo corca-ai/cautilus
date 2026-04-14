@@ -137,7 +137,7 @@ func RenderReviewPrompt(promptInput map[string]any) (string, error) {
 	if defaultSchema := asMap(promptInput["defaultSchemaFile"]); stringOrEmpty(defaultSchema["absolutePath"]) != "" {
 		lines = append(lines, "", "## Output Contract", "- schema file: "+stringOrEmpty(defaultSchema["absolutePath"]))
 	}
-	lines = append(lines, "", "Return a verdict that follows the provided output schema. Explain why you agree or disagree with the automated recommendation.")
+	lines = append(lines, "", "Return a verdict that follows the provided output schema. If the provided evidence is insufficient for a bounded review, return the schema-compliant blocked payload with a concrete reason code and reason instead of prose.")
 	if consumerPrompt, err := maybeReadConsumerPrompt(asMap(promptInput["defaultPromptFile"])); err == nil && strings.TrimSpace(consumerPrompt) != "" {
 		lines = append(lines, "", "## Consumer Prompt Addendum", consumerPrompt)
 	}

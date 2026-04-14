@@ -17,7 +17,7 @@ function writeExecutable(root, name, body) {
 	return filePath;
 }
 
-function createAdapterRepo({ failVariantId = "" } = {}) {
+function createAdapterRepo({ failVariantId = "", blockedVariantId = "", invalidVariantId = "" } = {}) {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-workbench-runner-"));
 	const workspace = join(root, "workspace");
 	mkdirSync(workspace, { recursive: true });
@@ -35,6 +35,28 @@ fi
 if [ "$variant_id" = "${failVariantId}" ]; then
   echo "repo-local variant failure for $variant_id" >&2
   exit 1
+fi
+if [ "$variant_id" = "${blockedVariantId}" ]; then
+  node - "$variant_id" "$output_file" <<'EOF'
+const [variantId, outputFile] = process.argv.slice(2);
+const { writeFileSync } = await import("node:fs");
+writeFileSync(
+	outputFile,
+		JSON.stringify({
+			status: "blocked",
+			reasonCode: "insufficient_evidence",
+			reasonCodes: ["insufficient_evidence"],
+			reason: \`\${variantId} lacked bounded evidence\`,
+			summary: \`\${variantId} could not be reviewed from the provided packet alone\`,
+		}) + "\\n",
+	"utf-8",
+);
+EOF
+  exit 0
+fi
+if [ "$variant_id" = "${invalidVariantId}" ]; then
+  printf 'not-json\n' > "$output_file"
+  exit 0
 fi
 node - "$variant_id" "$output_file" "$prompt_file" "$schema_file" <<'EOF'
 const [variantId, outputFile, promptFile, schemaFile] = process.argv.slice(2);
@@ -172,11 +194,16 @@ test("run-workbench-executor-variants executes every adapter-defined variant and
 		assert.equal(result.status, 0, result.stderr);
 		const summaryPath = result.stdout.trim();
 		const summary = JSON.parse(readFileSync(summaryPath, "utf-8"));
+		assert.equal(summary.schemaVersion, "cautilus.review_summary.v1");
+		assert.equal(summary.status, "passed");
+		assert.equal(summary.reviewVerdict, "pass");
 		assert.equal(summary.variants.length, 2);
 		assert.equal(summary.variants[0].status, "passed");
 		assert.equal(summary.variants[1].status, "passed");
+		assert.equal(summary.variants[0].output.schemaVersion, "cautilus.review_variant_result.v1");
 		assert.equal(summary.telemetry.variantCount, 2);
 		assert.equal(summary.telemetry.passedVariantCount, 2);
+		assert.equal(summary.telemetry.blockedVariantCount, 0);
 		assert.ok(summary.telemetry.durationMs >= 0);
 		assert.equal(summary.telemetry.total_tokens, 84);
 			assert.equal(summary.telemetry.cost_usd, 0.02);
@@ -330,6 +357,71 @@ test("run-workbench-executor-variants emits heartbeat and ownership hints for fa
 		assert.match(result.stderr, /variant beta failure signal: repo-local variant failure for beta/);
 		assert.match(result.stderr, /variant beta ownership hint: Repo-local adapter, artifact, or policy failures are usually consumer-owned/);
 		assert.match(result.stderr, /review variants complete: status=failed summary=/);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("run-workbench-executor-variants preserves schema-compliant blocked results", () => {
+	const { root, workspace, adapterPath, promptFile, schemaFile } = createAdapterRepo({ blockedVariantId: "beta" });
+	try {
+		const outputDir = join(root, "blocked-outputs");
+		const result = runReviewVariants(
+			[
+				"--repo-root",
+				root,
+				"--adapter",
+				adapterPath,
+				"--workspace",
+				workspace,
+				"--prompt-file",
+				promptFile,
+				"--schema-file",
+				schemaFile,
+				"--output-dir",
+				outputDir,
+			],
+		);
+		assert.equal(result.status, 1, result.stderr);
+		const summary = JSON.parse(readFileSync(result.stdout.trim(), "utf-8"));
+		assert.equal(summary.status, "blocked");
+		assert.equal(summary.reasonCodes[0], "insufficient_evidence");
+		assert.equal(summary.telemetry.blockedVariantCount, 1);
+		assert.equal(summary.variants[1].status, "blocked");
+		assert.equal(summary.variants[1].output.status, "blocked");
+		assert.equal(summary.variants[1].output.reason, "beta lacked bounded evidence");
+		assert.equal(summary.variants[1].output.findings[0].severity, "blocker");
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("run-workbench-executor-variants rewrites invalid JSON into a failed variant packet", () => {
+	const { root, workspace, adapterPath, promptFile, schemaFile } = createAdapterRepo({ invalidVariantId: "beta" });
+	try {
+		const outputDir = join(root, "invalid-outputs");
+		const result = runReviewVariants(
+			[
+				"--repo-root",
+				root,
+				"--adapter",
+				adapterPath,
+				"--workspace",
+				workspace,
+				"--prompt-file",
+				promptFile,
+				"--schema-file",
+				schemaFile,
+				"--output-dir",
+				outputDir,
+			],
+		);
+		assert.equal(result.status, 1, result.stderr);
+		const summary = JSON.parse(readFileSync(result.stdout.trim(), "utf-8"));
+		assert.equal(summary.status, "failed");
+		assert.equal(summary.variants[1].status, "failed");
+		assert.equal(summary.variants[1].output.reasonCodes[0], "invalid_output_json");
+		assert.equal(summary.variants[1].output.findings[0].severity, "blocker");
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

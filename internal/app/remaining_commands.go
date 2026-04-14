@@ -367,7 +367,6 @@ func handleReviewVariants(repoRoot string, cwd string, args []string, stdout io.
 	}
 	log(fmt.Sprintf("review variants artifacts ready: prompt=%s schema=%s", promptArtifacts.promptFile, schemaFile))
 	summaries := make([]any, 0, len(variants))
-	failed := false
 	for _, variant := range variants {
 		id := anyString(variant["id"])
 		outputFile := filepath.Join(outputDir, id+".json")
@@ -384,38 +383,46 @@ func handleReviewVariants(repoRoot string, cwd string, args []string, stdout io.
 			return 1
 		}
 		result := runShellCommand(options.repoRoot, commandText, filepath.Join(outputDir, id+".json.stdout"), filepath.Join(outputDir, id+".json.stderr"), log, "variant "+id)
-		output := map[string]any(nil)
+		rawOutput := map[string]any(nil)
+		rawOutputErr := error(nil)
 		if pathExists(outputFile) {
-			output, _ = readJSONObject(outputFile)
+			rawOutput, rawOutputErr = readJSONObject(outputFile)
+		}
+		output := normalizeReviewVariantResult(id, variant["tool"], result, rawOutput, rawOutputErr)
+		if err := writeOutputResolved(io.Discard, &outputFile, output); err != nil {
+			fmt.Fprintf(stderr, "%s\n", err)
+			return 1
 		}
 		summary := map[string]any{
-			"id":          id,
-			"tool":        variant["tool"],
-			"status":      result["status"],
-			"startedAt":   result["startedAt"],
-			"completedAt": result["completedAt"],
-			"durationMs":  result["durationMs"],
-			"exitCode":    result["exitCode"],
-			"signal":      result["signal"],
-			"outputFile":  outputFile,
-			"stdoutFile":  result["stdoutFile"],
-			"stderrFile":  result["stderrFile"],
-			"command":     commandText,
-			"stdout":      result["stdout"],
-			"stderr":      result["stderr"],
-			"output":      output,
+			"id":              id,
+			"tool":            variant["tool"],
+			"status":          output["status"],
+			"executionStatus": result["status"],
+			"startedAt":       result["startedAt"],
+			"completedAt":     result["completedAt"],
+			"durationMs":      result["durationMs"],
+			"exitCode":        result["exitCode"],
+			"signal":          result["signal"],
+			"outputFile":      outputFile,
+			"stdoutFile":      result["stdoutFile"],
+			"stderrFile":      result["stderrFile"],
+			"command":         commandText,
+			"stdout":          result["stdout"],
+			"stderr":          result["stderr"],
+			"output":          output,
 		}
-		if output != nil {
-			if telemetry, ok := output["telemetry"].(map[string]any); ok {
-				summary["telemetry"] = telemetry
-			}
+		if telemetry, ok := output["telemetry"].(map[string]any); ok {
+			summary["telemetry"] = telemetry
 		}
-		if anyString(result["status"]) != "passed" {
-			failed = true
+		if reasonCodes := arrayOrEmpty(output["reasonCodes"]); len(reasonCodes) > 0 {
+			summary["reasonCodes"] = reasonCodes
 		}
 		summaries = append(summaries, summary)
 	}
+	status := overallReviewExecutionStatus(summaries)
 	summaryPacket := map[string]any{
+		"schemaVersion":         contracts.ReviewSummarySchema,
+		"generatedAt":           time.Now().UTC().Format(time.RFC3339Nano),
 		"repoRoot":              options.repoRoot,
 		"adapterPath":           adapterPayload.Path,
 		"workspace":             workspace,
@@ -424,6 +431,11 @@ func handleReviewVariants(repoRoot string, cwd string, args []string, stdout io.
 		"reviewPromptInputFile": promptArtifacts.reviewPromptInputFile,
 		"schemaFile":            schemaFile,
 		"outputDir":             outputDir,
+		"status":                status,
+		"reviewVerdict":         overallReviewVerdict(summaries),
+		"reasonCodes":           collectReviewReasonCodes(summaries),
+		"humanReviewFindings":   flattenReviewFindings(summaries),
+		"findingsCount":         countReviewFindings(summaries),
 		"telemetry":             summarizeVariantTelemetry(summaries),
 		"variants":              summaries,
 	}
@@ -432,9 +444,9 @@ func handleReviewVariants(repoRoot string, cwd string, args []string, stdout io.
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
-	log(fmt.Sprintf("review variants complete: status=%s summary=%s", ternaryString(!failed, "passed", "failed"), summaryFile))
+	log(fmt.Sprintf("review variants complete: status=%s summary=%s", status, summaryFile))
 	fmt.Fprintf(stdout, "%s\n", summaryFile)
-	if failed {
+	if status != "passed" {
 		return 1
 	}
 	return 0
@@ -1416,6 +1428,191 @@ func resolveReviewSchemaFile(options *reviewVariantsArgs, adapterPayload *runtim
 	return "", fmt.Errorf("missing required argument or adapter default: schemaFile")
 }
 
+func normalizeReviewVariantResult(variantID string, tool any, execution map[string]any, rawOutput map[string]any, rawOutputErr error) map[string]any {
+	packet := map[string]any{
+		"schemaVersion": contracts.ReviewVariantResultSchema,
+		"variantId":     variantID,
+		"tool":          tool,
+		"status":        "passed",
+		"findings":      []any{},
+	}
+	if len(rawOutput) > 0 {
+		packet["rawOutput"] = rawOutput
+	}
+	if telemetry := asMapAny(rawOutput["telemetry"]); len(telemetry) > 0 {
+		packet["telemetry"] = telemetry
+	}
+	if verdict := normalizeReviewVerdict(anyString(rawOutput["verdict"])); verdict != "" {
+		packet["verdict"] = verdict
+	}
+	if summary := strings.TrimSpace(anyString(rawOutput["summary"])); summary != "" {
+		packet["summary"] = summary
+	}
+	findings := normalizeReviewVariantFindings(rawOutput["findings"], variantID)
+	status := "passed"
+	reason := ""
+	reasonCodes := normalizeReasonCodes(rawOutput["reasonCodes"])
+	switch {
+	case anyString(execution["status"]) != "passed":
+		status = "failed"
+		reason = firstNonEmptyString(
+			strings.TrimSpace(anyString(rawOutput["reason"])),
+			strings.TrimSpace(anyString(rawOutput["message"])),
+			strings.TrimSpace(anyString(execution["stderr"])),
+			strings.TrimSpace(anyString(execution["stdout"])),
+			"review variant command failed",
+		)
+		if len(reasonCodes) == 0 {
+			reasonCodes = []any{"command_failed"}
+		}
+	case rawOutputErr != nil:
+		status = "failed"
+		reason = rawOutputErr.Error()
+		if len(reasonCodes) == 0 {
+			reasonCodes = []any{"invalid_output_json"}
+		}
+	case len(rawOutput) == 0:
+		status = "failed"
+		reason = "review variant did not produce a JSON object"
+		if len(reasonCodes) == 0 {
+			reasonCodes = []any{"missing_output"}
+		}
+	default:
+		switch normalizeReviewExecutionStatus(anyString(rawOutput["status"])) {
+		case "blocked":
+			status = "blocked"
+			reason = firstNonEmptyString(
+				strings.TrimSpace(anyString(rawOutput["reason"])),
+				strings.TrimSpace(anyString(rawOutput["abortReason"])),
+				strings.TrimSpace(anyString(rawOutput["message"])),
+				strings.TrimSpace(anyString(rawOutput["summary"])),
+				"review variant blocked without a reason",
+			)
+			if len(reasonCodes) == 0 {
+				reasonCodes = []any{"variant_blocked"}
+			}
+		case "failed":
+			status = "failed"
+			reason = firstNonEmptyString(
+				strings.TrimSpace(anyString(rawOutput["reason"])),
+				strings.TrimSpace(anyString(rawOutput["message"])),
+				strings.TrimSpace(anyString(rawOutput["summary"])),
+				"review variant reported a failure",
+			)
+			if len(reasonCodes) == 0 {
+				reasonCodes = []any{"variant_failed"}
+			}
+		}
+	}
+	packet["status"] = status
+	if status != "passed" {
+		if reason != "" {
+			packet["reason"] = reason
+		}
+		packet["reasonCodes"] = reasonCodes
+		if packet["summary"] == nil || strings.TrimSpace(anyString(packet["summary"])) == "" {
+			packet["summary"] = reason
+		}
+		if len(findings) == 0 {
+			findings = []any{map[string]any{
+				"severity": "blocker",
+				"message":  firstNonEmptyString(anyString(packet["summary"]), reason, "review variant failed without details"),
+				"path":     "variant/" + variantID,
+			}}
+		}
+	}
+	if packet["summary"] == nil || strings.TrimSpace(anyString(packet["summary"])) == "" {
+		switch {
+		case len(findings) > 0:
+			packet["summary"] = anyString(asMapAny(findings[0])["message"])
+		case packet["verdict"] != nil:
+			packet["summary"] = fmt.Sprintf("%s review completed with verdict %s.", variantID, packet["verdict"])
+		default:
+			packet["summary"] = fmt.Sprintf("%s review completed.", variantID)
+		}
+	}
+	packet["findings"] = findings
+	return packet
+}
+
+func normalizeReviewVariantFindings(value any, variantID string) []any {
+	items := arrayOrEmpty(value)
+	if len(items) == 0 {
+		return []any{}
+	}
+	findings := make([]any, 0, len(items))
+	for index, raw := range items {
+		record := asMapAny(raw)
+		message := strings.TrimSpace(anyString(record["message"]))
+		if message == "" {
+			continue
+		}
+		finding := map[string]any{
+			"severity": firstNonEmptyString(normalizeReviewSeverity(anyString(record["severity"])), "concern"),
+			"message":  message,
+			"path":     firstNonEmptyString(strings.TrimSpace(anyString(record["path"])), fmt.Sprintf("variant/%s/%d", variantID, index)),
+		}
+		findings = append(findings, finding)
+	}
+	return findings
+}
+
+func normalizeReviewExecutionStatus(value string) string {
+	switch strings.ToLower(strings.TrimSpace(value)) {
+	case "", "passed", "completed", "success", "ok":
+		return "passed"
+	case "blocked", "abort", "aborted", "skipped":
+		return "blocked"
+	case "failed", "error":
+		return "failed"
+	default:
+		return "passed"
+	}
+}
+
+func normalizeReviewSeverity(value string) string {
+	switch strings.ToLower(strings.TrimSpace(value)) {
+	case "blocker", "concern", "pass":
+		return strings.ToLower(strings.TrimSpace(value))
+	default:
+		return ""
+	}
+}
+
+func normalizeReviewVerdict(value string) string {
+	return normalizeReviewSeverity(value)
+}
+
+func normalizeReasonCodes(value any) []any {
+	items := arrayOrEmpty(value)
+	if len(items) == 0 {
+		return []any{}
+	}
+	seen := map[string]struct{}{}
+	codes := make([]any, 0, len(items))
+	for _, raw := range items {
+		code := strings.TrimSpace(anyString(raw))
+		if code == "" {
+			continue
+		}
+		if _, ok := seen[code]; ok {
+			continue
+		}
+		seen[code] = struct{}{}
+		codes = append(codes, code)
+	}
+	return codes
+}
+
+func firstNonEmptyString(values ...string) string {
+	for _, value := range values {
+		if strings.TrimSpace(value) != "" {
+			return strings.TrimSpace(value)
+		}
+	}
+	return ""
+}
+
 func summarizeVariantTelemetry(summaries []any) any {
 	if len(summaries) == 0 {
 		return nil
@@ -1427,7 +1624,8 @@ func summarizeVariantTelemetry(summaries []any) any {
 		"averageVariantDurationMs": float64(sumDuration(summaries)) / float64(len(summaries)),
 		"variantCount":             len(summaries),
 		"passedVariantCount":       countVariantStatus(summaries, "passed"),
-		"failedVariantCount":       len(summaries) - countVariantStatus(summaries, "passed"),
+		"blockedVariantCount":      countVariantStatus(summaries, "blocked"),
+		"failedVariantCount":       countVariantStatus(summaries, "failed"),
 	}
 	providers := uniqueTelemetryStrings(summaries, "provider")
 	models := uniqueTelemetryStrings(summaries, "model")
@@ -1665,6 +1863,100 @@ func countVariantStatus(items []any, status string) int {
 		}
 	}
 	return count
+}
+
+func overallReviewExecutionStatus(items []any) string {
+	if countVariantStatus(items, "failed") > 0 {
+		return "failed"
+	}
+	if countVariantStatus(items, "blocked") > 0 {
+		return "blocked"
+	}
+	return "passed"
+}
+
+func overallReviewVerdict(items []any) string {
+	best := "pass"
+	for _, raw := range items {
+		record := asMapAny(raw)
+		if anyString(record["status"]) != "passed" {
+			best = "blocker"
+			continue
+		}
+		verdict := normalizeReviewVerdict(anyString(asMapAny(record["output"])["verdict"]))
+		if verdict == "" {
+			continue
+		}
+		if reviewVerdictPriority(verdict) > reviewVerdictPriority(best) {
+			best = verdict
+		}
+	}
+	return best
+}
+
+func reviewVerdictPriority(verdict string) int {
+	switch verdict {
+	case "blocker":
+		return 2
+	case "concern":
+		return 1
+	default:
+		return 0
+	}
+}
+
+func collectReviewReasonCodes(items []any) []any {
+	seen := map[string]struct{}{}
+	codes := []any{}
+	for _, raw := range items {
+		for _, code := range arrayOrEmpty(asMapAny(raw)["reasonCodes"]) {
+			text := strings.TrimSpace(anyString(code))
+			if text == "" {
+				continue
+			}
+			if _, ok := seen[text]; ok {
+				continue
+			}
+			seen[text] = struct{}{}
+			codes = append(codes, text)
+		}
+	}
+	return codes
+}
+
+func flattenReviewFindings(items []any) []any {
+	findings := []any{}
+	for _, raw := range items {
+		record := asMapAny(raw)
+		variantID := anyString(record["id"])
+		for _, rawFinding := range arrayOrEmpty(asMapAny(record["output"])["findings"]) {
+			finding := asMapAny(rawFinding)
+			message := strings.TrimSpace(anyString(finding["message"]))
+			if message == "" {
+				continue
+			}
+			flattened := map[string]any{
+				"severity": firstNonEmptyString(normalizeReviewSeverity(anyString(finding["severity"])), "concern"),
+				"message":  message,
+			}
+			if path := strings.TrimSpace(anyString(finding["path"])); path != "" {
+				flattened["path"] = path
+			}
+			if variantID != "" {
+				flattened["variantId"] = variantID
+			}
+			findings = append(findings, flattened)
+		}
+	}
+	return findings
+}
+
+func countReviewFindings(items []any) int {
+	total := 0
+	for _, raw := range items {
+		total += len(arrayOrEmpty(asMapAny(asMapAny(raw)["output"])["findings"]))
+	}
+	return total
 }
 
 func sumTelemetryField(items []any, field string) (float64, bool) {

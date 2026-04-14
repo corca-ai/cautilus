@@ -376,6 +376,12 @@ printf '{"verdict":"pass","summary":"standalone smoke","findings":[{"severity":"
 		t.Fatalf("review variants failed: %s", stderr)
 	}
 	summary := readJSONObjectFile(t, strings.TrimSpace(stdout))
+	if summary["schemaVersion"] != contracts.ReviewSummarySchema {
+		t.Fatalf("unexpected review summary schema: %#v", summary["schemaVersion"])
+	}
+	if summary["status"] != "passed" {
+		t.Fatalf("expected passed review summary, got %#v", summary["status"])
+	}
 	if summary["repoRoot"] != root {
 		t.Fatalf("expected repoRoot=%s, got %#v", root, summary["repoRoot"])
 	}
@@ -388,11 +394,91 @@ printf '{"verdict":"pass","summary":"standalone smoke","findings":[{"severity":"
 		t.Fatalf("expected passed variant, got %#v", variant)
 	}
 	output := variant["output"].(map[string]any)
+	if output["schemaVersion"] != contracts.ReviewVariantResultSchema {
+		t.Fatalf("unexpected variant result schema: %#v", output["schemaVersion"])
+	}
 	if output["summary"] != "standalone smoke" {
 		t.Fatalf("expected standalone smoke summary, got %#v", output["summary"])
 	}
 	if strings.Contains(string(mustJSONMarshal(t, summary)), "/home/ubuntu/") {
 		t.Fatalf("unexpected host-local path leak in %#v", summary)
+	}
+}
+
+func TestCLIReviewVariantsReturnsBlockedSummaryWhenVariantEmitsBlockedPayload(t *testing.T) {
+	root := t.TempDir()
+	if err := os.MkdirAll(filepath.Join(root, ".agents"), 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	writeExecutableFile(t, root, "variant.sh", `#!/bin/sh
+output_file="$1"
+cat > "$output_file" <<'EOF'
+{
+  "status": "blocked",
+  "reasonCode": "insufficient_evidence",
+  "reasonCodes": ["insufficient_evidence"],
+  "reason": "Review packet omitted the artifact diff.",
+  "summary": "The bounded review could not establish a verdict."
+}
+EOF
+`)
+	if err := os.MkdirAll(filepath.Join(root, "fixtures"), 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(root, "fixtures", "review.prompt.md"), []byte("review\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	schemaBytes, err := os.ReadFile(filepath.Join(repoToolRoot(t), "fixtures", "workbench", "review-verdict.schema.json"))
+	if err != nil {
+		t.Fatalf("ReadFile returned error: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(root, "fixtures", "review.schema.json"), schemaBytes, 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	adapterText := strings.Join([]string{
+		"version: 1",
+		"repo: temp",
+		"evaluation_surfaces:",
+		"  - smoke",
+		"baseline_options:",
+		"  - baseline git ref via {baseline_ref}",
+		"default_prompt_file: fixtures/review.prompt.md",
+		"default_schema_file: fixtures/review.schema.json",
+		"executor_variants:",
+		"  - id: standalone",
+		"    tool: command",
+		"    purpose: standalone smoke variant",
+		"    command_template: sh {candidate_repo}/variant.sh {output_file}",
+		"",
+	}, "\n")
+	if err := os.WriteFile(filepath.Join(root, ".agents", "cautilus-adapter.yaml"), []byte(adapterText), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+
+	outputDir := filepath.Join(root, "outputs")
+	stdout, stderr, exitCode := runCLI(t, root, "review", "variants", "--repo-root", root, "--workspace", root, "--output-dir", outputDir)
+	if exitCode != 1 {
+		t.Fatalf("expected blocked exit code, got %d, stderr=%s", exitCode, stderr)
+	}
+	summary := readJSONObjectFile(t, strings.TrimSpace(stdout))
+	if summary["status"] != "blocked" {
+		t.Fatalf("expected blocked review summary, got %#v", summary["status"])
+	}
+	reasonCodes, ok := summary["reasonCodes"].([]any)
+	if !ok || len(reasonCodes) != 1 || anyToString(reasonCodes[0]) != "insufficient_evidence" {
+		t.Fatalf("unexpected review reason codes: %#v", summary["reasonCodes"])
+	}
+	variant := summary["variants"].([]any)[0].(map[string]any)
+	if variant["status"] != "blocked" {
+		t.Fatalf("expected blocked variant, got %#v", variant["status"])
+	}
+	output := variant["output"].(map[string]any)
+	if output["status"] != "blocked" {
+		t.Fatalf("expected blocked output packet, got %#v", output)
+	}
+	findings := output["findings"].([]any)
+	if len(findings) != 1 || findings[0].(map[string]any)["severity"] != "blocker" {
+		t.Fatalf("expected synthesized blocker finding, got %#v", output["findings"])
 	}
 }
 

@@ -219,7 +219,7 @@ export function renderReviewPrompt(promptInput) {
 	if (promptInput.defaultSchemaFile?.absolutePath) {
 		sections.push("", "## Output Contract", `- schema file: ${promptInput.defaultSchemaFile.absolutePath}`);
 	}
-	sections.push("", "Return a verdict that follows the provided output schema. Explain why you agree or disagree with the automated recommendation.");
+	sections.push("", "Return a verdict that follows the provided output schema. If the evidence is insufficient for a bounded review, return the schema-compliant blocked payload with a concrete reason code and reason instead of prose.");
 	const consumerPrompt = maybeReadConsumerPrompt(promptInput);
 	return `${sections.join("\n")}${consumerPrompt}`.trimEnd() + "\n";
 }

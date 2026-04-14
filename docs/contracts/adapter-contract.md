@@ -63,6 +63,7 @@ executor_variants:
     safety_notes:
       - prefer a clean worktree or read-only temp copy over the live checkout
       - keep the verdict schema in {schema_file} and the final JSON in {output_file}
+      - the schema should allow an explicit blocked payload with reason code and reason when bounded review evidence is insufficient
       - do not use bypass-approval or danger-full-access flags for review-only loops
   - id: claude-review
     tool: claude_print
@@ -74,6 +75,7 @@ executor_variants:
     safety_notes:
       - prefer self-contained prompts or explicitly bounded attached context
       - keep tools disabled unless the prompt truly needs repo reads
+      - allow a schema-compliant blocked payload when the prompt packet is insufficient for a bounded verdict
       - do not use dangerously-skip-permissions flags for review-only loops
       - normalize structured_output if the JSON response is wrapped
 artifact_paths:
