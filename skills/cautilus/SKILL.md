@@ -29,6 +29,47 @@ cautilus doctor --repo-root . --scope agent-surface
 - keep held-out evaluation and review prompts explicit
 - keep host-repo fixtures, prompts, and policy outside the product boundary
 
+## Scenarios
+
+`Cautilus` has exactly three first-class evaluation archetypes. Pick the one
+that matches the task before reaching for adapters, reports, or review. The
+1:1 mapping is pinned in `archetype-boundary.spec.md` (chatbot / skill /
+workflow); every normalize command also ships a `--example-input` flag that
+prints a minimal valid packet to stdout for quick inspection.
+
+### 1. Chatbot conversation regression
+
+Use when a chatbot or assistant gets worse at multi-turn behavior after a
+prompt change (forgetting prior turns, answering when it should clarify,
+ignoring preferences the user already stated).
+
+- CLI: `cautilus scenario normalize chatbot --input <conversation-logs.json>`
+- Inspect shape: `cautilus scenario normalize chatbot --example-input`
+- Output: `proposals.json` (`cautilus.scenario_proposals.v1`)
+
+### 2. Skill / agent execution regression
+
+Use when a skill or agent edit should be checked for whether it still
+triggers on the right prompts, executes cleanly, and keeps its declared
+validation surfaces passing.
+
+- CLI: `cautilus skill test --repo-root . --adapter-name <name>` (or
+  `cautilus skill evaluate --input <summary.json>` when a normalized
+  observed packet already exists)
+- Inspect shape: `cautilus scenario normalize skill --example-input`
+- Output: `skill-summary.json` (`cautilus.skill_evaluation_summary.v1`)
+  plus chained proposal candidates when regressions appear
+
+### 3. Durable workflow recovery
+
+Use when a stateful automation — a CLI workflow, long-running agent
+session, or pipeline that persists state across invocations — keeps
+getting stuck on the same step.
+
+- CLI: `cautilus scenario normalize workflow --input <workflow-runs.json>`
+- Inspect shape: `cautilus scenario normalize workflow --example-input`
+- Output: `proposals.json` with `operator_workflow_recovery` candidates
+
 ## Bootstrap
 
 1. Resolve the adapter from the target repo:

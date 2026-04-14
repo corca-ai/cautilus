@@ -161,16 +161,12 @@ with this spec:
 6. **Doctor next-step hint.** After `ready`, print a short pointer to
    `cautilus scenarios` so a first-time user knows which scenario applies
    to their situation.
-7. **Bundled skill SKILL.md scenario preamble.** Mirror the three
-   archetype blocks from README into the top of
-   [skills/cautilus/SKILL.md](../../skills/cautilus/SKILL.md) so a
-   skill-loading agent starts with the same mental model as a human.
-8. **README section ordering.** Scenarios block is the most scannable
+7. **README section ordering.** Scenarios block is the most scannable
    section for first-time readers, but currently sits below Why Cautilus
    and Core Flow. Reorder the top of README so readers hit the three
    scenario blocks before the philosophy block. Pairs naturally with
    follow-up 4 (inline glossary).
-9. **Experimental archetype escape hatch.** This spec requires every
+8. **Experimental archetype escape hatch.** This spec requires every
    first-class archetype to ship in a coordinated slice. That discipline
    is intentional, but leaves no room for research prototypes. Consider a
    relaxed namespace (location TBD — keep the `prototypes/` hint Go-side
@@ -178,7 +174,7 @@ with this spec:
    rules for exploratory surfaces, and a promotion checklist into
    first-class status when the surface earns a schema/helper/CLI/
    contract slice.
-10. **Archetype-extension hardening.** Surfaced by an
+9. **Archetype-extension hardening.** Surfaced by an
     onboarding-lens premortem on the Node-removal slice (round 2): a new
     contributor told to add a 4th first-class archetype must currently
     grep across files this spec does not name, and the 1:1 mapping has
