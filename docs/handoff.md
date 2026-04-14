@@ -41,7 +41,7 @@
 - latest self-dogfood published bundle는 `pass / accept-now` 상태다.
   - [artifacts/self-dogfood/latest/summary.json](../artifacts/self-dogfood/latest/summary.json)
 - 최근 관련 커밋:
-  - 작업 후 다음 커밋 예정: rejected sibling severity steers merge parent ties
+  - `ade8bfa` Respect checkpoint severity in merge parent selection
   - `df9b4d1` rejected sibling signals bias merge selection
   - `fe99139` checkpointed scenarios prioritized in repair
   - `ff07f6b` pruning stays bounded to concern/blocker
