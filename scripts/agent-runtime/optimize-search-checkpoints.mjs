@@ -81,6 +81,47 @@ function reviewFeedbackMessages(summary) {
 	});
 }
 
+function normalizedReviewSeverity(value, fallback = "concern") {
+	return REVIEW_STATUS_RANK.has(value) ? value : fallback;
+}
+
+function feedbackEntryFor(variant, message, severity) {
+	if (typeof message !== "string" || message.length === 0) {
+		return null;
+	}
+	const normalizedSeverity = normalizedReviewSeverity(severity, reviewStatusFromVariant(variant));
+	return {
+		message,
+		severity: normalizedSeverity,
+		rejectionReason: `review:${variant?.id || "variant"}:${normalizedSeverity}`,
+	};
+}
+
+function findingFeedbackEntries(variant) {
+	const findings = Array.isArray(variant?.output?.findings) ? variant.output.findings : [];
+	return findings
+		.map((finding) => feedbackEntryFor(variant, finding?.message, finding?.severity))
+		.filter(Boolean);
+}
+
+function summaryFeedbackEntry(variant) {
+	if (typeof variant?.output?.summary !== "string" || variant.output.summary.length === 0) {
+		return null;
+	}
+	return feedbackEntryFor(variant, variant.output.summary, reviewStatusFromVariant(variant));
+}
+
+function reviewFeedbackEntries(summary) {
+	return (Array.isArray(summary?.variants) ? summary.variants : []).flatMap((variant) => {
+		const findings = findingFeedbackEntries(variant);
+		if (findings.length > 0) {
+			return findings;
+		}
+		const fallback = summaryFeedbackEntry(variant);
+		return fallback ? [fallback] : [];
+	});
+}
+
 function hasExecutorVariants(payload) {
 	return Array.isArray(payload?.data?.executor_variants) && payload.data.executor_variants.length > 0;
 }
@@ -171,6 +212,7 @@ export function runReviewCheckpoint(packet, artifactRoot, candidate, env) {
 	}
 	const summary = readJson(summaryFile);
 	const rejectionReasons = reviewRejectionReasons(summary);
+	const feedbackEntries = reviewFeedbackEntries(summary);
 	const feedbackMessages = reviewFeedbackMessages(summary);
 	return {
 		type: "review",
@@ -178,6 +220,7 @@ export function runReviewCheckpoint(packet, artifactRoot, candidate, env) {
 		status: result.status === 0 ? "passed" : "failed",
 		admissible: rejectionReasons.length === 0,
 		rejectionReasons,
+		feedbackEntries,
 		feedbackMessages,
 		outputDir,
 		summaryFile,

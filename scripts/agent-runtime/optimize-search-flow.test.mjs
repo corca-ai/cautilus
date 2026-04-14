@@ -2497,6 +2497,7 @@ test("run-optimize-search reinjects frontier-promotion review feedback into the 
 			source: "frontier_promotion_review",
 			scope: "scenario",
 			scenarioIds: ["operator-follow-up"],
+			severity: "concern",
 			rejectionReasons: ["review:operator-review:concern"],
 			feedbackMessages: ["Checklist candidate still leaves operator-follow-up under-specified."],
 		}]);
@@ -2605,6 +2606,7 @@ EOF
 				source: "frontier_promotion_review",
 				scope: "scenario",
 				scenarioIds: ["operator-recovery"],
+				severity: "concern",
 				rejectionReasons: ["review:operator-review:concern"],
 				feedbackMessages: ["Checklist candidate still leaves operator-recovery sequencing too implicit."],
 			},
@@ -2612,6 +2614,7 @@ EOF
 				source: "frontier_promotion_review",
 				scope: "scenario",
 				scenarioIds: ["operator-follow-up"],
+				severity: "concern",
 				rejectionReasons: ["review:operator-review:concern"],
 				feedbackMessages: ["Checklist candidate still leaves operator-follow-up under-specified."],
 			},
@@ -2757,6 +2760,188 @@ EOF
 		assert.equal(result.selectedCandidateId, "g2-1-codex-exec");
 		const repairedCandidate = result.candidateRegistry.find((candidate) => candidate.id === "g2-1-codex-exec");
 		const mutationPrompt = readFileSync(repairedCandidate.artifacts.promptFile, "utf-8");
+		assert.match(mutationPrompt, /operator-recovery sequencing too implicit\./);
+		assert.doesNotMatch(mutationPrompt, /operator-follow-up under-specified\./);
+		assert.match(readFileSync(result.proposalBridge.selectedTargetFile.path, "utf-8"), /explicit recovery sequencing map/);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+		rmSync(artifactRoot, { recursive: true, force: true });
+	}
+});
+
+test("run-optimize-search prioritizes blocker-scoped checkpoint feedback over concern-scoped scenarios in reflection ordering", () => {
+	const { root, artifactRoot, optimizeInputPath, heldOutResultsPath } = createCheckpointFallbackFixture({
+		includeReviewVariants: true,
+		gateFailsOnChecklist: false,
+		reviewVerdict: "concern",
+	});
+	try {
+		writeExecutable(
+			join(root, "evaluate.sh"),
+			`#!/bin/sh
+output="$1"
+recovery_score=40
+recovery_status="failed"
+followup_score=55
+followup_status="failed"
+if grep -q "detailed recovery checklist" prompt.md && ! grep -q "explicit recovery sequencing map" prompt.md && ! grep -q "follow-up handoff map" prompt.md; then
+  recovery_score=70
+  recovery_status="failed"
+  followup_score=92
+  followup_status="passed"
+fi
+if grep -q "explicit recovery sequencing map" prompt.md; then
+  recovery_score=99
+  recovery_status="passed"
+  followup_score=72
+  followup_status="failed"
+fi
+if grep -q "follow-up handoff map" prompt.md; then
+  recovery_score=72
+  recovery_status="failed"
+  followup_score=95
+  followup_status="passed"
+fi
+cat >"$output" <<EOF
+{
+  "schemaVersion": "cautilus.scenario_results.v1",
+  "mode": "held_out",
+  "results": [
+    {
+      "scenarioId": "operator-recovery",
+      "status": "$recovery_status",
+      "overallScore": $recovery_score,
+      "telemetry": { "cost_usd": 0.04, "durationMs": 1000 }
+    },
+    {
+      "scenarioId": "operator-follow-up",
+      "status": "$followup_status",
+      "overallScore": $followup_score,
+      "telemetry": { "cost_usd": 0.03, "durationMs": 900 }
+    }
+  ]
+}
+EOF
+`,
+		);
+		writeExecutable(
+			join(root, "review-variant.sh"),
+			`#!/bin/sh
+workspace="$1"
+output="$2"
+verdict="pass"
+severity="pass"
+summary="Candidate stays operator-safe."
+if grep -q "detailed recovery checklist" "$workspace/prompt.md" && ! grep -q "explicit recovery sequencing map" "$workspace/prompt.md" && ! grep -q "follow-up handoff map" "$workspace/prompt.md"; then
+  verdict="concern"
+  severity="concern"
+  summary="Checklist candidate still leaves operator-recovery sequencing too implicit."
+fi
+cat >"$output" <<EOF
+{
+  "verdict": "$verdict",
+  "summary": "$summary",
+  "findings": [
+    {
+      "severity": "blocker",
+      "message": "Checklist candidate still leaves operator-recovery sequencing too implicit.",
+      "path": "variant/operator-review"
+    },
+    {
+      "severity": "concern",
+      "message": "Checklist candidate still leaves operator-follow-up under-specified.",
+      "path": "variant/operator-review"
+    }
+  ]
+}
+EOF
+`,
+		);
+		createProgrammableCodex(root, [
+			{
+				currentPromptMatchNone: ["detailed recovery checklist"],
+				output: {
+					promptMarkdown: "Keep recovery instructions explicit with a detailed recovery checklist.\n",
+					rationaleSummary: "Strengthen the recovery path first.",
+					expectedImprovements: ["operator-recovery"],
+					preservedStrengths: ["keeps the original recovery framing"],
+					riskNotes: ["operator-follow-up may still remain weak"],
+				},
+			},
+			{
+				currentPromptMatchAll: ["detailed recovery checklist"],
+				matchAll: ["review:operator-review:blocker", "operator-recovery sequencing too implicit."],
+				matchNone: ["operator-follow-up under-specified."],
+				output: {
+					promptMarkdown: "Keep recovery instructions explicit with a detailed recovery checklist and an explicit recovery sequencing map.\n",
+					rationaleSummary: "Repair the blocker-level recovery sequencing gap first.",
+					expectedImprovements: ["operator-recovery"],
+					preservedStrengths: ["keeps the detailed recovery checklist"],
+					riskNotes: ["operator-follow-up still needs later repair"],
+				},
+			},
+			{
+				currentPromptMatchAll: ["detailed recovery checklist", "operator-follow-up under-specified."],
+				output: {
+					promptMarkdown: "Keep recovery instructions explicit with a follow-up handoff map.\n",
+					rationaleSummary: "Fallback mutation output.",
+					expectedImprovements: ["operator-follow-up"],
+					preservedStrengths: ["keeps the detailed recovery checklist"],
+					riskNotes: ["held-out should confirm the fallback stays sufficient"],
+				},
+			},
+			{
+				output: {
+					promptMarkdown: "Keep recovery instructions explicit with a generic escalation note.\n",
+					rationaleSummary: "Fallback mutation output.",
+					expectedImprovements: ["operator-follow-up"],
+					preservedStrengths: ["keeps the detailed recovery checklist"],
+					riskNotes: ["held-out should confirm the fallback stays sufficient"],
+				},
+			},
+		]);
+		const { packet } = buildOptimizeSearchInput(
+			["--optimize-input", optimizeInputPath, "--held-out-results-file", heldOutResultsPath, "--budget", "medium"],
+			{ now: new Date("2026-04-13T10:00:00.000Z") },
+		);
+		packet.searchConfig.reviewCheckpointPolicy = "frontier_promotions";
+		packet.searchConfig.generationLimit = 2;
+		packet.searchConfig.mergeEnabled = false;
+		packet.mutationConfig.backends = [{ id: "codex-mutate", backend: "codex_exec" }];
+		packet.mutationConfig.trainScenarioLimit = 1;
+		const result = runOptimizeSearch(packet, {
+			inputFile: join(root, "optimize-search-input.json"),
+			outputFile: join(artifactRoot, "optimize-search-result.json"),
+			now: new Date("2026-04-13T10:01:00.000Z"),
+			env: {
+				...process.env,
+				PATH: `${root}:${process.env.PATH ?? ""}`,
+			},
+		});
+		assert.equal(result.status, "completed");
+		assert.equal(result.selectedCandidateId, "g2-1-codex-exec");
+		const rejectedCandidate = result.candidateRegistry.find((candidate) => candidate.id === "g1-1-codex-exec");
+		assert.deepEqual(rejectedCandidate.checkpointFeedback, [
+			{
+				source: "frontier_promotion_review",
+				scope: "scenario",
+				scenarioIds: ["operator-recovery"],
+				severity: "blocker",
+				rejectionReasons: ["review:operator-review:blocker"],
+				feedbackMessages: ["Checklist candidate still leaves operator-recovery sequencing too implicit."],
+			},
+			{
+				source: "frontier_promotion_review",
+				scope: "scenario",
+				scenarioIds: ["operator-follow-up"],
+				severity: "concern",
+				rejectionReasons: ["review:operator-review:concern"],
+				feedbackMessages: ["Checklist candidate still leaves operator-follow-up under-specified."],
+			},
+		]);
+		const repairedCandidate = result.candidateRegistry.find((candidate) => candidate.id === "g2-1-codex-exec");
+		const mutationPrompt = readFileSync(repairedCandidate.artifacts.promptFile, "utf-8");
+		assert.match(mutationPrompt, /review:operator-review:blocker/);
 		assert.match(mutationPrompt, /operator-recovery sequencing too implicit\./);
 		assert.doesNotMatch(mutationPrompt, /operator-follow-up under-specified\./);
 		assert.match(readFileSync(result.proposalBridge.selectedTargetFile.path, "utf-8"), /explicit recovery sequencing map/);

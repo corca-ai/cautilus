@@ -357,8 +357,13 @@ In v1, review checkpoint policy means:
   - when a rejection message names one or more known scenarios, preserve it as
     scenario-scoped checkpoint feedback and inject only the relevant scenario
     entries into that candidate's later mutation prompts
+  - scenario-scoped checkpoint feedback should preserve finding-level
+    severity when review outputs provide it, so later mutation can distinguish
+    blocker-scoped repair from concern-scoped polish
   - scenario-scoped checkpoint feedback may also reprioritize the next
     reflection batch ahead of lower-scoring but uncheckpointed train scenarios
+    - blocker-scoped checkpoint feedback should outrank concern-scoped
+      checkpoint feedback when both name known train scenarios
   - when mutation budget forces a smaller next batch, concern-level rejected
     frontier lineage should be prioritized ahead of otherwise similar
     admissible parents so the next mutation repairs the explicit checkpointed
@@ -546,6 +551,8 @@ The current bounded slice already proves:
   prompts
 - scenario-scoped checkpoint feedback can reprioritize the next mutation
   reflection batch
+- finding-level checkpoint severity can also steer reflection ordering inside
+  that next mutation batch
 - concern-level rejected lineage can also outrank otherwise similar admissible
   parents in the next mutation batch when prompt-variant budget is tighter than
   the available frontier parent set

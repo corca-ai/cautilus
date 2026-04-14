@@ -171,7 +171,8 @@ function scenarioCheckpointPriority(candidate, scenarioId) {
 			return total;
 		}
 		const feedbackMessages = Array.isArray(entry?.feedbackMessages) ? entry.feedbackMessages : [];
-		return total + Math.max(1, feedbackMessages.length);
+		const severityWeight = entry?.severity === "blocker" ? 100 : entry?.severity === "concern" ? 10 : 1;
+		return total + severityWeight + Math.max(1, feedbackMessages.length);
 	}, 0);
 }
 
