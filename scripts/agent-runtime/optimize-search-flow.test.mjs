@@ -1442,6 +1442,65 @@ test("selectMergeParents can weight metadata toward checkpointed rejected siblin
 	assert.deepEqual(selected?.map((candidate) => candidate.id), ["seed", "g1-followup"]);
 });
 
+test("selectMergeParents prioritizes higher-severity rejected sibling scenarios when pair metrics tie", () => {
+	const scenarioIds = ["operator-recovery", "operator-follow-up"];
+	const seed = {
+		id: "seed",
+		heldOutEntries: [
+			{ scenarioId: "operator-recovery", score: 95 },
+			{ scenarioId: "operator-follow-up", score: 55 },
+		],
+		telemetry: { totalCostUsd: 0.03, totalDurationMs: 2000 },
+	};
+	const recoveryRepair = {
+		id: "g1-recovery",
+		expectedImprovements: ["operator-recovery"],
+		preservedStrengths: ["keeps the recovery checklist concrete"],
+		riskNotes: ["operator-follow-up may still remain sparse"],
+		heldOutEntries: [
+			{ scenarioId: "operator-recovery", score: 55 },
+			{ scenarioId: "operator-follow-up", score: 96 },
+		],
+		telemetry: { totalCostUsd: 0.07, totalDurationMs: 1900 },
+	};
+	const followupRepair = {
+		id: "g1-followup",
+		expectedImprovements: ["operator-follow-up"],
+		preservedStrengths: ["keeps the handoff map concise"],
+		riskNotes: ["operator-recovery may still need stronger wording"],
+		heldOutEntries: [
+			{ scenarioId: "operator-recovery", score: 55 },
+			{ scenarioId: "operator-follow-up", score: 96 },
+		],
+		telemetry: { totalCostUsd: 0.07, totalDurationMs: 1900 },
+	};
+	const rejectedSibling = {
+		id: "g1-rejected",
+		checkpointFeedback: [
+			{
+				source: "frontier_promotion_review",
+				scope: "scenario",
+				scenarioIds: ["operator-recovery"],
+				rejectionReasons: ["review:operator-review:blocker"],
+				feedbackMessages: ["Checklist candidate still leaves operator-recovery sequencing too implicit."],
+			},
+			{
+				source: "frontier_promotion_review",
+				scope: "scenario",
+				scenarioIds: ["operator-follow-up"],
+				rejectionReasons: ["review:operator-review:concern"],
+				feedbackMessages: ["Checklist candidate still leaves operator-follow-up under-specified."],
+			},
+		],
+	};
+	const selected = selectMergeParents(
+		[seed, recoveryRepair, followupRepair],
+		scenarioIds,
+		{ feedbackCandidates: [rejectedSibling] },
+	);
+	assert.deepEqual(selected?.map((candidate) => candidate.id), ["seed", "g1-recovery"]);
+});
+
 test("selectMergeParents can pick a bounded three-parent merge when coverage expands", () => {
 	const scenarioIds = ["operator-recovery", "operator-follow-up", "operator-escalation"];
 	const recovery = {

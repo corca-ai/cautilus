@@ -382,8 +382,9 @@ standalone product여야 한다.
   bounded two- or three-parent merge synthesis, optional frontier-promotion
   review checkpoints, scenario-aware checkpoint-feedback reinjection,
   scenario-aware bounded merge selection with explicit three-parent
-  activation policy, scenario-aware merge-prompt feedback from rejected
-  frontier siblings, severity-aware retention for review-rejected lineage,
+  activation policy and severity-aware rejected-sibling tie-breaking,
+  scenario-aware merge-prompt feedback from rejected frontier siblings,
+  severity-aware retention for review-rejected lineage,
   final-only full-gate checkpoint fallback, selection-cap filtering across
   ranked frontier finalists, readiness blocking, and proposal bridging
 - durable revision-artifact builder above optimize proposals
