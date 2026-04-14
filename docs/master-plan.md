@@ -86,6 +86,12 @@ Dogfood and migration evidence now lives separately from the product concept.
 Use [consumer-readiness.md](./consumer-readiness.md) for checked-in host
 evidence instead of treating any one consumer repo as the product definition.
 
+The first-class evaluation archetype boundary (chatbot / skill / workflow)
+is pinned as a standing contract in
+[specs/archetype-boundary.spec.md](./specs/archetype-boundary.spec.md) and
+enforced by `npm run lint:specs`. New user-facing copy must reconcile with
+that contract before landing.
+
 ## Phase Plan
 
 ### Phase 1: Product Baseline — done

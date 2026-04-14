@@ -45,6 +45,8 @@ This repo is the standalone product boundary for `Cautilus`.
   product direction and priority order
 - [docs/specs/index.spec.md](./docs/specs/index.spec.md):
   currently claimed product surface
+- [docs/specs/archetype-boundary.spec.md](./docs/specs/archetype-boundary.spec.md):
+  first-class archetype 1:1 contract (chatbot / skill / workflow)
 - [docs/operator-acceptance.md](./docs/operator-acceptance.md):
   tiered human acceptance checklist
 - [docs/consumer-migration.md](./docs/consumer-migration.md):

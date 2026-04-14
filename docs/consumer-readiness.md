@@ -82,8 +82,10 @@ Current role: external durable-workflow archetype
 
 Evidence:
 
-- `skill` normalization also has a checked-in durable-workflow fixture:
-  [fixtures/scenario-proposals/workflow-recovery-input.json](../fixtures/scenario-proposals/workflow-recovery-input.json)
+- `workflow` normalization owns a checked-in durable-workflow fixture:
+  [fixtures/scenario-proposals/workflow-recovery-input.json](../fixtures/scenario-proposals/workflow-recovery-input.json).
+  Routed through `cautilus scenario normalize workflow` per the
+  [archetype boundary spec](./specs/archetype-boundary.spec.md).
 - `mode evaluate`, `review variants`, and comparison flows are all exercised
   in-tree against workflow-shaped packets and adapters
 - the external proof bar remains:
