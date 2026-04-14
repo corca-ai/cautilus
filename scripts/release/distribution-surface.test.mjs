@@ -42,6 +42,11 @@ test("cautilus --version matches package.json", () => {
 	assert.equal(result.stdout.trim(), pkg.version);
 });
 
+test("package metadata does not claim an npm bin install surface", () => {
+	const pkg = JSON.parse(readFileSync(join(REPO_ROOT, "package.json"), "utf-8"));
+	assert.equal("bin" in pkg, false);
+});
+
 test("repo root exposes an official self-consumer adapter and doctor returns ready", () => {
 	const result = spawnSync(join(REPO_ROOT, "bin", "cautilus"), ["doctor", "--repo-root", REPO_ROOT], {
 		cwd: REPO_ROOT,

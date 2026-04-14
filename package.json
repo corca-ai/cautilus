@@ -7,9 +7,6 @@
   "engines": {
     "node": ">=22"
   },
-  "bin": {
-    "cautilus": "./bin/cautilus"
-  },
   "scripts": {
     "dogfood:self": "node scripts/run-self-dogfood.mjs",
     "dogfood:self:experiments": "node scripts/run-self-dogfood-experiments.mjs",
