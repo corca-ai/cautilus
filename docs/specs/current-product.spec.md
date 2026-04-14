@@ -32,6 +32,7 @@ standalone product여야 한다.
 | package.json | fixed | "release:smoke-install" |
 | package.json | fixed | "consumer:onboard:smoke" |
 | package.json | fixed | "lint" |
+| package.json | fixed | "lint:links" |
 | package.json | fixed | "lint:go" |
 | package.json | fixed | "security:govulncheck" |
 | package.json | fixed | "test:go" |
@@ -295,6 +296,9 @@ standalone product여야 한다.
 | docs/external-consumer-onboarding.md | file_exists |  |
 | docs/external-consumer-onboarding.md | fixed | npm run consumer:onboard:smoke |
 | scripts/check-specs.mjs | file_exists |  |
+| scripts/check-markdown-links.mjs | file_exists |  |
+| scripts/check-markdown-links.mjs | fixed | DERIVED_PATH_PREFIXES |
+| scripts/check-markdown-links.test.mjs | file_exists |  |
 | scripts/agent-runtime/scenario-result-telemetry.mjs | file_exists |  |
 | scripts/agent-runtime/scenario-result-telemetry.mjs | fixed | SCENARIO_TELEMETRY_SUMMARY_SCHEMA |
 | scripts/agent-runtime/summarize-scenario-telemetry.mjs | file_exists |  |

@@ -150,7 +150,7 @@ The product-owned `scenario propose` command then:
 
 - [scenario-proposal-sources.md](./scenario-proposal-sources.md)
 - [scenario-proposal-normalization.md](./scenario-proposal-normalization.md)
-- [build-scenario-proposal-input.mjs](../../scripts/agent-runtime/build-scenario-proposal-input.mjs)
-- [generate-scenario-proposals.mjs](../../scripts/agent-runtime/generate-scenario-proposals.mjs)
-- [input.schema.json](../../fixtures/scenario-proposals/input.schema.json)
-- [standalone-input.json](../../fixtures/scenario-proposals/standalone-input.json)
+- [build-scenario-proposal-input.mjs](../../../scripts/agent-runtime/build-scenario-proposal-input.mjs)
+- [generate-scenario-proposals.mjs](../../../scripts/agent-runtime/generate-scenario-proposals.mjs)
+- [input.schema.json](../../../fixtures/scenario-proposals/input.schema.json)
+- [standalone-input.json](../../../fixtures/scenario-proposals/standalone-input.json)

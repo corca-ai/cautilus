@@ -27,7 +27,7 @@ The product boundary is:
 ## Current Slice
 
 The shipped `workflow` normalization helper is `NormalizeWorkflowProposalCandidates`
-in [internal/runtime/proposals.go](../../internal/runtime/proposals.go),
+in [internal/runtime/proposals.go](../../../internal/runtime/proposals.go),
 exposed on the CLI as `cautilus scenario normalize workflow`.
 
 This slice accepts `cautilus.workflow_normalization_inputs.v1` and rejects

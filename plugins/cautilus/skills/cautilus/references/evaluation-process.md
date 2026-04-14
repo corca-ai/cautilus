@@ -38,7 +38,7 @@ node scripts/init_adapter.mjs --repo-root . --adapter-name code-quality
 ```
 
 3. If the adapter is invalid, repair it using
-   [adapter-contract.md](./contracts/adapter-contract.md).
+   [adapter-contract.md](./adapter-contract.md).
 4. Run any adapter-defined `preflight_commands` before spending time on long
    runs.
 
@@ -90,7 +90,7 @@ that env var without operator path-threading. Pass `--json` instead of
 `eval` if a script needs the machine-readable payload.
 
 If interpretation or reporting is getting sloppy, read
-[reporting.md](./contracts/reporting.md) before
+[reporting.md](./reporting.md) before
 continuing.
 
 ## Goal
@@ -135,7 +135,7 @@ The adapter may define:
 - human review prompts
 - sample-count defaults
 
-Use [adapter-contract.md](./contracts/adapter-contract.md)
+Use [adapter-contract.md](./adapter-contract.md)
 for the schema.
 
 When the repo needs more than one evaluation surface, prefer multiple named
