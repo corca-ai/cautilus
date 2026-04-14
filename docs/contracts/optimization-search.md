@@ -71,6 +71,10 @@ This slice defines a first `GEPA`-inspired search contract for `Cautilus`:
 - Declared selection `constraintCaps` keep a candidate eligible for frontier
   search, mutation, and merge, but make it ineligible for final selection when
   the candidate breaches the cap.
+- When merge synthesis is enabled, the default three-parent activation policy
+  is `coverage_expansion`: keep the smaller two-parent merge unless adding a
+  third review-admissible parent expands frontier coverage across held-out
+  scenarios.
 - Prompt mutation is reflective prompt rewriting based on explicit evidence,
   not random token- or substring-level crossover.
 - The search output recommends a best next candidate and preserves lineage, but
@@ -164,6 +168,9 @@ The packet should include:
     - optional `tieBreakers`, such as `lower_cost` and `lower_latency`
     - optional `constraintCaps`, such as `maxCostUsd` or `maxDurationMs`
   - optional `mergeEnabled`
+  - optional `threeParentPolicy`
+    - `coverage_expansion`
+    - `disabled`
 - mutation evidence policy
   - which report buckets can seed mutation
   - how many review findings can enter one reflective batch
@@ -361,8 +368,9 @@ In the current bounded slice, merge synthesis stays bounded to two or three
 review-admissible parents and should prefer:
 
 - stronger combined held-out frontier coverage first
-- then smaller parent sets unless an extra parent materially expands combined
-  held-out coverage
+- then smaller parent sets unless `threeParentPolicy=coverage_expansion` and
+  an extra parent materially expands combined frontier coverage across
+  held-out scenarios
 - then explicit candidate signals such as `expectedImprovements`,
   `preservedStrengths`, and lower `riskNotes`, with scenario-aware weighting
   toward the weakest current frontier scenarios
@@ -507,7 +515,8 @@ The current bounded slice already proves:
 - scenario-aware checkpoint rejection feedback reinjection into later mutation
   prompts
 - scenario-aware bounded two- or three-parent merge selection using candidate
-  metadata, weakest-frontier weighting, and telemetry tie-breakers
+  metadata, weakest-frontier weighting, telemetry tie-breakers, and explicit
+  three-parent activation policy
 - scenario-aware merge-prompt checkpoint feedback from relevant rejected
   frontier siblings
 - severity-aware retention for review-rejected lineage: one repair generation

@@ -27,6 +27,9 @@
   - multi-generation Pareto frontier retention
   - optional bounded merge candidate
   - scenario-aware bounded 2-3 parent merge selection
+  - explicit `threeParentPolicy`
+    - default `coverage_expansion`
+    - `disabled` override
   - budget-aware default review checkpoint policy
     - `light` -> `final_only`
     - `medium`/`heavy` -> `frontier_promotions`
@@ -64,21 +67,18 @@
 
 ## Next Session
 
-1. 필요하면 bounded 3-parent merge를 언제 2-parent보다 먼저 허용할지 policy knob로 뺄지 판단한다.
-2. selection-cap breach reason code를 public contract로 고정할지, 아니면 implementation detail로 둘지 판단한다.
-3. concern/blocker보다 더 세밀한 pruning bucket이 필요한지 판단한다.
-4. merge prompt가 rejected sibling feedback를 얼마나 많이 실을지 cap을 따로 둘지 판단한다.
+1. selection-cap breach reason code를 public contract로 고정할지, 아니면 implementation detail로 둘지 판단한다.
+2. concern/blocker보다 더 세밀한 pruning bucket이 필요한지 판단한다.
+3. merge prompt가 rejected sibling feedback를 얼마나 많이 실을지 cap을 따로 둘지 판단한다.
 
 ## Discuss
 
 - 아직 `v2`는 아니다.
 - 지금 닫힌 것은 “bounded GEPA slice with frontier-promotion review feedback reinjection + final-only full-gate fallback”이다.
-- 다음 세션의 첫 결정은 이것이다:
-  - bounded 3-parent activation policy를 따로 뺄지
-  - 아니면 selection-cap reason code를 public contract로 고정할지
-- 제 추천은 먼저
-  - bounded 3-parent activation policy
-  를 다음 핵심 slice로 두는 것이다.
+- bounded 3-parent activation policy는 이제 product surface로 뺐다.
+  - 기본값은 `coverage_expansion`
+  - 즉, 3-parent는 held-out frontier coverage를 실제로 넓힐 때만 2-parent보다 먼저 허용한다.
+- 다음 세션의 첫 product decision은 selection-cap reason code를 public contract로 고정할지 여부다.
 
 ## Premortem
 

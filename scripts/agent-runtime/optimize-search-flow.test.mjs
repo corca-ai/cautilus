@@ -500,6 +500,7 @@ test("build-optimize-search-input assembles a canonical packet from optimize inp
 		assert.equal(packet.searchConfig.reviewCheckpointPolicy, "frontier_promotions");
 		assert.equal(packet.mutationEvidencePolicy.includeCheckpointFeedback, true);
 		assert.deepEqual(packet.searchConfig.selectionPolicy.tieBreakers, ["lower_cost", "lower_latency"]);
+		assert.equal(packet.searchConfig.threeParentPolicy, "coverage_expansion");
 		assert.deepEqual(packet.scenarioSets.heldOutScenarioSet, ["operator-recovery"]);
 		assert.equal(packet.evaluationContext.mode, "held_out");
 		assert.equal(packet.evaluationContext.baselineRef, "origin/main");
@@ -562,6 +563,29 @@ test("build-optimize-search-input preserves selection constraint caps from direc
 			maxCostUsd: 0.08,
 			maxDurationMs: 1600,
 		});
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("build-optimize-search-input preserves three-parent policy from direct JSON ingress", () => {
+	const { root, optimizeInputPath, heldOutResultsPath } = createSearchFixtureRoot();
+	try {
+		const { packet } = buildOptimizeSearchInput(
+			[
+				"--input-json",
+				JSON.stringify({
+					optimizeInputFile: optimizeInputPath,
+					heldOutResultsFile: heldOutResultsPath,
+					budget: "medium",
+					threeParentPolicy: "disabled",
+				}),
+				"--output",
+				join(root, "optimize-search-input.json"),
+			],
+			{ now: new Date("2026-04-13T10:00:00.000Z") },
+		);
+		assert.equal(packet.searchConfig.threeParentPolicy, "disabled");
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}
@@ -1410,6 +1434,48 @@ test("selectMergeParents can pick a bounded three-parent merge when coverage exp
 	assert.deepEqual(selected?.map((candidate) => candidate.id), ["g1-recovery", "g1-followup", "g1-escalation"]);
 });
 
+test("selectMergeParents keeps a bounded pair when a third parent does not expand frontier coverage", () => {
+	const scenarioIds = ["operator-recovery", "operator-follow-up", "operator-escalation"];
+	const recovery = {
+		id: "g1-recovery",
+		expectedImprovements: ["operator-recovery"],
+		preservedStrengths: ["keeps the recovery checklist concrete"],
+		riskNotes: ["operator-follow-up may still remain sparse"],
+		heldOutEntries: [
+			{ scenarioId: "operator-recovery", score: 96 },
+			{ scenarioId: "operator-follow-up", score: 65 },
+			{ scenarioId: "operator-escalation", score: 92 },
+		],
+		telemetry: { totalCostUsd: 0.04, totalDurationMs: 1800 },
+	};
+	const followUp = {
+		id: "g1-followup",
+		expectedImprovements: ["operator-follow-up"],
+		preservedStrengths: ["keeps the handoff map concise"],
+		riskNotes: ["operator-escalation may still remain implicit"],
+		heldOutEntries: [
+			{ scenarioId: "operator-recovery", score: 64 },
+			{ scenarioId: "operator-follow-up", score: 96 },
+			{ scenarioId: "operator-escalation", score: 90 },
+		],
+		telemetry: { totalCostUsd: 0.04, totalDurationMs: 1800 },
+	};
+	const escalationPolish = {
+		id: "g1-escalation-polish",
+		expectedImprovements: ["operator-escalation"],
+		preservedStrengths: ["keeps the escalation ladder explicit"],
+		riskNotes: ["operator-recovery may still need stronger wording"],
+		heldOutEntries: [
+			{ scenarioId: "operator-recovery", score: 95 },
+			{ scenarioId: "operator-follow-up", score: 95 },
+			{ scenarioId: "operator-escalation", score: 92 },
+		],
+		telemetry: { totalCostUsd: 0.04, totalDurationMs: 1800 },
+	};
+	const selected = selectMergeParents([recovery, followUp, escalationPolish], scenarioIds);
+	assert.deepEqual(selected?.map((candidate) => candidate.id), ["g1-recovery", "g1-followup"]);
+});
+
 test("run-optimize-search treats constraint-cap breaches as final-selection ineligible", () => {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-optimize-search-constraints-"));
 	const artifactRoot = mkdtempSync(join(tmpdir(), "cautilus-optimize-search-constraints-artifacts-"));
@@ -1841,6 +1907,7 @@ EOF
 		);
 		packet.searchConfig.generationLimit = 2;
 		packet.searchConfig.mergeEnabled = true;
+		assert.equal(packet.searchConfig.threeParentPolicy, "coverage_expansion");
 		packet.mutationConfig.backends = [
 			{ id: "codex-mutate", backend: "codex_exec" },
 			{ id: "claude-mutate", backend: "claude_p" },

@@ -435,7 +435,9 @@ function generateMergeCandidates(packet, artifactRoot, frontierCandidates, merge
 		return [];
 	}
 	const scenarioIds = Array.isArray(packet.scenarioSets?.heldOutScenarioSet) ? packet.scenarioSets.heldOutScenarioSet : [];
-	const parents = selectMergeParents(frontierCandidates, scenarioIds);
+	const parents = selectMergeParents(frontierCandidates, scenarioIds, {
+		threeParentPolicy: packet.searchConfig?.threeParentPolicy,
+	});
 	if (!parents) {
 		return [];
 	}

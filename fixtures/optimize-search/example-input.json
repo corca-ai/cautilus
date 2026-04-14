@@ -136,7 +136,8 @@
       ],
       "constraintCaps": {}
     },
-    "mergeEnabled": false
+    "mergeEnabled": false,
+    "threeParentPolicy": "coverage_expansion"
   },
   "mutationConfig": {
     "backends": [

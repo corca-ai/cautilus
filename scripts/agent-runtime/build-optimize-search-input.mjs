@@ -28,6 +28,7 @@ const SEARCH_BUDGETS = {
 };
 
 const REVIEW_CHECKPOINT_POLICIES = new Set(["final_only", "frontier_promotions"]);
+const THREE_PARENT_POLICIES = new Set(["disabled", "coverage_expansion"]);
 
 const ARG_FIELDS = {
 	"--optimize-input": "optimizeInput",
@@ -41,13 +42,14 @@ const ARG_FIELDS = {
 	"--split": "split",
 	"--budget": "budget",
 	"--review-checkpoint-policy": "reviewCheckpointPolicy",
+	"--three-parent-policy": "threeParentPolicy",
 	"--output": "output",
 };
 
 function usage(exitCode = 0) {
 	const text = [
 		"Usage:",
-		"  node ./scripts/agent-runtime/build-optimize-search-input.mjs --optimize-input <file> [--target-file <file>] [--held-out-results-file <file>] [--budget <light|medium|heavy>] [--review-checkpoint-policy <final_only|frontier_promotions>] [--output <file>] [--json]",
+		"  node ./scripts/agent-runtime/build-optimize-search-input.mjs --optimize-input <file> [--target-file <file>] [--held-out-results-file <file>] [--budget <light|medium|heavy>] [--review-checkpoint-policy <final_only|frontier_promotions>] [--three-parent-policy <disabled|coverage_expansion>] [--output <file>] [--json]",
 		"  node ./scripts/agent-runtime/build-optimize-search-input.mjs --input-json '<json>' [--output <file>] [--json]",
 		"",
 		"Output packet:",
@@ -82,27 +84,7 @@ function parseJsonObject(text, label) {
 	}
 }
 
-function parseArgs(argv) {
-	const options = {
-		optimizeInput: null,
-		inputJson: null,
-		targetFile: null,
-		heldOutResultsFile: null,
-		adapter: null,
-		adapterName: null,
-		intent: null,
-		baselineRef: null,
-		profile: null,
-		split: null,
-		budget: "medium",
-		reviewCheckpointPolicy: null,
-		output: null,
-		json: false,
-	};
-	for (let index = 0; index < argv.length; index += 1) {
-		const arg = argv[index];
-		index += applyArg(options, argv, index, arg);
-	}
+function validateParsedArgs(options) {
 	if (options.optimizeInput && options.inputJson) {
 		fail("Use either --optimize-input or --input-json, not both");
 	}
@@ -118,7 +100,35 @@ function parseArgs(argv) {
 	if (options.reviewCheckpointPolicy && !REVIEW_CHECKPOINT_POLICIES.has(options.reviewCheckpointPolicy)) {
 		fail(`--review-checkpoint-policy must be one of: ${[...REVIEW_CHECKPOINT_POLICIES].join(", ")}`);
 	}
+	if (options.threeParentPolicy && !THREE_PARENT_POLICIES.has(options.threeParentPolicy)) {
+		fail(`--three-parent-policy must be one of: ${[...THREE_PARENT_POLICIES].join(", ")}`);
+	}
 	return options;
+}
+
+function parseArgs(argv) {
+	const options = {
+		optimizeInput: null,
+		inputJson: null,
+		targetFile: null,
+		heldOutResultsFile: null,
+		adapter: null,
+		adapterName: null,
+		intent: null,
+		baselineRef: null,
+		profile: null,
+		split: null,
+		budget: "medium",
+		reviewCheckpointPolicy: null,
+		threeParentPolicy: null,
+		output: null,
+		json: false,
+	};
+	for (let index = 0; index < argv.length; index += 1) {
+		const arg = argv[index];
+		index += applyArg(options, argv, index, arg);
+	}
+	return validateParsedArgs(options);
 }
 
 function applyArg(options, argv, index, arg) {
@@ -209,6 +219,10 @@ function deriveSelectionPolicy() {
 	};
 }
 
+function defaultThreeParentPolicy() {
+	return "coverage_expansion";
+}
+
 function normalizeTieBreakers(value) {
 	if (value === undefined) {
 		return deriveSelectionPolicy().tieBreakers;
@@ -250,7 +264,12 @@ function resolveSelectionPolicy(value) {
 	};
 }
 
-function buildSearchConfig(budget, reviewCheckpointPolicy, selectionPolicy = deriveSelectionPolicy()) {
+function buildSearchConfig(
+	budget,
+	reviewCheckpointPolicy,
+	selectionPolicy = deriveSelectionPolicy(),
+	threeParentPolicy = defaultThreeParentPolicy(),
+) {
 	return {
 		algorithm: "reflective_pareto",
 		budget,
@@ -260,6 +279,7 @@ function buildSearchConfig(budget, reviewCheckpointPolicy, selectionPolicy = der
 		fullGateCheckpointPolicy: "final_only",
 		selectionPolicy,
 		mergeEnabled: false,
+		threeParentPolicy,
 	};
 }
 
@@ -350,6 +370,7 @@ function buildCanonicalPacket({
 	budget,
 	reviewCheckpointPolicy,
 	selectionPolicy,
+	threeParentPolicy,
 	evaluationOptions,
 	now = new Date(),
 }) {
@@ -369,7 +390,7 @@ function buildCanonicalPacket({
 			targetFile,
 			targetSnapshot: collectTargetSnapshot(targetPath),
 		},
-		searchConfig: buildSearchConfig(budget, reviewCheckpointPolicy, selectionPolicy),
+		searchConfig: buildSearchConfig(budget, reviewCheckpointPolicy, selectionPolicy, threeParentPolicy),
 		mutationEvidencePolicy: {
 			reportBuckets: ["regressed", "noisy"],
 			reviewFindingLimit: optimizeInput.optimizer?.plan?.reviewVariantLimit ?? 1,
@@ -424,6 +445,10 @@ function resolveFromRawInput(rawInput, options) {
 			rawInput.reviewCheckpointPolicy,
 			options.reviewCheckpointPolicy || defaultReviewCheckpointPolicy(preferRawString(rawInput.budget, options.budget)),
 		),
+		threeParentPolicy: preferRawString(
+			rawInput.threeParentPolicy,
+			options.threeParentPolicy || defaultThreeParentPolicy(),
+		),
 		selectionPolicy: resolveSelectionPolicy(rawInput.selectionPolicy),
 	};
 }
@@ -445,6 +470,7 @@ function resolveInputOverrides(options) {
 			},
 			budget: options.budget,
 			reviewCheckpointPolicy: options.reviewCheckpointPolicy || defaultReviewCheckpointPolicy(options.budget),
+			threeParentPolicy: options.threeParentPolicy || defaultThreeParentPolicy(),
 			selectionPolicy: deriveSelectionPolicy(),
 		};
 	}
@@ -455,6 +481,9 @@ function resolveInputOverrides(options) {
 	}
 	if (!REVIEW_CHECKPOINT_POLICIES.has(resolved.reviewCheckpointPolicy)) {
 		fail(`reviewCheckpointPolicy must be one of: ${[...REVIEW_CHECKPOINT_POLICIES].join(", ")}`);
+	}
+	if (!THREE_PARENT_POLICIES.has(resolved.threeParentPolicy)) {
+		fail(`threeParentPolicy must be one of: ${[...THREE_PARENT_POLICIES].join(", ")}`);
 	}
 	return {
 		rawInput,
@@ -471,6 +500,7 @@ function resolveInputOverrides(options) {
 		},
 		budget: resolved.budget,
 		reviewCheckpointPolicy: resolved.reviewCheckpointPolicy,
+		threeParentPolicy: resolved.threeParentPolicy,
 		selectionPolicy: resolved.selectionPolicy,
 	};
 }
@@ -509,6 +539,7 @@ export function buildOptimizeSearchInput(argv, { now = new Date(), env = process
 		evaluationOptions,
 		budget,
 		reviewCheckpointPolicy,
+		threeParentPolicy,
 		selectionPolicy,
 	} = resolveInputOverrides(options);
 	const parsedOptimizeInput = parseOptimizeInputFile(optimizeInputFile);
@@ -518,6 +549,7 @@ export function buildOptimizeSearchInput(argv, { now = new Date(), env = process
 		targetFileOverride: targetFile,
 		budget,
 		reviewCheckpointPolicy,
+		threeParentPolicy,
 		selectionPolicy,
 		evaluationOptions,
 		now,

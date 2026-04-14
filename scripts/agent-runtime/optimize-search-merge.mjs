@@ -32,6 +32,19 @@ function numericTelemetryValue(candidate, field) {
 	return typeof candidate?.telemetry?.[field] === "number" ? candidate.telemetry[field] : Number.POSITIVE_INFINITY;
 }
 
+function frontierBestScores(frontierCandidates, scenarioIds) {
+	const scores = new Map();
+	for (const scenarioId of scenarioIds) {
+		scores.set(
+			scenarioId,
+			frontierCandidates.reduce((score, candidate) => (
+				Math.max(score, heldOutScoreForCandidate(candidate, scenarioId) ?? Number.NEGATIVE_INFINITY)
+			), Number.NEGATIVE_INFINITY),
+		);
+	}
+	return scores;
+}
+
 function scenarioPriorityWeights(frontierCandidates, scenarioIds) {
 	const weights = new Map();
 	for (const scenarioId of scenarioIds) {
@@ -48,7 +61,7 @@ function scenarioPriorityWeights(frontierCandidates, scenarioIds) {
 	return weights;
 }
 
-function groupScenarioStats(candidates, scenarioIds) {
+function groupScenarioStats(candidates, scenarioIds, bestFrontierScores) {
 	let coverage = 0;
 	let average = 0;
 	let weakestScore = Number.POSITIVE_INFINITY;
@@ -56,7 +69,7 @@ function groupScenarioStats(candidates, scenarioIds) {
 		const bestScore = candidates.reduce((score, candidate) => (
 			Math.max(score, heldOutScoreForCandidate(candidate, scenarioId) ?? Number.NEGATIVE_INFINITY)
 		), Number.NEGATIVE_INFINITY);
-		if (bestScore > Number.NEGATIVE_INFINITY) {
+		if (bestScore > Number.NEGATIVE_INFINITY && bestScore === (bestFrontierScores.get(scenarioId) ?? Number.NEGATIVE_INFINITY)) {
 			coverage += 1;
 			weakestScore = Math.min(weakestScore, bestScore);
 		}
@@ -69,8 +82,8 @@ function groupScenarioStats(candidates, scenarioIds) {
 	};
 }
 
-function groupCandidateMetrics(candidates, scenarioIds, scenarioWeights) {
-	const scenarioStats = groupScenarioStats(candidates, scenarioIds);
+function groupCandidateMetrics(candidates, scenarioIds, scenarioWeights, bestFrontierScores) {
+	const scenarioStats = groupScenarioStats(candidates, scenarioIds, bestFrontierScores);
 	const expectedImprovements = candidates.flatMap((candidate) => normalizedList(candidate.expectedImprovements));
 	const preservedStrengths = candidates.flatMap((candidate) => normalizedList(candidate.preservedStrengths));
 	const riskNotes = candidates.flatMap((candidate) => normalizedList(candidate.riskNotes));
@@ -127,20 +140,60 @@ function combinationGroups(items, size, startIndex = 0, prefix = [], groups = []
 	return groups;
 }
 
-export function selectMergeParents(frontierCandidates, scenarioIds, { maxParents = 3 } = {}) {
+function compareBestGroup(left, right) {
+	if (!left) {
+		return right;
+	}
+	if (!right) {
+		return left;
+	}
+	return comparePairMetrics(left.metrics, right.metrics) >= 0 ? left : right;
+}
+
+function bestGroupOfSize(frontierCandidates, size, scenarioIds, scenarioWeights, bestFrontierScores) {
+	if (frontierCandidates.length < size) {
+		return null;
+	}
+	let best = null;
+	for (const group of combinationGroups(frontierCandidates, size)) {
+		const metrics = groupCandidateMetrics(group, scenarioIds, scenarioWeights, bestFrontierScores);
+		best = compareBestGroup(best, { group, metrics });
+	}
+	return best;
+}
+
+function canConsiderThreeParentMerge(boundedMaxParents, threeParentPolicy) {
+	return boundedMaxParents >= 3 && threeParentPolicy !== "disabled";
+}
+
+function preferredMergeGroup(bestPair, bestTriple, threeParentPolicy) {
+	if (!bestPair) {
+		return null;
+	}
+	if (!bestTriple) {
+		return bestPair.group;
+	}
+	if (threeParentPolicy === "coverage_expansion" && bestTriple.metrics.coverage <= bestPair.metrics.coverage) {
+		return bestPair.group;
+	}
+	return comparePairMetrics(bestTriple.metrics, bestPair.metrics) > 0 ? bestTriple.group : bestPair.group;
+}
+
+export function selectMergeParents(
+	frontierCandidates,
+	scenarioIds,
+	{ maxParents = 3, threeParentPolicy = "coverage_expansion" } = {},
+) {
 	if (frontierCandidates.length < 2) {
 		return null;
 	}
 	const scenarioWeights = scenarioPriorityWeights(frontierCandidates, scenarioIds);
-	let best = null;
-	const boundedMaxParents = Math.max(2, Math.min(maxParents, frontierCandidates.length));
-	for (let size = 2; size <= boundedMaxParents; size += 1) {
-		for (const group of combinationGroups(frontierCandidates, size)) {
-			const metrics = groupCandidateMetrics(group, scenarioIds, scenarioWeights);
-			if (!best || comparePairMetrics(metrics, best.metrics) > 0) {
-				best = { group, metrics };
-			}
-		}
+	const bestFrontierScores = frontierBestScores(frontierCandidates, scenarioIds);
+	const boundedMaxParents = Math.max(2, Math.min(maxParents, 3, frontierCandidates.length));
+	const bestPair = bestGroupOfSize(frontierCandidates, 2, scenarioIds, scenarioWeights, bestFrontierScores);
+	if (!canConsiderThreeParentMerge(boundedMaxParents, threeParentPolicy)) {
+		return bestPair?.group || null;
 	}
-	return best?.group || null;
+	const bestTriple = bestGroupOfSize(frontierCandidates, 3, scenarioIds, scenarioWeights, bestFrontierScores);
+	return preferredMergeGroup(bestPair, bestTriple, threeParentPolicy);
 }
