@@ -18,10 +18,10 @@
   iterative premortem 등은 **사용자가 명시적으로 요청할 때만 발동**한다.
   에이전트가 "필요하겠다" 고 판단해서 자발적으로 돌리지 않는다. 사용자가
   안 부르면 안 돈다. 다만 패턴 자체의 유용성은 유지되므로 문서는 남긴다.
-- 시작 branch는 `main`이다. 로컬이 `origin/main`보다 21커밋 앞서 있다
-  (아래 `Unpushed Commits` 참고). **다음 세션의 첫 작업은 push 여부
-  결정**이다. 이 21커밋은 여러 세션에 걸쳐 누적된 것이고, 각 커밋은
-  독립적으로 검증 완료된 상태다.
+- 시작 branch는 `main`이다. 이번 세션 끝에 누적됐던 24커밋 전부를
+  `origin/main`에 푸시했다. 다음 세션 시작 시점에는 로컬과 origin이
+  동일. Actions `verify.yml`이 푸시 시점에 돌았고 결과는 세션 마지막
+  Last Verified 참조.
 - product-owned seam이면 `cautilus`에서 먼저 고친다.
 
 ## Current State
@@ -55,65 +55,48 @@
   top-level `groups` 선언 + 커맨드별 `group`/`usage`/`example` inline 구조로
   바뀌었다. `cautilus commands --json` 페이로드는 기존 `usage`/`examples`
   배열을 그룹 순서로 derive해 유지하고 `groups`만 추가로 노출 (schema
-  version `cautilus.commands.v1` 그대로). archetype-boundary follow-up #2가
-  이 슬라이스로 은퇴했고, 나머지 follow-up은 1-8로 리넘버됐다.
+  version `cautilus.commands.v1` 그대로).
+- `cautilus adapter init`에 `--scenario <chatbot|skill|workflow>` 플래그
+  추가. 선택한 아키타입에 맞는 command slot을 미리 채운다 — skill은
+  `skill_test_command_templates` + `skill_cases_default`, chatbot/workflow는
+  `iterate_command_templates`에 각 archetype의 `cautilus scenario normalize`
+  호출을 꽂는다. `evaluation_surfaces`도 아키타입 한 줄로 좁힌다. 알 수 없는
+  값은 actionable error (`use chatbot, skill, or workflow`)로 리젝트.
+- archetype-boundary follow-up #2 (help grouping) + 새 follow-up #2
+  (adapter init --scenario)가 이번 세션에 둘 다 은퇴했고, 나머지 follow-up은
+  1-7로 리넘버됐다.
 
 ## Unpushed Commits
 
-```
-9c50a88 Correct unpushed count off-by-one in handoff
-191e6aa Fill in SHA placeholder + count bump in handoff
-8809871 Retire follow-up #2 and renumber archetype-boundary cross-refs
-1ae488d Group cautilus --help by purpose instead of flat usage list
-47480fa Fill in SHA placeholder + count bump in handoff
-412a1fb Retire auto-apply premortem mandate + apply retrospective fixes
-0e2402a Refresh handoff after 5-slice archetype-followup pass
-c5407ce Mirror the three-archetype preamble into SKILL.md
-b321ea8 Emit round-trippable example input for normalize/evaluate commands
-d23306c Give workflow the canonical <archetype>-input.json fixture
-82e11f2 Keep narrative runs aware of the three-archetype contract
-7a0f7be Gate markdown link drift with standing lint:links
-2efaeea Persist round-2 premortem rejections per pattern
-c11df06 Apply execution-time premortem pattern to the Node-removal slice
-d1db762 Log markdown link linter gap as next-session candidate
-a862cd8 Restore proposals.go markdown link in bundled skill references
-7865253 Refresh handoff around Node-removal completion and push decision
-cf87840 Retire Node normalize helper dual implementation
-aedab10 Align Go normalize output with Node parity before deletion
-8aac3b6 Teach handoff to auto-apply premortem + counterweight patterns
-```
+없음. 이번 세션 끝에 전부 `origin/main`으로 푸시 완료.
 
 ## Last Verified
 
-- `npm run verify` (218/218 Go + 219/219 Node pass, 22s)
-- `npm run lint:specs` (5 specs, 569 guard rows)
+- `npm run verify` (Go + Node all green; 22s) — 이번 세션 두 슬라이스 후
+  재실행 확인
+- `npm run lint:specs` (5 specs, guard rows)
 - `npm run lint:links` (62 files checked, 19 derived skipped)
-- `npm run hooks:check` (ready)
+- `./bin/cautilus --help` — 4-group 출력 확인 (run/setup/results/introspection)
+- `./bin/cautilus adapter init --repo-root <tmp> --scenario skill` — YAML
+  출력에서 `skill_test_command_templates` 프리필 + `skill_cases_default`
+  세팅 확인 (chatbot/workflow도 각각 `iterate_command_templates` 프리필)
 - `./bin/cautilus scenario normalize {chatbot,skill,workflow} --example-input`
-  모두 round-trip 통과
-- `./bin/cautilus scenario normalize workflow --input ./fixtures/scenario-proposals/workflow-input.json`
-  정상 출력, 1 candidate
+  모두 round-trip 통과 (이전 세션 유지)
 
 ## Next Session
 
-1. **Push 결정.** 16개의 미푸시 커밋을 `origin/main`에 올릴지 확인. 지난
-   세션 + 이번 세션 내내 "push는 마지막" 이라고 해서 의도적으로 보류했다.
-   푸시하면 Actions `verify.yml`이 돌고, 별도 릴리스 커밋이 아니므로
-   `release-artifacts.yml`은 트리거되지 않는다. 21커밋은 검증된 상태라
-   한 번에 올려도 안전.
-2. `archetype-boundary.spec.md` follow-up 중 하나 골라 다음 슬라이스 진행
-   (스펙에 1-8번으로 번호 매겨져 있음). 짧은/중간 슬라이스 후보:
-   - 2 `cautilus adapter init --scenario <chatbot|skill|workflow>` 스타터
-   - 3 inline glossary 패스 (README)
-   - 6 README section ordering (3과 페어)
+1. `archetype-boundary.spec.md` follow-up 중 하나 골라 다음 슬라이스 진행
+   (스펙에 1-7번으로 번호 매겨져 있음). 짧은/중간 슬라이스 후보:
+   - 2 inline glossary 패스 (README)
+   - 5 README section ordering (2와 페어)
    사이즈 큰 슬라이스:
-   - 1 + 5 `cautilus scenarios` 커맨드 + doctor 힌트 (함께 — 5는 1에 의존)
-   - 4 behavior-intent `workflow_conversation` 리네이밍 (스키마 bump 필요)
-   - 8 Archetype-extension hardening (다음 4번째 아키타입 직전/함께)
-3. **remaining quality gate 후보**: 지금 `npm run verify` 체인은
+   - 1 + 4 `cautilus scenarios` 커맨드 + doctor 힌트 (함께 — 4는 1에 의존)
+   - 3 behavior-intent `workflow_conversation` 리네이밍 (스키마 bump 필요)
+   - 7 Archetype-extension hardening (다음 4번째 아키타입 직전/함께)
+2. **remaining quality gate 후보**: 지금 `npm run verify` 체인은
    eslint + specs + links + golangci + go vet + govulncheck + go test
    -race + node test. 충분히 두껍다. 추가 gate는 dogfood 증거가 요청할 때만.
-4. `corca-ai/charness` 등록 이슈: #22 (narrative scenario block + inline
+3. `corca-ai/charness` 등록 이슈: #22 (narrative scenario block + inline
    glossary), #23 (quality flat-help + cross-archetype schema overlap),
    #24 (premortem 스킬 신설 + spec/quality 확장). 후속 댓글 필요할 때만.
 
@@ -266,15 +249,15 @@ Trigger 참고). 상세 논의와 다른 repo에 이식할 제안은
   (예: `tool_use`, `pipeline`) 유혹이 와도 하지 말자.
   `archetype-boundary.spec.md`가 요구하는 대로, 새 아키타입은 schema +
   helper + CLI + contract + fixture + README 블록을 한 슬라이스에 같이
-  가져올 때만 추가한다. 그때는 follow-up 8 (Archetype-extension
+  가져올 때만 추가한다. 그때는 follow-up 7 (Archetype-extension
   hardening)을 먼저 또는 함께 집는다.
-- 다음 세션이 **push를 건너뛰고** 새 슬라이스부터 시작하면, origin은
-  아직 이번 세션(그리고 이전 여러 세션의) 결과물을 못 본 상태로 남는다.
-  CI `verify.yml`은 push 시에만 돌므로 Actions 기반 외부 공유/게이트가
-  지연된다. `push 여부`를 의식적으로 결정하고 넘어갈 것.
 - 3개 follow-up을 한 슬라이스에 묶으려는 유혹도 피할 것. 특히 follow-up
-  5 (behavior-intent 리네이밍)은 `cautilus.behavior_intent.v1` 스키마
+  3 (behavior-intent 리네이밍)은 `cautilus.behavior_intent.v1` 스키마
   bump를 수반하므로 독립 슬라이스여야 한다.
+- **핸드오프 bookkeeping은 커밋 끝에 한 번만.** 지난 세션에서 unpushed
+  count가 매 커밋마다 +1 되면서 off-by-one 정정용 마이크로 커밋이
+  세 번 쌓였다. 슬라이스가 끝나고 푸시 직전에 한 번 정리하거나, 아예
+  푸시를 이 세션 안에서 같이 끝내면 count 자체가 사라진다.
 
 ## References
 
