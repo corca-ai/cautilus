@@ -1,4 +1,5 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { spawnSync } from "node:child_process";
 
 function adapterExcerptPatterns(adapterName) {
 	if (adapterName === "self-dogfood") {
@@ -106,36 +107,87 @@ export function excerptFileContent(content, adapterName) {
 	return lines.slice(0, 24).join("\n").trim();
 }
 
+function renderExcerptSection(title, intro, excerpts) {
+	if (excerpts.length === 0) {
+		return "";
+	}
+	return [
+		"",
+		title,
+		"",
+		intro,
+		"",
+		...excerpts,
+		"",
+	].join("\n");
+}
+
+function renderExcerptBlock(pathLabel, content, adapterName) {
+	const excerpt = excerptFileContent(content, adapterName);
+	if (!excerpt) {
+		return [];
+	}
+	return [
+		`### ${pathLabel}`,
+		"```text",
+		excerpt,
+		"```",
+	];
+}
+
 function renderArtifactExcerpts(promptInput, adapterName) {
 	const records = [...(promptInput.artifactFiles ?? []), ...(promptInput.reportArtifacts ?? [])];
 	const excerpts = records.flatMap((record) => {
 		if (!record?.absolutePath || !record.exists || !existsSync(record.absolutePath)) {
 			return [];
 		}
-		const text = readFileSync(record.absolutePath, "utf-8");
-		const excerpt = excerptFileContent(text, adapterName);
-		if (!excerpt) {
-			return [];
-		}
-		return [
-			`### ${record.absolutePath}`,
-			"```text",
-			excerpt,
-			"```",
-		];
+		return renderExcerptBlock(record.absolutePath, readFileSync(record.absolutePath, "utf-8"), adapterName);
 	});
-	if (excerpts.length === 0) {
+	return renderExcerptSection(
+		"## Inlined Artifact Excerpts",
+		"Use these excerpts as the primary evidence. Avoid extra shell commands unless the prompt is missing a required fact.",
+		excerpts,
+	);
+}
+
+function shouldRenderBaselineExcerpts(adapterName) {
+	return adapterName === "self-dogfood-gate-honesty-b";
+}
+
+function readBaselineArtifactContent(repoRoot, baselineRef, relativePath) {
+	if (!repoRoot || !baselineRef || !relativePath) {
+		return null;
+	}
+	const result = spawnSync("git", ["show", `${baselineRef}:${relativePath}`], {
+		cwd: repoRoot,
+		encoding: "utf-8",
+	});
+	if (result.status !== 0 || !result.stdout) {
+		return null;
+	}
+	return result.stdout;
+}
+
+function renderBaselineArtifactExcerpts(promptInput, adapterName) {
+	if (!shouldRenderBaselineExcerpts(adapterName)) {
 		return "";
 	}
-	return [
-		"",
-		"## Inlined Artifact Excerpts",
-		"",
-		"Use these excerpts as the primary evidence. Avoid extra shell commands unless the prompt is missing a required fact.",
-		"",
-		...excerpts,
-		"",
-	].join("\n");
+	const records = promptInput.artifactFiles ?? [];
+	const repoRoot = promptInput.repoRoot ?? null;
+	const baselineRef = promptInput.baseline ?? null;
+	const excerpts = records.flatMap((record) => {
+		const relativePath = record?.relativePath ?? null;
+		const baselineContent = readBaselineArtifactContent(repoRoot, baselineRef, relativePath);
+		if (!baselineContent) {
+			return [];
+		}
+		return renderExcerptBlock(`${baselineRef}:${relativePath}`, baselineContent, adapterName);
+	});
+	return renderExcerptSection(
+		`## Baseline Artifact Excerpts (${baselineRef ?? "baseline"})`,
+		"Use these baseline excerpts as the direct comparison point for whether the current claim boundary is actually narrower and more evidence-proportional than the baseline.",
+		excerpts,
+	);
 }
 
 function renderExperimentContext(adapterName, reviewTimeoutMs) {
@@ -160,6 +212,7 @@ function renderExperimentContext(adapterName, reviewTimeoutMs) {
 	if (adapterName.includes("gate-honesty")) {
 		lines.push("- judge the honesty of the standing gate's narrow claim boundary from the current report and inlined excerpts, not from repo-wide exploration");
 		lines.push("- if the current surfaced claim is narrower and more evidence-proportional than the baseline's broader claim boundary, treat that as a real improvement");
+		lines.push("- when baseline excerpts are provided below, compare against those exact baseline texts instead of requiring extra git exploration");
 		lines.push("- do not inspect unrelated docs or git history unless the prompt is missing a strictly required fact");
 	}
 	if (adapterName.includes("binary-surface")) {
@@ -208,7 +261,7 @@ export function enrichExperimentPrompt({
 	const rendered = readFileSync(promptPath, "utf-8");
 	writeFileSync(
 		promptPath,
-		`${rendered.trimEnd()}\n${renderExperimentContext(adapterName, reviewTimeoutMs)}${renderCurrentRunEvidence(promptInput, adapterName, currentReportPath, projectedReportPath, projectedReviewSummaryPath, projectedSummaryPath)}${renderArtifactExcerpts(promptInput, adapterName)}`,
+		`${rendered.trimEnd()}\n${renderExperimentContext(adapterName, reviewTimeoutMs)}${renderCurrentRunEvidence(promptInput, adapterName, currentReportPath, projectedReportPath, projectedReviewSummaryPath, projectedSummaryPath)}${renderArtifactExcerpts(promptInput, adapterName)}${renderBaselineArtifactExcerpts(promptInput, adapterName)}`,
 		"utf-8",
 	);
 }

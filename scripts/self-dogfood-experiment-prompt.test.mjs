@@ -1,7 +1,11 @@
 import assert from "node:assert/strict";
+import { mkdtempSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { spawnSync } from "node:child_process";
 import test from "node:test";
 
-import { excerptFileContent } from "./self-dogfood-experiment-prompt.mjs";
+import { enrichExperimentPrompt, excerptFileContent } from "./self-dogfood-experiment-prompt.mjs";
 
 test("excerptFileContent keeps the self-dogfood command section for skill-surface prompts", () => {
 	const content = [
@@ -82,4 +86,76 @@ test("excerptFileContent surfaces timeout enforcement and published artifacts fo
 	assert.match(excerpt, /resolveReviewTimeoutMs/);
 	assert.match(excerpt, /runReviewVariants/);
 	assert.match(excerpt, /review-summary\.json/);
+});
+
+test("enrichExperimentPrompt inlines baseline excerpts for gate-honesty-b", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-gate-honesty-baseline-"));
+	mkdirSync(join(root, ".agents"), { recursive: true });
+	mkdirSync(join(root, "docs", "specs"), { recursive: true });
+	writeFileSync(
+		join(root, ".agents", "cautilus-adapter.yaml"),
+		[
+			"version: 1",
+			"evaluation_surfaces:",
+			"  - standalone binary and bundled skill self-consumer gate",
+			"full_gate_command_templates:",
+			"  - npm run verify",
+		].join("\n"),
+		"utf-8",
+	);
+	writeFileSync(join(root, "README.md"), "`npm run verify` proves a broader self-consumer gate.\n", "utf-8");
+	writeFileSync(
+		join(root, "docs", "specs", "self-dogfood.spec.md"),
+		"canonical latest report의 claim은 좁아야 한다.\n",
+		"utf-8",
+	);
+	spawnSync("git", ["init", "-b", "main"], { cwd: root, encoding: "utf-8" });
+	spawnSync("git", ["config", "user.name", "Test User"], { cwd: root, encoding: "utf-8" });
+	spawnSync("git", ["config", "user.email", "test@example.com"], { cwd: root, encoding: "utf-8" });
+	spawnSync("git", ["add", "."], { cwd: root, encoding: "utf-8" });
+	spawnSync("git", ["commit", "-m", "baseline"], { cwd: root, encoding: "utf-8" });
+
+	writeFileSync(
+		join(root, ".agents", "cautilus-adapter.yaml"),
+		[
+			"version: 1",
+			"evaluation_surfaces:",
+			"  - deterministic self-consumer standing gate for the product repo",
+			"full_gate_command_templates:",
+			"  - npm run verify",
+		].join("\n"),
+		"utf-8",
+	);
+
+	const promptPath = join(root, "review.prompt.md");
+	const promptInputPath = join(root, "review-prompt-input.json");
+	writeFileSync(promptPath, "# Prompt\n", "utf-8");
+	writeFileSync(
+		promptInputPath,
+		`${JSON.stringify({
+			repoRoot: root,
+			baseline: "main",
+			artifactFiles: [
+				{
+					relativePath: ".agents/cautilus-adapter.yaml",
+					absolutePath: join(root, ".agents", "cautilus-adapter.yaml"),
+					exists: true,
+				},
+			],
+		})}\n`,
+		"utf-8",
+	);
+
+	enrichExperimentPrompt({
+		promptPath,
+		promptInputPath,
+		adapterName: "self-dogfood-gate-honesty-b",
+		reviewTimeoutMs: 30000,
+	});
+
+	const rendered = readFileSync(promptPath, "utf-8");
+	assert.match(rendered, /## Baseline Artifact Excerpts \(main\)/);
+	assert.match(rendered, /main:\.agents\/cautilus-adapter\.yaml/);
+	assert.match(rendered, /standalone binary and bundled skill self-consumer gate/);
+	assert.match(rendered, /deterministic self-consumer standing gate for the product repo/);
 });

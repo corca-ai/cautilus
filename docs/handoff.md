@@ -49,11 +49,11 @@
     merge/mutation decision policy에도 명시적으로 반영된다.
 - latest canonical self-dogfood published bundle는 `pass / accept-now` 상태다.
   - [artifacts/self-dogfood/latest/summary.json](../artifacts/self-dogfood/latest/summary.json)
-- latest self-dogfood experiments bundle는 `concern / defer` 상태다.
+- latest self-dogfood experiments bundle는 `pass / accept-now` 상태다.
   - [artifacts/self-dogfood/experiments/latest/summary.json](../artifacts/self-dogfood/experiments/latest/summary.json)
-  - blocker는 정리됐고, 지금 남은 것은
-    `self-dogfood-gate-honesty-b`의 baseline comparison evidence 부족에 대한
-    conservative `concern` 1건이다.
+  - `gate-honesty-b`는 이제 baseline `origin/main` claim excerpt를 prompt에
+    같이 넣어 current candidate가 baseline보다 더 좁고
+    evidence-proportional하다는 비교를 직접 통과한다.
 - 최근 관련 커밋:
   - `2393cf9` Preserve checkpoint severity in reflection feedback
   - `9cc12a3` Prioritize rejected mutation repairs under tight budget
@@ -73,13 +73,13 @@
 
 ## Next Session
 
-1. `self-dogfood-gate-honesty-b` concern을 닫을지 판단한다.
-2. 닫는다면 가장 유력한 slice는 baseline `origin/main` claim excerpt를
-   experiment prompt에 같이 넣어, "current candidate가 baseline보다 실제로
-   더 좁고 evidence-proportional한가"를 직접 비교 가능하게 만드는 것이다.
-3. 그 concern을 의도적으로 유지할지 결정한 뒤, optimize-search 이후의 다음
-   bounded improvement seam으로 넘어간다.
-4. 다음 slice를 고른 뒤 `npm run verify`, `npm run hooks:check`를 다시 닫는다.
+1. optimize-search `v2`는 implementation/evidence 둘 다 닫힌 slice로 보고,
+   다음 bounded improvement seam을 고른다.
+2. 우선순위 질문:
+   - richer merge heuristics가 실제로 필요한지
+   - 아니면 optimize-search contract를 유지하고 다른 roadmap slice로
+     넘어갈지
+3. 다음 slice를 고른 뒤 `npm run verify`, `npm run hooks:check`를 다시 닫는다.
 
 ## Discuss
 
@@ -87,12 +87,10 @@
   - optimize-search `v2`는 닫혔다고 봐도 된다.
   - 더 나아가려면 이제 contract 확장보다 dogfood evidence가 먼저다.
   - self-dogfood canonical surface는 충분히 정직해졌고, stronger claim
-    experiments도 대부분 green이다.
+    experiments도 모두 green이다.
 - 아직 열려 있는 질문:
   - richer merge heuristics가 실제로 필요한지
   - 아니면 현재 bounded search seam을 유지하고 다른 roadmap slice로 넘어갈지
-  - `gate-honesty-b`의 remaining concern을 실제 product gap으로 볼지,
-    baseline-compare prompt evidence gap으로 볼지
 - 아직 의도적으로 안 하는 것:
   - multi-prompt or multi-component coupled updates
   - fine-tuning or trainer orchestration
@@ -104,10 +102,10 @@
   수라는 해석.
   아니다. 이제는 evidence 없이 heuristic만 더 얹을 위험이 더 크다.
 - 다음 세션에서 가장 쉬운 실수:
-  `gate-honesty-b` concern을 또 다른 generic self-dogfood blocker로
-  과해석하는 것.
-  지금 남은 것은 대부분 baseline comparison evidence를 prompt에 얼마나 직접
-  넣어주느냐의 문제다.
+  optimize-search `v2`가 이미 닫혔는데도 self-dogfood evidence 정리를
+  또 같은 seam에서 반복하는 것.
+  다음 수는 이제 남은 heuristic 필요성을 확인하거나 다른 roadmap slice로
+  이동하는 쪽이다.
 - optimize-search 쪽에서도 merge heuristics를 넓히면서 다시 packet
   boundary를 흔들면 안 된다.
   다음 slice는 먼저 dogfood evidence가 진짜 부족한 heuristic을 가리키는지
