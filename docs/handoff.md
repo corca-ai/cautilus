@@ -47,7 +47,9 @@
   - `cautilus.workflow_normalization_inputs.v1` 신설
   - `skill` 아키타입이 `cli_workflow` 인풋을 받지 않음
   - `docs/workflow.md` 경로 제거
-- 버전은 `0.4.0`으로 올라갔다. 아직 태그·푸시는 안 됐다.
+- 버전은 `0.4.0`으로 올라갔고, `main` + `v0.4.0` 태그가 이미 푸시됐다.
+  GitHub Actions release workflow가 바이너리·Homebrew·attestation을
+  생성 중이다.
 
 ## Last Verified
 
@@ -59,11 +61,11 @@
 
 ## Next Session
 
-1. `v0.4.0` 태그 + 푸시. GitHub Actions release workflow가 바이너리·checksum·
-   Homebrew formula를 생성.
-2. `release:verify-public -- --version v0.4.0`, `release:smoke-install`
-   으로 공개 surface 검증.
-3. 아래 `archetype-boundary.spec.md` follow-up 중 하나 골라 다음 슬라이스
+1. 공개 release surface 검증:
+   `npm run release:verify-public -- --version v0.4.0`
+   과 `npm run release:smoke-install -- --channel install_sh --version v0.4.0`.
+   Actions가 아직 굴러가는 중이면 완료 대기 후 실행.
+2. 아래 `archetype-boundary.spec.md` follow-up 중 하나 골라 다음 슬라이스
    진행:
    - `cautilus scenarios` 커맨드 (3 archetype을 human/machine 둘 다로 노출)
    - `cautilus --help` 그룹핑 (registry JSON에 `group` 필드 + 렌더러)
@@ -75,8 +77,30 @@
      disambiguation
    - `cautilus doctor` ready 메시지 뒤 시나리오 힌트 추가
    - bundled SKILL.md 상단에 3 archetype 압축 preamble
-4. 별도 트랙으로 `corca-ai/charness`에 narrative / quality 스킬 개선 이슈
-   등록 (이번 세션에 시작 못함, 다음 세션에 처리).
+3. `corca-ai/charness`에 narrative / quality 스킬 개선 이슈는 이미
+   등록됨. 다음 세션에서는 issue #22, #23에 후속 업데이트만 필요 시 남긴다.
+
+## Consumer Migration (v0.3.x → v0.4.0)
+
+하위호환 breaking 슬라이스라 외부 consumer가 있으면 다음을 갱신해야 한다.
+
+- `schemaVersion`
+  - skill: `cautilus.skill_normalization_inputs.v1` → `.v2`
+  - workflow(구 skill에 섞여 있던 cli_workflow 인풋):
+    `cautilus.skill_normalization_inputs.v1` →
+    `cautilus.workflow_normalization_inputs.v1`
+- CLI
+  - `cautilus scenario normalize skill` + `cli_workflow` 인풋 →
+    `cautilus scenario normalize workflow`로 이동
+  - skill 아키타입의 `targetKind`는 `public_skill / profile / integration`만
+    허용. `cli_workflow`는 workflow 아키타입 전용.
+- 문서/링크
+  - `docs/workflow.md` 참조가 있으면 `docs/evaluation-process.md`로 치환
+  - 번들드 skill references의 `workflow.md`도 동일
+- 확인
+  - `cautilus doctor --repo-root .`가 ready로 돌면 wiring 재검증 완료
+  - `cautilus scenario normalize workflow --input <workflow-input>.json`이
+    정상 출력하면 새 아키타입 사용 가능
 
 ## Discuss
 
