@@ -18,9 +18,9 @@
   iterative premortem 등은 **사용자가 명시적으로 요청할 때만 발동**한다.
   에이전트가 "필요하겠다" 고 판단해서 자발적으로 돌리지 않는다. 사용자가
   안 부르면 안 돈다. 다만 패턴 자체의 유용성은 유지되므로 문서는 남긴다.
-- 시작 branch는 `main`이다. 로컬이 `origin/main`보다 17커밋 앞서 있다
+- 시작 branch는 `main`이다. 로컬이 `origin/main`보다 18커밋 앞서 있다
   (아래 `Unpushed Commits` 참고). **다음 세션의 첫 작업은 push 여부
-  결정**이다. 이 17커밋은 여러 세션에 걸쳐 누적된 것이고, 각 커밋은
+  결정**이다. 이 18커밋은 여러 세션에 걸쳐 누적된 것이고, 각 커밋은
   독립적으로 검증 완료된 상태다.
 - product-owned seam이면 `cautilus`에서 먼저 고친다.
 
@@ -61,6 +61,7 @@
 ## Unpushed Commits
 
 ```
+8809871 Retire follow-up #2 and renumber archetype-boundary cross-refs
 1ae488d Group cautilus --help by purpose instead of flat usage list
 47480fa Fill in SHA placeholder + count bump in handoff
 412a1fb Retire auto-apply premortem mandate + apply retrospective fixes
@@ -96,7 +97,7 @@ aedab10 Align Go normalize output with Node parity before deletion
 1. **Push 결정.** 16개의 미푸시 커밋을 `origin/main`에 올릴지 확인. 지난
    세션 + 이번 세션 내내 "push는 마지막" 이라고 해서 의도적으로 보류했다.
    푸시하면 Actions `verify.yml`이 돌고, 별도 릴리스 커밋이 아니므로
-   `release-artifacts.yml`은 트리거되지 않는다. 17커밋은 검증된 상태라
+   `release-artifacts.yml`은 트리거되지 않는다. 18커밋은 검증된 상태라
    한 번에 올려도 안전.
 2. `archetype-boundary.spec.md` follow-up 중 하나 골라 다음 슬라이스 진행
    (스펙에 1-8번으로 번호 매겨져 있음). 짧은/중간 슬라이스 후보:
