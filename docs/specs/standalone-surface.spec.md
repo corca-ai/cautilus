@@ -14,7 +14,7 @@ standalone acceptance boundary만 남긴다.
 | file | mode | pattern |
 | --- | --- | --- |
 | README.md | fixed | standalone binary plus a bundled skill |
-| README.md | fixed | intentful behavior evaluation |
+| README.md | fixed | keeps agent and workflow behavior honest |
 | AGENTS.md | fixed | independent binary plus bundled skill |
 | bin/cautilus | file_exists |  |
 | go.mod | file_exists |  |

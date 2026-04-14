@@ -1,10 +1,10 @@
 # Cautilus
 
-`Cautilus` is a repo-agnostic intentful behavior evaluation product for teams
-shipping agent runtimes, skills, and operator-facing workflows.
-It helps a host repo define the behavior it is trying to protect, separate
-iterate and held-out checks, run bounded compare and review flows, and keep
-evidence in durable packets instead of ad hoc benchmark narratives.
+`Cautilus` keeps agent and workflow behavior honest while prompts keep changing.
+It gives teams a repo-local way to define the behavior they are trying to
+protect, separate iterate and held-out checks, run bounded compare and review
+flows, and keep evidence in durable packets instead of ad hoc benchmark
+narratives.
 
 The target product is a standalone binary plus a bundled skill that a host repo
 can adopt without inheriting another repo's private runtime surfaces.
@@ -16,6 +16,18 @@ The longer-term direction is close to the workflow philosophy behind DSPy:
 intent and evaluation contracts matter more than preserving one prompt
 verbatim, and prompts should be allowed to improve as long as the behavior
 survives evaluation.
+
+Use `Cautilus` when prompt tweaks, benchmark anecdotes, and repo-local shell
+glue are no longer enough to explain whether a candidate actually got better.
+
+## Who It Is For
+
+- teams maintaining agent runtimes or chatbot loops whose prompts and wrappers
+  change frequently
+- maintainers shipping repo-owned skills and wanting held-out validation instead
+  of trigger-only smoke checks
+- operators who need review packets, comparison artifacts, and explicit
+  evidence before accepting workflow changes
 
 ## Why Cautilus
 
@@ -35,6 +47,25 @@ The practical stance is:
 - keep evidence, review, and decisions in durable files
 - prefer bounded search and bounded revision over open-ended autonomous loops
 - let prompts change when held-out behavior and review discipline improve
+
+## Core Flow
+
+The intended loop is simple:
+
+1. install the standalone binary and bundled skill into a host repo
+2. define one repo-local adapter that names the behavior surface and the real
+   held-out or gate commands
+3. run bounded evaluation and review instead of relying on one benchmark score
+4. compare baseline and candidate results through reports, review packets, and
+   explicit artifacts
+
+What the operator gets back is not only a pass or fail bit:
+
+- a repo-local adapter that declares the evaluation surface explicitly
+- machine-readable run artifacts such as report and review packets
+- bounded compare and review surfaces that can be reopened later from files
+- a path from observed runtime evidence to new scenario proposals and bounded
+  revisions
 
 ## What It Does Today
 
@@ -70,16 +101,27 @@ Dogfood and migration evidence is tracked separately in
 
 ## Why It Is Different
 
-- `Intent-first`: the product centers the behavior being protected, not one
-  frozen prompt string.
-- `Packet-first`: every important boundary should be reopenable from files,
-  not reconstructed from shell history.
-- `Held-out honesty`: train and held-out serve different purposes and should
-  not silently collapse into one score.
-- `Structured review`: benchmark wins are not enough when operator-facing
-  behavior can still be misleading.
-- `Bounded autonomy`: search and revision should stop on explicit budgets,
-  checkpoints, and blocked-readiness conditions.
+- unlike a prompt manager, `Cautilus` does not treat one frozen prompt string
+  as the product contract; it treats the behavior under evaluation as the
+  contract
+- unlike a benchmark scrapbook, `Cautilus` separates iterate and held-out
+  surfaces and keeps the evidence reopenable from files
+- unlike ad hoc eval scripts, `Cautilus` makes adapters, reports, review
+  packets, and compare artifacts first-class product boundaries
+- unlike open-ended optimizer loops, `Cautilus` keeps search and revision
+  explicitly bounded by budgets, checkpoints, and blocked-readiness conditions
+
+The underlying principles are:
+
+- `Intent-first`: center the behavior being protected, not one frozen prompt
+  string
+- `Packet-first`: make important boundaries reopenable from files, not shell
+  history
+- `Held-out honesty`: do not silently collapse train and held-out into one score
+- `Structured review`: do not treat benchmark wins as enough when
+  operator-facing behavior can still mislead
+- `Bounded autonomy`: stop search and revision on explicit budgets and
+  checkpoints
 
 ## GEPA-Style Prompt Search
 
@@ -135,6 +177,20 @@ This repo is still early, but the product boundary is already real:
 
 After a tag is published, verify the public release surface with
 `npm run release:verify-public -- --version <tag>`.
+
+## Proof
+
+The current proof surface is split on purpose:
+
+- `cautilus doctor --repo-root <repo>` proves whether a repo is wired enough to
+  use the checked-in contract
+- `npm run consumer:onboard:smoke` proves that a fresh consumer repo can go
+  from install to `doctor ready` through the product-owned onboarding path
+- [docs/consumer-readiness.md](./docs/consumer-readiness.md) records which
+  archetypes and self-consumer paths are currently backed by checked-in
+  evidence
+- `npm run verify` and `npm run hooks:check` keep the repo's own standing
+  surface honest
 
 ## Repo Layout
 
@@ -266,69 +322,58 @@ After a tag is published, verify the public release surface with
 
 ## Quick Start
 
-For the operator-facing install flow on another machine, start with
+For the full operator-facing install guide on another machine, start with
 [install.md](./install.md).
 
-Install from a tagged GitHub release:
+Fastest path in a real repo:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh | sh
-cautilus --version
-cautilus version --verbose
-```
-
-The installer downloads the tagged binary asset that matches the host OS and
-architecture, so no local Go toolchain is required for the public install
-path. `cautilus version --verbose` shows the local version provenance plus the
-last cached update-check state for the installed binary.
-
-Homebrew is also an official install path:
-
-```bash
-brew install corca-ai/tap/cautilus
-```
-
-Install or refresh the bundled skill into a host repo:
-
-```bash
 cd /path/to/host-repo
 cautilus install --repo-root .
+cautilus adapter init --repo-root .
+cautilus adapter resolve --repo-root .
 ```
 
-This creates `.agents/skills/cautilus/` as the canonical checked-in skill path
-and `.claude/skills -> ../.agents/skills` for Claude compatibility. The
-installed skill assumes `cautilus` is already on `PATH`. The lower-level
-compatibility command `cautilus skills install` remains available, but
-`cautilus install` is the canonical lifecycle entrypoint.
+The generated adapter is intentionally minimal.
+To reach `doctor ready`, wire at least one real runnable path into it.
+The smallest possible proof looks like this:
 
-To prove that a fresh consumer repo can still adopt the product end-to-end:
+```yaml
+held_out_command_templates:
+  - node -e "console.log('held out ok')"
+```
+
+Then run:
+
+```bash
+cautilus doctor --repo-root .
+```
+
+If you want the shortest end-to-end proof without hand-editing a real consumer
+repo, run the checked-in smoke helper from this repo:
 
 ```bash
 npm run consumer:onboard:smoke
 ```
 
-Refresh the installed CLI and optionally the checked-in bundled skill:
+What success looks like:
+
+- `.agents/skills/cautilus/` exists in the consumer repo
+- `.agents/cautilus-adapter.yaml` exists and resolves cleanly
+- `cautilus doctor --repo-root .` returns `ready`
+
+Official install and lifecycle commands:
 
 ```bash
+# install from Homebrew instead of install.sh
+brew install corca-ai/tap/cautilus
+
+# inspect local version provenance
+cautilus version --verbose
+
+# refresh the CLI and the checked-in bundled skill in a repo
 cautilus update --repo-root /path/to/host-repo
-```
-
-Resolve an adapter in a target repo:
-
-```bash
-cautilus adapter resolve --repo-root /path/to/repo
-```
-
-Scaffold a new adapter:
-
-```bash
-cautilus adapter init --repo-root /path/to/repo
-```
-
-Check whether a repo is ready for standalone `Cautilus` evaluation:
-
-```bash
-cautilus doctor --repo-root /path/to/repo
 ```
 
 Before designing adapters, inventory LLM-behavior surfaces first:
