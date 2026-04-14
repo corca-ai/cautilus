@@ -588,6 +588,10 @@ func TestCLIReviewVariantsSupportsOutputUnderTest(t *testing.T) {
 	if outputUnderTest["absolutePath"] != outputUnderTestPath {
 		t.Fatalf("unexpected output-under-test summary: %#v", outputUnderTest)
 	}
+	warnings := summary["warnings"].([]any)
+	if len(warnings) != 1 || !strings.Contains(anyToString(warnings[0]), "{output_under_test}") {
+		t.Fatalf("expected output-under-test warning, got %#v", warnings)
+	}
 	promptBytes, err := os.ReadFile(anyString(summary["promptFile"]))
 	if err != nil {
 		t.Fatalf("ReadFile returned error: %v", err)

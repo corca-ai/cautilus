@@ -34,6 +34,8 @@ This updates the maintained version surfaces together:
 - [plugins/cautilus/.claude-plugin/plugin.json](../plugins/cautilus/.claude-plugin/plugin.json)
 - [plugins/cautilus/.codex-plugin/plugin.json](../plugins/cautilus/.codex-plugin/plugin.json)
 - [install.md](../install.md)
+- the packaged `plugins/cautilus/skills/cautilus/` tree from the bundled
+  `skills/cautilus/` source
 
 2. Run:
 

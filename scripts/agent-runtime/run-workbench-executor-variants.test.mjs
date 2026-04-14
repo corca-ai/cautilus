@@ -325,6 +325,8 @@ test("run-workbench-executor-variants can judge an explicit output-under-test ar
 		assert.equal(result.status, 0, result.stderr);
 		const summary = JSON.parse(readFileSync(result.stdout.trim(), "utf-8"));
 		assert.equal(summary.outputUnderTestFile.absolutePath, outputUnderTest);
+		assert.equal(summary.warnings.length, 2);
+		assert.match(summary.warnings[0], /does not reference \{output_under_test\}/);
 		assert.equal(summary.reviewPromptInputFile.endsWith("review-prompt-input.json"), true);
 		const promptInput = JSON.parse(readFileSync(summary.reviewPromptInputFile, "utf-8"));
 		assert.equal(promptInput.reviewMode, "output_under_test");

@@ -237,6 +237,16 @@ Required fields:
   `command`
 - `command_template`: checked-in command or wrapper invocation
 
+Command-template placeholders currently include:
+
+- `{candidate_repo}`
+- `{prompt_file}`
+- `{schema_file}`
+- `{output_file}`
+- `{variant_id}`
+- optional `{output_under_test}` when `review variants` is run with
+  `--output-under-test`
+
 Optional fields:
 
 - `purpose`: what this variant is judging

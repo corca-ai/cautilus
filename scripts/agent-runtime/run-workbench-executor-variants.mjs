@@ -241,6 +241,17 @@ function resolvePromptArtifactFromInputFile(options, repoRoot, outputDir) {
 	};
 }
 
+function buildOutputUnderTestWarnings(variants, outputUnderTestFile) {
+	if (!outputUnderTestFile?.absolutePath) {
+		return [];
+	}
+	return variants
+		.filter((variant) => !variant.command_template.includes("{output_under_test}"))
+		.map((variant) =>
+			`Variant ${variant.id} does not reference {output_under_test}; it will need to rely on the rendered prompt for the artifact path.`,
+		);
+}
+
 function resolvePromptArtifacts(options, adapterPayload, repoRoot, outputDir) {
 	validatePromptArtifactOptions(options);
 	const directPromptArtifact = resolveDirectPromptArtifact(options, adapterPayload, repoRoot);
@@ -312,6 +323,10 @@ async function main() {
 	const promptArtifacts = resolvePromptArtifacts(options, adapterPayload, repoRoot, outputDir);
 	const promptFile = promptArtifacts.promptFile;
 	log(`review variants artifacts ready: prompt=${promptFile} schema=${schemaFile}`);
+	const warnings = buildOutputUnderTestWarnings(selectedVariants, promptArtifacts.outputUnderTestFile);
+	for (const warning of warnings) {
+		log(`warning: ${warning}`);
+	}
 
 	const results = [];
 	for (const variant of selectedVariants) {
@@ -370,6 +385,7 @@ async function main() {
 		reviewPacketFile: promptArtifacts.reviewPacketFile,
 		reviewPromptInputFile: promptArtifacts.reviewPromptInputFile,
 		outputUnderTestFile: promptArtifacts.outputUnderTestFile,
+		warnings,
 		schemaFile,
 		outputDir,
 		variants: variantSummaries,

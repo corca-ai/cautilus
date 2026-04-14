@@ -367,6 +367,10 @@ func handleReviewVariants(repoRoot string, cwd string, args []string, stdout io.
 	}
 	log(fmt.Sprintf("review variants artifacts ready: prompt=%s schema=%s", promptArtifacts.promptFile, schemaFile))
 	summaries := make([]any, 0, len(variants))
+	warnings := reviewVariantWarnings(variants, promptArtifacts.outputUnderTestFile)
+	for _, warning := range warnings {
+		log("warning: " + anyString(warning))
+	}
 	for _, variant := range variants {
 		id := anyString(variant["id"])
 		outputFile := filepath.Join(outputDir, id+".json")
@@ -431,6 +435,7 @@ func handleReviewVariants(repoRoot string, cwd string, args []string, stdout io.
 		"reviewPacketFile":      promptArtifacts.reviewPacketFile,
 		"reviewPromptInputFile": promptArtifacts.reviewPromptInputFile,
 		"outputUnderTestFile":   promptArtifacts.outputUnderTestFile,
+		"warnings":              warnings,
 		"schemaFile":            schemaFile,
 		"outputDir":             outputDir,
 		"status":                status,
@@ -1677,6 +1682,21 @@ func resolveReviewSchemaFile(options *reviewVariantsArgs, adapterPayload *runtim
 		return resolvePath(options.repoRoot, schemaFile), nil
 	}
 	return "", fmt.Errorf("missing required argument or adapter default: schemaFile")
+}
+
+func reviewVariantWarnings(variants []map[string]any, outputUnderTestFile any) []any {
+	if anyString(asMapAny(outputUnderTestFile)["absolutePath"]) == "" {
+		return []any{}
+	}
+	warnings := make([]any, 0)
+	for _, variant := range variants {
+		commandTemplate := anyString(variant["command_template"])
+		if strings.Contains(commandTemplate, "{output_under_test}") {
+			continue
+		}
+		warnings = append(warnings, fmt.Sprintf("Variant %s does not reference {output_under_test}; it will need to rely on the rendered prompt for the artifact path.", anyString(variant["id"])))
+	}
+	return warnings
 }
 
 func normalizeReviewVariantResult(variantID string, tool any, execution map[string]any, rawOutput map[string]any, rawOutputErr error) map[string]any {
