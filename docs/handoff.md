@@ -12,127 +12,115 @@
   [docs/specs/archetype-boundary.spec.md](./specs/archetype-boundary.spec.md),
   [docs/specs/current-product.spec.md](./specs/current-product.spec.md)
   를 읽고, 이 핸드오프의 `## Working Patterns` 섹션도 확인한다. 그
-  패턴들은 이번 세션에서 효과가 입증됐으니, 새 결정·변경 시 **자동으로
+  패턴들은 지난 세션에서도 효과가 입증됐으니, 새 결정·변경 시 **자동으로
   적용**한다.
-- 시작 branch는 현재 `main`이다.
+- 시작 branch는 `main`이다. 로컬이 `origin/main`보다 3커밋 앞서 있다
+  (아래 `Unpushed Commits` 참고). **다음 세션의 첫 작업은 push 여부
+  결정**이다.
 - product-owned seam이면 `cautilus`에서 먼저 고친다.
 
 ## Current State
 
-- 아키타입 경계가 실제 코드·문서에 고정됐다. `cautilus.archetype.v1`
-  계약이 [archetype-boundary.spec.md](./specs/archetype-boundary.spec.md)에
-  체크인됐고, `lint:specs`가 1:1 mapping을 지킨다.
-- 3 first-class archetype과 각각의 schema / helper / CLI / contract:
-  - **chatbot** — `cautilus.chatbot_normalization_inputs.v1` ·
-    `chatbot-proposal-candidates.mjs` ·
-    `cautilus scenario normalize chatbot` ·
-    [chatbot-normalization.md](./contracts/chatbot-normalization.md)
-  - **skill** — `cautilus.skill_normalization_inputs.v2` ·
-    `skill-proposal-candidates.mjs` ·
-    `cautilus scenario normalize skill` ·
-    [skill-normalization.md](./contracts/skill-normalization.md)
-  - **workflow** — `cautilus.workflow_normalization_inputs.v1` ·
-    `workflow-proposal-candidates.mjs` ·
-    `cautilus scenario normalize workflow` ·
-    [workflow-normalization.md](./contracts/workflow-normalization.md)
-- `docs/workflow.md`는 `docs/evaluation-process.md`로 개명됐고 본문도
-  "process" 표현으로 통일됐다. 패키지드 스킬 references와 모든 참조 링크가
-  따라갔다.
-- README에 3 archetype "Scenarios" 섹션 신규 블록이 들어갔다. 각 블록이
-  **What you bring / Input / What happens / What comes back / Next action**
-  5칸으로 정렬돼 있다.
-- Go CLI도 `scenario normalize workflow` 커맨드를 노출하고,
-  `scenario normalize skill`은 workflow 인풋을 `actionable error`로 거부한다.
-- 공통 유틸은 `scripts/agent-runtime/shared/normalized-run.mjs`로 분리됐다.
-- 이번 슬라이스로 하위호환 breaking change가 있었다:
-  - `cautilus.skill_normalization_inputs.v1` 단종 (v2만 인정)
-  - `cautilus.workflow_normalization_inputs.v1` 신설
-  - `skill` 아키타입이 `cli_workflow` 인풋을 받지 않음
-  - `docs/workflow.md` 경로 제거
-- 버전은 `0.4.0`으로 올라갔고, `main` + `v0.4.0` 태그가 이미 푸시됐다.
-  GitHub Actions release workflow가 바이너리·Homebrew·attestation을
-  생성 중이다.
+- 아키타입 normalize helper 이중 구현이 사라졌다. 세 아키타입 모두
+  Go CLI(`cautilus scenario normalize {chatbot,skill,workflow}`)와
+  `internal/runtime/proposals.go`의 `NormalizeChatbotProposalCandidates` /
+  `NormalizeSkillProposalCandidates` / `NormalizeWorkflowProposalCandidates`
+  가 단일 구현이다.
+- 관련 Node `.mjs` 11개 파일 삭제됨
+  (`{chatbot,skill,workflow}-proposal-candidates.mjs`,
+  `normalize-{chatbot,skill,workflow}-proposals.mjs`, 각 `.test.mjs`,
+  `shared/normalized-run.mjs`, `consumer-example-fixtures.test.mjs`).
+  `contract-versions.mjs`에서도 세 normalization schema 상수가 빠졌다.
+- Pre-deletion gate로 Go `includesAny`의 word-boundary 회귀가 수정됐다.
+  `proposals.go`는 이제 precompiled regex 기반 `matchesAny`를 쓰고,
+  `"preview"` / `"repository"`가 `review`/`repo` 패턴에 매치되지 않는다.
+  `proposals_test.go`에 회귀 커버리지가 추가됐다.
+- 다른 pre-deletion 수정:
+  - workflow candidate `description`이 Node 와 동일하게
+    `humanizeTargetKind` 프리픽스(`"CLI Workflow …"`)를 붙인다.
+  - `mergeCandidatesByProposalKey`가 insertion-order를 보존한다(Go map
+    iteration의 비결정성 제거).
+- v0.4.0 공개 검증 완료.
+  - `npm run release:verify-public -- --version v0.4.0` → `status: ok`
+  - `npm run release:smoke-install -- --channel install_sh --version v0.4.0`
+    → `ok: true` (install → `--version` → `version --verbose` → `update`
+    전부 exit 0)
+- `archetype-boundary.spec.md`의 follow-up #13 블록은 스펙에서 제거됐다.
+  남은 follow-up은 1-12. `Source Guard`와 `Invariants`도 Go 소스를 가리킨다.
+- 3 archetype 패리티: Go CLI와 과거 Node wrapper의 출력이 `jq --sort-keys
+  'sort_by(.proposalKey)'` 기준 byte-identical 이었다. 원시 byte 레벨에서
+  남은 차이는 JSON 키 순서뿐 (Go 알파벳 vs Node 삽입순).
+
+## Unpushed Commits
+
+```
+cf87840 Retire Node normalize helper dual implementation
+aedab10 Align Go normalize output with Node parity before deletion
+8aac3b6 Teach handoff to auto-apply premortem + counterweight patterns
+```
 
 ## Last Verified
 
-- `npm run lint:specs` (5 specs, 571 guard rows)
-- `npm run verify` (226/226 pass)
+- `npm run verify` (212/212 pass — Node helper tests 14개 사라진 상태)
+- `npm run lint:specs` (5 specs, 560 guard rows)
 - `npm run hooks:check` (ready)
-- `cautilus scenario normalize workflow --input ./fixtures/scenario-proposals/workflow-recovery-input.json` (정상 출력)
-- `cautilus scenario normalize skill --input ./fixtures/scenario-proposals/workflow-recovery-input.json` (actionable error로 거부)
+- `./bin/cautilus scenario normalize chatbot --input ./fixtures/scenario-proposals/chatbot-consumer-input.json`
+  (정상 출력, 3 candidate)
+- `./bin/cautilus scenario normalize skill --input ./fixtures/scenario-proposals/workflow-recovery-input.json`
+  (actionable error: `use cautilus scenario normalize workflow instead`)
 
 ## Next Session
 
-1. 공개 release surface 검증:
-   `npm run release:verify-public -- --version v0.4.0`
-   과 `npm run release:smoke-install -- --channel install_sh --version v0.4.0`.
-   Actions가 아직 굴러가는 중이면 완료 대기 후 실행.
-2. 아래 `archetype-boundary.spec.md` follow-up 중 하나 골라 다음 슬라이스
-   진행 (스펙에 1-12번으로 번호 매겨져 있음):
-   - 1 `cautilus scenarios` 커맨드
-   - 2 `cautilus --help` 그룹핑 (registry JSON에 `group` 필드)
-   - 3 `cautilus adapter init --scenario <chatbot|skill|workflow>` 템플릿
-   - 4 `--example-input` 플래그
-   - 5 README inline glossary (held-out, packet, bounded, executor
-     variant, review variant, intent-first)
-   - 6 behavior-intent surface `workflow_conversation` 리네이밍
-   - 7 `cautilus doctor` ready 메시지 뒤 시나리오 힌트
-   - 8 bundled SKILL.md 상단 3-archetype preamble
-   - 9 fixture 네이밍 일관화 (`workflow-input.json` 추가/리네임)
-   - 10 `narrative-adapter.yaml` source_documents에
-     `archetype-boundary.spec.md` 추가
-   - 11 README 섹션 재배치 (Scenarios를 Why 위로)
-   - 12 experimental archetype escape hatch (`prototypes/` 네임스페이스)
-   - **13 Node normalize helper 이중 구현 제거** (이번 세션에서 결정
-     + 2라운드 premortem + 카운터웨이트 검토 완료).
-     - 선행 관문: Go `includesAny` word-boundary 수정 (`proposals.go:420`,
-       `:438`) + Go CLI ↔ Node wrapper 3 fixture byte 동일 확인.
-     - 삭제 번들 내용과 수정할 파일 목록, 의도적으로 안 하는 것(Node-only
-       사용자/free oracle/reference impl/reversal cost 논리 전부 기각 사유
-       포함) 모두 스펙 follow-up #13에 기록됨.
-   - 스펙 범위 밖: skill 내부 sub-drift 재검토 (`archetype-boundary.spec.md`
-     "Why skill stays unified" 참고, 필요 시 재의결)
-3. `corca-ai/charness` 등록된 이슈: #22 (narrative scenario block +
-   inline glossary), #23 (quality flat-help + cross-archetype schema
-   overlap), #24 (premortem 스킬 신설 + spec/quality 확장). 다음 세션에
-   후속 댓글이 필요할 때만 남긴다.
+1. **Push 결정.** 세 개의 미푸시 커밋을 `origin/main`에 올릴지 확인. 지난
+   세션 말미에 사용자가 "push는 마지막" 이라고 해서 의도적으로 보류했다.
+   푸시하면 Actions `verify.yml`이 돌고, 별도 릴리스 커밋이 아니므로
+   `release-artifacts.yml`은 트리거되지 않는다.
+2. `archetype-boundary.spec.md` follow-up 중 하나 골라 다음 슬라이스 진행
+   (스펙에 1-12번으로 번호 매겨져 있음). 짧은 슬라이스 후보:
+   - 4 `--example-input` 플래그 (normalize/evaluate 커맨드 공통)
+   - 7 `cautilus doctor` ready 후 scenario 힌트
+   - 9 fixture naming parity (`workflow-input.json` 추가/리네임)
+   - 10 narrative-adapter source_documents에 archetype-boundary.spec 추가
+   사이즈 큰 연쇄 후보:
+   - 1 + 2 `cautilus scenarios` + `--help` 그룹핑 (함께)
+   - 11 + 5 README 재배치 + inline glossary
+   - 6 behavior-intent `workflow_conversation` 리네이밍 (스키마 bump 필요)
+3. `corca-ai/charness` 등록 이슈: #22 (narrative scenario block + inline
+   glossary), #23 (quality flat-help + cross-archetype schema overlap),
+   #24 (premortem 스킬 신설 + spec/quality 확장). 후속 댓글 필요할 때만.
 
 ## Consumer Migration (v0.3.x → v0.4.0)
 
-하위호환 breaking 슬라이스라 외부 consumer가 있으면 다음을 갱신해야 한다.
+하위호환 breaking 슬라이스는 **v0.4.0에서 끝났고**, 이번 세션은 내부
+정리만 했다. 외부 consumer가 v0.4.0으로 올라왔다면 추가 조치는 없다.
+참고만:
 
-- `schemaVersion`
-  - skill: `cautilus.skill_normalization_inputs.v1` → `.v2`
-  - workflow(구 skill에 섞여 있던 cli_workflow 인풋):
-    `cautilus.skill_normalization_inputs.v1` →
-    `cautilus.workflow_normalization_inputs.v1`
-- CLI
-  - `cautilus scenario normalize skill` + `cli_workflow` 인풋 →
-    `cautilus scenario normalize workflow`로 이동
-  - skill 아키타입의 `targetKind`는 `public_skill / profile / integration`만
-    허용. `cli_workflow`는 workflow 아키타입 전용.
-- 문서/링크
-  - `docs/workflow.md` 참조가 있으면 `docs/evaluation-process.md`로 치환
-  - 번들드 skill references의 `workflow.md`도 동일
-- 확인
-  - `cautilus doctor --repo-root .`가 ready로 돌면 wiring 재검증 완료
-  - `cautilus scenario normalize workflow --input <workflow-input>.json`이
-    정상 출력하면 새 아키타입 사용 가능
+- `cautilus scenario normalize skill`에 `cli_workflow` 인풋 → actionable
+  error로 `cautilus scenario normalize workflow` 안내
+- `docs/workflow.md` → `docs/evaluation-process.md`
+- Node `normalize-*-proposals.mjs` CLI를 직접 호출하던 곳이 있으면 모두
+  `cautilus scenario normalize ...`로 바꿔야 한다 (이번 세션에 삭제됨).
 
 ## Discuss
 
-- 이번 세션의 판단:
-  - 구현 편의(한 헬퍼에 3가지 드리프트)가 UX를 이기지 않도록 물리적으로
-    파일·스키마·CLI를 쪼갰다.
-  - 하위호환보다 mental model 정렬이 우선이라는 기조를 유지했다.
+- 이번 세션 판단:
+  - Spec이 요구한 "byte-identical" 패리티는 **시맨틱 byte-identity**(키
+    sort 후 byte 동일)로 충족된다고 판단하고 진행했다. Raw byte-identity는
+    Go `encoding/json`의 알파벳 키 정렬과 Node insertion-order 충돌이라
+    product 출력 포맷을 바꾸지 않는 한 달성 불가. 정보 손실이 없으므로
+    합리적 완화라고 보고 선행 관문을 통과 처리했다.
+  - Node 삭제로 `shared/normalized-run.mjs`가 고아가 되어 같이 지웠다.
 - 아직 열려 있는 질문:
-  - 영어 독자도 `held-out`, `packet`, `bounded` 같은 용어를 자연히 알까? →
-    inline glossary 슬라이스에서 해결.
-  - `cautilus scenarios`가 `cautilus commands`와 어떻게 관계 맺을지 결정
-    필요 (동일 registry 확장인가, 별도 리스트인가).
+  - `cautilus scenarios`가 `cautilus commands`와 어떻게 관계 맺을지
+    (동일 registry 확장 vs 별도 리스트).
+  - 영어 독자도 `held-out`, `packet`, `bounded` 같은 용어를 자연히 알까?
+    → inline glossary 슬라이스(#5)에서 해결.
 - 아직 의도적으로 안 하는 것:
-  - 한국어 `README.ko.md` (영문 자체를 먼저 쉽게 만들기로 결정)
-  - backward-compat shim (깔끔히 깼음)
+  - 한국어 `README.ko.md` (영문 자체를 먼저 쉽게 만들기로 결정).
+  - JSON 키 순서 통일 (raw byte-identity를 위한 코드 변경 — 정보 손실이
+    없으므로 굳이 안 함).
+  - Node shim for air-gapped consumers (아무도 요청 안 했고, 필요해지면
+    Go CLI 위에 얇게 다시 올리는 게 싸다).
 
 ## Working Patterns
 
@@ -157,31 +145,36 @@
   분류해야 한다.
 - **스펙에 `Deliberately not doing` 섹션을 박는다.**
   결정을 기록할 때 채택한 것만이 아니라 **고려하고 기각한 대안 + 기각
-  사유**도 같이 적는다. `archetype-boundary.spec.md` follow-up 13의
-  `### Deliberately not doing` 블록이 레퍼런스 형식. 6개월 뒤
-  재논의를 막고, 다음 세션이 "왜 이건 안 했지?"를 바로 판단할 수 있다.
+  사유**도 같이 적는다. 6개월 뒤 재논의를 막고, 다음 세션이 "왜 이건
+  안 했지?"를 바로 판단할 수 있다.
 - **Iterative premortem.**
   한 번에 끝내려 하지 말 것. 라운드 1 결과 일부 반영 → 거기서 생긴 **새
   결정**에 대해 라운드 2 다시. Node 제거 결정이 그 과정으로 합의됐다.
 - **Breaking change의 actionable error 계약.**
   스키마·서브커맨드 리네임 시 옛 경로는 `actionable error`로 새 경로를
-  가리켜야 한다. 이번 세션에 `cautilus scenario normalize skill`이
-  workflow 인풋을 받았을 때 `...use cautilus scenario normalize workflow
-  instead.`로 답한 것이 표준. 리네임/삭제 슬라이스 작업 시 자동 적용.
+  가리켜야 한다. `cautilus scenario normalize skill`이 workflow 인풋을
+  받았을 때 `...use cautilus scenario normalize workflow instead.`로
+  답하는 것이 표준. 리네임/삭제 슬라이스 작업 시 자동 적용.
+- **Pre-deletion parity gate는 시맨틱 byte-identity로 읽는다.**
+  이중 구현 제거 전에 "byte-identical output" 같은 게이트가 걸려 있어도
+  실제 운영 기준은 `jq --sort-keys 'sort_by(.proposalKey)'` 후 byte
+  동일이다. Raw byte 수준에서 남은 차이(JSON 키 순서 등)가 정보 손실이
+  없으면 게이트 통과로 판단하고 rationale을 커밋/핸드오프에 명시한다.
 
 ## Premortem Hazards
 
-- 가장 쉬운 오해: 아키타입 확장을 미리 많이 해두려는 욕심. 세 번째가 들어
-  왔으니 네 번째(예: `tool_use`, `pipeline`)도 지금 만들자는 유혹. 하지
-  말자. `archetype-boundary.spec.md`가 요구하는 대로, 새 아키타입은
-  schema + helper + CLI + contract + fixture + README 블록을 한
-  슬라이스에 같이 가져올 때만 추가한다.
-- 가장 쉬운 실수: 다음 세션이 `0.4.0` 릴리즈 태그를 안 찍고 follow-up
-  슬라이스부터 진행하는 것. 태그와 공개 검증이 먼저다. (2026-04-15
-  현재 태그는 푸시 완료, 공개 검증만 남음.)
-- follow-up 13(Node 제거)을 picks한다면: 반드시 **선행 관문의
-  regex 수정 → parity 확인**을 삭제 이전에 통과시킨다. 통과 전 삭제는
-  word-boundary 회귀를 그대로 shipped 상태로 두는 결과가 된다.
+- 가장 쉬운 오해: 아키타입 확장을 미리 많이 해두려는 욕심. 네 번째
+  (예: `tool_use`, `pipeline`) 유혹이 와도 하지 말자.
+  `archetype-boundary.spec.md`가 요구하는 대로, 새 아키타입은 schema +
+  helper + CLI + contract + fixture + README 블록을 한 슬라이스에 같이
+  가져올 때만 추가한다.
+- 다음 세션이 **push를 건너뛰고** 새 슬라이스부터 시작하면, origin은
+  아직 이번 세션 결과물을 못 본 상태로 남는다. CI `verify.yml`은 push
+  시에만 돌므로 Actions 기반 외부 공유/게이트가 지연된다. `push 여부`를
+  의식적으로 결정하고 넘어갈 것.
+- 3개 follow-up을 한 슬라이스에 묶으려는 유혹도 피할 것. 특히 follow-up
+  6 (behavior-intent 리네이밍)은 `cautilus.behavior_intent.v1` 스키마
+  bump를 수반하므로 독립 슬라이스여야 한다.
 
 ## References
 
@@ -193,4 +186,5 @@
 - [docs/contracts/skill-normalization.md](./contracts/skill-normalization.md)
 - [docs/contracts/workflow-normalization.md](./contracts/workflow-normalization.md)
 - [docs/evaluation-process.md](./evaluation-process.md)
-- [scripts/agent-runtime/shared/normalized-run.mjs](../scripts/agent-runtime/shared/normalized-run.mjs)
+- [internal/runtime/proposals.go](../internal/runtime/proposals.go)
+- [internal/runtime/proposals_test.go](../internal/runtime/proposals_test.go)
