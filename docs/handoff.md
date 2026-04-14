@@ -14,46 +14,51 @@
   를 읽고, 이 핸드오프의 `## Working Patterns` 섹션도 확인한다. 그
   패턴들은 지난 세션에서도 효과가 입증됐으니, 새 결정·변경 시 **자동으로
   적용**한다.
-- 시작 branch는 `main`이다. 로컬이 `origin/main`보다 3커밋 앞서 있다
+- 시작 branch는 `main`이다. 로컬이 `origin/main`보다 13커밋 앞서 있다
   (아래 `Unpushed Commits` 참고). **다음 세션의 첫 작업은 push 여부
-  결정**이다.
+  결정**이다. 이 13커밋은 여러 세션에 걸쳐 누적된 것이고, 각 커밋은
+  독립적으로 검증 완료된 상태다.
 - product-owned seam이면 `cautilus`에서 먼저 고친다.
 
 ## Current State
 
-- 아키타입 normalize helper 이중 구현이 사라졌다. 세 아키타입 모두
-  Go CLI(`cautilus scenario normalize {chatbot,skill,workflow}`)와
-  `internal/runtime/proposals.go`의 `NormalizeChatbotProposalCandidates` /
-  `NormalizeSkillProposalCandidates` / `NormalizeWorkflowProposalCandidates`
-  가 단일 구현이다.
-- 관련 Node `.mjs` 11개 파일 삭제됨
-  (`{chatbot,skill,workflow}-proposal-candidates.mjs`,
-  `normalize-{chatbot,skill,workflow}-proposals.mjs`, 각 `.test.mjs`,
-  `shared/normalized-run.mjs`, `consumer-example-fixtures.test.mjs`).
-  `contract-versions.mjs`에서도 세 normalization schema 상수가 빠졌다.
-- Pre-deletion gate로 Go `includesAny`의 word-boundary 회귀가 수정됐다.
-  `proposals.go`는 이제 precompiled regex 기반 `matchesAny`를 쓰고,
-  `"preview"` / `"repository"`가 `review`/`repo` 패턴에 매치되지 않는다.
-  `proposals_test.go`에 회귀 커버리지가 추가됐다.
-- 다른 pre-deletion 수정:
-  - workflow candidate `description`이 Node 와 동일하게
-    `humanizeTargetKind` 프리픽스(`"CLI Workflow …"`)를 붙인다.
-  - `mergeCandidatesByProposalKey`가 insertion-order를 보존한다(Go map
-    iteration의 비결정성 제거).
-- v0.4.0 공개 검증 완료.
-  - `npm run release:verify-public -- --version v0.4.0` → `status: ok`
-  - `npm run release:smoke-install -- --channel install_sh --version v0.4.0`
-    → `ok: true` (install → `--version` → `version --verbose` → `update`
-    전부 exit 0)
-- `archetype-boundary.spec.md`의 follow-up #13 블록은 스펙에서 제거됐다.
-  남은 follow-up은 1-12. `Source Guard`와 `Invariants`도 Go 소스를 가리킨다.
-- 3 archetype 패리티: Go CLI와 과거 Node wrapper의 출력이 `jq --sort-keys
-  'sort_by(.proposalKey)'` 기준 byte-identical 이었다. 원시 byte 레벨에서
-  남은 차이는 JSON 키 순서뿐 (Go 알파벳 vs Node 삽입순).
+- 마크다운 링크 드리프트가 이제 standing gate로 잡힌다.
+  `npm run lint:links`(= `node scripts/check-markdown-links.mjs`)가
+  체크인된 `.md` 81개 중 62개(정본)의 로컬/상대 링크를 검증하고,
+  `plugins/cautilus/skills/` 19개는 `cpSync` 파생본이라 스킵한다.
+  외부 URL(https/mailto/...)과 순수 앵커(`#...`)는 의도적으로 제외.
+  `npm run verify`에 `lint:links`가 들어가 있어 pre-push + CI 자동 커버.
+- narrative-adapter가 이제 `archetype-boundary.spec.md`를
+  `source_documents`로 읽는다. 다음 narrative 런부터 README/SKILL.md/
+  master-plan을 세 아키타입 계약과 맞춰 검사한다.
+- workflow 아키타입이 canonical `workflow-input.json`을 갖는다. 기존
+  `workflow-recovery-input.json`은 specialized 예제로 README Scenarios
+  블록에만 남기고, command-registry/operator-acceptance/schema parity
+  test/current-product Functional Check는 모두 canonical 이름을 쓴다.
+- `cautilus scenario normalize {chatbot,skill,workflow}`와
+  `cautilus skill evaluate`에 `--example-input` 플래그 추가. minimal
+  packet을 stdout으로 찍고 exit 0. 방출된 packet은 `--input /dev/stdin`
+  으로 파이프해도 같은 명령을 통과한다(round-trip 보장).
+- `skills/cautilus/SKILL.md`가 intro와 Bootstrap 사이에 3-아키타입
+  Scenarios 프리앰블을 갖는다. 각 블록은 CLI 진입, `--example-input`
+  self-inspection 경로, 출력 스키마를 한 블록에 담는다.
+- `archetype-boundary.spec.md` follow-up 4, 7, 9, 10번이 은퇴하고
+  나머지 1-9로 리넘버됐다. `proposals_test.go`의 cross-ref도 같이
+  따라붙었다.
 
 ## Unpushed Commits
 
 ```
+c5407ce Mirror the three-archetype preamble into SKILL.md
+b321ea8 Emit round-trippable example input for normalize/evaluate commands
+d23306c Give workflow the canonical <archetype>-input.json fixture
+82e11f2 Keep narrative runs aware of the three-archetype contract
+7a0f7be Gate markdown link drift with standing lint:links
+2efaeea Persist round-2 premortem rejections per pattern
+c11df06 Apply execution-time premortem pattern to the Node-removal slice
+d1db762 Log markdown link linter gap as next-session candidate
+a862cd8 Restore proposals.go markdown link in bundled skill references
+7865253 Refresh handoff around Node-removal completion and push decision
 cf87840 Retire Node normalize helper dual implementation
 aedab10 Align Go normalize output with Node parity before deletion
 8aac3b6 Teach handoff to auto-apply premortem + counterweight patterns
@@ -61,44 +66,42 @@ aedab10 Align Go normalize output with Node parity before deletion
 
 ## Last Verified
 
-- `npm run verify` (212/212 pass — Node helper tests 14개 사라진 상태)
-- `npm run lint:specs` (5 specs, 560 guard rows)
+- `npm run verify` (218/218 Go + 219/219 Node pass, 22s)
+- `npm run lint:specs` (5 specs, 569 guard rows)
+- `npm run lint:links` (62 files checked, 19 derived skipped)
 - `npm run hooks:check` (ready)
-- `./bin/cautilus scenario normalize chatbot --input ./fixtures/scenario-proposals/chatbot-consumer-input.json`
-  (정상 출력, 3 candidate)
-- `./bin/cautilus scenario normalize skill --input ./fixtures/scenario-proposals/workflow-recovery-input.json`
-  (actionable error: `use cautilus scenario normalize workflow instead`)
+- `./bin/cautilus scenario normalize {chatbot,skill,workflow} --example-input`
+  모두 round-trip 통과
+- `./bin/cautilus scenario normalize workflow --input ./fixtures/scenario-proposals/workflow-input.json`
+  정상 출력, 1 candidate
 
 ## Next Session
 
-1. **Push 결정.** 세 개의 미푸시 커밋을 `origin/main`에 올릴지 확인. 지난
-   세션 말미에 사용자가 "push는 마지막" 이라고 해서 의도적으로 보류했다.
+1. **Push 결정.** 13개의 미푸시 커밋을 `origin/main`에 올릴지 확인. 지난
+   세션 + 이번 세션 내내 "push는 마지막" 이라고 해서 의도적으로 보류했다.
    푸시하면 Actions `verify.yml`이 돌고, 별도 릴리스 커밋이 아니므로
-   `release-artifacts.yml`은 트리거되지 않는다.
+   `release-artifacts.yml`은 트리거되지 않는다. 13커밋은 검증된 상태라
+   한 번에 올려도 안전.
 2. `archetype-boundary.spec.md` follow-up 중 하나 골라 다음 슬라이스 진행
-   (스펙에 1-12번으로 번호 매겨져 있음). 짧은 슬라이스 후보:
-   - 4 `--example-input` 플래그 (normalize/evaluate 커맨드 공통)
-   - 7 `cautilus doctor` ready 후 scenario 힌트
-   - 9 fixture naming parity (`workflow-input.json` 추가/리네임)
-   - 10 narrative-adapter source_documents에 archetype-boundary.spec 추가
-   사이즈 큰 연쇄 후보:
-   - 1 + 2 `cautilus scenarios` + `--help` 그룹핑 (함께)
-   - 11 + 5 README 재배치 + inline glossary
-   - 6 behavior-intent `workflow_conversation` 리네이밍 (스키마 bump 필요)
-3. **품질 게이트 보강 후보**: 이 repo에 마크다운 링크 린터
-   (`lychee`/`markdown-link-check` 등)가 없다. Commit B 카스케이드에서
-   `skills/cautilus/references/*-normalization.md` 세 파일이 링크 형식을
-   잃고 백틱 코드로만 바뀌었는데 standing gate가 못 잡았다 (후속 커밋
-   `a862cd8`에서 수동 복구). `verify.yml` + pre-push에 바운디드 링크
-   린트 한 번 추가하면 해당 클래스의 드리프트가 자동으로 잡힌다.
-   `charness:quality` 스킬과 잘 맞는 슬라이스.
+   (스펙에 1-9번으로 번호 매겨져 있음). 짧은/중간 슬라이스 후보:
+   - 2 `cautilus --help` 그룹핑 (registry에 `group` 필드 추가 + 렌더러)
+   - 3 `cautilus adapter init --scenario <chatbot|skill|workflow>` 스타터
+   - 4 inline glossary 패스 (README)
+   - 7 README section ordering (4와 페어)
+   사이즈 큰 슬라이스:
+   - 1 + 6 `cautilus scenarios` 커맨드 + doctor 힌트 (함께 — 6은 1에 의존)
+   - 5 behavior-intent `workflow_conversation` 리네이밍 (스키마 bump 필요)
+   - 9 Archetype-extension hardening (다음 4번째 아키타입 직전/함께)
+3. **remaining quality gate 후보**: 지금 `npm run verify` 체인은
+   eslint + specs + links + golangci + go vet + govulncheck + go test
+   -race + node test. 충분히 두껍다. 추가 gate는 dogfood 증거가 요청할 때만.
 4. `corca-ai/charness` 등록 이슈: #22 (narrative scenario block + inline
    glossary), #23 (quality flat-help + cross-archetype schema overlap),
    #24 (premortem 스킬 신설 + spec/quality 확장). 후속 댓글 필요할 때만.
 
 ## Consumer Migration (v0.3.x → v0.4.0)
 
-하위호환 breaking 슬라이스는 **v0.4.0에서 끝났고**, 이번 세션은 내부
+하위호환 breaking 슬라이스는 **v0.4.0에서 끝났고**, 이번 세션도 내부
 정리만 했다. 외부 consumer가 v0.4.0으로 올라왔다면 추가 조치는 없다.
 참고만:
 
@@ -106,46 +109,35 @@ aedab10 Align Go normalize output with Node parity before deletion
   error로 `cautilus scenario normalize workflow` 안내
 - `docs/workflow.md` → `docs/evaluation-process.md`
 - Node `normalize-*-proposals.mjs` CLI를 직접 호출하던 곳이 있으면 모두
-  `cautilus scenario normalize ...`로 바꿔야 한다 (이번 세션에 삭제됨).
+  `cautilus scenario normalize ...`로 바꿔야 한다 (이전 세션에 삭제됨).
+- normalize/evaluate 진입을 문서 없이 시도하는 agent는 `--example-input`
+  으로 방출된 최소 packet을 출발점으로 쓸 수 있다.
 
 ## Discuss
 
 - 이번 세션 판단:
-  - Spec이 요구한 "byte-identical" 패리티는 **시맨틱 byte-identity**(키
-    sort 후 byte 동일)로 충족된다고 판단하고 진행했다. Raw byte-identity는
-    Go `encoding/json`의 알파벳 키 정렬과 Node insertion-order 충돌이라
-    product 출력 포맷을 바꾸지 않는 한 달성 불가. 정보 손실이 없으므로
-    합리적 완화라고 보고 선행 관문을 통과 처리했다.
-  - Node 삭제로 `shared/normalized-run.mjs`가 고아가 되어 같이 지웠다.
+  - 링크 린터는 **정본(source-of-truth) 파일만** 검증하고 `plugins/`
+    `cpSync` 파생본은 스킵하는 구조로 갔다. 파생본의 상대경로는
+    구조적으로 정본과 다른 깊이에 있어서 둘 다 동시에 통과시키려면
+    링크 리라이팅이 필요한데, 정본이 맞으면 실사용(`cautilus install`
+    로 consumer에 풀어낸 경로)은 어차피 상대경로가 망가지므로
+    투자 가치가 낮다고 판단.
+  - `--example-input`은 fixture 파일을 embed하지 않고 Go 문자열로
+    인라인했다. fixture보다 더 작은 minimal packet을 명시적으로
+    유지하기 위해서였고, round-trip 테스트가 동기화를 지킨다.
+  - 스펙 follow-up 번호는 매 슬라이스 삭제 후 재넘버링했다.
+    `proposals_test.go`와 내부 cross-ref가 따라붙는 cost(매번 2-3줄)
+    보다 gap-leaving의 가독성 손해가 더 컸다고 판단.
 - 아직 열려 있는 질문:
   - `cautilus scenarios`가 `cautilus commands`와 어떻게 관계 맺을지
     (동일 registry 확장 vs 별도 리스트).
-  - 영어 독자도 `held-out`, `packet`, `bounded` 같은 용어를 자연히 알까?
-    → inline glossary 슬라이스(#5)에서 해결.
 - 아직 의도적으로 안 하는 것:
   - 한국어 `README.ko.md` (영문 자체를 먼저 쉽게 만들기로 결정).
   - JSON 키 순서 통일 (raw byte-identity를 위한 코드 변경 — 정보 손실이
     없으므로 굳이 안 함).
-  - Node shim for air-gapped consumers (아무도 요청 안 했고, 필요해지면
-    Go CLI 위에 얇게 다시 올리는 게 싸다).
-- Premortem 라운드 2 (실행-시점, 코드 감사 + 신규 컨트리뷰터
-  onboarding 각도) + 카운터웨이트 결과 13건 중 3건은 worry-theater로
-  버렸다. 다음 세션에 다시 끌고 오지 말 것:
-  - `command-registry.json`의 `usage`/`examples` 배열을 추가로
-    source-guard 하는 것 — 로드 베어링 경로(`commands`)는 이미 가드
-    중. 이중 가드는 paranoia.
-  - `proposals.go` 상단에 "extension-shape" 주석 블록 추가 — 800줄
-    파일에 6줄 장식. 주석으로 막을 수 있는 실제 버그 없음.
-  - `humanizeTargetKind` 맵을 spec에 명시적으로 거는 것 — leaf helper.
-    명시해도 막아주는 버그 없음. (4번째 아키타입이 들어올 때 fallback
-    표기를 같이 손보면 됨, 그건 [archetype-boundary.spec.md
-    follow-up 13](./specs/archetype-boundary.spec.md)에 들어가 있음.)
-- Premortem 라운드 2 finding 중 10건은 "extension-time hardening"
-  성격이라 Node-removal 슬라이스에 끼우지 않고
-  `archetype-boundary.spec.md` follow-up 13으로 통째로 옮겼다. 다음
-  4번째 아키타입을 추가하기 직전(또는 함께) 그 슬라이스를 픽업.
-  Net of 13: a=0, b=0, c=3, d=10. 카운터웨이트가 inflate를 막은
-  대표 사례.
+  - Node shim for air-gapped consumers.
+  - SKILL.md → docs/ upward 링크 (SKILL.md는 self-contained references
+    관습을 따르고 있어 docs/ 쪽으로 링크하지 않는다).
 
 ## Working Patterns
 
@@ -156,8 +148,7 @@ aedab10 Align Go normalize output with Node parity before deletion
 - **Premortem은 두 시점에 각각 돌린다: 결정 직전 + 실행 직전.**
   이 둘을 혼동하면 안 된다. 핸드오프에 "premortem 완료" 라고 적혀 있어도
   그건 **결정에 대한 커버리지**이고, 실제로 카스케이드·삭제·리네임 코드를
-  칠 때는 **실행 각도로 다시** 돌려야 한다. 이번 세션에서 링크 포맷
-  드리프트를 놓친 원인이 바로 이 혼동이다.
+  칠 때는 **실행 각도로 다시** 돌려야 한다.
   - 결정 전 premortem 대상: 스펙 확정 직전, 브레이킹 체인지 직전,
     이중 구현을 한쪽으로 합치는 결정 직전 등. 관점: 스펙 드리프트,
     외부 사용자, devil's advocate, 예측 불가능한 결과.
@@ -184,17 +175,26 @@ aedab10 Align Go normalize output with Node parity before deletion
   안 했지?"를 바로 판단할 수 있다.
 - **Iterative premortem.**
   한 번에 끝내려 하지 말 것. 라운드 1 결과 일부 반영 → 거기서 생긴 **새
-  결정**에 대해 라운드 2 다시. Node 제거 결정이 그 과정으로 합의됐다.
+  결정**에 대해 라운드 2 다시.
 - **Breaking change의 actionable error 계약.**
   스키마·서브커맨드 리네임 시 옛 경로는 `actionable error`로 새 경로를
   가리켜야 한다. `cautilus scenario normalize skill`이 workflow 인풋을
   받았을 때 `...use cautilus scenario normalize workflow instead.`로
-  답하는 것이 표준. 리네임/삭제 슬라이스 작업 시 자동 적용.
+  답하는 것이 표준.
 - **Pre-deletion parity gate는 시맨틱 byte-identity로 읽는다.**
   이중 구현 제거 전에 "byte-identical output" 같은 게이트가 걸려 있어도
   실제 운영 기준은 `jq --sort-keys 'sort_by(.proposalKey)'` 후 byte
   동일이다. Raw byte 수준에서 남은 차이(JSON 키 순서 등)가 정보 손실이
   없으면 게이트 통과로 판단하고 rationale을 커밋/핸드오프에 명시한다.
+- **Standing gate 먼저, 슬라이스 나중.**
+  이번 세션 #1 슬라이스(링크 린터)가 그 예시. standing gate를 먼저
+  올리면 이후 같은 세션의 다른 슬라이스가 자동 검증된다. 다수 파일
+  카스케이드를 수반하는 슬라이스를 계획 중이면, 그 드리프트 클래스를
+  잡는 린터가 이미 있는지 먼저 확인하고, 없으면 린터부터 올린다.
+- **Follow-up 번호는 스펙에서 삭제될 때 재넘버링한다.**
+  gap을 남기면 cross-ref가 "왜 #7이 없지?"로 깨져 보이고, 다음 세션이
+  작업 전에 스펙을 읽을 때 불필요한 확인 비용이 붙는다. 삭제 + 재넘버링
+  + cross-ref 갱신(테스트 코멘트, 스펙 내부 ref)을 한 커밋에 묶어라.
 
 ## Premortem Hazards
 
@@ -202,13 +202,14 @@ aedab10 Align Go normalize output with Node parity before deletion
   (예: `tool_use`, `pipeline`) 유혹이 와도 하지 말자.
   `archetype-boundary.spec.md`가 요구하는 대로, 새 아키타입은 schema +
   helper + CLI + contract + fixture + README 블록을 한 슬라이스에 같이
-  가져올 때만 추가한다.
+  가져올 때만 추가한다. 그때는 follow-up 9 (Archetype-extension
+  hardening)을 먼저 또는 함께 집는다.
 - 다음 세션이 **push를 건너뛰고** 새 슬라이스부터 시작하면, origin은
-  아직 이번 세션 결과물을 못 본 상태로 남는다. CI `verify.yml`은 push
-  시에만 돌므로 Actions 기반 외부 공유/게이트가 지연된다. `push 여부`를
-  의식적으로 결정하고 넘어갈 것.
+  아직 이번 세션(그리고 이전 여러 세션의) 결과물을 못 본 상태로 남는다.
+  CI `verify.yml`은 push 시에만 돌므로 Actions 기반 외부 공유/게이트가
+  지연된다. `push 여부`를 의식적으로 결정하고 넘어갈 것.
 - 3개 follow-up을 한 슬라이스에 묶으려는 유혹도 피할 것. 특히 follow-up
-  6 (behavior-intent 리네이밍)은 `cautilus.behavior_intent.v1` 스키마
+  5 (behavior-intent 리네이밍)은 `cautilus.behavior_intent.v1` 스키마
   bump를 수반하므로 독립 슬라이스여야 한다.
 
 ## References
@@ -223,3 +224,5 @@ aedab10 Align Go normalize output with Node parity before deletion
 - [docs/evaluation-process.md](./evaluation-process.md)
 - [internal/runtime/proposals.go](../internal/runtime/proposals.go)
 - [internal/runtime/proposals_test.go](../internal/runtime/proposals_test.go)
+- [internal/app/examples.go](../internal/app/examples.go)
+- [scripts/check-markdown-links.mjs](../scripts/check-markdown-links.mjs)
