@@ -18,9 +18,9 @@
   iterative premortem 등은 **사용자가 명시적으로 요청할 때만 발동**한다.
   에이전트가 "필요하겠다" 고 판단해서 자발적으로 돌리지 않는다. 사용자가
   안 부르면 안 돈다. 다만 패턴 자체의 유용성은 유지되므로 문서는 남긴다.
-- 시작 branch는 `main`이다. 로컬이 `origin/main`보다 16커밋 앞서 있다
+- 시작 branch는 `main`이다. 로컬이 `origin/main`보다 17커밋 앞서 있다
   (아래 `Unpushed Commits` 참고). **다음 세션의 첫 작업은 push 여부
-  결정**이다. 이 16커밋은 여러 세션에 걸쳐 누적된 것이고, 각 커밋은
+  결정**이다. 이 17커밋은 여러 세션에 걸쳐 누적된 것이고, 각 커밋은
   독립적으로 검증 완료된 상태다.
 - product-owned seam이면 `cautilus`에서 먼저 고친다.
 
@@ -49,10 +49,20 @@
 - `archetype-boundary.spec.md` follow-up 4, 7, 9, 10번이 은퇴하고
   나머지 1-9로 리넘버됐다. `proposals_test.go`의 cross-ref도 같이
   따라붙었다.
+- `cautilus --help`가 flat 34줄 대신 4개 purpose 그룹으로 나온다
+  (`Run an evaluation scenario` / `Set up and check a repo` /
+  `Turn results into next moves` / `Introspection`). registry.json은
+  top-level `groups` 선언 + 커맨드별 `group`/`usage`/`example` inline 구조로
+  바뀌었다. `cautilus commands --json` 페이로드는 기존 `usage`/`examples`
+  배열을 그룹 순서로 derive해 유지하고 `groups`만 추가로 노출 (schema
+  version `cautilus.commands.v1` 그대로). archetype-boundary follow-up #2가
+  이 슬라이스로 은퇴했고, 나머지 follow-up은 1-8로 리넘버됐다.
 
 ## Unpushed Commits
 
 ```
+1ae488d Group cautilus --help by purpose instead of flat usage list
+47480fa Fill in SHA placeholder + count bump in handoff
 412a1fb Retire auto-apply premortem mandate + apply retrospective fixes
 0e2402a Refresh handoff after 5-slice archetype-followup pass
 c5407ce Mirror the three-archetype preamble into SKILL.md
@@ -86,18 +96,17 @@ aedab10 Align Go normalize output with Node parity before deletion
 1. **Push 결정.** 16개의 미푸시 커밋을 `origin/main`에 올릴지 확인. 지난
    세션 + 이번 세션 내내 "push는 마지막" 이라고 해서 의도적으로 보류했다.
    푸시하면 Actions `verify.yml`이 돌고, 별도 릴리스 커밋이 아니므로
-   `release-artifacts.yml`은 트리거되지 않는다. 16커밋은 검증된 상태라
+   `release-artifacts.yml`은 트리거되지 않는다. 17커밋은 검증된 상태라
    한 번에 올려도 안전.
 2. `archetype-boundary.spec.md` follow-up 중 하나 골라 다음 슬라이스 진행
-   (스펙에 1-9번으로 번호 매겨져 있음). 짧은/중간 슬라이스 후보:
-   - 2 `cautilus --help` 그룹핑 (registry에 `group` 필드 추가 + 렌더러)
-   - 3 `cautilus adapter init --scenario <chatbot|skill|workflow>` 스타터
-   - 4 inline glossary 패스 (README)
-   - 7 README section ordering (4와 페어)
+   (스펙에 1-8번으로 번호 매겨져 있음). 짧은/중간 슬라이스 후보:
+   - 2 `cautilus adapter init --scenario <chatbot|skill|workflow>` 스타터
+   - 3 inline glossary 패스 (README)
+   - 6 README section ordering (3과 페어)
    사이즈 큰 슬라이스:
-   - 1 + 6 `cautilus scenarios` 커맨드 + doctor 힌트 (함께 — 6은 1에 의존)
-   - 5 behavior-intent `workflow_conversation` 리네이밍 (스키마 bump 필요)
-   - 9 Archetype-extension hardening (다음 4번째 아키타입 직전/함께)
+   - 1 + 5 `cautilus scenarios` 커맨드 + doctor 힌트 (함께 — 5는 1에 의존)
+   - 4 behavior-intent `workflow_conversation` 리네이밍 (스키마 bump 필요)
+   - 8 Archetype-extension hardening (다음 4번째 아키타입 직전/함께)
 3. **remaining quality gate 후보**: 지금 `npm run verify` 체인은
    eslint + specs + links + golangci + go vet + govulncheck + go test
    -race + node test. 충분히 두껍다. 추가 gate는 dogfood 증거가 요청할 때만.
@@ -254,7 +263,7 @@ Trigger 참고). 상세 논의와 다른 repo에 이식할 제안은
   (예: `tool_use`, `pipeline`) 유혹이 와도 하지 말자.
   `archetype-boundary.spec.md`가 요구하는 대로, 새 아키타입은 schema +
   helper + CLI + contract + fixture + README 블록을 한 슬라이스에 같이
-  가져올 때만 추가한다. 그때는 follow-up 9 (Archetype-extension
+  가져올 때만 추가한다. 그때는 follow-up 8 (Archetype-extension
   hardening)을 먼저 또는 함께 집는다.
 - 다음 세션이 **push를 건너뛰고** 새 슬라이스부터 시작하면, origin은
   아직 이번 세션(그리고 이전 여러 세션의) 결과물을 못 본 상태로 남는다.

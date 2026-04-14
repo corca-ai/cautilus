@@ -138,35 +138,31 @@ with this spec:
 
 1. **`cautilus scenarios` command.** Print the three archetypes with one
    example input path and one next-step command each. Machine-readable
-   (`--json`) companion so an agent can pick by archetype. Pairs with the
-   next item.
-2. **`cautilus --help` grouping.** Replace the 34-line flat usage list with
-   purpose-based groups: `Run an evaluation scenario`, `Set up and check a
-   repo`, `Turn results into next moves`, `Introspection`. Backed by a
-   `group` field in `internal/cli/command-registry.json`.
-3. **`cautilus adapter init --scenario <chatbot|skill|workflow>`.** Emit a
+   (`--json`) companion so an agent can pick by archetype. Pairs with
+   follow-up 5 (doctor next-step hint).
+2. **`cautilus adapter init --scenario <chatbot|skill|workflow>`.** Emit a
    starter adapter template whose command slots match the selected
    archetype (for example, skill pre-fills `skill_test_command_templates`).
-4. **Inline-glossary pass across README.** First use of `held-out`,
+3. **Inline-glossary pass across README.** First use of `held-out`,
    `packet`, `bounded`, `executor variant`, `review variant`,
    `intent-first` gets a one-line parenthetical definition. No separate
    glossary document; definitions stay next to first use.
-5. **Surface-name disambiguation.** `workflow_conversation` (chatbot
+4. **Surface-name disambiguation.** `workflow_conversation` (chatbot
    archetype) and `operator_workflow_recovery` (workflow archetype) both
    contain the word `workflow` in the catalog. Consider renaming
    `workflow_conversation` to `conversation_continuity` in
    `cautilus.behavior_intent.v1` so archetype vocabulary does not leak
    across boundaries. Requires a bump of `cautilus.behavior_intent.v1` or a
    catalog-level deprecation.
-6. **Doctor next-step hint.** After `ready`, print a short pointer to
+5. **Doctor next-step hint.** After `ready`, print a short pointer to
    `cautilus scenarios` so a first-time user knows which scenario applies
    to their situation.
-7. **README section ordering.** Scenarios block is the most scannable
+6. **README section ordering.** Scenarios block is the most scannable
    section for first-time readers, but currently sits below Why Cautilus
    and Core Flow. Reorder the top of README so readers hit the three
    scenario blocks before the philosophy block. Pairs naturally with
-   follow-up 4 (inline glossary).
-8. **Experimental archetype escape hatch.** This spec requires every
+   follow-up 3 (inline glossary).
+7. **Experimental archetype escape hatch.** This spec requires every
    first-class archetype to ship in a coordinated slice. That discipline
    is intentional, but leaves no room for research prototypes. Consider a
    relaxed namespace (location TBD — keep the `prototypes/` hint Go-side
@@ -174,7 +170,7 @@ with this spec:
    rules for exploratory surfaces, and a promotion checklist into
    first-class status when the surface earns a schema/helper/CLI/
    contract slice.
-9. **Archetype-extension hardening.** Surfaced by an
+8. **Archetype-extension hardening.** Surfaced by an
     onboarding-lens premortem on the Node-removal slice (round 2): a new
     contributor told to add a 4th first-class archetype must currently
     grep across files this spec does not name, and the 1:1 mapping has
@@ -199,9 +195,9 @@ with this spec:
       silently accept another archetype's `targetKind` and break the
       1:1 mapping invariant.
     - `internal/cli/command-registry.json` already has a Source Guard
-      for the `commands` array path; the `usage` and `examples` arrays
-      in the same file are NOT guarded. Decide whether to widen the
-      guard or leave them as cosmetic.
+      for the `commands` array paths; the per-command `group`, `usage`,
+      and `example` inline fields are NOT guarded. Decide whether to
+      widen the guard or leave them as cosmetic.
     - `skills/cautilus/SKILL.md` references list ordering (chatbot ·
       skill-* · workflow). Source-guard row pinning the archetype
       reference order would prevent skill-loading agents from missing
