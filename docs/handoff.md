@@ -66,17 +66,23 @@
    과 `npm run release:smoke-install -- --channel install_sh --version v0.4.0`.
    Actions가 아직 굴러가는 중이면 완료 대기 후 실행.
 2. 아래 `archetype-boundary.spec.md` follow-up 중 하나 골라 다음 슬라이스
-   진행:
-   - `cautilus scenarios` 커맨드 (3 archetype을 human/machine 둘 다로 노출)
-   - `cautilus --help` 그룹핑 (registry JSON에 `group` 필드 + 렌더러)
-   - `cautilus adapter init --scenario <chatbot|skill|workflow>` 템플릿
-   - `--example-input` 플래그 (normalize/evaluate 커맨드마다)
-   - README inline glossary pass (held-out, packet, bounded, executor
+   진행 (스펙에 1-12번으로 번호 매겨져 있음):
+   - 1 `cautilus scenarios` 커맨드
+   - 2 `cautilus --help` 그룹핑 (registry JSON에 `group` 필드)
+   - 3 `cautilus adapter init --scenario <chatbot|skill|workflow>` 템플릿
+   - 4 `--example-input` 플래그
+   - 5 README inline glossary (held-out, packet, bounded, executor
      variant, review variant, intent-first)
-   - behavior-intent surface 이름 `workflow_conversation` → 다른 이름으로
-     disambiguation
-   - `cautilus doctor` ready 메시지 뒤 시나리오 힌트 추가
-   - bundled SKILL.md 상단에 3 archetype 압축 preamble
+   - 6 behavior-intent surface `workflow_conversation` 리네이밍
+   - 7 `cautilus doctor` ready 메시지 뒤 시나리오 힌트
+   - 8 bundled SKILL.md 상단 3-archetype preamble
+   - 9 fixture 네이밍 일관화 (`workflow-input.json` 추가/리네임)
+   - 10 `narrative-adapter.yaml` source_documents에
+     `archetype-boundary.spec.md` 추가
+   - 11 README 섹션 재배치 (Scenarios를 Why 위로)
+   - 12 experimental archetype escape hatch (`prototypes/` 네임스페이스)
+   - 스펙 범위 밖: skill 내부 sub-drift 재검토 (`archetype-boundary.spec.md`
+     "Why skill stays unified" 참고, 필요 시 재의결)
 3. `corca-ai/charness`에 narrative / quality 스킬 개선 이슈는 이미
    등록됨. 다음 세션에서는 issue #22, #23에 후속 업데이트만 필요 시 남긴다.
 

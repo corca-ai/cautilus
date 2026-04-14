@@ -55,6 +55,17 @@ invocations and must recover when it hits a known blocker.
 - example fixture: [workflow-recovery-input.json](../../fixtures/scenario-proposals/workflow-recovery-input.json)
 - behavior surfaces: `operator_workflow_recovery`
 
+## Why skill stays unified
+
+The skill archetype covers three sub-drifts: validation, trigger selection,
+and execution quality. The same `evaluationRuns` shape describes all three,
+and a single host session commonly evaluates more than one at once (one
+skill invocation produces trigger + execution signals together). Splitting
+them into three archetypes would duplicate schema, helper, and CLI without
+a clear user-facing payoff. The split stays at the `surface` level inside
+one helper instead. Revisit this decision only when a sub-drift diverges in
+input shape or is owned by a distinct host class.
+
 ## Invariants
 
 - No archetype helper may accept another archetype's schema id.
@@ -157,6 +168,28 @@ with this spec:
    archetype blocks from README into the top of
    [skills/cautilus/SKILL.md](../../skills/cautilus/SKILL.md) so a
    skill-loading agent starts with the same mental model as a human.
+9. **Fixture naming parity.** `workflow-recovery-input.json` breaks the
+   `<archetype>-input.json` convention that `chatbot-input.json` and
+   `skill-input.json` follow. Add a canonical
+   `workflow-input.json` and keep `workflow-recovery-input.json` only as a
+   named specialized example, or rename outright. Whichever path is chosen,
+   the generic example file name should match the archetype name.
+10. **Narrative adapter source alignment.**
+    [`.agents/narrative-adapter.yaml`](../../.agents/narrative-adapter.yaml)
+    `source_documents` should include `archetype-boundary.spec.md`, so
+    narrative runs keep README, SKILL.md, and master-plan aligned to the
+    three-archetype contract.
+11. **README section ordering.** Scenarios block is the most scannable
+    section for first-time readers, but currently sits below Why Cautilus
+    and Core Flow. Reorder the top of README so readers hit the three
+    scenario blocks before the philosophy block. Pairs naturally with
+    follow-up 5 (inline glossary).
+12. **Experimental archetype escape hatch.** This spec requires every
+    first-class archetype to ship in a coordinated slice. That discipline
+    is intentional, but leaves no room for research prototypes. Consider a
+    `scripts/agent-runtime/prototypes/` namespace with relaxed rules for
+    exploratory surfaces, and a promotion checklist into first-class
+    status when the surface earns a schema/helper/CLI/contract slice.
 
 Every item above must keep the 1:1 archetype mapping intact. When adding a
 new first-class evaluation target, update this spec first and introduce the
