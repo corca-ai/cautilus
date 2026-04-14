@@ -109,6 +109,8 @@ executor-variant runners, local Codex and Claude plugin packaging metadata,
 and local tests for the bounded evaluation surface.
 It also now includes checked-in GitHub workflows for `verify` and tagged
 release artifacts, so the release/install surface is not only prose.
+After a tag is published, verify the public release surface with
+`npm run release:verify-public -- --version v0.3.0`.
 
 ## Current Product Surface
 

@@ -109,6 +109,8 @@ standalone acceptance boundary만 남긴다.
 | install.sh | fixed | need_cmd uname |
 | scripts/release/binary-assets.mjs | file_exists |  |
 | scripts/release/binary-assets.mjs | fixed | binaryAssetName |
+| scripts/release/verify-public-release.mjs | file_exists |  |
+| scripts/release/verify-public-release.mjs | fixed | verifyPublicRelease |
 | docs/master-plan.md | fixed | standalone installable CLI plus bundled reusable skill |
 | docs/master-plan.md | fixed | durable workflow behavior |
 

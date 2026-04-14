@@ -20,6 +20,11 @@
 
 ## Current State
 
+- release hardening now includes a product-owned public verification helper:
+  - `npm run release:verify-public -- --version <tag>`
+  - it verifies the tagged GitHub release asset matrix, checksum assets,
+    rendered `Cautilus.rb`, release notes, and published Homebrew tap formula
+- latest public release `v0.3.0` passes the new public verification helper.
 - `Cautilus`의 GEPA-style optimize search는 이제 rejected sibling checkpoint
   signal을 merge selection, mutation parent ordering, reflection batch ordering
   모두에서 direct policy로 해석한다.
@@ -68,6 +73,7 @@
 
 - `npm run verify`
 - `npm run hooks:check`
+- `npm run release:verify-public -- --version v0.3.0`
 - `npm run dogfood:self`
 - `npm run dogfood:self:experiments`
 
@@ -80,6 +86,9 @@
    - 아니면 optimize-search contract를 유지하고 다른 roadmap slice로
      넘어갈지
 3. 다음 slice를 고른 뒤 `npm run verify`, `npm run hooks:check`를 다시 닫는다.
+4. release/consumer hardening을 계속한다면 public release verification helper
+   위에서 install smoke matrix automation이나 external consumer onboarding으로
+   넘어간다.
 
 ## Discuss
 

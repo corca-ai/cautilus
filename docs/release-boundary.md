@@ -20,6 +20,7 @@ These are part of the reusable release boundary:
 - [install.sh](../install.sh)
 - [scripts/release/](../scripts/release)
 - [scripts/release/check-codex-marketplace.mjs](../scripts/release/check-codex-marketplace.mjs)
+- [scripts/release/verify-public-release.mjs](../scripts/release/verify-public-release.mjs)
 - [docs/contracts/](./contracts)
 - [fixtures/workbench/review-verdict.schema.json](../fixtures/workbench/review-verdict.schema.json)
 - checked-in product example fixtures under
@@ -65,7 +66,10 @@ The current honest install story is:
     assets
 12. when cutting a tagged release, render and publish the Homebrew formula with
     [render-homebrew-formula.mjs](../scripts/release/render-homebrew-formula.mjs)
-13. keep `cautilus update` install-channel-aware:
+13. after the tag is live, verify the public GitHub release assets and tap
+    formula with
+    [verify-public-release.mjs](../scripts/release/verify-public-release.mjs)
+14. keep `cautilus update` install-channel-aware:
     - Homebrew installs run `brew upgrade cautilus`
     - release-asset installs re-materialize the managed binary wrapper
 

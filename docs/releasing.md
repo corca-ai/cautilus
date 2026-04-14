@@ -60,14 +60,29 @@ the Homebrew formula, publish the formula to the tap repo when
 `HOMEBREW_TAP_TOKEN` is available, generate GitHub artifact attestations from
 the checksum manifest, and attach those artifacts to the GitHub release.
 
-4. After GitHub exposes the release assets, verify the public installer path:
+4. After GitHub exposes the release assets, verify the published release
+   surface:
+
+```bash
+npm run release:verify-public -- --version v0.3.0
+```
+
+This checks the tagged GitHub release for:
+
+- the expected binary asset matrix
+- the release checksum assets
+- the rendered `Cautilus.rb` artifact
+- the checked-in release notes asset
+- the published Homebrew tap formula, unless `--skip-tap-check` is used
+
+5. Verify the public installer path:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh | sh
 cautilus --version
 ```
 
-5. Verify the supported install smoke matrix before treating the release line
+6. Verify the supported install smoke matrix before treating the release line
    as closed:
 
 - native macOS + `install.sh`
@@ -87,9 +102,6 @@ For Homebrew installs, also confirm:
 ```bash
 cautilus update
 ```
-
-6. Confirm the tagged checksum manifest was attached alongside the binary
-   assets.
 
 7. Verify the public provenance for one released binary with GitHub CLI:
 
@@ -113,8 +125,9 @@ node ./scripts/release/render-homebrew-formula.mjs \
   --sha256 <sha256>
 ```
 
-10. Confirm the Homebrew tap repo was updated with the rendered formula.
-   The default target for this repo is `corca-ai/homebrew-tap`.
+10. Confirm the Homebrew tap repo was updated with the rendered formula if you
+    skipped the scripted tap check. The default target for this repo is
+    `corca-ai/homebrew-tap`.
 
 ## Guardrails
 
