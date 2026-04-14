@@ -389,6 +389,9 @@ review-admissible parents and should prefer:
   - the current bounded slice does not add a separate explicit feedback-entry
     cap here; existing bounds come from frontier parent retention, scenario
     filtering, and review-admissible merge-parent selection
+- rejected sibling scenario-scoped checkpoint feedback may also upweight the
+  same scenarios inside merge selection, so tied parent groups keep pressure on
+  explicitly rejected gaps before prompt synthesis
 - then cost and duration telemetry as late tie-breakers
 
 The current bounded default is budget-aware: `light` stays `final_only` to
@@ -541,6 +544,8 @@ The current bounded slice already proves:
 - scenario-aware bounded two- or three-parent merge selection using candidate
   metadata, weakest-frontier weighting, telemetry tie-breakers, and explicit
   three-parent activation policy
+- rejected sibling scenario-scoped checkpoint feedback can also bias merge
+  selection toward parent groups that name the same unresolved scenarios
 - scenario-aware merge-prompt checkpoint feedback from relevant rejected
   frontier siblings
   - with no separate explicit feedback-entry cap in the current bounded slice

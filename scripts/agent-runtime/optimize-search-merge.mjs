@@ -45,18 +45,52 @@ function frontierBestScores(frontierCandidates, scenarioIds) {
 	return scores;
 }
 
-function scenarioPriorityWeights(frontierCandidates, scenarioIds) {
+function scopedFeedbackEntries(candidate) {
+	return (Array.isArray(candidate?.checkpointFeedback) ? candidate.checkpointFeedback : [])
+		.filter((entry) => Array.isArray(entry?.scenarioIds) && entry.scenarioIds.length > 0);
+}
+
+function feedbackEntryBonus(entry) {
+	return Math.max(1, Array.isArray(entry?.feedbackMessages) ? entry.feedbackMessages.length : 0) * 100;
+}
+
+function accumulateFeedbackBonus(bonuses, selectedScenarioIds, entry) {
+	const bonus = feedbackEntryBonus(entry);
+	for (const scenarioId of entry.scenarioIds) {
+		if (!selectedScenarioIds.has(scenarioId)) {
+			continue;
+		}
+		bonuses.set(scenarioId, (bonuses.get(scenarioId) || 0) + bonus);
+	}
+}
+
+function checkpointFeedbackBonuses(feedbackCandidates, scenarioIds) {
+	const selectedScenarioIds = new Set(
+		(Array.isArray(scenarioIds) ? scenarioIds : [])
+			.filter((scenarioId) => typeof scenarioId === "string" && scenarioId.length > 0),
+	);
+	const bonuses = new Map([...selectedScenarioIds].map((scenarioId) => [scenarioId, 0]));
+	for (const candidate of Array.isArray(feedbackCandidates) ? feedbackCandidates : []) {
+		for (const entry of scopedFeedbackEntries(candidate)) {
+			accumulateFeedbackBonus(bonuses, selectedScenarioIds, entry);
+		}
+	}
+	return bonuses;
+}
+
+function scenarioPriorityWeights(frontierCandidates, scenarioIds, feedbackCandidates = []) {
+	const feedbackBonuses = checkpointFeedbackBonuses(feedbackCandidates, scenarioIds);
 	const weights = new Map();
 	for (const scenarioId of scenarioIds) {
 		const scores = frontierCandidates
 			.map((candidate) => heldOutScoreForCandidate(candidate, scenarioId))
 			.filter((score) => typeof score === "number");
 		if (scores.length === 0) {
-			weights.set(scenarioId, 1);
+			weights.set(scenarioId, 1 + (feedbackBonuses.get(scenarioId) || 0));
 			continue;
 		}
 		const averageScore = scores.reduce((sum, score) => sum + score, 0) / scores.length;
-		weights.set(scenarioId, Math.max(1, 100 - averageScore));
+		weights.set(scenarioId, Math.max(1, 100 - averageScore) + (feedbackBonuses.get(scenarioId) || 0));
 	}
 	return weights;
 }
@@ -182,12 +216,12 @@ function preferredMergeGroup(bestPair, bestTriple, threeParentPolicy) {
 export function selectMergeParents(
 	frontierCandidates,
 	scenarioIds,
-	{ maxParents = 3, threeParentPolicy = "coverage_expansion" } = {},
+	{ maxParents = 3, threeParentPolicy = "coverage_expansion", feedbackCandidates = [] } = {},
 ) {
 	if (frontierCandidates.length < 2) {
 		return null;
 	}
-	const scenarioWeights = scenarioPriorityWeights(frontierCandidates, scenarioIds);
+	const scenarioWeights = scenarioPriorityWeights(frontierCandidates, scenarioIds, feedbackCandidates);
 	const bestFrontierScores = frontierBestScores(frontierCandidates, scenarioIds);
 	const boundedMaxParents = Math.max(2, Math.min(maxParents, 3, frontierCandidates.length));
 	const bestPair = bestGroupOfSize(frontierCandidates, 2, scenarioIds, scenarioWeights, bestFrontierScores);

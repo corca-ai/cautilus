@@ -27,6 +27,7 @@
   - multi-generation Pareto frontier retention
   - optional bounded merge candidate
   - scenario-aware bounded 2-3 parent merge selection
+  - rejected sibling scenario-scoped checkpoint feedback can bias merge selection
   - explicit `threeParentPolicy`
     - default `coverage_expansion`
     - `disabled` override
@@ -76,7 +77,7 @@
 
 ## Next Session
 
-1. merge selection을 rejected sibling checkpoint signals까지 더 system-aware하게 만들지 판단한다.
+1. merge selection을 rejected sibling checkpoint signals beyond scenario weighting까지 더 system-aware하게 만들지 판단한다.
 
 ## Discuss
 
@@ -95,8 +96,9 @@
   - finer bucket은 더 큰 search budget이나 반복 telemetry 패턴이 생길 때 다시 본다.
 - merge prompt rejected sibling feedback는 별도 explicit cap을 두지 않기로 했다.
   - 현재는 frontier parent retention, scenario filtering, review-admissible merge-parent selection으로 충분히 bounded하다고 본다.
-- 다음 세션의 첫 product decision은 merge selection을 rejected sibling checkpoint signals까지 더 system-aware하게 만들지 여부다.
-- 다음 세션의 첫 product decision은 merge prompt에 실리는 rejected sibling feedback cap을 따로 둘지 여부다.
+- rejected sibling scenario-scoped checkpoint feedback는 이제 merge selection에서도 scenario weighting에 반영한다.
+- 다음 세션의 첫 product decision은 merge selection이 scenario weighting을 넘어서
+  rejected sibling checkpoint signals를 더 직접적으로 해석해야 하는지 여부다.
 
 ## Premortem
 
