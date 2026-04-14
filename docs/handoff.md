@@ -8,136 +8,109 @@
   [README.md](../README.md),
   [AGENTS.md](../AGENTS.md),
   [docs/master-plan.md](./master-plan.md),
-  [docs/specs/current-product.spec.md](./specs/current-product.spec.md),
-  [docs/contracts/optimization-search.md](./contracts/optimization-search.md),
-  [scripts/agent-runtime/optimize-search-core.mjs](../scripts/agent-runtime/optimize-search-core.mjs),
-  [scripts/agent-runtime/optimize-search-mutation.mjs](../scripts/agent-runtime/optimize-search-mutation.mjs),
-  [scripts/agent-runtime/optimize-search-merge.mjs](../scripts/agent-runtime/optimize-search-merge.mjs),
-  [scripts/agent-runtime/optimize-search-flow.test.mjs](../scripts/agent-runtime/optimize-search-flow.test.mjs)
+  [docs/specs/index.spec.md](./specs/index.spec.md),
+  [docs/specs/archetype-boundary.spec.md](./specs/archetype-boundary.spec.md),
+  [docs/specs/current-product.spec.md](./specs/current-product.spec.md)
   를 읽는다.
 - 시작 branch는 현재 `main`이다.
 - product-owned seam이면 `cautilus`에서 먼저 고친다.
 
 ## Current State
 
-- release hardening now includes two product-owned post-release helpers:
-  - `npm run release:verify-public -- --version <tag>`
-  - `npm run release:smoke-install -- --channel install_sh --version <tag>`
-- external consumer onboarding now has:
-  - [docs/external-consumer-onboarding.md](./external-consumer-onboarding.md)
-  - `npm run consumer:onboard:smoke`
-  - the smoke helper proves `install -> adapter init -> minimal runnable adapter
-    wiring -> adapter resolve -> doctor ready` in a temp git repo
-- release hardening now includes a product-owned public verification helper:
-  - `npm run release:verify-public -- --version <tag>`
-  - it verifies the tagged GitHub release asset matrix, checksum assets,
-    rendered `Cautilus.rb`, release notes, and published Homebrew tap formula
-- latest public release `v0.3.0` passes the new public verification helper.
-- `Cautilus`의 GEPA-style optimize search는 이제 rejected sibling checkpoint
-  signal을 merge selection, mutation parent ordering, reflection batch ordering
-  모두에서 direct policy로 해석한다.
-- self-dogfood claim surface를 dogfood evidence 기준으로 다시 좁혔다.
-  - root standing gate adapter는 이제 standalone binary / bundled skill
-    전체를 암시하지 않고 `deterministic self-consumer standing gate`로
-    스코프를 제한한다.
-  - gate-honesty / review-completion / skill-surface experiment prompts는
-    claim boundary, timeout enforcement, published latest bundle artifact를
-    더 직접 보게 된다.
-  - skill-surface experiment timeout은 `30000ms`로 완화했다.
-- 지금 닫힌 핵심:
-  - reflective mutation + multi-generation Pareto frontier
-  - frontier-promotion review feedback reinjection
-  - scenario-scoped checkpoint feedback의 다음 reflection batch 우선순위 반영
-  - concern-level rejected lineage의 다음 mutation batch repair-first 우선화
-  - finding-level severity를 보존한 scenario-level reflection ordering
-  - bounded 2-3 parent merge + `threeParentPolicy`
-  - rejected sibling scenario-scoped checkpoint feedback의 merge selection weighting 반영
-  - rejected sibling scenario-scoped checkpoint severity-aware merge
-    tie-breaking
-  - selection-cap public reason codes
-  - concern/blocker 2-bucket pruning
-  - final-only full-gate fallback
-- optimize-search `v2`로 보던 최소 기준은 사실상 닫혔다.
-  - checkpoint rejection이 단순 prompt context나 weighting이 아니라
-    merge/mutation decision policy에도 명시적으로 반영된다.
-- latest canonical self-dogfood published bundle는 `pass / accept-now` 상태다.
-  - [artifacts/self-dogfood/latest/summary.json](../artifacts/self-dogfood/latest/summary.json)
-- latest self-dogfood experiments bundle는 `pass / accept-now` 상태다.
-  - [artifacts/self-dogfood/experiments/latest/summary.json](../artifacts/self-dogfood/experiments/latest/summary.json)
-  - `gate-honesty-b`는 이제 baseline `origin/main` claim excerpt를 prompt에
-    같이 넣어 current candidate가 baseline보다 더 좁고
-    evidence-proportional하다는 비교를 직접 통과한다.
-- 최근 관련 커밋:
-  - `2393cf9` Preserve checkpoint severity in reflection feedback
-  - `9cc12a3` Prioritize rejected mutation repairs under tight budget
-  - `ade8bfa` Respect checkpoint severity in merge parent selection
-  - `df9b4d1` rejected sibling signals bias merge selection
-  - `fe99139` checkpointed scenarios prioritized in repair
-  - `ff07f6b` pruning stays bounded to concern/blocker
-  - `3943bd4` selection-cap reason codes stabilized
-  - `95fd2fd` three-parent policy exposed
+- 아키타입 경계가 실제 코드·문서에 고정됐다. `cautilus.archetype.v1`
+  계약이 [archetype-boundary.spec.md](./specs/archetype-boundary.spec.md)에
+  체크인됐고, `lint:specs`가 1:1 mapping을 지킨다.
+- 3 first-class archetype과 각각의 schema / helper / CLI / contract:
+  - **chatbot** — `cautilus.chatbot_normalization_inputs.v1` ·
+    `chatbot-proposal-candidates.mjs` ·
+    `cautilus scenario normalize chatbot` ·
+    [chatbot-normalization.md](./contracts/chatbot-normalization.md)
+  - **skill** — `cautilus.skill_normalization_inputs.v2` ·
+    `skill-proposal-candidates.mjs` ·
+    `cautilus scenario normalize skill` ·
+    [skill-normalization.md](./contracts/skill-normalization.md)
+  - **workflow** — `cautilus.workflow_normalization_inputs.v1` ·
+    `workflow-proposal-candidates.mjs` ·
+    `cautilus scenario normalize workflow` ·
+    [workflow-normalization.md](./contracts/workflow-normalization.md)
+- `docs/workflow.md`는 `docs/evaluation-process.md`로 개명됐고 본문도
+  "process" 표현으로 통일됐다. 패키지드 스킬 references와 모든 참조 링크가
+  따라갔다.
+- README에 3 archetype "Scenarios" 섹션 신규 블록이 들어갔다. 각 블록이
+  **What you bring / Input / What happens / What comes back / Next action**
+  5칸으로 정렬돼 있다.
+- Go CLI도 `scenario normalize workflow` 커맨드를 노출하고,
+  `scenario normalize skill`은 workflow 인풋을 `actionable error`로 거부한다.
+- 공통 유틸은 `scripts/agent-runtime/shared/normalized-run.mjs`로 분리됐다.
+- 이번 슬라이스로 하위호환 breaking change가 있었다:
+  - `cautilus.skill_normalization_inputs.v1` 단종 (v2만 인정)
+  - `cautilus.workflow_normalization_inputs.v1` 신설
+  - `skill` 아키타입이 `cli_workflow` 인풋을 받지 않음
+  - `docs/workflow.md` 경로 제거
+- 버전은 `0.4.0`으로 올라갔다. 아직 태그·푸시는 안 됐다.
 
 ## Last Verified
 
-- `npm run verify`
-- `npm run hooks:check`
-- `npm run release:verify-public -- --version v0.3.0`
-- `npm run release:smoke-install -- --channel install_sh --version v0.3.0`
-- `npm run consumer:onboard:smoke`
-- `npm run dogfood:self`
-- `npm run dogfood:self:experiments`
+- `npm run lint:specs` (5 specs, 571 guard rows)
+- `npm run verify` (226/226 pass)
+- `npm run hooks:check` (ready)
+- `cautilus scenario normalize workflow --input ./fixtures/scenario-proposals/workflow-recovery-input.json` (정상 출력)
+- `cautilus scenario normalize skill --input ./fixtures/scenario-proposals/workflow-recovery-input.json` (actionable error로 거부)
 
 ## Next Session
 
-1. optimize-search `v2`는 implementation/evidence 둘 다 닫힌 slice로 보고,
-   다음 bounded improvement seam을 고른다.
-2. 우선순위 질문:
-   - richer merge heuristics가 실제로 필요한지
-   - 아니면 optimize-search contract를 유지하고 다른 roadmap slice로
-     넘어갈지
-3. 다음 slice를 고른 뒤 `npm run verify`, `npm run hooks:check`를 다시 닫는다.
-4. release/consumer hardening 다음 후보:
-   - Homebrew install smoke를 실제 managed helper로 더 다듬을지
-   - external consumer onboarding smoke를 archetype-specific starter kits로
-     넓힐지
+1. `v0.4.0` 태그 + 푸시. GitHub Actions release workflow가 바이너리·checksum·
+   Homebrew formula를 생성.
+2. `release:verify-public -- --version v0.4.0`, `release:smoke-install`
+   으로 공개 surface 검증.
+3. 아래 `archetype-boundary.spec.md` follow-up 중 하나 골라 다음 슬라이스
+   진행:
+   - `cautilus scenarios` 커맨드 (3 archetype을 human/machine 둘 다로 노출)
+   - `cautilus --help` 그룹핑 (registry JSON에 `group` 필드 + 렌더러)
+   - `cautilus adapter init --scenario <chatbot|skill|workflow>` 템플릿
+   - `--example-input` 플래그 (normalize/evaluate 커맨드마다)
+   - README inline glossary pass (held-out, packet, bounded, executor
+     variant, review variant, intent-first)
+   - behavior-intent surface 이름 `workflow_conversation` → 다른 이름으로
+     disambiguation
+   - `cautilus doctor` ready 메시지 뒤 시나리오 힌트 추가
+   - bundled SKILL.md 상단에 3 archetype 압축 preamble
+4. 별도 트랙으로 `corca-ai/charness`에 narrative / quality 스킬 개선 이슈
+   등록 (이번 세션에 시작 못함, 다음 세션에 처리).
 
 ## Discuss
 
-- 현재 판단:
-  - optimize-search `v2`는 닫혔다고 봐도 된다.
-  - 더 나아가려면 이제 contract 확장보다 dogfood evidence가 먼저다.
-  - self-dogfood canonical surface는 충분히 정직해졌고, stronger claim
-    experiments도 모두 green이다.
+- 이번 세션의 판단:
+  - 구현 편의(한 헬퍼에 3가지 드리프트)가 UX를 이기지 않도록 물리적으로
+    파일·스키마·CLI를 쪼갰다.
+  - 하위호환보다 mental model 정렬이 우선이라는 기조를 유지했다.
 - 아직 열려 있는 질문:
-  - richer merge heuristics가 실제로 필요한지
-  - 아니면 현재 bounded search seam을 유지하고 다른 roadmap slice로 넘어갈지
+  - 영어 독자도 `held-out`, `packet`, `bounded` 같은 용어를 자연히 알까? →
+    inline glossary 슬라이스에서 해결.
+  - `cautilus scenarios`가 `cautilus commands`와 어떻게 관계 맺을지 결정
+    필요 (동일 registry 확장인가, 별도 리스트인가).
 - 아직 의도적으로 안 하는 것:
-  - multi-prompt or multi-component coupled updates
-  - fine-tuning or trainer orchestration
-  - consumer prompt auto-apply
+  - 한국어 `README.ko.md` (영문 자체를 먼저 쉽게 만들기로 결정)
+  - backward-compat shim (깔끔히 깼음)
 
 ## Premortem
 
-- 가장 쉬운 오해: optimize-search seam을 더 만지는 것이 자동으로 다음 최선의
-  수라는 해석.
-  아니다. 이제는 evidence 없이 heuristic만 더 얹을 위험이 더 크다.
-- 다음 세션에서 가장 쉬운 실수:
-  optimize-search `v2`가 이미 닫혔는데도 self-dogfood evidence 정리를
-  또 같은 seam에서 반복하는 것.
-  다음 수는 이제 남은 heuristic 필요성을 확인하거나 다른 roadmap slice로
-  이동하는 쪽이다.
-- optimize-search 쪽에서도 merge heuristics를 넓히면서 다시 packet
-  boundary를 흔들면 안 된다.
-  다음 slice는 먼저 dogfood evidence가 진짜 부족한 heuristic을 가리키는지
-  확인하는 편이 맞다.
+- 가장 쉬운 오해: 아키타입 확장을 미리 많이 해두려는 욕심. 세 번째가 들어
+  왔으니 네 번째(예: `tool_use`, `pipeline`)도 지금 만들자는 유혹. 하지
+  말자. `archetype-boundary.spec.md`가 요구하는 대로, 새 아키타입은
+  schema + helper + CLI + contract + fixture + README 블록을 한
+  슬라이스에 같이 가져올 때만 추가한다.
+- 가장 쉬운 실수: 다음 세션이 `0.4.0` 릴리즈 태그를 안 찍고 follow-up
+  슬라이스부터 진행하는 것. 태그와 공개 검증이 먼저다.
 
 ## References
 
 - [README.md](../README.md)
 - [docs/master-plan.md](./master-plan.md)
+- [docs/specs/archetype-boundary.spec.md](./specs/archetype-boundary.spec.md)
 - [docs/specs/current-product.spec.md](./specs/current-product.spec.md)
-- [docs/contracts/optimization-search.md](./contracts/optimization-search.md)
-- [scripts/agent-runtime/optimize-search-core.mjs](../scripts/agent-runtime/optimize-search-core.mjs)
-- [scripts/agent-runtime/optimize-search-mutation.mjs](../scripts/agent-runtime/optimize-search-mutation.mjs)
-- [scripts/agent-runtime/optimize-search-merge.mjs](../scripts/agent-runtime/optimize-search-merge.mjs)
-- [scripts/agent-runtime/optimize-search-flow.test.mjs](../scripts/agent-runtime/optimize-search-flow.test.mjs)
+- [docs/contracts/chatbot-normalization.md](./contracts/chatbot-normalization.md)
+- [docs/contracts/skill-normalization.md](./contracts/skill-normalization.md)
+- [docs/contracts/workflow-normalization.md](./contracts/workflow-normalization.md)
+- [docs/evaluation-process.md](./evaluation-process.md)
+- [scripts/agent-runtime/shared/normalized-run.mjs](../scripts/agent-runtime/shared/normalized-run.mjs)
