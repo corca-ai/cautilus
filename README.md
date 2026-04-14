@@ -207,7 +207,9 @@ Current `core validated surface`:
 
 Current `product-owned helper surface`:
 
-- `chatbot` and `skill` normalization helpers
+- `chatbot`, `skill`, and `workflow` normalization helpers (one per
+  first-class archetype; shipped through
+  `cautilus scenario normalize {chatbot,skill,workflow}`)
 - scenario proposal packet assembly and proposal generation
 - scenario telemetry summaries
 - normalized evidence bundling
@@ -433,14 +435,9 @@ The current proof surface is split on purpose:
   adapter readiness diagnosis
 - [scripts/agent-runtime/scenario-history.mjs](./scripts/agent-runtime/scenario-history.mjs):
   scenario selection, graduation, and history helpers
-- [scripts/agent-runtime/chatbot-proposal-candidates.mjs](./scripts/agent-runtime/chatbot-proposal-candidates.mjs):
-  chatbot-shaped conversation and blocked-run summaries to proposal-candidate
-  helper
-- [scripts/agent-runtime/skill-proposal-candidates.mjs](./scripts/agent-runtime/skill-proposal-candidates.mjs):
-  skill-validation and durable-workflow summaries to proposal-candidate helper
-- [scripts/agent-runtime/consumer-example-fixtures.test.mjs](./scripts/agent-runtime/consumer-example-fixtures.test.mjs):
-  executable proof that multiple checked-in dogfood packet shapes normalize
-  cleanly
+- [internal/runtime/proposals.go](./internal/runtime/proposals.go):
+  archetype normalization for chatbot, skill, and workflow proposal candidates
+  (shipped through `cautilus scenario normalize {chatbot,skill,workflow}`)
 - [scripts/agent-runtime/scenario-proposals.mjs](./scripts/agent-runtime/scenario-proposals.mjs):
   proposal ranking and draft-scenario payload helpers
 - [scripts/agent-runtime/generate-scenario-proposals.mjs](./scripts/agent-runtime/generate-scenario-proposals.mjs):
@@ -863,8 +860,6 @@ Direct script usage is also supported:
 node scripts/resolve_adapter.mjs --repo-root .
 node scripts/init_adapter.mjs --repo-root .
 node scripts/agent-runtime/run-executor-variants.mjs --workspace . --output-dir /tmp/cautilus-review
-node scripts/agent-runtime/normalize-chatbot-proposals.mjs --input ./fixtures/scenario-proposals/chatbot-input.json
-node scripts/agent-runtime/normalize-skill-proposals.mjs --input ./fixtures/scenario-proposals/skill-input.json
 node scripts/agent-runtime/build-scenario-proposal-input.mjs --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json --family fast_regression
 node scripts/agent-runtime/generate-scenario-proposals.mjs --input ./fixtures/scenario-proposals/standalone-input.json
 node scripts/agent-runtime/build-evidence-input.mjs --report-file /tmp/cautilus-mode/report.json --scenario-results-file ./fixtures/scenario-results/example-results.json

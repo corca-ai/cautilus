@@ -338,23 +338,12 @@ standalone product여야 한다.
 | scripts/init_adapter.mjs | fixed | dumpYamlDocument |
 | scripts/agent-runtime/scenario-history.mjs | file_exists |  |
 | scripts/agent-runtime/scenario-history.mjs | fixed | SCENARIO_HISTORY_SCHEMA |
-| scripts/agent-runtime/chatbot-proposal-candidates.mjs | file_exists |  |
-| scripts/agent-runtime/chatbot-proposal-candidates.mjs | fixed | normalizeChatbotProposalCandidates |
-| scripts/agent-runtime/normalize-chatbot-proposals.mjs | file_exists |  |
-| scripts/agent-runtime/normalize-chatbot-proposals.mjs | fixed | CHATBOT_NORMALIZATION_INPUTS_SCHEMA |
 | scripts/agent-runtime/evaluate-skill.mjs | file_exists |  |
 | scripts/agent-runtime/evaluate-skill.mjs | fixed | SKILL_EVALUATION_INPUTS_SCHEMA |
 | scripts/agent-runtime/evaluate-skill.mjs | fixed | SKILL_EVALUATION_SUMMARY_SCHEMA |
-| scripts/agent-runtime/skill-proposal-candidates.mjs | file_exists |  |
-| scripts/agent-runtime/skill-proposal-candidates.mjs | fixed | normalizeSkillProposalCandidates |
-| scripts/agent-runtime/normalize-skill-proposals.mjs | file_exists |  |
-| scripts/agent-runtime/normalize-skill-proposals.mjs | fixed | SKILL_NORMALIZATION_INPUTS_SCHEMA |
-| scripts/agent-runtime/workflow-proposal-candidates.mjs | file_exists |  |
-| scripts/agent-runtime/workflow-proposal-candidates.mjs | fixed | normalizeWorkflowProposalCandidates |
-| scripts/agent-runtime/normalize-workflow-proposals.mjs | file_exists |  |
-| scripts/agent-runtime/normalize-workflow-proposals.mjs | fixed | WORKFLOW_NORMALIZATION_INPUTS_SCHEMA |
-| scripts/agent-runtime/consumer-example-fixtures.test.mjs | file_exists |  |
-| scripts/agent-runtime/consumer-example-fixtures.test.mjs | fixed | chatbot-consumer packet produces the expected proposal keys |
+| internal/runtime/proposals.go | fixed | func NormalizeChatbotProposalCandidates |
+| internal/runtime/proposals.go | fixed | func NormalizeSkillProposalCandidates |
+| internal/runtime/proposals.go | fixed | func NormalizeWorkflowProposalCandidates |
 | scripts/agent-runtime/scenario-proposals.mjs | file_exists |  |
 | scripts/agent-runtime/scenario-proposals.mjs | fixed | SCENARIO_PROPOSALS_SCHEMA |
 | scripts/agent-runtime/build-scenario-proposal-input.mjs | file_exists |  |

@@ -26,8 +26,9 @@ The product boundary is:
 
 ## Current Slice
 
-- [workflow-proposal-candidates.mjs](../../scripts/agent-runtime/workflow-proposal-candidates.mjs)
-- [normalize-workflow-proposals.mjs](../../scripts/agent-runtime/normalize-workflow-proposals.mjs)
+The shipped `workflow` normalization helper is `NormalizeWorkflowProposalCandidates`
+in `internal/runtime/proposals.go`, exposed on the CLI as
+`cautilus scenario normalize workflow`.
 
 This slice accepts `cautilus.workflow_normalization_inputs.v1` and rejects
 every other input schema.

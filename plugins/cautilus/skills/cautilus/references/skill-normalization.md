@@ -38,8 +38,9 @@ be:
 
 ## Current Slice
 
-- [skill-proposal-candidates.mjs](../../scripts/agent-runtime/skill-proposal-candidates.mjs)
-- [normalize-skill-proposals.mjs](../../scripts/agent-runtime/normalize-skill-proposals.mjs)
+The shipped `skill` normalization helper is `NormalizeSkillProposalCandidates`
+in `internal/runtime/proposals.go`, exposed on the CLI as
+`cautilus scenario normalize skill`.
 
 This slice accepts `cautilus.skill_normalization_inputs.v2` or the newer
 `cautilus.skill_evaluation_summary.v1` summary packet. It rejects

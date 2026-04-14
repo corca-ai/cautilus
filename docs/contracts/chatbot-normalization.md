@@ -28,13 +28,11 @@ and before generic proposal ranking:
 
 ## Current Slice
 
-The first `chatbot` normalization helper now exists as:
-
-- [chatbot-proposal-candidates.mjs](../../scripts/agent-runtime/chatbot-proposal-candidates.mjs)
-- [normalize-chatbot-proposals.mjs](../../scripts/agent-runtime/normalize-chatbot-proposals.mjs)
-
-This slice fixes the initial contract that turns normalized conversation/run
-summaries into `proposalCandidates`.
+The shipped `chatbot` normalization helper is `NormalizeChatbotProposalCandidates`
+in [internal/runtime/proposals.go](../../internal/runtime/proposals.go), exposed
+on the CLI as `cautilus scenario normalize chatbot`. That Go helper is the
+single source of truth that turns normalized conversation/run summaries into
+`proposalCandidates`.
 
 ## Representative Consumers
 
