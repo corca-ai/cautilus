@@ -85,7 +85,14 @@ aedab10 Align Go normalize output with Node parity before deletion
    - 1 + 2 `cautilus scenarios` + `--help` 그룹핑 (함께)
    - 11 + 5 README 재배치 + inline glossary
    - 6 behavior-intent `workflow_conversation` 리네이밍 (스키마 bump 필요)
-3. `corca-ai/charness` 등록 이슈: #22 (narrative scenario block + inline
+3. **품질 게이트 보강 후보**: 이 repo에 마크다운 링크 린터
+   (`lychee`/`markdown-link-check` 등)가 없다. Commit B 카스케이드에서
+   `skills/cautilus/references/*-normalization.md` 세 파일이 링크 형식을
+   잃고 백틱 코드로만 바뀌었는데 standing gate가 못 잡았다 (후속 커밋
+   `a862cd8`에서 수동 복구). `verify.yml` + pre-push에 바운디드 링크
+   린트 한 번 추가하면 해당 클래스의 드리프트가 자동으로 잡힌다.
+   `charness:quality` 스킬과 잘 맞는 슬라이스.
+4. `corca-ai/charness` 등록 이슈: #22 (narrative scenario block + inline
    glossary), #23 (quality flat-help + cross-archetype schema overlap),
    #24 (premortem 스킬 신설 + spec/quality 확장). 후속 댓글 필요할 때만.
 
