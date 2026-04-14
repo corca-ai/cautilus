@@ -34,6 +34,10 @@
     - `light` -> `final_only`
     - `medium`/`heavy` -> `frontier_promotions`
   - scenario-aware checkpoint rejection feedback reinjection into later mutation prompts
+  - scenario-scoped checkpoint feedback can reprioritize the next reflection batch
+  - merge prompt rejected sibling feedback stays implicitly bounded
+    - no separate explicit feedback-entry cap
+    - bounded today by frontier parent retention + scenario filtering
   - severity-aware frontier pruning
     - concern -> one repair generation
     - blocker -> prune before the next generation
@@ -72,7 +76,7 @@
 
 ## Next Session
 
-1. merge prompt가 rejected sibling feedback를 얼마나 많이 실을지 cap을 따로 둘지 판단한다.
+1. merge selection을 rejected sibling checkpoint signals까지 더 system-aware하게 만들지 판단한다.
 
 ## Discuss
 
@@ -89,6 +93,9 @@
 - pruning bucket은 현재 `concern` / `blocker` 2단계 유지로 두기로 했다.
   - 이유: 현재 bounded budget에선 “한 번 repair vs 즉시 prune” 결정만으로 충분하다.
   - finer bucket은 더 큰 search budget이나 반복 telemetry 패턴이 생길 때 다시 본다.
+- merge prompt rejected sibling feedback는 별도 explicit cap을 두지 않기로 했다.
+  - 현재는 frontier parent retention, scenario filtering, review-admissible merge-parent selection으로 충분히 bounded하다고 본다.
+- 다음 세션의 첫 product decision은 merge selection을 rejected sibling checkpoint signals까지 더 system-aware하게 만들지 여부다.
 - 다음 세션의 첫 product decision은 merge prompt에 실리는 rejected sibling feedback cap을 따로 둘지 여부다.
 
 ## Premortem

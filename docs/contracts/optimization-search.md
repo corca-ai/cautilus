@@ -357,6 +357,8 @@ In v1, review checkpoint policy means:
   - when a rejection message names one or more known scenarios, preserve it as
     scenario-scoped checkpoint feedback and inject only the relevant scenario
     entries into that candidate's later mutation prompts
+  - scenario-scoped checkpoint feedback may also reprioritize the next
+    reflection batch ahead of lower-scoring but uncheckpointed train scenarios
   - when a rejection message does not name a known scenario, preserve it as
     candidate-scoped checkpoint feedback and keep it eligible for later
     mutation prompts
@@ -384,6 +386,9 @@ review-admissible parents and should prefer:
 - when the frontier also contains review-rejected siblings, the merge prompt
   may carry their scenario-relevant checkpoint feedback forward as bounded
   context so the synthesis can avoid repeating the same rejected gap
+  - the current bounded slice does not add a separate explicit feedback-entry
+    cap here; existing bounds come from frontier parent retention, scenario
+    filtering, and review-admissible merge-parent selection
 - then cost and duration telemetry as late tie-breakers
 
 The current bounded default is budget-aware: `light` stays `final_only` to
@@ -531,11 +536,14 @@ The current bounded slice already proves:
 - optional frontier-promotion review checkpoint execution
 - scenario-aware checkpoint rejection feedback reinjection into later mutation
   prompts
+- scenario-scoped checkpoint feedback can reprioritize the next mutation
+  reflection batch
 - scenario-aware bounded two- or three-parent merge selection using candidate
   metadata, weakest-frontier weighting, telemetry tie-breakers, and explicit
   three-parent activation policy
 - scenario-aware merge-prompt checkpoint feedback from relevant rejected
   frontier siblings
+  - with no separate explicit feedback-entry cap in the current bounded slice
 - severity-aware retention for review-rejected lineage: one repair generation
   for concern-level review rejection, immediate pruning for blocker-level
   rejection

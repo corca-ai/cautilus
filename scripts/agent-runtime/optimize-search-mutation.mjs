@@ -163,11 +163,27 @@ function addFeedbackSignals(signals, feedbackSignals, trainScenarioSet) {
 	}
 }
 
+function scenarioCheckpointPriority(candidate, scenarioId) {
+	const entries = Array.isArray(candidate?.checkpointFeedback) ? candidate.checkpointFeedback : [];
+	return entries.reduce((total, entry) => {
+		const scopedScenarioIds = Array.isArray(entry?.scenarioIds) ? entry.scenarioIds : [];
+		if (!scopedScenarioIds.includes(scenarioId)) {
+			return total;
+		}
+		const feedbackMessages = Array.isArray(entry?.feedbackMessages) ? entry.feedbackMessages : [];
+		return total + Math.max(1, feedbackMessages.length);
+	}, 0);
+}
+
 function buildReflectionBatch(packet, parentCandidate, feedbackSignals) {
 	const scenarioIds = Array.isArray(packet.scenarioSets?.trainScenarioSet) ? packet.scenarioSets.trainScenarioSet : [];
 	const limit = Math.max(1, packet.mutationConfig?.trainScenarioLimit || 1);
 	const signals = scenarioSignalMap(packet, feedbackSignals);
 	const rankedScenarioIds = [...scenarioIds].sort((left, right) => {
+		const checkpointDelta = scenarioCheckpointPriority(parentCandidate, right) - scenarioCheckpointPriority(parentCandidate, left);
+		if (checkpointDelta !== 0) {
+			return checkpointDelta;
+		}
 		const leftScore = heldOutScoreForCandidate(parentCandidate, left);
 		const rightScore = heldOutScoreForCandidate(parentCandidate, right);
 		if (typeof leftScore === "number" && typeof rightScore === "number" && leftScore !== rightScore) {
