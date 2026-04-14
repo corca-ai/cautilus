@@ -381,7 +381,9 @@ The current proof surface is split on purpose:
 - [fixtures/scenario-proposals/chatbot-input.schema.json](./fixtures/scenario-proposals/chatbot-input.schema.json):
   checked-in schema for `cautilus.chatbot_normalization_inputs.v1`
 - [fixtures/scenario-proposals/skill-input.schema.json](./fixtures/scenario-proposals/skill-input.schema.json):
-  checked-in schema for `cautilus.skill_normalization_inputs.v1`
+  checked-in schema for `cautilus.skill_normalization_inputs.v2`
+- [fixtures/scenario-proposals/workflow-input.schema.json](./fixtures/scenario-proposals/workflow-input.schema.json):
+  checked-in schema for `cautilus.workflow_normalization_inputs.v1`
 - [fixtures/scenario-proposals/chatbot-consumer-input.json](./fixtures/scenario-proposals/chatbot-consumer-input.json):
   chatbot-consumer-shaped normalization example packet from one checked-in
   dogfood source

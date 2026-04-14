@@ -203,4 +203,3 @@ conversation fixtures:
 
 - [scenario-proposal-sources.md](./scenario-proposal-sources.md)
 - [scenario-proposal-inputs.md](./scenario-proposal-inputs.md)
-- [scenario-proposal-sources.md](./scenario-proposal-sources.md)
