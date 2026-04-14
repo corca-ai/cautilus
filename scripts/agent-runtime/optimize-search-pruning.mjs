@@ -28,3 +28,24 @@ export function candidateCanSeedMutation(candidate, nextGenerationIndex) {
 	const reviewedAtGeneration = candidate.promotionReviewOutcome?.reviewedAtGeneration ?? candidate.generationIndex;
 	return nextGenerationIndex <= reviewedAtGeneration + repairGenerationBudget(candidate);
 }
+
+export function mutationRepairPriority(candidate) {
+	const outcome = candidate?.promotionReviewOutcome;
+	if (!candidate || outcome?.admissible !== false) {
+		return 0;
+	}
+	return reviewOutcomeSeverity(outcome) === "blocker" ? 2 : 1;
+}
+
+export function prioritizeMutationParents(candidates) {
+	return [...(Array.isArray(candidates) ? candidates : [])]
+		.map((candidate, index) => ({ candidate, index }))
+		.sort((left, right) => {
+			const priorityDelta = mutationRepairPriority(right.candidate) - mutationRepairPriority(left.candidate);
+			if (priorityDelta !== 0) {
+				return priorityDelta;
+			}
+			return left.index - right.index;
+		})
+		.map(({ candidate }) => candidate);
+}

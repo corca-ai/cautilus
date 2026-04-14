@@ -5,7 +5,7 @@ import {
 	summarizeCandidateTelemetry,
 } from "./optimize-search-mutation.mjs";
 import { evaluateCandidateCheckpoints, runReviewCheckpoint } from "./optimize-search-checkpoints.mjs";
-import { candidateCanSeedMutation } from "./optimize-search-pruning.mjs";
+import { candidateCanSeedMutation, prioritizeMutationParents } from "./optimize-search-pruning.mjs";
 import { collectFeedbackSignals, collectSeedHeldOutEntries } from "./optimize-search-readiness.mjs";
 import { candidateConstraintRejectionReasons } from "./optimize-search-selection.mjs";
 import { dirname } from "node:path";
@@ -479,7 +479,9 @@ function nextGenerationCandidates(packet, allCandidates, scenarioIds, nextGenera
 		scenarioIds,
 		packet.searchConfig.populationLimit,
 	);
-	const mutationParents = rankedMutationParents.filter((candidate) => candidateCanSeedMutation(candidate, nextGenerationIndex));
+	const mutationParents = prioritizeMutationParents(
+		rankedMutationParents.filter((candidate) => candidateCanSeedMutation(candidate, nextGenerationIndex)),
+	);
 	const mergeParents = shouldReviewFrontierPromotions(packet)
 		? mutationParents.filter(candidatePassedPromotionReview)
 		: mutationParents;

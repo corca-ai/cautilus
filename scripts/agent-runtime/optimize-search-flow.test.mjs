@@ -2848,6 +2848,172 @@ test("run-optimize-search keeps concern-level rejected lineage for one repair ge
 	}
 });
 
+test("run-optimize-search prioritizes concern-level rejected lineage ahead of widening mutation work", () => {
+	const { root, artifactRoot, optimizeInputPath, heldOutResultsPath } = createCheckpointFallbackFixture({
+		includeReviewVariants: true,
+		gateFailsOnChecklist: false,
+		reviewVerdict: "concern",
+	});
+	try {
+		writeJson(heldOutResultsPath, {
+			schemaVersion: "cautilus.scenario_results.v1",
+			mode: "held_out",
+			results: [
+				{
+					scenarioId: "operator-recovery",
+					status: "passed",
+					overallScore: 95,
+					telemetry: { cost_usd: 0.02, durationMs: 1200 },
+				},
+				{
+					scenarioId: "operator-follow-up",
+					status: "passed",
+					overallScore: 80,
+					telemetry: { cost_usd: 0.01, durationMs: 800 },
+				},
+			],
+		});
+		writeExecutable(
+			join(root, "evaluate.sh"),
+			`#!/bin/sh
+output="$1"
+recovery_score=95
+recovery_status="passed"
+followup_score=80
+followup_status="passed"
+if grep -q "detailed recovery checklist" prompt.md && ! grep -q "explicit recovery sequencing map" prompt.md; then
+  recovery_score=75
+  recovery_status="passed"
+  followup_score=96
+  followup_status="passed"
+fi
+if grep -q "explicit recovery sequencing map" prompt.md; then
+  recovery_score=99
+  recovery_status="passed"
+  followup_score=96
+  followup_status="passed"
+fi
+if grep -q "follow-up handoff map" prompt.md; then
+  recovery_score=94
+  recovery_status="passed"
+  followup_score=82
+  followup_status="passed"
+fi
+cat >"$output" <<EOF
+{
+  "schemaVersion": "cautilus.scenario_results.v1",
+  "mode": "held_out",
+  "results": [
+    {
+      "scenarioId": "operator-recovery",
+      "status": "$recovery_status",
+      "overallScore": $recovery_score,
+      "telemetry": { "cost_usd": 0.04, "durationMs": 1000 }
+    },
+    {
+      "scenarioId": "operator-follow-up",
+      "status": "$followup_status",
+      "overallScore": $followup_score,
+      "telemetry": { "cost_usd": 0.03, "durationMs": 900 }
+    }
+  ]
+}
+EOF
+`,
+		);
+		writeExecutable(
+			join(root, "review-variant.sh"),
+			`#!/bin/sh
+workspace="$1"
+output="$2"
+verdict="pass"
+severity="pass"
+summary="Candidate stays operator-safe."
+if grep -q "detailed recovery checklist" "$workspace/prompt.md" && ! grep -q "explicit recovery sequencing map" "$workspace/prompt.md"; then
+  verdict="concern"
+  severity="concern"
+  summary="Checklist candidate still leaves operator-recovery sequencing too implicit."
+fi
+cat >"$output" <<EOF
+{
+  "verdict": "$verdict",
+  "summary": "$summary",
+  "findings": [
+    {
+      "severity": "$severity",
+      "message": "$summary",
+      "path": "variant/operator-review"
+    }
+  ]
+}
+EOF
+`,
+		);
+		createProgrammableCodex(root, [
+			{
+				currentPromptMatchNone: ["detailed recovery checklist"],
+				output: {
+					promptMarkdown: "Keep recovery instructions explicit with a detailed recovery checklist.\n",
+					rationaleSummary: "Add the checklist first, even if sequencing still needs explicit repair.",
+					expectedImprovements: ["operator-follow-up"],
+					preservedStrengths: ["keeps the original recovery framing"],
+					riskNotes: ["operator-recovery sequencing may still remain too implicit"],
+				},
+			},
+			{
+				currentPromptMatchAll: ["detailed recovery checklist"],
+				matchAll: ["review:operator-review:concern", "operator-recovery sequencing too implicit."],
+				output: {
+					promptMarkdown: "Keep recovery instructions explicit with a detailed recovery checklist and an explicit recovery sequencing map.\n",
+					rationaleSummary: "Repair the checkpointed sequencing concern before widening other mutation work.",
+					expectedImprovements: ["operator-recovery"],
+					preservedStrengths: ["keeps the detailed recovery checklist"],
+					riskNotes: ["operator-follow-up may still need later polish"],
+				},
+			},
+			{
+				output: {
+					promptMarkdown: "Keep recovery instructions explicit with a follow-up handoff map.\n",
+					rationaleSummary: "Fallback mutation keeps widening scope from the seed.",
+					expectedImprovements: ["operator-follow-up"],
+					preservedStrengths: ["keeps the original recovery framing"],
+					riskNotes: ["checkpointed recovery sequencing still remains unresolved"],
+				},
+			},
+		]);
+		const { packet } = buildOptimizeSearchInput(
+			["--optimize-input", optimizeInputPath, "--held-out-results-file", heldOutResultsPath, "--budget", "medium"],
+			{ now: new Date("2026-04-13T10:00:00.000Z") },
+		);
+		packet.searchConfig.reviewCheckpointPolicy = "frontier_promotions";
+		packet.searchConfig.generationLimit = 2;
+		packet.searchConfig.mergeEnabled = false;
+		packet.mutationConfig.backends = [{ id: "codex-mutate", backend: "codex_exec" }];
+		packet.mutationConfig.promptVariantLimit = 1;
+		packet.mutationConfig.trainScenarioLimit = 1;
+		const result = runOptimizeSearch(packet, {
+			inputFile: join(root, "optimize-search-input.json"),
+			outputFile: join(artifactRoot, "optimize-search-result.json"),
+			now: new Date("2026-04-13T10:01:00.000Z"),
+			env: {
+				...process.env,
+				PATH: `${root}:${process.env.PATH ?? ""}`,
+			},
+		});
+		assert.equal(result.status, "completed");
+		assert.equal(result.selectedCandidateId, "g2-1-codex-exec");
+		const repairedCandidate = result.candidateRegistry.find((candidate) => candidate.id === "g2-1-codex-exec");
+		const mutationPrompt = readFileSync(repairedCandidate.artifacts.promptFile, "utf-8");
+		assert.match(mutationPrompt, /review:operator-review:concern/);
+		assert.match(mutationPrompt, /operator-recovery sequencing too implicit\./);
+		assert.match(readFileSync(result.proposalBridge.selectedTargetFile.path, "utf-8"), /explicit recovery sequencing map/);
+		assert.doesNotMatch(readFileSync(result.proposalBridge.selectedTargetFile.path, "utf-8"), /follow-up handoff map/);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+		rmSync(artifactRoot, { recursive: true, force: true });
+	}
+});
+
 test("run-optimize-search prunes blocker-level rejected lineage before the next generation", () => {
 	const { root, artifactRoot, optimizeInputPath, heldOutResultsPath } = createCheckpointFallbackFixture({
 		includeReviewVariants: true,
