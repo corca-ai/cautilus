@@ -2,11 +2,37 @@ package runtime
 
 import (
 	"fmt"
+	"regexp"
 	"sort"
 	"strings"
 	"time"
 
 	"github.com/corca-ai/cautilus/internal/contracts"
+)
+
+var (
+	reviewClarificationFirstPatterns = []*regexp.Regexp{
+		regexp.MustCompile(`\breview\b`),
+		regexp.MustCompile(`리뷰`),
+		regexp.MustCompile(`저장소`),
+		regexp.MustCompile(`\brepo\b`),
+	}
+	reviewClarificationSecondPatterns = []*regexp.Regexp{
+		regexp.MustCompile(`checkout`),
+		regexp.MustCompile(`현재`),
+		regexp.MustCompile(`기준`),
+		regexp.MustCompile(`저장소`),
+		regexp.MustCompile(`\brepo\b`),
+	}
+	eventTriggeredFollowupPatterns = []*regexp.Regexp{
+		regexp.MustCompile(`계속`),
+		regexp.MustCompile(`follow`),
+		regexp.MustCompile(`이어`),
+		regexp.MustCompile(`진행`),
+		regexp.MustCompile(`다음`),
+		regexp.MustCompile(`go ahead`),
+		regexp.MustCompile(`continue`),
+	}
 )
 
 func BuildScenarioProposalInput(proposalCandidates []any, existingScenarioRegistry []any, scenarioCoverage []any, families []string, windowDays int, now *time.Time) (map[string]any, error) {
@@ -334,13 +360,19 @@ func appendCandidate(candidates []map[string]any, candidate map[string]any) []ma
 }
 
 func mergeCandidatesByProposalKey(candidates []map[string]any) []any {
-	merged := map[string]map[string]any{}
+	indexByKey := map[string]int{}
+	ordered := make([]map[string]any, 0, len(candidates))
 	for _, candidate := range candidates {
 		key := stringOrEmpty(candidate["proposalKey"])
-		merged[key] = mergeProposalRecord(merged[key], candidate)
+		if idx, ok := indexByKey[key]; ok {
+			ordered[idx] = mergeProposalRecord(ordered[idx], candidate)
+			continue
+		}
+		indexByKey[key] = len(ordered)
+		ordered = append(ordered, mergeProposalRecord(nil, candidate))
 	}
-	result := make([]any, 0, len(merged))
-	for _, candidate := range merged {
+	result := make([]any, 0, len(ordered))
+	for _, candidate := range ordered {
 		result = append(result, candidate)
 	}
 	return result
@@ -417,7 +449,7 @@ func buildChatbotIntentProfile(intent string, intentProfile map[string]any, fall
 }
 
 func buildReviewClarificationCandidate(conversation map[string]any, userMessages []string) map[string]any {
-	if len(userMessages) < 2 || !includesAny(userMessages[0], []string{"review", "리뷰", "저장소", "repo"}) || !includesAny(userMessages[1], []string{"checkout", "현재", "기준", "저장소", "repo"}) {
+	if len(userMessages) < 2 || !matchesAny(userMessages[0], reviewClarificationFirstPatterns) || !matchesAny(userMessages[1], reviewClarificationSecondPatterns) {
 		return nil
 	}
 	return map[string]any{
@@ -436,7 +468,7 @@ func buildReviewClarificationCandidate(conversation map[string]any, userMessages
 }
 
 func buildEventTriggeredFollowupCandidate(conversation map[string]any, userMessages []string) map[string]any {
-	if !isEventTriggered(conversation) || len(userMessages) < 2 || !includesAny(userMessages[1], []string{"계속", "follow", "이어", "진행", "다음", "go ahead", "continue"}) {
+	if !isEventTriggered(conversation) || len(userMessages) < 2 || !matchesAny(userMessages[1], eventTriggeredFollowupPatterns) {
 		return nil
 	}
 	return map[string]any{
@@ -574,7 +606,7 @@ func buildWorkflowRecoveryCandidate(run map[string]any) map[string]any {
 		"family":         "fast_regression",
 		"intentProfile":  anyFromProfileMust(BuildBehaviorIntentProfile(fmt.Sprintf("%s should recover cleanly when the %s workflow hits the same blocker.", displayName, surfaceLabel), asMap(run["intentProfile"]), BehaviorSurfaces["OPERATOR_WORKFLOW_RECOVERY"], []string{BehaviorDimensions["WORKFLOW_RECOVERY"], BehaviorDimensions["RECOVERY_NEXT_STEP"]}, nil)),
 		"name":           fmt.Sprintf("%s %s Recovery", displayName, titleCase(surfaceLabel)),
-		"description":    fmt.Sprintf("%s should recover cleanly when the %s workflow hits the same operator-facing blocker.", displayName, surfaceLabel),
+		"description":    fmt.Sprintf("%s %s should recover cleanly when the %s workflow hits the same operator-facing blocker.", humanizeTargetKind(stringOrEmpty(run["targetKind"])), displayName, surfaceLabel),
 		"brief":          fmt.Sprintf("Recent %s runs for %s were %s with %s. Latest summary: %q.", surfaceLabel, displayName, stringOrEmpty(run["status"]), blockedCountText, stringOrEmpty(run["summary"])),
 		"tags":           []any{"workflow", "operator-recovery", localSlugify(stringOrEmpty(run["surface"])), blockerSlug},
 		"maxTurns":       float64(1),
@@ -712,10 +744,10 @@ func localSlugify(value string) string {
 	return slugify(value)
 }
 
-func includesAny(text string, snippets []string) bool {
+func matchesAny(text string, patterns []*regexp.Regexp) bool {
 	normalized := strings.ToLower(strings.TrimSpace(text))
-	for _, snippet := range snippets {
-		if strings.Contains(normalized, strings.ToLower(snippet)) {
+	for _, pattern := range patterns {
+		if pattern.MatchString(normalized) {
 			return true
 		}
 	}
