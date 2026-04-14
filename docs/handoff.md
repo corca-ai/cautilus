@@ -11,12 +11,16 @@
   [docs/specs/index.spec.md](./specs/index.spec.md),
   [docs/specs/archetype-boundary.spec.md](./specs/archetype-boundary.spec.md),
   [docs/specs/current-product.spec.md](./specs/current-product.spec.md)
-  를 읽고, 이 핸드오프의 `## Working Patterns` 섹션도 확인한다. 그
-  패턴들은 지난 세션에서도 효과가 입증됐으니, 새 결정·변경 시 **자동으로
-  적용**한다.
-- 시작 branch는 `main`이다. 로컬이 `origin/main`보다 13커밋 앞서 있다
+  를 읽고, 이 핸드오프의 `## Working Patterns` 섹션도 참고용으로 확인한다.
+- **패턴 발동은 사용자-요청 모델이다.** 이전 두 세션 모두 "자동으로
+  적용" 지침이 있었지만 연속으로 실패했다 (실행-전 premortem 스킵).
+  수동적 rule은 읽을수록 무뎌진다는 증거. 이후로는 premortem/카운터웨이트/
+  iterative premortem 등은 **사용자가 명시적으로 요청할 때만 발동**한다.
+  에이전트가 "필요하겠다" 고 판단해서 자발적으로 돌리지 않는다. 사용자가
+  안 부르면 안 돈다. 다만 패턴 자체의 유용성은 유지되므로 문서는 남긴다.
+- 시작 branch는 `main`이다. 로컬이 `origin/main`보다 15커밋 앞서 있다
   (아래 `Unpushed Commits` 참고). **다음 세션의 첫 작업은 push 여부
-  결정**이다. 이 13커밋은 여러 세션에 걸쳐 누적된 것이고, 각 커밋은
+  결정**이다. 이 15커밋은 여러 세션에 걸쳐 누적된 것이고, 각 커밋은
   독립적으로 검증 완료된 상태다.
 - product-owned seam이면 `cautilus`에서 먼저 고친다.
 
@@ -49,6 +53,8 @@
 ## Unpushed Commits
 
 ```
+<this commit> Retire auto-apply premortem mandate + retrospective cleanup
+0e2402a Refresh handoff after 5-slice archetype-followup pass
 c5407ce Mirror the three-archetype preamble into SKILL.md
 b321ea8 Emit round-trippable example input for normalize/evaluate commands
 d23306c Give workflow the canonical <archetype>-input.json fixture
@@ -77,10 +83,10 @@ aedab10 Align Go normalize output with Node parity before deletion
 
 ## Next Session
 
-1. **Push 결정.** 13개의 미푸시 커밋을 `origin/main`에 올릴지 확인. 지난
+1. **Push 결정.** 15개의 미푸시 커밋을 `origin/main`에 올릴지 확인. 지난
    세션 + 이번 세션 내내 "push는 마지막" 이라고 해서 의도적으로 보류했다.
    푸시하면 Actions `verify.yml`이 돌고, 별도 릴리스 커밋이 아니므로
-   `release-artifacts.yml`은 트리거되지 않는다. 13커밋은 검증된 상태라
+   `release-artifacts.yml`은 트리거되지 않는다. 15커밋은 검증된 상태라
    한 번에 올려도 안전.
 2. `archetype-boundary.spec.md` follow-up 중 하나 골라 다음 슬라이스 진행
    (스펙에 1-9번으로 번호 매겨져 있음). 짧은/중간 슬라이스 후보:
@@ -128,6 +134,51 @@ aedab10 Align Go normalize output with Node parity before deletion
   - 스펙 follow-up 번호는 매 슬라이스 삭제 후 재넘버링했다.
     `proposals_test.go`와 내부 cross-ref가 따라붙는 cost(매번 2-3줄)
     보다 gap-leaving의 가독성 손해가 더 컸다고 판단.
+- **세션 말미 회고 프리모르템 (사용자 요청으로 돌림):**
+  4 angle (document-cascade / blast-radius / external-callers /
+  onboarding-readability) + 카운터웨이트 1. 24개 finding 중:
+  - (a) must-fix 2건 적용: F1a `operator-acceptance.md` 3d 섹션 번호
+    충돌 (3.12 중복) → 3d-3f 섹션 +1 리넘버. F4a handoff commit count
+    불일치 (14 vs 13) → 15로 통일.
+  - (b) cheap fold-in 1건 적용: F1b `--example-input` discoverability
+    — README Scenarios intro + `current-product.spec.md` Functional
+    Check에 각각 1줄 추가.
+  - (c) drop 5건: F1d/F3a/F4c/F4d — 각 doc는 specialized fixture 컨벤션
+    에 이미 internally consistent (standalone-surface/consumer-readiness/
+    README Scenarios/archetype-boundary는 specialized를 쓰고,
+    current-product만 canonical을 쓰는 것이 설계 의도). F3b는 promotion.
+  - (d) defer 7건: 아래 `Deferred from retrospective` 참고.
+  - 카운터웨이트의 솔직한 counterfactual: 5-슬라이스 클린업엔 4-angle
+    프리모르템이 오버사이즈였고, 1-angle(document-cascade)로 충분했을
+    것. 실질 수익은 F3d 하나뿐이었는데 F3d는 릴리스 사이클 concern이라
+    결국 (d) defer. 다음에 이 규모 변경엔 1-angle로 충분.
+- **Deferred from retrospective** (archetype-boundary 확장 아닌 별도 슬라이스
+  후보; 필요 시점에 집어라):
+  - F2b: `plugins/cautilus/skills/cautilus/references/*.md`가
+    `claude plugins install` / codex marketplace 경로에서 깨진 상대
+    링크로 풀림. 현재 link 린터는 이 디렉토리를 derived로 스킵.
+    해결은 sync 스크립트가 경로를 재작성하거나 consumer-facing docs를
+    link-free로 바꾸는 쪽. 중간 사이즈.
+  - F2c: `internal/app/examples.go`의 예제 JSON이
+    `fixtures/scenario-proposals/*-input.schema.json`으로 schema-validate
+    되지 않음. round-trip은 parseable만 증명. 짧은 슬라이스.
+  - F3c: `.github/workflows/release-artifacts.yml`이 옛 태그를
+    현재 `package.json`로 재실행 시 `lint:links` 없음으로 깨질 수 있음.
+    CI 히스토리 재실행 시나리오가 드물어 우선순위 낮음.
+  - F3d: plugin manifests (`0.4.0`)가 SKILL.md 콘텐츠 변경을 반영하지
+    않음. **릴리스 사이클 concern** — `release:prepare`가 version을
+    bump하므로 다음 릴리스 시 자동 해결. 미푸시 상태에선 노출 없음.
+  - F3e: `scripts/on-demand/smoke-external-consumer.mjs`가 `--example-input`
+    이나 canonical `workflow-input.json`을 커버하지 않음. 온보딩 smoke
+    가드 확대 슬라이스.
+  - F4e: canonical `workflow-input.json` (47줄) vs specialized
+    `workflow-recovery-input.json` (30줄). "canonical = minimal" 관습과
+    반대. 설계 질문 — canonical을 더 단순화할지, 아니면 "canonical =
+    full reference packet" 로 재정의할지. 같이 chatbot/skill canonical
+    도 재검토 필요할 수 있음.
+  - F4f: SKILL.md Scenarios §2에서 "Inspect shape: `scenario normalize
+    skill --example-input`" 가 `skill test`/`skill evaluate` 입력 형상과
+    다름 (다른 schema). 온보딩 혼동 가능. SKILL.md §2 rewording 슬라이스.
 - 아직 열려 있는 질문:
   - `cautilus scenarios`가 `cautilus commands`와 어떻게 관계 맺을지
     (동일 registry 확장 vs 별도 리스트).
@@ -141,9 +192,10 @@ aedab10 Align Go normalize output with Node parity before deletion
 
 ## Working Patterns
 
-지난 세션들에서 실제로 효과가 컸던 운영 패턴. 다음 세션도 non-trivial한
-결정·변경을 할 때 아래를 자동으로 적용한다. 상세 논의와 다른 repo에
-이식할 제안은 `corca-ai/charness#24`에 있다.
+지난 세션들에서 실제로 효과가 컸던 운영 패턴. **사용자가 요청할 때
+발동한다** (자동 적용 모델은 두 세션 연속 실패 후 폐기, Workflow
+Trigger 참고). 상세 논의와 다른 repo에 이식할 제안은
+`corca-ai/charness#24`에 있다.
 
 - **Premortem은 두 시점에 각각 돌린다: 결정 직전 + 실행 직전.**
   이 둘을 혼동하면 안 된다. 핸드오프에 "premortem 완료" 라고 적혀 있어도

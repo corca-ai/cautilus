@@ -113,17 +113,17 @@ spec source guard) + Go race test + standing Node tests를 포함한다.
 
 | # | 명령 | 통과 조건 | 실행자 |
 |---|---|---|---|
-| 3.12 | `cautilus report build --input ./fixtures/reports/report-input.json` | JSON 출력에 `cautilus.report_packet.v2` 포함, exit 0 | 기계적 |
-| 3.13 | `cautilus evidence prepare-input --report-file ./fixtures/reports/report-input.json --scenario-results-file ./fixtures/scenario-results/example-results.json` | JSON 출력, exit 0 | 기계적 |
-| 3.14 | `cautilus evidence bundle --input ./fixtures/evidence/example-input.json` | JSON 출력, exit 0 | 기계적 |
+| 3.13 | `cautilus report build --input ./fixtures/reports/report-input.json` | JSON 출력에 `cautilus.report_packet.v2` 포함, exit 0 | 기계적 |
+| 3.14 | `cautilus evidence prepare-input --report-file ./fixtures/reports/report-input.json --scenario-results-file ./fixtures/scenario-results/example-results.json` | JSON 출력, exit 0 | 기계적 |
+| 3.15 | `cautilus evidence bundle --input ./fixtures/evidence/example-input.json` | JSON 출력, exit 0 | 기계적 |
 
 ### 3e. Optimize
 
 | # | 명령 | 통과 조건 | 실행자 |
 |---|---|---|---|
-| 3.15 | `cautilus optimize prepare-input --report-file ./fixtures/reports/report-input.json --target prompt --optimizer repair --budget light` | JSON 출력, exit 0 | 기계적 |
-| 3.16 | `cautilus optimize propose --input ./fixtures/optimize/example-input.json` | JSON 출력, exit 0 | 기계적 |
-| 3.17 | `cautilus optimize build-artifact --proposal-file ./fixtures/optimize/example-proposal.json --input-file ./fixtures/optimize/example-input.json` | JSON 출력, exit 0 | 기계적 |
+| 3.16 | `cautilus optimize prepare-input --report-file ./fixtures/reports/report-input.json --target prompt --optimizer repair --budget light` | JSON 출력, exit 0 | 기계적 |
+| 3.17 | `cautilus optimize propose --input ./fixtures/optimize/example-input.json` | JSON 출력, exit 0 | 기계적 |
+| 3.18 | `cautilus optimize build-artifact --proposal-file ./fixtures/optimize/example-proposal.json --input-file ./fixtures/optimize/example-input.json` | JSON 출력, exit 0 | 기계적 |
 
 ### 3f. Review (fixture 기반, LLM 없음)
 
@@ -132,10 +132,10 @@ spec source guard) + Go race test + standing Node tests를 포함한다.
 
 | # | 명령 | 통과 조건 | 실행자 |
 |---|---|---|---|
-| 3.18 | `cautilus mode evaluate --repo-root . --mode held_out --intent "Operator-facing behavior should remain legible." --baseline-ref origin/main --output-dir /tmp/cautilus-oa-mode` | report.json 생성, exit 0 | 기계적 |
-| 3.19 | `cautilus review prepare-input --repo-root . --report-file /tmp/cautilus-oa-mode/report.json` | review.json 생성, exit 0. 의존: 3.18 | 기계적 |
-| 3.20 | `cautilus review build-prompt-input --review-packet /tmp/cautilus-oa-mode/review.json` | review-prompt-input.json 생성, exit 0. 의존: 3.19 | 기계적 |
-| 3.21 | `cautilus review render-prompt --input /tmp/cautilus-oa-mode/review-prompt-input.json` | 프롬프트 텍스트 출력, exit 0. 의존: 3.20 | 기계적 |
+| 3.19 | `cautilus mode evaluate --repo-root . --mode held_out --intent "Operator-facing behavior should remain legible." --baseline-ref origin/main --output-dir /tmp/cautilus-oa-mode` | report.json 생성, exit 0 | 기계적 |
+| 3.20 | `cautilus review prepare-input --repo-root . --report-file /tmp/cautilus-oa-mode/report.json` | review.json 생성, exit 0. 의존: 3.19 | 기계적 |
+| 3.21 | `cautilus review build-prompt-input --review-packet /tmp/cautilus-oa-mode/review.json` | review-prompt-input.json 생성, exit 0. 의존: 3.20 | 기계적 |
+| 3.22 | `cautilus review render-prompt --input /tmp/cautilus-oa-mode/review-prompt-input.json` | 프롬프트 텍스트 출력, exit 0. 의존: 3.21 | 기계적 |
 
 ---
 
