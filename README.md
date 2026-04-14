@@ -20,6 +20,10 @@ survives evaluation.
 Use `Cautilus` when prompt tweaks, benchmark anecdotes, and repo-local shell
 glue are no longer enough to explain whether a candidate actually got better.
 
+Primary wedge:
+`Cautilus` is the repo-local contract layer for agent behavior evaluation, not
+another prompt manager or benchmark scrapbook.
+
 ## Who It Is For
 
 - teams maintaining agent runtimes or chatbot loops whose prompts and wrappers
@@ -28,6 +32,18 @@ glue are no longer enough to explain whether a candidate actually got better.
   of trigger-only smoke checks
 - operators who need review packets, comparison artifacts, and explicit
   evidence before accepting workflow changes
+
+Primary buyer:
+the maintainer who has to decide whether a prompt, skill, or workflow change is
+actually better before shipping it
+
+Day-1 trigger:
+your repo already has behavior that matters, but prompt tweaks and ad hoc evals
+no longer explain whether the candidate improved
+
+Not for:
+repos that only need deterministic lint, unit, or type checks and do not have
+an evaluator-dependent behavior surface
 
 ## Why Cautilus
 
@@ -67,6 +83,19 @@ What the operator gets back is not only a pass or fail bit:
 - a path from observed runtime evidence to new scenario proposals and bounded
   revisions
 
+One minimal host-repo path looks like this:
+
+```text
+.agents/cautilus-adapter.yaml
+.agents/skills/cautilus/
+artifacts/<run>/report.json
+artifacts/<run>/review-packet.json
+```
+
+That is the first real success condition:
+the repo can declare its evaluation surface, run it, and reopen the result from
+files later.
+
 ## What It Does Today
 
 Current `core validated surface`:
@@ -98,6 +127,22 @@ Dogfood and migration evidence is tracked separately in
 [consumer-readiness.md](./docs/consumer-readiness.md),
 [consumer-migration.md](./docs/consumer-migration.md), and
 [external-consumer-onboarding.md](./docs/external-consumer-onboarding.md).
+
+## Charness Helpers
+
+This repo also carries repo-local adapters for three `charness` workflows that
+help maintain the product story around `Cautilus` itself:
+
+- `narrative`: truth-surface alignment for README and adjacent source-of-truth
+  docs, writing to `skill-outputs/narrative/narrative.md`
+- `find-skills`: local-first capability discovery for this repo, writing to
+  `skill-outputs/find-skills/`
+- `announcement`: draft-only change communication for this repo, writing to
+  `skill-outputs/announcement/announcement.md`
+
+These helpers are intentionally bounded.
+`narrative` is for truth-surface alignment, `find-skills` is local-first, and
+`announcement` is currently draft-only rather than a delivery backend.
 
 ## Why It Is Different
 
@@ -182,15 +227,17 @@ After a tag is published, verify the public release surface with
 
 The current proof surface is split on purpose:
 
-- `cautilus doctor --repo-root <repo>` proves whether a repo is wired enough to
-  use the checked-in contract
-- `npm run consumer:onboard:smoke` proves that a fresh consumer repo can go
-  from install to `doctor ready` through the product-owned onboarding path
-- [docs/consumer-readiness.md](./docs/consumer-readiness.md) records which
-  archetypes and self-consumer paths are currently backed by checked-in
-  evidence
-- `npm run verify` and `npm run hooks:check` keep the repo's own standing
-  surface honest
+- `cautilus doctor --repo-root <repo>`: wiring gate
+  Use when a repo should be ready against the checked-in contract.
+- `npm run consumer:onboard:smoke`: adoption gate
+  Use when you want the shortest end-to-end proof that a fresh consumer repo
+  can adopt `Cautilus`.
+- [docs/consumer-readiness.md](./docs/consumer-readiness.md): evidence appendix
+  Use when you need to see which archetypes and self-consumer paths are backed
+  by checked-in proof today.
+- `npm run verify` and `npm run hooks:check`: repo health gate
+  Use when changing the product repo itself and you need the standing surface to
+  stay honest.
 
 ## Repo Layout
 
@@ -344,6 +391,15 @@ held_out_command_templates:
   - node -e "console.log('held out ok')"
 ```
 
+That example is a smoke-only placeholder, not a meaningful held-out workflow.
+In a real repo, the same slot should point at the repo's actual held-out
+evaluation command, for example:
+
+```yaml
+held_out_command_templates:
+  - npm run bench:test -- --baseline-ref {baseline_ref} --samples {held_out_samples}
+```
+
 Then run:
 
 ```bash
@@ -362,6 +418,13 @@ What success looks like:
 - `.agents/skills/cautilus/` exists in the consumer repo
 - `.agents/cautilus-adapter.yaml` exists and resolves cleanly
 - `cautilus doctor --repo-root .` returns `ready`
+
+If `doctor` passes, the usual next step is one of these:
+
+- run your repo's first real held-out or full-gate command through the adapter
+- prepare an explicit A/B workspace with `cautilus workspace prepare-compare`
+- use `npm run consumer:onboard:smoke` when you only need adoption proof, not a
+  real consumer evaluation run
 
 Official install and lifecycle commands:
 
