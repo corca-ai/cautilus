@@ -54,7 +54,7 @@
     "cautilus skill evaluate --input ./fixtures/skill-evaluation/input.json",
     "cautilus scenario normalize chatbot --input ./fixtures/scenario-proposals/chatbot-input.json",
     "cautilus scenario normalize skill --input ./fixtures/scenario-proposals/skill-input.json",
-    "cautilus scenario normalize workflow --input ./fixtures/scenario-proposals/workflow-recovery-input.json",
+    "cautilus scenario normalize workflow --input ./fixtures/scenario-proposals/workflow-input.json",
     "cautilus scenario summarize-telemetry --results ./results.json",
     "cautilus scenario prepare-input --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json",
     "cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json",

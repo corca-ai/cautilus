@@ -168,18 +168,12 @@ with this spec:
    archetype blocks from README into the top of
    [skills/cautilus/SKILL.md](../../skills/cautilus/SKILL.md) so a
    skill-loading agent starts with the same mental model as a human.
-9. **Fixture naming parity.** `workflow-recovery-input.json` breaks the
-   `<archetype>-input.json` convention that `chatbot-input.json` and
-   `skill-input.json` follow. Add a canonical
-   `workflow-input.json` and keep `workflow-recovery-input.json` only as a
-   named specialized example, or rename outright. Whichever path is chosen,
-   the generic example file name should match the archetype name.
-10. **README section ordering.** Scenarios block is the most scannable
-    section for first-time readers, but currently sits below Why Cautilus
-    and Core Flow. Reorder the top of README so readers hit the three
-    scenario blocks before the philosophy block. Pairs naturally with
-    follow-up 5 (inline glossary).
-11. **Experimental archetype escape hatch.** This spec requires every
+9. **README section ordering.** Scenarios block is the most scannable
+   section for first-time readers, but currently sits below Why Cautilus
+   and Core Flow. Reorder the top of README so readers hit the three
+   scenario blocks before the philosophy block. Pairs naturally with
+   follow-up 5 (inline glossary).
+10. **Experimental archetype escape hatch.** This spec requires every
     first-class archetype to ship in a coordinated slice. That discipline
     is intentional, but leaves no room for research prototypes. Consider a
     relaxed namespace (location TBD — keep the `prototypes/` hint Go-side
@@ -187,7 +181,7 @@ with this spec:
     rules for exploratory surfaces, and a promotion checklist into
     first-class status when the surface earns a schema/helper/CLI/
     contract slice.
-12. **Archetype-extension hardening.** Surfaced by an
+11. **Archetype-extension hardening.** Surfaced by an
     onboarding-lens premortem on the Node-removal slice (round 2): a new
     contributor told to add a 4th first-class archetype must currently
     grep across files this spec does not name, and the 1:1 mapping has

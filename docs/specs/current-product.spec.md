@@ -364,6 +364,8 @@ standalone product여야 한다.
 | fixtures/scenario-proposals/skill-input.schema.json | fixed | cautilus.skill_normalization_inputs.v2 |
 | fixtures/scenario-proposals/workflow-input.schema.json | file_exists |  |
 | fixtures/scenario-proposals/workflow-input.schema.json | fixed | cautilus.workflow_normalization_inputs.v1 |
+| fixtures/scenario-proposals/workflow-input.json | file_exists |  |
+| fixtures/scenario-proposals/workflow-input.json | fixed | cautilus.workflow_normalization_inputs.v1 |
 | fixtures/skill-evaluation/input.schema.json | file_exists |  |
 | fixtures/skill-evaluation/input.schema.json | fixed | cautilus.skill_evaluation_inputs.v1 |
 | fixtures/skill-evaluation/summary.schema.json | file_exists |  |
@@ -482,6 +484,7 @@ $ cautilus skill test --repo-root . --adapter-name self-dogfood-skill-test || tr
 $ cautilus skill evaluate --input ./fixtures/skill-evaluation/input.json || true
 $ cautilus scenario normalize chatbot --input ./fixtures/scenario-proposals/chatbot-input.json
 $ cautilus scenario normalize skill --input ./fixtures/scenario-proposals/skill-input.json
+$ cautilus scenario normalize workflow --input ./fixtures/scenario-proposals/workflow-input.json
 $ cautilus scenario prepare-input --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json --family fast_regression --window-days 14 --now 2026-04-11T00:00:00.000Z
 $ cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json
 $ cautilus scenario summarize-telemetry --results ./fixtures/scenario-results/example-results.json

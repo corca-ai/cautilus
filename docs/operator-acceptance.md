@@ -104,9 +104,10 @@ spec source guard) + Go race test + standing Node tests를 포함한다.
 |---|---|---|---|
 | 3.7 | `cautilus scenario normalize chatbot --input ./fixtures/scenario-proposals/chatbot-input.json` | JSON 출력, exit 0 | 기계적 |
 | 3.8 | `cautilus scenario normalize skill --input ./fixtures/scenario-proposals/skill-input.json` | JSON 출력, exit 0 | 기계적 |
-| 3.9 | `cautilus scenario prepare-input --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json --family fast_regression --window-days 14 --now 2026-04-11T00:00:00.000Z` | JSON 출력, exit 0 | 기계적 |
-| 3.10 | `cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json` | JSON 출력, exit 0 | 기계적 |
-| 3.11 | `cautilus scenario summarize-telemetry --results ./fixtures/scenario-results/example-results.json` | JSON 출력, exit 0 | 기계적 |
+| 3.9 | `cautilus scenario normalize workflow --input ./fixtures/scenario-proposals/workflow-input.json` | JSON 출력, exit 0 | 기계적 |
+| 3.10 | `cautilus scenario prepare-input --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json --family fast_regression --window-days 14 --now 2026-04-11T00:00:00.000Z` | JSON 출력, exit 0 | 기계적 |
+| 3.11 | `cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json` | JSON 출력, exit 0 | 기계적 |
+| 3.12 | `cautilus scenario summarize-telemetry --results ./fixtures/scenario-results/example-results.json` | JSON 출력, exit 0 | 기계적 |
 
 ### 3d. Report 및 Evidence
 
