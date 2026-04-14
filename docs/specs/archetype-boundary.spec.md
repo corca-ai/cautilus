@@ -147,41 +147,38 @@ with this spec:
 3. **`cautilus adapter init --scenario <chatbot|skill|workflow>`.** Emit a
    starter adapter template whose command slots match the selected
    archetype (for example, skill pre-fills `skill_test_command_templates`).
-4. **`--example-input` on every normalize/evaluate command.** Write a
-   minimal fixture-shaped JSON to stdout so operators can stop clicking
-   into fixtures on GitHub.
-5. **Inline-glossary pass across README.** First use of `held-out`,
+4. **Inline-glossary pass across README.** First use of `held-out`,
    `packet`, `bounded`, `executor variant`, `review variant`,
    `intent-first` gets a one-line parenthetical definition. No separate
    glossary document; definitions stay next to first use.
-6. **Surface-name disambiguation.** `workflow_conversation` (chatbot
+5. **Surface-name disambiguation.** `workflow_conversation` (chatbot
    archetype) and `operator_workflow_recovery` (workflow archetype) both
    contain the word `workflow` in the catalog. Consider renaming
    `workflow_conversation` to `conversation_continuity` in
    `cautilus.behavior_intent.v1` so archetype vocabulary does not leak
    across boundaries. Requires a bump of `cautilus.behavior_intent.v1` or a
    catalog-level deprecation.
-7. **Doctor next-step hint.** After `ready`, print a short pointer to
+6. **Doctor next-step hint.** After `ready`, print a short pointer to
    `cautilus scenarios` so a first-time user knows which scenario applies
    to their situation.
-8. **Bundled skill SKILL.md scenario preamble.** Mirror the three
+7. **Bundled skill SKILL.md scenario preamble.** Mirror the three
    archetype blocks from README into the top of
    [skills/cautilus/SKILL.md](../../skills/cautilus/SKILL.md) so a
    skill-loading agent starts with the same mental model as a human.
-9. **README section ordering.** Scenarios block is the most scannable
+8. **README section ordering.** Scenarios block is the most scannable
    section for first-time readers, but currently sits below Why Cautilus
    and Core Flow. Reorder the top of README so readers hit the three
    scenario blocks before the philosophy block. Pairs naturally with
-   follow-up 5 (inline glossary).
-10. **Experimental archetype escape hatch.** This spec requires every
-    first-class archetype to ship in a coordinated slice. That discipline
-    is intentional, but leaves no room for research prototypes. Consider a
-    relaxed namespace (location TBD — keep the `prototypes/` hint Go-side
-    if the surface ends up living in `internal/runtime/`) with relaxed
-    rules for exploratory surfaces, and a promotion checklist into
-    first-class status when the surface earns a schema/helper/CLI/
-    contract slice.
-11. **Archetype-extension hardening.** Surfaced by an
+   follow-up 4 (inline glossary).
+9. **Experimental archetype escape hatch.** This spec requires every
+   first-class archetype to ship in a coordinated slice. That discipline
+   is intentional, but leaves no room for research prototypes. Consider a
+   relaxed namespace (location TBD — keep the `prototypes/` hint Go-side
+   if the surface ends up living in `internal/runtime/`) with relaxed
+   rules for exploratory surfaces, and a promotion checklist into
+   first-class status when the surface earns a schema/helper/CLI/
+   contract slice.
+10. **Archetype-extension hardening.** Surfaced by an
     onboarding-lens premortem on the Node-removal slice (round 2): a new
     contributor told to add a 4th first-class archetype must currently
     grep across files this spec does not name, and the 1:1 mapping has

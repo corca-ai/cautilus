@@ -132,6 +132,9 @@ standalone product여야 한다.
 | internal/app/cli_smoke_test.go | fixed | TestCLISelfDogfoodRenderExperimentsHTMLWritesIndexFromLatestBundle |
 | internal/app/cli_smoke_test.go | fixed | TestCLISkillTestRunsAdapterCommandsAndWritesSummaryAndCandidates |
 | internal/app/cli_smoke_test.go | fixed | TestCLISkillEvaluateProducesSummaryThatChainsIntoScenarioNormalizeSkill |
+| internal/app/cli_smoke_test.go | fixed | TestCLIExampleInputEmitsPacketsThatRoundTripThroughTheSameCommand |
+| internal/app/examples.go | file_exists |  |
+| internal/app/examples.go | fixed | hasExampleInputFlag |
 | internal/runtime/self_dogfood_html.go | file_exists |  |
 | internal/runtime/self_dogfood_html.go | fixed | Cautilus Self-Dogfood |
 | internal/runtime/self_dogfood_html.go | fixed | A/B Comparison |

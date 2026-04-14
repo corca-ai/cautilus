@@ -665,6 +665,10 @@ func handleScenarioNormalizeWorkflow(repoRoot string, cwd string, args []string,
 
 //nolint:errcheck // CLI stderr reporting is best-effort.
 func handleSkillEvaluate(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	if hasExampleInputFlag(args) {
+		fmt.Fprint(stdout, skillEvaluateExampleInput)
+		return 0
+	}
 	options, err := parseInputOutputArgs(args)
 	if err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
@@ -689,6 +693,20 @@ func handleSkillEvaluate(repoRoot string, cwd string, args []string, stdout io.W
 
 //nolint:errcheck // CLI stderr reporting is best-effort.
 func handleScenarioNormalize(args []string, cwd string, stdout io.Writer, stderr io.Writer, kind string) int {
+	if hasExampleInputFlag(args) {
+		switch kind {
+		case "chatbot":
+			fmt.Fprint(stdout, chatbotExampleInput)
+		case "skill":
+			fmt.Fprint(stdout, skillNormalizeExampleInput)
+		case "workflow":
+			fmt.Fprint(stdout, workflowExampleInput)
+		default:
+			fmt.Fprintf(stderr, "unknown scenario normalization kind: %s\n", kind)
+			return 1
+		}
+		return 0
+	}
 	options, err := parseInputOutputArgs(args)
 	if err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)

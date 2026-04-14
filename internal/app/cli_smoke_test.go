@@ -2745,6 +2745,45 @@ JSON
 	}
 }
 
+func TestCLIExampleInputEmitsPacketsThatRoundTripThroughTheSameCommand(t *testing.T) {
+	cases := []struct {
+		name           string
+		args           []string
+		expectedSchema string
+	}{
+		{"chatbot", []string{"scenario", "normalize", "chatbot"}, contracts.ChatbotNormalizationInputsSchema},
+		{"skill", []string{"scenario", "normalize", "skill"}, contracts.SkillNormalizationInputsSchema},
+		{"workflow", []string{"scenario", "normalize", "workflow"}, contracts.WorkflowNormalizationInputsSchema},
+		{"skill-evaluate", []string{"skill", "evaluate"}, contracts.SkillEvaluationInputsSchema},
+	}
+
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			root := t.TempDir()
+			stdout, stderr, exitCode := runCLI(t, root, append(tc.args, "--example-input")...)
+			if exitCode != 0 {
+				t.Fatalf("--example-input failed: %s", stderr)
+			}
+			var emitted map[string]any
+			if err := json.Unmarshal([]byte(stdout), &emitted); err != nil {
+				t.Fatalf("--example-input produced non-JSON: %v\n%s", err, stdout)
+			}
+			if emitted["schemaVersion"] != tc.expectedSchema {
+				t.Fatalf("unexpected schemaVersion: got %v, want %s", emitted["schemaVersion"], tc.expectedSchema)
+			}
+
+			inputPath := filepath.Join(root, "example.json")
+			if err := os.WriteFile(inputPath, []byte(stdout), 0o644); err != nil {
+				t.Fatalf("WriteFile returned error: %v", err)
+			}
+			_, stderr, exitCode = runCLI(t, root, append(tc.args, "--input", inputPath)...)
+			if exitCode != 0 {
+				t.Fatalf("--example-input output did not round-trip through --input: %s", stderr)
+			}
+		})
+	}
+}
+
 func anyToString(value any) string {
 	if text, ok := value.(string); ok {
 		return text
