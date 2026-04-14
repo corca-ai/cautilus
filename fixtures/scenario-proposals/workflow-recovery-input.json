@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "cautilus.skill_normalization_inputs.v1",
+  "schemaVersion": "cautilus.workflow_normalization_inputs.v1",
   "evaluationRuns": [
     {
       "targetKind": "cli_workflow",

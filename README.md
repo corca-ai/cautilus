@@ -96,6 +96,98 @@ That is the first real success condition:
 the repo can declare its evaluation surface, run it, and reopen the result from
 files later.
 
+## Scenarios
+
+Cautilus has three first-class evaluation archetypes. They share the same
+pipeline (normalize -> propose -> evaluate -> review), but each has its own
+input shape and starting command. Pick the one that matches what you are
+actually evaluating. The 1:1 boundary is fixed in
+[archetype-boundary.spec.md](./docs/specs/archetype-boundary.spec.md).
+
+### 1. Chatbot conversation regression
+
+Use when a chat or assistant experience gets worse at multi-turn behavior
+after a prompt change — forgetting prior turns, answering when it should
+clarify, ignoring a preference the user already stated.
+
+- **What you bring.** A JSON file of recent conversation summaries (turns +
+  metadata), the baseline prompt, the changed prompt. See
+  [chatbot-consumer-input.json](./fixtures/scenario-proposals/chatbot-consumer-input.json)
+  for the shape.
+- **Input (CLI).** `cautilus scenario normalize chatbot --input logs.json`
+- **Input (what to ask an agent).** "Run a chatbot regression with these
+  conversation logs and my new system prompt; flag follow-up and
+  context-recovery failures."
+- **What happens.** Conversations are normalized into follow-up,
+  context-recovery, and intent-retention signals. Regressions become
+  candidate scenarios held out from tuning.
+- **What comes back.** Stdout prints how many candidates and whether
+  evidence was sparse; the real output is
+  `proposals.json` (`cautilus.scenario_proposals.v1`) that is reopenable
+  later.
+- **Next action.**
+  - You: if a candidate is a real regression, keep it as a saved scenario;
+    otherwise drop it.
+  - Agent: feed the proposals into `cautilus mode evaluate --mode held_out`
+    to turn them into an actual evaluation run.
+
+### 2. Skill / agent execution regression
+
+Use when you change a skill or agent and want to know whether it still
+triggers on the right prompts, executes the task cleanly, and keeps its
+static validation surfaces passing.
+
+- **What you bring.** The modified skill or agent, a checked-in case suite
+  (see [fixtures/skill-test/cases.json](./fixtures/skill-test/cases.json)),
+  and the previous evaluation summary if you have one.
+- **Input (CLI).** `cautilus skill test --repo-root . --adapter-name <name>`
+  (or `cautilus skill evaluate --input summary.json` if a normalized
+  packet already exists).
+- **Input (what to ask an agent).** "Run the checked-in case suite against
+  the skill I just edited and compare trigger accuracy and execution
+  quality against the baseline."
+- **What happens.** Each case runs through the adapter-owned runner
+  multiple times (consensus). Results are scored on trigger accuracy,
+  execution quality, and optional runtime budget.
+- **What comes back.** Stdout summarizes pass/fail per case plus blockers;
+  files include `skill-summary.json`
+  (`cautilus.skill_evaluation_summary.v1`), a `review-summary.json`, and
+  chained proposal candidates when there are regressions.
+- **Next action.**
+  - You: if no blocker appears and dimension scores hold, the change is
+    safe to land. Otherwise roll back.
+  - Agent: pass the summary into `cautilus scenario normalize skill` to
+    turn real regressions into saved scenarios.
+
+### 3. Durable workflow recovery
+
+Use when a stateful automation — a CLI workflow, long-running agent
+session, or pipeline that persists state across invocations — keeps
+getting stuck on the same step, and you want the blocker to stop living as
+a paragraph in a doc.
+
+- **What you bring.** Run summaries from the automation, each including
+  `targetId`, `status` (`blocked`, `degraded`, `failed`, or `passed`),
+  `surface`, and `blockedSteps` where progress stalled. Example:
+  [workflow-recovery-input.json](./fixtures/scenario-proposals/workflow-recovery-input.json).
+- **Input (CLI).** `cautilus scenario normalize workflow --input workflow-runs.json`
+- **Input (what to ask an agent).** "Look at last week's automation runs
+  and flag anything that stalled on the same step twice or reported
+  success without actual progress."
+- **What happens.** Runs with repeated blocked steps (or the same step
+  appearing without status change) become `operator_workflow_recovery`
+  candidates. The helper emphasizes explicit next-step guidance and
+  honest blocker reporting.
+- **What comes back.** Stdout prints blocker count and kind
+  (`repeated_screen_no_progress`, etc.); files include `proposals.json`
+  that fixes the blocker as a repeatable evaluation case.
+- **Next action.**
+  - You: turn the proposed recovery scenario into a saved case so the
+    next release catches the regression instead of repeating a manual
+    recovery.
+  - Agent: run `cautilus scenario propose` to produce a draft scenario
+    and a PR-ready JSON.
+
 ## What It Does Today
 
 Current `core validated surface`:
@@ -241,8 +333,8 @@ The current proof surface is split on purpose:
 
 ## Repo Layout
 
-- [docs/workflow.md](./docs/workflow.md): canonical
-  evaluation workflow
+- [docs/evaluation-process.md](./docs/evaluation-process.md): canonical
+  evaluation process
 - [docs/contracts/active-run.md](./docs/contracts/active-run.md):
   active-run env var contract, default root, and canonical filenames
   that consumer commands default to inside a single workflow
@@ -265,7 +357,11 @@ The current proof surface is split on purpose:
 - [docs/contracts/skill-evaluation.md](./docs/contracts/skill-evaluation.md):
   product-owned packet boundary for skill trigger and execution evaluation
 - [docs/contracts/skill-normalization.md](./docs/contracts/skill-normalization.md):
-  product-owned `skill` helper boundary for durable workflow and validation candidates
+  product-owned `skill` helper boundary for validation, trigger, and
+  execution candidates
+- [docs/contracts/workflow-normalization.md](./docs/contracts/workflow-normalization.md):
+  product-owned `workflow` helper boundary for durable automation recovery
+  candidates
 - [docs/contracts/review-packet.md](./docs/contracts/review-packet.md):
   product-owned packet that binds report artifacts to comparison questions and review prompts
 - [docs/contracts/review-prompt-inputs.md](./docs/contracts/review-prompt-inputs.md):

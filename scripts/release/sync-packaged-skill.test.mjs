@@ -14,7 +14,7 @@ test("syncPackagedSkill replaces the packaged skill tree with the bundled source
 	mkdirSync(join(sourceDir, "references"), { recursive: true });
 	mkdirSync(destinationDir, { recursive: true });
 	writeFileSync(join(sourceDir, "SKILL.md"), "# source skill\n", "utf-8");
-	writeFileSync(join(sourceDir, "references", "workflow.md"), "source workflow\n", "utf-8");
+	writeFileSync(join(sourceDir, "references", "evaluation-process.md"), "source evaluation-process\n", "utf-8");
 	writeFileSync(join(destinationDir, "SKILL.md"), "# stale skill\n", "utf-8");
 	writeFileSync(join(destinationDir, "stale.md"), "remove me\n", "utf-8");
 
@@ -23,6 +23,6 @@ test("syncPackagedSkill replaces the packaged skill tree with the bundled source
 	assert.equal(result.sourceDir, sourceDir);
 	assert.equal(result.destinationDir, destinationDir);
 	assert.equal(readFileSync(join(destinationDir, "SKILL.md"), "utf-8"), "# source skill\n");
-	assert.equal(readFileSync(join(destinationDir, "references", "workflow.md"), "utf-8"), "source workflow\n");
+	assert.equal(readFileSync(join(destinationDir, "references", "evaluation-process.md"), "utf-8"), "source evaluation-process\n");
 	assert.throws(() => readFileSync(join(destinationDir, "stale.md"), "utf-8"));
 });

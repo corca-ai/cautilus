@@ -25,7 +25,7 @@ function writeFile(root, relativePath, content) {
 function createDogfoodRepo({ reviewTimeoutMs = null } = {}) {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-self-dogfood-"));
 	writeFile(root, "README.md", "# temp\n");
-	writeFile(root, "docs/workflow.md", "# workflow\n");
+	writeFile(root, "docs/evaluation-process.md", "# workflow\n");
 	writeFile(root, "docs/specs/self-dogfood.spec.md", "# self-dogfood\n");
 	writeFile(root, "skills/cautilus/SKILL.md", "# skill\n");
 	writeFile(root, "plugins/cautilus/skills/cautilus/SKILL.md", "# packaged skill\n");

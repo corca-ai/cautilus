@@ -132,12 +132,50 @@ func NormalizeSkillProposalCandidates(evaluationRuns []any) ([]any, error) {
 		if err := validateSkillEvaluationRun(run, index); err != nil {
 			return nil, err
 		}
+		if err := assertSkillTargetKind(run, index); err != nil {
+			return nil, err
+		}
 		candidates = appendCandidate(candidates, buildSkillTriggerCandidate(run))
 		candidates = appendCandidate(candidates, buildSkillExecutionCandidate(run))
 		candidates = appendCandidate(candidates, buildSkillValidationCandidate(run))
+	}
+	return mergeCandidatesByProposalKey(candidates), nil
+}
+
+func NormalizeWorkflowProposalCandidates(evaluationRuns []any) ([]any, error) {
+	candidates := make([]map[string]any, 0)
+	for index, rawRun := range evaluationRuns {
+		run, ok := rawRun.(map[string]any)
+		if !ok {
+			return nil, fmt.Errorf("evaluationRuns[%d] must be an object", index)
+		}
+		if err := validateSkillEvaluationRun(run, index); err != nil {
+			return nil, err
+		}
+		if err := assertWorkflowTargetKind(run, index); err != nil {
+			return nil, err
+		}
 		candidates = appendCandidate(candidates, buildWorkflowRecoveryCandidate(run))
 	}
 	return mergeCandidatesByProposalKey(candidates), nil
+}
+
+func assertSkillTargetKind(run map[string]any, index int) error {
+	targetKind := stringOrEmpty(run["targetKind"])
+	if targetKind == "cli_workflow" {
+		return fmt.Errorf("evaluationRuns[%d].targetKind is %q; this belongs to the workflow archetype. Use `cautilus scenario normalize workflow` with the %s schema", index, targetKind, contracts.WorkflowNormalizationInputsSchema)
+	}
+	if !containsString([]string{"public_skill", "profile", "integration"}, targetKind) {
+		return fmt.Errorf("evaluationRuns[%d].targetKind must be one of public_skill, profile, integration for the skill archetype", index)
+	}
+	return nil
+}
+
+func assertWorkflowTargetKind(run map[string]any, index int) error {
+	if stringOrEmpty(run["targetKind"]) != "cli_workflow" {
+		return fmt.Errorf("evaluationRuns[%d].targetKind must be cli_workflow for the workflow archetype", index)
+	}
+	return nil
 }
 
 func validateProposalCandidate(candidate map[string]any, index int) error {
@@ -538,7 +576,7 @@ func buildWorkflowRecoveryCandidate(run map[string]any) map[string]any {
 		"name":           fmt.Sprintf("%s %s Recovery", displayName, titleCase(surfaceLabel)),
 		"description":    fmt.Sprintf("%s should recover cleanly when the %s workflow hits the same operator-facing blocker.", displayName, surfaceLabel),
 		"brief":          fmt.Sprintf("Recent %s runs for %s were %s with %s. Latest summary: %q.", surfaceLabel, displayName, stringOrEmpty(run["status"]), blockedCountText, stringOrEmpty(run["summary"])),
-		"tags":           []any{"skill", "workflow", "operator-recovery", localSlugify(stringOrEmpty(run["surface"])), blockerSlug},
+		"tags":           []any{"workflow", "operator-recovery", localSlugify(stringOrEmpty(run["surface"])), blockerSlug},
 		"maxTurns":       float64(1),
 		"simulatorTurns": []any{fmt.Sprintf("Re-run %s on the %s surface and verify the workflow can recover from %s.", displayName, surfaceLabel, humanizeBlocker(stringOrEmpty(run["blockerKind"])))},
 		"evidence":       []any{buildWorkflowEvidence(run, surfaceLabel+" recovery regression")},

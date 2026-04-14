@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "cautilus.skill_normalization_inputs.v1",
+  "schemaVersion": "cautilus.skill_normalization_inputs.v2",
   "evaluationRuns": [
     {
       "targetKind": "public_skill",
@@ -28,37 +28,6 @@
           "path": "evals/fixtures/impl-smoke.json"
         }
       ]
-    },
-    {
-      "targetKind": "cli_workflow",
-      "targetId": "scan-settings-seed",
-      "intentProfile": {
-        "schemaVersion": "cautilus.behavior_intent.v1",
-        "intentId": "intent-scan-settings-seed-recovery",
-        "summary": "Scan Settings Seed should recover cleanly when the replay seed workflow hits the same blocker.",
-        "behaviorSurface": "operator_workflow_recovery",
-        "successDimensions": [
-          {
-            "id": "workflow_recovery",
-            "summary": "Recover the workflow cleanly when the known blocker reappears."
-          }
-        ],
-        "guardrailDimensions": []
-      },
-      "displayName": "Scan Settings Seed",
-      "surface": "replay_seed",
-      "startedAt": "2026-04-11T01:00:00.000Z",
-      "status": "blocked",
-      "summary": "Replay seed stalled on the same settings screen after two retries.",
-      "blockerKind": "repeated_screen_no_progress",
-      "blockedSteps": [
-        "open_settings",
-        "open_settings"
-      ],
-      "metrics": {
-        "blocked_steps": 2,
-        "unique_states_discovered": 4
-      }
     }
   ]
 }

@@ -715,7 +715,7 @@ func TestCLISkillsInstallCreatesRepoLocalCanonicalSkill(t *testing.T) {
 	}
 
 	skillPath := filepath.Join(root, ".agents", "skills", "cautilus", "SKILL.md")
-	referencesPath := filepath.Join(root, ".agents", "skills", "cautilus", "references", "workflow.md")
+	referencesPath := filepath.Join(root, ".agents", "skills", "cautilus", "references", "evaluation-process.md")
 	if _, err := os.Stat(skillPath); err != nil {
 		t.Fatalf("expected installed skill: %v", err)
 	}
@@ -2439,15 +2439,13 @@ func TestCLIScenarioNormalizeSkillProducesCandidatesThatChainIntoPrepareAndPropo
 				"summary":     "The impl smoke scenario stopped producing a bounded execution plan.",
 			},
 			{
-				"targetKind":   "cli_workflow",
-				"targetId":     "scan-settings-seed",
-				"displayName":  "Scan Settings Seed",
-				"surface":      "replay_seed",
-				"startedAt":    "2026-04-11T01:00:00.000Z",
-				"status":       "blocked",
-				"summary":      "Replay seed stalled on the same settings screen after two retries.",
-				"blockerKind":  "repeated_screen_no_progress",
-				"blockedSteps": []string{"open_settings", "open_settings"},
+				"targetKind":  "profile",
+				"targetId":    "engineering-quality",
+				"displayName": "Engineering Quality",
+				"surface":     "bootstrap",
+				"startedAt":   "2026-04-11T00:05:00.000Z",
+				"status":      "degraded",
+				"summary":     "Profile bootstrap passed structurally but no longer keeps the expected quality gate command surface.",
 			},
 		},
 	})
@@ -2494,6 +2492,80 @@ func TestCLIScenarioNormalizeSkillProducesCandidatesThatChainIntoPrepareAndPropo
 	firstProposal := proposalList[0].(map[string]any)
 	if firstProposal["draftScenario"].(map[string]any)["intentProfile"].(map[string]any)["schemaVersion"] != contracts.BehaviorIntentSchema || firstProposal["family"] != "fast_regression" {
 		t.Fatalf("unexpected first proposal: %#v", firstProposal)
+	}
+}
+
+func TestCLIScenarioNormalizeSkillRejectsWorkflowInputs(t *testing.T) {
+	root := t.TempDir()
+	inputPath := filepath.Join(root, "workflow-input.json")
+	writeJSONFile(t, inputPath, map[string]any{
+		"schemaVersion": contracts.WorkflowNormalizationInputsSchema,
+		"evaluationRuns": []map[string]any{
+			{
+				"targetKind": "cli_workflow",
+				"targetId":   "scan-settings-seed",
+				"surface":    "replay_seed",
+				"startedAt":  "2026-04-11T01:00:00.000Z",
+				"status":     "blocked",
+				"summary":    "Replay seed stalled.",
+			},
+		},
+	})
+
+	_, stderr, exitCode := runCLI(t, root, "scenario", "normalize", "skill", "--input", inputPath)
+	if exitCode == 0 {
+		t.Fatalf("expected non-zero exit for workflow input, got 0")
+	}
+	if !strings.Contains(stderr, "scenario normalize workflow") {
+		t.Fatalf("expected stderr to mention workflow command, got: %s", stderr)
+	}
+}
+
+func TestCLIScenarioNormalizeWorkflowProducesOperatorRecoveryCandidate(t *testing.T) {
+	root := t.TempDir()
+	inputPath := filepath.Join(root, "workflow-input.json")
+	candidatesPath := filepath.Join(root, "workflow-candidates.json")
+	writeJSONFile(t, inputPath, map[string]any{
+		"schemaVersion": contracts.WorkflowNormalizationInputsSchema,
+		"evaluationRuns": []map[string]any{
+			{
+				"targetKind":   "cli_workflow",
+				"targetId":     "scan-settings-seed",
+				"displayName":  "Scan Settings Seed",
+				"surface":      "replay_seed",
+				"startedAt":    "2026-04-11T01:00:00.000Z",
+				"status":       "blocked",
+				"summary":      "Replay seed stalled on the same settings screen after two retries.",
+				"blockerKind":  "repeated_screen_no_progress",
+				"blockedSteps": []string{"open_settings", "open_settings"},
+			},
+		},
+	})
+
+	_, stderr, exitCode := runCLI(t, root, "scenario", "normalize", "workflow", "--input", inputPath, "--output", candidatesPath)
+	if exitCode != 0 {
+		t.Fatalf("scenario normalize workflow failed: %s", stderr)
+	}
+	candidates := readJSONArrayFile(t, candidatesPath)
+	if len(candidates) != 1 {
+		t.Fatalf("unexpected workflow candidates: %#v", candidates)
+	}
+	candidate := candidates[0].(map[string]any)
+	if candidate["intentProfile"].(map[string]any)["behaviorSurface"] != "operator_workflow_recovery" {
+		t.Fatalf("expected operator_workflow_recovery surface, got: %#v", candidate["intentProfile"])
+	}
+	tags, ok := candidate["tags"].([]any)
+	if !ok {
+		t.Fatalf("expected tags array, got: %#v", candidate["tags"])
+	}
+	foundRecovery := false
+	for _, rawTag := range tags {
+		if rawTag == "operator-recovery" {
+			foundRecovery = true
+		}
+	}
+	if !foundRecovery {
+		t.Fatalf("expected operator-recovery tag, got: %#v", tags)
 	}
 }
 

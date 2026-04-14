@@ -15,7 +15,7 @@ skill_test_command_templates:
 artifact_paths:
   - skills/cautilus/SKILL.md
   - skills/cautilus/references/skill-evaluation.md
-  - skills/cautilus/references/workflow.md
+  - skills/cautilus/references/evaluation-process.md
   - fixtures/skill-test/cases.json
 comparison_questions:
   - Can the bundled cautilus skill follow a concrete local skill-test request without hand-held packet editing?

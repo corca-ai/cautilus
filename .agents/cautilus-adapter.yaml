@@ -13,7 +13,7 @@ full_gate_command_templates:
   - npm run verify
 artifact_paths:
   - README.md
-  - docs/workflow.md
+  - docs/evaluation-process.md
   - docs/specs/self-dogfood.spec.md
   - skills/cautilus/SKILL.md
 comparison_questions:

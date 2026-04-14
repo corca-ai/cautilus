@@ -1,6 +1,6 @@
-# Cautilus Workflow
+# Cautilus Evaluation Process
 
-Use this workflow when intentful behavior evaluation itself is the task.
+Use this process when intentful behavior evaluation itself is the task.
 
 The point is not to find a flattering benchmark slice. The point is to decide
 whether the candidate change survives comparison, held-out checks, and human
@@ -8,11 +8,6 @@ review with enough evidence to ship for the behavior the operator actually
 cares about.
 When the user wants a repeated quality bar, prefer a bounded evaluation loop
 with explicit stop conditions over an open-ended "retry until clean" loop.
-
-When the user asks to test a local skill rather than a code or prompt delta,
-prefer `cautilus skill test` first. That seam owns the checked-in case suite,
-adapter-runner invocation, and chained summary artifacts before the flow
-returns to packet-level `skill evaluate` and proposal normalization.
 
 ## Bootstrap
 
@@ -322,8 +317,9 @@ Typical examples:
 - run a fake operator task to see whether a workflow converges cleanly before
   using it for real
 
-When repeated workflow failures should become durable scenario coverage, prefer
-the checked-in `skill` normalization helper over repo-local one-off shapers:
+When repeated skill failures should become durable scenario coverage, prefer a
+first-class skill workflow and then chain it into the checked-in normalization
+helper instead of inventing repo-local one-off shapers:
 
 ```bash
 cautilus skill test \

@@ -68,7 +68,7 @@ behavior evaluation beyond those gates.
 
 4. Read the canonical workflow and contracts before widening the surface:
 
-- [workflow.md](references/workflow.md)
+- [evaluation-process.md](references/evaluation-process.md)
 - [active-run.md](references/active-run.md)
 - [adapter-contract.md](references/adapter-contract.md)
 - [reporting.md](references/reporting.md)
@@ -79,6 +79,7 @@ behavior evaluation beyond those gates.
 - [skill-testing.md](references/skill-testing.md)
 - [skill-evaluation.md](references/skill-evaluation.md)
 - [skill-normalization.md](references/skill-normalization.md)
+- [workflow-normalization.md](references/workflow-normalization.md)
 - [review-packet.md](references/review-packet.md)
 - [review-prompt-inputs.md](references/review-prompt-inputs.md)
 - [evidence-bundle.md](references/evidence-bundle.md)

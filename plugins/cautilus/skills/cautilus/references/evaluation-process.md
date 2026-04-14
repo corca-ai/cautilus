@@ -1,6 +1,6 @@
-# Cautilus Workflow
+# Cautilus Evaluation Process
 
-Use this workflow when intentful behavior evaluation itself is the task.
+Use this process when intentful behavior evaluation itself is the task.
 
 The point is not to find a flattering benchmark slice. The point is to decide
 whether the candidate change survives comparison, held-out checks, and human

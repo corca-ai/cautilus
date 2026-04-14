@@ -5,6 +5,7 @@ import test from "node:test";
 
 import { buildChatbotProposalCandidates } from "./normalize-chatbot-proposals.mjs";
 import { buildSkillProposalCandidates } from "./normalize-skill-proposals.mjs";
+import { buildWorkflowProposalCandidates } from "./normalize-workflow-proposals.mjs";
 
 const FIXTURE_ROOT = join(process.cwd(), "fixtures", "scenario-proposals");
 
@@ -36,7 +37,7 @@ test("skill-validation packet produces deterministic validation regression candi
 });
 
 test("workflow-recovery packet produces an operator-recovery candidate", () => {
-	const candidates = buildSkillProposalCandidates(readJson("workflow-recovery-input.json"));
+	const candidates = buildWorkflowProposalCandidates(readJson("workflow-recovery-input.json"));
 	assert.equal(candidates.length, 1);
 	assert.equal(candidates[0].proposalKey, "cli-workflow-scan-settings-seed-replay-seed-repeated-screen-no-progress");
 	assert.ok(candidates[0].tags.includes("operator-recovery"));

@@ -26,4 +26,5 @@ export const SCENARIO_TELEMETRY_SUMMARY_SCHEMA = "cautilus.scenario_telemetry_su
 export const SKILL_TEST_CASES_SCHEMA = "cautilus.skill_test_cases.v1";
 export const SKILL_EVALUATION_INPUTS_SCHEMA = "cautilus.skill_evaluation_inputs.v1";
 export const SKILL_EVALUATION_SUMMARY_SCHEMA = "cautilus.skill_evaluation_summary.v1";
-export const SKILL_NORMALIZATION_INPUTS_SCHEMA = "cautilus.skill_normalization_inputs.v1";
+export const SKILL_NORMALIZATION_INPUTS_SCHEMA = "cautilus.skill_normalization_inputs.v2";
+export const WORKFLOW_NORMALIZATION_INPUTS_SCHEMA = "cautilus.workflow_normalization_inputs.v1";

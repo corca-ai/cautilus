@@ -140,8 +140,8 @@ standalone product여야 한다.
 | skills/cautilus/SKILL.md | fixed | npm run dogfood:self |
 | skills/cautilus/SKILL.md | fixed | npm run dogfood:self:experiments |
 | skills/cautilus/agents/openai.yaml | file_exists |  |
-| docs/workflow.md | fixed | Meta Eval |
-| docs/workflow.md | fixed | Executor Variants |
+| docs/evaluation-process.md | fixed | Meta Eval |
+| docs/evaluation-process.md | fixed | Executor Variants |
 | docs/contracts/adapter-contract.md | fixed | Dogfooding Pattern |
 | docs/contracts/adapter-contract.md | fixed | Executor Variant Shape |
 | docs/specs/self-dogfood.spec.md | file_exists |  |
@@ -349,6 +349,10 @@ standalone product여야 한다.
 | scripts/agent-runtime/skill-proposal-candidates.mjs | fixed | normalizeSkillProposalCandidates |
 | scripts/agent-runtime/normalize-skill-proposals.mjs | file_exists |  |
 | scripts/agent-runtime/normalize-skill-proposals.mjs | fixed | SKILL_NORMALIZATION_INPUTS_SCHEMA |
+| scripts/agent-runtime/workflow-proposal-candidates.mjs | file_exists |  |
+| scripts/agent-runtime/workflow-proposal-candidates.mjs | fixed | normalizeWorkflowProposalCandidates |
+| scripts/agent-runtime/normalize-workflow-proposals.mjs | file_exists |  |
+| scripts/agent-runtime/normalize-workflow-proposals.mjs | fixed | WORKFLOW_NORMALIZATION_INPUTS_SCHEMA |
 | scripts/agent-runtime/consumer-example-fixtures.test.mjs | file_exists |  |
 | scripts/agent-runtime/consumer-example-fixtures.test.mjs | fixed | chatbot-consumer packet produces the expected proposal keys |
 | scripts/agent-runtime/scenario-proposals.mjs | file_exists |  |
@@ -364,7 +368,9 @@ standalone product여야 한다.
 | fixtures/scenario-proposals/chatbot-input.schema.json | file_exists |  |
 | fixtures/scenario-proposals/chatbot-input.schema.json | fixed | cautilus.chatbot_normalization_inputs.v1 |
 | fixtures/scenario-proposals/skill-input.schema.json | file_exists |  |
-| fixtures/scenario-proposals/skill-input.schema.json | fixed | cautilus.skill_normalization_inputs.v1 |
+| fixtures/scenario-proposals/skill-input.schema.json | fixed | cautilus.skill_normalization_inputs.v2 |
+| fixtures/scenario-proposals/workflow-input.schema.json | file_exists |  |
+| fixtures/scenario-proposals/workflow-input.schema.json | fixed | cautilus.workflow_normalization_inputs.v1 |
 | fixtures/skill-evaluation/input.schema.json | file_exists |  |
 | fixtures/skill-evaluation/input.schema.json | fixed | cautilus.skill_evaluation_inputs.v1 |
 | fixtures/skill-evaluation/summary.schema.json | file_exists |  |
@@ -374,6 +380,10 @@ standalone product여야 한다.
 | fixtures/scenario-proposals/chatbot-consumer-input.json | file_exists |  |
 | fixtures/scenario-proposals/skill-validation-input.json | file_exists |  |
 | fixtures/scenario-proposals/workflow-recovery-input.json | file_exists |  |
+| fixtures/scenario-proposals/workflow-recovery-input.json | fixed | cautilus.workflow_normalization_inputs.v1 |
+| docs/contracts/workflow-normalization.md | file_exists |  |
+| docs/contracts/skill-normalization.md | file_exists |  |
+| docs/specs/archetype-boundary.spec.md | file_exists |  |
 | scripts/agent-runtime/run-review-variant.sh | file_exists |  |
 | scripts/agent-runtime/run-review-variant.sh | fixed | CAUTILUS_REVIEW_VARIANT_TIMEOUT_SECONDS |
 | scripts/agent-runtime/run-executor-variants.mjs | file_exists |  |

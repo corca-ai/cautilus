@@ -3,23 +3,19 @@ import { resolve } from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
 
-import {
-	SKILL_EVALUATION_SUMMARY_SCHEMA,
-	SKILL_NORMALIZATION_INPUTS_SCHEMA,
-	WORKFLOW_NORMALIZATION_INPUTS_SCHEMA,
-} from "./contract-versions.mjs";
-import { normalizeSkillProposalCandidates } from "./skill-proposal-candidates.mjs";
+import { WORKFLOW_NORMALIZATION_INPUTS_SCHEMA } from "./contract-versions.mjs";
+import { normalizeWorkflowProposalCandidates } from "./workflow-proposal-candidates.mjs";
 
-export { SKILL_NORMALIZATION_INPUTS_SCHEMA } from "./contract-versions.mjs";
+export { WORKFLOW_NORMALIZATION_INPUTS_SCHEMA } from "./contract-versions.mjs";
 
 function usage(exitCode = 0) {
 	const text = [
 		"Usage:",
-		"  node ./scripts/agent-runtime/normalize-skill-proposals.mjs --input <file> [--output <file>]",
+		"  node ./scripts/agent-runtime/normalize-workflow-proposals.mjs --input <file> [--output <file>]",
 		"",
 		"Input packet:",
-		`  schemaVersion: ${SKILL_NORMALIZATION_INPUTS_SCHEMA}`,
-		"  evaluationRuns: [...]",
+		`  schemaVersion: ${WORKFLOW_NORMALIZATION_INPUTS_SCHEMA}`,
+		"  evaluationRuns: [...] (targetKind: cli_workflow)",
 	].join("\n");
 	const out = exitCode === 0 ? process.stdout : process.stderr;
 	out.write(`${text}\n`);
@@ -70,18 +66,11 @@ function assertArray(value, field) {
 	return value;
 }
 
-export function buildSkillProposalCandidates(input) {
-	if (input?.schemaVersion === WORKFLOW_NORMALIZATION_INPUTS_SCHEMA) {
-		throw new Error(
-			`Input uses ${WORKFLOW_NORMALIZATION_INPUTS_SCHEMA}; use \`cautilus scenario normalize workflow\` instead.`,
-		);
+export function buildWorkflowProposalCandidates(input) {
+	if (input?.schemaVersion !== WORKFLOW_NORMALIZATION_INPUTS_SCHEMA) {
+		throw new Error(`schemaVersion must be ${WORKFLOW_NORMALIZATION_INPUTS_SCHEMA}`);
 	}
-	if (![SKILL_NORMALIZATION_INPUTS_SCHEMA, SKILL_EVALUATION_SUMMARY_SCHEMA].includes(input?.schemaVersion)) {
-		throw new Error(
-			`schemaVersion must be ${SKILL_NORMALIZATION_INPUTS_SCHEMA} or ${SKILL_EVALUATION_SUMMARY_SCHEMA}`,
-		);
-	}
-	return normalizeSkillProposalCandidates({
+	return normalizeWorkflowProposalCandidates({
 		evaluationRuns: assertArray(input.evaluationRuns, "evaluationRuns"),
 	});
 }
@@ -90,7 +79,7 @@ export function main(argv = process.argv.slice(2)) {
 	try {
 		const { inputPath, outputPath } = parseArgs(argv);
 		const input = parseJsonFile(inputPath);
-		const candidates = buildSkillProposalCandidates(input);
+		const candidates = buildWorkflowProposalCandidates(input);
 		const text = `${JSON.stringify(candidates, null, 2)}\n`;
 		if (outputPath) {
 			writeFileSync(outputPath, text, "utf-8");

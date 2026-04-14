@@ -177,6 +177,8 @@ func nativeHandler(path []string) handlerFunc {
 		return handleScenarioNormalizeChatbot
 	case "scenario normalize skill":
 		return handleScenarioNormalizeSkill
+	case "scenario normalize workflow":
+		return handleScenarioNormalizeWorkflow
 	case "skill evaluate":
 		return handleSkillEvaluate
 	case "scenario summarize-telemetry":
@@ -657,6 +659,10 @@ func handleScenarioNormalizeSkill(repoRoot string, cwd string, args []string, st
 	return handleScenarioNormalize(args, cwd, stdout, stderr, "skill")
 }
 
+func handleScenarioNormalizeWorkflow(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	return handleScenarioNormalize(args, cwd, stdout, stderr, "workflow")
+}
+
 //nolint:errcheck // CLI stderr reporting is best-effort.
 func handleSkillEvaluate(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
 	options, err := parseInputOutputArgs(args)
@@ -703,6 +709,10 @@ func handleScenarioNormalize(args []string, cwd string, stdout io.Writer, stderr
 		}
 		candidates, err = runtime.NormalizeChatbotProposalCandidates(arrayOrEmpty(input["conversationSummaries"]), arrayOrEmpty(input["runSummaries"]))
 	case "skill":
+		if input["schemaVersion"] == contracts.WorkflowNormalizationInputsSchema {
+			fmt.Fprintf(stderr, "Input uses %s; use `cautilus scenario normalize workflow` instead.\n", contracts.WorkflowNormalizationInputsSchema)
+			return 1
+		}
 		switch input["schemaVersion"] {
 		case contracts.SkillNormalizationInputsSchema, contracts.SkillEvaluationSummarySchema:
 			candidates, err = runtime.NormalizeSkillProposalCandidates(arrayOrEmpty(input["evaluationRuns"]))
@@ -710,6 +720,12 @@ func handleScenarioNormalize(args []string, cwd string, stdout io.Writer, stderr
 			fmt.Fprintf(stderr, "schemaVersion must be %s or %s\n", contracts.SkillNormalizationInputsSchema, contracts.SkillEvaluationSummarySchema)
 			return 1
 		}
+	case "workflow":
+		if input["schemaVersion"] != contracts.WorkflowNormalizationInputsSchema {
+			fmt.Fprintf(stderr, "schemaVersion must be %s\n", contracts.WorkflowNormalizationInputsSchema)
+			return 1
+		}
+		candidates, err = runtime.NormalizeWorkflowProposalCandidates(arrayOrEmpty(input["evaluationRuns"]))
 	default:
 		err = fmt.Errorf("unknown scenario normalization kind: %s", kind)
 	}

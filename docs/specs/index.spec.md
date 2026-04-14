@@ -19,3 +19,6 @@ standing spec gate에서는 다시 실행하지 않는다.
 - [Self Dogfood](self-dogfood.spec.md)
   explicit quality 시점에만 돌리는 self-dogfood contract와 latest artifact
   path를 정의한다.
+- [Archetype Boundary](archetype-boundary.spec.md)
+  chatbot / skill / workflow 세 first-class archetype의 1:1 mapping과
+  source guard를 고정한다.

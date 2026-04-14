@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "cautilus.skill_normalization_inputs.v1",
+  "schemaVersion": "cautilus.skill_normalization_inputs.v2",
   "evaluationRuns": [
     {
       "targetKind": "public_skill",
