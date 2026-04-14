@@ -37,6 +37,7 @@
   - severity-aware frontier pruning
     - concern -> one repair generation
     - blocker -> prune before the next generation
+    - no finer pruning bucket yet
   - final-only full-gate checkpoint execution
   - selection-cap breach keeps candidates in frontier search but makes them final-selection ineligible
   - selection-cap rejection reason codes are public contract
@@ -71,8 +72,7 @@
 
 ## Next Session
 
-1. concern/blocker보다 더 세밀한 pruning bucket이 필요한지 판단한다.
-2. merge prompt가 rejected sibling feedback를 얼마나 많이 실을지 cap을 따로 둘지 판단한다.
+1. merge prompt가 rejected sibling feedback를 얼마나 많이 실을지 cap을 따로 둘지 판단한다.
 
 ## Discuss
 
@@ -86,7 +86,10 @@
   - per-candidate cap rejection code는 open set이지만 현재 stable set은
     `selection_constraint_max_cost_exceeded`,
     `selection_constraint_max_duration_exceeded`다.
-- 다음 세션의 첫 product decision은 pruning bucket을 concern/blocker보다 더 세밀하게 나눌지 여부다.
+- pruning bucket은 현재 `concern` / `blocker` 2단계 유지로 두기로 했다.
+  - 이유: 현재 bounded budget에선 “한 번 repair vs 즉시 prune” 결정만으로 충분하다.
+  - finer bucket은 더 큰 search budget이나 반복 telemetry 패턴이 생길 때 다시 본다.
+- 다음 세션의 첫 product decision은 merge prompt에 실리는 rejected sibling feedback cap을 따로 둘지 여부다.
 
 ## Premortem
 

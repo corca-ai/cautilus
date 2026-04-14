@@ -367,6 +367,9 @@ In v1, review checkpoint policy means:
     rejected lineage
   - a blocker-level review rejection is pruned from mutation-parent selection
     before the next generation
+  - the current bounded slice keeps this two-bucket pruning policy; finer
+    review-pruning buckets stay deferred until larger search budgets or live
+    telemetry show a repeatable need
 
 In the current bounded slice, merge synthesis stays bounded to two or three
 review-admissible parents and should prefer:
