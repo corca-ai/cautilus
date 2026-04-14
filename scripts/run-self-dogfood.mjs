@@ -12,7 +12,6 @@ import {
 	buildPublishedSummary,
 } from "./self-dogfood-published-snapshot.mjs";
 import { enrichExperimentPrompt } from "./self-dogfood-experiment-prompt.mjs";
-import { renderHtml as renderSelfDogfoodHtml } from "./render-self-dogfood-html.mjs";
 
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(SCRIPT_DIR, "..");
@@ -344,11 +343,10 @@ function writeLatestArtifacts(latestDir, { summary, report, reviewSummary, lates
 	writeFileSync(join(latestDir, "report.json"), `${JSON.stringify(report, null, 2)}\n`, "utf-8");
 	writeFileSync(join(latestDir, "review-summary.json"), `${JSON.stringify(reviewSummary, null, 2)}\n`, "utf-8");
 	writeFileSync(join(latestDir, "latest.md"), latestMarkdown, "utf-8");
-	writeFileSync(
-		join(latestDir, "index.html"),
-		renderSelfDogfoodHtml({ summary, report, reviewSummary }),
-		"utf-8",
-	);
+	const renderResult = runCautilus(REPO_ROOT, ["self-dogfood", "render-html", "--latest-dir", latestDir], true);
+	if (renderResult.status !== 0) {
+		fail(`self-dogfood render-html failed.\n${renderResult.stderr}`);
+	}
 }
 
 function pruneRuns(runsRoot, keepLast) {

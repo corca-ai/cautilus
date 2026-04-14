@@ -90,6 +90,8 @@ standalone product여야 한다.
 | internal/cli/command-registry.json | fixed | "path": ["update"] |
 | internal/cli/command-registry.json | fixed | "path": ["skills", "install"] |
 | internal/cli/command-registry.json | fixed | "path": ["workspace", "start"] |
+| internal/cli/command-registry.json | fixed | "path": ["self-dogfood", "render-html"] |
+| internal/cli/command-registry.json | fixed | "path": ["self-dogfood", "render-experiments-html"] |
 | internal/cli/command-registry.json | fixed | "path": ["review", "variants"] |
 | internal/cli/command-registry.json | fixed | cautilus commands [--json] |
 | internal/cli/command-registry.json | fixed | cautilus healthcheck [--json] |
@@ -97,6 +99,8 @@ standalone product여야 한다.
 | internal/cli/command-registry.json | fixed | cautilus install [--repo-root <path>] [--overwrite] [--json] |
 | internal/cli/command-registry.json | fixed | cautilus update [--repo-root <path>] [--json] |
 | internal/cli/command-registry.json | fixed | cautilus skills install [--overwrite] |
+| internal/cli/command-registry.json | fixed | cautilus self-dogfood render-html [args] |
+| internal/cli/command-registry.json | fixed | cautilus self-dogfood render-experiments-html [args] |
 | bin/cautilus | file_exists |  |
 | .claude-plugin/marketplace.json | file_exists |  |
 | .agents/plugins/marketplace.json | file_exists |  |
@@ -113,6 +117,12 @@ standalone product여야 한다.
 | internal/app/cli_smoke_test.go | fixed | TestCLIRootSelfConsumerRepoStaysDoctorReady |
 | internal/app/cli_smoke_test.go | fixed | TestCLIStandaloneTempRepoCanAdoptCautilusWithoutHostSpecificPaths |
 | internal/app/cli_smoke_test.go | fixed | TestCLISkillsInstallCreatesRepoLocalCanonicalSkill |
+| internal/app/cli_smoke_test.go | fixed | TestCLISelfDogfoodRenderHTMLWritesIndexFromLatestBundle |
+| internal/app/cli_smoke_test.go | fixed | TestCLISelfDogfoodRenderExperimentsHTMLWritesIndexFromLatestBundle |
+| internal/runtime/self_dogfood_html.go | file_exists |  |
+| internal/runtime/self_dogfood_html.go | fixed | Cautilus Self-Dogfood |
+| internal/runtime/self_dogfood_html.go | fixed | A/B Comparison |
+| internal/runtime/self_dogfood_html_test.go | file_exists |  |
 | skills/cautilus/SKILL.md | file_exists |  |
 | skills/cautilus/SKILL.md | fixed | cautilus install --repo-root . |
 | skills/cautilus/SKILL.md | fixed | npm run dogfood:self |

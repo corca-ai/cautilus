@@ -10,8 +10,8 @@
   "scripts": {
     "dogfood:self": "node scripts/run-self-dogfood.mjs",
     "dogfood:self:experiments": "node scripts/run-self-dogfood-experiments.mjs",
-    "dogfood:self:html": "node scripts/render-self-dogfood-html.mjs",
-    "dogfood:self:experiments:html": "node scripts/render-self-dogfood-experiments-html.mjs",
+    "dogfood:self:html": "./bin/cautilus self-dogfood render-html",
+    "dogfood:self:experiments:html": "./bin/cautilus self-dogfood render-experiments-html",
     "release:prepare": "node scripts/release/bump-version.mjs",
     "hooks:install": "node scripts/install-git-hooks.mjs",
     "hooks:check": "node scripts/check-git-hooks.mjs",

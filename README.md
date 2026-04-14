@@ -374,6 +374,7 @@ bundle, without replaying the experiment reviews:
 
 ```bash
 npm run dogfood:self:experiments:html
+cautilus self-dogfood render-experiments-html
 ```
 
 Refresh only the static HTML view of the current checked-in self-dogfood
@@ -381,20 +382,25 @@ bundle, without replaying the LLM-backed review:
 
 ```bash
 npm run dogfood:self:html
+cautilus self-dogfood render-html
 ```
 
 The rendered HTML is written alongside the other published files at
 `artifacts/self-dogfood/latest/index.html` and is automatically refreshed every
-time `npm run dogfood:self` rewrites the latest bundle. It is a read-only view
-of `summary.json`, `report.json`, and `review-summary.json`, so the JSON files
-remain the source of truth.
+time `npm run dogfood:self` rewrites the latest bundle. The product-owned
+renderer is `cautilus self-dogfood render-html`; `npm run dogfood:self:html`
+is only a repo-local convenience wrapper around that command. It is a read-only
+view of `summary.json`, `report.json`, and `review-summary.json`, so the JSON
+files remain the source of truth.
 
 The experiments HTML comparison view is written to
 `artifacts/self-dogfood/experiments/latest/index.html` and is automatically
 refreshed every time `npm run dogfood:self:experiments` rewrites the latest
-experiments bundle. It exists so the deterministic gate baseline and named
-experiment adapters can be compared side by side without reconstructing an A/B
-diff by hand.
+experiments bundle. The product-owned renderer is
+`cautilus self-dogfood render-experiments-html`; `npm run dogfood:self:experiments:html`
+is only a repo-local convenience wrapper around that command. It exists so the
+deterministic gate baseline and named experiment adapters can be compared side
+by side without reconstructing an A/B diff by hand.
 
 Prepare clean baseline and candidate git worktrees for a compare run:
 

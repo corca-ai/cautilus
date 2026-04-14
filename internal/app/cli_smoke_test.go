@@ -937,6 +937,121 @@ func TestCLIReportBuildEmitsMachineReadableReportPacket(t *testing.T) {
 	}
 }
 
+func TestCLISelfDogfoodRenderHTMLWritesIndexFromLatestBundle(t *testing.T) {
+	root := t.TempDir()
+	latestDir := filepath.Join(root, "artifacts", "self-dogfood", "latest")
+	if err := os.MkdirAll(latestDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	writeJSONFile(t, filepath.Join(latestDir, "summary.json"), map[string]any{
+		"generatedAt":          "2026-04-11T00:29:26.763Z",
+		"runId":                "2026-04-11T00-29-08.947Z",
+		"baselineRef":          "origin/main",
+		"artifactRoot":         "artifacts/self-dogfood",
+		"intent":               "Cautilus should <strong>honestly</strong> record dogfood results.",
+		"overallStatus":        "concern",
+		"reportRecommendation": "defer",
+		"gateRecommendation":   "accept-now",
+	})
+	writeJSONFile(t, filepath.Join(latestDir, "report.json"), map[string]any{
+		"schemaVersion":       contracts.ReportPacketSchema,
+		"intent":              "Cautilus should <strong>honestly</strong> record dogfood results.",
+		"commandObservations": []any{map[string]any{"stage": "full_gate", "index": 1, "status": "passed", "command": "npm run verify", "durationMs": 8349, "exitCode": 0}},
+	})
+	writeJSONFile(t, filepath.Join(latestDir, "review-summary.json"), map[string]any{
+		"variants": []any{
+			map[string]any{
+				"id":         "codex-review",
+				"tool":       "codex_exec",
+				"status":     "passed",
+				"durationMs": 8694,
+				"output": map[string]any{
+					"verdict": "concern",
+					"summary": "Review said verdict is 'concern' & findings > 0.",
+					"findings": []any{
+						map[string]any{"severity": "concern", "message": "evidence does not include report body", "path": "."},
+					},
+				},
+			},
+		},
+	})
+
+	stdout, stderr, exitCode := runCLI(t, root, "self-dogfood", "render-html")
+	if exitCode != 0 {
+		t.Fatalf("render-html failed: %s", stderr)
+	}
+	outputPath := strings.TrimSpace(stdout)
+	if outputPath != filepath.Join(latestDir, "index.html") {
+		t.Fatalf("unexpected output path: %s", outputPath)
+	}
+	htmlBytes, err := os.ReadFile(outputPath)
+	if err != nil {
+		t.Fatalf("ReadFile returned error: %v", err)
+	}
+	html := string(htmlBytes)
+	if !strings.Contains(html, "Cautilus Self-Dogfood") {
+		t.Fatalf("expected self-dogfood title in html")
+	}
+	if !strings.Contains(html, `data-variant="codex-review"`) {
+		t.Fatalf("expected rendered variant in html")
+	}
+}
+
+func TestCLISelfDogfoodRenderExperimentsHTMLWritesIndexFromLatestBundle(t *testing.T) {
+	root := t.TempDir()
+	latestDir := filepath.Join(root, "artifacts", "self-dogfood", "experiments", "latest")
+	if err := os.MkdirAll(latestDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	writeJSONFile(t, filepath.Join(latestDir, "summary.json"), map[string]any{
+		"generatedAt":          "2026-04-11T02:00:00.000Z",
+		"runId":                "exp-2026-04-11T02-00-00",
+		"baselineRef":          "origin/main",
+		"artifactRoot":         "artifacts/self-dogfood/experiments",
+		"intent":               "Experiments should compare <b>baseline</b> and variants honestly.",
+		"overallStatus":        "concern",
+		"reportRecommendation": "defer",
+		"gateRecommendation":   "accept-now",
+		"modeTelemetry":        map[string]any{"durationMs": 2400},
+		"experiments": []any{
+			map[string]any{
+				"adapterName":     "exp-a",
+				"overallStatus":   "pass",
+				"executionStatus": "passed",
+				"findingsCount":   0,
+				"telemetry":       map[string]any{"durationMs": 1800},
+				"primarySummary":  "exp-a is better than exp-b & easier to trust.",
+				"variants":        []any{map[string]any{"id": "codex-review", "executionStatus": "passed", "verdict": "pass", "summary": "exp-a is better than exp-b & easier to trust.", "findingsCount": 0}},
+			},
+		},
+	})
+	writeJSONFile(t, filepath.Join(latestDir, "report.json"), map[string]any{
+		"schemaVersion":       contracts.ReportPacketSchema,
+		"intent":              "Experiments should compare <b>baseline</b> and variants honestly.",
+		"commandObservations": []any{},
+	})
+
+	stdout, stderr, exitCode := runCLI(t, root, "self-dogfood", "render-experiments-html")
+	if exitCode != 0 {
+		t.Fatalf("render-experiments-html failed: %s", stderr)
+	}
+	outputPath := strings.TrimSpace(stdout)
+	if outputPath != filepath.Join(latestDir, "index.html") {
+		t.Fatalf("unexpected output path: %s", outputPath)
+	}
+	htmlBytes, err := os.ReadFile(outputPath)
+	if err != nil {
+		t.Fatalf("ReadFile returned error: %v", err)
+	}
+	html := string(htmlBytes)
+	if !strings.Contains(html, "Cautilus Self-Dogfood Experiments") {
+		t.Fatalf("expected experiments title in html")
+	}
+	if !strings.Contains(html, `data-compare-row="exp-a"`) {
+		t.Fatalf("expected experiment comparison row in html")
+	}
+}
+
 func TestCLIModeEvaluateExecutesAdapterCommandTemplatesAndWritesReportPacket(t *testing.T) {
 	root := t.TempDir()
 	adapterDir := filepath.Join(root, ".agents")

@@ -148,6 +148,7 @@ current latest experiments bundle, use:
 
 ```bash
 npm run dogfood:self:experiments:html
+cautilus self-dogfood render-experiments-html
 ```
 
 When the job only needs to refresh the static HTML view of the current
@@ -156,6 +157,7 @@ narrative or regenerating JSON offline), use:
 
 ```bash
 npm run dogfood:self:html
+cautilus self-dogfood render-html
 ```
 
 Treat `dogfood:self` as the canonical operator-facing record of the current
@@ -164,7 +166,9 @@ claims such as binary-surface, skill-surface, and gate-honesty probes.
 Treat the experiments `index.html` as a read-only compare view of the latest
 experiment summary/report bundle so A/B outcomes are visible side by side.
 Treat `dogfood:self:html` as a read-only view of the checked-in JSON bundle,
-not as a separate source of truth.
+not as a separate source of truth. The product-owned renderer is
+`cautilus self-dogfood render-html`; the `npm run` entry is a repo-local
+wrapper for maintainers.
 
 7. Report exact commands, exact placeholder values, and the final recommendation.
 8. When the repo already has normalized scenario proposal candidates, generate

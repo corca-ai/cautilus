@@ -11,6 +11,8 @@
     "cautilus workspace prepare-compare [args]",
     "cautilus workspace prune-artifacts [args]",
     "cautilus workspace start [args]",
+    "cautilus self-dogfood render-html [args]",
+    "cautilus self-dogfood render-experiments-html [args]",
     "cautilus scenario normalize chatbot [args]",
     "cautilus scenario normalize skill [args]",
     "cautilus scenario summarize-telemetry [args]",
@@ -43,6 +45,8 @@
     "cautilus workspace prepare-compare --repo-root . --baseline-ref origin/main --output-dir /tmp/cautilus-compare",
     "cautilus workspace prune-artifacts --root /tmp/cautilus-runs --keep-last 20",
     "eval \"$(cautilus workspace start --label mode-held-out)\"",
+    "cautilus self-dogfood render-html --latest-dir ./artifacts/self-dogfood/latest",
+    "cautilus self-dogfood render-experiments-html --latest-dir ./artifacts/self-dogfood/experiments/latest",
     "cautilus scenario normalize chatbot --input ./fixtures/scenario-proposals/chatbot-input.json",
     "cautilus scenario normalize skill --input ./fixtures/scenario-proposals/skill-input.json",
     "cautilus scenario summarize-telemetry --results ./results.json",
@@ -96,6 +100,12 @@
     },
     {
       "path": ["workspace", "start"]
+    },
+    {
+      "path": ["self-dogfood", "render-html"]
+    },
+    {
+      "path": ["self-dogfood", "render-experiments-html"]
     },
     {
       "path": ["scenario", "normalize", "chatbot"]

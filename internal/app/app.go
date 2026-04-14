@@ -168,6 +168,10 @@ func nativeHandler(path []string) handlerFunc {
 		return handleWorkspacePruneArtifacts
 	case "workspace start":
 		return handleWorkspaceStart
+	case "self-dogfood render-html":
+		return handleSelfDogfoodRenderHTML
+	case "self-dogfood render-experiments-html":
+		return handleSelfDogfoodRenderExperimentsHTML
 	case "scenario normalize chatbot":
 		return handleScenarioNormalizeChatbot
 	case "scenario normalize skill":
@@ -391,6 +395,11 @@ type optimizeBuildArtifactArgs struct {
 	output       *string
 }
 
+type selfDogfoodRenderArgs struct {
+	latestDir string
+	output    *string
+}
+
 //nolint:errcheck // CLI stderr reporting is best-effort.
 func handleAdapterResolve(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
 	options, err := parseAdapterArgs(args)
@@ -600,6 +609,38 @@ func handleWorkspaceStart(repoRoot string, cwd string, args []string, stdout io.
 
 func handleScenarioNormalizeChatbot(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
 	return handleScenarioNormalize(args, cwd, stdout, stderr, "chatbot")
+}
+
+//nolint:errcheck // CLI stderr reporting is best-effort.
+func handleSelfDogfoodRenderHTML(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	options, err := parseSelfDogfoodRenderArgs(args, cwd, filepath.Join("artifacts", "self-dogfood", "latest"))
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	outputPath, err := runtime.WriteSelfDogfoodHTML(options.latestDir, options.output)
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	fmt.Fprintf(stdout, "%s\n", outputPath)
+	return 0
+}
+
+//nolint:errcheck // CLI stderr reporting is best-effort.
+func handleSelfDogfoodRenderExperimentsHTML(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	options, err := parseSelfDogfoodRenderArgs(args, cwd, filepath.Join("artifacts", "self-dogfood", "experiments", "latest"))
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	outputPath, err := runtime.WriteSelfDogfoodExperimentsHTML(options.latestDir, options.output)
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	fmt.Fprintf(stdout, "%s\n", outputPath)
+	return 0
 }
 
 func handleScenarioNormalizeSkill(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
@@ -1780,6 +1821,35 @@ func parseOptimizePrepareArgs(args []string, cwd string) (*optimizePrepareArgs, 
 	if options.output == nil && activeRunDir != nil {
 		value := filepath.Join(*activeRunDir, "optimize-input.json")
 		options.output = &value
+	}
+	return options, nil
+}
+
+func parseSelfDogfoodRenderArgs(args []string, cwd string, defaultLatestDir string) (*selfDogfoodRenderArgs, error) {
+	options := &selfDogfoodRenderArgs{
+		latestDir: resolvePath(cwd, defaultLatestDir),
+	}
+	for index := 0; index < len(args); index++ {
+		arg := args[index]
+		switch arg {
+		case "--latest-dir":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.latestDir = resolvePath(cwd, value)
+		case "--output":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			resolved := resolvePath(cwd, value)
+			options.output = &resolved
+		default:
+			return nil, fmt.Errorf("unknown argument: %s", arg)
+		}
 	}
 	return options, nil
 }
