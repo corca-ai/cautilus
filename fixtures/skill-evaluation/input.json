@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "cautilus.skill_evaluation_inputs.v1",
+  "skillId": "impl",
+  "skillDisplayName": "impl",
+  "evaluations": [
+    {
+      "evaluationId": "trigger-impl-positive",
+      "targetKind": "public_skill",
+      "targetId": "impl",
+      "displayName": "impl",
+      "evaluationKind": "trigger",
+      "prompt": "Please implement one bounded repo-local quality slice.",
+      "startedAt": "2026-04-14T00:00:00.000Z",
+      "expectedTrigger": "must_invoke",
+      "invoked": true,
+      "summary": "The prompt clearly called for the impl skill and the skill was invoked."
+    },
+    {
+      "evaluationId": "execution-impl-budget",
+      "targetKind": "public_skill",
+      "targetId": "impl",
+      "displayName": "impl",
+      "evaluationKind": "execution",
+      "prompt": "Apply the bounded change and verify it.",
+      "startedAt": "2026-04-14T00:05:00.000Z",
+      "invoked": true,
+      "outcome": "passed",
+      "summary": "The skill completed the task but used more time and tokens than intended.",
+      "metrics": {
+        "total_tokens": 1400,
+        "duration_ms": 4200
+      },
+      "thresholds": {
+        "max_total_tokens": 1000,
+        "max_duration_ms": 3000
+      },
+      "artifactRefs": [
+        {
+          "kind": "transcript",
+          "path": "artifacts/skills/impl/execution-impl-budget/transcript.md"
+        }
+      ]
+    }
+  ]
+}

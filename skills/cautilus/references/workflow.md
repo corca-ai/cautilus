@@ -302,6 +302,24 @@ Typical examples:
 - run a fake operator task to see whether a workflow converges cleanly before
   using it for real
 
+When repeated skill failures should become durable scenario coverage, prefer a
+first-class skill packet and then chain it into the checked-in normalization
+helper instead of inventing repo-local one-off shapers:
+
+```bash
+cautilus skill evaluate \
+  --input ./fixtures/skill-evaluation/input.json \
+  --output /tmp/cautilus-skill-summary.json
+
+cautilus scenario normalize skill \
+  --input /tmp/cautilus-skill-summary.json
+```
+
+`skill evaluate` is the first-class packet boundary for skill trigger and
+execution quality. The host still owns raw invocation and transcript capture;
+`Cautilus` owns the packet, recommendation, behavior-intent framing, and the
+direct chain into `scenario normalize skill`.
+
 For this pattern:
 
 - use a dedicated named adapter such as `code-quality`, `skill-smoke`, or

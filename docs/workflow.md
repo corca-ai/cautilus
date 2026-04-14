@@ -306,9 +306,18 @@ When repeated workflow failures should become durable scenario coverage, prefer
 the checked-in `skill` normalization helper over repo-local one-off shapers:
 
 ```bash
+cautilus skill evaluate \
+  --input ./fixtures/skill-evaluation/input.json \
+  --output /tmp/cautilus-skill-summary.json
+
 cautilus scenario normalize skill \
-  --input ./fixtures/scenario-proposals/skill-input.json
+  --input /tmp/cautilus-skill-summary.json
 ```
+
+`skill evaluate` is the first-class packet boundary for skill trigger and
+execution quality. The host still owns raw invocation and transcript capture;
+`Cautilus` owns the packet, recommendation, behavior-intent framing, and the
+direct chain into `scenario normalize skill`.
 
 For this pattern:
 

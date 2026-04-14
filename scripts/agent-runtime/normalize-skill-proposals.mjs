@@ -4,6 +4,7 @@ import process from "node:process";
 import { pathToFileURL } from "node:url";
 
 import { SKILL_NORMALIZATION_INPUTS_SCHEMA } from "./contract-versions.mjs";
+import { SKILL_EVALUATION_SUMMARY_SCHEMA } from "./contract-versions.mjs";
 import { normalizeSkillProposalCandidates } from "./skill-proposal-candidates.mjs";
 
 export { SKILL_NORMALIZATION_INPUTS_SCHEMA } from "./contract-versions.mjs";
@@ -67,8 +68,10 @@ function assertArray(value, field) {
 }
 
 export function buildSkillProposalCandidates(input) {
-	if (input.schemaVersion !== SKILL_NORMALIZATION_INPUTS_SCHEMA) {
-		throw new Error(`schemaVersion must be ${SKILL_NORMALIZATION_INPUTS_SCHEMA}`);
+	if (![SKILL_NORMALIZATION_INPUTS_SCHEMA, SKILL_EVALUATION_SUMMARY_SCHEMA].includes(input.schemaVersion)) {
+		throw new Error(
+			`schemaVersion must be ${SKILL_NORMALIZATION_INPUTS_SCHEMA} or ${SKILL_EVALUATION_SUMMARY_SCHEMA}`,
+		);
 	}
 	return normalizeSkillProposalCandidates({
 		evaluationRuns: assertArray(input.evaluationRuns, "evaluationRuns"),

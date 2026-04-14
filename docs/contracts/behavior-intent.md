@@ -40,6 +40,10 @@ Current product-owned catalog:
   clarification or recovery when the thread context is insufficient
 - `skill_validation`
   deterministic skill, profile, or integration validation surface
+- `skill_trigger_selection`
+  whether the skill triggers on the right prompts and stays quiet otherwise
+- `skill_execution_quality`
+  whether the skill completes the intended task once invoked
 - `operator_workflow_recovery`
   durable workflow recovery or resumability surface
 - `review_variant_workflow`
@@ -67,6 +71,12 @@ Current success-dimension catalog:
   Reuse the preference or constraint the user just established in-thread.
 - `validation_integrity`
   Keep the declared validation surface passing and legible.
+- `skill_trigger_accuracy`
+  Trigger the skill when the prompt truly needs it and stay quiet otherwise.
+- `skill_task_fidelity`
+  Complete the intended task cleanly once the skill is invoked.
+- `runtime_budget_respect`
+  Stay within the declared runtime or token budget when one is provided.
 - `workflow_recovery`
   Recover the workflow cleanly when the known blocker reappears.
 - `review_evidence_legibility`
@@ -135,6 +145,13 @@ Current seam-level defaults:
 - skill validation candidate
   - `skill_validation`
   - `validation_integrity`
+- skill trigger evaluation
+  - `skill_trigger_selection`
+  - `skill_trigger_accuracy`
+- skill execution evaluation
+  - `skill_execution_quality`
+  - `skill_task_fidelity`
+  - optional `runtime_budget_respect`
 - skill workflow-recovery candidate
   - `operator_workflow_recovery`
   - `workflow_recovery`

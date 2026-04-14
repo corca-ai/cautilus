@@ -19,6 +19,8 @@ var BehaviorSurfaces = map[string]string{
 	"THREAD_FOLLOWUP":            "thread_followup",
 	"THREAD_CONTEXT_RECOVERY":    "thread_context_recovery",
 	"SKILL_VALIDATION":           "skill_validation",
+	"SKILL_TRIGGER_SELECTION":    "skill_trigger_selection",
+	"SKILL_EXECUTION_QUALITY":    "skill_execution_quality",
 	"OPERATOR_WORKFLOW_RECOVERY": "operator_workflow_recovery",
 	"REVIEW_VARIANT_WORKFLOW":    "review_variant_workflow",
 }
@@ -31,6 +33,9 @@ var BehaviorDimensions = map[string]string{
 	"TARGET_CLARIFICATION":              "target_clarification",
 	"PREFERENCE_REUSE":                  "preference_reuse",
 	"VALIDATION_INTEGRITY":              "validation_integrity",
+	"SKILL_TRIGGER_ACCURACY":            "skill_trigger_accuracy",
+	"SKILL_TASK_FIDELITY":               "skill_task_fidelity",
+	"RUNTIME_BUDGET_RESPECT":            "runtime_budget_respect",
 	"WORKFLOW_RECOVERY":                 "workflow_recovery",
 	"REVIEW_EVIDENCE_LEGIBILITY":        "review_evidence_legibility",
 	"OPERATOR_STATE_TRUTHFULNESS":       "operator_state_truthfulness",
@@ -62,13 +67,13 @@ type BehaviorIntentProfile struct {
 
 var behaviorDimensionCatalog = map[string]dimensionCatalogEntry{
 	BehaviorDimensions["OPERATOR_GUIDANCE_CLARITY"]: {
-		Kind:    DimensionKindSuccess,
-		Summary: "Keep the operator-facing guidance explicit and easy to follow.",
+		Kind:     DimensionKindSuccess,
+		Summary:  "Keep the operator-facing guidance explicit and easy to follow.",
 		Surfaces: []string{BehaviorSurfaces["OPERATOR_BEHAVIOR"]},
 	},
 	BehaviorDimensions["FAILURE_CAUSE_CLARITY"]: {
-		Kind:    DimensionKindSuccess,
-		Summary: "Explain the concrete failure cause or missing prerequisite.",
+		Kind:     DimensionKindSuccess,
+		Summary:  "Explain the concrete failure cause or missing prerequisite.",
 		Surfaces: []string{BehaviorSurfaces["OPERATOR_BEHAVIOR"]},
 	},
 	BehaviorDimensions["RECOVERY_NEXT_STEP"]: {
@@ -104,6 +109,21 @@ var behaviorDimensionCatalog = map[string]dimensionCatalogEntry{
 		Kind:     DimensionKindSuccess,
 		Summary:  "Keep the declared validation surface passing and legible.",
 		Surfaces: []string{BehaviorSurfaces["SKILL_VALIDATION"]},
+	},
+	BehaviorDimensions["SKILL_TRIGGER_ACCURACY"]: {
+		Kind:     DimensionKindSuccess,
+		Summary:  "Trigger the skill when the prompt truly needs it and stay quiet otherwise.",
+		Surfaces: []string{BehaviorSurfaces["SKILL_TRIGGER_SELECTION"]},
+	},
+	BehaviorDimensions["SKILL_TASK_FIDELITY"]: {
+		Kind:     DimensionKindSuccess,
+		Summary:  "Complete the intended task cleanly once the skill is invoked.",
+		Surfaces: []string{BehaviorSurfaces["SKILL_EXECUTION_QUALITY"]},
+	},
+	BehaviorDimensions["RUNTIME_BUDGET_RESPECT"]: {
+		Kind:     DimensionKindSuccess,
+		Summary:  "Stay within the declared runtime or token budget when one is provided.",
+		Surfaces: []string{BehaviorSurfaces["SKILL_EXECUTION_QUALITY"]},
 	},
 	BehaviorDimensions["WORKFLOW_RECOVERY"]: {
 		Kind:     DimensionKindSuccess,
@@ -151,6 +171,8 @@ var defaultSuccessDimensionsBySurface = map[string][]string{
 	BehaviorSurfaces["THREAD_FOLLOWUP"]:            {BehaviorDimensions["WORKFLOW_CONTINUITY"]},
 	BehaviorSurfaces["THREAD_CONTEXT_RECOVERY"]:    {BehaviorDimensions["TARGET_CLARIFICATION"]},
 	BehaviorSurfaces["SKILL_VALIDATION"]:           {BehaviorDimensions["VALIDATION_INTEGRITY"]},
+	BehaviorSurfaces["SKILL_TRIGGER_SELECTION"]:    {BehaviorDimensions["SKILL_TRIGGER_ACCURACY"]},
+	BehaviorSurfaces["SKILL_EXECUTION_QUALITY"]:    {BehaviorDimensions["SKILL_TASK_FIDELITY"]},
 	BehaviorSurfaces["OPERATOR_WORKFLOW_RECOVERY"]: {BehaviorDimensions["WORKFLOW_RECOVERY"]},
 	BehaviorSurfaces["REVIEW_VARIANT_WORKFLOW"]:    {BehaviorDimensions["REVIEW_EVIDENCE_LEGIBILITY"]},
 }

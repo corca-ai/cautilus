@@ -92,6 +92,7 @@ standalone product여야 한다.
 | internal/cli/command-registry.json | fixed | "path": ["workspace", "start"] |
 | internal/cli/command-registry.json | fixed | "path": ["self-dogfood", "render-html"] |
 | internal/cli/command-registry.json | fixed | "path": ["self-dogfood", "render-experiments-html"] |
+| internal/cli/command-registry.json | fixed | "path": ["skill", "evaluate"] |
 | internal/cli/command-registry.json | fixed | "path": ["review", "variants"] |
 | internal/cli/command-registry.json | fixed | cautilus commands [--json] |
 | internal/cli/command-registry.json | fixed | cautilus healthcheck [--json] |
@@ -99,6 +100,7 @@ standalone product여야 한다.
 | internal/cli/command-registry.json | fixed | cautilus install [--repo-root <path>] [--overwrite] [--json] |
 | internal/cli/command-registry.json | fixed | cautilus update [--repo-root <path>] [--json] |
 | internal/cli/command-registry.json | fixed | cautilus skills install [--overwrite] |
+| internal/cli/command-registry.json | fixed | cautilus skill evaluate [args] |
 | internal/cli/command-registry.json | fixed | cautilus self-dogfood render-html [args] |
 | internal/cli/command-registry.json | fixed | cautilus self-dogfood render-experiments-html [args] |
 | bin/cautilus | file_exists |  |
@@ -119,6 +121,7 @@ standalone product여야 한다.
 | internal/app/cli_smoke_test.go | fixed | TestCLISkillsInstallCreatesRepoLocalCanonicalSkill |
 | internal/app/cli_smoke_test.go | fixed | TestCLISelfDogfoodRenderHTMLWritesIndexFromLatestBundle |
 | internal/app/cli_smoke_test.go | fixed | TestCLISelfDogfoodRenderExperimentsHTMLWritesIndexFromLatestBundle |
+| internal/app/cli_smoke_test.go | fixed | TestCLISkillEvaluateProducesSummaryThatChainsIntoScenarioNormalizeSkill |
 | internal/runtime/self_dogfood_html.go | file_exists |  |
 | internal/runtime/self_dogfood_html.go | fixed | Cautilus Self-Dogfood |
 | internal/runtime/self_dogfood_html.go | fixed | A/B Comparison |
@@ -313,6 +316,9 @@ standalone product여야 한다.
 | scripts/agent-runtime/chatbot-proposal-candidates.mjs | fixed | normalizeChatbotProposalCandidates |
 | scripts/agent-runtime/normalize-chatbot-proposals.mjs | file_exists |  |
 | scripts/agent-runtime/normalize-chatbot-proposals.mjs | fixed | CHATBOT_NORMALIZATION_INPUTS_SCHEMA |
+| scripts/agent-runtime/evaluate-skill.mjs | file_exists |  |
+| scripts/agent-runtime/evaluate-skill.mjs | fixed | SKILL_EVALUATION_INPUTS_SCHEMA |
+| scripts/agent-runtime/evaluate-skill.mjs | fixed | SKILL_EVALUATION_SUMMARY_SCHEMA |
 | scripts/agent-runtime/skill-proposal-candidates.mjs | file_exists |  |
 | scripts/agent-runtime/skill-proposal-candidates.mjs | fixed | normalizeSkillProposalCandidates |
 | scripts/agent-runtime/normalize-skill-proposals.mjs | file_exists |  |
@@ -333,6 +339,10 @@ standalone product여야 한다.
 | fixtures/scenario-proposals/chatbot-input.schema.json | fixed | cautilus.chatbot_normalization_inputs.v1 |
 | fixtures/scenario-proposals/skill-input.schema.json | file_exists |  |
 | fixtures/scenario-proposals/skill-input.schema.json | fixed | cautilus.skill_normalization_inputs.v1 |
+| fixtures/skill-evaluation/input.schema.json | file_exists |  |
+| fixtures/skill-evaluation/input.schema.json | fixed | cautilus.skill_evaluation_inputs.v1 |
+| fixtures/skill-evaluation/summary.schema.json | file_exists |  |
+| fixtures/skill-evaluation/summary.schema.json | fixed | cautilus.skill_evaluation_summary.v1 |
 | fixtures/scenario-proposals/chatbot-consumer-input.json | file_exists |  |
 | fixtures/scenario-proposals/skill-validation-input.json | file_exists |  |
 | fixtures/scenario-proposals/workflow-recovery-input.json | file_exists |  |
@@ -402,16 +412,17 @@ standalone product여야 한다.
 - durable revision-artifact builder above optimize proposals
 - chatbot proposal-candidate normalization helper
 - chatbot normalization command
+- skill evaluation packet command
 - skill proposal-candidate normalization helper
 - skill normalization command
 - scenario proposal input packet assembly command
 - scenario proposal ranking and draft-scenario helpers
 - scenario proposal packet generation command
-- checked-in schema artifacts for proposal and helper input/output packets
+- checked-in schema artifacts for proposal, skill-evaluation, and helper input/output packets
 - checked-in dogfood packet examples across chatbot, skill-validation, and
   durable-workflow archetypes
 - scenario-level telemetry summaries for cost and token transparency
-- intentful behavior framing for chatbot, skill, and durable-workflow surfaces
+- intentful behavior framing for chatbot, skill trigger/execution, and durable-workflow surfaces
 
 현재 baseline cache는 reusable result store까지는 아직 아니다.
 다만 scenario-history의 comparison path는 baseline-cache seed와 cache key를
@@ -436,6 +447,7 @@ $ cautilus workspace prepare-compare --repo-root . --baseline-ref origin/main --
 $ cautilus workspace prune-artifacts --root /tmp/cautilus-runs --keep-last 20 || true
 $ mkdir -p /tmp/cautilus-runs
 $ cautilus workspace start --root /tmp/cautilus-runs --label mode-held-out --json || true
+$ cautilus skill evaluate --input ./fixtures/skill-evaluation/input.json || true
 $ cautilus scenario normalize chatbot --input ./fixtures/scenario-proposals/chatbot-input.json
 $ cautilus scenario normalize skill --input ./fixtures/scenario-proposals/skill-input.json
 $ cautilus scenario prepare-input --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json --family fast_regression --window-days 14 --now 2026-04-11T00:00:00.000Z

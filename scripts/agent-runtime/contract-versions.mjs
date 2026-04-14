@@ -23,4 +23,6 @@ export const SCENARIO_PROPOSAL_INPUTS_SCHEMA = "cautilus.scenario_proposal_input
 export const SCENARIO_PROPOSALS_SCHEMA = "cautilus.scenario_proposals.v1";
 export const SCENARIO_RESULTS_SCHEMA = "cautilus.scenario_results.v1";
 export const SCENARIO_TELEMETRY_SUMMARY_SCHEMA = "cautilus.scenario_telemetry_summary.v1";
+export const SKILL_EVALUATION_INPUTS_SCHEMA = "cautilus.skill_evaluation_inputs.v1";
+export const SKILL_EVALUATION_SUMMARY_SCHEMA = "cautilus.skill_evaluation_summary.v1";
 export const SKILL_NORMALIZATION_INPUTS_SCHEMA = "cautilus.skill_normalization_inputs.v1";

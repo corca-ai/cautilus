@@ -26,6 +26,8 @@ const (
 	ScenarioProposalsSchema           = "cautilus.scenario_proposals.v1"
 	ScenarioResultsSchema             = "cautilus.scenario_results.v1"
 	ScenarioTelemetrySummarySchema    = "cautilus.scenario_telemetry_summary.v1"
+	SkillEvaluationInputsSchema       = "cautilus.skill_evaluation_inputs.v1"
+	SkillEvaluationSummarySchema      = "cautilus.skill_evaluation_summary.v1"
 	SkillNormalizationInputsSchema    = "cautilus.skill_normalization_inputs.v1"
 	WorkspaceRunManifestSchema        = "cautilus.workspace_run_manifest.v1"
 )

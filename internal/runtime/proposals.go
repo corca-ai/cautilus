@@ -132,6 +132,8 @@ func NormalizeSkillProposalCandidates(evaluationRuns []any) ([]any, error) {
 		if err := validateSkillEvaluationRun(run, index); err != nil {
 			return nil, err
 		}
+		candidates = appendCandidate(candidates, buildSkillTriggerCandidate(run))
+		candidates = appendCandidate(candidates, buildSkillExecutionCandidate(run))
 		candidates = appendCandidate(candidates, buildSkillValidationCandidate(run))
 		candidates = appendCandidate(candidates, buildWorkflowRecoveryCandidate(run))
 	}
@@ -450,7 +452,7 @@ func validateSkillEvaluationRun(run map[string]any, index int) error {
 }
 
 func buildSkillValidationCandidate(run map[string]any) map[string]any {
-	if !isSkillValidationRun(run) {
+	if !isSkillValidationRun(run) || isSkillTriggerRun(run) || isSkillExecutionRun(run) {
 		return nil
 	}
 	displayName := skillDisplayName(run)
@@ -468,6 +470,48 @@ func buildSkillValidationCandidate(run map[string]any) map[string]any {
 		"maxTurns":       float64(1),
 		"simulatorTurns": []any{fmt.Sprintf("Run %s on the %s surface and keep the expected validation bar green.", displayName, surfaceLabel)},
 		"evidence":       []any{buildSkillEvaluationEvidence(run, surfaceLabel+" regression")},
+	}
+}
+
+func buildSkillTriggerCandidate(run map[string]any) map[string]any {
+	if !isSkillTriggerRun(run) {
+		return nil
+	}
+	displayName := skillDisplayName(run)
+	targetLabel := humanizeTargetKind(stringOrEmpty(run["targetKind"]))
+	return map[string]any{
+		"proposalKey":    fmt.Sprintf("%s-%s-trigger-selection-regression", localSlugify(stringOrEmpty(run["targetKind"])), localSlugify(stringOrEmpty(run["targetId"]))),
+		"title":          fmt.Sprintf("Refresh %s trigger coverage", displayName),
+		"family":         "fast_regression",
+		"intentProfile":  anyFromProfileMust(BuildBehaviorIntentProfile(fmt.Sprintf("%s should trigger only when the prompt truly needs the skill.", displayName), asMap(run["intentProfile"]), BehaviorSurfaces["SKILL_TRIGGER_SELECTION"], []string{BehaviorDimensions["SKILL_TRIGGER_ACCURACY"]}, nil)),
+		"name":           fmt.Sprintf("%s Trigger Regression", displayName),
+		"description":    fmt.Sprintf("%s %s regressed on skill trigger selection and should keep a durable trigger/no-trigger scenario pair.", targetLabel, displayName),
+		"brief":          fmt.Sprintf("Recent trigger-selection runs for %s are %s. Latest summary: %q.", displayName, stringOrEmpty(run["status"]), stringOrEmpty(run["summary"])),
+		"tags":           []any{"skill", "trigger", localSlugify(stringOrEmpty(run["targetKind"])), "trigger-selection"},
+		"maxTurns":       float64(1),
+		"simulatorTurns": []any{fmt.Sprintf("Run a prompt that should clearly require %s and verify the skill is selected only on the right prompts.", displayName)},
+		"evidence":       []any{buildSkillEvaluationEvidence(run, "trigger-selection regression")},
+	}
+}
+
+func buildSkillExecutionCandidate(run map[string]any) map[string]any {
+	if !isSkillExecutionRun(run) {
+		return nil
+	}
+	displayName := skillDisplayName(run)
+	targetLabel := humanizeTargetKind(stringOrEmpty(run["targetKind"]))
+	return map[string]any{
+		"proposalKey":    fmt.Sprintf("%s-%s-execution-quality-regression", localSlugify(stringOrEmpty(run["targetKind"])), localSlugify(stringOrEmpty(run["targetId"]))),
+		"title":          fmt.Sprintf("Refresh %s execution coverage", displayName),
+		"family":         "fast_regression",
+		"intentProfile":  anyFromProfileMust(BuildBehaviorIntentProfile(fmt.Sprintf("%s should complete the intended task cleanly once the skill is invoked.", displayName), asMap(run["intentProfile"]), BehaviorSurfaces["SKILL_EXECUTION_QUALITY"], []string{BehaviorDimensions["SKILL_TASK_FIDELITY"]}, nil)),
+		"name":           fmt.Sprintf("%s Execution Regression", displayName),
+		"description":    fmt.Sprintf("%s %s regressed on execution quality and should keep a durable passing execution scenario.", targetLabel, displayName),
+		"brief":          fmt.Sprintf("Recent execution-quality runs for %s are %s. Latest summary: %q.", displayName, stringOrEmpty(run["status"]), stringOrEmpty(run["summary"])),
+		"tags":           []any{"skill", "execution", localSlugify(stringOrEmpty(run["targetKind"])), "execution-quality"},
+		"maxTurns":       float64(1),
+		"simulatorTurns": []any{fmt.Sprintf("Invoke %s on one representative task and verify the skill completes the task cleanly within its intended quality bar.", displayName)},
+		"evidence":       []any{buildSkillEvaluationEvidence(run, "execution-quality regression")},
 	}
 }
 
@@ -531,6 +575,14 @@ func buildWorkflowEvidence(run map[string]any, title string) map[string]any {
 func isSkillValidationRun(run map[string]any) bool {
 	return containsString([]string{"public_skill", "profile", "integration"}, stringOrEmpty(run["targetKind"])) &&
 		containsString([]string{"failed", "degraded"}, stringOrEmpty(run["status"]))
+}
+
+func isSkillTriggerRun(run map[string]any) bool {
+	return isSkillValidationRun(run) && stringOrEmpty(run["surface"]) == "trigger_selection"
+}
+
+func isSkillExecutionRun(run map[string]any) bool {
+	return isSkillValidationRun(run) && stringOrEmpty(run["surface"]) == "execution_quality"
 }
 
 func isBlockedWorkflowRun(run map[string]any) bool {

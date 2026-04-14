@@ -6,6 +6,8 @@ export const BEHAVIOR_SURFACES = {
 	THREAD_FOLLOWUP: "thread_followup",
 	THREAD_CONTEXT_RECOVERY: "thread_context_recovery",
 	SKILL_VALIDATION: "skill_validation",
+	SKILL_TRIGGER_SELECTION: "skill_trigger_selection",
+	SKILL_EXECUTION_QUALITY: "skill_execution_quality",
 	OPERATOR_WORKFLOW_RECOVERY: "operator_workflow_recovery",
 	REVIEW_VARIANT_WORKFLOW: "review_variant_workflow",
 };
@@ -18,6 +20,9 @@ export const BEHAVIOR_DIMENSIONS = {
 	TARGET_CLARIFICATION: "target_clarification",
 	PREFERENCE_REUSE: "preference_reuse",
 	VALIDATION_INTEGRITY: "validation_integrity",
+	SKILL_TRIGGER_ACCURACY: "skill_trigger_accuracy",
+	SKILL_TASK_FIDELITY: "skill_task_fidelity",
+	RUNTIME_BUDGET_RESPECT: "runtime_budget_respect",
 	WORKFLOW_RECOVERY: "workflow_recovery",
 	REVIEW_EVIDENCE_LEGIBILITY: "review_evidence_legibility",
 	OPERATOR_STATE_TRUTHFULNESS: "operator_state_truthfulness",
@@ -72,6 +77,21 @@ export const BEHAVIOR_DIMENSION_CATALOG = {
 		summary: "Keep the declared validation surface passing and legible.",
 		surfaces: [BEHAVIOR_SURFACES.SKILL_VALIDATION],
 	},
+	[BEHAVIOR_DIMENSIONS.SKILL_TRIGGER_ACCURACY]: {
+		kind: DIMENSION_KIND_SUCCESS,
+		summary: "Trigger the skill when the prompt truly needs it and stay quiet otherwise.",
+		surfaces: [BEHAVIOR_SURFACES.SKILL_TRIGGER_SELECTION],
+	},
+	[BEHAVIOR_DIMENSIONS.SKILL_TASK_FIDELITY]: {
+		kind: DIMENSION_KIND_SUCCESS,
+		summary: "Complete the intended task cleanly once the skill is invoked.",
+		surfaces: [BEHAVIOR_SURFACES.SKILL_EXECUTION_QUALITY],
+	},
+	[BEHAVIOR_DIMENSIONS.RUNTIME_BUDGET_RESPECT]: {
+		kind: DIMENSION_KIND_SUCCESS,
+		summary: "Stay within the declared runtime or token budget when one is provided.",
+		surfaces: [BEHAVIOR_SURFACES.SKILL_EXECUTION_QUALITY],
+	},
 	[BEHAVIOR_DIMENSIONS.WORKFLOW_RECOVERY]: {
 		kind: DIMENSION_KIND_SUCCESS,
 		summary: "Recover the workflow cleanly when the known blocker reappears.",
@@ -118,6 +138,8 @@ const DEFAULT_SUCCESS_DIMENSIONS_BY_SURFACE = {
 	[BEHAVIOR_SURFACES.THREAD_FOLLOWUP]: [BEHAVIOR_DIMENSIONS.WORKFLOW_CONTINUITY],
 	[BEHAVIOR_SURFACES.THREAD_CONTEXT_RECOVERY]: [BEHAVIOR_DIMENSIONS.TARGET_CLARIFICATION],
 	[BEHAVIOR_SURFACES.SKILL_VALIDATION]: [BEHAVIOR_DIMENSIONS.VALIDATION_INTEGRITY],
+	[BEHAVIOR_SURFACES.SKILL_TRIGGER_SELECTION]: [BEHAVIOR_DIMENSIONS.SKILL_TRIGGER_ACCURACY],
+	[BEHAVIOR_SURFACES.SKILL_EXECUTION_QUALITY]: [BEHAVIOR_DIMENSIONS.SKILL_TASK_FIDELITY],
 	[BEHAVIOR_SURFACES.OPERATOR_WORKFLOW_RECOVERY]: [BEHAVIOR_DIMENSIONS.WORKFLOW_RECOVERY],
 	[BEHAVIOR_SURFACES.REVIEW_VARIANT_WORKFLOW]: [BEHAVIOR_DIMENSIONS.REVIEW_EVIDENCE_LEGIBILITY],
 };

@@ -58,6 +58,7 @@ standalone acceptance boundary만 남긴다.
 | skills/cautilus/SKILL.md | fixed | cautilus workspace prepare-compare |
 | skills/cautilus/SKILL.md | fixed | cautilus workspace prune-artifacts |
 | skills/cautilus/SKILL.md | fixed | eval "$(cautilus workspace start --label mode-held-out)" |
+| skills/cautilus/SKILL.md | fixed | cautilus skill evaluate |
 | skills/cautilus/SKILL.md | fixed | cautilus scenario normalize chatbot |
 | skills/cautilus/SKILL.md | fixed | cautilus scenario normalize skill |
 | skills/cautilus/SKILL.md | fixed | cautilus scenario summarize-telemetry |
@@ -83,6 +84,7 @@ standalone acceptance boundary만 남긴다.
 | plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus workspace prepare-compare |
 | plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus workspace prune-artifacts |
 | plugins/cautilus/skills/cautilus/SKILL.md | fixed | eval "$(cautilus workspace start --label mode-held-out)" |
+| plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus skill evaluate |
 | plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus scenario normalize chatbot |
 | plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus scenario normalize skill |
 | plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus scenario summarize-telemetry |
@@ -116,7 +118,7 @@ standalone acceptance boundary만 남긴다.
 - binary health, command discovery, repo readiness, and local agent-surface readiness are separate probe surfaces.
 - host repo는 `cautilus install --repo-root .`로 canonical `.agents/skills/cautilus` surface를 materialize할 수 있다.
 - packaged local skill surface는 repo-local Codex/Claude marketplace로도 설명된다.
-- adapter resolve/init/doctor/workspace prepare-compare/workspace prune-artifacts/workspace start/scenario normalize chatbot/scenario normalize skill/scenario summarize-telemetry/scenario prepare-input/scenario propose/evidence prepare-input/evidence bundle/report build/mode evaluate/optimize prepare-input/optimize propose/optimize build-artifact/review prepare-input/review build-prompt-input/review render-prompt/review variants는 host-local script path 없이 설명된다.
+- adapter resolve/init/doctor/workspace prepare-compare/workspace prune-artifacts/workspace start/skill evaluate/scenario normalize chatbot/scenario normalize skill/scenario summarize-telemetry/scenario prepare-input/scenario propose/evidence prepare-input/evidence bundle/report build/mode evaluate/optimize prepare-input/optimize propose/optimize build-artifact/review prepare-input/review build-prompt-input/review render-prompt/review variants는 host-local script path 없이 설명된다.
 - host repo repoint는 제품 정의가 아니라 consumer migration 단계로 남아 있다.
 
 ```run:shell
@@ -131,6 +133,7 @@ $ cautilus workspace prepare-compare --repo-root . --baseline-ref origin/main --
 $ cautilus workspace prune-artifacts --root /tmp/cautilus-runs --keep-last 20 || true
 $ mkdir -p /tmp/cautilus-runs
 $ cautilus workspace start --root /tmp/cautilus-runs --label mode-held-out --json || true
+$ cautilus skill evaluate --input ./fixtures/skill-evaluation/input.json || true
 $ cautilus scenario normalize chatbot --input ./fixtures/scenario-proposals/chatbot-input.json
 $ cautilus scenario normalize skill --input ./fixtures/scenario-proposals/skill-input.json
 $ cautilus scenario summarize-telemetry --results ./fixtures/scenario-results/example-results.json || true

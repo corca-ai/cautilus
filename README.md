@@ -22,8 +22,8 @@ The intended product shape is:
 - optional executor-variant runners for structured `codex exec`,
   `claude -p`, or other bounded review passes
 - a contract that separates training surfaces from held-out surfaces
-- first-class use-case helpers for `chatbot` and `skill`
-  evaluation packets
+- first-class use-case helpers for `chatbot`, `skill evaluate`, and
+  `skill`-normalization packets
 - a path to propose new scenarios from runtime logs instead of hand-authoring
   every benchmark case forever
 
@@ -161,6 +161,8 @@ Dogfood and migration evidence is tracked separately in
   host-owned reference seam that assembles split normalized sources
 - [docs/contracts/chatbot-normalization.md](./docs/contracts/chatbot-normalization.md):
   product-owned `chatbot` helper boundary for conversation-driven proposal candidates
+- [docs/contracts/skill-evaluation.md](./docs/contracts/skill-evaluation.md):
+  product-owned packet boundary for skill trigger and execution evaluation
 - [docs/contracts/skill-normalization.md](./docs/contracts/skill-normalization.md):
   product-owned `skill` helper boundary for durable workflow and validation candidates
 - [docs/contracts/review-packet.md](./docs/contracts/review-packet.md):
@@ -190,6 +192,8 @@ Dogfood and migration evidence is tracked separately in
 - [fixtures/scenario-proposals/workflow-recovery-input.json](./fixtures/scenario-proposals/workflow-recovery-input.json):
   durable-workflow-shaped normalization example packet from one checked-in
   dogfood source
+- [fixtures/skill-evaluation/input.json](./fixtures/skill-evaluation/input.json):
+  checked-in example packet for skill trigger/execution evaluation
 - [docs/specs/index.spec.md](./docs/specs/index.spec.md):
   active product specs
 - [docs/master-plan.md](./docs/master-plan.md): roadmap
@@ -456,11 +460,20 @@ cautilus scenario normalize chatbot \
   --input ./fixtures/scenario-proposals/chatbot-input.json
 ```
 
+Evaluate one normalized skill packet for trigger accuracy and execution
+quality:
+
+```bash
+cautilus skill evaluate \
+  --input ./fixtures/skill-evaluation/input.json \
+  --output /tmp/cautilus-skill-summary.json
+```
+
 Normalize skill- or workflow-evaluation summaries into proposal candidates:
 
 ```bash
 cautilus scenario normalize skill \
-  --input ./fixtures/scenario-proposals/skill-input.json
+  --input /tmp/cautilus-skill-summary.json
 ```
 
 Generate a scenario proposal packet from normalized candidate input:

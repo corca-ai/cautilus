@@ -1,14 +1,16 @@
 # Skill Scenario Normalization Contract
 
 `Cautilus` should also support a first-class `skill` normalization helper that
-turns durable skill- or workflow-evaluation summaries into scenario proposal
-candidates.
+turns durable skill trigger, skill execution, or workflow-evaluation summaries
+into scenario proposal candidates.
 
 This helper is needed because some consumers do not look like chatbot-thread
 stores, but they still produce the same kind of reusable
 evaluation signals:
 
 - deterministic validation or smoke-scenario failures
+- skill trigger-selection failures
+- skill execution-quality regressions
 - durable operator guidance regressions
 - blocked workflow artifacts whose shape should become scenario coverage
 
@@ -27,6 +29,11 @@ The product boundary should instead be:
 
 `host run/artifact summaries -> skill normalization helper -> proposalCandidates -> scenario prepare-input -> scenario propose`
 
+When the host already uses the first-class `skill evaluate` seam, the chain can
+be:
+
+`host-observed skill eval packet -> skill evaluate -> skill evaluation summary -> skill normalization helper`
+
 ## Current Slice
 
 The first `skill` normalization helper now exists as:
@@ -36,11 +43,15 @@ The first `skill` normalization helper now exists as:
 
 This slice fixes the initial contract for turning normalized evaluation and
 workflow summaries into `proposalCandidates`.
+It now accepts both the older `cautilus.skill_normalization_inputs.v1` packet
+and the newer `cautilus.skill_evaluation_summary.v1` summary packet.
 
 ## Representative Consumers
 
 - one checked-in skill-validation fixture
   - captures deterministic validation and smoke-scenario drift
+- one checked-in skill-evaluation fixture
+  - captures trigger-selection and execution-quality regressions
 - one checked-in workflow-recovery fixture
   - captures blocked durable workflow and replay-seed regressions
 - future mixed consumers
@@ -59,8 +70,8 @@ Minimum input class:
   - optional `intentProfile`
   - optional `displayName`
   - `surface`
-    - examples: `smoke_scenario`, `bootstrap`, `real_device_acceptance`,
-      `replay_seed`
+    - examples: `smoke_scenario`, `bootstrap`, `trigger_selection`,
+      `execution_quality`, `real_device_acceptance`, `replay_seed`
   - `startedAt`
   - `status`
     - examples: `passed`, `failed`, `degraded`, `blocked`
@@ -109,7 +120,18 @@ Seen in the validation-shaped fixture:
 - smoke scenario failures for public-skill or profile validation
 - missing or stale scenario coverage for declared validation surfaces
 
-### 2. Durable Operator Workflow Regressions
+### 2. Skill Trigger And Execution Drift
+
+Seen in the evaluation-shaped fixture:
+
+- prompts that should have invoked the skill but did not
+- prompts that should have stayed outside the skill but still invoked it
+- execution runs that completed functionally but crossed the declared token or
+  runtime budget
+- execution runs that produced degraded or failed task outcomes after the skill
+  was invoked
+
+### 3. Durable Operator Workflow Regressions
 
 Seen in the workflow-recovery fixture:
 
@@ -129,6 +151,8 @@ is durable operator workflow evaluation rather than chat continuity.
   `skills/`, `profiles/`, `runs/`, or CI logs.
 - the validation-shaped fixture is the primary reference for skill/profile
   validation shape
+- the evaluation-shaped fixture is the primary reference for trigger and
+  execution quality shape
 - the workflow-shaped fixture is the primary reference for blocked durable
   workflow artifacts
 - The helper should output proposal candidates that can feed the existing
@@ -176,6 +200,8 @@ is durable operator workflow evaluation rather than chat continuity.
 
 - fixture: validation-shaped failed smoke scenario for a public skill becomes a
   candidate with stable `proposalKey`
+- fixture: evaluation-summary-shaped trigger and execution regressions also
+  become stable `proposalKey`s without extra host mapping
 - fixture: workflow-shaped degraded run with `blocked_steps` evidence becomes a
   candidate with operator-recovery rationale
 - fixture: helper output feeds directly into `scenario prepare-input` or
@@ -187,7 +213,8 @@ is durable operator workflow evaluation rather than chat continuity.
 
 ## First Implementation Slice
 
-- keep one validation-shaped fixture and one workflow-shaped fixture checked in
+- keep one validation-shaped fixture, one skill-evaluation-shaped fixture, and
+  one workflow-shaped fixture checked in
 - maintain the pure helper and CLI against those fixtures
 - maintain the dedicated checked-in input schema artifact beside the fixture
 

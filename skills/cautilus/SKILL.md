@@ -76,6 +76,7 @@ behavior evaluation beyond those gates.
 - [scenario-proposal-inputs.md](references/scenario-proposal-inputs.md)
 - [scenario-proposal-normalization.md](references/scenario-proposal-normalization.md)
 - [chatbot-normalization.md](references/chatbot-normalization.md)
+- [skill-evaluation.md](references/skill-evaluation.md)
 - [skill-normalization.md](references/skill-normalization.md)
 - [review-packet.md](references/review-packet.md)
 - [review-prompt-inputs.md](references/review-prompt-inputs.md)
@@ -190,11 +191,15 @@ LLM-behavior surfaces. Use it to turn the normalized evidence into bounded
 scenarios before widening adapter YAML by hand.
 
 ```bash
+cautilus skill evaluate \
+  --input ./fixtures/skill-evaluation/input.json \
+  --output /tmp/cautilus-skill-summary.json
+
 cautilus scenario normalize chatbot \
   --input ./fixtures/scenario-proposals/chatbot-input.json
 
 cautilus scenario normalize skill \
-  --input ./fixtures/scenario-proposals/skill-input.json
+  --input /tmp/cautilus-skill-summary.json
 
 cautilus scenario prepare-input \
   --candidates ./fixtures/scenario-proposals/candidates.json \

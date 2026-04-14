@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"slices"
 	"strings"
 	"testing"
 	"time"
@@ -2255,6 +2256,85 @@ func TestCLIScenarioNormalizeSkillProducesCandidatesThatChainIntoPrepareAndPropo
 	firstProposal := proposalList[0].(map[string]any)
 	if firstProposal["draftScenario"].(map[string]any)["intentProfile"].(map[string]any)["schemaVersion"] != contracts.BehaviorIntentSchema || firstProposal["family"] != "fast_regression" {
 		t.Fatalf("unexpected first proposal: %#v", firstProposal)
+	}
+}
+
+func TestCLISkillEvaluateProducesSummaryThatChainsIntoScenarioNormalizeSkill(t *testing.T) {
+	root := t.TempDir()
+	inputPath := filepath.Join(root, "skill-evaluation-input.json")
+	summaryPath := filepath.Join(root, "skill-evaluation-summary.json")
+	candidatesPath := filepath.Join(root, "skill-candidates.json")
+
+	writeJSONFile(t, inputPath, map[string]any{
+		"schemaVersion": contracts.SkillEvaluationInputsSchema,
+		"skillId":       "impl",
+		"evaluations": []map[string]any{
+			{
+				"evaluationId":    "trigger-impl",
+				"targetKind":      "public_skill",
+				"targetId":        "impl",
+				"displayName":     "impl",
+				"evaluationKind":  "trigger",
+				"prompt":          "Please implement a bounded repo-local quality slice.",
+				"startedAt":       "2026-04-14T00:00:00.000Z",
+				"expectedTrigger": "must_invoke",
+				"invoked":         false,
+				"summary":         "The prompt clearly matched the impl skill surface.",
+			},
+			{
+				"evaluationId":   "execution-impl",
+				"targetKind":     "public_skill",
+				"targetId":       "impl",
+				"displayName":    "impl",
+				"evaluationKind": "execution",
+				"prompt":         "Apply the bounded change and verify it.",
+				"startedAt":      "2026-04-14T00:05:00.000Z",
+				"invoked":        true,
+				"outcome":        "passed",
+				"summary":        "The skill completed the task but ran over the intended budget.",
+				"metrics": map[string]any{
+					"total_tokens": 1400,
+					"duration_ms":  4200,
+				},
+				"thresholds": map[string]any{
+					"max_total_tokens": 1000,
+					"max_duration_ms":  3000,
+				},
+			},
+		},
+	})
+
+	_, stderr, exitCode := runCLI(t, root, "skill", "evaluate", "--input", inputPath, "--output", summaryPath)
+	if exitCode != 0 {
+		t.Fatalf("skill evaluate failed: %s", stderr)
+	}
+	summary := readJSONObjectFile(t, summaryPath)
+	if summary["schemaVersion"] != contracts.SkillEvaluationSummarySchema || summary["recommendation"] != "reject" {
+		t.Fatalf("unexpected skill evaluation summary: %#v", summary)
+	}
+	runs := summary["evaluationRuns"].([]any)
+	if len(runs) != 2 {
+		t.Fatalf("unexpected evaluation runs: %#v", runs)
+	}
+
+	_, stderr, exitCode = runCLI(t, root, "scenario", "normalize", "skill", "--input", summaryPath, "--output", candidatesPath)
+	if exitCode != 0 {
+		t.Fatalf("scenario normalize skill from summary failed: %s", stderr)
+	}
+	candidates := readJSONArrayFile(t, candidatesPath)
+	if len(candidates) != 2 {
+		t.Fatalf("unexpected candidates: %#v", candidates)
+	}
+	keys := []string{
+		candidates[0].(map[string]any)["proposalKey"].(string),
+		candidates[1].(map[string]any)["proposalKey"].(string),
+	}
+	slices.Sort(keys)
+	if !slices.Equal(keys, []string{
+		"public-skill-impl-execution-quality-regression",
+		"public-skill-impl-trigger-selection-regression",
+	}) {
+		t.Fatalf("unexpected proposal keys: %#v", keys)
 	}
 }
 

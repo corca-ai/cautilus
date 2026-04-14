@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cautilus.skill_evaluation_inputs.v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "skillId",
+    "evaluations"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "cautilus.skill_evaluation_inputs.v1"
+    },
+    "skillId": {
+      "type": "string"
+    },
+    "skillDisplayName": {
+      "type": "string"
+    },
+    "evaluations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "evaluationId",
+          "targetKind",
+          "targetId",
+          "evaluationKind",
+          "prompt",
+          "startedAt",
+          "invoked",
+          "summary"
+        ],
+        "properties": {
+          "evaluationId": {
+            "type": "string"
+          },
+          "targetKind": {
+            "type": "string",
+            "enum": ["public_skill", "profile", "integration"]
+          },
+          "targetId": {
+            "type": "string"
+          },
+          "displayName": {
+            "type": "string"
+          },
+          "evaluationKind": {
+            "type": "string",
+            "enum": ["trigger", "execution"]
+          },
+          "prompt": {
+            "type": "string"
+          },
+          "startedAt": {
+            "type": "string"
+          },
+          "expectedTrigger": {
+            "type": "string",
+            "enum": ["must_invoke", "must_not_invoke"]
+          },
+          "invoked": {
+            "type": "boolean"
+          },
+          "outcome": {
+            "type": "string",
+            "enum": ["passed", "failed", "degraded", "blocked"]
+          },
+          "summary": {
+            "type": "string"
+          },
+          "blockerKind": {
+            "type": "string"
+          },
+          "metrics": {
+            "type": "object",
+            "properties": {
+              "total_tokens": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "duration_ms": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "cost_usd": {
+                "type": "number",
+                "minimum": 0
+              }
+            }
+          },
+          "thresholds": {
+            "type": "object",
+            "properties": {
+              "max_total_tokens": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "max_duration_ms": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "max_cost_usd": {
+                "type": "number",
+                "minimum": 0
+              }
+            }
+          },
+          "artifactRefs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["kind", "path"],
+              "properties": {
+                "kind": {
+                  "type": "string"
+                },
+                "path": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -175,6 +175,8 @@ func nativeHandler(path []string) handlerFunc {
 		return handleScenarioNormalizeChatbot
 	case "scenario normalize skill":
 		return handleScenarioNormalizeSkill
+	case "skill evaluate":
+		return handleSkillEvaluate
 	case "scenario summarize-telemetry":
 		return handleScenarioSummarizeTelemetry
 	case "scenario prepare-input":
@@ -647,6 +649,30 @@ func handleScenarioNormalizeSkill(repoRoot string, cwd string, args []string, st
 }
 
 //nolint:errcheck // CLI stderr reporting is best-effort.
+func handleSkillEvaluate(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	options, err := parseInputOutputArgs(args)
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	input, err := readJSONObject(resolvePath(cwd, options.input))
+	if err != nil {
+		fmt.Fprintf(stderr, "Failed to read JSON from %s: %s\n", options.input, err)
+		return 1
+	}
+	summary, err := runtime.BuildSkillEvaluationSummary(input, time.Now())
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	if err := writeOutput(stdout, cwd, options.output, summary); err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	return 0
+}
+
+//nolint:errcheck // CLI stderr reporting is best-effort.
 func handleScenarioNormalize(args []string, cwd string, stdout io.Writer, stderr io.Writer, kind string) int {
 	options, err := parseInputOutputArgs(args)
 	if err != nil {
@@ -668,11 +694,13 @@ func handleScenarioNormalize(args []string, cwd string, stdout io.Writer, stderr
 		}
 		candidates, err = runtime.NormalizeChatbotProposalCandidates(arrayOrEmpty(input["conversationSummaries"]), arrayOrEmpty(input["runSummaries"]))
 	case "skill":
-		if input["schemaVersion"] != contracts.SkillNormalizationInputsSchema {
-			fmt.Fprintf(stderr, "schemaVersion must be %s\n", contracts.SkillNormalizationInputsSchema)
+		switch input["schemaVersion"] {
+		case contracts.SkillNormalizationInputsSchema, contracts.SkillEvaluationSummarySchema:
+			candidates, err = runtime.NormalizeSkillProposalCandidates(arrayOrEmpty(input["evaluationRuns"]))
+		default:
+			fmt.Fprintf(stderr, "schemaVersion must be %s or %s\n", contracts.SkillNormalizationInputsSchema, contracts.SkillEvaluationSummarySchema)
 			return 1
 		}
-		candidates, err = runtime.NormalizeSkillProposalCandidates(arrayOrEmpty(input["evaluationRuns"]))
 	default:
 		err = fmt.Errorf("unknown scenario normalization kind: %s", kind)
 	}
