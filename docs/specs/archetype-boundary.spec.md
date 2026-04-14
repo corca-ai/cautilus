@@ -139,30 +139,27 @@ with this spec:
 1. **`cautilus scenarios` command.** Print the three archetypes with one
    example input path and one next-step command each. Machine-readable
    (`--json`) companion so an agent can pick by archetype. Pairs with
-   follow-up 5 (doctor next-step hint).
-2. **`cautilus adapter init --scenario <chatbot|skill|workflow>`.** Emit a
-   starter adapter template whose command slots match the selected
-   archetype (for example, skill pre-fills `skill_test_command_templates`).
-3. **Inline-glossary pass across README.** First use of `held-out`,
+   follow-up 4 (doctor next-step hint).
+2. **Inline-glossary pass across README.** First use of `held-out`,
    `packet`, `bounded`, `executor variant`, `review variant`,
    `intent-first` gets a one-line parenthetical definition. No separate
    glossary document; definitions stay next to first use.
-4. **Surface-name disambiguation.** `workflow_conversation` (chatbot
+3. **Surface-name disambiguation.** `workflow_conversation` (chatbot
    archetype) and `operator_workflow_recovery` (workflow archetype) both
    contain the word `workflow` in the catalog. Consider renaming
    `workflow_conversation` to `conversation_continuity` in
    `cautilus.behavior_intent.v1` so archetype vocabulary does not leak
    across boundaries. Requires a bump of `cautilus.behavior_intent.v1` or a
    catalog-level deprecation.
-5. **Doctor next-step hint.** After `ready`, print a short pointer to
+4. **Doctor next-step hint.** After `ready`, print a short pointer to
    `cautilus scenarios` so a first-time user knows which scenario applies
    to their situation.
-6. **README section ordering.** Scenarios block is the most scannable
+5. **README section ordering.** Scenarios block is the most scannable
    section for first-time readers, but currently sits below Why Cautilus
    and Core Flow. Reorder the top of README so readers hit the three
    scenario blocks before the philosophy block. Pairs naturally with
-   follow-up 3 (inline glossary).
-7. **Experimental archetype escape hatch.** This spec requires every
+   follow-up 2 (inline glossary).
+6. **Experimental archetype escape hatch.** This spec requires every
    first-class archetype to ship in a coordinated slice. That discipline
    is intentional, but leaves no room for research prototypes. Consider a
    relaxed namespace (location TBD — keep the `prototypes/` hint Go-side
@@ -170,7 +167,7 @@ with this spec:
    rules for exploratory surfaces, and a promotion checklist into
    first-class status when the surface earns a schema/helper/CLI/
    contract slice.
-8. **Archetype-extension hardening.** Surfaced by an
+7. **Archetype-extension hardening.** Surfaced by an
     onboarding-lens premortem on the Node-removal slice (round 2): a new
     contributor told to add a 4th first-class archetype must currently
     grep across files this spec does not name, and the 1:1 mapping has
