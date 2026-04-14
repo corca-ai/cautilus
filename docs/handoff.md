@@ -20,6 +20,14 @@
 
 ## Current State
 
+- release hardening now includes two product-owned post-release helpers:
+  - `npm run release:verify-public -- --version <tag>`
+  - `npm run release:smoke-install -- --channel install_sh --version <tag>`
+- external consumer onboarding now has:
+  - [docs/external-consumer-onboarding.md](./external-consumer-onboarding.md)
+  - `npm run consumer:onboard:smoke`
+  - the smoke helper proves `install -> adapter init -> minimal runnable adapter
+    wiring -> adapter resolve -> doctor ready` in a temp git repo
 - release hardening now includes a product-owned public verification helper:
   - `npm run release:verify-public -- --version <tag>`
   - it verifies the tagged GitHub release asset matrix, checksum assets,
@@ -74,6 +82,8 @@
 - `npm run verify`
 - `npm run hooks:check`
 - `npm run release:verify-public -- --version v0.3.0`
+- `npm run release:smoke-install -- --channel install_sh --version v0.3.0`
+- `npm run consumer:onboard:smoke`
 - `npm run dogfood:self`
 - `npm run dogfood:self:experiments`
 
@@ -86,9 +96,10 @@
    - 아니면 optimize-search contract를 유지하고 다른 roadmap slice로
      넘어갈지
 3. 다음 slice를 고른 뒤 `npm run verify`, `npm run hooks:check`를 다시 닫는다.
-4. release/consumer hardening을 계속한다면 public release verification helper
-   위에서 install smoke matrix automation이나 external consumer onboarding으로
-   넘어간다.
+4. release/consumer hardening 다음 후보:
+   - Homebrew install smoke를 실제 managed helper로 더 다듬을지
+   - external consumer onboarding smoke를 archetype-specific starter kits로
+     넓힐지
 
 ## Discuss
 
