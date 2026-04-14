@@ -471,8 +471,9 @@ func handleCommands(repoRoot string, cwd string, args []string, stdout io.Writer
 	if options.json {
 		payload := map[string]any{
 			"schemaVersion": "cautilus.commands.v1",
-			"usage":         registry.Usage,
-			"examples":      registry.Examples,
+			"usage":         registry.UsageLines(),
+			"examples":      registry.ExampleLines(),
+			"groups":        registry.Groups,
 			"commands":      registry.Commands,
 		}
 		if err := writeJSON(stdout, payload); err != nil {

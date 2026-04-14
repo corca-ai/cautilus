@@ -97,11 +97,13 @@ func TestRenderTopicUsageIncludesGroupedSubcommandsForPrefixes(t *testing.T) {
 func TestDecodeRegistryRejectsUnknownCommandFields(t *testing.T) {
 	var registry Registry
 	err := decodeRegistry([]byte(`{
-		"usage": ["cautilus doctor [args]"],
-		"examples": ["cautilus doctor --repo-root ."],
+		"groups": [{"id": "setup", "label": "Set up and check a repo"}],
 		"commands": [
 			{
 				"path": ["skills", "install"],
+				"group": "setup",
+				"usage": "cautilus skills install [--overwrite]",
+				"example": "cautilus skills install",
 				"script": "scripts/install-skills.mjs"
 			}
 		]
@@ -111,6 +113,62 @@ func TestDecodeRegistryRejectsUnknownCommandFields(t *testing.T) {
 	}
 	if !strings.Contains(err.Error(), "unknown field") {
 		t.Fatalf("expected unknown field error, got %v", err)
+	}
+}
+
+func TestRenderUsageGroupsCommandsByPurpose(t *testing.T) {
+	usage, err := RenderUsage()
+	if err != nil {
+		t.Fatalf("RenderUsage returned error: %v", err)
+	}
+	expectedGroups := []string{
+		"Run an evaluation scenario:",
+		"Set up and check a repo:",
+		"Turn results into next moves:",
+		"Introspection:",
+	}
+	previousIndex := -1
+	for _, label := range expectedGroups {
+		index := strings.Index(usage, label)
+		if index < 0 {
+			t.Fatalf("usage missing group label %q:\n%s", label, usage)
+		}
+		if index <= previousIndex {
+			t.Fatalf("group %q appears out of order:\n%s", label, usage)
+		}
+		previousIndex = index
+	}
+	runIndex := strings.Index(usage, "Run an evaluation scenario:")
+	setupIndex := strings.Index(usage, "Set up and check a repo:")
+	scenarioLine := strings.Index(usage, "cautilus scenario normalize chatbot [args]")
+	installLine := strings.Index(usage, "cautilus install [--repo-root <path>] [--overwrite] [--json]")
+	if scenarioLine < runIndex || scenarioLine > setupIndex {
+		t.Fatalf("expected scenario normalize chatbot to sit inside the run group:\n%s", usage)
+	}
+	if installLine < setupIndex {
+		t.Fatalf("expected install to sit inside the setup group:\n%s", usage)
+	}
+}
+
+func TestLoadRegistryAssignsKnownGroupToEveryCommand(t *testing.T) {
+	loaded, err := LoadRegistry()
+	if err != nil {
+		t.Fatalf("LoadRegistry returned error: %v", err)
+	}
+	if len(loaded.Groups) == 0 {
+		t.Fatal("expected registry to declare groups")
+	}
+	knownGroups := map[string]struct{}{}
+	for _, group := range loaded.Groups {
+		knownGroups[group.ID] = struct{}{}
+	}
+	for _, command := range loaded.Commands {
+		if _, ok := knownGroups[command.Group]; !ok {
+			t.Fatalf("command %v references unknown group %q", command.Path, command.Group)
+		}
+		if command.Usage == "" || command.Example == "" {
+			t.Fatalf("command %v missing usage or example", command.Path)
+		}
 	}
 }
 

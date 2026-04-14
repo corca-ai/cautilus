@@ -12,13 +12,20 @@ import (
 )
 
 type Registry struct {
-	Usage    []string       `json:"usage"`
-	Examples []string       `json:"examples"`
+	Groups   []Group        `json:"groups"`
 	Commands []CommandEntry `json:"commands"`
 }
 
+type Group struct {
+	ID    string `json:"id"`
+	Label string `json:"label"`
+}
+
 type CommandEntry struct {
-	Path []string `json:"path"`
+	Path    []string `json:"path"`
+	Group   string   `json:"group"`
+	Usage   string   `json:"usage"`
+	Example string   `json:"example"`
 }
 
 type Match struct {
@@ -63,6 +70,10 @@ func LoadRegistry() (Registry, error) {
 		registryLoadErr = err
 		return Registry{}, err
 	}
+	if err := validateRegistry(registry); err != nil {
+		registryLoadErr = err
+		return Registry{}, err
+	}
 	return registry, nil
 }
 
@@ -70,6 +81,57 @@ func decodeRegistry(content []byte, target *Registry) error {
 	decoder := json.NewDecoder(bytes.NewReader(content))
 	decoder.DisallowUnknownFields()
 	return decoder.Decode(target)
+}
+
+func validateRegistry(r Registry) error {
+	known := map[string]struct{}{}
+	for _, group := range r.Groups {
+		if group.ID == "" {
+			return fmt.Errorf("registry group missing id")
+		}
+		known[group.ID] = struct{}{}
+	}
+	for _, command := range r.Commands {
+		if command.Group == "" {
+			return fmt.Errorf("command %q missing group", strings.Join(command.Path, " "))
+		}
+		if _, ok := known[command.Group]; !ok {
+			return fmt.Errorf("command %q references unknown group %q", strings.Join(command.Path, " "), command.Group)
+		}
+	}
+	return nil
+}
+
+// UsageLines returns the flat list of usage strings in group order.
+// Kept for the `cautilus commands --json` payload.
+func (r Registry) UsageLines() []string {
+	lines := make([]string, 0, len(r.Commands))
+	for _, command := range r.orderedCommands() {
+		lines = append(lines, command.Usage)
+	}
+	return lines
+}
+
+// ExampleLines returns the flat list of example strings in group order.
+// Kept for the `cautilus commands --json` payload.
+func (r Registry) ExampleLines() []string {
+	lines := make([]string, 0, len(r.Commands))
+	for _, command := range r.orderedCommands() {
+		lines = append(lines, command.Example)
+	}
+	return lines
+}
+
+func (r Registry) orderedCommands() []CommandEntry {
+	ordered := make([]CommandEntry, 0, len(r.Commands))
+	for _, group := range r.Groups {
+		for _, command := range r.Commands {
+			if command.Group == group.ID {
+				ordered = append(ordered, command)
+			}
+		}
+	}
+	return ordered
 }
 
 func MatchCommand(args []string) (*Match, error) {
@@ -112,12 +174,19 @@ func RenderUsage() (string, error) {
 		return "", err
 	}
 	lines := []string{"Usage:"}
-	for _, usageLine := range loaded.Usage {
-		lines = append(lines, fmt.Sprintf("  %s", usageLine))
+	for _, group := range loaded.Groups {
+		groupCommands := commandsInGroup(loaded, group.ID)
+		if len(groupCommands) == 0 {
+			continue
+		}
+		lines = append(lines, "", fmt.Sprintf("  %s:", group.Label))
+		for _, command := range groupCommands {
+			lines = append(lines, fmt.Sprintf("    %s", command.Usage))
+		}
 	}
 	lines = append(lines, "", "Examples:")
-	for _, exampleLine := range loaded.Examples {
-		lines = append(lines, fmt.Sprintf("  %s", exampleLine))
+	for _, command := range loaded.orderedCommands() {
+		lines = append(lines, fmt.Sprintf("  %s", command.Example))
 	}
 	return strings.Join(lines, "\n"), nil
 }
@@ -162,36 +231,23 @@ func FindTopicHelp(topic []string) (*TopicHelp, bool, error) {
 	return &help, true, nil
 }
 
+func commandsInGroup(loaded Registry, groupID string) []CommandEntry {
+	commands := make([]CommandEntry, 0)
+	for _, command := range loaded.Commands {
+		if command.Group == groupID {
+			commands = append(commands, command)
+		}
+	}
+	return commands
+}
+
 func findTopicHelp(loaded Registry, topic []string) (TopicHelp, bool) {
-	prefix := strings.TrimSpace(strings.Join(topic, " "))
 	usage := []string{}
 	examples := []string{}
 	children := []CommandEntry{}
-	seenUsage := map[string]struct{}{}
-	seenExamples := map[string]struct{}{}
 	seenChildren := map[string]struct{}{}
 
-	for _, usageLine := range loaded.Usage {
-		if !matchesRegistryLine(usageLine, prefix) {
-			continue
-		}
-		if _, ok := seenUsage[usageLine]; ok {
-			continue
-		}
-		seenUsage[usageLine] = struct{}{}
-		usage = append(usage, usageLine)
-	}
-	for _, exampleLine := range loaded.Examples {
-		if !matchesRegistryLine(exampleLine, prefix) {
-			continue
-		}
-		if _, ok := seenExamples[exampleLine]; ok {
-			continue
-		}
-		seenExamples[exampleLine] = struct{}{}
-		examples = append(examples, exampleLine)
-	}
-	for _, command := range loaded.Commands {
+	for _, command := range loaded.orderedCommands() {
 		if len(topic) == 0 {
 			key := strings.Join(command.Path, "\x00")
 			if _, ok := seenChildren[key]; ok {
@@ -201,14 +257,22 @@ func findTopicHelp(loaded Registry, topic []string) (TopicHelp, bool) {
 			children = append(children, command)
 			continue
 		}
-		if hasPathPrefix(command.Path, topic) && len(command.Path) > len(topic) {
-			key := strings.Join(command.Path, "\x00")
-			if _, ok := seenChildren[key]; ok {
-				continue
-			}
-			seenChildren[key] = struct{}{}
-			children = append(children, command)
+		if !hasPathPrefix(command.Path, topic) {
+			continue
 		}
+		if len(command.Path) == len(topic) {
+			usage = append(usage, command.Usage)
+			examples = append(examples, command.Example)
+			continue
+		}
+		key := strings.Join(command.Path, "\x00")
+		if _, ok := seenChildren[key]; ok {
+			continue
+		}
+		seenChildren[key] = struct{}{}
+		children = append(children, command)
+		usage = append(usage, command.Usage)
+		examples = append(examples, command.Example)
 	}
 
 	if len(topic) > 0 && len(usage) == 0 && len(children) == 0 {
@@ -220,21 +284,6 @@ func findTopicHelp(loaded Registry, topic []string) (TopicHelp, bool) {
 		Examples:      examples,
 		ChildCommands: children,
 	}, true
-}
-
-func matchesRegistryLine(line string, prefix string) bool {
-	if prefix == "" {
-		return true
-	}
-	expectedPrefix := "cautilus " + prefix
-	if !strings.HasPrefix(line, expectedPrefix) {
-		return false
-	}
-	if len(line) == len(expectedPrefix) {
-		return true
-	}
-	next := line[len(expectedPrefix)]
-	return next == ' ' || next == '['
 }
 
 func hasPathPrefix(path []string, prefix []string) bool {
