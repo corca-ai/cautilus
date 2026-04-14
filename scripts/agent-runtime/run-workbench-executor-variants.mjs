@@ -28,7 +28,10 @@ const VALUE_OPTIONS = new Map([
 	["--workspace", "workspace"],
 	["--prompt-file", "promptFile"],
 	["--schema-file", "schemaFile"],
+	["--scenario-file", "scenarioFile"],
+	["--scenario", "scenarioId"],
 	["--output-under-test", "outputUnderTest"],
+	["--output-text-key", "outputTextKey"],
 	["--output-dir", "outputDir"],
 	["--report-file", "reportFile"],
 	["--review-packet", "reviewPacketFile"],
@@ -43,7 +46,7 @@ function fail(message) {
 
 function printUsage() {
 	process.stdout.write(
-		"Usage: node scripts/agent-runtime/run-workbench-executor-variants.mjs [--repo-root DIR] [--adapter PATH | --adapter-name NAME] --workspace DIR [--prompt-file FILE | --report-file FILE | --review-packet FILE | --review-prompt-input FILE] [--output-under-test FILE] [--schema-file FILE] [--output-dir DIR] [--variant-id ID] [--quiet]\n",
+		"Usage: node scripts/agent-runtime/run-workbench-executor-variants.mjs [--repo-root DIR] [--adapter PATH | --adapter-name NAME] --workspace DIR [--prompt-file FILE | --report-file FILE | --review-packet FILE | --review-prompt-input FILE | --scenario-file FILE] [--scenario ID] [--output-under-test FILE] [--output-text-key DOT_PATH] [--schema-file FILE] [--output-dir DIR] [--variant-id ID] [--quiet]\n",
 	);
 }
 
@@ -58,6 +61,9 @@ function readRequiredValue(argv, index, option) {
 function validateOptions(options) {
 	if (options.adapter && options.adapterName) {
 		fail("Use either --adapter or --adapter-name, not both.");
+	}
+	if (options.outputTextKey && !options.outputUnderTest) {
+		fail("--output-text-key requires --output-under-test");
 	}
 	for (const field of REQUIRED_FIELDS) {
 		if (!options[field]) {
@@ -74,8 +80,11 @@ function parseArgs(argv) {
 		workspace: null,
 		promptFile: null,
 		schemaFile: null,
+		scenarioFile: null,
+		scenarioId: null,
 		outputDir: null,
 		outputUnderTest: null,
+		outputTextKey: null,
 		reportFile: null,
 		reviewPacketFile: null,
 		reviewPromptInputFile: null,
@@ -191,6 +200,9 @@ function resolvePromptFromReviewPacket(options, adapterPayload, repoRoot, output
 	if (options.outputUnderTest) {
 		promptInputArgs.push("--output-under-test", options.outputUnderTest);
 	}
+	if (options.outputTextKey) {
+		promptInputArgs.push("--output-text-key", options.outputTextKey);
+	}
 	const promptInput = buildReviewPromptInput(promptInputArgs, { now: new Date() });
 	writeFileSync(reviewPromptInputFile, `${JSON.stringify(promptInput, null, 2)}\n`, "utf-8");
 	return {
@@ -207,6 +219,12 @@ function validatePromptArtifactOptions(options) {
 	}
 	if (options.outputUnderTest && options.reviewPromptInputFile) {
 		fail("--output-under-test cannot be combined with --review-prompt-input");
+	}
+	if (options.scenarioFile && !options.outputUnderTest) {
+		fail("--scenario-file requires --output-under-test");
+	}
+	if (options.scenarioFile && (options.promptFile || options.reviewPromptInputFile || options.reviewPacketFile || options.reportFile)) {
+		fail("--scenario-file cannot be combined with prompt, review-packet, or report inputs");
 	}
 }
 
@@ -241,6 +259,41 @@ function resolvePromptArtifactFromInputFile(options, repoRoot, outputDir) {
 	};
 }
 
+function resolvePromptArtifactFromScenario(options, outputDir) {
+	if (!options.scenarioFile) {
+		return null;
+	}
+	const reviewPromptInputFile = join(outputDir, "review-prompt-input.json");
+	const promptInputArgs = [
+		"--scenario-file",
+		resolve(options.repoRoot, options.scenarioFile),
+		"--repo-root",
+		resolve(options.repoRoot),
+		"--output-under-test",
+		resolve(options.repoRoot, options.outputUnderTest),
+	];
+	if (options.scenarioId) {
+		promptInputArgs.push("--scenario", options.scenarioId);
+	}
+	if (options.outputTextKey) {
+		promptInputArgs.push("--output-text-key", options.outputTextKey);
+	}
+	if (options.adapter) {
+		promptInputArgs.push("--adapter", options.adapter);
+	}
+	if (options.adapterName) {
+		promptInputArgs.push("--adapter-name", options.adapterName);
+	}
+	const promptInput = buildReviewPromptInput(promptInputArgs, { now: new Date() });
+	writeFileSync(reviewPromptInputFile, `${JSON.stringify(promptInput, null, 2)}\n`, "utf-8");
+	return {
+		promptFile: renderPromptFromInputFile(reviewPromptInputFile, outputDir),
+		reviewPacketFile: null,
+		reviewPromptInputFile,
+		outputUnderTestFile: promptInput.outputUnderTestFile ?? null,
+	};
+}
+
 function buildOutputUnderTestWarnings(variants, outputUnderTestFile) {
 	if (!outputUnderTestFile?.absolutePath) {
 		return [];
@@ -261,6 +314,10 @@ function resolvePromptArtifacts(options, adapterPayload, repoRoot, outputDir) {
 	const promptArtifactFromInput = resolvePromptArtifactFromInputFile(options, repoRoot, outputDir);
 	if (promptArtifactFromInput) {
 		return promptArtifactFromInput;
+	}
+	const promptArtifactFromScenario = resolvePromptArtifactFromScenario(options, outputDir);
+	if (promptArtifactFromScenario) {
+		return promptArtifactFromScenario;
 	}
 	return resolvePromptFromReviewPacket(options, adapterPayload, repoRoot, outputDir);
 }

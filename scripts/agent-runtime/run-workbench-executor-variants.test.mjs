@@ -107,8 +107,38 @@ EOF
 	const promptFile = join(root, "prompt.md");
 	const schemaFile = join(root, "schema.json");
 	const reportFile = join(root, "report.json");
+	const scenarioFile = join(root, "scenario.json");
 	writeFileSync(promptFile, "smoke prompt", "utf-8");
 	writeFileSync(schemaFile, '{"type":"object"}\n', "utf-8");
+	writeFileSync(
+		scenarioFile,
+		`${JSON.stringify(
+			{
+				schemaVersion: "cautilus.scenario.v1",
+				scenarioId: "replay-negative-path",
+				name: "Replay Negative Path",
+				description: "Judge whether the replay analysis explains the realized failure path clearly.",
+				brief: "The realized output should stay legible on a negative replay path.",
+				intentProfile: {
+					schemaVersion: "cautilus.behavior_intent.v1",
+					intentId: "intent-replay-negative-path-output-review",
+					summary: "Judge whether the replay analysis explains the realized failure path clearly.",
+					behaviorSurface: "review_variant_workflow",
+					successDimensions: [
+						{
+							id: BEHAVIOR_DIMENSIONS.REVIEW_EVIDENCE_LEGIBILITY,
+							summary: "Keep review evidence and verdict framing legible to a human reviewer.",
+						},
+					],
+					guardrailDimensions: [],
+				},
+				simulatorTurns: ["Replay the failure", "Explain whether the analysis output really matches the scenario."],
+			},
+			null,
+			2,
+		)}\n`,
+		"utf-8",
+	);
 	writeFileSync(
 		reportFile,
 		`${JSON.stringify(
@@ -160,7 +190,7 @@ EOF
 		)}\n`,
 		"utf-8",
 	);
-	return { root, workspace, adapterPath, promptFile, schemaFile, reportFile };
+	return { root, workspace, adapterPath, promptFile, schemaFile, reportFile, scenarioFile };
 }
 
 function runReviewVariants(args, { cwd = process.cwd(), env = process.env } = {}) {
@@ -318,6 +348,8 @@ test("run-workbench-executor-variants can judge an explicit output-under-test ar
 				reportFile,
 				"--output-under-test",
 				outputUnderTest,
+				"--output-text-key",
+				"summary",
 				"--output-dir",
 				outputDir,
 			],
@@ -331,7 +363,58 @@ test("run-workbench-executor-variants can judge an explicit output-under-test ar
 		const promptInput = JSON.parse(readFileSync(summary.reviewPromptInputFile, "utf-8"));
 		assert.equal(promptInput.reviewMode, "output_under_test");
 		assert.equal(promptInput.outputUnderTestFile.absolutePath, outputUnderTest);
+		assert.equal(promptInput.outputUnderTestText.key, "summary");
 		assert.match(readFileSync(summary.promptFile, "utf-8"), /## Output Under Test/);
+		assert.match(readFileSync(summary.promptFile, "utf-8"), /## Output Under Test Text/);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("run-workbench-executor-variants can review a direct scenario file against an output artifact", () => {
+	const { root, workspace, adapterPath, schemaFile, scenarioFile } = createAdapterRepo();
+	try {
+		const adapterWithSchema = join(root, "adapter-with-schema.yaml");
+		const outputUnderTest = join(root, "artifacts", "analysis-output.json");
+		mkdirSync(join(root, "artifacts"), { recursive: true });
+		writeFileSync(
+			outputUnderTest,
+			`${JSON.stringify({ analysis_text: "The replay failed because the denylist blocked 삭제 and four target-resolution lookups cascaded." })}\n`,
+			"utf-8",
+		);
+		writeFileSync(
+			adapterWithSchema,
+			readFileSync(adapterPath, "utf-8") + `default_schema_file: ${schemaFile}\n`,
+			"utf-8",
+		);
+		const outputDir = join(root, "scenario-output-review");
+		const result = runReviewVariants(
+			[
+				"--repo-root",
+				root,
+				"--adapter",
+				adapterWithSchema,
+				"--workspace",
+				workspace,
+				"--scenario-file",
+				scenarioFile,
+				"--output-under-test",
+				outputUnderTest,
+				"--output-text-key",
+				"analysis_text",
+				"--output-dir",
+				outputDir,
+			],
+		);
+		assert.equal(result.status, 0, result.stderr);
+		const summary = JSON.parse(readFileSync(result.stdout.trim(), "utf-8"));
+		const promptInput = JSON.parse(readFileSync(summary.reviewPromptInputFile, "utf-8"));
+		assert.equal(promptInput.scenarioContext.scenarioId, "replay-negative-path");
+		assert.equal(promptInput.outputUnderTestText.key, "analysis_text");
+		const prompt = readFileSync(summary.promptFile, "utf-8");
+		assert.match(prompt, /## Scenario Context/);
+		assert.match(prompt, /replay-negative-path/);
+		assert.match(prompt, /denylist blocked 삭제/);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

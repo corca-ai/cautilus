@@ -684,7 +684,10 @@ type reviewVariantsArgs struct {
 	workspace         string
 	promptFile        *string
 	schemaFile        *string
+	scenarioFile      *string
+	scenarioID        *string
 	outputUnderTest   *string
+	outputTextKey     *string
 	outputDir         *string
 	reportFile        *string
 	reviewPacketFile  *string
@@ -1110,6 +1113,21 @@ func parseReviewVariantsArgs(args []string, cwd string) (*reviewVariantsArgs, er
 			}
 			index = next
 			options.schemaFile = &value
+		case "--scenario-file":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			resolved := resolvePath(cwd, value)
+			options.scenarioFile = &resolved
+		case "--scenario":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.scenarioID = &value
 		case "--output-under-test":
 			value, next, err := requiredValue(args, index, arg)
 			if err != nil {
@@ -1118,6 +1136,13 @@ func parseReviewVariantsArgs(args []string, cwd string) (*reviewVariantsArgs, er
 			index = next
 			resolved := resolvePath(cwd, value)
 			options.outputUnderTest = &resolved
+		case "--output-text-key":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.outputTextKey = &value
 		case "--output-dir":
 			value, next, err := requiredValue(args, index, arg)
 			if err != nil {
@@ -1153,6 +1178,9 @@ func parseReviewVariantsArgs(args []string, cwd string) (*reviewVariantsArgs, er
 	}
 	if options.adapter != nil && options.adapterName != nil {
 		return nil, fmt.Errorf("use either --adapter or --adapter-name, not both")
+	}
+	if options.outputTextKey != nil && options.outputUnderTest == nil {
+		return nil, fmt.Errorf("--output-text-key requires --output-under-test")
 	}
 	if options.workspace == "" {
 		return nil, fmt.Errorf("missing required argument: workspace")
@@ -1600,6 +1628,12 @@ func resolveReviewVariantPromptArtifacts(options *reviewVariantsArgs, adapterPay
 	if options.outputUnderTest != nil && options.reviewPromptInput != nil {
 		return nil, fmt.Errorf("--output-under-test cannot be combined with --review-prompt-input")
 	}
+	if options.scenarioFile != nil && options.outputUnderTest == nil {
+		return nil, fmt.Errorf("--scenario-file requires --output-under-test")
+	}
+	if options.scenarioFile != nil && (options.promptFile != nil || options.reviewPromptInput != nil || options.reviewPacketFile != nil || options.reportFile != nil) {
+		return nil, fmt.Errorf("--scenario-file cannot be combined with prompt, review-packet, or report inputs")
+	}
 	if options.promptFile != nil {
 		return &reviewPromptArtifacts{promptFile: resolvePath(repoRoot, *options.promptFile), reviewPacketFile: nil, reviewPromptInputFile: nil, outputUnderTestFile: nil}, nil
 	}
@@ -1607,6 +1641,30 @@ func resolveReviewVariantPromptArtifacts(options *reviewVariantsArgs, adapterPay
 		if defaultPrompt, ok := adapterPayload.Data["default_prompt_file"].(string); ok && strings.TrimSpace(defaultPrompt) != "" {
 			return &reviewPromptArtifacts{promptFile: resolvePath(repoRoot, defaultPrompt), reviewPacketFile: nil, reviewPromptInputFile: nil, outputUnderTestFile: nil}, nil
 		}
+	}
+	if options.scenarioFile != nil {
+		scenarioSourceFile := resolvePath(repoRoot, *options.scenarioFile)
+		scenarioSource, err := readJSONObject(scenarioSourceFile)
+		if err != nil {
+			return nil, err
+		}
+		promptInput, err := runtime.BuildReviewPromptInputFromScenario(options.repoRoot, anyString(adapterPayload.Path), adapterPayload.Data, scenarioSource, scenarioSourceFile, options.scenarioID, *options.outputUnderTest, options.outputTextKey, time.Now())
+		if err != nil {
+			return nil, err
+		}
+		reviewPromptInputFile := filepath.Join(outputDir, "review-prompt-input.json")
+		if err := writeOutputResolved(io.Discard, &reviewPromptInputFile, promptInput); err != nil {
+			return nil, err
+		}
+		prompt, err := runtime.RenderReviewPrompt(promptInput)
+		if err != nil {
+			return nil, err
+		}
+		promptFile := filepath.Join(outputDir, "review.prompt.md")
+		if err := os.WriteFile(promptFile, []byte(prompt), 0o644); err != nil {
+			return nil, err
+		}
+		return &reviewPromptArtifacts{promptFile: promptFile, reviewPacketFile: nil, reviewPromptInputFile: reviewPromptInputFile, outputUnderTestFile: promptInput["outputUnderTestFile"]}, nil
 	}
 	if options.reviewPromptInput != nil {
 		reviewPromptInputFile := resolvePath(repoRoot, *options.reviewPromptInput)
@@ -1655,7 +1713,7 @@ func resolveReviewVariantPromptArtifacts(options *reviewVariantsArgs, adapterPay
 	if err != nil {
 		return nil, err
 	}
-	promptInput, err := runtime.BuildReviewPromptInput(reviewPacket, reviewPacketFile, options.outputUnderTest, time.Now())
+	promptInput, err := runtime.BuildReviewPromptInput(reviewPacket, reviewPacketFile, options.outputUnderTest, options.outputTextKey, time.Now())
 	if err != nil {
 		return nil, err
 	}

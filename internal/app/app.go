@@ -342,9 +342,15 @@ type reviewPrepareArgs struct {
 }
 
 type reviewBuildPromptArgs struct {
-	reviewPacket    string
+	repoRoot        string
+	adapter         *string
+	adapterName     *string
+	reviewPacket    *string
+	scenarioFile    *string
+	scenarioID      *string
 	output          *string
 	outputUnderTest *string
+	outputTextKey   *string
 }
 
 type evidencePrepareArgs struct {
@@ -895,16 +901,45 @@ func handleReviewBuildPromptInput(repoRoot string, cwd string, args []string, st
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
-	packet, err := readJSONObject(resolvePath(cwd, options.reviewPacket))
-	if err != nil {
-		fmt.Fprintf(stderr, "Failed to read JSON from %s: %s\n", options.reviewPacket, err)
-		return 1
+	adapterPath := ""
+	adapterData := map[string]any{}
+	if options.scenarioFile != nil && (options.adapter != nil || options.adapterName != nil) {
+		adapterPayload, loadErr := runtime.LoadAdapter(options.repoRoot, options.adapter, options.adapterName)
+		if loadErr != nil {
+			fmt.Fprintf(stderr, "%s\n", loadErr)
+			return 1
+		}
+		if !adapterPayload.Found {
+			fmt.Fprintf(stderr, "Adapter not found for repo %s\n", options.repoRoot)
+			return 1
+		}
+		if !adapterPayload.Valid {
+			fmt.Fprintf(stderr, "Adapter is invalid: %s\n", toJSONString(adapterPayload.Errors))
+			return 1
+		}
+		adapterPath = anyString(adapterPayload.Path)
+		adapterData = adapterPayload.Data
 	}
-	if packet["schemaVersion"] != contracts.ReviewPacketSchema {
-		fmt.Fprintf(stderr, "review packet must use schemaVersion %s\n", contracts.ReviewPacketSchema)
-		return 1
+	var promptInput map[string]any
+	if options.scenarioFile != nil {
+		scenarioInput, readErr := readJSONObject(*options.scenarioFile)
+		if readErr != nil {
+			fmt.Fprintf(stderr, "Failed to read JSON from %s: %s\n", *options.scenarioFile, readErr)
+			return 1
+		}
+		promptInput, err = runtime.BuildReviewPromptInputFromScenario(options.repoRoot, adapterPath, adapterData, scenarioInput, *options.scenarioFile, options.scenarioID, *options.outputUnderTest, options.outputTextKey, time.Now())
+	} else {
+		packet, readErr := readJSONObject(*options.reviewPacket)
+		if readErr != nil {
+			fmt.Fprintf(stderr, "Failed to read JSON from %s: %s\n", *options.reviewPacket, readErr)
+			return 1
+		}
+		if packet["schemaVersion"] != contracts.ReviewPacketSchema {
+			fmt.Fprintf(stderr, "review packet must use schemaVersion %s\n", contracts.ReviewPacketSchema)
+			return 1
+		}
+		promptInput, err = runtime.BuildReviewPromptInput(packet, *options.reviewPacket, options.outputUnderTest, options.outputTextKey, time.Now())
 	}
-	promptInput, err := runtime.BuildReviewPromptInput(packet, resolvePath(cwd, options.reviewPacket), options.outputUnderTest, time.Now())
 	if err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
@@ -1727,17 +1762,54 @@ func parseReviewPrepareArgs(args []string, cwd string) (*reviewPrepareArgs, erro
 }
 
 func parseReviewBuildPromptArgs(args []string, cwd string) (*reviewBuildPromptArgs, error) {
-	options := &reviewBuildPromptArgs{}
+	options := &reviewBuildPromptArgs{repoRoot: cwd}
 	for index := 0; index < len(args); index++ {
 		arg := args[index]
 		switch arg {
+		case "--repo-root":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.repoRoot = resolvePath(cwd, value)
+		case "--adapter":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.adapter = &value
+		case "--adapter-name":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.adapterName = &value
 		case "--review-packet":
 			value, next, err := requiredValue(args, index, arg)
 			if err != nil {
 				return nil, err
 			}
 			index = next
-			options.reviewPacket = value
+			resolved := resolvePath(cwd, value)
+			options.reviewPacket = &resolved
+		case "--scenario-file":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			resolved := resolvePath(cwd, value)
+			options.scenarioFile = &resolved
+		case "--scenario":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.scenarioID = &value
 		case "--output":
 			value, next, err := requiredValue(args, index, arg)
 			if err != nil {
@@ -1753,12 +1825,31 @@ func parseReviewBuildPromptArgs(args []string, cwd string) (*reviewBuildPromptAr
 			index = next
 			resolved := resolvePath(cwd, value)
 			options.outputUnderTest = &resolved
+		case "--output-text-key":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.outputTextKey = &value
 		default:
 			return nil, fmt.Errorf("unknown argument: %s", arg)
 		}
 	}
-	if strings.TrimSpace(options.reviewPacket) == "" {
-		return nil, fmt.Errorf("--review-packet is required")
+	if options.adapter != nil && options.adapterName != nil {
+		return nil, fmt.Errorf("use either --adapter or --adapter-name, not both")
+	}
+	if options.reviewPacket != nil && options.scenarioFile != nil {
+		return nil, fmt.Errorf("use either --review-packet or --scenario-file, not both")
+	}
+	if options.outputTextKey != nil && options.outputUnderTest == nil {
+		return nil, fmt.Errorf("--output-text-key requires --output-under-test")
+	}
+	if options.reviewPacket == nil && options.scenarioFile == nil {
+		return nil, fmt.Errorf("provide --review-packet or --scenario-file")
+	}
+	if options.scenarioFile != nil && options.outputUnderTest == nil {
+		return nil, fmt.Errorf("--scenario-file requires --output-under-test")
 	}
 	return options, nil
 }

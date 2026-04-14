@@ -544,7 +544,16 @@ cautilus review build-prompt-input \
 
 cautilus review build-prompt-input \
   --review-packet /tmp/cautilus-mode/review.json \
-  --output-under-test /tmp/cautilus-mode/analysis-output.json
+  --output-under-test /tmp/cautilus-mode/analysis-output.json \
+  --output-text-key analysis_text
+
+cautilus review build-prompt-input \
+  --repo-root . \
+  --adapter-name analysis-prompts \
+  --scenario-file .agents/cautilus-scenarios/analysis-prompts/proposals.json \
+  --scenario replay-negative-path \
+  --output-under-test runs/latest/replay-review.json \
+  --output-text-key analysis_text
 
 cautilus review render-prompt \
   --input /tmp/cautilus-mode/review-prompt-input.json
@@ -620,7 +629,10 @@ cautilus review variants \
   --repo-root /path/to/repo \
   --adapter-name code-quality \
   --workspace /path/to/repo \
+  --scenario-file /path/to/scenario.json \
+  --scenario replay-negative-path \
   --output-under-test /tmp/cautilus-mode/analysis-output.json \
+  --output-text-key analysis_text \
   --output-dir /tmp/cautilus-review
 ```
 
@@ -631,7 +643,9 @@ cautilus review variants \
 readable reason codes instead of prose-only abort text. When
 `--output-under-test` is present, the generated review prompt switches into
 `output_under_test` mode and treats the referenced artifact as primary
-evidence.
+evidence. When `--output-text-key` is present, `Cautilus` also extracts that
+JSON narrative span into the rendered prompt so the judge can read the realized
+output directly instead of only following a file path.
 
 Direct script usage is also supported:
 

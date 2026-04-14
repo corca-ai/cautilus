@@ -159,6 +159,48 @@ function createReviewPacketFixture() {
 	return { root, reviewPacketPath, schemaPath };
 }
 
+function createScenarioFixture() {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-review-scenario-"));
+	const schemaPath = join(process.cwd(), "fixtures", "review", "prompt-input.schema.json");
+	mkdirSync(join(root, "artifacts"), { recursive: true });
+	const scenarioPath = join(root, "scenario.json");
+	writeFileSync(
+		scenarioPath,
+		`${JSON.stringify(
+			{
+				schemaVersion: "cautilus.scenario.v1",
+				scenarioId: "replay-negative-path",
+				name: "Replay Negative Path",
+				description: "Judge whether the replay analysis explains the realized failure path clearly.",
+				brief: "The realized output should stay legible on a negative replay path.",
+				intentProfile: {
+					schemaVersion: "cautilus.behavior_intent.v1",
+					intentId: "intent-replay-negative-path-output-review",
+					summary: "Judge whether the replay analysis explains the realized failure path clearly.",
+					behaviorSurface: "review_variant_workflow",
+					successDimensions: [
+						{
+							id: BEHAVIOR_DIMENSIONS.REVIEW_EVIDENCE_LEGIBILITY,
+							summary: "Keep review evidence and verdict framing legible to a human reviewer.",
+						},
+					],
+					guardrailDimensions: [
+						{
+							id: BEHAVIOR_DIMENSIONS.REVIEW_FINDINGS_BINDING,
+							summary: "Treat review findings as first-class evidence, not optional commentary.",
+						},
+					],
+				},
+				simulatorTurns: ["Replay the failure", "Explain whether the analysis output really matches the scenario."],
+			},
+			null,
+			2,
+		)}\n`,
+		"utf-8",
+	);
+	return { root, scenarioPath, schemaPath };
+}
+
 test("buildReviewPromptInput emits the explicit meta-prompt contract", () => {
 	const { root, reviewPacketPath, schemaPath } = createReviewPacketFixture();
 	try {
@@ -205,12 +247,14 @@ test("buildReviewPromptInput can switch into output-under-test mode", () => {
 		mkdirSync(join(root, "artifacts"), { recursive: true });
 		writeFileSync(outputUnderTestPath, '{"summary":"realized output"}\n', "utf-8");
 		const packet = buildReviewPromptInput(
-			["--review-packet", reviewPacketPath, "--output-under-test", outputUnderTestPath],
+			["--review-packet", reviewPacketPath, "--output-under-test", outputUnderTestPath, "--output-text-key", "summary"],
 			{ now: new Date("2026-04-11T00:04:00.000Z") },
 		);
 		validateAgainstSchema(readJson(schemaPath), packet);
 		assert.equal(packet.reviewMode, "output_under_test");
 		assert.equal(packet.outputUnderTestFile.absolutePath, outputUnderTestPath);
+		assert.equal(packet.outputUnderTestText.key, "summary");
+		assert.equal(packet.outputUnderTestText.text, "realized output");
 		assert.equal(
 			packet.metaPrompt.objective,
 			"Judge whether the output under test actually satisfies the stated intent and dimensions.",
@@ -218,7 +262,46 @@ test("buildReviewPromptInput can switch into output-under-test mode", () => {
 		const prompt = renderReviewPrompt(packet);
 		assert.match(prompt, /## Output Under Test/);
 		assert.match(prompt, /analysis-output\.json/);
+		assert.match(prompt, /## Output Under Test Text/);
+		assert.match(prompt, /realized output/);
 		assert.match(prompt, /primary evidence of realized behavior/);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("buildReviewPromptInput can build direct output review inputs from a scenario file", () => {
+	const { root, scenarioPath, schemaPath } = createScenarioFixture();
+	const outputUnderTestPath = join(root, "artifacts", "analysis-output.json");
+	try {
+		writeFileSync(
+			outputUnderTestPath,
+			`${JSON.stringify({ analysis_text: "The replay failed because the denylist blocked 삭제 and four target-resolution lookups cascaded." })}\n`,
+			"utf-8",
+		);
+		const packet = buildReviewPromptInput(
+			[
+				"--repo-root",
+				root,
+				"--scenario-file",
+				scenarioPath,
+				"--output-under-test",
+				outputUnderTestPath,
+				"--output-text-key",
+				"analysis_text",
+			],
+			{ now: new Date("2026-04-14T01:04:00.000Z") },
+		);
+		validateAgainstSchema(readJson(schemaPath), packet);
+		assert.equal(packet.reviewMode, "output_under_test");
+		assert.equal(packet.scenarioContext.scenarioId, "replay-negative-path");
+		assert.equal(packet.outputUnderTestText.key, "analysis_text");
+		assert.match(packet.outputUnderTestText.text, /denylist blocked 삭제/);
+		const prompt = renderReviewPrompt(packet);
+		assert.match(prompt, /## Scenario Context/);
+		assert.match(prompt, /replay-negative-path/);
+		assert.match(prompt, /## Output Under Test Text/);
+		assert.match(prompt, /denylist blocked 삭제/);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

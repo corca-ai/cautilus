@@ -19,10 +19,14 @@ The packet should include:
 - adapter `comparison_questions`
 - adapter `human_review_prompts`
 - referenced artifact/report files
+- optional `scenarioContext` for one-scenario direct output review
 - `reviewMode`
   - `prompt_under_test`
   - `output_under_test`
 - optional explicit `outputUnderTestFile`
+- optional `outputUnderTestText`
+  - extracted with `--output-text-key <dot.path>` when the narrative span lives
+    inside a JSON artifact
 - optional default prompt/schema file references
 - product-owned meta-prompt objective and instructions
 
@@ -49,7 +53,20 @@ Build the packet for a realized output artifact instead of prompt text:
 ```bash
 cautilus review build-prompt-input \
   --review-packet /tmp/cautilus-mode/review.json \
-  --output-under-test /tmp/cautilus-mode/analysis-output.json
+  --output-under-test /tmp/cautilus-mode/analysis-output.json \
+  --output-text-key analysis_text
+```
+
+Build the packet directly from one scenario plus one realized output artifact:
+
+```bash
+cautilus review build-prompt-input \
+  --repo-root . \
+  --adapter-name analysis-prompts \
+  --scenario-file .agents/cautilus-scenarios/analysis-prompts/proposals.json \
+  --scenario replay-negative-path \
+  --output-under-test runs/latest/replay-review.json \
+  --output-text-key analysis_text
 ```
 
 Render the prompt:
@@ -67,3 +84,6 @@ cautilus review render-prompt \
 - Prefer explicit file references over hidden prompt assembly.
 - When judging realized behavior, prefer `--output-under-test` over baking the
   artifact path into adapter prose.
+- When the realized output is a larger JSON artifact, prefer `--output-text-key`
+  so the judge sees the narrative span directly instead of inferring it from a
+  file path alone.

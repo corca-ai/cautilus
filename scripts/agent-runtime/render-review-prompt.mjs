@@ -136,7 +136,7 @@ function renderCurrentReportEvidence(evidence) {
 		lines.push("- current command observations:");
 		lines.push(...evidence.commandObservations.map((entry) => `  ${renderCommandObservation(entry).slice(2)}`));
 	}
-	return lines;
+	return lines.length > 1 ? lines : [];
 }
 
 function renderIntentProfile(intentProfile) {
@@ -172,6 +172,57 @@ function renderOutputUnderTest(fileRecord) {
 		`- ${fileRecord.absolutePath}${fileRecord.exists ? "" : " (missing at render time)"}`,
 		"- Use this artifact as the primary evidence of realized behavior for the stated dimensions.",
 	].join("\n");
+}
+
+function renderScenarioContext(context) {
+	if (!context || typeof context !== "object") {
+		return "";
+	}
+	const lines = ["## Scenario Context"];
+	if (context.sourceFile) {
+		lines.push(`- source file: ${context.sourceFile}`);
+	}
+	if (context.scenarioId) {
+		lines.push(`- scenario id: ${context.scenarioId}`);
+	}
+	if (context.scenarioKey) {
+		lines.push(`- scenario key: ${context.scenarioKey}`);
+	}
+	if (context.proposalKey) {
+		lines.push(`- proposal key: ${context.proposalKey}`);
+	}
+	if (context.name) {
+		lines.push(`- name: ${context.name}`);
+	}
+	if (context.description) {
+		lines.push(`- description: ${context.description}`);
+	}
+	if (context.brief) {
+		lines.push(`- brief: ${context.brief}`);
+	}
+	if (Array.isArray(context.simulatorTurns) && context.simulatorTurns.length > 0) {
+		lines.push("- simulator turns:");
+		lines.push(...context.simulatorTurns.map((entry, index) => `  ${index + 1}. ${entry}`));
+	}
+	return lines.join("\n");
+}
+
+function renderOutputUnderTestText(textRecord) {
+	if (!textRecord?.text) {
+		return "";
+	}
+	const lines = ["## Output Under Test Text"];
+	if (textRecord.key) {
+		lines.push(`- extracted key: ${textRecord.key}`);
+	}
+	if (typeof textRecord.charCount === "number") {
+		lines.push(`- extracted chars: ${textRecord.charCount}`);
+	}
+	if (textRecord.truncated) {
+		lines.push("- excerpt truncated for bounded review.");
+	}
+	lines.push("```text", textRecord.text, "```");
+	return lines.join("\n");
 }
 
 function maybeReadConsumerPrompt(promptInput) {
@@ -235,7 +286,9 @@ export function renderReviewPrompt(promptInput) {
 		...humanReviewPrompts,
 	];
 	appendSectionLines(sections, renderFileList("## Artifact Files", promptInput.artifactFiles || []));
+	appendSectionLines(sections, renderScenarioContext(promptInput.scenarioContext));
 	appendSectionLines(sections, renderOutputUnderTest(promptInput.outputUnderTestFile));
+	appendSectionLines(sections, renderOutputUnderTestText(promptInput.outputUnderTestText));
 	appendSectionLines(sections, renderFileList("## Report Artifacts", promptInput.reportArtifacts || []));
 	if (promptInput.defaultSchemaFile?.absolutePath) {
 		sections.push("", "## Output Contract", `- schema file: ${promptInput.defaultSchemaFile.absolutePath}`);

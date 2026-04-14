@@ -246,7 +246,16 @@ cautilus review build-prompt-input \
 
 cautilus review build-prompt-input \
   --review-packet /tmp/cautilus-mode/review.json \
-  --output-under-test /tmp/cautilus-mode/analysis-output.json
+  --output-under-test /tmp/cautilus-mode/analysis-output.json \
+  --output-text-key analysis_text
+
+cautilus review build-prompt-input \
+  --repo-root . \
+  --adapter-name analysis-prompts \
+  --scenario-file .agents/cautilus-scenarios/analysis-prompts/proposals.json \
+  --scenario replay-negative-path \
+  --output-under-test /tmp/cautilus-mode/replay-review.json \
+  --output-text-key analysis_text
 
 cautilus review render-prompt \
   --input /tmp/cautilus-mode/review-prompt-input.json
@@ -292,6 +301,17 @@ cautilus review variants \
   --workspace . \
   --report-file /tmp/cautilus-mode/report.json \
   --output-under-test /tmp/cautilus-mode/analysis-output.json \
+  --output-text-key analysis_text \
+  --output-dir /tmp/cautilus-review
+
+cautilus review variants \
+  --repo-root . \
+  --adapter-name analysis-prompts \
+  --workspace . \
+  --scenario-file .agents/cautilus-scenarios/analysis-prompts/proposals.json \
+  --scenario replay-negative-path \
+  --output-under-test /tmp/cautilus-mode/replay-review.json \
+  --output-text-key analysis_text \
   --output-dir /tmp/cautilus-review
 
 ```

@@ -6,7 +6,6 @@
   "required": [
     "schemaVersion",
     "generatedAt",
-    "reviewPacketFile",
     "repoRoot",
     "adapterPath",
     "intent",
@@ -32,6 +31,9 @@
     },
     "reviewPacketFile": {
       "type": "string"
+    },
+    "scenarioContext": {
+      "type": "object"
     },
     "repoRoot": {
       "type": "string"
@@ -91,6 +93,9 @@
       "type": "array"
     },
     "outputUnderTestFile": {
+      "type": "object"
+    },
+    "outputUnderTestText": {
       "type": "object"
     },
     "reportArtifacts": {

@@ -1,9 +1,11 @@
 package runtime
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"time"
 
@@ -13,6 +15,7 @@ import (
 const (
 	metaPromptObjective      = "Judge whether the candidate is actually better than the baseline for the stated intent."
 	outputUnderTestObjective = "Judge whether the output under test actually satisfies the stated intent and dimensions."
+	outputUnderTestTextLimit = 12000
 )
 
 var metaPromptInstructions = []string{
@@ -52,7 +55,7 @@ func BuildReviewPacket(repoRoot string, adapterPath string, adapterData map[stri
 	}, nil
 }
 
-func BuildReviewPromptInput(reviewPacket map[string]any, reviewPacketFile string, outputUnderTestFile *string, now time.Time) (map[string]any, error) {
+func BuildReviewPromptInput(reviewPacket map[string]any, reviewPacketFile string, outputUnderTestFile *string, outputTextKey *string, now time.Time) (map[string]any, error) {
 	report := asMap(reviewPacket["report"])
 	intent, err := normalizeNonEmptyString(report["intent"], "report.intent")
 	if err != nil {
@@ -101,10 +104,67 @@ func BuildReviewPromptInput(reviewPacket map[string]any, reviewPacketFile string
 		metaPromptInstructionsValue = append(metaPromptInstructionsValue, reviewInstructionItems(outputUnderTestInstructions)...)
 		result["reviewMode"] = reviewMode
 		result["outputUnderTestFile"] = summarizeOneFileRecord(explicitFileRecord(*outputUnderTestFile))
+		if outputText, err := buildOutputUnderTestText(*outputUnderTestFile, outputTextKey); err != nil {
+			return nil, err
+		} else if outputText != nil {
+			result["outputUnderTestText"] = outputText
+		}
 		result["metaPrompt"] = map[string]any{
 			"objective":    metaPromptObjectiveValue,
 			"instructions": metaPromptInstructionsValue,
 		}
+	}
+	return result, nil
+}
+
+func BuildReviewPromptInputFromScenario(repoRoot string, adapterPath string, adapterData map[string]any, scenarioSource map[string]any, scenarioSourceFile string, scenarioSelector *string, outputUnderTestFile string, outputTextKey *string, now time.Time) (map[string]any, error) {
+	scenarioContext, err := resolveReviewScenarioContext(scenarioSource, scenarioSourceFile, scenarioSelector)
+	if err != nil {
+		return nil, err
+	}
+	intent := stringOrEmpty(scenarioContext["description"])
+	if strings.TrimSpace(intent) == "" {
+		intent = stringOrEmpty(asMap(scenarioContext["intentProfile"])["summary"])
+	}
+	intentProfile, err := BuildBehaviorIntentProfile(intent, asMap(scenarioContext["intentProfile"]), BehaviorSurfaces["REVIEW_VARIANT_WORKFLOW"], nil, nil)
+	if err != nil {
+		return nil, err
+	}
+	result := map[string]any{
+		"schemaVersion":           contracts.ReviewPromptInputsSchema,
+		"generatedAt":             now.UTC().Format(time.RFC3339Nano),
+		"repoRoot":                repoRoot,
+		"adapterPath":             adapterPath,
+		"intent":                  intent,
+		"intentProfile":           intentProfile,
+		"candidate":               filepath.Base(outputUnderTestFile),
+		"baseline":                "not_applicable",
+		"automatedRecommendation": "not_run",
+		"currentReportEvidence": map[string]any{
+			"reportFile":              "",
+			"reportGeneratedAt":       "",
+			"automatedRecommendation": "not_run",
+			"commandObservations":     []any{},
+		},
+		"modeSummaries":       []any{},
+		"comparisonQuestions": stringArrayToAny(stringArrayOrEmpty(adapterData["comparison_questions"])),
+		"humanReviewPrompts":  arrayOrEmpty(adapterData["human_review_prompts"]),
+		"artifactFiles":       []any{},
+		"reportArtifacts":     []any{},
+		"reviewMode":          "output_under_test",
+		"metaPrompt": map[string]any{
+			"objective":    outputUnderTestObjective,
+			"instructions": append(reviewInstructionItems(metaPromptInstructions), reviewInstructionItems(outputUnderTestInstructions)...),
+		},
+		"scenarioContext":     scenarioContext,
+		"outputUnderTestFile": summarizeOneFileRecord(explicitFileRecord(outputUnderTestFile)),
+		"defaultPromptFile":   summarizeOneFileRecord(collectOptionalFile(repoRoot, stringOrEmpty(adapterData["default_prompt_file"]))),
+		"defaultSchemaFile":   summarizeOneFileRecord(collectOptionalFile(repoRoot, stringOrEmpty(adapterData["default_schema_file"]))),
+	}
+	if outputText, err := buildOutputUnderTestText(outputUnderTestFile, outputTextKey); err != nil {
+		return nil, err
+	} else if outputText != nil {
+		result["outputUnderTestText"] = outputText
 	}
 	return result, nil
 }
@@ -160,7 +220,15 @@ func RenderReviewPrompt(promptInput map[string]any) (string, error) {
 		lines = append(lines, "")
 		lines = append(lines, section...)
 	}
+	if section := renderScenarioContext(asMap(promptInput["scenarioContext"])); len(section) > 0 {
+		lines = append(lines, "")
+		lines = append(lines, section...)
+	}
 	if section := renderOutputUnderTest(asMap(promptInput["outputUnderTestFile"])); len(section) > 0 {
+		lines = append(lines, "")
+		lines = append(lines, section...)
+	}
+	if section := renderOutputUnderTestText(asMap(promptInput["outputUnderTestText"])); len(section) > 0 {
 		lines = append(lines, "")
 		lines = append(lines, section...)
 	}
@@ -310,6 +378,9 @@ func renderCurrentReportEvidence(evidence map[string]any) []string {
 			lines = append(lines, "  "+renderCommandObservation(asMap(raw)))
 		}
 	}
+	if len(lines) == 1 {
+		return nil
+	}
 	return lines
 }
 
@@ -397,6 +468,60 @@ func renderOutputUnderTest(fileRecord map[string]any) []string {
 	}
 }
 
+func renderScenarioContext(context map[string]any) []string {
+	if len(context) == 0 {
+		return nil
+	}
+	lines := []string{"## Scenario Context"}
+	if sourceFile := stringOrEmpty(context["sourceFile"]); sourceFile != "" {
+		lines = append(lines, "- source file: "+sourceFile)
+	}
+	if scenarioID := stringOrEmpty(context["scenarioId"]); scenarioID != "" {
+		lines = append(lines, "- scenario id: "+scenarioID)
+	}
+	if scenarioKey := stringOrEmpty(context["scenarioKey"]); scenarioKey != "" {
+		lines = append(lines, "- scenario key: "+scenarioKey)
+	}
+	if proposalKey := stringOrEmpty(context["proposalKey"]); proposalKey != "" {
+		lines = append(lines, "- proposal key: "+proposalKey)
+	}
+	if name := stringOrEmpty(context["name"]); name != "" {
+		lines = append(lines, "- name: "+name)
+	}
+	if description := stringOrEmpty(context["description"]); description != "" {
+		lines = append(lines, "- description: "+description)
+	}
+	if brief := stringOrEmpty(context["brief"]); brief != "" {
+		lines = append(lines, "- brief: "+brief)
+	}
+	if turns := arrayOrEmpty(context["simulatorTurns"]); len(turns) > 0 {
+		lines = append(lines, "- simulator turns:")
+		for index, raw := range turns {
+			lines = append(lines, fmt.Sprintf("  %d. %s", index+1, stringOrEmpty(raw)))
+		}
+	}
+	return lines
+}
+
+func renderOutputUnderTestText(textRecord map[string]any) []string {
+	text := stringOrEmpty(textRecord["text"])
+	if text == "" {
+		return nil
+	}
+	lines := []string{"## Output Under Test Text"}
+	if key := stringOrEmpty(textRecord["key"]); key != "" {
+		lines = append(lines, "- extracted key: "+key)
+	}
+	if charCount, ok := toFloat(textRecord["charCount"]); ok {
+		lines = append(lines, fmt.Sprintf("- extracted chars: %.0f", charCount))
+	}
+	if truthy(textRecord["truncated"]) {
+		lines = append(lines, fmt.Sprintf("- excerpt truncated to %d chars for bounded review.", outputUnderTestTextLimit))
+	}
+	lines = append(lines, "```text", text, "```")
+	return lines
+}
+
 func maybeReadConsumerPrompt(defaultPromptFile map[string]any) (string, error) {
 	path := stringOrEmpty(defaultPromptFile["absolutePath"])
 	if path == "" || !truthy(defaultPromptFile["exists"]) {
@@ -407,6 +532,180 @@ func maybeReadConsumerPrompt(defaultPromptFile map[string]any) (string, error) {
 		return "", err
 	}
 	return strings.TrimSpace(string(payload)), nil
+}
+
+func buildOutputUnderTestText(outputUnderTestFile string, outputTextKey *string) (any, error) {
+	if outputTextKey == nil || strings.TrimSpace(*outputTextKey) == "" {
+		return nil, nil
+	}
+	payload, err := os.ReadFile(outputUnderTestFile)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read output-under-test file %s: %w", outputUnderTestFile, err)
+	}
+	var parsed any
+	if err := json.Unmarshal(payload, &parsed); err != nil {
+		return nil, fmt.Errorf("--output-text-key requires a JSON output-under-test file: %w", err)
+	}
+	value, found := lookupDotPath(parsed, *outputTextKey)
+	if !found {
+		return nil, fmt.Errorf("output-under-test file %s does not contain key %s", outputUnderTestFile, strings.TrimSpace(*outputTextKey))
+	}
+	fullText, err := coerceOutputText(value)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read output-under-test text at %s: %w", strings.TrimSpace(*outputTextKey), err)
+	}
+	text := fullText
+	truncated := false
+	if len(text) > outputUnderTestTextLimit {
+		text = text[:outputUnderTestTextLimit]
+		truncated = true
+	}
+	return map[string]any{
+		"key":       strings.TrimSpace(*outputTextKey),
+		"text":      text,
+		"charCount": len(fullText),
+		"truncated": truncated,
+	}, nil
+}
+
+func lookupDotPath(value any, dotPath string) (any, bool) {
+	current := value
+	for _, segment := range strings.Split(strings.TrimSpace(dotPath), ".") {
+		if strings.TrimSpace(segment) == "" {
+			return nil, false
+		}
+		switch typed := current.(type) {
+		case map[string]any:
+			next, ok := typed[segment]
+			if !ok {
+				return nil, false
+			}
+			current = next
+		case []any:
+			index, err := strconv.Atoi(segment)
+			if err != nil || index < 0 || index >= len(typed) {
+				return nil, false
+			}
+			current = typed[index]
+		default:
+			return nil, false
+		}
+	}
+	return current, true
+}
+
+func coerceOutputText(value any) (string, error) {
+	switch typed := value.(type) {
+	case nil:
+		return "", fmt.Errorf("value is null")
+	case string:
+		return typed, nil
+	case []any:
+		lines := make([]string, 0, len(typed))
+		for _, entry := range typed {
+			text, err := coerceOutputText(entry)
+			if err != nil {
+				return "", err
+			}
+			lines = append(lines, text)
+		}
+		return strings.Join(lines, "\n"), nil
+	case map[string]any:
+		payload, err := json.MarshalIndent(typed, "", "  ")
+		if err != nil {
+			return "", err
+		}
+		return string(payload), nil
+	default:
+		return fmt.Sprint(typed), nil
+	}
+}
+
+func resolveReviewScenarioContext(source map[string]any, sourceFile string, scenarioSelector *string) (map[string]any, error) {
+	if len(source) == 0 {
+		return nil, fmt.Errorf("scenario source must be an object")
+	}
+	selector := ""
+	if scenarioSelector != nil {
+		selector = strings.TrimSpace(*scenarioSelector)
+	}
+	switch stringOrEmpty(source["schemaVersion"]) {
+	case contracts.DraftScenarioSchema:
+		return normalizeReviewScenarioContext(source, sourceFile), nil
+	case contracts.ScenarioProposalInputsSchema:
+		return selectReviewScenarioCandidate(arrayOrEmpty(source["proposalCandidates"]), sourceFile, selector)
+	case contracts.ScenarioProposalsSchema:
+		return selectReviewScenarioProposal(arrayOrEmpty(source["proposals"]), sourceFile, selector)
+	default:
+		if len(asMap(source["intentProfile"])) > 0 {
+			return normalizeReviewScenarioContext(source, sourceFile), nil
+		}
+		return nil, fmt.Errorf("scenario source must be a %s, %s, %s, or scenario-like object", contracts.DraftScenarioSchema, contracts.ScenarioProposalInputsSchema, contracts.ScenarioProposalsSchema)
+	}
+}
+
+func selectReviewScenarioCandidate(candidates []any, sourceFile string, selector string) (map[string]any, error) {
+	if len(candidates) == 0 {
+		return nil, fmt.Errorf("scenario proposal input has no proposalCandidates")
+	}
+	if selector == "" {
+		return nil, fmt.Errorf("--scenario is required when --scenario-file points at %s", contracts.ScenarioProposalInputsSchema)
+	}
+	for _, raw := range candidates {
+		candidate := asMap(raw)
+		if selector != stringOrEmpty(candidate["proposalKey"]) {
+			continue
+		}
+		record := normalizeReviewScenarioContext(candidate, sourceFile)
+		record["proposalKey"] = stringOrEmpty(candidate["proposalKey"])
+		record["scenarioId"] = stringOrEmpty(candidate["proposalKey"])
+		return record, nil
+	}
+	return nil, fmt.Errorf("scenario %s not found in %s", selector, sourceFile)
+}
+
+func selectReviewScenarioProposal(proposals []any, sourceFile string, selector string) (map[string]any, error) {
+	if len(proposals) == 0 {
+		return nil, fmt.Errorf("scenario proposals packet has no proposals")
+	}
+	if selector == "" {
+		return nil, fmt.Errorf("--scenario is required when --scenario-file points at %s", contracts.ScenarioProposalsSchema)
+	}
+	for _, raw := range proposals {
+		proposal := asMap(raw)
+		draftScenario := asMap(proposal["draftScenario"])
+		if selector != stringOrEmpty(proposal["proposalKey"]) && selector != stringOrEmpty(draftScenario["scenarioId"]) && selector != stringOrEmpty(asMap(draftScenario["benchmark"])["scenarioKey"]) {
+			continue
+		}
+		record := normalizeReviewScenarioContext(draftScenario, sourceFile)
+		record["proposalKey"] = stringOrEmpty(proposal["proposalKey"])
+		return record, nil
+	}
+	return nil, fmt.Errorf("scenario %s not found in %s", selector, sourceFile)
+}
+
+func normalizeReviewScenarioContext(record map[string]any, sourceFile string) map[string]any {
+	context := map[string]any{
+		"sourceFile":     sourceFile,
+		"scenarioId":     stringOrEmpty(record["scenarioId"]),
+		"name":           stringOrEmpty(record["name"]),
+		"description":    stringOrEmpty(record["description"]),
+		"brief":          stringOrEmpty(record["brief"]),
+		"simulatorTurns": arrayOrEmpty(record["simulatorTurns"]),
+		"intentProfile":  record["intentProfile"],
+	}
+	if benchmark := asMap(record["benchmark"]); len(benchmark) > 0 {
+		context["scenarioKey"] = stringOrEmpty(benchmark["scenarioKey"])
+	}
+	return context
+}
+
+func stringArrayToAny(values []string) []any {
+	result := make([]any, 0, len(values))
+	for _, value := range values {
+		result = append(result, value)
+	}
+	return result
 }
 
 func stringArrayOrEmpty(value any) []string {

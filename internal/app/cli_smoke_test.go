@@ -577,6 +577,8 @@ func TestCLIReviewVariantsSupportsOutputUnderTest(t *testing.T) {
 		reportFile,
 		"--output-under-test",
 		outputUnderTestPath,
+		"--output-text-key",
+		"summary",
 		"--output-dir",
 		outputDir,
 	)
@@ -597,8 +599,107 @@ func TestCLIReviewVariantsSupportsOutputUnderTest(t *testing.T) {
 		t.Fatalf("ReadFile returned error: %v", err)
 	}
 	prompt := string(promptBytes)
-	if !strings.Contains(prompt, "## Output Under Test") || !strings.Contains(prompt, "analysis-output.json") {
+	if !strings.Contains(prompt, "## Output Under Test") || !strings.Contains(prompt, "analysis-output.json") || !strings.Contains(prompt, "## Output Under Test Text") || !strings.Contains(prompt, "realized output") {
 		t.Fatalf("unexpected rendered output-under-test prompt: %s", prompt)
+	}
+}
+
+func TestCLIReviewVariantsCanUseDirectScenarioOutputReview(t *testing.T) {
+	root := t.TempDir()
+	if err := os.MkdirAll(filepath.Join(root, "artifacts"), 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(root, "review.schema.json"), []byte("{\"type\":\"object\"}\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	outputUnderTestPath := filepath.Join(root, "artifacts", "analysis-output.json")
+	if err := os.WriteFile(outputUnderTestPath, []byte("{\"analysis_text\":\"The replay failed because the denylist blocked 삭제 and four target-resolution lookups cascaded.\"}\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	scenarioFile := filepath.Join(root, "scenario.json")
+	writeJSONFile(t, scenarioFile, map[string]any{
+		"schemaVersion": contracts.DraftScenarioSchema,
+		"scenarioId":    "replay-negative-path",
+		"name":          "Replay Negative Path",
+		"description":   "Judge whether the replay analysis explains the realized failure path clearly.",
+		"brief":         "The realized output should stay legible on a negative replay path.",
+		"intentProfile": map[string]any{
+			"schemaVersion":   contracts.BehaviorIntentSchema,
+			"intentId":        "intent-replay-negative-path-output-review",
+			"summary":         "Judge whether the replay analysis explains the realized failure path clearly.",
+			"behaviorSurface": cautilusruntime.BehaviorSurfaces["REVIEW_VARIANT_WORKFLOW"],
+			"successDimensions": []map[string]any{
+				{
+					"id":      cautilusruntime.BehaviorDimensions["REVIEW_EVIDENCE_LEGIBILITY"],
+					"summary": "Keep review evidence and verdict framing legible to a human reviewer.",
+				},
+			},
+			"guardrailDimensions": []any{},
+		},
+		"simulatorTurns": []string{"Replay the failure", "Explain whether the analysis output really matches the scenario."},
+	})
+	writeExecutableFile(t, root, "variant.sh", "#!/bin/sh\noutput_file=\"$1\"\nprompt_file=\"$2\"\nprompt_text=\"$(cat \"$prompt_file\")\"\nnode - \"$output_file\" \"$prompt_text\" <<'EOF'\nconst [outputFile, promptText] = process.argv.slice(2);\nconst { writeFileSync } = await import(\"node:fs\");\nwriteFileSync(outputFile, JSON.stringify({\n  verdict: \"pass\",\n  summary: promptText,\n  findings: [{ severity: \"pass\", message: \"scenario-output-review\", path: \"variant/sh\" }],\n}) + \"\\n\", \"utf-8\");\nEOF\n")
+
+	if _, stderr, exitCode := runCLI(t, root, "adapter", "init", "--repo-root", root); exitCode != 0 {
+		t.Fatalf("adapter init failed: %s", stderr)
+	}
+	adapterPath := filepath.Join(root, ".agents", "cautilus-adapter.yaml")
+	adapterText, err := os.ReadFile(adapterPath)
+	if err != nil {
+		t.Fatalf("ReadFile returned error: %v", err)
+	}
+	adapterText = append(adapterText, []byte(strings.Join([]string{
+		"default_schema_file: review.schema.json",
+		"executor_variants:",
+		"  - id: standalone",
+		"    tool: command",
+		"    purpose: direct scenario output review",
+		"    command_template: sh {candidate_repo}/variant.sh {output_file} {prompt_file}",
+		"",
+	}, "\n"))...)
+	if err := os.WriteFile(adapterPath, adapterText, 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+
+	outputDir := filepath.Join(root, "scenario-review-outputs")
+	stdout, stderr, exitCode := runCLI(
+		t,
+		root,
+		"review",
+		"variants",
+		"--repo-root",
+		root,
+		"--workspace",
+		root,
+		"--scenario-file",
+		scenarioFile,
+		"--output-under-test",
+		outputUnderTestPath,
+		"--output-text-key",
+		"analysis_text",
+		"--output-dir",
+		outputDir,
+	)
+	if exitCode != 0 {
+		t.Fatalf("review variants failed: %s", stderr)
+	}
+	summary := readJSONObjectFile(t, strings.TrimSpace(stdout))
+	promptInput := readJSONObjectFile(t, anyString(summary["reviewPromptInputFile"]))
+	scenarioContext := promptInput["scenarioContext"].(map[string]any)
+	if scenarioContext["scenarioId"] != "replay-negative-path" {
+		t.Fatalf("unexpected scenario context: %#v", scenarioContext)
+	}
+	outputUnderTestText := promptInput["outputUnderTestText"].(map[string]any)
+	if outputUnderTestText["key"] != "analysis_text" || !strings.Contains(anyToString(outputUnderTestText["text"]), "denylist blocked 삭제") {
+		t.Fatalf("unexpected output-under-test text: %#v", outputUnderTestText)
+	}
+	promptBytes, err := os.ReadFile(anyString(summary["promptFile"]))
+	if err != nil {
+		t.Fatalf("ReadFile returned error: %v", err)
+	}
+	prompt := string(promptBytes)
+	if !strings.Contains(prompt, "## Scenario Context") || !strings.Contains(prompt, "replay-negative-path") || !strings.Contains(prompt, "## Output Under Test Text") || !strings.Contains(prompt, "denylist blocked 삭제") {
+		t.Fatalf("unexpected rendered scenario review prompt: %s", prompt)
 	}
 }
 
@@ -1491,7 +1592,7 @@ func TestCLIReviewBuildPromptInputAndRenderPromptCloseMetaPromptSeam(t *testing.
 		},
 	})
 
-	_, stderr, exitCode := runCLI(t, root, "review", "build-prompt-input", "--review-packet", reviewPacketPath, "--output-under-test", outputUnderTestPath, "--output", promptInputPath)
+	_, stderr, exitCode := runCLI(t, root, "review", "build-prompt-input", "--review-packet", reviewPacketPath, "--output-under-test", outputUnderTestPath, "--output-text-key", "summary", "--output", promptInputPath)
 	if exitCode != 0 {
 		t.Fatalf("review build-prompt-input failed: %s", stderr)
 	}
@@ -1510,6 +1611,10 @@ func TestCLIReviewBuildPromptInputAndRenderPromptCloseMetaPromptSeam(t *testing.
 	if outputUnderTest["absolutePath"] != outputUnderTestPath {
 		t.Fatalf("unexpected output-under-test file: %#v", outputUnderTest)
 	}
+	outputUnderTestText := promptInput["outputUnderTestText"].(map[string]any)
+	if outputUnderTestText["key"] != "summary" || outputUnderTestText["text"] != "realized output" {
+		t.Fatalf("unexpected output-under-test text: %#v", outputUnderTestText)
+	}
 	_, stderr, exitCode = runCLI(t, root, "review", "render-prompt", "--input", promptInputPath, "--output", promptPath)
 	if exitCode != 0 {
 		t.Fatalf("review render-prompt failed: %s", stderr)
@@ -1519,7 +1624,7 @@ func TestCLIReviewBuildPromptInputAndRenderPromptCloseMetaPromptSeam(t *testing.
 		t.Fatalf("ReadFile returned error: %v", err)
 	}
 	prompt := string(promptBytes)
-	if !strings.Contains(prompt, "Held-out operator guidance improved.") || !strings.Contains(prompt, "## Intent Profile") || !strings.Contains(prompt, "Prefer operator-visible evidence.") || !strings.Contains(prompt, "## Current Report Evidence") || !strings.Contains(prompt, "npm run verify") || !strings.Contains(prompt, "## Output Under Test") || !strings.Contains(prompt, "analysis-output.json") {
+	if !strings.Contains(prompt, "Held-out operator guidance improved.") || !strings.Contains(prompt, "## Intent Profile") || !strings.Contains(prompt, "Prefer operator-visible evidence.") || !strings.Contains(prompt, "## Current Report Evidence") || !strings.Contains(prompt, "npm run verify") || !strings.Contains(prompt, "## Output Under Test") || !strings.Contains(prompt, "analysis-output.json") || !strings.Contains(prompt, "## Output Under Test Text") || !strings.Contains(prompt, "realized output") {
 		t.Fatalf("unexpected rendered prompt: %s", prompt)
 	}
 }

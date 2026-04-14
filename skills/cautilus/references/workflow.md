@@ -230,6 +230,21 @@ cautilus review variants \
   --repo-root . \
   --workspace . \
   --report-file /tmp/cautilus-mode/report.json \
+  --output-under-test /tmp/cautilus-mode/analysis-output.json \
+  --output-text-key analysis_text \
+  --output-dir /tmp/cautilus-review
+```
+   For one-scenario output review, the same surface can start from a checked-in
+   scenario file instead of a report packet:
+
+```bash
+cautilus review variants \
+  --repo-root . \
+  --workspace . \
+  --scenario-file .agents/cautilus-scenarios/analysis-prompts/proposals.json \
+  --scenario replay-negative-path \
+  --output-under-test runs/latest/replay-review.json \
+  --output-text-key analysis_text \
   --output-dir /tmp/cautilus-review
 ```
    When the repo already has explicit mode results, assemble one checked-in
