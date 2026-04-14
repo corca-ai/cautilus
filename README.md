@@ -1,52 +1,74 @@
 # Cautilus
 
-`Cautilus` is a repo-agnostic intentful behavior evaluation product.
-It is meant to help a host repo evaluate
-agent runtimes, skills, and operator-facing workflows with bounded loops,
-explicit baselines, held-out validation, comparison summaries, and
-independent review variants.
-It now also includes a product-owned helper that prepares clean baseline and
-candidate git worktrees for explicit A/B evaluation runs.
-The product target is a standalone binary plus a bundled skill that a host repo
+`Cautilus` is a repo-agnostic intentful behavior evaluation product for teams
+shipping agent runtimes, skills, and operator-facing workflows.
+It helps a host repo define the behavior it is trying to protect, separate
+iterate and held-out checks, run bounded compare and review flows, and keep
+evidence in durable packets instead of ad hoc benchmark narratives.
+
+The target product is a standalone binary plus a bundled skill that a host repo
 can adopt without inheriting another repo's private runtime surfaces.
-This repo now also carries minimal Codex and Claude plugin manifests plus
-repo-local marketplace wiring so that the same checked-in skill can be
-installed without copying it into another local scaffold first.
+This repo also carries minimal Codex and Claude plugin manifests plus repo-local
+marketplace wiring so the same checked-in skill can be installed without
+copying it into another scaffold first.
 
-The intended product shape is:
-
-- a small CLI or runtime entrypoint for adapter-driven intentful behavior
-  evaluation
-- repo-local adapters that define how a host repo runs iterate, held-out,
-  comparison, and full-gate checks
-- optional executor-variant runners for structured `codex exec`,
-  `claude -p`, or other bounded review passes
-- a contract that separates training surfaces from held-out surfaces
-- first-class use-case helpers for `chatbot`, `skill test`, `skill evaluate`,
-  and `skill`-normalization packets
-- a path to propose new scenarios from runtime logs instead of hand-authoring
-  every benchmark case forever
-
-The longer-term direction is closer to the workflow philosophy behind DSPy:
+The longer-term direction is close to the workflow philosophy behind DSPy:
 intent and evaluation contracts matter more than preserving one prompt
 verbatim, and prompts should be allowed to improve as long as the behavior
 survives evaluation.
 
-## Mental Model
+## Why Cautilus
 
-`Cautilus` is not primarily a prompt manager or a benchmark scrapbook.
+Prompt strings change.
+That is not the real contract.
+
+`Cautilus` exists for the harder problem: keeping an agent or workflow's
+intended behavior honest while prompts, wrappers, and execution details evolve.
+It is not primarily a prompt manager or a benchmark scrapbook.
 It treats prompts as mutable implementation detail and treats the evaluated
 behavior contract as the source of truth.
 
 The practical stance is:
 
 - define the intended behavior explicitly
-- separate iterate/train surfaces from held-out validation
+- separate iterate or train surfaces from held-out validation
 - keep evidence, review, and decisions in durable files
 - prefer bounded search and bounded revision over open-ended autonomous loops
 - let prompts change when held-out behavior and review discipline improve
 
-## Design Principles
+## What It Does Today
+
+Current `core validated surface`:
+
+- adapter-driven CLI entrypoints for `install`, `update`, `resolve`, `init`,
+  and `doctor`
+- explicit A/B workspace preparation through `workspace prepare-compare`
+- artifact-root retention through `workspace prune-artifacts`
+- bounded runtime execution through `mode evaluate`
+- scenario-history-aware profile selection and history updates for
+  profile-backed mode runs
+- comparison-mode baseline-cache seed materialization for profile-backed runs
+- report assembly, review packet assembly, and review-variant fanout
+- standalone install surface, local gates, and checked-in release helpers
+- repo-local Codex and Claude plugin package and marketplace wiring for local
+  skill install
+
+Current `product-owned helper surface`:
+
+- `chatbot` and `skill` normalization helpers
+- scenario proposal packet assembly and proposal generation
+- scenario telemetry summaries
+- normalized evidence bundling
+- bounded optimization input and proposal helpers
+- GEPA-style bounded prompt search with reflective mutation and held-out
+  candidate reevaluation
+
+Dogfood and migration evidence is tracked separately in
+[consumer-readiness.md](./docs/consumer-readiness.md),
+[consumer-migration.md](./docs/consumer-migration.md), and
+[external-consumer-onboarding.md](./docs/external-consumer-onboarding.md).
+
+## Why It Is Different
 
 - `Intent-first`: the product centers the behavior being protected, not one
   frozen prompt string.
@@ -101,47 +123,18 @@ heuristics, and stronger self-dogfood loops.
 
 ## Current Status
 
-This repo is still early.
-It already owns the generic workflow and adapter contracts plus bootstrap
-scripts.
-It now also includes a minimal CLI, a bundled `cautilus` skill surface,
-executor-variant runners, local Codex and Claude plugin packaging metadata,
-and local tests for the bounded evaluation surface.
-It also now includes checked-in GitHub workflows for `verify` and tagged
-release artifacts, so the release/install surface is not only prose.
+This repo is still early, but the product boundary is already real:
+
+- generic workflow and adapter contracts are checked in under `docs/`
+- the standalone CLI, bundled skill, installer, and updater are shipped as one
+  surface
+- local tests, `verify`, release helpers, and consumer onboarding smoke flows
+  are checked in with the product
+- the public install story is not only prose; it has tagged-release and
+  Homebrew surfaces plus verification helpers
+
 After a tag is published, verify the public release surface with
-`npm run release:verify-public -- --version v0.3.0`.
-
-## Current Product Surface
-
-Current `core validated surface`:
-
-- adapter-driven CLI entrypoints for `resolve`, `init`, and `doctor`
-- explicit A/B workspace preparation through `workspace prepare-compare`
-- artifact-root retention through `workspace prune-artifacts`
-- bounded runtime execution through `mode evaluate`
-- scenario-history-aware profile selection and history updates for
-  profile-backed mode runs
-- comparison-mode baseline-cache seed materialization for profile-backed runs
-- report assembly, review packet assembly, and review-variant fanout
-- standalone install surface, local gates, and checked-in release helpers
-- repo-local Codex and Claude plugin package and marketplace wiring for local
-  skill install
-
-Current `product-owned helper surface`:
-
-- `chatbot` and `skill` normalization helpers
-- scenario proposal packet assembly and proposal generation
-- scenario telemetry summaries
-- normalized evidence bundling
-- bounded optimization input and proposal helpers
-- GEPA-style bounded prompt search with reflective mutation and held-out
-  candidate reevaluation
-
-Dogfood and migration evidence is tracked separately in
-[consumer-readiness.md](./docs/consumer-readiness.md),
-[consumer-migration.md](./docs/consumer-migration.md), and
-[external-consumer-onboarding.md](./docs/external-consumer-onboarding.md).
+`npm run release:verify-public -- --version <tag>`.
 
 ## Repo Layout
 

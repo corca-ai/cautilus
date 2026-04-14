@@ -1,0 +1,25 @@
+version: 1
+repo: cautilus
+product_name: Cautilus
+language: en
+output_dir: skill-outputs/announcement
+preset_id: portable-defaults
+customized_from: portable-defaults
+sections:
+- Summary
+- Why It Matters
+- What Landed
+- Operator Impact
+audience_tags:
+- maintainers
+- consumer-repo operators
+- agent-eval builders
+omission_lenses:
+- standalone binary plus bundled skill should read as one product surface
+- repo-agnostic contract boundaries matter more than any one consumer
+- held-out validation and structured review matter more than benchmark anecdotes
+delivery_kind: none
+delivery_target: ""
+release_notes_path: ""
+post_command_template: ""
+delivery_capability: ""

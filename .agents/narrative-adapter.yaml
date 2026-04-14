@@ -1,0 +1,30 @@
+version: 1
+repo: cautilus
+language: en
+output_dir: skill-outputs/narrative
+preset_id: portable-defaults
+customized_from: portable-defaults
+source_documents:
+- README.md
+- docs/master-plan.md
+- docs/specs/index.spec.md
+- docs/specs/current-product.spec.md
+- docs/consumer-readiness.md
+- docs/external-consumer-onboarding.md
+- docs/charness-consumer-boundary.md
+- docs/handoff.md
+mutable_documents:
+- README.md
+- docs/master-plan.md
+- docs/consumer-readiness.md
+- docs/charness-consumer-boundary.md
+- docs/handoff.md
+brief_template:
+- One-Line Summary
+- Why It Exists
+- What It Does Today
+- Why It Is Different
+- Current Boundaries
+- Proof
+- Open Questions
+remote_name: origin
