@@ -361,9 +361,9 @@ The current proof surface is split on purpose:
   bounded optimizer input builder around explicit report, review, and history evidence
 - [scripts/agent-runtime/generate-optimize-proposal.mjs](./scripts/agent-runtime/generate-optimize-proposal.mjs):
   deterministic bounded revision proposal generator
-- [scripts/agent-runtime/run-workbench-review-variant.sh](./scripts/agent-runtime/run-workbench-review-variant.sh):
+- [scripts/agent-runtime/run-review-variant.sh](./scripts/agent-runtime/run-review-variant.sh):
   bounded single-variant runner
-- [scripts/agent-runtime/run-workbench-executor-variants.mjs](./scripts/agent-runtime/run-workbench-executor-variants.mjs):
+- [scripts/agent-runtime/run-executor-variants.mjs](./scripts/agent-runtime/run-executor-variants.mjs):
   adapter-driven variant fanout runner
 - [bin/cautilus](./bin/cautilus): minimal CLI entrypoint
 
@@ -766,7 +766,7 @@ Direct script usage is also supported:
 ```bash
 node scripts/resolve_adapter.mjs --repo-root .
 node scripts/init_adapter.mjs --repo-root .
-node scripts/agent-runtime/run-workbench-executor-variants.mjs --workspace . --output-dir /tmp/cautilus-review
+node scripts/agent-runtime/run-executor-variants.mjs --workspace . --output-dir /tmp/cautilus-review
 node scripts/agent-runtime/normalize-chatbot-proposals.mjs --input ./fixtures/scenario-proposals/chatbot-input.json
 node scripts/agent-runtime/normalize-skill-proposals.mjs --input ./fixtures/scenario-proposals/skill-input.json
 node scripts/agent-runtime/build-scenario-proposal-input.mjs --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json --family fast_regression

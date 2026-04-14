@@ -107,16 +107,16 @@ func InferRepoDefaults(repoRoot string) map[string]any {
 			"node scripts/agent-runtime/compare-prompt-worktrees.mjs --baseline-ref {baseline_ref} --profile {profile} --split {split} --samples {comparison_samples}",
 		}
 	}
-	reportPath := filepath.Join(repoRoot, "specs", "report", "audit-workbench.html")
+	reportPath := filepath.Join(repoRoot, "specs", "report", "audit-report.html")
 	if fileExists(reportPath) {
-		inferred["report_paths"] = []string{"specs/report/audit-workbench.html"}
+		inferred["report_paths"] = []string{"specs/report/audit-report.html"}
 	}
 	inferred["repo"] = filepath.Base(repoRoot)
 	inferred["iterate_samples_default"] = 2
 	inferred["held_out_samples_default"] = 2
 	inferred["comparison_samples_default"] = 2
 	inferred["full_gate_samples_default"] = 2
-	inferred["history_file_hint"] = "/tmp/workbench-history.json"
+	inferred["history_file_hint"] = "/tmp/cautilus-history.json"
 	return inferred
 }
 

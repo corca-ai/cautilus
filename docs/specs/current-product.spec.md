@@ -374,11 +374,11 @@ standalone product여야 한다.
 | fixtures/scenario-proposals/chatbot-consumer-input.json | file_exists |  |
 | fixtures/scenario-proposals/skill-validation-input.json | file_exists |  |
 | fixtures/scenario-proposals/workflow-recovery-input.json | file_exists |  |
-| scripts/agent-runtime/run-workbench-review-variant.sh | file_exists |  |
-| scripts/agent-runtime/run-workbench-review-variant.sh | fixed | WORKBENCH_REVIEW_TIMEOUT_SECONDS |
-| scripts/agent-runtime/run-workbench-executor-variants.mjs | file_exists |  |
-| scripts/agent-runtime/run-workbench-executor-variants.mjs | fixed | --repo-root |
-| fixtures/workbench/review-verdict.schema.json | file_exists |  |
+| scripts/agent-runtime/run-review-variant.sh | file_exists |  |
+| scripts/agent-runtime/run-review-variant.sh | fixed | CAUTILUS_REVIEW_VARIANT_TIMEOUT_SECONDS |
+| scripts/agent-runtime/run-executor-variants.mjs | file_exists |  |
+| scripts/agent-runtime/run-executor-variants.mjs | fixed | --repo-root |
+| fixtures/review/review-verdict.schema.json | file_exists |  |
 
 ## Runtime Expectations
 

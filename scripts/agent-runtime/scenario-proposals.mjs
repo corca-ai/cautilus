@@ -100,7 +100,7 @@ export function buildDraftScenario(candidate, existingScenarioKeys = new Set()) 
 		...(candidate.intentProfile ? { intentProfile: candidate.intentProfile } : {}),
 		...(candidate.conversationAuditScenario ? { conversationAuditScenario: candidate.conversationAuditScenario } : {}),
 		...(candidate.eventType
-			? { conversation: { userId: "U_AUDIT_WORKBENCH", channelId: "D_AUDIT_WORKBENCH", eventType: candidate.eventType } }
+			? { conversation: { userId: "U_AUDIT_REVIEW", channelId: "D_AUDIT_REVIEW", eventType: candidate.eventType } }
 			: {}),
 	};
 }

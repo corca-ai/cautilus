@@ -46,7 +46,7 @@ function fail(message) {
 
 function printUsage() {
 	process.stdout.write(
-		"Usage: node scripts/agent-runtime/run-workbench-executor-variants.mjs [--repo-root DIR] [--adapter PATH | --adapter-name NAME] --workspace DIR [--prompt-file FILE | --report-file FILE | --review-packet FILE | --review-prompt-input FILE | --scenario-file FILE] [--scenario ID] [--output-under-test FILE] [--output-text-key DOT_PATH] [--schema-file FILE] [--output-dir DIR] [--variant-id ID] [--quiet]\n",
+		"Usage: node scripts/agent-runtime/run-executor-variants.mjs [--repo-root DIR] [--adapter PATH | --adapter-name NAME] --workspace DIR [--prompt-file FILE | --report-file FILE | --review-packet FILE | --review-prompt-input FILE | --scenario-file FILE] [--scenario ID] [--output-under-test FILE] [--output-text-key DOT_PATH] [--schema-file FILE] [--output-dir DIR] [--variant-id ID] [--quiet]\n",
 	);
 }
 

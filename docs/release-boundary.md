@@ -22,7 +22,7 @@ These are part of the reusable release boundary:
 - [scripts/release/check-codex-marketplace.mjs](../scripts/release/check-codex-marketplace.mjs)
 - [scripts/release/verify-public-release.mjs](../scripts/release/verify-public-release.mjs)
 - [docs/contracts/](./contracts)
-- [fixtures/workbench/review-verdict.schema.json](../fixtures/workbench/review-verdict.schema.json)
+- [fixtures/review/review-verdict.schema.json](../fixtures/review/review-verdict.schema.json)
 - checked-in product example fixtures under
   [fixtures/scenario-proposals/](../fixtures/scenario-proposals),
   and [fixtures/reports/](../fixtures/reports)

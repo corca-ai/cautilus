@@ -136,7 +136,7 @@ export function scaffoldAdapter(repoRoot, repoName) {
 			},
 		],
 		...numericDefaults(inferred),
-		history_file_hint: inferred.history_file_hint ?? "/tmp/workbench-history.json",
+		history_file_hint: inferred.history_file_hint ?? "/tmp/cautilus-history.json",
 		profile_default: inferred.profile_default ?? "default",
 	};
 }

@@ -6,14 +6,14 @@ json_helper="$script_dir/review-variant-json.mjs"
 
 usage() {
 	cat <<'EOF'
-Usage: run-workbench-review-variant.sh --backend codex_exec|claude_p --workspace DIR --prompt-file FILE --schema-file FILE --output-file FILE
+Usage: run-review-variant.sh --backend codex_exec|claude_p --workspace DIR --prompt-file FILE --schema-file FILE --output-file FILE
 
-Runs a bounded, structured workbench review variant with the repo's preferred
+Runs a bounded, structured review variant with the repo's preferred
 CLI guardrails.
 The script intentionally keeps the argument surface small so operators do not
 re-introduce fragile approval, stdin, or permission flags ad hoc.
-Default timeout: 900 seconds. Override with WORKBENCH_REVIEW_TIMEOUT_SECONDS.
-Set WORKBENCH_CODEX_MODEL or WORKBENCH_CODEX_REASONING_EFFORT to override the
+Default timeout: 900 seconds. Override with CAUTILUS_REVIEW_VARIANT_TIMEOUT_SECONDS.
+Set CAUTILUS_REVIEW_CODEX_MODEL or CAUTILUS_REVIEW_CODEX_REASONING_EFFORT to override the
 Codex review model configuration for bounded review surfaces.
 EOF
 }
@@ -24,9 +24,9 @@ prompt_file=""
 schema_file=""
 output_file=""
 stderr_file=""
-timeout_seconds="${WORKBENCH_REVIEW_TIMEOUT_SECONDS:-900}"
-codex_model="${WORKBENCH_CODEX_MODEL:-}"
-codex_reasoning_effort="${WORKBENCH_CODEX_REASONING_EFFORT:-}"
+timeout_seconds="${CAUTILUS_REVIEW_VARIANT_TIMEOUT_SECONDS:-900}"
+codex_model="${CAUTILUS_REVIEW_CODEX_MODEL:-}"
+codex_reasoning_effort="${CAUTILUS_REVIEW_CODEX_REASONING_EFFORT:-}"
 
 while [[ $# -gt 0 ]]; do
 	case "$1" in

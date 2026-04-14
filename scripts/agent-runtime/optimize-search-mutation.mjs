@@ -7,7 +7,7 @@ import { buildMergePrompt, buildMutationPrompt } from "./optimize-search-prompts
 
 const TOOL_ROOT = resolve(dirname(new URL(import.meta.url).pathname), "..", "..");
 const BIN_PATH = join(TOOL_ROOT, "bin", "cautilus");
-const REVIEW_WRAPPER_PATH = join(TOOL_ROOT, "scripts", "agent-runtime", "run-workbench-review-variant.sh");
+const REVIEW_WRAPPER_PATH = join(TOOL_ROOT, "scripts", "agent-runtime", "run-review-variant.sh");
 
 function writeJson(path, value) {
 	mkdirSync(dirname(path), { recursive: true });
@@ -225,7 +225,7 @@ function candidateOutputSchema() {
 function runMutationBackend({ backend, workspace, promptFile, schemaFile, outputFile, env }) {
 	const runtimeEnv = {
 		...env,
-		WORKBENCH_REVIEW_TIMEOUT_SECONDS: env.CAUTILUS_OPTIMIZE_SEARCH_TIMEOUT_SECONDS || "180",
+		CAUTILUS_REVIEW_VARIANT_TIMEOUT_SECONDS: env.CAUTILUS_OPTIMIZE_SEARCH_TIMEOUT_SECONDS || "180",
 	};
 	return spawnSync(
 		"bash",

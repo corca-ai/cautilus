@@ -429,7 +429,7 @@ EOF
 	if err := os.WriteFile(filepath.Join(root, "fixtures", "review.prompt.md"), []byte("review\n"), 0o644); err != nil {
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
-	schemaBytes, err := os.ReadFile(filepath.Join(repoToolRoot(t), "fixtures", "workbench", "review-verdict.schema.json"))
+	schemaBytes, err := os.ReadFile(filepath.Join(repoToolRoot(t), "fixtures", "review", "review-verdict.schema.json"))
 	if err != nil {
 		t.Fatalf("ReadFile returned error: %v", err)
 	}

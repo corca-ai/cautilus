@@ -11,7 +11,7 @@ executor_variants:
   - id: codex-review-fast-b
     tool: codex_exec
     purpose: higher-fidelity B-side review of gate honesty
-    command_template: WORKBENCH_CODEX_MODEL=gpt-5.4 WORKBENCH_CODEX_REASONING_EFFORT=low bash scripts/agent-runtime/run-workbench-review-variant.sh --backend codex_exec --workspace {candidate_repo} --prompt-file {prompt_file} --schema-file {schema_file} --output-file {output_file}
+    command_template: CAUTILUS_REVIEW_CODEX_MODEL=gpt-5.4 CAUTILUS_REVIEW_CODEX_REASONING_EFFORT=low bash scripts/agent-runtime/run-review-variant.sh --backend codex_exec --workspace {candidate_repo} --prompt-file {prompt_file} --schema-file {schema_file} --output-file {output_file}
     required_prerequisites:
       - generate the latest full-gate report before review variants
     safety_notes:
@@ -27,4 +27,4 @@ human_review_prompts:
     prompt: Judge whether npm run verify plus the root self-consumer adapter stays honest about the narrow standing-gate claim without overclaiming explicit self-dogfood.
   - id: stale-latest
     prompt: Ignore artifacts/self-dogfood/latest from previous completed runs. Only judge the current report packet and the listed product files for this run.
-default_schema_file: fixtures/workbench/review-verdict.schema.json
+default_schema_file: fixtures/review/review-verdict.schema.json

@@ -87,7 +87,7 @@ The right failure mode is:
 
 The mixed runtime was not an architectural goal.
 
-It existed because `Cautilus` was extracted from Ceal's workbench boundary in
+It existed because `Cautilus` was extracted from an earlier host-embedded skill in
 small safe steps:
 
 - generic bootstrap helpers were copied first

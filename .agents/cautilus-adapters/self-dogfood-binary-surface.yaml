@@ -11,7 +11,7 @@ executor_variants:
   - id: codex-review-binary-surface
     tool: codex_exec
     purpose: bounded review of whether the standalone binary surface is actually trustworthy
-    command_template: WORKBENCH_CODEX_MODEL=gpt-5.4-mini WORKBENCH_CODEX_REASONING_EFFORT=low bash scripts/agent-runtime/run-workbench-review-variant.sh --backend codex_exec --workspace {candidate_repo} --prompt-file {prompt_file} --schema-file {schema_file} --output-file {output_file}
+    command_template: CAUTILUS_REVIEW_CODEX_MODEL=gpt-5.4-mini CAUTILUS_REVIEW_CODEX_REASONING_EFFORT=low bash scripts/agent-runtime/run-review-variant.sh --backend codex_exec --workspace {candidate_repo} --prompt-file {prompt_file} --schema-file {schema_file} --output-file {output_file}
     required_prerequisites:
       - generate the latest full-gate report before review variants
     safety_notes:
@@ -31,4 +31,4 @@ human_review_prompts:
     prompt: Where would an operator still conclude the standalone binary surface is brittle, underspecified, or not actually covered by product-owned checks despite the current full-gate report?
   - id: stale-latest
     prompt: Ignore artifacts/self-dogfood/latest from previous completed runs. Only judge the current report packet and the listed product files for this run.
-default_schema_file: fixtures/workbench/review-verdict.schema.json
+default_schema_file: fixtures/review/review-verdict.schema.json

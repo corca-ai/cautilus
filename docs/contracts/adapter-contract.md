@@ -84,7 +84,7 @@ executor_variants:
 artifact_paths:
   - docs/evaluation-plan.md
 report_paths:
-  - reports/workbench/latest.json
+  - reports/cautilus/latest.json
 comparison_questions:
   - Which scenarios improved or regressed?
 human_review_prompts:
@@ -95,10 +95,10 @@ held_out_samples_default: 2
 comparison_samples_default: 2
 full_gate_samples_default: 2
 review_timeout_ms: 30000
-history_file_hint: /tmp/workbench-history.json
+history_file_hint: /tmp/cautilus-history.json
 profile_default: default
-default_prompt_file: fixtures/workbench/skill-smoke.prompt.md
-default_schema_file: fixtures/workbench/review-verdict.schema.json
+default_prompt_file: fixtures/review/skill-smoke.prompt.md
+default_schema_file: fixtures/review/review-verdict.schema.json
 ```
 
 ## Fields
@@ -220,7 +220,7 @@ executor_variants:
   - id: codex-review
     tool: codex_exec
     purpose: independent structured review pass
-    command_template: bash scripts/agent-runtime/run-workbench-review-variant.sh --backend codex_exec --workspace {candidate_repo} --prompt-file {prompt_file} --schema-file {schema_file} --output-file {output_file}
+    command_template: bash scripts/agent-runtime/run-review-variant.sh --backend codex_exec --workspace {candidate_repo} --prompt-file {prompt_file} --schema-file {schema_file} --output-file {output_file}
     required_prerequisites:
       - render the review instructions into {prompt_file} before execution
       - point {candidate_repo} at the exact workspace under review

@@ -5,7 +5,7 @@ import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 import test from "node:test";
 
-const SCRIPT_PATH = join(process.cwd(), "scripts", "agent-runtime", "run-workbench-review-variant.sh");
+const SCRIPT_PATH = join(process.cwd(), "scripts", "agent-runtime", "run-review-variant.sh");
 
 function writeExecutable(root, name, body) {
 	const filePath = join(root, name);
@@ -106,7 +106,7 @@ function runVariantWithEnv(root, backend, env, outputName = `${backend}-output.j
 }
 
 test("codex_exec wrapper closes stdin and writes structured output to the requested file", () => {
-	const root = mkdtempSync(join(tmpdir(), "cautilus-workbench-codex-"));
+	const root = mkdtempSync(join(tmpdir(), "cautilus-review-codex-"));
 	try {
 		writeExecutable(
 			root,
@@ -137,7 +137,7 @@ printf '%s\\n' '{"kind":"stop","reason":"goal_satisfied"}' > "$out"
 });
 
 test("claude_p wrapper extracts structured_output into the final output file", () => {
-	const root = mkdtempSync(join(tmpdir(), "cautilus-workbench-claude-"));
+	const root = mkdtempSync(join(tmpdir(), "cautilus-review-claude-"));
 	try {
 		writeExecutable(
 			root,
@@ -169,7 +169,7 @@ printf '%s\\n' '{"is_error":false,"structured_output":{"kind":"stop","reason":"g
 });
 
 test("codex_exec wrapper fails when codex stderr matches fatal skill-load patterns", () => {
-	const root = mkdtempSync(join(tmpdir(), "cautilus-workbench-codex-stderr-"));
+	const root = mkdtempSync(join(tmpdir(), "cautilus-review-codex-stderr-"));
 	try {
 		writeExecutable(
 			root,
@@ -198,7 +198,7 @@ printf '%s\\n' '{"kind":"stop","reason":"goal_satisfied"}' > "$out"
 });
 
 test("codex_exec wrapper forwards optional model config from environment", () => {
-	const root = mkdtempSync(join(tmpdir(), "cautilus-workbench-codex-config-"));
+	const root = mkdtempSync(join(tmpdir(), "cautilus-review-codex-config-"));
 	try {
 		const argsFile = join(root, "codex-args.txt");
 		writeExecutable(
@@ -223,8 +223,8 @@ printf '%s\\n' '{"kind":"stop","reason":"goal_satisfied"}' > "$out"
 			root,
 			"codex_exec",
 			{
-				WORKBENCH_CODEX_MODEL: "gpt-5.4",
-				WORKBENCH_CODEX_REASONING_EFFORT: "low",
+				CAUTILUS_REVIEW_CODEX_MODEL: "gpt-5.4",
+				CAUTILUS_REVIEW_CODEX_REASONING_EFFORT: "low",
 			},
 			"codex-config-output.json",
 		);

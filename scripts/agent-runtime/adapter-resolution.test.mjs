@@ -18,7 +18,7 @@ function runNode(args, workdir = process.cwd()) {
 }
 
 test("resolve_adapter loads a named cautilus adapter from the repo", () => {
-	const root = mkdtempSync(join(tmpdir(), "cautilus-workbench-adapter-load-"));
+	const root = mkdtempSync(join(tmpdir(), "cautilus-review-adapter-load-"));
 	try {
 		const adapterDir = join(root, ".agents", "cautilus-adapters");
 		mkdirSync(adapterDir, { recursive: true });
@@ -47,9 +47,9 @@ test("resolve_adapter loads a named cautilus adapter from the repo", () => {
 });
 
 test("resolve_adapter can load an explicit adapter path", () => {
-	const root = mkdtempSync(join(tmpdir(), "cautilus-workbench-adapter-override-"));
+	const root = mkdtempSync(join(tmpdir(), "cautilus-review-adapter-override-"));
 	try {
-		const adapterPath = join(root, "custom-workbench.yaml");
+		const adapterPath = join(root, "custom-adapter.yaml");
 		writeFileSync(
 			adapterPath,
 			[
@@ -74,7 +74,7 @@ test("resolve_adapter can load an explicit adapter path", () => {
 });
 
 test("init_adapter scaffolds a named adapter into the named adapter directory", () => {
-	const root = mkdtempSync(join(tmpdir(), "cautilus-workbench-adapter-init-"));
+	const root = mkdtempSync(join(tmpdir(), "cautilus-review-adapter-init-"));
 	try {
 		writeFileSync(
 			join(root, "package.json"),

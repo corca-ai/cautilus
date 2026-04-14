@@ -1,4 +1,4 @@
 interface:
-  display_name: "Workbench"
+  display_name: "Cautilus"
   short_description: "Change evaluation with baselines and review gates."
-  default_prompt: "Use $workbench to evaluate the current change, workflow, or skill against a baseline with adapter-defined iterate runs, held-out validation, comparison summaries, and review gates before calling it ready."
+  default_prompt: "Use $cautilus to evaluate the current change, workflow, or skill against a baseline with adapter-defined iterate runs, held-out validation, comparison summaries, and review gates before calling it ready."

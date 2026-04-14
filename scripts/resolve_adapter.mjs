@@ -274,9 +274,9 @@ export function inferRepoDefaults(repoRoot) {
 		];
 	}
 
-	const reportPath = resolve(repoRoot, "specs/report/audit-workbench.html");
+	const reportPath = resolve(repoRoot, "specs/report/audit-report.html");
 	if (existsSync(reportPath)) {
-		inferred.report_paths = ["specs/report/audit-workbench.html"];
+		inferred.report_paths = ["specs/report/audit-report.html"];
 	}
 
 	inferred.repo = repoRoot.split(/[\\/]/u).at(-1);
@@ -284,7 +284,7 @@ export function inferRepoDefaults(repoRoot) {
 	inferred.held_out_samples_default = 2;
 	inferred.comparison_samples_default = 2;
 	inferred.full_gate_samples_default = 2;
-	inferred.history_file_hint = "/tmp/workbench-history.json";
+	inferred.history_file_hint = "/tmp/cautilus-history.json";
 	return inferred;
 }
 

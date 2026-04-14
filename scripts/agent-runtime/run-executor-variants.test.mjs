@@ -8,7 +8,7 @@ import test from "node:test";
 import { ACTIVE_RUN_ENV_VAR, DEFAULT_RUNS_ROOT } from "./active-run.mjs";
 import { BEHAVIOR_DIMENSIONS } from "./behavior-intent.mjs";
 
-const SCRIPT_PATH = join(process.cwd(), "scripts", "agent-runtime", "run-workbench-executor-variants.mjs");
+const SCRIPT_PATH = join(process.cwd(), "scripts", "agent-runtime", "run-executor-variants.mjs");
 
 function writeExecutable(root, name, body) {
 	const filePath = join(root, name);
@@ -18,7 +18,7 @@ function writeExecutable(root, name, body) {
 }
 
 function createAdapterRepo({ failVariantId = "", blockedVariantId = "", invalidVariantId = "" } = {}) {
-	const root = mkdtempSync(join(tmpdir(), "cautilus-workbench-runner-"));
+	const root = mkdtempSync(join(tmpdir(), "cautilus-review-runner-"));
 	const workspace = join(root, "workspace");
 	mkdirSync(workspace, { recursive: true });
 	writeExecutable(
@@ -201,7 +201,7 @@ function runReviewVariants(args, { cwd = process.cwd(), env = process.env } = {}
 	});
 }
 
-test("run-workbench-executor-variants executes every adapter-defined variant and writes a summary", () => {
+test("run-executor-variants executes every adapter-defined variant and writes a summary", () => {
 	const { root, workspace, adapterPath, promptFile, schemaFile } = createAdapterRepo();
 	try {
 		const outputDir = join(root, "outputs");
@@ -254,7 +254,7 @@ test("run-workbench-executor-variants executes every adapter-defined variant and
 		}
 });
 
-test("run-workbench-executor-variants falls back to adapter default prompt and schema files", () => {
+test("run-executor-variants falls back to adapter default prompt and schema files", () => {
 	const { root, workspace, adapterPath, promptFile, schemaFile } = createAdapterRepo();
 	try {
 		const adapterWithDefaults = join(root, "adapter-with-defaults.yaml");
@@ -288,7 +288,7 @@ test("run-workbench-executor-variants falls back to adapter default prompt and s
 	}
 });
 
-test("run-workbench-executor-variants can render a prompt from a report file when no prompt file is provided", () => {
+test("run-executor-variants can render a prompt from a report file when no prompt file is provided", () => {
 	const { root, workspace, adapterPath, schemaFile, reportFile } = createAdapterRepo();
 	try {
 		const adapterWithSchema = join(root, "adapter-with-schema.yaml");
@@ -323,7 +323,7 @@ test("run-workbench-executor-variants can render a prompt from a report file whe
 		}
 	});
 
-test("run-workbench-executor-variants can judge an explicit output-under-test artifact", () => {
+test("run-executor-variants can judge an explicit output-under-test artifact", () => {
 	const { root, workspace, adapterPath, schemaFile, reportFile } = createAdapterRepo();
 	try {
 		const adapterWithSchema = join(root, "adapter-with-schema.yaml");
@@ -371,7 +371,7 @@ test("run-workbench-executor-variants can judge an explicit output-under-test ar
 	}
 });
 
-test("run-workbench-executor-variants can review a direct scenario file against an output artifact", () => {
+test("run-executor-variants can review a direct scenario file against an output artifact", () => {
 	const { root, workspace, adapterPath, schemaFile, scenarioFile } = createAdapterRepo();
 	try {
 		const adapterWithSchema = join(root, "adapter-with-schema.yaml");
@@ -420,7 +420,7 @@ test("run-workbench-executor-variants can review a direct scenario file against 
 	}
 });
 
-test("run-workbench-executor-variants suppresses progress logs with --quiet", () => {
+test("run-executor-variants suppresses progress logs with --quiet", () => {
 	const { root, workspace, adapterPath, promptFile, schemaFile } = createAdapterRepo();
 	try {
 		const outputDir = join(root, "quiet-outputs");
@@ -449,7 +449,7 @@ test("run-workbench-executor-variants suppresses progress logs with --quiet", ()
 	}
 });
 
-test("run-workbench-executor-variants emits heartbeat and ownership hints for failed variants", () => {
+test("run-executor-variants emits heartbeat and ownership hints for failed variants", () => {
 	const { root, workspace, adapterPath, promptFile, schemaFile } = createAdapterRepo({ failVariantId: "beta" });
 	try {
 		const outputDir = join(root, "failing-outputs");
@@ -489,7 +489,7 @@ test("run-workbench-executor-variants emits heartbeat and ownership hints for fa
 	}
 });
 
-test("run-workbench-executor-variants preserves schema-compliant blocked results", () => {
+test("run-executor-variants preserves schema-compliant blocked results", () => {
 	const { root, workspace, adapterPath, promptFile, schemaFile } = createAdapterRepo({ blockedVariantId: "beta" });
 	try {
 		const outputDir = join(root, "blocked-outputs");
@@ -523,7 +523,7 @@ test("run-workbench-executor-variants preserves schema-compliant blocked results
 	}
 });
 
-test("run-workbench-executor-variants rewrites invalid JSON into a failed variant packet", () => {
+test("run-executor-variants rewrites invalid JSON into a failed variant packet", () => {
 	const { root, workspace, adapterPath, promptFile, schemaFile } = createAdapterRepo({ invalidVariantId: "beta" });
 	try {
 		const outputDir = join(root, "invalid-outputs");
@@ -554,7 +554,7 @@ test("run-workbench-executor-variants rewrites invalid JSON into a failed varian
 	}
 });
 
-test("run-workbench-executor-variants honors CAUTILUS_RUN_DIR when --output-dir is omitted", () => {
+test("run-executor-variants honors CAUTILUS_RUN_DIR when --output-dir is omitted", () => {
 	const { root, workspace, adapterPath, promptFile, schemaFile } = createAdapterRepo();
 	try {
 		const activeRunDir = join(root, "active-run");
@@ -588,7 +588,7 @@ test("run-workbench-executor-variants honors CAUTILUS_RUN_DIR when --output-dir 
 	}
 });
 
-test("run-workbench-executor-variants auto-materializes a fresh runDir under the default root and logs Active run", () => {
+test("run-executor-variants auto-materializes a fresh runDir under the default root and logs Active run", () => {
 	const { root, workspace, adapterPath, promptFile, schemaFile } = createAdapterRepo();
 	try {
 		const result = runReviewVariants(
@@ -623,7 +623,7 @@ test("run-workbench-executor-variants auto-materializes a fresh runDir under the
 	}
 });
 
-test("run-workbench-executor-variants explicit --output-dir overrides an inherited CAUTILUS_RUN_DIR", () => {
+test("run-executor-variants explicit --output-dir overrides an inherited CAUTILUS_RUN_DIR", () => {
 	const { root, workspace, adapterPath, promptFile, schemaFile } = createAdapterRepo();
 	try {
 		const activeRunDir = join(root, "active-run");

@@ -225,7 +225,7 @@ cautilus mode evaluate \
    If the adapter defines `executor_variants`, use those checked-in command
    templates instead of retyping ad-hoc `codex exec` or `claude -p` commands.
    When the repo keeps a runner such as
-   `scripts/agent-runtime/run-workbench-executor-variants.mjs`, prefer that
+   `scripts/agent-runtime/run-executor-variants.mjs`, prefer that
    checked-in fanout path over manual per-variant shell invocations.
    When the repo already has a report packet but no fixed prompt file, let the
    runner synthesize the review packet and meta-prompt artifacts directly:

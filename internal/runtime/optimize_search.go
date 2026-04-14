@@ -624,7 +624,7 @@ func optimizeSearchEvaluateMutation(packet map[string]any, inputFile string) (ma
 		return nil, fmt.Errorf("mutation prerequisites missing")
 	}
 	toolRoot := strings.TrimSpace(os.Getenv("CAUTILUS_TOOL_ROOT"))
-	reviewWrapperPath := filepath.Join(toolRoot, "scripts", "agent-runtime", "run-workbench-review-variant.sh")
+	reviewWrapperPath := filepath.Join(toolRoot, "scripts", "agent-runtime", "run-review-variant.sh")
 	if toolRoot == "" || !fileExists(reviewWrapperPath) {
 		return nil, fmt.Errorf("review wrapper unavailable")
 	}
@@ -655,7 +655,7 @@ func optimizeSearchEvaluateMutation(packet map[string]any, inputFile string) (ma
 		"--schema-file", schemaFile,
 		"--output-file", outputFile,
 	)
-	command.Env = append(os.Environ(), "WORKBENCH_REVIEW_TIMEOUT_SECONDS="+firstNonEmpty(os.Getenv("CAUTILUS_OPTIMIZE_SEARCH_TIMEOUT_SECONDS"), "180"))
+	command.Env = append(os.Environ(), "CAUTILUS_REVIEW_VARIANT_TIMEOUT_SECONDS="+firstNonEmpty(os.Getenv("CAUTILUS_OPTIMIZE_SEARCH_TIMEOUT_SECONDS"), "180"))
 	output, err := command.CombinedOutput()
 	if err != nil {
 		return nil, fmt.Errorf("mutation backend failed: %s", strings.TrimSpace(string(output)))

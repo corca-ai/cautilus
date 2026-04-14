@@ -225,8 +225,8 @@ func buildDraftScenario(candidate map[string]any, existingScenarioKeys map[strin
 	}
 	if eventType := stringOrEmpty(candidate["eventType"]); eventType != "" {
 		scenario["conversation"] = map[string]any{
-			"userId":    "U_AUDIT_WORKBENCH",
-			"channelId": "D_AUDIT_WORKBENCH",
+			"userId":    "U_AUDIT_REVIEW",
+			"channelId": "D_AUDIT_REVIEW",
 			"eventType": eventType,
 		}
 	}
