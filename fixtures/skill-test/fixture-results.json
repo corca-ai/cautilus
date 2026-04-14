@@ -1,0 +1,13 @@
+{
+  "trigger-cautilus-test-request": {
+    "invoked": true,
+    "summary": "The prompt explicitly called for the cautilus skill and the agent used it.",
+    "duration_ms": 1800
+  },
+  "execution-cautilus-test-request": {
+    "invoked": true,
+    "summary": "The agent used the cautilus skill to run the checked-in impl fixture and summarized the defer recommendation.",
+    "outcome": "passed",
+    "duration_ms": 2600
+  }
+}

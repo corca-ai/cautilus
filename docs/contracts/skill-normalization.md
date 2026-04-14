@@ -34,6 +34,10 @@ be:
 
 `host-observed skill eval packet -> skill evaluate -> skill evaluation summary -> skill normalization helper`
 
+When the operator starts from a checked-in case suite instead, the chain can be:
+
+`checked-in skill cases -> skill test -> observed skill eval packet -> skill evaluate -> skill evaluation summary -> skill normalization helper`
+
 ## Current Slice
 
 The first `skill` normalization helper now exists as:

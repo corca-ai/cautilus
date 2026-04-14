@@ -32,6 +32,9 @@ named experiment adapter에서 따로 다룬다.
 | .agents/cautilus-adapters/self-dogfood-gate-honesty-a.yaml | file_exists |  |
 | .agents/cautilus-adapters/self-dogfood-gate-honesty-b.yaml | file_exists |  |
 | .agents/cautilus-adapters/self-dogfood-skill-surface.yaml | file_exists |  |
+| .agents/cautilus-adapters/self-dogfood-skill-test.yaml | file_exists |  |
+| .agents/cautilus-adapters/self-dogfood-skill-test.yaml | fixed | skill_test_command_templates |
+| .agents/cautilus-adapters/self-dogfood-skill-test.yaml | fixed | run-local-skill-test.mjs |
 | .agents/cautilus-adapters/self-dogfood-review-completion.yaml | file_exists |  |
 | .agents/quality-adapter.yaml | file_exists |  |
 | .agents/quality-adapter.yaml | fixed | ./bin/cautilus adapter resolve --repo-root . |

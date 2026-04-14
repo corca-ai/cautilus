@@ -9,6 +9,11 @@ cares about.
 When the user wants a repeated quality bar, prefer a bounded evaluation loop
 with explicit stop conditions over an open-ended "retry until clean" loop.
 
+When the user asks to test a local skill rather than a code or prompt delta,
+prefer `cautilus skill test` first. That seam owns the checked-in case suite,
+adapter-runner invocation, and chained summary artifacts before the flow
+returns to packet-level `skill evaluate` and proposal normalization.
+
 ## Bootstrap
 
 Every invocation starts here.
@@ -306,6 +311,10 @@ When repeated workflow failures should become durable scenario coverage, prefer
 the checked-in `skill` normalization helper over repo-local one-off shapers:
 
 ```bash
+cautilus skill test \
+  --repo-root . \
+  --adapter-name self-dogfood-skill-test
+
 cautilus skill evaluate \
   --input ./fixtures/skill-evaluation/input.json \
   --output /tmp/cautilus-skill-summary.json
@@ -314,10 +323,12 @@ cautilus scenario normalize skill \
   --input /tmp/cautilus-skill-summary.json
 ```
 
-`skill evaluate` is the first-class packet boundary for skill trigger and
-execution quality. The host still owns raw invocation and transcript capture;
-`Cautilus` owns the packet, recommendation, behavior-intent framing, and the
-direct chain into `scenario normalize skill`.
+`skill test` is the operator-facing workflow seam above adapter-owned local
+skill runners. `skill evaluate` remains the first-class packet boundary for
+skill trigger and execution quality. The host still owns raw invocation and
+transcript capture; `Cautilus` owns the case-suite/runDir workflow,
+packet-level recommendation, behavior-intent framing, and the direct chain into
+`scenario normalize skill`.
 
 For this pattern:
 

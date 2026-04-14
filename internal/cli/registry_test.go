@@ -54,6 +54,9 @@ func TestRenderUsageIncludesLifecycleCommands(t *testing.T) {
 	if !strings.Contains(usage, "cautilus update [--repo-root <path>] [--json]") {
 		t.Fatalf("usage missing update line:\n%s", usage)
 	}
+	if !strings.Contains(usage, "cautilus skill test --repo-root . --adapter-name self-dogfood-skill-test") {
+		t.Fatalf("usage missing skill test example:\n%s", usage)
+	}
 	if !strings.Contains(usage, "cautilus skill evaluate --input ./fixtures/skill-evaluation/input.json") {
 		t.Fatalf("usage missing skill evaluate example:\n%s", usage)
 	}

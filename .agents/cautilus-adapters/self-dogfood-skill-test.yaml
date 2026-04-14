@@ -1,0 +1,24 @@
+version: 1
+repo: cautilus
+evaluation_surfaces:
+  - local bundled cautilus skill can orchestrate a checked-in skill test request
+baseline_options:
+  - baseline git ref in the same repo via {baseline_ref}
+required_prerequisites:
+  - materialize the local cautilus skill surface before running nested skill tests
+preflight_commands:
+  - ./bin/cautilus install --repo-root . --overwrite
+  - ./bin/cautilus doctor --repo-root . --scope agent-surface
+skill_cases_default: fixtures/skill-test/cases.json
+skill_test_command_templates:
+  - node ./scripts/agent-runtime/run-local-skill-test.mjs --repo-root . --workspace {candidate_repo} --cases-file {skill_cases_file} --output-file {skill_eval_input_file} --artifact-dir {output_dir}/local-skill-test --backend codex_exec --sandbox read-only --timeout-ms 120000
+artifact_paths:
+  - skills/cautilus/SKILL.md
+  - skills/cautilus/references/skill-evaluation.md
+  - skills/cautilus/references/workflow.md
+  - fixtures/skill-test/cases.json
+comparison_questions:
+  - Can the bundled cautilus skill follow a concrete local skill-test request without hand-held packet editing?
+human_review_prompts:
+  - id: local-skill-test
+    prompt: Where would an operator still conclude that the bundled cautilus skill cannot reliably run a local skill test end to end?

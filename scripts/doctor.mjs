@@ -5,6 +5,7 @@ import { resolve } from "node:path";
 import { loadAdapter } from "./resolve_adapter.mjs";
 
 const COMMAND_FIELDS = [
+	"skill_test_command_templates",
 	"iterate_command_templates",
 	"held_out_command_templates",
 	"comparison_command_templates",
@@ -108,7 +109,7 @@ function collectReadinessChecks(data, checks, suggestions) {
 		okDetail: "Adapter declares runnable command templates or executor variants.",
 		missingDetail: "Adapter has no command templates or executor variants yet.",
 		suggestion:
-			"Add at least one iterate/held_out/comparison/full_gate command template or executor_variants entry.",
+			"Add at least one skill_test/iterate/held_out/comparison/full_gate command template or executor_variants entry.",
 	});
 }
 

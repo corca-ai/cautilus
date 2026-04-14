@@ -49,6 +49,9 @@ standalone product여야 한다.
 | .agents/cautilus-adapters/self-dogfood-gate-honesty-a.yaml | file_exists |  |
 | .agents/cautilus-adapters/self-dogfood-gate-honesty-b.yaml | file_exists |  |
 | .agents/cautilus-adapters/self-dogfood-skill-surface.yaml | file_exists |  |
+| .agents/cautilus-adapters/self-dogfood-skill-test.yaml | file_exists |  |
+| .agents/cautilus-adapters/self-dogfood-skill-test.yaml | fixed | skill_test_command_templates |
+| .agents/cautilus-adapters/self-dogfood-skill-test.yaml | fixed | run-local-skill-test.mjs |
 | .agents/cautilus-adapters/self-dogfood-review-completion.yaml | file_exists |  |
 | .agents/quality-adapter.yaml | file_exists |  |
 | .agents/quality-adapter.yaml | fixed | ./bin/cautilus adapter resolve --repo-root . |
@@ -92,6 +95,7 @@ standalone product여야 한다.
 | internal/cli/command-registry.json | fixed | "path": ["workspace", "start"] |
 | internal/cli/command-registry.json | fixed | "path": ["self-dogfood", "render-html"] |
 | internal/cli/command-registry.json | fixed | "path": ["self-dogfood", "render-experiments-html"] |
+| internal/cli/command-registry.json | fixed | "path": ["skill", "test"] |
 | internal/cli/command-registry.json | fixed | "path": ["skill", "evaluate"] |
 | internal/cli/command-registry.json | fixed | "path": ["review", "variants"] |
 | internal/cli/command-registry.json | fixed | cautilus commands [--json] |
@@ -100,6 +104,7 @@ standalone product여야 한다.
 | internal/cli/command-registry.json | fixed | cautilus install [--repo-root <path>] [--overwrite] [--json] |
 | internal/cli/command-registry.json | fixed | cautilus update [--repo-root <path>] [--json] |
 | internal/cli/command-registry.json | fixed | cautilus skills install [--overwrite] |
+| internal/cli/command-registry.json | fixed | cautilus skill test [args] |
 | internal/cli/command-registry.json | fixed | cautilus skill evaluate [args] |
 | internal/cli/command-registry.json | fixed | cautilus self-dogfood render-html [args] |
 | internal/cli/command-registry.json | fixed | cautilus self-dogfood render-experiments-html [args] |
@@ -121,6 +126,7 @@ standalone product여야 한다.
 | internal/app/cli_smoke_test.go | fixed | TestCLISkillsInstallCreatesRepoLocalCanonicalSkill |
 | internal/app/cli_smoke_test.go | fixed | TestCLISelfDogfoodRenderHTMLWritesIndexFromLatestBundle |
 | internal/app/cli_smoke_test.go | fixed | TestCLISelfDogfoodRenderExperimentsHTMLWritesIndexFromLatestBundle |
+| internal/app/cli_smoke_test.go | fixed | TestCLISkillTestRunsAdapterCommandsAndWritesSummaryAndCandidates |
 | internal/app/cli_smoke_test.go | fixed | TestCLISkillEvaluateProducesSummaryThatChainsIntoScenarioNormalizeSkill |
 | internal/runtime/self_dogfood_html.go | file_exists |  |
 | internal/runtime/self_dogfood_html.go | fixed | Cautilus Self-Dogfood |
@@ -142,6 +148,8 @@ standalone product여야 한다.
 | docs/contracts/behavior-intent.md | fixed | operator_workflow_recovery |
 | docs/contracts/behavior-intent.md | fixed | operator_guidance_clarity |
 | docs/contracts/behavior-intent.md | fixed | repair_explicit_regressions_first |
+| docs/contracts/skill-testing.md | file_exists |  |
+| docs/contracts/skill-testing.md | fixed | cautilus skill test |
 | docs/contracts/reporting.md | fixed | duration_ms |
 | docs/contracts/reporting.md | fixed | cautilus.report_packet.v2 |
 | docs/contracts/reporting.md | fixed | command_observations |
@@ -152,6 +160,10 @@ standalone product여야 한다.
 | scripts/agent-runtime/build-report-packet.mjs | fixed | REPORT_PACKET_SCHEMA |
 | scripts/agent-runtime/evaluate-adapter-mode.mjs | file_exists |  |
 | scripts/agent-runtime/evaluate-adapter-mode.mjs | fixed | ADAPTER_MODE_EVALUATION_PACKET_SCHEMA |
+| scripts/agent-runtime/run-local-skill-test.mjs | file_exists |  |
+| scripts/agent-runtime/run-local-skill-test.mjs | fixed | SKILL_TEST_CASES_SCHEMA |
+| scripts/agent-runtime/run-local-skill-test.test.mjs | file_exists |  |
+| scripts/agent-runtime/skill-test-schemas.test.mjs | file_exists |  |
 | scripts/agent-runtime/prepare-compare-worktrees.mjs | file_exists |  |
 | scripts/agent-runtime/prepare-compare-worktrees.mjs | fixed | --baseline-ref |
 | scripts/agent-runtime/prune-workspace-artifacts.mjs | file_exists |  |
@@ -343,6 +355,8 @@ standalone product여야 한다.
 | fixtures/skill-evaluation/input.schema.json | fixed | cautilus.skill_evaluation_inputs.v1 |
 | fixtures/skill-evaluation/summary.schema.json | file_exists |  |
 | fixtures/skill-evaluation/summary.schema.json | fixed | cautilus.skill_evaluation_summary.v1 |
+| fixtures/skill-test/cases.schema.json | file_exists |  |
+| fixtures/skill-test/cases.schema.json | fixed | cautilus.skill_test_cases.v1 |
 | fixtures/scenario-proposals/chatbot-consumer-input.json | file_exists |  |
 | fixtures/scenario-proposals/skill-validation-input.json | file_exists |  |
 | fixtures/scenario-proposals/workflow-recovery-input.json | file_exists |  |
@@ -447,6 +461,7 @@ $ cautilus workspace prepare-compare --repo-root . --baseline-ref origin/main --
 $ cautilus workspace prune-artifacts --root /tmp/cautilus-runs --keep-last 20 || true
 $ mkdir -p /tmp/cautilus-runs
 $ cautilus workspace start --root /tmp/cautilus-runs --label mode-held-out --json || true
+$ cautilus skill test --repo-root . --adapter-name self-dogfood-skill-test || true
 $ cautilus skill evaluate --input ./fixtures/skill-evaluation/input.json || true
 $ cautilus scenario normalize chatbot --input ./fixtures/scenario-proposals/chatbot-input.json
 $ cautilus scenario normalize skill --input ./fixtures/scenario-proposals/skill-input.json

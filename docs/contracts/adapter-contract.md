@@ -44,6 +44,9 @@ required_prerequisites:
   - choose a real baseline before comparing results
 preflight_commands:
   - npm run check
+skill_cases_default: fixtures/skill-test/cases.json
+skill_test_command_templates:
+  - node scripts/agent-runtime/run-local-skill-test.mjs --repo-root . --workspace {candidate_repo} --cases-file {skill_cases_file} --output-file {skill_eval_input_file} --artifact-dir {output_dir}/local-skill-test --backend codex_exec --sandbox read-only
 iterate_command_templates:
   - npm run bench:train -- --baseline-ref {baseline_ref} --history-file {history_file} --samples {iterate_samples}
 held_out_command_templates:
@@ -107,6 +110,11 @@ default_schema_file: fixtures/workbench/review-verdict.schema.json
   about them.
 - `required_prerequisites`: conditions that should stop the evaluation early.
 - `preflight_commands`: fast commands to run before long evaluations.
+- `skill_cases_default`: optional checked-in `cautilus.skill_test_cases.v1`
+  path used by `cautilus skill test` when the operator does not pass
+  `--cases-file`.
+- `skill_test_command_templates`: commands that turn a checked-in skill-test
+  case suite into an observed `cautilus.skill_evaluation_inputs.v1` packet.
 - `iterate_command_templates`: commands for training or iterate loops.
 - `held_out_command_templates`: commands for the held-out split or equivalent
   validation.
@@ -148,6 +156,7 @@ Example names:
 
 - `code-quality`
 - `skill-smoke`
+- `skill-test`
 - `self-dogfood`
 - `meta-eval`
 
@@ -259,6 +268,9 @@ Template placeholders should stay obvious and few. Good placeholders:
 - `{baseline_ref}`
 - `{baseline_repo}`
 - `{candidate_repo}`
+- `{skill_id}`
+- `{skill_cases_file}`
+- `{skill_eval_input_file}`
 - `{history_file}`
 - `{profile}`
 - `{selected_scenario_ids_file}`

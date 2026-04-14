@@ -31,6 +31,7 @@ var adapterStringListFields = []string{
 	"baseline_options",
 	"required_prerequisites",
 	"preflight_commands",
+	"skill_test_command_templates",
 	"iterate_command_templates",
 	"held_out_command_templates",
 	"comparison_command_templates",
@@ -55,6 +56,7 @@ var adapterStringFields = []string{
 	"profile_default",
 	"default_prompt_file",
 	"default_schema_file",
+	"skill_cases_default",
 }
 
 type AdapterPayload struct {
@@ -423,6 +425,7 @@ func ScaffoldAdapter(repoRoot string, repoName string) map[string]any {
 		"baseline_options":             []string{"baseline git ref in the same repo via {baseline_ref}"},
 		"required_prerequisites":       []string{"choose a real baseline before comparing results"},
 		"preflight_commands":           stringArrayOrEmpty(inferred["preflight_commands"]),
+		"skill_test_command_templates": []string{},
 		"iterate_command_templates":    stringArrayOrEmpty(inferred["iterate_command_templates"]),
 		"held_out_command_templates":   stringArrayOrEmpty(inferred["held_out_command_templates"]),
 		"comparison_command_templates": stringArrayOrEmpty(inferred["comparison_command_templates"]),
@@ -506,11 +509,12 @@ func DoctorRepo(repoRoot string, adapterPath *string, adapterName *string) (map[
 	appendFieldCheck(&checks, &suggestions, "evaluation_surfaces", len(stringArrayOrEmpty(data["evaluation_surfaces"])) > 0, "Adapter declares evaluation surfaces.", "Adapter is missing evaluation_surfaces.", "Add at least one evaluation_surfaces entry that states what the adapter judges.")
 	appendFieldCheck(&checks, &suggestions, "baseline_options", len(stringArrayOrEmpty(data["baseline_options"])) > 0, "Adapter declares baseline options.", "Adapter is missing baseline_options.", "Add at least one baseline_options entry so comparisons stay explicit.")
 	automatedCommands := len(stringArrayOrEmpty(data["iterate_command_templates"])) > 0 ||
+		len(stringArrayOrEmpty(data["skill_test_command_templates"])) > 0 ||
 		len(stringArrayOrEmpty(data["held_out_command_templates"])) > 0 ||
 		len(stringArrayOrEmpty(data["comparison_command_templates"])) > 0 ||
 		len(stringArrayOrEmpty(data["full_gate_command_templates"])) > 0
 	hasVariants := len(arrayOrEmpty(data["executor_variants"])) > 0
-	appendFieldCheck(&checks, &suggestions, "execution_surface", automatedCommands || hasVariants, "Adapter declares runnable command templates or executor variants.", "Adapter has no command templates or executor variants yet.", "Add at least one iterate/held_out/comparison/full_gate command template or executor_variants entry.")
+	appendFieldCheck(&checks, &suggestions, "execution_surface", automatedCommands || hasVariants, "Adapter declares runnable command templates or executor variants.", "Adapter has no command templates or executor variants yet.", "Add at least one skill_test/iterate/held_out/comparison/full_gate command template or executor_variants entry.")
 	if adapterLooksDeterministicOnly(data) {
 		warnings = append(warnings, "Adapter commands look like repo-local deterministic gates only. Keep pytest/lint/type/spec checks in CI or pre-push hooks; use Cautilus for LLM-behavior, judge, or operator-facing review surfaces.")
 		suggestions = append(suggestions, "Inventory LLM-behavior surfaces first (system prompts, agent/chat loops, LLM-backed analysis, operator copy reviewed by a judge) before hand-editing adapter YAML.")
@@ -632,6 +636,7 @@ func adapterLooksDeterministicOnly(data map[string]any) bool {
 	}
 	commands := []string{}
 	for _, key := range []string{
+		"skill_test_command_templates",
 		"iterate_command_templates",
 		"held_out_command_templates",
 		"comparison_command_templates",

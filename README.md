@@ -22,8 +22,8 @@ The intended product shape is:
 - optional executor-variant runners for structured `codex exec`,
   `claude -p`, or other bounded review passes
 - a contract that separates training surfaces from held-out surfaces
-- first-class use-case helpers for `chatbot`, `skill evaluate`, and
-  `skill`-normalization packets
+- first-class use-case helpers for `chatbot`, `skill test`, `skill evaluate`,
+  and `skill`-normalization packets
 - a path to propose new scenarios from runtime logs instead of hand-authoring
   every benchmark case forever
 
@@ -161,6 +161,8 @@ Dogfood and migration evidence is tracked separately in
   host-owned reference seam that assembles split normalized sources
 - [docs/contracts/chatbot-normalization.md](./docs/contracts/chatbot-normalization.md):
   product-owned `chatbot` helper boundary for conversation-driven proposal candidates
+- [docs/contracts/skill-testing.md](./docs/contracts/skill-testing.md):
+  product-owned workflow seam for checked-in local skill tests
 - [docs/contracts/skill-evaluation.md](./docs/contracts/skill-evaluation.md):
   product-owned packet boundary for skill trigger and execution evaluation
 - [docs/contracts/skill-normalization.md](./docs/contracts/skill-normalization.md):
@@ -194,6 +196,8 @@ Dogfood and migration evidence is tracked separately in
   dogfood source
 - [fixtures/skill-evaluation/input.json](./fixtures/skill-evaluation/input.json):
   checked-in example packet for skill trigger/execution evaluation
+- [fixtures/skill-test/cases.json](./fixtures/skill-test/cases.json):
+  checked-in example suite for adapter-driven local skill testing
 - [docs/specs/index.spec.md](./docs/specs/index.spec.md):
   active product specs
 - [docs/master-plan.md](./docs/master-plan.md): roadmap
@@ -458,6 +462,15 @@ Normalize chatbot-style conversational summaries into proposal candidates:
 ```bash
 cautilus scenario normalize chatbot \
   --input ./fixtures/scenario-proposals/chatbot-input.json
+```
+
+Run one checked-in local skill test through an adapter-owned runner and write
+the summary plus chained candidates into one bounded run directory:
+
+```bash
+cautilus skill test \
+  --repo-root . \
+  --adapter-name self-dogfood-skill-test
 ```
 
 Evaluate one normalized skill packet for trigger accuracy and execution

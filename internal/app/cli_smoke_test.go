@@ -2338,6 +2338,103 @@ func TestCLISkillEvaluateProducesSummaryThatChainsIntoScenarioNormalizeSkill(t *
 	}
 }
 
+func TestCLISkillTestRunsAdapterCommandsAndWritesSummaryAndCandidates(t *testing.T) {
+	root := t.TempDir()
+	adapterDir := filepath.Join(root, ".agents")
+	fixtureDir := filepath.Join(root, "fixtures", "skill-test")
+	outputDir := filepath.Join(root, "outputs")
+	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.MkdirAll(fixtureDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	scriptPath := filepath.Join(root, "skill-test.sh")
+	script := `#!/bin/sh
+cat <<'JSON' > "$1"
+{
+  "schemaVersion": "cautilus.skill_evaluation_inputs.v1",
+  "skillId": "cautilus",
+  "skillDisplayName": "cautilus",
+  "evaluations": [
+    {
+      "evaluationId": "trigger-cautilus-test-request",
+      "targetKind": "public_skill",
+      "targetId": "cautilus",
+      "displayName": "cautilus",
+      "evaluationKind": "trigger",
+      "prompt": "Use $cautilus to test the local impl skill.",
+      "startedAt": "2026-04-14T00:00:00.000Z",
+      "expectedTrigger": "must_invoke",
+      "invoked": true,
+      "summary": "The prompt explicitly called for the cautilus skill and the agent used it."
+    },
+    {
+      "evaluationId": "execution-cautilus-test-request",
+      "targetKind": "public_skill",
+      "targetId": "cautilus",
+      "displayName": "cautilus",
+      "evaluationKind": "execution",
+      "prompt": "Use $cautilus to test the local impl skill with the checked-in fixture.",
+      "startedAt": "2026-04-14T00:05:00.000Z",
+      "invoked": true,
+      "outcome": "passed",
+      "summary": "The agent used the cautilus skill to run the checked-in impl fixture and summarized the recommendation."
+    }
+  ]
+}
+JSON
+`
+	if err := os.WriteFile(scriptPath, []byte(script), 0o755); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	writeJSONFile(t, filepath.Join(fixtureDir, "cases.json"), map[string]any{
+		"schemaVersion": contracts.SkillTestCasesSchema,
+		"skillId":       "cautilus",
+		"cases": []map[string]any{
+			{
+				"caseId":          "trigger-cautilus-test-request",
+				"evaluationKind":  "trigger",
+				"prompt":          "Use $cautilus to test the local impl skill.",
+				"expectedTrigger": "must_invoke",
+			},
+			{
+				"caseId":         "execution-cautilus-test-request",
+				"evaluationKind": "execution",
+				"prompt":         "Use $cautilus to test the local impl skill with the checked-in fixture.",
+			},
+		},
+	})
+	if err := os.WriteFile(filepath.Join(adapterDir, "cautilus-adapter.yaml"), []byte(strings.Join([]string{
+		"version: 1",
+		"repo: temp",
+		"evaluation_surfaces:",
+		"  - local skill testing",
+		"baseline_options:",
+		"  - baseline git ref via {baseline_ref}",
+		"skill_cases_default: fixtures/skill-test/cases.json",
+		"skill_test_command_templates:",
+		"  - sh ./skill-test.sh {skill_eval_input_file}",
+		"",
+	}, "\n")), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+
+	stdout, stderr, exitCode := runCLI(t, root, "skill", "test", "--repo-root", root, "--output-dir", outputDir)
+	if exitCode != 0 {
+		t.Fatalf("skill test failed: %s", stderr)
+	}
+	summaryPath := strings.TrimSpace(stdout)
+	summary := readJSONObjectFile(t, summaryPath)
+	if summary["schemaVersion"] != contracts.SkillEvaluationSummarySchema || summary["recommendation"] != "accept-now" {
+		t.Fatalf("unexpected skill test summary: %#v", summary)
+	}
+	candidates := readJSONArrayFile(t, filepath.Join(outputDir, "skill-candidates.json"))
+	if len(candidates) != 0 {
+		t.Fatalf("unexpected candidates: %#v", candidates)
+	}
+}
+
 func anyToString(value any) string {
 	if text, ok := value.(string); ok {
 		return text

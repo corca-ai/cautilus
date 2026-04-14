@@ -39,6 +39,7 @@ the storage-reader layer.
 
 The first checked-in helper entrypoints now exist as:
 
+- `cautilus skill test`
 - `cautilus skill evaluate`
 - `cautilus scenario normalize chatbot`
 - `cautilus scenario normalize skill`

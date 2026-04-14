@@ -47,6 +47,7 @@ Current `core validated surface`:
 
 Current `product-owned helper surface`:
 
+- `skill test` workflow seam above adapter-owned local skill runners
 - `skill evaluate` packet summarizer for trigger and execution behavior
 - `chatbot` and `skill` normalization helpers
 - scenario proposal packet assembly and proposal generation

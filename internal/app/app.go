@@ -171,6 +171,8 @@ func nativeHandler(path []string) handlerFunc {
 		return handleSelfDogfoodRenderHTML
 	case "self-dogfood render-experiments-html":
 		return handleSelfDogfoodRenderExperimentsHTML
+	case "skill test":
+		return handleSkillTest
 	case "scenario normalize chatbot":
 		return handleScenarioNormalizeChatbot
 	case "scenario normalize skill":

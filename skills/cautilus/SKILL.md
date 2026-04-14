@@ -76,6 +76,7 @@ behavior evaluation beyond those gates.
 - [scenario-proposal-inputs.md](references/scenario-proposal-inputs.md)
 - [scenario-proposal-normalization.md](references/scenario-proposal-normalization.md)
 - [chatbot-normalization.md](references/chatbot-normalization.md)
+- [skill-testing.md](references/skill-testing.md)
 - [skill-evaluation.md](references/skill-evaluation.md)
 - [skill-normalization.md](references/skill-normalization.md)
 - [review-packet.md](references/review-packet.md)
@@ -191,9 +192,18 @@ LLM-behavior surfaces. Use it to turn the normalized evidence into bounded
 scenarios before widening adapter YAML by hand.
 
 ```bash
+cautilus skill test \
+  --repo-root . \
+  --adapter-name self-dogfood-skill-test
+
 cautilus skill evaluate \
   --input ./fixtures/skill-evaluation/input.json \
   --output /tmp/cautilus-skill-summary.json
+
+Prefer `skill test` when the repo already has a checked-in case suite plus
+adapter-owned runner for a local skill. Fall back to `skill evaluate` when the
+host already produced a normalized observed packet and only needs the product
+summary/recommendation layer.
 
 cautilus scenario normalize chatbot \
   --input ./fixtures/scenario-proposals/chatbot-input.json

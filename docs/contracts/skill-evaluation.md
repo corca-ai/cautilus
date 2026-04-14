@@ -4,6 +4,10 @@
 whether a skill is invoked on the right prompts and whether it performs its
 intended task once invoked.
 
+When the operator still needs to run the host-specific skill invocation loop,
+use [skill-testing.md](./skill-testing.md) first and treat `skill evaluate` as
+the packet summarizer one step downstream.
+
 Use `cautilus.skill_evaluation_inputs.v1` for the input packet and
 `cautilus.skill_evaluation_summary.v1` for the summary packet.
 
