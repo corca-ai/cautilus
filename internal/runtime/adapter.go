@@ -416,7 +416,7 @@ func numericDefaults(inferred map[string]any) map[string]any {
 	}
 }
 
-func ScaffoldAdapter(repoRoot string, repoName string) map[string]any {
+func ScaffoldAdapter(repoRoot string, repoName string, scenario string) map[string]any {
 	inferred := InferRepoDefaults(repoRoot)
 	scaffold := map[string]any{
 		"version":                      1,
@@ -444,7 +444,33 @@ func ScaffoldAdapter(repoRoot string, repoName string) map[string]any {
 	for key, value := range numericDefaults(inferred) {
 		scaffold[key] = value
 	}
+	applyScenarioOverlay(scaffold, scenario)
 	return scaffold
+}
+
+// applyScenarioOverlay pre-fills the command slot that matches the selected
+// evaluation archetype so a first-time operator sees a concrete starting
+// point instead of an empty list. Unknown scenarios leave the scaffold
+// untouched; the CLI parser is expected to validate the flag value first.
+func applyScenarioOverlay(scaffold map[string]any, scenario string) {
+	switch scenario {
+	case "chatbot":
+		scaffold["evaluation_surfaces"] = []string{"chatbot conversation behavior"}
+		scaffold["iterate_command_templates"] = []string{
+			"cautilus scenario normalize chatbot --input {chatbot_input_file}",
+		}
+	case "skill":
+		scaffold["evaluation_surfaces"] = []string{"skill trigger, execution, and validation behavior"}
+		scaffold["skill_cases_default"] = "fixtures/skill-test/cases.json"
+		scaffold["skill_test_command_templates"] = []string{
+			"cautilus skill test --repo-root {candidate_repo} --adapter-name {adapter_name}",
+		}
+	case "workflow":
+		scaffold["evaluation_surfaces"] = []string{"workflow recovery behavior across sessions"}
+		scaffold["iterate_command_templates"] = []string{
+			"cautilus scenario normalize workflow --input {workflow_input_file}",
+		}
+	}
 }
 
 func DumpYAMLDocument(data map[string]any) (string, error) {

@@ -200,6 +200,92 @@ func TestRunSkillsInstallDoesNotRequireToolRoot(t *testing.T) {
 	}
 }
 
+func TestRunAdapterInitSkillScenarioPrefillsSkillTestSlot(t *testing.T) {
+	repoRoot := t.TempDir()
+	t.Setenv("CAUTILUS_CALLER_CWD", repoRoot)
+	t.Setenv("CAUTILUS_TOOL_ROOT", "")
+
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	exitCode := Run([]string{"adapter", "init", "--repo-root", repoRoot, "--scenario", "skill"}, &stdout, &stderr)
+	if exitCode != 0 {
+		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
+	}
+	adapterPath := filepath.Join(repoRoot, ".agents", "cautilus-adapter.yaml")
+	contents, err := os.ReadFile(adapterPath)
+	if err != nil {
+		t.Fatalf("ReadFile returned error: %v", err)
+	}
+	yaml := string(contents)
+	if !strings.Contains(yaml, "skill_test_command_templates:") || !strings.Contains(yaml, "- cautilus skill test") {
+		t.Fatalf("expected skill_test_command_templates to be pre-filled, got:\n%s", yaml)
+	}
+	if !strings.Contains(yaml, "skill_cases_default: fixtures/skill-test/cases.json") {
+		t.Fatalf("expected skill_cases_default to be set, got:\n%s", yaml)
+	}
+}
+
+func TestRunAdapterInitChatbotScenarioPrefillsIterateSlot(t *testing.T) {
+	repoRoot := t.TempDir()
+	t.Setenv("CAUTILUS_CALLER_CWD", repoRoot)
+	t.Setenv("CAUTILUS_TOOL_ROOT", "")
+
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	exitCode := Run([]string{"adapter", "init", "--repo-root", repoRoot, "--scenario", "chatbot"}, &stdout, &stderr)
+	if exitCode != 0 {
+		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
+	}
+	contents, err := os.ReadFile(filepath.Join(repoRoot, ".agents", "cautilus-adapter.yaml"))
+	if err != nil {
+		t.Fatalf("ReadFile returned error: %v", err)
+	}
+	yaml := string(contents)
+	if !strings.Contains(yaml, "iterate_command_templates:") || !strings.Contains(yaml, "- cautilus scenario normalize chatbot") {
+		t.Fatalf("expected iterate_command_templates to carry a chatbot-archetype command, got:\n%s", yaml)
+	}
+}
+
+func TestRunAdapterInitWorkflowScenarioPrefillsIterateSlot(t *testing.T) {
+	repoRoot := t.TempDir()
+	t.Setenv("CAUTILUS_CALLER_CWD", repoRoot)
+	t.Setenv("CAUTILUS_TOOL_ROOT", "")
+
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	exitCode := Run([]string{"adapter", "init", "--repo-root", repoRoot, "--scenario", "workflow"}, &stdout, &stderr)
+	if exitCode != 0 {
+		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
+	}
+	contents, err := os.ReadFile(filepath.Join(repoRoot, ".agents", "cautilus-adapter.yaml"))
+	if err != nil {
+		t.Fatalf("ReadFile returned error: %v", err)
+	}
+	yaml := string(contents)
+	if !strings.Contains(yaml, "iterate_command_templates:") || !strings.Contains(yaml, "- cautilus scenario normalize workflow") {
+		t.Fatalf("expected iterate_command_templates to carry a workflow-archetype command, got:\n%s", yaml)
+	}
+}
+
+func TestRunAdapterInitRejectsUnknownScenario(t *testing.T) {
+	repoRoot := t.TempDir()
+	t.Setenv("CAUTILUS_CALLER_CWD", repoRoot)
+	t.Setenv("CAUTILUS_TOOL_ROOT", "")
+
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	exitCode := Run([]string{"adapter", "init", "--repo-root", repoRoot, "--scenario", "bogus"}, &stdout, &stderr)
+	if exitCode == 0 {
+		t.Fatalf("expected non-zero exit code for unknown scenario, stdout=%s", stdout.String())
+	}
+	if !strings.Contains(stderr.String(), "chatbot, skill, or workflow") {
+		t.Fatalf("expected actionable scenario error, got stderr=%q", stderr.String())
+	}
+	if _, err := os.Stat(filepath.Join(repoRoot, ".agents", "cautilus-adapter.yaml")); !os.IsNotExist(err) {
+		t.Fatalf("expected no adapter file on scenario validation failure, got err=%v", err)
+	}
+}
+
 func TestRunShellCommandDoesNotLeakShimContextEnv(t *testing.T) {
 	t.Setenv("CAUTILUS_CALLER_CWD", "/tmp/caller")
 	t.Setenv("CAUTILUS_TOOL_ROOT", "/tmp/tool")

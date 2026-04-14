@@ -268,6 +268,7 @@ type initArgs struct {
 	adapterName *string
 	repoName    *string
 	output      *string
+	scenario    string
 	force       bool
 }
 
@@ -552,7 +553,7 @@ func handleAdapterInit(repoRoot string, cwd string, args []string, stdout io.Wri
 	if options.repoName != nil && strings.TrimSpace(*options.repoName) != "" {
 		repoName = strings.TrimSpace(*options.repoName)
 	}
-	document, err := runtime.DumpYAMLDocument(runtime.ScaffoldAdapter(resolvedRoot, repoName))
+	document, err := runtime.DumpYAMLDocument(runtime.ScaffoldAdapter(resolvedRoot, repoName, options.scenario))
 	if err != nil {
 		_, _ = fmt.Fprintf(stderr, "%s\n", err)
 		return 1
@@ -1418,6 +1419,18 @@ func parseInitArgs(args []string) (*initArgs, error) {
 			}
 			index = next
 			options.output = &value
+		case "--scenario":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			switch value {
+			case "chatbot", "skill", "workflow":
+				options.scenario = value
+			default:
+				return nil, fmt.Errorf("unknown --scenario value %q: use chatbot, skill, or workflow", value)
+			}
 		default:
 			return nil, fmt.Errorf("unknown argument: %s", arg)
 		}

@@ -87,8 +87,8 @@
     {
       "path": ["adapter", "init"],
       "group": "setup",
-      "usage": "cautilus adapter init [args]",
-      "example": "cautilus adapter init --repo-root ."
+      "usage": "cautilus adapter init [--scenario <chatbot|skill|workflow>] [args]",
+      "example": "cautilus adapter init --repo-root . --scenario skill"
     },
     {
       "path": ["doctor"],
