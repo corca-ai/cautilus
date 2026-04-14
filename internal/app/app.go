@@ -342,8 +342,9 @@ type reviewPrepareArgs struct {
 }
 
 type reviewBuildPromptArgs struct {
-	reviewPacket string
-	output       *string
+	reviewPacket    string
+	output          *string
+	outputUnderTest *string
 }
 
 type evidencePrepareArgs struct {
@@ -889,7 +890,7 @@ func handleReviewPrepareInput(repoRoot string, cwd string, args []string, stdout
 
 //nolint:errcheck // CLI stderr reporting is best-effort.
 func handleReviewBuildPromptInput(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
-	options, err := parseReviewBuildPromptArgs(args)
+	options, err := parseReviewBuildPromptArgs(args, cwd)
 	if err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
@@ -903,7 +904,7 @@ func handleReviewBuildPromptInput(repoRoot string, cwd string, args []string, st
 		fmt.Fprintf(stderr, "review packet must use schemaVersion %s\n", contracts.ReviewPacketSchema)
 		return 1
 	}
-	promptInput, err := runtime.BuildReviewPromptInput(packet, resolvePath(cwd, options.reviewPacket), time.Now())
+	promptInput, err := runtime.BuildReviewPromptInput(packet, resolvePath(cwd, options.reviewPacket), options.outputUnderTest, time.Now())
 	if err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
@@ -1725,7 +1726,7 @@ func parseReviewPrepareArgs(args []string, cwd string) (*reviewPrepareArgs, erro
 	return options, nil
 }
 
-func parseReviewBuildPromptArgs(args []string) (*reviewBuildPromptArgs, error) {
+func parseReviewBuildPromptArgs(args []string, cwd string) (*reviewBuildPromptArgs, error) {
 	options := &reviewBuildPromptArgs{}
 	for index := 0; index < len(args); index++ {
 		arg := args[index]
@@ -1744,6 +1745,14 @@ func parseReviewBuildPromptArgs(args []string) (*reviewBuildPromptArgs, error) {
 			}
 			index = next
 			options.output = &value
+		case "--output-under-test":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			resolved := resolvePath(cwd, value)
+			options.outputUnderTest = &resolved
 		default:
 			return nil, fmt.Errorf("unknown argument: %s", arg)
 		}

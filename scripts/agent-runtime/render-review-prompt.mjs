@@ -163,6 +163,17 @@ function renderFileList(title, files) {
 	].join("\n");
 }
 
+function renderOutputUnderTest(fileRecord) {
+	if (!fileRecord?.absolutePath) {
+		return "";
+	}
+	return [
+		"## Output Under Test",
+		`- ${fileRecord.absolutePath}${fileRecord.exists ? "" : " (missing at render time)"}`,
+		"- Use this artifact as the primary evidence of realized behavior for the stated dimensions.",
+	].join("\n");
+}
+
 function maybeReadConsumerPrompt(promptInput) {
 	const path = promptInput.defaultPromptFile?.absolutePath;
 	if (!path || !promptInput.defaultPromptFile?.exists) {
@@ -176,13 +187,28 @@ function maybeReadConsumerPrompt(promptInput) {
 	}
 }
 
-export function renderReviewPrompt(promptInput) {
-	const comparisonQuestions = promptInput.comparisonQuestions?.length
+function defaultComparisonQuestions(promptInput) {
+	return promptInput.comparisonQuestions?.length
 		? promptInput.comparisonQuestions
 		: ["Which behaviors improved, regressed, or stayed noisy in ways that matter to a real operator?"];
-	const humanReviewPrompts = promptInput.humanReviewPrompts?.length
+}
+
+function defaultHumanReviewPrompts(promptInput) {
+	return promptInput.humanReviewPrompts?.length
 		? promptInput.humanReviewPrompts.map((entry) => `- ${entry.id}: ${entry.prompt}`)
 		: ["- real-user: Where would a real user still judge the candidate worse despite benchmark wins?"];
+}
+
+function appendSectionLines(sections, sectionText) {
+	if (!sectionText) {
+		return;
+	}
+	sections.push("", ...sectionText.split("\n"));
+}
+
+export function renderReviewPrompt(promptInput) {
+	const comparisonQuestions = defaultComparisonQuestions(promptInput);
+	const humanReviewPrompts = defaultHumanReviewPrompts(promptInput);
 	const sections = [
 		"# Cautilus Review",
 		"",
@@ -208,14 +234,9 @@ export function renderReviewPrompt(promptInput) {
 		"## Human Review Lenses",
 		...humanReviewPrompts,
 	];
-	const artifactSection = renderFileList("## Artifact Files", promptInput.artifactFiles || []);
-	if (artifactSection) {
-		sections.push("", ...artifactSection.split("\n"));
-	}
-	const reportSection = renderFileList("## Report Artifacts", promptInput.reportArtifacts || []);
-	if (reportSection) {
-		sections.push("", ...reportSection.split("\n"));
-	}
+	appendSectionLines(sections, renderFileList("## Artifact Files", promptInput.artifactFiles || []));
+	appendSectionLines(sections, renderOutputUnderTest(promptInput.outputUnderTestFile));
+	appendSectionLines(sections, renderFileList("## Report Artifacts", promptInput.reportArtifacts || []));
 	if (promptInput.defaultSchemaFile?.absolutePath) {
 		sections.push("", "## Output Contract", `- schema file: ${promptInput.defaultSchemaFile.absolutePath}`);
 	}

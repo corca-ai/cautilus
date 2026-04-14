@@ -483,6 +483,121 @@ EOF
 	}
 }
 
+func TestCLIReviewVariantsSupportsOutputUnderTest(t *testing.T) {
+	root := t.TempDir()
+	if err := os.MkdirAll(filepath.Join(root, "fixtures"), 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.MkdirAll(filepath.Join(root, "artifacts"), 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(root, "fixtures", "review.prompt.md"), []byte("unused fallback prompt\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(root, "fixtures", "review.schema.json"), []byte("{\"type\":\"object\"}\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	outputUnderTestPath := filepath.Join(root, "artifacts", "analysis-output.json")
+	if err := os.WriteFile(outputUnderTestPath, []byte("{\"summary\":\"realized output\"}\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	writeExecutableFile(t, root, "variant.sh", "#!/bin/sh\noutput_file=\"$1\"\nprompt_file=\"$2\"\nprompt_text=\"$(cat \"$prompt_file\")\"\nnode - \"$output_file\" \"$prompt_text\" <<'EOF'\nconst [outputFile, promptText] = process.argv.slice(2);\nconst { writeFileSync } = await import(\"node:fs\");\nwriteFileSync(outputFile, JSON.stringify({\n  verdict: \"pass\",\n  summary: promptText,\n  findings: [{ severity: \"pass\", message: \"output-under-test\", path: \"variant/sh\" }],\n}) + \"\\n\", \"utf-8\");\nEOF\n")
+	reportFile := filepath.Join(root, "report.json")
+	writeJSONFile(t, reportFile, map[string]any{
+		"schemaVersion": contracts.ReportPacketSchema,
+		"generatedAt":   "2026-04-11T00:02:00.000Z",
+		"candidate":     "feature/output-under-test",
+		"baseline":      "origin/main",
+		"intent":        "The output should explain missing adapter setup without operator guesswork.",
+		"intentProfile": map[string]any{
+			"schemaVersion":   contracts.BehaviorIntentSchema,
+			"intentId":        "intent-output-under-test",
+			"summary":         "The output should explain missing adapter setup without operator guesswork.",
+			"behaviorSurface": cautilusruntime.BehaviorSurfaces["OPERATOR_BEHAVIOR"],
+			"successDimensions": []map[string]any{
+				{
+					"id":      cautilusruntime.BehaviorDimensions["FAILURE_CAUSE_CLARITY"],
+					"summary": "Explain the concrete failure cause or missing prerequisite.",
+				},
+			},
+			"guardrailDimensions": []any{},
+		},
+		"commands":            []any{},
+		"commandObservations": []any{},
+		"modesRun":            []string{"held_out"},
+		"modeSummaries": []map[string]any{
+			{
+				"mode":    "held_out",
+				"status":  "passed",
+				"summary": "held_out completed across 1 command.",
+			},
+		},
+		"telemetry":           map[string]any{"modeCount": 1},
+		"improved":            []any{},
+		"regressed":           []any{},
+		"unchanged":           []any{},
+		"noisy":               []any{},
+		"humanReviewFindings": []any{},
+		"recommendation":      "defer",
+	})
+
+	if _, stderr, exitCode := runCLI(t, root, "adapter", "init", "--repo-root", root); exitCode != 0 {
+		t.Fatalf("adapter init failed: %s", stderr)
+	}
+	adapterPath := filepath.Join(root, ".agents", "cautilus-adapter.yaml")
+	adapterText, err := os.ReadFile(adapterPath)
+	if err != nil {
+		t.Fatalf("ReadFile returned error: %v", err)
+	}
+	adapterText = append(adapterText, []byte(strings.Join([]string{
+		"default_prompt_file: fixtures/review.prompt.md",
+		"default_schema_file: fixtures/review.schema.json",
+		"executor_variants:",
+		"  - id: standalone",
+		"    tool: command",
+		"    purpose: output-under-test smoke variant",
+		"    command_template: sh {candidate_repo}/variant.sh {output_file} {prompt_file}",
+		"",
+	}, "\n"))...)
+	if err := os.WriteFile(adapterPath, adapterText, 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+
+	outputDir := filepath.Join(root, "outputs")
+	stdout, stderr, exitCode := runCLI(
+		t,
+		root,
+		"review",
+		"variants",
+		"--repo-root",
+		root,
+		"--workspace",
+		root,
+		"--report-file",
+		reportFile,
+		"--output-under-test",
+		outputUnderTestPath,
+		"--output-dir",
+		outputDir,
+	)
+	if exitCode != 0 {
+		t.Fatalf("review variants failed: %s", stderr)
+	}
+	summary := readJSONObjectFile(t, strings.TrimSpace(stdout))
+	outputUnderTest := summary["outputUnderTestFile"].(map[string]any)
+	if outputUnderTest["absolutePath"] != outputUnderTestPath {
+		t.Fatalf("unexpected output-under-test summary: %#v", outputUnderTest)
+	}
+	promptBytes, err := os.ReadFile(anyString(summary["promptFile"]))
+	if err != nil {
+		t.Fatalf("ReadFile returned error: %v", err)
+	}
+	prompt := string(promptBytes)
+	if !strings.Contains(prompt, "## Output Under Test") || !strings.Contains(prompt, "analysis-output.json") {
+		t.Fatalf("unexpected rendered output-under-test prompt: %s", prompt)
+	}
+}
+
 func TestCLISkillsInstallCreatesRepoLocalCanonicalSkill(t *testing.T) {
 	root := t.TempDir()
 
@@ -1285,10 +1400,17 @@ func TestCLIReviewBuildPromptInputAndRenderPromptCloseMetaPromptSeam(t *testing.
 	reviewPacketPath := filepath.Join(root, "review-packet.json")
 	promptPath := filepath.Join(root, "review.prompt.md")
 	promptInputPath := filepath.Join(root, "review-prompt-input.json")
+	outputUnderTestPath := filepath.Join(root, "artifacts", "analysis-output.json")
 	if err := os.MkdirAll(filepath.Join(root, "fixtures"), 0o755); err != nil {
 		t.Fatalf("MkdirAll returned error: %v", err)
 	}
+	if err := os.MkdirAll(filepath.Join(root, "artifacts"), 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
 	if err := os.WriteFile(filepath.Join(root, "fixtures", "consumer.prompt.md"), []byte("Prefer operator-visible evidence.\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	if err := os.WriteFile(outputUnderTestPath, []byte("{\"summary\":\"realized output\"}\n"), 0o644); err != nil {
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
 	writeJSONFile(t, reviewPacketPath, map[string]any{
@@ -1365,7 +1487,7 @@ func TestCLIReviewBuildPromptInputAndRenderPromptCloseMetaPromptSeam(t *testing.
 		},
 	})
 
-	_, stderr, exitCode := runCLI(t, root, "review", "build-prompt-input", "--review-packet", reviewPacketPath, "--output", promptInputPath)
+	_, stderr, exitCode := runCLI(t, root, "review", "build-prompt-input", "--review-packet", reviewPacketPath, "--output-under-test", outputUnderTestPath, "--output", promptInputPath)
 	if exitCode != 0 {
 		t.Fatalf("review build-prompt-input failed: %s", stderr)
 	}
@@ -1377,6 +1499,13 @@ func TestCLIReviewBuildPromptInputAndRenderPromptCloseMetaPromptSeam(t *testing.
 	if currentReportEvidence["reportFile"] != filepath.Join(root, "report.json") {
 		t.Fatalf("unexpected current report evidence: %#v", currentReportEvidence)
 	}
+	if promptInput["reviewMode"] != "output_under_test" {
+		t.Fatalf("expected output_under_test review mode, got %#v", promptInput["reviewMode"])
+	}
+	outputUnderTest := promptInput["outputUnderTestFile"].(map[string]any)
+	if outputUnderTest["absolutePath"] != outputUnderTestPath {
+		t.Fatalf("unexpected output-under-test file: %#v", outputUnderTest)
+	}
 	_, stderr, exitCode = runCLI(t, root, "review", "render-prompt", "--input", promptInputPath, "--output", promptPath)
 	if exitCode != 0 {
 		t.Fatalf("review render-prompt failed: %s", stderr)
@@ -1386,7 +1515,7 @@ func TestCLIReviewBuildPromptInputAndRenderPromptCloseMetaPromptSeam(t *testing.
 		t.Fatalf("ReadFile returned error: %v", err)
 	}
 	prompt := string(promptBytes)
-	if !strings.Contains(prompt, "Held-out operator guidance improved.") || !strings.Contains(prompt, "## Intent Profile") || !strings.Contains(prompt, "Prefer operator-visible evidence.") || !strings.Contains(prompt, "## Current Report Evidence") || !strings.Contains(prompt, "npm run verify") {
+	if !strings.Contains(prompt, "Held-out operator guidance improved.") || !strings.Contains(prompt, "## Intent Profile") || !strings.Contains(prompt, "Prefer operator-visible evidence.") || !strings.Contains(prompt, "## Current Report Evidence") || !strings.Contains(prompt, "npm run verify") || !strings.Contains(prompt, "## Output Under Test") || !strings.Contains(prompt, "analysis-output.json") {
 		t.Fatalf("unexpected rendered prompt: %s", prompt)
 	}
 }

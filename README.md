@@ -542,6 +542,10 @@ Build the product-owned meta-prompt packet and render a review prompt:
 cautilus review build-prompt-input \
   --review-packet /tmp/cautilus-mode/review.json
 
+cautilus review build-prompt-input \
+  --review-packet /tmp/cautilus-mode/review.json \
+  --output-under-test /tmp/cautilus-mode/analysis-output.json
+
 cautilus review render-prompt \
   --input /tmp/cautilus-mode/review-prompt-input.json
 ```
@@ -616,6 +620,7 @@ cautilus review variants \
   --repo-root /path/to/repo \
   --adapter-name code-quality \
   --workspace /path/to/repo \
+  --output-under-test /tmp/cautilus-mode/analysis-output.json \
   --output-dir /tmp/cautilus-review
 ```
 
@@ -623,7 +628,10 @@ cautilus review variants \
 (`cautilus.review_summary.v1`) plus one per-variant
 `cautilus.review_variant_result.v1` file. A variant can finish as
 `passed`, `blocked`, or `failed`; blocked runs are expected to carry machine
-readable reason codes instead of prose-only abort text.
+readable reason codes instead of prose-only abort text. When
+`--output-under-test` is present, the generated review prompt switches into
+`output_under_test` mode and treats the referenced artifact as primary
+evidence.
 
 Direct script usage is also supported:
 

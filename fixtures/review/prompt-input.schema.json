@@ -20,6 +20,7 @@
     "humanReviewPrompts",
     "artifactFiles",
     "reportArtifacts",
+    "reviewMode",
     "metaPrompt"
   ],
   "properties": {
@@ -89,8 +90,15 @@
     "artifactFiles": {
       "type": "array"
     },
+    "outputUnderTestFile": {
+      "type": "object"
+    },
     "reportArtifacts": {
       "type": "array"
+    },
+    "reviewMode": {
+      "type": "string",
+      "enum": ["prompt_under_test", "output_under_test"]
     },
     "defaultPromptFile": {
       "type": "object"

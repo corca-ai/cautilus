@@ -11,7 +11,8 @@ import (
 )
 
 const (
-	metaPromptObjective = "Judge whether the candidate is actually better than the baseline for the stated intent."
+	metaPromptObjective      = "Judge whether the candidate is actually better than the baseline for the stated intent."
+	outputUnderTestObjective = "Judge whether the output under test actually satisfies the stated intent and dimensions."
 )
 
 var metaPromptInstructions = []string{
@@ -19,6 +20,19 @@ var metaPromptInstructions = []string{
 	"Prefer held-out and full-gate evidence over train-only wins.",
 	"Call out cases where automated recommendation and real-user judgment diverge.",
 	"Use compare artifacts and scenario telemetry when they make the decision more legible.",
+}
+
+var outputUnderTestInstructions = []string{
+	"Judge the realized output artifact, not only the prompt plausibility.",
+	"Use the output-under-test file as primary evidence for success and guardrail dimensions.",
+}
+
+func reviewInstructionItems(values []string) []any {
+	items := make([]any, 0, len(values))
+	for _, value := range values {
+		items = append(items, value)
+	}
+	return items
 }
 
 func BuildReviewPacket(repoRoot string, adapterPath string, adapterData map[string]any, reportPath string, report map[string]any, now time.Time) (map[string]any, error) {
@@ -38,7 +52,7 @@ func BuildReviewPacket(repoRoot string, adapterPath string, adapterData map[stri
 	}, nil
 }
 
-func BuildReviewPromptInput(reviewPacket map[string]any, reviewPacketFile string, now time.Time) (map[string]any, error) {
+func BuildReviewPromptInput(reviewPacket map[string]any, reviewPacketFile string, outputUnderTestFile *string, now time.Time) (map[string]any, error) {
 	report := asMap(reviewPacket["report"])
 	intent, err := normalizeNonEmptyString(report["intent"], "report.intent")
 	if err != nil {
@@ -48,7 +62,10 @@ func BuildReviewPromptInput(reviewPacket map[string]any, reviewPacketFile string
 	if err != nil {
 		return nil, err
 	}
-	return map[string]any{
+	reviewMode := "prompt_under_test"
+	metaPromptObjectiveValue := metaPromptObjective
+	metaPromptInstructionsValue := reviewInstructionItems(metaPromptInstructions)
+	result := map[string]any{
 		"schemaVersion":           contracts.ReviewPromptInputsSchema,
 		"generatedAt":             now.UTC().Format(time.RFC3339Nano),
 		"reviewPacketFile":        reviewPacketFile,
@@ -70,13 +87,26 @@ func BuildReviewPromptInput(reviewPacket map[string]any, reviewPacketFile string
 		"humanReviewPrompts":  arrayOrEmpty(reviewPacket["humanReviewPrompts"]),
 		"artifactFiles":       summarizeFileRecords(reviewPacket["artifactFiles"]),
 		"reportArtifacts":     summarizeFileRecords(reviewPacket["reportArtifacts"]),
+		"reviewMode":          reviewMode,
 		"metaPrompt": map[string]any{
-			"objective":    metaPromptObjective,
-			"instructions": metaPromptInstructions,
+			"objective":    metaPromptObjectiveValue,
+			"instructions": metaPromptInstructionsValue,
 		},
 		"defaultPromptFile": summarizeOneFileRecord(reviewPacket["defaultPromptFile"]),
 		"defaultSchemaFile": summarizeOneFileRecord(reviewPacket["defaultSchemaFile"]),
-	}, nil
+	}
+	if outputUnderTestFile != nil && strings.TrimSpace(*outputUnderTestFile) != "" {
+		reviewMode = "output_under_test"
+		metaPromptObjectiveValue = outputUnderTestObjective
+		metaPromptInstructionsValue = append(metaPromptInstructionsValue, reviewInstructionItems(outputUnderTestInstructions)...)
+		result["reviewMode"] = reviewMode
+		result["outputUnderTestFile"] = summarizeOneFileRecord(explicitFileRecord(*outputUnderTestFile))
+		result["metaPrompt"] = map[string]any{
+			"objective":    metaPromptObjectiveValue,
+			"instructions": metaPromptInstructionsValue,
+		}
+	}
+	return result, nil
 }
 
 func RenderReviewPrompt(promptInput map[string]any) (string, error) {
@@ -130,6 +160,10 @@ func RenderReviewPrompt(promptInput map[string]any) (string, error) {
 		lines = append(lines, "")
 		lines = append(lines, section...)
 	}
+	if section := renderOutputUnderTest(asMap(promptInput["outputUnderTestFile"])); len(section) > 0 {
+		lines = append(lines, "")
+		lines = append(lines, section...)
+	}
 	if section := renderFileList("## Report Artifacts", arrayOrEmpty(promptInput["reportArtifacts"])); len(section) > 0 {
 		lines = append(lines, "")
 		lines = append(lines, section...)
@@ -164,6 +198,18 @@ func collectOptionalFile(repoRoot string, relativePath string) any {
 	absolutePath := filepath.Join(repoRoot, relativePath)
 	return map[string]any{
 		"relativePath": relativePath,
+		"absolutePath": absolutePath,
+		"exists":       fileExists(absolutePath),
+	}
+}
+
+func explicitFileRecord(path string) map[string]any {
+	if strings.TrimSpace(path) == "" {
+		return nil
+	}
+	absolutePath := filepath.Clean(path)
+	return map[string]any{
+		"relativePath": nil,
 		"absolutePath": absolutePath,
 		"exists":       fileExists(absolutePath),
 	}
@@ -333,6 +379,22 @@ func renderFileList(title string, files []any) []string {
 		return nil
 	}
 	return append([]string{title}, lines...)
+}
+
+func renderOutputUnderTest(fileRecord map[string]any) []string {
+	absolutePath := stringOrEmpty(fileRecord["absolutePath"])
+	if absolutePath == "" {
+		return nil
+	}
+	line := "- " + absolutePath
+	if !truthy(fileRecord["exists"]) {
+		line += " (missing at render time)"
+	}
+	return []string{
+		"## Output Under Test",
+		line,
+		"- Use this artifact as the primary evidence of realized behavior for the stated dimensions.",
+	}
 }
 
 func maybeReadConsumerPrompt(defaultPromptFile map[string]any) (string, error) {

@@ -197,3 +197,29 @@ test("renderReviewPrompt turns review prompt inputs into a portable meta-prompt"
 		rmSync(root, { recursive: true, force: true });
 	}
 });
+
+test("buildReviewPromptInput can switch into output-under-test mode", () => {
+	const { root, reviewPacketPath, schemaPath } = createReviewPacketFixture();
+	const outputUnderTestPath = join(root, "artifacts", "analysis-output.json");
+	try {
+		mkdirSync(join(root, "artifacts"), { recursive: true });
+		writeFileSync(outputUnderTestPath, '{"summary":"realized output"}\n', "utf-8");
+		const packet = buildReviewPromptInput(
+			["--review-packet", reviewPacketPath, "--output-under-test", outputUnderTestPath],
+			{ now: new Date("2026-04-11T00:04:00.000Z") },
+		);
+		validateAgainstSchema(readJson(schemaPath), packet);
+		assert.equal(packet.reviewMode, "output_under_test");
+		assert.equal(packet.outputUnderTestFile.absolutePath, outputUnderTestPath);
+		assert.equal(
+			packet.metaPrompt.objective,
+			"Judge whether the output under test actually satisfies the stated intent and dimensions.",
+		);
+		const prompt = renderReviewPrompt(packet);
+		assert.match(prompt, /## Output Under Test/);
+		assert.match(prompt, /analysis-output\.json/);
+		assert.match(prompt, /primary evidence of realized behavior/);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});

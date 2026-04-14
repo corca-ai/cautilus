@@ -244,6 +244,10 @@ cautilus review prepare-input \
 cautilus review build-prompt-input \
   --review-packet /tmp/cautilus-mode/review.json
 
+cautilus review build-prompt-input \
+  --review-packet /tmp/cautilus-mode/review.json \
+  --output-under-test /tmp/cautilus-mode/analysis-output.json
+
 cautilus review render-prompt \
   --input /tmp/cautilus-mode/review-prompt-input.json
 
@@ -287,6 +291,7 @@ cautilus review variants \
   --repo-root . \
   --workspace . \
   --report-file /tmp/cautilus-mode/report.json \
+  --output-under-test /tmp/cautilus-mode/analysis-output.json \
   --output-dir /tmp/cautilus-review
 
 ```

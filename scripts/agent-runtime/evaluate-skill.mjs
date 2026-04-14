@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import { readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import process from "node:process";
@@ -19,7 +20,12 @@ const TARGET_KINDS = new Set(["public_skill", "profile", "integration"]);
 const EVALUATION_KINDS = new Set(["trigger", "execution"]);
 const EXECUTION_STATUSES = new Set(["passed", "failed", "degraded", "blocked"]);
 const TRIGGER_EXPECTATIONS = new Set(["must_invoke", "must_not_invoke"]);
-
+const STATUS_ORDER = new Map([
+	["failed", 0],
+	["blocked", 1],
+	["degraded", 2],
+	["passed", 3],
+]);
 function usage(exitCode = 0) {
 	const text = [
 		"Usage:",
@@ -34,7 +40,6 @@ function usage(exitCode = 0) {
 	out.write(`${text}\n`);
 	process.exit(exitCode);
 }
-
 function parseArgs(argv) {
 	let inputPath = "";
 	let outputPath = "";
@@ -60,7 +65,6 @@ function parseArgs(argv) {
 	}
 	return { inputPath, outputPath };
 }
-
 function parseJsonFile(path) {
 	try {
 		return JSON.parse(readFileSync(path, "utf-8"));
@@ -68,21 +72,18 @@ function parseJsonFile(path) {
 		throw new Error(`Failed to read JSON from ${path}: ${error.message}`);
 	}
 }
-
 function normalizeNonEmptyString(value, field) {
 	if (typeof value !== "string" || !value.trim()) {
 		throw new Error(`${field} must be a non-empty string`);
 	}
 	return value.trim();
 }
-
 function normalizeOptionalString(value, field) {
 	if (value === undefined || value === null) {
 		return null;
 	}
 	return normalizeNonEmptyString(value, field);
 }
-
 function normalizeOptionalIsoTime(value, field) {
 	const text = normalizeOptionalString(value, field);
 	if (!text) {
@@ -93,14 +94,12 @@ function normalizeOptionalIsoTime(value, field) {
 	}
 	return text;
 }
-
 function normalizeBoolean(value, field) {
 	if (typeof value !== "boolean") {
 		throw new Error(`${field} must be a boolean`);
 	}
 	return value;
 }
-
 function normalizeNonNegativeNumber(value, field) {
 	if (value === undefined || value === null) {
 		return null;
@@ -110,7 +109,6 @@ function normalizeNonNegativeNumber(value, field) {
 	}
 	return value;
 }
-
 function normalizeOptionalMetrics(value, field) {
 	if (value === undefined || value === null) {
 		return null;
@@ -133,7 +131,6 @@ function normalizeOptionalMetrics(value, field) {
 	}
 	return Object.keys(metrics).length > 0 ? metrics : null;
 }
-
 function normalizeOptionalThresholds(value, field) {
 	if (value === undefined || value === null) {
 		return null;
@@ -156,7 +153,75 @@ function normalizeOptionalThresholds(value, field) {
 	}
 	return Object.keys(thresholds).length > 0 ? thresholds : null;
 }
-
+function assertObjectRecord(value, field) {
+	if (!value || typeof value !== "object" || Array.isArray(value)) {
+		throw new Error(`${field} must be an object`);
+	}
+}
+function normalizeSamplingCounts(value, field, sampling) {
+	for (const key of ["consensusCount", "matchingCount", "invokedCount"]) {
+		const count = normalizeNonNegativeNumber(value[key], `${field}.${key}`);
+		if (count === null) {
+			continue;
+		}
+		if (!Number.isInteger(count)) {
+			throw new Error(`${field}.${key} must be an integer`);
+		}
+		sampling[key] = count;
+	}
+}
+function normalizeSamplingStatusCounts(value, field) {
+	if (value.statusCounts === undefined || value.statusCounts === null) {
+		return null;
+	}
+	assertObjectRecord(value.statusCounts, `${field}.statusCounts`);
+	const statusCounts = {};
+	for (const status of EXECUTION_STATUSES) {
+		const count = normalizeNonNegativeNumber(value.statusCounts[status], `${field}.statusCounts.${status}`);
+		if (count === null) {
+			continue;
+		}
+		if (!Number.isInteger(count)) {
+			throw new Error(`${field}.statusCounts.${status} must be an integer`);
+		}
+		statusCounts[status] = count;
+	}
+	return Object.keys(statusCounts).length > 0 ? statusCounts : null;
+}
+function normalizeOptionalSampling(value, field) {
+	if (value === undefined || value === null) {
+		return null;
+	}
+	assertObjectRecord(value, field);
+	const sampleCount = normalizeNonNegativeNumber(value.sampleCount, `${field}.sampleCount`);
+	if (sampleCount === null || !Number.isInteger(sampleCount) || sampleCount < 1) {
+		throw new Error(`${field}.sampleCount must be a positive integer`);
+	}
+	const sampling = { sampleCount };
+	normalizeSamplingCounts(value, field, sampling);
+	if (value.stable !== undefined && value.stable !== null) {
+		sampling.stable = normalizeBoolean(value.stable, `${field}.stable`);
+	}
+	const statusCounts = normalizeSamplingStatusCounts(value, field);
+	if (statusCounts) {
+		sampling.statusCounts = statusCounts;
+	}
+	return sampling;
+}
+function normalizeOptionalBaseline(value, field) {
+	if (value === undefined || value === null) {
+		return null;
+	}
+	if (!value || typeof value !== "object" || Array.isArray(value)) {
+		throw new Error(`${field} must be an object`);
+	}
+	return {
+		invoked: normalizeBoolean(value.invoked, `${field}.invoked`),
+		summary: normalizeOptionalString(value.summary, `${field}.summary`),
+		outcome: normalizeOptionalString(value.outcome, `${field}.outcome`),
+		metrics: normalizeOptionalMetrics(value.metrics, `${field}.metrics`),
+	};
+}
 function normalizeArtifactRefs(value, field) {
 	if (value === undefined || value === null) {
 		return [];
@@ -173,7 +238,6 @@ function normalizeArtifactRefs(value, field) {
 		return { kind, path };
 	});
 }
-
 function thresholdFindings(metrics, thresholds) {
 	if (!metrics || !thresholds) {
 		return [];
@@ -197,7 +261,100 @@ function thresholdFindings(metrics, thresholds) {
 	}
 	return findings;
 }
-
+function ratio(numerator, denominator) {
+	if (typeof numerator !== "number" || typeof denominator !== "number" || denominator <= 0) {
+		return null;
+	}
+	return Number((numerator / denominator).toFixed(4));
+}
+function statusRank(status) {
+	return STATUS_ORDER.get(status) ?? -1;
+}
+function samplingPassCount(run, consensusCount) {
+	if (run.evaluationKind === "trigger") {
+		return run.sampling.matchingCount ?? consensusCount;
+	}
+	return run.sampling.statusCounts?.passed ?? null;
+}
+function samplingRateFields(sampleCount, consensusCount, invokedCount, passCount) {
+	const rateFields = {};
+	const passRate = ratio(passCount, sampleCount);
+	const invocationRate = ratio(invokedCount, sampleCount);
+	const consensusRate = ratio(consensusCount, sampleCount);
+	if (passRate !== null) {
+		rateFields.passRate = passRate;
+	}
+	if (invocationRate !== null) {
+		rateFields.invocationRate = invocationRate;
+	}
+	if (consensusRate !== null) {
+		rateFields.consensusRate = consensusRate;
+	}
+	return rateFields;
+}
+function buildSamplingInsights(run, status) {
+	if (!run.sampling) {
+		return null;
+	}
+	const sampleCount = run.sampling.sampleCount;
+	const consensusCount = run.sampling.consensusCount ?? null;
+	const invokedCount = run.sampling.invokedCount ?? null;
+	const passCount = samplingPassCount(run, consensusCount);
+	return {
+		sampleCount,
+		...(consensusCount !== null ? { consensusCount } : {}),
+		...(invokedCount !== null ? { invokedCount } : {}),
+		...(passCount !== null ? { passCount } : {}),
+		...(run.sampling.stable !== undefined ? { stable: run.sampling.stable } : {}),
+		...samplingRateFields(sampleCount, consensusCount, invokedCount, passCount),
+		unstable: run.sampling.stable === false,
+		...(run.sampling.statusCounts ? { statusCounts: run.sampling.statusCounts } : {}),
+		derivedStatus: status,
+	};
+}
+function evaluateBaseline(run) {
+	if (!run.baseline) {
+		return null;
+	}
+	const baselineRun = {
+		...run,
+		invoked: run.baseline.invoked,
+		summary: run.baseline.summary || "Baseline comparison run.",
+		metrics: run.baseline.metrics,
+		outcome: run.baseline.outcome,
+	};
+	return run.evaluationKind === "trigger"
+		? evaluateTriggerRun(baselineRun)
+		: evaluateExecutionRun(baselineRun);
+}
+function buildBaselineComparison(run, evaluatedStatus) {
+	const baselineEvaluation = evaluateBaseline(run);
+	if (!baselineEvaluation) {
+		return null;
+	}
+	const currentRank = statusRank(evaluatedStatus);
+	const baselineRank = statusRank(baselineEvaluation.status);
+	let relativeStatus = "same";
+	if (currentRank > baselineRank) {
+		relativeStatus = "better";
+	} else if (currentRank < baselineRank) {
+		relativeStatus = "worse";
+	}
+	const metricDeltas = {};
+	for (const metric of ["duration_ms", "total_tokens", "cost_usd"]) {
+		if (typeof run.metrics?.[metric] !== "number" || typeof run.baseline.metrics?.[metric] !== "number") {
+			continue;
+		}
+		metricDeltas[metric] = Number((run.metrics[metric] - run.baseline.metrics[metric]).toFixed(4));
+	}
+	return {
+		baselineStatus: baselineEvaluation.status,
+		relativeStatus,
+		baselineInvoked: run.baseline.invoked,
+		...(run.baseline.outcome ? { baselineOutcome: run.baseline.outcome } : {}),
+		...(Object.keys(metricDeltas).length > 0 ? { metricDeltas } : {}),
+	};
+}
 function buildTriggerIntentProfile(run) {
 	return buildBehaviorIntentProfile({
 		intent: `${run.displayName} should trigger only when the prompt truly needs the skill.`,
@@ -206,7 +363,6 @@ function buildTriggerIntentProfile(run) {
 		defaultSuccessDimensions: [BEHAVIOR_DIMENSIONS.SKILL_TRIGGER_ACCURACY],
 	});
 }
-
 function buildExecutionIntentProfile(run) {
 	const defaultSuccessDimensions = [BEHAVIOR_DIMENSIONS.SKILL_TASK_FIDELITY];
 	if (run.thresholds) {
@@ -219,7 +375,6 @@ function buildExecutionIntentProfile(run) {
 		defaultSuccessDimensions,
 	});
 }
-
 function evaluateTriggerRun(run) {
 	const expectedTrigger = normalizeNonEmptyString(run.expectedTrigger, "evaluations[].expectedTrigger");
 	if (!TRIGGER_EXPECTATIONS.has(expectedTrigger)) {
@@ -243,7 +398,6 @@ function evaluateTriggerRun(run) {
 		intentProfile: buildTriggerIntentProfile(run),
 	};
 }
-
 function evaluateExecutionRun(run) {
 	const outcome = normalizeNonEmptyString(run.outcome, "evaluations[].outcome");
 	if (!EXECUTION_STATUSES.has(outcome)) {
@@ -276,7 +430,6 @@ function evaluateExecutionRun(run) {
 		intentProfile: buildExecutionIntentProfile(run),
 	};
 }
-
 function normalizeRun(run, index) {
 	if (!run || typeof run !== "object" || Array.isArray(run)) {
 		throw new Error(`evaluations[${index}] must be an object`);
@@ -306,11 +459,116 @@ function normalizeRun(run, index) {
 		blockerKind: normalizeOptionalString(run.blockerKind, `evaluations[${index}].blockerKind`),
 		artifactRefs: normalizeArtifactRefs(run.artifactRefs, `evaluations[${index}].artifactRefs`),
 		metrics: normalizeOptionalMetrics(run.metrics, `evaluations[${index}].metrics`),
+		sampling: normalizeOptionalSampling(run.sampling, `evaluations[${index}].sampling`),
+		baseline: normalizeOptionalBaseline(run.baseline, `evaluations[${index}].baseline`),
 		thresholds: normalizeOptionalThresholds(run.thresholds, `evaluations[${index}].thresholds`),
 		intentProfile: run.intentProfile,
 	};
 }
-
+function evaluateNormalizedRun(normalized) {
+	const outcome =
+		normalized.evaluationKind === "trigger" ? evaluateTriggerRun(normalized) : evaluateExecutionRun(normalized);
+	return {
+		...normalized,
+		...outcome,
+		sampling: buildSamplingInsights(normalized, outcome.status),
+		baselineComparison: buildBaselineComparison(normalized, outcome.status),
+	};
+}
+function buildEvaluationCounts(evaluations) {
+	return {
+		total: evaluations.length,
+		passed: evaluations.filter((entry) => entry.status === "passed").length,
+		failed: evaluations.filter((entry) => entry.status === "failed").length,
+		degraded: evaluations.filter((entry) => entry.status === "degraded").length,
+		blocked: evaluations.filter((entry) => entry.status === "blocked").length,
+		trigger: evaluations.filter((entry) => entry.evaluationKind === "trigger").length,
+		execution: evaluations.filter((entry) => entry.evaluationKind === "execution").length,
+		unstable: evaluations.filter((entry) => entry.sampling?.unstable).length,
+	};
+}
+function buildComparisonSummary(evaluations) {
+	return {
+		evaluationsWithBaseline: evaluations.filter((entry) => entry.baselineComparison).length,
+		betterThanBaseline: evaluations.filter((entry) => entry.baselineComparison?.relativeStatus === "better").length,
+		sameAsBaseline: evaluations.filter((entry) => entry.baselineComparison?.relativeStatus === "same").length,
+		worseThanBaseline: evaluations.filter((entry) => entry.baselineComparison?.relativeStatus === "worse").length,
+	};
+}
+function buildSamplingSummary(evaluations, counts) {
+	const samplingSummary = {
+		evaluationsWithSampling: evaluations.filter((entry) => entry.sampling).length,
+		unstableEvaluations: counts.unstable,
+		totalSamples: evaluations.reduce((sum, entry) => sum + (entry.sampling?.sampleCount ?? 0), 0),
+		totalConsensusSamples: evaluations.reduce((sum, entry) => sum + (entry.sampling?.consensusCount ?? 0), 0),
+		totalInvocations: evaluations.reduce((sum, entry) => sum + (entry.sampling?.invokedCount ?? 0), 0),
+		totalPassingSamples: evaluations.reduce((sum, entry) => sum + (entry.sampling?.passCount ?? 0), 0),
+	};
+	const overallPassRate = ratio(samplingSummary.totalPassingSamples, samplingSummary.totalSamples);
+	const overallInvocationRate = ratio(samplingSummary.totalInvocations, samplingSummary.totalSamples);
+	const overallConsensusRate = ratio(samplingSummary.totalConsensusSamples, samplingSummary.totalSamples);
+	if (overallPassRate !== null) {
+		samplingSummary.overallPassRate = overallPassRate;
+	}
+	if (overallInvocationRate !== null) {
+		samplingSummary.overallInvocationRate = overallInvocationRate;
+	}
+	if (overallConsensusRate !== null) {
+		samplingSummary.overallConsensusRate = overallConsensusRate;
+	}
+	return samplingSummary;
+}
+function recommendationFromCounts(counts, comparisonSummary) {
+	if (counts.failed > 0) {
+		return "reject";
+	}
+	if (counts.degraded > 0 || counts.blocked > 0 || counts.unstable > 0 || comparisonSummary.worseThanBaseline > 0) {
+		return "defer";
+	}
+	return "accept-now";
+}
+function serializeEvaluation(entry) {
+	return {
+		evaluationId: entry.evaluationId,
+		targetKind: entry.targetKind,
+		targetId: entry.targetId,
+		displayName: entry.displayName,
+		evaluationKind: entry.evaluationKind,
+		surface: entry.surface,
+		status: entry.status,
+		startedAt: entry.startedAt,
+		prompt: entry.prompt,
+		summary: entry.summary,
+		invoked: entry.invoked,
+		...(entry.expectedTrigger ? { expectedTrigger: entry.expectedTrigger } : {}),
+		...(entry.blockerKind ? { blockerKind: entry.blockerKind } : {}),
+		...(entry.metrics ? { metrics: entry.metrics } : {}),
+		...(entry.sampling ? { sampling: entry.sampling } : {}),
+		...(entry.baselineComparison ? { baselineComparison: entry.baselineComparison } : {}),
+		...(entry.thresholds ? { thresholds: entry.thresholds } : {}),
+		...(entry.thresholdFindings.length > 0 ? { thresholdFindings: entry.thresholdFindings } : {}),
+		...(entry.artifactRefs.length > 0 ? { artifactRefs: entry.artifactRefs } : {}),
+		intentProfile: entry.intentProfile,
+	};
+}
+function serializeEvaluationRun(entry) {
+	return {
+		targetKind: entry.targetKind,
+		targetId: entry.targetId,
+		displayName: entry.displayName,
+		evaluationKind: entry.evaluationKind,
+		surface: entry.surface,
+		startedAt: entry.startedAt,
+		status: entry.status,
+		summary: entry.summary,
+		...(entry.blockerKind ? { blockerKind: entry.blockerKind } : {}),
+		...(entry.metrics ? { metrics: entry.metrics } : {}),
+		...(entry.sampling ? { sampling: entry.sampling } : {}),
+		...(entry.baselineComparison ? { baselineComparison: entry.baselineComparison } : {}),
+		...(entry.artifactRefs.length > 0 ? { artifactRefs: entry.artifactRefs } : {}),
+		intentProfile: entry.intentProfile,
+	};
+}
 export function buildSkillEvaluationSummary(input, now = new Date().toISOString()) {
 	if (input.schemaVersion !== SKILL_EVALUATION_INPUTS_SCHEMA) {
 		throw new Error(`schemaVersion must be ${SKILL_EVALUATION_INPUTS_SCHEMA}`);
@@ -321,27 +579,11 @@ export function buildSkillEvaluationSummary(input, now = new Date().toISOString(
 		throw new Error("evaluations must be a non-empty array");
 	}
 
-	const evaluations = input.evaluations.map((run, index) => {
-		const normalized = normalizeRun(run, index);
-		const outcome =
-			normalized.evaluationKind === "trigger" ? evaluateTriggerRun(normalized) : evaluateExecutionRun(normalized);
-		return {
-			...normalized,
-			...outcome,
-		};
-	});
-
-	const counts = {
-		total: evaluations.length,
-		passed: evaluations.filter((entry) => entry.status === "passed").length,
-		failed: evaluations.filter((entry) => entry.status === "failed").length,
-		degraded: evaluations.filter((entry) => entry.status === "degraded").length,
-		blocked: evaluations.filter((entry) => entry.status === "blocked").length,
-		trigger: evaluations.filter((entry) => entry.evaluationKind === "trigger").length,
-		execution: evaluations.filter((entry) => entry.evaluationKind === "execution").length,
-	};
-	const recommendation =
-		counts.failed > 0 ? "reject" : counts.degraded > 0 || counts.blocked > 0 ? "defer" : "accept-now";
+	const evaluations = input.evaluations.map((run, index) => evaluateNormalizedRun(normalizeRun(run, index)));
+	const counts = buildEvaluationCounts(evaluations);
+	const comparisonSummary = buildComparisonSummary(evaluations);
+	const samplingSummary = buildSamplingSummary(evaluations, counts);
+	const recommendation = recommendationFromCounts(counts, comparisonSummary);
 
 	return {
 		schemaVersion: SKILL_EVALUATION_SUMMARY_SCHEMA,
@@ -350,43 +592,12 @@ export function buildSkillEvaluationSummary(input, now = new Date().toISOString(
 		evaluatedAt: now,
 		recommendation,
 		evaluationCounts: counts,
-		evaluations: evaluations.map((entry) => ({
-			evaluationId: entry.evaluationId,
-			targetKind: entry.targetKind,
-			targetId: entry.targetId,
-			displayName: entry.displayName,
-			evaluationKind: entry.evaluationKind,
-			surface: entry.surface,
-			status: entry.status,
-			startedAt: entry.startedAt,
-			prompt: entry.prompt,
-			summary: entry.summary,
-			invoked: entry.invoked,
-			...(entry.expectedTrigger ? { expectedTrigger: entry.expectedTrigger } : {}),
-			...(entry.blockerKind ? { blockerKind: entry.blockerKind } : {}),
-			...(entry.metrics ? { metrics: entry.metrics } : {}),
-			...(entry.thresholds ? { thresholds: entry.thresholds } : {}),
-			...(entry.thresholdFindings.length > 0 ? { thresholdFindings: entry.thresholdFindings } : {}),
-			...(entry.artifactRefs.length > 0 ? { artifactRefs: entry.artifactRefs } : {}),
-			intentProfile: entry.intentProfile,
-		})),
-		evaluationRuns: evaluations.map((entry) => ({
-			targetKind: entry.targetKind,
-			targetId: entry.targetId,
-			displayName: entry.displayName,
-			evaluationKind: entry.evaluationKind,
-			surface: entry.surface,
-			startedAt: entry.startedAt,
-			status: entry.status,
-			summary: entry.summary,
-			...(entry.blockerKind ? { blockerKind: entry.blockerKind } : {}),
-			...(entry.metrics ? { metrics: entry.metrics } : {}),
-			...(entry.artifactRefs.length > 0 ? { artifactRefs: entry.artifactRefs } : {}),
-			intentProfile: entry.intentProfile,
-		})),
+		samplingSummary,
+		comparisonSummary,
+		evaluations: evaluations.map((entry) => serializeEvaluation(entry)),
+		evaluationRuns: evaluations.map((entry) => serializeEvaluationRun(entry)),
 	};
 }
-
 export function main(argv = process.argv.slice(2)) {
 	try {
 		const { inputPath, outputPath } = parseArgs(argv);

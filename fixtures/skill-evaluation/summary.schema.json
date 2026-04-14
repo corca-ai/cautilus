@@ -40,7 +40,31 @@
         "degraded": { "type": "integer", "minimum": 0 },
         "blocked": { "type": "integer", "minimum": 0 },
         "trigger": { "type": "integer", "minimum": 0 },
-        "execution": { "type": "integer", "minimum": 0 }
+        "execution": { "type": "integer", "minimum": 0 },
+        "unstable": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "samplingSummary": {
+      "type": "object",
+      "properties": {
+        "evaluationsWithSampling": { "type": "integer", "minimum": 0 },
+        "unstableEvaluations": { "type": "integer", "minimum": 0 },
+        "totalSamples": { "type": "integer", "minimum": 0 },
+        "totalConsensusSamples": { "type": "integer", "minimum": 0 },
+        "totalInvocations": { "type": "integer", "minimum": 0 },
+        "totalPassingSamples": { "type": "integer", "minimum": 0 },
+        "overallPassRate": { "type": "number", "minimum": 0 },
+        "overallInvocationRate": { "type": "number", "minimum": 0 },
+        "overallConsensusRate": { "type": "number", "minimum": 0 }
+      }
+    },
+    "comparisonSummary": {
+      "type": "object",
+      "properties": {
+        "evaluationsWithBaseline": { "type": "integer", "minimum": 0 },
+        "betterThanBaseline": { "type": "integer", "minimum": 0 },
+        "sameAsBaseline": { "type": "integer", "minimum": 0 },
+        "worseThanBaseline": { "type": "integer", "minimum": 0 }
       }
     },
     "evaluations": {
@@ -75,6 +99,37 @@
           "summary": { "type": "string" },
           "invoked": { "type": "boolean" },
           "expectedTrigger": { "type": "string" },
+          "sampling": {
+            "type": "object",
+            "properties": {
+              "sampleCount": { "type": "integer", "minimum": 1 },
+              "consensusCount": { "type": "integer", "minimum": 0 },
+              "passCount": { "type": "integer", "minimum": 0 },
+              "invokedCount": { "type": "integer", "minimum": 0 },
+              "passRate": { "type": "number", "minimum": 0 },
+              "invocationRate": { "type": "number", "minimum": 0 },
+              "consensusRate": { "type": "number", "minimum": 0 },
+              "stable": { "type": "boolean" },
+              "unstable": { "type": "boolean" }
+            }
+          },
+          "baselineComparison": {
+            "type": "object",
+            "properties": {
+              "baselineStatus": { "type": "string", "enum": ["passed", "failed", "degraded", "blocked"] },
+              "relativeStatus": { "type": "string", "enum": ["better", "same", "worse"] },
+              "baselineInvoked": { "type": "boolean" },
+              "baselineOutcome": { "type": "string", "enum": ["passed", "failed", "degraded", "blocked"] },
+              "metricDeltas": {
+                "type": "object",
+                "properties": {
+                  "duration_ms": { "type": "number" },
+                  "total_tokens": { "type": "number" },
+                  "cost_usd": { "type": "number" }
+                }
+              }
+            }
+          },
           "intentProfile": {
             "type": "object",
             "required": ["schemaVersion", "intentId", "summary", "behaviorSurface", "successDimensions", "guardrailDimensions"],
@@ -115,6 +170,37 @@
           "startedAt": { "type": "string" },
           "status": { "type": "string", "enum": ["passed", "failed", "degraded", "blocked"] },
           "summary": { "type": "string" },
+          "sampling": {
+            "type": "object",
+            "properties": {
+              "sampleCount": { "type": "integer", "minimum": 1 },
+              "consensusCount": { "type": "integer", "minimum": 0 },
+              "passCount": { "type": "integer", "minimum": 0 },
+              "invokedCount": { "type": "integer", "minimum": 0 },
+              "passRate": { "type": "number", "minimum": 0 },
+              "invocationRate": { "type": "number", "minimum": 0 },
+              "consensusRate": { "type": "number", "minimum": 0 },
+              "stable": { "type": "boolean" },
+              "unstable": { "type": "boolean" }
+            }
+          },
+          "baselineComparison": {
+            "type": "object",
+            "properties": {
+              "baselineStatus": { "type": "string", "enum": ["passed", "failed", "degraded", "blocked"] },
+              "relativeStatus": { "type": "string", "enum": ["better", "same", "worse"] },
+              "baselineInvoked": { "type": "boolean" },
+              "baselineOutcome": { "type": "string", "enum": ["passed", "failed", "degraded", "blocked"] },
+              "metricDeltas": {
+                "type": "object",
+                "properties": {
+                  "duration_ms": { "type": "number" },
+                  "total_tokens": { "type": "number" },
+                  "cost_usd": { "type": "number" }
+                }
+              }
+            }
+          },
           "intentProfile": {
             "type": "object",
             "required": ["schemaVersion", "intentId", "summary", "behaviorSurface", "successDimensions", "guardrailDimensions"],

@@ -51,6 +51,18 @@ The first slice consumes one normalized packet with:
     - `degraded`
     - `blocked`
   - optional `metrics`
+  - optional `sampling`
+    - `sampleCount`
+    - optional `consensusCount`
+    - optional `matchingCount`
+    - optional `invokedCount`
+    - optional `stable`
+    - execution-only optional `statusCounts`
+  - optional `baseline`
+    - `invoked`
+    - optional `summary`
+    - optional `outcome`
+    - optional `metrics`
   - optional `thresholds`
   - optional `artifactRefs`
   - optional `intentProfile`
@@ -74,6 +86,13 @@ The first summary packet should include:
   - `defer`
   - `reject`
 - evaluation counts by status and kind
+- sampling rollup
+  - pass rate
+  - invocation rate
+  - consensus rate
+  - unstable evaluation count
+- baseline comparison rollup
+  - better / same / worse counts
 - per-evaluation results with normalized `surface`
   - `trigger_selection`
   - `execution_quality`
@@ -92,12 +111,11 @@ The point is to give the product one stable boundary that can:
 ## Current Recommendation Rules
 
 - any `failed` run -> `reject`
-- otherwise any `degraded` or `blocked` run -> `defer`
+- otherwise any `degraded`, `blocked`, `unstable`, or baseline-worse run -> `defer`
 - otherwise -> `accept-now`
 
-This is intentionally simple for the first slice.
-Hosts can still encode richer thresholds or baseline logic before writing the
-normalized packet.
+This remains intentionally bounded. The product now exposes stability and
+baseline drift explicitly, but the host still owns richer experiment design.
 
 ## Behavior Intent Mapping
 

@@ -29,6 +29,7 @@ test("buildSkillEvaluationSummary rejects trigger mismatches and emits normalize
 	);
 	assert.equal(summary.recommendation, "reject");
 	assert.equal(summary.evaluationCounts.failed, 1);
+	assert.equal(summary.evaluationCounts.unstable, 0);
 	assert.equal(summary.evaluationRuns[0].surface, "trigger_selection");
 	assert.equal(summary.evaluationRuns[0].intentProfile.behaviorSurface, "skill_trigger_selection");
 	assert.equal(
@@ -69,6 +70,7 @@ test("buildSkillEvaluationSummary degrades execution runs that exceed declared r
 	);
 	assert.equal(summary.recommendation, "defer");
 	assert.equal(summary.evaluationCounts.degraded, 1);
+	assert.equal(summary.evaluationCounts.unstable, 0);
 	assert.equal(summary.evaluations[0].surface, "execution_quality");
 	assert.equal(summary.evaluations[0].thresholdFindings.length, 2);
 	assert.equal(summary.evaluationRuns[0].intentProfile.behaviorSurface, "skill_execution_quality");
@@ -118,4 +120,46 @@ test("skill evaluation summary chains directly into skill proposal normalization
 		candidates.map((entry) => entry.proposalKey).sort(),
 		["public-skill-impl-execution-quality-regression", "public-skill-impl-trigger-selection-regression"],
 	);
+});
+
+test("buildSkillEvaluationSummary surfaces sampling stability and baseline comparisons", () => {
+	const summary = buildSkillEvaluationSummary(
+		{
+			schemaVersion: "cautilus.skill_evaluation_inputs.v1",
+			skillId: "impl",
+			evaluations: [
+				{
+					evaluationId: "trigger-sampled",
+					targetKind: "public_skill",
+					targetId: "impl",
+					displayName: "impl",
+					evaluationKind: "trigger",
+					prompt: "Please implement a bounded repo-local quality slice.",
+					startedAt: "2026-04-14T00:00:00.000Z",
+					expectedTrigger: "must_invoke",
+					invoked: true,
+					summary: "Trigger consensus matched must_invoke in 2/3 runs.",
+					sampling: {
+						sampleCount: 3,
+						consensusCount: 2,
+						matchingCount: 2,
+						invokedCount: 2,
+						stable: false,
+					},
+					baseline: {
+						invoked: true,
+					},
+				},
+			],
+		},
+		"2026-04-14T01:00:00.000Z",
+	);
+	assert.equal(summary.recommendation, "defer");
+	assert.equal(summary.evaluationCounts.unstable, 1);
+	assert.equal(summary.samplingSummary.totalSamples, 3);
+	assert.equal(summary.samplingSummary.overallConsensusRate, 0.6667);
+	assert.equal(summary.evaluations[0].sampling.passRate, 0.6667);
+	assert.equal(summary.evaluations[0].sampling.unstable, true);
+	assert.equal(summary.comparisonSummary.sameAsBaseline, 1);
+	assert.equal(summary.evaluations[0].baselineComparison.relativeStatus, "same");
 });

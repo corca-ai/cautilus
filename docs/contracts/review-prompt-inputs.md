@@ -19,6 +19,10 @@ The packet should include:
 - adapter `comparison_questions`
 - adapter `human_review_prompts`
 - referenced artifact/report files
+- `reviewMode`
+  - `prompt_under_test`
+  - `output_under_test`
+- optional explicit `outputUnderTestFile`
 - optional default prompt/schema file references
 - product-owned meta-prompt objective and instructions
 
@@ -40,6 +44,14 @@ cautilus review build-prompt-input \
   --review-packet /tmp/cautilus-mode/review.json
 ```
 
+Build the packet for a realized output artifact instead of prompt text:
+
+```bash
+cautilus review build-prompt-input \
+  --review-packet /tmp/cautilus-mode/review.json \
+  --output-under-test /tmp/cautilus-mode/analysis-output.json
+```
+
 Render the prompt:
 
 ```bash
@@ -53,3 +65,5 @@ cautilus review render-prompt \
 - Keep domain-specific instructions adapter-owned.
 - Do not inline arbitrary repo files into the packet.
 - Prefer explicit file references over hidden prompt assembly.
+- When judging realized behavior, prefer `--output-under-test` over baking the
+  artifact path into adapter prose.

@@ -415,6 +415,7 @@ function writeAggregateArtifact(caseDir, payload) {
 }
 
 function aggregateTriggerSamples(testCase, sampleResults, artifactDir) {
+	const invokedRuns = sampleResults.filter((result) => result.invoked).length;
 	const matchedRuns = sampleResults.filter((result) => (
 		testCase.expectedTrigger === "must_invoke" ? result.invoked : !result.invoked
 	)).length;
@@ -442,9 +443,16 @@ function aggregateTriggerSamples(testCase, sampleResults, artifactDir) {
 		: `Trigger consensus failed for ${testCase.expectedTrigger}: only ${matchedRuns}/${testCase.repeatCount} run(s) matched.`;
 	return {
 		invoked: consensusReached ? testCase.expectedTrigger === "must_invoke" : testCase.expectedTrigger !== "must_invoke",
-		summary: `${aggregateSummary} ${sampleResults[0]?.summary ?? ""}`.trim(),
+		summary: testCase.repeatCount > 1 ? aggregateSummary : `${aggregateSummary} ${sampleResults[0]?.summary ?? ""}`.trim(),
 		expectedTrigger: testCase.expectedTrigger,
 		metrics: aggregateMetrics(sampleResults),
+		sampling: {
+			sampleCount: testCase.repeatCount,
+			consensusCount: matchedRuns,
+			matchingCount: matchedRuns,
+			invokedCount: invokedRuns,
+			stable: consensusReached,
+		},
 		artifactRefs,
 	};
 }
@@ -485,10 +493,17 @@ function aggregateExecutionSamples(testCase, sampleResults, artifactDir) {
 		: `Execution results were unstable across ${testCase.repeatCount} run(s): ${summarizeStatusCounts(statusCounts)}.`;
 	return {
 		invoked: invokedRuns >= testCase.minConsensusCount,
-		summary: `${prefix} ${sampleResults[0]?.summary ?? ""}`.trim(),
+		summary: testCase.repeatCount > 1 ? prefix : `${prefix} ${sampleResults[0]?.summary ?? ""}`.trim(),
 		outcome: consensusOutcome,
 		metrics: aggregateMetrics(sampleResults),
 		thresholds: testCase.thresholds ?? null,
+		sampling: {
+			sampleCount: testCase.repeatCount,
+			consensusCount: statusCounts[consensusOutcome],
+			invokedCount: invokedRuns,
+			stable: consensusReached,
+			statusCounts,
+		},
 		artifactRefs,
 	};
 }
@@ -525,6 +540,7 @@ export function buildObservedSkillEvaluationInput(options) {
 			...(observed.outcome ? { outcome: observed.outcome } : {}),
 			...(observed.blockerKind ? { blockerKind: observed.blockerKind } : {}),
 			...(observed.metrics ? { metrics: observed.metrics } : {}),
+			...(observed.sampling ? { sampling: observed.sampling } : {}),
 			...(observed.thresholds ? { thresholds: observed.thresholds } : {}),
 			...(observed.artifactRefs ? { artifactRefs: observed.artifactRefs } : {}),
 		};

@@ -8,17 +8,23 @@ import { REVIEW_PACKET_SCHEMA, REVIEW_PROMPT_INPUTS_SCHEMA } from "./contract-ve
 
 const META_PROMPT_OBJECTIVE =
 	"Judge whether the candidate is actually better than the baseline for the stated intent.";
+const OUTPUT_UNDER_TEST_OBJECTIVE =
+	"Judge whether the output under test actually satisfies the stated intent and dimensions.";
 const META_PROMPT_INSTRUCTIONS = [
 	"Treat prompts, wrappers, and benchmark text as mutable implementation details.",
 	"Prefer held-out and full-gate evidence over train-only wins.",
 	"Call out cases where automated recommendation and real-user judgment diverge.",
 	"Use compare artifacts and scenario telemetry when they make the decision more legible.",
 ];
+const OUTPUT_UNDER_TEST_INSTRUCTIONS = [
+	"Judge the realized output artifact, not only the prompt plausibility.",
+	"Use the output-under-test file as primary evidence for success and guardrail dimensions.",
+];
 
 function usage(exitCode = 0) {
 	const text = [
 		"Usage:",
-		"  node ./scripts/agent-runtime/build-review-prompt-input.mjs --review-packet <file> [--output <file>]",
+		"  node ./scripts/agent-runtime/build-review-prompt-input.mjs --review-packet <file> [--output-under-test <file>] [--output <file>]",
 	].join("\n");
 	const out = exitCode === 0 ? process.stdout : process.stderr;
 	out.write(`${text}\n`);
@@ -42,6 +48,7 @@ function parseArgs(argv) {
 	const options = {
 		reviewPacket: null,
 		output: null,
+		outputUnderTest: null,
 	};
 	for (let index = 0; index < argv.length; index += 1) {
 		const arg = argv[index];
@@ -51,6 +58,7 @@ function parseArgs(argv) {
 		const field = {
 			"--review-packet": "reviewPacket",
 			"--output": "output",
+			"--output-under-test": "outputUnderTest",
 		}[arg];
 		if (!field) {
 			fail(`Unknown argument: ${arg}`);
@@ -62,6 +70,18 @@ function parseArgs(argv) {
 		fail("--review-packet is required");
 	}
 	return options;
+}
+
+function explicitFileRecord(path) {
+	if (!path) {
+		return null;
+	}
+	const resolved = resolve(path);
+	return {
+		relativePath: null,
+		absolutePath: resolved,
+		exists: existsSync(resolved),
+	};
 }
 
 function parseReviewPacket(path) {
@@ -110,13 +130,34 @@ function summarizeCommandObservation(observation) {
 	};
 }
 
+function buildMetaPrompt(reviewMode) {
+	return {
+		objective: reviewMode === "output_under_test" ? OUTPUT_UNDER_TEST_OBJECTIVE : META_PROMPT_OBJECTIVE,
+		instructions:
+			reviewMode === "output_under_test"
+				? [...META_PROMPT_INSTRUCTIONS, ...OUTPUT_UNDER_TEST_INSTRUCTIONS]
+				: META_PROMPT_INSTRUCTIONS,
+	};
+}
+
+function buildCurrentReportEvidence(reviewPacket, report) {
+	return {
+		reportFile: reviewPacket.packet.reportFile,
+		reportGeneratedAt: report.generatedAt,
+		automatedRecommendation: report.recommendation,
+		commandObservations: (report.commandObservations || []).map((entry) => summarizeCommandObservation(entry)),
+	};
+}
+
 export function buildReviewPromptInput(inputOptions, { now = new Date() } = {}) {
 	const options = parseArgs(inputOptions);
 	const reviewPacket = parseReviewPacket(options.reviewPacket);
 	const report = reviewPacket.packet.report;
 	const defaultPromptFile = fileRecordSummary(reviewPacket.packet.defaultPromptFile);
 	const defaultSchemaFile = fileRecordSummary(reviewPacket.packet.defaultSchemaFile);
-	return {
+	const outputUnderTestFile = explicitFileRecord(options.outputUnderTest);
+	const reviewMode = outputUnderTestFile ? "output_under_test" : "prompt_under_test";
+	const packet = {
 		schemaVersion: REVIEW_PROMPT_INPUTS_SCHEMA,
 		generatedAt: now.toISOString(),
 		reviewPacketFile: reviewPacket.path,
@@ -130,24 +171,25 @@ export function buildReviewPromptInput(inputOptions, { now = new Date() } = {}) 
 		candidate: report.candidate,
 		baseline: report.baseline,
 		automatedRecommendation: report.recommendation,
-		currentReportEvidence: {
-			reportFile: reviewPacket.packet.reportFile,
-			reportGeneratedAt: report.generatedAt,
-			automatedRecommendation: report.recommendation,
-			commandObservations: (report.commandObservations || []).map((entry) => summarizeCommandObservation(entry)),
-		},
+		currentReportEvidence: buildCurrentReportEvidence(reviewPacket, report),
 		modeSummaries: (report.modeSummaries || []).map((entry) => summarizeMode(entry)),
 		comparisonQuestions: reviewPacket.packet.comparisonQuestions || [],
 		humanReviewPrompts: reviewPacket.packet.humanReviewPrompts || [],
 		artifactFiles: (reviewPacket.packet.artifactFiles || []).map((entry) => fileRecordSummary(entry)),
 		reportArtifacts: (reviewPacket.packet.reportArtifacts || []).map((entry) => fileRecordSummary(entry)),
-		...(defaultPromptFile ? { defaultPromptFile } : {}),
-		...(defaultSchemaFile ? { defaultSchemaFile } : {}),
-		metaPrompt: {
-			objective: META_PROMPT_OBJECTIVE,
-			instructions: META_PROMPT_INSTRUCTIONS,
-		},
+		reviewMode,
+		metaPrompt: buildMetaPrompt(reviewMode),
 	};
+	if (defaultPromptFile) {
+		packet.defaultPromptFile = defaultPromptFile;
+	}
+	if (defaultSchemaFile) {
+		packet.defaultSchemaFile = defaultSchemaFile;
+	}
+	if (outputUnderTestFile) {
+		packet.outputUnderTestFile = outputUnderTestFile;
+	}
+	return packet;
 }
 
 export function main(argv = process.argv.slice(2)) {

@@ -293,6 +293,48 @@ test("run-workbench-executor-variants can render a prompt from a report file whe
 		}
 	});
 
+test("run-workbench-executor-variants can judge an explicit output-under-test artifact", () => {
+	const { root, workspace, adapterPath, schemaFile, reportFile } = createAdapterRepo();
+	try {
+		const adapterWithSchema = join(root, "adapter-with-schema.yaml");
+		const outputUnderTest = join(root, "artifacts", "analysis-output.json");
+		mkdirSync(join(root, "artifacts"), { recursive: true });
+		writeFileSync(outputUnderTest, '{"summary":"realized analysis"}\n', "utf-8");
+		writeFileSync(
+			adapterWithSchema,
+			readFileSync(adapterPath, "utf-8") + `default_schema_file: ${schemaFile}\n`,
+			"utf-8",
+		);
+		const outputDir = join(root, "output-under-test-outputs");
+		const result = runReviewVariants(
+			[
+				"--repo-root",
+				root,
+				"--adapter",
+				adapterWithSchema,
+				"--workspace",
+				workspace,
+				"--report-file",
+				reportFile,
+				"--output-under-test",
+				outputUnderTest,
+				"--output-dir",
+				outputDir,
+			],
+		);
+		assert.equal(result.status, 0, result.stderr);
+		const summary = JSON.parse(readFileSync(result.stdout.trim(), "utf-8"));
+		assert.equal(summary.outputUnderTestFile.absolutePath, outputUnderTest);
+		assert.equal(summary.reviewPromptInputFile.endsWith("review-prompt-input.json"), true);
+		const promptInput = JSON.parse(readFileSync(summary.reviewPromptInputFile, "utf-8"));
+		assert.equal(promptInput.reviewMode, "output_under_test");
+		assert.equal(promptInput.outputUnderTestFile.absolutePath, outputUnderTest);
+		assert.match(readFileSync(summary.promptFile, "utf-8"), /## Output Under Test/);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
 test("run-workbench-executor-variants suppresses progress logs with --quiet", () => {
 	const { root, workspace, adapterPath, promptFile, schemaFile } = createAdapterRepo();
 	try {

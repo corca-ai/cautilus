@@ -23,6 +23,8 @@ type skillEvaluationCase struct {
 	blockerKind     *string
 	artifactRefs    []any
 	metrics         map[string]any
+	sampling        map[string]any
+	baseline        map[string]any
 	thresholds      map[string]any
 	intentProfile   map[string]any
 }
@@ -57,9 +59,24 @@ func BuildSkillEvaluationSummary(input map[string]any, now time.Time) (map[strin
 		"blocked":   0,
 		"trigger":   0,
 		"execution": 0,
+		"unstable":  0,
 	}
 	evaluations := make([]any, 0, len(rawEvaluations))
 	evaluationRuns := make([]any, 0, len(rawEvaluations))
+	samplingSummary := map[string]any{
+		"evaluationsWithSampling": 0,
+		"unstableEvaluations":     0,
+		"totalSamples":            0,
+		"totalConsensusSamples":   0,
+		"totalInvocations":        0,
+		"totalPassingSamples":     0,
+	}
+	comparisonSummary := map[string]any{
+		"evaluationsWithBaseline": 0,
+		"betterThanBaseline":      0,
+		"sameAsBaseline":          0,
+		"worseThanBaseline":       0,
+	}
 
 	for index, rawEvaluation := range rawEvaluations {
 		record, ok := rawEvaluation.(map[string]any)
@@ -80,13 +97,27 @@ func BuildSkillEvaluationSummary(input map[string]any, now time.Time) (map[strin
 		counts["total"]++
 		counts[status]++
 		counts[evaluation.evaluationKind]++
+		if truthy(asMap(result["evaluation"])["unstable"]) {
+			counts["unstable"]++
+		}
+		accumulateSkillSamplingSummary(samplingSummary, asMap(result["evaluation"])["sampling"])
+		accumulateSkillComparisonSummary(comparisonSummary, asMap(result["evaluation"])["baselineComparison"])
 	}
 
 	recommendation := "accept-now"
 	if counts["failed"] > 0 {
 		recommendation = "reject"
-	} else if counts["degraded"] > 0 || counts["blocked"] > 0 {
+	} else if counts["degraded"] > 0 || counts["blocked"] > 0 || counts["unstable"] > 0 || intFromAny(comparisonSummary["worseThanBaseline"]) > 0 {
 		recommendation = "defer"
+	}
+	if value := ratioFromAny(samplingSummary["totalPassingSamples"], samplingSummary["totalSamples"]); value != nil {
+		samplingSummary["overallPassRate"] = *value
+	}
+	if value := ratioFromAny(samplingSummary["totalInvocations"], samplingSummary["totalSamples"]); value != nil {
+		samplingSummary["overallInvocationRate"] = *value
+	}
+	if value := ratioFromAny(samplingSummary["totalConsensusSamples"], samplingSummary["totalSamples"]); value != nil {
+		samplingSummary["overallConsensusRate"] = *value
 	}
 
 	return map[string]any{
@@ -103,9 +134,12 @@ func BuildSkillEvaluationSummary(input map[string]any, now time.Time) (map[strin
 			"blocked":   counts["blocked"],
 			"trigger":   counts["trigger"],
 			"execution": counts["execution"],
+			"unstable":  counts["unstable"],
 		},
-		"evaluations":    evaluations,
-		"evaluationRuns": evaluationRuns,
+		"samplingSummary":   samplingSummary,
+		"comparisonSummary": comparisonSummary,
+		"evaluations":       evaluations,
+		"evaluationRuns":    evaluationRuns,
 	}, nil
 }
 
@@ -186,6 +220,14 @@ func normalizeSkillEvaluationCase(input map[string]any, index int, now time.Time
 	if err != nil {
 		return nil, err
 	}
+	sampling, err := normalizeSkillSampling(input["sampling"], fmt.Sprintf("evaluations[%d].sampling", index))
+	if err != nil {
+		return nil, err
+	}
+	baseline, err := normalizeSkillBaseline(input["baseline"], fmt.Sprintf("evaluations[%d].baseline", index))
+	if err != nil {
+		return nil, err
+	}
 	thresholds, err := normalizeSkillNumberObject(
 		input["thresholds"],
 		fmt.Sprintf("evaluations[%d].thresholds", index),
@@ -214,6 +256,8 @@ func normalizeSkillEvaluationCase(input map[string]any, index int, now time.Time
 		blockerKind:     blockerKind,
 		artifactRefs:    artifactRefs,
 		metrics:         metrics,
+		sampling:        sampling,
+		baseline:        baseline,
 		thresholds:      thresholds,
 		intentProfile:   asMap(input["intentProfile"]),
 	}, nil
@@ -286,6 +330,289 @@ func normalizeSkillNumberObject(value any, field string, integerFields map[strin
 	return result, nil
 }
 
+func normalizeSkillSampling(value any, field string) (map[string]any, error) {
+	record := asMap(value)
+	if value == nil {
+		return nil, nil
+	}
+	if len(record) == 0 {
+		return nil, fmt.Errorf("%s must be an object", field)
+	}
+	sampleCount, err := normalizeNonNegativeNumber(record["sampleCount"], field+".sampleCount")
+	if err != nil {
+		return nil, err
+	}
+	if sampleCount == nil || *sampleCount < 1 || float64(int(*sampleCount)) != *sampleCount {
+		return nil, fmt.Errorf("%s.sampleCount must be a positive integer", field)
+	}
+	result := map[string]any{
+		"sampleCount": int(*sampleCount),
+	}
+	for _, key := range []string{"consensusCount", "matchingCount", "invokedCount"} {
+		number, err := normalizeNonNegativeNumber(record[key], field+"."+key)
+		if err != nil {
+			return nil, err
+		}
+		if number == nil {
+			continue
+		}
+		if float64(int(*number)) != *number {
+			return nil, fmt.Errorf("%s.%s must be an integer", field, key)
+		}
+		result[key] = int(*number)
+	}
+	if stable, ok := record["stable"].(bool); ok {
+		result["stable"] = stable
+	} else if record["stable"] != nil {
+		return nil, fmt.Errorf("%s.stable must be a boolean", field)
+	}
+	if statusCounts := asMap(record["statusCounts"]); len(statusCounts) > 0 {
+		normalized := map[string]any{}
+		for _, key := range []string{"passed", "failed", "degraded", "blocked"} {
+			number, err := normalizeNonNegativeNumber(statusCounts[key], field+".statusCounts."+key)
+			if err != nil {
+				return nil, err
+			}
+			if number == nil {
+				continue
+			}
+			if float64(int(*number)) != *number {
+				return nil, fmt.Errorf("%s.statusCounts.%s must be an integer", field, key)
+			}
+			normalized[key] = int(*number)
+		}
+		if len(normalized) > 0 {
+			result["statusCounts"] = normalized
+		}
+	}
+	return result, nil
+}
+
+func normalizeSkillBaseline(value any, field string) (map[string]any, error) {
+	record := asMap(value)
+	if value == nil {
+		return nil, nil
+	}
+	if len(record) == 0 {
+		return nil, fmt.Errorf("%s must be an object", field)
+	}
+	invoked, ok := record["invoked"].(bool)
+	if !ok {
+		return nil, fmt.Errorf("%s.invoked must be a boolean", field)
+	}
+	summary, err := normalizeOptionalString(record["summary"], field+".summary")
+	if err != nil {
+		return nil, err
+	}
+	outcome, err := normalizeOptionalString(record["outcome"], field+".outcome")
+	if err != nil {
+		return nil, err
+	}
+	metrics, err := normalizeSkillNumberObject(
+		record["metrics"],
+		field+".metrics",
+		map[string]bool{
+			"total_tokens": true,
+			"duration_ms":  true,
+			"cost_usd":     false,
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	result := map[string]any{"invoked": invoked}
+	if summary != nil {
+		result["summary"] = *summary
+	}
+	if outcome != nil {
+		result["outcome"] = *outcome
+	}
+	if metrics != nil {
+		result["metrics"] = metrics
+	}
+	return result, nil
+}
+
+func intPointerFromAny(value any) *int {
+	number, ok := toFloat(value)
+	if !ok {
+		return nil
+	}
+	normalized := int(number)
+	return &normalized
+}
+
+func intFromAny(value any) int {
+	if normalized := intPointerFromAny(value); normalized != nil {
+		return *normalized
+	}
+	return 0
+}
+
+func ratioFromInts(numerator int, denominator int) *float64 {
+	if denominator <= 0 {
+		return nil
+	}
+	value := round12(float64(numerator) / float64(denominator))
+	return &value
+}
+
+func ratioFromAny(numerator any, denominator any) *float64 {
+	return ratioFromInts(intFromAny(numerator), intFromAny(denominator))
+}
+
+func skillStatusRank(status string) int {
+	switch status {
+	case "passed":
+		return 3
+	case "degraded":
+		return 2
+	case "blocked":
+		return 1
+	default:
+		return 0
+	}
+}
+
+func buildSkillSamplingInsights(evaluation *skillEvaluationCase, status string) map[string]any {
+	if evaluation.sampling == nil {
+		return nil
+	}
+	sampleCount := intFromAny(evaluation.sampling["sampleCount"])
+	consensusCount := intPointerFromAny(evaluation.sampling["consensusCount"])
+	invokedCount := intPointerFromAny(evaluation.sampling["invokedCount"])
+	passCount := (*int)(nil)
+	if evaluation.evaluationKind == "trigger" {
+		passCount = intPointerFromAny(evaluation.sampling["matchingCount"])
+		if passCount == nil {
+			passCount = consensusCount
+		}
+	} else if statusCounts := asMap(evaluation.sampling["statusCounts"]); len(statusCounts) > 0 {
+		passCount = intPointerFromAny(statusCounts["passed"])
+	}
+	result := map[string]any{
+		"sampleCount":   sampleCount,
+		"derivedStatus": status,
+		"unstable":      evaluation.sampling["stable"] != nil && !truthy(evaluation.sampling["stable"]),
+	}
+	if evaluation.sampling["stable"] != nil {
+		result["stable"] = evaluation.sampling["stable"]
+	}
+	if consensusCount != nil {
+		result["consensusCount"] = *consensusCount
+		if value := ratioFromInts(*consensusCount, sampleCount); value != nil {
+			result["consensusRate"] = *value
+		}
+	}
+	if invokedCount != nil {
+		result["invokedCount"] = *invokedCount
+		if value := ratioFromInts(*invokedCount, sampleCount); value != nil {
+			result["invocationRate"] = *value
+		}
+	}
+	if passCount != nil {
+		result["passCount"] = *passCount
+		if value := ratioFromInts(*passCount, sampleCount); value != nil {
+			result["passRate"] = *value
+		}
+	}
+	if statusCounts := asMap(evaluation.sampling["statusCounts"]); len(statusCounts) > 0 {
+		result["statusCounts"] = statusCounts
+	}
+	return result
+}
+
+func evaluateSkillBaseline(evaluation *skillEvaluationCase) (map[string]any, error) {
+	if evaluation.baseline == nil {
+		return nil, nil
+	}
+	summary := "Baseline comparison run."
+	if value := stringOrEmpty(evaluation.baseline["summary"]); value != "" {
+		summary = value
+	}
+	baseline := *evaluation
+	baseline.invoked = truthy(evaluation.baseline["invoked"])
+	baseline.summary = summary
+	baseline.metrics = asMap(evaluation.baseline["metrics"])
+	baseline.baseline = nil
+	baseline.sampling = nil
+	if outcome := stringOrEmpty(evaluation.baseline["outcome"]); outcome != "" {
+		baseline.outcome = &outcome
+	} else {
+		baseline.outcome = nil
+	}
+	if evaluation.evaluationKind == "trigger" {
+		return evaluateSkillTriggerCase(&baseline)
+	}
+	return evaluateSkillExecutionCase(&baseline)
+}
+
+func buildSkillBaselineComparison(evaluation *skillEvaluationCase, status string) (map[string]any, error) {
+	baselineResult, err := evaluateSkillBaseline(evaluation)
+	if err != nil || baselineResult == nil {
+		return baselineResult, err
+	}
+	baselineStatus := stringOrEmpty(baselineResult["status"])
+	relativeStatus := "same"
+	if skillStatusRank(status) > skillStatusRank(baselineStatus) {
+		relativeStatus = "better"
+	} else if skillStatusRank(status) < skillStatusRank(baselineStatus) {
+		relativeStatus = "worse"
+	}
+	result := map[string]any{
+		"baselineStatus":  baselineStatus,
+		"relativeStatus":  relativeStatus,
+		"baselineInvoked": truthy(evaluation.baseline["invoked"]),
+	}
+	if outcome := stringOrEmpty(evaluation.baseline["outcome"]); outcome != "" {
+		result["baselineOutcome"] = outcome
+	}
+	metricDeltas := map[string]any{}
+	for _, key := range []string{"duration_ms", "total_tokens", "cost_usd"} {
+		actual, actualOK := toFloat(evaluation.metrics[key])
+		baselineValue, baselineOK := toFloat(asMap(evaluation.baseline["metrics"])[key])
+		if !actualOK || !baselineOK {
+			continue
+		}
+		metricDeltas[key] = round12(actual - baselineValue)
+	}
+	if len(metricDeltas) > 0 {
+		result["metricDeltas"] = metricDeltas
+	}
+	return result, nil
+}
+
+func accumulateSkillSamplingSummary(summary map[string]any, value any) {
+	record := asMap(value)
+	if len(record) == 0 {
+		return
+	}
+	summary["evaluationsWithSampling"] = intFromAny(summary["evaluationsWithSampling"]) + 1
+	if truthy(record["unstable"]) {
+		summary["unstableEvaluations"] = intFromAny(summary["unstableEvaluations"]) + 1
+	}
+	summary["totalSamples"] = intFromAny(summary["totalSamples"]) + intFromAny(record["sampleCount"])
+	summary["totalConsensusSamples"] = intFromAny(summary["totalConsensusSamples"]) + intFromAny(record["consensusCount"])
+	summary["totalInvocations"] = intFromAny(summary["totalInvocations"]) + intFromAny(record["invokedCount"])
+	summary["totalPassingSamples"] = intFromAny(summary["totalPassingSamples"]) + intFromAny(record["passCount"])
+}
+
+func accumulateSkillComparisonSummary(summary map[string]any, value any) {
+	record := asMap(value)
+	if len(record) == 0 {
+		return
+	}
+	summary["evaluationsWithBaseline"] = intFromAny(summary["evaluationsWithBaseline"]) + 1
+	switch stringOrEmpty(record["relativeStatus"]) {
+	case "better":
+		summary["betterThanBaseline"] = intFromAny(summary["betterThanBaseline"]) + 1
+	case "worse":
+		summary["worseThanBaseline"] = intFromAny(summary["worseThanBaseline"]) + 1
+	default:
+		summary["sameAsBaseline"] = intFromAny(summary["sameAsBaseline"]) + 1
+	}
+}
+
 func evaluateSkillEvaluationCase(evaluation *skillEvaluationCase) (map[string]any, error) {
 	switch evaluation.evaluationKind {
 	case "trigger":
@@ -323,7 +650,12 @@ func evaluateSkillTriggerCase(evaluation *skillEvaluationCase) (map[string]any, 
 	if err != nil {
 		return nil, err
 	}
-	return buildEvaluatedSkillResult(evaluation, "trigger_selection", status, summary, nil, intentProfile), nil
+	sampling := buildSkillSamplingInsights(evaluation, status)
+	baselineComparison, err := buildSkillBaselineComparison(evaluation, status)
+	if err != nil {
+		return nil, err
+	}
+	return buildEvaluatedSkillResult(evaluation, "trigger_selection", status, summary, nil, sampling, baselineComparison, intentProfile), nil
 }
 
 func evaluateSkillExecutionCase(evaluation *skillEvaluationCase) (map[string]any, error) {
@@ -345,12 +677,19 @@ func evaluateSkillExecutionCase(evaluation *skillEvaluationCase) (map[string]any
 		return nil, err
 	}
 	if !evaluation.invoked {
+		sampling := buildSkillSamplingInsights(evaluation, "failed")
+		baselineComparison, err := buildSkillBaselineComparison(evaluation, "failed")
+		if err != nil {
+			return nil, err
+		}
 		return buildEvaluatedSkillResult(
 			evaluation,
 			"execution_quality",
 			"failed",
 			fmt.Sprintf("%s The execution case never invoked the skill, so the task could not complete on the intended surface.", evaluation.summary),
 			nil,
+			sampling,
+			baselineComparison,
 			intentProfile,
 		), nil
 	}
@@ -367,7 +706,12 @@ func evaluateSkillExecutionCase(evaluation *skillEvaluationCase) (map[string]any
 		}
 		summary = fmt.Sprintf("%s Runtime budgets were exceeded for %s.", evaluation.summary, strings.Join(parts, ", "))
 	}
-	return buildEvaluatedSkillResult(evaluation, "execution_quality", status, summary, findings, intentProfile), nil
+	sampling := buildSkillSamplingInsights(evaluation, status)
+	baselineComparison, err := buildSkillBaselineComparison(evaluation, status)
+	if err != nil {
+		return nil, err
+	}
+	return buildEvaluatedSkillResult(evaluation, "execution_quality", status, summary, findings, sampling, baselineComparison, intentProfile), nil
 }
 
 func thresholdFindings(metrics map[string]any, thresholds map[string]any) []any {
@@ -405,6 +749,8 @@ func buildEvaluatedSkillResult(
 	status string,
 	summary string,
 	findings []any,
+	sampling map[string]any,
+	baselineComparison map[string]any,
 	intentProfile *BehaviorIntentProfile,
 ) map[string]any {
 	evaluationPayload := map[string]any{
@@ -433,6 +779,15 @@ func buildEvaluatedSkillResult(
 	if evaluation.thresholds != nil {
 		evaluationPayload["thresholds"] = evaluation.thresholds
 	}
+	if sampling != nil {
+		evaluationPayload["sampling"] = sampling
+		if truthy(sampling["unstable"]) {
+			evaluationPayload["unstable"] = true
+		}
+	}
+	if baselineComparison != nil {
+		evaluationPayload["baselineComparison"] = baselineComparison
+	}
 	if len(findings) > 0 {
 		evaluationPayload["thresholdFindings"] = findings
 	}
@@ -456,6 +811,15 @@ func buildEvaluatedSkillResult(
 	}
 	if evaluation.metrics != nil {
 		evaluationRun["metrics"] = evaluation.metrics
+	}
+	if sampling != nil {
+		evaluationRun["sampling"] = sampling
+		if truthy(sampling["unstable"]) {
+			evaluationRun["unstable"] = true
+		}
+	}
+	if baselineComparison != nil {
+		evaluationRun["baselineComparison"] = baselineComparison
 	}
 	if len(evaluation.artifactRefs) > 0 {
 		evaluationRun["artifactRefs"] = evaluation.artifactRefs

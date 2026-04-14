@@ -91,6 +91,73 @@
               }
             }
           },
+          "sampling": {
+            "type": "object",
+            "required": ["sampleCount"],
+            "properties": {
+              "sampleCount": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "consensusCount": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "matchingCount": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "invokedCount": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "stable": {
+                "type": "boolean"
+              },
+              "statusCounts": {
+                "type": "object",
+                "properties": {
+                  "passed": { "type": "integer", "minimum": 0 },
+                  "failed": { "type": "integer", "minimum": 0 },
+                  "degraded": { "type": "integer", "minimum": 0 },
+                  "blocked": { "type": "integer", "minimum": 0 }
+                }
+              }
+            }
+          },
+          "baseline": {
+            "type": "object",
+            "required": ["invoked"],
+            "properties": {
+              "invoked": {
+                "type": "boolean"
+              },
+              "summary": {
+                "type": "string"
+              },
+              "outcome": {
+                "type": "string",
+                "enum": ["passed", "failed", "degraded", "blocked"]
+              },
+              "metrics": {
+                "type": "object",
+                "properties": {
+                  "total_tokens": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "duration_ms": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "cost_usd": {
+                    "type": "number",
+                    "minimum": 0
+                  }
+                }
+              }
+            }
+          },
           "thresholds": {
             "type": "object",
             "properties": {
