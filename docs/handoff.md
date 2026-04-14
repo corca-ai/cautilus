@@ -128,6 +128,24 @@ aedab10 Align Go normalize output with Node parity before deletion
     없으므로 굳이 안 함).
   - Node shim for air-gapped consumers (아무도 요청 안 했고, 필요해지면
     Go CLI 위에 얇게 다시 올리는 게 싸다).
+- Premortem 라운드 2 (실행-시점, 코드 감사 + 신규 컨트리뷰터
+  onboarding 각도) + 카운터웨이트 결과 13건 중 3건은 worry-theater로
+  버렸다. 다음 세션에 다시 끌고 오지 말 것:
+  - `command-registry.json`의 `usage`/`examples` 배열을 추가로
+    source-guard 하는 것 — 로드 베어링 경로(`commands`)는 이미 가드
+    중. 이중 가드는 paranoia.
+  - `proposals.go` 상단에 "extension-shape" 주석 블록 추가 — 800줄
+    파일에 6줄 장식. 주석으로 막을 수 있는 실제 버그 없음.
+  - `humanizeTargetKind` 맵을 spec에 명시적으로 거는 것 — leaf helper.
+    명시해도 막아주는 버그 없음. (4번째 아키타입이 들어올 때 fallback
+    표기를 같이 손보면 됨, 그건 [archetype-boundary.spec.md
+    follow-up 13](./specs/archetype-boundary.spec.md)에 들어가 있음.)
+- Premortem 라운드 2 finding 중 10건은 "extension-time hardening"
+  성격이라 Node-removal 슬라이스에 끼우지 않고
+  `archetype-boundary.spec.md` follow-up 13으로 통째로 옮겼다. 다음
+  4번째 아키타입을 추가하기 직전(또는 함께) 그 슬라이스를 픽업.
+  Net of 13: a=0, b=0, c=3, d=10. 카운터웨이트가 inflate를 막은
+  대표 사례.
 
 ## Working Patterns
 

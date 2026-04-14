@@ -187,9 +187,91 @@ with this spec:
 12. **Experimental archetype escape hatch.** This spec requires every
     first-class archetype to ship in a coordinated slice. That discipline
     is intentional, but leaves no room for research prototypes. Consider a
-    `scripts/agent-runtime/prototypes/` namespace with relaxed rules for
-    exploratory surfaces, and a promotion checklist into first-class
-    status when the surface earns a schema/helper/CLI/contract slice.
+    relaxed namespace (location TBD — keep the `prototypes/` hint Go-side
+    if the surface ends up living in `internal/runtime/`) with relaxed
+    rules for exploratory surfaces, and a promotion checklist into
+    first-class status when the surface earns a schema/helper/CLI/
+    contract slice.
+13. **Archetype-extension hardening.** Surfaced by an
+    onboarding-lens premortem on the Node-removal slice (round 2): a new
+    contributor told to add a 4th first-class archetype must currently
+    grep across files this spec does not name, and the 1:1 mapping has
+    no inverse-completeness check. The deletion slice is intentionally
+    not bundling these because they are extension-time concerns, not
+    Node-removal concerns. Pick this up before — or together with — the
+    next first-class archetype actually being added.
+
+    Required edits this spec should name (today the contributor must
+    discover them by greping):
+
+    - `internal/app/app.go` dispatch table (around L176-181) and the
+      `switch kind` block (around L691-731). Source-guard rows for
+      `handleScenarioNormalize{Chatbot,Skill,Workflow}`.
+    - `internal/runtime/intent.go` `BehaviorSurfaces` /
+      `BehaviorDimensions` registries. `BehaviorSurfaces[...]` lookup
+      currently returns the empty string on a missing key; consider a
+      panic-on-miss helper as a separate seam.
+    - `internal/runtime/proposals.go` `assert<Archetype>TargetKind`
+      isolation pattern (around L189-205). Source-guard row for each
+      assertion function name. Without this, a new archetype can
+      silently accept another archetype's `targetKind` and break the
+      1:1 mapping invariant.
+    - `internal/cli/command-registry.json` already has a Source Guard
+      for the `commands` array path; the `usage` and `examples` arrays
+      in the same file are NOT guarded. Decide whether to widen the
+      guard or leave them as cosmetic.
+    - `skills/cautilus/SKILL.md` references list ordering (chatbot ·
+      skill-* · workflow). Source-guard row pinning the archetype
+      reference order would prevent skill-loading agents from missing
+      a new archetype.
+    - `README.md` Repo Layout schema-file bullets and the Scenarios
+      section's literal `"Cautilus has three first-class evaluation
+      archetypes"` count line. Either source-guard the count or
+      reword to be count-agnostic.
+    - `internal/runtime/proposals.go` extension-shape contract: the
+      file is now ~800 lines flat with no `register(...)` seam. A
+      6-line comment block at the top naming the per-archetype
+      contract (top-level `Normalize<Archetype>ProposalCandidates`,
+      `build<Archetype>...Candidate` builders, `assert<Archetype>...`
+      isolation, shared `mergeCandidatesByProposalKey`) would cut the
+      first read time meaningfully.
+    - `internal/runtime/proposals.go` `humanizeTargetKind` map
+      (around L685): if a new archetype introduces a new `targetKind`,
+      the fallback renders lower-case. Either Title Case the fallback
+      or require the spec to name the map.
+    - Spec walkthrough: today this spec is a registry of endpoints,
+      not an ordered "to add an archetype, edit these N files in this
+      order" checklist. Add such a checklist (or generate one from
+      the Source Guard table) so `npm run lint:specs` passing means
+      "the slice is complete," not "the surfaces named in the table
+      exist."
+    - Inverse-completeness lint: enumerate archetypes from `###`
+      headings in this spec; for each, assert that every required
+      surface (schema constant, helper function, CLI subcommand,
+      fixture, contract doc, behavior surfaces, assertion function,
+      handler, README block, SKILL.md reference) actually exists.
+      Larger seam, may be its own spec lint command.
+
+    Test gaps in `internal/runtime/proposals_test.go` that should land
+    with the same hardening pass (also surfaced by the round-2
+    code-level audit lens):
+
+    - The `eventTriggeredFollowupPatterns` branch
+      (`buildEventTriggeredFollowupCandidate`) has zero direct
+      coverage. One subcase using an `eventType: "app_mention"`
+      conversation closes it.
+    - The workflow `description` "CLI Workflow" prefix has no
+      regression guard; a future refactor that drops the prefix would
+      ship silently.
+    - `mergeCandidatesByProposalKey` insertion-order is asserted only
+      by parity inspection; no Go test pins it. A future refactor back
+      to `for k,v := range map` would reintroduce nondeterminism.
+
+    All of the above were considered for inclusion in the Node-removal
+    slice and rejected (counterweight classification (d) "valid but
+    defer") because they are extension-time scaffolding, not
+    dual-implementation retirement. Bundling would have inflated the
+    slice's intent without protecting any current user.
 
 Every item above must keep the 1:1 archetype mapping intact. When adding a
 new first-class evaluation target, update this spec first and introduce the
