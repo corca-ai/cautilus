@@ -23,6 +23,14 @@
 - `Cautilus`의 GEPA-style optimize search는 이제 rejected sibling checkpoint
   signal을 merge selection, mutation parent ordering, reflection batch ordering
   모두에서 direct policy로 해석한다.
+- self-dogfood claim surface를 dogfood evidence 기준으로 다시 좁혔다.
+  - root standing gate adapter는 이제 standalone binary / bundled skill
+    전체를 암시하지 않고 `deterministic self-consumer standing gate`로
+    스코프를 제한한다.
+  - gate-honesty / review-completion / skill-surface experiment prompts는
+    claim boundary, timeout enforcement, published latest bundle artifact를
+    더 직접 보게 된다.
+  - skill-surface experiment timeout은 `30000ms`로 완화했다.
 - 지금 닫힌 핵심:
   - reflective mutation + multi-generation Pareto frontier
   - frontier-promotion review feedback reinjection
@@ -39,8 +47,13 @@
 - optimize-search `v2`로 보던 최소 기준은 사실상 닫혔다.
   - checkpoint rejection이 단순 prompt context나 weighting이 아니라
     merge/mutation decision policy에도 명시적으로 반영된다.
-- latest self-dogfood published bundle는 `pass / accept-now` 상태다.
+- latest canonical self-dogfood published bundle는 `pass / accept-now` 상태다.
   - [artifacts/self-dogfood/latest/summary.json](../artifacts/self-dogfood/latest/summary.json)
+- latest self-dogfood experiments bundle는 `concern / defer` 상태다.
+  - [artifacts/self-dogfood/experiments/latest/summary.json](../artifacts/self-dogfood/experiments/latest/summary.json)
+  - blocker는 정리됐고, 지금 남은 것은
+    `self-dogfood-gate-honesty-b`의 baseline comparison evidence 부족에 대한
+    conservative `concern` 1건이다.
 - 최근 관련 커밋:
   - `2393cf9` Preserve checkpoint severity in reflection feedback
   - `9cc12a3` Prioritize rejected mutation repairs under tight budget
@@ -55,24 +68,31 @@
 
 - `npm run verify`
 - `npm run hooks:check`
+- `npm run dogfood:self`
+- `npm run dogfood:self:experiments`
 
 ## Next Session
 
-1. optimize-search `v2`를 닫힌 slice로 보고, 다음 bounded improvement seam을
-   고른다.
-2. 기본 후보:
-   - richer merge heuristics가 실제로 더 필요한지 self-dogfood evidence로 확인
-   - 아니면 optimize-search contract를 더 건드리지 않고 다른 product seam으로 이동
-3. 다음 slice를 고른 뒤 `npm run verify`, `npm run hooks:check`를 다시 닫는다.
+1. `self-dogfood-gate-honesty-b` concern을 닫을지 판단한다.
+2. 닫는다면 가장 유력한 slice는 baseline `origin/main` claim excerpt를
+   experiment prompt에 같이 넣어, "current candidate가 baseline보다 실제로
+   더 좁고 evidence-proportional한가"를 직접 비교 가능하게 만드는 것이다.
+3. 그 concern을 의도적으로 유지할지 결정한 뒤, optimize-search 이후의 다음
+   bounded improvement seam으로 넘어간다.
+4. 다음 slice를 고른 뒤 `npm run verify`, `npm run hooks:check`를 다시 닫는다.
 
 ## Discuss
 
 - 현재 판단:
   - optimize-search `v2`는 닫혔다고 봐도 된다.
   - 더 나아가려면 이제 contract 확장보다 dogfood evidence가 먼저다.
+  - self-dogfood canonical surface는 충분히 정직해졌고, stronger claim
+    experiments도 대부분 green이다.
 - 아직 열려 있는 질문:
   - richer merge heuristics가 실제로 필요한지
   - 아니면 현재 bounded search seam을 유지하고 다른 roadmap slice로 넘어갈지
+  - `gate-honesty-b`의 remaining concern을 실제 product gap으로 볼지,
+    baseline-compare prompt evidence gap으로 볼지
 - 아직 의도적으로 안 하는 것:
   - multi-prompt or multi-component coupled updates
   - fine-tuning or trainer orchestration
@@ -83,8 +103,13 @@
 - 가장 쉬운 오해: optimize-search seam을 더 만지는 것이 자동으로 다음 최선의
   수라는 해석.
   아니다. 이제는 evidence 없이 heuristic만 더 얹을 위험이 더 크다.
-- 다음 세션에서 가장 쉬운 실수: merge heuristics를 넓히면서 다시 packet
-  boundary를 흔드는 것.
+- 다음 세션에서 가장 쉬운 실수:
+  `gate-honesty-b` concern을 또 다른 generic self-dogfood blocker로
+  과해석하는 것.
+  지금 남은 것은 대부분 baseline comparison evidence를 prompt에 얼마나 직접
+  넣어주느냐의 문제다.
+- optimize-search 쪽에서도 merge heuristics를 넓히면서 다시 packet
+  boundary를 흔들면 안 된다.
   다음 slice는 먼저 dogfood evidence가 진짜 부족한 heuristic을 가리키는지
   확인하는 편이 맞다.
 

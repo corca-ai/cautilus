@@ -2,13 +2,28 @@ import { existsSync, readFileSync, writeFileSync } from "node:fs";
 
 function adapterExcerptPatterns(adapterName) {
 	if (adapterName === "self-dogfood") {
-		return ["reportRecommendation", "gateRecommendation", "dogfood:self", "self-dogfood", "latest.md", "review-summary"];
+		return ["reportRecommendation", "gateRecommendation", "dogfood:self", "latest.md", "review-summary", "self-dogfood"];
 	}
 	if (adapterName.includes("gate-honesty")) {
-		return ["self-dogfood", "verify", "hooks:check", "doctor", "adapter"];
+		return [
+			"standing gate",
+			"dogfood:self",
+			"npm run verify",
+			"self-consumer gate",
+			"overclaims",
+			"self-dogfood",
+		];
 	}
 	if (adapterName.includes("review-completion")) {
-		return ["reviewTimeoutMs", "dogfood:self", "latest.md", "timeout", "WORKBENCH_CODEX", "self-dogfood"];
+		return [
+			"resolveReviewTimeoutMs",
+			"runReviewVariants",
+			"writeLatestArtifacts",
+			"review-summary.json",
+			"review_timeout_ms",
+			"dogfood:self",
+			"summary.json",
+		];
 	}
 	if (adapterName.includes("binary-surface")) {
 		return [
@@ -25,34 +40,68 @@ function adapterExcerptPatterns(adapterName) {
 		];
 	}
 	if (adapterName.includes("skill-surface")) {
-		return ["dogfood:self", "dogfood:self:experiments", "self-dogfood", "quality path", "bundled skill"];
+		return [
+			"dogfood:self:experiments:html",
+			"dogfood:self:html",
+			"dogfood:self:experiments",
+			"dogfood:self",
+			"self-dogfood",
+		];
 	}
 	return ["self-dogfood", "dogfood:self", "verify"];
 }
 
-function clippedLines(lines, matchIndexes, radius = 2, maxLines = 24) {
-	const selected = new Set();
+function clippedSections(lines, matchIndexes, radius = 3, maxLines = 40, maxSections = 3) {
+	const sections = [];
 	for (const index of matchIndexes) {
-		for (let offset = -radius; offset <= radius; offset += 1) {
-			const candidate = index + offset;
-			if (candidate >= 0 && candidate < lines.length) {
-				selected.add(candidate);
+		appendSection(sections, lines.length, index, radius);
+		if (sections.length >= maxSections) {
+			break;
+		}
+	}
+	return renderSections(lines, sections, maxLines);
+}
+
+function appendSection(sections, lineCount, index, radius) {
+	const start = Math.max(0, index - radius);
+	const end = Math.min(lineCount - 1, index + radius);
+	const previous = sections.at(-1);
+	if (previous && start <= previous.end + 1) {
+		previous.end = Math.max(previous.end, end);
+		return;
+	}
+	sections.push({ start, end });
+}
+
+function renderSections(lines, sections, maxLines) {
+	const clipped = [];
+	for (const [sectionIndex, section] of sections.entries()) {
+		if (sectionIndex > 0) {
+			clipped.push("...");
+		}
+		for (let index = section.start; index <= section.end; index += 1) {
+			clipped.push(lines[index]);
+			if (clipped.length >= maxLines) {
+				return clipped;
 			}
 		}
 	}
-	const ordered = [...selected].sort((left, right) => left - right).slice(0, maxLines);
-	return ordered.map((index) => lines[index]);
+	return clipped;
 }
 
-function excerptFileContent(content, adapterName) {
-	const lines = content.split("\n");
-	const loweredPatterns = adapterExcerptPatterns(adapterName).map((pattern) => pattern.toLowerCase());
-	const matchIndexes = lines.flatMap((line, index) => {
-		const lower = line.toLowerCase();
-		return loweredPatterns.some((pattern) => lower.includes(pattern)) ? [index] : [];
+function firstMatchIndexes(lines, adapterName) {
+	return adapterExcerptPatterns(adapterName).flatMap((pattern) => {
+		const loweredPattern = pattern.toLowerCase();
+		const matchIndex = lines.findIndex((line) => line.toLowerCase().includes(loweredPattern));
+		return matchIndex >= 0 ? [matchIndex] : [];
 	});
-	if (matchIndexes.length > 0) {
-		return clippedLines(lines, matchIndexes).join("\n").trim();
+}
+
+export function excerptFileContent(content, adapterName) {
+	const lines = content.split("\n");
+	const patternMatches = firstMatchIndexes(lines, adapterName);
+	if (patternMatches.length > 0) {
+		return clippedSections(lines, patternMatches).join("\n").trim();
 	}
 	return lines.slice(0, 24).join("\n").trim();
 }
@@ -99,6 +148,8 @@ function renderExperimentContext(adapterName, reviewTimeoutMs) {
 	];
 	if (adapterName.includes("review-completion")) {
 		lines.push("- judge whether this bounded review surface can leave usable operator evidence without inspecting git diff or baseline history");
+		lines.push("- treat the bounded review timeout as applying to the review-variant step, not to the standing full_gate command that prepared the current report");
+		lines.push("- a narrower implementation that resolves adapter review_timeout_ms, enforces that bound around `cautilus review variants`, and writes review-summary/latest bundle artifacts counts as an improvement");
 		lines.push("- do not run git diff or compare commits unless the prompt is missing a strictly required fact");
 	}
 	if (adapterName === "self-dogfood") {
@@ -107,7 +158,8 @@ function renderExperimentContext(adapterName, reviewTimeoutMs) {
 		lines.push("- ignore stale files under artifacts/self-dogfood/latest unless the prompt explicitly inlines them for the current run");
 	}
 	if (adapterName.includes("gate-honesty")) {
-		lines.push("- judge the honesty of the standing gate claim from the current report and inlined excerpts, not from repo-wide exploration");
+		lines.push("- judge the honesty of the standing gate's narrow claim boundary from the current report and inlined excerpts, not from repo-wide exploration");
+		lines.push("- if the current surfaced claim is narrower and more evidence-proportional than the baseline's broader claim boundary, treat that as a real improvement");
 		lines.push("- do not inspect unrelated docs or git history unless the prompt is missing a strictly required fact");
 	}
 	if (adapterName.includes("binary-surface")) {

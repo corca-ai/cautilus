@@ -21,10 +21,10 @@ artifact_paths:
   - scripts/run-self-dogfood.mjs
   - scripts/agent-runtime/run-workbench-review-variant.sh
 comparison_questions:
-  - Does the explicit self-dogfood path complete within the bounded budget and leave usable evidence for operators?
+  - Does the explicit self-dogfood implementation enforce its declared review timeout and publish the expected operator-facing review artifacts when the review completes?
 human_review_prompts:
   - id: review-completion
-    prompt: Judge whether the current explicit self-dogfood path completes reliably enough to be trusted as an operator-facing quality signal.
+    prompt: Judge whether the current explicit self-dogfood implementation makes the bounded review step and its published operator-facing artifacts trustworthy enough to be relied on once the standing gate has prepared the report.
   - id: stale-latest
     prompt: Ignore artifacts/self-dogfood/latest from previous completed runs. Only judge the current report packet and the listed product files for this run.
 default_schema_file: fixtures/workbench/review-verdict.schema.json

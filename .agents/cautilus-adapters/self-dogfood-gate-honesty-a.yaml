@@ -21,10 +21,10 @@ artifact_paths:
   - README.md
   - docs/specs/self-dogfood.spec.md
 comparison_questions:
-  - Does the current deterministic self-consumer gate justify the claim that Cautilus can evaluate itself honestly?
+  - Does the current deterministic self-consumer gate stay within a narrow, evidence-proportional standing-gate claim?
 human_review_prompts:
   - id: gate-honesty
-    prompt: Judge whether npm run verify plus the root self-consumer adapter is enough evidence for the self-consumer claim.
+    prompt: Judge whether npm run verify plus the root self-consumer adapter stays honest about the narrow standing-gate claim without overclaiming explicit self-dogfood.
   - id: stale-latest
     prompt: Ignore artifacts/self-dogfood/latest from previous completed runs. Only judge the current report packet and the listed product files for this run.
 default_schema_file: fixtures/workbench/review-verdict.schema.json

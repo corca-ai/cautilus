@@ -1,7 +1,7 @@
 version: 1
 repo: cautilus
 evaluation_surfaces:
-  - standalone binary and bundled skill self-consumer gate
+  - deterministic self-consumer standing gate for the product repo
 baseline_options:
   - baseline git ref in the same repo via {baseline_ref}
 required_prerequisites:
@@ -17,7 +17,7 @@ artifact_paths:
   - docs/specs/self-dogfood.spec.md
   - skills/cautilus/SKILL.md
 comparison_questions:
-  - Does the current repo still behave like a credible self-consumer for the standalone binary and bundled skill?
+  - Does the current deterministic self-consumer gate stay honest about what it actually proves for the product repo?
 human_review_prompts:
   - id: operator
-    prompt: Where would an operator still conclude that Cautilus cannot validate its own repo honestly even if npm run verify passes?
+    prompt: Where would an operator still conclude that the root standing gate overclaims beyond npm run verify and its listed product artifacts?

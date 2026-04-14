@@ -95,8 +95,8 @@ code { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, mo
 	<div class="banner-title">Cautilus Self-Dogfood</div>
 	<div class="banner-status">
 		<span class="chip" data-status="overallStatus" style="background:#1b7f3a">pass</span>
-		<span class="banner-meta">runId 2026-04-13T21-34-42.833Z</span>
-		<span class="banner-meta">generatedAt 2026-04-13T21:35:32.327Z</span>
+		<span class="banner-meta">runId 2026-04-14T02-04-32.298Z</span>
+		<span class="banner-meta">generatedAt 2026-04-14T02:05:37.461Z</span>
 	</div>
 </header>
 
@@ -135,7 +135,7 @@ code { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, mo
 			<td>1</td>
 			<td><span class="chip" style="background:#1b7f3a">passed</span></td>
 			<td><code>npm run hooks:check</code></td>
-			<td>247ms</td>
+			<td>232ms</td>
 			<td>0</td>
 		</tr>
 		<tr data-observation="full_gate-1">
@@ -143,7 +143,7 @@ code { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, mo
 			<td>1</td>
 			<td><span class="chip" style="background:#1b7f3a">passed</span></td>
 			<td><code>npm run verify</code></td>
-			<td>38.55s</td>
+			<td>52.93s</td>
 			<td>0</td>
 		</tr>
 		</tbody>
@@ -152,7 +152,7 @@ code { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, mo
 
 <section class="panel" aria-labelledby="review-heading">
 	<h2 id="review-heading">Review Variants</h2>
-	<p class="telemetry">variants 1 · passed 1 · failed 0 · total 9.63s</p>
+	<p class="telemetry">variants 1 · passed 1 · failed 0 · total 10.96s</p>
 	
 	<article class="variant" data-variant="codex-review">
 		<header class="variant-header">
@@ -160,34 +160,12 @@ code { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, mo
 			<div class="variant-chips">
 				<span class="chip" data-status="executionStatus" style="background:#1b7f3a">execution: passed</span>
 				<span class="chip" data-status="verdict" style="background:#1b7f3a">verdict: pass</span>
-				<span class="chip neutral">findings: 3</span>
-				<span class="chip neutral">duration: 9.63s</span>
+				<span class="chip neutral">findings: 0</span>
+				<span class="chip neutral">duration: 10.96s</span>
 			</div>
 		</header>
-		<p class="variant-summary">The current report packet supports the narrow operator-facing claim: it records the self-dogfood run, surfaces the current gate outcome, and keeps the recommendation aligned with the deterministic gate signal. `npm run hooks:check` and `npm run verify` both passed, and the report does not overclaim broader binary-surface or bundled-skill behavior. The automated `accept-now` recommendation is consistent with this evidence.</p>
-		<ul class="findings">
-		<li class="finding" data-severity="pass">
-			<span class="chip" style="background:#1b7f3a">pass</span>
-			<div class="finding-body">
-				<div class="finding-message">The current report packet is internally consistent for the narrow self-dogfood claim: it captures the run, shows the passed preflight and full gate, and exposes the recommendation without contradiction.</div>
-				<div class="finding-path"><code>artifacts/self-dogfood/runs/2026-04-13T21-34-42.833Z/mode/report.json</code></div>
-			</div>
-		</li>
-		<li class="finding" data-severity="pass">
-			<span class="chip" style="background:#1b7f3a">pass</span>
-			<div class="finding-body">
-				<div class="finding-message">The evidence does not support the stronger experiment-surface claims, but the report/spec framing explicitly treats those as separate surfaces, so this does not weaken the operator-facing self-dogfood claim.</div>
-				<div class="finding-path"><code>docs/specs/self-dogfood.spec.md</code></div>
-			</div>
-		</li>
-		<li class="finding" data-severity="pass">
-			<span class="chip" style="background:#1b7f3a">pass</span>
-			<div class="finding-body">
-				<div class="finding-message">The current automated recommendation matches the observed gate result and there is no human-review finding in the packet that would justify downgrading it.</div>
-				<div class="finding-path"><code>artifacts/self-dogfood/runs/2026-04-13T21-34-42.833Z/mode/report.json</code></div>
-			</div>
-		</li>
-	</ul>
+		<p class="variant-summary">The current report packet supports the narrower operator-facing claim: it records the self-dogfood result, preserves the raw `gateRecommendation` as `accept-now`, and surfaces a separate operator-facing `recommendation` without any human-review findings or contradictory telemetry in the current run. I agree with the automated recommendation for this scope.</p>
+		<p class="empty">No findings recorded.</p>
 	</article>
 </section>
 
