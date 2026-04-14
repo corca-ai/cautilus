@@ -190,6 +190,38 @@ with this spec:
     `scripts/agent-runtime/prototypes/` namespace with relaxed rules for
     exploratory surfaces, and a promotion checklist into first-class
     status when the surface earns a schema/helper/CLI/contract slice.
+13. **Remove Node normalize helper dual implementation.** The archetype
+    normalization logic currently exists twice: once in Go
+    (`internal/runtime/proposals.go`, shipped via the `cautilus` binary)
+    and once in Node
+    (`scripts/agent-runtime/{chatbot,skill,workflow}-proposal-candidates.mjs`
+    plus `normalize-{chatbot,skill,workflow}-proposals.mjs`). The Node
+    path is historical from the pre-Go era. No test verifies that the
+    two implementations agree on output, and the first post-archetype
+    premortem found concrete field-shape divergence on empty
+    `blockerKind` and `metrics` values. Contract docs further confuse
+    the picture by pointing at the Node `.mjs` files as "the helper"
+    even though the shipped helper is the Go CLI.
+
+    Target state:
+    - Delete every `*-proposal-candidates.mjs` and
+      `normalize-*-proposals.mjs` helper under `scripts/agent-runtime/`.
+    - Drop their test files under `scripts/agent-runtime/`.
+    - Remove the "Direct script usage is also supported" block in
+      README that lists these helpers.
+    - Rewrite `docs/contracts/{chatbot,skill,workflow}-normalization.md`
+      so "Current Slice" references `cautilus scenario normalize ...`
+      as the canonical helper instead of the Node `.mjs` files.
+    - Refresh `archetype-boundary.spec.md` source guard table to stop
+      pointing at Node files for helper existence.
+    - Verify the standalone functional check still exercises each
+      archetype via the binary.
+
+    Out of scope for the removal slice: other scripts under
+    `scripts/agent-runtime/` (workspace, review-variant, optimize-search,
+    scenario-history, etc.). Only the archetype-normalization dual
+    implementation is being retired here. Cross-runtime tooling outside
+    the archetype layer stays as is until a separate decision retires it.
 
 Every item above must keep the 1:1 archetype mapping intact. When adding a
 new first-class evaluation target, update this spec first and introduce the
