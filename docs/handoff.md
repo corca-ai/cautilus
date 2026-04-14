@@ -81,12 +81,13 @@
      `archetype-boundary.spec.md` 추가
    - 11 README 섹션 재배치 (Scenarios를 Why 위로)
    - 12 experimental archetype escape hatch (`prototypes/` 네임스페이스)
-   - **13 Node normalize helper 이중 구현 제거** (이번 세션에서 결정됨).
-     Go `internal/runtime/proposals.go`만 남기고
-     `scripts/agent-runtime/*-proposal-candidates.mjs` +
-     `normalize-*-proposals.mjs` 삭제, contract 문서들이 Node 파일 대신
-     `cautilus scenario normalize ...` CLI를 가리키도록 재작성. 스펙
-     follow-up #13에 target state 적혀 있음.
+   - **13 Node normalize helper 이중 구현 제거** (이번 세션에서 결정
+     + 2라운드 premortem + 카운터웨이트 검토 완료).
+     - 선행 관문: Go `includesAny` word-boundary 수정 (`proposals.go:420`,
+       `:438`) + Go CLI ↔ Node wrapper 3 fixture byte 동일 확인.
+     - 삭제 번들 내용과 수정할 파일 목록, 의도적으로 안 하는 것(Node-only
+       사용자/free oracle/reference impl/reversal cost 논리 전부 기각 사유
+       포함) 모두 스펙 follow-up #13에 기록됨.
    - 스펙 범위 밖: skill 내부 sub-drift 재검토 (`archetype-boundary.spec.md`
      "Why skill stays unified" 참고, 필요 시 재의결)
 3. `corca-ai/charness`에 narrative / quality 스킬 개선 이슈는 이미
