@@ -459,6 +459,7 @@ func DoctorRepo(repoRoot string, adapterPath *string, adapterName *string) (map[
 	}
 	checks := []any{}
 	suggestions := []any{}
+	warnings := append([]string{}, payload.Warnings...)
 	baseResult := func() map[string]any {
 		return map[string]any{
 			"repo_root":      repoRoot,
@@ -466,7 +467,7 @@ func DoctorRepo(repoRoot string, adapterPath *string, adapterName *string) (map[
 			"searched_paths": payload.SearchedPaths,
 			"checks":         checks,
 			"suggestions":    suggestions,
-			"warnings":       payload.Warnings,
+			"warnings":       warnings,
 			"errors":         payload.Errors,
 		}
 	}
@@ -510,6 +511,11 @@ func DoctorRepo(repoRoot string, adapterPath *string, adapterName *string) (map[
 		len(stringArrayOrEmpty(data["full_gate_command_templates"])) > 0
 	hasVariants := len(arrayOrEmpty(data["executor_variants"])) > 0
 	appendFieldCheck(&checks, &suggestions, "execution_surface", automatedCommands || hasVariants, "Adapter declares runnable command templates or executor variants.", "Adapter has no command templates or executor variants yet.", "Add at least one iterate/held_out/comparison/full_gate command template or executor_variants entry.")
+	if adapterLooksDeterministicOnly(data) {
+		warnings = append(warnings, "Adapter commands look like repo-local deterministic gates only. Keep pytest/lint/type/spec checks in CI or pre-push hooks; use Cautilus for LLM-behavior, judge, or operator-facing review surfaces.")
+		suggestions = append(suggestions, "Inventory LLM-behavior surfaces first (system prompts, agent/chat loops, LLM-backed analysis, operator copy reviewed by a judge) before hand-editing adapter YAML.")
+		suggestions = append(suggestions, "Run cautilus scenario propose against those LLM-behavior surfaces before adding more deterministic command wrappers.")
+	}
 	ready := allChecksReady(checks)
 	result := baseResult()
 	if ready {
@@ -618,4 +624,61 @@ func firstNonEmptyString(value any, fallback string) string {
 		return text
 	}
 	return fallback
+}
+
+func adapterLooksDeterministicOnly(data map[string]any) bool {
+	if len(arrayOrEmpty(data["executor_variants"])) > 0 {
+		return false
+	}
+	commands := []string{}
+	for _, key := range []string{
+		"iterate_command_templates",
+		"held_out_command_templates",
+		"comparison_command_templates",
+		"full_gate_command_templates",
+	} {
+		commands = append(commands, stringArrayOrEmpty(data[key])...)
+	}
+	if len(commands) == 0 {
+		return false
+	}
+	for _, command := range commands {
+		if !looksLikeDeterministicGateCommand(command) {
+			return false
+		}
+	}
+	return true
+}
+
+func looksLikeDeterministicGateCommand(command string) bool {
+	normalized := strings.ToLower(strings.TrimSpace(command))
+	for _, marker := range []string{
+		"pytest",
+		"ruff",
+		"mypy",
+		"pyright",
+		"specdown",
+		"eslint",
+		"prettier",
+		"golangci-lint",
+		"go test",
+		"go vet",
+		"cargo test",
+		"cargo clippy",
+		"npm test",
+		"npm run test",
+		"npm run lint",
+		"pnpm test",
+		"pnpm lint",
+		"uv run python -m pytest",
+		"python -m pytest",
+		"uv run ruff",
+		"uv run ty",
+		" ty ",
+	} {
+		if strings.Contains(normalized, marker) {
+			return true
+		}
+	}
+	return false
 }

@@ -511,6 +511,12 @@ func TestCLISkillsInstallCreatesRepoLocalCanonicalSkill(t *testing.T) {
 	if !strings.Contains(string(skill), "cautilus doctor --repo-root .") {
 		t.Fatalf("expected doctor guidance in skill")
 	}
+	if !strings.Contains(string(skill), "Inventory LLM-behavior surfaces first") {
+		t.Fatalf("expected LLM-behavior inventory guidance in skill")
+	}
+	if !strings.Contains(string(skill), "do not wrap pytest/lint/type/spec checks under Cautilus") {
+		t.Fatalf("expected deterministic-gate warning in skill")
+	}
 	if strings.Contains(string(skill), "node ./bin/cautilus") {
 		t.Fatalf("unexpected repo-local node invocation in installed skill")
 	}
@@ -533,6 +539,49 @@ func TestCLISkillsInstallCreatesRepoLocalCanonicalSkill(t *testing.T) {
 	_, stderr, exitCode = runCLI(t, root, "skills", "install")
 	if exitCode != 1 || !strings.Contains(stderr, "already exists") {
 		t.Fatalf("expected already exists failure, got exit=%d stderr=%q", exitCode, stderr)
+	}
+}
+
+func TestCLIDoctorWarnsWhenAdapterOnlyWrapsDeterministicGates(t *testing.T) {
+	root := t.TempDir()
+	if err := os.MkdirAll(filepath.Join(root, ".agents"), 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	adapter := strings.Join([]string{
+		"version: 1",
+		"repo: temp",
+		"evaluation_surfaces:",
+		"  - cli smoke",
+		"baseline_options:",
+		"  - baseline git ref via {baseline_ref}",
+		"full_gate_command_templates:",
+		"  - uv run python -m pytest tests/test_cli.py -q",
+		"  - ruff check .",
+		"",
+	}, "\n")
+	if err := os.WriteFile(filepath.Join(root, ".agents", "cautilus-adapter.yaml"), []byte(adapter), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+
+	stdout, stderr, exitCode := runCLI(t, root, "doctor", "--repo-root", root)
+	if exitCode != 0 {
+		t.Fatalf("doctor failed: %s", stderr)
+	}
+	payload := parseJSONObject(t, stdout)
+	warnings, ok := payload["warnings"].([]any)
+	if !ok || len(warnings) == 0 {
+		t.Fatalf("expected doctor warnings, got %#v", payload["warnings"])
+	}
+	if !strings.Contains(anyToString(warnings[0]), "deterministic gates only") {
+		t.Fatalf("unexpected warning payload: %#v", warnings)
+	}
+	suggestions, ok := payload["suggestions"].([]any)
+	if !ok || len(suggestions) == 0 {
+		t.Fatalf("expected doctor suggestions, got %#v", payload["suggestions"])
+	}
+	joined := mustJSONMarshal(t, suggestions)
+	if !strings.Contains(string(joined), "Inventory LLM-behavior surfaces first") {
+		t.Fatalf("expected LLM-behavior suggestion, got %#v", suggestions)
 	}
 }
 

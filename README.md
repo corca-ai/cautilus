@@ -317,6 +317,18 @@ Check whether a repo is ready for standalone `Cautilus` evaluation:
 cautilus doctor --repo-root /path/to/repo
 ```
 
+Before designing adapters, inventory LLM-behavior surfaces first:
+
+- system prompts and prompt assets
+- agent or chatbot loops whose behavior needs a judge
+- LLM-backed analysis or summarization passes
+- operator-facing copy that should be reviewed for intent fidelity
+
+Do not wrap pytest/lint/type/spec checks under `Cautilus`. Keep cheap
+deterministic gates in CI or pre-push hooks, then use `scenario propose`,
+held-out evaluation, and bounded review variants for the behavior surfaces
+that actually need evaluator-backed judgment.
+
 Use the probe surfaces according to what you are actually verifying:
 
 ```bash

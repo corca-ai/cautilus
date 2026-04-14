@@ -55,6 +55,17 @@ cautilus adapter init --repo-root .
 cautilus doctor --repo-root .
 ```
 
+Before hand-editing adapter YAML: Inventory LLM-behavior surfaces first.
+
+- system prompts and prompt assets
+- agent or chatbot loops that depend on judgeable model behavior
+- LLM-backed analysis or summarization passes
+- operator-facing copy that should be reviewed by a bounded judge
+
+do not wrap pytest/lint/type/spec checks under Cautilus. Keep cheap
+deterministic gates in CI or pre-push hooks, and use Cautilus for bounded
+behavior evaluation beyond those gates.
+
 4. Read the canonical workflow and contracts before widening the surface:
 
 - [workflow.md](references/workflow.md)
@@ -173,6 +184,10 @@ wrapper for maintainers.
 7. Report exact commands, exact placeholder values, and the final recommendation.
 8. When the repo already has normalized scenario proposal candidates, generate
    a checked-in proposal packet instead of hand-drafting scenario JSON:
+
+Prefer `scenario propose` as the default entry after inventorying those
+LLM-behavior surfaces. Use it to turn the normalized evidence into bounded
+scenarios before widening adapter YAML by hand.
 
 ```bash
 cautilus scenario normalize chatbot \
