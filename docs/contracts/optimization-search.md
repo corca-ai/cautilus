@@ -75,6 +75,15 @@ This slice defines a first `GEPA`-inspired search contract for `Cautilus`:
   is `coverage_expansion`: keep the smaller two-parent merge unless adding a
   third review-admissible parent expands frontier coverage across held-out
   scenarios.
+- Selection-policy failures must stay machine-readable.
+  - top-level blocked search results use stable public reason codes such as
+    `no_selection_policy_eligible_candidate`
+  - per-candidate `selectionTelemetry.rejectionReasons` entries for declared
+    selection caps are also stable public codes
+  - the current stable cap-breach code set is:
+    - `selection_constraint_max_cost_exceeded`
+    - `selection_constraint_max_duration_exceeded`
+  - future codes may be added, so consumers must tolerate unknown values
 - Prompt mutation is reflective prompt rewriting based on explicit evidence,
   not random token- or substring-level crossover.
 - The search output recommends a best next candidate and preserves lineage, but
@@ -83,11 +92,6 @@ This slice defines a first `GEPA`-inspired search contract for `Cautilus`:
   candidate generation and emit a machine-readable blocked result.
 - Inline JSON ingress is allowed, but `Cautilus` must materialize it into a
   canonical input file before continuing.
-
-## Probe Questions
-
-- Which blocked reason codes should be stable public contract versus
-  implementation detail?
 
 ## Deferred Decisions
 
@@ -434,6 +438,11 @@ The packet should include:
 - checkpoint outcomes
   - review checkpoint results
   - full-gate checkpoint result for each attempted finalist when run
+- selection telemetry
+  - ranked frontier candidate ids
+  - rejected finalist candidate ids
+  - selection-policy-ineligible candidate ids
+  - per-candidate machine-readable rejection reasons
 - search telemetry
   - candidate count
   - generation count
@@ -445,6 +454,11 @@ The packet should include:
 - proposal bridge
   - the selected candidate snapshot reference
   - the bounded rationale for why it should feed `optimize propose`
+
+Selection-policy blocked results should use `no_selection_policy_eligible_candidate`
+when every ranked frontier finalist is excluded by declared selection caps,
+and they should preserve the per-candidate stable rejection codes under
+`selectionTelemetry.rejectionReasons`.
 
 ## Proposal Bridge
 

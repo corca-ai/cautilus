@@ -39,6 +39,10 @@
     - blocker -> prune before the next generation
   - final-only full-gate checkpoint execution
   - selection-cap breach keeps candidates in frontier search but makes them final-selection ineligible
+  - selection-cap rejection reason codes are public contract
+    - top-level `no_selection_policy_eligible_candidate`
+    - per-candidate `selection_constraint_max_cost_exceeded`
+    - per-candidate `selection_constraint_max_duration_exceeded`
   - ranked-frontier fallback when the leader fails final checkpoints
   - blocked result when no checkpoint-admissible finalist survives
 - 이 흐름은 현재 README/spec/current contract와 sync되어 있다.
@@ -67,9 +71,8 @@
 
 ## Next Session
 
-1. selection-cap breach reason code를 public contract로 고정할지, 아니면 implementation detail로 둘지 판단한다.
-2. concern/blocker보다 더 세밀한 pruning bucket이 필요한지 판단한다.
-3. merge prompt가 rejected sibling feedback를 얼마나 많이 실을지 cap을 따로 둘지 판단한다.
+1. concern/blocker보다 더 세밀한 pruning bucket이 필요한지 판단한다.
+2. merge prompt가 rejected sibling feedback를 얼마나 많이 실을지 cap을 따로 둘지 판단한다.
 
 ## Discuss
 
@@ -78,7 +81,12 @@
 - bounded 3-parent activation policy는 이제 product surface로 뺐다.
   - 기본값은 `coverage_expansion`
   - 즉, 3-parent는 held-out frontier coverage를 실제로 넓힐 때만 2-parent보다 먼저 허용한다.
-- 다음 세션의 첫 product decision은 selection-cap reason code를 public contract로 고정할지 여부다.
+- selection-cap reason code는 이제 public contract로 고정했다.
+  - top-level blocked code는 `no_selection_policy_eligible_candidate`
+  - per-candidate cap rejection code는 open set이지만 현재 stable set은
+    `selection_constraint_max_cost_exceeded`,
+    `selection_constraint_max_duration_exceeded`다.
+- 다음 세션의 첫 product decision은 pruning bucket을 concern/blocker보다 더 세밀하게 나눌지 여부다.
 
 ## Premortem
 

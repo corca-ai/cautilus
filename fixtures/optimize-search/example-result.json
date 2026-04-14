@@ -22,7 +22,8 @@
       ],
       "constraintCaps": {}
     },
-    "mergeEnabled": false
+    "mergeEnabled": false,
+    "threeParentPolicy": "coverage_expansion"
   },
   "selectedCandidateId": "seed",
   "candidateRegistry": [
@@ -100,8 +101,10 @@
     "candidateCount": 1,
     "generationCount": 0,
     "mutationInvocationCount": 0,
+    "mergeInvocationCount": 0,
     "heldOutEvaluationCount": 1,
     "reviewCheckpointCount": 0,
+    "fullGateCheckpointCount": 0,
     "stopReason": "seed_only"
   },
   "proposalBridge": {
@@ -111,5 +114,13 @@
       "path": "/tmp/cautilus-optimize-search/prompt.md",
       "exists": true
     }
+  },
+  "selectionTelemetry": {
+    "rankedFrontierCandidateIds": [
+      "seed"
+    ],
+    "rejectedFinalistCandidateIds": [],
+    "selectionConstraintIneligibleCandidateIds": [],
+    "rejectionReasons": {}
   }
 }

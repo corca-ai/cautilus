@@ -1680,6 +1680,45 @@ EOF
 	}
 });
 
+test("run-optimize-search emits a stable selection-policy blocked code when every finalist breaches a cap", () => {
+	const { root, artifactRoot, optimizeInputPath, heldOutResultsPath } = createCheckpointFallbackFixture({
+		includeReviewVariants: false,
+	});
+	try {
+		const { packet } = buildOptimizeSearchInput(
+			["--optimize-input", optimizeInputPath, "--held-out-results-file", heldOutResultsPath, "--budget", "medium"],
+			{ now: new Date("2026-04-13T10:00:00.000Z") },
+		);
+		packet.searchConfig.generationLimit = 1;
+		packet.searchConfig.mergeEnabled = false;
+		packet.searchConfig.selectionPolicy.constraintCaps = { maxCostUsd: 0.01 };
+		packet.mutationConfig.backends = [
+			{ id: "codex-mutate", backend: "codex_exec" },
+			{ id: "claude-mutate", backend: "claude_p" },
+		];
+		const result = runOptimizeSearch(packet, {
+			inputFile: join(root, "optimize-search-input.json"),
+			outputFile: join(artifactRoot, "optimize-search-result.json"),
+			now: new Date("2026-04-13T10:01:00.000Z"),
+			env: {
+				...process.env,
+				PATH: `${root}:${process.env.PATH ?? ""}`,
+			},
+		});
+		assert.equal(result.status, "blocked");
+		assert.deepEqual(result.reasonCodes, ["no_selection_policy_eligible_candidate"]);
+		assert.deepEqual(
+			result.selectionTelemetry.selectionConstraintIneligibleCandidateIds,
+			["g1-1-codex-exec", "g1-2-claude-p"],
+		);
+		assert.deepEqual(result.selectionTelemetry.rejectionReasons["g1-1-codex-exec"], ["selection_constraint_max_cost_exceeded"]);
+		assert.deepEqual(result.selectionTelemetry.rejectionReasons["g1-2-claude-p"], ["selection_constraint_max_cost_exceeded"]);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+		rmSync(artifactRoot, { recursive: true, force: true });
+	}
+});
+
 test("run-optimize-search can synthesize a bounded three-parent frontier candidate", () => {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-optimize-search-three-parent-"));
 	const artifactRoot = mkdtempSync(join(tmpdir(), "cautilus-optimize-search-three-parent-artifacts-"));
