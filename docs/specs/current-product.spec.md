@@ -143,8 +143,9 @@ standalone product여야 한다.
 | internal/runtime/self_dogfood_html_test.go | file_exists |  |
 | skills/cautilus/SKILL.md | file_exists |  |
 | skills/cautilus/SKILL.md | fixed | cautilus install --repo-root . |
-| skills/cautilus/SKILL.md | fixed | npm run dogfood:self |
-| skills/cautilus/SKILL.md | fixed | npm run dogfood:self:experiments |
+| skills/cautilus/references/self-dogfood-runner.md | file_exists |  |
+| skills/cautilus/references/self-dogfood-runner.md | fixed | npm run dogfood:self |
+| skills/cautilus/references/self-dogfood-runner.md | fixed | npm run dogfood:self:experiments |
 | skills/cautilus/agents/openai.yaml | file_exists |  |
 | docs/evaluation-process.md | fixed | Meta Eval |
 | docs/evaluation-process.md | fixed | Executor Variants |

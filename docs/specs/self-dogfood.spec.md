@@ -75,10 +75,10 @@ named experiment adapter에서 따로 다룬다.
 | README.md | fixed | npm run dogfood:self:experiments:html |
 | README.md | fixed | cautilus self-dogfood render-html |
 | README.md | fixed | cautilus self-dogfood render-experiments-html |
-| skills/cautilus/SKILL.md | fixed | npm run dogfood:self |
-| skills/cautilus/SKILL.md | fixed | npm run dogfood:self:experiments |
-| skills/cautilus/SKILL.md | fixed | npm run dogfood:self:html |
-| skills/cautilus/SKILL.md | fixed | npm run dogfood:self:experiments:html |
+| skills/cautilus/references/self-dogfood-runner.md | fixed | npm run dogfood:self |
+| skills/cautilus/references/self-dogfood-runner.md | fixed | npm run dogfood:self:experiments |
+| skills/cautilus/references/self-dogfood-runner.md | fixed | npm run dogfood:self:html |
+| skills/cautilus/references/self-dogfood-runner.md | fixed | npm run dogfood:self:experiments:html |
 | internal/cli/command-registry.json | fixed | "path": ["self-dogfood", "render-html"] |
 | internal/cli/command-registry.json | fixed | "path": ["self-dogfood", "render-experiments-html"] |
 | .gitignore | fixed | !artifacts/self-dogfood/latest/summary.json |

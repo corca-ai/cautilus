@@ -89,11 +89,7 @@ getting stuck on the same step.
 cautilus adapter resolve --repo-root .
 ```
 
-For a named adapter:
-
-```bash
-cautilus adapter resolve --repo-root . --adapter-name code-quality
-```
+For a named adapter: `cautilus adapter resolve --repo-root . --adapter-name <name>`.
 
 2. If the repo does not have an adapter yet, scaffold one:
 
@@ -107,18 +103,12 @@ cautilus adapter init --repo-root .
 cautilus doctor --repo-root .
 ```
 
-Before hand-editing adapter YAML: Inventory LLM-behavior surfaces first.
+4. Before hand-editing adapter YAML, run the inventory in
+   [bootstrap-inventory.md](references/bootstrap-inventory.md) so `Cautilus`
+   is only pointed at LLM-behavior surfaces — not at cheap deterministic
+   gates that belong in CI.
 
-- system prompts and prompt assets
-- agent or chatbot loops that depend on judgeable model behavior
-- LLM-backed analysis or summarization passes
-- operator-facing copy that should be reviewed by a bounded judge
-
-do not wrap pytest/lint/type/spec checks under Cautilus. Keep cheap
-deterministic gates in CI or pre-push hooks, and use Cautilus for bounded
-behavior evaluation beyond those gates.
-
-4. Read the canonical workflow and contracts before widening the surface:
+5. Read the canonical workflow and contracts before widening the surface:
 
 - [evaluation-process.md](references/evaluation-process.md)
 - [active-run.md](references/active-run.md)
@@ -163,27 +153,22 @@ cautilus workspace prepare-compare \
 
 ```bash
 eval "$(cautilus workspace start --label mode-held-out)"
-```
 
-   `workspace start` defaults `--root` to `./.cautilus/runs/` (auto-created
-   on first use) and writes a `run.json` manifest inside the new directory so
-   the pruner recognizes it even before any other bundle file is written.
-   After the `eval`, `CAUTILUS_RUN_DIR` is set in the current shell and
-   consumer commands like `mode evaluate`, `review variants`, `review
-   prepare-input`, and `workspace prepare-compare` resolve their runDir from
-   that env var. Operators do not need to pipe a JSON payload or thread paths
-   between commands. Pass `--json` instead of `eval` if a script needs the
-   machine-readable payload.
-
-```bash
 cautilus workspace prune-artifacts \
   --root ./.cautilus/runs \
   --keep-last 20
 ```
 
+   `workspace start` auto-creates `./.cautilus/runs/`, writes a `run.json`
+   manifest so the pruner recognizes the run immediately, and exports
+   `CAUTILUS_RUN_DIR` via `eval`. Pass `--json` instead of `eval` when a
+   script needs the machine-readable payload.
+
 4. Run adapter-defined preflight commands before long evaluations.
+
 5. Use iterate mode for tuning, held-out mode for validation, and full gate for
    ship decisions.
+
 6. When the adapter defines `executor_variants`, run the checked-in review
    runner instead of retyping ad-hoc shell commands:
 
@@ -194,180 +179,22 @@ cautilus review variants \
   --output-dir /tmp/cautilus-review
 ```
 
-When the target repo is `Cautilus` itself, prefer the checked-in explicit
-self-dogfood command over rebuilding the same mode/report/review chain by hand:
+   When the target repo is `Cautilus` itself, prefer the checked-in
+   self-dogfood wrappers over rebuilding the mode/report/review chain by hand
+   — see [self-dogfood-runner.md](references/self-dogfood-runner.md) for the
+   four wrapper entries and their claim boundaries.
 
-```bash
-npm run dogfood:self
-```
+7. Report exact commands, exact placeholder values, and the final
+   recommendation.
 
-When the job is tuning the self-dogfood review budget or comparing review
-surfaces, use the checked-in experiment runner instead of inventing ad hoc
-A/B loops:
-
-```bash
-npm run dogfood:self:experiments
-```
-
-When the job only needs to refresh the static HTML comparison view of the
-current latest experiments bundle, use:
-
-```bash
-npm run dogfood:self:experiments:html
-cautilus self-dogfood render-experiments-html
-```
-
-When the job only needs to refresh the static HTML view of the current
-checked-in self-dogfood bundle (for example after hand-editing the markdown
-narrative or regenerating JSON offline), use:
-
-```bash
-npm run dogfood:self:html
-cautilus self-dogfood render-html
-```
-
-Treat `dogfood:self` as the canonical operator-facing record of the current
-self-dogfood result. Treat `dogfood:self:experiments` as the place for stronger
-claims such as binary-surface, skill-surface, and gate-honesty probes.
-Treat the experiments `index.html` as a read-only compare view of the latest
-experiment summary/report bundle so A/B outcomes are visible side by side.
-Treat `dogfood:self:html` as a read-only view of the checked-in JSON bundle,
-not as a separate source of truth. The product-owned renderer is
-`cautilus self-dogfood render-html`; the `npm run` entry is a repo-local
-wrapper for maintainers.
-
-7. Report exact commands, exact placeholder values, and the final recommendation.
-8. When the repo already has normalized scenario proposal candidates, generate
-   a checked-in proposal packet instead of hand-drafting scenario JSON:
-
-Prefer `scenario propose` as the default entry after inventorying those
-LLM-behavior surfaces. Use it to turn the normalized evidence into bounded
-scenarios before widening adapter YAML by hand.
-
-```bash
-cautilus skill test \
-  --repo-root . \
-  --adapter-name self-dogfood-skill-test
-
-cautilus skill evaluate \
-  --input ./fixtures/skill-evaluation/input.json \
-  --output /tmp/cautilus-skill-summary.json
-
-Prefer `skill test` when the repo already has a checked-in case suite plus
-adapter-owned runner for a local skill. Fall back to `skill evaluate` when the
-host already produced a normalized observed packet and only needs the product
-summary/recommendation layer.
-
-cautilus scenario normalize chatbot \
-  --input ./fixtures/scenario-proposals/chatbot-input.json
-
-cautilus scenario normalize skill \
-  --input /tmp/cautilus-skill-summary.json
-
-cautilus scenario prepare-input \
-  --candidates ./fixtures/scenario-proposals/candidates.json \
-  --registry ./fixtures/scenario-proposals/registry.json \
-  --coverage ./fixtures/scenario-proposals/coverage.json \
-  --family fast_regression
-
-cautilus scenario propose \
-  --input ./fixtures/scenario-proposals/standalone-input.json
-
-cautilus scenario summarize-telemetry \
-  --results ./fixtures/scenario-proposals/results.json
-
-cautilus report build \
-  --input ./fixtures/reports/report-input.json
-
-# --output-dir is optional when cautilus workspace start has already pinned
-# CAUTILUS_RUN_DIR. Pass it explicitly only when you need to override the
-# active run (for example, inside a self-dogfood script that mints its own
-# curated bundle path).
-cautilus mode evaluate \
-  --repo-root . \
-  --mode held_out \
-  --intent "Operator-facing behavior should remain legible." \
-  --baseline-ref origin/main \
-  --output-dir /tmp/cautilus-mode
-
-cautilus review prepare-input \
-  --repo-root . \
-  --report-file /tmp/cautilus-mode/report.json
-
-cautilus review build-prompt-input \
-  --review-packet /tmp/cautilus-mode/review.json
-
-cautilus review build-prompt-input \
-  --review-packet /tmp/cautilus-mode/review.json \
-  --output-under-test /tmp/cautilus-mode/analysis-output.json \
-  --output-text-key analysis_text
-
-cautilus review build-prompt-input \
-  --repo-root . \
-  --adapter-name analysis-prompts \
-  --scenario-file .agents/cautilus-scenarios/analysis-prompts/proposals.json \
-  --scenario replay-negative-path \
-  --output-under-test /tmp/cautilus-mode/replay-review.json \
-  --output-text-key analysis_text
-
-cautilus review render-prompt \
-  --input /tmp/cautilus-mode/review-prompt-input.json
-
-cautilus evidence prepare-input \
-  --report-file /tmp/cautilus-mode/report.json \
-  --scenario-results-file /tmp/cautilus-mode/held_out-scenario-results.json \
-  --run-audit-file /tmp/cautilus-run-audit/run-audit-summary.json \
-  --history-file /tmp/cautilus-history/scenario-history.snapshot.json
-
-cautilus evidence bundle \
-  --input /tmp/cautilus-evidence/input.json
-
-cautilus optimize prepare-input \
-  --report-file /tmp/cautilus-mode/report.json \
-  --review-summary /tmp/cautilus-review/review-summary.json \
-  --history-file /tmp/cautilus-history/scenario-history.snapshot.json \
-  --target prompt \
-  --optimizer reflection \
-  --budget medium
-
-cautilus optimize search prepare-input \
-  --optimize-input /tmp/cautilus-optimize/input.json \
-  --held-out-results-file /tmp/cautilus-mode/held_out-scenario-results.json \
-  --target-file ./prompts/system.md \
-  --budget light
-
-cautilus optimize search run \
-  --input /tmp/cautilus-optimize/search-input.json \
-  --json
-
-cautilus optimize propose \
-  --input /tmp/cautilus-optimize/input.json
-
-cautilus optimize propose \
-  --from-search /tmp/cautilus-optimize/search-result.json
-
-cautilus optimize build-artifact \
-  --proposal-file /tmp/cautilus-optimize/proposal.json
-
-cautilus review variants \
-  --repo-root . \
-  --workspace . \
-  --report-file /tmp/cautilus-mode/report.json \
-  --output-under-test /tmp/cautilus-mode/analysis-output.json \
-  --output-text-key analysis_text \
-  --output-dir /tmp/cautilus-review
-
-cautilus review variants \
-  --repo-root . \
-  --adapter-name analysis-prompts \
-  --workspace . \
-  --scenario-file .agents/cautilus-scenarios/analysis-prompts/proposals.json \
-  --scenario replay-negative-path \
-  --output-under-test /tmp/cautilus-mode/replay-review.json \
-  --output-text-key analysis_text \
-  --output-dir /tmp/cautilus-review
-
-```
+8. When the repo already has normalized scenario proposal candidates,
+   generate a checked-in proposal packet instead of hand-drafting scenario
+   JSON. Prefer `cautilus scenario propose` as the default entry after the
+   bootstrap inventory. Use it to turn normalized evidence into bounded
+   scenarios before widening adapter YAML by hand. For the concrete
+   invocations across skill test / skill evaluate / scenario normalize /
+   report build / mode evaluate / review / evidence / optimize / review
+   variants, see [command-cookbook.md](references/command-cookbook.md).
 
 ## Guardrails
 

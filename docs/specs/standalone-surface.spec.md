@@ -60,24 +60,26 @@ standalone acceptance boundary만 남긴다.
 | skills/cautilus/SKILL.md | fixed | cautilus workspace prepare-compare |
 | skills/cautilus/SKILL.md | fixed | cautilus workspace prune-artifacts |
 | skills/cautilus/SKILL.md | fixed | eval "$(cautilus workspace start --label mode-held-out)" |
-| skills/cautilus/SKILL.md | fixed | cautilus skill test |
-| skills/cautilus/SKILL.md | fixed | cautilus skill evaluate |
-| skills/cautilus/SKILL.md | fixed | cautilus scenario normalize chatbot |
-| skills/cautilus/SKILL.md | fixed | cautilus scenario normalize skill |
-| skills/cautilus/SKILL.md | fixed | cautilus scenario summarize-telemetry |
-| skills/cautilus/SKILL.md | fixed | cautilus scenario prepare-input |
-| skills/cautilus/SKILL.md | fixed | cautilus scenario propose |
-| skills/cautilus/SKILL.md | fixed | cautilus evidence prepare-input |
-| skills/cautilus/SKILL.md | fixed | cautilus evidence bundle |
-| skills/cautilus/SKILL.md | fixed | cautilus report build |
-| skills/cautilus/SKILL.md | fixed | cautilus mode evaluate |
-| skills/cautilus/SKILL.md | fixed | cautilus optimize prepare-input |
-| skills/cautilus/SKILL.md | fixed | cautilus optimize propose |
-| skills/cautilus/SKILL.md | fixed | cautilus optimize build-artifact |
-| skills/cautilus/SKILL.md | fixed | cautilus review prepare-input |
-| skills/cautilus/SKILL.md | fixed | cautilus review build-prompt-input |
-| skills/cautilus/SKILL.md | fixed | cautilus review render-prompt |
 | skills/cautilus/SKILL.md | fixed | cautilus review variants |
+| skills/cautilus/references/command-cookbook.md | file_exists |  |
+| skills/cautilus/references/command-cookbook.md | fixed | cautilus skill test |
+| skills/cautilus/references/command-cookbook.md | fixed | cautilus skill evaluate |
+| skills/cautilus/references/command-cookbook.md | fixed | cautilus scenario normalize chatbot |
+| skills/cautilus/references/command-cookbook.md | fixed | cautilus scenario normalize skill |
+| skills/cautilus/references/command-cookbook.md | fixed | cautilus scenario summarize-telemetry |
+| skills/cautilus/references/command-cookbook.md | fixed | cautilus scenario prepare-input |
+| skills/cautilus/references/command-cookbook.md | fixed | cautilus scenario propose |
+| skills/cautilus/references/command-cookbook.md | fixed | cautilus evidence prepare-input |
+| skills/cautilus/references/command-cookbook.md | fixed | cautilus evidence bundle |
+| skills/cautilus/references/command-cookbook.md | fixed | cautilus report build |
+| skills/cautilus/references/command-cookbook.md | fixed | cautilus mode evaluate |
+| skills/cautilus/references/command-cookbook.md | fixed | cautilus optimize prepare-input |
+| skills/cautilus/references/command-cookbook.md | fixed | cautilus optimize propose |
+| skills/cautilus/references/command-cookbook.md | fixed | cautilus optimize build-artifact |
+| skills/cautilus/references/command-cookbook.md | fixed | cautilus review prepare-input |
+| skills/cautilus/references/command-cookbook.md | fixed | cautilus review build-prompt-input |
+| skills/cautilus/references/command-cookbook.md | fixed | cautilus review render-prompt |
+| skills/cautilus/references/command-cookbook.md | fixed | cautilus review variants |
 | skills/cautilus/agents/openai.yaml | file_exists |  |
 | skills/cautilus/agents/openai.yaml | fixed | Cautilus |
 | plugins/cautilus/skills/cautilus/SKILL.md | file_exists |  |
@@ -87,24 +89,26 @@ standalone acceptance boundary만 남긴다.
 | plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus workspace prepare-compare |
 | plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus workspace prune-artifacts |
 | plugins/cautilus/skills/cautilus/SKILL.md | fixed | eval "$(cautilus workspace start --label mode-held-out)" |
-| plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus skill test |
-| plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus skill evaluate |
-| plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus scenario normalize chatbot |
-| plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus scenario normalize skill |
-| plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus scenario summarize-telemetry |
-| plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus scenario prepare-input |
-| plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus scenario propose |
-| plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus evidence prepare-input |
-| plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus evidence bundle |
-| plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus report build |
-| plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus mode evaluate |
-| plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus optimize prepare-input |
-| plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus optimize propose |
-| plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus optimize build-artifact |
-| plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus review prepare-input |
-| plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus review build-prompt-input |
-| plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus review render-prompt |
 | plugins/cautilus/skills/cautilus/SKILL.md | fixed | cautilus review variants |
+| plugins/cautilus/skills/cautilus/references/command-cookbook.md | file_exists |  |
+| plugins/cautilus/skills/cautilus/references/command-cookbook.md | fixed | cautilus skill test |
+| plugins/cautilus/skills/cautilus/references/command-cookbook.md | fixed | cautilus skill evaluate |
+| plugins/cautilus/skills/cautilus/references/command-cookbook.md | fixed | cautilus scenario normalize chatbot |
+| plugins/cautilus/skills/cautilus/references/command-cookbook.md | fixed | cautilus scenario normalize skill |
+| plugins/cautilus/skills/cautilus/references/command-cookbook.md | fixed | cautilus scenario summarize-telemetry |
+| plugins/cautilus/skills/cautilus/references/command-cookbook.md | fixed | cautilus scenario prepare-input |
+| plugins/cautilus/skills/cautilus/references/command-cookbook.md | fixed | cautilus scenario propose |
+| plugins/cautilus/skills/cautilus/references/command-cookbook.md | fixed | cautilus evidence prepare-input |
+| plugins/cautilus/skills/cautilus/references/command-cookbook.md | fixed | cautilus evidence bundle |
+| plugins/cautilus/skills/cautilus/references/command-cookbook.md | fixed | cautilus report build |
+| plugins/cautilus/skills/cautilus/references/command-cookbook.md | fixed | cautilus mode evaluate |
+| plugins/cautilus/skills/cautilus/references/command-cookbook.md | fixed | cautilus optimize prepare-input |
+| plugins/cautilus/skills/cautilus/references/command-cookbook.md | fixed | cautilus optimize propose |
+| plugins/cautilus/skills/cautilus/references/command-cookbook.md | fixed | cautilus optimize build-artifact |
+| plugins/cautilus/skills/cautilus/references/command-cookbook.md | fixed | cautilus review prepare-input |
+| plugins/cautilus/skills/cautilus/references/command-cookbook.md | fixed | cautilus review build-prompt-input |
+| plugins/cautilus/skills/cautilus/references/command-cookbook.md | fixed | cautilus review render-prompt |
+| plugins/cautilus/skills/cautilus/references/command-cookbook.md | fixed | cautilus review variants |
 | plugins/cautilus/skills/cautilus/agents/openai.yaml | file_exists |  |
 | plugins/cautilus/skills/cautilus/agents/openai.yaml | fixed | Cautilus |
 | install.sh | fixed | releases/download/$VERSION/$ASSET_NAME |

@@ -739,14 +739,19 @@ func TestCLISkillsInstallCreatesRepoLocalCanonicalSkill(t *testing.T) {
 	if !strings.Contains(string(skill), "cautilus doctor --repo-root .") {
 		t.Fatalf("expected doctor guidance in skill")
 	}
-	if !strings.Contains(string(skill), "Inventory LLM-behavior surfaces first") {
-		t.Fatalf("expected LLM-behavior inventory guidance in skill")
-	}
-	if !strings.Contains(string(skill), "do not wrap pytest/lint/type/spec checks under Cautilus") {
-		t.Fatalf("expected deterministic-gate warning in skill")
-	}
 	if strings.Contains(string(skill), "node ./bin/cautilus") {
 		t.Fatalf("unexpected repo-local node invocation in installed skill")
+	}
+	bootstrapInventoryPath := filepath.Join(root, ".agents", "skills", "cautilus", "references", "bootstrap-inventory.md")
+	bootstrapInventory, err := os.ReadFile(bootstrapInventoryPath)
+	if err != nil {
+		t.Fatalf("expected bootstrap-inventory reference: %v", err)
+	}
+	if !strings.Contains(string(bootstrapInventory), "Inventory the LLM-behavior surfaces first") {
+		t.Fatalf("expected LLM-behavior inventory guidance in bootstrap-inventory reference")
+	}
+	if !strings.Contains(string(bootstrapInventory), "Do not wrap `pytest`, lint, type, or spec checks under `Cautilus`") {
+		t.Fatalf("expected deterministic-gate warning in bootstrap-inventory reference")
 	}
 	claudeSkills := filepath.Join(root, ".claude", "skills")
 	info, err := os.Lstat(claudeSkills)
