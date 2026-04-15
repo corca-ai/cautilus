@@ -209,6 +209,12 @@ func nativeHandler(path []string) handlerFunc {
 		return handleReviewRenderHTML
 	case "review render-variants-summary-html":
 		return handleReviewRenderVariantsSummaryHTML
+	case "workspace render-compare-html":
+		return handleWorkspaceRenderCompareHTML
+	case "scenario render-proposals-html":
+		return handleScenarioRenderProposalsHTML
+	case "evidence render-html":
+		return handleEvidenceRenderHTML
 	case "evidence prepare-input":
 		return handleEvidencePrepareInput
 	case "evidence bundle":
@@ -929,6 +935,21 @@ func handleReviewRenderHTML(repoRoot string, cwd string, args []string, stdout i
 //nolint:errcheck // CLI stderr reporting is best-effort.
 func handleReviewRenderVariantsSummaryHTML(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
 	return renderJSONToHTMLCommand(args, cwd, stdout, stderr, runtime.WriteReviewSummaryHTMLFromFile)
+}
+
+//nolint:errcheck // CLI stderr reporting is best-effort.
+func handleWorkspaceRenderCompareHTML(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	return renderJSONToHTMLCommand(args, cwd, stdout, stderr, runtime.WriteCompareArtifactHTMLFromFile)
+}
+
+//nolint:errcheck // CLI stderr reporting is best-effort.
+func handleScenarioRenderProposalsHTML(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	return renderJSONToHTMLCommand(args, cwd, stdout, stderr, runtime.WriteScenarioProposalsHTMLFromFile)
+}
+
+//nolint:errcheck // CLI stderr reporting is best-effort.
+func handleEvidenceRenderHTML(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	return renderJSONToHTMLCommand(args, cwd, stdout, stderr, runtime.WriteEvidenceBundleHTMLFromFile)
 }
 
 //nolint:errcheck // CLI stderr reporting is best-effort.

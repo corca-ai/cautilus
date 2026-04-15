@@ -157,6 +157,24 @@
       "example": "cautilus review render-variants-summary-html --input /tmp/cautilus-review/review-summary.json"
     },
     {
+      "path": ["workspace", "render-compare-html"],
+      "group": "results",
+      "usage": "cautilus workspace render-compare-html --input <compare-artifact.json> [--output <compare.html>]",
+      "example": "cautilus workspace render-compare-html --input /tmp/cautilus-compare/compare-artifact.json"
+    },
+    {
+      "path": ["scenario", "render-proposals-html"],
+      "group": "results",
+      "usage": "cautilus scenario render-proposals-html --input <proposals.json> [--output <proposals.html>]",
+      "example": "cautilus scenario render-proposals-html --input /tmp/cautilus-proposals/proposals.json"
+    },
+    {
+      "path": ["evidence", "render-html"],
+      "group": "results",
+      "usage": "cautilus evidence render-html --input <evidence-bundle.json> [--output <evidence-bundle.html>]",
+      "example": "cautilus evidence render-html --input /tmp/cautilus-evidence/evidence-bundle.json"
+    },
+    {
       "path": ["review", "prepare-input"],
       "group": "results",
       "usage": "cautilus review prepare-input [args]",

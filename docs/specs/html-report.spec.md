@@ -227,3 +227,54 @@ overall verdict / telemetry / 각 variant 의 execution + verdict + findings + r
 | internal/app/app.go | fixed | handleReviewRenderVariantsSummaryHTML |
 | internal/app/app.go | fixed | "review render-variants-summary-html" |
 | internal/cli/command-registry.json | fixed | "cautilus review render-variants-summary-html |
+
+### Claim 6 — compare artifact
+
+`cautilus workspace render-compare-html` 은 `compare-artifact.json` (schemaVersion `cautilus.compare_artifact.v1`) 옆에 HTML 을 생성한다.
+두 개 report.html 의 iframe 대신 **단일 diff 페이지** 로 설계한다 — baseline/candidate report.html 이 compare-artifact 옆에 있다고 보장할 수 없고, diff 페이지가 자기완결형이어야 탐색이 끊기지 않는다.
+verdict / summary / scenario buckets / deltas / artifactPaths 가 한 페이지에 정렬된다.
+
+> check:source_guard
+
+| file | mode | pattern |
+| --- | --- | --- |
+| internal/runtime/artifact_html.go | file_exists |  |
+| internal/runtime/artifact_html.go | fixed | RenderCompareArtifactHTML |
+| internal/runtime/artifact_html.go | fixed | WriteCompareArtifactHTMLFromFile |
+| internal/runtime/artifact_html.go | fixed | compareDeltaStatusColor |
+| internal/runtime/artifact_html_test.go | fixed | TestRenderCompareArtifactHTMLIncludesBucketsDeltasAndTOC |
+| internal/runtime/artifact_html_test.go | fixed | TestRenderCompareArtifactHTMLRewritesArtifactPaths |
+| internal/app/app.go | fixed | handleWorkspaceRenderCompareHTML |
+| internal/cli/command-registry.json | fixed | "cautilus workspace render-compare-html |
+
+### Claim 7 — scenario proposals
+
+`cautilus scenario render-proposals-html` 은 `proposals.json` (schemaVersion `cautilus.scenario_proposals.v1`) 옆에 HTML 을 생성한다.
+각 proposal 의 proposalKey, title, action, family, evidence count, rationale 이 카드 단위로 표시된다.
+
+> check:source_guard
+
+| file | mode | pattern |
+| --- | --- | --- |
+| internal/runtime/artifact_html.go | fixed | RenderScenarioProposalsHTML |
+| internal/runtime/artifact_html.go | fixed | WriteScenarioProposalsHTMLFromFile |
+| internal/runtime/artifact_html_test.go | fixed | TestRenderScenarioProposalsHTMLRendersProposals |
+| internal/app/app.go | fixed | handleScenarioRenderProposalsHTML |
+| internal/cli/command-registry.json | fixed | "cautilus scenario render-proposals-html |
+
+### Claim 8 — evidence bundle
+
+`cautilus evidence render-html` 은 `evidence-bundle.json` (schemaVersion `cautilus.evidence_bundle.v1`) 옆에 HTML 을 생성한다.
+summary counts, signals (severity 칩 + sourceKind), guidance (miningFocus + loopRules), sources table 이 TOC 와 함께 표시된다.
+
+> check:source_guard
+
+| file | mode | pattern |
+| --- | --- | --- |
+| internal/runtime/artifact_html.go | fixed | RenderEvidenceBundleHTML |
+| internal/runtime/artifact_html.go | fixed | WriteEvidenceBundleHTMLFromFile |
+| internal/runtime/artifact_html.go | fixed | evidenceSeverityColor |
+| internal/runtime/artifact_html_test.go | fixed | TestRenderEvidenceBundleHTMLRendersSignalsAndSources |
+| internal/runtime/artifact_html_test.go | fixed | TestEvidenceSignalsAggregateStatus |
+| internal/app/app.go | fixed | handleEvidenceRenderHTML |
+| internal/cli/command-registry.json | fixed | "cautilus evidence render-html |
