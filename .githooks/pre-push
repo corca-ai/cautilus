@@ -2,7 +2,24 @@
 set -eu
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-
-printf 'pre-push: running npm run verify\n'
 cd "$REPO_ROOT"
-npm run verify
+
+LOG="$(mktemp -t cautilus-pre-push.XXXXXX)"
+
+start=$(date +%s)
+printf 'pre-push: npm run verify (quiet; log: %s)\n' "$LOG" >&2
+
+if npm run verify >"$LOG" 2>&1; then
+	end=$(date +%s)
+	printf 'pre-push: ok (%ss)\n' "$((end - start))" >&2
+	rm -f "$LOG"
+	exit 0
+else
+	status=$?
+	end=$(date +%s)
+	printf '\npre-push: FAILED after %ss (npm run verify exit %s)\n' "$((end - start))" "$status" >&2
+	printf '%s\n' "--- verify output (full log kept at $LOG) ---" >&2
+	cat "$LOG" >&2
+	printf '%s\n' "--- end verify output ---" >&2
+	exit "$status"
+fi
