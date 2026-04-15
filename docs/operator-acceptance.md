@@ -260,6 +260,8 @@ Tier 3이 "CLI가 돌아가는가"라면 이 tier는 "리드미의 각 문장이
 6.15–6.17은 **현재 미구현**. 다음 세션에서 `docs/specs/html-report.spec.md`의 row를 한 줄씩 승격 → 실패 → 구현 → 통과 loop로 채운다.
 이 tier에서 해당 행은 *구현 완료 후 인간 판정*을 뜻하며, 구현 전까지는 "n/a (spec 기준 미구현)"로 표시한다.
 
+**오늘 Tier 6을 돌리는 operator에게**: 6.15–6.17에서 `report.html`/`review.html`/compare HTML 파일이 **존재하지 않는 것은 regression이 아니라 seed 상태**다. 해당 claim이 구현되지 않은 상태이므로 "n/a"로 기록하고 넘어간다. html-report.spec.md의 guard block이 통과하는 한 (6.13·6.14 + seed guard) 홍보 준비 등급은 유지된다.
+
 ---
 
 ## 전체 통과 판정

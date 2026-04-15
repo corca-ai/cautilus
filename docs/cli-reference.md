@@ -108,7 +108,7 @@ cautilus scenario normalize skill \
 
 # normalize durable-workflow run summaries
 cautilus scenario normalize workflow \
-  --input ./fixtures/scenario-proposals/samples/workflow-recovery-input.json
+  --input ./fixtures/scenario-proposals/workflow-input.json
 
 # assemble a proposal-input packet from split normalized source files
 cautilus scenario prepare-input \
