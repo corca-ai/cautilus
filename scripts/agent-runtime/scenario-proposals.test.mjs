@@ -19,7 +19,7 @@ function createCandidate(overrides = {}) {
 			schemaVersion: "cautilus.behavior_intent.v1",
 			intentId: "intent-review-after-retro",
 			summary: "The workflow should support pivoting from retro back to review in one thread.",
-			behaviorSurface: "workflow_conversation",
+			behaviorSurface: "conversation_continuity",
 			successDimensions: [
 				{
 					id: BEHAVIOR_DIMENSIONS.WORKFLOW_CONTINUITY,
@@ -85,7 +85,7 @@ test("generateScenarioProposals ranks merged candidates by evidence count and re
 					schemaVersion: "cautilus.behavior_intent.v1",
 					intentId: "intent-memory-preference-followup",
 					summary: "The workflow should remember a newly taught preference within the same thread.",
-					behaviorSurface: "workflow_conversation",
+					behaviorSurface: "conversation_continuity",
 					successDimensions: [
 						{
 							id: BEHAVIOR_DIMENSIONS.PREFERENCE_REUSE,

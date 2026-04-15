@@ -8,7 +8,7 @@ import (
 // review-clarification candidate is produced only when the first user message
 // actually mentions "review" or "repo" as whole words (or the Korean
 // substrings). "preview" / "repository" must not match the review/repo
-// patterns. Guards against the parity regression that motivated follow-up 3
+// patterns. Guards against the parity regression that motivated follow-up 2
 // in docs/specs/archetype-boundary.spec.md.
 func TestNormalizeChatbotProposalCandidatesRespectsWordBoundary(t *testing.T) {
 	conversationWithMessages := func(first, second string) map[string]any {
@@ -71,5 +71,31 @@ func TestNormalizeChatbotProposalCandidatesRespectsWordBoundary(t *testing.T) {
 				t.Fatalf("proposalKey repo-review-needs-target-clarification: got %v, want %v (candidates=%#v)", sawReview, tc.wantReview, candidates)
 			}
 		})
+	}
+}
+
+// TestBuildBehaviorIntentProfileNormalizesDeprecatedSurfaceAlias asserts
+// that the deprecated `workflow_conversation` surface name is silently
+// normalized to its canonical replacement `conversation_continuity`.
+// Guards the catalog-level deprecation contract that closed the
+// surface-name disambiguation follow-up in
+// docs/specs/archetype-boundary.spec.md.
+func TestBuildBehaviorIntentProfileNormalizesDeprecatedSurfaceAlias(t *testing.T) {
+	intentProfile := map[string]any{
+		"summary":         "Carry workflow context across the next turn.",
+		"behaviorSurface": "workflow_conversation",
+	}
+	profile, err := BuildBehaviorIntentProfile(
+		"Carry workflow context across the next turn.",
+		intentProfile,
+		BehaviorSurfaces["OPERATOR_BEHAVIOR"],
+		[]string{BehaviorDimensions["WORKFLOW_CONTINUITY"]},
+		nil,
+	)
+	if err != nil {
+		t.Fatalf("BuildBehaviorIntentProfile: %v", err)
+	}
+	if profile.BehaviorSurface != "conversation_continuity" {
+		t.Fatalf("expected behaviorSurface to normalize to conversation_continuity, got %q", profile.BehaviorSurface)
 	}
 }

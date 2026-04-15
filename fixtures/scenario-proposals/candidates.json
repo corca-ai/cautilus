@@ -7,7 +7,7 @@
       "schemaVersion": "cautilus.behavior_intent.v1",
       "intentId": "intent-review-after-retro",
       "summary": "The workflow should support pivoting from retro back to review in one thread.",
-      "behaviorSurface": "workflow_conversation",
+      "behaviorSurface": "conversation_continuity",
       "successDimensions": [
         {
           "id": "workflow_continuity",

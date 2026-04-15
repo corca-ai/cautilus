@@ -32,8 +32,10 @@ Current product-owned catalog:
 - `operator_behavior`
   generic fallback when the seam knows the behavior is operator-facing but does
   not know a narrower product-owned class yet
-- `workflow_conversation`
-  multi-turn workflow continuity in a conversation
+- `conversation_continuity`
+  multi-turn workflow continuity in a conversation (formerly
+  `workflow_conversation`; the old name stays accepted as a deprecated
+  alias and is silently normalized to `conversation_continuity`)
 - `thread_followup`
   follow-up continuity inside an already active thread
 - `thread_context_recovery`
@@ -134,7 +136,7 @@ Current seam-level defaults:
   - `operator_behavior`
   - `operator_guidance_clarity`
 - chatbot clarification candidate
-  - `workflow_conversation`
+  - `conversation_continuity`
   - `target_clarification`
 - chatbot follow-up candidate
   - `thread_followup`

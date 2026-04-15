@@ -15,7 +15,7 @@ const (
 
 var BehaviorSurfaces = map[string]string{
 	"OPERATOR_BEHAVIOR":          "operator_behavior",
-	"WORKFLOW_CONVERSATION":      "workflow_conversation",
+	"CONVERSATION_CONTINUITY":    "conversation_continuity",
 	"THREAD_FOLLOWUP":            "thread_followup",
 	"THREAD_CONTEXT_RECOVERY":    "thread_context_recovery",
 	"SKILL_VALIDATION":           "skill_validation",
@@ -23,6 +23,15 @@ var BehaviorSurfaces = map[string]string{
 	"SKILL_EXECUTION_QUALITY":    "skill_execution_quality",
 	"OPERATOR_WORKFLOW_RECOVERY": "operator_workflow_recovery",
 	"REVIEW_VARIANT_WORKFLOW":    "review_variant_workflow",
+}
+
+// Deprecated behavior-surface names accepted on input and silently
+// normalized to their canonical replacement. Adding an alias preserves
+// consumer backward compatibility without keeping the deprecated name in
+// the canonical catalog. See the surface-name disambiguation discussion
+// in archetype-boundary.spec.md (closed in v0.4.x).
+var deprecatedBehaviorSurfaceAliases = map[string]string{
+	"workflow_conversation": "conversation_continuity",
 }
 
 var BehaviorDimensions = map[string]string{
@@ -88,7 +97,7 @@ var behaviorDimensionCatalog = map[string]dimensionCatalogEntry{
 		Kind:    DimensionKindSuccess,
 		Summary: "Carry the active workflow context cleanly into the next turn.",
 		Surfaces: []string{
-			BehaviorSurfaces["WORKFLOW_CONVERSATION"],
+			BehaviorSurfaces["CONVERSATION_CONTINUITY"],
 			BehaviorSurfaces["THREAD_FOLLOWUP"],
 		},
 	},
@@ -96,14 +105,14 @@ var behaviorDimensionCatalog = map[string]dimensionCatalogEntry{
 		Kind:    DimensionKindSuccess,
 		Summary: "Ask for the minimum concrete target or missing context before acting.",
 		Surfaces: []string{
-			BehaviorSurfaces["WORKFLOW_CONVERSATION"],
+			BehaviorSurfaces["CONVERSATION_CONTINUITY"],
 			BehaviorSurfaces["THREAD_CONTEXT_RECOVERY"],
 		},
 	},
 	BehaviorDimensions["PREFERENCE_REUSE"]: {
 		Kind:     DimensionKindSuccess,
 		Summary:  "Reuse the preference or constraint the user just established in-thread.",
-		Surfaces: []string{BehaviorSurfaces["WORKFLOW_CONVERSATION"]},
+		Surfaces: []string{BehaviorSurfaces["CONVERSATION_CONTINUITY"]},
 	},
 	BehaviorDimensions["VALIDATION_INTEGRITY"]: {
 		Kind:     DimensionKindSuccess,
@@ -167,7 +176,7 @@ var behaviorDimensionCatalog = map[string]dimensionCatalogEntry{
 
 var defaultSuccessDimensionsBySurface = map[string][]string{
 	BehaviorSurfaces["OPERATOR_BEHAVIOR"]:          {BehaviorDimensions["OPERATOR_GUIDANCE_CLARITY"]},
-	BehaviorSurfaces["WORKFLOW_CONVERSATION"]:      {BehaviorDimensions["WORKFLOW_CONTINUITY"]},
+	BehaviorSurfaces["CONVERSATION_CONTINUITY"]:      {BehaviorDimensions["WORKFLOW_CONTINUITY"]},
 	BehaviorSurfaces["THREAD_FOLLOWUP"]:            {BehaviorDimensions["WORKFLOW_CONTINUITY"]},
 	BehaviorSurfaces["THREAD_CONTEXT_RECOVERY"]:    {BehaviorDimensions["TARGET_CLARIFICATION"]},
 	BehaviorSurfaces["SKILL_VALIDATION"]:           {BehaviorDimensions["VALIDATION_INTEGRITY"]},
@@ -243,6 +252,9 @@ func BuildBehaviorIntentProfile(intent any, intentProfile map[string]any, fallba
 				return nil, err
 			}
 		}
+	}
+	if canonical, ok := deprecatedBehaviorSurfaceAliases[behaviorSurfaceValue]; ok {
+		behaviorSurfaceValue = canonical
 	}
 	if !containsString(allBehaviorSurfaces(), behaviorSurfaceValue) {
 		return nil, fmt.Errorf("behaviorSurface must be one of: %s", strings.Join(allBehaviorSurfaces(), ", "))

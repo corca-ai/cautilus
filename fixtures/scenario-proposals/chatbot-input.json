@@ -7,7 +7,7 @@
         "schemaVersion": "cautilus.behavior_intent.v1",
         "intentId": "intent-repo-review-target-clarification",
         "summary": "Clarify the concrete repo target before starting a broad repo review workflow.",
-        "behaviorSurface": "workflow_conversation",
+        "behaviorSurface": "conversation_continuity",
         "successDimensions": [
           {
             "id": "target_clarification",

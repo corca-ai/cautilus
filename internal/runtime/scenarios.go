@@ -6,7 +6,7 @@ package runtime
 // evaluation archetypes fixed in docs/specs/archetype-boundary.spec.md.
 // It stays next to the normalize helpers on purpose: adding a new
 // first-class archetype means updating proposals.go AND this catalog in
-// the same slice (see follow-up 3 in the archetype-boundary spec).
+// the same slice (see follow-up 2 in the archetype-boundary spec).
 
 const ScenarioCatalogSchema = "cautilus.scenarios.v1"
 

@@ -2,7 +2,7 @@ import { BEHAVIOR_INTENT_SCHEMA } from "./contract-versions.mjs";
 
 export const BEHAVIOR_SURFACES = {
 	OPERATOR_BEHAVIOR: "operator_behavior",
-	WORKFLOW_CONVERSATION: "workflow_conversation",
+	CONVERSATION_CONTINUITY: "conversation_continuity",
 	THREAD_FOLLOWUP: "thread_followup",
 	THREAD_CONTEXT_RECOVERY: "thread_context_recovery",
 	SKILL_VALIDATION: "skill_validation",
@@ -35,6 +35,13 @@ export const BEHAVIOR_DIMENSIONS = {
 const KNOWN_BEHAVIOR_SURFACES = new Set(Object.values(BEHAVIOR_SURFACES));
 const ALL_BEHAVIOR_SURFACES = Object.values(BEHAVIOR_SURFACES);
 
+// Deprecated surface names accepted on input and silently normalized to
+// their canonical replacement. See the surface-name disambiguation
+// discussion in archetype-boundary.spec.md (closed in v0.4.x).
+const DEPRECATED_BEHAVIOR_SURFACE_ALIASES = {
+	workflow_conversation: "conversation_continuity",
+};
+
 const DIMENSION_KIND_SUCCESS = "success";
 const DIMENSION_KIND_GUARDRAIL = "guardrail";
 
@@ -60,17 +67,17 @@ export const BEHAVIOR_DIMENSION_CATALOG = {
 	[BEHAVIOR_DIMENSIONS.WORKFLOW_CONTINUITY]: {
 		kind: DIMENSION_KIND_SUCCESS,
 		summary: "Carry the active workflow context cleanly into the next turn.",
-		surfaces: [BEHAVIOR_SURFACES.WORKFLOW_CONVERSATION, BEHAVIOR_SURFACES.THREAD_FOLLOWUP],
+		surfaces: [BEHAVIOR_SURFACES.CONVERSATION_CONTINUITY, BEHAVIOR_SURFACES.THREAD_FOLLOWUP],
 	},
 	[BEHAVIOR_DIMENSIONS.TARGET_CLARIFICATION]: {
 		kind: DIMENSION_KIND_SUCCESS,
 		summary: "Ask for the minimum concrete target or missing context before acting.",
-		surfaces: [BEHAVIOR_SURFACES.WORKFLOW_CONVERSATION, BEHAVIOR_SURFACES.THREAD_CONTEXT_RECOVERY],
+		surfaces: [BEHAVIOR_SURFACES.CONVERSATION_CONTINUITY, BEHAVIOR_SURFACES.THREAD_CONTEXT_RECOVERY],
 	},
 	[BEHAVIOR_DIMENSIONS.PREFERENCE_REUSE]: {
 		kind: DIMENSION_KIND_SUCCESS,
 		summary: "Reuse the preference or constraint the user just established in-thread.",
-		surfaces: [BEHAVIOR_SURFACES.WORKFLOW_CONVERSATION],
+		surfaces: [BEHAVIOR_SURFACES.CONVERSATION_CONTINUITY],
 	},
 	[BEHAVIOR_DIMENSIONS.VALIDATION_INTEGRITY]: {
 		kind: DIMENSION_KIND_SUCCESS,
@@ -134,7 +141,7 @@ export const BEHAVIOR_DIMENSION_CATALOG = {
 
 const DEFAULT_SUCCESS_DIMENSIONS_BY_SURFACE = {
 	[BEHAVIOR_SURFACES.OPERATOR_BEHAVIOR]: [BEHAVIOR_DIMENSIONS.OPERATOR_GUIDANCE_CLARITY],
-	[BEHAVIOR_SURFACES.WORKFLOW_CONVERSATION]: [BEHAVIOR_DIMENSIONS.WORKFLOW_CONTINUITY],
+	[BEHAVIOR_SURFACES.CONVERSATION_CONTINUITY]: [BEHAVIOR_DIMENSIONS.WORKFLOW_CONTINUITY],
 	[BEHAVIOR_SURFACES.THREAD_FOLLOWUP]: [BEHAVIOR_DIMENSIONS.WORKFLOW_CONTINUITY],
 	[BEHAVIOR_SURFACES.THREAD_CONTEXT_RECOVERY]: [BEHAVIOR_DIMENSIONS.TARGET_CLARIFICATION],
 	[BEHAVIOR_SURFACES.SKILL_VALIDATION]: [BEHAVIOR_DIMENSIONS.VALIDATION_INTEGRITY],
@@ -251,9 +258,10 @@ function resolveIntentId(intentProfile, summary) {
 }
 
 function resolveBehaviorSurface(intentProfile, fallbackBehaviorSurface) {
-	const value = intentProfile?.behaviorSurface !== undefined
+	const raw = intentProfile?.behaviorSurface !== undefined
 		? normalizeNonEmptyString(intentProfile.behaviorSurface, "intentProfile.behaviorSurface")
 		: normalizeNonEmptyString(fallbackBehaviorSurface, "fallbackBehaviorSurface");
+	const value = DEPRECATED_BEHAVIOR_SURFACE_ALIASES[raw] ?? raw;
 	if (!KNOWN_BEHAVIOR_SURFACES.has(value)) {
 		throw new Error(`behaviorSurface must be one of: ${[...KNOWN_BEHAVIOR_SURFACES].join(", ")}`);
 	}

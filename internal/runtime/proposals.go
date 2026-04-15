@@ -456,7 +456,7 @@ func buildReviewClarificationCandidate(conversation map[string]any, userMessages
 		"proposalKey":    "repo-review-needs-target-clarification",
 		"title":          "Refresh repo review clarification scenario from recent operator logs",
 		"family":         "fast_regression",
-		"intentProfile":  buildChatbotIntentProfile("Clarify the concrete repo target before starting a broad repo review workflow.", asMap(conversation["intentProfile"]), BehaviorSurfaces["WORKFLOW_CONVERSATION"], []string{BehaviorDimensions["TARGET_CLARIFICATION"]}),
+		"intentProfile":  buildChatbotIntentProfile("Clarify the concrete repo target before starting a broad repo review workflow.", asMap(conversation["intentProfile"]), BehaviorSurfaces["CONVERSATION_CONTINUITY"], []string{BehaviorDimensions["TARGET_CLARIFICATION"]}),
 		"name":           "Repo Review Needs Target Clarification",
 		"description":    "A broad review request is followed by one concrete repo-target clarification.",
 		"brief":          fmt.Sprintf("Recent operator logs show a broad review ask followed by a repo-target clarification: first %q, then %q.", userMessages[0], userMessages[1]),

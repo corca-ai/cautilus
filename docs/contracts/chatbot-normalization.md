@@ -102,7 +102,8 @@ its core value.
 When the host only provides normalized conversation or run summaries, the
 helper may derive a thin intent profile for the detected pattern class:
 
-- `workflow_conversation`
+- `conversation_continuity` (formerly `workflow_conversation`; the old
+  name is accepted as a deprecated alias and silently normalized)
 - `thread_followup`
 - `thread_context_recovery`
 

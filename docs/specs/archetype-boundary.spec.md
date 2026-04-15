@@ -21,7 +21,7 @@ What it evaluates: multi-turn conversational behavior inside a single session.
 - CLI subcommand: `cautilus scenario normalize chatbot`
 - contract document: [chatbot-normalization.md](../contracts/chatbot-normalization.md)
 - example fixture: [chatbot-consumer-input.json](../../fixtures/scenario-proposals/chatbot-consumer-input.json)
-- behavior surfaces: `workflow_conversation`, `thread_followup`,
+- behavior surfaces: `conversation_continuity`, `thread_followup`,
   `thread_context_recovery`
 
 ### skill
@@ -136,14 +136,7 @@ CLI subcommand for workflow, contract doc split, fixture cleanup,
 rewrite with three archetype blocks. Follow-up work that must reconcile
 with this spec:
 
-1. **Surface-name disambiguation.** `workflow_conversation` (chatbot
-   archetype) and `operator_workflow_recovery` (workflow archetype) both
-   contain the word `workflow` in the catalog. Consider renaming
-   `workflow_conversation` to `conversation_continuity` in
-   `cautilus.behavior_intent.v1` so archetype vocabulary does not leak
-   across boundaries. Requires a bump of `cautilus.behavior_intent.v1` or a
-   catalog-level deprecation.
-2. **Experimental archetype escape hatch.** This spec requires every
+1. **Experimental archetype escape hatch.** This spec requires every
    first-class archetype to ship in a coordinated slice. That discipline
    is intentional, but leaves no room for research prototypes. Consider a
    relaxed namespace (location TBD — keep the `prototypes/` hint Go-side
@@ -151,7 +144,7 @@ with this spec:
    rules for exploratory surfaces, and a promotion checklist into
    first-class status when the surface earns a schema/helper/CLI/
    contract slice.
-3. **Archetype-extension hardening.** Surfaced by an
+2. **Archetype-extension hardening.** Surfaced by an
     onboarding-lens premortem on the Node-removal slice (round 2): a new
     contributor told to add a 4th first-class archetype must currently
     grep across files this spec does not name, and the 1:1 mapping has
