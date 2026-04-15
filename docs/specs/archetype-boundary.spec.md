@@ -142,6 +142,37 @@ $ cautilus scenario normalize workflow --input ./fixtures/scenario-proposals/wor
 The skill command must reject a workflow-shaped input with an actionable
 error that mentions `cautilus scenario normalize workflow`.
 
+## Experimental Prototypes
+
+The 1:1 archetype boundary above is intentionally strict: every
+first-class archetype must ship a schema constant, helper, CLI
+subcommand, contract document, fixture, README block, SKILL.md
+reference, scenarios-catalog entry, and source-guard rows in one
+coordinated slice. That discipline keeps the contract honest but leaves
+no room to explore a fourth shape before its surface is understood.
+
+The escape hatch is the explicit `prototypes` namespace at
+[`internal/runtime/prototypes/`](../../internal/runtime/prototypes).
+Code that lives there is **not** a first-class archetype:
+
+- Schemas use the `cautilus.<name>_prototype.v0` naming pattern. The
+  `v0` band signals "may break without consumer migration." Stable
+  schemas use `v1+` and live outside the prototypes directory.
+- Source-guard rows are not required.
+- README and SKILL.md must not advertise prototype surfaces.
+- The packaged-skill sync script does not surface prototype docs.
+- Prototype helpers may not be referenced from any first-class
+  archetype helper or from `internal/runtime/scenarios.go`.
+- Each prototype declares its expected lifetime in a top-of-file
+  comment: `// Prototype lifetime: until promoted to first-class or
+  removed by <YYYY-MM-DD>.`
+
+A prototype graduates to a first-class archetype only by completing
+the full ordered "Adding A New First-Class Archetype" checklist below
+in one slice. That slice must also delete the prototype copy under
+`internal/runtime/prototypes/` so the canonical surface is the
+promoted one.
+
 ## Adding A New First-Class Archetype
 
 `npm run lint:specs` passing only proves the surfaces named in the
@@ -199,15 +230,7 @@ CLI subcommand for workflow, contract doc split, fixture cleanup,
 rewrite with three archetype blocks. Follow-up work that must reconcile
 with this spec:
 
-1. **Experimental archetype escape hatch.** This spec requires every
-   first-class archetype to ship in a coordinated slice. That discipline
-   is intentional, but leaves no room for research prototypes. Consider a
-   relaxed namespace (location TBD — keep the `prototypes/` hint Go-side
-   if the surface ends up living in `internal/runtime/`) with relaxed
-   rules for exploratory surfaces, and a promotion checklist into
-   first-class status when the surface earns a schema/helper/CLI/
-   contract slice.
-2. **Inverse-completeness lint.** The Source Guard table above
+1. **Inverse-completeness lint.** The Source Guard table above
    enforces that every named surface exists, but it does not enforce
    the inverse: that every `###` archetype heading in this spec has
    the full surface set behind it. A new spec lint command would
