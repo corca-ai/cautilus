@@ -376,10 +376,10 @@ standalone product여야 한다.
 | fixtures/skill-evaluation/summary.schema.json | fixed | cautilus.skill_evaluation_summary.v1 |
 | fixtures/skill-test/cases.schema.json | file_exists |  |
 | fixtures/skill-test/cases.schema.json | fixed | cautilus.skill_test_cases.v1 |
-| fixtures/scenario-proposals/chatbot-consumer-input.json | file_exists |  |
-| fixtures/scenario-proposals/skill-validation-input.json | file_exists |  |
-| fixtures/scenario-proposals/workflow-recovery-input.json | file_exists |  |
-| fixtures/scenario-proposals/workflow-recovery-input.json | fixed | cautilus.workflow_normalization_inputs.v1 |
+| fixtures/scenario-proposals/samples/chatbot-consumer-input.json | file_exists |  |
+| fixtures/scenario-proposals/samples/skill-validation-input.json | file_exists |  |
+| fixtures/scenario-proposals/samples/workflow-recovery-input.json | file_exists |  |
+| fixtures/scenario-proposals/samples/workflow-recovery-input.json | fixed | cautilus.workflow_normalization_inputs.v1 |
 | docs/contracts/workflow-normalization.md | file_exists |  |
 | docs/contracts/skill-normalization.md | file_exists |  |
 | docs/specs/archetype-boundary.spec.md | file_exists |  |

@@ -73,7 +73,7 @@ clarify, ignoring a preference the user already stated.
 
 - **What you bring.** A JSON file of recent conversation summaries (turns +
   metadata), the baseline prompt, the changed prompt. See
-  [chatbot-consumer-input.json](./fixtures/scenario-proposals/chatbot-consumer-input.json)
+  [chatbot-consumer-input.json](./fixtures/scenario-proposals/samples/chatbot-consumer-input.json)
   for the shape.
 - **Input (CLI).** `cautilus scenario normalize chatbot --input logs.json`
 - **Input (what to ask an agent).** "Run a chatbot regression with these
@@ -130,7 +130,7 @@ a paragraph in a doc.
 - **What you bring.** Run summaries from the automation, each including
   `targetId`, `status` (`blocked`, `degraded`, `failed`, or `passed`),
   `surface`, and `blockedSteps` where progress stalled. Example:
-  [workflow-recovery-input.json](./fixtures/scenario-proposals/workflow-recovery-input.json).
+  [workflow-recovery-input.json](./fixtures/scenario-proposals/samples/workflow-recovery-input.json).
 - **Input (CLI).** `cautilus scenario normalize workflow --input workflow-runs.json`
 - **Input (what to ask an agent).** "Look at last week's automation runs
   and flag anything that stalled on the same step twice or reported
@@ -398,13 +398,13 @@ The current proof surface is split on purpose:
   checked-in schema for `cautilus.workflow_normalization_inputs.v1`
 - [fixtures/scenario-proposals/workflow-input.json](./fixtures/scenario-proposals/workflow-input.json):
   canonical workflow normalization example packet matching the archetype name
-- [fixtures/scenario-proposals/chatbot-consumer-input.json](./fixtures/scenario-proposals/chatbot-consumer-input.json):
+- [fixtures/scenario-proposals/samples/chatbot-consumer-input.json](./fixtures/scenario-proposals/samples/chatbot-consumer-input.json):
   chatbot-consumer-shaped normalization example packet from one checked-in
   dogfood source
-- [fixtures/scenario-proposals/skill-validation-input.json](./fixtures/scenario-proposals/skill-validation-input.json):
+- [fixtures/scenario-proposals/samples/skill-validation-input.json](./fixtures/scenario-proposals/samples/skill-validation-input.json):
   skill-validation-shaped normalization example packet from one checked-in
   dogfood source
-- [fixtures/scenario-proposals/workflow-recovery-input.json](./fixtures/scenario-proposals/workflow-recovery-input.json):
+- [fixtures/scenario-proposals/samples/workflow-recovery-input.json](./fixtures/scenario-proposals/samples/workflow-recovery-input.json):
   durable-workflow-shaped normalization example packet from one checked-in
   dogfood source
 - [fixtures/skill-evaluation/input.json](./fixtures/skill-evaluation/input.json):

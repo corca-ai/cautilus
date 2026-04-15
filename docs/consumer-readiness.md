@@ -45,7 +45,7 @@ Current role: external conversational consumer archetype
 Evidence:
 
 - `chatbot` normalization has a checked-in consumer-shaped fixture:
-  [fixtures/scenario-proposals/chatbot-consumer-input.json](../fixtures/scenario-proposals/chatbot-consumer-input.json)
+  [fixtures/scenario-proposals/samples/chatbot-consumer-input.json](../fixtures/scenario-proposals/samples/chatbot-consumer-input.json)
 - the checked-in consumer fixture feeds the normalization helper and proposal
   chain without host-specific rewriting
 - the external proof bar remains:
@@ -65,7 +65,7 @@ Current role: external skill and validation archetype
 Evidence:
 
 - `skill` normalization has a checked-in validation-shaped fixture:
-  [fixtures/scenario-proposals/skill-validation-input.json](../fixtures/scenario-proposals/skill-validation-input.json)
+  [fixtures/scenario-proposals/samples/skill-validation-input.json](../fixtures/scenario-proposals/samples/skill-validation-input.json)
 - the checked-in consumer fixture produces stable validation-regression
   candidates
 - the external proof bar remains:
@@ -83,7 +83,7 @@ Current role: external durable-workflow archetype
 Evidence:
 
 - `workflow` normalization owns a checked-in durable-workflow fixture:
-  [fixtures/scenario-proposals/workflow-recovery-input.json](../fixtures/scenario-proposals/workflow-recovery-input.json).
+  [fixtures/scenario-proposals/samples/workflow-recovery-input.json](../fixtures/scenario-proposals/samples/workflow-recovery-input.json).
   Routed through `cautilus scenario normalize workflow` per the
   [archetype boundary spec](./specs/archetype-boundary.spec.md).
 - `mode evaluate`, `review variants`, and comparison flows are all exercised

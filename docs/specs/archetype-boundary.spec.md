@@ -20,7 +20,7 @@ What it evaluates: multi-turn conversational behavior inside a single session.
   [proposals.go](../../internal/runtime/proposals.go)
 - CLI subcommand: `cautilus scenario normalize chatbot`
 - contract document: [chatbot-normalization.md](../contracts/chatbot-normalization.md)
-- example fixture: [chatbot-consumer-input.json](../../fixtures/scenario-proposals/chatbot-consumer-input.json)
+- example fixture: [chatbot-consumer-input.json](../../fixtures/scenario-proposals/samples/chatbot-consumer-input.json)
 - behavior surfaces: `conversation_continuity`, `thread_followup`,
   `thread_context_recovery`
 
@@ -35,7 +35,7 @@ validation surfaces passing.
   [proposals.go](../../internal/runtime/proposals.go)
 - CLI subcommand: `cautilus scenario normalize skill`
 - contract document: [skill-normalization.md](../contracts/skill-normalization.md)
-- example fixture: [skill-validation-input.json](../../fixtures/scenario-proposals/skill-validation-input.json)
+- example fixture: [skill-validation-input.json](../../fixtures/scenario-proposals/samples/skill-validation-input.json)
 - behavior surfaces: `skill_validation`, `skill_trigger_selection`,
   `skill_execution_quality`
 
@@ -52,7 +52,7 @@ invocations and must recover when it hits a known blocker.
   [proposals.go](../../internal/runtime/proposals.go)
 - CLI subcommand: `cautilus scenario normalize workflow`
 - contract document: [workflow-normalization.md](../contracts/workflow-normalization.md)
-- example fixture: [workflow-recovery-input.json](../../fixtures/scenario-proposals/workflow-recovery-input.json)
+- example fixture: [workflow-recovery-input.json](../../fixtures/scenario-proposals/samples/workflow-recovery-input.json)
 - behavior surfaces: `operator_workflow_recovery`
 
 ## Why skill stays unified
@@ -77,6 +77,8 @@ input shape or is owned by a distinct host class.
   whose names do not mention any one archetype.
 - Fixture filenames reflect their archetype: `chatbot-*`, `skill-*`,
   `workflow-*`. A fixture must not mix archetype shapes in one file.
+  See Fixture Naming below for the canonical / minimal / specialized
+  split.
 - The renamed canonical evaluation workflow document is
   [docs/evaluation-process.md](../evaluation-process.md). `docs/workflow.md`
   no longer exists to avoid colliding with the `workflow` archetype name.
@@ -119,6 +121,38 @@ Source-guard coverage for the underlying command paths already lives in
 [standalone-surface.spec.md](./standalone-surface.spec.md), so this
 section does not restate those rows.
 
+## Fixture Naming
+
+Each archetype's fixtures split into three roles. Every new archetype
+slice must respect this split.
+
+- **Canonical.** `fixtures/scenario-proposals/<archetype>-input.json`.
+  One per archetype. This is the realistic reference shape — what a
+  typical consumer input actually looks like. Standing functional checks
+  (`docs/specs/current-product.spec.md`) and the `cautilus scenarios`
+  catalog point at this file.
+- **Minimal.** Emitted by `cautilus scenario normalize <archetype> --example-input`
+  and `cautilus skill evaluate --example-input` on stdout. Not a file.
+  The minimal shape is the smallest valid packet that satisfies the
+  published schema; it exists so operators can `--example-input | <same
+  command>` without opening the repo. The stdout payload is
+  schema-validated by
+  [internal/app/examples_schema_test.go](../../internal/app/examples_schema_test.go),
+  which pins "minimal = stdout" as the single source of truth.
+- **Specialized.** `fixtures/scenario-proposals/samples/<archetype>-<specialization>-input.json`.
+  Consumer- or sub-surface-shaped examples (e.g.
+  `chatbot-consumer-input.json`, `skill-validation-input.json`,
+  `workflow-recovery-input.json`). Referenced from consumer-facing copy
+  (README, archetype section headers, consumer-readiness appendix, this
+  spec's Functional Check). Multiple specialized fixtures per archetype
+  are allowed.
+
+This split is deliberate. Conflating canonical with specialized would
+force one file to serve two audiences (schema reference vs. realistic
+consumer narrative) and make either role harder to read. Adding a
+minimal fixture file alongside the `--example-input` stdout would
+duplicate the minimal payload in two places and invite drift.
+
 ## Source Guard
 
 > check:source_guard
@@ -155,10 +189,10 @@ section does not restate those rows.
 | fixtures/scenario-proposals/skill-input.schema.json | fixed | cautilus.skill_normalization_inputs.v2 |
 | fixtures/scenario-proposals/workflow-input.schema.json | file_exists |  |
 | fixtures/scenario-proposals/workflow-input.schema.json | fixed | cautilus.workflow_normalization_inputs.v1 |
-| fixtures/scenario-proposals/chatbot-consumer-input.json | file_exists |  |
-| fixtures/scenario-proposals/skill-validation-input.json | file_exists |  |
-| fixtures/scenario-proposals/workflow-recovery-input.json | file_exists |  |
-| fixtures/scenario-proposals/workflow-recovery-input.json | fixed | cautilus.workflow_normalization_inputs.v1 |
+| fixtures/scenario-proposals/samples/chatbot-consumer-input.json | file_exists |  |
+| fixtures/scenario-proposals/samples/skill-validation-input.json | file_exists |  |
+| fixtures/scenario-proposals/samples/workflow-recovery-input.json | file_exists |  |
+| fixtures/scenario-proposals/samples/workflow-recovery-input.json | fixed | cautilus.workflow_normalization_inputs.v1 |
 | docs/contracts/chatbot-normalization.md | file_exists |  |
 | docs/contracts/skill-normalization.md | file_exists |  |
 | docs/contracts/workflow-normalization.md | file_exists |  |
@@ -173,9 +207,9 @@ The three archetype normalize commands must each resolve their own example
 fixture into a valid proposal candidate list.
 
 ```run:shell
-$ cautilus scenario normalize chatbot --input ./fixtures/scenario-proposals/chatbot-consumer-input.json
-$ cautilus scenario normalize skill --input ./fixtures/scenario-proposals/skill-validation-input.json
-$ cautilus scenario normalize workflow --input ./fixtures/scenario-proposals/workflow-recovery-input.json
+$ cautilus scenario normalize chatbot --input ./fixtures/scenario-proposals/samples/chatbot-consumer-input.json
+$ cautilus scenario normalize skill --input ./fixtures/scenario-proposals/samples/skill-validation-input.json
+$ cautilus scenario normalize workflow --input ./fixtures/scenario-proposals/samples/workflow-recovery-input.json
 ```
 
 The skill command must reject a workflow-shaped input with an actionable

@@ -143,9 +143,9 @@ $ mkdir -p /tmp/cautilus-runs
 $ cautilus workspace start --root /tmp/cautilus-runs --label mode-held-out --json || true
 $ cautilus skill test --repo-root . --adapter-name self-dogfood-skill-test || true
 $ cautilus skill evaluate --input ./fixtures/skill-evaluation/input.json || true
-$ cautilus scenario normalize chatbot --input ./fixtures/scenario-proposals/chatbot-consumer-input.json
-$ cautilus scenario normalize skill --input ./fixtures/scenario-proposals/skill-validation-input.json
-$ cautilus scenario normalize workflow --input ./fixtures/scenario-proposals/workflow-recovery-input.json
+$ cautilus scenario normalize chatbot --input ./fixtures/scenario-proposals/samples/chatbot-consumer-input.json
+$ cautilus scenario normalize skill --input ./fixtures/scenario-proposals/samples/skill-validation-input.json
+$ cautilus scenario normalize workflow --input ./fixtures/scenario-proposals/samples/workflow-recovery-input.json
 $ cautilus scenario summarize-telemetry --results ./fixtures/scenario-results/example-results.json || true
 $ cautilus scenario prepare-input --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json --family fast_regression --window-days 14 --now 2026-04-11T00:00:00.000Z
 $ cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json
