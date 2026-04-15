@@ -152,3 +152,18 @@ row 추가 → `npm run lint:specs` fail → impl → pass → commit 의 tight 
 | internal/runtime/self_dogfood_html_test.go | fixed | TestRenderSelfDogfoodHTMLIncludesPageTOC |
 | internal/runtime/self_dogfood_html_test.go | fixed | TestRenderSelfDogfoodHTMLRewritesMarkdownAndJSONLinks |
 | internal/runtime/self_dogfood_html_test.go | fixed | TestSelfDogfoodStatusColorsMapToSemanticLabels |
+
+### Claim 2 — self-dogfood experiments
+
+같은 TOC + 링크 rewriting 계약을 experiments 렌더러에도 적용한다.
+A/B comparison anchor 와 sibling artifact 링크 rewriting 은 Go 테스트로 잠근다.
+
+> check:source_guard
+
+| file | mode | pattern |
+| --- | --- | --- |
+| internal/runtime/self_dogfood_html.go | fixed | experimentsAggregateStatus |
+| internal/runtime/self_dogfood_html.go | fixed | "compare-heading" |
+| internal/runtime/self_dogfood_html.go | fixed | "experiments-heading" |
+| internal/runtime/self_dogfood_html_test.go | fixed | TestRenderSelfDogfoodExperimentsHTMLIncludesPageTOC |
+| internal/runtime/self_dogfood_html_test.go | fixed | TestRenderSelfDogfoodExperimentsHTMLRewritesSiblingArtifactLinks |

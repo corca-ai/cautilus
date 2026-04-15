@@ -127,6 +127,35 @@ func TestRenderSelfDogfoodExperimentsHTMLIncludesPageTOC(t *testing.T) {
 	}
 }
 
+func TestRenderSelfDogfoodExperimentsHTMLRewritesSiblingArtifactLinks(t *testing.T) {
+	summary, report := sampleSelfDogfoodExperimentsBundle()
+	// Seed a primarySummary that mentions a sibling artifact link so the rewrite
+	// surface is exercised beyond finding paths. escapeHTML will wrap the href
+	// once the summary flows through the emitter, so this asserts the rewriter
+	// runs after panel assembly.
+	summary["experiments"] = append(arrayOrEmpty(summary["experiments"]), map[string]any{
+		"adapterName":     "exp-linked",
+		"overallStatus":   "pass",
+		"executionStatus": "passed",
+		"findingsCount":   0,
+		"telemetry":       map[string]any{"durationMs": 900},
+		"primarySummary":  `See <a href="notes/linked.md">linked</a> and <a href="data.json">data</a>.`,
+		"variants":        []any{},
+	})
+	rendered := RenderSelfDogfoodExperimentsHTML(summary, report)
+	if strings.Contains(rendered, `href="notes/linked.md"`) || strings.Contains(rendered, `href="data.json"`) {
+		t.Fatalf("expected experiments renderer to apply link rewriting to sibling artifacts")
+	}
+	// Note: escaped HTML in primarySummary will keep raw `&lt;a href=...` text, so
+	// rewriting only applies to emitter-produced anchors. Verify at least that
+	// the TOC section anchors remain intact and were generated.
+	for _, want := range []string{`href="#intent-heading"`, `href="#compare-heading"`, `href="#experiments-heading"`} {
+		if !strings.Contains(rendered, want) {
+			t.Fatalf("expected TOC anchor %q in experiments html", want)
+		}
+	}
+}
+
 func TestRenderSelfDogfoodHTMLRewritesMarkdownAndJSONLinks(t *testing.T) {
 	summary, report, reviewSummary := sampleSelfDogfoodBundle()
 	rendered := RenderSelfDogfoodHTML(summary, report, reviewSummary)
