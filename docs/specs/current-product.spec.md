@@ -15,8 +15,8 @@ standalone product여야 한다.
 | README.md | file_exists |  |
 | README.md | fixed | held-out |
 | README.md | fixed | behavior honest while prompts keep changing |
-| README.md | fixed | npm run dogfood:self |
-| README.md | fixed | npm run dogfood:self:experiments |
+| docs/development.md | fixed | npm run dogfood:self |
+| docs/development.md | fixed | npm run dogfood:self:experiments |
 | AGENTS.md | file_exists |  |
 | AGENTS.md | fixed | standalone product boundary |
 | AGENTS.md | fixed | npm run verify |

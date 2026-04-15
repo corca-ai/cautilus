@@ -1,9 +1,10 @@
 # README Rewrite Research
 
-Working notes for the 2026-04-15 README rewrite. Four parallel research passes
-over OSS comparables feed the decisions captured in
-[project memory](~/.claude/projects/-home-hwidong-codes-cautilus/memory/project_readme_structure.md).
-This file is a decision log; it can be removed once the rewrite stabilizes.
+Working notes for the 2026-04-15 README rewrite. Four parallel research
+passes over OSS comparables feed the decisions captured in the project
+memory entry `project_readme_structure.md` (Claude Code auto-memory, not
+checked in). This file is a decision log; it can be removed once the
+rewrite stabilizes.
 
 ## Synthesis
 
@@ -106,8 +107,8 @@ Products: cli/cli, ohmyzsh/ohmyzsh, denoland/deno, tauri-apps/tauri.
 ### Steal
 
 - **Redirect-out + wiki links** — Oh My Zsh: "You can take a look in the
-  [plugins](...) directory and/or the [wiki](...)". Keeps the README lean
-  while letting a searchable, user-editable surface be the registry.
+  plugins directory and/or the wiki". Keeps the README lean while letting
+  a searchable, user-editable surface be the registry.
 - **Lead with one surface; signal the second early** — Oh My Zsh names the
   themes surface explicitly ("We have over one hundred and fifty themes now
   bundled...") and redirects contribution energy. Prevents readers from

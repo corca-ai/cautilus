@@ -1,9 +1,10 @@
 # Cautilus
 
-`Cautilus` is a repo-local contract layer for agent and workflow behavior
-evaluation. Define the behavior you are trying to protect once, then
-verify it survives prompt, skill, and wrapper changes. Ships as a
-standalone CLI plus a bundled skill a host repo can install without
+`Cautilus` keeps agent and workflow behavior honest while prompts keep changing.
+It is a repo-local contract layer for agent and workflow behavior evaluation:
+define the behavior you are trying to protect once, then verify it survives
+prompt, skill, and wrapper changes. Ships as
+a standalone binary plus a bundled skill a host repo can install without
 copying another scaffold first.
 
 ## Who It Is For
@@ -35,36 +36,39 @@ For the full command catalog see [docs/cli-reference.md](./docs/cli-reference.md
 
 ## Scenarios
 
-`Cautilus` has three first-class evaluation archetypes. They share one
+Cautilus has three first-class evaluation archetypes. They share one
 pipeline — normalize → propose → evaluate → review — but each has its
 own input shape and starting command. The 1:1 boundary is fixed in
 [archetype-boundary.spec.md](./docs/specs/archetype-boundary.spec.md).
 
-**1. Chatbot conversation regression.** Use when a chat or assistant
-experience gets worse at multi-turn behavior after a prompt change —
-forgetting prior turns, answering when it should clarify, ignoring a
-stated preference. Bring conversation summaries + the baseline and
-changed prompts; run `cautilus scenario normalize chatbot --input logs.json`.
-Regressions become candidate scenarios held out from tuning, saved in a
-reopenable `proposals.json`. Fixture:
+### 1. Chatbot conversation regression
+
+Use when a chat or assistant experience gets worse at multi-turn behavior
+after a prompt change — forgetting prior turns, answering when it should
+clarify, ignoring a stated preference. Bring conversation summaries + the
+baseline and changed prompts; run `cautilus scenario normalize chatbot
+--input logs.json`. Regressions become candidate scenarios held out from
+tuning, saved in a reopenable `proposals.json`. Fixture:
 [chatbot-consumer-input.json](./fixtures/scenario-proposals/samples/chatbot-consumer-input.json).
 
-**2. Skill / agent execution regression.** Use when you change a skill
-or agent and want to know whether it still triggers on the right
-prompts, executes cleanly, and keeps its static validation passing.
-Bring the modified skill + a checked-in case suite; run `cautilus skill
-test --repo-root . --adapter-name <name>`. Each case runs multiple times
-for consensus and is scored on trigger accuracy, execution quality, and
-optional runtime budget. Fixture:
+### 2. Skill / agent execution regression
+
+Use when you change a skill or agent and want to know whether it still
+triggers on the right prompts, executes cleanly, and keeps its static
+validation passing. Bring the modified skill + a checked-in case suite;
+run `cautilus skill test --repo-root . --adapter-name <name>`. Each case
+runs multiple times for consensus and is scored on trigger accuracy,
+execution quality, and optional runtime budget. Fixture:
 [fixtures/skill-test/cases.json](./fixtures/skill-test/cases.json).
 
-**3. Durable workflow recovery.** Use when a stateful automation — a
-CLI workflow, long-running agent session, or pipeline that persists
-state across invocations — keeps stalling on the same step. Bring run
-summaries with `targetId`, `status`, `surface`, and `blockedSteps`; run
-`cautilus scenario normalize workflow --input runs.json`. Repeated
-blockers become `operator_workflow_recovery` candidates that pin the
-regression as a repeatable case. Fixture:
+### 3. Durable workflow recovery
+
+Use when a stateful automation — a CLI workflow, long-running agent
+session, or pipeline that persists state across invocations — keeps
+stalling on the same step. Bring run summaries with `targetId`, `status`,
+`surface`, and `blockedSteps`; run `cautilus scenario normalize workflow
+--input runs.json`. Repeated blockers become `operator_workflow_recovery`
+candidates that pin the regression as a repeatable case. Fixture:
 [workflow-recovery-input.json](./fixtures/scenario-proposals/samples/workflow-recovery-input.json).
 
 Agent-facing phrasing works too: "run a chatbot regression with these

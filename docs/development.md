@@ -92,9 +92,9 @@ npm run dogfood:self:html
 npm run dogfood:self:experiments:html
 ```
 
-These are thin wrappers around the product-owned `cautilus self-dogfood
-render-html` and `cautilus self-dogfood render-experiments-html` commands
-(see [cli-reference.md](./cli-reference.md)).
+These are thin wrappers around the product-owned
+`cautilus self-dogfood render-html` and `cautilus self-dogfood render-experiments-html`
+commands (see [cli-reference.md](./cli-reference.md)).
 
 ## Release verification
 

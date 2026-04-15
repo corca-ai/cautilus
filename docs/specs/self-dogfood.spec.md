@@ -68,13 +68,13 @@ named experiment adapter에서 따로 다룬다.
 | scripts/run-self-dogfood-experiments.mjs | fixed | self-dogfood render-experiments-html |
 | scripts/on-demand/run-self-dogfood-experiments.test.mjs | file_exists |  |
 | scripts/self-dogfood-experiment-prompt.mjs | file_exists |  |
-| README.md | fixed | npm run dogfood:self |
-| README.md | fixed | artifacts/self-dogfood/latest/ |
-| README.md | fixed | npm run dogfood:self:experiments |
-| README.md | fixed | npm run dogfood:self:html |
-| README.md | fixed | npm run dogfood:self:experiments:html |
-| README.md | fixed | cautilus self-dogfood render-html |
-| README.md | fixed | cautilus self-dogfood render-experiments-html |
+| docs/development.md | fixed | npm run dogfood:self |
+| docs/development.md | fixed | artifacts/self-dogfood/latest/ |
+| docs/development.md | fixed | npm run dogfood:self:experiments |
+| docs/development.md | fixed | npm run dogfood:self:html |
+| docs/development.md | fixed | npm run dogfood:self:experiments:html |
+| docs/development.md | fixed | cautilus self-dogfood render-html |
+| docs/development.md | fixed | cautilus self-dogfood render-experiments-html |
 | skills/cautilus/references/self-dogfood-runner.md | fixed | npm run dogfood:self |
 | skills/cautilus/references/self-dogfood-runner.md | fixed | npm run dogfood:self:experiments |
 | skills/cautilus/references/self-dogfood-runner.md | fixed | npm run dogfood:self:html |
