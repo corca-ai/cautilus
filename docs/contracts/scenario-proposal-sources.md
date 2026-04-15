@@ -1,19 +1,14 @@
 # Scenario Proposal Source Contract
 
-`Cautilus` should eventually propose new or refreshed evaluation scenarios from
-recent operator activity and recent runtime outcomes, but the product boundary
-must stay independent from any one host repo's storage layout.
+`Cautilus` should eventually propose new or refreshed evaluation scenarios from recent operator activity and recent runtime outcomes, but the product boundary must stay independent from any one host repo's storage layout.
 
-This contract defines the source ports and output payload that a scenario
-proposal engine can rely on before `Cautilus` imports any host-specific log
-mining code.
+This contract defines the source ports and output payload that a scenario proposal engine can rely on before `Cautilus` imports any host-specific log mining code.
 
 ## Scope
 
 This contract owns:
 
-- normalized source-port inputs for recent human activity, recent agent runs,
-  existing scenario registry, and recent scenario coverage
+- normalized source-port inputs for recent human activity, recent agent runs, existing scenario registry, and recent scenario coverage
 - proposal payload shape for operator review
 - evidence and ranking expectations
 
@@ -23,18 +18,15 @@ This contract does not yet own:
 - prompt text used to draft proposals
 - the final scenario store file path
 - UI workflow for accepting or rejecting proposals
-- raw host-specific heuristics that convert activity logs into normalized
-  proposal candidates
+- raw host-specific heuristics that convert activity logs into normalized proposal candidates
 
-Two use-case-specific normalization helpers are now in scope as product-owned
-layers:
+Two use-case-specific normalization helpers are now in scope as product-owned layers:
 
 - `chatbot`
 - `skill`
 
-Those helpers should sit between source-port ingestion and proposal packet
-generation. They are product-owned only at the normalized-helper layer, not at
-the storage-reader layer.
+Those helpers should sit between source-port ingestion and proposal packet generation.
+They are product-owned only at the normalized-helper layer, not at the storage-reader layer.
 
 The first checked-in helper entrypoints now exist as:
 
@@ -49,8 +41,7 @@ The proposal engine should read from four source ports.
 
 ### Human Activity Port
 
-Recent human conversations or operator-visible threads that may reveal new
-scenario patterns.
+Recent human conversations or operator-visible threads that may reveal new scenario patterns.
 
 Minimum shape:
 
@@ -71,8 +62,7 @@ Minimum shape:
 
 ### Agent Run Port
 
-Recent runtime summaries that expose blocked reasons, weak follow-up handling,
-or recurring failure modes.
+Recent runtime summaries that expose blocked reasons, weak follow-up handling, or recurring failure modes.
 
 Minimum shape:
 
@@ -88,8 +78,7 @@ Minimum shape:
 
 ### Existing Scenario Registry Port
 
-The current checked-in scenario set so the engine can decide between
-`add_new_scenario` and `refresh_existing_scenario`.
+The current checked-in scenario set so the engine can decide between `add_new_scenario` and `refresh_existing_scenario`.
 
 Minimum shape:
 
@@ -103,8 +92,7 @@ Minimum shape:
 
 ### Scenario Coverage Port
 
-Recent execution counts for each scenario key so proposals can prioritize weakly
-covered patterns.
+Recent execution counts for each scenario key so proposals can prioritize weakly covered patterns.
 
 Minimum shape:
 
@@ -146,8 +134,7 @@ The proposal engine should emit an operator-reviewable payload like this:
 
 ## Evidence Shape
 
-Evidence should preserve where the suggestion came from without forcing one host
-repo's storage model on the product.
+Evidence should preserve where the suggestion came from without forcing one host repo's storage model on the product.
 
 Allowed source kinds:
 
@@ -180,9 +167,7 @@ Recommended evidence payloads:
 }
 ```
 
-Proposal candidates and draft scenarios may also carry an optional
-`intentProfile` when the normalized source already knows the intended behavior
-behind the reusable scenario.
+Proposal candidates and draft scenarios may also carry an optional `intentProfile` when the normalized source already knows the intended behavior behind the reusable scenario.
 
 ```json
 {
@@ -213,8 +198,7 @@ behind the reusable scenario.
 
 ## Draft Scenario Expectations
 
-The draft scenario embedded in each proposal should be normalized enough for a
-human to accept, edit, or reject it without re-deriving the context.
+The draft scenario embedded in each proposal should be normalized enough for a human to accept, edit, or reject it without re-deriving the context.
 
 Minimum expectations:
 
@@ -223,8 +207,7 @@ Minimum expectations:
 - benchmark family and scenario key
 - suggested backend family
 - enough simulator or runner input to reproduce the pattern
-- optional conversation-evaluation expectations when the source pattern is
-  conversational
+- optional conversation-evaluation expectations when the source pattern is conversational
 
 ## Ranking Rules
 
@@ -234,17 +217,13 @@ The first generic ranking pass should prefer:
 2. more recent evidence
 3. low recent coverage on the existing scenario key
 
-The engine should cap output with an explicit `limit` instead of dumping every
-possible pattern.
+The engine should cap output with an explicit `limit` instead of dumping every possible pattern.
 
 ## Fixed Decisions
 
-- Proposal generation should depend on normalized source ports, not direct host
-  repo file traversal baked into `Cautilus`.
-- The first standalone CLI surface starts after host-specific mining and reads a
-  normalized proposal-candidate packet plus scenario registry and coverage.
-- If `Cautilus` grows pre-candidate helpers, they should be use-case-specific
-  normalization helpers such as `chatbot` or `skill`, not raw source readers.
+- Proposal generation should depend on normalized source ports, not direct host repo file traversal baked into `Cautilus`.
+- The first standalone CLI surface starts after host-specific mining and reads a normalized proposal-candidate packet plus scenario registry and coverage.
+- If `Cautilus` grows pre-candidate helpers, they should be use-case-specific normalization helpers such as `chatbot` or `skill`, not raw source readers.
 - Existing scenario registry and recent scenario coverage are separate inputs.
   One says whether a key exists; the other says whether it is exercised enough.
 - Proposal output should embed a draft scenario, not only a prose suggestion.
@@ -254,18 +233,14 @@ possible pattern.
 
 ## Probe Questions
 
-- Should `recommendedBackends` stay proposal-engine output, or be derived later
-  from benchmark family defaults?
-- Should the product distinguish `refresh_existing_scenario` from
-  `raise_coverage_only`, or is one refresh action enough for the first version?
-- Should blocked-run proposals and human-conversation proposals share one
-  ranking queue, or should they be ranked per source kind first?
+- Should `recommendedBackends` stay proposal-engine output, or be derived later from benchmark family defaults?
+- Should the product distinguish `refresh_existing_scenario` from `raise_coverage_only`, or is one refresh action enough for the first version?
+- Should blocked-run proposals and human-conversation proposals share one ranking queue, or should they be ranked per source kind first?
 
 ## Deferred Decisions
 
 - operator acceptance workflow and persistence path
-- host-specific heuristics for detecting topic shift, clarification, memory
-  preference, or event-triggered wake-up patterns
+- host-specific heuristics for detecting topic shift, clarification, memory preference, or event-triggered wake-up patterns
 
 ## Source References
 

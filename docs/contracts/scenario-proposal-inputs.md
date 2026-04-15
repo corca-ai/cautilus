@@ -1,26 +1,21 @@
 # Scenario Proposal Input Packet Contract
 
-`cautilus scenario propose` is the first standalone product surface for
-turning host-normalized scenario signals into operator-reviewable proposal
-packets.
+`cautilus scenario propose` is the first standalone product surface for turning host-normalized scenario signals into operator-reviewable proposal packets.
 
-This contract defines the exact input packet boundary that host repos must
-produce before `Cautilus` ranks, merges, and emits draft scenario proposals.
+This contract defines the exact input packet boundary that host repos must produce before `Cautilus` ranks, merges, and emits draft scenario proposals.
 
 ## Scope
 
 This contract owns:
 
-- the checked-in or generated JSON packet consumed by
-  `cautilus scenario propose`
+- the checked-in or generated JSON packet consumed by `cautilus scenario propose`
 - normalized proposal-candidate shape
 - scenario registry and coverage payload shape at the CLI handoff boundary
 
 This contract does not own:
 
 - raw Slack, chat, or host-runtime logs
-- host-specific heuristics that decide how to group activity into proposal
-  candidates
+- host-specific heuristics that decide how to group activity into proposal candidates
 - operator acceptance workflow after proposal generation
 
 ## Input Packet
@@ -83,8 +78,7 @@ Each entry in `proposalCandidates` must provide:
 
 Optional fields currently supported by the product-owned draft builder:
 
-- `intentProfile` using `cautilus.behavior_intent.v1`
-  with product-owned `behaviorSurface` and dimension IDs
+- `intentProfile` using `cautilus.behavior_intent.v1` with product-owned `behaviorSurface` and dimension IDs
 - `tags`
 - `maxTurns`
 - `simulatorTurns`
@@ -92,14 +86,12 @@ Optional fields currently supported by the product-owned draft builder:
 - `conversationAuditScenario`
 
 `Cautilus` may accept multiple candidates with the same `proposalKey`.
-The product-owned merge step combines their evidence and keeps the newest
-evidence first.
+The product-owned merge step combines their evidence and keeps the newest evidence first.
 
 ## Registry And Coverage Shape
 
 `existingScenarioRegistry` carries the current checked-in scenario identity.
-Only `scenarioKey` is required by the first standalone CLI surface, but host
-repos should preserve `scenarioId` and `family` when they already have them.
+Only `scenarioKey` is required by the first standalone CLI surface, but host repos should preserve `scenarioId` and `family` when they already have them.
 
 `scenarioCoverage` carries recent execution counts by `scenarioKey`.
 `recentResultCount` must be a non-negative number.
@@ -110,10 +102,8 @@ The host-owned normalization seam should:
 
 - map raw activity into stable `proposalKey` buckets
 - produce operator-reviewable evidence rather than opaque IDs alone
-- keep host-private storage details out of the product packet unless they are
-  needed for review context
-- pass scenario registry and coverage as separate inputs so refresh decisions do
-  not depend on guessed state
+- keep host-private storage details out of the product packet unless they are needed for review context
+- pass scenario registry and coverage as separate inputs so refresh decisions do not depend on guessed state
 
 The product-owned `scenario propose` command then:
 
@@ -121,26 +111,21 @@ The product-owned `scenario propose` command then:
 - merges duplicate `proposalKey` entries
 - ranks proposals
 - emits `cautilus.scenario_proposals.v1`
-- preserves `intentProfile` when the candidate already carries one
-  and normalizes it against the shared behavior-intent catalog
+- preserves `intentProfile` when the candidate already carries one and normalizes it against the shared behavior-intent catalog
 
 ## Fixed Decisions
 
 - `cautilus scenario propose` reads a normalized packet, not raw host logs.
-- Host repos own topic detection, blocked-run clustering, and other
-  pattern-mining heuristics.
+- Host repos own topic detection, blocked-run clustering, and other pattern-mining heuristics.
 - Product-owned proposal generation starts at candidate merge and ranking.
 - Registry presence and recent coverage remain separate inputs.
-- `intentProfile` stays optional so non-intent-aware candidate miners do not
-  have to invent fake dimensions.
+- `intentProfile` stays optional so non-intent-aware candidate miners do not have to invent fake dimensions.
 
 ## Probe Questions
 
 - Should a later version support stdin in addition to `--input` files?
-- Should host repos be encouraged to emit one candidate per evidence item, or
-  pre-merge candidates before handing them to `Cautilus`?
-- Should the product eventually validate richer candidate-family-specific
-  fields, or keep the first packet schema loose?
+- Should host repos be encouraged to emit one candidate per evidence item, or pre-merge candidates before handing them to `Cautilus`?
+- Should the product eventually validate richer candidate-family-specific fields, or keep the first packet schema loose?
 
 ## Deferred Decisions
 

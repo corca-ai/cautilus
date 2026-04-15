@@ -1,14 +1,11 @@
 # Behavior Intent
 
-`Cautilus` should keep one small behavior-intent contract above raw prompt or
-adapter mechanics.
+`Cautilus` should keep one small behavior-intent contract above raw prompt or adapter mechanics.
 
 Use `cautilus.behavior_intent.v1` for that object.
 
 The point is not to freeze one prompt verbatim.
-The point is to make the evaluated behavior explicit enough that `report`,
-`review`, `optimize`, `revision artifact`, and `scenario proposal` packets can
-point at the same intent without re-deriving it from prose.
+The point is to make the evaluated behavior explicit enough that `report`, `review`, `optimize`, `revision artifact`, and `scenario proposal` packets can point at the same intent without re-deriving it from prose.
 
 ## Contents
 
@@ -29,75 +26,43 @@ Each dimension stays thin:
 
 Current product-owned catalog:
 
-- `operator_behavior`
-  generic fallback when the seam knows the behavior is operator-facing but does
-  not know a narrower product-owned class yet
-- `conversation_continuity`
-  multi-turn workflow continuity in a conversation (formerly
-  `workflow_conversation`; the old name stays accepted as a deprecated
-  alias and is silently normalized to `conversation_continuity`)
-- `thread_followup`
-  follow-up continuity inside an already active thread
-- `thread_context_recovery`
-  clarification or recovery when the thread context is insufficient
-- `skill_validation`
-  deterministic skill, profile, or integration validation surface
-- `skill_trigger_selection`
-  whether the skill triggers on the right prompts and stays quiet otherwise
-- `skill_execution_quality`
-  whether the skill completes the intended task once invoked
-- `operator_workflow_recovery`
-  durable workflow recovery or resumability surface
-- `review_variant_workflow`
-  review prompt or executor-variant workflow surface
+- `operator_behavior` generic fallback when the seam knows the behavior is operator-facing but does not know a narrower product-owned class yet
+- `conversation_continuity` multi-turn workflow continuity in a conversation (formerly `workflow_conversation`; the old name stays accepted as a deprecated alias and is silently normalized to `conversation_continuity`)
+- `thread_followup` follow-up continuity inside an already active thread
+- `thread_context_recovery` clarification or recovery when the thread context is insufficient
+- `skill_validation` deterministic skill, profile, or integration validation surface
+- `skill_trigger_selection` whether the skill triggers on the right prompts and stays quiet otherwise
+- `skill_execution_quality` whether the skill completes the intended task once invoked
+- `operator_workflow_recovery` durable workflow recovery or resumability surface
+- `review_variant_workflow` review prompt or executor-variant workflow surface
 
 ## Dimension Catalog
 
 Dimensions are now product-owned catalog entries, not free-form host IDs.
-The runtime rejects unknown IDs, wrong dimension kinds, and dimensions that do
-not apply to the declared `behaviorSurface`.
+The runtime rejects unknown IDs, wrong dimension kinds, and dimensions that do not apply to the declared `behaviorSurface`.
 
 Current success-dimension catalog:
 
-- `operator_guidance_clarity`
-  Keep the operator-facing guidance explicit and easy to follow.
-- `failure_cause_clarity`
-  Explain the concrete failure cause or missing prerequisite.
-- `recovery_next_step`
-  Make the next safe recovery step explicit without operator guesswork.
-- `workflow_continuity`
-  Carry the active workflow context cleanly into the next turn.
-- `target_clarification`
-  Ask for the minimum concrete target or missing context before acting.
-- `preference_reuse`
-  Reuse the preference or constraint the user just established in-thread.
-- `validation_integrity`
-  Keep the declared validation surface passing and legible.
-- `skill_trigger_accuracy`
-  Trigger the skill when the prompt truly needs it and stay quiet otherwise.
-- `skill_task_fidelity`
-  Complete the intended task cleanly once the skill is invoked.
-- `runtime_budget_respect`
-  Stay within the declared runtime or token budget when one is provided.
-- `workflow_recovery`
-  Recover the workflow cleanly when the known blocker reappears.
-- `review_evidence_legibility`
-  Keep review evidence and verdict framing legible to a human reviewer.
+- `operator_guidance_clarity` Keep the operator-facing guidance explicit and easy to follow.
+- `failure_cause_clarity` Explain the concrete failure cause or missing prerequisite.
+- `recovery_next_step` Make the next safe recovery step explicit without operator guesswork.
+- `workflow_continuity` Carry the active workflow context cleanly into the next turn.
+- `target_clarification` Ask for the minimum concrete target or missing context before acting.
+- `preference_reuse` Reuse the preference or constraint the user just established in-thread.
+- `validation_integrity` Keep the declared validation surface passing and legible.
+- `skill_trigger_accuracy` Trigger the skill when the prompt truly needs it and stay quiet otherwise.
+- `skill_task_fidelity` Complete the intended task cleanly once the skill is invoked.
+- `runtime_budget_respect` Stay within the declared runtime or token budget when one is provided.
+- `workflow_recovery` Recover the workflow cleanly when the known blocker reappears.
+- `review_evidence_legibility` Keep review evidence and verdict framing legible to a human reviewer.
 
 Current guardrail-dimension catalog:
 
-- `operator_state_truthfulness`
-  Do not imply success, configuration, or completion state that has not
-  happened.
-- `repair_explicit_regressions_first`
-  Prefer repairing explicit regressions over widening scope.
-- `review_findings_binding`
-  Treat review findings as first-class evidence, not optional commentary.
-- `history_focuses_next_probe`
-  Use scenario history only to focus the next bounded probe, not to justify
-  overfitting.
-- `rerun_relevant_gates`
-  Stop after one bounded revision and rerun the relevant gates.
+- `operator_state_truthfulness` Do not imply success, configuration, or completion state that has not happened.
+- `repair_explicit_regressions_first` Prefer repairing explicit regressions over widening scope.
+- `review_findings_binding` Treat review findings as first-class evidence, not optional commentary.
+- `history_focuses_next_probe` Use scenario history only to focus the next bounded probe, not to justify overfitting.
+- `rerun_relevant_gates` Stop after one bounded revision and rerun the relevant gates.
 
 ## Ownership
 
@@ -115,18 +80,15 @@ Current rule:
 
 ### Default-Derived Profile
 
-The product derives a minimal profile from a plain `intent` string plus seam
-context.
+The product derives a minimal profile from a plain `intent` string plus seam context.
 
 Current derivation rules:
 
 - `intentId` is slug-derived from the summary
 - `summary` copies the explicit intent text
 - `behaviorSurface` falls back to one product-owned default for the seam
-- `successDimensions` fall back to one product-owned default set for that seam
-  or surface
-- `guardrailDimensions` stay empty unless the seam has explicit product-owned
-  defaults, such as optimize guardrails
+- `successDimensions` fall back to one product-owned default set for that seam or surface
+- `guardrailDimensions` stay empty unless the seam has explicit product-owned defaults, such as optimize guardrails
 
 ## Current Default Sets
 
@@ -166,24 +128,17 @@ Current seam-level defaults:
 
 ## Current Slice
 
-This slice keeps the contract intentionally thin but now makes the reusable
-dimension vocabulary explicit.
+This slice keeps the contract intentionally thin but now makes the reusable dimension vocabulary explicit.
 
 - `report` materializes the intent profile once from explicit inputs
 - `review` reuses that same object when building the meta-prompt packet
-- `optimize` copies the same object into the bounded revision packet and may
-  add product-owned guardrail defaults when none were declared
-- `revision artifact` carries the same object forward so the next operator can
-  see what behavior the bounded revision is trying to repair
-- `scenario proposal` may carry the same object when a normalization helper or
-  host packet already knows the intended behavior behind a reusable scenario
+- `optimize` copies the same object into the bounded revision packet and may add product-owned guardrail defaults when none were declared
+- `revision artifact` carries the same object forward so the next operator can see what behavior the bounded revision is trying to repair
+- `scenario proposal` may carry the same object when a normalization helper or host packet already knows the intended behavior behind a reusable scenario
 
 ## Guardrails
 
 - Do not turn the behavior-intent object into a prompt-programming runtime.
-- Do not require host repos to encode policy-specific ontologies before they
-  can use the product.
-- Prefer one explicit summary plus a few durable catalog dimensions over deep
-  nested schemas.
-- Keep consumer prompts, adapters, policy, and scenario fixtures
-  consumer-owned.
+- Do not require host repos to encode policy-specific ontologies before they can use the product.
+- Prefer one explicit summary plus a few durable catalog dimensions over deep nested schemas.
+- Keep consumer prompts, adapters, policy, and scenario fixtures consumer-owned.

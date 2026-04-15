@@ -1,7 +1,6 @@
 # Revision Artifact
 
-`Cautilus` should expose one durable revision-artifact seam above an optimize
-proposal.
+`Cautilus` should expose one durable revision-artifact seam above an optimize proposal.
 
 The proposal answers:
 
@@ -9,8 +8,7 @@ The proposal answers:
 
 The revision artifact answers:
 
-- what exact bounded revision object should an operator, prompt editor, or
-  follow-up tool reopen later
+- what exact bounded revision object should an operator, prompt editor, or follow-up tool reopen later
 - which target file snapshot and evidence files that revision was based on
 - which bounded checks must rerun before the revision can be accepted
 
@@ -42,9 +40,7 @@ The artifact should include:
 - trial telemetry copied from the proposal
 
 The point is not to inline arbitrary repo state.
-The point is to materialize one machine-readable revision object that can be
-reviewed, stored, or handed to a bounded follow-up step without rediscovering
-the optimize context from scratch.
+The point is to materialize one machine-readable revision object that can be reviewed, stored, or handed to a bounded follow-up step without rediscovering the optimize context from scratch.
 
 ## Current Use
 

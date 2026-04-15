@@ -1,20 +1,15 @@
 # Scenario Proposal Normalization Seam
 
-Host repos own the step that turns raw recent activity into normalized proposal
-candidates.
+Host repos own the step that turns raw recent activity into normalized proposal candidates.
 
-`Cautilus` does not yet own those heuristics, but it should provide one bounded
-reference seam that proves how host-owned normalized sources become the input
-packet consumed by `cautilus scenario propose`.
+`Cautilus` does not yet own those heuristics, but it should provide one bounded reference seam that proves how host-owned normalized sources become the input packet consumed by `cautilus scenario propose`.
 
 ## Scope
 
 This seam owns:
 
-- a reference command that assembles split normalized sources into one
-  `cautilus.scenario_proposal_inputs.v1` packet
-- the split-file boundary between host-owned candidate mining and
-  product-owned proposal generation
+- a reference command that assembles split normalized sources into one `cautilus.scenario_proposal_inputs.v1` packet
+- the split-file boundary between host-owned candidate mining and product-owned proposal generation
 
 This seam does not own:
 
@@ -43,8 +38,7 @@ This command is intentionally narrow:
 - `--coverage` points at recent execution counts
 - `--family`, `--window-days`, and `--now` add packet-level metadata
 
-The command emits a single `cautilus.scenario_proposal_inputs.v1` packet that
-can be passed directly to `cautilus scenario propose`.
+The command emits a single `cautilus.scenario_proposal_inputs.v1` packet that can be passed directly to `cautilus scenario propose`.
 
 ## Split Source Files
 
@@ -91,26 +85,20 @@ The first reference seam expects JSON arrays in three separate files.
 
 ## Fixed Decisions
 
-- Host repos still own normalization heuristics before `candidates.json`
-  exists.
-- The first executable seam is file-based and explicit, not hidden behind a
-  repo-local database query or storage SDK.
+- Host repos still own normalization heuristics before `candidates.json` exists.
+- The first executable seam is file-based and explicit, not hidden behind a repo-local database query or storage SDK.
 - `scenario prepare-input` is a reference assembler, not a mining engine.
 - `scenario propose` stays downstream of this seam.
 
 ## Probe Questions
 
-- Should a later version also accept stdin or directories instead of explicit
-  file flags?
-- Should family metadata stay CLI flags, or move fully into checked-in source
-  files?
+- Should a later version also accept stdin or directories instead of explicit file flags?
+- Should family metadata stay CLI flags, or move fully into checked-in source files?
 
 ## Deferred Decisions
 
-- any generic library helpers for mapping raw source ports into
-  `candidates.json`
-- whether `scenario prepare-input` should eventually move registry and coverage
-  path discovery into adapter config
+- any generic library helpers for mapping raw source ports into `candidates.json`
+- whether `scenario prepare-input` should eventually move registry and coverage path discovery into adapter config
 
 ## Source References
 

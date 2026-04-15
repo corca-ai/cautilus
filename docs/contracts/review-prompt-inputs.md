@@ -1,10 +1,8 @@
 # Review Prompt Inputs
 
-`Cautilus` owns a generic meta-prompt layer above
-`cautilus.review_packet.v1`.
+`Cautilus` owns a generic meta-prompt layer above `cautilus.review_packet.v1`.
 
-Use `cautilus.review_prompt_inputs.v1` for the packet that turns durable review
-evidence into a portable prompt-rendering input.
+Use `cautilus.review_prompt_inputs.v1` for the packet that turns durable review evidence into a portable prompt-rendering input.
 
 ## Contents
 
@@ -25,8 +23,7 @@ The packet should include:
   - `output_under_test`
 - optional explicit `outputUnderTestFile`
 - optional `outputUnderTestText`
-  - extracted with `--output-text-key <dot.path>` when the narrative span lives
-    inside a JSON artifact
+  - extracted with `--output-text-key <dot.path>` when the narrative span lives inside a JSON artifact
 - optional default prompt/schema file references
 - product-owned meta-prompt objective and instructions
 
@@ -36,8 +33,7 @@ The consumer still owns:
 - prompt addenda checked into the host repo
 - output schemas and policy language
 
-`Cautilus` owns the generic framing that says how an independent reviewer
-should interpret those inputs.
+`Cautilus` owns the generic framing that says how an independent reviewer should interpret those inputs.
 
 ## Current Use
 
@@ -82,8 +78,5 @@ cautilus review render-prompt \
 - Keep domain-specific instructions adapter-owned.
 - Do not inline arbitrary repo files into the packet.
 - Prefer explicit file references over hidden prompt assembly.
-- When judging realized behavior, prefer `--output-under-test` over baking the
-  artifact path into adapter prose.
-- When the realized output is a larger JSON artifact, prefer `--output-text-key`
-  so the judge sees the narrative span directly instead of inferring it from a
-  file path alone.
+- When judging realized behavior, prefer `--output-under-test` over baking the artifact path into adapter prose.
+- When the realized output is a larger JSON artifact, prefer `--output-text-key` so the judge sees the narrative span directly instead of inferring it from a file path alone.

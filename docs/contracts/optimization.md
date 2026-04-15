@@ -1,56 +1,44 @@
 # Optimization
 
-`Cautilus` should expose one bounded optimization seam above explicit report,
-review, and history evidence.
+`Cautilus` should expose one bounded optimization seam above explicit report, review, and history evidence.
 
 The goal is not an open-ended self-improvement loop.
-The goal is to turn explicit evaluation evidence into one conservative next
-revision brief that still respects held-out, comparison, and structured review
-gates.
+The goal is to turn explicit evaluation evidence into one conservative next revision brief that still respects held-out, comparison, and structured review gates.
 
-For a bounded `GEPA`-inspired prompt-search seam that sits above this contract,
-see [optimization-search.md](./optimization-search.md).
+For a bounded `GEPA`-inspired prompt-search seam that sits above this contract, see [optimization-search.md](./optimization-search.md).
 
 ## Problem
 
-The current optimization seam can propose one bounded revision brief, but it
-does not yet make three things explicit enough:
+The current optimization seam can propose one bounded revision brief, but it does not yet make three things explicit enough:
 
 - which optimization style is being used
 - how much evidence and review surface the optimizer is allowed to consume
 - why a specific subset of evidence was selected for the brief
 
-This makes the proposal less reproducible than the surrounding evaluation
-packets and leaves too much optimizer behavior implicit.
+This makes the proposal less reproducible than the surrounding evaluation packets and leaves too much optimizer behavior implicit.
 
 ## Current Slice
 
-This slice adds a small DSPy-inspired control surface without importing a DSPy
-runtime:
+This slice adds a small DSPy-inspired control surface without importing a DSPy runtime:
 
 - a declared optimizer kind
 - a declared bounded budget
 - a materialized trial plan derived from that budget
-- proposal telemetry that explains how much evidence was seen, selected, and
-  converted into the next bounded revision brief
-- evidence provenance so later review can trace each proposal back to an
-  explicit packet and locator
+- proposal telemetry that explains how much evidence was seen, selected, and converted into the next bounded revision brief
+- evidence provenance so later review can trace each proposal back to an explicit packet and locator
 - one durable revision artifact packet above the proposal
 
 ## Fixed Decisions
 
 - Optimization stays packet-first and file-based.
 - `Cautilus` does not own a prompt-programming runtime or LM module framework.
-- The optimizer still emits one bounded next-revision brief, not a compile
-  loop.
+- The optimizer still emits one bounded next-revision brief, not a compile loop.
 - Consumer prompts, adapter files, and policy remain consumer-owned targets.
-- Review findings, compare results, and scenario history remain the evidence
-  sources for this seam.
+- Review findings, compare results, and scenario history remain the evidence sources for this seam.
 
 ## Probe Questions
 
-- Is the shared behavior-intent profile thin enough to stay repo-agnostic while
-  still keeping review and optimize packets aligned?
+- Is the shared behavior-intent profile thin enough to stay repo-agnostic while still keeping review and optimize packets aligned?
 ## Deferred Decisions
 
 - consumer-integrated fine-tuning or weight-update orchestration
@@ -64,12 +52,9 @@ runtime:
 
 ## Constraints
 
-- keep the existing `optimize prepare-input` and `optimize propose` command
-  shape
-- preserve `cautilus.optimize_inputs.v1` and
-  `cautilus.optimize_proposal.v1` schema ids
-- keep the default optimizer behavior conservative when the operator does not
-  specify new fields
+- keep the existing `optimize prepare-input` and `optimize propose` command shape
+- preserve `cautilus.optimize_inputs.v1` and `cautilus.optimize_proposal.v1` schema ids
+- keep the default optimizer behavior conservative when the operator does not specify new fields
 
 ## Input Packet
 
@@ -89,8 +74,7 @@ The packet should include:
 - optimizer configuration
   - `kind`: `repair`, `reflection`, or `history_followup`
   - `budget`: `light`, `medium`, or `heavy`
-  - `plan`: bounded limits derived from the budget, such as evidence and review
-    consumption caps
+  - `plan`: bounded limits derived from the budget, such as evidence and review consumption caps
 
 Current surface:
 
@@ -115,11 +99,9 @@ The proposal should include:
 - optimizer configuration copied from the input packet
 - current report recommendation
 - a bounded decision: `hold`, `revise`, or `investigate`
-- prioritized evidence derived from regressions, review findings, noisy
-  surfaces, and recent history misses
+- prioritized evidence derived from regressions, review findings, noisy surfaces, and recent history misses
 - evidence provenance that points back to the source packet and locator
-- suggested changes with explicit change kinds such as `prompt_revision`,
-  `adapter_revision`, `sampling_increase`, or `history_followup`
+- suggested changes with explicit change kinds such as `prompt_revision`, `adapter_revision`, `sampling_increase`, or `history_followup`
 - one revision brief
 - trial telemetry
   - how many evidence items were seen
@@ -145,15 +127,11 @@ cautilus optimize build-artifact \
 ## Success Criteria
 
 - `optimize prepare-input` can declare optimizer kind and budget explicitly.
-- `optimize prepare-input` keeps a shared behavior-intent profile above raw
-  prompt or adapter mechanics.
-- The input packet materializes a bounded plan instead of leaving budget
-  behavior implicit.
-- `optimize propose` records optimizer telemetry that explains why the final
-  revision brief is bounded the way it is.
+- `optimize prepare-input` keeps a shared behavior-intent profile above raw prompt or adapter mechanics.
+- The input packet materializes a bounded plan instead of leaving budget behavior implicit.
+- `optimize propose` records optimizer telemetry that explains why the final revision brief is bounded the way it is.
 - Prioritized evidence includes source provenance for later audit.
-- `optimize build-artifact` emits one durable packet that can be reopened
-  without rediscovering optimize inputs by hand.
+- `optimize build-artifact` emits one durable packet that can be reopened without rediscovering optimize inputs by hand.
 
 ## Acceptance Checks
 
@@ -164,20 +142,15 @@ cautilus optimize build-artifact \
 
 ## Canonical Artifact
 
-This document is the canonical contract for the optimization seam in this
-slice.
+This document is the canonical contract for the optimization seam in this slice.
 
 ## First Implementation Slice
 
-Update the optimize input builder, optimize proposal generator, revision
-artifact builder, schemas, fixtures, and flow tests so the optimize seam keeps
-one durable packet for the next bounded revision.
+Update the optimize input builder, optimize proposal generator, revision artifact builder, schemas, fixtures, and flow tests so the optimize seam keeps one durable packet for the next bounded revision.
 
 ## Guardrails
 
-- Do not treat optimizer output as permission to weaken held-out, comparison,
-  or structured review gates.
+- Do not treat optimizer output as permission to weaken held-out, comparison, or structured review gates.
 - Do not turn one bounded revision brief into an infinite retry loop.
 - Prefer repairing cited regressions over widening scope.
-- Keep consumer prompts, policies, and target files consumer-owned even when
-  packet assembly and proposal framing are product-owned.
+- Keep consumer prompts, policies, and target files consumer-owned even when packet assembly and proposal framing are product-owned.

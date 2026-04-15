@@ -1,7 +1,6 @@
 # Review Packet
 
-`Cautilus` should keep review prompts, schemas, compare questions, and report
-artifacts on one durable boundary before executor variants run.
+`Cautilus` should keep review prompts, schemas, compare questions, and report artifacts on one durable boundary before executor variants run.
 
 Use `cautilus.review_packet.v1` for that boundary.
 
@@ -19,9 +18,7 @@ The packet should include:
 - default prompt/schema file references when the adapter declares them
 
 The point is not to inline every artifact body.
-The point is to give the repo one stable machine-readable object that tells a
-review prompt builder or executor wrapper what evidence exists and where it
-lives.
+The point is to give the repo one stable machine-readable object that tells a review prompt builder or executor wrapper what evidence exists and where it lives.
 
 ## Current Use
 
@@ -42,7 +39,5 @@ This packet is the intended bridge between:
 ## Guardrails
 
 - Keep artifact discovery adapter-driven and explicit.
-- Do not scrape arbitrary repo files outside `artifact_paths` and `report_paths`
-  in this product-owned layer.
-- Keep domain-specific prompt authoring consumer-owned even when packet
-  assembly and meta-prompt framing are product-owned.
+- Do not scrape arbitrary repo files outside `artifact_paths` and `report_paths` in this product-owned layer.
+- Keep domain-specific prompt authoring consumer-owned even when packet assembly and meta-prompt framing are product-owned.

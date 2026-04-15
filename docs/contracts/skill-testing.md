@@ -1,34 +1,25 @@
 # Skill Testing Contract
 
-`Cautilus` should support a first-class `skill test` workflow for the common
-operator request:
+`Cautilus` should support a first-class `skill test` workflow for the common operator request:
 
 `Use Cautilus to test this skill.`
 
 `skill evaluate` remains the packet summarizer for already observed runs.
-`skill test` sits one step earlier and owns the bounded workflow that turns a
-checked-in case suite plus adapter-owned runner into the observed evaluation
-packet.
+`skill test` sits one step earlier and owns the bounded workflow that turns a checked-in case suite plus adapter-owned runner into the observed evaluation packet.
 
 ## Problem
 
-`skill evaluate` is valuable once a host already has a normalized
-`cautilus.skill_evaluation_inputs.v1` packet, but that starts too late for the
-operator flow where an agent should be able to run a local skill test with one
-explicit command path.
+`skill evaluate` is valuable once a host already has a normalized `cautilus.skill_evaluation_inputs.v1` packet, but that starts too late for the operator flow where an agent should be able to run a local skill test with one explicit command path.
 
 The product-owned first slice should be:
 
 `checked-in skill cases -> cautilus skill test -> observed skill evaluation input -> cautilus skill evaluate -> skill evaluation summary -> cautilus scenario normalize skill`
 
-This keeps host execution ownership in the adapter while letting `Cautilus`
-own the operator-facing command, output paths, runDir behavior, and downstream
-chaining.
+This keeps host execution ownership in the adapter while letting `Cautilus` own the operator-facing command, output paths, runDir behavior, and downstream chaining.
 
 ## Input Boundary
 
-`cautilus skill test` should consume a checked-in case suite with schema
-`cautilus.skill_test_cases.v1`.
+`cautilus skill test` should consume a checked-in case suite with schema `cautilus.skill_test_cases.v1`.
 
 Minimum shape:
 
@@ -52,11 +43,9 @@ Minimum shape:
   - optional `repeatCount`
   - optional `minConsensusCount`
 
-When `repeatCount` is greater than `1`, the adapter-owned runner should
-execute that case multiple times and emit one aggregated observed evaluation
-result. `minConsensusCount` is the minimum number of matching runs required for
-that aggregated result to count as a clean pass. If omitted, it defaults to
-`repeatCount`.
+When `repeatCount` is greater than `1`, the adapter-owned runner should execute that case multiple times and emit one aggregated observed evaluation result.
+`minConsensusCount` is the minimum number of matching runs required for that aggregated result to count as a clean pass.
+If omitted, it defaults to `repeatCount`.
 
 The checked-in case suite owns the prompts and expectations.
 The adapter-owned runner still owns:
@@ -79,9 +68,7 @@ Current placeholder additions for that seam:
 - `{skill_cases_file}`
 - `{skill_eval_input_file}`
 
-Existing placeholders such as `{candidate_repo}` and `{output_dir}` remain
-available, so a checked-in runner can use a disposable workspace and emit its
-raw artifacts beside the generated input packet.
+Existing placeholders such as `{candidate_repo}` and `{output_dir}` remain available, so a checked-in runner can use a disposable workspace and emit its raw artifacts beside the generated input packet.
 
 ## Output Boundary
 
@@ -94,15 +81,12 @@ raw artifacts beside the generated input packet.
 - any adapter-owned raw runner artifacts
 - per-case aggregate artifacts when repeated runs are used
 
-The summary and candidates should be product-owned outputs even when the
-adapter-owned runner produced the raw observed packet.
+The summary and candidates should be product-owned outputs even when the adapter-owned runner produced the raw observed packet.
 
 ## Guardrails
 
 - Do not make `skill test` parse raw host logs directly inside the product.
-- Do not require every host to expose provider telemetry before the seam is
-  usable.
-- Do not collapse deterministic packaging or bootstrap validation into this
-  workflow. Keep those as repo-owned cheap gates.
-- Do not force operators to hand-edit `cautilus.skill_evaluation_inputs.v1`
-  when a checked-in case suite plus adapter runner can produce it.
+- Do not require every host to expose provider telemetry before the seam is usable.
+- Do not collapse deterministic packaging or bootstrap validation into this workflow.
+  Keep those as repo-owned cheap gates.
+- Do not force operators to hand-edit `cautilus.skill_evaluation_inputs.v1` when a checked-in case suite plus adapter runner can produce it.

@@ -8,8 +8,7 @@ The host repo still owns:
 - storage and trace access
 - app- or runtime-specific extraction logic
 
-`Cautilus` owns the portable packet boundary that combines normalized sources
-before scenario mining or optimization.
+`Cautilus` owns the portable packet boundary that combines normalized sources before scenario mining or optimization.
 
 ## Input Packet
 
@@ -56,5 +55,4 @@ cautilus evidence bundle \
 - Keep raw-reader ownership host-side.
 - Do not infer hidden evidence from shell history.
 - Use explicit files and explicit schema versions.
-- Treat the bundle as bounded evidence for the next slice, not an open-ended
-  retry loop.
+- Treat the bundle as bounded evidence for the next slice, not an open-ended retry loop.

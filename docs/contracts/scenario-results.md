@@ -1,10 +1,8 @@
 # Scenario Results
 
-`Cautilus` should not accept loose benchmark arrays once a mode run becomes
-part of the durable product surface.
+`Cautilus` should not accept loose benchmark arrays once a mode run becomes part of the durable product surface.
 
-Use `cautilus.scenario_results.v1` for the explicit packet that carries one
-mode's scenario-level outcomes.
+Use `cautilus.scenario_results.v1` for the explicit packet that carries one mode's scenario-level outcomes.
 
 ## Contents
 
@@ -34,8 +32,7 @@ Each result entry may include:
 
 ## Compare Artifact
 
-When a mode command produces richer deltas, it may embed one
-`cautilus.compare_artifact.v1` object beside `results`.
+When a mode command produces richer deltas, it may embed one `cautilus.compare_artifact.v1` object beside `results`.
 
 That artifact should summarize:
 
@@ -44,8 +41,7 @@ That artifact should summarize:
 - optional finer-grained deltas
 - optional artifact paths worth reading directly
 
-This gives `report build`, `review prepare-input`, and review prompt rendering
-one shared machine-readable compare surface.
+This gives `report build`, `review prepare-input`, and review prompt rendering one shared machine-readable compare surface.
 
 ## Current Use
 
@@ -53,8 +49,7 @@ The current standalone chain is:
 
 1. `mode evaluate` asks the adapter command to write one scenario-results file
 2. `report build` lifts that packet into `cautilus.report_packet.v2`
-3. `review prepare-input` and `review build-prompt-input` keep the same compare
-   surface visible to review variants
+3. `review prepare-input` and `review build-prompt-input` keep the same compare surface visible to review variants
 
 ## Guardrails
 
