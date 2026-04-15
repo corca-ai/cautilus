@@ -242,6 +242,118 @@ Current runtime note:
 - whether low-confidence adjudication policy belongs in this contract or in a
   compare-run contract
 
+## Deferred Expansion — Reusable Baseline Store + Broader Compare Ownership
+
+Designed and premortemed on 2026-04-15, then deferred. Recorded here so the
+next session does not re-run the same analysis.
+
+### Planned scope (if unlocked)
+
+- **Part 1 — reusable baseline result store.** Re-key the baseline-cache
+  from `(profileId, scenarioIds, baselineFingerprint, scenarioFingerprint)`
+  to a broader key that lets multiple profiles and entry points share one
+  baseline result per evaluated commit (e.g. `(commitSha, scenarioId,
+  adapterId, mode)`).
+- **Part 2 — broader compare ownership.** Extend history / compare hooks
+  beyond the single profile-backed `mode evaluate --profile <X>` path so
+  `review variants`, `mode evaluate` without a profile, and `skill evaluate`
+  can also update history and materialize compare artifacts.
+
+The two parts were planned as one coordinated slice, with README,
+[skills/cautilus/SKILL.md](../../skills/cautilus/SKILL.md),
+`cautilus --help` (registry), and this contract updated together.
+
+### Why deferred
+
+Premortem (4 angles: cache migration / external consumer / devil's
+advocate / doc cascade) surfaced a devil's-advocate finding strong enough
+to block execution and verified against repo state:
+
+- `mode evaluate --mode comparison` is the only path that materializes a
+  baseline-cache file today
+  ([evaluate-adapter-mode.mjs](../../scripts/agent-runtime/evaluate-adapter-mode.mjs)).
+- The repo's only live dogfood path, `run-self-dogfood.mjs`, runs with
+  `--mode full_gate`, which never reaches the cache-materialization branch.
+- Zero scenario profile files are checked in across `.agents/`, `fixtures/`,
+  and the repo root.
+- `run-executor-variants.mjs` and `evaluate-skill.mjs` contain zero
+  references to `scenario-history`, `baseline-cache`, or any persistence
+  hook — so Part 2 has no current call site.
+- Live external consumers are not yet tracked in
+  [consumer-readiness.md](../consumer-readiness.md); the chatbot,
+  skill-validation, and workflow entries are archetype reference fixtures,
+  not live deployments.
+
+Conclusion: the "shared baseline across multiple profiles" problem Part 1
+solves has zero occurrences today, and the "other entry points also want
+history" problem Part 2 solves has zero requesters. Master-plan Phase 5
+guidance ("dogfood evidence should justify the next seam rather than
+adding heuristics speculatively") applies directly.
+
+### Trigger to unlock
+
+Any one of the following is enough to revisit:
+
+1. A live external consumer (not an archetype fixture) runs `mode evaluate
+   --profile <X>` across two or more adapter commands and measures
+   baseline recomputation cost that the shared store would eliminate.
+2. A live consumer or dogfood adapter begins using `mode evaluate --mode
+   comparison` with a checked-in profile, so the existing baseline-cache
+   path becomes hot enough to matter.
+3. A concrete request to make `review variants` or `skill evaluate`
+   history-aware lands with a named use case (e.g. "remember which skill
+   test cases already passed last week").
+
+### If/when unlocked — required fixes
+
+These were identified by the premortem as blockers; keep the list so the
+next session does not re-derive them.
+
+Must fix in the same slice:
+
+- Bump `cautilus.scenario_baseline_cache.v1` to `v2` (or add a
+  `cacheKeyVersion` field) when the key structure changes. Update both
+  [contract-versions.mjs](../../scripts/agent-runtime/contract-versions.mjs)
+  and [internal/contracts/constants.go](../../internal/contracts/constants.go)
+  in the same commit.
+- Rewrite the narrow-scope lines in
+  [docs/specs/current-product.spec.md](../specs/current-product.spec.md)
+  ("checked-in scenario profile를 쓰는 comparison run에서 baseline-cache
+  seed와 cache key를 materialize" and "baseline cache는 reusable result
+  store까지는 아직 아니다") to describe the new scope, or explicitly
+  defer one more step.
+- Document the three entry points in README, SKILL.md, `--help` text
+  (registry usage strings), and this contract in one slice. The
+  user-facing requirement is that usage lands in all four surfaces
+  together.
+- Keep `profile` optional for the non-profile entry points. `skill
+  evaluate` and `review variants` must not be forced to declare a
+  profile file just to participate in history.
+
+Cheap to fold in:
+
+- Graceful fallback in `loadScenarioHistory` / `loadBaselineCache` for
+  the old key shape: either auto-migrate to the new key (if derivable)
+  or move the old file under `.cautilus/legacy/` with a logged warning.
+- `cautilus doctor` must still return `ready` against a repo that has
+  only a v1 cache file on disk.
+- Add a standing lint (`lint:history-compare-ownership` or folded into
+  an existing check) that verifies `docs/contracts/scenario-history.md`
+  and `docs/contracts/active-run.md` agree on cache-key structure, and
+  that each entry point participating in history has a matching row in
+  `current-product.spec.md`. Land before the slice if cascade drift is a
+  real concern; otherwise fold in.
+- Verify `sync-packaged-skill.mjs` handles any new upward links added to
+  SKILL.md so the packaged copy still resolves.
+
+Over-worry / skip:
+
+- Archetype-boundary coupling. Scenario-history is archetype-neutral and
+  stays that way unless a skill-specific graduation policy is introduced.
+- Making `profile` mandatory. The existing fallback to
+  `adapterData.profile_default || "default"` already covers the absence
+  path and should remain.
+
 ## Source References
 
 - [scenario-proposal-sources.md](./scenario-proposal-sources.md)

@@ -122,7 +122,9 @@ Moved into the product runtime:
 - compare artifact conventions shared by `mode evaluate` and
   `review variants`
 
-Still open:
+Still open (both deferred 2026-04-15 pending dogfood evidence — see
+[scenario-history.md § Deferred Expansion](./contracts/scenario-history.md)
+for premortem findings and the triggers that would unlock the slice):
 
 - reusable baseline result store beyond the first profile-backed cache-key
   path
