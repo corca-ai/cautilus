@@ -81,6 +81,44 @@ input shape or is owned by a distinct host class.
   [docs/evaluation-process.md](../evaluation-process.md). `docs/workflow.md`
   no longer exists to avoid colliding with the `workflow` archetype name.
 
+## Introspection Surfaces
+
+Three command surfaces let operators and tooling discover what `Cautilus`
+exposes. They are intentionally separate because they serve different
+audiences and grow at different rates:
+
+- `cautilus --help` (and `cautilus <subcommand> --help`) — human-readable
+  terminal text. Not a stable machine-parseable contract; do not script
+  against its shape.
+- `cautilus commands [--json]` — machine-readable CLI registry. Wrapper
+  tooling and agents parse it for safe probing and dispatch. Enumerates
+  every command path, usage string, and group. Grows with the CLI
+  surface on every new subcommand.
+- `cautilus scenarios [--json]` — machine-readable archetype catalog.
+  Enumerates the first-class evaluation archetypes defined in this spec
+  and their canonical entry commands. Answers "what can I evaluate?"
+  rather than "what commands exist?". Fixed cardinality: grows only when
+  this spec adds a new archetype.
+
+The three are deliberately not merged. `commands` is a CLI-shape index
+pinned to the CLI registry; `scenarios` is an evaluation-semantics index
+pinned to this spec. Merging would conflate dispatch metadata with
+archetype meaning, and every new subcommand would touch the scenarios
+payload by accident.
+
+Guidance for callers:
+
+- Agents picking an archetype should read `cautilus scenarios --json`.
+- Wrapper tools dispatching commands should read
+  `cautilus commands --json`.
+- Human operators use `cautilus --help`; no other surface promises the
+  same shape.
+
+Source-guard coverage for the underlying command paths already lives in
+[current-product.spec.md](./current-product.spec.md) and
+[standalone-surface.spec.md](./standalone-surface.spec.md), so this
+section does not restate those rows.
+
 ## Source Guard
 
 > check:source_guard
