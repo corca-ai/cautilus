@@ -1,6 +1,7 @@
 package runtime
 
 import (
+	"strings"
 	"testing"
 )
 
@@ -71,6 +72,105 @@ func TestNormalizeChatbotProposalCandidatesRespectsWordBoundary(t *testing.T) {
 				t.Fatalf("proposalKey repo-review-needs-target-clarification: got %v, want %v (candidates=%#v)", sawReview, tc.wantReview, candidates)
 			}
 		})
+	}
+}
+
+// TestNormalizeChatbotProposalCandidatesEmitsEventTriggeredFollowup asserts
+// that an `eventType: "app_mention"` wake-up followed by a plain
+// follow-up turn produces the `event-triggered-followup` candidate.
+// Closes the test gap called out in archetype-extension hardening:
+// without this guard `buildEventTriggeredFollowupCandidate` could rot
+// silently because no other test exercises the event-triggered branch.
+func TestNormalizeChatbotProposalCandidatesEmitsEventTriggeredFollowup(t *testing.T) {
+	conversation := map[string]any{
+		"threadKey":      "thread-event-triggered",
+		"lastObservedAt": "2026-04-15T00:00:00.000Z",
+		"records": []any{
+			map[string]any{"actorKind": "user", "text": "@cautilus 안녕", "eventType": "app_mention"},
+			map[string]any{"actorKind": "user", "text": "이어서 진행해주세요"},
+		},
+	}
+	candidates, err := NormalizeChatbotProposalCandidates([]any{conversation}, nil)
+	if err != nil {
+		t.Fatalf("NormalizeChatbotProposalCandidates: %v", err)
+	}
+	saw := false
+	for _, rawCandidate := range candidates {
+		candidate, ok := rawCandidate.(map[string]any)
+		if !ok {
+			continue
+		}
+		if candidate["proposalKey"] == "event-triggered-followup" {
+			saw = true
+			break
+		}
+	}
+	if !saw {
+		t.Fatalf("expected event-triggered-followup candidate, got %#v", candidates)
+	}
+}
+
+// TestNormalizeWorkflowProposalCandidatesUsesCLIWorkflowLabel asserts
+// that the workflow archetype renders the canonical "CLI Workflow"
+// human label inside its description copy. Closes the test gap called
+// out in archetype-extension hardening: a future refactor that drops
+// the label from `humanizeTargetKind` would otherwise ship silently.
+func TestNormalizeWorkflowProposalCandidatesUsesCLIWorkflowLabel(t *testing.T) {
+	run := map[string]any{
+		"targetKind":     "cli_workflow",
+		"targetId":       "self-dogfood-cli",
+		"surface":        "operator_workflow_recovery",
+		"startedAt":      "2026-04-15T00:00:00.000Z",
+		"status":         "blocked",
+		"summary":        "Recovery loop kept hitting the same blocker.",
+		"blockerKind":    "repeated_screen_no_progress",
+		"blockedSteps":   []any{"step-1", "step-1"},
+	}
+	candidates, err := NormalizeWorkflowProposalCandidates([]any{run})
+	if err != nil {
+		t.Fatalf("NormalizeWorkflowProposalCandidates: %v", err)
+	}
+	if len(candidates) == 0 {
+		t.Fatalf("expected at least one workflow recovery candidate")
+	}
+	candidate, ok := candidates[0].(map[string]any)
+	if !ok {
+		t.Fatalf("candidate is not a map: %#v", candidates[0])
+	}
+	description, _ := candidate["description"].(string)
+	if !strings.Contains(description, "CLI Workflow") {
+		t.Fatalf("expected description to contain canonical label %q, got %q", "CLI Workflow", description)
+	}
+}
+
+// TestMergeCandidatesByProposalKeyPreservesInsertionOrder asserts that
+// the merge helper returns candidates in the insertion order of their
+// first appearance, not in map-iteration order. Closes the test gap
+// called out in archetype-extension hardening: without this guard a
+// refactor back to `for k, v := range map` would reintroduce
+// nondeterministic candidate ordering.
+func TestMergeCandidatesByProposalKeyPreservesInsertionOrder(t *testing.T) {
+	candidates := []map[string]any{
+		{"proposalKey": "alpha", "evidence": []any{}},
+		{"proposalKey": "bravo", "evidence": []any{}},
+		{"proposalKey": "charlie", "evidence": []any{}},
+		{"proposalKey": "alpha", "evidence": []any{}},
+	}
+	for iteration := 0; iteration < 8; iteration++ {
+		merged := mergeCandidatesByProposalKey(candidates)
+		if len(merged) != 3 {
+			t.Fatalf("expected 3 unique candidates, got %d", len(merged))
+		}
+		for index, want := range []string{"alpha", "bravo", "charlie"} {
+			candidate, ok := merged[index].(map[string]any)
+			if !ok {
+				t.Fatalf("merged[%d] is not a map: %#v", index, merged[index])
+			}
+			if candidate["proposalKey"] != want {
+				t.Fatalf("iteration %d: expected merged[%d] proposalKey %q, got %q",
+					iteration, index, want, candidate["proposalKey"])
+			}
+		}
 	}
 }
 

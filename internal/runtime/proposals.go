@@ -1,5 +1,20 @@
 package runtime
 
+// Per-archetype contract enforced inside this file.
+//
+// The three first-class evaluation archetypes (chatbot, skill, workflow)
+// each ship the same shape inside this file:
+//   - top-level `Normalize<Archetype>ProposalCandidates(...)` entry point.
+//   - per-pattern `build<Archetype>...Candidate(...)` builder helpers.
+//   - input-isolation `assert<Archetype>TargetKind(...)` (skill, workflow).
+//   - shared `mergeCandidatesByProposalKey` for deterministic ordering.
+//
+// Adding a fourth archetype means adding all four shapes here in the
+// same slice as the schema constant, contract document, fixtures, CLI
+// subcommand, README block, and `internal/runtime/scenarios.go` catalog
+// entry. See docs/specs/archetype-boundary.spec.md for the full
+// extension checklist.
+
 import (
 	"fmt"
 	"regexp"
@@ -692,7 +707,7 @@ func humanizeTargetKind(targetKind string) string {
 	if label, ok := labels[targetKind]; ok {
 		return label
 	}
-	return strings.ReplaceAll(targetKind, "_", " ")
+	return titleCase(strings.ReplaceAll(targetKind, "_", " "))
 }
 
 func humanizeSurface(surface string) string {

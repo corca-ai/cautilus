@@ -96,6 +96,20 @@ input shape or is owned by a distinct host class.
 | internal/runtime/proposals.go | fixed | func NormalizeChatbotProposalCandidates |
 | internal/runtime/proposals.go | fixed | func NormalizeSkillProposalCandidates |
 | internal/runtime/proposals.go | fixed | func NormalizeWorkflowProposalCandidates |
+| internal/runtime/proposals.go | fixed | func assertSkillTargetKind |
+| internal/runtime/proposals.go | fixed | func assertWorkflowTargetKind |
+| internal/runtime/scenarios.go | file_exists |  |
+| internal/runtime/scenarios.go | fixed | "cautilus.scenarios.v1" |
+| internal/runtime/scenarios.go | fixed | Archetype:     "chatbot" |
+| internal/runtime/scenarios.go | fixed | Archetype:     "skill" |
+| internal/runtime/scenarios.go | fixed | Archetype:     "workflow" |
+| internal/app/app.go | fixed | func handleScenarioNormalizeChatbot |
+| internal/app/app.go | fixed | func handleScenarioNormalizeSkill |
+| internal/app/app.go | fixed | func handleScenarioNormalizeWorkflow |
+| skills/cautilus/SKILL.md | fixed | scenario normalize chatbot |
+| skills/cautilus/SKILL.md | fixed | scenario normalize skill |
+| skills/cautilus/SKILL.md | fixed | scenario normalize workflow |
+| README.md | fixed | Cautilus has three first-class evaluation archetypes |
 | fixtures/scenario-proposals/chatbot-input.schema.json | file_exists |  |
 | fixtures/scenario-proposals/chatbot-input.schema.json | fixed | cautilus.chatbot_normalization_inputs.v1 |
 | fixtures/scenario-proposals/skill-input.schema.json | file_exists |  |
@@ -128,6 +142,55 @@ $ cautilus scenario normalize workflow --input ./fixtures/scenario-proposals/wor
 The skill command must reject a workflow-shaped input with an actionable
 error that mentions `cautilus scenario normalize workflow`.
 
+## Adding A New First-Class Archetype
+
+`npm run lint:specs` passing only proves the surfaces named in the
+Source Guard table exist. It does not prove the slice that adds a
+fourth archetype is complete. When introducing a new first-class
+archetype, edit these files in this order in one coordinated slice
+(everything from step 1 must be merged together; the spec lint must
+also pass after the table is widened in step 9):
+
+1. `internal/contracts/constants.go` — add the new
+   `<Archetype>NormalizationInputsSchema` constant + literal string.
+2. `fixtures/scenario-proposals/<archetype>-input.schema.json` — JSON
+   schema file pinned to the new schema id.
+3. `fixtures/scenario-proposals/<archetype>-*-input.json` — at least
+   one canonical example fixture matching the new schema.
+4. `internal/runtime/proposals.go` — add
+   `Normalize<Archetype>ProposalCandidates`, the per-pattern
+   `build<Archetype>...Candidate` builders, and an
+   `assert<Archetype>TargetKind` isolation function (extend the
+   contract comment block at the top of the file).
+5. `internal/runtime/intent.go` — add any new behavior surfaces and
+   dimensions needed for the new archetype to the catalog plus the
+   default-success-dimension map.
+6. `internal/runtime/scenarios.go` — add a `ScenarioCatalogEntry` for
+   the new archetype so `cautilus scenarios` includes it.
+7. `internal/cli/command-registry.json` — register the new
+   `["scenario", "normalize", "<archetype>"]` command path.
+8. `internal/app/app.go` — wire `handleScenarioNormalize<Archetype>`
+   in the `nativeHandler` dispatch table and the `switch kind` block,
+   then add the matching parser if needed.
+9. `docs/specs/archetype-boundary.spec.md` — add the new archetype's
+   `###` section above, widen the Source Guard table to include all
+   files touched in steps 1-8, and update any count language that
+   said "three" archetypes.
+10. `docs/contracts/<archetype>-normalization.md` — contract document
+    for the new helper boundary.
+11. `README.md` — add a Scenarios block with what-you-bring,
+    what-happens, what-comes-back, and next-action; update the
+    archetype count line.
+12. `skills/cautilus/SKILL.md` — add a Scenarios sub-block matching
+    the README copy and re-run the packaged-skill sync (Slice 0
+    `node scripts/release/sync-packaged-skill.mjs .`).
+
+The Source Guard table above only enforces existence of named
+patterns; it does not enforce ordering of the steps themselves. Adding
+an inverse-completeness lint that walks each archetype `###` heading
+in this spec and asserts every required surface is present is a
+separate, larger seam (see follow-up 2 below).
+
 ## Follow-up Work
 
 The initial slice that landed this spec covers: schema split, helper split,
@@ -144,86 +207,18 @@ with this spec:
    rules for exploratory surfaces, and a promotion checklist into
    first-class status when the surface earns a schema/helper/CLI/
    contract slice.
-2. **Archetype-extension hardening.** Surfaced by an
-    onboarding-lens premortem on the Node-removal slice (round 2): a new
-    contributor told to add a 4th first-class archetype must currently
-    grep across files this spec does not name, and the 1:1 mapping has
-    no inverse-completeness check. The deletion slice is intentionally
-    not bundling these because they are extension-time concerns, not
-    Node-removal concerns. Pick this up before — or together with — the
-    next first-class archetype actually being added.
-
-    Required edits this spec should name (today the contributor must
-    discover them by greping):
-
-    - `internal/app/app.go` dispatch table (around L176-181) and the
-      `switch kind` block (around L691-731). Source-guard rows for
-      `handleScenarioNormalize{Chatbot,Skill,Workflow}`.
-    - `internal/runtime/intent.go` `BehaviorSurfaces` /
-      `BehaviorDimensions` registries. `BehaviorSurfaces[...]` lookup
-      currently returns the empty string on a missing key; consider a
-      panic-on-miss helper as a separate seam.
-    - `internal/runtime/proposals.go` `assert<Archetype>TargetKind`
-      isolation pattern (around L189-205). Source-guard row for each
-      assertion function name. Without this, a new archetype can
-      silently accept another archetype's `targetKind` and break the
-      1:1 mapping invariant.
-    - `internal/cli/command-registry.json` already has a Source Guard
-      for the `commands` array paths; the per-command `group`, `usage`,
-      and `example` inline fields are NOT guarded. Decide whether to
-      widen the guard or leave them as cosmetic.
-    - `skills/cautilus/SKILL.md` references list ordering (chatbot ·
-      skill-* · workflow). Source-guard row pinning the archetype
-      reference order would prevent skill-loading agents from missing
-      a new archetype.
-    - `README.md` Repo Layout schema-file bullets and the Scenarios
-      section's literal `"Cautilus has three first-class evaluation
-      archetypes"` count line. Either source-guard the count or
-      reword to be count-agnostic.
-    - `internal/runtime/proposals.go` extension-shape contract: the
-      file is now ~800 lines flat with no `register(...)` seam. A
-      6-line comment block at the top naming the per-archetype
-      contract (top-level `Normalize<Archetype>ProposalCandidates`,
-      `build<Archetype>...Candidate` builders, `assert<Archetype>...`
-      isolation, shared `mergeCandidatesByProposalKey`) would cut the
-      first read time meaningfully.
-    - `internal/runtime/proposals.go` `humanizeTargetKind` map
-      (around L685): if a new archetype introduces a new `targetKind`,
-      the fallback renders lower-case. Either Title Case the fallback
-      or require the spec to name the map.
-    - Spec walkthrough: today this spec is a registry of endpoints,
-      not an ordered "to add an archetype, edit these N files in this
-      order" checklist. Add such a checklist (or generate one from
-      the Source Guard table) so `npm run lint:specs` passing means
-      "the slice is complete," not "the surfaces named in the table
-      exist."
-    - Inverse-completeness lint: enumerate archetypes from `###`
-      headings in this spec; for each, assert that every required
-      surface (schema constant, helper function, CLI subcommand,
-      fixture, contract doc, behavior surfaces, assertion function,
-      handler, README block, SKILL.md reference) actually exists.
-      Larger seam, may be its own spec lint command.
-
-    Test gaps in `internal/runtime/proposals_test.go` that should land
-    with the same hardening pass (also surfaced by the round-2
-    code-level audit lens):
-
-    - The `eventTriggeredFollowupPatterns` branch
-      (`buildEventTriggeredFollowupCandidate`) has zero direct
-      coverage. One subcase using an `eventType: "app_mention"`
-      conversation closes it.
-    - The workflow `description` "CLI Workflow" prefix has no
-      regression guard; a future refactor that drops the prefix would
-      ship silently.
-    - `mergeCandidatesByProposalKey` insertion-order is asserted only
-      by parity inspection; no Go test pins it. A future refactor back
-      to `for k,v := range map` would reintroduce nondeterminism.
-
-    All of the above were considered for inclusion in the Node-removal
-    slice and rejected (counterweight classification (d) "valid but
-    defer") because they are extension-time scaffolding, not
-    dual-implementation retirement. Bundling would have inflated the
-    slice's intent without protecting any current user.
+2. **Inverse-completeness lint.** The Source Guard table above
+   enforces that every named surface exists, but it does not enforce
+   the inverse: that every `###` archetype heading in this spec has
+   the full surface set behind it. A new spec lint command would
+   enumerate archetypes from `###` headings in this spec; for each,
+   assert that every required surface (schema constant, helper
+   function, CLI subcommand, fixture, contract doc, behavior surfaces,
+   assertion function, handler, scenarios catalog entry, README block,
+   SKILL.md reference) actually exists. Larger seam — likely its own
+   spec lint command. Lower priority than the ordered "Adding A New
+   First-Class Archetype" checklist above, which already names the
+   files a contributor must edit.
 
 Every item above must keep the 1:1 archetype mapping intact. When adding a
 new first-class evaluation target, update this spec first and introduce the
