@@ -34,20 +34,6 @@ var deprecatedBehaviorSurfaceAliases = map[string]string{
 	"workflow_conversation": "conversation_continuity",
 }
 
-// MustBehaviorSurface returns the canonical surface string for the named
-// catalog key. It panics on a missing key instead of silently returning
-// the empty string. Use this in code paths that must fail loudly when a
-// new archetype's surface is added without being wired everywhere it is
-// referenced. Plain `BehaviorSurfaces[key]` map access remains valid for
-// backward compat with existing call sites.
-func MustBehaviorSurface(key string) string {
-	surface, ok := BehaviorSurfaces[key]
-	if !ok {
-		panic(fmt.Sprintf("MustBehaviorSurface: unknown catalog key %q", key))
-	}
-	return surface
-}
-
 var BehaviorDimensions = map[string]string{
 	"OPERATOR_GUIDANCE_CLARITY":         "operator_guidance_clarity",
 	"FAILURE_CAUSE_CLARITY":             "failure_cause_clarity",
