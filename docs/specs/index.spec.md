@@ -22,7 +22,6 @@ standing spec gate에서는 다시 실행하지 않는다.
 - [Archetype Boundary](archetype-boundary.spec.md)
   chatbot / skill / workflow 세 first-class archetype의 1:1 mapping과
   source guard를 고정한다.
-- [HTML Report Surface (seed)](html-report.spec.md)
+- [HTML Report Surface](html-report.spec.md)
   리드미의 human-review 약속 — JSON artifact 옆에 HTML view —
-  을 executable하게 검증하기 위한 seed spec. 현재는 최소 guard만 두고,
-  다음 세션에서 specdown 스킬 기반으로 spec과 impl을 co-evolve한다.
+  을 executable하게 검증한다. claim 1–9 (self-dogfood / mode report / review packet / review summary / compare / proposals / evidence / run index) 가 모두 승격되어 있다.

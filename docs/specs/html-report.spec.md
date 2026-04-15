@@ -1,11 +1,11 @@
-# HTML Report Surface (seed spec)
+# HTML Report Surface
 
-이 문서는 `Cautilus`의 HTML 보고 surface가 리드미의 human-review 약속을 만족하는지를 executable하게 검증하기 위한 **seed spec**이다.
-현재는 최소한의 file_exists 단언만 두고, 다음 세션에서 `charness:spec` + `charness:support/specdown` 스킬로 spec과 구현을 함께 확장한다.
+이 문서는 `Cautilus`의 HTML 보고 surface가 리드미의 human-review 약속을 만족하는지를 executable하게 검증한다.
+claim 1–9가 모두 승격되어 실제 렌더러 / 테스트 / CLI / registry entry 에 묶여 있다.
+`npm run lint:specs` 는 아래 guard block 전체를 읽고, Go 테스트 + CLI smoke 는 렌더 결과의 시각 불변식을 잡는다.
 
-이 spec은 `charness:support/specdown`의 철학 — *spec과 구현은 분리 불가, tight loop로 co-evolve* — 를 따른다.
-이번 seed는 의도적으로 미완이다.
-다음 세션은 이 파일을 자신이 실행할 로드맵으로 삼는다.
+이 spec은 specdown 철학 — *spec과 구현은 분리 불가, tight loop로 co-evolve* — 를 따른다.
+새 artifact surface가 생기면 같은 패턴으로 guard block 을 추가한다: spec row → `npm run lint:specs` fail → impl → pass → commit.
 
 ## Intent
 

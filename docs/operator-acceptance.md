@@ -253,14 +253,16 @@ Tier 3이 "CLI가 돌아가는가"라면 이 tier는 "리드미의 각 문장이
 |---|---|---|---|
 | 6.13 | Self-dogfood latest | 브라우저에서 `artifacts/self-dogfood/latest/index.html` 열기 | `gateRecommendation`, `reportRecommendation`, 주요 review 판정이 한 화면에서 인지 가능 |
 | 6.14 | Self-dogfood experiments | `artifacts/self-dogfood/experiments/latest/index.html` 열기 | 실험별 A/B 비교가 side-by-side로 읽힘 |
-| 6.15 | Mode evaluate report HTML | (다음 세션 구현 후) `report.json` 옆 `report.html` 열기 | intent / scenario 결과 / per-mode 상태가 구조적으로 읽힘 |
-| 6.16 | Review packet HTML | (다음 세션 구현 후) `review.json` 옆 `review.html` 열기 | review 질문 / artifact 링크 / judge response가 연결 탐색 가능 |
-| 6.17 | Compare artifacts HTML | (다음 세션 구현 후) baseline/candidate 비교 뷰 | 차이점이 구조적으로 읽힘 |
+| 6.15 | Mode evaluate report HTML | `cautilus report render-html --input <report.json>` 실행 후 `report.html` 열기 | intent / modes / scenario outcomes / command observations / human review findings 가 TOC 와 함께 한 페이지에서 읽힘 |
+| 6.16 | Review packet HTML | `cautilus review render-html --input <review.json>` 실행 후 `review.html` 열기 | intent / comparison questions / human review prompts / artifactFiles 가 연결 탐색 가능 |
+| 6.17 | Review variants summary HTML | `cautilus review render-variants-summary-html --input <review-summary.json>` 실행 후 `review-summary.html` 열기 | overall verdict / telemetry / variant별 execution + verdict + findings / reasonCodes 가 구조적으로 읽힘 |
+| 6.18 | Compare artifact HTML | `cautilus workspace render-compare-html --input <compare-artifact.json>` 실행 후 `compare.html` 열기 | verdict / summary / scenario buckets / deltas / artifactPaths 가 단일 diff 페이지에서 읽힘 |
+| 6.19 | Scenario proposals HTML | `cautilus scenario render-proposals-html --input <proposals.json>` 실행 후 `proposals.html` 열기 | 각 proposal 의 proposalKey / title / action / family / rationale 이 카드 단위로 읽힘 |
+| 6.20 | Evidence bundle HTML | `cautilus evidence render-html --input <evidence-bundle.json>` 실행 후 `evidence-bundle.html` 열기 | summary counts / severity-chipped signals / guidance / sources 가 읽힘 |
+| 6.21 | Run index HTML (global TOC) | `cautilus artifacts render-index-html --run-dir <path>` 실행 후 `index.html` 열기 | run 의 모든 artifact 가 사이드바에서 한눈에 보이고 aggregate 상태 chip 이 정확 |
 
-6.15–6.17은 **현재 미구현**. 다음 세션에서 `docs/specs/html-report.spec.md`의 row를 한 줄씩 승격 → 실패 → 구현 → 통과 loop로 채운다.
-이 tier에서 해당 행은 *구현 완료 후 인간 판정*을 뜻하며, 구현 전까지는 "n/a (spec 기준 미구현)"로 표시한다.
-
-**오늘 Tier 6을 돌리는 operator에게**: 6.15–6.17에서 `report.html`/`review.html`/compare HTML 파일이 **존재하지 않는 것은 regression이 아니라 seed 상태**다. 해당 claim이 구현되지 않은 상태이므로 "n/a"로 기록하고 넘어간다. html-report.spec.md의 guard block이 통과하는 한 (6.13·6.14 + seed guard) 홍보 준비 등급은 유지된다.
+이 tier 의 모든 row 는 각 HTML 이 브라우저에서 실제로 열릴 때 인간이 판정한다.
+자동 guard (`npm run verify`) 는 렌더러 함수 / 핸들러 / CLI 등록이 살아 있음을 확인할 뿐, 시각 품질은 사람이 본다.
 
 ---
 
