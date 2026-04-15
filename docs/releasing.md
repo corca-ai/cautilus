@@ -35,7 +35,10 @@ This updates the maintained version surfaces together:
 - [plugins/cautilus/.codex-plugin/plugin.json](../plugins/cautilus/.codex-plugin/plugin.json)
 - [install.md](../install.md)
 - the packaged `plugins/cautilus/skills/cautilus/` tree from the bundled
-  `skills/cautilus/` source
+  `skills/cautilus/` source (upward relative markdown links inside `.md`
+  files are rewritten so they still resolve to the same repo-root
+  targets from the two-levels-deeper packaged location; sibling `./X`
+  links and non-markdown files stay byte-identical)
 
 2. Run:
 
