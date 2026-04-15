@@ -167,3 +167,26 @@ A/B comparison anchor 와 sibling artifact 링크 rewriting 은 Go 테스트로 
 | internal/runtime/self_dogfood_html.go | fixed | "experiments-heading" |
 | internal/runtime/self_dogfood_html_test.go | fixed | TestRenderSelfDogfoodExperimentsHTMLIncludesPageTOC |
 | internal/runtime/self_dogfood_html_test.go | fixed | TestRenderSelfDogfoodExperimentsHTMLRewritesSiblingArtifactLinks |
+
+### Claim 3 — mode evaluate report
+
+`cautilus report render-html` 은 `report.json` (schemaVersion `cautilus.report_packet.v2`) 옆에 `report.html` 을 자동 생성한다.
+intent / modes / scenario outcomes / command observations / human review findings 가 TOC 와 함께 한 페이지에서 인지 가능하다.
+legacy `cautilus.report_packet.v1` 입력은 명시적으로 거부된다.
+
+> check:source_guard
+
+| file | mode | pattern |
+| --- | --- | --- |
+| internal/runtime/report_html.go | file_exists |  |
+| internal/runtime/report_html.go | fixed | RenderReportHTML |
+| internal/runtime/report_html.go | fixed | RenderReportHTMLFromFile |
+| internal/runtime/report_html.go | fixed | WriteReportHTMLFromFile |
+| internal/runtime/report_html.go | fixed | reportScenarioBucketOrder |
+| internal/runtime/report_html_test.go | fixed | TestRenderReportHTMLIncludesHeadlineAndTOC |
+| internal/runtime/report_html_test.go | fixed | TestRenderReportHTMLRendersScenarioBuckets |
+| internal/runtime/report_html_test.go | fixed | TestRenderReportHTMLFromFileRejectsLegacySchema |
+| internal/runtime/report_html_test.go | fixed | TestWriteReportHTMLFromFileWritesNextToInput |
+| internal/app/app.go | fixed | handleReportRenderHTML |
+| internal/app/app.go | fixed | "report render-html" |
+| internal/cli/command-registry.json | fixed | "cautilus report render-html |

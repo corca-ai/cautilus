@@ -191,6 +191,8 @@ func nativeHandler(path []string) handlerFunc {
 		return handleScenarioPropose
 	case "report build":
 		return handleReportBuild
+	case "report render-html":
+		return handleReportRenderHTML
 	case "mode evaluate":
 		return handleModeEvaluate
 	case "skills install":
@@ -906,6 +908,29 @@ func handleScenarioPropose(repoRoot string, cwd string, args []string, stdout io
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
+	return 0
+}
+
+//nolint:errcheck // CLI stderr reporting is best-effort.
+//nolint:errcheck // CLI stderr reporting is best-effort.
+func handleReportRenderHTML(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	options, err := parseInputOutputArgs(args)
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	inputPath := resolvePath(cwd, options.input)
+	var outputPath *string
+	if options.output != nil {
+		resolved := resolvePath(cwd, *options.output)
+		outputPath = &resolved
+	}
+	target, err := runtime.WriteReportHTMLFromFile(inputPath, outputPath)
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	fmt.Fprintf(stdout, "%s\n", target)
 	return 0
 }
 

@@ -139,6 +139,12 @@
       "example": "cautilus report build --input ./fixtures/reports/report-input.json"
     },
     {
+      "path": ["report", "render-html"],
+      "group": "results",
+      "usage": "cautilus report render-html --input <report.json> [--output <report.html>]",
+      "example": "cautilus report render-html --input /tmp/cautilus-mode/report.json"
+    },
+    {
       "path": ["review", "prepare-input"],
       "group": "results",
       "usage": "cautilus review prepare-input [args]",
