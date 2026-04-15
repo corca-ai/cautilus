@@ -53,14 +53,23 @@ ignoring preferences the user already stated).
 
 Use when a skill or agent edit should be checked for whether it still
 triggers on the right prompts, executes cleanly, and keeps its declared
-validation surfaces passing.
+validation surfaces passing. Two entry points depending on what you
+already have:
 
-- CLI: `cautilus skill test --repo-root . --adapter-name <name>` (or
-  `cautilus skill evaluate --input <summary.json>` when a normalized
-  observed packet already exists)
-- Inspect shape: `cautilus scenario normalize skill --example-input`
-- Output: `skill-summary.json` (`cautilus.skill_evaluation_summary.v1`)
-  plus chained proposal candidates when regressions appear
+- Checked-in case suite (`cautilus.skill_test_cases.v1`, e.g.
+  `fixtures/skill-test/cases.json`):
+  `cautilus skill test --repo-root . --adapter-name <name>`
+- Already-normalized observation packet
+  (`cautilus.skill_evaluation_inputs.v1`; peek with
+  `cautilus skill evaluate --example-input`):
+  `cautilus skill evaluate --input <observations.json>`
+
+Either path emits `skill-summary.json`
+(`cautilus.skill_evaluation_summary.v1`) plus chained proposal
+candidates when regressions appear. To turn those candidates into saved
+scenarios, feed the summary into
+`cautilus scenario normalize skill --input <summary.json>`; inspect its
+input shape with `cautilus scenario normalize skill --example-input`.
 
 ### 3. Durable workflow recovery
 
