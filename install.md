@@ -1,7 +1,6 @@
 # Install Cautilus
 
-This guide is the operator-facing install path for using `Cautilus` on another
-machine.
+This guide is the operator-facing install path for using `Cautilus` on another machine.
 
 It covers:
 
@@ -23,8 +22,7 @@ This guide does not currently target:
 - Windows Subsystem for Linux
 
 If you are on WSL, treat the current install surface as unsupported for now.
-The tagged-release installer and Homebrew guidance below are written for native
-macOS and native Linux hosts.
+The tagged-release installer and Homebrew guidance below are written for native macOS and native Linux hosts.
 
 ## Choose An Install Path
 
@@ -35,13 +33,12 @@ Use one of these two public install paths:
 
 If you want the fewest moving parts, use `install.sh`.
 
-Both of these are first-class install channels for native macOS and native
-Linux hosts. They are not "best effort" side paths.
+Both of these are first-class install channels for native macOS and native Linux hosts.
+They are not "best effort" side paths.
 
 ## OS Notes
 
-`install.sh` already chooses the correct tagged binary asset for the current
-host:
+`install.sh` already chooses the correct tagged binary asset for the current host:
 
 - macOS: `darwin`
 - Linux: `linux`
@@ -108,9 +105,8 @@ cautilus --version
 cautilus version --verbose
 ```
 
-On Linux, Homebrew is officially supported when Homebrew itself is installed in
-its default prefix. If your machine cannot support that prefix cleanly, prefer
-the tagged-release path above instead of forcing an unsupported Homebrew setup.
+On Linux, Homebrew is officially supported when Homebrew itself is installed in its default prefix.
+If your machine cannot support that prefix cleanly, prefer the tagged-release path above instead of forcing an unsupported Homebrew setup.
 
 Default Homebrew prefixes:
 
@@ -118,18 +114,14 @@ Default Homebrew prefixes:
 - macOS Intel: `/usr/local`
 - Linux: `/home/linuxbrew/.linuxbrew`
 
-On Linux, if you cannot use Homebrew's default prefix cleanly, prefer
-`install.sh`. Do not treat an arbitrary untar-anywhere Homebrew install as the
-recommended operator path for `Cautilus`.
+On Linux, if you cannot use Homebrew's default prefix cleanly, prefer `install.sh`.
+Do not treat an arbitrary untar-anywhere Homebrew install as the recommended operator path for `Cautilus`.
 
-For supported native macOS and native Linux hosts, `brew install` and
-`cautilus update` are part of the intended operator story, not a secondary
-compatibility seam.
+For supported native macOS and native Linux hosts, `brew install` and `cautilus update` are part of the intended operator story, not a secondary compatibility seam.
 
 ## Install The Bundled Skill Into A Host Repo
 
-After the binary is available on `PATH`, install the bundled skill into the
-target repo:
+After the binary is available on `PATH`, install the bundled skill into the target repo:
 
 ```bash
 cd /path/to/host-repo
@@ -142,8 +134,7 @@ This creates:
 - `.agents/skills/cautilus/` as the canonical checked-in skill path
 - `.claude/skills -> ../.agents/skills` for Claude compatibility
 
-The low-level `cautilus skills install` command still exists for compatibility,
-but `cautilus install` is the canonical lifecycle entrypoint.
+The low-level `cautilus skills install` command still exists for compatibility, but `cautilus install` is the canonical lifecycle entrypoint.
 
 ## Verify The Install
 
@@ -176,8 +167,7 @@ cautilus update --repo-root /path/to/host-repo
 ```
 
 For Homebrew installs, `cautilus update` delegates to `brew upgrade cautilus`.
-For managed tagged-release installs, it refreshes the installed wrapper from
-the latest tagged release.
+For managed tagged-release installs, it refreshes the installed wrapper from the latest tagged release.
 
 ## Current Boundaries
 

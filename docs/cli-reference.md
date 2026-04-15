@@ -1,8 +1,8 @@
 # CLI Reference
 
-Full command catalog for `cautilus`. For the narrative overview, see the
-[README](../README.md). For install and update lifecycle on a fresh machine,
-see [install.md](../install.md).
+Full command catalog for `cautilus`.
+For the narrative overview, see the [README](../README.md).
+For install and update lifecycle on a fresh machine, see [install.md](../install.md).
 
 ## Install & lifecycle
 
@@ -23,8 +23,7 @@ cautilus update --repo-root /path/to/host-repo
 cautilus version --verbose
 ```
 
-The lower-level compatibility command `cautilus skills install` remains
-available when a workflow needs to call the skill installer directly.
+The lower-level compatibility command `cautilus skills install` remains available when a workflow needs to call the skill installer directly.
 
 ## Adapter bootstrap
 
@@ -36,15 +35,11 @@ cautilus adapter init --repo-root .
 cautilus adapter resolve --repo-root .
 ```
 
-If you already know which archetype your repo evaluates, start from an
-archetype-specific starter kit under [examples/starters/](../examples/starters/)
-instead of `cautilus adapter init`. Each starter ships a pre-filled
-`cautilus-adapter.yaml`, a canonical input fixture, and a README that
-explains what to replace next. Smoke placeholders let `cautilus doctor`
-return `ready` immediately.
+If you already know which archetype your repo evaluates, start from an archetype-specific starter kit under [examples/starters/](../examples/starters/) instead of `cautilus adapter init`.
+Each starter ships a pre-filled `cautilus-adapter.yaml`, a canonical input fixture, and a README that explains what to replace next.
+Smoke placeholders let `cautilus doctor` return `ready` immediately.
 
-A minimal adapter must wire at least one real runnable path to reach
-`doctor ready`:
+A minimal adapter must wire at least one real runnable path to reach `doctor ready`:
 
 ```yaml
 held_out_command_templates:
@@ -70,8 +65,7 @@ cautilus doctor --repo-root /path/to/repo --scope agent-surface
 cautilus scenarios --json
 ```
 
-`cautilus <subcommand> --help` exits `0` for the registered native command
-surface, including grouped topics such as `cautilus optimize search --help`.
+`cautilus <subcommand> --help` exits `0` for the registered native command surface, including grouped topics such as `cautilus optimize search --help`.
 
 For the shortest end-to-end adoption proof in a fresh consumer repo:
 
@@ -97,13 +91,9 @@ cautilus workspace prune-artifacts \
   --keep-last 20
 ```
 
-`workspace start` defaults `--root` to `./.cautilus/runs/` (auto-created on
-first use) and prints `export CAUTILUS_RUN_DIR=<absolute runDir>`. Pass
-`--json` instead of `eval` when a script needs the machine-readable payload.
-When `CAUTILUS_RUN_DIR` is already pinned, downstream commands
-(`workspace prepare-compare`, `mode evaluate`) reuse that active `runDir`;
-if nothing is pinned they auto-materialize a fresh `runDir` and print
-`Active run: <path>` to stderr.
+`workspace start` defaults `--root` to `./.cautilus/runs/` (auto-created on first use) and prints `export CAUTILUS_RUN_DIR=<absolute runDir>`.
+Pass `--json` instead of `eval` when a script needs the machine-readable payload.
+When `CAUTILUS_RUN_DIR` is already pinned, downstream commands (`workspace prepare-compare`, `mode evaluate`) reuse that active `runDir`; if nothing is pinned they auto-materialize a fresh `runDir` and print `Active run: <path>` to stderr.
 
 ## Scenarios
 
@@ -138,10 +128,7 @@ cautilus scenario summarize-telemetry \
   --results ./fixtures/scenario-results/example-results.json
 ```
 
-Every normalize command plus `cautilus skill evaluate` accepts
-`--example-input`: it prints a minimal valid packet to stdout that can be
-piped back into the same command, so operators can inspect the expected
-shape without clicking into a fixture on GitHub.
+Every normalize command plus `cautilus skill evaluate` accepts `--example-input`: it prints a minimal valid packet to stdout that can be piped back into the same command, so operators can inspect the expected shape without clicking into a fixture on GitHub.
 
 ## Skill testing & evaluation
 
@@ -219,15 +206,10 @@ cautilus review variants \
   --output-dir /tmp/cautilus-review
 ```
 
-`review variants` writes a product-owned `review-summary.json`
-(`cautilus.review_summary.v1`) plus one per-variant
-`cautilus.review_variant_result.v1` file. A variant can finish as `passed`,
-`blocked`, or `failed`; blocked runs carry machine-readable reason codes
-instead of prose-only abort text. When `--output-under-test` is present, the
-generated review prompt switches into `output_under_test` mode and treats
-the referenced artifact as primary evidence. When `--output-text-key` is
-present, Cautilus also extracts that JSON narrative span into the rendered
-prompt so the judge can read the realized output directly.
+`review variants` writes a product-owned `review-summary.json` (`cautilus.review_summary.v1`) plus one per-variant `cautilus.review_variant_result.v1` file.
+A variant can finish as `passed`, `blocked`, or `failed`; blocked runs carry machine-readable reason codes instead of prose-only abort text.
+When `--output-under-test` is present, the generated review prompt switches into `output_under_test` mode and treats the referenced artifact as primary evidence.
+When `--output-text-key` is present, Cautilus also extracts that JSON narrative span into the rendered prompt so the judge can read the realized output directly.
 
 ## Evidence
 
@@ -259,9 +241,7 @@ cautilus optimize propose \
   --input /tmp/cautilus-optimize/input.json
 ```
 
-For the GEPA-style bounded prompt search seam layered above that optimizer —
-multi-generation reflective mutation, held-out reevaluation, frontier
-selection — see [gepa.md](./gepa.md).
+For the GEPA-style bounded prompt search seam layered above that optimizer — multi-generation reflective mutation, held-out reevaluation, frontier selection — see [gepa.md](./gepa.md).
 
 ## Self-dogfood rendering
 
@@ -273,9 +253,8 @@ cautilus self-dogfood render-html
 cautilus self-dogfood render-experiments-html
 ```
 
-The rendered HTML is read-only over `summary.json`, `report.json`, and
-`review-summary.json`; those JSON files remain the source of truth. For the
-npm wrappers and the full dogfood workflow, see [development.md](./development.md).
+The rendered HTML is read-only over `summary.json`, `report.json`, and `review-summary.json`; those JSON files remain the source of truth.
+For the npm wrappers and the full dogfood workflow, see [development.md](./development.md).
 
 ## Plugin manifest validation
 
@@ -290,8 +269,7 @@ node ./scripts/release/check-codex-marketplace.mjs --repo-root .
 
 ## Direct script usage
 
-The underlying Node scripts are runnable directly when a wrapper tool needs
-to call them without the `cautilus` binary:
+The underlying Node scripts are runnable directly when a wrapper tool needs to call them without the `cautilus` binary:
 
 ```bash
 node scripts/resolve_adapter.mjs --repo-root .

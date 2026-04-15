@@ -4,71 +4,56 @@ This repo is the standalone product boundary for `Cautilus`.
 
 ## Operating Stance
 
-- Use the actual available skills for this turn before improvising a local
-  workflow.
+- Use the actual available skills for this turn before improvising a local workflow.
 - Keep manually maintained docs in English.
-  Exceptions: [docs/handoff.md](./docs/handoff.md),
-  [docs/operator-acceptance.md](./docs/operator-acceptance.md),
-  executable specs under [docs/specs/](./docs/specs), and
-  temporary product-planning notes while they are being rewritten.
+  Exceptions: [docs/handoff.md](./docs/handoff.md), [docs/operator-acceptance.md](./docs/operator-acceptance.md), executable specs under [docs/specs/](./docs/specs), and temporary product-planning notes while they are being rewritten.
 - Speak to this user in Korean unless they ask otherwise.
 - Prefer the source of truth over copied checklists.
   Deterministic behavior belongs in code, scripts, adapters, tests, and specs.
-- Optimize for `Cautilus` as an independent binary plus bundled skill before
-  optimizing any host repo as a consumer.
+- Optimize for `Cautilus` as an independent binary plus bundled skill before optimizing any host repo as a consumer.
+- Prose markdown uses semantic line breaks: one sentence per line, no hard-wrap at a column width.
+  This is so fixed-pattern assertions in specs cannot be broken by incidental wrap positions and so prose edits produce clean sentence-level diffs.
+  Applies to all `.md` files except `docs/specs/*.md` (tables plus executable patterns), `docs/handoff.md`, and `docs/operator-acceptance.md`.
+  Code fences, tables, and YAML blocks are never reflowed.
 
 ## Product Intent
 
 - `Cautilus` owns generic intentful behavior evaluation workflow contracts.
 - Host repos own adapter instances, fixtures, prompts, and policy.
-- The product should prefer explicit baselines, held-out validation, bounded
-  loops, and structured review over ad-hoc benchmark narratives.
-- The long-term direction is intent-first and intentful behavior evaluation:
-  prompts can change if the evaluated behavior gets better.
+- The product should prefer explicit baselines, held-out validation, bounded loops, and structured review over ad-hoc benchmark narratives.
+- The long-term direction is intent-first and intentful behavior evaluation: prompts can change if the evaluated behavior gets better.
 
 ## Current Boundaries
 
 - Generic contracts live under [docs/](./docs).
 - Bootstrap adapter helpers live under [scripts/](./scripts).
-- Minimal runtime runners live under
-  [scripts/agent-runtime/](./scripts/agent-runtime).
+- Minimal runtime runners live under [scripts/agent-runtime/](./scripts/agent-runtime).
 - The CLI entrypoint lives at [bin/cautilus](./bin/cautilus).
-- The bundled standalone skill lives under
-  [skills/cautilus/](./skills/cautilus).
+- The bundled standalone skill lives under [skills/cautilus/](./skills/cautilus).
 - Product roadmap lives at [docs/master-plan.md](./docs/master-plan.md).
 
 ## Repo Memory
 
-- [docs/handoff.md](./docs/handoff.md): next-session pickup
-  and volatile state
-- [docs/master-plan.md](./docs/master-plan.md): durable
-  product direction and priority order
-- [docs/specs/index.spec.md](./docs/specs/index.spec.md):
-  currently claimed product surface
-- [docs/specs/archetype-boundary.spec.md](./docs/specs/archetype-boundary.spec.md):
-  first-class archetype 1:1 contract (chatbot / skill / workflow)
-- [docs/operator-acceptance.md](./docs/operator-acceptance.md):
-  tiered human acceptance checklist
-- [docs/consumer-migration.md](./docs/consumer-migration.md):
-  generic consumer adoption path
+- [docs/handoff.md](./docs/handoff.md): next-session pickup and volatile state
+- [docs/master-plan.md](./docs/master-plan.md): durable product direction and priority order
+- [docs/specs/index.spec.md](./docs/specs/index.spec.md): currently claimed product surface
+- [docs/specs/archetype-boundary.spec.md](./docs/specs/archetype-boundary.spec.md): first-class archetype 1:1 contract (chatbot / skill / workflow)
+- [docs/operator-acceptance.md](./docs/operator-acceptance.md): tiered human acceptance checklist
+- [docs/consumer-migration.md](./docs/consumer-migration.md): generic consumer adoption path
 
 ## Working Rules
 
 - Keep the adapter schema repo-agnostic.
-- Do not import host-specific adapters, prompts, output paths, or audit UI
-  unless they are being explicitly generalized.
+- Do not import host-specific adapters, prompts, output paths, or audit UI unless they are being explicitly generalized.
 - Prefer adding small bounded runtimes over large operator surfaces.
-- If a consumer repo has gained generic evaluation knowledge, bring it here
-  rather than letting the contracts drift.
+- If a consumer repo has gained generic evaluation knowledge, bring it here rather than letting the contracts drift.
 - When adding a new runtime surface, add at least one executable test.
 
 ## Commit Discipline
 
 - After each meaningful unit of work, create a git commit before moving on.
-- Write commit messages so later announcements can recover intent without
-  guessing.
-- Prefer commit subjects that state user-facing or operator-facing purpose, not
-  mechanism.
+- Write commit messages so later announcements can recover intent without guessing.
+- Prefer commit subjects that state user-facing or operator-facing purpose, not mechanism.
 - Add a short body when it clarifies the trigger, boundary, or behavior change.
 
 ## Local Checks
@@ -86,8 +71,7 @@ npm run verify
 npm run hooks:check
 ```
 
-Use `npm run lint` and `npm run test` directly when iterating on one seam, but
-do not require all three in sequence before stopping.
+Use `npm run lint` and `npm run test` directly when iterating on one seam, but do not require all three in sequence before stopping.
 
 On-demand checks:
 
@@ -95,9 +79,8 @@ On-demand checks:
 npm run test:on-demand
 ```
 
-`npm run test:on-demand` currently owns the heavier self-dogfood workflow
-script tests. Run it when changing release-prep flow, self-dogfood workflow
-scripts, or operator-facing quality record behavior.
+`npm run test:on-demand` currently owns the heavier self-dogfood workflow script tests.
+Run it when changing release-prep flow, self-dogfood workflow scripts, or operator-facing quality record behavior.
 
 Key direct commands:
 
