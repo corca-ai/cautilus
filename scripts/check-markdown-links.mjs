@@ -6,10 +6,6 @@ import process from "node:process";
 const EXTERNAL_SCHEME = /^(?:https?|mailto|ftp|ftps|file|tel|data):/i;
 const INLINE_LINK = /!?\[[^\]]*\]\(([^)\s]+)(?:\s+"[^"]*")?\)/g;
 
-const DERIVED_PATH_PREFIXES = [
-	"plugins/cautilus/skills/",
-];
-
 export function stripFencedCodeBlocks(content) {
 	const lines = content.split("\n");
 	let inFence = false;
@@ -73,13 +69,8 @@ function listCheckedInMarkdown(repoRoot) {
 		.filter((entry) => entry.length > 0);
 }
 
-function isDerivedPath(relative) {
-	return DERIVED_PATH_PREFIXES.some((prefix) => relative.startsWith(prefix));
-}
-
 export function checkRepo(repoRoot) {
-	const allFiles = listCheckedInMarkdown(repoRoot);
-	const files = allFiles.filter((relative) => !isDerivedPath(relative));
+	const files = listCheckedInMarkdown(repoRoot);
 	const findings = [];
 	for (const relative of files) {
 		const absolute = resolve(repoRoot, relative);
@@ -91,14 +82,13 @@ export function checkRepo(repoRoot) {
 	}
 	return {
 		fileCount: files.length,
-		skippedCount: allFiles.length - files.length,
 		findings,
 	};
 }
 
 function main() {
 	const repoRoot = process.cwd();
-	const { fileCount, skippedCount, findings } = checkRepo(repoRoot);
+	const { fileCount, findings } = checkRepo(repoRoot);
 	if (findings.length > 0) {
 		process.stderr.write(
 			`check-markdown-links: ${findings.length} broken link(s) across ${fileCount} file(s)\n`,
@@ -109,7 +99,7 @@ function main() {
 		process.exit(1);
 	}
 	process.stdout.write(
-		`check-markdown-links: ok (${fileCount} file(s) checked, ${skippedCount} derived file(s) skipped, local links only)\n`,
+		`check-markdown-links: ok (${fileCount} file(s) checked, local links only)\n`,
 	);
 }
 

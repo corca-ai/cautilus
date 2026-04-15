@@ -302,7 +302,6 @@ standalone product여야 한다.
 | scripts/check-specs.mjs | file_exists |  |
 | scripts/check-archetype-completeness.mjs | file_exists |  |
 | scripts/check-markdown-links.mjs | file_exists |  |
-| scripts/check-markdown-links.mjs | fixed | DERIVED_PATH_PREFIXES |
 | scripts/check-markdown-links.test.mjs | file_exists |  |
 | scripts/agent-runtime/scenario-result-telemetry.mjs | file_exists |  |
 | scripts/agent-runtime/scenario-result-telemetry.mjs | fixed | SCENARIO_TELEMETRY_SUMMARY_SCHEMA |

@@ -8,6 +8,7 @@ import { binaryAssetName, renderBinaryAssetUrl } from "./binary-assets.mjs";
 import { renderArchiveUrl } from "./fetch-github-archive-sha256.mjs";
 import { renderHomebrewFormula } from "./render-homebrew-formula.mjs";
 import { deriveTapRepo, parseGitHubRemoteUrl, resolveReleaseTargets } from "./resolve-release-targets.mjs";
+import { rewriteUpwardLinks } from "./sync-packaged-skill.mjs";
 
 const REPO_ROOT = process.cwd();
 const PACKAGE_VERSION = JSON.parse(readFileSync(join(REPO_ROOT, "package.json"), "utf-8")).version;
@@ -189,5 +190,12 @@ test("packaged cautilus skill stays in sync with the repo-bundled skill source",
 	const packagedTree = readTree(
 		join(REPO_ROOT, "plugins", "cautilus", "skills", "cautilus"),
 	);
-	assert.deepEqual(packagedTree, repoTree);
+	// The packaged tree sits two directory levels deeper than the source tree,
+	// so sync-packaged-skill.mjs rewrites upward markdown links to keep them
+	// pointed at the same repo-root targets. Everything else stays byte-identical.
+	const expected = repoTree.map(({ path, content }) => ({
+		path,
+		content: path.endsWith(".md") ? rewriteUpwardLinks(content) : content,
+	}));
+	assert.deepEqual(packagedTree, expected);
 });
