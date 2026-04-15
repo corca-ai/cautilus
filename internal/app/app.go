@@ -215,6 +215,8 @@ func nativeHandler(path []string) handlerFunc {
 		return handleScenarioRenderProposalsHTML
 	case "evidence render-html":
 		return handleEvidenceRenderHTML
+	case "artifacts render-index-html":
+		return handleArtifactsRenderIndexHTML
 	case "evidence prepare-input":
 		return handleEvidencePrepareInput
 	case "evidence bundle":
@@ -950,6 +952,57 @@ func handleScenarioRenderProposalsHTML(repoRoot string, cwd string, args []strin
 //nolint:errcheck // CLI stderr reporting is best-effort.
 func handleEvidenceRenderHTML(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
 	return renderJSONToHTMLCommand(args, cwd, stdout, stderr, runtime.WriteEvidenceBundleHTMLFromFile)
+}
+
+//nolint:errcheck // CLI stderr reporting is best-effort.
+func handleArtifactsRenderIndexHTML(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	options, err := parseArtifactsRenderIndexArgs(args, cwd)
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	target, err := runtime.WriteRunIndexHTMLForDir(options.runDir, options.output)
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	fmt.Fprintf(stdout, "%s\n", target)
+	return 0
+}
+
+type artifactsRenderIndexArgs struct {
+	runDir string
+	output *string
+}
+
+func parseArtifactsRenderIndexArgs(args []string, cwd string) (*artifactsRenderIndexArgs, error) {
+	options := &artifactsRenderIndexArgs{}
+	for index := 0; index < len(args); index++ {
+		arg := args[index]
+		switch arg {
+		case "--run-dir":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.runDir = resolvePath(cwd, value)
+		case "--output":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			resolved := resolvePath(cwd, value)
+			options.output = &resolved
+		default:
+			return nil, fmt.Errorf("unknown argument: %s", arg)
+		}
+	}
+	if strings.TrimSpace(options.runDir) == "" {
+		return nil, fmt.Errorf("--run-dir is required")
+	}
+	return options, nil
 }
 
 //nolint:errcheck // CLI stderr reporting is best-effort.

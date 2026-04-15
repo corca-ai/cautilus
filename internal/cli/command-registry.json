@@ -175,6 +175,12 @@
       "example": "cautilus evidence render-html --input /tmp/cautilus-evidence/evidence-bundle.json"
     },
     {
+      "path": ["artifacts", "render-index-html"],
+      "group": "results",
+      "usage": "cautilus artifacts render-index-html --run-dir <path> [--output <index.html>]",
+      "example": "cautilus artifacts render-index-html --run-dir artifacts/self-dogfood/latest"
+    },
+    {
       "path": ["review", "prepare-input"],
       "group": "results",
       "usage": "cautilus review prepare-input [args]",

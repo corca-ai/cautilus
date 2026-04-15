@@ -278,3 +278,25 @@ summary counts, signals (severity 칩 + sourceKind), guidance (miningFocus + loo
 | internal/runtime/artifact_html_test.go | fixed | TestEvidenceSignalsAggregateStatus |
 | internal/app/app.go | fixed | handleEvidenceRenderHTML |
 | internal/cli/command-registry.json | fixed | "cautilus evidence render-html |
+
+### Claim 9 — global run index
+
+`cautilus artifacts render-index-html --run-dir <path>` 은 run 디렉토리(최대 1단계 하위)에서 알려진 first-class artifact 를 discover 해서 `index.html` 을 생성한다.
+각 artifact 는 사이드바 한 줄로 표시되고, 상태 (녹색 / 황색 / 적색) 가 chip 으로, `.html` 이 아직 렌더 안 된 항목은 `pending-html` chip 으로 표시된다.
+run 의 aggregate status 는 배너에 한눈 칩으로 노출된다.
+
+> check:source_guard
+
+| file | mode | pattern |
+| --- | --- | --- |
+| internal/runtime/run_index_html.go | file_exists |  |
+| internal/runtime/run_index_html.go | fixed | RenderRunIndexHTML |
+| internal/runtime/run_index_html.go | fixed | DiscoverRunIndexEntries |
+| internal/runtime/run_index_html.go | fixed | WriteRunIndexHTMLForDir |
+| internal/runtime/run_index_html.go | fixed | runIndexArtifactDescriptors |
+| internal/runtime/run_index_html_test.go | fixed | TestDiscoverRunIndexEntriesFindsKnownArtifacts |
+| internal/runtime/run_index_html_test.go | fixed | TestRenderRunIndexHTMLIncludesSidebarEntriesAndStatus |
+| internal/runtime/run_index_html_test.go | fixed | TestWriteRunIndexHTMLForDirWritesIndexHTML |
+| internal/app/app.go | fixed | handleArtifactsRenderIndexHTML |
+| internal/app/app.go | fixed | "artifacts render-index-html" |
+| internal/cli/command-registry.json | fixed | "cautilus artifacts render-index-html |
