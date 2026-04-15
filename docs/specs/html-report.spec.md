@@ -190,3 +190,40 @@ legacy `cautilus.report_packet.v1` 입력은 명시적으로 거부된다.
 | internal/app/app.go | fixed | handleReportRenderHTML |
 | internal/app/app.go | fixed | "report render-html" |
 | internal/cli/command-registry.json | fixed | "cautilus report render-html |
+
+### Claim 4 — review packet
+
+`cautilus review render-html` 은 `review.json` (schemaVersion `cautilus.review_packet.v1`) 옆에 `review.html` 을 생성한다.
+intent / comparison questions / human review prompts / artifactFiles 가 TOC 와 함께 한 페이지에서 탐색 가능하며, reportFile / artifactFile 링크는 `.html` 로 rewrite 된다.
+
+> check:source_guard
+
+| file | mode | pattern |
+| --- | --- | --- |
+| internal/runtime/review_html.go | file_exists |  |
+| internal/runtime/review_html.go | fixed | RenderReviewPacketHTML |
+| internal/runtime/review_html.go | fixed | WriteReviewPacketHTMLFromFile |
+| internal/runtime/review_html_test.go | fixed | TestRenderReviewPacketHTMLIncludesIntentAndQuestions |
+| internal/runtime/review_html_test.go | fixed | TestRenderReviewPacketHTMLRewritesArtifactLinks |
+| internal/runtime/review_html_test.go | fixed | TestWriteReviewPacketHTMLFromFileWritesNextToInput |
+| internal/app/app.go | fixed | handleReviewRenderHTML |
+| internal/app/app.go | fixed | "review render-html" |
+| internal/cli/command-registry.json | fixed | "cautilus review render-html |
+
+### Claim 5 — review variants summary
+
+`cautilus review render-variants-summary-html` 은 `review-summary.json` (schemaVersion `cautilus.review_summary.v1`) 옆에 `review-summary.html` 을 생성한다.
+overall verdict / telemetry / 각 variant 의 execution + verdict + findings + reasonCodes 가 한 페이지에서 판정 가능하다.
+
+> check:source_guard
+
+| file | mode | pattern |
+| --- | --- | --- |
+| internal/runtime/review_html.go | fixed | RenderReviewSummaryHTML |
+| internal/runtime/review_html.go | fixed | WriteReviewSummaryHTMLFromFile |
+| internal/runtime/review_html.go | fixed | normalizeReviewExecutionStatus |
+| internal/runtime/review_html_test.go | fixed | TestRenderReviewSummaryHTMLRendersVariantsAndFindings |
+| internal/runtime/review_html_test.go | fixed | TestWriteReviewSummaryHTMLFromFileWritesNextToInput |
+| internal/app/app.go | fixed | handleReviewRenderVariantsSummaryHTML |
+| internal/app/app.go | fixed | "review render-variants-summary-html" |
+| internal/cli/command-registry.json | fixed | "cautilus review render-variants-summary-html |

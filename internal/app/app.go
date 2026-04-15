@@ -205,6 +205,10 @@ func nativeHandler(path []string) handlerFunc {
 		return handleReviewRenderPrompt
 	case "review variants":
 		return handleReviewVariants
+	case "review render-html":
+		return handleReviewRenderHTML
+	case "review render-variants-summary-html":
+		return handleReviewRenderVariantsSummaryHTML
 	case "evidence prepare-input":
 		return handleEvidencePrepareInput
 	case "evidence bundle":
@@ -914,6 +918,21 @@ func handleScenarioPropose(repoRoot string, cwd string, args []string, stdout io
 //nolint:errcheck // CLI stderr reporting is best-effort.
 //nolint:errcheck // CLI stderr reporting is best-effort.
 func handleReportRenderHTML(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	return renderJSONToHTMLCommand(args, cwd, stdout, stderr, runtime.WriteReportHTMLFromFile)
+}
+
+//nolint:errcheck // CLI stderr reporting is best-effort.
+func handleReviewRenderHTML(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	return renderJSONToHTMLCommand(args, cwd, stdout, stderr, runtime.WriteReviewPacketHTMLFromFile)
+}
+
+//nolint:errcheck // CLI stderr reporting is best-effort.
+func handleReviewRenderVariantsSummaryHTML(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	return renderJSONToHTMLCommand(args, cwd, stdout, stderr, runtime.WriteReviewSummaryHTMLFromFile)
+}
+
+//nolint:errcheck // CLI stderr reporting is best-effort.
+func renderJSONToHTMLCommand(args []string, cwd string, stdout io.Writer, stderr io.Writer, writer func(string, *string) (string, error)) int {
 	options, err := parseInputOutputArgs(args)
 	if err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
@@ -925,7 +944,7 @@ func handleReportRenderHTML(repoRoot string, cwd string, args []string, stdout i
 		resolved := resolvePath(cwd, *options.output)
 		outputPath = &resolved
 	}
-	target, err := runtime.WriteReportHTMLFromFile(inputPath, outputPath)
+	target, err := writer(inputPath, outputPath)
 	if err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1

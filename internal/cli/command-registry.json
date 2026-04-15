@@ -145,6 +145,18 @@
       "example": "cautilus report render-html --input /tmp/cautilus-mode/report.json"
     },
     {
+      "path": ["review", "render-html"],
+      "group": "results",
+      "usage": "cautilus review render-html --input <review.json> [--output <review.html>]",
+      "example": "cautilus review render-html --input /tmp/cautilus-review/review.json"
+    },
+    {
+      "path": ["review", "render-variants-summary-html"],
+      "group": "results",
+      "usage": "cautilus review render-variants-summary-html --input <review-summary.json> [--output <review-summary.html>]",
+      "example": "cautilus review render-variants-summary-html --input /tmp/cautilus-review/review-summary.json"
+    },
+    {
       "path": ["review", "prepare-input"],
       "group": "results",
       "usage": "cautilus review prepare-input [args]",
