@@ -30,6 +30,7 @@ standalone product여야 한다.
 | package.json | fixed | "release:prepare" |
 | package.json | fixed | "release:verify-public" |
 | package.json | fixed | "release:smoke-install" |
+| package.json | fixed | "release:smoke-install:brew" |
 | package.json | fixed | "consumer:onboard:smoke" |
 | package.json | fixed | "lint" |
 | package.json | fixed | "lint:archetypes" |

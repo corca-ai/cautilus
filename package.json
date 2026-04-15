@@ -17,6 +17,7 @@
     "release:prepare": "npm run skills:sync-packaged && node scripts/release/bump-version.mjs",
     "release:verify-public": "node scripts/release/verify-public-release.mjs",
     "release:smoke-install": "node scripts/release/run-install-smoke.mjs",
+    "release:smoke-install:brew": "node scripts/release/run-install-smoke.mjs --channel homebrew --allow-system-mutation",
     "hooks:install": "node scripts/install-git-hooks.mjs",
     "hooks:check": "node scripts/check-git-hooks.mjs",
     "lint": "npm run lint:eslint && npm run lint:specs && npm run lint:archetypes && npm run lint:links && npm run lint:go && npm run vet:go && npm run security:govulncheck",

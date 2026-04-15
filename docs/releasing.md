@@ -113,11 +113,24 @@ cautilus update
 ```
 
 The product-owned smoke helper can also drive the Homebrew path, but it
-requires explicit opt-in because it mutates the host package-manager state:
+requires explicit opt-in because it mutates the host package-manager state.
+On a Linux or macOS machine that already has Homebrew installed, use the
+dedicated on-demand npm script (`--allow-system-mutation` is wired in):
+
+```bash
+npm run release:smoke-install:brew -- --version v0.3.0
+```
+
+The underlying helper is also reachable without the npm wrapper if another
+flag combination is needed:
 
 ```bash
 npm run release:smoke-install -- --channel homebrew --version v0.3.0 --allow-system-mutation
 ```
+
+`release:smoke-install:brew` is intentionally on-demand only: it is not
+wired into `verify`, pre-push hooks, or CI. Run it when a release line is
+being closed, not on every repo change.
 
 7. Verify the public provenance for one released binary with GitHub CLI:
 
