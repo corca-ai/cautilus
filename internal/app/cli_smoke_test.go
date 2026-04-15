@@ -265,6 +265,13 @@ func TestCLIDoctorReportsReadyWithExecutionSurface(t *testing.T) {
 	if payload["adapter_path"] != filepath.Join(root, ".agents", "cautilus-adapter.yaml") {
 		t.Fatalf("unexpected adapter path: %#v", payload["adapter_path"])
 	}
+	nextSteps, ok := payload["next_steps"].([]any)
+	if !ok || len(nextSteps) == 0 {
+		t.Fatalf("expected next_steps hint on ready payload, got %#v", payload["next_steps"])
+	}
+	if !strings.Contains(anyToString(nextSteps[0]), "cautilus scenarios") {
+		t.Fatalf("expected next_steps to mention `cautilus scenarios`, got %#v", nextSteps)
+	}
 }
 
 func TestCLIDoctorFailsWithoutCheckedInAdapter(t *testing.T) {

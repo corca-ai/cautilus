@@ -552,6 +552,9 @@ func DoctorRepo(repoRoot string, adapterPath *string, adapterName *string) (map[
 		result["status"] = "ready"
 		result["ready"] = true
 		result["summary"] = "Adapter is ready for standalone Cautilus use."
+		result["next_steps"] = []any{
+			"Run `cautilus scenarios` to see which evaluation archetype matches your situation.",
+		}
 		return result, 0, nil
 	}
 	result["status"] = "incomplete_adapter"

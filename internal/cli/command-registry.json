@@ -211,6 +211,12 @@
       "example": "cautilus commands --json"
     },
     {
+      "path": ["scenarios"],
+      "group": "introspection",
+      "usage": "cautilus scenarios [--json]",
+      "example": "cautilus scenarios --json"
+    },
+    {
       "path": ["version"],
       "group": "introspection",
       "usage": "cautilus version [--verbose] [--check]",

@@ -139,6 +139,65 @@ func TestRunCommandsJSONReturnsRegistry(t *testing.T) {
 	}
 }
 
+func TestRunScenariosReturnsCatalog(t *testing.T) {
+	t.Setenv("CAUTILUS_CALLER_CWD", t.TempDir())
+	t.Setenv("CAUTILUS_TOOL_ROOT", "")
+
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	exitCode := Run([]string{"scenarios"}, &stdout, &stderr)
+	if exitCode != 0 {
+		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
+	}
+	for _, want := range []string{"chatbot", "skill", "workflow", "cautilus.scenarios.v1"} {
+		if !strings.Contains(stdout.String(), want) {
+			t.Fatalf("expected stdout to mention %q, got %q", want, stdout.String())
+		}
+	}
+}
+
+func TestRunScenariosJSONReturnsThreeArchetypes(t *testing.T) {
+	t.Setenv("CAUTILUS_CALLER_CWD", t.TempDir())
+	t.Setenv("CAUTILUS_TOOL_ROOT", "")
+
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	exitCode := Run([]string{"scenarios", "--json"}, &stdout, &stderr)
+	if exitCode != 0 {
+		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
+	}
+	var payload map[string]any
+	if err := json.Unmarshal(stdout.Bytes(), &payload); err != nil {
+		t.Fatalf("Unmarshal returned error: %v", err)
+	}
+	if payload["schemaVersion"] != "cautilus.scenarios.v1" {
+		t.Fatalf("unexpected schemaVersion: %#v", payload["schemaVersion"])
+	}
+	archetypes, ok := payload["archetypes"].([]any)
+	if !ok || len(archetypes) != 3 {
+		t.Fatalf("expected 3 archetypes, got %#v", payload["archetypes"])
+	}
+	seen := map[string]bool{}
+	for _, entry := range archetypes {
+		obj, ok := entry.(map[string]any)
+		if !ok {
+			t.Fatalf("archetype entry is not an object: %#v", entry)
+		}
+		name, _ := obj["archetype"].(string)
+		seen[name] = true
+		for _, field := range []string{"summary", "exampleInput", "nextStepCli", "contractDoc", "inputSchema", "behaviorFocus"} {
+			if value, _ := obj[field].(string); strings.TrimSpace(value) == "" {
+				t.Fatalf("archetype %q missing %s: %#v", name, field, obj)
+			}
+		}
+	}
+	for _, want := range []string{"chatbot", "skill", "workflow"} {
+		if !seen[want] {
+			t.Fatalf("expected archetype %q in payload, got %#v", want, seen)
+		}
+	}
+}
+
 func TestRunHealthcheckJSONReturnsHealthyPayload(t *testing.T) {
 	t.Setenv("CAUTILUS_CALLER_CWD", t.TempDir())
 	t.Setenv("CAUTILUS_TOOL_ROOT", "")

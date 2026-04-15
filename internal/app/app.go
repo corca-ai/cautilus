@@ -147,6 +147,8 @@ func nativeHandler(path []string) handlerFunc {
 	switch strings.Join(path, " ") {
 	case "commands":
 		return handleCommands
+	case "scenarios":
+		return handleScenarios
 	case "healthcheck":
 		return handleHealthcheck
 	case "adapter resolve":
@@ -278,6 +280,10 @@ type versionArgs struct {
 }
 
 type commandsArgs struct {
+	json bool
+}
+
+type scenariosArgs struct {
 	json bool
 }
 
@@ -489,6 +495,37 @@ func handleCommands(repoRoot string, cwd string, args []string, stdout io.Writer
 		return 1
 	}
 	_, _ = fmt.Fprintf(stdout, "%s\n", usage)
+	return 0
+}
+
+//nolint:errcheck // CLI stdout/stderr reporting is best-effort.
+func handleScenarios(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	options, err := parseScenariosArgs(args)
+	if err != nil {
+		_, _ = fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	catalog := runtime.LoadScenarioCatalog()
+	if options.json {
+		if err := writeJSON(stdout, catalog); err != nil {
+			_, _ = fmt.Fprintf(stderr, "%s\n", err)
+			return 1
+		}
+		return 0
+	}
+	lines := []string{"Cautilus evaluation archetypes (1:1 to archetype-boundary.spec.md):", ""}
+	for _, entry := range catalog.Archetypes {
+		lines = append(lines,
+			fmt.Sprintf("  %s", entry.Archetype),
+			fmt.Sprintf("    %s", entry.Summary),
+			fmt.Sprintf("    behavior focus: %s", entry.BehaviorFocus),
+			fmt.Sprintf("    example input:  %s", entry.ExampleInput),
+			fmt.Sprintf("    next-step CLI:  %s", entry.NextStepCLI),
+			"",
+		)
+	}
+	lines = append(lines, "Pass --json for the machine-readable catalog (schema: "+runtime.ScenarioCatalogSchema+").")
+	_, _ = fmt.Fprintln(stdout, strings.Join(lines, "\n"))
 	return 0
 }
 
@@ -1456,6 +1493,19 @@ func parseVersionArgs(args []string) (*versionArgs, error) {
 
 func parseCommandsArgs(args []string) (*commandsArgs, error) {
 	options := &commandsArgs{}
+	for index := 0; index < len(args); index++ {
+		switch args[index] {
+		case "--json":
+			options.json = true
+		default:
+			return nil, fmt.Errorf("unexpected argument %q", args[index])
+		}
+	}
+	return options, nil
+}
+
+func parseScenariosArgs(args []string) (*scenariosArgs, error) {
+	options := &scenariosArgs{}
 	for index := 0; index < len(args); index++ {
 		switch args[index] {
 		case "--json":
