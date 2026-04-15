@@ -2,8 +2,11 @@
 
 `Cautilus` keeps agent and workflow behavior honest while prompts keep changing.
 It gives teams a repo-local way to define the behavior they are trying to
-protect, separate iterate and held-out checks, run bounded compare and review
-flows, and keep evidence in durable packets instead of ad hoc benchmark
+protect, separate iterate and held-out checks (held-out = evaluation cases
+kept out of tuning so improvements can be measured honestly), run bounded
+(explicit budgets and checkpoints, not open-ended loops) compare and review
+flows, and keep evidence in durable packets (packet = machine-readable
+artifact that can be reopened from files later) instead of ad hoc benchmark
 narratives.
 
 The target product is a standalone binary plus a bundled skill that a host repo
@@ -44,57 +47,6 @@ no longer explain whether the candidate improved
 Not for:
 repos that only need deterministic lint, unit, or type checks and do not have
 an evaluator-dependent behavior surface
-
-## Why Cautilus
-
-Prompt strings change.
-That is not the real contract.
-
-`Cautilus` exists for the harder problem: keeping an agent or workflow's
-intended behavior honest while prompts, wrappers, and execution details evolve.
-It is not primarily a prompt manager or a benchmark scrapbook.
-It treats prompts as mutable implementation detail and treats the evaluated
-behavior contract as the source of truth.
-
-The practical stance is:
-
-- define the intended behavior explicitly
-- separate iterate or train surfaces from held-out validation
-- keep evidence, review, and decisions in durable files
-- prefer bounded search and bounded revision over open-ended autonomous loops
-- let prompts change when held-out behavior and review discipline improve
-
-## Core Flow
-
-The intended loop is simple:
-
-1. install the standalone binary and bundled skill into a host repo
-2. define one repo-local adapter that names the behavior surface and the real
-   held-out or gate commands
-3. run bounded evaluation and review instead of relying on one benchmark score
-4. compare baseline and candidate results through reports, review packets, and
-   explicit artifacts
-
-What the operator gets back is not only a pass or fail bit:
-
-- a repo-local adapter that declares the evaluation surface explicitly
-- machine-readable run artifacts such as report and review packets
-- bounded compare and review surfaces that can be reopened later from files
-- a path from observed runtime evidence to new scenario proposals and bounded
-  revisions
-
-One minimal host-repo path looks like this:
-
-```text
-.agents/cautilus-adapter.yaml
-.agents/skills/cautilus/
-artifacts/<run>/report.json
-artifacts/<run>/review-packet.json
-```
-
-That is the first real success condition:
-the repo can declare its evaluation surface, run it, and reopen the result from
-files later.
 
 ## Scenarios
 
@@ -192,6 +144,57 @@ a paragraph in a doc.
     recovery.
   - Agent: run `cautilus scenario propose` to produce a draft scenario
     and a PR-ready JSON.
+
+## Why Cautilus
+
+Prompt strings change.
+That is not the real contract.
+
+`Cautilus` exists for the harder problem: keeping an agent or workflow's
+intended behavior honest while prompts, wrappers, and execution details evolve.
+It is not primarily a prompt manager or a benchmark scrapbook.
+It treats prompts as mutable implementation detail and treats the evaluated
+behavior contract as the source of truth.
+
+The practical stance is:
+
+- define the intended behavior explicitly
+- separate iterate or train surfaces from held-out validation
+- keep evidence, review, and decisions in durable files
+- prefer bounded search and bounded revision over open-ended autonomous loops
+- let prompts change when held-out behavior and review discipline improve
+
+## Core Flow
+
+The intended loop is simple:
+
+1. install the standalone binary and bundled skill into a host repo
+2. define one repo-local adapter that names the behavior surface and the real
+   held-out or gate commands
+3. run bounded evaluation and review instead of relying on one benchmark score
+4. compare baseline and candidate results through reports, review packets, and
+   explicit artifacts
+
+What the operator gets back is not only a pass or fail bit:
+
+- a repo-local adapter that declares the evaluation surface explicitly
+- machine-readable run artifacts such as report and review packets
+- bounded compare and review surfaces that can be reopened later from files
+- a path from observed runtime evidence to new scenario proposals and bounded
+  revisions
+
+One minimal host-repo path looks like this:
+
+```text
+.agents/cautilus-adapter.yaml
+.agents/skills/cautilus/
+artifacts/<run>/report.json
+artifacts/<run>/review-packet.json
+```
+
+That is the first real success condition:
+the repo can declare its evaluation surface, run it, and reopen the result from
+files later.
 
 ## What It Does Today
 
@@ -550,7 +553,9 @@ Before designing adapters, inventory LLM-behavior surfaces first:
 
 Do not wrap pytest/lint/type/spec checks under `Cautilus`. Keep cheap
 deterministic gates in CI or pre-push hooks, then use `scenario propose`,
-held-out evaluation, and bounded review variants for the behavior surfaces
+held-out evaluation, and bounded review variants (review variant = one bounded
+prompt-plus-judge run over a scenario that produces a structured verdict) for
+the behavior surfaces
 that actually need evaluator-backed judgment.
 
 Use the probe surfaces according to what you are actually verifying:
@@ -838,7 +843,9 @@ cautilus scenario prepare-input \
   --now 2026-04-11T00:00:00.000Z
 ```
 
-Run every executor variant defined by an adapter:
+Run every executor variant (executor variant = one adapter-declared way to
+execute the evaluated behavior, e.g. one prompt and model pairing) defined by
+an adapter:
 
 ```bash
 cautilus review variants \
