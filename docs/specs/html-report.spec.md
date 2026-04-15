@@ -122,10 +122,12 @@ single commit당 claim 하나 원칙을 지키면 review가 쉬워진다.
 - HTML이 JSON 원본을 대체하는 편집 surface가 되는 것 (항상 read-only).
 - specdown reporter의 1:1 port.
 
-## 현재 executable guard (seed)
+## 현재 executable guard
 
-아래 check는 이 seed가 **현재 참인 것만** 단언한다.
-다음 세션이 claim 1–9를 하나씩 executable row로 승격시킨다.
+Claim 1–9가 executable row로 승격되면 이 표에 누적된다.
+row 추가 → `npm run lint:specs` fail → impl → pass → commit 의 tight loop를 유지한다.
+
+### Seed (항상 참)
 
 > check:source_guard
 
@@ -134,3 +136,19 @@ single commit당 claim 하나 원칙을 지키면 review가 쉬워진다.
 | internal/runtime/self_dogfood_html.go | file_exists |  |
 | docs/operator-acceptance.md | fixed | Tier 6: Promotion Readiness |
 | docs/operator-acceptance.md | fixed | html-report.spec.md |
+
+### Claim 1 — self-dogfood latest
+
+페이지 내 TOC (heading anchor 기반), `.md` / `.json` 링크의 `.html` rewriting, 상태 색상 단언의 명시화를 `RenderSelfDogfoodHTML` 경로에 요구한다.
+자세한 테스트 기대치는 `self_dogfood_html_test.go` 의 대응 테스트가 잠근다.
+
+> check:source_guard
+
+| file | mode | pattern |
+| --- | --- | --- |
+| internal/runtime/self_dogfood_html.go | fixed | renderSelfDogfoodPageTOC |
+| internal/runtime/self_dogfood_html.go | fixed | rewriteSelfDogfoodLinks |
+| internal/runtime/self_dogfood_html.go | fixed | class="toc-nav" |
+| internal/runtime/self_dogfood_html_test.go | fixed | TestRenderSelfDogfoodHTMLIncludesPageTOC |
+| internal/runtime/self_dogfood_html_test.go | fixed | TestRenderSelfDogfoodHTMLRewritesMarkdownAndJSONLinks |
+| internal/runtime/self_dogfood_html_test.go | fixed | TestSelfDogfoodStatusColorsMapToSemanticLabels |

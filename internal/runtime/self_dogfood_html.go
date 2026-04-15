@@ -5,6 +5,7 @@ import (
 	"html"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 )
 
@@ -114,15 +115,30 @@ main { max-width: 1120px; margin: 0 auto; padding: 24px 16px 48px; }
 .variant-head { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 6px; }
 .footer { margin-top: 24px; font-size: 12px; color: #6e7781; }
 .footer code { background: rgba(175, 184, 193, 0.2); padding: 0 4px; border-radius: 3px; }
+.toc-nav {
+	background: #ffffff;
+	padding: 14px 24px;
+	border-radius: 8px;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+	margin-bottom: 20px;
+}
+.toc-nav-title { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: #5a6472; margin: 0 0 8px; }
+.toc-nav ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 18px; }
+.toc-nav li { display: inline-flex; align-items: center; gap: 6px; }
+.toc-nav a { color: #1f2328; text-decoration: none; font-size: 13px; }
+.toc-nav a:hover { text-decoration: underline; }
+.finding-path a { color: inherit; text-decoration: none; }
+.finding-path a:hover { text-decoration: underline; }
 code { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace; }
 @media (prefers-color-scheme: dark) {
 	body { background: #0d1117; color: #e6edf3; }
-	.banner, .panel, .variant, .experiment-card { background: #161b22; box-shadow: 0 1px 3px rgba(0,0,0,0.4); }
-	.banner-meta, .panel h2, .panel-copy, .meta-grid dt, .data-table th, .footer, .finding-path, .telemetry, .empty { color: #9198a1; }
+	.banner, .panel, .variant, .experiment-card, .toc-nav { background: #161b22; box-shadow: 0 1px 3px rgba(0,0,0,0.4); }
+	.banner-meta, .panel h2, .panel-copy, .meta-grid dt, .data-table th, .footer, .finding-path, .telemetry, .empty, .toc-nav-title { color: #9198a1; }
 	.data-table th, .data-table td { border-bottom-color: #30363d; }
 	.variant, .experiment-card { border-color: #30363d; }
 	.finding, .variants .variant { background: #0d1117; }
 	.footer code { background: rgba(110, 118, 129, 0.4); }
+	.toc-nav a { color: #e6edf3; }
 }
 `
 
@@ -133,12 +149,17 @@ func RenderSelfDogfoodHTML(summary map[string]any, report map[string]any, review
 	builder.WriteString("<meta name=\"generator\" content=\"cautilus self-dogfood render-html\">\n")
 	builder.WriteString("<title>" + escapeHTML(title) + "</title>\n<style>" + selfDogfoodHTMLStyles + "</style>\n</head>\n<body>\n<main>\n")
 	builder.WriteString(renderSelfDogfoodHeader(summary, "Cautilus Self-Dogfood"))
+	builder.WriteString(renderSelfDogfoodPageTOC([]tocNavEntry{
+		{Anchor: "intent-heading", Label: "Intent", Status: stringOrEmpty(summary["overallStatus"])},
+		{Anchor: "observations-heading", Label: "Command Observations", Status: observationsAggregateStatus(report)},
+		{Anchor: "review-heading", Label: "Review Variants", Status: reviewVariantsAggregateStatus(reviewSummary)},
+	}))
 	builder.WriteString(renderSelfDogfoodIntentPanel(summary, report))
 	builder.WriteString(renderSelfDogfoodObservations(report))
 	builder.WriteString(renderSelfDogfoodReviewVariants(summary, reviewSummary))
 	builder.WriteString(renderSelfDogfoodFooter(summary, "Generated from <code>summary.json</code>, <code>report.json</code>, and <code>review-summary.json</code>.\n\tDo not hand-edit this file — rerun <code>cautilus self-dogfood render-html</code> to refresh."))
 	builder.WriteString("\n</main>\n</body>\n</html>\n")
-	return builder.String()
+	return rewriteSelfDogfoodLinks(builder.String())
 }
 
 func RenderSelfDogfoodExperimentsHTML(summary map[string]any, report map[string]any) string {
@@ -148,12 +169,17 @@ func RenderSelfDogfoodExperimentsHTML(summary map[string]any, report map[string]
 	builder.WriteString("<meta name=\"generator\" content=\"cautilus self-dogfood render-experiments-html\">\n")
 	builder.WriteString("<title>" + escapeHTML(title) + "</title>\n<style>" + selfDogfoodHTMLStyles + "</style>\n</head>\n<body>\n<main>\n")
 	builder.WriteString(renderSelfDogfoodHeader(summary, "Cautilus Self-Dogfood Experiments"))
+	builder.WriteString(renderSelfDogfoodPageTOC([]tocNavEntry{
+		{Anchor: "intent-heading", Label: "Intent", Status: stringOrEmpty(summary["overallStatus"])},
+		{Anchor: "compare-heading", Label: "A/B Comparison", Status: stringOrEmpty(summary["gateRecommendation"])},
+		{Anchor: "experiments-heading", Label: "Experiment Details", Status: experimentsAggregateStatus(summary)},
+	}))
 	builder.WriteString(renderSelfDogfoodExperimentsIntentPanel(summary, report))
 	builder.WriteString(renderSelfDogfoodComparison(summary))
 	builder.WriteString(renderSelfDogfoodExperimentCards(summary))
 	builder.WriteString(renderSelfDogfoodFooter(summary, "Generated from <code>summary.json</code> and <code>report.json</code>. The comparison view exists so A/B experiment outcomes can be inspected side by side instead of as isolated summaries.\n\tDo not hand-edit this file — rerun <code>cautilus self-dogfood render-experiments-html</code> to refresh."))
 	builder.WriteString("\n</main>\n</body>\n</html>\n")
-	return builder.String()
+	return rewriteSelfDogfoodLinks(builder.String())
 }
 
 func RenderSelfDogfoodHTMLFromDir(latestDir string) (string, error) {
@@ -627,10 +653,121 @@ func writeDimensionList(builder *strings.Builder, label string, values []any) {
 }
 
 func renderOptionalPath(path string) string {
-	if strings.TrimSpace(path) == "" {
+	trimmed := strings.TrimSpace(path)
+	if trimmed == "" {
 		return ""
 	}
-	return `<div class="finding-path"><code>` + escapeHTML(path) + `</code></div>`
+	if selfDogfoodPathLinkable(trimmed) {
+		return `<div class="finding-path"><a href="` + escapeHTML(trimmed) + `"><code>` + escapeHTML(trimmed) + `</code></a></div>`
+	}
+	return `<div class="finding-path"><code>` + escapeHTML(trimmed) + `</code></div>`
+}
+
+type tocNavEntry struct {
+	Anchor string
+	Label  string
+	Status string
+}
+
+// renderSelfDogfoodPageTOC emits an in-page nav anchored to known section IDs.
+// Each entry carries a status chip so a human reviewer can skim state before
+// deciding which section to read in full.
+func renderSelfDogfoodPageTOC(entries []tocNavEntry) string {
+	if len(entries) == 0 {
+		return ""
+	}
+	var items strings.Builder
+	for _, entry := range entries {
+		color := selfDogfoodStatusColor(entry.Status)
+		label := selfDogfoodStatusLabel(entry.Status)
+		items.WriteString(fmt.Sprintf(`
+		<li data-anchor="%s">
+			<span class="chip" style="background:%s">%s</span>
+			<a href="#%s">%s</a>
+		</li>`,
+			escapeHTML(entry.Anchor),
+			color,
+			escapeHTML(label),
+			escapeHTML(entry.Anchor),
+			escapeHTML(entry.Label),
+		))
+	}
+	return fmt.Sprintf(`
+<nav class="toc-nav" aria-label="Page contents">
+	<p class="toc-nav-title">On this page</p>
+	<ul>%s
+	</ul>
+</nav>`, items.String())
+}
+
+var selfDogfoodLinkablePathSuffixes = []string{".md", ".spec.md", ".json", ".html"}
+
+func selfDogfoodPathLinkable(value string) bool {
+	lower := strings.ToLower(value)
+	for _, suffix := range selfDogfoodLinkablePathSuffixes {
+		if strings.HasSuffix(lower, suffix) {
+			return true
+		}
+	}
+	return false
+}
+
+var selfDogfoodLinkRewriter = regexp.MustCompile(`(href|src)="([^"#?]+?)(?:\.spec\.md|\.md|\.json)((?:#[^"]*)?(?:\?[^"]*)?)"`)
+
+// rewriteSelfDogfoodLinks rewrites href/src attributes pointing to sibling JSON
+// or Markdown artifacts so the generated HTML stays navigable in a browser.
+// A `.md`, `.spec.md`, or `.json` target is swapped for `.html`, preserving any
+// fragment or query. Anchors that do not point at a path (e.g. `href="#top"`)
+// are left intact because they are handled elsewhere.
+func rewriteSelfDogfoodLinks(s string) string {
+	return selfDogfoodLinkRewriter.ReplaceAllString(s, `$1="$2.html$3"`)
+}
+
+func observationsAggregateStatus(report map[string]any) string {
+	observations := arrayOrEmpty(report["commandObservations"])
+	if len(observations) == 0 {
+		return "n/a"
+	}
+	for _, raw := range observations {
+		status := stringOrEmpty(asMap(raw)["status"])
+		if status != "passed" && status != "pass" {
+			return status
+		}
+	}
+	return "pass"
+}
+
+func reviewVariantsAggregateStatus(reviewSummary map[string]any) string {
+	variants := arrayOrEmpty(reviewSummary["variants"])
+	if len(variants) == 0 {
+		return "n/a"
+	}
+	for _, raw := range variants {
+		variant := asMap(raw)
+		status := stringOrEmpty(variant["status"])
+		if status != "passed" && status != "pass" {
+			return status
+		}
+	}
+	return "pass"
+}
+
+func experimentsAggregateStatus(summary map[string]any) string {
+	experiments := arrayOrEmpty(summary["experiments"])
+	if len(experiments) == 0 {
+		return "n/a"
+	}
+	worst := "pass"
+	for _, raw := range experiments {
+		overall := stringOrEmpty(asMap(raw)["overallStatus"])
+		if overall == "blocker" || overall == "failed" || overall == "reject" {
+			return overall
+		}
+		if overall == "concern" || overall == "defer" {
+			worst = overall
+		}
+	}
+	return worst
 }
 
 func defaultString(value any, fallback any) string {

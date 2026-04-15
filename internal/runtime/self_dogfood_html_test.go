@@ -91,6 +91,105 @@ func TestWriteSelfDogfoodExperimentsHTMLWritesIndexNextToLatestBundle(t *testing
 	}
 }
 
+func TestRenderSelfDogfoodHTMLIncludesPageTOC(t *testing.T) {
+	summary, report, reviewSummary := sampleSelfDogfoodBundle()
+	rendered := RenderSelfDogfoodHTML(summary, report, reviewSummary)
+	for _, pattern := range []string{
+		`class="toc-nav"`,
+		`data-anchor="intent-heading"`,
+		`data-anchor="observations-heading"`,
+		`data-anchor="review-heading"`,
+		`href="#intent-heading"`,
+		`href="#observations-heading"`,
+		`href="#review-heading"`,
+	} {
+		if !strings.Contains(rendered, pattern) {
+			t.Fatalf("expected %q in rendered html", pattern)
+		}
+	}
+	if strings.Count(rendered, `id="intent-heading"`) != 1 {
+		t.Fatalf("expected intent-heading section to remain a single anchor target")
+	}
+}
+
+func TestRenderSelfDogfoodExperimentsHTMLIncludesPageTOC(t *testing.T) {
+	summary, report := sampleSelfDogfoodExperimentsBundle()
+	rendered := RenderSelfDogfoodExperimentsHTML(summary, report)
+	for _, pattern := range []string{
+		`class="toc-nav"`,
+		`href="#intent-heading"`,
+		`href="#compare-heading"`,
+		`href="#experiments-heading"`,
+	} {
+		if !strings.Contains(rendered, pattern) {
+			t.Fatalf("expected %q in rendered html", pattern)
+		}
+	}
+}
+
+func TestRenderSelfDogfoodHTMLRewritesMarkdownAndJSONLinks(t *testing.T) {
+	summary, report, reviewSummary := sampleSelfDogfoodBundle()
+	rendered := RenderSelfDogfoodHTML(summary, report, reviewSummary)
+	// finding path `docs/specs/self-dogfood.spec.md` should become an anchor to `.html`.
+	if !strings.Contains(rendered, `<a href="docs/specs/self-dogfood.html"><code>docs/specs/self-dogfood.spec.md</code></a>`) {
+		t.Fatalf("expected .spec.md finding path rewritten to .html anchor; got:\n%s", rendered)
+	}
+	// Script path `.mjs` is not rewritten — only `.md`/`.spec.md`/`.json` are swapped.
+	if !strings.Contains(rendered, `<code>scripts/run-self-dogfood.mjs</code>`) {
+		t.Fatalf("expected non-linkable paths to stay code blocks")
+	}
+	// No stale .md / .spec.md / .json href attributes should leak through.
+	stalePatterns := []string{`href="docs/specs/self-dogfood.spec.md"`, `href="summary.json"`, `href="report.json"`}
+	for _, pattern := range stalePatterns {
+		if strings.Contains(rendered, pattern) {
+			t.Fatalf("expected rewriter to swap %q to .html", pattern)
+		}
+	}
+}
+
+func TestRewriteSelfDogfoodLinksPreservesFragmentsAndIgnoresAnchors(t *testing.T) {
+	in := `<a href="docs/guide.md#section">g</a><a href="report.json?v=1">r</a><a href="#top">top</a><a href="already.html">x</a>`
+	out := rewriteSelfDogfoodLinks(in)
+	expected := `<a href="docs/guide.html#section">g</a><a href="report.html?v=1">r</a><a href="#top">top</a><a href="already.html">x</a>`
+	if out != expected {
+		t.Fatalf("rewriteSelfDogfoodLinks mismatch:\n got: %s\nwant: %s", out, expected)
+	}
+}
+
+func TestSelfDogfoodStatusColorsMapToSemanticLabels(t *testing.T) {
+	groups := map[string][]string{
+		"#1b7f3a": {"accept", "pass", "passed"},
+		"#a4161a": {"blocker", "failed", "reject"},
+		"#a65d00": {"concern", "defer"},
+		"#444c56": {"unknown"},
+	}
+	for color, statuses := range groups {
+		for _, status := range statuses {
+			if got := selfDogfoodStatusColor(status); got != color {
+				t.Fatalf("status %q expected color %s, got %s", status, color, got)
+			}
+		}
+	}
+	// Unknown statuses fall back to the neutral color rather than a misleading green/red.
+	if got := selfDogfoodStatusColor("totally-made-up"); got != "#444c56" {
+		t.Fatalf("unknown status should fall back to neutral; got %s", got)
+	}
+	// Every label in the labels map must resolve to a color in the palette.
+	for status := range selfDogfoodStatusLabels {
+		got := selfDogfoodStatusColor(status)
+		matched := false
+		for color := range groups {
+			if got == color {
+				matched = true
+				break
+			}
+		}
+		if !matched {
+			t.Fatalf("status %q maps to color %s which is outside the semantic palette", status, got)
+		}
+	}
+}
+
 func writeSampleSelfDogfoodBundle(t *testing.T, latestDir string) {
 	t.Helper()
 	if err := os.MkdirAll(latestDir, 0o755); err != nil {
