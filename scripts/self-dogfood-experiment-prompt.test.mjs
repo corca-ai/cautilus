@@ -88,6 +88,269 @@ test("excerptFileContent surfaces timeout enforcement and published artifacts fo
 	assert.match(excerpt, /review-summary\.json/);
 });
 
+function setupPromptEnv({
+	adapterName,
+	artifactBody = "stub artifact body for excerpt",
+	promptInputExtras = {},
+}) {
+	const root = mkdtempSync(join(tmpdir(), `cautilus-prompt-shape-${adapterName}-`));
+	mkdirSync(join(root, ".agents"), { recursive: true });
+	const artifactAbs = join(root, ".agents", "cautilus-adapter.yaml");
+	writeFileSync(artifactAbs, `${artifactBody}\n`, "utf-8");
+	const promptPath = join(root, "review.prompt.md");
+	const promptInputPath = join(root, "review-prompt-input.json");
+	writeFileSync(promptPath, "# Prompt\n", "utf-8");
+	writeFileSync(
+		promptInputPath,
+		`${JSON.stringify({
+			repoRoot: root,
+			artifactFiles: [
+				{
+					relativePath: ".agents/cautilus-adapter.yaml",
+					absolutePath: artifactAbs,
+					exists: true,
+				},
+			],
+			...promptInputExtras,
+		})}\n`,
+		"utf-8",
+	);
+	return { root, promptPath, promptInputPath };
+}
+
+test("enrichExperimentPrompt always emits Experiment Context with adapter + timeout", () => {
+	for (const adapterName of [
+		"self-dogfood",
+		"self-dogfood-gate-honesty-a",
+		"self-dogfood-review-completion",
+		"self-dogfood-binary-surface",
+		"self-dogfood-skill-surface",
+	]) {
+		const { promptPath, promptInputPath } = setupPromptEnv({ adapterName });
+		enrichExperimentPrompt({
+			promptPath,
+			promptInputPath,
+			adapterName,
+			reviewTimeoutMs: 45000,
+		});
+		const rendered = readFileSync(promptPath, "utf-8");
+		assert.match(rendered, /## Experiment Context/, `missing section for ${adapterName}`);
+		assert.match(rendered, new RegExp(`- adapter: ${adapterName}`));
+		assert.match(rendered, /- bounded review timeout: 45000ms/);
+	}
+});
+
+test("enrichExperimentPrompt emits adapter-specific guidance bullets per adapter", () => {
+	const cases = [
+		{
+			adapterName: "self-dogfood",
+			must: [
+				/canonical operator-facing self-dogfood claim/,
+				/gateRecommendation as the raw deterministic signal/,
+				/ignore stale files under artifacts\/self-dogfood\/latest/,
+			],
+		},
+		{
+			adapterName: "self-dogfood-review-completion",
+			must: [
+				/bounded review surface can leave usable operator evidence/,
+				/review-variant step, not to the standing full_gate/,
+				/resolves adapter review_timeout_ms/,
+			],
+		},
+		{
+			adapterName: "self-dogfood-gate-honesty-a",
+			must: [
+				/honesty of the standing gate's narrow claim boundary/,
+				/narrower and more evidence-proportional than the baseline/,
+			],
+		},
+		{
+			adapterName: "self-dogfood-binary-surface",
+			must: [
+				/standalone binary surface is discoverable/,
+				/do not widen into bundled-skill or repo-wide quality claims/,
+			],
+		},
+		{
+			adapterName: "self-dogfood-skill-surface",
+			must: [
+				/operators can follow the skill path/,
+			],
+		},
+	];
+	for (const { adapterName, must } of cases) {
+		const { promptPath, promptInputPath } = setupPromptEnv({ adapterName });
+		enrichExperimentPrompt({
+			promptPath,
+			promptInputPath,
+			adapterName,
+			reviewTimeoutMs: 30000,
+		});
+		const rendered = readFileSync(promptPath, "utf-8");
+		for (const pattern of must) {
+			assert.match(rendered, pattern, `${adapterName}: missing bullet ${pattern}`);
+		}
+	}
+});
+
+test("enrichExperimentPrompt emits Current Run Evidence only for self-dogfood adapter", () => {
+	const adapterName = "self-dogfood";
+	const { promptPath, promptInputPath } = setupPromptEnv({
+		adapterName,
+		promptInputExtras: {
+			currentReportEvidence: {
+				reportFile: "/tmp/report.json",
+				automatedRecommendation: "accept-now",
+			},
+		},
+	});
+	enrichExperimentPrompt({
+		promptPath,
+		promptInputPath,
+		adapterName,
+		reviewTimeoutMs: 30000,
+		currentReportPath: "/tmp/current-report.json",
+		projectedReportPath: "/tmp/projected-report.json",
+		projectedReviewSummaryPath: "/tmp/projected-review-summary.json",
+		projectedSummaryPath: "/tmp/projected-summary.json",
+	});
+	const rendered = readFileSync(promptPath, "utf-8");
+	assert.match(rendered, /## Current Run Evidence/);
+	assert.match(rendered, /- current report file: \/tmp\/current-report\.json/);
+	assert.match(rendered, /- projected published report\.json: \/tmp\/projected-report\.json/);
+	assert.match(rendered, /- projected review-summary\.json: \/tmp\/projected-review-summary\.json/);
+	assert.match(rendered, /- projected summary\.json: \/tmp\/projected-summary\.json/);
+	assert.match(rendered, /- current gateRecommendation: accept-now/);
+	assert.match(
+		rendered,
+		/- summary\.json is written after this review from the current report plus your structured verdict\./,
+	);
+	assert.match(
+		rendered,
+		/published latest report\.json will embed selfDogfoodPublication/,
+	);
+	assert.match(
+		rendered,
+		/gateRecommendation should stay equal to the current automated recommendation/,
+	);
+	assert.match(
+		rendered,
+		/reportRecommendation should reflect the stronger of the deterministic gate result/,
+	);
+});
+
+test("enrichExperimentPrompt falls back to n/a in Current Run Evidence when paths missing", () => {
+	const adapterName = "self-dogfood";
+	const { promptPath, promptInputPath } = setupPromptEnv({ adapterName });
+	enrichExperimentPrompt({
+		promptPath,
+		promptInputPath,
+		adapterName,
+		reviewTimeoutMs: 30000,
+	});
+	const rendered = readFileSync(promptPath, "utf-8");
+	assert.match(rendered, /- current report file: n\/a/);
+	assert.match(rendered, /- projected published report\.json: n\/a/);
+	assert.match(rendered, /- projected review-summary\.json: n\/a/);
+	assert.match(rendered, /- projected summary\.json: n\/a/);
+	assert.match(rendered, /- current gateRecommendation: n\/a/);
+});
+
+test("enrichExperimentPrompt omits Current Run Evidence for non-self-dogfood adapters", () => {
+	for (const adapterName of [
+		"self-dogfood-gate-honesty-a",
+		"self-dogfood-review-completion",
+		"self-dogfood-binary-surface",
+		"self-dogfood-skill-surface",
+	]) {
+		const { promptPath, promptInputPath } = setupPromptEnv({ adapterName });
+		enrichExperimentPrompt({
+			promptPath,
+			promptInputPath,
+			adapterName,
+			reviewTimeoutMs: 30000,
+			currentReportPath: "/tmp/cur.json",
+			projectedReportPath: "/tmp/proj.json",
+			projectedReviewSummaryPath: "/tmp/rs.json",
+			projectedSummaryPath: "/tmp/s.json",
+		});
+		const rendered = readFileSync(promptPath, "utf-8");
+		assert.doesNotMatch(
+			rendered,
+			/## Current Run Evidence/,
+			`${adapterName} must not emit Current Run Evidence section`,
+		);
+	}
+});
+
+test("enrichExperimentPrompt emits Inlined Artifact Excerpts when artifactFiles present", () => {
+	const adapterName = "self-dogfood";
+	const { promptPath, promptInputPath, root } = setupPromptEnv({
+		adapterName,
+		artifactBody: "self-dogfood marker line for adapter excerpt",
+	});
+	enrichExperimentPrompt({
+		promptPath,
+		promptInputPath,
+		adapterName,
+		reviewTimeoutMs: 30000,
+	});
+	const rendered = readFileSync(promptPath, "utf-8");
+	assert.match(rendered, /## Inlined Artifact Excerpts/);
+	assert.match(rendered, /Use these excerpts as the primary evidence/);
+	assert.match(
+		rendered,
+		new RegExp(`### ${join(root, ".agents", "cautilus-adapter.yaml").replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`),
+	);
+	assert.match(rendered, /```text[\s\S]+?self-dogfood marker line/);
+});
+
+test("enrichExperimentPrompt omits Inlined Artifact Excerpts when no artifactFiles present", () => {
+	const adapterName = "self-dogfood";
+	const root = mkdtempSync(join(tmpdir(), "cautilus-prompt-shape-empty-"));
+	const promptPath = join(root, "review.prompt.md");
+	const promptInputPath = join(root, "review-prompt-input.json");
+	writeFileSync(promptPath, "# Prompt\n", "utf-8");
+	writeFileSync(
+		promptInputPath,
+		`${JSON.stringify({ repoRoot: root, artifactFiles: [] })}\n`,
+		"utf-8",
+	);
+	enrichExperimentPrompt({
+		promptPath,
+		promptInputPath,
+		adapterName,
+		reviewTimeoutMs: 30000,
+	});
+	const rendered = readFileSync(promptPath, "utf-8");
+	assert.doesNotMatch(rendered, /## Inlined Artifact Excerpts/);
+});
+
+test("enrichExperimentPrompt omits Baseline Artifact Excerpts for non gate-honesty-b adapters", () => {
+	for (const adapterName of [
+		"self-dogfood",
+		"self-dogfood-gate-honesty-a",
+		"self-dogfood-review-completion",
+		"self-dogfood-binary-surface",
+		"self-dogfood-skill-surface",
+	]) {
+		const { promptPath, promptInputPath } = setupPromptEnv({ adapterName });
+		enrichExperimentPrompt({
+			promptPath,
+			promptInputPath,
+			adapterName,
+			reviewTimeoutMs: 30000,
+		});
+		const rendered = readFileSync(promptPath, "utf-8");
+		assert.doesNotMatch(
+			rendered,
+			/## Baseline Artifact Excerpts/,
+			`${adapterName} must not emit Baseline Artifact Excerpts section`,
+		);
+	}
+});
+
 test("enrichExperimentPrompt inlines baseline excerpts for gate-honesty-b", () => {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-gate-honesty-baseline-"));
 	mkdirSync(join(root, ".agents"), { recursive: true });
