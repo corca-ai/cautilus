@@ -108,7 +108,8 @@ artifacts/<run>/review-packet.json
 What the operator gets back is not just a pass/fail bit:
 
 - a repo-local adapter that declares the evaluation surface explicitly
-- machine-readable run artifacts (report and review packets)
+- machine-readable run artifacts (report and review packets) that agents can consume directly
+- static HTML views of the same artifacts so a human reviewer can judge them in a browser without an agent in the loop (see [docs/specs/html-report.spec.md](./docs/specs/html-report.spec.md))
 - bounded compare and review surfaces reopenable from files
 - a path from observed runtime evidence back to new scenario proposals and bounded revisions
 

@@ -214,6 +214,54 @@ consumer-readiness.md에 기록된 deeper evidence path. 전부 돌릴 필요는
 
 ---
 
+## Tier 6: Promotion Readiness
+
+비용: 무료 (6a) + **인간 판단** (6b).
+의존: Tier 0-3 완료.
+
+이 tier는 *"다른 사람에게 이 리포 링크를 던지고 리드미의 주장을 자신있게 홍보할 수 있는가"*를 판정한다.
+Tier 3이 "CLI가 돌아가는가"라면 이 tier는 "리드미의 각 문장이 참인가"이다.
+외부 홍보 (블로그, 소셜, 사내 공유) 전에 이 tier가 녹색이어야 안전하다.
+
+### 6a. CLI claim coverage (기계적)
+
+리드미의 주장 ↔ 검증 명령 1:1 매핑.
+
+| # | 리드미 주장 | 검증 명령 | 통과 조건 |
+|---|---|---|---|
+| 6.1 | GEPA-style bounded prompt search — prepare | `cautilus optimize search prepare-input --optimize-input ./fixtures/optimize/example-input.json --held-out-results-file ./fixtures/scenario-results/example-results.json --budget light` | JSON 출력, exit 0 |
+| 6.2 | GEPA search — run (blocked-readiness 포함) | `cautilus optimize search run --input <6.1 출력>` | JSON 출력 (blocked result도 통과로 간주), exit 0 |
+| 6.3 | Agent track — plugin surface doctor | `cautilus doctor --repo-root . --scope agent-surface` | `ready` 출력, exit 0 |
+| 6.4 | Claude marketplace manifest | `claude plugins validate ./.claude-plugin/marketplace.json` | exit 0 |
+| 6.5 | Claude plugin manifest (packaged) | `claude plugins validate ./plugins/cautilus/.claude-plugin/plugin.json` | exit 0 |
+| 6.6 | Codex marketplace 발견 | `node ./scripts/release/check-codex-marketplace.mjs --repo-root .` | exit 0 |
+| 6.7 | Starter kit — chatbot resolves | `cautilus adapter resolve --repo-root ./examples/starters/chatbot` | adapter 경로, exit 0 |
+| 6.8 | Starter kit — skill resolves | `cautilus adapter resolve --repo-root ./examples/starters/skill` | adapter 경로, exit 0 |
+| 6.9 | Starter kit — workflow resolves | `cautilus adapter resolve --repo-root ./examples/starters/workflow` | adapter 경로, exit 0 |
+| 6.10 | Packet shape — 3 archetype normalize (optional, `jq` 필요) | `cautilus scenario normalize chatbot --input ./fixtures/scenario-proposals/chatbot-input.json \| jq -e '.candidates\|length>0'` (skill, workflow도 동일 패턴으로) | 각각 exit 0 |
+
+`jq`가 없는 환경에서는 6.10을 스킵해도 된다. 나머지 행은 의존성 없이 돈다.
+
+### 6b. HTML report — human review (인간 판단)
+
+리드미는 *"static HTML views of the same artifacts so a human reviewer can judge them in a browser without an agent in the loop"*을 약속한다.
+이 약속이 참인지는 사람이 브라우저에서 실제로 열어봐야 판정 가능하다.
+
+**상세 스펙 + 현재 구현 격차 + 다음 세션 확장 순서는** [docs/specs/html-report.spec.md](./specs/html-report.spec.md) **가 source of truth.** 아래 행은 인간 판단 체크리스트로만 사용한다.
+
+| # | 대상 | 확인 방법 | 인간 판단 기준 |
+|---|---|---|---|
+| 6.13 | Self-dogfood latest | 브라우저에서 `artifacts/self-dogfood/latest/index.html` 열기 | `gateRecommendation`, `reportRecommendation`, 주요 review 판정이 한 화면에서 인지 가능 |
+| 6.14 | Self-dogfood experiments | `artifacts/self-dogfood/experiments/latest/index.html` 열기 | 실험별 A/B 비교가 side-by-side로 읽힘 |
+| 6.15 | Mode evaluate report HTML | (다음 세션 구현 후) `report.json` 옆 `report.html` 열기 | intent / scenario 결과 / per-mode 상태가 구조적으로 읽힘 |
+| 6.16 | Review packet HTML | (다음 세션 구현 후) `review.json` 옆 `review.html` 열기 | review 질문 / artifact 링크 / judge response가 연결 탐색 가능 |
+| 6.17 | Compare artifacts HTML | (다음 세션 구현 후) baseline/candidate 비교 뷰 | 차이점이 구조적으로 읽힘 |
+
+6.15–6.17은 **현재 미구현**. 다음 세션에서 `docs/specs/html-report.spec.md`의 row를 한 줄씩 승격 → 실패 → 구현 → 통과 loop로 채운다.
+이 tier에서 해당 행은 *구현 완료 후 인간 판정*을 뜻하며, 구현 전까지는 "n/a (spec 기준 미구현)"로 표시한다.
+
+---
+
 ## 전체 통과 판정
 
 | 등급 | 기준 | 의미 |
@@ -222,8 +270,10 @@ consumer-readiness.md에 기록된 deeper evidence path. 전부 돌릴 필요는
 | **제품 인수** | Tier 0-3 전체 통과 | CLI surface 전체가 fixture 기반으로 동작 |
 | **품질 인수** | Tier 0-4 전체 통과 | self-dogfood까지 녹색 |
 | **완전 인수** | Tier 0-5 전체 통과 | consumer repo까지 검증 완료 |
+| **홍보 준비** | Tier 0-3, 6a 전체 통과 + 6b 중 현재 구현된 항목 (6.13, 6.14) 통과 | 리드미의 claim surface가 참이라고 공식 인정할 수 있음 |
 
 release 전에는 최소 **품질 인수** (Tier 0-4)를 달성해야 한다.
+외부 **홍보** 전에는 **홍보 준비** 도 함께 달성해야 한다.
 
 ---
 
