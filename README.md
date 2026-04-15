@@ -441,6 +441,12 @@ The current proof surface is split on purpose:
   dogfood and live-consumer evidence appendix
 - [docs/external-consumer-onboarding.md](./docs/external-consumer-onboarding.md):
   shortest end-to-end path for adopting a fresh consumer repo
+- [examples/starters/chatbot/](./examples/starters/chatbot/):
+  archetype-specific starter kit for chatbot evaluation wiring
+- [examples/starters/skill/](./examples/starters/skill/):
+  archetype-specific starter kit for skill evaluation wiring
+- [examples/starters/workflow/](./examples/starters/workflow/):
+  archetype-specific starter kit for durable-workflow evaluation wiring
 - [skills/cautilus/SKILL.md](./skills/cautilus/SKILL.md):
   bundled standalone skill entrypoint
 - [scripts/resolve_adapter.mjs](./scripts/resolve_adapter.mjs):
@@ -490,6 +496,14 @@ cautilus install --repo-root .
 cautilus adapter init --repo-root .
 cautilus adapter resolve --repo-root .
 ```
+
+If you already know which of the three archetypes (chatbot / skill /
+workflow) your repo evaluates, start from an archetype-specific starter
+kit under [examples/starters/](./examples/starters/) instead of
+`cautilus adapter init`. Each starter ships a pre-filled
+`cautilus-adapter.yaml`, a canonical input fixture, and a README that
+explains what to replace next. Smoke placeholders let `cautilus doctor`
+return `ready` immediately, so you can swap real commands in over time.
 
 The generated adapter is intentionally minimal.
 To reach `doctor ready`, wire at least one real runnable path into it.

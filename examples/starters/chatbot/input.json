@@ -1,0 +1,82 @@
+{
+  "schemaVersion": "cautilus.chatbot_normalization_inputs.v1",
+  "conversationSummaries": [
+    {
+      "threadKey": "thread-chatbot-1",
+      "intentProfile": {
+        "schemaVersion": "cautilus.behavior_intent.v1",
+        "intentId": "intent-repo-review-target-clarification",
+        "summary": "Clarify the concrete repo target before starting a broad repo review workflow.",
+        "behaviorSurface": "conversation_continuity",
+        "successDimensions": [
+          {
+            "id": "target_clarification",
+            "summary": "Ask for the minimum concrete target or missing context before acting."
+          }
+        ],
+        "guardrailDimensions": []
+      },
+      "lastObservedAt": "2026-04-11T00:00:00.000Z",
+      "records": [
+        {
+          "actorKind": "user",
+          "text": "repo review 해주세요"
+        },
+        {
+          "actorKind": "user",
+          "text": "지금 이 저장소 기준으로 봐주세요"
+        }
+      ]
+    },
+    {
+      "threadKey": "thread-chatbot-2",
+      "intentProfile": {
+        "schemaVersion": "cautilus.behavior_intent.v1",
+        "intentId": "intent-event-triggered-followup",
+        "summary": "Continue the active thread cleanly after an event-triggered wake-up.",
+        "behaviorSurface": "thread_followup",
+        "successDimensions": [
+          {
+            "id": "workflow_continuity",
+            "summary": "Carry the active workflow context cleanly into the next turn."
+          }
+        ],
+        "guardrailDimensions": []
+      },
+      "lastObservedAt": "2026-04-11T00:00:00.000Z",
+      "records": [
+        {
+          "actorKind": "user",
+          "text": "CI 깨졌어요",
+          "eventType": "app_mention"
+        },
+        {
+          "actorKind": "user",
+          "text": "그대로 이어서 진행해줘요"
+        }
+      ]
+    }
+  ],
+  "runSummaries": [
+    {
+      "runId": "run-chatbot-1",
+      "threadKey": "thread-chatbot-3",
+      "intentProfile": {
+        "schemaVersion": "cautilus.behavior_intent.v1",
+        "intentId": "intent-ambiguous-confirmation-context-recovery",
+        "summary": "Ask one clarification when a bare confirmation lacks thread context.",
+        "behaviorSurface": "thread_context_recovery",
+        "successDimensions": [
+          {
+            "id": "target_clarification",
+            "summary": "Ask for the minimum concrete target or missing context before acting."
+          }
+        ],
+        "guardrailDimensions": []
+      },
+      "startedAt": "2026-04-11T00:00:00.000Z",
+      "textPreview": "네, 그대로 진행해주세요.",
+      "blockedReason": "ambiguous_confirmation_without_thread_context"
+    }
+  ]
+}

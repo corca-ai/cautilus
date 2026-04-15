@@ -300,6 +300,16 @@ standalone product여야 한다.
 | docs/consumer-migration.md | fixed | cautilus-adapter.yaml |
 | docs/external-consumer-onboarding.md | file_exists |  |
 | docs/external-consumer-onboarding.md | fixed | npm run consumer:onboard:smoke |
+| examples/starters/chatbot/cautilus-adapter.yaml | file_exists |  |
+| examples/starters/chatbot/input.json | file_exists |  |
+| examples/starters/chatbot/README.md | file_exists |  |
+| examples/starters/skill/cautilus-adapter.yaml | file_exists |  |
+| examples/starters/skill/input.json | file_exists |  |
+| examples/starters/skill/README.md | file_exists |  |
+| examples/starters/workflow/cautilus-adapter.yaml | file_exists |  |
+| examples/starters/workflow/input.json | file_exists |  |
+| examples/starters/workflow/README.md | file_exists |  |
+| scripts/starter-kit-parity.test.mjs | file_exists |  |
 | scripts/check-specs.mjs | file_exists |  |
 | scripts/check-archetype-completeness.mjs | file_exists |  |
 | scripts/check-markdown-links.mjs | file_exists |  |

@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "cautilus.workflow_normalization_inputs.v1",
+  "evaluationRuns": [
+    {
+      "targetKind": "cli_workflow",
+      "targetId": "release-prep",
+      "intentProfile": {
+        "schemaVersion": "cautilus.behavior_intent.v1",
+        "intentId": "intent-release-prep-recovery",
+        "summary": "The release-prep workflow should advance past a known blocked step instead of reporting false progress.",
+        "behaviorSurface": "operator_workflow_recovery",
+        "successDimensions": [
+          {
+            "id": "workflow_progress",
+            "summary": "Advance past the blocked step within the declared retry budget."
+          }
+        ],
+        "guardrailDimensions": [
+          {
+            "id": "honest_blocker_reporting",
+            "summary": "Report `blocked` explicitly when the same step repeats without state change."
+          }
+        ]
+      },
+      "displayName": "Release Prep",
+      "surface": "release_prep",
+      "startedAt": "2026-04-11T00:00:00.000Z",
+      "status": "blocked",
+      "summary": "Release-prep stalled on the checksum-render step twice without state change.",
+      "blockerKind": "repeated_screen_no_progress",
+      "blockedSteps": [
+        "render_checksums",
+        "render_checksums"
+      ],
+      "artifactRefs": [
+        {
+          "kind": "scenario_yaml",
+          "path": "runs/release-prep/scenario.yaml"
+        }
+      ],
+      "metrics": {
+        "blocked_steps": 2,
+        "unique_states_discovered": 3
+      }
+    }
+  ]
+}

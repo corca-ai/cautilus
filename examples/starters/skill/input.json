@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "cautilus.skill_normalization_inputs.v2",
+  "evaluationRuns": [
+    {
+      "targetKind": "public_skill",
+      "targetId": "impl",
+      "intentProfile": {
+        "schemaVersion": "cautilus.behavior_intent.v1",
+        "intentId": "intent-impl-smoke-validation",
+        "summary": "impl should keep the smoke scenario validation surface passing.",
+        "behaviorSurface": "skill_validation",
+        "successDimensions": [
+          {
+            "id": "validation_integrity",
+            "summary": "Keep the declared validation surface passing and legible."
+          }
+        ],
+        "guardrailDimensions": []
+      },
+      "displayName": "impl",
+      "surface": "smoke_scenario",
+      "startedAt": "2026-04-11T00:00:00.000Z",
+      "status": "failed",
+      "summary": "The impl smoke scenario stopped producing a bounded execution plan.",
+      "artifactRefs": [
+        {
+          "kind": "eval_fixture",
+          "path": "evals/fixtures/impl-smoke.json"
+        }
+      ]
+    }
+  ]
+}

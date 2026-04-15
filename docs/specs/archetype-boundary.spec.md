@@ -21,6 +21,7 @@ What it evaluates: multi-turn conversational behavior inside a single session.
 - CLI subcommand: `cautilus scenario normalize chatbot`
 - contract document: [chatbot-normalization.md](../contracts/chatbot-normalization.md)
 - example fixture: [chatbot-consumer-input.json](../../fixtures/scenario-proposals/samples/chatbot-consumer-input.json)
+- starter kit: [examples/starters/chatbot/](../../examples/starters/chatbot/)
 - behavior surfaces: `conversation_continuity`, `thread_followup`,
   `thread_context_recovery`
 
@@ -36,6 +37,7 @@ validation surfaces passing.
 - CLI subcommand: `cautilus scenario normalize skill`
 - contract document: [skill-normalization.md](../contracts/skill-normalization.md)
 - example fixture: [skill-validation-input.json](../../fixtures/scenario-proposals/samples/skill-validation-input.json)
+- starter kit: [examples/starters/skill/](../../examples/starters/skill/)
 - behavior surfaces: `skill_validation`, `skill_trigger_selection`,
   `skill_execution_quality`
 
@@ -53,6 +55,7 @@ invocations and must recover when it hits a known blocker.
 - CLI subcommand: `cautilus scenario normalize workflow`
 - contract document: [workflow-normalization.md](../contracts/workflow-normalization.md)
 - example fixture: [workflow-recovery-input.json](../../fixtures/scenario-proposals/samples/workflow-recovery-input.json)
+- starter kit: [examples/starters/workflow/](../../examples/starters/workflow/)
 - behavior surfaces: `operator_workflow_recovery`
 
 ## Why skill stays unified
@@ -152,6 +155,15 @@ force one file to serve two audiences (schema reference vs. realistic
 consumer narrative) and make either role harder to read. Adding a
 minimal fixture file alongside the `--example-input` stdout would
 duplicate the minimal payload in two places and invite drift.
+
+Starter kits under `examples/starters/<archetype>/` keep a copy of the
+canonical fixture at `input.json` so each starter stays self-contained
+when a consumer copies just that directory. The copy is kept
+byte-identical to the canonical fixture by a drift test
+([scripts/starter-kit-parity.test.mjs](../../scripts/starter-kit-parity.test.mjs));
+update both files together or re-run the copy. The starter copy is not
+a new fixture role — it is an intentional duplicate carried for consumer
+convenience.
 
 ## Source Guard
 
