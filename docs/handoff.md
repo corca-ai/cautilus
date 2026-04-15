@@ -15,97 +15,96 @@
 - **패턴 발동은 사용자-요청 모델이다.** premortem/카운터웨이트/iterative
   premortem 등은 **사용자가 명시적으로 요청할 때만 발동**한다.
   에이전트가 "필요하겠다"고 판단해서 자발적으로 돌리지 않는다.
-- 시작 branch는 `main`이다. 이번 세션 끝에 사용자가 push 하여 로컬과
-  `origin/main` 일치. 다음 세션 시작 시 `git fetch` 로 확인.
+- 시작 branch는 `main`이다. 이번 세션 끝에 로컬 `main` 은 4 커밋 (품질
+  리뷰 리프레시 + phase-label verify + prompt shape assert + SKILL.md
+  trim) + 이 핸드오프 커밋이 `origin/main` 보다 앞선 상태로 남는다.
+  다음 세션 시작 시 먼저 `git status` / `git log origin/main..HEAD` 로
+  unpushed 확인 후 push 여부 결정.
 - product-owned seam이면 `cautilus`에서 먼저 고친다.
 
 ## Current State
 
-이번 세션에 Top 3 소화 (§1, §2, §3) + scenario-history 확장 premortem
-후 defer + archetype starter kits 3종 착륙. 한 세션 5 커밋으로 "다음
-한 수"가 비워진 상태.
+이번 세션은 `/charness:quality` 로 시작해 2026-04-15 품질 리뷰 갱신
+후 세 개의 advisory ergonomics smell 을 바로 deterministic 개선으로
+승격. 한 세션 4 커밋으로 "다음 한 수" 다시 비워진 상태.
 
-- **§1 — introspection surfaces spec 섹션.**
-  `archetype-boundary.spec.md` 에 `--help`(사람) / `cautilus commands`
-  (기계 CLI registry) / `cautilus scenarios`(archetype 의미 카탈로그)
-  세 surface 역할을 못박음. 나중에 `scenarios` 를 `commands` 로 합치는
-  실수 방지.
-- **§2 — fixture canonical/specialized 분리.**
-  canonical=full (`<archetype>-input.json`), minimal=`--example-input`
-  stdout, specialized=`fixtures/scenario-proposals/samples/` 로 3 역할
-  규약. 3개 specialized fixture (`chatbot-consumer`,
-  `skill-validation`, `workflow-recovery`) 를 `samples/` 로 이동 +
-  참조 5 파일 갱신. Fixture Naming 섹션이 스펙에 기록.
-- **§3 — Homebrew on-demand smoke npm script.**
-  `release:smoke-install:brew` = `run-install-smoke.mjs --channel
-  homebrew --allow-system-mutation` wrap. 코드는 이미 완비되어 있었고
-  npm script 편의 진입점만 빠져있던 상태. CI/pre-push 미편입, Linux+
-  macOS 에서 brew 설치된 환경 on-demand only.
-- **scenario-history 확장 premortem → defer.** 4각
-  (cache migration / external consumer / devil's-advocate / doc cascade)
-  + C 의 주장 직접 verification (self-dogfood 가 `full_gate` 모드 사용
-  → baseline-cache 자체 비활성, 0 profile 체크인, `review variants` 와
-  `skill evaluate` 에 history 코드 0건) 로 speculative 확인.
-  Planned scope + 왜 defer + unlock trigger + must-fix 분류를
-  [scenario-history.md § Deferred Expansion](./contracts/scenario-history.md)
-  에 기록해서 다음 세션이 4각 premortem 재실행 안 해도 되게.
-  master-plan Phase 3 의 "still open" 항목에 그 섹션 pointer 추가.
-- **Archetype starter kits.**
-  `examples/starters/{chatbot,skill,workflow}/` 3 세트. 각각
-  `cautilus-adapter.yaml` (node -e smoke placeholder 로 복사 직후
-  `doctor ready`) + `input.json` (canonical fixture 의 drift-tested
-  copy) + `README.md`. 드리프트 방지는 `scripts/starter-kit-parity.test.mjs`
-  가 byte-identity 검증. archetype-boundary spec 의 각 ### 에
-  `starter kit:` bullet 추가 — `lint:archetypes` 의 pre-defined key set
-  이 unknown bullet 을 무시하므로 11-surface 체크 영향 없음.
+- **품질 리뷰 refresh.** 이전 2026-04-12 리뷰를
+  `skill-outputs/quality/history/` 로 rotate. 새 리뷰에서 세 advisory
+  발견: (1) `phase_level_signal: weak` + `escape_hatch: missing` on
+  pre-push, (2) `long_core` on `skills/cautilus/SKILL.md` (297 non-empty
+  lines vs 160 threshold), (3) 이월된 self-dogfood prompt shape deterministic
+  assertion missing.
+- **#1 — verify phase label + verbose escape hatch.**
+  `scripts/run-verify.mjs` 가 9 phase (eslint/specs/archetypes/links/
+  golangci/vet/govulncheck/go race/node) 를 ▶ 라벨 + 경과시간으로 순차
+  실행. 실패 시 `✖ <label> (exit N)` 로 어느 phase 가 터졌는지 스크롤 없이
+  확인. `npm run verify:verbose` + `npm run test:node:spec` 가 verbose
+  escape hatch. 11 unit test 로 PHASES 커버리지, arg parse, resolver,
+  success / short-circuit / spawn-error / verbose routing 검증.
+- **#2 — self-dogfood prompt shape deterministic assertion.**
+  `scripts/self-dogfood-experiment-prompt.test.mjs` 에 9 test 추가.
+  6 adapter variant (self-dogfood, gate-honesty-{a,b},
+  review-completion, binary-surface, skill-surface) × 4 section
+  (Experiment Context / Current Run Evidence / Inlined Artifact
+  Excerpts / Baseline Artifact Excerpts) 매트릭스로 각 섹션의 존재/부재
+  + 필수 bullet/path/fallback 을 결정론 체크. 2026-04-12 "Missing"
+  이월분 해소.
+- **#3 — SKILL.md core trim 297 → 159 non-empty lines (−46%).**
+  세 reference 로 progressive disclosure 분리:
+  `references/bootstrap-inventory.md` (LLM-behavior surface 인벤토리
+  checklist; adapter YAML 편집 전 체크), `references/self-dogfood-runner.md`
+  (4 maintainer-local `dogfood:self*` wrapper + claim boundary),
+  `references/command-cookbook.md` (step-8 concrete cautilus CLI
+  invocation 블록 전체). `standalone-surface.spec.md` 의 커맨드 가드
+  블록 + `self-dogfood.spec.md` + `current-product.spec.md` 의 관련
+  가드를 새 reference 파일로 재지정 (source + packaged twin 모두).
+  `internal/app/cli_smoke_test.go` 도 inventory 문자열을 새 reference
+  에서 읽도록 갱신. `plugins/cautilus/skills/cautilus/` 패키지 트리는
+  `npm run skills:sync-packaged` 로 재동기화 (byte-identity 테스트 유지).
 
 ## Unpushed Commits
 
-이번 세션 끝에 사용자가 push 하여 unpushed 없음. 이번 세션 5 커밋:
+이번 세션 4 커밋 (main 기준 push 전):
 
 ```
-0d961e6 Add archetype starter kits under examples/starters/
-b9d8a67 Record deferred scenario-history expansion with premortem findings
-8949c66 Add on-demand Homebrew install smoke npm script
-680c595 Split archetype fixtures into canonical + specialized samples
-6939a04 Pin three introspection surfaces in archetype-boundary spec
+26e3d7f Trim skills/cautilus/SKILL.md core from 297 → 159 non-empty lines
+7d7c60c Assert self-dogfood review prompt shape per adapter
+e51d09a Phase-label verify + expose test:node:spec verbose escape hatch
+da72e5d Refresh quality review for post-starter-kit surface (advisory ergonomics smells)
 ```
 
 ## Last Verified
 
-- `npm run verify` (Go + Node all green; 모든 lint 통과)
-- `npm run lint:specs` (5 specs, 598 guard rows)
+- `npm run verify` (Go + Node all green; 새 phase-labeled orchestrator
+  통과, 총 31-32s)
+- `npm run lint:specs` (5 specs, **603 guard rows** — +5 from spec
+  guard 재지정)
 - `npm run lint:archetypes` (3 archetypes × 11 surface 유지)
-- `npm run lint:links` (85 파일; starter README 3 추가 포함)
-- `node --test scripts/starter-kit-parity.test.mjs` (3 archetype drift
-  test pass)
+- `npm run lint:links` (86 파일; 3개 신규 reference 포함)
+- `node --test test:node:spec` (222 pass / 0 fail / ~22s; run-verify
+  unit test 11건, prompt shape test 12건 포함)
+- `inventory_skill_ergonomics` — `long_core` advisory 해소 (159 < 160);
+  `mode_pressure_terms_present` + `code_fence_without_helper_script` 는
+  CLI product skill 특성상 잔존, advisory 수용
 
 ## Next Session
 
-이번 세션에 Top 3 + scenario-history 결정 + starter kits 소화. **즉시
-대기** 큐가 비었다. 다음 세션은 방향 선택부터 한다:
+4 커밋 push 전. 먼저 push 후 방향 선택.
 
-- **(옵션 A) Master Plan 의 Immediate Next Moves 중 하나.**
-  현재 열린 것:
-  1. 최적화 레이어 다음 bounded improvement seam (GEPA 확장 또는 다른
-     slice; dogfood 증거가 요구할 때만).
-  2. scenario-history 확장 — **이번 세션에 defer**. unlock trigger 3개
-     ([scenario-history.md § Deferred Expansion](./contracts/scenario-history.md))
-     중 하나 발생 시 재고.
-  5. starter kit 실사용 검증 후 관찰된 pain 정리 (개밥 repos 에서 직접
-     사용 후 피드백). Homebrew managed smoke 로의 추가 승격 여부도
-     이 경험치에 달림.
-  6. 다른 packet type HTML rendering (JSON/YAML 경계 안정화 후;
-     consumer 다수에서 안정화 요건 미달).
-- **(옵션 B) 미해결 설계 질문 1건 정착.**
-  - 이번 세션에 B-1 (introspection surfaces), B-2 (fixture 규약)
-    둘 다 닫음.
-  - 남은 설계 질문: Master Plan Phase 5 의 "richer merge heuristics"
-    를 dogfood 증거 없이 확장할지 — 증거 없으면 다른 slice 로 이동.
-- **(옵션 C) 3-angle 우선순위 투표로 drive-by 후보 발굴.**
-  Working Patterns 대로 사용자가 투표 요청하면 3각 + 카운터웨이트 1회.
+- **(옵션 A) README / operator-acceptance 축약 (defer 된 #4).**
+  2026-04-15 품질 리뷰의 `long_entrypoint` + mode/option pressure
+  advisory. README 를 다른 이유로 편집할 때 in-flight 로 합치는 것이
+  원래 계획. 별도 세션 요청이면 바로 착수 가능.
+- **(옵션 B) Master Plan 의 Immediate Next Moves.**
+  열린 것: (1) 최적화 레이어 다음 bounded improvement seam
+  (dogfood 증거 요구 시), (2) scenario-history 확장 — unlock trigger
+  대기 ([scenario-history.md § Deferred Expansion](./contracts/scenario-history.md)),
+  (5) starter kit 실사용 pain 정리, (6) 다른 packet type HTML
+  rendering.
+- **(옵션 C) 3-angle 우선순위 투표로 drive-by 발굴.**
+  Working Patterns 대로 사용자가 요청 시.
 
-현재 남은 **영구 drop** 목록 (이전 세션까지):
+현재 남은 **영구 drop** 목록:
 
 - D (category-confused docs-shuffle), B (prototype lifetime enforcement),
   M (stderr deprecation warning), I (smoke-external-consumer
@@ -114,49 +113,45 @@ b9d8a67 Record deferred scenario-history expansion with premortem findings
 
 ## Consumer Migration (v0.4.x)
 
-v0.4.x 내에서 실질 breaking 은 1건. 이번 세션 외부 영향:
+이번 세션 외부 영향은 모두 additive 또는 문서 경로 이동. 동작 변화
+없음.
 
-- **specialized fixture 경로 이동** (breaking for scripts referencing
-  the old paths): 3개 specialized fixture 가
-  `fixtures/scenario-proposals/` → `fixtures/scenario-proposals/samples/`
-  로 이동. consumer 가 이 경로를 hardcoded 참조했다면 path 업데이트
-  필요. canonical `<archetype>-input.json` 은 그대로.
-- **Archetype starter kits** (additive): `examples/starters/<archetype>/`
-  가 새 consumer 에게 `adapter init` 보다 빠른 출발점 제공.
-- **`release:smoke-install:brew`** (additive): on-demand, CI/pre-push
-  미편입.
-- **introspection surfaces spec 공식화** (additive): 동작 변화 없음,
-  scenarios ↔ commands 관계만 문서화.
-- **scenario-history 확장** (no change): 이번 세션 코드 변경 없음,
-  defer 기록만.
+- **`skills/cautilus/SKILL.md` content relocation** (additive for
+  consumers; packaged 트리에 새 reference 추가됨).
+  네 개 `npm run dogfood:self*` wrapper 설명은 이제
+  `references/self-dogfood-runner.md`, step-8 concrete CLI invocation
+  블록은 `references/command-cookbook.md`, adapter YAML 편집 전 인벤토리는
+  `references/bootstrap-inventory.md`. SKILL.md core 는 선택/순서만
+  보유. `cautilus install --repo-root .` 이 설치하는 tree 는 새
+  reference 포함 (test 가 검증).
+- **`npm run verify:verbose`, `npm run test:node:spec`** (additive):
+  기존 `npm run verify` 는 phase-labeled orchestrator 로 감싸짐, 외부
+  인터페이스 동일. pre-push 는 변화 없이 여전히 `npm run verify`.
+- **spec guard 재지정** (no-op for consumers): 동일 문자열이 이제
+  `references/*.md` 에 있어 spec guard rows 가 그쪽을 가리킴.
 
 ## Discuss
 
 - 이번 세션 판단:
-  - §1: 세 surface 를 별도 유지 이유 = 청중 다름 + 성장 속도 다름
-    (`commands` 는 새 subcommand 마다 증가, `scenarios` 는 spec 이
-    archetype 추가할 때만). 머지 시 "새 subcommand 가 scenarios
-    payload 를 의도치 않게 건드림" 이 위험.
-  - §2: canonical=full 이 이미 관행이었음. 세 archetype 모두
-    `<archetype>-input.json` 이 specialized 보다 크고 풍부. 규약화가
-    새 관행 도입이 아니라 암묵 관행의 명시화.
-  - §3: Homebrew smoke 코드가 이미 `run-install-smoke.mjs` 에 완비.
-    npm script wrapper 한 줄만 빠져있었던 상태. 편의 진입점 추가가
-    실작업 전부.
-  - scenario-history: C (devil's-advocate) 가 "현재 baseline-cache 가
-    생성되는 경로 자체가 없다 (self-dogfood = full_gate, profile 체크인
-    0건, review variants/skill evaluate 는 history 코드 0건)" 를
-    주장. 3 grep 으로 직접 confirm. Part 1 (reusable store) 는 공유할
-    cache 가 없는 상태에서 공유 추상만 추가, Part 2 (broader ownership)
-    는 call site 없음. master-plan Phase 5 의 "speculatively 말라"
-    원칙 직접 적용하여 defer.
-  - starter kits: fixture 는 copy + drift test. sync-packaged-skill
-    과 동일 패턴이라 신규 abstraction 없음. `lint:archetypes` 가
-    unknown bullet 을 무시하도록 설계되어 있어 spec 에 `starter kit:`
-    bullet 추가가 11-surface 강제로 이어지지 않음 (사용자가 명시적으로
-    피한 덫).
+  - **#1 (verify phase label)**: pre-push 는 계속 `npm run verify` 를
+    부르는 단일 엔트리. 실패 위치 명확성만 올리려고 phase 라벨을 위로
+    빼고, 테스트를 위해 `PHASES` + `resolveScript` + `runPhases` 를 순수
+    함수로 분리. 외부 인터페이스 동일. dot reporter 를 기본값으로 유지
+    (standing gate verbosity 원칙), verbose 는 명시적 opt-in.
+  - **#2 (prompt shape assert)**: 이전 리뷰가 "smoke 로는 섹션 누락을
+    놓칠 수 있다" 고 못박아놨던 이월분. 6 adapter variant × 4 section
+    매트릭스로 gating 규칙 (Current Run Evidence 는 `self-dogfood` 전용,
+    Baseline Artifact Excerpts 는 `gate-honesty-b` 전용) 을 결정론
+    assert. 섹션별 필수 bullet + fallback 경로 (`n/a`) 까지 커버.
+  - **#3 (SKILL.md trim)**: `long_core` advisory 는 tasteful 하지 않고
+    progressive-disclosure 원칙의 objective test. core 에서 삭제가
+    아니라 reference 로 이동 — spec guard + Go test + packaged 트리
+    세 군데가 이동을 따라가야 통과. "문서를 옮기면 그걸 assert 하는
+    gate 도 같이 옮긴다" 원칙이 이번 세션에 구체화된 working pattern.
+  - scenario-history: 이전 세션 defer 결정 유지. Trigger 3종은 이번에도
+    발생 없음.
 
-- **현재 열려 있는 설계 질문:** 없음. B-1, B-2 둘 다 이번 세션에 닫힘.
+- **현재 열려 있는 설계 질문:** 없음. 이번 세션은 품질 개선만.
 
 - 아직 의도적으로 안 하는 것:
   - 한국어 `README.ko.md`.
@@ -244,6 +239,11 @@ Trigger 참고).
   ↔ canonical fixture) 은 drift test 로 byte-identity 를 강제하는
   기존 standing pattern (sync-packaged-skill + distribution-surface
   test) 을 따른다. 추상화 재발명 금지.
+- **문서를 옮기면 그걸 assert 하는 gate 도 같이 옮긴다.** 이번 세션
+  SKILL.md core → `references/*.md` 이동 때 확인: spec guard rows,
+  Go smoke test 의 문자열 assert, packaged 트리 sync 세 군데가
+  이동을 따라가야 verify 통과. 이동 전에 grep 으로 해당 경로를
+  assert 하는 곳을 전부 찾아 같은 슬라이스 안에서 재지정할 것.
 
 ## Premortem Hazards
 
