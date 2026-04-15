@@ -220,33 +220,16 @@ also pass after the table is widened in step 9):
     `node scripts/release/sync-packaged-skill.mjs .`).
 
 The Source Guard table above only enforces existence of named
-patterns; it does not enforce ordering of the steps themselves. Adding
-an inverse-completeness lint that walks each archetype `###` heading
-in this spec and asserts every required surface is present is a
-separate, larger seam (see follow-up 1 below).
+patterns; it does not enforce ordering of the steps themselves. An
+inverse-completeness check — `npm run lint:archetypes`, implemented
+by [scripts/check-archetype-completeness.mjs](../../scripts/check-archetype-completeness.mjs)
+— walks each archetype `###` heading in this spec and asserts every
+required surface is present (schema constant, helper, CLI subcommand,
+fixture, contract doc, behavior surfaces, assertion function, handler,
+scenarios catalog entry, README block, SKILL.md reference). It does
+not enforce ordering or co-commit; those stay the contributor's job.
 
-## Follow-up Work
-
-The initial slice that landed this spec covers: schema split, helper split,
-CLI subcommand for workflow, contract doc split, fixture cleanup,
-`docs/workflow.md` rename to `docs/evaluation-process.md`, README Scenarios
-rewrite with three archetype blocks. Follow-up work that must reconcile
-with this spec:
-
-1. **Inverse-completeness lint.** The Source Guard table above
-   enforces that every named surface exists, but it does not enforce
-   the inverse: that every `###` archetype heading in this spec has
-   the full surface set behind it. A new spec lint command would
-   enumerate archetypes from `###` headings in this spec; for each,
-   assert that every required surface (schema constant, helper
-   function, CLI subcommand, fixture, contract doc, behavior surfaces,
-   assertion function, handler, scenarios catalog entry, README block,
-   SKILL.md reference) actually exists. Larger seam — likely its own
-   spec lint command. Lower priority than the ordered "Adding A New
-   First-Class Archetype" checklist above, which already names the
-   files a contributor must edit.
-
-Every item above must keep the 1:1 archetype mapping intact. When adding a
-new first-class evaluation target, update this spec first and introduce the
-matching schema, helper, CLI, fixture, and contract document in one
-coordinated slice.
+Every new archetype must keep the 1:1 archetype mapping intact. When
+adding a new first-class evaluation target, update this spec first and
+introduce the matching schema, helper, CLI, fixture, and contract
+document in one coordinated slice.
