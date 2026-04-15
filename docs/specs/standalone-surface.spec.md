@@ -25,11 +25,13 @@ standalone acceptance boundary만 남긴다.
 | bin/cautilus | fixed | exec go -C |
 | internal/cli/command-registry.json | file_exists |  |
 | internal/cli/command-registry.json | fixed | cautilus commands [--json] |
+| internal/cli/command-registry.json | fixed | cautilus scenarios [--json] |
 | internal/cli/command-registry.json | fixed | cautilus healthcheck [--json] |
 | internal/cli/command-registry.json | fixed | cautilus doctor [args] |
 | internal/cli/command-registry.json | fixed | cautilus install [--repo-root <path>] [--overwrite] [--json] |
 | internal/cli/command-registry.json | fixed | cautilus update [--repo-root <path>] [--json] |
 | internal/cli/command-registry.json | fixed | "path": ["commands"] |
+| internal/cli/command-registry.json | fixed | "path": ["scenarios"] |
 | internal/cli/command-registry.json | fixed | "path": ["healthcheck"] |
 | internal/cli/command-registry.json | fixed | "path": ["version"] |
 | internal/cli/command-registry.json | fixed | "path": ["install"] |

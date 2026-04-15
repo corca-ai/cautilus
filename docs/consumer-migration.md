@@ -35,6 +35,24 @@ For the shortest end-to-end onboarding path, see
 8. Keep host-specific mining, storage, audit UI, and operator policy in the
    consumer repo until they are intentionally generalized.
 
+## Deprecated Surface Names
+
+The product owns the behavior-surface vocabulary in
+`cautilus.behavior_intent.v1`. The schema version stays at `v1`, but
+some surface strings have been renamed for archetype-vocabulary
+hygiene. Old names still work as deprecated input aliases — Cautilus
+silently normalizes them — but new emitters should use the canonical
+name.
+
+| Deprecated name (still accepted on input) | Canonical name |
+| --- | --- |
+| `workflow_conversation` | `conversation_continuity` |
+
+Host fixtures, evidence packets, and prompt templates that emit a
+deprecated name keep working with no migration step required. The
+recommended action is to update emitters at the next routine touch so
+the alias map can eventually retire.
+
 ## Root Adapter Split Rule
 
 The root `cautilus-adapter.yaml` should stay the default operator entrypoint.

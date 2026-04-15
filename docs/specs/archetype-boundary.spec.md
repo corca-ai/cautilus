@@ -109,6 +109,7 @@ input shape or is owned by a distinct host class.
 | skills/cautilus/SKILL.md | fixed | scenario normalize chatbot |
 | skills/cautilus/SKILL.md | fixed | scenario normalize skill |
 | skills/cautilus/SKILL.md | fixed | scenario normalize workflow |
+| skills/cautilus/SKILL.md | fixed | exactly three first-class evaluation archetypes |
 | README.md | fixed | Cautilus has three first-class evaluation archetypes |
 | fixtures/scenario-proposals/chatbot-input.schema.json | file_exists |  |
 | fixtures/scenario-proposals/chatbot-input.schema.json | fixed | cautilus.chatbot_normalization_inputs.v1 |
@@ -194,8 +195,10 @@ also pass after the table is widened in step 9):
    `assert<Archetype>TargetKind` isolation function (extend the
    contract comment block at the top of the file).
 5. `internal/runtime/intent.go` — add any new behavior surfaces and
-   dimensions needed for the new archetype to the catalog plus the
-   default-success-dimension map.
+   dimensions needed for the new archetype to the `BehaviorSurfaces` /
+   `BehaviorDimensions` registries and to the
+   `defaultSuccessDimensionsBySurface` map. Wire the new dimensions
+   into `behaviorDimensionCatalog` so they apply to the right surface.
 6. `internal/runtime/scenarios.go` — add a `ScenarioCatalogEntry` for
    the new archetype so `cautilus scenarios` includes it.
 7. `internal/cli/command-registry.json` — register the new
@@ -220,7 +223,7 @@ The Source Guard table above only enforces existence of named
 patterns; it does not enforce ordering of the steps themselves. Adding
 an inverse-completeness lint that walks each archetype `###` heading
 in this spec and asserts every required surface is present is a
-separate, larger seam (see follow-up 2 below).
+separate, larger seam (see follow-up 1 below).
 
 ## Follow-up Work
 

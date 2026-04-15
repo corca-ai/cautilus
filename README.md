@@ -56,6 +56,10 @@ input shape and starting command. Pick the one that matches what you are
 actually evaluating. The 1:1 boundary is fixed in
 [archetype-boundary.spec.md](./docs/specs/archetype-boundary.spec.md).
 
+`cautilus scenarios` (or `cautilus scenarios --json`) prints this same
+catalog on demand from the CLI — useful when an agent needs to discover the
+archetype list without parsing this README.
+
 Every normalize command plus `cautilus skill evaluate` accepts
 `--example-input`: it prints a minimal valid packet to stdout that can be
 piped back into the same command, so operators can inspect the expected

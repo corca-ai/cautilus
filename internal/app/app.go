@@ -524,7 +524,14 @@ func handleScenarios(repoRoot string, cwd string, args []string, stdout io.Write
 			"",
 		)
 	}
-	lines = append(lines, "Pass --json for the machine-readable catalog (schema: "+runtime.ScenarioCatalogSchema+").")
+	lines = append(lines,
+		"Every normalize command also accepts --example-input, which prints a",
+		"minimal valid packet you can pipe back into the same command:",
+		"  cautilus scenario normalize chatbot --example-input | \\",
+		"    cautilus scenario normalize chatbot --input /dev/stdin",
+		"",
+		"Pass --json for the machine-readable catalog (schema: "+runtime.ScenarioCatalogSchema+").",
+	)
 	_, _ = fmt.Fprintln(stdout, strings.Join(lines, "\n"))
 	return 0
 }

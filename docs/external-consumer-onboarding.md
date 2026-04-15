@@ -41,7 +41,12 @@ What each step proves:
 3. fill in at least one runnable command template or executor variant in the
    generated adapter so the repo declares a real execution surface.
 4. `adapter resolve` proves the repo now satisfies official adapter discovery.
-5. `doctor` proves the repo is ready against the checked-in contract.
+5. `doctor` proves the repo is ready against the checked-in contract. The
+   ready payload now ships a `next_steps` hint pointing at
+   `cautilus scenarios`, which prints the three first-class evaluation
+   archetypes (chatbot / skill / workflow) plus one example input path
+   and next-step CLI per archetype, so an operator can pick which
+   normalize command applies without re-reading this doc.
 
 ## Product-Owned Smoke Helper
 

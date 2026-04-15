@@ -9,8 +9,9 @@ import (
 // review-clarification candidate is produced only when the first user message
 // actually mentions "review" or "repo" as whole words (or the Korean
 // substrings). "preview" / "repository" must not match the review/repo
-// patterns. Guards against the parity regression that motivated follow-up 2
-// in docs/specs/archetype-boundary.spec.md.
+// patterns. Guards against the parity regression that motivated the
+// archetype-extension hardening pass in
+// docs/specs/archetype-boundary.spec.md.
 func TestNormalizeChatbotProposalCandidatesRespectsWordBoundary(t *testing.T) {
 	conversationWithMessages := func(first, second string) map[string]any {
 		return map[string]any{

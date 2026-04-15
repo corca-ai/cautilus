@@ -9,11 +9,18 @@ package runtime
 //   - input-isolation `assert<Archetype>TargetKind(...)` (skill, workflow).
 //   - shared `mergeCandidatesByProposalKey` for deterministic ordering.
 //
-// Adding a fourth archetype means adding all four shapes here in the
-// same slice as the schema constant, contract document, fixtures, CLI
-// subcommand, README block, and `internal/runtime/scenarios.go` catalog
-// entry. See docs/specs/archetype-boundary.spec.md for the full
-// extension checklist.
+// `mergeCandidatesByProposalKey` stays shared across archetypes; do not
+// duplicate it per archetype.
+//
+// Adding a fourth archetype means adding the per-archetype shapes here
+// in the same slice as the schema constant, contract document,
+// fixtures, CLI subcommand, README block, and
+// `internal/runtime/scenarios.go` catalog entry. The Source Guard table
+// in archetype-boundary.spec.md only proves named patterns exist;
+// widening this file without the matching scenarios.go entry will pass
+// `npm run lint` and break `cautilus scenarios` only at runtime. See
+// the Adding-A-New-First-Class-Archetype walkthrough in the spec for
+// the ordered checklist.
 
 import (
 	"fmt"

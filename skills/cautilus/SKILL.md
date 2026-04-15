@@ -35,7 +35,9 @@ cautilus doctor --repo-root . --scope agent-surface
 that matches the task before reaching for adapters, reports, or review. The
 1:1 mapping is pinned in `archetype-boundary.spec.md` (chatbot / skill /
 workflow); every normalize command also ships a `--example-input` flag that
-prints a minimal valid packet to stdout for quick inspection.
+prints a minimal valid packet to stdout for quick inspection. Run
+`cautilus scenarios` (or `cautilus scenarios --json`) to print this same
+catalog from the CLI.
 
 ### 1. Chatbot conversation regression
 

@@ -6,7 +6,11 @@ package runtime
 // evaluation archetypes fixed in docs/specs/archetype-boundary.spec.md.
 // It stays next to the normalize helpers on purpose: adding a new
 // first-class archetype means updating proposals.go AND this catalog in
-// the same slice (see follow-up 2 in the archetype-boundary spec).
+// the same slice. The Source Guard table in the spec only proves named
+// rows exist; widening proposals.go without a matching entry here will
+// pass `npm run lint` and silently leave the new archetype invisible
+// to `cautilus scenarios`. See the Adding-A-New-First-Class-Archetype
+// walkthrough in the spec for the ordered checklist.
 
 const ScenarioCatalogSchema = "cautilus.scenarios.v1"
 
@@ -32,7 +36,7 @@ func LoadScenarioCatalog() ScenarioCatalog {
 			{
 				Archetype:     "chatbot",
 				Summary:       "Multi-turn conversational behavior inside a single session.",
-				ExampleInput:  "fixtures/scenario-proposals/chatbot-consumer-input.json",
+				ExampleInput:  "fixtures/scenario-proposals/chatbot-input.json",
 				NextStepCLI:   "cautilus scenario normalize chatbot --input <logs.json>",
 				ContractDoc:   "docs/contracts/chatbot-normalization.md",
 				InputSchema:   "cautilus.chatbot_normalization_inputs.v1",
@@ -41,7 +45,7 @@ func LoadScenarioCatalog() ScenarioCatalog {
 			{
 				Archetype:     "skill",
 				Summary:       "Single skill or agent invocation: trigger, task execution, and validation surfaces.",
-				ExampleInput:  "fixtures/scenario-proposals/skill-validation-input.json",
+				ExampleInput:  "fixtures/scenario-proposals/skill-input.json",
 				NextStepCLI:   "cautilus scenario normalize skill --input <summary.json>",
 				ContractDoc:   "docs/contracts/skill-normalization.md",
 				InputSchema:   "cautilus.skill_normalization_inputs.v2",
