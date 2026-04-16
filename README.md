@@ -27,7 +27,7 @@ cautilus doctor --repo-root /path/to/host-repo
 For Homebrew, update, and version surfaces see [install.md](./install.md).
 For the full command catalog see [docs/cli-reference.md](./docs/cli-reference.md).
 For the standing executable spec report, see <https://corca-ai.github.io/cautilus/>.
-That public report is generated with `specdown` from the repo's cheap standing `check:source_guard` slice, while each spec page still documents its more expensive functional checks.
+That public report is generated with `specdown` from the repo's full cheap public spec suite, with each page pairing a bounded product claim with a small executable proof.
 
 ## Scenarios
 
