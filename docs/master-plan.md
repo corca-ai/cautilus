@@ -54,7 +54,7 @@ Current `product-owned helper surface`:
 Dogfood and migration evidence now lives separately from the product concept.
 Use [consumer-readiness.md](./maintainers/consumer-readiness.md) for checked-in host evidence instead of treating any one consumer repo as the product definition.
 
-The first-class evaluation archetype boundary (chatbot / skill / workflow) is pinned as a standing contract in [specs/archetype-boundary.spec.md](./specs/archetype-boundary.spec.md) and enforced by `npm run lint:specs`.
+The first-class evaluation archetype boundary (chatbot / skill / workflow) is pinned as a standing contract in [specs/archetype-boundary.spec.md](./specs/archetype-boundary.spec.md) and reinforced by `npm run lint:specs` plus `npm run lint:archetypes`.
 New user-facing copy must reconcile with that contract before landing.
 
 ## Phase Plan
@@ -145,4 +145,4 @@ Still open:
 3. Continue moving host-specific runtime seams out of the product boundary into consumer-owned adapters, prompts, and storage readers.
 4. Keep expanding normalization-pattern coverage as new consumer archetypes appear, while preserving one official adapter contract (`cautilus-adapter.yaml`).
 5. Decide whether to grow external-consumer onboarding into archetype-specific starter kits, and whether to upgrade the Homebrew install smoke into a managed helper.
-6. Keep wider HTML report rendering on the roadmap (self-dogfood HTML is already native), deferring product-owned HTML output for other packet types until the JSON/YAML packet and report boundaries stay stable across multiple consumers.
+6. Keep widening the HTML report surface only when the packet boundary stays stable and the added page meaningfully improves human review, rather than mirroring every lower-level test seam.

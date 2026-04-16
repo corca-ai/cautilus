@@ -30,7 +30,7 @@ cautilus doctor --repo-root /path/to/host-repo
 Homebrew 설치, 업데이트, 버전 표면은 [install.md](./install.md)를 참고하세요.
 전체 명령 카탈로그는 [docs/cli-reference.md](./docs/cli-reference.md)에 있습니다.
 상세 executable spec은 공개 리포트 <https://corca-ai.github.io/cautilus/>에서 확인하세요.
-이 리포트는 저장소의 저비용 standing `check:source_guard` 경로를 `specdown`으로 렌더한 결과이고, 각 스펙 페이지에는 더 비싼 functional check가 계속 문서화되어 있습니다.
+이 리포트는 저장소의 저비용 public spec suite 전체를 `specdown`으로 렌더한 결과이며, 각 페이지는 제품 주장과 작은 executable proof를 함께 보여줍니다.
 
 ## 시나리오
 

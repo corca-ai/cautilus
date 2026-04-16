@@ -4,10 +4,10 @@ import process from "node:process";
 
 // Inverse-completeness lint for archetype-boundary.spec.md.
 //
-// The specdown-backed source_guard path proves that every named
-// surface exists (schema constant X in file Y, etc.). It does not
-// prove the inverse: that every archetype declared under `## Archetypes`
-// has the full surface set behind it. This script walks the spec's
+// The public spec stays focused on the user-facing archetype contract.
+// This lint carries one deeper maintenance check that the public report
+// should not carry: every declared archetype must still map to the full
+// implementation surface behind it. The script walks the spec's
 // per-archetype `###` sections, parses their bullets, and asserts each
 // archetype has all 11 required surfaces.
 //

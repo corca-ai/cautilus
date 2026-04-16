@@ -13,7 +13,7 @@ function writeFile(root, relativePath, content) {
 	writeFileSync(fullPath, content, "utf-8");
 }
 
-test("check-specs validates linked source_guard tables from docs/specs", () => {
+test("check-specs validates linked public specs from docs/specs", () => {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-check-specs-pass-"));
 	try {
 		writeFile(
@@ -32,23 +32,18 @@ test("check-specs validates linked source_guard tables from docs/specs", () => {
 			[
 				"# Product",
 				"",
-				"> check:source_guard",
-				"| file | mode | pattern |",
-				"| --- | --- | --- |",
-				"| README.md | file_exists |  |",
-				"| package.json | fixed | \"verify\" |",
+				"[Readme](../../README.md)",
 				"",
 			].join("\n"),
 		);
 		writeFile(root, "README.md", "# temp\n");
-		writeFile(root, "package.json", '{ "scripts": { "verify": "npm run test" } }\n');
 
 		const result = spawnSync("node", [SCRIPT_PATH], {
 			cwd: root,
 			encoding: "utf-8",
 		});
 		assert.equal(result.status, 0, result.stderr);
-		assert.match(result.stdout, /spec checks passed \(2 specs, 2 guard rows\)/);
+		assert.match(result.stdout, /spec checks passed \(2 specs\)/);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}
@@ -73,10 +68,7 @@ test("check-specs fails when an active spec is not linked from the index", () =>
 			[
 				"# Product",
 				"",
-				"> check:source_guard",
-				"| file | mode | pattern |",
-				"| --- | --- | --- |",
-				"| README.md | file_exists |  |",
+				"[Readme](../../README.md)",
 				"",
 			].join("\n"),
 		);
@@ -86,10 +78,7 @@ test("check-specs fails when an active spec is not linked from the index", () =>
 			[
 				"# Extra",
 				"",
-				"> check:source_guard",
-				"| file | mode | pattern |",
-				"| --- | --- | --- |",
-				"| README.md | file_exists |  |",
+				"[Readme](../../README.md)",
 				"",
 			].join("\n"),
 		);
@@ -101,6 +90,41 @@ test("check-specs fails when an active spec is not linked from the index", () =>
 		});
 		assert.equal(result.status, 1);
 		assert.match(result.stderr, /Spec index does not link docs\/specs\/extra\.spec\.md/);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("check-specs fails on broken relative links inside docs/specs", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-check-specs-broken-link-"));
+	try {
+		writeFile(
+			root,
+			"docs/specs/index.spec.md",
+			[
+				"# Test Specs",
+				"",
+				"- [Product](product.spec.md)",
+				"",
+			].join("\n"),
+		);
+		writeFile(
+			root,
+			"docs/specs/product.spec.md",
+			[
+				"# Product",
+				"",
+				"[Missing](missing.md)",
+				"",
+			].join("\n"),
+		);
+
+		const result = spawnSync("node", [SCRIPT_PATH], {
+			cwd: root,
+			encoding: "utf-8",
+		});
+		assert.equal(result.status, 1);
+		assert.match(result.stderr, /Broken spec link in docs\/specs\/product\.spec\.md: missing\.md/);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}
