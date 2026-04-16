@@ -118,14 +118,14 @@ func TestNormalizeChatbotProposalCandidatesEmitsEventTriggeredFollowup(t *testin
 // the label from `humanizeTargetKind` would otherwise ship silently.
 func TestNormalizeWorkflowProposalCandidatesUsesCLIWorkflowLabel(t *testing.T) {
 	run := map[string]any{
-		"targetKind":     "cli_workflow",
-		"targetId":       "self-dogfood-cli",
-		"surface":        "operator_workflow_recovery",
-		"startedAt":      "2026-04-15T00:00:00.000Z",
-		"status":         "blocked",
-		"summary":        "Recovery loop kept hitting the same blocker.",
-		"blockerKind":    "repeated_screen_no_progress",
-		"blockedSteps":   []any{"step-1", "step-1"},
+		"targetKind":   "cli_workflow",
+		"targetId":     "self-dogfood-cli",
+		"surface":      "operator_workflow_recovery",
+		"startedAt":    "2026-04-15T00:00:00.000Z",
+		"status":       "blocked",
+		"summary":      "Recovery loop kept hitting the same blocker.",
+		"blockerKind":  "repeated_screen_no_progress",
+		"blockedSteps": []any{"step-1", "step-1"},
 	}
 	candidates, err := NormalizeWorkflowProposalCandidates([]any{run})
 	if err != nil {
@@ -141,6 +141,121 @@ func TestNormalizeWorkflowProposalCandidatesUsesCLIWorkflowLabel(t *testing.T) {
 	description, _ := candidate["description"].(string)
 	if !strings.Contains(description, "CLI Workflow") {
 		t.Fatalf("expected description to contain canonical label %q, got %q", "CLI Workflow", description)
+	}
+}
+
+func TestNormalizeSkillProposalCandidatesCoversValidationTriggerAndExecutionBranches(t *testing.T) {
+	runs := []any{
+		map[string]any{
+			"targetKind":  "public_skill",
+			"targetId":    "impl",
+			"displayName": "impl",
+			"surface":     "smoke_scenario",
+			"startedAt":   "2026-04-15T00:00:00.000Z",
+			"status":      "failed",
+			"summary":     "The impl smoke scenario stopped producing a bounded execution plan.",
+		},
+		map[string]any{
+			"targetKind":  "public_skill",
+			"targetId":    "impl",
+			"displayName": "impl",
+			"surface":     "trigger_selection",
+			"startedAt":   "2026-04-15T00:05:00.000Z",
+			"status":      "failed",
+			"summary":     "The skill triggered on the wrong prompt.",
+		},
+		map[string]any{
+			"targetKind":  "public_skill",
+			"targetId":    "impl",
+			"displayName": "impl",
+			"surface":     "execution_quality",
+			"startedAt":   "2026-04-15T00:10:00.000Z",
+			"status":      "degraded",
+			"summary":     "The skill completed the task but exceeded the quality budget.",
+		},
+	}
+
+	candidates, err := NormalizeSkillProposalCandidates(runs)
+	if err != nil {
+		t.Fatalf("NormalizeSkillProposalCandidates: %v", err)
+	}
+	if len(candidates) != 3 {
+		t.Fatalf("expected 3 candidates, got %#v", candidates)
+	}
+
+	seen := map[string]string{}
+	for _, rawCandidate := range candidates {
+		candidate, ok := rawCandidate.(map[string]any)
+		if !ok {
+			t.Fatalf("candidate is not a map: %#v", rawCandidate)
+		}
+		intentProfile, ok := candidate["intentProfile"].(map[string]any)
+		if !ok {
+			t.Fatalf("candidate missing intentProfile: %#v", candidate)
+		}
+		seen[candidate["proposalKey"].(string)] = intentProfile["behaviorSurface"].(string)
+	}
+
+	want := map[string]string{
+		"public-skill-impl-smoke-scenario-regression":    "skill_validation",
+		"public-skill-impl-trigger-selection-regression": "skill_trigger_selection",
+		"public-skill-impl-execution-quality-regression": "skill_execution_quality",
+	}
+	if len(seen) != len(want) {
+		t.Fatalf("unexpected candidate count: got %#v want %#v", seen, want)
+	}
+	for key, surface := range want {
+		if seen[key] != surface {
+			t.Fatalf("proposalKey %q: got surface %q, want %q (all=%#v)", key, seen[key], surface, seen)
+		}
+	}
+}
+
+func TestNormalizeWorkflowProposalCandidatesAddsRecoveryTagAndCanonicalProposalKey(t *testing.T) {
+	run := map[string]any{
+		"targetKind":   "cli_workflow",
+		"targetId":     "scan-settings-seed",
+		"displayName":  "Scan Settings Seed",
+		"surface":      "replay_seed",
+		"startedAt":    "2026-04-15T00:00:00.000Z",
+		"status":       "blocked",
+		"summary":      "Replay seed stalled on the same settings screen after two retries.",
+		"blockerKind":  "repeated_screen_no_progress",
+		"blockedSteps": []any{"open_settings", "open_settings"},
+	}
+
+	candidates, err := NormalizeWorkflowProposalCandidates([]any{run})
+	if err != nil {
+		t.Fatalf("NormalizeWorkflowProposalCandidates: %v", err)
+	}
+	if len(candidates) != 1 {
+		t.Fatalf("expected 1 candidate, got %#v", candidates)
+	}
+
+	candidate, ok := candidates[0].(map[string]any)
+	if !ok {
+		t.Fatalf("candidate is not a map: %#v", candidates[0])
+	}
+	if candidate["proposalKey"] != "cli-workflow-scan-settings-seed-replay-seed-repeated-screen-no-progress" {
+		t.Fatalf("unexpected proposalKey: %#v", candidate["proposalKey"])
+	}
+	intentProfile := candidate["intentProfile"].(map[string]any)
+	if intentProfile["behaviorSurface"] != "operator_workflow_recovery" {
+		t.Fatalf("unexpected behaviorSurface: %#v", intentProfile)
+	}
+	tags, ok := candidate["tags"].([]any)
+	if !ok {
+		t.Fatalf("expected tags array, got %#v", candidate["tags"])
+	}
+	foundRecovery := false
+	for _, rawTag := range tags {
+		if rawTag == "operator-recovery" {
+			foundRecovery = true
+			break
+		}
+	}
+	if !foundRecovery {
+		t.Fatalf("expected operator-recovery tag, got %#v", tags)
 	}
 }
 

@@ -327,6 +327,45 @@ func TestRunAdapterInitWorkflowScenarioPrefillsIterateSlot(t *testing.T) {
 	}
 }
 
+func TestRunScenarioNormalizeSkillRejectsWorkflowSchema(t *testing.T) {
+	repoRoot := t.TempDir()
+	inputPath := filepath.Join(repoRoot, "workflow-input.json")
+	if err := os.WriteFile(inputPath, []byte(strings.Join([]string{
+		"{",
+		`  "schemaVersion": "cautilus.workflow_normalization_inputs.v1",`,
+		`  "evaluationRuns": [`,
+		`    {`,
+		`      "targetKind": "cli_workflow",`,
+		`      "targetId": "scan-settings-seed",`,
+		`      "surface": "replay_seed",`,
+		`      "startedAt": "2026-04-15T00:00:00.000Z",`,
+		`      "status": "blocked",`,
+		`      "summary": "Replay seed stalled."`,
+		`    }`,
+		`  ]`,
+		"}",
+		"",
+	}, "\n")), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+
+	t.Setenv("CAUTILUS_CALLER_CWD", repoRoot)
+	t.Setenv("CAUTILUS_TOOL_ROOT", "")
+
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	exitCode := Run([]string{"scenario", "normalize", "skill", "--input", inputPath}, &stdout, &stderr)
+	if exitCode == 0 {
+		t.Fatalf("expected non-zero exit code, stdout=%s", stdout.String())
+	}
+	if !strings.Contains(stderr.String(), "scenario normalize workflow") {
+		t.Fatalf("expected stderr to mention workflow command, got %q", stderr.String())
+	}
+	if stdout.Len() != 0 {
+		t.Fatalf("expected empty stdout on schema routing failure, got %q", stdout.String())
+	}
+}
+
 func TestRunAdapterInitRejectsUnknownScenario(t *testing.T) {
 	repoRoot := t.TempDir()
 	t.Setenv("CAUTILUS_CALLER_CWD", repoRoot)
