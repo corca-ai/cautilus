@@ -18,6 +18,10 @@ import (
 	cautilusruntime "github.com/corca-ai/cautilus/internal/runtime"
 )
 
+// Keep this file focused on multi-command integration flows that mutate repos,
+// write artifacts, or exercise adapter-owned execution seams.
+// Single-command public contract checks belong in docs/specs and app_test.go.
+
 func repoToolRoot(t *testing.T) string {
 	t.Helper()
 	wd, err := os.Getwd()
@@ -133,100 +137,6 @@ func TestCLIRootSelfConsumerRepoStaysDoctorReady(t *testing.T) {
 	}
 	if _, err := os.Stat(filepath.Join(root, ".agents", "cautilus-adapters", "self-dogfood.yaml")); err != nil {
 		t.Fatalf("expected self-dogfood adapter to exist: %v", err)
-	}
-}
-
-func TestCLIDoctorReportsGitPreconditionFailureForNonGitDirectory(t *testing.T) {
-	root := t.TempDir()
-	stdout, _, exitCode := runCLI(t, root, "doctor", "--repo-root", root)
-	if exitCode != 1 {
-		t.Fatalf("expected exit code 1, got %d", exitCode)
-	}
-	payload := parseJSONObject(t, stdout)
-	if payload["status"] != "missing_git" {
-		t.Fatalf("expected status missing_git, got %#v", payload["status"])
-	}
-	if payload["ready"] != false {
-		t.Fatalf("expected ready=false, got %#v", payload["ready"])
-	}
-	checks, ok := payload["checks"].([]any)
-	if !ok || len(checks) == 0 {
-		t.Fatalf("expected checks array, got %#v", payload["checks"])
-	}
-	first := checks[0].(map[string]any)
-	if first["id"] != "git_repo" || first["ok"] != false {
-		t.Fatalf("expected git_repo check to fail, got %#v", first)
-	}
-}
-
-func TestCLIDoctorReportsNoCommitsForEmptyGitRepo(t *testing.T) {
-	root := t.TempDir()
-	runGit(t, root, "init")
-	stdout, _, exitCode := runCLI(t, root, "doctor", "--repo-root", root)
-	if exitCode != 1 {
-		t.Fatalf("expected exit code 1, got %d", exitCode)
-	}
-	payload := parseJSONObject(t, stdout)
-	if payload["status"] != "no_commits" {
-		t.Fatalf("expected status no_commits, got %#v", payload["status"])
-	}
-	checks, ok := payload["checks"].([]any)
-	if !ok || len(checks) < 2 {
-		t.Fatalf("expected at least 2 checks, got %#v", payload["checks"])
-	}
-	gitRepoCheck := checks[0].(map[string]any)
-	if gitRepoCheck["id"] != "git_repo" || gitRepoCheck["ok"] != true {
-		t.Fatalf("expected git_repo check to pass, got %#v", gitRepoCheck)
-	}
-	commitsCheck := checks[1].(map[string]any)
-	if commitsCheck["id"] != "git_has_commits" || commitsCheck["ok"] != false {
-		t.Fatalf("expected git_has_commits check to fail, got %#v", commitsCheck)
-	}
-}
-
-func TestCLICommandsJSONListsRegisteredCommandSurface(t *testing.T) {
-	root := repoToolRoot(t)
-	stdout, stderr, exitCode := runCLI(t, root, "commands", "--json")
-	if exitCode != 0 {
-		t.Fatalf("Run returned exit code %d, stderr=%s", exitCode, stderr)
-	}
-	payload := parseJSONObject(t, stdout)
-	if payload["schemaVersion"] != "cautilus.commands.v1" {
-		t.Fatalf("unexpected schemaVersion: %#v", payload["schemaVersion"])
-	}
-	commands, ok := payload["commands"].([]any)
-	if !ok {
-		t.Fatalf("expected commands array, got %#v", payload["commands"])
-	}
-	foundHealthcheck := false
-	for _, raw := range commands {
-		command, ok := raw.(map[string]any)
-		if !ok {
-			continue
-		}
-		path, ok := command["path"].([]any)
-		if !ok || len(path) != 1 {
-			continue
-		}
-		if anyToString(path[0]) == "healthcheck" {
-			foundHealthcheck = true
-			break
-		}
-	}
-	if !foundHealthcheck {
-		t.Fatalf("expected healthcheck command in registry payload: %s", stdout)
-	}
-}
-
-func TestCLIHealthcheckReturnsHealthyPayload(t *testing.T) {
-	root := repoToolRoot(t)
-	stdout, stderr, exitCode := runCLI(t, root, "healthcheck", "--json")
-	if exitCode != 0 {
-		t.Fatalf("Run returned exit code %d, stderr=%s", exitCode, stderr)
-	}
-	payload := parseJSONObject(t, stdout)
-	if payload["status"] != "healthy" || payload["healthy"] != true {
-		t.Fatalf("expected healthy payload, got %#v", payload)
 	}
 }
 
