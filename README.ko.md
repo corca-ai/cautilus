@@ -146,14 +146,14 @@ docs/
 우선 읽을 문서:
 
 - [install.md](./install.md) — 다른 머신을 위한 운영자 설치 + 업데이트 가이드
-- [docs/evaluation-process.md](./docs/evaluation-process.md) — 정규 평가 루프
+- [docs/guides/evaluation-process.md](./docs/guides/evaluation-process.md) — 정규 평가 루프
 - [docs/specs/archetype-boundary.spec.md](./docs/specs/archetype-boundary.spec.md) — 챗봇/스킬/워크플로 1:1 계약
 - [docs/contracts/adapter-contract.md](./docs/contracts/adapter-contract.md) — 어댑터 스키마
 - [docs/contracts/review-packet.md](./docs/contracts/review-packet.md) — 리뷰 패킷 경계
 - [docs/cli-reference.md](./docs/cli-reference.md) — 전체 CLI 레퍼런스
-- [docs/development.md](./docs/development.md) — 개발 + 셀프 도그푸드
+- [docs/maintainers/development.md](./docs/maintainers/development.md) — 메인테이너 개발 + 셀프 도그푸드
 - [docs/gepa.md](./docs/gepa.md) — GEPA 스타일 프롬프트 탐색
 - [docs/master-plan.md](./docs/master-plan.md) — 로드맵
 - [examples/starters/](./examples/starters/) — 아키타입별 스타터 키트
 
-도그푸드 및 마이그레이션 근거는 [consumer-readiness.md](./docs/consumer-readiness.md), [consumer-migration.md](./docs/consumer-migration.md), [external-consumer-onboarding.md](./docs/external-consumer-onboarding.md)에 있습니다.
+도그푸드 및 마이그레이션 근거는 [consumer-readiness.md](./docs/maintainers/consumer-readiness.md)와 [consumer-adoption.md](./docs/guides/consumer-adoption.md)에 있습니다.

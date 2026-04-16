@@ -5,8 +5,8 @@ source-level guard를 담는다.
 
 아직 구현하지 않은 방향은 [master-plan.md](../master-plan.md)에 둔다.
 현재 검증 대상은 이 index에 링크된 문서들이다.
-`npm run lint:specs`는 이 index에 링크된 `.spec.md` 문서만 standing spec으로 읽고,
-각 문서의 `check:source_guard` 표를 직접 검증한다.
+`specdown run`은 이 index에 링크된 `.spec.md` 문서를 현재 executable spec surface로 읽는다.
+`npm run lint:specs`는 `specdown run -filter check:source_guard`를 써서 standing source-guard path만 싸게 고정한다.
 비싼 CLI 흐름이나 broad test suite는 각 스펙의 `Functional Check`에 남기되,
 standing spec gate에서는 다시 실행하지 않는다.
 

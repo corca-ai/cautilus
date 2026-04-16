@@ -254,7 +254,7 @@ cautilus self-dogfood render-experiments-html
 ```
 
 The rendered HTML is read-only over `summary.json`, `report.json`, and `review-summary.json`; those JSON files remain the source of truth.
-For the npm wrappers and the full dogfood workflow, see [development.md](./development.md).
+For the npm wrappers and the full dogfood workflow, see [development.md](./maintainers/development.md).
 
 ## Plugin manifest validation
 

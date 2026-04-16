@@ -37,7 +37,7 @@ For a named alternate adapter:
 node scripts/init_adapter.mjs --repo-root . --adapter-name code-quality
 ```
 
-3. If the adapter is invalid, repair it using [adapter-contract.md](./contracts/adapter-contract.md).
+3. If the adapter is invalid, repair it using [adapter-contract.md](../contracts/adapter-contract.md).
 4. Run any adapter-defined `preflight_commands` before spending time on long runs.
 
 If the run should compare clean git refs rather than a live checkout, prepare the explicit A/B worktrees first:
@@ -74,7 +74,7 @@ eval "$(cautilus workspace start --label mode-held-out)"
 After the `eval`, `CAUTILUS_RUN_DIR` is set in the current shell and consumer commands like `mode evaluate`, `review variants`, `review prepare-input`, and `workspace prepare-compare` resolve their runDir from that env var without operator path-threading.
 Pass `--json` instead of `eval` if a script needs the machine-readable payload.
 
-If interpretation or reporting is getting sloppy, read [reporting.md](./contracts/reporting.md) before continuing.
+If interpretation or reporting is getting sloppy, read [reporting.md](../contracts/reporting.md) before continuing.
 
 ## Goal
 
@@ -118,7 +118,7 @@ The adapter may define:
 - human review prompts
 - sample-count defaults
 
-Use [adapter-contract.md](./contracts/adapter-contract.md) for the schema.
+Use [adapter-contract.md](../contracts/adapter-contract.md) for the schema.
 
 When the repo needs more than one evaluation surface, prefer multiple named adapters over stuffing every workflow into one giant file.
 

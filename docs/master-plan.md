@@ -52,7 +52,7 @@ Current `product-owned helper surface`:
 - GEPA-style bounded prompt-search helpers (`optimize-search v2`) with multi-generation reflective mutation, optional bounded two- or three-parent merge synthesis, frontier-promotion review checkpoints, scenario-aware checkpoint feedback reinjection, severity-aware rejected-sibling merge tie-breaking, concern-level repair-first mutation prioritization, selection-cap reason codes, and final-only full-gate fallback
 
 Dogfood and migration evidence now lives separately from the product concept.
-Use [consumer-readiness.md](./consumer-readiness.md) for checked-in host evidence instead of treating any one consumer repo as the product definition.
+Use [consumer-readiness.md](./maintainers/consumer-readiness.md) for checked-in host evidence instead of treating any one consumer repo as the product definition.
 
 The first-class evaluation archetype boundary (chatbot / skill / workflow) is pinned as a standing contract in [specs/archetype-boundary.spec.md](./specs/archetype-boundary.spec.md) and enforced by `npm run lint:specs`.
 New user-facing copy must reconcile with that contract before landing.
@@ -129,9 +129,8 @@ Still intentionally excluded:
 
 Shipped:
 
-- [docs/external-consumer-onboarding.md](./external-consumer-onboarding.md) plus `npm run consumer:onboard:smoke` prove install → adapter init → minimal runnable wiring → adapter resolve → doctor ready in a temp git repo
-- [docs/consumer-migration.md](./consumer-migration.md) captures the generic migration path
-- release discipline boundary documented in [release-boundary.md](./release-boundary.md)
+- [docs/guides/consumer-adoption.md](./guides/consumer-adoption.md) plus `npm run consumer:onboard:smoke` prove install → adapter init → minimal runnable wiring → adapter resolve → doctor ready in a temp git repo
+- release discipline boundary documented in [release-boundary.md](./maintainers/release-boundary.md)
 
 Still open:
 

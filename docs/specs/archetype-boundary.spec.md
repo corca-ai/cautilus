@@ -83,7 +83,7 @@ input shape or is owned by a distinct host class.
   See Fixture Naming below for the canonical / minimal / specialized
   split.
 - The renamed canonical evaluation workflow document is
-  [docs/evaluation-process.md](../evaluation-process.md). `docs/workflow.md`
+  [docs/guides/evaluation-process.md](../guides/evaluation-process.md). `docs/workflow.md`
   no longer exists to avoid colliding with the `workflow` archetype name.
 
 ## Introspection Surfaces
@@ -208,7 +208,7 @@ convenience.
 | docs/contracts/chatbot-normalization.md | file_exists |  |
 | docs/contracts/skill-normalization.md | file_exists |  |
 | docs/contracts/workflow-normalization.md | file_exists |  |
-| docs/evaluation-process.md | file_exists |  |
+| docs/guides/evaluation-process.md | file_exists |  |
 | internal/cli/command-registry.json | fixed | "path": ["scenario", "normalize", "chatbot"] |
 | internal/cli/command-registry.json | fixed | "path": ["scenario", "normalize", "skill"] |
 | internal/cli/command-registry.json | fixed | "path": ["scenario", "normalize", "workflow"] |

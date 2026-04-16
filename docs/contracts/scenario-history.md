@@ -247,7 +247,7 @@ Premortem (4 angles: cache migration / external consumer / devil's advocate / do
 - The repo's only live dogfood path, `run-self-dogfood.mjs`, runs with `--mode full_gate`, which never reaches the cache-materialization branch.
 - Zero scenario profile files are checked in across `.agents/`, `fixtures/`, and the repo root.
 - `run-executor-variants.mjs` and `evaluate-skill.mjs` contain zero references to `scenario-history`, `baseline-cache`, or any persistence hook — so Part 2 has no current call site.
-- Live external consumers are not yet tracked in [consumer-readiness.md](../consumer-readiness.md); the chatbot, skill-validation, and workflow entries are archetype reference fixtures, not live deployments.
+- Live external consumers are not yet tracked in [consumer-readiness.md](../maintainers/consumer-readiness.md); the chatbot, skill-validation, and workflow entries are archetype reference fixtures, not live deployments.
 
 Conclusion: the "shared baseline across multiple profiles" problem Part 1 solves has zero occurrences today, and the "other entry points also want history" problem Part 2 solves has zero requesters.
 Master-plan Phase 5 guidance ("dogfood evidence should justify the next seam rather than adding heuristics speculatively") applies directly.

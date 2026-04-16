@@ -10,16 +10,15 @@ source_documents:
 - docs/specs/index.spec.md
 - docs/specs/current-product.spec.md
 - docs/specs/archetype-boundary.spec.md
-- docs/consumer-readiness.md
-- docs/external-consumer-onboarding.md
-- docs/consumer-migration.md
-- docs/handoff.md
+- docs/maintainers/consumer-readiness.md
+- docs/guides/consumer-adoption.md
+- docs/internal/handoff.md
 mutable_documents:
 - README.md
 - docs/master-plan.md
-- docs/consumer-readiness.md
-- docs/consumer-migration.md
-- docs/handoff.md
+- docs/maintainers/consumer-readiness.md
+- docs/guides/consumer-adoption.md
+- docs/internal/handoff.md
 brief_template:
 - One-Line Summary
 - Why It Exists

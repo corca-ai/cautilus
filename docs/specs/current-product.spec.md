@@ -15,8 +15,8 @@ standalone product여야 한다.
 | README.md | file_exists |  |
 | README.md | fixed | held-out |
 | README.md | fixed | behavior honest while prompts keep changing |
-| docs/development.md | fixed | npm run dogfood:self |
-| docs/development.md | fixed | npm run dogfood:self:experiments |
+| docs/maintainers/development.md | fixed | npm run dogfood:self |
+| docs/maintainers/development.md | fixed | npm run dogfood:self:experiments |
 | AGENTS.md | file_exists |  |
 | AGENTS.md | fixed | standalone product boundary |
 | AGENTS.md | fixed | npm run verify |
@@ -25,6 +25,8 @@ standalone product여야 한다.
 | package.json | file_exists |  |
 | package.json | fixed | "hooks:install" |
 | package.json | fixed | "hooks:check" |
+| package.json | fixed | "specdown" |
+| package.json | fixed | "specdown:guards" |
 | package.json | fixed | "dogfood:self" |
 | package.json | fixed | "dogfood:self:experiments" |
 | package.json | fixed | "release:prepare" |
@@ -46,6 +48,12 @@ standalone product여야 한다.
 | package.json | fixed | "test" |
 | package.json | fixed | "vet:go" |
 | package.json | fixed | "verify" |
+| specdown.json | file_exists |  |
+| specdown.json | fixed | "entry": "docs/specs/index.spec.md" |
+| specdown.json | fixed | "./scripts/specdown-source-guard-adapter.mjs" |
+| scripts/spec-source-guard-lib.mjs | file_exists |  |
+| scripts/specdown-source-guard-adapter.mjs | file_exists |  |
+| scripts/specdown-source-guard-adapter.test.mjs | file_exists |  |
 | .agents/cautilus-adapter.yaml | file_exists |  |
 | .agents/cautilus-adapter.yaml | fixed | npm run verify |
 | .agents/cautilus-adapters/self-dogfood.yaml | file_exists |  |
@@ -53,7 +61,7 @@ standalone product여야 한다.
 | .agents/cautilus-adapters/self-dogfood.yaml | fixed | review_timeout_ms |
 | .agents/cautilus-adapters/self-dogfood.yaml | fixed | scripts/run-self-dogfood.mjs |
 | .agents/cautilus-adapters/self-dogfood-binary-surface.yaml | file_exists |  |
-| .agents/cautilus-adapters/self-dogfood-binary-surface.yaml | fixed | docs/consumer-readiness.md |
+| .agents/cautilus-adapters/self-dogfood-binary-surface.yaml | fixed | docs/maintainers/consumer-readiness.md |
 | .agents/cautilus-adapters/self-dogfood-binary-surface.yaml | fixed | scripts/on-demand/run-self-dogfood.test.mjs |
 | .agents/cautilus-adapters/self-dogfood-gate-honesty-a.yaml | file_exists |  |
 | .agents/cautilus-adapters/self-dogfood-gate-honesty-b.yaml | file_exists |  |
@@ -152,8 +160,8 @@ standalone product여야 한다.
 | skills/cautilus/references/self-dogfood-runner.md | fixed | npm run dogfood:self |
 | skills/cautilus/references/self-dogfood-runner.md | fixed | npm run dogfood:self:experiments |
 | skills/cautilus/agents/openai.yaml | file_exists |  |
-| docs/evaluation-process.md | fixed | Meta Eval |
-| docs/evaluation-process.md | fixed | Executor Variants |
+| docs/guides/evaluation-process.md | fixed | Meta Eval |
+| docs/guides/evaluation-process.md | fixed | Executor Variants |
 | docs/contracts/adapter-contract.md | fixed | Dogfooding Pattern |
 | docs/contracts/adapter-contract.md | fixed | Executor Variant Shape |
 | docs/specs/self-dogfood.spec.md | file_exists |  |
@@ -291,23 +299,22 @@ standalone product여야 한다.
 | docs/contracts/scenario-results.md | file_exists |  |
 | docs/contracts/scenario-results.md | fixed | cautilus.scenario_results.v1 |
 | docs/contracts/scenario-history.md | fixed | durationMs |
-| docs/release-boundary.md | file_exists |  |
-| docs/release-boundary.md | fixed | Product-Owned Surface |
-| docs/release-boundary.md | fixed | install.sh |
-| docs/version-provenance.md | file_exists |  |
-| docs/version-provenance.md | fixed | CAUTILUS_NO_UPDATE_CHECK |
-| docs/version-provenance.md | fixed | cautilus version --verbose |
-| docs/releasing.md | file_exists |  |
-| docs/releasing.md | fixed | fetch-github-archive-sha256 |
-| docs/releasing.md | fixed | gh attestation verify |
-| docs/releasing.md | fixed | release:verify-public |
-| docs/releasing.md | fixed | release:smoke-install |
-| docs/consumer-readiness.md | file_exists |  |
-| docs/consumer-readiness.md | fixed | This note intentionally groups evidence by consumer archetype |
-| docs/consumer-migration.md | file_exists |  |
-| docs/consumer-migration.md | fixed | cautilus-adapter.yaml |
-| docs/external-consumer-onboarding.md | file_exists |  |
-| docs/external-consumer-onboarding.md | fixed | npm run consumer:onboard:smoke |
+| docs/maintainers/release-boundary.md | file_exists |  |
+| docs/maintainers/release-boundary.md | fixed | Product-Owned Surface |
+| docs/maintainers/release-boundary.md | fixed | install.sh |
+| docs/maintainers/version-provenance.md | file_exists |  |
+| docs/maintainers/version-provenance.md | fixed | CAUTILUS_NO_UPDATE_CHECK |
+| docs/maintainers/version-provenance.md | fixed | cautilus version --verbose |
+| docs/maintainers/releasing.md | file_exists |  |
+| docs/maintainers/releasing.md | fixed | fetch-github-archive-sha256 |
+| docs/maintainers/releasing.md | fixed | gh attestation verify |
+| docs/maintainers/releasing.md | fixed | release:verify-public |
+| docs/maintainers/releasing.md | fixed | release:smoke-install |
+| docs/maintainers/consumer-readiness.md | file_exists |  |
+| docs/maintainers/consumer-readiness.md | fixed | This note intentionally groups evidence by consumer archetype |
+| docs/guides/consumer-adoption.md | file_exists |  |
+| docs/guides/consumer-adoption.md | fixed | cautilus-adapter.yaml |
+| docs/guides/consumer-adoption.md | fixed | npm run consumer:onboard:smoke |
 | examples/starters/chatbot/cautilus-adapter.yaml | file_exists |  |
 | examples/starters/chatbot/input.json | file_exists |  |
 | examples/starters/chatbot/README.md | file_exists |  |

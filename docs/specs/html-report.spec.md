@@ -111,7 +111,7 @@ single commit당 claim 하나 원칙을 지키면 review가 쉬워진다.
 
 ## Acceptance 연결
 
-이 spec의 통과 여부는 [operator-acceptance.md](../operator-acceptance.md) Tier 6b (Promotion Readiness — HTML report, 6.13–6.17) 의 인간 판정 체크리스트가 전부 녹색이 되는 것과 등가다.
+이 spec의 통과 여부는 [operator-acceptance.md](../maintainers/operator-acceptance.md) Tier 6b (Promotion Readiness — HTML report, 6.13–6.17) 의 인간 판정 체크리스트가 전부 녹색이 되는 것과 등가다.
 구현이 진행됨에 따라 Tier 6b의 `(다음 세션 구현 후)` 주석이 실제 렌더 명령으로 치환된다.
 
 ## Non-goals (이 spec은 이것을 포함하지 않는다)
@@ -134,8 +134,8 @@ row 추가 → `npm run lint:specs` fail → impl → pass → commit 의 tight 
 | file | mode | pattern |
 | --- | --- | --- |
 | internal/runtime/self_dogfood_html.go | file_exists |  |
-| docs/operator-acceptance.md | fixed | Tier 6: Promotion Readiness |
-| docs/operator-acceptance.md | fixed | html-report.spec.md |
+| docs/maintainers/operator-acceptance.md | fixed | Tier 6: Promotion Readiness |
+| docs/maintainers/operator-acceptance.md | fixed | html-report.spec.md |
 
 ### Claim 1 — self-dogfood latest
 

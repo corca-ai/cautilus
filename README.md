@@ -136,14 +136,14 @@ docs/
 Top picks:
 
 - [install.md](./install.md) — operator install + update guide for another machine
-- [docs/evaluation-process.md](./docs/evaluation-process.md) — canonical evaluation loop
+- [docs/guides/evaluation-process.md](./docs/guides/evaluation-process.md) — canonical evaluation loop
 - [docs/specs/archetype-boundary.spec.md](./docs/specs/archetype-boundary.spec.md) — chatbot/skill/workflow 1:1 contract
 - [docs/contracts/adapter-contract.md](./docs/contracts/adapter-contract.md) — adapter schema
 - [docs/contracts/review-packet.md](./docs/contracts/review-packet.md) — review packet boundary
 - [docs/cli-reference.md](./docs/cli-reference.md) — full CLI reference
-- [docs/development.md](./docs/development.md) — dev + self-dogfood
+- [docs/maintainers/development.md](./docs/maintainers/development.md) — maintainer dev + self-dogfood
 - [docs/gepa.md](./docs/gepa.md) — GEPA-style prompt search
 - [docs/master-plan.md](./docs/master-plan.md) — roadmap
 - [examples/starters/](./examples/starters/) — archetype-specific starter kits
 
-Dogfood and migration evidence lives in [consumer-readiness.md](./docs/consumer-readiness.md), [consumer-migration.md](./docs/consumer-migration.md), and [external-consumer-onboarding.md](./docs/external-consumer-onboarding.md).
+Dogfood and migration evidence lives in [consumer-readiness.md](./docs/maintainers/consumer-readiness.md) and [consumer-adoption.md](./docs/guides/consumer-adoption.md).

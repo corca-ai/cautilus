@@ -1,0 +1,20 @@
+{
+  "entry": "docs/specs/index.spec.md",
+  "adapters": [
+    {
+      "name": "source-guard",
+      "command": ["node", "./scripts/specdown-source-guard-adapter.mjs"],
+      "checks": ["source_guard"]
+    }
+  ],
+  "reporters": [
+    {
+      "builtin": "html",
+      "outFile": ".artifacts/specdown/report"
+    },
+    {
+      "builtin": "json",
+      "outFile": ".artifacts/specdown/report.json"
+    }
+  ]
+}

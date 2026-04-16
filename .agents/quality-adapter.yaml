@@ -5,10 +5,10 @@ output_dir: skill-outputs/quality
 concept_paths:
 - README.md
 - docs/master-plan.md
-- docs/evaluation-process.md
-- docs/consumer-readiness.md
+- docs/guides/evaluation-process.md
+- docs/maintainers/consumer-readiness.md
 - docs/specs/self-dogfood.spec.md
-- docs/handoff.md
+- docs/internal/handoff.md
 - skill-outputs/quality/quality.md
 preflight_commands:
 - ./bin/cautilus adapter resolve --repo-root .

@@ -32,6 +32,8 @@ Use `npm run lint` or `npm run test` directly only when iterating on one seam.
 `npm run lint` includes `golangci-lint run`, `go vet`, and `govulncheck`.
 `npm run verify` additionally runs `go test -race` before the standing Node test suite.
 Do not require all three in sequence before stopping.
+`npm run lint:specs` is the cheap standing executable-spec path and now runs `specdown run -filter check:source_guard`.
+Use `npm run specdown` when you need the full executable spec surface rather than the filtered standing gate.
 
 ## On-demand checks
 
@@ -74,7 +76,7 @@ npm run dogfood:self:html
 npm run dogfood:self:experiments:html
 ```
 
-These are thin wrappers around the product-owned `cautilus self-dogfood render-html` and `cautilus self-dogfood render-experiments-html` commands (see [cli-reference.md](./cli-reference.md)).
+These are thin wrappers around the product-owned `cautilus self-dogfood render-html` and `cautilus self-dogfood render-experiments-html` commands (see [cli-reference.md](../cli-reference.md)).
 
 ## Release verification
 

@@ -1,13 +1,13 @@
 # Cautilus Handoff
 
 이 문서는 다음 세션이 바로 이어야 할 한 수만 남긴다.
-장기 누적 운영 패턴은 [docs/working-patterns.md](./working-patterns.md) 가 source of truth — 세션 bookkeeping 과 분리한다.
+장기 누적 운영 패턴은 [working-patterns.md](./working-patterns.md) 가 source of truth — 세션 bookkeeping 과 분리한다.
 
 ## Workflow Trigger
 
 다음 세션이 이 핸드오프를 멘션하면:
 
-1. **먼저 읽기**: [README.md](../README.md), [AGENTS.md](../AGENTS.md), [docs/master-plan.md](./master-plan.md), [docs/operator-acceptance.md](./operator-acceptance.md) Tier 6b, [docs/working-patterns.md](./working-patterns.md).
+1. **먼저 읽기**: [README.md](../../README.md), [AGENTS.md](../../AGENTS.md), [master-plan.md](../master-plan.md), [operator-acceptance.md](../maintainers/operator-acceptance.md) Tier 6b, [working-patterns.md](./working-patterns.md).
 2. **바로 착수할 작업**: 아래 `Next Session` 1순위 — HTML report 를 브라우저에서 실제로 열어 보는 사람 판정 패스 + 2순위 중 사용자 지정 항목.
 3. **패턴 발동 모델**: [working-patterns.md](./working-patterns.md) 참고.
    premortem · 카운터웨이트 · iterative premortem 은 사용자가 명시적으로 요청할 때만.
@@ -70,7 +70,7 @@ Self-dogfood 기존 두 개 (`self-dogfood render-html`, `self-dogfood render-ex
   prose fragility 재발 시 승격 권장, 지금은 orphan 유지.
 - **Master Plan Immediate Next Moves** (이월):
   (1) 최적화 레이어 다음 bounded improvement seam (dogfood 증거 요구 시),
-  (2) scenario-history 확장 — unlock trigger 대기 ([scenario-history.md § Deferred Expansion](./contracts/scenario-history.md)),
+  (2) scenario-history 확장 — unlock trigger 대기 ([scenario-history.md § Deferred Expansion](../contracts/scenario-history.md)),
   (5) starter kit 실사용 pain 정리.
 - **mode evaluate --emit-html 통합** — 현재는 `cautilus report build` → `cautilus report render-html` 두 단계.
   자주 쓰이면 `--emit-html` 플래그로 one-shot 승격 고려.
@@ -108,14 +108,14 @@ D, B, M, I, H, G, J, L, C, Validator subset 확장, `MustBehaviorSurface` 재도
 
 ## References
 
-- [README.md](../README.md)
-- [AGENTS.md](../AGENTS.md)
-- [docs/master-plan.md](./master-plan.md)
-- [docs/working-patterns.md](./working-patterns.md) — 누적 운영 패턴 + premortem hazards
-- [docs/specs/index.spec.md](./specs/index.spec.md)
-- [docs/specs/html-report.spec.md](./specs/html-report.spec.md) — claim 1–9 guard block 이 모두 승격 완료
-- [docs/operator-acceptance.md](./operator-acceptance.md) — Tier 6b (6.13–6.21)
-- [docs/specs/archetype-boundary.spec.md](./specs/archetype-boundary.spec.md)
-- [docs/specs/current-product.spec.md](./specs/current-product.spec.md)
-- [docs/contracts/scenario-history.md](./contracts/scenario-history.md) (§ Deferred Expansion)
+- [README.md](../../README.md)
+- [AGENTS.md](../../AGENTS.md)
+- [master-plan.md](../master-plan.md)
+- [working-patterns.md](./working-patterns.md) — 누적 운영 패턴 + premortem hazards
+- [index.spec.md](../specs/index.spec.md)
+- [html-report.spec.md](../specs/html-report.spec.md) — claim 1–9 guard block 이 모두 승격 완료
+- [operator-acceptance.md](../maintainers/operator-acceptance.md) — Tier 6b (6.13–6.21)
+- [archetype-boundary.spec.md](../specs/archetype-boundary.spec.md)
+- [current-product.spec.md](../specs/current-product.spec.md)
+- [scenario-history.md](../contracts/scenario-history.md) (§ Deferred Expansion)
 - charness 이슈 [#26](https://github.com/corca-ai/charness/issues/26), [#27](https://github.com/corca-ai/charness/issues/27), [#30](https://github.com/corca-ai/charness/issues/30), [#31](https://github.com/corca-ai/charness/issues/31)

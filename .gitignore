@@ -3,6 +3,7 @@ __pycache__/
 node_modules/
 coverage/
 .DS_Store
+.artifacts/specdown/
 artifacts/self-dogfood/*
 !artifacts/self-dogfood/latest/
 artifacts/self-dogfood/latest/*

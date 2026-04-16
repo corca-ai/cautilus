@@ -17,8 +17,8 @@ Current role: product repo self-consumer
 Evidence:
 
 - `cautilus doctor --repo-root /path/to/cautilus` returns `ready`
-- checked-in root adapter: [.agents/cautilus-adapter.yaml](../.agents/cautilus-adapter.yaml)
-- checked-in named adapter: [.agents/cautilus-adapters/self-dogfood.yaml](../.agents/cautilus-adapters/self-dogfood.yaml)
+- checked-in root adapter: [.agents/cautilus-adapter.yaml](../../.agents/cautilus-adapter.yaml)
+- checked-in named adapter: [.agents/cautilus-adapters/self-dogfood.yaml](../../.agents/cautilus-adapters/self-dogfood.yaml)
 - explicit self-dogfood command: `npm run dogfood:self`
 - explicit tuning command: `npm run dogfood:self:experiments`
 
@@ -34,7 +34,7 @@ Current role: external conversational consumer archetype
 
 Evidence:
 
-- `chatbot` normalization has a checked-in consumer-shaped fixture: [fixtures/scenario-proposals/samples/chatbot-consumer-input.json](../fixtures/scenario-proposals/samples/chatbot-consumer-input.json)
+- `chatbot` normalization has a checked-in consumer-shaped fixture: [fixtures/scenario-proposals/samples/chatbot-consumer-input.json](../../fixtures/scenario-proposals/samples/chatbot-consumer-input.json)
 - the checked-in consumer fixture feeds the normalization helper and proposal chain without host-specific rewriting
 - the external proof bar remains: `cautilus doctor --repo-root <chatbot-consumer-path>` returns `ready`
 
@@ -49,7 +49,7 @@ Current role: external skill and validation archetype
 
 Evidence:
 
-- `skill` normalization has a checked-in validation-shaped fixture: [fixtures/scenario-proposals/samples/skill-validation-input.json](../fixtures/scenario-proposals/samples/skill-validation-input.json)
+- `skill` normalization has a checked-in validation-shaped fixture: [fixtures/scenario-proposals/samples/skill-validation-input.json](../../fixtures/scenario-proposals/samples/skill-validation-input.json)
 - the checked-in consumer fixture produces stable validation-regression candidates
 - the external proof bar remains: `cautilus doctor --repo-root <skill-consumer-path>` returns `ready`
 
@@ -63,8 +63,8 @@ Current role: external durable-workflow archetype
 
 Evidence:
 
-- `workflow` normalization owns a checked-in durable-workflow fixture: [fixtures/scenario-proposals/samples/workflow-recovery-input.json](../fixtures/scenario-proposals/samples/workflow-recovery-input.json).
-  Routed through `cautilus scenario normalize workflow` per the [archetype boundary spec](./specs/archetype-boundary.spec.md).
+- `workflow` normalization owns a checked-in durable-workflow fixture: [fixtures/scenario-proposals/samples/workflow-recovery-input.json](../../fixtures/scenario-proposals/samples/workflow-recovery-input.json).
+  Routed through `cautilus scenario normalize workflow` per the [archetype boundary spec](../specs/archetype-boundary.spec.md).
 - `mode evaluate`, `review variants`, and comparison flows are all exercised in-tree against workflow-shaped packets and adapters
 - the external proof bar remains:
   - `cautilus doctor --repo-root <workflow-consumer-path>` returns `ready`

@@ -6,14 +6,14 @@ This repo is the standalone product boundary for `Cautilus`.
 
 - Use the actual available skills for this turn before improvising a local workflow.
 - Keep manually maintained docs in English.
-  Exceptions: [docs/handoff.md](./docs/handoff.md), [docs/operator-acceptance.md](./docs/operator-acceptance.md), executable specs under [docs/specs/](./docs/specs), and temporary product-planning notes while they are being rewritten.
+  Exceptions: [docs/internal/handoff.md](./docs/internal/handoff.md), [docs/maintainers/operator-acceptance.md](./docs/maintainers/operator-acceptance.md), executable specs under [docs/specs/](./docs/specs), and temporary product-planning notes while they are being rewritten.
 - Speak to this user in Korean unless they ask otherwise.
 - Prefer the source of truth over copied checklists.
   Deterministic behavior belongs in code, scripts, adapters, tests, and specs.
 - Optimize for `Cautilus` as an independent binary plus bundled skill before optimizing any host repo as a consumer.
 - Prose markdown uses semantic line breaks: one sentence per line, no hard-wrap at a column width.
   This is so fixed-pattern assertions in specs cannot be broken by incidental wrap positions and so prose edits produce clean sentence-level diffs.
-  Applies to all `.md` files except `docs/specs/*.md` (tables plus executable patterns), `docs/handoff.md`, and `docs/operator-acceptance.md`.
+  Applies to all `.md` files except `docs/specs/*.md` (tables plus executable patterns), `docs/internal/handoff.md`, and `docs/maintainers/operator-acceptance.md`.
   Code fences, tables, and YAML blocks are never reflowed.
 
 ## Product Intent
@@ -34,12 +34,12 @@ This repo is the standalone product boundary for `Cautilus`.
 
 ## Repo Memory
 
-- [docs/handoff.md](./docs/handoff.md): next-session pickup and volatile state
+- [docs/internal/handoff.md](./docs/internal/handoff.md): next-session pickup and volatile state
 - [docs/master-plan.md](./docs/master-plan.md): durable product direction and priority order
 - [docs/specs/index.spec.md](./docs/specs/index.spec.md): currently claimed product surface
 - [docs/specs/archetype-boundary.spec.md](./docs/specs/archetype-boundary.spec.md): first-class archetype 1:1 contract (chatbot / skill / workflow)
-- [docs/operator-acceptance.md](./docs/operator-acceptance.md): tiered human acceptance checklist
-- [docs/consumer-migration.md](./docs/consumer-migration.md): generic consumer adoption path
+- [docs/maintainers/operator-acceptance.md](./docs/maintainers/operator-acceptance.md): tiered human acceptance checklist
+- [docs/guides/consumer-adoption.md](./docs/guides/consumer-adoption.md): generic consumer adoption path
 
 ## Working Rules
 

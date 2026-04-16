@@ -4,7 +4,7 @@ import process from "node:process";
 
 // Inverse-completeness lint for archetype-boundary.spec.md.
 //
-// The Source Guard table in check-specs.mjs proves that every named
+// The specdown-backed source_guard path proves that every named
 // surface exists (schema constant X in file Y, etc.). It does not
 // prove the inverse: that every archetype declared under `## Archetypes`
 // has the full surface set behind it. This script walks the spec's
