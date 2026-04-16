@@ -20,8 +20,8 @@ test("external consumer onboarding smoke bootstraps a repo to doctor-ready", asy
 		assert.match(readFileSync(result.adapterPath, "utf-8"), /version: 1/);
 		assert.match(readFileSync(result.adapterPath, "utf-8"), /held_out_command_templates:/);
 		assert.match(readFileSync(result.adapterPath, "utf-8"), /external consumer smoke ok/);
-		assert.match(result.commands[0].command, /git$/);
-		assert.match(result.commands[1].command, /cautilus$/);
+		assert.equal(result.commands.some((entry) => /git$/.test(entry.command)), true);
+		assert.equal(result.commands.some((entry) => /cautilus$/.test(entry.command)), true);
 	} finally {
 		rmSync(result.workdir, { recursive: true, force: true });
 	}

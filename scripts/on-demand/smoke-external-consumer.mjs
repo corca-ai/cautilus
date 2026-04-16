@@ -116,6 +116,22 @@ function ensureSymlink(path, label) {
 	}
 }
 
+function seedBootstrapGitignore(repoRoot) {
+	const gitignorePath = join(repoRoot, ".gitignore");
+	if (existsSync(gitignorePath)) {
+		return gitignorePath;
+	}
+	writeFileSync(
+		gitignorePath,
+		[
+			"# Local outputs produced during consumer smoke runs",
+			"tmp/",
+		].join("\n") + "\n",
+		"utf-8",
+	);
+	return gitignorePath;
+}
+
 function seedReadyAdapter(adapterPath) {
 	const current = readFileSync(adapterPath, "utf-8");
 	if (!current.includes("held_out_command_templates: []")) {
@@ -152,6 +168,29 @@ export async function runExternalConsumerOnboardingSmoke(
 		const gitInit = execCommand("git", ["init", "-q", workspace.repoRoot]);
 		summary.commands.push(summarizeCommand("git", ["init", "-q", workspace.repoRoot], gitInit));
 
+		const gitignorePath = seedBootstrapGitignore(workspace.repoRoot);
+		summary.commands.push({
+			command: "seed-bootstrap-gitignore",
+			args: [gitignorePath],
+			exitCode: 0,
+			stdout: "wrote minimal .gitignore\n",
+			stderr: "",
+		});
+
+		const gitConfigName = execCommand("git", ["-C", workspace.repoRoot, "config", "user.name", "Cautilus Smoke"]);
+		summary.commands.push(
+			summarizeCommand("git", ["-C", workspace.repoRoot, "config", "user.name", "Cautilus Smoke"], gitConfigName),
+		);
+
+		const gitConfigEmail = execCommand("git", ["-C", workspace.repoRoot, "config", "user.email", "smoke@cautilus.local"]);
+		summary.commands.push(
+			summarizeCommand(
+				"git",
+				["-C", workspace.repoRoot, "config", "user.email", "smoke@cautilus.local"],
+				gitConfigEmail,
+			),
+		);
+
 		const install = execCommand(cautilusBin, ["install", "--repo-root", workspace.repoRoot, "--json"]);
 		summary.commands.push(summarizeCommand(cautilusBin, ["install", "--repo-root", workspace.repoRoot, "--json"], install));
 
@@ -167,6 +206,27 @@ export async function runExternalConsumerOnboardingSmoke(
 			stdout: "added minimal held_out command template\n",
 			stderr: "",
 		});
+
+		const gitAdd = execCommand("git", ["-C", workspace.repoRoot, "add", ".gitignore", ".agents", ".claude"]);
+		summary.commands.push(
+			summarizeCommand("git", ["-C", workspace.repoRoot, "add", ".gitignore", ".agents", ".claude"], gitAdd),
+		);
+
+		const gitCommit = execCommand("git", [
+			"-C",
+			workspace.repoRoot,
+			"commit",
+			"-q",
+			"-m",
+			"Bootstrap cautilus consumer smoke repo",
+		]);
+		summary.commands.push(
+			summarizeCommand(
+				"git",
+				["-C", workspace.repoRoot, "commit", "-q", "-m", "Bootstrap cautilus consumer smoke repo"],
+				gitCommit,
+			),
+		);
 
 		const adapterResolve = execCommand(cautilusBin, ["adapter", "resolve", "--repo-root", workspace.repoRoot]);
 		summary.commands.push(
