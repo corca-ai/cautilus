@@ -4,6 +4,7 @@ node_modules/
 coverage/
 .DS_Store
 .artifacts/specdown/
+_site/
 artifacts/self-dogfood/*
 !artifacts/self-dogfood/latest/
 artifacts/self-dogfood/latest/*

@@ -29,6 +29,7 @@
     "lint:specs": "npm run specdown:guards",
     "specdown": "specdown run",
     "specdown:guards": "specdown run -quiet -filter check:source_guard",
+    "specdown:pages": "npm run specdown:guards && node scripts/prepare-specdown-pages.mjs",
     "security:govulncheck": "node scripts/run-govulncheck.mjs ./...",
     "test:go": "go test ./cmd/... ./internal/...",
     "test:go:race": "go test -race ./cmd/... ./internal/...",

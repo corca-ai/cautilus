@@ -1,7 +1,7 @@
 # Development
 
 Dev environment, checks, and self-dogfood workflow for working on the `Cautilus` product itself.
-For consumer installation and use, see the [README](../README.md) and [install.md](../install.md).
+For consumer installation and use, see the [README](../../README.md) and [install.md](../../install.md).
 
 ## Tooling
 
@@ -88,6 +88,6 @@ npm run release:verify-public -- --version <tag>
 
 ## Commit discipline
 
-Per [AGENTS.md](../AGENTS.md), create a git commit after each meaningful unit of work.
+Per [AGENTS.md](../../AGENTS.md), create a git commit after each meaningful unit of work.
 Write commit subjects so later announcements can recover intent without guessing — state user-facing or operator-facing purpose, not mechanism.
 Add a short body when it clarifies the trigger, boundary, or behavior change.

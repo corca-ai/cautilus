@@ -29,6 +29,8 @@ cautilus doctor --repo-root /path/to/host-repo
 
 Homebrew 설치, 업데이트, 버전 표면은 [install.md](./install.md)를 참고하세요.
 전체 명령 카탈로그는 [docs/cli-reference.md](./docs/cli-reference.md)에 있습니다.
+상세 executable spec은 공개 리포트 <https://corca-ai.github.io/cautilus/>에서 확인하세요.
+이 리포트는 저장소의 저비용 standing `check:source_guard` 경로를 `specdown`으로 렌더한 결과이고, 각 스펙 페이지에는 더 비싼 functional check가 계속 문서화되어 있습니다.
 
 ## 시나리오
 
@@ -134,17 +136,18 @@ artifacts/<run>/review-packet.json
 
 ```text
 docs/
-├── evaluation-process.md          # 정규 평가 루프
+├── guides/                        # 운영자/소비자 가이드
 ├── contracts/                     # 어댑터, 리포트, 리뷰, 시나리오
 ├── specs/                         # 현재 제품 표면 + 아키타입
+├── maintainers/                   # 메인테이너 운영 및 릴리스 문서
 ├── master-plan.md                 # 장기 방향
 ├── cli-reference.md               # 전체 CLI 명령 카탈로그
-├── development.md                 # 개발 설정 + 셀프 도그푸드 워크플로
 └── gepa.md                        # GEPA 스타일 프롬프트 탐색 심화
 ```
 
 우선 읽을 문서:
 
+- <https://corca-ai.github.io/cautilus/> — standing executable spec 리포트
 - [install.md](./install.md) — 다른 머신을 위한 운영자 설치 + 업데이트 가이드
 - [docs/guides/evaluation-process.md](./docs/guides/evaluation-process.md) — 정규 평가 루프
 - [docs/specs/archetype-boundary.spec.md](./docs/specs/archetype-boundary.spec.md) — 챗봇/스킬/워크플로 1:1 계약

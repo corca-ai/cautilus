@@ -15,6 +15,9 @@ standalone product여야 한다.
 | README.md | file_exists |  |
 | README.md | fixed | held-out |
 | README.md | fixed | behavior honest while prompts keep changing |
+| README.md | fixed | corca-ai.github.io/cautilus |
+| README.ko.md | file_exists |  |
+| README.ko.md | fixed | corca-ai.github.io/cautilus |
 | docs/maintainers/development.md | fixed | npm run dogfood:self |
 | docs/maintainers/development.md | fixed | npm run dogfood:self:experiments |
 | AGENTS.md | file_exists |  |
@@ -27,6 +30,7 @@ standalone product여야 한다.
 | package.json | fixed | "hooks:check" |
 | package.json | fixed | "specdown" |
 | package.json | fixed | "specdown:guards" |
+| package.json | fixed | "specdown:pages" |
 | package.json | fixed | "dogfood:self" |
 | package.json | fixed | "dogfood:self:experiments" |
 | package.json | fixed | "release:prepare" |
@@ -54,6 +58,8 @@ standalone product여야 한다.
 | scripts/spec-source-guard-lib.mjs | file_exists |  |
 | scripts/specdown-source-guard-adapter.mjs | file_exists |  |
 | scripts/specdown-source-guard-adapter.test.mjs | file_exists |  |
+| scripts/prepare-specdown-pages.mjs | file_exists |  |
+| scripts/prepare-specdown-pages.test.mjs | file_exists |  |
 | .agents/cautilus-adapter.yaml | file_exists |  |
 | .agents/cautilus-adapter.yaml | fixed | npm run verify |
 | .agents/cautilus-adapters/self-dogfood.yaml | file_exists |  |
@@ -77,6 +83,7 @@ standalone product여야 한다.
 | .githooks/pre-push | fixed | npm run verify |
 | .gitignore | file_exists |  |
 | .gitignore | fixed | !artifacts/self-dogfood/latest/summary.json |
+| .gitignore | fixed | _site/ |
 | eslint.config.mjs | file_exists |  |
 | .golangci.yml | file_exists |  |
 | .golangci.yml | fixed | staticcheck |
@@ -95,6 +102,11 @@ standalone product여야 한다.
 | .github/workflows/release-artifacts.yml | fixed | render-homebrew-formula.mjs |
 | .github/workflows/release-artifacts.yml | fixed | actions/attest@v4 |
 | .github/workflows/release-artifacts.yml | fixed | subject-checksums: dist/cautilus-${{ github.ref_name }}-checksums.txt |
+| .github/workflows/spec-report.yml | file_exists |  |
+| .github/workflows/spec-report.yml | fixed | actions/upload-pages-artifact@v3 |
+| .github/workflows/spec-report.yml | fixed | actions/deploy-pages@v5 |
+| .github/workflows/spec-report.yml | fixed | github.com/corca-ai/specdown/cmd/specdown@latest |
+| .github/workflows/spec-report.yml | fixed | npm run specdown:pages |
 | go.mod | file_exists |  |
 | go.mod | fixed | module github.com/corca-ai/cautilus |
 | go.mod | fixed | toolchain go1.26.2 |

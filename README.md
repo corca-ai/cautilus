@@ -26,6 +26,8 @@ cautilus doctor --repo-root /path/to/host-repo
 
 For Homebrew, update, and version surfaces see [install.md](./install.md).
 For the full command catalog see [docs/cli-reference.md](./docs/cli-reference.md).
+For the standing executable spec report, see <https://corca-ai.github.io/cautilus/>.
+That public report is generated with `specdown` from the repo's cheap standing `check:source_guard` slice, while each spec page still documents its more expensive functional checks.
 
 ## Scenarios
 
@@ -124,17 +126,18 @@ Verification gates:
 
 ```text
 docs/
-├── evaluation-process.md          # canonical evaluation loop
+├── guides/                        # operator and consumer guides
 ├── contracts/                     # adapter, reports, review, scenarios
 ├── specs/                         # active product surface + archetypes
+├── maintainers/                   # maintainer-only operations and release docs
 ├── master-plan.md                 # durable direction
 ├── cli-reference.md               # full CLI command catalog
-├── development.md                 # dev setup + self-dogfood workflow
 └── gepa.md                        # GEPA-style prompt search deep-dive
 ```
 
 Top picks:
 
+- <https://corca-ai.github.io/cautilus/> — standing executable spec report
 - [install.md](./install.md) — operator install + update guide for another machine
 - [docs/guides/evaluation-process.md](./docs/guides/evaluation-process.md) — canonical evaluation loop
 - [docs/specs/archetype-boundary.spec.md](./docs/specs/archetype-boundary.spec.md) — chatbot/skill/workflow 1:1 contract

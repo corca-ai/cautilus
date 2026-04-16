@@ -19,6 +19,7 @@ export default [
 			"coverage/**",
 			"dist/**",
 			".artifacts/**",
+			"_site/**",
 			"__pycache__/**",
 		],
 	},

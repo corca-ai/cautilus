@@ -7,6 +7,8 @@ source-level guard를 담는다.
 현재 검증 대상은 이 index에 링크된 문서들이다.
 `specdown run`은 이 index에 링크된 `.spec.md` 문서를 현재 executable spec surface로 읽는다.
 `npm run lint:specs`는 `specdown run -filter check:source_guard`를 써서 standing source-guard path만 싸게 고정한다.
+공개 spec report인 `https://corca-ai.github.io/cautilus/`도 같은 standing filtered run을 배포해서,
+외부 독자가 비싼 functional check를 다시 실행하지 않고 현재 executable surface를 읽을 수 있게 한다.
 비싼 CLI 흐름이나 broad test suite는 각 스펙의 `Functional Check`에 남기되,
 standing spec gate에서는 다시 실행하지 않는다.
 
