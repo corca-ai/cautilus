@@ -35,6 +35,19 @@ Do not require all three in sequence before stopping.
 `npm run lint:specs` validates the spec index, checks relative spec links, and runs the full public spec suite with `specdown run -quiet`.
 Use `npm run specdown` when you want the full reporter output instead of the quiet standing gate.
 
+## Test layering
+
+Keep each layer honest so the same claim is not restated three times.
+
+- `docs/specs/*.spec.md` owns cheap public executable proofs for reader-facing product claims.
+- `internal/app/app_test.go` owns single-command native command behavior and JSON payload shape.
+- `internal/app/cli_smoke_test.go` owns multi-command integration flows that mutate repos, install surfaces, or write artifact trees.
+- `scripts/on-demand/*.test.mjs` owns heavier end-to-end consumer and self-dogfood flows that are valuable but too expensive for the standing gate.
+
+When adding a new check, start from the narrowest layer that can prove the behavior.
+Do not add a new CLI smoke test for a single-command contract that is already covered by a public spec and an app-level test.
+Do not push deterministic helper logic into an end-to-end smoke when a fixture-backed unit test can prove it more precisely.
+
 ## On-demand checks
 
 ```bash
