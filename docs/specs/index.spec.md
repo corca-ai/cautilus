@@ -12,6 +12,25 @@ source-level guard를 담는다.
 비싼 CLI 흐름이나 broad test suite는 각 스펙의 `Functional Check`에 남기되,
 standing spec gate에서는 다시 실행하지 않는다.
 
+## Source Guard
+
+이 index 자체도 standing executable spec surface에 포함되어야 한다.
+그래야 공개 spec report 루트가 수제 landing page가 아니라 이 문서의 HTML 렌더가 되고,
+외부 독자가 report 첫 화면만으로도 제품 개요와 전체 spec map을 읽을 수 있다.
+
+> check:source_guard
+| file | mode | pattern |
+| --- | --- | --- |
+| docs/specs/index.spec.md | file_exists |  |
+| docs/specs/index.spec.md | fixed | ## Current Documents |
+| docs/specs/index.spec.md | fixed | https://corca-ai.github.io/cautilus/ |
+| docs/specs/current-product.spec.md | file_exists |  |
+| docs/specs/standalone-surface.spec.md | file_exists |  |
+| docs/specs/self-dogfood.spec.md | file_exists |  |
+| docs/specs/archetype-boundary.spec.md | file_exists |  |
+| docs/specs/html-report.spec.md | file_exists |  |
+| docs/specs/git-precondition.spec.md | file_exists |  |
+
 ## Current Documents
 
 - [Current Product](current-product.spec.md)
