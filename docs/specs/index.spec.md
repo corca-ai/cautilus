@@ -25,3 +25,6 @@ standing spec gate에서는 다시 실행하지 않는다.
 - [HTML Report Surface](html-report.spec.md)
   리드미의 human-review 약속 — JSON artifact 옆에 HTML view —
   을 executable하게 검증한다. claim 1–9 (self-dogfood / mode report / review packet / review summary / compare / proposals / evidence / run index) 가 모두 승격되어 있다.
+- [Git Precondition and Runtime Selection](git-precondition.spec.md)
+  doctor의 git precondition gate와 skill test의 런타임 선택(codex/claude)을
+  정의한다.
