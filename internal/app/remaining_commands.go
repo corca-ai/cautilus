@@ -705,6 +705,7 @@ type skillTestArgs struct {
 	outputDir        *string
 	output           *string
 	candidatesOutput *string
+	runtime          string
 	quiet            bool
 	skipPreflight    bool
 }
@@ -798,14 +799,26 @@ func handleSkillTest(repoRoot string, cwd string, args []string, stdout io.Write
 	inputFile := filepath.Join(outputDir, "skill-evaluation-input.json")
 	log := progressLogger(options.quiet, stderr)
 	workspace := resolvePath(cwd, options.workspace)
+	effectiveRuntime := options.runtime
+	if effectiveRuntime == "" {
+		effectiveRuntime = strings.TrimSpace(anyString(adapterPayload.Data["default_runtime"]))
+	}
+	if effectiveRuntime == "" {
+		effectiveRuntime = "codex"
+	}
+	backendValue := "codex_exec"
+	if effectiveRuntime == "claude" {
+		backendValue = "claude_code"
+	}
 	replacements := map[string]string{
 		"candidate_repo":        runtime.ShellSingleQuote(workspace),
 		"output_dir":            runtime.ShellSingleQuote(outputDir),
 		"skill_id":              runtime.ShellSingleQuote(caseSuite.SkillID),
 		"skill_cases_file":      runtime.ShellSingleQuote(options.casesFile),
 		"skill_eval_input_file": runtime.ShellSingleQuote(inputFile),
+		"backend":               backendValue,
 	}
-	log(fmt.Sprintf("skill test start: repo=%s workspace=%s skill=%s output=%s", options.repoRoot, workspace, caseSuite.SkillID, outputDir))
+	log(fmt.Sprintf("skill test start: repo=%s workspace=%s skill=%s runtime=%s output=%s", options.repoRoot, workspace, caseSuite.SkillID, effectiveRuntime, outputDir))
 	commandsPassed := true
 	if !options.skipPreflight {
 		for index, commandTemplate := range stringArray(adapterPayload.Data["preflight_commands"]) {
@@ -994,6 +1007,13 @@ func parseSkillTestArgs(args []string, cwd string) (*skillTestArgs, error) {
 			index = next
 			resolved := resolvePath(cwd, value)
 			options.candidatesOutput = &resolved
+		case "--runtime":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.runtime = value
 		case "--skip-preflight":
 			options.skipPreflight = true
 		case "--quiet":
@@ -1004,6 +1024,9 @@ func parseSkillTestArgs(args []string, cwd string) (*skillTestArgs, error) {
 	}
 	if options.adapter != nil && options.adapterName != nil {
 		return nil, fmt.Errorf("use either --adapter or --adapter-name, not both")
+	}
+	if options.runtime != "" && options.runtime != "codex" && options.runtime != "claude" {
+		return nil, fmt.Errorf("--runtime must be codex or claude")
 	}
 	return options, nil
 }
