@@ -49,6 +49,12 @@ This repo is the standalone product boundary for `Cautilus`.
 - If a consumer repo has gained generic evaluation knowledge, bring it here rather than letting the contracts drift.
 - When adding a new runtime surface, add at least one executable test.
 
+## Before Stopping on a Spec-Driven Slice
+
+- New pure function in a new file: add fixture tests in the same slice, not after the fact.
+- New placeholder or adapter field: update the matching contract doc under [docs/contracts/](./docs/contracts).
+- Re-read the spec's decision section and confirm every bullet is either in the code or explicitly deferred in the spec.
+
 ## Commit Discipline
 
 - After each meaningful unit of work, create a git commit before moving on.

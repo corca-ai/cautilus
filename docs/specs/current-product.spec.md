@@ -34,6 +34,9 @@ standalone product여야 한다.
 | package.json | fixed | "consumer:onboard:smoke" |
 | package.json | fixed | "lint" |
 | package.json | fixed | "lint:archetypes" |
+| package.json | fixed | "lint:contracts" |
+| scripts/check-placeholder-drift.mjs | file_exists |  |
+| scripts/check-placeholder-drift.test.mjs | file_exists |  |
 | package.json | fixed | "lint:links" |
 | package.json | fixed | "lint:go" |
 | package.json | fixed | "security:govulncheck" |
