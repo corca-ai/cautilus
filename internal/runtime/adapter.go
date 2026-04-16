@@ -3,6 +3,7 @@ package runtime
 import (
 	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -481,7 +482,55 @@ func DumpYAMLDocument(data map[string]any) (string, error) {
 	return string(payload), nil
 }
 
+func checkGitPrecondition(repoRoot string) (map[string]any, int) {
+	gitResult := func(checks []any, suggestions []any, status string, summary string) (map[string]any, int) {
+		return map[string]any{
+			"repo_root":   repoRoot,
+			"status":      status,
+			"ready":       false,
+			"summary":     summary,
+			"checks":      checks,
+			"suggestions": suggestions,
+			"warnings":    []any{},
+			"errors":      []any{},
+		}, 1
+	}
+
+	isGitRepo := exec.Command("git", "-C", repoRoot, "rev-parse", "--is-inside-work-tree")
+	if err := isGitRepo.Run(); err != nil {
+		return gitResult(
+			[]any{map[string]any{"id": "git_repo", "ok": false, "detail": "This directory is not a git repository."}},
+			[]any{
+				"Run git init to initialize a repository.",
+				"Set up a .gitignore before your first commit to avoid tracking large or sensitive files.",
+			},
+			"missing_git",
+			"Not a git repository.",
+		)
+	}
+
+	hasCommits := exec.Command("git", "-C", repoRoot, "rev-list", "-1", "HEAD")
+	if err := hasCommits.Run(); err != nil {
+		return gitResult(
+			[]any{
+				map[string]any{"id": "git_repo", "ok": true, "detail": "This directory is a git repository."},
+				map[string]any{"id": "git_has_commits", "ok": false, "detail": "Git repository has no commits yet."},
+			},
+			[]any{
+				"Set up a .gitignore first, then create your initial commit.",
+			},
+			"no_commits",
+			"Git repository has no commits.",
+		)
+	}
+
+	return nil, 0
+}
+
 func DoctorRepo(repoRoot string, adapterPath *string, adapterName *string) (map[string]any, int, error) {
+	if gitResult, gitExit := checkGitPrecondition(repoRoot); gitResult != nil {
+		return gitResult, gitExit, nil
+	}
 	payload, err := LoadAdapter(repoRoot, adapterPath, adapterName)
 	if err != nil {
 		return nil, 1, err
