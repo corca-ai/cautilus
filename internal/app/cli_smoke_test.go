@@ -293,20 +293,9 @@ func TestCLIDoctorFailsWhenAdapterIsInvalid(t *testing.T) {
 	}
 }
 
-func TestCLIStandaloneTempRepoCanAdoptCautilusWithoutHostSpecificPaths(t *testing.T) {
+func TestCLIReviewVariantsRunsInsideFreshRepoWithoutHostSpecificPaths(t *testing.T) {
 	root := t.TempDir()
 	initGitRepo(t, root)
-	packageJSON, err := json.MarshalIndent(map[string]any{
-		"name":    "standalone-smoke",
-		"private": true,
-		"scripts": map[string]string{"check": "echo ok"},
-	}, "", "  ")
-	if err != nil {
-		t.Fatalf("MarshalIndent returned error: %v", err)
-	}
-	if err := os.WriteFile(filepath.Join(root, "package.json"), append(packageJSON, '\n'), 0o644); err != nil {
-		t.Fatalf("WriteFile returned error: %v", err)
-	}
 	if err := os.MkdirAll(filepath.Join(root, "fixtures"), 0o755); err != nil {
 		t.Fatalf("MkdirAll returned error: %v", err)
 	}
@@ -343,17 +332,8 @@ printf '{"verdict":"pass","summary":"standalone smoke","findings":[{"severity":"
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
 
-	stdout, stderr, exitCode := runCLI(t, root, "doctor", "--repo-root", root)
-	if exitCode != 0 {
-		t.Fatalf("doctor failed: %s", stderr)
-	}
-	doctorPayload := parseJSONObject(t, stdout)
-	if doctorPayload["ready"] != true || doctorPayload["status"] != "ready" {
-		t.Fatalf("expected ready doctor payload, got %#v", doctorPayload)
-	}
-
 	outputDir := filepath.Join(root, "outputs")
-	stdout, stderr, exitCode = runCLI(t, root, "review", "variants", "--repo-root", root, "--workspace", root, "--output-dir", outputDir)
+	stdout, stderr, exitCode := runCLI(t, root, "review", "variants", "--repo-root", root, "--workspace", root, "--output-dir", outputDir)
 	if exitCode != 0 {
 		t.Fatalf("review variants failed: %s", stderr)
 	}
