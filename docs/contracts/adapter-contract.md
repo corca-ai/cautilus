@@ -107,6 +107,7 @@ default_schema_file: fixtures/review/review-verdict.schema.json
 - `preflight_commands`: fast commands to run before long evaluations.
 - `skill_cases_default`: optional checked-in `cautilus.skill_test_cases.v1` path used by `cautilus skill test` when the operator does not pass `--cases-file`.
 - `skill_test_command_templates`: commands that turn a checked-in skill-test case suite into an observed `cautilus.skill_evaluation_inputs.v1` packet.
+- `default_runtime`: optional runtime choice (`codex` or `claude`), defaults to `codex`. Overridden by `cautilus skill test --runtime`.
 - `iterate_command_templates`: commands for training or iterate loops.
 - `held_out_command_templates`: commands for the held-out split or equivalent validation.
 - `comparison_command_templates`: optional commands that produce scenario-by-scenario deltas.

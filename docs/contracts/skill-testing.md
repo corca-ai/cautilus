@@ -67,6 +67,7 @@ Current placeholder additions for that seam:
 - `{skill_id}`
 - `{skill_cases_file}`
 - `{skill_eval_input_file}`
+- `{backend}` — resolved from `--runtime` CLI flag, adapter `default_runtime`, or `codex_exec` fallback
 
 Existing placeholders such as `{candidate_repo}` and `{output_dir}` remain available, so a checked-in runner can use a disposable workspace and emit its raw artifacts beside the generated input packet.
 

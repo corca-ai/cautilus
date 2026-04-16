@@ -24,6 +24,13 @@ For the shortest end-to-end onboarding path, see [external-consumer-onboarding.m
 7. Add at least one repo-local executable check that exercises the adapter through `Cautilus` rather than only validating static YAML.
 8. Keep host-specific mining, storage, audit UI, and operator policy in the consumer repo until they are intentionally generalized.
 
+## Git Precondition
+
+`cautilus doctor --scope repo` now requires the target directory to be a git repository with at least one commit.
+Non-git directories receive `status: "missing_git"` and `ready: false`.
+Empty git repositories (no commits) receive `status: "no_commits"`.
+This does not affect `cautilus install` or `cautilus adapter init`, which still work without git.
+
 ## Deprecated Surface Names
 
 The product owns the behavior-surface vocabulary in `cautilus.behavior_intent.v1`.

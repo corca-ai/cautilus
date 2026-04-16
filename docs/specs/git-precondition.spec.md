@@ -67,7 +67,7 @@ Worktree 기반 A/B, ref 고정, review packet의 커밋 해시 참조 모두 gi
 - 어댑터에 `default_runtime` 필드를 둔다 (선택적, 기본값 codex).
 - CLI `--runtime`이 어댑터 기본값을 오버라이드한다.
 - `{backend}` 플레이스홀더를 skill_test_command_templates에서 사용할 수 있게 한다.
-- 결과 아티팩트에 런타임 이름과 버전을 기록한다.
+- 결과 아티팩트에 런타임 이름과 버전을 기록하는 것은 다음 슬라이스에서 추가한다.
 
 ### 런타임 매핑
 
@@ -97,3 +97,4 @@ Worktree 기반 A/B, ref 고정, review packet의 커밋 해시 참조 모두 gi
 | scripts/agent-runtime/skill-test-claude-backend.mjs | file_exists |  |
 | scripts/agent-runtime/skill-test-claude-backend.mjs | fixed | runClaudeSample |
 | scripts/agent-runtime/skill-test-claude-backend.mjs | fixed | parseClaudeOutput |
+| scripts/agent-runtime/skill-test-claude-backend.test.mjs | file_exists |  |
