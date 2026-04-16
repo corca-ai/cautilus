@@ -60,6 +60,7 @@ func TestRunVersionVerboseEmitsVersionStateJSON(t *testing.T) {
 
 func TestRunDoctorDoesNotRequireToolRootForNativeCommands(t *testing.T) {
 	repoRoot := t.TempDir()
+	initGitRepo(t, repoRoot)
 	agentsDir := filepath.Join(repoRoot, ".agents")
 	if err := os.MkdirAll(agentsDir, 0o755); err != nil {
 		t.Fatalf("MkdirAll returned error: %v", err)

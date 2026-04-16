@@ -128,6 +128,8 @@ standalone product여야 한다.
 | skills/bundled.go | fixed | go:embed cautilus |
 | internal/app/cli_smoke_test.go | file_exists |  |
 | internal/app/cli_smoke_test.go | fixed | TestCLIRootSelfConsumerRepoStaysDoctorReady |
+| internal/app/cli_smoke_test.go | fixed | TestCLIDoctorReportsGitPreconditionFailureForNonGitDirectory |
+| internal/app/cli_smoke_test.go | fixed | TestCLIDoctorReportsNoCommitsForEmptyGitRepo |
 | internal/app/cli_smoke_test.go | fixed | TestCLIStandaloneTempRepoCanAdoptCautilusWithoutHostSpecificPaths |
 | internal/app/cli_smoke_test.go | fixed | TestCLISkillsInstallCreatesRepoLocalCanonicalSkill |
 | internal/app/cli_smoke_test.go | fixed | TestCLISelfDogfoodRenderHTMLWritesIndexFromLatestBundle |
@@ -171,6 +173,8 @@ standalone product여야 한다.
 | scripts/agent-runtime/evaluate-adapter-mode.mjs | file_exists |  |
 | scripts/agent-runtime/evaluate-adapter-mode.mjs | fixed | ADAPTER_MODE_EVALUATION_PACKET_SCHEMA |
 | scripts/agent-runtime/run-local-skill-test.mjs | file_exists |  |
+| scripts/agent-runtime/skill-test-claude-backend.mjs | file_exists |  |
+| scripts/agent-runtime/skill-test-claude-backend.mjs | fixed | runClaudeSample |
 | scripts/agent-runtime/skill-test-case-suite.mjs | file_exists |  |
 | scripts/agent-runtime/skill-test-case-suite.mjs | fixed | SKILL_TEST_CASES_SCHEMA |
 | scripts/agent-runtime/run-local-skill-test.test.mjs | file_exists |  |

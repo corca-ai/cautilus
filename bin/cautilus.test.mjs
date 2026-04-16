@@ -20,6 +20,12 @@ test("repo shim forwards --version to the Go CLI entry", () => {
 test("repo shim preserves caller cwd while resolving doctor against a consumer repo", () => {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-repo-shim-doctor-"));
 	try {
+		spawnSync("git", ["init"], { cwd: root });
+		spawnSync("git", ["-C", root, "config", "user.email", "test@test.com"]);
+		spawnSync("git", ["-C", root, "config", "user.name", "test"]);
+		writeFileSync(join(root, ".gitignore"), "", "utf-8");
+		spawnSync("git", ["-C", root, "add", ".gitignore"]);
+		spawnSync("git", ["-C", root, "commit", "-m", "bootstrap"]);
 		const adapterDir = join(root, ".agents");
 		mkdirSync(adapterDir, { recursive: true });
 		writeFileSync(

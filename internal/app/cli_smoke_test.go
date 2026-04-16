@@ -52,6 +52,18 @@ func runGit(t *testing.T, repoRoot string, args ...string) string {
 	return strings.TrimSpace(string(output))
 }
 
+func initGitRepo(t *testing.T, root string) {
+	t.Helper()
+	runGit(t, root, "init")
+	runGit(t, root, "config", "user.email", "test@test.com")
+	runGit(t, root, "config", "user.name", "test")
+	if err := os.WriteFile(filepath.Join(root, ".gitignore"), []byte(""), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	runGit(t, root, "add", ".gitignore")
+	runGit(t, root, "commit", "-m", "bootstrap")
+}
+
 func writeExecutableFile(t *testing.T, root string, name string, body string) {
 	t.Helper()
 	path := filepath.Join(root, name)
@@ -121,6 +133,54 @@ func TestCLIRootSelfConsumerRepoStaysDoctorReady(t *testing.T) {
 	}
 	if _, err := os.Stat(filepath.Join(root, ".agents", "cautilus-adapters", "self-dogfood.yaml")); err != nil {
 		t.Fatalf("expected self-dogfood adapter to exist: %v", err)
+	}
+}
+
+func TestCLIDoctorReportsGitPreconditionFailureForNonGitDirectory(t *testing.T) {
+	root := t.TempDir()
+	stdout, _, exitCode := runCLI(t, root, "doctor", "--repo-root", root)
+	if exitCode != 1 {
+		t.Fatalf("expected exit code 1, got %d", exitCode)
+	}
+	payload := parseJSONObject(t, stdout)
+	if payload["status"] != "missing_git" {
+		t.Fatalf("expected status missing_git, got %#v", payload["status"])
+	}
+	if payload["ready"] != false {
+		t.Fatalf("expected ready=false, got %#v", payload["ready"])
+	}
+	checks, ok := payload["checks"].([]any)
+	if !ok || len(checks) == 0 {
+		t.Fatalf("expected checks array, got %#v", payload["checks"])
+	}
+	first := checks[0].(map[string]any)
+	if first["id"] != "git_repo" || first["ok"] != false {
+		t.Fatalf("expected git_repo check to fail, got %#v", first)
+	}
+}
+
+func TestCLIDoctorReportsNoCommitsForEmptyGitRepo(t *testing.T) {
+	root := t.TempDir()
+	runGit(t, root, "init")
+	stdout, _, exitCode := runCLI(t, root, "doctor", "--repo-root", root)
+	if exitCode != 1 {
+		t.Fatalf("expected exit code 1, got %d", exitCode)
+	}
+	payload := parseJSONObject(t, stdout)
+	if payload["status"] != "no_commits" {
+		t.Fatalf("expected status no_commits, got %#v", payload["status"])
+	}
+	checks, ok := payload["checks"].([]any)
+	if !ok || len(checks) < 2 {
+		t.Fatalf("expected at least 2 checks, got %#v", payload["checks"])
+	}
+	gitRepoCheck := checks[0].(map[string]any)
+	if gitRepoCheck["id"] != "git_repo" || gitRepoCheck["ok"] != true {
+		t.Fatalf("expected git_repo check to pass, got %#v", gitRepoCheck)
+	}
+	commitsCheck := checks[1].(map[string]any)
+	if commitsCheck["id"] != "git_has_commits" || commitsCheck["ok"] != false {
+		t.Fatalf("expected git_has_commits check to fail, got %#v", commitsCheck)
 	}
 }
 
@@ -235,6 +295,7 @@ func TestCLIAdapterResolveDelegatesToBundledResolver(t *testing.T) {
 
 func TestCLIDoctorReportsReadyWithExecutionSurface(t *testing.T) {
 	root := t.TempDir()
+	initGitRepo(t, root)
 	adapterDir := filepath.Join(root, ".agents")
 	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
 		t.Fatalf("MkdirAll returned error: %v", err)
@@ -276,6 +337,7 @@ func TestCLIDoctorReportsReadyWithExecutionSurface(t *testing.T) {
 
 func TestCLIDoctorFailsWithoutCheckedInAdapter(t *testing.T) {
 	root := t.TempDir()
+	initGitRepo(t, root)
 	stdout, stderr, exitCode := runCLI(t, root, "doctor", "--repo-root", root)
 	if exitCode != 1 {
 		t.Fatalf("expected exit code 1, got %d, stderr=%s", exitCode, stderr)
@@ -292,6 +354,7 @@ func TestCLIDoctorFailsWithoutCheckedInAdapter(t *testing.T) {
 
 func TestCLIDoctorFailsWhenAdapterIsInvalid(t *testing.T) {
 	root := t.TempDir()
+	initGitRepo(t, root)
 	adapterDir := filepath.Join(root, ".agents")
 	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
 		t.Fatalf("MkdirAll returned error: %v", err)
@@ -322,6 +385,7 @@ func TestCLIDoctorFailsWhenAdapterIsInvalid(t *testing.T) {
 
 func TestCLIStandaloneTempRepoCanAdoptCautilusWithoutHostSpecificPaths(t *testing.T) {
 	root := t.TempDir()
+	initGitRepo(t, root)
 	packageJSON, err := json.MarshalIndent(map[string]any{
 		"name":    "standalone-smoke",
 		"private": true,
@@ -777,6 +841,7 @@ func TestCLISkillsInstallCreatesRepoLocalCanonicalSkill(t *testing.T) {
 
 func TestCLIDoctorWarnsWhenAdapterOnlyWrapsDeterministicGates(t *testing.T) {
 	root := t.TempDir()
+	initGitRepo(t, root)
 	if err := os.MkdirAll(filepath.Join(root, ".agents"), 0o755); err != nil {
 		t.Fatalf("MkdirAll returned error: %v", err)
 	}

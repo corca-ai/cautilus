@@ -94,4 +94,6 @@ Worktree 기반 A/B, ref 고정, review packet의 커밋 해시 참조 모두 gi
 | internal/app/cli_smoke_test.go | fixed | TestCLIDoctorReportsGitPreconditionFailureForNonGitDirectory |
 | internal/app/cli_smoke_test.go | fixed | TestCLIDoctorReportsNoCommitsForEmptyGitRepo |
 | scripts/agent-runtime/run-local-skill-test.mjs | fixed | claude_code |
-| scripts/agent-runtime/run-local-skill-test.mjs | fixed | runClaudeSample |
+| scripts/agent-runtime/skill-test-claude-backend.mjs | file_exists |  |
+| scripts/agent-runtime/skill-test-claude-backend.mjs | fixed | runClaudeSample |
+| scripts/agent-runtime/skill-test-claude-backend.mjs | fixed | parseClaudeOutput |
