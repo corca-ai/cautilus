@@ -13,6 +13,19 @@ test("parseArgs accepts changed/specs/stdout and custom widths", () => {
 		specsOnly: true,
 		stdout: true,
 		widths: [120, 72],
+		paths: [],
+		help: false,
+	});
+});
+
+test("parseArgs accepts explicit markdown targets", () => {
+	const parsed = parseArgs(["docs/guides", "README.md"]);
+	assert.deepEqual(parsed, {
+		changed: false,
+		specsOnly: false,
+		stdout: false,
+		widths: [],
+		paths: ["docs/guides", "README.md"],
 		help: false,
 	});
 });
@@ -44,6 +57,25 @@ test("selectMarkdownFiles narrows to changed files", () => {
 	}
 });
 
+test("selectMarkdownFiles expands explicit files and directories", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-preview-"));
+	try {
+		writeFileSync(join(root, "README.md"), "# Root\n");
+		mkdirSync(join(root, "docs", "guides"), { recursive: true });
+		writeFileSync(join(root, "docs", "guides", "consumer-adoption.md"), "# Guide\n");
+		const files = selectMarkdownFiles(root, {
+			changed: false,
+			specsOnly: false,
+			stdout: false,
+			widths: [],
+			paths: ["docs/guides", "README.md"],
+		});
+		assert.deepEqual(files, [join(root, "README.md"), join(root, "docs", "guides", "consumer-adoption.md")]);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
 test("previewMarkdown writes rendered artifacts with default widths", () => {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-preview-"));
 	try {
@@ -56,7 +88,7 @@ test("previewMarkdown writes rendered artifacts with default widths", () => {
 		const calls = [];
 		const result = previewMarkdown(
 			root,
-			{ changed: false, specsOnly: false, stdout: false, widths: [] },
+			{ changed: false, specsOnly: false, stdout: false, widths: [], paths: [] },
 			{
 				spawn(cmd, args) {
 					calls.push([cmd, args]);

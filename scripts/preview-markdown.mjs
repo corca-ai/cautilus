@@ -9,7 +9,7 @@ const ARTIFACT_ROOT = ".artifacts/markdown-preview";
 
 function usage() {
 	return [
-		"Usage: node scripts/preview-markdown.mjs [--changed] [--specs] [--stdout] [--width <n>]",
+		"Usage: node scripts/preview-markdown.mjs [--changed] [--specs] [--stdout] [--width <n>] [path ...]",
 		"",
 		"Renders repo-owned markdown through glow and writes text snapshots under",
 		".artifacts/markdown-preview by default.",
@@ -22,38 +22,51 @@ export function parseArgs(argv) {
 		specsOnly: false,
 		stdout: false,
 		widths: [],
+		paths: [],
 	};
 	for (let index = 0; index < argv.length; index += 1) {
-		const arg = argv[index];
-		switch (arg) {
-			case "-h":
-			case "--help":
-				return { ...options, help: true };
-			case "--changed":
-				options.changed = true;
-				break;
-			case "--specs":
-				options.specsOnly = true;
-				break;
-			case "--stdout":
-				options.stdout = true;
-				break;
-			case "--width": {
-				const value = argv[index + 1];
-				if (!value) throw new Error("--width requires a value");
-				const parsed = Number.parseInt(value, 10);
-				if (!Number.isInteger(parsed) || parsed <= 0) {
-					throw new Error(`invalid --width value ${value}`);
-				}
-				options.widths.push(parsed);
-				index += 1;
-				break;
-			}
-			default:
-				throw new Error(`unknown argument: ${arg}`);
-		}
+		const result = applyArgument(options, argv, index);
+		if (result.help) return { ...options, help: true };
+		index = result.nextIndex;
+	}
+	if (options.specsOnly && options.paths.length > 0) {
+		throw new Error("--specs cannot be combined with explicit paths");
 	}
 	return { ...options, help: false };
+}
+
+function applyArgument(options, argv, index) {
+	const arg = argv[index];
+	if (arg === "-h" || arg === "--help") {
+		return { help: true, nextIndex: index };
+	}
+	if (arg === "--changed") {
+		options.changed = true;
+		return { help: false, nextIndex: index };
+	}
+	if (arg === "--specs") {
+		options.specsOnly = true;
+		return { help: false, nextIndex: index };
+	}
+	if (arg === "--stdout") {
+		options.stdout = true;
+		return { help: false, nextIndex: index };
+	}
+	if (arg === "--width") {
+		const value = argv[index + 1];
+		if (!value) throw new Error("--width requires a value");
+		const parsed = Number.parseInt(value, 10);
+		if (!Number.isInteger(parsed) || parsed <= 0) {
+			throw new Error(`invalid --width value ${value}`);
+		}
+		options.widths.push(parsed);
+		return { help: false, nextIndex: index + 1 };
+	}
+	if (arg.startsWith("-")) {
+		throw new Error(`unknown argument: ${arg}`);
+	}
+	options.paths.push(arg);
+	return { help: false, nextIndex: index };
 }
 
 function commandExists(command, spawn = spawnSync) {
@@ -86,6 +99,26 @@ function walkMarkdownFiles(root) {
 		}
 	}
 	return entries;
+}
+
+function resolveExplicitTargets(repoRoot, targets) {
+	const files = [];
+	for (const target of targets) {
+		const full = resolve(repoRoot, target);
+		if (!existsSync(full)) {
+			throw new Error(`markdown preview path not found: ${target}`);
+		}
+		const stat = statSync(full);
+		if (stat.isDirectory()) {
+			files.push(...walkMarkdownFiles(full));
+			continue;
+		}
+		if (!target.endsWith(".md")) {
+			throw new Error(`markdown preview path is not a markdown file: ${target}`);
+		}
+		files.push(full);
+	}
+	return files;
 }
 
 function listBaseMarkdown(repoRoot, { specsOnly }) {
@@ -125,7 +158,8 @@ function listChangedMarkdown(repoRoot, spawn = spawnSync) {
 }
 
 export function selectMarkdownFiles(repoRoot, options, spawn = spawnSync) {
-	const base = listBaseMarkdown(repoRoot, options);
+	const explicitPaths = options.paths ?? [];
+	const base = explicitPaths.length > 0 ? resolveExplicitTargets(repoRoot, explicitPaths) : listBaseMarkdown(repoRoot, options);
 	if (!options.changed) return base.sort();
 	const changed = new Set(listChangedMarkdown(repoRoot, spawn));
 	return base.filter((file) => changed.has(file)).sort();
