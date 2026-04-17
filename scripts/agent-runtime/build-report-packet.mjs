@@ -8,6 +8,10 @@ import { REPORT_INPUTS_SCHEMA, REPORT_PACKET_SCHEMA } from "./contract-versions.
 import { readActiveRunDir } from "./active-run.mjs";
 import { normalizeScenarioResultsPacket } from "./scenario-results.mjs";
 import { summarizeScenarioTelemetryEntries } from "./scenario-result-telemetry.mjs";
+import {
+	classifyModeSummary,
+	summarizeReportReasons,
+} from "./report-reason-classification.mjs";
 
 export { REPORT_INPUTS_SCHEMA, REPORT_PACKET_SCHEMA } from "./contract-versions.mjs";
 
@@ -385,6 +389,54 @@ function summarizeReportTelemetry(modeSummaries) {
 	return telemetry;
 }
 
+function buildModeScenarioTelemetrySummary(modeRun, now) {
+	const scenarioResults = modeRun.scenarioResults?.results || [];
+	return scenarioResults.length > 0
+		? summarizeScenarioTelemetryEntries(scenarioResults, {
+			now,
+			source: `report_mode:${modeRun.mode}`,
+		})
+		: null;
+}
+
+function buildBaseModeSummary(modeRun, scenarioTelemetrySummary) {
+	const telemetry = createModeTelemetry(modeRun, scenarioTelemetrySummary);
+	return {
+		mode: modeRun.mode,
+		status: modeRun.status,
+		...(modeRun.summary ? { summary: modeRun.summary } : {}),
+		...(modeRun.startedAt ? { startedAt: modeRun.startedAt } : {}),
+		...(modeRun.completedAt ? { completedAt: modeRun.completedAt } : {}),
+		...(typeof modeRun.durationMs === "number" ? { durationMs: modeRun.durationMs } : {}),
+		...(telemetry ? { telemetry } : {}),
+		...(modeRun.scenarioResults?.compareArtifact
+			? { compareArtifact: modeRun.scenarioResults.compareArtifact }
+			: {}),
+		...(scenarioTelemetrySummary ? { scenarioTelemetrySummary } : {}),
+	};
+}
+
+function applyModeClassification(modeSummary, modeRun, commandObservations) {
+	const classified = classifyModeSummary(modeSummary, modeRun, commandObservations);
+	if (classified.reasonCodes.length > 0) {
+		modeSummary.reasonCodes = classified.reasonCodes;
+	}
+	if (classified.warnings.length > 0) {
+		modeSummary.warnings = classified.warnings;
+		const warningSummary = classified.warnings.map((entry) => entry.summary).join(" ");
+		modeSummary.summary = modeSummary.summary
+			? `${modeSummary.summary} Warning: ${warningSummary}`
+			: `Warning: ${warningSummary}`;
+	}
+	return modeSummary;
+}
+
+function createModeSummary(modeRun, commandObservations, now) {
+	const scenarioTelemetrySummary = buildModeScenarioTelemetrySummary(modeRun, now);
+	const modeSummary = buildBaseModeSummary(modeRun, scenarioTelemetrySummary);
+	return applyModeClassification(modeSummary, modeRun, commandObservations);
+}
+
 export function buildReportPacket(input, { now = new Date() } = {}) {
 	if (!input || typeof input !== "object" || Array.isArray(input)) {
 		throw new Error("input must be an object");
@@ -393,30 +445,11 @@ export function buildReportPacket(input, { now = new Date() } = {}) {
 		throw new Error(`schemaVersion must be ${REPORT_INPUTS_SCHEMA}`);
 	}
 	const modeRuns = assertArray(input.modeRuns, "modeRuns").map((entry, index) => normalizeModeRun(entry, index));
-	const modeSummaries = modeRuns.map((modeRun) => {
-		const scenarioResults = modeRun.scenarioResults?.results || [];
-		const scenarioTelemetrySummary = scenarioResults.length > 0
-			? summarizeScenarioTelemetryEntries(scenarioResults, {
-				now,
-				source: `report_mode:${modeRun.mode}`,
-			})
-			: null;
-		return {
-			mode: modeRun.mode,
-			status: modeRun.status,
-			...(modeRun.summary ? { summary: modeRun.summary } : {}),
-			...(modeRun.startedAt ? { startedAt: modeRun.startedAt } : {}),
-			...(modeRun.completedAt ? { completedAt: modeRun.completedAt } : {}),
-			...(typeof modeRun.durationMs === "number" ? { durationMs: modeRun.durationMs } : {}),
-			...(createModeTelemetry(modeRun, scenarioTelemetrySummary)
-				? { telemetry: createModeTelemetry(modeRun, scenarioTelemetrySummary) }
-				: {}),
-			...(modeRun.scenarioResults?.compareArtifact
-				? { compareArtifact: modeRun.scenarioResults.compareArtifact }
-				: {}),
-			...(scenarioTelemetrySummary ? { scenarioTelemetrySummary } : {}),
-		};
-	});
+	const commandObservations = assertArray(input.commandObservations, "commandObservations").map((entry, index) =>
+		normalizeCommandObservation(entry, index),
+	);
+	const modeSummaries = modeRuns.map((modeRun) => createModeSummary(modeRun, commandObservations, now));
+	const reportReasons = summarizeReportReasons(modeSummaries);
 	return {
 		schemaVersion: REPORT_PACKET_SCHEMA,
 		generatedAt: now.toISOString(),
@@ -428,12 +461,12 @@ export function buildReportPacket(input, { now = new Date() } = {}) {
 			intentProfile: input.intentProfile,
 		}),
 		commands: assertArray(input.commands, "commands").map((entry, index) => normalizeCommand(entry, index)),
-		commandObservations: assertArray(input.commandObservations, "commandObservations").map((entry, index) =>
-			normalizeCommandObservation(entry, index),
-		),
+		commandObservations,
 		modesRun: modeSummaries.map((entry) => entry.mode),
 		modeSummaries,
 		telemetry: summarizeReportTelemetry(modeSummaries),
+		...(reportReasons.reasonCodes.length > 0 ? { reasonCodes: reportReasons.reasonCodes } : {}),
+		...(reportReasons.warnings.length > 0 ? { warnings: reportReasons.warnings } : {}),
 		improved: normalizeScenarioBuckets(input.improved, "improved"),
 		regressed: normalizeScenarioBuckets(input.regressed, "regressed"),
 		unchanged: normalizeScenarioBuckets(input.unchanged, "unchanged"),

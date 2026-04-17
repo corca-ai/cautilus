@@ -88,12 +88,22 @@ function renderModeSummary(modeSummary) {
 	if (modeSummary.summary) {
 		lines.push(`  summary: ${modeSummary.summary}`);
 	}
+	if (Array.isArray(modeSummary.reasonCodes) && modeSummary.reasonCodes.length > 0) {
+		lines.push(`  reasonCodes: ${modeSummary.reasonCodes.join(", ")}`);
+	}
 	const telemetry = renderTelemetry(modeSummary.telemetry);
 	if (telemetry) {
 		lines.push(`  telemetry: ${telemetry}`);
 	}
 	if (modeSummary.compareArtifact?.summary) {
 		lines.push(`  compare artifact: ${modeSummary.compareArtifact.summary}`);
+	}
+	if (Array.isArray(modeSummary.warnings)) {
+		for (const warning of modeSummary.warnings) {
+			if (warning?.summary) {
+				lines.push(`  warning: ${warning.summary}`);
+			}
+		}
 	}
 	return lines.join("\n");
 }

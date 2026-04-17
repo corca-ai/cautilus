@@ -163,6 +163,12 @@ function summarizeMode(modeSummary) {
 		mode: modeSummary.mode,
 		status: modeSummary.status,
 		...(modeSummary.summary ? { summary: modeSummary.summary } : {}),
+		...(Array.isArray(modeSummary.reasonCodes) && modeSummary.reasonCodes.length > 0
+			? { reasonCodes: modeSummary.reasonCodes }
+			: {}),
+		...(Array.isArray(modeSummary.warnings) && modeSummary.warnings.length > 0
+			? { warnings: modeSummary.warnings }
+			: {}),
 		...(modeSummary.telemetry ? { telemetry: modeSummary.telemetry } : {}),
 		...(modeSummary.scenarioTelemetrySummary ? { scenarioTelemetrySummary: modeSummary.scenarioTelemetrySummary } : {}),
 		...(modeSummary.compareArtifact ? { compareArtifact: modeSummary.compareArtifact } : {}),

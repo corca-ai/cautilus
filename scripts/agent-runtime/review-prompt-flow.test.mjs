@@ -94,13 +94,25 @@ function createReviewPacketFixture() {
 					modeSummaries: [
 						{
 							mode: "held_out",
-							status: "passed",
-							summary: "held_out completed across 1 command.",
+							status: "rejected",
+							summary: "held_out completed comparison and reported 1 regression. Warning: held_out evidence may be contaminated by provider rate limits (1 matching artifact).",
+							reasonCodes: ["behavior_regression", "provider_rate_limit_contamination"],
+							warnings: [
+								{
+									code: "provider_rate_limit_contamination",
+									category: "runtime_provider_contamination",
+									mode: "held_out",
+									summary: "held_out evidence may be contaminated by provider rate limits (1 matching artifact).",
+									signalCount: 1,
+									artifactPaths: [join(root, "reports", "held-out.stderr")],
+									excerpts: ["Error: Rate limit reached for gpt-4.1 after repeated retries."],
+								},
+							],
 							compareArtifact: {
 								schemaVersion: "cautilus.compare_artifact.v1",
-								summary: "Held-out operator guidance improved.",
-								verdict: "improved",
-								improved: ["operator-guidance-smoke"],
+								summary: "Held-out operator guidance regressed.",
+								verdict: "regressed",
+								regressed: ["operator-guidance-smoke"],
 							},
 							scenarioTelemetrySummary: {
 								schemaVersion: "cautilus.scenario_telemetry_summary.v1",
@@ -112,12 +124,12 @@ function createReviewPacketFixture() {
 						},
 					],
 					telemetry: { modeCount: 1 },
-					improved: ["operator-guidance-smoke"],
-					regressed: [],
+					improved: [],
+					regressed: ["operator-guidance-smoke"],
 					unchanged: [],
 					noisy: [],
 					humanReviewFindings: [],
-					recommendation: "defer",
+					recommendation: "reject",
 				},
 				defaultPromptFile: {
 					relativePath: "fixtures/review.prompt.md",
@@ -210,7 +222,8 @@ test("buildReviewPromptInput emits the explicit meta-prompt contract", () => {
 		assert.equal(packet.schemaVersion, REVIEW_PROMPT_INPUTS_SCHEMA);
 		validateAgainstSchema(readJson(schemaPath), packet);
 		assert.equal(packet.intentProfile.intentId, "intent-operator-workflow-recovery");
-		assert.equal(packet.modeSummaries[0].compareArtifact.verdict, "improved");
+		assert.equal(packet.modeSummaries[0].compareArtifact.verdict, "regressed");
+		assert.equal(packet.modeSummaries[0].reasonCodes[1], "provider_rate_limit_contamination");
 		assert.equal(packet.currentReportEvidence.reportFile, join(root, "reports", "latest.json"));
 		assert.equal(packet.currentReportEvidence.commandObservations[0].command, "npm run verify");
 		assert.equal(packet.metaPrompt.instructions.length, 4);
@@ -232,7 +245,9 @@ test("renderReviewPrompt turns review prompt inputs into a portable meta-prompt"
 		assert.match(prompt, /## Intent Profile/);
 		assert.match(prompt, /behavior surface: operator_behavior/);
 		assert.match(prompt, /Which scenario-level deltas actually matter to a real operator/);
-		assert.match(prompt, /Held-out operator guidance improved\./);
+		assert.match(prompt, /Held-out operator guidance regressed\./);
+		assert.match(prompt, /provider_rate_limit_contamination/);
+		assert.match(prompt, /provider rate limits/);
 		assert.match(prompt, /## Consumer Prompt Addendum/);
 		assert.match(prompt, /Prefer concrete operator-facing evidence\./);
 	} finally {

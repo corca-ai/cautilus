@@ -67,6 +67,18 @@ func BuildReportPacket(input map[string]any, now time.Time) (map[string]any, err
 		}
 		modeRuns = append(modeRuns, normalized)
 	}
+	commands, err := normalizeCommands(input["commands"])
+	if err != nil {
+		return nil, err
+	}
+	commandObservations, err := normalizeCommandObservations(input["commandObservations"])
+	if err != nil {
+		return nil, err
+	}
+	humanReviewFindings, err := normalizeReviewFindings(input["humanReviewFindings"])
+	if err != nil {
+		return nil, err
+	}
 	modeSummaries := make([]any, 0, len(modeRuns))
 	modesRun := make([]string, 0, len(modeRuns))
 	for _, modeRun := range modeRuns {
@@ -91,6 +103,27 @@ func BuildReportPacket(input map[string]any, now time.Time) (map[string]any, err
 		if scenarioSummary != nil {
 			modeSummary["scenarioTelemetrySummary"] = scenarioSummary
 		}
+		reasonCodes, warnings := classifyModeSummary(modeSummary, modeRun, commandObservations)
+		if len(reasonCodes) > 0 {
+			modeSummary["reasonCodes"] = reasonCodes
+		}
+		if len(warnings) > 0 {
+			modeSummary["warnings"] = warnings
+			warningSummaries := make([]string, 0, len(warnings))
+			for _, rawWarning := range warnings {
+				if summary := stringFromAny(asMap(rawWarning)["summary"]); strings.TrimSpace(summary) != "" {
+					warningSummaries = append(warningSummaries, summary)
+				}
+			}
+			if len(warningSummaries) > 0 {
+				existingSummary := stringFromAny(modeSummary["summary"])
+				if strings.TrimSpace(existingSummary) != "" {
+					modeSummary["summary"] = existingSummary + " Warning: " + strings.Join(warningSummaries, " ")
+				} else {
+					modeSummary["summary"] = "Warning: " + strings.Join(warningSummaries, " ")
+				}
+			}
+		}
 		modeSummaries = append(modeSummaries, modeSummary)
 	}
 	intent, err := normalizeNonEmptyString(input["intent"], "intent")
@@ -101,18 +134,7 @@ func BuildReportPacket(input map[string]any, now time.Time) (map[string]any, err
 	if err != nil {
 		return nil, err
 	}
-	commands, err := normalizeCommands(input["commands"])
-	if err != nil {
-		return nil, err
-	}
-	commandObservations, err := normalizeCommandObservations(input["commandObservations"])
-	if err != nil {
-		return nil, err
-	}
-	humanReviewFindings, err := normalizeReviewFindings(input["humanReviewFindings"])
-	if err != nil {
-		return nil, err
-	}
+	reasonCodes, warnings := summarizeReportReasons(modeSummaries)
 	report := map[string]any{
 		"schemaVersion":       contracts.ReportPacketSchema,
 		"generatedAt":         now.UTC().Format(time.RFC3339Nano),
@@ -131,6 +153,12 @@ func BuildReportPacket(input map[string]any, now time.Time) (map[string]any, err
 		"noisy":               normalizeBucketOrEmpty(input["noisy"], "noisy"),
 		"humanReviewFindings": humanReviewFindings,
 		"recommendation":      mustString(input["recommendation"], "recommendation"),
+	}
+	if len(reasonCodes) > 0 {
+		report["reasonCodes"] = reasonCodes
+	}
+	if len(warnings) > 0 {
+		report["warnings"] = warnings
 	}
 	return report, nil
 }

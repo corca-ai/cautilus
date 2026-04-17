@@ -1281,6 +1281,78 @@ exit 1
 	}
 }
 
+func TestCLIModeEvaluateSurfacesProviderRateLimitContamination(t *testing.T) {
+	root := t.TempDir()
+	adapterDir := filepath.Join(root, ".agents")
+	workspace := filepath.Join(root, "workspace")
+	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.MkdirAll(workspace, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	writeExecutableFile(t, workspace, "bench.sh", `#!/bin/sh
+scenario_results_file="$1"
+cat > "$scenario_results_file" <<'JSON'
+{
+  "schemaVersion": "cautilus.scenario_results.v1",
+  "mode": "held_out",
+  "results": [
+    {
+      "scenarioId": "operator-guidance-smoke",
+      "status": "failed",
+      "durationMs": 90
+    }
+  ],
+  "compareArtifact": {
+    "schemaVersion": "cautilus.compare_artifact.v1",
+    "summary": "Operator guidance regressed.",
+    "verdict": "regressed",
+    "regressed": [
+      "operator-guidance-smoke"
+    ]
+  }
+}
+JSON
+echo "Error: Rate limit reached for gpt-4.1 after repeated retries." >&2
+exit 1
+`)
+	if err := os.WriteFile(filepath.Join(adapterDir, "cautilus-adapter.yaml"), []byte(strings.Join([]string{
+		"version: 1",
+		"repo: temp",
+		"evaluation_surfaces:",
+		"  - operator workflow",
+		"baseline_options:",
+		"  - baseline git ref via {baseline_ref}",
+		"held_out_command_templates:",
+		"  - sh {candidate_repo}/bench.sh {scenario_results_file}",
+		"",
+	}, "\n")), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	outputDir := filepath.Join(root, "outputs")
+	stdout, stderr, exitCode := runCLI(t, root, "mode", "evaluate", "--repo-root", root, "--candidate-repo", workspace, "--mode", "held_out", "--intent", "Rate-limit contamination should surface in the report.", "--baseline-ref", "origin/main", "--output-dir", outputDir)
+	if exitCode != 0 {
+		t.Fatalf("mode evaluate failed: %s", stderr)
+	}
+	report := readJSONObjectFile(t, strings.TrimSpace(stdout))
+	reasonCodes, ok := report["reasonCodes"].([]any)
+	if !ok || len(reasonCodes) != 2 {
+		t.Fatalf("unexpected report reasonCodes: %#v", report["reasonCodes"])
+	}
+	if anyToString(reasonCodes[0]) != "behavior_regression" || anyToString(reasonCodes[1]) != "provider_rate_limit_contamination" {
+		t.Fatalf("unexpected report reasonCodes: %#v", reasonCodes)
+	}
+	warnings, ok := report["warnings"].([]any)
+	if !ok || len(warnings) != 1 {
+		t.Fatalf("unexpected report warnings: %#v", report["warnings"])
+	}
+	firstSummary := report["modeSummaries"].([]any)[0].(map[string]any)
+	if !strings.Contains(anyToString(firstSummary["summary"]), "provider rate limits") {
+		t.Fatalf("unexpected mode summary: %#v", firstSummary["summary"])
+	}
+}
+
 func TestCLIReviewBuildPromptInputAndRenderPromptCloseMetaPromptSeam(t *testing.T) {
 	root := t.TempDir()
 	reviewPacketPath := filepath.Join(root, "review-packet.json")

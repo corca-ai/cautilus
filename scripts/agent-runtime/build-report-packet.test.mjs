@@ -140,6 +140,58 @@ test("buildReportPacket aggregates mode telemetry and scenario summaries", () =>
 	assert.equal(report.recommendation, "defer");
 });
 
+test("buildReportPacket surfaces provider rate-limit contamination in report reasons", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-report-rate-limit-"));
+	try {
+		const stderrFile = join(root, "held-out.stderr");
+		writeFileSync(stderrFile, "Error: Rate limit reached for gpt-4.1 after repeated retries.\n", "utf-8");
+		const input = createReportInputFixture();
+		input.modeRuns = [
+			{
+				mode: "held_out",
+				status: "rejected",
+				summary: "held_out completed comparison and reported 1 regression.",
+				scenarioResults: {
+					schemaVersion: SCENARIO_RESULTS_SCHEMA,
+					mode: "held_out",
+					results: [
+						{
+							scenarioId: "operator-guidance-smoke",
+							status: "failed",
+						},
+					],
+					compareArtifact: {
+						schemaVersion: COMPARE_ARTIFACT_SCHEMA,
+						summary: "Held-out operator guidance regressed.",
+						verdict: "regressed",
+						regressed: ["operator-guidance-smoke"],
+					},
+				},
+			},
+		];
+		input.commandObservations = [
+			{
+				stage: "held_out",
+				index: 1,
+				status: "failed",
+				command: "sh bench.sh held_out out.json",
+				stderrFile,
+			},
+		];
+		input.recommendation = "reject";
+		const report = buildReportPacket(input, { now: new Date("2026-04-11T00:02:00.000Z") });
+		assert.deepEqual(report.reasonCodes, [
+			"behavior_regression",
+			"provider_rate_limit_contamination",
+		]);
+		assert.equal(report.warnings.length, 1);
+		assert.equal(report.modeSummaries[0].warnings[0].code, "provider_rate_limit_contamination");
+		assert.match(report.modeSummaries[0].summary, /Warning: held_out evidence may be contaminated by provider rate limits/);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
 test("build-report-packet defaults to report-input.json and report.json inside the active run", () => {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-report-build-"));
 	try {

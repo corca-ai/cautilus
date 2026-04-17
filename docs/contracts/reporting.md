@@ -16,6 +16,8 @@
 - `commands`: rendered commands with concrete placeholder values
 - optional `command_observations`: executed command records with timing, exit code, and stdout/stderr artifact paths
 - optional `telemetry`: wall-clock latency plus any adapter- or provider-owned cost and token metrics
+- optional `reasonCodes`: machine-readable report-level outcome classification such as `behavior_regression`, `provider_rate_limit_contamination`, or `infrastructure_failure`
+- optional `warnings`: machine-readable warnings promoted from persisted artifacts when the evidence is contaminated or otherwise narrow
 - `improved`: scenarios or metrics that improved
 - `regressed`: scenarios or metrics that regressed
 - `unchanged`: scenarios that stayed flat
@@ -95,7 +97,15 @@ That packet should summarize both:
 - per-mode telemetry
 - per-mode scenario telemetry when explicit scenario results are available
 - per-mode compare-artifact summaries when compare output exists
+- per-mode reason codes and warnings when persisted artifacts show contamination such as provider rate limits
 - overall report telemetry across all included modes
+
+When artifact paths are present in command observations or compare artifacts, `Cautilus` may promote contamination signals into the report packet.
+The first operator-facing packet should make it legible whether a rejection looks like:
+
+- a clean behavior regression
+- runtime or provider contamination
+- a pure infrastructure failure
 
 ## Interpretation Rules
 
