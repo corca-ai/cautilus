@@ -29,6 +29,42 @@ For the full command catalog see [docs/cli-reference.md](./docs/cli-reference.md
 For the standing executable spec report, see <https://corca-ai.github.io/cautilus/>.
 That public report is generated with `specdown` from the repo's full cheap public spec suite, with each page pairing a bounded product claim with a small executable proof.
 
+## One Reviewable Decision Loop
+
+Start here if you want one concrete picture before reading the full surface.
+
+What you bring:
+
+- one checked-in proposal input or one new behavior input you want to turn into a reusable scenario
+
+Input (CLI):
+
+```bash
+cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json --output /tmp/proposals.json
+cautilus scenario render-proposals-html --input /tmp/proposals.json --output /tmp/proposals.html
+```
+
+Input (For Agent):
+
+- "Turn this behavior input into reusable scenarios and render an HTML page I can review."
+
+What happens:
+
+- `Cautilus` turns raw behavior evidence into a durable proposal packet, then renders the same packet into a browser-readable page.
+
+What comes back:
+
+- quick signal: one proposal packet was produced without inventing repo-local lore
+- durable files: `proposals.json` for later commands and `proposals.html` for human review
+
+Next action:
+
+- human: decide whether the proposed scenario is worth promoting into a held-out evaluation path
+- agent: reopen the packet, compare variants, or feed the proposal into the next evaluation step
+
+The same small loop anchors the public spec report in [docs/specs/index.spec.md](./docs/specs/index.spec.md).
+It is the shortest honest example of the product claim: `Cautilus` turns behavior evidence into a reviewable decision surface.
+
 ## Scenarios
 
 Cautilus has three first-class evaluation archetypes.
@@ -37,26 +73,38 @@ The 1:1 boundary is fixed in [archetype-boundary.spec.md](./docs/specs/archetype
 
 ### 1. Chatbot conversation regression
 
-Use when a chat or assistant experience gets worse at multi-turn behavior after a prompt change — forgetting prior turns, answering when it should clarify, ignoring a stated preference.
-Bring conversation summaries plus the baseline and changed prompts; run `cautilus scenario normalize chatbot --input logs.json`.
-Regressions become candidate scenarios held out from tuning, saved in a reopenable `proposals.json`.
+Use when a chat or assistant experience gets worse at multi-turn behavior after a prompt change.
+Typical failures are forgetting prior turns, answering when it should clarify, or ignoring a stated preference.
+What you bring: conversation summaries plus the baseline and changed prompts.
+Input (CLI): `cautilus scenario normalize chatbot --input logs.json`
+Input (For Agent): "Run a chatbot regression with these logs and my new system prompt."
+What happens: `Cautilus` extracts candidate failures that look like stable conversational regressions.
+What comes back: reopenable `proposals.json` candidates that can be kept out of tuning as held-out checks.
+Next action: promote the candidate into evaluate/review or revise the prompt with the held-out case still protecting the boundary.
 Fixture: [chatbot-consumer-input.json](./fixtures/scenario-proposals/samples/chatbot-consumer-input.json).
 
 ### 2. Skill / agent execution regression
 
 Use when you change a skill or agent and want to know whether it still triggers on the right prompts, executes cleanly, and keeps its static validation passing.
-Bring the modified skill plus a checked-in case suite; run `cautilus skill test --repo-root . --adapter-name <name>`.
-Each case runs multiple times for consensus and is scored on trigger accuracy, execution quality, and optional runtime budget.
+What you bring: the modified skill plus a checked-in case suite.
+Input (CLI): `cautilus skill test --repo-root . --adapter-name <name>`
+Input (For Agent): "Run the checked-in case suite against the skill I just edited."
+What happens: each case runs multiple times for consensus and is scored on trigger accuracy, execution quality, and optional runtime budget.
+What comes back: a report packet, review packet, and compare-ready evidence instead of one trigger-only smoke result.
+Next action: accept the changed skill, inspect review output, or reopen the packet for another bounded revision pass.
 Fixture: [fixtures/skill-test/cases.json](./fixtures/skill-test/cases.json).
 
 ### 3. Durable workflow recovery
 
 Use when a stateful automation — a CLI workflow, long-running agent session, or pipeline that persists state across invocations — keeps stalling on the same step.
-Bring run summaries with `targetId`, `status`, `surface`, and `blockedSteps`; run `cautilus scenario normalize workflow --input runs.json`.
-Repeated blockers become `operator_workflow_recovery` candidates that pin the regression as a repeatable case.
+What you bring: run summaries with `targetId`, `status`, `surface`, and `blockedSteps`.
+Input (CLI): `cautilus scenario normalize workflow --input runs.json`
+Input (For Agent): "Look at last week's automation runs and flag anything that stalled on the same step twice."
+What happens: repeated blockers are normalized into `operator_workflow_recovery` candidates that pin the regression as a repeatable case.
+What comes back: reusable workflow-recovery proposals that keep the operator question attached to concrete evidence.
+Next action: route the candidate into compare/review, or use it to justify a targeted workflow repair instead of an anecdotal one-off fix.
 Fixture: [workflow-recovery-input.json](./fixtures/scenario-proposals/samples/workflow-recovery-input.json).
 
-Agent-facing phrasing works too: "run a chatbot regression with these logs and my new system prompt" / "run the checked-in case suite against the skill I just edited" / "look at last week's automation runs and flag anything that stalled on the same step twice".
 `cautilus scenarios --json` prints the same catalog for agents that need to discover archetypes programmatically.
 
 ## Why Cautilus
@@ -84,7 +132,7 @@ The longer-term direction is close to the workflow philosophy behind DSPy: promp
 
 ## Core Flow
 
-Two entry points share one `cautilus-adapter.yaml` in the host repo.
+Two entry points share one `cautilus-adapter.yaml` in the host repo and return the same durable decision surface.
 
 **Operator track — standalone CLI.**
 You install Cautilus, declare the evaluation surface, and run bounded evaluation from the command line.
