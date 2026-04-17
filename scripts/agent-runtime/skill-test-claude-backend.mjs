@@ -11,7 +11,7 @@ import {
 	sampleDir,
 } from "./run-local-skill-test.mjs";
 
-const CLAUDE_CLI_ENV = {
+export const CLAUDE_CLI_ENV = {
 	CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: "1",
 	CLAUDE_CODE_DISABLE_AUTO_MEMORY: "1",
 	ENABLE_CLAUDEAI_MCP_SERVERS: "false",
@@ -22,7 +22,7 @@ const CLAUDE_CLI_ENV = {
 	CLAUDE_CODE_IDE_SKIP_AUTO_INSTALL: "1",
 };
 
-function claudeArgs(options) {
+export function claudeArgs(options) {
 	const args = [
 		"-p",
 		"--output-format", "json",
