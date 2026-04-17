@@ -35,6 +35,36 @@ Do not require all three in sequence before stopping.
 `npm run lint:specs` validates the spec index, checks relative spec links, and runs the full public spec suite with `specdown run -quiet`.
 Use `npm run specdown` when you want the full reporter output instead of the quiet standing gate.
 
+## Rendered Markdown Preview
+
+When landing docs or public spec prose change, preview the rendered markdown instead of trusting source line breaks alone.
+
+```bash
+npm run docs:preview
+```
+
+This writes `glow` snapshots under `.artifacts/markdown-preview/` for:
+
+- `README.md`
+- `README.ko.md`
+- `install.md`
+- `docs/specs/*.md`
+
+Useful narrower paths:
+
+```bash
+npm run docs:preview:changed
+npm run docs:preview:specs
+```
+
+`docs:preview:changed` only renders matching markdown files currently shown by `git status`.
+The preview command is intentionally advisory, not part of `pre-push`.
+Install `glow` first if the command is missing on `PATH`:
+
+```bash
+brew install glow
+```
+
 ## Test layering
 
 Keep each layer honest so the same claim is not restated three times.
