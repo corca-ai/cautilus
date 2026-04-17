@@ -7,6 +7,7 @@ import test from "node:test";
 
 import { ACTIVE_RUN_ENV_VAR, DEFAULT_RUNS_ROOT } from "./active-run.mjs";
 import { BEHAVIOR_DIMENSIONS } from "./behavior-intent.mjs";
+import { buildReviewPromptInput } from "./build-review-prompt-input.mjs";
 
 const SCRIPT_PATH = join(process.cwd(), "scripts", "agent-runtime", "run-executor-variants.mjs");
 
@@ -322,6 +323,57 @@ test("run-executor-variants can render a prompt from a report file when no promp
 			rmSync(root, { recursive: true, force: true });
 		}
 	});
+
+test("run-executor-variants falls back to defaultSchemaFile from review-prompt-input", () => {
+	const { root, workspace, adapterPath, schemaFile, reportFile } = createAdapterRepo();
+	try {
+		const reviewPacketFile = join(root, "review-packet.json");
+		const reviewPromptInputFile = join(root, "review-prompt-input.json");
+		writeFileSync(
+			reviewPacketFile,
+			`${JSON.stringify({
+				schemaVersion: "cautilus.review_packet.v1",
+				repoRoot: root,
+				adapterPath,
+				reportFile,
+				report: JSON.parse(readFileSync(reportFile, "utf-8")),
+				defaultSchemaFile: {
+					relativePath: "schema.json",
+					absolutePath: schemaFile,
+					exists: true,
+				},
+				artifactFiles: [],
+				reportArtifacts: [],
+				comparisonQuestions: [],
+				humanReviewPrompts: [],
+			}, null, 2)}\n`,
+			"utf-8",
+		);
+		const promptInput = buildReviewPromptInput(["--review-packet", reviewPacketFile], { now: new Date("2026-04-17T00:00:00.000Z") });
+		writeFileSync(reviewPromptInputFile, `${JSON.stringify(promptInput, null, 2)}\n`, "utf-8");
+		const outputDir = join(root, "review-prompt-input-default-schema");
+		const result = runReviewVariants(
+			[
+				"--repo-root",
+				root,
+				"--adapter",
+				adapterPath,
+				"--workspace",
+				workspace,
+				"--review-prompt-input",
+				reviewPromptInputFile,
+				"--output-dir",
+				outputDir,
+			],
+		);
+		assert.equal(result.status, 0, result.stderr);
+		const summary = JSON.parse(readFileSync(result.stdout.trim(), "utf-8"));
+		assert.equal(summary.schemaFile, schemaFile);
+		assert.equal(summary.reviewPromptInputFile, reviewPromptInputFile);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
 
 test("run-executor-variants can judge an explicit output-under-test artifact", () => {
 	const { root, workspace, adapterPath, schemaFile, reportFile } = createAdapterRepo();

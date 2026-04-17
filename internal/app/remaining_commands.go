@@ -360,7 +360,7 @@ func handleReviewVariants(repoRoot string, cwd string, args []string, stdout io.
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
-	schemaFile, err := resolveReviewSchemaFile(options, adapterPayload, cwd)
+	schemaFile, err := resolveReviewSchemaFile(options, promptArtifacts, adapterPayload, cwd)
 	if err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
@@ -595,17 +595,12 @@ func handleModeEvaluate(repoRoot string, cwd string, args []string, stdout io.Wr
 			}
 		}
 	}
-	modeStatus := "passed"
-	for _, raw := range modeObservations {
-		if anyString(raw.(map[string]any)["status"]) != "passed" {
-			modeStatus = "failed"
-			break
-		}
-	}
+	modeStatus := resolveModeStatus(modeObservations, scenarioResults)
+	buckets := classifyScenarioBuckets(scenarioResults)
 	modeRun := map[string]any{
 		"mode":            options.mode,
 		"status":          modeStatus,
-		"summary":         modeSummaryText(options.mode, modeStatus, len(modeObservations)),
+		"summary":         modeSummaryText(options.mode, modeStatus, len(modeObservations), buckets),
 		"durationMs":      sumDuration(modeObservations),
 		"scenarioResults": scenarioResults,
 	}
@@ -615,7 +610,6 @@ func handleModeEvaluate(repoRoot string, cwd string, args []string, stdout io.Wr
 		modeRun["startedAt"] = first["startedAt"]
 		modeRun["completedAt"] = last["completedAt"]
 	}
-	buckets := classifyScenarioBuckets(scenarioResults)
 	reportInput := map[string]any{
 		"schemaVersion":       contracts.ReportInputsSchema,
 		"candidate":           resolvePath(cwd, candidateRepo),
@@ -738,6 +732,7 @@ type reviewPromptArtifacts struct {
 	reviewPacketFile      any
 	reviewPromptInputFile any
 	outputUnderTestFile   any
+	schemaFile            string
 }
 
 //nolint:errcheck // CLI stdout/stderr reporting is best-effort.
@@ -1658,11 +1653,11 @@ func resolveReviewVariantPromptArtifacts(options *reviewVariantsArgs, adapterPay
 		return nil, fmt.Errorf("--scenario-file cannot be combined with prompt, review-packet, or report inputs")
 	}
 	if options.promptFile != nil {
-		return &reviewPromptArtifacts{promptFile: resolvePath(repoRoot, *options.promptFile), reviewPacketFile: nil, reviewPromptInputFile: nil, outputUnderTestFile: nil}, nil
+		return &reviewPromptArtifacts{promptFile: resolvePath(repoRoot, *options.promptFile), reviewPacketFile: nil, reviewPromptInputFile: nil, outputUnderTestFile: nil, schemaFile: ""}, nil
 	}
 	if options.outputUnderTest == nil {
 		if defaultPrompt, ok := adapterPayload.Data["default_prompt_file"].(string); ok && strings.TrimSpace(defaultPrompt) != "" {
-			return &reviewPromptArtifacts{promptFile: resolvePath(repoRoot, defaultPrompt), reviewPacketFile: nil, reviewPromptInputFile: nil, outputUnderTestFile: nil}, nil
+			return &reviewPromptArtifacts{promptFile: resolvePath(repoRoot, defaultPrompt), reviewPacketFile: nil, reviewPromptInputFile: nil, outputUnderTestFile: nil, schemaFile: ""}, nil
 		}
 	}
 	if options.scenarioFile != nil {
@@ -1687,7 +1682,13 @@ func resolveReviewVariantPromptArtifacts(options *reviewVariantsArgs, adapterPay
 		if err := os.WriteFile(promptFile, []byte(prompt), 0o644); err != nil {
 			return nil, err
 		}
-		return &reviewPromptArtifacts{promptFile: promptFile, reviewPacketFile: nil, reviewPromptInputFile: reviewPromptInputFile, outputUnderTestFile: promptInput["outputUnderTestFile"]}, nil
+		return &reviewPromptArtifacts{
+			promptFile:            promptFile,
+			reviewPacketFile:      nil,
+			reviewPromptInputFile: reviewPromptInputFile,
+			outputUnderTestFile:   promptInput["outputUnderTestFile"],
+			schemaFile:            anyString(asMapAny(promptInput["defaultSchemaFile"])["absolutePath"]),
+		}, nil
 	}
 	if options.reviewPromptInput != nil {
 		reviewPromptInputFile := resolvePath(repoRoot, *options.reviewPromptInput)
@@ -1706,7 +1707,13 @@ func resolveReviewVariantPromptArtifacts(options *reviewVariantsArgs, adapterPay
 		if err := os.WriteFile(promptFile, []byte(prompt), 0o644); err != nil {
 			return nil, err
 		}
-		return &reviewPromptArtifacts{promptFile: promptFile, reviewPacketFile: nil, reviewPromptInputFile: reviewPromptInputFile, outputUnderTestFile: input["outputUnderTestFile"]}, nil
+		return &reviewPromptArtifacts{
+			promptFile:            promptFile,
+			reviewPacketFile:      nil,
+			reviewPromptInputFile: reviewPromptInputFile,
+			outputUnderTestFile:   input["outputUnderTestFile"],
+			schemaFile:            anyString(asMapAny(input["defaultSchemaFile"])["absolutePath"]),
+		}, nil
 	}
 	reviewPacketFile := ""
 	if options.reviewPacketFile != nil {
@@ -1752,12 +1759,21 @@ func resolveReviewVariantPromptArtifacts(options *reviewVariantsArgs, adapterPay
 	if err := os.WriteFile(promptFile, []byte(prompt), 0o644); err != nil {
 		return nil, err
 	}
-	return &reviewPromptArtifacts{promptFile: promptFile, reviewPacketFile: reviewPacketFile, reviewPromptInputFile: reviewPromptInputFile, outputUnderTestFile: promptInput["outputUnderTestFile"]}, nil
+	return &reviewPromptArtifacts{
+		promptFile:            promptFile,
+		reviewPacketFile:      reviewPacketFile,
+		reviewPromptInputFile: reviewPromptInputFile,
+		outputUnderTestFile:   promptInput["outputUnderTestFile"],
+		schemaFile:            anyString(asMapAny(promptInput["defaultSchemaFile"])["absolutePath"]),
+	}, nil
 }
 
-func resolveReviewSchemaFile(options *reviewVariantsArgs, adapterPayload *runtime.AdapterPayload, cwd string) (string, error) {
+func resolveReviewSchemaFile(options *reviewVariantsArgs, promptArtifacts *reviewPromptArtifacts, adapterPayload *runtime.AdapterPayload, cwd string) (string, error) {
 	if options.schemaFile != nil {
 		return resolvePath(cwd, *options.schemaFile), nil
+	}
+	if promptArtifacts != nil && strings.TrimSpace(promptArtifacts.schemaFile) != "" {
+		return promptArtifacts.schemaFile, nil
 	}
 	if schemaFile, ok := adapterPayload.Data["default_schema_file"].(string); ok && strings.TrimSpace(schemaFile) != "" {
 		return resolvePath(options.repoRoot, schemaFile), nil
@@ -2176,12 +2192,38 @@ func defaultSplitByMode(mode string) string {
 	}
 }
 
-func modeSummaryText(mode string, status string, count int) string {
+func comparisonRejected(scenarioResults map[string]any) bool {
+	return len(asMapAny(scenarioResults["compareArtifact"])) > 0 || len(arrayOrEmpty(scenarioResults["results"])) > 0
+}
+
+func resolveModeStatus(modeObservations []any, scenarioResults map[string]any) string {
+	for _, raw := range modeObservations {
+		if anyString(asMapAny(raw)["status"]) != "passed" {
+			if comparisonRejected(scenarioResults) {
+				return "rejected"
+			}
+			return "failed"
+		}
+	}
+	return "passed"
+}
+
+func modeSummaryText(mode string, status string, count int, scenarioBuckets map[string][]any) string {
 	if status == "passed" {
 		if count == 1 {
 			return fmt.Sprintf("%s completed across 1 command.", mode)
 		}
 		return fmt.Sprintf("%s completed across %d commands.", mode, count)
+	}
+	if status == "rejected" {
+		regressionCount := len(scenarioBuckets["regressed"])
+		if regressionCount > 0 {
+			if regressionCount == 1 {
+				return fmt.Sprintf("%s completed comparison and reported 1 regression.", mode)
+			}
+			return fmt.Sprintf("%s completed comparison and reported %d regressions.", mode, regressionCount)
+		}
+		return fmt.Sprintf("%s completed comparison and returned a rejecting verdict.", mode)
 	}
 	return fmt.Sprintf("%s failed before completing all command templates.", mode)
 }

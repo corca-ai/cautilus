@@ -27,6 +27,11 @@ import {
 	updateScenarioHistory,
 } from "./scenario-history.mjs";
 import { normalizeScenarioResultsPacket } from "./scenario-results.mjs";
+import {
+	buildModeSummaryText,
+	classifyScenarioBuckets,
+	resolvedModeStatus,
+} from "./mode-evaluation-summary.mjs";
 
 export { ADAPTER_MODE_EVALUATION_PACKET_SCHEMA } from "./contract-versions.mjs";
 
@@ -274,17 +279,6 @@ function aggregateDuration(observations) {
 	return observations.reduce((total, entry) => total + (entry.durationMs || 0), 0);
 }
 
-function compareArtifactBuckets(scenarioResults) {
-	if (!scenarioResults.compareArtifact) {
-		return null;
-	}
-	return {
-		improved: scenarioResults.compareArtifact.improved || [],
-		regressed: scenarioResults.compareArtifact.regressed || [],
-		unchanged: scenarioResults.compareArtifact.unchanged || [],
-		noisy: scenarioResults.compareArtifact.noisy || [],
-	};
-}
 function sha256(value) {
 	return createHash("sha256").update(value).digest("hex");
 }
@@ -298,58 +292,6 @@ function resolveBaselineFingerprint(context, options) {
 	}
 }
 function baselineRepoLabel(context, options, baselineFingerprint) { return `${options.baselineRef || "HEAD"}@${baselineFingerprint.slice(0, 12)}`; }
-
-function classifyScenarioStatus(status) {
-	switch (status) {
-		case "passed":
-		case "improved":
-			return "improved";
-		case "unchanged":
-			return "unchanged";
-		case "noisy":
-			return "noisy";
-		default:
-			return "regressed";
-	}
-}
-
-function classifyScenarioBuckets(scenarioResults) {
-	const compareBuckets = compareArtifactBuckets(scenarioResults);
-	if (compareBuckets) {
-		return compareBuckets;
-	}
-	const improved = [];
-	const regressed = [];
-	const unchanged = [];
-	const noisy = [];
-	for (const result of scenarioResults.results) {
-		const scenarioId = typeof result.scenarioId === "string" ? result.scenarioId : null;
-		if (!scenarioId) {
-			continue;
-		}
-		switch (classifyScenarioStatus(result.status)) {
-			case "improved":
-				improved.push(scenarioId);
-				continue;
-			case "unchanged":
-				unchanged.push(scenarioId);
-				continue;
-			case "noisy":
-				noisy.push(scenarioId);
-				continue;
-			default:
-				regressed.push(scenarioId);
-		}
-	}
-	return { improved, regressed, unchanged, noisy };
-}
-
-function buildModeSummaryText(mode, status, commandCount) {
-	if (status === "passed") {
-		return `${mode} completed across ${commandCount} command${commandCount === 1 ? "" : "s"}.`;
-	}
-	return `${mode} failed before completing all command templates.`;
-}
 
 function buildReplacements(options, adapterData, context) {
 	return {
@@ -488,13 +430,13 @@ async function executePreflight(options, context, log) {
 }
 
 function buildModeReportInput(options, context, modeObservations, commandObservations) {
-	const modeStatus = modeObservations.every((entry) => entry.status === "passed") ? "passed" : "failed";
 	const scenarioResults = readScenarioResults(context.scenarioResultsFile, options.mode);
 	const scenarioBuckets = classifyScenarioBuckets(scenarioResults);
+	const modeStatus = resolvedModeStatus(modeObservations, scenarioResults);
 	const modeRun = {
 		mode: options.mode,
 		status: modeStatus,
-		summary: buildModeSummaryText(options.mode, modeStatus, modeObservations.length),
+		summary: buildModeSummaryText(options.mode, modeStatus, modeObservations.length, scenarioBuckets),
 		...(modeObservations[0]?.startedAt ? { startedAt: modeObservations[0].startedAt } : {}),
 		...(modeObservations.at(-1)?.completedAt ? { completedAt: modeObservations.at(-1).completedAt } : {}),
 		durationMs: aggregateDuration(modeObservations),

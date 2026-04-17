@@ -25,27 +25,11 @@ function git(root, args) {
 	return result.stdout.trim();
 }
 
-function createRepo({ failMode = "" } = {}) {
+function createRepo({ failMode = "", rejectMode = "" } = {}) {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-mode-eval-"));
 	const adapterDir = join(root, ".agents");
 	const workspace = join(root, "workspace");
-	mkdirSync(adapterDir, { recursive: true });
-	mkdirSync(workspace, { recursive: true });
-	writeExecutable(
-			workspace,
-			"bench.sh",
-			`#!/bin/sh
-mode="$1"
-scenario_results_file="$2"
-if [ -n "$CAUTILUS_TEST_SLEEP_MS" ]; then
-  node -e "setTimeout(() => {}, Number(process.argv[1]))" "$CAUTILUS_TEST_SLEEP_MS"
-fi
-if [ "$mode" = "${failMode}" ]; then
-  echo "repo-local failure for $mode" >&2
-  exit 1
-fi
-cat > "$scenario_results_file" <<JSON
-{
+	const successResultsJson = `{
   "schemaVersion": "cautilus.scenario_results.v1",
   "mode": "$mode",
   "results": [
@@ -67,11 +51,58 @@ cat > "$scenario_results_file" <<JSON
       "operator-guidance-smoke"
     ]
   }
-}
+}`;
+	const rejectedResultsJson = `{
+  "schemaVersion": "cautilus.scenario_results.v1",
+  "mode": "$mode",
+  "results": [
+    {
+      "scenarioId": "operator-guidance-smoke",
+      "status": "failed",
+      "durationMs": 110,
+      "telemetry": {
+        "total_tokens": 42,
+        "cost_usd": 0.01
+      }
+    }
+  ],
+  "compareArtifact": {
+    "schemaVersion": "cautilus.compare_artifact.v1",
+    "summary": "Held-out operator guidance regressed.",
+    "verdict": "regressed",
+    "regressed": [
+      "operator-guidance-smoke"
+    ]
+  }
+}`;
+	mkdirSync(adapterDir, { recursive: true });
+	mkdirSync(workspace, { recursive: true });
+	writeExecutable(
+			workspace,
+			"bench.sh",
+			`#!/bin/sh
+mode="$1"
+scenario_results_file="$2"
+if [ -n "$CAUTILUS_TEST_SLEEP_MS" ]; then
+  node -e "setTimeout(() => {}, Number(process.argv[1]))" "$CAUTILUS_TEST_SLEEP_MS"
+fi
+	if [ "$mode" = "${failMode}" ]; then
+	  echo "repo-local failure for $mode" >&2
+	  exit 1
+	fi
+	if [ "$mode" = "${rejectMode}" ]; then
+	  cat > "$scenario_results_file" <<JSON
+${rejectedResultsJson}
 JSON
-echo "$mode ok"
-`,
-	);
+	  echo "comparison rejected for $mode" >&2
+	  exit 1
+	fi
+	cat > "$scenario_results_file" <<JSON
+${successResultsJson}
+JSON
+	echo "$mode ok"
+	`,
+		);
 	writeExecutable(
 		workspace,
 		"preflight.sh",
@@ -381,6 +412,43 @@ test("evaluate-adapter-mode emits heartbeat and ownership hints for failed comma
 		assert.match(result.stderr, /full_gate 1\/1 artifacts: stdout=.*stderr=.*/);
 		assert.match(result.stderr, /full_gate 1\/1 failure signal: repo-local failure for full_gate/);
 		assert.match(result.stderr, /full_gate 1\/1 ownership hint: Repo-local adapter, artifact, or policy failures are usually consumer-owned/);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("evaluate-adapter-mode marks comparison-backed rejection separately from execution failure", () => {
+	const { root, workspace } = createRepo({ rejectMode: "held_out" });
+	try {
+		const outputDir = join(root, "comparison-rejected");
+		const result = spawnSync(
+			"node",
+			[
+				SCRIPT_PATH,
+				"--repo-root",
+				root,
+				"--candidate-repo",
+				workspace,
+				"--mode",
+				"held_out",
+				"--intent",
+				"Comparison-backed regressions should stay legible.",
+				"--baseline-ref",
+				"origin/main",
+				"--output-dir",
+				outputDir,
+			],
+			{
+				cwd: process.cwd(),
+				encoding: "utf-8",
+			},
+		);
+		assert.equal(result.status, 0, result.stderr);
+		const report = JSON.parse(readFileSync(result.stdout.trim(), "utf-8"));
+		assert.equal(report.recommendation, "reject");
+		assert.equal(report.modeSummaries[0].status, "rejected");
+		assert.match(report.modeSummaries[0].summary, /completed comparison and reported 1 regression/);
+		assert.equal(report.regressed[0], "operator-guidance-smoke");
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

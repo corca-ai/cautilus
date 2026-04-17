@@ -183,6 +183,10 @@ function resolveRequiredPath(cliValue, adapterValue, fieldName, repoRoot) {
 	return resolve(repoRoot, value);
 }
 
+function promptInputSchemaFile(promptInput) {
+	return promptInput?.defaultSchemaFile?.absolutePath ?? null;
+}
+
 function renderPromptFromInputFile(reviewPromptInputFile, outputDir) {
 	const promptInput = JSON.parse(readFileSync(reviewPromptInputFile, "utf-8"));
 	if (promptInput?.schemaVersion !== REVIEW_PROMPT_INPUTS_SCHEMA) {
@@ -210,6 +214,7 @@ function resolvePromptFromReviewPacket(options, adapterPayload, repoRoot, output
 		reviewPacketFile,
 		reviewPromptInputFile,
 		outputUnderTestFile: promptInput.outputUnderTestFile ?? null,
+		schemaFile: promptInputSchemaFile(promptInput),
 	};
 }
 
@@ -242,6 +247,7 @@ function resolveDirectPromptArtifact(options, adapterPayload, repoRoot) {
 		reviewPacketFile: options.reviewPacketFile ? resolve(repoRoot, options.reviewPacketFile) : null,
 		reviewPromptInputFile: options.reviewPromptInputFile ? resolve(repoRoot, options.reviewPromptInputFile) : null,
 		outputUnderTestFile: null,
+		schemaFile: null,
 	};
 }
 
@@ -256,6 +262,7 @@ function resolvePromptArtifactFromInputFile(options, repoRoot, outputDir) {
 		reviewPacketFile: options.reviewPacketFile ? resolve(repoRoot, options.reviewPacketFile) : null,
 		reviewPromptInputFile,
 		outputUnderTestFile: promptInput.outputUnderTestFile ?? null,
+		schemaFile: promptInputSchemaFile(promptInput),
 	};
 }
 
@@ -291,6 +298,7 @@ function resolvePromptArtifactFromScenario(options, outputDir) {
 		reviewPacketFile: null,
 		reviewPromptInputFile,
 		outputUnderTestFile: promptInput.outputUnderTestFile ?? null,
+		schemaFile: promptInputSchemaFile(promptInput),
 	};
 }
 
@@ -320,6 +328,15 @@ function resolvePromptArtifacts(options, adapterPayload, repoRoot, outputDir) {
 		return promptArtifactFromScenario;
 	}
 	return resolvePromptFromReviewPacket(options, adapterPayload, repoRoot, outputDir);
+}
+
+function resolveReviewSchemaFile(options, promptArtifacts, adapterPayload, repoRoot) {
+	return resolveRequiredPath(
+		options.schemaFile,
+		promptArtifacts.schemaFile ?? adapterPayload.data.default_schema_file,
+		"schemaFile",
+		repoRoot,
+	);
 }
 
 function resolveReviewPacket(options, adapterPayload, repoRoot, outputDir) {
@@ -368,16 +385,11 @@ async function main() {
 	if (selectedVariants.length === 0) {
 		fail("No executor variants matched the requested --variant-id values.");
 	}
-	const workspace = resolve(options.workspace);
-	const schemaFile = resolveRequiredPath(
-		options.schemaFile,
-		adapterPayload.data.default_schema_file,
-		"schemaFile",
-		repoRoot,
-	);
 	const outputDir = resolvedRun.runDir;
 	mkdirSync(outputDir, { recursive: true });
 	const promptArtifacts = resolvePromptArtifacts(options, adapterPayload, repoRoot, outputDir);
+	const workspace = resolve(options.workspace);
+	const schemaFile = resolveReviewSchemaFile(options, promptArtifacts, adapterPayload, repoRoot);
 	const promptFile = promptArtifacts.promptFile;
 	log(`review variants artifacts ready: prompt=${promptFile} schema=${schemaFile}`);
 	const warnings = buildOutputUnderTestWarnings(selectedVariants, promptArtifacts.outputUnderTestFile);

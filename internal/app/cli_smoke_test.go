@@ -1210,6 +1210,77 @@ echo ok
 	}
 }
 
+func TestCLIModeEvaluateMarksComparisonBackedRejectionSeparately(t *testing.T) {
+	root := t.TempDir()
+	adapterDir := filepath.Join(root, ".agents")
+	workspace := filepath.Join(root, "workspace")
+	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.MkdirAll(workspace, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	writeExecutableFile(t, workspace, "bench.sh", `#!/bin/sh
+scenario_results_file="$1"
+cat > "$scenario_results_file" <<'JSON'
+{
+  "schemaVersion": "cautilus.scenario_results.v1",
+  "mode": "held_out",
+  "results": [
+    {
+      "scenarioId": "operator-guidance-smoke",
+      "status": "failed",
+      "durationMs": 90,
+      "telemetry": {
+        "total_tokens": 21,
+        "cost_usd": 0.005
+      }
+    }
+  ],
+  "compareArtifact": {
+    "schemaVersion": "cautilus.compare_artifact.v1",
+    "summary": "Operator guidance regressed.",
+    "verdict": "regressed",
+    "regressed": [
+      "operator-guidance-smoke"
+    ]
+  }
+}
+JSON
+echo comparison rejected >&2
+exit 1
+`)
+	if err := os.WriteFile(filepath.Join(adapterDir, "cautilus-adapter.yaml"), []byte(strings.Join([]string{
+		"version: 1",
+		"repo: temp",
+		"evaluation_surfaces:",
+		"  - operator workflow",
+		"baseline_options:",
+		"  - baseline git ref via {baseline_ref}",
+		"held_out_command_templates:",
+		"  - sh {candidate_repo}/bench.sh {scenario_results_file}",
+		"",
+	}, "\n")), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	outputDir := filepath.Join(root, "outputs")
+	stdout, stderr, exitCode := runCLI(t, root, "mode", "evaluate", "--repo-root", root, "--candidate-repo", workspace, "--mode", "held_out", "--intent", "Comparison-backed regressions should stay legible.", "--baseline-ref", "origin/main", "--output-dir", outputDir)
+	if exitCode != 0 {
+		t.Fatalf("mode evaluate failed: %s", stderr)
+	}
+	report := readJSONObjectFile(t, strings.TrimSpace(stdout))
+	if report["recommendation"] != "reject" {
+		t.Fatalf("unexpected recommendation: %#v", report["recommendation"])
+	}
+	firstSummary := report["modeSummaries"].([]any)[0].(map[string]any)
+	if firstSummary["status"] != "rejected" {
+		t.Fatalf("unexpected mode status: %#v", firstSummary["status"])
+	}
+	if !strings.Contains(anyToString(firstSummary["summary"]), "completed comparison and reported 1 regression") {
+		t.Fatalf("unexpected mode summary: %#v", firstSummary["summary"])
+	}
+}
+
 func TestCLIReviewBuildPromptInputAndRenderPromptCloseMetaPromptSeam(t *testing.T) {
 	root := t.TempDir()
 	reviewPacketPath := filepath.Join(root, "review-packet.json")
@@ -1336,6 +1407,101 @@ func TestCLIReviewBuildPromptInputAndRenderPromptCloseMetaPromptSeam(t *testing.
 	prompt := string(promptBytes)
 	if !strings.Contains(prompt, "Held-out operator guidance improved.") || !strings.Contains(prompt, "## Intent Profile") || !strings.Contains(prompt, "Prefer operator-visible evidence.") || !strings.Contains(prompt, "## Current Report Evidence") || !strings.Contains(prompt, "npm run verify") || !strings.Contains(prompt, "## Output Under Test") || !strings.Contains(prompt, "analysis-output.json") || !strings.Contains(prompt, "## Output Under Test Text") || !strings.Contains(prompt, "realized output") {
 		t.Fatalf("unexpected rendered prompt: %s", prompt)
+	}
+}
+
+func TestCLIReviewVariantsUsesDefaultSchemaFromReviewPromptInput(t *testing.T) {
+	root := t.TempDir()
+	reviewPacketPath := filepath.Join(root, "review-packet.json")
+	promptInputPath := filepath.Join(root, "review-prompt-input.json")
+	reportPath := filepath.Join(root, "report.json")
+	outputDir := filepath.Join(root, "review-outputs")
+	schemaPath := filepath.Join(root, "fixtures", "review.schema.json")
+	if err := os.MkdirAll(filepath.Join(root, ".agents"), 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.MkdirAll(filepath.Join(root, "fixtures"), 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	schemaBytes, err := os.ReadFile(filepath.Join(repoToolRoot(t), "fixtures", "review", "review-verdict.schema.json"))
+	if err != nil {
+		t.Fatalf("ReadFile returned error: %v", err)
+	}
+	if err := os.WriteFile(schemaPath, schemaBytes, 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	writeExecutableFile(t, root, "variant.sh", "#!/bin/sh\noutput_file=\"$1\"\nprompt_file=\"$2\"\nschema_file=\"$3\"\nnode - \"$output_file\" \"$schema_file\" <<'EOF'\nconst [outputFile, schemaFile] = process.argv.slice(2);\nconst { writeFileSync } = await import(\"node:fs\");\nwriteFileSync(outputFile, JSON.stringify({\n  verdict: \"pass\",\n  summary: \"prompt-input-schema-fallback\",\n  findings: [{ severity: \"pass\", message: schemaFile, path: \"variant/sh\" }],\n}) + \"\\n\", \"utf-8\");\nEOF\n")
+	if err := os.WriteFile(filepath.Join(root, ".agents", "cautilus-adapter.yaml"), []byte(strings.Join([]string{
+		"version: 1",
+		"repo: temp",
+		"evaluation_surfaces:",
+		"  - smoke",
+		"baseline_options:",
+		"  - baseline git ref via {baseline_ref}",
+		"executor_variants:",
+		"  - id: standalone",
+		"    tool: command",
+		"    purpose: prompt-input schema fallback",
+		"    command_template: sh {candidate_repo}/variant.sh {output_file} {prompt_file} {schema_file}",
+		"",
+	}, "\n")), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	writeJSONFile(t, reportPath, map[string]any{
+		"schemaVersion": contracts.ReportPacketSchema,
+		"generatedAt":   "2026-04-11T00:02:00.000Z",
+		"candidate":     "feature/operator-guidance",
+		"baseline":      "origin/main",
+		"intent":        "The operator should understand a failed workflow step without operator guesswork.",
+		"intentProfile": map[string]any{
+			"schemaVersion":   contracts.BehaviorIntentSchema,
+			"intentId":        "intent-operator-workflow-recovery",
+			"summary":         "The operator should understand a failed workflow step without operator guesswork.",
+			"behaviorSurface": cautilusruntime.BehaviorSurfaces["OPERATOR_BEHAVIOR"],
+			"successDimensions": []any{
+				map[string]any{"id": cautilusruntime.BehaviorDimensions["FAILURE_CAUSE_CLARITY"], "summary": "Explain the concrete failure cause or missing prerequisite."},
+			},
+			"guardrailDimensions": []any{},
+		},
+		"commands":            []any{},
+		"commandObservations": []any{},
+		"modesRun":            []string{"held_out"},
+		"modeSummaries":       []map[string]any{{"mode": "held_out", "status": "passed", "summary": "held_out completed across 1 command."}},
+		"telemetry":           map[string]any{"modeCount": 1},
+		"improved":            []any{},
+		"regressed":           []any{},
+		"unchanged":           []any{},
+		"noisy":               []any{},
+		"humanReviewFindings": []any{},
+		"recommendation":      "defer",
+	})
+	writeJSONFile(t, reviewPacketPath, map[string]any{
+		"schemaVersion": contracts.ReviewPacketSchema,
+		"repoRoot":      root,
+		"adapterPath":   filepath.Join(root, ".agents", "cautilus-adapter.yaml"),
+		"reportFile":    reportPath,
+		"report":        readJSONObjectFile(t, reportPath),
+		"defaultSchemaFile": map[string]any{
+			"relativePath": "fixtures/review.schema.json",
+			"absolutePath": schemaPath,
+			"exists":       true,
+		},
+		"artifactFiles":       []any{},
+		"reportArtifacts":     []any{},
+		"comparisonQuestions": []any{},
+		"humanReviewPrompts":  []any{},
+	})
+
+	if _, stderr, exitCode := runCLI(t, root, "review", "build-prompt-input", "--review-packet", reviewPacketPath, "--output", promptInputPath); exitCode != 0 {
+		t.Fatalf("review build-prompt-input failed: %s", stderr)
+	}
+	stdout, stderr, exitCode := runCLI(t, root, "review", "variants", "--repo-root", root, "--workspace", root, "--review-prompt-input", promptInputPath, "--output-dir", outputDir)
+	if exitCode != 0 {
+		t.Fatalf("review variants failed: %s", stderr)
+	}
+	summary := readJSONObjectFile(t, strings.TrimSpace(stdout))
+	if anyString(summary["schemaFile"]) != schemaPath {
+		t.Fatalf("unexpected schema file: %#v", summary["schemaFile"])
 	}
 }
 

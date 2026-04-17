@@ -72,6 +72,9 @@ cautilus review render-prompt \
   --input /tmp/cautilus-mode/review-prompt-input.json
 ```
 
+When the packet carries `defaultSchemaFile`, `review variants` may reuse that
+schema without requiring a second explicit `--schema-file` flag.
+
 ## Guardrails
 
 - Keep the meta-prompt product-owned and generic.
