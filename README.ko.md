@@ -79,7 +79,7 @@ cautilus scenario render-proposals-html --input /tmp/proposals.json --output /tm
 - 사람: 제안된 시나리오를 보호된 평가 경로로 올릴 가치가 있는지 판단합니다
 - 에이전트: 저장된 결과를 다시 열어 variant를 비교하거나 다음 평가 단계로 넘깁니다
 
-같은 작은 루프가 [docs/specs/index.spec.md](./docs/specs/index.spec.md)의 public spec 리포트 시작점도 잡고 있습니다.
+같은 작은 루프가 `docs/specs/index.spec.md`의 public spec 리포트 시작점도 잡고 있습니다.
 이것이 제품 주장의 가장 짧고 정직한 예시입니다.
 `Cautilus`는 동작 증거를 검토 가능한 의사결정 표면으로 바꿉니다.
 
@@ -87,7 +87,7 @@ cautilus scenario render-proposals-html --input /tmp/proposals.json --output /tm
 
 Cautilus는 세 가지 평가 아키타입을 1급 개념으로 다룹니다.
 세 아키타입은 normalize → propose → evaluate → review라는 하나의 파이프라인을 공유하지만, 각각 입력 형태와 시작 명령이 다릅니다.
-이 1:1 경계는 [archetype-boundary.spec.md](./docs/specs/archetype-boundary.spec.md)에 고정되어 있습니다.
+이 1:1 경계는 `docs/specs/archetype-boundary.spec.md`에서 볼 수 있습니다.
 
 ### 1. 챗봇 대화 회귀
 
@@ -107,8 +107,6 @@ Cautilus는 세 가지 평가 아키타입을 1급 개념으로 다룹니다.
 
 **다음엔 뭘 하나**: evaluate/review 단계로 넘기거나, 그 보호된 케이스를 유지한 채 프롬프트를 다시 다듬습니다.
 
-**픽스처**: [chatbot-consumer-input.json](./fixtures/scenario-proposals/samples/chatbot-consumer-input.json).
-
 ### 2. 스킬 / 에이전트 실행 회귀
 
 스킬이나 에이전트를 바꾼 뒤에도 올바른 프롬프트에서 여전히 트리거되고, 깔끔하게 실행되며, 정적 검증을 계속 통과하는지 확인하고 싶을 때 사용합니다.
@@ -124,8 +122,6 @@ Cautilus는 세 가지 평가 아키타입을 1급 개념으로 다룹니다.
 **무엇을 받게 되나**: 트리거만 보는 스모크 하나가 아니라, 리포트, 리뷰 파일, 비교 가능한 증거를 받습니다.
 
 **다음엔 뭘 하나**: 변경된 스킬을 수락하거나, 리뷰 출력을 확인하거나, 한 번 더 제한된 수정 루프로 저장된 결과를 다시 엽니다.
-
-**픽스처**: [fixtures/skill-test/cases.json](./fixtures/skill-test/cases.json).
 
 ### 3. 지속형 워크플로 복구
 
@@ -143,9 +139,8 @@ Cautilus는 세 가지 평가 아키타입을 1급 개념으로 다룹니다.
 
 **다음엔 뭘 하나**: compare/review 단계로 보내거나, 일회성 대응이 아니라 근거 있는 워크플로 복구 작업으로 이어갑니다.
 
-**픽스처**: [workflow-recovery-input.json](./fixtures/scenario-proposals/samples/workflow-recovery-input.json).
-
 `cautilus scenarios --json`은 아키타입을 프로그래밍 방식으로 찾아야 하는 에이전트를 위해 같은 카탈로그를 출력합니다.
+이 아키타입들의 예시 입력은 `examples/starters/`와 `fixtures/` 아래의 체크인된 픽스처 디렉터리에서 볼 수 있습니다.
 
 ## 왜 Cautilus인가
 
@@ -170,7 +165,7 @@ Cautilus는 세 가지 평가 아키타입을 1급 개념으로 다룹니다.
 
 `Cautilus`는 또한 단발성 최적화기 위에 GEPA 스타일의 제한된 프롬프트 탐색 경계를 제공합니다.
 여기에는 다세대 반성적 변이, 보호된 검증 재평가, 파레토식 프런티어 선택이 포함됩니다.
-자세한 내용은 [docs/gepa.md](./docs/gepa.md)를 보세요.
+자세한 내용은 `docs/gepa.md`를 보세요.
 
 장기적인 방향성은 DSPy의 워크플로 철학과 가깝습니다.
 평가되는 동작만 살아남는다면 프롬프트는 바뀌어도 됩니다.
@@ -208,13 +203,14 @@ artifacts/<run>/review-packet.json
 
 - 평가 표면을 명시적으로 선언하는 저장소 로컬 어댑터
 - 에이전트가 직접 소비할 수 있는 기계 판독형 실행 산출물(리포트와 리뷰 파일)
-- 사람이 에이전트 없이 브라우저에서 같은 산출물을 판단할 수 있게 하는 정적 HTML 뷰([docs/specs/html-report.spec.md](./docs/specs/html-report.spec.md) 참고)
+- 사람이 에이전트 없이 브라우저에서 같은 산출물을 판단할 수 있게 하는 정적 HTML 뷰
+자세한 내용은 `docs/specs/html-report.spec.md` 참고
 - 파일에서 다시 열 수 있는 제한된 비교 및 리뷰 표면
 - 관찰된 런타임 증거에서 새 시나리오 제안과 제한된 수정으로 되돌아가는 경로
 
 검증 게이트:
 
-- `cautilus doctor --repo-root .` — 저장소별 연결 상태 게이트
+- `cautilus doctor` — 저장소별 연결 상태 게이트
 - `npm run consumer:onboard:smoke` — 가장 짧은 엔드투엔드 도입 증명(이 저장소에서 새 소비자 저장소를 대상으로 실행)
 
 ## 더 읽기

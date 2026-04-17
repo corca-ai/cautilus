@@ -3,8 +3,8 @@
 This guide is the shortest honest path for adopting `Cautilus` in a fresh consumer repo without repo-local lore.
 It combines the old onboarding path and the standing migration rules in one place.
 
-Use [install.md](../../install.md) for machine-level installation.
-Use [consumer-readiness.md](../maintainers/consumer-readiness.md) for checked-in proof and release-time evidence.
+Use `install.md` for machine-level installation.
+Use `docs/maintainers/consumer-readiness.md` for checked-in proof and release-time evidence.
 
 ## Goal
 
@@ -17,7 +17,7 @@ End at:
 
 - a checked-in `.agents/cautilus-adapter.yaml`
 - a checked-in `.agents/skills/cautilus/` tree
-- `cautilus doctor --repo-root <repo>` returning `ready` after the repo adds at least one runnable command template or executor variant
+- `cautilus doctor` returning `ready` after the repo adds at least one runnable command template or executor variant
 
 ## Fixed Rules
 

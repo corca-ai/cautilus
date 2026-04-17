@@ -76,14 +76,14 @@ cautilus scenario render-proposals-html --input /tmp/proposals.json --output /tm
 - human: decide whether the proposed scenario is worth promoting into a protected evaluation path
 - agent: reopen the saved result, compare variants, or feed the proposal into the next evaluation step
 
-The same small loop anchors the public spec report in [docs/specs/index.spec.md](./docs/specs/index.spec.md).
+The same small loop anchors the public spec report in `docs/specs/index.spec.md`.
 It is the shortest honest example of the product claim: `Cautilus` turns behavior evidence into a reviewable decision surface.
 
 ## Scenarios
 
 Cautilus has three first-class evaluation archetypes.
 They share one pipeline — normalize → propose → evaluate → review — but each has its own input shape and starting command.
-The 1:1 boundary is fixed in [archetype-boundary.spec.md](./docs/specs/archetype-boundary.spec.md).
+Read the 1:1 boundary in `docs/specs/archetype-boundary.spec.md`.
 
 ### 1. Chatbot conversation regression
 
@@ -103,8 +103,6 @@ Typical failures are forgetting prior turns, answering when it should clarify, o
 
 **What to do next**: promote the candidate into evaluate/review or revise the prompt with that protected case still guarding the boundary.
 
-**Fixture**: [chatbot-consumer-input.json](./fixtures/scenario-proposals/samples/chatbot-consumer-input.json).
-
 ### 2. Skill / agent execution regression
 
 Use when you change a skill or agent and want to know whether it still triggers on the right prompts, executes cleanly, and keeps its static validation passing.
@@ -120,8 +118,6 @@ Use when you change a skill or agent and want to know whether it still triggers 
 **What you get back**: a report, a review file, and compare-ready evidence instead of one trigger-only smoke result.
 
 **What to do next**: accept the changed skill, inspect the review output, or reopen the saved result for another bounded revision pass.
-
-**Fixture**: [fixtures/skill-test/cases.json](./fixtures/skill-test/cases.json).
 
 ### 3. Durable workflow recovery
 
@@ -139,9 +135,8 @@ Use when a stateful automation — a CLI workflow, long-running agent session, o
 
 **What to do next**: route the candidate into compare/review, or use it to justify a targeted workflow repair instead of an anecdotal one-off fix.
 
-**Fixture**: [workflow-recovery-input.json](./fixtures/scenario-proposals/samples/workflow-recovery-input.json).
-
 `cautilus scenarios --json` prints the same catalog for agents that need to discover archetypes programmatically.
+Sample inputs for these archetypes live in `examples/starters/` and the checked-in fixture directories under `fixtures/`.
 
 ## Why Cautilus
 
@@ -164,7 +159,7 @@ The stance, in four contrasts:
 - Unlike open-ended optimizer loops, `Cautilus` keeps search and revision explicitly bounded by budgets, checkpoints, and blocked-readiness conditions (`bounded autonomy`).
 
 `Cautilus` also ships a GEPA-style bounded prompt search seam above the one-shot optimizer: multi-generation reflective mutation, protected reevaluation, and Pareto-style frontier selection.
-Deep dive: [docs/gepa.md](./docs/gepa.md).
+Deep dive: `docs/gepa.md`.
 
 The longer-term direction is close to the workflow philosophy behind DSPy: prompts can change as long as the evaluated behavior survives.
 
@@ -200,13 +195,14 @@ What the operator gets back is not just a pass/fail bit:
 
 - a repo-local adapter that declares the evaluation surface explicitly
 - machine-readable run artifacts (reports and review files) that agents can consume directly
-- static HTML views of the same artifacts so a human reviewer can judge them in a browser without an agent in the loop (see [docs/specs/html-report.spec.md](./docs/specs/html-report.spec.md))
+- static HTML views of the same artifacts so a human reviewer can judge them in a browser without an agent in the loop
+See `docs/specs/html-report.spec.md` for the rendered contract.
 - bounded compare and review surfaces reopenable from files
 - a path from observed runtime evidence back to new scenario proposals and bounded revisions
 
 Verification gates:
 
-- `cautilus doctor --repo-root .` — wiring gate per repo
+- `cautilus doctor` — wiring gate per repo
 - `npm run consumer:onboard:smoke` — shortest end-to-end adoption proof (run from this repo against a fresh consumer)
 
 ## Read More
