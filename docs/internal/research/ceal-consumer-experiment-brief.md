@@ -1,127 +1,87 @@
-# Ceal Consumer Experiment Brief
+# Ceal Consumer Promotion Follow-Up
 
-This brief is for consumer-side experimentation in the closed-source `Ceal` repo.
-Its purpose is to discover realistic `chatbot` and `workflow` scenarios that can later be generalized into product-owned `Cautilus` fixtures, contracts, or runners.
+This note is the product-side companion to the consumer experiment brief that
+lives in the closed-source `Ceal` repo.
 
-## Boundary
+`Ceal` is allowed to depend on `Cautilus`.
+`Cautilus` must not gain an explicit dependency back on `Ceal`.
 
-`Ceal` may depend on `Cautilus`.
-`Cautilus` must not gain an explicit dependency on `Ceal`.
+That means `Cautilus` should record only what to inspect after the consumer
+experiment and what kind of generic product work to do next.
+The consumer-side instructions, private prompts, repo paths, and runtime setup
+belong in `Ceal`, not here.
 
-That means the experiment may use `Ceal` code, prompts, adapters, fixtures, logs, and local scripts to discover candidate scenarios.
-It must not copy `Ceal`-specific paths, names, prompts, policy text, or repo assumptions back into the open-source `Cautilus` product surface.
+## What To Look For
 
-When bringing results back into `Cautilus`, only bring back generic behavior patterns, redacted example packets, and product-owned contract changes.
+When the `Ceal` experiment returns, inspect only the redacted, genericizable
+parts of the handoff.
 
-## Goal
+Expected return items:
 
-Produce one realistic `chatbot` candidate scenario and one realistic `workflow` candidate scenario from `Ceal`.
-Each candidate should be strong enough that a `Cautilus` maintainer could justify promoting it into a checked-in generic fixture or test seam.
+- one `chatbot` candidate summary
+- one `workflow` candidate summary
+- one redacted JSON draft for a `chatbot` packet
+- one redacted JSON draft for a `workflow` packet
+- one promotion judgment per candidate
+- optional notes about missing contract fields or missing product-owned
+  telemetry
 
-## Consumer-Side Workflow
+If the returned material still depends on `Ceal`-specific naming, prompt text,
+or private policy, stop and reduce it further before promoting anything into
+the product.
 
-1. Install or restore `Ceal` dependencies until the repo can run its intended local checks.
-2. Run the smallest useful `Ceal` checks to confirm the repo is in a usable state before harvesting scenarios.
-3. Find one `chatbot`-shaped behavior regression or stability question that reflects a real consumer concern.
-4. Find one `workflow`-shaped recovery or blockage scenario that reflects a real consumer concern.
-5. Convert each finding into a generic candidate packet shape instead of leaving it as a repo-specific anecdote.
-6. Return with redacted notes about what should be promoted into `Cautilus`.
+## Promotion Questions
 
-## Candidate Quality Bar
+For each returned candidate, answer these questions before making a product
+change.
 
-Use a scenario only if it clears this bar.
+1. Does it map cleanly onto exactly one first-class `Cautilus` archetype?
+2. Can it be represented honestly with current product-owned packet fields?
+3. Would another consumer understand the scenario without knowing anything
+   about `Ceal`?
+4. Is the scenario small enough to maintain as a checked-in fixture or test?
+5. Does the scenario improve rollout evidence, normalization quality, or
+   operator-facing evaluation guidance instead of only preserving a Ceal-local
+   anecdote?
 
-- It reflects a real operator or user-visible behavior question.
-- It maps cleanly onto exactly one `Cautilus` archetype.
-- It can be described without `Ceal`-specific naming or private policy text.
-- It teaches something reusable about behavior evaluation, not only about `Ceal` internals.
-- It is small enough to become a maintained checked-in fixture.
+If any answer is no, do not promote the artifact as-is.
+Either reduce it further or treat it as consumer-only evidence.
 
-Reject a candidate if it depends on private business context, secret prompts, non-portable environment assumptions, or repo-local naming that would be meaningless to another consumer.
+## Allowed Product Outcomes
 
-## Archetype Mapping
+If the candidate clears the bar, `Cautilus` may promote it in one of these
+forms:
 
-Use the `Cautilus` archetypes as the normalization target, not as an afterthought.
+- a checked-in generic fixture
+- a contract clarification
+- a new or expanded executable test
+- a runner or packet-preparation improvement
+- a product-owned telemetry field or evidence seam improvement
 
-### Chatbot
+The promoted form should match the smallest honest product surface that captures
+the learned behavior.
 
-Choose a multi-turn conversational behavior inside one session.
-Good examples include context recovery, preference retention, clarification behavior, or following a previously established constraint.
+## Disallowed Product Outcomes
 
-The target shape is `cautilus.chatbot_normalization_inputs.v1`.
-Use `cautilus scenario normalize chatbot --example-input` as the canonical minimal shape.
+Do not land any of these in `Cautilus`:
 
-### Workflow
+- `Ceal` repo paths
+- `Ceal` adapter ids
+- `Ceal` prompt fragments
+- `Ceal` policy text
+- consumer-specific naming that another repo would not understand
+- private business context or user identifiers
 
-Choose a stateful automation or recovery situation that persists across invocations and gets stuck, repeats, or requires operator recovery judgment.
-Good examples include repeated no-progress steps, blocked recovery loops, or a durable task that cannot complete after multiple attempts.
+If a candidate cannot survive those removals, it is not product surface.
 
-The target shape is `cautilus.workflow_normalization_inputs.v1`.
-Use `cautilus scenario normalize workflow --example-input` as the canonical minimal shape.
+## Expected Follow-Up Work
 
-## What To Bring Back
+After a good consumer experiment, the next `Cautilus` move should usually be:
 
-Bring back only generic, redacted artifacts.
+1. rewrite the returned packet into a generic fixture
+2. add or update the smallest test or contract that proves the behavior
+3. connect that fixture to the relevant archetype workflow
+4. document any new rollout-facing evidence question the artifact now answers
 
-Required return items:
-
-- one short note describing the `chatbot` candidate in generic terms
-- one short note describing the `workflow` candidate in generic terms
-- one redacted JSON draft for the `chatbot` packet
-- one redacted JSON draft for the `workflow` packet
-- a short judgment for each candidate:
-  - `promote now`
-  - `needs more reduction`
-  - `do not promote`
-
-Optional return items:
-
-- a note about any missing `Cautilus` contract field that blocked honest representation
-- a note about any metric or evidence surface that should become product-owned
-
-## Redaction Rules
-
-Before bringing anything back into `Cautilus`, remove or replace:
-
-- repo names
-- company or customer names
-- internal channel names
-- user identifiers
-- private prompt text
-- policy text that is specific to `Ceal`
-- file paths that only make sense inside `Ceal`
-
-Prefer replacements such as:
-
-- `consumer-chat-thread`
-- `workflow-recovery-example`
-- `system policy omitted`
-- `internal actor`
-
-## Return Format
-
-Use a compact handoff like this.
-
-```md
-## Candidate: chatbot
-Status: promote now
-Why it matters: <one or two sentences>
-What was redacted: <one sentence>
-Generic packet: <attach JSON>
-Needed Cautilus change: <optional, one sentence>
-
-## Candidate: workflow
-Status: needs more reduction
-Why it matters: <one or two sentences>
-What was redacted: <one sentence>
-Generic packet: <attach JSON>
-Needed Cautilus change: <optional, one sentence>
-```
-
-## Promotion Rule
-
-Promotion into `Cautilus` should happen only in the `Cautilus` repo.
-The promoted artifact must be rewritten as a generic product-owned fixture, test, contract update, or runner change.
-
-Do not land `Ceal` names, paths, adapter ids, or prompt fragments in `Cautilus`.
-If a result cannot survive that rewrite, it is consumer evidence, not product surface.
+The product should prefer small, generic promotions over preserving a detailed
+consumer story.
