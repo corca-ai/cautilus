@@ -11,6 +11,16 @@ import {
 	sampleDir,
 } from "./run-local-skill-test.mjs";
 
+const CLAUDE_CLI_ENV = {
+	CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: "1",
+	CLAUDE_CODE_DISABLE_AUTO_MEMORY: "1",
+	ENABLE_CLAUDEAI_MCP_SERVERS: "false",
+	DISABLE_TELEMETRY: "1",
+	DISABLE_AUTOUPDATER: "1",
+	DISABLE_BUG_COMMAND: "1",
+	DISABLE_ERROR_REPORTING: "1",
+};
+
 function claudeArgs(options) {
 	const args = [
 		"-p",
@@ -76,6 +86,7 @@ export function runClaudeSample(options, testCase, artifactDir, sampleIndex) {
 		encoding: "utf-8",
 		env: {
 			...process.env,
+			...CLAUDE_CLI_ENV,
 			PATH: `${join(options.repoRoot, "bin")}:${process.env.PATH ?? ""}`,
 		},
 		input: prompt,
