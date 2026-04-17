@@ -43,6 +43,13 @@ The first slice consumes one normalized packet with:
     - `degraded`
     - `blocked`
   - optional `metrics`
+  - optional `telemetry`
+    - optional `provider`
+    - optional `model`
+    - optional `prompt_tokens`
+    - optional `completion_tokens`
+    - optional `total_tokens`
+    - optional `cost_usd`
   - optional `sampling`
     - `sampleCount`
     - optional `consensusCount`
@@ -87,6 +94,7 @@ The first summary packet should include:
 - per-evaluation results with normalized `surface`
   - `trigger_selection`
   - `execution_quality`
+- preserved per-evaluation runtime telemetry when the host runner exposes it explicitly
 - derived product-owned `intentProfile`
 - `evaluationRuns` suitable for `cautilus scenario normalize skill`
 

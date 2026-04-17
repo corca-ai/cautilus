@@ -2002,6 +2002,14 @@ func TestCLISkillEvaluateProducesSummaryThatChainsIntoScenarioNormalizeSkill(t *
 					"total_tokens": 1400,
 					"duration_ms":  4200,
 				},
+				"telemetry": map[string]any{
+					"provider":          "anthropic",
+					"model":             "claude-sonnet-4-6",
+					"prompt_tokens":     1000,
+					"completion_tokens": 400,
+					"total_tokens":      1400,
+					"cost_usd":          0.02,
+				},
 				"thresholds": map[string]any{
 					"max_total_tokens": 1000,
 					"max_duration_ms":  3000,
@@ -2021,6 +2029,11 @@ func TestCLISkillEvaluateProducesSummaryThatChainsIntoScenarioNormalizeSkill(t *
 	runs := summary["evaluationRuns"].([]any)
 	if len(runs) != 2 {
 		t.Fatalf("unexpected evaluation runs: %#v", runs)
+	}
+	evaluations := summary["evaluations"].([]any)
+	executionTelemetry := evaluations[1].(map[string]any)["telemetry"].(map[string]any)
+	if executionTelemetry["model"] != "claude-sonnet-4-6" || executionTelemetry["cost_usd"] != 0.02 {
+		t.Fatalf("unexpected skill evaluation telemetry: %#v", executionTelemetry)
 	}
 
 	_, stderr, exitCode = runCLI(t, root, "scenario", "normalize", "skill", "--input", summaryPath, "--output", candidatesPath)

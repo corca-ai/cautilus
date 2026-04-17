@@ -10,6 +10,9 @@ import {
 	artifactRef,
 	sampleDir,
 } from "./run-local-skill-test.mjs";
+import { extractClaudeTelemetry } from "./skill-test-telemetry.mjs";
+
+export { extractClaudeTelemetry } from "./skill-test-telemetry.mjs";
 
 export const CLAUDE_CLI_ENV = {
 	CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: "1",
@@ -121,7 +124,22 @@ export function runClaudeSample(options, testCase, artifactDir, sampleIndex) {
 	} catch (error) {
 		return backendFailureResult(testCase, `The claude_code runner did not produce valid JSON: ${error.message}`, durationMs, artifactRefs);
 	}
+	const telemetry = extractClaudeTelemetry(result.stdout ?? "", options);
 	writeFileSync(outputFile, `${JSON.stringify(observed, null, 2)}\n`);
 	artifactRefs.push(artifactRef("result", outputFile));
-	return normalizeObservedResult(testCase, observed, durationMs, artifactRefs);
+	return normalizeObservedResult(
+		testCase,
+		{
+			...observed,
+			...(telemetry ? {
+				metrics: {
+					total_tokens: telemetry.total_tokens,
+					cost_usd: telemetry.cost_usd,
+				},
+				telemetry,
+			} : {}),
+		},
+		durationMs,
+		artifactRefs,
+	);
 }

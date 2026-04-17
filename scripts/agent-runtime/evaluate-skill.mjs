@@ -131,6 +131,28 @@ function normalizeOptionalMetrics(value, field) {
 	}
 	return Object.keys(metrics).length > 0 ? metrics : null;
 }
+function normalizeOptionalTelemetry(value, field) {
+	if (value === undefined || value === null) {
+		return null;
+	}
+	if (!value || typeof value !== "object" || Array.isArray(value)) {
+		throw new Error(`${field} must be an object`);
+	}
+	const telemetry = {};
+	for (const key of ["provider", "model"]) {
+		const normalized = normalizeOptionalString(value[key], `${field}.${key}`);
+		if (normalized !== null) {
+			telemetry[key] = normalized;
+		}
+	}
+	for (const key of ["prompt_tokens", "completion_tokens", "total_tokens", "cost_usd"]) {
+		const normalized = normalizeNonNegativeNumber(value[key], `${field}.${key}`);
+		if (normalized !== null) {
+			telemetry[key] = normalized;
+		}
+	}
+	return Object.keys(telemetry).length > 0 ? telemetry : null;
+}
 function normalizeOptionalThresholds(value, field) {
 	if (value === undefined || value === null) {
 		return null;
@@ -459,6 +481,7 @@ function normalizeRun(run, index) {
 		blockerKind: normalizeOptionalString(run.blockerKind, `evaluations[${index}].blockerKind`),
 		artifactRefs: normalizeArtifactRefs(run.artifactRefs, `evaluations[${index}].artifactRefs`),
 		metrics: normalizeOptionalMetrics(run.metrics, `evaluations[${index}].metrics`),
+		telemetry: normalizeOptionalTelemetry(run.telemetry, `evaluations[${index}].telemetry`),
 		sampling: normalizeOptionalSampling(run.sampling, `evaluations[${index}].sampling`),
 		baseline: normalizeOptionalBaseline(run.baseline, `evaluations[${index}].baseline`),
 		thresholds: normalizeOptionalThresholds(run.thresholds, `evaluations[${index}].thresholds`),
@@ -543,6 +566,7 @@ function serializeEvaluation(entry) {
 		...(entry.expectedTrigger ? { expectedTrigger: entry.expectedTrigger } : {}),
 		...(entry.blockerKind ? { blockerKind: entry.blockerKind } : {}),
 		...(entry.metrics ? { metrics: entry.metrics } : {}),
+		...(entry.telemetry ? { telemetry: entry.telemetry } : {}),
 		...(entry.sampling ? { sampling: entry.sampling } : {}),
 		...(entry.baselineComparison ? { baselineComparison: entry.baselineComparison } : {}),
 		...(entry.thresholds ? { thresholds: entry.thresholds } : {}),
@@ -563,6 +587,7 @@ function serializeEvaluationRun(entry) {
 		summary: entry.summary,
 		...(entry.blockerKind ? { blockerKind: entry.blockerKind } : {}),
 		...(entry.metrics ? { metrics: entry.metrics } : {}),
+		...(entry.telemetry ? { telemetry: entry.telemetry } : {}),
 		...(entry.sampling ? { sampling: entry.sampling } : {}),
 		...(entry.baselineComparison ? { baselineComparison: entry.baselineComparison } : {}),
 		...(entry.artifactRefs.length > 0 ? { artifactRefs: entry.artifactRefs } : {}),

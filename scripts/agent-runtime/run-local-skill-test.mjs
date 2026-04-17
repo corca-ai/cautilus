@@ -9,6 +9,11 @@ import {
 } from "./contract-versions.mjs";
 import { normalizeSkillTestCaseSuite } from "./skill-test-case-suite.mjs";
 import { runClaudeSample } from "./skill-test-claude-backend.mjs";
+import {
+	aggregateSkillTelemetry,
+	normalizeSkillMetrics,
+	normalizeSkillTelemetry,
+} from "./skill-test-telemetry.mjs";
 
 export { normalizeSkillTestCaseSuite } from "./skill-test-case-suite.mjs";
 
@@ -291,33 +296,42 @@ export function backendFailureResult(testCase, message, durationMs, artifactRefs
 	return result;
 }
 
-export function normalizeObservedResult(testCase, observed, durationMs, artifactRefs) {
-	const invoked = Boolean(observed?.invoked);
-	const summary = assertString(observed?.summary, "observed.summary");
-	const result = {
-		invoked,
-		summary,
+function observedBaseResult(testCase, observed, durationMs, artifactRefs) {
+	const telemetry = normalizeSkillTelemetry(observed?.telemetry);
+	return {
+		invoked: Boolean(observed?.invoked),
+		summary: assertString(observed?.summary, "observed.summary"),
 		metrics: {
 			duration_ms: durationMs,
+			...(normalizeSkillMetrics(observed?.metrics) ?? {}),
 		},
 		artifactRefs,
+		...(telemetry ? { telemetry } : {}),
+		...(testCase.thresholds ? { thresholds: testCase.thresholds } : {}),
 	};
-	if (testCase.thresholds) {
-		result.thresholds = testCase.thresholds;
-	}
-	if (testCase.evaluationKind === "trigger") {
-		result.expectedTrigger = testCase.expectedTrigger;
-		return result;
-	}
+}
+
+function normalizeExecutionOutcome(observed) {
 	const outcome = assertString(observed?.outcome, "observed.outcome");
 	if (!["passed", "failed", "degraded", "blocked"].includes(outcome)) {
 		throw new Error("observed.outcome must be passed, failed, degraded, or blocked");
 	}
-	result.outcome = outcome;
-	if (typeof observed?.blockerKind === "string" && observed.blockerKind.trim()) {
-		result.blockerKind = observed.blockerKind;
+	return outcome;
+}
+
+export function normalizeObservedResult(testCase, observed, durationMs, artifactRefs) {
+	const result = observedBaseResult(testCase, observed, durationMs, artifactRefs);
+	if (testCase.evaluationKind === "trigger") {
+		result.expectedTrigger = testCase.expectedTrigger;
+		return result;
 	}
-	return result;
+	return {
+		...result,
+		outcome: normalizeExecutionOutcome(observed),
+		...(typeof observed?.blockerKind === "string" && observed.blockerKind.trim()
+			? { blockerKind: observed.blockerKind }
+			: {}),
+	};
 }
 
 function fixtureResultForSample(testCase, fixtureResults, sampleIndex) {
@@ -392,7 +406,16 @@ function runCodexSample(options, testCase, artifactDir, sampleIndex) {
 		return backendFailureResult(testCase, `The codex_exec runner did not produce valid JSON: ${error.message}`, durationMs, artifactRefs);
 	}
 	artifactRefs.push(artifactRef("result", outputFile));
-	return normalizeObservedResult(testCase, observed, durationMs, artifactRefs);
+	const model = options.codexModel ?? options.model;
+	return normalizeObservedResult(
+		testCase,
+		{
+			...observed,
+			...(typeof model === "string" && model.trim() ? { telemetry: { model } } : {}),
+		},
+		durationMs,
+		artifactRefs,
+	);
 }
 
 function numericMetricValues(results, metricKey) {
@@ -448,6 +471,7 @@ function aggregateTriggerSamples(testCase, sampleResults, artifactDir) {
 		testCase.expectedTrigger === "must_invoke" ? result.invoked : !result.invoked
 	)).length;
 	const consensusReached = matchedRuns >= testCase.minConsensusCount;
+	const telemetry = aggregateSkillTelemetry(sampleResults);
 	const caseDir = join(artifactDir, testCase.caseId);
 	const aggregatePayload = {
 		evaluationKind: testCase.evaluationKind,
@@ -461,6 +485,7 @@ function aggregateTriggerSamples(testCase, sampleResults, artifactDir) {
 			invoked: result.invoked,
 			summary: result.summary,
 			metrics: result.metrics ?? null,
+			telemetry: result.telemetry ?? null,
 		})),
 	};
 	const aggregateFile = writeAggregateArtifact(caseDir, aggregatePayload);
@@ -481,12 +506,14 @@ function aggregateTriggerSamples(testCase, sampleResults, artifactDir) {
 			invokedCount: invokedRuns,
 			stable: consensusReached,
 		},
+		...(telemetry ? { telemetry } : {}),
 		artifactRefs,
 	};
 }
 
 function aggregateExecutionSamples(testCase, sampleResults, artifactDir) {
 	const invokedRuns = sampleResults.filter((result) => result.invoked).length;
+	const telemetry = aggregateSkillTelemetry(sampleResults);
 	const statusCounts = { passed: 0, degraded: 0, blocked: 0, failed: 0 };
 	for (const result of sampleResults) {
 		if (result.outcome) {
@@ -511,6 +538,7 @@ function aggregateExecutionSamples(testCase, sampleResults, artifactDir) {
 			outcome: result.outcome ?? null,
 			summary: result.summary,
 			metrics: result.metrics ?? null,
+			telemetry: result.telemetry ?? null,
 		})),
 	};
 	const aggregateFile = writeAggregateArtifact(caseDir, aggregatePayload);
@@ -532,6 +560,7 @@ function aggregateExecutionSamples(testCase, sampleResults, artifactDir) {
 			stable: consensusReached,
 			statusCounts,
 		},
+		...(telemetry ? { telemetry } : {}),
 		artifactRefs,
 	};
 }
@@ -573,6 +602,7 @@ export function buildObservedSkillEvaluationInput(options) {
 			...(observed.outcome ? { outcome: observed.outcome } : {}),
 			...(observed.blockerKind ? { blockerKind: observed.blockerKind } : {}),
 			...(observed.metrics ? { metrics: observed.metrics } : {}),
+			...(observed.telemetry ? { telemetry: observed.telemetry } : {}),
 			...(observed.sampling ? { sampling: observed.sampling } : {}),
 			...(observed.thresholds ? { thresholds: observed.thresholds } : {}),
 			...(observed.artifactRefs ? { artifactRefs: observed.artifactRefs } : {}),

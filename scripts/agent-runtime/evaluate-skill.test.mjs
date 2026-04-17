@@ -120,3 +120,56 @@ test("buildSkillEvaluationSummary surfaces sampling stability and baseline compa
 	assert.equal(summary.comparisonSummary.sameAsBaseline, 1);
 	assert.equal(summary.evaluations[0].baselineComparison.relativeStatus, "same");
 });
+
+test("buildSkillEvaluationSummary preserves telemetry metadata for downstream reporting", () => {
+	const summary = buildSkillEvaluationSummary(
+		{
+			schemaVersion: "cautilus.skill_evaluation_inputs.v1",
+			skillId: "impl",
+			evaluations: [
+				{
+					evaluationId: "exec-telemetry",
+					targetKind: "public_skill",
+					targetId: "impl",
+					displayName: "impl",
+					evaluationKind: "execution",
+					prompt: "Apply one bounded implementation slice and verify it.",
+					startedAt: "2026-04-14T00:00:00.000Z",
+					invoked: true,
+					outcome: "passed",
+					summary: "The skill completed the task.",
+					metrics: {
+						total_tokens: 700,
+						duration_ms: 1800,
+						cost_usd: 0.01,
+					},
+					telemetry: {
+						provider: "anthropic",
+						model: "claude-sonnet-4-6",
+						prompt_tokens: 500,
+						completion_tokens: 200,
+						total_tokens: 700,
+						cost_usd: 0.01,
+					},
+				},
+			],
+		},
+		"2026-04-14T01:00:00.000Z",
+	);
+	assert.deepEqual(summary.evaluations[0].telemetry, {
+		provider: "anthropic",
+		model: "claude-sonnet-4-6",
+		prompt_tokens: 500,
+		completion_tokens: 200,
+		total_tokens: 700,
+		cost_usd: 0.01,
+	});
+	assert.deepEqual(summary.evaluationRuns[0].telemetry, {
+		provider: "anthropic",
+		model: "claude-sonnet-4-6",
+		prompt_tokens: 500,
+		completion_tokens: 200,
+		total_tokens: 700,
+		cost_usd: 0.01,
+	});
+});

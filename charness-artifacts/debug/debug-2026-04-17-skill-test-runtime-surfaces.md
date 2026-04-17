@@ -24,6 +24,17 @@ silently breaking trigger or execution evaluation.
 - `codex debug prompt-input` showed that `project_doc_max_bytes=0` removed the
   project doc block and reduced visible prompt size in this repo from `25671`
   chars to `20794` chars.
+- The smaller Codex reductions also held up in self-dogfood:
+  `include_apps_instructions=false` and
+  `include_environment_context=false` preserved pass/fail behavior while
+  further reducing observed Codex stderr token counters.
+- Claude trigger instability at `90000ms` disappeared once the runner timeout
+  was raised to `180000ms`; both the default Claude model and Sonnet completed
+  the checked-in suite successfully on the current machine.
+- The product-owned skill-test packet can now preserve explicit runtime
+  telemetry from the backend:
+  Claude contributes model plus token/cost fields from its structured JSON
+  envelope, while Codex currently contributes only the configured model name.
 
 ## Reproduction
 
@@ -58,12 +69,18 @@ and Claude execution permission failures should stop.
   `--claude-model`, `--claude-permission-mode`, and
   `--claude-allowed-tools`.
 - Updated the self-dogfood adapter to use `{backend}` and to pass:
-  Codex `gpt-5.4-mini`, low effort, `project_doc_max_bytes=0`;
-  Claude `dontAsk` plus `Bash(cautilus *)`.
+  Codex `gpt-5.4-mini`, low effort, `project_doc_max_bytes=0`,
+  `include_apps_instructions=false`, and
+  `include_environment_context=false`;
+  Claude `dontAsk`, `Bash(cautilus *)`, and a `180000ms` timeout.
 - Re-ran self-dogfood:
   Codex passed trigger `2/2` plus execution `passed`.
 - Re-ran self-dogfood:
-  Claude execution passed once permission rules were present.
+  Claude passed trigger `2/2` plus execution `passed` once permission rules
+  were present and the timeout budget matched observed latency.
+- Verified that product-owned `skill-evaluation-input.json` and
+  `skill-evaluation-summary.json` now preserve runtime telemetry fields instead
+  of leaving model/token/cost evidence only in backend raw artifacts.
 
 ## Root Cause
 
@@ -73,9 +90,11 @@ The first was adapter wiring:
 the self-dogfood adapter ignored `--runtime` because it hardcoded
 `codex_exec`, and it also treated Codex tuning as if it were backend-neutral.
 
-The second was Claude headless permission policy:
+The second was Claude headless runtime policy:
 non-interactive `-p` runs were not given any allow rules for the repo-local
-`cautilus` command surface, so execution blocked before the skill could finish.
+`cautilus` command surface, so execution blocked before the skill could finish,
+and the original `90000ms` timeout was too small to treat repeated Claude
+trigger runs as stable on this repo.
 
 ## Prevention
 
@@ -87,6 +106,9 @@ non-interactive `-p` runs were not given any allow rules for the repo-local
   promoting a Codex config change.
 - Keep Claude headless permission handling documented and tested for any
   adapter that expects nested repo-local CLI invocation.
+- Keep product-owned telemetry limited to explicit machine-readable payloads.
+  Claude JSON envelopes are acceptable; Codex stderr token counters are still
+  experiment-only evidence until the runtime exposes a structured surface.
 
 ## Related Prior Incidents
 

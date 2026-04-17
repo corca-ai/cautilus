@@ -99,6 +99,26 @@
           "summary": { "type": "string" },
           "invoked": { "type": "boolean" },
           "expectedTrigger": { "type": "string" },
+          "blockerKind": { "type": "string" },
+          "metrics": {
+            "type": "object",
+            "properties": {
+              "total_tokens": { "type": "number", "minimum": 0 },
+              "duration_ms": { "type": "number", "minimum": 0 },
+              "cost_usd": { "type": "number", "minimum": 0 }
+            }
+          },
+          "telemetry": {
+            "type": "object",
+            "properties": {
+              "provider": { "type": "string" },
+              "model": { "type": "string" },
+              "prompt_tokens": { "type": "number", "minimum": 0 },
+              "completion_tokens": { "type": "number", "minimum": 0 },
+              "total_tokens": { "type": "number", "minimum": 0 },
+              "cost_usd": { "type": "number", "minimum": 0 }
+            }
+          },
           "sampling": {
             "type": "object",
             "properties": {
@@ -111,6 +131,37 @@
               "consensusRate": { "type": "number", "minimum": 0 },
               "stable": { "type": "boolean" },
               "unstable": { "type": "boolean" }
+            }
+          },
+          "thresholds": {
+            "type": "object",
+            "properties": {
+              "max_total_tokens": { "type": "number", "minimum": 0 },
+              "max_duration_ms": { "type": "number", "minimum": 0 },
+              "max_cost_usd": { "type": "number", "minimum": 0 }
+            }
+          },
+          "thresholdFindings": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["metric", "actual", "limit"],
+              "properties": {
+                "metric": { "type": "string" },
+                "actual": { "type": "number", "minimum": 0 },
+                "limit": { "type": "number", "minimum": 0 }
+              }
+            }
+          },
+          "artifactRefs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["kind", "path"],
+              "properties": {
+                "kind": { "type": "string" },
+                "path": { "type": "string" }
+              }
             }
           },
           "baselineComparison": {
@@ -170,6 +221,26 @@
           "startedAt": { "type": "string" },
           "status": { "type": "string", "enum": ["passed", "failed", "degraded", "blocked"] },
           "summary": { "type": "string" },
+          "blockerKind": { "type": "string" },
+          "metrics": {
+            "type": "object",
+            "properties": {
+              "total_tokens": { "type": "number", "minimum": 0 },
+              "duration_ms": { "type": "number", "minimum": 0 },
+              "cost_usd": { "type": "number", "minimum": 0 }
+            }
+          },
+          "telemetry": {
+            "type": "object",
+            "properties": {
+              "provider": { "type": "string" },
+              "model": { "type": "string" },
+              "prompt_tokens": { "type": "number", "minimum": 0 },
+              "completion_tokens": { "type": "number", "minimum": 0 },
+              "total_tokens": { "type": "number", "minimum": 0 },
+              "cost_usd": { "type": "number", "minimum": 0 }
+            }
+          },
           "sampling": {
             "type": "object",
             "properties": {
@@ -182,6 +253,17 @@
               "consensusRate": { "type": "number", "minimum": 0 },
               "stable": { "type": "boolean" },
               "unstable": { "type": "boolean" }
+            }
+          },
+          "artifactRefs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["kind", "path"],
+              "properties": {
+                "kind": { "type": "string" },
+                "path": { "type": "string" }
+              }
             }
           },
           "baselineComparison": {

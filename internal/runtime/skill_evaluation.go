@@ -23,6 +23,7 @@ type skillEvaluationCase struct {
 	blockerKind     *string
 	artifactRefs    []any
 	metrics         map[string]any
+	telemetry       map[string]any
 	sampling        map[string]any
 	baseline        map[string]any
 	thresholds      map[string]any
@@ -220,6 +221,10 @@ func normalizeSkillEvaluationCase(input map[string]any, index int, now time.Time
 	if err != nil {
 		return nil, err
 	}
+	telemetry, err := normalizeScenarioTelemetry(input["telemetry"], fmt.Sprintf("evaluations[%d].telemetry", index))
+	if err != nil {
+		return nil, err
+	}
 	sampling, err := normalizeSkillSampling(input["sampling"], fmt.Sprintf("evaluations[%d].sampling", index))
 	if err != nil {
 		return nil, err
@@ -256,6 +261,7 @@ func normalizeSkillEvaluationCase(input map[string]any, index int, now time.Time
 		blockerKind:     blockerKind,
 		artifactRefs:    artifactRefs,
 		metrics:         metrics,
+		telemetry:       telemetry,
 		sampling:        sampling,
 		baseline:        baseline,
 		thresholds:      thresholds,
@@ -776,6 +782,9 @@ func buildEvaluatedSkillResult(
 	if evaluation.metrics != nil {
 		evaluationPayload["metrics"] = evaluation.metrics
 	}
+	if evaluation.telemetry != nil {
+		evaluationPayload["telemetry"] = evaluation.telemetry
+	}
 	if evaluation.thresholds != nil {
 		evaluationPayload["thresholds"] = evaluation.thresholds
 	}
@@ -811,6 +820,9 @@ func buildEvaluatedSkillResult(
 	}
 	if evaluation.metrics != nil {
 		evaluationRun["metrics"] = evaluation.metrics
+	}
+	if evaluation.telemetry != nil {
+		evaluationRun["telemetry"] = evaluation.telemetry
 	}
 	if sampling != nil {
 		evaluationRun["sampling"] = sampling

@@ -79,9 +79,12 @@ The checked-in `self-dogfood-skill-test` adapter now applies a narrower
 runtime-specific tuning layer:
 
 - Codex: `--model gpt-5.4-mini`, `-c model_reasoning_effort="low"`,
-  `-c project_doc_max_bytes=0`
+  `-c project_doc_max_bytes=0`,
+  `-c include_apps_instructions=false`,
+  `-c include_environment_context=false`
 - Claude: `--permission-mode dontAsk`,
-  `--allowedTools 'Bash(cautilus *)'`
+  `--allowedTools 'Bash(cautilus *)'`,
+  `--timeout-ms 180000`
 
 These are **not** generic product defaults.
 They are repo-local adapter choices for `Cautilus` self-dogfood because that
@@ -224,6 +227,19 @@ stdout payload.
 So the permission fix is real, but Claude trigger reproducibility remains an
 open latency/runtime issue.
 
+Follow-up on the same machine showed that this was primarily a timeout-budget
+problem, not another permission bug.
+With the same `dontAsk` + `Bash(cautilus *)` allowlist but a `180000ms`
+runner timeout, both the default Claude model and Sonnet completed the
+checked-in self-dogfood suite cleanly:
+
+- default Claude model: trigger `2/2`, execution `passed`
+- Sonnet: trigger `2/2`, execution `passed`
+
+The tradeoff is latency.
+On Sonnet, one trigger repeat took about `147448ms`, so a `90s` budget is not
+honest for this repo's current self-dogfood surface.
+
 ### Codex prompt-input sweep
 
 Using `codex debug prompt-input` in this repo with the same user prompt:
@@ -233,21 +249,60 @@ Using `codex debug prompt-input` in this repo with the same user prompt:
 - `include_environment_context=false`: `25488` chars (`-183`)
 - `include_apps_instructions=false`: `25025` chars (`-646`)
 
-For this repo, `project_doc_max_bytes=0` was the only materially large win.
-That setting removes the `AGENTS.md` project doc block from the model-visible
-prompt in this self-dogfood seam.
+The first pass applied only `project_doc_max_bytes=0`, because it was the
+large win and it was already proven safe.
+
+Follow-up self-dogfood runs showed that the two smaller reductions were still
+worth keeping on this repo-local adapter surface.
+With all three Codex overrides enabled, the checked-in self-dogfood suite
+still passed and the observed Codex stderr token counters dropped further:
+
+- trigger sample 1: `67709 -> 36683`
+- trigger sample 2: `40714 -> 27725`
+- execution: `29747 -> 12257`
+
+These two extra flags remain adapter-local, not generic product defaults,
+because other skills may legitimately depend on environment or app
+instructions.
 
 ### Codex self-dogfood outcome
 
-With `gpt-5.4-mini`, low reasoning effort, and `project_doc_max_bytes=0`, the
-checked-in `self-dogfood-skill-test` adapter passed again on Codex:
+With `gpt-5.4-mini`, low reasoning effort, and the three repo-local Codex
+prompt reductions above, the checked-in `self-dogfood-skill-test` adapter
+passed again on Codex:
 
 - trigger: `2/2` matched `must_invoke`
 - execution: `passed`
 
-This makes `project_doc_max_bytes=0` an applied repo-local adapter
-optimization for the current `Cautilus` self-dogfood surface, not yet a
-generic product default.
+This makes those Codex settings applied repo-local adapter optimizations for
+the current `Cautilus` self-dogfood surface, not yet generic product defaults.
+
+### Skill-test telemetry surface
+
+`run-local-skill-test.mjs` now preserves explicit runtime telemetry in the
+normalized packet instead of dropping it on the floor.
+
+- Claude backend:
+  the structured `--output-format json` envelope now feeds
+  `telemetry.provider`, `telemetry.model`, `telemetry.prompt_tokens`,
+  `telemetry.completion_tokens`, `telemetry.total_tokens`, and
+  `telemetry.cost_usd`, and mirrors the budget-relevant fields into
+  `metrics.total_tokens` / `metrics.cost_usd`
+- Codex backend:
+  the normalized packet now preserves the configured model in
+  `telemetry.model`, but it still does **not** promote token or cost values
+  because the current CLI only exposes those through human-oriented stderr
+  output, which cautilus deliberately avoids scraping as product truth
+
+That means the product-owned self-dogfood summary can now answer:
+
+- which evaluation case passed or failed
+- which runtime model was used
+- Claude time / token / cost per evaluation
+- Codex time per evaluation
+
+It still cannot honestly answer Codex token/cost questions without a more
+explicit machine-readable surface from the Codex runtime.
 
 ## Where this document should be surfaced
 

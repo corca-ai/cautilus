@@ -4,6 +4,7 @@ import test from "node:test";
 import {
 	CLAUDE_CLI_ENV,
 	claudeArgs,
+	extractClaudeTelemetry,
 	parseClaudeOutput,
 } from "./skill-test-claude-backend.mjs";
 
@@ -53,6 +54,37 @@ test("parseClaudeOutput handles envelope with object result (not string)", () =>
 		invoked: true,
 		summary: "Direct object.",
 		outcome: "degraded",
+	});
+});
+
+test("extractClaudeTelemetry keeps structured token, cost, and model metadata", () => {
+	const telemetry = extractClaudeTelemetry(JSON.stringify({
+		type: "result",
+		total_cost_usd: 0.05,
+		usage: {
+			input_tokens: 10,
+			cache_creation_input_tokens: 20,
+			cache_read_input_tokens: 30,
+			output_tokens: 40,
+		},
+		modelUsage: {
+			"claude-haiku-4-5-20251001": {
+				costUSD: 0.001,
+				outputTokens: 10,
+			},
+			"claude-sonnet-4-6": {
+				costUSD: 0.049,
+				outputTokens: 40,
+			},
+		},
+	}));
+	assert.deepEqual(telemetry, {
+		provider: "anthropic",
+		model: "claude-sonnet-4-6",
+		prompt_tokens: 60,
+		completion_tokens: 40,
+		total_tokens: 100,
+		cost_usd: 0.05,
 	});
 });
 

@@ -7,6 +7,7 @@ import test from "node:test";
 import {
 	buildObservedSkillEvaluationInput,
 	codexArgs,
+	normalizeObservedResult,
 	normalizeSkillTestCaseSuite,
 } from "./run-local-skill-test.mjs";
 
@@ -108,6 +109,65 @@ test("fixture-backed repeated execution cases degrade when no outcome consensus 
 	assert.equal(packet.evaluations[0].metrics.duration_ms, 2000);
 });
 
+test("fixture-backed repeated trigger cases aggregate telemetry medians", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-skill-test-telemetry-"));
+	const casesFile = join(root, "cases.json");
+	const fixtureResultsFile = join(root, "fixture-results.json");
+	writeFileSync(casesFile, `${JSON.stringify({
+		schemaVersion: "cautilus.skill_test_cases.v1",
+		skillId: "demo",
+		cases: [
+			{
+				caseId: "trigger-demo",
+				evaluationKind: "trigger",
+				prompt: "Use $demo.",
+				expectedTrigger: "must_invoke",
+				repeatCount: 2,
+				minConsensusCount: 2,
+			},
+		],
+	}, null, 2)}\n`);
+	writeFileSync(fixtureResultsFile, `${JSON.stringify({
+		"trigger-demo": [
+			{
+				invoked: true,
+				summary: "Run one passed.",
+				duration_ms: 1000,
+				metrics: { total_tokens: 100, cost_usd: 0.01 },
+				telemetry: { provider: "anthropic", model: "claude-sonnet-4-6", prompt_tokens: 80, completion_tokens: 20, total_tokens: 100, cost_usd: 0.01 },
+			},
+			{
+				invoked: true,
+				summary: "Run two passed.",
+				duration_ms: 3000,
+				metrics: { total_tokens: 300, cost_usd: 0.03 },
+				telemetry: { provider: "anthropic", model: "claude-sonnet-4-6", prompt_tokens: 240, completion_tokens: 60, total_tokens: 300, cost_usd: 0.03 },
+			},
+		],
+	}, null, 2)}\n`);
+	const packet = buildObservedSkillEvaluationInput({
+		repoRoot: process.cwd(),
+		workspace: process.cwd(),
+		casesFile,
+		artifactDir: join(root, "artifacts"),
+		backend: "fixture",
+		fixtureResultsFile,
+	});
+	assert.deepEqual(packet.evaluations[0].telemetry, {
+		provider: "anthropic",
+		model: "claude-sonnet-4-6",
+		prompt_tokens: 160,
+		completion_tokens: 40,
+		total_tokens: 200,
+		cost_usd: 0.02,
+	});
+	assert.deepEqual(packet.evaluations[0].metrics, {
+		duration_ms: 2000,
+		total_tokens: 200,
+		cost_usd: 0.02,
+	});
+});
+
 test("codexArgs applies runtime-specific model, effort, and config overrides", () => {
 	assert.deepEqual(
 		codexArgs({
@@ -144,4 +204,45 @@ test("codexArgs applies runtime-specific model, effort, and config overrides", (
 			"-",
 		],
 	);
+});
+
+test("normalizeObservedResult preserves backend telemetry and numeric metrics", () => {
+	const observed = normalizeObservedResult(
+		{
+			evaluationKind: "execution",
+			caseId: "execution-demo",
+		},
+		{
+			invoked: true,
+			summary: "Completed.",
+			outcome: "passed",
+			metrics: {
+				total_tokens: 1234,
+				cost_usd: 0.01234,
+			},
+			telemetry: {
+				provider: "anthropic",
+				model: "claude-sonnet-4-6",
+				prompt_tokens: 900,
+				completion_tokens: 334,
+				total_tokens: 1234,
+				cost_usd: 0.01234,
+			},
+		},
+		2500,
+		[],
+	);
+	assert.deepEqual(observed.metrics, {
+		duration_ms: 2500,
+		total_tokens: 1234,
+		cost_usd: 0.01234,
+	});
+	assert.deepEqual(observed.telemetry, {
+		provider: "anthropic",
+		model: "claude-sonnet-4-6",
+		prompt_tokens: 900,
+		completion_tokens: 334,
+		total_tokens: 1234,
+		cost_usd: 0.01234,
+	});
 });

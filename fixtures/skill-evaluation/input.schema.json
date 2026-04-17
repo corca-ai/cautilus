@@ -91,6 +91,33 @@
               }
             }
           },
+          "telemetry": {
+            "type": "object",
+            "properties": {
+              "provider": {
+                "type": "string"
+              },
+              "model": {
+                "type": "string"
+              },
+              "prompt_tokens": {
+                "type": "number",
+                "minimum": 0
+              },
+              "completion_tokens": {
+                "type": "number",
+                "minimum": 0
+              },
+              "total_tokens": {
+                "type": "number",
+                "minimum": 0
+              },
+              "cost_usd": {
+                "type": "number",
+                "minimum": 0
+              }
+            }
+          },
           "sampling": {
             "type": "object",
             "required": ["sampleCount"],
