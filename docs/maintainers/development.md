@@ -60,6 +60,7 @@ npm run docs:preview -- docs/guides docs/specs/index.spec.md
 
 `docs:preview:changed` only renders matching markdown files currently shown by `git status`.
 Pass explicit files or directories after `--` when you want to inspect one guide or one prose subtree instead of the default landing docs plus public specs.
+`quality` and `narrative` can reuse the checked-in `.agents/markdown-preview.yaml` scope through the shared charness support helper.
 The preview command is intentionally advisory, not part of `pre-push`.
 Install `glow` first if the command is missing on `PATH`:
 
