@@ -81,5 +81,4 @@ ae98ee8 Surface rate-limit contamination in reports
 - [docs/contracts/reporting.md](../contracts/reporting.md)
 - [docs/maintainers/consumer-readiness.md](../maintainers/consumer-readiness.md)
 - [docs/specs/instruction-surface.spec.md](../specs/instruction-surface.spec.md)
-- [docs/internal/research/ceal-consumer-follow-up-2026-04-17.md](./research/ceal-consumer-follow-up-2026-04-17.md)
 - [skills/cautilus/SKILL.md](../../skills/cautilus/SKILL.md)

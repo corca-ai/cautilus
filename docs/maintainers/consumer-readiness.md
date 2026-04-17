@@ -74,7 +74,6 @@ Evidence:
   The value of that run was twofold:
   it exposed repairable consumer-readiness gaps, and after those were fixed it produced an honest rejection rather than a false positive.
   The report surface is now also expected to distinguish a clean behavior regression from provider-contaminated evidence when persisted artifacts carry signatures such as repeated rate limits.
-  See [internal research follow-up](../internal/research/ceal-consumer-follow-up-2026-04-17.md).
 
 What this means:
 
