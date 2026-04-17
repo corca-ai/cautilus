@@ -27,17 +27,21 @@ cautilus doctor
 
 If you want to hand setup to an agent, paste this:
 
-> ```md
-> Read and follow: https://raw.githubusercontent.com/corca-ai/cautilus/refs/heads/main/install.md
->
-> Install Cautilus on this machine.
-> Then cd into /path/to/host-repo, install the bundled skill, and verify the setup there.
-> ```
+```md
+Read and follow: https://raw.githubusercontent.com/corca-ai/cautilus/refs/heads/main/install.md
 
-For Homebrew, update, and version surfaces see [install.md](./install.md).
-For the full command catalog see [docs/cli-reference.md](./docs/cli-reference.md).
-For the standing executable spec report, see <https://corca-ai.github.io/cautilus/>.
-That public report is generated with `specdown` from the repo's full cheap public spec suite, with each page pairing a bounded product claim with a small executable proof.
+Install Cautilus on this machine.
+Then cd into /path/to/host-repo, install the bundled skill, and verify the setup there.
+```
+
+Quick links:
+
+- Homebrew, update, and version details: [install.md](./install.md)
+- Full command catalog: [docs/cli-reference.md](./docs/cli-reference.md)
+- Public executable spec report: <https://corca-ai.github.io/cautilus/>
+
+That report is generated with `specdown` from the repo's cheap public spec suite.
+Each page pairs one bounded product claim with a small executable proof.
 
 ## One Reviewable Decision Loop
 

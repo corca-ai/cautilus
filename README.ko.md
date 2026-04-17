@@ -30,17 +30,21 @@ cautilus doctor
 
 에이전트에게 설치를 맡길 거라면, 이 프롬프트를 그대로 주면 됩니다:
 
-> ```md
-> Read and follow: https://raw.githubusercontent.com/corca-ai/cautilus/refs/heads/main/install.md
->
-> Install Cautilus on this machine.
-> Then cd into /path/to/host-repo, install the bundled skill, and verify the setup there.
-> ```
+```md
+Read and follow: https://raw.githubusercontent.com/corca-ai/cautilus/refs/heads/main/install.md
 
-Homebrew 설치, 업데이트, 버전 표면은 [install.md](./install.md)를 참고하세요.
-전체 명령 카탈로그는 [docs/cli-reference.md](./docs/cli-reference.md)에 있습니다.
-상세 executable spec은 공개 리포트 <https://corca-ai.github.io/cautilus/>에서 확인하세요.
-이 리포트는 저장소의 저비용 public spec suite 전체를 `specdown`으로 렌더한 결과이며, 각 페이지는 제품 주장과 작은 executable proof를 함께 보여줍니다.
+Install Cautilus on this machine.
+Then cd into /path/to/host-repo, install the bundled skill, and verify the setup there.
+```
+
+바로 가기:
+
+- Homebrew 설치, 업데이트, 버전 안내: [install.md](./install.md)
+- 전체 명령 카탈로그: [docs/cli-reference.md](./docs/cli-reference.md)
+- 공개 executable spec 리포트: <https://corca-ai.github.io/cautilus/>
+
+이 리포트는 저장소의 저비용 public spec suite를 `specdown`으로 렌더한 결과입니다.
+각 페이지는 하나의 제품 주장과 작은 executable proof를 함께 보여줍니다.
 
 ## 하나의 검토 가능한 의사결정 루프
 
