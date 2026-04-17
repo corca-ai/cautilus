@@ -43,8 +43,8 @@ This repo is the standalone product boundary for `Cautilus`.
 
 ## Skill Routing
 
-Prefer installed charness public skills before improvising a repo-local workflow.
-If the right skill is unclear or you need the current installed list, use `find-skills`.
+Always look for an installed charness skill before improvising a repo-local workflow.
+If the right skill is unclear or you need the current installed list, use `find-skills` before guessing.
 Keep this section intentionally non-exhaustive so `AGENTS.md` does not drift every time charness adds or renames a skill.
 
 ## Working Rules
