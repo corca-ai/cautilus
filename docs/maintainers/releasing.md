@@ -21,7 +21,7 @@ In this repo today that resolves to:
 1. Prepare the checked-in release metadata with the target version.
 
 ```bash
-npm run release:prepare -- 0.2.4
+npm run release:prepare -- <next-version>
 ```
 
 This updates the maintained version surfaces together:
@@ -43,19 +43,27 @@ npm run test:on-demand
 cautilus --version
 ```
 
-3. Commit and tag:
+3. Commit the checked-in release metadata:
 
 ```bash
-git tag v0.2.4
-git push origin main --tags
+git commit -am "Prepare v<next-version> release"
 ```
+
+4. Publish the release ref in one ordered helper:
+
+```bash
+npm run release:publish -- --version <next-version>
+```
+
+This helper refuses a dirty worktree, verifies the checked-in release surface already matches the target version, pushes the current branch first, then creates `v<version>` at `HEAD`, verifies the tag target, and pushes only that tag.
+Do not replace it with ad-hoc parallel `git commit` / `git tag` / `git push --tags` invocations.
 
 The checked-in release workflow at [release-artifacts.yml](../../.github/workflows/release-artifacts.yml) will re-run `verify`, build the tagged binary assets, compute checksums, render the Homebrew formula, publish the formula to the tap repo when `HOMEBREW_TAP_TOKEN` is available, generate GitHub artifact attestations from the checksum manifest, and attach those artifacts to the GitHub release.
 
-4. After GitHub exposes the release assets, verify the published release surface:
+5. After GitHub exposes the release assets, verify the published release surface:
 
 ```bash
-npm run release:verify-public -- --version v0.3.0
+npm run release:verify-public -- --version v<next-version>
 ```
 
 This checks the tagged GitHub release for:
@@ -66,10 +74,10 @@ This checks the tagged GitHub release for:
 - the checked-in release notes asset
 - the published Homebrew tap formula, unless `--skip-tap-check` is used
 
-5. Verify the public installer path:
+6. Verify the public installer path:
 
 ```bash
-npm run release:smoke-install -- --channel install_sh --version v0.3.0
+npm run release:smoke-install -- --channel install_sh --version v<next-version>
 ```
 
 This runs the public `install.sh` flow inside an isolated temp install root, then verifies:
@@ -78,7 +86,7 @@ This runs the public `install.sh` flow inside an isolated temp install root, the
 - `cautilus version --verbose`
 - `cautilus update`
 
-6. Verify the supported install smoke matrix before treating the release line as closed:
+7. Verify the supported install smoke matrix before treating the release line as closed:
 
 - native macOS + `install.sh`
 - native macOS + `brew install corca-ai/tap/cautilus`
@@ -102,41 +110,41 @@ The product-owned smoke helper can also drive the Homebrew path, but it requires
 On a Linux or macOS machine that already has Homebrew installed, use the dedicated on-demand npm script (`--allow-system-mutation` is wired in):
 
 ```bash
-npm run release:smoke-install:brew -- --version v0.3.0
+npm run release:smoke-install:brew -- --version v<next-version>
 ```
 
 The underlying helper is also reachable without the npm wrapper if another flag combination is needed:
 
 ```bash
-npm run release:smoke-install -- --channel homebrew --version v0.3.0 --allow-system-mutation
+npm run release:smoke-install -- --channel homebrew --version v<next-version> --allow-system-mutation
 ```
 
 `release:smoke-install:brew` is intentionally on-demand only: it is not wired into `verify`, pre-push hooks, or CI.
 Run it when a release line is being closed, not on every repo change.
 
-7. Verify the public provenance for one released binary with GitHub CLI:
+8. Verify the public provenance for one released binary with GitHub CLI:
 
 ```bash
 gh attestation verify \
-  "cautilus_0.2.0_linux_x64.tar.gz" \
+  "cautilus_<next-version>_linux_x64.tar.gz" \
   --repo corca-ai/cautilus
 ```
 
-8. If you need the source-archive checksum for the Homebrew formula manually:
+9. If you need the source-archive checksum for the Homebrew formula manually:
 
 ```bash
-node ./scripts/release/fetch-github-archive-sha256.mjs --version v0.2.0
+node ./scripts/release/fetch-github-archive-sha256.mjs --version v<next-version>
 ```
 
-9. Render the Homebrew formula body:
+10. Render the Homebrew formula body:
 
 ```bash
 node ./scripts/release/render-homebrew-formula.mjs \
-  --version v0.2.0 \
+  --version v<next-version> \
   --sha256 <sha256>
 ```
 
-10. Confirm the Homebrew tap repo was updated with the rendered formula if you skipped the scripted tap check.
+11. Confirm the Homebrew tap repo was updated with the rendered formula if you skipped the scripted tap check.
     The default target for this repo is `corca-ai/homebrew-tap`.
 
 ## Guardrails
@@ -145,3 +153,4 @@ node ./scripts/release/render-homebrew-formula.mjs \
 - Keep checksum manifests and GitHub artifact attestations aligned; if the release workflow shape changes, update the verification example above in the same change.
 - If the installer contract changes, update [README.md](../../README.md), [install.md](../../install.md), [handoff.md](../internal/handoff.md), and [release-boundary.md](./release-boundary.md) in the same work unit.
 - Keep the tap publication token name aligned with the shared org secret: `HOMEBREW_TAP_TOKEN`.
+- Keep branch push and tag push in the checked-in helper order; do not recreate the release race with manual `git push --tags`.

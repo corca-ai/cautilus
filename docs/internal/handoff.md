@@ -32,13 +32,8 @@ ae98ee8 Surface rate-limit contamination in reports
 010b808 Record workflow consumer contamination reporting
 ```
 
-이번 세션에서 아직 push 전 상태로 마무리해야 하는 작업:
-
-- `version --verbose` product summary
-- bundled skill 의 current report surface / outputs 설명
-- README / CLI reference 의 first-value wording 보강
-- handoff 갱신
-- release prepare, tag, push
+이번 세션 이후 `v0.5.1` 까지는 이미 나갔다.
+다음 릴리즈부터는 manual `git tag` 대신 checked-in `release:publish` helper 를 쓴다.
 
 ## Release Note
 
@@ -72,9 +67,8 @@ ae98ee8 Surface rate-limit contamination in reports
 4. `npm run test:on-demand`
 5. `npm run release:prepare -- <next-version>`
 6. release metadata 커밋
-7. `git tag v<next-version>`
-8. `git push origin main --tags`
-9. tag workflow 가 끝난 뒤 `npm run release:verify-public -- --version v<next-version>`
+7. `npm run release:publish -- --version <next-version>`
+8. tag workflow 가 끝난 뒤 `npm run release:verify-public -- --version v<next-version>`
 
 ## References
 
