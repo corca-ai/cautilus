@@ -8,7 +8,7 @@ This note intentionally groups evidence by consumer archetype rather than by spe
 
 ## Snapshot
 
-The checks below describe the current readiness split as of 2026-04-13 UTC.
+The checks below describe the current readiness split as of 2026-04-17 UTC.
 
 ## Cautilus
 
@@ -69,6 +69,11 @@ Evidence:
 - the external proof bar remains:
   - `cautilus doctor --repo-root <workflow-consumer-path>` returns `ready`
   - one deep path such as `mode evaluate` or `review variants` passes against that consumer before release
+- one real external workflow-style consumer run now exists in internal research:
+  it reached `doctor ready`, completed `mode evaluate --mode held_out`, and completed `review variants` with an explicit schema-file override.
+  The value of that run was twofold:
+  it exposed repairable consumer-readiness gaps, and after those were fixed it produced an honest rejection rather than a false positive.
+  See [internal research follow-up](../internal/research/ceal-consumer-follow-up-2026-04-17.md).
 
 What this means:
 
