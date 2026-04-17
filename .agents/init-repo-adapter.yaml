@@ -1,0 +1,10 @@
+version: 1
+repo: cautilus
+language: en
+output_dir: charness-artifacts/init-repo
+surfaces:
+  roadmap: docs/master-plan.md
+  operator_acceptance: docs/maintainers/operator-acceptance.md
+  handoff: docs/internal/handoff.md
+  install: install.md
+  uninstall: null
