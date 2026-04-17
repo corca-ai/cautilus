@@ -25,11 +25,18 @@ export const CLAUDE_CLI_ENV = {
 export function claudeArgs(options) {
 	const args = [
 		"-p",
+		"--no-session-persistence",
 		"--output-format", "json",
 		"--exclude-dynamic-system-prompt-sections",
 	];
-	if (options.model) {
-		args.push("--model", options.model);
+	if (options.claudeModel ?? options.model) {
+		args.push("--model", options.claudeModel ?? options.model);
+	}
+	if (options.claudePermissionMode) {
+		args.push("--permission-mode", options.claudePermissionMode);
+	}
+	if (options.claudeAllowedTools) {
+		args.push("--allowedTools", options.claudeAllowedTools);
 	}
 	return args;
 }

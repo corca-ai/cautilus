@@ -63,14 +63,33 @@ test("parseClaudeOutput throws on unparseable input", () => {
 test("claudeArgs includes json output and dynamic prompt exclusion", () => {
 	assert.deepEqual(claudeArgs({ model: null }), [
 		"-p",
+		"--no-session-persistence",
 		"--output-format", "json",
 		"--exclude-dynamic-system-prompt-sections",
 	]);
 	assert.deepEqual(claudeArgs({ model: "claude-opus-4-1" }), [
 		"-p",
+		"--no-session-persistence",
 		"--output-format", "json",
 		"--exclude-dynamic-system-prompt-sections",
 		"--model", "claude-opus-4-1",
+	]);
+});
+
+test("claudeArgs applies runtime-specific model and permission settings", () => {
+	assert.deepEqual(claudeArgs({
+		model: "claude-opus-4-1",
+		claudeModel: "claude-sonnet-4-6",
+		claudePermissionMode: "dontAsk",
+		claudeAllowedTools: "Bash(cautilus *)",
+	}), [
+		"-p",
+		"--no-session-persistence",
+		"--output-format", "json",
+		"--exclude-dynamic-system-prompt-sections",
+		"--model", "claude-sonnet-4-6",
+		"--permission-mode", "dontAsk",
+		"--allowedTools", "Bash(cautilus *)",
 	]);
 });
 

@@ -54,6 +54,8 @@ can do; they only strip operator-specific noise.
 ### Claude CLI flags
 
 - `-p` (print mode), `--output-format json`
+- `--no-session-persistence` — disables transcript writes for `-p` runs so
+  headless evaluation does not inherit resumable local session state
 - `--exclude-dynamic-system-prompt-sections` — moves per-machine sections
   (cwd, env info, memory paths, git status) out of the system prompt. Safe
   because cautilus does not replace the system prompt, so this flag has its
@@ -70,6 +72,20 @@ Current args (`codexArgs` in `scripts/agent-runtime/run-local-skill-test.mjs`):
 
 Sandbox mode is intentionally caller-controlled (`read-only` or
 `workspace-write`) because different skills have different authority needs.
+
+### Self-dogfood adapter-only runtime knobs
+
+The checked-in `self-dogfood-skill-test` adapter now applies a narrower
+runtime-specific tuning layer:
+
+- Codex: `--model gpt-5.4-mini`, `-c model_reasoning_effort="low"`,
+  `-c project_doc_max_bytes=0`
+- Claude: `--permission-mode dontAsk`,
+  `--allowedTools 'Bash(cautilus *)'`
+
+These are **not** generic product defaults.
+They are repo-local adapter choices for `Cautilus` self-dogfood because that
+surface has a known command contract and a known checked-in project doc size.
 
 ## Intentionally NOT applied (fidelity preservation)
 
@@ -189,6 +205,49 @@ Before widening what is stripped by default, measure:
 5. **`CODEX_HOME` isolation** — follow sah-cli issue #4. Run a subset of
    codex test cases with an auth-only `CODEX_HOME` and measure input-token
    delta against the default.
+
+## Experiments run on April 17, 2026
+
+### Claude headless permissions
+
+Official Claude Code headless docs confirm that `-p` runs accept
+`--permission-mode`, `dontAsk` denies any non-preapproved tool use, and
+`--allowedTools` can preapprove specific Bash command prefixes.
+That matched the observed execution blocker exactly: once the adapter passed
+`--permission-mode dontAsk --allowedTools 'Bash(cautilus *)'`, the execution
+case stopped failing on Bash permission denial.
+
+This did **not** make the Claude trigger case fully stable.
+On the current machine and account, the trigger case still showed 1/2 success
+for both Opus and Sonnet because one repeat hit the 90s runner timeout with no
+stdout payload.
+So the permission fix is real, but Claude trigger reproducibility remains an
+open latency/runtime issue.
+
+### Codex prompt-input sweep
+
+Using `codex debug prompt-input` in this repo with the same user prompt:
+
+- baseline: `25671` visible input chars
+- `project_doc_max_bytes=0`: `20794` chars (`-4877`)
+- `include_environment_context=false`: `25488` chars (`-183`)
+- `include_apps_instructions=false`: `25025` chars (`-646`)
+
+For this repo, `project_doc_max_bytes=0` was the only materially large win.
+That setting removes the `AGENTS.md` project doc block from the model-visible
+prompt in this self-dogfood seam.
+
+### Codex self-dogfood outcome
+
+With `gpt-5.4-mini`, low reasoning effort, and `project_doc_max_bytes=0`, the
+checked-in `self-dogfood-skill-test` adapter passed again on Codex:
+
+- trigger: `2/2` matched `must_invoke`
+- execution: `passed`
+
+This makes `project_doc_max_bytes=0` an applied repo-local adapter
+optimization for the current `Cautilus` self-dogfood surface, not yet a
+generic product default.
 
 ## Where this document should be surfaced
 

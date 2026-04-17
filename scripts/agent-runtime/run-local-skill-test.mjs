@@ -15,7 +15,7 @@ export { normalizeSkillTestCaseSuite } from "./skill-test-case-suite.mjs";
 function usage(exitCode = 0) {
 	const text = [
 		"Usage:",
-		"  node ./scripts/agent-runtime/run-local-skill-test.mjs --repo-root <dir> --workspace <dir> --cases-file <file> --output-file <file> [--artifact-dir <dir>] [--backend codex_exec|fixture] [--fixture-results-file <file>] [--sandbox read-only|workspace-write] [--timeout-ms <ms>] [--model <model>] [--reasoning-effort <level>]",
+		"  node ./scripts/agent-runtime/run-local-skill-test.mjs --repo-root <dir> --workspace <dir> --cases-file <file> --output-file <file> [--artifact-dir <dir>] [--backend codex_exec|fixture] [--fixture-results-file <file>] [--sandbox read-only|workspace-write] [--timeout-ms <ms>] [--model <model>] [--reasoning-effort <level>] [--codex-model <model>] [--codex-reasoning-effort <level>] [--codex-config <key=value>] [--claude-model <model>] [--claude-permission-mode <mode>] [--claude-allowed-tools <rules>]",
 	].join("\n");
 	const out = exitCode === 0 ? process.stdout : process.stderr;
 	out.write(`${text}\n`);
@@ -56,6 +56,12 @@ function defaultOptions() {
 		timeoutMs: 120000,
 		model: null,
 		reasoningEffort: null,
+		codexModel: null,
+		codexReasoningEffort: null,
+		codexConfigOverrides: [],
+		claudeModel: null,
+		claudePermissionMode: null,
+		claudeAllowedTools: null,
 	};
 }
 
@@ -89,6 +95,24 @@ const VALUE_OPTIONS = {
 	},
 	"--reasoning-effort": (options, value) => {
 		options.reasoningEffort = value;
+	},
+	"--codex-model": (options, value) => {
+		options.codexModel = value;
+	},
+	"--codex-reasoning-effort": (options, value) => {
+		options.codexReasoningEffort = value;
+	},
+	"--codex-config": (options, value) => {
+		options.codexConfigOverrides.push(value);
+	},
+	"--claude-model": (options, value) => {
+		options.claudeModel = value;
+	},
+	"--claude-permission-mode": (options, value) => {
+		options.claudePermissionMode = value;
+	},
+	"--claude-allowed-tools": (options, value) => {
+		options.claudeAllowedTools = value;
 	},
 };
 
@@ -219,7 +243,7 @@ export function sampleDir(caseDir, sampleIndex, repeatCount) {
 	return join(caseDir, `sample-${sampleIndex + 1}`);
 }
 
-function codexArgs(options, schemaFile, outputFile) {
+export function codexArgs(options, schemaFile, outputFile) {
 	const args = [
 		"exec",
 		"-C",
@@ -232,11 +256,14 @@ function codexArgs(options, schemaFile, outputFile) {
 		"-o",
 		outputFile,
 	];
-	if (options.model) {
-		args.push("--model", options.model);
+	if (options.codexModel ?? options.model) {
+		args.push("--model", options.codexModel ?? options.model);
 	}
-	if (options.reasoningEffort) {
-		args.push("-c", `model_reasoning_effort="${options.reasoningEffort}"`);
+	if (options.codexReasoningEffort ?? options.reasoningEffort) {
+		args.push("-c", `model_reasoning_effort="${options.codexReasoningEffort ?? options.reasoningEffort}"`);
+	}
+	for (const override of options.codexConfigOverrides ?? []) {
+		args.push("-c", override);
 	}
 	args.push("-");
 	return args;

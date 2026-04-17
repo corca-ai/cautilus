@@ -4,7 +4,11 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
 
-import { buildObservedSkillEvaluationInput, normalizeSkillTestCaseSuite } from "./run-local-skill-test.mjs";
+import {
+	buildObservedSkillEvaluationInput,
+	codexArgs,
+	normalizeSkillTestCaseSuite,
+} from "./run-local-skill-test.mjs";
 
 test("buildObservedSkillEvaluationInput materializes a normalized packet from fixture-backed skill test results", () => {
 	const artifactDir = mkdtempSync(join(tmpdir(), "cautilus-skill-test-"));
@@ -102,4 +106,42 @@ test("fixture-backed repeated execution cases degrade when no outcome consensus 
 	assert.equal(packet.evaluations[0].outcome, "degraded");
 	assert.ok(packet.evaluations[0].summary.includes("unstable"));
 	assert.equal(packet.evaluations[0].metrics.duration_ms, 2000);
+});
+
+test("codexArgs applies runtime-specific model, effort, and config overrides", () => {
+	assert.deepEqual(
+		codexArgs({
+			workspace: "/repo",
+			sandbox: "workspace-write",
+			model: "gpt-5.4",
+			reasoningEffort: "high",
+			codexModel: "gpt-5.4-mini",
+			codexReasoningEffort: "low",
+			codexConfigOverrides: [
+				"project_doc_max_bytes=0",
+				"include_apps_instructions=false",
+			],
+		}, "/tmp/schema.json", "/tmp/result.json"),
+		[
+			"exec",
+			"-C",
+			"/repo",
+			"--sandbox",
+			"workspace-write",
+			"--ephemeral",
+			"--output-schema",
+			"/tmp/schema.json",
+			"-o",
+			"/tmp/result.json",
+			"--model",
+			"gpt-5.4-mini",
+			"-c",
+			"model_reasoning_effort=\"low\"",
+			"-c",
+			"project_doc_max_bytes=0",
+			"-c",
+			"include_apps_instructions=false",
+			"-",
+		],
+	);
 });
