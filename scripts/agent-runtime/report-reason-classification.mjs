@@ -1,13 +1,24 @@
 import { existsSync, readFileSync } from "node:fs";
 
-const PROVIDER_RATE_LIMIT_PATTERNS = [
+const EXPLICIT_PROVIDER_RATE_LIMIT_PATTERNS = [
 	/rate limit/i,
 	/rate_limit/i,
 	/too many requests/i,
 	/tokens per min/i,
 	/requests per min/i,
-	/\b429\b/,
 ];
+const HTTP_429_CONTEXT_PATTERN = /\b(http|status|statuscode|error|errorcode|code|response|retry[-_]after)\b/i;
+const STANDALONE_429_PATTERN = /\b429\b/;
+
+function isProviderRateLimitLine(line) {
+	if (EXPLICIT_PROVIDER_RATE_LIMIT_PATTERNS.some((pattern) => pattern.test(line))) {
+		return true;
+	}
+	if (!STANDALONE_429_PATTERN.test(line)) {
+		return false;
+	}
+	return HTTP_429_CONTEXT_PATTERN.test(line);
+}
 
 function uniqueStrings(values) {
 	return Array.from(new Set(values.filter((value) => typeof value === "string" && value.length > 0)));
@@ -20,7 +31,7 @@ function firstMatchingLine(text) {
 		if (!line) {
 			continue;
 		}
-		if (PROVIDER_RATE_LIMIT_PATTERNS.some((pattern) => pattern.test(line))) {
+		if (isProviderRateLimitLine(line)) {
 			return line;
 		}
 	}

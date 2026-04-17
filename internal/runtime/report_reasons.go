@@ -2,6 +2,7 @@ package runtime
 
 import (
 	"os"
+	"regexp"
 	"strconv"
 	"strings"
 )
@@ -12,8 +13,10 @@ var providerRateLimitSignatures = []string{
 	"too many requests",
 	"tokens per min",
 	"requests per min",
-	"429",
 }
+
+var providerRateLimitContextPattern = regexp.MustCompile(`(?i)\b(http|status|statuscode|error|errorcode|code|response|retry[-_]after)\b`)
+var standalone429Pattern = regexp.MustCompile(`\b429\b`)
 
 type artifactSignal struct {
 	path    string
@@ -39,6 +42,9 @@ func firstRateLimitExcerpt(text string) string {
 			if strings.Contains(lowerLine, signature) {
 				return line
 			}
+		}
+		if standalone429Pattern.MatchString(lowerLine) && providerRateLimitContextPattern.MatchString(lowerLine) {
+			return line
 		}
 	}
 	return ""
