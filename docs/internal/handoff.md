@@ -15,26 +15,30 @@
 
 ## Current State
 
-2026-04-18 세션 기준 `main` 은 `origin/main` 앞에 여러 커밋이 있다.
-핵심 변화는 네 묶음이다.
+2026-04-18 세션 기준 `main` 은 `origin/main` 과 sync 되어 있다.
+핵심 변화는 여섯 묶음이다.
 
 1. external workflow consumer proof 를 archetype 수준으로 정리했다.
 2. `mode evaluate` / `report.json` 이 comparison-backed rejection 과 pure execution failure 를 구분한다.
 3. persisted artifact 에 rate limit 시그니처가 있으면 `report.json` 에 `reasonCodes` 와 `warnings` 로 contamination 을 올린다.
 4. `version --verbose`, README, CLI reference, bundled skill 이 현재 product surface 와 report 해석 규칙을 더 직접 설명한다.
 5. `instruction-surface` 를 다음 구현 slice 로 올리기 위한 planned spec 을 [docs/specs/instruction-surface.spec.md](../specs/instruction-surface.spec.md) 에 고정했다.
+6. `v0.5.2` release 가 나갔고, `release:publish` helper 로 branch push 와 tag push 를 직렬화했다.
 
 ## Recent Commits
 
-이미 local `main` 에 있는 주요 커밋:
+최근 주요 커밋:
 
 ```text
-ae98ee8 Surface rate-limit contamination in reports
-010b808 Record workflow consumer contamination reporting
+b439f03 Prepare v0.5.2 release
+b9c5671 Make rate-limit contamination detection less brittle
+21fbb8f Specify the planned instruction-surface boundary
+9cdbfc7 Strengthen compact charness skill routing guidance
+bdbbc30 Remove the retired Ceal follow-up note
 ```
 
-이번 세션 이후 `v0.5.1` 까지는 이미 나갔다.
-다음 릴리즈부터는 manual `git tag` 대신 checked-in `release:publish` helper 를 쓴다.
+`v0.5.2` 는 `origin/main` 과 같은 commit 을 가리킨다.
+다음 릴리즈부터도 manual `git tag` 대신 checked-in `release:publish` helper 를 유지한다.
 
 ## Release Note
 
@@ -53,6 +57,13 @@ ae98ee8 Surface rate-limit contamination in reports
 
 다음 세션의 1순위는 `instruction-surface` 구현이다.
 핵심은 `AGENTS.md` 만이 아니라 `CLAUDE.md`, symlink, nested instruction file, linked progressive docs 까지 포함한 실제 instruction surface fidelity 를 1급 평가 표면으로 올리는 것이다.
+
+같이 기억할 update seam:
+
+- `cautilus update --overwrite-skill` 자체는 유효한 방향으로 보였지만, machine-wide scan 은 하지 않기로 했다.
+- 대신 `~/.cautilus` 아래의 명시적 managed install registry 를 두는 방향이 유력하다.
+- 추천 이름은 `managed-installs.json` 이고, 첫 slice 는 repo-local bundled skill install entry 만 기록한다.
+- 목표는 `cautilus update` 가 charness 를 노출하지 않으면서도 `Cautilus` 가 직접 관리하는 repo 들의 skill refresh 를 opt-in 으로 제공하게 하는 것이다.
 
 그 다음 후보는 두 가지다.
 
