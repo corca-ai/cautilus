@@ -1,16 +1,39 @@
 # Current Product
 
-`Cautilus` is currently a packet-first evaluation toolkit.
-It is not an admin UI, a benchmark scrapbook, or an open-ended autonomous optimizer.
-The shipped boundary is narrower and more reusable:
+`Cautilus` currently helps an operator do one concrete job:
+turn recent behavior evidence into a bounded evaluation decision that can be reopened later without redoing the whole analysis.
 
-- normalize raw host evidence into archetype-shaped proposal inputs
-- turn those inputs into reusable scenario proposals
-- build machine-readable report, evidence, and review packets
-- reopen the same packets in later review and HTML flows instead of re-mining evidence ad hoc
+Today that job looks like this:
+
+- gather recent behavior signals and turn them into reusable scenario proposals
+- run a candidate through held-out and review-oriented checks
+- package the result into report, evidence, and review artifacts
+- reopen the same result later in JSON or HTML without re-mining raw logs
+
+That is why the product is packet-first.
+The packet layer is not the story the operator buys.
+It is the mechanism that keeps the decision durable, inspectable, and reusable across CLI, review, and HTML surfaces.
+
+It is not:
+
+- an admin UI
+- a benchmark scrapbook
+- an open-ended autonomous optimizer
 
 The detailed packet contracts live under `docs/contracts/`.
 The main seams referenced by this page are `docs/contracts/scenario-proposal-inputs.md`, `docs/contracts/reporting.md`, `docs/contracts/evidence-bundle.md`, and `docs/contracts/review-packet.md`.
+
+## What An Operator Gets
+
+One operator-friendly way to read the current product is as a four-step loop:
+
+1. Capture a scenario worth protecting.
+2. Evaluate a candidate against that scenario and related checks.
+3. Record what improved, regressed, or still needs human judgment.
+4. Reopen the same decision later from files instead of memory.
+
+The important promise is not merely "there is JSON on disk."
+The promise is that a future maintainer can reopen the same evaluation decision, see what changed, and understand why the recommendation was `accept-now`, `defer`, or `reject`.
 
 ## What This Spec Does Not Claim
 
@@ -23,10 +46,11 @@ Those seams may exist elsewhere in the product or roadmap, but they are not the 
 
 ## Executable Proof
 
-The current product should be able to turn checked-in fixture data into reusable packets without any LLM call.
+The current product should be able to turn checked-in fixture data into one reusable evaluation decision without any LLM call.
+The proof below checks both the machine-readable packet boundaries and the reader-facing statements inside those artifacts.
 
 ```run:shell
-# Build reusable proposal, report, evidence, and review packets from checked-in fixtures.
+# Build one proposal-to-review evaluation bundle from checked-in fixtures.
 tmpdir=$(mktemp -d)
 ./bin/cautilus scenario prepare-input --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json --family fast_regression --window-days 14 --now 2026-04-11T00:00:00.000Z --output "$tmpdir/proposal-input.json" >/dev/null
 ./bin/cautilus scenario propose --input "$tmpdir/proposal-input.json" --output "$tmpdir/proposals.json" >/dev/null
@@ -38,6 +62,8 @@ grep -q '"schemaVersion": "cautilus.scenario_proposals.v1"' "$tmpdir/proposals.j
 grep -q '"schemaVersion": "cautilus.report_packet.v2"' "$tmpdir/report.json"
 grep -q '"title": "Refresh review-after-retro scenario from recent activity"' "$tmpdir/proposals.json"
 grep -q '"intent": "The operator should understand why a workflow step failed and how to recover."' "$tmpdir/report.json"
+grep -q '"summary": "The candidate keeps the operator recovery path explicit."' "$tmpdir/report.json"
 grep -q '"objective": {' "$tmpdir/evidence-input.json"
 grep -q '"schemaVersion": "cautilus.review_packet.v1"' "$tmpdir/review.json"
+grep -q 'Does the current deterministic self-consumer gate stay honest about what it actually proves for the product repo?' "$tmpdir/review.json"
 ```
