@@ -22,6 +22,7 @@
 2. `mode evaluate` / `report.json` 이 comparison-backed rejection 과 pure execution failure 를 구분한다.
 3. persisted artifact 에 rate limit 시그니처가 있으면 `report.json` 에 `reasonCodes` 와 `warnings` 로 contamination 을 올린다.
 4. `version --verbose`, README, CLI reference, bundled skill 이 현재 product surface 와 report 해석 규칙을 더 직접 설명한다.
+5. `instruction-surface` 를 다음 구현 slice 로 올리기 위한 planned spec 을 [docs/specs/instruction-surface.spec.md](../specs/instruction-surface.spec.md) 에 고정했다.
 
 ## Recent Commits
 
@@ -50,7 +51,10 @@ ae98ee8 Surface rate-limit contamination in reports
 
 ## Next Session
 
-릴리즈가 끝난 뒤 다음으로 가장 가치 큰 작업은 두 가지다.
+다음 세션의 1순위는 `instruction-surface` 구현이다.
+핵심은 `AGENTS.md` 만이 아니라 `CLAUDE.md`, symlink, nested instruction file, linked progressive docs 까지 포함한 실제 instruction surface fidelity 를 1급 평가 표면으로 올리는 것이다.
+
+그 다음 후보는 두 가지다.
 
 1. CLI registry / help surface 를 `usage + example` 카탈로그에서 한 단계 올리기
    `summary`, `when_to_use`, `produces`, `next_step` 를 command registry 에 넣고 `cautilus --help`, topic help, `commands --json` 에 노출하는 일.
@@ -76,5 +80,6 @@ ae98ee8 Surface rate-limit contamination in reports
 - [docs/cli-reference.md](../cli-reference.md)
 - [docs/contracts/reporting.md](../contracts/reporting.md)
 - [docs/maintainers/consumer-readiness.md](../maintainers/consumer-readiness.md)
+- [docs/specs/instruction-surface.spec.md](../specs/instruction-surface.spec.md)
 - [docs/internal/research/ceal-consumer-follow-up-2026-04-17.md](./research/ceal-consumer-follow-up-2026-04-17.md)
 - [skills/cautilus/SKILL.md](../../skills/cautilus/SKILL.md)

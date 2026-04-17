@@ -25,6 +25,8 @@ The first proof deliberately shows a small end-to-end product move: `Cautilus` t
 
 ## Documents
 
+- [Instruction Surface](instruction-surface.spec.md)
+  Planned next-slice contract for evaluating whether repo instruction files (`AGENTS.md`, `CLAUDE.md`, nested instruction files, and linked follow-up docs) actually steer agent behavior honestly.
 - [Current Product](current-product.spec.md)
   Explains the packet-first evaluation workflow that ships today: normalize inputs, build reusable packets, and reopen the result through review and HTML surfaces.
 - [Standalone Surface](standalone-surface.spec.md)

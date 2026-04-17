@@ -140,9 +140,10 @@ Still open:
 
 ## Immediate Next Moves
 
-1. Pick the next bounded improvement seam for the optimization layer: either close a specific richer merge heuristic that dogfood evidence asks for, or move to another roadmap slice rather than extending heuristics speculatively.
-2. Expand scenario-history beyond the first profile-backed comparison cache-key path toward reusable baseline results and broader compare ownership.
-3. Continue moving host-specific runtime seams out of the product boundary into consumer-owned adapters, prompts, and storage readers.
-4. Keep expanding normalization-pattern coverage as new consumer archetypes appear, while preserving one official adapter contract (`cautilus-adapter.yaml`).
-5. Decide whether to grow external-consumer onboarding into archetype-specific starter kits, and whether to upgrade the Homebrew install smoke into a managed helper.
-6. Keep widening the HTML report surface only when the packet boundary stays stable and the added page meaningfully improves human review, rather than mirroring every lower-level test seam.
+1. Implement the planned `instruction-surface` boundary so host repos can evaluate whether `AGENTS.md`, `CLAUDE.md`, nested instruction files, and linked progressive-disclosure docs actually steer agent behavior honestly.
+2. Pick the next bounded improvement seam for the optimization layer: either close a specific richer merge heuristic that dogfood evidence asks for, or move to another roadmap slice rather than extending heuristics speculatively.
+3. Expand scenario-history beyond the first profile-backed comparison cache-key path toward reusable baseline results and broader compare ownership.
+4. Continue moving host-specific runtime seams out of the product boundary into consumer-owned adapters, prompts, and storage readers.
+5. Keep expanding normalization-pattern coverage as new consumer archetypes appear, while preserving one official adapter contract (`cautilus-adapter.yaml`).
+6. Decide whether to grow external-consumer onboarding into archetype-specific starter kits, and whether to upgrade the Homebrew install smoke into a managed helper.
+7. Keep widening the HTML report surface only when the packet boundary stays stable and the added page meaningfully improves human review, rather than mirroring every lower-level test seam.
