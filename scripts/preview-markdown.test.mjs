@@ -106,10 +106,70 @@ test("previewMarkdown writes rendered artifacts with default widths", () => {
 
 		assert.equal(result.fileCount, 4);
 		assert.equal(result.renderCount, 8);
-		assert.equal(calls.filter(([cmd]) => cmd === "glow").length, 8);
+		assert.equal(calls.filter(([cmd]) => cmd === "glow").length, 9);
 		const artifact = join(root, ".artifacts", "markdown-preview", "README.md.w80.txt");
 		assert.equal(existsSync(artifact), true);
 		assert.equal(readFileSync(artifact, "utf-8"), `rendered:${join(root, "README.md")}:w80\n`);
+		const manifest = JSON.parse(readFileSync(join(root, ".artifacts", "markdown-preview", "manifest.json"), "utf-8"));
+		assert.equal(manifest.target_count, 4);
+		assert.equal(manifest.backend, "glow");
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("previewMarkdown uses shared markdown-preview config when present", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-preview-"));
+	try {
+		mkdirSync(join(root, ".agents"), { recursive: true });
+		writeFileSync(
+			join(root, ".agents", "markdown-preview.yaml"),
+			[
+				"enabled: true",
+				"backend: glow",
+				"widths:",
+				"  - 120",
+				"include:",
+				"  - README*.md",
+				"  - docs/specs/*.md",
+				"artifact_dir: .artifacts/custom-preview",
+				"",
+			].join("\n"),
+		);
+		writeFileSync(join(root, "README.md"), "# Root\n");
+		writeFileSync(join(root, "README.ko.md"), "# Korean\n");
+		mkdirSync(join(root, "docs", "specs"), { recursive: true });
+		writeFileSync(join(root, "docs", "specs", "index.spec.md"), "# Spec\n");
+		writeFileSync(join(root, "install.md"), "# Install\n");
+
+		const result = previewMarkdown(
+			root,
+			{ changed: false, specsOnly: false, stdout: false, widths: [], paths: [] },
+			{
+				spawn(cmd, args) {
+					if (cmd === "sh") {
+						return { status: 0, stdout: "/usr/bin/glow\n", stderr: "" };
+					}
+					if (cmd === "glow") {
+						return { status: 0, stdout: `rendered:${args.at(-1)}:w${args[1]}\n`, stderr: "" };
+					}
+					throw new Error(`unexpected command ${cmd}`);
+				},
+				stdout: { write() {} },
+			},
+		);
+
+		assert.equal(result.fileCount, 3);
+		assert.equal(result.renderCount, 3);
+		assert.equal(result.configPath, join(root, ".agents", "markdown-preview.yaml"));
+		assert.equal(
+			readFileSync(join(root, ".artifacts", "custom-preview", "README.ko.md.w120.txt"), "utf-8"),
+			`rendered:${join(root, "README.ko.md")}:w120\n`,
+		);
+		const manifest = JSON.parse(readFileSync(join(root, ".artifacts", "custom-preview", "manifest.json"), "utf-8"));
+		assert.equal(manifest.config_path, ".agents/markdown-preview.yaml");
+		assert.equal(manifest.target_count, 3);
+		assert.equal(existsSync(join(root, ".artifacts", "custom-preview", "install.md.w120.txt")), false);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

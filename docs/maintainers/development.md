@@ -43,12 +43,14 @@ When landing docs or public spec prose change, preview the rendered markdown ins
 npm run docs:preview
 ```
 
-This writes `glow` snapshots under `.artifacts/markdown-preview/` for:
+This writes `glow` snapshots and `manifest.json` under `.artifacts/markdown-preview/` for:
 
 - `README.md`
 - `README.ko.md`
 - `install.md`
 - `docs/specs/*.md`
+
+When `.agents/markdown-preview.yaml` exists, `docs:preview` uses that checked-in scope, widths, and artifact directory instead of the built-in defaults.
 
 Useful narrower paths:
 
