@@ -1,0 +1,1 @@
+{"invoked":true,"summary":"Used the local `cautilus` skill. Exact command path: `./bin/cautilus skill evaluate --input ./fixtures/skill-evaluation/accept-now-input.json` (I also tried `./bin/cautilus skill test --repo-root . --adapter-name self-dogfood-skill-test`, which failed in preflight). Recommendation: `accept-now`."}

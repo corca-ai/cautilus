@@ -1,0 +1,26 @@
+{
+  "evaluationKind": "trigger",
+  "repeatCount": 2,
+  "minConsensusCount": 2,
+  "expectedTrigger": "must_invoke",
+  "consensusReached": true,
+  "matchedRuns": 2,
+  "sampleSummaries": [
+    {
+      "sampleIndex": 1,
+      "invoked": true,
+      "summary": "I used the local `cautilus` skill and invoked `./bin/cautilus skill test --repo-root . --adapter-name self-dogfood-skill-test`. The run failed in preflight because `./bin/cautilus install --repo-root . --overwrite` could not write `/.agents/skills/cautilus/SKILL.md` in this sandbox. Exact recommendation from the checked-in fixture is `accept-now` for the `fixtures/skill-evaluation/accept-now-input.json` path, but the live skill-test command is currently blocked until the workspace allows the install step.",
+      "metrics": {
+        "duration_ms": 34207
+      }
+    },
+    {
+      "sampleIndex": 2,
+      "invoked": true,
+      "summary": "I used the local `cautilus` skill and ran the checked-in fixture flow with `cautilus skill test --repo-root . --adapter-name self-dogfood-skill-test`. The exact failing command path was `./bin/cautilus install --repo-root . --overwrite` from the adapter preflight, and it stopped because `.agents/skills/cautilus/SKILL.md` was read-only in this sandbox. Recommendation: rerun in a writable checkout or change the preflight to avoid `install --overwrite` when the bundled skill surface is already materialized.",
+      "metrics": {
+        "duration_ms": 31652
+      }
+    }
+  ]
+}

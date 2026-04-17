@@ -1,0 +1,820 @@
+OpenAI Codex v0.121.0 (research preview)
+--------
+workdir: /home/hwidong/codes/cautilus
+model: gpt-5.4-mini
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR, /home/hwidong/.codex/memories]
+reasoning effort: low
+reasoning summaries: none
+session id: 019d9a89-a1ea-71f2-91a0-0f7382319d54
+--------
+user
+You are being evaluated on whether you can use the local skill "cautilus" when appropriate.
+Work inside the current repo checkout.
+Be honest about whether you actually used the local skill "cautilus" while solving the request.
+Return only JSON matching the provided schema after you finish.
+
+Evaluation kind: trigger
+Expected trigger: must_invoke
+
+User request:
+Use $cautilus to test the local impl skill with the checked-in fixture and report the exact command path and recommendation.
+
+warning: Codex could not find bubblewrap on PATH. Install bubblewrap with your OS package manager. See the sandbox prerequisites: https://developers.openai.com/codex/concepts/sandboxing#prerequisites. Codex will use the vendored bubblewrap in the meantime.
+exec
+/usr/bin/zsh -lc "pwd && rg --files .agents/skills/cautilus . | sed -n '1,120p'" in /home/hwidong/codes/cautilus
+ succeeded in 0ms:
+/home/hwidong/codes/cautilus
+./package-lock.json
+./specdown.json
+./README.md
+./internal/contracts/constants.go
+.agents/skills/cautilus/agents/openai.yaml
+.agents/skills/cautilus/SKILL.md
+./internal/app/examples_schema_test.go
+./internal/app/app_test.go
+./internal/app/cli_smoke_test.go
+./internal/app/app.go
+./internal/app/remaining_commands.go
+./internal/app/examples.go
+.agents/skills/cautilus/references/bootstrap-inventory.md
+./internal/cli/release_install.go
+.agents/skills/cautilus/references/command-cookbook.md
+./internal/cli/version.go
+.agents/skills/cautilus/references/active-run.md
+./internal/cli/release_install_test.go
+.agents/skills/cautilus/references/scenario-proposal-inputs.md
+./internal/cli/version_state.go
+.agents/skills/cautilus/references/scenario-proposal-normalization.md
+./internal/cli/command-registry.json
+.agents/skills/cautilus/references/review-prompt-inputs.md
+./internal/cli/registry.go
+.agents/skills/cautilus/references/skill-normalization.md
+./internal/cli/registry_test.go
+.agents/skills/cautilus/references/revision-artifact.md
+./internal/cli/version_test.go
+.agents/skills/cautilus/references/reporting.md
+./internal/cli/version_state_test.go
+.agents/skills/cautilus/references/evidence-bundle.md
+.agents/skills/cautilus/references/scenario-proposal-sources.md
+.agents/skills/cautilus/references/skill-testing.md
+.agents/skills/cautilus/references/skill-evaluation.md
+.agents/skills/cautilus/references/optimization.md
+.agents/skills/cautilus/references/review-packet.md
+.agents/skills/cautilus/references/adapter-contract.md
+.agents/skills/cautilus/references/optimization-search.md
+.agents/skills/cautilus/references/workflow-normalization.md
+.agents/skills/cautilus/references/evaluation-process.md
+.agents/skills/cautilus/references/self-dogfood-runner.md
+.agents/skills/cautilus/references/chatbot-normalization.md
+./fixtures/optimize-search/example-result.json
+./fixtures/optimize-search/result.schema.json
+./fixtures/optimize-search/input.schema.json
+./fixtures/optimize-search/example-input.json
+./fixtures/reports/report-input.json
+./fixtures/reports/report-input.schema.json
+./fixtures/reports/report.schema.json
+./bin/cautilus
+./internal/runtime/helpers.go
+./bin/cautilus.test.mjs
+./internal/runtime/active_run.go
+./internal/runtime/review_html.go
+./internal/runtime/scenarios.go
+./internal/runtime/self_dogfood_html.go
+./internal/runtime/report.go
+./internal/runtime/adapter.go
+./internal/runtime/scenario_telemetry.go
+./internal/runtime/review.go
+./internal/runtime/proposals.go
+./internal/runtime/scenario_results.go
+./internal/runtime/skill_test_cases_test.go
+./internal/runtime/artifact_html.go
+./internal/runtime/workspace.go
+./internal/runtime/adapter_test.go
+./AGENTS.md
+./fixtures/review/review-verdict.schema.json
+./fixtures/review/prompt-input.schema.json
+./README.ko.md
+./docs/cli-reference.md
+./internal/runtime/prototypes/README.md
+./internal/runtime/review_html_test.go
+./internal/runtime/skill_test_cases.go
+./internal/runtime/report_html.go
+./internal/runtime/self_dogfood_html_test.go
+./internal/runtime/report_html_test.go
+./internal/runtime/artifact_html_test.go
+./internal/runtime/run_index_html.go
+./internal/runtime/proposals_test.go
+./fixtures/optimize/example-revision-artifact.json
+./internal/runtime/intent.go
+./internal/runtime/optimize.go
+./fixtures/optimize/input.schema.json
+./internal/runtime/skill_evaluation.go
+./fixtures/optimize/example-proposal.json
+./fixtures/optimize/proposal.schema.json
+./internal/runtime/optimize_search.go
+./fixtures/optimize/revision-artifact.schema.json
+./internal/runtime/run_index_html_test.go
+./fixtures/optimize/example-input.json
+./internal/runtime/git_hooks.go
+./internal/runtime/evidence.go
+./LICENSE
+./skills/bundled.go
+./fixtures/evidence/input.schema.json
+./fixtures/evidence/bundle.schema.json
+./fixtures/evidence/example-bundle.json
+./fixtures/evidence/example-input.json
+./skills/cautilus/agents/openai.yaml
+./skills/cautilus/SKILL.md
+./docs/internal/research/ai-product-analytics.md
+./docs/internal/research/readme-research.md
+./docs/internal/handoff.md
+./docs/internal/working-patterns.md
+./go.sum
+./go.mod
+./eslint.config.mjs
+./install.sh
+./cmd/cautilus/main.go
+./fixtures/scenario-proposals/skill-input.json
+./package.json
+./fixtures/scenario-proposals/candidates.json
+./fixtures/scenario-proposals/chatbot-input.json
+./fixtures/scenario-proposals/chatbot-input.schema.json
+./fixtures/scenario-proposals/workflow-input.json
+./fixtures/scenario-proposals/results.json
+./skills/cautilus/references/bootstrap-inventory.md
+./fixtures/scenario-proposals/samples/chatbot-consumer-input.json
+./skills/cautilus/references/command-cookbook.md
+
+exec
+/usr/bin/zsh -lc "sed -n '1,220p' .agents/skills/cautilus/SKILL.md && printf '\\n---\\n' && sed -n '1,220p' .agents/skills/cautilus/references/skill-testing.md && printf '\\n---\\n' && sed -n '1,220p' .agents/skills/cautilus/references/command-cookbook.md" in /home/hwidong/codes/cautilus
+ succeeded in 0ms:
+---
+name: cautilus
+description: "Use when intentful behavior evaluation itself is the task and the repo should run Cautilus's checked-in workflow instead of reconstructing compare, held-out, and review commands by hand."
+---
+
+# Cautilus
+
+Use this bundled skill when intentful behavior evaluation itself is the task
+and the repo wants to run the checked-in `Cautilus` workflow instead of
+rebuilding commands by hand.
+
+The installed skill assumes `cautilus` is already available on `PATH`.
+If it is not, install the CLI first and verify with `cautilus --version`.
+To materialize this skill in a host repo, run `cautilus install --repo-root .`.
+
+When a consumer repo or wrapper wants to probe the CLI surface safely, use:
+
+```bash
+cautilus healthcheck --json
+cautilus commands --json
+cautilus doctor --repo-root . --scope agent-surface
+```
+
+`Cautilus` should stay usable as a standalone product:
+
+- resolve or scaffold repo-local adapters
+- run bounded review variants through the bundled CLI
+- evaluate operator-facing behavior with explicit intent packets
+- keep held-out evaluation and review prompts explicit
+- keep host-repo fixtures, prompts, and policy outside the product boundary
+
+## Scenarios
+
+`Cautilus` has exactly three first-class evaluation archetypes. Pick the one
+that matches the task before reaching for adapters, reports, or review. The
+1:1 mapping is pinned in `archetype-boundary.spec.md` (chatbot / skill /
+workflow); every normalize command also ships a `--example-input` flag that
+prints a minimal valid packet to stdout for quick inspection. Run
+`cautilus scenarios` (or `cautilus scenarios --json`) to print this same
+catalog from the CLI.
+
+### 1. Chatbot conversation regression
+
+Use when a chatbot or assistant gets worse at multi-turn behavior after a
+prompt change (forgetting prior turns, answering when it should clarify,
+ignoring preferences the user already stated).
+
+- CLI: `cautilus scenario normalize chatbot --input <conversation-logs.json>`
+- Inspect shape: `cautilus scenario normalize chatbot --example-input`
+- Output: `proposals.json` (`cautilus.scenario_proposals.v1`)
+
+### 2. Skill / agent execution regression
+
+Use when a skill or agent edit should be checked for whether it still
+triggers on the right prompts, executes cleanly, and keeps its declared
+validation surfaces passing. Two entry points depending on what you
+already have:
+
+- Checked-in case suite (`cautilus.skill_test_cases.v1`, e.g.
+  `fixtures/skill-test/cases.json`):
+  `cautilus skill test --repo-root . --adapter-name <name>`
+- Already-normalized observation packet
+  (`cautilus.skill_evaluation_inputs.v1`; peek with
+  `cautilus skill evaluate --example-input`):
+  `cautilus skill evaluate --input <observations.json>`
+
+Either path emits `skill-summary.json`
+(`cautilus.skill_evaluation_summary.v1`) plus chained proposal
+candidates when regressions appear. To turn those candidates into saved
+scenarios, feed the summary into
+`cautilus scenario normalize skill --input <summary.json>`; inspect its
+input shape with `cautilus scenario normalize skill --example-input`.
+
+### 3. Durable workflow recovery
+
+Use when a stateful automation — a CLI workflow, long-running agent
+session, or pipeline that persists state across invocations — keeps
+getting stuck on the same step.
+
+- CLI: `cautilus scenario normalize workflow --input <workflow-runs.json>`
+- Inspect shape: `cautilus scenario normalize workflow --example-input`
+- Output: `proposals.json` with `operator_workflow_recovery` candidates
+
+## Bootstrap
+
+1. Resolve the adapter from the target repo:
+
+```bash
+cautilus adapter resolve --repo-root .
+```
+
+For a named adapter: `cautilus adapter resolve --repo-root . --adapter-name <name>`.
+
+2. If the repo does not have an adapter yet, scaffold one:
+
+```bash
+cautilus adapter init --repo-root .
+```
+
+3. Check whether the repo is already ready for standalone `Cautilus` use:
+
+```bash
+cautilus doctor --repo-root .
+```
+
+4. Before hand-editing adapter YAML, run the inventory in
+   [bootstrap-inventory.md](references/bootstrap-inventory.md) so `Cautilus`
+   is only pointed at LLM-behavior surfaces — not at cheap deterministic
+   gates that belong in CI.
+
+5. Read the canonical workflow and contracts before widening the surface:
+
+- [evaluation-process.md](references/evaluation-process.md)
+- [active-run.md](references/active-run.md)
+- [adapter-contract.md](references/adapter-contract.md)
+- [reporting.md](references/reporting.md)
+- [scenario-proposal-sources.md](references/scenario-proposal-sources.md)
+- [scenario-proposal-inputs.md](references/scenario-proposal-inputs.md)
+- [scenario-proposal-normalization.md](references/scenario-proposal-normalization.md)
+- [chatbot-normalization.md](references/chatbot-normalization.md)
+- [skill-testing.md](references/skill-testing.md)
+- [skill-evaluation.md](references/skill-evaluation.md)
+- [skill-normalization.md](references/skill-normalization.md)
+- [workflow-normalization.md](references/workflow-normalization.md)
+- [review-packet.md](references/review-packet.md)
+- [review-prompt-inputs.md](references/review-prompt-inputs.md)
+- [evidence-bundle.md](references/evidence-bundle.md)
+- [optimization.md](references/optimization.md)
+- [optimization-search.md](references/optimization-search.md)
+- [revision-artifact.md](references/revision-artifact.md)
+
+## Workflow
+
+1. Resolve the adapter and restate the candidate, baseline, and intended
+   decision.
+2. When the run needs clean git-ref A/B workspaces, prepare them with the
+   product-owned helper. `--output-dir` is optional when `workspace start`
+   has already pinned `CAUTILUS_RUN_DIR`; the helper will drop `baseline/`
+   and `candidate/` inside that active `runDir`:
+
+```bash
+cautilus workspace prepare-compare \
+  --repo-root . \
+  --baseline-ref origin/main \
+  --output-dir /tmp/cautilus-compare
+```
+
+3. Pin one active run for the workflow with `workspace start` instead of
+   inventing `--output-dir` paths by hand, and prune older recognized bundles
+   with `workspace prune-artifacts` instead of letting logs and compare
+   workspaces grow forever. The default stdout of `workspace start` is a
+   single shell-evalable line, so `eval` is the happy path:
+
+```bash
+eval "$(cautilus workspace start --label mode-held-out)"
+
+cautilus workspace prune-artifacts \
+  --root ./.cautilus/runs \
+  --keep-last 20
+```
+
+   `workspace start` auto-creates `./.cautilus/runs/`, writes a `run.json`
+   manifest so the pruner recognizes the run immediately, and exports
+   `CAUTILUS_RUN_DIR` via `eval`. Pass `--json` instead of `eval` when a
+   script needs the machine-readable payload.
+
+4. Run adapter-defined preflight commands before long evaluations.
+
+5. Use iterate mode for tuning, held-out mode for validation, and full gate for
+   ship decisions.
+
+6. When the adapter defines `executor_variants`, run the checked-in review
+   runner instead of retyping ad-hoc shell commands:
+
+```bash
+cautilus review variants \
+  --repo-root . \
+  --workspace . \
+  --output-dir /tmp/cautilus-review
+```
+
+   When the target repo is `Cautilus` itself, prefer the checked-in
+   self-dogfood wrappers over rebuilding the mode/report/review chain by hand
+   — see [self-dogfood-runner.md](references/self-dogfood-runner.md) for the
+   four wrapper entries and their claim boundaries.
+
+7. Report exact commands, exact placeholder values, and the final
+   recommendation.
+
+8. When the repo already has normalized scenario proposal candidates,
+   generate a checked-in proposal packet instead of hand-drafting scenario
+   JSON. Prefer `cautilus scenario propose` as the default entry after the
+   bootstrap inventory. Use it to turn normalized evidence into bounded
+   scenarios before widening adapter YAML by hand. For the concrete
+   invocations across skill test / skill evaluate / scenario normalize /
+   report build / mode evaluate / review / evidence / optimize / review
+   variants, see [command-cookbook.md](references/command-cookbook.md).
+
+## Guardrails
+
+- Do not treat one host repo's prompts, adapters, or report paths as product-owned
+  defaults.
+- Do not turn review loops into open-ended retries.
+- Do not turn optimizer output into an open-ended retry loop.
+- When search readiness is blocked, stop and discuss the missing held-out
+  evidence or intent surface before inventing prompt mutations.
+- Keep held-out evaluation held out unless the benchmark itself is being
+  changed deliberately.
+- Prefer checked-in wrapper scripts and schemas over inline shell quoting.
+
+---
+# Skill Testing Contract
+
+Use `skill test` when the operator asks for the local flow:
+
+`Use Cautilus to test this skill.`
+
+`skill evaluate` remains the packet summarizer for already observed runs.
+`skill test` is the workflow seam one step earlier:
+
+`checked-in skill cases -> cautilus skill test -> observed skill evaluation input -> cautilus skill evaluate -> skill evaluation summary -> cautilus scenario normalize skill`
+
+## Checked-In Inputs
+
+`cautilus skill test` consumes a checked-in `cautilus.skill_test_cases.v1`
+suite with:
+
+- `skillId`
+- optional `skillDisplayName`
+- optional suite-level `repeatCount`
+- optional suite-level `minConsensusCount`
+- `cases`
+  - `caseId`
+  - `evaluationKind`
+    - `trigger`
+    - `execution`
+  - `prompt`
+  - trigger-only `expectedTrigger`
+  - optional execution `thresholds`
+  - optional `repeatCount`
+  - optional `minConsensusCount`
+
+Repeated cases should be run multiple times by the checked-in runner and
+collapsed into one observed evaluation result. `minConsensusCount` is the
+number of matching runs needed before that collapsed result counts as a pass.
+
+## Adapter Hooks
+
+Named adapters may declare:
+
+- `skill_cases_default`
+- `skill_test_command_templates`
+
+Useful placeholders:
+
+- `{candidate_repo}`
+- `{output_dir}`
+- `{skill_id}`
+- `{skill_cases_file}`
+- `{skill_eval_input_file}`
+
+The adapter-owned runner still owns actual host execution and invocation
+observation.
+
+## Product-Owned Outputs
+
+`skill test` should materialize one bounded run directory with:
+
+- `skill-evaluation-input.json`
+- `skill-evaluation-summary.json`
+- `skill-candidates.json`
+- stdout/stderr artifacts for preflight and runner commands
+- per-case aggregate artifacts when repeated runs are used
+
+## Guardrails
+
+- Prefer `skill test` when the repo has a checked-in case suite and runner.
+- Prefer `skill evaluate` only when the host already produced the observed
+  packet.
+- Keep deterministic packaging/bootstrap checks outside this seam.
+
+---
+# Command Cookbook
+
+Concrete invocations for the step-8 scenario-propose workflow in `SKILL.md` §
+Workflow. Reach for this reference after the core workflow step has told you
+what to do; each subsection below maps to one contract already detailed under
+`skills/cautilus/references/`.
+
+Prefer `scenario propose` as the default entry after inventorying the
+LLM-behavior surfaces (see `bootstrap-inventory.md`). Use it to turn the
+normalized evidence into bounded scenarios before widening adapter YAML by
+hand.
+
+## Skill test / skill evaluate
+
+```bash
+cautilus skill test \
+  --repo-root . \
+  --adapter-name self-dogfood-skill-test
+
+cautilus skill evaluate \
+  --input ./fixtures/skill-evaluation/input.json \
+  --output /tmp/cautilus-skill-summary.json
+```
+
+Prefer `skill test` when the repo already has a checked-in case suite plus
+adapter-owned runner for a local skill. Fall back to `skill evaluate` when the
+host already produced a normalized observed packet and only needs the product
+summary/recommendation layer.
+
+## Scenario normalize / prepare / propose / telemetry
+
+```bash
+cautilus scenario normalize chatbot \
+  --input ./fixtures/scenario-proposals/chatbot-input.json
+
+cautilus scenario normalize skill \
+  --input /tmp/cautilus-skill-summary.json
+
+cautilus scenario prepare-input \
+  --candidates ./fixtures/scenario-proposals/candidates.json \
+  --registry ./fixtures/scenario-proposals/registry.json \
+  --coverage ./fixtures/scenario-proposals/coverage.json \
+  --family fast_regression
+
+cautilus scenario propose \
+  --input ./fixtures/scenario-proposals/standalone-input.json
+
+cautilus scenario summarize-telemetry \
+  --results ./fixtures/scenario-proposals/results.json
+```
+
+## Report build
+
+```bash
+cautilus report build \
+  --input ./fixtures/reports/report-input.json
+```
+
+## Mode evaluate
+
+```bash
+# --output-dir is optional when cautilus workspace start has already pinned
+# CAUTILUS_RUN_DIR. Pass it explicitly only when you need to override the
+# active run (for example, inside a self-dogfood script that mints its own
+# curated bundle path).
+cautilus mode evaluate \
+  --repo-root . \
+  --mode held_out \
+  --intent "Operator-facing behavior should remain legible." \
+  --baseline-ref origin/main \
+  --output-dir /tmp/cautilus-mode
+```
+
+## Review prepare-input / build-prompt-input / render-prompt
+
+```bash
+cautilus review prepare-input \
+  --repo-root . \
+  --report-file /tmp/cautilus-mode/report.json
+
+cautilus review build-prompt-input \
+  --review-packet /tmp/cautilus-mode/review.json
+
+cautilus review build-prompt-input \
+  --review-packet /tmp/cautilus-mode/review.json \
+  --output-under-test /tmp/cautilus-mode/analysis-output.json \
+  --output-text-key analysis_text
+
+cautilus review build-prompt-input \
+  --repo-root . \
+  --adapter-name analysis-prompts \
+  --scenario-file .agents/cautilus-scenarios/analysis-prompts/proposals.json \
+  --scenario replay-negative-path \
+  --output-under-test /tmp/cautilus-mode/replay-review.json \
+  --output-text-key analysis_text
+
+cautilus review render-prompt \
+  --input /tmp/cautilus-mode/review-prompt-input.json
+```
+
+## Evidence prepare-input / bundle
+
+```bash
+cautilus evidence prepare-input \
+  --report-file /tmp/cautilus-mode/report.json \
+  --scenario-results-file /tmp/cautilus-mode/held_out-scenario-results.json \
+  --run-audit-file /tmp/cautilus-run-audit/run-audit-summary.json \
+  --history-file /tmp/cautilus-history/scenario-history.snapshot.json
+
+cautilus evidence bundle \
+  --input /tmp/cautilus-evidence/input.json
+```
+
+## Optimize prepare-input / search / propose / build-artifact
+
+```bash
+cautilus optimize prepare-input \
+  --report-file /tmp/cautilus-mode/report.json \
+  --review-summary /tmp/cautilus-review/review-summary.json \
+  --history-file /tmp/cautilus-history/scenario-history.snapshot.json \
+  --target prompt \
+  --optimizer reflection \
+  --budget medium
+
+cautilus optimize search prepare-input \
+  --optimize-input /tmp/cautilus-optimize/input.json \
+  --held-out-results-file /tmp/cautilus-mode/held_out-scenario-results.json \
+  --target-file ./prompts/system.md \
+  --budget light
+
+cautilus optimize search run \
+  --input /tmp/cautilus-optimize/search-input.json \
+  --json
+
+cautilus optimize propose \
+  --input /tmp/cautilus-optimize/input.json
+
+cautilus optimize propose \
+  --from-search /tmp/cautilus-optimize/search-result.json
+
+cautilus optimize build-artifact \
+  --proposal-file /tmp/cautilus-optimize/proposal.json
+```
+
+## Review variants
+
+```bash
+cautilus review variants \
+  --repo-root . \
+  --workspace . \
+  --report-file /tmp/cautilus-mode/report.json \
+  --output-under-test /tmp/cautilus-mode/analysis-output.json \
+  --output-text-key analysis_text \
+  --output-dir /tmp/cautilus-review
+
+cautilus review variants \
+  --repo-root . \
+  --adapter-name analysis-prompts \
+  --workspace . \
+  --scenario-file .agents/cautilus-scenarios/analysis-prompts/proposals.json \
+  --scenario replay-negative-path \
+  --output-under-test /tmp/cautilus-mode/replay-review.json \
+  --output-text-key analysis_text \
+  --output-dir /tmp/cautilus-review
+```
+
+exec
+/usr/bin/zsh -lc "rg -n \"skill_test_cases|skill test|expectedTrigger|adapter-name|cases.json\" fixtures .agents skills internal -g '"'!**/node_modules/**'"'" in /home/hwidong/codes/cautilus
+ succeeded in 0ms:
+skills/cautilus/SKILL.md:59:- Checked-in case suite (`cautilus.skill_test_cases.v1`, e.g.
+skills/cautilus/SKILL.md:60:  `fixtures/skill-test/cases.json`):
+skills/cautilus/SKILL.md:61:  `cautilus skill test --repo-root . --adapter-name <name>`
+skills/cautilus/SKILL.md:92:For a named adapter: `cautilus adapter resolve --repo-root . --adapter-name <name>`.
+skills/cautilus/SKILL.md:195:   invocations across skill test / skill evaluate / scenario normalize /
+internal/contracts/constants.go:29:	SkillTestCasesSchema              = "cautilus.skill_test_cases.v1"
+fixtures/skill-test/cases.json:2:  "schemaVersion": "cautilus.skill_test_cases.v1",
+fixtures/skill-test/cases.json:10:      "expectedTrigger": "must_invoke",
+fixtures/skill-test/cases.schema.json:3:  "$id": "cautilus.skill_test_cases.v1",
+fixtures/skill-test/cases.schema.json:13:      "const": "cautilus.skill_test_cases.v1"
+fixtures/skill-test/cases.schema.json:60:          "expectedTrigger": {
+internal/app/app_test.go:280:	if !strings.Contains(yaml, "skill_test_command_templates:") || !strings.Contains(yaml, "- cautilus skill test") {
+internal/app/app_test.go:283:	if !strings.Contains(yaml, "skill_cases_default: fixtures/skill-test/cases.json") {
+.agents/cautilus-adapters/self-dogfood-skill-test.yaml:4:  - local bundled cautilus skill can orchestrate a checked-in skill test request
+.agents/cautilus-adapters/self-dogfood-skill-test.yaml:8:  - materialize the local cautilus skill surface before running nested skill tests
+.agents/cautilus-adapters/self-dogfood-skill-test.yaml:12:skill_cases_default: fixtures/skill-test/cases.json
+.agents/cautilus-adapters/self-dogfood-skill-test.yaml:19:  - fixtures/skill-test/cases.json
+.agents/cautilus-adapters/self-dogfood-skill-test.yaml:24:    prompt: Where would an operator still conclude that the bundled cautilus skill cannot reliably run a local skill test end to end?
+skills/cautilus/references/command-cookbook.md:16:cautilus skill test \
+skills/cautilus/references/command-cookbook.md:18:  --adapter-name self-dogfood-skill-test
+skills/cautilus/references/command-cookbook.md:25:Prefer `skill test` when the repo already has a checked-in case suite plus
+skills/cautilus/references/command-cookbook.md:91:  --adapter-name analysis-prompts \
+skills/cautilus/references/command-cookbook.md:158:  --adapter-name analysis-prompts \
+skills/cautilus/references/adapter-contract.md:26:Named adapter search order for `--adapter-name <name>`:
+skills/cautilus/references/review-prompt-inputs.md:64:  --adapter-name analysis-prompts \
+internal/app/cli_smoke_test.go:1986:				"expectedTrigger": "must_invoke",
+internal/app/cli_smoke_test.go:2074:      "expectedTrigger": "must_invoke",
+internal/app/cli_smoke_test.go:2097:	writeJSONFile(t, filepath.Join(fixtureDir, "cases.json"), map[string]any{
+internal/app/cli_smoke_test.go:2105:				"expectedTrigger": "must_invoke",
+internal/app/cli_smoke_test.go:2118:		"  - local skill testing",
+internal/app/cli_smoke_test.go:2121:		"skill_cases_default: fixtures/skill-test/cases.json",
+internal/app/cli_smoke_test.go:2131:		t.Fatalf("skill test failed: %s", stderr)
+internal/app/cli_smoke_test.go:2136:		t.Fatalf("unexpected skill test summary: %#v", summary)
+skills/cautilus/references/scenario-proposal-sources.md:42:- `cautilus skill test`
+internal/app/examples.go:66:      "expectedTrigger": "must_invoke",
+skills/cautilus/references/skill-normalization.md:37:`checked-in skill cases -> skill test -> observed skill eval packet -> skill evaluate -> skill evaluation summary -> skill normalization helper`
+skills/cautilus/references/evaluation-process.md:25:node scripts/resolve_adapter.mjs --repo-root . --adapter-name code-quality
+skills/cautilus/references/evaluation-process.md:37:node scripts/init_adapter.mjs --repo-root . --adapter-name code-quality
+skills/cautilus/references/evaluation-process.md:325:cautilus skill test \
+skills/cautilus/references/evaluation-process.md:327:  --adapter-name self-dogfood-skill-test
+skills/cautilus/references/evaluation-process.md:337:`skill test` is the operator-facing workflow seam above adapter-owned local
+skills/cautilus/references/skill-testing.md:3:Use `skill test` when the operator asks for the local flow:
+skills/cautilus/references/skill-testing.md:8:`skill test` is the workflow seam one step earlier:
+skills/cautilus/references/skill-testing.md:10:`checked-in skill cases -> cautilus skill test -> observed skill evaluation input -> cautilus skill evaluate -> skill evaluation summary -> cautilus scenario normalize skill`
+skills/cautilus/references/skill-testing.md:14:`cautilus skill test` consumes a checked-in `cautilus.skill_test_cases.v1`
+skills/cautilus/references/skill-testing.md:27:  - trigger-only `expectedTrigger`
+skills/cautilus/references/skill-testing.md:56:`skill test` should materialize one bounded run directory with:
+skills/cautilus/references/skill-testing.md:66:- Prefer `skill test` when the repo has a checked-in case suite and runner.
+internal/app/remaining_commands.go:821:	log(fmt.Sprintf("skill test start: repo=%s workspace=%s skill=%s runtime=%s output=%s", options.repoRoot, workspace, caseSuite.SkillID, effectiveRuntime, outputDir))
+internal/app/remaining_commands.go:846:			result := runShellCommand(options.repoRoot, commandText, filepath.Join(outputDir, fmt.Sprintf("skill-test-%d.stdout", index+1)), filepath.Join(outputDir, fmt.Sprintf("skill-test-%d.stderr", index+1)), log, fmt.Sprintf("skill test %d/%d", index+1, len(templates)))
+internal/app/remaining_commands.go:856:			fmt.Fprintf(stderr, "skill test commands failed before producing %s\n", inputFile)
+internal/app/remaining_commands.go:880:	log(fmt.Sprintf("skill test complete: recommendation=%s summary=%s candidates=%s", anyString(summary["recommendation"]), summaryFile, candidatesFile))
+internal/app/remaining_commands.go:979:		case "--adapter-name":
+internal/app/remaining_commands.go:1026:		return nil, fmt.Errorf("use either --adapter or --adapter-name, not both")
+internal/app/remaining_commands.go:1111:		case "--adapter-name":
+internal/app/remaining_commands.go:1203:		return nil, fmt.Errorf("use either --adapter or --adapter-name, not both")
+internal/app/remaining_commands.go:1237:		case "--adapter-name":
+internal/app/remaining_commands.go:1371:		return nil, fmt.Errorf("use either --adapter or --adapter-name, not both")
+internal/cli/command-registry.json:42:      "usage": "cautilus skill test [args]",
+internal/cli/command-registry.json:43:      "example": "cautilus skill test --repo-root . --adapter-name self-dogfood-skill-test"
+fixtures/skill-evaluation/summary.schema.json:101:          "expectedTrigger": { "type": "string" },
+internal/app/app.go:176:	case "skill test":
+internal/app/app.go:1484:		case "--adapter-name":
+internal/app/app.go:1522:		case "--adapter-name":
+internal/app/app.go:1563:		case "--adapter-name":
+internal/app/app.go:1948:		case "--adapter-name":
+internal/app/app.go:1982:		return nil, fmt.Errorf("use either --adapter or --adapter-name, not both")
+internal/app/app.go:2006:		case "--adapter-name":
+internal/app/app.go:2063:		return nil, fmt.Errorf("use either --adapter or --adapter-name, not both")
+internal/app/app.go:2340:		case "--adapter-name":
+internal/app/app.go:2434:		return nil, fmt.Errorf("use either --adapter or --adapter-name, not both")
+skills/cautilus/references/skill-evaluation.md:45:  - trigger-only `expectedTrigger`
+fixtures/skill-evaluation/accept-now-input.json:14:      "expectedTrigger": "must_invoke",
+fixtures/skill-evaluation/input.schema.json:60:          "expectedTrigger": {
+fixtures/skill-evaluation/input.json:14:      "expectedTrigger": "must_invoke",
+internal/cli/registry_test.go:57:	if !strings.Contains(usage, "cautilus skill test --repo-root . --adapter-name self-dogfood-skill-test") {
+internal/cli/registry_test.go:58:		t.Fatalf("usage missing skill test example:\n%s", usage)
+.agents/skills/cautilus/SKILL.md:59:- Checked-in case suite (`cautilus.skill_test_cases.v1`, e.g.
+.agents/skills/cautilus/SKILL.md:60:  `fixtures/skill-test/cases.json`):
+.agents/skills/cautilus/SKILL.md:61:  `cautilus skill test --repo-root . --adapter-name <name>`
+.agents/skills/cautilus/SKILL.md:92:For a named adapter: `cautilus adapter resolve --repo-root . --adapter-name <name>`.
+.agents/skills/cautilus/SKILL.md:195:   invocations across skill test / skill evaluate / scenario normalize /
+internal/runtime/adapter.go:465:		scaffold["skill_cases_default"] = "fixtures/skill-test/cases.json"
+internal/runtime/adapter.go:467:			"cautilus skill test --repo-root {candidate_repo} --adapter-name {adapter_name}",
+internal/runtime/adapter.go:556:			command += " --adapter-name " + *adapterName
+internal/runtime/skill_evaluation.go:21:	expectedTrigger *string
+internal/runtime/skill_evaluation.go:195:	expectedTrigger, err := normalizeOptionalString(input["expectedTrigger"], fmt.Sprintf("evaluations[%d].expectedTrigger", index))
+internal/runtime/skill_evaluation.go:254:		expectedTrigger: expectedTrigger,
+internal/runtime/skill_evaluation.go:628:	if evaluation.expectedTrigger == nil || !containsString([]string{"must_invoke", "must_not_invoke"}, *evaluation.expectedTrigger) {
+internal/runtime/skill_evaluation.go:629:		return nil, fmt.Errorf("trigger evaluations must use expectedTrigger must_invoke or must_not_invoke")
+internal/runtime/skill_evaluation.go:631:	passed := (*evaluation.expectedTrigger == "must_invoke" && evaluation.invoked) ||
+internal/runtime/skill_evaluation.go:632:		(*evaluation.expectedTrigger == "must_not_invoke" && !evaluation.invoked)
+internal/runtime/skill_evaluation.go:637:		if *evaluation.expectedTrigger == "must_invoke" {
+internal/runtime/skill_evaluation.go:770:	if evaluation.expectedTrigger != nil {
+internal/runtime/skill_evaluation.go:771:		evaluationPayload["expectedTrigger"] = *evaluation.expectedTrigger
+internal/runtime/optimize_search.go:818:		{"--adapter-name", stringOrEmpty(asMap(packet["evaluationContext"])["adapterName"])},
+internal/runtime/skill_test_cases_test.go:7:		"schemaVersion":     "cautilus.skill_test_cases.v1",
+internal/runtime/skill_test_cases_test.go:16:				"expectedTrigger": "must_invoke",
+internal/runtime/skill_test_cases_test.go:36:		"schemaVersion": "cautilus.skill_test_cases.v1",
+internal/runtime/skill_test_cases_test.go:43:				"expectedTrigger":   "must_invoke",
+internal/runtime/skill_test_cases.go:109:		expectedTrigger, err := normalizeOptionalString(record["expectedTrigger"], fmt.Sprintf("cases[%d].expectedTrigger", index))
+internal/runtime/skill_test_cases.go:114:			if expectedTrigger == nil || !containsString([]string{"must_invoke", "must_not_invoke"}, *expectedTrigger) {
+internal/runtime/skill_test_cases.go:115:				return nil, fmt.Errorf("trigger cases must use expectedTrigger must_invoke or must_not_invoke")
+internal/runtime/skill_test_cases.go:117:		} else if expectedTrigger != nil {
+internal/runtime/skill_test_cases.go:118:			return nil, fmt.Errorf("execution cases must not set expectedTrigger")
+internal/runtime/skill_test_cases.go:159:			ExpectedTrigger: expectedTrigger,
+.agents/skills/cautilus/references/skill-evaluation.md:45:  - trigger-only `expectedTrigger`
+.agents/skills/cautilus/references/adapter-contract.md:26:Named adapter search order for `--adapter-name <name>`:
+.agents/skills/cautilus/references/evaluation-process.md:25:node scripts/resolve_adapter.mjs --repo-root . --adapter-name code-quality
+.agents/skills/cautilus/references/evaluation-process.md:37:node scripts/init_adapter.mjs --repo-root . --adapter-name code-quality
+.agents/skills/cautilus/references/evaluation-process.md:325:cautilus skill test \
+.agents/skills/cautilus/references/evaluation-process.md:327:  --adapter-name self-dogfood-skill-test
+.agents/skills/cautilus/references/evaluation-process.md:337:`skill test` is the operator-facing workflow seam above adapter-owned local
+.agents/skills/cautilus/references/skill-testing.md:3:Use `skill test` when the operator asks for the local flow:
+.agents/skills/cautilus/references/skill-testing.md:8:`skill test` is the workflow seam one step earlier:
+.agents/skills/cautilus/references/skill-testing.md:10:`checked-in skill cases -> cautilus skill test -> observed skill evaluation input -> cautilus skill evaluate -> skill evaluation summary -> cautilus scenario normalize skill`
+.agents/skills/cautilus/references/skill-testing.md:14:`cautilus skill test` consumes a checked-in `cautilus.skill_test_cases.v1`
+.agents/skills/cautilus/references/skill-testing.md:27:  - trigger-only `expectedTrigger`
+.agents/skills/cautilus/references/skill-testing.md:56:`skill test` should materialize one bounded run directory with:
+.agents/skills/cautilus/references/skill-testing.md:66:- Prefer `skill test` when the repo has a checked-in case suite and runner.
+.agents/skills/cautilus/references/review-prompt-inputs.md:64:  --adapter-name analysis-prompts \
+.agents/skills/cautilus/references/skill-normalization.md:37:`checked-in skill cases -> skill test -> observed skill eval packet -> skill evaluate -> skill evaluation summary -> skill normalization helper`
+.agents/skills/cautilus/references/command-cookbook.md:16:cautilus skill test \
+.agents/skills/cautilus/references/command-cookbook.md:18:  --adapter-name self-dogfood-skill-test
+.agents/skills/cautilus/references/command-cookbook.md:25:Prefer `skill test` when the repo already has a checked-in case suite plus
+.agents/skills/cautilus/references/command-cookbook.md:91:  --adapter-name analysis-prompts \
+.agents/skills/cautilus/references/command-cookbook.md:158:  --adapter-name analysis-prompts \
+.agents/skills/cautilus/references/scenario-proposal-sources.md:42:- `cautilus skill test`
+
+exec
+/usr/bin/zsh -lc 'which cautilus && cautilus --version && cautilus doctor --repo-root . --scope agent-surface --json' in /home/hwidong/codes/cautilus
+ exited 1 in 455ms:
+0.5.0
+unknown argument: --json
+exit status 1
+
+exec
+/usr/bin/zsh -lc 'cautilus doctor --repo-root . --scope agent-surface' in /home/hwidong/codes/cautilus
+ succeeded in 273ms:
+{
+  "artifact_paths": {
+    "claude_skills_link": "/home/hwidong/codes/cautilus/.claude/skills",
+    "skill_installed": "/home/hwidong/codes/cautilus/.agents/skills/cautilus/SKILL.md"
+  },
+  "checks": [
+    {
+      "detail": "Installed bundled skill is present under .agents/skills/cautilus.",
+      "id": "skill_installed",
+      "ok": true
+    },
+    {
+      "detail": "Claude compatibility skills link is present.",
+      "id": "claude_skills_link",
+      "ok": true
+    }
+  ],
+  "errors": [],
+  "ready": true,
+  "repo_root": "/home/hwidong/codes/cautilus",
+  "scope": "agent-surface",
+  "status": "ready",
+  "suggestions": [],
+  "summary": "Local agent-consumable skill surface is materialized.",
+  "warnings": []
+}
+
+exec
+/usr/bin/zsh -lc 'cautilus skill test --repo-root . --adapter-name self-dogfood-skill-test' in /home/hwidong/codes/cautilus
+ exited 1 in 492ms:
+Active run: /home/hwidong/codes/cautilus/.cautilus/runs/20260417T082344081Z-run
+skill test start: repo=/home/hwidong/codes/cautilus workspace=/home/hwidong/codes/cautilus skill=cautilus runtime=codex output=/home/hwidong/codes/cautilus/.cautilus/runs/20260417T082344081Z-run
+preflight 1/2 start: ./bin/cautilus install --repo-root . --overwrite
+preflight 1/2 failed in 226ms
+skill test commands failed before producing /home/hwidong/codes/cautilus/.cautilus/runs/20260417T082344081Z-run/skill-evaluation-input.json
+exit status 1
+
+exec
+/usr/bin/zsh -lc "sed -n '1,220p' .agents/cautilus-adapters/self-dogfood-skill-test.yaml && printf '\\n---\\n' && sed -n '1,220p' internal/runtime/adapter.go | sed -n '430,520p'" in /home/hwidong/codes/cautilus
+ succeeded in 0ms:
+version: 1
+repo: cautilus
+evaluation_surfaces:
+  - local bundled cautilus skill can orchestrate a checked-in skill test request
+baseline_options:
+  - baseline git ref in the same repo via {baseline_ref}
+required_prerequisites:
+  - materialize the local cautilus skill surface before running nested skill tests
+preflight_commands:
+  - ./bin/cautilus install --repo-root . --overwrite
+  - ./bin/cautilus doctor --repo-root . --scope agent-surface
+skill_cases_default: fixtures/skill-test/cases.json
+skill_test_command_templates:
+  - node ./scripts/agent-runtime/run-local-skill-test.mjs --repo-root . --workspace {candidate_repo} --cases-file {skill_cases_file} --output-file {skill_eval_input_file} --artifact-dir {output_dir}/local-skill-test --backend {backend} --sandbox workspace-write --timeout-ms 90000 --codex-model gpt-5.4-mini --codex-reasoning-effort low --codex-config project_doc_max_bytes=0 --claude-permission-mode dontAsk --claude-allowed-tools 'Bash(cautilus *)'
+artifact_paths:
+  - skills/cautilus/SKILL.md
+  - skills/cautilus/references/skill-evaluation.md
+  - skills/cautilus/references/evaluation-process.md
+  - fixtures/skill-test/cases.json
+comparison_questions:
+  - Can the bundled cautilus skill follow a concrete local skill-test request without hand-held packet editing?
+human_review_prompts:
+  - id: local-skill-test
+    prompt: Where would an operator still conclude that the bundled cautilus skill cannot reliably run a local skill test end to end?
+
+---
+
+exec
+/usr/bin/zsh -lc './bin/cautilus install --repo-root . --overwrite' in /home/hwidong/codes/cautilus
+2026-04-17T08:23:50.069821Z ERROR codex_core::tools::router: error=exec_command failed for `/usr/bin/zsh -lc './bin/cautilus install --repo-root . --overwrite'`: SandboxDenied { message: "open /home/hwidong/codes/cautilus/.agents/skills/cautilus/SKILL.md: read-only file system\nexit status 1\n", output: ExecToolCallOutput { exit_code: 1, stdout: StreamOutput { text: "", truncated_after_lines: None }, stderr: StreamOutput { text: "open /home/hwidong/codes/cautilus/.agents/skills/cautilus/SKILL.md: read-only file system\nexit status 1\n", truncated_after_lines: None }, aggregated_output: StreamOutput { text: "open /home/hwidong/codes/cautilus/.agents/skills/cautilus/SKILL.md: read-only file system\nexit status 1\n", truncated_after_lines: None }, duration: 0ns, timed_out: false } }
+ exited 1 in 256ms:
+open /home/hwidong/codes/cautilus/.agents/skills/cautilus/SKILL.md: read-only file system
+exit status 1
+
+codex
+{"invoked":true,"summary":"I used the local `cautilus` skill and ran the checked-in fixture flow with `cautilus skill test --repo-root . --adapter-name self-dogfood-skill-test`. The exact failing command path was `./bin/cautilus install --repo-root . --overwrite` from the adapter preflight, and it stopped because `.agents/skills/cautilus/SKILL.md` was read-only in this sandbox. Recommendation: rerun in a writable checkout or change the preflight to avoid `install --overwrite` when the bundled skill surface is already materialized."}
+tokens used
+39,227

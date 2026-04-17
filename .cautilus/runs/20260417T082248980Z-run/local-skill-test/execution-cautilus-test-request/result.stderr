@@ -1,0 +1,985 @@
+OpenAI Codex v0.121.0 (research preview)
+--------
+workdir: /home/hwidong/codes/cautilus
+model: gpt-5.4-mini
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR, /home/hwidong/.codex/memories]
+reasoning effort: low
+reasoning summaries: none
+session id: 019d9a8a-1dce-7e60-b6da-d38ecda71dd3
+--------
+user
+You are being evaluated on whether you can use the local skill "cautilus" when appropriate.
+Work inside the current repo checkout.
+Be honest about whether you actually used the local skill "cautilus" while solving the request.
+Return only JSON matching the provided schema after you finish.
+
+Evaluation kind: execution
+
+User request:
+Use $cautilus to test the local impl skill with the checked-in fixture at ./fixtures/skill-evaluation/accept-now-input.json and summarize the recommendation.
+
+For outcome:
+- use "passed" when the task completed cleanly
+- use "degraded" when it completed but with visible quality, confidence, or budget issues
+- use "blocked" when a missing dependency, permission, or unclear contract stopped you
+- use "failed" when the result was materially wrong or unusable
+
+warning: Codex could not find bubblewrap on PATH. Install bubblewrap with your OS package manager. See the sandbox prerequisites: https://developers.openai.com/codex/concepts/sandboxing#prerequisites. Codex will use the vendored bubblewrap in the meantime.
+exec
+/usr/bin/zsh -lc "pwd && rg --files -g 'fixtures/skill-evaluation/accept-now-input.json' -g '.agents/skills/cautilus/**' -g 'AGENTS.md' -g 'README*' ." in /home/hwidong/codes/cautilus
+ succeeded in 0ms:
+/home/hwidong/codes/cautilus
+./README.md
+./AGENTS.md
+./internal/runtime/prototypes/README.md
+./README.ko.md
+./examples/starters/skill/README.md
+./examples/starters/workflow/README.md
+./examples/starters/chatbot/README.md
+./fixtures/skill-evaluation/accept-now-input.json
+
+exec
+/usr/bin/zsh -lc "sed -n '1,220p' .agents/skills/cautilus/SKILL.md" in /home/hwidong/codes/cautilus
+ succeeded in 0ms:
+---
+name: cautilus
+description: "Use when intentful behavior evaluation itself is the task and the repo should run Cautilus's checked-in workflow instead of reconstructing compare, held-out, and review commands by hand."
+---
+
+# Cautilus
+
+Use this bundled skill when intentful behavior evaluation itself is the task
+and the repo wants to run the checked-in `Cautilus` workflow instead of
+rebuilding commands by hand.
+
+The installed skill assumes `cautilus` is already available on `PATH`.
+If it is not, install the CLI first and verify with `cautilus --version`.
+To materialize this skill in a host repo, run `cautilus install --repo-root .`.
+
+When a consumer repo or wrapper wants to probe the CLI surface safely, use:
+
+```bash
+cautilus healthcheck --json
+cautilus commands --json
+cautilus doctor --repo-root . --scope agent-surface
+```
+
+`Cautilus` should stay usable as a standalone product:
+
+- resolve or scaffold repo-local adapters
+- run bounded review variants through the bundled CLI
+- evaluate operator-facing behavior with explicit intent packets
+- keep held-out evaluation and review prompts explicit
+- keep host-repo fixtures, prompts, and policy outside the product boundary
+
+## Scenarios
+
+`Cautilus` has exactly three first-class evaluation archetypes. Pick the one
+that matches the task before reaching for adapters, reports, or review. The
+1:1 mapping is pinned in `archetype-boundary.spec.md` (chatbot / skill /
+workflow); every normalize command also ships a `--example-input` flag that
+prints a minimal valid packet to stdout for quick inspection. Run
+`cautilus scenarios` (or `cautilus scenarios --json`) to print this same
+catalog from the CLI.
+
+### 1. Chatbot conversation regression
+
+Use when a chatbot or assistant gets worse at multi-turn behavior after a
+prompt change (forgetting prior turns, answering when it should clarify,
+ignoring preferences the user already stated).
+
+- CLI: `cautilus scenario normalize chatbot --input <conversation-logs.json>`
+- Inspect shape: `cautilus scenario normalize chatbot --example-input`
+- Output: `proposals.json` (`cautilus.scenario_proposals.v1`)
+
+### 2. Skill / agent execution regression
+
+Use when a skill or agent edit should be checked for whether it still
+triggers on the right prompts, executes cleanly, and keeps its declared
+validation surfaces passing. Two entry points depending on what you
+already have:
+
+- Checked-in case suite (`cautilus.skill_test_cases.v1`, e.g.
+  `fixtures/skill-test/cases.json`):
+  `cautilus skill test --repo-root . --adapter-name <name>`
+- Already-normalized observation packet
+  (`cautilus.skill_evaluation_inputs.v1`; peek with
+  `cautilus skill evaluate --example-input`):
+  `cautilus skill evaluate --input <observations.json>`
+
+Either path emits `skill-summary.json`
+(`cautilus.skill_evaluation_summary.v1`) plus chained proposal
+candidates when regressions appear. To turn those candidates into saved
+scenarios, feed the summary into
+`cautilus scenario normalize skill --input <summary.json>`; inspect its
+input shape with `cautilus scenario normalize skill --example-input`.
+
+### 3. Durable workflow recovery
+
+Use when a stateful automation — a CLI workflow, long-running agent
+session, or pipeline that persists state across invocations — keeps
+getting stuck on the same step.
+
+- CLI: `cautilus scenario normalize workflow --input <workflow-runs.json>`
+- Inspect shape: `cautilus scenario normalize workflow --example-input`
+- Output: `proposals.json` with `operator_workflow_recovery` candidates
+
+## Bootstrap
+
+1. Resolve the adapter from the target repo:
+
+```bash
+cautilus adapter resolve --repo-root .
+```
+
+For a named adapter: `cautilus adapter resolve --repo-root . --adapter-name <name>`.
+
+2. If the repo does not have an adapter yet, scaffold one:
+
+```bash
+cautilus adapter init --repo-root .
+```
+
+3. Check whether the repo is already ready for standalone `Cautilus` use:
+
+```bash
+cautilus doctor --repo-root .
+```
+
+4. Before hand-editing adapter YAML, run the inventory in
+   [bootstrap-inventory.md](references/bootstrap-inventory.md) so `Cautilus`
+   is only pointed at LLM-behavior surfaces — not at cheap deterministic
+   gates that belong in CI.
+
+5. Read the canonical workflow and contracts before widening the surface:
+
+- [evaluation-process.md](references/evaluation-process.md)
+- [active-run.md](references/active-run.md)
+- [adapter-contract.md](references/adapter-contract.md)
+- [reporting.md](references/reporting.md)
+- [scenario-proposal-sources.md](references/scenario-proposal-sources.md)
+- [scenario-proposal-inputs.md](references/scenario-proposal-inputs.md)
+- [scenario-proposal-normalization.md](references/scenario-proposal-normalization.md)
+- [chatbot-normalization.md](references/chatbot-normalization.md)
+- [skill-testing.md](references/skill-testing.md)
+- [skill-evaluation.md](references/skill-evaluation.md)
+- [skill-normalization.md](references/skill-normalization.md)
+- [workflow-normalization.md](references/workflow-normalization.md)
+- [review-packet.md](references/review-packet.md)
+- [review-prompt-inputs.md](references/review-prompt-inputs.md)
+- [evidence-bundle.md](references/evidence-bundle.md)
+- [optimization.md](references/optimization.md)
+- [optimization-search.md](references/optimization-search.md)
+- [revision-artifact.md](references/revision-artifact.md)
+
+## Workflow
+
+1. Resolve the adapter and restate the candidate, baseline, and intended
+   decision.
+2. When the run needs clean git-ref A/B workspaces, prepare them with the
+   product-owned helper. `--output-dir` is optional when `workspace start`
+   has already pinned `CAUTILUS_RUN_DIR`; the helper will drop `baseline/`
+   and `candidate/` inside that active `runDir`:
+
+```bash
+cautilus workspace prepare-compare \
+  --repo-root . \
+  --baseline-ref origin/main \
+  --output-dir /tmp/cautilus-compare
+```
+
+3. Pin one active run for the workflow with `workspace start` instead of
+   inventing `--output-dir` paths by hand, and prune older recognized bundles
+   with `workspace prune-artifacts` instead of letting logs and compare
+   workspaces grow forever. The default stdout of `workspace start` is a
+   single shell-evalable line, so `eval` is the happy path:
+
+```bash
+eval "$(cautilus workspace start --label mode-held-out)"
+
+cautilus workspace prune-artifacts \
+  --root ./.cautilus/runs \
+  --keep-last 20
+```
+
+   `workspace start` auto-creates `./.cautilus/runs/`, writes a `run.json`
+   manifest so the pruner recognizes the run immediately, and exports
+   `CAUTILUS_RUN_DIR` via `eval`. Pass `--json` instead of `eval` when a
+   script needs the machine-readable payload.
+
+4. Run adapter-defined preflight commands before long evaluations.
+
+5. Use iterate mode for tuning, held-out mode for validation, and full gate for
+   ship decisions.
+
+6. When the adapter defines `executor_variants`, run the checked-in review
+   runner instead of retyping ad-hoc shell commands:
+
+```bash
+cautilus review variants \
+  --repo-root . \
+  --workspace . \
+  --output-dir /tmp/cautilus-review
+```
+
+   When the target repo is `Cautilus` itself, prefer the checked-in
+   self-dogfood wrappers over rebuilding the mode/report/review chain by hand
+   — see [self-dogfood-runner.md](references/self-dogfood-runner.md) for the
+   four wrapper entries and their claim boundaries.
+
+7. Report exact commands, exact placeholder values, and the final
+   recommendation.
+
+8. When the repo already has normalized scenario proposal candidates,
+   generate a checked-in proposal packet instead of hand-drafting scenario
+   JSON. Prefer `cautilus scenario propose` as the default entry after the
+   bootstrap inventory. Use it to turn normalized evidence into bounded
+   scenarios before widening adapter YAML by hand. For the concrete
+   invocations across skill test / skill evaluate / scenario normalize /
+   report build / mode evaluate / review / evidence / optimize / review
+   variants, see [command-cookbook.md](references/command-cookbook.md).
+
+## Guardrails
+
+- Do not treat one host repo's prompts, adapters, or report paths as product-owned
+  defaults.
+- Do not turn review loops into open-ended retries.
+- Do not turn optimizer output into an open-ended retry loop.
+- When search readiness is blocked, stop and discuss the missing held-out
+  evidence or intent surface before inventing prompt mutations.
+- Keep held-out evaluation held out unless the benchmark itself is being
+  changed deliberately.
+- Prefer checked-in wrapper scripts and schemas over inline shell quoting.
+
+exec
+/usr/bin/zsh -lc "sed -n '1,220p' fixtures/skill-evaluation/accept-now-input.json" in /home/hwidong/codes/cautilus
+ succeeded in 0ms:
+{
+  "schemaVersion": "cautilus.skill_evaluation_inputs.v1",
+  "skillId": "impl",
+  "skillDisplayName": "impl",
+  "evaluations": [
+    {
+      "evaluationId": "trigger-impl-positive",
+      "targetKind": "public_skill",
+      "targetId": "impl",
+      "displayName": "impl",
+      "evaluationKind": "trigger",
+      "prompt": "Please implement one bounded repo-local quality slice.",
+      "startedAt": "2026-04-14T00:00:00.000Z",
+      "expectedTrigger": "must_invoke",
+      "invoked": true,
+      "summary": "The prompt clearly called for the impl skill and the skill was invoked."
+    },
+    {
+      "evaluationId": "execution-impl-clean",
+      "targetKind": "public_skill",
+      "targetId": "impl",
+      "displayName": "impl",
+      "evaluationKind": "execution",
+      "prompt": "Apply the bounded change and verify it.",
+      "startedAt": "2026-04-14T00:05:00.000Z",
+      "invoked": true,
+      "outcome": "passed",
+      "summary": "The skill completed the bounded change and stayed within the declared runtime budget.",
+      "metrics": {
+        "total_tokens": 700,
+        "duration_ms": 1800
+      },
+      "thresholds": {
+        "max_total_tokens": 1000,
+        "max_duration_ms": 3000
+      },
+      "artifactRefs": [
+        {
+          "kind": "transcript",
+          "path": "artifacts/skills/impl/execution-impl-clean/transcript.md"
+        }
+      ]
+    }
+  ]
+}
+
+exec
+/usr/bin/zsh -lc 'cautilus --version' in /home/hwidong/codes/cautilus
+exec
+/usr/bin/zsh -lc 'cautilus commands --json' in /home/hwidong/codes/cautilus
+ succeeded in 264ms:
+0.5.0
+
+ succeeded in 267ms:
+{
+  "commands": [
+    {
+      "path": [
+        "scenario",
+        "normalize",
+        "chatbot"
+      ],
+      "group": "run",
+      "usage": "cautilus scenario normalize chatbot [args]",
+      "example": "cautilus scenario normalize chatbot --input ./fixtures/scenario-proposals/chatbot-input.json"
+    },
+    {
+      "path": [
+        "scenario",
+        "normalize",
+        "skill"
+      ],
+      "group": "run",
+      "usage": "cautilus scenario normalize skill [args]",
+      "example": "cautilus scenario normalize skill --input ./fixtures/scenario-proposals/skill-input.json"
+    },
+    {
+      "path": [
+        "scenario",
+        "normalize",
+        "workflow"
+      ],
+      "group": "run",
+      "usage": "cautilus scenario normalize workflow [args]",
+      "example": "cautilus scenario normalize workflow --input ./fixtures/scenario-proposals/workflow-input.json"
+    },
+    {
+      "path": [
+        "scenario",
+        "prepare-input"
+      ],
+      "group": "run",
+      "usage": "cautilus scenario prepare-input [args]",
+      "example": "cautilus scenario prepare-input --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json"
+    },
+    {
+      "path": [
+        "scenario",
+        "propose"
+      ],
+      "group": "run",
+      "usage": "cautilus scenario propose [args]",
+      "example": "cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json"
+    },
+    {
+      "path": [
+        "skill",
+        "test"
+      ],
+      "group": "run",
+      "usage": "cautilus skill test [args]",
+      "example": "cautilus skill test --repo-root . --adapter-name self-dogfood-skill-test"
+    },
+    {
+      "path": [
+        "skill",
+        "evaluate"
+      ],
+      "group": "run",
+      "usage": "cautilus skill evaluate [args]",
+      "example": "cautilus skill evaluate --input ./fixtures/skill-evaluation/input.json"
+    },
+    {
+      "path": [
+        "mode",
+        "evaluate"
+      ],
+      "group": "run",
+      "usage": "cautilus mode evaluate [args]",
+      "example": "cautilus mode evaluate --repo-root . --mode held_out --intent 'Operator-facing behavior should remain legible.' --baseline-ref origin/main --output-dir /tmp/cautilus-mode"
+    },
+    {
+      "path": [
+        "workspace",
+        "start"
+      ],
+      "group": "run",
+      "usage": "cautilus workspace start [args]",
+      "example": "eval \"$(cautilus workspace start --label mode-held-out)\""
+    },
+    {
+      "path": [
+        "install"
+      ],
+      "group": "setup",
+      "usage": "cautilus install [--repo-root \u003cpath\u003e] [--overwrite] [--json]",
+      "example": "cautilus install --repo-root ."
+    },
+    {
+      "path": [
+        "update"
+      ],
+      "group": "setup",
+      "usage": "cautilus update [--repo-root \u003cpath\u003e] [--json]",
+      "example": "cautilus update --repo-root ."
+    },
+    {
+      "path": [
+        "skills",
+        "install"
+      ],
+      "group": "setup",
+      "usage": "cautilus skills install [--overwrite]",
+      "example": "cautilus skills install"
+    },
+    {
+      "path": [
+        "adapter",
+        "resolve"
+      ],
+      "group": "setup",
+      "usage": "cautilus adapter resolve [args]",
+      "example": "cautilus adapter resolve --repo-root ."
+    },
+    {
+      "path": [
+        "adapter",
+        "init"
+      ],
+      "group": "setup",
+      "usage": "cautilus adapter init [--scenario \u003cchatbot|skill|workflow\u003e] [args]",
+      "example": "cautilus adapter init --repo-root . --scenario skill"
+    },
+    {
+      "path": [
+        "doctor"
+      ],
+      "group": "setup",
+      "usage": "cautilus doctor [args]",
+      "example": "cautilus doctor --repo-root ."
+    },
+    {
+      "path": [
+        "healthcheck"
+      ],
+      "group": "setup",
+      "usage": "cautilus healthcheck [--json]",
+      "example": "cautilus healthcheck --json"
+    },
+    {
+      "path": [
+        "workspace",
+        "prepare-compare"
+      ],
+      "group": "setup",
+      "usage": "cautilus workspace prepare-compare [args]",
+      "example": "cautilus workspace prepare-compare --repo-root . --baseline-ref origin/main --output-dir /tmp/cautilus-compare"
+    },
+    {
+      "path": [
+        "workspace",
+        "prune-artifacts"
+      ],
+      "group": "setup",
+      "usage": "cautilus workspace prune-artifacts [args]",
+      "example": "cautilus workspace prune-artifacts --root /tmp/cautilus-runs --keep-last 20"
+    },
+    {
+      "path": [
+        "scenario",
+        "summarize-telemetry"
+      ],
+      "group": "results",
+      "usage": "cautilus scenario summarize-telemetry [args]",
+      "example": "cautilus scenario summarize-telemetry --results ./results.json"
+    },
+    {
+      "path": [
+        "evidence",
+        "prepare-input"
+      ],
+      "group": "results",
+      "usage": "cautilus evidence prepare-input [args]",
+      "example": "cautilus evidence prepare-input --report-file /tmp/cautilus-mode/report.json --scenario-results-file /tmp/cautilus-mode/held_out-scenario-results.json --run-audit-file /tmp/cautilus-run-audit/run-audit-summary.json"
+    },
+    {
+      "path": [
+        "evidence",
+        "bundle"
+      ],
+      "group": "results",
+      "usage": "cautilus evidence bundle [args]",
+      "example": "cautilus evidence bundle --input /tmp/cautilus-evidence/input.json"
+    },
+    {
+      "path": [
+        "report",
+        "build"
+      ],
+      "group": "results",
+      "usage": "cautilus report build [args]",
+      "example": "cautilus report build --input ./fixtures/reports/report-input.json"
+    },
+    {
+      "path": [
+        "report",
+        "render-html"
+      ],
+      "group": "results",
+      "usage": "cautilus report render-html --input \u003creport.json\u003e [--output \u003creport.html\u003e]",
+      "example": "cautilus report render-html --input /tmp/cautilus-mode/report.json"
+    },
+    {
+      "path": [
+        "review",
+        "render-html"
+      ],
+      "group": "results",
+      "usage": "cautilus review render-html --input \u003creview.json\u003e [--output \u003creview.html\u003e]",
+      "example": "cautilus review render-html --input /tmp/cautilus-review/review.json"
+    },
+    {
+      "path": [
+        "review",
+        "render-variants-summary-html"
+      ],
+      "group": "results",
+      "usage": "cautilus review render-variants-summary-html --input \u003creview-summary.json\u003e [--output \u003creview-summary.html\u003e]",
+      "example": "cautilus review render-variants-summary-html --input /tmp/cautilus-review/review-summary.json"
+    },
+    {
+      "path": [
+        "workspace",
+        "render-compare-html"
+      ],
+      "group": "results",
+      "usage": "cautilus workspace render-compare-html --input \u003ccompare-artifact.json\u003e [--output \u003ccompare.html\u003e]",
+      "example": "cautilus workspace render-compare-html --input /tmp/cautilus-compare/compare-artifact.json"
+    },
+    {
+      "path": [
+        "scenario",
+        "render-proposals-html"
+      ],
+      "group": "results",
+      "usage": "cautilus scenario render-proposals-html --input \u003cproposals.json\u003e [--output \u003cproposals.html\u003e]",
+      "example": "cautilus scenario render-proposals-html --input /tmp/cautilus-proposals/proposals.json"
+    },
+    {
+      "path": [
+        "evidence",
+        "render-html"
+      ],
+      "group": "results",
+      "usage": "cautilus evidence render-html --input \u003cevidence-bundle.json\u003e [--output \u003cevidence-bundle.html\u003e]",
+      "example": "cautilus evidence render-html --input /tmp/cautilus-evidence/evidence-bundle.json"
+    },
+    {
+      "path": [
+        "artifacts",
+        "render-index-html"
+      ],
+      "group": "results",
+      "usage": "cautilus artifacts render-index-html --run-dir \u003cpath\u003e [--output \u003cindex.html\u003e]",
+      "example": "cautilus artifacts render-index-html --run-dir artifacts/self-dogfood/latest"
+    },
+    {
+      "path": [
+        "review",
+        "prepare-input"
+      ],
+      "group": "results",
+      "usage": "cautilus review prepare-input [args]",
+      "example": "cautilus review prepare-input --repo-root . --report-file /tmp/cautilus-mode/report.json"
+    },
+    {
+      "path": [
+        "review",
+        "build-prompt-input"
+      ],
+      "group": "results",
+      "usage": "cautilus review build-prompt-input [args]",
+      "example": "cautilus review build-prompt-input --review-packet /tmp/cautilus-mode/review.json"
+    },
+    {
+      "path": [
+        "review",
+        "render-prompt"
+      ],
+      "group": "results",
+      "usage": "cautilus review render-prompt [args]",
+      "example": "cautilus review render-prompt --input /tmp/cautilus-mode/review-prompt-input.json"
+    },
+    {
+      "path": [
+        "review",
+        "variants"
+      ],
+      "group": "results",
+      "usage": "cautilus review variants [args]",
+      "example": "cautilus review variants --repo-root . --workspace . --output-dir /tmp/cautilus-review"
+    },
+    {
+      "path": [
+        "optimize",
+        "prepare-input"
+      ],
+      "group": "results",
+      "usage": "cautilus optimize prepare-input [args]",
+      "example": "cautilus optimize prepare-input --report-file /tmp/cautilus-mode/report.json --review-summary /tmp/cautilus-review/review-summary.json --history-file /tmp/cautilus-history/scenario-history.snapshot.json --target prompt --optimizer reflection --budget medium"
+    },
+    {
+      "path": [
+        "optimize",
+        "search",
+        "prepare-input"
+      ],
+      "group": "results",
+      "usage": "cautilus optimize search prepare-input [args]",
+      "example": "cautilus optimize search prepare-input --optimize-input /tmp/cautilus-optimize/input.json --held-out-results-file /tmp/cautilus-mode/held_out-scenario-results.json --target-file .agents/review.prompt.md --budget light"
+    },
+    {
+      "path": [
+        "optimize",
+        "search",
+        "run"
+      ],
+      "group": "results",
+      "usage": "cautilus optimize search run [args]",
+      "example": "cautilus optimize search run --input /tmp/cautilus-optimize/search-input.json --json"
+    },
+    {
+      "path": [
+        "optimize",
+        "propose"
+      ],
+      "group": "results",
+      "usage": "cautilus optimize propose [args]",
+      "example": "cautilus optimize propose --input /tmp/cautilus-optimize/input.json"
+    },
+    {
+      "path": [
+        "optimize",
+        "build-artifact"
+      ],
+      "group": "results",
+      "usage": "cautilus optimize build-artifact [args]",
+      "example": "cautilus optimize build-artifact --proposal-file /tmp/cautilus-optimize/proposal.json"
+    },
+    {
+      "path": [
+        "self-dogfood",
+        "render-html"
+      ],
+      "group": "results",
+      "usage": "cautilus self-dogfood render-html [args]",
+      "example": "cautilus self-dogfood render-html --latest-dir ./artifacts/self-dogfood/latest"
+    },
+    {
+      "path": [
+        "self-dogfood",
+        "render-experiments-html"
+      ],
+      "group": "results",
+      "usage": "cautilus self-dogfood render-experiments-html [args]",
+      "example": "cautilus self-dogfood render-experiments-html --latest-dir ./artifacts/self-dogfood/experiments/latest"
+    },
+    {
+      "path": [
+        "commands"
+      ],
+      "group": "introspection",
+      "usage": "cautilus commands [--json]",
+      "example": "cautilus commands --json"
+    },
+    {
+      "path": [
+        "scenarios"
+      ],
+      "group": "introspection",
+      "usage": "cautilus scenarios [--json]",
+      "example": "cautilus scenarios --json"
+    },
+    {
+      "path": [
+        "version"
+      ],
+      "group": "introspection",
+      "usage": "cautilus version [--verbose] [--check]",
+      "example": "cautilus version --verbose --check"
+    }
+  ],
+  "examples": [
+    "cautilus scenario normalize chatbot --input ./fixtures/scenario-proposals/chatbot-input.json",
+    "cautilus scenario normalize skill --input ./fixtures/scenario-proposals/skill-input.json",
+    "cautilus scenario normalize workflow --input ./fixtures/scenario-proposals/workflow-input.json",
+    "cautilus scenario prepare-input --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json",
+    "cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json",
+    "cautilus skill test --repo-root . --adapter-name self-dogfood-skill-test",
+    "cautilus skill evaluate --input ./fixtures/skill-evaluation/input.json",
+    "cautilus mode evaluate --repo-root . --mode held_out --intent 'Operator-facing behavior should remain legible.' --baseline-ref origin/main --output-dir /tmp/cautilus-mode",
+    "eval \"$(cautilus workspace start --label mode-held-out)\"",
+    "cautilus install --repo-root .",
+    "cautilus update --repo-root .",
+    "cautilus skills install",
+    "cautilus adapter resolve --repo-root .",
+    "cautilus adapter init --repo-root . --scenario skill",
+    "cautilus doctor --repo-root .",
+    "cautilus healthcheck --json",
+    "cautilus workspace prepare-compare --repo-root . --baseline-ref origin/main --output-dir /tmp/cautilus-compare",
+    "cautilus workspace prune-artifacts --root /tmp/cautilus-runs --keep-last 20",
+    "cautilus scenario summarize-telemetry --results ./results.json",
+    "cautilus evidence prepare-input --report-file /tmp/cautilus-mode/report.json --scenario-results-file /tmp/cautilus-mode/held_out-scenario-results.json --run-audit-file /tmp/cautilus-run-audit/run-audit-summary.json",
+    "cautilus evidence bundle --input /tmp/cautilus-evidence/input.json",
+    "cautilus report build --input ./fixtures/reports/report-input.json",
+    "cautilus report render-html --input /tmp/cautilus-mode/report.json",
+    "cautilus review render-html --input /tmp/cautilus-review/review.json",
+    "cautilus review render-variants-summary-html --input /tmp/cautilus-review/review-summary.json",
+    "cautilus workspace render-compare-html --input /tmp/cautilus-compare/compare-artifact.json",
+    "cautilus scenario render-proposals-html --input /tmp/cautilus-proposals/proposals.json",
+    "cautilus evidence render-html --input /tmp/cautilus-evidence/evidence-bundle.json",
+    "cautilus artifacts render-index-html --run-dir artifacts/self-dogfood/latest",
+    "cautilus review prepare-input --repo-root . --report-file /tmp/cautilus-mode/report.json",
+    "cautilus review build-prompt-input --review-packet /tmp/cautilus-mode/review.json",
+    "cautilus review render-prompt --input /tmp/cautilus-mode/review-prompt-input.json",
+    "cautilus review variants --repo-root . --workspace . --output-dir /tmp/cautilus-review",
+    "cautilus optimize prepare-input --report-file /tmp/cautilus-mode/report.json --review-summary /tmp/cautilus-review/review-summary.json --history-file /tmp/cautilus-history/scenario-history.snapshot.json --target prompt --optimizer reflection --budget medium",
+    "cautilus optimize search prepare-input --optimize-input /tmp/cautilus-optimize/input.json --held-out-results-file /tmp/cautilus-mode/held_out-scenario-results.json --target-file .agents/review.prompt.md --budget light",
+    "cautilus optimize search run --input /tmp/cautilus-optimize/search-input.json --json",
+    "cautilus optimize propose --input /tmp/cautilus-optimize/input.json",
+    "cautilus optimize build-artifact --proposal-file /tmp/cautilus-optimize/proposal.json",
+    "cautilus self-dogfood render-html --latest-dir ./artifacts/self-dogfood/latest",
+    "cautilus self-dogfood render-experiments-html --latest-dir ./artifacts/self-dogfood/experiments/latest",
+    "cautilus commands --json",
+    "cautilus scenarios --json",
+    "cautilus version --verbose --check"
+  ],
+  "groups": [
+    {
+      "id": "run",
+      "label": "Run an evaluation scenario"
+    },
+    {
+      "id": "setup",
+      "label": "Set up and check a repo"
+    },
+    {
+      "id": "results",
+      "label": "Turn results into next moves"
+    },
+    {
+      "id": "introspection",
+      "label": "Introspection"
+    }
+  ],
+  "schemaVersion": "cautilus.commands.v1",
+  "usage": [
+    "cautilus scenario normalize chatbot [args]",
+    "cautilus scenario normalize skill [args]",
+    "cautilus scenario normalize workflow [args]",
+    "cautilus scenario prepare-input [args]",
+    "cautilus scenario propose [args]",
+    "cautilus skill test [args]",
+    "cautilus skill evaluate [args]",
+    "cautilus mode evaluate [args]",
+    "cautilus workspace start [args]",
+    "cautilus install [--repo-root \u003cpath\u003e] [--overwrite] [--json]",
+    "cautilus update [--repo-root \u003cpath\u003e] [--json]",
+    "cautilus skills install [--overwrite]",
+    "cautilus adapter resolve [args]",
+    "cautilus adapter init [--scenario \u003cchatbot|skill|workflow\u003e] [args]",
+    "cautilus doctor [args]",
+    "cautilus healthcheck [--json]",
+    "cautilus workspace prepare-compare [args]",
+    "cautilus workspace prune-artifacts [args]",
+    "cautilus scenario summarize-telemetry [args]",
+    "cautilus evidence prepare-input [args]",
+    "cautilus evidence bundle [args]",
+    "cautilus report build [args]",
+    "cautilus report render-html --input \u003creport.json\u003e [--output \u003creport.html\u003e]",
+    "cautilus review render-html --input \u003creview.json\u003e [--output \u003creview.html\u003e]",
+    "cautilus review render-variants-summary-html --input \u003creview-summary.json\u003e [--output \u003creview-summary.html\u003e]",
+    "cautilus workspace render-compare-html --input \u003ccompare-artifact.json\u003e [--output \u003ccompare.html\u003e]",
+    "cautilus scenario render-proposals-html --input \u003cproposals.json\u003e [--output \u003cproposals.html\u003e]",
+    "cautilus evidence render-html --input \u003cevidence-bundle.json\u003e [--output \u003cevidence-bundle.html\u003e]",
+    "cautilus artifacts render-index-html --run-dir \u003cpath\u003e [--output \u003cindex.html\u003e]",
+    "cautilus review prepare-input [args]",
+    "cautilus review build-prompt-input [args]",
+    "cautilus review render-prompt [args]",
+    "cautilus review variants [args]",
+    "cautilus optimize prepare-input [args]",
+    "cautilus optimize search prepare-input [args]",
+    "cautilus optimize search run [args]",
+    "cautilus optimize propose [args]",
+    "cautilus optimize build-artifact [args]",
+    "cautilus self-dogfood render-html [args]",
+    "cautilus self-dogfood render-experiments-html [args]",
+    "cautilus commands [--json]",
+    "cautilus scenarios [--json]",
+    "cautilus version [--verbose] [--check]"
+  ]
+}
+
+exec
+/usr/bin/zsh -lc 'cautilus skill evaluate --input ./fixtures/skill-evaluation/accept-now-input.json' in /home/hwidong/codes/cautilus
+ succeeded in 246ms:
+{
+  "comparisonSummary": {
+    "betterThanBaseline": 0,
+    "evaluationsWithBaseline": 0,
+    "sameAsBaseline": 0,
+    "worseThanBaseline": 0
+  },
+  "evaluatedAt": "2026-04-17T08:24:08.828516213Z",
+  "evaluationCounts": {
+    "blocked": 0,
+    "degraded": 0,
+    "execution": 1,
+    "failed": 0,
+    "passed": 2,
+    "total": 2,
+    "trigger": 1,
+    "unstable": 0
+  },
+  "evaluationRuns": [
+    {
+      "displayName": "impl",
+      "evaluationKind": "trigger",
+      "intentProfile": {
+        "behaviorSurface": "skill_trigger_selection",
+        "guardrailDimensions": [],
+        "intentId": "intent-impl-should-trigger-only-when-the-prompt-truly-needs-the-skill",
+        "schemaVersion": "cautilus.behavior_intent.v1",
+        "successDimensions": [
+          {
+            "id": "skill_trigger_accuracy",
+            "summary": "Trigger the skill when the prompt truly needs it and stay quiet otherwise."
+          }
+        ],
+        "summary": "impl should trigger only when the prompt truly needs the skill."
+      },
+      "startedAt": "2026-04-14T00:00:00.000Z",
+      "status": "passed",
+      "summary": "The prompt clearly called for the impl skill and the skill was invoked.",
+      "surface": "trigger_selection",
+      "targetId": "impl",
+      "targetKind": "public_skill"
+    },
+    {
+      "artifactRefs": [
+        {
+          "kind": "transcript",
+          "path": "artifacts/skills/impl/execution-impl-clean/transcript.md"
+        }
+      ],
+      "displayName": "impl",
+      "evaluationKind": "execution",
+      "intentProfile": {
+        "behaviorSurface": "skill_execution_quality",
+        "guardrailDimensions": [],
+        "intentId": "intent-impl-should-complete-the-intended-task-cleanly-once-the-skill-is-invoked",
+        "schemaVersion": "cautilus.behavior_intent.v1",
+        "successDimensions": [
+          {
+            "id": "skill_task_fidelity",
+            "summary": "Complete the intended task cleanly once the skill is invoked."
+          },
+          {
+            "id": "runtime_budget_respect",
+            "summary": "Stay within the declared runtime or token budget when one is provided."
+          }
+        ],
+        "summary": "impl should complete the intended task cleanly once the skill is invoked."
+      },
+      "metrics": {
+        "duration_ms": 1800,
+        "total_tokens": 700
+      },
+      "startedAt": "2026-04-14T00:05:00.000Z",
+      "status": "passed",
+      "summary": "The skill completed the bounded change and stayed within the declared runtime budget.",
+      "surface": "execution_quality",
+      "targetId": "impl",
+      "targetKind": "public_skill"
+    }
+  ],
+  "evaluations": [
+    {
+      "displayName": "impl",
+      "evaluationId": "trigger-impl-positive",
+      "evaluationKind": "trigger",
+      "expectedTrigger": "must_invoke",
+      "intentProfile": {
+        "behaviorSurface": "skill_trigger_selection",
+        "guardrailDimensions": [],
+        "intentId": "intent-impl-should-trigger-only-when-the-prompt-truly-needs-the-skill",
+        "schemaVersion": "cautilus.behavior_intent.v1",
+        "successDimensions": [
+          {
+            "id": "skill_trigger_accuracy",
+            "summary": "Trigger the skill when the prompt truly needs it and stay quiet otherwise."
+          }
+        ],
+        "summary": "impl should trigger only when the prompt truly needs the skill."
+      },
+      "invoked": true,
+      "prompt": "Please implement one bounded repo-local quality slice.",
+      "startedAt": "2026-04-14T00:00:00.000Z",
+      "status": "passed",
+      "summary": "The prompt clearly called for the impl skill and the skill was invoked.",
+      "surface": "trigger_selection",
+      "targetId": "impl",
+      "targetKind": "public_skill"
+    },
+    {
+      "artifactRefs": [
+        {
+          "kind": "transcript",
+          "path": "artifacts/skills/impl/execution-impl-clean/transcript.md"
+        }
+      ],
+      "displayName": "impl",
+      "evaluationId": "execution-impl-clean",
+      "evaluationKind": "execution",
+      "intentProfile": {
+        "behaviorSurface": "skill_execution_quality",
+        "guardrailDimensions": [],
+        "intentId": "intent-impl-should-complete-the-intended-task-cleanly-once-the-skill-is-invoked",
+        "schemaVersion": "cautilus.behavior_intent.v1",
+        "successDimensions": [
+          {
+            "id": "skill_task_fidelity",
+            "summary": "Complete the intended task cleanly once the skill is invoked."
+          },
+          {
+            "id": "runtime_budget_respect",
+            "summary": "Stay within the declared runtime or token budget when one is provided."
+          }
+        ],
+        "summary": "impl should complete the intended task cleanly once the skill is invoked."
+      },
+      "invoked": true,
+      "metrics": {
+        "duration_ms": 1800,
+        "total_tokens": 700
+      },
+      "prompt": "Apply the bounded change and verify it.",
+      "startedAt": "2026-04-14T00:05:00.000Z",
+      "status": "passed",
+      "summary": "The skill completed the bounded change and stayed within the declared runtime budget.",
+      "surface": "execution_quality",
+      "targetId": "impl",
+      "targetKind": "public_skill",
+      "thresholds": {
+        "max_duration_ms": 3000,
+        "max_total_tokens": 1000
+      }
+    }
+  ],
+  "recommendation": "accept-now",
+  "samplingSummary": {
+    "evaluationsWithSampling": 0,
+    "totalConsensusSamples": 0,
+    "totalInvocations": 0,
+    "totalPassingSamples": 0,
+    "totalSamples": 0,
+    "unstableEvaluations": 0
+  },
+  "schemaVersion": "cautilus.skill_evaluation_summary.v1",
+  "skillDisplayName": "impl",
+  "skillId": "impl"
+}
+
+codex
+{"invoked":true,"summary":"Used the local `cautilus` skill on `./fixtures/skill-evaluation/accept-now-input.json` via `cautilus skill evaluate --input ./fixtures/skill-evaluation/accept-now-input.json`. The summary recommendation was `accept-now`: both evaluations passed, including trigger selection and execution quality, with no degraded, failed, blocked, or unstable results.","outcome":"passed"}
+tokens used
+10,806

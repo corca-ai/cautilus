@@ -1,0 +1,1 @@
+{"invoked":true,"summary":"Used the local `cautilus` skill and ran `cautilus skill evaluate --input fixtures/skill-evaluation/accept-now-input.json`. The recommendation was `accept-now` because both evaluations passed, there were no degraded/blocked/failed runs, and no baseline or sampling issues were present.","outcome":"passed"}

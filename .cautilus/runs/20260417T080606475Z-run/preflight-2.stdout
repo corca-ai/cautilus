@@ -1,0 +1,26 @@
+{
+  "artifact_paths": {
+    "claude_skills_link": "/home/hwidong/codes/cautilus/.claude/skills",
+    "skill_installed": "/home/hwidong/codes/cautilus/.agents/skills/cautilus/SKILL.md"
+  },
+  "checks": [
+    {
+      "detail": "Installed bundled skill is present under .agents/skills/cautilus.",
+      "id": "skill_installed",
+      "ok": true
+    },
+    {
+      "detail": "Claude compatibility skills link is present.",
+      "id": "claude_skills_link",
+      "ok": true
+    }
+  ],
+  "errors": [],
+  "ready": true,
+  "repo_root": "/home/hwidong/codes/cautilus",
+  "scope": "agent-surface",
+  "status": "ready",
+  "suggestions": [],
+  "summary": "Local agent-consumable skill surface is materialized.",
+  "warnings": []
+}

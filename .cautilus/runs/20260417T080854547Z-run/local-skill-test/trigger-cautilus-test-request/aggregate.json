@@ -1,0 +1,26 @@
+{
+  "evaluationKind": "trigger",
+  "repeatCount": 2,
+  "minConsensusCount": 2,
+  "expectedTrigger": "must_invoke",
+  "consensusReached": true,
+  "matchedRuns": 2,
+  "sampleSummaries": [
+    {
+      "sampleIndex": 1,
+      "invoked": true,
+      "summary": "Used the local `cautilus` skill and its checked-in fixture. Exact command path: `node ./scripts/agent-runtime/run-local-skill-test.mjs --repo-root . --workspace . --cases-file ./fixtures/skill-test/cases.json --output-file /tmp/cautilus-skill-eval.json --artifact-dir /tmp/cautilus-skill-test --backend fixture --fixture-results-file ./fixtures/skill-test/fixture-results.json`. Recommendation: `accept-now` / passed; the trigger case reached must_invoke with 2/2 consensus, and the execution case passed.",
+      "metrics": {
+        "duration_ms": 60475
+      }
+    },
+    {
+      "sampleIndex": 2,
+      "invoked": true,
+      "summary": "Used the local `cautilus` skill and ran `cautilus skill test --repo-root . --adapter-name self-dogfood-skill-test` against the checked-in fixture `fixtures/skill-test/cases.json`. The checked-in command path behind that adapter is `node ./scripts/agent-runtime/run-local-skill-test.mjs --repo-root . --workspace {candidate_repo} --cases-file {skill_cases_file} --output-file {skill_eval_input_file} --artifact-dir {output_dir}/local-skill-test --backend {backend} --sandbox workspace-write --timeout-ms 90000 --codex-model gpt-5.4-mini --codex-reasoning-effort low --codex-config project_doc_max_bytes=0 --claude-permission-mode dontAsk --claude-allowed-tools 'Bash(cautilus *)'`. The run failed in preflight before producing `skill-evaluation-input.json` because `./bin/cautilus install --repo-root . --overwrite` tried to open `/home/hwidong/codes/cautilus/.agents/skills/cautilus/SKILL.md` and hit `read-only file system`. Recommendation: make the checked-in skill surface writable/materialized, then rerun the same `cautilus skill test --repo-root . --adapter-name self-dogfood-skill-test` command.",
+      "metrics": {
+        "duration_ms": 53635
+      }
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "evaluationKind": "trigger",
+  "repeatCount": 2,
+  "minConsensusCount": 2,
+  "expectedTrigger": "must_invoke",
+  "consensusReached": true,
+  "matchedRuns": 2,
+  "sampleSummaries": [
+    {
+      "sampleIndex": 1,
+      "invoked": true,
+      "summary": "Used the local `cautilus` skill. I resolved the checked-in adapter at `/home/hwidong/codes/cautilus/.agents/cautilus-adapters/self-dogfood-skill-test.yaml`, then ran `./bin/cautilus skill test --repo-root . --adapter-name self-dogfood-skill-test`. That command failed during preflight because `./bin/cautilus install --repo-root . --overwrite` hit `open /home/hwidong/codes/cautilus/.agents/skills/cautilus/SKILL.md: read-only file system`. Exact evaluated command path from the adapter was `node ./scripts/agent-runtime/run-local-skill-test.mjs --repo-root . --workspace {candidate_repo} --cases-file {skill_cases_file} --output-file {skill_eval_input_file} --artifact-dir {output_dir}/local-skill-test --backend {backend} --sandbox workspace-write --timeout-ms 90000 --codex-model gpt-5.4-mini --codex-reasoning-effort low --codex-config project_doc_max_bytes=0 --claude-permission-mode dontAsk --claude-allowed-tools 'Bash(cautilus *)'`. Recommendation: use `self-dogfood-skill-test` for this fixture, and fix the install/writable-surface issue before rerunning the skill test.",
+      "metrics": {
+        "duration_ms": 50203
+      }
+    },
+    {
+      "sampleIndex": 2,
+      "invoked": true,
+      "summary": "Used the local `cautilus` skill and ran the checked-in fixture via `./bin/cautilus skill test --repo-root . --adapter-name self-dogfood-skill-test`. The run failed during preflight at `./bin/cautilus install --repo-root . --overwrite` because it tried to open `/home/hwidong/codes/cautilus/.agents/skills/cautilus/SKILL.md` on a read-only file system. Exact command path: `./bin/cautilus` from `/home/hwidong/codes/cautilus`. Recommendation: rerun in a writable checkout or adjust the adapter preflight to avoid reinstalling the already-checked-in skill surface before the local skill test.",
+      "metrics": {
+        "duration_ms": 32317
+      }
+    }
+  ]
+}

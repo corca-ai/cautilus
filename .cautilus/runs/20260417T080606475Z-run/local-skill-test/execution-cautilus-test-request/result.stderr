@@ -1,0 +1,644 @@
+OpenAI Codex v0.121.0 (research preview)
+--------
+workdir: /home/hwidong/codes/cautilus
+model: gpt-5.4-mini
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR, /home/hwidong/.codex/memories]
+reasoning effort: low
+reasoning summaries: none
+session id: 019d9a7b-12e5-72f1-9f36-b324a7e24dd7
+--------
+user
+You are being evaluated on whether you can use the local skill "cautilus" when appropriate.
+Work inside the current repo checkout.
+Be honest about whether you actually used the local skill "cautilus" while solving the request.
+Return only JSON matching the provided schema after you finish.
+
+Evaluation kind: execution
+
+User request:
+Use $cautilus to test the local impl skill with the checked-in fixture at ./fixtures/skill-evaluation/accept-now-input.json and summarize the recommendation.
+
+For outcome:
+- use "passed" when the task completed cleanly
+- use "degraded" when it completed but with visible quality, confidence, or budget issues
+- use "blocked" when a missing dependency, permission, or unclear contract stopped you
+- use "failed" when the result was materially wrong or unusable
+
+warning: Codex could not find bubblewrap on PATH. Install bubblewrap with your OS package manager. See the sandbox prerequisites: https://developers.openai.com/codex/concepts/sandboxing#prerequisites. Codex will use the vendored bubblewrap in the meantime.
+exec
+/usr/bin/zsh -lc "pwd && rg --files fixtures/skill-evaluation .agents/skills/cautilus | sed -n '1,120p'" in /home/hwidong/codes/cautilus
+ succeeded in 0ms:
+/home/hwidong/codes/cautilus
+.agents/skills/cautilus/agents/openai.yaml
+.agents/skills/cautilus/SKILL.md
+fixtures/skill-evaluation/summary.schema.json
+fixtures/skill-evaluation/input.json
+fixtures/skill-evaluation/accept-now-input.json
+fixtures/skill-evaluation/input.schema.json
+.agents/skills/cautilus/references/bootstrap-inventory.md
+.agents/skills/cautilus/references/command-cookbook.md
+.agents/skills/cautilus/references/active-run.md
+.agents/skills/cautilus/references/scenario-proposal-inputs.md
+.agents/skills/cautilus/references/scenario-proposal-normalization.md
+.agents/skills/cautilus/references/review-prompt-inputs.md
+.agents/skills/cautilus/references/skill-normalization.md
+.agents/skills/cautilus/references/revision-artifact.md
+.agents/skills/cautilus/references/reporting.md
+.agents/skills/cautilus/references/evidence-bundle.md
+.agents/skills/cautilus/references/scenario-proposal-sources.md
+.agents/skills/cautilus/references/skill-testing.md
+.agents/skills/cautilus/references/skill-evaluation.md
+.agents/skills/cautilus/references/optimization.md
+.agents/skills/cautilus/references/review-packet.md
+.agents/skills/cautilus/references/adapter-contract.md
+.agents/skills/cautilus/references/optimization-search.md
+.agents/skills/cautilus/references/workflow-normalization.md
+.agents/skills/cautilus/references/evaluation-process.md
+.agents/skills/cautilus/references/self-dogfood-runner.md
+.agents/skills/cautilus/references/chatbot-normalization.md
+
+exec
+/usr/bin/zsh -lc "sed -n '1,220p' .agents/skills/cautilus/references/skill-evaluation.md" in /home/hwidong/codes/cautilus
+ succeeded in 0ms:
+# Skill Evaluation Contract
+
+`Cautilus` should support a first-class `skill evaluate` surface for judging
+whether a skill is invoked on the right prompts and whether it performs its
+intended task once invoked.
+
+When the operator still needs to run the host-specific skill invocation loop,
+use `skill-testing.md` first and treat `skill evaluate` as the packet
+summarizer one step downstream.
+
+Use `cautilus.skill_evaluation_inputs.v1` for the input packet and
+`cautilus.skill_evaluation_summary.v1` for the summary packet.
+
+## Problem
+
+`scenario normalize skill` is useful once a host repo already has normalized
+skill-evaluation summaries, but that helper starts one step too late when the
+host wants `skill` to be an explicit product-owned evaluation target.
+
+The product boundary for the first slice should be:
+
+`host-observed skill eval packet -> cautilus skill evaluate -> skill evaluation summary -> cautilus scenario normalize skill`
+
+This keeps raw runner ownership in the host repo while letting `Cautilus` own
+the packet shape, behavior framing, status rollup, and downstream chaining.
+
+## Input Boundary
+
+The first slice consumes one normalized packet with:
+
+- `skillId`
+- optional `skillDisplayName`
+- `evaluations`
+  - `evaluationId`
+  - `targetKind`
+  - `targetId`
+  - optional `displayName`
+  - `evaluationKind`
+    - `trigger`
+    - `execution`
+  - `prompt`
+  - `startedAt`
+  - `invoked`
+  - `summary`
+  - trigger-only `expectedTrigger`
+    - `must_invoke`
+    - `must_not_invoke`
+  - execution-only `outcome`
+    - `passed`
+    - `failed`
+    - `degraded`
+    - `blocked`
+  - optional `metrics`
+  - optional `sampling`
+    - `sampleCount`
+    - optional `consensusCount`
+    - optional `matchingCount`
+    - optional `invokedCount`
+    - optional `stable`
+    - execution-only optional `statusCounts`
+  - optional `baseline`
+    - `invoked`
+    - optional `summary`
+    - optional `outcome`
+    - optional `metrics`
+  - optional `thresholds`
+  - optional `artifactRefs`
+  - optional `intentProfile`
+
+The host repo still owns:
+
+- how prompts are selected
+- how the skill is actually invoked
+- how raw transcripts or output files are captured
+- any baseline or A/B runner logic
+
+The product-owned surface starts at the normalized packet, not at raw host
+runtime access.
+
+## Output Boundary
+
+The first summary packet should include:
+
+- recommendation
+  - `accept-now`
+  - `defer`
+  - `reject`
+- evaluation counts by status and kind
+- sampling rollup
+  - pass rate
+  - invocation rate
+  - consensus rate
+  - unstable evaluation count
+- baseline comparison rollup
+  - better / same / worse counts
+- per-evaluation results with normalized `surface`
+  - `trigger_selection`
+  - `execution_quality`
+- derived product-owned `intentProfile`
+- `evaluationRuns`
+  suitable for `cautilus scenario normalize skill`
+
+The point is not to replace host execution.
+The point is to give the product one stable boundary that can:
+
+- evaluate skill trigger accuracy
+- evaluate skill execution quality
+- degrade passing runs when declared runtime or token budgets are exceeded
+- chain directly into reusable scenario proposal coverage
+
+## Current Recommendation Rules
+
+- any `failed` run -> `reject`
+- otherwise any `degraded`, `blocked`, `unstable`, or baseline-worse run -> `defer`
+- otherwise -> `accept-now`
+
+This remains intentionally bounded. The product now exposes stability and
+baseline drift explicitly, but the host still owns richer experiment design.
+
+## Behavior Intent Mapping
+
+Current product-owned surfaces for this seam:
+
+- `skill_trigger_selection`
+  - `skill_trigger_accuracy`
+- `skill_execution_quality`
+  - `skill_task_fidelity`
+  - optional `runtime_budget_respect` when thresholds are declared
+
+## Guardrails
+
+- Do not let `skill evaluate` read raw repos, `SKILL.md`, or logs directly.
+- Do not pretend this slice owns skill execution infrastructure.
+- Do not collapse deterministic packaging or bootstrap validation into this
+  seam; those remain repo-owned local gates.
+- Do not make budget drift invisible when the host declared explicit runtime or
+  token thresholds.
+- Do not force hosts to supply a baseline packet before they can evaluate one
+  skill surface honestly.
+
+exec
+/usr/bin/zsh -lc "sed -n '1,220p' fixtures/skill-evaluation/input.schema.json" in /home/hwidong/codes/cautilus
+ succeeded in 0ms:
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cautilus.skill_evaluation_inputs.v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "skillId",
+    "evaluations"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "cautilus.skill_evaluation_inputs.v1"
+    },
+    "skillId": {
+      "type": "string"
+    },
+    "skillDisplayName": {
+      "type": "string"
+    },
+    "evaluations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "evaluationId",
+          "targetKind",
+          "targetId",
+          "evaluationKind",
+          "prompt",
+          "startedAt",
+          "invoked",
+          "summary"
+        ],
+        "properties": {
+          "evaluationId": {
+            "type": "string"
+          },
+          "targetKind": {
+            "type": "string",
+            "enum": ["public_skill", "profile", "integration"]
+          },
+          "targetId": {
+            "type": "string"
+          },
+          "displayName": {
+            "type": "string"
+          },
+          "evaluationKind": {
+            "type": "string",
+            "enum": ["trigger", "execution"]
+          },
+          "prompt": {
+            "type": "string"
+          },
+          "startedAt": {
+            "type": "string"
+          },
+          "expectedTrigger": {
+            "type": "string",
+            "enum": ["must_invoke", "must_not_invoke"]
+          },
+          "invoked": {
+            "type": "boolean"
+          },
+          "outcome": {
+            "type": "string",
+            "enum": ["passed", "failed", "degraded", "blocked"]
+          },
+          "summary": {
+            "type": "string"
+          },
+          "blockerKind": {
+            "type": "string"
+          },
+          "metrics": {
+            "type": "object",
+            "properties": {
+              "total_tokens": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "duration_ms": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "cost_usd": {
+                "type": "number",
+                "minimum": 0
+              }
+            }
+          },
+          "sampling": {
+            "type": "object",
+            "required": ["sampleCount"],
+            "properties": {
+              "sampleCount": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "consensusCount": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "matchingCount": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "invokedCount": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "stable": {
+                "type": "boolean"
+              },
+              "statusCounts": {
+                "type": "object",
+                "properties": {
+                  "passed": { "type": "integer", "minimum": 0 },
+                  "failed": { "type": "integer", "minimum": 0 },
+                  "degraded": { "type": "integer", "minimum": 0 },
+                  "blocked": { "type": "integer", "minimum": 0 }
+                }
+              }
+            }
+          },
+          "baseline": {
+            "type": "object",
+            "required": ["invoked"],
+            "properties": {
+              "invoked": {
+                "type": "boolean"
+              },
+              "summary": {
+                "type": "string"
+              },
+              "outcome": {
+                "type": "string",
+                "enum": ["passed", "failed", "degraded", "blocked"]
+              },
+              "metrics": {
+                "type": "object",
+                "properties": {
+                  "total_tokens": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "duration_ms": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "cost_usd": {
+                    "type": "number",
+                    "minimum": 0
+                  }
+                }
+              }
+            }
+          },
+          "thresholds": {
+            "type": "object",
+            "properties": {
+              "max_total_tokens": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "max_duration_ms": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "max_cost_usd": {
+                "type": "number",
+                "minimum": 0
+              }
+            }
+          },
+          "artifactRefs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["kind", "path"],
+              "properties": {
+                "kind": {
+                  "type": "string"
+                },
+                "path": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+exec
+/usr/bin/zsh -lc "sed -n '1,220p' fixtures/skill-evaluation/accept-now-input.json" in /home/hwidong/codes/cautilus
+ succeeded in 0ms:
+{
+  "schemaVersion": "cautilus.skill_evaluation_inputs.v1",
+  "skillId": "impl",
+  "skillDisplayName": "impl",
+  "evaluations": [
+    {
+      "evaluationId": "trigger-impl-positive",
+      "targetKind": "public_skill",
+      "targetId": "impl",
+      "displayName": "impl",
+      "evaluationKind": "trigger",
+      "prompt": "Please implement one bounded repo-local quality slice.",
+      "startedAt": "2026-04-14T00:00:00.000Z",
+      "expectedTrigger": "must_invoke",
+      "invoked": true,
+      "summary": "The prompt clearly called for the impl skill and the skill was invoked."
+    },
+    {
+      "evaluationId": "execution-impl-clean",
+      "targetKind": "public_skill",
+      "targetId": "impl",
+      "displayName": "impl",
+      "evaluationKind": "execution",
+      "prompt": "Apply the bounded change and verify it.",
+      "startedAt": "2026-04-14T00:05:00.000Z",
+      "invoked": true,
+      "outcome": "passed",
+      "summary": "The skill completed the bounded change and stayed within the declared runtime budget.",
+      "metrics": {
+        "total_tokens": 700,
+        "duration_ms": 1800
+      },
+      "thresholds": {
+        "max_total_tokens": 1000,
+        "max_duration_ms": 3000
+      },
+      "artifactRefs": [
+        {
+          "kind": "transcript",
+          "path": "artifacts/skills/impl/execution-impl-clean/transcript.md"
+        }
+      ]
+    }
+  ]
+}
+
+exec
+/usr/bin/zsh -lc 'cautilus --version && cautilus skill evaluate --input fixtures/skill-evaluation/accept-now-input.json --json' in /home/hwidong/codes/cautilus
+ exited 1 in 471ms:
+0.5.0
+unknown argument: --json
+exit status 1
+
+exec
+/usr/bin/zsh -lc 'cautilus skill evaluate --help' in /home/hwidong/codes/cautilus
+ succeeded in 247ms:
+Usage:
+  cautilus skill evaluate [args]
+
+Examples:
+  cautilus skill evaluate --input ./fixtures/skill-evaluation/input.json
+
+exec
+/usr/bin/zsh -lc 'cautilus skill evaluate --input fixtures/skill-evaluation/accept-now-input.json' in /home/hwidong/codes/cautilus
+ succeeded in 237ms:
+{
+  "comparisonSummary": {
+    "betterThanBaseline": 0,
+    "evaluationsWithBaseline": 0,
+    "sameAsBaseline": 0,
+    "worseThanBaseline": 0
+  },
+  "evaluatedAt": "2026-04-17T08:07:49.503622388Z",
+  "evaluationCounts": {
+    "blocked": 0,
+    "degraded": 0,
+    "execution": 1,
+    "failed": 0,
+    "passed": 2,
+    "total": 2,
+    "trigger": 1,
+    "unstable": 0
+  },
+  "evaluationRuns": [
+    {
+      "displayName": "impl",
+      "evaluationKind": "trigger",
+      "intentProfile": {
+        "behaviorSurface": "skill_trigger_selection",
+        "guardrailDimensions": [],
+        "intentId": "intent-impl-should-trigger-only-when-the-prompt-truly-needs-the-skill",
+        "schemaVersion": "cautilus.behavior_intent.v1",
+        "successDimensions": [
+          {
+            "id": "skill_trigger_accuracy",
+            "summary": "Trigger the skill when the prompt truly needs it and stay quiet otherwise."
+          }
+        ],
+        "summary": "impl should trigger only when the prompt truly needs the skill."
+      },
+      "startedAt": "2026-04-14T00:00:00.000Z",
+      "status": "passed",
+      "summary": "The prompt clearly called for the impl skill and the skill was invoked.",
+      "surface": "trigger_selection",
+      "targetId": "impl",
+      "targetKind": "public_skill"
+    },
+    {
+      "artifactRefs": [
+        {
+          "kind": "transcript",
+          "path": "artifacts/skills/impl/execution-impl-clean/transcript.md"
+        }
+      ],
+      "displayName": "impl",
+      "evaluationKind": "execution",
+      "intentProfile": {
+        "behaviorSurface": "skill_execution_quality",
+        "guardrailDimensions": [],
+        "intentId": "intent-impl-should-complete-the-intended-task-cleanly-once-the-skill-is-invoked",
+        "schemaVersion": "cautilus.behavior_intent.v1",
+        "successDimensions": [
+          {
+            "id": "skill_task_fidelity",
+            "summary": "Complete the intended task cleanly once the skill is invoked."
+          },
+          {
+            "id": "runtime_budget_respect",
+            "summary": "Stay within the declared runtime or token budget when one is provided."
+          }
+        ],
+        "summary": "impl should complete the intended task cleanly once the skill is invoked."
+      },
+      "metrics": {
+        "duration_ms": 1800,
+        "total_tokens": 700
+      },
+      "startedAt": "2026-04-14T00:05:00.000Z",
+      "status": "passed",
+      "summary": "The skill completed the bounded change and stayed within the declared runtime budget.",
+      "surface": "execution_quality",
+      "targetId": "impl",
+      "targetKind": "public_skill"
+    }
+  ],
+  "evaluations": [
+    {
+      "displayName": "impl",
+      "evaluationId": "trigger-impl-positive",
+      "evaluationKind": "trigger",
+      "expectedTrigger": "must_invoke",
+      "intentProfile": {
+        "behaviorSurface": "skill_trigger_selection",
+        "guardrailDimensions": [],
+        "intentId": "intent-impl-should-trigger-only-when-the-prompt-truly-needs-the-skill",
+        "schemaVersion": "cautilus.behavior_intent.v1",
+        "successDimensions": [
+          {
+            "id": "skill_trigger_accuracy",
+            "summary": "Trigger the skill when the prompt truly needs it and stay quiet otherwise."
+          }
+        ],
+        "summary": "impl should trigger only when the prompt truly needs the skill."
+      },
+      "invoked": true,
+      "prompt": "Please implement one bounded repo-local quality slice.",
+      "startedAt": "2026-04-14T00:00:00.000Z",
+      "status": "passed",
+      "summary": "The prompt clearly called for the impl skill and the skill was invoked.",
+      "surface": "trigger_selection",
+      "targetId": "impl",
+      "targetKind": "public_skill"
+    },
+    {
+      "artifactRefs": [
+        {
+          "kind": "transcript",
+          "path": "artifacts/skills/impl/execution-impl-clean/transcript.md"
+        }
+      ],
+      "displayName": "impl",
+      "evaluationId": "execution-impl-clean",
+      "evaluationKind": "execution",
+      "intentProfile": {
+        "behaviorSurface": "skill_execution_quality",
+        "guardrailDimensions": [],
+        "intentId": "intent-impl-should-complete-the-intended-task-cleanly-once-the-skill-is-invoked",
+        "schemaVersion": "cautilus.behavior_intent.v1",
+        "successDimensions": [
+          {
+            "id": "skill_task_fidelity",
+            "summary": "Complete the intended task cleanly once the skill is invoked."
+          },
+          {
+            "id": "runtime_budget_respect",
+            "summary": "Stay within the declared runtime or token budget when one is provided."
+          }
+        ],
+        "summary": "impl should complete the intended task cleanly once the skill is invoked."
+      },
+      "invoked": true,
+      "metrics": {
+        "duration_ms": 1800,
+        "total_tokens": 700
+      },
+      "prompt": "Apply the bounded change and verify it.",
+      "startedAt": "2026-04-14T00:05:00.000Z",
+      "status": "passed",
+      "summary": "The skill completed the bounded change and stayed within the declared runtime budget.",
+      "surface": "execution_quality",
+      "targetId": "impl",
+      "targetKind": "public_skill",
+      "thresholds": {
+        "max_duration_ms": 3000,
+        "max_total_tokens": 1000
+      }
+    }
+  ],
+  "recommendation": "accept-now",
+  "samplingSummary": {
+    "evaluationsWithSampling": 0,
+    "totalConsensusSamples": 0,
+    "totalInvocations": 0,
+    "totalPassingSamples": 0,
+    "totalSamples": 0,
+    "unstableEvaluations": 0
+  },
+  "schemaVersion": "cautilus.skill_evaluation_summary.v1",
+  "skillDisplayName": "impl",
+  "skillId": "impl"
+}
+
+codex
+{"invoked":true,"summary":"Used the local `cautilus` skill and ran `cautilus skill evaluate --input fixtures/skill-evaluation/accept-now-input.json`. The recommendation was `accept-now` because both evaluations passed, there were no degraded/blocked/failed runs, and no baseline or sampling issues were present.","outcome":"passed"}
+tokens used
+32,299

@@ -1,0 +1,340 @@
+{
+  "comparisonSummary": {
+    "betterThanBaseline": 0,
+    "evaluationsWithBaseline": 0,
+    "sameAsBaseline": 0,
+    "worseThanBaseline": 0
+  },
+  "evaluatedAt": "2026-04-17T08:07:52.932321076Z",
+  "evaluationCounts": {
+    "blocked": 0,
+    "degraded": 0,
+    "execution": 1,
+    "failed": 0,
+    "passed": 2,
+    "total": 2,
+    "trigger": 1,
+    "unstable": 0
+  },
+  "evaluationRuns": [
+    {
+      "artifactRefs": [
+        {
+          "kind": "prompt",
+          "path": "/home/hwidong/codes/cautilus/.cautilus/runs/20260417T080606475Z-run/local-skill-test/trigger-cautilus-test-request/sample-1/prompt.md"
+        },
+        {
+          "kind": "schema",
+          "path": "/home/hwidong/codes/cautilus/.cautilus/runs/20260417T080606475Z-run/local-skill-test/trigger-cautilus-test-request/sample-1/schema.json"
+        },
+        {
+          "kind": "stderr",
+          "path": "/home/hwidong/codes/cautilus/.cautilus/runs/20260417T080606475Z-run/local-skill-test/trigger-cautilus-test-request/sample-1/result.stderr"
+        },
+        {
+          "kind": "result",
+          "path": "/home/hwidong/codes/cautilus/.cautilus/runs/20260417T080606475Z-run/local-skill-test/trigger-cautilus-test-request/sample-1/result.json"
+        },
+        {
+          "kind": "prompt",
+          "path": "/home/hwidong/codes/cautilus/.cautilus/runs/20260417T080606475Z-run/local-skill-test/trigger-cautilus-test-request/sample-2/prompt.md"
+        },
+        {
+          "kind": "schema",
+          "path": "/home/hwidong/codes/cautilus/.cautilus/runs/20260417T080606475Z-run/local-skill-test/trigger-cautilus-test-request/sample-2/schema.json"
+        },
+        {
+          "kind": "stderr",
+          "path": "/home/hwidong/codes/cautilus/.cautilus/runs/20260417T080606475Z-run/local-skill-test/trigger-cautilus-test-request/sample-2/result.stderr"
+        },
+        {
+          "kind": "result",
+          "path": "/home/hwidong/codes/cautilus/.cautilus/runs/20260417T080606475Z-run/local-skill-test/trigger-cautilus-test-request/sample-2/result.json"
+        },
+        {
+          "kind": "aggregate",
+          "path": "/home/hwidong/codes/cautilus/.cautilus/runs/20260417T080606475Z-run/local-skill-test/trigger-cautilus-test-request/aggregate.json"
+        }
+      ],
+      "displayName": "cautilus",
+      "evaluationKind": "trigger",
+      "intentProfile": {
+        "behaviorSurface": "skill_trigger_selection",
+        "guardrailDimensions": [],
+        "intentId": "intent-cautilus-should-trigger-only-when-the-prompt-truly-needs-the-skill",
+        "schemaVersion": "cautilus.behavior_intent.v1",
+        "successDimensions": [
+          {
+            "id": "skill_trigger_accuracy",
+            "summary": "Trigger the skill when the prompt truly needs it and stay quiet otherwise."
+          }
+        ],
+        "summary": "cautilus should trigger only when the prompt truly needs the skill."
+      },
+      "metrics": {
+        "duration_ms": 41260
+      },
+      "sampling": {
+        "consensusCount": 2,
+        "consensusRate": 1,
+        "derivedStatus": "passed",
+        "invocationRate": 1,
+        "invokedCount": 2,
+        "passCount": 2,
+        "passRate": 1,
+        "sampleCount": 2,
+        "stable": true,
+        "unstable": false
+      },
+      "startedAt": "2026-04-17T08:07:29.524Z",
+      "status": "passed",
+      "summary": "Trigger consensus matched must_invoke in 2/2 run(s).",
+      "surface": "trigger_selection",
+      "targetId": "cautilus",
+      "targetKind": "public_skill"
+    },
+    {
+      "artifactRefs": [
+        {
+          "kind": "prompt",
+          "path": "/home/hwidong/codes/cautilus/.cautilus/runs/20260417T080606475Z-run/local-skill-test/execution-cautilus-test-request/prompt.md"
+        },
+        {
+          "kind": "schema",
+          "path": "/home/hwidong/codes/cautilus/.cautilus/runs/20260417T080606475Z-run/local-skill-test/execution-cautilus-test-request/schema.json"
+        },
+        {
+          "kind": "stderr",
+          "path": "/home/hwidong/codes/cautilus/.cautilus/runs/20260417T080606475Z-run/local-skill-test/execution-cautilus-test-request/result.stderr"
+        },
+        {
+          "kind": "result",
+          "path": "/home/hwidong/codes/cautilus/.cautilus/runs/20260417T080606475Z-run/local-skill-test/execution-cautilus-test-request/result.json"
+        },
+        {
+          "kind": "aggregate",
+          "path": "/home/hwidong/codes/cautilus/.cautilus/runs/20260417T080606475Z-run/local-skill-test/execution-cautilus-test-request/aggregate.json"
+        }
+      ],
+      "displayName": "cautilus",
+      "evaluationKind": "execution",
+      "intentProfile": {
+        "behaviorSurface": "skill_execution_quality",
+        "guardrailDimensions": [],
+        "intentId": "intent-cautilus-should-complete-the-intended-task-cleanly-once-the-skill-is-invoked",
+        "schemaVersion": "cautilus.behavior_intent.v1",
+        "successDimensions": [
+          {
+            "id": "skill_task_fidelity",
+            "summary": "Complete the intended task cleanly once the skill is invoked."
+          },
+          {
+            "id": "runtime_budget_respect",
+            "summary": "Stay within the declared runtime or token budget when one is provided."
+          }
+        ],
+        "summary": "cautilus should complete the intended task cleanly once the skill is invoked."
+      },
+      "metrics": {
+        "duration_ms": 23393
+      },
+      "sampling": {
+        "consensusCount": 1,
+        "consensusRate": 1,
+        "derivedStatus": "passed",
+        "invocationRate": 1,
+        "invokedCount": 1,
+        "passCount": 1,
+        "passRate": 1,
+        "sampleCount": 1,
+        "stable": true,
+        "statusCounts": {
+          "blocked": 0,
+          "degraded": 0,
+          "failed": 0,
+          "passed": 1
+        },
+        "unstable": false
+      },
+      "startedAt": "2026-04-17T08:07:52.920Z",
+      "status": "passed",
+      "summary": "Execution consensus reached passed in 1/1 run(s). Used the local `cautilus` skill and ran `cautilus skill evaluate --input fixtures/skill-evaluation/accept-now-input.json`. The recommendation was `accept-now` because both evaluations passed, there were no degraded/blocked/failed runs, and no baseline or sampling issues were present.",
+      "surface": "execution_quality",
+      "targetId": "cautilus",
+      "targetKind": "public_skill"
+    }
+  ],
+  "evaluations": [
+    {
+      "artifactRefs": [
+        {
+          "kind": "prompt",
+          "path": "/home/hwidong/codes/cautilus/.cautilus/runs/20260417T080606475Z-run/local-skill-test/trigger-cautilus-test-request/sample-1/prompt.md"
+        },
+        {
+          "kind": "schema",
+          "path": "/home/hwidong/codes/cautilus/.cautilus/runs/20260417T080606475Z-run/local-skill-test/trigger-cautilus-test-request/sample-1/schema.json"
+        },
+        {
+          "kind": "stderr",
+          "path": "/home/hwidong/codes/cautilus/.cautilus/runs/20260417T080606475Z-run/local-skill-test/trigger-cautilus-test-request/sample-1/result.stderr"
+        },
+        {
+          "kind": "result",
+          "path": "/home/hwidong/codes/cautilus/.cautilus/runs/20260417T080606475Z-run/local-skill-test/trigger-cautilus-test-request/sample-1/result.json"
+        },
+        {
+          "kind": "prompt",
+          "path": "/home/hwidong/codes/cautilus/.cautilus/runs/20260417T080606475Z-run/local-skill-test/trigger-cautilus-test-request/sample-2/prompt.md"
+        },
+        {
+          "kind": "schema",
+          "path": "/home/hwidong/codes/cautilus/.cautilus/runs/20260417T080606475Z-run/local-skill-test/trigger-cautilus-test-request/sample-2/schema.json"
+        },
+        {
+          "kind": "stderr",
+          "path": "/home/hwidong/codes/cautilus/.cautilus/runs/20260417T080606475Z-run/local-skill-test/trigger-cautilus-test-request/sample-2/result.stderr"
+        },
+        {
+          "kind": "result",
+          "path": "/home/hwidong/codes/cautilus/.cautilus/runs/20260417T080606475Z-run/local-skill-test/trigger-cautilus-test-request/sample-2/result.json"
+        },
+        {
+          "kind": "aggregate",
+          "path": "/home/hwidong/codes/cautilus/.cautilus/runs/20260417T080606475Z-run/local-skill-test/trigger-cautilus-test-request/aggregate.json"
+        }
+      ],
+      "displayName": "cautilus",
+      "evaluationId": "trigger-cautilus-test-request",
+      "evaluationKind": "trigger",
+      "expectedTrigger": "must_invoke",
+      "intentProfile": {
+        "behaviorSurface": "skill_trigger_selection",
+        "guardrailDimensions": [],
+        "intentId": "intent-cautilus-should-trigger-only-when-the-prompt-truly-needs-the-skill",
+        "schemaVersion": "cautilus.behavior_intent.v1",
+        "successDimensions": [
+          {
+            "id": "skill_trigger_accuracy",
+            "summary": "Trigger the skill when the prompt truly needs it and stay quiet otherwise."
+          }
+        ],
+        "summary": "cautilus should trigger only when the prompt truly needs the skill."
+      },
+      "invoked": true,
+      "metrics": {
+        "duration_ms": 41260
+      },
+      "prompt": "Use $cautilus to test the local impl skill with the checked-in fixture and report the exact command path and recommendation.",
+      "sampling": {
+        "consensusCount": 2,
+        "consensusRate": 1,
+        "derivedStatus": "passed",
+        "invocationRate": 1,
+        "invokedCount": 2,
+        "passCount": 2,
+        "passRate": 1,
+        "sampleCount": 2,
+        "stable": true,
+        "unstable": false
+      },
+      "startedAt": "2026-04-17T08:07:29.524Z",
+      "status": "passed",
+      "summary": "Trigger consensus matched must_invoke in 2/2 run(s).",
+      "surface": "trigger_selection",
+      "targetId": "cautilus",
+      "targetKind": "public_skill"
+    },
+    {
+      "artifactRefs": [
+        {
+          "kind": "prompt",
+          "path": "/home/hwidong/codes/cautilus/.cautilus/runs/20260417T080606475Z-run/local-skill-test/execution-cautilus-test-request/prompt.md"
+        },
+        {
+          "kind": "schema",
+          "path": "/home/hwidong/codes/cautilus/.cautilus/runs/20260417T080606475Z-run/local-skill-test/execution-cautilus-test-request/schema.json"
+        },
+        {
+          "kind": "stderr",
+          "path": "/home/hwidong/codes/cautilus/.cautilus/runs/20260417T080606475Z-run/local-skill-test/execution-cautilus-test-request/result.stderr"
+        },
+        {
+          "kind": "result",
+          "path": "/home/hwidong/codes/cautilus/.cautilus/runs/20260417T080606475Z-run/local-skill-test/execution-cautilus-test-request/result.json"
+        },
+        {
+          "kind": "aggregate",
+          "path": "/home/hwidong/codes/cautilus/.cautilus/runs/20260417T080606475Z-run/local-skill-test/execution-cautilus-test-request/aggregate.json"
+        }
+      ],
+      "displayName": "cautilus",
+      "evaluationId": "execution-cautilus-test-request",
+      "evaluationKind": "execution",
+      "intentProfile": {
+        "behaviorSurface": "skill_execution_quality",
+        "guardrailDimensions": [],
+        "intentId": "intent-cautilus-should-complete-the-intended-task-cleanly-once-the-skill-is-invoked",
+        "schemaVersion": "cautilus.behavior_intent.v1",
+        "successDimensions": [
+          {
+            "id": "skill_task_fidelity",
+            "summary": "Complete the intended task cleanly once the skill is invoked."
+          },
+          {
+            "id": "runtime_budget_respect",
+            "summary": "Stay within the declared runtime or token budget when one is provided."
+          }
+        ],
+        "summary": "cautilus should complete the intended task cleanly once the skill is invoked."
+      },
+      "invoked": true,
+      "metrics": {
+        "duration_ms": 23393
+      },
+      "prompt": "Use $cautilus to test the local impl skill with the checked-in fixture at ./fixtures/skill-evaluation/accept-now-input.json and summarize the recommendation.",
+      "sampling": {
+        "consensusCount": 1,
+        "consensusRate": 1,
+        "derivedStatus": "passed",
+        "invocationRate": 1,
+        "invokedCount": 1,
+        "passCount": 1,
+        "passRate": 1,
+        "sampleCount": 1,
+        "stable": true,
+        "statusCounts": {
+          "blocked": 0,
+          "degraded": 0,
+          "failed": 0,
+          "passed": 1
+        },
+        "unstable": false
+      },
+      "startedAt": "2026-04-17T08:07:52.920Z",
+      "status": "passed",
+      "summary": "Execution consensus reached passed in 1/1 run(s). Used the local `cautilus` skill and ran `cautilus skill evaluate --input fixtures/skill-evaluation/accept-now-input.json`. The recommendation was `accept-now` because both evaluations passed, there were no degraded/blocked/failed runs, and no baseline or sampling issues were present.",
+      "surface": "execution_quality",
+      "targetId": "cautilus",
+      "targetKind": "public_skill",
+      "thresholds": {
+        "max_duration_ms": 120000
+      }
+    }
+  ],
+  "recommendation": "accept-now",
+  "samplingSummary": {
+    "evaluationsWithSampling": 2,
+    "overallConsensusRate": 1,
+    "overallInvocationRate": 1,
+    "overallPassRate": 1,
+    "totalConsensusSamples": 3,
+    "totalInvocations": 3,
+    "totalPassingSamples": 3,
+    "totalSamples": 3,
+    "unstableEvaluations": 0
+  },
+  "schemaVersion": "cautilus.skill_evaluation_summary.v1",
+  "skillDisplayName": "cautilus",
+  "skillId": "cautilus"
+}

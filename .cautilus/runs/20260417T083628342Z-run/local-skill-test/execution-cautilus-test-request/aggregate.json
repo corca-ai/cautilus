@@ -1,0 +1,27 @@
+{
+  "evaluationKind": "execution",
+  "repeatCount": 1,
+  "minConsensusCount": 1,
+  "consensusReached": true,
+  "invokedRuns": 1,
+  "statusCounts": {
+    "passed": 1,
+    "degraded": 0,
+    "blocked": 0,
+    "failed": 0
+  },
+  "sampleSummaries": [
+    {
+      "sampleIndex": 1,
+      "invoked": true,
+      "outcome": "passed",
+      "summary": "Used the local `cautilus` skill and ran `cautilus skill evaluate --input ./fixtures/skill-evaluation/accept-now-input.json`. The evaluation summary recommends `accept-now`; both checks passed, with 2/2 evaluations passing and no degraded, failed, or blocked results.",
+      "metrics": {
+        "duration_ms": 22298
+      },
+      "telemetry": {
+        "model": "gpt-5.4-mini"
+      }
+    }
+  ]
+}

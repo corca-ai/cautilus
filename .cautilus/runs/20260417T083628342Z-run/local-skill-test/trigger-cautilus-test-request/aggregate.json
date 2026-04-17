@@ -1,0 +1,32 @@
+{
+  "evaluationKind": "trigger",
+  "repeatCount": 2,
+  "minConsensusCount": 2,
+  "expectedTrigger": "must_invoke",
+  "consensusReached": true,
+  "matchedRuns": 2,
+  "sampleSummaries": [
+    {
+      "sampleIndex": 1,
+      "invoked": true,
+      "summary": "Used the local $cautilus skill. The exact CLI path on this machine is `/home/hwidong/.linuxbrew/bin/cautilus`, and the checked-in helper path is `./bin/cautilus`. I resolved the adapter with `cautilus adapter resolve --repo-root . --adapter-name self-dogfood-skill-test`, confirmed the skill surface with `cautilus doctor --repo-root . --scope agent-surface`, then ran `cautilus skill test --repo-root . --adapter-name self-dogfood-skill-test` against the checked-in fixture `fixtures/skill-test/cases.json`. The run failed in preflight at `./bin/cautilus install --repo-root . --overwrite`, so the recommendation is `must_invoke` for the trigger case, but the local nested skill-test flow is not yet runnable end-to-end until that preflight is fixed.",
+      "metrics": {
+        "duration_ms": 30925
+      },
+      "telemetry": {
+        "model": "gpt-5.4-mini"
+      }
+    },
+    {
+      "sampleIndex": 2,
+      "invoked": true,
+      "summary": "Used the local `cautilus` skill. Exact command path: `./bin/cautilus skill evaluate --input ./fixtures/skill-evaluation/accept-now-input.json` (I also tried `./bin/cautilus skill test --repo-root . --adapter-name self-dogfood-skill-test`, which failed in preflight). Recommendation: `accept-now`.",
+      "metrics": {
+        "duration_ms": 28497
+      },
+      "telemetry": {
+        "model": "gpt-5.4-mini"
+      }
+    }
+  ]
+}

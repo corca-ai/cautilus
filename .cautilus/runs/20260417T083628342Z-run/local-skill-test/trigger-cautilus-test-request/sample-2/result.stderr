@@ -1,0 +1,1077 @@
+OpenAI Codex v0.121.0 (research preview)
+--------
+workdir: /home/hwidong/codes/cautilus
+model: gpt-5.4-mini
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR, /home/hwidong/.codex/memories]
+reasoning effort: low
+reasoning summaries: none
+session id: 019d9a96-1606-7c82-95c4-65d22412ac17
+--------
+user
+You are being evaluated on whether you can use the local skill "cautilus" when appropriate.
+Work inside the current repo checkout.
+Be honest about whether you actually used the local skill "cautilus" while solving the request.
+Return only JSON matching the provided schema after you finish.
+
+Evaluation kind: trigger
+Expected trigger: must_invoke
+
+User request:
+Use $cautilus to test the local impl skill with the checked-in fixture and report the exact command path and recommendation.
+
+warning: Codex could not find bubblewrap on PATH. Install bubblewrap with your OS package manager. See the sandbox prerequisites: https://developers.openai.com/codex/concepts/sandboxing#prerequisites. Codex will use the vendored bubblewrap in the meantime.
+exec
+/usr/bin/zsh -lc "pwd && rg --files -g 'AGENTS.md' -g '.agents/**' -g 'fixtures/**' -g '*skill*' -g '*cautilus*' ." in /home/hwidong/codes/cautilus
+ succeeded in 0ms:
+/home/hwidong/codes/cautilus
+./charness-artifacts/debug/debug-2026-04-17-skill-test-runtime-surfaces.md
+./internal/runtime/skill_test_cases_test.go
+./AGENTS.md
+./bin/cautilus
+./bin/cautilus.test.mjs
+./internal/runtime/skill_test_cases.go
+./internal/runtime/skill_evaluation.go
+./fixtures/optimize-search/example-result.json
+./fixtures/optimize-search/result.schema.json
+./fixtures/optimize-search/input.schema.json
+./fixtures/optimize-search/example-input.json
+./skills/cautilus/references/skill-testing.md
+./skills/cautilus/references/skill-evaluation.md
+./skills/cautilus/references/skill-normalization.md
+./plugins/cautilus/skills/cautilus/references/skill-testing.md
+./plugins/cautilus/skills/cautilus/references/skill-evaluation.md
+./plugins/cautilus/skills/cautilus/references/skill-normalization.md
+./docs/contracts/skill-normalization.md
+./docs/contracts/skill-testing.md
+./docs/contracts/skill-evaluation.md
+./fixtures/optimize/example-revision-artifact.json
+./fixtures/optimize/input.schema.json
+./fixtures/optimize/example-proposal.json
+./fixtures/optimize/proposal.schema.json
+./fixtures/optimize/revision-artifact.schema.json
+./fixtures/optimize/example-input.json
+./fixtures/skill-evaluation/input.schema.json
+./fixtures/evidence/example-bundle.json
+./fixtures/evidence/example-input.json
+./fixtures/evidence/input.schema.json
+./fixtures/evidence/bundle.schema.json
+./fixtures/skill-test/cases.schema.json
+./fixtures/skill-test/cases.json
+./fixtures/skill-test/fixture-results.json
+./fixtures/skill-evaluation/summary.schema.json
+./fixtures/skill-evaluation/input.json
+./fixtures/skill-evaluation/accept-now-input.json
+./fixtures/scenario-results/example-results.json
+./fixtures/scenario-results/results.schema.json
+./examples/starters/skill/cautilus-adapter.yaml
+./scripts/release/sync-packaged-skill.test.mjs
+./scripts/release/sync-packaged-skill.mjs
+./examples/starters/chatbot/cautilus-adapter.yaml
+./fixtures/scenario-proposals/results.json
+./fixtures/scenario-proposals/workflow-input.json
+./fixtures/reports/report-input.json
+./fixtures/reports/report-input.schema.json
+./fixtures/reports/report.schema.json
+./fixtures/cli-evaluation/workspaces/missing-adapter/.gitkeep
+./.cautilus/runs/20260417T080606475Z-run/skill-evaluation-input.json
+./.cautilus/runs/20260417T080606475Z-run/skill-test-1.stderr
+./.cautilus/runs/20260417T080606475Z-run/skill-candidates.json
+./.cautilus/runs/20260417T080606475Z-run/skill-test-1.stdout
+./.cautilus/runs/20260417T080606475Z-run/skill-evaluation-summary.json
+./examples/starters/workflow/cautilus-adapter.yaml
+./scripts/agent-runtime/skill-evaluation-schemas.test.mjs
+./fixtures/scenario-proposals/candidates.json
+./scripts/agent-runtime/run-local-skill-test.mjs
+./fixtures/scenario-proposals/input.schema.json
+./fixtures/scenario-proposals/workflow-input.schema.json
+./fixtures/scenario-proposals/skill-input.json
+./fixtures/review/prompt-input.schema.json
+./scripts/agent-runtime/run-local-skill-test.test.mjs
+./fixtures/scenario-proposals/chatbot-input.schema.json
+./.cautilus/runs/20260417T080854547Z-run/skill-evaluation-summary.json
+./fixtures/scenario-proposals/coverage.json
+./fixtures/scenario-proposals/standalone-input.json
+./fixtures/scenario-proposals/proposals.schema.json
+./fixtures/scenario-proposals/registry.json
+./fixtures/scenario-proposals/skill-input.schema.json
+./.cautilus/runs/20260417T080854547Z-run/skill-test-1.stdout
+./.cautilus/runs/20260417T080854547Z-run/skill-candidates.json
+./.cautilus/runs/20260417T082248980Z-run/skill-test-1.stdout
+./fixtures/scenario-proposals/chatbot-input.json
+./.cautilus/runs/20260417T082248980Z-run/skill-evaluation-summary.json
+./.cautilus/runs/20260417T080854547Z-run/skill-test-1.stderr
+./.cautilus/runs/20260417T082248980Z-run/skill-evaluation-input.json
+./.cautilus/runs/20260417T082248980Z-run/skill-test-1.stderr
+./.cautilus/runs/20260417T082248980Z-run/skill-candidates.json
+./scripts/agent-runtime/skill-test-case-suite.mjs
+./.cautilus/runs/20260417T080854547Z-run/skill-evaluation-input.json
+./fixtures/review/review-verdict.schema.json
+./fixtures/scenario-proposals/samples/chatbot-consumer-input.json
+./fixtures/scenario-proposals/samples/skill-validation-input.json
+./fixtures/scenario-proposals/samples/workflow-recovery-input.json
+./scripts/agent-runtime/evaluate-skill.mjs
+./scripts/agent-runtime/evaluate-skill.test.mjs
+./scripts/agent-runtime/skill-test-schemas.test.mjs
+./scripts/agent-runtime/skill-test-claude-backend.test.mjs
+./scripts/agent-runtime/skill-test-claude-backend.mjs
+
+exec
+/usr/bin/zsh -lc "sed -n '1,220p' /home/hwidong/codes/cautilus/.agents/skills/cautilus/SKILL.md && printf '\\n---\\n' && sed -n '1,220p' fixtures/skill-test/cases.json && printf '\\n---\\n' && sed -n '1,220p' fixtures/skill-test/fixture-results.json" in /home/hwidong/codes/cautilus
+ succeeded in 0ms:
+---
+name: cautilus
+description: "Use when intentful behavior evaluation itself is the task and the repo should run Cautilus's checked-in workflow instead of reconstructing compare, held-out, and review commands by hand."
+---
+
+# Cautilus
+
+Use this bundled skill when intentful behavior evaluation itself is the task
+and the repo wants to run the checked-in `Cautilus` workflow instead of
+rebuilding commands by hand.
+
+The installed skill assumes `cautilus` is already available on `PATH`.
+If it is not, install the CLI first and verify with `cautilus --version`.
+To materialize this skill in a host repo, run `cautilus install --repo-root .`.
+
+When a consumer repo or wrapper wants to probe the CLI surface safely, use:
+
+```bash
+cautilus healthcheck --json
+cautilus commands --json
+cautilus doctor --repo-root . --scope agent-surface
+```
+
+`Cautilus` should stay usable as a standalone product:
+
+- resolve or scaffold repo-local adapters
+- run bounded review variants through the bundled CLI
+- evaluate operator-facing behavior with explicit intent packets
+- keep held-out evaluation and review prompts explicit
+- keep host-repo fixtures, prompts, and policy outside the product boundary
+
+## Scenarios
+
+`Cautilus` has exactly three first-class evaluation archetypes. Pick the one
+that matches the task before reaching for adapters, reports, or review. The
+1:1 mapping is pinned in `archetype-boundary.spec.md` (chatbot / skill /
+workflow); every normalize command also ships a `--example-input` flag that
+prints a minimal valid packet to stdout for quick inspection. Run
+`cautilus scenarios` (or `cautilus scenarios --json`) to print this same
+catalog from the CLI.
+
+### 1. Chatbot conversation regression
+
+Use when a chatbot or assistant gets worse at multi-turn behavior after a
+prompt change (forgetting prior turns, answering when it should clarify,
+ignoring preferences the user already stated).
+
+- CLI: `cautilus scenario normalize chatbot --input <conversation-logs.json>`
+- Inspect shape: `cautilus scenario normalize chatbot --example-input`
+- Output: `proposals.json` (`cautilus.scenario_proposals.v1`)
+
+### 2. Skill / agent execution regression
+
+Use when a skill or agent edit should be checked for whether it still
+triggers on the right prompts, executes cleanly, and keeps its declared
+validation surfaces passing. Two entry points depending on what you
+already have:
+
+- Checked-in case suite (`cautilus.skill_test_cases.v1`, e.g.
+  `fixtures/skill-test/cases.json`):
+  `cautilus skill test --repo-root . --adapter-name <name>`
+- Already-normalized observation packet
+  (`cautilus.skill_evaluation_inputs.v1`; peek with
+  `cautilus skill evaluate --example-input`):
+  `cautilus skill evaluate --input <observations.json>`
+
+Either path emits `skill-summary.json`
+(`cautilus.skill_evaluation_summary.v1`) plus chained proposal
+candidates when regressions appear. To turn those candidates into saved
+scenarios, feed the summary into
+`cautilus scenario normalize skill --input <summary.json>`; inspect its
+input shape with `cautilus scenario normalize skill --example-input`.
+
+### 3. Durable workflow recovery
+
+Use when a stateful automation — a CLI workflow, long-running agent
+session, or pipeline that persists state across invocations — keeps
+getting stuck on the same step.
+
+- CLI: `cautilus scenario normalize workflow --input <workflow-runs.json>`
+- Inspect shape: `cautilus scenario normalize workflow --example-input`
+- Output: `proposals.json` with `operator_workflow_recovery` candidates
+
+## Bootstrap
+
+1. Resolve the adapter from the target repo:
+
+```bash
+cautilus adapter resolve --repo-root .
+```
+
+For a named adapter: `cautilus adapter resolve --repo-root . --adapter-name <name>`.
+
+2. If the repo does not have an adapter yet, scaffold one:
+
+```bash
+cautilus adapter init --repo-root .
+```
+
+3. Check whether the repo is already ready for standalone `Cautilus` use:
+
+```bash
+cautilus doctor --repo-root .
+```
+
+4. Before hand-editing adapter YAML, run the inventory in
+   [bootstrap-inventory.md](references/bootstrap-inventory.md) so `Cautilus`
+   is only pointed at LLM-behavior surfaces — not at cheap deterministic
+   gates that belong in CI.
+
+5. Read the canonical workflow and contracts before widening the surface:
+
+- [evaluation-process.md](references/evaluation-process.md)
+- [active-run.md](references/active-run.md)
+- [adapter-contract.md](references/adapter-contract.md)
+- [reporting.md](references/reporting.md)
+- [scenario-proposal-sources.md](references/scenario-proposal-sources.md)
+- [scenario-proposal-inputs.md](references/scenario-proposal-inputs.md)
+- [scenario-proposal-normalization.md](references/scenario-proposal-normalization.md)
+- [chatbot-normalization.md](references/chatbot-normalization.md)
+- [skill-testing.md](references/skill-testing.md)
+- [skill-evaluation.md](references/skill-evaluation.md)
+- [skill-normalization.md](references/skill-normalization.md)
+- [workflow-normalization.md](references/workflow-normalization.md)
+- [review-packet.md](references/review-packet.md)
+- [review-prompt-inputs.md](references/review-prompt-inputs.md)
+- [evidence-bundle.md](references/evidence-bundle.md)
+- [optimization.md](references/optimization.md)
+- [optimization-search.md](references/optimization-search.md)
+- [revision-artifact.md](references/revision-artifact.md)
+
+## Workflow
+
+1. Resolve the adapter and restate the candidate, baseline, and intended
+   decision.
+2. When the run needs clean git-ref A/B workspaces, prepare them with the
+   product-owned helper. `--output-dir` is optional when `workspace start`
+   has already pinned `CAUTILUS_RUN_DIR`; the helper will drop `baseline/`
+   and `candidate/` inside that active `runDir`:
+
+```bash
+cautilus workspace prepare-compare \
+  --repo-root . \
+  --baseline-ref origin/main \
+  --output-dir /tmp/cautilus-compare
+```
+
+3. Pin one active run for the workflow with `workspace start` instead of
+   inventing `--output-dir` paths by hand, and prune older recognized bundles
+   with `workspace prune-artifacts` instead of letting logs and compare
+   workspaces grow forever. The default stdout of `workspace start` is a
+   single shell-evalable line, so `eval` is the happy path:
+
+```bash
+eval "$(cautilus workspace start --label mode-held-out)"
+
+cautilus workspace prune-artifacts \
+  --root ./.cautilus/runs \
+  --keep-last 20
+```
+
+   `workspace start` auto-creates `./.cautilus/runs/`, writes a `run.json`
+   manifest so the pruner recognizes the run immediately, and exports
+   `CAUTILUS_RUN_DIR` via `eval`. Pass `--json` instead of `eval` when a
+   script needs the machine-readable payload.
+
+4. Run adapter-defined preflight commands before long evaluations.
+
+5. Use iterate mode for tuning, held-out mode for validation, and full gate for
+   ship decisions.
+
+6. When the adapter defines `executor_variants`, run the checked-in review
+   runner instead of retyping ad-hoc shell commands:
+
+```bash
+cautilus review variants \
+  --repo-root . \
+  --workspace . \
+  --output-dir /tmp/cautilus-review
+```
+
+   When the target repo is `Cautilus` itself, prefer the checked-in
+   self-dogfood wrappers over rebuilding the mode/report/review chain by hand
+   — see [self-dogfood-runner.md](references/self-dogfood-runner.md) for the
+   four wrapper entries and their claim boundaries.
+
+7. Report exact commands, exact placeholder values, and the final
+   recommendation.
+
+8. When the repo already has normalized scenario proposal candidates,
+   generate a checked-in proposal packet instead of hand-drafting scenario
+   JSON. Prefer `cautilus scenario propose` as the default entry after the
+   bootstrap inventory. Use it to turn normalized evidence into bounded
+   scenarios before widening adapter YAML by hand. For the concrete
+   invocations across skill test / skill evaluate / scenario normalize /
+   report build / mode evaluate / review / evidence / optimize / review
+   variants, see [command-cookbook.md](references/command-cookbook.md).
+
+## Guardrails
+
+- Do not treat one host repo's prompts, adapters, or report paths as product-owned
+  defaults.
+- Do not turn review loops into open-ended retries.
+- Do not turn optimizer output into an open-ended retry loop.
+- When search readiness is blocked, stop and discuss the missing held-out
+  evidence or intent surface before inventing prompt mutations.
+- Keep held-out evaluation held out unless the benchmark itself is being
+  changed deliberately.
+- Prefer checked-in wrapper scripts and schemas over inline shell quoting.
+
+---
+{
+  "schemaVersion": "cautilus.skill_test_cases.v1",
+  "skillId": "cautilus",
+  "skillDisplayName": "cautilus",
+  "cases": [
+    {
+      "caseId": "trigger-cautilus-test-request",
+      "evaluationKind": "trigger",
+      "prompt": "Use $cautilus to test the local impl skill with the checked-in fixture and report the exact command path and recommendation.",
+      "expectedTrigger": "must_invoke",
+      "repeatCount": 2,
+      "minConsensusCount": 2
+    },
+    {
+      "caseId": "execution-cautilus-test-request",
+      "evaluationKind": "execution",
+      "prompt": "Use $cautilus to test the local impl skill with the checked-in fixture at ./fixtures/skill-evaluation/accept-now-input.json and summarize the recommendation.",
+      "thresholds": {
+        "max_duration_ms": 120000
+      }
+    }
+  ]
+}
+
+---
+{
+  "trigger-cautilus-test-request": [
+    {
+      "invoked": true,
+      "summary": "The prompt explicitly called for the cautilus skill and the agent used it.",
+      "duration_ms": 1800
+    },
+    {
+      "invoked": true,
+      "summary": "A second trigger run also used the cautilus skill for the local fixture workflow.",
+      "duration_ms": 1900
+    }
+  ],
+  "execution-cautilus-test-request": {
+    "invoked": true,
+    "summary": "The agent used the cautilus skill to run the checked-in impl fixture and summarized the accept-now recommendation.",
+    "outcome": "passed",
+    "duration_ms": 2600
+  }
+}
+
+exec
+/usr/bin/zsh -lc "sed -n '1,220p' examples/starters/skill/cautilus-adapter.yaml && printf '\\n---\\n' && sed -n '1,220p' docs/contracts/skill-testing.md && printf '\\n---\\n' && sed -n '1,220p' scripts/agent-runtime/run-local-skill-test.mjs" in /home/hwidong/codes/cautilus
+ succeeded in 0ms:
+version: 1
+repo: your-skill-repo
+evaluation_surfaces:
+  - skill trigger accuracy and execution quality
+baseline_options:
+  - baseline git ref in the same repo via {baseline_ref}
+required_prerequisites:
+  - choose a real baseline before comparing results
+preflight_commands:
+  - node -e "console.log('preflight smoke ok')"
+iterate_command_templates:
+  - node -e "console.log('iterate smoke ok')"
+held_out_command_templates:
+  - node -e "console.log('held out smoke ok')"
+comparison_command_templates:
+  - node -e "console.log('comparison smoke ok')"
+full_gate_command_templates:
+  - node -e "console.log('full gate smoke ok')"
+iterate_samples_default: 1
+held_out_samples_default: 1
+comparison_samples_default: 1
+full_gate_samples_default: 1
+profile_default: default
+
+---
+# Skill Testing Contract
+
+`Cautilus` should support a first-class `skill test` workflow for the common operator request:
+
+`Use Cautilus to test this skill.`
+
+`skill evaluate` remains the packet summarizer for already observed runs.
+`skill test` sits one step earlier and owns the bounded workflow that turns a checked-in case suite plus adapter-owned runner into the observed evaluation packet.
+
+## Problem
+
+`skill evaluate` is valuable once a host already has a normalized `cautilus.skill_evaluation_inputs.v1` packet, but that starts too late for the operator flow where an agent should be able to run a local skill test with one explicit command path.
+
+The product-owned first slice should be:
+
+`checked-in skill cases -> cautilus skill test -> observed skill evaluation input -> cautilus skill evaluate -> skill evaluation summary -> cautilus scenario normalize skill`
+
+This keeps host execution ownership in the adapter while letting `Cautilus` own the operator-facing command, output paths, runDir behavior, and downstream chaining.
+
+## Input Boundary
+
+`cautilus skill test` should consume a checked-in case suite with schema `cautilus.skill_test_cases.v1`.
+
+Minimum shape:
+
+- `skillId`
+- optional `skillDisplayName`
+- optional suite-level `repeatCount`
+- optional suite-level `minConsensusCount`
+- `cases`
+  - `caseId`
+  - optional `targetKind`
+  - optional `targetId`
+  - optional `displayName`
+  - `evaluationKind`
+    - `trigger`
+    - `execution`
+  - `prompt`
+  - trigger-only `expectedTrigger`
+    - `must_invoke`
+    - `must_not_invoke`
+  - optional execution `thresholds`
+  - optional `repeatCount`
+  - optional `minConsensusCount`
+
+When `repeatCount` is greater than `1`, the adapter-owned runner should execute that case multiple times and emit one aggregated observed evaluation result.
+`minConsensusCount` is the minimum number of matching runs required for that aggregated result to count as a clean pass.
+If omitted, it defaults to `repeatCount`.
+
+The checked-in case suite owns the prompts and expectations.
+The adapter-owned runner still owns:
+
+- how the local host runtime is actually invoked
+- how invocation is observed
+- how output files or transcripts are collected
+- any host-specific backend choice such as `codex exec`
+
+## Adapter Boundary
+
+The adapter may define:
+
+- `skill_cases_default`
+- `skill_test_command_templates`
+
+Current placeholder additions for that seam:
+
+- `{skill_id}`
+- `{skill_cases_file}`
+- `{skill_eval_input_file}`
+- `{backend}` — resolved from `--runtime` CLI flag, adapter `default_runtime`, or `codex_exec` fallback
+
+Existing placeholders such as `{candidate_repo}` and `{output_dir}` remain available, so a checked-in runner can use a disposable workspace and emit its raw artifacts beside the generated input packet.
+
+## Output Boundary
+
+`cautilus skill test` should create one bounded workflow directory containing:
+
+- `skill-evaluation-input.json`
+- `skill-evaluation-summary.json`
+- `skill-candidates.json`
+- per-command stdout/stderr artifacts
+- any adapter-owned raw runner artifacts
+- per-case aggregate artifacts when repeated runs are used
+
+The summary and candidates should be product-owned outputs even when the adapter-owned runner produced the raw observed packet.
+
+## Guardrails
+
+- Do not make `skill test` parse raw host logs directly inside the product.
+- Do not require every host to expose provider telemetry before the seam is usable.
+- Do not collapse deterministic packaging or bootstrap validation into this workflow.
+  Keep those as repo-owned cheap gates.
+- Do not force operators to hand-edit `cautilus.skill_evaluation_inputs.v1` when a checked-in case suite plus adapter runner can produce it.
+
+---
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname, join, resolve } from "node:path";
+import { spawnSync } from "node:child_process";
+import process from "node:process";
+import { pathToFileURL } from "node:url";
+
+import {
+	SKILL_EVALUATION_INPUTS_SCHEMA,
+} from "./contract-versions.mjs";
+import { normalizeSkillTestCaseSuite } from "./skill-test-case-suite.mjs";
+import { runClaudeSample } from "./skill-test-claude-backend.mjs";
+
+export { normalizeSkillTestCaseSuite } from "./skill-test-case-suite.mjs";
+
+function usage(exitCode = 0) {
+	const text = [
+		"Usage:",
+		"  node ./scripts/agent-runtime/run-local-skill-test.mjs --repo-root <dir> --workspace <dir> --cases-file <file> --output-file <file> [--artifact-dir <dir>] [--backend codex_exec|fixture] [--fixture-results-file <file>] [--sandbox read-only|workspace-write] [--timeout-ms <ms>] [--model <model>] [--reasoning-effort <level>] [--codex-model <model>] [--codex-reasoning-effort <level>] [--codex-config <key=value>] [--claude-model <model>] [--claude-permission-mode <mode>] [--claude-allowed-tools <rules>]",
+	].join("\n");
+	const out = exitCode === 0 ? process.stdout : process.stderr;
+	out.write(`${text}\n`);
+	process.exit(exitCode);
+}
+
+function fail(message) {
+	process.stderr.write(`${message}\n`);
+	process.exit(1);
+}
+
+function readRequiredValue(argv, index, option) {
+	const value = argv[index];
+	if (!value) {
+		fail(`Missing value for ${option}`);
+	}
+	return value;
+}
+
+function parsePositiveInteger(value, option) {
+	const parsed = Number(value);
+	if (!Number.isInteger(parsed) || parsed <= 0) {
+		fail(`${option} must be a positive integer`);
+	}
+	return parsed;
+}
+
+function defaultOptions() {
+	return {
+		repoRoot: process.cwd(),
+		workspace: process.cwd(),
+		casesFile: null,
+		outputFile: null,
+		artifactDir: null,
+		backend: "codex_exec",
+		fixtureResultsFile: null,
+		sandbox: "read-only",
+		timeoutMs: 120000,
+		model: null,
+		reasoningEffort: null,
+		codexModel: null,
+		codexReasoningEffort: null,
+		codexConfigOverrides: [],
+		claudeModel: null,
+		claudePermissionMode: null,
+		claudeAllowedTools: null,
+	};
+}
+
+const VALUE_OPTIONS = {
+	"--repo-root": (options, value) => {
+		options.repoRoot = resolve(value);
+	},
+	"--workspace": (options, value) => {
+		options.workspace = resolve(value);
+	},
+	"--cases-file": (options, value) => {
+		options.casesFile = resolve(value);
+	},
+	"--output-file": (options, value) => {
+		options.outputFile = resolve(value);
+	},
+	"--artifact-dir": (options, value) => {
+		options.artifactDir = resolve(value);
+	},
+	"--backend": (options, value) => {
+		options.backend = value;
+	},
+	"--fixture-results-file": (options, value) => {
+		options.fixtureResultsFile = resolve(value);
+	},
+	"--sandbox": (options, value) => {
+		options.sandbox = value;
+	},
+	"--model": (options, value) => {
+		options.model = value;
+	},
+	"--reasoning-effort": (options, value) => {
+		options.reasoningEffort = value;
+	},
+	"--codex-model": (options, value) => {
+		options.codexModel = value;
+	},
+	"--codex-reasoning-effort": (options, value) => {
+		options.codexReasoningEffort = value;
+	},
+	"--codex-config": (options, value) => {
+		options.codexConfigOverrides.push(value);
+	},
+	"--claude-model": (options, value) => {
+		options.claudeModel = value;
+	},
+	"--claude-permission-mode": (options, value) => {
+		options.claudePermissionMode = value;
+	},
+	"--claude-allowed-tools": (options, value) => {
+		options.claudeAllowedTools = value;
+	},
+};
+
+function applyArgument(options, argv, index) {
+	const arg = argv[index];
+	if (arg === "-h" || arg === "--help") {
+		usage(0);
+		return index;
+	}
+	if (arg === "--timeout-ms") {
+		options.timeoutMs = parsePositiveInteger(readRequiredValue(argv, index + 1, arg), arg);
+		return index + 1;
+	}
+	const applyValue = VALUE_OPTIONS[arg];
+	if (!applyValue) {
+		fail(`Unknown argument: ${arg}`);
+	}
+	applyValue(options, readRequiredValue(argv, index + 1, arg));
+	return index + 1;
+}
+
+function parseArgs(argv) {
+	const options = defaultOptions();
+	for (let index = 0; index < argv.length; index += 1) {
+		index = applyArgument(options, argv, index);
+	}
+	if (!options.casesFile) {
+		fail("--cases-file is required");
+	}
+	if (!options.outputFile) {
+		fail("--output-file is required");
+	}
+	if (!["codex_exec", "claude_code", "fixture"].includes(options.backend)) {
+		fail("--backend must be codex_exec, claude_code, or fixture");
+	}
+	if (!["read-only", "workspace-write"].includes(options.sandbox)) {
+		fail("--sandbox must be read-only or workspace-write");
+	}
+	if (options.backend === "fixture" && !options.fixtureResultsFile) {
+		fail("--fixture-results-file is required when --backend fixture");
+	}
+	if (!options.artifactDir) {
+		options.artifactDir = join(dirname(options.outputFile), "local-skill-test");
+	}
+	return options;
+}
+
+function readJson(path) {
+	return JSON.parse(readFileSync(path, "utf-8"));
+}
+
+function assertObject(value, field) {
+	if (!value || typeof value !== "object" || Array.isArray(value)) {
+		throw new Error(`${field} must be an object`);
+	}
+	return value;
+}
+
+function assertString(value, field) {
+	if (typeof value !== "string" || !value.trim()) {
+		throw new Error(`${field} must be a non-empty string`);
+	}
+	return value;
+}
+
+export function baseSchema(evaluationKind) {
+	if (evaluationKind === "trigger") {
+		return {
+			type: "object",
+			additionalProperties: false,
+			required: ["invoked", "summary"],
+			properties: {
+				invoked: { type: "boolean" },
+				summary: { type: "string" },
+			},
+		};
+	}
+	return {
+		type: "object",
+		additionalProperties: false,
+		required: ["invoked", "summary", "outcome"],
+		properties: {
+			invoked: { type: "boolean" },
+			summary: { type: "string" },
+			outcome: { type: "string", enum: ["passed", "failed", "degraded", "blocked"] },
+		},
+	};
+}
+
+export function renderPrompt(skillId, testCase) {
+	const lines = [
+		`You are being evaluated on whether you can use the local skill "${skillId}" when appropriate.`,
+		"Work inside the current repo checkout.",
+		`Be honest about whether you actually used the local skill "${skillId}" while solving the request.`,
+		"Return only JSON matching the provided schema after you finish.",
+		"",
+		`Evaluation kind: ${testCase.evaluationKind}`,
+	];
+	if (testCase.expectedTrigger) {
+		lines.push(`Expected trigger: ${testCase.expectedTrigger}`);
+	}
+	lines.push(
+		"",
+		"User request:",
+		testCase.prompt,
+
+exec
+/usr/bin/zsh -lc "rg -n \"accept-now|skill test|skill evaluate|cautilus skill test\" scripts internal fixtures -g '"'!**/*.schema.json'"'" in /home/hwidong/codes/cautilus
+ succeeded in 0ms:
+internal/app/app_test.go:280:	if !strings.Contains(yaml, "skill_test_command_templates:") || !strings.Contains(yaml, "- cautilus skill test") {
+scripts/run-self-dogfood-experiments.mjs:178:	if (recommendation === "accept-now") {
+scripts/run-self-dogfood-experiments.mjs:189:		return "accept-now";
+scripts/run-self-dogfood-experiments.mjs:507:		`- deterministic gate: ${summary.gateRecommendation === "accept-now" ? "passed" : summary.gateRecommendation}`,
+scripts/self-dogfood-experiment-prompt.mjs:245:		"- reportRecommendation should reflect the stronger of the deterministic gate result and your verdict (`pass -> accept-now`, `concern -> defer`, `blocker -> reject`).",
+fixtures/skill-test/fixture-results.json:16:    "summary": "The agent used the cautilus skill to run the checked-in impl fixture and summarized the accept-now recommendation.",
+internal/app/cli_smoke_test.go:1091:		"gateRecommendation":   "accept-now",
+internal/app/cli_smoke_test.go:2023:		t.Fatalf("skill evaluate failed: %s", stderr)
+internal/app/cli_smoke_test.go:2131:		"  - local skill testing",
+internal/app/cli_smoke_test.go:2144:		t.Fatalf("skill test failed: %s", stderr)
+internal/app/cli_smoke_test.go:2148:	if summary["schemaVersion"] != contracts.SkillEvaluationSummarySchema || summary["recommendation"] != "accept-now" {
+internal/app/cli_smoke_test.go:2149:		t.Fatalf("unexpected skill test summary: %#v", summary)
+fixtures/skill-test/cases.json:17:      "prompt": "Use $cautilus to test the local impl skill with the checked-in fixture at ./fixtures/skill-evaluation/accept-now-input.json and summarize the recommendation.",
+scripts/check-placeholder-drift.test.mjs:32:		'    log("skill test start")',
+scripts/check-placeholder-drift.test.mjs:54:		'    log("skill test start")',
+internal/cli/command-registry.json:42:      "usage": "cautilus skill test [args]",
+internal/cli/command-registry.json:43:      "example": "cautilus skill test --repo-root . --adapter-name self-dogfood-skill-test"
+internal/cli/command-registry.json:48:      "usage": "cautilus skill evaluate [args]",
+internal/cli/command-registry.json:49:      "example": "cautilus skill evaluate --input ./fixtures/skill-evaluation/input.json"
+internal/app/app.go:176:	case "skill test":
+internal/app/app.go:184:	case "skill evaluate":
+scripts/self-dogfood-experiment-prompt.test.mjs:204:				automatedRecommendation: "accept-now",
+scripts/self-dogfood-experiment-prompt.test.mjs:224:	assert.match(rendered, /- current gateRecommendation: accept-now/);
+internal/cli/registry_test.go:57:	if !strings.Contains(usage, "cautilus skill test --repo-root . --adapter-name self-dogfood-skill-test") {
+internal/cli/registry_test.go:58:		t.Fatalf("usage missing skill test example:\n%s", usage)
+internal/cli/registry_test.go:60:	if !strings.Contains(usage, "cautilus skill evaluate --input ./fixtures/skill-evaluation/input.json") {
+internal/cli/registry_test.go:61:		t.Fatalf("usage missing skill evaluate example:\n%s", usage)
+scripts/run-self-dogfood.mjs:179:	if (recommendation === "accept-now") {
+scripts/run-self-dogfood.mjs:190:		return "accept-now";
+scripts/run-self-dogfood.mjs:264:		`- deterministic gate: ${summary.gateRecommendation === "accept-now" ? "passed" : summary.gateRecommendation}`,
+scripts/on-demand/run-self-dogfood.test.mjs:127:		assert.equal(publishedReport.selfDogfoodPublication.gateRecommendation, "accept-now");
+scripts/on-demand/run-self-dogfood.test.mjs:128:		assert.equal(publishedReport.selfDogfoodPublication.reportRecommendation, "accept-now");
+scripts/on-demand/run-self-dogfood.test.mjs:134:		assert.match(reviewPrompt, /current gateRecommendation: accept-now/);
+scripts/on-demand/run-self-dogfood.test.mjs:178:		assert.equal(summary.gateRecommendation, "accept-now");
+scripts/on-demand/run-self-dogfood.test.mjs:183:		assert.match(latest, /gateRecommendation: accept-now/);
+scripts/on-demand/run-self-dogfood.test.mjs:212:		assert.equal(summary.gateRecommendation, "accept-now");
+scripts/on-demand/run-self-dogfood.test.mjs:216:		assert.match(latest, /gateRecommendation: accept-now/);
+internal/app/remaining_commands.go:821:	log(fmt.Sprintf("skill test start: repo=%s workspace=%s skill=%s runtime=%s output=%s", options.repoRoot, workspace, caseSuite.SkillID, effectiveRuntime, outputDir))
+internal/app/remaining_commands.go:846:			result := runShellCommand(options.repoRoot, commandText, filepath.Join(outputDir, fmt.Sprintf("skill-test-%d.stdout", index+1)), filepath.Join(outputDir, fmt.Sprintf("skill-test-%d.stderr", index+1)), log, fmt.Sprintf("skill test %d/%d", index+1, len(templates)))
+internal/app/remaining_commands.go:856:			fmt.Fprintf(stderr, "skill test commands failed before producing %s\n", inputFile)
+internal/app/remaining_commands.go:880:	log(fmt.Sprintf("skill test complete: recommendation=%s summary=%s candidates=%s", anyString(summary["recommendation"]), summaryFile, candidatesFile))
+internal/app/remaining_commands.go:2197:		return "accept-now"
+scripts/on-demand/run-self-dogfood-experiments.test.mjs:165:		assert.equal(summary.gateRecommendation, "accept-now");
+scripts/on-demand/run-self-dogfood-experiments.test.mjs:201:		assert.equal(summary.gateRecommendation, "accept-now");
+scripts/check-placeholder-drift.mjs:16:		mapAnchor: "skill test start", // a string unique to the handler
+internal/runtime/self_dogfood_html.go:828:	case "accept-now":
+scripts/agent-runtime/generate-optimize-proposal.mjs:367:	if (evidenceItems.length === 0 && packet.report?.recommendation === "accept-now") {
+scripts/agent-runtime/generate-optimize-proposal.mjs:432:	if (packet.report?.recommendation === "accept-now" && evidence.every((item) => item.severity === "low")) {
+internal/runtime/self_dogfood_html_test.go:13:	for _, pattern := range []string{`<!DOCTYPE html>`, `<html lang="en">`, `data-status="overallStatus"`, `data-field="reportRecommendation"`, `>defer<`, `>accept-now<`} {
+internal/runtime/self_dogfood_html_test.go:262:			"gateRecommendation":   "accept-now",
+internal/runtime/self_dogfood_html_test.go:312:			"gateRecommendation":   "accept-now",
+internal/runtime/adapter.go:467:			"cautilus skill test --repo-root {candidate_repo} --adapter-name {adapter_name}",
+scripts/agent-runtime/evaluate-adapter-mode.test.mjs:242:test("evaluate-adapter-mode promotes a passing full_gate run to accept-now", () => {
+scripts/agent-runtime/evaluate-adapter-mode.test.mjs:270:		assert.equal(report.recommendation, "accept-now");
+internal/runtime/optimize.go:414:	if len(evidenceItems) == 0 && stringOrEmpty(asMap(packet["report"])["recommendation"]) == "accept-now" {
+internal/runtime/optimize.go:474:	if stringOrEmpty(asMap(packet["report"])["recommendation"]) == "accept-now" {
+scripts/agent-runtime/evaluate-skill.mjs:551:	return "accept-now";
+internal/runtime/skill_evaluation.go:108:	recommendation := "accept-now"
+scripts/agent-runtime/skill-test-schemas.test.mjs:62:test("skill test cases schema matches the checked-in fixture", () => {
+scripts/agent-runtime/optimize-flow.test.mjs:295:			recommendation: "accept-now",
+scripts/agent-runtime/run-local-skill-test.test.mjs:14:test("buildObservedSkillEvaluationInput materializes a normalized packet from fixture-backed skill test results", () => {
+scripts/agent-runtime/optimize-search-checkpoints.mjs:285:	const admissible = report.recommendation === "accept-now";
+scripts/agent-runtime/evaluate-adapter-mode.mjs:219:	return mode === "full_gate" ? "accept-now" : "defer";
+
+exec
+/usr/bin/zsh -lc "rg -n \"self-dogfood-skill-test|adapter_name\" internal scripts examples fixtures -g '"'!**/*.schema.json'"'" in /home/hwidong/codes/cautilus
+ succeeded in 0ms:
+internal/cli/command-registry.json:43:      "example": "cautilus skill test --repo-root . --adapter-name self-dogfood-skill-test"
+internal/cli/registry_test.go:57:	if !strings.Contains(usage, "cautilus skill test --repo-root . --adapter-name self-dogfood-skill-test") {
+internal/runtime/adapter.go:467:			"cautilus skill test --repo-root {candidate_repo} --adapter-name {adapter_name}",
+
+exec
+/usr/bin/zsh -lc './bin/cautilus skill test --repo-root . --adapter-name self-dogfood-skill-test' in /home/hwidong/codes/cautilus
+ exited 1 in 446ms:
+Active run: /home/hwidong/codes/cautilus/.cautilus/runs/20260417T083718713Z-run
+skill test start: repo=/home/hwidong/codes/cautilus workspace=/home/hwidong/codes/cautilus skill=cautilus runtime=codex output=/home/hwidong/codes/cautilus/.cautilus/runs/20260417T083718713Z-run
+preflight 1/2 start: ./bin/cautilus install --repo-root . --overwrite
+preflight 1/2 failed in 209ms
+skill test commands failed before producing /home/hwidong/codes/cautilus/.cautilus/runs/20260417T083718713Z-run/skill-evaluation-input.json
+exit status 1
+
+exec
+/usr/bin/zsh -lc "sed -n '1,220p' fixtures/skill-evaluation/accept-now-input.json && printf '\\n---\\n' && sed -n '1,220p' fixtures/skill-evaluation/input.json" in /home/hwidong/codes/cautilus
+ succeeded in 0ms:
+{
+  "schemaVersion": "cautilus.skill_evaluation_inputs.v1",
+  "skillId": "impl",
+  "skillDisplayName": "impl",
+  "evaluations": [
+    {
+      "evaluationId": "trigger-impl-positive",
+      "targetKind": "public_skill",
+      "targetId": "impl",
+      "displayName": "impl",
+      "evaluationKind": "trigger",
+      "prompt": "Please implement one bounded repo-local quality slice.",
+      "startedAt": "2026-04-14T00:00:00.000Z",
+      "expectedTrigger": "must_invoke",
+      "invoked": true,
+      "summary": "The prompt clearly called for the impl skill and the skill was invoked."
+    },
+    {
+      "evaluationId": "execution-impl-clean",
+      "targetKind": "public_skill",
+      "targetId": "impl",
+      "displayName": "impl",
+      "evaluationKind": "execution",
+      "prompt": "Apply the bounded change and verify it.",
+      "startedAt": "2026-04-14T00:05:00.000Z",
+      "invoked": true,
+      "outcome": "passed",
+      "summary": "The skill completed the bounded change and stayed within the declared runtime budget.",
+      "metrics": {
+        "total_tokens": 700,
+        "duration_ms": 1800
+      },
+      "thresholds": {
+        "max_total_tokens": 1000,
+        "max_duration_ms": 3000
+      },
+      "artifactRefs": [
+        {
+          "kind": "transcript",
+          "path": "artifacts/skills/impl/execution-impl-clean/transcript.md"
+        }
+      ]
+    }
+  ]
+}
+
+---
+{
+  "schemaVersion": "cautilus.skill_evaluation_inputs.v1",
+  "skillId": "impl",
+  "skillDisplayName": "impl",
+  "evaluations": [
+    {
+      "evaluationId": "trigger-impl-positive",
+      "targetKind": "public_skill",
+      "targetId": "impl",
+      "displayName": "impl",
+      "evaluationKind": "trigger",
+      "prompt": "Please implement one bounded repo-local quality slice.",
+      "startedAt": "2026-04-14T00:00:00.000Z",
+      "expectedTrigger": "must_invoke",
+      "invoked": true,
+      "summary": "The prompt clearly called for the impl skill and the skill was invoked."
+    },
+    {
+      "evaluationId": "execution-impl-budget",
+      "targetKind": "public_skill",
+      "targetId": "impl",
+      "displayName": "impl",
+      "evaluationKind": "execution",
+      "prompt": "Apply the bounded change and verify it.",
+      "startedAt": "2026-04-14T00:05:00.000Z",
+      "invoked": true,
+      "outcome": "passed",
+      "summary": "The skill completed the task but used more time and tokens than intended.",
+      "metrics": {
+        "total_tokens": 1400,
+        "duration_ms": 4200
+      },
+      "thresholds": {
+        "max_total_tokens": 1000,
+        "max_duration_ms": 3000
+      },
+      "artifactRefs": [
+        {
+          "kind": "transcript",
+          "path": "artifacts/skills/impl/execution-impl-budget/transcript.md"
+        }
+      ]
+    }
+  ]
+}
+
+exec
+/usr/bin/zsh -lc './bin/cautilus skill evaluate --input ./fixtures/skill-evaluation/accept-now-input.json' in /home/hwidong/codes/cautilus
+ succeeded in 595ms:
+{
+  "comparisonSummary": {
+    "betterThanBaseline": 0,
+    "evaluationsWithBaseline": 0,
+    "sameAsBaseline": 0,
+    "worseThanBaseline": 0
+  },
+  "evaluatedAt": "2026-04-17T08:37:25.014487352Z",
+  "evaluationCounts": {
+    "blocked": 0,
+    "degraded": 0,
+    "execution": 1,
+    "failed": 0,
+    "passed": 2,
+    "total": 2,
+    "trigger": 1,
+    "unstable": 0
+  },
+  "evaluationRuns": [
+    {
+      "displayName": "impl",
+      "evaluationKind": "trigger",
+      "intentProfile": {
+        "behaviorSurface": "skill_trigger_selection",
+        "guardrailDimensions": [],
+        "intentId": "intent-impl-should-trigger-only-when-the-prompt-truly-needs-the-skill",
+        "schemaVersion": "cautilus.behavior_intent.v1",
+        "successDimensions": [
+          {
+            "id": "skill_trigger_accuracy",
+            "summary": "Trigger the skill when the prompt truly needs it and stay quiet otherwise."
+          }
+        ],
+        "summary": "impl should trigger only when the prompt truly needs the skill."
+      },
+      "startedAt": "2026-04-14T00:00:00.000Z",
+      "status": "passed",
+      "summary": "The prompt clearly called for the impl skill and the skill was invoked.",
+      "surface": "trigger_selection",
+      "targetId": "impl",
+      "targetKind": "public_skill"
+    },
+    {
+      "artifactRefs": [
+        {
+          "kind": "transcript",
+          "path": "artifacts/skills/impl/execution-impl-clean/transcript.md"
+        }
+      ],
+      "displayName": "impl",
+      "evaluationKind": "execution",
+      "intentProfile": {
+        "behaviorSurface": "skill_execution_quality",
+        "guardrailDimensions": [],
+        "intentId": "intent-impl-should-complete-the-intended-task-cleanly-once-the-skill-is-invoked",
+        "schemaVersion": "cautilus.behavior_intent.v1",
+        "successDimensions": [
+          {
+            "id": "skill_task_fidelity",
+            "summary": "Complete the intended task cleanly once the skill is invoked."
+          },
+          {
+            "id": "runtime_budget_respect",
+            "summary": "Stay within the declared runtime or token budget when one is provided."
+          }
+        ],
+        "summary": "impl should complete the intended task cleanly once the skill is invoked."
+      },
+      "metrics": {
+        "duration_ms": 1800,
+        "total_tokens": 700
+      },
+      "startedAt": "2026-04-14T00:05:00.000Z",
+      "status": "passed",
+      "summary": "The skill completed the bounded change and stayed within the declared runtime budget.",
+      "surface": "execution_quality",
+      "targetId": "impl",
+      "targetKind": "public_skill"
+    }
+  ],
+  "evaluations": [
+    {
+      "displayName": "impl",
+      "evaluationId": "trigger-impl-positive",
+      "evaluationKind": "trigger",
+      "expectedTrigger": "must_invoke",
+      "intentProfile": {
+        "behaviorSurface": "skill_trigger_selection",
+        "guardrailDimensions": [],
+        "intentId": "intent-impl-should-trigger-only-when-the-prompt-truly-needs-the-skill",
+        "schemaVersion": "cautilus.behavior_intent.v1",
+        "successDimensions": [
+          {
+            "id": "skill_trigger_accuracy",
+            "summary": "Trigger the skill when the prompt truly needs it and stay quiet otherwise."
+          }
+        ],
+        "summary": "impl should trigger only when the prompt truly needs the skill."
+      },
+      "invoked": true,
+      "prompt": "Please implement one bounded repo-local quality slice.",
+      "startedAt": "2026-04-14T00:00:00.000Z",
+      "status": "passed",
+      "summary": "The prompt clearly called for the impl skill and the skill was invoked.",
+      "surface": "trigger_selection",
+      "targetId": "impl",
+      "targetKind": "public_skill"
+    },
+    {
+      "artifactRefs": [
+        {
+          "kind": "transcript",
+          "path": "artifacts/skills/impl/execution-impl-clean/transcript.md"
+        }
+      ],
+      "displayName": "impl",
+      "evaluationId": "execution-impl-clean",
+      "evaluationKind": "execution",
+      "intentProfile": {
+        "behaviorSurface": "skill_execution_quality",
+        "guardrailDimensions": [],
+        "intentId": "intent-impl-should-complete-the-intended-task-cleanly-once-the-skill-is-invoked",
+        "schemaVersion": "cautilus.behavior_intent.v1",
+        "successDimensions": [
+          {
+            "id": "skill_task_fidelity",
+            "summary": "Complete the intended task cleanly once the skill is invoked."
+          },
+          {
+            "id": "runtime_budget_respect",
+            "summary": "Stay within the declared runtime or token budget when one is provided."
+          }
+        ],
+        "summary": "impl should complete the intended task cleanly once the skill is invoked."
+      },
+      "invoked": true,
+      "metrics": {
+        "duration_ms": 1800,
+        "total_tokens": 700
+      },
+      "prompt": "Apply the bounded change and verify it.",
+      "startedAt": "2026-04-14T00:05:00.000Z",
+      "status": "passed",
+      "summary": "The skill completed the bounded change and stayed within the declared runtime budget.",
+      "surface": "execution_quality",
+      "targetId": "impl",
+      "targetKind": "public_skill",
+      "thresholds": {
+        "max_duration_ms": 3000,
+        "max_total_tokens": 1000
+      }
+    }
+  ],
+  "recommendation": "accept-now",
+  "samplingSummary": {
+    "evaluationsWithSampling": 0,
+    "totalConsensusSamples": 0,
+    "totalInvocations": 0,
+    "totalPassingSamples": 0,
+    "totalSamples": 0,
+    "unstableEvaluations": 0
+  },
+  "schemaVersion": "cautilus.skill_evaluation_summary.v1",
+  "skillDisplayName": "impl",
+  "skillId": "impl"
+}
+
+codex
+{"invoked":true,"summary":"Used the local `cautilus` skill. Exact command path: `./bin/cautilus skill evaluate --input ./fixtures/skill-evaluation/accept-now-input.json` (I also tried `./bin/cautilus skill test --repo-root . --adapter-name self-dogfood-skill-test`, which failed in preflight). Recommendation: `accept-now`."}
+tokens used
+49,816
