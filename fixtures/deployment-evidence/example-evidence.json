@@ -1,0 +1,103 @@
+{
+  "schemaVersion": "cautilus.deployment_evidence.v1",
+  "generatedAt": "2026-04-17T12:00:00.000Z",
+  "overall": {
+    "surfaceCount": 2,
+    "runtimes": ["claude", "codex"],
+    "providers": ["anthropic", "openai"],
+    "models": ["claude-opus-4-7[1m]", "gpt-5.4-mini"],
+    "rowCount": 2,
+    "scenarioCount": 2,
+    "totalSamples": 3,
+    "successfulSamples": 3,
+    "successRate": 1,
+    "statusCounts": {
+      "passed": 2
+    },
+    "sourceKinds": ["scenario_results", "skill_evaluation_summary"],
+    "p50_duration_ms": 16675,
+    "p90_duration_ms": 28095,
+    "p50_total_tokens": 72541,
+    "p90_total_tokens": 130429,
+    "p50_cost_usd": 0.099262,
+    "p90_cost_usd": 0.1690716
+  },
+  "rows": [
+    {
+      "surface": "skill",
+      "scenarioId": "trigger-cautilus-test-request",
+      "scenarioLabel": "cautilus",
+      "runtime": "claude",
+      "sourceKind": "skill_evaluation_summary",
+      "status": "passed",
+      "sampleCount": 2,
+      "successCount": 2,
+      "successRate": 1,
+      "provider": "anthropic",
+      "model": "claude-opus-4-7[1m]",
+      "duration_ms": 30950,
+      "total_tokens": 144901,
+      "cost_usd": 0.186524
+    },
+    {
+      "surface": "workflow",
+      "scenarioId": "operator-recovery",
+      "scenarioLabel": "operator-recovery",
+      "runtime": "codex",
+      "sourceKind": "scenario_results",
+      "status": "passed",
+      "sampleCount": 1,
+      "successCount": 1,
+      "successRate": 1,
+      "provider": "openai",
+      "model": "gpt-5.4-mini",
+      "duration_ms": 2400,
+      "total_tokens": 180,
+      "cost_usd": 0.012
+    }
+  ],
+  "summaries": [
+    {
+      "surface": "skill",
+      "runtime": "claude",
+      "provider": "anthropic",
+      "model": "claude-opus-4-7[1m]",
+      "rowCount": 1,
+      "scenarioCount": 1,
+      "totalSamples": 2,
+      "successfulSamples": 2,
+      "successRate": 1,
+      "statusCounts": {
+        "passed": 1
+      },
+      "sourceKinds": ["skill_evaluation_summary"],
+      "p50_duration_ms": 30950,
+      "p90_duration_ms": 30950,
+      "p50_total_tokens": 144901,
+      "p90_total_tokens": 144901,
+      "p50_cost_usd": 0.186524,
+      "p90_cost_usd": 0.186524
+    },
+    {
+      "surface": "workflow",
+      "runtime": "codex",
+      "provider": "openai",
+      "model": "gpt-5.4-mini",
+      "rowCount": 1,
+      "scenarioCount": 1,
+      "totalSamples": 1,
+      "successfulSamples": 1,
+      "successRate": 1,
+      "statusCounts": {
+        "passed": 1
+      },
+      "sourceKinds": ["scenario_results"],
+      "p50_duration_ms": 2400,
+      "p90_duration_ms": 2400,
+      "p50_total_tokens": 180,
+      "p90_total_tokens": 180,
+      "p50_cost_usd": 0.012,
+      "p90_cost_usd": 0.012
+    }
+  ]
+}

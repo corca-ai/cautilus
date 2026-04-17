@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "cautilus.deployment_evidence_inputs.v1",
+  "rows": [
+    {
+      "surface": "skill",
+      "scenarioId": "trigger-cautilus-test-request",
+      "scenarioLabel": "cautilus",
+      "runtime": "claude",
+      "sourceKind": "skill_evaluation_summary",
+      "status": "passed",
+      "sampleCount": 2,
+      "successCount": 2,
+      "successRate": 1,
+      "provider": "anthropic",
+      "model": "claude-opus-4-7[1m]",
+      "duration_ms": 30950,
+      "total_tokens": 144901,
+      "cost_usd": 0.186524
+    },
+    {
+      "surface": "workflow",
+      "scenarioId": "operator-recovery",
+      "scenarioLabel": "operator-recovery",
+      "runtime": "codex",
+      "sourceKind": "scenario_results",
+      "status": "passed",
+      "sampleCount": 1,
+      "successCount": 1,
+      "successRate": 1,
+      "provider": "openai",
+      "model": "gpt-5.4-mini",
+      "duration_ms": 2400,
+      "total_tokens": 180,
+      "cost_usd": 0.012
+    }
+  ]
+}

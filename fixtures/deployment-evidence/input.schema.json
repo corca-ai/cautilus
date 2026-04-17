@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cautilus.deployment_evidence_inputs.v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "rows"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "cautilus.deployment_evidence_inputs.v1"
+    },
+    "rows": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "surface",
+          "scenarioId",
+          "runtime",
+          "sourceKind",
+          "status",
+          "sampleCount",
+          "successCount"
+        ],
+        "properties": {
+          "surface": {
+            "type": "string",
+            "enum": ["chatbot", "skill", "workflow"]
+          },
+          "scenarioId": {
+            "type": "string"
+          },
+          "scenarioLabel": {
+            "type": "string"
+          },
+          "runtime": {
+            "type": "string"
+          },
+          "sourceKind": {
+            "type": "string",
+            "enum": ["skill_evaluation_summary", "scenario_results"]
+          },
+          "status": {
+            "type": "string"
+          },
+          "sampleCount": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "successCount": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "successRate": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "sourcePath": {
+            "type": "string"
+          },
+          "provider": {
+            "type": "string"
+          },
+          "model": {
+            "type": "string"
+          },
+          "duration_ms": {
+            "type": "number",
+            "minimum": 0
+          },
+          "total_tokens": {
+            "type": "number",
+            "minimum": 0
+          },
+          "cost_usd": {
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

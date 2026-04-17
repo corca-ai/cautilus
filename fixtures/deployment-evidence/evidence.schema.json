@@ -1,0 +1,161 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cautilus.deployment_evidence.v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "generatedAt",
+    "overall",
+    "rows",
+    "summaries"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "cautilus.deployment_evidence.v1"
+    },
+    "generatedAt": {
+      "type": "string"
+    },
+    "overall": {
+      "type": "object",
+      "required": [
+        "surfaceCount",
+        "rowCount",
+        "scenarioCount",
+        "totalSamples",
+        "successfulSamples",
+        "sourceKinds"
+      ],
+      "properties": {
+        "surfaceCount": { "type": "integer", "minimum": 0 },
+        "rowCount": { "type": "integer", "minimum": 0 },
+        "scenarioCount": { "type": "integer", "minimum": 0 },
+        "totalSamples": { "type": "integer", "minimum": 0 },
+        "successfulSamples": { "type": "integer", "minimum": 0 },
+        "successRate": { "type": "number", "minimum": 0, "maximum": 1 },
+        "sourceKinds": { "type": "array", "items": { "type": "string" } },
+        "runtimes": { "type": "array", "items": { "type": "string" } },
+        "providers": { "type": "array", "items": { "type": "string" } },
+        "models": { "type": "array", "items": { "type": "string" } },
+        "statusCounts": { "type": "object" },
+        "p50_duration_ms": { "type": "number", "minimum": 0 },
+        "p90_duration_ms": { "type": "number", "minimum": 0 },
+        "p50_total_tokens": { "type": "number", "minimum": 0 },
+        "p90_total_tokens": { "type": "number", "minimum": 0 },
+        "p50_cost_usd": { "type": "number", "minimum": 0 },
+        "p90_cost_usd": { "type": "number", "minimum": 0 }
+      }
+    },
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "surface",
+          "scenarioId",
+          "runtime",
+          "sourceKind",
+          "status",
+          "sampleCount",
+          "successCount"
+        ],
+        "properties": {
+          "surface": {
+            "type": "string",
+            "enum": ["chatbot", "skill", "workflow"]
+          },
+          "scenarioId": {
+            "type": "string"
+          },
+          "scenarioLabel": {
+            "type": "string"
+          },
+          "runtime": {
+            "type": "string"
+          },
+          "sourceKind": {
+            "type": "string",
+            "enum": ["skill_evaluation_summary", "scenario_results"]
+          },
+          "status": {
+            "type": "string"
+          },
+          "sampleCount": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "successCount": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "successRate": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "sourcePath": {
+            "type": "string"
+          },
+          "provider": {
+            "type": "string"
+          },
+          "model": {
+            "type": "string"
+          },
+          "duration_ms": {
+            "type": "number",
+            "minimum": 0
+          },
+          "total_tokens": {
+            "type": "number",
+            "minimum": 0
+          },
+          "cost_usd": {
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "summaries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "surface",
+          "runtime",
+          "rowCount",
+          "scenarioCount",
+          "totalSamples",
+          "successfulSamples",
+          "sourceKinds"
+        ],
+        "properties": {
+          "surface": {
+            "type": "string",
+            "enum": ["chatbot", "skill", "workflow"]
+          },
+          "runtime": { "type": "string" },
+          "provider": { "type": "string" },
+          "model": { "type": "string" },
+          "rowCount": { "type": "integer", "minimum": 0 },
+          "scenarioCount": { "type": "integer", "minimum": 0 },
+          "totalSamples": { "type": "integer", "minimum": 0 },
+          "successfulSamples": { "type": "integer", "minimum": 0 },
+          "successRate": { "type": "number", "minimum": 0, "maximum": 1 },
+          "sourceKinds": { "type": "array", "items": { "type": "string" } },
+          "statusCounts": { "type": "object" },
+          "p50_duration_ms": { "type": "number", "minimum": 0 },
+          "p90_duration_ms": { "type": "number", "minimum": 0 },
+          "p50_total_tokens": { "type": "number", "minimum": 0 },
+          "p90_total_tokens": { "type": "number", "minimum": 0 },
+          "p50_cost_usd": { "type": "number", "minimum": 0 },
+          "p90_cost_usd": { "type": "number", "minimum": 0 }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
