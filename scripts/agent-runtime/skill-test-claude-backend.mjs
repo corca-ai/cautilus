@@ -19,12 +19,14 @@ const CLAUDE_CLI_ENV = {
 	DISABLE_AUTOUPDATER: "1",
 	DISABLE_BUG_COMMAND: "1",
 	DISABLE_ERROR_REPORTING: "1",
+	CLAUDE_CODE_IDE_SKIP_AUTO_INSTALL: "1",
 };
 
 function claudeArgs(options) {
 	const args = [
 		"-p",
 		"--output-format", "json",
+		"--exclude-dynamic-system-prompt-sections",
 	];
 	if (options.model) {
 		args.push("--model", options.model);
