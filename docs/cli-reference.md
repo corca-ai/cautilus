@@ -23,6 +23,11 @@ cautilus update --repo-root /path/to/host-repo
 cautilus version --verbose
 ```
 
+`cautilus version --verbose` is also the quickest binary-only summary of what
+`Cautilus` currently considers its product surface:
+who it is for, which archetype to start from, and which report fields now matter
+when a run rejects.
+
 The lower-level compatibility command `cautilus skills install` remains available when a workflow needs to call the skill installer directly.
 
 ## Adapter bootstrap
@@ -156,12 +161,26 @@ cautilus mode evaluate \
   --output-dir /tmp/cautilus-mode
 ```
 
+This command answers:
+"did the bounded evaluation complete, and if it rejected, was that a clean
+behavior regression or a contaminated result?"
+
+Start with `report.json`.
+Read `recommendation`, then `modeSummaries[*].status`, then `reasonCodes` and
+`warnings`.
+`provider_rate_limit_contamination` means persisted artifacts suggest
+provider/runtime pressure polluted the result.
+
 ## Reports
 
 ```bash
 # build a machine-readable evaluation report packet from explicit mode runs
 cautilus report build --input ./fixtures/reports/report-input.json
 ```
+
+This command answers:
+"what is the first product-owned decision packet for this candidate versus the
+baseline?"
 
 ## Review
 
@@ -210,6 +229,9 @@ cautilus review variants \
 A variant can finish as `passed`, `blocked`, or `failed`; blocked runs carry machine-readable reason codes instead of prose-only abort text.
 When `--output-under-test` is present, the generated review prompt switches into `output_under_test` mode and treats the referenced artifact as primary evidence.
 When `--output-text-key` is present, Cautilus also extracts that JSON narrative span into the rendered prompt so the judge can read the realized output directly.
+This command answers:
+"do multiple bounded reviewers agree with the current report, and what concrete
+reason codes or warnings survive that second pass?"
 
 ## Evidence
 
@@ -225,6 +247,10 @@ cautilus evidence prepare-input \
 cautilus evidence bundle \
   --input /tmp/cautilus-evidence/input.json
 ```
+
+This command answers:
+"what single packet should I hand to the next decision step when report,
+scenario, audit, and history evidence all matter together?"
 
 ## Optimization
 
@@ -255,6 +281,9 @@ cautilus self-dogfood render-experiments-html
 
 The rendered HTML is read-only over `summary.json`, `report.json`, and `review-summary.json`; those JSON files remain the source of truth.
 For the npm wrappers and the full dogfood workflow, see [development.md](./maintainers/development.md).
+These renderers answer:
+"what should a human reviewer open first if they should inspect the same
+decision surface without parsing raw JSON?"
 
 ## Plugin manifest validation
 

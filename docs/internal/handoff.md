@@ -1,121 +1,86 @@
 # Cautilus Handoff
 
-이 문서는 다음 세션이 바로 이어야 할 한 수만 남긴다.
-장기 누적 운영 패턴은 [working-patterns.md](./working-patterns.md) 가 source of truth — 세션 bookkeeping 과 분리한다.
+이 문서는 다음 세션이 바로 이어야 할 현재 상태와 다음 한 수만 남긴다.
+장기 패턴은 [working-patterns.md](./working-patterns.md) 가 source of truth 다.
 
-## Workflow Trigger
+## 먼저 읽기
 
-다음 세션이 이 핸드오프를 멘션하면:
+다음 세션이 이 문서를 멘션하면 먼저 아래만 읽는다.
 
-1. **먼저 읽기**: [README.md](../../README.md), [AGENTS.md](../../AGENTS.md), [master-plan.md](../master-plan.md), [operator-acceptance.md](../maintainers/operator-acceptance.md) Tier 6b, [working-patterns.md](./working-patterns.md).
-2. **바로 착수할 작업**: 아래 `Next Session` 1순위 — HTML report 를 브라우저에서 실제로 열어 보는 사람 판정 패스 + 2순위 중 사용자 지정 항목.
-3. **패턴 발동 모델**: [working-patterns.md](./working-patterns.md) 참고.
-   premortem · 카운터웨이트 · iterative premortem 은 사용자가 명시적으로 요청할 때만.
+1. [README.md](../../README.md)
+2. [AGENTS.md](../../AGENTS.md)
+3. [docs/master-plan.md](../master-plan.md)
+4. [docs/maintainers/releasing.md](../maintainers/releasing.md)
+5. [docs/maintainers/consumer-readiness.md](../maintainers/consumer-readiness.md)
 
 ## Current State
 
-2026-04-16 세션 완료.
-HTML report claim 1–9 전부 승격 — spec ↔ impl co-evolve tight loop 로 9 commit 누적.
+2026-04-18 세션 기준 `main` 은 `origin/main` 앞에 여러 커밋이 있다.
+핵심 변화는 네 묶음이다.
 
-### 이번 세션 커밋 (모두 unpushed; 사용자가 push 시점 결정)
+1. external workflow consumer proof 를 archetype 수준으로 정리했다.
+2. `mode evaluate` / `report.json` 이 comparison-backed rejection 과 pure execution failure 를 구분한다.
+3. persisted artifact 에 rate limit 시그니처가 있으면 `report.json` 에 `reasonCodes` 와 `warnings` 로 contamination 을 올린다.
+4. `version --verbose`, README, CLI reference, bundled skill 이 현재 product surface 와 report 해석 규칙을 더 직접 설명한다.
 
+## Recent Commits
+
+이미 local `main` 에 있는 주요 커밋:
+
+```text
+ae98ee8 Surface rate-limit contamination in reports
+010b808 Record workflow consumer contamination reporting
 ```
-899560b Add run-index aggregator for claim 9
-066f281 Add HTML renderers for compare, scenario proposals, and evidence
-16d4d88 Add HTML renderers for review packet and review variants summary
-c9ab378 Add cautilus report render-html for claim 3
-b134e50 Promote self-dogfood experiments HTML to claim 2 executable rows
-06428b6 Promote self-dogfood HTML to claim 1 executable rows
-```
 
-이 핸드오프 commit + operator-acceptance / spec seed-label 제거 commit 추가 필요.
+이번 세션에서 아직 push 전 상태로 마무리해야 하는 작업:
 
-### HTML report 표면 전체
+- `version --verbose` product summary
+- bundled skill 의 current report surface / outputs 설명
+- README / CLI reference 의 first-value wording 보강
+- handoff 갱신
+- release prepare, tag, push
 
-신규 CLI 7개 (모두 `cautilus ... --input <json> [--output <html>]` 패턴):
+## Release Note
 
-- `cautilus report render-html`
-- `cautilus review render-html`
-- `cautilus review render-variants-summary-html`
-- `cautilus workspace render-compare-html`
-- `cautilus scenario render-proposals-html`
-- `cautilus evidence render-html`
-- `cautilus artifacts render-index-html --run-dir <path>`
+이 릴리즈 라인의 operator-facing 핵심은 아래 두 문장으로 요약된다.
 
-Self-dogfood 기존 두 개 (`self-dogfood render-html`, `self-dogfood render-experiments-html`) 는 claim 1–2 guard 로 잠긴 상태로 살아 있음.
+- `report.json` 은 이제 comparison-backed rejection 과 pure execution failure 를 더 명확히 구분한다.
+- persisted artifact 에 rate limit 시그니처가 있으면 `provider_rate_limit_contamination` 이 `reasonCodes` / `warnings` 로 올라와 첫 report surface 에서 바로 읽힌다.
 
-### 모든 gate 녹색 (커밋 직후 기준)
+`Ceal` 같은 external consumer 에게는 새 버전에서 아래를 다시 확인하라고 안내하면 된다.
 
-- `npm run verify` (eslint + specs + archetypes + links + go race + node)
-- `npm run hooks:check`
-- 677 spec guard rows across 6 specs (이번 세션에 +71 승격)
-- 98 link files
-- 3 archetype × 11 surface
-
-### charness 이슈 4건 (변동 없음)
-
-- [#26 narrative](https://github.com/corca-ai/charness/issues/26), [#27 quality + init-repo](https://github.com/corca-ai/charness/issues/27), [#30 init-repo inspector](https://github.com/corca-ai/charness/issues/30), [#31 find-skills](https://github.com/corca-ai/charness/issues/31).
+1. `cautilus mode evaluate --mode held_out ...`
+2. 생성된 `report.json` 의 `reasonCodes`, `warnings`, `modeSummaries[*].summary`
+3. 같은 evidence 를 `review prepare-input -> review build-prompt-input -> review variants` 로 다시 태웠을 때 contamination warning 이 review surface 까지 이어지는지
 
 ## Next Session
 
-사용자 지시로 순서 재배치: backlog 먼저, Tier 6b 인간 판정 패스는 뒤로.
+릴리즈가 끝난 뒤 다음으로 가장 가치 큰 작업은 두 가지다.
 
-### 1순위 — 이월 backlog 중 사용자 지정 항목 착수
+1. CLI registry / help surface 를 `usage + example` 카탈로그에서 한 단계 올리기
+   `summary`, `when_to_use`, `produces`, `next_step` 를 command registry 에 넣고 `cautilus --help`, topic help, `commands --json` 에 노출하는 일.
+2. README 의 대표 루프를 proposal-only 예시에서 evaluation loop 까지 확장하기
+   `mode evaluate -> report -> review -> html` 이 한 번에 보이게 해야 한다.
 
-아래 중 사용자가 지목하는 하나를 택해 spec ↔ impl co-evolve loop 로 진행.
+## Release Checklist
 
-- **UNINSTALL.md** — Cautilus 가 uninstall 계약을 가질지 결정 후 작성.
-  현재 `install.md` "Current Boundaries" 가 약식으로 담음.
-- **`reformat-prose.mjs` 를 `npm run` 에 노출** — `fix:prose` (apply) + `lint:prose` (check-only, CI-appropriate) pair.
-  prose fragility 재발 시 승격 권장, 지금은 orphan 유지.
-- **Master Plan Immediate Next Moves** (이월):
-  (1) 최적화 레이어 다음 bounded improvement seam (dogfood 증거 요구 시),
-  (2) scenario-history 확장 — unlock trigger 대기 ([scenario-history.md § Deferred Expansion](../contracts/scenario-history.md)),
-  (5) starter kit 실사용 pain 정리.
-- **mode evaluate --emit-html 통합** — 현재는 `cautilus report build` → `cautilus report render-html` 두 단계.
-  자주 쓰이면 `--emit-html` 플래그로 one-shot 승격 고려.
-  지금은 wrapper script 가 대신 묶을 수 있으므로 급하지 않음.
+현재 세션을 닫기 전 해야 할 순서:
 
-사용자가 한 항목을 고르지 않고 즉시 착수를 지시하면 **UNINSTALL.md** 부터 — install/uninstall 대칭 문서가 가장 외부 발견성 영향이 큼.
-
-### 2순위 — HTML report 인간 판정 패스 (backlog 한 개 끝난 후)
-
-operator-acceptance Tier 6b (6.13–6.21) 를 사람이 브라우저에서 실제로 연다.
-자동 guard 는 렌더러/핸들러/CLI 등록 생존만 확인 — 시각 품질은 사람만 본다.
-판단 결과는 별도 기록 필요 (승/보류/거부).
-
-권장 시나리오:
-
-1. 실제 run 을 하나 만든다 (`cautilus report build --input fixtures/reports/report-input.json` 등).
-2. 각 render 명령으로 HTML 을 생성한다.
-3. `cautilus artifacts render-index-html --run-dir <path>` 로 글로벌 TOC 를 띄운다.
-4. 브라우저에서 index.html 을 열고 사이드바를 타고 모든 artifact HTML 을 훑는다.
-5. 각 항목에서 상태 chip 의 정확성 + 링크 rewriting 의 끊김 없음을 확인한다.
-
-### 영구 drop (예전 세션 결정 유지)
-
-D, B, M, I, H, G, J, L, C, Validator subset 확장, `MustBehaviorSurface` 재도입.
-
-## Discuss
-
-- **Compare artifact iframe vs single diff page**: 이번 세션이 단일 diff 페이지로 확정 (claim 6 rationale 커밋 메시지 + spec 에 기록).
-  baseline/candidate report.html 동거를 가정할 수 없어서 iframe 은 부서지기 쉽다는 이유.
-  사용자가 iframe 경험을 원하면 재고 여지는 있음.
-- **charness 이슈 impl 순서**: `#31 find-skills` 가 support 스킬 발견성에 제일 직접적 (변동 없음).
-  단 charness 리포 작업이라 Cautilus 세션과는 분리.
-- **의도적으로 안 하는 것** (유지):
-  한국어 `README.ko.md`, JSON 키 순서 통일, Node shim for air-gapped consumers, SKILL.md → `docs/` upward 링크 (SKILL.md self-contained 관습), `cautilus.behavior_intent` 스키마 bump, scenario-history 두 조각 확장 (trigger 대기), 새 starter smoke 자동화, Homebrew managed smoke CI 편입, Admin web UI / scenario persistence UI / runtime-log mining / host-specific prompt benchmark profiles.
+1. 현재 변경 커밋
+2. `npm run verify`
+3. `npm run hooks:check`
+4. `npm run test:on-demand`
+5. `npm run release:prepare -- <next-version>`
+6. release metadata 커밋
+7. `git tag v<next-version>`
+8. `git push origin main --tags`
+9. tag workflow 가 끝난 뒤 `npm run release:verify-public -- --version v<next-version>`
 
 ## References
 
 - [README.md](../../README.md)
-- [AGENTS.md](../../AGENTS.md)
-- [master-plan.md](../master-plan.md)
-- [working-patterns.md](./working-patterns.md) — 누적 운영 패턴 + premortem hazards
-- [index.spec.md](../specs/index.spec.md)
-- [html-report.spec.md](../specs/html-report.spec.md) — claim 1–9 guard block 이 모두 승격 완료
-- [operator-acceptance.md](../maintainers/operator-acceptance.md) — Tier 6b (6.13–6.21)
-- [archetype-boundary.spec.md](../specs/archetype-boundary.spec.md)
-- [current-product.spec.md](../specs/current-product.spec.md)
-- [scenario-history.md](../contracts/scenario-history.md) (§ Deferred Expansion)
-- charness 이슈 [#26](https://github.com/corca-ai/charness/issues/26), [#27](https://github.com/corca-ai/charness/issues/27), [#30](https://github.com/corca-ai/charness/issues/30), [#31](https://github.com/corca-ai/charness/issues/31)
+- [docs/cli-reference.md](../cli-reference.md)
+- [docs/contracts/reporting.md](../contracts/reporting.md)
+- [docs/maintainers/consumer-readiness.md](../maintainers/consumer-readiness.md)
+- [docs/internal/research/ceal-consumer-follow-up-2026-04-17.md](./ceal-consumer-follow-up-2026-04-17.md)
+- [skills/cautilus/SKILL.md](../../skills/cautilus/SKILL.md)

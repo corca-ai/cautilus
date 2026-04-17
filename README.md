@@ -27,6 +27,12 @@ cautilus install
 cautilus doctor
 ```
 
+After `doctor` returns `ready`, do not stop at wiring.
+Run `cautilus scenarios` to choose the right archetype, then drive one bounded
+decision loop such as `mode evaluate -> review prepare-input -> review variants`
+so the repo proves it can produce a real report and review surface, not just a
+bootstrap-ready adapter.
+
 If you want to hand setup to an agent, paste this:
 
 ```md

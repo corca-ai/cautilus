@@ -170,6 +170,26 @@ func TestCLIDoctorScopeAgentSurfaceTracksInstalledSkillSurface(t *testing.T) {
 	}
 }
 
+func TestCLIVersionVerboseIncludesProductSurfaceSummary(t *testing.T) {
+	root := repoToolRoot(t)
+	stdout, stderr, exitCode := runCLI(t, root, "version", "--verbose")
+	if exitCode != 0 {
+		t.Fatalf("Run returned exit code %d, stderr=%s", exitCode, stderr)
+	}
+	payload := parseJSONObject(t, stdout)
+	product, ok := payload["product"].(map[string]any)
+	if !ok {
+		t.Fatalf("expected product summary, got %#v", payload["product"])
+	}
+	if !strings.Contains(anyToString(product["summary"]), "intentful agent, skill, and workflow evaluation") {
+		t.Fatalf("unexpected product summary: %#v", product["summary"])
+	}
+	reportSurface, ok := product["reportSurface"].([]any)
+	if !ok || len(reportSurface) == 0 {
+		t.Fatalf("expected reportSurface notes, got %#v", product["reportSurface"])
+	}
+}
+
 func TestCLIAdapterResolveDelegatesToBundledResolver(t *testing.T) {
 	root := t.TempDir()
 	adapterDir := filepath.Join(root, ".agents")

@@ -43,11 +43,27 @@ type UpdateCheck struct {
 	UpgradeHint   string       `json:"upgradeHint,omitempty"`
 }
 
+type ProductArchetypeSummary struct {
+	Archetype  string `json:"archetype"`
+	UseWhen    string `json:"useWhen"`
+	EntryPoint string `json:"entryPoint"`
+}
+
+type ProductSurfaceSummary struct {
+	Summary            string                   `json:"summary"`
+	BestFor            []string                 `json:"bestFor,omitempty"`
+	Archetypes         []ProductArchetypeSummary `json:"archetypes,omitempty"`
+	DecisionLoop       []string                 `json:"decisionLoop,omitempty"`
+	ReportSurface      []string                 `json:"reportSurface,omitempty"`
+	CurrentSurfaceNote []string                 `json:"currentSurfaceNote,omitempty"`
+}
+
 type VersionState struct {
 	SchemaVersion string       `json:"schemaVersion"`
 	RecordedAt    string       `json:"recordedAt"`
 	Current       VersionInfo  `json:"current"`
 	UpdateCheck   *UpdateCheck `json:"updateCheck,omitempty"`
+	Product       ProductSurfaceSummary `json:"product"`
 }
 
 type VersionStateOptions struct {
@@ -81,6 +97,7 @@ func InspectVersionState(toolRoot string, options VersionStateOptions) (VersionS
 		SchemaVersion: versionStateSchemaVersion,
 		RecordedAt:    now.Format(time.RFC3339),
 		Current:       current,
+		Product:       currentProductSurfaceSummary(),
 	}
 
 	cachePath := options.CachePath
@@ -111,6 +128,49 @@ func InspectVersionState(toolRoot string, options VersionStateOptions) (VersionS
 		_ = saveVersionState(cachePath, state)
 	}
 	return state, nil
+}
+
+func currentProductSurfaceSummary() ProductSurfaceSummary {
+	return ProductSurfaceSummary{
+		Summary: "Repo-local contract layer for intentful agent, skill, and workflow evaluation.",
+		BestFor: []string{
+			"agent runtimes or chatbot loops whose prompts and wrappers change frequently",
+			"repo-owned skills that need protected validation instead of trigger-only smoke checks",
+			"operators who want review-ready compare evidence before accepting workflow changes",
+		},
+		Archetypes: []ProductArchetypeSummary{
+			{
+				Archetype:  "chatbot",
+				UseWhen:    "a multi-turn assistant gets worse after a prompt or wrapper change",
+				EntryPoint: "cautilus scenario normalize chatbot --input <conversation-logs.json>",
+			},
+			{
+				Archetype:  "skill",
+				UseWhen:    "a checked-in skill or agent should still trigger, execute, and validate cleanly",
+				EntryPoint: "cautilus skill test --repo-root . --adapter-name <name>",
+			},
+			{
+				Archetype:  "workflow",
+				UseWhen:    "a stateful automation keeps stalling on the same recovery step",
+				EntryPoint: "cautilus scenario normalize workflow --input <workflow-runs.json>",
+			},
+		},
+		DecisionLoop: []string{
+			"normalize or evaluate one bounded behavior surface",
+			"run held-out or full-gate evaluation against an explicit baseline",
+			"turn the result into report, review, evidence, or bounded optimization input",
+		},
+		ReportSurface: []string{
+			"report.json stays the first machine-readable decision surface",
+			"mode summaries can distinguish comparison-backed rejection from pure execution failure",
+			"report reasonCodes and warnings can surface provider-rate-limit contamination from persisted artifacts",
+			"review build-prompt-input and review variants carry those warnings forward for human or agent review",
+		},
+		CurrentSurfaceNote: []string{
+			"inspect report.json reasonCodes and warnings before treating reject as a clean regression",
+			"use cautilus scenarios or the bundled skill when the right archetype is unclear",
+		},
+	}
 }
 
 func MaybeCheckForUpdates(toolRoot string, options AutoUpdateOptions) (string, error) {

@@ -24,6 +24,15 @@ func TestInspectVersionStateRecordsCurrentVersionWithoutRemoteCheck(t *testing.T
 	if state.Current.Version != "1.2.3" {
 		t.Fatalf("expected version 1.2.3, got %q", state.Current.Version)
 	}
+	if state.Product.Summary == "" {
+		t.Fatal("expected product summary to be present")
+	}
+	if len(state.Product.Archetypes) != 3 {
+		t.Fatalf("expected 3 archetypes, got %#v", state.Product.Archetypes)
+	}
+	if len(state.Product.ReportSurface) == 0 {
+		t.Fatalf("expected report surface notes, got %#v", state.Product.ReportSurface)
+	}
 	if state.UpdateCheck != nil {
 		t.Fatalf("expected no update check, got %#v", state.UpdateCheck)
 	}
@@ -33,6 +42,9 @@ func TestInspectVersionStateRecordsCurrentVersionWithoutRemoteCheck(t *testing.T
 	}
 	if cached.Current.Version != "1.2.3" {
 		t.Fatalf("expected cached version 1.2.3, got %q", cached.Current.Version)
+	}
+	if cached.Product.Summary == "" {
+		t.Fatalf("expected cached product summary, got %#v", cached.Product)
 	}
 }
 
