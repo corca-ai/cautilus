@@ -173,3 +173,55 @@ test("buildSkillEvaluationSummary preserves telemetry metadata for downstream re
 		cost_usd: 0.01,
 	});
 });
+
+test("buildSkillEvaluationSummary scores first routing decisions against expected routes", () => {
+	const summary = buildSkillEvaluationSummary(
+		{
+			schemaVersion: "cautilus.skill_evaluation_inputs.v1",
+			skillId: "find-skills",
+			evaluations: [
+				{
+					evaluationId: "trigger-routing",
+					targetKind: "public_skill",
+					targetId: "find-skills",
+					displayName: "find-skills",
+					evaluationKind: "trigger",
+					prompt: "Figure out which shared skill to use for this ambiguous repo request.",
+					startedAt: "2026-04-14T00:00:00.000Z",
+					expectedTrigger: "must_invoke",
+					expectedRouting: {
+						selectedSkill: "find-skills",
+						firstToolCallPattern: "list_capabilities.py",
+					},
+					invoked: true,
+					summary: "The agent routed directly to impl instead of discovering the right skill first.",
+					routingDecision: {
+						selectedSkill: "impl",
+						selectedSupport: null,
+						firstToolCall: "python3 skills/public/impl/scripts/run.py --repo-root .",
+						reasonSummary: "The task looked implementation-shaped.",
+					},
+					instructionSurface: {
+						surfaceLabel: "compact-routing",
+						files: [
+							{
+								path: "AGENTS.md",
+								sourceKind: "source_file",
+								artifactPath: "artifacts/instruction-surface/AGENTS.md",
+							},
+						],
+					},
+				},
+			],
+		},
+		"2026-04-14T01:00:00.000Z",
+	);
+	assert.equal(summary.recommendation, "reject");
+	assert.equal(summary.evaluationCounts.failed, 1);
+	assert.equal(summary.routingSummary.evaluationsWithExpectedRoute, 1);
+	assert.equal(summary.routingSummary.mismatchedExpectedRoute, 1);
+	assert.equal(summary.routingSummary.selectedSkillCounts.impl, 1);
+	assert.equal(summary.evaluations[0].routingEvaluation.status, "mismatched");
+	assert.equal(summary.evaluations[0].instructionSurface.surfaceLabel, "compact-routing");
+	assert.ok(summary.evaluations[0].summary.includes("First routing decision mismatched"));
+});

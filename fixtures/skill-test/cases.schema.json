@@ -18,6 +18,34 @@
     "skillDisplayName": {
       "type": "string"
     },
+    "instructionSurface": {
+      "type": "object",
+      "required": ["surfaceLabel", "files"],
+      "properties": {
+        "surfaceLabel": {
+          "type": "string"
+        },
+        "files": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["path"],
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "content": {
+                "type": "string"
+              },
+              "sourceFile": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
     "repeatCount": {
       "type": "integer",
       "minimum": 1
@@ -60,6 +88,48 @@
           "expectedTrigger": {
             "type": "string",
             "enum": ["must_invoke", "must_not_invoke"]
+          },
+          "expectedRouting": {
+            "type": "object",
+            "properties": {
+              "selectedSkill": {
+                "type": ["string", "null"]
+              },
+              "selectedSupport": {
+                "type": ["string", "null"]
+              },
+              "firstToolCallPattern": {
+                "type": "string"
+              }
+            }
+          },
+          "instructionSurface": {
+            "type": "object",
+            "required": ["surfaceLabel", "files"],
+            "properties": {
+              "surfaceLabel": {
+                "type": "string"
+              },
+              "files": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "required": ["path"],
+                  "properties": {
+                    "path": {
+                      "type": "string"
+                    },
+                    "content": {
+                      "type": "string"
+                    },
+                    "sourceFile": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           },
           "thresholds": {
             "type": "object",

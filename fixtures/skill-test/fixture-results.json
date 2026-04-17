@@ -3,17 +3,35 @@
     {
       "invoked": true,
       "summary": "The prompt explicitly called for the cautilus skill and the agent used it.",
+      "routingDecision": {
+        "selectedSkill": "cautilus",
+        "selectedSupport": null,
+        "firstToolCall": "cautilus skill test --repo-root . --adapter-name self-dogfood-skill-test",
+        "reasonSummary": "The prompt explicitly named the cautilus skill."
+      },
       "duration_ms": 1800
     },
     {
       "invoked": true,
       "summary": "A second trigger run also used the cautilus skill for the local fixture workflow.",
+      "routingDecision": {
+        "selectedSkill": "cautilus",
+        "selectedSupport": null,
+        "firstToolCall": "cautilus skill test --repo-root . --adapter-name self-dogfood-skill-test",
+        "reasonSummary": "The prompt again explicitly named the cautilus skill."
+      },
       "duration_ms": 1900
     }
   ],
   "execution-cautilus-test-request": {
     "invoked": true,
     "summary": "The agent used the cautilus skill to run the checked-in impl fixture and summarized the accept-now recommendation.",
+    "routingDecision": {
+      "selectedSkill": "cautilus",
+      "selectedSupport": null,
+      "firstToolCall": "cautilus skill test --repo-root . --adapter-name self-dogfood-skill-test",
+      "reasonSummary": "The task was a direct cautilus skill invocation."
+    },
     "outcome": "passed",
     "duration_ms": 2600
   }

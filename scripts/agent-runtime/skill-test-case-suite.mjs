@@ -27,6 +27,16 @@ function optionalString(value, field) {
 	return value;
 }
 
+function nullableString(value, field) {
+	if (value === undefined) {
+		return undefined;
+	}
+	if (value === null) {
+		return null;
+	}
+	return optionalString(value, field);
+}
+
 function normalizePositiveInteger(value, field, defaultValue = null) {
 	if (value === undefined || value === null) {
 		return defaultValue;
@@ -82,7 +92,71 @@ function normalizeRepeatConfig(record, index, suiteRepeatCount, suiteMinConsensu
 	return { repeatCount, minConsensusCount };
 }
 
-function normalizeCase(record, index, skillId, skillDisplayName, suiteRepeatCount, suiteMinConsensusCount) {
+function normalizeInstructionSurfaceFile(record, field) {
+	const normalized = {
+		path: assertString(record.path, `${field}.path`),
+	};
+	const content = optionalString(record.content, `${field}.content`);
+	const sourceFile = optionalString(record.sourceFile, `${field}.sourceFile`);
+	if ((content ? 1 : 0) + (sourceFile ? 1 : 0) !== 1) {
+		throw new Error(`${field} must set exactly one of content or sourceFile`);
+	}
+	if (content) {
+		normalized.content = content;
+	}
+	if (sourceFile) {
+		normalized.sourceFile = sourceFile;
+	}
+	return normalized;
+}
+
+function normalizeInstructionSurface(value, field) {
+	if (value === undefined || value === null) {
+		return null;
+	}
+	const record = assertObject(value, field);
+	if (!Array.isArray(record.files) || record.files.length === 0) {
+		throw new Error(`${field}.files must be a non-empty array`);
+	}
+	return {
+		surfaceLabel: optionalString(record.surfaceLabel, `${field}.surfaceLabel`) ?? "custom_instruction_surface",
+		files: record.files.map((entry, index) => normalizeInstructionSurfaceFile(
+			assertObject(entry, `${field}.files[${index}]`),
+			`${field}.files[${index}]`,
+		)),
+	};
+}
+
+function normalizeExpectedRouting(value, field) {
+	if (value === undefined || value === null) {
+		return null;
+	}
+	const record = assertObject(value, field);
+	const normalized = {};
+	if ("selectedSkill" in record) {
+		normalized.selectedSkill = nullableString(record.selectedSkill, `${field}.selectedSkill`);
+	}
+	if ("selectedSupport" in record) {
+		normalized.selectedSupport = nullableString(record.selectedSupport, `${field}.selectedSupport`);
+	}
+	if ("firstToolCallPattern" in record) {
+		normalized.firstToolCallPattern = optionalString(record.firstToolCallPattern, `${field}.firstToolCallPattern`);
+	}
+	if (Object.keys(normalized).length === 0) {
+		throw new Error(`${field} must declare at least one expectation field`);
+	}
+	return normalized;
+}
+
+function normalizeCase(
+	record,
+	index,
+	skillId,
+	skillDisplayName,
+	suiteRepeatCount,
+	suiteMinConsensusCount,
+	suiteInstructionSurface,
+) {
 	const evaluationKind = assertString(record.evaluationKind, `cases[${index}].evaluationKind`);
 	if (!["trigger", "execution"].includes(evaluationKind)) {
 		throw new Error(`cases[${index}].evaluationKind must be trigger or execution`);
@@ -106,6 +180,11 @@ function normalizeCase(record, index, skillId, skillDisplayName, suiteRepeatCoun
 		evaluationKind,
 		prompt: assertString(record.prompt, `cases[${index}].prompt`),
 		expectedTrigger,
+		expectedRouting: normalizeExpectedRouting(record.expectedRouting, `cases[${index}].expectedRouting`),
+		instructionSurface: normalizeInstructionSurface(
+			record.instructionSurface,
+			`cases[${index}].instructionSurface`,
+		) ?? suiteInstructionSurface,
 		thresholds: nonNegativeMetricObject(record.thresholds, `cases[${index}].thresholds`),
 		repeatCount,
 		minConsensusCount,
@@ -124,6 +203,7 @@ export function normalizeSkillTestCaseSuite(input) {
 		"minConsensusCount",
 		suiteRepeatCount,
 	);
+	const suiteInstructionSurface = normalizeInstructionSurface(input.instructionSurface, "instructionSurface");
 	if (suiteMinConsensusCount > suiteRepeatCount) {
 		throw new Error("minConsensusCount must be less than or equal to repeatCount");
 	}
@@ -137,6 +217,14 @@ export function normalizeSkillTestCaseSuite(input) {
 		skillDisplayName,
 		suiteRepeatCount,
 		suiteMinConsensusCount,
+		suiteInstructionSurface,
 	));
-	return { skillId, skillDisplayName, repeatCount: suiteRepeatCount, minConsensusCount: suiteMinConsensusCount, cases };
+	return {
+		skillId,
+		skillDisplayName,
+		repeatCount: suiteRepeatCount,
+		minConsensusCount: suiteMinConsensusCount,
+		instructionSurface: suiteInstructionSurface,
+		cases,
+	};
 }

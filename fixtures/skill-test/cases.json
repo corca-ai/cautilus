@@ -2,12 +2,24 @@
   "schemaVersion": "cautilus.skill_test_cases.v1",
   "skillId": "cautilus",
   "skillDisplayName": "cautilus",
+  "instructionSurface": {
+    "surfaceLabel": "workspace_checked_in_agents",
+    "files": [
+      {
+        "path": "AGENTS.md",
+        "content": "Prefer the local cautilus skill when the prompt explicitly asks for Cautilus-driven skill testing.\n"
+      }
+    ]
+  },
   "cases": [
     {
       "caseId": "trigger-cautilus-test-request",
       "evaluationKind": "trigger",
       "prompt": "Use $cautilus to test the local impl skill with the checked-in fixture and report the exact command path and recommendation.",
       "expectedTrigger": "must_invoke",
+      "expectedRouting": {
+        "selectedSkill": "cautilus"
+      },
       "repeatCount": 2,
       "minConsensusCount": 2
     },

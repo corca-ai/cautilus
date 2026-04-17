@@ -10,6 +10,17 @@ import {
 import { normalizeSkillTestCaseSuite } from "./skill-test-case-suite.mjs";
 import { runClaudeSample } from "./skill-test-claude-backend.mjs";
 import {
+	aggregateMetrics,
+	aggregateRoutingDecision,
+	artifactRef,
+	backendFailureResult,
+	materializeInstructionSurface,
+	normalizeRoutingDecision,
+	sampleDir,
+	summarizeStatusCounts,
+	writeAggregateArtifact,
+} from "./skill-test-support.mjs";
+import {
 	aggregateSkillTelemetry,
 	normalizeSkillMetrics,
 	normalizeSkillTelemetry,
@@ -184,25 +195,38 @@ function assertString(value, field) {
 }
 
 export function baseSchema(evaluationKind) {
+	const routingDecisionSchema = {
+		type: "object",
+		additionalProperties: false,
+		required: ["selectedSkill", "selectedSupport", "firstToolCall", "reasonSummary"],
+		properties: {
+			selectedSkill: { type: ["string", "null"] },
+			selectedSupport: { type: ["string", "null"] },
+			firstToolCall: { type: ["string", "null"] },
+			reasonSummary: { type: ["string", "null"] },
+		},
+	};
 	if (evaluationKind === "trigger") {
 		return {
 			type: "object",
 			additionalProperties: false,
-			required: ["invoked", "summary"],
+			required: ["invoked", "summary", "routingDecision"],
 			properties: {
 				invoked: { type: "boolean" },
 				summary: { type: "string" },
+				routingDecision: routingDecisionSchema,
 			},
 		};
 	}
 	return {
 		type: "object",
 		additionalProperties: false,
-		required: ["invoked", "summary", "outcome"],
+		required: ["invoked", "summary", "outcome", "routingDecision"],
 		properties: {
 			invoked: { type: "boolean" },
 			summary: { type: "string" },
 			outcome: { type: "string", enum: ["passed", "failed", "degraded", "blocked"] },
+			routingDecision: routingDecisionSchema,
 		},
 	};
 }
@@ -212,6 +236,7 @@ export function renderPrompt(skillId, testCase) {
 		`You are being evaluated on whether you can use the local skill "${skillId}" when appropriate.`,
 		"Work inside the current repo checkout.",
 		`Be honest about whether you actually used the local skill "${skillId}" while solving the request.`,
+		"Report the first routing decision you made before execution, including the first selected skill or support helper and the first tool call if one happened.",
 		"Return only JSON matching the provided schema after you finish.",
 		"",
 		`Evaluation kind: ${testCase.evaluationKind}`,
@@ -235,17 +260,6 @@ export function renderPrompt(skillId, testCase) {
 		);
 	}
 	return `${lines.join("\n")}\n`;
-}
-
-export function artifactRef(kind, path) {
-	return { kind, path };
-}
-
-export function sampleDir(caseDir, sampleIndex, repeatCount) {
-	if (repeatCount <= 1) {
-		return caseDir;
-	}
-	return join(caseDir, `sample-${sampleIndex + 1}`);
 }
 
 export function codexArgs(options, schemaFile, outputFile) {
@@ -274,33 +288,12 @@ export function codexArgs(options, schemaFile, outputFile) {
 	return args;
 }
 
-export function backendFailureResult(testCase, message, durationMs, artifactRefs) {
-	const result = {
-		invoked: false,
-		summary: message,
-		metrics: {
-			duration_ms: durationMs,
-		},
-		artifactRefs,
-	};
-	if (testCase.evaluationKind === "trigger") {
-		result.expectedTrigger = testCase.expectedTrigger;
-	}
-	if (testCase.evaluationKind === "execution") {
-		result.outcome = "blocked";
-		result.blockerKind = "runner_execution_failed";
-		if (testCase.thresholds) {
-			result.thresholds = testCase.thresholds;
-		}
-	}
-	return result;
-}
-
 function observedBaseResult(testCase, observed, durationMs, artifactRefs) {
 	const telemetry = normalizeSkillTelemetry(observed?.telemetry);
 	return {
 		invoked: Boolean(observed?.invoked),
 		summary: assertString(observed?.summary, "observed.summary"),
+		routingDecision: normalizeRoutingDecision(observed?.routingDecision),
 		metrics: {
 			duration_ms: durationMs,
 			...(normalizeSkillMetrics(observed?.metrics) ?? {}),
@@ -349,10 +342,7 @@ function fixtureResultForSample(testCase, fixtureResults, sampleIndex) {
 	return raw;
 }
 
-function runFixtureSample(testCase, fixtureResults, artifactDir, sampleIndex) {
-	const caseDir = join(artifactDir, testCase.caseId);
-	const outputDir = sampleDir(caseDir, sampleIndex, testCase.repeatCount);
-	mkdirSync(outputDir, { recursive: true });
+function runFixtureSample(testCase, fixtureResults, outputDir, sampleIndex) {
 	const promptFile = join(outputDir, "prompt.md");
 	writeFileSync(promptFile, renderPrompt(testCase.targetId, testCase));
 	const observed = assertObject(
@@ -363,10 +353,7 @@ function runFixtureSample(testCase, fixtureResults, artifactDir, sampleIndex) {
 	return normalizeObservedResult(testCase, observed, Number(observed.duration_ms ?? 0), artifactRefs);
 }
 
-function runCodexSample(options, testCase, artifactDir, sampleIndex) {
-	const caseDir = join(artifactDir, testCase.caseId);
-	const outputDir = sampleDir(caseDir, sampleIndex, testCase.repeatCount);
-	mkdirSync(outputDir, { recursive: true });
+function runCodexSample(options, testCase, outputDir) {
 	const promptFile = join(outputDir, "prompt.md");
 	const schemaFile = join(outputDir, "schema.json");
 	const outputFile = join(outputDir, "result.json");
@@ -418,52 +405,6 @@ function runCodexSample(options, testCase, artifactDir, sampleIndex) {
 	);
 }
 
-function numericMetricValues(results, metricKey) {
-	return results
-		.map((result) => Number(result?.metrics?.[metricKey]))
-		.filter((value) => Number.isFinite(value));
-}
-
-function median(values) {
-	if (values.length === 0) {
-		return null;
-	}
-	const sorted = [...values].sort((left, right) => left - right);
-	const mid = Math.floor(sorted.length / 2);
-	if (sorted.length % 2 === 1) {
-		return sorted[mid];
-	}
-	return (sorted[mid - 1] + sorted[mid]) / 2;
-}
-
-function aggregateMetrics(results) {
-	const aggregates = {};
-	for (const metricKey of ["duration_ms", "total_tokens", "cost_usd"]) {
-		const values = numericMetricValues(results, metricKey);
-		if (values.length === 0) {
-			continue;
-		}
-		const value = median(values);
-		if (value === null) {
-			continue;
-		}
-		aggregates[metricKey] = metricKey === "cost_usd" ? value : Math.round(value);
-	}
-	return Object.keys(aggregates).length > 0 ? aggregates : null;
-}
-
-function summarizeStatusCounts(statusCounts) {
-	return ["passed", "degraded", "blocked", "failed"]
-		.filter((status) => Number(statusCounts[status] ?? 0) > 0)
-		.map((status) => `${status}=${statusCounts[status]}`)
-		.join(", ");
-}
-
-function writeAggregateArtifact(caseDir, payload) {
-	const aggregateFile = join(caseDir, "aggregate.json");
-	writeFileSync(aggregateFile, `${JSON.stringify(payload, null, 2)}\n`);
-	return aggregateFile;
-}
 
 function aggregateTriggerSamples(testCase, sampleResults, artifactDir) {
 	const invokedRuns = sampleResults.filter((result) => result.invoked).length;
@@ -478,12 +419,15 @@ function aggregateTriggerSamples(testCase, sampleResults, artifactDir) {
 		repeatCount: testCase.repeatCount,
 		minConsensusCount: testCase.minConsensusCount,
 		expectedTrigger: testCase.expectedTrigger,
+		instructionSurface: sampleResults[0]?.instructionSurface ?? null,
+		routingDecision: aggregateRoutingDecision(sampleResults),
 		consensusReached,
 		matchedRuns,
 		sampleSummaries: sampleResults.map((result, index) => ({
 			sampleIndex: index + 1,
 			invoked: result.invoked,
 			summary: result.summary,
+			routingDecision: result.routingDecision ?? null,
 			metrics: result.metrics ?? null,
 			telemetry: result.telemetry ?? null,
 		})),
@@ -498,6 +442,8 @@ function aggregateTriggerSamples(testCase, sampleResults, artifactDir) {
 		invoked: consensusReached ? testCase.expectedTrigger === "must_invoke" : testCase.expectedTrigger !== "must_invoke",
 		summary: testCase.repeatCount > 1 ? aggregateSummary : `${aggregateSummary} ${sampleResults[0]?.summary ?? ""}`.trim(),
 		expectedTrigger: testCase.expectedTrigger,
+		routingDecision: aggregateRoutingDecision(sampleResults),
+		instructionSurface: sampleResults[0]?.instructionSurface ?? null,
 		metrics: aggregateMetrics(sampleResults),
 		sampling: {
 			sampleCount: testCase.repeatCount,
@@ -511,24 +457,34 @@ function aggregateTriggerSamples(testCase, sampleResults, artifactDir) {
 	};
 }
 
+function executionStatusCounts(sampleResults) {
+	return sampleResults.reduce((counts, result) => {
+		if (result.outcome) {
+			counts[result.outcome] += 1;
+		}
+		return counts;
+	}, { passed: 0, degraded: 0, blocked: 0, failed: 0 });
+}
+
+function executionConsensusOutcome(statusCounts, invokedRuns, minConsensusCount) {
+	return ["passed", "failed", "blocked", "degraded"]
+		.find((status) => statusCounts[status] >= minConsensusCount)
+		?? (invokedRuns >= minConsensusCount ? "degraded" : "blocked");
+}
+
 function aggregateExecutionSamples(testCase, sampleResults, artifactDir) {
 	const invokedRuns = sampleResults.filter((result) => result.invoked).length;
 	const telemetry = aggregateSkillTelemetry(sampleResults);
-	const statusCounts = { passed: 0, degraded: 0, blocked: 0, failed: 0 };
-	for (const result of sampleResults) {
-		if (result.outcome) {
-			statusCounts[result.outcome] += 1;
-		}
-	}
-	const consensusOutcome = ["passed", "failed", "blocked", "degraded"]
-		.find((status) => statusCounts[status] >= testCase.minConsensusCount)
-		?? (invokedRuns >= testCase.minConsensusCount ? "degraded" : "blocked");
+	const statusCounts = executionStatusCounts(sampleResults);
+	const consensusOutcome = executionConsensusOutcome(statusCounts, invokedRuns, testCase.minConsensusCount);
 	const consensusReached = statusCounts[consensusOutcome] >= testCase.minConsensusCount;
 	const caseDir = join(artifactDir, testCase.caseId);
 	const aggregatePayload = {
 		evaluationKind: testCase.evaluationKind,
 		repeatCount: testCase.repeatCount,
 		minConsensusCount: testCase.minConsensusCount,
+		instructionSurface: sampleResults[0]?.instructionSurface ?? null,
+		routingDecision: aggregateRoutingDecision(sampleResults),
 		consensusReached,
 		invokedRuns,
 		statusCounts,
@@ -537,6 +493,7 @@ function aggregateExecutionSamples(testCase, sampleResults, artifactDir) {
 			invoked: result.invoked,
 			outcome: result.outcome ?? null,
 			summary: result.summary,
+			routingDecision: result.routingDecision ?? null,
 			metrics: result.metrics ?? null,
 			telemetry: result.telemetry ?? null,
 		})),
@@ -551,6 +508,8 @@ function aggregateExecutionSamples(testCase, sampleResults, artifactDir) {
 		invoked: invokedRuns >= testCase.minConsensusCount,
 		summary: testCase.repeatCount > 1 ? prefix : `${prefix} ${sampleResults[0]?.summary ?? ""}`.trim(),
 		outcome: consensusOutcome,
+		routingDecision: aggregateRoutingDecision(sampleResults),
+		instructionSurface: sampleResults[0]?.instructionSurface ?? null,
 		metrics: aggregateMetrics(sampleResults),
 		thresholds: testCase.thresholds ?? null,
 		sampling: {
@@ -568,15 +527,27 @@ function aggregateExecutionSamples(testCase, sampleResults, artifactDir) {
 function runCaseSamples(options, testCase, fixtureResults) {
 	const sampleResults = [];
 	for (let sampleIndex = 0; sampleIndex < testCase.repeatCount; sampleIndex += 1) {
-		let observed;
-		if (options.backend === "fixture") {
-			observed = runFixtureSample(testCase, fixtureResults, options.artifactDir, sampleIndex);
-		} else if (options.backend === "claude_code") {
-			observed = runClaudeSample(options, testCase, options.artifactDir, sampleIndex);
-		} else {
-			observed = runCodexSample(options, testCase, options.artifactDir, sampleIndex);
+		const caseDir = join(options.artifactDir, testCase.caseId);
+		const outputDir = sampleDir(caseDir, sampleIndex, testCase.repeatCount);
+		mkdirSync(outputDir, { recursive: true });
+		const { instructionSurface, artifactRefs, restore } = materializeInstructionSurface(options, testCase, outputDir);
+		try {
+			let observed;
+			if (options.backend === "fixture") {
+				observed = runFixtureSample(testCase, fixtureResults, outputDir, sampleIndex);
+			} else if (options.backend === "claude_code") {
+				observed = runClaudeSample(options, testCase, outputDir);
+			} else {
+				observed = runCodexSample(options, testCase, outputDir);
+			}
+			sampleResults.push({
+				...observed,
+				instructionSurface,
+				artifactRefs: [...artifactRefs, ...(observed.artifactRefs ?? [])],
+			});
+		} finally {
+			restore();
 		}
-		sampleResults.push(observed);
 	}
 	return testCase.evaluationKind === "trigger"
 		? aggregateTriggerSamples(testCase, sampleResults, options.artifactDir)
@@ -600,6 +571,9 @@ export function buildObservedSkillEvaluationInput(options) {
 			summary: observed.summary,
 			...(observed.expectedTrigger ? { expectedTrigger: observed.expectedTrigger } : {}),
 			...(observed.outcome ? { outcome: observed.outcome } : {}),
+			...(observed.routingDecision ? { routingDecision: observed.routingDecision } : {}),
+			...(testCase.expectedRouting ? { expectedRouting: testCase.expectedRouting } : {}),
+			...(observed.instructionSurface ? { instructionSurface: observed.instructionSurface } : {}),
 			...(observed.blockerKind ? { blockerKind: observed.blockerKind } : {}),
 			...(observed.metrics ? { metrics: observed.metrics } : {}),
 			...(observed.telemetry ? { telemetry: observed.telemetry } : {}),

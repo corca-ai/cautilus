@@ -37,11 +37,27 @@ The first slice consumes one normalized packet with:
   - trigger-only `expectedTrigger`
     - `must_invoke`
     - `must_not_invoke`
+  - optional `expectedRouting`
+    - optional nullable `selectedSkill`
+    - optional nullable `selectedSupport`
+    - optional `firstToolCallPattern`
   - execution-only `outcome`
     - `passed`
     - `failed`
     - `degraded`
     - `blocked`
+  - optional `routingDecision`
+    - nullable `selectedSkill`
+    - nullable `selectedSupport`
+    - nullable `firstToolCall`
+    - nullable `reasonSummary`
+  - optional `instructionSurface`
+    - `surfaceLabel`
+    - `files`
+      - `path`
+      - `sourceKind`
+      - optional `sourceFile`
+      - optional `artifactPath`
   - optional `metrics`
   - optional `telemetry`
     - optional `provider`
@@ -95,8 +111,18 @@ The first summary packet should include:
   - `trigger_selection`
   - `execution_quality`
 - preserved per-evaluation runtime telemetry when the host runner exposes it explicitly
+- preserved first-routing evidence and route-expectation scoring when the host or product-owned runner captures it
 - derived product-owned `intentProfile`
 - `evaluationRuns` suitable for `cautilus scenario normalize skill`
+
+The summary packet should also include a narrow `routingSummary`.
+That top-level view exists so operators can compare the same prompt set across instruction surfaces without manual transcript review.
+At minimum it should preserve:
+
+- how many evaluations emitted a routing decision
+- how many evaluations declared an expected route
+- matched versus mismatched expected-route counts
+- simple route-selection counts such as top-level `selectedSkill` tallies
 
 The point is not to replace host execution.
 The point is to give the product one stable boundary that can:
@@ -111,6 +137,10 @@ The point is to give the product one stable boundary that can:
 - any `failed` run -> `reject`
 - otherwise any `degraded`, `blocked`, `unstable`, or baseline-worse run -> `defer`
 - otherwise -> `accept-now`
+
+When an expected first route is declared, a routing mismatch should not be invisible.
+Trigger-surface mismatches should fail the evaluation.
+Execution-surface mismatches may degrade an otherwise passing run if the task still completed but the first routing move regressed.
 
 This remains intentionally bounded.
 The product now exposes stability and baseline drift explicitly, but the host still owns richer experiment design.

@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdtempSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
@@ -25,9 +25,12 @@ test("buildObservedSkillEvaluationInput materializes a normalized packet from fi
 	assert.equal(packet.skillId, "cautilus");
 	assert.equal(packet.evaluations.length, 2);
 	assert.equal(packet.evaluations[0].expectedTrigger, "must_invoke");
+	assert.equal(packet.evaluations[0].expectedRouting.selectedSkill, "cautilus");
 	assert.equal(packet.evaluations[0].invoked, true);
 	assert.equal(packet.evaluations[0].metrics.duration_ms, 1850);
 	assert.ok(packet.evaluations[0].summary.includes("2/2"));
+	assert.equal(packet.evaluations[0].routingDecision.selectedSkill, "cautilus");
+	assert.equal(packet.evaluations[0].instructionSurface.surfaceLabel, "workspace_checked_in_agents");
 	assert.equal(packet.evaluations[1].outcome, "passed");
 	assert.equal(packet.evaluations[1].thresholds.max_duration_ms, 120000);
 	assert.ok(Array.isArray(packet.evaluations[1].artifactRefs));
@@ -70,6 +73,67 @@ test("normalizeSkillTestCaseSuite applies repeat defaults and validates consensu
 		}),
 		/minConsensusCount must be less than or equal to repeatCount/,
 	);
+});
+
+test("buildObservedSkillEvaluationInput applies instruction-surface overrides and restores workspace files", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-instruction-surface-"));
+	const workspace = join(root, "workspace");
+	const casesFile = join(root, "cases.json");
+	const fixtureResultsFile = join(root, "fixture-results.json");
+	mkdirSync(workspace, { recursive: true });
+	writeFileSync(join(workspace, "AGENTS.md"), "Original workspace routing.\n", "utf-8");
+	writeFileSync(join(root, "compact-agents.md"), "Use find-skills before guessing.\n", "utf-8");
+	writeFileSync(casesFile, `${JSON.stringify({
+		schemaVersion: "cautilus.skill_test_cases.v1",
+		skillId: "demo",
+		instructionSurface: {
+			surfaceLabel: "compact-find-skills",
+			files: [
+				{
+					path: "AGENTS.md",
+					sourceFile: "./compact-agents.md",
+				},
+			],
+		},
+		cases: [
+			{
+				caseId: "trigger-demo",
+				evaluationKind: "trigger",
+				prompt: "Use the right shared skill for this ambiguous request.",
+				expectedTrigger: "must_invoke",
+				expectedRouting: {
+					selectedSkill: "find-skills",
+					firstToolCallPattern: "list_capabilities.py",
+				},
+			},
+		],
+	}, null, 2)}\n`);
+	writeFileSync(fixtureResultsFile, `${JSON.stringify({
+		"trigger-demo": {
+			invoked: true,
+			summary: "The prompt routed through find-skills first.",
+			routingDecision: {
+				selectedSkill: "find-skills",
+				selectedSupport: null,
+				firstToolCall: "python3 skills/public/find-skills/scripts/list_capabilities.py --repo-root .",
+				reasonSummary: "The prompt was ambiguous, so the compact AGENTS surface said to use find-skills first.",
+			},
+			duration_ms: 900,
+		},
+	}, null, 2)}\n`);
+	const packet = buildObservedSkillEvaluationInput({
+		repoRoot: root,
+		workspace,
+		casesFile,
+		artifactDir: join(root, "artifacts"),
+		backend: "fixture",
+		fixtureResultsFile,
+	});
+	assert.equal(packet.evaluations[0].instructionSurface.surfaceLabel, "compact-find-skills");
+	assert.equal(packet.evaluations[0].instructionSurface.files[0].sourceKind, "source_file");
+	assert.equal(packet.evaluations[0].routingDecision.selectedSkill, "find-skills");
+	assert.ok(packet.evaluations[0].artifactRefs.some((ref) => ref.kind === "instruction_surface"));
+	assert.equal(readFileSync(join(workspace, "AGENTS.md"), "utf-8"), "Original workspace routing.\n");
 });
 
 test("fixture-backed repeated execution cases degrade when no outcome consensus is reached", () => {
