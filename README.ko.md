@@ -31,7 +31,7 @@ cautilus doctor
 에이전트에게 설치를 맡길 거라면, 이 프롬프트를 그대로 주면 됩니다:
 
 ```md
-Read and follow: https://raw.githubusercontent.com/corca-ai/cautilus/refs/heads/main/install.md
+Read and follow: https://raw.githubusercontent.com/corca-ai/cautilus/main/install.md
 
 Install Cautilus on this machine.
 Then cd into /path/to/host-repo, install the bundled skill, and verify the setup there.
@@ -184,9 +184,10 @@ Cautilus는 세 가지 평가 아키타입을 1급 개념으로 다룹니다.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh | sh
-cautilus install --repo-root .
-cautilus adapter init --repo-root .
-cautilus mode evaluate --repo-root . --mode held_out
+cd /path/to/host-repo
+cautilus install
+cautilus adapter init
+cautilus mode evaluate --mode held_out
 ```
 
 **에이전트 트랙 — Claude / Codex 플러그인.**

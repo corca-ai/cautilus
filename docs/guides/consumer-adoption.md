@@ -32,10 +32,10 @@ End at:
 Inside the consumer repo:
 
 ```bash
-cautilus install --repo-root .
-cautilus adapter init --repo-root .
-cautilus adapter resolve --repo-root .
-cautilus doctor --repo-root .
+cautilus install
+cautilus adapter init
+cautilus adapter resolve
+cautilus doctor
 ```
 
 What each step proves:
@@ -53,8 +53,8 @@ What each step proves:
 2. If the repo has multiple evaluation surfaces, add named adapters under `.agents/cautilus-adapters/`.
 3. Keep any existing `*-adapter.yaml` files only if they remain host-local tools.
 4. Point the root adapter at checked-in host-owned prompt files, schema files, wrappers, and command templates.
-5. Install the repo-local skill surface with `cautilus install --repo-root .` when the host environment wants a checked-in reusable `Cautilus` skill.
-6. Run `cautilus doctor --repo-root <repo>` and require `ready` before claiming live-consumer status.
+5. Install the repo-local skill surface with `cautilus install` when the host environment wants a checked-in reusable `Cautilus` skill.
+6. Run `cautilus doctor` and require `ready` before claiming live-consumer status.
 7. Add at least one repo-local executable check that exercises the adapter through `Cautilus` rather than only validating static YAML.
 8. Keep host-specific mining, storage, audit UI, and operator policy in the consumer repo until they are intentionally generalized.
 
@@ -89,11 +89,11 @@ npm run consumer:onboard:smoke
 This helper:
 
 - creates a temp git repo
-- runs `cautilus install --repo-root <temp-repo>`
-- runs `cautilus adapter init --repo-root <temp-repo>`
+- runs `cautilus install` inside that temp repo
+- runs `cautilus adapter init` inside that temp repo
 - seeds one minimal `held_out_command_templates` entry into the generated adapter so the repo reaches `doctor ready`
-- runs `cautilus adapter resolve --repo-root <temp-repo>`
-- runs `cautilus doctor --repo-root <temp-repo>`
+- runs `cautilus adapter resolve` inside that temp repo
+- runs `cautilus doctor` inside that temp repo
 
 ## Deprecated Surface Names
 

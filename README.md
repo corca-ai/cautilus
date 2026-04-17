@@ -28,7 +28,7 @@ cautilus doctor
 If you want to hand setup to an agent, paste this:
 
 ```md
-Read and follow: https://raw.githubusercontent.com/corca-ai/cautilus/refs/heads/main/install.md
+Read and follow: https://raw.githubusercontent.com/corca-ai/cautilus/main/install.md
 
 Install Cautilus on this machine.
 Then cd into /path/to/host-repo, install the bundled skill, and verify the setup there.
@@ -177,9 +177,10 @@ You install Cautilus, declare the evaluation surface, and run bounded evaluation
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh | sh
-cautilus install --repo-root .
-cautilus adapter init --repo-root .
-cautilus mode evaluate --repo-root . --mode held_out
+cd /path/to/host-repo
+cautilus install
+cautilus adapter init
+cautilus mode evaluate --mode held_out
 ```
 
 **Agent track — Claude / Codex plugin.**
