@@ -9,8 +9,8 @@ Ships as a standalone binary plus a bundled skill a host repo can install withou
 ## Who It Is For
 
 - teams maintaining agent runtimes or chatbot loops whose prompts and wrappers change frequently
-- maintainers shipping repo-owned skills who want held-out validation, not trigger-only smoke checks
-- operators who need review packets and explicit comparison artifacts before accepting workflow changes
+- maintainers shipping repo-owned skills who want protected validation, not trigger-only smoke checks
+- operators who want review-ready outputs and explicit comparison evidence before accepting workflow changes
 
 Day-1 trigger: your repo already has behavior that matters, but prompt tweaks and ad hoc evals no longer explain whether a candidate actually got better.
 
@@ -50,17 +50,17 @@ Input (For Agent):
 
 What happens:
 
-- `Cautilus` turns raw behavior evidence into a durable proposal packet, then renders the same packet into a browser-readable page.
+- `Cautilus` turns raw behavior evidence into a reusable scenario file, then renders the same result into a browser-readable page.
 
 What you get back:
 
-- quick signal: one proposal packet was produced without inventing repo-local lore
+- quick signal: one reusable scenario file was produced without inventing repo-local lore
 - durable files: `proposals.json` for later commands and `proposals.html` for human review
 
 What to do next:
 
-- human: decide whether the proposed scenario is worth promoting into a held-out evaluation path
-- agent: reopen the packet, compare variants, or feed the proposal into the next evaluation step
+- human: decide whether the proposed scenario is worth promoting into a protected evaluation path
+- agent: reopen the saved result, compare variants, or feed the proposal into the next evaluation step
 
 The same small loop anchors the public spec report in [docs/specs/index.spec.md](./docs/specs/index.spec.md).
 It is the shortest honest example of the product claim: `Cautilus` turns behavior evidence into a reviewable decision surface.
@@ -79,8 +79,8 @@ What you need: conversation summaries plus the baseline and changed prompts.
 Input (CLI): `cautilus scenario normalize chatbot --input logs.json`
 Input (For Agent): "Run a chatbot regression with these logs and my new system prompt."
 What happens: `Cautilus` extracts candidate failures that look like stable conversational regressions.
-What you get back: reopenable `proposals.json` candidates that can be kept out of tuning as held-out checks.
-What to do next: promote the candidate into evaluate/review or revise the prompt with the held-out case still protecting the boundary.
+What you get back: reopenable `proposals.json` candidates that can be kept out of tuning as protected checks.
+What to do next: promote the candidate into evaluate/review or revise the prompt with that protected case still guarding the boundary.
 Fixture: [chatbot-consumer-input.json](./fixtures/scenario-proposals/samples/chatbot-consumer-input.json).
 
 ### 2. Skill / agent execution regression
@@ -90,8 +90,8 @@ What you need: the modified skill plus a checked-in case suite.
 Input (CLI): `cautilus skill test --repo-root . --adapter-name <name>`
 Input (For Agent): "Run the checked-in case suite against the skill I just edited."
 What happens: each case runs multiple times for consensus and is scored on trigger accuracy, execution quality, and optional runtime budget.
-What you get back: a report packet, review packet, and compare-ready evidence instead of one trigger-only smoke result.
-What to do next: accept the changed skill, inspect review output, or reopen the packet for another bounded revision pass.
+What you get back: a report, a review file, and compare-ready evidence instead of one trigger-only smoke result.
+What to do next: accept the changed skill, inspect the review output, or reopen the saved result for another bounded revision pass.
 Fixture: [fixtures/skill-test/cases.json](./fixtures/skill-test/cases.json).
 
 ### 3. Durable workflow recovery
@@ -116,16 +116,18 @@ Concrete picture: you tweak a chatbot system prompt.
 One user's follow-up experience improves.
 Another user silently loses context recovery across turns.
 Anecdotes will not tell you which effect dominates.
-`Cautilus` treats the context-recovery case as a *held-out scenario* — kept out of tuning so the signal stays honest — and stores the evidence in a durable *packet* the next maintainer can reopen from files.
+`Cautilus` treats the context-recovery case as a protected scenario kept out of tuning so the signal stays honest.
+It stores the evidence in a durable file the next maintainer can reopen from disk.
+Later docs use the shorthand `held-out` for that protected validation path and `packet` for those reopenable machine-readable files.
 
 The stance, in four contrasts:
 
 - Unlike a prompt manager, `Cautilus` does not freeze one prompt string as the contract — it treats the behavior under evaluation as the contract (`intent-first`).
-- Unlike a benchmark scrapbook, `Cautilus` separates iterate and held-out surfaces and keeps evidence reopenable from files (`held-out honesty`, `packet-first`).
-- Unlike ad hoc eval scripts, `Cautilus` makes adapters, reports, review packets, and compare artifacts first-class product boundaries (`structured review`).
+- Unlike a benchmark scrapbook, `Cautilus` separates iteration from protected validation and keeps evidence reopenable from files (`held-out honesty`, `packet-first`).
+- Unlike ad hoc eval scripts, `Cautilus` makes adapters, reports, review files, and compare artifacts first-class product boundaries (`structured review`).
 - Unlike open-ended optimizer loops, `Cautilus` keeps search and revision explicitly bounded by budgets, checkpoints, and blocked-readiness conditions (`bounded autonomy`).
 
-`Cautilus` also ships a GEPA-style bounded prompt search seam above the one-shot optimizer — multi-generation reflective mutation, held-out reevaluation, Pareto-style frontier selection.
+`Cautilus` also ships a GEPA-style bounded prompt search seam above the one-shot optimizer: multi-generation reflective mutation, protected reevaluation, and Pareto-style frontier selection.
 Deep dive: [docs/gepa.md](./docs/gepa.md).
 
 The longer-term direction is close to the workflow philosophy behind DSPy: prompts can change as long as the evaluated behavior survives.
@@ -160,7 +162,7 @@ artifacts/<run>/review-packet.json
 What the operator gets back is not just a pass/fail bit:
 
 - a repo-local adapter that declares the evaluation surface explicitly
-- machine-readable run artifacts (report and review packets) that agents can consume directly
+- machine-readable run artifacts (reports and review files) that agents can consume directly
 - static HTML views of the same artifacts so a human reviewer can judge them in a browser without an agent in the loop (see [docs/specs/html-report.spec.md](./docs/specs/html-report.spec.md))
 - bounded compare and review surfaces reopenable from files
 - a path from observed runtime evidence back to new scenario proposals and bounded revisions

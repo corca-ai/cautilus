@@ -19,6 +19,7 @@
 - `README.md` and `README.ko.md` now lead with one reviewable decision loop before the wider surface tour.
 - The scenario section now uses short scenario-block structure so each archetype is scannable in the same reader-facing shape.
 - The Korean landing surface now uses friendlier labels such as `준비물` instead of more literal checklist wording.
+- The README landing sections now introduce easier phrases first and delay formal terms such as `held-out`, `packet`, and `review packet` until the reader has the product picture.
 - The durable story is now closer to the public spec report: `Cautilus` turns behavior evidence into a reviewable decision surface, not just a packet vocabulary.
 
 # Brief
