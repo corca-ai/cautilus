@@ -19,7 +19,9 @@ Not for: repos that only need deterministic lint, unit, or type checks and do no
 ## Quick Start
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh | sh
+curl -fsSL \
+  https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh \
+  | sh
 cd /path/to/host-repo
 cautilus install
 cautilus doctor
@@ -54,8 +56,12 @@ Start here if you want one concrete picture before reading the full surface.
 **Input (CLI)**
 
 ```bash
-cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json --output /tmp/proposals.json
-cautilus scenario render-proposals-html --input /tmp/proposals.json --output /tmp/proposals.html
+cautilus scenario propose \
+  --input ./fixtures/scenario-proposals/standalone-input.json \
+  --output /tmp/proposals.json
+cautilus scenario render-proposals-html \
+  --input /tmp/proposals.json \
+  --output /tmp/proposals.html
 ```
 
 **Input (For Agent)**
@@ -171,7 +177,9 @@ Two entry points share one `cautilus-adapter.yaml` in the host repo and return t
 You install Cautilus, declare the evaluation surface, and run bounded evaluation from the command line.
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh | sh
+curl -fsSL \
+  https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh \
+  | sh
 cd /path/to/host-repo
 cautilus install
 cautilus adapter init

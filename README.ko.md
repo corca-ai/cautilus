@@ -22,7 +22,9 @@
 ## 빠른 시작
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh | sh
+curl -fsSL \
+  https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh \
+  | sh
 cd /path/to/host-repo
 cautilus install
 cautilus doctor
@@ -57,8 +59,12 @@ Then cd into /path/to/host-repo, install the bundled skill, and verify the setup
 **입력 (CLI)**
 
 ```bash
-cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json --output /tmp/proposals.json
-cautilus scenario render-proposals-html --input /tmp/proposals.json --output /tmp/proposals.html
+cautilus scenario propose \
+  --input ./fixtures/scenario-proposals/standalone-input.json \
+  --output /tmp/proposals.json
+cautilus scenario render-proposals-html \
+  --input /tmp/proposals.json \
+  --output /tmp/proposals.html
 ```
 
 **입력 (에이전트)**
@@ -178,7 +184,9 @@ Cautilus는 세 가지 평가 아키타입을 1급 개념으로 다룹니다.
 `Cautilus`를 설치하고, 평가 표면을 선언하고, 커맨드라인에서 제한된 평가를 실행합니다.
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh | sh
+curl -fsSL \
+  https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh \
+  | sh
 cd /path/to/host-repo
 cautilus install
 cautilus adapter init
