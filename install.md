@@ -9,20 +9,6 @@ It covers:
 - installing the bundled `cautilus` skill into a host repo
 - updating the CLI and bundled skill later
 
-## If You Are Using A Coding Agent
-
-You can hand this guide to a coding agent directly:
-
-```md
-Read and follow: https://raw.githubusercontent.com/corca-ai/cautilus/refs/heads/main/install.md
-
-Install Cautilus on this machine.
-Then cd into /path/to/host-repo, install the bundled skill, and verify the setup there.
-```
-
-That prompt is intentionally simple.
-The repo-local steps in this guide assume the agent is running from inside the host repo once the binary is available on `PATH`.
-
 ## Supported Platforms
 
 This guide currently targets:
@@ -139,8 +125,8 @@ After the binary is available on `PATH`, install the bundled skill into the targ
 
 ```bash
 cd /path/to/host-repo
-cautilus install --repo-root .
-cautilus doctor --repo-root .
+cautilus install
+cautilus doctor
 ```
 
 This creates:
@@ -158,14 +144,14 @@ Minimum verification:
 cautilus --version
 cautilus version --verbose
 cd /path/to/host-repo
-cautilus doctor --repo-root .
+cautilus doctor
 ```
 
 Recommended repo-local verification:
 
 ```bash
 cd /path/to/host-repo
-cautilus adapter resolve --repo-root .
+cautilus adapter resolve
 ```
 
 ## Update Later
@@ -180,7 +166,7 @@ Update the CLI and refresh the bundled skill in a repo:
 
 ```bash
 cd /path/to/host-repo
-cautilus update --repo-root .
+cautilus update
 ```
 
 For Homebrew installs, `cautilus update` delegates to `brew upgrade cautilus`.

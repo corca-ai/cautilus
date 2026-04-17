@@ -21,9 +21,18 @@ Not for: repos that only need deterministic lint, unit, or type checks and do no
 ```bash
 curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh | sh
 cd /path/to/host-repo
-cautilus install --repo-root .
-cautilus doctor --repo-root .
+cautilus install
+cautilus doctor
 ```
+
+If you want to hand setup to an agent, paste this:
+
+> ```md
+> Read and follow: https://raw.githubusercontent.com/corca-ai/cautilus/refs/heads/main/install.md
+>
+> Install Cautilus on this machine.
+> Then cd into /path/to/host-repo, install the bundled skill, and verify the setup there.
+> ```
 
 For Homebrew, update, and version surfaces see [install.md](./install.md).
 For the full command catalog see [docs/cli-reference.md](./docs/cli-reference.md).

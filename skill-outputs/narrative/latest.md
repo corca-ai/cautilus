@@ -18,11 +18,11 @@
 
 - `README.md` and `README.ko.md` now lead with one reviewable decision loop before the wider surface tour.
 - `README.md` and `README.ko.md` now use rendered paragraphs and bold labels in the scenario blocks instead of relying on source-only line breaks.
-- The README quick start now switches into the host repo first and uses `--repo-root .` for the first local commands.
+- The README quick start now switches into the host repo first, uses the cwd-default repo behavior, and includes an agent-ready install prompt directly under the command block.
 - The scenario section now uses short scenario-block structure so each archetype is scannable in the same reader-facing shape.
 - The Korean landing surface now uses friendlier labels such as `준비물` instead of more literal checklist wording.
 - The README landing sections now introduce easier phrases first and delay formal terms such as `held-out`, `packet`, and `review packet` until the reader has the product picture.
-- `install.md` now includes a direct "hand this to a coding agent" prompt using the raw guide URL.
+- `install.md` now stays focused on the operator-facing guide while using cwd-default repo-local commands after `cd`.
 - The durable story is now closer to the public spec report: `Cautilus` turns behavior evidence into a reviewable decision surface, not just a packet vocabulary.
 
 # Brief

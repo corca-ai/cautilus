@@ -24,9 +24,18 @@
 ```bash
 curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh | sh
 cd /path/to/host-repo
-cautilus install --repo-root .
-cautilus doctor --repo-root .
+cautilus install
+cautilus doctor
 ```
+
+에이전트에게 설치를 맡길 거라면, 이 프롬프트를 그대로 주면 됩니다:
+
+> ```md
+> Read and follow: https://raw.githubusercontent.com/corca-ai/cautilus/refs/heads/main/install.md
+>
+> Install Cautilus on this machine.
+> Then cd into /path/to/host-repo, install the bundled skill, and verify the setup there.
+> ```
 
 Homebrew 설치, 업데이트, 버전 표면은 [install.md](./install.md)를 참고하세요.
 전체 명령 카탈로그는 [docs/cli-reference.md](./docs/cli-reference.md)에 있습니다.
