@@ -1,6 +1,8 @@
 # HTML Report Surface
 
-`Cautilus` ships static HTML views for packet-based artifacts so a human can review them in a browser without an agent in the loop.
+`Cautilus` ships static HTML views so a human can answer one practical question in a browser:
+what happened in this evaluation, and what should I trust or revisit next?
+
 The public contract on this page is the currently shipped renderer surface, not a future design backlog.
 
 Today that surface includes:
@@ -17,6 +19,15 @@ These pages are generated from JSON packets or checked-in artifact bundles.
 They are read-only representations of the source packet, not a second editable source of truth.
 The visual language does not have to match `specdown` exactly.
 The contract is simpler: a reviewer should be able to open the generated page, understand what artifact it represents, and find the key verdict or summary.
+
+## What A Reviewer Can Learn
+
+The current HTML surface should let a reviewer answer questions like:
+
+- What was the intent behind this run?
+- Did the candidate improve, regress, or still need human judgment?
+- Which proposal, finding, or evidence signal should I inspect first?
+- Is this a current run artifact, a published self-dogfood snapshot, or a summary across review variants?
 
 ## Packet Renderer Proof
 

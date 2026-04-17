@@ -1,12 +1,15 @@
 # Archetype Boundary
 
-`Cautilus` has exactly three first-class evaluation archetypes:
+`Cautilus` has exactly three first-class evaluation archetypes.
+This split exists so an operator can answer one starting question quickly:
+which command should I use for the behavior problem I have right now?
+
+The three starting points are:
 
 - `chatbot` for multi-turn conversational behavior in one session
 - `skill` for a single skill or agent invocation
 - `workflow` for a stateful automation that must recover from known blockers
 
-The public reason for this split is operator clarity.
 Each archetype answers a different first question:
 
 - "What conversation should still work after a prompt change?"
@@ -15,6 +18,12 @@ Each archetype answers a different first question:
 
 The deeper implementation fanout behind each archetype is covered by unit and integration tests plus `npm run lint:archetypes`.
 This public spec stays at the user-facing boundary: catalog shape, normalization command, and negative-case separation.
+
+## Which One Should I Start With?
+
+- Start with `chatbot` when the failure is about turns, follow-up context, clarification, or preference reuse in one thread.
+- Start with `skill` when the failure is about invoking one skill, validating it, or checking whether it still completes the intended task cleanly.
+- Start with `workflow` when the failure repeats across invocations and the operator needs a durable recovery path, not just one correct answer in one turn.
 
 ## Archetypes
 
