@@ -34,6 +34,10 @@ grep -q '<title>Cautilus Report — defer</title>' "$tmpdir/report.html"
 grep -q '<title>Cautilus Review Packet — defer</title>' "$tmpdir/review.html"
 grep -q '<title>Cautilus Scenario Proposals — 1</title>' "$tmpdir/proposals.html"
 grep -q '<title>Cautilus Evidence Bundle — 5 signals</title>' "$tmpdir/evidence.html"
+grep -q 'The operator should understand why a workflow step failed and how to recover.' "$tmpdir/report.html"
+grep -q 'Does the current deterministic self-consumer gate stay honest about what it actually proves for the product repo?' "$tmpdir/review.html"
+grep -q 'Refresh review-after-retro scenario from recent activity' "$tmpdir/proposals.html"
+grep -q 'Regressed evidence: operator-recovery' "$tmpdir/evidence.html"
 ```
 
 ## Bundle And Index Proof
@@ -45,6 +49,7 @@ tmpdir=$(mktemp -d)
 ./bin/cautilus artifacts render-index-html --run-dir ./artifacts/self-dogfood/latest --output "$tmpdir/index.html" >/dev/null
 grep -q '<title>Cautilus Self-Dogfood — pass</title>' "$tmpdir/self-dogfood.html"
 grep -q '<title>Cautilus Run Index — latest</title>' "$tmpdir/index.html"
+grep -q 'Cautilus should record and surface its own self-dogfood result honestly before operators trust broader consumer runs.' "$tmpdir/self-dogfood.html"
 ```
 
 ## Review Summary Proof

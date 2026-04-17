@@ -36,6 +36,8 @@ tmpdir=$(mktemp -d)
 grep -q '"schemaVersion": "cautilus.scenario_proposal_inputs.v1"' "$tmpdir/proposal-input.json"
 grep -q '"schemaVersion": "cautilus.scenario_proposals.v1"' "$tmpdir/proposals.json"
 grep -q '"schemaVersion": "cautilus.report_packet.v2"' "$tmpdir/report.json"
+grep -q '"title": "Refresh review-after-retro scenario from recent activity"' "$tmpdir/proposals.json"
+grep -q '"intent": "The operator should understand why a workflow step failed and how to recover."' "$tmpdir/report.json"
 grep -q '"objective": {' "$tmpdir/evidence-input.json"
 grep -q '"schemaVersion": "cautilus.review_packet.v1"' "$tmpdir/review.json"
 ```

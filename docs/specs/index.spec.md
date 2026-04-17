@@ -10,14 +10,18 @@ That standing gate is affordable because the public specs only exercise cheap fi
 ## See It Work
 
 ```run:shell
-$ ./bin/cautilus healthcheck --json | grep '"status": "healthy"'
-  "status": "healthy"
-$ ./bin/cautilus scenarios --json | grep '"archetype": "workflow"'
-      "archetype": "workflow",
+# Turn a checked-in proposal input into a browser-readable scenario page.
+tmpdir=$(mktemp -d)
+./bin/cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json --output "$tmpdir/proposals.json" >/dev/null
+./bin/cautilus scenario render-proposals-html --input "$tmpdir/proposals.json" --output "$tmpdir/proposals.html" >/dev/null
+grep -q '"title": "Refresh review-after-retro scenario from recent activity"' "$tmpdir/proposals.json"
+grep -q '<title>Cautilus Scenario Proposals — 1</title>' "$tmpdir/proposals.html"
+grep -q 'Refresh review-after-retro scenario from recent activity' "$tmpdir/proposals.html"
 ```
 
 The report should feel legible to a reviewer who is not reading Go or Node code.
 The contract on each page is therefore written in user-facing terms first, then backed by one or two executable slices.
+The first proof deliberately shows a small end-to-end product move: `Cautilus` turns raw proposal inputs into a reusable scenario packet and then into a page a human can scan in a browser.
 
 ## Documents
 
