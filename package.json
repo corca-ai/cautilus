@@ -1,7 +1,7 @@
 {
   "name": "cautilus",
   "private": true,
-  "version": "0.5.0",
+  "version": "0.5.1",
   "type": "module",
   "description": "Adapter-driven intentful behavior evaluation toolkit",
   "engines": {
