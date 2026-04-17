@@ -196,6 +196,58 @@ cautilus review variants \
    report build / mode evaluate / review / evidence / optimize / review
    variants, see [command-cookbook.md](references/command-cookbook.md).
 
+## Current Report Surface
+
+When `mode evaluate` or `report build` emits `report.json`, treat that packet as
+the first decision surface rather than digging into raw artifacts immediately.
+
+Read it in this order:
+
+1. `recommendation`
+2. `modeSummaries[*].status` and `modeSummaries[*].summary`
+3. `reasonCodes` and `warnings`
+4. `compareArtifact`, scenario buckets, and telemetry
+
+Current interpretation rules:
+
+- `rejected` means comparison-backed evidence found a regression; do not read it
+  as a generic execution failure.
+- `failed` means the evaluation surface did not complete cleanly enough to make
+  a comparison-backed decision.
+- `provider_rate_limit_contamination` inside `reasonCodes` or `warnings` means
+  persisted artifacts suggest provider/runtime pressure contaminated the result;
+  do not treat that reject as a clean prompt regression without checking the
+  warning context.
+- `review build-prompt-input` and `review variants` now carry those warnings
+  forward, so the judge should reuse the report classification instead of
+  rediscovering it from raw stdout/stderr.
+
+## Outputs And Review Surfaces
+
+Use the product-owned outputs instead of paraphrasing command results from
+memory.
+
+- `report.json`: first machine-readable decision packet for held-out, full-gate,
+  or explicit report assembly.
+- `review.json`: durable review packet built around one report plus adapter-owned
+  prompt and artifact context.
+- `review-prompt-input.json`: portable meta-prompt packet for human or model
+  review.
+- `review-summary.json`: multi-variant judge summary with verdicts, reason codes,
+  and aggregate telemetry.
+- `evidence-bundle.json`: one place to collect report, scenario results, run
+  audit, and history when the next move depends on all of them together.
+- `index.html` or per-surface HTML renders: browser-readable mirrors of those
+  packets when a human reviewer should inspect the same decision surface without
+  reopening raw JSON.
+
+Human-readable rule of thumb:
+
+- humans usually read HTML renders first, then the underlying packet if they
+  need the exact fields
+- agents should read the packet first, then cite HTML only when a browser view
+  is the actual deliverable
+
 ## Guardrails
 
 - Do not treat one host repo's prompts, adapters, or report paths as product-owned
