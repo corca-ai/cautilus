@@ -113,13 +113,19 @@
 이번 세션에서 드러난 operator mistake 하나는 canonical `$charness:premortem` 경로를 열 수 있는지 직접 확인하지 않고, local fallback 으로 너무 빨리 내려간 점이다.
 이건 skill 쪽에서도 guardrail 을 둘 여지가 있다고 판단해서 `corca-ai/charness#38` 을 열어 두었다.
 요지는 `premortem` skill 이 canonical path 가 막혔다고 선언하기 전에 subagent availability 를 먼저 확인하거나 시도하도록 요구를 더 분명히 하자는 것이다.
+별도로 `corca-ai/charness#39` 는 released `Cautilus v0.5.5` 기준으로 `bootstrapHelper` / `workSkill` split consumer validation 을 요청하는 follow-up 이다.
+핵심은 `find-skills -> impl` 같은 bootstrap-heavy path 가 false mismatch 없이 평가되는지, 그리고 `premortem` expectation 이 현재 `charness` side fixture / docs / eval surface 와 어디까지 맞는지 확인하는 것이다.
 
 ## Next Session
 
 다음 세션은 release blocker 를 처리하는 세션이 아니라, `v0.5.5` 이후 onboarding 체감과 instruction-surface consumer adoption 을 보는 세션이다.
 
-1. 새 consumer 가 여전히 `doctor ready` 뒤에서 멈춘다면, 이번 `first_bounded_run` payload 가 실제로 충분했는지 보고 다음엔 archetype 선택이나 starter loop 를 adapter-aware 하게 더 좁힐지 판단한다.
-2. 여러 named adapters 를 가진 consumer repo 에서 `#8` 류 repro 가 다시 오면, `report.json` 의 `.adapterContext`, `optimize-input.json`, `optimize-search-input.json` 을 같이 받아 exact loss point 를 잡는다.
+1. 새 consumer 가 여전히 `doctor ready` 뒤에서 멈춘다면, 여기서는 `first_bounded_run` payload, docs, temp-consumer smoke, archetype hints, starter loop 를 더 좁히는 쪽으로 계속 개선할 수 있다.
+   다만 무엇을 먼저 좁힐지는 outside signal 이 필요하다.
+   실제 consumer 가 어느 command 까지 갔는지, 어떤 adapter shape 에서 멈췄는지, 문서/doctor/first run 중 어디서 이탈했는지를 받아야 다음 우선순위를 정확히 고를 수 있다.
+2. 여러 named adapters 를 가진 consumer repo 에서 `#8` 류 repro 가 다시 오면, 여기서는 바로 diagnostics, fallback, regression test 추가를 할 수 있다.
+   다만 diagnosis 자체는 outside artifact 가 필요하다.
+   최소한 `report.json` 의 `.adapterContext`, `optimize-input.json`, `optimize-search-input.json`, 그리고 기대한 adapter name/context 를 받아야 exact loss point 를 잡을 수 있다.
 3. `charness` 같은 bootstrap-heavy consumer 에서 새 `bootstrapHelper` / `workSkill` lanes 가 실제로 false mismatch 를 줄이는지 확인한다.
 4. `corca-ai/charness#38` 진행 여부를 보고, `premortem` skill 이 정말 availability check 를 강제하게 바뀌면 여기 `AGENTS.md` 의 skill-routing 문구도 그에 맞춰 다시 다듬는다.
 
