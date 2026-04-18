@@ -27,6 +27,17 @@
     "intentProfile": {
       "type": "object"
     },
+    "adapterContext": {
+      "type": "object",
+      "properties": {
+        "adapter": {
+          "type": "string"
+        },
+        "adapterName": {
+          "type": "string"
+        }
+      }
+    },
     "commands": {
       "type": "array"
     },
@@ -93,7 +104,25 @@
       "type": "array"
     },
     "humanReviewFindings": {
-      "type": "array"
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "severity",
+          "message"
+        ],
+        "properties": {
+          "severity": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          }
+        }
+      }
     },
     "recommendation": {
       "type": "string"

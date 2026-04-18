@@ -321,23 +321,27 @@ func normalizeReviewFindings(value any) ([]any, error) {
 	for index, entry := range items {
 		record, ok := entry.(map[string]any)
 		if !ok {
-			return nil, fmt.Errorf("humanReviewFindings[%d] must be an object", index)
+			return nil, fmt.Errorf("humanReviewFindings[%d] must be an object (%s)", index, reviewFindingShapeHint())
 		}
 		severity, err := normalizeNonEmptyString(record["severity"], fmt.Sprintf("humanReviewFindings[%d].severity", index))
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("%w (%s)", err, reviewFindingShapeHint())
 		}
 		message, err := normalizeNonEmptyString(record["message"], fmt.Sprintf("humanReviewFindings[%d].message", index))
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("%w (%s)", err, reviewFindingShapeHint())
 		}
 		normalized := map[string]any{"severity": severity, "message": message}
 		if err := copyNormalizedOptionalString(record, normalized, "path", fmt.Sprintf("humanReviewFindings[%d]", index)); err != nil {
-			return nil, err
+			return nil, fmt.Errorf("%w (%s)", err, reviewFindingShapeHint())
 		}
 		result = append(result, normalized)
 	}
 	return result, nil
+}
+
+func reviewFindingShapeHint() string {
+	return `minimum shape: {"severity":"concern","message":"Concrete review feedback","path":"optional/path.md"}`
 }
 
 func normalizeAdapterContext(value any, field string) (map[string]any, error) {

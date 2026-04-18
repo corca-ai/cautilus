@@ -31,6 +31,17 @@
     "intent": {
       "type": "string"
     },
+    "adapterContext": {
+      "type": "object",
+      "properties": {
+        "adapter": {
+          "type": "string"
+        },
+        "adapterName": {
+          "type": "string"
+        }
+      }
+    },
     "intentProfile": {
       "type": "object",
       "required": [
@@ -79,7 +90,25 @@
       "type": "array"
     },
     "humanReviewFindings": {
-      "type": "array"
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "severity",
+          "message"
+        ],
+        "properties": {
+          "severity": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          }
+        }
+      }
     },
     "recommendation": {
       "type": "string"

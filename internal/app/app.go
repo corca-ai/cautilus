@@ -1061,6 +1061,10 @@ func renderJSONToHTMLCommand(args []string, cwd string, stdout io.Writer, stderr
 
 //nolint:errcheck // CLI stderr reporting is best-effort.
 func handleReportBuild(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	if hasExampleInputFlag(args) {
+		fmt.Fprint(stdout, reportBuildExampleInput)
+		return 0
+	}
 	options, err := parseInputOutputOrActiveRunArgs(args, cwd, "report-input.json", "report.json")
 	if err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)

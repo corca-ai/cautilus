@@ -2715,6 +2715,7 @@ func TestCLIExampleInputEmitsPacketsThatRoundTripThroughTheSameCommand(t *testin
 		{"workflow", []string{"scenario", "normalize", "workflow"}, contracts.WorkflowNormalizationInputsSchema},
 		{"instruction-surface-evaluate", []string{"instruction-surface", "evaluate"}, contracts.InstructionSurfaceInputsSchema},
 		{"skill-evaluate", []string{"skill", "evaluate"}, contracts.SkillEvaluationInputsSchema},
+		{"report-build", []string{"report", "build"}, contracts.ReportInputsSchema},
 	}
 
 	for _, tc := range cases {
@@ -2741,6 +2742,48 @@ func TestCLIExampleInputEmitsPacketsThatRoundTripThroughTheSameCommand(t *testin
 				t.Fatalf("--example-input output did not round-trip through --input: %s", stderr)
 			}
 		})
+	}
+}
+
+func TestCLIReportBuildHumanReviewFindingErrorsIncludeMinimumShape(t *testing.T) {
+	root := t.TempDir()
+	inputPath := filepath.Join(root, "report-input.json")
+	if err := os.WriteFile(inputPath, mustJSONMarshal(t, map[string]any{
+		"schemaVersion": "cautilus.report_inputs.v1",
+		"candidate":     "feature/recovery-guidance",
+		"baseline":      "origin/main",
+		"intent":        "The operator should understand the next safe recovery step without guesswork.",
+		"commands": []any{
+			map[string]any{
+				"mode":    "held_out",
+				"command": "cautilus doctor --repo-root /tmp/repo",
+			},
+		},
+		"modeRuns": []any{
+			map[string]any{
+				"mode":   "held_out",
+				"status": "passed",
+			},
+		},
+		"humanReviewFindings": []any{
+			map[string]any{
+				"message": "Missing severity on purpose.",
+			},
+		},
+		"recommendation": "defer",
+	}), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+
+	_, stderr, exitCode := runCLI(t, root, "report", "build", "--input", inputPath)
+	if exitCode == 0 {
+		t.Fatalf("report build unexpectedly succeeded")
+	}
+	if !strings.Contains(stderr, "humanReviewFindings[0].severity") {
+		t.Fatalf("stderr did not mention the missing severity: %s", stderr)
+	}
+	if !strings.Contains(stderr, "minimum shape:") {
+		t.Fatalf("stderr did not include the minimum shape hint: %s", stderr)
 	}
 }
 

@@ -180,15 +180,37 @@ function normalizeCommand(entry, index) {
 	};
 }
 
+function reviewFindingShapeHint() {
+	return 'minimum shape: {"severity":"concern","message":"Concrete review feedback","path":"optional/path.md"}';
+}
+
 function normalizeReviewFinding(entry, index) {
 	if (!entry || typeof entry !== "object" || Array.isArray(entry)) {
-		throw new Error(`humanReviewFindings[${index}] must be an object`);
+		throw new Error(`humanReviewFindings[${index}] must be an object (${reviewFindingShapeHint()})`);
+	}
+	let severity;
+	try {
+		severity = normalizeNonEmptyString(entry.severity, `humanReviewFindings[${index}].severity`);
+	} catch (error) {
+		throw new Error(`${error.message} (${reviewFindingShapeHint()})`);
+	}
+	let message;
+	try {
+		message = normalizeNonEmptyString(entry.message, `humanReviewFindings[${index}].message`);
+	} catch (error) {
+		throw new Error(`${error.message} (${reviewFindingShapeHint()})`);
 	}
 	return {
-		severity: normalizeNonEmptyString(entry.severity, `humanReviewFindings[${index}].severity`),
-		message: normalizeNonEmptyString(entry.message, `humanReviewFindings[${index}].message`),
+		severity,
+		message,
 		...(entry.path !== undefined
-			? { path: normalizeNonEmptyString(entry.path, `humanReviewFindings[${index}].path`) }
+			? (() => {
+					try {
+						return { path: normalizeNonEmptyString(entry.path, `humanReviewFindings[${index}].path`) };
+					} catch (error) {
+						throw new Error(`${error.message} (${reviewFindingShapeHint()})`);
+					}
+				})()
 			: {}),
 	};
 }

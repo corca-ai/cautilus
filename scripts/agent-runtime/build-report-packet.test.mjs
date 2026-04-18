@@ -196,6 +196,19 @@ test("buildReportPacket surfaces provider rate-limit contamination in report rea
 	}
 });
 
+test("buildReportPacket explains the minimum humanReviewFindings shape in one error", () => {
+	const input = createReportInputFixture();
+	input.humanReviewFindings = [{ message: "Missing severity on purpose." }];
+	try {
+		buildReportPacket(input, { now: new Date("2026-04-11T00:02:00.000Z") });
+		assert.fail("expected buildReportPacket to throw");
+	} catch (error) {
+		assert.match(error.message, /humanReviewFindings\[0\]\.severity/);
+		assert.match(error.message, /minimum shape:/);
+		assert.match(error.message, /"message":"Concrete review feedback"/);
+	}
+});
+
 test("build-report-packet defaults to report-input.json and report.json inside the active run", () => {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-report-build-"));
 	try {

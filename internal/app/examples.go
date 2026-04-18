@@ -113,6 +113,34 @@ const instructionSurfaceEvaluateExampleInput = `{
 }
 `
 
+const reportBuildExampleInput = `{
+  "schemaVersion": "cautilus.report_inputs.v1",
+  "candidate": "feature/recovery-guidance",
+  "baseline": "origin/main",
+  "intent": "The operator should understand the next safe recovery step without guesswork.",
+  "commands": [
+    {
+      "mode": "held_out",
+      "command": "cautilus doctor --repo-root /tmp/repo"
+    }
+  ],
+  "modeRuns": [
+    {
+      "mode": "held_out",
+      "status": "passed"
+    }
+  ],
+  "humanReviewFindings": [
+    {
+      "severity": "concern",
+      "message": "The first recovery step is still implicit for a first-time operator.",
+      "path": "docs/specs/review.spec.md"
+    }
+  ],
+  "recommendation": "defer"
+}
+`
+
 func hasExampleInputFlag(args []string) bool {
 	for _, arg := range args {
 		if arg == "--example-input" {

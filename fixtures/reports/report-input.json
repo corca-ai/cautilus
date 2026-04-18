@@ -4,7 +4,7 @@
   "baseline": "origin/main",
   "intent": "The operator should understand why a workflow step failed and how to recover.",
   "adapterContext": {
-    "adapterName": "operator-review"
+    "adapter": ".agents/cautilus-adapter.yaml"
   },
   "intentProfile": {
     "schemaVersion": "cautilus.behavior_intent.v1",

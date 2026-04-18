@@ -48,6 +48,31 @@ This keeps report assembly deterministic.
 When `Cautilus` itself executes adapter-defined mode commands, it should write those command observations into the report input so the final packet preserves how the evidence was gathered.
 The same applies to adapter identity when an operator selected a named adapter or explicit adapter path for the run.
 
+## `humanReviewFindings` Shape
+
+`humanReviewFindings` is an array of product-owned finding objects.
+The minimum valid object shape is:
+
+```json
+{
+  "severity": "concern",
+  "message": "The first recovery step is still implicit for a first-time operator.",
+  "path": "docs/specs/review.spec.md"
+}
+```
+
+Required fields:
+
+- `severity`: operator-visible level such as `concern`, `warning`, or `blocker`
+- `message`: the concrete human-review feedback that should survive into review, evidence, and optimize flows
+
+Optional fields:
+
+- `path`: the file or artifact path that the reviewer wants to anchor
+
+When an operator wants a minimal valid report-input packet without opening the checked-in fixtures, `cautilus report build --example-input` prints one to stdout.
+For a fuller canonical packet, see `./fixtures/reports/report-input.json`.
+
 ## Versioning
 
 `cautilus.report_packet.v2` is the current report contract.

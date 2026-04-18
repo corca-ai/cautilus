@@ -350,19 +350,32 @@ function buildTargetRef(targetPath) {
 	};
 }
 
+function asRecord(value) {
+	return value && typeof value === "object" && !Array.isArray(value) ? value : {};
+}
+
+function firstNonEmptyString(...values) {
+	for (const value of values) {
+		if (typeof value === "string" && value.trim() !== "") {
+			return value;
+		}
+	}
+	return null;
+}
+
 function resolveEvaluationContext(optimizeInput, options) {
-	const report = optimizeInput.report || {};
-	const adapterContext = report.adapterContext && typeof report.adapterContext === "object" && !Array.isArray(report.adapterContext)
-		? report.adapterContext
-		: {};
+	const report = asRecord(optimizeInput.report);
+	const adapterContext = asRecord(report.adapterContext);
+	const intent =
+		firstNonEmptyString(options.intent, report.intent, optimizeInput.intentProfile?.summary) ?? "";
 	return {
 		mode: "held_out",
-		adapter: options.adapter || adapterContext.adapter || null,
-		adapterName: options.adapterName || adapterContext.adapterName || null,
-		intent: options.intent || report.intent || optimizeInput.intentProfile?.summary || "",
-		baselineRef: options.baselineRef || report.baseline || "HEAD",
-		profile: options.profile || null,
-		split: options.split || null,
+		adapter: firstNonEmptyString(options.adapter, adapterContext.adapter),
+		adapterName: firstNonEmptyString(options.adapterName, adapterContext.adapterName),
+		intent,
+		baselineRef: firstNonEmptyString(options.baselineRef, report.baseline) ?? "HEAD",
+		profile: firstNonEmptyString(options.profile),
+		split: firstNonEmptyString(options.split),
 	};
 }
 
