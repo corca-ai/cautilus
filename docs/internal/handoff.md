@@ -34,12 +34,16 @@
 6. public onboarding 계약은 이제 `doctor --scope agent-surface` 와 기본 `doctor` 를 분리해 설명한다.
    `README`, `install.md`, `docs/guides/consumer-adoption.md`, `docs/cli-reference.md`, install/update CLI output, bundled `skills/cautilus/SKILL.md` 전부에서 같은 canonical sequence 를 쓴다.
    순서는 `install -> doctor --scope agent-surface -> adapter init -> adapter resolve -> doctor --repo-root .` 이고, 첫 bounded run 은 repo-scope doctor 뒤에 하도록 못 박아 두었다.
+7. named-adapter-only consumer repo 는 이제 plain repo doctor 에서 더 덜 오해를 부른다.
+   default unnamed adapter 가 없고 named adapters 만 있으면 `doctor` 는 `missing_default_adapter` 와 `named_adapters` 힌트를 돌려주고, `review prepare-input` 와 `optimize search prepare-input` 는 report 에 `adapterContext` 가 빠져 있어도 sole named adapter 하나만 있으면 거기로 fallback 한다.
+   `review prepare-input --help` 와 `commands --json` 는 이제 `report build --example-input` 와 minimum `humanReviewFindings` shape 를 직접 가리킨다.
 
 ## Recent Commits
 
 최근 주요 커밋:
 
 ```text
+1e806cd Reduce named-adapter onboarding ambiguity
 3dee64c Prepare v0.5.4 release
 7845e47 Clarify AGENTS skill routing for charness
 4aca699 Refresh handoff after issue burn-down
@@ -81,6 +85,18 @@ e85a22a Keep mode evaluate consistent with report build
 5. `#9` [`humanReviewFindings` schema is hard to discover from CLI/docs and validator errors reveal it one field at a time](https://github.com/corca-ai/cautilus/issues/9)
    docs/contracts, report schemas, CLI example-input, validator error hint 를 같이 보강했다.
 
+새 follow-up triage 는 아래처럼 보면 된다.
+
+1. `#10` [`doctor --repo-root` reports missing adapter for repos that rely on named adapters under `.agents/cautilus-adapters/`](https://github.com/corca-ai/cautilus/issues/10)
+   product mismatch 였고 실제로 재현됐다.
+   fix 는 `1e806cd` 에 들어갔다.
+   plain repo doctor 는 이제 default unnamed adapter 가 없더라도 named adapters 존재를 별도 status 와 suggestions 로 드러낸다.
+2. `#9` 의 새 댓글은 “완전 미발견” 보다 help/discovery follow-up 으로 보는 편이 맞았다.
+   `review prepare-input --help` 와 `commands --json` 가 이제 `report build --example-input` 와 minimum `humanReviewFindings` shape 를 직접 노출한다.
+3. `#8` 의 새 댓글은 원래 보고된 seam 을 artifact 없이 완전히 재현하진 못했지만, 같은 failure surface 에 대한 fallback 과 diagnostics 는 보강했다.
+   report 에 `adapterContext` 가 빠졌더라도 sole named adapter 하나만 있으면 `review prepare-input` 와 `optimize search prepare-input` 가 그 adapter 를 재사용한다.
+   여러 named adapters 가 있는 repo 에서 여전히 재현된다면 다음엔 `report.json` 의 `.adapterContext` 와 generated optimize packet 을 같이 받아서 본다.
+
 ## Charness Follow-Up
 
 이번 세션에서 드러난 operator mistake 하나는 canonical `$charness:premortem` 경로를 열 수 있는지 직접 확인하지 않고, local fallback 으로 너무 빨리 내려간 점이다.
@@ -91,9 +107,8 @@ e85a22a Keep mode evaluate consistent with report build
 
 다음 세션은 release blocker 를 처리하는 세션이 아니라, `v0.5.4` 이후 onboarding 체감과 optional distribution follow-up 을 보는 세션이다.
 
-1. 선택 과제로 native Homebrew smoke 를 Linux/macOS host 에서 한 번 더 돌릴 수 있다.
-   `release:verify-public` 는 tap formula 까지 검증했지만, 실제 `brew install corca-ai/tap/cautilus` 자체는 아직 세션에서 실행하지 않았다.
-2. 새 consumer 가 여전히 `doctor ready` 에서 멈춘다면, 다음 개선점은 문서 분리보다 “repo-scope doctor 뒤 첫 bounded run” 을 더 product-owned 하게 만드는 쪽이다.
+1. 새 consumer 가 여전히 `doctor ready` 에서 멈춘다면, 다음 개선점은 문서 분리보다 “repo-scope doctor 뒤 첫 bounded run” 을 더 product-owned 하게 만드는 쪽이다.
+2. 여러 named adapters 를 가진 consumer repo 에서 `#8` 류 repro 가 다시 오면, `report.json` 의 `.adapterContext`, `optimize-input.json`, `optimize-search-input.json` 을 같이 받아 exact loss point 를 잡는다.
 3. `corca-ai/charness#38` 진행 여부를 보고, `premortem` skill 이 정말 availability check 를 강제하게 바뀌면 여기 `AGENTS.md` 의 skill-routing 문구도 그에 맞춰 다시 다듬는다.
 
 ## Stop Checks
