@@ -15,11 +15,11 @@
 
 ## Current State
 
-2026-04-18 세션 기준 public release 는 `v0.5.4` 이다.
-이번 세션에서는 post-release issue burn-down 이후 남아 있던 public onboarding mismatch 를 정리했고, `v0.5.4` 태그/릴리즈/아티팩트 공개까지 끝냈다.
-`#5` 는 shipped `instruction-surface` surface 로 대체된 이슈로 close 했고, `#6` 부터 `#9` 까지의 실제 seam 도 모두 구현으로 정리한 뒤 이번 릴리즈에 포함했다.
+2026-04-18 세션 기준 public release 는 `v0.5.5` 이다.
+이번 세션에서는 `instruction-surface` contract 에서 bootstrap helper 와 durable work skill 을 분리하는 `#11` 을 구현했고, 그 변경을 `v0.5.5` 로 release 했다.
+이전 세션에서 정리했던 `#5` 부터 `#10` 까지의 seam 은 유지한 채, instruction-surface summary 가 이제 bootstrap-heavy repo 도 honest 하게 표현할 수 있게 됐다.
 
-지금 기억할 product 상태는 여섯 묶음이다.
+지금 기억할 product 상태는 여덟 묶음이다.
 
 1. `instruction-surface` 는 실제 shipped surface 다.
    `cautilus instruction-surface test` / `evaluate`, 전용 contracts, fixtures, self-dogfood adapter, routingDecision scoring 이 다 들어가 있다.
@@ -37,34 +37,35 @@
 7. named-adapter-only consumer repo 는 이제 plain repo doctor 에서 더 덜 오해를 부른다.
    default unnamed adapter 가 없고 named adapters 만 있으면 `doctor` 는 `missing_default_adapter` 와 `named_adapters` 힌트를 돌려주고, `review prepare-input` 와 `optimize search prepare-input` 는 report 에 `adapterContext` 가 빠져 있어도 sole named adapter 하나만 있으면 거기로 fallback 한다.
    `review prepare-input --help` 와 `commands --json` 는 이제 `report build --example-input` 와 minimum `humanReviewFindings` shape 를 직접 가리킨다.
+8. `instruction-surface` routing summary 는 이제 bootstrap helper 와 durable work skill 을 따로 셀 수 있다.
+   observed `routingDecision` 과 checked-in `expectedRouting` 모두 `bootstrapHelper` 와 `workSkill` 을 받을 수 있고, `selectedSkill` 은 single-lane 하위호환 alias 로 남겼다.
+   summary packet 은 `bootstrapHelperCounts` 와 `workSkillCounts` 를 별도로 내고, self-dogfood example 과 checked-in fixture 도 `find-skills -> impl` 분리를 실제로 사용한다.
 
 ## Recent Commits
 
 최근 주요 커밋:
 
 ```text
+7307206 Prepare v0.5.5 release
+9a98772 Separate bootstrap helpers from work-skill routing
 1e806cd Reduce named-adapter onboarding ambiguity
 3dee64c Prepare v0.5.4 release
 7845e47 Clarify AGENTS skill routing for charness
 4aca699 Refresh handoff after issue burn-down
-0937194 Make report input review findings easier to discover
-e85a22a Keep mode evaluate consistent with report build
-3c91c66 Let optimize search use compare-artifact reasons
-62d5b41 Preserve adapter identity across report bridges
 ```
 
-`3dee64c` 에서 `0.5.4` release prepare 를 마쳤고, 이후 `v0.5.4` 태그를 push 해서 GitHub release 와 binary assets 까지 공개된 상태다.
+`7307206` 에서 `0.5.5` release prepare 를 마쳤고, 이후 `v0.5.5` 태그를 push 해서 GitHub release 와 binary assets 까지 공개된 상태다.
 
 ## Release Status
 
 이번 세션에서 확인한 release 상태는 아래다.
 
-1. `v0.5.4` tag 는 `origin` 에 push 되어 있고, GitHub release object 도 published 상태다.
+1. `v0.5.5` tag 는 `origin` 에 push 되어 있고, GitHub release object 도 published 상태다.
 2. public release assets 는 GitHub release API 에서 확인된다.
    tarballs, checksums, release notes, Homebrew formula asset 이 모두 올라와 있다.
-3. `npm run release:verify-public -- --version v0.5.4` 는 통과했다.
+3. `npm run release:verify-public -- --version v0.5.5` 는 통과했다.
    release object, checksums, formula asset, tap formula 까지 public surface 검증이 끝난 상태다.
-4. `npm run release:smoke-install -- --channel install_sh --version v0.5.4` 도 통과했다.
+4. `npm run release:smoke-install -- --channel install_sh --version v0.5.5` 도 통과했다.
    install script 로 받은 binary 가 `--version`, `version --verbose`, `update` 까지 정상 응답했다.
 5. native Homebrew smoke 는 이번 세션에서 일부러 돌리지 않았다.
    이 경로는 host package manager 를 실제로 mutate 하므로 on-demand 로만 다룬다.
@@ -84,6 +85,9 @@ e85a22a Keep mode evaluate consistent with report build
    `mode evaluate` report input, report packet, review prepare-input, optimize prepare-input, optimize search prepare-input 전체에서 `adapterContext` 를 보존하게 고쳤다.
 5. `#9` [`humanReviewFindings` schema is hard to discover from CLI/docs and validator errors reveal it one field at a time](https://github.com/corca-ai/cautilus/issues/9)
    docs/contracts, report schemas, CLI example-input, validator error hint 를 같이 보강했다.
+6. `#11` [instruction-surface summary should separate bootstrap helper from work-skill routing](https://github.com/corca-ai/cautilus/issues/11)
+   `instruction-surface` contract, schemas, fixtures, self-dogfood runner prompt, summary aggregation 이 이제 `bootstrapHelper` 와 `workSkill` 을 first-class 로 다룬다.
+   `selectedSkill` 은 old single-lane expectations 를 깨지 않도록 compatibility alias 로 유지했다.
 
 새 follow-up triage 는 아래처럼 보면 된다.
 
@@ -96,6 +100,8 @@ e85a22a Keep mode evaluate consistent with report build
 3. `#8` 의 새 댓글은 원래 보고된 seam 을 artifact 없이 완전히 재현하진 못했지만, 같은 failure surface 에 대한 fallback 과 diagnostics 는 보강했다.
    report 에 `adapterContext` 가 빠졌더라도 sole named adapter 하나만 있으면 `review prepare-input` 와 `optimize search prepare-input` 가 그 adapter 를 재사용한다.
    여러 named adapters 가 있는 repo 에서 여전히 재현된다면 다음엔 `report.json` 의 `.adapterContext` 와 generated optimize packet 을 같이 받아서 본다.
+4. `#11` 은 이번 세션에서 product-side 로 처리했다.
+   bootstrap helper 와 work skill 을 따로 기대하거나 관찰할 수 있으므로, `find-skills` 같은 bootstrap helper 와 `impl` 같은 durable work skill 을 같은 honest run 안에서 같이 표현할 수 있다.
 
 ## Charness Follow-Up
 
@@ -105,11 +111,12 @@ e85a22a Keep mode evaluate consistent with report build
 
 ## Next Session
 
-다음 세션은 release blocker 를 처리하는 세션이 아니라, `v0.5.4` 이후 onboarding 체감과 optional distribution follow-up 을 보는 세션이다.
+다음 세션은 release blocker 를 처리하는 세션이 아니라, `v0.5.5` 이후 onboarding 체감과 instruction-surface consumer adoption 을 보는 세션이다.
 
 1. 새 consumer 가 여전히 `doctor ready` 에서 멈춘다면, 다음 개선점은 문서 분리보다 “repo-scope doctor 뒤 첫 bounded run” 을 더 product-owned 하게 만드는 쪽이다.
 2. 여러 named adapters 를 가진 consumer repo 에서 `#8` 류 repro 가 다시 오면, `report.json` 의 `.adapterContext`, `optimize-input.json`, `optimize-search-input.json` 을 같이 받아 exact loss point 를 잡는다.
-3. `corca-ai/charness#38` 진행 여부를 보고, `premortem` skill 이 정말 availability check 를 강제하게 바뀌면 여기 `AGENTS.md` 의 skill-routing 문구도 그에 맞춰 다시 다듬는다.
+3. `charness` 같은 bootstrap-heavy consumer 에서 새 `bootstrapHelper` / `workSkill` lanes 가 실제로 false mismatch 를 줄이는지 확인한다.
+4. `corca-ai/charness#38` 진행 여부를 보고, `premortem` skill 이 정말 availability check 를 강제하게 바뀌면 여기 `AGENTS.md` 의 skill-routing 문구도 그에 맞춰 다시 다듬는다.
 
 ## Stop Checks
 
