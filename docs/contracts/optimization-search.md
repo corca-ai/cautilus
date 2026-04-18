@@ -38,7 +38,8 @@ This slice defines a first `GEPA`-inspired search contract for `Cautilus`:
 - candidate selection is Pareto-based over per-scenario validation scores
 - the current implementation closes packet assembly, readiness gating, a bounded frontier-following reflective mutation loop that consumes `generationLimit` and stops when total candidate count reaches `populationLimit`, held-out reevaluation of each promoted candidate, telemetry-aware frontier ranking, and the proposal bridge
 - the current shipped runner is the Go runtime behind `cautilus optimize search run`
-- Node files under `scripts/agent-runtime/` may still host helper glue or research harnesses, but they do not define the shipped behavior contract
+- Node files under `scripts/agent-runtime/` may still host helper glue, but they do not define the shipped behavior contract
+- retired richer Node optimize-search research harnesses live under `scripts/experiments/optimize-search-js/`
 - reflective mutation is evidence-aware rewriting, not random string editing
 - the canonical search packet records both the resolved search configuration and the source of each resolved knob so operators can tell whether the final budget, packet-level merge toggle, and selection policy came from product defaults, adapter defaults, or explicit overrides
 - the search output stays reopenable as a durable artifact and can feed the existing bounded `optimize propose` seam
@@ -98,7 +99,7 @@ This slice defines a first `GEPA`-inspired search contract for `Cautilus`:
 - keep telemetry truth machine-readable
   Do not scrape human-oriented stderr summaries into product-owned token or cost fields
 - keep the shipped runtime singular
-  If a richer Node harness exists while parity work is underway, it must remain clearly experimental and may not become the only place where product semantics live
+  If a richer Node harness exists while parity work is underway, it must remain clearly experimental under `scripts/experiments/` and may not become the only place where product semantics live
 
 ## Reference Mapping
 

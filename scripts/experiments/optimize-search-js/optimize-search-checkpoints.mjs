@@ -2,9 +2,9 @@ import { existsSync, mkdirSync, readFileSync } from "node:fs";
 import { spawnSync } from "node:child_process";
 import { dirname, join, resolve } from "node:path";
 
-import { loadAdapter } from "../resolve_adapter.mjs";
+import { loadAdapter } from "../../resolve_adapter.mjs";
 
-const TOOL_ROOT = resolve(dirname(new URL(import.meta.url).pathname), "..", "..");
+const TOOL_ROOT = resolve(dirname(new URL(import.meta.url).pathname), "..", "..", "..");
 const BIN_PATH = join(TOOL_ROOT, "bin", "cautilus");
 const REVIEW_STATUS_RANK = new Map([
 	["pass", 0],

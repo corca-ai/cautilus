@@ -3,17 +3,17 @@ import { dirname, join, resolve } from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
 
-import { readActiveRunDir } from "./active-run.mjs";
+import { readActiveRunDir } from "../../agent-runtime/active-run.mjs";
 import {
 	OPTIMIZE_SEARCH_INPUTS_SCHEMA,
 	OPTIMIZE_SEARCH_RESULT_SCHEMA,
-} from "./contract-versions.mjs";
+} from "../../agent-runtime/contract-versions.mjs";
 import { runOptimizeSearch as runOptimizeSearchCore } from "./optimize-search-core.mjs";
 
 function usage(exitCode = 0) {
 	const text = [
 		"Usage:",
-		"  node ./scripts/agent-runtime/run-optimize-search.mjs --input <file> [--output <file>] [--json]",
+		"  node ./scripts/experiments/optimize-search-js/run-optimize-search.mjs --input <file> [--output <file>] [--json]",
 		"",
 		"Output packet:",
 		`  schemaVersion: ${OPTIMIZE_SEARCH_RESULT_SCHEMA}`,

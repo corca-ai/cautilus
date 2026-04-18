@@ -20,6 +20,7 @@ govulncheck --version
 Adapter bootstrap, release/install helpers, and provider-facing command wrappers still live in Node where that keeps the product boundary thinner.
 Shipped behavior semantics for native product surfaces belong in Go under `internal/runtime/`.
 For `optimize search`, the source of truth is the Go runtime plus its Go tests, not the Node research harness.
+Retired richer Node optimize-search experiments live under `scripts/experiments/optimize-search-js/` so they cannot masquerade as shipped `agent-runtime` behavior.
 The standalone release surface does not depend on `python3`.
 
 ## Standing checks
@@ -144,7 +145,8 @@ These are thin wrappers around the product-owned `cautilus self-dogfood render-h
 Keep runtime ownership explicit so Node helpers do not silently grow a second product runtime again.
 
 - `internal/runtime/` owns shipped behavior semantics for native product surfaces.
-- `scripts/agent-runtime/` may own thin wrappers, fixture helpers, provider command glue, and research harnesses, but not the sole shipped meaning of a surface.
+- `scripts/agent-runtime/` may own thin wrappers, fixture helpers, and provider command glue, but not the sole shipped meaning of a surface.
+- richer retired Node product experiments belong under `scripts/experiments/`, not under `scripts/agent-runtime/`
 - If a change alters shipped `optimize search` behavior, the same slice must update the Go runtime and its Go acceptance tests.
 - If a richer Node experiment needs to exist before parity lands, keep it clearly experimental and do not let product docs or release claims treat it as the shipped runtime.
 

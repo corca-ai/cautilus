@@ -5,7 +5,7 @@ import { dirname, join, relative, resolve } from "node:path";
 import { selectMergeParents } from "./optimize-search-merge.mjs";
 import { buildMergePrompt, buildMutationPrompt } from "./optimize-search-prompts.mjs";
 
-const TOOL_ROOT = resolve(dirname(new URL(import.meta.url).pathname), "..", "..");
+const TOOL_ROOT = resolve(dirname(new URL(import.meta.url).pathname), "..", "..", "..");
 const BIN_PATH = join(TOOL_ROOT, "bin", "cautilus");
 const REVIEW_WRAPPER_PATH = join(TOOL_ROOT, "scripts", "agent-runtime", "run-review-variant.sh");
 

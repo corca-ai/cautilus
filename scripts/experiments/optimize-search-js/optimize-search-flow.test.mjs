@@ -5,7 +5,7 @@ import { join } from "node:path";
 import { execFileSync, spawnSync } from "node:child_process";
 import test from "node:test";
 
-import { buildOptimizeSearchInput } from "./build-optimize-search-input.mjs";
+import { buildOptimizeSearchInput } from "../../agent-runtime/build-optimize-search-input.mjs";
 import { selectMergeParents } from "./optimize-search-merge.mjs";
 import { runOptimizeSearch } from "./run-optimize-search.mjs";
 
@@ -3457,7 +3457,7 @@ test("run-optimize-search CLI reports blocked readiness in JSON mode with exit c
 			now: new Date("2026-04-13T10:00:00.000Z"),
 		});
 		const result = spawnSync(process.execPath, [
-			join(process.cwd(), "scripts", "agent-runtime", "run-optimize-search.mjs"),
+			join(process.cwd(), "scripts", "experiments", "optimize-search-js", "run-optimize-search.mjs"),
 			"--input",
 			inputPath,
 			"--json",
