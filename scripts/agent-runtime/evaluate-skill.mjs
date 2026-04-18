@@ -84,15 +84,6 @@ function normalizeOptionalString(value, field) {
 	}
 	return normalizeNonEmptyString(value, field);
 }
-function normalizeNullableString(value, field) {
-	if (value === undefined) {
-		return undefined;
-	}
-	if (value === null) {
-		return null;
-	}
-	return normalizeNonEmptyString(value, field);
-}
 function normalizeOptionalIsoTime(value, field) {
 	const text = normalizeOptionalString(value, field);
 	if (!text) {
@@ -268,83 +259,6 @@ function normalizeArtifactRefs(value, field) {
 		const path = normalizeNonEmptyString(entry.path, `${field}[${index}].path`);
 		return { kind, path };
 	});
-}
-function normalizeRoutingDecision(value, field) {
-	if (value === undefined || value === null) {
-		return null;
-	}
-	if (!value || typeof value !== "object" || Array.isArray(value)) {
-		throw new Error(`${field} must be an object`);
-	}
-	return {
-		selectedSkill: normalizeNullableString(value.selectedSkill, `${field}.selectedSkill`) ?? null,
-		selectedSupport: normalizeNullableString(value.selectedSupport, `${field}.selectedSupport`) ?? null,
-		firstToolCall: normalizeNullableString(value.firstToolCall, `${field}.firstToolCall`) ?? null,
-		reasonSummary: normalizeNullableString(value.reasonSummary, `${field}.reasonSummary`) ?? null,
-	};
-}
-function normalizeExpectedRouting(value, field) {
-	if (value === undefined || value === null) {
-		return null;
-	}
-	if (!value || typeof value !== "object" || Array.isArray(value)) {
-		throw new Error(`${field} must be an object`);
-	}
-	const expectedRouting = {};
-	if ("selectedSkill" in value) {
-		expectedRouting.selectedSkill = normalizeNullableString(value.selectedSkill, `${field}.selectedSkill`);
-	}
-	if ("selectedSupport" in value) {
-		expectedRouting.selectedSupport = normalizeNullableString(value.selectedSupport, `${field}.selectedSupport`);
-	}
-	if ("firstToolCallPattern" in value) {
-		expectedRouting.firstToolCallPattern = normalizeOptionalString(value.firstToolCallPattern, `${field}.firstToolCallPattern`);
-	}
-	if (Object.keys(expectedRouting).length === 0) {
-		throw new Error(`${field} must declare at least one expectation field`);
-	}
-	return expectedRouting;
-}
-function normalizeInstructionSurface(value, field) {
-	if (value === undefined || value === null) {
-		return null;
-	}
-	if (!value || typeof value !== "object" || Array.isArray(value)) {
-		throw new Error(`${field} must be an object`);
-	}
-	const surfaceLabel = normalizeNonEmptyString(value.surfaceLabel, `${field}.surfaceLabel`);
-	if (!Array.isArray(value.files)) {
-		throw new Error(`${field}.files must be an array`);
-	}
-	return {
-		surfaceLabel,
-		files: value.files.map((entry, index) => {
-			if (!entry || typeof entry !== "object" || Array.isArray(entry)) {
-				throw new Error(`${field}.files[${index}] must be an object`);
-			}
-			const fileRecord = {
-				path: normalizeNonEmptyString(entry.path, `${field}.files[${index}].path`),
-				sourceKind: normalizeOptionalString(entry.sourceKind, `${field}.files[${index}].sourceKind`) ?? "workspace_default",
-			};
-			const sourceFile = normalizeOptionalString(entry.sourceFile, `${field}.files[${index}].sourceFile`);
-			if (sourceFile) {
-				fileRecord.sourceFile = sourceFile;
-			}
-			const artifactPath = normalizeOptionalString(entry.artifactPath, `${field}.files[${index}].artifactPath`);
-			if (artifactPath) {
-				fileRecord.artifactPath = artifactPath;
-			}
-			return fileRecord;
-		}),
-	};
-}
-function hasRoutingSignal(decision) {
-	return Boolean(decision && [
-		decision.selectedSkill,
-		decision.selectedSupport,
-		decision.firstToolCall,
-		decision.reasonSummary,
-	].some((value) => typeof value === "string" && value.trim()));
 }
 function thresholdFindings(metrics, thresholds) {
 	if (!metrics || !thresholds) {
@@ -538,53 +452,6 @@ function evaluateExecutionRun(run) {
 		intentProfile: buildExecutionIntentProfile(run),
 	};
 }
-function buildRoutingEvaluation(run) {
-	if (!run.expectedRouting) {
-		return null;
-	}
-	const routingDecision = run.routingDecision ?? {
-		selectedSkill: null,
-		selectedSupport: null,
-		firstToolCall: null,
-		reasonSummary: null,
-	};
-	const matchedFields = [];
-	const mismatchedFields = [];
-	const compareNullableField = (field, actual) => {
-		if (!(field in run.expectedRouting)) {
-			return;
-		}
-		if ((run.expectedRouting[field] ?? null) === (actual ?? null)) {
-			matchedFields.push(field);
-			return;
-		}
-		mismatchedFields.push(field);
-	};
-	compareNullableField("selectedSkill", routingDecision.selectedSkill);
-	compareNullableField("selectedSupport", routingDecision.selectedSupport);
-	if (run.expectedRouting.firstToolCallPattern) {
-		((routingDecision.firstToolCall ?? "").includes(run.expectedRouting.firstToolCallPattern)
-			? matchedFields
-			: mismatchedFields).push("firstToolCall");
-	}
-	return {
-		status: mismatchedFields.length === 0 ? "matched" : "mismatched",
-		matchedFields,
-		mismatchedFields,
-	};
-}
-function routingMismatchSummary(run, routingEvaluation) {
-	const parts = routingEvaluation.mismatchedFields.map((field) => {
-		if (field === "selectedSkill") {
-			return `selectedSkill expected ${JSON.stringify(run.expectedRouting.selectedSkill ?? null)} but got ${JSON.stringify(run.routingDecision?.selectedSkill ?? null)}`;
-		}
-		if (field === "selectedSupport") {
-			return `selectedSupport expected ${JSON.stringify(run.expectedRouting.selectedSupport ?? null)} but got ${JSON.stringify(run.routingDecision?.selectedSupport ?? null)}`;
-		}
-		return `firstToolCall did not match pattern ${JSON.stringify(run.expectedRouting.firstToolCallPattern)}`;
-	});
-	return `First routing decision mismatched the expected route: ${parts.join(", ")}.`;
-}
 function normalizeRun(run, index) {
 	if (!run || typeof run !== "object" || Array.isArray(run)) {
 		throw new Error(`evaluations[${index}] must be an object`);
@@ -610,11 +477,8 @@ function normalizeRun(run, index) {
 		summary: normalizeNonEmptyString(run.summary, `evaluations[${index}].summary`),
 		invoked: normalizeBoolean(run.invoked, `evaluations[${index}].invoked`),
 		expectedTrigger: run.expectedTrigger,
-		expectedRouting: normalizeExpectedRouting(run.expectedRouting, `evaluations[${index}].expectedRouting`),
 		outcome: run.outcome,
 		blockerKind: normalizeOptionalString(run.blockerKind, `evaluations[${index}].blockerKind`),
-		routingDecision: normalizeRoutingDecision(run.routingDecision, `evaluations[${index}].routingDecision`),
-		instructionSurface: normalizeInstructionSurface(run.instructionSurface, `evaluations[${index}].instructionSurface`),
 		artifactRefs: normalizeArtifactRefs(run.artifactRefs, `evaluations[${index}].artifactRefs`),
 		metrics: normalizeOptionalMetrics(run.metrics, `evaluations[${index}].metrics`),
 		telemetry: normalizeOptionalTelemetry(run.telemetry, `evaluations[${index}].telemetry`),
@@ -627,25 +491,11 @@ function normalizeRun(run, index) {
 function evaluateNormalizedRun(normalized) {
 	const outcome =
 		normalized.evaluationKind === "trigger" ? evaluateTriggerRun(normalized) : evaluateExecutionRun(normalized);
-	const routingEvaluation = buildRoutingEvaluation(normalized);
-	let status = outcome.status;
-	let summary = outcome.summary;
-	if (routingEvaluation?.status === "mismatched") {
-		summary = `${summary} ${routingMismatchSummary(normalized, routingEvaluation)}`;
-		if (normalized.evaluationKind === "trigger") {
-			status = "failed";
-		} else if (status === "passed") {
-			status = "degraded";
-		}
-	}
 	return {
 		...normalized,
 		...outcome,
-		status,
-		summary,
-		routingEvaluation,
-		sampling: buildSamplingInsights(normalized, status),
-		baselineComparison: buildBaselineComparison(normalized, status),
+		sampling: buildSamplingInsights(normalized, outcome.status),
+		baselineComparison: buildBaselineComparison(normalized, outcome.status),
 	};
 }
 function buildEvaluationCounts(evaluations) {
@@ -691,33 +541,6 @@ function buildSamplingSummary(evaluations, counts) {
 	}
 	return samplingSummary;
 }
-function buildRoutingSummary(evaluations) {
-	const routingSummary = {
-		evaluationsWithRoutingDecision: 0,
-		evaluationsWithExpectedRoute: 0,
-		matchedExpectedRoute: 0,
-		mismatchedExpectedRoute: 0,
-		selectedSkillCounts: {},
-	};
-	for (const evaluation of evaluations) {
-		if (hasRoutingSignal(evaluation.routingDecision)) {
-			routingSummary.evaluationsWithRoutingDecision += 1;
-		}
-		const selectedSkillKey = evaluation.routingDecision?.selectedSkill ?? "__none__";
-		routingSummary.selectedSkillCounts[selectedSkillKey] = (routingSummary.selectedSkillCounts[selectedSkillKey] ?? 0) + 1;
-		if (!evaluation.expectedRouting) {
-			continue;
-		}
-		routingSummary.evaluationsWithExpectedRoute += 1;
-		if (evaluation.routingEvaluation?.status === "matched") {
-			routingSummary.matchedExpectedRoute += 1;
-		}
-		if (evaluation.routingEvaluation?.status === "mismatched") {
-			routingSummary.mismatchedExpectedRoute += 1;
-		}
-	}
-	return routingSummary;
-}
 function recommendationFromCounts(counts, comparisonSummary) {
 	if (counts.failed > 0) {
 		return "reject";
@@ -727,20 +550,8 @@ function recommendationFromCounts(counts, comparisonSummary) {
 	}
 	return "accept-now";
 }
-function withOptionalFields(base, fields) {
-	for (const [key, value] of Object.entries(fields)) {
-		if (value === undefined || value === null) {
-			continue;
-		}
-		if (Array.isArray(value) && value.length === 0) {
-			continue;
-		}
-		base[key] = value;
-	}
-	return base;
-}
 function serializeEvaluation(entry) {
-	return withOptionalFields({
+	return {
 		evaluationId: entry.evaluationId,
 		targetKind: entry.targetKind,
 		targetId: entry.targetId,
@@ -752,25 +563,20 @@ function serializeEvaluation(entry) {
 		prompt: entry.prompt,
 		summary: entry.summary,
 		invoked: entry.invoked,
+		...(entry.expectedTrigger ? { expectedTrigger: entry.expectedTrigger } : {}),
+		...(entry.blockerKind ? { blockerKind: entry.blockerKind } : {}),
+		...(entry.metrics ? { metrics: entry.metrics } : {}),
+		...(entry.telemetry ? { telemetry: entry.telemetry } : {}),
+		...(entry.sampling ? { sampling: entry.sampling } : {}),
+		...(entry.baselineComparison ? { baselineComparison: entry.baselineComparison } : {}),
+		...(entry.thresholds ? { thresholds: entry.thresholds } : {}),
+		...(entry.thresholdFindings.length > 0 ? { thresholdFindings: entry.thresholdFindings } : {}),
+		...(entry.artifactRefs.length > 0 ? { artifactRefs: entry.artifactRefs } : {}),
 		intentProfile: entry.intentProfile,
-	}, {
-		expectedTrigger: entry.expectedTrigger,
-		expectedRouting: entry.expectedRouting,
-		routingDecision: entry.routingDecision,
-		routingEvaluation: entry.routingEvaluation,
-		instructionSurface: entry.instructionSurface,
-		blockerKind: entry.blockerKind,
-		metrics: entry.metrics,
-		telemetry: entry.telemetry,
-		sampling: entry.sampling,
-		baselineComparison: entry.baselineComparison,
-		thresholds: entry.thresholds,
-		thresholdFindings: entry.thresholdFindings,
-		artifactRefs: entry.artifactRefs,
-	});
+	};
 }
 function serializeEvaluationRun(entry) {
-	return withOptionalFields({
+	return {
 		targetKind: entry.targetKind,
 		targetId: entry.targetId,
 		displayName: entry.displayName,
@@ -779,19 +585,14 @@ function serializeEvaluationRun(entry) {
 		startedAt: entry.startedAt,
 		status: entry.status,
 		summary: entry.summary,
+		...(entry.blockerKind ? { blockerKind: entry.blockerKind } : {}),
+		...(entry.metrics ? { metrics: entry.metrics } : {}),
+		...(entry.telemetry ? { telemetry: entry.telemetry } : {}),
+		...(entry.sampling ? { sampling: entry.sampling } : {}),
+		...(entry.baselineComparison ? { baselineComparison: entry.baselineComparison } : {}),
+		...(entry.artifactRefs.length > 0 ? { artifactRefs: entry.artifactRefs } : {}),
 		intentProfile: entry.intentProfile,
-	}, {
-		expectedRouting: entry.expectedRouting,
-		routingDecision: entry.routingDecision,
-		routingEvaluation: entry.routingEvaluation,
-		instructionSurface: entry.instructionSurface,
-		blockerKind: entry.blockerKind,
-		metrics: entry.metrics,
-		telemetry: entry.telemetry,
-		sampling: entry.sampling,
-		baselineComparison: entry.baselineComparison,
-		artifactRefs: entry.artifactRefs,
-	});
+	};
 }
 export function buildSkillEvaluationSummary(input, now = new Date().toISOString()) {
 	if (input.schemaVersion !== SKILL_EVALUATION_INPUTS_SCHEMA) {
@@ -807,7 +608,6 @@ export function buildSkillEvaluationSummary(input, now = new Date().toISOString(
 	const counts = buildEvaluationCounts(evaluations);
 	const comparisonSummary = buildComparisonSummary(evaluations);
 	const samplingSummary = buildSamplingSummary(evaluations, counts);
-	const routingSummary = buildRoutingSummary(evaluations);
 	const recommendation = recommendationFromCounts(counts, comparisonSummary);
 
 	return {
@@ -819,7 +619,6 @@ export function buildSkillEvaluationSummary(input, now = new Date().toISOString(
 		evaluationCounts: counts,
 		samplingSummary,
 		comparisonSummary,
-		routingSummary,
 		evaluations: evaluations.map((entry) => serializeEvaluation(entry)),
 		evaluationRuns: evaluations.map((entry) => serializeEvaluationRun(entry)),
 	};

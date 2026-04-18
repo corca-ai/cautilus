@@ -64,27 +64,8 @@ const skillEvaluateExampleInput = `{
       "prompt": "Run the example skill.",
       "startedAt": "2026-04-14T00:00:00.000Z",
       "expectedTrigger": "must_invoke",
-      "expectedRouting": {
-        "selectedSkill": "example"
-      },
       "invoked": true,
-      "summary": "The prompt clearly called for the example skill and it was invoked.",
-      "routingDecision": {
-        "selectedSkill": "example",
-        "selectedSupport": null,
-        "firstToolCall": "example --repo-root .",
-        "reasonSummary": "The prompt directly called for the example skill."
-      },
-      "instructionSurface": {
-        "surfaceLabel": "workspace_checked_in",
-        "files": [
-          {
-            "path": "AGENTS.md",
-            "sourceKind": "workspace_default",
-            "artifactPath": "artifacts/instruction-surface/AGENTS.md"
-          }
-        ]
-      }
+      "summary": "The prompt clearly called for the example skill and it was invoked."
     }
   ]
 }

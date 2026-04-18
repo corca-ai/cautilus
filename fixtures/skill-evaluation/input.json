@@ -12,27 +12,8 @@
       "prompt": "Please implement one bounded repo-local quality slice.",
       "startedAt": "2026-04-14T00:00:00.000Z",
       "expectedTrigger": "must_invoke",
-      "expectedRouting": {
-        "selectedSkill": "impl"
-      },
       "invoked": true,
-      "summary": "The prompt clearly called for the impl skill and the skill was invoked.",
-      "routingDecision": {
-        "selectedSkill": "impl",
-        "selectedSupport": null,
-        "firstToolCall": "impl --repo-root .",
-        "reasonSummary": "The prompt directly requested implementation work."
-      },
-      "instructionSurface": {
-        "surfaceLabel": "workspace_checked_in",
-        "files": [
-          {
-            "path": "AGENTS.md",
-            "sourceKind": "workspace_default",
-            "artifactPath": "artifacts/instruction-surface/AGENTS.md"
-          }
-        ]
-      }
+      "summary": "The prompt clearly called for the impl skill and the skill was invoked."
     },
     {
       "evaluationId": "execution-impl-budget",
@@ -45,12 +26,6 @@
       "invoked": true,
       "outcome": "passed",
       "summary": "The skill completed the task but used more time and tokens than intended.",
-      "routingDecision": {
-        "selectedSkill": "impl",
-        "selectedSupport": null,
-        "firstToolCall": "impl --repo-root .",
-        "reasonSummary": "The same impl route handled the bounded change request."
-      },
       "metrics": {
         "total_tokens": 1400,
         "duration_ms": 4200

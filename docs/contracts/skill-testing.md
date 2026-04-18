@@ -55,22 +55,6 @@ The adapter-owned runner still owns:
 - how output files or transcripts are collected
 - any host-specific backend choice such as `codex exec`
 
-For routing-sensitive evals, the case suite may also declare a bounded `instructionSurface`.
-The first slice supports an `AGENTS.md`-style override through either:
-
-- the checked-in workspace file already present in the candidate repo
-- a fixture file path
-- an inline override string
-
-This lets one prompt dataset be replayed against multiple instruction-surface variants without cloning multiple repos.
-
-Each case may also declare an `expectedRouting` record for the first routing move.
-That expectation can score fields such as:
-
-- `selectedSkill`
-- `selectedSupport`
-- `firstToolCallPattern`
-
 ## Adapter Boundary
 
 The adapter may define:
@@ -99,11 +83,6 @@ Existing placeholders such as `{candidate_repo}` and `{output_dir}` remain avail
 - per-case aggregate artifacts when repeated runs are used
 
 The summary and candidates should be product-owned outputs even when the adapter-owned runner produced the raw observed packet.
-When routing expectations are present, the observed packet should also preserve:
-
-- the instruction-surface label and file provenance used for the run
-- the first structured routing decision returned by the runtime
-- pass/fail scoring against the expected first route
 
 ## Guardrails
 

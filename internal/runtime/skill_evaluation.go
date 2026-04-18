@@ -9,28 +9,25 @@ import (
 )
 
 type skillEvaluationCase struct {
-	evaluationID       string
-	targetKind         string
-	targetID           string
-	displayName        string
-	evaluationKind     string
-	prompt             string
-	startedAt          string
-	summary            string
-	invoked            bool
-	expectedTrigger    *string
-	expectedRouting    map[string]any
-	outcome            *string
-	blockerKind        *string
-	routingDecision    map[string]any
-	instructionSurface map[string]any
-	artifactRefs       []any
-	metrics            map[string]any
-	telemetry          map[string]any
-	sampling           map[string]any
-	baseline           map[string]any
-	thresholds         map[string]any
-	intentProfile      map[string]any
+	evaluationID    string
+	targetKind      string
+	targetID        string
+	displayName     string
+	evaluationKind  string
+	prompt          string
+	startedAt       string
+	summary         string
+	invoked         bool
+	expectedTrigger *string
+	outcome         *string
+	blockerKind     *string
+	artifactRefs    []any
+	metrics         map[string]any
+	telemetry       map[string]any
+	sampling        map[string]any
+	baseline        map[string]any
+	thresholds      map[string]any
+	intentProfile   map[string]any
 }
 
 func BuildSkillEvaluationSummary(input map[string]any, now time.Time) (map[string]any, error) {
@@ -81,13 +78,6 @@ func BuildSkillEvaluationSummary(input map[string]any, now time.Time) (map[strin
 		"sameAsBaseline":          0,
 		"worseThanBaseline":       0,
 	}
-	routingSummary := map[string]any{
-		"evaluationsWithRoutingDecision": 0,
-		"evaluationsWithExpectedRoute":   0,
-		"matchedExpectedRoute":           0,
-		"mismatchedExpectedRoute":        0,
-		"selectedSkillCounts":            map[string]any{},
-	}
 
 	for index, rawEvaluation := range rawEvaluations {
 		record, ok := rawEvaluation.(map[string]any)
@@ -113,7 +103,6 @@ func BuildSkillEvaluationSummary(input map[string]any, now time.Time) (map[strin
 		}
 		accumulateSkillSamplingSummary(samplingSummary, asMap(result["evaluation"])["sampling"])
 		accumulateSkillComparisonSummary(comparisonSummary, asMap(result["evaluation"])["baselineComparison"])
-		accumulateSkillRoutingSummary(routingSummary, asMap(result["evaluation"]))
 	}
 
 	recommendation := "accept-now"
@@ -150,7 +139,6 @@ func BuildSkillEvaluationSummary(input map[string]any, now time.Time) (map[strin
 		},
 		"samplingSummary":   samplingSummary,
 		"comparisonSummary": comparisonSummary,
-		"routingSummary":    routingSummary,
 		"evaluations":       evaluations,
 		"evaluationRuns":    evaluationRuns,
 	}, nil
@@ -209,23 +197,11 @@ func normalizeSkillEvaluationCase(input map[string]any, index int, now time.Time
 	if err != nil {
 		return nil, err
 	}
-	expectedRouting, err := normalizeSkillEvaluationExpectedRouting(input["expectedRouting"], fmt.Sprintf("evaluations[%d].expectedRouting", index))
-	if err != nil {
-		return nil, err
-	}
 	outcome, err := normalizeOptionalString(input["outcome"], fmt.Sprintf("evaluations[%d].outcome", index))
 	if err != nil {
 		return nil, err
 	}
 	blockerKind, err := normalizeOptionalString(input["blockerKind"], fmt.Sprintf("evaluations[%d].blockerKind", index))
-	if err != nil {
-		return nil, err
-	}
-	routingDecision, err := normalizeSkillEvaluationRoutingDecision(input["routingDecision"], fmt.Sprintf("evaluations[%d].routingDecision", index))
-	if err != nil {
-		return nil, err
-	}
-	instructionSurface, err := normalizeSkillEvaluationInstructionSurface(input["instructionSurface"], fmt.Sprintf("evaluations[%d].instructionSurface", index))
 	if err != nil {
 		return nil, err
 	}
@@ -271,28 +247,25 @@ func normalizeSkillEvaluationCase(input map[string]any, index int, now time.Time
 	}
 
 	return &skillEvaluationCase{
-		evaluationID:       evaluationID,
-		targetKind:         targetKind,
-		targetID:           targetID,
-		displayName:        displayName,
-		evaluationKind:     evaluationKind,
-		prompt:             prompt,
-		startedAt:          *startedAt,
-		summary:            summary,
-		invoked:            invoked,
-		expectedTrigger:    expectedTrigger,
-		expectedRouting:    expectedRouting,
-		outcome:            outcome,
-		blockerKind:        blockerKind,
-		routingDecision:    routingDecision,
-		instructionSurface: instructionSurface,
-		artifactRefs:       artifactRefs,
-		metrics:            metrics,
-		telemetry:          telemetry,
-		sampling:           sampling,
-		baseline:           baseline,
-		thresholds:         thresholds,
-		intentProfile:      asMap(input["intentProfile"]),
+		evaluationID:    evaluationID,
+		targetKind:      targetKind,
+		targetID:        targetID,
+		displayName:     displayName,
+		evaluationKind:  evaluationKind,
+		prompt:          prompt,
+		startedAt:       *startedAt,
+		summary:         summary,
+		invoked:         invoked,
+		expectedTrigger: expectedTrigger,
+		outcome:         outcome,
+		blockerKind:     blockerKind,
+		artifactRefs:    artifactRefs,
+		metrics:         metrics,
+		telemetry:       telemetry,
+		sampling:        sampling,
+		baseline:        baseline,
+		thresholds:      thresholds,
+		intentProfile:   asMap(input["intentProfile"]),
 	}, nil
 }
 
@@ -335,141 +308,6 @@ func normalizeSkillArtifactRefs(value any, field string) ([]any, error) {
 		})
 	}
 	return normalized, nil
-}
-
-func normalizeNullableRoutingString(value any, field string) (*string, error) {
-	if value == nil {
-		return nil, nil
-	}
-	return normalizeOptionalString(value, field)
-}
-
-func normalizeSkillEvaluationRoutingDecision(value any, field string) (map[string]any, error) {
-	record := asMap(value)
-	if value == nil {
-		return nil, nil
-	}
-	if len(record) == 0 {
-		return nil, fmt.Errorf("%s must be an object", field)
-	}
-	normalized := map[string]any{
-		"selectedSkill":   nil,
-		"selectedSupport": nil,
-		"firstToolCall":   nil,
-		"reasonSummary":   nil,
-	}
-	for _, key := range []string{"selectedSkill", "selectedSupport", "firstToolCall", "reasonSummary"} {
-		text, err := normalizeNullableRoutingString(record[key], field+"."+key)
-		if err != nil {
-			return nil, err
-		}
-		if text != nil {
-			normalized[key] = *text
-		}
-	}
-	return normalized, nil
-}
-
-func normalizeSkillEvaluationExpectedRouting(value any, field string) (map[string]any, error) {
-	record := asMap(value)
-	if value == nil {
-		return nil, nil
-	}
-	if len(record) == 0 {
-		return nil, fmt.Errorf("%s must be an object", field)
-	}
-	normalized := map[string]any{}
-	if _, exists := record["selectedSkill"]; exists {
-		text, err := normalizeNullableRoutingString(record["selectedSkill"], field+".selectedSkill")
-		if err != nil {
-			return nil, err
-		}
-		if text == nil {
-			normalized["selectedSkill"] = nil
-		} else {
-			normalized["selectedSkill"] = *text
-		}
-	}
-	if _, exists := record["selectedSupport"]; exists {
-		text, err := normalizeNullableRoutingString(record["selectedSupport"], field+".selectedSupport")
-		if err != nil {
-			return nil, err
-		}
-		if text == nil {
-			normalized["selectedSupport"] = nil
-		} else {
-			normalized["selectedSupport"] = *text
-		}
-	}
-	if _, exists := record["firstToolCallPattern"]; exists {
-		text, err := normalizeOptionalString(record["firstToolCallPattern"], field+".firstToolCallPattern")
-		if err != nil {
-			return nil, err
-		}
-		if text != nil {
-			normalized["firstToolCallPattern"] = *text
-		}
-	}
-	if len(normalized) == 0 {
-		return nil, fmt.Errorf("%s must declare at least one expectation field", field)
-	}
-	return normalized, nil
-}
-
-func normalizeSkillEvaluationInstructionSurface(value any, field string) (map[string]any, error) {
-	record := asMap(value)
-	if value == nil {
-		return nil, nil
-	}
-	if len(record) == 0 {
-		return nil, fmt.Errorf("%s must be an object", field)
-	}
-	surfaceLabel, err := normalizeNonEmptyString(record["surfaceLabel"], field+".surfaceLabel")
-	if err != nil {
-		return nil, err
-	}
-	files, err := assertArray(record["files"], field+".files")
-	if err != nil {
-		return nil, err
-	}
-	normalizedFiles := make([]any, 0, len(files))
-	for index, rawFile := range files {
-		fileRecord := asMap(rawFile)
-		path, err := normalizeNonEmptyString(fileRecord["path"], fmt.Sprintf("%s.files[%d].path", field, index))
-		if err != nil {
-			return nil, err
-		}
-		sourceKind, err := normalizeOptionalString(fileRecord["sourceKind"], fmt.Sprintf("%s.files[%d].sourceKind", field, index))
-		if err != nil {
-			return nil, err
-		}
-		sourceFile, err := normalizeOptionalString(fileRecord["sourceFile"], fmt.Sprintf("%s.files[%d].sourceFile", field, index))
-		if err != nil {
-			return nil, err
-		}
-		artifactPath, err := normalizeOptionalString(fileRecord["artifactPath"], fmt.Sprintf("%s.files[%d].artifactPath", field, index))
-		if err != nil {
-			return nil, err
-		}
-		entry := map[string]any{
-			"path":       path,
-			"sourceKind": "workspace_default",
-		}
-		if sourceKind != nil {
-			entry["sourceKind"] = *sourceKind
-		}
-		if sourceFile != nil {
-			entry["sourceFile"] = *sourceFile
-		}
-		if artifactPath != nil {
-			entry["artifactPath"] = *artifactPath
-		}
-		normalizedFiles = append(normalizedFiles, entry)
-	}
-	return map[string]any{
-		"surfaceLabel": surfaceLabel,
-		"files":        normalizedFiles,
-	}, nil
 }
 
 func normalizeSkillNumberObject(value any, field string, integerFields map[string]bool) (map[string]any, error) {
@@ -781,39 +619,6 @@ func accumulateSkillComparisonSummary(summary map[string]any, value any) {
 	}
 }
 
-func skillRoutingHasSignal(value any) bool {
-	record := asMap(value)
-	for _, key := range []string{"selectedSkill", "selectedSupport", "firstToolCall", "reasonSummary"} {
-		if strings.TrimSpace(stringOrEmpty(record[key])) != "" {
-			return true
-		}
-	}
-	return false
-}
-
-func accumulateSkillRoutingSummary(summary map[string]any, evaluation map[string]any) {
-	if skillRoutingHasSignal(evaluation["routingDecision"]) {
-		summary["evaluationsWithRoutingDecision"] = intFromAny(summary["evaluationsWithRoutingDecision"]) + 1
-	}
-	selectedSkillCounts := asMap(summary["selectedSkillCounts"])
-	selectedSkillKey := stringOrEmpty(asMap(evaluation["routingDecision"])["selectedSkill"])
-	if selectedSkillKey == "" {
-		selectedSkillKey = "__none__"
-	}
-	selectedSkillCounts[selectedSkillKey] = intFromAny(selectedSkillCounts[selectedSkillKey]) + 1
-	summary["selectedSkillCounts"] = selectedSkillCounts
-	if len(asMap(evaluation["expectedRouting"])) == 0 {
-		return
-	}
-	summary["evaluationsWithExpectedRoute"] = intFromAny(summary["evaluationsWithExpectedRoute"]) + 1
-	switch stringOrEmpty(asMap(evaluation["routingEvaluation"])["status"]) {
-	case "matched":
-		summary["matchedExpectedRoute"] = intFromAny(summary["matchedExpectedRoute"]) + 1
-	case "mismatched":
-		summary["mismatchedExpectedRoute"] = intFromAny(summary["mismatchedExpectedRoute"]) + 1
-	}
-}
-
 func evaluateSkillEvaluationCase(evaluation *skillEvaluationCase) (map[string]any, error) {
 	switch evaluation.evaluationKind {
 	case "trigger":
@@ -823,60 +628,6 @@ func evaluateSkillEvaluationCase(evaluation *skillEvaluationCase) (map[string]an
 	default:
 		return nil, fmt.Errorf("unknown evaluationKind: %s", evaluation.evaluationKind)
 	}
-}
-
-func buildSkillRoutingEvaluation(evaluation *skillEvaluationCase) map[string]any {
-	if len(evaluation.expectedRouting) == 0 {
-		return nil
-	}
-	routingDecision := asMap(evaluation.routingDecision)
-	matchedFields := []any{}
-	mismatchedFields := []any{}
-	if expected, exists := evaluation.expectedRouting["selectedSkill"]; exists {
-		if expected == routingDecision["selectedSkill"] {
-			matchedFields = append(matchedFields, "selectedSkill")
-		} else {
-			mismatchedFields = append(mismatchedFields, "selectedSkill")
-		}
-	}
-	if expected, exists := evaluation.expectedRouting["selectedSupport"]; exists {
-		if expected == routingDecision["selectedSupport"] {
-			matchedFields = append(matchedFields, "selectedSupport")
-		} else {
-			mismatchedFields = append(mismatchedFields, "selectedSupport")
-		}
-	}
-	if pattern := strings.TrimSpace(stringOrEmpty(evaluation.expectedRouting["firstToolCallPattern"])); pattern != "" {
-		if strings.Contains(stringOrEmpty(routingDecision["firstToolCall"]), pattern) {
-			matchedFields = append(matchedFields, "firstToolCall")
-		} else {
-			mismatchedFields = append(mismatchedFields, "firstToolCall")
-		}
-	}
-	status := "matched"
-	if len(mismatchedFields) > 0 {
-		status = "mismatched"
-	}
-	return map[string]any{
-		"status":           status,
-		"matchedFields":    matchedFields,
-		"mismatchedFields": mismatchedFields,
-	}
-}
-
-func skillRoutingMismatchSummary(evaluation *skillEvaluationCase, routingEvaluation map[string]any) string {
-	parts := make([]string, 0, len(arrayOrEmpty(routingEvaluation["mismatchedFields"])))
-	for _, rawField := range arrayOrEmpty(routingEvaluation["mismatchedFields"]) {
-		switch stringOrEmpty(rawField) {
-		case "selectedSkill":
-			parts = append(parts, fmt.Sprintf("selectedSkill expected %q but got %q", stringOrEmpty(evaluation.expectedRouting["selectedSkill"]), stringOrEmpty(asMap(evaluation.routingDecision)["selectedSkill"])))
-		case "selectedSupport":
-			parts = append(parts, fmt.Sprintf("selectedSupport expected %q but got %q", stringOrEmpty(evaluation.expectedRouting["selectedSupport"]), stringOrEmpty(asMap(evaluation.routingDecision)["selectedSupport"])))
-		case "firstToolCall":
-			parts = append(parts, fmt.Sprintf("firstToolCall did not match pattern %q", stringOrEmpty(evaluation.expectedRouting["firstToolCallPattern"])))
-		}
-	}
-	return fmt.Sprintf("First routing decision mismatched the expected route: %s.", strings.Join(parts, ", "))
 }
 
 func evaluateSkillTriggerCase(evaluation *skillEvaluationCase) (map[string]any, error) {
@@ -895,11 +646,6 @@ func evaluateSkillTriggerCase(evaluation *skillEvaluationCase) (map[string]any, 
 			summary = fmt.Sprintf("%s The prompt should have stayed outside %s, but an invocation was observed.", evaluation.summary, evaluation.displayName)
 		}
 	}
-	routingEvaluation := buildSkillRoutingEvaluation(evaluation)
-	if stringOrEmpty(routingEvaluation["status"]) == "mismatched" {
-		status = "failed"
-		summary = fmt.Sprintf("%s %s", summary, skillRoutingMismatchSummary(evaluation, routingEvaluation))
-	}
 	intentProfile, err := BuildBehaviorIntentProfile(
 		fmt.Sprintf("%s should trigger only when the prompt truly needs the skill.", evaluation.displayName),
 		evaluation.intentProfile,
@@ -915,7 +661,7 @@ func evaluateSkillTriggerCase(evaluation *skillEvaluationCase) (map[string]any, 
 	if err != nil {
 		return nil, err
 	}
-	return buildEvaluatedSkillResult(evaluation, "trigger_selection", status, summary, nil, routingEvaluation, sampling, baselineComparison, intentProfile), nil
+	return buildEvaluatedSkillResult(evaluation, "trigger_selection", status, summary, nil, sampling, baselineComparison, intentProfile), nil
 }
 
 func evaluateSkillExecutionCase(evaluation *skillEvaluationCase) (map[string]any, error) {
@@ -937,11 +683,6 @@ func evaluateSkillExecutionCase(evaluation *skillEvaluationCase) (map[string]any
 		return nil, err
 	}
 	if !evaluation.invoked {
-		routingEvaluation := buildSkillRoutingEvaluation(evaluation)
-		summary := fmt.Sprintf("%s The execution case never invoked the skill, so the task could not complete on the intended surface.", evaluation.summary)
-		if stringOrEmpty(routingEvaluation["status"]) == "mismatched" {
-			summary = fmt.Sprintf("%s %s", summary, skillRoutingMismatchSummary(evaluation, routingEvaluation))
-		}
 		sampling := buildSkillSamplingInsights(evaluation, "failed")
 		baselineComparison, err := buildSkillBaselineComparison(evaluation, "failed")
 		if err != nil {
@@ -951,9 +692,8 @@ func evaluateSkillExecutionCase(evaluation *skillEvaluationCase) (map[string]any
 			evaluation,
 			"execution_quality",
 			"failed",
-			summary,
+			fmt.Sprintf("%s The execution case never invoked the skill, so the task could not complete on the intended surface.", evaluation.summary),
 			nil,
-			routingEvaluation,
 			sampling,
 			baselineComparison,
 			intentProfile,
@@ -972,19 +712,12 @@ func evaluateSkillExecutionCase(evaluation *skillEvaluationCase) (map[string]any
 		}
 		summary = fmt.Sprintf("%s Runtime budgets were exceeded for %s.", evaluation.summary, strings.Join(parts, ", "))
 	}
-	routingEvaluation := buildSkillRoutingEvaluation(evaluation)
-	if stringOrEmpty(routingEvaluation["status"]) == "mismatched" {
-		if status == "passed" {
-			status = "degraded"
-		}
-		summary = fmt.Sprintf("%s %s", summary, skillRoutingMismatchSummary(evaluation, routingEvaluation))
-	}
 	sampling := buildSkillSamplingInsights(evaluation, status)
 	baselineComparison, err := buildSkillBaselineComparison(evaluation, status)
 	if err != nil {
 		return nil, err
 	}
-	return buildEvaluatedSkillResult(evaluation, "execution_quality", status, summary, findings, routingEvaluation, sampling, baselineComparison, intentProfile), nil
+	return buildEvaluatedSkillResult(evaluation, "execution_quality", status, summary, findings, sampling, baselineComparison, intentProfile), nil
 }
 
 func thresholdFindings(metrics map[string]any, thresholds map[string]any) []any {
@@ -1022,7 +755,6 @@ func buildEvaluatedSkillResult(
 	status string,
 	summary string,
 	findings []any,
-	routingEvaluation map[string]any,
 	sampling map[string]any,
 	baselineComparison map[string]any,
 	intentProfile *BehaviorIntentProfile,
@@ -1044,20 +776,8 @@ func buildEvaluatedSkillResult(
 	if evaluation.expectedTrigger != nil {
 		evaluationPayload["expectedTrigger"] = *evaluation.expectedTrigger
 	}
-	if len(evaluation.expectedRouting) > 0 {
-		evaluationPayload["expectedRouting"] = evaluation.expectedRouting
-	}
 	if evaluation.blockerKind != nil {
 		evaluationPayload["blockerKind"] = *evaluation.blockerKind
-	}
-	if len(evaluation.routingDecision) > 0 {
-		evaluationPayload["routingDecision"] = evaluation.routingDecision
-	}
-	if len(routingEvaluation) > 0 {
-		evaluationPayload["routingEvaluation"] = routingEvaluation
-	}
-	if len(evaluation.instructionSurface) > 0 {
-		evaluationPayload["instructionSurface"] = evaluation.instructionSurface
 	}
 	if evaluation.metrics != nil {
 		evaluationPayload["metrics"] = evaluation.metrics
@@ -1094,18 +814,6 @@ func buildEvaluatedSkillResult(
 		"status":         status,
 		"summary":        summary,
 		"intentProfile":  anyFromProfileMust(intentProfile, nil),
-	}
-	if len(evaluation.expectedRouting) > 0 {
-		evaluationRun["expectedRouting"] = evaluation.expectedRouting
-	}
-	if len(evaluation.routingDecision) > 0 {
-		evaluationRun["routingDecision"] = evaluation.routingDecision
-	}
-	if len(routingEvaluation) > 0 {
-		evaluationRun["routingEvaluation"] = routingEvaluation
-	}
-	if len(evaluation.instructionSurface) > 0 {
-		evaluationRun["instructionSurface"] = evaluation.instructionSurface
 	}
 	if evaluation.blockerKind != nil {
 		evaluationRun["blockerKind"] = *evaluation.blockerKind

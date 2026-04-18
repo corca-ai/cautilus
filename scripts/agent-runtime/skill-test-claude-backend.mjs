@@ -5,9 +5,11 @@ import { spawnSync } from "node:child_process";
 import {
 	renderPrompt,
 	baseSchema,
+	backendFailureResult,
 	normalizeObservedResult,
+	artifactRef,
+	sampleDir,
 } from "./run-local-skill-test.mjs";
-import { artifactRef, backendFailureResult } from "./skill-test-support.mjs";
 import { extractClaudeTelemetry } from "./skill-test-telemetry.mjs";
 
 export { extractClaudeTelemetry } from "./skill-test-telemetry.mjs";
@@ -78,7 +80,9 @@ export function parseClaudeOutput(raw) {
 	}
 }
 
-export function runClaudeSample(options, testCase, outputDir) {
+export function runClaudeSample(options, testCase, artifactDir, sampleIndex) {
+	const caseDir = join(artifactDir, testCase.caseId);
+	const outputDir = sampleDir(caseDir, sampleIndex, testCase.repeatCount);
 	mkdirSync(outputDir, { recursive: true });
 	const promptFile = join(outputDir, "prompt.md");
 	const outputFile = join(outputDir, "result.json");

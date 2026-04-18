@@ -31,42 +31,6 @@ func TestNormalizeSkillTestCaseSuiteRepeatDefaults(t *testing.T) {
 	}
 }
 
-func TestNormalizeSkillTestCaseSuiteCarriesInstructionSurfaceAndExpectedRouting(t *testing.T) {
-	suite, err := NormalizeSkillTestCaseSuite(map[string]any{
-		"schemaVersion": "cautilus.skill_test_cases.v1",
-		"skillId":       "demo",
-		"instructionSurface": map[string]any{
-			"surfaceLabel": "compact-routing",
-			"files": []any{
-				map[string]any{
-					"path":       "AGENTS.md",
-					"sourceFile": "./fixtures/compact-agents.md",
-				},
-			},
-		},
-		"cases": []any{
-			map[string]any{
-				"caseId":          "trigger-demo",
-				"evaluationKind":  "trigger",
-				"prompt":          "Use $demo here.",
-				"expectedTrigger": "must_invoke",
-				"expectedRouting": map[string]any{
-					"selectedSkill": "find-skills",
-				},
-			},
-		},
-	})
-	if err != nil {
-		t.Fatalf("NormalizeSkillTestCaseSuite returned error: %v", err)
-	}
-	if got := stringOrEmpty(suite.InstructionSurface["surfaceLabel"]); got != "compact-routing" {
-		t.Fatalf("unexpected suite instruction surface: %#v", suite.InstructionSurface)
-	}
-	if got := stringOrEmpty(suite.Cases[0].ExpectedRouting["selectedSkill"]); got != "find-skills" {
-		t.Fatalf("unexpected expected routing: %#v", suite.Cases[0].ExpectedRouting)
-	}
-}
-
 func TestNormalizeSkillTestCaseSuiteRejectsConsensusAboveRepeatCount(t *testing.T) {
 	_, err := NormalizeSkillTestCaseSuite(map[string]any{
 		"schemaVersion": "cautilus.skill_test_cases.v1",
