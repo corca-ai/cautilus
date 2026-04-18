@@ -37,6 +37,8 @@ This slice defines a first `GEPA`-inspired search contract for `Cautilus`:
 - adapters may override the repo's default search budget and tier-specific search limits through one optional `optimize_search` block while the product still owns the tier labels `light`, `medium`, and `heavy`
 - candidate selection is Pareto-based over per-scenario validation scores
 - the current implementation closes packet assembly, readiness gating, a bounded frontier-following reflective mutation loop that consumes `generationLimit` and stops when total candidate count reaches `populationLimit`, held-out reevaluation of each promoted candidate, telemetry-aware frontier ranking, and the proposal bridge
+- the current shipped runner is the Go runtime behind `cautilus optimize search run`
+- Node files under `scripts/agent-runtime/` may still host helper glue or research harnesses, but they do not define the shipped behavior contract
 - reflective mutation is evidence-aware rewriting, not random string editing
 - the canonical search packet records both the resolved search configuration and the source of each resolved knob so operators can tell whether the final budget, packet-level merge toggle, and selection policy came from product defaults, adapter defaults, or explicit overrides
 - the search output stays reopenable as a durable artifact and can feed the existing bounded `optimize propose` seam
@@ -54,6 +56,10 @@ This slice defines a first `GEPA`-inspired search contract for `Cautilus`:
   Adapters may override the default tier choice and the numeric limits inside each tier, but they may not rename the shared tier labels.
 - Candidate retention uses a Pareto frontier over per-scenario validation scores, not only one aggregate score.
 - Cost and latency telemetry are mandatory when available, but are not primary Pareto frontier dimensions in v1.
+- Finalist selection may reject a frontier candidate when:
+  - declared selection `constraintCaps` make it ineligible
+  - final review checkpoints reject it
+  - final full-gate checkpoints reject it
 - Declared selection policy and optional merge knobs are preserved in the canonical packet even when the current runner does not yet consume every knob.
 - Prompt mutation is reflective prompt rewriting based on explicit evidence, not random token- or substring-level crossover.
 - Merge synthesis stays opt-in in the resolved search packet.
@@ -69,9 +75,8 @@ This slice defines a first `GEPA`-inspired search contract for `Cautilus`:
 - weight updates, fine-tuning, or external trainer orchestration
 - automatic prompt patch application to consumer-owned files
 - batch mutation that proposes more than one candidate per generation
-- review-checkpoint execution beyond packet-level policy shaping
+- frontier-promotion review execution before final selection
 - runtime consumption of `mergeEnabled` and `threeParentPolicy`
-- runtime enforcement of declared selection `constraintCaps`
 - richer merge selection and smarter crossover heuristics
 
 ## Non-Goals
@@ -92,6 +97,8 @@ This slice defines a first `GEPA`-inspired search contract for `Cautilus`:
 - when JSON is provided directly over CLI or stdin, materialize the raw input and the normalized canonical packet under the active run before running readiness checks or search
 - keep telemetry truth machine-readable
   Do not scrape human-oriented stderr summaries into product-owned token or cost fields
+- keep the shipped runtime singular
+  If a richer Node harness exists while parity work is underway, it must remain clearly experimental and may not become the only place where product semantics live
 
 ## Reference Mapping
 
@@ -229,8 +236,10 @@ Resolution order is:
 Current runtime note:
 
 - `generationLimit`, `populationLimit`, `mergeEnabled`, `threeParentPolicy`, and declared selection caps are preserved in the canonical packet for replay and future expansion
+- the shipped Go runner now enforces finalist eligibility against declared selection `constraintCaps`
+- the shipped Go runner now executes final review and final full-gate checkpoints when the adapter exposes those surfaces
 - the current runner follows the best current frontier candidate and evaluates one reflective mutation per generation until `generationLimit` or total candidate count is exhausted
-- the current runner does not yet synthesize merge candidates or reject finalists purely because a declared selection cap was breached
+- the current runner does not yet synthesize merge candidates or run frontier-promotion review checkpoints before final selection
 
 ## Search Readiness
 

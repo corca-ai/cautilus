@@ -170,6 +170,8 @@ default_schema_file: fixtures/review/review-verdict.schema.json
 ## Dogfooding Pattern
 
 To evaluate a skill, adapter, or workflow with `Cautilus` itself, add a named adapter instead of overloading the repo's default adapter.
+Named adapters are not second-class.
+When one named self-dogfood surface becomes an official on-demand proof path, give it a repo-owned wrapper command and document that wrapper as the canonical entrypoint for operators.
 
 Example names:
 

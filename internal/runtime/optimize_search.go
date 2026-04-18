@@ -466,23 +466,23 @@ func RunOptimizeSearch(packet map[string]any, inputFile string, now time.Time) m
 		reasonCodes = append(reasonCodes, "missing_textual_feedback")
 		missingEvidence = append(missingEvidence, "compareArtifact reasons or humanReviewFindings")
 	}
-		if len(reasonCodes) > 0 {
-			return map[string]any{
-				"schemaVersion":           contracts.OptimizeSearchResultSchema,
-				"generatedAt":             now.UTC().Format(time.RFC3339Nano),
-				"status":                  "blocked",
-				"inputFile":               inputFile,
-				"repoRoot":                packet["repoRoot"],
-				"optimizeInputFile":       packet["optimizeInputFile"],
-				"searchConfig":            packet["searchConfig"],
-				"searchConfigSources":     firstNonNil(packet["searchConfigSources"], map[string]any{}),
-				"experimentContext":       optimizeSearchExperimentContext(packet),
-				"telemetryCompleteness":   optimizeSearchTelemetryCompleteness(nil, nil),
-				"candidateRegistry":       []any{},
-				"generationSummaries":     []any{},
-				"heldOutEvaluationMatrix": []any{},
-				"pareto": map[string]any{
-					"frontierCandidateIds":        []any{},
+	if len(reasonCodes) > 0 {
+		return map[string]any{
+			"schemaVersion":           contracts.OptimizeSearchResultSchema,
+			"generatedAt":             now.UTC().Format(time.RFC3339Nano),
+			"status":                  "blocked",
+			"inputFile":               inputFile,
+			"repoRoot":                packet["repoRoot"],
+			"optimizeInputFile":       packet["optimizeInputFile"],
+			"searchConfig":            packet["searchConfig"],
+			"searchConfigSources":     firstNonNil(packet["searchConfigSources"], map[string]any{}),
+			"experimentContext":       optimizeSearchExperimentContext(packet),
+			"telemetryCompleteness":   optimizeSearchTelemetryCompleteness(nil, nil),
+			"candidateRegistry":       []any{},
+			"generationSummaries":     []any{},
+			"heldOutEvaluationMatrix": []any{},
+			"pareto": map[string]any{
+				"frontierCandidateIds":        []any{},
 				"perScenarioBestCandidateIds": []any{},
 			},
 			"checkpointOutcomes": map[string]any{
@@ -568,10 +568,8 @@ func RunOptimizeSearch(packet map[string]any, inputFile string, now time.Time) m
 	candidateIDs := optimizeSearchCandidateIDs(candidates)
 	frontierIDs := optimizeSearchFrontierCandidateIDs(matrix, candidateIDs, scenarioIDs)
 	rankedFrontierIDs := optimizeSearchRankCandidateIDs(frontierIDs, matrix, candidates, scenarioIDs)
-	selectedCandidateID := "seed"
-	if len(rankedFrontierIDs) > 0 {
-		selectedCandidateID = rankedFrontierIDs[0]
-	}
+	artifactRoot := filepath.Dir(firstNonEmpty(inputFile, stringOrEmpty(packet["optimizeInputFile"])))
+	selectionOutcome := optimizeSearchSelectionOutcome(packet, artifactRoot, candidates, rankedFrontierIDs)
 	perScenarioBest := make([]any, 0, len(scenarioIDs))
 	for _, scenarioID := range scenarioIDs {
 		bestIDs := []any{}
@@ -593,16 +591,58 @@ func RunOptimizeSearch(packet map[string]any, inputFile string, now time.Time) m
 		})
 	}
 	selectedCandidate := candidates[0]
+	selectedCandidateID := "seed"
+	if selectionOutcome != nil {
+		selectedCandidateID = firstNonEmpty(stringOrEmpty(selectionOutcome["selectedCandidateId"]), selectedCandidateID)
+	} else if len(rankedFrontierIDs) > 0 {
+		selectedCandidateID = rankedFrontierIDs[0]
+	}
 	for _, candidate := range candidates {
 		if stringOrEmpty(candidate["id"]) == selectedCandidateID {
 			selectedCandidate = candidate
 			break
 		}
 	}
+	status := "completed"
+	proposalBridge := map[string]any{
+		"optimizeInputFile":   packet["optimizeInputFile"],
+		"selectedCandidateId": selectedCandidateID,
+		"selectedTargetFile":  selectedCandidate["targetFile"],
+	}
+	reasonCodes = []any{}
+	missingEvidence = []any{}
+	suggestedNextSteps := []any{}
+	if selectionOutcome != nil && stringOrEmpty(selectionOutcome["status"]) == "blocked" {
+		status = "blocked"
+		proposalBridge = map[string]any{
+			"optimizeInputFile": packet["optimizeInputFile"],
+		}
+		reasonCodes = arrayOrEmpty(selectionOutcome["reasonCodes"])
+		suggestedNextSteps = []any{
+			"inspect checkpoint outcomes for the rejected frontier candidates",
+			"tighten the prompt or search brief to satisfy review and full-gate constraints",
+			"rerun optimize search after updating the bounded evidence or selection policy",
+		}
+	}
+	checkpointOutcomes := map[string]any{
+		"review":   []any{},
+		"fullGate": []any{},
+	}
+	selectionTelemetry := map[string]any{
+		"rankedFrontierCandidateIds": stringSliceToAny(rankedFrontierIDs),
+	}
+	reviewCheckpointCount := 0
+	fullGateCheckpointCount := 0
+	if selectionOutcome != nil {
+		checkpointOutcomes = asMap(selectionOutcome["checkpointOutcomes"])
+		selectionTelemetry = asMap(selectionOutcome["selectionTelemetry"])
+		reviewCheckpointCount = optimizeSearchCountExecutedCheckpoints(arrayOrEmpty(checkpointOutcomes["review"]))
+		fullGateCheckpointCount = optimizeSearchCountExecutedCheckpoints(arrayOrEmpty(checkpointOutcomes["fullGate"]))
+	}
 	return map[string]any{
 		"schemaVersion":           contracts.OptimizeSearchResultSchema,
 		"generatedAt":             now.UTC().Format(time.RFC3339Nano),
-		"status":                  "completed",
+		"status":                  status,
 		"inputFile":               inputFile,
 		"repoRoot":                packet["repoRoot"],
 		"optimizeInputFile":       packet["optimizeInputFile"],
@@ -618,27 +658,428 @@ func RunOptimizeSearch(packet map[string]any, inputFile string, now time.Time) m
 			"frontierCandidateIds":        stringSliceToAny(frontierIDs),
 			"perScenarioBestCandidateIds": perScenarioBest,
 		},
-		"checkpointOutcomes": map[string]any{
-			"review":   []any{},
-			"fullGate": []any{},
-		},
+		"checkpointOutcomes": checkpointOutcomes,
 		"searchTelemetry": map[string]any{
 			"candidateCount":          len(candidates),
 			"generationCount":         len(generationSummaries),
 			"mutationInvocationCount": mutationInvocations,
 			"heldOutEvaluationCount":  len(candidates),
-			"reviewCheckpointCount":   0,
+			"reviewCheckpointCount":   reviewCheckpointCount,
+			"fullGateCheckpointCount": fullGateCheckpointCount,
 			"stopReason":              stopReason,
 		},
-		"proposalBridge": map[string]any{
-			"optimizeInputFile":   packet["optimizeInputFile"],
-			"selectedCandidateId": selectedCandidateID,
-			"selectedTargetFile":  selectedCandidate["targetFile"],
-		},
-		"selectionTelemetry": map[string]any{
-			"rankedFrontierCandidateIds": stringSliceToAny(rankedFrontierIDs),
-		},
+		"proposalBridge":     proposalBridge,
+		"selectionTelemetry": selectionTelemetry,
+		"reasonCodes":        reasonCodes,
+		"missingEvidence":    missingEvidence,
+		"suggestedNextSteps": suggestedNextSteps,
 	}
+}
+
+func optimizeSearchSelectionOutcome(packet map[string]any, artifactRoot string, candidates []map[string]any, rankedFrontierIDs []string) map[string]any {
+	checkpointOutcomes := map[string]any{
+		"review":   []any{},
+		"fullGate": []any{},
+	}
+	rejectedFinalistCandidateIDs := []any{}
+	selectionConstraintIneligibleCandidateIDs := []any{}
+	rejectionReasons := map[string]any{}
+	for _, candidateID := range rankedFrontierIDs {
+		candidate := optimizeSearchCandidateByID(candidates, candidateID)
+		if candidate == nil {
+			continue
+		}
+		constraintReasons := optimizeSearchCandidateConstraintRejectionReasons(packet, candidate)
+		if len(constraintReasons) > 0 {
+			rejectedFinalistCandidateIDs = append(rejectedFinalistCandidateIDs, candidateID)
+			selectionConstraintIneligibleCandidateIDs = append(selectionConstraintIneligibleCandidateIDs, candidateID)
+			rejectionReasons[candidateID] = stringSliceToAny(constraintReasons)
+			continue
+		}
+		checkpointOutcome := optimizeSearchEvaluateCandidateCheckpoints(packet, artifactRoot, candidate)
+		if executed, _ := checkpointOutcome["reviewExecuted"].(bool); executed {
+			checkpointOutcomes["review"] = append(arrayOrEmpty(checkpointOutcomes["review"]), checkpointOutcome["review"])
+		}
+		if executed, _ := checkpointOutcome["fullGateExecuted"].(bool); executed {
+			checkpointOutcomes["fullGate"] = append(arrayOrEmpty(checkpointOutcomes["fullGate"]), checkpointOutcome["fullGate"])
+		}
+		if admissible, _ := checkpointOutcome["admissible"].(bool); admissible {
+			return map[string]any{
+				"selectedCandidateId": candidateID,
+				"checkpointOutcomes":  checkpointOutcomes,
+				"selectionTelemetry": map[string]any{
+					"rankedFrontierCandidateIds":                stringSliceToAny(rankedFrontierIDs),
+					"rejectedFinalistCandidateIds":              rejectedFinalistCandidateIDs,
+					"selectionConstraintIneligibleCandidateIds": selectionConstraintIneligibleCandidateIDs,
+					"rejectionReasons":                          rejectionReasons,
+				},
+				"status":      "completed",
+				"reasonCodes": []any{},
+			}
+		}
+		rejectedFinalistCandidateIDs = append(rejectedFinalistCandidateIDs, candidateID)
+		rejectionReasons[candidateID] = firstNonNil(checkpointOutcome["rejectionReasons"], []any{})
+	}
+	reasonCodes := []any{"no_checkpoint_admissible_candidate"}
+	if len(rankedFrontierIDs) > 0 && len(selectionConstraintIneligibleCandidateIDs) == len(rankedFrontierIDs) {
+		reasonCodes = []any{"no_selection_policy_eligible_candidate"}
+	}
+	return map[string]any{
+		"selectedCandidateId": nil,
+		"checkpointOutcomes":  checkpointOutcomes,
+		"selectionTelemetry": map[string]any{
+			"rankedFrontierCandidateIds":                stringSliceToAny(rankedFrontierIDs),
+			"rejectedFinalistCandidateIds":              rejectedFinalistCandidateIDs,
+			"selectionConstraintIneligibleCandidateIds": selectionConstraintIneligibleCandidateIDs,
+			"rejectionReasons":                          rejectionReasons,
+		},
+		"status":      "blocked",
+		"reasonCodes": reasonCodes,
+	}
+}
+
+func optimizeSearchCandidateByID(candidates []map[string]any, candidateID string) map[string]any {
+	for _, candidate := range candidates {
+		if stringOrEmpty(candidate["id"]) == candidateID {
+			return candidate
+		}
+	}
+	return nil
+}
+
+func optimizeSearchCandidateConstraintRejectionReasons(packet map[string]any, candidate map[string]any) []string {
+	caps := asMap(asMap(asMap(packet["searchConfig"])["selectionPolicy"])["constraintCaps"])
+	reasons := []string{}
+	if maxCostUsd, ok := toFloat(caps["maxCostUsd"]); ok {
+		if totalCostUsd, ok := toFloat(asMap(candidate["telemetry"])["totalCostUsd"]); ok && totalCostUsd > maxCostUsd {
+			reasons = append(reasons, "selection_constraint_max_cost_exceeded")
+		}
+	}
+	if maxDurationMs, ok := toFloat(caps["maxDurationMs"]); ok {
+		if totalDurationMs, ok := toFloat(asMap(candidate["telemetry"])["totalDurationMs"]); ok && totalDurationMs > maxDurationMs {
+			reasons = append(reasons, "selection_constraint_max_duration_exceeded")
+		}
+	}
+	return reasons
+}
+
+func optimizeSearchEvaluateCandidateCheckpoints(packet map[string]any, artifactRoot string, candidate map[string]any) map[string]any {
+	review := optimizeSearchRunReviewCheckpoint(packet, artifactRoot, candidate)
+	reviewExecuted := stringOrEmpty(review["status"]) != "skipped"
+	reviewAdmissible, _ := review["admissible"].(bool)
+	if !reviewAdmissible {
+		return map[string]any{
+			"admissible":       false,
+			"rejectionReasons": firstNonNil(review["rejectionReasons"], []any{}),
+			"review":           review,
+			"reviewExecuted":   reviewExecuted,
+			"fullGate":         optimizeSearchSkipCheckpointOutcome("full_gate", stringOrEmpty(candidate["id"]), "review_rejected"),
+			"fullGateExecuted": false,
+		}
+	}
+	fullGate := optimizeSearchRunFullGateCheckpoint(packet, artifactRoot, candidate)
+	fullGateExecuted := stringOrEmpty(fullGate["status"]) != "skipped"
+	fullGateAdmissible, _ := fullGate["admissible"].(bool)
+	return map[string]any{
+		"admissible":       fullGateAdmissible,
+		"rejectionReasons": append(arrayOrEmpty(review["rejectionReasons"]), arrayOrEmpty(fullGate["rejectionReasons"])...),
+		"review":           review,
+		"reviewExecuted":   reviewExecuted,
+		"fullGate":         fullGate,
+		"fullGateExecuted": fullGateExecuted,
+	}
+}
+
+func optimizeSearchRunReviewCheckpoint(packet map[string]any, artifactRoot string, candidate map[string]any) map[string]any {
+	adapterPayload, err := optimizeSearchLoadCheckpointAdapter(packet)
+	if err != nil {
+		return optimizeSearchSkipCheckpointOutcome("review", stringOrEmpty(candidate["id"]), "adapter_not_found")
+	}
+	if !adapterPayload.Found || !adapterPayload.Valid || len(stringArrayOrEmpty(adapterPayload.Data["executor_variants"])) == 0 {
+		reason := "surface_unavailable"
+		if !adapterPayload.Found {
+			reason = "adapter_not_found"
+		}
+		return optimizeSearchSkipCheckpointOutcome("review", stringOrEmpty(candidate["id"]), reason)
+	}
+	reportFile := optimizeSearchCandidateReportFile(packet, candidate)
+	if reportFile == "" || !fileExists(reportFile) {
+		return optimizeSearchSkipCheckpointOutcome("review", stringOrEmpty(candidate["id"]), "report_missing")
+	}
+	outputDir := filepath.Join(artifactRoot, "optimize-search-checkpoints", stringOrEmpty(candidate["id"]), "review")
+	if err := os.MkdirAll(outputDir, 0o755); err != nil {
+		return map[string]any{
+			"type":             "review",
+			"candidateId":      candidate["id"],
+			"status":           "failed",
+			"admissible":       false,
+			"rejectionReasons": []any{"review:output_dir_failed"},
+		}
+	}
+	args := []string{
+		"review", "variants",
+		"--repo-root", stringOrEmpty(packet["repoRoot"]),
+		"--workspace", optimizeSearchCandidateWorkspace(packet, candidate),
+		"--report-file", reportFile,
+		"--output-dir", outputDir,
+		"--quiet",
+	}
+	args = append(args, optimizeSearchAdapterArgs(packet)...)
+	command := exec.Command(optimizeSearchBinaryPath(), args...)
+	command.Env = optimizeSearchCommandEnv()
+	output, runErr := command.CombinedOutput()
+	summaryFile := filepath.Join(outputDir, "review-summary.json")
+	if !fileExists(summaryFile) {
+		return map[string]any{
+			"type":             "review",
+			"candidateId":      candidate["id"],
+			"status":           "failed",
+			"admissible":       false,
+			"rejectionReasons": []any{"review:summary_missing"},
+			"outputDir":        outputDir,
+			"summaryFile":      summaryFile,
+			"stdout":           string(output),
+			"stderr":           string(output),
+		}
+	}
+	summary, err := readJSONFile(summaryFile)
+	if err != nil {
+		return map[string]any{
+			"type":             "review",
+			"candidateId":      candidate["id"],
+			"status":           "failed",
+			"admissible":       false,
+			"rejectionReasons": []any{"review:summary_invalid"},
+			"outputDir":        outputDir,
+			"summaryFile":      summaryFile,
+		}
+	}
+	rejectionReasons := optimizeSearchReviewRejectionReasons(summary)
+	variants := []any{}
+	for _, rawVariant := range arrayOrEmpty(summary["variants"]) {
+		variant := asMap(rawVariant)
+		variants = append(variants, map[string]any{
+			"id":            firstNonNil(variant["id"], nil),
+			"status":        firstNonNil(variant["status"], nil),
+			"verdict":       firstNonNil(asMap(variant["output"])["verdict"], nil),
+			"findingsCount": len(arrayOrEmpty(asMap(variant["output"])["findings"])),
+			"outputFile":    firstNonNil(variant["outputFile"], nil),
+		})
+	}
+	return map[string]any{
+		"type":             "review",
+		"candidateId":      candidate["id"],
+		"status":           ternaryStatus(runErr == nil, "passed", "failed"),
+		"admissible":       len(rejectionReasons) == 0,
+		"rejectionReasons": stringSliceToAny(rejectionReasons),
+		"outputDir":        outputDir,
+		"summaryFile":      summaryFile,
+		"telemetry":        firstNonNil(summary["telemetry"], nil),
+		"variants":         variants,
+	}
+}
+
+func optimizeSearchRunFullGateCheckpoint(packet map[string]any, artifactRoot string, candidate map[string]any) map[string]any {
+	if stringOrEmpty(asMap(packet["searchConfig"])["fullGateCheckpointPolicy"]) != "final_only" {
+		return optimizeSearchSkipCheckpointOutcome("full_gate", stringOrEmpty(candidate["id"]), "policy_disabled")
+	}
+	adapterPayload, err := optimizeSearchLoadCheckpointAdapter(packet)
+	if err != nil {
+		return optimizeSearchSkipCheckpointOutcome("full_gate", stringOrEmpty(candidate["id"]), "adapter_not_found")
+	}
+	if !adapterPayload.Found || !adapterPayload.Valid || len(stringArrayOrEmpty(adapterPayload.Data["full_gate_command_templates"])) == 0 {
+		reason := "surface_unavailable"
+		if !adapterPayload.Found {
+			reason = "adapter_not_found"
+		}
+		return optimizeSearchSkipCheckpointOutcome("full_gate", stringOrEmpty(candidate["id"]), reason)
+	}
+	outputDir := filepath.Join(artifactRoot, "optimize-search-checkpoints", stringOrEmpty(candidate["id"]), "full-gate")
+	if err := os.MkdirAll(outputDir, 0o755); err != nil {
+		return map[string]any{
+			"type":             "full_gate",
+			"candidateId":      candidate["id"],
+			"status":           "failed",
+			"admissible":       false,
+			"rejectionReasons": []any{"full_gate:output_dir_failed"},
+		}
+	}
+	args := []string{
+		"mode", "evaluate",
+		"--repo-root", stringOrEmpty(packet["repoRoot"]),
+		"--candidate-repo", optimizeSearchCandidateWorkspace(packet, candidate),
+		"--mode", "full_gate",
+		"--intent", firstNonEmpty(stringOrEmpty(asMap(packet["evaluationContext"])["intent"]), stringOrEmpty(asMap(asMap(packet["optimizeInput"])["report"])["intent"]), "Prompt candidate evaluation"),
+		"--baseline-ref", firstNonEmpty(stringOrEmpty(asMap(packet["evaluationContext"])["baselineRef"]), stringOrEmpty(asMap(asMap(packet["optimizeInput"])["report"])["baseline"]), "HEAD"),
+		"--output-dir", outputDir,
+		"--quiet",
+	}
+	for _, pair := range [][2]string{
+		{"--profile", stringOrEmpty(asMap(packet["evaluationContext"])["profile"])},
+		{"--split", stringOrEmpty(asMap(packet["evaluationContext"])["split"])},
+	} {
+		if strings.TrimSpace(pair[1]) != "" {
+			args = append(args, pair[0], pair[1])
+		}
+	}
+	args = append(args, optimizeSearchAdapterArgs(packet)...)
+	command := exec.Command(optimizeSearchBinaryPath(), args...)
+	command.Env = optimizeSearchCommandEnv()
+	output, runErr := command.CombinedOutput()
+	reportFile := filepath.Join(outputDir, "report.json")
+	if !fileExists(reportFile) {
+		return map[string]any{
+			"type":             "full_gate",
+			"candidateId":      candidate["id"],
+			"status":           "failed",
+			"admissible":       false,
+			"rejectionReasons": []any{"full_gate:report_missing"},
+			"outputDir":        outputDir,
+			"reportFile":       reportFile,
+			"stdout":           string(output),
+			"stderr":           string(output),
+		}
+	}
+	report, err := readJSONFile(reportFile)
+	if err != nil {
+		return map[string]any{
+			"type":             "full_gate",
+			"candidateId":      candidate["id"],
+			"status":           "failed",
+			"admissible":       false,
+			"rejectionReasons": []any{"full_gate:report_invalid"},
+			"outputDir":        outputDir,
+			"reportFile":       reportFile,
+		}
+	}
+	recommendation := stringOrEmpty(report["recommendation"])
+	admissible := recommendation == "accept-now"
+	rejectionReasons := []any{}
+	if !admissible {
+		rejectionReasons = []any{"full_gate:" + firstNonEmpty(recommendation, "reject")}
+	}
+	return map[string]any{
+		"type":             "full_gate",
+		"candidateId":      candidate["id"],
+		"status":           ternaryStatus(runErr == nil, "passed", "failed"),
+		"admissible":       admissible,
+		"rejectionReasons": rejectionReasons,
+		"outputDir":        outputDir,
+		"reportFile":       reportFile,
+		"recommendation":   firstNonNil(report["recommendation"], nil),
+	}
+}
+
+func optimizeSearchLoadCheckpointAdapter(packet map[string]any) (*AdapterPayload, error) {
+	evaluationContext := asMap(packet["evaluationContext"])
+	return LoadAdapter(
+		stringOrEmpty(packet["repoRoot"]),
+		optimizeSearchOptionalStringPointer(evaluationContext["adapter"]),
+		optimizeSearchOptionalStringPointer(evaluationContext["adapterName"]),
+	)
+}
+
+func optimizeSearchAdapterArgs(packet map[string]any) []string {
+	evaluationContext := asMap(packet["evaluationContext"])
+	args := []string{}
+	if adapter := stringOrEmpty(evaluationContext["adapter"]); adapter != "" {
+		args = append(args, "--adapter", adapter)
+	}
+	if adapterName := stringOrEmpty(evaluationContext["adapterName"]); adapterName != "" {
+		args = append(args, "--adapter-name", adapterName)
+	}
+	return args
+}
+
+func optimizeSearchCandidateWorkspace(packet map[string]any, candidate map[string]any) string {
+	if worktreeRoot := stringOrEmpty(asMap(candidate["evaluationArtifacts"])["worktreeRoot"]); worktreeRoot != "" {
+		return worktreeRoot
+	}
+	return stringOrEmpty(packet["repoRoot"])
+}
+
+func optimizeSearchCandidateReportFile(packet map[string]any, candidate map[string]any) string {
+	if reportFile := stringOrEmpty(asMap(candidate["evaluationArtifacts"])["reportFile"]); reportFile != "" {
+		return reportFile
+	}
+	if reportFile := stringOrEmpty(asMap(packet["evaluationFiles"])["reportFile"]); reportFile != "" {
+		return reportFile
+	}
+	return stringOrEmpty(asMap(asMap(packet["optimizeInput"])["reportFile"])["path"])
+}
+
+func optimizeSearchSkipCheckpointOutcome(checkpointType string, candidateID string, reason string) map[string]any {
+	return map[string]any{
+		"type":             checkpointType,
+		"candidateId":      candidateID,
+		"status":           "skipped",
+		"admissible":       true,
+		"rejectionReasons": []any{},
+		"skipReason":       reason,
+	}
+}
+
+func optimizeSearchCommandEnv() []string {
+	env := []string{}
+	for _, entry := range os.Environ() {
+		if strings.HasPrefix(entry, "CAUTILUS_RUN_DIR=") {
+			continue
+		}
+		env = append(env, entry)
+	}
+	return append(env, "CAUTILUS_RUN_DIR=")
+}
+
+func optimizeSearchReviewRejectionReasons(summary map[string]any) []string {
+	reasons := []string{}
+	for _, rawVariant := range arrayOrEmpty(summary["variants"]) {
+		variant := asMap(rawVariant)
+		status := optimizeSearchReviewStatusFromVariant(variant)
+		if status == "pass" {
+			continue
+		}
+		reasons = append(reasons, fmt.Sprintf("review:%s:%s", firstNonEmpty(stringOrEmpty(variant["id"]), "variant"), status))
+	}
+	return reasons
+}
+
+func optimizeSearchReviewStatusFromVariant(variant map[string]any) string {
+	if stringOrEmpty(variant["status"]) != "passed" {
+		return "blocker"
+	}
+	verdict := stringOrEmpty(asMap(variant["output"])["verdict"])
+	switch verdict {
+	case "pass", "concern", "blocker":
+		return verdict
+	default:
+		return "concern"
+	}
+}
+
+func optimizeSearchCountExecutedCheckpoints(items []any) int {
+	count := 0
+	for _, raw := range items {
+		status := stringOrEmpty(asMap(raw)["status"])
+		if status != "" && status != "skipped" {
+			count++
+		}
+	}
+	return count
+}
+
+func ternaryStatus(condition bool, whenTrue string, whenFalse string) string {
+	if condition {
+		return whenTrue
+	}
+	return whenFalse
+}
+
+func optimizeSearchOptionalStringPointer(value any) *string {
+	text := strings.TrimSpace(stringOrEmpty(value))
+	if text == "" {
+		return nil
+	}
+	return &text
 }
 
 func GenerateOptimizeProposalFromSearch(searchResult map[string]any, searchResultFile string, optimizeInput map[string]any, optimizeInputFile string, now time.Time) (map[string]any, error) {
@@ -871,8 +1312,14 @@ func optimizeSearchTelemetryCompleteness(matrix []any, candidates []map[string]a
 		return telemetryCompletenessStatus(len(candidates), count)
 	}
 	return map[string]any{
-		"heldOutDurationMs":            heldOutValues(func(entry map[string]any) bool { _, ok := toFloat(firstNonNil(asMap(entry["telemetry"])["durationMs"], asMap(entry["telemetry"])["duration_ms"])); return ok }),
-		"heldOutTotalTokens":           heldOutValues(func(entry map[string]any) bool { _, ok := toFloat(asMap(entry["telemetry"])["total_tokens"]); return ok }),
+		"heldOutDurationMs": heldOutValues(func(entry map[string]any) bool {
+			_, ok := toFloat(firstNonNil(asMap(entry["telemetry"])["durationMs"], asMap(entry["telemetry"])["duration_ms"]))
+			return ok
+		}),
+		"heldOutTotalTokens": heldOutValues(func(entry map[string]any) bool {
+			_, ok := toFloat(asMap(entry["telemetry"])["total_tokens"])
+			return ok
+		}),
 		"heldOutCostUsd":               heldOutValues(func(entry map[string]any) bool { _, ok := toFloat(asMap(entry["telemetry"])["cost_usd"]); return ok }),
 		"candidateAggregateDurationMs": candidateValues(func(telemetry map[string]any) bool { _, ok := toFloat(telemetry["totalDurationMs"]); return ok }),
 		"candidateAggregateTotalTokens": candidateValues(func(telemetry map[string]any) bool {

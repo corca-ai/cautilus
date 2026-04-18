@@ -20,12 +20,13 @@ Evidence:
 - checked-in root adapter: [.agents/cautilus-adapter.yaml](../../.agents/cautilus-adapter.yaml)
 - checked-in named adapter: [.agents/cautilus-adapters/self-dogfood.yaml](../../.agents/cautilus-adapters/self-dogfood.yaml)
 - explicit self-dogfood command: `npm run dogfood:self`
+- explicit instruction-surface self-dogfood command: `npm run dogfood:self:instruction-surface`
 - explicit tuning command: `npm run dogfood:self:experiments`
 
 What this means:
 
 - `cautilus` satisfies its own official adapter discovery contract.
-- The repo keeps cheap deterministic proof in the root adapter and one explicit LLM-backed self-dogfood path in a named adapter.
+- The repo keeps cheap deterministic proof in the root adapter and explicit LLM-backed self-dogfood paths in named adapters.
 - Stronger binary or bundled-skill claims stay in named experiment adapters instead of being smuggled into the canonical latest report.
 
 ## Chatbot Consumer

@@ -143,6 +143,9 @@ Every normalize command plus `cautilus skill evaluate`, `cautilus instruction-su
 ## Instruction surface
 
 ```bash
+# official on-demand self-dogfood wrapper for the repo's own instruction surface
+npm run dogfood:self:instruction-surface
+
 # run one checked-in instruction-surface suite through an adapter-owned runner
 cautilus instruction-surface test \
   --repo-root . \
@@ -153,6 +156,9 @@ cautilus instruction-surface evaluate \
   --input ./fixtures/instruction-surface/input.json \
   --output /tmp/cautilus-instruction-surface-summary.json
 ```
+
+The npm wrapper is the canonical maintainer-facing self-dogfood path for this repo.
+It keeps `instruction-surface` first-class without overloading the root unnamed adapter.
 
 ## Skill testing & evaluation
 

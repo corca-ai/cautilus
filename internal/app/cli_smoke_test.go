@@ -2341,39 +2341,39 @@ func TestCLIOptimizeSearchPrepareRunAndProposeFromSearch(t *testing.T) {
 		t.Fatalf("optimize search run failed: %s", stderr)
 	}
 	searchResult := readJSONObjectFile(t, searchResultPath)
-		if searchResult["schemaVersion"] != contracts.OptimizeSearchResultSchema || searchResult["status"] != "completed" {
-			t.Fatalf("unexpected search result: %#v", searchResult)
-		}
-		if searchResult["selectedCandidateId"] != "seed" {
-			t.Fatalf("unexpected selected candidate: %#v", searchResult["selectedCandidateId"])
-		}
-		searchConfigSources := searchResult["searchConfigSources"].(map[string]any)
-		if searchConfigSources["budget"] != "product_default" || searchConfigSources["preset"] != "product_default" {
-			t.Fatalf("unexpected search config sources: %#v", searchConfigSources)
-		}
-		experimentContext := searchResult["experimentContext"].(map[string]any)
-		if experimentContext["baselineRef"] != "origin/main" || experimentContext["intent"] != "Operator recovery guidance should stay legible." {
-			t.Fatalf("unexpected experiment context: %#v", experimentContext)
-		}
-		if experimentContext["searchBudget"] != "medium" {
-			t.Fatalf("unexpected search budget in experiment context: %#v", experimentContext)
-		}
-		mutationBackends := experimentContext["mutationBackends"].([]any)
-		if len(mutationBackends) != 2 {
-			t.Fatalf("unexpected mutation backends: %#v", mutationBackends)
-		}
-		telemetryCompleteness := searchResult["telemetryCompleteness"].(map[string]any)
-		if telemetryCompleteness["heldOutCostUsd"] != "complete" || telemetryCompleteness["candidateAggregateCostUsd"] != "complete" {
-			t.Fatalf("unexpected telemetry completeness: %#v", telemetryCompleteness)
-		}
-		if telemetryCompleteness["heldOutTotalTokens"] != "absent" {
-			t.Fatalf("unexpected token completeness: %#v", telemetryCompleteness)
-		}
+	if searchResult["schemaVersion"] != contracts.OptimizeSearchResultSchema || searchResult["status"] != "completed" {
+		t.Fatalf("unexpected search result: %#v", searchResult)
+	}
+	if searchResult["selectedCandidateId"] != "seed" {
+		t.Fatalf("unexpected selected candidate: %#v", searchResult["selectedCandidateId"])
+	}
+	searchConfigSources := searchResult["searchConfigSources"].(map[string]any)
+	if searchConfigSources["budget"] != "product_default" || searchConfigSources["preset"] != "product_default" {
+		t.Fatalf("unexpected search config sources: %#v", searchConfigSources)
+	}
+	experimentContext := searchResult["experimentContext"].(map[string]any)
+	if experimentContext["baselineRef"] != "origin/main" || experimentContext["intent"] != "Operator recovery guidance should stay legible." {
+		t.Fatalf("unexpected experiment context: %#v", experimentContext)
+	}
+	if experimentContext["searchBudget"] != "medium" {
+		t.Fatalf("unexpected search budget in experiment context: %#v", experimentContext)
+	}
+	mutationBackends := experimentContext["mutationBackends"].([]any)
+	if len(mutationBackends) != 2 {
+		t.Fatalf("unexpected mutation backends: %#v", mutationBackends)
+	}
+	telemetryCompleteness := searchResult["telemetryCompleteness"].(map[string]any)
+	if telemetryCompleteness["heldOutCostUsd"] != "complete" || telemetryCompleteness["candidateAggregateCostUsd"] != "complete" {
+		t.Fatalf("unexpected telemetry completeness: %#v", telemetryCompleteness)
+	}
+	if telemetryCompleteness["heldOutTotalTokens"] != "absent" {
+		t.Fatalf("unexpected token completeness: %#v", telemetryCompleteness)
+	}
 
-		_, stderr, exitCode = runCLI(t, root, "optimize", "propose", "--from-search", searchResultPath, "--output", proposalPath)
-		if exitCode != 0 {
-			t.Fatalf("optimize propose --from-search failed: %s", stderr)
-		}
+	_, stderr, exitCode = runCLI(t, root, "optimize", "propose", "--from-search", searchResultPath, "--output", proposalPath)
+	if exitCode != 0 {
+		t.Fatalf("optimize propose --from-search failed: %s", stderr)
+	}
 	proposal := readJSONObjectFile(t, proposalPath)
 	if proposal["schemaVersion"] != contracts.OptimizeProposalSchema {
 		t.Fatalf("unexpected proposal schema: %#v", proposal["schemaVersion"])
@@ -2790,6 +2790,266 @@ func TestCLIOptimizeSearchRunConsumesMultipleGenerations(t *testing.T) {
 	}
 	if !strings.Contains(string(payload), "escalation ladder") {
 		t.Fatalf("expected selected candidate prompt to include escalation ladder, got %q", string(payload))
+	}
+}
+
+func TestCLIOptimizeSearchRunFallsBackWhenFinalFullGateRejectsLeader(t *testing.T) {
+	root := t.TempDir()
+	artifactRoot := t.TempDir()
+	targetPath := filepath.Join(root, "prompt.md")
+	heldOutResultsPath := filepath.Join(root, "held-out-results.json")
+	optimizeInputPath := filepath.Join(root, "optimize-input.json")
+	searchInputPath := filepath.Join(root, "optimize-search-input.json")
+	searchResultPath := filepath.Join(artifactRoot, "optimize-search-result.json")
+
+	if err := os.MkdirAll(filepath.Join(root, ".agents"), 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.WriteFile(targetPath, []byte("Keep recovery instructions explicit.\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	writeExecutableFile(t, root, "evaluate.sh", strings.Join([]string{
+		"#!/bin/sh",
+		"output=\"$1\"",
+		"recovery_score=70",
+		"followup_score=85",
+		"if grep -q \"detailed recovery checklist\" prompt.md; then",
+		"  recovery_score=95",
+		"  followup_score=60",
+		"fi",
+		"cat >\"$output\" <<EOF",
+		"{",
+		"  \"schemaVersion\": \"cautilus.scenario_results.v1\",",
+		"  \"mode\": \"held_out\",",
+		"  \"results\": [",
+		"    {",
+		"      \"scenarioId\": \"operator-recovery\",",
+		"      \"status\": \"passed\",",
+		"      \"overallScore\": $recovery_score,",
+		"      \"telemetry\": {",
+		"        \"cost_usd\": 0.05,",
+		"        \"durationMs\": 1300",
+		"      }",
+		"    },",
+		"    {",
+		"      \"scenarioId\": \"operator-follow-up\",",
+		"      \"status\": \"passed\",",
+		"      \"overallScore\": $followup_score,",
+		"      \"telemetry\": {",
+		"        \"cost_usd\": 0.04,",
+		"        \"durationMs\": 1250",
+		"      }",
+		"    }",
+		"  ]",
+		"}",
+		"EOF",
+		"",
+	}, "\n"))
+	writeExecutableFile(t, root, "full-gate.sh", strings.Join([]string{
+		"#!/bin/sh",
+		"output=\"$1\"",
+		"status=\"passed\"",
+		"score=92",
+		"if grep -q \"detailed recovery checklist\" prompt.md; then",
+		"  status=\"failed\"",
+		"  score=55",
+		"fi",
+		"cat >\"$output\" <<EOF",
+		"{",
+		"  \"schemaVersion\": \"cautilus.scenario_results.v1\",",
+		"  \"mode\": \"full_gate\",",
+		"  \"results\": [",
+		"    {",
+		"      \"scenarioId\": \"operator-release-gate\",",
+		"      \"status\": \"$status\",",
+		"      \"overallScore\": $score",
+		"    }",
+		"  ]",
+		"}",
+		"EOF",
+		"",
+	}, "\n"))
+	writeExecutableFile(t, root, "codex", strings.Join([]string{
+		"#!/bin/sh",
+		"out=\"\"",
+		"while [ \"$#\" -gt 0 ]; do",
+		"  if [ \"$1\" = \"-o\" ]; then",
+		"    out=\"$2\"",
+		"    shift 2",
+		"    continue",
+		"  fi",
+		"  shift",
+		"done",
+		"cat >/dev/null",
+		fmt.Sprintf("printf '%%s\\n' '%s' > \"$out\"", toJSONString(map[string]any{
+			"promptMarkdown":       "Keep recovery instructions explicit with a detailed recovery checklist.\n",
+			"rationaleSummary":     "Improve the recovery checklist even if the release-gate surface may stay strict.",
+			"expectedImprovements": []string{"operator-recovery"},
+			"preservedStrengths":   []string{"keeps the original concise framing"},
+			"riskNotes":            []string{"final full gate still needs to confirm the checklist stays admissible"},
+		})),
+		"",
+	}, "\n"))
+	if err := os.WriteFile(filepath.Join(root, ".agents", "cautilus-adapter.yaml"), []byte(strings.Join([]string{
+		"version: 1",
+		"repo: temp-optimize-search",
+		"evaluation_surfaces:",
+		"  - prompt behavior",
+		"baseline_options:",
+		"  - baseline git ref in the same repo via {baseline_ref}",
+		"required_prerequisites: []",
+		"held_out_command_templates:",
+		"  - sh evaluate.sh {scenario_results_file}",
+		"full_gate_command_templates:",
+		"  - sh full-gate.sh {scenario_results_file}",
+		"comparison_questions:",
+		"  - Did the held-out score improve?",
+		"human_review_prompts:",
+		"  - id: operator",
+		"    prompt: Where would the prompt still leave the operator stuck?",
+		"",
+	}, "\n")), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	writeJSONFile(t, heldOutResultsPath, map[string]any{
+		"schemaVersion": contracts.ScenarioResultsSchema,
+		"mode":          "held_out",
+		"results": []map[string]any{
+			{
+				"scenarioId":   "operator-recovery",
+				"status":       "passed",
+				"overallScore": 70,
+				"telemetry": map[string]any{
+					"cost_usd":   0.02,
+					"durationMs": 1200,
+				},
+			},
+			{
+				"scenarioId":   "operator-follow-up",
+				"status":       "passed",
+				"overallScore": 85,
+				"telemetry": map[string]any{
+					"cost_usd":   0.02,
+					"durationMs": 1200,
+				},
+			},
+		},
+	})
+	writeJSONFile(t, optimizeInputPath, map[string]any{
+		"schemaVersion":      contracts.OptimizeInputsSchema,
+		"generatedAt":        "2026-04-13T09:58:00.000Z",
+		"repoRoot":           root,
+		"optimizationTarget": "prompt",
+		"intentProfile": map[string]any{
+			"schemaVersion":   contracts.BehaviorIntentSchema,
+			"intentId":        "intent-operator-recovery-guidance",
+			"summary":         "Operator guidance should stay legible under recovery pressure.",
+			"behaviorSurface": cautilusruntime.BehaviorSurfaces["OPERATOR_BEHAVIOR"],
+		},
+		"optimizer": map[string]any{
+			"kind":   "reflection",
+			"budget": "light",
+			"plan": map[string]any{
+				"evidenceLimit":        3,
+				"suggestedChangeLimit": 2,
+				"reviewVariantLimit":   1,
+				"historySignalLimit":   1,
+			},
+		},
+		"targetFile": map[string]any{
+			"path":   targetPath,
+			"exists": true,
+		},
+		"reportFile": filepath.Join(root, "report.json"),
+		"report": map[string]any{
+			"schemaVersion": contracts.ReportPacketSchema,
+			"generatedAt":   "2026-04-13T09:57:00.000Z",
+			"candidate":     root,
+			"baseline":      "HEAD",
+			"intent":        "Operator guidance should stay legible under recovery pressure.",
+			"intentProfile": map[string]any{
+				"schemaVersion":   contracts.BehaviorIntentSchema,
+				"intentId":        "intent-operator-recovery-guidance",
+				"summary":         "Operator guidance should stay legible under recovery pressure.",
+				"behaviorSurface": cautilusruntime.BehaviorSurfaces["OPERATOR_BEHAVIOR"],
+			},
+			"commands":            []any{},
+			"commandObservations": []any{},
+			"modesRun":            []any{},
+			"modeSummaries":       []any{},
+			"telemetry":           map[string]any{"modeCount": 0},
+			"improved":            []any{},
+			"regressed":           []any{"operator-recovery"},
+			"unchanged":           []any{},
+			"noisy":               []any{},
+			"humanReviewFindings": []any{
+				map[string]any{
+					"severity": "concern",
+					"message":  "operator-recovery still needs a detailed recovery checklist",
+				},
+			},
+			"recommendation": "defer",
+		},
+		"reviewSummaryFile": filepath.Join(root, "review-summary.json"),
+		"reviewSummary": map[string]any{
+			"variants": []any{},
+		},
+		"scenarioHistoryFile": filepath.Join(root, "history.json"),
+		"scenarioHistory": map[string]any{
+			"schemaVersion": contracts.ScenarioHistorySchema,
+			"scenarioStats": map[string]any{
+				"operator-recovery": map[string]any{
+					"recentTrainResults": []any{
+						map[string]any{
+							"status":       "failed",
+							"overallScore": 80,
+							"passRate":     0,
+						},
+					},
+				},
+			},
+		},
+		"objective": map[string]any{
+			"summary":     "Propose one bounded next revision without weakening held-out, comparison, or review discipline.",
+			"constraints": []any{"Prefer repairing explicit regressions over widening scope."},
+		},
+	})
+
+	runGit(t, root, "init")
+	runGit(t, root, "config", "user.email", "test@example.com")
+	runGit(t, root, "config", "user.name", "Cautilus Test")
+	runGit(t, root, "add", ".")
+	runGit(t, root, "commit", "-m", "initial")
+	t.Setenv("PATH", root+string(os.PathListSeparator)+os.Getenv("PATH"))
+
+	_, stderr, exitCode := runCLI(t, root, "optimize", "search", "prepare-input", "--optimize-input", optimizeInputPath, "--held-out-results-file", heldOutResultsPath, "--budget", "light", "--output", searchInputPath)
+	if exitCode != 0 {
+		t.Fatalf("optimize search prepare-input failed: %s", stderr)
+	}
+	_, stderr, exitCode = runCLI(t, root, "optimize", "search", "run", "--input", searchInputPath, "--output", searchResultPath)
+	if exitCode != 0 {
+		t.Fatalf("optimize search run failed: %s", stderr)
+	}
+	searchResult := readJSONObjectFile(t, searchResultPath)
+	if searchResult["status"] != "completed" {
+		t.Fatalf("unexpected search result status: %#v", searchResult)
+	}
+	if searchResult["selectedCandidateId"] != "seed" {
+		t.Fatalf("expected fallback to seed candidate, got %#v", searchResult["selectedCandidateId"])
+	}
+	searchTelemetry := searchResult["searchTelemetry"].(map[string]any)
+	if searchTelemetry["fullGateCheckpointCount"] != float64(2) {
+		t.Fatalf("expected two full-gate checkpoints, got %#v", searchTelemetry)
+	}
+	selectionTelemetry := searchResult["selectionTelemetry"].(map[string]any)
+	rejected := selectionTelemetry["rejectedFinalistCandidateIds"].([]any)
+	if len(rejected) == 0 || rejected[0] != "g1-1-codex-exec" {
+		t.Fatalf("expected generated candidate rejection, got %#v", rejected)
+	}
+	rejectionReasons := selectionTelemetry["rejectionReasons"].(map[string]any)
+	generatedReasons := rejectionReasons["g1-1-codex-exec"].([]any)
+	if len(generatedReasons) == 0 || !strings.HasPrefix(anyToString(generatedReasons[0]), "full_gate:") {
+		t.Fatalf("expected full-gate rejection reason, got %#v", generatedReasons)
 	}
 }
 EOF

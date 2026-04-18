@@ -17,7 +17,9 @@ govulncheck --version
 
 `hooks:install` is a once-per-clone setup step that points `core.hooksPath` at the checked-in `.githooks` directory, where `pre-push` runs `npm run verify`.
 
-Adapter bootstrap, readiness, and review-variant JSON helpers live inside the product-owned Node runtime.
+Adapter bootstrap, release/install helpers, and provider-facing command wrappers still live in Node where that keeps the product boundary thinner.
+Shipped behavior semantics for native product surfaces belong in Go under `internal/runtime/`.
+For `optimize search`, the source of truth is the Go runtime plus its Go tests, not the Node research harness.
 The standalone release surface does not depend on `python3`.
 
 ## Standing checks
@@ -108,6 +110,17 @@ The `latest/` bundle is the published snapshot meant to be checked into Git, so 
 
 The rendered HTML is written alongside the other published files at `artifacts/self-dogfood/latest/index.html` and is automatically refreshed every time `npm run dogfood:self` rewrites the latest bundle.
 
+Refresh the canonical instruction-surface self-dogfood bundle:
+
+```bash
+npm run dogfood:self:instruction-surface
+```
+
+This is also on-demand quality work, not a standing pre-push or CI gate.
+It refreshes `artifacts/self-dogfood/instruction-surface/latest/`.
+The canonical claim is narrower than the broader self-dogfood report:
+it proves that the shipped `instruction-surface` runner can exercise the repo's checked-in self-dogfood adapter and materialize a current summary packet without relying on one-off manual wiring.
+
 Tuning path for named A/B and split-surface reviews, including stronger binary and skill surface claims:
 
 ```bash
@@ -125,6 +138,15 @@ npm run dogfood:self:experiments:html
 ```
 
 These are thin wrappers around the product-owned `cautilus self-dogfood render-html` and `cautilus self-dogfood render-experiments-html` commands (see [cli-reference.md](../cli-reference.md)).
+
+## Runtime ownership
+
+Keep runtime ownership explicit so Node helpers do not silently grow a second product runtime again.
+
+- `internal/runtime/` owns shipped behavior semantics for native product surfaces.
+- `scripts/agent-runtime/` may own thin wrappers, fixture helpers, provider command glue, and research harnesses, but not the sole shipped meaning of a surface.
+- If a change alters shipped `optimize search` behavior, the same slice must update the Go runtime and its Go acceptance tests.
+- If a richer Node experiment needs to exist before parity lands, keep it clearly experimental and do not let product docs or release claims treat it as the shipped runtime.
 
 ## Release verification
 

@@ -15,15 +15,16 @@
 
 ## Current State
 
-2026-04-19 세션 기준 public release 는 여전히 `v0.5.5` 이다.
-이전 세션에서 `instruction-surface` split, `doctor` first bounded-run handoff, `#5` 부터 `#11` 까지의 seam 정리를 끝냈고, 이번 세션에서는 GEPA/optimize-search 쪽 계약과 구현을 다시 맞췄다.
+2026-04-19 세션 기준 public release 는 `v0.5.6` 이다.
+이전 세션에서 `instruction-surface` split, `doctor` first bounded-run handoff, `#5` 부터 `#11` 까지의 seam 정리를 끝냈고, 이번 세션에서는 `instruction-surface` self-dogfood 승격과 GEPA/optimize-search runtime ownership 을 다시 맞췄다.
 핵심은 세 가지다.
 첫째, adapter 가 이제 `optimize_search` 블록으로 repo별 `light` / `medium` / `heavy` budget preset 과 default tier 를 소유할 수 있다.
 둘째, canonical search packet 이 `searchConfigSources` 를 남겨 product default / adapter preset / explicit override 출처를 다시 열어볼 수 있다.
 셋째, Codex skill-test telemetry 는 이제 human stderr scraping 이 아니라 machine-readable `codex exec --json` stream 에서 provider / model / token totals 를 product-owned 로 보존한다.
+넷째, optimize-search 의 shipped semantics 는 Go runtime 이 소유한다는 ownership 을 docs 와 maintainer workflow 에 명시했고, 첫 parity slice 로 final selection constraint-cap enforcement 와 review/full-gate checkpoint execution 을 Go runner 로 올렸다.
 대신 이번 세션에서 명확히 한 것도 있다.
 현재 optimize-search runner 는 full GEPA 엔진이 아니다.
-packet 에는 merge toggle, three-parent policy, selection caps 같은 future intent 가 보존되지만, 현재 runner 가 실제로 소비하는 것은 one-seed plus bounded frontier-following multi-generation mutation, held-out reevaluation, telemetry-aware frontier ranking 까지다.
+packet 에는 merge toggle, three-parent policy 같은 future intent 가 보존되지만, 현재 runner 가 실제로 소비하는 것은 one-seed plus bounded frontier-following multi-generation mutation, held-out reevaluation, telemetry-aware frontier ranking, final selection constraint caps, final review/full-gate checkpoints 까지다.
 문서도 이 경계에 맞춰 다시 honest 하게 줄였다.
 
 지금 기억할 product 상태는 열한 묶음이다.
@@ -56,16 +57,19 @@ packet 에는 merge toggle, three-parent policy, selection caps 같은 future in
 11. Codex skill-test telemetry 는 이제 `codex exec --json` event stream 을 읽어 provider, model, prompt/completion/total tokens 를 product-owned 로 보존한다.
     supported OpenAI Codex models 에 대해서는 checked-in pricing catalog 로 `cost_usd` 를 derived 하며, `cost_truth=derived_pricing`, `pricing_source`, `pricing_version` 도 같이 남긴다.
     optimize-search / GEPA 문서도 현재 구현 경계에 맞춰 줄였다.
-    merge, three-parent, selection-cap 은 packet 에 intent 를 보존하지만 current runner 는 아직 실제 merge candidate synthesis 나 cap-based finalist rejection 을 수행하지 않는다.
+    merge 와 three-parent 는 packet 에 intent 를 보존하지만 current runner 는 아직 실제 merge candidate synthesis 를 수행하지 않는다.
 12. optimize-search result 는 이제 result-only reader 를 위한 얇은 experiment summary surface 를 같이 낸다.
     `searchConfigSources`, `experimentContext`, `telemetryCompleteness` 가 result packet 에 같이 들어가므로, operator 는 input packet 을 다시 열지 않아도 어떤 adapter / baseline / budget / target / mutation backend 조건에서 돌았는지와 비용/시간/token telemetry 가 어디까지 완전한지 바로 볼 수 있다.
+13. `instruction-surface` 는 이제 공식 on-demand self-dogfood surface 다.
+    root unnamed adapter 를 과적재하지 않고 named adapter 를 유지하되, `npm run dogfood:self:instruction-surface` 를 canonical maintainer entrypoint 로 올렸다.
+    operator acceptance 와 development docs 도 같은 경로를 가리킨다.
 
 ## Recent Commits
 
 최근 주요 커밋:
 
 ```text
-<pending> Adapter-own search presets and Codex telemetry truth
+<pending> Runtime ownership docs, instruction-surface dogfood wrapper, and finalist checkpoints
 60c36f3 Make doctor hand off the first bounded run
 7307206 Prepare v0.5.5 release
 9a98772 Separate bootstrap helpers from work-skill routing
@@ -75,7 +79,7 @@ packet 에는 merge toggle, three-parent policy, selection caps 같은 future in
 4aca699 Refresh handoff after issue burn-down
 ```
 
-`7307206` 에서 `0.5.5` release prepare 를 마쳤고, 이후 `v0.5.5` 태그를 push 해서 GitHub release 와 binary assets 까지 공개된 상태다.
+`b38502f` 에서 `0.5.6` release prepare 를 마쳤고, 이후 `v0.5.6` 태그를 push 해서 GitHub release 와 binary assets 까지 공개된 상태다.
 
 ## Release Status
 
@@ -134,21 +138,18 @@ packet 에는 merge toggle, three-parent policy, selection caps 같은 future in
 
 ## Next Session
 
-다음 세션의 우선순위는 onboarding 보다 GEPA truth surface 쪽이다.
+다음 세션의 우선순위는 onboarding 보다 GEPA runtime convergence 쪽이다.
 여러 external consumer 가 이미 잘 쓰고 있어서 onboarding 은 지금 즉시 불타는 seam 이 아니다.
 `doctor ready` 뒤에서 멈춘다는 fresh-consumer signal 이 다시 오기 전까지는 후순위로 둬도 된다.
 
-1. Codex cost 를 product-owned 하게 어디까지 끌어올릴지 결정한다.
-   지금은 machine-readable token totals 까지 정직하게 보존하고, cost 는 비워 둔다.
-   다음 slice 후보는 stable machine cost field 가 있는지 확인하는 것, 아니면 `tokscale` 류 pricing seam 을 참고해 separately versioned derived-cost surface 를 여는 것이다.
-   중요한 건 human stderr scraping 을 truth 로 승격하지 않는 것이다.
-2. optimize-search / deployment-evidence 의 experiment context 를 더 노골적으로 드러낼지 본다.
-   optimize-search result 자체에는 이제 result-only summary 면이 생겼다.
-   다음 질문은 deployment-evidence 나 다른 surface 들도 같은 수준의 context summary 를 가져야 하는지다.
-3. GEPA runner 자체를 더 키울지, 아니면 current bounded slice 를 유지할지 판단한다.
-   현재 구현은 one-seed plus bounded frontier-following multi-generation mutation 까지다.
-   batch mutation, review-checkpoint runners, merge synthesis, selection-cap enforcement 은 아직 deferred 다.
-   다음에 키우려면 먼저 promise 를 어디까지 올릴지 다시 결정해야 한다.
+1. optimize-search runtime split 을 더 줄인다.
+   지금 product-owned semantics 는 Go 로 고정했지만, JS research harness 에 남아 있는 richer semantics inventory 가 여전히 있다.
+   다음 parity 후보는 frontier-promotion review reuse 와 merge synthesis 중 무엇을 먼저 Go 로 올릴지 정하는 것이다.
+2. Codex cost truth surface 를 계속 다듬는다.
+   지금은 derived pricing 까지 올라왔지만, future stable machine cost field 가 있으면 exact surface 로 바꿀 여지가 있다.
+3. optimize-search / deployment-evidence 의 experiment context 를 더 노골적으로 드러낼지 본다.
+   optimize-search result 자체에는 이미 result-only summary 면이 있다.
+   다음 질문은 다른 evidence surfaces 도 같은 수준의 context summary 를 가져야 하는지다.
 4. 여러 named adapters 를 가진 consumer repo 에서 `#8` 류 repro 가 다시 오면, 여기서는 바로 diagnostics, fallback, regression test 추가를 할 수 있다.
    다만 diagnosis 자체는 outside artifact 가 필요하다.
    최소한 `report.json` 의 `.adapterContext`, `optimize-input.json`, `optimize-search-input.json`, 그리고 기대한 adapter name/context 를 받아야 exact loss point 를 잡을 수 있다.
