@@ -1090,7 +1090,21 @@ func handleReviewPrepareInput(repoRoot string, cwd string, args []string, stdout
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
-	adapterPayload, err := runtime.LoadAdapter(options.repoRoot, options.adapter, options.adapterName)
+	report, err := readJSONObject(options.reportFile)
+	if err != nil {
+		fmt.Fprintf(stderr, "Failed to read JSON from %s: %s\n", options.reportFile, err)
+		return 1
+	}
+	if err := runtime.ValidateReportPacket(report, options.reportFile); err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	adapterOption := options.adapter
+	adapterNameOption := options.adapterName
+	if adapterOption == nil && adapterNameOption == nil {
+		adapterOption, adapterNameOption = runtime.InferAdapterSelectionFromReport(report)
+	}
+	adapterPayload, err := runtime.LoadAdapter(options.repoRoot, adapterOption, adapterNameOption)
 	if err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
@@ -1101,15 +1115,6 @@ func handleReviewPrepareInput(repoRoot string, cwd string, args []string, stdout
 	}
 	if !adapterPayload.Valid {
 		fmt.Fprintf(stderr, "Adapter is invalid: %s\n", toJSONString(adapterPayload.Errors))
-		return 1
-	}
-	report, err := readJSONObject(options.reportFile)
-	if err != nil {
-		fmt.Fprintf(stderr, "Failed to read JSON from %s: %s\n", options.reportFile, err)
-		return 1
-	}
-	if err := runtime.ValidateReportPacket(report, options.reportFile); err != nil {
-		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
 	packet, err := runtime.BuildReviewPacket(options.repoRoot, anyString(adapterPayload.Path), adapterPayload.Data, options.reportFile, report, time.Now())

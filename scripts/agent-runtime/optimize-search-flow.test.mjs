@@ -397,13 +397,16 @@ function createSearchFixtureRoot({ includeHeldOut = true, includeFeedback = true
 			exists: true,
 		},
 		reportFile: join(root, "report.json"),
-		report: {
-			schemaVersion: "cautilus.report_packet.v2",
-			generatedAt: "2026-04-13T09:57:00.000Z",
-			candidate: "feature/operator-guidance",
-			baseline: "origin/main",
-			intent: "Operator guidance should stay legible under recovery pressure.",
-			intentProfile: {
+			report: {
+				schemaVersion: "cautilus.report_packet.v2",
+				generatedAt: "2026-04-13T09:57:00.000Z",
+				candidate: "feature/operator-guidance",
+				baseline: "origin/main",
+				intent: "Operator guidance should stay legible under recovery pressure.",
+				adapterContext: {
+					adapterName: "data-final-prompt-ab",
+				},
+				intentProfile: {
 				schemaVersion: "cautilus.behavior_intent.v1",
 				intentId: "intent-operator-recovery-guidance",
 				summary: "Operator guidance should stay legible under recovery pressure.",
@@ -504,6 +507,7 @@ test("build-optimize-search-input assembles a canonical packet from optimize inp
 		assert.deepEqual(packet.scenarioSets.heldOutScenarioSet, ["operator-recovery"]);
 		assert.equal(packet.evaluationContext.mode, "held_out");
 		assert.equal(packet.evaluationContext.baselineRef, "origin/main");
+		assert.equal(packet.evaluationContext.adapterName, "data-final-prompt-ab");
 		assert.equal(packet.mutationConfig.backends[0].backend, "codex_exec");
 	} finally {
 		rmSync(root, { recursive: true, force: true });

@@ -8,6 +8,20 @@ function normalizeNonEmptyString(value, field) {
 	return value.trim();
 }
 
+function validateOptionalAdapterContext(value, field) {
+	if (value === undefined || value === null) {
+		return;
+	}
+	if (!value || typeof value !== "object" || Array.isArray(value)) {
+		throw new Error(`${field} must be an object`);
+	}
+	for (const key of ["adapter", "adapterName"]) {
+		if (value[key] !== undefined) {
+			normalizeNonEmptyString(value[key], `${field}.${key}`);
+		}
+	}
+}
+
 function failLegacySchemaVersion(schemaVersion) {
 	if (schemaVersion === "cautilus.report_packet.v1") {
 		throw new Error(
@@ -41,6 +55,7 @@ export function validateReportPacket(packet, { label = "report file" } = {}) {
 	if (summary !== intent) {
 		throw new Error(`${label}.intentProfile.summary must exactly match ${label}.intent`);
 	}
+	validateOptionalAdapterContext(packet.adapterContext, `${label}.adapterContext`);
 	buildBehaviorIntentProfile({
 		intent: summary,
 		intentProfile: packet.intentProfile,

@@ -1230,6 +1230,122 @@ echo ok
 	}
 }
 
+func TestCLIModeEvaluatePreservesNamedAdapterContextForReviewAndSearch(t *testing.T) {
+	root := t.TempDir()
+	adapterDir := filepath.Join(root, ".agents")
+	namedAdapterDir := filepath.Join(adapterDir, "cautilus-adapters")
+	workspace := filepath.Join(root, "workspace")
+	if err := os.MkdirAll(namedAdapterDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.MkdirAll(workspace, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	writeExecutableFile(t, workspace, "bench.sh", `#!/bin/sh
+scenario_results_file="$1"
+cat > "$scenario_results_file" <<'JSON'
+{
+  "schemaVersion": "cautilus.scenario_results.v1",
+  "mode": "held_out",
+  "results": [
+    {
+      "scenarioId": "operator-guidance-smoke",
+      "status": "passed",
+      "durationMs": 90
+    }
+  ],
+  "compareArtifact": {
+    "schemaVersion": "cautilus.compare_artifact.v1",
+    "summary": "Operator guidance stayed explicit.",
+    "verdict": "improved",
+    "improved": [
+      "operator-guidance-smoke"
+    ]
+  }
+}
+JSON
+echo ok
+`)
+	adapterText := strings.Join([]string{
+		"version: 1",
+		"repo: temp",
+		"evaluation_surfaces:",
+		"  - operator workflow",
+		"baseline_options:",
+		"  - baseline git ref via {baseline_ref}",
+		"held_out_command_templates:",
+		"  - sh {candidate_repo}/bench.sh {scenario_results_file}",
+		"default_prompt_file: prompts/review.md",
+		"default_schema_file: fixtures/review.schema.json",
+		"artifact_paths:",
+		"  - prompts/review.md",
+		"",
+	}, "\n")
+	if err := os.MkdirAll(filepath.Join(root, "prompts"), 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.MkdirAll(filepath.Join(root, "fixtures"), 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(root, "prompts", "review.md"), []byte("review prompt\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(root, "fixtures", "review.schema.json"), []byte("{\"type\":\"object\"}\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(namedAdapterDir, "data-final-prompt-ab.yaml"), []byte(adapterText), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	targetPath := filepath.Join(root, "prompt.md")
+	if err := os.WriteFile(targetPath, []byte("Keep operator guidance explicit.\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	outputDir := filepath.Join(root, "outputs")
+	reportStdout, stderr, exitCode := runCLI(t, root, "mode", "evaluate", "--repo-root", root, "--candidate-repo", workspace, "--adapter-name", "data-final-prompt-ab", "--mode", "held_out", "--intent", "Operator-facing behavior should remain legible.", "--baseline-ref", "origin/main", "--output-dir", outputDir)
+	if exitCode != 0 {
+		t.Fatalf("mode evaluate failed: %s", stderr)
+	}
+	reportPath := strings.TrimSpace(reportStdout)
+	report := readJSONObjectFile(t, reportPath)
+	adapterContext := report["adapterContext"].(map[string]any)
+	if adapterContext["adapterName"] != "data-final-prompt-ab" {
+		t.Fatalf("unexpected adapter context: %#v", adapterContext)
+	}
+	reviewPacketPath := filepath.Join(root, "review-packet.json")
+	if _, stderr, exitCode := runCLI(t, root, "review", "prepare-input", "--repo-root", root, "--report-file", reportPath, "--output", reviewPacketPath); exitCode != 0 {
+		t.Fatalf("review prepare-input failed without adapter override: %s", stderr)
+	}
+	reviewPacket := readJSONObjectFile(t, reviewPacketPath)
+	if !strings.HasSuffix(anyToString(reviewPacket["adapterPath"]), filepath.Join(".agents", "cautilus-adapters", "data-final-prompt-ab.yaml")) {
+		t.Fatalf("unexpected adapter path: %#v", reviewPacket["adapterPath"])
+	}
+	optimizeInputPath := filepath.Join(root, "optimize-input.json")
+	if _, stderr, exitCode := runCLI(t, root, "optimize", "prepare-input", "--repo-root", root, "--report-file", reportPath, "--target", "prompt", "--target-file", targetPath, "--output", optimizeInputPath); exitCode != 0 {
+		t.Fatalf("optimize prepare-input failed: %s", stderr)
+	}
+	heldOutResultsPath := filepath.Join(root, "held-out-results.json")
+	writeJSONFile(t, heldOutResultsPath, map[string]any{
+		"schemaVersion": contracts.ScenarioResultsSchema,
+		"mode":          "held_out",
+		"results": []map[string]any{
+			{
+				"scenarioId":   "operator-guidance-smoke",
+				"status":       "passed",
+				"overallScore": 100,
+			},
+		},
+	})
+	searchInputPath := filepath.Join(root, "optimize-search-input.json")
+	if _, stderr, exitCode := runCLI(t, root, "optimize", "search", "prepare-input", "--optimize-input", optimizeInputPath, "--held-out-results-file", heldOutResultsPath, "--target-file", targetPath, "--output", searchInputPath); exitCode != 0 {
+		t.Fatalf("optimize search prepare-input failed: %s", stderr)
+	}
+	searchInput := readJSONObjectFile(t, searchInputPath)
+	evaluationContext := searchInput["evaluationContext"].(map[string]any)
+	if evaluationContext["adapterName"] != "data-final-prompt-ab" {
+		t.Fatalf("unexpected evaluation context: %#v", evaluationContext)
+	}
+}
+
 func TestCLIModeEvaluateMarksComparisonBackedRejectionSeparately(t *testing.T) {
 	root := t.TempDir()
 	adapterDir := filepath.Join(root, ".agents")

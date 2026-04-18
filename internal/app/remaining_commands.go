@@ -610,11 +610,11 @@ func handleModeEvaluate(repoRoot string, cwd string, args []string, stdout io.Wr
 		modeRun["startedAt"] = first["startedAt"]
 		modeRun["completedAt"] = last["completedAt"]
 	}
-	reportInput := map[string]any{
-		"schemaVersion":       contracts.ReportInputsSchema,
-		"candidate":           resolvePath(cwd, candidateRepo),
-		"baseline":            firstNonEmpty(options.baselineRef, resolvePath(cwd, baselineRepo)),
-		"intent":              options.intent,
+		reportInput := map[string]any{
+			"schemaVersion":       contracts.ReportInputsSchema,
+			"candidate":           resolvePath(cwd, candidateRepo),
+			"baseline":            firstNonEmpty(options.baselineRef, resolvePath(cwd, baselineRepo)),
+			"intent":              options.intent,
 		"commands":            commandDescriptors(options.mode, modeObservations),
 		"commandObservations": commandObservations,
 		"modeRuns":            []any{modeRun},
@@ -622,10 +622,20 @@ func handleModeEvaluate(repoRoot string, cwd string, args []string, stdout io.Wr
 		"regressed":           buckets["regressed"],
 		"unchanged":           buckets["unchanged"],
 		"noisy":               buckets["noisy"],
-		"humanReviewFindings": []any{},
-		"recommendation":      modeRecommendation(options.mode, options.recommendationOnPass, modeStatus),
-	}
-	_ = writeOutputResolved(stdout, &reportInputFile, reportInput)
+			"humanReviewFindings": []any{},
+			"recommendation":      modeRecommendation(options.mode, options.recommendationOnPass, modeStatus),
+		}
+		if options.adapter != nil || options.adapterName != nil {
+			adapterContext := map[string]any{}
+			if options.adapter != nil {
+				adapterContext["adapter"] = anyString(adapterPayload.Path)
+			}
+			if options.adapterName != nil {
+				adapterContext["adapterName"] = *options.adapterName
+			}
+			reportInput["adapterContext"] = adapterContext
+		}
+		_ = writeOutputResolved(stdout, &reportInputFile, reportInput)
 	report, err := runtime.BuildReportPacket(reportInput, time.Now())
 	if err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)

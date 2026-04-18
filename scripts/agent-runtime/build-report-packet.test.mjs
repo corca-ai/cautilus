@@ -22,6 +22,9 @@ function createReportInputFixture() {
 		candidate: "feature/operator-guidance",
 		baseline: "origin/main",
 		intent: "The operator should understand a failed workflow step without guesswork.",
+		adapterContext: {
+			adapterName: "operator-review",
+		},
 		intentProfile: {
 			schemaVersion: "cautilus.behavior_intent.v1",
 			intentId: "intent-operator-workflow-recovery",
@@ -137,6 +140,7 @@ test("buildReportPacket aggregates mode telemetry and scenario summaries", () =>
 	assert.equal(report.telemetry.cost_usd, 0.06);
 	assert.equal(report.telemetry.durationMs, 35000);
 	assert.deepEqual(report.telemetry.providers.sort(), ["anthropic", "openai"]);
+	assert.equal(report.adapterContext.adapterName, "operator-review");
 	assert.equal(report.recommendation, "defer");
 });
 

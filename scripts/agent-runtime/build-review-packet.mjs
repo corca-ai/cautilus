@@ -85,6 +85,25 @@ function resolveCommandOptions(options, { env = process.env } = {}) {
 	return resolved;
 }
 
+function deriveAdapterOptionsFromReport(options, report) {
+	if (options.adapter || options.adapterName) {
+		return options;
+	}
+	const adapterContext = report?.packet?.adapterContext;
+	if (!adapterContext || typeof adapterContext !== "object" || Array.isArray(adapterContext)) {
+		return options;
+	}
+	return {
+		...options,
+		...(typeof adapterContext.adapter === "string" && adapterContext.adapter.length > 0
+			? { adapter: adapterContext.adapter }
+			: {}),
+		...(typeof adapterContext.adapterName === "string" && adapterContext.adapterName.length > 0
+			? { adapterName: adapterContext.adapterName }
+			: {}),
+	};
+}
+
 function loadAdapter(options) {
 	const repoRoot = resolve(options.repoRoot);
 	const payload = loadAdapterPayload(repoRoot, {
@@ -138,10 +157,11 @@ function collectOptionalFile(repoRoot, relativePath) {
 }
 
 export function buildReviewPacket(inputOptions, { now = new Date() } = {}) {
-	const options = resolveCommandOptions(parseArgs(inputOptions));
+	const baseOptions = resolveCommandOptions(parseArgs(inputOptions));
+	const report = parseReportFile(baseOptions.reportFile);
+	const options = deriveAdapterOptionsFromReport(baseOptions, report);
 	const repoRoot = options.repoRoot;
 	const adapterPayload = loadAdapter(options);
-	const report = parseReportFile(options.reportFile);
 	const adapterData = adapterPayload.data;
 	return {
 		schemaVersion: REVIEW_PACKET_SCHEMA,

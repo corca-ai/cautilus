@@ -131,6 +131,28 @@ echo preflight-ok
 		].join("\n"),
 		"utf-8",
 	);
+	mkdirSync(join(adapterDir, "cautilus-adapters"), { recursive: true });
+	writeFileSync(
+		join(adapterDir, "cautilus-adapters", "named-adapter.yaml"),
+		[
+			"version: 1",
+			"repo: temp",
+			"evaluation_surfaces:",
+			"  - operator workflow",
+			"baseline_options:",
+			"  - baseline git ref via {baseline_ref}",
+			"preflight_commands:",
+			"  - sh {candidate_repo}/preflight.sh",
+			"held_out_command_templates:",
+			"  - sh {candidate_repo}/bench.sh held_out {scenario_results_file}",
+			"full_gate_command_templates:",
+			"  - sh {candidate_repo}/bench.sh full_gate {scenario_results_file}",
+			"held_out_samples_default: 2",
+			"full_gate_samples_default: 2",
+			"",
+		].join("\n"),
+		"utf-8",
+	);
 	return { root, workspace };
 }
 
@@ -300,6 +322,42 @@ test("evaluate-adapter-mode promotes a passing full_gate run to accept-now", () 
 		const report = JSON.parse(readFileSync(result.stdout.trim(), "utf-8"));
 		assert.equal(report.recommendation, "accept-now");
 		assert.equal(report.modesRun[0], "full_gate");
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("evaluate-adapter-mode preserves adapter context for named adapters", () => {
+	const { root, workspace } = createRepo();
+	try {
+		const outputDir = join(root, "named-adapter-outputs");
+		const result = spawnSync(
+			"node",
+			[
+				SCRIPT_PATH,
+				"--repo-root",
+				root,
+				"--candidate-repo",
+				workspace,
+				"--adapter-name",
+				"named-adapter",
+				"--mode",
+				"held_out",
+				"--intent",
+				"Named adapter context should survive the report bridge.",
+				"--baseline-ref",
+				"origin/main",
+				"--output-dir",
+				outputDir,
+			],
+			{
+				cwd: process.cwd(),
+				encoding: "utf-8",
+			},
+		);
+		assert.equal(result.status, 0, result.stderr);
+		const report = JSON.parse(readFileSync(result.stdout.trim(), "utf-8"));
+		assert.equal(report.adapterContext.adapterName, "named-adapter");
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

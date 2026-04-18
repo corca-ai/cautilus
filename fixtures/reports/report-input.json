@@ -3,6 +3,9 @@
   "candidate": "feature/operator-guidance",
   "baseline": "origin/main",
   "intent": "The operator should understand why a workflow step failed and how to recover.",
+  "adapterContext": {
+    "adapterName": "operator-review"
+  },
   "intentProfile": {
     "schemaVersion": "cautilus.behavior_intent.v1",
     "intentId": "intent-operator-workflow-recovery",

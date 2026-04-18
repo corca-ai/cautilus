@@ -352,10 +352,13 @@ function buildTargetRef(targetPath) {
 
 function resolveEvaluationContext(optimizeInput, options) {
 	const report = optimizeInput.report || {};
+	const adapterContext = report.adapterContext && typeof report.adapterContext === "object" && !Array.isArray(report.adapterContext)
+		? report.adapterContext
+		: {};
 	return {
 		mode: "held_out",
-		adapter: options.adapter,
-		adapterName: options.adapterName,
+		adapter: options.adapter || adapterContext.adapter || null,
+		adapterName: options.adapterName || adapterContext.adapterName || null,
 		intent: options.intent || report.intent || optimizeInput.intentProfile?.summary || "",
 		baselineRef: options.baselineRef || report.baseline || "HEAD",
 		profile: options.profile || null,

@@ -193,6 +193,23 @@ function normalizeReviewFinding(entry, index) {
 	};
 }
 
+function normalizeAdapterContext(value, field = "adapterContext") {
+	if (value === undefined || value === null) {
+		return null;
+	}
+	if (!value || typeof value !== "object" || Array.isArray(value)) {
+		throw new Error(`${field} must be an object`);
+	}
+	const normalized = {};
+	if (value.adapter !== undefined) {
+		normalized.adapter = normalizeNonEmptyString(value.adapter, `${field}.adapter`);
+	}
+	if (value.adapterName !== undefined) {
+		normalized.adapterName = normalizeNonEmptyString(value.adapterName, `${field}.adapterName`);
+	}
+	return Object.keys(normalized).length > 0 ? normalized : null;
+}
+
 function normalizeCommandObservation(entry, index) {
 	if (!entry || typeof entry !== "object" || Array.isArray(entry)) {
 		throw new Error(`commandObservations[${index}] must be an object`);
@@ -448,6 +465,7 @@ export function buildReportPacket(input, { now = new Date() } = {}) {
 	const commandObservations = assertArray(input.commandObservations, "commandObservations").map((entry, index) =>
 		normalizeCommandObservation(entry, index),
 	);
+	const adapterContext = normalizeAdapterContext(input.adapterContext);
 	const modeSummaries = modeRuns.map((modeRun) => createModeSummary(modeRun, commandObservations, now));
 	const reportReasons = summarizeReportReasons(modeSummaries);
 	return {
@@ -467,6 +485,7 @@ export function buildReportPacket(input, { now = new Date() } = {}) {
 		telemetry: summarizeReportTelemetry(modeSummaries),
 		...(reportReasons.reasonCodes.length > 0 ? { reasonCodes: reportReasons.reasonCodes } : {}),
 		...(reportReasons.warnings.length > 0 ? { warnings: reportReasons.warnings } : {}),
+		...(adapterContext ? { adapterContext } : {}),
 		improved: normalizeScenarioBuckets(input.improved, "improved"),
 		regressed: normalizeScenarioBuckets(input.regressed, "regressed"),
 		unchanged: normalizeScenarioBuckets(input.unchanged, "unchanged"),

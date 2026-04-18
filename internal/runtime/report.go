@@ -44,6 +44,9 @@ func ValidateReportPacket(packet map[string]any, label string) error {
 	if summary != intent {
 		return fmt.Errorf("%s.intentProfile.summary must exactly match %s.intent", label, label)
 	}
+	if _, err := normalizeAdapterContext(packet["adapterContext"], label+".adapterContext"); err != nil {
+		return err
+	}
 	_, err = BuildBehaviorIntentProfile(summary, intentProfile, BehaviorSurfaces["OPERATOR_BEHAVIOR"], nil, nil)
 	return err
 }
@@ -76,6 +79,10 @@ func BuildReportPacket(input map[string]any, now time.Time) (map[string]any, err
 		return nil, err
 	}
 	humanReviewFindings, err := normalizeReviewFindings(input["humanReviewFindings"])
+	if err != nil {
+		return nil, err
+	}
+	adapterContext, err := normalizeAdapterContext(input["adapterContext"], "adapterContext")
 	if err != nil {
 		return nil, err
 	}
@@ -159,6 +166,9 @@ func BuildReportPacket(input map[string]any, now time.Time) (map[string]any, err
 	}
 	if len(warnings) > 0 {
 		report["warnings"] = warnings
+	}
+	if adapterContext != nil {
+		report["adapterContext"] = adapterContext
 	}
 	return report, nil
 }
@@ -328,6 +338,40 @@ func normalizeReviewFindings(value any) ([]any, error) {
 		result = append(result, normalized)
 	}
 	return result, nil
+}
+
+func normalizeAdapterContext(value any, field string) (map[string]any, error) {
+	if value == nil {
+		return nil, nil
+	}
+	record, ok := value.(map[string]any)
+	if !ok {
+		return nil, fmt.Errorf("%s must be an object", field)
+	}
+	normalized := map[string]any{}
+	if err := copyNormalizedOptionalString(record, normalized, "adapter", field); err != nil {
+		return nil, err
+	}
+	if err := copyNormalizedOptionalString(record, normalized, "adapterName", field); err != nil {
+		return nil, err
+	}
+	if len(normalized) == 0 {
+		return nil, nil
+	}
+	return normalized, nil
+}
+
+func InferAdapterSelectionFromReport(report map[string]any) (*string, *string) {
+	adapterContext := asMap(report["adapterContext"])
+	var adapter *string
+	var adapterName *string
+	if value := strings.TrimSpace(stringOrEmpty(adapterContext["adapter"])); value != "" {
+		adapter = &value
+	}
+	if value := strings.TrimSpace(stringOrEmpty(adapterContext["adapterName"])); value != "" {
+		adapterName = &value
+	}
+	return adapter, adapterName
 }
 
 func buildModeScenarioTelemetry(modeRun map[string]any, now time.Time) (map[string]any, error) {

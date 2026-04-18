@@ -15,6 +15,7 @@
 - `modes_run`: iterate, held-out, comparison, full gate
 - `commands`: rendered commands with concrete placeholder values
 - optional `command_observations`: executed command records with timing, exit code, and stdout/stderr artifact paths
+- optional `adapter_context`: product-owned adapter identity such as `adapter` or `adapterName` when downstream review or optimize bridges must reuse the same adapter without operator restatement
 - optional `telemetry`: wall-clock latency plus any adapter- or provider-owned cost and token metrics
 - optional `reasonCodes`: machine-readable report-level outcome classification such as `behavior_regression`, `provider_rate_limit_contamination`, or `infrastructure_failure`
 - optional `warnings`: machine-readable warnings promoted from persisted artifacts when the evidence is contaminated or otherwise narrow
@@ -36,6 +37,7 @@ The standalone builder should start from an explicit input packet:
 - optional `intentProfile` when present, it must use the product-owned behavior-intent catalog
 - `commands`: explicit mode-to-command mapping
 - optional `commandObservations`: bounded executed-command records
+- optional `adapterContext`: product-owned adapter identity preserved from `mode evaluate` when the run was executed against an explicit adapter path or named adapter
 - `modeRuns`: checked-in or persisted mode execution records Each mode run may include one `scenarioResults` packet using `cautilus.scenario_results.v1`.
 - optional `improved`, `regressed`, `unchanged`, `noisy`
 - optional `humanReviewFindings`
@@ -44,6 +46,7 @@ The standalone builder should start from an explicit input packet:
 This keeps report assembly deterministic.
 `Cautilus` should not scrape shell history or infer report structure from loose logs.
 When `Cautilus` itself executes adapter-defined mode commands, it should write those command observations into the report input so the final packet preserves how the evidence was gathered.
+The same applies to adapter identity when an operator selected a named adapter or explicit adapter path for the run.
 
 ## Versioning
 

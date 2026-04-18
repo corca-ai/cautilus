@@ -116,8 +116,14 @@ func BuildOptimizeSearchInput(optimizeInput map[string]any, optimizeInputFile st
 		},
 		"evaluationContext": map[string]any{
 			"mode":        "held_out",
-			"adapter":     derefString(options.Adapter),
-			"adapterName": derefString(options.AdapterName),
+			"adapter": firstNonEmpty(
+				derefString(options.Adapter),
+				stringOrEmpty(asMap(asMap(optimizeInput["report"])["adapterContext"])["adapter"]),
+			),
+			"adapterName": firstNonEmpty(
+				derefString(options.AdapterName),
+				stringOrEmpty(asMap(asMap(optimizeInput["report"])["adapterContext"])["adapterName"]),
+			),
 			"intent": firstNonEmpty(
 				derefString(options.Intent),
 				stringOrEmpty(asMap(optimizeInput["report"])["intent"]),

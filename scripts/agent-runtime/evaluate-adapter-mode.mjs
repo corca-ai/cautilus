@@ -429,7 +429,7 @@ async function executePreflight(options, context, log) {
 	return observations;
 }
 
-function buildModeReportInput(options, context, modeObservations, commandObservations) {
+function buildModeReportInput(options, context, adapterPayload, modeObservations, commandObservations) {
 	const scenarioResults = readScenarioResults(context.scenarioResultsFile, options.mode);
 	const scenarioBuckets = classifyScenarioBuckets(scenarioResults);
 	const modeStatus = resolvedModeStatus(modeObservations, scenarioResults);
@@ -447,6 +447,14 @@ function buildModeReportInput(options, context, modeObservations, commandObserva
 		candidate: context.candidateRepo,
 		baseline: options.baselineRef || context.baselineRepo,
 		intent: options.intent,
+		...((options.adapter || options.adapterName)
+			? {
+				adapterContext: {
+					...(options.adapter ? { adapter: adapterPayload.path } : {}),
+					...(options.adapterName ? { adapterName: options.adapterName } : {}),
+				},
+			}
+			: {}),
 		commands: modeObservations.map((entry) => ({
 			mode: options.mode,
 			command: entry.command,
@@ -521,7 +529,7 @@ export async function evaluateAdapterMode(inputOptions) {
 	const preflightObservations = await executePreflight(options, context, log);
 	const modeObservations = await executeTemplateSeries(context.templates, options.mode, context, options, log);
 	const commandObservations = [...preflightObservations, ...modeObservations];
-	const reportInput = buildModeReportInput(options, context, modeObservations, commandObservations);
+	const reportInput = buildModeReportInput(options, context, adapterPayload, modeObservations, commandObservations);
 	const report = persistModeReport(context, reportInput);
 	const baselineCache = persistBaselineCacheIfNeeded(context, options);
 	const scenarioHistory = persistScenarioHistoryIfNeeded(context, options);

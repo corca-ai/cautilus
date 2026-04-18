@@ -12,7 +12,9 @@ const SCRIPT_PATH = join(process.cwd(), "scripts", "agent-runtime", "build-revie
 function createRepo() {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-review-packet-"));
 	const adapterDir = join(root, ".agents");
+	const namedAdapterDir = join(adapterDir, "cautilus-adapters");
 	mkdirSync(adapterDir, { recursive: true });
+	mkdirSync(namedAdapterDir, { recursive: true });
 	mkdirSync(join(root, "fixtures"), { recursive: true });
 	mkdirSync(join(root, "reports"), { recursive: true });
 	writeFileSync(join(root, "fixtures", "review.prompt.md"), "review prompt\n", "utf-8");
@@ -20,6 +22,32 @@ function createRepo() {
 	writeFileSync(join(root, "reports", "latest.json"), '{"schemaVersion":"cautilus.report_packet.v2"}\n', "utf-8");
 	writeFileSync(
 		join(adapterDir, "cautilus-adapter.yaml"),
+		[
+			"version: 1",
+			"repo: temp",
+			"evaluation_surfaces:",
+			"  - operator workflow",
+			"baseline_options:",
+			"  - baseline git ref via {baseline_ref}",
+			"held_out_command_templates:",
+			"  - npm run held-out",
+			"artifact_paths:",
+			"  - fixtures/review.prompt.md",
+			"report_paths:",
+			"  - reports/latest.json",
+			"comparison_questions:",
+			"  - Which scenarios improved?",
+			"human_review_prompts:",
+			"  - id: operator",
+			"    prompt: Where is the workflow still brittle?",
+			"default_prompt_file: fixtures/review.prompt.md",
+			"default_schema_file: fixtures/review.schema.json",
+			"",
+		].join("\n"),
+		"utf-8",
+	);
+	writeFileSync(
+		join(namedAdapterDir, "operator-review.yaml"),
 		[
 			"version: 1",
 			"repo: temp",
@@ -185,6 +213,23 @@ test("build-review-packet preserves stdout behavior without an active run", () =
 		const packet = JSON.parse(result.stdout);
 		assert.equal(packet.reportFile, reportFile);
 		assert.equal(result.stderr, "");
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("build-review-packet can recover adapter selection from report adapterContext", () => {
+	const root = createRepo();
+	try {
+		const reportFile = join(root, "reports", "latest.json");
+		writeValidReport(reportFile);
+		const report = JSON.parse(readFileSync(reportFile, "utf-8"));
+		report.adapterContext = { adapterName: "operator-review" };
+		writeFileSync(reportFile, `${JSON.stringify(report, null, 2)}\n`, "utf-8");
+		const result = runBuildReviewPacket(["--repo-root", root, "--report-file", reportFile]);
+		assert.equal(result.status, 0, result.stderr);
+		const packet = JSON.parse(result.stdout);
+		assert.match(packet.adapterPath, /operator-review\.yaml$/);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}
