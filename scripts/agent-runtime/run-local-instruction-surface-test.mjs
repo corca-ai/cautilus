@@ -160,11 +160,14 @@ function assertString(value, field) {
 	return value;
 }
 
-function optionalString(value, field) {
+function nullableObservedString(value, field) {
 	if (value === undefined || value === null) {
 		return null;
 	}
-	return assertString(value, field);
+	if (typeof value !== "string") {
+		throw new Error(`${field} must be a string`);
+	}
+	return value.trim() ? value : null;
 }
 
 function normalizeStringArray(value, field) {
@@ -180,7 +183,9 @@ export function baseSchema() {
 		additionalProperties: false,
 		required: [
 			"observationStatus",
+			"blockerKind",
 			"summary",
+			"entryFile",
 			"loadedInstructionFiles",
 			"loadedSupportingFiles",
 			"routingDecision",
@@ -210,6 +215,7 @@ export function baseSchema() {
 			routingDecision: {
 				type: "object",
 				additionalProperties: false,
+				required: ["selectedSkill", "selectedSupport", "firstToolCall", "reasonSummary"],
 				properties: {
 					selectedSkill: { type: "string" },
 					selectedSupport: { type: "string" },
@@ -300,11 +306,11 @@ function normalizeObservedCore(evaluation, observed, artifactRefs, startedAt) {
 
 function normalizeObservedOptionalFields(observed, telemetry) {
 	const optionalFields = {};
-	const entryFile = optionalString(observed?.entryFile, "observed.entryFile");
+	const entryFile = nullableObservedString(observed?.entryFile, "observed.entryFile");
 	if (entryFile) {
 		optionalFields.entryFile = entryFile;
 	}
-	const blockerKind = optionalString(observed?.blockerKind, "observed.blockerKind");
+	const blockerKind = nullableObservedString(observed?.blockerKind, "observed.blockerKind");
 	if (blockerKind) {
 		optionalFields.blockerKind = blockerKind;
 	}
@@ -410,7 +416,6 @@ function runCodexEvaluation(options, evaluation, outputDir, startedAt) {
 	writeFileSync(promptFile, prompt);
 	writeFileSync(schemaFile, `${JSON.stringify(baseSchema(), null, 2)}\n`);
 
-	const startedMs = Date.now();
 	const result = spawnSync("codex", codexArgs(options, schemaFile, outputFile), {
 		cwd: options.workspace,
 		encoding: "utf-8",
@@ -421,7 +426,6 @@ function runCodexEvaluation(options, evaluation, outputDir, startedAt) {
 		input: prompt,
 		timeout: options.timeoutMs,
 	});
-	const durationMs = Date.now() - startedMs;
 	writeFileSync(stderrFile, result.stderr ?? "");
 	const artifactRefs = [
 		artifactRef("prompt", promptFile),
@@ -429,16 +433,16 @@ function runCodexEvaluation(options, evaluation, outputDir, startedAt) {
 		artifactRef("stderr", stderrFile),
 	];
 	if (result.error?.code === "ETIMEDOUT") {
-		return backendFailureResult(`The codex_exec runner timed out after ${options.timeoutMs}ms.`, durationMs, artifactRefs);
+		return normalizeObservedResult(evaluation, backendFailureResult(`The codex_exec runner timed out after ${options.timeoutMs}ms.`), artifactRefs, startedAt);
 	}
 	if (result.status !== 0) {
-		return backendFailureResult(`The codex_exec runner exited with status ${result.status}.`, durationMs, artifactRefs);
+		return normalizeObservedResult(evaluation, backendFailureResult(`The codex_exec runner exited with status ${result.status}.`), artifactRefs, startedAt);
 	}
 	let observed;
 	try {
 		observed = readJson(outputFile);
 	} catch (error) {
-		return backendFailureResult(`The codex_exec runner did not produce valid JSON: ${error.message}`, durationMs, artifactRefs);
+		return normalizeObservedResult(evaluation, backendFailureResult(`The codex_exec runner did not produce valid JSON: ${error.message}`), artifactRefs, startedAt);
 	}
 	artifactRefs.push(artifactRef("result", outputFile));
 	const model = options.codexModel ?? options.model;
@@ -460,7 +464,6 @@ function runClaudeEvaluation(options, evaluation, outputDir, startedAt) {
 	const prompt = renderClaudePrompt(evaluation, schema);
 	writeFileSync(promptFile, prompt);
 
-	const startedMs = Date.now();
 	const result = spawnSync("claude", claudeArgs(options), {
 		cwd: options.workspace,
 		encoding: "utf-8",
@@ -472,7 +475,6 @@ function runClaudeEvaluation(options, evaluation, outputDir, startedAt) {
 		input: prompt,
 		timeout: options.timeoutMs,
 	});
-	const durationMs = Date.now() - startedMs;
 	writeFileSync(stderrFile, result.stderr ?? "");
 	writeFileSync(rawFile, result.stdout ?? "");
 	const artifactRefs = [
@@ -481,16 +483,16 @@ function runClaudeEvaluation(options, evaluation, outputDir, startedAt) {
 		artifactRef("stderr", stderrFile),
 	];
 	if (result.error?.code === "ETIMEDOUT") {
-		return backendFailureResult(`The claude_code runner timed out after ${options.timeoutMs}ms.`, durationMs, artifactRefs);
+		return normalizeObservedResult(evaluation, backendFailureResult(`The claude_code runner timed out after ${options.timeoutMs}ms.`), artifactRefs, startedAt);
 	}
 	if (result.status !== 0) {
-		return backendFailureResult(`The claude_code runner exited with status ${result.status}.`, durationMs, artifactRefs);
+		return normalizeObservedResult(evaluation, backendFailureResult(`The claude_code runner exited with status ${result.status}.`), artifactRefs, startedAt);
 	}
 	let observed;
 	try {
 		observed = parseClaudeOutput(result.stdout ?? "");
 	} catch (error) {
-		return backendFailureResult(`The claude_code runner did not produce valid JSON: ${error.message}`, durationMs, artifactRefs);
+		return normalizeObservedResult(evaluation, backendFailureResult(`The claude_code runner did not produce valid JSON: ${error.message}`), artifactRefs, startedAt);
 	}
 	writeFileSync(outputFile, `${JSON.stringify(observed, null, 2)}\n`);
 	artifactRefs.push(artifactRef("result", outputFile));

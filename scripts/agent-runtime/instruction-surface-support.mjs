@@ -29,7 +29,10 @@ function optionalString(value, field) {
 	if (value === undefined || value === null) {
 		return null;
 	}
-	return assertString(value, field);
+	if (typeof value !== "string") {
+		throw new Error(`${field} must be a string`);
+	}
+	return value.trim() ? value : null;
 }
 
 export function artifactRef(kind, path) {
@@ -51,7 +54,7 @@ export function normalizeRoutingDecision(value, field = "observed.routingDecisio
 	return normalized;
 }
 
-export function backendFailureResult(message, durationMs, artifactRefs) {
+export function backendFailureResult(message) {
 	return {
 		observationStatus: "blocked",
 		blockerKind: "runner_execution_failed",
@@ -59,12 +62,11 @@ export function backendFailureResult(message, durationMs, artifactRefs) {
 		loadedInstructionFiles: [],
 		loadedSupportingFiles: [],
 		routingDecision: {
+			selectedSkill: "",
+			selectedSupport: "",
+			firstToolCall: "",
 			reasonSummary: message,
 		},
-		metrics: {
-			duration_ms: durationMs,
-		},
-		artifactRefs,
 	};
 }
 
