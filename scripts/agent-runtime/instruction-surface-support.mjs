@@ -11,6 +11,8 @@ import {
 import { dirname, join, resolve } from "node:path";
 import process from "node:process";
 
+const ROOT_ENTRY_ALIASES = ["AGENTS.md", "CLAUDE.md"];
+
 function assertObject(value, field) {
 	if (!value || typeof value !== "object" || Array.isArray(value)) {
 		throw new Error(`${field} must be an object`);
@@ -46,12 +48,30 @@ export function normalizeRoutingDecision(value, field = "observed.routingDecisio
 	const record = assertObject(value, field);
 	const normalized = {};
 	for (const key of ["selectedSkill", "selectedSupport", "firstToolCall", "reasonSummary"]) {
-		const text = optionalString(record[key], `${field}.${key}`);
+		const text = normalizeRoutingField(optionalString(record[key], `${field}.${key}`), key);
 		if (text) {
 			normalized[key] = text;
 		}
 	}
 	return normalized;
+}
+
+function normalizeRoutingField(value, key) {
+	if (!value) {
+		return value;
+	}
+	if (/^none\b/i.test(value)) {
+		return "none";
+	}
+	if (key === "firstToolCall") {
+		if (value.startsWith("functions.exec_command")) {
+			return "functions.exec_command";
+		}
+		if (value.startsWith("web.")) {
+			return value.split(/[:\s]/, 1)[0];
+		}
+	}
+	return value;
 }
 
 export function backendFailureResult(message) {
@@ -187,11 +207,25 @@ function resolveInstructionContent(casesFile, file) {
 	};
 }
 
+function maskUnspecifiedRootEntryAliases(workspace, files) {
+	const backups = [];
+	const specified = new Set(files.map((file) => file.path));
+	for (const relativePath of ROOT_ENTRY_ALIASES) {
+		if (specified.has(relativePath)) {
+			continue;
+		}
+		const workspacePath = safeWorkspacePath(workspace, relativePath);
+		backups.push(snapshotWorkspaceEntry(workspacePath));
+		rmSync(workspacePath, { force: true, recursive: false });
+	}
+	return backups;
+}
+
 export function materializeInstructionSurface(options, evaluation, outputDir) {
 	if (!evaluation.instructionSurface) {
 		return captureWorkspaceInstructionFiles(options.workspace, outputDir);
 	}
-	const backups = [];
+	const backups = maskUnspecifiedRootEntryAliases(options.workspace, evaluation.instructionSurface.files);
 	const files = [];
 	const artifactRefs = [];
 	for (const file of evaluation.instructionSurface.files) {
@@ -239,4 +273,21 @@ export function materializeInstructionSurface(options, evaluation, outputDir) {
 			}
 		},
 	};
+}
+
+export function relativizeObservedPath(workspace, observedPath) {
+	if (typeof observedPath !== "string" || !observedPath.trim()) {
+		return observedPath;
+	}
+	const trimmed = observedPath.trim();
+	const workspaceRoot = resolve(workspace);
+	const resolvedPath = resolve(trimmed);
+	if (resolvedPath === workspaceRoot) {
+		return ".";
+	}
+	const prefix = `${workspaceRoot}${process.platform === "win32" ? "\\" : "/"}`;
+	if (!resolvedPath.startsWith(prefix)) {
+		return trimmed;
+	}
+	return resolvedPath.slice(prefix.length).replaceAll("\\", "/");
 }

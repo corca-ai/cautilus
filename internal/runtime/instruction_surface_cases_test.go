@@ -27,7 +27,7 @@ func TestNormalizeInstructionSurfaceCaseSuiteAcceptsFileAndSymlinkVariants(t *te
 				"expectedEntryFile":        "AGENTS.md",
 				"requiredInstructionFiles": []any{"AGENTS.md", "CLAUDE.md"},
 				"expectedRouting": map[string]any{
-					"selectedSkill": "find-skills",
+					"selectedSkill": "charness:find-skills",
 				},
 			},
 		},

@@ -22,8 +22,8 @@ func TestBuildInstructionSurfaceSummaryScoresRoutingAndFiles(t *testing.T) {
 				"loadedInstructionFiles": []any{"AGENTS.md"},
 				"loadedSupportingFiles":  []any{"docs/internal/handoff.md"},
 				"routingDecision": map[string]any{
-					"selectedSkill": "find-skills",
-					"firstToolCall": "find-skills --repo-root .",
+					"selectedSkill": "charness:find-skills",
+					"firstToolCall": "functions.exec_command",
 				},
 				"instructionSurface": map[string]any{
 					"surfaceLabel": "compact_agents",
@@ -35,8 +35,8 @@ func TestBuildInstructionSurfaceSummaryScoresRoutingAndFiles(t *testing.T) {
 				"requiredInstructionFiles": []any{"AGENTS.md"},
 				"requiredSupportingFiles":  []any{"docs/internal/handoff.md"},
 				"expectedRouting": map[string]any{
-					"selectedSkill":        "find-skills",
-					"firstToolCallPattern": "find-skills",
+					"selectedSkill":        "charness:find-skills",
+					"firstToolCallPattern": "functions.exec_command",
 				},
 				"artifactRefs": []any{},
 			},
@@ -63,7 +63,7 @@ func TestBuildInstructionSurfaceSummaryScoresRoutingAndFiles(t *testing.T) {
 				"requiredInstructionFiles": []any{"AGENTS.md", "docs/feature/AGENTS.md"},
 				"requiredSupportingFiles":  []any{"docs/internal/handoff.md"},
 				"expectedRouting": map[string]any{
-					"selectedSkill": "find-skills",
+					"selectedSkill": "charness:find-skills",
 				},
 				"artifactRefs": []any{},
 			},

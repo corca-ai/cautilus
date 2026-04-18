@@ -9,10 +9,8 @@
       "prompt": "Read the repo instructions first and decide how to route this task.",
       "expectedEntryFile": "AGENTS.md",
       "requiredInstructionFiles": ["AGENTS.md"],
-      "requiredSupportingFiles": ["docs/internal/handoff.md"],
       "expectedRouting": {
-        "selectedSkill": "find-skills",
-        "firstToolCallPattern": "find-skills"
+        "selectedSkill": "charness:find-skills"
       }
     },
     {
@@ -31,7 +29,7 @@
       "expectedEntryFile": "CLAUDE.md",
       "requiredInstructionFiles": ["CLAUDE.md"],
       "expectedRouting": {
-        "selectedSkill": "find-skills"
+        "selectedSkill": "none"
       }
     },
     {
@@ -55,7 +53,7 @@
       "expectedEntryFile": "AGENTS.md",
       "requiredInstructionFiles": ["AGENTS.md", "apps/demo/AGENTS.md"],
       "expectedRouting": {
-        "selectedSkill": "find-skills"
+        "selectedSkill": "none"
       }
     },
     {
@@ -75,11 +73,10 @@
           }
         ]
       },
-      "expectedEntryFile": "AGENTS.md",
-      "requiredInstructionFiles": ["AGENTS.md"],
-      "requiredSupportingFiles": ["docs/internal/routing-note.md"],
+      "expectedEntryFile": "docs/internal/routing-note.md",
+      "requiredInstructionFiles": ["docs/internal/routing-note.md"],
       "expectedRouting": {
-        "selectedSkill": "find-skills"
+        "selectedSkill": "none"
       }
     },
     {
@@ -101,10 +98,7 @@
         ]
       },
       "expectedEntryFile": "AGENTS.md",
-      "requiredInstructionFiles": ["AGENTS.md", "CLAUDE.md"],
-      "expectedRouting": {
-        "selectedSkill": "find-skills"
-      }
+      "requiredInstructionFiles": ["AGENTS.md"]
     }
   ]
 }

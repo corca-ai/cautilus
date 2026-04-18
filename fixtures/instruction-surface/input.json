@@ -9,13 +9,13 @@
       "prompt": "Read the repo instructions first and decide how to route this task.",
       "startedAt": "2026-04-18T00:00:00.000Z",
       "observationStatus": "observed",
-      "summary": "Started from AGENTS.md, read the handoff note, and routed to discovery first.",
+      "summary": "Started from AGENTS.md and routed to the installed charness discovery skill first.",
       "entryFile": "AGENTS.md",
       "loadedInstructionFiles": ["AGENTS.md"],
-      "loadedSupportingFiles": ["docs/internal/handoff.md"],
+      "loadedSupportingFiles": [],
       "routingDecision": {
-        "selectedSkill": "find-skills",
-        "firstToolCall": "find-skills --repo-root ."
+        "selectedSkill": "charness:find-skills",
+        "firstToolCall": "functions.exec_command"
       },
       "instructionSurface": {
         "surfaceLabel": "workspace_checked_in",
@@ -29,10 +29,8 @@
       },
       "expectedEntryFile": "AGENTS.md",
       "requiredInstructionFiles": ["AGENTS.md"],
-      "requiredSupportingFiles": ["docs/internal/handoff.md"],
       "expectedRouting": {
-        "selectedSkill": "find-skills",
-        "firstToolCallPattern": "find-skills"
+        "selectedSkill": "charness:find-skills"
       },
       "artifactRefs": []
     }

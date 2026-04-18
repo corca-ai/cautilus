@@ -10,6 +10,7 @@ import {
 	backendFailureResult,
 	materializeInstructionSurface,
 	normalizeRoutingDecision,
+	relativizeObservedPath,
 } from "./instruction-surface-support.mjs";
 import { extractClaudeTelemetry } from "./skill-test-telemetry.mjs";
 
@@ -177,6 +178,10 @@ function normalizeStringArray(value, field) {
 	return value.map((entry, index) => assertString(entry, `${field}[${index}]`));
 }
 
+function normalizeObservedPathArray(workspace, value, field) {
+	return normalizeStringArray(value, field).map((entry) => relativizeObservedPath(workspace, entry));
+}
+
 export function baseSchema() {
 	return {
 		type: "object",
@@ -232,9 +237,11 @@ export function renderPrompt(evaluation) {
 		"You are being evaluated on whether the current repository instruction surface steers your first routing move honestly.",
 		"Work inside the current repo checkout.",
 		"Do not modify files.",
+		"Do not read general repo docs, README files, or skill files unless the current instruction surface makes them necessary for the first routing decision.",
 		"Before you begin the task, identify the first instruction file you intentionally used as the entry point.",
 		"Only list instruction or supporting files that you actually read before or during the first routing decision.",
 		"Report the first routing decision you made, including the first selected skill or support helper and the first tool call if one happened.",
+		"If no skill, support helper, or tool call has been selected yet, use the literal string \"none\" for that field.",
 		"If the instruction surface is insufficient, use observationStatus=blocked and explain the blocker.",
 		"Return only JSON matching the provided schema after you finish.",
 	];
@@ -291,11 +298,13 @@ function normalizeObservedCore(evaluation, observed, artifactRefs, startedAt) {
 		startedAt,
 		observationStatus: assertString(observed?.observationStatus, "observed.observationStatus"),
 		summary: assertString(observed?.summary, "observed.summary"),
-		loadedInstructionFiles: normalizeStringArray(
+		loadedInstructionFiles: normalizeObservedPathArray(
+			evaluation.workspace,
 			observed?.loadedInstructionFiles,
 			"observed.loadedInstructionFiles",
 		),
-		loadedSupportingFiles: normalizeStringArray(
+		loadedSupportingFiles: normalizeObservedPathArray(
+			evaluation.workspace,
 			observed?.loadedSupportingFiles,
 			"observed.loadedSupportingFiles",
 		),
@@ -304,11 +313,11 @@ function normalizeObservedCore(evaluation, observed, artifactRefs, startedAt) {
 	};
 }
 
-function normalizeObservedOptionalFields(observed, telemetry) {
+function normalizeObservedOptionalFields(workspace, observed, telemetry) {
 	const optionalFields = {};
 	const entryFile = nullableObservedString(observed?.entryFile, "observed.entryFile");
 	if (entryFile) {
-		optionalFields.entryFile = entryFile;
+		optionalFields.entryFile = relativizeObservedPath(workspace, entryFile);
 	}
 	const blockerKind = nullableObservedString(observed?.blockerKind, "observed.blockerKind");
 	if (blockerKind) {
@@ -383,7 +392,7 @@ export function normalizeObservedResult(evaluation, observed, artifactRefs, star
 	return {
 		...normalizeObservedCore(evaluation, observed, artifactRefs, startedAt),
 		...normalizeExpectedFields(evaluation),
-		...normalizeObservedOptionalFields(observed, telemetry),
+		...normalizeObservedOptionalFields(evaluation.workspace, observed, telemetry),
 	};
 }
 
@@ -505,14 +514,18 @@ function evaluateSurface(options, evaluation, fixtureResults) {
 	mkdirSync(caseDir, { recursive: true });
 	const materialized = materializeInstructionSurface(options, evaluation, caseDir);
 	const startedAt = new Date().toISOString();
+	const observedEvaluation = {
+		...evaluation,
+		workspace: options.workspace,
+	};
 	try {
 		let observed;
 		if (options.backend === "fixture") {
-			observed = runFixtureEvaluation(evaluation, fixtureResults, caseDir, startedAt);
+			observed = runFixtureEvaluation(observedEvaluation, fixtureResults, caseDir, startedAt);
 		} else if (options.backend === "claude_code") {
-			observed = runClaudeEvaluation(options, evaluation, caseDir, startedAt);
+			observed = runClaudeEvaluation(options, observedEvaluation, caseDir, startedAt);
 		} else {
-			observed = runCodexEvaluation(options, evaluation, caseDir, startedAt);
+			observed = runCodexEvaluation(options, observedEvaluation, caseDir, startedAt);
 		}
 		return {
 			...observed,
