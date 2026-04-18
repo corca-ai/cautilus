@@ -15,12 +15,18 @@
 
 ## Current State
 
-2026-04-18 세션 기준 public release 는 `v0.5.5` 이다.
-이번 세션에서는 `instruction-surface` contract 에서 bootstrap helper 와 durable work skill 을 분리하는 `#11` 을 구현했고, 그 변경을 `v0.5.5` 로 release 했다.
-그 다음 slice 에서는 repo-scope `doctor` ready payload 가 첫 bounded run 을 직접 handoff 하도록 보강했다.
-이전 세션에서 정리했던 `#5` 부터 `#10` 까지의 seam 은 유지한 채, instruction-surface summary 가 이제 bootstrap-heavy repo 도 honest 하게 표현할 수 있게 됐고, onboarding 도 `doctor ready` 뒤에서 덜 멈추게 됐다.
+2026-04-19 세션 기준 public release 는 여전히 `v0.5.5` 이다.
+이전 세션에서 `instruction-surface` split, `doctor` first bounded-run handoff, `#5` 부터 `#11` 까지의 seam 정리를 끝냈고, 이번 세션에서는 GEPA/optimize-search 쪽 계약과 구현을 다시 맞췄다.
+핵심은 세 가지다.
+첫째, adapter 가 이제 `optimize_search` 블록으로 repo별 `light` / `medium` / `heavy` budget preset 과 default tier 를 소유할 수 있다.
+둘째, canonical search packet 이 `searchConfigSources` 를 남겨 product default / adapter preset / explicit override 출처를 다시 열어볼 수 있다.
+셋째, Codex skill-test telemetry 는 이제 human stderr scraping 이 아니라 machine-readable `codex exec --json` stream 에서 provider / model / token totals 를 product-owned 로 보존한다.
+대신 이번 세션에서 명확히 한 것도 있다.
+현재 optimize-search runner 는 full GEPA 엔진이 아니다.
+packet 에는 merge toggle, three-parent policy, selection caps 같은 future intent 가 보존되지만, 현재 runner 가 실제로 소비하는 것은 one-seed plus one bounded mutation attempt, held-out reevaluation, telemetry-aware frontier ranking 까지다.
+문서도 이 경계에 맞춰 다시 honest 하게 줄였다.
 
-지금 기억할 product 상태는 아홉 묶음이다.
+지금 기억할 product 상태는 열한 묶음이다.
 
 1. `instruction-surface` 는 실제 shipped surface 다.
    `cautilus instruction-surface test` / `evaluate`, 전용 contracts, fixtures, self-dogfood adapter, routingDecision scoring 이 다 들어가 있다.
@@ -44,12 +50,20 @@
 9. repo-scope `doctor` ready payload 는 이제 `first_bounded_run` 을 직접 준다.
    여기에는 `cautilus scenarios --json` 과 같은 archetype catalog, 각 archetype 의 `exampleInputCli`, 그리고 starter `mode evaluate -> review prepare-input -> review variants` loop 가 같이 들어 있다.
    human-readable `cautilus scenarios` 출력, `README`, `install.md`, `docs/guides/consumer-adoption.md`, `docs/cli-reference.md`, bundled skill, packaged skill, executable specs 도 같은 seam 으로 맞춰 두었다.
+10. adapter 는 이제 optional `optimize_search` block 으로 repo-owned search preset 을 정의할 수 있다.
+    shared tier label 은 product 가 계속 소유하고, adapter 는 default tier, per-tier numeric limits, review checkpoint default, selection policy 를 override 한다.
+    canonical search packet 은 `searchConfigSources` 를 남겨 각 knob 가 product default / adapter default / adapter preset / explicit override 중 어디서 왔는지 보여 준다.
+11. Codex skill-test telemetry 는 이제 `codex exec --json` event stream 을 읽어 provider, model, prompt/completion/total tokens 를 product-owned 로 보존한다.
+    다만 `cost_usd` 는 아직 stable machine field 나 separately versioned derived-pricing seam 이 없으므로 비워 둔다.
+    optimize-search / GEPA 문서도 현재 구현 경계에 맞춰 줄였다.
+    merge, three-parent, selection-cap 은 packet 에 intent 를 보존하지만 current runner 는 아직 실제 merge candidate synthesis 나 cap-based finalist rejection 을 수행하지 않는다.
 
 ## Recent Commits
 
 최근 주요 커밋:
 
 ```text
+<pending> Adapter-own search presets and Codex telemetry truth
 60c36f3 Make doctor hand off the first bounded run
 7307206 Prepare v0.5.5 release
 9a98772 Separate bootstrap helpers from work-skill routing
@@ -118,21 +132,24 @@
 
 ## Next Session
 
-다음 세션은 release blocker 를 처리하는 세션이 아니라, `v0.5.5` 이후 onboarding 체감과 first bounded-run adoption 을 보는 세션이다.
+다음 세션의 우선순위는 onboarding 보다 GEPA truth surface 쪽이다.
+여러 external consumer 가 이미 잘 쓰고 있어서 onboarding 은 지금 즉시 불타는 seam 이 아니다.
+`doctor ready` 뒤에서 멈춘다는 fresh-consumer signal 이 다시 오기 전까지는 후순위로 둬도 된다.
 
-1. 새 consumer 가 여전히 `doctor ready` 뒤에서 멈춘다면, 여기서는 `first_bounded_run` payload, docs, temp-consumer smoke, archetype hints, starter loop 를 더 좁히는 쪽으로 계속 개선할 수 있다.
-   다만 무엇을 먼저 좁힐지는 outside signal 이 필요하다.
-   실제 consumer 가 어느 command 까지 갔는지, 어떤 adapter shape 에서 멈췄는지, 문서/doctor/first run 중 어디서 이탈했는지를 받아야 다음 우선순위를 정확히 고를 수 있다.
-2. 여러 named adapters 를 가진 consumer repo 에서 `#8` 류 repro 가 다시 오면, 여기서는 바로 diagnostics, fallback, regression test 추가를 할 수 있다.
+1. Codex cost 를 product-owned 하게 어디까지 끌어올릴지 결정한다.
+   지금은 machine-readable token totals 까지 정직하게 보존하고, cost 는 비워 둔다.
+   다음 slice 후보는 stable machine cost field 가 있는지 확인하는 것, 아니면 `tokscale` 류 pricing seam 을 참고해 separately versioned derived-cost surface 를 여는 것이다.
+   중요한 건 human stderr scraping 을 truth 로 승격하지 않는 것이다.
+2. optimize-search / deployment-evidence 의 experiment context 를 더 노골적으로 드러낼지 본다.
+   사용자가 실제로 알고 싶은 것은 어떤 adapter, baseline, profile/split, backend/model, target prompt, budget 으로 얼마를 써서 돌렸는지다.
+   지금도 packet 조각으로는 복원되지만 한 곳에서 요약되진 않는다.
+3. GEPA runner 자체를 더 키울지, 아니면 current bounded slice 를 유지할지 판단한다.
+   현재 구현은 one-seed plus one bounded mutation attempt 까지다.
+   true multi-generation execution, review-checkpoint runners, merge synthesis, selection-cap enforcement 은 아직 deferred 다.
+   다음에 키우려면 먼저 promise 를 어디까지 올릴지 다시 결정해야 한다.
+4. 여러 named adapters 를 가진 consumer repo 에서 `#8` 류 repro 가 다시 오면, 여기서는 바로 diagnostics, fallback, regression test 추가를 할 수 있다.
    다만 diagnosis 자체는 outside artifact 가 필요하다.
    최소한 `report.json` 의 `.adapterContext`, `optimize-input.json`, `optimize-search-input.json`, 그리고 기대한 adapter name/context 를 받아야 exact loss point 를 잡을 수 있다.
-3. onboarding 의 다음 설계 질문은 product-owned guidance 가 어디까지여야 하느냐다.
-   후보는 archetype 선택을 더 강하게 product-owned 하게 만드는 것, `first_bounded_run` 을 adapter-aware 하게 좁히는 것, 또는 `doctor ready` 다음 한 수를 더 작은 executable proof 로 바꾸는 것이다.
-   먼저 해볼 실험은 세 가지다.
-   첫째, `consumer:onboard:smoke` 의 proof floor 를 `doctor ready` 에서 `first bounded run completed` 로 올릴 수 있는지 본다.
-   둘째, generic `first_bounded_run` payload 와 adapter-aware next-step payload 를 비교해 어느 쪽이 실제 fresh consumer 에 더 덜 모호한지 본다.
-   셋째, `mode evaluate -> review` chain 이 정말 첫 bounded run 의 기본값이어야 하는지, 아니면 `instruction-surface test` / `skill test` 같은 narrower starter 가 더 honest 한지 비교한다.
-4. `charness` external proof 는 닫혔으므로, 이제 consumer-side unknown 은 bootstrap/work split 이 아니라 fresh-consumer first-run ergonomics 쪽으로 본다.
 
 ## Stop Checks
 
