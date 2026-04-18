@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "cautilus.instruction_surface_inputs.v1",
+  "suiteId": "instruction-surface-demo",
+  "suiteDisplayName": "Instruction Surface Demo",
+  "evaluations": [
+    {
+      "evaluationId": "checked-in-agents-routing",
+      "displayName": "Checked-in AGENTS routing",
+      "prompt": "Read the repo instructions first and decide how to route this task.",
+      "startedAt": "2026-04-18T00:00:00.000Z",
+      "observationStatus": "observed",
+      "summary": "Started from AGENTS.md, read the handoff note, and routed to discovery first.",
+      "entryFile": "AGENTS.md",
+      "loadedInstructionFiles": ["AGENTS.md"],
+      "loadedSupportingFiles": ["docs/internal/handoff.md"],
+      "routingDecision": {
+        "selectedSkill": "find-skills",
+        "firstToolCall": "find-skills --repo-root ."
+      },
+      "instructionSurface": {
+        "surfaceLabel": "workspace_checked_in",
+        "files": [
+          {
+            "path": "AGENTS.md",
+            "kind": "file",
+            "sourceKind": "workspace_default"
+          }
+        ]
+      },
+      "expectedEntryFile": "AGENTS.md",
+      "requiredInstructionFiles": ["AGENTS.md"],
+      "requiredSupportingFiles": ["docs/internal/handoff.md"],
+      "expectedRouting": {
+        "selectedSkill": "find-skills",
+        "firstToolCallPattern": "find-skills"
+      },
+      "artifactRefs": []
+    }
+  ]
+}

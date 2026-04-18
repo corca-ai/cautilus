@@ -2412,6 +2412,107 @@ JSON
 	}
 }
 
+func TestCLIInstructionSurfaceTestRunsAdapterCommandsAndWritesSummary(t *testing.T) {
+	root := t.TempDir()
+	adapterDir := filepath.Join(root, ".agents")
+	fixtureDir := filepath.Join(root, "fixtures", "instruction-surface")
+	outputDir := filepath.Join(root, "outputs")
+	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.MkdirAll(fixtureDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	scriptPath := filepath.Join(root, "instruction-surface-test.sh")
+	script := `#!/bin/sh
+cat <<'JSON' > "$1"
+{
+  "schemaVersion": "cautilus.instruction_surface_inputs.v1",
+  "suiteId": "instruction-surface-demo",
+  "evaluations": [
+    {
+      "evaluationId": "agents-routing",
+      "displayName": "agents-routing",
+      "prompt": "Read the repo instructions first and decide how to route this task.",
+      "startedAt": "2026-04-18T00:00:00.000Z",
+      "observationStatus": "observed",
+      "summary": "Started from AGENTS.md and routed to discovery first.",
+      "entryFile": "AGENTS.md",
+      "loadedInstructionFiles": ["AGENTS.md"],
+      "loadedSupportingFiles": ["docs/internal/handoff.md"],
+      "routingDecision": {
+        "selectedSkill": "find-skills",
+        "firstToolCall": "find-skills --repo-root ."
+      },
+      "instructionSurface": {
+        "surfaceLabel": "compact_agents",
+        "files": [
+          {
+            "path": "AGENTS.md",
+            "kind": "file",
+            "sourceKind": "workspace_default"
+          }
+        ]
+      },
+      "expectedEntryFile": "AGENTS.md",
+      "requiredInstructionFiles": ["AGENTS.md"],
+      "requiredSupportingFiles": ["docs/internal/handoff.md"],
+      "expectedRouting": {
+        "selectedSkill": "find-skills",
+        "firstToolCallPattern": "find-skills"
+      },
+      "artifactRefs": []
+    }
+  ]
+}
+JSON
+`
+	if err := os.WriteFile(scriptPath, []byte(script), 0o755); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	writeJSONFile(t, filepath.Join(fixtureDir, "cases.json"), map[string]any{
+		"schemaVersion": contracts.InstructionSurfaceCasesSchema,
+		"suiteId":       "instruction-surface-demo",
+		"evaluations": []map[string]any{
+			{
+				"evaluationId":             "agents-routing",
+				"prompt":                   "Read the repo instructions first and decide how to route this task.",
+				"expectedEntryFile":        "AGENTS.md",
+				"requiredInstructionFiles": []string{"AGENTS.md"},
+				"requiredSupportingFiles":  []string{"docs/internal/handoff.md"},
+				"expectedRouting": map[string]any{
+					"selectedSkill":        "find-skills",
+					"firstToolCallPattern": "find-skills",
+				},
+			},
+		},
+	})
+	if err := os.WriteFile(filepath.Join(adapterDir, "cautilus-adapter.yaml"), []byte(strings.Join([]string{
+		"version: 1",
+		"repo: temp",
+		"evaluation_surfaces:",
+		"  - instruction surface fidelity",
+		"baseline_options:",
+		"  - baseline git ref via {baseline_ref}",
+		"instruction_surface_cases_default: fixtures/instruction-surface/cases.json",
+		"instruction_surface_test_command_templates:",
+		"  - sh ./instruction-surface-test.sh {instruction_surface_input_file}",
+		"",
+	}, "\n")), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+
+	stdout, stderr, exitCode := runCLI(t, root, "instruction-surface", "test", "--repo-root", root, "--output-dir", outputDir)
+	if exitCode != 0 {
+		t.Fatalf("instruction-surface test failed: %s", stderr)
+	}
+	summaryPath := strings.TrimSpace(stdout)
+	summary := readJSONObjectFile(t, summaryPath)
+	if summary["schemaVersion"] != contracts.InstructionSurfaceSummarySchema || summary["recommendation"] != "accept-now" {
+		t.Fatalf("unexpected instruction-surface summary: %#v", summary)
+	}
+}
+
 func TestCLIExampleInputEmitsPacketsThatRoundTripThroughTheSameCommand(t *testing.T) {
 	cases := []struct {
 		name           string
@@ -2421,6 +2522,7 @@ func TestCLIExampleInputEmitsPacketsThatRoundTripThroughTheSameCommand(t *testin
 		{"chatbot", []string{"scenario", "normalize", "chatbot"}, contracts.ChatbotNormalizationInputsSchema},
 		{"skill", []string{"scenario", "normalize", "skill"}, contracts.SkillNormalizationInputsSchema},
 		{"workflow", []string{"scenario", "normalize", "workflow"}, contracts.WorkflowNormalizationInputsSchema},
+		{"instruction-surface-evaluate", []string{"instruction-surface", "evaluate"}, contracts.InstructionSurfaceInputsSchema},
 		{"skill-evaluate", []string{"skill", "evaluate"}, contracts.SkillEvaluationInputsSchema},
 	}
 

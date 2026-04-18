@@ -1,0 +1,110 @@
+{
+  "schemaVersion": "cautilus.instruction_surface_cases.v1",
+  "suiteId": "instruction-surface-demo",
+  "suiteDisplayName": "Instruction Surface Demo",
+  "evaluations": [
+    {
+      "evaluationId": "checked-in-agents-routing",
+      "displayName": "Checked-in AGENTS routing",
+      "prompt": "Read the repo instructions first and decide how to route this task.",
+      "expectedEntryFile": "AGENTS.md",
+      "requiredInstructionFiles": ["AGENTS.md"],
+      "requiredSupportingFiles": ["docs/internal/handoff.md"],
+      "expectedRouting": {
+        "selectedSkill": "find-skills",
+        "firstToolCallPattern": "find-skills"
+      }
+    },
+    {
+      "evaluationId": "claude-only-routing",
+      "displayName": "Root CLAUDE-only routing",
+      "prompt": "Read the repo instructions first and decide how to route this task.",
+      "instructionSurface": {
+        "surfaceLabel": "claude_only",
+        "files": [
+          {
+            "path": "CLAUDE.md",
+            "content": "# CLAUDE\n\nUse discovery-first routing.\n"
+          }
+        ]
+      },
+      "expectedEntryFile": "CLAUDE.md",
+      "requiredInstructionFiles": ["CLAUDE.md"],
+      "expectedRouting": {
+        "selectedSkill": "find-skills"
+      }
+    },
+    {
+      "evaluationId": "nested-override-routing",
+      "displayName": "Nested override routing",
+      "prompt": "Review the scoped task before deciding how to route it.",
+      "taskPath": "apps/demo",
+      "instructionSurface": {
+        "surfaceLabel": "nested_override",
+        "files": [
+          {
+            "path": "AGENTS.md",
+            "content": "# AGENTS\n\nRead nested overrides when the task path enters a scoped subtree.\n"
+          },
+          {
+            "path": "apps/demo/AGENTS.md",
+            "content": "# Nested AGENTS\n\nInside apps/demo, use discovery-first routing.\n"
+          }
+        ]
+      },
+      "expectedEntryFile": "AGENTS.md",
+      "requiredInstructionFiles": ["AGENTS.md", "apps/demo/AGENTS.md"],
+      "expectedRouting": {
+        "selectedSkill": "find-skills"
+      }
+    },
+    {
+      "evaluationId": "linked-doc-routing",
+      "displayName": "Linked follow-up doc routing",
+      "prompt": "Read the repo instructions first and decide how to route this task.",
+      "instructionSurface": {
+        "surfaceLabel": "linked_progressive_doc",
+        "files": [
+          {
+            "path": "AGENTS.md",
+            "content": "# AGENTS\n\nRead docs/internal/routing-note.md when the task is about routing fidelity.\n"
+          },
+          {
+            "path": "docs/internal/routing-note.md",
+            "content": "# Routing Note\n\nPrefer discovery-first routing before improvising a repo-local workflow.\n"
+          }
+        ]
+      },
+      "expectedEntryFile": "AGENTS.md",
+      "requiredInstructionFiles": ["AGENTS.md"],
+      "requiredSupportingFiles": ["docs/internal/routing-note.md"],
+      "expectedRouting": {
+        "selectedSkill": "find-skills"
+      }
+    },
+    {
+      "evaluationId": "claude-symlink-routing",
+      "displayName": "AGENTS symlink to CLAUDE",
+      "prompt": "Read the repo instructions first and decide how to route this task.",
+      "instructionSurface": {
+        "surfaceLabel": "claude_symlink",
+        "files": [
+          {
+            "path": "CLAUDE.md",
+            "content": "# CLAUDE\n\nUse discovery-first routing.\n"
+          },
+          {
+            "path": "AGENTS.md",
+            "kind": "symlink",
+            "targetPath": "CLAUDE.md"
+          }
+        ]
+      },
+      "expectedEntryFile": "AGENTS.md",
+      "requiredInstructionFiles": ["AGENTS.md", "CLAUDE.md"],
+      "expectedRouting": {
+        "selectedSkill": "find-skills"
+      }
+    }
+  ]
+}

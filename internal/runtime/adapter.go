@@ -32,6 +32,7 @@ var adapterStringListFields = []string{
 	"baseline_options",
 	"required_prerequisites",
 	"preflight_commands",
+	"instruction_surface_test_command_templates",
 	"skill_test_command_templates",
 	"iterate_command_templates",
 	"held_out_command_templates",
@@ -57,6 +58,7 @@ var adapterStringFields = []string{
 	"profile_default",
 	"default_prompt_file",
 	"default_schema_file",
+	"instruction_surface_cases_default",
 	"skill_cases_default",
 }
 
@@ -420,21 +422,22 @@ func numericDefaults(inferred map[string]any) map[string]any {
 func ScaffoldAdapter(repoRoot string, repoName string, scenario string) map[string]any {
 	inferred := InferRepoDefaults(repoRoot)
 	scaffold := map[string]any{
-		"version":                      1,
-		"repo":                         repoName,
-		"evaluation_surfaces":          []string{"prompt behavior", "workflow behavior"},
-		"baseline_options":             []string{"baseline git ref in the same repo via {baseline_ref}"},
-		"required_prerequisites":       []string{"choose a real baseline before comparing results"},
-		"preflight_commands":           stringArrayOrEmpty(inferred["preflight_commands"]),
-		"skill_test_command_templates": []string{},
-		"iterate_command_templates":    stringArrayOrEmpty(inferred["iterate_command_templates"]),
-		"held_out_command_templates":   stringArrayOrEmpty(inferred["held_out_command_templates"]),
-		"comparison_command_templates": stringArrayOrEmpty(inferred["comparison_command_templates"]),
-		"full_gate_command_templates":  stringArrayOrEmpty(inferred["full_gate_command_templates"]),
-		"executor_variants":            []any{},
-		"artifact_paths":               []any{},
-		"report_paths":                 stringArrayOrEmpty(inferred["report_paths"]),
-		"comparison_questions":         []string{"Which scenarios improved, regressed, or stayed noisy after repeated samples?"},
+		"version":                1,
+		"repo":                   repoName,
+		"evaluation_surfaces":    []string{"prompt behavior", "workflow behavior"},
+		"baseline_options":       []string{"baseline git ref in the same repo via {baseline_ref}"},
+		"required_prerequisites": []string{"choose a real baseline before comparing results"},
+		"preflight_commands":     stringArrayOrEmpty(inferred["preflight_commands"]),
+		"instruction_surface_test_command_templates": []string{},
+		"skill_test_command_templates":               []string{},
+		"iterate_command_templates":                  stringArrayOrEmpty(inferred["iterate_command_templates"]),
+		"held_out_command_templates":                 stringArrayOrEmpty(inferred["held_out_command_templates"]),
+		"comparison_command_templates":               stringArrayOrEmpty(inferred["comparison_command_templates"]),
+		"full_gate_command_templates":                stringArrayOrEmpty(inferred["full_gate_command_templates"]),
+		"executor_variants":                          []any{},
+		"artifact_paths":                             []any{},
+		"report_paths":                               stringArrayOrEmpty(inferred["report_paths"]),
+		"comparison_questions":                       []string{"Which scenarios improved, regressed, or stayed noisy after repeated samples?"},
 		"human_review_prompts": []any{map[string]any{
 			"id":     "real-user",
 			"prompt": "Where would a real user still judge the candidate worse despite benchmark wins?",
@@ -584,6 +587,7 @@ func DoctorRepo(repoRoot string, adapterPath *string, adapterName *string) (map[
 	appendFieldCheck(&checks, &suggestions, "evaluation_surfaces", len(stringArrayOrEmpty(data["evaluation_surfaces"])) > 0, "Adapter declares evaluation surfaces.", "Adapter is missing evaluation_surfaces.", "Add at least one evaluation_surfaces entry that states what the adapter judges.")
 	appendFieldCheck(&checks, &suggestions, "baseline_options", len(stringArrayOrEmpty(data["baseline_options"])) > 0, "Adapter declares baseline options.", "Adapter is missing baseline_options.", "Add at least one baseline_options entry so comparisons stay explicit.")
 	automatedCommands := len(stringArrayOrEmpty(data["iterate_command_templates"])) > 0 ||
+		len(stringArrayOrEmpty(data["instruction_surface_test_command_templates"])) > 0 ||
 		len(stringArrayOrEmpty(data["skill_test_command_templates"])) > 0 ||
 		len(stringArrayOrEmpty(data["held_out_command_templates"])) > 0 ||
 		len(stringArrayOrEmpty(data["comparison_command_templates"])) > 0 ||
@@ -714,6 +718,7 @@ func adapterLooksDeterministicOnly(data map[string]any) bool {
 	}
 	commands := []string{}
 	for _, key := range []string{
+		"instruction_surface_test_command_templates",
 		"skill_test_command_templates",
 		"iterate_command_templates",
 		"held_out_command_templates",

@@ -133,7 +133,21 @@ cautilus scenario summarize-telemetry \
   --results ./fixtures/scenario-results/example-results.json
 ```
 
-Every normalize command plus `cautilus skill evaluate` accepts `--example-input`: it prints a minimal valid packet to stdout that can be piped back into the same command, so operators can inspect the expected shape without clicking into a fixture on GitHub.
+Every normalize command plus `cautilus skill evaluate` and `cautilus instruction-surface evaluate` accepts `--example-input`: it prints a minimal valid packet to stdout that can be piped back into the same command, so operators can inspect the expected shape without clicking into a fixture on GitHub.
+
+## Instruction surface
+
+```bash
+# run one checked-in instruction-surface suite through an adapter-owned runner
+cautilus instruction-surface test \
+  --repo-root . \
+  --adapter-name self-dogfood-instruction-surface
+
+# evaluate one normalized instruction-surface packet
+cautilus instruction-surface evaluate \
+  --input ./fixtures/instruction-surface/input.json \
+  --output /tmp/cautilus-instruction-surface-summary.json
+```
 
 ## Skill testing & evaluation
 

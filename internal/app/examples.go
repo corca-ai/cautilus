@@ -71,6 +71,48 @@ const skillEvaluateExampleInput = `{
 }
 `
 
+const instructionSurfaceEvaluateExampleInput = `{
+  "schemaVersion": "cautilus.instruction_surface_inputs.v1",
+  "suiteId": "instruction-surface-example",
+  "suiteDisplayName": "Instruction Surface Example",
+  "evaluations": [
+    {
+      "evaluationId": "compact-agents-routing",
+      "displayName": "Compact AGENTS routing",
+      "prompt": "Read the repo instructions first and decide how to route this task.",
+      "startedAt": "2026-04-18T00:00:00.000Z",
+      "observationStatus": "observed",
+      "summary": "Started from AGENTS.md and chose discovery-first routing.",
+      "entryFile": "AGENTS.md",
+      "loadedInstructionFiles": ["AGENTS.md"],
+      "loadedSupportingFiles": ["docs/internal/handoff.md"],
+      "routingDecision": {
+        "selectedSkill": "find-skills",
+        "firstToolCall": "find-skills --repo-root ."
+      },
+      "instructionSurface": {
+        "surfaceLabel": "compact_agents",
+        "files": [
+          {
+            "path": "AGENTS.md",
+            "kind": "file",
+            "sourceKind": "workspace_default"
+          }
+        ]
+      },
+      "expectedEntryFile": "AGENTS.md",
+      "requiredInstructionFiles": ["AGENTS.md"],
+      "requiredSupportingFiles": ["docs/internal/handoff.md"],
+      "expectedRouting": {
+        "selectedSkill": "find-skills",
+        "firstToolCallPattern": "find-skills"
+      },
+      "artifactRefs": []
+    }
+  ]
+}
+`
+
 func hasExampleInputFlag(args []string) bool {
 	for _, arg := range args {
 		if arg == "--example-input" {

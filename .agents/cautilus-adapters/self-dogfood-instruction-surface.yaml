@@ -1,0 +1,29 @@
+version: 1
+repo: cautilus
+evaluation_surfaces:
+  - instruction surface fidelity across AGENTS.md, CLAUDE.md, nested overrides, linked docs, and symlink entrypoints
+baseline_options:
+  - baseline git ref in the same repo via {baseline_ref}
+required_prerequisites:
+  - keep the candidate workspace on the exact checkout under evaluation
+preflight_commands:
+  - ./bin/cautilus doctor --repo-root . --scope agent-surface
+instruction_surface_cases_default: fixtures/instruction-surface/cases.json
+instruction_surface_test_command_templates:
+  - node ./scripts/agent-runtime/run-local-instruction-surface-test.mjs --repo-root . --workspace {candidate_repo} --cases-file {instruction_surface_cases_file} --output-file {instruction_surface_input_file} --artifact-dir {output_dir}/instruction-surface-test --backend {backend} --sandbox read-only --timeout-ms 180000 --codex-model gpt-5.4-mini --codex-reasoning-effort low --claude-permission-mode dontAsk
+artifact_paths:
+  - AGENTS.md
+  - docs/internal/handoff.md
+  - docs/specs/instruction-surface.spec.md
+  - docs/contracts/instruction-surface.md
+  - fixtures/instruction-surface/cases.json
+  - scripts/agent-runtime/run-local-instruction-surface-test.mjs
+comparison_questions:
+  - Does the current instruction surface help the agent start from the right entry file before improvising a repo-local workflow?
+  - Do nested overrides and linked follow-up docs change first routing behavior without inflating scoped rules into repo-wide policy?
+  - Does the current instruction surface keep ambiguous routing prompts on the discovery-first path instead of over-eager direct skill selection?
+human_review_prompts:
+  - id: entry-surface
+    prompt: Where would an operator still conclude that AGENTS.md or CLAUDE.md is not being treated as a trustworthy entry instruction surface?
+  - id: scope-boundary
+    prompt: Where would an operator still conclude that nested instruction overrides or linked follow-up docs leak beyond their intended scope?

@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cautilus.instruction_surface_summary.v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "suiteId",
+    "evaluatedAt",
+    "recommendation",
+    "evaluationCounts",
+    "surfaceSummary",
+    "routingSummary",
+    "variantSummaries",
+    "evaluations"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "cautilus.instruction_surface_summary.v1"
+    },
+    "suiteId": { "type": "string" },
+    "suiteDisplayName": { "type": "string" },
+    "evaluatedAt": { "type": "string" },
+    "recommendation": {
+      "type": "string",
+      "enum": ["accept-now", "defer", "reject"]
+    },
+    "evaluationCounts": {
+      "type": "object",
+      "required": ["total", "passed", "failed", "blocked"],
+      "properties": {
+        "total": { "type": "integer", "minimum": 0 },
+        "passed": { "type": "integer", "minimum": 0 },
+        "failed": { "type": "integer", "minimum": 0 },
+        "blocked": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "surfaceSummary": {
+      "type": "object",
+      "required": [
+        "entryFileMatches",
+        "entryFileMismatches",
+        "requiredInstructionFileMisses",
+        "forbiddenInstructionFileViolations",
+        "requiredSupportingFileMisses",
+        "forbiddenSupportingFileViolations"
+      ],
+      "properties": {
+        "entryFileMatches": { "type": "integer", "minimum": 0 },
+        "entryFileMismatches": { "type": "integer", "minimum": 0 },
+        "requiredInstructionFileMisses": { "type": "integer", "minimum": 0 },
+        "forbiddenInstructionFileViolations": { "type": "integer", "minimum": 0 },
+        "requiredSupportingFileMisses": { "type": "integer", "minimum": 0 },
+        "forbiddenSupportingFileViolations": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "routingSummary": {
+      "type": "object",
+      "required": [
+        "evaluationsWithRoutingDecision",
+        "evaluationsWithExpectedRoute",
+        "matchedExpectedRoute",
+        "mismatchedExpectedRoute",
+        "selectedSkillCounts"
+      ],
+      "properties": {
+        "evaluationsWithRoutingDecision": { "type": "integer", "minimum": 0 },
+        "evaluationsWithExpectedRoute": { "type": "integer", "minimum": 0 },
+        "matchedExpectedRoute": { "type": "integer", "minimum": 0 },
+        "mismatchedExpectedRoute": { "type": "integer", "minimum": 0 },
+        "selectedSkillCounts": { "type": "object" }
+      }
+    },
+    "variantSummaries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "surfaceLabel",
+          "evaluationCounts",
+          "selectedSkillCounts",
+          "matchedExpectedRoute",
+          "mismatchedExpectedRoute"
+        ],
+        "properties": {
+          "surfaceLabel": { "type": "string" },
+          "evaluationCounts": { "type": "object" },
+          "selectedSkillCounts": { "type": "object" },
+          "matchedExpectedRoute": { "type": "integer", "minimum": 0 },
+          "mismatchedExpectedRoute": { "type": "integer", "minimum": 0 }
+        }
+      }
+    },
+    "evaluations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["evaluationId", "status", "surface", "summary"],
+        "properties": {
+          "evaluationId": { "type": "string" },
+          "status": {
+            "type": "string",
+            "enum": ["passed", "failed", "blocked"]
+          },
+          "surface": { "type": "string" },
+          "summary": { "type": "string" }
+        }
+      }
+    }
+  }
+}

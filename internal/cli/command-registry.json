@@ -37,6 +37,18 @@
       "example": "cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json"
     },
     {
+      "path": ["instruction-surface", "test"],
+      "group": "run",
+      "usage": "cautilus instruction-surface test [args]",
+      "example": "cautilus instruction-surface test --repo-root . --adapter-name self-dogfood-instruction-surface"
+    },
+    {
+      "path": ["instruction-surface", "evaluate"],
+      "group": "run",
+      "usage": "cautilus instruction-surface evaluate [args]",
+      "example": "cautilus instruction-surface evaluate --input ./fixtures/instruction-surface/input.json"
+    },
+    {
       "path": ["skill", "test"],
       "group": "run",
       "usage": "cautilus skill test [args]",

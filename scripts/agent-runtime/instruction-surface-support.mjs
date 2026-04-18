@@ -1,0 +1,240 @@
+import {
+	existsSync,
+	lstatSync,
+	mkdirSync,
+	readFileSync,
+	readlinkSync,
+	rmSync,
+	symlinkSync,
+	writeFileSync,
+} from "node:fs";
+import { dirname, join, resolve } from "node:path";
+import process from "node:process";
+
+function assertObject(value, field) {
+	if (!value || typeof value !== "object" || Array.isArray(value)) {
+		throw new Error(`${field} must be an object`);
+	}
+	return value;
+}
+
+function assertString(value, field) {
+	if (typeof value !== "string" || !value.trim()) {
+		throw new Error(`${field} must be a non-empty string`);
+	}
+	return value;
+}
+
+function optionalString(value, field) {
+	if (value === undefined || value === null) {
+		return null;
+	}
+	return assertString(value, field);
+}
+
+export function artifactRef(kind, path) {
+	return { kind, path };
+}
+
+export function normalizeRoutingDecision(value, field = "observed.routingDecision") {
+	if (value === undefined || value === null) {
+		return {};
+	}
+	const record = assertObject(value, field);
+	const normalized = {};
+	for (const key of ["selectedSkill", "selectedSupport", "firstToolCall", "reasonSummary"]) {
+		const text = optionalString(record[key], `${field}.${key}`);
+		if (text) {
+			normalized[key] = text;
+		}
+	}
+	return normalized;
+}
+
+export function backendFailureResult(message, durationMs, artifactRefs) {
+	return {
+		observationStatus: "blocked",
+		blockerKind: "runner_execution_failed",
+		summary: message,
+		loadedInstructionFiles: [],
+		loadedSupportingFiles: [],
+		routingDecision: {
+			reasonSummary: message,
+		},
+		metrics: {
+			duration_ms: durationMs,
+		},
+		artifactRefs,
+	};
+}
+
+function safeWorkspacePath(workspace, relativePath) {
+	const trimmed = assertString(relativePath, "instruction surface file path");
+	const resolved = resolve(workspace, trimmed);
+	const workspaceRoot = `${resolve(workspace)}${process.platform === "win32" ? "\\" : "/"}`;
+	if (resolved !== resolve(workspace) && !resolved.startsWith(workspaceRoot)) {
+		throw new Error(`instruction surface path escapes workspace: ${relativePath}`);
+	}
+	return resolved;
+}
+
+function artifactPathForFile(outputDir, relativePath, suffix = "") {
+	return join(outputDir, "instruction-surface", `${relativePath}${suffix}`);
+}
+
+function writeInstructionArtifact(outputDir, relativePath, content, suffix = "") {
+	const artifactPath = artifactPathForFile(outputDir, relativePath, suffix);
+	mkdirSync(dirname(artifactPath), { recursive: true });
+	writeFileSync(artifactPath, content, "utf-8");
+	return artifactPath;
+}
+
+function captureWorkspaceInstructionFiles(workspace, outputDir) {
+	const files = [];
+	const artifactRefs = [];
+	for (const relativePath of ["AGENTS.md", "CLAUDE.md"]) {
+		const workspacePath = join(workspace, relativePath);
+		if (!existsSync(workspacePath)) {
+			continue;
+		}
+		const stat = lstatSync(workspacePath);
+		if (stat.isDirectory()) {
+			continue;
+		}
+		if (stat.isSymbolicLink()) {
+			const targetPath = readlinkSync(workspacePath);
+			const artifactPath = writeInstructionArtifact(outputDir, relativePath, `${targetPath}\n`, ".symlink.txt");
+			files.push({
+				path: relativePath,
+				kind: "symlink",
+				sourceKind: "workspace_default",
+				targetPath,
+				artifactPath,
+			});
+			artifactRefs.push(artifactRef("instruction_surface", artifactPath));
+			continue;
+		}
+		const content = readFileSync(workspacePath, "utf-8");
+		const artifactPath = writeInstructionArtifact(outputDir, relativePath, content);
+		files.push({
+			path: relativePath,
+			kind: "file",
+			sourceKind: "workspace_default",
+			artifactPath,
+		});
+		artifactRefs.push(artifactRef("instruction_surface", artifactPath));
+	}
+	return {
+		instructionSurface: {
+			surfaceLabel: "workspace_checked_in",
+			files,
+		},
+		artifactRefs,
+		restore() {},
+	};
+}
+
+function snapshotWorkspaceEntry(workspacePath) {
+	if (!existsSync(workspacePath)) {
+		return { kind: "missing", workspacePath };
+	}
+	const stat = lstatSync(workspacePath);
+	if (stat.isDirectory()) {
+		throw new Error(`instruction surface path points to a directory: ${workspacePath}`);
+	}
+	if (stat.isSymbolicLink()) {
+		return {
+			kind: "symlink",
+			workspacePath,
+			targetPath: readlinkSync(workspacePath),
+		};
+	}
+	return {
+		kind: "file",
+		workspacePath,
+		content: readFileSync(workspacePath),
+	};
+}
+
+function restoreWorkspaceEntry(snapshot) {
+	rmSync(snapshot.workspacePath, { force: true, recursive: false });
+	if (snapshot.kind === "missing") {
+		return;
+	}
+	mkdirSync(dirname(snapshot.workspacePath), { recursive: true });
+	if (snapshot.kind === "symlink") {
+		symlinkSync(snapshot.targetPath, snapshot.workspacePath);
+		return;
+	}
+	writeFileSync(snapshot.workspacePath, snapshot.content);
+}
+
+function resolveInstructionContent(casesFile, file) {
+	if (file.content) {
+		return {
+			content: file.content,
+			sourceKind: "inline",
+			sourceFile: null,
+		};
+	}
+	const sourceFile = resolve(dirname(casesFile), file.sourceFile);
+	return {
+		content: readFileSync(sourceFile, "utf-8"),
+		sourceKind: "source_file",
+		sourceFile,
+	};
+}
+
+export function materializeInstructionSurface(options, evaluation, outputDir) {
+	if (!evaluation.instructionSurface) {
+		return captureWorkspaceInstructionFiles(options.workspace, outputDir);
+	}
+	const backups = [];
+	const files = [];
+	const artifactRefs = [];
+	for (const file of evaluation.instructionSurface.files) {
+		const workspacePath = safeWorkspacePath(options.workspace, file.path);
+		backups.push(snapshotWorkspaceEntry(workspacePath));
+		rmSync(workspacePath, { force: true, recursive: false });
+		mkdirSync(dirname(workspacePath), { recursive: true });
+		if (file.kind === "symlink") {
+			symlinkSync(file.targetPath, workspacePath);
+			const artifactPath = writeInstructionArtifact(outputDir, file.path, `${file.targetPath}\n`, ".symlink.txt");
+			files.push({
+				path: file.path,
+				kind: "symlink",
+				sourceKind: "inline_symlink",
+				targetPath: file.targetPath,
+				artifactPath,
+			});
+			artifactRefs.push(artifactRef("instruction_surface", artifactPath));
+			continue;
+		}
+		const resolved = resolveInstructionContent(options.casesFile, file);
+		writeFileSync(workspacePath, resolved.content, "utf-8");
+		const artifactPath = writeInstructionArtifact(outputDir, file.path, resolved.content);
+		files.push({
+			path: file.path,
+			kind: "file",
+			sourceKind: resolved.sourceKind,
+			...(resolved.sourceFile ? { sourceFile: resolved.sourceFile } : {}),
+			artifactPath,
+		});
+		artifactRefs.push(artifactRef("instruction_surface", artifactPath));
+		if (resolved.sourceFile) {
+			artifactRefs.push(artifactRef("instruction_surface_source", resolved.sourceFile));
+		}
+	}
+	return {
+		instructionSurface: {
+			surfaceLabel: evaluation.instructionSurface.surfaceLabel,
+			files,
+		},
+		artifactRefs,
+		restore() {
+			for (const snapshot of backups.reverse()) {
+				restoreWorkspaceEntry(snapshot);
+			}
+		},
+	};
+}

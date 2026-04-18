@@ -1,0 +1,59 @@
+{
+  "checked-in-agents-routing": {
+    "observationStatus": "observed",
+    "summary": "Started from AGENTS.md, read the handoff note, and routed to discovery first.",
+    "entryFile": "AGENTS.md",
+    "loadedInstructionFiles": ["AGENTS.md"],
+    "loadedSupportingFiles": ["docs/internal/handoff.md"],
+    "routingDecision": {
+      "selectedSkill": "find-skills",
+      "firstToolCall": "find-skills --repo-root .",
+      "reasonSummary": "The prompt was ambiguous, so the repo instruction surface said to discover available skills first."
+    }
+  },
+  "claude-only-routing": {
+    "observationStatus": "observed",
+    "summary": "Started from CLAUDE.md and chose discovery-first routing.",
+    "entryFile": "CLAUDE.md",
+    "loadedInstructionFiles": ["CLAUDE.md"],
+    "loadedSupportingFiles": [],
+    "routingDecision": {
+      "selectedSkill": "find-skills",
+      "reasonSummary": "The root instruction surface only exposed CLAUDE.md and it directed discovery-first routing."
+    }
+  },
+  "nested-override-routing": {
+    "observationStatus": "observed",
+    "summary": "Read the root instruction file and then the scoped nested override before routing.",
+    "entryFile": "AGENTS.md",
+    "loadedInstructionFiles": ["AGENTS.md", "apps/demo/AGENTS.md"],
+    "loadedSupportingFiles": [],
+    "routingDecision": {
+      "selectedSkill": "find-skills",
+      "reasonSummary": "The nested override confirmed that the scoped subtree should still start with shared-skill discovery."
+    }
+  },
+  "linked-doc-routing": {
+    "observationStatus": "observed",
+    "summary": "Started from AGENTS.md, followed the linked routing note, and routed to discovery.",
+    "entryFile": "AGENTS.md",
+    "loadedInstructionFiles": ["AGENTS.md"],
+    "loadedSupportingFiles": ["docs/internal/routing-note.md"],
+    "routingDecision": {
+      "selectedSkill": "find-skills",
+      "selectedSupport": "docs/internal/routing-note.md",
+      "reasonSummary": "The linked follow-up doc made the discovery-first preference explicit for routing fidelity work."
+    }
+  },
+  "claude-symlink-routing": {
+    "observationStatus": "observed",
+    "summary": "Entered through AGENTS.md, resolved the symlink target, and routed to discovery first.",
+    "entryFile": "AGENTS.md",
+    "loadedInstructionFiles": ["AGENTS.md", "CLAUDE.md"],
+    "loadedSupportingFiles": [],
+    "routingDecision": {
+      "selectedSkill": "find-skills",
+      "reasonSummary": "The AGENTS symlink delegated to CLAUDE.md, which still directed discovery-first routing."
+    }
+  }
+}

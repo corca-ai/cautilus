@@ -173,6 +173,10 @@ func nativeHandler(path []string) handlerFunc {
 		return handleSelfDogfoodRenderHTML
 	case "self-dogfood render-experiments-html":
 		return handleSelfDogfoodRenderExperimentsHTML
+	case "instruction-surface test":
+		return handleInstructionSurfaceTest
+	case "instruction-surface evaluate":
+		return handleInstructionSurfaceEvaluate
 	case "skill test":
 		return handleSkillTest
 	case "scenario normalize chatbot":
@@ -740,6 +744,34 @@ func handleSkillEvaluate(repoRoot string, cwd string, args []string, stdout io.W
 		return 1
 	}
 	summary, err := runtime.BuildSkillEvaluationSummary(input, time.Now())
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	if err := writeOutput(stdout, cwd, options.output, summary); err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	return 0
+}
+
+//nolint:errcheck // CLI stderr reporting is best-effort.
+func handleInstructionSurfaceEvaluate(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	if hasExampleInputFlag(args) {
+		fmt.Fprint(stdout, instructionSurfaceEvaluateExampleInput)
+		return 0
+	}
+	options, err := parseInputOutputArgs(args)
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	input, err := readJSONObject(resolvePath(cwd, options.input))
+	if err != nil {
+		fmt.Fprintf(stderr, "Failed to read JSON from %s: %s\n", options.input, err)
+		return 1
+	}
+	summary, err := runtime.BuildInstructionSurfaceSummary(input, time.Now())
 	if err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1

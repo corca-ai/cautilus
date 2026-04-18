@@ -34,6 +34,11 @@ func TestExampleInputConstantsValidateAgainstPublishedSchemas(t *testing.T) {
 			example:  skillEvaluateExampleInput,
 			schemaAt: filepath.Join("..", "..", "fixtures", "skill-evaluation", "input.schema.json"),
 		},
+		{
+			name:     "instruction_surface_evaluate",
+			example:  instructionSurfaceEvaluateExampleInput,
+			schemaAt: filepath.Join("..", "..", "fixtures", "instruction-surface", "input.schema.json"),
+		},
 	}
 
 	for _, tc := range cases {
