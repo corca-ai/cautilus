@@ -23,7 +23,7 @@
 셋째, Codex skill-test telemetry 는 이제 human stderr scraping 이 아니라 machine-readable `codex exec --json` stream 에서 provider / model / token totals 를 product-owned 로 보존한다.
 대신 이번 세션에서 명확히 한 것도 있다.
 현재 optimize-search runner 는 full GEPA 엔진이 아니다.
-packet 에는 merge toggle, three-parent policy, selection caps 같은 future intent 가 보존되지만, 현재 runner 가 실제로 소비하는 것은 one-seed plus one bounded mutation attempt, held-out reevaluation, telemetry-aware frontier ranking 까지다.
+packet 에는 merge toggle, three-parent policy, selection caps 같은 future intent 가 보존되지만, 현재 runner 가 실제로 소비하는 것은 one-seed plus bounded frontier-following multi-generation mutation, held-out reevaluation, telemetry-aware frontier ranking 까지다.
 문서도 이 경계에 맞춰 다시 honest 하게 줄였다.
 
 지금 기억할 product 상태는 열한 묶음이다.
@@ -54,7 +54,7 @@ packet 에는 merge toggle, three-parent policy, selection caps 같은 future in
     shared tier label 은 product 가 계속 소유하고, adapter 는 default tier, per-tier numeric limits, review checkpoint default, selection policy 를 override 한다.
     canonical search packet 은 `searchConfigSources` 를 남겨 각 knob 가 product default / adapter default / adapter preset / explicit override 중 어디서 왔는지 보여 준다.
 11. Codex skill-test telemetry 는 이제 `codex exec --json` event stream 을 읽어 provider, model, prompt/completion/total tokens 를 product-owned 로 보존한다.
-    다만 `cost_usd` 는 아직 stable machine field 나 separately versioned derived-pricing seam 이 없으므로 비워 둔다.
+    supported OpenAI Codex models 에 대해서는 checked-in pricing catalog 로 `cost_usd` 를 derived 하며, `cost_truth=derived_pricing`, `pricing_source`, `pricing_version` 도 같이 남긴다.
     optimize-search / GEPA 문서도 현재 구현 경계에 맞춰 줄였다.
     merge, three-parent, selection-cap 은 packet 에 intent 를 보존하지만 current runner 는 아직 실제 merge candidate synthesis 나 cap-based finalist rejection 을 수행하지 않는다.
 12. optimize-search result 는 이제 result-only reader 를 위한 얇은 experiment summary surface 를 같이 낸다.
@@ -146,8 +146,8 @@ packet 에는 merge toggle, three-parent policy, selection caps 같은 future in
    optimize-search result 자체에는 이제 result-only summary 면이 생겼다.
    다음 질문은 deployment-evidence 나 다른 surface 들도 같은 수준의 context summary 를 가져야 하는지다.
 3. GEPA runner 자체를 더 키울지, 아니면 current bounded slice 를 유지할지 판단한다.
-   현재 구현은 one-seed plus one bounded mutation attempt 까지다.
-   true multi-generation execution, review-checkpoint runners, merge synthesis, selection-cap enforcement 은 아직 deferred 다.
+   현재 구현은 one-seed plus bounded frontier-following multi-generation mutation 까지다.
+   batch mutation, review-checkpoint runners, merge synthesis, selection-cap enforcement 은 아직 deferred 다.
    다음에 키우려면 먼저 promise 를 어디까지 올릴지 다시 결정해야 한다.
 4. 여러 named adapters 를 가진 consumer repo 에서 `#8` 류 repro 가 다시 오면, 여기서는 바로 diagnostics, fallback, regression test 추가를 할 수 있다.
    다만 diagnosis 자체는 outside artifact 가 필요하다.

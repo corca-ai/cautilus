@@ -510,20 +510,57 @@ func RunOptimizeSearch(packet map[string]any, inputFile string, now time.Time) m
 	candidates := []map[string]any{seedCandidate}
 	generationSummaries := []any{}
 	stopReason := "seed_only"
+	mutationInvocations := 0
+	generationLimit := optimizeSearchConfigInt(packet, "generationLimit", 1)
+	populationLimit := optimizeSearchConfigInt(packet, "populationLimit", generationLimit+1)
 
-	if candidate, err := optimizeSearchEvaluateMutation(packet, inputFile); err == nil && candidate != nil {
-		candidates = append(candidates, candidate)
-		stopReason = "generation_limit"
+	for generationIndex := 1; generationIndex <= generationLimit; generationIndex++ {
+		if len(candidates) >= populationLimit {
+			stopReason = "population_limit"
+			break
+		}
 		matrix := optimizeSearchHeldOutMatrix(candidates)
 		scenarioIDs := optimizeSearchScenarioIDs(packet, matrix)
-		frontierIDs := optimizeSearchFrontierCandidateIDs(matrix, optimizeSearchCandidateIDs(candidates), scenarioIDs)
+		candidateIDs := optimizeSearchCandidateIDs(candidates)
+		parentFrontierIDs := optimizeSearchFrontierCandidateIDs(matrix, candidateIDs, scenarioIDs)
+		rankedParentFrontierIDs := optimizeSearchRankCandidateIDs(parentFrontierIDs, matrix, candidates, scenarioIDs)
+		parentCandidate := optimizeSearchPreferredCandidate(candidates, rankedParentFrontierIDs)
+		if parentCandidate == nil {
+			if len(generationSummaries) > 0 {
+				stopReason = "mutation_unavailable"
+			}
+			break
+		}
+		mutationInvocations++
+		candidate, err := optimizeSearchEvaluateMutation(packet, inputFile, optimizeSearchMutationOptions{
+			GenerationIndex: generationIndex,
+			AttemptIndex:    1,
+			ParentCandidate: parentCandidate,
+		})
+		if err != nil || candidate == nil {
+			if len(generationSummaries) > 0 {
+				stopReason = "mutation_unavailable"
+			}
+			break
+		}
+		candidates = append(candidates, candidate)
+		updatedMatrix := optimizeSearchHeldOutMatrix(candidates)
+		updatedScenarioIDs := optimizeSearchScenarioIDs(packet, updatedMatrix)
+		updatedFrontierIDs := optimizeSearchFrontierCandidateIDs(updatedMatrix, optimizeSearchCandidateIDs(candidates), updatedScenarioIDs)
 		generationSummaries = append(generationSummaries, map[string]any{
-			"generationIndex":            1,
-			"parentFrontierCandidateIds": []any{"seed"},
+			"generationIndex":            generationIndex,
+			"parentFrontierCandidateIds": stringSliceToAny(parentFrontierIDs),
 			"proposedCandidateIds":       []any{candidate["id"]},
 			"promotedCandidateIds":       []any{candidate["id"]},
-			"frontierCandidateIds":       stringSliceToAny(frontierIDs),
+			"frontierCandidateIds":       stringSliceToAny(updatedFrontierIDs),
 		})
+		if len(candidates) >= populationLimit {
+			stopReason = "population_limit"
+			break
+		}
+		if generationIndex == generationLimit {
+			stopReason = "generation_limit"
+		}
 	}
 
 	matrix := optimizeSearchHeldOutMatrix(candidates)
@@ -588,8 +625,8 @@ func RunOptimizeSearch(packet map[string]any, inputFile string, now time.Time) m
 		"searchTelemetry": map[string]any{
 			"candidateCount":          len(candidates),
 			"generationCount":         len(generationSummaries),
-			"mutationInvocationCount": maxInt(0, len(candidates)-1),
-			"heldOutEvaluationCount":  1 + maxInt(0, len(candidates)-1),
+			"mutationInvocationCount": mutationInvocations,
+			"heldOutEvaluationCount":  len(candidates),
 			"reviewCheckpointCount":   0,
 			"stopReason":              stopReason,
 		},
@@ -873,7 +910,13 @@ func optimizeSearchSeedCandidate(packet map[string]any, heldOutEntries []map[str
 	}
 }
 
-func optimizeSearchEvaluateMutation(packet map[string]any, inputFile string) (map[string]any, error) {
+type optimizeSearchMutationOptions struct {
+	GenerationIndex int
+	AttemptIndex    int
+	ParentCandidate map[string]any
+}
+
+func optimizeSearchEvaluateMutation(packet map[string]any, inputFile string, options optimizeSearchMutationOptions) (map[string]any, error) {
 	if !optimizeSearchCanRunMutation(packet) {
 		return nil, fmt.Errorf("mutation prerequisites missing")
 	}
@@ -887,7 +930,10 @@ func optimizeSearchEvaluateMutation(packet map[string]any, inputFile string) (ma
 	if backend == "" {
 		return nil, fmt.Errorf("mutation backend unavailable")
 	}
-	candidateID := "g1-1-" + strings.ReplaceAll(strings.ReplaceAll(backend, "_", "-"), " ", "-")
+	generationIndex := maxInt(1, options.GenerationIndex)
+	attemptIndex := maxInt(1, options.AttemptIndex)
+	parentCandidate := options.ParentCandidate
+	candidateID := fmt.Sprintf("g%d-%d-%s", generationIndex, attemptIndex, strings.ReplaceAll(strings.ReplaceAll(backend, "_", "-"), " ", "-"))
 	candidateRoot := filepath.Join(artifactRoot, "optimize-search-candidates", candidateID)
 	if err := os.MkdirAll(candidateRoot, 0o755); err != nil {
 		return nil, err
@@ -896,7 +942,7 @@ func optimizeSearchEvaluateMutation(packet map[string]any, inputFile string) (ma
 	schemaFile := filepath.Join(candidateRoot, "mutation.schema.json")
 	outputFile := filepath.Join(candidateRoot, "mutation.output.json")
 	candidatePromptPath := filepath.Join(candidateRoot, "candidate.prompt.md")
-	if err := os.WriteFile(promptFile, []byte(optimizeSearchMutationPrompt(packet)), 0o644); err != nil {
+	if err := os.WriteFile(promptFile, []byte(optimizeSearchMutationPrompt(packet, parentCandidate)), 0o644); err != nil {
 		return nil, err
 	}
 	if err := writeJSONFile(schemaFile, optimizeSearchMutationSchema()); err != nil {
@@ -931,8 +977,8 @@ func optimizeSearchEvaluateMutation(packet map[string]any, inputFile string) (ma
 	}
 	return map[string]any{
 		"id":                 candidateID,
-		"generationIndex":    1,
-		"parentCandidateIds": []any{"seed"},
+		"generationIndex":    generationIndex,
+		"parentCandidateIds": []any{stringOrEmpty(parentCandidate["id"])},
 		"origin":             "mutation",
 		"targetFile": map[string]any{
 			"path":   candidatePromptPath,
@@ -963,6 +1009,11 @@ func optimizeSearchCanRunMutation(packet map[string]any) bool {
 	return stringOrEmpty(evaluationContext["intent"]) != "" && stringOrEmpty(evaluationContext["baselineRef"]) != ""
 }
 
+func optimizeSearchConfigInt(packet map[string]any, key string, defaultValue int) int {
+	value := int(numberOrDefault(asMap(packet["searchConfig"])[key], float64(defaultValue)))
+	return maxInt(1, value)
+}
+
 func optimizeSearchMutationBackend(packet map[string]any) string {
 	for _, rawBackend := range arrayOrEmpty(asMap(packet["mutationConfig"])["backends"]) {
 		if backend := stringOrEmpty(asMap(rawBackend)["backend"]); backend != "" {
@@ -972,8 +1023,11 @@ func optimizeSearchMutationBackend(packet map[string]any) string {
 	return ""
 }
 
-func optimizeSearchMutationPrompt(packet map[string]any) string {
-	targetPath := stringOrEmpty(asMap(packet["targetFile"])["path"])
+func optimizeSearchMutationPrompt(packet map[string]any, parentCandidate map[string]any) string {
+	targetPath := stringOrEmpty(asMap(parentCandidate["targetFile"])["path"])
+	if targetPath == "" {
+		targetPath = stringOrEmpty(asMap(packet["targetFile"])["path"])
+	}
 	currentPrompt := ""
 	if targetPath != "" && fileExists(targetPath) {
 		payload, err := os.ReadFile(targetPath)
@@ -997,6 +1051,25 @@ Behavior objective:
 Evidence to address:
 %s
 `, currentPrompt, stringOrEmpty(asMap(packet["objective"])["summary"]), feedback)) + "\n"
+}
+
+func optimizeSearchPreferredCandidate(candidates []map[string]any, candidateIDs []string) map[string]any {
+	if len(candidateIDs) == 0 {
+		if len(candidates) == 0 {
+			return nil
+		}
+		return candidates[0]
+	}
+	targetID := candidateIDs[0]
+	for _, candidate := range candidates {
+		if stringOrEmpty(candidate["id"]) == targetID {
+			return candidate
+		}
+	}
+	if len(candidates) == 0 {
+		return nil
+	}
+	return candidates[0]
 }
 
 func optimizeSearchMutationSchema() map[string]any {

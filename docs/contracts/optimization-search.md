@@ -36,7 +36,7 @@ This slice defines a first `GEPA`-inspired search contract for `Cautilus`:
 - candidate evaluation is bounded by declared budgets and checkpoint policies
 - adapters may override the repo's default search budget and tier-specific search limits through one optional `optimize_search` block while the product still owns the tier labels `light`, `medium`, and `heavy`
 - candidate selection is Pareto-based over per-scenario validation scores
-- the current implementation closes packet assembly, readiness gating, one bounded reflective mutation attempt above the seed candidate, held-out reevaluation of that candidate, telemetry-aware frontier ranking, and the proposal bridge
+- the current implementation closes packet assembly, readiness gating, a bounded frontier-following reflective mutation loop that consumes `generationLimit` and stops when total candidate count reaches `populationLimit`, held-out reevaluation of each promoted candidate, telemetry-aware frontier ranking, and the proposal bridge
 - reflective mutation is evidence-aware rewriting, not random string editing
 - the canonical search packet records both the resolved search configuration and the source of each resolved knob so operators can tell whether the final budget, packet-level merge toggle, and selection policy came from product defaults, adapter defaults, or explicit overrides
 - the search output stays reopenable as a durable artifact and can feed the existing bounded `optimize propose` seam
@@ -68,7 +68,7 @@ This slice defines a first `GEPA`-inspired search contract for `Cautilus`:
 - `adapter` target search
 - weight updates, fine-tuning, or external trainer orchestration
 - automatic prompt patch application to consumer-owned files
-- actual multi-generation execution that fully consumes `generationLimit` and `populationLimit`
+- batch mutation that proposes more than one candidate per generation
 - review-checkpoint execution beyond packet-level policy shaping
 - runtime consumption of `mergeEnabled` and `threeParentPolicy`
 - runtime enforcement of declared selection `constraintCaps`
@@ -229,7 +229,7 @@ Resolution order is:
 Current runtime note:
 
 - `generationLimit`, `populationLimit`, `mergeEnabled`, `threeParentPolicy`, and declared selection caps are preserved in the canonical packet for replay and future expansion
-- the current runner executes one bounded reflective mutation attempt above the seed candidate
+- the current runner follows the best current frontier candidate and evaluates one reflective mutation per generation until `generationLimit` or total candidate count is exhausted
 - the current runner does not yet synthesize merge candidates or reject finalists purely because a declared selection cap was breached
 
 ## Search Readiness
@@ -330,13 +330,13 @@ The current bounded loop works like this:
 
 1. Start with one seed candidate from the current target prompt file.
 2. Evaluate the seed candidate on the held-out scenario set to establish the initial per-scenario score vector and frontier.
-3. If the packet is mutation-ready, build one reflective dataset from explicit evidence and ask one selected backend to produce one bounded mutated candidate.
-4. Evaluate that candidate on held-out scenarios and update the frontier using per-scenario scores plus late telemetry tie-breaks when present.
+3. If the packet is mutation-ready, build one reflective dataset from explicit evidence and follow the best current frontier candidate through one bounded mutation per generation.
+4. Evaluate each promoted candidate on held-out scenarios and update the frontier using per-scenario scores plus late telemetry tie-breaks when present.
 5. Emit one selected best next candidate plus the durable search record.
 
 Current implementation note:
 
-- v1 executes packet assembly, readiness blocking, one reflective mutation attempt, held-out reevaluation, telemetry-aware frontier ranking, and proposal bridging
+- v1 executes packet assembly, readiness blocking, one reflective mutation per generation, held-out reevaluation, telemetry-aware frontier ranking, and proposal bridging
 - `reviewCheckpointPolicy` currently shapes packet policy and checkpoint-feedback inclusion, but does not yet trigger separate review-checkpoint executions inside `optimize search run`
 - `mergeEnabled`, `threeParentPolicy`, and declared selection caps are preserved in the packet today so future runners and artifacts can reopen the same intent honestly
 
