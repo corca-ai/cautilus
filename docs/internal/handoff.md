@@ -17,9 +17,10 @@
 
 2026-04-18 세션 기준 public release 는 `v0.5.5` 이다.
 이번 세션에서는 `instruction-surface` contract 에서 bootstrap helper 와 durable work skill 을 분리하는 `#11` 을 구현했고, 그 변경을 `v0.5.5` 로 release 했다.
-이전 세션에서 정리했던 `#5` 부터 `#10` 까지의 seam 은 유지한 채, instruction-surface summary 가 이제 bootstrap-heavy repo 도 honest 하게 표현할 수 있게 됐다.
+그 다음 slice 에서는 repo-scope `doctor` ready payload 가 첫 bounded run 을 직접 handoff 하도록 보강했다.
+이전 세션에서 정리했던 `#5` 부터 `#10` 까지의 seam 은 유지한 채, instruction-surface summary 가 이제 bootstrap-heavy repo 도 honest 하게 표현할 수 있게 됐고, onboarding 도 `doctor ready` 뒤에서 덜 멈추게 됐다.
 
-지금 기억할 product 상태는 여덟 묶음이다.
+지금 기억할 product 상태는 아홉 묶음이다.
 
 1. `instruction-surface` 는 실제 shipped surface 다.
    `cautilus instruction-surface test` / `evaluate`, 전용 contracts, fixtures, self-dogfood adapter, routingDecision scoring 이 다 들어가 있다.
@@ -40,12 +41,16 @@
 8. `instruction-surface` routing summary 는 이제 bootstrap helper 와 durable work skill 을 따로 셀 수 있다.
    observed `routingDecision` 과 checked-in `expectedRouting` 모두 `bootstrapHelper` 와 `workSkill` 을 받을 수 있고, `selectedSkill` 은 single-lane 하위호환 alias 로 남겼다.
    summary packet 은 `bootstrapHelperCounts` 와 `workSkillCounts` 를 별도로 내고, self-dogfood example 과 checked-in fixture 도 `find-skills -> impl` 분리를 실제로 사용한다.
+9. repo-scope `doctor` ready payload 는 이제 `first_bounded_run` 을 직접 준다.
+   여기에는 `cautilus scenarios --json` 과 같은 archetype catalog, 각 archetype 의 `exampleInputCli`, 그리고 starter `mode evaluate -> review prepare-input -> review variants` loop 가 같이 들어 있다.
+   human-readable `cautilus scenarios` 출력, `README`, `install.md`, `docs/guides/consumer-adoption.md`, `docs/cli-reference.md`, bundled skill, packaged skill, executable specs 도 같은 seam 으로 맞춰 두었다.
 
 ## Recent Commits
 
 최근 주요 커밋:
 
 ```text
+60c36f3 Make doctor hand off the first bounded run
 7307206 Prepare v0.5.5 release
 9a98772 Separate bootstrap helpers from work-skill routing
 1e806cd Reduce named-adapter onboarding ambiguity
@@ -113,7 +118,7 @@
 
 다음 세션은 release blocker 를 처리하는 세션이 아니라, `v0.5.5` 이후 onboarding 체감과 instruction-surface consumer adoption 을 보는 세션이다.
 
-1. 새 consumer 가 여전히 `doctor ready` 에서 멈춘다면, 다음 개선점은 문서 분리보다 “repo-scope doctor 뒤 첫 bounded run” 을 더 product-owned 하게 만드는 쪽이다.
+1. 새 consumer 가 여전히 `doctor ready` 뒤에서 멈춘다면, 이번 `first_bounded_run` payload 가 실제로 충분했는지 보고 다음엔 archetype 선택이나 starter loop 를 adapter-aware 하게 더 좁힐지 판단한다.
 2. 여러 named adapters 를 가진 consumer repo 에서 `#8` 류 repro 가 다시 오면, `report.json` 의 `.adapterContext`, `optimize-input.json`, `optimize-search-input.json` 을 같이 받아 exact loss point 를 잡는다.
 3. `charness` 같은 bootstrap-heavy consumer 에서 새 `bootstrapHelper` / `workSkill` lanes 가 실제로 false mismatch 를 줄이는지 확인한다.
 4. `corca-ai/charness#38` 진행 여부를 보고, `premortem` skill 이 정말 availability check 를 강제하게 바뀌면 여기 `AGENTS.md` 의 skill-routing 문구도 그에 맞춰 다시 다듬는다.
