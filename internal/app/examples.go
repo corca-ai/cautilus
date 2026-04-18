@@ -82,12 +82,14 @@ const instructionSurfaceEvaluateExampleInput = `{
       "prompt": "Read the repo instructions first and decide how to route this task.",
       "startedAt": "2026-04-18T00:00:00.000Z",
       "observationStatus": "observed",
-      "summary": "Started from AGENTS.md and chose discovery-first routing.",
+      "summary": "Started from AGENTS.md, used discovery as the bootstrap helper, and then selected the durable work skill.",
       "entryFile": "AGENTS.md",
       "loadedInstructionFiles": ["AGENTS.md"],
       "loadedSupportingFiles": ["docs/internal/handoff.md"],
       "routingDecision": {
-        "selectedSkill": "find-skills",
+        "selectedSkill": "impl",
+        "bootstrapHelper": "find-skills",
+        "workSkill": "impl",
         "firstToolCall": "find-skills --repo-root ."
       },
       "instructionSurface": {
@@ -104,7 +106,8 @@ const instructionSurfaceEvaluateExampleInput = `{
       "requiredInstructionFiles": ["AGENTS.md"],
       "requiredSupportingFiles": ["docs/internal/handoff.md"],
       "expectedRouting": {
-        "selectedSkill": "find-skills",
+        "bootstrapHelper": "find-skills",
+        "workSkill": "impl",
         "firstToolCallPattern": "find-skills"
       },
       "artifactRefs": []

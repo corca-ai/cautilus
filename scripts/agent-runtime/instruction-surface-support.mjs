@@ -47,7 +47,7 @@ export function normalizeRoutingDecision(value, field = "observed.routingDecisio
 	}
 	const record = assertObject(value, field);
 	const normalized = {};
-	for (const key of ["selectedSkill", "selectedSupport", "firstToolCall", "reasonSummary"]) {
+	for (const key of ["selectedSkill", "bootstrapHelper", "workSkill", "selectedSupport", "firstToolCall", "reasonSummary"]) {
 		const text = normalizeRoutingField(optionalString(record[key], `${field}.${key}`), key);
 		if (text) {
 			normalized[key] = text;
@@ -82,9 +82,11 @@ export function backendFailureResult(message) {
 		loadedInstructionFiles: [],
 		loadedSupportingFiles: [],
 		routingDecision: {
-			selectedSkill: "",
-			selectedSupport: "",
-			firstToolCall: "",
+			selectedSkill: "none",
+			bootstrapHelper: "none",
+			workSkill: "none",
+			selectedSupport: "none",
+			firstToolCall: "none",
 			reasonSummary: message,
 		},
 	};

@@ -53,6 +53,7 @@ The observed packet can include:
 - any nested instruction file relevant to the scoped task path
 - a small bounded set of linked follow-up docs
 - the first routing decision
+  - including a bootstrap helper and durable work skill as separate lanes when both are honest facts
 
 The packet must not slurp the whole repo.
 Instruction-surface evaluation is only useful when the evidence stays bounded and legible.

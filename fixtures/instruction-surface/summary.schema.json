@@ -61,14 +61,18 @@
         "evaluationsWithExpectedRoute",
         "matchedExpectedRoute",
         "mismatchedExpectedRoute",
-        "selectedSkillCounts"
+        "selectedSkillCounts",
+        "bootstrapHelperCounts",
+        "workSkillCounts"
       ],
       "properties": {
         "evaluationsWithRoutingDecision": { "type": "integer", "minimum": 0 },
         "evaluationsWithExpectedRoute": { "type": "integer", "minimum": 0 },
         "matchedExpectedRoute": { "type": "integer", "minimum": 0 },
         "mismatchedExpectedRoute": { "type": "integer", "minimum": 0 },
-        "selectedSkillCounts": { "type": "object" }
+        "selectedSkillCounts": { "type": "object" },
+        "bootstrapHelperCounts": { "type": "object" },
+        "workSkillCounts": { "type": "object" }
       }
     },
     "variantSummaries": {
@@ -79,6 +83,8 @@
           "surfaceLabel",
           "evaluationCounts",
           "selectedSkillCounts",
+          "bootstrapHelperCounts",
+          "workSkillCounts",
           "matchedExpectedRoute",
           "mismatchedExpectedRoute"
         ],
@@ -86,6 +92,8 @@
           "surfaceLabel": { "type": "string" },
           "evaluationCounts": { "type": "object" },
           "selectedSkillCounts": { "type": "object" },
+          "bootstrapHelperCounts": { "type": "object" },
+          "workSkillCounts": { "type": "object" },
           "matchedExpectedRoute": { "type": "integer", "minimum": 0 },
           "mismatchedExpectedRoute": { "type": "integer", "minimum": 0 }
         }

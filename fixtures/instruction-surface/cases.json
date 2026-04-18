@@ -8,7 +8,11 @@
       "displayName": "Checked-in AGENTS routing",
       "prompt": "Read the repo instructions first and decide how to route this task.",
       "expectedEntryFile": "AGENTS.md",
-      "requiredInstructionFiles": ["AGENTS.md"]
+      "requiredInstructionFiles": ["AGENTS.md"],
+      "expectedRouting": {
+        "bootstrapHelper": "charness:find-skills",
+        "workSkill": "charness:impl"
+      }
     },
     {
       "evaluationId": "claude-only-routing",

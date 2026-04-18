@@ -69,6 +69,8 @@ func BuildInstructionSurfaceSummary(input map[string]any, now time.Time) (map[st
 		"matchedExpectedRoute":           0,
 		"mismatchedExpectedRoute":        0,
 		"selectedSkillCounts":            map[string]any{},
+		"bootstrapHelperCounts":          map[string]any{},
+		"workSkillCounts":                map[string]any{},
 	}
 	variantAccumulators := map[string]map[string]any{}
 	evaluations := make([]any, 0, len(rawEvaluations))
@@ -243,7 +245,7 @@ func normalizeInstructionRoutingDecision(value any, field string) (map[string]an
 		return nil, fmt.Errorf("%s must be an object", field)
 	}
 	normalized := map[string]any{}
-	for _, key := range []string{"selectedSkill", "selectedSupport", "firstToolCall", "reasonSummary"} {
+	for _, key := range []string{"selectedSkill", "bootstrapHelper", "workSkill", "selectedSupport", "firstToolCall", "reasonSummary"} {
 		if rawValue, ok := record[key]; ok {
 			text, err := normalizeNonEmptyString(rawValue, field+"."+key)
 			if err != nil {
@@ -418,8 +420,14 @@ func evaluateInstructionRouting(expected map[string]any, observed map[string]any
 		}
 	}
 	mismatches := []any{}
-	if expectedSkill := stringOrEmpty(expected["selectedSkill"]); expectedSkill != "" && expectedSkill != stringOrEmpty(observed["selectedSkill"]) {
+	if expectedSkill := stringOrEmpty(expected["selectedSkill"]); expectedSkill != "" && expectedSkill != instructionObservedSelectedSkill(observed) {
 		mismatches = append(mismatches, fmt.Sprintf("selectedSkill expected %q", expectedSkill))
+	}
+	if expectedHelper := stringOrEmpty(expected["bootstrapHelper"]); expectedHelper != "" && expectedHelper != instructionObservedBootstrapHelper(observed) {
+		mismatches = append(mismatches, fmt.Sprintf("bootstrapHelper expected %q", expectedHelper))
+	}
+	if expectedWorkSkill := stringOrEmpty(expected["workSkill"]); expectedWorkSkill != "" && expectedWorkSkill != instructionObservedWorkSkill(observed) {
+		mismatches = append(mismatches, fmt.Sprintf("workSkill expected %q", expectedWorkSkill))
 	}
 	if expectedSupport := stringOrEmpty(expected["selectedSupport"]); expectedSupport != "" && expectedSupport != stringOrEmpty(observed["selectedSupport"]) {
 		mismatches = append(mismatches, fmt.Sprintf("selectedSupport expected %q", expectedSupport))
@@ -470,10 +478,20 @@ func accumulateInstructionRoutingSummary(summary map[string]any, routingEvaluati
 	observed := asMap(routingEvaluation["observed"])
 	if len(observed) > 0 {
 		summary["evaluationsWithRoutingDecision"] = intFromAny(summary["evaluationsWithRoutingDecision"]) + 1
-		if selectedSkill := stringOrEmpty(observed["selectedSkill"]); selectedSkill != "" {
+		if selectedSkill := instructionObservedSelectedSkill(observed); selectedSkill != "" {
 			selectedSkillCounts := asMap(summary["selectedSkillCounts"])
 			selectedSkillCounts[selectedSkill] = intFromAny(selectedSkillCounts[selectedSkill]) + 1
 			summary["selectedSkillCounts"] = selectedSkillCounts
+		}
+		if bootstrapHelper := instructionObservedBootstrapHelper(observed); bootstrapHelper != "" {
+			bootstrapHelperCounts := asMap(summary["bootstrapHelperCounts"])
+			bootstrapHelperCounts[bootstrapHelper] = intFromAny(bootstrapHelperCounts[bootstrapHelper]) + 1
+			summary["bootstrapHelperCounts"] = bootstrapHelperCounts
+		}
+		if workSkill := instructionObservedWorkSkill(observed); workSkill != "" {
+			workSkillCounts := asMap(summary["workSkillCounts"])
+			workSkillCounts[workSkill] = intFromAny(workSkillCounts[workSkill]) + 1
+			summary["workSkillCounts"] = workSkillCounts
 		}
 	}
 	if stringOrEmpty(routingEvaluation["status"]) == "not_applicable" {
@@ -498,6 +516,8 @@ func accumulateInstructionVariantSummary(accumulators map[string]map[string]any,
 			"surfaceLabel":            label,
 			"evaluationCounts":        map[string]any{"total": 0, "passed": 0, "failed": 0, "blocked": 0},
 			"selectedSkillCounts":     map[string]any{},
+			"bootstrapHelperCounts":   map[string]any{},
+			"workSkillCounts":         map[string]any{},
 			"matchedExpectedRoute":    0,
 			"mismatchedExpectedRoute": 0,
 		}
@@ -508,10 +528,20 @@ func accumulateInstructionVariantSummary(accumulators map[string]map[string]any,
 	counts[status] = intFromAny(counts[status]) + 1
 	entry["evaluationCounts"] = counts
 	observed := asMap(routingEvaluation["observed"])
-	if selectedSkill := stringOrEmpty(observed["selectedSkill"]); selectedSkill != "" {
+	if selectedSkill := instructionObservedSelectedSkill(observed); selectedSkill != "" {
 		selectedSkillCounts := asMap(entry["selectedSkillCounts"])
 		selectedSkillCounts[selectedSkill] = intFromAny(selectedSkillCounts[selectedSkill]) + 1
 		entry["selectedSkillCounts"] = selectedSkillCounts
+	}
+	if bootstrapHelper := instructionObservedBootstrapHelper(observed); bootstrapHelper != "" {
+		bootstrapHelperCounts := asMap(entry["bootstrapHelperCounts"])
+		bootstrapHelperCounts[bootstrapHelper] = intFromAny(bootstrapHelperCounts[bootstrapHelper]) + 1
+		entry["bootstrapHelperCounts"] = bootstrapHelperCounts
+	}
+	if workSkill := instructionObservedWorkSkill(observed); workSkill != "" {
+		workSkillCounts := asMap(entry["workSkillCounts"])
+		workSkillCounts[workSkill] = intFromAny(workSkillCounts[workSkill]) + 1
+		entry["workSkillCounts"] = workSkillCounts
 	}
 	if stringOrEmpty(routingEvaluation["status"]) == "not_applicable" {
 		return
@@ -533,9 +563,32 @@ func finalizeInstructionVariantSummaries(accumulators map[string]map[string]any)
 	for _, label := range labels {
 		entry := accumulators[label]
 		entry["selectedSkillCounts"] = sortedInstructionCounts(asMap(entry["selectedSkillCounts"]))
+		entry["bootstrapHelperCounts"] = sortedInstructionCounts(asMap(entry["bootstrapHelperCounts"]))
+		entry["workSkillCounts"] = sortedInstructionCounts(asMap(entry["workSkillCounts"]))
 		result = append(result, entry)
 	}
 	return result
+}
+
+func instructionObservedSelectedSkill(observed map[string]any) string {
+	return firstNonEmpty(
+		stringOrEmpty(observed["selectedSkill"]),
+		stringOrEmpty(observed["workSkill"]),
+		stringOrEmpty(observed["bootstrapHelper"]),
+	)
+}
+
+func instructionObservedBootstrapHelper(observed map[string]any) string {
+	return firstNonEmpty(
+		stringOrEmpty(observed["bootstrapHelper"]),
+	)
+}
+
+func instructionObservedWorkSkill(observed map[string]any) string {
+	return firstNonEmpty(
+		stringOrEmpty(observed["workSkill"]),
+		stringOrEmpty(observed["selectedSkill"]),
+	)
 }
 
 func sortedInstructionCounts(counts map[string]any) map[string]any {

@@ -1,12 +1,14 @@
 {
   "checked-in-agents-routing": {
     "observationStatus": "observed",
-    "summary": "Started from AGENTS.md and routed to the installed charness discovery skill first.",
+    "summary": "Started from AGENTS.md, loaded the installed charness bootstrap helper first, and then chose the durable work skill.",
     "entryFile": "AGENTS.md",
     "loadedInstructionFiles": ["AGENTS.md"],
     "loadedSupportingFiles": [],
     "routingDecision": {
-      "selectedSkill": "charness:find-skills",
+      "selectedSkill": "charness:impl",
+      "bootstrapHelper": "charness:find-skills",
+      "workSkill": "charness:impl",
       "firstToolCall": "functions.exec_command",
       "reasonSummary": "The repo instruction surface says to look for an installed charness skill before improvising a repo-local workflow."
     }

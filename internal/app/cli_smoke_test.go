@@ -2850,12 +2850,14 @@ cat <<'JSON' > "$1"
       "prompt": "Read the repo instructions first and decide how to route this task.",
       "startedAt": "2026-04-18T00:00:00.000Z",
       "observationStatus": "observed",
-      "summary": "Started from AGENTS.md and routed to discovery first.",
+      "summary": "Started from AGENTS.md, used discovery first as a bootstrap helper, and then selected the durable work skill.",
       "entryFile": "AGENTS.md",
       "loadedInstructionFiles": ["AGENTS.md"],
       "loadedSupportingFiles": ["docs/internal/handoff.md"],
       "routingDecision": {
-        "selectedSkill": "find-skills",
+        "selectedSkill": "impl",
+        "bootstrapHelper": "find-skills",
+        "workSkill": "impl",
         "firstToolCall": "find-skills --repo-root ."
       },
       "instructionSurface": {
@@ -2872,7 +2874,8 @@ cat <<'JSON' > "$1"
       "requiredInstructionFiles": ["AGENTS.md"],
       "requiredSupportingFiles": ["docs/internal/handoff.md"],
       "expectedRouting": {
-        "selectedSkill": "find-skills",
+        "bootstrapHelper": "find-skills",
+        "workSkill": "impl",
         "firstToolCallPattern": "find-skills"
       },
       "artifactRefs": []
@@ -2895,7 +2898,8 @@ JSON
 				"requiredInstructionFiles": []string{"AGENTS.md"},
 				"requiredSupportingFiles":  []string{"docs/internal/handoff.md"},
 				"expectedRouting": map[string]any{
-					"selectedSkill":        "find-skills",
+					"bootstrapHelper":      "find-skills",
+					"workSkill":            "impl",
 					"firstToolCallPattern": "find-skills",
 				},
 			},

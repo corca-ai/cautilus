@@ -55,6 +55,8 @@
             "type": "object",
             "properties": {
               "selectedSkill": { "type": "string" },
+              "bootstrapHelper": { "type": "string" },
+              "workSkill": { "type": "string" },
               "selectedSupport": { "type": "string" },
               "firstToolCall": { "type": "string" },
               "reasonSummary": { "type": "string" }
@@ -103,6 +105,8 @@
             "type": "object",
             "properties": {
               "selectedSkill": { "type": "string" },
+              "bootstrapHelper": { "type": "string" },
+              "workSkill": { "type": "string" },
               "selectedSupport": { "type": "string" },
               "firstToolCallPattern": { "type": "string" }
             }

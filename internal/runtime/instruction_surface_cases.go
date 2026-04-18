@@ -255,7 +255,7 @@ func normalizeInstructionSurfaceExpectedRouting(value any, field string) (map[st
 		return nil, fmt.Errorf("%s must be an object", field)
 	}
 	normalized := map[string]any{}
-	for _, key := range []string{"selectedSkill", "selectedSupport", "firstToolCallPattern"} {
+	for _, key := range []string{"selectedSkill", "bootstrapHelper", "workSkill", "selectedSupport", "firstToolCallPattern"} {
 		if rawValue, ok := record[key]; ok {
 			text, err := normalizeNonEmptyString(rawValue, field+"."+key)
 			if err != nil {

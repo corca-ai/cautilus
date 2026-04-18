@@ -22,8 +22,9 @@ func TestBuildInstructionSurfaceSummaryScoresRoutingAndFiles(t *testing.T) {
 				"loadedInstructionFiles": []any{"AGENTS.md"},
 				"loadedSupportingFiles":  []any{"docs/internal/handoff.md"},
 				"routingDecision": map[string]any{
-					"selectedSkill": "charness:find-skills",
-					"firstToolCall": "functions.exec_command",
+					"bootstrapHelper": "charness:find-skills",
+					"workSkill":       "charness:impl",
+					"firstToolCall":   "functions.exec_command",
 				},
 				"instructionSurface": map[string]any{
 					"surfaceLabel": "compact_agents",
@@ -35,7 +36,8 @@ func TestBuildInstructionSurfaceSummaryScoresRoutingAndFiles(t *testing.T) {
 				"requiredInstructionFiles": []any{"AGENTS.md"},
 				"requiredSupportingFiles":  []any{"docs/internal/handoff.md"},
 				"expectedRouting": map[string]any{
-					"selectedSkill":        "charness:find-skills",
+					"bootstrapHelper":      "charness:find-skills",
+					"workSkill":            "charness:impl",
 					"firstToolCallPattern": "functions.exec_command",
 				},
 				"artifactRefs": []any{},
@@ -51,7 +53,8 @@ func TestBuildInstructionSurfaceSummaryScoresRoutingAndFiles(t *testing.T) {
 				"loadedInstructionFiles": []any{"AGENTS.md"},
 				"loadedSupportingFiles":  []any{},
 				"routingDecision": map[string]any{
-					"selectedSkill": "bug-fixer",
+					"bootstrapHelper": "charness:find-skills",
+					"workSkill":       "bug-fixer",
 				},
 				"instructionSurface": map[string]any{
 					"surfaceLabel": "expanded_agents",
@@ -63,7 +66,8 @@ func TestBuildInstructionSurfaceSummaryScoresRoutingAndFiles(t *testing.T) {
 				"requiredInstructionFiles": []any{"AGENTS.md", "docs/feature/AGENTS.md"},
 				"requiredSupportingFiles":  []any{"docs/internal/handoff.md"},
 				"expectedRouting": map[string]any{
-					"selectedSkill": "charness:find-skills",
+					"bootstrapHelper": "charness:find-skills",
+					"workSkill":       "charness:impl",
 				},
 				"artifactRefs": []any{},
 			},
@@ -85,6 +89,12 @@ func TestBuildInstructionSurfaceSummaryScoresRoutingAndFiles(t *testing.T) {
 	routingSummary := asMap(summary["routingSummary"])
 	if routingSummary["matchedExpectedRoute"] != 1 || routingSummary["mismatchedExpectedRoute"] != 1 {
 		t.Fatalf("unexpected routing summary: %#v", routingSummary)
+	}
+	if asMap(routingSummary["bootstrapHelperCounts"])["charness:find-skills"] != 2 {
+		t.Fatalf("unexpected bootstrap helper counts: %#v", routingSummary)
+	}
+	if asMap(routingSummary["workSkillCounts"])["charness:impl"] != 1 || asMap(routingSummary["workSkillCounts"])["bug-fixer"] != 1 {
+		t.Fatalf("unexpected work skill counts: %#v", routingSummary)
 	}
 	surfaceSummary := asMap(summary["surfaceSummary"])
 	if surfaceSummary["requiredInstructionFileMisses"] != 1 || surfaceSummary["requiredSupportingFileMisses"] != 1 {

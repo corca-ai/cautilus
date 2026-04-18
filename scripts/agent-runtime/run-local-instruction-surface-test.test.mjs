@@ -85,13 +85,17 @@ test("codexArgs applies runtime-specific model, effort, and config overrides", (
 test("normalizeRoutingDecision canonicalizes deferred none values and tool prefixes", () => {
 	assert.deepEqual(
 		normalizeRoutingDecision({
-			selectedSkill: "none; deferred until after discovery",
+			selectedSkill: "impl",
+			bootstrapHelper: "find-skills",
+			workSkill: "impl",
 			selectedSupport: "none",
 			firstToolCall: "functions.exec_command: rg --files .",
 			reasonSummary: "route first",
 		}),
 		{
-			selectedSkill: "none",
+			selectedSkill: "impl",
+			bootstrapHelper: "find-skills",
+			workSkill: "impl",
 			selectedSupport: "none",
 			firstToolCall: "functions.exec_command",
 			reasonSummary: "route first",

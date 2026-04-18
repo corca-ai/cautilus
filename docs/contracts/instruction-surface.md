@@ -47,8 +47,10 @@ Minimum shape:
   - optional `forbiddenInstructionFiles`
   - optional `requiredSupportingFiles`
   - optional `forbiddenSupportingFiles`
-  - optional `expectedRouting`
+- optional `expectedRouting`
     - optional `selectedSkill`
+    - optional `bootstrapHelper`
+    - optional `workSkill`
     - optional `selectedSupport`
     - optional `firstToolCallPattern`
 
@@ -88,6 +90,9 @@ The observed packet should preserve at least:
 - the instruction files the agent claims it read
 - the supporting files the agent claims it read
 - the first routing decision
+  - optional `bootstrapHelper` for discovery/bootstrap helpers such as `find-skills`
+  - optional `workSkill` for the eventual durable work skill such as `impl`
+  - optional legacy `selectedSkill` single-lane alias when the bootstrap/work split is not meaningful
 - any expectation fields copied from the checked-in case
 
 The summary should expose:
@@ -99,7 +104,9 @@ The summary should expose:
 - evaluation counts by status
 - entry-file and file-boundary mismatch counts
 - routing match / mismatch counts
-- selected-skill counts
+- selected-skill alias counts
+- bootstrap-helper counts
+- work-skill counts
 - grouped variant summaries for route comparison
 
 ## Current Recommendation Rules
