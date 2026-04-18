@@ -72,9 +72,18 @@ func normalizeCompareArtifact(value any, field string) (map[string]any, error) {
 		}
 		normalized["deltas"] = deltas
 	}
-	if rawPaths, err := assertArray(record["artifactPaths"], field+".artifactPaths"); err != nil {
-		return nil, err
-	} else if len(rawPaths) > 0 {
+		if rawReasons, err := assertArray(record["reasons"], field+".reasons"); err != nil {
+			return nil, err
+		} else if len(rawReasons) > 0 {
+			reasons, err := stringSliceFromAny(rawReasons, field+".reasons")
+			if err != nil {
+				return nil, err
+			}
+			normalized["reasons"] = reasons
+		}
+		if rawPaths, err := assertArray(record["artifactPaths"], field+".artifactPaths"); err != nil {
+			return nil, err
+		} else if len(rawPaths) > 0 {
 		paths, err := stringSliceFromAny(rawPaths, field+".artifactPaths")
 		if err != nil {
 			return nil, err

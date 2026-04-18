@@ -193,6 +193,15 @@ function addCompareArtifactPaths(normalized, value, field) {
 	}
 }
 
+function addCompareReasons(normalized, value, field) {
+	const reasons = value.reasons === undefined ? [] : assertArray(value.reasons, `${field}.reasons`);
+	if (reasons.length > 0) {
+		normalized.reasons = reasons.map((entry, index) =>
+			normalizeNonEmptyString(entry, `${field}.reasons[${index}]`),
+		);
+	}
+}
+
 export function normalizeCompareArtifact(value, field = "compareArtifact") {
 	if (value === undefined || value === null) {
 		return undefined;
@@ -217,6 +226,7 @@ export function normalizeCompareArtifact(value, field = "compareArtifact") {
 	}
 	addCompareBuckets(normalized, value, field);
 	addCompareDeltas(normalized, value, field);
+	addCompareReasons(normalized, value, field);
 	addCompareArtifactPaths(normalized, value, field);
 	return normalized;
 }

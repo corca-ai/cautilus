@@ -38,10 +38,12 @@ That artifact should summarize:
 
 - the high-level verdict
 - the most useful improved/regressed/unchanged/noisy buckets
+- optional bounded textual `reasons` that explain why a held-out or compare result matters downstream
 - optional finer-grained deltas
 - optional artifact paths worth reading directly
 
 This gives `report build`, `review prepare-input`, and review prompt rendering one shared machine-readable compare surface.
+It also gives `optimize search` a textual feedback path that does not depend on separately authored `humanReviewFindings`.
 
 ## Current Use
 

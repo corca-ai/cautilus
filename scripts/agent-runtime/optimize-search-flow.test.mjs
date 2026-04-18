@@ -347,18 +347,18 @@ function initGitRepo(root) {
 	execFileSync("git", ["-C", root, "commit", "-m", "initial"], { stdio: "pipe" });
 }
 
-function createSearchFixtureRoot({ includeHeldOut = true, includeFeedback = true } = {}) {
+function createSearchFixtureRoot({ includeHeldOut = true, includeFeedback = true, includeHeldOutCompareReasons = false } = {}) {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-optimize-search-"));
 	const optimizeInputPath = join(root, "optimize-input.json");
 	const targetFile = join(root, "prompt.md");
 	const heldOutResultsPath = join(root, "held-out-results.json");
 	writeFileSync(targetFile, "Keep recovery instructions explicit.\n", "utf-8");
 	const modeRuns = [];
-	if (includeHeldOut) {
-		writeJson(heldOutResultsPath, {
-			schemaVersion: "cautilus.scenario_results.v1",
-			mode: "held_out",
-			results: [
+		if (includeHeldOut) {
+			writeJson(heldOutResultsPath, {
+				schemaVersion: "cautilus.scenario_results.v1",
+				mode: "held_out",
+				results: [
 				{
 					scenarioId: "operator-recovery",
 					status: "failed",
@@ -366,11 +366,22 @@ function createSearchFixtureRoot({ includeHeldOut = true, includeFeedback = true
 					telemetry: {
 						cost_usd: 0.02,
 						durationMs: 1200,
+						},
 					},
-				},
-			],
-		});
-	}
+				],
+				...(includeHeldOutCompareReasons
+					? {
+						compareArtifact: {
+							schemaVersion: "cautilus.compare_artifact.v1",
+							summary: "Held-out operator guidance improved enough to continue search.",
+							reasons: [
+								"operator-recovery: improved recovery-next-step clarity without adding false positives.",
+							],
+						},
+					}
+					: {}),
+			});
+		}
 	writeJson(optimizeInputPath, {
 		schemaVersion: "cautilus.optimize_inputs.v1",
 		generatedAt: "2026-04-13T09:58:00.000Z",
@@ -627,6 +638,27 @@ test("run-optimize-search emits a blocked result when held-out evidence is missi
 			"missing_per_scenario_scores",
 			"missing_textual_feedback",
 		]);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("run-optimize-search accepts held-out compareArtifact reasons as textual feedback", () => {
+	const { root, optimizeInputPath, heldOutResultsPath } = createSearchFixtureRoot({
+		includeFeedback: false,
+		includeHeldOutCompareReasons: true,
+	});
+	try {
+		const { packet } = buildOptimizeSearchInput(
+			["--optimize-input", optimizeInputPath, "--held-out-results-file", heldOutResultsPath],
+			{ now: new Date("2026-04-13T10:00:00.000Z") },
+		);
+		const result = runOptimizeSearch(packet, {
+			inputFile: join(root, "optimize-search-input.json"),
+			now: new Date("2026-04-13T10:01:00.000Z"),
+		});
+		assert.equal(result.status, "completed");
+		assert.equal(result.selectedCandidateId, "seed");
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

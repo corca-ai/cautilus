@@ -1979,6 +1979,74 @@ func TestCLIOptimizeSearchPrepareRunAndProposeFromSearch(t *testing.T) {
 	}
 }
 
+func TestCLIOptimizeSearchUsesHeldOutCompareArtifactReasonsAsFeedback(t *testing.T) {
+	root := t.TempDir()
+	reportPath := filepath.Join(root, "report.json")
+	targetPath := filepath.Join(root, "review.prompt.md")
+	optimizeInputPath := filepath.Join(root, "optimize-input.json")
+	heldOutResultsPath := filepath.Join(root, "held-out-results.json")
+	searchInputPath := filepath.Join(root, "optimize-search-input.json")
+	if err := os.WriteFile(targetPath, []byte("Keep recovery instructions explicit.\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	writeJSONFile(t, reportPath, map[string]any{
+		"schemaVersion": contracts.ReportPacketSchema,
+		"generatedAt":   "2026-04-13T00:02:00.000Z",
+		"candidate":     "feature/operator-guidance",
+		"baseline":      "origin/main",
+		"intent":        "Operator recovery guidance should stay legible.",
+		"intentProfile": map[string]any{
+			"schemaVersion":   contracts.BehaviorIntentSchema,
+			"intentId":        "intent-operator-workflow-recovery",
+			"summary":         "Operator recovery guidance should stay legible.",
+			"behaviorSurface": cautilusruntime.BehaviorSurfaces["OPERATOR_BEHAVIOR"],
+		},
+		"commands":            []any{},
+		"commandObservations": []any{},
+		"modesRun":            []any{},
+		"modeSummaries":       []any{},
+		"telemetry":           map[string]any{},
+		"improved":            []any{},
+		"regressed":           []string{"operator-recovery"},
+		"unchanged":           []any{},
+		"noisy":               []any{},
+		"humanReviewFindings": []any{},
+		"recommendation":      "defer",
+	})
+	if _, stderr, exitCode := runCLI(t, root, "optimize", "prepare-input", "--repo-root", root, "--report-file", reportPath, "--target", "prompt", "--target-file", targetPath, "--output", optimizeInputPath); exitCode != 0 {
+		t.Fatalf("optimize prepare-input failed: %s", stderr)
+	}
+	writeJSONFile(t, heldOutResultsPath, map[string]any{
+		"schemaVersion": contracts.ScenarioResultsSchema,
+		"mode":          "held_out",
+		"results": []map[string]any{
+			{
+				"scenarioId":   "operator-recovery",
+				"status":       "failed",
+				"overallScore": 40,
+			},
+		},
+		"compareArtifact": map[string]any{
+			"schemaVersion": contracts.CompareArtifactSchema,
+			"summary":       "Held-out operator guidance improved enough to continue search.",
+			"reasons": []string{
+				"operator-recovery: improved recovery-next-step clarity without adding false positives.",
+			},
+		},
+	})
+	if _, stderr, exitCode := runCLI(t, root, "optimize", "search", "prepare-input", "--optimize-input", optimizeInputPath, "--held-out-results-file", heldOutResultsPath, "--target-file", targetPath, "--output", searchInputPath); exitCode != 0 {
+		t.Fatalf("optimize search prepare-input failed: %s", stderr)
+	}
+	stdout, stderr, exitCode := runCLI(t, root, "optimize", "search", "run", "--input", searchInputPath, "--json")
+	if exitCode != 0 {
+		t.Fatalf("optimize search run unexpectedly blocked: stdout=%s stderr=%s", stdout, stderr)
+	}
+	result := parseJSONObject(t, stdout)
+	if result["status"] != "completed" {
+		t.Fatalf("unexpected optimize search result: %#v", result)
+	}
+}
+
 func TestCLIOptimizeSearchPrepareInputJSONAndBlockedRunReturnMachineReadablePayload(t *testing.T) {
 	root := t.TempDir()
 	reportPath := filepath.Join(root, "report.json")

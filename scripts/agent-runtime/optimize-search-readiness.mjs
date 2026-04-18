@@ -3,20 +3,26 @@ import { collectModeRunEntries } from "./optimize-search-mutation.mjs";
 function collectFindingMessages(items, field = "message") {
 	const source = Array.isArray(items) ? items : [];
 	return source
-		.map((item) => item?.[field])
+		.map((item) => (field === "" ? item : item?.[field]))
 		.filter((value) => typeof value === "string" && value.length > 0);
 }
 
 function collectCompareSignals(modeRuns) {
 	const signals = [];
 	for (const modeRun of modeRuns) {
-		const compareArtifact = modeRun?.scenarioResults?.compareArtifact;
-		if (typeof compareArtifact?.summary === "string" && compareArtifact.summary.length > 0) {
-			signals.push(compareArtifact.summary);
-		}
-		signals.push(...collectFindingMessages(compareArtifact?.regressed, "reason"));
-		signals.push(...collectFindingMessages(compareArtifact?.noisy, "reason"));
+		signals.push(...collectCompareArtifactSignals(modeRun?.scenarioResults?.compareArtifact));
 	}
+	return signals;
+}
+
+function collectCompareArtifactSignals(compareArtifact) {
+	const signals = [];
+	if (typeof compareArtifact?.summary === "string" && compareArtifact.summary.length > 0) {
+		signals.push(compareArtifact.summary);
+	}
+	signals.push(...collectFindingMessages(compareArtifact?.regressed, "reason"));
+	signals.push(...collectFindingMessages(compareArtifact?.noisy, "reason"));
+	signals.push(...collectFindingMessages(compareArtifact?.reasons, ""));
 	return signals;
 }
 
@@ -47,6 +53,7 @@ export function collectFeedbackSignals(input) {
 	const modeRuns = Array.isArray(input.optimizeInput?.report?.modeRuns) ? input.optimizeInput.report.modeRuns : [];
 	return [
 		...collectCompareSignals(modeRuns),
+		...collectCompareArtifactSignals(input.heldOutResults?.compareArtifact),
 		...collectReviewSignals(input),
 		...collectHistorySignals(input),
 	];

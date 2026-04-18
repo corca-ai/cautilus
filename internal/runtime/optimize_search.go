@@ -541,19 +541,9 @@ func optimizeSearchFeedbackSignals(packet map[string]any) []string {
 	report := asMap(asMap(packet["optimizeInput"])["report"])
 	for _, rawModeRun := range arrayOrEmpty(report["modeRuns"]) {
 		modeRun := asMap(rawModeRun)
-		compareArtifact := asMap(asMap(modeRun["scenarioResults"])["compareArtifact"])
-		if summary := stringOrEmpty(compareArtifact["summary"]); summary != "" {
-			signals = append(signals, summary)
-		}
-		for _, bucket := range []string{"regressed", "noisy"} {
-			for _, rawItem := range arrayOrEmpty(compareArtifact[bucket]) {
-				item := asMap(rawItem)
-				if reason := stringOrEmpty(item["reason"]); reason != "" {
-					signals = append(signals, reason)
-				}
-			}
-		}
+		signals = append(signals, collectCompareArtifactFeedbackSignals(asMap(asMap(modeRun["scenarioResults"])["compareArtifact"]))...)
 	}
+	signals = append(signals, collectCompareArtifactFeedbackSignals(asMap(asMap(packet["heldOutResults"])["compareArtifact"]))...)
 	for _, rawFinding := range arrayOrEmpty(report["humanReviewFindings"]) {
 		finding := asMap(rawFinding)
 		if message := stringOrEmpty(finding["message"]); message != "" {
@@ -583,6 +573,27 @@ func optimizeSearchFeedbackSignals(packet map[string]any) []string {
 		}
 	}
 	return uniqueStrings(signals)
+}
+
+func collectCompareArtifactFeedbackSignals(compareArtifact map[string]any) []string {
+	signals := []string{}
+	if summary := stringOrEmpty(compareArtifact["summary"]); summary != "" {
+		signals = append(signals, summary)
+	}
+	for _, bucket := range []string{"regressed", "noisy"} {
+		for _, rawItem := range arrayOrEmpty(compareArtifact[bucket]) {
+			item := asMap(rawItem)
+			if reason := stringOrEmpty(item["reason"]); reason != "" {
+				signals = append(signals, reason)
+			}
+		}
+	}
+	for _, reason := range stringSliceValue(compareArtifact["reasons"]) {
+		if strings.TrimSpace(reason) != "" {
+			signals = append(signals, reason)
+		}
+	}
+	return signals
 }
 
 func optimizeSearchCandidateTelemetry(entries []map[string]any) map[string]any {
