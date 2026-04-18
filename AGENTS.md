@@ -43,9 +43,19 @@ This repo is the standalone product boundary for `Cautilus`.
 
 ## Skill Routing
 
-Always look for an installed charness skill before improvising a repo-local workflow.
-If the right skill is unclear or you need the current installed list, use `find-skills` before guessing.
-Keep this section intentionally non-exhaustive so `AGENTS.md` does not drift every time charness adds or renames a skill.
+Prefer installed charness public skills before improvising a repo-local workflow.
+When a request explicitly names a charness skill, route to that named skill first.
+Keep this section intentionally non-exhaustive so `AGENTS.md` stays stable as the installed charness skill catalog changes.
+When the right skill is unclear, or you need the current installed/trusted capability list, route to the shared/public charness skill `find-skills` first.
+Use these high-signal routes first:
+
+- unclear skill choice, named support/helper, or hidden capability lookup -> shared/public charness skill `find-skills`
+- external source fetch (Slack thread, Notion page, Google Docs, GitHub content, arbitrary URL) -> `gather`
+- bug, error, regression, or unexpected behavior investigation -> `debug`
+- code, config, test, or operator-facing artifact implementation -> `impl`
+- repo quality posture, gates, test confidence, security, or operability review -> `quality`
+- next-session pickup, baton pass, or handoff artifact refresh -> `handoff`
+- new or partially initialized repo operating surface -> `init-repo`
 
 ## Working Rules
 
