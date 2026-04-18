@@ -1,6 +1,6 @@
 {
   "name": "cautilus",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "Standalone intentful behavior evaluation CLI and bundled skill.",
   "author": {
     "name": "Corca",
