@@ -25,7 +25,7 @@
 5. `instruction-surface` 가 이제 planned spec 이 아니라 shipped surface 다.
    `cautilus instruction-surface test` / `evaluate`, 전용 contracts, fixtures, self-dogfood adapter 가 들어갔다.
 6. instruction-surface self-dogfood 는 live repo 를 더럽히지 않도록 run-scoped candidate worktree 에서 돈다.
-   현재 녹색 run 은 [20260418T032453456Z-run/instruction-surface-summary.json](../../.cautilus/runs/20260418T032453456Z-run/instruction-surface-summary.json) 이고 `accept-now` 다.
+   이 세션의 local self-dogfood 는 `accept-now` 까지 확인했다.
 
 ## Recent Commits
 
