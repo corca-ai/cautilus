@@ -538,6 +538,7 @@ func handleScenarios(repoRoot string, cwd string, args []string, stdout io.Write
 			fmt.Sprintf("    %s", entry.Summary),
 			fmt.Sprintf("    behavior focus: %s", entry.BehaviorFocus),
 			fmt.Sprintf("    example input:  %s", entry.ExampleInput),
+			fmt.Sprintf("    inspect input:  %s", entry.ExampleInputCLI),
 			fmt.Sprintf("    next-step CLI:  %s", entry.NextStepCLI),
 			"",
 		)

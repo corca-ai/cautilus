@@ -107,6 +107,8 @@ cautilus doctor --repo-root .
 `doctor --scope agent-surface` and default `doctor` answer different questions.
 The first checks the bundled skill and local agent-surface install.
 The second checks whether the repo is actually wired for a real runnable evaluation path.
+When default `doctor` returns `ready`, read its `first_bounded_run` payload before inventing your own next command sequence.
+That payload mirrors `cautilus scenarios --json`, includes `exampleInputCli` per archetype, and adds a starter `mode evaluate -> review prepare-input -> review variants` loop.
 
 4. Before hand-editing adapter YAML, run the inventory in
    [bootstrap-inventory.md](references/bootstrap-inventory.md) so `Cautilus`

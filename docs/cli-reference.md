@@ -73,6 +73,7 @@ cautilus scenarios --json
 `cautilus <subcommand> --help` exits `0` for the registered native command surface, including grouped topics such as `cautilus optimize search --help`.
 Use `doctor --scope agent-surface` to verify only the bundled skill and local agent-surface install.
 Use default `doctor` (`--scope repo`) to verify the repo has a real runnable evaluation path.
+When repo-scope `doctor` returns `ready`, the JSON payload includes `first_bounded_run`: the same archetype catalog as `cautilus scenarios --json` plus a starter `mode evaluate -> review prepare-input -> review variants` loop.
 When a repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, run `cautilus doctor --repo-root /path/to/repo --adapter-name <name>` for repo-scope validation instead of expecting plain `doctor` to guess which named adapter you mean.
 
 For the shortest end-to-end adoption proof in a fresh consumer repo:
@@ -137,6 +138,7 @@ cautilus scenario summarize-telemetry \
 ```
 
 Every normalize command plus `cautilus skill evaluate`, `cautilus instruction-surface evaluate`, and `cautilus report build` accepts `--example-input`: it prints a minimal valid packet to stdout that can be piped back into the same command, so operators can inspect the expected shape without clicking into a fixture on GitHub.
+`cautilus scenarios --json` now exposes those same inspect commands under `exampleInputCli` for each archetype.
 
 ## Instruction surface
 

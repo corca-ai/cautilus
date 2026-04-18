@@ -51,6 +51,7 @@ The product already exposes both `commands --json` and `scenarios --json`.
 That split is deliberate.
 `commands` is a full CLI registry.
 `scenarios` is the smaller operator-facing archetype catalog.
+Each `scenarios --json` row now also exposes `exampleInputCli`, so a caller can inspect a minimal valid packet shape without opening a fixture path first.
 
 Keeping the three archetypes distinct prevents one large "normalize anything" surface from hiding important differences in evidence shape and review intent.
 It also keeps error handling explicit: a workflow-shaped input should not silently pass through the skill path.
@@ -60,6 +61,8 @@ It also keeps error handling explicit: a workflow-shaped input should not silent
 ```run:shell
 $ ./bin/cautilus scenarios --json | grep '"schemaVersion": "cautilus.scenarios.v1"'
   "schemaVersion": "cautilus.scenarios.v1",
+$ ./bin/cautilus scenarios --json | grep '"exampleInputCli": "cautilus scenario normalize chatbot --example-input"'
+      "exampleInputCli": "cautilus scenario normalize chatbot --example-input",
 $ ./bin/cautilus scenario normalize chatbot --input ./fixtures/scenario-proposals/samples/chatbot-consumer-input.json | grep '"proposalKey": "event-triggered-followup"'
     "proposalKey": "event-triggered-followup",
 $ ./bin/cautilus scenario normalize skill --input ./fixtures/scenario-proposals/samples/skill-validation-input.json | grep '"proposalKey": "public-skill-impl-smoke-scenario-regression"'

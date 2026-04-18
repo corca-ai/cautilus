@@ -35,7 +35,8 @@ Use the two `doctor` scopes deliberately.
 `cautilus doctor --scope agent-surface` verifies the bundled skill and local agent-facing surface are installed and discoverable.
 `cautilus doctor` without `--scope` stays the repo-wiring gate and proves the repo has a real runnable `Cautilus` evaluation path.
 Do not stop at either gate.
-After repo-scope `doctor` returns `ready`, run `cautilus scenarios` to choose the right archetype, then drive one bounded decision loop such as `mode evaluate -> review prepare-input -> review variants` so the repo proves it can produce a real report and review surface, not just a bootstrap-ready adapter.
+When repo-scope `doctor` returns `ready`, its JSON payload now includes `first_bounded_run` with the same archetype catalog as `cautilus scenarios --json` plus a product-owned `mode evaluate -> review prepare-input -> review variants` starter loop.
+Use that payload or `cautilus scenarios --json` to choose one archetype, then complete one bounded decision loop so the repo proves it can produce a real report and review surface, not just a bootstrap-ready adapter.
 
 If you want to hand setup to an agent, paste this:
 
@@ -154,6 +155,7 @@ Use when a stateful automation — a CLI workflow, long-running agent session, o
 **What to do next**: route the candidate into compare/review, or use it to justify a targeted workflow repair instead of an anecdotal one-off fix.
 
 `cautilus scenarios --json` prints the same catalog for agents that need to discover archetypes programmatically.
+Each catalog entry now also includes `exampleInputCli`, so an operator or wrapper can inspect a minimal valid packet shape without opening a fixture path first.
 Sample inputs for these archetypes live in `examples/starters/` and the checked-in fixture directories under `fixtures/`.
 
 ## Why Cautilus

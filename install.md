@@ -142,6 +142,7 @@ This creates:
 The low-level `cautilus skills install` command still exists for compatibility, but `cautilus install` is the canonical lifecycle entrypoint.
 `cautilus doctor --scope agent-surface` verifies only the bundled skill and local agent-surface install.
 `cautilus doctor` without `--scope` stays the repo-wiring gate and will not return `ready` until the repo has a real runnable evaluation path.
+When repo-scope `doctor` does return `ready`, its JSON payload includes `first_bounded_run` with archetype hints and a starter `mode evaluate -> review` loop so the next step stays product-owned.
 
 ## Verify The Install
 

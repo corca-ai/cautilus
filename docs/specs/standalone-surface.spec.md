@@ -7,7 +7,7 @@ Three discovery surfaces matter here:
 
 - `./bin/cautilus healthcheck --json` for binary health
 - `./bin/cautilus commands --json` and `./bin/cautilus scenarios --json` for safe machine-readable discovery
-- `./bin/cautilus doctor --repo-root <path>` for repo-local readiness
+- `./bin/cautilus doctor --repo-root <path>` for repo-local readiness plus the first bounded-run handoff once a repo is ready
 
 The bundled skill matters because the standalone binary is not the only entry point.
 `cautilus install` materializes the same product surface under `.agents/skills/cautilus/` for an in-repo assistant, while the operator still uses the CLI directly.
@@ -23,6 +23,8 @@ $ ./bin/cautilus commands --json | grep '"path": \[' | head -n 1
       "path": [
 $ ./bin/cautilus doctor --repo-root . | grep '"status": "ready"'
   "status": "ready",
+$ ./bin/cautilus doctor --repo-root . | grep '"first_bounded_run": {'
+  "first_bounded_run": {
 ```
 
 ## Install Proof

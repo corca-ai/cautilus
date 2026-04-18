@@ -263,6 +263,48 @@ func TestCLIDoctorReportsReadyWithExecutionSurface(t *testing.T) {
 	if !strings.Contains(anyToString(nextSteps[0]), "cautilus scenarios") {
 		t.Fatalf("expected next_steps to mention `cautilus scenarios`, got %#v", nextSteps)
 	}
+	firstBoundedRun, ok := payload["first_bounded_run"].(map[string]any)
+	if !ok {
+		t.Fatalf("expected first_bounded_run payload, got %#v", payload["first_bounded_run"])
+	}
+	if anyToString(firstBoundedRun["discoveryCommand"]) != "cautilus scenarios --json" {
+		t.Fatalf("unexpected first_bounded_run discovery command: %#v", firstBoundedRun["discoveryCommand"])
+	}
+	decisionLoopCommands, ok := firstBoundedRun["decisionLoopCommands"].([]any)
+	if !ok || len(decisionLoopCommands) != 3 {
+		t.Fatalf("expected three decision loop commands, got %#v", firstBoundedRun["decisionLoopCommands"])
+	}
+	if !strings.Contains(anyToString(decisionLoopCommands[0]), "cautilus mode evaluate --repo-root "+root) {
+		t.Fatalf("expected mode evaluate first bounded run command, got %#v", decisionLoopCommands[0])
+	}
+	archetypes, ok := firstBoundedRun["archetypes"].([]any)
+	if !ok || len(archetypes) != 3 {
+		t.Fatalf("expected three archetype hints, got %#v", firstBoundedRun["archetypes"])
+	}
+	firstArchetype, ok := archetypes[0].(map[string]any)
+	if !ok || anyToString(firstArchetype["exampleInputCli"]) == "" {
+		t.Fatalf("expected exampleInputCli in archetype hint, got %#v", archetypes[0])
+	}
+}
+
+func TestCLIScenariosExposeExampleInputCLI(t *testing.T) {
+	root := t.TempDir()
+	stdout, stderr, exitCode := runCLI(t, root, "scenarios", "--json")
+	if exitCode != 0 {
+		t.Fatalf("scenarios --json failed: %s", stderr)
+	}
+	payload := parseJSONObject(t, stdout)
+	if payload["schemaVersion"] != cautilusruntime.ScenarioCatalogSchema {
+		t.Fatalf("unexpected scenarios schema: %#v", payload["schemaVersion"])
+	}
+	archetypes, ok := payload["archetypes"].([]any)
+	if !ok || len(archetypes) != 3 {
+		t.Fatalf("expected three archetypes, got %#v", payload["archetypes"])
+	}
+	firstArchetype, ok := archetypes[0].(map[string]any)
+	if !ok || anyToString(firstArchetype["exampleInputCli"]) == "" {
+		t.Fatalf("expected exampleInputCli on first archetype, got %#v", archetypes[0])
+	}
 }
 
 func TestCLIDoctorFailsWithoutCheckedInAdapter(t *testing.T) {
