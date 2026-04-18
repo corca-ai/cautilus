@@ -82,6 +82,9 @@ func TestRenderTopicUsageIncludesLeafCommandUsageAndExamples(t *testing.T) {
 	if !strings.Contains(usage, "cautilus doctor --repo-root .") {
 		t.Fatalf("topic usage missing doctor example:\n%s", usage)
 	}
+	if !strings.Contains(usage, "named adapters under `.agents/cautilus-adapters/`") {
+		t.Fatalf("topic usage missing doctor named-adapter note:\n%s", usage)
+	}
 }
 
 func TestRenderTopicUsageIncludesGroupedSubcommandsForPrefixes(t *testing.T) {
@@ -97,6 +100,19 @@ func TestRenderTopicUsageIncludesGroupedSubcommandsForPrefixes(t *testing.T) {
 	}
 	if !strings.Contains(usage, "cautilus optimize search run") {
 		t.Fatalf("topic usage missing optimize search run subcommand:\n%s", usage)
+	}
+}
+
+func TestRenderTopicUsageIncludesCommandNotes(t *testing.T) {
+	usage, err := RenderTopicUsage([]string{"review", "prepare-input"})
+	if err != nil {
+		t.Fatalf("RenderTopicUsage returned error: %v", err)
+	}
+	if !strings.Contains(usage, "cautilus report build --example-input") {
+		t.Fatalf("topic usage missing report example-input note:\n%s", usage)
+	}
+	if !strings.Contains(usage, "\"severity\": \"concern\"") {
+		t.Fatalf("topic usage missing humanReviewFindings shape note:\n%s", usage)
 	}
 }
 

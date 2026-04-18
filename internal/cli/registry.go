@@ -26,6 +26,7 @@ type CommandEntry struct {
 	Group   string   `json:"group"`
 	Usage   string   `json:"usage"`
 	Example string   `json:"example"`
+	Notes   []string `json:"notes,omitempty"`
 }
 
 type Match struct {
@@ -37,6 +38,7 @@ type TopicHelp struct {
 	Topic         []string
 	Usage         []string
 	Examples      []string
+	Notes         []string
 	ChildCommands []CommandEntry
 }
 
@@ -216,6 +218,12 @@ func RenderTopicUsage(topic []string) (string, error) {
 			lines = append(lines, fmt.Sprintf("  %s", exampleLine))
 		}
 	}
+	if len(help.Notes) > 0 {
+		lines = append(lines, "", "Notes:")
+		for _, note := range help.Notes {
+			lines = append(lines, fmt.Sprintf("  %s", note))
+		}
+	}
 	return strings.Join(lines, "\n"), nil
 }
 
@@ -244,8 +252,10 @@ func commandsInGroup(loaded Registry, groupID string) []CommandEntry {
 func findTopicHelp(loaded Registry, topic []string) (TopicHelp, bool) {
 	usage := []string{}
 	examples := []string{}
+	notes := []string{}
 	children := []CommandEntry{}
 	seenChildren := map[string]struct{}{}
+	seenNotes := map[string]struct{}{}
 
 	for _, command := range loaded.orderedCommands() {
 		if len(topic) == 0 {
@@ -263,6 +273,13 @@ func findTopicHelp(loaded Registry, topic []string) (TopicHelp, bool) {
 		if len(command.Path) == len(topic) {
 			usage = append(usage, command.Usage)
 			examples = append(examples, command.Example)
+			for _, note := range command.Notes {
+				if _, ok := seenNotes[note]; ok {
+					continue
+				}
+				seenNotes[note] = struct{}{}
+				notes = append(notes, note)
+			}
 			continue
 		}
 		key := strings.Join(command.Path, "\x00")
@@ -273,6 +290,13 @@ func findTopicHelp(loaded Registry, topic []string) (TopicHelp, bool) {
 		children = append(children, command)
 		usage = append(usage, command.Usage)
 		examples = append(examples, command.Example)
+		for _, note := range command.Notes {
+			if _, ok := seenNotes[note]; ok {
+				continue
+			}
+			seenNotes[note] = struct{}{}
+			notes = append(notes, note)
+		}
 	}
 
 	if len(topic) > 0 && len(usage) == 0 && len(children) == 0 {
@@ -282,6 +306,7 @@ func findTopicHelp(loaded Registry, topic []string) (TopicHelp, bool) {
 		Topic:         append([]string{}, topic...),
 		Usage:         usage,
 		Examples:      examples,
+		Notes:         notes,
 		ChildCommands: children,
 	}, true
 }

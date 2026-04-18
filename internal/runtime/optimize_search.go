@@ -74,6 +74,15 @@ func BuildOptimizeSearchInput(optimizeInput map[string]any, optimizeInputFile st
 		threeParentPolicy = strings.TrimSpace(*options.ThreeParentPolicy)
 	}
 	searchConfig := buildOptimizeSearchConfig(budget, reviewCheckpointPolicy, options.SelectionPolicy, threeParentPolicy)
+	reportAdapterContext := asMap(asMap(optimizeInput["report"])["adapterContext"])
+	inferredNamedAdapter := ""
+	if derefString(options.Adapter) == "" && derefString(options.AdapterName) == "" {
+		if stringOrEmpty(reportAdapterContext["adapter"]) == "" && stringOrEmpty(reportAdapterContext["adapterName"]) == "" {
+			if namedAdapter := SoleNamedAdapter(stringOrEmpty(optimizeInput["repoRoot"])); namedAdapter != nil {
+				inferredNamedAdapter = namedAdapter.Name
+			}
+		}
+	}
 	packet := map[string]any{
 		"schemaVersion":      contracts.OptimizeSearchInputsSchema,
 		"generatedAt":        now.UTC().Format(time.RFC3339Nano),
@@ -115,14 +124,15 @@ func BuildOptimizeSearchInput(optimizeInput map[string]any, optimizeInputFile st
 			"scenarioHistoryFile": firstNonNil(optimizeInput["scenarioHistoryFile"], nil),
 		},
 		"evaluationContext": map[string]any{
-			"mode":        "held_out",
+			"mode": "held_out",
 			"adapter": firstNonEmpty(
 				derefString(options.Adapter),
-				stringOrEmpty(asMap(asMap(optimizeInput["report"])["adapterContext"])["adapter"]),
+				stringOrEmpty(reportAdapterContext["adapter"]),
 			),
 			"adapterName": firstNonEmpty(
 				derefString(options.AdapterName),
-				stringOrEmpty(asMap(asMap(optimizeInput["report"])["adapterContext"])["adapterName"]),
+				stringOrEmpty(reportAdapterContext["adapterName"]),
+				inferredNamedAdapter,
 			),
 			"intent": firstNonEmpty(
 				derefString(options.Intent),

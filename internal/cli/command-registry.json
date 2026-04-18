@@ -106,7 +106,11 @@
       "path": ["doctor"],
       "group": "setup",
       "usage": "cautilus doctor [args]",
-      "example": "cautilus doctor --repo-root ."
+      "example": "cautilus doctor --repo-root .",
+      "notes": [
+        "Default `doctor` validates the unnamed checked-in adapter path.",
+        "If your repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, use `cautilus doctor --repo-root . --adapter-name <name>` for repo-scope validation."
+      ]
     },
     {
       "path": ["healthcheck"],
@@ -148,7 +152,11 @@
       "path": ["report", "build"],
       "group": "results",
       "usage": "cautilus report build [args]",
-      "example": "cautilus report build --input ./fixtures/reports/report-input.json"
+      "example": "cautilus report build --example-input",
+      "notes": [
+        "`--example-input` prints a minimal valid report-input packet.",
+        "`humanReviewFindings` entries require `severity` and `message`, with optional `path`."
+      ]
     },
     {
       "path": ["report", "render-html"],
@@ -196,7 +204,11 @@
       "path": ["review", "prepare-input"],
       "group": "results",
       "usage": "cautilus review prepare-input [args]",
-      "example": "cautilus review prepare-input --repo-root . --report-file /tmp/cautilus-mode/report.json"
+      "example": "cautilus review prepare-input --repo-root . --report-file /tmp/cautilus-mode/report.json",
+      "notes": [
+        "If you need a minimal valid report packet before running review, start with `cautilus report build --example-input`.",
+        "That example shows the minimum `humanReviewFindings` shape: `{ \"severity\": \"concern\", \"message\": \"...\", \"path\": \"optional\" }`."
+      ]
     },
     {
       "path": ["review", "build-prompt-input"],

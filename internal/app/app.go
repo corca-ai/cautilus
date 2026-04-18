@@ -1107,6 +1107,11 @@ func handleReviewPrepareInput(repoRoot string, cwd string, args []string, stdout
 	adapterNameOption := options.adapterName
 	if adapterOption == nil && adapterNameOption == nil {
 		adapterOption, adapterNameOption = runtime.InferAdapterSelectionFromReport(report)
+		if adapterOption == nil && adapterNameOption == nil {
+			if namedAdapter := runtime.SoleNamedAdapter(options.repoRoot); namedAdapter != nil {
+				adapterNameOption = &namedAdapter.Name
+			}
+		}
 	}
 	adapterPayload, err := runtime.LoadAdapter(options.repoRoot, adapterOption, adapterNameOption)
 	if err != nil {
@@ -1114,6 +1119,22 @@ func handleReviewPrepareInput(repoRoot string, cwd string, args []string, stdout
 		return 1
 	}
 	if !adapterPayload.Found {
+		if adapterOption == nil && adapterNameOption == nil {
+			namedAdapters := runtime.DiscoverNamedAdapters(options.repoRoot)
+			if len(namedAdapters) > 0 {
+				names := make([]string, 0, len(namedAdapters))
+				for _, reference := range namedAdapters {
+					names = append(names, reference.Name)
+				}
+				fmt.Fprintf(
+					stderr,
+					"Adapter not found for repo %s. The report did not carry adapterContext. Named adapters are available: %s. Retry with --adapter-name <name>.\n",
+					options.repoRoot,
+					strings.Join(names, ", "),
+				)
+				return 1
+			}
+		}
 		fmt.Fprintf(stderr, "Adapter not found for repo %s\n", options.repoRoot)
 		return 1
 	}

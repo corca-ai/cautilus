@@ -50,6 +50,7 @@ What each step proves:
 5. `adapter resolve` proves the repo now satisfies official adapter discovery.
 6. `doctor` proves the repo is ready against the checked-in runtime contract.
    The ready payload points at `cautilus scenarios`, which prints the three first-class evaluation archetypes plus an example input path and next-step CLI per archetype.
+   If the repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, use `cautilus doctor --adapter-name <name>` for repo-scope validation.
 7. After repo-scope `doctor` is ready, run one bounded evaluation path rather than stopping at wiring.
 
 ## Migration Checklist

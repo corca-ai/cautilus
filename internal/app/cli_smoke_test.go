@@ -282,6 +282,53 @@ func TestCLIDoctorFailsWithoutCheckedInAdapter(t *testing.T) {
 	}
 }
 
+func TestCLIDoctorAcknowledgesNamedAdaptersWhenDefaultAdapterIsMissing(t *testing.T) {
+	root := t.TempDir()
+	initGitRepo(t, root)
+	namedAdapterDir := filepath.Join(root, ".agents", "cautilus-adapters")
+	if err := os.MkdirAll(namedAdapterDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	adapter := strings.Join([]string{
+		"version: 1",
+		"repo: temp",
+		"evaluation_surfaces:",
+		"  - smoke",
+		"baseline_options:",
+		"  - baseline git ref via {baseline_ref}",
+		"held_out_command_templates:",
+		"  - echo held-out",
+		"",
+	}, "\n")
+	if err := os.WriteFile(filepath.Join(namedAdapterDir, "data-final-prompt-ab.yaml"), []byte(adapter), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+
+	stdout, stderr, exitCode := runCLI(t, root, "doctor", "--repo-root", root)
+	if exitCode != 1 {
+		t.Fatalf("expected exit code 1, got %d, stderr=%s", exitCode, stderr)
+	}
+	payload := parseJSONObject(t, stdout)
+	if payload["ready"] != false || payload["status"] != "missing_default_adapter" {
+		t.Fatalf("expected missing_default_adapter payload, got %#v", payload)
+	}
+	namedAdapters, ok := payload["named_adapters"].([]any)
+	if !ok || len(namedAdapters) != 1 {
+		t.Fatalf("expected one named adapter hint, got %#v", payload["named_adapters"])
+	}
+	firstNamedAdapter := namedAdapters[0].(map[string]any)
+	if firstNamedAdapter["name"] != "data-final-prompt-ab" {
+		t.Fatalf("unexpected named adapter payload: %#v", firstNamedAdapter)
+	}
+	suggestions, ok := payload["suggestions"].([]any)
+	if !ok || len(suggestions) < 3 {
+		t.Fatalf("expected named-adapter suggestions, got %#v", payload["suggestions"])
+	}
+	if !strings.Contains(anyToString(suggestions[1]), "--adapter-name data-final-prompt-ab") {
+		t.Fatalf("expected doctor suggestion to mention --adapter-name, got %#v", suggestions)
+	}
+}
+
 func TestCLIDoctorFailsWhenAdapterIsInvalid(t *testing.T) {
 	root := t.TempDir()
 	initGitRepo(t, root)
@@ -1351,6 +1398,175 @@ echo ok
 	})
 	searchInputPath := filepath.Join(root, "optimize-search-input.json")
 	if _, stderr, exitCode := runCLI(t, root, "optimize", "search", "prepare-input", "--optimize-input", optimizeInputPath, "--held-out-results-file", heldOutResultsPath, "--target-file", targetPath, "--output", searchInputPath); exitCode != 0 {
+		t.Fatalf("optimize search prepare-input failed: %s", stderr)
+	}
+	searchInput := readJSONObjectFile(t, searchInputPath)
+	evaluationContext := searchInput["evaluationContext"].(map[string]any)
+	if evaluationContext["adapterName"] != "data-final-prompt-ab" {
+		t.Fatalf("unexpected evaluation context: %#v", evaluationContext)
+	}
+}
+
+func TestCLIReviewPrepareInputFallsBackToSoleNamedAdapterWhenReportLacksAdapterContext(t *testing.T) {
+	root := t.TempDir()
+	initGitRepo(t, root)
+	namedAdapterDir := filepath.Join(root, ".agents", "cautilus-adapters")
+	if err := os.MkdirAll(namedAdapterDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.MkdirAll(filepath.Join(root, "prompts"), 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.MkdirAll(filepath.Join(root, "fixtures"), 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	adapter := strings.Join([]string{
+		"version: 1",
+		"repo: temp",
+		"evaluation_surfaces:",
+		"  - operator workflow",
+		"baseline_options:",
+		"  - baseline git ref via {baseline_ref}",
+		"held_out_command_templates:",
+		"  - echo held-out",
+		"default_prompt_file: prompts/review.md",
+		"default_schema_file: fixtures/review.schema.json",
+		"",
+	}, "\n")
+	if err := os.WriteFile(filepath.Join(namedAdapterDir, "data-final-prompt-ab.yaml"), []byte(adapter), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(root, "prompts", "review.md"), []byte("review prompt\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(root, "fixtures", "review.schema.json"), []byte("{\"type\":\"object\"}\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	reportPath := filepath.Join(root, "report.json")
+	writeJSONFile(t, reportPath, map[string]any{
+		"schemaVersion": contracts.ReportPacketSchema,
+		"generatedAt":   "2026-04-18T06:00:00Z",
+		"candidate":     "feature/operator-guidance",
+		"baseline":      "origin/main",
+		"intent":        "The workflow should explain the next safe recovery step without guesswork.",
+		"intentProfile": map[string]any{
+			"schemaVersion":   contracts.BehaviorIntentSchema,
+			"intentId":        "intent-recovery-guidance",
+			"summary":         "The workflow should explain the next safe recovery step without guesswork.",
+			"behaviorSurface": cautilusruntime.BehaviorSurfaces["OPERATOR_BEHAVIOR"],
+			"successDimensions": []map[string]any{
+				{
+					"id":      cautilusruntime.BehaviorDimensions["FAILURE_CAUSE_CLARITY"],
+					"summary": "Explain the concrete failure cause or missing prerequisite.",
+				},
+			},
+			"guardrailDimensions": []any{},
+		},
+		"commands": []any{
+			map[string]any{
+				"mode":    "held_out",
+				"command": "echo held-out",
+			},
+		},
+		"commandObservations": []any{},
+		"modeSummaries": []any{
+			map[string]any{
+				"mode":   "held_out",
+				"status": "passed",
+			},
+		},
+		"humanReviewFindings": []any{},
+		"recommendation":      "defer",
+	})
+	reviewPacketPath := filepath.Join(root, "review-packet.json")
+	if _, stderr, exitCode := runCLI(t, root, "review", "prepare-input", "--repo-root", root, "--report-file", reportPath, "--output", reviewPacketPath); exitCode != 0 {
+		t.Fatalf("review prepare-input failed without adapter context: %s", stderr)
+	}
+	reviewPacket := readJSONObjectFile(t, reviewPacketPath)
+	if !strings.HasSuffix(anyToString(reviewPacket["adapterPath"]), filepath.Join(".agents", "cautilus-adapters", "data-final-prompt-ab.yaml")) {
+		t.Fatalf("unexpected adapter path: %#v", reviewPacket["adapterPath"])
+	}
+}
+
+func TestCLIOptimizeSearchPrepareInputFallsBackToSoleNamedAdapterWhenReportLacksAdapterContext(t *testing.T) {
+	root := t.TempDir()
+	initGitRepo(t, root)
+	namedAdapterDir := filepath.Join(root, ".agents", "cautilus-adapters")
+	if err := os.MkdirAll(namedAdapterDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	adapter := strings.Join([]string{
+		"version: 1",
+		"repo: temp",
+		"evaluation_surfaces:",
+		"  - operator workflow",
+		"baseline_options:",
+		"  - baseline git ref via {baseline_ref}",
+		"held_out_command_templates:",
+		"  - echo held-out",
+		"",
+	}, "\n")
+	if err := os.WriteFile(filepath.Join(namedAdapterDir, "data-final-prompt-ab.yaml"), []byte(adapter), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	targetFile := filepath.Join(root, "prompt.md")
+	if err := os.WriteFile(targetFile, []byte("Keep recovery guidance explicit.\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	reportPath := filepath.Join(root, "report.json")
+	writeJSONFile(t, reportPath, map[string]any{
+		"schemaVersion": contracts.ReportPacketSchema,
+		"generatedAt":   "2026-04-18T06:00:00Z",
+		"candidate":     "feature/operator-guidance",
+		"baseline":      "origin/main",
+		"intent":        "The workflow should explain the next safe recovery step without guesswork.",
+		"intentProfile": map[string]any{
+			"schemaVersion":   contracts.BehaviorIntentSchema,
+			"intentId":        "intent-recovery-guidance",
+			"summary":         "The workflow should explain the next safe recovery step without guesswork.",
+			"behaviorSurface": cautilusruntime.BehaviorSurfaces["OPERATOR_BEHAVIOR"],
+			"successDimensions": []map[string]any{
+				{
+					"id":      cautilusruntime.BehaviorDimensions["FAILURE_CAUSE_CLARITY"],
+					"summary": "Explain the concrete failure cause or missing prerequisite.",
+				},
+			},
+			"guardrailDimensions": []any{},
+		},
+		"commands": []any{
+			map[string]any{
+				"mode":    "held_out",
+				"command": "echo held-out",
+			},
+		},
+		"commandObservations": []any{},
+		"modeSummaries": []any{
+			map[string]any{
+				"mode":   "held_out",
+				"status": "passed",
+			},
+		},
+		"humanReviewFindings": []any{},
+		"recommendation":      "defer",
+	})
+	optimizeInputPath := filepath.Join(root, "optimize-input.json")
+	if _, stderr, exitCode := runCLI(t, root, "optimize", "prepare-input", "--report-file", reportPath, "--repo-root", root, "--target", "prompt", "--target-file", targetFile, "--output", optimizeInputPath); exitCode != 0 {
+		t.Fatalf("optimize prepare-input failed: %s", stderr)
+	}
+	heldOutResultsPath := filepath.Join(root, "held-out-results.json")
+	writeJSONFile(t, heldOutResultsPath, map[string]any{
+		"schemaVersion": contracts.ScenarioResultsSchema,
+		"mode":          "held_out",
+		"results": []map[string]any{
+			{
+				"scenarioId":   "operator-guidance-smoke",
+				"status":       "passed",
+				"overallScore": 100,
+			},
+		},
+	})
+	searchInputPath := filepath.Join(root, "optimize-search-input.json")
+	if _, stderr, exitCode := runCLI(t, root, "optimize", "search", "prepare-input", "--optimize-input", optimizeInputPath, "--held-out-results-file", heldOutResultsPath, "--target-file", targetFile, "--output", searchInputPath); exitCode != 0 {
 		t.Fatalf("optimize search prepare-input failed: %s", stderr)
 	}
 	searchInput := readJSONObjectFile(t, searchInputPath)

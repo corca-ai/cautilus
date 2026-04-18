@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -70,6 +71,11 @@ type AdapterPayload struct {
 	Errors        []string       `json:"errors"`
 	Warnings      []string       `json:"warnings"`
 	SearchedPaths []string       `json:"searched_paths"`
+}
+
+type NamedAdapterReference struct {
+	Name string `json:"name"`
+	Path string `json:"path"`
 }
 
 func InferRepoDefaults(repoRoot string) map[string]any {
@@ -139,6 +145,50 @@ func FindAdapter(repoRoot string, candidates []string) string {
 		}
 	}
 	return ""
+}
+
+func DiscoverNamedAdapters(repoRoot string) []NamedAdapterReference {
+	discovered := []NamedAdapterReference{}
+	seen := map[string]struct{}{}
+	for _, relativeDir := range NamedAdapterDirs {
+		absoluteDir := filepath.Join(repoRoot, relativeDir)
+		entries, err := os.ReadDir(absoluteDir)
+		if err != nil {
+			continue
+		}
+		names := make([]string, 0, len(entries))
+		for _, entry := range entries {
+			if entry.IsDir() || !strings.HasSuffix(entry.Name(), ".yaml") {
+				continue
+			}
+			names = append(names, entry.Name())
+		}
+		sort.Strings(names)
+		for _, filename := range names {
+			name := strings.TrimSuffix(filename, ".yaml")
+			if name == "" {
+				continue
+			}
+			if _, ok := seen[name]; ok {
+				continue
+			}
+			seen[name] = struct{}{}
+			discovered = append(discovered, NamedAdapterReference{
+				Name: name,
+				Path: filepath.Join(absoluteDir, filename),
+			})
+		}
+	}
+	return discovered
+}
+
+func SoleNamedAdapter(repoRoot string) *NamedAdapterReference {
+	discovered := DiscoverNamedAdapters(repoRoot)
+	if len(discovered) != 1 {
+		return nil
+	}
+	reference := discovered[0]
+	return &reference
 }
 
 func LoadAdapter(repoRoot string, adapterPath *string, adapterName *string) (*AdapterPayload, error) {
@@ -553,19 +603,45 @@ func DoctorRepo(repoRoot string, adapterPath *string, adapterName *string) (map[
 		}
 	}
 	if !payload.Found {
-		checks = append(checks, map[string]any{"id": "adapter_found", "ok": false, "detail": "No checked-in adapter was found."})
+		namedAdapters := []any{}
+		discoveredNamedAdapters := DiscoverNamedAdapters(repoRoot)
+		if adapterName == nil {
+			for _, reference := range discoveredNamedAdapters {
+				namedAdapters = append(namedAdapters, map[string]any{
+					"name": reference.Name,
+					"path": reference.Path,
+				})
+			}
+		}
+		detail := "No checked-in adapter was found."
+		if len(namedAdapters) > 0 {
+			detail = "No default checked-in adapter was found, but named adapters are available."
+		}
+		checks = append(checks, map[string]any{"id": "adapter_found", "ok": false, "detail": detail})
 		command := fmt.Sprintf("cautilus adapter init --repo-root %s", repoRoot)
 		if adapterName != nil && strings.TrimSpace(*adapterName) != "" {
 			command += " --adapter-name " + *adapterName
 		}
 		suggestions = append(suggestions, command)
+		if len(namedAdapters) > 0 {
+			firstNamedAdapter := discoveredNamedAdapters[0].Name
+			suggestions = append(suggestions, fmt.Sprintf("Run cautilus doctor --repo-root %s --adapter-name %s to validate a named adapter directly.", repoRoot, firstNamedAdapter))
+			suggestions = append(suggestions, fmt.Sprintf("Run cautilus adapter resolve --repo-root %s --adapter-name %s to inspect the named adapter path.", repoRoot, firstNamedAdapter))
+			suggestions = append(suggestions, "Add a default .agents/cautilus-adapter.yaml only if you want plain `cautilus doctor` to validate one unnamed adapter without `--adapter-name`.")
+		}
 		for _, warning := range payload.Warnings {
 			suggestions = append(suggestions, warning)
 		}
 		result := baseResult()
-		result["status"] = "missing_adapter"
+		if len(namedAdapters) > 0 {
+			result["status"] = "missing_default_adapter"
+			result["summary"] = "Default adapter missing, but named adapters are available."
+			result["named_adapters"] = namedAdapters
+		} else {
+			result["status"] = "missing_adapter"
+			result["summary"] = "Adapter missing."
+		}
 		result["ready"] = false
-		result["summary"] = "Adapter missing."
 		return result, 1, nil
 	}
 	checks = append(checks, map[string]any{"id": "adapter_found", "ok": true, "detail": fmt.Sprintf("Using adapter at %v", payload.Path)})

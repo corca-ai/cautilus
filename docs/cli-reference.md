@@ -73,6 +73,7 @@ cautilus scenarios --json
 `cautilus <subcommand> --help` exits `0` for the registered native command surface, including grouped topics such as `cautilus optimize search --help`.
 Use `doctor --scope agent-surface` to verify only the bundled skill and local agent-surface install.
 Use default `doctor` (`--scope repo`) to verify the repo has a real runnable evaluation path.
+When a repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, run `cautilus doctor --repo-root /path/to/repo --adapter-name <name>` for repo-scope validation instead of expecting plain `doctor` to guess which named adapter you mean.
 
 For the shortest end-to-end adoption proof in a fresh consumer repo:
 
@@ -240,6 +241,10 @@ cautilus review variants \
   --output-text-key analysis_text \
   --output-dir /tmp/cautilus-review
 ```
+
+If you need a minimal valid report packet before review, run `cautilus report build --example-input`.
+That example includes the minimum `humanReviewFindings` shape:
+`{ "severity": "concern", "message": "...", "path": "optional" }`.
 
 `review variants` writes a product-owned `review-summary.json` (`cautilus.review_summary.v1`) plus one per-variant `cautilus.review_variant_result.v1` file.
 A variant can finish as `passed`, `blocked`, or `failed`; blocked runs carry machine-readable reason codes instead of prose-only abort text.
