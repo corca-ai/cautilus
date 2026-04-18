@@ -1182,6 +1182,9 @@ cat > "$scenario_results_file" <<'JSON'
     "verdict": "improved",
     "improved": [
       "operator-guidance-smoke"
+    ],
+    "artifactPaths": [
+      ".cautilus/runs/gepa-speech-heldout1/김이나/seg_0003/scenario_artifact.json"
     ]
   }
 }
@@ -1227,6 +1230,10 @@ echo ok
 	compareArtifact := firstSummary["compareArtifact"].(map[string]any)
 	if compareArtifact["verdict"] != "improved" {
 		t.Fatalf("unexpected compare artifact: %#v", compareArtifact)
+	}
+	artifactPaths := compareArtifact["artifactPaths"].([]any)
+	if len(artifactPaths) != 1 || anyToString(artifactPaths[0]) != ".cautilus/runs/gepa-speech-heldout1/김이나/seg_0003/scenario_artifact.json" {
+		t.Fatalf("unexpected compare artifact paths: %#v", compareArtifact["artifactPaths"])
 	}
 }
 

@@ -89,6 +89,13 @@ func assertArray(value any, field string) ([]any, error) {
 	if value == nil {
 		return []any{}, nil
 	}
+	if typed, ok := value.([]string); ok {
+		items := make([]any, 0, len(typed))
+		for _, entry := range typed {
+			items = append(items, entry)
+		}
+		return items, nil
+	}
 	items, ok := value.([]any)
 	if !ok {
 		return nil, fmt.Errorf("%s must be an array", field)
