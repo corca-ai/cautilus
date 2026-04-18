@@ -112,9 +112,13 @@ The output should include:
 - Codex `skill test` summaries now preserve provider, model, duration, and
   product-owned token totals from the machine-readable `codex exec --json`
   stream.
-- Codex `skill test` summaries still do not promote product-owned `cost_usd`
-  unless the runtime exposes a stable machine field for it.
-  `Cautilus` does not derive product truth from human-oriented stderr prose.
+- For supported OpenAI Codex models, `skill test` may also populate
+  `cost_usd` from a checked-in derived-pricing catalog.
+  When it does, the underlying telemetry keeps `cost_truth=derived_pricing`
+  plus pricing provenance fields so downstream readers can distinguish
+  derived cost from runtime-exposed exact cost.
+- `Cautilus` still does not derive product truth from human-oriented stderr
+  prose.
 - `scenario_results` rows need the caller to decide which statuses count as
   success when the source mode is comparison-shaped.
   The preparer therefore accepts explicit `--pass-status` overrides.

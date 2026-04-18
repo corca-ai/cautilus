@@ -195,7 +195,7 @@ func normalizeScenarioTelemetry(value any, field string) (map[string]any, error)
 		return nil, fmt.Errorf("%s must be an object", field)
 	}
 	telemetry := map[string]any{}
-	for _, key := range []string{"provider", "model"} {
+	for _, key := range []string{"provider", "model", "cost_truth", "pricing_source", "pricing_version"} {
 		value, err := normalizeOptionalString(record[key], field+"."+key)
 		if err != nil {
 			return nil, err

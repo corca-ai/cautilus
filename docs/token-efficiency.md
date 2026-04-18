@@ -73,6 +73,14 @@ Current args (`codexArgs` in `scripts/agent-runtime/run-local-skill-test.mjs`):
 Sandbox mode is intentionally caller-controlled (`read-only` or
 `workspace-write`) because different skills have different authority needs.
 
+Codex `skill test` telemetry now reads the machine-readable `codex exec --json`
+event stream.
+For supported OpenAI Codex models, `Cautilus` also derives `cost_usd` from a
+checked-in pricing catalog using token totals from that stream.
+Those rows are labeled with `cost_truth=derived_pricing`,
+`pricing_source=openai_api_pricing`, and a checked-in `pricing_version`.
+`Cautilus` still does not promote human-oriented stderr counters into product truth.
+
 ### Self-dogfood adapter-only runtime knobs
 
 The checked-in `self-dogfood-skill-test` adapter now applies a narrower

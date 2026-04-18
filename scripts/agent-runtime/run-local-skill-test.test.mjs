@@ -239,6 +239,10 @@ test("extractCodexTelemetry preserves provider, model, and token totals from jso
 		prompt_tokens: 1400,
 		completion_tokens: 350,
 		total_tokens: 1750,
+		cost_usd: 0.00249,
+		cost_truth: "derived_pricing",
+		pricing_source: "openai_api_pricing",
+		pricing_version: "2026-04-19",
 	});
 });
 
@@ -280,5 +284,48 @@ test("normalizeObservedResult preserves backend telemetry and numeric metrics", 
 		completion_tokens: 334,
 		total_tokens: 1234,
 		cost_usd: 0.01234,
+	});
+});
+
+test("normalizeObservedResult falls back to telemetry totals when observed metrics omit codex cost", () => {
+	const observed = normalizeObservedResult(
+		{
+			evaluationKind: "execution",
+			caseId: "execution-demo",
+		},
+		{
+			invoked: true,
+			summary: "Completed.",
+			outcome: "passed",
+			telemetry: {
+				provider: "openai",
+				model: "gpt-5.4-mini",
+				prompt_tokens: 1400,
+				completion_tokens: 350,
+				total_tokens: 1750,
+				cost_usd: 0.002625,
+				cost_truth: "derived_pricing",
+				pricing_source: "openai_api_pricing",
+				pricing_version: "2026-04-19",
+			},
+		},
+		2500,
+		[],
+	);
+	assert.deepEqual(observed.metrics, {
+		duration_ms: 2500,
+		total_tokens: 1750,
+		cost_usd: 0.002625,
+	});
+	assert.deepEqual(observed.telemetry, {
+		provider: "openai",
+		model: "gpt-5.4-mini",
+		prompt_tokens: 1400,
+		completion_tokens: 350,
+		total_tokens: 1750,
+		cost_usd: 0.002625,
+		cost_truth: "derived_pricing",
+		pricing_source: "openai_api_pricing",
+		pricing_version: "2026-04-19",
 	});
 });

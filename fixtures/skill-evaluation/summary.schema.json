@@ -113,6 +113,9 @@
             "properties": {
               "provider": { "type": "string" },
               "model": { "type": "string" },
+              "cost_truth": { "type": "string" },
+              "pricing_source": { "type": "string" },
+              "pricing_version": { "type": "string" },
               "prompt_tokens": { "type": "number", "minimum": 0 },
               "completion_tokens": { "type": "number", "minimum": 0 },
               "total_tokens": { "type": "number", "minimum": 0 },
@@ -235,6 +238,9 @@
             "properties": {
               "provider": { "type": "string" },
               "model": { "type": "string" },
+              "cost_truth": { "type": "string" },
+              "pricing_source": { "type": "string" },
+              "pricing_version": { "type": "string" },
               "prompt_tokens": { "type": "number", "minimum": 0 },
               "completion_tokens": { "type": "number", "minimum": 0 },
               "total_tokens": { "type": "number", "minimum": 0 },

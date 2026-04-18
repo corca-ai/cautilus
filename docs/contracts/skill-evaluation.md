@@ -50,6 +50,9 @@ The first slice consumes one normalized packet with:
     - optional `completion_tokens`
     - optional `total_tokens`
     - optional `cost_usd`
+    - optional `cost_truth`
+    - optional `pricing_source`
+    - optional `pricing_version`
   - optional `sampling`
     - `sampleCount`
     - optional `consensusCount`
@@ -75,6 +78,18 @@ The host repo still owns:
 
 The product-owned surface starts at the normalized packet, not at raw host runtime access.
 
+`cost_usd` may come from two honest sources:
+
+- exact runtime-exposed cost telemetry
+- a separately versioned derived-pricing seam, when the runtime exposes
+  machine-readable token totals but not direct cost
+
+When the second path is used, the telemetry should preserve:
+
+- `cost_truth=derived_pricing`
+- `pricing_source`
+- `pricing_version`
+
 ## Output Boundary
 
 The first summary packet should include:
@@ -95,6 +110,8 @@ The first summary packet should include:
   - `trigger_selection`
   - `execution_quality`
 - preserved per-evaluation runtime telemetry when the host runner exposes it explicitly
+- preserved cost-truth provenance when cost is derived from a versioned
+  pricing catalog instead of emitted directly by the runtime
 - derived product-owned `intentProfile`
 - `evaluationRuns` suitable for `cautilus scenario normalize skill`
 

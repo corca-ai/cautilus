@@ -300,12 +300,19 @@ export function backendFailureResult(testCase, message, durationMs, artifactRefs
 
 function observedBaseResult(testCase, observed, durationMs, artifactRefs) {
 	const telemetry = normalizeSkillTelemetry(observed?.telemetry);
+	const normalizedMetrics = normalizeSkillMetrics(observed?.metrics) ?? {};
+	if (telemetry?.total_tokens !== undefined && normalizedMetrics.total_tokens === undefined) {
+		normalizedMetrics.total_tokens = telemetry.total_tokens;
+	}
+	if (telemetry?.cost_usd !== undefined && normalizedMetrics.cost_usd === undefined) {
+		normalizedMetrics.cost_usd = telemetry.cost_usd;
+	}
 	return {
 		invoked: Boolean(observed?.invoked),
 		summary: assertString(observed?.summary, "observed.summary"),
 		metrics: {
 			duration_ms: durationMs,
-			...(normalizeSkillMetrics(observed?.metrics) ?? {}),
+			...normalizedMetrics,
 		},
 		artifactRefs,
 		...(telemetry ? { telemetry } : {}),

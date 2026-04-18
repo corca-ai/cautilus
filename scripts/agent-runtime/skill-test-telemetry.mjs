@@ -1,3 +1,5 @@
+import { deriveCodexCostTelemetry } from "./codex-pricing.mjs";
+
 function normalizeNonNegativeInteger(value) {
 	return Number.isInteger(value) && value >= 0 ? value : null;
 }
@@ -147,10 +149,12 @@ function codexTotalsFromUsage(usage) {
 }
 
 function codexTelemetryFromTotals(totals, provider, model) {
+	const costTelemetry = deriveCodexCostTelemetry({ provider, model, totals });
 	if (!totals) {
 		return compactTelemetry({
 			provider,
 			model,
+			...(costTelemetry ?? {}),
 		});
 	}
 	const promptTokens = totals.input + totals.cached;
@@ -161,6 +165,7 @@ function codexTelemetryFromTotals(totals, provider, model) {
 		prompt_tokens: promptTokens > 0 ? promptTokens : null,
 		completion_tokens: completionTokens > 0 ? completionTokens : null,
 		total_tokens: promptTokens + completionTokens > 0 ? promptTokens + completionTokens : null,
+		...(costTelemetry ?? {}),
 	});
 }
 
@@ -254,7 +259,7 @@ export function normalizeSkillTelemetry(value) {
 		return null;
 	}
 	const telemetry = {};
-	for (const key of ["provider", "model"]) {
+	for (const key of ["provider", "model", "cost_truth", "pricing_source", "pricing_version"]) {
 		if (typeof value[key] === "string" && value[key].trim()) {
 			telemetry[key] = value[key];
 		}
@@ -273,7 +278,7 @@ export function aggregateSkillTelemetry(results) {
 		return null;
 	}
 	const telemetry = {};
-	for (const key of ["provider", "model"]) {
+	for (const key of ["provider", "model", "cost_truth", "pricing_source", "pricing_version"]) {
 		const values = Array.from(new Set(
 			telemetryResults
 				.map((entry) => (typeof entry[key] === "string" && entry[key].trim() ? entry[key] : null))

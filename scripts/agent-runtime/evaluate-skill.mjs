@@ -139,7 +139,7 @@ function normalizeOptionalTelemetry(value, field) {
 		throw new Error(`${field} must be an object`);
 	}
 	const telemetry = {};
-	for (const key of ["provider", "model"]) {
+	for (const key of ["provider", "model", "cost_truth", "pricing_source", "pricing_version"]) {
 		const normalized = normalizeOptionalString(value[key], `${field}.${key}`);
 		if (normalized !== null) {
 			telemetry[key] = normalized;
