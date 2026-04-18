@@ -2336,9 +2336,13 @@ func TestCLIOptimizeSearchPrepareRunAndProposeFromSearch(t *testing.T) {
 		t.Fatalf("unexpected held-out scenario set: %#v", searchInput["scenarioSets"])
 	}
 
-	_, stderr, exitCode = runCLI(t, root, "optimize", "search", "run", "--input", searchInputPath, "--output", searchResultPath)
+	stdout, stderr, exitCode := runCLI(t, root, "optimize", "search", "run", "--input", searchInputPath, "--output", searchResultPath)
 	if exitCode != 0 {
-		t.Fatalf("optimize search run failed: %s", stderr)
+		resultPayload := ""
+		if payload, err := os.ReadFile(searchResultPath); err == nil {
+			resultPayload = string(payload)
+		}
+		t.Fatalf("optimize search run failed: stdout=%s stderr=%s result=%s", stdout, stderr, resultPayload)
 	}
 	searchResult := readJSONObjectFile(t, searchResultPath)
 	if searchResult["schemaVersion"] != contracts.OptimizeSearchResultSchema || searchResult["status"] != "completed" {
@@ -2764,9 +2768,9 @@ func TestCLIOptimizeSearchRunConsumesMultipleGenerations(t *testing.T) {
 	if exitCode != 0 {
 		t.Fatalf("optimize search prepare-input failed: %s", stderr)
 	}
-	_, stderr, exitCode = runCLI(t, root, "optimize", "search", "run", "--input", searchInputPath, "--output", searchResultPath)
+	stdout, stderr, exitCode := runCLI(t, root, "optimize", "search", "run", "--input", searchInputPath, "--output", searchResultPath)
 	if exitCode != 0 {
-		t.Fatalf("optimize search run failed: %s", stderr)
+		t.Fatalf("optimize search run failed: stdout=%s stderr=%s", stdout, stderr)
 	}
 	searchResult := readJSONObjectFile(t, searchResultPath)
 	if searchResult["status"] != "completed" {
@@ -3225,6 +3229,265 @@ printf '%%s\n' '%s' > "$out"
 	}
 	if !strings.Contains(string(payload), "detailed recovery checklist") {
 		t.Fatalf("expected selected candidate prompt to include checklist, got %q", string(payload))
+	}
+}
+
+func TestCLIOptimizeSearchRunReusesFrontierPromotionReviewBeforeFinalSelection(t *testing.T) {
+	root := t.TempDir()
+	targetPath := filepath.Join(root, "prompt.md")
+	schemaPath := filepath.Join(root, "fixtures", "review.schema.json")
+	heldOutResultsPath := filepath.Join(root, "held-out-results.json")
+	optimizeInputPath := filepath.Join(root, "optimize-input.json")
+	searchInputPath := filepath.Join(root, "optimize-search-input.json")
+	reviewCountPath := filepath.Join(root, "review-count.txt")
+
+	if err := os.MkdirAll(filepath.Join(root, ".agents"), 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.MkdirAll(filepath.Join(root, "fixtures"), 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.WriteFile(targetPath, []byte("Keep recovery instructions explicit.\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	if err := os.WriteFile(schemaPath, []byte("{\"type\":\"object\"}\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	writeExecutableFile(t, root, "evaluate.sh", strings.Join([]string{
+		"#!/bin/sh",
+		"output=\"$1\"",
+		"recovery_score=60",
+		"if grep -q \"detailed recovery checklist\" prompt.md; then",
+		"  recovery_score=95",
+		"fi",
+		"cat >\"$output\" <<EOF",
+		"{",
+		"  \"schemaVersion\": \"cautilus.scenario_results.v1\",",
+		"  \"mode\": \"held_out\",",
+		"  \"results\": [",
+		"    {",
+		"      \"scenarioId\": \"operator-recovery\",",
+		"      \"status\": \"passed\",",
+		"      \"overallScore\": $recovery_score,",
+		"      \"telemetry\": {",
+		"        \"cost_usd\": 0.02,",
+		"        \"durationMs\": 1200",
+		"      }",
+		"    }",
+		"  ]",
+		"}",
+		"EOF",
+		"",
+	}, "\n"))
+	writeExecutableFile(t, root, "variant.sh", strings.Join([]string{
+		"#!/bin/sh",
+		"output_file=\"$1\"",
+		fmt.Sprintf("count_file=%q", reviewCountPath),
+		"count=0",
+		"if [ -f \"$count_file\" ]; then",
+		"  count=$(cat \"$count_file\")",
+		"fi",
+		"count=$((count + 1))",
+		"printf '%s\\n' \"$count\" > \"$count_file\"",
+		"printf '{\"verdict\":\"pass\",\"summary\":\"frontier promotion review passed\",\"findings\":[{\"severity\":\"pass\",\"message\":\"promotion review reused\",\"path\":\"variant/sh\"}] }\\n' > \"$output_file\"",
+		"",
+	}, "\n"))
+	writeExecutableFile(t, root, "codex", strings.Join([]string{
+		"#!/bin/sh",
+		"out=\"\"",
+		"while [ \"$#\" -gt 0 ]; do",
+		"  if [ \"$1\" = \"-o\" ]; then",
+		"    out=\"$2\"",
+		"    shift 2",
+		"    continue",
+		"  fi",
+		"  shift",
+		"done",
+		"cat >/dev/null",
+		fmt.Sprintf("printf '%%s\\n' '%s' > \"$out\"", toJSONString(map[string]any{
+			"promptMarkdown":       "Keep recovery instructions explicit with a detailed recovery checklist.\n",
+			"rationaleSummary":     "Strengthen the recovery path with a concrete checklist.",
+			"expectedImprovements": []string{"operator-recovery"},
+			"preservedStrengths":   []string{"keeps the original recovery framing"},
+			"riskNotes":            []string{"held-out should confirm the extra detail stays concise"},
+		})),
+		"",
+	}, "\n"))
+	if err := os.WriteFile(filepath.Join(root, ".agents", "cautilus-adapter.yaml"), []byte(strings.Join([]string{
+		"version: 1",
+		"repo: temp-optimize-search",
+		"evaluation_surfaces:",
+		"  - prompt behavior",
+		"baseline_options:",
+		"  - baseline git ref in the same repo via {baseline_ref}",
+		"required_prerequisites: []",
+		"default_schema_file: fixtures/review.schema.json",
+		"held_out_command_templates:",
+		"  - sh evaluate.sh {scenario_results_file}",
+		"comparison_questions:",
+		"  - Did the held-out score improve?",
+		"executor_variants:",
+		"  - id: operator-review",
+		"    tool: command",
+		"    purpose: frontier promotion review",
+		"    command_template: sh {candidate_repo}/variant.sh {output_file}",
+		"",
+	}, "\n")), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	writeJSONFile(t, heldOutResultsPath, map[string]any{
+		"schemaVersion": contracts.ScenarioResultsSchema,
+		"mode":          "held_out",
+		"results": []map[string]any{
+			{
+				"scenarioId":   "operator-recovery",
+				"status":       "failed",
+				"overallScore": 40,
+				"telemetry": map[string]any{
+					"cost_usd":   0.02,
+					"durationMs": 1200,
+				},
+			},
+		},
+	})
+	writeJSONFile(t, optimizeInputPath, map[string]any{
+		"schemaVersion":      contracts.OptimizeInputsSchema,
+		"generatedAt":        "2026-04-13T09:58:00.000Z",
+		"repoRoot":           root,
+		"optimizationTarget": "prompt",
+		"intentProfile": map[string]any{
+			"schemaVersion":   contracts.BehaviorIntentSchema,
+			"intentId":        "intent-operator-recovery-guidance",
+			"summary":         "Operator guidance should stay legible under recovery pressure.",
+			"behaviorSurface": cautilusruntime.BehaviorSurfaces["OPERATOR_BEHAVIOR"],
+		},
+		"optimizer": map[string]any{
+			"kind":   "reflection",
+			"budget": "medium",
+			"plan": map[string]any{
+				"evidenceLimit":        3,
+				"suggestedChangeLimit": 2,
+				"reviewVariantLimit":   1,
+				"historySignalLimit":   1,
+			},
+		},
+		"targetFile": map[string]any{
+			"path":   targetPath,
+			"exists": true,
+		},
+		"reportFile": filepath.Join(root, "report.json"),
+		"report": map[string]any{
+			"schemaVersion": contracts.ReportPacketSchema,
+			"generatedAt":   "2026-04-13T09:57:00.000Z",
+			"candidate":     root,
+			"baseline":      "HEAD",
+			"intent":        "Operator guidance should stay legible under recovery pressure.",
+			"intentProfile": map[string]any{
+				"schemaVersion":   contracts.BehaviorIntentSchema,
+				"intentId":        "intent-operator-recovery-guidance",
+				"summary":         "Operator guidance should stay legible under recovery pressure.",
+				"behaviorSurface": cautilusruntime.BehaviorSurfaces["OPERATOR_BEHAVIOR"],
+			},
+			"commands":            []any{},
+			"commandObservations": []any{},
+			"modesRun":            []any{},
+			"modeSummaries":       []any{},
+			"telemetry":           map[string]any{"modeCount": 0},
+			"improved":            []any{},
+			"regressed":           []any{"operator-recovery"},
+			"unchanged":           []any{},
+			"noisy":               []any{},
+			"humanReviewFindings": []any{
+				map[string]any{
+					"severity": "concern",
+					"message":  "operator-recovery still needs a detailed recovery checklist",
+				},
+			},
+			"recommendation": "defer",
+		},
+		"reviewSummaryFile": filepath.Join(root, "review-summary.json"),
+		"reviewSummary": map[string]any{
+			"variants": []any{},
+		},
+		"scenarioHistoryFile": filepath.Join(root, "history.json"),
+		"scenarioHistory": map[string]any{
+			"schemaVersion": contracts.ScenarioHistorySchema,
+			"scenarioStats": map[string]any{
+				"operator-recovery": map[string]any{
+					"recentTrainResults": []any{
+						map[string]any{
+							"status":       "failed",
+							"overallScore": 80,
+							"passRate":     0,
+						},
+					},
+				},
+			},
+		},
+		"objective": map[string]any{
+			"summary":     "Propose one bounded next revision without weakening held-out, comparison, or review discipline.",
+			"constraints": []any{"Prefer repairing explicit regressions over widening scope."},
+		},
+	})
+
+	runGit(t, root, "init")
+	runGit(t, root, "config", "user.email", "test@example.com")
+	runGit(t, root, "config", "user.name", "Cautilus Test")
+	runGit(t, root, "add", ".")
+	runGit(t, root, "commit", "-m", "initial")
+	t.Setenv("PATH", root+string(os.PathListSeparator)+os.Getenv("PATH"))
+
+	_, stderr, exitCode := runCLI(t, root, "optimize", "search", "prepare-input", "--optimize-input", optimizeInputPath, "--held-out-results-file", heldOutResultsPath, "--budget", "medium", "--output", searchInputPath)
+	if exitCode != 0 {
+		t.Fatalf("optimize search prepare-input failed: %s", stderr)
+	}
+	searchInput := readJSONObjectFile(t, searchInputPath)
+	searchConfig := searchInput["searchConfig"].(map[string]any)
+	searchConfig["generationLimit"] = float64(1)
+	searchConfig["reviewCheckpointPolicy"] = "frontier_promotions"
+	mutationConfig := searchInput["mutationConfig"].(map[string]any)
+	mutationConfig["backends"] = []any{
+		map[string]any{
+			"id":      "codex-mutate",
+			"backend": "codex_exec",
+		},
+	}
+	writeJSONFile(t, searchInputPath, searchInput)
+
+	stdout, stderr, exitCode := runCLI(t, root, "optimize", "search", "run", "--input", searchInputPath, "--json")
+	if exitCode != 0 {
+		t.Fatalf("optimize search run failed: stdout=%s stderr=%s", stdout, stderr)
+	}
+	searchResult := map[string]any{}
+	if err := json.Unmarshal([]byte(stdout), &searchResult); err != nil {
+		t.Fatalf("json.Unmarshal returned error: %v", err)
+	}
+	if searchResult["status"] != "completed" {
+		t.Fatalf("unexpected search result status: %#v", searchResult)
+	}
+	if searchResult["selectedCandidateId"] == "seed" {
+		t.Fatalf("expected promoted candidate selection, got %#v", searchResult["selectedCandidateId"])
+	}
+	searchTelemetry := searchResult["searchTelemetry"].(map[string]any)
+	if searchTelemetry["reviewCheckpointCount"] != float64(1) {
+		t.Fatalf("expected one reused review checkpoint, got %#v", searchTelemetry)
+	}
+	if searchTelemetry["fullGateCheckpointCount"] != float64(0) {
+		t.Fatalf("expected no full-gate checkpoint executions, got %#v", searchTelemetry)
+	}
+	reviewOutcomes := searchResult["checkpointOutcomes"].(map[string]any)["review"].([]any)
+	if len(reviewOutcomes) != 1 {
+		t.Fatalf("expected one recorded review outcome, got %#v", reviewOutcomes)
+	}
+	if reviewOutcomes[0].(map[string]any)["reviewedAtGeneration"] != float64(1) {
+		t.Fatalf("expected promotion review metadata, got %#v", reviewOutcomes[0])
+	}
+	countBytes, err := os.ReadFile(reviewCountPath)
+	if err != nil {
+		t.Fatalf("ReadFile returned error: %v", err)
+	}
+	if strings.TrimSpace(string(countBytes)) != "1" {
+		t.Fatalf("expected review runner to execute once, got %q", string(countBytes))
 	}
 }
 

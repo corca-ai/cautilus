@@ -238,9 +238,11 @@ Current runtime note:
 
 - `generationLimit`, `populationLimit`, `mergeEnabled`, `threeParentPolicy`, and declared selection caps are preserved in the canonical packet for replay and future expansion
 - the shipped Go runner now enforces finalist eligibility against declared selection `constraintCaps`
+- the shipped Go runner now executes frontier-promotion review checkpoints for promoted frontier candidates when the policy requests them and the adapter exposes review variants
+- the shipped Go runner reuses those frontier-promotion review checkpoints during final selection instead of rerunning the same candidate review
 - the shipped Go runner now executes final review and final full-gate checkpoints when the adapter exposes those surfaces
 - the current runner follows the best current frontier candidate and evaluates one reflective mutation per generation until `generationLimit` or total candidate count is exhausted
-- the current runner does not yet synthesize merge candidates or run frontier-promotion review checkpoints before final selection
+- the current runner does not yet synthesize merge candidates or reinject frontier-promotion checkpoint feedback into later mutation prompts
 
 ## Search Readiness
 

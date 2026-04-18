@@ -509,10 +509,15 @@ func RunOptimizeSearch(packet map[string]any, inputFile string, now time.Time) m
 	seedCandidate := optimizeSearchSeedCandidate(packet, heldOutEntries)
 	candidates := []map[string]any{seedCandidate}
 	generationSummaries := []any{}
+	checkpointLedger := map[string]any{
+		"review":   []any{},
+		"fullGate": []any{},
+	}
 	stopReason := "seed_only"
 	mutationInvocations := 0
 	generationLimit := optimizeSearchConfigInt(packet, "generationLimit", 1)
 	populationLimit := optimizeSearchConfigInt(packet, "populationLimit", generationLimit+1)
+	artifactRoot := filepath.Dir(firstNonEmpty(inputFile, stringOrEmpty(packet["optimizeInputFile"])))
 
 	for generationIndex := 1; generationIndex <= generationLimit; generationIndex++ {
 		if len(candidates) >= populationLimit {
@@ -547,6 +552,7 @@ func RunOptimizeSearch(packet map[string]any, inputFile string, now time.Time) m
 		updatedMatrix := optimizeSearchHeldOutMatrix(candidates)
 		updatedScenarioIDs := optimizeSearchScenarioIDs(packet, updatedMatrix)
 		updatedFrontierIDs := optimizeSearchFrontierCandidateIDs(updatedMatrix, optimizeSearchCandidateIDs(candidates), updatedScenarioIDs)
+		optimizeSearchRecordFrontierPromotionReviews(packet, artifactRoot, []map[string]any{candidate}, updatedFrontierIDs, checkpointLedger)
 		generationSummaries = append(generationSummaries, map[string]any{
 			"generationIndex":            generationIndex,
 			"parentFrontierCandidateIds": stringSliceToAny(parentFrontierIDs),
@@ -568,8 +574,7 @@ func RunOptimizeSearch(packet map[string]any, inputFile string, now time.Time) m
 	candidateIDs := optimizeSearchCandidateIDs(candidates)
 	frontierIDs := optimizeSearchFrontierCandidateIDs(matrix, candidateIDs, scenarioIDs)
 	rankedFrontierIDs := optimizeSearchRankCandidateIDs(frontierIDs, matrix, candidates, scenarioIDs)
-	artifactRoot := filepath.Dir(firstNonEmpty(inputFile, stringOrEmpty(packet["optimizeInputFile"])))
-	selectionOutcome := optimizeSearchSelectionOutcome(packet, artifactRoot, candidates, rankedFrontierIDs)
+	selectionOutcome := optimizeSearchSelectionOutcome(packet, artifactRoot, candidates, rankedFrontierIDs, checkpointLedger)
 	perScenarioBest := make([]any, 0, len(scenarioIDs))
 	for _, scenarioID := range scenarioIDs {
 		bestIDs := []any{}
@@ -676,10 +681,10 @@ func RunOptimizeSearch(packet map[string]any, inputFile string, now time.Time) m
 	}
 }
 
-func optimizeSearchSelectionOutcome(packet map[string]any, artifactRoot string, candidates []map[string]any, rankedFrontierIDs []string) map[string]any {
+func optimizeSearchSelectionOutcome(packet map[string]any, artifactRoot string, candidates []map[string]any, rankedFrontierIDs []string, checkpointLedger map[string]any) map[string]any {
 	checkpointOutcomes := map[string]any{
-		"review":   []any{},
-		"fullGate": []any{},
+		"review":   append([]any{}, arrayOrEmpty(checkpointLedger["review"])...),
+		"fullGate": append([]any{}, arrayOrEmpty(checkpointLedger["fullGate"])...),
 	}
 	rejectedFinalistCandidateIDs := []any{}
 	selectionConstraintIneligibleCandidateIDs := []any{}
@@ -698,10 +703,10 @@ func optimizeSearchSelectionOutcome(packet map[string]any, artifactRoot string, 
 		}
 		checkpointOutcome := optimizeSearchEvaluateCandidateCheckpoints(packet, artifactRoot, candidate)
 		if executed, _ := checkpointOutcome["reviewExecuted"].(bool); executed {
-			checkpointOutcomes["review"] = append(arrayOrEmpty(checkpointOutcomes["review"]), checkpointOutcome["review"])
+			checkpointOutcomes["review"] = optimizeSearchRecordCheckpointOutcome(arrayOrEmpty(checkpointOutcomes["review"]), asMap(checkpointOutcome["review"]))
 		}
 		if executed, _ := checkpointOutcome["fullGateExecuted"].(bool); executed {
-			checkpointOutcomes["fullGate"] = append(arrayOrEmpty(checkpointOutcomes["fullGate"]), checkpointOutcome["fullGate"])
+			checkpointOutcomes["fullGate"] = optimizeSearchRecordCheckpointOutcome(arrayOrEmpty(checkpointOutcomes["fullGate"]), asMap(checkpointOutcome["fullGate"]))
 		}
 		if admissible, _ := checkpointOutcome["admissible"].(bool); admissible {
 			return map[string]any{
@@ -763,9 +768,62 @@ func optimizeSearchCandidateConstraintRejectionReasons(packet map[string]any, ca
 	return reasons
 }
 
+func optimizeSearchRecordFrontierPromotionReviews(packet map[string]any, artifactRoot string, promotedCandidates []map[string]any, frontierIDs []string, checkpointLedger map[string]any) {
+	if stringOrEmpty(asMap(packet["searchConfig"])["reviewCheckpointPolicy"]) != "frontier_promotions" {
+		return
+	}
+	frontierSet := map[string]struct{}{}
+	for _, candidateID := range frontierIDs {
+		frontierSet[candidateID] = struct{}{}
+	}
+	reviewOutcomes := arrayOrEmpty(checkpointLedger["review"])
+	for _, candidate := range promotedCandidates {
+		candidateID := stringOrEmpty(candidate["id"])
+		if candidateID == "" {
+			continue
+		}
+		if _, ok := frontierSet[candidateID]; !ok {
+			continue
+		}
+		if _, ok := candidate["promotionReviewOutcome"].(map[string]any); ok {
+			continue
+		}
+		outcome := optimizeSearchRunReviewCheckpoint(packet, artifactRoot, candidate)
+		outcome["reviewedAtGeneration"] = firstNonNil(candidate["generationIndex"], nil)
+		candidate["promotionReviewOutcome"] = outcome
+		reviewOutcomes = optimizeSearchRecordCheckpointOutcome(reviewOutcomes, outcome)
+	}
+	checkpointLedger["review"] = reviewOutcomes
+}
+
+func optimizeSearchRecordCheckpointOutcome(collection []any, outcome map[string]any) []any {
+	if len(outcome) == 0 || stringOrEmpty(outcome["status"]) == "skipped" {
+		return collection
+	}
+	outcomeType := stringOrEmpty(outcome["type"])
+	candidateID := stringOrEmpty(outcome["candidateId"])
+	for _, raw := range collection {
+		existing := asMap(raw)
+		if stringOrEmpty(existing["type"]) == outcomeType && stringOrEmpty(existing["candidateId"]) == candidateID {
+			return collection
+		}
+	}
+	return append(collection, outcome)
+}
+
 func optimizeSearchEvaluateCandidateCheckpoints(packet map[string]any, artifactRoot string, candidate map[string]any) map[string]any {
-	review := optimizeSearchRunReviewCheckpoint(packet, artifactRoot, candidate)
-	reviewExecuted := stringOrEmpty(review["status"]) != "skipped"
+	review := map[string]any{}
+	reviewExecuted := true
+	if stringOrEmpty(asMap(packet["searchConfig"])["reviewCheckpointPolicy"]) == "frontier_promotions" {
+		if existing := asMap(candidate["promotionReviewOutcome"]); len(existing) > 0 {
+			review = existing
+			reviewExecuted = false
+		}
+	}
+	if len(review) == 0 {
+		review = optimizeSearchRunReviewCheckpoint(packet, artifactRoot, candidate)
+		reviewExecuted = stringOrEmpty(review["status"]) != "skipped"
+	}
 	reviewAdmissible, _ := review["admissible"].(bool)
 	if !reviewAdmissible {
 		return map[string]any{
@@ -795,7 +853,7 @@ func optimizeSearchRunReviewCheckpoint(packet map[string]any, artifactRoot strin
 	if err != nil {
 		return optimizeSearchSkipCheckpointOutcome("review", stringOrEmpty(candidate["id"]), "adapter_not_found")
 	}
-	if !adapterPayload.Found || !adapterPayload.Valid || len(stringArrayOrEmpty(adapterPayload.Data["executor_variants"])) == 0 {
+	if !adapterPayload.Found || !adapterPayload.Valid || len(arrayOrEmpty(adapterPayload.Data["executor_variants"])) == 0 {
 		reason := "surface_unavailable"
 		if !adapterPayload.Found {
 			reason = "adapter_not_found"
