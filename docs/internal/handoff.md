@@ -111,14 +111,14 @@
 ## Charness Follow-Up
 
 이번 세션에서 드러난 operator mistake 하나는 canonical `$charness:premortem` 경로를 열 수 있는지 직접 확인하지 않고, local fallback 으로 너무 빨리 내려간 점이다.
-이건 skill 쪽에서도 guardrail 을 둘 여지가 있다고 판단해서 `corca-ai/charness#38` 을 열어 두었다.
-요지는 `premortem` skill 이 canonical path 가 막혔다고 선언하기 전에 subagent availability 를 먼저 확인하거나 시도하도록 요구를 더 분명히 하자는 것이다.
-별도로 `corca-ai/charness#39` 는 released `Cautilus v0.5.5` 기준으로 `bootstrapHelper` / `workSkill` split consumer validation 을 요청하는 follow-up 이다.
-핵심은 `find-skills -> impl` 같은 bootstrap-heavy path 가 false mismatch 없이 평가되는지, 그리고 `premortem` expectation 이 현재 `charness` side fixture / docs / eval surface 와 어디까지 맞는지 확인하는 것이다.
+이건 `corca-ai/charness#38` 로 올라갔고, 현재 `charness v0.3.3` 에서는 `premortem` skill 이 canonical path 를 blocked 라고 선언하기 전에 capability check 를 먼저 수행하도록 정리됐다.
+별도로 `corca-ai/charness#39` 는 released `Cautilus v0.5.5` 기준으로 `bootstrapHelper` / `workSkill` split consumer validation 을 요청하는 follow-up 이었고, 현재는 close 됐다.
+`charness` 는 checked-in `instruction-surface` case 와 validator 를 widened 해서 bootstrap case 를 `bootstrapHelper=find-skills`, `workSkill=impl` expectation 으로 통과시키고, released `v0.5.5` binary 에서 `cautilus instruction-surface test --repo-root .` 를 `recommendation=accept-now` 로 확인했다.
+즉 `charness` 쪽 follow-up 은 pending risk 가 아니라 external bootstrap-heavy consumer proof 로 흡수하면 된다.
 
 ## Next Session
 
-다음 세션은 release blocker 를 처리하는 세션이 아니라, `v0.5.5` 이후 onboarding 체감과 instruction-surface consumer adoption 을 보는 세션이다.
+다음 세션은 release blocker 를 처리하는 세션이 아니라, `v0.5.5` 이후 onboarding 체감과 first bounded-run adoption 을 보는 세션이다.
 
 1. 새 consumer 가 여전히 `doctor ready` 뒤에서 멈춘다면, 여기서는 `first_bounded_run` payload, docs, temp-consumer smoke, archetype hints, starter loop 를 더 좁히는 쪽으로 계속 개선할 수 있다.
    다만 무엇을 먼저 좁힐지는 outside signal 이 필요하다.
@@ -126,8 +126,13 @@
 2. 여러 named adapters 를 가진 consumer repo 에서 `#8` 류 repro 가 다시 오면, 여기서는 바로 diagnostics, fallback, regression test 추가를 할 수 있다.
    다만 diagnosis 자체는 outside artifact 가 필요하다.
    최소한 `report.json` 의 `.adapterContext`, `optimize-input.json`, `optimize-search-input.json`, 그리고 기대한 adapter name/context 를 받아야 exact loss point 를 잡을 수 있다.
-3. `charness` 같은 bootstrap-heavy consumer 에서 새 `bootstrapHelper` / `workSkill` lanes 가 실제로 false mismatch 를 줄이는지 확인한다.
-4. `corca-ai/charness#38` 진행 여부를 보고, `premortem` skill 이 정말 availability check 를 강제하게 바뀌면 여기 `AGENTS.md` 의 skill-routing 문구도 그에 맞춰 다시 다듬는다.
+3. onboarding 의 다음 설계 질문은 product-owned guidance 가 어디까지여야 하느냐다.
+   후보는 archetype 선택을 더 강하게 product-owned 하게 만드는 것, `first_bounded_run` 을 adapter-aware 하게 좁히는 것, 또는 `doctor ready` 다음 한 수를 더 작은 executable proof 로 바꾸는 것이다.
+   먼저 해볼 실험은 세 가지다.
+   첫째, `consumer:onboard:smoke` 의 proof floor 를 `doctor ready` 에서 `first bounded run completed` 로 올릴 수 있는지 본다.
+   둘째, generic `first_bounded_run` payload 와 adapter-aware next-step payload 를 비교해 어느 쪽이 실제 fresh consumer 에 더 덜 모호한지 본다.
+   셋째, `mode evaluate -> review` chain 이 정말 첫 bounded run 의 기본값이어야 하는지, 아니면 `instruction-surface test` / `skill test` 같은 narrower starter 가 더 honest 한지 비교한다.
+4. `charness` external proof 는 닫혔으므로, 이제 consumer-side unknown 은 bootstrap/work split 이 아니라 fresh-consumer first-run ergonomics 쪽으로 본다.
 
 ## Stop Checks
 

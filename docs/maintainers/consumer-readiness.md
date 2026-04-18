@@ -8,7 +8,7 @@ This note intentionally groups evidence by consumer archetype rather than by spe
 
 ## Snapshot
 
-The checks below describe the current readiness split as of 2026-04-17 UTC.
+The checks below describe the current readiness split as of 2026-04-19 UTC.
 
 ## Cautilus
 
@@ -79,6 +79,25 @@ What this means:
 
 - The durable-workflow claim is about a reusable archetype, not about one named repo becoming part of the product definition.
 
+## Agent-Runtime Consumer
+
+Current role: external bootstrap-heavy agent-runtime archetype
+
+Evidence:
+
+- one real external bootstrap-heavy consumer now validates the released `instruction-surface` split on `Cautilus v0.5.5`
+- the checked-in consumer seam exercises `cautilus instruction-surface test --repo-root .` against a routing case that now expects `bootstrapHelper=find-skills` and `workSkill=impl`
+- the same consumer keeps its standing repo-owned evaluator path green on the released binary:
+  `python3 scripts/run-evals.py --repo-root .` passed its maintained scenario set and `pytest tests/test_cautilus_scenarios.py` stayed green
+- the checked validation artifact records `recommendation=accept-now` plus explicit `bootstrapHelperCounts` / `workSkillCounts` output instead of the older collapsed single-lane interpretation
+- the same consumer deliberately kept `premortem` outside standing evaluator-required coverage and treated it as on-demand / HITL-backed proof, so the split validation did not depend on widening that policy-heavy seam
+
+What this means:
+
+- `Cautilus` now has one external proof that a bootstrap-heavy agent-runtime consumer can adopt the released `bootstrapHelper` / `workSkill` contract without false mismatches.
+- The product does not need to promote every policy-heavy routing seam into standing evaluator coverage just to validate the bootstrap-versus-work split honestly.
+- The remaining onboarding question is no longer "does the released split work in a real consumer?" but "does a fresh consumer reach the first meaningful bounded run quickly enough after `doctor ready`?"
+
 ## Product Positioning
 
 Right now the honest product stance is:
@@ -87,6 +106,7 @@ Right now the honest product stance is:
 - `chatbot consumer` is the primary conversational reference archetype
 - `skill-validation consumer` is the primary validation reference archetype
 - `workflow consumer` is the primary durable-workflow reference archetype
+- `agent-runtime consumer` is the current bootstrap-heavy routing reference archetype
 
 This split is acceptable.
 It keeps one official adapter contract while still grounding the normalization layer in multiple checked-in consumer shapes.
@@ -95,5 +115,7 @@ It keeps one official adapter contract while still grounding the normalization l
 
 1. Keep proving the deepest binary and bundled-skill behavior against `cautilus` itself.
 2. Keep checked-in consumer-shaped normalized packet examples for the chatbot, skill-validation, and durable-workflow archetypes.
-3. Treat external consumer proof as archetype validation, not as named-repo product ownership.
-4. If a stronger claim needs one real external consumer, record that proof as an appendix update without turning the named repo into canonical vocabulary.
+3. Keep one explicit external bootstrap-heavy consumer proof for `instruction-surface`, but treat it as archetype validation rather than named-repo product ownership.
+4. Treat the next external-consumer question as onboarding speed and first bounded-run clarity, not as whether `bootstrapHelper` / `workSkill` works at all.
+5. If a stronger claim needs one real external consumer, record that proof as an appendix update without turning the named repo into canonical vocabulary.
+6. Keep the current product-owned onboarding smoke honest: today it proves fresh-consumer install to `doctor ready`; the next proof question is whether that smoke should reach one completed bounded run instead of stopping at wiring.
