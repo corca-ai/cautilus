@@ -1,6 +1,7 @@
 # Install Cautilus
 
-This guide is the operator-facing install path for using `Cautilus` on another machine.
+This guide is the canonical machine-level install path for using `Cautilus` on another machine.
+Use [docs/guides/consumer-adoption.md](./docs/guides/consumer-adoption.md) for the canonical fresh-consumer repo bootstrap after `cautilus --version` already works on `PATH`.
 
 It covers:
 
@@ -75,7 +76,7 @@ What this does:
 Optional environment variables:
 
 ```bash
-CAUTILUS_VERSION=v0.5.3
+CAUTILUS_VERSION=v0.5.4
 CAUTILUS_INSTALL_ROOT="$HOME/.local/share/cautilus"
 CAUTILUS_BIN_DIR="$HOME/.local/bin"
 CAUTILUS_REPO=corca-ai/cautilus
@@ -126,7 +127,11 @@ After the binary is available on `PATH`, install the bundled skill into the targ
 ```bash
 cd /path/to/host-repo
 cautilus install
-cautilus doctor
+cautilus doctor --repo-root . --scope agent-surface
+cautilus adapter init --repo-root .
+# fill one runnable command template or executor variant in .agents/cautilus-adapter.yaml
+cautilus adapter resolve --repo-root .
+cautilus doctor --repo-root .
 ```
 
 This creates:
@@ -135,6 +140,8 @@ This creates:
 - `.claude/skills -> ../.agents/skills` for Claude compatibility
 
 The low-level `cautilus skills install` command still exists for compatibility, but `cautilus install` is the canonical lifecycle entrypoint.
+`cautilus doctor --scope agent-surface` verifies only the bundled skill and local agent-surface install.
+`cautilus doctor` without `--scope` stays the repo-wiring gate and will not return `ready` until the repo has a real runnable evaluation path.
 
 ## Verify The Install
 
@@ -144,14 +151,17 @@ Minimum verification:
 cautilus --version
 cautilus version --verbose
 cd /path/to/host-repo
-cautilus doctor
+cautilus doctor --repo-root . --scope agent-surface
 ```
 
-Recommended repo-local verification:
+Recommended fresh-consumer repo verification:
 
 ```bash
 cd /path/to/host-repo
+cautilus adapter init --repo-root .
+# fill one runnable command template or executor variant in .agents/cautilus-adapter.yaml
 cautilus adapter resolve
+cautilus doctor --repo-root .
 ```
 
 ## Update Later

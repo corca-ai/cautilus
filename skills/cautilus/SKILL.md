@@ -86,6 +86,7 @@ getting stuck on the same step.
 1. Resolve the adapter from the target repo:
 
 ```bash
+cautilus doctor --repo-root . --scope agent-surface
 cautilus adapter resolve --repo-root .
 ```
 
@@ -102,6 +103,10 @@ cautilus adapter init --repo-root .
 ```bash
 cautilus doctor --repo-root .
 ```
+
+`doctor --scope agent-surface` and default `doctor` answer different questions.
+The first checks the bundled skill and local agent-surface install.
+The second checks whether the repo is actually wired for a real runnable evaluation path.
 
 4. Before hand-editing adapter YAML, run the inventory in
    [bootstrap-inventory.md](references/bootstrap-inventory.md) so `Cautilus`

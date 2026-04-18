@@ -813,6 +813,13 @@ func TestCLIInstallCreatesRepoLocalCanonicalSkillAndReportsCurrentCLI(t *testing
 	if skill["destinationDir"] != filepath.Join(root, ".agents", "skills", "cautilus") {
 		t.Fatalf("unexpected destinationDir: %#v", skill["destinationDir"])
 	}
+	nextSteps, ok := summary["nextSteps"].([]any)
+	if !ok || len(nextSteps) < 4 {
+		t.Fatalf("expected install nextSteps, got %#v", summary["nextSteps"])
+	}
+	if anyToString(nextSteps[0]) != "cautilus doctor --repo-root "+root+" --scope agent-surface" {
+		t.Fatalf("unexpected first next step: %#v", nextSteps[0])
+	}
 	if _, err := os.Stat(filepath.Join(root, ".agents", "skills", "cautilus", "SKILL.md")); err != nil {
 		t.Fatalf("expected installed skill: %v", err)
 	}

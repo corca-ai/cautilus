@@ -4,6 +4,7 @@ This guide is the shortest honest path for adopting `Cautilus` in a fresh consum
 It combines the old onboarding path and the standing migration rules in one place.
 
 Use `install.md` for machine-level installation.
+Treat this page as the canonical fresh-consumer bootstrap path once `cautilus --version` already works on `PATH`.
 Use `docs/maintainers/consumer-readiness.md` for checked-in proof and release-time evidence.
 
 ## Goal
@@ -17,7 +18,8 @@ End at:
 
 - a checked-in `.agents/cautilus-adapter.yaml`
 - a checked-in `.agents/skills/cautilus/` tree
-- `cautilus doctor` returning `ready` after the repo adds at least one runnable command template or executor variant
+- `cautilus doctor --scope agent-surface` returning `ready` after install
+- `cautilus doctor` returning `ready` after the repo adds at least one runnable command template or executor variant and satisfies the git precondition
 
 ## Fixed Rules
 
@@ -33,6 +35,7 @@ Inside the consumer repo:
 
 ```bash
 cautilus install
+cautilus doctor --scope agent-surface
 cautilus adapter init
 cautilus adapter resolve
 cautilus doctor
@@ -41,11 +44,13 @@ cautilus doctor
 What each step proves:
 
 1. `install` materializes the bundled skill into `.agents/skills/cautilus/` and creates the Claude compatibility shim.
-2. `adapter init` creates the canonical root adapter path: `.agents/cautilus-adapter.yaml`.
-3. Fill in at least one runnable command template or executor variant in the generated adapter so the repo declares a real execution surface.
-4. `adapter resolve` proves the repo now satisfies official adapter discovery.
-5. `doctor` proves the repo is ready against the checked-in contract.
+2. `doctor --scope agent-surface` proves the bundled skill is actually discoverable from the repo-local agent surface.
+3. `adapter init` creates the canonical root adapter path: `.agents/cautilus-adapter.yaml`.
+4. Fill in at least one runnable command template or executor variant in the generated adapter so the repo declares a real execution surface.
+5. `adapter resolve` proves the repo now satisfies official adapter discovery.
+6. `doctor` proves the repo is ready against the checked-in runtime contract.
    The ready payload points at `cautilus scenarios`, which prints the three first-class evaluation archetypes plus an example input path and next-step CLI per archetype.
+7. After repo-scope `doctor` is ready, run one bounded evaluation path rather than stopping at wiring.
 
 ## Migration Checklist
 
@@ -54,16 +59,17 @@ What each step proves:
 3. Keep any existing `*-adapter.yaml` files only if they remain host-local tools.
 4. Point the root adapter at checked-in host-owned prompt files, schema files, wrappers, and command templates.
 5. Install the repo-local skill surface with `cautilus install` when the host environment wants a checked-in reusable `Cautilus` skill.
-6. Run `cautilus doctor` and require `ready` before claiming live-consumer status.
-7. Add at least one repo-local executable check that exercises the adapter through `Cautilus` rather than only validating static YAML.
-8. Keep host-specific mining, storage, audit UI, and operator policy in the consumer repo until they are intentionally generalized.
+6. Run `cautilus doctor --scope agent-surface` after install and require `ready` before claiming the agent-facing surface is discoverable.
+7. Run `cautilus doctor` and require `ready` before claiming live-consumer status.
+8. Add at least one repo-local executable check that exercises the adapter through `Cautilus` rather than only validating static YAML.
+9. Keep host-specific mining, storage, audit UI, and operator policy in the consumer repo until they are intentionally generalized.
 
 ## Git Precondition
 
 `cautilus doctor --scope repo` requires the target directory to be a git repository with at least one commit.
 Non-git directories receive `status: "missing_git"` and `ready: false`.
 Empty git repositories receive `status: "no_commits"`.
-This does not affect `cautilus install` or `cautilus adapter init`, which still work without git.
+This does not affect `cautilus install`, `cautilus doctor --scope agent-surface`, or `cautilus adapter init`, which still work without git.
 
 ## Named Adapter Split Rule
 
@@ -90,6 +96,7 @@ This helper:
 
 - creates a temp git repo
 - runs `cautilus install` inside that temp repo
+- runs `cautilus doctor --scope agent-surface` inside that temp repo
 - runs `cautilus adapter init` inside that temp repo
 - seeds one minimal `held_out_command_templates` entry into the generated adapter so the repo reaches `doctor ready`
 - runs `cautilus adapter resolve` inside that temp repo
@@ -109,6 +116,7 @@ Old names still work as deprecated input aliases, and Cautilus silently normaliz
 
 A repo counts as a live `Cautilus` consumer only when all of the following are true:
 
+- `doctor --scope agent-surface` returns `ready`
 - `doctor` returns `ready`
 - the repo has a checked-in `cautilus-adapter.yaml`
 - at least one real `Cautilus` runtime path is exercised in tests or CI

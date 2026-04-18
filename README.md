@@ -24,14 +24,18 @@ curl -fsSL \
   | sh
 cd /path/to/host-repo
 cautilus install
-cautilus doctor
+cautilus doctor --repo-root . --scope agent-surface
+cautilus adapter init --repo-root .
+# fill one runnable command template or executor variant in .agents/cautilus-adapter.yaml
+cautilus adapter resolve --repo-root .
+cautilus doctor --repo-root .
 ```
 
-After `doctor` returns `ready`, do not stop at wiring.
-Run `cautilus scenarios` to choose the right archetype, then drive one bounded
-decision loop such as `mode evaluate -> review prepare-input -> review variants`
-so the repo proves it can produce a real report and review surface, not just a
-bootstrap-ready adapter.
+Use the two `doctor` scopes deliberately.
+`cautilus doctor --scope agent-surface` verifies the bundled skill and local agent-facing surface are installed and discoverable.
+`cautilus doctor` without `--scope` stays the repo-wiring gate and proves the repo has a real runnable `Cautilus` evaluation path.
+Do not stop at either gate.
+After repo-scope `doctor` returns `ready`, run `cautilus scenarios` to choose the right archetype, then drive one bounded decision loop such as `mode evaluate -> review prepare-input -> review variants` so the repo proves it can produce a real report and review surface, not just a bootstrap-ready adapter.
 
 If you want to hand setup to an agent, paste this:
 
@@ -50,6 +54,8 @@ Quick links:
 
 That report is generated with `specdown` from the repo's cheap public spec suite.
 Each page pairs one bounded product claim with a small executable proof.
+The spec pages are the shipped contract.
+The install and adoption guides below are the operator path into that contract.
 
 ## One Reviewable Decision Loop
 
@@ -195,6 +201,8 @@ cautilus mode evaluate --mode held_out
 **Agent track — Claude / Codex plugin.**
 The `cautilus install` step also lands a bundled skill at `.agents/skills/cautilus/` with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally.
 "Run a chatbot regression with these logs" feeds into the exact same adapter.
+Use `cautilus doctor --scope agent-surface` when you want to verify only this bundled skill surface.
+If the repo treats `AGENTS.md`, `CLAUDE.md`, or linked instruction files as part of the behavior contract, verify that separately with the `instruction-surface` seam rather than assuming install-time discoverability already proves routing fidelity.
 
 Minimal host-repo layout:
 
@@ -216,7 +224,8 @@ See `docs/specs/html-report.spec.md` for the rendered contract.
 
 Verification gates:
 
-- `cautilus doctor` — wiring gate per repo
+- `cautilus doctor --scope agent-surface` — bundled skill and local agent-surface discoverability gate
+- `cautilus doctor` — repo wiring gate for a runnable evaluation path
 - `npm run consumer:onboard:smoke` — shortest end-to-end adoption proof (run from this repo against a fresh consumer)
 
 ## Read More
@@ -235,7 +244,8 @@ docs/
 Top picks:
 
 - <https://corca-ai.github.io/cautilus/> — standing executable spec report
-- [install.md](./install.md) — operator install + update guide for another machine
+- [install.md](./install.md) — canonical machine install guide and first post-install checks
+- [docs/guides/consumer-adoption.md](./docs/guides/consumer-adoption.md) — canonical fresh-consumer bootstrap path after the binary is on `PATH`
 - [docs/guides/evaluation-process.md](./docs/guides/evaluation-process.md) — canonical evaluation loop
 - [docs/specs/archetype-boundary.spec.md](./docs/specs/archetype-boundary.spec.md) — chatbot/skill/workflow 1:1 contract
 - [docs/contracts/adapter-contract.md](./docs/contracts/adapter-contract.md) — adapter schema
@@ -246,4 +256,4 @@ Top picks:
 - [docs/master-plan.md](./docs/master-plan.md) — roadmap
 - [examples/starters/](./examples/starters/) — archetype-specific starter kits
 
-Dogfood and migration evidence lives in [consumer-readiness.md](./docs/maintainers/consumer-readiness.md) and [consumer-adoption.md](./docs/guides/consumer-adoption.md).
+Dogfood and migration evidence lives in [consumer-readiness.md](./docs/maintainers/consumer-readiness.md), which is an evidence appendix rather than the canonical bootstrap guide.

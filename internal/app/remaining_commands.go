@@ -147,6 +147,9 @@ func handleInstall(repoRoot string, cwd string, args []string, stdout io.Writer,
 		"skill":         skill,
 		"messages":      logLines(logBuffer.String()),
 		"nextSteps": []string{
+			fmt.Sprintf("cautilus doctor --repo-root %s --scope agent-surface", targetRepo),
+			fmt.Sprintf("cautilus adapter init --repo-root %s", targetRepo),
+			fmt.Sprintf("cautilus adapter resolve --repo-root %s", targetRepo),
 			fmt.Sprintf("cautilus doctor --repo-root %s", targetRepo),
 		},
 	}
@@ -160,7 +163,10 @@ func handleInstall(repoRoot string, cwd string, args []string, stdout io.Writer,
 	writeLifecycleMessages(stdout, logLines(logBuffer.String()))
 	fmt.Fprintf(stdout, "Installed %s\n", skill.DestinationDir)
 	fmt.Fprintf(stdout, "Current CLI: v%s (%s)\n", state.Current.Version, state.Current.InstallKind)
-	fmt.Fprintf(stdout, "Next: cautilus doctor --repo-root %s\n", targetRepo)
+	fmt.Fprintf(stdout, "Next: cautilus doctor --repo-root %s --scope agent-surface\n", targetRepo)
+	fmt.Fprintf(stdout, "Then: cautilus adapter init --repo-root %s\n", targetRepo)
+	fmt.Fprintf(stdout, "Then: cautilus adapter resolve --repo-root %s\n", targetRepo)
+	fmt.Fprintf(stdout, "Then: cautilus doctor --repo-root %s\n", targetRepo)
 	return 0
 }
 
@@ -226,7 +232,10 @@ func handleUpdate(repoRoot string, cwd string, args []string, stdout io.Writer, 
 				return 1
 			}
 			summary["skill"] = skill
-			nextSteps = append(nextSteps, fmt.Sprintf("cautilus doctor --repo-root %s", targetRepo))
+			nextSteps = append(nextSteps,
+				fmt.Sprintf("cautilus doctor --repo-root %s --scope agent-surface", targetRepo),
+				fmt.Sprintf("cautilus doctor --repo-root %s", targetRepo),
+			)
 		}
 		if options.json {
 			summary["nextSteps"] = nextSteps
@@ -239,7 +248,8 @@ func handleUpdate(repoRoot string, cwd string, args []string, stdout io.Writer, 
 		fmt.Fprintf(stdout, "Source checkout detected. Pull the repo and rebuild to update the CLI.\n")
 		if targetRepo != "" {
 			fmt.Fprintf(stdout, "Refreshed bundled skill in %s\n", targetRepo)
-			fmt.Fprintf(stdout, "Next: cautilus doctor --repo-root %s\n", targetRepo)
+			fmt.Fprintf(stdout, "Next: cautilus doctor --repo-root %s --scope agent-surface\n", targetRepo)
+			fmt.Fprintf(stdout, "Then: cautilus doctor --repo-root %s\n", targetRepo)
 		}
 		return 0
 	}
@@ -286,7 +296,10 @@ func handleUpdate(repoRoot string, cwd string, args []string, stdout io.Writer, 
 			return 1
 		}
 		summary["skill"] = skill
-		nextSteps = append(nextSteps, fmt.Sprintf("cautilus doctor --repo-root %s", targetRepo))
+		nextSteps = append(nextSteps,
+			fmt.Sprintf("cautilus doctor --repo-root %s --scope agent-surface", targetRepo),
+			fmt.Sprintf("cautilus doctor --repo-root %s", targetRepo),
+		)
 	}
 	summary["messages"] = messages
 	summary["nextSteps"] = nextSteps
@@ -610,11 +623,11 @@ func handleModeEvaluate(repoRoot string, cwd string, args []string, stdout io.Wr
 		modeRun["startedAt"] = first["startedAt"]
 		modeRun["completedAt"] = last["completedAt"]
 	}
-		reportInput := map[string]any{
-			"schemaVersion":       contracts.ReportInputsSchema,
-			"candidate":           resolvePath(cwd, candidateRepo),
-			"baseline":            firstNonEmpty(options.baselineRef, resolvePath(cwd, baselineRepo)),
-			"intent":              options.intent,
+	reportInput := map[string]any{
+		"schemaVersion":       contracts.ReportInputsSchema,
+		"candidate":           resolvePath(cwd, candidateRepo),
+		"baseline":            firstNonEmpty(options.baselineRef, resolvePath(cwd, baselineRepo)),
+		"intent":              options.intent,
 		"commands":            commandDescriptors(options.mode, modeObservations),
 		"commandObservations": commandObservations,
 		"modeRuns":            []any{modeRun},
@@ -622,20 +635,20 @@ func handleModeEvaluate(repoRoot string, cwd string, args []string, stdout io.Wr
 		"regressed":           buckets["regressed"],
 		"unchanged":           buckets["unchanged"],
 		"noisy":               buckets["noisy"],
-			"humanReviewFindings": []any{},
-			"recommendation":      modeRecommendation(options.mode, options.recommendationOnPass, modeStatus),
+		"humanReviewFindings": []any{},
+		"recommendation":      modeRecommendation(options.mode, options.recommendationOnPass, modeStatus),
+	}
+	if options.adapter != nil || options.adapterName != nil {
+		adapterContext := map[string]any{}
+		if options.adapter != nil {
+			adapterContext["adapter"] = anyString(adapterPayload.Path)
 		}
-		if options.adapter != nil || options.adapterName != nil {
-			adapterContext := map[string]any{}
-			if options.adapter != nil {
-				adapterContext["adapter"] = anyString(adapterPayload.Path)
-			}
-			if options.adapterName != nil {
-				adapterContext["adapterName"] = *options.adapterName
-			}
-			reportInput["adapterContext"] = adapterContext
+		if options.adapterName != nil {
+			adapterContext["adapterName"] = *options.adapterName
 		}
-		_ = writeOutputResolved(stdout, &reportInputFile, reportInput)
+		reportInput["adapterContext"] = adapterContext
+	}
+	_ = writeOutputResolved(stdout, &reportInputFile, reportInput)
 	report, err := runtime.BuildReportPacket(reportInput, time.Now())
 	if err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)

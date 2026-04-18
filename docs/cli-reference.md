@@ -42,7 +42,7 @@ cautilus adapter resolve --repo-root .
 
 If you already know which archetype your repo evaluates, start from an archetype-specific starter kit under [examples/starters/](../examples/starters/) instead of `cautilus adapter init`.
 Each starter ships a pre-filled `cautilus-adapter.yaml`, a canonical input fixture, and a README that explains what to replace next.
-Smoke placeholders let `cautilus doctor` return `ready` immediately.
+Treat starter placeholders as bootstrap help, not as proof that a real consumer workflow is already wired.
 
 A minimal adapter must wire at least one real runnable path to reach `doctor ready`:
 
@@ -71,6 +71,8 @@ cautilus scenarios --json
 ```
 
 `cautilus <subcommand> --help` exits `0` for the registered native command surface, including grouped topics such as `cautilus optimize search --help`.
+Use `doctor --scope agent-surface` to verify only the bundled skill and local agent-surface install.
+Use default `doctor` (`--scope repo`) to verify the repo has a real runnable evaluation path.
 
 For the shortest end-to-end adoption proof in a fresh consumer repo:
 
