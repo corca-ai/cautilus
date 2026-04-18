@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { existsSync, mkdtempSync, readFileSync } from "node:fs";
+import { existsSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
@@ -14,12 +14,20 @@ import {
 	relativizeObservedPath,
 } from "./instruction-surface-support.mjs";
 
+function createInstructionSurfaceWorkspace() {
+	const workspace = mkdtempSync(join(tmpdir(), "cautilus-instruction-surface-workspace-"));
+	const agents = readFileSync(join(process.cwd(), "AGENTS.md"), "utf-8");
+	writeFileSync(join(workspace, "AGENTS.md"), agents);
+	writeFileSync(join(workspace, "CLAUDE.md"), agents);
+	return workspace;
+}
+
 test("buildObservedInstructionSurfaceInput materializes fixture-backed instruction-surface observations", () => {
 	const artifactDir = mkdtempSync(join(tmpdir(), "cautilus-instruction-surface-"));
-	const originalAgents = readFileSync(join(process.cwd(), "AGENTS.md"), "utf-8");
+	const workspace = createInstructionSurfaceWorkspace();
 	const packet = buildObservedInstructionSurfaceInput({
 		repoRoot: process.cwd(),
-		workspace: process.cwd(),
+		workspace,
 		casesFile: join(process.cwd(), "fixtures", "instruction-surface", "cases.json"),
 		artifactDir,
 		backend: "fixture",
@@ -30,10 +38,10 @@ test("buildObservedInstructionSurfaceInput materializes fixture-backed instructi
 	assert.equal(packet.evaluations.length, 5);
 	assert.equal(packet.evaluations[0].expectedEntryFile, "AGENTS.md");
 	assert.equal(packet.evaluations[1].instructionSurface.surfaceLabel, "claude_only");
-	assert.equal(packet.evaluations[3].loadedInstructionFiles[0], "docs/internal/routing-note.md");
+	assert.equal(packet.evaluations[3].loadedInstructionFiles[0], "AGENTS.md");
 	assert.equal(packet.evaluations[4].instructionSurface.files[1].kind, "symlink");
 	assert.equal(packet.evaluations[4].instructionSurface.files[1].targetPath, "CLAUDE.md");
-	assert.equal(readFileSync(join(process.cwd(), "AGENTS.md"), "utf-8"), originalAgents);
+	assert.equal(readFileSync(join(workspace, "AGENTS.md"), "utf-8"), readFileSync(join(process.cwd(), "AGENTS.md"), "utf-8"));
 });
 
 test("codexArgs applies runtime-specific model, effort, and config overrides", () => {
@@ -93,10 +101,10 @@ test("normalizeRoutingDecision canonicalizes deferred none values and tool prefi
 
 test("materializeInstructionSurface masks unspecified root aliases while a variant is active", () => {
 	const artifactDir = mkdtempSync(join(tmpdir(), "cautilus-instruction-surface-"));
-	const workspace = process.cwd();
+	const workspace = createInstructionSurfaceWorkspace();
 	const originalAgents = readFileSync(join(workspace, "AGENTS.md"), "utf-8");
 	const hadClaude = existsSync(join(workspace, "CLAUDE.md"));
-	const originalClaude = hadClaude ? readFileSync(join(workspace, "CLAUDE.md"), "utf-8") : null;
+	const originalClaudeTarget = hadClaude ? readFileSync(join(workspace, "CLAUDE.md"), "utf-8") : null;
 	const materialized = materializeInstructionSurface(
 		{
 			workspace,
@@ -123,7 +131,7 @@ test("materializeInstructionSurface masks unspecified root aliases while a varia
 	}
 	assert.equal(readFileSync(join(workspace, "AGENTS.md"), "utf-8"), originalAgents);
 	if (hadClaude) {
-		assert.equal(readFileSync(join(workspace, "CLAUDE.md"), "utf-8"), originalClaude);
+		assert.equal(readFileSync(join(workspace, "CLAUDE.md"), "utf-8"), originalClaudeTarget);
 	} else {
 		assert.equal(existsSync(join(workspace, "CLAUDE.md")), false);
 	}

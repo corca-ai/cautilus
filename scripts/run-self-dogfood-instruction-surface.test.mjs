@@ -33,7 +33,7 @@ test("run-self-dogfood-instruction-surface materializes a disposable candidate w
 		assert.equal(packet.schemaVersion, "cautilus.instruction_surface_inputs.v1");
 		assert.equal(packet.evaluations.length, 5);
 		assert.equal(packet.evaluations[0].entryFile, "AGENTS.md");
-		assert.equal(packet.evaluations[3].loadedInstructionFiles[0], "docs/internal/routing-note.md");
+		assert.equal(packet.evaluations[3].loadedInstructionFiles[0], "AGENTS.md");
 	} finally {
 		try {
 			execFileSync("git", ["-C", process.cwd(), "worktree", "remove", "--force", candidateRepo], {

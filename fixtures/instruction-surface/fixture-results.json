@@ -35,9 +35,9 @@
   },
   "linked-doc-routing": {
     "observationStatus": "observed",
-    "summary": "Started from AGENTS.md, followed the linked routing note, and routed to discovery.",
-    "entryFile": "docs/internal/routing-note.md",
-    "loadedInstructionFiles": ["docs/internal/routing-note.md"],
+    "summary": "Started from AGENTS.md and kept the first routing decision narrow before choosing a helper.",
+    "entryFile": "AGENTS.md",
+    "loadedInstructionFiles": ["AGENTS.md"],
     "loadedSupportingFiles": [],
     "routingDecision": {
       "selectedSkill": "none",

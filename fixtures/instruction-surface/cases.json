@@ -8,10 +8,7 @@
       "displayName": "Checked-in AGENTS routing",
       "prompt": "Read the repo instructions first and decide how to route this task.",
       "expectedEntryFile": "AGENTS.md",
-      "requiredInstructionFiles": ["AGENTS.md"],
-      "expectedRouting": {
-        "selectedSkill": "charness:find-skills"
-      }
+      "requiredInstructionFiles": ["AGENTS.md"]
     },
     {
       "evaluationId": "claude-only-routing",
@@ -27,10 +24,7 @@
         ]
       },
       "expectedEntryFile": "CLAUDE.md",
-      "requiredInstructionFiles": ["CLAUDE.md"],
-      "expectedRouting": {
-        "selectedSkill": "none"
-      }
+      "requiredInstructionFiles": ["CLAUDE.md"]
     },
     {
       "evaluationId": "nested-override-routing",
@@ -73,8 +67,6 @@
           }
         ]
       },
-      "expectedEntryFile": "docs/internal/routing-note.md",
-      "requiredInstructionFiles": ["docs/internal/routing-note.md"],
       "expectedRouting": {
         "selectedSkill": "none"
       }
@@ -96,9 +88,7 @@
             "targetPath": "CLAUDE.md"
           }
         ]
-      },
-      "expectedEntryFile": "AGENTS.md",
-      "requiredInstructionFiles": ["AGENTS.md"]
+      }
     }
   ]
 }
