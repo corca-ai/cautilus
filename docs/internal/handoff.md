@@ -37,11 +37,11 @@
 최근 주요 커밋:
 
 ```text
-425bb1e Keep handoff release-safe
-1fd99b6 Prepare v0.5.3 release
-70942fa Make instruction-surface dogfood expectations robust
-9fbef9b Keep release gates clean around self-dogfood tests
-0deee0f Stabilize instruction-surface self-dogfood isolation
+0937194 Make report input review findings easier to discover
+e85a22a Keep mode evaluate consistent with report build
+3c91c66 Let optimize search use compare-artifact reasons
+62d5b41 Preserve adapter identity across report bridges
+7f78dd6 Refresh handoff for post-release issue triage
 ```
 
 직전 public release 는 `v0.5.2` 였고, 지금은 `v0.5.3` 가 이미 공개된 상태다.
