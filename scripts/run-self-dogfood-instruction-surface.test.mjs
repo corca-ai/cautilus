@@ -39,7 +39,9 @@ test("run-self-dogfood-instruction-surface materializes a disposable candidate w
 			execFileSync("git", ["-C", process.cwd(), "worktree", "remove", "--force", candidateRepo], {
 				encoding: "utf-8",
 			});
-		} catch {}
+		} catch {
+			// Best-effort cleanup for detached worktrees created in the test.
+		}
 		rmSync(outputDir, { recursive: true, force: true });
 	}
 });
