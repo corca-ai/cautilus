@@ -8,8 +8,10 @@ import { evaluateCandidateCheckpoints, runReviewCheckpoint } from "./optimize-se
 import { buildCheckpointFeedback } from "./optimize-search-feedback.mjs";
 import { candidateCanSeedMutation, prioritizeMutationParents } from "./optimize-search-pruning.mjs";
 import { collectFeedbackSignals, collectSeedHeldOutEntries } from "./optimize-search-readiness.mjs";
+import { experimentContext, telemetryCompleteness } from "./optimize-search-result-context.mjs";
 import { candidateConstraintRejectionReasons } from "./optimize-search-selection.mjs";
 import { dirname } from "node:path";
+
 function buildBlockedResult(input, inputFile, reasons, missingEvidence, schemaVersion, now = new Date()) {
 	return {
 		schemaVersion,
@@ -19,6 +21,9 @@ function buildBlockedResult(input, inputFile, reasons, missingEvidence, schemaVe
 		repoRoot: input.repoRoot,
 		optimizeInputFile: input.optimizeInputFile,
 		searchConfig: input.searchConfig,
+		searchConfigSources: input.searchConfigSources || {},
+		experimentContext: experimentContext(input),
+		telemetryCompleteness: telemetryCompleteness([], []),
 		candidateRegistry: [],
 		generationSummaries: [],
 		heldOutEvaluationMatrix: [],
@@ -287,6 +292,9 @@ function resultContext(packet, candidates, generationSummaries, selectionOutcome
 		repoRoot: packet.repoRoot,
 		optimizeInputFile: packet.optimizeInputFile,
 		searchConfig: packet.searchConfig,
+		searchConfigSources: packet.searchConfigSources || {},
+		experimentContext: experimentContext(packet),
+		telemetryCompleteness: telemetryCompleteness(matrix, candidates),
 		candidateRegistry: candidateRegistry(candidates),
 		generationSummaries,
 		heldOutEvaluationMatrix: matrix,
@@ -310,11 +318,14 @@ function buildCompletedResult(packet, inputFile, candidates, schemaVersion, stop
 		generatedAt: context.generatedAt,
 		status: "completed",
 		inputFile,
-		repoRoot: context.repoRoot,
-		optimizeInputFile: context.optimizeInputFile,
-		searchConfig: context.searchConfig,
-		selectedCandidateId,
-		candidateRegistry: context.candidateRegistry,
+			repoRoot: context.repoRoot,
+			optimizeInputFile: context.optimizeInputFile,
+			searchConfig: context.searchConfig,
+			searchConfigSources: context.searchConfigSources,
+			experimentContext: context.experimentContext,
+			telemetryCompleteness: context.telemetryCompleteness,
+			selectedCandidateId,
+			candidateRegistry: context.candidateRegistry,
 		generationSummaries: context.generationSummaries,
 		heldOutEvaluationMatrix: context.heldOutEvaluationMatrix,
 		pareto: context.pareto,
@@ -336,10 +347,13 @@ function buildCheckpointBlockedResult(packet, inputFile, candidates, schemaVersi
 		generatedAt: context.generatedAt,
 		status: "blocked",
 		inputFile,
-		repoRoot: context.repoRoot,
-		optimizeInputFile: context.optimizeInputFile,
-		searchConfig: context.searchConfig,
-		candidateRegistry: context.candidateRegistry,
+			repoRoot: context.repoRoot,
+			optimizeInputFile: context.optimizeInputFile,
+			searchConfig: context.searchConfig,
+			searchConfigSources: context.searchConfigSources,
+			experimentContext: context.experimentContext,
+			telemetryCompleteness: context.telemetryCompleteness,
+			candidateRegistry: context.candidateRegistry,
 		generationSummaries: context.generationSummaries,
 		heldOutEvaluationMatrix: context.heldOutEvaluationMatrix,
 		pareto: context.pareto,

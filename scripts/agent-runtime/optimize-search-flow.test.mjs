@@ -752,15 +752,25 @@ test("run-optimize-search produces a seed-only completed result with frontier me
 			now: new Date("2026-04-13T10:01:00.000Z"),
 		});
 		assert.equal(result.status, "completed");
-		assert.equal(result.selectedCandidateId, "seed");
-		assert.deepEqual(result.pareto.frontierCandidateIds, ["seed"]);
-		assert.equal(result.heldOutEvaluationMatrix.length, 1);
-		assert.equal(result.searchTelemetry.stopReason, "seed_only");
-		assert.equal(result.proposalBridge.selectedTargetFile.path, packet.targetFile.path);
-	} finally {
-		rmSync(root, { recursive: true, force: true });
-	}
-});
+			assert.equal(result.selectedCandidateId, "seed");
+			assert.deepEqual(result.pareto.frontierCandidateIds, ["seed"]);
+			assert.equal(result.heldOutEvaluationMatrix.length, 1);
+			assert.equal(result.searchTelemetry.stopReason, "seed_only");
+			assert.deepEqual(result.searchConfigSources, packet.searchConfigSources);
+			assert.equal(result.experimentContext.searchBudget, packet.searchConfig.budget);
+			assert.equal(result.experimentContext.targetFile.path, packet.targetFile.path);
+			assert.deepEqual(
+				result.experimentContext.mutationBackends.map((backend) => backend.backend),
+				packet.mutationConfig.backends.map((backend) => backend.backend),
+			);
+			assert.equal(result.telemetryCompleteness.heldOutCostUsd, "complete");
+			assert.equal(result.telemetryCompleteness.heldOutDurationMs, "complete");
+			assert.equal(result.telemetryCompleteness.heldOutTotalTokens, "absent");
+			assert.equal(result.proposalBridge.selectedTargetFile.path, packet.targetFile.path);
+		} finally {
+			rmSync(root, { recursive: true, force: true });
+		}
+	});
 
 test("run-optimize-search generates and selects a reflective mutation candidate", () => {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-optimize-search-mutation-"));
@@ -929,12 +939,14 @@ EOF
 		});
 		assert.equal(result.status, "completed");
 		assert.notEqual(result.selectedCandidateId, "seed");
-		assert.equal(result.searchTelemetry.generationCount, 1);
-		assert.equal(result.searchTelemetry.mutationInvocationCount, 1);
-		assert.equal(result.candidateRegistry.length, 2);
-		const selectedTargetFile = result.proposalBridge.selectedTargetFile.path;
-		assert.equal(existsSync(selectedTargetFile), true);
-		assert.match(readFileSync(selectedTargetFile, "utf-8"), /detailed recovery checklist/);
+			assert.equal(result.searchTelemetry.generationCount, 1);
+			assert.equal(result.searchTelemetry.mutationInvocationCount, 1);
+			assert.equal(result.candidateRegistry.length, 2);
+			assert.equal(result.experimentContext.mutationBackends.length >= 1, true);
+			assert.equal(result.telemetryCompleteness.candidateAggregateCostUsd, "complete");
+			const selectedTargetFile = result.proposalBridge.selectedTargetFile.path;
+			assert.equal(existsSync(selectedTargetFile), true);
+			assert.match(readFileSync(selectedTargetFile, "utf-8"), /detailed recovery checklist/);
 		const bestForScenario = result.pareto.perScenarioBestCandidateIds[0];
 		assert.deepEqual(bestForScenario.candidateIds, [result.selectedCandidateId]);
 	} finally {

@@ -69,28 +69,51 @@ export function collectModeRunEntries(modeRun, candidateId) {
 		.map((result) => toHeldOutEntry(result, modeRun.mode, candidateId));
 }
 
+function addCostTelemetry(entry, totals) {
+	if (typeof entry.telemetry?.cost_usd !== "number") {
+		return;
+	}
+	totals.sawCost = true;
+	totals.totalCostUsd += entry.telemetry.cost_usd;
+}
+
+function addDurationTelemetry(entry, totals) {
+	if (typeof entry.telemetry?.duration_ms === "number") {
+		totals.sawDuration = true;
+		totals.totalDurationMs += entry.telemetry.duration_ms;
+	}
+	if (typeof entry.telemetry?.durationMs === "number") {
+		totals.sawDuration = true;
+		totals.totalDurationMs += entry.telemetry.durationMs;
+	}
+}
+
+function addTokenTelemetry(entry, totals) {
+	if (typeof entry.telemetry?.total_tokens !== "number") {
+		return;
+	}
+	totals.sawTokens = true;
+	totals.totalTokens += entry.telemetry.total_tokens;
+}
+
 export function summarizeCandidateTelemetry(entries) {
-	let totalCostUsd = 0;
-	let totalDurationMs = 0;
-	let sawCost = false;
-	let sawDuration = false;
+	const totals = {
+		totalCostUsd: 0,
+		totalDurationMs: 0,
+		totalTokens: 0,
+		sawCost: false,
+		sawDuration: false,
+		sawTokens: false,
+	};
 	for (const entry of entries) {
-		if (typeof entry.telemetry?.cost_usd === "number") {
-			sawCost = true;
-			totalCostUsd += entry.telemetry.cost_usd;
-		}
-		if (typeof entry.telemetry?.duration_ms === "number") {
-			sawDuration = true;
-			totalDurationMs += entry.telemetry.duration_ms;
-		}
-		if (typeof entry.telemetry?.durationMs === "number") {
-			sawDuration = true;
-			totalDurationMs += entry.telemetry.durationMs;
-		}
+		addCostTelemetry(entry, totals);
+		addDurationTelemetry(entry, totals);
+		addTokenTelemetry(entry, totals);
 	}
 	return {
-		...(sawCost ? { totalCostUsd } : {}),
-		...(sawDuration ? { totalDurationMs } : {}),
+		...(totals.sawCost ? { totalCostUsd: totals.totalCostUsd } : {}),
+		...(totals.sawDuration ? { totalDurationMs: totals.totalDurationMs } : {}),
+		...(totals.sawTokens ? { totalTokens: totals.totalTokens } : {}),
 	};
 }
 

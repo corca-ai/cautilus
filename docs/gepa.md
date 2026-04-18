@@ -10,6 +10,7 @@ It is inspired by DSPy's `GEPA`, adapted to Cautilus's file-based, consumer-owne
 - `cautilus optimize search run` currently keeps a seed candidate, attempts one bounded reflective mutation above that seed, reevaluates the candidate on held-out scenarios, and selects from a Pareto-style frontier over per-scenario scores.
 - Cost and latency are recorded as telemetry and late tie-break signals rather than dominating the primary behavior objective.
 - The canonical search packet records `searchConfigSources` so the operator can see which search knobs came from product defaults, adapter presets, or explicit overrides.
+- The search result mirrors that provenance with `searchConfigSources`, `experimentContext`, and `telemetryCompleteness` so a result-only reader can reconstruct the conditions and know which telemetry dimensions were actually present.
 - Sparse evidence blocks search early with machine-readable JSON so an agent or operator can discuss what is missing before generating candidates.
 - The selected candidate bridges back into the bounded `cautilus optimize propose` and `cautilus optimize build-artifact` flow.
 

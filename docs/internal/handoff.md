@@ -57,6 +57,8 @@ packet 에는 merge toggle, three-parent policy, selection caps 같은 future in
     다만 `cost_usd` 는 아직 stable machine field 나 separately versioned derived-pricing seam 이 없으므로 비워 둔다.
     optimize-search / GEPA 문서도 현재 구현 경계에 맞춰 줄였다.
     merge, three-parent, selection-cap 은 packet 에 intent 를 보존하지만 current runner 는 아직 실제 merge candidate synthesis 나 cap-based finalist rejection 을 수행하지 않는다.
+12. optimize-search result 는 이제 result-only reader 를 위한 얇은 experiment summary surface 를 같이 낸다.
+    `searchConfigSources`, `experimentContext`, `telemetryCompleteness` 가 result packet 에 같이 들어가므로, operator 는 input packet 을 다시 열지 않아도 어떤 adapter / baseline / budget / target / mutation backend 조건에서 돌았는지와 비용/시간/token telemetry 가 어디까지 완전한지 바로 볼 수 있다.
 
 ## Recent Commits
 
@@ -141,8 +143,8 @@ packet 에는 merge toggle, three-parent policy, selection caps 같은 future in
    다음 slice 후보는 stable machine cost field 가 있는지 확인하는 것, 아니면 `tokscale` 류 pricing seam 을 참고해 separately versioned derived-cost surface 를 여는 것이다.
    중요한 건 human stderr scraping 을 truth 로 승격하지 않는 것이다.
 2. optimize-search / deployment-evidence 의 experiment context 를 더 노골적으로 드러낼지 본다.
-   사용자가 실제로 알고 싶은 것은 어떤 adapter, baseline, profile/split, backend/model, target prompt, budget 으로 얼마를 써서 돌렸는지다.
-   지금도 packet 조각으로는 복원되지만 한 곳에서 요약되진 않는다.
+   optimize-search result 자체에는 이제 result-only summary 면이 생겼다.
+   다음 질문은 deployment-evidence 나 다른 surface 들도 같은 수준의 context summary 를 가져야 하는지다.
 3. GEPA runner 자체를 더 키울지, 아니면 current bounded slice 를 유지할지 판단한다.
    현재 구현은 one-seed plus one bounded mutation attempt 까지다.
    true multi-generation execution, review-checkpoint runners, merge synthesis, selection-cap enforcement 은 아직 deferred 다.

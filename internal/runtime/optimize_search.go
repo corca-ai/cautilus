@@ -466,20 +466,23 @@ func RunOptimizeSearch(packet map[string]any, inputFile string, now time.Time) m
 		reasonCodes = append(reasonCodes, "missing_textual_feedback")
 		missingEvidence = append(missingEvidence, "compareArtifact reasons or humanReviewFindings")
 	}
-	if len(reasonCodes) > 0 {
-		return map[string]any{
-			"schemaVersion":           contracts.OptimizeSearchResultSchema,
-			"generatedAt":             now.UTC().Format(time.RFC3339Nano),
-			"status":                  "blocked",
-			"inputFile":               inputFile,
-			"repoRoot":                packet["repoRoot"],
-			"optimizeInputFile":       packet["optimizeInputFile"],
-			"searchConfig":            packet["searchConfig"],
-			"candidateRegistry":       []any{},
-			"generationSummaries":     []any{},
-			"heldOutEvaluationMatrix": []any{},
-			"pareto": map[string]any{
-				"frontierCandidateIds":        []any{},
+		if len(reasonCodes) > 0 {
+			return map[string]any{
+				"schemaVersion":           contracts.OptimizeSearchResultSchema,
+				"generatedAt":             now.UTC().Format(time.RFC3339Nano),
+				"status":                  "blocked",
+				"inputFile":               inputFile,
+				"repoRoot":                packet["repoRoot"],
+				"optimizeInputFile":       packet["optimizeInputFile"],
+				"searchConfig":            packet["searchConfig"],
+				"searchConfigSources":     firstNonNil(packet["searchConfigSources"], map[string]any{}),
+				"experimentContext":       optimizeSearchExperimentContext(packet),
+				"telemetryCompleteness":   optimizeSearchTelemetryCompleteness(nil, nil),
+				"candidateRegistry":       []any{},
+				"generationSummaries":     []any{},
+				"heldOutEvaluationMatrix": []any{},
+				"pareto": map[string]any{
+					"frontierCandidateIds":        []any{},
 				"perScenarioBestCandidateIds": []any{},
 			},
 			"checkpointOutcomes": map[string]any{
@@ -567,6 +570,9 @@ func RunOptimizeSearch(packet map[string]any, inputFile string, now time.Time) m
 		"repoRoot":                packet["repoRoot"],
 		"optimizeInputFile":       packet["optimizeInputFile"],
 		"searchConfig":            packet["searchConfig"],
+		"searchConfigSources":     firstNonNil(packet["searchConfigSources"], map[string]any{}),
+		"experimentContext":       optimizeSearchExperimentContext(packet),
+		"telemetryCompleteness":   optimizeSearchTelemetryCompleteness(matrix, candidates),
 		"selectedCandidateId":     selectedCandidateID,
 		"candidateRegistry":       optimizeSearchCandidateRegistry(candidates),
 		"generationSummaries":     generationSummaries,
@@ -744,8 +750,10 @@ func collectCompareArtifactFeedbackSignals(compareArtifact map[string]any) []str
 func optimizeSearchCandidateTelemetry(entries []map[string]any) map[string]any {
 	totalCost := 0.0
 	totalDuration := 0.0
+	totalTokens := 0.0
 	sawCost := false
 	sawDuration := false
+	sawTokens := false
 	for _, entry := range entries {
 		telemetry := asMap(entry["telemetry"])
 		if cost, ok := toFloat(telemetry["cost_usd"]); ok {
@@ -756,6 +764,10 @@ func optimizeSearchCandidateTelemetry(entries []map[string]any) map[string]any {
 			totalDuration += duration
 			sawDuration = true
 		}
+		if tokens, ok := toFloat(telemetry["total_tokens"]); ok {
+			totalTokens += tokens
+			sawTokens = true
+		}
 	}
 	result := map[string]any{}
 	if sawCost {
@@ -764,7 +776,87 @@ func optimizeSearchCandidateTelemetry(entries []map[string]any) map[string]any {
 	if sawDuration {
 		result["totalDurationMs"] = round12(totalDuration)
 	}
+	if sawTokens {
+		result["totalTokens"] = round12(totalTokens)
+	}
 	return result
+}
+
+func optimizeSearchExperimentContext(packet map[string]any) map[string]any {
+	evaluationContext := asMap(packet["evaluationContext"])
+	mutationBackends := []any{}
+	for _, rawBackend := range arrayOrEmpty(asMap(packet["mutationConfig"])["backends"]) {
+		backend := asMap(rawBackend)
+		mutationBackends = append(mutationBackends, map[string]any{
+			"id":      nilIfEmpty(backend["id"]),
+			"backend": nilIfEmpty(backend["backend"]),
+		})
+	}
+	return map[string]any{
+		"mode":             nilIfEmpty(evaluationContext["mode"]),
+		"intent":           nilIfEmpty(evaluationContext["intent"]),
+		"baselineRef":      nilIfEmpty(evaluationContext["baselineRef"]),
+		"adapter":          nilIfEmpty(evaluationContext["adapter"]),
+		"adapterName":      nilIfEmpty(evaluationContext["adapterName"]),
+		"adapterPath":      nilIfEmpty(asMap(packet["searchConfigSources"])["adapterPath"]),
+		"profile":          nilIfEmpty(evaluationContext["profile"]),
+		"split":            nilIfEmpty(evaluationContext["split"]),
+		"targetFile":       firstNonNil(packet["targetFile"], map[string]any{}),
+		"searchBudget":     nilIfEmpty(asMap(packet["searchConfig"])["budget"]),
+		"mutationBackends": mutationBackends,
+	}
+}
+
+func optimizeSearchTelemetryCompleteness(matrix []any, candidates []map[string]any) map[string]any {
+	heldOutValues := func(extract func(map[string]any) bool) string {
+		if len(matrix) == 0 {
+			return "absent"
+		}
+		count := 0
+		for _, rawEntry := range matrix {
+			entry := asMap(rawEntry)
+			if extract(entry) {
+				count++
+			}
+		}
+		return telemetryCompletenessStatus(len(matrix), count)
+	}
+	candidateValues := func(extract func(map[string]any) bool) string {
+		if len(candidates) == 0 {
+			return "absent"
+		}
+		count := 0
+		for _, candidate := range candidates {
+			if extract(asMap(candidate["telemetry"])) {
+				count++
+			}
+		}
+		return telemetryCompletenessStatus(len(candidates), count)
+	}
+	return map[string]any{
+		"heldOutDurationMs":            heldOutValues(func(entry map[string]any) bool { _, ok := toFloat(firstNonNil(asMap(entry["telemetry"])["durationMs"], asMap(entry["telemetry"])["duration_ms"])); return ok }),
+		"heldOutTotalTokens":           heldOutValues(func(entry map[string]any) bool { _, ok := toFloat(asMap(entry["telemetry"])["total_tokens"]); return ok }),
+		"heldOutCostUsd":               heldOutValues(func(entry map[string]any) bool { _, ok := toFloat(asMap(entry["telemetry"])["cost_usd"]); return ok }),
+		"candidateAggregateDurationMs": candidateValues(func(telemetry map[string]any) bool { _, ok := toFloat(telemetry["totalDurationMs"]); return ok }),
+		"candidateAggregateTotalTokens": candidateValues(func(telemetry map[string]any) bool {
+			_, ok := toFloat(telemetry["totalTokens"])
+			return ok
+		}),
+		"candidateAggregateCostUsd": candidateValues(func(telemetry map[string]any) bool {
+			_, ok := toFloat(telemetry["totalCostUsd"])
+			return ok
+		}),
+	}
+}
+
+func telemetryCompletenessStatus(total, present int) string {
+	if total == 0 || present == 0 {
+		return "absent"
+	}
+	if present == total {
+		return "complete"
+	}
+	return "partial"
 }
 
 func optimizeSearchSeedCandidate(packet map[string]any, heldOutEntries []map[string]any) map[string]any {

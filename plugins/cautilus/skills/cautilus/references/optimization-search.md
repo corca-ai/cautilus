@@ -375,6 +375,12 @@ The packet should include:
 - repo root
 - source search input file reference
 - search configuration
+- `searchConfigSources`
+  - the same resolved source labels emitted by the canonical input packet so result-only readers can still tell which knobs came from product defaults, adapter defaults, adapter presets, or explicit overrides
+- `experimentContext`
+  - mode, intent, baseline ref, adapter identity, target file, resolved budget, and mutation backend list
+- `telemetryCompleteness`
+  - one small truth surface that says which held-out and candidate-aggregate telemetry dimensions are `complete`, `partial`, or `absent`
 - selected candidate id
 - candidate registry
   - candidate ids
@@ -428,6 +434,7 @@ This preserves the current "one bounded revision brief" contract while adding se
 - Adapter-owned search presets can override product defaults without inventing repo-specific tier names.
 - The canonical search packet records resolved search config sources so operators can reopen why a given run used a given budget or policy.
 - Search output preserves enough lineage and per-scenario scoring detail for an operator to understand why the selected candidate won.
+- Search output lets a result-only reader reconstruct the experiment conditions without reopening the input packet by hand.
 - The selected candidate can feed the existing bounded optimize proposal seam without weakening held-out or review discipline.
 
 ## Acceptance Checks

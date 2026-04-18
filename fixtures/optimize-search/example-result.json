@@ -25,6 +25,44 @@
     "mergeEnabled": false,
     "threeParentPolicy": "coverage_expansion"
   },
+  "searchConfigSources": {
+    "adapterPath": "/tmp/cautilus-optimize-search/.agents/cautilus-adapter.yaml",
+    "budget": "product_default",
+    "preset": "product_default",
+    "selectionPolicy": "product_default",
+    "reviewCheckpointPolicy": "product_default",
+    "mergeEnabled": "product_default",
+    "threeParentPolicy": "product_default"
+  },
+  "experimentContext": {
+    "mode": "held_out",
+    "intent": "Operator recovery guidance should stay legible.",
+    "baselineRef": "origin/main",
+    "adapter": null,
+    "adapterName": "data-final-prompt-ab",
+    "adapterPath": "/tmp/cautilus-optimize-search/.agents/cautilus-adapter.yaml",
+    "profile": null,
+    "split": null,
+    "targetFile": {
+      "path": "/tmp/cautilus-optimize-search/prompt.md",
+      "exists": true
+    },
+    "searchBudget": "light",
+    "mutationBackends": [
+      {
+        "id": "codex-mutate",
+        "backend": "codex_exec"
+      }
+    ]
+  },
+  "telemetryCompleteness": {
+    "heldOutDurationMs": "complete",
+    "heldOutTotalTokens": "absent",
+    "heldOutCostUsd": "complete",
+    "candidateAggregateDurationMs": "complete",
+    "candidateAggregateTotalTokens": "absent",
+    "candidateAggregateCostUsd": "complete"
+  },
   "selectedCandidateId": "seed",
   "candidateRegistry": [
     {

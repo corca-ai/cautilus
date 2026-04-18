@@ -11,6 +11,9 @@
     "repoRoot",
     "optimizeInputFile",
     "searchConfig",
+    "searchConfigSources",
+    "experimentContext",
+    "telemetryCompleteness",
     "candidateRegistry",
     "generationSummaries",
     "heldOutEvaluationMatrix",
@@ -43,6 +46,15 @@
       "type": "string"
     },
     "searchConfig": {
+      "type": "object"
+    },
+    "searchConfigSources": {
+      "type": "object"
+    },
+    "experimentContext": {
+      "type": "object"
+    },
+    "telemetryCompleteness": {
       "type": "object"
     },
     "selectedCandidateId": {

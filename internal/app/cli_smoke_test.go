@@ -2341,17 +2341,39 @@ func TestCLIOptimizeSearchPrepareRunAndProposeFromSearch(t *testing.T) {
 		t.Fatalf("optimize search run failed: %s", stderr)
 	}
 	searchResult := readJSONObjectFile(t, searchResultPath)
-	if searchResult["schemaVersion"] != contracts.OptimizeSearchResultSchema || searchResult["status"] != "completed" {
-		t.Fatalf("unexpected search result: %#v", searchResult)
-	}
-	if searchResult["selectedCandidateId"] != "seed" {
-		t.Fatalf("unexpected selected candidate: %#v", searchResult["selectedCandidateId"])
-	}
+		if searchResult["schemaVersion"] != contracts.OptimizeSearchResultSchema || searchResult["status"] != "completed" {
+			t.Fatalf("unexpected search result: %#v", searchResult)
+		}
+		if searchResult["selectedCandidateId"] != "seed" {
+			t.Fatalf("unexpected selected candidate: %#v", searchResult["selectedCandidateId"])
+		}
+		searchConfigSources := searchResult["searchConfigSources"].(map[string]any)
+		if searchConfigSources["budget"] != "product_default" || searchConfigSources["preset"] != "product_default" {
+			t.Fatalf("unexpected search config sources: %#v", searchConfigSources)
+		}
+		experimentContext := searchResult["experimentContext"].(map[string]any)
+		if experimentContext["baselineRef"] != "origin/main" || experimentContext["intent"] != "Operator recovery guidance should stay legible." {
+			t.Fatalf("unexpected experiment context: %#v", experimentContext)
+		}
+		if experimentContext["searchBudget"] != "medium" {
+			t.Fatalf("unexpected search budget in experiment context: %#v", experimentContext)
+		}
+		mutationBackends := experimentContext["mutationBackends"].([]any)
+		if len(mutationBackends) != 2 {
+			t.Fatalf("unexpected mutation backends: %#v", mutationBackends)
+		}
+		telemetryCompleteness := searchResult["telemetryCompleteness"].(map[string]any)
+		if telemetryCompleteness["heldOutCostUsd"] != "complete" || telemetryCompleteness["candidateAggregateCostUsd"] != "complete" {
+			t.Fatalf("unexpected telemetry completeness: %#v", telemetryCompleteness)
+		}
+		if telemetryCompleteness["heldOutTotalTokens"] != "absent" {
+			t.Fatalf("unexpected token completeness: %#v", telemetryCompleteness)
+		}
 
-	_, stderr, exitCode = runCLI(t, root, "optimize", "propose", "--from-search", searchResultPath, "--output", proposalPath)
-	if exitCode != 0 {
-		t.Fatalf("optimize propose --from-search failed: %s", stderr)
-	}
+		_, stderr, exitCode = runCLI(t, root, "optimize", "propose", "--from-search", searchResultPath, "--output", proposalPath)
+		if exitCode != 0 {
+			t.Fatalf("optimize propose --from-search failed: %s", stderr)
+		}
 	proposal := readJSONObjectFile(t, proposalPath)
 	if proposal["schemaVersion"] != contracts.OptimizeProposalSchema {
 		t.Fatalf("unexpected proposal schema: %#v", proposal["schemaVersion"])
