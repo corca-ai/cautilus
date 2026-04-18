@@ -64,6 +64,7 @@ Use these high-signal routes first:
 - Prefer adding small bounded runtimes over large operator surfaces.
 - If a consumer repo has gained generic evaluation knowledge, bring it here rather than letting the contracts drift.
 - When adding a new runtime surface, add at least one executable test.
+- While implementing, any bug, error, regression, or unexpected behavior routes to `charness:debug` before further fixes.
 
 ## Before Stopping on a Spec-Driven Slice
 

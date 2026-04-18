@@ -12,9 +12,11 @@ import { runClaudeSample } from "./skill-test-claude-backend.mjs";
 import {
 	aggregateSkillTelemetry,
 	extractCodexTelemetry,
-	normalizeSkillMetrics,
-	normalizeSkillTelemetry,
 } from "./skill-test-telemetry.mjs";
+import {
+	aggregateObservedMetrics,
+	buildObservedBaseResult,
+} from "./skill-test-observed.mjs";
 
 export { normalizeSkillTestCaseSuite } from "./skill-test-case-suite.mjs";
 
@@ -299,25 +301,7 @@ export function backendFailureResult(testCase, message, durationMs, artifactRefs
 }
 
 function observedBaseResult(testCase, observed, durationMs, artifactRefs) {
-	const telemetry = normalizeSkillTelemetry(observed?.telemetry);
-	const normalizedMetrics = normalizeSkillMetrics(observed?.metrics) ?? {};
-	if (telemetry?.total_tokens !== undefined && normalizedMetrics.total_tokens === undefined) {
-		normalizedMetrics.total_tokens = telemetry.total_tokens;
-	}
-	if (telemetry?.cost_usd !== undefined && normalizedMetrics.cost_usd === undefined) {
-		normalizedMetrics.cost_usd = telemetry.cost_usd;
-	}
-	return {
-		invoked: Boolean(observed?.invoked),
-		summary: assertString(observed?.summary, "observed.summary"),
-		metrics: {
-			duration_ms: durationMs,
-			...normalizedMetrics,
-		},
-		artifactRefs,
-		...(telemetry ? { telemetry } : {}),
-		...(testCase.thresholds ? { thresholds: testCase.thresholds } : {}),
-	};
+	return buildObservedBaseResult(testCase, observed, durationMs, artifactRefs, assertString);
 }
 
 function normalizeExecutionOutcome(observed) {
@@ -430,40 +414,6 @@ function runCodexSample(options, testCase, artifactDir, sampleIndex) {
 	);
 }
 
-function numericMetricValues(results, metricKey) {
-	return results
-		.map((result) => Number(result?.metrics?.[metricKey]))
-		.filter((value) => Number.isFinite(value));
-}
-
-function median(values) {
-	if (values.length === 0) {
-		return null;
-	}
-	const sorted = [...values].sort((left, right) => left - right);
-	const mid = Math.floor(sorted.length / 2);
-	if (sorted.length % 2 === 1) {
-		return sorted[mid];
-	}
-	return (sorted[mid - 1] + sorted[mid]) / 2;
-}
-
-function aggregateMetrics(results) {
-	const aggregates = {};
-	for (const metricKey of ["duration_ms", "total_tokens", "cost_usd"]) {
-		const values = numericMetricValues(results, metricKey);
-		if (values.length === 0) {
-			continue;
-		}
-		const value = median(values);
-		if (value === null) {
-			continue;
-		}
-		aggregates[metricKey] = metricKey === "cost_usd" ? value : Math.round(value);
-	}
-	return Object.keys(aggregates).length > 0 ? aggregates : null;
-}
-
 function summarizeStatusCounts(statusCounts) {
 	return ["passed", "degraded", "blocked", "failed"]
 		.filter((status) => Number(statusCounts[status] ?? 0) > 0)
@@ -510,7 +460,7 @@ function aggregateTriggerSamples(testCase, sampleResults, artifactDir) {
 		invoked: consensusReached ? testCase.expectedTrigger === "must_invoke" : testCase.expectedTrigger !== "must_invoke",
 		summary: testCase.repeatCount > 1 ? aggregateSummary : `${aggregateSummary} ${sampleResults[0]?.summary ?? ""}`.trim(),
 		expectedTrigger: testCase.expectedTrigger,
-		metrics: aggregateMetrics(sampleResults),
+			metrics: aggregateObservedMetrics(sampleResults),
 		sampling: {
 			sampleCount: testCase.repeatCount,
 			consensusCount: matchedRuns,
@@ -563,7 +513,7 @@ function aggregateExecutionSamples(testCase, sampleResults, artifactDir) {
 		invoked: invokedRuns >= testCase.minConsensusCount,
 		summary: testCase.repeatCount > 1 ? prefix : `${prefix} ${sampleResults[0]?.summary ?? ""}`.trim(),
 		outcome: consensusOutcome,
-		metrics: aggregateMetrics(sampleResults),
+			metrics: aggregateObservedMetrics(sampleResults),
 		thresholds: testCase.thresholds ?? null,
 		sampling: {
 			sampleCount: testCase.repeatCount,

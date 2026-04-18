@@ -118,7 +118,7 @@ func BuildOptimizeSearchInput(optimizeInput map[string]any, optimizeInputFile st
 		"searchConfigSources": searchConfigSources,
 		"mutationConfig": map[string]any{
 			"backends":           defaultOptimizeSearchBackends(stringOrEmpty(searchConfig["budget"])),
-			"trainScenarioLimit": maxInt(1, int(numberOrDefault(searchConfig["mutationBatchSize"], 1))-1),
+			"trainScenarioLimit": atLeastOne(int(numberOrDefault(searchConfig["mutationBatchSize"], 1)) - 1),
 			"promptVariantLimit": int(numberOrDefault(searchConfig["mutationBatchSize"], 1)),
 		},
 		"mutationEvidencePolicy": map[string]any{
@@ -930,8 +930,8 @@ func optimizeSearchEvaluateMutation(packet map[string]any, inputFile string, opt
 	if backend == "" {
 		return nil, fmt.Errorf("mutation backend unavailable")
 	}
-	generationIndex := maxInt(1, options.GenerationIndex)
-	attemptIndex := maxInt(1, options.AttemptIndex)
+	generationIndex := atLeastOne(options.GenerationIndex)
+	attemptIndex := atLeastOne(options.AttemptIndex)
 	parentCandidate := options.ParentCandidate
 	candidateID := fmt.Sprintf("g%d-%d-%s", generationIndex, attemptIndex, strings.ReplaceAll(strings.ReplaceAll(backend, "_", "-"), " ", "-"))
 	candidateRoot := filepath.Join(artifactRoot, "optimize-search-candidates", candidateID)
@@ -1011,7 +1011,7 @@ func optimizeSearchCanRunMutation(packet map[string]any) bool {
 
 func optimizeSearchConfigInt(packet map[string]any, key string, defaultValue int) int {
 	value := int(numberOrDefault(asMap(packet["searchConfig"])[key], float64(defaultValue)))
-	return maxInt(1, value)
+	return atLeastOne(value)
 }
 
 func optimizeSearchMutationBackend(packet map[string]any) string {
@@ -1368,11 +1368,11 @@ func derefString(value *string) string {
 	return strings.TrimSpace(*value)
 }
 
-func maxInt(left int, right int) int {
-	if left > right {
-		return left
+func atLeastOne(value int) int {
+	if value < 1 {
+		return 1
 	}
-	return right
+	return value
 }
 
 func firstArrayItem(value any) any {
