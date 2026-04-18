@@ -11,6 +11,7 @@ import { normalizeSkillTestCaseSuite } from "./skill-test-case-suite.mjs";
 import { runClaudeSample } from "./skill-test-claude-backend.mjs";
 import {
 	aggregateSkillTelemetry,
+	extractCodexTelemetry,
 	normalizeSkillMetrics,
 	normalizeSkillTelemetry,
 } from "./skill-test-telemetry.mjs";
@@ -256,6 +257,7 @@ export function codexArgs(options, schemaFile, outputFile) {
 		"--sandbox",
 		options.sandbox,
 		"--ephemeral",
+		"--json",
 		"--output-schema",
 		schemaFile,
 		"-o",
@@ -370,6 +372,7 @@ function runCodexSample(options, testCase, artifactDir, sampleIndex) {
 	const promptFile = join(outputDir, "prompt.md");
 	const schemaFile = join(outputDir, "schema.json");
 	const outputFile = join(outputDir, "result.json");
+	const stdoutFile = join(outputDir, "result.stdout.jsonl");
 	const stderrFile = join(outputDir, "result.stderr");
 	const prompt = renderPrompt(testCase.targetId, testCase);
 	writeFileSync(promptFile, prompt);
@@ -387,10 +390,12 @@ function runCodexSample(options, testCase, artifactDir, sampleIndex) {
 		timeout: options.timeoutMs,
 	});
 	const durationMs = Date.now() - started;
+	writeFileSync(stdoutFile, result.stdout ?? "");
 	writeFileSync(stderrFile, result.stderr ?? "");
 	const artifactRefs = [
 		artifactRef("prompt", promptFile),
 		artifactRef("schema", schemaFile),
+		artifactRef("stdout", stdoutFile),
 		artifactRef("stderr", stderrFile),
 	];
 	if (result.error?.code === "ETIMEDOUT") {
@@ -406,12 +411,12 @@ function runCodexSample(options, testCase, artifactDir, sampleIndex) {
 		return backendFailureResult(testCase, `The codex_exec runner did not produce valid JSON: ${error.message}`, durationMs, artifactRefs);
 	}
 	artifactRefs.push(artifactRef("result", outputFile));
-	const model = options.codexModel ?? options.model;
+	const telemetry = extractCodexTelemetry(result.stdout, options);
 	return normalizeObservedResult(
 		testCase,
 		{
 			...observed,
-			...(typeof model === "string" && model.trim() ? { telemetry: { model } } : {}),
+			...(telemetry ? { telemetry } : {}),
 		},
 		durationMs,
 		artifactRefs,

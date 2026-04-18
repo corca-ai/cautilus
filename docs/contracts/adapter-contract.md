@@ -54,6 +54,36 @@ comparison_command_templates:
   - npm run bench:compare -- --baseline-ref {baseline_ref} --profile {profile} --split {split} --samples {comparison_samples}
 full_gate_command_templates:
   - npm run bench:full -- --baseline-ref {baseline_ref} --history-file {history_file} --samples {full_gate_samples}
+optimize_search:
+  default_budget: medium
+  budgets:
+    light:
+      generation_limit: 1
+      population_limit: 3
+      mutation_batch_size: 3
+      review_checkpoint_policy: final_only
+      merge_enabled: false
+      three_parent_policy: coverage_expansion
+    medium:
+      generation_limit: 2
+      population_limit: 5
+      mutation_batch_size: 4
+      review_checkpoint_policy: frontier_promotions
+      merge_enabled: false
+      three_parent_policy: coverage_expansion
+    heavy:
+      generation_limit: 3
+      population_limit: 8
+      mutation_batch_size: 5
+      review_checkpoint_policy: frontier_promotions
+      merge_enabled: false
+      three_parent_policy: coverage_expansion
+  selection_policy:
+    primary_objective: held_out_behavior
+    tie_breakers:
+      - lower_cost
+      - lower_latency
+    constraint_caps: {}
 executor_variants:
   - id: codex-review
     tool: codex_exec
@@ -118,6 +148,10 @@ default_schema_file: fixtures/review/review-verdict.schema.json
 - `comparison_command_templates`: optional commands that produce scenario-by-scenario deltas.
 - `full_gate_command_templates`: commands for the final shipping gate.
 - `executor_variants`: optional backend-specific review or simulation runners.
+- `optimize_search`: optional repo-owned defaults for `cautilus optimize search`.
+  The product still owns the shared tier labels `light`, `medium`, and `heavy`.
+  The adapter may override the repo's default budget tier, per-tier numeric limits, review checkpoint defaults, and selection policy.
+  `merge_enabled` and `three_parent_policy` are currently preserved into the canonical search packet for replay and future expansion, but the current runner does not yet synthesize merge candidates from them.
 - `artifact_paths`: code or docs the evaluator should inspect while interpreting results.
 - `report_paths`: machine-readable or HTML output paths worth checking after runs.
 - `comparison_questions`: prompts to keep result interpretation focused on real deltas.
@@ -152,6 +186,7 @@ Each named adapter should define its own:
 - command templates
 - artifacts to inspect
 - human review prompts
+- optional `optimize_search` defaults when that surface needs a different bounded search policy from the repo root adapter
 
 This keeps prompt benchmarking, code-quality benchmarking, and workflow smoke tests from collapsing into one overloaded adapter file.
 When a repo runs review variants repeatedly, add a checked-in runner that loads the adapter and fans out `executor_variants` instead of asking operators to retype each shell command by hand.

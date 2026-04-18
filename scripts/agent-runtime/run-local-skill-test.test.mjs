@@ -10,6 +10,7 @@ import {
 	normalizeObservedResult,
 	normalizeSkillTestCaseSuite,
 } from "./run-local-skill-test.mjs";
+import { extractCodexTelemetry } from "./skill-test-telemetry.mjs";
 
 test("buildObservedSkillEvaluationInput materializes a normalized packet from fixture-backed skill test results", () => {
 	const artifactDir = mkdtempSync(join(tmpdir(), "cautilus-skill-test-"));
@@ -189,6 +190,7 @@ test("codexArgs applies runtime-specific model, effort, and config overrides", (
 			"--sandbox",
 			"workspace-write",
 			"--ephemeral",
+			"--json",
 			"--output-schema",
 			"/tmp/schema.json",
 			"-o",
@@ -204,6 +206,40 @@ test("codexArgs applies runtime-specific model, effort, and config overrides", (
 			"-",
 		],
 	);
+});
+
+test("extractCodexTelemetry preserves provider, model, and token totals from jsonl events", () => {
+	const telemetry = extractCodexTelemetry([
+		{
+			type: "session_meta",
+			payload: {
+				source: "exec",
+				model_provider: "openai",
+				model_info: { slug: "gpt-5.4-mini" },
+			},
+		},
+		{
+			type: "event_msg",
+			payload: {
+				type: "token_count",
+				info: {
+					total_token_usage: {
+						input_tokens: 1200,
+						output_tokens: 300,
+						cached_input_tokens: 200,
+						reasoning_output_tokens: 50,
+					},
+				},
+			},
+		},
+	]);
+	assert.deepEqual(telemetry, {
+		provider: "openai",
+		model: "gpt-5.4-mini",
+		prompt_tokens: 1400,
+		completion_tokens: 350,
+		total_tokens: 1750,
+	});
 });
 
 test("normalizeObservedResult preserves backend telemetry and numeric metrics", () => {

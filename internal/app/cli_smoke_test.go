@@ -1618,6 +1618,119 @@ func TestCLIOptimizeSearchPrepareInputFallsBackToSoleNamedAdapterWhenReportLacks
 	}
 }
 
+func TestCLIOptimizeSearchPrepareInputAppliesAdapterSearchDefaults(t *testing.T) {
+	root := t.TempDir()
+	initGitRepo(t, root)
+	adapterDir := filepath.Join(root, ".agents")
+	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	adapter := strings.Join([]string{
+		"version: 1",
+		"repo: temp",
+		"evaluation_surfaces:",
+		"  - operator workflow",
+		"baseline_options:",
+		"  - baseline git ref via {baseline_ref}",
+		"held_out_command_templates:",
+		"  - echo held-out",
+		"optimize_search:",
+		"  default_budget: heavy",
+		"  budgets:",
+		"    heavy:",
+		"      generation_limit: 4",
+		"      population_limit: 9",
+		"      mutation_batch_size: 6",
+		"      review_checkpoint_policy: frontier_promotions",
+		"      merge_enabled: true",
+		"      three_parent_policy: disabled",
+		"  selection_policy:",
+		"    constraint_caps:",
+		"      maxCostUsd: 0.08",
+		"",
+	}, "\n")
+	if err := os.WriteFile(filepath.Join(adapterDir, "cautilus-adapter.yaml"), []byte(adapter), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	targetFile := filepath.Join(root, "prompt.md")
+	if err := os.WriteFile(targetFile, []byte("Keep recovery guidance explicit.\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	reportPath := filepath.Join(root, "report.json")
+	writeJSONFile(t, reportPath, map[string]any{
+		"schemaVersion": contracts.ReportPacketSchema,
+		"generatedAt":   "2026-04-18T06:00:00Z",
+		"candidate":     "feature/operator-guidance",
+		"baseline":      "origin/main",
+		"intent":        "The workflow should explain the next safe recovery step without guesswork.",
+		"intentProfile": map[string]any{
+			"schemaVersion":   contracts.BehaviorIntentSchema,
+			"intentId":        "intent-recovery-guidance",
+			"summary":         "The workflow should explain the next safe recovery step without guesswork.",
+			"behaviorSurface": cautilusruntime.BehaviorSurfaces["OPERATOR_BEHAVIOR"],
+			"successDimensions": []map[string]any{
+				{
+					"id":      cautilusruntime.BehaviorDimensions["FAILURE_CAUSE_CLARITY"],
+					"summary": "Explain the concrete failure cause or missing prerequisite.",
+				},
+			},
+			"guardrailDimensions": []any{},
+		},
+		"commands": []any{
+			map[string]any{
+				"mode":    "held_out",
+				"command": "echo held-out",
+			},
+		},
+		"commandObservations": []any{},
+		"modeSummaries": []any{
+			map[string]any{
+				"mode":   "held_out",
+				"status": "passed",
+			},
+		},
+		"humanReviewFindings": []any{},
+		"recommendation":      "defer",
+	})
+	optimizeInputPath := filepath.Join(root, "optimize-input.json")
+	if _, stderr, exitCode := runCLI(t, root, "optimize", "prepare-input", "--report-file", reportPath, "--repo-root", root, "--target", "prompt", "--target-file", targetFile, "--output", optimizeInputPath); exitCode != 0 {
+		t.Fatalf("optimize prepare-input failed: %s", stderr)
+	}
+	heldOutResultsPath := filepath.Join(root, "held-out-results.json")
+	writeJSONFile(t, heldOutResultsPath, map[string]any{
+		"schemaVersion": contracts.ScenarioResultsSchema,
+		"mode":          "held_out",
+		"results": []map[string]any{
+			{
+				"scenarioId":   "operator-guidance-smoke",
+				"status":       "passed",
+				"overallScore": 100,
+			},
+		},
+	})
+	searchInputPath := filepath.Join(root, "optimize-search-input.json")
+	if _, stderr, exitCode := runCLI(t, root, "optimize", "search", "prepare-input", "--optimize-input", optimizeInputPath, "--held-out-results-file", heldOutResultsPath, "--target-file", targetFile, "--output", searchInputPath); exitCode != 0 {
+		t.Fatalf("optimize search prepare-input failed: %s", stderr)
+	}
+	searchInput := readJSONObjectFile(t, searchInputPath)
+	searchConfig := searchInput["searchConfig"].(map[string]any)
+	if searchConfig["budget"] != "heavy" || searchConfig["generationLimit"] != float64(4) || searchConfig["populationLimit"] != float64(9) || searchConfig["mutationBatchSize"] != float64(6) {
+		t.Fatalf("unexpected search config: %#v", searchConfig)
+	}
+	if searchConfig["mergeEnabled"] != true || searchConfig["threeParentPolicy"] != "disabled" {
+		t.Fatalf("unexpected merge config: %#v", searchConfig)
+	}
+	selectionPolicy := searchConfig["selectionPolicy"].(map[string]any)
+	constraintCaps := selectionPolicy["constraintCaps"].(map[string]any)
+	if constraintCaps["maxCostUsd"] != 0.08 {
+		t.Fatalf("unexpected selection caps: %#v", constraintCaps)
+	}
+	searchConfigSources := searchInput["searchConfigSources"].(map[string]any)
+	if searchConfigSources["budget"] != "adapter_default" || searchConfigSources["preset"] != "adapter_preset" || searchConfigSources["mergeEnabled"] != "adapter_preset" {
+		t.Fatalf("unexpected search config sources: %#v", searchConfigSources)
+	}
+}
+
 func TestCLIModeEvaluateMarksComparisonBackedRejectionSeparately(t *testing.T) {
 	root := t.TempDir()
 	adapterDir := filepath.Join(root, ".agents")

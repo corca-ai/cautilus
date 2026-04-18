@@ -403,21 +403,24 @@ type optimizePrepareArgs struct {
 }
 
 type optimizeSearchPrepareArgs struct {
-	optimizeInputFile      string
-	inputJSON              map[string]any
-	targetFile             *string
-	heldOutResultsFile     *string
-	adapter                *string
-	adapterName            *string
-	intent                 *string
-	baselineRef            *string
-	profile                *string
-	split                  *string
-	budget                 string
-	reviewCheckpointPolicy *string
-	threeParentPolicy      *string
-	output                 *string
-	json                   bool
+	optimizeInputFile        string
+	inputJSON                map[string]any
+	targetFile               *string
+	heldOutResultsFile       *string
+	adapter                  *string
+	adapterName              *string
+	intent                   *string
+	baselineRef              *string
+	profile                  *string
+	split                    *string
+	budget                   string
+	budgetExplicit           bool
+	reviewCheckpointPolicy   *string
+	reviewCheckpointExplicit bool
+	threeParentPolicy        *string
+	threeParentExplicit      bool
+	output                   *string
+	json                     bool
 }
 
 type optimizeSearchRunArgs struct {
@@ -2453,6 +2456,7 @@ func parseOptimizeSearchPrepareArgs(args []string, cwd string) (*optimizeSearchP
 				return nil, fmt.Errorf("--budget must be one of: light, medium, heavy")
 			}
 			options.budget = value
+			options.budgetExplicit = true
 		case "--review-checkpoint-policy":
 			value, next, err := requiredValue(args, index, arg)
 			if err != nil {
@@ -2463,6 +2467,7 @@ func parseOptimizeSearchPrepareArgs(args []string, cwd string) (*optimizeSearchP
 				return nil, fmt.Errorf("--review-checkpoint-policy must be one of: final_only, frontier_promotions")
 			}
 			options.reviewCheckpointPolicy = &value
+			options.reviewCheckpointExplicit = true
 		case "--three-parent-policy":
 			value, next, err := requiredValue(args, index, arg)
 			if err != nil {
@@ -2473,6 +2478,7 @@ func parseOptimizeSearchPrepareArgs(args []string, cwd string) (*optimizeSearchP
 				return nil, fmt.Errorf("--three-parent-policy must be one of: disabled, coverage_expansion")
 			}
 			options.threeParentPolicy = &value
+			options.threeParentExplicit = true
 		case "--output":
 			value, next, err := requiredValue(args, index, arg)
 			if err != nil {
@@ -2784,17 +2790,20 @@ func mapOrEmpty(value any) map[string]any {
 
 func resolveOptimizeSearchBuildInputs(options *optimizeSearchPrepareArgs, cwd string) (string, runtime.OptimizeSearchBuildOptions, error) {
 	buildOptions := runtime.OptimizeSearchBuildOptions{
-		TargetFileOverride:     options.targetFile,
-		HeldOutResultsFile:     options.heldOutResultsFile,
-		Budget:                 options.budget,
-		ReviewCheckpointPolicy: options.reviewCheckpointPolicy,
-		ThreeParentPolicy:      options.threeParentPolicy,
-		Adapter:                options.adapter,
-		AdapterName:            options.adapterName,
-		Intent:                 options.intent,
-		BaselineRef:            options.baselineRef,
-		Profile:                options.profile,
-		Split:                  options.split,
+		TargetFileOverride:       options.targetFile,
+		HeldOutResultsFile:       options.heldOutResultsFile,
+		Budget:                   options.budget,
+		BudgetExplicit:           options.budgetExplicit,
+		ReviewCheckpointPolicy:   options.reviewCheckpointPolicy,
+		ReviewCheckpointExplicit: options.reviewCheckpointExplicit,
+		ThreeParentPolicy:        options.threeParentPolicy,
+		ThreeParentExplicit:      options.threeParentExplicit,
+		Adapter:                  options.adapter,
+		AdapterName:              options.adapterName,
+		Intent:                   options.intent,
+		BaselineRef:              options.baselineRef,
+		Profile:                  options.profile,
+		Split:                    options.split,
 	}
 	if len(options.inputJSON) == 0 {
 		return options.optimizeInputFile, buildOptions, nil
@@ -2833,12 +2842,18 @@ func resolveOptimizeSearchBuildInputs(options *optimizeSearchPrepareArgs, cwd st
 	}
 	if budget := firstNonEmptyJSONString(rawInput["budget"], options.budget); budget != "" {
 		buildOptions.Budget = budget
+		buildOptions.BudgetExplicit = options.budgetExplicit || firstNonEmptyJSONString(rawInput["budget"], "") != ""
 	}
 	if reviewCheckpointPolicy := firstNonEmptyJSONString(rawInput["reviewCheckpointPolicy"], derefString(options.reviewCheckpointPolicy)); reviewCheckpointPolicy != "" {
 		buildOptions.ReviewCheckpointPolicy = &reviewCheckpointPolicy
+		buildOptions.ReviewCheckpointExplicit = options.reviewCheckpointExplicit || firstNonEmptyJSONString(rawInput["reviewCheckpointPolicy"], "") != ""
 	}
 	if threeParentPolicy := firstNonEmptyJSONString(rawInput["threeParentPolicy"], derefString(options.threeParentPolicy)); threeParentPolicy != "" {
 		buildOptions.ThreeParentPolicy = &threeParentPolicy
+		buildOptions.ThreeParentExplicit = options.threeParentExplicit || firstNonEmptyJSONString(rawInput["threeParentPolicy"], "") != ""
+	}
+	if mergeEnabledRaw, ok := rawInput["mergeEnabled"].(bool); ok {
+		buildOptions.MergeEnabled = &mergeEnabledRaw
 	}
 	if selectionPolicy := mapOrEmpty(rawInput["selectionPolicy"]); len(selectionPolicy) > 0 {
 		buildOptions.SelectionPolicy = selectionPolicy

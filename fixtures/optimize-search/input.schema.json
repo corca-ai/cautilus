@@ -13,6 +13,7 @@
     "targetFile",
     "seedCandidate",
     "searchConfig",
+    "searchConfigSources",
     "mutationConfig",
     "mutationEvidencePolicy",
     "scenarioSets",
@@ -49,6 +50,9 @@
       "type": "object"
     },
     "searchConfig": {
+      "type": "object"
+    },
+    "searchConfigSources": {
       "type": "object"
     },
     "mutationConfig": {

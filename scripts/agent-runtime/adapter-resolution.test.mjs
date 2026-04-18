@@ -73,6 +73,43 @@ test("resolve_adapter can load an explicit adapter path", () => {
 	}
 });
 
+test("resolve_adapter preserves nested optimize_search mappings", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-review-adapter-optimize-search-"));
+	try {
+		const adapterDir = join(root, ".agents", "cautilus-adapters");
+		mkdirSync(adapterDir, { recursive: true });
+		writeFileSync(
+			join(adapterDir, "code-quality.yaml"),
+			[
+				"version: 1",
+				"repo: temp",
+				"evaluation_surfaces:",
+				"  - code quality",
+				"baseline_options:",
+				"  - baseline git ref via {baseline_ref}",
+				"optimize_search:",
+				"  default_budget: heavy",
+				"  budgets:",
+				"    heavy:",
+				"      generation_limit: 4",
+				"      population_limit: 9",
+				"      mutation_batch_size: 6",
+				"      merge_enabled: true",
+				"",
+			].join("\n"),
+			"utf-8",
+		);
+		const stdout = runNode([RESOLVE_SCRIPT, "--repo-root", root, "--adapter-name", "code-quality"]);
+		const payload = JSON.parse(stdout);
+		assert.equal(payload.valid, true);
+		assert.equal(payload.data.optimize_search.default_budget, "heavy");
+		assert.equal(payload.data.optimize_search.budgets.heavy.generation_limit, 4);
+		assert.equal(payload.data.optimize_search.budgets.heavy.merge_enabled, true);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
 test("init_adapter scaffolds a named adapter into the named adapter directory", () => {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-review-adapter-init-"));
 	try {

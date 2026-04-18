@@ -122,133 +122,200 @@ function listItemBody(stripped) {
 	return stripped.startsWith("- ") ? stripped.slice(2).trim() : "";
 }
 
-function resetPendingState(state) {
-	state.pendingObject = null;
-	state.pendingNestedListKey = null;
+function stripInlineComment(stripped) {
+	if (!stripped.includes("  #")) {
+		return stripped;
+	}
+	return stripped.slice(0, stripped.indexOf("  #")).trimEnd();
 }
 
-function consumeNestedListItem(state, stripped, indent) {
-	if (
-		state.pendingObject === null ||
-		state.pendingNestedListKey === null ||
-		indent < 6 ||
-		!isListLine(stripped)
-	) {
-		return false;
-	}
-	const itemBody = listItemBody(stripped);
-	if (itemBody) {
-		state.pendingObject[state.pendingNestedListKey].push(coerceScalar(itemBody));
-	}
-	return true;
+function prepareLines(text) {
+	return inlineBlockScalars(text)
+		.split(/\r?\n/u)
+		.map((raw) => {
+			const stripped = stripInlineComment(raw.trim());
+			return {
+				raw,
+				stripped,
+				indent: raw.length - raw.trimStart().length,
+			};
+		});
 }
 
-function ensureCurrentList(state) {
-	if (state.currentList === null) {
-		state.currentList = [];
-		state.result[state.currentKey] = state.currentList;
+function skipIgnorable(lines, index) {
+	let current = index;
+	while (current < lines.length) {
+		const stripped = lines[current].stripped;
+		if (!stripped || stripped.startsWith("#")) {
+			current += 1;
+			continue;
+		}
+		break;
 	}
-	return state.currentList;
+	return current;
 }
 
-function consumeListItem(state, stripped) {
-	if (!isListLine(stripped) || state.currentKey === null) {
-		return false;
+function parseScalar(value) {
+	if (value === "[]") {
+		return [];
 	}
-	const currentList = ensureCurrentList(state);
-	const itemBody = listItemBody(stripped);
-	const match = /^([A-Za-z_][A-Za-z0-9_-]*):\s+(.+)$/u.exec(itemBody);
-	if (match && !itemBody.startsWith("\"") && !itemBody.startsWith("'")) {
-		const obj = { [match[1]]: coerceScalar(match[2].trim()) };
-		currentList.push(obj);
-		state.pendingObject = obj;
-		state.pendingNestedListKey = null;
-		return true;
+	if (value === "{}") {
+		return {};
 	}
-	if (itemBody) {
-		currentList.push(coerceScalar(itemBody));
-		resetPendingState(state);
-		return true;
-	}
-	state.pendingObject = {};
-	currentList.push(state.pendingObject);
-	state.pendingNestedListKey = null;
-	return true;
+	return coerceScalar(value);
 }
 
-function consumePendingObjectField(state, stripped, indent) {
-	if (state.pendingObject === null || indent < 2 || !stripped.includes(":")) {
-		return false;
-	}
-	const [rawKey, ...rest] = stripped.split(":");
-	const key = rawKey.trim();
-	const value = rest.join(":").trim();
-	if (!value) {
-		state.pendingObject[key] = [];
-		state.pendingNestedListKey = key;
-		return true;
-	}
-	state.pendingObject[key] = coerceScalar(value);
-	state.pendingNestedListKey = null;
-	return true;
-}
-
-function topLevelValue(stripped) {
-	const [rawKey, ...rest] = stripped.split(":");
-	let value = rest.join(":").trim();
-	if (value.includes("  #")) {
-		value = value.slice(0, value.indexOf("  #")).trim();
+function splitKeyValue(stripped) {
+	const separator = stripped.indexOf(":");
+	if (separator === -1) {
+		return null;
 	}
 	return {
-		key: rawKey.trim(),
-		value,
+		key: stripped.slice(0, separator).trim(),
+		value: stripped.slice(separator + 1).trim(),
 	};
 }
 
-function consumeTopLevelEntry(state, stripped, indent) {
-	if (indent !== 0 || !stripped.includes(":")) {
-		return false;
+function parseNode(lines, index, indent) {
+	const current = skipIgnorable(lines, index);
+	if (current >= lines.length || lines[current].indent < indent) {
+		return { value: null, index: current };
 	}
-	state.currentList = null;
-	resetPendingState(state);
-	const { key, value } = topLevelValue(stripped);
-	state.currentKey = key;
-	if (!value) {
-		return true;
+	if (isListLine(lines[current].stripped)) {
+		return parseArray(lines, current, indent);
 	}
-	state.result[key] = value === "[]" ? [] : coerceScalar(value);
-	return true;
+	return parseObject(lines, current, indent);
+}
+
+function shouldStopObjectParse(line, indent) {
+	return line.indent < indent || line.indent !== indent || isListLine(line.stripped);
+}
+
+function parseObjectEntry(result, lines, current, indent) {
+	const line = lines[current];
+	if (shouldStopObjectParse(line, indent)) {
+		return { stop: true, current };
+	}
+	const pair = splitKeyValue(line.stripped);
+	if (!pair) {
+		return { stop: true, current };
+	}
+	current += 1;
+	if (pair.value) {
+		result[pair.key] = parseScalar(pair.value);
+		return { stop: false, current };
+	}
+	const next = skipIgnorable(lines, current);
+	if (next >= lines.length || lines[next].indent <= indent) {
+		result[pair.key] = null;
+		return { stop: false, current: next };
+	}
+	const parsed = parseNode(lines, next, lines[next].indent);
+	result[pair.key] = parsed.value;
+	return { stop: false, current: parsed.index };
+}
+
+function parseObject(lines, index, indent) {
+	const result = {};
+	let current = index;
+	while (current < lines.length) {
+		current = skipIgnorable(lines, current);
+		if (current >= lines.length) {
+			break;
+		}
+		const parsedEntry = parseObjectEntry(result, lines, current, indent);
+		if (parsedEntry.stop) {
+			break;
+		}
+		current = parsedEntry.current;
+	}
+	return { value: result, index: current };
+}
+
+function shouldStopArrayParse(line, indent) {
+	return line.indent < indent || line.indent !== indent || !isListLine(line.stripped);
+}
+
+function parseNestedArrayItem(lines, current, indent) {
+	const next = skipIgnorable(lines, current);
+	if (next >= lines.length || lines[next].indent <= indent) {
+		return { value: null, current: next };
+	}
+	const parsed = parseNode(lines, next, lines[next].indent);
+	return { value: parsed.value, current: parsed.index };
+}
+
+function parseArrayMapValue(lines, current, indent) {
+	const next = skipIgnorable(lines, current);
+	if (next >= lines.length || lines[next].indent <= indent) {
+		return { value: null, current: next };
+	}
+	const parsed = parseNode(lines, next, lines[next].indent);
+	return { value: parsed.value, current: parsed.index };
+}
+
+function mergeFollowingObject(item, lines, current, indent) {
+	const next = skipIgnorable(lines, current);
+	if (next >= lines.length || lines[next].indent <= indent || isListLine(lines[next].stripped)) {
+		return { value: item, current };
+	}
+	const parsed = parseObject(lines, next, lines[next].indent);
+	return {
+		value: { ...item, ...parsed.value },
+		current: parsed.index,
+	};
+}
+
+function parseArrayKeyValueItem(pair, lines, current, indent) {
+	const item = {};
+	if (pair.value) {
+		item[pair.key] = parseScalar(pair.value);
+		return mergeFollowingObject(item, lines, current, indent);
+	}
+	const parsedValue = parseArrayMapValue(lines, current, indent);
+	item[pair.key] = parsedValue.value;
+	return mergeFollowingObject(item, lines, parsedValue.current, indent);
+}
+
+function parseArrayItem(body, lines, current, indent) {
+	if (!body) {
+		return parseNestedArrayItem(lines, current, indent);
+	}
+	const pair = splitKeyValue(body);
+	if (pair && !body.startsWith("\"") && !body.startsWith("'")) {
+		return parseArrayKeyValueItem(pair, lines, current, indent);
+	}
+	return { value: parseScalar(body), current };
+}
+
+function parseArray(lines, index, indent) {
+	const result = [];
+	let current = index;
+	while (current < lines.length) {
+		current = skipIgnorable(lines, current);
+		if (current >= lines.length) {
+			break;
+		}
+		const line = lines[current];
+		if (shouldStopArrayParse(line, indent)) {
+			break;
+		}
+		const body = listItemBody(line.stripped);
+		current += 1;
+		const parsedItem = parseArrayItem(body, lines, current, indent);
+		result.push(parsedItem.value);
+		current = parsedItem.current;
+	}
+	return { value: result, index: current };
 }
 
 export function load(text) {
-	const normalized = inlineBlockScalars(text);
-	const state = {
-		result: {},
-		currentKey: null,
-		currentList: null,
-		pendingObject: null,
-		pendingNestedListKey: null,
-	};
-
-	for (const raw of normalized.split(/\r?\n/u)) {
-		const stripped = raw.trim();
-		if (!stripped || stripped.startsWith("#")) {
-			continue;
-		}
-		const indent = raw.length - raw.trimStart().length;
-		if (consumeNestedListItem(state, stripped, indent)) {
-			continue;
-		}
-		if (consumeListItem(state, stripped)) {
-			continue;
-		}
-		if (consumePendingObjectField(state, stripped, indent)) {
-			continue;
-		}
-		consumeTopLevelEntry(state, stripped, indent);
+	const lines = prepareLines(text);
+	const start = skipIgnorable(lines, 0);
+	if (start >= lines.length) {
+		return {};
 	}
-
-	return state.result;
+	return parseNode(lines, start, lines[start].indent).value ?? {};
 }
 
 export function loadFile(path) {

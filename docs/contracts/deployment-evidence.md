@@ -109,10 +109,12 @@ The output should include:
 
 - Claude `skill test` summaries now carry model, token, and cost telemetry, so
   this seam can answer deployment questions for that runtime directly.
-- Codex `skill test` summaries currently preserve model and duration, but not
-  product-owned token or cost values, because the current Codex CLI exposes
-  those through human-oriented stderr output rather than a stable machine
-  packet.
+- Codex `skill test` summaries now preserve provider, model, duration, and
+  product-owned token totals from the machine-readable `codex exec --json`
+  stream.
+- Codex `skill test` summaries still do not promote product-owned `cost_usd`
+  unless the runtime exposes a stable machine field for it.
+  `Cautilus` does not derive product truth from human-oriented stderr prose.
 - `scenario_results` rows need the caller to decide which statuses count as
   success when the source mode is comparison-shaped.
   The preparer therefore accepts explicit `--pass-status` overrides.

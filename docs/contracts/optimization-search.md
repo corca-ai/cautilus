@@ -34,9 +34,11 @@ This slice defines a first `GEPA`-inspired search contract for `Cautilus`:
 - v1 assumes one consumer-owned target prompt file
 - search remains packet-first and file-based
 - candidate evaluation is bounded by declared budgets and checkpoint policies
+- adapters may override the repo's default search budget and tier-specific search limits through one optional `optimize_search` block while the product still owns the tier labels `light`, `medium`, and `heavy`
 - candidate selection is Pareto-based over per-scenario validation scores
-- the current implementation closes packet assembly, readiness gating, multi-generation reflective mutation, bounded merge synthesis, held-out reevaluation, frontier-promotion review execution, final-only checkpoint fallback, and the proposal bridge
+- the current implementation closes packet assembly, readiness gating, one bounded reflective mutation attempt above the seed candidate, held-out reevaluation of that candidate, telemetry-aware frontier ranking, and the proposal bridge
 - reflective mutation is evidence-aware rewriting, not random string editing
+- the canonical search packet records both the resolved search configuration and the source of each resolved knob so operators can tell whether the final budget, packet-level merge toggle, and selection policy came from product defaults, adapter defaults, or explicit overrides
 - the search output stays reopenable as a durable artifact and can feed the existing bounded `optimize propose` seam
 
 ## Fixed Decisions
@@ -46,20 +48,16 @@ This slice defines a first `GEPA`-inspired search contract for `Cautilus`:
 - v1 targets `prompt` only.
 - v1 targets exactly one consumer-owned prompt file at a time.
 - Held-out scenarios remain selection and validation surfaces, not mutation training material.
-- Review findings are binding evidence for search checkpoints and candidate selection.
+- Review findings are binding evidence for reflective mutation readiness and candidate shaping.
 - The default review checkpoint policy is budget-aware: `final_only` for `light`, `frontier_promotions` for `medium` and `heavy`.
+- The product owns the shared search-budget tier labels `light`, `medium`, and `heavy`.
+  Adapters may override the default tier choice and the numeric limits inside each tier, but they may not rename the shared tier labels.
 - Candidate retention uses a Pareto frontier over per-scenario validation scores, not only one aggregate score.
 - Cost and latency telemetry are mandatory when available, but are not primary Pareto frontier dimensions in v1.
-- Declared selection `constraintCaps` keep a candidate eligible for frontier search, mutation, and merge, but make it ineligible for final selection when the candidate breaches the cap.
-- When merge synthesis is enabled, the default three-parent activation policy is `coverage_expansion`: keep the smaller two-parent merge unless adding a third review-admissible parent expands frontier coverage across held-out scenarios.
-- Selection-policy failures must stay machine-readable.
-  - top-level blocked search results use stable public reason codes such as `no_selection_policy_eligible_candidate`
-  - per-candidate `selectionTelemetry.rejectionReasons` entries for declared selection caps are also stable public codes
-  - the current stable cap-breach code set is:
-    - `selection_constraint_max_cost_exceeded`
-    - `selection_constraint_max_duration_exceeded`
-  - future codes may be added, so consumers must tolerate unknown values
+- Declared selection policy and optional merge knobs are preserved in the canonical packet even when the current runner does not yet consume every knob.
 - Prompt mutation is reflective prompt rewriting based on explicit evidence, not random token- or substring-level crossover.
+- Merge synthesis stays opt-in in the resolved search packet.
+  `Cautilus` preserves adapter- or direct-input merge settings, but the current runner does not yet synthesize merge candidates from them.
 - The search output recommends a best next candidate and preserves lineage, but does not auto-apply prompt edits.
 - If search-readiness evidence is insufficient, `Cautilus` must stop before candidate generation and emit a machine-readable blocked result.
 - Inline JSON ingress is allowed, but `Cautilus` must materialize it into a canonical input file before continuing.
@@ -70,7 +68,11 @@ This slice defines a first `GEPA`-inspired search contract for `Cautilus`:
 - `adapter` target search
 - weight updates, fine-tuning, or external trainer orchestration
 - automatic prompt patch application to consumer-owned files
-- richer merge selection beyond the current bounded two- or three-parent synthesis and smarter crossover heuristics
+- actual multi-generation execution that fully consumes `generationLimit` and `populationLimit`
+- review-checkpoint execution beyond packet-level policy shaping
+- runtime consumption of `mergeEnabled` and `threeParentPolicy`
+- runtime enforcement of declared selection `constraintCaps`
+- richer merge selection and smarter crossover heuristics
 
 ## Non-Goals
 
@@ -88,6 +90,8 @@ This slice defines a first `GEPA`-inspired search contract for `Cautilus`:
 - prefer explicit candidate snapshot files and fingerprints over inlining large prompt bodies into search packets
 - keep the packet shape extensible to richer frontier heuristics and broader checkpoint execution later
 - when JSON is provided directly over CLI or stdin, materialize the raw input and the normalized canonical packet under the active run before running readiness checks or search
+- keep telemetry truth machine-readable
+  Do not scrape human-oriented stderr summaries into product-owned token or cost fields
 
 ## Reference Mapping
 
@@ -99,7 +103,7 @@ This slice defines a first `GEPA`-inspired search contract for `Cautilus`:
 - `metric + feedback`: explicit per-scenario score plus bounded textual failure digest assembled from compare artifacts, review findings, and scenario history
 - `Pareto frontier`: the set of candidates that remain best on at least one held-out scenario
 - `reflective mutation`: rewriting the target prompt using structured evidence about where a candidate succeeded or failed
-- `merge`: bounded synthesis of one new prompt from complementary frontier strengths without raw string splicing
+- `merge`: a reserved future seam for bounded synthesis of one new prompt from complementary frontier strengths without raw string splicing
 
 This keeps the useful GEPA shape while staying honest about `Cautilus`'s different product boundary.
 
@@ -132,6 +136,20 @@ The packet should include:
   - optional `threeParentPolicy`
     - `coverage_expansion`
     - `disabled`
+- `searchConfigSources`
+  - optional `adapterPath`
+  - one source label per resolved knob, such as:
+    - `budget`
+    - `preset`
+    - `selectionPolicy`
+    - `reviewCheckpointPolicy`
+    - `mergeEnabled`
+    - `threeParentPolicy`
+  - valid values are:
+    - `product_default`
+    - `adapter_default`
+    - `adapter_preset`
+    - `explicit_override`
 - mutation evidence policy
   - which report buckets can seed mutation
   - how many review findings can enter one reflective batch
@@ -166,6 +184,53 @@ For agent-driven ingress, `Cautilus` may also accept direct JSON input, but it m
 under the active run directory before returning success or blocked status.
 
 This keeps the ingress convenient without giving up replayable file-based artifacts.
+
+Adapter-owned search presets use one optional adapter block:
+
+```yaml
+optimize_search:
+  default_budget: medium
+  budgets:
+    light:
+      generation_limit: 1
+      population_limit: 3
+      mutation_batch_size: 3
+      review_checkpoint_policy: final_only
+      merge_enabled: false
+      three_parent_policy: coverage_expansion
+    medium:
+      generation_limit: 2
+      population_limit: 5
+      mutation_batch_size: 4
+      review_checkpoint_policy: frontier_promotions
+      merge_enabled: false
+      three_parent_policy: coverage_expansion
+    heavy:
+      generation_limit: 3
+      population_limit: 8
+      mutation_batch_size: 5
+      review_checkpoint_policy: frontier_promotions
+      merge_enabled: false
+      three_parent_policy: coverage_expansion
+  selection_policy:
+    primary_objective: held_out_behavior
+    tie_breakers:
+      - lower_cost
+      - lower_latency
+    constraint_caps: {}
+```
+
+Resolution order is:
+
+1. explicit direct-input overrides
+2. adapter `optimize_search` defaults and presets
+3. product defaults
+
+Current runtime note:
+
+- `generationLimit`, `populationLimit`, `mergeEnabled`, `threeParentPolicy`, and declared selection caps are preserved in the canonical packet for replay and future expansion
+- the current runner executes one bounded reflective mutation attempt above the seed candidate
+- the current runner does not yet synthesize merge candidates or reject finalists purely because a declared selection cap was breached
 
 ## Search Readiness
 
@@ -253,60 +318,36 @@ This is the `Cautilus` equivalent of GEPA's "inputs, outputs, feedback" reflecti
 
 If the repo cannot provide enough explicit scenario evidence to assemble this dataset honestly, `Cautilus` should refuse search rather than hallucinating a reflection surface from loose logs.
 
+## Deliberately Not Doing
+
+- letting adapters invent new budget tier names that break cross-repo comparison
+- promoting Codex stderr summaries into product-owned telemetry truth
+- forcing merge synthesis on for every repo just because the engine can perform it
+
 ## Search Loop
 
-The bounded loop should work like this:
+The current bounded loop works like this:
 
 1. Start with one seed candidate from the current target prompt file.
 2. Evaluate the seed candidate on the held-out scenario set to establish the initial per-scenario score vector and frontier.
-3. For each generation:
-   - retain a bounded parent set from the current Pareto frontier
-   - sample one bounded reflection batch per parent from the train scenario set
-   - build a reflective dataset from explicit evidence
-   - generate one or more mutated prompt candidates from frontier parents
-   - optionally generate one bounded merge candidate from complementary frontier parents
-   - evaluate generated candidates on held-out scenarios
-   - update the Pareto frontier using held-out per-scenario scores
-   - defer non-final checkpoints unless the operator enables a stricter policy
-4. Stop when the budget, generation limit, or stop condition is reached.
-5. Evaluate ranked frontier finalists against the declared final checkpoints.
-6. Emit one selected best next candidate plus the durable search record, or a blocked result when no checkpoint-admissible finalist survives.
+3. If the packet is mutation-ready, build one reflective dataset from explicit evidence and ask one selected backend to produce one bounded mutated candidate.
+4. Evaluate that candidate on held-out scenarios and update the frontier using per-scenario scores plus late telemetry tie-breaks when present.
+5. Emit one selected best next candidate plus the durable search record.
 
 Current implementation note:
 
-- v1 executes the bounded multi-generation loop, including reflective mutation, optional merge generation, held-out reevaluation, frontier retention, optional frontier-promotion review checkpoints, final-only full-gate checkpoints, declared selection-cap filtering across ranked frontier finalists, and proposal bridging
-- when the frontier leader fails a final checkpoint, `optimize search run` falls back to the next ranked frontier candidate
-- when every frontier finalist fails the final checkpoints, `optimize search run` emits a blocked result with checkpoint rejection reasons
+- v1 executes packet assembly, readiness blocking, one reflective mutation attempt, held-out reevaluation, telemetry-aware frontier ranking, and proposal bridging
+- `reviewCheckpointPolicy` currently shapes packet policy and checkpoint-feedback inclusion, but does not yet trigger separate review-checkpoint executions inside `optimize search run`
+- `mergeEnabled`, `threeParentPolicy`, and declared selection caps are preserved in the packet today so future runners and artifacts can reopen the same intent honestly
 
 In v1, review checkpoint policy means:
 
 - `final_only`
-  - run review variants and full-gate evaluation while walking the ranked frontier finalists
+  - keep checkpoint policy conservative in the canonical packet
 - `frontier_promotions`
-  - run review variants whenever a candidate is promoted onto the held-out frontier
-  - if the review rejects that candidate, preserve the rejection reasons and feedback messages on the candidate record
-  - when a rejection message names one or more known scenarios, preserve it as scenario-scoped checkpoint feedback and inject only the relevant scenario entries into that candidate's later mutation prompts
-  - scenario-scoped checkpoint feedback should preserve finding-level severity when review outputs provide it, so later mutation can distinguish blocker-scoped repair from concern-scoped polish
-  - scenario-scoped checkpoint feedback may also reprioritize the next reflection batch ahead of lower-scoring but uncheckpointed train scenarios
-    - blocker-scoped checkpoint feedback should outrank concern-scoped checkpoint feedback when both name known train scenarios
-  - when mutation budget forces a smaller next batch, concern-level rejected frontier lineage should be prioritized ahead of otherwise similar admissible parents so the next mutation repairs the explicit checkpointed gap before widening scope
-  - when a rejection message does not name a known scenario, preserve it as candidate-scoped checkpoint feedback and keep it eligible for later mutation prompts
-  - review-rejected frontier candidates may still seed later mutation, but merge-parent selection remains limited to review-admissible candidates
-  - a concern-level review rejection gets at most one later repair generation as a mutation parent before frontier parent selection prunes that stale rejected lineage
-  - a blocker-level review rejection is pruned from mutation-parent selection before the next generation
-  - the current bounded slice keeps this two-bucket pruning policy; finer review-pruning buckets stay deferred until larger search budgets or live telemetry show a repeatable need
+  - preserve the intent to allow earlier checkpointing once the runner grows beyond the current one-mutation slice
 
-In the current bounded slice, merge synthesis stays bounded to two or three review-admissible parents and should prefer:
-
-- stronger combined held-out frontier coverage first
-- then smaller parent sets unless `threeParentPolicy=coverage_expansion` and an extra parent materially expands combined frontier coverage across held-out scenarios
-- then explicit candidate signals such as `expectedImprovements`, `preservedStrengths`, and lower `riskNotes`, with scenario-aware weighting toward the weakest current frontier scenarios
-- when the frontier also contains review-rejected siblings, the merge prompt may carry their scenario-relevant checkpoint feedback forward as bounded context so the synthesis can avoid repeating the same rejected gap
-  - the current bounded slice does not add a separate explicit feedback-entry cap here; existing bounds come from frontier parent retention, scenario filtering, and review-admissible merge-parent selection
-- rejected sibling scenario-scoped checkpoint feedback may also directly prioritize parent groups whose `expectedImprovements` explicitly cover the same rejected scenarios, with higher-severity rejection reasons outranking lower-severity ones when held-out group metrics tie
-- then cost and duration telemetry as late tie-breakers
-
-The current bounded default is budget-aware: `light` stays `final_only` to preserve a cheaper bounded path, while `medium` and `heavy` default to `frontier_promotions` so larger searches reinvest their extra budget into earlier review-bound pruning and feedback reinjection.
+The current bounded default is budget-aware at packet-construction time: `light` stays `final_only`, while `medium` and `heavy` default to `frontier_promotions`.
 
 ## Cost And Latency
 
@@ -319,11 +360,11 @@ In v1:
 - they should act as:
   - explicit constraint caps
   - or tie-breakers between behaviorally similar candidates
-- when a declared `constraintCaps` limit is breached, the candidate stays in the frontier search record but becomes ineligible for final selection in the ranked-frontier walk
+- the current runner only uses them as late ranking tie-breakers when telemetry is present
 
 This avoids selecting a prompt merely because it is short or cheap when the behavior objective is worse.
 
-If two candidates are behaviorally near-equivalent on held-out scenarios and review checkpoints, the cheaper or faster one may win final selection.
+If two candidates are behaviorally near-equivalent on held-out scenarios, the cheaper or faster one may win final selection.
 
 ## Search Result Packet
 
@@ -352,25 +393,19 @@ The packet should include:
   - optional frontier coverage counts
 - checkpoint outcomes
   - review checkpoint results
-  - full-gate checkpoint result for each attempted finalist when run
+  - full-gate checkpoint results are reserved for future runner expansion
 - selection telemetry
   - ranked frontier candidate ids
-  - rejected finalist candidate ids
-  - selection-policy-ineligible candidate ids
-  - per-candidate machine-readable rejection reasons
 - search telemetry
   - candidate count
   - generation count
   - mutation invocation count
   - held-out evaluation count
   - review checkpoint count
-  - full-gate checkpoint count
   - stop reason
 - proposal bridge
   - the selected candidate snapshot reference
   - the bounded rationale for why it should feed `optimize propose`
-
-Selection-policy blocked results should use `no_selection_policy_eligible_candidate` when every ranked frontier finalist is excluded by declared selection caps, and they should preserve the per-candidate stable rejection codes under `selectionTelemetry.rejectionReasons`.
 
 ## Proposal Bridge
 
@@ -390,6 +425,8 @@ This preserves the current "one bounded revision brief" contract while adding se
 - The first search surface is honest about `prompt`-only ownership and single target-file scope.
 - Candidate selection preserves complementary strengths through a Pareto frontier over per-scenario held-out scores.
 - Reflective mutation uses explicit textual feedback derived from report, review, compare, and history artifacts.
+- Adapter-owned search presets can override product defaults without inventing repo-specific tier names.
+- The canonical search packet records resolved search config sources so operators can reopen why a given run used a given budget or policy.
 - Search output preserves enough lineage and per-scenario scoring detail for an operator to understand why the selected candidate won.
 - The selected candidate can feed the existing bounded optimize proposal seam without weakening held-out or review discipline.
 
@@ -402,12 +439,9 @@ This preserves the current "one bounded revision brief" contract while adding se
 - `cautilus optimize propose --from-search ./fixtures/optimize/search-result.json`
 - one checked-in flow test that proves:
   - candidate lineage is preserved
-  - multi-generation frontier evolution is preserved
-  - optional merge candidates preserve multiple parents
   - Pareto frontier metadata is emitted
-  - final review rejection can fall back to the next frontier candidate
-  - final full-gate rejection can fall back to the next frontier candidate
-  - no checkpoint-admissible finalist yields a blocked result
+  - adapter-owned search presets are reflected in the canonical packet
+  - direct JSON ingress can still override preserved packet defaults
   - the selected candidate remains reopenable as a bounded revision artifact
   - blocked readiness emits machine-readable reason codes and the canonical input file path
 
@@ -422,23 +456,14 @@ The current bounded slice already proves:
 - one explicit seed candidate plus durable descendant candidates
 - explicit search input and result packets
 - held-out readiness blocking with machine-readable JSON output
-- multi-generation Pareto frontier retention over per-scenario scores
 - reflective mutation from explicit evidence
-- optional bounded merge generation from complementary frontier parents
-- optional frontier-promotion review checkpoint execution
-- scenario-aware checkpoint rejection feedback reinjection into later mutation prompts
-- scenario-scoped checkpoint feedback can reprioritize the next mutation reflection batch
-- finding-level checkpoint severity can also steer reflection ordering inside that next mutation batch
-- concern-level rejected lineage can also outrank otherwise similar admissible parents in the next mutation batch when prompt-variant budget is tighter than the available frontier parent set
-- scenario-aware bounded two- or three-parent merge selection using candidate metadata, weakest-frontier weighting, telemetry tie-breakers, and explicit three-parent activation policy
-- rejected sibling scenario-scoped checkpoint feedback can also directly bias merge selection toward parent groups that name the same unresolved scenarios, with rejection severity used as an explicit tie-break signal
-- scenario-aware merge-prompt checkpoint feedback from relevant rejected frontier siblings
-  - with no separate explicit feedback-entry cap in the current bounded slice
-- severity-aware retention for review-rejected lineage: one repair generation for concern-level review rejection, immediate pruning for blocker-level rejection
-- final-only full-gate checkpoint execution with ranked-frontier fallback
+- one reevaluated held-out frontier above the seed candidate
+- packet-level review-checkpoint policy resolution
+- adapter-owned budget preset resolution with explicit source tracking
+- Codex machine-readable token telemetry preserved in downstream evidence packets
 - selected-candidate emission and proposal bridging back into the existing optimize artifact flow
 
-The next slice can build on this by extending the same explicit checkpoint signal handling into richer mutation and merge policies without reshaping the packet boundary.
+The next slice can build on this by extending the same packet boundary into true multi-generation execution, actual checkpoint runners, merge synthesis, and selection-cap enforcement without reshaping the product surface.
 
 ## Guardrails
 

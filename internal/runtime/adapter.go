@@ -63,6 +63,8 @@ var adapterStringFields = []string{
 	"skill_cases_default",
 }
 
+var adapterOptimizeSearchBudgetNames = []string{"light", "medium", "heavy"}
+
 type AdapterPayload struct {
 	Found         bool           `json:"found"`
 	Valid         bool           `json:"valid"`
@@ -441,7 +443,141 @@ func validateAdapterData(data map[string]any) (map[string]any, []string) {
 			validated["executor_variants"] = normalized
 		}
 	}
+	if optimizeSearch, ok := data["optimize_search"]; ok && optimizeSearch != nil {
+		normalized, optimizeErrors := validateAdapterOptimizeSearch(optimizeSearch)
+		errors = append(errors, optimizeErrors...)
+		if normalized != nil {
+			validated["optimize_search"] = normalized
+		}
+	}
 	return validated, errors
+}
+
+func validateAdapterOptimizeSearch(value any) (map[string]any, []string) {
+	record, ok := value.(map[string]any)
+	if !ok {
+		return nil, []string{"optimize_search must be a mapping"}
+	}
+	errors := []string{}
+	validated := map[string]any{}
+	if defaultBudget, ok := record["default_budget"]; ok && defaultBudget != nil {
+		text, err := normalizeNonEmptyString(defaultBudget, "optimize_search.default_budget")
+		if err != nil {
+			errors = append(errors, "optimize_search.default_budget must be one of: light, medium, heavy")
+		} else if !isKnownOptimizeSearchBudget(text) {
+			errors = append(errors, "optimize_search.default_budget must be one of: light, medium, heavy")
+		} else {
+			validated["default_budget"] = text
+		}
+	}
+	if budgets, ok := record["budgets"]; ok && budgets != nil {
+		items, ok := budgets.(map[string]any)
+		if !ok {
+			errors = append(errors, "optimize_search.budgets must be a mapping")
+		} else {
+			normalizedBudgets := map[string]any{}
+			for budgetName, rawBudget := range items {
+				if !isKnownOptimizeSearchBudget(budgetName) {
+					errors = append(errors, fmt.Sprintf("optimize_search.budgets.%s is not a supported tier", budgetName))
+					continue
+				}
+				budgetRecord, ok := rawBudget.(map[string]any)
+				if !ok {
+					errors = append(errors, fmt.Sprintf("optimize_search.budgets.%s must be a mapping", budgetName))
+					continue
+				}
+				entry := map[string]any{}
+				for _, field := range []string{"generation_limit", "population_limit", "mutation_batch_size"} {
+					if rawValue, ok := budgetRecord[field]; ok && rawValue != nil {
+						number, err := normalizeInteger(rawValue, fmt.Sprintf("optimize_search.budgets.%s.%s", budgetName, field))
+						if err != nil || number == nil || *number <= 0 {
+							errors = append(errors, fmt.Sprintf("optimize_search.budgets.%s.%s must be a positive integer", budgetName, field))
+							continue
+						}
+						entry[field] = *number
+					}
+				}
+				if policy, ok := budgetRecord["review_checkpoint_policy"]; ok && policy != nil {
+					text, err := normalizeNonEmptyString(policy, fmt.Sprintf("optimize_search.budgets.%s.review_checkpoint_policy", budgetName))
+					if err != nil || (text != "final_only" && text != "frontier_promotions") {
+						errors = append(errors, fmt.Sprintf("optimize_search.budgets.%s.review_checkpoint_policy must be one of: final_only, frontier_promotions", budgetName))
+					} else {
+						entry["review_checkpoint_policy"] = text
+					}
+				}
+				if mergeEnabled, ok := budgetRecord["merge_enabled"]; ok && mergeEnabled != nil {
+					value, ok := mergeEnabled.(bool)
+					if !ok {
+						errors = append(errors, fmt.Sprintf("optimize_search.budgets.%s.merge_enabled must be a boolean", budgetName))
+					} else {
+						entry["merge_enabled"] = value
+					}
+				}
+				if policy, ok := budgetRecord["three_parent_policy"]; ok && policy != nil {
+					text, err := normalizeNonEmptyString(policy, fmt.Sprintf("optimize_search.budgets.%s.three_parent_policy", budgetName))
+					if err != nil || (text != "disabled" && text != "coverage_expansion") {
+						errors = append(errors, fmt.Sprintf("optimize_search.budgets.%s.three_parent_policy must be one of: disabled, coverage_expansion", budgetName))
+					} else {
+						entry["three_parent_policy"] = text
+					}
+				}
+				normalizedBudgets[budgetName] = entry
+			}
+			validated["budgets"] = normalizedBudgets
+		}
+	}
+	if selectionPolicy, ok := record["selection_policy"]; ok && selectionPolicy != nil {
+		policy, ok := selectionPolicy.(map[string]any)
+		if !ok {
+			errors = append(errors, "optimize_search.selection_policy must be a mapping")
+		} else {
+			normalized := map[string]any{}
+			if objective, ok := policy["primary_objective"]; ok && objective != nil {
+				text, err := normalizeNonEmptyString(objective, "optimize_search.selection_policy.primary_objective")
+				if err != nil {
+					errors = append(errors, "optimize_search.selection_policy.primary_objective must be a non-empty string")
+				} else {
+					normalized["primary_objective"] = text
+				}
+			}
+			if tieBreakers, ok := policy["tie_breakers"]; ok && tieBreakers != nil {
+				items, err := assertArray(tieBreakers, "optimize_search.selection_policy.tie_breakers")
+				if err != nil {
+					errors = append(errors, "optimize_search.selection_policy.tie_breakers must be a list of strings")
+				} else {
+					normalized["tie_breakers"] = stringSliceNoValidate(items)
+				}
+			}
+			if constraintCaps, ok := policy["constraint_caps"]; ok && constraintCaps != nil {
+				caps, ok := constraintCaps.(map[string]any)
+				if !ok {
+					errors = append(errors, "optimize_search.selection_policy.constraint_caps must be a mapping")
+				} else {
+					normalizedCaps := map[string]any{}
+					for key, rawCap := range caps {
+						number, err := normalizeNonNegativeNumber(rawCap, fmt.Sprintf("optimize_search.selection_policy.constraint_caps.%s", key))
+						if err != nil || number == nil {
+							errors = append(errors, fmt.Sprintf("optimize_search.selection_policy.constraint_caps.%s must be a non-negative number", key))
+							continue
+						}
+						normalizedCaps[key] = *number
+					}
+					normalized["constraint_caps"] = normalizedCaps
+				}
+			}
+			validated["selection_policy"] = normalized
+		}
+	}
+	return validated, errors
+}
+
+func isKnownOptimizeSearchBudget(value string) bool {
+	for _, budget := range adapterOptimizeSearchBudgetNames {
+		if value == budget {
+			return true
+		}
+	}
+	return false
 }
 
 func stringSliceNoValidate(items []any) []string {
@@ -494,12 +630,50 @@ func ScaffoldAdapter(repoRoot string, repoName string, scenario string) map[stri
 		}},
 		"history_file_hint": inferred["history_file_hint"],
 		"profile_default":   firstNonEmptyString(inferred["profile_default"], "default"),
+		"optimize_search":   defaultAdapterOptimizeSearchConfig(),
 	}
 	for key, value := range numericDefaults(inferred) {
 		scaffold[key] = value
 	}
 	applyScenarioOverlay(scaffold, scenario)
 	return scaffold
+}
+
+func defaultAdapterOptimizeSearchConfig() map[string]any {
+	return map[string]any{
+		"default_budget": "medium",
+		"budgets": map[string]any{
+			"light": map[string]any{
+				"generation_limit":         1,
+				"population_limit":         3,
+				"mutation_batch_size":      3,
+				"review_checkpoint_policy": "final_only",
+				"merge_enabled":            false,
+				"three_parent_policy":      "coverage_expansion",
+			},
+			"medium": map[string]any{
+				"generation_limit":         2,
+				"population_limit":         5,
+				"mutation_batch_size":      4,
+				"review_checkpoint_policy": "frontier_promotions",
+				"merge_enabled":            false,
+				"three_parent_policy":      "coverage_expansion",
+			},
+			"heavy": map[string]any{
+				"generation_limit":         3,
+				"population_limit":         8,
+				"mutation_batch_size":      5,
+				"review_checkpoint_policy": "frontier_promotions",
+				"merge_enabled":            false,
+				"three_parent_policy":      "coverage_expansion",
+			},
+		},
+		"selection_policy": map[string]any{
+			"primary_objective": "held_out_behavior",
+			"tie_breakers":      []string{"lower_cost", "lower_latency"},
+			"constraint_caps":   map[string]any{},
+		},
+	}
 }
 
 // applyScenarioOverlay pre-fills the command slot that matches the selected

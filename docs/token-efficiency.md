@@ -289,20 +289,25 @@ normalized packet instead of dropping it on the floor.
   `telemetry.cost_usd`, and mirrors the budget-relevant fields into
   `metrics.total_tokens` / `metrics.cost_usd`
 - Codex backend:
-  the normalized packet now preserves the configured model in
-  `telemetry.model`, but it still does **not** promote token or cost values
-  because the current CLI only exposes those through human-oriented stderr
-  output, which cautilus deliberately avoids scraping as product truth
+  the normalized packet now preserves `telemetry.provider`,
+  `telemetry.model`, `telemetry.prompt_tokens`,
+  `telemetry.completion_tokens`, and `telemetry.total_tokens` from the
+  machine-readable `codex exec --json` event stream
+  while still refusing to scrape human-oriented stderr output into product
+  truth
+- Codex cost:
+  `cost_usd` remains absent until the runtime exposes a stable machine field
+  for it or cautilus grows a separately versioned derived-pricing seam
 
 That means the product-owned self-dogfood summary can now answer:
 
 - which evaluation case passed or failed
 - which runtime model was used
 - Claude time / token / cost per evaluation
-- Codex time per evaluation
+- Codex time / token per evaluation
 
-It still cannot honestly answer Codex token/cost questions without a more
-explicit machine-readable surface from the Codex runtime.
+It still cannot honestly answer Codex cost questions without a more explicit
+machine-readable surface from the Codex runtime.
 
 ## Where this document should be surfaced
 

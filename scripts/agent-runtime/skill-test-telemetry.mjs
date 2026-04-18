@@ -74,6 +74,165 @@ function claudeTelemetryModel(envelope, options) {
 	return dominantClaudeModel(envelope.modelUsage) ?? options.claudeModel ?? options.model ?? null;
 }
 
+function parseJsonLines(raw) {
+	if (typeof raw !== "string" || raw.trim() === "") {
+		return [];
+	}
+	return raw
+		.split("\n")
+		.map((line) => line.trim())
+		.filter(Boolean)
+		.flatMap((line) => {
+			try {
+				const parsed = JSON.parse(line);
+				return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? [parsed] : [];
+			} catch {
+				return [];
+			}
+		});
+}
+
+function codexPayload(entry) {
+	if (isObjectRecord(entry?.payload)) {
+		return entry.payload;
+	}
+	if (isObjectRecord(entry?.msg)) {
+		if (isObjectRecord(entry.msg.payload)) {
+			return entry.msg.payload;
+		}
+		return entry.msg;
+	}
+	return {};
+}
+
+function codexEntryType(entry) {
+	if (typeof entry?.type === "string" && entry.type) {
+		return entry.type;
+	}
+	if (typeof entry?.msg?.type === "string" && entry.msg.type) {
+		return entry.msg.type;
+	}
+	const payloadType = codexPayload(entry).type;
+	return typeof payloadType === "string" ? payloadType : null;
+}
+
+function codexModelFromPayload(payload) {
+	if (!isObjectRecord(payload)) {
+		return null;
+	}
+	return payload.model_name
+		?? payload.model
+		?? payload.model_info?.slug
+		?? payload.info?.model_name
+		?? payload.info?.model
+		?? null;
+}
+
+function codexTotalsFromUsage(usage) {
+	if (!isObjectRecord(usage)) {
+		return null;
+	}
+	const input = normalizeNonNegativeInteger(usage.input_tokens) ?? 0;
+	const output = normalizeNonNegativeInteger(usage.output_tokens) ?? 0;
+	const cachedInput = normalizeNonNegativeInteger(usage.cached_input_tokens);
+	const cacheReadInput = normalizeNonNegativeInteger(usage.cache_read_input_tokens);
+	const cached = Math.max(cachedInput ?? 0, cacheReadInput ?? 0);
+	const reasoning = normalizeNonNegativeInteger(usage.reasoning_output_tokens) ?? 0;
+	return {
+		input,
+		output,
+		cached,
+		reasoning,
+	};
+}
+
+function codexTelemetryFromTotals(totals, provider, model) {
+	if (!totals) {
+		return compactTelemetry({
+			provider,
+			model,
+		});
+	}
+	const promptTokens = totals.input + totals.cached;
+	const completionTokens = totals.output + totals.reasoning;
+	return compactTelemetry({
+		provider,
+		model,
+		prompt_tokens: promptTokens > 0 ? promptTokens : null,
+		completion_tokens: completionTokens > 0 ? completionTokens : null,
+		total_tokens: promptTokens + completionTokens > 0 ? promptTokens + completionTokens : null,
+	});
+}
+
+function codexTokenTotalsState() {
+	return {
+		provider: null,
+		model: null,
+		lastTotals: null,
+		summedLastUsage: null,
+	};
+}
+
+function addCodexUsageTotals(current, next) {
+	if (!next) {
+		return current;
+	}
+	if (!current) {
+		return next;
+	}
+	return {
+		input: current.input + next.input,
+		output: current.output + next.output,
+		cached: current.cached + next.cached,
+		reasoning: current.reasoning + next.reasoning,
+	};
+}
+
+function applyCodexSessionMeta(state, payload) {
+	return {
+		...state,
+		provider:
+			typeof payload.model_provider === "string" && payload.model_provider.trim()
+				? payload.model_provider
+				: state.provider,
+		model: codexModelFromPayload(payload) ?? state.model,
+	};
+}
+
+function applyCodexTurnContext(state, payload) {
+	return {
+		...state,
+		model: codexModelFromPayload(payload) ?? state.model,
+	};
+}
+
+function applyCodexTokenCount(state, payload) {
+	return {
+		...state,
+		lastTotals: codexTotalsFromUsage(payload.info?.total_token_usage) ?? state.lastTotals,
+		summedLastUsage: addCodexUsageTotals(
+			state.summedLastUsage,
+			codexTotalsFromUsage(payload.info?.last_token_usage),
+		),
+		model: codexModelFromPayload(payload) ?? state.model,
+	};
+}
+
+function reduceCodexEntry(state, entry) {
+	const payload = codexPayload(entry);
+	const type = codexEntryType(entry);
+	if (type === "session_meta") {
+		return applyCodexSessionMeta(state, payload);
+	}
+	if (type === "turn_context") {
+		return applyCodexTurnContext(state, payload);
+	}
+	if (type === "event_msg" && payload.type === "token_count") {
+		return applyCodexTokenCount(state, payload);
+	}
+	return state;
+}
+
 function normalizeNumericFields(source, keys) {
 	const normalized = {};
 	for (const key of keys) {
@@ -153,4 +312,23 @@ export function extractClaudeTelemetry(raw, options = {}) {
 		total_tokens: completionTokens === null && promptTokens === 0 ? null : promptTokens + (completionTokens ?? 0),
 		cost_usd: normalizeNonNegativeNumber(envelope.total_cost_usd),
 	});
+}
+
+export function extractCodexTelemetry(raw, options = {}) {
+	const entries = Array.isArray(raw) ? raw : parseJsonLines(raw);
+	if (entries.length === 0) {
+		return compactTelemetry({
+			model: options.codexModel ?? options.model ?? null,
+		});
+	}
+	const initialState = {
+		...codexTokenTotalsState(),
+		model: options.codexModel ?? options.model ?? null,
+	};
+	const finalState = entries.reduce(reduceCodexEntry, initialState);
+	return codexTelemetryFromTotals(
+		finalState.lastTotals ?? finalState.summedLastUsage,
+		finalState.provider,
+		finalState.model,
+	);
 }

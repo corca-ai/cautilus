@@ -621,6 +621,82 @@ test("build-optimize-search-input defaults medium budget to frontier-promotion r
 	}
 });
 
+test("build-optimize-search-input applies adapter-owned optimize_search defaults", () => {
+	const { root, optimizeInputPath, heldOutResultsPath } = createSearchFixtureRoot();
+	try {
+		mkdirSync(join(root, ".agents", "cautilus-adapters"), { recursive: true });
+		writeFileSync(
+			join(root, ".agents", "cautilus-adapters", "data-final-prompt-ab.yaml"),
+			[
+				"version: 1",
+				"repo: temp-optimize-search",
+				"evaluation_surfaces:",
+				"  - prompt behavior",
+				"baseline_options:",
+				"  - baseline git ref in the same repo via {baseline_ref}",
+				"optimize_search:",
+				"  default_budget: heavy",
+				"  budgets:",
+				"    heavy:",
+				"      generation_limit: 4",
+				"      population_limit: 9",
+				"      mutation_batch_size: 6",
+				"      review_checkpoint_policy: frontier_promotions",
+				"      merge_enabled: true",
+				"      three_parent_policy: disabled",
+				"  selection_policy:",
+				"    constraint_caps:",
+				"      maxCostUsd: 0.08",
+				"",
+			].join("\n"),
+			"utf-8",
+		);
+		const { packet } = buildOptimizeSearchInput(
+			["--optimize-input", optimizeInputPath, "--held-out-results-file", heldOutResultsPath],
+			{ now: new Date("2026-04-13T10:00:00.000Z") },
+		);
+		assert.equal(packet.searchConfig.budget, "heavy");
+		assert.equal(packet.searchConfig.generationLimit, 4);
+		assert.equal(packet.searchConfig.populationLimit, 9);
+		assert.equal(packet.searchConfig.mutationBatchSize, 6);
+		assert.equal(packet.searchConfig.mergeEnabled, true);
+		assert.equal(packet.searchConfig.threeParentPolicy, "disabled");
+		assert.deepEqual(packet.searchConfig.selectionPolicy.constraintCaps, {
+			maxCostUsd: 0.08,
+		});
+		assert.equal(packet.searchConfigSources.budget, "adapter_default");
+		assert.equal(packet.searchConfigSources.preset, "adapter_preset");
+		assert.equal(packet.searchConfigSources.mergeEnabled, "adapter_preset");
+		assert.match(packet.searchConfigSources.adapterPath, /\.agents\/cautilus-adapters\/data-final-prompt-ab\.yaml$/);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("build-optimize-search-input preserves mergeEnabled from direct JSON ingress", () => {
+	const { root, optimizeInputPath, heldOutResultsPath } = createSearchFixtureRoot();
+	try {
+		const { packet } = buildOptimizeSearchInput(
+			[
+				"--input-json",
+				JSON.stringify({
+					optimizeInputFile: optimizeInputPath,
+					heldOutResultsFile: heldOutResultsPath,
+					budget: "medium",
+					mergeEnabled: true,
+				}),
+				"--output",
+				join(root, "optimize-search-input.json"),
+			],
+			{ now: new Date("2026-04-13T10:00:00.000Z") },
+		);
+		assert.equal(packet.searchConfig.mergeEnabled, true);
+		assert.equal(packet.searchConfigSources.mergeEnabled, "explicit_override");
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
 test("run-optimize-search emits a blocked result when held-out evidence is missing", () => {
 	const { root, optimizeInputPath } = createSearchFixtureRoot({ includeHeldOut: false, includeFeedback: false });
 	try {

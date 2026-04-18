@@ -62,6 +62,9 @@ const EXECUTOR_VARIANT_STRING_FIELDS = [
 
 const EXECUTOR_VARIANT_OPTIONAL_STRING_FIELDS = ["purpose"];
 const EXECUTOR_VARIANT_STRING_LIST_FIELDS = ["required_prerequisites", "safety_notes"];
+const OPTIMIZE_SEARCH_BUDGETS = new Set(["light", "medium", "heavy"]);
+const REVIEW_CHECKPOINT_POLICIES = new Set(["final_only", "frontier_promotions"]);
+const THREE_PARENT_POLICIES = new Set(["disabled", "coverage_expansion"]);
 
 function fail(message) {
 	process.stderr.write(`${message}\n`);
@@ -182,6 +185,204 @@ function validateExecutorVariants(value, errors) {
 	return variants;
 }
 
+function isObjectRecord(value) {
+	return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+}
+
+function nonNegativeNumber(value, field, errors) {
+	if (value === undefined || value === null) {
+		return null;
+	}
+	if (typeof value !== "number" || !Number.isFinite(value) || value < 0) {
+		errors.push(`${field} must be a non-negative number`);
+		return null;
+	}
+	return value;
+}
+
+function positiveInteger(value, field, errors) {
+	if (value === undefined || value === null) {
+		return null;
+	}
+	if (!Number.isInteger(value) || value <= 0) {
+		errors.push(`${field} must be a positive integer`);
+		return null;
+	}
+	return value;
+}
+
+function nonEmptyString(value, field, errors) {
+	if (value === undefined || value === null) {
+		return null;
+	}
+	if (typeof value !== "string" || !value.trim()) {
+		errors.push(`${field} must be a non-empty string`);
+		return null;
+	}
+	return value.trim();
+}
+
+function validateOptimizeSearchBudget(name, value, errors) {
+	if (!isObjectRecord(value)) {
+		errors.push(`optimize_search.budgets.${name} must be a mapping`);
+		return null;
+	}
+	const budget = {};
+	validateOptimizeSearchBudgetNumbers(name, value, budget, errors);
+	validateEnumStringField(
+		value.review_checkpoint_policy,
+		`optimize_search.budgets.${name}.review_checkpoint_policy`,
+		REVIEW_CHECKPOINT_POLICIES,
+		errors,
+		budget,
+		"review_checkpoint_policy",
+	);
+	validateBooleanField(
+		value.merge_enabled,
+		`optimize_search.budgets.${name}.merge_enabled`,
+		errors,
+		budget,
+		"merge_enabled",
+	);
+	validateEnumStringField(
+		value.three_parent_policy,
+		`optimize_search.budgets.${name}.three_parent_policy`,
+		THREE_PARENT_POLICIES,
+		errors,
+		budget,
+		"three_parent_policy",
+	);
+	return budget;
+}
+
+function validateOptimizeSearchBudgetNumbers(name, value, budget, errors) {
+	for (const field of ["generation_limit", "population_limit", "mutation_batch_size"]) {
+		const normalized = positiveInteger(value[field], `optimize_search.budgets.${name}.${field}`, errors);
+		if (normalized !== null) {
+			budget[field] = normalized;
+		}
+	}
+}
+
+function validateEnumStringField(value, field, allowedValues, errors, target, targetKey) {
+	const normalized = nonEmptyString(value, field, errors);
+	if (normalized === null) {
+		return;
+	}
+	if (!allowedValues.has(normalized)) {
+		errors.push(`${field} must be one of: ${[...allowedValues].join(", ")}`);
+		return;
+	}
+	target[targetKey] = normalized;
+}
+
+function validateBooleanField(value, field, errors, target, targetKey) {
+	if (value === undefined || value === null) {
+		return;
+	}
+	if (typeof value !== "boolean") {
+		errors.push(`${field} must be a boolean`);
+		return;
+	}
+	target[targetKey] = value;
+}
+
+function validateOptimizeSearchBudgets(value, errors) {
+	if (value === undefined || value === null) {
+		return null;
+	}
+	if (!isObjectRecord(value)) {
+		errors.push("optimize_search.budgets must be a mapping");
+		return null;
+	}
+	const budgets = {};
+	for (const [name, budgetValue] of Object.entries(value)) {
+		if (!OPTIMIZE_SEARCH_BUDGETS.has(name)) {
+			errors.push(`optimize_search.budgets.${name} is not a supported tier`);
+			continue;
+		}
+		const normalized = validateOptimizeSearchBudget(name, budgetValue, errors);
+		if (normalized) {
+			budgets[name] = normalized;
+		}
+	}
+	return budgets;
+}
+
+function validateOptimizeSearchSelectionPolicy(value, errors) {
+	if (value === undefined || value === null) {
+		return null;
+	}
+	if (!isObjectRecord(value)) {
+		errors.push("optimize_search.selection_policy must be a mapping");
+		return null;
+	}
+	const selectionPolicy = {};
+	const primaryObjective = nonEmptyString(
+		value.primary_objective,
+		"optimize_search.selection_policy.primary_objective",
+		errors,
+	);
+	if (primaryObjective !== null) {
+		selectionPolicy.primary_objective = primaryObjective;
+	}
+	const tieBreakers = stringList(value.tie_breakers, "optimize_search.selection_policy.tie_breakers", errors);
+	if (tieBreakers !== null) {
+		selectionPolicy.tie_breakers = tieBreakers;
+	}
+	if (value.constraint_caps !== undefined && value.constraint_caps !== null) {
+		if (!isObjectRecord(value.constraint_caps)) {
+			errors.push("optimize_search.selection_policy.constraint_caps must be a mapping");
+		} else {
+			constraintCapsFromEntries(Object.entries(value.constraint_caps), errors, selectionPolicy);
+		}
+	}
+	return selectionPolicy;
+}
+
+function constraintCapsFromEntries(entries, errors, selectionPolicy) {
+	const constraintCaps = {};
+	for (const [key, rawValue] of entries) {
+		const normalized = nonNegativeNumber(
+			rawValue,
+			`optimize_search.selection_policy.constraint_caps.${key}`,
+			errors,
+		);
+		if (normalized !== null) {
+			constraintCaps[key] = normalized;
+		}
+	}
+	selectionPolicy.constraint_caps = constraintCaps;
+}
+
+function validateOptimizeSearch(value, errors) {
+	if (value === undefined || value === null) {
+		return null;
+	}
+	if (!isObjectRecord(value)) {
+		errors.push("optimize_search must be a mapping");
+		return null;
+	}
+	const optimizeSearch = {};
+	validateEnumStringField(
+		value.default_budget,
+		"optimize_search.default_budget",
+		OPTIMIZE_SEARCH_BUDGETS,
+		errors,
+		optimizeSearch,
+		"default_budget",
+	);
+	const budgets = validateOptimizeSearchBudgets(value.budgets, errors);
+	if (budgets !== null) {
+		optimizeSearch.budgets = budgets;
+	}
+	const selectionPolicy = validateOptimizeSearchSelectionPolicy(value.selection_policy, errors);
+	if (selectionPolicy !== null) {
+		optimizeSearch.selection_policy = selectionPolicy;
+	}
+	return optimizeSearch;
+}
+
 function copyTypedStringFields(data, target, errors) {
 	for (const field of STRING_FIELDS) {
 		const value = data[field];
@@ -230,6 +431,11 @@ export function validateAdapterData(data) {
 	const executorVariants = validateExecutorVariants(data.executor_variants, errors);
 	if (executorVariants !== null) {
 		validated.executor_variants = executorVariants;
+	}
+
+	const optimizeSearch = validateOptimizeSearch(data.optimize_search, errors);
+	if (optimizeSearch !== null) {
+		validated.optimize_search = optimizeSearch;
 	}
 
 	return { validated, errors };

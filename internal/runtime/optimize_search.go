@@ -14,36 +14,49 @@ import (
 
 var optimizeSearchBudgets = map[string]map[string]any{
 	"light": {
-		"generationLimit":   1,
-		"populationLimit":   3,
-		"mutationBatchSize": 3,
+		"generationLimit":        1,
+		"populationLimit":        3,
+		"mutationBatchSize":      3,
+		"reviewCheckpointPolicy": "final_only",
+		"mergeEnabled":           false,
+		"threeParentPolicy":      "coverage_expansion",
 	},
 	"medium": {
-		"generationLimit":   2,
-		"populationLimit":   5,
-		"mutationBatchSize": 4,
+		"generationLimit":        2,
+		"populationLimit":        5,
+		"mutationBatchSize":      4,
+		"reviewCheckpointPolicy": "frontier_promotions",
+		"mergeEnabled":           false,
+		"threeParentPolicy":      "coverage_expansion",
 	},
 	"heavy": {
-		"generationLimit":   3,
-		"populationLimit":   8,
-		"mutationBatchSize": 5,
+		"generationLimit":        3,
+		"populationLimit":        8,
+		"mutationBatchSize":      5,
+		"reviewCheckpointPolicy": "frontier_promotions",
+		"mergeEnabled":           false,
+		"threeParentPolicy":      "coverage_expansion",
 	},
 }
 
 type OptimizeSearchBuildOptions struct {
-	TargetFileOverride     *string
-	HeldOutResultsFile     *string
-	HeldOutResults         map[string]any
-	Budget                 string
-	ReviewCheckpointPolicy *string
-	ThreeParentPolicy      *string
-	SelectionPolicy        map[string]any
-	Adapter                *string
-	AdapterName            *string
-	Intent                 *string
-	BaselineRef            *string
-	Profile                *string
-	Split                  *string
+	TargetFileOverride       *string
+	HeldOutResultsFile       *string
+	HeldOutResults           map[string]any
+	Budget                   string
+	BudgetExplicit           bool
+	ReviewCheckpointPolicy   *string
+	ReviewCheckpointExplicit bool
+	ThreeParentPolicy        *string
+	ThreeParentExplicit      bool
+	MergeEnabled             *bool
+	SelectionPolicy          map[string]any
+	Adapter                  *string
+	AdapterName              *string
+	Intent                   *string
+	BaselineRef              *string
+	Profile                  *string
+	Split                    *string
 }
 
 func BuildOptimizeSearchInput(optimizeInput map[string]any, optimizeInputFile string, options OptimizeSearchBuildOptions, now time.Time) (map[string]any, error) {
@@ -53,7 +66,6 @@ func BuildOptimizeSearchInput(optimizeInput map[string]any, optimizeInputFile st
 	if stringOrEmpty(optimizeInput["optimizationTarget"]) != "prompt" {
 		return nil, fmt.Errorf("optimize search currently supports prompt targets only")
 	}
-	budget := normalizeOptimizeSearchBudget(options.Budget)
 	targetPath := stringOrEmpty(asMap(optimizeInput["targetFile"])["path"])
 	if options.TargetFileOverride != nil && strings.TrimSpace(*options.TargetFileOverride) != "" {
 		targetPath = *options.TargetFileOverride
@@ -65,15 +77,6 @@ func BuildOptimizeSearchInput(optimizeInput map[string]any, optimizeInputFile st
 		"path":   targetPath,
 		"exists": fileExists(targetPath),
 	}
-	reviewCheckpointPolicy := DefaultOptimizeSearchReviewCheckpointPolicy(budget)
-	if options.ReviewCheckpointPolicy != nil && strings.TrimSpace(*options.ReviewCheckpointPolicy) != "" {
-		reviewCheckpointPolicy = strings.TrimSpace(*options.ReviewCheckpointPolicy)
-	}
-	threeParentPolicy := DefaultOptimizeSearchThreeParentPolicy()
-	if options.ThreeParentPolicy != nil && strings.TrimSpace(*options.ThreeParentPolicy) != "" {
-		threeParentPolicy = strings.TrimSpace(*options.ThreeParentPolicy)
-	}
-	searchConfig := buildOptimizeSearchConfig(budget, reviewCheckpointPolicy, options.SelectionPolicy, threeParentPolicy)
 	reportAdapterContext := asMap(asMap(optimizeInput["report"])["adapterContext"])
 	inferredNamedAdapter := ""
 	if derefString(options.Adapter) == "" && derefString(options.AdapterName) == "" {
@@ -83,6 +86,15 @@ func BuildOptimizeSearchInput(optimizeInput map[string]any, optimizeInputFile st
 			}
 		}
 	}
+	resolvedAdapterPath, resolvedAdapterName := resolveOptimizeSearchAdapterSelection(options, reportAdapterContext, inferredNamedAdapter)
+	adapterPayload, err := LoadAdapter(stringOrEmpty(optimizeInput["repoRoot"]), resolvedAdapterPath, resolvedAdapterName)
+	if err != nil {
+		return nil, err
+	}
+	if !adapterPayload.Valid {
+		return nil, fmt.Errorf("adapter is invalid: %s", strings.Join(adapterPayload.Errors, "; "))
+	}
+	searchConfig, searchConfigSources := buildOptimizeSearchResolvedConfig(options, adapterPayload)
 	packet := map[string]any{
 		"schemaVersion":      contracts.OptimizeSearchInputsSchema,
 		"generatedAt":        now.UTC().Format(time.RFC3339Nano),
@@ -102,9 +114,10 @@ func BuildOptimizeSearchInput(optimizeInput map[string]any, optimizeInputFile st
 				"exists": fileExists(targetPath),
 			}),
 		},
-		"searchConfig": searchConfig,
+		"searchConfig":        searchConfig,
+		"searchConfigSources": searchConfigSources,
 		"mutationConfig": map[string]any{
-			"backends":           defaultOptimizeSearchBackends(budget),
+			"backends":           defaultOptimizeSearchBackends(stringOrEmpty(searchConfig["budget"])),
 			"trainScenarioLimit": maxInt(1, int(numberOrDefault(searchConfig["mutationBatchSize"], 1))-1),
 			"promptVariantLimit": int(numberOrDefault(searchConfig["mutationBatchSize"], 1)),
 		},
@@ -112,7 +125,7 @@ func BuildOptimizeSearchInput(optimizeInput map[string]any, optimizeInputFile st
 			"reportBuckets":             []any{"regressed", "noisy"},
 			"reviewFindingLimit":        numberOrDefault(asMap(asMap(optimizeInput["optimizer"])["plan"])["reviewVariantLimit"], 1),
 			"includeScenarioHistory":    optimizeInput["scenarioHistory"] != nil,
-			"includeCheckpointFeedback": reviewCheckpointPolicy == "frontier_promotions",
+			"includeCheckpointFeedback": stringOrEmpty(searchConfig["reviewCheckpointPolicy"]) == "frontier_promotions",
 		},
 		"scenarioSets": map[string]any{
 			"trainScenarioSet":   optimizeSearchTrainScenarioSet(optimizeInput),
@@ -163,14 +176,11 @@ func BuildOptimizeSearchInput(optimizeInput map[string]any, optimizeInputFile st
 }
 
 func DefaultOptimizeSearchReviewCheckpointPolicy(budget string) string {
-	if normalizeOptimizeSearchBudget(budget) == "light" {
-		return "final_only"
-	}
-	return "frontier_promotions"
+	return stringOrEmpty(optimizeSearchBudgets[normalizeOptimizeSearchBudget(budget)]["reviewCheckpointPolicy"])
 }
 
 func DefaultOptimizeSearchThreeParentPolicy() string {
-	return "coverage_expansion"
+	return stringOrEmpty(optimizeSearchBudgets["medium"]["threeParentPolicy"])
 }
 
 func normalizeOptimizeSearchBudget(budget string) string {
@@ -201,8 +211,130 @@ func defaultOptimizeSearchBackends(budget string) []any {
 	}
 }
 
-func buildOptimizeSearchConfig(budget string, reviewCheckpointPolicy string, selectionPolicy map[string]any, threeParentPolicy string) map[string]any {
-	base := optimizeSearchBudgets[normalizeOptimizeSearchBudget(budget)]
+func buildOptimizeSearchResolvedConfig(options OptimizeSearchBuildOptions, adapterPayload *AdapterPayload) (map[string]any, map[string]any) {
+	budget := normalizeOptimizeSearchBudget(options.Budget)
+	sources := map[string]any{
+		"adapterPath":            adapterPayload.Path,
+		"budget":                 "product_default",
+		"preset":                 "product_default",
+		"selectionPolicy":        "product_default",
+		"reviewCheckpointPolicy": "product_default",
+		"mergeEnabled":           "product_default",
+		"threeParentPolicy":      "product_default",
+	}
+	adapterOptimizeSearch := asMap(adapterPayload.Data["optimize_search"])
+	if !options.BudgetExplicit {
+		if defaultBudget := stringOrEmpty(adapterOptimizeSearch["default_budget"]); defaultBudget != "" {
+			budget = normalizeOptimizeSearchBudget(defaultBudget)
+			sources["budget"] = "adapter_default"
+		}
+	} else {
+		sources["budget"] = "explicit_override"
+	}
+	preset, presetSource := resolveOptimizeSearchBudgetPreset(budget, adapterOptimizeSearch)
+	sources["preset"] = presetSource
+
+	reviewCheckpointPolicy := stringOrEmpty(preset["reviewCheckpointPolicy"])
+	if options.ReviewCheckpointExplicit && options.ReviewCheckpointPolicy != nil && strings.TrimSpace(*options.ReviewCheckpointPolicy) != "" {
+		reviewCheckpointPolicy = strings.TrimSpace(*options.ReviewCheckpointPolicy)
+		sources["reviewCheckpointPolicy"] = "explicit_override"
+	} else {
+		sources["reviewCheckpointPolicy"] = presetSource
+	}
+
+	mergeEnabled := false
+	if value, ok := preset["mergeEnabled"].(bool); ok {
+		mergeEnabled = value
+	}
+	if options.MergeEnabled != nil {
+		mergeEnabled = *options.MergeEnabled
+		sources["mergeEnabled"] = "explicit_override"
+	} else {
+		sources["mergeEnabled"] = presetSource
+	}
+
+	threeParentPolicy := stringOrEmpty(preset["threeParentPolicy"])
+	if options.ThreeParentExplicit && options.ThreeParentPolicy != nil && strings.TrimSpace(*options.ThreeParentPolicy) != "" {
+		threeParentPolicy = strings.TrimSpace(*options.ThreeParentPolicy)
+		sources["threeParentPolicy"] = "explicit_override"
+	} else {
+		sources["threeParentPolicy"] = presetSource
+	}
+
+	selectionPolicy := normalizeAdapterOptimizeSearchSelectionPolicy(asMap(adapterOptimizeSearch["selection_policy"]))
+	if len(selectionPolicy) > 0 {
+		sources["selectionPolicy"] = "adapter_default"
+	}
+	if len(options.SelectionPolicy) > 0 {
+		selectionPolicy = options.SelectionPolicy
+		sources["selectionPolicy"] = "explicit_override"
+	}
+	return buildOptimizeSearchConfig(budget, preset, reviewCheckpointPolicy, selectionPolicy, mergeEnabled, threeParentPolicy), sources
+}
+
+func normalizeAdapterOptimizeSearchSelectionPolicy(value map[string]any) map[string]any {
+	if len(value) == 0 {
+		return map[string]any{}
+	}
+	normalized := map[string]any{}
+	if primaryObjective := stringOrEmpty(value["primary_objective"]); primaryObjective != "" {
+		normalized["primaryObjective"] = primaryObjective
+	}
+	if tieBreakers := arrayOrEmpty(value["tie_breakers"]); len(tieBreakers) > 0 {
+		normalized["tieBreakers"] = tieBreakers
+	}
+	if constraintCaps := asMap(value["constraint_caps"]); len(constraintCaps) > 0 {
+		normalized["constraintCaps"] = constraintCaps
+	}
+	return normalized
+}
+
+func resolveOptimizeSearchAdapterSelection(options OptimizeSearchBuildOptions, reportAdapterContext map[string]any, inferredNamedAdapter string) (*string, *string) {
+	if derefString(options.Adapter) != "" {
+		return options.Adapter, nil
+	}
+	if reportAdapter := stringOrEmpty(reportAdapterContext["adapter"]); reportAdapter != "" {
+		return &reportAdapter, nil
+	}
+	if derefString(options.AdapterName) != "" {
+		return nil, options.AdapterName
+	}
+	if reportAdapterName := stringOrEmpty(reportAdapterContext["adapterName"]); reportAdapterName != "" {
+		return nil, &reportAdapterName
+	}
+	if inferredNamedAdapter != "" {
+		return nil, &inferredNamedAdapter
+	}
+	return nil, nil
+}
+
+func resolveOptimizeSearchBudgetPreset(budget string, adapterOptimizeSearch map[string]any) (map[string]any, string) {
+	base, _ := cloneJSON(optimizeSearchBudgets[normalizeOptimizeSearchBudget(budget)])
+	presetSource := "product_default"
+	adapterBudgets := asMap(adapterOptimizeSearch["budgets"])
+	if customPreset := asMap(adapterBudgets[budget]); len(customPreset) > 0 {
+		for key, value := range customPreset {
+			switch key {
+			case "generation_limit":
+				base["generationLimit"] = value
+			case "population_limit":
+				base["populationLimit"] = value
+			case "mutation_batch_size":
+				base["mutationBatchSize"] = value
+			case "review_checkpoint_policy":
+				base["reviewCheckpointPolicy"] = value
+			case "merge_enabled":
+				base["mergeEnabled"] = value
+			case "three_parent_policy":
+				base["threeParentPolicy"] = value
+			}
+		}
+		presetSource = "adapter_preset"
+	}
+	return base, presetSource
+}
+
+func buildOptimizeSearchConfig(budget string, preset map[string]any, reviewCheckpointPolicy string, selectionPolicy map[string]any, mergeEnabled bool, threeParentPolicy string) map[string]any {
 	config := map[string]any{
 		"algorithm":                "reflective_pareto",
 		"budget":                   normalizeOptimizeSearchBudget(budget),
@@ -210,10 +342,13 @@ func buildOptimizeSearchConfig(budget string, reviewCheckpointPolicy string, sel
 		"reviewCheckpointPolicy":   reviewCheckpointPolicy,
 		"fullGateCheckpointPolicy": "final_only",
 		"selectionPolicy":          normalizeOptimizeSearchSelectionPolicy(selectionPolicy),
-		"mergeEnabled":             false,
+		"mergeEnabled":             mergeEnabled,
 		"threeParentPolicy":        threeParentPolicy,
 	}
-	for key, value := range base {
+	for key, value := range preset {
+		if key == "reviewCheckpointPolicy" || key == "mergeEnabled" || key == "threeParentPolicy" {
+			continue
+		}
 		config[key] = value
 	}
 	return config

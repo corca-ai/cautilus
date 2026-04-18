@@ -139,6 +139,15 @@
     "mergeEnabled": false,
     "threeParentPolicy": "coverage_expansion"
   },
+  "searchConfigSources": {
+    "adapterPath": null,
+    "budget": "explicit_override",
+    "preset": "product_default",
+    "selectionPolicy": "product_default",
+    "reviewCheckpointPolicy": "product_default",
+    "mergeEnabled": "product_default",
+    "threeParentPolicy": "product_default"
+  },
   "mutationConfig": {
     "backends": [
       {

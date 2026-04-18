@@ -8,27 +8,15 @@ import {
 	OPTIMIZE_INPUTS_SCHEMA,
 	OPTIMIZE_SEARCH_INPUTS_SCHEMA,
 } from "./contract-versions.mjs";
-
-const SEARCH_BUDGETS = {
-	light: {
-		generationLimit: 1,
-		populationLimit: 3,
-		mutationBatchSize: 3,
-	},
-	medium: {
-		generationLimit: 2,
-		populationLimit: 5,
-		mutationBatchSize: 4,
-	},
-	heavy: {
-		generationLimit: 3,
-		populationLimit: 8,
-		mutationBatchSize: 5,
-	},
-};
-
-const REVIEW_CHECKPOINT_POLICIES = new Set(["final_only", "frontier_promotions"]);
-const THREE_PARENT_POLICIES = new Set(["disabled", "coverage_expansion"]);
+import {
+	SEARCH_BUDGETS,
+	REVIEW_CHECKPOINT_POLICIES,
+	THREE_PARENT_POLICIES,
+	buildMutationConfig,
+	buildSearchConfig,
+	loadResolvedAdapter,
+	resolveSearchPolicy,
+} from "./optimize-search-input-policy.mjs";
 
 const ARG_FIELDS = {
 	"--optimize-input": "optimizeInput",
@@ -119,8 +107,11 @@ function parseArgs(argv) {
 		profile: null,
 		split: null,
 		budget: "medium",
+		budgetExplicit: false,
 		reviewCheckpointPolicy: null,
+		reviewCheckpointExplicit: false,
 		threeParentPolicy: null,
+		threeParentExplicit: false,
 		output: null,
 		json: false,
 	};
@@ -148,6 +139,15 @@ function applyArg(options, argv, index, arg) {
 		fail(`Unknown argument: ${arg}`);
 	}
 	options[field] = readRequiredValue(argv, index + 1, arg);
+	if (arg === "--budget") {
+		options.budgetExplicit = true;
+	}
+	if (arg === "--review-checkpoint-policy") {
+		options.reviewCheckpointExplicit = true;
+	}
+	if (arg === "--three-parent-policy") {
+		options.threeParentExplicit = true;
+	}
 	return 1;
 }
 
@@ -219,10 +219,6 @@ function deriveSelectionPolicy() {
 	};
 }
 
-function defaultThreeParentPolicy() {
-	return "coverage_expansion";
-}
-
 function normalizeTieBreakers(value) {
 	if (value === undefined) {
 		return deriveSelectionPolicy().tieBreakers;
@@ -264,54 +260,6 @@ function resolveSelectionPolicy(value) {
 	};
 }
 
-function buildSearchConfig(
-	budget,
-	reviewCheckpointPolicy,
-	selectionPolicy = deriveSelectionPolicy(),
-	threeParentPolicy = defaultThreeParentPolicy(),
-) {
-	return {
-		algorithm: "reflective_pareto",
-		budget,
-		...SEARCH_BUDGETS[budget],
-		candidateSelection: "pareto",
-		reviewCheckpointPolicy,
-		fullGateCheckpointPolicy: "final_only",
-		selectionPolicy,
-		mergeEnabled: false,
-		threeParentPolicy,
-	};
-}
-
-function defaultMutationBackends(budget) {
-	if (budget === "light") {
-		return [
-			{
-				id: "codex-mutate",
-				backend: "codex_exec",
-			},
-		];
-	}
-	return [
-		{
-			id: "codex-mutate",
-			backend: "codex_exec",
-		},
-		{
-			id: "claude-mutate",
-			backend: "claude_p",
-		},
-	];
-}
-
-function buildMutationConfig(budget, packet) {
-	return {
-		backends: defaultMutationBackends(budget),
-		trainScenarioLimit: Math.max(1, packet.searchConfig.mutationBatchSize - 1),
-		promptVariantLimit: packet.searchConfig.mutationBatchSize,
-	};
-}
-
 function collectTargetSnapshot(targetPath) {
 	if (!targetPath || !existsSync(targetPath)) {
 		return null;
@@ -339,10 +287,6 @@ function resolveTargetPath(optimizeInput, targetFileOverride) {
 	return resolve(targetRawPath);
 }
 
-function defaultReviewCheckpointPolicy(budget) {
-	return budget === "light" ? "final_only" : "frontier_promotions";
-}
-
 function buildTargetRef(targetPath) {
 	return {
 		path: targetPath,
@@ -354,6 +298,10 @@ function asRecord(value) {
 	return value && typeof value === "object" && !Array.isArray(value) ? value : {};
 }
 
+function isObjectRecord(value) {
+	return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+}
+
 function firstNonEmptyString(...values) {
 	for (const value of values) {
 		if (typeof value === "string" && value.trim() !== "") {
@@ -363,7 +311,7 @@ function firstNonEmptyString(...values) {
 	return null;
 }
 
-function resolveEvaluationContext(optimizeInput, options) {
+function resolveEvaluationContext(optimizeInput, options, adapterSelection = null) {
 	const report = asRecord(optimizeInput.report);
 	const adapterContext = asRecord(report.adapterContext);
 	const intent =
@@ -371,7 +319,11 @@ function resolveEvaluationContext(optimizeInput, options) {
 	return {
 		mode: "held_out",
 		adapter: firstNonEmptyString(options.adapter, adapterContext.adapter),
-		adapterName: firstNonEmptyString(options.adapterName, adapterContext.adapterName),
+		adapterName: firstNonEmptyString(
+			options.adapterName,
+			adapterContext.adapterName,
+			adapterSelection?.inferredNamedAdapter,
+		),
 		intent,
 		baselineRef: firstNonEmptyString(options.baselineRef, report.baseline) ?? "HEAD",
 		profile: firstNonEmptyString(options.profile),
@@ -383,16 +335,23 @@ function buildCanonicalPacket({
 	optimizeInputFile,
 	optimizeInput,
 	targetFileOverride,
-	budget,
-	reviewCheckpointPolicy,
-	selectionPolicy,
-	threeParentPolicy,
 	evaluationOptions,
+	searchPolicy,
 	now = new Date(),
 }) {
 	ensurePromptSearchTarget(optimizeInput);
 	const targetPath = resolveTargetPath(optimizeInput, targetFileOverride);
 	const targetFile = buildTargetRef(targetPath);
+	const { payload: adapterPayload, selection: adapterSelection } = loadResolvedAdapter(optimizeInput, evaluationOptions);
+	const {
+		budget,
+		preset,
+		reviewCheckpointPolicy,
+		selectionPolicy,
+		mergeEnabled,
+		threeParentPolicy,
+		searchConfigSources,
+	} = resolveSearchPolicy(searchPolicy, adapterPayload, deriveSelectionPolicy, resolveSelectionPolicy);
 	const packet = {
 		schemaVersion: OPTIMIZE_SEARCH_INPUTS_SCHEMA,
 		generatedAt: now.toISOString(),
@@ -406,7 +365,8 @@ function buildCanonicalPacket({
 			targetFile,
 			targetSnapshot: collectTargetSnapshot(targetPath),
 		},
-		searchConfig: buildSearchConfig(budget, reviewCheckpointPolicy, selectionPolicy, threeParentPolicy),
+		searchConfig: buildSearchConfig(budget, preset, reviewCheckpointPolicy, selectionPolicy, mergeEnabled, threeParentPolicy),
+		searchConfigSources,
 		mutationEvidencePolicy: {
 			reportBuckets: ["regressed", "noisy"],
 			reviewFindingLimit: optimizeInput.optimizer?.plan?.reviewVariantLimit ?? 1,
@@ -422,10 +382,10 @@ function buildCanonicalPacket({
 			reviewSummaryFile: optimizeInput.reviewSummaryFile || null,
 			scenarioHistoryFile: optimizeInput.scenarioHistoryFile || null,
 		},
-		evaluationContext: resolveEvaluationContext(optimizeInput, evaluationOptions),
+		evaluationContext: resolveEvaluationContext(optimizeInput, evaluationOptions, adapterSelection),
 		objective: optimizeInput.objective,
 	};
-	packet.mutationConfig = buildMutationConfig(budget, packet);
+	packet.mutationConfig = buildMutationConfig(packet.searchConfig.budget, packet);
 	return packet;
 }
 
@@ -446,6 +406,9 @@ function resolveFromRawInput(rawInput, options) {
 	if (!optimizeInputFile) {
 		fail("input JSON must include optimizeInputFile");
 	}
+	const rawBudget = typeof rawInput.budget === "string" ? rawInput.budget : null;
+	const rawReviewCheckpointPolicy = typeof rawInput.reviewCheckpointPolicy === "string" ? rawInput.reviewCheckpointPolicy : null;
+	const rawThreeParentPolicy = typeof rawInput.threeParentPolicy === "string" ? rawInput.threeParentPolicy : null;
 	return {
 		optimizeInputFile,
 		targetFile: preferRawString(rawInput.targetFile, options.targetFile),
@@ -456,16 +419,14 @@ function resolveFromRawInput(rawInput, options) {
 		baselineRef: preferRawString(rawInput.baselineRef, options.baselineRef),
 		profile: preferRawString(rawInput.profile, options.profile),
 		split: preferRawString(rawInput.split, options.split),
-		budget: preferRawString(rawInput.budget, options.budget),
-		reviewCheckpointPolicy: preferRawString(
-			rawInput.reviewCheckpointPolicy,
-			options.reviewCheckpointPolicy || defaultReviewCheckpointPolicy(preferRawString(rawInput.budget, options.budget)),
-		),
-		threeParentPolicy: preferRawString(
-			rawInput.threeParentPolicy,
-			options.threeParentPolicy || defaultThreeParentPolicy(),
-		),
-		selectionPolicy: resolveSelectionPolicy(rawInput.selectionPolicy),
+		budget: preferRawString(rawBudget, options.budget),
+		budgetExplicit: typeof rawBudget === "string" || options.budgetExplicit,
+		reviewCheckpointPolicy: preferRawString(rawReviewCheckpointPolicy, options.reviewCheckpointPolicy),
+		reviewCheckpointExplicit: typeof rawReviewCheckpointPolicy === "string" || options.reviewCheckpointExplicit,
+		threeParentPolicy: preferRawString(rawThreeParentPolicy, options.threeParentPolicy),
+		threeParentExplicit: typeof rawThreeParentPolicy === "string" || options.threeParentExplicit,
+		selectionPolicy: isObjectRecord(rawInput.selectionPolicy) ? rawInput.selectionPolicy : null,
+		mergeEnabled: typeof rawInput.mergeEnabled === "boolean" ? rawInput.mergeEnabled : null,
 	};
 }
 
@@ -485,9 +446,13 @@ function resolveInputOverrides(options) {
 				split: options.split,
 			},
 			budget: options.budget,
-			reviewCheckpointPolicy: options.reviewCheckpointPolicy || defaultReviewCheckpointPolicy(options.budget),
-			threeParentPolicy: options.threeParentPolicy || defaultThreeParentPolicy(),
-			selectionPolicy: deriveSelectionPolicy(),
+			budgetExplicit: options.budgetExplicit,
+			reviewCheckpointPolicy: options.reviewCheckpointPolicy,
+			reviewCheckpointExplicit: options.reviewCheckpointExplicit,
+			threeParentPolicy: options.threeParentPolicy,
+			threeParentExplicit: options.threeParentExplicit,
+			selectionPolicy: null,
+			mergeEnabled: null,
 		};
 	}
 	const rawInput = options.inputJson;
@@ -495,10 +460,10 @@ function resolveInputOverrides(options) {
 	if (!Object.prototype.hasOwnProperty.call(SEARCH_BUDGETS, resolved.budget)) {
 		fail(`budget must be one of: ${Object.keys(SEARCH_BUDGETS).join(", ")}`);
 	}
-	if (!REVIEW_CHECKPOINT_POLICIES.has(resolved.reviewCheckpointPolicy)) {
+	if (resolved.reviewCheckpointPolicy && !REVIEW_CHECKPOINT_POLICIES.has(resolved.reviewCheckpointPolicy)) {
 		fail(`reviewCheckpointPolicy must be one of: ${[...REVIEW_CHECKPOINT_POLICIES].join(", ")}`);
 	}
-	if (!THREE_PARENT_POLICIES.has(resolved.threeParentPolicy)) {
+	if (resolved.threeParentPolicy && !THREE_PARENT_POLICIES.has(resolved.threeParentPolicy)) {
 		fail(`threeParentPolicy must be one of: ${[...THREE_PARENT_POLICIES].join(", ")}`);
 	}
 	return {
@@ -515,9 +480,13 @@ function resolveInputOverrides(options) {
 			split: resolved.split,
 		},
 		budget: resolved.budget,
+		budgetExplicit: resolved.budgetExplicit,
 		reviewCheckpointPolicy: resolved.reviewCheckpointPolicy,
+		reviewCheckpointExplicit: resolved.reviewCheckpointExplicit,
 		threeParentPolicy: resolved.threeParentPolicy,
+		threeParentExplicit: resolved.threeParentExplicit,
 		selectionPolicy: resolved.selectionPolicy,
+		mergeEnabled: resolved.mergeEnabled,
 	};
 }
 
@@ -554,20 +523,30 @@ export function buildOptimizeSearchInput(argv, { now = new Date(), env = process
 		heldOutResultsFile,
 		evaluationOptions,
 		budget,
+		budgetExplicit,
 		reviewCheckpointPolicy,
+		reviewCheckpointExplicit,
 		threeParentPolicy,
+		threeParentExplicit,
 		selectionPolicy,
+		mergeEnabled,
 	} = resolveInputOverrides(options);
 	const parsedOptimizeInput = parseOptimizeInputFile(optimizeInputFile);
 	const packet = buildCanonicalPacket({
 		optimizeInputFile: parsedOptimizeInput.path,
 		optimizeInput: parsedOptimizeInput.packet,
 		targetFileOverride: targetFile,
-		budget,
-		reviewCheckpointPolicy,
-		threeParentPolicy,
-		selectionPolicy,
 		evaluationOptions,
+		searchPolicy: {
+			budget,
+			budgetExplicit,
+			reviewCheckpointPolicy,
+			reviewCheckpointExplicit,
+			threeParentPolicy,
+			threeParentExplicit,
+			selectionPolicy,
+			mergeEnabled,
+		},
 		now,
 	});
 	if (heldOutResultsFile) {
