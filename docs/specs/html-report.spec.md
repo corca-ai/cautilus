@@ -3,7 +3,7 @@
 `Cautilus` ships static HTML views so a human can answer one practical question in a browser:
 what happened in this evaluation, and what should I trust or revisit next?
 
-The public contract on this page is the currently shipped renderer surface, not a future design backlog.
+The public contract on this page is the currently shipped renderer surface, not a design backlog.
 
 Today that surface includes:
 
@@ -66,7 +66,7 @@ grep -q 'Cautilus should record and surface its own self-dogfood result honestly
 ## Review Summary Proof
 
 The review summary renderer expects a `cautilus.review_summary.v1` packet.
-This page keeps a minimal inline sample so the public proof stays current even when checked-in historical artifacts lag behind the latest schema.
+This page keeps a minimal inline sample so the public proof stays current without depending on a historical artifact snapshot.
 
 ```run:shell
 # Render a minimal review summary packet into standalone HTML.

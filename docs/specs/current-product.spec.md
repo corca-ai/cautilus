@@ -1,14 +1,14 @@
 # Current Product
 
 `Cautilus` currently helps an operator do one concrete job:
-turn recent behavior evidence into a bounded evaluation decision that can be reopened later without redoing the whole analysis.
+turn recent behavior evidence into a bounded evaluation decision that can be reopened from files without redoing the whole analysis.
 
 Today that job looks like this:
 
 - gather recent behavior signals and turn them into reusable scenario proposals
 - run a candidate through held-out and review-oriented checks
 - package the result into report, evidence, and review artifacts
-- reopen the same result later in JSON or HTML without re-mining raw logs
+- reopen the same result from JSON or HTML without re-mining raw logs
 
 That is why the product is packet-first.
 The packet layer is not the story the operator buys.
@@ -30,10 +30,10 @@ One operator-friendly way to read the current product is as a four-step loop:
 1. Capture a scenario worth protecting.
 2. Evaluate a candidate against that scenario and related checks.
 3. Record what improved, regressed, or still needs human judgment.
-4. Reopen the same decision later from files instead of memory.
+4. Reopen the same decision from files instead of memory.
 
 The important promise is not merely "there is JSON on disk."
-The promise is that a future maintainer can reopen the same evaluation decision, see what changed, and understand why the recommendation was `accept-now`, `defer`, or `reject`.
+The promise is that another maintainer can reopen the same evaluation decision, see what changed, and understand why the product reached its recommendation.
 
 ## What This Spec Does Not Claim
 
@@ -42,7 +42,7 @@ The promise is that a future maintainer can reopen the same evaluation decision,
 - automatic prompt application back into a consumer repo
 - every optimizer or self-dogfood path as part of the standing public proof
 
-Those seams may exist elsewhere in the product or roadmap, but they are not the core public proof on this page.
+Those seams may exist elsewhere in the product, but they are not the core public proof on this page.
 
 ## Executable Proof
 

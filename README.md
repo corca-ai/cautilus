@@ -35,8 +35,7 @@ Use the two `doctor` scopes deliberately.
 `cautilus doctor --scope agent-surface` verifies the bundled skill and local agent-facing surface are installed and discoverable.
 `cautilus doctor` without `--scope` stays the repo-wiring gate and proves the repo has a real runnable `Cautilus` evaluation path.
 Do not stop at either gate.
-When repo-scope `doctor` returns `ready`, its JSON payload now includes `first_bounded_run` with the same archetype catalog as `cautilus scenarios --json` plus a product-owned `mode evaluate -> review prepare-input -> review variants` starter loop.
-Use that payload or `cautilus scenarios --json` to choose one archetype, then complete one bounded decision loop so the repo proves it can produce a real report and review surface, not just a bootstrap-ready adapter.
+When repo-scope `doctor` returns `ready`, use its `first_bounded_run` payload or `cautilus scenarios --json` to choose one archetype and complete one bounded decision loop.
 
 If you want to hand setup to an agent, paste this:
 
@@ -56,15 +55,11 @@ Quick links:
 That report is generated with `specdown` from the repo's cheap public spec suite.
 Each page pairs one bounded product claim with a small executable proof.
 The spec pages are the shipped contract.
-The install and adoption guides below are the operator path into that contract.
 
 ## One Reviewable Decision Loop
 
 Start here if you want one concrete picture before reading the full surface.
-
-**What you need**
-
-- one checked-in proposal input or one new behavior input you want to turn into a reusable scenario
+You need one checked-in proposal input, or one new behavior input you want to turn into a reusable scenario.
 
 **Input (CLI)**
 
@@ -77,23 +72,11 @@ cautilus scenario render-proposals-html \
   --output /tmp/proposals.html
 ```
 
-**Input (For Agent)**
+**Input (For Agent)**: "Turn this behavior input into reusable scenarios and render an HTML page I can review."
 
-- "Turn this behavior input into reusable scenarios and render an HTML page I can review."
-
-**What happens**
-
-- `Cautilus` turns raw behavior evidence into a reviewable proposal packet whose canonical JSON preserves the full ranked proposal set for agents, then renders the same result into a browser-readable page with a bounded attention-first view for humans.
-
-**What you get back**
-
-- quick signal: one reusable scenario file was produced without inventing repo-local lore
-- durable files: `proposals.json` as the full machine-readable truth surface for later commands, plus `proposals.html` for human review with the same packet's derived attention view
-
-**What to do next**
-
-- human: decide whether the proposed scenario is worth promoting into a protected evaluation path
-- agent: reopen the saved result, compare variants, or feed the proposal into the next evaluation step
+`Cautilus` turns the evidence into a reviewable proposal packet whose canonical JSON preserves the full ranked proposal set for agents, then renders the same result into a browser-readable page with a bounded attention-first view for humans.
+You get back `proposals.json` as the machine-readable truth surface and `proposals.html` as the human review view.
+Next step: a human decides whether to promote the scenario into a protected evaluation path, while an agent can reopen the saved result, compare variants, or feed it into the next bounded step.
 
 The same small loop anchors the public spec report in `docs/specs/index.spec.md`.
 It is the shortest honest example of the product claim: `Cautilus` turns behavior evidence into a reviewable decision surface.
@@ -107,52 +90,24 @@ Read the 1:1 boundary in `docs/specs/archetype-boundary.spec.md`.
 ### 1. Chatbot conversation regression
 
 Use when a chat or assistant experience gets worse at multi-turn behavior after a prompt change.
-
 Typical failures are forgetting prior turns, answering when it should clarify, or ignoring a stated preference.
-
-**What you need**: conversation summaries plus the baseline and changed prompts.
-
-**Input (CLI)**: `cautilus scenario normalize chatbot --input logs.json`
-
-**Input (For Agent)**: "Run a chatbot regression with these logs and my new system prompt."
-
-**What happens**: `Cautilus` extracts candidate failures that look like stable conversational regressions.
-
-**What you get back**: reopenable `proposals.json` candidates that can be kept out of tuning as protected checks.
-
-**What to do next**: promote the candidate into evaluate/review or revise the prompt with that protected case still guarding the boundary.
+CLI: `cautilus scenario normalize chatbot --input logs.json`
+For agent: "Run a chatbot regression with these logs and my new system prompt."
+You get reopenable `proposals.json` candidates that can be kept out of tuning as protected checks.
 
 ### 2. Skill / agent execution regression
 
 Use when you change a skill or agent and want to know whether it still triggers on the right prompts, executes cleanly, and keeps its static validation passing.
-
-**What you need**: the modified skill plus a checked-in case suite.
-
-**Input (CLI)**: `cautilus skill test --repo-root . --adapter-name <name>`
-
-**Input (For Agent)**: "Run the checked-in case suite against the skill I just edited."
-
-**What happens**: each case runs multiple times for consensus and is scored on trigger accuracy, execution quality, and optional runtime budget.
-
-**What you get back**: a report, a review file, and compare-ready evidence instead of one trigger-only smoke result.
-
-**What to do next**: accept the changed skill, inspect the review output, or reopen the saved result for another bounded revision pass.
+CLI: `cautilus skill test --repo-root . --adapter-name <name>`
+For agent: "Run the checked-in case suite against the skill I just edited."
+You get a report, a review file, and compare-ready evidence instead of one trigger-only smoke result.
 
 ### 3. Durable workflow recovery
 
 Use when a stateful automation — a CLI workflow, long-running agent session, or pipeline that persists state across invocations — keeps stalling on the same step.
-
-**What you need**: run summaries with `targetId`, `status`, `surface`, and `blockedSteps`.
-
-**Input (CLI)**: `cautilus scenario normalize workflow --input runs.json`
-
-**Input (For Agent)**: "Look at last week's automation runs and flag anything that stalled on the same step twice."
-
-**What happens**: repeated blockers are normalized into `operator_workflow_recovery` candidates that pin the regression as a repeatable case.
-
-**What you get back**: reusable workflow-recovery proposals that keep the operator question attached to concrete evidence.
-
-**What to do next**: route the candidate into compare/review, or use it to justify a targeted workflow repair instead of an anecdotal one-off fix.
+CLI: `cautilus scenario normalize workflow --input runs.json`
+For agent: "Look at last week's automation runs and flag anything that stalled on the same step twice."
+You get reusable workflow-recovery proposals that keep the operator question attached to concrete evidence.
 
 `cautilus scenarios --json` prints the same catalog for agents that need to discover archetypes programmatically.
 Each catalog entry now also includes `exampleInputCli`, so an operator or wrapper can inspect a minimal valid packet shape without opening a fixture path first.

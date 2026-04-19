@@ -10,7 +10,7 @@ Three discovery surfaces matter here:
 - `./bin/cautilus doctor --repo-root <path>` for repo-local readiness plus the first bounded-run handoff once a repo is ready
 
 The bundled skill matters because the standalone binary is not the only entry point.
-`cautilus install` materializes the same product surface under `.agents/skills/cautilus/` for an in-repo assistant, while the operator still uses the CLI directly.
+`cautilus install` materializes the same product surface for an in-repo assistant, while the operator still uses the CLI directly.
 That install step does not pretend the repo is fully configured.
 The follow-up readiness check should report the next missing prerequisite honestly.
 
@@ -44,4 +44,4 @@ test -f "$tmpdir/.agents/skills/cautilus/SKILL.md"
 grep -q '"status": "missing_adapter"' "$tmpdir/doctor.json"
 ```
 
-The user-facing references for this surface are `install.md`, `README.md`, and the bundled `skills/cautilus/SKILL.md`.
+The user-facing references for this surface are the install guide, the repo README, and the bundled skill docs.
