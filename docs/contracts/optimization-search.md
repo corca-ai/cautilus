@@ -240,9 +240,10 @@ Current runtime note:
 - the shipped Go runner now enforces finalist eligibility against declared selection `constraintCaps`
 - the shipped Go runner now executes frontier-promotion review checkpoints for promoted frontier candidates when the policy requests them and the adapter exposes review variants
 - the shipped Go runner reuses those frontier-promotion review checkpoints during final selection instead of rerunning the same candidate review
+- the shipped Go runner now preserves rejected frontier-promotion review feedback on the candidate record and reinjects that feedback into later mutation prompts when the policy enables checkpoint feedback
 - the shipped Go runner now executes final review and final full-gate checkpoints when the adapter exposes those surfaces
 - the current runner follows the best current frontier candidate and evaluates one reflective mutation per generation until `generationLimit` or total candidate count is exhausted
-- the current runner does not yet synthesize merge candidates or reinject frontier-promotion checkpoint feedback into later mutation prompts
+- the current runner does not yet synthesize merge candidates or implement the richer checkpoint-feedback prioritization heuristics still parked in the experimental Node harness
 
 ## Search Readiness
 

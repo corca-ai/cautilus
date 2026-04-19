@@ -1,6 +1,7 @@
 package runtime
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"os/exec"
@@ -791,6 +792,11 @@ func optimizeSearchRecordFrontierPromotionReviews(packet map[string]any, artifac
 		outcome := optimizeSearchRunReviewCheckpoint(packet, artifactRoot, candidate)
 		outcome["reviewedAtGeneration"] = firstNonNil(candidate["generationIndex"], nil)
 		candidate["promotionReviewOutcome"] = outcome
+		if admissible, _ := outcome["admissible"].(bool); !admissible {
+			if feedback := optimizeSearchBuildCheckpointFeedback(packet, outcome); len(feedback) > 0 {
+				candidate["checkpointFeedback"] = feedback
+			}
+		}
 		reviewOutcomes = optimizeSearchRecordCheckpointOutcome(reviewOutcomes, outcome)
 	}
 	checkpointLedger["review"] = reviewOutcomes
@@ -913,6 +919,8 @@ func optimizeSearchRunReviewCheckpoint(packet map[string]any, artifactRoot strin
 		}
 	}
 	rejectionReasons := optimizeSearchReviewRejectionReasons(summary)
+	feedbackEntries := optimizeSearchReviewFeedbackEntries(summary)
+	feedbackMessages := optimizeSearchReviewFeedbackMessages(summary)
 	variants := []any{}
 	for _, rawVariant := range arrayOrEmpty(summary["variants"]) {
 		variant := asMap(rawVariant)
@@ -930,11 +938,228 @@ func optimizeSearchRunReviewCheckpoint(packet map[string]any, artifactRoot strin
 		"status":           ternaryStatus(runErr == nil, "passed", "failed"),
 		"admissible":       len(rejectionReasons) == 0,
 		"rejectionReasons": stringSliceToAny(rejectionReasons),
+		"feedbackEntries":  mapsToAny(feedbackEntries),
+		"feedbackMessages": stringSliceToAny(feedbackMessages),
 		"outputDir":        outputDir,
 		"summaryFile":      summaryFile,
 		"telemetry":        firstNonNil(summary["telemetry"], nil),
 		"variants":         variants,
 	}
+}
+
+func optimizeSearchReviewFeedbackEntries(summary map[string]any) []map[string]any {
+	entries := []map[string]any{}
+	for _, rawVariant := range arrayOrEmpty(summary["variants"]) {
+		variant := asMap(rawVariant)
+		variantID := firstNonEmpty(stringOrEmpty(variant["id"]), "variant")
+		defaultSeverity := optimizeSearchReviewStatusFromVariant(variant)
+		output := asMap(variant["output"])
+		findings := arrayOrEmpty(output["findings"])
+		if len(findings) > 0 {
+			for _, rawFinding := range findings {
+				finding := asMap(rawFinding)
+				message := stringOrEmpty(finding["message"])
+				if message == "" {
+					continue
+				}
+				severity := firstNonEmpty(stringOrEmpty(finding["severity"]), defaultSeverity)
+				entries = append(entries, map[string]any{
+					"message":         message,
+					"severity":        severity,
+					"rejectionReason": fmt.Sprintf("review:%s:%s", variantID, severity),
+				})
+			}
+			continue
+		}
+		if summaryText := stringOrEmpty(output["summary"]); summaryText != "" {
+			entries = append(entries, map[string]any{
+				"message":         summaryText,
+				"severity":        defaultSeverity,
+				"rejectionReason": fmt.Sprintf("review:%s:%s", variantID, defaultSeverity),
+			})
+		}
+	}
+	return entries
+}
+
+func optimizeSearchReviewFeedbackMessages(summary map[string]any) []string {
+	messages := []string{}
+	for _, rawEntry := range optimizeSearchReviewFeedbackEntries(summary) {
+		if message := stringOrEmpty(rawEntry["message"]); message != "" {
+			messages = append(messages, message)
+		}
+	}
+	return uniqueStrings(messages)
+}
+
+func optimizeSearchBuildCheckpointFeedback(packet map[string]any, reviewOutcome map[string]any) []any {
+	entries := arrayOrEmpty(reviewOutcome["feedbackEntries"])
+	rejectionReasons := stringSliceValue(reviewOutcome["rejectionReasons"])
+	if len(entries) == 0 {
+		fallbackSeverity := "concern"
+		for _, reason := range rejectionReasons {
+			if strings.HasSuffix(reason, ":blocker") {
+				fallbackSeverity = "blocker"
+				break
+			}
+		}
+		for _, message := range stringSliceValue(reviewOutcome["feedbackMessages"]) {
+			entries = append(entries, map[string]any{
+				"message":         message,
+				"severity":        fallbackSeverity,
+				"rejectionReason": firstNonEmpty(firstNonEmptySliceString(rejectionReasons), ""),
+			})
+		}
+	}
+	if len(entries) == 0 {
+		return []any{}
+	}
+	scenarioIDs := optimizeSearchCheckpointScenarioIDs(packet)
+	feedbackByScenarioID := map[string][]map[string]any{}
+	genericEntries := []map[string]any{}
+	for _, rawEntry := range entries {
+		entry := asMap(rawEntry)
+		message := stringOrEmpty(entry["message"])
+		matchedScenarioIDs := optimizeSearchFeedbackScenarioIDs(message, scenarioIDs)
+		if len(matchedScenarioIDs) == 0 {
+			genericEntries = append(genericEntries, entry)
+			continue
+		}
+		for _, scenarioID := range matchedScenarioIDs {
+			feedbackByScenarioID[scenarioID] = append(feedbackByScenarioID[scenarioID], entry)
+		}
+	}
+	result := []any{}
+	for _, scenarioID := range scenarioIDs {
+		scopedEntries := feedbackByScenarioID[scenarioID]
+		if len(scopedEntries) == 0 {
+			continue
+		}
+		result = append(result, map[string]any{
+			"source":           "frontier_promotion_review",
+			"scope":            "scenario",
+			"scenarioIds":      []any{scenarioID},
+			"severity":         optimizeSearchCheckpointEntrySeverity(scopedEntries),
+			"rejectionReasons": stringSliceToAny(optimizeSearchCheckpointEntryReasons(scopedEntries, rejectionReasons)),
+			"feedbackMessages": stringSliceToAny(optimizeSearchCheckpointEntryMessages(scopedEntries)),
+		})
+	}
+	if len(genericEntries) > 0 || len(result) == 0 {
+		sourceEntries := genericEntries
+		scope := "generic"
+		if len(sourceEntries) == 0 {
+			scope = "candidate"
+			sourceEntries = []map[string]any{}
+			for _, rawEntry := range entries {
+				sourceEntries = append(sourceEntries, asMap(rawEntry))
+			}
+		}
+		result = append(result, map[string]any{
+			"source":           "frontier_promotion_review",
+			"scope":            scope,
+			"scenarioIds":      []any{},
+			"severity":         optimizeSearchCheckpointEntrySeverity(sourceEntries),
+			"rejectionReasons": stringSliceToAny(optimizeSearchCheckpointEntryReasons(sourceEntries, rejectionReasons)),
+			"feedbackMessages": stringSliceToAny(optimizeSearchCheckpointEntryMessages(sourceEntries)),
+		})
+	}
+	return result
+}
+
+func optimizeSearchCheckpointScenarioIDs(packet map[string]any) []string {
+	ordered := []string{}
+	for _, raw := range append(arrayOrEmpty(asMap(packet["scenarioSets"])["trainScenarioSet"]), arrayOrEmpty(asMap(packet["scenarioSets"])["heldOutScenarioSet"])...) {
+		if scenarioID := strings.TrimSpace(stringOrEmpty(raw)); scenarioID != "" {
+			ordered = append(ordered, scenarioID)
+		}
+	}
+	return uniqueStrings(ordered)
+}
+
+func optimizeSearchFeedbackScenarioIDs(message string, scenarioIDs []string) []string {
+	normalizedMessage := optimizeSearchNormalizedMatchText(message)
+	if normalizedMessage == "" {
+		return []string{}
+	}
+	matches := []string{}
+	for _, scenarioID := range scenarioIDs {
+		if strings.Contains(normalizedMessage, optimizeSearchNormalizedMatchText(scenarioID)) {
+			matches = append(matches, scenarioID)
+		}
+	}
+	return matches
+}
+
+func optimizeSearchNormalizedMatchText(value string) string {
+	builder := strings.Builder{}
+	lastSpace := false
+	for _, r := range strings.ToLower(value) {
+		if (r >= 'a' && r <= 'z') || (r >= '0' && r <= '9') {
+			builder.WriteRune(r)
+			lastSpace = false
+			continue
+		}
+		if !lastSpace {
+			builder.WriteRune(' ')
+			lastSpace = true
+		}
+	}
+	return strings.TrimSpace(builder.String())
+}
+
+func optimizeSearchCheckpointEntrySeverity(entries []map[string]any) string {
+	best := "concern"
+	for _, entry := range entries {
+		severity := stringOrEmpty(entry["severity"])
+		if severity == "blocker" {
+			return "blocker"
+		}
+		if severity == "concern" {
+			best = "concern"
+		}
+	}
+	return best
+}
+
+func optimizeSearchCheckpointEntryReasons(entries []map[string]any, fallback []string) []string {
+	reasons := []string{}
+	for _, entry := range entries {
+		if reason := stringOrEmpty(entry["rejectionReason"]); reason != "" {
+			reasons = append(reasons, reason)
+		}
+	}
+	reasons = uniqueStrings(reasons)
+	if len(reasons) > 0 {
+		return reasons
+	}
+	return uniqueStrings(fallback)
+}
+
+func optimizeSearchCheckpointEntryMessages(entries []map[string]any) []string {
+	messages := []string{}
+	for _, entry := range entries {
+		if message := stringOrEmpty(entry["message"]); message != "" {
+			messages = append(messages, message)
+		}
+	}
+	return uniqueStrings(messages)
+}
+
+func mapsToAny(items []map[string]any) []any {
+	result := make([]any, 0, len(items))
+	for _, item := range items {
+		result = append(result, item)
+	}
+	return result
+}
+
+func firstNonEmptySliceString(items []string) string {
+	for _, item := range items {
+		if strings.TrimSpace(item) != "" {
+			return item
+		}
+	}
+	return ""
 }
 
 func optimizeSearchRunFullGateCheckpoint(packet map[string]any, artifactRoot string, candidate map[string]any) map[string]any {
@@ -1544,6 +1769,14 @@ func optimizeSearchMutationPrompt(packet map[string]any, parentCandidate map[str
 	if feedback != "" {
 		feedback = "- " + feedback
 	}
+	checkpointFeedback := "[]"
+	if includeCheckpointFeedback, _ := asMap(packet["mutationEvidencePolicy"])["includeCheckpointFeedback"].(bool); includeCheckpointFeedback {
+		if entries := arrayOrEmpty(parentCandidate["checkpointFeedback"]); len(entries) > 0 {
+			if payload, err := json.MarshalIndent(entries, "", "  "); err == nil {
+				checkpointFeedback = string(payload)
+			}
+		}
+	}
 	return strings.TrimSpace(fmt.Sprintf(`
 Return one JSON object matching the schema.
 
@@ -1555,7 +1788,10 @@ Behavior objective:
 
 Evidence to address:
 %s
-`, currentPrompt, stringOrEmpty(asMap(packet["objective"])["summary"]), feedback)) + "\n"
+
+Checkpoint feedback to repair:
+%s
+`, currentPrompt, stringOrEmpty(asMap(packet["objective"])["summary"]), feedback, checkpointFeedback)) + "\n"
 }
 
 func optimizeSearchPreferredCandidate(candidates []map[string]any, candidateIDs []string) map[string]any {
@@ -1704,7 +1940,7 @@ func optimizeSearchCandidateRegistry(candidates []map[string]any) []any {
 			"mutationRationale":  candidate["mutationRationale"],
 			"telemetry":          firstNonNil(candidate["telemetry"], map[string]any{}),
 		}
-		for _, key := range []string{"expectedImprovements", "preservedStrengths", "riskNotes", "artifacts", "evaluationArtifacts"} {
+		for _, key := range []string{"expectedImprovements", "preservedStrengths", "riskNotes", "checkpointFeedback", "artifacts", "evaluationArtifacts"} {
 			if value := candidate[key]; value != nil {
 				entry[key] = value
 			}
