@@ -77,12 +77,13 @@ func BuildScenarioProposalPacket(input map[string]any) (map[string]any, error) {
 		return nil, fmt.Errorf("schemaVersion must be %s", contracts.ScenarioProposalInputsSchema)
 	}
 	families := stringSliceValue(input["families"])
+	limit := intValueOrDefault(input["limit"], 5)
 	return GenerateScenarioProposals(
 		arrayOrEmpty(input["proposalCandidates"]),
 		readScenarioKeys(arrayOrEmpty(input["existingScenarioRegistry"])),
 		readScenarioCoverage(arrayOrEmpty(input["scenarioCoverage"])),
 		families,
-		intValueOrDefault(input["limit"], 5),
+		limit,
 		intValueOrDefault(input["windowDays"], 14),
 		parseOptionalNow(input["now"]),
 	)
@@ -119,6 +120,7 @@ func GenerateScenarioProposals(proposalCandidates []any, existingScenarioKeys []
 	for _, candidate := range merged {
 		candidates = append(candidates, candidate)
 	}
+	totalMergedCandidates := len(candidates)
 	sort.Slice(candidates, func(left, right int) bool {
 		leftEvidence := arrayOrEmpty(candidates[left]["evidence"])
 		rightEvidence := arrayOrEmpty(candidates[right]["evidence"])
@@ -139,8 +141,22 @@ func GenerateScenarioProposals(proposalCandidates []any, existingScenarioKeys []
 		"generatedAt":   now.UTC().Format(time.RFC3339Nano),
 		"windowDays":    windowDays,
 		"families":      families,
-		"proposals":     proposals,
+		"appliedLimit":  limit,
+		"proposalTelemetry": map[string]any{
+			"mergedCandidateCount":  totalMergedCandidates,
+			"returnedProposalCount": len(proposals),
+			"truncated":             limit > 0 && totalMergedCandidates > len(proposals),
+			"omittedProposalCount":  maxInt(totalMergedCandidates-len(proposals), 0),
+		},
+		"proposals": proposals,
 	}, nil
+}
+
+func maxInt(left, right int) int {
+	if left > right {
+		return left
+	}
+	return right
 }
 
 func NormalizeChatbotProposalCandidates(conversationSummaries []any, runSummaries []any) ([]any, error) {

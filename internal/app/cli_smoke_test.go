@@ -1132,6 +1132,13 @@ func TestCLIScenarioProposeGeneratesStandaloneProposalPacket(t *testing.T) {
 	if payload["schemaVersion"] != contracts.ScenarioProposalsSchema {
 		t.Fatalf("expected scenario proposals schema, got %#v", payload["schemaVersion"])
 	}
+	if payload["appliedLimit"] != float64(5) {
+		t.Fatalf("expected default applied limit, got %#v", payload["appliedLimit"])
+	}
+	proposalTelemetry := payload["proposalTelemetry"].(map[string]any)
+	if proposalTelemetry["mergedCandidateCount"] != float64(1) || proposalTelemetry["truncated"] != false {
+		t.Fatalf("unexpected proposal telemetry: %#v", proposalTelemetry)
+	}
 	proposals := payload["proposals"].([]any)
 	if len(proposals) != 1 {
 		t.Fatalf("expected one proposal, got %#v", payload["proposals"])
@@ -1143,6 +1150,59 @@ func TestCLIScenarioProposeGeneratesStandaloneProposalPacket(t *testing.T) {
 	draftScenario := proposal["draftScenario"].(map[string]any)
 	if draftScenario["schemaVersion"] != contracts.DraftScenarioSchema {
 		t.Fatalf("unexpected draft scenario schema: %#v", draftScenario["schemaVersion"])
+	}
+}
+
+func TestCLIScenarioProposeSurfacesDefaultLimitAndTruncationTelemetry(t *testing.T) {
+	root := t.TempDir()
+	inputPath := filepath.Join(root, "scenario-proposal-input.json")
+	outputPath := filepath.Join(root, "scenario-proposals.json")
+	proposalCandidates := make([]map[string]any, 0, 6)
+	for index := 0; index < 6; index++ {
+		proposalCandidates = append(proposalCandidates, map[string]any{
+			"proposalKey": fmt.Sprintf("fast-regression-%d", index+1),
+			"title":       fmt.Sprintf("Refresh fast regression %d", index+1),
+			"family":      "fast_regression",
+			"name":        fmt.Sprintf("Fast Regression %d", index+1),
+			"description": "Recent activity suggests a refresh candidate.",
+			"brief":       "Recent activity suggests a refresh candidate.",
+			"evidence": []map[string]any{
+				{
+					"sourceKind": "human_conversation",
+					"title":      fmt.Sprintf("candidate-%d", index+1),
+					"observedAt": fmt.Sprintf("2026-04-%02dT00:00:00.000Z", 10+index),
+				},
+			},
+		})
+	}
+	writeJSONFile(t, inputPath, map[string]any{
+		"schemaVersion":            contracts.ScenarioProposalInputsSchema,
+		"windowDays":               14,
+		"families":                 []any{"fast_regression"},
+		"proposalCandidates":       proposalCandidates,
+		"existingScenarioRegistry": []any{},
+		"scenarioCoverage":         []any{},
+		"now":                      "2026-04-19T00:00:00.000Z",
+	})
+
+	_, stderr, exitCode := runCLI(t, root, "scenario", "propose", "--input", inputPath, "--output", outputPath)
+	if exitCode != 0 {
+		t.Fatalf("scenario propose failed: %s", stderr)
+	}
+	payload := readJSONObjectFile(t, outputPath)
+	if payload["appliedLimit"] != float64(5) {
+		t.Fatalf("expected default applied limit 5, got %#v", payload["appliedLimit"])
+	}
+	proposalTelemetry := payload["proposalTelemetry"].(map[string]any)
+	if proposalTelemetry["mergedCandidateCount"] != float64(6) || proposalTelemetry["returnedProposalCount"] != float64(5) {
+		t.Fatalf("unexpected proposal telemetry counts: %#v", proposalTelemetry)
+	}
+	if proposalTelemetry["truncated"] != true || proposalTelemetry["omittedProposalCount"] != float64(1) {
+		t.Fatalf("expected truncation telemetry, got %#v", proposalTelemetry)
+	}
+	proposals := payload["proposals"].([]any)
+	if len(proposals) != 5 {
+		t.Fatalf("expected default cap of 5 proposals, got %#v", proposals)
 	}
 }
 

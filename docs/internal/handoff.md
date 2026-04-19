@@ -76,6 +76,8 @@
     `report.humanReviewFindings` 와 residual `compareArtifact.reasons` 를 `report.improved` fallback 보다 앞세우고, proposal telemetry 에는 budget 때문에 선택되지 않은 residual hotspot 요약도 남긴다.
 19. optimize-search result 는 이제 seed-only fallback 도 더 설명 가능하다.
     `candidateGenerationDiagnostics` 가 mutation prerequisites, backend invocation 여부, per-generation attempt status, `whyNoCandidates` 요약을 남기고, `searchTelemetry.stopReason` 도 `seed_only` 대신 `mutation_backend_failed` 같은 explicit reason 으로 더 세분화된다.
+20. `scenario propose` 는 이제 packet-level `limit` default 를 숨기지 않는다.
+    input contract, input schema, CLI help, CLI reference 가 optional `limit` 와 default `5` 를 직접 말하고, output packet 도 `appliedLimit` 와 `proposalTelemetry` 로 truncation 여부를 설명한다.
 
 ## Recent Commits
 
@@ -153,6 +155,9 @@
    실제 logic gap 이었고, 이번 세션에서 직접 고쳤다.
    proposal evidence universe 는 이제 report-level `humanReviewFindings` 와 residual `compareArtifact.reasons` 를 first-class 로 읽고, improved fallback 은 정말 residual hotspot 이 비었을 때만 쓴다.
    trial telemetry 는 budget 때문에 선택되지 않은 residual hotspot 요약도 남긴다.
+7. `#14` [scenario propose default `limit=5` is hidden from input schema/help/docs](https://github.com/corca-ai/cautilus/issues/14)
+   docs/help discoverability gap 이었고, 이번 세션에서 직접 고쳤다.
+   input contract, schema, CLI help, CLI reference 가 optional `limit` 와 default `5` 를 직접 말하고, output packet 은 `appliedLimit` 와 `proposalTelemetry` 로 truncation 여부까지 설명한다.
 
 ## Charness Follow-Up
 

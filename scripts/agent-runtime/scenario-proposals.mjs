@@ -124,6 +124,15 @@ export function buildScenarioProposal(candidate, existingScenarioKeys, recentCov
 	};
 }
 
+function buildProposalTelemetry(mergedCandidates, proposals, limit) {
+	return {
+		mergedCandidateCount: mergedCandidates.length,
+		returnedProposalCount: proposals.length,
+		truncated: limit > 0 && mergedCandidates.length > proposals.length,
+		omittedProposalCount: Math.max(mergedCandidates.length - proposals.length, 0),
+	};
+}
+
 export function generateScenarioProposals({
 	proposalCandidates,
 	existingScenarioKeys = [],
@@ -144,7 +153,8 @@ export function generateScenarioProposals({
 		}
 		merged.set(candidate.proposalKey, mergeProposalRecord(merged.get(candidate.proposalKey), candidate));
 	}
-	const proposals = [...merged.values()]
+	const mergedCandidates = [...merged.values()];
+	const proposals = mergedCandidates
 		.sort(
 			(left, right) =>
 				right.evidence.length - left.evidence.length ||
@@ -157,6 +167,8 @@ export function generateScenarioProposals({
 		generatedAt: now.toISOString(),
 		windowDays,
 		families: [...familyFilter],
+		appliedLimit: limit,
+		proposalTelemetry: buildProposalTelemetry(mergedCandidates, proposals, limit),
 		proposals,
 	};
 }

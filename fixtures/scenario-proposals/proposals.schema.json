@@ -7,6 +7,8 @@
     "generatedAt",
     "windowDays",
     "families",
+    "appliedLimit",
+    "proposalTelemetry",
     "proposals"
   ],
   "properties": {
@@ -25,6 +27,36 @@
       "type": "array",
       "items": {
         "type": "string"
+      }
+    },
+    "appliedLimit": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "proposalTelemetry": {
+      "type": "object",
+      "required": [
+        "mergedCandidateCount",
+        "returnedProposalCount",
+        "truncated",
+        "omittedProposalCount"
+      ],
+      "properties": {
+        "mergedCandidateCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "returnedProposalCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "truncated": {
+          "type": "boolean"
+        },
+        "omittedProposalCount": {
+          "type": "integer",
+          "minimum": 0
+        }
       }
     },
     "proposals": {

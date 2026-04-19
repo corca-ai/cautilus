@@ -15,6 +15,7 @@ function usage(exitCode = 0) {
 		"",
 		"Input packet:",
 		`  schemaVersion: ${SCENARIO_PROPOSAL_INPUTS_SCHEMA}`,
+		"  limit: optional proposal cap (default 5)",
 		"  proposalCandidates: [...]",
 		"  existingScenarioRegistry: [...]",
 		"  scenarioCoverage: [...]",
