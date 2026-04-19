@@ -188,6 +188,12 @@
 5. 여러 named adapters 를 가진 consumer repo 에서 `#8` 류 repro 가 다시 오면, 여기서는 바로 diagnostics, fallback, regression test 추가를 할 수 있다.
    다만 diagnosis 자체는 outside artifact 가 필요하다.
    최소한 `report.json` 의 `.adapterContext`, `optimize-input.json`, `optimize-search-input.json`, 그리고 기대한 adapter name/context 를 받아야 exact loss point 를 잡을 수 있다.
+6. `#16` [Absorb consumer-facing audit workbench UI into cautilus](https://github.com/corca-ai/cautilus/issues/16) 는 바로 구현보다 boundary contract 설계가 먼저다.
+   follow-up comment 로 scope 는 많이 좁혀졌다.
+   `Cautilus` 가 이미 가진 것은 `chatbot` normalization, `human_conversation` evidence 를 읽는 `scenario propose`, 그리고 static `scenario render-proposals-html` surface 다.
+   아직 없는 것은 multi-instance discovery, interactive HTTP/read-write workbench surface, generic live-run invocation primitive, 그리고 scenario-adjacent conversation review packet 이다.
+   다음 세션의 좋은 첫 slice 는 implementation 이 아니라 contract 정리다:
+   local-first access model, adapter-defined instance discovery/data roots, generic live-run command seam, scenario-centric conversation review boundary.
 
 ## Stop Checks
 
