@@ -1767,7 +1767,7 @@ func optimizeSearchEvaluateMutation(packet map[string]any, inputFile string, opt
 	schemaFile := filepath.Join(candidateRoot, "mutation.schema.json")
 	outputFile := filepath.Join(candidateRoot, "mutation.output.json")
 	candidatePromptPath := filepath.Join(candidateRoot, "candidate.prompt.md")
-	if err := os.WriteFile(promptFile, []byte(optimizeSearchMutationPrompt(packet, parentCandidate)), 0o644); err != nil {
+	if err := os.WriteFile(promptFile, []byte(optimizeSearchMutationPrompt(packet, parentCandidate, backend)), 0o644); err != nil {
 		diagnostics["status"] = "candidate_setup_failed"
 		return nil, diagnostics, err
 	}
@@ -2552,7 +2552,7 @@ func compareInt(left int, right int) int {
 	}
 }
 
-func optimizeSearchMutationPrompt(packet map[string]any, parentCandidate map[string]any) string {
+func optimizeSearchMutationPrompt(packet map[string]any, parentCandidate map[string]any, backend string) string {
 	targetPath := stringOrEmpty(asMap(parentCandidate["targetFile"])["path"])
 	if targetPath == "" {
 		targetPath = stringOrEmpty(asMap(packet["targetFile"])["path"])
@@ -2569,6 +2569,18 @@ func optimizeSearchMutationPrompt(packet map[string]any, parentCandidate map[str
 	if payload, err := json.MarshalIndent(reflectionBatch, "", "  "); err == nil {
 		reflectionBatchJSON = string(payload)
 	}
+	constraints := []string{}
+	for _, rawConstraint := range arrayOrEmpty(asMap(packet["objective"])["constraints"]) {
+		if constraint := strings.TrimSpace(stringOrEmpty(rawConstraint)); constraint != "" {
+			constraints = append(constraints, constraint)
+		}
+	}
+	heldOutScenarioIDs := []string{}
+	for _, rawScenarioID := range arrayOrEmpty(asMap(packet["scenarioSets"])["heldOutScenarioSet"]) {
+		if scenarioID := strings.TrimSpace(stringOrEmpty(rawScenarioID)); scenarioID != "" {
+			heldOutScenarioIDs = append(heldOutScenarioIDs, scenarioID)
+		}
+	}
 	checkpointFeedback := "[]"
 	if includeCheckpointFeedback, _ := asMap(packet["mutationEvidencePolicy"])["includeCheckpointFeedback"].(bool); includeCheckpointFeedback {
 		filteredEntries := optimizeSearchFilterCheckpointFeedbackForReflectionBatch(arrayOrEmpty(parentCandidate["checkpointFeedback"]), reflectionBatch)
@@ -2578,21 +2590,53 @@ func optimizeSearchMutationPrompt(packet map[string]any, parentCandidate map[str
 			}
 		}
 	}
-	return strings.TrimSpace(fmt.Sprintf(`
-Return one JSON object matching the schema.
-
-Current prompt:
-%s
-
-Behavior objective:
-%s
-
-Reflection batch:
-%s
-
-Checkpoint feedback to repair:
-%s
-`, currentPrompt, stringOrEmpty(asMap(packet["objective"])["summary"]), reflectionBatchJSON, checkpointFeedback)) + "\n"
+	sections := []string{
+		"# Task",
+		"Return one improved prompt candidate as structured JSON.",
+		"",
+		"## Constraints",
+		"- Output valid JSON matching the provided schema.",
+		"- Rewrite the prompt body only; do not describe shell commands or repo edits.",
+		"- Preserve working behavior unless the evidence explicitly says it is harmful.",
+		"- Prefer concrete operator-facing recovery guidance over generic wording.",
+		"- Do not optimize for lower cost by merely making the prompt shorter.",
+		"- If checkpoint feedback exists, repair that rejection before widening scope.",
+		"",
+		"## Search Context",
+		fmt.Sprintf("- backend: %s", backend),
+		fmt.Sprintf("- objective: %s", stringOrEmpty(asMap(packet["objective"])["summary"])),
+		fmt.Sprintf("- parentCandidateId: %s", stringOrEmpty(parentCandidate["id"])),
+		fmt.Sprintf("- targetFile: %s", targetPath),
+		fmt.Sprintf("- heldOutScenarioSet: %s", firstNonEmpty(strings.Join(heldOutScenarioIDs, ", "), "none")),
+		"",
+		"## Guardrails",
+	}
+	for _, constraint := range constraints {
+		sections = append(sections, "- "+constraint)
+	}
+	sections = append(sections,
+		"- Keep the prompt self-contained and legible.",
+		"- Do not claim success that the evidence does not support.",
+		"",
+		"## Reflection Batch",
+		reflectionBatchJSON,
+		"",
+		"## Checkpoint Feedback",
+		checkpointFeedback,
+		"",
+		"## Current Prompt",
+		"```md",
+		currentPrompt,
+		"```",
+		"",
+		"## Response Shape",
+		"- promptMarkdown: full revised prompt body",
+		"- rationaleSummary: 1-2 sentence explanation of what changed and why",
+		"- expectedImprovements: list of scenarios or failure modes this candidate should improve",
+		"- preservedStrengths: list of strengths intentionally kept from the parent candidate",
+		"- riskNotes: list of residual risks that still need held-out validation",
+	)
+	return strings.Join(sections, "\n") + "\n"
 }
 
 func optimizeSearchCollectMergeCheckpointFeedback(candidates []map[string]any, frontierIDs []string, scenarioIDs []string) []any {

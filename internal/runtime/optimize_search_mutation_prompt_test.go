@@ -102,7 +102,13 @@ func TestOptimizeSearchMutationPromptFiltersCheckpointFeedbackToReflectionBatch(
 		},
 	}
 
-	prompt := optimizeSearchMutationPrompt(packet, parentCandidate)
+	prompt := optimizeSearchMutationPrompt(packet, parentCandidate, "codex_exec")
+	if !strings.Contains(prompt, "## Search Context") || !strings.Contains(prompt, "- backend: codex_exec") {
+		t.Fatalf("expected structured search context in mutation prompt: %s", prompt)
+	}
+	if !strings.Contains(prompt, "## Reflection Batch") || !strings.Contains(prompt, "## Current Prompt") {
+		t.Fatalf("expected structured reflection sections in mutation prompt: %s", prompt)
+	}
 	if !strings.Contains(prompt, "operator-recovery sequencing too implicit.") {
 		t.Fatalf("expected reflected checkpoint feedback to remain in prompt: %s", prompt)
 	}

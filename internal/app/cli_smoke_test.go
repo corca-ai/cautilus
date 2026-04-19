@@ -4121,6 +4121,12 @@ func TestCLIOptimizeSearchRunReinjectsFrontierPromotionReviewFeedbackIntoNextMut
 	if !strings.Contains(string(mutationPrompt), "review:operator-review:concern") || !strings.Contains(string(mutationPrompt), "operator-follow-up under-specified") {
 		t.Fatalf("expected repaired mutation prompt to include reinjected checkpoint feedback, got %q", string(mutationPrompt))
 	}
+	if !strings.Contains(string(mutationPrompt), "## Search Context") || !strings.Contains(string(mutationPrompt), "## Reflection Batch") || !strings.Contains(string(mutationPrompt), "## Current Prompt") {
+		t.Fatalf("expected structured mutation prompt context, got %q", string(mutationPrompt))
+	}
+	if !strings.Contains(string(mutationPrompt), "\"scenarioId\": \"operator-follow-up\"") {
+		t.Fatalf("expected reflected scenario batch in mutation prompt, got %q", string(mutationPrompt))
+	}
 	selectedTargetPath := searchResult["proposalBridge"].(map[string]any)["selectedTargetFile"].(map[string]any)["path"].(string)
 	selectedPrompt, err := os.ReadFile(selectedTargetPath)
 	if err != nil {
@@ -4128,6 +4134,320 @@ func TestCLIOptimizeSearchRunReinjectsFrontierPromotionReviewFeedbackIntoNextMut
 	}
 	if !strings.Contains(string(selectedPrompt), "follow-up handoff map") {
 		t.Fatalf("expected repaired selected prompt, got %q", string(selectedPrompt))
+	}
+}
+
+func TestCLIOptimizeSearchRunRecordsMutationParentEligibilityAcrossRepairWindow(t *testing.T) {
+	root := t.TempDir()
+	targetPath := filepath.Join(root, "prompt.md")
+	schemaPath := filepath.Join(root, "fixtures", "review.schema.json")
+	heldOutResultsPath := filepath.Join(root, "held-out-results.json")
+	optimizeInputPath := filepath.Join(root, "optimize-input.json")
+	searchInputPath := filepath.Join(root, "optimize-search-input.json")
+	searchResultPath := filepath.Join(root, "optimize-search-result.json")
+
+	if err := os.MkdirAll(filepath.Join(root, ".agents"), 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.MkdirAll(filepath.Join(root, "fixtures"), 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.WriteFile(targetPath, []byte("Keep recovery instructions explicit.\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	if err := os.WriteFile(schemaPath, []byte("{\"type\":\"object\"}\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	writeExecutableFile(t, root, "evaluate.sh", strings.Join([]string{
+		"#!/bin/sh",
+		"output=\"$1\"",
+		"recovery_score=95",
+		"followup_score=80",
+		"if grep -q \"detailed recovery checklist and an explicit recovery sequencing map\" prompt.md; then",
+		"  recovery_score=99",
+		"  followup_score=82",
+		"elif grep -q \"detailed recovery checklist\" prompt.md; then",
+		"  recovery_score=75",
+		"  followup_score=96",
+		"fi",
+		"cat >\"$output\" <<EOF",
+		"{",
+		"  \"schemaVersion\": \"cautilus.scenario_results.v1\",",
+		"  \"mode\": \"held_out\",",
+		"  \"results\": [",
+		"    {",
+		"      \"scenarioId\": \"operator-recovery\",",
+		"      \"status\": \"passed\",",
+		"      \"overallScore\": $recovery_score,",
+		"      \"telemetry\": {",
+		"        \"cost_usd\": 0.04,",
+		"        \"durationMs\": 1000",
+		"      }",
+		"    },",
+		"    {",
+		"      \"scenarioId\": \"operator-follow-up\",",
+		"      \"status\": \"passed\",",
+		"      \"overallScore\": $followup_score,",
+		"      \"telemetry\": {",
+		"        \"cost_usd\": 0.03,",
+		"        \"durationMs\": 900",
+		"      }",
+		"    }",
+		"  ]",
+		"}",
+		"EOF",
+		"",
+	}, "\n"))
+	writeExecutableFile(t, root, "variant.sh", strings.Join([]string{
+		"#!/bin/sh",
+		"output_file=\"$1\"",
+		"prompt_file=\"$(dirname \"$0\")/prompt.md\"",
+		"verdict=\"pass\"",
+		"severity=\"pass\"",
+		"summary=\"candidate stays operator-safe\"",
+		"if grep -q \"detailed recovery checklist\" \"$prompt_file\" && ! grep -q \"explicit recovery sequencing map\" \"$prompt_file\"; then",
+		"  verdict=\"concern\"",
+		"  severity=\"concern\"",
+		"  summary=\"Checklist candidate still leaves operator-recovery sequencing too implicit.\"",
+		"fi",
+		"cat >\"$output_file\" <<EOF",
+		"{",
+		"  \"verdict\": \"$verdict\",",
+		"  \"summary\": \"$summary\",",
+		"  \"findings\": [",
+		"    {",
+		"      \"severity\": \"$severity\",",
+		"      \"message\": \"Checklist candidate still leaves operator-recovery sequencing too implicit.\",",
+		"      \"path\": \"variant/operator-review\"",
+		"    }",
+		"  ]",
+		"}",
+		"EOF",
+		"",
+	}, "\n"))
+	writeExecutableFile(t, root, "codex", strings.Join([]string{
+		"#!/bin/sh",
+		"out=\"\"",
+		"while [ \"$#\" -gt 0 ]; do",
+		"  if [ \"$1\" = \"-o\" ]; then",
+		"    out=\"$2\"",
+		"    shift 2",
+		"    continue",
+		"  fi",
+		"  shift",
+		"done",
+		"prompt=$(cat)",
+		"if printf '%s' \"$prompt\" | grep -q \"operator-recovery sequencing too implicit\"; then",
+		fmt.Sprintf("  printf '%%s\\n' '%s' > \"$out\"", toJSONString(map[string]any{
+			"promptMarkdown":       "Keep recovery instructions explicit with a detailed recovery checklist and an explicit recovery sequencing map.\n",
+			"rationaleSummary":     "Repair the checkpointed sequencing concern.",
+			"expectedImprovements": []string{"operator-recovery"},
+			"preservedStrengths":   []string{"keeps the detailed recovery checklist"},
+			"riskNotes":            []string{"operator-follow-up may still need later polish"},
+		})),
+		"  exit 0",
+		"fi",
+		"if printf '%s' \"$prompt\" | grep -q \"explicit recovery sequencing map\"; then",
+		fmt.Sprintf("  printf '%%s\\n' '%s' > \"$out\"", toJSONString(map[string]any{
+			"promptMarkdown":       "Keep recovery instructions explicit with a detailed recovery checklist, an explicit recovery sequencing map, and a compact operator summary.\n",
+			"rationaleSummary":     "Continue from the repaired frontier candidate.",
+			"expectedImprovements": []string{"operator-recovery"},
+			"preservedStrengths":   []string{"keeps the explicit recovery sequencing map"},
+			"riskNotes":            []string{"operator-follow-up may still need later polish"},
+		})),
+		"  exit 0",
+		"fi",
+		fmt.Sprintf("printf '%%s\\n' '%s' > \"$out\"", toJSONString(map[string]any{
+			"promptMarkdown":       "Keep recovery instructions explicit with a detailed recovery checklist.\n",
+			"rationaleSummary":     "Add the checklist first.",
+			"expectedImprovements": []string{"operator-follow-up"},
+			"preservedStrengths":   []string{"keeps the original recovery framing"},
+			"riskNotes":            []string{"operator-recovery sequencing may still remain too implicit"},
+		})),
+		"",
+	}, "\n"))
+	if err := os.WriteFile(filepath.Join(root, ".agents", "cautilus-adapter.yaml"), []byte(strings.Join([]string{
+		"version: 1",
+		"repo: temp-optimize-search",
+		"evaluation_surfaces:",
+		"  - prompt behavior",
+		"baseline_options:",
+		"  - baseline git ref in the same repo via {baseline_ref}",
+		"required_prerequisites: []",
+		"default_schema_file: fixtures/review.schema.json",
+		"held_out_command_templates:",
+		"  - sh evaluate.sh {scenario_results_file}",
+		"comparison_questions:",
+		"  - Did the held-out score improve?",
+		"executor_variants:",
+		"  - id: operator-review",
+		"    tool: command",
+		"    purpose: frontier promotion review",
+		"    command_template: sh {candidate_repo}/variant.sh {output_file}",
+		"",
+	}, "\n")), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	writeJSONFile(t, heldOutResultsPath, map[string]any{
+		"schemaVersion": contracts.ScenarioResultsSchema,
+		"mode":          "held_out",
+		"results": []map[string]any{
+			{
+				"scenarioId":   "operator-recovery",
+				"status":       "passed",
+				"overallScore": 95,
+				"telemetry": map[string]any{
+					"cost_usd":   0.04,
+					"durationMs": 1000,
+				},
+			},
+			{
+				"scenarioId":   "operator-follow-up",
+				"status":       "passed",
+				"overallScore": 80,
+				"telemetry": map[string]any{
+					"cost_usd":   0.03,
+					"durationMs": 900,
+				},
+			},
+		},
+	})
+	writeJSONFile(t, optimizeInputPath, map[string]any{
+		"schemaVersion":      contracts.OptimizeInputsSchema,
+		"generatedAt":        "2026-04-20T10:00:00.000Z",
+		"repoRoot":           root,
+		"optimizationTarget": "prompt",
+		"intentProfile": map[string]any{
+			"schemaVersion":   contracts.BehaviorIntentSchema,
+			"intentId":        "intent-operator-recovery-guidance",
+			"summary":         "Operator guidance should stay legible under recovery pressure.",
+			"behaviorSurface": cautilusruntime.BehaviorSurfaces["OPERATOR_BEHAVIOR"],
+		},
+		"optimizer": map[string]any{
+			"kind":   "reflection",
+			"budget": "medium",
+			"plan": map[string]any{
+				"evidenceLimit":        3,
+				"suggestedChangeLimit": 2,
+				"reviewVariantLimit":   1,
+				"historySignalLimit":   1,
+			},
+		},
+		"targetFile": map[string]any{
+			"path":   targetPath,
+			"exists": true,
+		},
+		"reportFile": filepath.Join(root, "report.json"),
+		"report": map[string]any{
+			"schemaVersion": contracts.ReportPacketSchema,
+			"generatedAt":   "2026-04-20T09:59:00.000Z",
+			"candidate":     root,
+			"baseline":      "HEAD",
+			"intent":        "Operator guidance should stay legible under recovery pressure.",
+			"intentProfile": map[string]any{
+				"schemaVersion":   contracts.BehaviorIntentSchema,
+				"intentId":        "intent-operator-recovery-guidance",
+				"summary":         "Operator guidance should stay legible under recovery pressure.",
+				"behaviorSurface": cautilusruntime.BehaviorSurfaces["OPERATOR_BEHAVIOR"],
+			},
+			"commands":            []any{},
+			"commandObservations": []any{},
+			"modesRun":            []any{},
+			"modeSummaries":       []any{},
+			"telemetry":           map[string]any{"modeCount": 0},
+			"improved":            []any{},
+			"regressed":           []any{},
+			"unchanged":           []any{},
+			"noisy":               []any{},
+			"humanReviewFindings": []any{
+				map[string]any{
+					"severity": "concern",
+					"message":  "operator-recovery still needs an explicit sequencing map",
+				},
+			},
+			"recommendation": "defer",
+		},
+		"reviewSummaryFile":   filepath.Join(root, "review-summary.json"),
+		"reviewSummary":       map[string]any{"variants": []any{}},
+		"scenarioHistoryFile": filepath.Join(root, "history.json"),
+		"scenarioHistory": map[string]any{
+			"schemaVersion": contracts.ScenarioHistorySchema,
+			"scenarioStats": map[string]any{
+				"operator-recovery": map[string]any{
+					"recentTrainResults": []any{
+						map[string]any{
+							"status":       "failed",
+							"overallScore": 80,
+							"passRate":     0,
+						},
+					},
+				},
+			},
+		},
+		"objective": map[string]any{
+			"summary":     "Propose one bounded next revision without weakening held-out, comparison, or review discipline.",
+			"constraints": []any{"Prefer repairing explicit regressions over widening scope."},
+		},
+	})
+
+	runGit(t, root, "init")
+	runGit(t, root, "config", "user.email", "test@example.com")
+	runGit(t, root, "config", "user.name", "Cautilus Test")
+	runGit(t, root, "add", ".")
+	runGit(t, root, "commit", "-m", "initial")
+	t.Setenv("PATH", root+string(os.PathListSeparator)+os.Getenv("PATH"))
+
+	_, stderr, exitCode := runCLI(t, root, "optimize", "search", "prepare-input", "--optimize-input", optimizeInputPath, "--held-out-results-file", heldOutResultsPath, "--budget", "medium", "--output", searchInputPath)
+	if exitCode != 0 {
+		t.Fatalf("optimize search prepare-input failed: %s", stderr)
+	}
+	searchInput := readJSONObjectFile(t, searchInputPath)
+	searchConfig := searchInput["searchConfig"].(map[string]any)
+	searchConfig["generationLimit"] = float64(3)
+	searchConfig["reviewCheckpointPolicy"] = "frontier_promotions"
+	mutationConfig := searchInput["mutationConfig"].(map[string]any)
+	mutationConfig["backends"] = []any{
+		map[string]any{
+			"id":      "codex-mutate",
+			"backend": "codex_exec",
+		},
+	}
+	mutationConfig["trainScenarioLimit"] = float64(1)
+	writeJSONFile(t, searchInputPath, searchInput)
+
+	stdout, stderr, exitCode := runCLI(t, root, "optimize", "search", "run", "--input", searchInputPath, "--output", searchResultPath)
+	if exitCode != 0 {
+		t.Fatalf("optimize search run failed: stdout=%s stderr=%s", stdout, stderr)
+	}
+	searchResult := readJSONObjectFile(t, searchResultPath)
+	if searchResult["status"] != "completed" {
+		t.Fatalf("unexpected search result status: %#v", searchResult)
+	}
+	diagnostics := searchResult["candidateGenerationDiagnostics"].(map[string]any)
+	attempts := diagnostics["attempts"].([]any)
+	if len(attempts) != 3 {
+		t.Fatalf("expected three generation attempts, got %#v", diagnostics)
+	}
+	thirdAttempt := attempts[2].(map[string]any)
+	eligibility := thirdAttempt["mutationParentEligibility"].([]any)
+	if len(eligibility) < 2 {
+		t.Fatalf("expected frontier eligibility diagnostics on third generation, got %#v", thirdAttempt)
+	}
+	byCandidateID := map[string]map[string]any{}
+	for _, raw := range eligibility {
+		record := raw.(map[string]any)
+		byCandidateID[record["candidateId"].(string)] = record
+	}
+	g1 := byCandidateID["g1-1-codex-exec"]
+	g2 := byCandidateID["g2-1-codex-exec"]
+	if len(g1) == 0 || g1["reason"] != "repair_window_expired" || g1["eligible"] != false {
+		t.Fatalf("expected first rejected lineage to explain expired repair window, got %#v", eligibility)
+	}
+	if len(g2) == 0 || g2["reason"] != "frontier_candidate" || g2["eligible"] != true {
+		t.Fatalf("expected repaired frontier candidate to stay eligible, got %#v", eligibility)
+	}
+	if thirdAttempt["selectedParentCandidateId"] != "g2-1-codex-exec" {
+		t.Fatalf("expected third generation to continue from repaired frontier candidate, got %#v", thirdAttempt["selectedParentCandidateId"])
 	}
 }
 

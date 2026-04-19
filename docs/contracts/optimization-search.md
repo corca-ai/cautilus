@@ -241,6 +241,7 @@ Current runtime note:
 - the shipped Go runner reuses those frontier-promotion review checkpoints during final selection instead of rerunning the same candidate review
 - the shipped Go runner now preserves rejected frontier-promotion review feedback on the candidate record and reinjects that feedback into later mutation prompts when the policy enables checkpoint feedback
 - the shipped Go runner now uses `trainScenarioLimit` to choose a bounded reflection batch and filters reinjected checkpoint feedback to the reflected scenarios
+- the shipped Go runner now materializes mutation prompts as structured search-context artifacts instead of raw freeform evidence dumps
 - the shipped Go runner now executes final review and final full-gate checkpoints when the adapter exposes those surfaces
 - the current runner evaluates one reflective mutation per generation until `generationLimit` or total candidate count is exhausted
 - by default that mutation follows the best current frontier candidate, but a frontier-promotion review-rejected lineage may take one bounded repair generation before it is pruned

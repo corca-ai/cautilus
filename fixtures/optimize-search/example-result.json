@@ -168,6 +168,16 @@
         "rankedParentFrontierIds": [
           "seed"
         ],
+        "eligibleMutationParentIds": [
+          "seed"
+        ],
+        "mutationParentEligibility": [
+          {
+            "candidateId": "seed",
+            "eligible": true,
+            "reason": "frontier_candidate"
+          }
+        ],
         "selectedParentCandidateId": "seed",
         "generatedCandidateIds": [],
         "generatedCandidateCount": 0,
