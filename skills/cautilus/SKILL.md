@@ -200,8 +200,9 @@ cautilus review variants \
    bootstrap inventory. Use it to turn normalized evidence into bounded
    scenarios before widening adapter YAML by hand. For the concrete
    invocations across skill test / skill evaluate / scenario normalize /
-   report build / mode evaluate / review / evidence / optimize / review
-   variants, see [command-cookbook.md](references/command-cookbook.md).
+   scenario conversation review / report build / mode evaluate / review /
+   evidence / optimize / review variants, see
+   [command-cookbook.md](references/command-cookbook.md).
 
 ## Current Report Surface
 
@@ -236,6 +237,9 @@ memory.
 
 - `report.json`: first machine-readable decision packet for held-out, full-gate,
   or explicit report assembly.
+- `conversation-review.json`: read-only scenario-centric conversation review
+  packet that links normalized chatbot threads to scenario proposals and
+  coverage hints without becoming a generic audit browser.
 - `review.json`: durable review packet built around one report plus adapter-owned
   prompt and artifact context.
 - `review-prompt-input.json`: portable meta-prompt packet for human or model

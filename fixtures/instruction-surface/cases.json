@@ -10,8 +10,7 @@
       "expectedEntryFile": "AGENTS.md",
       "requiredInstructionFiles": ["AGENTS.md"],
       "expectedRouting": {
-        "bootstrapHelper": "charness:find-skills",
-        "workSkill": "charness:impl"
+        "selectedSkill": "none"
       }
     },
     {

@@ -27,7 +27,7 @@ adapter-owned runner for a local skill. Fall back to `skill evaluate` when the
 host already produced a normalized observed packet and only needs the product
 summary/recommendation layer.
 
-## Scenario normalize / prepare / propose / telemetry
+## Scenario normalize / prepare / propose / conversation review / telemetry
 
 ```bash
 cautilus scenario normalize chatbot \
@@ -44,6 +44,12 @@ cautilus scenario prepare-input \
 
 cautilus scenario propose \
   --input ./fixtures/scenario-proposals/standalone-input.json
+
+cautilus scenario review-conversations \
+  --input ./fixtures/scenario-conversation-review/input.json
+
+cautilus scenario render-conversation-review-html \
+  --input /tmp/cautilus-scenario-review/conversation-review.json
 
 cautilus scenario summarize-telemetry \
   --results ./fixtures/scenario-proposals/results.json

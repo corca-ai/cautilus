@@ -14,10 +14,11 @@
       "loadedInstructionFiles": ["AGENTS.md"],
       "loadedSupportingFiles": [],
       "routingDecision": {
-        "selectedSkill": "charness:impl",
-        "bootstrapHelper": "charness:find-skills",
-        "workSkill": "charness:impl",
-        "firstToolCall": "functions.exec_command"
+        "selectedSkill": "none",
+        "bootstrapHelper": "none",
+        "workSkill": "none",
+        "firstToolCall": "none",
+        "reasonSummary": "The repo instruction surface is sufficient to answer the routing question itself, so no bootstrap helper or durable work skill is committed yet."
       },
       "instructionSurface": {
         "surfaceLabel": "workspace_checked_in",
@@ -32,8 +33,7 @@
       "expectedEntryFile": "AGENTS.md",
       "requiredInstructionFiles": ["AGENTS.md"],
       "expectedRouting": {
-        "bootstrapHelper": "charness:find-skills",
-        "workSkill": "charness:impl"
+        "selectedSkill": "none"
       },
       "artifactRefs": []
     }

@@ -22,7 +22,7 @@ These are part of the reusable release boundary:
 - [scripts/release/verify-public-release.mjs](../../scripts/release/verify-public-release.mjs)
 - [docs/contracts/](../contracts)
 - [fixtures/review/review-verdict.schema.json](../../fixtures/review/review-verdict.schema.json)
-- checked-in product example fixtures under [fixtures/scenario-proposals/](../../fixtures/scenario-proposals), and [fixtures/reports/](../../fixtures/reports)
+- checked-in product example fixtures under [fixtures/scenario-proposals/](../../fixtures/scenario-proposals), [fixtures/scenario-conversation-review/](../../fixtures/scenario-conversation-review), and [fixtures/reports/](../../fixtures/reports)
 
 ## Consumer-Owned Surface
 

@@ -162,7 +162,7 @@
 8. `#16` [Absorb consumer-facing audit workbench UI into cautilus](https://github.com/corca-ai/cautilus/issues/16)
    issue body 전체를 한 번에 삼키지 않고 첫 shipped slice 로 잘랐다.
    `scenario review-conversations` 는 normalized chatbot threads 와 proposal candidates 를 읽어 scenario-centric conversation review packet 을 만들고, `scenario render-conversation-review-html` 는 같은 packet 을 read-only HTML 로 다시 연다.
-   대신 multi-instance discovery, generic live-run invocation, interactive read-write workbench, generic operator traffic audit 는 의도적으로 남겨 두었다.
+   대신 multi-instance discovery/data roots 는 `#17`, generic live-run invocation seam 은 `#18` 로 분리했고, interactive read-write workbench 와 generic operator traffic audit 는 의도적으로 남겨 두었다.
 
 ## Charness Follow-Up
 
@@ -194,6 +194,7 @@
    최소한 `report.json` 의 `.adapterContext`, `optimize-input.json`, `optimize-search-input.json`, 그리고 기대한 adapter name/context 를 받아야 exact loss point 를 잡을 수 있다.
 6. `#16` 이후 남은 workbench follow-up 은 이제 둘로 분리해서 보면 된다.
    conversation review 는 product-owned 로 이미 올라왔고, 남은 것은 multi-instance discovery/data roots 와 generic live-run invocation seam 이다.
+   tracker 는 각각 `#17`, `#18` 이다.
    둘 다 interactive read-write UI 나 consumer-specific audit surface 로 곧장 뛰기보다 adapter contract 부터 다시 잡는 편이 맞다.
 
 ## Stop Checks
