@@ -159,11 +159,14 @@
       "suggestedChangeCount": 3,
       "sourceCounts": {
         "regressed": 1,
+        "reportReviewFinding": 0,
         "reviewFindings": 1,
         "noisy": 1,
+        "compareReasons": 0,
         "historySignals": 1,
         "improved": 0
       },
+      "deprioritizedEvidence": [],
       "plan": {
         "evidenceLimit": 5,
         "suggestedChangeLimit": 3,
@@ -395,11 +398,14 @@
     "suggestedChangeCount": 3,
     "sourceCounts": {
       "regressed": 1,
+      "reportReviewFinding": 0,
       "reviewFindings": 1,
       "noisy": 1,
+      "compareReasons": 0,
       "historySignals": 1,
       "improved": 0
     },
+    "deprioritizedEvidence": [],
     "plan": {
       "evidenceLimit": 5,
       "suggestedChangeLimit": 3,

@@ -2233,6 +2233,105 @@ func TestCLIOptimizePrepareInputProposeAndBuildArtifact(t *testing.T) {
 	}
 }
 
+func TestCLIOptimizeProposePrioritizesResidualReportHotspotsBeforeImprovedFallback(t *testing.T) {
+	root := t.TempDir()
+	reportPath := filepath.Join(root, "report.json")
+	targetPath := filepath.Join(root, "prompt.md")
+	inputPath := filepath.Join(root, "optimize-input.json")
+	proposalPath := filepath.Join(root, "optimize-proposal.json")
+	if err := os.WriteFile(targetPath, []byte("Keep operator escalation wording explicit.\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+
+	writeJSONFile(t, reportPath, map[string]any{
+		"schemaVersion": contracts.ReportPacketSchema,
+		"generatedAt":   "2026-04-19T00:02:00.000Z",
+		"candidate":     "feature/operator-hotspots",
+		"baseline":      "origin/main",
+		"intent":        "Operator escalation guidance should stay explicit.",
+		"intentProfile": map[string]any{
+			"schemaVersion":   contracts.BehaviorIntentSchema,
+			"intentId":        "intent-operator-escalation-hotspots",
+			"summary":         "Operator escalation guidance should stay explicit.",
+			"behaviorSurface": cautilusruntime.BehaviorSurfaces["OPERATOR_BEHAVIOR"],
+		},
+		"commands":            []any{},
+		"commandObservations": []any{},
+		"modesRun":            []string{"held_out"},
+		"modeSummaries":       []any{},
+		"modeRuns": []any{
+			map[string]any{
+				"mode": "held_out",
+				"scenarioResults": map[string]any{
+					"schemaVersion": contracts.ScenarioResultsSchema,
+					"generatedAt":   "2026-04-19T00:01:00.000Z",
+					"mode":          "held_out",
+					"results": []any{
+						map[string]any{
+							"scenarioId": "operator-escalation-smoke",
+							"status":     "passed",
+						},
+					},
+					"compareArtifact": map[string]any{
+						"schemaVersion": contracts.CompareArtifactSchema,
+						"generatedAt":   "2026-04-19T00:01:00.000Z",
+						"verdict":       "improved",
+						"summary":       "The escalation wording improved overall.",
+						"improved":      []any{"operator-escalation-smoke"},
+						"reasons": []any{
+							"operator-escalation-smoke: improved retry wording clarity 0.72->0.85.",
+							"operator-escalation-smoke: remaining gaps: escalation wording still has 2 FP and 1 FN.",
+						},
+					},
+				},
+			},
+		},
+		"telemetry": []any{},
+		"improved":  []any{"operator-escalation-smoke"},
+		"regressed": []any{},
+		"unchanged": []any{},
+		"noisy":     []any{},
+		"humanReviewFindings": []any{
+			map[string]any{
+				"severity": "concern",
+				"message":  "Residual escalation wording still over-triggers on benign retries.",
+				"path":     "prompt.md",
+			},
+		},
+		"recommendation": "defer",
+	})
+
+	_, stderr, exitCode := runCLI(t, root, "optimize", "prepare-input", "--repo-root", root, "--report-file", reportPath, "--target", "prompt", "--target-file", targetPath, "--output", inputPath)
+	if exitCode != 0 {
+		t.Fatalf("optimize prepare-input failed: %s", stderr)
+	}
+	_, stderr, exitCode = runCLI(t, root, "optimize", "propose", "--input", inputPath, "--output", proposalPath)
+	if exitCode != 0 {
+		t.Fatalf("optimize propose failed: %s", stderr)
+	}
+	proposal := readJSONObjectFile(t, proposalPath)
+	prioritizedEvidence := proposal["prioritizedEvidence"].([]any)
+	if len(prioritizedEvidence) < 2 {
+		t.Fatalf("expected residual evidence entries, got %#v", proposal)
+	}
+	firstEvidence := prioritizedEvidence[0].(map[string]any)
+	secondEvidence := prioritizedEvidence[1].(map[string]any)
+	if firstEvidence["source"] != "report.review_finding" {
+		t.Fatalf("expected report review finding first, got %#v", prioritizedEvidence)
+	}
+	if secondEvidence["source"] != "report.compare_reason" {
+		t.Fatalf("expected residual compare reason second, got %#v", prioritizedEvidence)
+	}
+	if strings.Contains(anyToString(firstEvidence["summary"]), "Improved scenario") {
+		t.Fatalf("expected residual hotspot summary, got %#v", firstEvidence)
+	}
+	trialTelemetry := proposal["trialTelemetry"].(map[string]any)
+	sourceCounts := trialTelemetry["sourceCounts"].(map[string]any)
+	if sourceCounts["reportReviewFinding"] != float64(1) || sourceCounts["compareReasons"] != float64(1) || sourceCounts["improved"] != float64(0) {
+		t.Fatalf("unexpected proposal telemetry source counts: %#v", trialTelemetry)
+	}
+}
+
 func TestCLIOptimizeSearchPrepareRunAndProposeFromSearch(t *testing.T) {
 	root := t.TempDir()
 	reportPath := filepath.Join(root, "report.json")

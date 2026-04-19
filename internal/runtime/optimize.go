@@ -27,9 +27,9 @@ var optimizerBudgets = map[string]map[string]any{
 }
 
 var optimizerSourcePriority = map[string][]string{
-	"repair":           {"report.regressed", "review.finding", "report.noisy", "scenario_history", "report.improved"},
-	"reflection":       {"review.finding", "report.noisy", "report.regressed", "scenario_history", "report.improved"},
-	"history_followup": {"scenario_history", "report.regressed", "review.finding", "report.noisy", "report.improved"},
+	"repair":           {"report.regressed", "report.noisy", "report.review_finding", "review.finding", "report.compare_reason", "scenario_history", "report.improved"},
+	"reflection":       {"report.regressed", "report.noisy", "report.review_finding", "review.finding", "report.compare_reason", "scenario_history", "report.improved"},
+	"history_followup": {"report.regressed", "report.noisy", "report.review_finding", "review.finding", "report.compare_reason", "scenario_history", "report.improved"},
 }
 
 var optimizeSeverityPriority = map[string]int{"blocker": 0, "high": 1, "medium": 2, "concern": 2, "low": 3}
@@ -132,8 +132,13 @@ func GenerateOptimizeProposal(packet map[string]any, inputFile *string, now time
 		return nil, err
 	}
 	evidenceUniverse := buildEvidenceUniverse(packet, optimizer)
-	prioritizedEvidence := buildPrioritizedEvidence(evidenceUniverse, optimizer)
+	rankedEvidence := rankOptimizeEvidence(evidenceUniverse, optimizer)
+	prioritizedEvidence := buildPrioritizedEvidence(rankedEvidence, optimizer)
 	evidence := prioritizedEvidence
+	deprioritizedEvidence := []map[string]any{}
+	if len(rankedEvidence) > len(prioritizedEvidence) {
+		deprioritizedEvidence = rankedEvidence[len(prioritizedEvidence):]
+	}
 	if len(evidence) == 0 {
 		evidence = buildFallbackOptimizeEvidence(packet)
 	}
@@ -154,7 +159,7 @@ func GenerateOptimizeProposal(packet map[string]any, inputFile *string, now time
 		"prioritizedEvidence":  evidence,
 		"suggestedChanges":     suggestedChanges,
 		"revisionBrief":        buildRevisionBrief(packet, decision, evidence, suggestedChanges),
-		"trialTelemetry":       buildTrialTelemetry(optimizer, evidenceUniverse, evidence, suggestedChanges),
+		"trialTelemetry":       buildTrialTelemetry(optimizer, evidenceUniverse, evidence, deprioritizedEvidence, suggestedChanges),
 		"stopConditions": []string{
 			"Stop after one bounded revision.",
 			"Do not weaken held-out, comparison, or structured review gates to make the candidate pass.",
@@ -257,6 +262,7 @@ func buildEvidenceUniverse(packet map[string]any, optimizer map[string]any) []ma
 			"provenance": map[string]any{"packet": "report", "locator": "regressed." + scenario},
 		})
 	}
+	evidence = append(evidence, gatherOptimizeReportReviewFindings(report)...)
 	evidence = append(evidence, gatherOptimizeReviewFindings(packet, int(numberOrDefault(asMap(optimizer["plan"])["reviewVariantLimit"], 2)))...)
 	for _, rawScenario := range arrayOrEmpty(report["noisy"]) {
 		scenario := normalizeScenarioKey(rawScenario, 0, "noisy")
@@ -269,7 +275,38 @@ func buildEvidenceUniverse(packet map[string]any, optimizer map[string]any) []ma
 			"provenance": map[string]any{"packet": "report", "locator": "noisy." + scenario},
 		})
 	}
+	evidence = append(evidence, gatherOptimizeResidualCompareReasons(report)...)
 	evidence = append(evidence, gatherOptimizeHistorySignals(asMap(packet["scenarioHistory"]), int(numberOrDefault(asMap(optimizer["plan"])["historySignalLimit"], 2)))...)
+	return evidence
+}
+
+func gatherOptimizeReportReviewFindings(report map[string]any) []map[string]any {
+	evidence := []map[string]any{}
+	for index, rawFinding := range arrayOrEmpty(report["humanReviewFindings"]) {
+		finding := asMap(rawFinding)
+		message := strings.TrimSpace(stringOrEmpty(finding["message"]))
+		if message == "" {
+			continue
+		}
+		severity := strings.ToLower(stringOrEmpty(finding["severity"]))
+		if severity == "" {
+			severity = "concern"
+		}
+		path := strings.TrimSpace(stringOrEmpty(finding["path"]))
+		key := fmt.Sprintf("report:%d", index)
+		if path != "" {
+			key = "report:" + path
+		}
+		evidence = append(evidence, map[string]any{
+			"source":     "report.review_finding",
+			"key":        key,
+			"severity":   severity,
+			"summary":    fmt.Sprintf("Report review %s: %s", severity, message),
+			"message":    message,
+			"path":       nilIfEmpty(path),
+			"provenance": map[string]any{"packet": "report", "locator": fmt.Sprintf("humanReviewFindings.%d", index)},
+		})
+	}
 	return evidence
 }
 
@@ -313,6 +350,68 @@ func gatherOptimizeReviewFindings(packet map[string]any, reviewVariantLimit int)
 	return evidence
 }
 
+func gatherOptimizeResidualCompareReasons(report map[string]any) []map[string]any {
+	evidence := []map[string]any{}
+	for modeIndex, rawModeRun := range arrayOrEmpty(report["modeRuns"]) {
+		modeRun := asMap(rawModeRun)
+		mode := firstNonEmpty(stringOrEmpty(modeRun["mode"]), fmt.Sprintf("mode-%d", modeIndex+1))
+		compareArtifact := asMap(asMap(modeRun["scenarioResults"])["compareArtifact"])
+		for reasonIndex, rawReason := range arrayOrEmpty(compareArtifact["reasons"]) {
+			reason := strings.TrimSpace(stringOrEmpty(rawReason))
+			if reason == "" || !optimizeCompareReasonLooksResidual(reason) {
+				continue
+			}
+			key := fmt.Sprintf("%s:%d", mode, reasonIndex)
+			evidence = append(evidence, map[string]any{
+				"source":     "report.compare_reason",
+				"key":        key,
+				"severity":   optimizeCompareReasonSeverity(reason),
+				"summary":    "Residual compare gap: " + reason,
+				"message":    reason,
+				"provenance": map[string]any{"packet": "report", "locator": fmt.Sprintf("modeRuns.%d.scenarioResults.compareArtifact.reasons.%d", modeIndex, reasonIndex)},
+			})
+		}
+	}
+	return evidence
+}
+
+func optimizeCompareReasonLooksResidual(reason string) bool {
+	lower := strings.ToLower(strings.TrimSpace(reason))
+	if lower == "" {
+		return false
+	}
+	for _, marker := range []string{
+		"remaining gap",
+		"remaining gaps",
+		"remaining issue",
+		"remaining hotspot",
+		"residual",
+		"still has",
+		"false positive",
+		"false negative",
+		" fp",
+		"fn ",
+		" miss",
+		"gap:",
+		"hotspot",
+	} {
+		if strings.Contains(lower, marker) {
+			return true
+		}
+	}
+	return false
+}
+
+func optimizeCompareReasonSeverity(reason string) string {
+	lower := strings.ToLower(reason)
+	for _, marker := range []string{"blocker", "regress", "false positive", "false negative", "still has"} {
+		if strings.Contains(lower, marker) {
+			return "high"
+		}
+	}
+	return "medium"
+}
+
 func gatherOptimizeHistorySignals(history map[string]any, limit int) []map[string]any {
 	evidence := []map[string]any{}
 	for scenarioID, rawStats := range asMap(history["scenarioStats"]) {
@@ -341,21 +440,26 @@ func gatherOptimizeHistorySignals(history map[string]any, limit int) []map[strin
 	return evidence
 }
 
-func buildPrioritizedEvidence(evidence []map[string]any, optimizer map[string]any) []any {
+func rankOptimizeEvidence(evidence []map[string]any, optimizer map[string]any) []map[string]any {
 	sourcePriority := optimizerSourcePriority[stringOrEmpty(optimizer["kind"])]
-	sort.Slice(evidence, func(left, right int) bool {
-		leftSourceRank := indexOf(sourcePriority, stringOrEmpty(evidence[left]["source"]))
-		rightSourceRank := indexOf(sourcePriority, stringOrEmpty(evidence[right]["source"]))
+	ranked := append([]map[string]any{}, evidence...)
+	sort.Slice(ranked, func(left, right int) bool {
+		leftSourceRank := indexOf(sourcePriority, stringOrEmpty(ranked[left]["source"]))
+		rightSourceRank := indexOf(sourcePriority, stringOrEmpty(ranked[right]["source"]))
 		if leftSourceRank != rightSourceRank {
 			return leftSourceRank < rightSourceRank
 		}
-		leftSeverity := optimizeSeverityPriority[stringOrEmpty(evidence[left]["severity"])]
-		rightSeverity := optimizeSeverityPriority[stringOrEmpty(evidence[right]["severity"])]
+		leftSeverity := optimizeSeverityPriority[stringOrEmpty(ranked[left]["severity"])]
+		rightSeverity := optimizeSeverityPriority[stringOrEmpty(ranked[right]["severity"])]
 		if leftSeverity != rightSeverity {
 			return leftSeverity < rightSeverity
 		}
-		return stringOrEmpty(evidence[left]["summary"]) < stringOrEmpty(evidence[right]["summary"])
+		return stringOrEmpty(ranked[left]["summary"]) < stringOrEmpty(ranked[right]["summary"])
 	})
+	return ranked
+}
+
+func buildPrioritizedEvidence(evidence []map[string]any, optimizer map[string]any) []any {
 	limit := int(numberOrDefault(asMap(optimizer["plan"])["evidenceLimit"], 5))
 	if limit < len(evidence) {
 		evidence = evidence[:limit]
@@ -399,7 +503,10 @@ func buildSuggestedChanges(packet map[string]any, evidence []any) []any {
 
 func buildPrimaryChange(packet map[string]any, evidence []any) any {
 	regressed := filterEvidenceBySource(evidence, "report.regressed")
-	reviewSignals := filterEvidenceBySource(evidence, "review.finding")
+	noisySignals := filterEvidenceBySource(evidence, "report.noisy")
+	reviewSignals := append([]any{}, filterEvidenceBySource(evidence, "report.review_finding")...)
+	reviewSignals = append(reviewSignals, filterEvidenceBySource(evidence, "review.finding")...)
+	reviewSignals = append(reviewSignals, filterEvidenceBySource(evidence, "report.compare_reason")...)
 	target := stringOrEmpty(packet["optimizationTarget"])
 	changeKind := "prompt_revision"
 	summary := "Revise the prompt to repair the cited failures before widening scope."
@@ -407,7 +514,9 @@ func buildPrimaryChange(packet map[string]any, evidence []any) any {
 		changeKind = "adapter_revision"
 		summary = "Tighten the adapter surface around the failing evidence before widening the workflow."
 	}
-	evidenceItems := append(regressed, reviewSignals...)
+	evidenceItems := append([]any{}, regressed...)
+	evidenceItems = append(evidenceItems, noisySignals...)
+	evidenceItems = append(evidenceItems, reviewSignals...)
 	if len(evidenceItems) > 3 {
 		evidenceItems = evidenceItems[:3]
 	}
@@ -419,7 +528,7 @@ func buildPrimaryChange(packet map[string]any, evidence []any) any {
 		"changeKind": changeKind,
 		"target":     target,
 		"summary":    summary,
-		"rationale":  fmt.Sprintf("%d regressed scenario(s) and %d review finding(s) currently bound the next revision.", len(regressed), len(reviewSignals)),
+		"rationale":  fmt.Sprintf("%d regressed scenario(s), %d noisy scenario(s), and %d residual hotspot(s) currently bound the next revision.", len(regressed), len(noisySignals), len(reviewSignals)),
 		"evidence":   summarizeChangeEvidence(evidenceItems),
 	}
 }
@@ -537,22 +646,28 @@ func buildFollowUpChecks(decision string) []string {
 	}
 }
 
-func buildTrialTelemetry(optimizer map[string]any, evidenceUniverse []map[string]any, prioritizedEvidence []any, suggestedChanges []any) map[string]any {
+func buildTrialTelemetry(optimizer map[string]any, evidenceUniverse []map[string]any, prioritizedEvidence []any, deprioritizedEvidence []map[string]any, suggestedChanges []any) map[string]any {
 	sourceCounts := map[string]int{
-		"regressed":      0,
-		"reviewFindings": 0,
-		"noisy":          0,
-		"historySignals": 0,
-		"improved":       0,
+		"regressed":           0,
+		"reportReviewFinding": 0,
+		"reviewFindings":      0,
+		"noisy":               0,
+		"compareReasons":      0,
+		"historySignals":      0,
+		"improved":            0,
 	}
 	for _, entry := range evidenceUniverse {
 		switch stringOrEmpty(entry["source"]) {
 		case "report.regressed":
 			sourceCounts["regressed"]++
+		case "report.review_finding":
+			sourceCounts["reportReviewFinding"]++
 		case "review.finding":
 			sourceCounts["reviewFindings"]++
 		case "report.noisy":
 			sourceCounts["noisy"]++
+		case "report.compare_reason":
+			sourceCounts["compareReasons"]++
 		case "scenario_history":
 			sourceCounts["historySignals"]++
 		case "report.improved":
@@ -565,8 +680,25 @@ func buildTrialTelemetry(optimizer map[string]any, evidenceUniverse []map[string
 		"highSignalEvidenceCount":  countHighSignalEvidence(prioritizedEvidence),
 		"suggestedChangeCount":     len(suggestedChanges),
 		"sourceCounts":             sourceCounts,
+		"deprioritizedEvidence":    summarizeOptimizeEvidence(deprioritizedEvidence, 3),
 		"plan":                     optimizer["plan"],
 	}
+}
+
+func summarizeOptimizeEvidence(evidence []map[string]any, limit int) []any {
+	if limit > 0 && len(evidence) > limit {
+		evidence = evidence[:limit]
+	}
+	result := make([]any, 0, len(evidence))
+	for _, entry := range evidence {
+		result = append(result, map[string]any{
+			"source":   entry["source"],
+			"key":      entry["key"],
+			"severity": entry["severity"],
+			"summary":  entry["summary"],
+		})
+	}
+	return result
 }
 
 func collectTargetSnapshot(targetFile map[string]any) any {

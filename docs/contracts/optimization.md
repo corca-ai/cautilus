@@ -99,7 +99,7 @@ The proposal should include:
 - optimizer configuration copied from the input packet
 - current report recommendation
 - a bounded decision: `hold`, `revise`, or `investigate`
-- prioritized evidence derived from regressions, review findings, noisy surfaces, and recent history misses
+- prioritized evidence derived from regressions, noisy surfaces, report-level review findings, residual compare reasons, executor review findings, and recent history misses
 - evidence provenance that points back to the source packet and locator
 - suggested changes with explicit change kinds such as `prompt_revision`, `adapter_revision`, `sampling_increase`, or `history_followup`
 - one revision brief
@@ -108,6 +108,7 @@ The proposal should include:
   - how many were selected under the current budget
   - how many high-signal items bound the brief
   - how many suggestions survived the bounded plan
+  - which residual hotspots were considered but not selected under the current budget
 - stop conditions and follow-up checks
 
 Current surface:
