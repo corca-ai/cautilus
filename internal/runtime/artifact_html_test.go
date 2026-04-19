@@ -121,6 +121,52 @@ func TestWriteScenarioProposalsHTMLFromFileWritesNextToInput(t *testing.T) {
 	}
 }
 
+func TestRenderScenarioConversationReviewHTMLRendersThreadsAndLinkedProposals(t *testing.T) {
+	packet := sampleScenarioConversationReview()
+	rendered := RenderScenarioConversationReviewHTML(packet)
+	for _, pattern := range []string{
+		`class="toc-nav"`,
+		`href="#context-heading"`,
+		`href="#attention-heading"`,
+		`href="#threads-heading"`,
+		`Attention Threads`,
+		`All Threads`,
+		`data-thread-key="thread-1"`,
+		`recommendation: review_existing_scenario_refresh`,
+		`retro 먼저 해주세요`,
+	} {
+		if !strings.Contains(rendered, pattern) {
+			t.Fatalf("expected %q in conversation review html", pattern)
+		}
+	}
+}
+
+func TestRenderScenarioConversationReviewHTMLFromFileRejectsWrongSchema(t *testing.T) {
+	tempDir := t.TempDir()
+	inputPath := filepath.Join(tempDir, "conversation-review.json")
+	if err := writeReportHTMLPacketFromJSON(inputPath, map[string]any{"schemaVersion": "not.conversation-review"}); err != nil {
+		t.Fatalf("setup error: %v", err)
+	}
+	if _, err := RenderScenarioConversationReviewHTMLFromFile(inputPath); err == nil {
+		t.Fatalf("expected wrong schemaVersion to be rejected")
+	}
+}
+
+func TestWriteScenarioConversationReviewHTMLFromFileWritesNextToInput(t *testing.T) {
+	tempDir := t.TempDir()
+	inputPath := filepath.Join(tempDir, "conversation-review.json")
+	if err := writeReportHTMLPacketFromJSON(inputPath, sampleScenarioConversationReview()); err != nil {
+		t.Fatalf("setup error: %v", err)
+	}
+	outputPath, err := WriteScenarioConversationReviewHTMLFromFile(inputPath, nil)
+	if err != nil {
+		t.Fatalf("WriteScenarioConversationReviewHTMLFromFile error: %v", err)
+	}
+	if outputPath != filepath.Join(tempDir, "conversation-review.html") {
+		t.Fatalf("unexpected output path: %s", outputPath)
+	}
+}
+
 // --- evidence bundle tests ---
 
 func TestRenderEvidenceBundleHTMLRendersSignalsAndSources(t *testing.T) {
@@ -239,5 +285,63 @@ func sampleEvidenceBundle() map[string]any {
 			"loopRules":   []any{"Keep source ownership explicit."},
 		},
 		"sources": []any{map[string]any{"kind": "report", "file": "/tmp/cautilus/report.json"}},
+	}
+}
+
+func sampleScenarioConversationReview() map[string]any {
+	return map[string]any{
+		"schemaVersion": "cautilus.scenario_conversation_review.v1",
+		"generatedAt":   "2026-04-19T00:00:00Z",
+		"windowDays":    float64(14),
+		"families":      []any{"fast_regression"},
+		"summary": map[string]any{
+			"threadCount":            float64(2),
+			"linkedThreadCount":      float64(1),
+			"unlinkedThreadCount":    float64(1),
+			"linkedProposalCount":    float64(1),
+			"newScenarioThreadCount": float64(0),
+			"refreshThreadCount":     float64(1),
+		},
+		"proposalTelemetry": map[string]any{
+			"mergedCandidateCount":  float64(1),
+			"returnedProposalCount": float64(1),
+		},
+		"attentionView": map[string]any{
+			"ruleVersion": "v1",
+			"threadKeys": []any{
+				"thread-1",
+			},
+			"reasonCodesByThreadKey": map[string]any{
+				"thread-1": []any{"linked_proposal", "low_recent_coverage"},
+			},
+			"matchedRuleCount": float64(1),
+			"selectedCount":    float64(1),
+			"fallbackUsed":     false,
+			"truncated":        false,
+		},
+		"threads": []any{
+			map[string]any{
+				"threadKey":       "thread-1",
+				"title":           "Refresh review-after-retro scenario from recent activity",
+				"recommendation":  "review_existing_scenario_refresh",
+				"rationale":       "1 linked proposal(s) reference this conversation. Actions: refresh_existing_scenario. At least one linked scenario has low recent coverage.",
+				"linkedProposals": []any{map[string]any{"proposalKey": "review-after-retro", "title": "Refresh review-after-retro scenario from recent activity", "action": "refresh_existing_scenario", "family": "fast_regression", "existingCoverage": map[string]any{"recentResultCount": float64(2)}}},
+				"records": []any{
+					map[string]any{"actorKind": "user", "text": "retro 먼저 해주세요"},
+					map[string]any{"actorKind": "assistant", "text": "retro를 먼저 정리하겠습니다."},
+					map[string]any{"actorKind": "user", "text": "이제 review로 돌아가죠"},
+				},
+			},
+			map[string]any{
+				"threadKey":       "thread-2",
+				"title":           "배포 전에 체크리스트를 다시 보여주세요",
+				"recommendation":  "inspect_unlinked_thread",
+				"rationale":       "No linked scenario proposal currently references this conversation.",
+				"linkedProposals": []any{},
+				"records": []any{
+					map[string]any{"actorKind": "user", "text": "배포 전에 체크리스트를 다시 보여주세요"},
+				},
+			},
+		},
 	}
 }

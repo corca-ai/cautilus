@@ -6,6 +6,7 @@ turn recent behavior evidence into a bounded evaluation decision that can be reo
 Today that job looks like this:
 
 - gather recent behavior signals and turn them into reusable scenario proposals
+- reopen scenario-adjacent chatbot conversations in a review packet that stays tied to proposal work
 - run a candidate through held-out and review-oriented checks
 - package the result into report, evidence, and review artifacts
 - reopen the same result from JSON or HTML without re-mining raw logs
@@ -21,7 +22,7 @@ It is not:
 - an open-ended autonomous optimizer
 
 The detailed packet contracts live under `docs/contracts/`.
-The main seams referenced by this page are `docs/contracts/scenario-proposal-inputs.md`, `docs/contracts/reporting.md`, `docs/contracts/evidence-bundle.md`, and `docs/contracts/review-packet.md`.
+The main seams referenced by this page are `docs/contracts/scenario-proposal-inputs.md`, `docs/contracts/scenario-conversation-review.md`, `docs/contracts/reporting.md`, `docs/contracts/evidence-bundle.md`, and `docs/contracts/review-packet.md`.
 
 ## What An Operator Gets
 
@@ -54,13 +55,16 @@ The proof below checks both the machine-readable packet boundaries and the reade
 tmpdir=$(mktemp -d)
 ./bin/cautilus scenario prepare-input --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json --family fast_regression --window-days 14 --now 2026-04-11T00:00:00.000Z --output "$tmpdir/proposal-input.json" >/dev/null
 ./bin/cautilus scenario propose --input "$tmpdir/proposal-input.json" --output "$tmpdir/proposals.json" >/dev/null
+./bin/cautilus scenario review-conversations --input ./fixtures/scenario-conversation-review/input.json --output "$tmpdir/conversation-review.json" >/dev/null
 ./bin/cautilus report build --input ./fixtures/reports/report-input.json --output "$tmpdir/report.json" >/dev/null
 ./bin/cautilus evidence prepare-input --report-file "$tmpdir/report.json" --scenario-results-file ./fixtures/scenario-results/example-results.json --output "$tmpdir/evidence-input.json" >/dev/null
 ./bin/cautilus review prepare-input --repo-root . --report-file "$tmpdir/report.json" --output "$tmpdir/review.json" >/dev/null
 grep -q '"schemaVersion": "cautilus.scenario_proposal_inputs.v1"' "$tmpdir/proposal-input.json"
 grep -q '"schemaVersion": "cautilus.scenario_proposals.v1"' "$tmpdir/proposals.json"
+grep -q '"schemaVersion": "cautilus.scenario_conversation_review.v1"' "$tmpdir/conversation-review.json"
 grep -q '"schemaVersion": "cautilus.report_packet.v2"' "$tmpdir/report.json"
 grep -q '"title": "Refresh review-after-retro scenario from recent activity"' "$tmpdir/proposals.json"
+grep -q '"recommendation": "review_existing_scenario_refresh"' "$tmpdir/conversation-review.json"
 grep -q '"intent": "The operator should understand why a workflow step failed and how to recover."' "$tmpdir/report.json"
 grep -q '"summary": "The candidate keeps the operator recovery path explicit."' "$tmpdir/report.json"
 grep -q '"objective": {' "$tmpdir/evidence-input.json"

@@ -11,6 +11,7 @@ Today that surface includes:
 - review packets
 - review summary packets
 - scenario proposal packets
+- scenario conversation review packets
 - evidence bundles
 - self-dogfood latest bundles
 - run index pages
@@ -32,21 +33,25 @@ The current HTML surface should let a reviewer answer questions like:
 ## Packet Renderer Proof
 
 ```run:shell
-# Render report, review, proposals, and evidence packets into standalone HTML pages.
+# Render report, review, scenario review, proposals, and evidence packets into standalone HTML pages.
 tmpdir=$(mktemp -d)
 ./bin/cautilus report build --input ./fixtures/reports/report-input.json --output "$tmpdir/report.json" >/dev/null
 ./bin/cautilus review prepare-input --repo-root . --report-file "$tmpdir/report.json" --output "$tmpdir/review.json" >/dev/null
+./bin/cautilus scenario review-conversations --input ./fixtures/scenario-conversation-review/input.json --output "$tmpdir/conversation-review.json" >/dev/null
 ./bin/cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json --output "$tmpdir/proposals.json" >/dev/null
 ./bin/cautilus report render-html --input "$tmpdir/report.json" --output "$tmpdir/report.html" >/dev/null
 ./bin/cautilus review render-html --input "$tmpdir/review.json" --output "$tmpdir/review.html" >/dev/null
+./bin/cautilus scenario render-conversation-review-html --input "$tmpdir/conversation-review.json" --output "$tmpdir/conversation-review.html" >/dev/null
 ./bin/cautilus scenario render-proposals-html --input "$tmpdir/proposals.json" --output "$tmpdir/proposals.html" >/dev/null
 ./bin/cautilus evidence render-html --input ./fixtures/evidence/example-bundle.json --output "$tmpdir/evidence.html" >/dev/null
 grep -q '<title>Cautilus Report — defer</title>' "$tmpdir/report.html"
 grep -q '<title>Cautilus Review Packet — defer</title>' "$tmpdir/review.html"
+grep -q '<title>Cautilus Scenario Conversation Review — 2</title>' "$tmpdir/conversation-review.html"
 grep -q '<title>Cautilus Scenario Proposals — 1</title>' "$tmpdir/proposals.html"
 grep -q '<title>Cautilus Evidence Bundle — 5 signals</title>' "$tmpdir/evidence.html"
 grep -q 'The operator should understand why a workflow step failed and how to recover.' "$tmpdir/report.html"
 grep -q 'Does the current deterministic self-consumer gate stay honest about what it actually proves for the product repo?' "$tmpdir/review.html"
+grep -q 'review_existing_scenario_refresh' "$tmpdir/conversation-review.html"
 grep -q 'Refresh review-after-retro scenario from recent activity' "$tmpdir/proposals.html"
 grep -q 'Regressed evidence: operator-recovery' "$tmpdir/evidence.html"
 ```

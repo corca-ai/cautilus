@@ -94,6 +94,7 @@ Typical failures are forgetting prior turns, answering when it should clarify, o
 CLI: `cautilus scenario normalize chatbot --input logs.json`
 For agent: "Run a chatbot regression with these logs and my new system prompt."
 You get reopenable `proposals.json` candidates that can be kept out of tuning as protected checks.
+When you want a read-only operator page before promoting or refreshing scenarios, use `cautilus scenario review-conversations --input ...` and `cautilus scenario render-conversation-review-html --input ...` against normalized chatbot threads plus proposal candidates.
 
 ### 2. Skill / agent execution regression
 

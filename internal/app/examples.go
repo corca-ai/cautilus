@@ -144,6 +144,58 @@ const reportBuildExampleInput = `{
 }
 `
 
+const scenarioConversationReviewExampleInput = `{
+  "schemaVersion": "cautilus.scenario_conversation_review_inputs.v1",
+  "windowDays": 14,
+  "families": ["fast_regression"],
+  "conversationSummaries": [
+    {
+      "threadKey": "thread-1",
+      "lastObservedAt": "2026-04-09T21:00:00.000Z",
+      "records": [
+        {"actorKind": "user", "text": "retro 먼저 해주세요"},
+        {"actorKind": "assistant", "text": "retro를 먼저 정리하겠습니다."},
+        {"actorKind": "user", "text": "이제 review로 돌아가죠"}
+      ]
+    }
+  ],
+  "proposalCandidates": [
+    {
+      "proposalKey": "review-after-retro",
+      "title": "Refresh review-after-retro scenario from recent activity",
+      "family": "fast_regression",
+      "name": "Review After Retro",
+      "description": "The user pivots from retro back to review in one thread.",
+      "brief": "Recent activity shows a retro turn followed by a review turn.",
+      "simulatorTurns": ["retro 먼저 해주세요", "이제 review로 돌아가죠"],
+      "evidence": [
+        {
+          "sourceKind": "human_conversation",
+          "title": "review after retro",
+          "threadKey": "thread-1",
+          "observedAt": "2026-04-09T21:00:00.000Z",
+          "messages": ["retro 먼저 해주세요", "이제 review로 돌아가죠"]
+        }
+      ]
+    }
+  ],
+  "existingScenarioRegistry": [
+    {
+      "scenarioId": "review-after-retro",
+      "scenarioKey": "review-after-retro",
+      "family": "fast_regression"
+    }
+  ],
+  "scenarioCoverage": [
+    {
+      "scenarioKey": "review-after-retro",
+      "recentResultCount": 2
+    }
+  ],
+  "now": "2026-04-11T00:00:00.000Z"
+}
+`
+
 func hasExampleInputFlag(args []string) bool {
 	for _, arg := range args {
 		if arg == "--example-input" {

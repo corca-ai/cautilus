@@ -282,6 +282,48 @@ func RenderScenarioProposalsHTML(packet map[string]any) string {
 	return rewriteSelfDogfoodLinks(builder.String())
 }
 
+func RenderScenarioConversationReviewHTML(packet map[string]any) string {
+	var builder strings.Builder
+	threads := arrayOrEmpty(packet["threads"])
+	attentionView := asMap(packet["attentionView"])
+	attentionThreads := selectScenarioConversationAttentionSet(threads, stringSliceOrEmptyRuntime(attentionView["threadKeys"]))
+	title := fmt.Sprintf("Cautilus Scenario Conversation Review — %d", len(threads))
+	builder.WriteString("<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n")
+	builder.WriteString("<meta name=\"generator\" content=\"cautilus scenario render-conversation-review-html\">\n")
+	builder.WriteString("<title>" + escapeHTML(title) + "</title>\n<style>" + selfDogfoodHTMLStyles + "</style>\n</head>\n<body>\n<main>\n")
+	builder.WriteString(renderScenarioConversationHeader(packet, threads, attentionThreads))
+	builder.WriteString(renderSelfDogfoodPageTOC([]tocNavEntry{
+		{Anchor: "context-heading", Label: "Context", Status: "unknown"},
+		{Anchor: "attention-heading", Label: "Attention", Status: scenarioConversationThreadsAggregateStatus(attentionThreads)},
+		{Anchor: "threads-heading", Label: "Threads", Status: scenarioConversationThreadsAggregateStatus(threads)},
+	}))
+	builder.WriteString(renderScenarioConversationContextPanel(packet))
+	builder.WriteString(renderScenarioConversationThreadsPanel("attention-heading", "Attention Threads", attentionThreads, attentionView))
+	builder.WriteString(renderScenarioConversationThreadsPanel("threads-heading", "All Threads", threads, attentionView))
+	builder.WriteString(renderScenarioConversationFooter(packet))
+	builder.WriteString("\n</main>\n</body>\n</html>\n")
+	return rewriteSelfDogfoodLinks(builder.String())
+}
+
+func RenderScenarioConversationReviewHTMLFromFile(inputPath string) (string, error) {
+	packet, err := readJSONFile(inputPath)
+	if err != nil {
+		return "", fmt.Errorf("failed to read scenario conversation review from %s: %w", inputPath, err)
+	}
+	if packet["schemaVersion"] != contracts.ScenarioConversationReviewSchema {
+		return "", fmt.Errorf("%s must use schemaVersion %s", inputPath, contracts.ScenarioConversationReviewSchema)
+	}
+	return RenderScenarioConversationReviewHTML(packet), nil
+}
+
+func WriteScenarioConversationReviewHTMLFromFile(inputPath string, outputPath *string) (string, error) {
+	rendered, err := RenderScenarioConversationReviewHTMLFromFile(inputPath)
+	if err != nil {
+		return "", err
+	}
+	return writeRenderedHTML(defaultReportHTMLOutputPath(inputPath), outputPath, rendered)
+}
+
 func RenderScenarioProposalsHTMLFromFile(inputPath string) (string, error) {
 	packet, err := readJSONFile(inputPath)
 	if err != nil {
@@ -413,6 +455,208 @@ func renderProposalsFooter(packet map[string]any) string {
 func proposalsAggregateStatus(proposals []any) string {
 	if len(proposals) == 0 {
 		return "n/a"
+	}
+	return "unknown"
+}
+
+func renderScenarioConversationHeader(packet map[string]any, threads []any, attentionThreads []any) string {
+	color := selfDogfoodStatusColor(scenarioConversationThreadsAggregateStatus(threads))
+	return fmt.Sprintf(`
+<header class="banner" style="border-left:8px solid %s">
+	<div class="banner-title">Cautilus Scenario Conversation Review</div>
+	<div class="banner-status">
+		<span class="chip" style="background:%s">threads: %d</span>
+		<span class="chip neutral">attention: %d</span>
+		<span class="banner-meta">windowDays %s</span>
+		<span class="banner-meta">generatedAt %s</span>
+	</div>
+</header>`,
+		color,
+		color,
+		len(threads),
+		len(attentionThreads),
+		escapeHTML(defaultString(packet["windowDays"], "n/a")),
+		escapeHTML(defaultString(packet["generatedAt"], "n/a")),
+	)
+}
+
+func renderScenarioConversationContextPanel(packet map[string]any) string {
+	summary := asMap(packet["summary"])
+	families := arrayOrEmpty(packet["families"])
+	chips := make([]string, 0, len(families))
+	for _, raw := range families {
+		chips = append(chips, fmt.Sprintf(`<span class="chip neutral">%s</span>`, escapeHTML(stringOrEmpty(raw))))
+	}
+	familyLine := ""
+	if len(chips) > 0 {
+		familyLine = fmt.Sprintf(`<dt>families</dt><dd>%s</dd>`, strings.Join(chips, " "))
+	}
+	return fmt.Sprintf(`
+<section class="panel" aria-labelledby="context-heading">
+	<h2 id="context-heading">Context</h2>
+	<dl class="meta-grid">
+		<dt>windowDays</dt>
+		<dd>%s</dd>
+		<dt>threadCount</dt>
+		<dd>%s</dd>
+		<dt>linkedProposalCount</dt>
+		<dd>%s</dd>
+		<dt>unlinkedThreadCount</dt>
+		<dd>%s</dd>
+		%s
+	</dl>
+</section>`,
+		escapeHTML(defaultString(packet["windowDays"], "n/a")),
+		escapeHTML(defaultString(summary["threadCount"], "0")),
+		escapeHTML(defaultString(summary["linkedProposalCount"], "0")),
+		escapeHTML(defaultString(summary["unlinkedThreadCount"], "0")),
+		familyLine,
+	)
+}
+
+func renderScenarioConversationThreadsPanel(headingID string, title string, threads []any, attentionView map[string]any) string {
+	if len(threads) == 0 {
+		return fmt.Sprintf(`
+<section class="panel" aria-labelledby="%s">
+	<h2 id="%s">%s</h2>
+	<p class="empty">No conversation threads recorded.</p>
+</section>`, escapeHTML(headingID), escapeHTML(headingID), escapeHTML(title))
+	}
+	reasonCodesByThreadKey := asMap(attentionView["reasonCodesByThreadKey"])
+	var blocks strings.Builder
+	for _, rawThread := range threads {
+		thread := asMap(rawThread)
+		threadKey := stringOrEmpty(thread["threadKey"])
+		reasonCodes := stringSliceOrEmptyRuntime(reasonCodesByThreadKey[threadKey])
+		blocks.WriteString(fmt.Sprintf(`
+	<article class="variant" data-thread-key="%s">
+		<header class="variant-header">
+			<h3>%s <small>(%s)</small></h3>
+			<div class="variant-chips">
+				<span class="chip neutral">recommendation: %s</span>
+				<span class="chip neutral">linked proposals: %d</span>
+				<span class="chip neutral">records: %d</span>
+			</div>
+		</header>
+		<p class="variant-summary">%s</p>
+		%s
+		%s
+	</article>`,
+			escapeHTML(threadKey),
+			escapeHTML(defaultString(thread["title"], "n/a")),
+			escapeHTML(threadKey),
+			escapeHTML(defaultString(thread["recommendation"], "n/a")),
+			len(arrayOrEmpty(thread["linkedProposals"])),
+			len(arrayOrEmpty(thread["records"])),
+			escapeHTML(defaultString(thread["rationale"], "")),
+			renderScenarioConversationReasonChips(reasonCodes),
+			renderScenarioConversationThreadBody(thread),
+		))
+	}
+	return fmt.Sprintf(`
+<section class="panel" aria-labelledby="%s">
+	<h2 id="%s">%s</h2>
+	%s
+</section>`, escapeHTML(headingID), escapeHTML(headingID), escapeHTML(title), blocks.String())
+}
+
+func renderScenarioConversationReasonChips(reasonCodes []string) string {
+	if len(reasonCodes) == 0 {
+		return ""
+	}
+	chips := make([]string, 0, len(reasonCodes))
+	for _, reason := range reasonCodes {
+		chips = append(chips, fmt.Sprintf(`<span class="chip neutral">%s</span>`, escapeHTML(reason)))
+	}
+	return `<p>` + strings.Join(chips, " ") + `</p>`
+}
+
+func renderScenarioConversationThreadBody(thread map[string]any) string {
+	var sections strings.Builder
+	linkedProposals := arrayOrEmpty(thread["linkedProposals"])
+	if len(linkedProposals) > 0 {
+		sections.WriteString(`<ul class="findings">`)
+		for _, rawProposal := range linkedProposals {
+			proposal := asMap(rawProposal)
+			coverage := asMap(proposal["existingCoverage"])
+			sections.WriteString(fmt.Sprintf(`
+			<li class="finding" data-proposal-key="%s">
+				<span class="chip neutral">%s</span>
+				<div class="finding-body">
+					<div class="finding-message">%s</div>
+					<div class="finding-path">family=%s, recentResultCount=%s</div>
+				</div>
+			</li>`,
+				escapeHTML(defaultString(proposal["proposalKey"], "")),
+				escapeHTML(defaultString(proposal["action"], "n/a")),
+				escapeHTML(defaultString(proposal["title"], "n/a")),
+				escapeHTML(defaultString(proposal["family"], "n/a")),
+				escapeHTML(defaultString(coverage["recentResultCount"], "0")),
+			))
+		}
+		sections.WriteString(`</ul>`)
+	}
+	records := arrayOrEmpty(thread["records"])
+	if len(records) == 0 {
+		return sections.String()
+	}
+	sections.WriteString(`<ul class="findings">`)
+	for _, rawRecord := range records {
+		record := asMap(rawRecord)
+		actorKind := defaultString(record["actorKind"], "unknown")
+		text := defaultString(record["text"], "")
+		sections.WriteString(fmt.Sprintf(`
+		<li class="finding" data-actor-kind="%s">
+			<span class="chip neutral">%s</span>
+			<div class="finding-body"><div class="finding-message">%s</div></div>
+		</li>`,
+			escapeHTML(actorKind),
+			escapeHTML(actorKind),
+			escapeHTML(text),
+		))
+	}
+	sections.WriteString(`</ul>`)
+	return sections.String()
+}
+
+func renderScenarioConversationFooter(packet map[string]any) string {
+	return fmt.Sprintf(`
+<footer class="footer">
+	<p>Generated from <code>conversation-review.json</code> (schemaVersion <code>%s</code>).
+	Do not hand-edit this file — rerun <code>cautilus scenario render-conversation-review-html</code> to refresh.</p>
+</footer>`, escapeHTML(defaultString(packet["schemaVersion"], "n/a")))
+}
+
+func selectScenarioConversationAttentionSet(threads []any, keys []string) []any {
+	if len(keys) == 0 {
+		return []any{}
+	}
+	keySet := map[string]struct{}{}
+	for _, key := range keys {
+		keySet[key] = struct{}{}
+	}
+	selected := make([]any, 0, len(keys))
+	for _, rawThread := range threads {
+		threadKey := stringOrEmpty(asMap(rawThread)["threadKey"])
+		if _, ok := keySet[threadKey]; !ok {
+			continue
+		}
+		selected = append(selected, rawThread)
+	}
+	return selected
+}
+
+func scenarioConversationThreadsAggregateStatus(threads []any) string {
+	if len(threads) == 0 {
+		return "n/a"
+	}
+	for _, rawThread := range threads {
+		switch stringOrEmpty(asMap(rawThread)["recommendation"]) {
+		case "review_new_scenario":
+			return "concern"
+		case "review_existing_scenario_refresh":
+			return "unknown"
+		}
 	}
 	return "unknown"
 }

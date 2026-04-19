@@ -41,6 +41,16 @@
       ]
     },
     {
+      "path": ["scenario", "review-conversations"],
+      "group": "results",
+      "usage": "cautilus scenario review-conversations [args]",
+      "example": "cautilus scenario review-conversations --input ./fixtures/scenario-conversation-review/input.json",
+      "notes": [
+        "`--example-input` prints a minimal valid conversation-review input packet.",
+        "This read-only surface stays scenario-centric: it links normalized chatbot threads to scenario proposals instead of acting like a generic audit browser."
+      ]
+    },
+    {
       "path": ["instruction-surface", "test"],
       "group": "run",
       "usage": "cautilus instruction-surface test [args]",
@@ -192,6 +202,12 @@
       "group": "results",
       "usage": "cautilus scenario render-proposals-html --input <proposals.json> [--output <proposals.html>]",
       "example": "cautilus scenario render-proposals-html --input /tmp/cautilus-proposals/proposals.json"
+    },
+    {
+      "path": ["scenario", "render-conversation-review-html"],
+      "group": "results",
+      "usage": "cautilus scenario render-conversation-review-html --input <conversation-review.json> [--output <conversation-review.html>]",
+      "example": "cautilus scenario render-conversation-review-html --input /tmp/cautilus-review/conversation-review.json"
     },
     {
       "path": ["evidence", "render-html"],

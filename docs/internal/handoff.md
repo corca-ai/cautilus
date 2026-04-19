@@ -159,6 +159,10 @@
    결국 discoverability fix 로 끝내지 않고 shape 자체를 다시 잡았다.
    packet-level `limit` 는 제거했고, canonical JSON 은 full ranked `proposals` 를 agent-facing truth surface 로 유지한다.
    대신 output packet 은 `attentionView` 를 같이 내서 human-facing shortlist 를 full set 위에서 파생한다.
+8. `#16` [Absorb consumer-facing audit workbench UI into cautilus](https://github.com/corca-ai/cautilus/issues/16)
+   issue body 전체를 한 번에 삼키지 않고 첫 shipped slice 로 잘랐다.
+   `scenario review-conversations` 는 normalized chatbot threads 와 proposal candidates 를 읽어 scenario-centric conversation review packet 을 만들고, `scenario render-conversation-review-html` 는 같은 packet 을 read-only HTML 로 다시 연다.
+   대신 multi-instance discovery, generic live-run invocation, interactive read-write workbench, generic operator traffic audit 는 의도적으로 남겨 두었다.
 
 ## Charness Follow-Up
 
@@ -188,12 +192,9 @@
 5. 여러 named adapters 를 가진 consumer repo 에서 `#8` 류 repro 가 다시 오면, 여기서는 바로 diagnostics, fallback, regression test 추가를 할 수 있다.
    다만 diagnosis 자체는 outside artifact 가 필요하다.
    최소한 `report.json` 의 `.adapterContext`, `optimize-input.json`, `optimize-search-input.json`, 그리고 기대한 adapter name/context 를 받아야 exact loss point 를 잡을 수 있다.
-6. `#16` [Absorb consumer-facing audit workbench UI into cautilus](https://github.com/corca-ai/cautilus/issues/16) 는 바로 구현보다 boundary contract 설계가 먼저다.
-   follow-up comment 로 scope 는 많이 좁혀졌다.
-   `Cautilus` 가 이미 가진 것은 `chatbot` normalization, `human_conversation` evidence 를 읽는 `scenario propose`, 그리고 static `scenario render-proposals-html` surface 다.
-   아직 없는 것은 multi-instance discovery, interactive HTTP/read-write workbench surface, generic live-run invocation primitive, 그리고 scenario-adjacent conversation review packet 이다.
-   다음 세션의 좋은 첫 slice 는 implementation 이 아니라 contract 정리다:
-   local-first access model, adapter-defined instance discovery/data roots, generic live-run command seam, scenario-centric conversation review boundary.
+6. `#16` 이후 남은 workbench follow-up 은 이제 둘로 분리해서 보면 된다.
+   conversation review 는 product-owned 로 이미 올라왔고, 남은 것은 multi-instance discovery/data roots 와 generic live-run invocation seam 이다.
+   둘 다 interactive read-write UI 나 consumer-specific audit surface 로 곧장 뛰기보다 adapter contract 부터 다시 잡는 편이 맞다.
 
 ## Stop Checks
 

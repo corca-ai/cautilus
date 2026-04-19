@@ -1205,6 +1205,84 @@ func TestCLIScenarioProposePreservesFullRankedOutputAndDerivesAttentionView(t *t
 	}
 }
 
+func TestCLIScenarioReviewConversationsBuildsScenarioCentricThreadPacket(t *testing.T) {
+	root := t.TempDir()
+	inputPath := filepath.Join(root, "conversation-review-input.json")
+	outputPath := filepath.Join(root, "conversation-review.json")
+	writeJSONFile(t, inputPath, map[string]any{
+		"schemaVersion": contracts.ScenarioConversationReviewInputsSchema,
+		"windowDays":    14,
+		"families":      []any{"fast_regression"},
+		"conversationSummaries": []any{
+			map[string]any{
+				"threadKey":      "thread-1",
+				"lastObservedAt": "2026-04-09T21:00:00.000Z",
+				"records": []any{
+					map[string]any{"actorKind": "user", "text": "retro 먼저 해주세요"},
+					map[string]any{"actorKind": "assistant", "text": "retro를 먼저 정리하겠습니다."},
+					map[string]any{"actorKind": "user", "text": "이제 review로 돌아가죠"},
+				},
+			},
+			map[string]any{
+				"threadKey":      "thread-2",
+				"lastObservedAt": "2026-04-10T08:00:00.000Z",
+				"records": []any{
+					map[string]any{"actorKind": "user", "text": "배포 전에 체크리스트를 다시 보여주세요"},
+				},
+			},
+		},
+		"proposalCandidates": []any{
+			map[string]any{
+				"proposalKey":    "review-after-retro",
+				"title":          "Refresh review-after-retro scenario from recent activity",
+				"family":         "fast_regression",
+				"name":           "Review After Retro",
+				"description":    "The user pivots from retro back to review in one thread.",
+				"brief":          "Recent activity shows a retro turn followed by a review turn.",
+				"simulatorTurns": []any{"retro 먼저 해주세요", "이제 review로 돌아가죠"},
+				"evidence": []any{
+					map[string]any{
+						"sourceKind": "human_conversation",
+						"title":      "review after retro",
+						"threadKey":  "thread-1",
+						"observedAt": "2026-04-09T21:00:00.000Z",
+						"messages":   []any{"retro 먼저 해주세요", "이제 review로 돌아가죠"},
+					},
+				},
+			},
+		},
+		"existingScenarioRegistry": []any{
+			map[string]any{"scenarioKey": "review-after-retro", "family": "fast_regression"},
+		},
+		"scenarioCoverage": []any{
+			map[string]any{"scenarioKey": "review-after-retro", "recentResultCount": 2},
+		},
+		"now": "2026-04-11T00:00:00.000Z",
+	})
+
+	_, stderr, exitCode := runCLI(t, root, "scenario", "review-conversations", "--input", inputPath, "--output", outputPath)
+	if exitCode != 0 {
+		t.Fatalf("scenario review-conversations failed: %s", stderr)
+	}
+	payload := readJSONObjectFile(t, outputPath)
+	if payload["schemaVersion"] != contracts.ScenarioConversationReviewSchema {
+		t.Fatalf("expected scenario conversation review schema, got %#v", payload["schemaVersion"])
+	}
+	summary := payload["summary"].(map[string]any)
+	if summary["threadCount"] != float64(2) || summary["linkedThreadCount"] != float64(1) || summary["unlinkedThreadCount"] != float64(1) {
+		t.Fatalf("unexpected conversation review summary: %#v", summary)
+	}
+	attentionView := payload["attentionView"].(map[string]any)
+	if attentionView["selectedCount"] != float64(1) || attentionView["fallbackUsed"] != false {
+		t.Fatalf("unexpected attention view: %#v", attentionView)
+	}
+	threads := payload["threads"].([]any)
+	first := threads[0].(map[string]any)
+	if first["threadKey"] != "thread-1" || first["recommendation"] != "review_existing_scenario_refresh" {
+		t.Fatalf("unexpected first thread: %#v", first)
+	}
+}
+
 func TestCLIScenarioSummarizeTelemetryAggregatesScenarioCosts(t *testing.T) {
 	root := t.TempDir()
 	inputPath := filepath.Join(root, "results.json")
@@ -5085,6 +5163,7 @@ func TestCLIExampleInputEmitsPacketsThatRoundTripThroughTheSameCommand(t *testin
 		{"chatbot", []string{"scenario", "normalize", "chatbot"}, contracts.ChatbotNormalizationInputsSchema},
 		{"skill", []string{"scenario", "normalize", "skill"}, contracts.SkillNormalizationInputsSchema},
 		{"workflow", []string{"scenario", "normalize", "workflow"}, contracts.WorkflowNormalizationInputsSchema},
+		{"scenario-review-conversations", []string{"scenario", "review-conversations"}, contracts.ScenarioConversationReviewInputsSchema},
 		{"instruction-surface-evaluate", []string{"instruction-surface", "evaluate"}, contracts.InstructionSurfaceInputsSchema},
 		{"skill-evaluate", []string{"skill", "evaluate"}, contracts.SkillEvaluationInputsSchema},
 		{"report-build", []string{"report", "build"}, contracts.ReportInputsSchema},

@@ -132,6 +132,14 @@ cautilus scenario prepare-input \
 cautilus scenario propose \
   --input ./fixtures/scenario-proposals/standalone-input.json
 
+# build a scenario-centric conversation review packet from normalized chatbot threads
+cautilus scenario review-conversations \
+  --input ./fixtures/scenario-conversation-review/input.json
+
+# render the conversation review packet into HTML
+cautilus scenario render-conversation-review-html \
+  --input /tmp/cautilus-scenario-review/conversation-review.json
+
 # summarize scenario-level cost, token, and duration telemetry
 cautilus scenario summarize-telemetry \
   --results ./fixtures/scenario-results/example-results.json
@@ -141,6 +149,8 @@ Every normalize command plus `cautilus skill evaluate`, `cautilus instruction-su
 `cautilus scenarios --json` now exposes those same inspect commands under `exampleInputCli` for each archetype.
 `cautilus scenario propose` now preserves the full ranked `proposals` list in the canonical JSON output.
 The same packet also emits an `attentionView`, which is a bounded human-facing shortlist derived from the full ranked set.
+`cautilus scenario review-conversations` stays intentionally narrower than a generic audit UI.
+It links normalized chatbot threads to scenario proposals and coverage hints so an operator can review behavior-eval evidence without browsing every live operator turn.
 
 ## Instruction surface
 

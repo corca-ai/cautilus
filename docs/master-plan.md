@@ -45,6 +45,7 @@ Current `product-owned helper surface`:
 - `skill evaluate` packet summarizer (`cautilus.skill_evaluation_summary.v1`) for trigger and execution behavior
 - `chatbot`, `skill`, and `workflow` normalization helpers (one per first-class archetype; see [archetype-boundary.spec.md](./specs/archetype-boundary.spec.md))
 - scenario proposal packet assembly and proposal generation
+- scenario-adjacent conversation review packet and HTML surface over normalized chatbot threads plus proposal candidates
 - scenario-level telemetry summaries for cost and token transparency
 - normalized evidence-bundle input and merge helpers
 - bounded optimization input and proposal helpers

@@ -193,6 +193,8 @@ func nativeHandler(path []string) handlerFunc {
 		return handleScenarioPrepareInput
 	case "scenario propose":
 		return handleScenarioPropose
+	case "scenario review-conversations":
+		return handleScenarioReviewConversations
 	case "report build":
 		return handleReportBuild
 	case "report render-html":
@@ -217,6 +219,8 @@ func nativeHandler(path []string) handlerFunc {
 		return handleWorkspaceRenderCompareHTML
 	case "scenario render-proposals-html":
 		return handleScenarioRenderProposalsHTML
+	case "scenario render-conversation-review-html":
+		return handleScenarioRenderConversationReviewHTML
 	case "evidence render-html":
 		return handleEvidenceRenderHTML
 	case "artifacts render-index-html":
@@ -960,6 +964,34 @@ func handleScenarioPropose(repoRoot string, cwd string, args []string, stdout io
 }
 
 //nolint:errcheck // CLI stderr reporting is best-effort.
+func handleScenarioReviewConversations(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	if hasExampleInputFlag(args) {
+		fmt.Fprint(stdout, scenarioConversationReviewExampleInput)
+		return 0
+	}
+	options, err := parseInputOutputArgs(args)
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	input, err := readJSONObject(resolvePath(cwd, options.input))
+	if err != nil {
+		fmt.Fprintf(stderr, "Failed to read JSON from %s: %s\n", options.input, err)
+		return 1
+	}
+	packet, err := runtime.BuildScenarioConversationReview(input, time.Now())
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	if err := writeOutput(stdout, cwd, options.output, packet); err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	return 0
+}
+
+//nolint:errcheck // CLI stderr reporting is best-effort.
 //nolint:errcheck // CLI stderr reporting is best-effort.
 func handleReportRenderHTML(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
 	return renderJSONToHTMLCommand(args, cwd, stdout, stderr, runtime.WriteReportHTMLFromFile)
@@ -983,6 +1015,11 @@ func handleWorkspaceRenderCompareHTML(repoRoot string, cwd string, args []string
 //nolint:errcheck // CLI stderr reporting is best-effort.
 func handleScenarioRenderProposalsHTML(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
 	return renderJSONToHTMLCommand(args, cwd, stdout, stderr, runtime.WriteScenarioProposalsHTMLFromFile)
+}
+
+//nolint:errcheck // CLI stderr reporting is best-effort.
+func handleScenarioRenderConversationReviewHTML(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	return renderJSONToHTMLCommand(args, cwd, stdout, stderr, runtime.WriteScenarioConversationReviewHTMLFromFile)
 }
 
 //nolint:errcheck // CLI stderr reporting is best-effort.
