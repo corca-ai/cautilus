@@ -2339,6 +2339,175 @@ func optimizeSearchWeightedScenarioMentions(items []string, scenarioIDs []string
 	return total
 }
 
+func optimizeSearchScenarioSignalMap(packet map[string]any, feedbackSignals []string) map[string]map[string]any {
+	signals := map[string]map[string]any{}
+	report := asMap(asMap(packet["optimizeInput"])["report"])
+	for _, bucket := range []string{"regressed", "noisy", "improved", "unchanged"} {
+		for _, rawItem := range arrayOrEmpty(report[bucket]) {
+			item := asMap(rawItem)
+			scenarioID := firstNonEmpty(stringOrEmpty(rawItem), stringOrEmpty(item["scenarioId"]))
+			if scenarioID == "" {
+				continue
+			}
+			entry := signals[scenarioID]
+			if entry == nil {
+				entry = map[string]any{
+					"scenarioId": scenarioID,
+					"buckets":    []string{},
+					"feedback":   []string{},
+				}
+			}
+			entry["buckets"] = append(stringSliceOrEmptyRuntime(entry["buckets"]), bucket)
+			if reason := stringOrEmpty(item["reason"]); reason != "" {
+				entry["feedback"] = append(stringSliceOrEmptyRuntime(entry["feedback"]), reason)
+			}
+			signals[scenarioID] = entry
+		}
+	}
+	for _, rawScenarioID := range arrayOrEmpty(asMap(packet["scenarioSets"])["trainScenarioSet"]) {
+		scenarioID := strings.TrimSpace(stringOrEmpty(rawScenarioID))
+		if scenarioID == "" {
+			continue
+		}
+		entry := signals[scenarioID]
+		if entry == nil {
+			entry = map[string]any{
+				"scenarioId": scenarioID,
+				"buckets":    []string{},
+				"feedback":   []string{},
+			}
+		}
+		for _, feedback := range feedbackSignals {
+			if strings.Contains(feedback, scenarioID) {
+				entry["feedback"] = append(stringSliceOrEmptyRuntime(entry["feedback"]), feedback)
+			}
+		}
+		entry["buckets"] = uniqueStrings(stringSliceOrEmptyRuntime(entry["buckets"]))
+		entry["feedback"] = uniqueStrings(stringSliceOrEmptyRuntime(entry["feedback"]))
+		signals[scenarioID] = entry
+	}
+	return signals
+}
+
+func optimizeSearchCheckpointPriorityForScenario(candidate map[string]any, scenarioID string) int {
+	total := 0
+	for _, rawEntry := range arrayOrEmpty(candidate["checkpointFeedback"]) {
+		entry := asMap(rawEntry)
+		matchesScenario := false
+		for _, scopedScenarioID := range stringSliceOrEmptyRuntime(entry["scenarioIds"]) {
+			if scopedScenarioID == scenarioID {
+				matchesScenario = true
+				break
+			}
+		}
+		if !matchesScenario {
+			continue
+		}
+		severityWeight := 1
+		switch stringOrEmpty(entry["severity"]) {
+		case "blocker":
+			severityWeight = 100
+		case "concern":
+			severityWeight = 10
+		}
+		total += severityWeight + max(1, len(stringSliceOrEmptyRuntime(entry["feedbackMessages"])))
+	}
+	return total
+}
+
+func optimizeSearchBuildReflectionBatch(packet map[string]any, parentCandidate map[string]any) []map[string]any {
+	scenarioIDs := []string{}
+	for _, rawScenarioID := range arrayOrEmpty(asMap(packet["scenarioSets"])["trainScenarioSet"]) {
+		if scenarioID := strings.TrimSpace(stringOrEmpty(rawScenarioID)); scenarioID != "" {
+			scenarioIDs = append(scenarioIDs, scenarioID)
+		}
+	}
+	if len(scenarioIDs) == 0 {
+		return []map[string]any{}
+	}
+	feedbackSignals := optimizeSearchFeedbackSignals(packet)
+	signalMap := optimizeSearchScenarioSignalMap(packet, feedbackSignals)
+	sort.SliceStable(scenarioIDs, func(i, j int) bool {
+		leftID := scenarioIDs[i]
+		rightID := scenarioIDs[j]
+		leftCheckpoint := optimizeSearchCheckpointPriorityForScenario(parentCandidate, leftID)
+		rightCheckpoint := optimizeSearchCheckpointPriorityForScenario(parentCandidate, rightID)
+		if leftCheckpoint != rightCheckpoint {
+			return leftCheckpoint > rightCheckpoint
+		}
+		leftScore := optimizeSearchHeldOutScoreForCandidate(parentCandidate, leftID)
+		rightScore := optimizeSearchHeldOutScoreForCandidate(parentCandidate, rightID)
+		leftHasScore := !math.IsInf(leftScore, -1)
+		rightHasScore := !math.IsInf(rightScore, -1)
+		switch {
+		case leftHasScore && rightHasScore && leftScore != rightScore:
+			return leftScore < rightScore
+		case leftHasScore && !rightHasScore:
+			return true
+		case !leftHasScore && rightHasScore:
+			return false
+		default:
+			return leftID < rightID
+		}
+	})
+	limit := atLeastOne(int(numberOrDefault(asMap(packet["mutationConfig"])["trainScenarioLimit"], 1)))
+	if len(scenarioIDs) > limit {
+		scenarioIDs = scenarioIDs[:limit]
+	}
+	batch := make([]map[string]any, 0, len(scenarioIDs))
+	for _, scenarioID := range scenarioIDs {
+		entry := signalMap[scenarioID]
+		if entry == nil {
+			entry = map[string]any{
+				"scenarioId": scenarioID,
+				"buckets":    []string{},
+				"feedback":   []string{},
+			}
+		}
+		feedback := stringSliceOrEmptyRuntime(entry["feedback"])
+		if len(feedback) > 3 {
+			feedback = feedback[:3]
+		}
+		batch = append(batch, map[string]any{
+			"scenarioId": scenarioID,
+			"buckets":    stringSliceToAny(stringSliceOrEmptyRuntime(entry["buckets"])),
+			"feedback":   stringSliceToAny(feedback),
+		})
+	}
+	return batch
+}
+
+func optimizeSearchFilterCheckpointFeedbackForReflectionBatch(checkpointFeedback []any, reflectionBatch []map[string]any) []any {
+	if len(checkpointFeedback) == 0 {
+		return []any{}
+	}
+	selectedScenarioIDs := map[string]struct{}{}
+	for _, entry := range reflectionBatch {
+		if scenarioID := strings.TrimSpace(stringOrEmpty(entry["scenarioId"])); scenarioID != "" {
+			selectedScenarioIDs[scenarioID] = struct{}{}
+		}
+	}
+	if len(selectedScenarioIDs) == 0 {
+		return checkpointFeedback
+	}
+	filtered := []any{}
+	for _, rawEntry := range checkpointFeedback {
+		entry := asMap(rawEntry)
+		scopedScenarioIDs := stringSliceOrEmptyRuntime(entry["scenarioIds"])
+		if len(scopedScenarioIDs) == 0 {
+			filtered = append(filtered, rawEntry)
+			continue
+		}
+		for _, scenarioID := range scopedScenarioIDs {
+			if _, ok := selectedScenarioIDs[scenarioID]; ok {
+				filtered = append(filtered, rawEntry)
+				break
+			}
+		}
+	}
+	return filtered
+}
+
 func optimizeSearchCombinationIndexes(length int, size int) [][]int {
 	results := [][]int{}
 	if size <= 0 || size > length {
@@ -2392,14 +2561,16 @@ func optimizeSearchMutationPrompt(packet map[string]any, parentCandidate map[str
 			currentPrompt = string(payload)
 		}
 	}
-	feedback := strings.Join(optimizeSearchFeedbackSignals(packet), "\n- ")
-	if feedback != "" {
-		feedback = "- " + feedback
+	reflectionBatch := optimizeSearchBuildReflectionBatch(packet, parentCandidate)
+	reflectionBatchJSON := "[]"
+	if payload, err := json.MarshalIndent(reflectionBatch, "", "  "); err == nil {
+		reflectionBatchJSON = string(payload)
 	}
 	checkpointFeedback := "[]"
 	if includeCheckpointFeedback, _ := asMap(packet["mutationEvidencePolicy"])["includeCheckpointFeedback"].(bool); includeCheckpointFeedback {
-		if entries := arrayOrEmpty(parentCandidate["checkpointFeedback"]); len(entries) > 0 {
-			if payload, err := json.MarshalIndent(entries, "", "  "); err == nil {
+		filteredEntries := optimizeSearchFilterCheckpointFeedbackForReflectionBatch(arrayOrEmpty(parentCandidate["checkpointFeedback"]), reflectionBatch)
+		if len(filteredEntries) > 0 {
+			if payload, err := json.MarshalIndent(filteredEntries, "", "  "); err == nil {
 				checkpointFeedback = string(payload)
 			}
 		}
@@ -2413,12 +2584,12 @@ Current prompt:
 Behavior objective:
 %s
 
-Evidence to address:
+Reflection batch:
 %s
 
 Checkpoint feedback to repair:
 %s
-`, currentPrompt, stringOrEmpty(asMap(packet["objective"])["summary"]), feedback, checkpointFeedback)) + "\n"
+`, currentPrompt, stringOrEmpty(asMap(packet["objective"])["summary"]), reflectionBatchJSON, checkpointFeedback)) + "\n"
 }
 
 func optimizeSearchCollectMergeCheckpointFeedback(candidates []map[string]any, frontierIDs []string, scenarioIDs []string) []any {
