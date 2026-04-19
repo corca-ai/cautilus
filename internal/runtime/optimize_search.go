@@ -3,6 +3,7 @@ package runtime
 import (
 	"encoding/json"
 	"fmt"
+	"math"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -1874,57 +1875,37 @@ func optimizeSearchSelectMergeParents(candidates []map[string]any, rankedFrontie
 	if len(rankedFrontierIDs) < 2 {
 		return nil
 	}
-	parents := []map[string]any{}
-	coveredScenarioIDs := map[string]struct{}{}
-	for _, candidateID := range rankedFrontierIDs[:2] {
+	frontierCandidates := []map[string]any{}
+	for _, candidateID := range rankedFrontierIDs {
 		candidate := optimizeSearchCandidateByID(candidates, candidateID)
-		if candidate == nil {
-			continue
-		}
-		parents = append(parents, candidate)
-		for _, scenarioID := range optimizeSearchCandidateBestScenarioIDs(candidate, scenarioIDs, candidates, rankedFrontierIDs) {
-			coveredScenarioIDs[scenarioID] = struct{}{}
+		if candidate != nil {
+			frontierCandidates = append(frontierCandidates, candidate)
 		}
 	}
-	if len(parents) < 2 || threeParentPolicy == "disabled" || len(rankedFrontierIDs) < 3 {
-		return parents
+	if len(frontierCandidates) < 2 {
+		return nil
 	}
-	for _, candidateID := range rankedFrontierIDs[2:] {
-		candidate := optimizeSearchCandidateByID(candidates, candidateID)
-		if candidate == nil {
-			continue
-		}
-		addsCoverage := false
-		for _, scenarioID := range optimizeSearchCandidateBestScenarioIDs(candidate, scenarioIDs, candidates, rankedFrontierIDs) {
-			if _, ok := coveredScenarioIDs[scenarioID]; !ok {
-				addsCoverage = true
-				coveredScenarioIDs[scenarioID] = struct{}{}
-			}
-		}
-		if addsCoverage {
-			parents = append(parents, candidate)
-			break
-		}
+	scenarioWeights := optimizeSearchMergeScenarioPriorityWeights(frontierCandidates, scenarioIDs, candidates)
+	checkpointRepairWeights := optimizeSearchMergeCheckpointRepairWeights(candidates, scenarioIDs)
+	bestFrontierScores := optimizeSearchMergeFrontierBestScores(frontierCandidates, scenarioIDs)
+	bestPair := optimizeSearchBestMergeGroup(frontierCandidates, 2, scenarioIDs, scenarioWeights, checkpointRepairWeights, bestFrontierScores)
+	if bestPair == nil {
+		return nil
 	}
-	return parents
-}
-
-func optimizeSearchCandidateBestScenarioIDs(candidate map[string]any, scenarioIDs []string, candidates []map[string]any, frontierIDs []string) []string {
-	bestScenarioIDs := []string{}
-	candidateID := stringOrEmpty(candidate["id"])
-	for _, scenarioID := range scenarioIDs {
-		bestScore := -1.0
-		for _, frontierID := range frontierIDs {
-			score := optimizeSearchScoreForCandidate(optimizeSearchHeldOutMatrix(candidates), frontierID, scenarioID)
-			if score > bestScore {
-				bestScore = score
-			}
-		}
-		if optimizeSearchScoreForCandidate(optimizeSearchHeldOutMatrix(candidates), candidateID, scenarioID) == bestScore {
-			bestScenarioIDs = append(bestScenarioIDs, scenarioID)
-		}
+	if len(frontierCandidates) < 3 || threeParentPolicy == "disabled" {
+		return bestPair.Candidates
 	}
-	return uniqueStrings(bestScenarioIDs)
+	bestTriple := optimizeSearchBestMergeGroup(frontierCandidates, 3, scenarioIDs, scenarioWeights, checkpointRepairWeights, bestFrontierScores)
+	if bestTriple == nil {
+		return bestPair.Candidates
+	}
+	if threeParentPolicy == "coverage_expansion" && bestTriple.Metrics.Coverage <= bestPair.Metrics.Coverage {
+		return bestPair.Candidates
+	}
+	if optimizeSearchCompareMergeGroupMetrics(bestTriple.Metrics, bestPair.Metrics) > 0 {
+		return bestTriple.Candidates
+	}
+	return bestPair.Candidates
 }
 
 func optimizeSearchHasFingerprint(candidates []map[string]any, fingerprint string) bool {
@@ -1947,6 +1928,356 @@ func candidateIDList(candidates []map[string]any) []any {
 		}
 	}
 	return result
+}
+
+type optimizeSearchMergeGroup struct {
+	Candidates []map[string]any
+	Metrics    optimizeSearchMergeGroupMetrics
+}
+
+type optimizeSearchMergeGroupMetrics struct {
+	Coverage                  int
+	WeakestScore              float64
+	Average                   float64
+	CheckpointRepairWeight    float64
+	CheckpointRepairCoverage  int
+	ParentCount               int
+	PriorityImprovementWeight float64
+	ImprovementCoverage       int
+	ImprovementDiversity      int
+	StrengthCount             int
+	PriorityRiskPenalty       float64
+	RiskPenalty               int
+	TotalCostUsd              float64
+	TotalDurationMs           float64
+}
+
+func optimizeSearchBestMergeGroup(frontierCandidates []map[string]any, size int, scenarioIDs []string, scenarioWeights map[string]float64, checkpointRepairWeights map[string]float64, bestFrontierScores map[string]float64) *optimizeSearchMergeGroup {
+	if len(frontierCandidates) < size || size < 2 {
+		return nil
+	}
+	var best *optimizeSearchMergeGroup
+	for _, indexes := range optimizeSearchCombinationIndexes(len(frontierCandidates), size) {
+		group := make([]map[string]any, 0, size)
+		for _, index := range indexes {
+			group = append(group, frontierCandidates[index])
+		}
+		candidateGroup := &optimizeSearchMergeGroup{
+			Candidates: group,
+			Metrics:    optimizeSearchMergeGroupMetricsForCandidates(group, scenarioIDs, scenarioWeights, checkpointRepairWeights, bestFrontierScores),
+		}
+		if best == nil || optimizeSearchCompareMergeGroupMetrics(candidateGroup.Metrics, best.Metrics) > 0 {
+			best = candidateGroup
+		}
+	}
+	return best
+}
+
+func optimizeSearchCompareMergeGroupMetrics(left optimizeSearchMergeGroupMetrics, right optimizeSearchMergeGroupMetrics) int {
+	switch {
+	case left.Coverage != right.Coverage:
+		return compareInt(left.Coverage, right.Coverage)
+	case left.WeakestScore != right.WeakestScore:
+		return compareFloat(left.WeakestScore, right.WeakestScore)
+	case left.Average != right.Average:
+		return compareFloat(left.Average, right.Average)
+	case left.CheckpointRepairWeight != right.CheckpointRepairWeight:
+		return compareFloat(left.CheckpointRepairWeight, right.CheckpointRepairWeight)
+	case left.CheckpointRepairCoverage != right.CheckpointRepairCoverage:
+		return compareInt(left.CheckpointRepairCoverage, right.CheckpointRepairCoverage)
+	case left.ParentCount != right.ParentCount:
+		return compareInt(right.ParentCount, left.ParentCount)
+	case left.PriorityImprovementWeight != right.PriorityImprovementWeight:
+		return compareFloat(left.PriorityImprovementWeight, right.PriorityImprovementWeight)
+	case left.ImprovementCoverage != right.ImprovementCoverage:
+		return compareInt(left.ImprovementCoverage, right.ImprovementCoverage)
+	case left.ImprovementDiversity != right.ImprovementDiversity:
+		return compareInt(left.ImprovementDiversity, right.ImprovementDiversity)
+	case left.StrengthCount != right.StrengthCount:
+		return compareInt(left.StrengthCount, right.StrengthCount)
+	case left.PriorityRiskPenalty != right.PriorityRiskPenalty:
+		return compareFloat(right.PriorityRiskPenalty, left.PriorityRiskPenalty)
+	case left.RiskPenalty != right.RiskPenalty:
+		return compareInt(right.RiskPenalty, left.RiskPenalty)
+	case left.TotalCostUsd != right.TotalCostUsd:
+		return compareFloat(right.TotalCostUsd, left.TotalCostUsd)
+	case left.TotalDurationMs != right.TotalDurationMs:
+		return compareFloat(right.TotalDurationMs, left.TotalDurationMs)
+	default:
+		return 0
+	}
+}
+
+func optimizeSearchMergeGroupMetricsForCandidates(candidates []map[string]any, scenarioIDs []string, scenarioWeights map[string]float64, checkpointRepairWeights map[string]float64, bestFrontierScores map[string]float64) optimizeSearchMergeGroupMetrics {
+	coverage := 0
+	weakestScore := math.Inf(1)
+	average := 0.0
+	expectedImprovements := []string{}
+	preservedStrengths := []string{}
+	riskNotes := []string{}
+	totalCostUsd := 0.0
+	totalDurationMs := 0.0
+	for _, scenarioID := range scenarioIDs {
+		bestScore := math.Inf(-1)
+		for _, candidate := range candidates {
+			score := optimizeSearchHeldOutScoreForCandidate(candidate, scenarioID)
+			if score > bestScore {
+				bestScore = score
+			}
+		}
+		if bestScore == bestFrontierScores[scenarioID] {
+			coverage++
+			if bestScore < weakestScore {
+				weakestScore = bestScore
+			}
+		}
+		average += bestScore
+	}
+	if weakestScore == math.Inf(1) {
+		weakestScore = math.Inf(-1)
+	}
+	for _, candidate := range candidates {
+		expectedImprovements = append(expectedImprovements, stringSliceOrEmptyRuntime(candidate["expectedImprovements"])...)
+		preservedStrengths = append(preservedStrengths, stringSliceOrEmptyRuntime(candidate["preservedStrengths"])...)
+		riskNotes = append(riskNotes, stringSliceOrEmptyRuntime(candidate["riskNotes"])...)
+		telemetry := asMap(candidate["telemetry"])
+		if cost, ok := toFloat(telemetry["totalCostUsd"]); ok {
+			totalCostUsd += cost
+		} else {
+			totalCostUsd += math.Inf(1)
+		}
+		if duration, ok := toFloat(telemetry["totalDurationMs"]); ok {
+			totalDurationMs += duration
+		} else {
+			totalDurationMs += math.Inf(1)
+		}
+	}
+	if len(scenarioIDs) > 0 {
+		average = average / float64(len(scenarioIDs))
+	}
+	checkpointScenarioIDs := []string{}
+	for scenarioID, weight := range checkpointRepairWeights {
+		if weight > 0 {
+			checkpointScenarioIDs = append(checkpointScenarioIDs, scenarioID)
+		}
+	}
+	return optimizeSearchMergeGroupMetrics{
+		Coverage:                  coverage,
+		WeakestScore:              weakestScore,
+		Average:                   average,
+		CheckpointRepairWeight:    optimizeSearchWeightedScenarioMentions(expectedImprovements, scenarioIDs, checkpointRepairWeights),
+		CheckpointRepairCoverage:  optimizeSearchCountScenarioMentions(expectedImprovements, checkpointScenarioIDs),
+		ParentCount:               len(candidates),
+		PriorityImprovementWeight: optimizeSearchWeightedScenarioMentions(expectedImprovements, scenarioIDs, scenarioWeights),
+		ImprovementCoverage:       optimizeSearchCountScenarioMentions(expectedImprovements, scenarioIDs),
+		ImprovementDiversity:      len(uniqueStrings(expectedImprovements)),
+		StrengthCount:             len(uniqueStrings(preservedStrengths)),
+		PriorityRiskPenalty:       optimizeSearchWeightedScenarioMentions(riskNotes, scenarioIDs, scenarioWeights),
+		RiskPenalty:               len(riskNotes),
+		TotalCostUsd:              totalCostUsd,
+		TotalDurationMs:           totalDurationMs,
+	}
+}
+
+func optimizeSearchMergeScenarioPriorityWeights(frontierCandidates []map[string]any, scenarioIDs []string, feedbackCandidates []map[string]any) map[string]float64 {
+	bonuses := optimizeSearchMergeCheckpointFeedbackBonuses(feedbackCandidates, scenarioIDs)
+	weights := map[string]float64{}
+	for _, scenarioID := range scenarioIDs {
+		scores := []float64{}
+		for _, candidate := range frontierCandidates {
+			score := optimizeSearchHeldOutScoreForCandidate(candidate, scenarioID)
+			if !math.IsInf(score, -1) {
+				scores = append(scores, score)
+			}
+		}
+		if len(scores) == 0 {
+			weights[scenarioID] = 1 + bonuses[scenarioID]
+			continue
+		}
+		total := 0.0
+		for _, score := range scores {
+			total += score
+		}
+		weights[scenarioID] = math.Max(1, 100-(total/float64(len(scores)))) + bonuses[scenarioID]
+	}
+	return weights
+}
+
+func optimizeSearchMergeCheckpointRepairWeights(feedbackCandidates []map[string]any, scenarioIDs []string) map[string]float64 {
+	selectedScenarioIDs := map[string]struct{}{}
+	weights := map[string]float64{}
+	for _, scenarioID := range scenarioIDs {
+		selectedScenarioIDs[scenarioID] = struct{}{}
+		weights[scenarioID] = 0
+	}
+	for _, candidate := range feedbackCandidates {
+		for _, entry := range optimizeSearchScopedCheckpointFeedbackEntries(candidate) {
+			severity := optimizeSearchMergeCheckpointReasonSeverity(entry)
+			for _, scenarioID := range stringSliceOrEmptyRuntime(entry["scenarioIds"]) {
+				if _, ok := selectedScenarioIDs[scenarioID]; ok {
+					weights[scenarioID] += severity
+				}
+			}
+		}
+	}
+	return weights
+}
+
+func optimizeSearchMergeCheckpointFeedbackBonuses(feedbackCandidates []map[string]any, scenarioIDs []string) map[string]float64 {
+	selectedScenarioIDs := map[string]struct{}{}
+	bonuses := map[string]float64{}
+	for _, scenarioID := range scenarioIDs {
+		selectedScenarioIDs[scenarioID] = struct{}{}
+		bonuses[scenarioID] = 0
+	}
+	for _, candidate := range feedbackCandidates {
+		for _, entry := range optimizeSearchScopedCheckpointFeedbackEntries(candidate) {
+			bonus := float64(max(1, len(stringSliceOrEmptyRuntime(entry["feedbackMessages"]))) * 100)
+			for _, scenarioID := range stringSliceOrEmptyRuntime(entry["scenarioIds"]) {
+				if _, ok := selectedScenarioIDs[scenarioID]; ok {
+					bonuses[scenarioID] += bonus
+				}
+			}
+		}
+	}
+	return bonuses
+}
+
+func optimizeSearchScopedCheckpointFeedbackEntries(candidate map[string]any) []map[string]any {
+	entries := []map[string]any{}
+	for _, rawEntry := range arrayOrEmpty(candidate["checkpointFeedback"]) {
+		entry := asMap(rawEntry)
+		if len(stringSliceOrEmptyRuntime(entry["scenarioIds"])) == 0 {
+			continue
+		}
+		entries = append(entries, entry)
+	}
+	return entries
+}
+
+func optimizeSearchMergeCheckpointReasonSeverity(entry map[string]any) float64 {
+	severity := 1.0
+	for _, reason := range stringSliceOrEmptyRuntime(entry["rejectionReasons"]) {
+		switch {
+		case strings.HasPrefix(reason, "full_gate:"):
+			if severity < 3 {
+				severity = 3
+			}
+		case strings.HasSuffix(reason, ":blocker"):
+			if severity < 3 {
+				severity = 3
+			}
+		case strings.HasSuffix(reason, ":concern"):
+			if severity < 2 {
+				severity = 2
+			}
+		}
+	}
+	return severity
+}
+
+func optimizeSearchMergeFrontierBestScores(frontierCandidates []map[string]any, scenarioIDs []string) map[string]float64 {
+	scores := map[string]float64{}
+	for _, scenarioID := range scenarioIDs {
+		best := math.Inf(-1)
+		for _, candidate := range frontierCandidates {
+			score := optimizeSearchHeldOutScoreForCandidate(candidate, scenarioID)
+			if score > best {
+				best = score
+			}
+		}
+		scores[scenarioID] = best
+	}
+	return scores
+}
+
+func optimizeSearchHeldOutScoreForCandidate(candidate map[string]any, scenarioID string) float64 {
+	for _, rawEntry := range arrayOrEmpty(candidate["heldOutEntries"]) {
+		entry := asMap(rawEntry)
+		if stringOrEmpty(entry["scenarioId"]) != scenarioID {
+			continue
+		}
+		if score, ok := toFloat(entry["score"]); ok {
+			return score
+		}
+		return math.Inf(-1)
+	}
+	return math.Inf(-1)
+}
+
+func optimizeSearchCountScenarioMentions(items []string, scenarioIDs []string) int {
+	count := 0
+	for _, scenarioID := range scenarioIDs {
+		scenarioToken := strings.ToLower(strings.TrimSpace(scenarioID))
+		if scenarioToken == "" {
+			continue
+		}
+		for _, item := range items {
+			if strings.Contains(strings.ToLower(item), scenarioToken) {
+				count++
+				break
+			}
+		}
+	}
+	return count
+}
+
+func optimizeSearchWeightedScenarioMentions(items []string, scenarioIDs []string, weights map[string]float64) float64 {
+	total := 0.0
+	for _, scenarioID := range scenarioIDs {
+		scenarioToken := strings.ToLower(strings.TrimSpace(scenarioID))
+		if scenarioToken == "" {
+			continue
+		}
+		for _, item := range items {
+			if strings.Contains(strings.ToLower(item), scenarioToken) {
+				total += weights[scenarioID]
+				break
+			}
+		}
+	}
+	return total
+}
+
+func optimizeSearchCombinationIndexes(length int, size int) [][]int {
+	results := [][]int{}
+	if size <= 0 || size > length {
+		return results
+	}
+	var walk func(start int, prefix []int)
+	walk = func(start int, prefix []int) {
+		if len(prefix) == size {
+			results = append(results, append([]int{}, prefix...))
+			return
+		}
+		for index := start; index <= length-(size-len(prefix)); index++ {
+			walk(index+1, append(prefix, index))
+		}
+	}
+	walk(0, []int{})
+	return results
+}
+
+func compareFloat(left float64, right float64) int {
+	switch {
+	case left > right:
+		return 1
+	case left < right:
+		return -1
+	default:
+		return 0
+	}
+}
+
+func compareInt(left int, right int) int {
+	switch {
+	case left > right:
+		return 1
+	case left < right:
+		return -1
+	default:
+		return 0
+	}
 }
 
 func optimizeSearchMutationPrompt(packet map[string]any, parentCandidate map[string]any) string {
