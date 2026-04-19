@@ -352,6 +352,7 @@ Current implementation note:
 - v1 executes packet assembly, readiness blocking, one reflective mutation per generation, optional bounded merge synthesis, held-out reevaluation, frontier-promotion review reuse, checkpoint-feedback reinjection, telemetry-aware frontier ranking, finalist checkpoint execution, and proposal bridging
 - `mergeEnabled`, `threeParentPolicy`, and declared selection caps are consumed by the current runner
 - merge parent selection now prefers complementary frontier groups using held-out coverage, weakest-scenario weighting, checkpoint-severity weighting, and late risk/cost tie-breaks
+- merge prompts now carry scenario-scoped frontier checkpoint feedback with source-candidate provenance when review checkpoints have already exposed merge-relevant concerns
 - broader crossover heuristics and more aggressive synthesis strategies remain deferred
 
 In v1, review checkpoint policy means:

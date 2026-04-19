@@ -1804,7 +1804,8 @@ func optimizeSearchEvaluateMerge(packet map[string]any, inputFile string, genera
 		}
 		parentPrompts = append(parentPrompts, string(payload))
 	}
-	promptText := optimizeSearchMergePrompt(packet, parents, parentPrompts, backend, scenarioIDs)
+	mergeCheckpointFeedback := optimizeSearchCollectMergeCheckpointFeedback(candidates, rankedFrontierIDs, scenarioIDs)
+	promptText := optimizeSearchMergePrompt(packet, parents, parentPrompts, backend, scenarioIDs, mergeCheckpointFeedback)
 	if err := os.WriteFile(promptFile, []byte(promptText), 0o644); err != nil {
 		return nil, err
 	}
@@ -2321,7 +2322,46 @@ Checkpoint feedback to repair:
 `, currentPrompt, stringOrEmpty(asMap(packet["objective"])["summary"]), feedback, checkpointFeedback)) + "\n"
 }
 
-func optimizeSearchMergePrompt(packet map[string]any, parentCandidates []map[string]any, parentPrompts []string, backend string, scenarioIDs []string) string {
+func optimizeSearchCollectMergeCheckpointFeedback(candidates []map[string]any, frontierIDs []string, scenarioIDs []string) []any {
+	allowedScenarioIDs := map[string]struct{}{}
+	for _, scenarioID := range scenarioIDs {
+		if strings.TrimSpace(scenarioID) != "" {
+			allowedScenarioIDs[scenarioID] = struct{}{}
+		}
+	}
+	feedback := []any{}
+	for _, candidateID := range frontierIDs {
+		candidate := optimizeSearchCandidateByID(candidates, candidateID)
+		if candidate == nil {
+			continue
+		}
+		for _, rawEntry := range arrayOrEmpty(candidate["checkpointFeedback"]) {
+			entry := asMap(rawEntry)
+			entryScenarioIDs := stringSliceOrEmptyRuntime(entry["scenarioIds"])
+			if len(allowedScenarioIDs) > 0 && len(entryScenarioIDs) > 0 {
+				matchesScenario := false
+				for _, scenarioID := range entryScenarioIDs {
+					if _, ok := allowedScenarioIDs[scenarioID]; ok {
+						matchesScenario = true
+						break
+					}
+				}
+				if !matchesScenario {
+					continue
+				}
+			}
+			enriched := map[string]any{}
+			for key, value := range entry {
+				enriched[key] = value
+			}
+			enriched["sourceCandidateId"] = candidateID
+			feedback = append(feedback, enriched)
+		}
+	}
+	return feedback
+}
+
+func optimizeSearchMergePrompt(packet map[string]any, parentCandidates []map[string]any, parentPrompts []string, backend string, scenarioIDs []string, mergeCheckpointFeedback []any) string {
 	constraints := []string{}
 	for _, rawConstraint := range arrayOrEmpty(asMap(packet["objective"])["constraints"]) {
 		if constraint := strings.TrimSpace(stringOrEmpty(rawConstraint)); constraint != "" {
@@ -2330,9 +2370,7 @@ func optimizeSearchMergePrompt(packet map[string]any, parentCandidates []map[str
 	}
 	mergeFeedback := []any{}
 	if includeCheckpointFeedback, _ := asMap(packet["mutationEvidencePolicy"])["includeCheckpointFeedback"].(bool); includeCheckpointFeedback {
-		for _, candidate := range parentCandidates {
-			mergeFeedback = append(mergeFeedback, arrayOrEmpty(candidate["checkpointFeedback"])...)
-		}
+		mergeFeedback = append(mergeFeedback, mergeCheckpointFeedback...)
 	}
 	feedbackJSON := "[]"
 	if payload, err := json.MarshalIndent(mergeFeedback, "", "  "); err == nil {

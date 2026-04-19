@@ -141,6 +141,49 @@ func TestOptimizeSearchSelectMergeParentsCanPickBoundedThreeParentMergeWhenCover
 	}
 }
 
+func TestOptimizeSearchCollectMergeCheckpointFeedbackFiltersToHeldOutScenariosAndAddsSourceCandidateID(t *testing.T) {
+	recovery := testOptimizeSearchMergeCandidate("g1-recovery", map[string]float64{
+		"operator-recovery": 96,
+	}, nil, nil, nil, []map[string]any{
+		{
+			"scenarioIds":      []any{"operator-recovery"},
+			"rejectionReasons": []any{"review:operator-review:blocker"},
+			"feedbackMessages": []any{"Recovery sequencing is still too implicit."},
+		},
+		{
+			"scenarioIds":      []any{"operator-escalation"},
+			"rejectionReasons": []any{"review:operator-review:concern"},
+			"feedbackMessages": []any{"Escalation wording is still too broad."},
+		},
+	})
+	followup := testOptimizeSearchMergeCandidate("g1-followup", map[string]float64{
+		"operator-follow-up": 96,
+	}, nil, nil, nil, []map[string]any{
+		{
+			"scenarioIds":      []any{"operator-follow-up"},
+			"rejectionReasons": []any{"review:operator-review:concern"},
+			"feedbackMessages": []any{"Follow-up handoff is still under-specified."},
+		},
+	})
+
+	feedback := optimizeSearchCollectMergeCheckpointFeedback(
+		[]map[string]any{recovery, followup},
+		[]string{"g1-recovery", "g1-followup"},
+		[]string{"operator-recovery", "operator-follow-up"},
+	)
+	if len(feedback) != 2 {
+		t.Fatalf("expected filtered checkpoint feedback for two held-out scenarios, got %#v", feedback)
+	}
+	first := asMap(feedback[0])
+	second := asMap(feedback[1])
+	if first["sourceCandidateId"] != "g1-recovery" || second["sourceCandidateId"] != "g1-followup" {
+		t.Fatalf("expected sourceCandidateId to be preserved, got %#v", feedback)
+	}
+	if len(stringSliceOrEmptyRuntime(first["scenarioIds"])) != 1 || stringSliceOrEmptyRuntime(first["scenarioIds"])[0] != "operator-recovery" {
+		t.Fatalf("expected recovery-only feedback, got %#v", first)
+	}
+}
+
 func testOptimizeSearchMergeCandidate(id string, scores map[string]float64, expectedImprovements []string, preservedStrengths []string, riskNotes []string, checkpointFeedback []map[string]any) map[string]any {
 	heldOutEntries := []any{}
 	for scenarioID, score := range scores {

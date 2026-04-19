@@ -3857,7 +3857,7 @@ func TestCLIOptimizeSearchRunSynthesizesComplementaryMergeCandidate(t *testing.T
 		"  shift",
 		"done",
 		"prompt=$(cat)",
-		"if printf '%s' \"$prompt\" | grep -q \"# Parent seed\"; then",
+		"if printf '%s' \"$prompt\" | grep -q \"# Parent seed\" && printf '%s' \"$prompt\" | grep -q \"sourceCandidateId\" && printf '%s' \"$prompt\" | grep -q \"operator-follow-up under-specified\"; then",
 		fmt.Sprintf("  printf '%%s\\n' '%s' > \"$out\"", toJSONString(map[string]any{
 			"promptMarkdown":       "Keep recovery instructions explicit with a detailed recovery checklist and a follow-up handoff map.\n",
 			"rationaleSummary":     "Combine the seed recovery checklist with the frontier follow-up handoff map.",
@@ -3876,6 +3876,35 @@ func TestCLIOptimizeSearchRunSynthesizesComplementaryMergeCandidate(t *testing.T
 		})),
 		"",
 	}, "\n"))
+	writeExecutableFile(t, root, "variant.sh", strings.Join([]string{
+		"#!/bin/sh",
+		"output_file=\"$1\"",
+		"prompt_file=\"$(dirname \"$0\")/prompt.md\"",
+		"verdict=\"pass\"",
+		"severity=\"pass\"",
+		"summary=\"candidate stays operator-safe\"",
+		"message=\"candidate stays operator-safe\"",
+		"if grep -q \"follow-up handoff map\" \"$prompt_file\" && ! grep -q \"detailed recovery checklist\" \"$prompt_file\"; then",
+		"  verdict=\"concern\"",
+		"  severity=\"concern\"",
+		"  summary=\"Checklist candidate still leaves operator-follow-up under-specified.\"",
+		"  message=\"Checklist candidate still leaves operator-follow-up under-specified.\"",
+		"fi",
+		"cat >\"$output_file\" <<EOF",
+		"{",
+		"  \"verdict\": \"$verdict\",",
+		"  \"summary\": \"$summary\",",
+		"  \"findings\": [",
+		"    {",
+		"      \"severity\": \"$severity\",",
+		"      \"message\": \"$message\",",
+		"      \"path\": \"variant/operator-review\"",
+		"    }",
+		"  ]",
+		"}",
+		"EOF",
+		"",
+	}, "\n"))
 	if err := os.WriteFile(filepath.Join(root, ".agents", "cautilus-adapter.yaml"), []byte(strings.Join([]string{
 		"version: 1",
 		"repo: temp-optimize-search",
@@ -3889,6 +3918,11 @@ func TestCLIOptimizeSearchRunSynthesizesComplementaryMergeCandidate(t *testing.T
 		"  - sh evaluate.sh {scenario_results_file}",
 		"comparison_questions:",
 		"  - Did the held-out score improve?",
+		"executor_variants:",
+		"  - id: operator-review",
+		"    tool: command",
+		"    purpose: frontier promotion review",
+		"    command_template: sh {candidate_repo}/variant.sh {output_file}",
 		"",
 	}, "\n")), 0o644); err != nil {
 		t.Fatalf("WriteFile returned error: %v", err)
@@ -4019,6 +4053,7 @@ func TestCLIOptimizeSearchRunSynthesizesComplementaryMergeCandidate(t *testing.T
 	searchConfig := searchInput["searchConfig"].(map[string]any)
 	searchConfig["generationLimit"] = float64(1)
 	searchConfig["mergeEnabled"] = true
+	searchConfig["reviewCheckpointPolicy"] = "frontier_promotions"
 	searchConfig["threeParentPolicy"] = "disabled"
 	mutationConfig := searchInput["mutationConfig"].(map[string]any)
 	mutationConfig["backends"] = []any{
@@ -4058,6 +4093,14 @@ func TestCLIOptimizeSearchRunSynthesizesComplementaryMergeCandidate(t *testing.T
 	}
 	if len(mergeCandidate) == 0 || mergeCandidate["origin"] != "merge" {
 		t.Fatalf("expected merge candidate in registry, got %#v", registry)
+	}
+	mergePromptPath := mergeCandidate["artifacts"].(map[string]any)["promptFile"].(string)
+	mergePrompt, err := os.ReadFile(mergePromptPath)
+	if err != nil {
+		t.Fatalf("ReadFile returned error: %v", err)
+	}
+	if !strings.Contains(string(mergePrompt), "sourceCandidateId") || !strings.Contains(string(mergePrompt), "operator-follow-up under-specified") {
+		t.Fatalf("expected merge prompt to include frontier checkpoint feedback provenance, got %q", string(mergePrompt))
 	}
 	selectedTargetPath := searchResult["proposalBridge"].(map[string]any)["selectedTargetFile"].(map[string]any)["path"].(string)
 	selectedPrompt, err := os.ReadFile(selectedTargetPath)

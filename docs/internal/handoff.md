@@ -70,7 +70,7 @@
 16. Go optimize-search runner 는 이제 rejected frontier-promotion review feedback 를 candidate record 에 보존하고, 다음 generation mutation prompt 에 그 feedback 를 reinject 한다.
     현재 parity 는 feedback preservation 과 reinjection 까지이며, scenario-priority ordering 같은 richer heuristics 는 아직 experimental Node harness 쪽에 남아 있다.
 17. Go optimize-search runner 는 이제 `mergeEnabled` 가 true 일 때 complementary frontier parents 로부터 generation 당 최대 한 개의 bounded merge candidate 를 실제로 합성한다.
-    current parity 는 pair merge 와 coverage-expansion third parent selection, scenario-priority / checkpoint-severity merge parent ranking, merge invocation telemetry, merge finalist selection smoke 까지다.
+    current parity 는 pair merge 와 coverage-expansion third parent selection, scenario-priority / checkpoint-severity merge parent ranking, merge invocation telemetry, merge finalist selection smoke, 그리고 frontier checkpoint feedback provenance 가 실린 merge prompt 까지다.
     broader crossover heuristics 와 더 공격적인 synthesis 전략은 아직 experimental Node harness 쪽에 남아 있다.
 
 ## Recent Commits
