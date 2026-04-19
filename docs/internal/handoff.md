@@ -77,10 +77,10 @@
 최근 주요 커밋:
 
 ```text
-<pending> Synthesize bounded merge candidates in optimize search
-<pending> Reinject frontier-promotion checkpoint feedback in Go optimize-search
-<pending> Reuse frontier-promotion review checkpoints in Go optimize-search
-<pending> Retire the Node optimize-search runtime to experiments
+482c1b0 Synthesize bounded merge candidates in optimize search
+71d33e7 Reinject checkpoint feedback into optimize search mutations
+3f9b7a4 Reuse frontier-promotion review checkpoints in optimize search
+1092850 Retire the Node optimize-search runtime to experiments
 9593bae Promote instruction-surface dogfood and Go finalist checks
 60c36f3 Make doctor hand off the first bounded run
 7307206 Prepare v0.5.5 release
