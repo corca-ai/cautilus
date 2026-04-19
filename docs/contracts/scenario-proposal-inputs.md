@@ -28,7 +28,6 @@ Minimum shape:
 {
   "schemaVersion": "cautilus.scenario_proposal_inputs.v1",
   "windowDays": 14,
-  "limit": 5,
   "families": ["fast_regression"],
   "proposalCandidates": [
     {
@@ -66,10 +65,6 @@ Minimum shape:
   "now": "2026-04-11T00:00:00.000Z"
 }
 ```
-
-`limit` is optional.
-If omitted, `cautilus scenario propose` applies a product-owned default cap of `5` returned proposals.
-Set a larger packet-level `limit` when a consumer needs to inspect a wider ranked set without changing candidate generation itself.
 
 ## Proposal Candidate Shape
 
@@ -116,8 +111,8 @@ The product-owned `scenario propose` command then:
 - merges duplicate `proposalKey` entries
 - ranks proposals
 - emits `cautilus.scenario_proposals.v1`
-- applies packet `limit`, default `5`, to the returned proposal list
-- records the applied limit plus truncation telemetry in the output packet
+- preserves the full ranked proposal list in the canonical JSON output
+- derives a bounded `attentionView` for human-facing review without hiding the full ranked set from agents
 - preserves `intentProfile` when the candidate already carries one and normalizes it against the shared behavior-intent catalog
 
 ## Fixed Decisions

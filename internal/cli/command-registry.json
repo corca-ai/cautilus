@@ -36,8 +36,8 @@
       "usage": "cautilus scenario propose [args]",
       "example": "cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json",
       "notes": [
-        "The input packet can include optional `limit`; if omitted, the product applies a default proposal cap of 5.",
-        "The output packet records `appliedLimit` and `proposalTelemetry` so downstream artifacts can explain truncation without reopening runtime code."
+        "The canonical JSON output preserves the full ranked proposal list for agents.",
+        "The output packet also emits an `attentionView`, which is a bounded human-facing shortlist derived from the full ranked set."
       ]
     },
     {

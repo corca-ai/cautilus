@@ -139,8 +139,8 @@ cautilus scenario summarize-telemetry \
 
 Every normalize command plus `cautilus skill evaluate`, `cautilus instruction-surface evaluate`, and `cautilus report build` accepts `--example-input`: it prints a minimal valid packet to stdout that can be piped back into the same command, so operators can inspect the expected shape without clicking into a fixture on GitHub.
 `cautilus scenarios --json` now exposes those same inspect commands under `exampleInputCli` for each archetype.
-`cautilus scenario propose` reads optional packet field `limit`; if omitted, the product applies a default cap of `5` returned proposals.
-The output packet records `appliedLimit` and `proposalTelemetry` so downstream artifacts can explain truncation without rereading runtime code.
+`cautilus scenario propose` now preserves the full ranked `proposals` list in the canonical JSON output.
+The same packet also emits an `attentionView`, which is a bounded human-facing shortlist derived from the full ranked set.
 
 ## Instruction surface
 

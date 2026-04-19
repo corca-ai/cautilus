@@ -113,6 +113,21 @@ The proposal engine should emit an operator-reviewable payload like this:
   "generatedAt": "2026-04-09T21:00:00.000Z",
   "windowDays": 14,
   "families": ["fast_regression"],
+  "proposalTelemetry": {
+    "mergedCandidateCount": 12,
+    "returnedProposalCount": 12
+  },
+  "attentionView": {
+    "ruleVersion": "v1",
+    "proposalKeys": ["review-after-retro"],
+    "reasonCodesByProposalKey": {
+      "review-after-retro": ["low_recent_coverage"]
+    },
+    "matchedRuleCount": 1,
+    "selectedCount": 1,
+    "fallbackUsed": false,
+    "truncated": false
+  },
   "proposals": [
     {
       "proposalKey": "review-after-retro",
@@ -217,7 +232,8 @@ The first generic ranking pass should prefer:
 2. more recent evidence
 3. low recent coverage on the existing scenario key
 
-The engine should cap output with an explicit `limit` instead of dumping every possible pattern.
+The canonical machine-readable output should preserve the full ranked proposal list.
+Human-facing views may derive a smaller attention set, but they should not hide the full ranked result from agents.
 
 ## Fixed Decisions
 

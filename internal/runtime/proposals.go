@@ -57,6 +57,11 @@ var (
 	}
 )
 
+const (
+	scenarioProposalAttentionCap           = 5
+	scenarioProposalAttentionFallbackCount = 3
+)
+
 func BuildScenarioProposalInput(proposalCandidates []any, existingScenarioRegistry []any, scenarioCoverage []any, families []string, windowDays int, now *time.Time) (map[string]any, error) {
 	packet := map[string]any{
 		"schemaVersion":            contracts.ScenarioProposalInputsSchema,
@@ -77,19 +82,17 @@ func BuildScenarioProposalPacket(input map[string]any) (map[string]any, error) {
 		return nil, fmt.Errorf("schemaVersion must be %s", contracts.ScenarioProposalInputsSchema)
 	}
 	families := stringSliceValue(input["families"])
-	limit := intValueOrDefault(input["limit"], 5)
 	return GenerateScenarioProposals(
 		arrayOrEmpty(input["proposalCandidates"]),
 		readScenarioKeys(arrayOrEmpty(input["existingScenarioRegistry"])),
 		readScenarioCoverage(arrayOrEmpty(input["scenarioCoverage"])),
 		families,
-		limit,
 		intValueOrDefault(input["windowDays"], 14),
 		parseOptionalNow(input["now"]),
 	)
 }
 
-func GenerateScenarioProposals(proposalCandidates []any, existingScenarioKeys []string, recentCoverage map[string]float64, families []string, limit int, windowDays int, now time.Time) (map[string]any, error) {
+func GenerateScenarioProposals(proposalCandidates []any, existingScenarioKeys []string, recentCoverage map[string]float64, families []string, windowDays int, now time.Time) (map[string]any, error) {
 	familyFilter := map[string]struct{}{}
 	for _, family := range families {
 		familyFilter[family] = struct{}{}
@@ -129,34 +132,80 @@ func GenerateScenarioProposals(proposalCandidates []any, existingScenarioKeys []
 		}
 		return parseISOTime(asMap(rightEvidence[0])["observedAt"]) < parseISOTime(asMap(leftEvidence[0])["observedAt"])
 	})
-	if limit > 0 && len(candidates) > limit {
-		candidates = candidates[:limit]
-	}
 	proposals := make([]any, 0, len(candidates))
 	for _, candidate := range candidates {
 		proposals = append(proposals, buildScenarioProposal(candidate, scenarioKeys, recentCoverage))
 	}
+	attentionView := buildScenarioProposalAttentionView(proposals)
 	return map[string]any{
 		"schemaVersion": contracts.ScenarioProposalsSchema,
 		"generatedAt":   now.UTC().Format(time.RFC3339Nano),
 		"windowDays":    windowDays,
 		"families":      families,
-		"appliedLimit":  limit,
 		"proposalTelemetry": map[string]any{
 			"mergedCandidateCount":  totalMergedCandidates,
 			"returnedProposalCount": len(proposals),
-			"truncated":             limit > 0 && totalMergedCandidates > len(proposals),
-			"omittedProposalCount":  maxInt(totalMergedCandidates-len(proposals), 0),
 		},
-		"proposals": proposals,
+		"attentionView": attentionView,
+		"proposals":     proposals,
 	}, nil
 }
 
-func maxInt(left, right int) int {
-	if left > right {
-		return left
+func buildScenarioProposalAttentionView(proposals []any) map[string]any {
+	reasonCodesByProposalKey := map[string]any{}
+	matchedRuleCount := 0
+	selectedKeys := []any{}
+	fallbackUsed := false
+	for _, rawProposal := range proposals {
+		proposal := asMap(rawProposal)
+		proposalKey := stringOrEmpty(proposal["proposalKey"])
+		reasons := scenarioProposalAttentionReasons(proposal)
+		if len(reasons) == 0 {
+			continue
+		}
+		matchedRuleCount++
+		reasonCodesByProposalKey[proposalKey] = stringSliceToAny(reasons)
+		selectedKeys = append(selectedKeys, proposalKey)
 	}
-	return right
+	if len(selectedKeys) == 0 {
+		fallbackUsed = true
+		for index, rawProposal := range proposals {
+			if index >= scenarioProposalAttentionFallbackCount {
+				break
+			}
+			proposalKey := stringOrEmpty(asMap(rawProposal)["proposalKey"])
+			reasonCodesByProposalKey[proposalKey] = []any{"top_ranked_fallback"}
+			selectedKeys = append(selectedKeys, proposalKey)
+		}
+	}
+	truncated := false
+	if len(selectedKeys) > scenarioProposalAttentionCap {
+		selectedKeys = selectedKeys[:scenarioProposalAttentionCap]
+		truncated = true
+	}
+	return map[string]any{
+		"ruleVersion":             "v1",
+		"proposalKeys":            selectedKeys,
+		"reasonCodesByProposalKey": reasonCodesByProposalKey,
+		"matchedRuleCount":        matchedRuleCount,
+		"selectedCount":           len(selectedKeys),
+		"fallbackUsed":            fallbackUsed,
+		"truncated":               truncated,
+	}
+}
+
+func scenarioProposalAttentionReasons(proposal map[string]any) []string {
+	reasons := []string{}
+	if stringOrEmpty(proposal["action"]) == "add_new_scenario" {
+		reasons = append(reasons, "new_scenario")
+	}
+	if len(arrayOrEmpty(proposal["evidence"])) >= 2 {
+		reasons = append(reasons, "repeated_signal")
+	}
+	if intValueOrDefault(asMap(proposal["existingCoverage"])["recentResultCount"], 0) <= 2 {
+		reasons = append(reasons, "low_recent_coverage")
+	}
+	return reasons
 }
 
 func NormalizeChatbotProposalCandidates(conversationSummaries []any, runSummaries []any) ([]any, error) {

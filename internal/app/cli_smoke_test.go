@@ -1132,12 +1132,13 @@ func TestCLIScenarioProposeGeneratesStandaloneProposalPacket(t *testing.T) {
 	if payload["schemaVersion"] != contracts.ScenarioProposalsSchema {
 		t.Fatalf("expected scenario proposals schema, got %#v", payload["schemaVersion"])
 	}
-	if payload["appliedLimit"] != float64(5) {
-		t.Fatalf("expected default applied limit, got %#v", payload["appliedLimit"])
-	}
 	proposalTelemetry := payload["proposalTelemetry"].(map[string]any)
-	if proposalTelemetry["mergedCandidateCount"] != float64(1) || proposalTelemetry["truncated"] != false {
+	if proposalTelemetry["mergedCandidateCount"] != float64(1) || proposalTelemetry["returnedProposalCount"] != float64(1) {
 		t.Fatalf("unexpected proposal telemetry: %#v", proposalTelemetry)
+	}
+	attentionView := payload["attentionView"].(map[string]any)
+	if attentionView["selectedCount"] != float64(1) || attentionView["fallbackUsed"] != false {
+		t.Fatalf("unexpected attention view: %#v", attentionView)
 	}
 	proposals := payload["proposals"].([]any)
 	if len(proposals) != 1 {
@@ -1153,7 +1154,7 @@ func TestCLIScenarioProposeGeneratesStandaloneProposalPacket(t *testing.T) {
 	}
 }
 
-func TestCLIScenarioProposeSurfacesDefaultLimitAndTruncationTelemetry(t *testing.T) {
+func TestCLIScenarioProposePreservesFullRankedOutputAndDerivesAttentionView(t *testing.T) {
 	root := t.TempDir()
 	inputPath := filepath.Join(root, "scenario-proposal-input.json")
 	outputPath := filepath.Join(root, "scenario-proposals.json")
@@ -1190,19 +1191,17 @@ func TestCLIScenarioProposeSurfacesDefaultLimitAndTruncationTelemetry(t *testing
 		t.Fatalf("scenario propose failed: %s", stderr)
 	}
 	payload := readJSONObjectFile(t, outputPath)
-	if payload["appliedLimit"] != float64(5) {
-		t.Fatalf("expected default applied limit 5, got %#v", payload["appliedLimit"])
-	}
 	proposalTelemetry := payload["proposalTelemetry"].(map[string]any)
-	if proposalTelemetry["mergedCandidateCount"] != float64(6) || proposalTelemetry["returnedProposalCount"] != float64(5) {
+	if proposalTelemetry["mergedCandidateCount"] != float64(6) || proposalTelemetry["returnedProposalCount"] != float64(6) {
 		t.Fatalf("unexpected proposal telemetry counts: %#v", proposalTelemetry)
 	}
-	if proposalTelemetry["truncated"] != true || proposalTelemetry["omittedProposalCount"] != float64(1) {
-		t.Fatalf("expected truncation telemetry, got %#v", proposalTelemetry)
+	attentionView := payload["attentionView"].(map[string]any)
+	if attentionView["selectedCount"] != float64(5) || attentionView["truncated"] != true || attentionView["fallbackUsed"] != false {
+		t.Fatalf("unexpected attention view telemetry: %#v", attentionView)
 	}
 	proposals := payload["proposals"].([]any)
-	if len(proposals) != 5 {
-		t.Fatalf("expected default cap of 5 proposals, got %#v", proposals)
+	if len(proposals) != 6 {
+		t.Fatalf("expected full ranked proposal list, got %#v", proposals)
 	}
 }
 

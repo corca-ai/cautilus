@@ -124,12 +124,56 @@ export function buildScenarioProposal(candidate, existingScenarioKeys, recentCov
 	};
 }
 
-function buildProposalTelemetry(mergedCandidates, proposals, limit) {
+function buildProposalTelemetry(mergedCandidates, proposals) {
 	return {
 		mergedCandidateCount: mergedCandidates.length,
 		returnedProposalCount: proposals.length,
-		truncated: limit > 0 && mergedCandidates.length > proposals.length,
-		omittedProposalCount: Math.max(mergedCandidates.length - proposals.length, 0),
+	};
+}
+
+function buildAttentionReasons(proposal) {
+	const reasons = [];
+	if (proposal.action === "add_new_scenario") {
+		reasons.push("new_scenario");
+	}
+	if ((proposal.evidence || []).length >= 2) {
+		reasons.push("repeated_signal");
+	}
+	if ((proposal.existingCoverage?.recentResultCount ?? 0) <= 2) {
+		reasons.push("low_recent_coverage");
+	}
+	return reasons;
+}
+
+function buildAttentionView(proposals) {
+	const reasonCodesByProposalKey = {};
+	let matchedRuleCount = 0;
+	let proposalKeys = proposals.flatMap((proposal) => {
+		const reasons = buildAttentionReasons(proposal);
+		if (reasons.length === 0) {
+			return [];
+		}
+		matchedRuleCount += 1;
+		reasonCodesByProposalKey[proposal.proposalKey] = reasons;
+		return [proposal.proposalKey];
+	});
+	let fallbackUsed = false;
+	if (proposalKeys.length === 0) {
+		fallbackUsed = true;
+		proposalKeys = proposals.slice(0, 3).map((proposal) => {
+			reasonCodesByProposalKey[proposal.proposalKey] = ["top_ranked_fallback"];
+			return proposal.proposalKey;
+		});
+	}
+	const truncated = proposalKeys.length > 5;
+	return {
+		ruleVersion: "v1",
+		proposalKeys: proposalKeys.slice(0, 5),
+		reasonCodesByProposalKey,
+		matchedRuleCount,
+		selectedCount: Math.min(proposalKeys.length, 5),
+		fallbackUsed,
+		truncated,
 	};
 }
 
@@ -138,7 +182,6 @@ export function generateScenarioProposals({
 	existingScenarioKeys = [],
 	recentCoverage = new Map(),
 	families = [],
-	limit = 5,
 	windowDays = 14,
 	now = new Date(),
 }) {
@@ -160,15 +203,14 @@ export function generateScenarioProposals({
 				right.evidence.length - left.evidence.length ||
 				parseIsoTime(right.evidence[0]?.observedAt) - parseIsoTime(left.evidence[0]?.observedAt),
 		)
-		.slice(0, limit)
 		.map((candidate) => buildScenarioProposal(candidate, scenarioKeys, coverageMap));
 	return {
 		schemaVersion: SCENARIO_PROPOSALS_SCHEMA,
 		generatedAt: now.toISOString(),
 		windowDays,
 		families: [...familyFilter],
-		appliedLimit: limit,
-		proposalTelemetry: buildProposalTelemetry(mergedCandidates, proposals, limit),
+		proposalTelemetry: buildProposalTelemetry(mergedCandidates, proposals),
+		attentionView: buildAttentionView(proposals),
 		proposals,
 	};
 }

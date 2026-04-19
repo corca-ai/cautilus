@@ -19,10 +19,6 @@
       "type": "integer",
       "minimum": 1
     },
-    "limit": {
-      "type": "integer",
-      "minimum": 1
-    },
     "families": {
       "type": "array",
       "items": {

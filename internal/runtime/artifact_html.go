@@ -262,17 +262,21 @@ func compareDeltaStatusColor(status string) string {
 func RenderScenarioProposalsHTML(packet map[string]any) string {
 	var builder strings.Builder
 	proposals := arrayOrEmpty(packet["proposals"])
+	attentionView := asMap(packet["attentionView"])
+	attentionProposals := selectScenarioProposalAttentionSet(proposals, stringSliceOrEmptyRuntime(attentionView["proposalKeys"]))
 	title := fmt.Sprintf("Cautilus Scenario Proposals — %d", len(proposals))
 	builder.WriteString("<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n")
 	builder.WriteString("<meta name=\"generator\" content=\"cautilus scenario render-proposals-html\">\n")
 	builder.WriteString("<title>" + escapeHTML(title) + "</title>\n<style>" + selfDogfoodHTMLStyles + "</style>\n</head>\n<body>\n<main>\n")
-	builder.WriteString(renderProposalsHeader(packet, proposals))
+	builder.WriteString(renderProposalsHeader(packet, proposals, attentionProposals))
 	builder.WriteString(renderSelfDogfoodPageTOC([]tocNavEntry{
 		{Anchor: "context-heading", Label: "Context", Status: "unknown"},
+		{Anchor: "attention-heading", Label: "Attention", Status: proposalsAggregateStatus(attentionProposals)},
 		{Anchor: "proposals-heading", Label: "Proposals", Status: proposalsAggregateStatus(proposals)},
 	}))
 	builder.WriteString(renderProposalsContextPanel(packet))
-	builder.WriteString(renderProposalsPanel(proposals))
+	builder.WriteString(renderProposalsPanel("attention-heading", "Attention View", attentionProposals))
+	builder.WriteString(renderProposalsPanel("proposals-heading", "Full Ranked Proposals", proposals))
 	builder.WriteString(renderProposalsFooter(packet))
 	builder.WriteString("\n</main>\n</body>\n</html>\n")
 	return rewriteSelfDogfoodLinks(builder.String())
@@ -297,18 +301,19 @@ func WriteScenarioProposalsHTMLFromFile(inputPath string, outputPath *string) (s
 	return writeRenderedHTML(defaultReportHTMLOutputPath(inputPath), outputPath, rendered)
 }
 
-func renderProposalsHeader(packet map[string]any, proposals []any) string {
+func renderProposalsHeader(packet map[string]any, proposals []any, attentionProposals []any) string {
 	color := selfDogfoodStatusColor(proposalsAggregateStatus(proposals))
 	return fmt.Sprintf(`
 <header class="banner" style="border-left:8px solid %s">
 	<div class="banner-title">Cautilus Scenario Proposals</div>
 	<div class="banner-status">
-		<span class="chip" style="background:%s">count: %d</span>
+		<span class="chip" style="background:%s">full: %d</span>
+		<span class="chip neutral">attention: %d</span>
 		<span class="banner-meta">windowDays %s</span>
 		<span class="banner-meta">generatedAt %s</span>
 	</div>
 </header>`,
-		color, color, len(proposals),
+		color, color, len(proposals), len(attentionProposals),
 		escapeHTML(defaultString(packet["windowDays"], "n/a")),
 		escapeHTML(defaultString(packet["generatedAt"], "n/a")),
 	)
@@ -338,13 +343,13 @@ func renderProposalsContextPanel(packet map[string]any) string {
 	)
 }
 
-func renderProposalsPanel(proposals []any) string {
+func renderProposalsPanel(headingID string, title string, proposals []any) string {
 	if len(proposals) == 0 {
-		return `
-<section class="panel" aria-labelledby="proposals-heading">
-	<h2 id="proposals-heading">Proposals</h2>
+		return fmt.Sprintf(`
+<section class="panel" aria-labelledby="%s">
+	<h2 id="%s">%s</h2>
 	<p class="empty">No scenario proposals generated.</p>
-</section>`
+</section>`, escapeHTML(headingID), escapeHTML(headingID), escapeHTML(title))
 	}
 	var blocks strings.Builder
 	for _, raw := range proposals {
@@ -371,11 +376,30 @@ func renderProposalsPanel(proposals []any) string {
 			escapeHTML(defaultString(proposal["rationale"], "")),
 		))
 	}
-	return `
-<section class="panel" aria-labelledby="proposals-heading">
-	<h2 id="proposals-heading">Proposals</h2>
-	` + blocks.String() + `
-</section>`
+	return fmt.Sprintf(`
+<section class="panel" aria-labelledby="%s">
+	<h2 id="%s">%s</h2>
+	%s
+</section>`, escapeHTML(headingID), escapeHTML(headingID), escapeHTML(title), blocks.String())
+}
+
+func selectScenarioProposalAttentionSet(proposals []any, keys []string) []any {
+	if len(keys) == 0 {
+		return []any{}
+	}
+	keySet := map[string]struct{}{}
+	for _, key := range keys {
+		keySet[key] = struct{}{}
+	}
+	selected := make([]any, 0, len(keys))
+	for _, rawProposal := range proposals {
+		proposalKey := stringOrEmpty(asMap(rawProposal)["proposalKey"])
+		if _, ok := keySet[proposalKey]; !ok {
+			continue
+		}
+		selected = append(selected, rawProposal)
+	}
+	return selected
 }
 
 func renderProposalsFooter(packet map[string]any) string {

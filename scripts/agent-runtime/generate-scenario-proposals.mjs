@@ -15,7 +15,6 @@ function usage(exitCode = 0) {
 		"",
 		"Input packet:",
 		`  schemaVersion: ${SCENARIO_PROPOSAL_INPUTS_SCHEMA}`,
-		"  limit: optional proposal cap (default 5)",
 		"  proposalCandidates: [...]",
 		"  existingScenarioRegistry: [...]",
 		"  scenarioCoverage: [...]",
@@ -124,7 +123,6 @@ export function buildScenarioProposalPacket(input) {
 		existingScenarioKeys: readScenarioKeys(input.existingScenarioRegistry),
 		recentCoverage: readScenarioCoverage(input.scenarioCoverage),
 		families,
-		limit: input.limit,
 		windowDays: input.windowDays,
 		now: parseNow(input.now),
 	});

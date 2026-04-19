@@ -81,7 +81,10 @@ func TestRenderScenarioProposalsHTMLRendersProposals(t *testing.T) {
 	for _, pattern := range []string{
 		`class="toc-nav"`,
 		`href="#context-heading"`,
+		`href="#attention-heading"`,
 		`href="#proposals-heading"`,
+		`Attention View`,
+		`Full Ranked Proposals`,
 		`data-proposal-key="chatbot-review-clarification"`,
 		`action: add_new_scenario`,
 		`family: chatbot`,
@@ -191,6 +194,23 @@ func sampleScenarioProposals() map[string]any {
 		"generatedAt":   "2026-04-16T00:00:00Z",
 		"windowDays":    float64(7),
 		"families":      []any{"chatbot", "workflow"},
+		"proposalTelemetry": map[string]any{
+			"mergedCandidateCount":  float64(1),
+			"returnedProposalCount": float64(1),
+		},
+		"attentionView": map[string]any{
+			"ruleVersion": "v1",
+			"proposalKeys": []any{
+				"chatbot-review-clarification",
+			},
+			"reasonCodesByProposalKey": map[string]any{
+				"chatbot-review-clarification": []any{"new_scenario", "low_recent_coverage"},
+			},
+			"matchedRuleCount": float64(1),
+			"selectedCount":    float64(1),
+			"fallbackUsed":     false,
+			"truncated":        false,
+		},
 		"proposals": []any{
 			map[string]any{
 				"proposalKey": "chatbot-review-clarification",

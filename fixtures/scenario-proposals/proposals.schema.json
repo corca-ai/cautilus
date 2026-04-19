@@ -7,8 +7,8 @@
     "generatedAt",
     "windowDays",
     "families",
-    "appliedLimit",
     "proposalTelemetry",
+    "attentionView",
     "proposals"
   ],
   "properties": {
@@ -29,17 +29,11 @@
         "type": "string"
       }
     },
-    "appliedLimit": {
-      "type": "integer",
-      "minimum": 1
-    },
     "proposalTelemetry": {
       "type": "object",
       "required": [
         "mergedCandidateCount",
-        "returnedProposalCount",
-        "truncated",
-        "omittedProposalCount"
+        "returnedProposalCount"
       ],
       "properties": {
         "mergedCandidateCount": {
@@ -49,13 +43,46 @@
         "returnedProposalCount": {
           "type": "integer",
           "minimum": 0
+        }
+      }
+    },
+    "attentionView": {
+      "type": "object",
+      "required": [
+        "ruleVersion",
+        "proposalKeys",
+        "reasonCodesByProposalKey",
+        "matchedRuleCount",
+        "selectedCount",
+        "fallbackUsed",
+        "truncated"
+      ],
+      "properties": {
+        "ruleVersion": {
+          "type": "string"
+        },
+        "proposalKeys": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "reasonCodesByProposalKey": {
+          "type": "object"
+        },
+        "matchedRuleCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "selectedCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "fallbackUsed": {
+          "type": "boolean"
         },
         "truncated": {
           "type": "boolean"
-        },
-        "omittedProposalCount": {
-          "type": "integer",
-          "minimum": 0
         }
       }
     },
