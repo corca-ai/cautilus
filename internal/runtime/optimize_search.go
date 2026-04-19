@@ -516,6 +516,7 @@ func RunOptimizeSearch(packet map[string]any, inputFile string, now time.Time) m
 	}
 	stopReason := "seed_only"
 	mutationInvocations := 0
+	mergeInvocations := 0
 	generationLimit := optimizeSearchConfigInt(packet, "generationLimit", 1)
 	populationLimit := optimizeSearchConfigInt(packet, "populationLimit", generationLimit+1)
 	artifactRoot := filepath.Dir(firstNonEmpty(inputFile, stringOrEmpty(packet["optimizeInputFile"])))
@@ -549,16 +550,27 @@ func RunOptimizeSearch(packet map[string]any, inputFile string, now time.Time) m
 			}
 			break
 		}
+		proposedCandidates := []map[string]any{candidate}
 		candidates = append(candidates, candidate)
 		updatedMatrix := optimizeSearchHeldOutMatrix(candidates)
 		updatedScenarioIDs := optimizeSearchScenarioIDs(packet, updatedMatrix)
 		updatedFrontierIDs := optimizeSearchFrontierCandidateIDs(updatedMatrix, optimizeSearchCandidateIDs(candidates), updatedScenarioIDs)
 		optimizeSearchRecordFrontierPromotionReviews(packet, artifactRoot, []map[string]any{candidate}, updatedFrontierIDs, checkpointLedger)
+		if mergeCandidate, err := optimizeSearchEvaluateMerge(packet, inputFile, generationIndex, candidates, updatedFrontierIDs, updatedScenarioIDs); err == nil && mergeCandidate != nil {
+			if !optimizeSearchHasFingerprint(candidates, stringOrEmpty(asMap(mergeCandidate["targetSnapshot"])["sha256"])) {
+				proposedCandidates = append(proposedCandidates, mergeCandidate)
+				candidates = append(candidates, mergeCandidate)
+				mergeInvocations++
+				updatedMatrix = optimizeSearchHeldOutMatrix(candidates)
+				updatedScenarioIDs = optimizeSearchScenarioIDs(packet, updatedMatrix)
+				updatedFrontierIDs = optimizeSearchFrontierCandidateIDs(updatedMatrix, optimizeSearchCandidateIDs(candidates), updatedScenarioIDs)
+			}
+		}
 		generationSummaries = append(generationSummaries, map[string]any{
 			"generationIndex":            generationIndex,
 			"parentFrontierCandidateIds": stringSliceToAny(parentFrontierIDs),
-			"proposedCandidateIds":       []any{candidate["id"]},
-			"promotedCandidateIds":       []any{candidate["id"]},
+			"proposedCandidateIds":       candidateIDList(proposedCandidates),
+			"promotedCandidateIds":       candidateIDList(proposedCandidates),
 			"frontierCandidateIds":       stringSliceToAny(updatedFrontierIDs),
 		})
 		if len(candidates) >= populationLimit {
@@ -669,6 +681,7 @@ func RunOptimizeSearch(packet map[string]any, inputFile string, now time.Time) m
 			"candidateCount":          len(candidates),
 			"generationCount":         len(generationSummaries),
 			"mutationInvocationCount": mutationInvocations,
+			"mergeInvocationCount":    mergeInvocations,
 			"heldOutEvaluationCount":  len(candidates),
 			"reviewCheckpointCount":   reviewCheckpointCount,
 			"fullGateCheckpointCount": fullGateCheckpointCount,
@@ -1753,6 +1766,189 @@ func optimizeSearchMutationBackend(packet map[string]any) string {
 	return ""
 }
 
+func optimizeSearchEvaluateMerge(packet map[string]any, inputFile string, generationIndex int, candidates []map[string]any, rankedFrontierIDs []string, scenarioIDs []string) (map[string]any, error) {
+	mergeEnabled, _ := asMap(packet["searchConfig"])["mergeEnabled"].(bool)
+	if !mergeEnabled {
+		return nil, nil
+	}
+	parents := optimizeSearchSelectMergeParents(candidates, rankedFrontierIDs, scenarioIDs, stringOrEmpty(asMap(packet["searchConfig"])["threeParentPolicy"]))
+	if len(parents) < 2 {
+		return nil, nil
+	}
+	toolRoot := strings.TrimSpace(os.Getenv("CAUTILUS_TOOL_ROOT"))
+	reviewWrapperPath := filepath.Join(toolRoot, "scripts", "agent-runtime", "run-review-variant.sh")
+	if toolRoot == "" || !fileExists(reviewWrapperPath) {
+		return nil, fmt.Errorf("review wrapper unavailable")
+	}
+	artifactRoot := filepath.Dir(firstNonEmpty(inputFile, stringOrEmpty(packet["optimizeInputFile"])))
+	backend := optimizeSearchMutationBackend(packet)
+	if backend == "" {
+		return nil, fmt.Errorf("mutation backend unavailable")
+	}
+	candidateID := fmt.Sprintf("g%d-merge-1-%s", atLeastOne(generationIndex), strings.ReplaceAll(strings.ReplaceAll(backend, "_", "-"), " ", "-"))
+	candidateRoot := filepath.Join(artifactRoot, "optimize-search-candidates", candidateID)
+	if err := os.MkdirAll(candidateRoot, 0o755); err != nil {
+		return nil, err
+	}
+	promptFile := filepath.Join(candidateRoot, "mutation.prompt.md")
+	schemaFile := filepath.Join(candidateRoot, "mutation.schema.json")
+	outputFile := filepath.Join(candidateRoot, "mutation.output.json")
+	candidatePromptPath := filepath.Join(candidateRoot, "candidate.prompt.md")
+	parentPrompts := make([]string, 0, len(parents))
+	for _, parent := range parents {
+		targetPath := stringOrEmpty(asMap(parent["targetFile"])["path"])
+		payload, err := os.ReadFile(targetPath)
+		if err != nil {
+			return nil, err
+		}
+		parentPrompts = append(parentPrompts, string(payload))
+	}
+	promptText := optimizeSearchMergePrompt(packet, parents, parentPrompts, backend, scenarioIDs)
+	if err := os.WriteFile(promptFile, []byte(promptText), 0o644); err != nil {
+		return nil, err
+	}
+	if err := writeJSONFile(schemaFile, optimizeSearchMutationSchema()); err != nil {
+		return nil, err
+	}
+	command := exec.Command("bash", reviewWrapperPath,
+		"--backend", backend,
+		"--workspace", stringOrEmpty(packet["repoRoot"]),
+		"--prompt-file", promptFile,
+		"--schema-file", schemaFile,
+		"--output-file", outputFile,
+	)
+	command.Env = append(os.Environ(), "CAUTILUS_REVIEW_VARIANT_TIMEOUT_SECONDS="+firstNonEmpty(os.Getenv("CAUTILUS_OPTIMIZE_SEARCH_TIMEOUT_SECONDS"), "180"))
+	output, err := command.CombinedOutput()
+	if err != nil {
+		return nil, fmt.Errorf("merge backend failed: %s", strings.TrimSpace(string(output)))
+	}
+	mutationOutput, err := readJSONFile(outputFile)
+	if err != nil {
+		return nil, err
+	}
+	promptMarkdown := strings.TrimSpace(stringOrEmpty(mutationOutput["promptMarkdown"]))
+	if promptMarkdown == "" {
+		return nil, fmt.Errorf("merge output omitted promptMarkdown")
+	}
+	if err := os.WriteFile(candidatePromptPath, []byte(promptMarkdown+"\n"), 0o644); err != nil {
+		return nil, err
+	}
+	heldOutEntries, evaluationArtifacts, err := optimizeSearchEvaluateCandidate(packet, artifactRoot, candidateID, candidatePromptPath)
+	if err != nil {
+		return nil, err
+	}
+	parentIDs := make([]any, 0, len(parents))
+	for _, parent := range parents {
+		parentIDs = append(parentIDs, stringOrEmpty(parent["id"]))
+	}
+	return map[string]any{
+		"id":                 candidateID,
+		"generationIndex":    atLeastOne(generationIndex),
+		"parentCandidateIds": parentIDs,
+		"origin":             "merge",
+		"targetFile": map[string]any{
+			"path":   candidatePromptPath,
+			"exists": true,
+		},
+		"targetSnapshot": collectTargetSnapshot(map[string]any{
+			"path":   candidatePromptPath,
+			"exists": true,
+		}),
+		"mutationRationale":    stringOrEmpty(mutationOutput["rationaleSummary"]),
+		"expectedImprovements": arrayOrEmpty(mutationOutput["expectedImprovements"]),
+		"preservedStrengths":   arrayOrEmpty(mutationOutput["preservedStrengths"]),
+		"riskNotes":            arrayOrEmpty(mutationOutput["riskNotes"]),
+		"backend":              backend,
+		"artifacts": map[string]any{
+			"promptFile": promptFile,
+			"schemaFile": schemaFile,
+			"outputFile": outputFile,
+		},
+		"evaluationArtifacts": evaluationArtifacts,
+		"telemetry":           optimizeSearchCandidateTelemetry(heldOutEntries),
+		"heldOutEntries":      heldOutEntries,
+	}, nil
+}
+
+func optimizeSearchSelectMergeParents(candidates []map[string]any, rankedFrontierIDs []string, scenarioIDs []string, threeParentPolicy string) []map[string]any {
+	if len(rankedFrontierIDs) < 2 {
+		return nil
+	}
+	parents := []map[string]any{}
+	coveredScenarioIDs := map[string]struct{}{}
+	for _, candidateID := range rankedFrontierIDs[:2] {
+		candidate := optimizeSearchCandidateByID(candidates, candidateID)
+		if candidate == nil {
+			continue
+		}
+		parents = append(parents, candidate)
+		for _, scenarioID := range optimizeSearchCandidateBestScenarioIDs(candidate, scenarioIDs, candidates, rankedFrontierIDs) {
+			coveredScenarioIDs[scenarioID] = struct{}{}
+		}
+	}
+	if len(parents) < 2 || threeParentPolicy == "disabled" || len(rankedFrontierIDs) < 3 {
+		return parents
+	}
+	for _, candidateID := range rankedFrontierIDs[2:] {
+		candidate := optimizeSearchCandidateByID(candidates, candidateID)
+		if candidate == nil {
+			continue
+		}
+		addsCoverage := false
+		for _, scenarioID := range optimizeSearchCandidateBestScenarioIDs(candidate, scenarioIDs, candidates, rankedFrontierIDs) {
+			if _, ok := coveredScenarioIDs[scenarioID]; !ok {
+				addsCoverage = true
+				coveredScenarioIDs[scenarioID] = struct{}{}
+			}
+		}
+		if addsCoverage {
+			parents = append(parents, candidate)
+			break
+		}
+	}
+	return parents
+}
+
+func optimizeSearchCandidateBestScenarioIDs(candidate map[string]any, scenarioIDs []string, candidates []map[string]any, frontierIDs []string) []string {
+	bestScenarioIDs := []string{}
+	candidateID := stringOrEmpty(candidate["id"])
+	for _, scenarioID := range scenarioIDs {
+		bestScore := -1.0
+		for _, frontierID := range frontierIDs {
+			score := optimizeSearchScoreForCandidate(optimizeSearchHeldOutMatrix(candidates), frontierID, scenarioID)
+			if score > bestScore {
+				bestScore = score
+			}
+		}
+		if optimizeSearchScoreForCandidate(optimizeSearchHeldOutMatrix(candidates), candidateID, scenarioID) == bestScore {
+			bestScenarioIDs = append(bestScenarioIDs, scenarioID)
+		}
+	}
+	return uniqueStrings(bestScenarioIDs)
+}
+
+func optimizeSearchHasFingerprint(candidates []map[string]any, fingerprint string) bool {
+	if strings.TrimSpace(fingerprint) == "" {
+		return false
+	}
+	for _, candidate := range candidates {
+		if stringOrEmpty(asMap(candidate["targetSnapshot"])["sha256"]) == fingerprint {
+			return true
+		}
+	}
+	return false
+}
+
+func candidateIDList(candidates []map[string]any) []any {
+	result := make([]any, 0, len(candidates))
+	for _, candidate := range candidates {
+		if id := stringOrEmpty(candidate["id"]); id != "" {
+			result = append(result, id)
+		}
+	}
+	return result
+}
+
 func optimizeSearchMutationPrompt(packet map[string]any, parentCandidate map[string]any) string {
 	targetPath := stringOrEmpty(asMap(parentCandidate["targetFile"])["path"])
 	if targetPath == "" {
@@ -1792,6 +1988,84 @@ Evidence to address:
 Checkpoint feedback to repair:
 %s
 `, currentPrompt, stringOrEmpty(asMap(packet["objective"])["summary"]), feedback, checkpointFeedback)) + "\n"
+}
+
+func optimizeSearchMergePrompt(packet map[string]any, parentCandidates []map[string]any, parentPrompts []string, backend string, scenarioIDs []string) string {
+	constraints := []string{}
+	for _, rawConstraint := range arrayOrEmpty(asMap(packet["objective"])["constraints"]) {
+		if constraint := strings.TrimSpace(stringOrEmpty(rawConstraint)); constraint != "" {
+			constraints = append(constraints, constraint)
+		}
+	}
+	mergeFeedback := []any{}
+	if includeCheckpointFeedback, _ := asMap(packet["mutationEvidencePolicy"])["includeCheckpointFeedback"].(bool); includeCheckpointFeedback {
+		for _, candidate := range parentCandidates {
+			mergeFeedback = append(mergeFeedback, arrayOrEmpty(candidate["checkpointFeedback"])...)
+		}
+	}
+	feedbackJSON := "[]"
+	if payload, err := json.MarshalIndent(mergeFeedback, "", "  "); err == nil {
+		feedbackJSON = string(payload)
+	}
+	sections := []string{
+		"Return one JSON object matching the schema.",
+		"",
+		"# Merge context",
+		fmt.Sprintf("- backend: %s", backend),
+		fmt.Sprintf("- objective: %s", stringOrEmpty(asMap(packet["objective"])["summary"])),
+		fmt.Sprintf("- parentCandidateIds: %s", strings.Join(optimizeSearchCandidateIDs(parentCandidates), ", ")),
+		fmt.Sprintf("- targetFile: %s", stringOrEmpty(asMap(packet["targetFile"])["path"])),
+		fmt.Sprintf("- heldOutScenarioSet: %s", strings.Join(scenarioIDs, ", ")),
+		"",
+		"# Guardrails",
+		"- Output valid JSON matching the provided schema.",
+		"- Synthesize one coherent prompt body instead of concatenating the parent prompts verbatim.",
+		"- Preserve complementary strengths from the selected frontier parents when they do not conflict.",
+		"- Do not weaken the stronger held-out behaviors already achieved by either parent.",
+		"- Do not optimize for lower cost by merely making the prompt shorter.",
+	}
+	for _, constraint := range constraints {
+		sections = append(sections, "- "+constraint)
+	}
+	sections = append(sections,
+		"",
+		"# Frontier checkpoint feedback",
+		feedbackJSON,
+	)
+	for index, candidate := range parentCandidates {
+		parentMetadata := map[string]any{
+			"id":                   candidate["id"],
+			"expectedImprovements": arrayOrEmpty(candidate["expectedImprovements"]),
+			"preservedStrengths":   arrayOrEmpty(candidate["preservedStrengths"]),
+			"riskNotes":            arrayOrEmpty(candidate["riskNotes"]),
+		}
+		parentJSON := "{}"
+		if payload, err := json.MarshalIndent(parentMetadata, "", "  "); err == nil {
+			parentJSON = string(payload)
+		}
+		parentPrompt := ""
+		if index < len(parentPrompts) {
+			parentPrompt = strings.TrimSpace(parentPrompts[index])
+		}
+		sections = append(sections,
+			"",
+			fmt.Sprintf("# Parent %s", stringOrEmpty(candidate["id"])),
+			parentJSON,
+			"```md",
+			parentPrompt,
+			"```",
+		)
+	}
+	sections = append(sections,
+		"",
+		"# Response shape",
+		"- promptMarkdown: full revised prompt body",
+		"- rationaleSummary: 1-2 sentence explanation of what changed and why",
+		"- expectedImprovements: list of scenarios or failure modes this candidate should improve",
+		"- preservedStrengths: list of strengths intentionally kept from the parents",
+		"- riskNotes: list of residual risks that still need held-out validation",
+	)
+	return strings.Join(sections, "\n") + "\n"
 }
 
 func optimizeSearchPreferredCandidate(candidates []map[string]any, candidateIDs []string) map[string]any {

@@ -36,7 +36,7 @@ This slice defines a first `GEPA`-inspired search contract for `Cautilus`:
 - candidate evaluation is bounded by declared budgets and checkpoint policies
 - adapters may override the repo's default search budget and tier-specific search limits through one optional `optimize_search` block while the product still owns the tier labels `light`, `medium`, and `heavy`
 - candidate selection is Pareto-based over per-scenario validation scores
-- the current implementation closes packet assembly, readiness gating, a bounded frontier-following reflective mutation loop that consumes `generationLimit` and stops when total candidate count reaches `populationLimit`, held-out reevaluation of each promoted candidate, telemetry-aware frontier ranking, and the proposal bridge
+- the current implementation closes packet assembly, readiness gating, a bounded frontier-following reflective mutation loop that consumes `generationLimit` and stops when total candidate count reaches `populationLimit`, held-out reevaluation of each promoted candidate, optional bounded merge synthesis, frontier-promotion review reuse, telemetry-aware frontier ranking, and the proposal bridge
 - the current shipped runner is the Go runtime behind `cautilus optimize search run`
 - Node files under `scripts/agent-runtime/` may still host helper glue, but they do not define the shipped behavior contract
 - retired richer Node optimize-search research harnesses live under `scripts/experiments/optimize-search-js/`
@@ -61,10 +61,10 @@ This slice defines a first `GEPA`-inspired search contract for `Cautilus`:
   - declared selection `constraintCaps` make it ineligible
   - final review checkpoints reject it
   - final full-gate checkpoints reject it
-- Declared selection policy and optional merge knobs are preserved in the canonical packet even when the current runner does not yet consume every knob.
+- Declared selection policy and optional merge knobs are preserved in the canonical packet, and the current runner consumes the bounded merge toggle plus three-parent policy.
 - Prompt mutation is reflective prompt rewriting based on explicit evidence, not random token- or substring-level crossover.
 - Merge synthesis stays opt-in in the resolved search packet.
-  `Cautilus` preserves adapter- or direct-input merge settings, but the current runner does not yet synthesize merge candidates from them.
+  When `mergeEnabled` is true, the current runner may synthesize one bounded merge candidate per generation from complementary frontier parents.
 - The search output recommends a best next candidate and preserves lineage, but does not auto-apply prompt edits.
 - If search-readiness evidence is insufficient, `Cautilus` must stop before candidate generation and emit a machine-readable blocked result.
 - Inline JSON ingress is allowed, but `Cautilus` must materialize it into a canonical input file before continuing.
@@ -76,8 +76,7 @@ This slice defines a first `GEPA`-inspired search contract for `Cautilus`:
 - weight updates, fine-tuning, or external trainer orchestration
 - automatic prompt patch application to consumer-owned files
 - batch mutation that proposes more than one candidate per generation
-- frontier-promotion review execution before final selection
-- runtime consumption of `mergeEnabled` and `threeParentPolicy`
+- richer checkpoint-priority ordering beyond the current reuse and feedback-reinjection path
 - richer merge selection and smarter crossover heuristics
 
 ## Non-Goals
@@ -344,21 +343,23 @@ The current bounded loop works like this:
 1. Start with one seed candidate from the current target prompt file.
 2. Evaluate the seed candidate on the held-out scenario set to establish the initial per-scenario score vector and frontier.
 3. If the packet is mutation-ready, build one reflective dataset from explicit evidence and follow the best current frontier candidate through one bounded mutation per generation.
-4. Evaluate each promoted candidate on held-out scenarios and update the frontier using per-scenario scores plus late telemetry tie-breaks when present.
-5. Emit one selected best next candidate plus the durable search record.
+4. If `mergeEnabled` is true and the frontier exposes complementary parents, synthesize at most one bounded merge candidate for that generation and evaluate it on the held-out scenario set.
+5. Evaluate each promoted candidate on held-out scenarios, run frontier-promotion review checkpoints when configured, and update the frontier using per-scenario scores plus late telemetry tie-breaks when present.
+6. Emit one selected best next candidate plus the durable search record.
 
 Current implementation note:
 
-- v1 executes packet assembly, readiness blocking, one reflective mutation per generation, held-out reevaluation, telemetry-aware frontier ranking, and proposal bridging
-- `reviewCheckpointPolicy` currently shapes packet policy and checkpoint-feedback inclusion, but does not yet trigger separate review-checkpoint executions inside `optimize search run`
-- `mergeEnabled`, `threeParentPolicy`, and declared selection caps are preserved in the packet today so future runners and artifacts can reopen the same intent honestly
+- v1 executes packet assembly, readiness blocking, one reflective mutation per generation, optional bounded merge synthesis, held-out reevaluation, frontier-promotion review reuse, checkpoint-feedback reinjection, telemetry-aware frontier ranking, finalist checkpoint execution, and proposal bridging
+- `mergeEnabled`, `threeParentPolicy`, and declared selection caps are consumed by the current runner, but richer merge-selection heuristics remain deferred
 
 In v1, review checkpoint policy means:
 
 - `final_only`
   - keep checkpoint policy conservative in the canonical packet
 - `frontier_promotions`
-  - preserve the intent to allow earlier checkpointing once the runner grows beyond the current one-mutation slice
+  - run review checkpoints when a candidate first reaches the frontier
+  - reuse the recorded review outcome during final selection
+  - reinject rejected checkpoint feedback into later mutation prompts
 
 The current bounded default is budget-aware at packet-construction time: `light` stays `final_only`, while `medium` and `heavy` default to `frontier_promotions`.
 
