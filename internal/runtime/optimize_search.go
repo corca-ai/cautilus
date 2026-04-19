@@ -534,13 +534,15 @@ func RunOptimizeSearch(packet map[string]any, inputFile string, now time.Time) m
 		candidateIDs := optimizeSearchCandidateIDs(candidates)
 		parentFrontierIDs := optimizeSearchFrontierCandidateIDs(matrix, candidateIDs, scenarioIDs)
 		rankedParentFrontierIDs := optimizeSearchRankCandidateIDs(parentFrontierIDs, matrix, candidates, scenarioIDs)
-		parentCandidate := optimizeSearchPreferredCandidate(candidates, rankedParentFrontierIDs)
+		eligibleMutationParentIDs := optimizeSearchPrioritizeMutationCandidateIDs(candidates, rankedParentFrontierIDs, generationIndex)
+		parentCandidate := optimizeSearchPreferredCandidate(candidates, eligibleMutationParentIDs)
 		if parentCandidate == nil {
 			stopReason = "no_parent_candidate"
 			candidateGenerationAttempts = append(candidateGenerationAttempts, map[string]any{
 				"generationIndex":             generationIndex,
 				"parentFrontierCandidateIds":  stringSliceToAny(parentFrontierIDs),
 				"rankedParentFrontierIds":     stringSliceToAny(rankedParentFrontierIDs),
+				"eligibleMutationParentIds":   stringSliceToAny(eligibleMutationParentIDs),
 				"selectedParentCandidateId":   nil,
 				"backendInvoked":              false,
 				"status":                      "no_parent_candidate",
@@ -562,6 +564,7 @@ func RunOptimizeSearch(packet map[string]any, inputFile string, now time.Time) m
 			"generationIndex":            generationIndex,
 			"parentFrontierCandidateIds": stringSliceToAny(parentFrontierIDs),
 			"rankedParentFrontierIds":    stringSliceToAny(rankedParentFrontierIDs),
+			"eligibleMutationParentIds":  stringSliceToAny(eligibleMutationParentIDs),
 			"selectedParentCandidateId":  stringOrEmpty(parentCandidate["id"]),
 			"generatedCandidateIds":      []any{},
 			"generatedCandidateCount":    0,
@@ -714,23 +717,23 @@ func RunOptimizeSearch(packet map[string]any, inputFile string, now time.Time) m
 		},
 		"checkpointOutcomes": checkpointOutcomes,
 		"searchTelemetry": map[string]any{
-			"candidateCount":           len(candidates),
-			"generatedCandidateCount":  generatedCandidateCount,
-			"generationCount":          len(generationSummaries),
-			"mutationInvocationCount":  mutationInvocations,
-			"mergeInvocationCount":     mergeInvocations,
-			"heldOutEvaluationCount":   len(candidates),
-			"reviewCheckpointCount":    reviewCheckpointCount,
-			"fullGateCheckpointCount":  fullGateCheckpointCount,
-			"candidateAttemptCount":    len(candidateGenerationAttempts),
-			"stopReason":               stopReason,
+			"candidateCount":          len(candidates),
+			"generatedCandidateCount": generatedCandidateCount,
+			"generationCount":         len(generationSummaries),
+			"mutationInvocationCount": mutationInvocations,
+			"mergeInvocationCount":    mergeInvocations,
+			"heldOutEvaluationCount":  len(candidates),
+			"reviewCheckpointCount":   reviewCheckpointCount,
+			"fullGateCheckpointCount": fullGateCheckpointCount,
+			"candidateAttemptCount":   len(candidateGenerationAttempts),
+			"stopReason":              stopReason,
 		},
 		"candidateGenerationDiagnostics": optimizeSearchCandidateGenerationDiagnostics(packet, candidateGenerationAttempts, generatedCandidateCount, stopReason),
-		"proposalBridge":     proposalBridge,
-		"selectionTelemetry": selectionTelemetry,
-		"reasonCodes":        reasonCodes,
-		"missingEvidence":    missingEvidence,
-		"suggestedNextSteps": suggestedNextSteps,
+		"proposalBridge":                 proposalBridge,
+		"selectionTelemetry":             selectionTelemetry,
+		"reasonCodes":                    reasonCodes,
+		"missingEvidence":                missingEvidence,
+		"suggestedNextSteps":             suggestedNextSteps,
 	}
 }
 
@@ -1840,11 +1843,11 @@ func optimizeSearchMutationPrerequisites(packet map[string]any) map[string]any {
 	toolRoot := strings.TrimSpace(os.Getenv("CAUTILUS_TOOL_ROOT"))
 	reviewWrapperPath := filepath.Join(toolRoot, "scripts", "agent-runtime", "run-review-variant.sh")
 	return map[string]any{
-		"intentPresent":            stringOrEmpty(evaluationContext["intent"]) != "",
-		"baselineRefPresent":       stringOrEmpty(evaluationContext["baselineRef"]) != "",
-		"targetFilePath":           nilIfEmpty(targetFile["path"]),
-		"targetFileExists":         truthy(targetFile["exists"]),
-		"reviewWrapperAvailable":   toolRoot != "" && fileExists(reviewWrapperPath),
+		"intentPresent":             stringOrEmpty(evaluationContext["intent"]) != "",
+		"baselineRefPresent":        stringOrEmpty(evaluationContext["baselineRef"]) != "",
+		"targetFilePath":            nilIfEmpty(targetFile["path"]),
+		"targetFileExists":          truthy(targetFile["exists"]),
+		"reviewWrapperAvailable":    toolRoot != "" && fileExists(reviewWrapperPath),
 		"mutationBackendConfigured": backend != "",
 	}
 }
@@ -2535,10 +2538,7 @@ func optimizeSearchMergePrompt(packet map[string]any, parentCandidates []map[str
 
 func optimizeSearchPreferredCandidate(candidates []map[string]any, candidateIDs []string) map[string]any {
 	if len(candidateIDs) == 0 {
-		if len(candidates) == 0 {
-			return nil
-		}
-		return candidates[0]
+		return nil
 	}
 	targetID := candidateIDs[0]
 	for _, candidate := range candidates {
@@ -2550,6 +2550,96 @@ func optimizeSearchPreferredCandidate(candidates []map[string]any, candidateIDs 
 		return nil
 	}
 	return candidates[0]
+}
+
+func optimizeSearchPrioritizeMutationCandidateIDs(candidates []map[string]any, candidateIDs []string, nextGenerationIndex int) []string {
+	type prioritizedCandidate struct {
+		id       string
+		priority int
+		index    int
+	}
+	prioritized := []prioritizedCandidate{}
+	for index, candidateID := range candidateIDs {
+		candidate := optimizeSearchCandidateByID(candidates, candidateID)
+		if candidate == nil || !optimizeSearchCandidateCanSeedMutation(candidate, nextGenerationIndex) {
+			continue
+		}
+		prioritized = append(prioritized, prioritizedCandidate{
+			id:       candidateID,
+			priority: optimizeSearchMutationRepairPriority(candidate),
+			index:    index,
+		})
+	}
+	sort.SliceStable(prioritized, func(i, j int) bool {
+		if prioritized[i].priority != prioritized[j].priority {
+			return prioritized[i].priority > prioritized[j].priority
+		}
+		return prioritized[i].index < prioritized[j].index
+	})
+	result := make([]string, 0, len(prioritized))
+	for _, entry := range prioritized {
+		result = append(result, entry.id)
+	}
+	return result
+}
+
+func optimizeSearchCandidateCanSeedMutation(candidate map[string]any, nextGenerationIndex int) bool {
+	outcome := asMap(candidate["promotionReviewOutcome"])
+	if len(outcome) == 0 {
+		return true
+	}
+	if admissible, _ := outcome["admissible"].(bool); admissible {
+		return true
+	}
+	reviewedAtGeneration := int(numberOrDefault(firstNonNil(outcome["reviewedAtGeneration"], candidate["generationIndex"]), 0))
+	return nextGenerationIndex <= reviewedAtGeneration+optimizeSearchMutationRepairGenerationBudget(outcome)
+}
+
+func optimizeSearchMutationRepairPriority(candidate map[string]any) int {
+	outcome := asMap(candidate["promotionReviewOutcome"])
+	if len(outcome) == 0 {
+		return 0
+	}
+	if admissible, _ := outcome["admissible"].(bool); admissible {
+		return 0
+	}
+	if optimizeSearchReviewOutcomeSeverity(outcome) == "blocker" {
+		return 2
+	}
+	return 1
+}
+
+func optimizeSearchMutationRepairGenerationBudget(outcome map[string]any) int {
+	if len(outcome) == 0 {
+		return math.MaxInt
+	}
+	if admissible, _ := outcome["admissible"].(bool); admissible {
+		return math.MaxInt
+	}
+	if optimizeSearchReviewOutcomeSeverity(outcome) == "blocker" {
+		return 0
+	}
+	return 1
+}
+
+func optimizeSearchReviewOutcomeSeverity(outcome map[string]any) string {
+	severity := "pass"
+	severityRank := map[string]int{
+		"pass":    0,
+		"concern": 1,
+		"blocker": 2,
+	}
+	for _, rawVariant := range arrayOrEmpty(outcome["variants"]) {
+		variant := asMap(rawVariant)
+		verdict := firstNonEmpty(stringOrEmpty(variant["verdict"]), "pass")
+		if severityRank[verdict] > severityRank[severity] {
+			severity = verdict
+		}
+	}
+	if admissible, _ := outcome["admissible"].(bool); !admissible && severity == "pass" {
+		return "concern"
+	}
+	return severity
 }
 
 func optimizeSearchMutationSchema() map[string]any {
