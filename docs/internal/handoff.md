@@ -72,12 +72,17 @@
 17. Go optimize-search runner 는 이제 `mergeEnabled` 가 true 일 때 complementary frontier parents 로부터 generation 당 최대 한 개의 bounded merge candidate 를 실제로 합성한다.
     current parity 는 pair merge 와 coverage-expansion third parent selection, scenario-priority / checkpoint-severity merge parent ranking, merge invocation telemetry, merge finalist / multi-generation merge synthesis smoke, 그리고 frontier checkpoint feedback provenance 가 실린 merge prompt 까지다.
     broader crossover heuristics 와 더 공격적인 synthesis 전략은 아직 experimental Node harness 쪽에 남아 있다.
+18. optimize proposal 은 이제 report-level residual hotspot 을 first-class evidence 로 읽는다.
+    `report.humanReviewFindings` 와 residual `compareArtifact.reasons` 를 `report.improved` fallback 보다 앞세우고, proposal telemetry 에는 budget 때문에 선택되지 않은 residual hotspot 요약도 남긴다.
+19. optimize-search result 는 이제 seed-only fallback 도 더 설명 가능하다.
+    `candidateGenerationDiagnostics` 가 mutation prerequisites, backend invocation 여부, per-generation attempt status, `whyNoCandidates` 요약을 남기고, `searchTelemetry.stopReason` 도 `seed_only` 대신 `mutation_backend_failed` 같은 explicit reason 으로 더 세분화된다.
 
 ## Recent Commits
 
 최근 주요 커밋:
 
 ```text
+9605ef4 Prioritize residual hotspots in optimize proposals
 482c1b0 Synthesize bounded merge candidates in optimize search
 71d33e7 Reinject checkpoint feedback into optimize search mutations
 3f9b7a4 Reuse frontier-promotion review checkpoints in optimize search
@@ -140,6 +145,14 @@
    여러 named adapters 가 있는 repo 에서 여전히 재현된다면 다음엔 `report.json` 의 `.adapterContext` 와 generated optimize packet 을 같이 받아서 본다.
 4. `#11` 은 이번 세션에서 product-side 로 처리했다.
    bootstrap helper 와 work skill 을 따로 기대하거나 관찰할 수 있으므로, `find-skills` 같은 bootstrap helper 와 `impl` 같은 durable work skill 을 같은 honest run 안에서 같이 표현할 수 있다.
+5. `#12` [`optimize search` often stops at `seed_only` without explaining why mutation generation was skipped](https://github.com/corca-ai/cautilus/issues/12)
+   새 seam 이었고, 이번 세션에서 직접 고쳤다.
+   result packet 은 이제 `candidateGenerationDiagnostics` 를 같이 내며, mutation prerequisites, backend invocation 여부, per-generation attempt status, `whyNoCandidates` 를 operator 가 바로 읽을 수 있다.
+   `searchTelemetry.stopReason` 도 `seed_only` 보다 explicit 한 reason 으로 내려간다.
+6. `#13` [`optimize propose` can prioritize improved scenarios and generic revise guidance instead of remaining failure hotspots](https://github.com/corca-ai/cautilus/issues/13)
+   실제 logic gap 이었고, 이번 세션에서 직접 고쳤다.
+   proposal evidence universe 는 이제 report-level `humanReviewFindings` 와 residual `compareArtifact.reasons` 를 first-class 로 읽고, improved fallback 은 정말 residual hotspot 이 비었을 때만 쓴다.
+   trial telemetry 는 budget 때문에 선택되지 않은 residual hotspot 요약도 남긴다.
 
 ## Charness Follow-Up
 
@@ -159,12 +172,14 @@
    shipped path 에서 JS dual runtime 은 치웠고, frontier-promotion review reuse, feedback reinjection, bounded merge synthesis, scenario-priority merge parent ranking 도 Go 쪽으로 올라왔다.
    `scripts/experiments/optimize-search-js/` 에 parity backlog 는 여전히 남아 있다.
    다음 큰 후보는 broader crossover heuristics 와 더 공격적인 synthesis 전략을 실제 shipped boundary 로 올릴지 판단하는 것이다.
-2. Codex cost truth surface 를 계속 다듬는다.
+2. `#12` 와 `#13` 이 실제 consumer artifact 에서 충분히 설명력 있게 동작하는지 본다.
+   특히 `candidateGenerationDiagnostics` 가 operator next step 을 바로 결정할 정도로 충분한지, proposal residual hotspot ranking 이 multi-source packet 에서도 기대대로 안정적인지 external packet 으로 한 번 더 보는 것이 좋다.
+3. Codex cost truth surface 를 계속 다듬는다.
    지금은 derived pricing 까지 올라왔지만, future stable machine cost field 가 있으면 exact surface 로 바꿀 여지가 있다.
-3. optimize-search / deployment-evidence 의 experiment context 를 더 노골적으로 드러낼지 본다.
+4. optimize-search / deployment-evidence 의 experiment context 를 더 노골적으로 드러낼지 본다.
    optimize-search result 자체에는 이미 result-only summary 면이 있다.
    다음 질문은 다른 evidence surfaces 도 같은 수준의 context summary 를 가져야 하는지다.
-4. 여러 named adapters 를 가진 consumer repo 에서 `#8` 류 repro 가 다시 오면, 여기서는 바로 diagnostics, fallback, regression test 추가를 할 수 있다.
+5. 여러 named adapters 를 가진 consumer repo 에서 `#8` 류 repro 가 다시 오면, 여기서는 바로 diagnostics, fallback, regression test 추가를 할 수 있다.
    다만 diagnosis 자체는 outside artifact 가 필요하다.
    최소한 `report.json` 의 `.adapterContext`, `optimize-input.json`, `optimize-search-input.json`, 그리고 기대한 adapter name/context 를 받아야 exact loss point 를 잡을 수 있다.
 

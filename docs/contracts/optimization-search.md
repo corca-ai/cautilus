@@ -242,7 +242,10 @@ Current runtime note:
 - the shipped Go runner now preserves rejected frontier-promotion review feedback on the candidate record and reinjects that feedback into later mutation prompts when the policy enables checkpoint feedback
 - the shipped Go runner now executes final review and final full-gate checkpoints when the adapter exposes those surfaces
 - the current runner follows the best current frontier candidate and evaluates one reflective mutation per generation until `generationLimit` or total candidate count is exhausted
-- the current runner does not yet synthesize merge candidates or implement the richer checkpoint-feedback prioritization heuristics still parked in the experimental Node harness
+- the current runner now synthesizes bounded merge candidates when `mergeEnabled` is true and the frontier exposes complementary parents
+- merge parent selection now prefers complementary frontier groups using held-out coverage, weakest-scenario weighting, checkpoint-severity weighting, and late risk/cost tie-breaks
+- merge prompts now carry scenario-scoped frontier checkpoint feedback with source-candidate provenance when review checkpoints have already surfaced merge-relevant concerns
+- broader crossover heuristics and more aggressive synthesis strategies remain deferred
 
 ## Search Readiness
 
@@ -418,10 +421,15 @@ The packet should include:
 - checkpoint outcomes
   - review checkpoint results
   - full-gate checkpoint results are reserved for future runner expansion
+- candidate-generation diagnostics
+  - mutation prerequisites
+  - whether the mutation backend was actually invoked
+  - per-generation attempt records when search stays on the seed candidate
 - selection telemetry
   - ranked frontier candidate ids
 - search telemetry
   - candidate count
+  - generated candidate count
   - generation count
   - mutation invocation count
   - held-out evaluation count

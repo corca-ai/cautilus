@@ -137,13 +137,61 @@
   },
   "searchTelemetry": {
     "candidateCount": 1,
+    "generatedCandidateCount": 0,
     "generationCount": 0,
-    "mutationInvocationCount": 0,
+    "mutationInvocationCount": 1,
     "mergeInvocationCount": 0,
     "heldOutEvaluationCount": 1,
     "reviewCheckpointCount": 0,
     "fullGateCheckpointCount": 0,
-    "stopReason": "seed_only"
+    "candidateAttemptCount": 1,
+    "stopReason": "mutation_backend_failed"
+  },
+  "candidateGenerationDiagnostics": {
+    "generatedCandidateCount": 0,
+    "attemptCount": 1,
+    "stopReason": "mutation_backend_failed",
+    "prerequisites": {
+      "intentPresent": true,
+      "baselineRefPresent": true,
+      "targetFilePath": "/tmp/cautilus-optimize-search/prompt.md",
+      "targetFileExists": true,
+      "reviewWrapperAvailable": true,
+      "mutationBackendConfigured": true
+    },
+    "attempts": [
+      {
+        "generationIndex": 1,
+        "parentFrontierCandidateIds": [
+          "seed"
+        ],
+        "rankedParentFrontierIds": [
+          "seed"
+        ],
+        "selectedParentCandidateId": "seed",
+        "generatedCandidateIds": [],
+        "generatedCandidateCount": 0,
+        "mutationBackend": "codex_exec",
+        "backendInvoked": true,
+        "status": "mutation_backend_failed",
+        "prerequisites": {
+          "intentPresent": true,
+          "baselineRefPresent": true,
+          "targetFilePath": "/tmp/cautilus-optimize-search/prompt.md",
+          "targetFileExists": true,
+          "reviewWrapperAvailable": true,
+          "mutationBackendConfigured": true
+        },
+        "message": "mutation backend failed: command exited non-zero"
+      }
+    ],
+    "whyNoCandidates": [
+      {
+        "generationIndex": 1,
+        "status": "mutation_backend_failed",
+        "message": "mutation backend failed: command exited non-zero"
+      }
+    ]
   },
   "proposalBridge": {
     "optimizeInputFile": "/tmp/cautilus-optimize-search/optimize-input.json",

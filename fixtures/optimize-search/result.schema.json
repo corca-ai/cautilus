@@ -75,6 +75,9 @@
     "checkpointOutcomes": {
       "type": "object"
     },
+    "candidateGenerationDiagnostics": {
+      "type": "object"
+    },
     "searchTelemetry": {
       "type": "object"
     },

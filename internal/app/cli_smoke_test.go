@@ -2489,6 +2489,115 @@ func TestCLIOptimizeSearchPrepareRunAndProposeFromSearch(t *testing.T) {
 	}
 }
 
+func TestCLIOptimizeSearchRunReportsWhyNoCandidatesWereGenerated(t *testing.T) {
+	root := t.TempDir()
+	reportPath := filepath.Join(root, "report.json")
+	targetPath := filepath.Join(root, "review.prompt.md")
+	optimizeInputPath := filepath.Join(root, "optimize-input.json")
+	heldOutResultsPath := filepath.Join(root, "held-out-results.json")
+	searchInputPath := filepath.Join(root, "optimize-search-input.json")
+	searchResultPath := filepath.Join(root, "optimize-search-result.json")
+	if err := os.WriteFile(targetPath, []byte("Keep escalation handling explicit.\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	writeJSONFile(t, reportPath, map[string]any{
+		"schemaVersion": contracts.ReportPacketSchema,
+		"generatedAt":   "2026-04-19T00:10:00.000Z",
+		"candidate":     "feature/operator-escalation",
+		"baseline":      "origin/main",
+		"intent":        "Operator escalation guidance should stay explicit.",
+		"intentProfile": map[string]any{
+			"schemaVersion":   contracts.BehaviorIntentSchema,
+			"intentId":        "intent-operator-escalation",
+			"summary":         "Operator escalation guidance should stay explicit.",
+			"behaviorSurface": cautilusruntime.BehaviorSurfaces["OPERATOR_BEHAVIOR"],
+		},
+		"commands":            []any{},
+		"commandObservations": []any{},
+		"modesRun":            []string{"held_out"},
+		"modeSummaries":       []any{},
+		"telemetry":           map[string]any{},
+		"improved":            []any{},
+		"regressed":           []any{"operator-escalation-smoke"},
+		"unchanged":           []any{},
+		"noisy":               []any{},
+		"humanReviewFindings": []any{
+			map[string]any{"severity": "concern", "message": "Residual escalation wording still over-triggers."},
+		},
+		"recommendation": "defer",
+	})
+	writeJSONFile(t, heldOutResultsPath, map[string]any{
+		"schemaVersion": contracts.ScenarioResultsSchema,
+		"generatedAt":   "2026-04-19T00:11:00.000Z",
+		"mode":          "held_out",
+		"results": []any{
+			map[string]any{
+				"scenarioId": "operator-escalation-smoke",
+				"status":     "failed",
+				"telemetry": map[string]any{
+					"durationMs": 1200,
+					"cost_usd":   0.02,
+				},
+			},
+		},
+		"compareArtifact": map[string]any{
+			"schemaVersion": contracts.CompareArtifactSchema,
+			"generatedAt":   "2026-04-19T00:11:00.000Z",
+			"verdict":       "regressed",
+			"summary":       "Escalation wording still regresses on held-out recovery prompts.",
+			"reasons": []any{
+				"operator-escalation-smoke: remaining gaps: escalation wording still has 2 FP.",
+			},
+		},
+	})
+
+	runGit(t, root, "init")
+	runGit(t, root, "config", "user.email", "test@example.com")
+	runGit(t, root, "config", "user.name", "Cautilus Test")
+	runGit(t, root, "add", ".")
+	runGit(t, root, "commit", "-m", "initial")
+	writeExecutableFile(t, root, "codex", "#!/bin/sh\nexit 23\n")
+	t.Setenv("PATH", root+string(os.PathListSeparator)+os.Getenv("PATH"))
+
+	_, stderr, exitCode := runCLI(t, root, "optimize", "prepare-input", "--repo-root", root, "--report-file", reportPath, "--target", "prompt", "--target-file", targetPath, "--output", optimizeInputPath)
+	if exitCode != 0 {
+		t.Fatalf("optimize prepare-input failed: %s", stderr)
+	}
+	_, stderr, exitCode = runCLI(t, root, "optimize", "search", "prepare-input", "--optimize-input", optimizeInputPath, "--held-out-results-file", heldOutResultsPath, "--budget", "light", "--output", searchInputPath)
+	if exitCode != 0 {
+		t.Fatalf("optimize search prepare-input failed: %s", stderr)
+	}
+	_, stderr, exitCode = runCLI(t, root, "optimize", "search", "run", "--input", searchInputPath, "--output", searchResultPath)
+	if exitCode != 0 {
+		t.Fatalf("optimize search run failed: %s", stderr)
+	}
+	searchResult := readJSONObjectFile(t, searchResultPath)
+	if searchResult["selectedCandidateId"] != "seed" {
+		t.Fatalf("expected seed-only fallback, got %#v", searchResult["selectedCandidateId"])
+	}
+	searchTelemetry := searchResult["searchTelemetry"].(map[string]any)
+	if searchTelemetry["stopReason"] != "mutation_backend_failed" || searchTelemetry["generatedCandidateCount"] != float64(0) {
+		t.Fatalf("unexpected search telemetry: %#v", searchTelemetry)
+	}
+	candidateGenerationDiagnostics := searchResult["candidateGenerationDiagnostics"].(map[string]any)
+	if candidateGenerationDiagnostics["stopReason"] != "mutation_backend_failed" || candidateGenerationDiagnostics["attemptCount"] != float64(1) {
+		t.Fatalf("unexpected candidate generation diagnostics: %#v", candidateGenerationDiagnostics)
+	}
+	attempts := candidateGenerationDiagnostics["attempts"].([]any)
+	firstAttempt := attempts[0].(map[string]any)
+	if firstAttempt["status"] != "mutation_backend_failed" || firstAttempt["backendInvoked"] != true {
+		t.Fatalf("expected backend invocation failure diagnostics, got %#v", firstAttempt)
+	}
+	prerequisites := firstAttempt["prerequisites"].(map[string]any)
+	if prerequisites["intentPresent"] != true || prerequisites["baselineRefPresent"] != true || prerequisites["mutationBackendConfigured"] != true {
+		t.Fatalf("unexpected mutation prerequisites: %#v", prerequisites)
+	}
+	whyNoCandidates := candidateGenerationDiagnostics["whyNoCandidates"].([]any)
+	if len(whyNoCandidates) != 1 || whyNoCandidates[0].(map[string]any)["status"] != "mutation_backend_failed" {
+		t.Fatalf("unexpected why-no-candidates diagnostics: %#v", candidateGenerationDiagnostics)
+	}
+}
+
 func TestCLIOptimizeSearchUsesHeldOutCompareArtifactReasonsAsFeedback(t *testing.T) {
 	root := t.TempDir()
 	reportPath := filepath.Join(root, "report.json")
