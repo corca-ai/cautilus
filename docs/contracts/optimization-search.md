@@ -353,6 +353,7 @@ Current implementation note:
 - `mergeEnabled`, `threeParentPolicy`, and declared selection caps are consumed by the current runner
 - merge parent selection now prefers complementary frontier groups using held-out coverage, weakest-scenario weighting, checkpoint-severity weighting, and late risk/cost tie-breaks
 - merge prompts now carry scenario-scoped frontier checkpoint feedback with source-candidate provenance when review checkpoints have already exposed merge-relevant concerns
+- the shipped test surface now covers bounded three-parent selection at the runtime layer and multi-generation merge synthesis at the CLI layer
 - broader crossover heuristics and more aggressive synthesis strategies remain deferred
 
 In v1, review checkpoint policy means:
