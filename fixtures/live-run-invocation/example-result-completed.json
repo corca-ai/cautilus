@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "cautilus.live_run_invocation_result.v1",
+  "requestId": "live-run-review-after-retro-001",
+  "instanceId": "ceal",
+  "executionStatus": "completed",
+  "summary": "The selected live instance completed the bounded run and returned to the review workflow after the retro turn.",
+  "startedAt": "2026-04-20T07:05:00Z",
+  "completedAt": "2026-04-20T07:05:12Z",
+  "durationMs": 12000,
+  "scenarioResult": {
+    "scenarioId": "review-after-retro",
+    "status": "pass",
+    "summary": "The live instance resumed the review flow without losing thread context.",
+    "transcriptExcerpt": [
+      {
+        "actor": "user",
+        "text": "retro 먼저 해주세요"
+      },
+      {
+        "actor": "assistant",
+        "text": "먼저 retro를 정리하고 바로 review로 이어가겠습니다."
+      },
+      {
+        "actor": "user",
+        "text": "이제 review로 돌아가죠"
+      },
+      {
+        "actor": "assistant",
+        "text": "좋습니다. 현재 review 대상과 확인 기준부터 정리하겠습니다."
+      }
+    ]
+  },
+  "artifactPaths": [
+    "/Users/operator/.ceal/ceal/agent-runs/live-run-review-after-retro-001.json"
+  ]
+}

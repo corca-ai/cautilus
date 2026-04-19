@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "cautilus.live_run_invocation_request.v1",
+  "requestId": "live-run-review-after-retro-001",
+  "instanceId": "ceal",
+  "timeoutMs": 45000,
+  "captureTranscript": true,
+  "operatorNote": "Recheck live behavior before refreshing the regression scenario.",
+  "scenario": {
+    "scenarioId": "review-after-retro",
+    "name": "Review After Retro",
+    "description": "The operator pivots from retro back to review in one thread.",
+    "maxTurns": 2,
+    "sideEffectsMode": "read_only",
+    "simulatorTurns": [
+      "retro 먼저 해주세요",
+      "이제 review로 돌아가죠"
+    ]
+  }
+}

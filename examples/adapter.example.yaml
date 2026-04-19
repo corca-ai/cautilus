@@ -22,6 +22,10 @@ instance_discovery:
   command_template: node scripts/agent-runtime/discover-workbench-instances.mjs --repo-root {repo_root} --adapter-path {adapter_path}
   required_prerequisites:
     - Keep the discovery command local-first and machine-readable on stdout.
+live_run_invocation:
+  command_template: node scripts/agent-runtime/run-live-instance-scenario.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}
+  required_prerequisites:
+    - Keep the invocation bounded to one selected local instance and one request packet.
 executor_variants:
   - id: codex-review
     tool: codex_exec

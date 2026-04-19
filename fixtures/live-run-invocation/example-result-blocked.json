@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "cautilus.live_run_invocation_result.v1",
+  "requestId": "live-run-review-after-retro-002",
+  "instanceId": "ceal-dev",
+  "executionStatus": "blocked",
+  "summary": "The adapter refused the run because the selected instance is in maintenance mode.",
+  "diagnostics": [
+    {
+      "code": "instance_maintenance_mode",
+      "severity": "error",
+      "message": "ceal-dev is draining background jobs and cannot accept live runs."
+    }
+  ]
+}

@@ -78,6 +78,21 @@ func TestFixtureExamplesValidateAgainstPublishedSchemas(t *testing.T) {
 			example:  filepath.Join("..", "..", "fixtures", "workbench-instance-discovery", "example-catalog.json"),
 			schemaAt: filepath.Join("..", "..", "fixtures", "workbench-instance-discovery", "catalog.schema.json"),
 		},
+		{
+			name:     "live_run_invocation_request",
+			example:  filepath.Join("..", "..", "fixtures", "live-run-invocation", "example-request.json"),
+			schemaAt: filepath.Join("..", "..", "fixtures", "live-run-invocation", "request.schema.json"),
+		},
+		{
+			name:     "live_run_invocation_result_completed",
+			example:  filepath.Join("..", "..", "fixtures", "live-run-invocation", "example-result-completed.json"),
+			schemaAt: filepath.Join("..", "..", "fixtures", "live-run-invocation", "result.schema.json"),
+		},
+		{
+			name:     "live_run_invocation_result_blocked",
+			example:  filepath.Join("..", "..", "fixtures", "live-run-invocation", "example-result-blocked.json"),
+			schemaAt: filepath.Join("..", "..", "fixtures", "live-run-invocation", "result.schema.json"),
+		},
 	}
 
 	for _, tc := range cases {

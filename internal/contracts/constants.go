@@ -11,6 +11,8 @@ const (
 	InstructionSurfaceCasesSchema          = "cautilus.instruction_surface_cases.v1"
 	InstructionSurfaceInputsSchema         = "cautilus.instruction_surface_inputs.v1"
 	InstructionSurfaceSummarySchema        = "cautilus.instruction_surface_summary.v1"
+	LiveRunInvocationRequestSchema         = "cautilus.live_run_invocation_request.v1"
+	LiveRunInvocationResultSchema          = "cautilus.live_run_invocation_result.v1"
 	OptimizeInputsSchema                   = "cautilus.optimize_inputs.v1"
 	OptimizeProposalSchema                 = "cautilus.optimize_proposal.v1"
 	OptimizeSearchInputsSchema             = "cautilus.optimize_search_inputs.v1"

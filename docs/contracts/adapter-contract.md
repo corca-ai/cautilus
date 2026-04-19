@@ -59,6 +59,10 @@ instance_discovery:
   command_template: node scripts/agent-runtime/discover-workbench-instances.mjs --repo-root {repo_root} --adapter-path {adapter_path}
   required_prerequisites:
     - keep the discovery command local-first and machine-readable on stdout
+live_run_invocation:
+  command_template: node scripts/agent-runtime/run-live-instance-scenario.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}
+  required_prerequisites:
+    - keep invocation bounded to one selected local instance and one request packet
 optimize_search:
   default_budget: medium
   budgets:
@@ -155,6 +159,7 @@ default_schema_file: fixtures/review/review-verdict.schema.json
 - `instance_discovery`: optional local-first instance routing contract for future workbench flows.
   Use `kind: explicit` when the adapter can check in a small stable instance list directly.
   Use `kind: command` when the consumer must probe one or more host-local roots at runtime and print `cautilus.workbench_instance_catalog.v1` to stdout.
+- `live_run_invocation`: optional command contract for running one bounded scenario packet against one selected live instance.
 - `executor_variants`: optional backend-specific review or simulation runners.
 - `optimize_search`: optional repo-owned defaults for `cautilus optimize search`.
   The product still owns the shared tier labels `light`, `medium`, and `heavy`.
@@ -219,6 +224,36 @@ Current placeholders for `instance_discovery.command_template`:
 - `{adapter_path}`
 
 See [workbench-instance-discovery.md](./workbench-instance-discovery.md) for the packet contract that both `explicit` and `command` discovery normalize to.
+
+## Live Run Invocation Shape
+
+Once the product has one selected instance id, it needs one neutral way to ask the consumer to run a bounded packet against that instance without copying consumer-specific HTTP routes into `Cautilus`.
+The adapter may therefore declare one optional `live_run_invocation` stanza.
+
+```yaml
+live_run_invocation:
+  command_template: node scripts/agent-runtime/run-live-instance-scenario.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}
+  required_prerequisites:
+    - keep invocation bounded to one selected local instance and one request packet
+```
+
+Fixed rules:
+
+- The command handles exactly one selected `instance_id` per invocation.
+- The command reads one request packet from `request_file`.
+- The command writes one `cautilus.live_run_invocation_result.v1` packet to `output_file`.
+- The packet owns scenario execution intent.
+  The consumer still owns runtime wiring, auth, secrets, and host-specific launch details.
+
+Current placeholders for `live_run_invocation.command_template`:
+
+- `{repo_root}`
+- `{adapter_path}`
+- `{instance_id}`
+- `{request_file}`
+- `{output_file}`
+
+See [live-run-invocation.md](./live-run-invocation.md) for the request/result packet contract.
 
 ## Dogfooding Pattern
 

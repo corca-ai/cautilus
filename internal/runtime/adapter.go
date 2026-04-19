@@ -450,11 +450,42 @@ func validateAdapterData(data map[string]any) (map[string]any, []string) {
 			validated["instance_discovery"] = normalized
 		}
 	}
+	if liveRunInvocation, ok := data["live_run_invocation"]; ok && liveRunInvocation != nil {
+		normalized, invocationErrors := validateAdapterLiveRunInvocation(liveRunInvocation)
+		errors = append(errors, invocationErrors...)
+		if normalized != nil {
+			validated["live_run_invocation"] = normalized
+		}
+	}
 	if optimizeSearch, ok := data["optimize_search"]; ok && optimizeSearch != nil {
 		normalized, optimizeErrors := validateAdapterOptimizeSearch(optimizeSearch)
 		errors = append(errors, optimizeErrors...)
 		if normalized != nil {
 			validated["optimize_search"] = normalized
+		}
+	}
+	return validated, errors
+}
+
+func validateAdapterLiveRunInvocation(value any) (map[string]any, []string) {
+	record, ok := value.(map[string]any)
+	if !ok {
+		return nil, []string{"live_run_invocation must be a mapping"}
+	}
+	errors := []string{}
+	validated := map[string]any{}
+	commandTemplate, err := normalizeNonEmptyString(record["command_template"], "live_run_invocation.command_template")
+	if err != nil {
+		errors = append(errors, "live_run_invocation.command_template must be a non-empty string")
+	} else {
+		validated["command_template"] = commandTemplate
+	}
+	if prerequisites, ok := record["required_prerequisites"]; ok && prerequisites != nil {
+		items, err := assertArray(prerequisites, "live_run_invocation.required_prerequisites")
+		if err != nil {
+			errors = append(errors, "live_run_invocation.required_prerequisites must be a list of strings")
+		} else {
+			validated["required_prerequisites"] = stringSliceNoValidate(items)
 		}
 	}
 	return validated, errors

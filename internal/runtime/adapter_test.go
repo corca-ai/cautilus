@@ -99,6 +99,50 @@ func TestValidateAdapterDataRejectsExplicitInstanceDiscoveryWithoutLocation(t *t
 	}
 }
 
+func TestValidateAdapterDataAcceptsLiveRunInvocation(t *testing.T) {
+	validated, errors := validateAdapterData(map[string]any{
+		"live_run_invocation": map[string]any{
+			"command_template": "node scripts/agent-runtime/run-live-instance-scenario.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
+			"required_prerequisites": []any{
+				"Keep the invocation command bounded to one selected local instance.",
+			},
+		},
+	})
+	if len(errors) != 0 {
+		t.Fatalf("expected live_run_invocation to validate, got %v", errors)
+	}
+	liveRunInvocation, ok := validated["live_run_invocation"].(map[string]any)
+	if !ok {
+		t.Fatalf("expected live_run_invocation mapping, got %#v", validated["live_run_invocation"])
+	}
+	if !strings.Contains(liveRunInvocation["command_template"].(string), "{request_file}") {
+		t.Fatalf("expected request-file placeholder to survive normalization, got %#v", liveRunInvocation["command_template"])
+	}
+}
+
+func TestValidateAdapterDataRejectsLiveRunInvocationWithoutCommandTemplate(t *testing.T) {
+	_, errors := validateAdapterData(map[string]any{
+		"live_run_invocation": map[string]any{
+			"required_prerequisites": []any{
+				"Missing command template should fail validation.",
+			},
+		},
+	})
+	if len(errors) == 0 {
+		t.Fatal("expected missing live_run_invocation command template to fail validation")
+	}
+	found := false
+	for _, err := range errors {
+		if strings.Contains(err, "live_run_invocation.command_template must be a non-empty string") {
+			found = true
+			break
+		}
+	}
+	if !found {
+		t.Fatalf("expected live_run_invocation command validation error, got %v", errors)
+	}
+}
+
 func TestScaffoldAdapterLeavesSlotsEmptyWithoutScenario(t *testing.T) {
 	scaffold := ScaffoldAdapter(t.TempDir(), "repo-x", "")
 	skillSlot, ok := scaffold["skill_test_command_templates"].([]string)
