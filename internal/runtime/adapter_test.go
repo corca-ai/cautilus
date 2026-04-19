@@ -5,6 +5,100 @@ import (
 	"testing"
 )
 
+func TestValidateAdapterDataAcceptsExplicitInstanceDiscovery(t *testing.T) {
+	validated, errors := validateAdapterData(map[string]any{
+		"repo": "repo-x",
+		"instance_discovery": map[string]any{
+			"kind": "explicit",
+			"instances": []any{
+				map[string]any{
+					"id":            "ceal",
+					"display_label": "Ceal Production",
+					"data_root":     "/Users/operator/.ceal/ceal",
+					"paths": map[string]any{
+						"scenario_store":         "/Users/operator/.ceal/ceal/scenarios.json",
+						"conversation_summaries": "/Users/operator/.ceal/ceal/human-conversations/normalized",
+					},
+				},
+			},
+		},
+	})
+	if len(errors) != 0 {
+		t.Fatalf("expected explicit instance_discovery to validate, got %v", errors)
+	}
+	instanceDiscovery, ok := validated["instance_discovery"].(map[string]any)
+	if !ok {
+		t.Fatalf("expected instance_discovery mapping, got %#v", validated["instance_discovery"])
+	}
+	if instanceDiscovery["kind"] != "explicit" {
+		t.Fatalf("expected explicit kind, got %#v", instanceDiscovery["kind"])
+	}
+	instances, ok := instanceDiscovery["instances"].([]any)
+	if !ok || len(instances) != 1 {
+		t.Fatalf("expected one instance, got %#v", instanceDiscovery["instances"])
+	}
+	first, ok := instances[0].(map[string]any)
+	if !ok {
+		t.Fatalf("expected instance mapping, got %#v", instances[0])
+	}
+	if first["display_label"] != "Ceal Production" {
+		t.Fatalf("unexpected display_label: %#v", first["display_label"])
+	}
+}
+
+func TestValidateAdapterDataAcceptsCommandInstanceDiscovery(t *testing.T) {
+	validated, errors := validateAdapterData(map[string]any{
+		"repo": "repo-x",
+		"instance_discovery": map[string]any{
+			"kind":             "command",
+			"command_template": "node scripts/agent-runtime/discover-workbench-instances.mjs --repo-root {repo_root} --adapter-path {adapter_path}",
+			"required_prerequisites": []any{
+				"Install the consumer runtime before discovery.",
+			},
+		},
+	})
+	if len(errors) != 0 {
+		t.Fatalf("expected command instance_discovery to validate, got %v", errors)
+	}
+	instanceDiscovery, ok := validated["instance_discovery"].(map[string]any)
+	if !ok {
+		t.Fatalf("expected instance_discovery mapping, got %#v", validated["instance_discovery"])
+	}
+	if instanceDiscovery["kind"] != "command" {
+		t.Fatalf("expected command kind, got %#v", instanceDiscovery["kind"])
+	}
+	if instanceDiscovery["command_template"] == "" {
+		t.Fatalf("expected command_template, got %#v", instanceDiscovery)
+	}
+}
+
+func TestValidateAdapterDataRejectsExplicitInstanceDiscoveryWithoutLocation(t *testing.T) {
+	_, errors := validateAdapterData(map[string]any{
+		"instance_discovery": map[string]any{
+			"kind": "explicit",
+			"instances": []any{
+				map[string]any{
+					"id":            "ceal",
+					"display_label": "Ceal Production",
+				},
+			},
+		},
+	})
+	if len(errors) == 0 {
+		t.Fatal("expected missing explicit instance location to fail validation")
+	}
+	found := false
+	for _, err := range errors {
+		if strings.Contains(err, "must include data_root, paths, or both") {
+			found = true
+			break
+		}
+	}
+	if !found {
+		t.Fatalf("expected location validation error, got %v", errors)
+	}
+}
+
 func TestScaffoldAdapterLeavesSlotsEmptyWithoutScenario(t *testing.T) {
 	scaffold := ScaffoldAdapter(t.TempDir(), "repo-x", "")
 	skillSlot, ok := scaffold["skill_test_command_templates"].([]string)

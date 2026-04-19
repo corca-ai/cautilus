@@ -17,6 +17,11 @@ comparison_command_templates:
   - npm run bench:compare -- --baseline-ref {baseline_ref} --profile {profile} --split {split} --samples {comparison_samples}
 full_gate_command_templates:
   - npm run bench:full -- --baseline-ref {baseline_ref} --history-file {history_file} --samples {full_gate_samples}
+instance_discovery:
+  kind: command
+  command_template: node scripts/agent-runtime/discover-workbench-instances.mjs --repo-root {repo_root} --adapter-path {adapter_path}
+  required_prerequisites:
+    - Keep the discovery command local-first and machine-readable on stdout.
 executor_variants:
   - id: codex-review
     tool: codex_exec

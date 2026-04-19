@@ -443,12 +443,134 @@ func validateAdapterData(data map[string]any) (map[string]any, []string) {
 			validated["executor_variants"] = normalized
 		}
 	}
+	if instanceDiscovery, ok := data["instance_discovery"]; ok && instanceDiscovery != nil {
+		normalized, instanceErrors := validateAdapterInstanceDiscovery(instanceDiscovery)
+		errors = append(errors, instanceErrors...)
+		if normalized != nil {
+			validated["instance_discovery"] = normalized
+		}
+	}
 	if optimizeSearch, ok := data["optimize_search"]; ok && optimizeSearch != nil {
 		normalized, optimizeErrors := validateAdapterOptimizeSearch(optimizeSearch)
 		errors = append(errors, optimizeErrors...)
 		if normalized != nil {
 			validated["optimize_search"] = normalized
 		}
+	}
+	return validated, errors
+}
+
+func validateAdapterInstanceDiscovery(value any) (map[string]any, []string) {
+	record, ok := value.(map[string]any)
+	if !ok {
+		return nil, []string{"instance_discovery must be a mapping"}
+	}
+	errors := []string{}
+	validated := map[string]any{}
+	kind, err := normalizeNonEmptyString(record["kind"], "instance_discovery.kind")
+	if err != nil || (kind != "explicit" && kind != "command") {
+		errors = append(errors, "instance_discovery.kind must be one of: explicit, command")
+		return nil, errors
+	}
+	validated["kind"] = kind
+	if prerequisites, ok := record["required_prerequisites"]; ok && prerequisites != nil {
+		items, err := assertArray(prerequisites, "instance_discovery.required_prerequisites")
+		if err != nil {
+			errors = append(errors, "instance_discovery.required_prerequisites must be a list of strings")
+		} else {
+			validated["required_prerequisites"] = stringSliceNoValidate(items)
+		}
+	}
+	switch kind {
+	case "command":
+		commandTemplate, err := normalizeNonEmptyString(record["command_template"], "instance_discovery.command_template")
+		if err != nil {
+			errors = append(errors, "instance_discovery.command_template must be a non-empty string when kind=command")
+		} else {
+			validated["command_template"] = commandTemplate
+		}
+		if _, ok := record["instances"]; ok {
+			errors = append(errors, "instance_discovery.instances is only allowed when kind=explicit")
+		}
+	case "explicit":
+		if _, ok := record["command_template"]; ok {
+			errors = append(errors, "instance_discovery.command_template is only allowed when kind=command")
+		}
+		instances, ok := record["instances"]
+		if !ok || instances == nil {
+			errors = append(errors, "instance_discovery.instances must be a non-empty list when kind=explicit")
+			return validated, errors
+		}
+		items, err := assertArray(instances, "instance_discovery.instances")
+		if err != nil || len(items) == 0 {
+			errors = append(errors, "instance_discovery.instances must be a non-empty list when kind=explicit")
+			return validated, errors
+		}
+		normalizedInstances := []any{}
+		for index, raw := range items {
+			instance, ok := raw.(map[string]any)
+			if !ok {
+				errors = append(errors, fmt.Sprintf("instance_discovery.instances[%d] must be a mapping", index))
+				continue
+			}
+			entry := map[string]any{}
+			id, idErr := normalizeNonEmptyString(instance["id"], fmt.Sprintf("instance_discovery.instances[%d].id", index))
+			displayLabel, labelErr := normalizeNonEmptyString(instance["display_label"], fmt.Sprintf("instance_discovery.instances[%d].display_label", index))
+			if idErr != nil {
+				errors = append(errors, fmt.Sprintf("instance_discovery.instances[%d].id must be a non-empty string", index))
+			} else {
+				entry["id"] = id
+			}
+			if labelErr != nil {
+				errors = append(errors, fmt.Sprintf("instance_discovery.instances[%d].display_label must be a non-empty string", index))
+			} else {
+				entry["display_label"] = displayLabel
+			}
+			if description, err := normalizeOptionalString(instance["description"], fmt.Sprintf("instance_discovery.instances[%d].description", index)); err == nil && description != nil {
+				entry["description"] = *description
+			} else if err != nil {
+				errors = append(errors, fmt.Sprintf("instance_discovery.instances[%d].description must be a string", index))
+			}
+			hasLocation := false
+			if dataRoot, err := normalizeOptionalString(instance["data_root"], fmt.Sprintf("instance_discovery.instances[%d].data_root", index)); err == nil && dataRoot != nil {
+				entry["data_root"] = *dataRoot
+				hasLocation = true
+			} else if err != nil {
+				errors = append(errors, fmt.Sprintf("instance_discovery.instances[%d].data_root must be a string", index))
+			}
+			if rawPaths, ok := instance["paths"]; ok && rawPaths != nil {
+				pathMap, ok := rawPaths.(map[string]any)
+				if !ok {
+					errors = append(errors, fmt.Sprintf("instance_discovery.instances[%d].paths must be a mapping of strings", index))
+				} else {
+					normalizedPaths := map[string]any{}
+					for key, rawPath := range pathMap {
+						trimmedKey := strings.TrimSpace(key)
+						if trimmedKey == "" {
+							errors = append(errors, fmt.Sprintf("instance_discovery.instances[%d].paths keys must be non-empty", index))
+							continue
+						}
+						path, err := normalizeNonEmptyString(rawPath, fmt.Sprintf("instance_discovery.instances[%d].paths.%s", index, trimmedKey))
+						if err != nil {
+							errors = append(errors, fmt.Sprintf("instance_discovery.instances[%d].paths.%s must be a non-empty string", index, trimmedKey))
+							continue
+						}
+						normalizedPaths[trimmedKey] = path
+					}
+					if len(normalizedPaths) > 0 {
+						entry["paths"] = normalizedPaths
+						hasLocation = true
+					}
+				}
+			}
+			if !hasLocation {
+				errors = append(errors, fmt.Sprintf("instance_discovery.instances[%d] must include data_root, paths, or both", index))
+			}
+			if len(entry) > 0 {
+				normalizedInstances = append(normalizedInstances, entry)
+			}
+		}
+		validated["instances"] = normalizedInstances
 	}
 	return validated, errors
 }

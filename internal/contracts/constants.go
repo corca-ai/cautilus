@@ -35,6 +35,7 @@ const (
 	SkillEvaluationInputsSchema            = "cautilus.skill_evaluation_inputs.v1"
 	SkillEvaluationSummarySchema           = "cautilus.skill_evaluation_summary.v1"
 	SkillNormalizationInputsSchema         = "cautilus.skill_normalization_inputs.v2"
+	WorkbenchInstanceCatalogSchema         = "cautilus.workbench_instance_catalog.v1"
 	WorkflowNormalizationInputsSchema      = "cautilus.workflow_normalization_inputs.v1"
 	WorkspaceRunManifestSchema             = "cautilus.workspace_run_manifest.v1"
 )

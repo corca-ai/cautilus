@@ -54,6 +54,11 @@ comparison_command_templates:
   - npm run bench:compare -- --baseline-ref {baseline_ref} --profile {profile} --split {split} --samples {comparison_samples}
 full_gate_command_templates:
   - npm run bench:full -- --baseline-ref {baseline_ref} --history-file {history_file} --samples {full_gate_samples}
+instance_discovery:
+  kind: command
+  command_template: node scripts/agent-runtime/discover-workbench-instances.mjs --repo-root {repo_root} --adapter-path {adapter_path}
+  required_prerequisites:
+    - keep the discovery command local-first and machine-readable on stdout
 optimize_search:
   default_budget: medium
   budgets:
@@ -147,6 +152,9 @@ default_schema_file: fixtures/review/review-verdict.schema.json
 - `held_out_command_templates`: commands for the held-out split or equivalent validation.
 - `comparison_command_templates`: optional commands that produce scenario-by-scenario deltas.
 - `full_gate_command_templates`: commands for the final shipping gate.
+- `instance_discovery`: optional local-first instance routing contract for future workbench flows.
+  Use `kind: explicit` when the adapter can check in a small stable instance list directly.
+  Use `kind: command` when the consumer must probe one or more host-local roots at runtime and print `cautilus.workbench_instance_catalog.v1` to stdout.
 - `executor_variants`: optional backend-specific review or simulation runners.
 - `optimize_search`: optional repo-owned defaults for `cautilus optimize search`.
   The product still owns the shared tier labels `light`, `medium`, and `heavy`.
@@ -166,6 +174,51 @@ default_schema_file: fixtures/review/review-verdict.schema.json
   This may stay an opaque profile label, or it may point at a checked-in `cautilus.scenario_profile.v1` file for product-owned selection/history integration.
 - `default_prompt_file`: optional checked-in prompt path for executor-variant review runs.
 - `default_schema_file`: optional checked-in schema path for executor-variant review runs.
+
+## Instance Discovery Shape
+
+Future workbench flows need one neutral way to enumerate consumer instances and route follow-up reads or invocations by a stable instance id.
+The adapter therefore may declare one optional `instance_discovery` stanza.
+
+Command-backed discovery:
+
+```yaml
+instance_discovery:
+  kind: command
+  command_template: node scripts/agent-runtime/discover-workbench-instances.mjs --repo-root {repo_root} --adapter-path {adapter_path}
+  required_prerequisites:
+    - keep stdout machine-readable and reserve stderr for operator hints
+```
+
+Explicit discovery:
+
+```yaml
+instance_discovery:
+  kind: explicit
+  instances:
+    - id: ceal
+      display_label: Ceal Production
+      data_root: /Users/operator/.ceal/ceal
+      paths:
+        scenario_store: /Users/operator/.ceal/ceal/scenarios.json
+        conversation_summaries: /Users/operator/.ceal/ceal/human-conversations/normalized
+        scenario_results: /Users/operator/.ceal/ceal/simulation-results
+```
+
+Fixed rules:
+
+- Every discovered instance needs a stable `id` plus a human-facing `display_label`.
+- Every discovered instance must expose either one `data_root`, one or more typed `paths`, or both.
+- `kind: command` is the default fit for consumers that enumerate multiple host-local instances dynamically.
+- `kind: explicit` keeps fixture-backed repos and simple single-instance adopters cheap without forcing a probe script.
+- `command_template` should print `cautilus.workbench_instance_catalog.v1` JSON to stdout.
+
+Current placeholders for `instance_discovery.command_template`:
+
+- `{repo_root}`
+- `{adapter_path}`
+
+See [workbench-instance-discovery.md](./workbench-instance-discovery.md) for the packet contract that both `explicit` and `command` discovery normalize to.
 
 ## Dogfooding Pattern
 

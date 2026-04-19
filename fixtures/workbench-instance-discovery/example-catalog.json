@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "cautilus.workbench_instance_catalog.v1",
+  "generatedAt": "2026-04-20T07:00:00Z",
+  "instances": [
+    {
+      "instanceId": "ceal",
+      "displayLabel": "Ceal Production",
+      "description": "Primary local production-like instance on the operator workstation.",
+      "dataRoot": "/Users/operator/.ceal/ceal",
+      "paths": {
+        "scenarioStore": "/Users/operator/.ceal/ceal/scenarios.json",
+        "conversationSummaries": "/Users/operator/.ceal/ceal/human-conversations/normalized",
+        "conversationTranscripts": "/Users/operator/.ceal/ceal/human-conversations/raw",
+        "proposalCandidates": "/Users/operator/.ceal/ceal/scenario-proposals",
+        "scenarioResults": "/Users/operator/.ceal/ceal/simulation-results",
+        "runArtifacts": "/Users/operator/.ceal/ceal/agent-runs",
+        "compareArtifacts": "/Users/operator/.ceal/ceal/scenario-compare"
+      }
+    },
+    {
+      "instanceId": "ceal-dev",
+      "displayLabel": "Ceal Dev",
+      "dataRoot": "/Users/operator/.ceal/ceal-dev",
+      "paths": {
+        "scenarioStore": "/Users/operator/.ceal/ceal-dev/scenarios.json",
+        "scenarioResults": "/Users/operator/.ceal/ceal-dev/simulation-results"
+      }
+    }
+  ]
+}

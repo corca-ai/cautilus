@@ -67,6 +67,44 @@ func TestExampleInputConstantsValidateAgainstPublishedSchemas(t *testing.T) {
 	}
 }
 
+func TestFixtureExamplesValidateAgainstPublishedSchemas(t *testing.T) {
+	cases := []struct {
+		name     string
+		example  string
+		schemaAt string
+	}{
+		{
+			name:     "workbench_instance_catalog",
+			example:  filepath.Join("..", "..", "fixtures", "workbench-instance-discovery", "example-catalog.json"),
+			schemaAt: filepath.Join("..", "..", "fixtures", "workbench-instance-discovery", "catalog.schema.json"),
+		},
+	}
+
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			schemaBytes, err := os.ReadFile(tc.schemaAt)
+			if err != nil {
+				t.Fatalf("read schema %s: %v", tc.schemaAt, err)
+			}
+			var schema map[string]any
+			if err := json.Unmarshal(schemaBytes, &schema); err != nil {
+				t.Fatalf("parse schema %s: %v", tc.schemaAt, err)
+			}
+			exampleBytes, err := os.ReadFile(tc.example)
+			if err != nil {
+				t.Fatalf("read example %s: %v", tc.example, err)
+			}
+			var value any
+			if err := json.Unmarshal(exampleBytes, &value); err != nil {
+				t.Fatalf("parse example %s: %v", tc.example, err)
+			}
+			if err := validateAgainstJSONSchema(schema, value, "root"); err != nil {
+				t.Fatalf("example failed schema %s: %v", tc.schemaAt, err)
+			}
+		})
+	}
+}
+
 // validateAgainstJSONSchema is a minimal JSON Schema checker that mirrors the
 // Node-side helper in scripts/agent-runtime/scenario-proposal-schemas.test.mjs.
 // It covers the subset used by the checked-in fixture schemas: object with
