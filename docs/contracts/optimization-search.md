@@ -429,6 +429,7 @@ The packet should include:
   - mutation prerequisites
   - whether the mutation backend was actually invoked
   - per-generation attempt records when search stays on the seed candidate
+  - frontier mutation-parent eligibility, including bounded repair-window and blocker-pruning reasons when review-rejected lineage cannot seed the next mutation
 - selection telemetry
   - ranked frontier candidate ids
 - search telemetry

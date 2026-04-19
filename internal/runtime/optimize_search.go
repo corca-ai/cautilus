@@ -534,6 +534,7 @@ func RunOptimizeSearch(packet map[string]any, inputFile string, now time.Time) m
 		candidateIDs := optimizeSearchCandidateIDs(candidates)
 		parentFrontierIDs := optimizeSearchFrontierCandidateIDs(matrix, candidateIDs, scenarioIDs)
 		rankedParentFrontierIDs := optimizeSearchRankCandidateIDs(parentFrontierIDs, matrix, candidates, scenarioIDs)
+		mutationParentEligibility := optimizeSearchMutationParentEligibility(candidates, rankedParentFrontierIDs, generationIndex)
 		eligibleMutationParentIDs := optimizeSearchPrioritizeMutationCandidateIDs(candidates, rankedParentFrontierIDs, generationIndex)
 		parentCandidate := optimizeSearchPreferredCandidate(candidates, eligibleMutationParentIDs)
 		if parentCandidate == nil {
@@ -543,6 +544,7 @@ func RunOptimizeSearch(packet map[string]any, inputFile string, now time.Time) m
 				"parentFrontierCandidateIds":  stringSliceToAny(parentFrontierIDs),
 				"rankedParentFrontierIds":     stringSliceToAny(rankedParentFrontierIDs),
 				"eligibleMutationParentIds":   stringSliceToAny(eligibleMutationParentIDs),
+				"mutationParentEligibility":   mutationParentEligibility,
 				"selectedParentCandidateId":   nil,
 				"backendInvoked":              false,
 				"status":                      "no_parent_candidate",
@@ -565,6 +567,7 @@ func RunOptimizeSearch(packet map[string]any, inputFile string, now time.Time) m
 			"parentFrontierCandidateIds": stringSliceToAny(parentFrontierIDs),
 			"rankedParentFrontierIds":    stringSliceToAny(rankedParentFrontierIDs),
 			"eligibleMutationParentIds":  stringSliceToAny(eligibleMutationParentIDs),
+			"mutationParentEligibility":  mutationParentEligibility,
 			"selectedParentCandidateId":  stringOrEmpty(parentCandidate["id"]),
 			"generatedCandidateIds":      []any{},
 			"generatedCandidateCount":    0,
@@ -2752,6 +2755,59 @@ func optimizeSearchPrioritizeMutationCandidateIDs(candidates []map[string]any, c
 		result = append(result, entry.id)
 	}
 	return result
+}
+
+func optimizeSearchMutationParentEligibility(candidates []map[string]any, candidateIDs []string, nextGenerationIndex int) []any {
+	records := make([]any, 0, len(candidateIDs))
+	for _, candidateID := range candidateIDs {
+		candidate := optimizeSearchCandidateByID(candidates, candidateID)
+		record := map[string]any{
+			"candidateId": candidateID,
+		}
+		if candidate == nil {
+			record["eligible"] = false
+			record["reason"] = "candidate_missing"
+			records = append(records, record)
+			continue
+		}
+		outcome := asMap(candidate["promotionReviewOutcome"])
+		severity := optimizeSearchReviewOutcomeSeverity(outcome)
+		record["severity"] = nilIfEmpty(severity)
+		record["repairPriority"] = optimizeSearchMutationRepairPriority(candidate)
+		if len(outcome) == 0 {
+			record["eligible"] = true
+			record["reason"] = "frontier_candidate"
+			records = append(records, record)
+			continue
+		}
+		reviewedAtGeneration := int(numberOrDefault(firstNonNil(outcome["reviewedAtGeneration"], candidate["generationIndex"]), 0))
+		record["reviewedAtGeneration"] = reviewedAtGeneration
+		if admissible, _ := outcome["admissible"].(bool); admissible {
+			record["eligible"] = true
+			record["reason"] = "frontier_candidate"
+			records = append(records, record)
+			continue
+		}
+		budget := optimizeSearchMutationRepairGenerationBudget(outcome)
+		record["repairGenerationBudget"] = budget
+		record["repairExpiresAfterGeneration"] = reviewedAtGeneration + budget
+		if severity == "blocker" {
+			record["eligible"] = false
+			record["reason"] = "frontier_promotion_review_blocker"
+			records = append(records, record)
+			continue
+		}
+		if nextGenerationIndex <= reviewedAtGeneration+budget {
+			record["eligible"] = true
+			record["reason"] = "bounded_repair_generation"
+			records = append(records, record)
+			continue
+		}
+		record["eligible"] = false
+		record["reason"] = "repair_window_expired"
+		records = append(records, record)
+	}
+	return records
 }
 
 func optimizeSearchCandidateCanSeedMutation(candidate map[string]any, nextGenerationIndex int) bool {
