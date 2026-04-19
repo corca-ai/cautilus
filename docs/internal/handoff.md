@@ -4,12 +4,14 @@
 
 다음 세션은 workbench contract follow-up implementation 을 시작한다.
 먼저 GitHub issue `#17`, `#18`, [docs/contracts/workbench-instance-discovery.md](../contracts/workbench-instance-discovery.md), [docs/contracts/live-run-invocation.md](../contracts/live-run-invocation.md), [AGENTS.md](../../AGENTS.md) 를 읽고 contract-only 이후 첫 runtime proof 를 어디에 둘지 결정한다.
-릴리즈 후속이 남아 있다면 `v0.6.2` public release verify 와 install smoke 기록부터 확인한다.
+릴리즈 후속이 남아 있다면 `v0.6.2` attestation 과 multi-machine smoke 기록부터 확인한다.
 
 ## Current State
 
-- checked-in release surface 는 `0.6.2` 로 준비돼 있다.
-- 이번 세션의 release target 은 `v0.6.2` 이다.
+- public release 는 `v0.6.2` 이고 tag 는 `d7d080a` 에 있다.
+- `release-artifacts` workflow run `24641998570` 는 성공했다.
+- `npm run release:verify-public -- --version v0.6.2` 는 통과했다.
+- `npm run release:smoke-install -- --channel install_sh --version v0.6.2` 는 통과했다.
 - `#16` 은 `v0.6.0` 로 이미 닫혀 있었다.
 - `#17` workbench instance discovery/data roots seam 은 commit `f02a8ee` 로 닫혔다.
 - `#18` generic live-run invocation seam 은 commit `586ae67` 로 닫혔다.
@@ -23,8 +25,8 @@
 ## Next Session
 
 1. `#17`, `#18` 을 이미 닫지 않았다면 close comment 와 함께 닫는다.
-2. `v0.6.2` release line 이 완전히 닫혔는지 확인한다.
-   GitHub release assets, public installer smoke, tap publication, attestation 확인 기록이 남았는지 본다.
+2. `v0.6.2` release line 잔여 기록을 정리한다.
+   native macOS/Linux install smoke matrix 와 Homebrew smoke 기록이 남았는지 확인한다.
 3. workbench follow-up 의 첫 executable slice 를 고른다.
    후보는 adapter-owned helper script template, thin CLI wrapper, 또는 fixture-backed proof runner 다.
 4. runtime surface 를 시작하면 local-first / one-instance-per-invocation / bounded packet 원칙을 유지한다.
