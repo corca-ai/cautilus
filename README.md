@@ -83,12 +83,12 @@ cautilus scenario render-proposals-html \
 
 **What happens**
 
-- `Cautilus` turns raw behavior evidence into a reusable scenario file, then renders the same result into a browser-readable page.
+- `Cautilus` turns raw behavior evidence into a reviewable proposal packet whose canonical JSON preserves the full ranked proposal set for agents, then renders the same result into a browser-readable page with a bounded attention-first view for humans.
 
 **What you get back**
 
 - quick signal: one reusable scenario file was produced without inventing repo-local lore
-- durable files: `proposals.json` for later commands and `proposals.html` for human review
+- durable files: `proposals.json` as the full machine-readable truth surface for later commands, plus `proposals.html` for human review with the same packet's derived attention view
 
 **What to do next**
 
@@ -178,7 +178,7 @@ The stance, in four contrasts:
 - Unlike ad hoc eval scripts, `Cautilus` makes adapters, reports, review files, and compare artifacts first-class product boundaries (`structured review`).
 - Unlike open-ended optimizer loops, `Cautilus` keeps search and revision explicitly bounded by budgets, checkpoints, and blocked-readiness conditions (`bounded autonomy`).
 
-`Cautilus` also ships a GEPA-style bounded prompt search seam above the one-shot optimizer: multi-generation reflective mutation, protected reevaluation, and Pareto-style frontier selection.
+`Cautilus` also ships a GEPA-style bounded prompt search seam above the one-shot optimizer: multi-generation reflective mutation, protected reevaluation, frontier-promotion review reuse, checkpoint feedback reinjection, bounded merge synthesis, and Pareto-style frontier selection.
 Deep dive: `docs/gepa.md`.
 
 The longer-term direction is close to the workflow philosophy behind DSPy: prompts can change as long as the evaluated behavior survives.
@@ -205,6 +205,7 @@ The `cautilus install` step also lands a bundled skill at `.agents/skills/cautil
 "Run a chatbot regression with these logs" feeds into the exact same adapter.
 Use `cautilus doctor --scope agent-surface` when you want to verify only this bundled skill surface.
 If the repo treats `AGENTS.md`, `CLAUDE.md`, or linked instruction files as part of the behavior contract, verify that separately with the `instruction-surface` seam rather than assuming install-time discoverability already proves routing fidelity.
+For the product repo itself, `instruction-surface` is also a first-class on-demand self-dogfood surface through `npm run dogfood:self:instruction-surface`.
 
 Minimal host-repo layout:
 
