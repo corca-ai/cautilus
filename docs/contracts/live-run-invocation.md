@@ -54,7 +54,8 @@ Optional request fields:
 - `operatorNote`
 
 `consumerMetadata` is an opaque object that `Cautilus` round-trips into the consumer-owned single-turn seam when the adapter uses the product-owned loop.
-For `persona_prompt`, the product owns the loop boundary and the request packet, while the adapter still owns the concrete backend command that produces the next simulated user turn.
+For `persona_prompt`, the product owns the loop boundary, the request packet, the persona prompt shaping, and the result normalization.
+The adapter still owns backend selection and provider-specific flags through the simulator command template.
 The first request packet deliberately carries only the scenario-execution subset that the live runner needs.
 It does not force the full draft-scenario envelope or any consumer-owned storage paths into the invocation boundary.
 
@@ -125,6 +126,7 @@ For the product-owned chatbot loop, the adapter instead points `command_template
   - receives the stable `{workspace_dir}` placeholder
 - `simulator_persona_command_template`
   - required when `simulator.kind` is `persona_prompt`
+  - usually points at `cautilus workbench run-simulator-persona`
   - called once per persona-generated turn with `{simulator_request_file}` and `{simulator_result_file}`
 - `consumer_evaluator_command_template`
   - optional post-run hook with `{transcript_file}` and `{evaluation_output_file}`

@@ -148,6 +148,16 @@
       ]
     },
     {
+      "path": ["workbench", "run-simulator-persona"],
+      "group": "run",
+      "usage": "cautilus workbench run-simulator-persona --workspace <dir> --simulator-request-file <request.json> --simulator-result-file <result.json> --backend codex_exec|claude_p|fixture [args]",
+      "example": "cautilus workbench run-simulator-persona --workspace . --simulator-request-file /tmp/simulator-request.json --simulator-result-file /tmp/simulator-result.json --backend fixture --fixture-results-file fixtures/live-run/persona-fixture.json",
+      "notes": [
+        "This product-owned helper turns one persona_prompt simulator request into one canonical simulator result packet.",
+        "The adapter still chooses the backend and any fixture or provider-specific flags through its command template."
+      ]
+    },
+    {
       "path": ["healthcheck"],
       "group": "setup",
       "usage": "cautilus healthcheck [--json]",

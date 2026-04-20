@@ -6203,6 +6203,22 @@ func TestCLIWorkbenchRunLiveCanExecutePersonaPromptLoop(t *testing.T) {
 	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
 		t.Fatalf("MkdirAll returned error: %v", err)
 	}
+	fixtureFile := filepath.Join(root, "persona-fixture.json")
+	cautilusBin := filepath.Join(repoToolRoot(t), "bin", "cautilus")
+	writeJSONFile(t, fixtureFile, map[string]any{
+		"responses": []any{
+			map[string]any{
+				"action":       "continue",
+				"summary":      "The synthetic user still needs the repo name.",
+				"nextTurnText": "대상 repo는 cautilus입니다.",
+			},
+			map[string]any{
+				"action":     "stop",
+				"stopReason": "goal_satisfied",
+				"summary":    "The synthetic user has enough context to stop.",
+			},
+		},
+	})
 	writeExecutableFile(t, root, "run-live-turn.sh", strings.Join([]string{
 		"#!/bin/sh",
 		"turn_request_file=\"$1\"",
@@ -6225,39 +6241,6 @@ func TestCLIWorkbenchRunLiveCanExecutePersonaPromptLoop(t *testing.T) {
 		"EOF",
 		"",
 	}, "\n"))
-	writeExecutableFile(t, root, "run-live-simulator.sh", strings.Join([]string{
-		"#!/bin/sh",
-		"simulator_request_file=\"$1\"",
-		"simulator_result_file=\"$2\"",
-		"node - \"$simulator_request_file\" \"$simulator_result_file\" <<'EOF'",
-		"const [simulatorRequestFile, simulatorResultFile] = process.argv.slice(2);",
-		"const { readFileSync, writeFileSync } = await import(\"node:fs\");",
-		"const simulatorRequest = JSON.parse(readFileSync(simulatorRequestFile, \"utf8\"));",
-		"const response = simulatorRequest.turnIndex === 1",
-		"  ? {",
-		`      schemaVersion: "cautilus.live_run_simulator_result.v1",`,
-		"      requestId: simulatorRequest.requestId,",
-		"      instanceId: simulatorRequest.instanceId,",
-		"      turnIndex: simulatorRequest.turnIndex,",
-		`      executionStatus: "completed",`,
-		`      action: "continue",`,
-		`      summary: "synthetic user still needs the repo name",`,
-		"      simulatorTurn: { text: \"대상 repo는 cautilus입니다.\" }",
-		"    }",
-		"  : {",
-		`      schemaVersion: "cautilus.live_run_simulator_result.v1",`,
-		"      requestId: simulatorRequest.requestId,",
-		"      instanceId: simulatorRequest.instanceId,",
-		"      turnIndex: simulatorRequest.turnIndex,",
-		`      executionStatus: "completed",`,
-		`      action: "stop",`,
-		`      stopReason: "goal_satisfied",`,
-		`      summary: "synthetic user has enough context",`,
-		"    };",
-		"writeFileSync(simulatorResultFile, JSON.stringify(response) + \"\\n\", \"utf8\");",
-		"EOF",
-		"",
-	}, "\n"))
 	adapter := strings.Join([]string{
 		"version: 1",
 		"repo: temp",
@@ -6268,7 +6251,7 @@ func TestCLIWorkbenchRunLiveCanExecutePersonaPromptLoop(t *testing.T) {
 		"live_run_invocation:",
 		"  command_template: cautilus workbench run-live --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
 		"  consumer_single_turn_command_template: ./run-live-turn.sh {turn_request_file} {turn_result_file}",
-		"  simulator_persona_command_template: ./run-live-simulator.sh {simulator_request_file} {simulator_result_file}",
+		fmt.Sprintf("  simulator_persona_command_template: %s workbench run-simulator-persona --workspace {repo_root} --simulator-request-file {simulator_request_file} --simulator-result-file {simulator_result_file} --backend fixture --fixture-results-file %s", cautilusBin, fixtureFile),
 		"",
 	}, "\n")
 	if err := os.WriteFile(filepath.Join(adapterDir, "cautilus-adapter.yaml"), []byte(adapter), 0o644); err != nil {
@@ -6322,6 +6305,126 @@ func TestCLIWorkbenchRunLiveCanExecutePersonaPromptLoop(t *testing.T) {
 	transcript, ok := result["transcript"].([]any)
 	if !ok || len(transcript) != 1 {
 		t.Fatalf("expected one transcript entry before persona stop, got %#v", result["transcript"])
+	}
+}
+
+func TestCLIWorkbenchRunSimulatorPersonaCanContinueFromFixture(t *testing.T) {
+	root := t.TempDir()
+	fixtureFile := filepath.Join(root, "persona-fixture.json")
+	requestPath := filepath.Join(root, "simulator-request.json")
+	outputPath := filepath.Join(root, "artifacts", "simulator-result.json")
+	writeJSONFile(t, fixtureFile, map[string]any{
+		"responses": []any{
+			map[string]any{
+				"action":       "continue",
+				"summary":      "The synthetic user still needs the repo name.",
+				"nextTurnText": "대상 repo는 cautilus입니다.",
+			},
+		},
+	})
+	writeJSONFile(t, requestPath, map[string]any{
+		"schemaVersion": contracts.LiveRunSimulatorRequestSchema,
+		"requestId":     "req-persona-continue",
+		"instanceId":    "ceal",
+		"scenarioId":    "scenario-persona",
+		"turnIndex":     1,
+		"maxTurns":      3,
+		"instructions":  "Act like a pragmatic operator. Stop once enough context is collected.",
+		"transcript":    []any{},
+	})
+
+	stdout, stderr, exitCode := runCLI(
+		t,
+		root,
+		"workbench",
+		"run-simulator-persona",
+		"--workspace",
+		root,
+		"--simulator-request-file",
+		requestPath,
+		"--simulator-result-file",
+		outputPath,
+		"--backend",
+		"fixture",
+		"--fixture-results-file",
+		fixtureFile,
+	)
+	if exitCode != 0 {
+		t.Fatalf("workbench run-simulator-persona failed: %s", stderr)
+	}
+	if strings.TrimSpace(stdout) != outputPath {
+		t.Fatalf("expected stdout to point at result file, got %q", stdout)
+	}
+	result := readJSONObjectFile(t, outputPath)
+	if result["executionStatus"] != "completed" || result["action"] != "continue" {
+		t.Fatalf("unexpected simulator result payload: %#v", result)
+	}
+	if mapOrEmpty(result["simulatorTurn"])["text"] != "대상 repo는 cautilus입니다." {
+		t.Fatalf("unexpected simulator turn payload: %#v", result["simulatorTurn"])
+	}
+}
+
+func TestCLIWorkbenchRunSimulatorPersonaCanStopFromFixture(t *testing.T) {
+	root := t.TempDir()
+	fixtureFile := filepath.Join(root, "persona-fixture.json")
+	requestPath := filepath.Join(root, "simulator-request.json")
+	outputPath := filepath.Join(root, "artifacts", "simulator-result.json")
+	writeJSONFile(t, fixtureFile, map[string]any{
+		"responses": []any{
+			map[string]any{
+				"action":       "continue",
+				"summary":      "The synthetic user still needs the repo name.",
+				"nextTurnText": "대상 repo는 cautilus입니다.",
+			},
+			map[string]any{
+				"action":     "stop",
+				"stopReason": "goal_satisfied",
+				"summary":    "The synthetic user has enough context to stop.",
+			},
+		},
+	})
+	writeJSONFile(t, requestPath, map[string]any{
+		"schemaVersion": contracts.LiveRunSimulatorRequestSchema,
+		"requestId":     "req-persona-stop",
+		"instanceId":    "ceal",
+		"scenarioId":    "scenario-persona",
+		"turnIndex":     2,
+		"maxTurns":      3,
+		"instructions":  "Act like a pragmatic operator. Stop once enough context is collected.",
+		"transcript": []any{
+			map[string]any{
+				"turnIndex":     1,
+				"simulatorTurn": map[string]any{"text": "대상 repo는 cautilus입니다."},
+				"assistantTurn": map[string]any{"text": "좋습니다. 바로 검토하겠습니다."},
+			},
+		},
+	})
+
+	stdout, stderr, exitCode := runCLI(
+		t,
+		root,
+		"workbench",
+		"run-simulator-persona",
+		"--workspace",
+		root,
+		"--simulator-request-file",
+		requestPath,
+		"--simulator-result-file",
+		outputPath,
+		"--backend",
+		"fixture",
+		"--fixture-results-file",
+		fixtureFile,
+	)
+	if exitCode != 0 {
+		t.Fatalf("workbench run-simulator-persona failed: %s", stderr)
+	}
+	if strings.TrimSpace(stdout) != outputPath {
+		t.Fatalf("expected stdout to point at result file, got %q", stdout)
+	}
+	result := readJSONObjectFile(t, outputPath)
+	if result["executionStatus"] != "completed" || result["action"] != "stop" || result["stopReason"] != "goal_satisfied" {
+		t.Fatalf("unexpected simulator stop payload: %#v", result)
 	}
 }
 
