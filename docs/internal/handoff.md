@@ -3,7 +3,7 @@
 ## Workflow Trigger
 
 다음 세션은 Ceal adopter 쪽에서 새 `#21` surface 를 실제로 채택하고 close-out evidence 를 남기는 것부터 시작한다.
-먼저 [docs/contracts/live-run-invocation.md](../contracts/live-run-invocation.md), [docs/contracts/adapter-contract.md](../contracts/adapter-contract.md), [docs/master-plan.md](../master-plan.md), [AGENTS.md](../../AGENTS.md), 그리고 Ceal adopter proof 근거인 [../ceal/docs/implementation/24-simulation-stack-thinning.md](../../../ceal/docs/implementation/24-simulation-stack-thinning.md), [../ceal/scripts/agent-runtime/run-ceal-single-turn.ts](../../../ceal/scripts/agent-runtime/run-ceal-single-turn.ts) 를 읽는다.
+먼저 [docs/contracts/live-run-invocation.md](../contracts/live-run-invocation.md), [docs/contracts/adapter-contract.md](../contracts/adapter-contract.md), [docs/master-plan.md](../master-plan.md), [AGENTS.md](../../AGENTS.md), 그리고 local Ceal sibling checkout 기준 참고 경로인 `../ceal/docs/implementation/24-simulation-stack-thinning.md`, `../ceal/scripts/agent-runtime/run-ceal-single-turn.ts` 를 읽는다.
 이미 product boundary 결정은 끝났다.
 `Cautilus` 는 stable `{workspace_dir}` 와 optional one-time `workspace_prepare_command_template` 를 product-owned loop 경계로 채택했다.
 
@@ -63,6 +63,6 @@
 - [docs/specs/standalone-surface.spec.md](../specs/standalone-surface.spec.md)
 - [#20](https://github.com/corca-ai/cautilus/issues/20)
 - [#21](https://github.com/corca-ai/cautilus/issues/21)
-- [../ceal/docs/implementation/24-simulation-stack-thinning.md](../../../ceal/docs/implementation/24-simulation-stack-thinning.md)
-- [../ceal/scripts/agent-runtime/run-ceal-single-turn.ts](../../../ceal/scripts/agent-runtime/run-ceal-single-turn.ts)
-- [../ceal/scripts/agent-runtime/run-ceal-persona-simulator.ts](../../../ceal/scripts/agent-runtime/run-ceal-persona-simulator.ts)
+- local sibling reference: `../ceal/docs/implementation/24-simulation-stack-thinning.md`
+- local sibling reference: `../ceal/scripts/agent-runtime/run-ceal-single-turn.ts`
+- local sibling reference: `../ceal/scripts/agent-runtime/run-ceal-persona-simulator.ts`

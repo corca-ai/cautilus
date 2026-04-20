@@ -1,5 +1,5 @@
 import { existsSync, readFileSync } from "node:fs";
-import { dirname, resolve } from "node:path";
+import { dirname, relative, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 import process from "node:process";
 
@@ -36,7 +36,12 @@ function isSkippable(target) {
 	return EXTERNAL_SCHEME.test(target);
 }
 
-export function findBrokenLinksInFile(absoluteMdPath, content) {
+function escapesRepoRoot(repoRoot, resolvedTarget) {
+	const rel = relative(repoRoot, resolvedTarget);
+	return rel === ".." || rel.startsWith(`..${process.platform === "win32" ? "\\" : "/"}`);
+}
+
+export function findBrokenLinksInFile(absoluteMdPath, content, repoRoot = null) {
 	const scrubbed = stripFencedCodeBlocks(content);
 	const broken = [];
 	for (const match of scrubbed.matchAll(INLINE_LINK)) {
@@ -45,10 +50,19 @@ export function findBrokenLinksInFile(absoluteMdPath, content) {
 		const withoutFragment = target.split("#")[0];
 		if (withoutFragment.length === 0) continue;
 		const resolved = resolve(dirname(absoluteMdPath), withoutFragment);
+		if (repoRoot && escapesRepoRoot(repoRoot, resolved)) {
+			broken.push({
+				target,
+				line: lineNumberAt(scrubbed, match.index),
+				reason: "outside_repo",
+			});
+			continue;
+		}
 		if (!existsSync(resolved)) {
 			broken.push({
 				target,
 				line: lineNumberAt(scrubbed, match.index),
+				reason: "missing",
 			});
 		}
 	}
@@ -76,8 +90,8 @@ export function checkRepo(repoRoot) {
 		const absolute = resolve(repoRoot, relative);
 		if (!existsSync(absolute)) continue;
 		const content = readFileSync(absolute, "utf-8");
-		for (const { target, line } of findBrokenLinksInFile(absolute, content)) {
-			findings.push({ file: relative, line, target });
+		for (const { target, line, reason } of findBrokenLinksInFile(absolute, content, repoRoot)) {
+			findings.push({ file: relative, line, target, reason });
 		}
 	}
 	return {
@@ -93,8 +107,9 @@ function main() {
 		process.stderr.write(
 			`check-markdown-links: ${findings.length} broken link(s) across ${fileCount} file(s)\n`,
 		);
-		for (const { file, line, target } of findings) {
-			process.stderr.write(`  ${file}:${line} -> ${target}\n`);
+		for (const { file, line, target, reason } of findings) {
+			const suffix = reason === "outside_repo" ? " [outside repo root]" : "";
+			process.stderr.write(`  ${file}:${line} -> ${target}${suffix}\n`);
 		}
 		process.exit(1);
 	}

@@ -100,6 +100,22 @@ test("strips anchor from local links before checking the file exists", () => {
 	}
 });
 
+test("fails when a relative link escapes the repo root even if the target exists on disk", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-link-outside-"));
+	const sibling = mkdtempSync(join(tmpdir(), "cautilus-link-outside-sibling-"));
+	try {
+		initRepo(root);
+		writeFileSync(join(sibling, "external.md"), "# external\n", "utf-8");
+		write(root, "doc.md", `See [external](../${sibling.split("/").at(-1)}/external.md).\n`);
+		const result = runLinter(root);
+		assert.equal(result.status, 1, `${result.stdout}\n${result.stderr}`);
+		assert.match(result.stderr, /\[outside repo root\]/);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+		rmSync(sibling, { recursive: true, force: true });
+	}
+});
+
 test("stripFencedCodeBlocks preserves line numbers by emptying fenced lines", () => {
 	const input = "a\n```\ninside\n```\nb\n";
 	const output = stripFencedCodeBlocks(input);
