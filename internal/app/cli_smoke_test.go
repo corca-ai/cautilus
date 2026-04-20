@@ -5580,6 +5580,57 @@ func TestCLIWorkbenchDiscoverExecutesConsumerProbeCommand(t *testing.T) {
 	}
 }
 
+func TestCLIWorkbenchDiscoverIgnoresProbeWarningsOnStderr(t *testing.T) {
+	root := t.TempDir()
+	adapterDir := filepath.Join(root, ".agents")
+	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	writeExecutableFile(t, root, "discover.sh", strings.Join([]string{
+		"#!/bin/sh",
+		"printf '%s\\n' '[discover-instances] skipped ceal-prod: observability.port missing' >&2",
+		"cat <<'EOF'",
+		"{",
+		`  "schemaVersion": "cautilus.workbench_instance_catalog.v1",`,
+		`  "instances": [`,
+		"    {",
+		`      "instanceId": "ceal-dev",`,
+		`      "displayLabel": "Ceal Dev",`,
+		fmt.Sprintf(`      "dataRoot": %q`, filepath.Join(root, ".runtime", "ceal-dev")),
+		"    }",
+		"  ]",
+		"}",
+		"EOF",
+		"",
+	}, "\n"))
+	adapter := strings.Join([]string{
+		"version: 1",
+		"repo: temp",
+		"evaluation_surfaces:",
+		"  - workbench smoke",
+		"baseline_options:",
+		"  - baseline git ref via {baseline_ref}",
+		"instance_discovery:",
+		"  kind: command",
+		"  command_template: ./discover.sh",
+		"",
+	}, "\n")
+	if err := os.WriteFile(filepath.Join(adapterDir, "cautilus-adapter.yaml"), []byte(adapter), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+
+	stdout, stderr, exitCode := runCLI(t, root, "workbench", "discover", "--repo-root", root)
+	if exitCode != 0 {
+		t.Fatalf("workbench discover failed: %s", stderr)
+	}
+	payload := parseJSONObject(t, stdout)
+	instances := payload["instances"].([]any)
+	instance := instances[0].(map[string]any)
+	if instance["instanceId"] != "ceal-dev" || instance["displayLabel"] != "Ceal Dev" {
+		t.Fatalf("unexpected command-backed catalog when probe warns on stderr: %#v", payload)
+	}
+}
+
 func TestCLIWorkbenchRunLiveDispatchesConsumerCommand(t *testing.T) {
 	root := t.TempDir()
 	adapterDir := filepath.Join(root, ".agents")

@@ -1,6 +1,7 @@
 package app
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -485,15 +486,26 @@ func workbenchCommandReplacements(adapterPayload *runtime.AdapterPayload, option
 func executeWorkbenchCommand(repoRoot string, commandText string) (string, error) {
 	command := exec.Command("bash", "-lc", commandText)
 	command.Dir = repoRoot
-	output, err := command.CombinedOutput()
-	text := strings.TrimSpace(string(output))
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	command.Stdout = &stdout
+	command.Stderr = &stderr
+	err := command.Run()
+	stdoutText := strings.TrimSpace(stdout.String())
+	stderrText := strings.TrimSpace(stderr.String())
 	if err != nil {
-		if text == "" {
+		if stderrText != "" {
+			if stdoutText != "" {
+				return "", fmt.Errorf("command failed: %s\n%s", stderrText, stdoutText)
+			}
+			return "", fmt.Errorf("command failed: %s", stderrText)
+		}
+		if stdoutText == "" {
 			return "", fmt.Errorf("command failed: %w", err)
 		}
-		return "", fmt.Errorf("command failed: %s", text)
+		return "", fmt.Errorf("command failed: %s", stdoutText)
 	}
-	return text, nil
+	return stdoutText, nil
 }
 
 func decodeJSONObjectFromString(payload string) (map[string]any, error) {
