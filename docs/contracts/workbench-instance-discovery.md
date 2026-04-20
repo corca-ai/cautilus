@@ -10,6 +10,13 @@ It is the local-first routing contract that says which instances exist on this h
 The adapter may provide that catalog either through an explicit checked-in instance list or through a local command that prints the catalog to stdout.
 Both modes normalize to the same packet so future read-only and interactive flows can route by `instanceId` without learning consumer-specific directory rules.
 
+## What An Instance Means
+
+An instance is one live consumer target on this host that `Cautilus` can select by stable id.
+It is not the adapter itself and it is not the scenario packet.
+It is the concrete thing an operator wants to inspect or run against, such as one local Ceal environment, one named dev runtime, or one single default app deployment on a laptop.
+This vocabulary started from Ceal-style multi-instance workbench needs, but the contract also applies to a simple repo that exposes only one default instance.
+
 ## Fixed Decisions
 
 - The discovery boundary is local-first.

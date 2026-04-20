@@ -102,7 +102,7 @@ func TestValidateAdapterDataRejectsExplicitInstanceDiscoveryWithoutLocation(t *t
 func TestValidateAdapterDataAcceptsLiveRunInvocation(t *testing.T) {
 	validated, errors := validateAdapterData(map[string]any{
 		"live_run_invocation": map[string]any{
-			"command_template": "node scripts/agent-runtime/run-live-instance-scenario.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
+			"command_template":          "cautilus workbench run-live --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
 			"consumer_command_template": "node scripts/consumer/run-live-instance-scenario.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
 			"required_prerequisites": []any{
 				"Keep the invocation command bounded to one selected local instance.",

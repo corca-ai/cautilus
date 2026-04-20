@@ -8,6 +8,7 @@ The missing seam is a neutral invocation contract, not another consumer-specific
 `Cautilus` now defines one request packet and one result packet for local-first live-run invocation.
 The adapter owns the command that executes the request against the selected instance.
 The product owns the request intent, result summary shape, and failure semantics.
+The selected instance is one live consumer target returned by workbench discovery, not a scenario definition or an adapter name.
 
 ## Fixed Decisions
 
@@ -92,7 +93,7 @@ That separation is the main reason this seam should be a product-owned packet in
 
 The adapter-owned entry lives under `live_run_invocation` in `cautilus-adapter.yaml`.
 The `command_template` receives one selected instance id plus one request/output file pair.
-When `command_template` points at a product-owned helper, the adapter must also provide a consumer-owned `consumer_command_template` so the helper can dispatch the bounded run without recursively calling itself.
+When `command_template` points at the product-owned `cautilus workbench run-live` command, the adapter must also provide a consumer-owned `consumer_command_template` so the command can dispatch the bounded run without recursively calling itself.
 The consumer may implement that command in any language or host runtime as long as it preserves the packet boundary.
 
 ## Deferred Decisions

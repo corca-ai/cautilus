@@ -82,6 +82,28 @@ For the shortest end-to-end adoption proof in a fresh consumer repo:
 npm run consumer:onboard:smoke
 ```
 
+## Workbench
+
+```bash
+# list live consumer targets that this host repo exposes to Cautilus
+cautilus workbench discover --repo-root /path/to/repo
+
+# run one bounded live scenario request against one selected instance
+cautilus workbench run-live \
+  --repo-root /path/to/repo \
+  --instance-id ceal \
+  --request-file /tmp/request.json \
+  --output-file /tmp/result.json
+```
+
+A workbench instance is one live consumer target on this host that `Cautilus` can select by stable id.
+For a Ceal-like consumer, that may mean `ceal`, `ceal-dev`, or another named runtime.
+For a simple adopter, the catalog may contain only one default instance.
+`cautilus workbench discover` resolves either explicit adapter instances or a consumer-owned probe command into the same `cautilus.workbench_instance_catalog.v1` packet.
+`cautilus workbench run-live` takes one selected instance id plus one request packet and returns one bounded result packet.
+The product owns the packet boundary and status semantics.
+The consumer still owns actual launch, auth, and runtime wiring through its adapter command.
+
 ## Workspace management
 
 ```bash
@@ -344,6 +366,8 @@ The underlying Node scripts are runnable directly when a wrapper tool needs to c
 ```bash
 node scripts/resolve_adapter.mjs --repo-root .
 node scripts/init_adapter.mjs --repo-root .
+node scripts/agent-runtime/discover-workbench-instances.mjs --repo-root .
+node scripts/agent-runtime/run-live-instance-scenario.mjs --repo-root . --instance-id default --request-file /tmp/request.json --output-file /tmp/result.json
 node scripts/agent-runtime/run-executor-variants.mjs --workspace . --output-dir /tmp/cautilus-review
 node scripts/agent-runtime/build-scenario-proposal-input.mjs --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json --family fast_regression
 node scripts/agent-runtime/generate-scenario-proposals.mjs --input ./fixtures/scenario-proposals/standalone-input.json

@@ -5474,6 +5474,203 @@ JSON
 	}
 }
 
+func TestCLIWorkbenchDiscoverNormalizesExplicitInstances(t *testing.T) {
+	root := t.TempDir()
+	adapterDir := filepath.Join(root, ".agents")
+	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	adapter := strings.Join([]string{
+		"version: 1",
+		"repo: temp",
+		"evaluation_surfaces:",
+		"  - workbench smoke",
+		"baseline_options:",
+		"  - baseline git ref via {baseline_ref}",
+		"instance_discovery:",
+		"  kind: explicit",
+		"  instances:",
+		"    - id: default",
+		"      display_label: Local Default",
+		fmt.Sprintf("      data_root: %s", filepath.Join(root, ".runtime", "default")),
+		"      paths:",
+		fmt.Sprintf("        scenario_store: %s", filepath.Join(root, ".runtime", "default", "scenarios.json")),
+		fmt.Sprintf("        scenario_results: %s", filepath.Join(root, ".runtime", "default", "results")),
+		"",
+	}, "\n")
+	if err := os.WriteFile(filepath.Join(adapterDir, "cautilus-adapter.yaml"), []byte(adapter), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+
+	stdout, stderr, exitCode := runCLI(t, root, "workbench", "discover", "--repo-root", root)
+	if exitCode != 0 {
+		t.Fatalf("workbench discover failed: %s", stderr)
+	}
+	payload := parseJSONObject(t, stdout)
+	if payload["schemaVersion"] != contracts.WorkbenchInstanceCatalogSchema {
+		t.Fatalf("unexpected schemaVersion: %#v", payload["schemaVersion"])
+	}
+	instances, ok := payload["instances"].([]any)
+	if !ok || len(instances) != 1 {
+		t.Fatalf("expected one discovered instance, got %#v", payload["instances"])
+	}
+	instance, ok := instances[0].(map[string]any)
+	if !ok {
+		t.Fatalf("expected instance mapping, got %#v", instances[0])
+	}
+	if instance["instanceId"] != "default" || instance["displayLabel"] != "Local Default" {
+		t.Fatalf("unexpected instance payload: %#v", instance)
+	}
+	paths, ok := instance["paths"].(map[string]any)
+	if !ok {
+		t.Fatalf("expected normalized paths, got %#v", instance["paths"])
+	}
+	if paths["scenarioStore"] != filepath.Join(root, ".runtime", "default", "scenarios.json") {
+		t.Fatalf("unexpected scenarioStore path: %#v", paths["scenarioStore"])
+	}
+}
+
+func TestCLIWorkbenchDiscoverExecutesConsumerProbeCommand(t *testing.T) {
+	root := t.TempDir()
+	adapterDir := filepath.Join(root, ".agents")
+	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	writeExecutableFile(t, root, "discover.sh", strings.Join([]string{
+		"#!/bin/sh",
+		"cat <<'EOF'",
+		"{",
+		`  "schemaVersion": "cautilus.workbench_instance_catalog.v1",`,
+		`  "instances": [`,
+		"    {",
+		`      "instanceId": "ceal-dev",`,
+		`      "displayLabel": "Ceal Dev",`,
+		fmt.Sprintf(`      "dataRoot": %q`, filepath.Join(root, ".runtime", "ceal-dev")),
+		"    }",
+		"  ]",
+		"}",
+		"EOF",
+		"",
+	}, "\n"))
+	adapter := strings.Join([]string{
+		"version: 1",
+		"repo: temp",
+		"evaluation_surfaces:",
+		"  - workbench smoke",
+		"baseline_options:",
+		"  - baseline git ref via {baseline_ref}",
+		"instance_discovery:",
+		"  kind: command",
+		"  command_template: ./discover.sh",
+		"",
+	}, "\n")
+	if err := os.WriteFile(filepath.Join(adapterDir, "cautilus-adapter.yaml"), []byte(adapter), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+
+	stdout, stderr, exitCode := runCLI(t, root, "workbench", "discover", "--repo-root", root)
+	if exitCode != 0 {
+		t.Fatalf("workbench discover failed: %s", stderr)
+	}
+	payload := parseJSONObject(t, stdout)
+	instances := payload["instances"].([]any)
+	instance := instances[0].(map[string]any)
+	if instance["instanceId"] != "ceal-dev" || instance["displayLabel"] != "Ceal Dev" {
+		t.Fatalf("unexpected command-backed catalog: %#v", payload)
+	}
+}
+
+func TestCLIWorkbenchRunLiveDispatchesConsumerCommand(t *testing.T) {
+	root := t.TempDir()
+	adapterDir := filepath.Join(root, ".agents")
+	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	writeExecutableFile(t, root, "run-live.sh", strings.Join([]string{
+		"#!/bin/sh",
+		"instance_id=\"$1\"",
+		"request_file=\"$2\"",
+		"output_file=\"$3\"",
+		"node - \"$instance_id\" \"$request_file\" \"$output_file\" <<'EOF'",
+		"const [instanceId, requestFile, outputFile] = process.argv.slice(2);",
+		"const { readFileSync, writeFileSync } = await import(\"node:fs\");",
+		"const request = JSON.parse(readFileSync(requestFile, \"utf8\"));",
+		"writeFileSync(outputFile, JSON.stringify({",
+		`  schemaVersion: "cautilus.live_run_invocation_result.v1",`,
+		"  requestId: request.requestId,",
+		"  instanceId,",
+		`  executionStatus: "completed",`,
+		`  summary: "consumer completed bounded run",`,
+		"  scenarioResult: {",
+		"    scenarioId: request.scenario.scenarioId,",
+		`    status: "passed",`,
+		`    summary: "scenario finished cleanly"`,
+		"  }",
+		"}) + \"\\n\", \"utf8\");",
+		"EOF",
+		"",
+	}, "\n"))
+	adapter := strings.Join([]string{
+		"version: 1",
+		"repo: temp",
+		"evaluation_surfaces:",
+		"  - workbench smoke",
+		"baseline_options:",
+		"  - baseline git ref via {baseline_ref}",
+		"live_run_invocation:",
+		"  command_template: cautilus workbench run-live --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
+		"  consumer_command_template: ./run-live.sh {instance_id} {request_file} {output_file}",
+		"",
+	}, "\n")
+	if err := os.WriteFile(filepath.Join(adapterDir, "cautilus-adapter.yaml"), []byte(adapter), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	requestPath := filepath.Join(root, "request.json")
+	outputPath := filepath.Join(root, "artifacts", "result.json")
+	writeJSONFile(t, requestPath, map[string]any{
+		"schemaVersion": contracts.LiveRunInvocationRequestSchema,
+		"requestId":     "req-123",
+		"instanceId":    "ceal",
+		"timeoutMs":     30000,
+		"scenario": map[string]any{
+			"scenarioId":      "scenario-1",
+			"name":            "Smoke live run",
+			"description":     "Verify the promoted CLI surface can dispatch one bounded run.",
+			"maxTurns":        2,
+			"sideEffectsMode": "read_only",
+			"simulatorTurns":  []string{"Open the runtime and verify the welcome state."},
+		},
+	})
+
+	stdout, stderr, exitCode := runCLI(
+		t,
+		root,
+		"workbench",
+		"run-live",
+		"--repo-root",
+		root,
+		"--instance-id",
+		"ceal",
+		"--request-file",
+		requestPath,
+		"--output-file",
+		outputPath,
+	)
+	if exitCode != 0 {
+		t.Fatalf("workbench run-live failed: %s", stderr)
+	}
+	if strings.TrimSpace(stdout) != outputPath {
+		t.Fatalf("expected stdout to point at result file, got %q", stdout)
+	}
+	result := readJSONObjectFile(t, outputPath)
+	if result["schemaVersion"] != contracts.LiveRunInvocationResultSchema || result["executionStatus"] != "completed" {
+		t.Fatalf("unexpected live result payload: %#v", result)
+	}
+	if result["instanceId"] != "ceal" || result["requestId"] != "req-123" {
+		t.Fatalf("unexpected identity fields in live result: %#v", result)
+	}
+}
+
 func TestCLIExampleInputEmitsPacketsThatRoundTripThroughTheSameCommand(t *testing.T) {
 	cases := []struct {
 		name           string

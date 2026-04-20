@@ -2,9 +2,9 @@
 
 ## Workflow Trigger
 
-다음 세션은 workbench runtime proof 의 첫 executable slice 를 시작한다.
+다음 세션은 Go CLI 로 승격된 workbench surface 위에 첫 real-consumer proof 를 얹는 쪽으로 시작한다.
 먼저 GitHub issue `#17`, `#18`, [docs/contracts/workbench-instance-discovery.md](../contracts/workbench-instance-discovery.md), [docs/contracts/live-run-invocation.md](../contracts/live-run-invocation.md), [docs/contracts/adapter-contract.md](../contracts/adapter-contract.md), [examples/adapter.example.yaml](../../examples/adapter.example.yaml), [AGENTS.md](../../AGENTS.md) 를 읽는다.
-핵심 질문은 contract-only follow-up 을 어디에 둘지 자체가 아니라, example adapter 와 contract docs 가 이미 선언한 discovery/live invocation seam 중 무엇을 먼저 executable proof 로 고정할지다.
+핵심 질문은 discovery/live invocation seam 자체를 어디에 둘지가 아니라, 이미 Go CLI 로 승격된 surface 를 어떤 consumer proof 로 먼저 고정할지다.
 릴리즈 후속을 더 넓히고 싶다면 `v0.6.2` install evidence 중 Homebrew 또는 multi-machine smoke 기록이 남았는지만 확인하면 된다.
 
 ## Current State
@@ -22,18 +22,19 @@
 - contract docs 는 [docs/contracts/workbench-instance-discovery.md](../contracts/workbench-instance-discovery.md) 와 [docs/contracts/live-run-invocation.md](../contracts/live-run-invocation.md) 로 고정됐다.
 - [scripts/agent-runtime/discover-workbench-instances.mjs](../../scripts/agent-runtime/discover-workbench-instances.mjs) 는 이제 `kind: explicit` adapter stanza 를 `cautilus.workbench_instance_catalog.v1` packet 으로 정규화한다.
 - JS-side adapter resolution 도 이제 optional `instance_discovery` 와 `live_run_invocation` stanza 를 보존한다.
-- [examples/adapter.example.yaml](../../examples/adapter.example.yaml) 과 [docs/contracts/adapter-contract.md](../contracts/adapter-contract.md) 는 self-recursive wrapper 예시를 제거했다.
+- [examples/adapter.example.yaml](../../examples/adapter.example.yaml) 과 [docs/contracts/adapter-contract.md](../contracts/adapter-contract.md) 는 이제 `cautilus workbench run-live` command example 을 사용한다.
 - [scripts/agent-runtime/run-live-instance-scenario.mjs](../../scripts/agent-runtime/run-live-instance-scenario.mjs) 는 이제 request/result packet 검증과 consumer command dispatch 를 담당하는 thin helper 로 존재한다.
 - live invocation helper 는 `consumer_command_template` 를 통해 consumer-owned runtime command 를 호출한다.
 - 지금까지의 executable proof 는 explicit discovery normalization 과 live invocation completed/blocked synthetic proof 까지다.
-- 다음 slice 는 live invocation helper 를 thin Go CLI wrapper 로 끌어올릴지, 아니면 agent-runtime helper 로 유지할지 결정하는 쪽으로 좁혀졌다.
+- `cautilus workbench discover` 와 `cautilus workbench run-live` 는 이제 Go CLI entrypoint 로 연결됐다.
+- CLI smoke test 는 explicit discovery, command-backed discovery, live invocation dispatch 를 synthetic repo 에서 증명한다.
 
 ## Next Session
 
-1. live invocation helper 를 thin Go CLI wrapper 로 끌어올릴지, 지금처럼 agent-runtime helper 로 유지할지 결정한다.
-   현재 helper 는 `consumer_command_template` indirection 위에서만 non-recursive 하게 동작한다.
-2. workbench 후속이 discovery 쪽이라면 explicit 외에 `kind: command` consumer probe 를 product proof 에 어떻게 엮을지 정한다.
-   discovery helper 는 아직 explicit normalization only 이다.
+1. workbench discovery/live invocation 을 Ceal 또는 첫 real consumer adapter 에 실제로 연결할지 결정한다.
+   synthetic proof 는 닫혔으니 이제 consumer-owned probe/launch command 와의 실제 접점을 확인하는 턴이다.
+2. `kind: command` discovery 와 `consumer_command_template` indirection 을 real consumer 에서 그대로 유지하는지 확인한다.
+   contract 를 바꿀 이유가 보이지 않으면 example 을 넘어 operator acceptance 에 올린다.
 3. 어떤 runtime surface 를 더 열더라도 local-first / one-instance-per-invocation / bounded packet 원칙을 유지한다.
    remote auth, watch mode, multi-run session, full UI 흡수는 이번 턴에 넣지 않는다.
 4. 릴리즈 후속을 계속 추적해야 한다면 install.sh 외 smoke evidence 가 실제로 더 필요한지부터 판단한다.
@@ -42,9 +43,9 @@
 
 ## Discuss
 
-- discovery helper 를 thin Go CLI wrapper 로 끌어올릴지, 지금처럼 agent-runtime helper 로 유지할지
 - live invocation 의 `consumer_command_template` indirection 을 장기 contract 로 고정할지
-- 다음 runnable proof 를 Ceal consumer experiment 로 바로 연결할지, repo-local synthetic invocation runner 로 먼저 고정할지
+- 다음 runnable proof 를 Ceal consumer experiment 로 바로 연결할지, 다른 real consumer adapter 로 먼저 고정할지
+- operator acceptance 에 workbench discover/run-live 를 언제 올릴지
 
 ## References
 

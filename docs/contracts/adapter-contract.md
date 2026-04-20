@@ -66,7 +66,7 @@ instance_discovery:
   required_prerequisites:
     - keep instance ids stable and keep typed paths machine-readable
 live_run_invocation:
-  command_template: node scripts/agent-runtime/run-live-instance-scenario.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}
+  command_template: cautilus workbench run-live --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}
   consumer_command_template: node scripts/consumer/run-live-instance-scenario.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}
   required_prerequisites:
     - keep invocation bounded to one selected local instance and one request packet
@@ -224,8 +224,8 @@ Fixed rules:
 - `kind: command` is the default fit for consumers that enumerate multiple host-local instances dynamically.
 - `kind: explicit` keeps fixture-backed repos and simple single-instance adopters cheap without forcing a probe script.
 - `command_template` should print `cautilus.workbench_instance_catalog.v1` JSON to stdout.
-The product-owned helper [discover-workbench-instances.mjs](../../scripts/agent-runtime/discover-workbench-instances.mjs) only normalizes `kind: explicit`.
-When the adapter uses `kind: command`, point `command_template` directly at a consumer-owned probe command instead of wrapping the helper around itself.
+`cautilus workbench discover` resolves either `kind: explicit` or `kind: command` into the canonical catalog packet.
+When the adapter uses `kind: command`, point `command_template` directly at a consumer-owned probe command instead of wrapping the product command around itself.
 
 Current placeholders for `instance_discovery.command_template`:
 
@@ -241,7 +241,7 @@ The adapter may therefore declare one optional `live_run_invocation` stanza.
 
 ```yaml
 live_run_invocation:
-  command_template: node scripts/agent-runtime/run-live-instance-scenario.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}
+  command_template: cautilus workbench run-live --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}
   consumer_command_template: node scripts/consumer/run-live-instance-scenario.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}
   required_prerequisites:
     - keep invocation bounded to one selected local instance and one request packet
@@ -250,7 +250,7 @@ live_run_invocation:
 Fixed rules:
 
 - The command handles exactly one selected `instance_id` per invocation.
-- `command_template` may point at the product-owned helper, but the helper must then receive a consumer-owned `consumer_command_template` to avoid recursive self-invocation.
+- `command_template` may point at the product-owned `cautilus workbench run-live` command, but that command must then receive a consumer-owned `consumer_command_template` to avoid recursive self-invocation.
 - The command reads one request packet from `request_file`.
 - The command writes one `cautilus.live_run_invocation_result.v1` packet to `output_file`.
 - The packet owns scenario execution intent.

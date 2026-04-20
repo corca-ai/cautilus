@@ -159,6 +159,10 @@ func nativeHandler(path []string) handlerFunc {
 		return handleVersion
 	case "doctor":
 		return handleDoctor
+	case "workbench discover":
+		return handleWorkbenchDiscover
+	case "workbench run-live":
+		return handleWorkbenchRunLive
 	case "install":
 		return handleInstall
 	case "update":

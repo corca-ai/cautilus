@@ -128,6 +128,26 @@
       ]
     },
     {
+      "path": ["workbench", "discover"],
+      "group": "introspection",
+      "usage": "cautilus workbench discover [args]",
+      "example": "cautilus workbench discover --repo-root .",
+      "notes": [
+        "A workbench instance is one live consumer target on this host that Cautilus can select by stable id.",
+        "The command resolves either explicit adapter instances or a consumer-owned discovery probe into the canonical catalog packet."
+      ]
+    },
+    {
+      "path": ["workbench", "run-live"],
+      "group": "run",
+      "usage": "cautilus workbench run-live --instance-id <id> --request-file <request.json> --output-file <result.json> [args]",
+      "example": "cautilus workbench run-live --repo-root . --instance-id ceal --request-file /tmp/request.json --output-file /tmp/result.json",
+      "notes": [
+        "The selected instance id must come from `cautilus workbench discover`.",
+        "The adapter may still delegate actual runtime launch to a consumer-owned `consumer_command_template`."
+      ]
+    },
+    {
       "path": ["healthcheck"],
       "group": "setup",
       "usage": "cautilus healthcheck [--json]",
