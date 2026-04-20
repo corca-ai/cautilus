@@ -28,6 +28,11 @@ var (
 	runLifecycleCommandForUpdate      = runLifecycleCommand
 )
 
+const (
+	defaultBoundedShellCommandTimeout = 15 * time.Minute
+	boundedShellCommandTimeoutEnv     = "CAUTILUS_SHELL_COMMAND_TIMEOUT_MS"
+)
+
 //nolint:errcheck // CLI stderr reporting is best-effort.
 func handleWorkspacePrepareCompare(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
 	options, err := parseWorkspacePrepareCompareArgs(args, cwd)
@@ -379,6 +384,7 @@ func handleReviewVariants(repoRoot string, cwd string, args []string, stdout io.
 		return 1
 	}
 	log(fmt.Sprintf("review variants artifacts ready: prompt=%s schema=%s", promptArtifacts.promptFile, schemaFile))
+	commandTimeout := reviewVariantCommandTimeout(adapterPayload.Data)
 	summaries := make([]any, 0, len(variants))
 	warnings := reviewVariantWarnings(variants, promptArtifacts.outputUnderTestFile)
 	for _, warning := range warnings {
@@ -400,7 +406,15 @@ func handleReviewVariants(repoRoot string, cwd string, args []string, stdout io.
 			fmt.Fprintf(stderr, "%s\n", err)
 			return 1
 		}
-		result := runShellCommand(options.repoRoot, commandText, filepath.Join(outputDir, id+".json.stdout"), filepath.Join(outputDir, id+".json.stderr"), log, "variant "+id)
+		result := runShellCommand(
+			options.repoRoot,
+			commandText,
+			filepath.Join(outputDir, id+".json.stdout"),
+			filepath.Join(outputDir, id+".json.stderr"),
+			log,
+			"variant "+id,
+			commandTimeout,
+		)
 		rawOutput := map[string]any(nil)
 		rawOutputErr := error(nil)
 		if pathExists(outputFile) {
@@ -558,6 +572,7 @@ func handleModeEvaluate(repoRoot string, cwd string, args []string, stdout io.Wr
 		"report_file":                runtime.ShellSingleQuote(reportFile),
 	}
 	log(fmt.Sprintf("mode evaluate start: mode=%s repo=%s output=%s", options.mode, options.repoRoot, outputDir))
+	commandTimeout := defaultShellCommandTimeout()
 	commandObservations := []any{}
 	if !options.skipPreflight {
 		for index, commandTemplate := range stringArray(adapterPayload.Data["preflight_commands"]) {
@@ -566,7 +581,15 @@ func handleModeEvaluate(repoRoot string, cwd string, args []string, stdout io.Wr
 				fmt.Fprintf(stderr, "%s\n", err)
 				return 1
 			}
-			result := runShellCommand(options.repoRoot, commandText, filepath.Join(outputDir, fmt.Sprintf("preflight-%d.stdout", index+1)), filepath.Join(outputDir, fmt.Sprintf("preflight-%d.stderr", index+1)), log, fmt.Sprintf("preflight %d/%d", index+1, len(stringArray(adapterPayload.Data["preflight_commands"]))))
+			result := runShellCommand(
+				options.repoRoot,
+				commandText,
+				filepath.Join(outputDir, fmt.Sprintf("preflight-%d.stdout", index+1)),
+				filepath.Join(outputDir, fmt.Sprintf("preflight-%d.stderr", index+1)),
+				log,
+				fmt.Sprintf("preflight %d/%d", index+1, len(stringArray(adapterPayload.Data["preflight_commands"]))),
+				commandTimeout,
+			)
 			commandObservations = append(commandObservations, commandObservation("preflight", index+1, result, commandText))
 			if anyString(result["status"]) != "passed" {
 				fmt.Fprintf(stderr, "Preflight command failed: %s\n", commandText)
@@ -583,7 +606,15 @@ func handleModeEvaluate(repoRoot string, cwd string, args []string, stdout io.Wr
 			fmt.Fprintf(stderr, "%s\n", err)
 			return 1
 		}
-		result := runShellCommand(options.repoRoot, commandText, filepath.Join(outputDir, fmt.Sprintf("%s-%d.stdout", options.mode, index+1)), filepath.Join(outputDir, fmt.Sprintf("%s-%d.stderr", options.mode, index+1)), log, fmt.Sprintf("%s %d/%d", options.mode, index+1, len(templates)))
+		result := runShellCommand(
+			options.repoRoot,
+			commandText,
+			filepath.Join(outputDir, fmt.Sprintf("%s-%d.stdout", options.mode, index+1)),
+			filepath.Join(outputDir, fmt.Sprintf("%s-%d.stderr", options.mode, index+1)),
+			log,
+			fmt.Sprintf("%s %d/%d", options.mode, index+1, len(templates)),
+			commandTimeout,
+		)
 		observation := commandObservation(options.mode, index+1, result, commandText)
 		modeObservations = append(modeObservations, observation)
 		commandObservations = append(commandObservations, observation)
@@ -845,6 +876,7 @@ func handleInstructionSurfaceTest(repoRoot string, cwd string, args []string, st
 		"backend":                        backendValue,
 	}
 	log(fmt.Sprintf("instruction-surface test start: repo=%s workspace=%s suite=%s runtime=%s output=%s", options.repoRoot, workspace, caseSuite.SuiteID, effectiveRuntime, outputDir))
+	commandTimeout := defaultShellCommandTimeout()
 	commandsPassed := true
 	if !options.skipPreflight {
 		for index, commandTemplate := range stringArray(adapterPayload.Data["preflight_commands"]) {
@@ -853,7 +885,15 @@ func handleInstructionSurfaceTest(repoRoot string, cwd string, args []string, st
 				fmt.Fprintf(stderr, "%s\n", err)
 				return 1
 			}
-			result := runShellCommand(options.repoRoot, commandText, filepath.Join(outputDir, fmt.Sprintf("preflight-%d.stdout", index+1)), filepath.Join(outputDir, fmt.Sprintf("preflight-%d.stderr", index+1)), log, fmt.Sprintf("preflight %d/%d", index+1, len(stringArray(adapterPayload.Data["preflight_commands"]))))
+			result := runShellCommand(
+				options.repoRoot,
+				commandText,
+				filepath.Join(outputDir, fmt.Sprintf("preflight-%d.stdout", index+1)),
+				filepath.Join(outputDir, fmt.Sprintf("preflight-%d.stderr", index+1)),
+				log,
+				fmt.Sprintf("preflight %d/%d", index+1, len(stringArray(adapterPayload.Data["preflight_commands"]))),
+				commandTimeout,
+			)
 			if anyString(result["status"]) != "passed" {
 				commandsPassed = false
 				break
@@ -869,7 +909,15 @@ func handleInstructionSurfaceTest(repoRoot string, cwd string, args []string, st
 				fmt.Fprintf(stderr, "%s\n", err)
 				return 1
 			}
-			result := runShellCommand(options.repoRoot, commandText, filepath.Join(outputDir, fmt.Sprintf("instruction-surface-test-%d.stdout", index+1)), filepath.Join(outputDir, fmt.Sprintf("instruction-surface-test-%d.stderr", index+1)), log, fmt.Sprintf("instruction-surface test %d/%d", index+1, len(templates)))
+			result := runShellCommand(
+				options.repoRoot,
+				commandText,
+				filepath.Join(outputDir, fmt.Sprintf("instruction-surface-test-%d.stdout", index+1)),
+				filepath.Join(outputDir, fmt.Sprintf("instruction-surface-test-%d.stderr", index+1)),
+				log,
+				fmt.Sprintf("instruction-surface test %d/%d", index+1, len(templates)),
+				commandTimeout,
+			)
 			if anyString(result["status"]) != "passed" {
 				commandsPassed = false
 				break
@@ -981,6 +1029,7 @@ func handleSkillTest(repoRoot string, cwd string, args []string, stdout io.Write
 		"backend":               backendValue,
 	}
 	log(fmt.Sprintf("skill test start: repo=%s workspace=%s skill=%s runtime=%s output=%s", options.repoRoot, workspace, caseSuite.SkillID, effectiveRuntime, outputDir))
+	commandTimeout := defaultShellCommandTimeout()
 	commandsPassed := true
 	if !options.skipPreflight {
 		for index, commandTemplate := range stringArray(adapterPayload.Data["preflight_commands"]) {
@@ -989,7 +1038,15 @@ func handleSkillTest(repoRoot string, cwd string, args []string, stdout io.Write
 				fmt.Fprintf(stderr, "%s\n", err)
 				return 1
 			}
-			result := runShellCommand(options.repoRoot, commandText, filepath.Join(outputDir, fmt.Sprintf("preflight-%d.stdout", index+1)), filepath.Join(outputDir, fmt.Sprintf("preflight-%d.stderr", index+1)), log, fmt.Sprintf("preflight %d/%d", index+1, len(stringArray(adapterPayload.Data["preflight_commands"]))))
+			result := runShellCommand(
+				options.repoRoot,
+				commandText,
+				filepath.Join(outputDir, fmt.Sprintf("preflight-%d.stdout", index+1)),
+				filepath.Join(outputDir, fmt.Sprintf("preflight-%d.stderr", index+1)),
+				log,
+				fmt.Sprintf("preflight %d/%d", index+1, len(stringArray(adapterPayload.Data["preflight_commands"]))),
+				commandTimeout,
+			)
 			if anyString(result["status"]) != "passed" {
 				commandsPassed = false
 				break
@@ -1005,7 +1062,15 @@ func handleSkillTest(repoRoot string, cwd string, args []string, stdout io.Write
 				fmt.Fprintf(stderr, "%s\n", err)
 				return 1
 			}
-			result := runShellCommand(options.repoRoot, commandText, filepath.Join(outputDir, fmt.Sprintf("skill-test-%d.stdout", index+1)), filepath.Join(outputDir, fmt.Sprintf("skill-test-%d.stderr", index+1)), log, fmt.Sprintf("skill test %d/%d", index+1, len(templates)))
+			result := runShellCommand(
+				options.repoRoot,
+				commandText,
+				filepath.Join(outputDir, fmt.Sprintf("skill-test-%d.stdout", index+1)),
+				filepath.Join(outputDir, fmt.Sprintf("skill-test-%d.stderr", index+1)),
+				log,
+				fmt.Sprintf("skill test %d/%d", index+1, len(templates)),
+				commandTimeout,
+			)
 			if anyString(result["status"]) != "passed" {
 				commandsPassed = false
 				break
@@ -1794,10 +1859,16 @@ func progressLogger(quiet bool, stderr io.Writer) func(string) {
 	}
 }
 
-func runShellCommand(repoRoot string, commandText string, stdoutFile string, stderrFile string, log func(string), label string) map[string]any {
+func runShellCommand(repoRoot string, commandText string, stdoutFile string, stderrFile string, log func(string), label string, timeout time.Duration) map[string]any {
 	startedAt := time.Now()
 	log(fmt.Sprintf("%s start: %s", label, commandText))
-	command := exec.Command("bash", "-lc", commandText)
+	ctx := context.Background()
+	cancel := func() {}
+	if timeout > 0 {
+		ctx, cancel = context.WithTimeout(ctx, timeout)
+	}
+	defer cancel()
+	command := exec.CommandContext(ctx, "bash", "-lc", commandText)
 	command.Dir = repoRoot
 	command.Env = externalCommandEnv(nil)
 	var stdoutBuffer bytes.Buffer
@@ -1806,6 +1877,7 @@ func runShellCommand(repoRoot string, commandText string, stdoutFile string, std
 	command.Stderr = &stderrBuffer
 	err := command.Run()
 	completedAt := time.Now()
+	timedOut := timeout > 0 && ctx.Err() == context.DeadlineExceeded
 	_ = os.WriteFile(stdoutFile, stdoutBuffer.Bytes(), 0o644)
 	_ = os.WriteFile(stderrFile, stderrBuffer.Bytes(), 0o644)
 	result := map[string]any{
@@ -1817,15 +1889,53 @@ func runShellCommand(repoRoot string, commandText string, stdoutFile string, std
 		"stdoutFile":  stdoutFile,
 		"stderrFile":  stderrFile,
 		"status":      ternaryString(err == nil, "passed", "failed"),
+		"timedOut":    timedOut,
 	}
 	var exitErr *exec.ExitError
 	if errors.As(err, &exitErr) {
 		result["exitCode"] = exitErr.ExitCode()
 	} else if err == nil {
 		result["exitCode"] = 0
+	} else if timedOut {
+		result["exitCode"] = -1
+	}
+	if timedOut {
+		result["error"] = fmt.Sprintf("command timed out after %s", timeout)
 	}
 	log(fmt.Sprintf("%s %s in %dms", label, result["status"], result["durationMs"]))
+	if timedOut {
+		log(fmt.Sprintf("%s timeout: command timed out after %s", label, timeout))
+	}
 	return result
+}
+
+func parsePositiveTimeoutDuration(envName string) (time.Duration, bool) {
+	raw := strings.TrimSpace(os.Getenv(envName))
+	if raw == "" {
+		return 0, false
+	}
+	parsed, err := strconv.Atoi(raw)
+	if err != nil || parsed <= 0 {
+		return 0, false
+	}
+	return time.Duration(parsed) * time.Millisecond, true
+}
+
+func defaultShellCommandTimeout() time.Duration {
+	if timeout, ok := parsePositiveTimeoutDuration(boundedShellCommandTimeoutEnv); ok {
+		return timeout
+	}
+	return defaultBoundedShellCommandTimeout
+}
+
+func reviewVariantCommandTimeout(adapterData map[string]any) time.Duration {
+	if timeout, ok := parsePositiveTimeoutDuration(boundedShellCommandTimeoutEnv); ok {
+		return timeout
+	}
+	if timeoutMs := intFromAny(adapterData["review_timeout_ms"], 0); timeoutMs > 0 {
+		return time.Duration(timeoutMs) * time.Millisecond
+	}
+	return defaultBoundedShellCommandTimeout
 }
 
 func renderTemplate(template string, replacements map[string]string) (string, error) {
@@ -2387,6 +2497,12 @@ func commandObservation(stage string, index int, result map[string]any, commandT
 	}
 	if result["exitCode"] != nil {
 		packet["exitCode"] = result["exitCode"]
+	}
+	if result["timedOut"] == true {
+		packet["timedOut"] = true
+	}
+	if result["error"] != nil {
+		packet["error"] = result["error"]
 	}
 	return packet
 }

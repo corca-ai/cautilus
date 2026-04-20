@@ -18,7 +18,7 @@ function writeExecutable(root, name, body) {
 	return filePath;
 }
 
-function createAdapterRepo({ failVariantId = "", blockedVariantId = "", invalidVariantId = "" } = {}) {
+function createAdapterRepo({ failVariantId = "", blockedVariantId = "", invalidVariantId = "", reviewTimeoutMs = null } = {}) {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-review-runner-"));
 	const workspace = join(root, "workspace");
 	mkdirSync(workspace, { recursive: true });
@@ -101,6 +101,7 @@ EOF
 			"human_review_prompts:",
 			"  - id: operator",
 			"    prompt: smoke",
+			...(reviewTimeoutMs === null ? [] : [`review_timeout_ms: ${reviewTimeoutMs}`]),
 			"",
 		].join("\n"),
 		"utf-8",
@@ -284,6 +285,44 @@ test("run-executor-variants falls back to adapter default prompt and schema file
 			assert.equal(summary.promptFile, promptFile);
 			assert.equal(summary.schemaFile, schemaFile);
 			assert.equal(summary.variants.length, 2);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("run-executor-variants fails bounded variants that exceed the review timeout", () => {
+	const { root, workspace, adapterPath, promptFile, schemaFile } = createAdapterRepo({ reviewTimeoutMs: 100 });
+	try {
+		const outputDir = join(root, "outputs");
+		const result = runReviewVariants(
+			[
+				"--repo-root",
+				root,
+				"--adapter",
+				adapterPath,
+				"--workspace",
+				workspace,
+				"--prompt-file",
+				promptFile,
+				"--schema-file",
+				schemaFile,
+				"--output-dir",
+				outputDir,
+			],
+			{
+				env: {
+					...process.env,
+					CAUTILUS_TEST_SLEEP_MS: "1000",
+				},
+			},
+		);
+		assert.equal(result.status, 1, result.stderr);
+		assert.match(result.stderr, /command timed out after 100ms/);
+		const summary = JSON.parse(readFileSync(join(outputDir, "review-summary.json"), "utf-8"));
+		assert.equal(summary.status, "failed");
+		assert.equal(summary.variants[0].executionStatus, "failed");
+		assert.equal(summary.variants[0].timedOut, true);
+		assert.match(summary.variants[0].error, /command timed out after 100ms/);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

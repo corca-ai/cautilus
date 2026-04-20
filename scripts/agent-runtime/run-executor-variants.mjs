@@ -9,6 +9,7 @@ import { buildReviewPromptInput } from "./build-review-prompt-input.mjs";
 import {
 	createProgressLogger,
 	ownershipHintForRepo,
+	resolveCommandTimeoutMs,
 	runBashCommandWithProgress,
 } from "./command-progress.mjs";
 import { REVIEW_PROMPT_INPUTS_SCHEMA } from "./contract-versions.mjs";
@@ -21,6 +22,7 @@ import { resolveRunDir } from "./active-run.mjs";
 
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 const TOOL_ROOT = resolve(SCRIPT_DIR, "..", "..");
+const DEFAULT_REVIEW_TIMEOUT_MS = 15 * 60 * 1000;
 const VALUE_OPTIONS = new Map([
 	["--repo-root", "repoRoot"],
 	["--adapter", "adapter"],
@@ -143,7 +145,15 @@ function renderTemplate(template, replacements) {
 	});
 }
 
-async function runVariant(repoRoot, variant, replacements, log) {
+function resolveReviewTimeoutMs(adapterPayload) {
+	const configured = Number.parseInt(String(adapterPayload.data.review_timeout_ms ?? ""), 10);
+	const fallbackMs = Number.isInteger(configured) && configured > 0
+		? configured
+		: DEFAULT_REVIEW_TIMEOUT_MS;
+	return resolveCommandTimeoutMs(fallbackMs);
+}
+
+async function runVariant(repoRoot, variant, replacements, log, timeoutMs) {
 	const command = renderTemplate(variant.command_template, replacements);
 	const label = `variant ${variant.id}`;
 	const result = await runBashCommandWithProgress({
@@ -156,6 +166,7 @@ async function runVariant(repoRoot, variant, replacements, log) {
 		heartbeatMessage: `${label} still running`,
 		completionLabel: label,
 		ownershipHint: ownershipHintForRepo(TOOL_ROOT, repoRoot),
+		timeoutMs,
 	});
 	return {
 		id: variant.id,
@@ -166,6 +177,8 @@ async function runVariant(repoRoot, variant, replacements, log) {
 		durationMs: result.durationMs,
 		exitCode: result.exitCode,
 		signal: result.signal,
+		timedOut: result.timedOut === true,
+		...(result.error ? { error: result.error } : {}),
 		stdout: result.stdout,
 		stderr: result.stderr,
 		outputFile: replacements.output_file_raw,
@@ -391,6 +404,7 @@ async function main() {
 	const workspace = resolve(options.workspace);
 	const schemaFile = resolveReviewSchemaFile(options, promptArtifacts, adapterPayload, repoRoot);
 	const promptFile = promptArtifacts.promptFile;
+	const reviewTimeoutMs = resolveReviewTimeoutMs(adapterPayload);
 	log(`review variants artifacts ready: prompt=${promptFile} schema=${schemaFile}`);
 	const warnings = buildOutputUnderTestWarnings(selectedVariants, promptArtifacts.outputUnderTestFile);
 	for (const warning of warnings) {
@@ -409,7 +423,7 @@ async function main() {
 			variant_id: shellEscape(variant.id),
 			output_under_test: shellEscape(promptArtifacts.outputUnderTestFile?.absolutePath ?? ""),
 		};
-		results.push(await runVariant(repoRoot, variant, replacements, log));
+		results.push(await runVariant(repoRoot, variant, replacements, log, reviewTimeoutMs));
 	}
 
 	const variantSummaries = results.map((result) => {
@@ -424,19 +438,20 @@ async function main() {
 		}
 		const output = normalizeReviewVariantResult(result, rawOutput, rawOutputError);
 		writeFileSync(result.outputFile, `${JSON.stringify(output, null, 2)}\n`, "utf-8");
-		return {
-			id: result.id,
-			tool: result.tool,
-			status: output.status,
-			executionStatus: result.status,
-			startedAt: result.startedAt,
-			completedAt: result.completedAt,
-			durationMs: result.durationMs,
-			exitCode: result.exitCode,
-			signal: result.signal,
-			outputFile: result.outputFile,
-			stdoutFile: result.stdoutFile,
-			stderrFile: result.stderrFile,
+			return {
+				id: result.id,
+				tool: result.tool,
+				status: output.status,
+				executionStatus: result.status,
+				startedAt: result.startedAt,
+				completedAt: result.completedAt,
+				durationMs: result.durationMs,
+				exitCode: result.exitCode,
+				signal: result.signal,
+				...(result.timedOut ? { timedOut: true, error: result.error } : {}),
+				outputFile: result.outputFile,
+				stdoutFile: result.stdoutFile,
+				stderrFile: result.stderrFile,
 			command: result.command,
 			stdout: result.stdout,
 			stderr: result.stderr,

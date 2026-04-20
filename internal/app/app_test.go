@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/corca-ai/cautilus/internal/cli"
 )
@@ -396,6 +397,7 @@ func TestRunShellCommandDoesNotLeakShimContextEnv(t *testing.T) {
 		filepath.Join(t.TempDir(), "stderr.txt"),
 		func(string) {},
 		"env scrub",
+		time.Second,
 	)
 
 	if status := result["status"]; status != "passed" {
@@ -403,6 +405,33 @@ func TestRunShellCommandDoesNotLeakShimContextEnv(t *testing.T) {
 	}
 	if stdout := result["stdout"]; stdout != "|" {
 		t.Fatalf("expected shim env to be scrubbed, got %#v", stdout)
+	}
+}
+
+func TestRunShellCommandTimesOutLongRunningProcess(t *testing.T) {
+	stdoutFile := filepath.Join(t.TempDir(), "stdout.txt")
+	stderrFile := filepath.Join(t.TempDir(), "stderr.txt")
+	result := runShellCommand(
+		t.TempDir(),
+		"node -e 'setTimeout(() => {}, 1000)'",
+		stdoutFile,
+		stderrFile,
+		func(string) {},
+		"timeout probe",
+		50*time.Millisecond,
+	)
+
+	if status := result["status"]; status != "failed" {
+		t.Fatalf("expected failed status, got %#v", result)
+	}
+	if timedOut := result["timedOut"]; timedOut != true {
+		t.Fatalf("expected timedOut flag, got %#v", result)
+	}
+	if exitCode := result["exitCode"]; exitCode != -1 {
+		t.Fatalf("expected timeout exitCode -1, got %#v", result)
+	}
+	if errorText := anyString(result["error"]); !strings.Contains(errorText, "timed out after") {
+		t.Fatalf("expected timeout error text, got %#v", result["error"])
 	}
 }
 

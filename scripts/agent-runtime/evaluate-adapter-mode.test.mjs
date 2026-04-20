@@ -290,9 +290,52 @@ echo "$mode ok"
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}
-});
+	});
 
-test("evaluate-adapter-mode promotes a passing full_gate run to accept-now", () => {
+	test("evaluate-adapter-mode fails bounded stage commands that exceed the shell timeout", () => {
+		const { root, workspace } = createRepo();
+		try {
+			const outputDir = join(root, "outputs-timeout");
+			const result = spawnSync(
+				"node",
+				[
+					SCRIPT_PATH,
+					"--repo-root",
+					root,
+					"--candidate-repo",
+					workspace,
+					"--mode",
+					"held_out",
+					"--intent",
+					"Bound the held-out runner.",
+					"--baseline-ref",
+					"origin/main",
+					"--output-dir",
+					outputDir,
+				],
+				{
+					cwd: process.cwd(),
+					encoding: "utf-8",
+					env: {
+						...process.env,
+						CAUTILUS_TEST_SLEEP_MS: "1000",
+						CAUTILUS_SHELL_COMMAND_TIMEOUT_MS: "100",
+					},
+				},
+			);
+			assert.equal(result.status, 0, result.stderr);
+			assert.match(result.stderr, /command timed out after 100ms/);
+			const report = JSON.parse(readFileSync(join(outputDir, "report.json"), "utf-8"));
+			const reportInput = JSON.parse(readFileSync(join(outputDir, "report-input.json"), "utf-8"));
+			assert.equal(report.recommendation, "reject");
+			assert.equal(reportInput.commandObservations[1].timedOut, true);
+			assert.match(reportInput.commandObservations[1].error, /command timed out after 100ms/);
+		} finally {
+			rmSync(root, { recursive: true, force: true });
+		}
+	});
+
+	test("evaluate-adapter-mode promotes a passing full_gate run to accept-now", () => {
 	const { root, workspace } = createRepo();
 	try {
 		const outputDir = join(root, "full-gate-outputs");

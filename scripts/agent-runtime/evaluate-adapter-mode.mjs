@@ -16,6 +16,7 @@ import { buildReportPacket } from "./build-report-packet.mjs";
 import {
 	createProgressLogger,
 	ownershipHintForRepo,
+	resolveCommandTimeoutMs,
 	runBashCommandWithProgress,
 } from "./command-progress.mjs";
 import {
@@ -37,6 +38,7 @@ export { ADAPTER_MODE_EVALUATION_PACKET_SCHEMA } from "./contract-versions.mjs";
 
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 const TOOL_ROOT = resolve(SCRIPT_DIR, "..", "..");
+const DEFAULT_STAGE_COMMAND_TIMEOUT_MS = 15 * 60 * 1000;
 const MODE_FIELD_BY_NAME = {
 	iterate: "iterate_command_templates",
 	held_out: "held_out_command_templates",
@@ -270,6 +272,7 @@ function createObservation(stage, index, commandResult) {
 		durationMs: commandResult.durationMs,
 		...(typeof commandResult.exitCode === "number" ? { exitCode: commandResult.exitCode } : {}),
 		...(commandResult.signal ? { signal: commandResult.signal } : {}),
+		...(commandResult.timedOut ? { timedOut: true, error: commandResult.error } : {}),
 		stdoutFile: commandResult.stdoutFile,
 		stderrFile: commandResult.stderrFile,
 	};
@@ -386,6 +389,7 @@ function resolveModeContext(options, adapterPayload) {
 }
 
 async function executeTemplateSeries(templates, stage, context, options, log) {
+	const timeoutMs = resolveCommandTimeoutMs(DEFAULT_STAGE_COMMAND_TIMEOUT_MS);
 	const observations = [];
 	for (const [index, template] of templates.entries()) {
 		const command = renderTemplate(template, context.replacements);
@@ -400,6 +404,7 @@ async function executeTemplateSeries(templates, stage, context, options, log) {
 			heartbeatMessage: `${label} still running`,
 			completionLabel: label,
 			ownershipHint: ownershipHintForRepo(TOOL_ROOT, context.repoRoot),
+			timeoutMs,
 		});
 		const observation = createObservation(stage, index + 1, result);
 		observations.push(observation);
