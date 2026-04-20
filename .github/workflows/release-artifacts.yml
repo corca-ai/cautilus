@@ -84,3 +84,21 @@ jobs:
             dist/cautilus-*-checksums.txt
             dist/Cautilus.rb
             dist/release-notes-*.md
+  verify-public-release:
+    needs: release-artifacts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - name: Verify published public release surface
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          npm run release:verify-public -- \
+            --version "${GITHUB_REF_NAME}" \
+            --retry-attempts 10 \
+            --retry-delay-ms 30000

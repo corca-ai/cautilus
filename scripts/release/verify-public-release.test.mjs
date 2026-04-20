@@ -7,6 +7,7 @@ import {
 	expectedBinaryAssets,
 	expectedReleaseAssets,
 	verifyPublicRelease,
+	verifyPublicReleaseWithRetry,
 } from "./verify-public-release.mjs";
 
 function jsonResponse(payload) {
@@ -201,4 +202,87 @@ test("verifyPublicRelease reports missing assets and stale tap formula", async (
 	assert.match(result.problems.join("\n"), /checksum manifest is missing binary entries/);
 	assert.match(result.problems.join("\n"), /release formula asset does not match/);
 	assert.match(result.problems.join("\n"), /tap formula is not updated/);
+});
+
+test("verifyPublicReleaseWithRetry retries transient release visibility gaps until the public surface is ready", async () => {
+	const version = "v3.1.0";
+	const repo = "corca-ai/cautilus";
+	const tapRepo = "corca-ai/homebrew-tap";
+	const sha256 = "d".repeat(64);
+	const binaryAssets = expectedBinaryAssets(version);
+	const formula = renderHomebrewFormula({ version, repo, sha256 });
+	const releaseAssets = expectedReleaseAssets(version).map((name) => ({
+		name,
+		browser_download_url: `https://downloads.example/${name}`,
+	}));
+	const notes = [
+		`# Cautilus ${version}`,
+		"",
+		`- source archive checksum: \`${sha256}\``,
+		"- binary artifacts:",
+		...binaryAssets.map((asset) => `  - \`${asset}\``),
+		`- binary checksum manifest: \`cautilus-${version}-checksums.txt\``,
+		"- formula artifact: `Cautilus.rb`",
+	].join("\n");
+	const checksums = binaryAssets
+		.map((asset, index) => `${String(index + 2).repeat(64)}  dist/${asset}`)
+		.join("\n");
+	const releaseUrl = `https://github.com/${repo}/releases/tag/${version}`;
+	const releaseEndpoint = `https://api.github.com/repos/${repo}/releases/tags/${version}`;
+	const tapEndpoint = `https://api.github.com/repos/${tapRepo}/contents/Formula/cautilus.rb`;
+	let sleepCalls = 0;
+	let releaseFetches = 0;
+	const fetchStub = async (url) => {
+		if (url === releaseEndpoint) {
+			releaseFetches += 1;
+			if (releaseFetches === 1) {
+				return {
+					ok: false,
+					status: 404,
+					statusText: "Not Found",
+					async json() {
+						return {};
+					},
+					async text() {
+						return "";
+					},
+				};
+			}
+			return jsonResponse({
+				html_url: releaseUrl,
+				draft: false,
+				prerelease: false,
+				assets: releaseAssets,
+			});
+		}
+		const fetchMap = new Map([
+			[`https://downloads.example/cautilus-${version}.sha256`, textResponse(`${sha256}\n`)],
+			[`https://downloads.example/cautilus-${version}-checksums.txt`, textResponse(`${checksums}\n`)],
+			[`https://downloads.example/Cautilus.rb`, textResponse(formula)],
+			[`https://downloads.example/release-notes-${version}.md`, textResponse(notes)],
+			[
+				tapEndpoint,
+				jsonResponse({
+					encoding: "base64",
+					content: Buffer.from(formula, "utf-8").toString("base64"),
+				}),
+			],
+		]);
+		return createFetchStub(fetchMap)(url);
+	};
+
+	const result = await verifyPublicReleaseWithRetry(
+		{ version, repo, tapRepo, checkTap: true, retryAttempts: 3, retryDelayMs: 25 },
+		{
+			fetchImplementation: fetchStub,
+			sleepImplementation: async () => {
+				sleepCalls += 1;
+			},
+		},
+	);
+
+	assert.equal(result.ok, true);
+	assert.equal(result.attemptsUsed, 2);
+	assert.equal(releaseFetches, 2);
+	assert.equal(sleepCalls, 1);
 });

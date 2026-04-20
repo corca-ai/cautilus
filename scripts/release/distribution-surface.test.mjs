@@ -94,6 +94,11 @@ test("release workflow attaches provenance attestations for the public binary ma
 	assert.match(workflow, /artifact-metadata: write/);
 	assert.match(workflow, /uses: actions\/attest@v4/);
 	assert.match(workflow, /subject-checksums: dist\/cautilus-\$\{\{ github\.ref_name \}\}-checksums\.txt/);
+	assert.match(workflow, /verify-public-release:/);
+	assert.match(workflow, /needs: release-artifacts/);
+	assert.match(workflow, /npm run release:verify-public -- \\/);
+	assert.match(workflow, /--retry-attempts 10/);
+	assert.match(workflow, /--retry-delay-ms 30000/);
 });
 
 test("dead runtime compatibility shims stay deleted", () => {

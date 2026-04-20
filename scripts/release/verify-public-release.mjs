@@ -1,5 +1,6 @@
 import { Buffer } from "node:buffer";
 import process from "node:process";
+import { setTimeout as sleep } from "node:timers/promises";
 import { pathToFileURL } from "node:url";
 import { resolve } from "node:path";
 
@@ -13,7 +14,7 @@ const DEFAULT_TAP_FORMULA_PATH = "Formula/cautilus.rb";
 function usage(exitCode = 0) {
 	const text = [
 		"Usage:",
-		"  node ./scripts/release/verify-public-release.mjs --version <v0.3.0> [--repo <owner/name>] [--tap-repo <owner/name>] [--json] [--skip-tap-check]",
+		"  node ./scripts/release/verify-public-release.mjs --version <v0.3.0> [--repo <owner/name>] [--tap-repo <owner/name>] [--json] [--skip-tap-check] [--retry-attempts <n>] [--retry-delay-ms <ms>]",
 	].join("\n");
 	const stream = exitCode === 0 ? process.stdout : process.stderr;
 	stream.write(`${text}\n`);
@@ -36,6 +37,8 @@ function parseArgs(argv = process.argv.slice(2)) {
 		tapRepo: targets.tapRepo,
 		json: false,
 		checkTap: true,
+		retryAttempts: 1,
+		retryDelayMs: 0,
 	};
 	for (let index = 0; index < argv.length; index += 1) {
 		index = applyArg(options, argv, index);
@@ -44,6 +47,13 @@ function parseArgs(argv = process.argv.slice(2)) {
 		throw new Error("--version is required");
 	}
 	return options;
+}
+
+function parseNonNegativeInteger(value, option) {
+	if (!/^\d+$/.test(String(value || ""))) {
+		throw new Error(`${option} must be a non-negative integer`);
+	}
+	return Number.parseInt(value, 10);
 }
 
 function applyArg(options, argv, index) {
@@ -70,18 +80,36 @@ function applyArg(options, argv, index) {
 		return flagMap[arg]();
 	}
 	const target = valueMap[arg];
+	if (target) {
+		options[target] = readRequiredValue(argv, index, arg);
+		return index + 1;
+	}
+	if (arg === "--retry-attempts") {
+		options.retryAttempts = parseNonNegativeInteger(readRequiredValue(argv, index, arg), arg);
+		if (options.retryAttempts < 1) {
+			throw new Error("--retry-attempts must be at least 1");
+		}
+		return index + 1;
+	}
+	if (arg === "--retry-delay-ms") {
+		options.retryDelayMs = parseNonNegativeInteger(readRequiredValue(argv, index, arg), arg);
+		return index + 1;
+	}
 	if (!target) {
 		throw new Error(`Unknown argument: ${arg}`);
 	}
-	options[target] = readRequiredValue(argv, index, arg);
-	return index + 1;
 }
 
 function githubHeaders() {
-	return {
+	const headers = {
 		accept: "application/vnd.github+json",
 		"user-agent": "cautilus-release-verifier",
 	};
+	const token = process.env.GITHUB_TOKEN || process.env.GH_TOKEN || "";
+	if (token) {
+		headers.authorization = `Bearer ${token}`;
+	}
+	return headers;
 }
 
 async function fetchJson(url, fetchImplementation = fetch) {
@@ -345,10 +373,75 @@ export async function verifyPublicRelease(
 	return result;
 }
 
+async function runVerificationAttempt({ version, repo, tapRepo, checkTap, fetchImplementation, attempt }) {
+	const result = await verifyPublicRelease(
+		{ version, repo, tapRepo, checkTap },
+		{ fetchImplementation },
+	);
+	return {
+		...result,
+		attemptsUsed: attempt,
+	};
+}
+
+function shouldReturnRetryResult(result, attempt, retryAttempts) {
+	return result.ok || attempt === retryAttempts;
+}
+
+async function waitForRetryDelay(retryDelayMs, sleepImplementation) {
+	if (retryDelayMs > 0) {
+		await sleepImplementation(retryDelayMs);
+	}
+}
+
+async function retryPublicReleaseVerification(
+	{ version, repo, tapRepo, checkTap, retryAttempts, retryDelayMs, fetchImplementation, sleepImplementation },
+	attempt = 1,
+) {
+	try {
+		const result = await runVerificationAttempt({
+			version,
+			repo,
+			tapRepo,
+			checkTap,
+			fetchImplementation,
+			attempt,
+		});
+		if (shouldReturnRetryResult(result, attempt, retryAttempts)) {
+			return result;
+		}
+	} catch (error) {
+		if (attempt === retryAttempts) {
+			throw error;
+		}
+	}
+	await waitForRetryDelay(retryDelayMs, sleepImplementation);
+	return retryPublicReleaseVerification(
+		{ version, repo, tapRepo, checkTap, retryAttempts, retryDelayMs, fetchImplementation, sleepImplementation },
+		attempt + 1,
+	);
+}
+
+export async function verifyPublicReleaseWithRetry(
+	{ version, repo, tapRepo, checkTap = true, retryAttempts = 1, retryDelayMs = 0 },
+	{ fetchImplementation = fetch, sleepImplementation = sleep } = {},
+) {
+	return retryPublicReleaseVerification({
+		version,
+		repo,
+		tapRepo,
+		checkTap,
+		retryAttempts,
+		retryDelayMs,
+		fetchImplementation,
+		sleepImplementation,
+	});
+}
+
 export async function main(argv = process.argv.slice(2)) {
 	try {
 		const options = parseArgs(argv);
-		const result = await verifyPublicRelease(options);
+		const result = await verifyPublicReleaseWithRetry(options);
 		if (options.json) {
 			process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
 		} else {

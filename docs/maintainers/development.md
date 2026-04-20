@@ -152,7 +152,8 @@ Keep runtime ownership explicit so Node helpers do not silently grow a second pr
 
 ## Release verification
 
-After a tag is published, verify the public release surface with:
+The tag-triggered release workflow now retries public release verification until the GitHub release API and tap formula expose the tagged version.
+If you need to replay that check locally, run:
 
 ```bash
 npm run release:verify-public -- --version <tag>
