@@ -26,6 +26,7 @@ const STRING_LIST_FIELDS = [
 	"baseline_options",
 	"required_prerequisites",
 	"preflight_commands",
+	"instruction_surface_test_command_templates",
 	"skill_test_command_templates",
 	"iterate_command_templates",
 	"held_out_command_templates",
@@ -51,6 +52,7 @@ const STRING_FIELDS = [
 	"profile_default",
 	"default_prompt_file",
 	"default_schema_file",
+	"instruction_surface_cases_default",
 	"skill_cases_default",
 ];
 
@@ -222,6 +224,13 @@ function nonEmptyString(value, field, errors) {
 	return value.trim();
 }
 
+function optionalString(value, field, errors) {
+	if (value === undefined || value === null) {
+		return null;
+	}
+	return nonEmptyString(value, field, errors);
+}
+
 function validateOptimizeSearchBudget(name, value, errors) {
 	if (!isObjectRecord(value)) {
 		errors.push(`optimize_search.budgets.${name} must be a mapping`);
@@ -383,6 +392,159 @@ function validateOptimizeSearch(value, errors) {
 	return optimizeSearch;
 }
 
+function validateStringMapping(value, field, errors) {
+	if (value === undefined || value === null) {
+		return null;
+	}
+	if (!isObjectRecord(value)) {
+		errors.push(`${field} must be a mapping of strings`);
+		return null;
+	}
+	const normalized = {};
+	for (const [key, rawValue] of Object.entries(value)) {
+		const trimmedKey = String(key ?? "").trim();
+		if (!trimmedKey) {
+			errors.push(`${field} keys must be non-empty`);
+			continue;
+		}
+		const path = nonEmptyString(rawValue, `${field}.${trimmedKey}`, errors);
+		if (path !== null) {
+			normalized[trimmedKey] = path;
+		}
+	}
+	return normalized;
+}
+
+function validateExplicitInstanceDiscoveryInstance(item, index, errors) {
+	if (!isObjectRecord(item)) {
+		errors.push(`instance_discovery.instances[${index}] must be a mapping`);
+		return null;
+	}
+	const instance = {};
+	const id = nonEmptyString(item.id, `instance_discovery.instances[${index}].id`, errors);
+	if (id !== null) {
+		instance.id = id;
+	}
+	const displayLabel = nonEmptyString(
+		item.display_label,
+		`instance_discovery.instances[${index}].display_label`,
+		errors,
+	);
+	if (displayLabel !== null) {
+		instance.display_label = displayLabel;
+	}
+	const description = optionalString(
+		item.description,
+		`instance_discovery.instances[${index}].description`,
+		errors,
+	);
+	if (description !== null) {
+		instance.description = description;
+	}
+	const dataRoot = optionalString(
+		item.data_root,
+		`instance_discovery.instances[${index}].data_root`,
+		errors,
+	);
+	if (dataRoot !== null) {
+		instance.data_root = dataRoot;
+	}
+	const paths = validateStringMapping(item.paths, `instance_discovery.instances[${index}].paths`, errors);
+	if (paths !== null && Object.keys(paths).length > 0) {
+		instance.paths = paths;
+	}
+	if (!instance.data_root && !instance.paths) {
+		errors.push(`instance_discovery.instances[${index}] must include data_root, paths, or both`);
+	}
+	return instance;
+}
+
+function validateInstanceDiscovery(value, errors) {
+	if (value === undefined || value === null) {
+		return null;
+	}
+	if (!isObjectRecord(value)) {
+		errors.push("instance_discovery must be a mapping");
+		return null;
+	}
+	const instanceDiscovery = {};
+	const kind = nonEmptyString(value.kind, "instance_discovery.kind", errors);
+	if (kind === null) {
+		return null;
+	}
+	if (kind !== "explicit" && kind !== "command") {
+		errors.push("instance_discovery.kind must be one of: explicit, command");
+		return null;
+	}
+	instanceDiscovery.kind = kind;
+	const prerequisites = stringList(
+		value.required_prerequisites,
+		"instance_discovery.required_prerequisites",
+		errors,
+	);
+	if (prerequisites !== null) {
+		instanceDiscovery.required_prerequisites = prerequisites;
+	}
+	if (kind === "command") {
+		const commandTemplate = nonEmptyString(
+			value.command_template,
+			"instance_discovery.command_template",
+			errors,
+		);
+		if (commandTemplate !== null) {
+			instanceDiscovery.command_template = commandTemplate;
+		}
+		if (value.instances !== undefined && value.instances !== null) {
+			errors.push("instance_discovery.instances is only allowed when kind=explicit");
+		}
+		return instanceDiscovery;
+	}
+	if (value.command_template !== undefined && value.command_template !== null) {
+		errors.push("instance_discovery.command_template is only allowed when kind=command");
+	}
+	if (!Array.isArray(value.instances) || value.instances.length === 0) {
+		errors.push("instance_discovery.instances must be a non-empty list when kind=explicit");
+		return instanceDiscovery;
+	}
+	const instances = [];
+	for (const [index, item] of value.instances.entries()) {
+		const normalized = validateExplicitInstanceDiscoveryInstance(item, index, errors);
+		if (normalized) {
+			instances.push(normalized);
+		}
+	}
+	instanceDiscovery.instances = instances;
+	return instanceDiscovery;
+}
+
+function validateLiveRunInvocation(value, errors) {
+	if (value === undefined || value === null) {
+		return null;
+	}
+	if (!isObjectRecord(value)) {
+		errors.push("live_run_invocation must be a mapping");
+		return null;
+	}
+	const liveRunInvocation = {};
+	const commandTemplate = nonEmptyString(
+		value.command_template,
+		"live_run_invocation.command_template",
+		errors,
+	);
+	if (commandTemplate !== null) {
+		liveRunInvocation.command_template = commandTemplate;
+	}
+	const prerequisites = stringList(
+		value.required_prerequisites,
+		"live_run_invocation.required_prerequisites",
+		errors,
+	);
+	if (prerequisites !== null) {
+		liveRunInvocation.required_prerequisites = prerequisites;
+	}
+	return liveRunInvocation;
+}
+
 function copyTypedStringFields(data, target, errors) {
 	for (const field of STRING_FIELDS) {
 		const value = data[field];
@@ -436,6 +598,16 @@ export function validateAdapterData(data) {
 	const optimizeSearch = validateOptimizeSearch(data.optimize_search, errors);
 	if (optimizeSearch !== null) {
 		validated.optimize_search = optimizeSearch;
+	}
+
+	const instanceDiscovery = validateInstanceDiscovery(data.instance_discovery, errors);
+	if (instanceDiscovery !== null) {
+		validated.instance_discovery = instanceDiscovery;
+	}
+
+	const liveRunInvocation = validateLiveRunInvocation(data.live_run_invocation, errors);
+	if (liveRunInvocation !== null) {
+		validated.live_run_invocation = liveRunInvocation;
 	}
 
 	return { validated, errors };

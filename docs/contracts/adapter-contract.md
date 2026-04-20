@@ -55,12 +55,18 @@ comparison_command_templates:
 full_gate_command_templates:
   - npm run bench:full -- --baseline-ref {baseline_ref} --history-file {history_file} --samples {full_gate_samples}
 instance_discovery:
-  kind: command
-  command_template: node scripts/agent-runtime/discover-workbench-instances.mjs --repo-root {repo_root} --adapter-path {adapter_path}
+  kind: explicit
+  instances:
+    - id: default
+      display_label: Local Default
+      data_root: /Users/operator/.example-repo/default
+      paths:
+        scenario_store: /Users/operator/.example-repo/default/scenarios.json
+        scenario_results: /Users/operator/.example-repo/default/simulation-results
   required_prerequisites:
-    - keep the discovery command local-first and machine-readable on stdout
+    - keep instance ids stable and keep typed paths machine-readable
 live_run_invocation:
-  command_template: node scripts/agent-runtime/run-live-instance-scenario.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}
+  command_template: node scripts/consumer/run-live-instance-scenario.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}
   required_prerequisites:
     - keep invocation bounded to one selected local instance and one request packet
 optimize_search:
@@ -190,7 +196,7 @@ Command-backed discovery:
 ```yaml
 instance_discovery:
   kind: command
-  command_template: node scripts/agent-runtime/discover-workbench-instances.mjs --repo-root {repo_root} --adapter-path {adapter_path}
+  command_template: node scripts/consumer/discover-workbench-instances.mjs --repo-root {repo_root} --adapter-path {adapter_path}
   required_prerequisites:
     - keep stdout machine-readable and reserve stderr for operator hints
 ```
@@ -217,6 +223,8 @@ Fixed rules:
 - `kind: command` is the default fit for consumers that enumerate multiple host-local instances dynamically.
 - `kind: explicit` keeps fixture-backed repos and simple single-instance adopters cheap without forcing a probe script.
 - `command_template` should print `cautilus.workbench_instance_catalog.v1` JSON to stdout.
+The product-owned helper [discover-workbench-instances.mjs](../../scripts/agent-runtime/discover-workbench-instances.mjs) only normalizes `kind: explicit`.
+When the adapter uses `kind: command`, point `command_template` directly at a consumer-owned probe command instead of wrapping the helper around itself.
 
 Current placeholders for `instance_discovery.command_template`:
 
@@ -232,7 +240,7 @@ The adapter may therefore declare one optional `live_run_invocation` stanza.
 
 ```yaml
 live_run_invocation:
-  command_template: node scripts/agent-runtime/run-live-instance-scenario.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}
+  command_template: node scripts/consumer/run-live-instance-scenario.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}
   required_prerequisites:
     - keep invocation bounded to one selected local instance and one request packet
 ```

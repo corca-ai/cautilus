@@ -110,6 +110,45 @@ test("resolve_adapter preserves nested optimize_search mappings", () => {
 	}
 });
 
+test("resolve_adapter preserves workbench discovery and live invocation seams", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-review-adapter-workbench-"));
+	try {
+		const adapterDir = join(root, ".agents");
+		mkdirSync(adapterDir, { recursive: true });
+		writeFileSync(
+			join(adapterDir, "cautilus-adapter.yaml"),
+			[
+				"version: 1",
+				"repo: temp",
+				"evaluation_surfaces:",
+				"  - code quality",
+				"baseline_options:",
+				"  - baseline git ref via {baseline_ref}",
+				"instance_discovery:",
+				"  kind: explicit",
+				"  instances:",
+				"    - id: ceal",
+				"      display_label: Ceal Production",
+				"      data_root: /Users/operator/.ceal/ceal",
+				"      paths:",
+				"        scenario_store: /Users/operator/.ceal/ceal/scenarios.json",
+				"live_run_invocation:",
+				"  command_template: node scripts/consumer/run-live-instance-scenario.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
+				"",
+			].join("\n"),
+			"utf-8",
+		);
+		const stdout = runNode([RESOLVE_SCRIPT, "--repo-root", root]);
+		const payload = JSON.parse(stdout);
+		assert.equal(payload.valid, true);
+		assert.equal(payload.data.instance_discovery.kind, "explicit");
+		assert.equal(payload.data.instance_discovery.instances[0].display_label, "Ceal Production");
+		assert.match(payload.data.live_run_invocation.command_template, /run-live-instance-scenario/);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
 test("init_adapter scaffolds a named adapter into the named adapter directory", () => {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-review-adapter-init-"));
 	try {
