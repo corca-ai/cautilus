@@ -13,6 +13,8 @@ const (
 	InstructionSurfaceSummarySchema        = "cautilus.instruction_surface_summary.v1"
 	LiveRunInvocationRequestSchema         = "cautilus.live_run_invocation_request.v1"
 	LiveRunInvocationResultSchema          = "cautilus.live_run_invocation_result.v1"
+	LiveRunEvaluatorInputSchema            = "cautilus.live_run_evaluator_input.v1"
+	LiveRunEvaluatorResultSchema           = "cautilus.live_run_evaluator_result.v1"
 	LiveRunSimulatorRequestSchema          = "cautilus.live_run_simulator_request.v1"
 	LiveRunSimulatorResultSchema           = "cautilus.live_run_simulator_result.v1"
 	LiveRunTranscriptSchema                = "cautilus.live_run_transcript.v1"

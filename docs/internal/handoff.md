@@ -23,19 +23,26 @@
   업데이트된 truth surfaces는 [docs/cli-reference.md](../cli-reference.md), [docs/guides/evaluation-process.md](../guides/evaluation-process.md), [docs/contracts/adapter-contract.md](../contracts/adapter-contract.md), [docs/contracts/live-run-invocation.md](../contracts/live-run-invocation.md), [docs/contracts/scenario-history.md](../contracts/scenario-history.md), [skills/cautilus/references/evaluation-process.md](../../skills/cautilus/references/evaluation-process.md), [plugins/cautilus/skills/cautilus/references/evaluation-process.md](../../plugins/cautilus/skills/cautilus/references/evaluation-process.md)다.
 - `persona_prompt` simulator semantics도 이제 Go command [internal/app/workbench_persona_command.go](../../internal/app/workbench_persona_command.go)와 `cautilus workbench run-simulator-persona`가 소유한다.
   adapter는 backend 선택과 provider-specific flags만 `simulator_persona_command_template`로 넘긴다.
+- `consumer_evaluator_command_template`도 이제 product-owned evaluator contract를 탄다.
+  `Cautilus`는 [internal/app/workbench_commands.go](../../internal/app/workbench_commands.go)에서 `cautilus.live_run_evaluator_input.v1`을 materialize하고 `cautilus.live_run_evaluator_result.v1`을 검증한 뒤 verdict를 `live_run_invocation_result.v1`의 `scenarioResult.evaluation` 아래에 붙인다.
+  canonical placeholder는 `{evaluator_input_file}`이고 `{transcript_file}`는 compatibility escape hatch로만 남겼다.
+  관련 fixture/schema는 [fixtures/live-run-invocation/](../../fixtures/live-run-invocation/)에 추가됐다.
 
 ## Next Session
 
 1. `charness:impl`로 next runtime slice를 시작하고, [docs/contracts/go-runtime-consolidation.md](../contracts/go-runtime-consolidation.md)의 `First Implementation Slice` 완료 상태와 이어지는 workbench/live-run migration 우선순위를 다시 확인한다.
-2. `run-executor-variants`와 `evaluate-adapter-mode` shim removal을 early cleanup 후보로 다시 확인한다.
+2. single-run seam이 정리됐으므로 다음 우선 후보는 issue `#22`의 batch primitive다.
+   adopter가 per-scenario scheduler를 다시 쓰지 않도록 `workbench run-scenarios` 같은 product-owned fanout primitive가 필요한지 확인한다.
+3. `run-executor-variants`와 `evaluate-adapter-mode` shim removal은 여전히 early cleanup 후보다.
    하위호환성은 고려하지 않으므로 equivalent Go path가 landed한 seam은 direct Node runtime entrypoint를 제거할 수 있다.
-3. packet-builder surfaces는 이번 pickup의 첫 대상이 아니다.
-   workbench/live-run runtime seam을 먼저 정리한 뒤, builder 계층이 실제 shipped semantics를 소유하는지 다시 분류한다.
-4. 해당 seam을 옮기면 docs와 skill references도 같은 슬라이스에서 같이 정리한다.
+4. packet-builder surfaces는 여전히 첫 대상이 아니다.
+   workbench/live-run runtime seam과 batch primitive 우선순위를 먼저 정리한 뒤, builder 계층이 실제 shipped semantics를 소유하는지 다시 분류한다.
+5. 해당 seam을 옮기면 docs와 skill references도 같은 슬라이스에서 같이 정리한다.
 
 ## Discuss
 
 - second-wave migration에서 packet-builder surfaces를 어디까지 Go로 끌어올릴지
+- `workbench run-scenarios`를 새 public surface로 둘지, 더 좁은 internal helper로 먼저 proof할지
 
 ## References
 

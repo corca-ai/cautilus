@@ -108,6 +108,7 @@ That loop now allocates one stable per-request workspace directory at `<output_f
 When the adapter also declares `workspace_prepare_command_template`, `Cautilus` runs that consumer-owned prepare command once before the first turn.
 When the public scenario uses `simulator.kind: persona_prompt`, the adapter additionally provides `simulator_persona_command_template`, which normally calls `cautilus workbench run-simulator-persona` with repo-specific backend flags.
 That keeps persona prompt shaping and result semantics product-owned while backend selection stays adapter-owned.
+When the adapter declares `consumer_evaluator_command_template`, `Cautilus` also materializes one `cautilus.live_run_evaluator_input.v1` packet and expects one `cautilus.live_run_evaluator_result.v1` verdict back under `scenarioResult.evaluation`.
 
 ## Workspace management
 

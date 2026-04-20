@@ -79,7 +79,6 @@ Optional result fields:
 - `stopReason`
 - `scenarioResult`
 - `transcript`
-- `evaluation`
 - `diagnostics`
 - `artifactPaths`
 
@@ -91,7 +90,22 @@ The first `scenarioResult` summary may include:
 - `scenarioId`
 - `status`
 - `summary`
+- `evaluation`
 - `transcriptExcerpt`
+
+When the adapter opts into post-run evaluation, `scenarioResult.evaluation` uses `cautilus.live_run_evaluator_result.v1`.
+That evaluator verdict is consumer-owned in method but product-owned in transport and result placement.
+The first shipped evaluator result shape includes:
+
+- `schemaVersion`
+- `status`
+  - `passed`, `failed`, or `error`
+- `overallScore`
+- `summary`
+- `details`
+
+The product-managed evaluator input packet uses `cautilus.live_run_evaluator_input.v1`.
+It carries the normalized transcript, `stopReason`, and optional artifact paths.
 
 When the adapter opts into the product-owned loop, `stopReason` records why the bounded episode ended.
 The first shipped vocabulary is intentionally small:
@@ -129,13 +143,16 @@ For the product-owned chatbot loop, the adapter instead points `command_template
   - usually points at `cautilus workbench run-simulator-persona`
   - called once per persona-generated turn with `{simulator_request_file}` and `{simulator_result_file}`
 - `consumer_evaluator_command_template`
-  - optional post-run hook with `{transcript_file}` and `{evaluation_output_file}`
+  - optional post-run hook with `{evaluator_input_file}` and `{evaluation_output_file}`
+  - `{transcript_file}` remains available as a compatibility placeholder, but the canonical evaluator contract now flows through `cautilus.live_run_evaluator_input.v1`
 
 The consumer may implement those commands in any language or host runtime as long as they preserve the packet boundary.
 The workspace directory contents stay consumer-owned even when `Cautilus` owns the directory allocation and one-time prepare timing.
 
 The product-owned loop also materializes supporting JSON artifacts when that path is active:
 
+- `cautilus.live_run_evaluator_input.v1`
+- `cautilus.live_run_evaluator_result.v1`
 - `cautilus.live_run_simulator_request.v1`
 - `cautilus.live_run_simulator_result.v1`
 - `cautilus.live_run_turn_request.v1`
@@ -173,6 +190,8 @@ The product-owned loop also materializes supporting JSON artifacts when that pat
 - request example at [fixtures/live-run-invocation/example-request.json](../../fixtures/live-run-invocation/example-request.json) validates against [fixtures/live-run-invocation/request.schema.json](../../fixtures/live-run-invocation/request.schema.json)
 - completed result example at [fixtures/live-run-invocation/example-result-completed.json](../../fixtures/live-run-invocation/example-result-completed.json) validates against [fixtures/live-run-invocation/result.schema.json](../../fixtures/live-run-invocation/result.schema.json)
 - blocked result example at [fixtures/live-run-invocation/example-result-blocked.json](../../fixtures/live-run-invocation/example-result-blocked.json) validates against [fixtures/live-run-invocation/result.schema.json](../../fixtures/live-run-invocation/result.schema.json)
+- evaluator input example at [fixtures/live-run-invocation/example-evaluator-input.json](../../fixtures/live-run-invocation/example-evaluator-input.json) validates against [fixtures/live-run-invocation/evaluator-input.schema.json](../../fixtures/live-run-invocation/evaluator-input.schema.json)
+- evaluator result example at [fixtures/live-run-invocation/example-evaluator-result.json](../../fixtures/live-run-invocation/example-evaluator-result.json) validates against [fixtures/live-run-invocation/evaluator-result.schema.json](../../fixtures/live-run-invocation/evaluator-result.schema.json)
 - turn request example at [fixtures/live-run-invocation/example-turn-request.json](../../fixtures/live-run-invocation/example-turn-request.json) validates against [fixtures/live-run-invocation/turn-request.schema.json](../../fixtures/live-run-invocation/turn-request.schema.json)
 - simulator request example at [fixtures/live-run-invocation/example-simulator-request.json](../../fixtures/live-run-invocation/example-simulator-request.json) validates against [fixtures/live-run-invocation/simulator-request.schema.json](../../fixtures/live-run-invocation/simulator-request.schema.json)
 - simulator result example at [fixtures/live-run-invocation/example-simulator-result.json](../../fixtures/live-run-invocation/example-simulator-result.json) validates against [fixtures/live-run-invocation/simulator-result.schema.json](../../fixtures/live-run-invocation/simulator-result.schema.json)
@@ -183,7 +202,7 @@ The product-owned loop also materializes supporting JSON artifacts when that pat
 
 The canonical request artifact for this slice is `cautilus.live_run_invocation_request.v1`.
 The canonical result artifact for this slice is `cautilus.live_run_invocation_result.v1`.
-The supporting simulator, per-turn, and transcript artifacts are `cautilus.live_run_simulator_request.v1`, `cautilus.live_run_simulator_result.v1`, `cautilus.live_run_turn_request.v1`, `cautilus.live_run_turn_result.v1`, and `cautilus.live_run_transcript.v1`.
+The supporting evaluator, simulator, per-turn, and transcript artifacts are `cautilus.live_run_evaluator_input.v1`, `cautilus.live_run_evaluator_result.v1`, `cautilus.live_run_simulator_request.v1`, `cautilus.live_run_simulator_result.v1`, `cautilus.live_run_turn_request.v1`, `cautilus.live_run_turn_result.v1`, and `cautilus.live_run_transcript.v1`.
 
 ## Premortem
 

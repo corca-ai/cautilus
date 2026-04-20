@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cautilus.live_run_evaluator_result.v1",
+  "type": "object",
+  "required": ["schemaVersion", "status", "summary"],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "cautilus.live_run_evaluator_result.v1"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["passed", "failed", "error"]
+    },
+    "overallScore": {
+      "type": "number"
+    },
+    "summary": {
+      "type": "string"
+    },
+    "details": {
+      "type": "object"
+    }
+  }
+}

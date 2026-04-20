@@ -552,6 +552,11 @@ func validateWorkbenchLiveResult(result map[string]any, request map[string]any) 
 		if strings.TrimSpace(anyString(scenarioResult["status"])) == "" || strings.TrimSpace(anyString(scenarioResult["summary"])) == "" {
 			return fmt.Errorf("completed result must include scenarioResult.status and scenarioResult.summary")
 		}
+		if evaluation := mapOrEmpty(scenarioResult["evaluation"]); len(evaluation) > 0 {
+			if err := validateWorkbenchEvaluatorResult(evaluation); err != nil {
+				return fmt.Errorf("scenarioResult.evaluation: %w", err)
+			}
+		}
 		return nil
 	}
 	return validateWorkbenchDiagnostics(arrayOrEmpty(result["diagnostics"]), status)
@@ -588,6 +593,30 @@ func validateWorkbenchDiagnostics(diagnostics []any, status string) error {
 			if strings.TrimSpace(anyString(record[field])) == "" {
 				return fmt.Errorf("diagnostics[%d].%s must be a non-empty string", index, field)
 			}
+		}
+	}
+	return nil
+}
+
+func validateWorkbenchEvaluatorResult(result map[string]any) error {
+	if anyString(result["schemaVersion"]) != contracts.LiveRunEvaluatorResultSchema {
+		return fmt.Errorf("evaluator result packet must use schemaVersion %s", contracts.LiveRunEvaluatorResultSchema)
+	}
+	status := anyString(result["status"])
+	if status != "passed" && status != "failed" && status != "error" {
+		return fmt.Errorf("evaluator result.status must be one of: passed, failed, error")
+	}
+	if strings.TrimSpace(anyString(result["summary"])) == "" {
+		return fmt.Errorf("evaluator result.summary must be a non-empty string")
+	}
+	if overallScore := result["overallScore"]; overallScore != nil {
+		if _, ok := anyNumber(overallScore); !ok {
+			return fmt.Errorf("evaluator result.overallScore must be a number or null when present")
+		}
+	}
+	if details := result["details"]; details != nil {
+		if _, ok := details.(map[string]any); !ok {
+			return fmt.Errorf("evaluator result.details must be an object when present")
 		}
 	}
 	return nil
@@ -1050,7 +1079,8 @@ func finalizeWorkbenchLoopResult(
 ) (map[string]any, error) {
 	transcriptFile := ""
 	artifactPaths := []any{}
-	if truthyWorkbenchCaptureTranscript(request) || strings.TrimSpace(anyString(liveRunInvocation["consumer_evaluator_command_template"])) != "" {
+	evaluatorTemplate := strings.TrimSpace(anyString(liveRunInvocation["consumer_evaluator_command_template"]))
+	if truthyWorkbenchCaptureTranscript(request) || evaluatorTemplate != "" {
 		transcriptFile = filepath.Join(artifactDir, "transcript.json")
 		if err := writeOutputResolved(io.Discard, &transcriptFile, buildWorkbenchTranscriptPacket(request, transcript, stopReason)); err != nil {
 			return nil, err
@@ -1060,22 +1090,33 @@ func finalizeWorkbenchLoopResult(
 		}
 	}
 	evaluation := map[string]any(nil)
-	if evaluatorTemplate := strings.TrimSpace(anyString(liveRunInvocation["consumer_evaluator_command_template"])); evaluatorTemplate != "" {
+	if evaluatorTemplate != "" {
 		if isRecursiveWorkbenchRunLiveCommand(evaluatorTemplate) {
 			return nil, fmt.Errorf("live_run_invocation.consumer_evaluator_command_template must point at a consumer-owned evaluator command")
 		}
+		evaluatorInputFile := filepath.Join(artifactDir, "evaluator-input.json")
+		evaluatorArtifacts := []any{}
+		if transcriptFile != "" {
+			evaluatorArtifacts = append(evaluatorArtifacts, transcriptFile)
+		}
+		if err := writeOutputResolved(io.Discard, &evaluatorInputFile, buildWorkbenchEvaluatorInputPacket(request, transcript, stopReason, evaluatorArtifacts)); err != nil {
+			return nil, err
+		}
+		artifactPaths = append(artifactPaths, evaluatorInputFile)
 		remainingMs := workbenchRemainingTimeoutMs(startedAt, timeoutMs)
 		if remainingMs <= 0 {
-			evaluation = map[string]any{
-				"status":  "skipped",
-				"summary": "Evaluator skipped because the live-run timeout budget was exhausted.",
-			}
+			evaluation = workbenchEvaluatorErrorResult(
+				"Evaluator could not run because the live-run timeout budget was exhausted.",
+				"live_run_timeout_exhausted",
+				"The bounded live run exhausted its timeout budget before the evaluator command could start.",
+			)
 		} else {
 			evaluationOutputFile := filepath.Join(artifactDir, "evaluation.json")
 			commandText, err := renderTemplate(
 				evaluatorTemplate,
 				workbenchCommandReplacements(adapterPayload, options, map[string]string{
 					"transcript_file":        runtime.ShellSingleQuote(transcriptFile),
+					"evaluator_input_file":   runtime.ShellSingleQuote(evaluatorInputFile),
 					"evaluation_output_file": runtime.ShellSingleQuote(evaluationOutputFile),
 				}),
 			)
@@ -1084,26 +1125,37 @@ func finalizeWorkbenchLoopResult(
 			}
 			if _, timedOut, err := executeWorkbenchCommandWithTimeout(options.repoRoot, commandText, time.Duration(remainingMs)*time.Millisecond); err != nil {
 				if timedOut {
-					evaluation = map[string]any{
-						"status":  "failed",
-						"summary": "Evaluator timed out before producing a result.",
-					}
+					evaluation = workbenchEvaluatorErrorResult(
+						"Evaluator timed out before producing a result.",
+						"evaluator_timed_out",
+						"The evaluator command exceeded the remaining live-run timeout budget.",
+					)
 				} else {
-					evaluation = map[string]any{
-						"status":  "failed",
-						"summary": fmt.Sprintf("Evaluator command failed: %s", err),
-					}
+					evaluation = workbenchEvaluatorErrorResult(
+						fmt.Sprintf("Evaluator command failed: %s", err),
+						"evaluator_command_failed",
+						err.Error(),
+					)
 				}
 			} else {
 				parsed, err := readJSONObject(evaluationOutputFile)
 				if err != nil {
-					evaluation = map[string]any{
-						"status":  "failed",
-						"summary": fmt.Sprintf("Evaluator output was not valid JSON: %s", err),
-					}
+					evaluation = workbenchEvaluatorErrorResult(
+						fmt.Sprintf("Evaluator output was not valid JSON: %s", err),
+						"invalid_evaluator_json",
+						err.Error(),
+					)
 				} else {
-					evaluation = parsed
-					artifactPaths = append(artifactPaths, evaluationOutputFile)
+					if err := validateWorkbenchEvaluatorResult(parsed); err != nil {
+						evaluation = workbenchEvaluatorErrorResult(
+							"Evaluator output did not match the contract.",
+							"invalid_evaluator_contract",
+							err.Error(),
+						)
+					} else {
+						evaluation = parsed
+						artifactPaths = append(artifactPaths, evaluationOutputFile)
+					}
 				}
 			}
 		}
@@ -1134,6 +1186,9 @@ func finalizeWorkbenchCompletedResult(
 		"status":     scenarioStatus,
 		"summary":    scenarioSummary,
 	}
+	if len(mapOrEmpty(evaluation)) > 0 {
+		scenarioResult["evaluation"] = evaluation
+	}
 	if excerpt := workbenchTranscriptExcerpt(transcript); len(excerpt) > 0 {
 		scenarioResult["transcriptExcerpt"] = excerpt
 	}
@@ -1151,9 +1206,6 @@ func finalizeWorkbenchCompletedResult(
 	}
 	if truthyWorkbenchCaptureTranscript(request) {
 		result["transcript"] = transcript
-	}
-	if len(mapOrEmpty(evaluation)) > 0 {
-		result["evaluation"] = evaluation
 	}
 	if len(artifactPaths) > 0 {
 		result["artifactPaths"] = artifactPaths
@@ -1277,6 +1329,44 @@ func buildWorkbenchTranscriptPacket(request map[string]any, transcript []any, st
 		packet["consumerMetadata"] = metadata
 	}
 	return packet
+}
+
+func buildWorkbenchEvaluatorInputPacket(request map[string]any, transcript []any, stopReason string, artifactPaths []any) map[string]any {
+	packet := map[string]any{
+		"schemaVersion": contracts.LiveRunEvaluatorInputSchema,
+		"requestId":     anyString(request["requestId"]),
+		"instanceId":    anyString(request["instanceId"]),
+		"scenarioId":    anyString(mapOrEmpty(request["scenario"])["scenarioId"]),
+		"stopReason":    stopReason,
+		"transcript":    transcript,
+	}
+	if metadata := request["consumerMetadata"]; metadata != nil {
+		packet["consumerMetadata"] = metadata
+	}
+	if len(artifactPaths) > 0 {
+		packet["artifactPaths"] = artifactPaths
+	}
+	return packet
+}
+
+func workbenchEvaluatorErrorResult(summary string, code string, message string) map[string]any {
+	result := map[string]any{
+		"schemaVersion": contracts.LiveRunEvaluatorResultSchema,
+		"status":        "error",
+		"overallScore":  nil,
+		"summary":       summary,
+	}
+	if strings.TrimSpace(code) != "" || strings.TrimSpace(message) != "" {
+		details := map[string]any{}
+		if strings.TrimSpace(code) != "" {
+			details["code"] = code
+		}
+		if strings.TrimSpace(message) != "" {
+			details["message"] = message
+		}
+		result["details"] = details
+	}
+	return result
 }
 
 func workbenchTranscriptExcerpt(transcript []any) []any {

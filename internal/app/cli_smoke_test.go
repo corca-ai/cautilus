@@ -6086,15 +6086,20 @@ func TestCLIWorkbenchRunLiveCanExecuteProductOwnedScriptedLoop(t *testing.T) {
 	}, "\n"))
 	writeExecutableFile(t, root, "evaluate-live-run.sh", strings.Join([]string{
 		"#!/bin/sh",
-		"transcript_file=\"$1\"",
+		"evaluator_input_file=\"$1\"",
 		"evaluation_output_file=\"$2\"",
-		"node - \"$transcript_file\" \"$evaluation_output_file\" <<'EOF'",
-		"const [transcriptFile, evaluationOutputFile] = process.argv.slice(2);",
+		"node - \"$evaluator_input_file\" \"$evaluation_output_file\" <<'EOF'",
+		"const [evaluatorInputFile, evaluationOutputFile] = process.argv.slice(2);",
 		"const { readFileSync, writeFileSync } = await import(\"node:fs\");",
-		"const transcript = JSON.parse(readFileSync(transcriptFile, \"utf8\"));",
+		"const evaluatorInput = JSON.parse(readFileSync(evaluatorInputFile, \"utf8\"));",
 		"writeFileSync(evaluationOutputFile, JSON.stringify({",
-		`  status: "pass",`,
-		"  summary: `evaluated ${transcript.transcript.length} transcript turns`",
+		`  schemaVersion: "cautilus.live_run_evaluator_result.v1",`,
+		`  status: "passed",`,
+		"  overallScore: 100,",
+		"  summary: `evaluated ${evaluatorInput.transcript.length} transcript turns`,",
+		"  details: {",
+		"    stopReason: evaluatorInput.stopReason",
+		"  }",
 		"}) + \"\\n\", \"utf8\");",
 		"EOF",
 		"",
@@ -6110,7 +6115,7 @@ func TestCLIWorkbenchRunLiveCanExecuteProductOwnedScriptedLoop(t *testing.T) {
 		"  command_template: cautilus workbench run-live --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
 		"  consumer_single_turn_command_template: ./run-live-turn.sh {turn_request_file} {turn_result_file} {workspace_dir}",
 		"  workspace_prepare_command_template: ./prepare-live-run.sh {workspace_dir}",
-		"  consumer_evaluator_command_template: ./evaluate-live-run.sh {transcript_file} {evaluation_output_file}",
+		"  consumer_evaluator_command_template: ./evaluate-live-run.sh {evaluator_input_file} {evaluation_output_file}",
 		"",
 	}, "\n")
 	if err := os.WriteFile(filepath.Join(adapterDir, "cautilus-adapter.yaml"), []byte(adapter), 0o644); err != nil {
@@ -6167,8 +6172,20 @@ func TestCLIWorkbenchRunLiveCanExecuteProductOwnedScriptedLoop(t *testing.T) {
 	if result["executionStatus"] != "completed" || result["stopReason"] != "scripted_turns_exhausted" {
 		t.Fatalf("unexpected scripted live result payload: %#v", result)
 	}
-	if result["evaluation"].(map[string]any)["summary"] != "evaluated 2 transcript turns" {
-		t.Fatalf("expected evaluator summary in result, got %#v", result["evaluation"])
+	scenarioResult := result["scenarioResult"].(map[string]any)
+	evaluation := scenarioResult["evaluation"].(map[string]any)
+	if evaluation["summary"] != "evaluated 2 transcript turns" {
+		t.Fatalf("expected evaluator summary in scenarioResult.evaluation, got %#v", evaluation)
+	}
+	if evaluation["schemaVersion"] != contracts.LiveRunEvaluatorResultSchema {
+		t.Fatalf("expected evaluator result schema, got %#v", evaluation["schemaVersion"])
+	}
+	evaluatorInput := readJSONObjectFile(t, filepath.Join(outputPath+".d", "evaluator-input.json"))
+	if evaluatorInput["schemaVersion"] != contracts.LiveRunEvaluatorInputSchema {
+		t.Fatalf("expected evaluator input schema, got %#v", evaluatorInput["schemaVersion"])
+	}
+	if evaluatorInput["stopReason"] != "scripted_turns_exhausted" {
+		t.Fatalf("expected evaluator input stop reason, got %#v", evaluatorInput["stopReason"])
 	}
 	workspaceDir := filepath.Join(outputPath+".d", "workspace")
 	countBytes, err := os.ReadFile(filepath.Join(workspaceDir, "prepare-count.txt"))

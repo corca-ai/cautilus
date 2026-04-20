@@ -47,6 +47,29 @@
         "summary": {
           "type": "string"
         },
+        "evaluation": {
+          "type": "object",
+          "required": ["schemaVersion", "status", "summary"],
+          "properties": {
+            "schemaVersion": {
+              "type": "string",
+              "const": "cautilus.live_run_evaluator_result.v1"
+            },
+            "status": {
+              "type": "string",
+              "enum": ["passed", "failed", "error"]
+            },
+            "overallScore": {
+              "type": "number"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "details": {
+              "type": "object"
+            }
+          }
+        },
         "transcriptExcerpt": {
           "type": "array",
           "items": {

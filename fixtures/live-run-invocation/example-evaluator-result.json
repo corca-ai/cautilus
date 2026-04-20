@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "cautilus.live_run_evaluator_result.v1",
+  "status": "passed",
+  "overallScore": 100,
+  "summary": "The evaluator judged the bounded run as preserving the target workflow behavior.",
+  "details": {
+    "judge": "fixture",
+    "notes": [
+      "The assistant returned to the review workflow after the retro turn.",
+      "No extra escalation or routing detour was observed."
+    ]
+  }
+}

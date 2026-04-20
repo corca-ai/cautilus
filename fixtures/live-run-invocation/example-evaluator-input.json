@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "cautilus.live_run_evaluator_input.v1",
+  "requestId": "live-run-review-after-retro-001",
+  "instanceId": "ceal",
+  "scenarioId": "review-after-retro",
+  "stopReason": "scripted_turns_exhausted",
+  "consumerMetadata": {
+    "channelId": "C_REVIEW",
+    "threadTs": "1713596700.000100"
+  },
+  "artifactPaths": [
+    "/Users/operator/.ceal/ceal/agent-runs/live-run-review-after-retro-001.json.d/transcript.json"
+  ],
+  "transcript": [
+    {
+      "turnIndex": 1,
+      "simulatorTurn": {
+        "text": "retro 먼저 해주세요"
+      },
+      "assistantTurn": {
+        "text": "먼저 retro를 정리하고 바로 review로 이어가겠습니다."
+      }
+    },
+    {
+      "turnIndex": 2,
+      "simulatorTurn": {
+        "text": "이제 review로 돌아가죠"
+      },
+      "assistantTurn": {
+        "text": "좋습니다. 현재 review 대상과 확인 기준부터 정리하겠습니다."
+      }
+    }
+  ]
+}

@@ -10,8 +10,18 @@
   "durationMs": 12000,
   "scenarioResult": {
     "scenarioId": "review-after-retro",
-    "status": "completed",
-    "summary": "The live instance resumed the review flow without losing thread context.",
+    "status": "passed",
+    "summary": "The evaluator judged the live instance as preserving the review flow across the retro interruption.",
+    "evaluation": {
+      "schemaVersion": "cautilus.live_run_evaluator_result.v1",
+      "status": "passed",
+      "overallScore": 100,
+      "summary": "The evaluator judged the live instance as preserving the review flow across the retro interruption.",
+      "details": {
+        "judge": "fixture",
+        "stopReason": "scripted_turns_exhausted"
+      }
+    },
     "transcriptExcerpt": [
       {
         "turnIndex": 1,
@@ -55,6 +65,7 @@
   ],
   "artifactPaths": [
     "/Users/operator/.ceal/ceal/agent-runs/live-run-review-after-retro-001.json",
+    "/Users/operator/.ceal/ceal/agent-runs/live-run-review-after-retro-001.json.d/evaluator-input.json",
     "/Users/operator/.ceal/ceal/agent-runs/live-run-review-after-retro-001.json.d/transcript.json"
   ]
 }
