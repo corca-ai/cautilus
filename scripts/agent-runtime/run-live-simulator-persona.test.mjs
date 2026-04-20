@@ -5,101 +5,114 @@ import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 import test from "node:test";
 
-const SCRIPT = join(process.cwd(), "scripts", "agent-runtime", "run-live-simulator-persona.mjs");
+const SCRIPT_PATH = join(process.cwd(), "scripts", "agent-runtime", "run-live-simulator-persona.mjs");
 
-function runPersona(args, cwd = process.cwd()) {
-	return spawnSync("node", [SCRIPT, ...args], {
+function runPersonaHelper(args, cwd = process.cwd()) {
+	return spawnSync("node", [SCRIPT_PATH, ...args], {
 		cwd,
 		encoding: "utf-8",
 	});
 }
 
-function writeJson(path, value) {
+function writeJSON(path, value) {
 	writeFileSync(path, `${JSON.stringify(value, null, 2)}\n`, "utf-8");
 }
 
-test("run-live-simulator-persona can continue from a fixture response", () => {
+function writeSimulatorRequest(root, turnIndex) {
+	const requestFile = join(root, `request-${turnIndex}.json`);
+	writeJSON(requestFile, {
+		schemaVersion: "cautilus.live_run_simulator_request.v1",
+		requestId: "req-persona-123",
+		instanceId: "ceal",
+		scenarioId: "persona-review",
+		turnIndex,
+		maxTurns: 3,
+		instructions: "Act like a pragmatic operator. Stop once enough context is collected.",
+		transcript: turnIndex === 1 ? [] : [
+			{
+				turnIndex: 1,
+				simulatorTurn: { text: "대상 repo는 cautilus입니다." },
+				assistantTurn: { text: "좋습니다. 바로 검토하겠습니다." },
+			},
+		],
+	});
+	return requestFile;
+}
+
+test("run-live-simulator-persona returns a fixture-backed continue turn", () => {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-live-persona-continue-"));
 	try {
-		const requestFile = join(root, "request.json");
-		const resultFile = join(root, "result.json");
 		const fixtureFile = join(root, "fixture.json");
-		writeJson(requestFile, {
-			schemaVersion: "cautilus.live_run_simulator_request.v1",
-			requestId: "req-1",
-			instanceId: "ceal",
-			scenarioId: "scenario-1",
-			turnIndex: 1,
-			maxTurns: 3,
-			instructions: "Act like a pragmatic user and continue if more information is needed.",
-			transcript: [],
-		});
-		writeJson(fixtureFile, {
+		const requestFile = writeSimulatorRequest(root, 1);
+		const outputFile = join(root, "result.json");
+		writeJSON(fixtureFile, {
 			responses: [
 				{
 					action: "continue",
-					summary: "The user should ask one more clarifying question.",
-					nextTurnText: "현재 review 대상이 어느 repo인지 먼저 확인할게요.",
+					summary: "The synthetic user still needs the repo name.",
+					nextTurnText: "대상 repo는 cautilus입니다.",
 				},
 			],
 		});
-		const result = runPersona([
-			"--workspace", root,
-			"--simulator-request-file", requestFile,
-			"--simulator-result-file", resultFile,
-			"--backend", "fixture",
-			"--fixture-results-file", fixtureFile,
-		], root);
+		const result = runPersonaHelper([
+			"--workspace",
+			root,
+			"--simulator-request-file",
+			requestFile,
+			"--simulator-result-file",
+			outputFile,
+			"--backend",
+			"fixture",
+			"--fixture-results-file",
+			fixtureFile,
+		]);
 		assert.equal(result.status, 0, result.stderr);
-		const output = JSON.parse(readFileSync(resultFile, "utf-8"));
-		assert.equal(output.executionStatus, "completed");
-		assert.equal(output.action, "continue");
-		assert.equal(output.simulatorTurn.text, "현재 review 대상이 어느 repo인지 먼저 확인할게요.");
+		const payload = JSON.parse(readFileSync(outputFile, "utf-8"));
+		assert.equal(payload.executionStatus, "completed");
+		assert.equal(payload.action, "continue");
+		assert.equal(payload.simulatorTurn.text, "대상 repo는 cautilus입니다.");
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}
 });
 
-test("run-live-simulator-persona can stop from a fixture response", () => {
+test("run-live-simulator-persona returns a fixture-backed stop result", () => {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-live-persona-stop-"));
 	try {
-		const requestFile = join(root, "request.json");
-		const resultFile = join(root, "result.json");
 		const fixtureFile = join(root, "fixture.json");
-		writeJson(requestFile, {
-			schemaVersion: "cautilus.live_run_simulator_request.v1",
-			requestId: "req-2",
-			instanceId: "ceal",
-			scenarioId: "scenario-2",
-			turnIndex: 2,
-			maxTurns: 3,
-			instructions: "Stop when the user goal is already satisfied.",
-			transcript: [
+		const requestFile = writeSimulatorRequest(root, 2);
+		const outputFile = join(root, "result.json");
+		writeJSON(fixtureFile, {
+			responses: [
 				{
-					turnIndex: 1,
-					simulatorTurn: { text: "review 해주세요" },
-					assistantTurn: { text: "대상 repo와 기준을 먼저 알려주세요." },
+					action: "continue",
+					summary: "The synthetic user still needs the repo name.",
+					nextTurnText: "대상 repo는 cautilus입니다.",
+				},
+				{
+					action: "stop",
+					stopReason: "goal_satisfied",
+					summary: "The synthetic user has enough context to stop.",
 				},
 			],
 		});
-		writeJson(fixtureFile, {
-			responses: [
-				{ action: "continue", nextTurnText: "repo는 cautilus입니다." },
-				{ action: "stop", stopReason: "goal_satisfied", summary: "The user goal is already satisfied." },
-			],
-		});
-		const result = runPersona([
-			"--workspace", root,
-			"--simulator-request-file", requestFile,
-			"--simulator-result-file", resultFile,
-			"--backend", "fixture",
-			"--fixture-results-file", fixtureFile,
-		], root);
+		const result = runPersonaHelper([
+			"--workspace",
+			root,
+			"--simulator-request-file",
+			requestFile,
+			"--simulator-result-file",
+			outputFile,
+			"--backend",
+			"fixture",
+			"--fixture-results-file",
+			fixtureFile,
+		]);
 		assert.equal(result.status, 0, result.stderr);
-		const output = JSON.parse(readFileSync(resultFile, "utf-8"));
-		assert.equal(output.executionStatus, "completed");
-		assert.equal(output.action, "stop");
-		assert.equal(output.stopReason, "goal_satisfied");
+		const payload = JSON.parse(readFileSync(outputFile, "utf-8"));
+		assert.equal(payload.executionStatus, "completed");
+		assert.equal(payload.action, "stop");
+		assert.equal(payload.stopReason, "goal_satisfied");
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

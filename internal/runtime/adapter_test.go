@@ -51,7 +51,7 @@ func TestValidateAdapterDataAcceptsCommandInstanceDiscovery(t *testing.T) {
 		"repo": "repo-x",
 		"instance_discovery": map[string]any{
 			"kind":             "command",
-			"command_template": "node scripts/agent-runtime/discover-workbench-instances.mjs --repo-root {repo_root} --adapter-path {adapter_path}",
+			"command_template": "node scripts/consumer/discover-workbench-instances.mjs --repo-root {repo_root} --adapter-path {adapter_path}",
 			"required_prerequisites": []any{
 				"Install the consumer runtime before discovery.",
 			},
