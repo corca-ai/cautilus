@@ -3,6 +3,8 @@ package app
 import (
 	"bytes"
 	"context"
+	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -545,6 +547,9 @@ func handleModeEvaluate(repoRoot string, cwd string, args []string, stdout io.Wr
 	reportFile := filepath.Join(outputDir, "report.json")
 	selectedScenarioIDsFile := filepath.Join(outputDir, "selected-scenario-ids.json")
 	_ = os.WriteFile(selectedScenarioIDsFile, []byte("[]\n"), 0o644)
+	selectedScenarioIDs := []string{}
+	var scenarioProfile map[string]any
+	var loadedHistory map[string]any
 	profileArg := options.profile
 	if profileArg == "" {
 		if defaultProfile, ok := adapterPayload.Data["profile_default"].(string); ok && strings.TrimSpace(defaultProfile) != "" {
@@ -553,12 +558,58 @@ func handleModeEvaluate(repoRoot string, cwd string, args []string, stdout io.Wr
 			profileArg = "default"
 		}
 	}
+	profilePlaceholder := profileArg
+	resolvedProfilePath := resolvePath(options.repoRoot, profileArg)
+	if pathExists(resolvedProfilePath) {
+		profile, err := runtime.LoadScenarioProfile(resolvedProfilePath)
+		if err != nil {
+			fmt.Fprintf(stderr, "%s\n", err)
+			return 1
+		}
+		selectedSplit := firstNonEmpty(options.split, defaultSplitByMode(options.mode))
+		history := runtime.LoadScenarioHistory(historyFile, profile)
+		selectedIDs, err := runtime.SelectProfileScenarioIDs(profile, selectedSplit, history, options.mode == "full_gate")
+		if err != nil {
+			fmt.Fprintf(stderr, "%s\n", err)
+			return 1
+		}
+		selectedScenarioIDs = selectedIDs
+		if err := writeOutputResolved(io.Discard, &selectedScenarioIDsFile, stringSliceToAny(selectedScenarioIDs)); err != nil {
+			fmt.Fprintf(stderr, "%s\n", err)
+			return 1
+		}
+		selectedProfileFile := filepath.Join(outputDir, "selected-profile.json")
+		selectedIDSet := map[string]struct{}{}
+		for _, scenarioID := range selectedScenarioIDs {
+			selectedIDSet[scenarioID] = struct{}{}
+		}
+		filteredScenarios := []any{}
+		for _, rawScenario := range arrayOrEmpty(profile["scenarios"]) {
+			scenarioID := anyString(asMapAny(rawScenario)["scenarioId"])
+			if _, ok := selectedIDSet[scenarioID]; ok {
+				filteredScenarios = append(filteredScenarios, rawScenario)
+			}
+		}
+		filteredProfile, err := cloneJSONObject(profile)
+		if err != nil {
+			fmt.Fprintf(stderr, "%s\n", err)
+			return 1
+		}
+		filteredProfile["scenarios"] = filteredScenarios
+		if err := writeOutputResolved(io.Discard, &selectedProfileFile, filteredProfile); err != nil {
+			fmt.Fprintf(stderr, "%s\n", err)
+			return 1
+		}
+		profilePlaceholder = selectedProfileFile
+		scenarioProfile = profile
+		loadedHistory = history
+	}
 	replacements := map[string]string{
 		"baseline_ref":               runtime.ShellSingleQuote(firstNonEmpty(options.baselineRef, "HEAD")),
 		"baseline_repo":              runtime.ShellSingleQuote(resolvePath(cwd, baselineRepo)),
 		"candidate_repo":             runtime.ShellSingleQuote(resolvePath(cwd, candidateRepo)),
 		"history_file":               runtime.ShellSingleQuote(historyFile),
-		"profile":                    runtime.ShellSingleQuote(profileArg),
+		"profile":                    runtime.ShellSingleQuote(profilePlaceholder),
 		"split":                      runtime.ShellSingleQuote(firstNonEmpty(options.split, defaultSplitByMode(options.mode))),
 		"selected_scenario_ids_file": runtime.ShellSingleQuote(selectedScenarioIDsFile),
 		"iterate_samples":            fmt.Sprintf("%d", intOrDefault(options.iterateSamples, intFromAny(adapterPayload.Data["iterate_samples_default"], 2))),
@@ -697,10 +748,65 @@ func handleModeEvaluate(repoRoot string, cwd string, args []string, stdout io.Wr
 		"reportInputFile":     reportInputFile,
 		"reportFile":          reportFile,
 		"historyFile":         nil,
-		"selectedScenarioIds": []any{},
+		"selectedScenarioIds": stringSliceToAny(selectedScenarioIDs),
 		"baselineCacheFile":   nil,
 		"commandObservations": commandObservations,
 		"report":              report,
+	}
+	if scenarioProfile != nil {
+		packet["historyFile"] = historyFile
+	}
+	if scenarioProfile != nil && options.mode == "comparison" && len(selectedScenarioIDs) > 0 {
+		baselineCacheFile := filepath.Join(outputDir, "baseline-cache.json")
+		baselineFingerprint, err := resolveBaselineFingerprint(resolvePath(cwd, baselineRepo), firstNonEmpty(options.baselineRef, "HEAD"))
+		if err != nil {
+			fmt.Fprintf(stderr, "%s\n", err)
+			return 1
+		}
+		baselineCache, err := runtime.CreateScenarioBaselineCacheSeed(
+			scenarioProfile,
+			selectedScenarioIDs,
+			baselineFingerprint,
+			intOrDefault(options.comparisonSamples, intFromAny(adapterPayload.Data["comparison_samples_default"], 2)),
+			baselineRepoLabel(firstNonEmpty(options.baselineRef, "HEAD"), baselineFingerprint),
+			time.Now().UTC().Format(time.RFC3339Nano),
+		)
+		if err != nil {
+			fmt.Fprintf(stderr, "%s\n", err)
+			return 1
+		}
+		if err := writeOutputResolved(io.Discard, &baselineCacheFile, baselineCache); err != nil {
+			fmt.Fprintf(stderr, "%s\n", err)
+			return 1
+		}
+		packet["baselineCacheFile"] = baselineCacheFile
+		packet["baselineCache"] = baselineCache
+	}
+	if scenarioProfile != nil {
+		timestamp := firstNonEmpty(anyString(scenarioResults["completedAt"]), anyString(scenarioResults["timestamp"]), time.Now().UTC().Format(time.RFC3339Nano))
+		scenarioHistory, err := runtime.UpdateScenarioHistory(
+			scenarioProfile,
+			loadedHistory,
+			selectedScenarioIDs,
+			arrayOrEmpty(scenarioResults["results"]),
+			timestamp,
+			firstNonEmpty(options.split, defaultSplitByMode(options.mode)),
+			options.mode == "full_gate",
+		)
+		if err != nil {
+			fmt.Fprintf(stderr, "%s\n", err)
+			return 1
+		}
+		if err := runtime.SaveScenarioHistory(historyFile, scenarioHistory); err != nil {
+			fmt.Fprintf(stderr, "%s\n", err)
+			return 1
+		}
+		snapshotFile := filepath.Join(outputDir, "scenario-history.snapshot.json")
+		if err := writeOutputResolved(io.Discard, &snapshotFile, scenarioHistory); err != nil {
+			fmt.Fprintf(stderr, "%s\n", err)
+			return 1
+		}
+		packet["scenarioHistory"] = scenarioHistory
 	}
 	modeEvaluationFile := strings.TrimSuffix(reportFile, ".json") + ".mode-evaluation.json"
 	_ = writeOutputResolved(stdout, &modeEvaluationFile, packet)
@@ -2841,6 +2947,46 @@ func firstNonEmpty(values ...string) string {
 		}
 	}
 	return ""
+}
+
+func stringSliceToAny(values []string) []any {
+	result := make([]any, 0, len(values))
+	for _, value := range values {
+		result = append(result, value)
+	}
+	return result
+}
+
+func cloneJSONObject(value map[string]any) (map[string]any, error) {
+	payload, err := json.Marshal(value)
+	if err != nil {
+		return nil, err
+	}
+	var cloned map[string]any
+	if err := json.Unmarshal(payload, &cloned); err != nil {
+		return nil, err
+	}
+	return cloned, nil
+}
+
+func resolveBaselineFingerprint(baselineRepo string, baselineRef string) (string, error) {
+	fingerprint, err := runGitStrict(baselineRepo, []string{"rev-parse", "HEAD"})
+	if err == nil && strings.TrimSpace(fingerprint) != "" {
+		return strings.TrimSpace(fingerprint), nil
+	}
+	payload, marshalErr := json.Marshal(map[string]any{
+		"baselineRepo": baselineRepo,
+		"baselineRef":  baselineRef,
+	})
+	if marshalErr != nil {
+		return "", marshalErr
+	}
+	sum := sha256.Sum256(payload)
+	return hex.EncodeToString(sum[:]), nil
+}
+
+func baselineRepoLabel(baselineRef string, baselineFingerprint string) string {
+	return fmt.Sprintf("%s@%s", baselineRef, baselineFingerprint[:min(len(baselineFingerprint), 12)])
 }
 
 func ternaryString(condition bool, yes string, no string) string {

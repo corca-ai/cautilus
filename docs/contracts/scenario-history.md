@@ -243,10 +243,10 @@ The two parts were planned as one coordinated slice, with README, [skills/cautil
 
 Premortem (4 angles: cache migration / external consumer / devil's advocate / doc cascade) surfaced a devil's-advocate finding strong enough to block execution and verified against repo state:
 
-- `mode evaluate --mode comparison` is the only path that materializes a baseline-cache file today ([evaluate-adapter-mode.mjs](../../scripts/agent-runtime/evaluate-adapter-mode.mjs)).
+- `cautilus mode evaluate --mode comparison` is the only path that materializes a baseline-cache file today.
 - The repo's only live dogfood path, `run-self-dogfood.mjs`, runs with `--mode full_gate`, which never reaches the cache-materialization branch.
 - Zero scenario profile files are checked in across `.agents/`, `fixtures/`, and the repo root.
-- `run-executor-variants.mjs` and `evaluate-skill.mjs` contain zero references to `scenario-history`, `baseline-cache`, or any persistence hook — so Part 2 has no current call site.
+- `cautilus review variants` and `cautilus skill evaluate` still contain zero `scenario-history` or `baseline-cache` persistence hooks today, so Part 2 still has no current call site.
 - Live external consumers are not yet tracked in [consumer-readiness.md](../maintainers/consumer-readiness.md); the chatbot, skill-validation, and workflow entries are archetype reference fixtures, not live deployments.
 
 Conclusion: the "shared baseline across multiple profiles" problem Part 1 solves has zero occurrences today, and the "other entry points also want history" problem Part 2 solves has zero requesters.

@@ -365,14 +365,15 @@ node ./scripts/release/check-codex-marketplace.mjs --repo-root .
 
 ## Direct script usage
 
-The underlying Node scripts are runnable directly when a wrapper tool needs to call them without the `cautilus` binary:
+Most underlying Node scripts are still runnable directly when a wrapper tool needs to call them without the `cautilus` binary.
+The runtime-facing seams below are temporary compatibility shims and delegate to the Go-owned `cautilus` command path rather than defining shipped behavior independently.
 
 ```bash
 node scripts/resolve_adapter.mjs --repo-root .
 node scripts/init_adapter.mjs --repo-root .
 node scripts/agent-runtime/discover-workbench-instances.mjs --repo-root .
 node scripts/agent-runtime/run-live-instance-scenario.mjs --repo-root . --instance-id default --request-file /tmp/request.json --output-file /tmp/result.json
-node scripts/agent-runtime/run-executor-variants.mjs --workspace . --output-dir /tmp/cautilus-review
+node scripts/agent-runtime/run-executor-variants.mjs --repo-root . --workspace . --output-dir /tmp/cautilus-review
 node scripts/agent-runtime/build-scenario-proposal-input.mjs --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json --family fast_regression
 node scripts/agent-runtime/generate-scenario-proposals.mjs --input ./fixtures/scenario-proposals/standalone-input.json
 node scripts/agent-runtime/build-evidence-input.mjs --report-file /tmp/cautilus-mode/report.json --scenario-results-file ./fixtures/scenario-results/example-results.json

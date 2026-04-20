@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"reflect"
 	"slices"
 	"strings"
 	"testing"
@@ -100,6 +101,15 @@ func readJSONArrayFile(t *testing.T, path string) []any {
 		t.Fatalf("Unmarshal returned error: %v", err)
 	}
 	return value
+}
+
+func mustReadFile(t *testing.T, path string) []byte {
+	t.Helper()
+	payload, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatalf("ReadFile returned error: %v", err)
+	}
+	return payload
 }
 
 func parseJSONObject(t *testing.T, payload string) map[string]any {
@@ -1865,6 +1875,214 @@ func TestCLIOptimizeSearchPrepareInputAppliesAdapterSearchDefaults(t *testing.T)
 	searchConfigSources := searchInput["searchConfigSources"].(map[string]any)
 	if searchConfigSources["budget"] != "adapter_default" || searchConfigSources["preset"] != "adapter_preset" || searchConfigSources["mergeEnabled"] != "adapter_preset" {
 		t.Fatalf("unexpected search config sources: %#v", searchConfigSources)
+	}
+}
+
+func createScenarioHistoryModeRepo(t *testing.T) (string, string) {
+	t.Helper()
+	root := t.TempDir()
+	adapterDir := filepath.Join(root, ".agents")
+	workspace := filepath.Join(root, "workspace")
+	profilesDir := filepath.Join(root, "profiles")
+	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.MkdirAll(workspace, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.MkdirAll(profilesDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	writeExecutableFile(t, workspace, "bench-history.sh", `#!/bin/sh
+mode="$1"
+scenario_results_file="$2"
+profile_file="$3"
+selected_ids_file="$4"
+selection_snapshot="$5"
+node - "$profile_file" "$selected_ids_file" "$scenario_results_file" "$selection_snapshot" "$mode" <<'EOF'
+const [profileFile, selectedIdsFile, scenarioResultsFile, selectionSnapshot, mode] = process.argv.slice(2);
+const { readFileSync, writeFileSync } = await import("node:fs");
+const profile = JSON.parse(readFileSync(profileFile, "utf-8"));
+const selectedIds = JSON.parse(readFileSync(selectedIdsFile, "utf-8"));
+const scenarioIds = profile.scenarios.map((entry) => entry.scenarioId);
+writeFileSync(selectionSnapshot, scenarioIds.join(","), "utf-8");
+const packet = {
+  schemaVersion: "cautilus.scenario_results.v1",
+  mode,
+  results: scenarioIds.map((scenarioId) => ({
+    scenarioId,
+    status: "passed",
+    overallScore: 100,
+    passRate: 1
+  }))
+};
+writeFileSync(scenarioResultsFile, JSON.stringify(packet) + "\n", "utf-8");
+if (JSON.stringify(scenarioIds) !== JSON.stringify(selectedIds)) {
+  throw new Error(
+    "profile scenarios " + JSON.stringify(scenarioIds) + " did not match selected ids " + JSON.stringify(selectedIds),
+  );
+}
+EOF
+echo "$mode ok"
+`)
+	writeJSONFile(t, filepath.Join(profilesDir, "default-train.json"), map[string]any{
+		"schemaVersion": contracts.ScenarioProfileSchema,
+		"profileId":     "default-train",
+		"historyPolicy": map[string]any{
+			"maxGraduationInterval": 5,
+			"recentResultsLimit":    12,
+		},
+		"scenarios": []any{
+			map[string]any{"scenarioId": "probe-a", "split": "train", "cadence": "graduated", "cohort": "probe"},
+			map[string]any{"scenarioId": "control-a", "split": "train", "cadence": "always", "cohort": "control"},
+			map[string]any{"scenarioId": "held-out-a", "split": "test", "cadence": "always", "cohort": "held-out"},
+		},
+	})
+	adapterText := strings.Join([]string{
+		"version: 1",
+		"repo: temp",
+		"evaluation_surfaces:",
+		"  - operator workflow",
+		"baseline_options:",
+		"  - baseline git ref via {baseline_ref}",
+		"iterate_command_templates:",
+		"  - sh {candidate_repo}/bench-history.sh iterate {scenario_results_file} {profile} {selected_scenario_ids_file} {output_dir}/selection.txt",
+		"comparison_command_templates:",
+		"  - sh {candidate_repo}/bench-history.sh comparison {scenario_results_file} {profile} {selected_scenario_ids_file} {output_dir}/selection.txt",
+		"profile_default: profiles/default-train.json",
+		"history_file_hint: .cautilus/history.json",
+		"",
+	}, "\n")
+	if err := os.WriteFile(filepath.Join(adapterDir, "cautilus-adapter.yaml"), []byte(adapterText), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	return root, workspace
+}
+
+func TestCLIModeEvaluateSelectsScenariosFromProfileAndUpdatesHistory(t *testing.T) {
+	root, workspace := createScenarioHistoryModeRepo(t)
+	firstOutputDir := filepath.Join(root, "iterate-first")
+	stdout, stderr, exitCode := runCLI(
+		t,
+		root,
+		"mode",
+		"evaluate",
+		"--repo-root",
+		root,
+		"--candidate-repo",
+		workspace,
+		"--mode",
+		"iterate",
+		"--intent",
+		"Train scenario selection should honor checked-in profile history.",
+		"--baseline-ref",
+		"origin/main",
+		"--output-dir",
+		firstOutputDir,
+	)
+	if exitCode != 0 {
+		t.Fatalf("mode evaluate failed: %s", stderr)
+	}
+	report := readJSONObjectFile(t, strings.TrimSpace(stdout))
+	if report["recommendation"] != "defer" {
+		t.Fatalf("unexpected recommendation: %#v", report["recommendation"])
+	}
+	if selection := strings.TrimSpace(string(mustReadFile(t, filepath.Join(firstOutputDir, "selection.txt")))); selection != "probe-a,control-a" {
+		t.Fatalf("unexpected first selection: %q", selection)
+	}
+	historyPath := filepath.Join(root, ".cautilus", "history.json")
+	firstHistory := readJSONObjectFile(t, historyPath)
+	firstSnapshot := readJSONObjectFile(t, filepath.Join(firstOutputDir, "scenario-history.snapshot.json"))
+	if firstHistory["trainRunCount"] != float64(1) || firstSnapshot["trainRunCount"] != float64(1) {
+		t.Fatalf("unexpected first history counts: %#v %#v", firstHistory["trainRunCount"], firstSnapshot["trainRunCount"])
+	}
+	if asMapAny(asMapAny(firstHistory["scenarioStats"])["probe-a"])["graduationInterval"] != float64(2) {
+		t.Fatalf("unexpected probe cadence after first run: %#v", firstHistory["scenarioStats"])
+	}
+
+	secondOutputDir := filepath.Join(root, "iterate-second")
+	_, stderr, exitCode = runCLI(
+		t,
+		root,
+		"mode",
+		"evaluate",
+		"--repo-root",
+		root,
+		"--candidate-repo",
+		workspace,
+		"--mode",
+		"iterate",
+		"--intent",
+		"Train scenario selection should respect graduated cadence.",
+		"--baseline-ref",
+		"origin/main",
+		"--output-dir",
+		secondOutputDir,
+	)
+	if exitCode != 0 {
+		t.Fatalf("mode evaluate failed: %s", stderr)
+	}
+	if selection := strings.TrimSpace(string(mustReadFile(t, filepath.Join(secondOutputDir, "selection.txt")))); selection != "control-a" {
+		t.Fatalf("unexpected second selection: %q", selection)
+	}
+	secondHistory := readJSONObjectFile(t, historyPath)
+	secondSnapshot := readJSONObjectFile(t, filepath.Join(secondOutputDir, "scenario-history.snapshot.json"))
+	if secondHistory["trainRunCount"] != float64(2) || secondSnapshot["trainRunCount"] != float64(2) {
+		t.Fatalf("unexpected second history counts: %#v %#v", secondHistory["trainRunCount"], secondSnapshot["trainRunCount"])
+	}
+	recentRuns := secondHistory["recentRuns"].([]any)
+	if !reflect.DeepEqual(asMapAny(recentRuns[len(recentRuns)-1])["selectedScenarioIds"], []any{"control-a"}) {
+		t.Fatalf("unexpected recentRuns selection: %#v", recentRuns)
+	}
+}
+
+func TestCLIModeEvaluateMaterializesBaselineCacheSeedForProfileBackedComparisonRuns(t *testing.T) {
+	root, workspace := createScenarioHistoryModeRepo(t)
+	outputDir := filepath.Join(root, "comparison")
+	stdout, stderr, exitCode := runCLI(
+		t,
+		root,
+		"mode",
+		"evaluate",
+		"--repo-root",
+		root,
+		"--candidate-repo",
+		workspace,
+		"--mode",
+		"comparison",
+		"--intent",
+		"Comparison runs should materialize a reusable baseline cache seed.",
+		"--baseline-ref",
+		"origin/main",
+		"--output-dir",
+		outputDir,
+	)
+	if exitCode != 0 {
+		t.Fatalf("mode evaluate failed: %s", stderr)
+	}
+	reportPath := strings.TrimSpace(stdout)
+	modeEvaluationPath := strings.TrimSuffix(reportPath, ".json") + ".mode-evaluation.json"
+	modeEvaluation := readJSONObjectFile(t, modeEvaluationPath)
+	baselineCacheFile := anyToString(modeEvaluation["baselineCacheFile"])
+	if baselineCacheFile == "" {
+		t.Fatalf("expected baselineCacheFile in mode evaluation packet: %#v", modeEvaluation)
+	}
+	baselineCache := readJSONObjectFile(t, baselineCacheFile)
+	if baselineCache["schemaVersion"] != contracts.ScenarioBaselineCacheSchema {
+		t.Fatalf("unexpected baseline cache schema: %#v", baselineCache["schemaVersion"])
+	}
+	if strings.TrimSpace(string(mustReadFile(t, filepath.Join(outputDir, "selection.txt")))) != "probe-a,control-a,held-out-a" {
+		t.Fatalf("unexpected comparison selection")
+	}
+	cacheKey := baselineCache["cacheKey"].(map[string]any)
+	if cacheKey["profileId"] != "default-train" {
+		t.Fatalf("unexpected cache key: %#v", cacheKey)
+	}
+	if cacheKey["cacheSampleCount"] != float64(2) {
+		t.Fatalf("unexpected cache sample count: %#v", cacheKey)
+	}
+	if len(arrayOrEmpty(cacheKey["scenarioIds"])) != 3 {
+		t.Fatalf("unexpected scenario ids: %#v", cacheKey["scenarioIds"])
 	}
 }
 
