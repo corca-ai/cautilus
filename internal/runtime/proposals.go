@@ -184,13 +184,13 @@ func buildScenarioProposalAttentionView(proposals []any) map[string]any {
 		truncated = true
 	}
 	return map[string]any{
-		"ruleVersion":             "v1",
-		"proposalKeys":            selectedKeys,
+		"ruleVersion":              "v1",
+		"proposalKeys":             selectedKeys,
 		"reasonCodesByProposalKey": reasonCodesByProposalKey,
-		"matchedRuleCount":        matchedRuleCount,
-		"selectedCount":           len(selectedKeys),
-		"fallbackUsed":            fallbackUsed,
-		"truncated":               truncated,
+		"matchedRuleCount":         matchedRuleCount,
+		"selectedCount":            len(selectedKeys),
+		"fallbackUsed":             fallbackUsed,
+		"truncated":                truncated,
 	}
 }
 
@@ -387,7 +387,7 @@ func buildDraftScenario(candidate map[string]any, existingScenarioKeys map[strin
 func buildSimulator(candidate map[string]any) map[string]any {
 	if stringOrEmpty(candidate["family"]) == "terminal_realism" {
 		return map[string]any{
-			"kind":         "codex_exec",
+			"kind":         "persona_prompt",
 			"instructions": "You are acting like a real user talking to the candidate runtime. Be concise, goal-oriented, and stop when a real user would wait.",
 		}
 	}
@@ -426,7 +426,7 @@ func recommendedBackends(family string) []string {
 
 func draftScenarioBackend(family string) string {
 	if family == "terminal_realism" {
-		return "codex_exec"
+		return "persona_prompt"
 	}
 	return "scripted"
 }

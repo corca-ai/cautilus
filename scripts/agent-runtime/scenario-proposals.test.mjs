@@ -161,4 +161,6 @@ test("generateScenarioProposals filters families and limits output", () => {
 	assert.equal(result.proposals.length, 1);
 	assert.equal(result.proposals[0].family, "terminal_realism");
 	assert.deepEqual(result.proposals[0].recommendedBackends, ["codex_exec", "claude_p"]);
+	assert.equal(result.proposals[0].draftScenario.benchmark.backend, "persona_prompt");
+	assert.equal(result.proposals[0].draftScenario.simulator.kind, "persona_prompt");
 });

@@ -32,6 +32,13 @@ type workbenchRunLiveArgs struct {
 	outputFile  string
 }
 
+type workbenchSimulatorSpec struct {
+	kind          string
+	scriptedTurns []map[string]any
+	instructions  string
+	seedTurns     []map[string]any
+}
+
 func handleWorkbenchDiscover(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
 	options, err := parseWorkbenchDiscoverArgs(args, cwd)
 	if err != nil {
@@ -414,28 +421,52 @@ func validateWorkbenchLiveScenario(scenario map[string]any) error {
 	if len(mapOrEmpty(scenario["simulator"])) > 0 && len(arrayOrEmpty(scenario["simulatorTurns"])) > 0 {
 		return fmt.Errorf("request.scenario.simulator and request.scenario.simulatorTurns cannot both be set")
 	}
-	_, err := normalizeWorkbenchSimulatorTurns(scenario)
+	_, err := normalizeWorkbenchSimulatorSpec(scenario)
 	return err
 }
 
-func normalizeWorkbenchSimulatorTurns(scenario map[string]any) ([]map[string]any, error) {
+func normalizeWorkbenchSimulatorSpec(scenario map[string]any) (*workbenchSimulatorSpec, error) {
 	if simulator := mapOrEmpty(scenario["simulator"]); len(simulator) > 0 {
-		if anyString(simulator["kind"]) != "scripted" {
-			return nil, fmt.Errorf("request.scenario.simulator.kind must be scripted for the current slice")
-		}
-		turns := arrayOrEmpty(simulator["turns"])
-		if len(turns) == 0 {
-			return nil, fmt.Errorf("request.scenario.simulator.turns must be a non-empty list")
-		}
-		normalized := make([]map[string]any, 0, len(turns))
-		for index, raw := range turns {
-			turn, err := normalizeWorkbenchSimulatorTurn(raw, fmt.Sprintf("request.scenario.simulator.turns[%d]", index))
-			if err != nil {
-				return nil, err
+		kind := anyString(simulator["kind"])
+		switch kind {
+		case "scripted":
+			turns := arrayOrEmpty(simulator["turns"])
+			if len(turns) == 0 {
+				return nil, fmt.Errorf("request.scenario.simulator.turns must be a non-empty list")
 			}
-			normalized = append(normalized, turn)
+			normalized := make([]map[string]any, 0, len(turns))
+			for index, raw := range turns {
+				turn, err := normalizeWorkbenchSimulatorTurn(raw, fmt.Sprintf("request.scenario.simulator.turns[%d]", index))
+				if err != nil {
+					return nil, err
+				}
+				normalized = append(normalized, turn)
+			}
+			return &workbenchSimulatorSpec{
+				kind:          "scripted",
+				scriptedTurns: normalized,
+			}, nil
+		case "persona_prompt":
+			instructions := strings.TrimSpace(anyString(simulator["instructions"]))
+			if instructions == "" {
+				return nil, fmt.Errorf("request.scenario.simulator.instructions must be a non-empty string")
+			}
+			seedTurns := make([]map[string]any, 0, len(arrayOrEmpty(simulator["seedTurns"])))
+			for index, raw := range arrayOrEmpty(simulator["seedTurns"]) {
+				turn, err := normalizeWorkbenchSimulatorTurn(raw, fmt.Sprintf("request.scenario.simulator.seedTurns[%d]", index))
+				if err != nil {
+					return nil, err
+				}
+				seedTurns = append(seedTurns, turn)
+			}
+			return &workbenchSimulatorSpec{
+				kind:         "persona_prompt",
+				instructions: instructions,
+				seedTurns:    seedTurns,
+			}, nil
+		default:
+			return nil, fmt.Errorf("request.scenario.simulator.kind must be scripted or persona_prompt")
 		}
-		return normalized, nil
 	}
 	turns := arrayOrEmpty(scenario["simulatorTurns"])
 	if len(turns) == 0 {
@@ -449,7 +480,10 @@ func normalizeWorkbenchSimulatorTurns(scenario map[string]any) ([]map[string]any
 		}
 		normalized = append(normalized, map[string]any{"text": text})
 	}
-	return normalized, nil
+	return &workbenchSimulatorSpec{
+		kind:          "scripted",
+		scriptedTurns: normalized,
+	}, nil
 }
 
 func normalizeWorkbenchSimulatorTurn(raw any, path string) (map[string]any, error) {
@@ -576,7 +610,7 @@ func executeWorkbenchMultiTurnLiveRun(
 	liveRunInvocation map[string]any,
 	request map[string]any,
 ) (map[string]any, error) {
-	scriptedTurns, err := normalizeWorkbenchSimulatorTurns(mapOrEmpty(request["scenario"]))
+	simulatorSpec, err := normalizeWorkbenchSimulatorSpec(mapOrEmpty(request["scenario"]))
 	if err != nil {
 		return nil, err
 	}
@@ -586,124 +620,386 @@ func executeWorkbenchMultiTurnLiveRun(
 	if err := os.MkdirAll(artifactDir, 0o755); err != nil {
 		return nil, err
 	}
-	transcript := make([]any, 0, minInt(intFromAny(mapOrEmpty(request["scenario"])["maxTurns"], 0), len(scriptedTurns)))
 	singleTurnTemplate := strings.TrimSpace(anyString(liveRunInvocation["consumer_single_turn_command_template"]))
 	if isRecursiveWorkbenchRunLiveCommand(singleTurnTemplate) {
 		return nil, fmt.Errorf("live_run_invocation.consumer_single_turn_command_template must point at a consumer-owned single-turn command")
 	}
-	for index, simulatorTurn := range scriptedTurns {
+	transcript := make([]any, 0, intFromAny(mapOrEmpty(request["scenario"])["maxTurns"], 0))
+	switch simulatorSpec.kind {
+	case "scripted":
+		return executeWorkbenchScriptedLoop(options, adapterPayload, liveRunInvocation, request, startedAt, timeoutMs, artifactDir, singleTurnTemplate, simulatorSpec, transcript)
+	case "persona_prompt":
+		return executeWorkbenchPersonaPromptLoop(options, adapterPayload, liveRunInvocation, request, startedAt, timeoutMs, artifactDir, singleTurnTemplate, simulatorSpec, transcript)
+	default:
+		return nil, fmt.Errorf("unsupported simulator kind: %s", simulatorSpec.kind)
+	}
+}
+
+func executeWorkbenchScriptedLoop(
+	options *workbenchRunLiveArgs,
+	adapterPayload *runtime.AdapterPayload,
+	liveRunInvocation map[string]any,
+	request map[string]any,
+	startedAt time.Time,
+	timeoutMs int,
+	artifactDir string,
+	singleTurnTemplate string,
+	simulatorSpec *workbenchSimulatorSpec,
+	transcript []any,
+) (map[string]any, error) {
+	for index, simulatorTurn := range simulatorSpec.scriptedTurns {
 		if index >= intFromAny(mapOrEmpty(request["scenario"])["maxTurns"], 0) {
 			break
 		}
-		remainingMs := workbenchRemainingTimeoutMs(startedAt, timeoutMs)
-		if remainingMs <= 0 {
-			return finalizeWorkbenchCompletedResult(request, transcript, startedAt, "timeout_reached", nil, "", nil)
-		}
-		turnRequestFile := filepath.Join(artifactDir, fmt.Sprintf("turn-request-%02d.json", index+1))
-		turnResultFile := filepath.Join(artifactDir, fmt.Sprintf("turn-result-%02d.json", index+1))
-		turnRequest := map[string]any{
-			"schemaVersion": contracts.LiveRunTurnRequestSchema,
-			"requestId":     anyString(request["requestId"]),
-			"instanceId":    anyString(request["instanceId"]),
-			"scenarioId":    anyString(mapOrEmpty(request["scenario"])["scenarioId"]),
-			"turnIndex":     index + 1,
-			"maxTurns":      intFromAny(mapOrEmpty(request["scenario"])["maxTurns"], 0),
-			"simulatorTurn": simulatorTurn,
-			"transcript":    transcript,
-		}
-		if metadata := request["consumerMetadata"]; metadata != nil {
-			turnRequest["consumerMetadata"] = metadata
-		}
-		if capture, ok := request["captureTranscript"].(bool); ok {
-			turnRequest["captureTranscript"] = capture
-		}
-		if err := writeOutputResolved(io.Discard, &turnRequestFile, turnRequest); err != nil {
-			return nil, err
-		}
-		commandText, err := renderTemplate(
+		updatedTranscript, completed, err := executeWorkbenchConsumerTurn(
+			options,
+			adapterPayload,
+			request,
+			startedAt,
+			timeoutMs,
+			artifactDir,
 			singleTurnTemplate,
-			workbenchCommandReplacements(adapterPayload, options, map[string]string{
-				"turn_request_file": runtime.ShellSingleQuote(turnRequestFile),
-				"turn_result_file":  runtime.ShellSingleQuote(turnResultFile),
-			}),
+			transcript,
+			simulatorTurn,
+			index+1,
 		)
 		if err != nil {
 			return nil, err
 		}
-		if _, timedOut, err := executeWorkbenchCommandWithTimeout(options.repoRoot, commandText, time.Duration(remainingMs)*time.Millisecond); err != nil {
-			if timedOut {
-				return finalizeWorkbenchCompletedResult(request, transcript, startedAt, "timeout_reached", nil, "", nil)
-			}
-			return finalizeWorkbenchDiagnosticResult(
-				request,
-				transcript,
-				startedAt,
-				"failed",
-				"consumer_turn_failed",
-				"consumer single-turn command failed",
-				[]any{workbenchDiagnostic("consumer_single_turn_command_failed", err.Error())},
-			)
-		}
-		turnResult, err := readJSONObject(turnResultFile)
-		if err != nil {
-			return finalizeWorkbenchDiagnosticResult(
-				request,
-				transcript,
-				startedAt,
-				"failed",
-				"consumer_turn_failed",
-				"consumer single-turn command did not produce a valid result",
-				[]any{workbenchDiagnostic("invalid_turn_result", err.Error())},
-			)
-		}
-		if err := validateWorkbenchTurnResult(turnResult, request, index+1); err != nil {
-			return finalizeWorkbenchDiagnosticResult(
-				request,
-				transcript,
-				startedAt,
-				"failed",
-				"consumer_turn_failed",
-				"consumer single-turn result did not match the contract",
-				[]any{workbenchDiagnostic("invalid_turn_result_contract", err.Error())},
-			)
-		}
-		switch anyString(turnResult["executionStatus"]) {
-		case "completed":
-			entry := map[string]any{
-				"turnIndex":     index + 1,
-				"simulatorTurn": simulatorTurn,
-				"assistantTurn": mapOrEmpty(turnResult["assistantTurn"]),
-			}
-			if signal := turnResult["consumerSignal"]; signal != nil {
-				entry["consumerSignal"] = signal
-			}
-			transcript = append(transcript, entry)
-		case "blocked":
-			return finalizeWorkbenchDiagnosticResult(
-				request,
-				transcript,
-				startedAt,
-				"blocked",
-				"blocked_by_consumer",
-				anyString(turnResult["summary"]),
-				arrayOrEmpty(turnResult["diagnostics"]),
-			)
-		default:
-			return finalizeWorkbenchDiagnosticResult(
-				request,
-				transcript,
-				startedAt,
-				"failed",
-				"consumer_turn_failed",
-				anyString(turnResult["summary"]),
-				arrayOrEmpty(turnResult["diagnostics"]),
-			)
+		transcript = updatedTranscript
+		if completed != nil {
+			return completed, nil
 		}
 	}
 	stopReason := "scripted_turns_exhausted"
-	if len(scriptedTurns) > intFromAny(mapOrEmpty(request["scenario"])["maxTurns"], 0) {
+	if len(simulatorSpec.scriptedTurns) > intFromAny(mapOrEmpty(request["scenario"])["maxTurns"], 0) {
 		stopReason = "turn_limit_reached"
 	}
+	return finalizeWorkbenchLoopResult(options, adapterPayload, liveRunInvocation, request, startedAt, timeoutMs, artifactDir, transcript, stopReason)
+}
+
+func executeWorkbenchPersonaPromptLoop(
+	options *workbenchRunLiveArgs,
+	adapterPayload *runtime.AdapterPayload,
+	liveRunInvocation map[string]any,
+	request map[string]any,
+	startedAt time.Time,
+	timeoutMs int,
+	artifactDir string,
+	singleTurnTemplate string,
+	simulatorSpec *workbenchSimulatorSpec,
+	transcript []any,
+) (map[string]any, error) {
+	maxTurns := intFromAny(mapOrEmpty(request["scenario"])["maxTurns"], 0)
+	for turnIndex := 1; turnIndex <= maxTurns; turnIndex += 1 {
+		var simulatorTurn map[string]any
+		if turnIndex <= len(simulatorSpec.seedTurns) {
+			simulatorTurn = simulatorSpec.seedTurns[turnIndex-1]
+		} else {
+			simulatedTurn, stopReason, completed, err := executeWorkbenchSimulatorPersonaTurn(
+				options,
+				adapterPayload,
+				liveRunInvocation,
+				request,
+				startedAt,
+				timeoutMs,
+				artifactDir,
+				simulatorSpec,
+				transcript,
+				turnIndex,
+			)
+			if err != nil {
+				return nil, err
+			}
+			if completed != nil {
+				return completed, nil
+			}
+			if stopReason != "" {
+				return finalizeWorkbenchLoopResult(options, adapterPayload, liveRunInvocation, request, startedAt, timeoutMs, artifactDir, transcript, stopReason)
+			}
+			simulatorTurn = simulatedTurn
+		}
+		updatedTranscript, completed, err := executeWorkbenchConsumerTurn(
+			options,
+			adapterPayload,
+			request,
+			startedAt,
+			timeoutMs,
+			artifactDir,
+			singleTurnTemplate,
+			transcript,
+			simulatorTurn,
+			turnIndex,
+		)
+		if err != nil {
+			return nil, err
+		}
+		transcript = updatedTranscript
+		if completed != nil {
+			return completed, nil
+		}
+	}
+	return finalizeWorkbenchLoopResult(options, adapterPayload, liveRunInvocation, request, startedAt, timeoutMs, artifactDir, transcript, "turn_limit_reached")
+}
+
+func executeWorkbenchConsumerTurn(
+	options *workbenchRunLiveArgs,
+	adapterPayload *runtime.AdapterPayload,
+	request map[string]any,
+	startedAt time.Time,
+	timeoutMs int,
+	artifactDir string,
+	singleTurnTemplate string,
+	transcript []any,
+	simulatorTurn map[string]any,
+	turnIndex int,
+) ([]any, map[string]any, error) {
+	remainingMs := workbenchRemainingTimeoutMs(startedAt, timeoutMs)
+	if remainingMs <= 0 {
+		completed, err := finalizeWorkbenchCompletedResult(request, transcript, startedAt, "timeout_reached", nil, "", nil)
+		return transcript, completed, err
+	}
+	turnRequestFile := filepath.Join(artifactDir, fmt.Sprintf("turn-request-%02d.json", turnIndex))
+	turnResultFile := filepath.Join(artifactDir, fmt.Sprintf("turn-result-%02d.json", turnIndex))
+	turnRequest := map[string]any{
+		"schemaVersion": contracts.LiveRunTurnRequestSchema,
+		"requestId":     anyString(request["requestId"]),
+		"instanceId":    anyString(request["instanceId"]),
+		"scenarioId":    anyString(mapOrEmpty(request["scenario"])["scenarioId"]),
+		"turnIndex":     turnIndex,
+		"maxTurns":      intFromAny(mapOrEmpty(request["scenario"])["maxTurns"], 0),
+		"simulatorTurn": simulatorTurn,
+		"transcript":    transcript,
+	}
+	if metadata := request["consumerMetadata"]; metadata != nil {
+		turnRequest["consumerMetadata"] = metadata
+	}
+	if capture, ok := request["captureTranscript"].(bool); ok {
+		turnRequest["captureTranscript"] = capture
+	}
+	if err := writeOutputResolved(io.Discard, &turnRequestFile, turnRequest); err != nil {
+		return transcript, nil, err
+	}
+	commandText, err := renderTemplate(
+		singleTurnTemplate,
+		workbenchCommandReplacements(adapterPayload, options, map[string]string{
+			"turn_request_file": runtime.ShellSingleQuote(turnRequestFile),
+			"turn_result_file":  runtime.ShellSingleQuote(turnResultFile),
+		}),
+	)
+	if err != nil {
+		return transcript, nil, err
+	}
+	if _, timedOut, err := executeWorkbenchCommandWithTimeout(options.repoRoot, commandText, time.Duration(remainingMs)*time.Millisecond); err != nil {
+		if timedOut {
+			completed, completeErr := finalizeWorkbenchCompletedResult(request, transcript, startedAt, "timeout_reached", nil, "", nil)
+			return transcript, completed, completeErr
+		}
+		completed := finalizeWorkbenchDiagnosticResult(
+			request,
+			transcript,
+			startedAt,
+			"failed",
+			"consumer_turn_failed",
+			"consumer single-turn command failed",
+			[]any{workbenchDiagnostic("consumer_single_turn_command_failed", err.Error())},
+		)
+		return transcript, completed, nil
+	}
+	turnResult, err := readJSONObject(turnResultFile)
+	if err != nil {
+		completed := finalizeWorkbenchDiagnosticResult(
+			request,
+			transcript,
+			startedAt,
+			"failed",
+			"consumer_turn_failed",
+			"consumer single-turn command did not produce a valid result",
+			[]any{workbenchDiagnostic("invalid_turn_result", err.Error())},
+		)
+		return transcript, completed, nil
+	}
+	if err := validateWorkbenchTurnResult(turnResult, request, turnIndex); err != nil {
+		completed := finalizeWorkbenchDiagnosticResult(
+			request,
+			transcript,
+			startedAt,
+			"failed",
+			"consumer_turn_failed",
+			"consumer single-turn result did not match the contract",
+			[]any{workbenchDiagnostic("invalid_turn_result_contract", err.Error())},
+		)
+		return transcript, completed, nil
+	}
+	switch anyString(turnResult["executionStatus"]) {
+	case "completed":
+		entry := map[string]any{
+			"turnIndex":     turnIndex,
+			"simulatorTurn": simulatorTurn,
+			"assistantTurn": mapOrEmpty(turnResult["assistantTurn"]),
+		}
+		if signal := turnResult["consumerSignal"]; signal != nil {
+			entry["consumerSignal"] = signal
+		}
+		transcript = append(transcript, entry)
+		return transcript, nil, nil
+	case "blocked":
+		completed := finalizeWorkbenchDiagnosticResult(
+			request,
+			transcript,
+			startedAt,
+			"blocked",
+			"blocked_by_consumer",
+			anyString(turnResult["summary"]),
+			arrayOrEmpty(turnResult["diagnostics"]),
+		)
+		return transcript, completed, nil
+	default:
+		completed := finalizeWorkbenchDiagnosticResult(
+			request,
+			transcript,
+			startedAt,
+			"failed",
+			"consumer_turn_failed",
+			anyString(turnResult["summary"]),
+			arrayOrEmpty(turnResult["diagnostics"]),
+		)
+		return transcript, completed, nil
+	}
+}
+
+func executeWorkbenchSimulatorPersonaTurn(
+	options *workbenchRunLiveArgs,
+	adapterPayload *runtime.AdapterPayload,
+	liveRunInvocation map[string]any,
+	request map[string]any,
+	startedAt time.Time,
+	timeoutMs int,
+	artifactDir string,
+	simulatorSpec *workbenchSimulatorSpec,
+	transcript []any,
+	turnIndex int,
+) (map[string]any, string, map[string]any, error) {
+	simulatorTemplate := strings.TrimSpace(anyString(liveRunInvocation["simulator_persona_command_template"]))
+	if simulatorTemplate == "" {
+		return nil, "", nil, fmt.Errorf("live_run_invocation.simulator_persona_command_template is required for simulator.kind persona_prompt")
+	}
+	remainingMs := workbenchRemainingTimeoutMs(startedAt, timeoutMs)
+	if remainingMs <= 0 {
+		completed, err := finalizeWorkbenchCompletedResult(request, transcript, startedAt, "timeout_reached", nil, "", nil)
+		return nil, "", completed, err
+	}
+	simulatorRequestFile := filepath.Join(artifactDir, fmt.Sprintf("simulator-request-%02d.json", turnIndex))
+	simulatorResultFile := filepath.Join(artifactDir, fmt.Sprintf("simulator-result-%02d.json", turnIndex))
+	simulatorRequest := map[string]any{
+		"schemaVersion": contracts.LiveRunSimulatorRequestSchema,
+		"requestId":     anyString(request["requestId"]),
+		"instanceId":    anyString(request["instanceId"]),
+		"scenarioId":    anyString(mapOrEmpty(request["scenario"])["scenarioId"]),
+		"turnIndex":     turnIndex,
+		"maxTurns":      intFromAny(mapOrEmpty(request["scenario"])["maxTurns"], 0),
+		"instructions":  simulatorSpec.instructions,
+		"transcript":    transcript,
+	}
+	if metadata := request["consumerMetadata"]; metadata != nil {
+		simulatorRequest["consumerMetadata"] = metadata
+	}
+	if err := writeOutputResolved(io.Discard, &simulatorRequestFile, simulatorRequest); err != nil {
+		return nil, "", nil, err
+	}
+	commandText, err := renderTemplate(
+		simulatorTemplate,
+		workbenchCommandReplacements(adapterPayload, options, map[string]string{
+			"simulator_request_file": runtime.ShellSingleQuote(simulatorRequestFile),
+			"simulator_result_file":  runtime.ShellSingleQuote(simulatorResultFile),
+		}),
+	)
+	if err != nil {
+		return nil, "", nil, err
+	}
+	if _, timedOut, err := executeWorkbenchCommandWithTimeout(options.repoRoot, commandText, time.Duration(remainingMs)*time.Millisecond); err != nil {
+		if timedOut {
+			completed, completeErr := finalizeWorkbenchCompletedResult(request, transcript, startedAt, "timeout_reached", nil, "", nil)
+			return nil, "", completed, completeErr
+		}
+		completed := finalizeWorkbenchDiagnosticResult(
+			request,
+			transcript,
+			startedAt,
+			"failed",
+			"simulator_persona_failed",
+			"simulator persona command failed",
+			[]any{workbenchDiagnostic("simulator_persona_command_failed", err.Error())},
+		)
+		return nil, "", completed, nil
+	}
+	simulatorResult, err := readJSONObject(simulatorResultFile)
+	if err != nil {
+		completed := finalizeWorkbenchDiagnosticResult(
+			request,
+			transcript,
+			startedAt,
+			"failed",
+			"simulator_persona_failed",
+			"simulator persona command did not produce a valid result",
+			[]any{workbenchDiagnostic("invalid_simulator_result", err.Error())},
+		)
+		return nil, "", completed, nil
+	}
+	if err := validateWorkbenchSimulatorResult(simulatorResult, request, turnIndex); err != nil {
+		completed := finalizeWorkbenchDiagnosticResult(
+			request,
+			transcript,
+			startedAt,
+			"failed",
+			"simulator_persona_failed",
+			"simulator persona result did not match the contract",
+			[]any{workbenchDiagnostic("invalid_simulator_result_contract", err.Error())},
+		)
+		return nil, "", completed, nil
+	}
+	switch anyString(simulatorResult["executionStatus"]) {
+	case "completed":
+		if anyString(simulatorResult["action"]) == "stop" {
+			return nil, anyString(simulatorResult["stopReason"]), nil, nil
+		}
+		return mapOrEmpty(simulatorResult["simulatorTurn"]), "", nil, nil
+	case "blocked":
+		completed := finalizeWorkbenchDiagnosticResult(
+			request,
+			transcript,
+			startedAt,
+			"blocked",
+			"blocked_by_consumer",
+			anyString(simulatorResult["summary"]),
+			arrayOrEmpty(simulatorResult["diagnostics"]),
+		)
+		return nil, "", completed, nil
+	default:
+		completed := finalizeWorkbenchDiagnosticResult(
+			request,
+			transcript,
+			startedAt,
+			"failed",
+			"simulator_persona_failed",
+			anyString(simulatorResult["summary"]),
+			arrayOrEmpty(simulatorResult["diagnostics"]),
+		)
+		return nil, "", completed, nil
+	}
+}
+
+func finalizeWorkbenchLoopResult(
+	options *workbenchRunLiveArgs,
+	adapterPayload *runtime.AdapterPayload,
+	liveRunInvocation map[string]any,
+	request map[string]any,
+	startedAt time.Time,
+	timeoutMs int,
+	artifactDir string,
+	transcript []any,
+	stopReason string,
+) (map[string]any, error) {
 	transcriptFile := ""
 	artifactPaths := []any{}
 	if truthyWorkbenchCaptureTranscript(request) || strings.TrimSpace(anyString(liveRunInvocation["consumer_evaluator_command_template"])) != "" {
@@ -779,7 +1075,7 @@ func finalizeWorkbenchCompletedResult(
 	completedAt := time.Now().UTC()
 	scenarioSummary := anyString(mapOrEmpty(evaluation)["summary"])
 	if strings.TrimSpace(scenarioSummary) == "" {
-		scenarioSummary = fmt.Sprintf("Completed %d scripted turn(s); stop reason: %s.", len(transcript), stopReason)
+		scenarioSummary = fmt.Sprintf("Completed %d turn(s); stop reason: %s.", len(transcript), stopReason)
 	}
 	scenarioStatus := anyString(mapOrEmpty(evaluation)["status"])
 	if strings.TrimSpace(scenarioStatus) == "" {
@@ -827,7 +1123,7 @@ func finalizeWorkbenchDiagnosticResult(
 	stopReason string,
 	summary string,
 	diagnostics []any,
-) (map[string]any, error) {
+) map[string]any {
 	completedAt := time.Now().UTC()
 	result := map[string]any{
 		"schemaVersion":   contracts.LiveRunInvocationResultSchema,
@@ -844,7 +1140,46 @@ func finalizeWorkbenchDiagnosticResult(
 	if truthyWorkbenchCaptureTranscript(request) && len(transcript) > 0 {
 		result["transcript"] = transcript
 	}
-	return result, nil
+	return result
+}
+
+func validateWorkbenchSimulatorResult(result map[string]any, request map[string]any, expectedTurnIndex int) error {
+	if anyString(result["schemaVersion"]) != contracts.LiveRunSimulatorResultSchema {
+		return fmt.Errorf("simulator result packet must use schemaVersion %s", contracts.LiveRunSimulatorResultSchema)
+	}
+	if anyString(result["requestId"]) != anyString(request["requestId"]) {
+		return fmt.Errorf("simulator result.requestId %q does not match request.requestId %q", anyString(result["requestId"]), anyString(request["requestId"]))
+	}
+	if anyString(result["instanceId"]) != anyString(request["instanceId"]) {
+		return fmt.Errorf("simulator result.instanceId %q does not match request.instanceId %q", anyString(result["instanceId"]), anyString(request["instanceId"]))
+	}
+	if intFromAny(result["turnIndex"], 0) != expectedTurnIndex {
+		return fmt.Errorf("simulator result.turnIndex %d does not match expected turn index %d", intFromAny(result["turnIndex"], 0), expectedTurnIndex)
+	}
+	status := anyString(result["executionStatus"])
+	if status != "completed" && status != "blocked" && status != "failed" {
+		return fmt.Errorf("simulator result.executionStatus must be one of: completed, blocked, failed")
+	}
+	if strings.TrimSpace(anyString(result["summary"])) == "" {
+		return fmt.Errorf("simulator result.summary must be a non-empty string")
+	}
+	if status == "completed" {
+		action := strings.TrimSpace(anyString(result["action"]))
+		if action != "continue" && action != "stop" {
+			return fmt.Errorf("simulator result.action must be continue or stop")
+		}
+		if action == "continue" {
+			if _, err := normalizeWorkbenchSimulatorTurn(result["simulatorTurn"], "simulator result.simulatorTurn"); err != nil {
+				return err
+			}
+			return nil
+		}
+		if strings.TrimSpace(anyString(result["stopReason"])) == "" {
+			return fmt.Errorf("simulator result.stopReason must be a non-empty string when action is stop")
+		}
+		return nil
+	}
+	return validateWorkbenchDiagnostics(arrayOrEmpty(result["diagnostics"]), status)
 }
 
 func validateWorkbenchTurnResult(result map[string]any, request map[string]any, expectedTurnIndex int) error {

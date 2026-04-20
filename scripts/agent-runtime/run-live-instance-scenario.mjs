@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
@@ -8,6 +9,8 @@ import { loadAdapter } from "../resolve_adapter.mjs";
 
 const LIVE_RUN_REQUEST_SCHEMA = "cautilus.live_run_invocation_request.v1";
 const LIVE_RUN_RESULT_SCHEMA = "cautilus.live_run_invocation_result.v1";
+const LIVE_RUN_SIMULATOR_REQUEST_SCHEMA = "cautilus.live_run_simulator_request.v1";
+const LIVE_RUN_SIMULATOR_RESULT_SCHEMA = "cautilus.live_run_simulator_result.v1";
 const LIVE_RUN_TURN_REQUEST_SCHEMA = "cautilus.live_run_turn_request.v1";
 const LIVE_RUN_TURN_RESULT_SCHEMA = "cautilus.live_run_turn_result.v1";
 const LIVE_RUN_TRANSCRIPT_SCHEMA = "cautilus.live_run_transcript.v1";
@@ -131,7 +134,47 @@ function normalizeSimulatorTurn(value, field) {
 	return normalized;
 }
 
-function normalizeSimulatorTurns(scenario) {
+function normalizeScriptedSimulator(simulator) {
+	if (!Array.isArray(simulator.turns) || simulator.turns.length === 0) {
+		fail("request.scenario.simulator.turns must be a non-empty list");
+	}
+	return {
+		kind: "scripted",
+		scriptedTurns: simulator.turns.map((turn, index) =>
+			normalizeSimulatorTurn(turn, `request.scenario.simulator.turns[${index}]`),
+		),
+	};
+}
+
+function normalizePersonaPromptSimulator(simulator) {
+	if (typeof simulator.instructions !== "string" || !simulator.instructions.trim()) {
+		fail("request.scenario.simulator.instructions must be a non-empty string");
+	}
+	const seedTurns = Array.isArray(simulator.seedTurns)
+		? simulator.seedTurns.map((turn, index) =>
+			normalizeSimulatorTurn(turn, `request.scenario.simulator.seedTurns[${index}]`),
+		)
+		: [];
+	return {
+		kind: "persona_prompt",
+		instructions: simulator.instructions.trim(),
+		seedTurns,
+	};
+}
+
+function normalizeLegacySimulatorTurns(scenario) {
+	if (!Array.isArray(scenario.simulatorTurns) || scenario.simulatorTurns.length === 0) {
+		fail("request.scenario.simulatorTurns must be a non-empty list of strings");
+	}
+	return {
+		kind: "scripted",
+		scriptedTurns: scenario.simulatorTurns.map((turn, index) => ({
+			text: assertString(turn, `request.scenario.simulatorTurns[${index}]`),
+		})),
+	};
+}
+
+function normalizeSimulatorSpec(scenario) {
 	if (scenario.simulator && scenario.simulatorTurns) {
 		fail("request.scenario.simulator and request.scenario.simulatorTurns cannot both be set");
 	}
@@ -139,22 +182,16 @@ function normalizeSimulatorTurns(scenario) {
 		if (!scenario.simulator || typeof scenario.simulator !== "object" || Array.isArray(scenario.simulator)) {
 			fail("request.scenario.simulator must be an object");
 		}
-		if (scenario.simulator.kind !== "scripted") {
-			fail("request.scenario.simulator.kind must be scripted for the current slice");
+		switch (scenario.simulator.kind) {
+			case "scripted":
+				return normalizeScriptedSimulator(scenario.simulator);
+			case "persona_prompt":
+				return normalizePersonaPromptSimulator(scenario.simulator);
+			default:
+				fail("request.scenario.simulator.kind must be scripted or persona_prompt");
 		}
-		if (!Array.isArray(scenario.simulator.turns) || scenario.simulator.turns.length === 0) {
-			fail("request.scenario.simulator.turns must be a non-empty list");
-		}
-		return scenario.simulator.turns.map((turn, index) =>
-			normalizeSimulatorTurn(turn, `request.scenario.simulator.turns[${index}]`),
-		);
 	}
-	if (!Array.isArray(scenario.simulatorTurns) || scenario.simulatorTurns.length === 0) {
-		fail("request.scenario.simulatorTurns must be a non-empty list of strings");
-	}
-	return scenario.simulatorTurns.map((turn, index) => ({
-		text: assertString(turn, `request.scenario.simulatorTurns[${index}]`),
-	}));
+	return normalizeLegacySimulatorTurns(scenario);
 }
 
 function validateAssistantTurn(turn, field) {
@@ -193,7 +230,7 @@ function validateScenarioPacket(scenario) {
 	assertString(scenario.description, "request.scenario.description");
 	assertPositiveInteger(scenario.maxTurns, "request.scenario.maxTurns");
 	assertString(scenario.sideEffectsMode, "request.scenario.sideEffectsMode");
-	normalizeSimulatorTurns(scenario);
+	normalizeSimulatorSpec(scenario);
 }
 
 function validateRequestPacket(request, expectedInstanceId) {
@@ -306,6 +343,46 @@ function validateTurnResultPacket(result, request, expectedTurnIndex) {
 	validateDiagnosticResult(result, executionStatus);
 }
 
+function validateCompletedSimulatorResultPacket(result) {
+	const action = assertString(result.action, "simulator result.action");
+	if (action !== "continue" && action !== "stop") {
+		fail("simulator result.action must be continue or stop");
+	}
+	if (action === "continue") {
+		normalizeSimulatorTurn(result.simulatorTurn, "simulator result.simulatorTurn");
+		return;
+	}
+	assertString(result.stopReason, "simulator result.stopReason");
+}
+
+function validateSimulatorResultPacket(result, request, expectedTurnIndex) {
+	if (!result || typeof result !== "object" || Array.isArray(result)) {
+		fail("simulator result packet must be an object");
+	}
+	if (result.schemaVersion !== LIVE_RUN_SIMULATOR_RESULT_SCHEMA) {
+		fail(`simulator result packet must use schemaVersion ${LIVE_RUN_SIMULATOR_RESULT_SCHEMA}`);
+	}
+	if (assertString(result.requestId, "simulator result.requestId") !== request.requestId) {
+		fail(`simulator result.requestId ${result.requestId} does not match request.requestId ${request.requestId}`);
+	}
+	if (assertString(result.instanceId, "simulator result.instanceId") !== request.instanceId) {
+		fail(`simulator result.instanceId ${result.instanceId} does not match request.instanceId ${request.instanceId}`);
+	}
+	if (assertPositiveInteger(result.turnIndex, "simulator result.turnIndex") !== expectedTurnIndex) {
+		fail(`simulator result.turnIndex ${result.turnIndex} does not match expected turn index ${expectedTurnIndex}`);
+	}
+	const executionStatus = assertString(result.executionStatus, "simulator result.executionStatus");
+	if (!EXECUTION_STATUSES.has(executionStatus)) {
+		fail("simulator result.executionStatus must be one of: completed, blocked, failed");
+	}
+	assertString(result.summary, "simulator result.summary");
+	if (executionStatus === "completed") {
+		validateCompletedSimulatorResultPacket(result);
+		return;
+	}
+	validateDiagnosticResult(result, executionStatus);
+}
+
 function resolveConsumerCommand(liveRunInvocation) {
 	const consumerCommandTemplate =
 		liveRunInvocation.consumer_command_template ?? liveRunInvocation.command_template ?? null;
@@ -397,7 +474,7 @@ function transcriptExcerpt(transcript) {
 function buildCompletedResult(request, transcript, startedAt, stopReason, evaluation, artifactPaths = []) {
 	const summary = typeof evaluation?.summary === "string" && evaluation.summary.trim()
 		? evaluation.summary
-		: `Completed ${transcript.length} scripted turn(s); stop reason: ${stopReason}.`;
+		: `Completed ${transcript.length} turn(s); stop reason: ${stopReason}.`;
 	const status = typeof evaluation?.status === "string" && evaluation.status.trim()
 		? evaluation.status
 		: "completed";
@@ -451,6 +528,17 @@ function resolveSingleTurnTemplate(liveRunInvocation) {
 	return template;
 }
 
+function resolveSimulatorPersonaTemplate(liveRunInvocation) {
+	const template = liveRunInvocation.simulator_persona_command_template?.trim();
+	if (!template) {
+		fail("live_run_invocation.simulator_persona_command_template is required for simulator.kind persona_prompt.");
+	}
+	if (HELPER_PATH_PATTERN.test(template)) {
+		fail("live_run_invocation.simulator_persona_command_template must point at a simulator-owned command, not the product helper.");
+	}
+	return template;
+}
+
 function buildTurnRequest(request, scriptedTurn, transcript, turnIndex) {
 	return {
 		schemaVersion: LIVE_RUN_TURN_REQUEST_SCHEMA,
@@ -463,6 +551,20 @@ function buildTurnRequest(request, scriptedTurn, transcript, turnIndex) {
 		transcript,
 		...(request.consumerMetadata ? { consumerMetadata: request.consumerMetadata } : {}),
 		...(typeof request.captureTranscript === "boolean" ? { captureTranscript: request.captureTranscript } : {}),
+	};
+}
+
+function buildSimulatorRequest(request, transcript, simulatorSpec, turnIndex) {
+	return {
+		schemaVersion: LIVE_RUN_SIMULATOR_REQUEST_SCHEMA,
+		requestId: request.requestId,
+		instanceId: request.instanceId,
+		scenarioId: request.scenario.scenarioId,
+		turnIndex,
+		maxTurns: request.scenario.maxTurns,
+		instructions: simulatorSpec.instructions,
+		transcript,
+		...(request.consumerMetadata ? { consumerMetadata: request.consumerMetadata } : {}),
 	};
 }
 
@@ -516,6 +618,64 @@ function runScriptedTurn(options, context, payload, request, singleTurnTemplate,
 	};
 }
 
+function runSimulatorPersonaTurn(
+	options,
+	context,
+	payload,
+	request,
+	liveRunInvocation,
+	simulatorSpec,
+	transcript,
+	turnIndex,
+	artifactDir,
+	startedAt,
+) {
+	const simulatorTemplate = resolveSimulatorPersonaTemplate(liveRunInvocation);
+	const simulatorRequestFile = join(artifactDir, `simulator-request-${String(turnIndex).padStart(2, "0")}.json`);
+	const simulatorResultFile = join(artifactDir, `simulator-result-${String(turnIndex).padStart(2, "0")}.json`);
+	writeJsonFile(simulatorRequestFile, buildSimulatorRequest(request, transcript, simulatorSpec, turnIndex));
+	const command = renderTemplate(simulatorTemplate, buildReplacements(payload, context, options, {
+		simulator_request_file: shellEscape(simulatorRequestFile),
+		simulator_result_file: shellEscape(simulatorResultFile),
+	}));
+	const commandResult = executeCommand(command, context.repoRoot, remainingTimeoutMs(startedAt, request.timeoutMs));
+	if (commandResult.timedOut) {
+		return { completedResult: buildCompletedResult(request, transcript, startedAt, "timeout_reached", null) };
+	}
+	if (commandResult.detail) {
+		return {
+			completedResult: buildDiagnosticResult(
+				request,
+				transcript,
+				startedAt,
+				"failed",
+				"simulator_persona_failed",
+				"simulator persona command failed",
+				[diagnostic("simulator_persona_command_failed", commandResult.detail)],
+			),
+		};
+	}
+	const simulatorResult = readJsonFile(simulatorResultFile, "simulator result file");
+	validateSimulatorResultPacket(simulatorResult, request, turnIndex);
+	if (simulatorResult.executionStatus === "completed") {
+		if (simulatorResult.action === "stop") {
+			return { stopReason: simulatorResult.stopReason };
+		}
+		return { simulatorTurn: simulatorResult.simulatorTurn };
+	}
+	return {
+		completedResult: buildDiagnosticResult(
+			request,
+			transcript,
+			startedAt,
+			simulatorResult.executionStatus,
+			simulatorResult.executionStatus === "blocked" ? "simulator_persona_blocked" : "simulator_persona_failed",
+			simulatorResult.summary,
+			simulatorResult.diagnostics,
+		),
+	};
+}
+
 function materializeTranscriptArtifact(request, transcript, artifactDir, stopReason, needsArtifact) {
 	if (!needsArtifact) {
 		return { transcriptFile: null, artifactPaths: [] };
@@ -534,6 +694,21 @@ function materializeTranscriptArtifact(request, transcript, artifactDir, stopRea
 		transcriptFile,
 		artifactPaths: captureTranscript(request) ? [transcriptFile] : [],
 	};
+}
+
+function finalizeLoopResult(options, context, payload, liveRunInvocation, request, transcript, artifactDir, stopReason, startedAt) {
+	const needsTranscriptArtifact = captureTranscript(request) || typeof liveRunInvocation.consumer_evaluator_command_template === "string";
+	const { transcriptFile, artifactPaths } = materializeTranscriptArtifact(
+		request,
+		transcript,
+		artifactDir,
+		stopReason,
+		needsTranscriptArtifact,
+	);
+	const evaluation = transcriptFile
+		? evaluateTranscript(options, context, payload, liveRunInvocation, request, transcriptFile, artifactPaths, startedAt)
+		: null;
+	return buildCompletedResult(request, transcript, startedAt, stopReason, evaluation, artifactPaths);
 }
 
 function evaluateTranscript(options, context, payload, liveRunInvocation, request, transcriptFile, artifactPaths, startedAt) {
@@ -565,15 +740,9 @@ function evaluateTranscript(options, context, payload, liveRunInvocation, reques
 	return evaluation;
 }
 
-function executeMultiTurnRun(options, context, payload, liveRunInvocation, request) {
-	const singleTurnTemplate = resolveSingleTurnTemplate(liveRunInvocation);
-	const scriptedTurns = normalizeSimulatorTurns(request.scenario);
-	const startedAt = Date.now();
-	const artifactDir = `${context.outputFile}.d`;
-	mkdirSync(dirname(context.outputFile), { recursive: true });
-	mkdirSync(artifactDir, { recursive: true });
+function executeScriptedLoop(options, context, payload, liveRunInvocation, request, singleTurnTemplate, simulatorSpec, startedAt, artifactDir) {
 	const transcript = [];
-	const turnCount = Math.min(request.scenario.maxTurns, scriptedTurns.length);
+	const turnCount = Math.min(request.scenario.maxTurns, simulatorSpec.scriptedTurns.length);
 	for (let index = 0; index < turnCount; index += 1) {
 		const turnOutcome = runScriptedTurn(
 			options,
@@ -582,7 +751,7 @@ function executeMultiTurnRun(options, context, payload, liveRunInvocation, reque
 			request,
 			singleTurnTemplate,
 			transcript,
-			scriptedTurns[index],
+			simulatorSpec.scriptedTurns[index],
 			index + 1,
 			artifactDir,
 			startedAt,
@@ -592,19 +761,78 @@ function executeMultiTurnRun(options, context, payload, liveRunInvocation, reque
 		}
 		transcript.push(turnOutcome.transcriptEntry);
 	}
-	const stopReason = scriptedTurns.length > request.scenario.maxTurns ? "turn_limit_reached" : "scripted_turns_exhausted";
-	const needsTranscriptArtifact = captureTranscript(request) || typeof liveRunInvocation.consumer_evaluator_command_template === "string";
-	const { transcriptFile, artifactPaths } = materializeTranscriptArtifact(
-		request,
-		transcript,
-		artifactDir,
-		stopReason,
-		needsTranscriptArtifact,
-	);
-	const evaluation = transcriptFile
-		? evaluateTranscript(options, context, payload, liveRunInvocation, request, transcriptFile, artifactPaths, startedAt)
-		: null;
-	return buildCompletedResult(request, transcript, startedAt, stopReason, evaluation, artifactPaths);
+	const stopReason = simulatorSpec.scriptedTurns.length > request.scenario.maxTurns ? "turn_limit_reached" : "scripted_turns_exhausted";
+	return finalizeLoopResult(options, context, payload, liveRunInvocation, request, transcript, artifactDir, stopReason, startedAt);
+}
+
+function executePersonaPromptLoop(options, context, payload, liveRunInvocation, request, singleTurnTemplate, simulatorSpec, startedAt, artifactDir) {
+	const transcript = [];
+	for (let turnIndex = 1; turnIndex <= request.scenario.maxTurns; turnIndex += 1) {
+		let simulatorTurn = null;
+		if (turnIndex <= simulatorSpec.seedTurns.length) {
+			simulatorTurn = simulatorSpec.seedTurns[turnIndex - 1];
+		} else {
+			const simulatorOutcome = runSimulatorPersonaTurn(
+				options,
+				context,
+				payload,
+				request,
+				liveRunInvocation,
+				simulatorSpec,
+				transcript,
+				turnIndex,
+				artifactDir,
+				startedAt,
+			);
+			if (simulatorOutcome.completedResult) {
+				return simulatorOutcome.completedResult;
+			}
+			if (simulatorOutcome.stopReason) {
+				return finalizeLoopResult(
+					options,
+					context,
+					payload,
+					liveRunInvocation,
+					request,
+					transcript,
+					artifactDir,
+					simulatorOutcome.stopReason,
+					startedAt,
+				);
+			}
+			simulatorTurn = simulatorOutcome.simulatorTurn;
+		}
+		const turnOutcome = runScriptedTurn(
+			options,
+			context,
+			payload,
+			request,
+			singleTurnTemplate,
+			transcript,
+			simulatorTurn,
+			turnIndex,
+			artifactDir,
+			startedAt,
+		);
+		if (turnOutcome.completedResult) {
+			return turnOutcome.completedResult;
+		}
+		transcript.push(turnOutcome.transcriptEntry);
+	}
+	return finalizeLoopResult(options, context, payload, liveRunInvocation, request, transcript, artifactDir, "turn_limit_reached", startedAt);
+}
+
+function executeMultiTurnRun(options, context, payload, liveRunInvocation, request) {
+	const singleTurnTemplate = resolveSingleTurnTemplate(liveRunInvocation);
+	const simulatorSpec = normalizeSimulatorSpec(request.scenario);
+	const startedAt = Date.now();
+	const artifactDir = `${context.outputFile}.d`;
+	mkdirSync(dirname(context.outputFile), { recursive: true });
+	mkdirSync(artifactDir, { recursive: true });
+	if (simulatorSpec.kind === "persona_prompt") {
+		return executePersonaPromptLoop(options, context, payload, liveRunInvocation, request, singleTurnTemplate, simulatorSpec, startedAt, artifactDir);
+	}
+	return executeScriptedLoop(options, context, payload, liveRunInvocation, request, singleTurnTemplate, simulatorSpec, startedAt, artifactDir);
 }
 
 function executeLiveRunCommand(options, context, payload, liveRunInvocation, request) {

@@ -195,6 +195,13 @@ export function validateLiveRunInvocation(value, errors) {
 		errors,
 		liveRunInvocation,
 	);
+	copyOptionalInstanceField(
+		value.simulator_persona_command_template,
+		"live_run_invocation.simulator_persona_command_template",
+		"simulator_persona_command_template",
+		errors,
+		liveRunInvocation,
+	);
 	const prerequisites = stringList(
 		value.required_prerequisites,
 		"live_run_invocation.required_prerequisites",

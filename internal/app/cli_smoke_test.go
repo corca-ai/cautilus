@@ -5878,10 +5878,10 @@ func TestCLIWorkbenchRunLiveCanExecuteProductOwnedScriptedLoop(t *testing.T) {
 	requestPath := filepath.Join(root, "request.json")
 	outputPath := filepath.Join(root, "artifacts", "scripted-result.json")
 	writeJSONFile(t, requestPath, map[string]any{
-		"schemaVersion": contracts.LiveRunInvocationRequestSchema,
-		"requestId":     "req-scripted-123",
-		"instanceId":    "ceal",
-		"timeoutMs":     30000,
+		"schemaVersion":     contracts.LiveRunInvocationRequestSchema,
+		"requestId":         "req-scripted-123",
+		"instanceId":        "ceal",
+		"timeoutMs":         30000,
 		"captureTranscript": true,
 		"consumerMetadata": map[string]any{
 			"channelId": "C_REVIEW",
@@ -5928,6 +5928,134 @@ func TestCLIWorkbenchRunLiveCanExecuteProductOwnedScriptedLoop(t *testing.T) {
 	}
 	if result["evaluation"].(map[string]any)["summary"] != "evaluated 2 transcript turns" {
 		t.Fatalf("expected evaluator summary in result, got %#v", result["evaluation"])
+	}
+}
+
+func TestCLIWorkbenchRunLiveCanExecutePersonaPromptLoop(t *testing.T) {
+	root := t.TempDir()
+	adapterDir := filepath.Join(root, ".agents")
+	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	writeExecutableFile(t, root, "run-live-turn.sh", strings.Join([]string{
+		"#!/bin/sh",
+		"turn_request_file=\"$1\"",
+		"turn_result_file=\"$2\"",
+		"node - \"$turn_request_file\" \"$turn_result_file\" <<'EOF'",
+		"const [turnRequestFile, turnResultFile] = process.argv.slice(2);",
+		"const { readFileSync, writeFileSync } = await import(\"node:fs\");",
+		"const turnRequest = JSON.parse(readFileSync(turnRequestFile, \"utf8\"));",
+		"writeFileSync(turnResultFile, JSON.stringify({",
+		`  schemaVersion: "cautilus.live_run_turn_result.v1",`,
+		"  requestId: turnRequest.requestId,",
+		"  instanceId: turnRequest.instanceId,",
+		"  turnIndex: turnRequest.turnIndex,",
+		`  executionStatus: "completed",`,
+		`  summary: "synthetic persona turn completed",`,
+		"  assistantTurn: {",
+		`    text: turnRequest.turnIndex === 1 ? "대상 repo를 알려주시면 바로 보겠습니다." : "좋습니다. 바로 검토하겠습니다."`,
+		"  }",
+		"}) + \"\\n\", \"utf8\");",
+		"EOF",
+		"",
+	}, "\n"))
+	writeExecutableFile(t, root, "run-live-simulator.sh", strings.Join([]string{
+		"#!/bin/sh",
+		"simulator_request_file=\"$1\"",
+		"simulator_result_file=\"$2\"",
+		"node - \"$simulator_request_file\" \"$simulator_result_file\" <<'EOF'",
+		"const [simulatorRequestFile, simulatorResultFile] = process.argv.slice(2);",
+		"const { readFileSync, writeFileSync } = await import(\"node:fs\");",
+		"const simulatorRequest = JSON.parse(readFileSync(simulatorRequestFile, \"utf8\"));",
+		"const response = simulatorRequest.turnIndex === 1",
+		"  ? {",
+		`      schemaVersion: "cautilus.live_run_simulator_result.v1",`,
+		"      requestId: simulatorRequest.requestId,",
+		"      instanceId: simulatorRequest.instanceId,",
+		"      turnIndex: simulatorRequest.turnIndex,",
+		`      executionStatus: "completed",`,
+		`      action: "continue",`,
+		`      summary: "synthetic user still needs the repo name",`,
+		"      simulatorTurn: { text: \"대상 repo는 cautilus입니다.\" }",
+		"    }",
+		"  : {",
+		`      schemaVersion: "cautilus.live_run_simulator_result.v1",`,
+		"      requestId: simulatorRequest.requestId,",
+		"      instanceId: simulatorRequest.instanceId,",
+		"      turnIndex: simulatorRequest.turnIndex,",
+		`      executionStatus: "completed",`,
+		`      action: "stop",`,
+		`      stopReason: "goal_satisfied",`,
+		`      summary: "synthetic user has enough context",`,
+		"    };",
+		"writeFileSync(simulatorResultFile, JSON.stringify(response) + \"\\n\", \"utf8\");",
+		"EOF",
+		"",
+	}, "\n"))
+	adapter := strings.Join([]string{
+		"version: 1",
+		"repo: temp",
+		"evaluation_surfaces:",
+		"  - chatbot behavior",
+		"baseline_options:",
+		"  - baseline git ref via {baseline_ref}",
+		"live_run_invocation:",
+		"  command_template: cautilus workbench run-live --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
+		"  consumer_single_turn_command_template: ./run-live-turn.sh {turn_request_file} {turn_result_file}",
+		"  simulator_persona_command_template: ./run-live-simulator.sh {simulator_request_file} {simulator_result_file}",
+		"",
+	}, "\n")
+	if err := os.WriteFile(filepath.Join(adapterDir, "cautilus-adapter.yaml"), []byte(adapter), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	requestPath := filepath.Join(root, "request.json")
+	outputPath := filepath.Join(root, "artifacts", "persona-result.json")
+	writeJSONFile(t, requestPath, map[string]any{
+		"schemaVersion":     contracts.LiveRunInvocationRequestSchema,
+		"requestId":         "req-persona-123",
+		"instanceId":        "ceal",
+		"timeoutMs":         30000,
+		"captureTranscript": true,
+		"scenario": map[string]any{
+			"scenarioId":      "scenario-persona",
+			"name":            "Persona live run",
+			"description":     "Verify the promoted CLI can own a persona-driven multi-turn loop.",
+			"maxTurns":        3,
+			"sideEffectsMode": "read_only",
+			"simulator": map[string]any{
+				"kind":         "persona_prompt",
+				"instructions": "Act like a pragmatic operator. Stop once you have enough context to let the assistant proceed.",
+			},
+		},
+	})
+
+	stdout, stderr, exitCode := runCLI(
+		t,
+		root,
+		"workbench",
+		"run-live",
+		"--repo-root",
+		root,
+		"--instance-id",
+		"ceal",
+		"--request-file",
+		requestPath,
+		"--output-file",
+		outputPath,
+	)
+	if exitCode != 0 {
+		t.Fatalf("workbench run-live failed: %s", stderr)
+	}
+	if strings.TrimSpace(stdout) != outputPath {
+		t.Fatalf("expected stdout to point at result file, got %q", stdout)
+	}
+	result := readJSONObjectFile(t, outputPath)
+	if result["executionStatus"] != "completed" || result["stopReason"] != "goal_satisfied" {
+		t.Fatalf("unexpected persona live result payload: %#v", result)
+	}
+	transcript, ok := result["transcript"].([]any)
+	if !ok || len(transcript) != 1 {
+		t.Fatalf("expected one transcript entry before persona stop, got %#v", result["transcript"])
 	}
 }
 

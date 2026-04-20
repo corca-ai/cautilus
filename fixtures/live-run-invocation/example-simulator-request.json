@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "cautilus.live_run_simulator_request.v1",
+  "requestId": "live-run-persona-review-001",
+  "instanceId": "ceal",
+  "scenarioId": "persona-review",
+  "turnIndex": 2,
+  "maxTurns": 3,
+  "instructions": "Act like a pragmatic operator. Stop when you have enough context to let the assistant proceed.",
+  "consumerMetadata": {
+    "channelId": "C_REVIEW"
+  },
+  "transcript": [
+    {
+      "turnIndex": 1,
+      "simulatorTurn": {
+        "text": "review 해주세요"
+      },
+      "assistantTurn": {
+        "text": "대상 repo를 알려주시면 바로 확인하겠습니다."
+      }
+    }
+  ]
+}

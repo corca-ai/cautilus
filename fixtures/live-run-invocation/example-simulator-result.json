@@ -1,0 +1,10 @@
+{
+  "schemaVersion": "cautilus.live_run_simulator_result.v1",
+  "requestId": "live-run-persona-review-001",
+  "instanceId": "ceal",
+  "turnIndex": 2,
+  "executionStatus": "completed",
+  "action": "stop",
+  "stopReason": "goal_satisfied",
+  "summary": "The synthetic operator has enough context to let the assistant proceed."
+}

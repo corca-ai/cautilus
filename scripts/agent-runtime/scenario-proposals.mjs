@@ -20,7 +20,7 @@ function recommendedBackends(family) {
 }
 
 function draftScenarioBackend(family) {
-	return family === "terminal_realism" ? "codex_exec" : "scripted";
+	return family === "terminal_realism" ? "persona_prompt" : "scripted";
 }
 
 function normalizeTurn(turn, fallbackEventType) {
@@ -39,7 +39,7 @@ function normalizeTurn(turn, fallbackEventType) {
 function buildSimulator(candidate) {
 	if (candidate.family === "terminal_realism") {
 		return {
-			kind: "codex_exec",
+			kind: "persona_prompt",
 			instructions:
 				"You are acting like a real user talking to the candidate runtime. Be concise, goal-oriented, and stop when a real user would wait.",
 		};

@@ -6,7 +6,7 @@ The missing seam is a neutral invocation contract, not another consumer-specific
 ## Current Slice
 
 `Cautilus` now defines one request packet and one result packet for local-first live-run invocation.
-The adapter may either execute that packet directly as one bounded command or let `Cautilus` own a scripted multi-turn chatbot loop above a consumer-owned single-turn command.
+The adapter may either execute that packet directly as one bounded command or let `Cautilus` own a multi-turn chatbot loop above a consumer-owned single-turn command.
 The product owns the request intent, result summary shape, and failure semantics.
 The selected instance is one live consumer target returned by workbench discovery, not a scenario definition or an adapter name.
 
@@ -17,7 +17,7 @@ The selected instance is one live consumer target returned by workbench discover
 - The request packet carries product-owned scenario execution intent, not consumer route details.
 - The result packet distinguishes `completed`, `blocked`, and `failed` execution states.
 - `blocked` and `failed` results must carry operator-facing diagnostics.
-- The first product-owned loop slice supports `scripted` simulator turns on the public packet.
+- The first product-owned loop slice supports public `scripted` turns plus one provider-agnostic `persona_prompt` simulator kind.
 - Consumer-specific metadata stays opaque to `Cautilus`.
 - The contract does not define remote auth, sessions, or a generic admin transport.
 
@@ -40,7 +40,9 @@ The embedded `scenario` object must include:
 - `description`
 - `maxTurns`
 - `sideEffectsMode`
-- either `simulator.kind: scripted` plus `simulator.turns`, or the legacy `simulatorTurns`
+- either `simulator.kind: scripted` plus `simulator.turns`
+- or `simulator.kind: persona_prompt` plus `simulator.instructions`
+- or the legacy `simulatorTurns`
 
 Optional request fields:
 
@@ -50,6 +52,7 @@ Optional request fields:
 - `operatorNote`
 
 `consumerMetadata` is an opaque object that `Cautilus` round-trips into the consumer-owned single-turn seam when the adapter uses the product-owned loop.
+For `persona_prompt`, the product owns the loop boundary and the request packet, while the adapter still owns the concrete backend command that produces the next simulated user turn.
 The first request packet deliberately carries only the scenario-execution subset that the live runner needs.
 It does not force the full draft-scenario envelope or any consumer-owned storage paths into the invocation boundary.
 
@@ -95,6 +98,8 @@ The first shipped vocabulary is intentionally small:
 - `timeout_reached`
 - `blocked_by_consumer`
 - `consumer_turn_failed`
+- `goal_satisfied`
+- `simulator_persona_failed`
 
 ## Failure Semantics
 
@@ -109,17 +114,22 @@ That separation is the main reason this seam should be a product-owned packet in
 
 The adapter-owned entry lives under `live_run_invocation` in `cautilus-adapter.yaml`.
 The minimal legacy path still uses one `consumer_command_template` that reads `request_file` and writes `output_file`.
-For the product-owned scripted chatbot loop, the adapter instead points `command_template` at `cautilus workbench run-live` and provides:
+For the product-owned chatbot loop, the adapter instead points `command_template` at `cautilus workbench run-live` and provides:
 
 - `consumer_single_turn_command_template`
-  - called once per scripted turn with `{turn_request_file}` and `{turn_result_file}`
+  - called once per simulated turn with `{turn_request_file}` and `{turn_result_file}`
+- `simulator_persona_command_template`
+  - required when `simulator.kind` is `persona_prompt`
+  - called once per persona-generated turn with `{simulator_request_file}` and `{simulator_result_file}`
 - `consumer_evaluator_command_template`
   - optional post-run hook with `{transcript_file}` and `{evaluation_output_file}`
 
 The consumer may implement those commands in any language or host runtime as long as they preserve the packet boundary.
 
-The product-owned loop also materializes three supporting JSON artifacts when that path is active:
+The product-owned loop also materializes supporting JSON artifacts when that path is active:
 
+- `cautilus.live_run_simulator_request.v1`
+- `cautilus.live_run_simulator_result.v1`
 - `cautilus.live_run_turn_request.v1`
 - `cautilus.live_run_turn_result.v1`
 - `cautilus.live_run_transcript.v1`
@@ -128,7 +138,8 @@ The product-owned loop also materializes three supporting JSON artifacts when th
 
 - replay or resume semantics for partially completed live runs
 - streaming transcript updates
-- persona backends beyond public `scripted` turns
+- richer stop-reason vocabulary beyond the current bounded set
+- shared provider presets for persona backends
 - shared retry policy across consumers
 - generic remote invocation transport
 
@@ -153,6 +164,8 @@ The product-owned loop also materializes three supporting JSON artifacts when th
 - completed result example at [fixtures/live-run-invocation/example-result-completed.json](../../fixtures/live-run-invocation/example-result-completed.json) validates against [fixtures/live-run-invocation/result.schema.json](../../fixtures/live-run-invocation/result.schema.json)
 - blocked result example at [fixtures/live-run-invocation/example-result-blocked.json](../../fixtures/live-run-invocation/example-result-blocked.json) validates against [fixtures/live-run-invocation/result.schema.json](../../fixtures/live-run-invocation/result.schema.json)
 - turn request example at [fixtures/live-run-invocation/example-turn-request.json](../../fixtures/live-run-invocation/example-turn-request.json) validates against [fixtures/live-run-invocation/turn-request.schema.json](../../fixtures/live-run-invocation/turn-request.schema.json)
+- simulator request example at [fixtures/live-run-invocation/example-simulator-request.json](../../fixtures/live-run-invocation/example-simulator-request.json) validates against [fixtures/live-run-invocation/simulator-request.schema.json](../../fixtures/live-run-invocation/simulator-request.schema.json)
+- simulator result example at [fixtures/live-run-invocation/example-simulator-result.json](../../fixtures/live-run-invocation/example-simulator-result.json) validates against [fixtures/live-run-invocation/simulator-result.schema.json](../../fixtures/live-run-invocation/simulator-result.schema.json)
 - turn result example at [fixtures/live-run-invocation/example-turn-result.json](../../fixtures/live-run-invocation/example-turn-result.json) validates against [fixtures/live-run-invocation/turn-result.schema.json](../../fixtures/live-run-invocation/turn-result.schema.json)
 - transcript example at [fixtures/live-run-invocation/example-transcript.json](../../fixtures/live-run-invocation/example-transcript.json) validates against [fixtures/live-run-invocation/transcript.schema.json](../../fixtures/live-run-invocation/transcript.schema.json)
 
@@ -160,7 +173,7 @@ The product-owned loop also materializes three supporting JSON artifacts when th
 
 The canonical request artifact for this slice is `cautilus.live_run_invocation_request.v1`.
 The canonical result artifact for this slice is `cautilus.live_run_invocation_result.v1`.
-The supporting per-turn and transcript artifacts are `cautilus.live_run_turn_request.v1`, `cautilus.live_run_turn_result.v1`, and `cautilus.live_run_transcript.v1`.
+The supporting simulator, per-turn, and transcript artifacts are `cautilus.live_run_simulator_request.v1`, `cautilus.live_run_simulator_result.v1`, `cautilus.live_run_turn_request.v1`, `cautilus.live_run_turn_result.v1`, and `cautilus.live_run_transcript.v1`.
 
 ## Premortem
 

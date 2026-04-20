@@ -99,6 +99,16 @@ func TestFixtureExamplesValidateAgainstPublishedSchemas(t *testing.T) {
 			schemaAt: filepath.Join("..", "..", "fixtures", "live-run-invocation", "turn-request.schema.json"),
 		},
 		{
+			name:     "live_run_simulator_request",
+			example:  filepath.Join("..", "..", "fixtures", "live-run-invocation", "example-simulator-request.json"),
+			schemaAt: filepath.Join("..", "..", "fixtures", "live-run-invocation", "simulator-request.schema.json"),
+		},
+		{
+			name:     "live_run_simulator_result",
+			example:  filepath.Join("..", "..", "fixtures", "live-run-invocation", "example-simulator-result.json"),
+			schemaAt: filepath.Join("..", "..", "fixtures", "live-run-invocation", "simulator-result.schema.json"),
+		},
+		{
 			name:     "live_run_turn_result",
 			example:  filepath.Join("..", "..", "fixtures", "live-run-invocation", "example-turn-result.json"),
 			schemaAt: filepath.Join("..", "..", "fixtures", "live-run-invocation", "turn-result.schema.json"),

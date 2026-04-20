@@ -6,6 +6,7 @@ import { spawnSync } from "node:child_process";
 import test from "node:test";
 
 const RUN_SCRIPT = join(process.cwd(), "scripts", "agent-runtime", "run-live-instance-scenario.mjs");
+const PERSONA_SCRIPT = join(process.cwd(), "scripts", "agent-runtime", "run-live-simulator-persona.mjs");
 
 function writeExecutableFile(path, contents) {
 	writeFileSync(path, contents, "utf-8");
@@ -70,6 +71,40 @@ function writeScriptedSimulatorRequestFile(root, instanceId = "ceal") {
 					simulator: {
 						kind: "scripted",
 						turns: [{ text: "retro 먼저 해주세요" }, { text: "이제 review로 돌아가죠" }],
+					},
+				},
+			},
+			null,
+			2,
+		)}\n`,
+		"utf-8",
+	);
+	return requestFile;
+}
+
+function writePersonaSimulatorRequestFile(root, instanceId = "ceal") {
+	const requestFile = join(root, "persona-request.json");
+	writeFileSync(
+		requestFile,
+		`${JSON.stringify(
+			{
+				schemaVersion: "cautilus.live_run_invocation_request.v1",
+				requestId: "live-run-persona-chat-001",
+				instanceId,
+				timeoutMs: 45000,
+				captureTranscript: true,
+				consumerMetadata: {
+					channelId: "C_REVIEW",
+				},
+				scenario: {
+					scenarioId: "persona-review",
+					name: "Persona Review",
+					description: "The operator behaves like a realistic user until the goal is satisfied.",
+					maxTurns: 3,
+					sideEffectsMode: "read_only",
+					simulator: {
+						kind: "persona_prompt",
+						instructions: "Act like a pragmatic operator. Ask for the repo once, then stop when you have enough to proceed.",
 					},
 				},
 			},
@@ -309,6 +344,92 @@ test("run-live-instance-scenario can own a scripted multi-turn loop with evaluat
 		assert.equal(output.stopReason, "scripted_turns_exhausted");
 		assert.equal(output.transcript.length, 2);
 		assert.equal(output.evaluation.summary, "evaluated 2 transcript turns");
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("run-live-instance-scenario can own a persona_prompt multi-turn loop", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-live-run-persona-loop-"));
+	try {
+		const adapterDir = join(root, ".agents");
+		const consumerDir = join(root, "scripts", "consumer");
+		mkdirSync(adapterDir, { recursive: true });
+		mkdirSync(consumerDir, { recursive: true });
+		const fixtureFile = join(root, "persona-fixture.json");
+		writeFileSync(
+			fixtureFile,
+			`${JSON.stringify(
+				{
+					responses: [
+						{
+							action: "continue",
+							summary: "The synthetic user still needs the repo name.",
+							nextTurnText: "대상 repo는 cautilus입니다.",
+						},
+						{
+							action: "stop",
+							stopReason: "goal_satisfied",
+							summary: "The synthetic user has enough context to stop.",
+						},
+					],
+				},
+				null,
+				2,
+			)}\n`,
+			"utf-8",
+		);
+		writeExecutableFile(
+			join(consumerDir, "run-live-turn.mjs"),
+			[
+				"#!/usr/bin/env node",
+				"import { readFileSync, writeFileSync } from 'node:fs';",
+				"const args = process.argv.slice(2);",
+				"const take = (flag) => args[args.indexOf(flag) + 1];",
+				"const turnRequest = JSON.parse(readFileSync(take('--turn-request-file'), 'utf-8'));",
+				"writeFileSync(take('--turn-result-file'), JSON.stringify({",
+				"  schemaVersion: 'cautilus.live_run_turn_result.v1',",
+				"  requestId: turnRequest.requestId,",
+				"  instanceId: turnRequest.instanceId,",
+				"  turnIndex: turnRequest.turnIndex,",
+				"  executionStatus: 'completed',",
+				"  summary: 'synthetic persona turn completed',",
+				"  assistantTurn: {",
+				"    text: turnRequest.turnIndex === 1 ? '대상 repo를 알려주시면 바로 보겠습니다.' : '좋습니다. 바로 검토하겠습니다.'",
+				"  }",
+				"}, null, 2) + '\\n', 'utf-8');",
+				"",
+			].join("\n"),
+		);
+		writeFileSync(
+			join(adapterDir, "cautilus-adapter.yaml"),
+			[
+				"version: 1",
+				"repo: temp",
+				"evaluation_surfaces:",
+				"  - chatbot behavior",
+				"baseline_options:",
+				"  - baseline git ref via {baseline_ref}",
+				"live_run_invocation:",
+				"  command_template: node scripts/agent-runtime/run-live-instance-scenario.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
+				"  consumer_single_turn_command_template: node scripts/consumer/run-live-turn.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --turn-request-file {turn_request_file} --turn-result-file {turn_result_file}",
+				`  simulator_persona_command_template: node ${PERSONA_SCRIPT} --workspace {repo_root} --simulator-request-file {simulator_request_file} --simulator-result-file {simulator_result_file} --backend fixture --fixture-results-file ${fixtureFile}`,
+				"",
+			].join("\n"),
+			"utf-8",
+		);
+		const requestFile = writePersonaSimulatorRequestFile(root);
+		const outputFile = join(root, "artifacts", "persona-result.json");
+		const result = runLiveInvocation(
+			["--repo-root", root, "--instance-id", "ceal", "--request-file", requestFile, "--output-file", outputFile],
+			root,
+		);
+		assert.equal(result.status, 0, result.stderr);
+		const output = JSON.parse(readFileSync(outputFile, "utf-8"));
+		assert.equal(output.executionStatus, "completed");
+		assert.equal(output.stopReason, "goal_satisfied");
+		assert.equal(output.transcript.length, 1);
+		assert.equal(output.transcript[0].simulatorTurn.text, "대상 repo는 cautilus입니다.");
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}
