@@ -152,6 +152,10 @@ export function readDoctorReady(stdout) {
 	return payload.ready === true;
 }
 
+function readJSONFile(path) {
+	return JSON.parse(readFileSync(path, "utf-8"));
+}
+
 export async function runExternalConsumerOnboardingSmoke(
 	{ cautilusBin, outputDir = "", keepWorkdir = false },
 	{ execCommand = runCommand } = {},
@@ -235,18 +239,61 @@ export async function runExternalConsumerOnboardingSmoke(
 
 		const doctor = execCommand(cautilusBin, ["doctor", "--repo-root", workspace.repoRoot]);
 		summary.commands.push(summarizeCommand(cautilusBin, ["doctor", "--repo-root", workspace.repoRoot], doctor));
+		const doctorPayload = JSON.parse(doctor.stdout);
+
+		const firstBoundedRunDir = join(workspace.repoRoot, "tmp", "first-bounded-run");
+		const modeEvaluate = execCommand(cautilusBin, [
+			"mode",
+			"evaluate",
+			"--repo-root",
+			workspace.repoRoot,
+			"--mode",
+			"held_out",
+			"--intent",
+			"Fresh consumer onboarding smoke should reach one bounded run after doctor ready.",
+			"--baseline-ref",
+			"HEAD",
+			"--output-dir",
+			firstBoundedRunDir,
+		]);
+		summary.commands.push(
+			summarizeCommand(
+				cautilusBin,
+				[
+					"mode",
+					"evaluate",
+					"--repo-root",
+					workspace.repoRoot,
+					"--mode",
+					"held_out",
+					"--intent",
+					"Fresh consumer onboarding smoke should reach one bounded run after doctor ready.",
+					"--baseline-ref",
+					"HEAD",
+					"--output-dir",
+					firstBoundedRunDir,
+				],
+				modeEvaluate,
+			),
+		);
 
 		const agentSkillRoot = join(workspace.repoRoot, ".agents", "skills", "cautilus");
 		const claudeSkillLink = join(workspace.repoRoot, ".claude", "skills");
+		const reportPath = join(firstBoundedRunDir, "report.json");
 		ensurePathExists(adapterPath, "root adapter");
 		ensurePathExists(join(agentSkillRoot, "SKILL.md"), "bundled skill");
 		ensureSymlink(claudeSkillLink, "Claude skill compatibility link");
+		ensurePathExists(reportPath, "first bounded run report");
 
 		summary.ready = readDoctorReady(doctor.stdout);
+		summary.firstBoundedRun = doctorPayload.first_bounded_run ?? null;
+		summary.firstBoundedRunDir = firstBoundedRunDir;
+		summary.reportPath = reportPath;
+		summary.report = readJSONFile(reportPath);
 		summary.adapterPath = adapterPath;
 		summary.agentSkillRoot = agentSkillRoot;
 		summary.claudeSkillLink = claudeSkillLink;
-		summary.ok = summary.ready;
+		summary.ok = summary.ready && summary.report?.schemaVersion === "cautilus.report_packet.v2";
 		return summary;
 	} finally {
 		if (!keepWorkdir && !outputDir) {

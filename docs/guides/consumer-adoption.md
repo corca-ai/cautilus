@@ -103,6 +103,8 @@ This helper:
 - seeds one minimal `held_out_command_templates` entry into the generated adapter so the repo reaches `doctor ready`
 - runs `cautilus adapter resolve` inside that temp repo
 - runs `cautilus doctor` inside that temp repo
+- runs `cautilus mode evaluate --mode held_out` inside that temp repo
+- proves the fresh consumer reaches one bounded `report.json` instead of stopping at wiring
 
 ## Deprecated Surface Names
 
