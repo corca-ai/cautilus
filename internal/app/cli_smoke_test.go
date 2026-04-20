@@ -5671,6 +5671,100 @@ func TestCLIWorkbenchRunLiveDispatchesConsumerCommand(t *testing.T) {
 	}
 }
 
+func TestCLIWorkbenchRunLiveAcceptsBlockedConsumerResult(t *testing.T) {
+	root := t.TempDir()
+	adapterDir := filepath.Join(root, ".agents")
+	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	writeExecutableFile(t, root, "run-live.sh", strings.Join([]string{
+		"#!/bin/sh",
+		"instance_id=\"$1\"",
+		"request_file=\"$2\"",
+		"output_file=\"$3\"",
+		"node - \"$instance_id\" \"$request_file\" \"$output_file\" <<'EOF'",
+		"const [instanceId, requestFile, outputFile] = process.argv.slice(2);",
+		"const { readFileSync, writeFileSync } = await import(\"node:fs\");",
+		"const request = JSON.parse(readFileSync(requestFile, \"utf8\"));",
+		"writeFileSync(outputFile, JSON.stringify({",
+		`  schemaVersion: "cautilus.live_run_invocation_result.v1",`,
+		"  requestId: request.requestId,",
+		"  instanceId,",
+		`  executionStatus: "blocked",`,
+		`  summary: "runtime refused to start the bounded run",`,
+		"  diagnostics: [",
+		"    {",
+		`      code: "runtime_not_ready",`,
+		`      severity: "error",`,
+		`      message: "Consumer runtime is not ready for live execution."`,
+		"    }",
+		"  ]",
+		"}) + \"\\n\", \"utf8\");",
+		"EOF",
+		"",
+	}, "\n"))
+	adapter := strings.Join([]string{
+		"version: 1",
+		"repo: temp",
+		"evaluation_surfaces:",
+		"  - workbench smoke",
+		"baseline_options:",
+		"  - baseline git ref via {baseline_ref}",
+		"live_run_invocation:",
+		"  command_template: cautilus workbench run-live --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
+		"  consumer_command_template: ./run-live.sh {instance_id} {request_file} {output_file}",
+		"",
+	}, "\n")
+	if err := os.WriteFile(filepath.Join(adapterDir, "cautilus-adapter.yaml"), []byte(adapter), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	requestPath := filepath.Join(root, "request.json")
+	outputPath := filepath.Join(root, "artifacts", "blocked-result.json")
+	writeJSONFile(t, requestPath, map[string]any{
+		"schemaVersion": contracts.LiveRunInvocationRequestSchema,
+		"requestId":     "req-456",
+		"instanceId":    "ceal-dev",
+		"timeoutMs":     30000,
+		"scenario": map[string]any{
+			"scenarioId":      "scenario-blocked",
+			"name":            "Blocked live run",
+			"description":     "Verify blocked results stay distinct from completed results.",
+			"maxTurns":        1,
+			"sideEffectsMode": "read_only",
+			"simulatorTurns":  []string{"Attempt to start a bounded live run."},
+		},
+	})
+
+	stdout, stderr, exitCode := runCLI(
+		t,
+		root,
+		"workbench",
+		"run-live",
+		"--repo-root",
+		root,
+		"--instance-id",
+		"ceal-dev",
+		"--request-file",
+		requestPath,
+		"--output-file",
+		outputPath,
+	)
+	if exitCode != 0 {
+		t.Fatalf("workbench run-live failed: %s", stderr)
+	}
+	if strings.TrimSpace(stdout) != outputPath {
+		t.Fatalf("expected stdout to point at blocked result file, got %q", stdout)
+	}
+	result := readJSONObjectFile(t, outputPath)
+	if result["executionStatus"] != "blocked" {
+		t.Fatalf("expected blocked execution status, got %#v", result["executionStatus"])
+	}
+	diagnostics, ok := result["diagnostics"].([]any)
+	if !ok || len(diagnostics) != 1 {
+		t.Fatalf("expected one diagnostic entry, got %#v", result["diagnostics"])
+	}
+}
+
 func TestCLIExampleInputEmitsPacketsThatRoundTripThroughTheSameCommand(t *testing.T) {
 	cases := []struct {
 		name           string

@@ -27,14 +27,15 @@
 - live invocation helper 는 `consumer_command_template` 를 통해 consumer-owned runtime command 를 호출한다.
 - 지금까지의 executable proof 는 explicit discovery normalization 과 live invocation completed/blocked synthetic proof 까지다.
 - `cautilus workbench discover` 와 `cautilus workbench run-live` 는 이제 Go CLI entrypoint 로 연결됐다.
-- CLI smoke test 는 explicit discovery, command-backed discovery, live invocation dispatch 를 synthetic repo 에서 증명한다.
+- CLI smoke test 는 explicit discovery, command-backed discovery, live invocation completed/blocked dispatch 를 synthetic repo 에서 증명한다.
+- Ceal consumer-owned wiring follow-up 은 외부 issue [corca-ai/ceal#1](https://github.com/corca-ai/ceal/issues/1) 로 분리됐다.
 
 ## Next Session
 
-1. workbench discovery/live invocation 을 Ceal 또는 첫 real consumer adapter 에 실제로 연결할지 결정한다.
-   synthetic proof 는 닫혔으니 이제 consumer-owned probe/launch command 와의 실제 접점을 확인하는 턴이다.
-2. `kind: command` discovery 와 `consumer_command_template` indirection 을 real consumer 에서 그대로 유지하는지 확인한다.
-   contract 를 바꿀 이유가 보이지 않으면 example 을 넘어 operator acceptance 에 올린다.
+1. Cautilus 쪽 남은 local follow-up 을 product-only 기준으로 좁힌다.
+   우선순위는 operator acceptance 에 workbench discover/run-live 를 언제 올릴지와, human-facing acceptance command 를 fixture-backed 로 만들지 여부다.
+2. Ceal 쪽 real-consumer proof 는 [corca-ai/ceal#1](https://github.com/corca-ai/ceal/issues/1) 진행을 기다리며 추적한다.
+   이 repo 에서는 consumer-specific launch/auth/path 결정을 다시 끌어오지 않는다.
 3. 어떤 runtime surface 를 더 열더라도 local-first / one-instance-per-invocation / bounded packet 원칙을 유지한다.
    remote auth, watch mode, multi-run session, full UI 흡수는 이번 턴에 넣지 않는다.
 4. 릴리즈 후속을 계속 추적해야 한다면 install.sh 외 smoke evidence 가 실제로 더 필요한지부터 판단한다.
@@ -44,8 +45,8 @@
 ## Discuss
 
 - live invocation 의 `consumer_command_template` indirection 을 장기 contract 로 고정할지
-- 다음 runnable proof 를 Ceal consumer experiment 로 바로 연결할지, 다른 real consumer adapter 로 먼저 고정할지
 - operator acceptance 에 workbench discover/run-live 를 언제 올릴지
+- workbench acceptance 를 위해 temp consumer fixture 를 checked-in artifact 로 둘지, 현재처럼 smoke-test-owned synthetic repo 로 유지할지
 
 ## References
 
