@@ -480,6 +480,14 @@ func validateAdapterLiveRunInvocation(value any) (map[string]any, []string) {
 	} else {
 		validated["command_template"] = commandTemplate
 	}
+	if consumerCommandTemplate, ok := record["consumer_command_template"]; ok && consumerCommandTemplate != nil {
+		text, err := normalizeNonEmptyString(consumerCommandTemplate, "live_run_invocation.consumer_command_template")
+		if err != nil {
+			errors = append(errors, "live_run_invocation.consumer_command_template must be a non-empty string")
+		} else {
+			validated["consumer_command_template"] = text
+		}
+	}
 	if prerequisites, ok := record["required_prerequisites"]; ok && prerequisites != nil {
 		items, err := assertArray(prerequisites, "live_run_invocation.required_prerequisites")
 		if err != nil {

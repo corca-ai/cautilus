@@ -66,7 +66,8 @@ instance_discovery:
   required_prerequisites:
     - keep instance ids stable and keep typed paths machine-readable
 live_run_invocation:
-  command_template: node scripts/consumer/run-live-instance-scenario.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}
+  command_template: node scripts/agent-runtime/run-live-instance-scenario.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}
+  consumer_command_template: node scripts/consumer/run-live-instance-scenario.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}
   required_prerequisites:
     - keep invocation bounded to one selected local instance and one request packet
 optimize_search:
@@ -240,7 +241,8 @@ The adapter may therefore declare one optional `live_run_invocation` stanza.
 
 ```yaml
 live_run_invocation:
-  command_template: node scripts/consumer/run-live-instance-scenario.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}
+  command_template: node scripts/agent-runtime/run-live-instance-scenario.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}
+  consumer_command_template: node scripts/consumer/run-live-instance-scenario.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}
   required_prerequisites:
     - keep invocation bounded to one selected local instance and one request packet
 ```
@@ -248,12 +250,21 @@ live_run_invocation:
 Fixed rules:
 
 - The command handles exactly one selected `instance_id` per invocation.
+- `command_template` may point at the product-owned helper, but the helper must then receive a consumer-owned `consumer_command_template` to avoid recursive self-invocation.
 - The command reads one request packet from `request_file`.
 - The command writes one `cautilus.live_run_invocation_result.v1` packet to `output_file`.
 - The packet owns scenario execution intent.
   The consumer still owns runtime wiring, auth, secrets, and host-specific launch details.
 
 Current placeholders for `live_run_invocation.command_template`:
+
+- `{repo_root}`
+- `{adapter_path}`
+- `{instance_id}`
+- `{request_file}`
+- `{output_file}`
+
+Current placeholders for `live_run_invocation.consumer_command_template`:
 
 - `{repo_root}`
 - `{adapter_path}`

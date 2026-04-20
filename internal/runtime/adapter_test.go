@@ -103,6 +103,7 @@ func TestValidateAdapterDataAcceptsLiveRunInvocation(t *testing.T) {
 	validated, errors := validateAdapterData(map[string]any{
 		"live_run_invocation": map[string]any{
 			"command_template": "node scripts/agent-runtime/run-live-instance-scenario.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
+			"consumer_command_template": "node scripts/consumer/run-live-instance-scenario.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
 			"required_prerequisites": []any{
 				"Keep the invocation command bounded to one selected local instance.",
 			},
@@ -117,6 +118,9 @@ func TestValidateAdapterDataAcceptsLiveRunInvocation(t *testing.T) {
 	}
 	if !strings.Contains(liveRunInvocation["command_template"].(string), "{request_file}") {
 		t.Fatalf("expected request-file placeholder to survive normalization, got %#v", liveRunInvocation["command_template"])
+	}
+	if !strings.Contains(liveRunInvocation["consumer_command_template"].(string), "scripts/consumer/run-live-instance-scenario.mjs") {
+		t.Fatalf("expected consumer command template to survive normalization, got %#v", liveRunInvocation["consumer_command_template"])
 	}
 }
 

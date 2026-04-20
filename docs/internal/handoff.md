@@ -23,16 +23,17 @@
 - [scripts/agent-runtime/discover-workbench-instances.mjs](../../scripts/agent-runtime/discover-workbench-instances.mjs) 는 이제 `kind: explicit` adapter stanza 를 `cautilus.workbench_instance_catalog.v1` packet 으로 정규화한다.
 - JS-side adapter resolution 도 이제 optional `instance_discovery` 와 `live_run_invocation` stanza 를 보존한다.
 - [examples/adapter.example.yaml](../../examples/adapter.example.yaml) 과 [docs/contracts/adapter-contract.md](../contracts/adapter-contract.md) 는 self-recursive wrapper 예시를 제거했다.
-- live invocation 은 아직 product-owned helper 가 아니라 consumer-owned command seam 으로 남아 있다.
-- 지금까지의 executable proof 는 explicit discovery normalization 까지다.
-- 다음 slice 는 live invocation 을 product-owned helper 로 올릴지, 계속 consumer-owned command seam 으로 둘지 결정하는 쪽으로 좁혀졌다.
+- [scripts/agent-runtime/run-live-instance-scenario.mjs](../../scripts/agent-runtime/run-live-instance-scenario.mjs) 는 이제 request/result packet 검증과 consumer command dispatch 를 담당하는 thin helper 로 존재한다.
+- live invocation helper 는 `consumer_command_template` 를 통해 consumer-owned runtime command 를 호출한다.
+- 지금까지의 executable proof 는 explicit discovery normalization 과 live invocation completed/blocked synthetic proof 까지다.
+- 다음 slice 는 live invocation helper 를 thin Go CLI wrapper 로 끌어올릴지, 아니면 agent-runtime helper 로 유지할지 결정하는 쪽으로 좁혀졌다.
 
 ## Next Session
 
-1. live invocation seam 을 product-owned helper 로 실제로 만들지, consumer-owned command example 로 유지할지 결정한다.
-   현재 contract shape 에서는 generic wrapper 가 자기 자신을 재귀 호출하기 쉬우므로, helper 를 추가하려면 adapter indirection 또는 다른 invocation surface 가 더 필요하다.
+1. live invocation helper 를 thin Go CLI wrapper 로 끌어올릴지, 지금처럼 agent-runtime helper 로 유지할지 결정한다.
+   현재 helper 는 `consumer_command_template` indirection 위에서만 non-recursive 하게 동작한다.
 2. workbench 후속이 discovery 쪽이라면 explicit 외에 `kind: command` consumer probe 를 product proof 에 어떻게 엮을지 정한다.
-   지금 helper 는 explicit normalization only 이다.
+   discovery helper 는 아직 explicit normalization only 이다.
 3. 어떤 runtime surface 를 더 열더라도 local-first / one-instance-per-invocation / bounded packet 원칙을 유지한다.
    remote auth, watch mode, multi-run session, full UI 흡수는 이번 턴에 넣지 않는다.
 4. 릴리즈 후속을 계속 추적해야 한다면 install.sh 외 smoke evidence 가 실제로 더 필요한지부터 판단한다.
@@ -42,7 +43,7 @@
 ## Discuss
 
 - discovery helper 를 thin Go CLI wrapper 로 끌어올릴지, 지금처럼 agent-runtime helper 로 유지할지
-- live invocation 을 generic wrapper 로 만들려면 adapter contract 에 어떤 non-recursive indirection 이 필요한지
+- live invocation 의 `consumer_command_template` indirection 을 장기 contract 로 고정할지
 - 다음 runnable proof 를 Ceal consumer experiment 로 바로 연결할지, repo-local synthetic invocation runner 로 먼저 고정할지
 
 ## References

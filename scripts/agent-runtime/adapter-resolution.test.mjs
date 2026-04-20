@@ -133,7 +133,8 @@ test("resolve_adapter preserves workbench discovery and live invocation seams", 
 				"      paths:",
 				"        scenario_store: /Users/operator/.ceal/ceal/scenarios.json",
 				"live_run_invocation:",
-				"  command_template: node scripts/consumer/run-live-instance-scenario.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
+				"  command_template: node scripts/agent-runtime/run-live-instance-scenario.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
+				"  consumer_command_template: node scripts/consumer/run-live-instance-scenario.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
 				"",
 			].join("\n"),
 			"utf-8",
@@ -143,7 +144,8 @@ test("resolve_adapter preserves workbench discovery and live invocation seams", 
 		assert.equal(payload.valid, true);
 		assert.equal(payload.data.instance_discovery.kind, "explicit");
 		assert.equal(payload.data.instance_discovery.instances[0].display_label, "Ceal Production");
-		assert.match(payload.data.live_run_invocation.command_template, /run-live-instance-scenario/);
+		assert.match(payload.data.live_run_invocation.command_template, /agent-runtime\/run-live-instance-scenario/);
+		assert.match(payload.data.live_run_invocation.consumer_command_template, /scripts\/consumer\/run-live-instance-scenario/);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}
