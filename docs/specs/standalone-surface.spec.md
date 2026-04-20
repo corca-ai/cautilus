@@ -51,32 +51,30 @@ instance_discovery:
         scenario_store: $tmpdir/runtime/default/scenarios.json
 live_run_invocation:
   command_template: cautilus workbench run-live --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}
-  consumer_command_template: sh ./run-live.sh {instance_id} {request_file} {output_file}
+  consumer_single_turn_command_template: sh ./run-live-turn.sh {turn_request_file} {turn_result_file}
 EOF
-cat > "$tmpdir/run-live.sh" <<'EOF'
+cat > "$tmpdir/run-live-turn.sh" <<'EOF'
 #!/bin/sh
-instance_id="$1"
-request_file="$2"
-output_file="$3"
-node - "$instance_id" "$request_file" "$output_file" <<'JSON'
-const [instanceId, requestFile, outputFile] = process.argv.slice(2);
+turn_request_file="$1"
+turn_result_file="$2"
+node - "$turn_request_file" "$turn_result_file" <<'JSON'
+const [turnRequestFile, turnResultFile] = process.argv.slice(2);
 const { readFileSync, writeFileSync } = await import("node:fs");
-const request = JSON.parse(readFileSync(requestFile, "utf8"));
-writeFileSync(outputFile, JSON.stringify({
-  schemaVersion: "cautilus.live_run_invocation_result.v1",
-  requestId: request.requestId,
-  instanceId,
+const turnRequest = JSON.parse(readFileSync(turnRequestFile, "utf8"));
+writeFileSync(turnResultFile, JSON.stringify({
+  schemaVersion: "cautilus.live_run_turn_result.v1",
+  requestId: turnRequest.requestId,
+  instanceId: turnRequest.instanceId,
+  turnIndex: turnRequest.turnIndex,
   executionStatus: "completed",
-  summary: "Synthetic workbench smoke completed successfully.",
-  scenarioResult: {
-    scenarioId: request.scenario.scenarioId,
-    status: "passed",
-    summary: "The bounded run stayed inside the contract."
+  summary: "Synthetic scripted turn completed successfully.",
+  assistantTurn: {
+    text: "The synthetic consumer acknowledged the scripted prompt."
   }
 }) + "\n", "utf8");
 JSON
 EOF
-chmod +x "$tmpdir/run-live.sh"
+chmod +x "$tmpdir/run-live-turn.sh"
 cat > "$tmpdir/request.json" <<'EOF'
 {
   "schemaVersion": "cautilus.live_run_invocation_request.v1",
@@ -89,7 +87,12 @@ cat > "$tmpdir/request.json" <<'EOF'
     "description": "Prove the standalone CLI can route one bounded live request.",
     "maxTurns": 1,
     "sideEffectsMode": "read_only",
-    "simulatorTurns": ["Open the target and confirm the initial state."]
+    "simulator": {
+      "kind": "scripted",
+      "turns": [
+        { "text": "Open the target and confirm the initial state." }
+      ]
+    }
   }
 }
 EOF
@@ -97,8 +100,9 @@ EOF
 ./bin/cautilus workbench run-live --repo-root "$tmpdir" --instance-id default --request-file "$tmpdir/request.json" --output-file "$tmpdir/result.json" >/dev/null
 grep -q '"instanceId": "default"' "$tmpdir/catalog.json"
 grep -q '"displayLabel": "Local Default"' "$tmpdir/catalog.json"
-grep -q '"executionStatus":"completed"' "$tmpdir/result.json"
-grep -q '"scenarioId":"scenario-smoke"' "$tmpdir/result.json"
+grep -q '"executionStatus": "completed"' "$tmpdir/result.json"
+grep -q '"stopReason": "scripted_turns_exhausted"' "$tmpdir/result.json"
+grep -q '"scenarioId": "scenario-smoke"' "$tmpdir/result.json"
 ```
 
 ## Install Proof

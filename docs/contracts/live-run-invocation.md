@@ -118,6 +118,12 @@ For the product-owned scripted chatbot loop, the adapter instead points `command
 
 The consumer may implement those commands in any language or host runtime as long as they preserve the packet boundary.
 
+The product-owned loop also materializes three supporting JSON artifacts when that path is active:
+
+- `cautilus.live_run_turn_request.v1`
+- `cautilus.live_run_turn_result.v1`
+- `cautilus.live_run_transcript.v1`
+
 ## Deferred Decisions
 
 - replay or resume semantics for partially completed live runs
@@ -146,11 +152,15 @@ The consumer may implement those commands in any language or host runtime as lon
 - request example at [fixtures/live-run-invocation/example-request.json](../../fixtures/live-run-invocation/example-request.json) validates against [fixtures/live-run-invocation/request.schema.json](../../fixtures/live-run-invocation/request.schema.json)
 - completed result example at [fixtures/live-run-invocation/example-result-completed.json](../../fixtures/live-run-invocation/example-result-completed.json) validates against [fixtures/live-run-invocation/result.schema.json](../../fixtures/live-run-invocation/result.schema.json)
 - blocked result example at [fixtures/live-run-invocation/example-result-blocked.json](../../fixtures/live-run-invocation/example-result-blocked.json) validates against [fixtures/live-run-invocation/result.schema.json](../../fixtures/live-run-invocation/result.schema.json)
+- turn request example at [fixtures/live-run-invocation/example-turn-request.json](../../fixtures/live-run-invocation/example-turn-request.json) validates against [fixtures/live-run-invocation/turn-request.schema.json](../../fixtures/live-run-invocation/turn-request.schema.json)
+- turn result example at [fixtures/live-run-invocation/example-turn-result.json](../../fixtures/live-run-invocation/example-turn-result.json) validates against [fixtures/live-run-invocation/turn-result.schema.json](../../fixtures/live-run-invocation/turn-result.schema.json)
+- transcript example at [fixtures/live-run-invocation/example-transcript.json](../../fixtures/live-run-invocation/example-transcript.json) validates against [fixtures/live-run-invocation/transcript.schema.json](../../fixtures/live-run-invocation/transcript.schema.json)
 
 ## Canonical Artifact
 
 The canonical request artifact for this slice is `cautilus.live_run_invocation_request.v1`.
 The canonical result artifact for this slice is `cautilus.live_run_invocation_result.v1`.
+The supporting per-turn and transcript artifacts are `cautilus.live_run_turn_request.v1`, `cautilus.live_run_turn_result.v1`, and `cautilus.live_run_transcript.v1`.
 
 ## Premortem
 

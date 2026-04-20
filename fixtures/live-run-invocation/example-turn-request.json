@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "cautilus.live_run_turn_request.v1",
+  "requestId": "live-run-review-after-retro-001",
+  "instanceId": "ceal",
+  "scenarioId": "review-after-retro",
+  "turnIndex": 2,
+  "maxTurns": 2,
+  "consumerMetadata": {
+    "channelId": "C_REVIEW",
+    "threadTs": "1713596700.000100"
+  },
+  "captureTranscript": true,
+  "simulatorTurn": {
+    "text": "이제 review로 돌아가죠"
+  },
+  "transcript": [
+    {
+      "turnIndex": 1,
+      "simulatorTurn": {
+        "text": "retro 먼저 해주세요"
+      },
+      "assistantTurn": {
+        "text": "먼저 retro를 정리하고 바로 review로 이어가겠습니다."
+      }
+    }
+  ]
+}

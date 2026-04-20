@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "cautilus.live_run_turn_result.v1",
+  "requestId": "live-run-review-after-retro-001",
+  "instanceId": "ceal",
+  "turnIndex": 2,
+  "executionStatus": "completed",
+  "summary": "The consumer completed the second scripted turn and returned to review mode.",
+  "assistantTurn": {
+    "text": "좋습니다. 현재 review 대상과 확인 기준부터 정리하겠습니다."
+  },
+  "consumerSignal": {
+    "route": "thread_reply"
+  }
+}
