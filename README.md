@@ -5,6 +5,10 @@
 `Cautilus` keeps agent and workflow behavior honest while prompts keep changing.
 It is a repo-local contract layer for agent and workflow behavior evaluation: define the behavior you are trying to protect once, then verify it survives prompt, skill, and wrapper changes.
 Ships as a standalone binary plus a bundled skill a host repo can install without copying another scaffold first.
+`Cautilus` installs as a machine-level binary, but its agent-facing surface is intentionally repo-local.
+The binary is shared across repos.
+The skill, adapter wiring, prompts, and instruction-routing surface are not.
+They stay checked into each host repo so evaluation behavior remains reproducible, reviewable, and owned by the repo that declares it.
 
 ## Who It Is For
 
