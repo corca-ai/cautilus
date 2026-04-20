@@ -5816,6 +5816,121 @@ func TestCLIWorkbenchRunLiveAcceptsBlockedConsumerResult(t *testing.T) {
 	}
 }
 
+func TestCLIWorkbenchRunLiveCanExecuteProductOwnedScriptedLoop(t *testing.T) {
+	root := t.TempDir()
+	adapterDir := filepath.Join(root, ".agents")
+	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	writeExecutableFile(t, root, "run-live-turn.sh", strings.Join([]string{
+		"#!/bin/sh",
+		"turn_request_file=\"$1\"",
+		"turn_result_file=\"$2\"",
+		"node - \"$turn_request_file\" \"$turn_result_file\" <<'EOF'",
+		"const [turnRequestFile, turnResultFile] = process.argv.slice(2);",
+		"const { readFileSync, writeFileSync } = await import(\"node:fs\");",
+		"const turnRequest = JSON.parse(readFileSync(turnRequestFile, \"utf8\"));",
+		"writeFileSync(turnResultFile, JSON.stringify({",
+		`  schemaVersion: "cautilus.live_run_turn_result.v1",`,
+		"  requestId: turnRequest.requestId,",
+		"  instanceId: turnRequest.instanceId,",
+		"  turnIndex: turnRequest.turnIndex,",
+		`  executionStatus: "completed",`,
+		`  summary: "synthetic turn completed",`,
+		"  assistantTurn: {",
+		`    text: turnRequest.turnIndex === 1 ? "먼저 retro를 정리하겠습니다." : "좋습니다. 이제 review로 돌아가겠습니다."`,
+		"  }",
+		"}) + \"\\n\", \"utf8\");",
+		"EOF",
+		"",
+	}, "\n"))
+	writeExecutableFile(t, root, "evaluate-live-run.sh", strings.Join([]string{
+		"#!/bin/sh",
+		"transcript_file=\"$1\"",
+		"evaluation_output_file=\"$2\"",
+		"node - \"$transcript_file\" \"$evaluation_output_file\" <<'EOF'",
+		"const [transcriptFile, evaluationOutputFile] = process.argv.slice(2);",
+		"const { readFileSync, writeFileSync } = await import(\"node:fs\");",
+		"const transcript = JSON.parse(readFileSync(transcriptFile, \"utf8\"));",
+		"writeFileSync(evaluationOutputFile, JSON.stringify({",
+		`  status: "pass",`,
+		"  summary: `evaluated ${transcript.transcript.length} transcript turns`",
+		"}) + \"\\n\", \"utf8\");",
+		"EOF",
+		"",
+	}, "\n"))
+	adapter := strings.Join([]string{
+		"version: 1",
+		"repo: temp",
+		"evaluation_surfaces:",
+		"  - chatbot behavior",
+		"baseline_options:",
+		"  - baseline git ref via {baseline_ref}",
+		"live_run_invocation:",
+		"  command_template: cautilus workbench run-live --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
+		"  consumer_single_turn_command_template: ./run-live-turn.sh {turn_request_file} {turn_result_file}",
+		"  consumer_evaluator_command_template: ./evaluate-live-run.sh {transcript_file} {evaluation_output_file}",
+		"",
+	}, "\n")
+	if err := os.WriteFile(filepath.Join(adapterDir, "cautilus-adapter.yaml"), []byte(adapter), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	requestPath := filepath.Join(root, "request.json")
+	outputPath := filepath.Join(root, "artifacts", "scripted-result.json")
+	writeJSONFile(t, requestPath, map[string]any{
+		"schemaVersion": contracts.LiveRunInvocationRequestSchema,
+		"requestId":     "req-scripted-123",
+		"instanceId":    "ceal",
+		"timeoutMs":     30000,
+		"captureTranscript": true,
+		"consumerMetadata": map[string]any{
+			"channelId": "C_REVIEW",
+		},
+		"scenario": map[string]any{
+			"scenarioId":      "scenario-scripted",
+			"name":            "Scripted live run",
+			"description":     "Verify the promoted CLI can own a scripted multi-turn loop.",
+			"maxTurns":        2,
+			"sideEffectsMode": "read_only",
+			"simulator": map[string]any{
+				"kind": "scripted",
+				"turns": []any{
+					map[string]any{"text": "retro 먼저 해주세요"},
+					map[string]any{"text": "이제 review로 돌아가죠"},
+				},
+			},
+		},
+	})
+
+	stdout, stderr, exitCode := runCLI(
+		t,
+		root,
+		"workbench",
+		"run-live",
+		"--repo-root",
+		root,
+		"--instance-id",
+		"ceal",
+		"--request-file",
+		requestPath,
+		"--output-file",
+		outputPath,
+	)
+	if exitCode != 0 {
+		t.Fatalf("workbench run-live failed: %s", stderr)
+	}
+	if strings.TrimSpace(stdout) != outputPath {
+		t.Fatalf("expected stdout to point at result file, got %q", stdout)
+	}
+	result := readJSONObjectFile(t, outputPath)
+	if result["executionStatus"] != "completed" || result["stopReason"] != "scripted_turns_exhausted" {
+		t.Fatalf("unexpected scripted live result payload: %#v", result)
+	}
+	if result["evaluation"].(map[string]any)["summary"] != "evaluated 2 transcript turns" {
+		t.Fatalf("expected evaluator summary in result, got %#v", result["evaluation"])
+	}
+}
+
 func TestCLIExampleInputEmitsPacketsThatRoundTripThroughTheSameCommand(t *testing.T) {
 	cases := []struct {
 		name           string

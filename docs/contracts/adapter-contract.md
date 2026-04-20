@@ -242,7 +242,8 @@ The adapter may therefore declare one optional `live_run_invocation` stanza.
 ```yaml
 live_run_invocation:
   command_template: cautilus workbench run-live --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}
-  consumer_command_template: node scripts/consumer/run-live-instance-scenario.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}
+  consumer_single_turn_command_template: node scripts/consumer/run-live-turn.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --turn-request-file {turn_request_file} --turn-result-file {turn_result_file}
+  consumer_evaluator_command_template: node scripts/consumer/evaluate-live-run.mjs --repo-root {repo_root} --adapter-path {adapter_path} --request-file {request_file} --transcript-file {transcript_file} --output-file {evaluation_output_file}
   required_prerequisites:
     - keep invocation bounded to one selected local instance and one request packet
 ```
@@ -250,7 +251,9 @@ live_run_invocation:
 Fixed rules:
 
 - The command handles exactly one selected `instance_id` per invocation.
-- `command_template` may point at the product-owned `cautilus workbench run-live` command, but that command must then receive a consumer-owned `consumer_command_template` to avoid recursive self-invocation.
+- `command_template` may point at the product-owned `cautilus workbench run-live` command.
+  For the legacy one-shot path, that command must then receive a consumer-owned `consumer_command_template` to avoid recursive self-invocation.
+  For the product-owned scripted chatbot loop, it must instead receive `consumer_single_turn_command_template`.
 - The command reads one request packet from `request_file`.
 - The command writes one `cautilus.live_run_invocation_result.v1` packet to `output_file`.
 - The packet owns scenario execution intent.
@@ -271,6 +274,23 @@ Current placeholders for `live_run_invocation.consumer_command_template`:
 - `{instance_id}`
 - `{request_file}`
 - `{output_file}`
+
+Current placeholders for `live_run_invocation.consumer_single_turn_command_template`:
+
+- `{repo_root}`
+- `{adapter_path}`
+- `{instance_id}`
+- `{request_file}`
+- `{turn_request_file}`
+- `{turn_result_file}`
+
+Current placeholders for `live_run_invocation.consumer_evaluator_command_template`:
+
+- `{repo_root}`
+- `{adapter_path}`
+- `{request_file}`
+- `{transcript_file}`
+- `{evaluation_output_file}`
 
 See [live-run-invocation.md](./live-run-invocation.md) for the request/result packet contract.
 

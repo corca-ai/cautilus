@@ -102,8 +102,10 @@ func TestValidateAdapterDataRejectsExplicitInstanceDiscoveryWithoutLocation(t *t
 func TestValidateAdapterDataAcceptsLiveRunInvocation(t *testing.T) {
 	validated, errors := validateAdapterData(map[string]any{
 		"live_run_invocation": map[string]any{
-			"command_template":          "cautilus workbench run-live --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
-			"consumer_command_template": "node scripts/consumer/run-live-instance-scenario.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
+			"command_template":                      "cautilus workbench run-live --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
+			"consumer_command_template":             "node scripts/consumer/run-live-instance-scenario.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
+			"consumer_single_turn_command_template": "node scripts/consumer/run-live-turn.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --turn-request-file {turn_request_file} --turn-result-file {turn_result_file}",
+			"consumer_evaluator_command_template":   "node scripts/consumer/evaluate-live-run.mjs --repo-root {repo_root} --adapter-path {adapter_path} --request-file {request_file} --transcript-file {transcript_file} --output-file {evaluation_output_file}",
 			"required_prerequisites": []any{
 				"Keep the invocation command bounded to one selected local instance.",
 			},
@@ -121,6 +123,12 @@ func TestValidateAdapterDataAcceptsLiveRunInvocation(t *testing.T) {
 	}
 	if !strings.Contains(liveRunInvocation["consumer_command_template"].(string), "scripts/consumer/run-live-instance-scenario.mjs") {
 		t.Fatalf("expected consumer command template to survive normalization, got %#v", liveRunInvocation["consumer_command_template"])
+	}
+	if !strings.Contains(liveRunInvocation["consumer_single_turn_command_template"].(string), "scripts/consumer/run-live-turn.mjs") {
+		t.Fatalf("expected consumer single-turn command template to survive normalization, got %#v", liveRunInvocation["consumer_single_turn_command_template"])
+	}
+	if !strings.Contains(liveRunInvocation["consumer_evaluator_command_template"].(string), "scripts/consumer/evaluate-live-run.mjs") {
+		t.Fatalf("expected consumer evaluator command template to survive normalization, got %#v", liveRunInvocation["consumer_evaluator_command_template"])
 	}
 }
 

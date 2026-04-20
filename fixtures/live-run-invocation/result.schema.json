@@ -21,6 +21,9 @@
     "summary": {
       "type": "string"
     },
+    "stopReason": {
+      "type": "string"
+    },
     "startedAt": {
       "type": "string"
     },
@@ -48,11 +51,58 @@
           "type": "array",
           "items": {
             "type": "object",
-            "required": ["actor", "text"],
+            "required": ["turnIndex", "simulatorTurn", "assistantTurn"],
             "properties": {
-              "actor": {
-                "type": "string"
+              "turnIndex": {
+                "type": "integer",
+                "minimum": 1
               },
+              "simulatorTurn": {
+                "type": "object",
+                "required": ["text"],
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                }
+              },
+              "assistantTurn": {
+                "type": "object",
+                "required": ["text"],
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "transcript": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["turnIndex", "simulatorTurn", "assistantTurn"],
+        "properties": {
+          "turnIndex": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "simulatorTurn": {
+            "type": "object",
+            "required": ["text"],
+            "properties": {
+              "text": {
+                "type": "string"
+              }
+            }
+          },
+          "assistantTurn": {
+            "type": "object",
+            "required": ["text"],
+            "properties": {
               "text": {
                 "type": "string"
               }

@@ -1,5 +1,5 @@
-import { existsSync, mkdirSync, readFileSync } from "node:fs";
-import { dirname, resolve } from "node:path";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname, join, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
@@ -8,6 +8,9 @@ import { loadAdapter } from "../resolve_adapter.mjs";
 
 const LIVE_RUN_REQUEST_SCHEMA = "cautilus.live_run_invocation_request.v1";
 const LIVE_RUN_RESULT_SCHEMA = "cautilus.live_run_invocation_result.v1";
+const LIVE_RUN_TURN_REQUEST_SCHEMA = "cautilus.live_run_turn_request.v1";
+const LIVE_RUN_TURN_RESULT_SCHEMA = "cautilus.live_run_turn_result.v1";
+const LIVE_RUN_TRANSCRIPT_SCHEMA = "cautilus.live_run_transcript.v1";
 const EXECUTION_STATUSES = new Set(["completed", "blocked", "failed"]);
 const HELPER_PATH_PATTERN = /scripts\/agent-runtime\/run-live-instance-scenario\.mjs/u;
 
@@ -91,6 +94,10 @@ function readJsonFile(filePath, label) {
 	}
 }
 
+function writeJsonFile(filePath, value) {
+	writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`, "utf-8");
+}
+
 function assertString(value, field) {
 	if (typeof value !== "string" || !value.trim()) {
 		fail(`${field} must be a non-empty string`);
@@ -105,6 +112,78 @@ function assertPositiveInteger(value, field) {
 	return value;
 }
 
+function normalizeSimulatorTurn(value, field) {
+	if (typeof value === "string") {
+		return { text: assertString(value, field) };
+	}
+	if (!value || typeof value !== "object" || Array.isArray(value)) {
+		fail(`${field} must be either a string or an object with text`);
+	}
+	const normalized = {
+		text: assertString(value.text, `${field}.text`),
+	};
+	if (value.metadata !== undefined) {
+		if (!value.metadata || typeof value.metadata !== "object" || Array.isArray(value.metadata)) {
+			fail(`${field}.metadata must be an object when present`);
+		}
+		normalized.metadata = value.metadata;
+	}
+	return normalized;
+}
+
+function normalizeSimulatorTurns(scenario) {
+	if (scenario.simulator && scenario.simulatorTurns) {
+		fail("request.scenario.simulator and request.scenario.simulatorTurns cannot both be set");
+	}
+	if (scenario.simulator) {
+		if (!scenario.simulator || typeof scenario.simulator !== "object" || Array.isArray(scenario.simulator)) {
+			fail("request.scenario.simulator must be an object");
+		}
+		if (scenario.simulator.kind !== "scripted") {
+			fail("request.scenario.simulator.kind must be scripted for the current slice");
+		}
+		if (!Array.isArray(scenario.simulator.turns) || scenario.simulator.turns.length === 0) {
+			fail("request.scenario.simulator.turns must be a non-empty list");
+		}
+		return scenario.simulator.turns.map((turn, index) =>
+			normalizeSimulatorTurn(turn, `request.scenario.simulator.turns[${index}]`),
+		);
+	}
+	if (!Array.isArray(scenario.simulatorTurns) || scenario.simulatorTurns.length === 0) {
+		fail("request.scenario.simulatorTurns must be a non-empty list of strings");
+	}
+	return scenario.simulatorTurns.map((turn, index) => ({
+		text: assertString(turn, `request.scenario.simulatorTurns[${index}]`),
+	}));
+}
+
+function validateAssistantTurn(turn, field) {
+	if (!turn || typeof turn !== "object" || Array.isArray(turn)) {
+		fail(`${field} must be an object`);
+	}
+	assertString(turn.text, `${field}.text`);
+	if (turn.metadata !== undefined && (!turn.metadata || typeof turn.metadata !== "object" || Array.isArray(turn.metadata))) {
+		fail(`${field}.metadata must be an object when present`);
+	}
+}
+
+function validateTranscript(entries) {
+	if (!Array.isArray(entries)) {
+		fail("result.transcript must be an array when present");
+	}
+	for (const [index, entry] of entries.entries()) {
+		if (!entry || typeof entry !== "object" || Array.isArray(entry)) {
+			fail(`result.transcript[${index}] must be an object`);
+		}
+		assertPositiveInteger(entry.turnIndex, `result.transcript[${index}].turnIndex`);
+		normalizeSimulatorTurn(entry.simulatorTurn, `result.transcript[${index}].simulatorTurn`);
+		validateAssistantTurn(entry.assistantTurn, `result.transcript[${index}].assistantTurn`);
+		if (entry.consumerSignal !== undefined && (!entry.consumerSignal || typeof entry.consumerSignal !== "object" || Array.isArray(entry.consumerSignal))) {
+			fail(`result.transcript[${index}].consumerSignal must be an object when present`);
+		}
+	}
+}
+
 function validateScenarioPacket(scenario) {
 	if (!scenario || typeof scenario !== "object" || Array.isArray(scenario)) {
 		fail("request.scenario must be an object");
@@ -114,12 +193,7 @@ function validateScenarioPacket(scenario) {
 	assertString(scenario.description, "request.scenario.description");
 	assertPositiveInteger(scenario.maxTurns, "request.scenario.maxTurns");
 	assertString(scenario.sideEffectsMode, "request.scenario.sideEffectsMode");
-	if (!Array.isArray(scenario.simulatorTurns) || scenario.simulatorTurns.length === 0) {
-		fail("request.scenario.simulatorTurns must be a non-empty list of strings");
-	}
-	for (const [index, turn] of scenario.simulatorTurns.entries()) {
-		assertString(turn, `request.scenario.simulatorTurns[${index}]`);
-	}
+	normalizeSimulatorTurns(scenario);
 }
 
 function validateRequestPacket(request, expectedInstanceId) {
@@ -135,6 +209,9 @@ function validateRequestPacket(request, expectedInstanceId) {
 		fail(`request.instanceId ${instanceId} does not match --instance-id ${expectedInstanceId}`);
 	}
 	assertPositiveInteger(request.timeoutMs, "request.timeoutMs");
+	if (request.consumerMetadata !== undefined && (!request.consumerMetadata || typeof request.consumerMetadata !== "object" || Array.isArray(request.consumerMetadata))) {
+		fail("request.consumerMetadata must be an object when present");
+	}
 	validateScenarioPacket(request.scenario);
 }
 
@@ -156,6 +233,12 @@ function validateResultPacketBase(result, request) {
 		fail("result.executionStatus must be one of: completed, blocked, failed");
 	}
 	assertString(result.summary, "result.summary");
+	if (result.stopReason !== undefined) {
+		assertString(result.stopReason, "result.stopReason");
+	}
+	if (result.transcript !== undefined) {
+		validateTranscript(result.transcript);
+	}
 	return executionStatus;
 }
 
@@ -190,6 +273,34 @@ function validateResultPacket(result, request) {
 	const executionStatus = validateResultPacketBase(result, request);
 	if (executionStatus === "completed") {
 		validateCompletedResult(result, request);
+		return;
+	}
+	validateDiagnosticResult(result, executionStatus);
+}
+
+function validateTurnResultPacket(result, request, expectedTurnIndex) {
+	if (!result || typeof result !== "object" || Array.isArray(result)) {
+		fail("turn result packet must be an object");
+	}
+	if (result.schemaVersion !== LIVE_RUN_TURN_RESULT_SCHEMA) {
+		fail(`turn result packet must use schemaVersion ${LIVE_RUN_TURN_RESULT_SCHEMA}`);
+	}
+	if (assertString(result.requestId, "turn result.requestId") !== request.requestId) {
+		fail(`turn result.requestId ${result.requestId} does not match request.requestId ${request.requestId}`);
+	}
+	if (assertString(result.instanceId, "turn result.instanceId") !== request.instanceId) {
+		fail(`turn result.instanceId ${result.instanceId} does not match request.instanceId ${request.instanceId}`);
+	}
+	if (assertPositiveInteger(result.turnIndex, "turn result.turnIndex") !== expectedTurnIndex) {
+		fail(`turn result.turnIndex ${result.turnIndex} does not match expected turn index ${expectedTurnIndex}`);
+	}
+	const executionStatus = assertString(result.executionStatus, "turn result.executionStatus");
+	if (!EXECUTION_STATUSES.has(executionStatus)) {
+		fail("turn result.executionStatus must be one of: completed, blocked, failed");
+	}
+	assertString(result.summary, "turn result.summary");
+	if (executionStatus === "completed") {
+		validateAssistantTurn(result.assistantTurn, "turn result.assistantTurn");
 		return;
 	}
 	validateDiagnosticResult(result, executionStatus);
@@ -239,24 +350,274 @@ function loadInvocationState(options, context) {
 	return { payload, liveRunInvocation, request };
 }
 
-function executeLiveRunCommand(options, context, payload, liveRunInvocation) {
-	const consumerCommandTemplate = resolveConsumerCommand(liveRunInvocation);
-	const replacements = {
+function buildReplacements(payload, context, options, extra = {}) {
+	return {
 		repo_root: shellEscape(context.repoRoot),
 		adapter_path: shellEscape(payload.path ?? context.adapterPath ?? ""),
 		instance_id: shellEscape(options.instanceId),
 		request_file: shellEscape(context.requestFile),
 		output_file: shellEscape(context.outputFile),
+		...extra,
 	};
-	const command = renderTemplate(consumerCommandTemplate, replacements);
-	mkdirSync(dirname(context.outputFile), { recursive: true });
+}
+
+function executeCommand(command, cwd, timeoutMs = 0) {
 	const result = spawnSync("bash", ["-lc", command], {
-		cwd: context.repoRoot,
+		cwd,
 		encoding: "utf-8",
+		...(timeoutMs > 0 ? { timeout: timeoutMs } : {}),
 	});
+	const detail = [result.stdout, result.stderr].filter(Boolean).join("\n").trim();
+	if (result.error?.code === "ETIMEDOUT") {
+		return { timedOut: true, detail: `command timed out after ${timeoutMs}ms` };
+	}
 	if (result.status !== 0) {
-		const detail = [result.stdout, result.stderr].filter(Boolean).join("\n").trim();
-		fail(detail ? `live run command failed: ${detail}` : "live run command failed");
+		return { timedOut: false, detail: detail || "command failed" };
+	}
+	return { timedOut: false, detail: "" };
+}
+
+function hasMultiTurnLoop(liveRunInvocation) {
+	return typeof liveRunInvocation.consumer_single_turn_command_template === "string"
+		&& liveRunInvocation.consumer_single_turn_command_template.trim().length > 0;
+}
+
+function remainingTimeoutMs(startedAt, timeoutMs) {
+	return Math.max(0, timeoutMs - (Date.now() - startedAt));
+}
+
+function captureTranscript(request) {
+	return request.captureTranscript === true;
+}
+
+function transcriptExcerpt(transcript) {
+	return transcript.slice(0, 2);
+}
+
+function buildCompletedResult(request, transcript, startedAt, stopReason, evaluation, artifactPaths = []) {
+	const summary = typeof evaluation?.summary === "string" && evaluation.summary.trim()
+		? evaluation.summary
+		: `Completed ${transcript.length} scripted turn(s); stop reason: ${stopReason}.`;
+	const status = typeof evaluation?.status === "string" && evaluation.status.trim()
+		? evaluation.status
+		: "completed";
+	return {
+		schemaVersion: LIVE_RUN_RESULT_SCHEMA,
+		requestId: request.requestId,
+		instanceId: request.instanceId,
+		executionStatus: "completed",
+		summary,
+		stopReason,
+		startedAt: new Date(startedAt).toISOString(),
+		completedAt: new Date().toISOString(),
+		durationMs: Date.now() - startedAt,
+		scenarioResult: {
+			scenarioId: request.scenario.scenarioId,
+			status,
+			summary,
+			...(transcript.length > 0 ? { transcriptExcerpt: transcriptExcerpt(transcript) } : {}),
+		},
+		...(captureTranscript(request) ? { transcript } : {}),
+		...(evaluation ? { evaluation } : {}),
+		...(artifactPaths.length > 0 ? { artifactPaths } : {}),
+	};
+}
+
+function buildDiagnosticResult(request, transcript, startedAt, executionStatus, stopReason, summary, diagnostics) {
+	return {
+		schemaVersion: LIVE_RUN_RESULT_SCHEMA,
+		requestId: request.requestId,
+		instanceId: request.instanceId,
+		executionStatus,
+		summary,
+		stopReason,
+		startedAt: new Date(startedAt).toISOString(),
+		completedAt: new Date().toISOString(),
+		durationMs: Date.now() - startedAt,
+		diagnostics,
+		...(captureTranscript(request) && transcript.length > 0 ? { transcript } : {}),
+	};
+}
+
+function diagnostic(code, message) {
+	return { code, severity: "error", message };
+}
+
+function resolveSingleTurnTemplate(liveRunInvocation) {
+	const template = liveRunInvocation.consumer_single_turn_command_template?.trim();
+	if (!template || HELPER_PATH_PATTERN.test(template)) {
+		fail("live_run_invocation.consumer_single_turn_command_template must point at a consumer-owned single-turn command.");
+	}
+	return template;
+}
+
+function buildTurnRequest(request, scriptedTurn, transcript, turnIndex) {
+	return {
+		schemaVersion: LIVE_RUN_TURN_REQUEST_SCHEMA,
+		requestId: request.requestId,
+		instanceId: request.instanceId,
+		scenarioId: request.scenario.scenarioId,
+		turnIndex,
+		maxTurns: request.scenario.maxTurns,
+		simulatorTurn: scriptedTurn,
+		transcript,
+		...(request.consumerMetadata ? { consumerMetadata: request.consumerMetadata } : {}),
+		...(typeof request.captureTranscript === "boolean" ? { captureTranscript: request.captureTranscript } : {}),
+	};
+}
+
+function runScriptedTurn(options, context, payload, request, singleTurnTemplate, transcript, scriptedTurn, turnIndex, artifactDir, startedAt) {
+	const turnRequestFile = join(artifactDir, `turn-request-${String(turnIndex).padStart(2, "0")}.json`);
+	const turnResultFile = join(artifactDir, `turn-result-${String(turnIndex).padStart(2, "0")}.json`);
+	writeJsonFile(turnRequestFile, buildTurnRequest(request, scriptedTurn, transcript, turnIndex));
+	const command = renderTemplate(singleTurnTemplate, buildReplacements(payload, context, options, {
+		turn_request_file: shellEscape(turnRequestFile),
+		turn_result_file: shellEscape(turnResultFile),
+	}));
+	const commandResult = executeCommand(command, context.repoRoot, remainingTimeoutMs(startedAt, request.timeoutMs));
+	if (commandResult.timedOut) {
+		return { completedResult: buildCompletedResult(request, transcript, startedAt, "timeout_reached", null) };
+	}
+	if (commandResult.detail) {
+		return {
+			completedResult: buildDiagnosticResult(
+				request,
+				transcript,
+				startedAt,
+				"failed",
+				"consumer_turn_failed",
+				"consumer single-turn command failed",
+				[diagnostic("consumer_single_turn_command_failed", commandResult.detail)],
+			),
+		};
+	}
+	const turnResult = readJsonFile(turnResultFile, "turn result file");
+	validateTurnResultPacket(turnResult, request, turnIndex);
+	if (turnResult.executionStatus === "completed") {
+		return {
+			transcriptEntry: {
+				turnIndex,
+				simulatorTurn: scriptedTurn,
+				assistantTurn: turnResult.assistantTurn,
+				...(turnResult.consumerSignal ? { consumerSignal: turnResult.consumerSignal } : {}),
+			},
+		};
+	}
+	return {
+		completedResult: buildDiagnosticResult(
+			request,
+			transcript,
+			startedAt,
+			turnResult.executionStatus,
+			turnResult.executionStatus === "blocked" ? "blocked_by_consumer" : "consumer_turn_failed",
+			turnResult.summary,
+			turnResult.diagnostics,
+		),
+	};
+}
+
+function materializeTranscriptArtifact(request, transcript, artifactDir, stopReason, needsArtifact) {
+	if (!needsArtifact) {
+		return { transcriptFile: null, artifactPaths: [] };
+	}
+	const transcriptFile = join(artifactDir, "transcript.json");
+	writeJsonFile(transcriptFile, {
+		schemaVersion: LIVE_RUN_TRANSCRIPT_SCHEMA,
+		requestId: request.requestId,
+		instanceId: request.instanceId,
+		scenarioId: request.scenario.scenarioId,
+		stopReason,
+		transcript,
+		...(request.consumerMetadata ? { consumerMetadata: request.consumerMetadata } : {}),
+	});
+	return {
+		transcriptFile,
+		artifactPaths: captureTranscript(request) ? [transcriptFile] : [],
+	};
+}
+
+function evaluateTranscript(options, context, payload, liveRunInvocation, request, transcriptFile, artifactPaths, startedAt) {
+	const evaluatorTemplate = liveRunInvocation.consumer_evaluator_command_template?.trim();
+	if (!evaluatorTemplate) {
+		return null;
+	}
+	if (HELPER_PATH_PATTERN.test(evaluatorTemplate)) {
+		fail("live_run_invocation.consumer_evaluator_command_template must point at a consumer-owned evaluator command.");
+	}
+	const remainingMs = remainingTimeoutMs(startedAt, request.timeoutMs);
+	if (remainingMs <= 0) {
+		return { status: "skipped", summary: "Evaluator skipped because the live-run timeout budget was exhausted." };
+	}
+	const evaluationOutputFile = join(dirname(transcriptFile), "evaluation.json");
+	const command = renderTemplate(evaluatorTemplate, buildReplacements(payload, context, options, {
+		transcript_file: shellEscape(transcriptFile),
+		evaluation_output_file: shellEscape(evaluationOutputFile),
+	}));
+	const commandResult = executeCommand(command, context.repoRoot, remainingMs);
+	if (commandResult.timedOut) {
+		return { status: "failed", summary: "Evaluator timed out before producing a result." };
+	}
+	if (commandResult.detail) {
+		return { status: "failed", summary: `Evaluator command failed: ${commandResult.detail}` };
+	}
+	const evaluation = readJsonFile(evaluationOutputFile, "evaluation output file");
+	artifactPaths.push(evaluationOutputFile);
+	return evaluation;
+}
+
+function executeMultiTurnRun(options, context, payload, liveRunInvocation, request) {
+	const singleTurnTemplate = resolveSingleTurnTemplate(liveRunInvocation);
+	const scriptedTurns = normalizeSimulatorTurns(request.scenario);
+	const startedAt = Date.now();
+	const artifactDir = `${context.outputFile}.d`;
+	mkdirSync(dirname(context.outputFile), { recursive: true });
+	mkdirSync(artifactDir, { recursive: true });
+	const transcript = [];
+	const turnCount = Math.min(request.scenario.maxTurns, scriptedTurns.length);
+	for (let index = 0; index < turnCount; index += 1) {
+		const turnOutcome = runScriptedTurn(
+			options,
+			context,
+			payload,
+			request,
+			singleTurnTemplate,
+			transcript,
+			scriptedTurns[index],
+			index + 1,
+			artifactDir,
+			startedAt,
+		);
+		if (turnOutcome.completedResult) {
+			return turnOutcome.completedResult;
+		}
+		transcript.push(turnOutcome.transcriptEntry);
+	}
+	const stopReason = scriptedTurns.length > request.scenario.maxTurns ? "turn_limit_reached" : "scripted_turns_exhausted";
+	const needsTranscriptArtifact = captureTranscript(request) || typeof liveRunInvocation.consumer_evaluator_command_template === "string";
+	const { transcriptFile, artifactPaths } = materializeTranscriptArtifact(
+		request,
+		transcript,
+		artifactDir,
+		stopReason,
+		needsTranscriptArtifact,
+	);
+	const evaluation = transcriptFile
+		? evaluateTranscript(options, context, payload, liveRunInvocation, request, transcriptFile, artifactPaths, startedAt)
+		: null;
+	return buildCompletedResult(request, transcript, startedAt, stopReason, evaluation, artifactPaths);
+}
+
+function executeLiveRunCommand(options, context, payload, liveRunInvocation, request) {
+	mkdirSync(dirname(context.outputFile), { recursive: true });
+	if (hasMultiTurnLoop(liveRunInvocation)) {
+		writeJsonFile(context.outputFile, executeMultiTurnRun(options, context, payload, liveRunInvocation, request));
+		return;
+	}
+	const consumerCommandTemplate = resolveConsumerCommand(liveRunInvocation);
+	const command = renderTemplate(consumerCommandTemplate, buildReplacements(payload, context, options));
+	const result = executeCommand(command, context.repoRoot);
+	if (result.detail) {
+		fail(`live run command failed: ${result.detail}`);
 	}
 }
 
@@ -272,7 +633,7 @@ export function main(argv = process.argv.slice(2)) {
 	const options = parseArgs(argv);
 	const context = buildInvocationContext(options);
 	const { payload, liveRunInvocation, request } = loadInvocationState(options, context);
-	executeLiveRunCommand(options, context, payload, liveRunInvocation);
+	executeLiveRunCommand(options, context, payload, liveRunInvocation, request);
 	readAndValidateOutput(context, request);
 }
 

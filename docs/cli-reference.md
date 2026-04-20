@@ -103,6 +103,7 @@ For a simple adopter, the catalog may contain only one default instance.
 `cautilus workbench run-live` takes one selected instance id plus one request packet and returns one bounded result packet.
 The product owns the packet boundary and status semantics.
 The consumer still owns actual launch, auth, and runtime wiring through its adapter command.
+When the adapter declares `consumer_single_turn_command_template`, the same command can also own a scripted multi-turn chatbot loop above a consumer-owned single-turn seam.
 
 ## Workspace management
 

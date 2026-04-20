@@ -181,6 +181,20 @@ export function validateLiveRunInvocation(value, errors) {
 		errors,
 		liveRunInvocation,
 	);
+	copyOptionalInstanceField(
+		value.consumer_single_turn_command_template,
+		"live_run_invocation.consumer_single_turn_command_template",
+		"consumer_single_turn_command_template",
+		errors,
+		liveRunInvocation,
+	);
+	copyOptionalInstanceField(
+		value.consumer_evaluator_command_template,
+		"live_run_invocation.consumer_evaluator_command_template",
+		"consumer_evaluator_command_template",
+		errors,
+		liveRunInvocation,
+	);
 	const prerequisites = stringList(
 		value.required_prerequisites,
 		"live_run_invocation.required_prerequisites",

@@ -2,6 +2,7 @@ package app
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -99,28 +100,41 @@ func handleWorkbenchRunLive(repoRoot string, cwd string, args []string, stdout i
 		_, _ = fmt.Fprintf(stderr, "Adapter does not declare live_run_invocation: %s\n", anyString(adapterPayload.Path))
 		return 1
 	}
-	commandTemplate, err := resolveWorkbenchLiveCommand(liveRunInvocation)
-	if err != nil {
-		_, _ = fmt.Fprintf(stderr, "%s\n", err)
-		return 1
-	}
 	if err := ensureParentDir(&options.outputFile); err != nil {
 		_, _ = fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
-	commandText, err := renderTemplate(commandTemplate, workbenchCommandReplacements(adapterPayload, options))
-	if err != nil {
-		_, _ = fmt.Fprintf(stderr, "%s\n", err)
-		return 1
-	}
-	if _, err := executeWorkbenchCommand(options.repoRoot, commandText); err != nil {
-		_, _ = fmt.Fprintf(stderr, "%s\n", err)
-		return 1
-	}
-	result, err := readJSONObject(options.outputFile)
-	if err != nil {
-		_, _ = fmt.Fprintf(stderr, "Failed to read JSON from %s: %s\n", options.outputFile, err)
-		return 1
+	var result map[string]any
+	if hasWorkbenchMultiTurnLoop(liveRunInvocation) {
+		result, err = executeWorkbenchMultiTurnLiveRun(options, adapterPayload, liveRunInvocation, request)
+		if err != nil {
+			_, _ = fmt.Fprintf(stderr, "%s\n", err)
+			return 1
+		}
+		if err := writeOutputResolved(io.Discard, &options.outputFile, result); err != nil {
+			_, _ = fmt.Fprintf(stderr, "%s\n", err)
+			return 1
+		}
+	} else {
+		commandTemplate, commandErr := resolveWorkbenchLiveCommand(liveRunInvocation)
+		if commandErr != nil {
+			_, _ = fmt.Fprintf(stderr, "%s\n", commandErr)
+			return 1
+		}
+		commandText, renderErr := renderTemplate(commandTemplate, workbenchCommandReplacements(adapterPayload, options, nil))
+		if renderErr != nil {
+			_, _ = fmt.Fprintf(stderr, "%s\n", renderErr)
+			return 1
+		}
+		if _, runErr := executeWorkbenchCommand(options.repoRoot, commandText); runErr != nil {
+			_, _ = fmt.Fprintf(stderr, "%s\n", runErr)
+			return 1
+		}
+		result, err = readJSONObject(options.outputFile)
+		if err != nil {
+			_, _ = fmt.Fprintf(stderr, "Failed to read JSON from %s: %s\n", options.outputFile, err)
+			return 1
+		}
 	}
 	if err := validateWorkbenchLiveResult(result, request); err != nil {
 		_, _ = fmt.Fprintf(stderr, "%s\n", err)
@@ -380,6 +394,11 @@ func validateWorkbenchLiveRequest(request map[string]any, expectedInstanceID str
 	if timeout <= 0 {
 		return fmt.Errorf("request.timeoutMs must be a positive integer")
 	}
+	if metadata := request["consumerMetadata"]; metadata != nil {
+		if _, ok := metadata.(map[string]any); !ok {
+			return fmt.Errorf("request.consumerMetadata must be an object when present")
+		}
+	}
 	return validateWorkbenchLiveScenario(mapOrEmpty(request["scenario"]))
 }
 
@@ -392,16 +411,70 @@ func validateWorkbenchLiveScenario(scenario map[string]any) error {
 	if intFromAny(scenario["maxTurns"], 0) <= 0 {
 		return fmt.Errorf("request.scenario.maxTurns must be a positive integer")
 	}
+	if len(mapOrEmpty(scenario["simulator"])) > 0 && len(arrayOrEmpty(scenario["simulatorTurns"])) > 0 {
+		return fmt.Errorf("request.scenario.simulator and request.scenario.simulatorTurns cannot both be set")
+	}
+	_, err := normalizeWorkbenchSimulatorTurns(scenario)
+	return err
+}
+
+func normalizeWorkbenchSimulatorTurns(scenario map[string]any) ([]map[string]any, error) {
+	if simulator := mapOrEmpty(scenario["simulator"]); len(simulator) > 0 {
+		if anyString(simulator["kind"]) != "scripted" {
+			return nil, fmt.Errorf("request.scenario.simulator.kind must be scripted for the current slice")
+		}
+		turns := arrayOrEmpty(simulator["turns"])
+		if len(turns) == 0 {
+			return nil, fmt.Errorf("request.scenario.simulator.turns must be a non-empty list")
+		}
+		normalized := make([]map[string]any, 0, len(turns))
+		for index, raw := range turns {
+			turn, err := normalizeWorkbenchSimulatorTurn(raw, fmt.Sprintf("request.scenario.simulator.turns[%d]", index))
+			if err != nil {
+				return nil, err
+			}
+			normalized = append(normalized, turn)
+		}
+		return normalized, nil
+	}
 	turns := arrayOrEmpty(scenario["simulatorTurns"])
 	if len(turns) == 0 {
-		return fmt.Errorf("request.scenario.simulatorTurns must be a non-empty list of strings")
+		return nil, fmt.Errorf("request.scenario.simulatorTurns must be a non-empty list of strings")
 	}
+	normalized := make([]map[string]any, 0, len(turns))
 	for index, turn := range turns {
-		if strings.TrimSpace(anyString(turn)) == "" {
-			return fmt.Errorf("request.scenario.simulatorTurns[%d] must be a non-empty string", index)
+		text := strings.TrimSpace(anyString(turn))
+		if text == "" {
+			return nil, fmt.Errorf("request.scenario.simulatorTurns[%d] must be a non-empty string", index)
 		}
+		normalized = append(normalized, map[string]any{"text": text})
 	}
-	return nil
+	return normalized, nil
+}
+
+func normalizeWorkbenchSimulatorTurn(raw any, path string) (map[string]any, error) {
+	if text, ok := raw.(string); ok {
+		if strings.TrimSpace(text) == "" {
+			return nil, fmt.Errorf("%s must be a non-empty string", path)
+		}
+		return map[string]any{"text": strings.TrimSpace(text)}, nil
+	}
+	record := mapOrEmpty(raw)
+	if len(record) == 0 {
+		return nil, fmt.Errorf("%s must be either a string or an object with text", path)
+	}
+	text := strings.TrimSpace(anyString(record["text"]))
+	if text == "" {
+		return nil, fmt.Errorf("%s.text must be a non-empty string", path)
+	}
+	normalized := map[string]any{"text": text}
+	if metadata := record["metadata"]; metadata != nil {
+		if _, ok := metadata.(map[string]any); !ok {
+			return nil, fmt.Errorf("%s.metadata must be an object when present", path)
+		}
+		normalized["metadata"] = metadata
+	}
+	return normalized, nil
 }
 
 func validateWorkbenchLiveResult(result map[string]any, request map[string]any) error {
@@ -421,6 +494,14 @@ func validateWorkbenchLiveResult(result map[string]any, request map[string]any) 
 	if strings.TrimSpace(anyString(result["summary"])) == "" {
 		return fmt.Errorf("result.summary must be a non-empty string")
 	}
+	if stopReason, ok := result["stopReason"]; ok && strings.TrimSpace(anyString(stopReason)) == "" {
+		return fmt.Errorf("result.stopReason must be a non-empty string when present")
+	}
+	if transcript, ok := result["transcript"]; ok && transcript != nil {
+		if err := validateWorkbenchTranscript(arrayOrEmpty(transcript)); err != nil {
+			return err
+		}
+	}
 	if status == "completed" {
 		scenarioResult := mapOrEmpty(result["scenarioResult"])
 		if strings.TrimSpace(anyString(scenarioResult["scenarioId"])) == "" {
@@ -437,6 +518,27 @@ func validateWorkbenchLiveResult(result map[string]any, request map[string]any) 
 	return validateWorkbenchDiagnostics(arrayOrEmpty(result["diagnostics"]), status)
 }
 
+func validateWorkbenchTranscript(entries []any) error {
+	for index, raw := range entries {
+		entry := mapOrEmpty(raw)
+		if intFromAny(entry["turnIndex"], 0) <= 0 {
+			return fmt.Errorf("transcript[%d].turnIndex must be a positive integer", index)
+		}
+		if _, err := normalizeWorkbenchSimulatorTurn(entry["simulatorTurn"], fmt.Sprintf("transcript[%d].simulatorTurn", index)); err != nil {
+			return err
+		}
+		if err := validateWorkbenchAssistantTurn(mapOrEmpty(entry["assistantTurn"]), fmt.Sprintf("transcript[%d].assistantTurn", index)); err != nil {
+			return err
+		}
+		if signal := entry["consumerSignal"]; signal != nil {
+			if _, ok := signal.(map[string]any); !ok {
+				return fmt.Errorf("transcript[%d].consumerSignal must be an object when present", index)
+			}
+		}
+	}
+	return nil
+}
+
 func validateWorkbenchDiagnostics(diagnostics []any, status string) error {
 	if len(diagnostics) == 0 {
 		return fmt.Errorf("%s result must include diagnostics", status)
@@ -450,6 +552,384 @@ func validateWorkbenchDiagnostics(diagnostics []any, status string) error {
 		}
 	}
 	return nil
+}
+
+func validateWorkbenchAssistantTurn(turn map[string]any, path string) error {
+	if strings.TrimSpace(anyString(turn["text"])) == "" {
+		return fmt.Errorf("%s.text must be a non-empty string", path)
+	}
+	if metadata := turn["metadata"]; metadata != nil {
+		if _, ok := metadata.(map[string]any); !ok {
+			return fmt.Errorf("%s.metadata must be an object when present", path)
+		}
+	}
+	return nil
+}
+
+func hasWorkbenchMultiTurnLoop(liveRunInvocation map[string]any) bool {
+	return strings.TrimSpace(anyString(liveRunInvocation["consumer_single_turn_command_template"])) != ""
+}
+
+func executeWorkbenchMultiTurnLiveRun(
+	options *workbenchRunLiveArgs,
+	adapterPayload *runtime.AdapterPayload,
+	liveRunInvocation map[string]any,
+	request map[string]any,
+) (map[string]any, error) {
+	scriptedTurns, err := normalizeWorkbenchSimulatorTurns(mapOrEmpty(request["scenario"]))
+	if err != nil {
+		return nil, err
+	}
+	startedAt := time.Now().UTC()
+	timeoutMs := intFromAny(request["timeoutMs"], 0)
+	artifactDir := options.outputFile + ".d"
+	if err := os.MkdirAll(artifactDir, 0o755); err != nil {
+		return nil, err
+	}
+	transcript := make([]any, 0, minInt(intFromAny(mapOrEmpty(request["scenario"])["maxTurns"], 0), len(scriptedTurns)))
+	singleTurnTemplate := strings.TrimSpace(anyString(liveRunInvocation["consumer_single_turn_command_template"]))
+	if isRecursiveWorkbenchRunLiveCommand(singleTurnTemplate) {
+		return nil, fmt.Errorf("live_run_invocation.consumer_single_turn_command_template must point at a consumer-owned single-turn command")
+	}
+	for index, simulatorTurn := range scriptedTurns {
+		if index >= intFromAny(mapOrEmpty(request["scenario"])["maxTurns"], 0) {
+			break
+		}
+		remainingMs := workbenchRemainingTimeoutMs(startedAt, timeoutMs)
+		if remainingMs <= 0 {
+			return finalizeWorkbenchCompletedResult(request, transcript, startedAt, "timeout_reached", nil, "", nil)
+		}
+		turnRequestFile := filepath.Join(artifactDir, fmt.Sprintf("turn-request-%02d.json", index+1))
+		turnResultFile := filepath.Join(artifactDir, fmt.Sprintf("turn-result-%02d.json", index+1))
+		turnRequest := map[string]any{
+			"schemaVersion": contracts.LiveRunTurnRequestSchema,
+			"requestId":     anyString(request["requestId"]),
+			"instanceId":    anyString(request["instanceId"]),
+			"scenarioId":    anyString(mapOrEmpty(request["scenario"])["scenarioId"]),
+			"turnIndex":     index + 1,
+			"maxTurns":      intFromAny(mapOrEmpty(request["scenario"])["maxTurns"], 0),
+			"simulatorTurn": simulatorTurn,
+			"transcript":    transcript,
+		}
+		if metadata := request["consumerMetadata"]; metadata != nil {
+			turnRequest["consumerMetadata"] = metadata
+		}
+		if capture, ok := request["captureTranscript"].(bool); ok {
+			turnRequest["captureTranscript"] = capture
+		}
+		if err := writeOutputResolved(io.Discard, &turnRequestFile, turnRequest); err != nil {
+			return nil, err
+		}
+		commandText, err := renderTemplate(
+			singleTurnTemplate,
+			workbenchCommandReplacements(adapterPayload, options, map[string]string{
+				"turn_request_file": runtime.ShellSingleQuote(turnRequestFile),
+				"turn_result_file":  runtime.ShellSingleQuote(turnResultFile),
+			}),
+		)
+		if err != nil {
+			return nil, err
+		}
+		if _, timedOut, err := executeWorkbenchCommandWithTimeout(options.repoRoot, commandText, time.Duration(remainingMs)*time.Millisecond); err != nil {
+			if timedOut {
+				return finalizeWorkbenchCompletedResult(request, transcript, startedAt, "timeout_reached", nil, "", nil)
+			}
+			return finalizeWorkbenchDiagnosticResult(
+				request,
+				transcript,
+				startedAt,
+				"failed",
+				"consumer_turn_failed",
+				"consumer single-turn command failed",
+				[]any{workbenchDiagnostic("consumer_single_turn_command_failed", err.Error())},
+			)
+		}
+		turnResult, err := readJSONObject(turnResultFile)
+		if err != nil {
+			return finalizeWorkbenchDiagnosticResult(
+				request,
+				transcript,
+				startedAt,
+				"failed",
+				"consumer_turn_failed",
+				"consumer single-turn command did not produce a valid result",
+				[]any{workbenchDiagnostic("invalid_turn_result", err.Error())},
+			)
+		}
+		if err := validateWorkbenchTurnResult(turnResult, request, index+1); err != nil {
+			return finalizeWorkbenchDiagnosticResult(
+				request,
+				transcript,
+				startedAt,
+				"failed",
+				"consumer_turn_failed",
+				"consumer single-turn result did not match the contract",
+				[]any{workbenchDiagnostic("invalid_turn_result_contract", err.Error())},
+			)
+		}
+		switch anyString(turnResult["executionStatus"]) {
+		case "completed":
+			entry := map[string]any{
+				"turnIndex":     index + 1,
+				"simulatorTurn": simulatorTurn,
+				"assistantTurn": mapOrEmpty(turnResult["assistantTurn"]),
+			}
+			if signal := turnResult["consumerSignal"]; signal != nil {
+				entry["consumerSignal"] = signal
+			}
+			transcript = append(transcript, entry)
+		case "blocked":
+			return finalizeWorkbenchDiagnosticResult(
+				request,
+				transcript,
+				startedAt,
+				"blocked",
+				"blocked_by_consumer",
+				anyString(turnResult["summary"]),
+				arrayOrEmpty(turnResult["diagnostics"]),
+			)
+		default:
+			return finalizeWorkbenchDiagnosticResult(
+				request,
+				transcript,
+				startedAt,
+				"failed",
+				"consumer_turn_failed",
+				anyString(turnResult["summary"]),
+				arrayOrEmpty(turnResult["diagnostics"]),
+			)
+		}
+	}
+	stopReason := "scripted_turns_exhausted"
+	if len(scriptedTurns) > intFromAny(mapOrEmpty(request["scenario"])["maxTurns"], 0) {
+		stopReason = "turn_limit_reached"
+	}
+	transcriptFile := ""
+	artifactPaths := []any{}
+	if truthyWorkbenchCaptureTranscript(request) || strings.TrimSpace(anyString(liveRunInvocation["consumer_evaluator_command_template"])) != "" {
+		transcriptFile = filepath.Join(artifactDir, "transcript.json")
+		if err := writeOutputResolved(io.Discard, &transcriptFile, buildWorkbenchTranscriptPacket(request, transcript, stopReason)); err != nil {
+			return nil, err
+		}
+		if truthyWorkbenchCaptureTranscript(request) {
+			artifactPaths = append(artifactPaths, transcriptFile)
+		}
+	}
+	evaluation := map[string]any(nil)
+	if evaluatorTemplate := strings.TrimSpace(anyString(liveRunInvocation["consumer_evaluator_command_template"])); evaluatorTemplate != "" {
+		if isRecursiveWorkbenchRunLiveCommand(evaluatorTemplate) {
+			return nil, fmt.Errorf("live_run_invocation.consumer_evaluator_command_template must point at a consumer-owned evaluator command")
+		}
+		remainingMs := workbenchRemainingTimeoutMs(startedAt, timeoutMs)
+		if remainingMs <= 0 {
+			evaluation = map[string]any{
+				"status":  "skipped",
+				"summary": "Evaluator skipped because the live-run timeout budget was exhausted.",
+			}
+		} else {
+			evaluationOutputFile := filepath.Join(artifactDir, "evaluation.json")
+			commandText, err := renderTemplate(
+				evaluatorTemplate,
+				workbenchCommandReplacements(adapterPayload, options, map[string]string{
+					"transcript_file":        runtime.ShellSingleQuote(transcriptFile),
+					"evaluation_output_file": runtime.ShellSingleQuote(evaluationOutputFile),
+				}),
+			)
+			if err != nil {
+				return nil, err
+			}
+			if _, timedOut, err := executeWorkbenchCommandWithTimeout(options.repoRoot, commandText, time.Duration(remainingMs)*time.Millisecond); err != nil {
+				if timedOut {
+					evaluation = map[string]any{
+						"status":  "failed",
+						"summary": "Evaluator timed out before producing a result.",
+					}
+				} else {
+					evaluation = map[string]any{
+						"status":  "failed",
+						"summary": fmt.Sprintf("Evaluator command failed: %s", err),
+					}
+				}
+			} else {
+				parsed, err := readJSONObject(evaluationOutputFile)
+				if err != nil {
+					evaluation = map[string]any{
+						"status":  "failed",
+						"summary": fmt.Sprintf("Evaluator output was not valid JSON: %s", err),
+					}
+				} else {
+					evaluation = parsed
+					artifactPaths = append(artifactPaths, evaluationOutputFile)
+				}
+			}
+		}
+	}
+	return finalizeWorkbenchCompletedResult(request, transcript, startedAt, stopReason, evaluation, transcriptFile, artifactPaths)
+}
+
+func finalizeWorkbenchCompletedResult(
+	request map[string]any,
+	transcript []any,
+	startedAt time.Time,
+	stopReason string,
+	evaluation map[string]any,
+	transcriptFile string,
+	artifactPaths []any,
+) (map[string]any, error) {
+	completedAt := time.Now().UTC()
+	scenarioSummary := anyString(mapOrEmpty(evaluation)["summary"])
+	if strings.TrimSpace(scenarioSummary) == "" {
+		scenarioSummary = fmt.Sprintf("Completed %d scripted turn(s); stop reason: %s.", len(transcript), stopReason)
+	}
+	scenarioStatus := anyString(mapOrEmpty(evaluation)["status"])
+	if strings.TrimSpace(scenarioStatus) == "" {
+		scenarioStatus = "completed"
+	}
+	scenarioResult := map[string]any{
+		"scenarioId": anyString(mapOrEmpty(request["scenario"])["scenarioId"]),
+		"status":     scenarioStatus,
+		"summary":    scenarioSummary,
+	}
+	if excerpt := workbenchTranscriptExcerpt(transcript); len(excerpt) > 0 {
+		scenarioResult["transcriptExcerpt"] = excerpt
+	}
+	result := map[string]any{
+		"schemaVersion":   contracts.LiveRunInvocationResultSchema,
+		"requestId":       anyString(request["requestId"]),
+		"instanceId":      anyString(request["instanceId"]),
+		"executionStatus": "completed",
+		"summary":         scenarioSummary,
+		"stopReason":      stopReason,
+		"startedAt":       startedAt.Format(time.RFC3339Nano),
+		"completedAt":     completedAt.Format(time.RFC3339Nano),
+		"durationMs":      completedAt.Sub(startedAt).Milliseconds(),
+		"scenarioResult":  scenarioResult,
+	}
+	if truthyWorkbenchCaptureTranscript(request) {
+		result["transcript"] = transcript
+	}
+	if len(mapOrEmpty(evaluation)) > 0 {
+		result["evaluation"] = evaluation
+	}
+	if len(artifactPaths) > 0 {
+		result["artifactPaths"] = artifactPaths
+	} else if transcriptFile != "" && truthyWorkbenchCaptureTranscript(request) {
+		result["artifactPaths"] = []any{transcriptFile}
+	}
+	return result, nil
+}
+
+func finalizeWorkbenchDiagnosticResult(
+	request map[string]any,
+	transcript []any,
+	startedAt time.Time,
+	executionStatus string,
+	stopReason string,
+	summary string,
+	diagnostics []any,
+) (map[string]any, error) {
+	completedAt := time.Now().UTC()
+	result := map[string]any{
+		"schemaVersion":   contracts.LiveRunInvocationResultSchema,
+		"requestId":       anyString(request["requestId"]),
+		"instanceId":      anyString(request["instanceId"]),
+		"executionStatus": executionStatus,
+		"summary":         summary,
+		"stopReason":      stopReason,
+		"startedAt":       startedAt.Format(time.RFC3339Nano),
+		"completedAt":     completedAt.Format(time.RFC3339Nano),
+		"durationMs":      completedAt.Sub(startedAt).Milliseconds(),
+		"diagnostics":     diagnostics,
+	}
+	if truthyWorkbenchCaptureTranscript(request) && len(transcript) > 0 {
+		result["transcript"] = transcript
+	}
+	return result, nil
+}
+
+func validateWorkbenchTurnResult(result map[string]any, request map[string]any, expectedTurnIndex int) error {
+	if anyString(result["schemaVersion"]) != contracts.LiveRunTurnResultSchema {
+		return fmt.Errorf("turn result packet must use schemaVersion %s", contracts.LiveRunTurnResultSchema)
+	}
+	if anyString(result["requestId"]) != anyString(request["requestId"]) {
+		return fmt.Errorf("turn result.requestId %q does not match request.requestId %q", anyString(result["requestId"]), anyString(request["requestId"]))
+	}
+	if anyString(result["instanceId"]) != anyString(request["instanceId"]) {
+		return fmt.Errorf("turn result.instanceId %q does not match request.instanceId %q", anyString(result["instanceId"]), anyString(request["instanceId"]))
+	}
+	if intFromAny(result["turnIndex"], 0) != expectedTurnIndex {
+		return fmt.Errorf("turn result.turnIndex %d does not match expected turn index %d", intFromAny(result["turnIndex"], 0), expectedTurnIndex)
+	}
+	status := anyString(result["executionStatus"])
+	if status != "completed" && status != "blocked" && status != "failed" {
+		return fmt.Errorf("turn result.executionStatus must be one of: completed, blocked, failed")
+	}
+	if strings.TrimSpace(anyString(result["summary"])) == "" {
+		return fmt.Errorf("turn result.summary must be a non-empty string")
+	}
+	if status == "completed" {
+		if err := validateWorkbenchAssistantTurn(mapOrEmpty(result["assistantTurn"]), "turn result.assistantTurn"); err != nil {
+			return err
+		}
+		if signal := result["consumerSignal"]; signal != nil {
+			if _, ok := signal.(map[string]any); !ok {
+				return fmt.Errorf("turn result.consumerSignal must be an object when present")
+			}
+		}
+		return nil
+	}
+	return validateWorkbenchDiagnostics(arrayOrEmpty(result["diagnostics"]), status)
+}
+
+func buildWorkbenchTranscriptPacket(request map[string]any, transcript []any, stopReason string) map[string]any {
+	packet := map[string]any{
+		"schemaVersion": contracts.LiveRunTranscriptSchema,
+		"requestId":     anyString(request["requestId"]),
+		"instanceId":    anyString(request["instanceId"]),
+		"scenarioId":    anyString(mapOrEmpty(request["scenario"])["scenarioId"]),
+		"stopReason":    stopReason,
+		"transcript":    transcript,
+	}
+	if metadata := request["consumerMetadata"]; metadata != nil {
+		packet["consumerMetadata"] = metadata
+	}
+	return packet
+}
+
+func workbenchTranscriptExcerpt(transcript []any) []any {
+	if len(transcript) == 0 {
+		return nil
+	}
+	limit := minInt(len(transcript), 2)
+	return append([]any{}, transcript[:limit]...)
+}
+
+func truthyWorkbenchCaptureTranscript(request map[string]any) bool {
+	capture, _ := request["captureTranscript"].(bool)
+	return capture
+}
+
+func workbenchRemainingTimeoutMs(startedAt time.Time, timeoutMs int) int {
+	remaining := timeoutMs - int(time.Since(startedAt).Milliseconds())
+	if remaining < 0 {
+		return 0
+	}
+	return remaining
+}
+
+func workbenchDiagnostic(code string, message string) map[string]any {
+	return map[string]any{
+		"code":     code,
+		"severity": "error",
+		"message":  message,
+	}
+}
+
+func minInt(left int, right int) int {
+	if left < right {
+		return left
+	}
+	return right
 }
 
 func resolveWorkbenchLiveCommand(liveRunInvocation map[string]any) (string, error) {
@@ -473,18 +953,33 @@ func workbenchDiscoverReplacements(adapterPayload *runtime.AdapterPayload, repoR
 	}
 }
 
-func workbenchCommandReplacements(adapterPayload *runtime.AdapterPayload, options *workbenchRunLiveArgs) map[string]string {
-	return map[string]string{
+func workbenchCommandReplacements(adapterPayload *runtime.AdapterPayload, options *workbenchRunLiveArgs, extra map[string]string) map[string]string {
+	replacements := map[string]string{
 		"repo_root":    runtime.ShellSingleQuote(options.repoRoot),
 		"adapter_path": runtime.ShellSingleQuote(anyString(adapterPayload.Path)),
 		"instance_id":  runtime.ShellSingleQuote(options.instanceID),
 		"request_file": runtime.ShellSingleQuote(options.requestFile),
 		"output_file":  runtime.ShellSingleQuote(options.outputFile),
 	}
+	for key, value := range extra {
+		replacements[key] = value
+	}
+	return replacements
 }
 
 func executeWorkbenchCommand(repoRoot string, commandText string) (string, error) {
-	command := exec.Command("bash", "-lc", commandText)
+	stdoutText, _, err := executeWorkbenchCommandWithTimeout(repoRoot, commandText, 0)
+	return stdoutText, err
+}
+
+func executeWorkbenchCommandWithTimeout(repoRoot string, commandText string, timeout time.Duration) (string, bool, error) {
+	commandContext := context.Background()
+	cancel := func() {}
+	if timeout > 0 {
+		commandContext, cancel = context.WithTimeout(commandContext, timeout)
+	}
+	defer cancel()
+	command := exec.CommandContext(commandContext, "bash", "-lc", commandText)
 	command.Dir = repoRoot
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
@@ -494,18 +989,21 @@ func executeWorkbenchCommand(repoRoot string, commandText string) (string, error
 	stdoutText := strings.TrimSpace(stdout.String())
 	stderrText := strings.TrimSpace(stderr.String())
 	if err != nil {
+		if timeout > 0 && commandContext.Err() == context.DeadlineExceeded {
+			return stdoutText, true, fmt.Errorf("command timed out after %s", timeout)
+		}
 		if stderrText != "" {
 			if stdoutText != "" {
-				return "", fmt.Errorf("command failed: %s\n%s", stderrText, stdoutText)
+				return stdoutText, false, fmt.Errorf("command failed: %s\n%s", stderrText, stdoutText)
 			}
-			return "", fmt.Errorf("command failed: %s", stderrText)
+			return stdoutText, false, fmt.Errorf("command failed: %s", stderrText)
 		}
 		if stdoutText == "" {
-			return "", fmt.Errorf("command failed: %w", err)
+			return stdoutText, false, fmt.Errorf("command failed: %w", err)
 		}
-		return "", fmt.Errorf("command failed: %s", stdoutText)
+		return stdoutText, false, fmt.Errorf("command failed: %s", stdoutText)
 	}
-	return stdoutText, nil
+	return stdoutText, false, nil
 }
 
 func decodeJSONObjectFromString(payload string) (map[string]any, error) {

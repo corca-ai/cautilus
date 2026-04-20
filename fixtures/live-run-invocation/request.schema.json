@@ -18,6 +18,9 @@
       "type": "integer",
       "minimum": 1
     },
+    "consumerMetadata": {
+      "type": "object"
+    },
     "captureTranscript": {
       "type": "boolean"
     },
@@ -26,7 +29,7 @@
     },
     "scenario": {
       "type": "object",
-      "required": ["scenarioId", "name", "description", "maxTurns", "sideEffectsMode", "simulatorTurns"],
+      "required": ["scenarioId", "name", "description", "maxTurns", "sideEffectsMode"],
       "properties": {
         "scenarioId": {
           "type": "string"
@@ -43,6 +46,31 @@
         },
         "sideEffectsMode": {
           "type": "string"
+        },
+        "simulator": {
+          "type": "object",
+          "required": ["kind", "turns"],
+          "properties": {
+            "kind": {
+              "type": "string"
+            },
+            "turns": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "required": ["text"],
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  },
+                  "metadata": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
         },
         "simulatorTurns": {
           "type": "array",

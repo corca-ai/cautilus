@@ -6,17 +6,19 @@ The missing seam is a neutral invocation contract, not another consumer-specific
 ## Current Slice
 
 `Cautilus` now defines one request packet and one result packet for local-first live-run invocation.
-The adapter owns the command that executes the request against the selected instance.
+The adapter may either execute that packet directly as one bounded command or let `Cautilus` own a scripted multi-turn chatbot loop above a consumer-owned single-turn command.
 The product owns the request intent, result summary shape, and failure semantics.
 The selected instance is one live consumer target returned by workbench discovery, not a scenario definition or an adapter name.
 
 ## Fixed Decisions
 
 - The selected `instanceId` comes from `cautilus.workbench_instance_catalog.v1`.
-- The adapter-owned command runs one request against one selected instance.
+- The adapter-owned seam still routes by one selected instance id per invocation.
 - The request packet carries product-owned scenario execution intent, not consumer route details.
 - The result packet distinguishes `completed`, `blocked`, and `failed` execution states.
 - `blocked` and `failed` results must carry operator-facing diagnostics.
+- The first product-owned loop slice supports `scripted` simulator turns on the public packet.
+- Consumer-specific metadata stays opaque to `Cautilus`.
 - The contract does not define remote auth, sessions, or a generic admin transport.
 
 ## Request Packet
@@ -38,14 +40,16 @@ The embedded `scenario` object must include:
 - `description`
 - `maxTurns`
 - `sideEffectsMode`
-- `simulatorTurns`
+- either `simulator.kind: scripted` plus `simulator.turns`, or the legacy `simulatorTurns`
 
 Optional request fields:
 
 - `intentProfile`
 - `captureTranscript`
+- `consumerMetadata`
 - `operatorNote`
 
+`consumerMetadata` is an opaque object that `Cautilus` round-trips into the consumer-owned single-turn seam when the adapter uses the product-owned loop.
 The first request packet deliberately carries only the scenario-execution subset that the live runner needs.
 It does not force the full draft-scenario envelope or any consumer-owned storage paths into the invocation boundary.
 
@@ -66,7 +70,10 @@ Optional result fields:
 - `startedAt`
 - `completedAt`
 - `durationMs`
+- `stopReason`
 - `scenarioResult`
+- `transcript`
+- `evaluation`
 - `diagnostics`
 - `artifactPaths`
 
@@ -80,6 +87,15 @@ The first `scenarioResult` summary may include:
 - `summary`
 - `transcriptExcerpt`
 
+When the adapter opts into the product-owned loop, `stopReason` records why the bounded episode ended.
+The first shipped vocabulary is intentionally small:
+
+- `scripted_turns_exhausted`
+- `turn_limit_reached`
+- `timeout_reached`
+- `blocked_by_consumer`
+- `consumer_turn_failed`
+
 ## Failure Semantics
 
 Use `completed` when the consumer finished the bounded run and can summarize what happened.
@@ -92,14 +108,21 @@ That separation is the main reason this seam should be a product-owned packet in
 ## Adapter Boundary
 
 The adapter-owned entry lives under `live_run_invocation` in `cautilus-adapter.yaml`.
-The `command_template` receives one selected instance id plus one request/output file pair.
-When `command_template` points at the product-owned `cautilus workbench run-live` command, the adapter must also provide a consumer-owned `consumer_command_template` so the command can dispatch the bounded run without recursively calling itself.
-The consumer may implement that command in any language or host runtime as long as it preserves the packet boundary.
+The minimal legacy path still uses one `consumer_command_template` that reads `request_file` and writes `output_file`.
+For the product-owned scripted chatbot loop, the adapter instead points `command_template` at `cautilus workbench run-live` and provides:
+
+- `consumer_single_turn_command_template`
+  - called once per scripted turn with `{turn_request_file}` and `{turn_result_file}`
+- `consumer_evaluator_command_template`
+  - optional post-run hook with `{transcript_file}` and `{evaluation_output_file}`
+
+The consumer may implement those commands in any language or host runtime as long as they preserve the packet boundary.
 
 ## Deferred Decisions
 
 - replay or resume semantics for partially completed live runs
 - streaming transcript updates
+- persona backends beyond public `scripted` turns
 - shared retry policy across consumers
 - generic remote invocation transport
 

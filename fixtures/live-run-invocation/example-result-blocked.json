@@ -4,6 +4,7 @@
   "instanceId": "ceal-dev",
   "executionStatus": "blocked",
   "summary": "The adapter refused the run because the selected instance is in maintenance mode.",
+  "stopReason": "blocked_by_consumer",
   "diagnostics": [
     {
       "code": "instance_maintenance_mode",
