@@ -111,9 +111,14 @@ func handleWorkbenchRunLive(repoRoot string, cwd string, args []string, stdout i
 		_, _ = fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
+	artifactDir, _, err := ensureWorkbenchWorkspace(options.outputFile)
+	if err != nil {
+		_, _ = fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
 	var result map[string]any
 	if hasWorkbenchMultiTurnLoop(liveRunInvocation) {
-		result, err = executeWorkbenchMultiTurnLiveRun(options, adapterPayload, liveRunInvocation, request)
+		result, err = executeWorkbenchMultiTurnLiveRun(options, adapterPayload, liveRunInvocation, request, artifactDir)
 		if err != nil {
 			_, _ = fmt.Fprintf(stderr, "%s\n", err)
 			return 1
@@ -609,6 +614,7 @@ func executeWorkbenchMultiTurnLiveRun(
 	adapterPayload *runtime.AdapterPayload,
 	liveRunInvocation map[string]any,
 	request map[string]any,
+	artifactDir string,
 ) (map[string]any, error) {
 	simulatorSpec, err := normalizeWorkbenchSimulatorSpec(mapOrEmpty(request["scenario"]))
 	if err != nil {
@@ -616,15 +622,16 @@ func executeWorkbenchMultiTurnLiveRun(
 	}
 	startedAt := time.Now().UTC()
 	timeoutMs := intFromAny(request["timeoutMs"], 0)
-	artifactDir := options.outputFile + ".d"
-	if err := os.MkdirAll(artifactDir, 0o755); err != nil {
-		return nil, err
-	}
 	singleTurnTemplate := strings.TrimSpace(anyString(liveRunInvocation["consumer_single_turn_command_template"]))
 	if isRecursiveWorkbenchRunLiveCommand(singleTurnTemplate) {
 		return nil, fmt.Errorf("live_run_invocation.consumer_single_turn_command_template must point at a consumer-owned single-turn command")
 	}
 	transcript := make([]any, 0, intFromAny(mapOrEmpty(request["scenario"])["maxTurns"], 0))
+	if completed, err := prepareWorkbenchWorkspace(options, adapterPayload, liveRunInvocation, request, startedAt, timeoutMs); err != nil {
+		return nil, err
+	} else if completed != nil {
+		return completed, nil
+	}
 	switch simulatorSpec.kind {
 	case "scripted":
 		return executeWorkbenchScriptedLoop(options, adapterPayload, liveRunInvocation, request, startedAt, timeoutMs, artifactDir, singleTurnTemplate, simulatorSpec, transcript)
@@ -633,6 +640,47 @@ func executeWorkbenchMultiTurnLiveRun(
 	default:
 		return nil, fmt.Errorf("unsupported simulator kind: %s", simulatorSpec.kind)
 	}
+}
+
+func prepareWorkbenchWorkspace(
+	options *workbenchRunLiveArgs,
+	adapterPayload *runtime.AdapterPayload,
+	liveRunInvocation map[string]any,
+	request map[string]any,
+	startedAt time.Time,
+	timeoutMs int,
+) (map[string]any, error) {
+	prepareTemplate := strings.TrimSpace(anyString(liveRunInvocation["workspace_prepare_command_template"]))
+	if prepareTemplate == "" {
+		return nil, nil
+	}
+	if isRecursiveWorkbenchRunLiveCommand(prepareTemplate) {
+		return nil, fmt.Errorf("live_run_invocation.workspace_prepare_command_template must point at a consumer-owned prepare command")
+	}
+	remainingMs := workbenchRemainingTimeoutMs(startedAt, timeoutMs)
+	if remainingMs <= 0 {
+		return finalizeWorkbenchCompletedResult(request, nil, startedAt, "timeout_reached", nil, "", nil)
+	}
+	commandText, err := renderTemplate(prepareTemplate, workbenchCommandReplacements(adapterPayload, options, nil))
+	if err != nil {
+		return nil, err
+	}
+	if _, timedOut, err := executeWorkbenchCommandWithTimeout(options.repoRoot, commandText, time.Duration(remainingMs)*time.Millisecond); err != nil {
+		if timedOut {
+			return finalizeWorkbenchCompletedResult(request, nil, startedAt, "timeout_reached", nil, "", nil)
+		}
+		completed := finalizeWorkbenchDiagnosticResult(
+			request,
+			nil,
+			startedAt,
+			"failed",
+			"consumer_turn_failed",
+			"workspace prepare command failed",
+			[]any{workbenchDiagnostic("workspace_prepare_command_failed", err.Error())},
+		)
+		return completed, nil
+	}
+	return nil, nil
 }
 
 func executeWorkbenchScriptedLoop(
@@ -1290,16 +1338,30 @@ func workbenchDiscoverReplacements(adapterPayload *runtime.AdapterPayload, repoR
 
 func workbenchCommandReplacements(adapterPayload *runtime.AdapterPayload, options *workbenchRunLiveArgs, extra map[string]string) map[string]string {
 	replacements := map[string]string{
-		"repo_root":    runtime.ShellSingleQuote(options.repoRoot),
-		"adapter_path": runtime.ShellSingleQuote(anyString(adapterPayload.Path)),
-		"instance_id":  runtime.ShellSingleQuote(options.instanceID),
-		"request_file": runtime.ShellSingleQuote(options.requestFile),
-		"output_file":  runtime.ShellSingleQuote(options.outputFile),
+		"repo_root":     runtime.ShellSingleQuote(options.repoRoot),
+		"adapter_path":  runtime.ShellSingleQuote(anyString(adapterPayload.Path)),
+		"instance_id":   runtime.ShellSingleQuote(options.instanceID),
+		"request_file":  runtime.ShellSingleQuote(options.requestFile),
+		"output_file":   runtime.ShellSingleQuote(options.outputFile),
+		"workspace_dir": runtime.ShellSingleQuote(workbenchWorkspaceDir(options.outputFile)),
 	}
 	for key, value := range extra {
 		replacements[key] = value
 	}
 	return replacements
+}
+
+func workbenchWorkspaceDir(outputFile string) string {
+	return filepath.Join(outputFile+".d", "workspace")
+}
+
+func ensureWorkbenchWorkspace(outputFile string) (string, string, error) {
+	artifactDir := outputFile + ".d"
+	workspaceDir := workbenchWorkspaceDir(outputFile)
+	if err := os.MkdirAll(workspaceDir, 0o755); err != nil {
+		return "", "", err
+	}
+	return artifactDir, workspaceDir, nil
 }
 
 func executeWorkbenchCommand(repoRoot string, commandText string) (string, error) {

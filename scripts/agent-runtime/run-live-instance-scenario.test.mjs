@@ -282,10 +282,17 @@ test("run-live-instance-scenario can own a scripted multi-turn loop with evaluat
 			join(consumerDir, "run-live-turn.mjs"),
 			[
 				"#!/usr/bin/env node",
-				"import { readFileSync, writeFileSync } from 'node:fs';",
+				"import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';",
+				"import { join } from 'node:path';",
 				"const args = process.argv.slice(2);",
 				"const take = (flag) => args[args.indexOf(flag) + 1];",
 				"const turnRequest = JSON.parse(readFileSync(take('--turn-request-file'), 'utf-8'));",
+				"const workspaceDir = take('--workspace-dir');",
+				"if (!existsSync(join(workspaceDir, 'prepared.txt'))) {",
+				"  throw new Error('workspace prepare marker missing');",
+				"}",
+				"mkdirSync(workspaceDir, { recursive: true });",
+				"appendFileSync(join(workspaceDir, 'turn-log.txt'), `${turnRequest.turnIndex}:${workspaceDir}\\n`, 'utf-8');",
 				"writeFileSync(take('--turn-result-file'), JSON.stringify({",
 				"  schemaVersion: 'cautilus.live_run_turn_result.v1',",
 				"  requestId: turnRequest.requestId,",
@@ -297,6 +304,25 @@ test("run-live-instance-scenario can own a scripted multi-turn loop with evaluat
 				"    text: turnRequest.turnIndex === 1 ? '먼저 retro를 정리하겠습니다.' : '좋습니다. 이제 review로 돌아가겠습니다.'",
 				"  }",
 				"}, null, 2) + '\\n', 'utf-8');",
+				"",
+			].join("\n"),
+		);
+		writeExecutableFile(
+			join(consumerDir, "prepare-live-run-workspace.mjs"),
+			[
+				"#!/usr/bin/env node",
+				"import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';",
+				"import { join } from 'node:path';",
+				"const args = process.argv.slice(2);",
+				"const take = (flag) => args[args.indexOf(flag) + 1];",
+				"const workspaceDir = take('--workspace-dir');",
+				"const request = JSON.parse(readFileSync(take('--request-file'), 'utf-8'));",
+				"mkdirSync(workspaceDir, { recursive: true });",
+				"const countFile = join(workspaceDir, 'prepare-count.txt');",
+				"let count = 0;",
+				"try { count = Number(readFileSync(countFile, 'utf-8').trim()) || 0; } catch {}",
+				"writeFileSync(countFile, `${count + 1}\\n`, 'utf-8');",
+				"writeFileSync(join(workspaceDir, 'prepared.txt'), request.requestId, 'utf-8');",
 				"",
 			].join("\n"),
 		);
@@ -326,7 +352,8 @@ test("run-live-instance-scenario can own a scripted multi-turn loop with evaluat
 				"  - baseline git ref via {baseline_ref}",
 				"live_run_invocation:",
 				"  command_template: node scripts/agent-runtime/run-live-instance-scenario.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
-				"  consumer_single_turn_command_template: node scripts/consumer/run-live-turn.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --turn-request-file {turn_request_file} --turn-result-file {turn_result_file}",
+				"  consumer_single_turn_command_template: node scripts/consumer/run-live-turn.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --turn-request-file {turn_request_file} --turn-result-file {turn_result_file} --workspace-dir {workspace_dir}",
+				"  workspace_prepare_command_template: node scripts/consumer/prepare-live-run-workspace.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --workspace-dir {workspace_dir}",
 				"  consumer_evaluator_command_template: node scripts/consumer/evaluate-live-run.mjs --repo-root {repo_root} --adapter-path {adapter_path} --request-file {request_file} --transcript-file {transcript_file} --output-file {evaluation_output_file}",
 				"",
 			].join("\n"),
@@ -344,6 +371,12 @@ test("run-live-instance-scenario can own a scripted multi-turn loop with evaluat
 		assert.equal(output.stopReason, "scripted_turns_exhausted");
 		assert.equal(output.transcript.length, 2);
 		assert.equal(output.evaluation.summary, "evaluated 2 transcript turns");
+		const workspaceDir = join(`${outputFile}.d`, "workspace");
+		assert.equal(readFileSync(join(workspaceDir, "prepare-count.txt"), "utf-8").trim(), "1");
+		assert.deepEqual(
+			readFileSync(join(workspaceDir, "turn-log.txt"), "utf-8").trim().split("\n"),
+			[`1:${workspaceDir}`, `2:${workspaceDir}`],
+		);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

@@ -68,6 +68,7 @@ instance_discovery:
 live_run_invocation:
   command_template: cautilus workbench run-live --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}
   consumer_single_turn_command_template: node scripts/consumer/run-live-turn.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --turn-request-file {turn_request_file} --turn-result-file {turn_result_file}
+  workspace_prepare_command_template: node scripts/consumer/prepare-live-run-workspace.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --workspace-dir {workspace_dir}
   simulator_persona_command_template: node scripts/agent-runtime/run-live-simulator-persona.mjs --workspace {repo_root} --simulator-request-file {simulator_request_file} --simulator-result-file {simulator_result_file} --backend fixture --fixture-results-file fixtures/live-run/persona-fixture.json
   consumer_evaluator_command_template: node scripts/consumer/evaluate-live-run.mjs --repo-root {repo_root} --adapter-path {adapter_path} --request-file {request_file} --transcript-file {transcript_file} --output-file {evaluation_output_file}
   required_prerequisites:
@@ -245,6 +246,7 @@ The adapter may therefore declare one optional `live_run_invocation` stanza.
 live_run_invocation:
   command_template: cautilus workbench run-live --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}
   consumer_single_turn_command_template: node scripts/consumer/run-live-turn.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --turn-request-file {turn_request_file} --turn-result-file {turn_result_file}
+  workspace_prepare_command_template: node scripts/consumer/prepare-live-run-workspace.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --workspace-dir {workspace_dir}
   simulator_persona_command_template: node scripts/agent-runtime/run-live-simulator-persona.mjs --workspace {repo_root} --simulator-request-file {simulator_request_file} --simulator-result-file {simulator_result_file} --backend fixture --fixture-results-file fixtures/live-run/persona-fixture.json
   consumer_evaluator_command_template: node scripts/consumer/evaluate-live-run.mjs --repo-root {repo_root} --adapter-path {adapter_path} --request-file {request_file} --transcript-file {transcript_file} --output-file {evaluation_output_file}
   required_prerequisites:
@@ -258,6 +260,8 @@ Fixed rules:
   For the legacy one-shot path, that command must then receive a consumer-owned `consumer_command_template` to avoid recursive self-invocation.
   For the product-owned chatbot loop, it must instead receive `consumer_single_turn_command_template`.
   When the public request uses `simulator.kind: persona_prompt`, it must also receive `simulator_persona_command_template`.
+- When the product-owned chatbot loop is active, `Cautilus` allocates one stable workspace directory at `<output_file>.d/workspace/`.
+  If `workspace_prepare_command_template` is present, `Cautilus` runs it once per request before the first turn.
 - The command reads one request packet from `request_file`.
 - The command writes one `cautilus.live_run_invocation_result.v1` packet to `output_file`.
 - The packet owns scenario execution intent.
@@ -270,6 +274,7 @@ Current placeholders for `live_run_invocation.command_template`:
 - `{instance_id}`
 - `{request_file}`
 - `{output_file}`
+- `{workspace_dir}`
 
 Current placeholders for `live_run_invocation.consumer_command_template`:
 
@@ -278,6 +283,7 @@ Current placeholders for `live_run_invocation.consumer_command_template`:
 - `{instance_id}`
 - `{request_file}`
 - `{output_file}`
+- `{workspace_dir}`
 
 Current placeholders for `live_run_invocation.consumer_single_turn_command_template`:
 
@@ -287,6 +293,16 @@ Current placeholders for `live_run_invocation.consumer_single_turn_command_templ
 - `{request_file}`
 - `{turn_request_file}`
 - `{turn_result_file}`
+- `{workspace_dir}`
+
+Current placeholders for `live_run_invocation.workspace_prepare_command_template`:
+
+- `{repo_root}`
+- `{adapter_path}`
+- `{instance_id}`
+- `{request_file}`
+- `{output_file}`
+- `{workspace_dir}`
 
 Current placeholders for `live_run_invocation.simulator_persona_command_template`:
 
@@ -296,6 +312,7 @@ Current placeholders for `live_run_invocation.simulator_persona_command_template
 - `{request_file}`
 - `{simulator_request_file}`
 - `{simulator_result_file}`
+- `{workspace_dir}`
 
 Current placeholders for `live_run_invocation.consumer_evaluator_command_template`:
 
@@ -304,6 +321,7 @@ Current placeholders for `live_run_invocation.consumer_evaluator_command_templat
 - `{request_file}`
 - `{transcript_file}`
 - `{evaluation_output_file}`
+- `{workspace_dir}`
 
 See [live-run-invocation.md](./live-run-invocation.md) for the request/result packet contract.
 

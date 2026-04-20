@@ -104,6 +104,8 @@ For a simple adopter, the catalog may contain only one default instance.
 The product owns the packet boundary and status semantics.
 The consumer still owns actual launch, auth, and runtime wiring through its adapter command.
 When the adapter declares `consumer_single_turn_command_template`, the same command can also own a product-managed multi-turn chatbot loop above a consumer-owned single-turn seam.
+That loop now allocates one stable per-request workspace directory at `<output_file>.d/workspace/` and exposes it through the `{workspace_dir}` placeholder across live-run command templates.
+When the adapter also declares `workspace_prepare_command_template`, `Cautilus` runs that consumer-owned prepare command once before the first turn.
 When the public scenario uses `simulator.kind: persona_prompt`, the adapter additionally provides `simulator_persona_command_template` so the packet stays provider-agnostic while the runtime backend stays adapter-owned.
 
 ## Workspace management

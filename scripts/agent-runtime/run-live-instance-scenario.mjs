@@ -434,6 +434,7 @@ function buildReplacements(payload, context, options, extra = {}) {
 		instance_id: shellEscape(options.instanceId),
 		request_file: shellEscape(context.requestFile),
 		output_file: shellEscape(context.outputFile),
+		workspace_dir: shellEscape(workbenchWorkspaceDir(context.outputFile)),
 		...extra,
 	};
 }
@@ -457,6 +458,17 @@ function executeCommand(command, cwd, timeoutMs = 0) {
 function hasMultiTurnLoop(liveRunInvocation) {
 	return typeof liveRunInvocation.consumer_single_turn_command_template === "string"
 		&& liveRunInvocation.consumer_single_turn_command_template.trim().length > 0;
+}
+
+function workbenchWorkspaceDir(outputFile) {
+	return join(`${outputFile}.d`, "workspace");
+}
+
+function ensureWorkbenchWorkspace(outputFile) {
+	const artifactDir = `${outputFile}.d`;
+	const workspaceDir = workbenchWorkspaceDir(outputFile);
+	mkdirSync(workspaceDir, { recursive: true });
+	return { artifactDir, workspaceDir };
 }
 
 function remainingTimeoutMs(startedAt, timeoutMs) {
@@ -524,6 +536,17 @@ function resolveSingleTurnTemplate(liveRunInvocation) {
 	const template = liveRunInvocation.consumer_single_turn_command_template?.trim();
 	if (!template || HELPER_PATH_PATTERN.test(template)) {
 		fail("live_run_invocation.consumer_single_turn_command_template must point at a consumer-owned single-turn command.");
+	}
+	return template;
+}
+
+function resolveWorkspacePrepareTemplate(liveRunInvocation) {
+	const template = liveRunInvocation.workspace_prepare_command_template?.trim();
+	if (!template) {
+		return null;
+	}
+	if (HELPER_PATH_PATTERN.test(template)) {
+		fail("live_run_invocation.workspace_prepare_command_template must point at a consumer-owned prepare command.");
 	}
 	return template;
 }
@@ -616,6 +639,30 @@ function runScriptedTurn(options, context, payload, request, singleTurnTemplate,
 			turnResult.diagnostics,
 		),
 	};
+}
+
+function prepareWorkspaceOnce(options, context, payload, request, liveRunInvocation, startedAt) {
+	const template = resolveWorkspacePrepareTemplate(liveRunInvocation);
+	if (!template) {
+		return null;
+	}
+	const command = renderTemplate(template, buildReplacements(payload, context, options));
+	const commandResult = executeCommand(command, context.repoRoot, remainingTimeoutMs(startedAt, request.timeoutMs));
+	if (commandResult.timedOut) {
+		return buildCompletedResult(request, [], startedAt, "timeout_reached", null);
+	}
+	if (commandResult.detail) {
+		return buildDiagnosticResult(
+			request,
+			[],
+			startedAt,
+			"failed",
+			"consumer_turn_failed",
+			"workspace prepare command failed",
+			[diagnostic("workspace_prepare_command_failed", commandResult.detail)],
+		);
+	}
+	return null;
 }
 
 function runSimulatorPersonaTurn(
@@ -826,9 +873,12 @@ function executeMultiTurnRun(options, context, payload, liveRunInvocation, reque
 	const singleTurnTemplate = resolveSingleTurnTemplate(liveRunInvocation);
 	const simulatorSpec = normalizeSimulatorSpec(request.scenario);
 	const startedAt = Date.now();
-	const artifactDir = `${context.outputFile}.d`;
+	const { artifactDir } = ensureWorkbenchWorkspace(context.outputFile);
 	mkdirSync(dirname(context.outputFile), { recursive: true });
-	mkdirSync(artifactDir, { recursive: true });
+	const preparedResult = prepareWorkspaceOnce(options, context, payload, request, liveRunInvocation, startedAt);
+	if (preparedResult) {
+		return preparedResult;
+	}
 	if (simulatorSpec.kind === "persona_prompt") {
 		return executePersonaPromptLoop(options, context, payload, liveRunInvocation, request, singleTurnTemplate, simulatorSpec, startedAt, artifactDir);
 	}
@@ -837,6 +887,7 @@ function executeMultiTurnRun(options, context, payload, liveRunInvocation, reque
 
 function executeLiveRunCommand(options, context, payload, liveRunInvocation, request) {
 	mkdirSync(dirname(context.outputFile), { recursive: true });
+	ensureWorkbenchWorkspace(context.outputFile);
 	if (hasMultiTurnLoop(liveRunInvocation)) {
 		writeJsonFile(context.outputFile, executeMultiTurnRun(options, context, payload, liveRunInvocation, request));
 		return;

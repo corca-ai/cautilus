@@ -51,16 +51,28 @@ instance_discovery:
         scenario_store: $tmpdir/runtime/default/scenarios.json
 live_run_invocation:
   command_template: cautilus workbench run-live --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}
-  consumer_single_turn_command_template: sh ./run-live-turn.sh {turn_request_file} {turn_result_file}
+  consumer_single_turn_command_template: sh ./run-live-turn.sh {turn_request_file} {turn_result_file} {workspace_dir}
+  workspace_prepare_command_template: sh ./prepare-live-run.sh {workspace_dir}
 EOF
+cat > "$tmpdir/prepare-live-run.sh" <<'EOF'
+#!/bin/sh
+workspace_dir="$1"
+mkdir -p "$workspace_dir"
+printf '1\n' > "$workspace_dir/prepare-count.txt"
+printf 'prepared\n' > "$workspace_dir/prepared.txt"
+EOF
+chmod +x "$tmpdir/prepare-live-run.sh"
 cat > "$tmpdir/run-live-turn.sh" <<'EOF'
 #!/bin/sh
 turn_request_file="$1"
 turn_result_file="$2"
-node - "$turn_request_file" "$turn_result_file" <<'JSON'
-const [turnRequestFile, turnResultFile] = process.argv.slice(2);
-const { readFileSync, writeFileSync } = await import("node:fs");
+workspace_dir="$3"
+node - "$turn_request_file" "$turn_result_file" "$workspace_dir" <<'JSON'
+const [turnRequestFile, turnResultFile, workspaceDir] = process.argv.slice(2);
+const { appendFileSync, readFileSync, writeFileSync } = await import("node:fs");
+const { join } = await import("node:path");
 const turnRequest = JSON.parse(readFileSync(turnRequestFile, "utf8"));
+appendFileSync(join(workspaceDir, "turn-log.txt"), String(turnRequest.turnIndex) + ":" + workspaceDir + "\n", "utf8");
 writeFileSync(turnResultFile, JSON.stringify({
   schemaVersion: "cautilus.live_run_turn_result.v1",
   requestId: turnRequest.requestId,
@@ -103,6 +115,8 @@ grep -q '"displayLabel": "Local Default"' "$tmpdir/catalog.json"
 grep -q '"executionStatus": "completed"' "$tmpdir/result.json"
 grep -q '"stopReason": "scripted_turns_exhausted"' "$tmpdir/result.json"
 grep -q '"scenarioId": "scenario-smoke"' "$tmpdir/result.json"
+grep -q '^1$' "$tmpdir/result.json.d/workspace/prepare-count.txt"
+grep -q '^1:' "$tmpdir/result.json.d/workspace/turn-log.txt"
 ```
 
 ## Install Proof

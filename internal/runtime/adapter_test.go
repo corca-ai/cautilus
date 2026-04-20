@@ -105,6 +105,7 @@ func TestValidateAdapterDataAcceptsLiveRunInvocation(t *testing.T) {
 			"command_template":                      "cautilus workbench run-live --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
 			"consumer_command_template":             "node scripts/consumer/run-live-instance-scenario.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
 			"consumer_single_turn_command_template": "node scripts/consumer/run-live-turn.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --turn-request-file {turn_request_file} --turn-result-file {turn_result_file}",
+			"workspace_prepare_command_template":    "node scripts/consumer/prepare-live-run-workspace.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --workspace-dir {workspace_dir}",
 			"consumer_evaluator_command_template":   "node scripts/consumer/evaluate-live-run.mjs --repo-root {repo_root} --adapter-path {adapter_path} --request-file {request_file} --transcript-file {transcript_file} --output-file {evaluation_output_file}",
 			"simulator_persona_command_template":    "node scripts/agent-runtime/run-live-simulator-persona.mjs --workspace {repo_root} --simulator-request-file {simulator_request_file} --simulator-result-file {simulator_result_file}",
 			"required_prerequisites": []any{
@@ -127,6 +128,9 @@ func TestValidateAdapterDataAcceptsLiveRunInvocation(t *testing.T) {
 	}
 	if !strings.Contains(liveRunInvocation["consumer_single_turn_command_template"].(string), "scripts/consumer/run-live-turn.mjs") {
 		t.Fatalf("expected consumer single-turn command template to survive normalization, got %#v", liveRunInvocation["consumer_single_turn_command_template"])
+	}
+	if !strings.Contains(liveRunInvocation["workspace_prepare_command_template"].(string), "{workspace_dir}") {
+		t.Fatalf("expected workspace prepare command template to survive normalization, got %#v", liveRunInvocation["workspace_prepare_command_template"])
 	}
 	if !strings.Contains(liveRunInvocation["consumer_evaluator_command_template"].(string), "scripts/consumer/evaluate-live-run.mjs") {
 		t.Fatalf("expected consumer evaluator command template to survive normalization, got %#v", liveRunInvocation["consumer_evaluator_command_template"])

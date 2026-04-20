@@ -5822,14 +5822,36 @@ func TestCLIWorkbenchRunLiveCanExecuteProductOwnedScriptedLoop(t *testing.T) {
 	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
 		t.Fatalf("MkdirAll returned error: %v", err)
 	}
+	writeExecutableFile(t, root, "prepare-live-run.sh", strings.Join([]string{
+		"#!/bin/sh",
+		"workspace_dir=\"$1\"",
+		"node - \"$workspace_dir\" <<'EOF'",
+		"const [workspaceDir] = process.argv.slice(2);",
+		"const { mkdirSync, readFileSync, writeFileSync } = await import(\"node:fs\");",
+		"const { join } = await import(\"node:path\");",
+		"mkdirSync(workspaceDir, { recursive: true });",
+		"const countFile = join(workspaceDir, \"prepare-count.txt\");",
+		"let count = 0;",
+		"try { count = Number(readFileSync(countFile, \"utf8\").trim()) || 0; } catch {}",
+		"writeFileSync(countFile, `${count + 1}\\n`, \"utf8\");",
+		"writeFileSync(join(workspaceDir, \"prepared.txt\"), \"prepared\\n\", \"utf8\");",
+		"EOF",
+		"",
+	}, "\n"))
 	writeExecutableFile(t, root, "run-live-turn.sh", strings.Join([]string{
 		"#!/bin/sh",
 		"turn_request_file=\"$1\"",
 		"turn_result_file=\"$2\"",
-		"node - \"$turn_request_file\" \"$turn_result_file\" <<'EOF'",
-		"const [turnRequestFile, turnResultFile] = process.argv.slice(2);",
-		"const { readFileSync, writeFileSync } = await import(\"node:fs\");",
+		"workspace_dir=\"$3\"",
+		"node - \"$turn_request_file\" \"$turn_result_file\" \"$workspace_dir\" <<'EOF'",
+		"const [turnRequestFile, turnResultFile, workspaceDir] = process.argv.slice(2);",
+		"const { appendFileSync, existsSync, readFileSync, writeFileSync } = await import(\"node:fs\");",
+		"const { join } = await import(\"node:path\");",
 		"const turnRequest = JSON.parse(readFileSync(turnRequestFile, \"utf8\"));",
+		"if (!existsSync(join(workspaceDir, \"prepared.txt\"))) {",
+		"  throw new Error(\"workspace prepare marker missing\");",
+		"}",
+		"appendFileSync(join(workspaceDir, \"turn-log.txt\"), `${turnRequest.turnIndex}:${workspaceDir}\\n`, \"utf8\");",
 		"writeFileSync(turnResultFile, JSON.stringify({",
 		`  schemaVersion: "cautilus.live_run_turn_result.v1",`,
 		"  requestId: turnRequest.requestId,",
@@ -5868,7 +5890,8 @@ func TestCLIWorkbenchRunLiveCanExecuteProductOwnedScriptedLoop(t *testing.T) {
 		"  - baseline git ref via {baseline_ref}",
 		"live_run_invocation:",
 		"  command_template: cautilus workbench run-live --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
-		"  consumer_single_turn_command_template: ./run-live-turn.sh {turn_request_file} {turn_result_file}",
+		"  consumer_single_turn_command_template: ./run-live-turn.sh {turn_request_file} {turn_result_file} {workspace_dir}",
+		"  workspace_prepare_command_template: ./prepare-live-run.sh {workspace_dir}",
 		"  consumer_evaluator_command_template: ./evaluate-live-run.sh {transcript_file} {evaluation_output_file}",
 		"",
 	}, "\n")
@@ -5928,6 +5951,31 @@ func TestCLIWorkbenchRunLiveCanExecuteProductOwnedScriptedLoop(t *testing.T) {
 	}
 	if result["evaluation"].(map[string]any)["summary"] != "evaluated 2 transcript turns" {
 		t.Fatalf("expected evaluator summary in result, got %#v", result["evaluation"])
+	}
+	workspaceDir := filepath.Join(outputPath+".d", "workspace")
+	countBytes, err := os.ReadFile(filepath.Join(workspaceDir, "prepare-count.txt"))
+	if err != nil {
+		t.Fatalf("ReadFile returned error: %v", err)
+	}
+	if strings.TrimSpace(string(countBytes)) != "1" {
+		t.Fatalf("expected prepare command to run once, got %q", string(countBytes))
+	}
+	logBytes, err := os.ReadFile(filepath.Join(workspaceDir, "turn-log.txt"))
+	if err != nil {
+		t.Fatalf("ReadFile returned error: %v", err)
+	}
+	lines := strings.Split(strings.TrimSpace(string(logBytes)), "\n")
+	expectedLines := []string{
+		fmt.Sprintf("1:%s", workspaceDir),
+		fmt.Sprintf("2:%s", workspaceDir),
+	}
+	if len(lines) != len(expectedLines) {
+		t.Fatalf("expected %d workspace log lines, got %#v", len(expectedLines), lines)
+	}
+	for index, line := range lines {
+		if line != expectedLines[index] {
+			t.Fatalf("unexpected workspace log line %d: got %q want %q", index, line, expectedLines[index])
+		}
 	}
 }
 

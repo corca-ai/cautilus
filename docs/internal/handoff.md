@@ -2,10 +2,10 @@
 
 ## Workflow Trigger
 
-다음 세션은 `#21 Add consumer workspace lifecycle support to workbench live-run`부터 시작한다.
+다음 세션은 Ceal adopter 쪽에서 새 `#21` surface 를 실제로 채택하고 close-out evidence 를 남기는 것부터 시작한다.
 먼저 [docs/contracts/live-run-invocation.md](../contracts/live-run-invocation.md), [docs/contracts/adapter-contract.md](../contracts/adapter-contract.md), [docs/master-plan.md](../master-plan.md), [AGENTS.md](../../AGENTS.md), 그리고 Ceal adopter proof 근거인 [../ceal/docs/implementation/24-simulation-stack-thinning.md](../../../ceal/docs/implementation/24-simulation-stack-thinning.md), [../ceal/scripts/agent-runtime/run-ceal-single-turn.ts](../../../ceal/scripts/agent-runtime/run-ceal-single-turn.ts) 를 읽는다.
-핵심 질문은 workspace lifecycle을 어디까지 product-owned로 올릴지다.
-최소 후보는 `{workspace_dir}` placeholder 하나고, 더 나가면 one-time `workspace_prepare_command_template` hook까지 포함한다.
+이미 product boundary 결정은 끝났다.
+`Cautilus` 는 stable `{workspace_dir}` 와 optional one-time `workspace_prepare_command_template` 를 product-owned loop 경계로 채택했다.
 
 ## Current State
 
@@ -19,6 +19,16 @@
 - `workbench run-live` 는 이제 product-owned multi-turn loop 를 제공한다.
   public simulator kinds 는 `scripted` 와 `persona_prompt` 두 개다.
   concrete backend choice 는 `simulator_persona_command_template` + opaque `consumerMetadata` 로 adapter-owned 상태를 유지한다.
+- `#21` 의 product-side slice 는 구현됐다.
+  `workbench run-live` 는 `<output_file>.d/workspace/` 에 stable per-request workspace dir 를 만들고,
+  모든 live-run command template 에 `{workspace_dir}` placeholder 를 제공한다.
+  product-owned multi-turn loop path 에서는 optional `workspace_prepare_command_template` 를 첫 turn 전에 정확히 한 번 실행한다.
+- adapter validation, Node helper, Go CLI smoke, docs/contracts, CLI reference, standalone surface spec 가 모두 새 surface 에 맞게 갱신됐다.
+- local gates 는 현재 slice 기준으로 통과했다.
+  `go test ./internal/runtime ./internal/app`
+  `node --test scripts/agent-runtime/run-live-instance-scenario.test.mjs scripts/agent-runtime/adapter-resolution.test.mjs`
+  `npm run verify`
+  `npm run hooks:check`
 - supporting artifacts 는 `cautilus.live_run_simulator_request/result.v1`, `cautilus.live_run_turn_request/result.v1`, `cautilus.live_run_transcript.v1` 까지 shipped 상태다.
 - Ceal 은 실제 adopter proof 를 완료했다.
   relevant Ceal commits:
@@ -32,25 +42,16 @@
 
 ## Next Session
 
-1. `#21` 을 spec 수준으로 좁힌다.
-   먼저 product-owned 최소안과 비목표를 명확히 적는다.
-2. workspace lifecycle surface 후보를 비교한다.
-   최소안: `{workspace_dir}` placeholder
-   확장안: `{workspace_dir}` + `workspace_prepare_command_template`
-3. Ceal proof를 기준으로 acceptance bar를 고정한다.
-   turn 1 bootstrap detection을 consumer가 계속 들지 않아도 되는지,
-   opaque `consumerMetadata.workingDir` 의존을 줄이는지가 핵심이다.
-4. 방향이 정해지면 바로 smallest slice 구현으로 들어간다.
-   adapter schema
-   workbench command placeholder wiring
-   docs/contracts
-   smoke test 하나
+1. Ceal adapter 와 `run-ceal-single-turn.ts` 계열 shim 을 새 surface 로 바꾼다.
+   `consumerMetadata.workingDir` 재-plumb 없이 `{workspace_dir}` 를 직접 쓰는지 확인한다.
+2. Ceal proof 를 다시 캡처한다.
+   scripted / persona path 둘 다에서 workspace bootstrap 이 product-owned prepare hook 으로 흡수됐는지 본다.
+3. evidence 가 충분하면 [#21](https://github.com/corca-ai/cautilus/issues/21) close-out comment 와 state transition 을 준비한다.
 
 ## Discuss
 
-- workspace lifecycle 에서 product가 소유해야 하는 최소 경계는 `{workspace_dir}` 만으로 충분한지
-- one-time `workspace_prepare_command_template` 가 실제로 필요한지, 아니면 consumer single-turn command 안에서 preparation 을 계속 허용할지
-- workspace root 를 `<output_file>.d/workspace/` 처럼 artifact-root 아래에 둘지, adapter-configurable root 를 열지
+- one-shot `consumer_command_template` path 에도 one-time prepare hook 을 열지, 아니면 지금처럼 product-owned multi-turn path 전용으로 유지할지
+- workspace root 를 계속 `<output_file>.d/workspace/` 로 고정할지, adopter evidence 가 더 쌓이면 adapter-configurable root 를 열지
 - evaluator 쪽 richer per-turn artifact handoff 는 `#21` 범위 밖으로 유지할지
 
 ## References

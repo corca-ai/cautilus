@@ -8,6 +8,7 @@ The missing seam is a neutral invocation contract, not another consumer-specific
 `Cautilus` now defines one request packet and one result packet for local-first live-run invocation.
 The adapter may either execute that packet directly as one bounded command or let `Cautilus` own a multi-turn chatbot loop above a consumer-owned single-turn command.
 The product owns the request intent, result summary shape, and failure semantics.
+When the product-owned loop is active, `Cautilus` also owns one stable per-request workspace directory under `<output_file>.d/workspace/` and may run one optional prepare hook before the first turn.
 The selected instance is one live consumer target returned by workbench discovery, not a scenario definition or an adapter name.
 
 ## Fixed Decisions
@@ -19,6 +20,7 @@ The selected instance is one live consumer target returned by workbench discover
 - `blocked` and `failed` results must carry operator-facing diagnostics.
 - The first product-owned loop slice supports public `scripted` turns plus one provider-agnostic `persona_prompt` simulator kind.
 - Consumer-specific metadata stays opaque to `Cautilus`.
+- Product-owned workspace lifecycle stays off the public packet shape and instead flows through adapter template placeholders.
 - The contract does not define remote auth, sessions, or a generic admin transport.
 
 ## Request Packet
@@ -118,6 +120,9 @@ For the product-owned chatbot loop, the adapter instead points `command_template
 
 - `consumer_single_turn_command_template`
   - called once per simulated turn with `{turn_request_file}` and `{turn_result_file}`
+- `workspace_prepare_command_template`
+  - optional one-time hook called once per request before the product-owned loop starts
+  - receives the stable `{workspace_dir}` placeholder
 - `simulator_persona_command_template`
   - required when `simulator.kind` is `persona_prompt`
   - called once per persona-generated turn with `{simulator_request_file}` and `{simulator_result_file}`
@@ -125,6 +130,7 @@ For the product-owned chatbot loop, the adapter instead points `command_template
   - optional post-run hook with `{transcript_file}` and `{evaluation_output_file}`
 
 The consumer may implement those commands in any language or host runtime as long as they preserve the packet boundary.
+The workspace directory contents stay consumer-owned even when `Cautilus` owns the directory allocation and one-time prepare timing.
 
 The product-owned loop also materializes supporting JSON artifacts when that path is active:
 
@@ -142,6 +148,7 @@ The product-owned loop also materializes supporting JSON artifacts when that pat
 - shared provider presets for persona backends
 - shared retry policy across consumers
 - generic remote invocation transport
+- adapter-configurable workspace roots beyond the current artifact-root-relative path
 
 ## Non-Goals
 
@@ -156,6 +163,7 @@ The product-owned loop also materializes supporting JSON artifacts when that pat
 - The consumer can return a machine-readable result without exposing its route layout.
 - Operators can distinguish scenario failure, blocked execution, and invocation failure.
 - The same command seam works whether the consumer wraps a CLI, a local daemon, or another host-owned runtime primitive.
+- A consumer-owned single-turn command can reuse one stable workspace across the bounded episode without inventing its own turn-1 bootstrap protocol.
 
 ## Acceptance Checks
 

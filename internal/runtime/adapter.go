@@ -496,6 +496,14 @@ func validateAdapterLiveRunInvocation(value any) (map[string]any, []string) {
 			validated["consumer_single_turn_command_template"] = text
 		}
 	}
+	if prepareTemplate, ok := record["workspace_prepare_command_template"]; ok && prepareTemplate != nil {
+		text, err := normalizeNonEmptyString(prepareTemplate, "live_run_invocation.workspace_prepare_command_template")
+		if err != nil {
+			errors = append(errors, "live_run_invocation.workspace_prepare_command_template must be a non-empty string")
+		} else {
+			validated["workspace_prepare_command_template"] = text
+		}
+	}
 	if evaluatorTemplate, ok := record["consumer_evaluator_command_template"]; ok && evaluatorTemplate != nil {
 		text, err := normalizeNonEmptyString(evaluatorTemplate, "live_run_invocation.consumer_evaluator_command_template")
 		if err != nil {

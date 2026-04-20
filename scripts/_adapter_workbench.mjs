@@ -189,6 +189,13 @@ export function validateLiveRunInvocation(value, errors) {
 		liveRunInvocation,
 	);
 	copyOptionalInstanceField(
+		value.workspace_prepare_command_template,
+		"live_run_invocation.workspace_prepare_command_template",
+		"workspace_prepare_command_template",
+		errors,
+		liveRunInvocation,
+	);
+	copyOptionalInstanceField(
 		value.consumer_evaluator_command_template,
 		"live_run_invocation.consumer_evaluator_command_template",
 		"consumer_evaluator_command_template",
