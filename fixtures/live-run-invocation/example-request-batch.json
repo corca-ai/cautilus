@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "cautilus.live_run_invocation_request_batch.v1",
+  "instanceId": "ceal",
+  "requests": [
+    {
+      "schemaVersion": "cautilus.live_run_invocation_request.v1",
+      "requestId": "review-after-retro-sample-1",
+      "instanceId": "ceal",
+      "timeoutMs": 30000,
+      "captureTranscript": true,
+      "scenario": {
+        "scenarioId": "review-after-retro",
+        "name": "Review after retro",
+        "description": "The live instance should return to the review workflow after a retro interruption.",
+        "maxTurns": 2,
+        "sideEffectsMode": "read_only",
+        "simulator": {
+          "kind": "scripted",
+          "turns": [
+            { "text": "retro 먼저 해주세요" },
+            { "text": "이제 review로 돌아가죠" }
+          ]
+        }
+      }
+    },
+    {
+      "schemaVersion": "cautilus.live_run_invocation_request.v1",
+      "requestId": "review-after-retro-sample-2",
+      "instanceId": "ceal",
+      "timeoutMs": 30000,
+      "captureTranscript": true,
+      "scenario": {
+        "scenarioId": "review-after-retro-followup",
+        "name": "Review follow-up after retro",
+        "description": "The live instance should keep the review thread coherent after a follow-up question.",
+        "maxTurns": 2,
+        "sideEffectsMode": "read_only",
+        "simulator": {
+          "kind": "scripted",
+          "turns": [
+            { "text": "retro 먼저 해주세요" },
+            { "text": "이제 review로 돌아가죠" }
+          ]
+        }
+      }
+    }
+  ]
+}

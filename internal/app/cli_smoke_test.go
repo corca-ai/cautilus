@@ -6214,6 +6214,154 @@ func TestCLIWorkbenchRunLiveCanExecuteProductOwnedScriptedLoop(t *testing.T) {
 	}
 }
 
+func TestCLIWorkbenchRunScenariosExecutesExplicitRequestBatch(t *testing.T) {
+	root := t.TempDir()
+	adapterDir := filepath.Join(root, ".agents")
+	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	writeExecutableFile(t, root, "prepare-live-run.sh", strings.Join([]string{
+		"#!/bin/sh",
+		"workspace_dir=\"$1\"",
+		"mkdir -p \"$workspace_dir\"",
+		"printf 'prepared\\n' > \"$workspace_dir/prepared.txt\"",
+		"",
+	}, "\n"))
+	writeExecutableFile(t, root, "run-live-turn.sh", strings.Join([]string{
+		"#!/bin/sh",
+		"turn_request_file=\"$1\"",
+		"turn_result_file=\"$2\"",
+		"workspace_dir=\"$3\"",
+		"node - \"$turn_request_file\" \"$turn_result_file\" \"$workspace_dir\" <<'EOF'",
+		"const [turnRequestFile, turnResultFile, workspaceDir] = process.argv.slice(2);",
+		"const { existsSync, readFileSync, writeFileSync } = await import(\"node:fs\");",
+		"if (!existsSync(`${workspaceDir}/prepared.txt`)) {",
+		"  throw new Error(\"missing prepare marker\");",
+		"}",
+		"const turnRequest = JSON.parse(readFileSync(turnRequestFile, \"utf8\"));",
+		"writeFileSync(turnResultFile, JSON.stringify({",
+		`  schemaVersion: "cautilus.live_run_turn_result.v1",`,
+		"  requestId: turnRequest.requestId,",
+		"  instanceId: turnRequest.instanceId,",
+		"  turnIndex: turnRequest.turnIndex,",
+		`  executionStatus: "completed",`,
+		`  summary: "batched synthetic turn completed",`,
+		"  assistantTurn: {",
+		"    text: `ack ${turnRequest.simulatorTurn.text}`",
+		"  }",
+		"}) + \"\\n\", \"utf8\");",
+		"EOF",
+		"",
+	}, "\n"))
+	adapter := strings.Join([]string{
+		"version: 1",
+		"repo: temp",
+		"evaluation_surfaces:",
+		"  - chatbot behavior",
+		"baseline_options:",
+		"  - baseline git ref via {baseline_ref}",
+		"live_run_invocation:",
+		"  command_template: cautilus workbench run-live --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
+		"  consumer_single_turn_command_template: ./run-live-turn.sh {turn_request_file} {turn_result_file} {workspace_dir}",
+		"  workspace_prepare_command_template: ./prepare-live-run.sh {workspace_dir}",
+		"",
+	}, "\n")
+	if err := os.WriteFile(filepath.Join(adapterDir, "cautilus-adapter.yaml"), []byte(adapter), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	requestBatchPath := filepath.Join(root, "request-batch.json")
+	writeJSONFile(t, requestBatchPath, map[string]any{
+		"schemaVersion": contracts.LiveRunInvocationBatchRequestSchema,
+		"instanceId":    "ceal",
+		"requests": []any{
+			map[string]any{
+				"schemaVersion": contracts.LiveRunInvocationRequestSchema,
+				"requestId":     "req-batch-1",
+				"instanceId":    "ceal",
+				"timeoutMs":     30000,
+				"scenario": map[string]any{
+					"scenarioId":      "scenario-batch-1",
+					"name":            "Batched live run one",
+					"description":     "First batched scenario.",
+					"maxTurns":        1,
+					"sideEffectsMode": "read_only",
+					"simulator": map[string]any{
+						"kind":  "scripted",
+						"turns": []any{map[string]any{"text": "첫 번째 turn"}},
+					},
+				},
+			},
+			map[string]any{
+				"schemaVersion": contracts.LiveRunInvocationRequestSchema,
+				"requestId":     "req-batch-2",
+				"instanceId":    "ceal",
+				"timeoutMs":     30000,
+				"scenario": map[string]any{
+					"scenarioId":      "scenario-batch-2",
+					"name":            "Batched live run two",
+					"description":     "Second batched scenario.",
+					"maxTurns":        1,
+					"sideEffectsMode": "read_only",
+					"simulator": map[string]any{
+						"kind":  "scripted",
+						"turns": []any{map[string]any{"text": "두 번째 turn"}},
+					},
+				},
+			},
+		},
+	})
+	outputPath := filepath.Join(root, "artifacts", "batch-result.json")
+
+	stdout, stderr, exitCode := runCLI(
+		t,
+		root,
+		"workbench",
+		"run-scenarios",
+		"--repo-root",
+		root,
+		"--instance-id",
+		"ceal",
+		"--requests-file",
+		requestBatchPath,
+		"--output-file",
+		outputPath,
+		"--concurrency",
+		"2",
+	)
+	if exitCode != 0 {
+		t.Fatalf("workbench run-scenarios failed: %s", stderr)
+	}
+	if strings.TrimSpace(stdout) != outputPath {
+		t.Fatalf("expected stdout to point at batch result file, got %q", stdout)
+	}
+	batchResult := readJSONObjectFile(t, outputPath)
+	if batchResult["schemaVersion"] != contracts.LiveRunInvocationBatchResultSchema {
+		t.Fatalf("unexpected batch result schema: %#v", batchResult["schemaVersion"])
+	}
+	counts := batchResult["counts"].(map[string]any)
+	if intFromAny(counts["total"], 0) != 2 || intFromAny(counts["completed"], 0) != 2 {
+		t.Fatalf("unexpected batch counts: %#v", counts)
+	}
+	results, ok := batchResult["results"].([]any)
+	if !ok || len(results) != 2 {
+		t.Fatalf("expected two batched result entries, got %#v", batchResult["results"])
+	}
+	for index, raw := range results {
+		entry := raw.(map[string]any)
+		if !strings.HasPrefix(anyToString(entry["outputFile"]), outputPath+".d/runs/") {
+			t.Fatalf("expected nested per-request result file, got %#v", entry["outputFile"])
+		}
+		result := entry["result"].(map[string]any)
+		if result["executionStatus"] != "completed" || result["stopReason"] != "scripted_turns_exhausted" {
+			t.Fatalf("unexpected embedded live-run result %d: %#v", index, result)
+		}
+		workspaceDir := filepath.Join(anyToString(entry["outputFile"])+".d", "workspace")
+		if _, err := os.Stat(filepath.Join(workspaceDir, "prepared.txt")); err != nil {
+			t.Fatalf("expected prepared workspace marker for result %d: %v", index, err)
+		}
+	}
+}
+
 func TestCLIWorkbenchRunLiveCanExecutePersonaPromptLoop(t *testing.T) {
 	root := t.TempDir()
 	adapterDir := filepath.Join(root, ".agents")

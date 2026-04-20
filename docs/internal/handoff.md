@@ -27,22 +27,25 @@
   `Cautilus`는 [internal/app/workbench_commands.go](../../internal/app/workbench_commands.go)에서 `cautilus.live_run_evaluator_input.v1`을 materialize하고 `cautilus.live_run_evaluator_result.v1`을 검증한 뒤 verdict를 `live_run_invocation_result.v1`의 `scenarioResult.evaluation` 아래에 붙인다.
   canonical placeholder는 `{evaluator_input_file}`이고 `{transcript_file}`는 compatibility escape hatch로만 남겼다.
   관련 fixture/schema는 [fixtures/live-run-invocation/](../../fixtures/live-run-invocation/)에 추가됐다.
+- `workbench run-scenarios`의 first batch slice도 landed 상태다.
+  새 command [internal/app/workbench_batch_command.go](../../internal/app/workbench_batch_command.go)는 explicit `cautilus.live_run_invocation_request_batch.v1` file과 `--concurrency`를 받아 one-instance in-process scheduler를 돌리고, aggregated `cautilus.live_run_invocation_batch_result.v1`와 nested per-request artifacts를 `<output-file>.d/runs/` 아래에 남긴다.
+  catalog/filter, sample expansion, retry/noise policy는 아직 deferred다.
 
 ## Next Session
 
 1. `charness:impl`로 next runtime slice를 시작하고, [docs/contracts/go-runtime-consolidation.md](../contracts/go-runtime-consolidation.md)의 `First Implementation Slice` 완료 상태와 이어지는 workbench/live-run migration 우선순위를 다시 확인한다.
-2. single-run seam이 정리됐으므로 다음 우선 후보는 issue `#22`의 batch primitive다.
-   adopter가 per-scenario scheduler를 다시 쓰지 않도록 `workbench run-scenarios` 같은 product-owned fanout primitive가 필요한지 확인한다.
+2. batch primitive의 next probe는 request synthesis 쪽이다.
+   explicit batch file만으로 충분한지, 아니면 scenario catalog + filter + sample expansion을 product가 이어서 소유해야 하는지 다시 자른다.
 3. `run-executor-variants`와 `evaluate-adapter-mode` shim removal은 여전히 early cleanup 후보다.
    하위호환성은 고려하지 않으므로 equivalent Go path가 landed한 seam은 direct Node runtime entrypoint를 제거할 수 있다.
 4. packet-builder surfaces는 여전히 첫 대상이 아니다.
-   workbench/live-run runtime seam과 batch primitive 우선순위를 먼저 정리한 뒤, builder 계층이 실제 shipped semantics를 소유하는지 다시 분류한다.
+   workbench/live-run runtime seam과 batch primitive 후속 slice를 먼저 정리한 뒤, builder 계층이 실제 shipped semantics를 소유하는지 다시 분류한다.
 5. 해당 seam을 옮기면 docs와 skill references도 같은 슬라이스에서 같이 정리한다.
 
 ## Discuss
 
 - second-wave migration에서 packet-builder surfaces를 어디까지 Go로 끌어올릴지
-- `workbench run-scenarios`를 새 public surface로 둘지, 더 좁은 internal helper로 먼저 proof할지
+- `run-scenarios`의 다음 제품 소유 범위를 request synthesis까지 넓힐지, explicit batch file surface에서 멈출지
 
 ## References
 

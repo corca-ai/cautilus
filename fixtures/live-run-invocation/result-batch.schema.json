@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cautilus.live_run_invocation_batch_result.v1",
+  "type": "object",
+  "required": ["schemaVersion", "instanceId", "summary", "counts", "results"],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "cautilus.live_run_invocation_batch_result.v1"
+    },
+    "instanceId": {
+      "type": "string"
+    },
+    "summary": {
+      "type": "string"
+    },
+    "startedAt": {
+      "type": "string"
+    },
+    "completedAt": {
+      "type": "string"
+    },
+    "durationMs": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "counts": {
+      "type": "object",
+      "required": ["total", "completed", "blocked", "failed"],
+      "properties": {
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "completed": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "blocked": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "failed": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["requestId", "scenarioId", "outputFile", "result"],
+        "properties": {
+          "requestId": {
+            "type": "string"
+          },
+          "scenarioId": {
+            "type": "string"
+          },
+          "outputFile": {
+            "type": "string"
+          },
+          "result": {
+            "type": "object",
+            "required": ["schemaVersion", "requestId", "instanceId", "executionStatus", "summary"],
+            "properties": {
+              "schemaVersion": {
+                "type": "string",
+                "const": "cautilus.live_run_invocation_result.v1"
+              },
+              "requestId": {
+                "type": "string"
+              },
+              "instanceId": {
+                "type": "string"
+              },
+              "executionStatus": {
+                "type": "string",
+                "enum": ["completed", "blocked", "failed"]
+              },
+              "summary": {
+                "type": "string"
+              },
+              "stopReason": {
+                "type": "string"
+              },
+              "startedAt": {
+                "type": "string"
+              },
+              "completedAt": {
+                "type": "string"
+              },
+              "durationMs": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "scenarioResult": {
+                "type": "object",
+                "required": ["scenarioId", "status", "summary"],
+                "properties": {
+                  "scenarioId": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string"
+                  },
+                  "summary": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

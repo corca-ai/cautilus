@@ -111,42 +111,10 @@ func handleWorkbenchRunLive(repoRoot string, cwd string, args []string, stdout i
 		_, _ = fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
-	artifactDir, _, err := ensureWorkbenchWorkspace(options.outputFile)
+	result, err := executeWorkbenchLiveRequest(options, adapterPayload, request)
 	if err != nil {
 		_, _ = fmt.Fprintf(stderr, "%s\n", err)
 		return 1
-	}
-	var result map[string]any
-	if hasWorkbenchMultiTurnLoop(liveRunInvocation) {
-		result, err = executeWorkbenchMultiTurnLiveRun(options, adapterPayload, liveRunInvocation, request, artifactDir)
-		if err != nil {
-			_, _ = fmt.Fprintf(stderr, "%s\n", err)
-			return 1
-		}
-		if err := writeOutputResolved(io.Discard, &options.outputFile, result); err != nil {
-			_, _ = fmt.Fprintf(stderr, "%s\n", err)
-			return 1
-		}
-	} else {
-		commandTemplate, commandErr := resolveWorkbenchLiveCommand(liveRunInvocation)
-		if commandErr != nil {
-			_, _ = fmt.Fprintf(stderr, "%s\n", commandErr)
-			return 1
-		}
-		commandText, renderErr := renderTemplate(commandTemplate, workbenchCommandReplacements(adapterPayload, options, nil))
-		if renderErr != nil {
-			_, _ = fmt.Fprintf(stderr, "%s\n", renderErr)
-			return 1
-		}
-		if _, runErr := executeWorkbenchCommand(options.repoRoot, commandText); runErr != nil {
-			_, _ = fmt.Fprintf(stderr, "%s\n", runErr)
-			return 1
-		}
-		result, err = readJSONObject(options.outputFile)
-		if err != nil {
-			_, _ = fmt.Fprintf(stderr, "Failed to read JSON from %s: %s\n", options.outputFile, err)
-			return 1
-		}
 	}
 	if err := validateWorkbenchLiveResult(result, request); err != nil {
 		_, _ = fmt.Fprintf(stderr, "%s\n", err)
@@ -154,6 +122,44 @@ func handleWorkbenchRunLive(repoRoot string, cwd string, args []string, stdout i
 	}
 	_, _ = fmt.Fprintf(stdout, "%s\n", options.outputFile)
 	return 0
+}
+
+func executeWorkbenchLiveRequest(options *workbenchRunLiveArgs, adapterPayload *runtime.AdapterPayload, request map[string]any) (map[string]any, error) {
+	liveRunInvocation := mapOrEmpty(adapterPayload.Data["live_run_invocation"])
+	if len(liveRunInvocation) == 0 {
+		return nil, fmt.Errorf("adapter does not declare live_run_invocation: %s", anyString(adapterPayload.Path))
+	}
+	artifactDir, _, err := ensureWorkbenchWorkspace(options.outputFile)
+	if err != nil {
+		return nil, err
+	}
+	var result map[string]any
+	if hasWorkbenchMultiTurnLoop(liveRunInvocation) {
+		result, err = executeWorkbenchMultiTurnLiveRun(options, adapterPayload, liveRunInvocation, request, artifactDir)
+		if err != nil {
+			return nil, err
+		}
+		if err := writeOutputResolved(io.Discard, &options.outputFile, result); err != nil {
+			return nil, err
+		}
+	} else {
+		commandTemplate, commandErr := resolveWorkbenchLiveCommand(liveRunInvocation)
+		if commandErr != nil {
+			return nil, commandErr
+		}
+		commandText, renderErr := renderTemplate(commandTemplate, workbenchCommandReplacements(adapterPayload, options, nil))
+		if renderErr != nil {
+			return nil, renderErr
+		}
+		if _, runErr := executeWorkbenchCommand(options.repoRoot, commandText); runErr != nil {
+			return nil, runErr
+		}
+		result, err = readJSONObject(options.outputFile)
+		if err != nil {
+			return nil, fmt.Errorf("failed to read JSON from %s: %w", options.outputFile, err)
+		}
+	}
+	return result, nil
 }
 
 func parseWorkbenchDiscoverArgs(args []string, cwd string) (*workbenchDiscoverArgs, error) {

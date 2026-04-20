@@ -94,6 +94,14 @@ cautilus workbench run-live \
   --instance-id ceal \
   --request-file /tmp/request.json \
   --output-file /tmp/result.json
+
+# run many explicit live scenario requests against one selected instance
+cautilus workbench run-scenarios \
+  --repo-root /path/to/repo \
+  --instance-id ceal \
+  --requests-file /tmp/request-batch.json \
+  --output-file /tmp/batch-result.json \
+  --concurrency 4
 ```
 
 A workbench instance is one live consumer target on this host that `Cautilus` can select by stable id.
@@ -101,6 +109,7 @@ For a Ceal-like consumer, that may mean `ceal`, `ceal-dev`, or another named run
 For a simple adopter, the catalog may contain only one default instance.
 `cautilus workbench discover` resolves either explicit adapter instances or a consumer-owned probe command into the same `cautilus.workbench_instance_catalog.v1` packet.
 `cautilus workbench run-live` takes one selected instance id plus one request packet and returns one bounded result packet.
+`cautilus workbench run-scenarios` is the first product-owned batch primitive above that seam: it accepts an explicit `cautilus.live_run_invocation_request_batch.v1` file for one selected instance, schedules the requests in-process, and writes one aggregated `cautilus.live_run_invocation_batch_result.v1` packet.
 The product owns the packet boundary and status semantics.
 The consumer still owns actual launch, auth, and runtime wiring through its adapter command.
 When the adapter declares `consumer_single_turn_command_template`, the same command can also own a product-managed multi-turn chatbot loop above a consumer-owned single-turn seam.
@@ -109,6 +118,7 @@ When the adapter also declares `workspace_prepare_command_template`, `Cautilus` 
 When the public scenario uses `simulator.kind: persona_prompt`, the adapter additionally provides `simulator_persona_command_template`, which normally calls `cautilus workbench run-simulator-persona` with repo-specific backend flags.
 That keeps persona prompt shaping and result semantics product-owned while backend selection stays adapter-owned.
 When the adapter declares `consumer_evaluator_command_template`, `Cautilus` also materializes one `cautilus.live_run_evaluator_input.v1` packet and expects one `cautilus.live_run_evaluator_result.v1` verdict back under `scenarioResult.evaluation`.
+The first shipped `run-scenarios` slice stays intentionally narrow: it owns concurrency and per-request artifact layout for an explicit request batch, while request synthesis, sample expansion, retry, and noise policy remain deferred.
 
 ## Workspace management
 

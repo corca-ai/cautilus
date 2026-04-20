@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cautilus.live_run_invocation_request_batch.v1",
+  "type": "object",
+  "required": ["schemaVersion", "instanceId", "requests"],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "cautilus.live_run_invocation_request_batch.v1"
+    },
+    "instanceId": {
+      "type": "string"
+    },
+    "requests": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["schemaVersion", "requestId", "instanceId", "scenario", "timeoutMs"],
+        "properties": {
+          "schemaVersion": {
+            "type": "string",
+            "const": "cautilus.live_run_invocation_request.v1"
+          },
+          "requestId": {
+            "type": "string"
+          },
+          "instanceId": {
+            "type": "string"
+          },
+          "timeoutMs": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "captureTranscript": {
+            "type": "boolean"
+          },
+          "consumerMetadata": {
+            "type": "object"
+          },
+          "operatorNote": {
+            "type": "string"
+          },
+          "scenario": {
+            "type": "object",
+            "required": ["scenarioId", "name", "description", "maxTurns", "sideEffectsMode"],
+            "properties": {
+              "scenarioId": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "maxTurns": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "sideEffectsMode": {
+                "type": "string"
+              },
+              "simulator": {
+                "type": "object",
+                "required": ["kind"],
+                "properties": {
+                  "kind": {
+                    "type": "string"
+                  },
+                  "turns": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "type": "object",
+                      "required": ["text"],
+                      "properties": {
+                        "text": {
+                          "type": "string"
+                        },
+                        "metadata": {
+                          "type": "object"
+                        }
+                      }
+                    }
+                  },
+                  "instructions": {
+                    "type": "string"
+                  },
+                  "seedTurns": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": ["text"],
+                      "properties": {
+                        "text": {
+                          "type": "string"
+                        },
+                        "metadata": {
+                          "type": "object"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "simulatorTurns": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string"
+                }
+              },
+              "intentProfile": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

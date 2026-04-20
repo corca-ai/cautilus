@@ -2,6 +2,7 @@
 
 Issue `#18` closes only if `Cautilus` can ask a consumer to run one bounded scenario packet against one selected live instance without inheriting the consumer's route layout.
 The missing seam is a neutral invocation contract, not another consumer-specific HTTP endpoint.
+For the first product-owned batch scheduler above this seam, see [live-run-invocation-batch.md](./live-run-invocation-batch.md).
 
 ## Current Slice
 

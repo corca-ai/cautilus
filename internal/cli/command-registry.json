@@ -148,6 +148,16 @@
       ]
     },
     {
+      "path": ["workbench", "run-scenarios"],
+      "group": "run",
+      "usage": "cautilus workbench run-scenarios --instance-id <id> --requests-file <batch.json> --output-file <result.json> [--concurrency <n>] [args]",
+      "example": "cautilus workbench run-scenarios --repo-root . --instance-id ceal --requests-file /tmp/request-batch.json --output-file /tmp/batch-result.json --concurrency 4",
+      "notes": [
+        "The first shipped batch slice accepts an explicit `cautilus.live_run_invocation_request_batch.v1` file and reuses the same live-run adapter seam per request.",
+        "Each request writes its own nested result artifact under `<output-file>.d/runs/`, while the top-level output aggregates counts and embeds the canonical per-request results."
+      ]
+    },
+    {
       "path": ["workbench", "run-simulator-persona"],
       "group": "run",
       "usage": "cautilus workbench run-simulator-persona --workspace <dir> --simulator-request-file <request.json> --simulator-result-file <result.json> --backend codex_exec|claude_p|fixture [args]",
