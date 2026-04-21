@@ -10,6 +10,8 @@ This repo is the standalone product boundary for `Cautilus`.
 - Speak to this user in Korean unless they ask otherwise.
 - Prefer the source of truth over copied checklists.
   Deterministic behavior belongs in code, scripts, adapters, tests, and specs.
+- Keep product surfaces agent-first, but human-auditable by design.
+  Prefer explicit artifacts, normalized packets, and inspectable intermediate files over hidden discovery or product-owned ingestion of raw host-specific shapes.
 - Optimize for `Cautilus` as an independent binary plus bundled skill before optimizing any host repo as a consumer.
 - Prose markdown uses semantic line breaks: one sentence per line, no hard-wrap at a column width.
   This is so fixed-pattern assertions in specs cannot be broken by incidental wrap positions and so prose edits produce clean sentence-level diffs.
