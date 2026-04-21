@@ -98,7 +98,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
-          npm run release:verify-public -- \
+          node ./scripts/release/verify-public-release.mjs \
             --version "${GITHUB_REF_NAME}" \
             --retry-attempts 10 \
             --retry-delay-ms 30000

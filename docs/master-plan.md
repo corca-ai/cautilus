@@ -36,7 +36,7 @@ Current `core validated surface`:
   `mode evaluate` is wired into `resolveRunDir`; remaining consumer commands are being pulled in one slice at a time.
 - report packet assembly, review packet assembly, and review-variant fanout
 - native self-dogfood HTML rendering through `cautilus self-dogfood render-html` and `render-experiments-html`
-- tagged-release install surface (curl installer, Homebrew formula render and tap publication, checksum + `actions/attest` subject attestation) plus product-owned `release:verify-public` and `release:smoke-install` helpers
+- tagged-release install surface (curl installer, Homebrew formula render and tap publication, checksum + `actions/attest` subject attestation) plus product-owned public-release verification and `release:smoke-install` helpers
 - checked-in local gates, GitHub workflows that run `verify`, and an external consumer onboarding smoke (`consumer:onboard:smoke`) that proves install → adapter init → minimal wiring → adapter resolve → doctor ready → one bounded `mode evaluate` run
 
 Current `product-owned helper surface`:

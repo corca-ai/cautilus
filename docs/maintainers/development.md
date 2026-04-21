@@ -153,10 +153,11 @@ Keep runtime ownership explicit so Node helpers do not silently grow a second pr
 ## Release verification
 
 The tag-triggered release workflow now retries public release verification until the GitHub release API and tap formula expose the tagged version.
-If you need to replay that check locally, run:
+That check is CI-owned and is not part of the normal local release checklist.
+If you need to replay it locally for workflow debugging after the release workflow has already published the tagged release, run:
 
 ```bash
-npm run release:verify-public -- --version <tag>
+node ./scripts/release/verify-public-release.mjs --version <tag>
 ```
 
 ## Commit discipline

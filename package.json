@@ -17,7 +17,6 @@
     "skills:sync-packaged": "node scripts/release/sync-packaged-skill.mjs",
     "release:prepare": "npm run skills:sync-packaged && node scripts/release/bump-version.mjs",
     "release:publish": "node scripts/release/publish-release.mjs",
-    "release:verify-public": "node scripts/release/verify-public-release.mjs",
     "release:smoke-install": "node scripts/release/run-install-smoke.mjs",
     "release:smoke-install:brew": "node scripts/release/run-install-smoke.mjs --channel homebrew --allow-system-mutation",
     "hooks:install": "node scripts/install-git-hooks.mjs",

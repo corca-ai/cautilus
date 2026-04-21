@@ -61,10 +61,12 @@ Do not replace it with ad-hoc parallel `git commit` / `git tag` / `git push --ta
 The checked-in release workflow at [release-artifacts.yml](../../.github/workflows/release-artifacts.yml) will re-run `verify`, build the tagged binary assets, compute checksums, render the Homebrew formula, publish the formula to the tap repo when `HOMEBREW_TAP_TOKEN` is available, generate GitHub artifact attestations from the checksum manifest, and attach those artifacts to the GitHub release.
 After those artifacts are published, the same workflow now retries [verify-public-release.mjs](../../scripts/release/verify-public-release.mjs) until the public release API and tap formula reflect the tagged version, so a green workflow run means the product-owned public release surface is visible from GitHub.
 
-5. If the workflow needs a manual replay or you want an explicit local re-check of the public release surface, run:
+5. Treat the tag-triggered workflow as the default owner of public release verification.
+   Do not include a local public-release verification replay in the normal maintainer checklist.
+   Only run the helper below for workflow debugging or an explicit manual re-check after the tagged workflow has already had time to publish the release object and assets:
 
 ```bash
-npm run release:verify-public -- --version v<next-version>
+node ./scripts/release/verify-public-release.mjs --version v<next-version>
 ```
 
 The helper checks the tagged GitHub release for:
@@ -78,7 +80,7 @@ The helper checks the tagged GitHub release for:
 For eventual-consistency windows outside CI, the helper also supports bounded retries:
 
 ```bash
-npm run release:verify-public -- --version v<next-version> --retry-attempts 10 --retry-delay-ms 30000
+node ./scripts/release/verify-public-release.mjs --version v<next-version> --retry-attempts 10 --retry-delay-ms 30000
 ```
 
 6. Verify the public installer path:
