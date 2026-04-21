@@ -1,7 +1,7 @@
 {
   "name": "cautilus",
   "description": "Standalone intentful behavior evaluation CLI and bundled skill.",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "author": {
     "name": "Corca",
     "url": "https://github.com/corca-ai"
