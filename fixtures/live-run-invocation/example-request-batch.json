@@ -1,6 +1,13 @@
 {
   "schemaVersion": "cautilus.live_run_invocation_request_batch.v1",
   "instanceId": "ceal",
+  "retryPolicy": {
+    "maxAttempts": 2,
+    "retryOnClasses": [
+      "rate_limit",
+      "transient_provider_failure"
+    ]
+  },
   "requests": [
     {
       "schemaVersion": "cautilus.live_run_invocation_request.v1",

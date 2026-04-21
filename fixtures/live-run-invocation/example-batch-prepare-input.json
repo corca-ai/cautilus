@@ -9,6 +9,12 @@
     "channelId": "C_REVIEW"
   },
   "operatorNote": "Recheck the selected scenarios before refreshing the regression pack.",
+  "retryPolicy": {
+    "maxAttempts": 2,
+    "retryOnClasses": [
+      "rate_limit"
+    ]
+  },
   "scenarioIds": [
     "review-after-retro"
   ],

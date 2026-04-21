@@ -89,6 +89,11 @@ func TestFixtureExamplesValidateAgainstPublishedSchemas(t *testing.T) {
 			schemaAt: filepath.Join("..", "..", "fixtures", "live-run-invocation", "batch-prepare-input.schema.json"),
 		},
 		{
+			name:     "live_run_invocation_batch_prepare_catalog_input",
+			example:  filepath.Join("..", "..", "fixtures", "live-run-invocation", "example-batch-prepare-catalog-input.json"),
+			schemaAt: filepath.Join("..", "..", "fixtures", "live-run-invocation", "batch-prepare-catalog-input.schema.json"),
+		},
+		{
 			name:     "live_run_invocation_request_batch",
 			example:  filepath.Join("..", "..", "fixtures", "live-run-invocation", "example-request-batch.json"),
 			schemaAt: filepath.Join("..", "..", "fixtures", "live-run-invocation", "request-batch.schema.json"),

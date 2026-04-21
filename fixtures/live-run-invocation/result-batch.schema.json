@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "cautilus.live_run_invocation_batch_result.v1",
   "type": "object",
-  "required": ["schemaVersion", "instanceId", "summary", "counts", "results"],
+  "required": ["schemaVersion", "instanceId", "summary", "counts", "attemptCounts", "transientClassCounts", "results"],
   "properties": {
     "schemaVersion": {
       "type": "string",
@@ -46,11 +46,39 @@
         }
       }
     },
+    "attemptCounts": {
+      "type": "object",
+      "required": ["total", "retriedRequests"],
+      "properties": {
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "retriedRequests": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "transientClassCounts": {
+      "type": "object",
+      "required": ["rate_limit", "transient_provider_failure"],
+      "properties": {
+        "rate_limit": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "transient_provider_failure": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
     "results": {
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["requestId", "scenarioId", "outputFile", "result"],
+        "required": ["requestId", "scenarioId", "outputFile", "result", "attemptCount", "attempts"],
         "properties": {
           "requestId": {
             "type": "string"
@@ -60,6 +88,91 @@
           },
           "outputFile": {
             "type": "string"
+          },
+          "attemptCount": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "attempts": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": ["attemptIndex", "outputFile", "result"],
+              "properties": {
+                "attemptIndex": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "outputFile": {
+                  "type": "string"
+                },
+                "result": {
+                  "type": "object",
+                  "required": ["schemaVersion", "requestId", "instanceId", "executionStatus", "summary"],
+                  "properties": {
+                    "schemaVersion": {
+                      "type": "string",
+                      "const": "cautilus.live_run_invocation_result.v1"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    },
+                    "instanceId": {
+                      "type": "string"
+                    },
+                    "executionStatus": {
+                      "type": "string",
+                      "enum": ["completed", "blocked", "failed"]
+                    },
+                    "summary": {
+                      "type": "string"
+                    },
+                    "stopReason": {
+                      "type": "string"
+                    },
+                    "startedAt": {
+                      "type": "string"
+                    },
+                    "completedAt": {
+                      "type": "string"
+                    },
+                    "durationMs": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "transientFailure": {
+                      "type": "object",
+                      "required": ["class"],
+                      "properties": {
+                        "class": {
+                          "type": "string",
+                          "enum": ["rate_limit", "transient_provider_failure"]
+                        },
+                        "details": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    "scenarioResult": {
+                      "type": "object",
+                      "required": ["scenarioId", "status", "summary"],
+                      "properties": {
+                        "scenarioId": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "type": "string"
+                        },
+                        "summary": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "result": {
             "type": "object",
@@ -94,6 +207,19 @@
               "durationMs": {
                 "type": "integer",
                 "minimum": 0
+              },
+              "transientFailure": {
+                "type": "object",
+                "required": ["class"],
+                "properties": {
+                  "class": {
+                    "type": "string",
+                    "enum": ["rate_limit", "transient_provider_failure"]
+                  },
+                  "details": {
+                    "type": "object"
+                  }
+                }
               },
               "scenarioResult": {
                 "type": "object",

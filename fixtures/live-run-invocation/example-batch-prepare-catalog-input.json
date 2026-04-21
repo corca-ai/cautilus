@@ -1,0 +1,92 @@
+{
+  "schemaVersion": "cautilus.live_run_invocation_batch_prepare_catalog_input.v1",
+  "instanceId": "ceal",
+  "timeoutMs": 45000,
+  "samplesPerScenario": 2,
+  "requestIdPrefix": "held-out",
+  "captureTranscript": true,
+  "consumerMetadata": {
+    "channelId": "C_REVIEW"
+  },
+  "operatorNote": "Refresh only the tagged chatbot regression scenarios from the normalized catalog packet.",
+  "retryPolicy": {
+    "maxAttempts": 3,
+    "retryOnClasses": [
+      "rate_limit",
+      "transient_provider_failure"
+    ]
+  },
+  "scenarioIds": [
+    "review-after-retro",
+    "review-followup"
+  ],
+  "requiredTags": [
+    "chatbot",
+    "held-out"
+  ],
+  "scenarioCandidates": [
+    {
+      "scenarioId": "review-after-retro",
+      "name": "Review After Retro",
+      "description": "The operator pivots from retro back to review in one thread.",
+      "maxTurns": 2,
+      "sideEffectsMode": "read_only",
+      "tags": [
+        "chatbot",
+        "held-out"
+      ],
+      "simulator": {
+        "kind": "scripted",
+        "turns": [
+          {
+            "text": "retro 먼저 해주세요"
+          },
+          {
+            "text": "이제 review로 돌아가죠"
+          }
+        ]
+      }
+    },
+    {
+      "scenarioId": "review-followup",
+      "name": "Review Follow-up",
+      "description": "The operator asks one quick follow-up after the initial review turn.",
+      "maxTurns": 2,
+      "sideEffectsMode": "read_only",
+      "tags": [
+        "chatbot",
+        "held-out",
+        "followup"
+      ],
+      "simulator": {
+        "kind": "scripted",
+        "turns": [
+          {
+            "text": "먼저 요약해 주세요"
+          },
+          {
+            "text": "그 다음 우선순위도 말해 주세요"
+          }
+        ]
+      }
+    },
+    {
+      "scenarioId": "operator-only-example",
+      "name": "Operator Only Example",
+      "description": "This candidate demonstrates exact tag filtering.",
+      "maxTurns": 1,
+      "sideEffectsMode": "read_only",
+      "tags": [
+        "workflow"
+      ],
+      "simulator": {
+        "kind": "scripted",
+        "turns": [
+          {
+            "text": "이 후보는 태그 필터에서 제외됩니다."
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -6364,14 +6364,29 @@ func TestCLIWorkbenchRunScenariosExecutesExplicitRequestBatch(t *testing.T) {
 	if intFromAny(counts["total"], 0) != 2 || intFromAny(counts["completed"], 0) != 2 {
 		t.Fatalf("unexpected batch counts: %#v", counts)
 	}
+	attemptCounts := batchResult["attemptCounts"].(map[string]any)
+	if intFromAny(attemptCounts["total"], 0) != 2 || intFromAny(attemptCounts["retriedRequests"], 0) != 0 {
+		t.Fatalf("unexpected batch attempt counts: %#v", attemptCounts)
+	}
+	transientCounts := batchResult["transientClassCounts"].(map[string]any)
+	if intFromAny(transientCounts["rate_limit"], -1) != 0 || intFromAny(transientCounts["transient_provider_failure"], -1) != 0 {
+		t.Fatalf("unexpected transient class counts: %#v", transientCounts)
+	}
 	results, ok := batchResult["results"].([]any)
 	if !ok || len(results) != 2 {
 		t.Fatalf("expected two batched result entries, got %#v", batchResult["results"])
 	}
 	for index, raw := range results {
 		entry := raw.(map[string]any)
-		if !strings.HasPrefix(anyToString(entry["outputFile"]), outputPath+".d/runs/") {
+		if !strings.HasPrefix(anyToString(entry["outputFile"]), outputPath+".d/runs/") || !strings.Contains(anyToString(entry["outputFile"]), "/attempt-01/") {
 			t.Fatalf("expected nested per-request result file, got %#v", entry["outputFile"])
+		}
+		if intFromAny(entry["attemptCount"], 0) != 1 {
+			t.Fatalf("expected one attempt for result %d, got %#v", index, entry["attemptCount"])
+		}
+		attempts, ok := entry["attempts"].([]any)
+		if !ok || len(attempts) != 1 {
+			t.Fatalf("expected one attempt entry for result %d, got %#v", index, entry["attempts"])
 		}
 		result := entry["result"].(map[string]any)
 		if result["executionStatus"] != "completed" || result["stopReason"] != "scripted_turns_exhausted" {
@@ -6381,6 +6396,254 @@ func TestCLIWorkbenchRunScenariosExecutesExplicitRequestBatch(t *testing.T) {
 		if _, err := os.Stat(filepath.Join(workspaceDir, "prepared.txt")); err != nil {
 			t.Fatalf("expected prepared workspace marker for result %d: %v", index, err)
 		}
+	}
+}
+
+func TestCLIWorkbenchPrepareRequestBatchAcceptsCatalogCandidates(t *testing.T) {
+	root := t.TempDir()
+	inputPath := filepath.Join(root, "catalog-input.json")
+	outputPath := filepath.Join(root, "request-batch.json")
+	writeJSONFile(t, inputPath, map[string]any{
+		"schemaVersion":      contracts.LiveRunInvocationBatchPrepareCatalogInputSchema,
+		"instanceId":         "ceal",
+		"timeoutMs":          45000,
+		"samplesPerScenario": 2,
+		"requestIdPrefix":    "held-out",
+		"captureTranscript":  true,
+		"retryPolicy": map[string]any{
+			"maxAttempts":    3,
+			"retryOnClasses": []any{"rate_limit", "transient_provider_failure"},
+		},
+		"scenarioIds":  []any{"review-after-retro", "review-followup"},
+		"requiredTags": []any{"chatbot", "held-out"},
+		"scenarioCandidates": []any{
+			map[string]any{
+				"scenarioId":      "review-after-retro",
+				"name":            "Review After Retro",
+				"description":     "The operator pivots from retro back to review in one thread.",
+				"maxTurns":        2,
+				"sideEffectsMode": "read_only",
+				"tags":            []any{"chatbot", "held-out"},
+				"simulator": map[string]any{
+					"kind":  "scripted",
+					"turns": []any{map[string]any{"text": "retro 먼저 해주세요"}, map[string]any{"text": "이제 review로 돌아가죠"}},
+				},
+			},
+			map[string]any{
+				"scenarioId":      "review-followup",
+				"name":            "Review Follow-up",
+				"description":     "The operator asks one quick follow-up after the initial review turn.",
+				"maxTurns":        2,
+				"sideEffectsMode": "read_only",
+				"tags":            []any{"chatbot", "held-out", "followup"},
+				"simulator": map[string]any{
+					"kind":  "scripted",
+					"turns": []any{map[string]any{"text": "먼저 요약해 주세요"}, map[string]any{"text": "그 다음 우선순위도 말해 주세요"}},
+				},
+			},
+			map[string]any{
+				"scenarioId":      "operator-only-example",
+				"name":            "Operator Only Example",
+				"description":     "This candidate should be filtered out by required tags.",
+				"maxTurns":        1,
+				"sideEffectsMode": "read_only",
+				"tags":            []any{"workflow"},
+				"simulator": map[string]any{
+					"kind":  "scripted",
+					"turns": []any{map[string]any{"text": "이 후보는 제외됩니다."}},
+				},
+			},
+		},
+	})
+
+	stdout, stderr, exitCode := runCLI(
+		t,
+		root,
+		"workbench",
+		"prepare-request-batch",
+		"--input",
+		inputPath,
+		"--output",
+		outputPath,
+	)
+	if exitCode != 0 {
+		t.Fatalf("workbench prepare-request-batch failed: %s", stderr)
+	}
+	if strings.TrimSpace(stdout) != outputPath {
+		t.Fatalf("expected stdout to point at request batch file, got %q", stdout)
+	}
+	requestBatch := readJSONObjectFile(t, outputPath)
+	retryPolicy := requestBatch["retryPolicy"].(map[string]any)
+	if intFromAny(retryPolicy["maxAttempts"], 0) != 3 {
+		t.Fatalf("expected retry policy to survive batch prep, got %#v", retryPolicy)
+	}
+	requests, ok := requestBatch["requests"].([]any)
+	if !ok || len(requests) != 4 {
+		t.Fatalf("expected four prepared requests from two selected scenarios x two samples, got %#v", requestBatch["requests"])
+	}
+	first := requests[0].(map[string]any)
+	last := requests[3].(map[string]any)
+	if anyToString(first["requestId"]) != "held-out--review-after-retro--sample-01" {
+		t.Fatalf("unexpected first prepared request id: %#v", first["requestId"])
+	}
+	if anyToString(mapOrEmpty(last["scenario"])["scenarioId"]) != "review-followup" {
+		t.Fatalf("expected second selected candidate to survive filtering, got %#v", last)
+	}
+}
+
+func TestCLIWorkbenchRunScenariosRetriesTransientFailures(t *testing.T) {
+	root := t.TempDir()
+	adapterDir := filepath.Join(root, ".agents")
+	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	writeExecutableFile(t, root, "run-live-direct.sh", strings.Join([]string{
+		"#!/bin/sh",
+		"request_file=\"$1\"",
+		"output_file=\"$2\"",
+		"repo_root=\"$3\"",
+		"node - \"$request_file\" \"$output_file\" \"$repo_root\" <<'EOF'",
+		"const [requestFile, outputFile, repoRoot] = process.argv.slice(2);",
+		"const { mkdirSync, readFileSync, writeFileSync } = await import(\"node:fs\");",
+		"const request = JSON.parse(readFileSync(requestFile, \"utf8\"));",
+		"const counterDir = `${repoRoot}/attempt-counters`;",
+		"mkdirSync(counterDir, { recursive: true });",
+		"const counterFile = `${counterDir}/${request.requestId}.txt`;",
+		"let attempt = 0;",
+		"try {",
+		"  attempt = Number(readFileSync(counterFile, \"utf8\"));",
+		"} catch {}",
+		"attempt += 1;",
+		"writeFileSync(counterFile, String(attempt), \"utf8\");",
+		"if (attempt === 1) {",
+		"  writeFileSync(outputFile, JSON.stringify({",
+		"    schemaVersion: \"cautilus.live_run_invocation_result.v1\",",
+		"    requestId: request.requestId,",
+		"    instanceId: request.instanceId,",
+		"    executionStatus: \"blocked\",",
+		"    summary: \"Provider asked the caller to retry after a brief cooldown.\",",
+		"    stopReason: \"blocked_by_consumer\",",
+		"    transientFailure: {",
+		"      class: \"rate_limit\",",
+		"      details: { provider: \"fixture\", retryAfterSeconds: 5 }",
+		"    },",
+		"    diagnostics: [",
+		"      { code: \"provider_rate_limit\", severity: \"error\", message: \"429 retry-after 5\" }",
+		"    ]",
+		"  }) + \"\\n\", \"utf8\");",
+		"  process.exit(0);",
+		"}",
+		"writeFileSync(outputFile, JSON.stringify({",
+		"  schemaVersion: \"cautilus.live_run_invocation_result.v1\",",
+		"  requestId: request.requestId,",
+		"  instanceId: request.instanceId,",
+		"  executionStatus: \"completed\",",
+		"  summary: \"Completed after one retry.\",",
+		"  stopReason: \"scripted_turns_exhausted\",",
+		"  scenarioResult: {",
+		"    scenarioId: request.scenario.scenarioId,",
+		"    status: \"completed\",",
+		"    summary: \"Completed after one retry.\"",
+		"  }",
+		"}) + \"\\n\", \"utf8\");",
+		"EOF",
+		"",
+	}, "\n"))
+	adapter := strings.Join([]string{
+		"version: 1",
+		"repo: temp",
+		"evaluation_surfaces:",
+		"  - chatbot behavior",
+		"baseline_options:",
+		"  - baseline git ref via {baseline_ref}",
+		"live_run_invocation:",
+		"  command_template: ./run-live-direct.sh {request_file} {output_file} {repo_root}",
+		"  consumer_command_template: ./run-live-direct.sh {request_file} {output_file} {repo_root}",
+		"",
+	}, "\n")
+	if err := os.WriteFile(filepath.Join(adapterDir, "cautilus-adapter.yaml"), []byte(adapter), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	requestBatchPath := filepath.Join(root, "request-batch.json")
+	writeJSONFile(t, requestBatchPath, map[string]any{
+		"schemaVersion": contracts.LiveRunInvocationBatchRequestSchema,
+		"instanceId":    "ceal",
+		"retryPolicy": map[string]any{
+			"maxAttempts":    2,
+			"retryOnClasses": []any{"rate_limit"},
+		},
+		"requests": []any{
+			map[string]any{
+				"schemaVersion": contracts.LiveRunInvocationRequestSchema,
+				"requestId":     "retry-on-rate-limit",
+				"instanceId":    "ceal",
+				"timeoutMs":     30000,
+				"scenario": map[string]any{
+					"scenarioId":      "scenario-retry",
+					"name":            "Retry on rate limit",
+					"description":     "The product should retry when the consumer returns a transient rate limit classification.",
+					"maxTurns":        1,
+					"sideEffectsMode": "read_only",
+					"simulator": map[string]any{
+						"kind":  "scripted",
+						"turns": []any{map[string]any{"text": "첫 시도 후 재시도해 주세요"}},
+					},
+				},
+			},
+		},
+	})
+	outputPath := filepath.Join(root, "artifacts", "batch-result.json")
+	stdout, stderr, exitCode := runCLI(
+		t,
+		root,
+		"workbench",
+		"run-scenarios",
+		"--repo-root",
+		root,
+		"--instance-id",
+		"ceal",
+		"--requests-file",
+		requestBatchPath,
+		"--output-file",
+		outputPath,
+	)
+	if exitCode != 0 {
+		t.Fatalf("workbench run-scenarios failed: %s", stderr)
+	}
+	if strings.TrimSpace(stdout) != outputPath {
+		t.Fatalf("expected stdout to point at batch result file, got %q", stdout)
+	}
+	batchResult := readJSONObjectFile(t, outputPath)
+	counts := batchResult["counts"].(map[string]any)
+	if intFromAny(counts["completed"], 0) != 1 || intFromAny(counts["failed"], 0) != 0 {
+		t.Fatalf("unexpected final outcome counts: %#v", counts)
+	}
+	attemptCounts := batchResult["attemptCounts"].(map[string]any)
+	if intFromAny(attemptCounts["total"], 0) != 2 || intFromAny(attemptCounts["retriedRequests"], 0) != 1 {
+		t.Fatalf("unexpected retry attempt counts: %#v", attemptCounts)
+	}
+	transientCounts := batchResult["transientClassCounts"].(map[string]any)
+	if intFromAny(transientCounts["rate_limit"], 0) != 1 || intFromAny(transientCounts["transient_provider_failure"], 0) != 0 {
+		t.Fatalf("unexpected transient class counts: %#v", transientCounts)
+	}
+	results := batchResult["results"].([]any)
+	entry := results[0].(map[string]any)
+	if intFromAny(entry["attemptCount"], 0) != 2 {
+		t.Fatalf("expected two attempts, got %#v", entry["attemptCount"])
+	}
+	attempts := entry["attempts"].([]any)
+	firstAttempt := attempts[0].(map[string]any)
+	secondAttempt := attempts[1].(map[string]any)
+	if !strings.Contains(anyToString(firstAttempt["outputFile"]), "/attempt-01/") || !strings.Contains(anyToString(secondAttempt["outputFile"]), "/attempt-02/") {
+		t.Fatalf("expected attempt-scoped artifact paths, got %#v", entry["attempts"])
+	}
+	firstResult := firstAttempt["result"].(map[string]any)
+	if anyToString(mapOrEmpty(firstResult["transientFailure"])["class"]) != "rate_limit" {
+		t.Fatalf("expected first attempt to retain transient classification, got %#v", firstResult)
+	}
+	finalResult := entry["result"].(map[string]any)
+	if finalResult["executionStatus"] != "completed" || anyToString(finalResult["summary"]) != "Completed after one retry." {
+		t.Fatalf("unexpected final retried result: %#v", finalResult)
 	}
 }
 

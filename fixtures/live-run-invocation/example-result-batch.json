@@ -1,7 +1,7 @@
 {
   "schemaVersion": "cautilus.live_run_invocation_batch_result.v1",
   "instanceId": "ceal",
-  "summary": "Completed 2 batched live-run request(s): 2 completed, 0 blocked, 0 failed.",
+  "summary": "Completed 2 batched live-run request(s) in 3 attempt(s): 2 completed, 0 blocked, 0 failed.",
   "startedAt": "2026-04-20T07:05:00Z",
   "completedAt": "2026-04-20T07:05:25Z",
   "durationMs": 25000,
@@ -11,11 +11,42 @@
     "blocked": 0,
     "failed": 0
   },
+  "attemptCounts": {
+    "total": 3,
+    "retriedRequests": 1
+  },
+  "transientClassCounts": {
+    "rate_limit": 1,
+    "transient_provider_failure": 0
+  },
   "results": [
     {
       "requestId": "review-after-retro-sample-1",
       "scenarioId": "review-after-retro",
-      "outputFile": "/Users/operator/.ceal/ceal/agent-runs/live-run-batch-result.json.d/runs/001-review-after-retro-sample-1/result.json",
+      "outputFile": "/Users/operator/.ceal/ceal/agent-runs/live-run-batch-result.json.d/runs/001-review-after-retro-sample-1/attempt-01/result.json",
+      "attemptCount": 1,
+      "attempts": [
+        {
+          "attemptIndex": 1,
+          "outputFile": "/Users/operator/.ceal/ceal/agent-runs/live-run-batch-result.json.d/runs/001-review-after-retro-sample-1/attempt-01/result.json",
+          "result": {
+            "schemaVersion": "cautilus.live_run_invocation_result.v1",
+            "requestId": "review-after-retro-sample-1",
+            "instanceId": "ceal",
+            "executionStatus": "completed",
+            "summary": "The evaluator judged the live instance as preserving the review flow across the retro interruption.",
+            "stopReason": "scripted_turns_exhausted",
+            "startedAt": "2026-04-20T07:05:00Z",
+            "completedAt": "2026-04-20T07:05:12Z",
+            "durationMs": 12000,
+            "scenarioResult": {
+              "scenarioId": "review-after-retro",
+              "status": "passed",
+              "summary": "The evaluator judged the live instance as preserving the review flow across the retro interruption."
+            }
+          }
+        }
+      ],
       "result": {
         "schemaVersion": "cautilus.live_run_invocation_result.v1",
         "requestId": "review-after-retro-sample-1",
@@ -36,7 +67,59 @@
     {
       "requestId": "review-after-retro-sample-2",
       "scenarioId": "review-after-retro-followup",
-      "outputFile": "/Users/operator/.ceal/ceal/agent-runs/live-run-batch-result.json.d/runs/002-review-after-retro-sample-2/result.json",
+      "outputFile": "/Users/operator/.ceal/ceal/agent-runs/live-run-batch-result.json.d/runs/002-review-after-retro-sample-2/attempt-02/result.json",
+      "attemptCount": 2,
+      "attempts": [
+        {
+          "attemptIndex": 1,
+          "outputFile": "/Users/operator/.ceal/ceal/agent-runs/live-run-batch-result.json.d/runs/002-review-after-retro-sample-2/attempt-01/result.json",
+          "result": {
+            "schemaVersion": "cautilus.live_run_invocation_result.v1",
+            "requestId": "review-after-retro-sample-2",
+            "instanceId": "ceal",
+            "executionStatus": "blocked",
+            "summary": "The provider asked the caller to retry after a brief cooldown.",
+            "stopReason": "blocked_by_consumer",
+            "transientFailure": {
+              "class": "rate_limit",
+              "details": {
+                "provider": "openai",
+                "retryAfterSeconds": 15
+              }
+            },
+            "startedAt": "2026-04-20T07:05:13Z",
+            "completedAt": "2026-04-20T07:05:16Z",
+            "durationMs": 3000,
+            "diagnostics": [
+              {
+                "code": "provider_rate_limit",
+                "severity": "error",
+                "message": "429 retry-after 15"
+              }
+            ]
+          }
+        },
+        {
+          "attemptIndex": 2,
+          "outputFile": "/Users/operator/.ceal/ceal/agent-runs/live-run-batch-result.json.d/runs/002-review-after-retro-sample-2/attempt-02/result.json",
+          "result": {
+            "schemaVersion": "cautilus.live_run_invocation_result.v1",
+            "requestId": "review-after-retro-sample-2",
+            "instanceId": "ceal",
+            "executionStatus": "completed",
+            "summary": "Completed 2 turn(s); stop reason: scripted_turns_exhausted.",
+            "stopReason": "scripted_turns_exhausted",
+            "startedAt": "2026-04-20T07:05:17Z",
+            "completedAt": "2026-04-20T07:05:25Z",
+            "durationMs": 8000,
+            "scenarioResult": {
+              "scenarioId": "review-after-retro-followup",
+              "status": "completed",
+              "summary": "Completed 2 turn(s); stop reason: scripted_turns_exhausted."
+            }
+          }
+        }
+      ],
       "result": {
         "schemaVersion": "cautilus.live_run_invocation_result.v1",
         "requestId": "review-after-retro-sample-2",

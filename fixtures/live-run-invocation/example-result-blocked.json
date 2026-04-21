@@ -5,6 +5,13 @@
   "executionStatus": "blocked",
   "summary": "The adapter refused the run because the selected instance is in maintenance mode.",
   "stopReason": "blocked_by_consumer",
+  "transientFailure": {
+    "class": "rate_limit",
+    "details": {
+      "provider": "openai",
+      "retryAfterSeconds": 30
+    }
+  },
   "diagnostics": [
     {
       "code": "instance_maintenance_mode",

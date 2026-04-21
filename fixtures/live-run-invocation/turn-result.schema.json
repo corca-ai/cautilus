@@ -40,6 +40,19 @@
     "consumerSignal": {
       "type": "object"
     },
+    "transientFailure": {
+      "type": "object",
+      "required": ["class"],
+      "properties": {
+        "class": {
+          "type": "string",
+          "enum": ["rate_limit", "transient_provider_failure"]
+        },
+        "details": {
+          "type": "object"
+        }
+      }
+    },
     "diagnostics": {
       "type": "array",
       "items": {

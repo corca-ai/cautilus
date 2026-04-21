@@ -1,12 +1,12 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "cautilus.live_run_invocation_batch_prepare_input.v1",
+  "$id": "cautilus.live_run_invocation_batch_prepare_catalog_input.v1",
   "type": "object",
-  "required": ["schemaVersion", "instanceId", "timeoutMs", "samplesPerScenario", "scenarios"],
+  "required": ["schemaVersion", "instanceId", "timeoutMs", "samplesPerScenario", "scenarioCandidates"],
   "properties": {
     "schemaVersion": {
       "type": "string",
-      "const": "cautilus.live_run_invocation_batch_prepare_input.v1"
+      "const": "cautilus.live_run_invocation_batch_prepare_catalog_input.v1"
     },
     "instanceId": {
       "type": "string"
@@ -56,17 +56,20 @@
         "type": "string"
       }
     },
-    "scenarios": {
+    "requiredTags": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "scenarioCandidates": {
       "type": "array",
       "minItems": 1,
       "items": {
         "type": "object",
-        "required": ["schemaVersion", "scenarioId", "name", "description", "maxTurns", "sideEffectsMode"],
+        "required": ["scenarioId", "name", "description", "maxTurns", "sideEffectsMode"],
         "properties": {
-          "schemaVersion": {
-            "type": "string",
-            "const": "cautilus.scenario.v1"
-          },
           "scenarioId": {
             "type": "string"
           },
@@ -76,11 +79,8 @@
           "description": {
             "type": "string"
           },
-          "brief": {
-            "type": "string"
-          },
           "maxTurns": {
-            "type": "number",
+            "type": "integer",
             "minimum": 1
           },
           "sideEffectsMode": {
@@ -129,8 +129,21 @@
               }
             }
           },
+          "simulatorTurns": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
           "intentProfile": {
             "type": "object"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       }

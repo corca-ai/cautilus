@@ -81,10 +81,19 @@ Optional result fields:
 - `scenarioResult`
 - `transcript`
 - `diagnostics`
+- `transientFailure`
 - `artifactPaths`
 
 When `executionStatus` is `completed`, the result should usually include `scenarioResult`.
 When `executionStatus` is `blocked` or `failed`, the result should include one or more `diagnostics` entries with `code`, `severity`, and `message`.
+When a consumer wants the product to distinguish transient operational noise from semantic failure, it may also attach `transientFailure`.
+The first product-readable vocabulary is intentionally tiny:
+
+- `rate_limit`
+- `transient_provider_failure`
+
+The top-level class is product-owned.
+Raw provider details remain consumer-owned under `transientFailure.details`.
 
 The first `scenarioResult` summary may include:
 
@@ -149,6 +158,7 @@ For the product-owned chatbot loop, the adapter instead points `command_template
 
 The consumer may implement those commands in any language or host runtime as long as they preserve the packet boundary.
 The workspace directory contents stay consumer-owned even when `Cautilus` owns the directory allocation and one-time prepare timing.
+When the product-owned loop is active, the same transient classification seam is available on failed or blocked `cautilus.live_run_turn_result.v1` and `cautilus.live_run_simulator_result.v1` packets, and `Cautilus` propagates that explicit class to the final live-run result instead of inferring it from raw stderr.
 
 The product-owned loop also materializes supporting JSON artifacts when that path is active:
 

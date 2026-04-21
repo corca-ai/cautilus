@@ -547,7 +547,14 @@ func validateWorkbenchLiveResult(result map[string]any, request map[string]any) 
 			return err
 		}
 	}
+	transientFailure, err := normalizeWorkbenchTransientFailure(result["transientFailure"], "result.transientFailure")
+	if err != nil {
+		return err
+	}
 	if status == "completed" {
+		if len(transientFailure) > 0 {
+			return fmt.Errorf("completed result must not include result.transientFailure")
+		}
 		scenarioResult := mapOrEmpty(result["scenarioResult"])
 		if strings.TrimSpace(anyString(scenarioResult["scenarioId"])) == "" {
 			return fmt.Errorf("completed result must include scenarioResult.scenarioId")
@@ -602,6 +609,36 @@ func validateWorkbenchDiagnostics(diagnostics []any, status string) error {
 		}
 	}
 	return nil
+}
+
+func normalizeWorkbenchTransientFailure(value any, path string) (map[string]any, error) {
+	if value == nil {
+		return nil, nil
+	}
+	record := mapOrEmpty(value)
+	if len(record) == 0 {
+		return nil, fmt.Errorf("%s must be an object when present", path)
+	}
+	class := strings.TrimSpace(anyString(record["class"]))
+	if !workbenchValidTransientFailureClass(class) {
+		return nil, fmt.Errorf("%s.class must be one of: rate_limit, transient_provider_failure", path)
+	}
+	normalized := map[string]any{"class": class}
+	if details := record["details"]; details != nil {
+		if _, ok := details.(map[string]any); !ok {
+			return nil, fmt.Errorf("%s.details must be an object when present", path)
+		}
+		normalized["details"] = details
+	}
+	return normalized, nil
+}
+
+func workbenchValidTransientFailureClass(class string) bool {
+	return class == "rate_limit" || class == "transient_provider_failure"
+}
+
+func workbenchTransientFailureClass(result map[string]any) string {
+	return anyString(mapOrEmpty(result["transientFailure"])["class"])
 }
 
 func validateWorkbenchEvaluatorResult(result map[string]any) error {
@@ -712,6 +749,7 @@ func prepareWorkbenchWorkspace(
 			"consumer_turn_failed",
 			"workspace prepare command failed",
 			[]any{workbenchDiagnostic("workspace_prepare_command_failed", err.Error())},
+			nil,
 		)
 		return completed, nil
 	}
@@ -886,6 +924,7 @@ func executeWorkbenchConsumerTurn(
 			"consumer_turn_failed",
 			"consumer single-turn command failed",
 			[]any{workbenchDiagnostic("consumer_single_turn_command_failed", err.Error())},
+			nil,
 		)
 		return transcript, completed, nil
 	}
@@ -899,6 +938,7 @@ func executeWorkbenchConsumerTurn(
 			"consumer_turn_failed",
 			"consumer single-turn command did not produce a valid result",
 			[]any{workbenchDiagnostic("invalid_turn_result", err.Error())},
+			nil,
 		)
 		return transcript, completed, nil
 	}
@@ -911,6 +951,7 @@ func executeWorkbenchConsumerTurn(
 			"consumer_turn_failed",
 			"consumer single-turn result did not match the contract",
 			[]any{workbenchDiagnostic("invalid_turn_result_contract", err.Error())},
+			nil,
 		)
 		return transcript, completed, nil
 	}
@@ -935,6 +976,7 @@ func executeWorkbenchConsumerTurn(
 			"blocked_by_consumer",
 			anyString(turnResult["summary"]),
 			arrayOrEmpty(turnResult["diagnostics"]),
+			mapOrEmpty(turnResult["transientFailure"]),
 		)
 		return transcript, completed, nil
 	default:
@@ -946,6 +988,7 @@ func executeWorkbenchConsumerTurn(
 			"consumer_turn_failed",
 			anyString(turnResult["summary"]),
 			arrayOrEmpty(turnResult["diagnostics"]),
+			mapOrEmpty(turnResult["transientFailure"]),
 		)
 		return transcript, completed, nil
 	}
@@ -1013,6 +1056,7 @@ func executeWorkbenchSimulatorPersonaTurn(
 			"simulator_persona_failed",
 			"simulator persona command failed",
 			[]any{workbenchDiagnostic("simulator_persona_command_failed", err.Error())},
+			nil,
 		)
 		return nil, "", completed, nil
 	}
@@ -1026,6 +1070,7 @@ func executeWorkbenchSimulatorPersonaTurn(
 			"simulator_persona_failed",
 			"simulator persona command did not produce a valid result",
 			[]any{workbenchDiagnostic("invalid_simulator_result", err.Error())},
+			nil,
 		)
 		return nil, "", completed, nil
 	}
@@ -1038,6 +1083,7 @@ func executeWorkbenchSimulatorPersonaTurn(
 			"simulator_persona_failed",
 			"simulator persona result did not match the contract",
 			[]any{workbenchDiagnostic("invalid_simulator_result_contract", err.Error())},
+			nil,
 		)
 		return nil, "", completed, nil
 	}
@@ -1056,6 +1102,7 @@ func executeWorkbenchSimulatorPersonaTurn(
 			"blocked_by_consumer",
 			anyString(simulatorResult["summary"]),
 			arrayOrEmpty(simulatorResult["diagnostics"]),
+			mapOrEmpty(simulatorResult["transientFailure"]),
 		)
 		return nil, "", completed, nil
 	default:
@@ -1067,6 +1114,7 @@ func executeWorkbenchSimulatorPersonaTurn(
 			"simulator_persona_failed",
 			anyString(simulatorResult["summary"]),
 			arrayOrEmpty(simulatorResult["diagnostics"]),
+			mapOrEmpty(simulatorResult["transientFailure"]),
 		)
 		return nil, "", completed, nil
 	}
@@ -1229,6 +1277,7 @@ func finalizeWorkbenchDiagnosticResult(
 	stopReason string,
 	summary string,
 	diagnostics []any,
+	transientFailure map[string]any,
 ) map[string]any {
 	completedAt := time.Now().UTC()
 	result := map[string]any{
@@ -1245,6 +1294,9 @@ func finalizeWorkbenchDiagnosticResult(
 	}
 	if truthyWorkbenchCaptureTranscript(request) && len(transcript) > 0 {
 		result["transcript"] = transcript
+	}
+	if len(transientFailure) > 0 {
+		result["transientFailure"] = transientFailure
 	}
 	return result
 }
@@ -1270,6 +1322,11 @@ func validateWorkbenchSimulatorResult(result map[string]any, request map[string]
 		return fmt.Errorf("simulator result.summary must be a non-empty string")
 	}
 	if status == "completed" {
+		if transientFailure, err := normalizeWorkbenchTransientFailure(result["transientFailure"], "simulator result.transientFailure"); err != nil {
+			return err
+		} else if len(transientFailure) > 0 {
+			return fmt.Errorf("completed simulator result must not include simulator result.transientFailure")
+		}
 		action := strings.TrimSpace(anyString(result["action"]))
 		if action != "continue" && action != "stop" {
 			return fmt.Errorf("simulator result.action must be continue or stop")
@@ -1284,6 +1341,9 @@ func validateWorkbenchSimulatorResult(result map[string]any, request map[string]
 			return fmt.Errorf("simulator result.stopReason must be a non-empty string when action is stop")
 		}
 		return nil
+	}
+	if _, err := normalizeWorkbenchTransientFailure(result["transientFailure"], "simulator result.transientFailure"); err != nil {
+		return err
 	}
 	return validateWorkbenchDiagnostics(arrayOrEmpty(result["diagnostics"]), status)
 }
@@ -1309,6 +1369,11 @@ func validateWorkbenchTurnResult(result map[string]any, request map[string]any, 
 		return fmt.Errorf("turn result.summary must be a non-empty string")
 	}
 	if status == "completed" {
+		if transientFailure, err := normalizeWorkbenchTransientFailure(result["transientFailure"], "turn result.transientFailure"); err != nil {
+			return err
+		} else if len(transientFailure) > 0 {
+			return fmt.Errorf("completed turn result must not include turn result.transientFailure")
+		}
 		if err := validateWorkbenchAssistantTurn(mapOrEmpty(result["assistantTurn"]), "turn result.assistantTurn"); err != nil {
 			return err
 		}
@@ -1318,6 +1383,9 @@ func validateWorkbenchTurnResult(result map[string]any, request map[string]any, 
 			}
 		}
 		return nil
+	}
+	if _, err := normalizeWorkbenchTransientFailure(result["transientFailure"], "turn result.transientFailure"); err != nil {
+		return err
 	}
 	return validateWorkbenchDiagnostics(arrayOrEmpty(result["diagnostics"]), status)
 }

@@ -11,6 +11,24 @@
     "instanceId": {
       "type": "string"
     },
+    "retryPolicy": {
+      "type": "object",
+      "required": ["maxAttempts", "retryOnClasses"],
+      "properties": {
+        "maxAttempts": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "retryOnClasses": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "enum": ["rate_limit", "transient_provider_failure"]
+          }
+        }
+      }
+    },
     "requests": {
       "type": "array",
       "minItems": 1,

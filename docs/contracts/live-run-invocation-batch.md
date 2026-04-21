@@ -6,21 +6,26 @@ This slice exists to stop adopters from re-implementing the per-scenario schedul
 
 ## Current Slice
 
-Use `cautilus workbench prepare-request-batch` when an agent has draft scenarios and needs a deterministic request-batch artifact.
-That prep command takes `cautilus.live_run_invocation_batch_prepare_input.v1` and emits `cautilus.live_run_invocation_request_batch.v1`.
+Use `cautilus workbench prepare-request-batch` when an agent has either draft scenarios or a normalized consumer-catalog candidate packet and needs a deterministic request-batch artifact.
+That prep command accepts either `cautilus.live_run_invocation_batch_prepare_input.v1` or `cautilus.live_run_invocation_batch_prepare_catalog_input.v1` and emits `cautilus.live_run_invocation_request_batch.v1`.
 Use `cautilus workbench run-scenarios` with `--instance-id`, `--requests-file`, and `--output-file` once that explicit request batch exists.
 The command reuses the same adapter-owned `live_run_invocation` seam that powers `cautilus workbench run-live`, but it executes many request packets inside one product-owned scheduler instead of spawning one new `cautilus` subprocess per scenario.
-This first slice owns request synthesis only from checked-in `cautilus.scenario.v1` draft scenarios plus exact `scenarioIds` filtering and `samplesPerScenario` expansion.
-It does not yet own request synthesis from a consumer scenario catalog, retry policy, or noise taxonomy.
+This slice now owns request synthesis from:
+
+- checked-in `cautilus.scenario.v1` draft scenarios plus exact `scenarioIds` filtering and `samplesPerScenario` expansion
+- normalized consumer-catalog candidate packets plus exact `scenarioIds` and `requiredTags` filtering
+
+Raw consumer catalog probing and host-specific schema interpretation remain consumer-owned.
 
 ## Fixed Decisions
 
 - The batch scheduler still routes to one selected `instanceId` per invocation.
 - Each embedded request must already be a valid `cautilus.live_run_invocation_request.v1` packet.
-- The scheduler writes one nested per-request result file under `<output-file>.d/runs/`.
+- The scheduler writes one nested per-request result file per attempt under `<output-file>.d/runs/`.
 - The top-level batch result embeds the canonical per-request `cautilus.live_run_invocation_result.v1` packets instead of inventing a second result shape.
 - Concurrency is product-owned at the scheduler layer, not adapter-owned.
-- Retry and noise policy stay deferred for now.
+- Retry stays scheduler-owned at the batch layer and is driven only by explicit product-readable transient classes.
+- Raw provider-error interpretation stays consumer-owned.
 
 ## Request Packet
 
@@ -32,9 +37,19 @@ Required top-level fields:
 - `instanceId`
 - `requests`
 
+Optional top-level fields:
+
+- `retryPolicy`
+
 `requests` must be a non-empty array of valid `cautilus.live_run_invocation_request.v1` packets.
 Every embedded request must use the same `instanceId` as the batch and the CLI flag.
-The first slice also requires unique `requestId` values inside the batch so nested artifact paths stay stable and machine-readable.
+The batch also requires unique `requestId` values inside the batch so nested artifact paths stay stable and machine-readable.
+
+When `retryPolicy` is present, it uses:
+
+- `maxAttempts`
+- `retryOnClasses`
+  - current values: `rate_limit`, `transient_provider_failure`
 
 ## Batch-Prepare Packet
 
@@ -55,10 +70,38 @@ Optional top-level fields:
 - `consumerMetadata`
 - `operatorNote`
 - `scenarioIds`
+- `retryPolicy`
 
 `scenarios` is a non-empty array of `cautilus.scenario.v1` draft scenarios.
 When `scenarioIds` is present, the prep command keeps only those exact `scenarioId` values.
 For each kept scenario, the command expands `samplesPerScenario` into deterministic request ids and emits the canonical batch request packet.
+
+## Catalog-Candidate Batch-Prepare Packet
+
+Use `cautilus.live_run_invocation_batch_prepare_catalog_input.v1`.
+
+Required top-level fields:
+
+- `schemaVersion`
+- `instanceId`
+- `timeoutMs`
+- `samplesPerScenario`
+- `scenarioCandidates`
+
+Optional top-level fields:
+
+- `requestIdPrefix`
+- `captureTranscript`
+- `consumerMetadata`
+- `operatorNote`
+- `retryPolicy`
+- `scenarioIds`
+- `requiredTags`
+
+`scenarioCandidates` is a non-empty array of normalized product-readable scenario candidates.
+Each candidate already carries the scenario execution shape that `prepare-request-batch` needs; the product does not read raw consumer catalog storage directly in this slice.
+When `scenarioIds` is present, the prep command keeps only those exact `scenarioId` values.
+When `requiredTags` is present, the prep command keeps only candidates that include every required tag exactly.
 
 ## Result Packet
 
@@ -70,6 +113,8 @@ Required top-level fields:
 - `instanceId`
 - `summary`
 - `counts`
+- `attemptCounts`
+- `transientClassCounts`
 - `results`
 
 `counts` includes:
@@ -79,14 +124,28 @@ Required top-level fields:
 - `blocked`
 - `failed`
 
+`attemptCounts` includes:
+
+- `total`
+- `retriedRequests`
+
+`transientClassCounts` currently includes:
+
+- `rate_limit`
+- `transient_provider_failure`
+
 Each `results[]` entry includes:
 
 - `requestId`
 - `scenarioId`
 - `outputFile`
+- `attemptCount`
+- `attempts`
 - `result`
 
 `result` is the same `cautilus.live_run_invocation_result.v1` packet that `cautilus workbench run-live` would have written for that request.
+`attempts[]` records each attempt in order with its nested `outputFile` and canonical `result`.
+`outputFile` and `result` at the top level duplicate the final attempt for convenience.
 
 ## CLI Surface
 
@@ -105,14 +164,10 @@ cautilus workbench run-scenarios \
 
 `--concurrency` defaults to `1`.
 The command writes the aggregated batch packet to `--output-file`.
-It also writes one nested request and result pair per scheduled request under `<output-file>.d/runs/`.
+It also writes one nested request and result pair per attempt under `<output-file>.d/runs/<request>/attempt-<nn>/`.
 
 ## Deferred Decisions
 
-- scenario catalog inputs plus product-owned filtering
-- sample expansion (`samples-per-scenario`)
-- retry policy
-- noise or rate-limit classification
 - cross-instance batches
 
 ## Non-Goals
@@ -124,21 +179,24 @@ It also writes one nested request and result pair per scheduled request under `<
 ## Success Criteria
 
 - Consumers can hand `Cautilus` many explicit live-run request packets in one file.
+- Consumers can hand `Cautilus` a normalized catalog-candidate prep packet without teaching the product a raw host-specific catalog schema.
 - The product schedules those requests without a host-side wrapper spawning one `cautilus workbench run-live` subprocess per scenario.
-- Operators receive one aggregated packet plus stable per-request artifacts.
+- Operators receive one aggregated packet plus stable per-attempt artifacts.
 - The batch scheduler preserves the existing single-request runtime contract instead of inventing a second adapter seam.
 
 ## Acceptance Checks
 
 - `go test ./internal/runtime ./internal/app`
 - batch prepare example at [fixtures/live-run-invocation/example-batch-prepare-input.json](../../fixtures/live-run-invocation/example-batch-prepare-input.json) validates against [fixtures/live-run-invocation/batch-prepare-input.schema.json](../../fixtures/live-run-invocation/batch-prepare-input.schema.json)
+- catalog prepare example at [fixtures/live-run-invocation/example-batch-prepare-catalog-input.json](../../fixtures/live-run-invocation/example-batch-prepare-catalog-input.json) validates against [fixtures/live-run-invocation/batch-prepare-catalog-input.schema.json](../../fixtures/live-run-invocation/batch-prepare-catalog-input.schema.json)
 - request batch example at [fixtures/live-run-invocation/example-request-batch.json](../../fixtures/live-run-invocation/example-request-batch.json) validates against [fixtures/live-run-invocation/request-batch.schema.json](../../fixtures/live-run-invocation/request-batch.schema.json)
 - batch result example at [fixtures/live-run-invocation/example-result-batch.json](../../fixtures/live-run-invocation/example-result-batch.json) validates against [fixtures/live-run-invocation/result-batch.schema.json](../../fixtures/live-run-invocation/result-batch.schema.json)
-- `go test ./internal/app -run TestCLIWorkbenchRunScenariosExecutesExplicitRequestBatch`
+- `go test ./internal/app -run 'TestCLIWorkbench(PrepareRequestBatchAcceptsCatalogCandidates|RunScenariosExecutesExplicitRequestBatch|RunScenariosRetriesTransientFailures)$'`
 
 ## Canonical Artifact
 
 The canonical batch-prepare artifact for this slice is `cautilus.live_run_invocation_batch_prepare_input.v1`.
+The canonical catalog-derived batch-prepare artifact for this slice is `cautilus.live_run_invocation_batch_prepare_catalog_input.v1`.
 The canonical batch request artifact for this slice is `cautilus.live_run_invocation_request_batch.v1`.
 The canonical batch result artifact for this slice is `cautilus.live_run_invocation_batch_result.v1`.
 The nested per-request artifacts remain `cautilus.live_run_invocation_request.v1` and `cautilus.live_run_invocation_result.v1`.
