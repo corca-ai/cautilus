@@ -6269,47 +6269,69 @@ func TestCLIWorkbenchRunScenariosExecutesExplicitRequestBatch(t *testing.T) {
 	if err := os.WriteFile(filepath.Join(adapterDir, "cautilus-adapter.yaml"), []byte(adapter), 0o644); err != nil {
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
+	prepareInputPath := filepath.Join(root, "prepare-input.json")
 	requestBatchPath := filepath.Join(root, "request-batch.json")
-	writeJSONFile(t, requestBatchPath, map[string]any{
-		"schemaVersion": contracts.LiveRunInvocationBatchRequestSchema,
-		"instanceId":    "ceal",
-		"requests": []any{
+	writeJSONFile(t, prepareInputPath, map[string]any{
+		"schemaVersion":      contracts.LiveRunInvocationBatchPrepareInputSchema,
+		"instanceId":         "ceal",
+		"timeoutMs":          30000,
+		"samplesPerScenario": 1,
+		"captureTranscript":  true,
+		"requestIdPrefix":    "held-out",
+		"scenarioIds":        []any{"scenario-batch-1", "scenario-batch-2"},
+		"scenarios": []any{
 			map[string]any{
-				"schemaVersion": contracts.LiveRunInvocationRequestSchema,
-				"requestId":     "req-batch-1",
-				"instanceId":    "ceal",
-				"timeoutMs":     30000,
-				"scenario": map[string]any{
-					"scenarioId":      "scenario-batch-1",
-					"name":            "Batched live run one",
-					"description":     "First batched scenario.",
-					"maxTurns":        1,
-					"sideEffectsMode": "read_only",
-					"simulator": map[string]any{
-						"kind":  "scripted",
-						"turns": []any{map[string]any{"text": "첫 번째 turn"}},
-					},
+				"schemaVersion":   contracts.DraftScenarioSchema,
+				"scenarioId":      "scenario-batch-1",
+				"name":            "Batched live run one",
+				"description":     "First batched scenario.",
+				"brief":           "First batched scenario.",
+				"maxTurns":        1,
+				"sideEffectsMode": "read_only",
+				"simulator": map[string]any{
+					"kind":  "scripted",
+					"turns": []any{map[string]any{"text": "첫 번째 turn"}},
 				},
 			},
 			map[string]any{
-				"schemaVersion": contracts.LiveRunInvocationRequestSchema,
-				"requestId":     "req-batch-2",
-				"instanceId":    "ceal",
-				"timeoutMs":     30000,
-				"scenario": map[string]any{
-					"scenarioId":      "scenario-batch-2",
-					"name":            "Batched live run two",
-					"description":     "Second batched scenario.",
-					"maxTurns":        1,
-					"sideEffectsMode": "read_only",
-					"simulator": map[string]any{
-						"kind":  "scripted",
-						"turns": []any{map[string]any{"text": "두 번째 turn"}},
-					},
+				"schemaVersion":   contracts.DraftScenarioSchema,
+				"scenarioId":      "scenario-batch-2",
+				"name":            "Batched live run two",
+				"description":     "Second batched scenario.",
+				"brief":           "Second batched scenario.",
+				"maxTurns":        1,
+				"sideEffectsMode": "read_only",
+				"simulator": map[string]any{
+					"kind":  "scripted",
+					"turns": []any{map[string]any{"text": "두 번째 turn"}},
 				},
 			},
 		},
 	})
+	prepareStdout, prepareStderr, prepareExitCode := runCLI(
+		t,
+		root,
+		"workbench",
+		"prepare-request-batch",
+		"--input",
+		prepareInputPath,
+		"--output",
+		requestBatchPath,
+	)
+	if prepareExitCode != 0 {
+		t.Fatalf("workbench prepare-request-batch failed: %s", prepareStderr)
+	}
+	if strings.TrimSpace(prepareStdout) != requestBatchPath {
+		t.Fatalf("expected batch prepare stdout to point at request batch file, got %q", prepareStdout)
+	}
+	requestBatch := readJSONObjectFile(t, requestBatchPath)
+	requests, ok := requestBatch["requests"].([]any)
+	if !ok || len(requests) != 2 {
+		t.Fatalf("expected two prepared live-run requests, got %#v", requestBatch["requests"])
+	}
+	if anyToString(requests[0].(map[string]any)["requestId"]) != "held-out--scenario-batch-1" {
+		t.Fatalf("unexpected prepared request id: %#v", requests[0])
+	}
 	outputPath := filepath.Join(root, "artifacts", "batch-result.json")
 
 	stdout, stderr, exitCode := runCLI(

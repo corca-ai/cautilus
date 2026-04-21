@@ -148,6 +148,16 @@
       ]
     },
     {
+      "path": ["workbench", "prepare-request-batch"],
+      "group": "run",
+      "usage": "cautilus workbench prepare-request-batch --input <prepare-input.json> [--output <request-batch.json>]",
+      "example": "cautilus workbench prepare-request-batch --input /tmp/prepare-input.json --output /tmp/request-batch.json",
+      "notes": [
+        "This command turns an agent-friendly `cautilus.live_run_invocation_batch_prepare_input.v1` packet into the canonical `cautilus.live_run_invocation_request_batch.v1` batch artifact.",
+        "The first slice accepts checked-in `cautilus.scenario.v1` draft scenarios plus exact `scenarioIds` filtering and `samplesPerScenario` expansion."
+      ]
+    },
+    {
       "path": ["workbench", "run-scenarios"],
       "group": "run",
       "usage": "cautilus workbench run-scenarios --instance-id <id> --requests-file <batch.json> --output-file <result.json> [--concurrency <n>] [args]",

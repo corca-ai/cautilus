@@ -163,6 +163,8 @@ func nativeHandler(path []string) handlerFunc {
 		return handleWorkbenchDiscover
 	case "workbench run-live":
 		return handleWorkbenchRunLive
+	case "workbench prepare-request-batch":
+		return handleWorkbenchPrepareRequestBatch
 	case "workbench run-scenarios":
 		return handleWorkbenchRunScenarios
 	case "workbench run-simulator-persona":

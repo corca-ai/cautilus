@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "cautilus.live_run_invocation_batch_prepare_input.v1",
+  "instanceId": "ceal",
+  "timeoutMs": 45000,
+  "samplesPerScenario": 2,
+  "requestIdPrefix": "held-out",
+  "captureTranscript": true,
+  "consumerMetadata": {
+    "channelId": "C_REVIEW"
+  },
+  "operatorNote": "Recheck the selected scenarios before refreshing the regression pack.",
+  "scenarioIds": [
+    "review-after-retro"
+  ],
+  "scenarios": [
+    {
+      "schemaVersion": "cautilus.scenario.v1",
+      "scenarioId": "review-after-retro",
+      "name": "Review After Retro",
+      "description": "The operator pivots from retro back to review in one thread.",
+      "brief": "Recent activity shows a retro turn followed by a review turn.",
+      "maxTurns": 2,
+      "sideEffectsMode": "read_only",
+      "simulator": {
+        "kind": "scripted",
+        "turns": [
+          {
+            "text": "retro 먼저 해주세요"
+          },
+          {
+            "text": "이제 review로 돌아가죠"
+          }
+        ]
+      }
+    },
+    {
+      "schemaVersion": "cautilus.scenario.v1",
+      "scenarioId": "off-topic-example",
+      "name": "Off-topic Example",
+      "description": "A second scenario included to show exact id filtering.",
+      "brief": "This scenario should be filtered out by scenarioIds.",
+      "maxTurns": 1,
+      "sideEffectsMode": "read_only",
+      "simulator": {
+        "kind": "scripted",
+        "turns": [
+          {
+            "text": "무시될 turn"
+          }
+        ]
+      }
+    }
+  ]
+}

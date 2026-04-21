@@ -29,13 +29,16 @@
   관련 fixture/schema는 [fixtures/live-run-invocation/](../../fixtures/live-run-invocation/)에 추가됐다.
 - `workbench run-scenarios`의 first batch slice도 landed 상태다.
   새 command [internal/app/workbench_batch_command.go](../../internal/app/workbench_batch_command.go)는 explicit `cautilus.live_run_invocation_request_batch.v1` file과 `--concurrency`를 받아 one-instance in-process scheduler를 돌리고, aggregated `cautilus.live_run_invocation_batch_result.v1`와 nested per-request artifacts를 `<output-file>.d/runs/` 아래에 남긴다.
-  catalog/filter, sample expansion, retry/noise policy는 아직 deferred다.
+  retry/noise policy는 아직 deferred다.
+- agent-facing prep surface [internal/app/workbench_prepare_batch_command.go](../../internal/app/workbench_prepare_batch_command.go)도 landed 상태다.
+  `cautilus workbench prepare-request-batch`는 `cautilus.live_run_invocation_batch_prepare_input.v1`을 받아 checked-in `cautilus.scenario.v1` draft scenarios, exact `scenarioIds` filtering, `samplesPerScenario` fanout을 canonical `cautilus.live_run_invocation_request_batch.v1` artifact로 정규화한다.
+  즉 batch flow는 이제 `prepare-request-batch -> run-scenarios`의 두 단계 product surface를 가진다.
 
 ## Next Session
 
 1. `charness:impl`로 next runtime slice를 시작하고, [docs/contracts/go-runtime-consolidation.md](../contracts/go-runtime-consolidation.md)의 `First Implementation Slice` 완료 상태와 이어지는 workbench/live-run migration 우선순위를 다시 확인한다.
-2. batch primitive의 next probe는 request synthesis 쪽이다.
-   explicit batch file만으로 충분한지, 아니면 scenario catalog + filter + sample expansion을 product가 이어서 소유해야 하는지 다시 자른다.
+2. batch primitive의 next probe는 prep surface 확장 쪽이다.
+   draft scenario 배열만으로 충분한지, 아니면 scenario proposals packet이나 consumer scenario catalog를 product prep command가 직접 읽어야 하는지 다시 자른다.
 3. `run-executor-variants`와 `evaluate-adapter-mode` shim removal은 여전히 early cleanup 후보다.
    하위호환성은 고려하지 않으므로 equivalent Go path가 landed한 seam은 direct Node runtime entrypoint를 제거할 수 있다.
 4. packet-builder surfaces는 여전히 첫 대상이 아니다.
@@ -45,7 +48,7 @@
 ## Discuss
 
 - second-wave migration에서 packet-builder surfaces를 어디까지 Go로 끌어올릴지
-- `run-scenarios`의 다음 제품 소유 범위를 request synthesis까지 넓힐지, explicit batch file surface에서 멈출지
+- `prepare-request-batch`의 다음 제품 소유 범위를 scenario proposals packet이나 consumer scenario catalog reading까지 넓힐지
 
 ## References
 
