@@ -63,6 +63,9 @@ Use these high-signal routes first:
 - Do not import host-specific adapters, prompts, output paths, or audit UI unless they are being explicitly generalized.
 - Prefer adding small bounded runtimes over large operator surfaces.
 - If a consumer repo has gained generic evaluation knowledge, bring it here rather than letting the contracts drift.
+- When opening issues in other repos, emphasize `why` and `what` more than `how`.
+  Lead with the user, operator, or agent-facing problem and the desired contract or decision boundary.
+  Treat implementation sketches as candidate direction, not as the core payload of the issue.
 - When adding a new runtime surface, add at least one executable test.
 - While implementing, any bug, error, regression, or unexpected behavior routes to `charness:debug` before further fixes.
 
