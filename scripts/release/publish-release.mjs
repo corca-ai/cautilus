@@ -6,8 +6,6 @@ import { spawnSync } from "node:child_process";
 
 import { normalizeVersion } from "./bump-version.mjs";
 
-const INSTALL_GUIDE_PATH = "install.md";
-
 function usage(exitCode = 0) {
 	const stream = exitCode === 0 ? process.stdout : process.stderr;
 	stream.write(
@@ -121,15 +119,6 @@ function readJson(repoRoot, relativePath) {
 	return JSON.parse(readFileSync(resolve(repoRoot, relativePath), "utf-8"));
 }
 
-function readInstallGuideVersion(repoRoot) {
-	const text = readFileSync(resolve(repoRoot, INSTALL_GUIDE_PATH), "utf-8");
-	const match = text.match(/^CAUTILUS_VERSION=v([^\n]+)$/m);
-	if (!match) {
-		throw new Error(`Failed to locate CAUTILUS_VERSION example in ${INSTALL_GUIDE_PATH}`);
-	}
-	return normalizeVersion(match[1]);
-}
-
 export function readReleaseSurfaceVersions(repoRoot) {
 	const packageJson = readJson(repoRoot, "package.json");
 	const packageLock = readJson(repoRoot, "package-lock.json");
@@ -145,7 +134,6 @@ export function readReleaseSurfaceVersions(repoRoot) {
 		claudeMarketplacePlugin: normalizeVersion(marketplacePlugin?.version),
 		packagedClaudePlugin: normalizeVersion(readJson(repoRoot, "plugins/cautilus/.claude-plugin/plugin.json").version),
 		packagedCodexPlugin: normalizeVersion(readJson(repoRoot, "plugins/cautilus/.codex-plugin/plugin.json").version),
-		installGuide: readInstallGuideVersion(repoRoot),
 	};
 }
 

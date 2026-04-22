@@ -949,7 +949,7 @@ func checkGitPrecondition(repoRoot string) (map[string]any, int) {
 
 func DoctorRepo(repoRoot string, adapterPath *string, adapterName *string) (map[string]any, int, error) {
 	if gitResult, gitExit := checkGitPrecondition(repoRoot); gitResult != nil {
-		return gitResult, gitExit, nil
+		return AttachDoctorGuidance(gitResult, repoRoot, "repo", adapterName), gitExit, nil
 	}
 	payload, err := LoadAdapter(repoRoot, adapterPath, adapterName)
 	if err != nil {
@@ -1009,7 +1009,7 @@ func DoctorRepo(repoRoot string, adapterPath *string, adapterName *string) (map[
 			result["summary"] = "Adapter missing."
 		}
 		result["ready"] = false
-		return result, 1, nil
+		return AttachDoctorGuidance(result, repoRoot, "repo", adapterName), 1, nil
 	}
 	checks = append(checks, map[string]any{"id": "adapter_found", "ok": true, "detail": fmt.Sprintf("Using adapter at %v", payload.Path)})
 	if !payload.Valid {
@@ -1022,7 +1022,7 @@ func DoctorRepo(repoRoot string, adapterPath *string, adapterName *string) (map[
 			"Repair the adapter fields reported in errors before running evaluation.",
 			"See docs/contracts/adapter-contract.md for the canonical adapter shape.",
 		}
-		return result, 1, nil
+		return AttachDoctorGuidance(result, repoRoot, "repo", adapterName), 1, nil
 	}
 	checks = append(checks, map[string]any{"id": "adapter_valid", "ok": true, "detail": "Adapter passed schema validation."})
 	data := payload.Data
@@ -1052,12 +1052,12 @@ func DoctorRepo(repoRoot string, adapterPath *string, adapterName *string) (map[
 		result["next_steps"] = []any{
 			"Inspect `first_bounded_run` or run `cautilus scenarios --json` to pick one archetype and its first bounded loop.",
 		}
-		return result, 0, nil
+		return AttachDoctorGuidance(result, repoRoot, "repo", adapterName), 0, nil
 	}
 	result["status"] = "incomplete_adapter"
 	result["ready"] = false
 	result["summary"] = "Adapter exists but is not ready yet."
-	return result, 1, nil
+	return AttachDoctorGuidance(result, repoRoot, "repo", adapterName), 1, nil
 }
 
 func DoctorAgentSurface(repoRoot string) (map[string]any, int, error) {
@@ -1121,12 +1121,12 @@ func DoctorAgentSurface(repoRoot string) (map[string]any, int, error) {
 		result["status"] = "ready"
 		result["ready"] = true
 		result["summary"] = "Local agent-consumable skill surface is materialized."
-		return result, 0, nil
+		return AttachDoctorGuidance(result, repoRoot, "agent-surface", nil), 0, nil
 	}
 	result["status"] = "missing_agent_surface"
 	result["ready"] = false
 	result["summary"] = "Local agent-consumable skill surface is not materialized yet."
-	return result, 1, nil
+	return AttachDoctorGuidance(result, repoRoot, "agent-surface", nil), 1, nil
 }
 
 func appendFieldCheck(checks *[]any, suggestions *[]any, id string, ok bool, okDetail string, missingDetail string, suggestion string) {

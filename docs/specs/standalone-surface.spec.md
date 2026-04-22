@@ -136,4 +136,4 @@ test -f "$tmpdir/.agents/skills/cautilus/SKILL.md"
 grep -q '"status": "missing_adapter"' "$tmpdir/doctor.json"
 ```
 
-The user-facing references for this surface are the install guide, the repo README, and the bundled skill docs.
+The user-facing references for this surface are the repo README, the consumer-adoption guide, and the bundled skill docs.

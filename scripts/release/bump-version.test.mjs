@@ -4,7 +4,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
 
-import { applyVersionBump, normalizeVersion, updateInstallGuide, updateVersionedJson } from "./bump-version.mjs";
+import { applyVersionBump, normalizeVersion, updateVersionedJson } from "./bump-version.mjs";
 
 function writeFile(root, relativePath, content) {
 	const filePath = join(root, relativePath);
@@ -45,10 +45,6 @@ test("updateVersionedJson updates the known release metadata files", () => {
 	);
 });
 
-test("updateInstallGuide refreshes the tagged installer example", () => {
-	assert.match(updateInstallGuide("CAUTILUS_VERSION=v0.2.3\n", "0.2.4"), /CAUTILUS_VERSION=v0\.2\.4/);
-});
-
 test("applyVersionBump rewrites the checked-in release metadata set", () => {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-bump-version-"));
 	try {
@@ -65,19 +61,16 @@ test("applyVersionBump rewrites the checked-in release metadata set", () => {
 		);
 		writeFile(root, "plugins/cautilus/.claude-plugin/plugin.json", '{\n  "version": "0.2.3"\n}\n');
 		writeFile(root, "plugins/cautilus/.codex-plugin/plugin.json", '{\n  "version": "0.2.3"\n}\n');
-		writeFile(root, "install.md", "CAUTILUS_VERSION=v0.2.3\n");
 
 		const result = applyVersionBump({ repoRoot: root, version: "0.2.4" });
 		assert.deepEqual(result.changedFiles.sort(), [
 			".claude-plugin/marketplace.json",
-			"install.md",
 			"package-lock.json",
 			"package.json",
 			"plugins/cautilus/.claude-plugin/plugin.json",
 			"plugins/cautilus/.codex-plugin/plugin.json",
 		]);
 		assert.equal(JSON.parse(readFileSync(join(root, "package.json"), "utf-8")).version, "0.2.4");
-		assert.match(readFileSync(join(root, "install.md"), "utf-8"), /CAUTILUS_VERSION=v0\.2\.4/);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

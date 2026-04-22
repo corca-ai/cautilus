@@ -2,16 +2,13 @@
 
 Full command catalog for `cautilus`.
 For the narrative overview, see the [README](../README.md).
-For install and update lifecycle on a fresh machine, see [install.md](../install.md).
+For the shortest bootstrap loop on a fresh machine, see the Quick Start section in [README.md](../README.md).
 
 ## Install & lifecycle
 
 ```bash
-# curl-install (tagged release)
+# tagged-release install
 curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh | sh
-
-# Homebrew tap
-brew install corca-ai/tap/cautilus
 
 # install CLI + bundled skill into a host repo
 cautilus install --repo-root /path/to/host-repo
@@ -63,6 +60,9 @@ cautilus commands --json
 # repo readiness for evaluation
 cautilus doctor --repo-root /path/to/repo
 
+# one current onboarding step plus the exact continuation loop
+cautilus doctor --repo-root /path/to/repo --next-action
+
 # local agent-skill discoverability in a consumer repo
 cautilus doctor --repo-root /path/to/repo --scope agent-surface
 
@@ -71,6 +71,7 @@ cautilus scenarios --json
 ```
 
 `cautilus <subcommand> --help` exits `0` for the registered native command surface, including grouped topics such as `cautilus optimize search --help`.
+Use `doctor --next-action` when you want one current onboarding step plus the exact follow-up loop.
 Use `doctor --scope agent-surface` to verify only the bundled skill and local agent-surface install.
 Use default `doctor` (`--scope repo`) to verify the repo has a real runnable evaluation path.
 When repo-scope `doctor` returns `ready`, the JSON payload includes `first_bounded_run`: the same archetype catalog as `cautilus scenarios --json` plus a starter `mode evaluate -> review prepare-input -> review variants` loop.

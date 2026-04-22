@@ -263,6 +263,13 @@ func TestCLIDoctorReportsReadyWithExecutionSurface(t *testing.T) {
 	if payload["ready"] != true || payload["status"] != "ready" {
 		t.Fatalf("expected ready doctor payload, got %#v", payload)
 	}
+	nextAction, ok := payload["next_action"].(map[string]any)
+	if !ok || anyToString(nextAction["kind"]) != "complete_first_bounded_run" {
+		t.Fatalf("expected first bounded run next_action, got %#v", payload["next_action"])
+	}
+	if !strings.Contains(anyToString(payload["next_prompt"]), "first_bounded_run") {
+		t.Fatalf("expected next_prompt to mention first_bounded_run, got %#v", payload["next_prompt"])
+	}
 	if payload["adapter_path"] != filepath.Join(root, ".agents", "cautilus-adapter.yaml") {
 		t.Fatalf("unexpected adapter path: %#v", payload["adapter_path"])
 	}
@@ -328,6 +335,10 @@ func TestCLIDoctorFailsWithoutCheckedInAdapter(t *testing.T) {
 	if payload["ready"] != false || payload["status"] != "missing_adapter" {
 		t.Fatalf("expected missing_adapter payload, got %#v", payload)
 	}
+	nextAction, ok := payload["next_action"].(map[string]any)
+	if !ok || anyToString(nextAction["command"]) != "cautilus adapter init --repo-root '"+root+"'" {
+		t.Fatalf("expected adapter init next_action command, got %#v", payload["next_action"])
+	}
 	suggestions, ok := payload["suggestions"].([]any)
 	if !ok || len(suggestions) == 0 || !strings.Contains(anyToString(suggestions[0]), "adapter init") {
 		t.Fatalf("expected adapter init suggestion, got %#v", payload["suggestions"])
@@ -378,6 +389,25 @@ func TestCLIDoctorAcknowledgesNamedAdaptersWhenDefaultAdapterIsMissing(t *testin
 	}
 	if !strings.Contains(anyToString(suggestions[1]), "--adapter-name data-final-prompt-ab") {
 		t.Fatalf("expected doctor suggestion to mention --adapter-name, got %#v", suggestions)
+	}
+	nextAction, ok := payload["next_action"].(map[string]any)
+	if !ok || !strings.Contains(anyToString(nextAction["command"]), "--adapter-name 'data-final-prompt-ab' --next-action") {
+		t.Fatalf("expected next_action to continue through named adapter, got %#v", payload["next_action"])
+	}
+}
+
+func TestCLIDoctorNextActionPrintsLoopPrompt(t *testing.T) {
+	root := t.TempDir()
+	initGitRepo(t, root)
+	stdout, stderr, exitCode := runCLI(t, root, "doctor", "--repo-root", root, "--next-action")
+	if exitCode != 1 {
+		t.Fatalf("expected exit code 1, got %d, stderr=%s", exitCode, stderr)
+	}
+	if !strings.Contains(stdout, "cautilus adapter init --repo-root") {
+		t.Fatalf("expected next-action prompt to mention adapter init, got %q", stdout)
+	}
+	if !strings.Contains(stdout, "continue from the returned next action") {
+		t.Fatalf("expected next-action loop hint, got %q", stdout)
 	}
 }
 
@@ -913,10 +943,10 @@ func TestCLIInstallCreatesRepoLocalCanonicalSkillAndReportsCurrentCLI(t *testing
 		t.Fatalf("unexpected destinationDir: %#v", skill["destinationDir"])
 	}
 	nextSteps, ok := summary["nextSteps"].([]any)
-	if !ok || len(nextSteps) < 4 {
+	if !ok || len(nextSteps) < 2 {
 		t.Fatalf("expected install nextSteps, got %#v", summary["nextSteps"])
 	}
-	if anyToString(nextSteps[0]) != "cautilus doctor --repo-root "+root+" --scope agent-surface" {
+	if anyToString(nextSteps[0]) != "cautilus doctor --repo-root "+root+" --next-action" {
 		t.Fatalf("unexpected first next step: %#v", nextSteps[0])
 	}
 	if _, err := os.Stat(filepath.Join(root, ".agents", "skills", "cautilus", "SKILL.md")); err != nil {

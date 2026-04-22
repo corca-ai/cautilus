@@ -2,7 +2,6 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
-	deriveTapFormulaRef,
 	normalizeVersion,
 	renderInstallerUrl,
 	runInstallSmoke,
@@ -27,10 +26,6 @@ function createExecStub() {
 test("normalizeVersion strips a leading v prefix", () => {
 	assert.equal(normalizeVersion("v1.2.3"), "1.2.3");
 	assert.equal(normalizeVersion("1.2.3"), "1.2.3");
-});
-
-test("deriveTapFormulaRef maps the tap repo to the public brew formula ref", () => {
-	assert.equal(deriveTapFormulaRef("corca-ai/homebrew-tap"), "corca-ai/tap/cautilus");
 });
 
 test("renderInstallerUrl points at the public install.sh path", () => {
@@ -89,35 +84,4 @@ test("runInstallSmoke can skip update for the install.sh channel", async () => {
 		},
 	);
 	assert.equal(calls.some((call) => call.args[0] === "update"), false);
-});
-
-test("runInstallSmoke drives the homebrew channel only after explicit opt-in", async () => {
-	const { calls, execCommand } = createExecStub();
-	const result = await runInstallSmoke(
-		{
-			channel: "homebrew",
-			version: "v1.2.3",
-			tapRepo: "corca-ai/homebrew-tap",
-			skipUpdate: false,
-		},
-		{
-			execCommand,
-		},
-	);
-
-	assert.equal(result.ok, true);
-	assert.deepEqual(calls[0], {
-		command: "brew",
-		args: ["install", "corca-ai/tap/cautilus"],
-		options: {
-			env: {
-				...process.env,
-				HOMEBREW_NO_AUTO_UPDATE: "1",
-				HOMEBREW_NO_INSTALL_CLEANUP: "1",
-			},
-		},
-	});
-	assert.deepEqual(calls[1].args, ["--version"]);
-	assert.deepEqual(calls[2].args, ["version", "--verbose"]);
-	assert.deepEqual(calls[3].args, ["update"]);
 });

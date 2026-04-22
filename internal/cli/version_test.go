@@ -86,13 +86,13 @@ func TestResolveVersionInfoDetectsSourceCheckoutFromPackageJSON(t *testing.T) {
 	}
 }
 
-func TestResolveVersionInfoDetectsHomebrewInstallKind(t *testing.T) {
+func TestResolveVersionInfoTreatsCellarBinaryAsStandaloneInstall(t *testing.T) {
 	info, err := resolveVersionInfo("", "v1.2.3", "(devel)", "", "/opt/homebrew/Cellar/cautilus/0.2.0/bin/cautilus")
 	if err != nil {
 		t.Fatalf("resolveVersionInfo returned error: %v", err)
 	}
-	if info.InstallKind != InstallKindHomebrew {
-		t.Fatalf("expected Homebrew install kind, got %q", info.InstallKind)
+	if info.InstallKind != InstallKindStandalone {
+		t.Fatalf("expected standalone install kind, got %q", info.InstallKind)
 	}
 }
 

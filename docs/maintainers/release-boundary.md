@@ -37,7 +37,7 @@ These stay in the host repo:
 
 The current honest install story is:
 
-1. install the standalone CLI from a tagged GitHub release with [install.sh](../../install.sh) or Homebrew
+1. install the standalone CLI from a tagged GitHub release with [install.sh](../../install.sh)
 2. let `install.sh` detect the host OS and architecture and download the matching tagged binary asset
 3. require `cautilus --version` to work on `PATH`
 4. in each consumer repo, run `cautilus install --repo-root .`
@@ -48,11 +48,8 @@ The current honest install story is:
 9. for local Claude plugin testing, expose the repo marketplace through [.claude-plugin/marketplace.json](../../.claude-plugin/marketplace.json) so Claude resolves `./plugins/cautilus` as the installable local plugin
 10. validate the checked-in Claude marketplace and plugin manifests with `claude plugins validate ./.claude-plugin/marketplace.json` and `claude plugins validate ./plugins/cautilus/.claude-plugin/plugin.json`
 11. when cutting a tagged release, keep the checksum manifest and GitHub artifact attestations as the public provenance surface for the binary assets
-12. when cutting a tagged release, render and publish the Homebrew formula with [render-homebrew-formula.mjs](../../scripts/release/render-homebrew-formula.mjs)
-13. after the tag is live, let the tag-triggered release workflow retry [verify-public-release.mjs](../../scripts/release/verify-public-release.mjs) until the public GitHub release assets and tap formula reflect the tagged version
-14. keep `cautilus update` install-channel-aware:
-    - Homebrew installs run `brew upgrade cautilus`
-    - release-asset installs re-materialize the managed binary wrapper
+12. after the tag is live, let the tag-triggered release workflow retry [verify-public-release.mjs](../../scripts/release/verify-public-release.mjs) until the public GitHub release assets reflect the tagged version
+13. keep `cautilus update` aligned with the tagged-release install surface so release-asset installs re-materialize the managed binary wrapper
 
 This repo is still not claiming npm publication or a public Codex/Claude plugin distribution flow.
 The plugin surfaces remain repo-local test fixtures, not the canonical consumer install contract.

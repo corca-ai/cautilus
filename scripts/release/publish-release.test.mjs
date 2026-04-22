@@ -27,7 +27,6 @@ function seedReleaseRepo(root, version = "0.5.1") {
 	);
 	writeFile(root, "plugins/cautilus/.claude-plugin/plugin.json", `{\n  "version": "${version}"\n}\n`);
 	writeFile(root, "plugins/cautilus/.codex-plugin/plugin.json", `{\n  "version": "${version}"\n}\n`);
-	writeFile(root, "install.md", `CAUTILUS_VERSION=v${version}\n`);
 }
 
 function initGitRepo(root) {
@@ -60,7 +59,6 @@ test("readReleaseSurfaceVersions reads the checked-in release surface", () => {
 			claudeMarketplacePlugin: "0.5.1",
 			packagedClaudePlugin: "0.5.1",
 			packagedCodexPlugin: "0.5.1",
-			installGuide: "0.5.1",
 		});
 	} finally {
 		rmSync(root, { recursive: true, force: true });

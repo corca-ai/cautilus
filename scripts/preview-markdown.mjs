@@ -5,7 +5,7 @@ import { createHash } from "node:crypto";
 import process from "node:process";
 
 const DEFAULT_WIDTHS = [80, 100];
-const DEFAULT_FILES = ["README.md", "README.ko.md", "install.md", "docs/specs"];
+const DEFAULT_FILES = ["README.md", "docs/specs"];
 const ARTIFACT_ROOT = ".artifacts/markdown-preview";
 const CONFIG_CANDIDATES = [
 	".agents/markdown-preview.yaml",

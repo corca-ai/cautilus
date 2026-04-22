@@ -334,6 +334,7 @@ type doctorArgs struct {
 	adapter     *string
 	adapterName *string
 	scope       string
+	nextAction  bool
 }
 
 type updateArgs struct {
@@ -670,6 +671,17 @@ func handleDoctor(repoRoot string, cwd string, args []string, stdout io.Writer, 
 	if err != nil {
 		_, _ = fmt.Fprintf(stderr, "%s\n", err)
 		return 1
+	}
+	if options.nextAction {
+		prompt := strings.TrimSpace(anyString(result["next_prompt"]))
+		if prompt == "" {
+			prompt = strings.TrimSpace(anyString(mapOrEmpty(result["next_action"])["message"]))
+		}
+		if prompt == "" {
+			prompt = "Inspect the doctor JSON payload and continue from the first incomplete requirement."
+		}
+		_, _ = fmt.Fprintln(stdout, prompt)
+		return exitCode
 	}
 	if err := writeJSON(stdout, result); err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
@@ -1646,6 +1658,8 @@ func parseDoctorArgs(args []string) (*doctorArgs, error) {
 			}
 			index = next
 			options.scope = strings.TrimSpace(value)
+		case "--next-action":
+			options.nextAction = true
 		default:
 			return nil, fmt.Errorf("unknown argument: %s", arg)
 		}

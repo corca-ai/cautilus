@@ -50,19 +50,19 @@ type ProductArchetypeSummary struct {
 }
 
 type ProductSurfaceSummary struct {
-	Summary            string                   `json:"summary"`
-	BestFor            []string                 `json:"bestFor,omitempty"`
+	Summary            string                    `json:"summary"`
+	BestFor            []string                  `json:"bestFor,omitempty"`
 	Archetypes         []ProductArchetypeSummary `json:"archetypes,omitempty"`
-	DecisionLoop       []string                 `json:"decisionLoop,omitempty"`
-	ReportSurface      []string                 `json:"reportSurface,omitempty"`
-	CurrentSurfaceNote []string                 `json:"currentSurfaceNote,omitempty"`
+	DecisionLoop       []string                  `json:"decisionLoop,omitempty"`
+	ReportSurface      []string                  `json:"reportSurface,omitempty"`
+	CurrentSurfaceNote []string                  `json:"currentSurfaceNote,omitempty"`
 }
 
 type VersionState struct {
-	SchemaVersion string       `json:"schemaVersion"`
-	RecordedAt    string       `json:"recordedAt"`
-	Current       VersionInfo  `json:"current"`
-	UpdateCheck   *UpdateCheck `json:"updateCheck,omitempty"`
+	SchemaVersion string                `json:"schemaVersion"`
+	RecordedAt    string                `json:"recordedAt"`
+	Current       VersionInfo           `json:"current"`
+	UpdateCheck   *UpdateCheck          `json:"updateCheck,omitempty"`
 	Product       ProductSurfaceSummary `json:"product"`
 }
 
@@ -207,7 +207,7 @@ func shouldAutoCheckForUpdates(current VersionInfo, interactive bool, isCI bool,
 		return false
 	}
 	switch current.InstallKind {
-	case InstallKindHomebrew, InstallKindInstallScript, InstallKindStandalone:
+	case InstallKindInstallScript, InstallKindStandalone:
 		return true
 	default:
 		return false
@@ -236,8 +236,6 @@ func assessUpdateCheck(check *UpdateCheck, current VersionInfo) *UpdateCheck {
 
 func upgradeHint(kind InstallKind) string {
 	switch kind {
-	case InstallKindHomebrew:
-		return "brew upgrade cautilus"
 	case InstallKindInstallScript, InstallKindStandalone:
 		return "rerun install.sh from the latest tagged release"
 	default:

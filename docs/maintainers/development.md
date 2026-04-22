@@ -1,7 +1,7 @@
 # Development
 
 Dev environment, checks, and self-dogfood workflow for working on the `Cautilus` product itself.
-For consumer installation and use, see the [README](../../README.md) and [install.md](../../install.md).
+For consumer installation and use, see the [README](../../README.md).
 
 ## Tooling
 
@@ -49,8 +49,6 @@ npm run docs:preview
 This writes `glow` snapshots and `manifest.json` under `.artifacts/markdown-preview/` for:
 
 - `README.md`
-- `README.ko.md`
-- `install.md`
 - `docs/specs/*.md`
 
 When `.agents/markdown-preview.yaml` exists, `docs:preview` uses that checked-in scope, widths, and artifact directory instead of the built-in defaults.

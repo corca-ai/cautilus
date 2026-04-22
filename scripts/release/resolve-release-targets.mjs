@@ -21,11 +21,6 @@ export function parseGitHubRemoteUrl(remoteUrl) {
 	return null;
 }
 
-export function deriveTapRepo(sourceRepo) {
-	const [owner] = String(sourceRepo || DEFAULT_SOURCE_REPO).split("/");
-	return `${owner}/homebrew-tap`;
-}
-
 export function readOriginRemoteUrl({ cwd = process.cwd() } = {}) {
 	try {
 		return execFileSync("git", ["config", "--get", "remote.origin.url"], {
@@ -42,7 +37,6 @@ export function resolveReleaseTargets({ cwd = process.cwd(), remoteUrl = readOri
 	const sourceRepo = parsed ? `${parsed.owner}/${parsed.repo}` : DEFAULT_SOURCE_REPO;
 	return {
 		sourceRepo,
-		tapRepo: deriveTapRepo(sourceRepo),
 	};
 }
 

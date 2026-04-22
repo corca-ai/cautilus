@@ -1,5 +1,3 @@
-[한국어 README](./README.ko.md)
-
 # Cautilus
 
 `Cautilus` keeps agent and workflow behavior honest while prompts keep changing.
@@ -22,38 +20,40 @@ Not for: repos that only need deterministic lint, unit, or type checks and do no
 
 ## Quick Start
 
+Prerequisites:
+
+- native macOS or native Linux
+- a target host repo you can edit locally
+- `git` available on `PATH`
+
 ```bash
 curl -fsSL \
   https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh \
   | sh
 cd /path/to/host-repo
 cautilus install
-cautilus doctor --repo-root . --scope agent-surface
-cautilus adapter init --repo-root .
-# fill one runnable command template or executor variant in .agents/cautilus-adapter.yaml
-cautilus adapter resolve --repo-root .
-cautilus doctor --repo-root .
 ```
-
-Use the two `doctor` scopes deliberately.
-`cautilus doctor --scope agent-surface` verifies the bundled skill and local agent-facing surface are installed and discoverable.
-`cautilus doctor` without `--scope` stays the repo-wiring gate and proves the repo has a real runnable `Cautilus` evaluation path.
-Do not stop at either gate.
-When repo-scope `doctor` returns `ready`, use its `first_bounded_run` payload or `cautilus scenarios --json` to choose one archetype and complete one bounded decision loop.
 
 If you want to hand setup to an agent, paste this:
 
 ```md
-Read and follow: https://raw.githubusercontent.com/corca-ai/cautilus/main/install.md
+Set up Cautilus in this repo.
 
-Install Cautilus on this machine.
-Then cd into /path/to/host-repo, install the bundled skill, and verify the setup there.
+Repeat this loop:
+
+1. Run `cautilus doctor --repo-root . --next-action`.
+2. Do exactly what it says.
+3. After each completed step, run `cautilus doctor --repo-root .` to inspect the full state when needed.
+4. Stop only when `cautilus doctor --repo-root .` returns `ready: true`.
+5. Then read `first_bounded_run` from `cautilus doctor --repo-root .` and complete one bounded run.
+
+If the repo has only named adapters under `.agents/cautilus-adapters/`, follow the `next_action` output and keep using the doctor command it tells you to continue with.
 ```
 
 Quick links:
 
-- Homebrew, update, and version details: [install.md](./install.md)
 - Full command catalog: [docs/cli-reference.md](./docs/cli-reference.md)
+- Fresh consumer bootstrap after the binary is on `PATH`: [docs/guides/consumer-adoption.md](./docs/guides/consumer-adoption.md)
 - Public executable spec report: <https://corca-ai.github.io/cautilus/>
 
 That report is generated with `specdown` from the repo's cheap public spec suite.
@@ -187,6 +187,7 @@ See `docs/specs/html-report.spec.md` for the rendered contract.
 
 Verification gates:
 
+- `cautilus doctor --next-action` — one current onboarding step plus the exact continuation loop
 - `cautilus doctor --scope agent-surface` — bundled skill and local agent-surface discoverability gate
 - `cautilus doctor` — repo wiring gate for a runnable evaluation path
 - `npm run consumer:onboard:smoke` — shortest end-to-end adoption proof (run from this repo against a fresh consumer)
@@ -207,7 +208,6 @@ docs/
 Top picks:
 
 - <https://corca-ai.github.io/cautilus/> — standing executable spec report
-- [install.md](./install.md) — canonical machine install guide and first post-install checks
 - [docs/guides/consumer-adoption.md](./docs/guides/consumer-adoption.md) — canonical fresh-consumer bootstrap path after the binary is on `PATH`
 - [docs/guides/evaluation-process.md](./docs/guides/evaluation-process.md) — canonical evaluation loop
 - [docs/specs/archetype-boundary.spec.md](./docs/specs/archetype-boundary.spec.md) — chatbot/skill/workflow 1:1 contract

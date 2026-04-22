@@ -18,6 +18,7 @@ When a consumer repo or wrapper wants to probe the CLI surface safely, use:
 ```bash
 cautilus healthcheck --json
 cautilus commands --json
+cautilus doctor --repo-root . --next-action
 cautilus doctor --repo-root . --scope agent-surface
 ```
 
@@ -86,7 +87,7 @@ getting stuck on the same step.
 1. Resolve the adapter from the target repo:
 
 ```bash
-cautilus doctor --repo-root . --scope agent-surface
+cautilus doctor --repo-root . --next-action
 cautilus adapter resolve --repo-root .
 ```
 
@@ -104,9 +105,10 @@ cautilus adapter init --repo-root .
 cautilus doctor --repo-root .
 ```
 
-`doctor --scope agent-surface` and default `doctor` answer different questions.
-The first checks the bundled skill and local agent-surface install.
-The second checks whether the repo is actually wired for a real runnable evaluation path.
+`doctor --next-action`, `doctor --scope agent-surface`, and default `doctor` answer different questions.
+`doctor --next-action` gives one current onboarding step plus the exact follow-up loop.
+`doctor --scope agent-surface` checks the bundled skill and local agent-surface install.
+Default `doctor` checks whether the repo is actually wired for a real runnable evaluation path.
 When default `doctor` returns `ready`, read its `first_bounded_run` payload before inventing your own next command sequence.
 That payload mirrors `cautilus scenarios --json`, includes `exampleInputCli` per archetype, and adds a starter `mode evaluate -> review prepare-input -> review variants` loop.
 

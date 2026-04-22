@@ -45,7 +45,7 @@ Inlining trains writers to solve comprehension via definition instead of via cle
 ### Applied to Cautilus
 
 - Rewrite the hook to a single sentence that drops held-out, bounded, and packet entirely; reintroduce those terms under Scenarios and Why where context exists.
-- Keep Quick Start to three lines: `install.sh`, `cautilus install`, `cautilus doctor`, with everything else linked out to `install.md`.
+- Keep Quick Start to three lines: `install.sh`, `cautilus install`, `cautilus doctor`, with everything else linked out to the consumer-adoption guide.
 
 ## Pass 2 — Philosophy-heavy products
 

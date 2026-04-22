@@ -123,6 +123,7 @@
       "example": "cautilus doctor --repo-root .",
       "notes": [
         "Default `doctor` validates the unnamed checked-in adapter path.",
+        "Use `cautilus doctor --repo-root . --next-action` when you want one current onboarding step plus the exact follow-up loop.",
         "If your repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, use `cautilus doctor --repo-root . --adapter-name <name>` for repo-scope validation.",
         "A ready repo payload includes `first_bounded_run`, which mirrors `cautilus scenarios --json` and adds a starter `mode evaluate -> review` loop."
       ]

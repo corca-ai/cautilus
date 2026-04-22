@@ -6,8 +6,7 @@ import test from "node:test";
 
 import { binaryAssetName, renderBinaryAssetUrl } from "./binary-assets.mjs";
 import { renderArchiveUrl } from "./fetch-github-archive-sha256.mjs";
-import { renderHomebrewFormula } from "./render-homebrew-formula.mjs";
-import { deriveTapRepo, parseGitHubRemoteUrl, resolveReleaseTargets } from "./resolve-release-targets.mjs";
+import { parseGitHubRemoteUrl, resolveReleaseTargets } from "./resolve-release-targets.mjs";
 import { rewriteUpwardLinks } from "./sync-packaged-skill.mjs";
 
 const REPO_ROOT = process.cwd();
@@ -106,21 +105,6 @@ test("dead runtime compatibility shims stay deleted", () => {
 	assert.equal(existsSync(join(REPO_ROOT, "scripts", "cli-registry.mjs")), false);
 });
 
-test("homebrew formula renderer produces a stable formula body", () => {
-	const formula = renderHomebrewFormula({
-		version: `v${PACKAGE_VERSION}`,
-		repo: "corca-ai/cautilus",
-		sha256: "abc123",
-	});
-	assert.match(formula, /class Cautilus < Formula/);
-	assert.match(formula, new RegExp(`https://github.com/corca-ai/cautilus/archive/refs/tags/v${PACKAGE_VERSION}\\.tar\\.gz`));
-	assert.match(formula, /sha256 "abc123"/);
-	assert.match(formula, /depends_on "go" => :build/);
-	assert.doesNotMatch(formula, /depends_on "node"/);
-	assert.match(formula, /system "go", "build"/);
-	assert.match(formula, /cautilus --version/);
-});
-
 test("github archive URL renderer targets tagged source archives", () => {
 	assert.equal(
 		renderArchiveUrl({ repo: "corca-ai/cautilus", version: `v${PACKAGE_VERSION}` }),
@@ -139,7 +123,7 @@ test("binary release asset helpers target tagged GitHub release assets", () => {
 	);
 });
 
-test("release target helpers parse the current GitHub remote and derive the default tap repo", () => {
+test("release target helpers parse the current GitHub remote", () => {
 	assert.deepEqual(parseGitHubRemoteUrl("https://github.com/corca-ai/cautilus"), {
 		owner: "corca-ai",
 		repo: "cautilus",
@@ -148,10 +132,8 @@ test("release target helpers parse the current GitHub remote and derive the defa
 		owner: "corca-ai",
 		repo: "cautilus",
 	});
-	assert.equal(deriveTapRepo("corca-ai/cautilus"), "corca-ai/homebrew-tap");
 	assert.deepEqual(resolveReleaseTargets({ remoteUrl: "https://github.com/corca-ai/cautilus" }), {
 		sourceRepo: "corca-ai/cautilus",
-		tapRepo: "corca-ai/homebrew-tap",
 	});
 });
 

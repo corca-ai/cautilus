@@ -27,7 +27,6 @@ import (
 var (
 	latestReleaseMetadataForLifecycle = cli.LatestReleaseMetadata
 	installManagedReleaseForLifecycle = cli.InstallManagedRelease
-	runLifecycleCommandForUpdate      = runLifecycleCommand
 )
 
 const (
@@ -154,9 +153,7 @@ func handleInstall(repoRoot string, cwd string, args []string, stdout io.Writer,
 		"skill":         skill,
 		"messages":      logLines(logBuffer.String()),
 		"nextSteps": []string{
-			fmt.Sprintf("cautilus doctor --repo-root %s --scope agent-surface", targetRepo),
-			fmt.Sprintf("cautilus adapter init --repo-root %s", targetRepo),
-			fmt.Sprintf("cautilus adapter resolve --repo-root %s", targetRepo),
+			fmt.Sprintf("cautilus doctor --repo-root %s --next-action", targetRepo),
 			fmt.Sprintf("cautilus doctor --repo-root %s", targetRepo),
 		},
 	}
@@ -170,10 +167,8 @@ func handleInstall(repoRoot string, cwd string, args []string, stdout io.Writer,
 	writeLifecycleMessages(stdout, logLines(logBuffer.String()))
 	fmt.Fprintf(stdout, "Installed %s\n", skill.DestinationDir)
 	fmt.Fprintf(stdout, "Current CLI: v%s (%s)\n", state.Current.Version, state.Current.InstallKind)
-	fmt.Fprintf(stdout, "Next: cautilus doctor --repo-root %s --scope agent-surface\n", targetRepo)
-	fmt.Fprintf(stdout, "Then: cautilus adapter init --repo-root %s\n", targetRepo)
-	fmt.Fprintf(stdout, "Then: cautilus adapter resolve --repo-root %s\n", targetRepo)
-	fmt.Fprintf(stdout, "Then: cautilus doctor --repo-root %s\n", targetRepo)
+	fmt.Fprintf(stdout, "Next: cautilus doctor --repo-root %s --next-action\n", targetRepo)
+	fmt.Fprintf(stdout, "Inspect: cautilus doctor --repo-root %s\n", targetRepo)
 	return 0
 }
 
@@ -240,7 +235,7 @@ func handleUpdate(repoRoot string, cwd string, args []string, stdout io.Writer, 
 			}
 			summary["skill"] = skill
 			nextSteps = append(nextSteps,
-				fmt.Sprintf("cautilus doctor --repo-root %s --scope agent-surface", targetRepo),
+				fmt.Sprintf("cautilus doctor --repo-root %s --next-action", targetRepo),
 				fmt.Sprintf("cautilus doctor --repo-root %s", targetRepo),
 			)
 		}
@@ -255,24 +250,14 @@ func handleUpdate(repoRoot string, cwd string, args []string, stdout io.Writer, 
 		fmt.Fprintf(stdout, "Source checkout detected. Pull the repo and rebuild to update the CLI.\n")
 		if targetRepo != "" {
 			fmt.Fprintf(stdout, "Refreshed bundled skill in %s\n", targetRepo)
-			fmt.Fprintf(stdout, "Next: cautilus doctor --repo-root %s --scope agent-surface\n", targetRepo)
-			fmt.Fprintf(stdout, "Then: cautilus doctor --repo-root %s\n", targetRepo)
+			fmt.Fprintf(stdout, "Next: cautilus doctor --repo-root %s --next-action\n", targetRepo)
+			fmt.Fprintf(stdout, "Inspect: cautilus doctor --repo-root %s\n", targetRepo)
 		}
 		return 0
 	}
 
 	if cli.CompareVersions(latest.Version, current.Version) > 0 {
 		switch current.InstallKind {
-		case cli.InstallKindHomebrew:
-			output, runErr := runLifecycleCommandForUpdate("brew", "upgrade", "cautilus")
-			if runErr != nil {
-				fmt.Fprintf(stderr, "%s\n", runErr)
-				return 1
-			}
-			summary["channel"] = "homebrew"
-			summary["channelCommand"] = []string{"brew", "upgrade", "cautilus"}
-			summary["channelOutput"] = output
-			messages = append(messages, strings.TrimSpace(output))
 		case cli.InstallKindInstallScript, cli.InstallKindStandalone, cli.InstallKindUnknown:
 			installResult, installErr := installManagedReleaseForLifecycle(cli.ReleaseInstallOptions{
 				Version: "v" + latest.Version,
@@ -304,7 +289,7 @@ func handleUpdate(repoRoot string, cwd string, args []string, stdout io.Writer, 
 		}
 		summary["skill"] = skill
 		nextSteps = append(nextSteps,
-			fmt.Sprintf("cautilus doctor --repo-root %s --scope agent-surface", targetRepo),
+			fmt.Sprintf("cautilus doctor --repo-root %s --next-action", targetRepo),
 			fmt.Sprintf("cautilus doctor --repo-root %s", targetRepo),
 		)
 	}
@@ -1927,15 +1912,6 @@ func ensureClaudeSkillsSymlink(repoRoot string) error {
 		return err
 	}
 	return os.Symlink(relativeTarget, claudeSkills)
-}
-
-func runLifecycleCommand(name string, args ...string) (string, error) {
-	command := exec.Command(name, args...)
-	output, err := command.CombinedOutput()
-	if err != nil {
-		return "", fmt.Errorf("%s", strings.TrimSpace(string(output)))
-	}
-	return strings.TrimSpace(string(output)), nil
 }
 
 func logLines(content string) []string {

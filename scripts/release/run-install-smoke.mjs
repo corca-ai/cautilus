@@ -7,12 +7,12 @@ import { pathToFileURL } from "node:url";
 
 import { resolveReleaseTargets } from "./resolve-release-targets.mjs";
 
-const supportedChannels = new Set(["install_sh", "homebrew"]);
+const supportedChannels = new Set(["install_sh"]);
 
 function usage(exitCode = 0) {
 	const text = [
 		"Usage:",
-		"  node ./scripts/release/run-install-smoke.mjs --channel <install_sh|homebrew> [--version <v0.3.0>] [--repo <owner/name>] [--tap-repo <owner/name>] [--installer-source <github|local>] [--skip-update] [--allow-system-mutation] [--keep-workdir] [--json]",
+		"  node ./scripts/release/run-install-smoke.mjs --channel <install_sh> [--version <v0.3.0>] [--repo <owner/name>] [--installer-source <github|local>] [--skip-update] [--keep-workdir] [--json]",
 	].join("\n");
 	const stream = exitCode === 0 ? process.stdout : process.stderr;
 	stream.write(`${text}\n`);
@@ -42,9 +42,7 @@ function parseArgs(argv = process.argv.slice(2)) {
 		channel: "",
 		version: defaultVersion(),
 		repo: targets.sourceRepo,
-		tapRepo: targets.tapRepo,
 		installerSource: "github",
-		allowSystemMutation: false,
 		skipUpdate: false,
 		keepWorkdir: false,
 		json: false,
@@ -53,13 +51,10 @@ function parseArgs(argv = process.argv.slice(2)) {
 		index = applyArg(options, argv, index);
 	}
 	if (!supportedChannels.has(options.channel)) {
-		throw new Error("--channel must be install_sh or homebrew");
+		throw new Error("--channel must be install_sh");
 	}
 	if (options.installerSource !== "github" && options.installerSource !== "local") {
 		throw new Error("--installer-source must be github or local");
-	}
-	if (options.channel === "homebrew" && !options.allowSystemMutation) {
-		throw new Error("homebrew smoke requires --allow-system-mutation");
 	}
 	return options;
 }
@@ -70,10 +65,6 @@ function applyArg(options, argv, index) {
 		usage(0);
 	}
 	const flagMap = {
-		"--allow-system-mutation": () => {
-			options.allowSystemMutation = true;
-			return index;
-		},
 		"--skip-update": () => {
 			options.skipUpdate = true;
 			return index;
@@ -91,7 +82,6 @@ function applyArg(options, argv, index) {
 		"--channel": "channel",
 		"--version": "version",
 		"--repo": "repo",
-		"--tap-repo": "tapRepo",
 		"--installer-source": "installerSource",
 	};
 	if (flagMap[arg]) {
@@ -107,11 +97,6 @@ function applyArg(options, argv, index) {
 
 export function normalizeVersion(version) {
 	return String(version || "").trim().replace(/^v/, "");
-}
-
-export function deriveTapFormulaRef(tapRepo) {
-	const owner = String(tapRepo || "").split("/")[0] || "corca-ai";
-	return `${owner}/tap/cautilus`;
 }
 
 export function renderInstallerUrl(repo) {
@@ -239,47 +224,9 @@ async function runInstallShSmoke(
 	}
 }
 
-function buildHomebrewEnv() {
-	return {
-		...process.env,
-		HOMEBREW_NO_AUTO_UPDATE: "1",
-		HOMEBREW_NO_INSTALL_CLEANUP: "1",
-	};
-}
-
-function runHomebrewSmoke(
-	{ version, tapRepo, skipUpdate },
-	{ execCommand = runCommand } = {},
-) {
-	const formulaRef = deriveTapFormulaRef(tapRepo);
-	const env = buildHomebrewEnv();
-	const summary = {
-		channel: "homebrew",
-		version,
-		tapRepo,
-		formulaRef,
-		commands: [],
-	};
-	const installResult = execCommand("brew", ["install", formulaRef], { env });
-	summary.commands.push(summarizeCommand("brew", ["install", formulaRef], installResult));
-	const versionResult = execCommand("cautilus", ["--version"], { env });
-	ensureExpectedVersion(versionResult, version);
-	summary.commands.push(summarizeCommand("cautilus", ["--version"], versionResult));
-	const verboseResult = execCommand("cautilus", ["version", "--verbose"], { env });
-	summary.commands.push(summarizeCommand("cautilus", ["version", "--verbose"], verboseResult));
-	if (!skipUpdate) {
-		const updateResult = execCommand("cautilus", ["update"], { env });
-		summary.commands.push(summarizeCommand("cautilus", ["update"], updateResult));
-	}
-	summary.ok = true;
-	return summary;
-}
 
 export async function runInstallSmoke(options, dependencies = {}) {
-	if (options.channel === "install_sh") {
-		return runInstallShSmoke(options, dependencies);
-	}
-	return runHomebrewSmoke(options, dependencies);
+	return runInstallShSmoke(options, dependencies);
 }
 
 export async function main(argv = process.argv.slice(2)) {

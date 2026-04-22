@@ -13,8 +13,6 @@ const JSON_VERSION_FILES = [
 	"plugins/cautilus/.codex-plugin/plugin.json",
 ];
 
-const INSTALL_GUIDE_PATH = "install.md";
-
 const JSON_UPDATERS = {
 	"package.json": (payload, version) => {
 		payload.version = version;
@@ -65,14 +63,6 @@ export function updateVersionedJson(relativePath, text, version) {
 	}
 	update(payload, version);
 	return formatJson(payload);
-}
-
-export function updateInstallGuide(text, version) {
-	const next = text.replace(/^CAUTILUS_VERSION=v[^\n]+$/m, `CAUTILUS_VERSION=v${version}`);
-	if (next === text) {
-		throw new Error(`Failed to locate CAUTILUS_VERSION example in ${INSTALL_GUIDE_PATH}`);
-	}
-	return next;
 }
 
 function usage(exitCode = 0) {
@@ -148,15 +138,6 @@ export function applyVersionBump({ repoRoot, version, dryRun = false }) {
 			}
 			changedFiles.push(relativePath);
 		}
-	}
-	const installPath = resolve(repoRoot, INSTALL_GUIDE_PATH);
-	const currentInstallGuide = readFileSync(installPath, "utf-8");
-	const nextInstallGuide = updateInstallGuide(currentInstallGuide, version);
-	if (currentInstallGuide !== nextInstallGuide) {
-		if (!dryRun) {
-			writeFileSync(installPath, nextInstallGuide, "utf-8");
-		}
-		changedFiles.push(INSTALL_GUIDE_PATH);
 	}
 	return {
 		repoRoot: relative(process.cwd(), repoRoot) || ".",

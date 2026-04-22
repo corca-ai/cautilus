@@ -1,20 +1,15 @@
-import { Buffer } from "node:buffer";
 import process from "node:process";
 import { setTimeout as sleep } from "node:timers/promises";
 import { pathToFileURL } from "node:url";
 import { resolve } from "node:path";
 
 import { listReleaseTargets, binaryAssetName } from "./binary-assets.mjs";
-import { renderHomebrewFormula } from "./render-homebrew-formula.mjs";
 import { resolveReleaseTargets } from "./resolve-release-targets.mjs";
-
-const DEFAULT_RELEASE_FORMULA_ASSET = "Cautilus.rb";
-const DEFAULT_TAP_FORMULA_PATH = "Formula/cautilus.rb";
 
 function usage(exitCode = 0) {
 	const text = [
 		"Usage:",
-		"  node ./scripts/release/verify-public-release.mjs --version <v0.3.0> [--repo <owner/name>] [--tap-repo <owner/name>] [--json] [--skip-tap-check] [--retry-attempts <n>] [--retry-delay-ms <ms>]",
+		"  node ./scripts/release/verify-public-release.mjs --version <v0.3.0> [--repo <owner/name>] [--json] [--retry-attempts <n>] [--retry-delay-ms <ms>]",
 	].join("\n");
 	const stream = exitCode === 0 ? process.stdout : process.stderr;
 	stream.write(`${text}\n`);
@@ -34,9 +29,7 @@ function parseArgs(argv = process.argv.slice(2)) {
 	const options = {
 		version: "",
 		repo: targets.sourceRepo,
-		tapRepo: targets.tapRepo,
 		json: false,
-		checkTap: true,
 		retryAttempts: 1,
 		retryDelayMs: 0,
 	};
@@ -66,15 +59,10 @@ function applyArg(options, argv, index) {
 			options.json = true;
 			return index;
 		},
-		"--skip-tap-check": () => {
-			options.checkTap = false;
-			return index;
-		},
 	};
 	const valueMap = {
 		"--version": "version",
 		"--repo": "repo",
-		"--tap-repo": "tapRepo",
 	};
 	if (flagMap[arg]) {
 		return flagMap[arg]();
@@ -143,7 +131,6 @@ export function expectedReleaseAssets(version) {
 		`cautilus-${version}.sha256`,
 		...expectedBinaryAssets(version),
 		`cautilus-${version}-checksums.txt`,
-		DEFAULT_RELEASE_FORMULA_ASSET,
 		`release-notes-${version}.md`,
 	];
 }
@@ -165,13 +152,6 @@ function parseChecksumManifest(content) {
 	return entries;
 }
 
-function decodeGitHubContents(payload) {
-	if (!payload || payload.encoding !== "base64") {
-		throw new Error("Expected GitHub contents payload with base64 encoding");
-	}
-	return Buffer.from(String(payload.content || "").replace(/\n/g, ""), "base64").toString("utf-8");
-}
-
 function normalizeContent(content) {
 	return String(content || "").trim().replace(/\r\n/g, "\n");
 }
@@ -183,7 +163,6 @@ function buildReleaseNotesExpectations({ version, binaryAssets }) {
 		"- binary artifacts:",
 		...binaryAssets.map((asset) => `\`${asset}\``),
 		`- binary checksum manifest: \`cautilus-${version}-checksums.txt\``,
-		`- formula artifact: \`${DEFAULT_RELEASE_FORMULA_ASSET}\``,
 	];
 }
 
@@ -209,12 +188,11 @@ function summarizeText(result) {
 	return `${lines.join("\n")}\n`;
 }
 
-function createResult({ version, repo, tapRepo, checkTap }) {
+function createResult({ version, repo }) {
 	return {
 		ok: true,
 		version,
 		repo,
-		tapRepo,
 		releaseUrl: "",
 		problems: [],
 		warnings: [],
@@ -232,15 +210,6 @@ function createResult({ version, repo, tapRepo, checkTap }) {
 		releaseNotes: {
 			ok: false,
 			missingExpectations: [],
-		},
-		formulaAsset: {
-			ok: false,
-			matchesRenderedFormula: false,
-		},
-		tapFormula: {
-			checked: checkTap,
-			ok: !checkTap,
-			path: DEFAULT_TAP_FORMULA_PATH,
 		},
 	};
 }
@@ -322,60 +291,27 @@ async function verifyReleaseNotes({ result, version, assetMap, fetchImplementati
 	}
 }
 
-async function verifyReleaseFormulaAsset({ result, version, repo, assetMap, archiveSha256, fetchImplementation }) {
-	const formulaAsset = assetMap.get(DEFAULT_RELEASE_FORMULA_ASSET);
-	if (!formulaAsset?.browser_download_url || !archiveSha256) {
-		return;
-	}
-	const formulaText = await fetchText(formulaAsset.browser_download_url, fetchImplementation);
-	const expectedFormula = renderHomebrewFormula({ version, repo, sha256: archiveSha256 });
-	result.formulaAsset.matchesRenderedFormula =
-		normalizeContent(formulaText) === normalizeContent(expectedFormula);
-	result.formulaAsset.ok = result.formulaAsset.matchesRenderedFormula;
-	if (!result.formulaAsset.ok) {
-		result.problems.push("release formula asset does not match the rendered Homebrew formula");
-	}
-}
-
-async function verifyTapFormula({ result, version, repo, tapRepo, archiveSha256, fetchImplementation }) {
-	if (!result.tapFormula.checked) {
-		return;
-	}
-	const tapContents = await fetchJson(
-		`https://api.github.com/repos/${tapRepo}/contents/${DEFAULT_TAP_FORMULA_PATH}`,
-		fetchImplementation,
-	);
-	const tapFormula = decodeGitHubContents(tapContents);
-	const expectedFormula = renderHomebrewFormula({ version, repo, sha256: archiveSha256 });
-	result.tapFormula.ok = normalizeContent(tapFormula) === normalizeContent(expectedFormula);
-	if (!result.tapFormula.ok) {
-		result.problems.push(`tap formula is not updated at ${tapRepo}/${DEFAULT_TAP_FORMULA_PATH}`);
-	}
-}
-
 export async function verifyPublicRelease(
-	{ version, repo, tapRepo, checkTap = true },
+	{ version, repo },
 	{ fetchImplementation = fetch } = {},
 ) {
-	const result = createResult({ version, repo, tapRepo, checkTap });
+	const result = createResult({ version, repo });
 	const release = await fetchJson(
 		`https://api.github.com/repos/${repo}/releases/tags/${version}`,
 		fetchImplementation,
 	);
 	applyReleaseMetadata(result, release);
 	const assetMap = collectReleaseAssets(result, release);
-	const archiveSha256 = await readArchiveChecksum({ result, version, assetMap, fetchImplementation });
+	await readArchiveChecksum({ result, version, assetMap, fetchImplementation });
 	await verifyChecksumManifest({ result, version, assetMap, fetchImplementation });
 	await verifyReleaseNotes({ result, version, assetMap, fetchImplementation });
-	await verifyReleaseFormulaAsset({ result, version, repo, assetMap, archiveSha256, fetchImplementation });
-	await verifyTapFormula({ result, version, repo, tapRepo, archiveSha256, fetchImplementation });
 	result.ok = result.problems.length === 0;
 	return result;
 }
 
-async function runVerificationAttempt({ version, repo, tapRepo, checkTap, fetchImplementation, attempt }) {
+async function runVerificationAttempt({ version, repo, fetchImplementation, attempt }) {
 	const result = await verifyPublicRelease(
-		{ version, repo, tapRepo, checkTap },
+		{ version, repo },
 		{ fetchImplementation },
 	);
 	return {
@@ -395,15 +331,13 @@ async function waitForRetryDelay(retryDelayMs, sleepImplementation) {
 }
 
 async function retryPublicReleaseVerification(
-	{ version, repo, tapRepo, checkTap, retryAttempts, retryDelayMs, fetchImplementation, sleepImplementation },
+	{ version, repo, retryAttempts, retryDelayMs, fetchImplementation, sleepImplementation },
 	attempt = 1,
 ) {
 	try {
 		const result = await runVerificationAttempt({
 			version,
 			repo,
-			tapRepo,
-			checkTap,
 			fetchImplementation,
 			attempt,
 		});
@@ -417,20 +351,18 @@ async function retryPublicReleaseVerification(
 	}
 	await waitForRetryDelay(retryDelayMs, sleepImplementation);
 	return retryPublicReleaseVerification(
-		{ version, repo, tapRepo, checkTap, retryAttempts, retryDelayMs, fetchImplementation, sleepImplementation },
+		{ version, repo, retryAttempts, retryDelayMs, fetchImplementation, sleepImplementation },
 		attempt + 1,
 	);
 }
 
 export async function verifyPublicReleaseWithRetry(
-	{ version, repo, tapRepo, checkTap = true, retryAttempts = 1, retryDelayMs = 0 },
+	{ version, repo, retryAttempts = 1, retryDelayMs = 0 },
 	{ fetchImplementation = fetch, sleepImplementation = sleep } = {},
 ) {
 	return retryPublicReleaseVerification({
 		version,
 		repo,
-		tapRepo,
-		checkTap,
 		retryAttempts,
 		retryDelayMs,
 		fetchImplementation,

@@ -104,14 +104,17 @@ test("previewMarkdown writes rendered artifacts with default widths", () => {
 			},
 		);
 
-		assert.equal(result.fileCount, 4);
-		assert.equal(result.renderCount, 8);
-		assert.equal(calls.filter(([cmd]) => cmd === "glow").length, 9);
+		assert.equal(result.fileCount, 2);
+		assert.equal(result.renderCount, 4);
+		assert.equal(
+			calls.filter(([cmd, args]) => cmd === "glow" && args[0] === "-w").length,
+			4,
+		);
 		const artifact = join(root, ".artifacts", "markdown-preview", "README.md.w80.txt");
 		assert.equal(existsSync(artifact), true);
 		assert.equal(readFileSync(artifact, "utf-8"), `rendered:${join(root, "README.md")}:w80\n`);
 		const manifest = JSON.parse(readFileSync(join(root, ".artifacts", "markdown-preview", "manifest.json"), "utf-8"));
-		assert.equal(manifest.target_count, 4);
+		assert.equal(manifest.target_count, 2);
 		assert.equal(manifest.backend, "glow");
 	} finally {
 		rmSync(root, { recursive: true, force: true });

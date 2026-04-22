@@ -25,7 +25,6 @@ type InstallKind string
 
 const (
 	InstallKindSourceCheckout InstallKind = "source_checkout"
-	InstallKindHomebrew       InstallKind = "homebrew"
 	InstallKindInstallScript  InstallKind = "install_sh_binary"
 	InstallKindStandalone     InstallKind = "standalone_binary"
 	InstallKindUnknown        InstallKind = "unknown"
@@ -150,18 +149,10 @@ func detectInstallKind(toolRoot string, source VersionSource, executablePath str
 	if executablePath == "" {
 		return InstallKindUnknown
 	}
-	if isHomebrewPath(executablePath) {
-		return InstallKindHomebrew
-	}
 	if filepath.Base(executablePath) == "cautilus-real" {
 		return InstallKindInstallScript
 	}
 	return InstallKindStandalone
-}
-
-func isHomebrewPath(path string) bool {
-	normalized := filepath.ToSlash(path)
-	return strings.Contains(normalized, "/Cellar/cautilus/") || strings.Contains(normalized, "/Homebrew/Cellar/cautilus/")
 }
 
 func isPathWithin(path string, root string) bool {
