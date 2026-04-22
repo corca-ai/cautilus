@@ -27,6 +27,15 @@ stderr_file=""
 timeout_seconds="${CAUTILUS_REVIEW_VARIANT_TIMEOUT_SECONDS:-900}"
 codex_model="${CAUTILUS_REVIEW_CODEX_MODEL:-}"
 codex_reasoning_effort="${CAUTILUS_REVIEW_CODEX_REASONING_EFFORT:-}"
+tmp_schema_file=""
+
+cleanup() {
+	if [[ -n "$tmp_schema_file" ]]; then
+		rm -f "$tmp_schema_file"
+	fi
+}
+
+trap cleanup EXIT
 
 while [[ $# -gt 0 ]]; do
 	case "$1" in
@@ -94,13 +103,19 @@ run_with_timeout() {
 
 case "$backend" in
 	codex_exec)
+		tmp_schema_file="$(mktemp "${TMPDIR:-/tmp}/cautilus-review-schema.XXXXXX.json")"
+		node "$json_helper" normalize-codex-schema "$schema_file" "$tmp_schema_file"
 		codex_args=(
 			exec
 			-C "$workspace"
 			--sandbox read-only
 			--ephemeral
-			--output-schema "$schema_file"
+			--json
+			--output-schema "$tmp_schema_file"
 			-o "$output_file"
+			-c "project_doc_max_bytes=0"
+			-c "include_apps_instructions=false"
+			-c "include_environment_context=false"
 		)
 		if [[ -n "$codex_model" ]]; then
 			codex_args+=(--model "$codex_model")

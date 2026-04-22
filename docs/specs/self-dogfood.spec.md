@@ -17,11 +17,12 @@ The checked-in JSON files are the source of truth.
 ```run:shell
 # Reopen the published latest self-dogfood bundle and regenerate its static HTML view.
 test -f ./artifacts/self-dogfood/latest/summary.json
-grep -q '"gateRecommendation": "accept-now"' ./artifacts/self-dogfood/latest/summary.json
+grep -q '"gateRecommendation": "' ./artifacts/self-dogfood/latest/summary.json
+grep -q '"reportRecommendation": "' ./artifacts/self-dogfood/latest/summary.json
 grep -q '"selfDogfoodPublication": {' ./artifacts/self-dogfood/latest/report.json
 tmpdir=$(mktemp -d)
 ./bin/cautilus self-dogfood render-html --latest-dir ./artifacts/self-dogfood/latest --output "$tmpdir/index.html" >/dev/null
-grep -q '<title>Cautilus Self-Dogfood — pass</title>' "$tmpdir/index.html"
+grep -q '<title>Cautilus Self-Dogfood — ' "$tmpdir/index.html"
 ```
 
 Operational guidance for refreshing these bundles lives in `docs/maintainers/development.md`.

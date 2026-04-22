@@ -22,6 +22,13 @@ function sanitizeFinding(repoRoot, finding) {
 	};
 }
 
+function publishDiagnosticPath(repoRoot, executionStatus, value) {
+	if (executionStatus === "passed") {
+		return null;
+	}
+	return makeRepoRelative(repoRoot, value);
+}
+
 export function buildPublishedReport(repoRoot, report) {
 	return {
 		...report,
@@ -74,8 +81,8 @@ export function buildPublishedReviewSummary(repoRoot, reviewSummary) {
 			? reviewSummary.variants.map((variant) => ({
 				...variant,
 				outputFile: null,
-				stdoutFile: null,
-				stderrFile: null,
+				stdoutFile: publishDiagnosticPath(repoRoot, variant.status, variant.stdoutFile),
+				stderrFile: publishDiagnosticPath(repoRoot, variant.status, variant.stderrFile),
 				command: null,
 				stdout: "",
 				stderr: "",
@@ -104,6 +111,7 @@ export function buildPublishedSummary(repoRoot, artifactRoot, summary) {
 			? summary.reviewVariants.map((variant) => ({
 				...variant,
 				outputFile: null,
+				stderrFile: publishDiagnosticPath(repoRoot, variant.executionStatus, variant.stderrFile),
 			}))
 			: summary.reviewVariants,
 	};

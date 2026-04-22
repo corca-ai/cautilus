@@ -231,10 +231,134 @@ printf '%s\\n' '{"kind":"stop","reason":"goal_satisfied"}' > "$out"
 		assert.equal(result.status, 0, result.stderr);
 		const args = readFileSync(argsFile, "utf-8");
 		assert.match(args, /^exec$/m);
+		assert.match(args, /^--json$/m);
 		assert.match(args, /^--model$/m);
 		assert.match(args, /^gpt-5\.4$/m);
 		assert.match(args, /^-c$/m);
+		assert.match(args, /^project_doc_max_bytes=0$/m);
+		assert.match(args, /^include_apps_instructions=false$/m);
+		assert.match(args, /^include_environment_context=false$/m);
 		assert.match(args, /^model_reasoning_effort="low"$/m);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("codex_exec wrapper flattens root oneOf schemas into a Codex-safe object schema", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-review-codex-schema-"));
+	try {
+		const workspace = join(root, "workspace");
+		mkdirSync(workspace, { recursive: true });
+		const promptFile = join(root, "codex-prompt.txt");
+		const schemaFile = writeJson(root, "codex-schema.json", {
+			oneOf: [
+				{
+					type: "object",
+					additionalProperties: false,
+					required: ["status", "verdict", "summary", "findings"],
+					properties: {
+						status: { type: "string", enum: ["completed"] },
+						verdict: { type: "string", enum: ["blocker", "concern", "pass"] },
+						summary: { type: "string" },
+						findings: { type: "array" },
+					},
+				},
+				{
+					type: "object",
+					additionalProperties: false,
+					required: ["status", "reasonCode", "reason"],
+					properties: {
+						status: { type: "string", enum: ["blocked"] },
+						reasonCode: { type: "string" },
+						reasonCodes: {
+							type: "array",
+							items: { type: "string" },
+						},
+						reason: { type: "string" },
+					},
+				},
+			],
+		});
+		const outputFile = join(root, "codex-output.json");
+		const seenSchemaFile = join(root, "seen-schema.json");
+		writeFileSync(promptFile, "Return the structured verdict.\n", "utf-8");
+		writeExecutable(
+			root,
+			"codex",
+			`#!/bin/sh
+schema=""
+out=""
+while [ "$#" -gt 0 ]; do
+  if [ "$1" = "--output-schema" ]; then
+    schema="$2"
+    shift 2
+    continue
+  fi
+  if [ "$1" = "-o" ]; then
+    out="$2"
+    shift 2
+    continue
+  fi
+  shift
+done
+cp "$schema" "${seenSchemaFile}"
+cat >/dev/null
+printf '%s\\n' '{"status":"blocked","reasonCode":"insufficient_evidence","reason":"Need more evidence."}' > "$out"
+`,
+		);
+		const result = spawnSync(
+			"bash",
+			[
+				SCRIPT_PATH,
+				"--backend",
+				"codex_exec",
+				"--workspace",
+				workspace,
+				"--prompt-file",
+				promptFile,
+				"--schema-file",
+				schemaFile,
+				"--output-file",
+				outputFile,
+			],
+			{
+				cwd: process.cwd(),
+				env: {
+					...process.env,
+					PATH: `${root}:${process.env.PATH ?? ""}`,
+				},
+				encoding: "utf-8",
+			},
+		);
+		assert.equal(result.status, 0, result.stderr);
+		const normalizedSchema = JSON.parse(readFileSync(seenSchemaFile, "utf-8"));
+		assert.equal(normalizedSchema.type, "object");
+		assert.equal(normalizedSchema.additionalProperties, false);
+		assert.deepEqual(normalizedSchema.required.sort(), [
+			"findings",
+			"reason",
+			"reasonCode",
+			"reasonCodes",
+			"status",
+			"summary",
+			"verdict",
+		]);
+		assert.deepEqual(Object.keys(normalizedSchema.properties).sort(), [
+			"findings",
+			"reason",
+			"reasonCode",
+			"reasonCodes",
+			"status",
+			"summary",
+			"verdict",
+		]);
+		assert.deepEqual(normalizedSchema.properties.status.enum.sort(), ["blocked", "completed"]);
+		assert.deepEqual(normalizedSchema.properties.verdict.enum.sort(), ["", "blocker", "concern", "pass"]);
+		assert.deepEqual(JSON.parse(readFileSync(outputFile, "utf-8")), {
+			status: "blocked",
+			reasonCode: "insufficient_evidence",
+			reason: "Need more evidence.",
+		});
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

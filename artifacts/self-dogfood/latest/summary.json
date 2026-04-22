@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-04-14T02:05:37.461Z",
+  "generatedAt": "2026-04-22T12:21:38.833Z",
   "repoRoot": ".",
   "workspace": ".",
   "artifactRoot": "artifacts/self-dogfood",
-  "runId": "2026-04-14T02-04-32.298Z",
+  "runId": "2026-04-22T12-20-49.278Z",
   "baselineRef": "origin/main",
   "intent": "Cautilus should record and surface its own self-dogfood result honestly before operators trust broader consumer runs.",
   "overallStatus": "pass",
@@ -12,12 +12,13 @@
   "reportPath": "artifacts/self-dogfood/latest/report.json",
   "reviewSummaryPath": "artifacts/self-dogfood/latest/review-summary.json",
   "reviewTelemetry": {
-    "averageVariantDurationMs": 10965,
-    "completedAt": "2026-04-14T02:05:37.452613675Z",
-    "durationMs": 10965,
+    "averageVariantDurationMs": 17964,
+    "blockedVariantCount": 0,
+    "completedAt": "2026-04-22T12:21:38.820752859Z",
+    "durationMs": 17964,
     "failedVariantCount": 0,
     "passedVariantCount": 1,
-    "startedAt": "2026-04-14T02:05:26.487249412Z",
+    "startedAt": "2026-04-22T12:21:20.85669307Z",
     "variantCount": 1
   },
   "reviewVariants": [
@@ -26,9 +27,10 @@
       "tool": "codex_exec",
       "executionStatus": "passed",
       "verdict": "pass",
-      "summary": "The current report packet supports the narrower operator-facing claim: it records the self-dogfood result, preserves the raw `gateRecommendation` as `accept-now`, and surfaces a separate operator-facing `recommendation` without any human-review findings or contradictory telemetry in the current run. I agree with the automated recommendation for this scope.",
-      "findingsCount": 0,
-      "outputFile": null
+      "summary": "The current packet supports the narrower operator-facing claim: the self-dogfood run completed, the deterministic gate passed, and the publication flow is explicitly scoped to recording and surfacing that result without claiming broader validation. I found no evidence in the current report packet that the bundle overstates what this run proved.",
+      "findingsCount": 3,
+      "outputFile": null,
+      "stderrFile": null
     }
   ]
 }

@@ -230,6 +230,7 @@ function buildSummary({ repoRoot, workspace, artifactRoot, runId, baselineRef, i
 			summary: variant.output?.summary ?? null,
 			findingsCount: Array.isArray(variant.output?.findings) ? variant.output.findings.length : 0,
 			outputFile: variant.outputFile,
+			stderrFile: variant.stderrFile ?? null,
 		})),
 	};
 }
@@ -274,6 +275,9 @@ function renderMarkdown(summary) {
 		);
 		if (variant.summary) {
 			lines.push(`  summary: ${variant.summary}`);
+		}
+		if (variant.stderrFile) {
+			lines.push(`  stderrFile: ${variant.stderrFile}`);
 		}
 	}
 	lines.push(

@@ -1,35 +1,109 @@
 {
   "adapterPath": ".agents/cautilus-adapters/self-dogfood.yaml",
+  "findingsCount": 3,
+  "generatedAt": "2026-04-22T12:21:38.821481365Z",
+  "humanReviewFindings": [
+    {
+      "message": "`mode/report.json` shows the self-dogfood run completed cleanly with `preflight` and `full_gate` both passed, and the report/gate recommendations are consistent with the run outcome.",
+      "path": "/home/hwidong/codes/cautilus/artifacts/self-dogfood/runs/2026-04-22T12-20-49.278Z/mode/report.json",
+      "severity": "pass",
+      "variantId": "codex-review"
+    },
+    {
+      "message": "The current product artifacts describe the public claim as intentionally narrow: the bundle should tell operators whether Cautilus recorded and surfaced its own self-dogfood result honestly, not assert stronger binary or skill-surface coverage.",
+      "path": "/home/hwidong/codes/cautilus/docs/specs/self-dogfood.spec.md",
+      "severity": "pass",
+      "variantId": "codex-review"
+    },
+    {
+      "message": "The publication script writes the run artifacts into the published bundle and regenerates the static HTML view, which matches the operator-facing surfacing intent for this review.",
+      "path": "/home/hwidong/codes/cautilus/scripts/run-self-dogfood.mjs",
+      "severity": "pass",
+      "variantId": "codex-review"
+    }
+  ],
   "outputDir": null,
+  "outputUnderTestFile": null,
   "promptFile": null,
+  "reasonCodes": [],
   "repoRoot": ".",
   "reviewPacketFile": null,
   "reviewPromptInputFile": null,
+  "reviewVerdict": "pass",
   "schemaFile": "fixtures/review/review-verdict.schema.json",
+  "schemaVersion": "cautilus.review_summary.v1",
+  "status": "passed",
   "telemetry": {
-    "averageVariantDurationMs": 10965,
-    "completedAt": "2026-04-14T02:05:37.452613675Z",
-    "durationMs": 10965,
+    "averageVariantDurationMs": 17964,
+    "blockedVariantCount": 0,
+    "completedAt": "2026-04-22T12:21:38.820752859Z",
+    "durationMs": 17964,
     "failedVariantCount": 0,
     "passedVariantCount": 1,
-    "startedAt": "2026-04-14T02:05:26.487249412Z",
+    "startedAt": "2026-04-22T12:21:20.85669307Z",
     "variantCount": 1
   },
   "variants": [
     {
       "command": null,
-      "completedAt": "2026-04-14T02:05:37.452613675Z",
-      "durationMs": 10965,
+      "completedAt": "2026-04-22T12:21:38.820752859Z",
+      "durationMs": 17964,
+      "executionStatus": "passed",
       "exitCode": 0,
       "id": "codex-review",
       "output": {
-        "findings": [],
-        "summary": "The current report packet supports the narrower operator-facing claim: it records the self-dogfood result, preserves the raw `gateRecommendation` as `accept-now`, and surfaces a separate operator-facing `recommendation` without any human-review findings or contradictory telemetry in the current run. I agree with the automated recommendation for this scope.",
+        "findings": [
+          {
+            "message": "`mode/report.json` shows the self-dogfood run completed cleanly with `preflight` and `full_gate` both passed, and the report/gate recommendations are consistent with the run outcome.",
+            "path": "artifacts/self-dogfood/runs/2026-04-22T12-20-49.278Z/mode/report.json",
+            "severity": "pass"
+          },
+          {
+            "message": "The current product artifacts describe the public claim as intentionally narrow: the bundle should tell operators whether Cautilus recorded and surfaced its own self-dogfood result honestly, not assert stronger binary or skill-surface coverage.",
+            "path": "docs/specs/self-dogfood.spec.md",
+            "severity": "pass"
+          },
+          {
+            "message": "The publication script writes the run artifacts into the published bundle and regenerates the static HTML view, which matches the operator-facing surfacing intent for this review.",
+            "path": "scripts/run-self-dogfood.mjs",
+            "severity": "pass"
+          }
+        ],
+        "rawOutput": {
+          "findings": [
+            {
+              "message": "`mode/report.json` shows the self-dogfood run completed cleanly with `preflight` and `full_gate` both passed, and the report/gate recommendations are consistent with the run outcome.",
+              "path": "/home/hwidong/codes/cautilus/artifacts/self-dogfood/runs/2026-04-22T12-20-49.278Z/mode/report.json",
+              "severity": "pass"
+            },
+            {
+              "message": "The current product artifacts describe the public claim as intentionally narrow: the bundle should tell operators whether Cautilus recorded and surfaced its own self-dogfood result honestly, not assert stronger binary or skill-surface coverage.",
+              "path": "/home/hwidong/codes/cautilus/docs/specs/self-dogfood.spec.md",
+              "severity": "pass"
+            },
+            {
+              "message": "The publication script writes the run artifacts into the published bundle and regenerates the static HTML view, which matches the operator-facing surfacing intent for this review.",
+              "path": "/home/hwidong/codes/cautilus/scripts/run-self-dogfood.mjs",
+              "severity": "pass"
+            }
+          ],
+          "reason": "",
+          "reasonCode": "",
+          "reasonCodes": [],
+          "status": "completed",
+          "summary": "The current packet supports the narrower operator-facing claim: the self-dogfood run completed, the deterministic gate passed, and the publication flow is explicitly scoped to recording and surfacing that result without claiming broader validation. I found no evidence in the current report packet that the bundle overstates what this run proved.",
+          "verdict": "pass"
+        },
+        "schemaVersion": "cautilus.review_variant_result.v1",
+        "status": "passed",
+        "summary": "The current packet supports the narrower operator-facing claim: the self-dogfood run completed, the deterministic gate passed, and the publication flow is explicitly scoped to recording and surfacing that result without claiming broader validation. I found no evidence in the current report packet that the bundle overstates what this run proved.",
+        "tool": "codex_exec",
+        "variantId": "codex-review",
         "verdict": "pass"
       },
       "outputFile": null,
       "signal": null,
-      "startedAt": "2026-04-14T02:05:26.487249412Z",
+      "startedAt": "2026-04-22T12:21:20.85669307Z",
       "status": "passed",
       "stderr": "",
       "stderrFile": null,
@@ -38,5 +112,6 @@
       "tool": "codex_exec"
     }
   ],
+  "warnings": [],
   "workspace": "."
 }

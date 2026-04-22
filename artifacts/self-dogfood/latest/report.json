@@ -4,22 +4,22 @@
   "commandObservations": [
     {
       "command": "npm run hooks:check",
-      "completedAt": "2026-04-14T02:04:32.710459239Z",
-      "durationMs": 232,
+      "completedAt": "2026-04-22T12:20:49.626105469Z",
+      "durationMs": 171,
       "exitCode": 0,
       "index": 1,
       "stage": "preflight",
-      "startedAt": "2026-04-14T02:04:32.478373412Z",
+      "startedAt": "2026-04-22T12:20:49.454150162Z",
       "status": "passed"
     },
     {
       "command": "npm run verify",
-      "completedAt": "2026-04-14T02:05:25.637436799Z",
-      "durationMs": 52926,
+      "completedAt": "2026-04-22T12:21:20.000210165Z",
+      "durationMs": 30373,
       "exitCode": 0,
       "index": 1,
       "stage": "full_gate",
-      "startedAt": "2026-04-14T02:04:32.710741328Z",
+      "startedAt": "2026-04-22T12:20:49.626309783Z",
       "status": "passed"
     }
   ],
@@ -30,7 +30,7 @@
       "mode": "full_gate"
     }
   ],
-  "generatedAt": "2026-04-14T02:05:25.638804475Z",
+  "generatedAt": "2026-04-22T12:21:20.000839355Z",
   "humanReviewFindings": [],
   "improved": [],
   "intent": "Cautilus should record and surface its own self-dogfood result honestly before operators trust broader consumer runs.",
@@ -49,16 +49,16 @@
   },
   "modeSummaries": [
     {
-      "completedAt": "2026-04-14T02:05:25.637436799Z",
-      "durationMs": 52926,
+      "completedAt": "2026-04-22T12:21:20.000210165Z",
+      "durationMs": 30373,
       "mode": "full_gate",
-      "startedAt": "2026-04-14T02:04:32.710741328Z",
+      "startedAt": "2026-04-22T12:20:49.626309783Z",
       "status": "passed",
       "summary": "full_gate completed across 1 command.",
       "telemetry": {
-        "completedAt": "2026-04-14T02:05:25.637436799Z",
-        "durationMs": 52926,
-        "startedAt": "2026-04-14T02:04:32.710741328Z"
+        "completedAt": "2026-04-22T12:21:20.000210165Z",
+        "durationMs": 30373,
+        "startedAt": "2026-04-22T12:20:49.626309783Z"
       }
     }
   ],
@@ -70,11 +70,11 @@
   "regressed": [],
   "schemaVersion": "cautilus.report_packet.v2",
   "telemetry": {
-    "completedAt": "2026-04-14T02:05:25.637436799Z",
-    "durationMs": 52926,
+    "completedAt": "2026-04-22T12:21:20.000210165Z",
+    "durationMs": 30373,
     "modeCount": 1,
     "modesWithScenarioResults": 0,
-    "startedAt": "2026-04-14T02:04:32.710741328Z"
+    "startedAt": "2026-04-22T12:20:49.626309783Z"
   },
   "unchanged": [],
   "selfDogfoodPublication": {
@@ -87,7 +87,7 @@
       "latestMarkdownPath": "artifacts/self-dogfood/latest/latest.md",
       "indexPath": "artifacts/self-dogfood/latest/index.html"
     },
-    "runId": "2026-04-14T02-04-32.298Z",
+    "runId": "2026-04-22T12-20-49.278Z",
     "intent": "Cautilus should record and surface its own self-dogfood result honestly before operators trust broader consumer runs.",
     "overallStatus": "pass",
     "gateRecommendation": "accept-now",

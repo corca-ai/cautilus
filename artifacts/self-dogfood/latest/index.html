@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="generator" content="scripts/render-self-dogfood-html.mjs">
+<meta name="generator" content="cautilus self-dogfood render-html">
 <title>Cautilus Self-Dogfood — pass</title>
 <style>
 :root { color-scheme: light dark; }
@@ -14,7 +14,7 @@ body {
 	color: #1f2328;
 	line-height: 1.5;
 }
-main { max-width: 960px; margin: 0 auto; padding: 24px 16px 48px; }
+main { max-width: 1120px; margin: 0 auto; padding: 24px 16px 48px; }
 .banner {
 	background: #ffffff;
 	padding: 20px 24px;
@@ -44,6 +44,7 @@ main { max-width: 960px; margin: 0 auto; padding: 24px 16px 48px; }
 	margin-bottom: 20px;
 }
 .panel h2 { margin-top: 0; font-size: 16px; text-transform: uppercase; letter-spacing: 0.06em; color: #5a6472; }
+.panel-copy { color: #5a6472; margin-top: 0; }
 .intent-text { font-size: 16px; margin: 0 0 16px; }
 .meta-grid {
 	display: grid;
@@ -74,17 +75,41 @@ main { max-width: 960px; margin: 0 auto; padding: 24px 16px 48px; }
 .finding-message { font-size: 13px; }
 .finding-path { font-size: 12px; color: #6e7781; margin-top: 2px; }
 .telemetry { font-size: 12px; color: #6e7781; margin: 0 0 12px; }
+.experiment-card {
+	border: 1px solid #e4e8ed;
+	border-radius: 6px;
+	padding: 14px 18px;
+	margin-top: 12px;
+}
+.experiment-header h3 { margin: 0 0 8px; font-size: 15px; }
+.variants { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+.variant-head { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 6px; }
 .footer { margin-top: 24px; font-size: 12px; color: #6e7781; }
 .footer code { background: rgba(175, 184, 193, 0.2); padding: 0 4px; border-radius: 3px; }
+.toc-nav {
+	background: #ffffff;
+	padding: 14px 24px;
+	border-radius: 8px;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+	margin-bottom: 20px;
+}
+.toc-nav-title { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: #5a6472; margin: 0 0 8px; }
+.toc-nav ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 18px; }
+.toc-nav li { display: inline-flex; align-items: center; gap: 6px; }
+.toc-nav a { color: #1f2328; text-decoration: none; font-size: 13px; }
+.toc-nav a:hover { text-decoration: underline; }
+.finding-path a { color: inherit; text-decoration: none; }
+.finding-path a:hover { text-decoration: underline; }
 code { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace; }
 @media (prefers-color-scheme: dark) {
 	body { background: #0d1117; color: #e6edf3; }
-	.banner, .panel, .variant { background: #161b22; box-shadow: 0 1px 3px rgba(0,0,0,0.4); }
-	.banner-meta, .panel h2, .meta-grid dt, .data-table th, .footer, .finding-path, .telemetry, .empty { color: #9198a1; }
+	.banner, .panel, .variant, .experiment-card, .toc-nav { background: #161b22; box-shadow: 0 1px 3px rgba(0,0,0,0.4); }
+	.banner-meta, .panel h2, .panel-copy, .meta-grid dt, .data-table th, .footer, .finding-path, .telemetry, .empty, .toc-nav-title { color: #9198a1; }
 	.data-table th, .data-table td { border-bottom-color: #30363d; }
-	.variant { border-color: #30363d; }
-	.finding { background: #0d1117; }
+	.variant, .experiment-card { border-color: #30363d; }
+	.finding, .variants .variant { background: #0d1117; }
 	.footer code { background: rgba(110, 118, 129, 0.4); }
+	.toc-nav a { color: #e6edf3; }
 }
 </style>
 </head>
@@ -95,11 +120,27 @@ code { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, mo
 	<div class="banner-title">Cautilus Self-Dogfood</div>
 	<div class="banner-status">
 		<span class="chip" data-status="overallStatus" style="background:#1b7f3a">pass</span>
-		<span class="banner-meta">runId 2026-04-14T02-04-32.298Z</span>
-		<span class="banner-meta">generatedAt 2026-04-14T02:05:37.461Z</span>
+		<span class="banner-meta">runId 2026-04-22T12-20-49.278Z</span>
+		<span class="banner-meta">generatedAt 2026-04-22T12:21:38.833Z</span>
 	</div>
 </header>
-
+<nav class="toc-nav" aria-label="Page contents">
+	<p class="toc-nav-title">On this page</p>
+	<ul>
+		<li data-anchor="intent-heading">
+			<span class="chip" style="background:#1b7f3a">pass</span>
+			<a href="#intent-heading">Intent</a>
+		</li>
+		<li data-anchor="observations-heading">
+			<span class="chip" style="background:#1b7f3a">pass</span>
+			<a href="#observations-heading">Command Observations</a>
+		</li>
+		<li data-anchor="review-heading">
+			<span class="chip" style="background:#1b7f3a">pass</span>
+			<a href="#review-heading">Review Variants</a>
+		</li>
+	</ul>
+</nav>
 <section class="panel" aria-labelledby="intent-heading">
 	<h2 id="intent-heading">Intent</h2>
 	<p class="intent-text" data-field="intent">Cautilus should record and surface its own self-dogfood result honestly before operators trust broader consumer runs.</p>
@@ -112,10 +153,12 @@ code { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, mo
 		<dd data-field="reportRecommendation">accept-now</dd>
 		<dt>baselineRef</dt>
 		<dd>origin/main</dd>
-		<dd><strong>behaviorSurface:</strong> operator_behavior</dd><dd><strong>successDimensions:</strong> <code>operator_guidance_clarity</code></dd>
+		<dt>behaviorSurface</dt>
+		<dd>operator_behavior</dd>
+		<dt>successDimensions</dt>
+		<dd><code>operator_guidance_clarity</code></dd>
 	</dl>
 </section>
-
 <section class="panel" aria-labelledby="observations-heading">
 	<h2 id="observations-heading">Command Observations</h2>
 	<table class="data-table">
@@ -135,7 +178,7 @@ code { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, mo
 			<td>1</td>
 			<td><span class="chip" style="background:#1b7f3a">passed</span></td>
 			<td><code>npm run hooks:check</code></td>
-			<td>232ms</td>
+			<td>171ms</td>
 			<td>0</td>
 		</tr>
 		<tr data-observation="full_gate-1">
@@ -143,16 +186,15 @@ code { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, mo
 			<td>1</td>
 			<td><span class="chip" style="background:#1b7f3a">passed</span></td>
 			<td><code>npm run verify</code></td>
-			<td>52.93s</td>
+			<td>30.37s</td>
 			<td>0</td>
 		</tr>
 		</tbody>
 	</table>
 </section>
-
 <section class="panel" aria-labelledby="review-heading">
 	<h2 id="review-heading">Review Variants</h2>
-	<p class="telemetry">variants 1 · passed 1 · failed 0 · total 10.96s</p>
+	<p class="telemetry">variants 1 · passed 1 · failed 0 · total 17.96s</p>
 	
 	<article class="variant" data-variant="codex-review">
 		<header class="variant-header">
@@ -160,18 +202,36 @@ code { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, mo
 			<div class="variant-chips">
 				<span class="chip" data-status="executionStatus" style="background:#1b7f3a">execution: passed</span>
 				<span class="chip" data-status="verdict" style="background:#1b7f3a">verdict: pass</span>
-				<span class="chip neutral">findings: 0</span>
-				<span class="chip neutral">duration: 10.96s</span>
+				<span class="chip neutral">findings: 3</span>
+				<span class="chip neutral">duration: 17.96s</span>
 			</div>
 		</header>
-		<p class="variant-summary">The current report packet supports the narrower operator-facing claim: it records the self-dogfood result, preserves the raw `gateRecommendation` as `accept-now`, and surfaces a separate operator-facing `recommendation` without any human-review findings or contradictory telemetry in the current run. I agree with the automated recommendation for this scope.</p>
-		<p class="empty">No findings recorded.</p>
+		<p class="variant-summary">The current packet supports the narrower operator-facing claim: the self-dogfood run completed, the deterministic gate passed, and the publication flow is explicitly scoped to recording and surfacing that result without claiming broader validation. I found no evidence in the current report packet that the bundle overstates what this run proved.</p>
+		<ul class="findings">
+		<li class="finding" data-severity="pass">
+			<span class="chip" style="background:#1b7f3a">pass</span>
+			<div class="finding-body">
+				<div class="finding-message">`mode/report.json` shows the self-dogfood run completed cleanly with `preflight` and `full_gate` both passed, and the report/gate recommendations are consistent with the run outcome.</div><div class="finding-path"><a href="artifacts/self-dogfood/runs/2026-04-22T12-20-49.278Z/mode/report.html"><code>artifacts/self-dogfood/runs/2026-04-22T12-20-49.278Z/mode/report.json</code></a></div>
+			</div>
+		</li>
+		<li class="finding" data-severity="pass">
+			<span class="chip" style="background:#1b7f3a">pass</span>
+			<div class="finding-body">
+				<div class="finding-message">The current product artifacts describe the public claim as intentionally narrow: the bundle should tell operators whether Cautilus recorded and surfaced its own self-dogfood result honestly, not assert stronger binary or skill-surface coverage.</div><div class="finding-path"><a href="docs/specs/self-dogfood.html"><code>docs/specs/self-dogfood.spec.md</code></a></div>
+			</div>
+		</li>
+		<li class="finding" data-severity="pass">
+			<span class="chip" style="background:#1b7f3a">pass</span>
+			<div class="finding-body">
+				<div class="finding-message">The publication script writes the run artifacts into the published bundle and regenerates the static HTML view, which matches the operator-facing surfacing intent for this review.</div><div class="finding-path"><code>scripts/run-self-dogfood.mjs</code></div>
+			</div>
+		</li>
+	</ul>
 	</article>
 </section>
-
 <footer class="footer">
 	<p>Generated from <code>summary.json</code>, <code>report.json</code>, and <code>review-summary.json</code>.
-	Do not hand-edit this file — rerun <code>npm run dogfood:self:html</code> to refresh.</p>
+	Do not hand-edit this file — rerun <code>cautilus self-dogfood render-html</code> to refresh.</p>
 	<p class="footer-paths">
 		<span>artifactRoot: <code>artifacts/self-dogfood</code></span>
 	</p>
