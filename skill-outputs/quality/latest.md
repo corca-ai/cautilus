@@ -1,6 +1,6 @@
 # Quality Review
 
-Date: 2026-04-17
+Date: 2026-04-22
 
 Prior durable reviews:
 
@@ -9,19 +9,17 @@ Prior durable reviews:
 
 ## Scope
 
-Repo-wide posture refresh after the public spec and README reshaping work.
-Focus on whether the standing bar is still honest, whether public specs now duplicate proof at the wrong layer, and whether entrypoint docs have become easier to scan in rendered markdown without weakening real runtime integrity.
+Repo-wide posture refresh for the current standing gate, rendered-doc proof seam, and explicit self-dogfood review surface.
+Focus on whether `npm run verify` still matches the repo's claimed stop-before-push contract and whether evaluator-backed quality remains operational.
 
 ## Concept Risks
 
-- Public spec drift is better than before, but `inventory_public_spec_quality.py` still flags:
-  - `docs/specs/current-product.spec.md`: `future_state_mixed`
-  - `docs/specs/html-report.spec.md`: `future_state_mixed`
-  - `docs/specs/standalone-surface.spec.md`: `implementation_guard_pressure`
-- Public spec layering still needs review.
-  The inventory reports `duplicate_public_spec_examples` and `proof_layering_review_needed`, which means the repo has improved the public report but has not yet fully collapsed repeated proof across README/spec/tests.
-- README first-touch ergonomics improved, but `inventory_entrypoint_docs_ergonomics.py` still flags `README.md` as `long_entrypoint`.
-  That is now a structural compression question, not a rendering accident.
+- The standing gate had drifted from the repo's claimed contract.
+  `package.json` kept `lint:contracts`, but `scripts/run-verify.mjs` omitted it until this review.
+- Public spec layering still shows duplicate-proof pressure.
+  `inventory_public_spec_quality.py` still reports `duplicate_public_spec_examples` and `proof_layering_review_needed`.
+- `README.md` remains a long first-touch entrypoint.
+  `inventory_entrypoint_docs_ergonomics.py` still flags `README.md` as `long_entrypoint`.
 
 ## Current Gates
 
@@ -29,6 +27,7 @@ Focus on whether the standing bar is still honest, whether public specs now dupl
   - `lint:eslint`
   - `lint:specs`
   - `lint:archetypes`
+  - `lint:contracts`
   - `lint:links`
   - `lint:go`
   - `vet:go`
@@ -37,44 +36,37 @@ Focus on whether the standing bar is still honest, whether public specs now dupl
   - `test:node`
 - `npm run hooks:check`
 - checked-in `.githooks/pre-push` running `npm run verify`
+- `npm run docs:preview`
 - `npm run dogfood:self`
   - explicit quality work, not standing pre-push
-- `npm run consumer:onboard:smoke`
-  - on-demand adoption proof
 
 ## Runtime Signals
 
 - `python3 .../resolve_adapter.py --repo-root .` found a valid quality adapter.
 - `git status --short` was clean at review start.
-- `npm run verify` passed end-to-end in this session.
-  - `lint:specs`: passed for 7 specs
-  - `lint:archetypes`: passed after narrowing the checker to runtime-completeness instead of prose lock
-  - `lint:links`: passed on 99 local markdown files
-  - `lint:go`: 0 issues
-  - `security:govulncheck`: no vulnerabilities found
-  - `test:go:race`: green
-  - `test:node`: green, still the longest standing phase at about 22s
-- Recent standing-gate runtime remains dominated by:
-  - `lint:specs` at about 7s
-  - `test:node` at about 22s
-  - full `verify` at about 38-41s
+- `npm run hooks:check` passed and confirmed `core.hooksPath=.githooks`.
+- `npm run docs:preview:specs` passed and rendered 16 snapshots across 8 spec files into `.artifacts/markdown-preview`.
+- `npm run verify` passed after restoring `lint:contracts` to the phase list.
+  Total runtime in this session was about 17.21s.
+- `npm run dogfood:self` failed in this session.
+  The generated `artifacts/self-dogfood/latest/summary.json` reports `overallStatus: blocker` because the lone `codex-review` variant ended with `executionStatus: failed` and only the generic reason `review variant command failed`.
 
 ## Coverage and Eval Depth
 
 - No standing coverage floor is enforced.
-  The adapter carries a coverage-floor policy shape, but the repo does not currently claim a live coverage floor gate.
-- Evaluator depth is still `smoke + explicit deeper quality work`.
-  Standing proof comes from deterministic lint/spec/go/node gates.
-  `dogfood:self` remains the stronger evaluator-backed operator-quality path, but it is intentionally not part of pre-push.
+  The adapter carries coverage-floor policy shape, but the repo does not currently claim a live coverage-floor gate.
+- Deterministic depth is healthy.
+  Standing lint, link, Go, security, race, and Node gates are real and green.
+- Evaluator-backed depth is currently weak.
+  The explicit self-dogfood review surface exists, but the current run did not complete a usable executor-backed review result.
 
 ## Maintainer-Local Enforcement
 
 - `healthy`: checked-in `.githooks/pre-push`
 - `healthy`: `core.hooksPath=.githooks`
-- `healthy`: `npm run verify` is the same final stop-before-push command used locally and in CI
-- `weak`: phase-level signal in `.githooks/pre-push` is still thin
-  - the hook prints one banner and then hands off to `npm run verify`
-  - failure locality depends on reading the downstream phase output, not on a richer wrapper surface
+- `healthy`: local pre-push and GitHub Actions both run `npm run verify`
+- `healthy`: `scripts/run-verify.mjs` now names phases explicitly, including `lint:contracts`
+- `weak`: failed self-dogfood review variants do not leave enough operator-facing failure detail in the published latest bundle
 
 ## Enforcement Triage
 
@@ -82,8 +74,10 @@ Focus on whether the standing bar is still honest, whether public specs now dupl
   - `npm run verify`
   - `npm run hooks:check`
   - checked-in `.githooks/pre-push`
+  - `npm run docs:preview`
   - `lint:specs`
-  - runtime-focused `lint:archetypes`
+  - `lint:archetypes`
+  - `lint:contracts`
   - `lint:links`
   - `golangci-lint`
   - `go vet`
@@ -91,81 +85,81 @@ Focus on whether the standing bar is still honest, whether public specs now dupl
   - Go race tests
   - standing Node tests
 - `AUTO_CANDIDATE`
-  - phase-label the final local gate more explicitly
-  - add a rendered-markdown preview helper to the doc-review toolchain once the new `charness` support seam lands
+  - keep `review-summary.json` linked to concrete stderr or artifact paths when a review variant command fails
+  - add an executor preflight or clearer fatal reason for the `codex-review` self-dogfood seam
   - continue collapsing duplicate proof between public specs and deeper deterministic tests
 - `NON_AUTOMATABLE`
-  - final reviewer judgment in self-dogfood and public-doc taste remains partially human
+  - final reviewer judgment in self-dogfood and landing-doc taste remains partially human
 
 ## Healthy
 
-- The repo-owned standing bar is real, deterministic, and currently green.
-- Maintainer-local enforcement is checked in and active.
-- The brittle archetype prose lock was replaced with a more honest runtime-completeness gate.
-- Source-guard pressure is effectively gone from the public spec path.
-- Rendered README review with `glow` surfaced real readability issues and confirmed the docs now need structure-based fixes, not source-only wrap guessing.
+- The standing deterministic bar is real, checked in, and green.
+- Maintainer-local enforcement is active and aligned with CI.
+- Rendered markdown preview now exists as a repo-owned seam and passes in this session.
+- The `verify` contract gap was fixed in this review instead of being left as prose debt.
 
 ## Weak
 
-- `current-product.spec.md` and `html-report.spec.md` still mix current shipped contract with some future-state pressure.
-- Public spec layering is improved but not yet cleanly minimized.
-- `README.md` remains long for a first-touch entrypoint even after the quick-start cleanup.
-- There is still no repo-owned rendered-markdown preview workflow; `glow` was helpful, but the repo has no checked-in seam for it yet.
+- Evaluator-backed self-dogfood is currently blocked by a failed review variant execution.
+- The published self-dogfood latest bundle flattens that failure into a generic message, which weakens operator diagnosis.
+- Public spec layering still needs structural cleanup rather than more surface-area growth.
+- `README.md` is still long for first-touch scanning.
 
 ## Missing
 
-- No deterministic repo-owned command yet exists for rendered markdown preview across README and spec prose.
-- No standing gate yet checks the rendered readability of landing docs or public specs.
-  That is appropriate for now, but the helper surface itself is missing.
+- No standing gate proves executor-backed self-dogfood review readiness before `dogfood:self` is invoked.
+- No published latest-bundle field currently points operators to captured stderr or a concrete host-side failure cause when a review variant command fails.
 
 ## Deferred
 
-- Do not turn rendered readability into a hard fail gate yet.
-  Start with preview artifacts or explicit preview commands first.
-- Do not promote `dogfood:self` into the standing bar yet.
-  Runtime cost and evaluator dependence still make it an explicit quality pass, not a stop-before-push command.
+- Do not promote `dogfood:self` into the standing pre-push gate yet.
+  Its runtime cost and executor dependence still make it explicit quality work.
 - Do not add a coverage floor yet.
-  There is still no strong product motivator for one.
+  There is still no clear product reason to make coverage percentage the standing authority.
+- Do not turn rendered markdown preview into a hard fail gate yet.
+  The current seam is useful as advisory proof.
 
 ## Commands Run
 
-- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.1.1/skills/quality/scripts/resolve_adapter.py --repo-root .`
-- `git status --short`
+- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.5.4/skills/quality/scripts/resolve_adapter.py --repo-root .`
 - `rg --files .`
+- `git status --short`
+- `sed -n '1,220p' skill-outputs/quality/latest.md`
+- `sed -n '1,220p' docs/internal/handoff.md`
+- `rg -n "eslint|ruff|mypy|pyright|tsc|pytest|vitest|jest|coverage|..." .`
 - `git config --get core.hooksPath`
 - `find .git/hooks -maxdepth 1 -type f`
-- `rg -n "eslint|golangci|govulncheck|verify|pre-push|core\\.hooksPath|specdown|glow|coverage|..." .`
-- `python3 .../inventory_public_spec_quality.py --repo-root .`
-- `python3 .../inventory_entrypoint_docs_ergonomics.py --repo-root .`
 - `python3 .../inventory_cli_ergonomics.py --repo-root .`
 - `python3 .../inventory_standing_gate_verbosity.py --repo-root .`
+- `python3 .../inventory_dual_implementation.py --repo-root .`
+- `python3 .../inventory_entrypoint_docs_ergonomics.py --repo-root .`
+- `python3 .../inventory_public_spec_quality.py --repo-root .`
 - `python3 .../inventory_brittle_source_guards.py --repo-root .`
 - `python3 .../inventory_skill_ergonomics.py --repo-root .`
 - `python3 .../inventory_lint_ignores.py --repo-root .`
-- `python3 .../inventory_dual_implementation.py --repo-root .`
+- `npm run lint:contracts`
+- `node --test scripts/run-verify.test.mjs`
+- `npm run hooks:check`
+- `npm run docs:preview:specs`
 - `npm run verify`
-- `glow -w 100 README.md`
-- `glow -w 100 README.ko.md`
+- `npm run dogfood:self`
 
 ## Recommended Next Gates
 
-- `active` / `AUTO_CANDIDATE`: add a repo-owned markdown preview command once the `charness` support seam lands.
-  Start with preview generation, not hard fail gating.
-- `active` / `AUTO_CANDIDATE`: trim proof duplication in public specs.
-  The next step is not “more spec”; it is deleting or moving duplicate proof to the right layer.
-- `passive`: compress `README.md` further only when touching landing docs again.
-  The current problem is entrypoint length, not a missing paragraph.
-- `passive`: revisit `current-product.spec.md` and `html-report.spec.md` to remove remaining future-state mixing.
+- `active` / `AUTO_CANDIDATE`: make failed review variants publish concrete diagnostic evidence.
+  The structural question is whether operator-facing self-dogfood can stay trustworthy when the executor layer fails.
+  A failure should point to stderr or an artifact path, not only `review variant command failed`.
+- `active` / `AUTO_CANDIDATE`: add a bounded readiness check for the configured review executor before `dogfood:self` relies on it.
+  The invariant is low-noise because the adapter already declares a concrete `codex-review` backend.
+- `active` / `AUTO_CANDIDATE`: keep deleting duplicate proof across public specs and deeper deterministic tests.
+  The next step is structural compression, not more spec text.
+- `passive`: compress `README.md` further when landing-doc work resumes.
+  The pressure is first-touch length, not missing explanation.
 
 ## Premortem Pass
 
-Fresh-eye subagent path was not used because delegation was not explicitly requested.
-
 Local premortem:
 
-- The repo could mistake “verify passes” for “public spec layering is solved”.
-  It is not; the quality inventory still reports proof overlap.
-- The repo could mistake “glow helped once” for “rendered markdown QA now exists”.
-  It does not; there is still no checked-in preview seam.
-- The repo could overreact by turning readability into a hard fail gate too early.
-  That would likely create noise before the helper and artifact model are stable.
+- The repo could over-celebrate the green standing gate and miss that evaluator-backed self-dogfood is presently blocked.
+- The repo could treat the new markdown preview seam as solved posture and still leave landing-doc length pressure untouched.
+- The repo could chase more public spec prose instead of deleting duplicated proof at the wrong layer.

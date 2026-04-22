@@ -32,8 +32,8 @@ npm run hooks:check
 
 Use these before stopping.
 Use `npm run lint` or `npm run test` directly only when iterating on one seam.
-`npm run lint` includes `golangci-lint run`, `go vet`, and `govulncheck`.
-`npm run verify` additionally runs `go test -race` before the standing Node test suite.
+`npm run lint` includes placeholder drift, `golangci-lint run`, `go vet`, and `govulncheck`.
+`npm run verify` runs the same standing lint phases, then adds `go test -race` before the standing Node test suite.
 Do not require all three in sequence before stopping.
 `npm run lint:specs` validates the spec index, checks relative spec links, and runs the full public spec suite with `specdown run -quiet`.
 Use `npm run specdown` when you want the full reporter output instead of the quiet standing gate.
