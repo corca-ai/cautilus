@@ -10,6 +10,10 @@ For the shortest bootstrap loop on a fresh machine, see the Quick Start section 
 # tagged-release install
 curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh | sh
 
+# migrate a legacy Homebrew install onto the supported channel
+brew uninstall cautilus
+curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh | sh
+
 # install CLI + bundled skill into a host repo
 cautilus install --repo-root /path/to/host-repo
 
@@ -26,6 +30,7 @@ who it is for, which archetype to start from, and which report fields now matter
 when a run rejects.
 
 The lower-level compatibility command `cautilus skills install` remains available when a workflow needs to call the skill installer directly.
+Legacy Homebrew installs are not a supported update channel anymore; remove them and reinstall through `install.sh` instead of mixing channels.
 
 ## Adapter bootstrap
 

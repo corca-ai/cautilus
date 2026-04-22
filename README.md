@@ -34,6 +34,13 @@ cd /path/to/host-repo
 cautilus install
 ```
 
+If this machine still has a legacy Homebrew install, remove that copy first and then reinstall through `install.sh`:
+
+```bash
+brew uninstall cautilus
+curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh | sh
+```
+
 If you want to hand setup to an agent, paste this:
 
 ```md

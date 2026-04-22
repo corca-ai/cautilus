@@ -36,7 +36,7 @@ Current `core validated surface`:
   `mode evaluate` is wired into `resolveRunDir`; remaining consumer commands are being pulled in one slice at a time.
 - report packet assembly, review packet assembly, and review-variant fanout
 - native self-dogfood HTML rendering through `cautilus self-dogfood render-html` and `render-experiments-html`
-- tagged-release install surface (curl installer, Homebrew formula render and tap publication, checksum + `actions/attest` subject attestation) plus product-owned public-release verification and `release:smoke-install` helpers
+- tagged-release install surface (`install.sh`, checksum + `actions/attest` subject attestation) plus product-owned public-release verification and `release:smoke-install` helpers
 - checked-in local gates, GitHub workflows that run `verify`, and an external consumer onboarding smoke (`consumer:onboard:smoke`) that proves install → adapter init → minimal wiring → adapter resolve → doctor ready → one bounded `mode evaluate` run
 
 Current `product-owned helper surface`:
@@ -73,7 +73,7 @@ New user-facing copy must reconcile with that contract before landing.
 - standalone Go binary and bundled skill feel like one product surface
 - durable runtime boundary for review prompts, schemas, and compare artifacts
 - stable versioned JSON contracts (`cautilus.report_packet.v2`, review/evidence/optimize/revision/scenario variants)
-- tagged-release installer surface without npm publication, including checksums, attestations, Homebrew tap, and post-release verification helpers
+- tagged-release installer surface without npm publication, including checksums, attestations, and post-release verification helpers
 
 ### Phase 3: Evaluation Engine — mostly done
 
@@ -136,7 +136,7 @@ Shipped:
 Still open:
 
 - archetype-specific starter kits beyond the generic onboarding smoke
-- optional managed Homebrew install smoke helper (current smoke covers `install.sh`)
+- keep the supported install smoke focused on `install.sh`
 - continue moving host-specific runtime seams (raw log readers, host storage conventions) out of the product boundary
 
 ## Immediate Next Moves
@@ -146,5 +146,5 @@ Still open:
 3. Expand scenario-history beyond the first profile-backed comparison cache-key path toward reusable baseline results and broader compare ownership.
 4. Continue moving host-specific runtime seams out of the product boundary into consumer-owned adapters, prompts, and storage readers.
 5. Keep expanding normalization-pattern coverage as new consumer archetypes appear, while preserving one official adapter contract (`cautilus-adapter.yaml`).
-6. Decide whether to grow external-consumer onboarding into archetype-specific starter kits, and whether to upgrade the Homebrew install smoke into a managed helper.
+6. Decide whether to grow external-consumer onboarding into archetype-specific starter kits while keeping the supported installer surface centered on `install.sh`.
 7. Keep widening the HTML report surface only when the packet boundary stays stable and the added page meaningfully improves human review, rather than mirroring every lower-level test seam.

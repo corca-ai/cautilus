@@ -37,7 +37,7 @@ Define one product-owned contract for:
 - Automatic checks should use a 24 hour cache TTL.
 - A failed update check must never fail or materially change the user command.
 - Update messaging should be install-channel-aware when the install surface can be detected honestly:
-  - Homebrew users should be told to use `brew upgrade`
+  - legacy Homebrew installs should be treated as unsupported and pointed at the migration path: `brew uninstall cautilus` then reinstall through `install.sh`
   - raw binary / `install.sh` users should be told that `cautilus update` re-materializes the managed binary release wrapper
 - The current public trust model stays:
   - tagged GitHub binary assets
@@ -97,5 +97,5 @@ This file is the canonical design note for version provenance and update-check b
 2. Add a user-cache-backed release-check store with a 24 hour TTL.
 3. Add `cautilus version --verbose` plus `cautilus version --check` as the explicit inspection and refresh surfaces.
 4. Add interactive-only cached update notices for installed standalone binary usage.
-5. Add explicit `cautilus update` handling for Homebrew and managed release installs.
+5. Add explicit `cautilus update` handling for the managed tagged-release install surface, and document the migration path away from legacy Homebrew installs.
 6. Keep `cautilus --version` unchanged as the minimal machine-readable path.
