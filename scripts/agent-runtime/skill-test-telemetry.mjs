@@ -24,6 +24,10 @@ function isObjectRecord(value) {
 	return Boolean(value) && typeof value === "object" && !Array.isArray(value);
 }
 
+function normalizeSessionMode(value) {
+	return value === "ephemeral" || value === "persistent" ? value : null;
+}
+
 function claudeModelScore(usage) {
 	return (
 		normalizeNonNegativeNumber(usage.costUSD) ??
@@ -148,12 +152,13 @@ function codexTotalsFromUsage(usage) {
 	};
 }
 
-function codexTelemetryFromTotals(totals, provider, model) {
+function codexTelemetryFromTotals(totals, provider, model, sessionMode) {
 	const costTelemetry = deriveCodexCostTelemetry({ provider, model, totals });
 	if (!totals) {
 		return compactTelemetry({
 			provider,
 			model,
+			session_mode: normalizeSessionMode(sessionMode),
 			...(costTelemetry ?? {}),
 		});
 	}
@@ -162,6 +167,7 @@ function codexTelemetryFromTotals(totals, provider, model) {
 	return compactTelemetry({
 		provider,
 		model,
+		session_mode: normalizeSessionMode(sessionMode),
 		prompt_tokens: promptTokens > 0 ? promptTokens : null,
 		completion_tokens: completionTokens > 0 ? completionTokens : null,
 		total_tokens: promptTokens + completionTokens > 0 ? promptTokens + completionTokens : null,
@@ -264,6 +270,9 @@ export function normalizeSkillTelemetry(value) {
 			telemetry[key] = value[key];
 		}
 	}
+	if (normalizeSessionMode(value.session_mode)) {
+		telemetry.session_mode = value.session_mode;
+	}
 	return {
 		...telemetry,
 		...(normalizeNumericFields(value, ["prompt_tokens", "completion_tokens", "total_tokens", "cost_usd"]) ?? {}),
@@ -278,10 +287,15 @@ export function aggregateSkillTelemetry(results) {
 		return null;
 	}
 	const telemetry = {};
-	for (const key of ["provider", "model", "cost_truth", "pricing_source", "pricing_version"]) {
+	for (const key of ["provider", "model", "cost_truth", "pricing_source", "pricing_version", "session_mode"]) {
 		const values = Array.from(new Set(
 			telemetryResults
-				.map((entry) => (typeof entry[key] === "string" && entry[key].trim() ? entry[key] : null))
+				.map((entry) => {
+					if (key === "session_mode") {
+						return normalizeSessionMode(entry[key]);
+					}
+					return typeof entry[key] === "string" && entry[key].trim() ? entry[key] : null;
+				})
 				.filter(Boolean),
 		));
 		if (values.length === 1) {
@@ -320,10 +334,12 @@ export function extractClaudeTelemetry(raw, options = {}) {
 }
 
 export function extractCodexTelemetry(raw, options = {}) {
+	const sessionMode = normalizeSessionMode(options.codexSessionMode) ?? "ephemeral";
 	const entries = Array.isArray(raw) ? raw : parseJsonLines(raw);
 	if (entries.length === 0) {
 		return compactTelemetry({
 			model: options.codexModel ?? options.model ?? null,
+			session_mode: sessionMode,
 		});
 	}
 	const initialState = {
@@ -335,5 +351,6 @@ export function extractCodexTelemetry(raw, options = {}) {
 		finalState.lastTotals ?? finalState.summedLastUsage,
 		finalState.provider,
 		finalState.model,
+		sessionMode,
 	);
 }

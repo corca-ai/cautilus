@@ -94,6 +94,7 @@ The observed packet should preserve at least:
   - optional `workSkill` for the eventual durable work skill such as `impl`
   - optional legacy `selectedSkill` single-lane alias when the bootstrap/work split is not meaningful
 - any expectation fields copied from the checked-in case
+- optional runtime telemetry such as model, token totals, and `session_mode` when the adapter-owned runner exposes those fields explicitly
 
 The summary should expose:
 

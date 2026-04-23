@@ -70,6 +70,8 @@ Current placeholder additions for that seam:
 - `{backend}` — resolved from `--runtime` CLI flag, adapter `default_runtime`, or `codex_exec` fallback
 
 Existing placeholders such as `{candidate_repo}` and `{output_dir}` remain available, so a checked-in runner can use a disposable workspace and emit its raw artifacts beside the generated input packet.
+For Codex-backed runners, default session mode should stay `ephemeral`, but a command template may opt into persistent mode for bounded probes that intentionally depend on session or fork tool surface.
+When that opt-out is used, the emitted telemetry should include `session_mode`.
 
 ## Output Boundary
 

@@ -53,6 +53,7 @@ test("codexArgs applies runtime-specific model, effort, and config overrides", (
 			reasoningEffort: "high",
 			codexModel: "gpt-5.4-mini",
 			codexReasoningEffort: "low",
+			codexSessionMode: "ephemeral",
 			codexConfigOverrides: [
 				"project_doc_max_bytes=0",
 				"include_apps_instructions=false",
@@ -77,6 +78,29 @@ test("codexArgs applies runtime-specific model, effort, and config overrides", (
 			"project_doc_max_bytes=0",
 			"-c",
 			"include_apps_instructions=false",
+			"-",
+		],
+	);
+});
+
+test("codexArgs omits --ephemeral when session mode is persistent", () => {
+	assert.deepEqual(
+		codexArgs({
+			workspace: "/repo",
+			sandbox: "read-only",
+			codexSessionMode: "persistent",
+			codexConfigOverrides: [],
+		}, "/tmp/schema.json", "/tmp/result.json"),
+		[
+			"exec",
+			"-C",
+			"/repo",
+			"--sandbox",
+			"read-only",
+			"--output-schema",
+			"/tmp/schema.json",
+			"-o",
+			"/tmp/result.json",
 			"-",
 		],
 	);

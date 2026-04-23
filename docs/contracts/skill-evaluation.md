@@ -46,6 +46,9 @@ The first slice consumes one normalized packet with:
   - optional `telemetry`
     - optional `provider`
     - optional `model`
+    - optional `session_mode`
+      - `ephemeral`
+      - `persistent`
     - optional `prompt_tokens`
     - optional `completion_tokens`
     - optional `total_tokens`

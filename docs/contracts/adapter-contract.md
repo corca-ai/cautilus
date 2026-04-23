@@ -45,7 +45,7 @@ instruction_surface_test_command_templates:
   - node scripts/agent-runtime/run-local-instruction-surface-test.mjs --repo-root . --workspace {candidate_repo} --cases-file {instruction_surface_cases_file} --output-file {instruction_surface_input_file} --artifact-dir {output_dir}/instruction-surface-test --backend {backend} --sandbox read-only
 skill_cases_default: fixtures/skill-test/cases.json
 skill_test_command_templates:
-  - node scripts/agent-runtime/run-local-skill-test.mjs --repo-root . --workspace {candidate_repo} --cases-file {skill_cases_file} --output-file {skill_eval_input_file} --artifact-dir {output_dir}/local-skill-test --backend codex_exec --sandbox read-only
+  - node scripts/agent-runtime/run-local-skill-test.mjs --repo-root . --workspace {candidate_repo} --cases-file {skill_cases_file} --output-file {skill_eval_input_file} --artifact-dir {output_dir}/local-skill-test --backend codex_exec --sandbox read-only --codex-session-mode ephemeral
 iterate_command_templates:
   - npm run bench:train -- --baseline-ref {baseline_ref} --history-file {history_file} --samples {iterate_samples}
 held_out_command_templates:
@@ -480,6 +480,8 @@ This lets the runtime keep selection and history ownership product-side while le
 
 For `codex exec`, do not invent approval-policy flags from older wrappers.
 Use `--sandbox` and your surrounding runtime sandbox instead.
+Keep ephemeral mode as the default, but allow explicit opt-out when a behavior probe intentionally depends on session or fork tool surface.
+When opt-out is used, emit the selected session mode in runtime telemetry so reviewers can audit whether a result was session-independent.
 For stdin-driven commands, prefer file redirection or a checked-in wrapper so the process receives EOF and does not wait on an open terminal pipe.
 `Reading additional input from stdin...` is expected when the process is reading from a bounded file redirect.
 It is only a bug when stdin is left attached to an interactive terminal and never closes.

@@ -66,7 +66,9 @@ can do; they only strip operator-specific noise.
 
 Current args (`codexArgs` in `scripts/agent-runtime/run-local-skill-test.mjs`):
 
-- `exec -C <workspace> --sandbox <mode> --ephemeral`
+- `exec -C <workspace> --sandbox <mode>`
+- default session mode: `ephemeral`
+- optional override for behavior probes: `--codex-session-mode persistent` (legacy alias: `--codex-ephemeral false`)
 - `--output-schema`, `-o <file>` for structured capture
 - `-c model_reasoning_effort=<level>` when the caller sets effort
 

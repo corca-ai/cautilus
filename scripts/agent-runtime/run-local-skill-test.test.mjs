@@ -178,6 +178,7 @@ test("codexArgs applies runtime-specific model, effort, and config overrides", (
 			reasoningEffort: "high",
 			codexModel: "gpt-5.4-mini",
 			codexReasoningEffort: "low",
+			codexSessionMode: "ephemeral",
 			codexConfigOverrides: [
 				"project_doc_max_bytes=0",
 				"include_apps_instructions=false",
@@ -203,6 +204,30 @@ test("codexArgs applies runtime-specific model, effort, and config overrides", (
 			"project_doc_max_bytes=0",
 			"-c",
 			"include_apps_instructions=false",
+			"-",
+		],
+	);
+});
+
+test("codexArgs omits --ephemeral when session mode is persistent", () => {
+	assert.deepEqual(
+		codexArgs({
+			workspace: "/repo",
+			sandbox: "read-only",
+			codexSessionMode: "persistent",
+			codexConfigOverrides: [],
+		}, "/tmp/schema.json", "/tmp/result.json"),
+		[
+			"exec",
+			"-C",
+			"/repo",
+			"--sandbox",
+			"read-only",
+			"--json",
+			"--output-schema",
+			"/tmp/schema.json",
+			"-o",
+			"/tmp/result.json",
 			"-",
 		],
 	);
@@ -236,6 +261,7 @@ test("extractCodexTelemetry preserves provider, model, and token totals from jso
 	assert.deepEqual(telemetry, {
 		provider: "openai",
 		model: "gpt-5.4-mini",
+		session_mode: "ephemeral",
 		prompt_tokens: 1400,
 		completion_tokens: 350,
 		total_tokens: 1750,
@@ -263,6 +289,7 @@ test("normalizeObservedResult preserves backend telemetry and numeric metrics", 
 			telemetry: {
 				provider: "anthropic",
 				model: "claude-sonnet-4-6",
+				session_mode: "persistent",
 				prompt_tokens: 900,
 				completion_tokens: 334,
 				total_tokens: 1234,
@@ -280,6 +307,7 @@ test("normalizeObservedResult preserves backend telemetry and numeric metrics", 
 	assert.deepEqual(observed.telemetry, {
 		provider: "anthropic",
 		model: "claude-sonnet-4-6",
+		session_mode: "persistent",
 		prompt_tokens: 900,
 		completion_tokens: 334,
 		total_tokens: 1234,
@@ -300,6 +328,7 @@ test("normalizeObservedResult falls back to telemetry totals when observed metri
 			telemetry: {
 				provider: "openai",
 				model: "gpt-5.4-mini",
+				session_mode: "persistent",
 				prompt_tokens: 1400,
 				completion_tokens: 350,
 				total_tokens: 1750,
@@ -320,6 +349,7 @@ test("normalizeObservedResult falls back to telemetry totals when observed metri
 	assert.deepEqual(observed.telemetry, {
 		provider: "openai",
 		model: "gpt-5.4-mini",
+		session_mode: "persistent",
 		prompt_tokens: 1400,
 		completion_tokens: 350,
 		total_tokens: 1750,

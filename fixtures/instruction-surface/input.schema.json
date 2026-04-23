@@ -117,6 +117,7 @@
             "properties": {
               "provider": { "type": "string" },
               "model": { "type": "string" },
+              "session_mode": { "type": "string", "enum": ["ephemeral", "persistent"] },
               "prompt_tokens": { "type": "number", "minimum": 0 },
               "completion_tokens": { "type": "number", "minimum": 0 },
               "total_tokens": { "type": "number", "minimum": 0 },

@@ -113,6 +113,7 @@
             "properties": {
               "provider": { "type": "string" },
               "model": { "type": "string" },
+              "session_mode": { "type": "string", "enum": ["ephemeral", "persistent"] },
               "cost_truth": { "type": "string" },
               "pricing_source": { "type": "string" },
               "pricing_version": { "type": "string" },
@@ -238,6 +239,7 @@
             "properties": {
               "provider": { "type": "string" },
               "model": { "type": "string" },
+              "session_mode": { "type": "string", "enum": ["ephemeral", "persistent"] },
               "cost_truth": { "type": "string" },
               "pricing_source": { "type": "string" },
               "pricing_version": { "type": "string" },

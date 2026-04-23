@@ -311,7 +311,8 @@ Use `executor_variants` when the evaluation needs an external judge or a termina
 ### Codex Exec Guardrails
 
 - Prefer `codex exec` with `--sandbox read-only` for review-only passes.
-- Use `--ephemeral` so repeated review loops do not depend on hidden session state.
+- Default to `--ephemeral` so repeated review loops do not depend on hidden session state.
+- Use persistent session mode only when the evaluation intentionally depends on session or fork tool surface, and record that mode in telemetry.
 - Feed the prompt from a file over stdin and use `--output-schema` plus `-o` for machine-readable output.
 - `Reading additional input from stdin...` can be normal when stdin is redirected from a file.
   Treat it as a problem only if the process is attached to an open terminal stdin instead of a bounded file redirect.

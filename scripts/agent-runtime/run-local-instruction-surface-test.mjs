@@ -16,6 +16,8 @@ import { extractClaudeTelemetry } from "./skill-test-telemetry.mjs";
 
 export { normalizeInstructionSurfaceCaseSuite } from "./instruction-surface-case-suite.mjs";
 
+const CODEX_SESSION_MODES = ["ephemeral", "persistent"];
+
 const CLAUDE_CLI_ENV = {
 	CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: "1",
 	CLAUDE_CODE_DISABLE_AUTO_MEMORY: "1",
@@ -30,7 +32,7 @@ const CLAUDE_CLI_ENV = {
 function usage(exitCode = 0) {
 	const text = [
 		"Usage:",
-		"  node ./scripts/agent-runtime/run-local-instruction-surface-test.mjs --repo-root <dir> --workspace <dir> --cases-file <file> --output-file <file> [--artifact-dir <dir>] [--backend codex_exec|claude_code|fixture] [--fixture-results-file <file>] [--sandbox read-only|workspace-write] [--timeout-ms <ms>] [--model <model>] [--reasoning-effort <level>] [--codex-model <model>] [--codex-reasoning-effort <level>] [--codex-config <key=value>] [--claude-model <model>] [--claude-permission-mode <mode>] [--claude-allowed-tools <rules>]",
+		"  node ./scripts/agent-runtime/run-local-instruction-surface-test.mjs --repo-root <dir> --workspace <dir> --cases-file <file> --output-file <file> [--artifact-dir <dir>] [--backend codex_exec|claude_code|fixture] [--fixture-results-file <file>] [--sandbox read-only|workspace-write] [--timeout-ms <ms>] [--model <model>] [--reasoning-effort <level>] [--codex-model <model>] [--codex-reasoning-effort <level>] [--codex-session-mode ephemeral|persistent] [--codex-ephemeral true|false] [--codex-config <key=value>] [--claude-model <model>] [--claude-permission-mode <mode>] [--claude-allowed-tools <rules>]",
 	].join("\n");
 	const out = exitCode === 0 ? process.stdout : process.stderr;
 	out.write(`${text}\n`);
@@ -58,6 +60,22 @@ function parsePositiveInteger(value, option) {
 	return parsed;
 }
 
+function parseCodexSessionMode(value, option) {
+	if (option === "--codex-ephemeral") {
+		if (value === "true") {
+			return "ephemeral";
+		}
+		if (value === "false") {
+			return "persistent";
+		}
+		fail("--codex-ephemeral must be true or false");
+	}
+	if (CODEX_SESSION_MODES.includes(value)) {
+		return value;
+	}
+	fail("--codex-session-mode must be ephemeral or persistent");
+}
+
 function defaultOptions() {
 	return {
 		repoRoot: process.cwd(),
@@ -73,6 +91,7 @@ function defaultOptions() {
 		reasoningEffort: null,
 		codexModel: null,
 		codexReasoningEffort: null,
+		codexSessionMode: "ephemeral",
 		codexConfigOverrides: [],
 		claudeModel: null,
 		claudePermissionMode: null,
@@ -93,6 +112,8 @@ const VALUE_OPTIONS = {
 	"--reasoning-effort": (options, value) => { options.reasoningEffort = value; },
 	"--codex-model": (options, value) => { options.codexModel = value; },
 	"--codex-reasoning-effort": (options, value) => { options.codexReasoningEffort = value; },
+	"--codex-session-mode": (options, value) => { options.codexSessionMode = parseCodexSessionMode(value, "--codex-session-mode"); },
+	"--codex-ephemeral": (options, value) => { options.codexSessionMode = parseCodexSessionMode(value, "--codex-ephemeral"); },
 	"--codex-config": (options, value) => { options.codexConfigOverrides.push(value); },
 	"--claude-model": (options, value) => { options.claudeModel = value; },
 	"--claude-permission-mode": (options, value) => { options.claudePermissionMode = value; },
@@ -133,6 +154,9 @@ function parseArgs(argv) {
 	}
 	if (!["read-only", "workspace-write"].includes(options.sandbox)) {
 		fail("--sandbox must be read-only or workspace-write");
+	}
+	if (!CODEX_SESSION_MODES.includes(options.codexSessionMode)) {
+		fail("--codex-session-mode must be ephemeral or persistent");
 	}
 	if (options.backend === "fixture" && !options.fixtureResultsFile) {
 		fail("--fixture-results-file is required when --backend fixture");
@@ -258,18 +282,23 @@ export function renderPrompt(evaluation) {
 }
 
 export function codexArgs(options, schemaFile, outputFile) {
+	const sessionMode = options.codexSessionMode ?? "ephemeral";
 	const args = [
 		"exec",
 		"-C",
 		options.workspace,
 		"--sandbox",
 		options.sandbox,
-		"--ephemeral",
+	];
+	if (sessionMode === "ephemeral") {
+		args.push("--ephemeral");
+	}
+	args.push(
 		"--output-schema",
 		schemaFile,
 		"-o",
 		outputFile,
-	];
+	);
 	if (options.codexModel ?? options.model) {
 		args.push("--model", options.codexModel ?? options.model);
 	}
@@ -460,12 +489,17 @@ function runCodexEvaluation(options, evaluation, outputDir, startedAt) {
 	}
 	artifactRefs.push(artifactRef("result", outputFile));
 	const model = options.codexModel ?? options.model;
+	const sessionMode = options.codexSessionMode ?? "ephemeral";
+	const telemetry = {
+		...(model ? { model } : {}),
+		session_mode: sessionMode,
+	};
 	return normalizeObservedResult(
 		evaluation,
 		observed,
 		artifactRefs,
 		startedAt,
-		model ? { model } : null,
+		telemetry,
 	);
 }
 

@@ -146,6 +146,7 @@ test("buildSkillEvaluationSummary preserves telemetry metadata for downstream re
 					telemetry: {
 						provider: "anthropic",
 						model: "claude-sonnet-4-6",
+						session_mode: "persistent",
 						prompt_tokens: 500,
 						completion_tokens: 200,
 						total_tokens: 700,
@@ -159,6 +160,7 @@ test("buildSkillEvaluationSummary preserves telemetry metadata for downstream re
 	assert.deepEqual(summary.evaluations[0].telemetry, {
 		provider: "anthropic",
 		model: "claude-sonnet-4-6",
+		session_mode: "persistent",
 		prompt_tokens: 500,
 		completion_tokens: 200,
 		total_tokens: 700,
@@ -167,6 +169,7 @@ test("buildSkillEvaluationSummary preserves telemetry metadata for downstream re
 	assert.deepEqual(summary.evaluationRuns[0].telemetry, {
 		provider: "anthropic",
 		model: "claude-sonnet-4-6",
+		session_mode: "persistent",
 		prompt_tokens: 500,
 		completion_tokens: 200,
 		total_tokens: 700,

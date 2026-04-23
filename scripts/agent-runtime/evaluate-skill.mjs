@@ -131,6 +131,18 @@ function normalizeOptionalMetrics(value, field) {
 	}
 	return Object.keys(metrics).length > 0 ? metrics : null;
 }
+
+function normalizeOptionalSessionMode(value, field) {
+	const sessionMode = normalizeOptionalString(value, field);
+	if (sessionMode === null) {
+		return null;
+	}
+	if (!["ephemeral", "persistent"].includes(sessionMode)) {
+		throw new Error(`${field} must be ephemeral or persistent`);
+	}
+	return sessionMode;
+}
+
 function normalizeOptionalTelemetry(value, field) {
 	if (value === undefined || value === null) {
 		return null;
@@ -144,6 +156,10 @@ function normalizeOptionalTelemetry(value, field) {
 		if (normalized !== null) {
 			telemetry[key] = normalized;
 		}
+	}
+	const sessionMode = normalizeOptionalSessionMode(value.session_mode, `${field}.session_mode`);
+	if (sessionMode !== null) {
+		telemetry.session_mode = sessionMode;
 	}
 	for (const key of ["prompt_tokens", "completion_tokens", "total_tokens", "cost_usd"]) {
 		const normalized = normalizeNonNegativeNumber(value[key], `${field}.${key}`);
