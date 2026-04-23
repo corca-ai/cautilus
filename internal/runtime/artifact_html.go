@@ -371,12 +371,14 @@ func RenderScenarioProposalsHTML(packet map[string]any) string {
 	builder.WriteString(renderProposalsHeader(packet, proposals, attentionProposals))
 	builder.WriteString(renderSelfDogfoodPageTOC([]tocNavEntry{
 		{Anchor: "context-heading", Label: "Context", Status: "unknown"},
+		{Anchor: "selection-heading", Label: "Selection Signals", Status: proposalsAttentionAggregateStatus(attentionProposals)},
 		{Anchor: "attention-heading", Label: "Attention", Status: proposalsAggregateStatus(attentionProposals)},
 		{Anchor: "proposals-heading", Label: "Proposals", Status: proposalsAggregateStatus(proposals)},
 	}))
 	builder.WriteString(renderProposalsContextPanel(packet))
-	builder.WriteString(renderProposalsPanel("attention-heading", "Attention View", attentionProposals))
-	builder.WriteString(renderProposalsPanel("proposals-heading", "Full Ranked Proposals", proposals))
+	builder.WriteString(renderProposalsSelectionPanel(packet, attentionProposals))
+	builder.WriteString(renderProposalsPanel("attention-heading", "Attention View", attentionProposals, attentionView))
+	builder.WriteString(renderProposalsPanel("proposals-heading", "Full Ranked Proposals", proposals, attentionView))
 	builder.WriteString(renderProposalsFooter(packet))
 	builder.WriteString("\n</main>\n</body>\n</html>\n")
 	return rewriteSelfDogfoodLinks(builder.String())
@@ -394,10 +396,12 @@ func RenderScenarioConversationReviewHTML(packet map[string]any) string {
 	builder.WriteString(renderScenarioConversationHeader(packet, threads, attentionThreads))
 	builder.WriteString(renderSelfDogfoodPageTOC([]tocNavEntry{
 		{Anchor: "context-heading", Label: "Context", Status: "unknown"},
+		{Anchor: "selection-heading", Label: "Selection Signals", Status: scenarioConversationThreadsAggregateStatus(attentionThreads)},
 		{Anchor: "attention-heading", Label: "Attention", Status: scenarioConversationThreadsAggregateStatus(attentionThreads)},
 		{Anchor: "threads-heading", Label: "Threads", Status: scenarioConversationThreadsAggregateStatus(threads)},
 	}))
 	builder.WriteString(renderScenarioConversationContextPanel(packet))
+	builder.WriteString(renderScenarioConversationSelectionPanel(packet, attentionThreads))
 	builder.WriteString(renderScenarioConversationThreadsPanel("attention-heading", "Attention Threads", attentionThreads, attentionView))
 	builder.WriteString(renderScenarioConversationThreadsPanel("threads-heading", "All Threads", threads, attentionView))
 	builder.WriteString(renderScenarioConversationFooter(packet))
@@ -485,7 +489,35 @@ func renderProposalsContextPanel(packet map[string]any) string {
 	)
 }
 
-func renderProposalsPanel(headingID string, title string, proposals []any) string {
+func renderProposalsSelectionPanel(packet map[string]any, attentionProposals []any) string {
+	attentionView := asMap(packet["attentionView"])
+	return fmt.Sprintf(`
+<section class="panel" aria-labelledby="selection-heading">
+	<h2 id="selection-heading">Selection Signals</h2>
+	<p class="panel-lead">%s</p>
+	<div class="chip-row">
+		<span class="chip neutral">selected: %s</span>
+		<span class="chip neutral">matched rules: %s</span>
+		<span class="chip neutral">fallback: %s</span>
+		<span class="chip neutral">truncated: %s</span>
+	</div>
+	<dl class="meta-grid">
+		<dt>reading order</dt>
+		<dd>attention view -> full ranked proposals</dd>
+		<dt>attention count</dt>
+		<dd>%d</dd>
+	</dl>
+</section>`,
+		escapeHTML(proposalsDecisionPressure(packet, attentionProposals)),
+		escapeHTML(defaultString(attentionView["selectedCount"], "0")),
+		escapeHTML(defaultString(attentionView["matchedRuleCount"], "0")),
+		escapeHTML(defaultString(attentionView["fallbackUsed"], "false")),
+		escapeHTML(defaultString(attentionView["truncated"], "false")),
+		len(attentionProposals),
+	)
+}
+
+func renderProposalsPanel(headingID string, title string, proposals []any, attentionView map[string]any) string {
 	if len(proposals) == 0 {
 		return fmt.Sprintf(`
 <section class="panel" aria-labelledby="%s">
@@ -497,6 +529,7 @@ func renderProposalsPanel(headingID string, title string, proposals []any) strin
 	for _, raw := range proposals {
 		proposal := asMap(raw)
 		evidence := arrayOrEmpty(proposal["evidence"])
+		reasonCodes := proposalReasonCodes(proposal, attentionView)
 		blocks.WriteString(fmt.Sprintf(`
 	<article class="variant" data-proposal-key="%s">
 		<header class="variant-header">
@@ -507,6 +540,7 @@ func renderProposalsPanel(headingID string, title string, proposals []any) strin
 				<span class="chip neutral">evidence: %d</span>
 			</div>
 		</header>
+		%s
 		<p class="variant-summary">%s</p>
 	</article>`,
 			escapeHTML(defaultString(proposal["proposalKey"], "")),
@@ -515,6 +549,7 @@ func renderProposalsPanel(headingID string, title string, proposals []any) strin
 			escapeHTML(defaultString(proposal["action"], "n/a")),
 			escapeHTML(defaultString(proposal["family"], "n/a")),
 			len(evidence),
+			renderReasonCodeChips(reasonCodes),
 			escapeHTML(defaultString(proposal["rationale"], "")),
 		))
 	}
@@ -557,6 +592,13 @@ func proposalsAggregateStatus(proposals []any) string {
 		return "n/a"
 	}
 	return "unknown"
+}
+
+func proposalsAttentionAggregateStatus(proposals []any) string {
+	if len(proposals) == 0 {
+		return "n/a"
+	}
+	return "concern"
 }
 
 func renderScenarioConversationHeader(packet map[string]any, threads []any, attentionThreads []any) string {
@@ -614,6 +656,34 @@ func renderScenarioConversationContextPanel(packet map[string]any) string {
 	)
 }
 
+func renderScenarioConversationSelectionPanel(packet map[string]any, attentionThreads []any) string {
+	attentionView := asMap(packet["attentionView"])
+	return fmt.Sprintf(`
+<section class="panel" aria-labelledby="selection-heading">
+	<h2 id="selection-heading">Selection Signals</h2>
+	<p class="panel-lead">%s</p>
+	<div class="chip-row">
+		<span class="chip neutral">selected: %s</span>
+		<span class="chip neutral">matched rules: %s</span>
+		<span class="chip neutral">fallback: %s</span>
+		<span class="chip neutral">truncated: %s</span>
+	</div>
+	<dl class="meta-grid">
+		<dt>reading order</dt>
+		<dd>attention threads -> all threads</dd>
+		<dt>attention count</dt>
+		<dd>%d</dd>
+	</dl>
+</section>`,
+		escapeHTML(scenarioConversationDecisionPressure(attentionThreads)),
+		escapeHTML(defaultString(attentionView["selectedCount"], "0")),
+		escapeHTML(defaultString(attentionView["matchedRuleCount"], "0")),
+		escapeHTML(defaultString(attentionView["fallbackUsed"], "false")),
+		escapeHTML(defaultString(attentionView["truncated"], "false")),
+		len(attentionThreads),
+	)
+}
+
 func renderScenarioConversationThreadsPanel(headingID string, title string, threads []any, attentionView map[string]any) string {
 	if len(threads) == 0 {
 		return fmt.Sprintf(`
@@ -664,17 +734,14 @@ func renderScenarioConversationReasonChips(reasonCodes []string) string {
 	if len(reasonCodes) == 0 {
 		return ""
 	}
-	chips := make([]string, 0, len(reasonCodes))
-	for _, reason := range reasonCodes {
-		chips = append(chips, fmt.Sprintf(`<span class="chip neutral">%s</span>`, escapeHTML(reason)))
-	}
-	return `<p>` + strings.Join(chips, " ") + `</p>`
+	return `<p class="chip-row">` + renderReasonCodeChips(reasonCodes) + `</p>`
 }
 
 func renderScenarioConversationThreadBody(thread map[string]any) string {
 	var sections strings.Builder
 	linkedProposals := arrayOrEmpty(thread["linkedProposals"])
 	if len(linkedProposals) > 0 {
+		sections.WriteString(`<h4>Linked Proposals</h4>`)
 		sections.WriteString(`<ul class="findings">`)
 		for _, rawProposal := range linkedProposals {
 			proposal := asMap(rawProposal)
@@ -700,6 +767,7 @@ func renderScenarioConversationThreadBody(thread map[string]any) string {
 	if len(records) == 0 {
 		return sections.String()
 	}
+	sections.WriteString(`<h4>Transcript</h4>`)
 	sections.WriteString(`<ul class="findings">`)
 	for _, rawRecord := range records {
 		record := asMap(rawRecord)
@@ -759,6 +827,42 @@ func scenarioConversationThreadsAggregateStatus(threads []any) string {
 		}
 	}
 	return "unknown"
+}
+
+func proposalsDecisionPressure(packet map[string]any, attentionProposals []any) string {
+	if len(attentionProposals) > 0 {
+		return "attention-selected proposals are currently the highest-signal scenario candidates"
+	}
+	if len(arrayOrEmpty(packet["proposals"])) > 0 {
+		return "full ranked proposals are currently the only available scenario signal"
+	}
+	return "no scenario proposal signal recorded"
+}
+
+func scenarioConversationDecisionPressure(attentionThreads []any) string {
+	if len(attentionThreads) > 0 {
+		return "attention-selected threads currently carry the strongest scenario-refresh signal"
+	}
+	return "all recorded threads currently have equal review priority"
+}
+
+func proposalReasonCodes(proposal map[string]any, attentionView map[string]any) []string {
+	proposalKey := defaultString(proposal["proposalKey"], "")
+	if proposalKey == "" {
+		return nil
+	}
+	return stringSliceOrEmptyRuntime(asMap(attentionView["reasonCodesByProposalKey"])[proposalKey])
+}
+
+func renderReasonCodeChips(reasonCodes []string) string {
+	if len(reasonCodes) == 0 {
+		return ""
+	}
+	chips := make([]string, 0, len(reasonCodes))
+	for _, reason := range reasonCodes {
+		chips = append(chips, fmt.Sprintf(`<span class="chip neutral">%s</span>`, escapeHTML(reason)))
+	}
+	return strings.Join(chips, " ")
 }
 
 // --- evidence bundle (claim 8) ---

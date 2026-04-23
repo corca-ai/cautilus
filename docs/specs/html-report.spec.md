@@ -53,8 +53,11 @@ grep -q '<title>Cautilus Evidence Bundle — 5 signals</title>' "$tmpdir/evidenc
 grep -q 'The operator should understand why a workflow step failed and how to recover.' "$tmpdir/report.html"
 grep -q 'Decision Signals' "$tmpdir/report.html"
 grep -q 'Does the current deterministic self-consumer gate stay honest about what it actually proves for the product repo?' "$tmpdir/review.html"
+grep -q 'Review Path' "$tmpdir/review.html"
 grep -q 'review_existing_scenario_refresh' "$tmpdir/conversation-review.html"
+grep -q 'Selection Signals' "$tmpdir/conversation-review.html"
 grep -q 'Refresh review-after-retro scenario from recent activity' "$tmpdir/proposals.html"
+grep -q 'Selection Signals' "$tmpdir/proposals.html"
 grep -q 'Regressed evidence: operator-recovery' "$tmpdir/evidence.html"
 grep -q 'Signals By Source' "$tmpdir/evidence.html"
 ```

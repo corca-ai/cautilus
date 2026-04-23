@@ -23,11 +23,13 @@ func RenderReviewPacketHTML(packet map[string]any) string {
 	builder.WriteString(renderReviewPacketHeader(packet, report))
 	builder.WriteString(renderSelfDogfoodPageTOC([]tocNavEntry{
 		{Anchor: "intent-heading", Label: "Intent", Status: stringOrEmpty(report["recommendation"])},
+		{Anchor: "path-heading", Label: "Review Path", Status: reviewPathAggregateStatus(packet)},
 		{Anchor: "questions-heading", Label: "Comparison Questions", Status: reviewQuestionsAggregateStatus(packet)},
 		{Anchor: "prompts-heading", Label: "Human Review Prompts", Status: reviewPromptsAggregateStatus(packet)},
 		{Anchor: "artifacts-heading", Label: "Artifacts", Status: reviewArtifactsAggregateStatus(packet)},
 	}))
 	builder.WriteString(renderReviewPacketIntentPanel(packet, report))
+	builder.WriteString(renderReviewPacketPathPanel(packet, report))
 	builder.WriteString(renderReviewComparisonQuestionsPanel(packet))
 	builder.WriteString(renderReviewHumanPromptsPanel(packet))
 	builder.WriteString(renderReviewArtifactsPanel(packet))
@@ -171,6 +173,34 @@ func renderReviewPacketIntentPanel(packet map[string]any, report map[string]any)
 	)
 }
 
+func renderReviewPacketPathPanel(packet map[string]any, report map[string]any) string {
+	return fmt.Sprintf(`
+<section class="panel" aria-labelledby="path-heading">
+	<h2 id="path-heading">Review Path</h2>
+	<p class="panel-lead">%s</p>
+	<div class="chip-row">
+		<span class="chip" style="background:%s">recommendation: %s</span>
+		<span class="chip neutral">comparison questions: %d</span>
+		<span class="chip neutral">review prompts: %d</span>
+		<span class="chip neutral">artifact refs: %d</span>
+	</div>
+	<dl class="meta-grid">
+		<dt>reading order</dt>
+		<dd>comparison questions -> human review prompts -> artifact refs</dd>
+		<dt>decision pressure</dt>
+		<dd>%s</dd>
+	</dl>
+</section>`,
+		escapeHTML(reviewPacketDecisionPressure(packet, report)),
+		selfDogfoodStatusColor(stringOrEmpty(report["recommendation"])),
+		escapeHTML(selfDogfoodStatusLabel(stringOrEmpty(report["recommendation"]))),
+		len(arrayOrEmpty(packet["comparisonQuestions"])),
+		len(arrayOrEmpty(packet["humanReviewPrompts"])),
+		len(arrayOrEmpty(packet["artifactFiles"]))+len(arrayOrEmpty(packet["reportArtifacts"])),
+		escapeHTML(reviewPacketDecisionPressure(packet, report)),
+	)
+}
+
 func renderReviewComparisonQuestionsPanel(packet map[string]any) string {
 	questions := arrayOrEmpty(packet["comparisonQuestions"])
 	if len(questions) == 0 {
@@ -193,6 +223,7 @@ func renderReviewComparisonQuestionsPanel(packet map[string]any) string {
 	return `
 <section class="panel" aria-labelledby="questions-heading">
 	<h2 id="questions-heading">Comparison Questions</h2>
+	<p class="panel-copy">These questions define what the reviewer should judge before opening prompts or raw artifacts.</p>
 	` + items.String() + `
 </section>`
 }
@@ -227,6 +258,7 @@ func renderReviewHumanPromptsPanel(packet map[string]any) string {
 	return `
 <section class="panel" aria-labelledby="prompts-heading">
 	<h2 id="prompts-heading">Human Review Prompts</h2>
+	<p class="panel-copy">Prompts are supporting lenses, not the first decision surface.</p>
 	` + items.String() + `
 </section>`
 }
@@ -251,6 +283,7 @@ func renderReviewArtifactsPanel(packet map[string]any) string {
 	return `
 <section class="panel" aria-labelledby="artifacts-heading">
 	<h2 id="artifacts-heading">Artifacts</h2>
+	<p class="panel-copy">Artifact references are the last hop when the question or prompt needs exact evidence.</p>
 	` + body.String() + `
 </section>`
 }
@@ -511,11 +544,33 @@ func reviewQuestionsAggregateStatus(packet map[string]any) string {
 	return "unknown"
 }
 
+func reviewPathAggregateStatus(packet map[string]any) string {
+	if len(arrayOrEmpty(packet["comparisonQuestions"])) == 0 {
+		return reviewArtifactsAggregateStatus(packet)
+	}
+	return reviewQuestionsAggregateStatus(packet)
+}
+
 func reviewPromptsAggregateStatus(packet map[string]any) string {
 	if len(arrayOrEmpty(packet["humanReviewPrompts"])) == 0 {
 		return "n/a"
 	}
 	return "unknown"
+}
+
+func reviewPacketDecisionPressure(packet map[string]any, report map[string]any) string {
+	switch {
+	case len(arrayOrEmpty(packet["comparisonQuestions"])) > 0:
+		return "comparison questions currently carry the review decision"
+	case len(arrayOrEmpty(packet["humanReviewPrompts"])) > 0:
+		return "review prompts currently carry the review decision"
+	case len(arrayOrEmpty(packet["artifactFiles"]))+len(arrayOrEmpty(packet["reportArtifacts"])) > 0:
+		return "artifact references currently carry the review decision"
+	case stringOrEmpty(report["recommendation"]) != "":
+		return "report recommendation is the only available review signal"
+	default:
+		return "no explicit review path recorded"
+	}
 }
 
 func reviewArtifactsAggregateStatus(packet map[string]any) string {

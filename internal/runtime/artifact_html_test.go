@@ -84,11 +84,15 @@ func TestRenderScenarioProposalsHTMLRendersProposals(t *testing.T) {
 	for _, pattern := range []string{
 		`class="toc-nav"`,
 		`href="#context-heading"`,
+		`href="#selection-heading"`,
 		`href="#attention-heading"`,
 		`href="#proposals-heading"`,
+		`Selection Signals`,
 		`Attention View`,
 		`Full Ranked Proposals`,
 		`data-proposal-key="chatbot-review-clarification"`,
+		`new_scenario`,
+		`low_recent_coverage`,
 		`action: add_new_scenario`,
 		`family: chatbot`,
 	} {
@@ -130,12 +134,17 @@ func TestRenderScenarioConversationReviewHTMLRendersThreadsAndLinkedProposals(t 
 	for _, pattern := range []string{
 		`class="toc-nav"`,
 		`href="#context-heading"`,
+		`href="#selection-heading"`,
 		`href="#attention-heading"`,
 		`href="#threads-heading"`,
+		`Selection Signals`,
 		`Attention Threads`,
 		`All Threads`,
 		`data-thread-key="thread-1"`,
 		`recommendation: review_existing_scenario_refresh`,
+		`Linked Proposals`,
+		`Transcript`,
+		`linked_proposal`,
 		`retro 먼저 해주세요`,
 	} {
 		if !strings.Contains(rendered, pattern) {
