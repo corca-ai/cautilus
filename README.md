@@ -222,6 +222,7 @@ Top picks:
 - [docs/contracts/review-packet.md](./docs/contracts/review-packet.md) — review packet boundary
 - [docs/cli-reference.md](./docs/cli-reference.md) — full CLI reference
 - [docs/maintainers/development.md](./docs/maintainers/development.md) — maintainer dev + self-dogfood
+- [docs/maintainers/operator-acceptance.md](./docs/maintainers/operator-acceptance.md) — human takeover and acceptance checklist
 - [docs/gepa.md](./docs/gepa.md) — GEPA-style prompt search
 - [docs/master-plan.md](./docs/master-plan.md) — roadmap
 - [examples/starters/](./examples/starters/) — archetype-specific starter kits

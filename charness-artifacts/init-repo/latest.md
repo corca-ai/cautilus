@@ -10,7 +10,7 @@ Run date: 2026-04-24
 
 - `AGENTS.md` exists and remains the primary host-facing instruction surface.
 - `CLAUDE.md` already symlinks to `AGENTS.md`.
-- `.agents/init-repo-adapter.yaml` is present and valid.
+- `.agents/init-repo-adapter.yaml` is present and points declared local surfaces at real files.
 - `render_skill_routing.py` can render a stricter generated compact block, but the checked-in block is intentionally more concrete for this repo.
 
 ## Verified Facts
@@ -19,7 +19,9 @@ Run date: 2026-04-24
 - The existing `Skill Routing` section is compact, startup-bootstrap-heavy, and names the high-signal charness routes this repo actually wants surfaced.
 - The repo intentionally uses semantic line breaks in prose markdown.
 - The README names the canonical install path and probe surfaces for the standalone binary plus bundled skill.
+- The README now points maintainers to the operator acceptance checklist.
 - Operator acceptance is maintained at `docs/maintainers/operator-acceptance.md`, as declared by the init-repo adapter.
+- Operator acceptance now includes a short read-first path before command tiers.
 - `docs/internal/working-patterns.md` treats premortem, counterweight, and iterative premortem as explicit-scope practices triggered by user request, repo artifact, handoff, AGENTS rule, or current-slice risk.
 
 ## Assumptions
@@ -31,10 +33,16 @@ Run date: 2026-04-24
 ## Normalized Surfaces
 
 - `AGENTS.md`
-  Added an on-demand premortem, counterweight, and bounded fresh-eye review rule.
-  The rule says that once such review is explicitly in scope or required by a repo artifact, it is already delegated by repo contract, and host spawn restrictions must be reported rather than hidden behind an unlabelled same-agent pass.
-- The existing `AGENTS.md` custom routing was reviewed and left intact.
-- The previous normalization already added concrete compact skill routes for `find-skills`, `gather`, `debug`, `impl`, `quality`, `handoff`, and `init-repo`, plus direct routing for user-named charness skills.
+  Added `docs/internal/working-patterns.md` to repo memory.
+  Strengthened `find-skills` startup bootstrap wording while preserving direct routing when the exact skill body is already provided.
+  Added bundled-skill semantic change proof policy.
+  Strengthened premortem/fresh-eye host restriction wording to stop instead of substituting a same-agent pass.
+- `.agents/init-repo-adapter.yaml`
+  Repointed `install` from missing `install.md` to `README.md`.
+- `README.md`
+  Added `docs/maintainers/operator-acceptance.md` to maintainer top picks.
+- `docs/maintainers/operator-acceptance.md`
+  Added a short read-first path for new maintainers before the tiered command checklist.
 
 ## Open Questions
 

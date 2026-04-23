@@ -6,5 +6,5 @@ surfaces:
   roadmap: docs/master-plan.md
   operator_acceptance: docs/maintainers/operator-acceptance.md
   handoff: docs/internal/handoff.md
-  install: install.md
+  install: README.md
   uninstall: null

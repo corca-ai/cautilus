@@ -37,6 +37,7 @@ This repo is the standalone product boundary for `Cautilus`.
 ## Repo Memory
 
 - [docs/internal/handoff.md](./docs/internal/handoff.md): next-session pickup and volatile state
+- [docs/internal/working-patterns.md](./docs/internal/working-patterns.md): durable operating patterns and review-trigger policy
 - [docs/master-plan.md](./docs/master-plan.md): durable product direction and priority order
 - [docs/specs/index.spec.md](./docs/specs/index.spec.md): currently claimed product surface
 - [docs/specs/archetype-boundary.spec.md](./docs/specs/archetype-boundary.spec.md): first-class archetype 1:1 contract (chatbot / skill / workflow)
@@ -48,7 +49,9 @@ This repo is the standalone product boundary for `Cautilus`.
 Prefer installed charness public skills before improvising a repo-local workflow.
 When a request explicitly names a charness skill, route to that named skill first.
 Keep this section intentionally non-exhaustive so `AGENTS.md` stays stable as the installed charness skill catalog changes.
-When the right skill is unclear, or you need the current installed/trusted capability list, route to the shared/public charness skill `find-skills` first.
+For task-oriented sessions, call the shared/public charness skill `find-skills` once at startup before broader exploration.
+If the current prompt already provides the exact named skill body to use, treat that as the startup routing source and do not add a redundant lookup.
+Use the `find-skills` inventory as the default map of installed public skills, support skills, synced support surfaces, and integrations.
 Use these high-signal routes first:
 
 - unclear skill choice, named support/helper, or hidden capability lookup -> shared/public charness skill `find-skills`
@@ -70,10 +73,11 @@ Use these high-signal routes first:
   Treat implementation sketches as candidate direction, not as the core payload of the issue.
 - When adding a new runtime surface, add at least one executable test.
 - While implementing, any bug, error, regression, or unexpected behavior routes to `charness:debug` before further fixes.
+- When changing the bundled `skills/cautilus/` surface or behavior-steering references, freeze the current consumer intent before broad edits by deciding whether reviewed dogfood, maintained evaluator scenarios, or checked-in scenario review proof will carry the change.
 - Premortem, counterweight, and bounded fresh-eye review are on-demand gates, not standing requirements.
   When one is explicitly in scope or required by a repo artifact, treat the review as already delegated by the repo contract.
   Do not wait for a second user message asking for delegation.
-  If the host blocks subagent spawning, report that restriction explicitly instead of substituting an unlabelled same-agent pass.
+  If the host blocks subagent spawning, stop and report that restriction explicitly instead of substituting a same-agent pass.
 
 ## Before Stopping on a Spec-Driven Slice
 
