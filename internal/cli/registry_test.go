@@ -66,7 +66,7 @@ func TestRenderUsageIncludesLifecycleCommands(t *testing.T) {
 	if !strings.Contains(usage, "cautilus skill evaluate --input ./fixtures/skill-evaluation/input.json") {
 		t.Fatalf("usage missing skill evaluate example:\n%s", usage)
 	}
-	if !strings.Contains(usage, "cautilus review variants --repo-root . --workspace . --output-dir /tmp/cautilus-review") {
+	if !strings.Contains(usage, "cautilus review variants --repo-root . --workspace . --prompt-file ./review.md --schema-file ./schema.json --output-dir /tmp/cautilus-review") {
 		t.Fatalf("usage missing review variants example:\n%s", usage)
 	}
 }
@@ -113,6 +113,19 @@ func TestRenderTopicUsageIncludesCommandNotes(t *testing.T) {
 	}
 	if !strings.Contains(usage, "\"severity\": \"concern\"") {
 		t.Fatalf("topic usage missing humanReviewFindings shape note:\n%s", usage)
+	}
+}
+
+func TestRenderTopicUsageShowsAdHocReviewVariantsPath(t *testing.T) {
+	usage, err := RenderTopicUsage([]string{"review", "variants"})
+	if err != nil {
+		t.Fatalf("RenderTopicUsage returned error: %v", err)
+	}
+	if !strings.Contains(usage, "--prompt-file <review.md> --schema-file <schema.json>") {
+		t.Fatalf("topic usage missing ad-hoc prompt/schema path:\n%s", usage)
+	}
+	if !strings.Contains(usage, "ad-hoc bounded review") {
+		t.Fatalf("topic usage missing ad-hoc review note:\n%s", usage)
 	}
 }
 

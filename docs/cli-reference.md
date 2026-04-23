@@ -310,6 +310,14 @@ cautilus review variants \
   --output-under-test /tmp/cautilus-mode/analysis-output.json \
   --output-text-key analysis_text \
   --output-dir /tmp/cautilus-review
+
+# run an ad-hoc bounded review without first building a review packet
+cautilus review variants \
+  --repo-root /path/to/repo \
+  --workspace /path/to/repo \
+  --prompt-file /tmp/review.md \
+  --schema-file /tmp/review.schema.json \
+  --output-dir /tmp/cautilus-review
 ```
 
 If you need a minimal valid report packet before review, run `cautilus report build --example-input`.
@@ -318,6 +326,8 @@ That example includes the minimum `humanReviewFindings` shape:
 
 `review variants` writes a product-owned `review-summary.json` (`cautilus.review_summary.v1`) plus one per-variant `cautilus.review_variant_result.v1` file.
 A variant can finish as `passed`, `blocked`, or `failed`; blocked runs carry machine-readable reason codes instead of prose-only abort text.
+Local executor readiness failures such as missing auth are classified as blocked `unavailable_executor` results rather than negative review verdicts.
+When at least one variant passes and another does not, the summary sets `partialSuccess: true` and lifts the passing outputs into `successfulVariantOutputs`.
 When `--output-under-test` is present, the generated review prompt switches into `output_under_test` mode and treats the referenced artifact as primary evidence.
 When `--output-text-key` is present, Cautilus also extracts that JSON narrative span into the rendered prompt so the judge can read the realized output directly.
 This command answers:

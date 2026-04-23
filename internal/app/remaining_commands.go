@@ -439,26 +439,30 @@ func handleReviewVariants(repoRoot string, cwd string, args []string, stdout io.
 		summaries = append(summaries, summary)
 	}
 	status := overallReviewExecutionStatus(summaries)
+	successfulVariantOutputs := successfulReviewVariantOutputs(summaries)
 	summaryPacket := map[string]any{
-		"schemaVersion":         contracts.ReviewSummarySchema,
-		"generatedAt":           time.Now().UTC().Format(time.RFC3339Nano),
-		"repoRoot":              options.repoRoot,
-		"adapterPath":           adapterPayload.Path,
-		"workspace":             workspace,
-		"promptFile":            promptArtifacts.promptFile,
-		"reviewPacketFile":      promptArtifacts.reviewPacketFile,
-		"reviewPromptInputFile": promptArtifacts.reviewPromptInputFile,
-		"outputUnderTestFile":   promptArtifacts.outputUnderTestFile,
-		"warnings":              warnings,
-		"schemaFile":            schemaFile,
-		"outputDir":             outputDir,
-		"status":                status,
-		"reviewVerdict":         overallReviewVerdict(summaries),
-		"reasonCodes":           collectReviewReasonCodes(summaries),
-		"humanReviewFindings":   flattenReviewFindings(summaries),
-		"findingsCount":         countReviewFindings(summaries),
-		"telemetry":             summarizeVariantTelemetry(summaries),
-		"variants":              summaries,
+		"schemaVersion":            contracts.ReviewSummarySchema,
+		"generatedAt":              time.Now().UTC().Format(time.RFC3339Nano),
+		"repoRoot":                 options.repoRoot,
+		"adapterPath":              adapterPayload.Path,
+		"workspace":                workspace,
+		"promptFile":               promptArtifacts.promptFile,
+		"reviewPacketFile":         promptArtifacts.reviewPacketFile,
+		"reviewPromptInputFile":    promptArtifacts.reviewPromptInputFile,
+		"outputUnderTestFile":      promptArtifacts.outputUnderTestFile,
+		"warnings":                 warnings,
+		"schemaFile":               schemaFile,
+		"outputDir":                outputDir,
+		"status":                   status,
+		"reviewVerdict":            overallReviewVerdict(summaries),
+		"reasonCodes":              collectReviewReasonCodes(summaries),
+		"humanReviewFindings":      flattenReviewFindings(summaries),
+		"findingsCount":            countReviewFindings(summaries),
+		"partialSuccess":           status != "passed" && len(successfulVariantOutputs) > 0,
+		"successfulVariantCount":   len(successfulVariantOutputs),
+		"successfulVariantOutputs": successfulVariantOutputs,
+		"telemetry":                summarizeVariantTelemetry(summaries),
+		"variants":                 summaries,
 	}
 	summaryFile := filepath.Join(outputDir, "review-summary.json")
 	if err := writeOutputResolved(stdout, &summaryFile, summaryPacket); err != nil {
@@ -2265,7 +2269,6 @@ func normalizeReviewVariantResult(variantID string, tool any, execution map[stri
 	reasonCodes := normalizeReasonCodes(rawOutput["reasonCodes"])
 	switch {
 	case anyString(execution["status"]) != "passed":
-		status = "failed"
 		reason = firstNonEmptyString(
 			strings.TrimSpace(anyString(rawOutput["reason"])),
 			strings.TrimSpace(anyString(rawOutput["message"])),
@@ -2273,6 +2276,14 @@ func normalizeReviewVariantResult(variantID string, tool any, execution map[stri
 			strings.TrimSpace(anyString(execution["stdout"])),
 			"review variant command failed",
 		)
+		if reviewVariantUnavailableExecutorFailure(execution, reason) {
+			status = "blocked"
+			if len(reasonCodes) == 0 {
+				reasonCodes = []any{"unavailable_executor"}
+			}
+		} else {
+			status = "failed"
+		}
 		if len(reasonCodes) == 0 {
 			reasonCodes = []any{"command_failed"}
 		}
@@ -2422,6 +2433,35 @@ func firstNonEmptyString(values ...string) string {
 		}
 	}
 	return ""
+}
+
+func reviewVariantUnavailableExecutorFailure(execution map[string]any, reason string) bool {
+	text := strings.ToLower(strings.Join([]string{
+		reason,
+		anyString(execution["stderr"]),
+		anyString(execution["stdout"]),
+		anyString(execution["error"]),
+	}, "\n"))
+	for _, pattern := range []string{
+		"401",
+		"unauthorized",
+		"authentication",
+		"not authenticated",
+		"not logged in",
+		"login required",
+		"please login",
+		"api key",
+		"api_key",
+		"auth token",
+		"command not found",
+		"executable file not found",
+		"no such file or directory",
+	} {
+		if strings.Contains(text, pattern) {
+			return true
+		}
+	}
+	return false
 }
 
 func summarizeVariantTelemetry(summaries []any) any {
@@ -2719,22 +2759,45 @@ func overallReviewExecutionStatus(items []any) string {
 }
 
 func overallReviewVerdict(items []any) string {
-	best := "pass"
+	best := ""
+	sawPassedVariant := false
+	sawReviewBlockingExecution := false
 	for _, raw := range items {
 		record := asMapAny(raw)
 		if anyString(record["status"]) != "passed" {
-			best = "blocker"
+			if !hasReasonCode(record, "unavailable_executor") {
+				sawReviewBlockingExecution = true
+			}
 			continue
 		}
+		sawPassedVariant = true
 		verdict := normalizeReviewVerdict(anyString(asMapAny(record["output"])["verdict"]))
 		if verdict == "" {
 			continue
 		}
-		if reviewVerdictPriority(verdict) > reviewVerdictPriority(best) {
+		if best == "" || reviewVerdictPriority(verdict) > reviewVerdictPriority(best) {
 			best = verdict
 		}
 	}
-	return best
+	if best != "" {
+		return best
+	}
+	if sawPassedVariant {
+		return "pass"
+	}
+	if sawReviewBlockingExecution {
+		return "blocker"
+	}
+	return "unknown"
+}
+
+func hasReasonCode(record map[string]any, target string) bool {
+	for _, raw := range arrayOrEmpty(record["reasonCodes"]) {
+		if anyString(raw) == target {
+			return true
+		}
+	}
+	return false
 }
 
 func reviewVerdictPriority(verdict string) int {
@@ -2765,6 +2828,27 @@ func collectReviewReasonCodes(items []any) []any {
 		}
 	}
 	return codes
+}
+
+func successfulReviewVariantOutputs(items []any) []any {
+	successes := []any{}
+	for _, raw := range items {
+		record := asMapAny(raw)
+		if anyString(record["status"]) != "passed" {
+			continue
+		}
+		output := asMapAny(record["output"])
+		success := map[string]any{
+			"id":            record["id"],
+			"tool":          record["tool"],
+			"outputFile":    record["outputFile"],
+			"verdict":       output["verdict"],
+			"summary":       output["summary"],
+			"findingsCount": len(arrayOrEmpty(output["findings"])),
+		}
+		successes = append(successes, success)
+	}
+	return successes
 }
 
 func flattenReviewFindings(items []any) []any {

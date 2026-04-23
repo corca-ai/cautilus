@@ -297,8 +297,12 @@
     {
       "path": ["review", "variants"],
       "group": "results",
-      "usage": "cautilus review variants [args]",
-      "example": "cautilus review variants --repo-root . --workspace . --output-dir /tmp/cautilus-review"
+      "usage": "cautilus review variants --repo-root <repo> --workspace <dir> [--prompt-file <review.md> --schema-file <schema.json>] [--output-dir <dir>]",
+      "example": "cautilus review variants --repo-root . --workspace . --prompt-file ./review.md --schema-file ./schema.json --output-dir /tmp/cautilus-review",
+      "notes": [
+        "Use `--prompt-file` plus `--schema-file` for ad-hoc bounded review without first building a review packet.",
+        "Omit those flags when the adapter or review prompt input provides the default prompt and schema."
+      ]
     },
     {
       "path": ["optimize", "prepare-input"],

@@ -113,9 +113,11 @@ The product-owned execution contract is:
 - per-variant execution `status`: `passed`, `blocked`, or `failed`
 - per-variant review `verdict`: optional host-level judgment such as `blocker`, `concern`, or `pass`
 - `blocked` should carry machine-readable reason codes and a concrete reason instead of free-form prose-only failure
+- local executor readiness failures such as missing auth or an unavailable CLI should classify as blocked `unavailable_executor`, not as a negative review finding
 - invalid or missing host JSON should be rewritten into a `failed` product-owned packet so downstream tools never have to guess whether the executor actually produced a usable object
 
 The summary packet should also aggregate any explicit numeric telemetry across variants so operators can inspect one top-level view without scraping each verdict file separately.
+When one or more variants pass while another variant is blocked or failed, the summary should set `partialSuccess: true` and expose `successfulVariantOutputs` so downstream agents can consume the usable review evidence without scraping the full variants array first.
 
 For scenario-driven evaluation, the same rule applies one level lower: scenario result packets should preserve per-scenario telemetry so `Cautilus` can answer which scenarios are currently the slowest or most expensive.
 

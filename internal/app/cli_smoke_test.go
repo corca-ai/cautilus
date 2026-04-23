@@ -593,6 +593,94 @@ EOF
 	}
 }
 
+func TestCLIReviewVariantsClassifiesUnavailableExecutorAsBlockedPartialSuccess(t *testing.T) {
+	root := t.TempDir()
+	if err := os.MkdirAll(filepath.Join(root, ".agents"), 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	writeExecutableFile(t, root, "pass.sh", `#!/bin/sh
+output_file="$1"
+cat > "$output_file" <<'EOF'
+{
+  "status": "completed",
+  "verdict": "pass",
+  "summary": "Codex review produced useful findings.",
+  "findings": []
+}
+EOF
+`)
+	writeExecutableFile(t, root, "auth-fail.sh", `#!/bin/sh
+echo "Claude API 401 authentication error" >&2
+exit 1
+`)
+	if err := os.MkdirAll(filepath.Join(root, "fixtures"), 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(root, "fixtures", "review.prompt.md"), []byte("review\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(root, "fixtures", "review.schema.json"), []byte("{\"type\":\"object\"}\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	adapterText := strings.Join([]string{
+		"version: 1",
+		"repo: temp",
+		"evaluation_surfaces:",
+		"  - smoke",
+		"baseline_options:",
+		"  - baseline git ref via {baseline_ref}",
+		"default_prompt_file: fixtures/review.prompt.md",
+		"default_schema_file: fixtures/review.schema.json",
+		"executor_variants:",
+		"  - id: codex-review",
+		"    tool: command",
+		"    command_template: sh {candidate_repo}/pass.sh {output_file}",
+		"  - id: claude-review",
+		"    tool: command",
+		"    command_template: sh {candidate_repo}/auth-fail.sh {output_file}",
+		"",
+	}, "\n")
+	if err := os.WriteFile(filepath.Join(root, ".agents", "cautilus-adapter.yaml"), []byte(adapterText), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+
+	outputDir := filepath.Join(root, "outputs")
+	stdout, stderr, exitCode := runCLI(t, root, "review", "variants", "--repo-root", root, "--workspace", root, "--output-dir", outputDir)
+	if exitCode != 1 {
+		t.Fatalf("expected blocked exit code, got %d, stderr=%s", exitCode, stderr)
+	}
+	summary := readJSONObjectFile(t, strings.TrimSpace(stdout))
+	if summary["status"] != "blocked" {
+		t.Fatalf("expected blocked review summary, got %#v", summary["status"])
+	}
+	if summary["reviewVerdict"] != "pass" {
+		t.Fatalf("expected review verdict to come from the passing variant, got %#v", summary["reviewVerdict"])
+	}
+	if summary["partialSuccess"] != true {
+		t.Fatalf("expected partialSuccess to be true, got %#v", summary["partialSuccess"])
+	}
+	if summary["successfulVariantCount"] != float64(1) {
+		t.Fatalf("expected one successful variant, got %#v", summary["successfulVariantCount"])
+	}
+	successes := summary["successfulVariantOutputs"].([]any)
+	if len(successes) != 1 || successes[0].(map[string]any)["id"] != "codex-review" {
+		t.Fatalf("unexpected successful variant outputs: %#v", summary["successfulVariantOutputs"])
+	}
+	reasonCodes := summary["reasonCodes"].([]any)
+	if len(reasonCodes) != 1 || anyToString(reasonCodes[0]) != "unavailable_executor" {
+		t.Fatalf("unexpected reason codes: %#v", reasonCodes)
+	}
+	variants := summary["variants"].([]any)
+	blocked := variants[1].(map[string]any)
+	if blocked["status"] != "blocked" {
+		t.Fatalf("expected auth failure to be blocked, got %#v", blocked["status"])
+	}
+	output := blocked["output"].(map[string]any)
+	if output["status"] != "blocked" {
+		t.Fatalf("expected blocked output packet, got %#v", output)
+	}
+}
+
 func TestCLIReviewVariantsSupportsOutputUnderTest(t *testing.T) {
 	root := t.TempDir()
 	if err := os.MkdirAll(filepath.Join(root, "fixtures"), 0o755); err != nil {
