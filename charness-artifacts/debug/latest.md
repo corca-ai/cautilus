@@ -1,70 +1,76 @@
-# Review Variant Unavailable Executor Debug
-Date: 2026-04-23
+# Instruction Surface Nested Override Debug
+Date: 2026-04-24
 
 ## Problem
 
-`cautilus review variants` can produce useful review output from one executor while another executor fails because the local tool or auth path is unavailable.
-The aggregate `review-summary.json` reported a plain `failed` state, which made the usable passing variant easy to miss and made local readiness look like a negative review result.
+`./bin/cautilus instruction-surface test --repo-root . --adapter-name self-dogfood-instruction-surface` exited 0 but returned `recommendation=reject`.
+The failing evaluation was `nested-override-routing`.
 
 ## Correct Behavior
 
-Given multiple review variants where one emits a schema-valid passing review and another exits with a local auth or tool-readiness error,
-when `cautilus review variants` builds `review-summary.json`,
-then the unavailable executor should be classified as blocked with a machine-readable `unavailable_executor` reason code and the passing review output should be easy to consume from the top-level summary.
+Given an instruction-surface case with root `AGENTS.md` plus `apps/demo/AGENTS.md`,
+when the prompt asks the runner to review the scoped task before routing,
+then the observed packet should either load both root and nested instruction files or the case expectation should explicitly allow the scoped nested file to be the entry point.
 
 ## Observed Facts
 
-- GitHub issue #28 reported a Ceal closeout run on 2026-04-23 with Cautilus `0.11.0`.
-- `codex-review` passed and produced structured findings.
-- `claude-review` failed because the local Claude CLI returned an API `401` authentication error.
-- The top-level summary status was `failed`, even though one variant produced useful evidence.
-- `cautilus review variants --help` only showed a generic `[args]` usage line, hiding the standalone `--prompt-file` plus `--schema-file` path.
+- The checked-in root `AGENTS.md` routing case passed after commit `6466341`.
+- The overall instruction-surface summary had `recommendation=reject` because one of five evaluations failed.
+- The failing live observation reported `entryFile=apps/demo/AGENTS.md`.
+- The checked-in `fixtures/instruction-surface/cases.json` case expects `expectedEntryFile=AGENTS.md` and `requiredInstructionFiles=["AGENTS.md","apps/demo/AGENTS.md"]`.
+- `fixtures/instruction-surface/fixture-results.json` expects the same case to load both files.
+- A prior related debug note, `debug-2026-04-19-instruction-surface-routing-expectation.md`, found stale instruction-surface routing expectations after `AGENTS.md` routing semantics changed.
 
 ## Reproduction
 
-1. Use a temp adapter with two `executor_variants`.
-2. Make the first variant write a valid completed review JSON file.
-3. Make the second variant write `Claude API 401 authentication error` to stderr and exit non-zero.
-4. Run `cautilus review variants --repo-root <tmp> --workspace <tmp> --output-dir <tmp>/outputs`.
+1. Run `./bin/cautilus instruction-surface test --repo-root . --adapter-name self-dogfood-instruction-surface`.
+2. Open the emitted `.cautilus/runs/<run>/instruction-surface-summary.json`.
+3. Inspect `evaluations[] | select(.evaluationId=="nested-override-routing")`.
 
 ## Candidate Causes
 
-- Command failures are normalized before considering whether stderr indicates auth or missing-tool readiness.
-- The summary only exposes full variant records, so a passing variant remains nested behind the aggregate failure state.
-- The command registry carries a generic usage string for `review variants`, so topic help cannot reveal the ad-hoc prompt/schema path.
+- The live model incorrectly skipped the root instruction file even though the root file tells it to read nested overrides.
+- The case prompt overemphasizes `taskPath=apps/demo`, making the model treat the nested file as the entry point.
+- The case expectation is too strict if scoped nested files are now allowed to be first entry points.
+- The runner prompt does not make the root-first expectation explicit enough for the bounded instruction-surface task.
 
 ## Hypothesis
 
-If command-failure normalization recognizes local auth and missing-tool signatures as unavailable executor blockers,
-and if the summary lifts passing variant outputs into a small top-level list,
-then a mixed review run should return `status: blocked`, include `unavailable_executor`, set `partialSuccess: true`, and keep the passing variant immediately consumable.
+If the product contract still requires root instruction discovery before nested override loading,
+then the correct fix is to tighten the runner prompt or case wording so `nested-override-routing` consistently reports `AGENTS.md` plus `apps/demo/AGENTS.md`.
+If scoped nested entry is now acceptable, the correct fix is to update the case expectation and fixture result together.
 
 ## Verification
 
-Added an integration smoke test that exercises one passing variant plus one auth-failed variant.
-Added a registry topic-help test that asserts `cautilus review variants --help` shows the `--prompt-file` and `--schema-file` path.
+- `./bin/cautilus instruction-surface evaluate --input fixtures/instruction-surface/input.json --output /tmp/cautilus-instruction-surface-fixture-summary.json` passed, but that fixture input only covers `checked-in-agents-routing`.
+- `fixtures/instruction-surface/cases.json` and `fixtures/instruction-surface/fixture-results.json` both encode the root-plus-nested expectation for `nested-override-routing`.
+- No fix has been applied yet.
 
 ## Root Cause
 
-The Go review-variant normalizer treated every non-zero executor command as `failed` with `command_failed`, regardless of whether the command output showed a local executor readiness problem.
-The summary also lacked a top-level partial-success view, so downstream agents had to inspect each variant to discover useful passing evidence.
+Not yet resolved.
+The current evidence shows a mismatch between live model behavior and checked-in nested override expectations.
 
 ## Seam Risk
 
-- Interrupt ID: review-variant-unavailable-executor
-- Risk Class: none
-- Seam: local executor readiness
-- Disproving Observation: none
-- What Local Reasoning Cannot Prove: exact stderr wording for every provider CLI
+- Interrupt ID: instruction-surface-nested-override-routing
+- Risk Class: external-seam
+- Seam: live model instruction-surface observation
+- Disproving Observation: a fixture-only evaluator pass does not prove the live runner will report root and nested instruction files consistently.
+- What Local Reasoning Cannot Prove: whether future live model runs will consistently choose root-first or scoped-first entry semantics without a prompt or expectation change.
 - Generalization Pressure: monitor
 
 ## Interrupt Decision
 
-- Premortem Required: no
-- Next Step: impl
-- Handoff Artifact: none
+- Premortem Required: yes
+- Next Step: spec
+- Handoff Artifact: charness-artifacts/spec/instruction-surface-nested-override-routing.md
 
 ## Prevention
 
-Keep unavailable executor failures machine-classified separately from review verdicts.
-Keep passing review evidence available at the top level whenever aggregate execution status is not passed.
+Do not treat `instruction-surface test` exit 0 as success when the summary recommendation is `reject`.
+When `AGENTS.md` or routing policy changes, run the full live instruction-surface suite and update nested override expectations or prompts in the same slice when the failure is semantically valid.
+
+## Related Prior Incidents
+
+- `debug-2026-04-19-instruction-surface-routing-expectation.md`: a prior instruction-surface `recommendation=reject` was caused by stale routing expectations after `AGENTS.md` semantics changed.
