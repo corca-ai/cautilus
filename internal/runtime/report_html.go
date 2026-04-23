@@ -24,12 +24,14 @@ func RenderReportHTML(report map[string]any) string {
 	builder.WriteString(renderReportHeader(report))
 	builder.WriteString(renderSelfDogfoodPageTOC([]tocNavEntry{
 		{Anchor: "intent-heading", Label: "Intent", Status: stringOrEmpty(report["recommendation"])},
+		{Anchor: "signals-heading", Label: "Decision Signals", Status: reportDecisionSignalsAggregateStatus(report)},
 		{Anchor: "modes-heading", Label: "Modes", Status: reportModesAggregateStatus(report)},
 		{Anchor: "scenarios-heading", Label: "Scenario Outcomes", Status: reportScenarioBucketsAggregateStatus(report)},
 		{Anchor: "observations-heading", Label: "Command Observations", Status: observationsAggregateStatus(report)},
 		{Anchor: "findings-heading", Label: "Human Review Findings", Status: reportFindingsAggregateStatus(report)},
 	}))
 	builder.WriteString(renderReportIntentPanel(report))
+	builder.WriteString(renderReportDecisionSignalsPanel(report))
 	builder.WriteString(renderReportModesPanel(report))
 	builder.WriteString(renderReportScenarioBucketsPanel(report))
 	builder.WriteString(renderSelfDogfoodObservations(report))
@@ -125,6 +127,35 @@ func renderReportIntentPanel(report map[string]any) string {
 	)
 }
 
+func renderReportDecisionSignalsPanel(report map[string]any) string {
+	reasonCodes := arrayOrEmpty(report["reasonCodes"])
+	warnings := arrayOrEmpty(report["warnings"])
+	return fmt.Sprintf(`
+<section class="panel" aria-labelledby="signals-heading">
+	<h2 id="signals-heading">Decision Signals</h2>
+	<p class="panel-lead">%s</p>
+	<div class="chip-row">
+		<span class="chip" style="background:%s">recommendation: %s</span>
+		<span class="chip neutral">regressed: %d</span>
+		<span class="chip neutral">noisy: %d</span>
+		<span class="chip neutral">improved: %d</span>
+		<span class="chip neutral">warnings: %d</span>
+	</div>
+	%s
+	%s
+</section>`,
+		escapeHTML(reportDecisionPressure(report)),
+		selfDogfoodStatusColor(stringOrEmpty(report["recommendation"])),
+		escapeHTML(selfDogfoodStatusLabel(stringOrEmpty(report["recommendation"]))),
+		len(arrayOrEmpty(report["regressed"])),
+		len(arrayOrEmpty(report["noisy"])),
+		len(arrayOrEmpty(report["improved"])),
+		len(warnings),
+		renderReportReasonCodes(reasonCodes),
+		renderReportWarnings(warnings),
+	)
+}
+
 func renderReportModesPanel(report map[string]any) string {
 	modeSummaries := arrayOrEmpty(report["modeSummaries"])
 	if len(modeSummaries) == 0 {
@@ -160,6 +191,7 @@ func renderReportModesPanel(report map[string]any) string {
 	return `
 <section class="panel" aria-labelledby="modes-heading">
 	<h2 id="modes-heading">Modes</h2>
+	<p class="panel-copy">Mode execution is supporting context unless it carries a blocker or contamination warning that changes the recommendation.</p>
 	<table class="data-table">
 		<thead>
 			<tr>
@@ -173,6 +205,44 @@ func renderReportModesPanel(report map[string]any) string {
 		</tbody>
 	</table>
 </section>`
+}
+
+func renderReportReasonCodes(reasonCodes []any) string {
+	if len(reasonCodes) == 0 {
+		return `<p class="empty">No report-level reason codes recorded.</p>`
+	}
+	chips := make([]string, 0, len(reasonCodes))
+	for _, raw := range reasonCodes {
+		chips = append(chips, fmt.Sprintf(`<span class="chip neutral">%s</span>`, escapeHTML(stringOrEmpty(raw))))
+	}
+	return `<p class="chip-row">` + strings.Join(chips, " ") + `</p>`
+}
+
+func renderReportWarnings(warnings []any) string {
+	if len(warnings) == 0 {
+		return ""
+	}
+	var items strings.Builder
+	items.WriteString(`<ul class="findings">`)
+	for idx, raw := range warnings {
+		warning := asMap(raw)
+		items.WriteString(fmt.Sprintf(`
+		<li class="finding" data-warning-index="%d">
+			<span class="chip" style="background:%s">warning</span>
+			<div class="finding-body">
+				<div class="finding-message">%s</div>
+				<div class="finding-path"><code>%s</code></div>
+			</div>
+		</li>`,
+			idx+1,
+			selfDogfoodStatusColor("concern"),
+			escapeHTML(defaultString(warning["summary"], "")),
+			escapeHTML(defaultString(warning["code"], "")),
+		))
+	}
+	items.WriteString(`
+	</ul>`)
+	return items.String()
 }
 
 var reportScenarioBucketOrder = []struct {
@@ -366,6 +436,29 @@ func reportFindingsAggregateStatus(report map[string]any) string {
 		}
 	}
 	return worst
+}
+
+func reportDecisionSignalsAggregateStatus(report map[string]any) string {
+	if len(arrayOrEmpty(report["warnings"])) > 0 {
+		return "concern"
+	}
+	return reportScenarioBucketsAggregateStatus(report)
+}
+
+func reportDecisionPressure(report map[string]any) string {
+	if len(arrayOrEmpty(report["warnings"])) > 0 {
+		return "contamination or runtime warnings are currently limiting confidence"
+	}
+	if len(arrayOrEmpty(report["regressed"])) > 0 {
+		return "regressed signal is currently carrying the decision"
+	}
+	if len(arrayOrEmpty(report["noisy"])) > 0 {
+		return "noisy signal is currently limiting confidence"
+	}
+	if len(arrayOrEmpty(report["improved"])) > 0 {
+		return "improved signal is currently carrying the decision"
+	}
+	return "no dominant decision signal recorded"
 }
 
 // writeReportHTMLPacketFromJSON is a small helper used by tests to materialize

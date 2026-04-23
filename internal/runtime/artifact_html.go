@@ -773,7 +773,7 @@ func RenderEvidenceBundleHTML(bundle map[string]any) string {
 	builder.WriteString(renderEvidenceHeader(bundle, signals))
 	builder.WriteString(renderSelfDogfoodPageTOC([]tocNavEntry{
 		{Anchor: "summary-heading", Label: "Summary", Status: evidenceSignalsAggregateStatus(signals)},
-		{Anchor: "signals-heading", Label: "Signals", Status: evidenceSignalsAggregateStatus(signals)},
+		{Anchor: "signals-heading", Label: "Signals By Source", Status: evidenceSignalsAggregateStatus(signals)},
 		{Anchor: "guidance-heading", Label: "Guidance", Status: "unknown"},
 		{Anchor: "sources-heading", Label: "Sources", Status: evidenceSourcesAggregateStatus(bundle)},
 	}))
@@ -833,10 +833,17 @@ func renderEvidenceSummaryPanel(bundle map[string]any) string {
 </section>`
 	}
 	var rows strings.Builder
-	for _, key := range []string{"highSeverityCount", "mediumSeverityCount", "lowSeverityCount", "totalCount"} {
+	for _, key := range []string{"signalCount", "highSignalCount", "mediumSignalCount", "lowSignalCount", "totalCount", "highSeverityCount", "mediumSeverityCount", "lowSeverityCount"} {
 		if value, ok := summary[key]; ok {
 			rows.WriteString(fmt.Sprintf(`<dt>%s</dt><dd>%s</dd>`, escapeHTML(key), escapeHTML(defaultString(value, "0"))))
 		}
+	}
+	if sourceKinds := arrayOrEmpty(summary["sourceKinds"]); len(sourceKinds) > 0 {
+		chips := make([]string, 0, len(sourceKinds))
+		for _, raw := range sourceKinds {
+			chips = append(chips, fmt.Sprintf(`<span class="chip neutral">%s</span>`, escapeHTML(stringOrEmpty(raw))))
+		}
+		rows.WriteString(fmt.Sprintf(`<dt>sourceKinds</dt><dd>%s</dd>`, strings.Join(chips, " ")))
 	}
 	return `
 <section class="panel" aria-labelledby="summary-heading">
@@ -853,31 +860,51 @@ func renderEvidenceSignalsPanel(signals []any) string {
 	<p class="empty">No signals recorded.</p>
 </section>`
 	}
+	groupOrder, grouped := groupEvidenceSignalsBySourceKind(signals)
 	var items strings.Builder
-	items.WriteString(`<ul class="findings">`)
-	for _, raw := range signals {
-		signal := asMap(raw)
-		severity := defaultString(signal["severity"], "unknown")
+	for _, sourceKind := range groupOrder {
+		groupSignals := grouped[sourceKind]
 		items.WriteString(fmt.Sprintf(`
-		<li class="finding" data-signal-id="%s">
-			<span class="chip" style="background:%s">%s</span>
-			<div class="finding-body">
-				<div class="finding-message">%s</div>
-				<div class="finding-path"><code>%s</code></div>
+	<article class="variant" data-source-kind-group="%s">
+		<header class="variant-header">
+			<h3>%s</h3>
+			<div class="variant-chips">
+				<span class="chip" style="background:%s">%s</span>
+				<span class="chip neutral">signals: %d</span>
 			</div>
-		</li>`,
-			escapeHTML(defaultString(signal["id"], "")),
-			selfDogfoodStatusColor(evidenceSeverityColor(severity)),
-			escapeHTML(severity),
-			escapeHTML(defaultString(signal["summary"], "")),
-			escapeHTML(defaultString(signal["sourceKind"], "")),
+		</header>
+		<ul class="findings">`,
+			escapeHTML(sourceKind),
+			escapeHTML(sourceKind),
+			selfDogfoodStatusColor(evidenceSourceKindAggregateStatus(groupSignals)),
+			escapeHTML(selfDogfoodStatusLabel(evidenceSourceKindAggregateStatus(groupSignals))),
+			len(groupSignals),
 		))
+		for _, raw := range groupSignals {
+			signal := asMap(raw)
+			severity := defaultString(signal["severity"], "unknown")
+			items.WriteString(fmt.Sprintf(`
+			<li class="finding" data-signal-id="%s">
+				<span class="chip" style="background:%s">%s</span>
+				<div class="finding-body">
+					<div class="finding-message">%s</div>
+					<div class="finding-path"><code>%s</code></div>
+				</div>
+			</li>`,
+				escapeHTML(defaultString(signal["id"], "")),
+				selfDogfoodStatusColor(evidenceSeverityColor(severity)),
+				escapeHTML(severity),
+				escapeHTML(defaultString(signal["summary"], "")),
+				escapeHTML(defaultString(signal["sourceKind"], "")),
+			))
+		}
+		items.WriteString(`
+		</ul>
+	</article>`)
 	}
-	items.WriteString(`
-	</ul>`)
 	return `
 <section class="panel" aria-labelledby="signals-heading">
-	<h2 id="signals-heading">Signals</h2>
+	<h2 id="signals-heading">Signals By Source</h2>
 	` + items.String() + `
 </section>`
 }
@@ -985,6 +1012,23 @@ func evidenceSignalsAggregateStatus(signals []any) string {
 		}
 	}
 	return worst
+}
+
+func evidenceSourceKindAggregateStatus(signals []any) string {
+	return evidenceSignalsAggregateStatus(signals)
+}
+
+func groupEvidenceSignalsBySourceKind(signals []any) ([]string, map[string][]any) {
+	order := make([]string, 0)
+	grouped := map[string][]any{}
+	for _, raw := range signals {
+		sourceKind := defaultString(asMap(raw)["sourceKind"], "unknown")
+		if _, ok := grouped[sourceKind]; !ok {
+			order = append(order, sourceKind)
+		}
+		grouped[sourceKind] = append(grouped[sourceKind], raw)
+	}
+	return order, grouped
 }
 
 func evidenceSourcesAggregateStatus(bundle map[string]any) string {

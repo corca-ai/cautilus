@@ -51,10 +51,12 @@ grep -q '<title>Cautilus Scenario Conversation Review — 2</title>' "$tmpdir/co
 grep -q '<title>Cautilus Scenario Proposals — 1</title>' "$tmpdir/proposals.html"
 grep -q '<title>Cautilus Evidence Bundle — 5 signals</title>' "$tmpdir/evidence.html"
 grep -q 'The operator should understand why a workflow step failed and how to recover.' "$tmpdir/report.html"
+grep -q 'Decision Signals' "$tmpdir/report.html"
 grep -q 'Does the current deterministic self-consumer gate stay honest about what it actually proves for the product repo?' "$tmpdir/review.html"
 grep -q 'review_existing_scenario_refresh' "$tmpdir/conversation-review.html"
 grep -q 'Refresh review-after-retro scenario from recent activity' "$tmpdir/proposals.html"
 grep -q 'Regressed evidence: operator-recovery' "$tmpdir/evidence.html"
+grep -q 'Signals By Source' "$tmpdir/evidence.html"
 ```
 
 ## Bundle And Index Proof

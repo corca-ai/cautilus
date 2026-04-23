@@ -15,10 +15,12 @@ func TestRenderReportHTMLIncludesHeadlineAndTOC(t *testing.T) {
 		`data-status="recommendation"`,
 		`class="toc-nav"`,
 		`href="#intent-heading"`,
+		`href="#signals-heading"`,
 		`href="#modes-heading"`,
 		`href="#scenarios-heading"`,
 		`href="#observations-heading"`,
 		`href="#findings-heading"`,
+		`<h2 id="signals-heading">Decision Signals</h2>`,
 		`<h2 id="modes-heading">Modes</h2>`,
 		`<h2 id="scenarios-heading">Scenario Outcomes</h2>`,
 	} {
@@ -62,6 +64,21 @@ func TestRenderReportHTMLEscapesIntentAndRewritesLinks(t *testing.T) {
 	// Finding paths ending in .spec.md or .json should be linked with a rewritten .html href.
 	if !strings.Contains(rendered, `<a href="docs/specs/operator.html"><code>docs/specs/operator.spec.md</code></a>`) {
 		t.Fatalf("expected markdown finding path rewritten to .html anchor; got:\n%s", rendered)
+	}
+}
+
+func TestRenderReportHTMLRendersReasonCodesAndWarnings(t *testing.T) {
+	packet := sampleReportPacket()
+	rendered := RenderReportHTML(packet)
+	for _, pattern := range []string{
+		`behavior_regression`,
+		`provider_rate_limit_contamination`,
+		`data-warning-index="1"`,
+		`contamination or runtime warnings are currently limiting confidence`,
+	} {
+		if !strings.Contains(rendered, pattern) {
+			t.Fatalf("expected %q in rendered report html", pattern)
+		}
 	}
 }
 
@@ -143,11 +160,18 @@ func sampleReportPacket() map[string]any {
 			map[string]any{"mode": "held_out", "status": "passed", "summary": "held_out succeeded", "durationMs": float64(10000)},
 			map[string]any{"mode": "full_gate", "status": "failed", "summary": "full_gate had a regression", "durationMs": float64(15000)},
 		},
-		"telemetry":   map[string]any{"modeCount": float64(2), "modesWithScenarioResults": float64(1), "durationMs": float64(25000)},
-		"improved":    []any{"operator-guidance-smoke", map[string]any{"scenarioId": "operator-recovery-next-step"}},
-		"regressed":   []any{map[string]any{"scenarioId": "workflow-state-accuracy", "metric": "recall"}},
-		"noisy":       []any{map[string]any{"scenarioId": "chatbot-latency-p95", "reason": "noisy metric"}},
-		"unchanged":   []any{},
+		"reasonCodes": []any{"behavior_regression", "provider_rate_limit_contamination"},
+		"warnings": []any{
+			map[string]any{
+				"code":    "provider_rate_limit_contamination",
+				"summary": "full_gate evidence may be contaminated by provider rate limits (1 matching artifact).",
+			},
+		},
+		"telemetry": map[string]any{"modeCount": float64(2), "modesWithScenarioResults": float64(1), "durationMs": float64(25000)},
+		"improved":  []any{"operator-guidance-smoke", map[string]any{"scenarioId": "operator-recovery-next-step"}},
+		"regressed": []any{map[string]any{"scenarioId": "workflow-state-accuracy", "metric": "recall"}},
+		"noisy":     []any{map[string]any{"scenarioId": "chatbot-latency-p95", "reason": "noisy metric"}},
+		"unchanged": []any{},
 		"humanReviewFindings": []any{
 			map[string]any{"severity": "concern", "message": "operator path slightly ambiguous", "path": "docs/specs/operator.spec.md"},
 			map[string]any{"severity": "pass", "message": "operator summary is explicit", "path": "scripts/run-self-dogfood.mjs"},

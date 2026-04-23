@@ -181,9 +181,11 @@ func TestRenderEvidenceBundleHTMLRendersSignalsAndSources(t *testing.T) {
 		`href="#signals-heading"`,
 		`href="#guidance-heading"`,
 		`href="#sources-heading"`,
+		`data-source-kind-group="report.regressed"`,
 		`data-signal-id="report.regressed:1"`,
 		`data-source-kind="report"`,
 		`<code>report.regressed</code>`,
+		`<h2 id="signals-heading">Signals By Source</h2>`,
 	} {
 		if !strings.Contains(rendered, pattern) {
 			t.Fatalf("expected %q in evidence html", pattern)
