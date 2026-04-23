@@ -5,10 +5,11 @@
 
 ## 발동 모델
 
-패턴 발동은 **사용자-요청 모델**이다.
-premortem / 카운터웨이트 / iterative premortem 등은 사용자가 명시적으로 요청할 때만 발동한다.
-에이전트가 "필요하겠다" 고 판단해서 자발적으로 돌리지 않는다.
-(자동 적용 모델은 두 세션 연속 실패 후 폐기.)
+패턴 발동은 **명시적 범위 모델**이다.
+premortem / 카운터웨이트 / iterative premortem 등은 사용자 요청, repo artifact, handoff, AGENTS 규칙, 또는 현재 slice 의 위험 조건이 범위에 넣을 때 발동한다.
+에이전트가 막연한 불안감만으로 자발적으로 돌리지는 않지만, 범위에 들어온 review gate 는 이미 위임된 것으로 취급한다.
+host 가 subagent spawning 을 막으면 same-agent pass 로 대체하지 말고 제한을 명시적으로 보고한다.
+(무조건 자동 적용 모델은 두 세션 연속 실패 후 폐기.)
 
 ## Premortem 및 카운터웨이트 원칙
 

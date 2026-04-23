@@ -20,7 +20,7 @@ Run date: 2026-04-24
 - The repo intentionally uses semantic line breaks in prose markdown.
 - The README names the canonical install path and probe surfaces for the standalone binary plus bundled skill.
 - Operator acceptance is maintained at `docs/maintainers/operator-acceptance.md`, as declared by the init-repo adapter.
-- `docs/internal/working-patterns.md` treats premortem, counterweight, and iterative premortem as on-demand practices rather than standing gates.
+- `docs/internal/working-patterns.md` treats premortem, counterweight, and iterative premortem as explicit-scope practices triggered by user request, repo artifact, handoff, AGENTS rule, or current-slice risk.
 
 ## Assumptions
 
