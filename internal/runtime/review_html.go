@@ -79,10 +79,12 @@ func RenderReviewSummaryHTML(summary map[string]any) string {
 	builder.WriteString("<title>" + escapeHTML(title) + "</title>\n<style>" + selfDogfoodHTMLStyles + "</style>\n</head>\n<body>\n<main>\n")
 	builder.WriteString(renderReviewSummaryHeader(summary, status, verdict))
 	builder.WriteString(renderSelfDogfoodPageTOC([]tocNavEntry{
+		{Anchor: "consensus-heading", Label: "Consensus", Status: reviewSummaryConsensusAggregateStatus(summary)},
 		{Anchor: "telemetry-heading", Label: "Telemetry", Status: reviewVariantExecutionAggregateStatus(summary)},
 		{Anchor: "variants-heading", Label: "Variants", Status: reviewVariantVerdictAggregateStatus(summary)},
 		{Anchor: "findings-heading", Label: "Flattened Findings", Status: reviewSummaryFindingsAggregateStatus(summary)},
 	}))
+	builder.WriteString(renderReviewSummaryConsensusPanel(summary))
 	builder.WriteString(renderReviewSummaryTelemetryPanel(summary))
 	builder.WriteString(renderReviewSummaryVariantsPanel(summary))
 	builder.WriteString(renderReviewSummaryFindingsPanel(summary))
@@ -341,6 +343,39 @@ func renderReviewSummaryTelemetryPanel(summary map[string]any) string {
 	)
 }
 
+func renderReviewSummaryConsensusPanel(summary map[string]any) string {
+	verdictCounts := reviewSummaryStatusCounts(arrayOrEmpty(summary["variants"]), func(variant map[string]any) string {
+		return stringOrEmpty(asMap(variant["output"])["verdict"])
+	})
+	executionCounts := reviewSummaryStatusCounts(arrayOrEmpty(summary["variants"]), func(variant map[string]any) string {
+		return normalizeReviewExecutionStatus(stringOrEmpty(variant["status"]))
+	})
+	return fmt.Sprintf(`
+<section class="panel" aria-labelledby="consensus-heading">
+	<h2 id="consensus-heading">Consensus</h2>
+	<p class="panel-lead">%s</p>
+	<div class="chip-row">%s %s</div>
+	<dl class="meta-grid">
+		<dt>decision pressure</dt>
+		<dd>%s</dd>
+		<dt>variant count</dt>
+		<dd>%d</dd>
+		<dt>distinct verdicts</dt>
+		<dd>%d</dd>
+		<dt>distinct execution states</dt>
+		<dd>%d</dd>
+	</dl>
+</section>`,
+		escapeHTML(reviewSummaryConsensusHeadline(summary)),
+		reviewSummaryStatusChips("verdict", verdictCounts),
+		reviewSummaryStatusChips("execution", executionCounts),
+		escapeHTML(reviewSummaryDecisionPressure(summary)),
+		len(arrayOrEmpty(summary["variants"])),
+		len(verdictCounts),
+		len(executionCounts),
+	)
+}
+
 func renderReviewSummaryVariantsPanel(summary map[string]any) string {
 	variants := arrayOrEmpty(summary["variants"])
 	if len(variants) == 0 {
@@ -537,6 +572,99 @@ func reviewSummaryFindingsAggregateStatus(summary map[string]any) string {
 		}
 	}
 	return worst
+}
+
+func reviewSummaryConsensusAggregateStatus(summary map[string]any) string {
+	verdictCounts := reviewSummaryStatusCounts(arrayOrEmpty(summary["variants"]), func(variant map[string]any) string {
+		return stringOrEmpty(asMap(variant["output"])["verdict"])
+	})
+	if len(verdictCounts) > 1 {
+		return "concern"
+	}
+	return reviewVariantVerdictAggregateStatus(summary)
+}
+
+func reviewSummaryConsensusHeadline(summary map[string]any) string {
+	verdictCounts := reviewSummaryStatusCounts(arrayOrEmpty(summary["variants"]), func(variant map[string]any) string {
+		return stringOrEmpty(asMap(variant["output"])["verdict"])
+	})
+	executionCounts := reviewSummaryStatusCounts(arrayOrEmpty(summary["variants"]), func(variant map[string]any) string {
+		return normalizeReviewExecutionStatus(stringOrEmpty(variant["status"]))
+	})
+	switch {
+	case len(verdictCounts) == 0:
+		return "No review variants recorded."
+	case len(verdictCounts) == 1 && len(executionCounts) == 1:
+		return "All variants align on both execution state and review verdict."
+	case len(verdictCounts) > 1 && len(executionCounts) == 1:
+		return "Execution aligned, but verdicts diverged across variants."
+	case len(verdictCounts) == 1 && len(executionCounts) > 1:
+		return "Review verdict aligned, but execution states diverged across variants."
+	default:
+		return "Both execution state and review verdict diverged across variants."
+	}
+}
+
+func reviewSummaryDecisionPressure(summary map[string]any) string {
+	verdictCounts := reviewSummaryStatusCounts(arrayOrEmpty(summary["variants"]), func(variant map[string]any) string {
+		return stringOrEmpty(asMap(variant["output"])["verdict"])
+	})
+	if len(verdictCounts) > 1 {
+		return "review verdict disagreement needs inspection before treating the summary as settled"
+	}
+	executionCounts := reviewSummaryStatusCounts(arrayOrEmpty(summary["variants"]), func(variant map[string]any) string {
+		return normalizeReviewExecutionStatus(stringOrEmpty(variant["status"]))
+	})
+	if len(executionCounts) > 1 {
+		return "execution divergence needs inspection before trusting a clean aggregate verdict"
+	}
+	return "variant consensus is currently the dominant review signal"
+}
+
+func reviewSummaryStatusCounts(items []any, statusFn func(map[string]any) string) map[string]int {
+	counts := map[string]int{}
+	for _, raw := range items {
+		status := statusFn(asMap(raw))
+		if status == "" {
+			status = "n/a"
+		}
+		counts[status]++
+	}
+	return counts
+}
+
+func reviewSummaryStatusChips(prefix string, counts map[string]int) string {
+	if len(counts) == 0 {
+		return ""
+	}
+	order := []string{"blocker", "failed", "concern", "defer", "pass", "passed", "unknown", "n/a"}
+	used := map[string]struct{}{}
+	parts := make([]string, 0, len(counts))
+	for _, status := range order {
+		count, ok := counts[status]
+		if !ok {
+			continue
+		}
+		used[status] = struct{}{}
+		parts = append(parts, fmt.Sprintf(`<span class="chip" style="background:%s">%s %s: %d</span>`,
+			selfDogfoodStatusColor(status),
+			escapeHTML(prefix),
+			escapeHTML(selfDogfoodStatusLabel(status)),
+			count,
+		))
+	}
+	for status, count := range counts {
+		if _, ok := used[status]; ok {
+			continue
+		}
+		parts = append(parts, fmt.Sprintf(`<span class="chip" style="background:%s">%s %s: %d</span>`,
+			selfDogfoodStatusColor(status),
+			escapeHTML(prefix),
+			escapeHTML(selfDogfoodStatusLabel(status)),
+			count,
+		))
+	}
+	return strings.Join(parts, " ")
 }
 
 // normalizeReviewExecutionStatus maps the schema's `passed` label onto the

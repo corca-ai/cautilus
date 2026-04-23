@@ -104,6 +104,7 @@ func renderRunIndexSidebar(entries []RunIndexEntry) string {
 	return `
 <section class="panel" aria-labelledby="artifacts-heading">
 	<h2 id="artifacts-heading">Artifacts</h2>
+	<p class="panel-copy">Artifacts are ordered by the intended review flow so a reviewer can move from scenario context into decision artifacts without reconstructing the path by hand.</p>
 	` + items.String() + `
 </section>`
 }
@@ -153,7 +154,8 @@ func WriteRunIndexHTMLForDir(runDir string, outputPath *string) (string, error) 
 
 // DiscoverRunIndexEntries walks runDir (one level deep) and returns index
 // entries for any file whose name matches a known first-class artifact.
-// The returned slice is sorted by Label so the sidebar is stable.
+// The returned slice is sorted by review flow so the sidebar reflects the
+// intended reading order rather than filesystem discovery order.
 func DiscoverRunIndexEntries(runDir string) ([]RunIndexEntry, error) {
 	entries := append([]RunIndexEntry{}, collectRunIndexEntriesInDir(runDir, runDir)...)
 	subdirs, err := os.ReadDir(runDir)
@@ -167,7 +169,14 @@ func DiscoverRunIndexEntries(runDir string) ([]RunIndexEntry, error) {
 		nested := filepath.Join(runDir, child.Name())
 		entries = append(entries, collectRunIndexEntriesInDir(runDir, nested)...)
 	}
-	sort.Slice(entries, func(i, j int) bool { return entries[i].Label < entries[j].Label })
+	sort.Slice(entries, func(i, j int) bool {
+		left := runIndexSortOrder(entries[i].Label)
+		right := runIndexSortOrder(entries[j].Label)
+		if left != right {
+			return left < right
+		}
+		return entries[i].Label < entries[j].Label
+	})
 	return entries, nil
 }
 
@@ -205,6 +214,12 @@ var runIndexArtifactDescriptors = []runIndexArtifactDescriptor{
 				return "n/a"
 			}
 			return "unknown"
+		},
+	},
+	{
+		filename: "conversation-review.json", labelPrefix: "conversation-review", schema: contracts.ScenarioConversationReviewSchema, schemaLabel: contracts.ScenarioConversationReviewSchema,
+		labelStatus: func(packet map[string]any) string {
+			return scenarioConversationThreadsAggregateStatus(arrayOrEmpty(packet["threads"]))
 		},
 	},
 	{
@@ -264,4 +279,31 @@ func collectRunIndexEntriesInDir(runDir, dir string) []RunIndexEntry {
 		})
 	}
 	return result
+}
+
+func runIndexSortOrder(label string) int {
+	prefix := label
+	if idx := strings.Index(prefix, " · "); idx >= 0 {
+		prefix = prefix[:idx]
+	}
+	switch prefix {
+	case "proposals":
+		return 10
+	case "conversation-review":
+		return 20
+	case "report":
+		return 30
+	case "compare":
+		return 40
+	case "review":
+		return 50
+	case "review-summary":
+		return 60
+	case "evidence":
+		return 70
+	case "self-dogfood":
+		return 80
+	default:
+		return 999
+	}
 }

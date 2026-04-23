@@ -81,11 +81,15 @@ func TestRenderReviewSummaryHTMLRendersVariantsAndFindings(t *testing.T) {
 	rendered := RenderReviewSummaryHTML(summary)
 	for _, pattern := range []string{
 		`data-status="reviewVerdict"`,
+		`<h2 id="consensus-heading">Consensus</h2>`,
 		`<h2 id="telemetry-heading">Telemetry</h2>`,
 		`<h2 id="variants-heading">Variants</h2>`,
 		`<h2 id="findings-heading">Flattened Findings</h2>`,
 		`data-variant="codex-review-a"`,
 		`data-variant="codex-review-b"`,
+		`verdict concern: 1`,
+		`verdict pass: 1`,
+		`Execution aligned, but verdicts diverged across variants.`,
 		`verdict: concern`,
 		`verdict: pass`,
 		`execution: pass`,
@@ -127,6 +131,29 @@ func TestWriteReviewSummaryHTMLFromFileWritesNextToInput(t *testing.T) {
 	}
 	if !strings.Contains(string(payload), "Cautilus Review Summary") {
 		t.Fatalf("expected review summary title in output html")
+	}
+}
+
+func TestReviewSummaryConsensusAggregateStatus(t *testing.T) {
+	summary := sampleReviewSummary()
+	if got := reviewSummaryConsensusAggregateStatus(summary); got != "concern" {
+		t.Fatalf("expected concern when verdicts diverge, got %s", got)
+	}
+	summary["variants"] = []any{
+		map[string]any{
+			"id":     "codex-review-a",
+			"status": "passed",
+			"output": map[string]any{"verdict": "pass"},
+		},
+		map[string]any{
+			"id":     "codex-review-b",
+			"status": "passed",
+			"output": map[string]any{"verdict": "pass"},
+		},
+	}
+	summary["reviewVerdict"] = "pass"
+	if got := reviewSummaryConsensusAggregateStatus(summary); got != "pass" {
+		t.Fatalf("expected pass when variants align, got %s", got)
 	}
 }
 

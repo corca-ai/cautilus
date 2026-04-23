@@ -74,6 +74,7 @@ main { max-width: 1120px; margin: 0 auto; padding: 24px 16px 48px; }
 }
 .panel h2 { margin-top: 0; font-size: 16px; text-transform: uppercase; letter-spacing: 0.06em; color: #5a6472; }
 .panel-copy { color: #5a6472; margin-top: 0; }
+.panel-lead { font-size: 15px; margin: 0 0 12px; }
 .intent-text { font-size: 16px; margin: 0 0 16px; }
 .meta-grid {
 	display: grid;
@@ -98,6 +99,7 @@ main { max-width: 1120px; margin: 0 auto; padding: 24px 16px 48px; }
 .variant-header h3 { margin: 0 0 8px; font-size: 15px; }
 .variant-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
 .variant-summary { margin: 8px 0; white-space: pre-wrap; }
+.chip-row { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 12px; }
 .findings { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
 .finding { display: flex; gap: 10px; align-items: flex-start; padding: 8px 10px; background: #f6f8fa; border-radius: 6px; }
 .finding-body { flex: 1; }

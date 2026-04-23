@@ -27,6 +27,7 @@ The current HTML surface should let a reviewer answer questions like:
 
 - What was the intent behind this run?
 - Did the candidate improve, regress, or still need human judgment?
+- Which layer is currently carrying the decision, and which layers are supporting context?
 - Which proposal, finding, or evidence signal should I inspect first?
 - Is this a current run artifact, a published self-dogfood snapshot, or a summary across review variants?
 
@@ -66,6 +67,7 @@ tmpdir=$(mktemp -d)
 grep -q '<title>Cautilus Self-Dogfood — pass</title>' "$tmpdir/self-dogfood.html"
 grep -q '<title>Cautilus Run Index — latest</title>' "$tmpdir/index.html"
 grep -q 'Cautilus should record and surface its own self-dogfood result honestly before operators trust broader consumer runs.' "$tmpdir/self-dogfood.html"
+grep -q 'Artifacts are ordered by the intended review flow' "$tmpdir/index.html"
 ```
 
 ## Review Summary Proof
@@ -79,4 +81,5 @@ tmpdir=$(mktemp -d)
 printf '%s\n' '{"schemaVersion":"cautilus.review_summary.v1","generatedAt":"2026-04-16T00:00:00Z","status":"passed","reviewVerdict":"concern","reasonCodes":["RC_NO_BENCHMARK_EVIDENCE"],"findingsCount":1,"telemetry":{"variantCount":2,"passedVariantCount":2,"failedVariantCount":0,"durationMs":12000},"variants":[{"id":"codex-review-a","status":"passed","durationMs":6000,"output":{"verdict":"concern","summary":"Evidence is promising but shallow.","findings":[{"severity":"concern","message":"needs more held_out evidence","path":"docs/specs/review.spec.md"}]}},{"id":"codex-review-b","status":"passed","durationMs":6000,"output":{"verdict":"pass","summary":"Second reviewer is satisfied.","findings":[]}}],"humanReviewFindings":[{"severity":"concern","message":"needs more held_out evidence","path":"docs/specs/review.spec.md"}]}' > "$tmpdir/review-summary.json"
 ./bin/cautilus review render-variants-summary-html --input "$tmpdir/review-summary.json" --output "$tmpdir/review-summary.html" >/dev/null
 grep -q '<title>Cautilus Review Summary — concern</title>' "$tmpdir/review-summary.html"
+grep -q 'Execution aligned, but verdicts diverged across variants.' "$tmpdir/review-summary.html"
 ```

@@ -9,6 +9,12 @@ import (
 
 func TestDiscoverRunIndexEntriesFindsKnownArtifacts(t *testing.T) {
 	runDir := t.TempDir()
+	if err := writeReportHTMLPacketFromJSON(filepath.Join(runDir, "proposals.json"), sampleScenarioProposals()); err != nil {
+		t.Fatal(err)
+	}
+	if err := writeReportHTMLPacketFromJSON(filepath.Join(runDir, "conversation-review.json"), sampleScenarioConversationReview()); err != nil {
+		t.Fatal(err)
+	}
 	if err := writeReportHTMLPacketFromJSON(filepath.Join(runDir, "report.json"), sampleReportPacket()); err != nil {
 		t.Fatal(err)
 	}
@@ -42,7 +48,7 @@ func TestDiscoverRunIndexEntriesFindsKnownArtifacts(t *testing.T) {
 	for _, entry := range entries {
 		labels = append(labels, entry.Label)
 	}
-	wantLabels := []string{"compare", "report", "review", "review-summary", "self-dogfood · self-dogfood"}
+	wantLabels := []string{"proposals", "conversation-review", "compare", "report", "review", "review-summary", "self-dogfood · self-dogfood"}
 	for _, want := range wantLabels {
 		found := false
 		for _, got := range labels {
@@ -54,6 +60,9 @@ func TestDiscoverRunIndexEntriesFindsKnownArtifacts(t *testing.T) {
 		if !found {
 			t.Fatalf("expected label %q in %v", want, labels)
 		}
+	}
+	if len(entries) < 4 || entries[0].Label != "proposals" || entries[1].Label != "conversation-review" || entries[2].Label != "report" || entries[3].Label != "compare" {
+		t.Fatalf("expected review-flow ordering, got %#v", entries)
 	}
 	// report should be flagged as rendered; others pending.
 	for _, entry := range entries {

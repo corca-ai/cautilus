@@ -15,13 +15,16 @@ func TestRenderCompareArtifactHTMLIncludesBucketsDeltasAndTOC(t *testing.T) {
 	for _, pattern := range []string{
 		`data-status="verdict"`,
 		`class="toc-nav"`,
-		`href="#summary-heading"`,
+		`href="#signal-map-heading"`,
 		`href="#buckets-heading"`,
 		`href="#deltas-heading"`,
+		`href="#reasons-heading"`,
 		`href="#artifacts-heading"`,
 		`data-bucket="improved"`,
 		`data-bucket="regressed"`,
 		`data-delta-key="operator-guidance-smoke"`,
+		`data-reason-index="1"`,
+		`dominant layer`,
 	} {
 		if !strings.Contains(rendered, pattern) {
 			t.Fatalf("expected %q in compare html", pattern)
@@ -226,6 +229,10 @@ func sampleCompareArtifact() map[string]any {
 		"summary":       "The candidate keeps the operator recovery path explicit.",
 		"improved":      []any{"operator-guidance-smoke"},
 		"regressed":     []any{map[string]any{"scenarioId": "workflow-state-accuracy"}},
+		"reasons": []any{
+			"operator-guidance-smoke: recovery wording became easier to follow.",
+			"workflow-state-accuracy: one held-out regression still matters downstream.",
+		},
 		"deltas": []any{
 			map[string]any{"status": "improved", "key": "operator-guidance-smoke", "summary": "Pass rate climbed from 60% to 90%."},
 			map[string]any{"status": "regressed", "key": "workflow-state-accuracy", "summary": "Recall dropped from 0.9 to 0.7."},

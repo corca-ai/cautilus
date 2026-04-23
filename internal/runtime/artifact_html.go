@@ -27,14 +27,16 @@ func RenderCompareArtifactHTML(packet map[string]any) string {
 	builder.WriteString("<title>" + escapeHTML(title) + "</title>\n<style>" + selfDogfoodHTMLStyles + "</style>\n</head>\n<body>\n<main>\n")
 	builder.WriteString(renderCompareHeader(packet, verdict))
 	builder.WriteString(renderSelfDogfoodPageTOC([]tocNavEntry{
-		{Anchor: "summary-heading", Label: "Summary", Status: verdict},
+		{Anchor: "signal-map-heading", Label: "Signal Map", Status: verdict},
 		{Anchor: "buckets-heading", Label: "Scenario Outcomes", Status: compareBucketsAggregateStatus(packet)},
 		{Anchor: "deltas-heading", Label: "Deltas", Status: compareDeltasAggregateStatus(packet)},
+		{Anchor: "reasons-heading", Label: "Threshold Reasons", Status: compareReasonsAggregateStatus(packet)},
 		{Anchor: "artifacts-heading", Label: "Artifact Paths", Status: compareArtifactPathsAggregateStatus(packet)},
 	}))
-	builder.WriteString(renderCompareSummaryPanel(packet))
+	builder.WriteString(renderCompareSignalMapPanel(packet))
 	builder.WriteString(renderCompareBucketsPanel(packet))
 	builder.WriteString(renderCompareDeltasPanel(packet))
+	builder.WriteString(renderCompareReasonsPanel(packet))
 	builder.WriteString(renderCompareArtifactPathsPanel(packet))
 	builder.WriteString(renderCompareFooter(packet))
 	builder.WriteString("\n</main>\n</body>\n</html>\n")
@@ -67,22 +69,56 @@ func renderCompareHeader(packet map[string]any, verdict string) string {
 	<div class="banner-title">Cautilus Compare</div>
 	<div class="banner-status">
 		<span class="chip" data-status="verdict" style="background:%s">verdict: %s</span>
+		<span class="chip neutral">regressed: %d</span>
+		<span class="chip neutral">noisy: %d</span>
+		<span class="chip neutral">improved: %d</span>
 		<span class="banner-meta">generatedAt %s</span>
 	</div>
 </header>`,
 		color,
 		color,
 		escapeHTML(selfDogfoodStatusLabel(verdict)),
+		len(arrayOrEmpty(packet["regressed"])),
+		len(arrayOrEmpty(packet["noisy"])),
+		len(arrayOrEmpty(packet["improved"])),
 		escapeHTML(defaultString(packet["generatedAt"], "n/a")),
 	)
 }
 
-func renderCompareSummaryPanel(packet map[string]any) string {
+func renderCompareSignalMapPanel(packet map[string]any) string {
+	dominantLayer := compareSignalDominantLayer(packet)
+	reasons := arrayOrEmpty(packet["reasons"])
 	return fmt.Sprintf(`
-<section class="panel" aria-labelledby="summary-heading">
-	<h2 id="summary-heading">Summary</h2>
-	<p class="intent-text" data-field="summary">%s</p>
-</section>`, escapeHTML(defaultString(packet["summary"], "n/a")))
+<section class="panel" aria-labelledby="signal-map-heading">
+	<h2 id="signal-map-heading">Signal Map</h2>
+	<p class="panel-lead" data-field="summary">%s</p>
+	<div class="chip-row">
+		<span class="chip" style="background:%s">decision: %s</span>
+		<span class="chip neutral">regressed: %d</span>
+		<span class="chip neutral">noisy: %d</span>
+		<span class="chip neutral">improved: %d</span>
+		<span class="chip neutral">deltas: %d</span>
+		<span class="chip neutral">reasons: %d</span>
+		<span class="chip neutral">artifact paths: %d</span>
+	</div>
+	<dl class="meta-grid">
+		<dt>dominant layer</dt>
+		<dd>%s</dd>
+		<dt>reading order</dt>
+		<dd>scenario outcomes -> deltas -> threshold reasons -> artifact paths</dd>
+	</dl>
+</section>`,
+		escapeHTML(defaultString(packet["summary"], "n/a")),
+		selfDogfoodStatusColor(dominantLayer),
+		escapeHTML(selfDogfoodStatusLabel(dominantLayer)),
+		len(arrayOrEmpty(packet["regressed"])),
+		len(arrayOrEmpty(packet["noisy"])),
+		len(arrayOrEmpty(packet["improved"])),
+		len(arrayOrEmpty(packet["deltas"])),
+		len(reasons),
+		len(arrayOrEmpty(packet["artifactPaths"])),
+		escapeHTML(compareSignalDominantLayerLabel(packet)),
+	)
 }
 
 func renderCompareBucketsPanel(packet map[string]any) string {
@@ -168,6 +204,37 @@ func renderCompareDeltasPanel(packet map[string]any) string {
 </section>`
 }
 
+func renderCompareReasonsPanel(packet map[string]any) string {
+	reasons := arrayOrEmpty(packet["reasons"])
+	if len(reasons) == 0 {
+		return `
+<section class="panel" aria-labelledby="reasons-heading">
+	<h2 id="reasons-heading">Threshold Reasons</h2>
+	<p class="empty">No threshold reasons recorded.</p>
+</section>`
+	}
+	var items strings.Builder
+	items.WriteString(`<ul class="findings">`)
+	for idx, raw := range reasons {
+		items.WriteString(fmt.Sprintf(`
+		<li class="finding" data-reason-index="%d">
+			<span class="chip neutral">reason %d</span>
+			<div class="finding-body"><div class="finding-message">%s</div></div>
+		</li>`,
+			idx+1,
+			idx+1,
+			escapeHTML(stringOrEmpty(raw)),
+		))
+	}
+	items.WriteString(`
+	</ul>`)
+	return `
+<section class="panel" aria-labelledby="reasons-heading">
+	<h2 id="reasons-heading">Threshold Reasons</h2>
+	` + items.String() + `
+</section>`
+}
+
 func renderCompareArtifactPathsPanel(packet map[string]any) string {
 	paths := arrayOrEmpty(packet["artifactPaths"])
 	if len(paths) == 0 {
@@ -239,6 +306,39 @@ func compareArtifactPathsAggregateStatus(packet map[string]any) string {
 		return "n/a"
 	}
 	return "unknown"
+}
+
+func compareReasonsAggregateStatus(packet map[string]any) string {
+	if len(arrayOrEmpty(packet["reasons"])) == 0 {
+		return "n/a"
+	}
+	return compareSignalDominantLayer(packet)
+}
+
+func compareSignalDominantLayer(packet map[string]any) string {
+	if len(arrayOrEmpty(packet["regressed"])) > 0 {
+		return "blocker"
+	}
+	if len(arrayOrEmpty(packet["noisy"])) > 0 {
+		return "concern"
+	}
+	if len(arrayOrEmpty(packet["improved"])) > 0 {
+		return "pass"
+	}
+	return "unknown"
+}
+
+func compareSignalDominantLayerLabel(packet map[string]any) string {
+	switch compareSignalDominantLayer(packet) {
+	case "blocker":
+		return "regressed signal is currently carrying the decision"
+	case "concern":
+		return "noisy signal is currently limiting confidence"
+	case "pass":
+		return "improved signal is currently carrying the decision"
+	default:
+		return "no dominant signal layer recorded"
+	}
 }
 
 // compareDeltaStatusColor maps compare_delta_status_values to the shared palette.
