@@ -263,6 +263,7 @@ export function renderPrompt(evaluation) {
 		"You are being evaluated on whether the current repository instruction surface steers your first routing move honestly.",
 		"Work inside the current repo checkout.",
 		"Do not modify files.",
+		"This is a coding-agent instruction-surface evaluation: root repository instructions are the entry surface, and nested instruction files refine scoped tasks only after the root instructions are considered.",
 		"Do not read general repo docs, README files, or skill files unless the current instruction surface makes them necessary for the first routing decision.",
 		"Before you begin the task, identify the first instruction file you intentionally used as the entry point.",
 		"Only list instruction or supporting files that you actually read before or during the first routing decision.",

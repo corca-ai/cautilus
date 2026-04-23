@@ -6,6 +6,8 @@
 
 This surface is intentionally separate from `skill test` and `skill evaluate`.
 It judges whether repository instruction files steer entry-file selection, progressive disclosure, scoped overrides, and first routing behavior honestly.
+For coding-agent evaluation, root repository instructions are the entry surface.
+Nested instruction files refine scoped tasks after the root policy is considered; they do not replace the root instruction surface as the entry point.
 
 Use `cautilus.instruction_surface_cases.v1` for the checked-in case suite, `cautilus.instruction_surface_inputs.v1` for the observed packet, and `cautilus.instruction_surface_summary.v1` for the summary packet.
 
