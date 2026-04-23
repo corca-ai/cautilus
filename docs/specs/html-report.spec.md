@@ -71,6 +71,8 @@ tmpdir=$(mktemp -d)
 ./bin/cautilus artifacts render-index-html --run-dir ./artifacts/self-dogfood/latest --output "$tmpdir/index.html" >/dev/null
 grep -q '<title>Cautilus Self-Dogfood — pass</title>' "$tmpdir/self-dogfood.html"
 grep -q '<title>Cautilus Run Index — latest</title>' "$tmpdir/index.html"
+grep -q 'Decision Summary' "$tmpdir/self-dogfood.html"
+grep -q 'What happened' "$tmpdir/self-dogfood.html"
 grep -q 'Cautilus should record and surface its own self-dogfood result honestly before operators trust broader consumer runs.' "$tmpdir/self-dogfood.html"
 grep -q 'Artifacts are ordered by the intended review flow' "$tmpdir/index.html"
 ```

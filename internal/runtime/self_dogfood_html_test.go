@@ -10,7 +10,7 @@ import (
 func TestRenderSelfDogfoodHTMLIncludesHeadlineFields(t *testing.T) {
 	summary, report, reviewSummary := sampleSelfDogfoodBundle()
 	rendered := RenderSelfDogfoodHTML(summary, report, reviewSummary)
-	for _, pattern := range []string{`<!DOCTYPE html>`, `<html lang="en">`, `data-status="overallStatus"`, `data-field="reportRecommendation"`, `>defer<`, `>accept-now<`} {
+	for _, pattern := range []string{`<!DOCTYPE html>`, `<html lang="en">`, `Decision Summary`, `What happened`, `data-status="overallStatus"`, `data-field="reportRecommendation"`, `Review recommendation`, `>defer<`, `>accept-now<`} {
 		if !strings.Contains(rendered, pattern) {
 			t.Fatalf("expected %q in rendered html", pattern)
 		}
@@ -52,7 +52,7 @@ func TestWriteSelfDogfoodHTMLWritesIndexNextToLatestBundle(t *testing.T) {
 func TestRenderSelfDogfoodExperimentsHTMLIncludesComparisonRows(t *testing.T) {
 	summary, report := sampleSelfDogfoodExperimentsBundle()
 	rendered := RenderSelfDogfoodExperimentsHTML(summary, report)
-	for _, pattern := range []string{"A/B Comparison", `data-compare-row="deterministic-gate"`, `data-compare-row="exp-a"`, `data-compare-row="exp-b"`} {
+	for _, pattern := range []string{"Decision Summary", "A/B Comparison", `class="data-table responsive-cards"`, `data-compare-row="deterministic-gate"`, `data-compare-row="exp-a"`, `data-compare-row="exp-b"`} {
 		if !strings.Contains(rendered, pattern) {
 			t.Fatalf("expected %q in rendered html", pattern)
 		}
@@ -117,12 +117,37 @@ func TestRenderSelfDogfoodExperimentsHTMLIncludesPageTOC(t *testing.T) {
 	rendered := RenderSelfDogfoodExperimentsHTML(summary, report)
 	for _, pattern := range []string{
 		`class="toc-nav"`,
+		`class="toc-status"`,
 		`href="#intent-heading"`,
 		`href="#compare-heading"`,
 		`href="#experiments-heading"`,
 	} {
 		if !strings.Contains(rendered, pattern) {
 			t.Fatalf("expected %q in rendered html", pattern)
+		}
+	}
+}
+
+func TestRenderSelfDogfoodExperimentsHTMLLinksInspectArtifactsWithoutRewritingRawJSON(t *testing.T) {
+	summary, report := sampleSelfDogfoodExperimentsBundle()
+	rendered := RenderSelfDogfoodExperimentsHTML(summary, report)
+	for _, pattern := range []string{
+		`Inspect`,
+		`href='artifacts/self-dogfood/experiments/runs/run-1/report.json'`,
+		`href='artifacts/self-dogfood/experiments/runs/run-1/experiments/exp-a/review-summary.json'`,
+		`href='artifacts/self-dogfood/experiments/runs/run-1/experiments/exp-b/codex-review.json'`,
+		`Artifact root: <code>artifacts/self-dogfood/experiments</code>`,
+	} {
+		if !strings.Contains(rendered, pattern) {
+			t.Fatalf("expected raw inspect artifact pattern %q in rendered html", pattern)
+		}
+	}
+	for _, stale := range []string{
+		`href="artifacts/self-dogfood/experiments/runs/run-1/report.html"`,
+		`href="artifacts/self-dogfood/experiments/runs/run-1/experiments/exp-b/codex-review.html"`,
+	} {
+		if strings.Contains(rendered, stale) {
+			t.Fatalf("expected raw inspect JSON link not to be rewritten to %q", stale)
 		}
 	}
 }
@@ -310,17 +335,18 @@ func sampleSelfDogfoodExperimentsBundle() (map[string]any, map[string]any) {
 			"overallStatus":        "concern",
 			"reportRecommendation": "defer",
 			"gateRecommendation":   "accept-now",
+			"reportPath":           "artifacts/self-dogfood/experiments/runs/run-1/report.json",
 			"modeTelemetry":        map[string]any{"durationMs": 2400},
 			"experiments": []any{
 				map[string]any{
-					"adapterName": "exp-a", "overallStatus": "pass", "executionStatus": "passed", "findingsCount": 0, "telemetry": map[string]any{"durationMs": 1800},
+					"adapterName": "exp-a", "summaryPath": "artifacts/self-dogfood/experiments/runs/run-1/experiments/exp-a/review-summary.json", "overallStatus": "pass", "executionStatus": "passed", "findingsCount": 0, "telemetry": map[string]any{"durationMs": 1800},
 					"primarySummary": "exp-a is better than exp-b & easier to trust.",
-					"variants":       []any{map[string]any{"id": "codex-review", "executionStatus": "passed", "verdict": "pass", "summary": "exp-a is better than exp-b & easier to trust.", "findingsCount": 0}},
+					"variants":       []any{map[string]any{"id": "codex-review", "executionStatus": "passed", "verdict": "pass", "summary": "exp-a is better than exp-b & easier to trust.", "findingsCount": 0, "outputFile": "artifacts/self-dogfood/experiments/runs/run-1/experiments/exp-a/codex-review.json"}},
 				},
 				map[string]any{
-					"adapterName": "exp-b", "overallStatus": "concern", "executionStatus": "passed", "findingsCount": 2, "telemetry": map[string]any{"durationMs": 2200},
+					"adapterName": "exp-b", "summaryPath": "artifacts/self-dogfood/experiments/runs/run-1/experiments/exp-b/review-summary.json", "overallStatus": "concern", "executionStatus": "passed", "findingsCount": 2, "telemetry": map[string]any{"durationMs": 2200},
 					"primarySummary": "exp-b needs more evidence.",
-					"variants":       []any{map[string]any{"id": "codex-review", "executionStatus": "passed", "verdict": "concern", "summary": "exp-b needs more evidence.", "findingsCount": 2}},
+					"variants":       []any{map[string]any{"id": "codex-review", "executionStatus": "passed", "verdict": "concern", "summary": "exp-b needs more evidence.", "findingsCount": 2, "outputFile": "artifacts/self-dogfood/experiments/runs/run-1/experiments/exp-b/codex-review.json"}},
 				},
 			},
 		}, map[string]any{

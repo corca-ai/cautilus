@@ -258,8 +258,8 @@ Tier 3이 "CLI가 돌아가는가"라면 이 tier는 "리드미의 각 문장이
 
 | # | 대상 | 확인 방법 | 인간 판단 기준 |
 |---|---|---|---|
-| 6.13 | Self-dogfood latest | 브라우저에서 `artifacts/self-dogfood/latest/index.html` 열기 | `gateRecommendation`, `reportRecommendation`, 주요 review 판정이 한 화면에서 인지 가능 |
-| 6.14 | Self-dogfood experiments | `artifacts/self-dogfood/experiments/latest/index.html` 열기 | 실험별 A/B 비교가 side-by-side로 읽힘 |
+| 6.13 | Self-dogfood latest | 브라우저에서 `artifacts/self-dogfood/latest/index.html` 열기 | Decision Summary 가 먼저 보이고 `what happened / why it matters / what to inspect next` 가 raw JSON field 보다 먼저 인지 가능 |
+| 6.14 | Self-dogfood experiments | `artifacts/self-dogfood/experiments/latest/index.html` 열기 | 전체 blocker/pass, deterministic gate, review recommendation 의 차이가 상단에서 설명되고 실패 experiment 의 inspect link 로 바로 이동 가능 |
 | 6.15 | Mode evaluate report HTML | `cautilus report render-html --input <report.json>` 실행 후 `report.html` 열기 | intent / decision signals / modes / scenario outcomes / command observations / human review findings 가 TOC 와 함께 한 페이지에서 읽히고 contamination warning 이 recommendation 보다 먼저 눈에 들어옴 |
 | 6.16 | Review packet HTML | `cautilus review render-html --input <review.json>` 실행 후 `review.html` 열기 | intent / review path / comparison questions / human review prompts / artifactFiles 가 연결 탐색 가능하고 reviewer 가 무엇부터 읽어야 하는지 먼저 보임 |
 | 6.17 | Review variants summary HTML | `cautilus review render-variants-summary-html --input <review-summary.json>` 실행 후 `review-summary.html` 열기 | overall verdict / consensus-or-divergence / telemetry / variant별 execution + verdict + findings / reasonCodes 가 구조적으로 읽힘 |
