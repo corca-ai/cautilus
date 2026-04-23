@@ -70,6 +70,10 @@ Use these high-signal routes first:
   Treat implementation sketches as candidate direction, not as the core payload of the issue.
 - When adding a new runtime surface, add at least one executable test.
 - While implementing, any bug, error, regression, or unexpected behavior routes to `charness:debug` before further fixes.
+- Premortem, counterweight, and bounded fresh-eye review are on-demand gates, not standing requirements.
+  When one is explicitly in scope or required by a repo artifact, treat the review as already delegated by the repo contract.
+  Do not wait for a second user message asking for delegation.
+  If the host blocks subagent spawning, report that restriction explicitly instead of substituting an unlabelled same-agent pass.
 
 ## Before Stopping on a Spec-Driven Slice
 
