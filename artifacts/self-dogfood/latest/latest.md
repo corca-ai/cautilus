@@ -1,7 +1,7 @@
 # Cautilus Self-Dogfood
 
-- generatedAt: 2026-04-22T12:21:38.833Z
-- runId: 2026-04-22T12-20-49.278Z
+- generatedAt: 2026-04-23T22:04:26.934Z
+- runId: 2026-04-23T22-03-45.008Z
 - baselineRef: origin/main
 - overallStatus: pass
 - reportRecommendation: accept-now
@@ -20,7 +20,7 @@ Cautilus should record and surface its own self-dogfood result honestly before o
 ## Review Variants
 
 - codex-review: execution=passed, verdict=pass, findings=3
-  summary: The current packet supports the narrower operator-facing claim: the self-dogfood run completed, the deterministic gate passed, and the publication flow is explicitly scoped to recording and surfacing that result without claiming broader validation. I found no evidence in the current report packet that the bundle overstates what this run proved.
+  summary: The current report packet supports the narrow operator-facing claim: it records the self-dogfood run, exposes the deterministic gate recommendation, and appears to publish the folded operator recommendation from the run status. The only evidence available here is the current report packet and related product artifacts, and that is enough to support accept-now for this intent.
 
 ## Artifacts
 
