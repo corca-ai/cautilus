@@ -9,6 +9,7 @@ export const PHASES = [
 	{ id: "lint:archetypes", label: "lint · archetypes" },
 	{ id: "lint:contracts", label: "lint · contracts" },
 	{ id: "lint:links", label: "lint · links" },
+	{ id: "lint:skill-disclosure", label: "lint · skill disclosure" },
 	{ id: "lint:go", label: "lint · golangci-lint" },
 	{ id: "vet:go", label: "lint · go vet" },
 	{ id: "security:govulncheck", label: "security · govulncheck" },

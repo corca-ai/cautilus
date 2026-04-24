@@ -39,6 +39,7 @@ test("PHASES covers every npm run verify sub-phase", () => {
 		"lint:archetypes",
 		"lint:contracts",
 		"lint:links",
+		"lint:skill-disclosure",
 		"lint:go",
 		"vet:go",
 		"security:govulncheck",

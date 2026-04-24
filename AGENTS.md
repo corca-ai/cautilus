@@ -74,6 +74,12 @@ Use these high-signal routes first:
 - When adding a new runtime surface, add at least one executable test.
 - While implementing, any bug, error, regression, or unexpected behavior routes to `charness:debug` before further fixes.
 - When changing the bundled `skills/cautilus/` surface or behavior-steering references, freeze the current consumer intent before broad edits by deciding whether reviewed dogfood, maintained evaluator scenarios, or checked-in scenario review proof will carry the change.
+- Treat `Cautilus` as a CLI plus bundled-skill product surface when reviewing skill, plugin, install, or release changes.
+  The repo-local quality adapter owns the concrete probe list; do not make this a generic release ritual for repos that do not declare the same product shape.
+- For `skills/cautilus/`, `plugins/cautilus/skills/cautilus/`, plugin metadata, install, or command-discovery changes, run a quality pass that checks progressive disclosure between the bundled skill and the binary.
+  The skill should own routing, sequencing, guardrails, and decision boundaries; the binary should own broad command discovery, help text, scenario catalogs, packet examples, install smoke, and doctor/readiness details.
+- When a quality or release review asks for evaluator, review, CLI-discovery, or agent-surface proof, verify that the selected adapter can actually run that surface before treating the gate as available.
+  If the adapter cannot run it, fix the adapter or record an explicit waiver before release.
 - Premortem, counterweight, and bounded fresh-eye review are on-demand gates, not standing requirements.
   When one is explicitly in scope or required by a repo artifact, treat the review as already delegated by the repo contract.
   Do not wait for a second user message asking for delegation.
