@@ -17,6 +17,9 @@ This repo is the standalone product boundary for `Cautilus`.
   This is so fixed-pattern assertions in specs cannot be broken by incidental wrap positions and so prose edits produce clean sentence-level diffs.
   Applies to all `.md` files except `docs/specs/*.md` (tables plus executable patterns), `docs/internal/handoff.md`, and `docs/maintainers/operator-acceptance.md`.
   Code fences, tables, and YAML blocks are never reflowed.
+- Treat `charness-artifacts/` changes as repo state.
+  Commit meaningful review, debug, and release artifacts so other sessions inherit the evidence.
+  When canonical content has not changed, current-pointer helpers such as `latest.md` should no-op instead of emitting timestamp-only diffs.
 
 ## Product Intent
 
@@ -46,21 +49,15 @@ This repo is the standalone product boundary for `Cautilus`.
 
 ## Skill Routing
 
-Prefer installed charness public skills before improvising a repo-local workflow.
-When a request explicitly names a charness skill, route to that named skill first.
-Keep this section intentionally non-exhaustive so `AGENTS.md` stays stable as the installed charness skill catalog changes.
-For task-oriented sessions, call the shared/public charness skill `find-skills` once at startup before broader exploration.
-If the current prompt already provides the exact named skill body to use, treat that as the startup routing source and do not add a redundant lookup.
-Use the `find-skills` inventory as the default map of installed public skills, support skills, synced support surfaces, and integrations.
-Use these high-signal routes first:
+For task-oriented sessions in this repo, call the shared/public charness skill `find-skills` once at startup before broader exploration.
 
-- unclear skill choice, named support/helper, or hidden capability lookup -> shared/public charness skill `find-skills`
-- external source fetch (Slack thread, Notion page, Google Docs, GitHub content, arbitrary URL) -> `gather`
-- bug, error, regression, or unexpected behavior investigation -> `debug`
-- code, config, test, or operator-facing artifact implementation -> `impl`
-- repo quality posture, gates, test confidence, security, or operability review -> `quality`
-- next-session pickup, baton pass, or handoff artifact refresh -> `handoff`
-- new or partially initialized repo operating surface -> `init-repo`
+Use its capability inventory as the default map of installed public skills, support skills, synced support surfaces, and integrations.
+
+After that bootstrap pass, choose the durable work skill that best matches the request from the installed charness surface.
+
+Validation-shaped closeout or operator reading test requests go through `quality` validation recommendations before HITL or same-agent manual review.
+
+Keep this block short. Detailed routing belongs in installed skill metadata and `find-skills` output, not in a long checked-in catalog.
 
 ## Working Rules
 
@@ -81,6 +78,7 @@ Use these high-signal routes first:
 - When a quality or release review asks for evaluator, review, CLI-discovery, or agent-surface proof, verify that the selected adapter can actually run that surface before treating the gate as available.
   If the adapter cannot run it, fix the adapter or record an explicit waiver before release.
 - Premortem, counterweight, and bounded fresh-eye review are on-demand gates, not standing requirements.
+  Task-completing `init-repo` and `quality` review runs count as explicitly in scope.
   When one is explicitly in scope or required by a repo artifact, treat the review as already delegated by the repo contract.
   Do not wait for a second user message asking for delegation.
   If the host blocks subagent spawning, stop and report that restriction explicitly instead of substituting a same-agent pass.
