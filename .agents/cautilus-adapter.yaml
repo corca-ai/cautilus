@@ -7,10 +7,21 @@ baseline_options:
 required_prerequisites:
   - install local dependencies with npm install before running evaluation
   - install the checked-in git hooks with npm run hooks:install before relying on maintainer-local checks
+review_timeout_ms: 30000
 preflight_commands:
   - npm run hooks:check
 full_gate_command_templates:
   - npm run verify
+executor_variants:
+  - id: codex-root-review
+    tool: codex_exec
+    purpose: bounded review of whether the root standing gate stays honest
+    command_template: CAUTILUS_REVIEW_CODEX_MODEL=gpt-5.4-mini CAUTILUS_REVIEW_CODEX_REASONING_EFFORT=low bash scripts/agent-runtime/run-review-variant.sh --backend codex_exec --workspace {candidate_repo} --prompt-file {prompt_file} --schema-file {schema_file} --output-file {output_file}
+    required_prerequisites:
+      - generate a current report packet before review variants
+    safety_notes:
+      - judge only the current report packet and listed product files
+      - do not treat named self-dogfood adapters as proof for the root standing gate
 artifact_paths:
   - README.md
   - docs/evaluation-process.md
@@ -21,3 +32,4 @@ comparison_questions:
 human_review_prompts:
   - id: operator
     prompt: Where would an operator still conclude that the root standing gate overclaims beyond npm run verify and its listed product artifacts?
+default_schema_file: fixtures/review/review-verdict.schema.json
