@@ -3370,7 +3370,6 @@ func TestCLIOptimizeSearchRunConsumesMultipleGenerations(t *testing.T) {
 			"behaviorSurface": cautilusruntime.BehaviorSurfaces["OPERATOR_BEHAVIOR"],
 		},
 		"optimizer": map[string]any{
-			"kind":   "reflection",
 			"budget": "medium",
 			"plan": map[string]any{
 				"evidenceLimit":        3,
@@ -3632,7 +3631,6 @@ func TestCLIOptimizeSearchRunFallsBackWhenFinalFullGateRejectsLeader(t *testing.
 			"behaviorSurface": cautilusruntime.BehaviorSurfaces["OPERATOR_BEHAVIOR"],
 		},
 		"optimizer": map[string]any{
-			"kind":   "reflection",
 			"budget": "light",
 			"plan": map[string]any{
 				"evidenceLimit":        3,
@@ -3804,7 +3802,6 @@ printf '%%s\n' '%s' > "$out"
 			"behaviorSurface": cautilusruntime.BehaviorSurfaces["OPERATOR_BEHAVIOR"],
 		},
 		"optimizer": map[string]any{
-			"kind":   "reflection",
 			"budget": "light",
 			"plan": map[string]any{
 				"evidenceLimit":        3,
@@ -4043,7 +4040,6 @@ func TestCLIOptimizeSearchRunReusesFrontierPromotionReviewBeforeFinalSelection(t
 			"behaviorSurface": cautilusruntime.BehaviorSurfaces["OPERATOR_BEHAVIOR"],
 		},
 		"optimizer": map[string]any{
-			"kind":   "reflection",
 			"budget": "medium",
 			"plan": map[string]any{
 				"evidenceLimit":        3,
@@ -4327,7 +4323,6 @@ func TestCLIOptimizeSearchRunReinjectsFrontierPromotionReviewFeedbackIntoNextMut
 			"behaviorSurface": cautilusruntime.BehaviorSurfaces["OPERATOR_BEHAVIOR"],
 		},
 		"optimizer": map[string]any{
-			"kind":   "reflection",
 			"budget": "medium",
 			"plan": map[string]any{
 				"evidenceLimit":        3,
@@ -4660,7 +4655,6 @@ func TestCLIOptimizeSearchRunRecordsMutationParentEligibilityAcrossRepairWindow(
 			"behaviorSurface": cautilusruntime.BehaviorSurfaces["OPERATOR_BEHAVIOR"],
 		},
 		"optimizer": map[string]any{
-			"kind":   "reflection",
 			"budget": "medium",
 			"plan": map[string]any{
 				"evidenceLimit":        3,
@@ -4964,7 +4958,6 @@ func TestCLIOptimizeSearchRunSynthesizesComplementaryMergeCandidate(t *testing.T
 			"behaviorSurface": cautilusruntime.BehaviorSurfaces["OPERATOR_BEHAVIOR"],
 		},
 		"optimizer": map[string]any{
-			"kind":   "reflection",
 			"budget": "medium",
 			"plan": map[string]any{
 				"evidenceLimit":        3,
@@ -5288,7 +5281,6 @@ func TestCLIOptimizeSearchRunSynthesizesMultiGenerationMergeCandidate(t *testing
 			"behaviorSurface": cautilusruntime.BehaviorSurfaces["OPERATOR_BEHAVIOR"],
 		},
 		"optimizer": map[string]any{
-			"kind":   "reflection",
 			"budget": "medium",
 			"plan": map[string]any{
 				"evidenceLimit":        4,

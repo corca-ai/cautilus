@@ -15,7 +15,6 @@
       "behaviorSurface": "operator_behavior"
     },
     "optimizer": {
-      "kind": "reflection",
       "budget": "light",
       "plan": {
         "evidenceLimit": 3,

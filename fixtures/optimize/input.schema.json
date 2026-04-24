@@ -37,19 +37,10 @@
     "optimizer": {
       "type": "object",
       "required": [
-        "kind",
         "budget",
         "plan"
       ],
       "properties": {
-        "kind": {
-          "type": "string",
-          "enum": [
-            "repair",
-            "reflection",
-            "history_followup"
-          ]
-        },
         "budget": {
           "type": "string",
           "enum": [

@@ -178,7 +178,7 @@ func TestGenerateOptimizeProposalAddsPassingSimplificationForRuntimeChange(t *te
 		"repoRoot":           ".",
 		"optimizationTarget": "prompt",
 		"intentProfile":      report["intentProfile"],
-		"optimizer":          buildOptimizerPlan("repair", "medium"),
+		"optimizer":          buildOptimizerPlan("medium"),
 		"reportFile":         "report.json",
 		"report":             report,
 		"runtimeContext":     report["runtimeContext"],

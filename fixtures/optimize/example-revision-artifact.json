@@ -38,7 +38,6 @@
       ]
     },
     "optimizer": {
-      "kind": "reflection",
       "budget": "medium",
       "plan": {
         "evidenceLimit": 5,
@@ -219,7 +218,6 @@
     ]
   },
   "optimizer": {
-    "kind": "reflection",
     "budget": "medium",
     "plan": {
       "evidenceLimit": 5,

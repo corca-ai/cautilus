@@ -11,7 +11,6 @@ import {
 	OPTIMIZE_SEARCH_RESULT_SCHEMA,
 } from "./contract-versions.mjs";
 
-const OPTIMIZER_KINDS = ["repair", "reflection", "history_followup"];
 const OPTIMIZER_BUDGETS = {
 	light: {
 		evidenceLimit: 3,
@@ -32,11 +31,13 @@ const OPTIMIZER_BUDGETS = {
 		historySignalLimit: 4,
 	},
 };
-const OPTIMIZER_SOURCE_PRIORITY = {
-	repair: ["report.regressed", "review.finding", "report.noisy", "scenario_history", "report.improved"],
-	reflection: ["review.finding", "report.noisy", "report.regressed", "scenario_history", "report.improved"],
-	history_followup: ["scenario_history", "report.regressed", "review.finding", "report.noisy", "report.improved"],
-};
+const OPTIMIZE_EVIDENCE_SOURCE_PRIORITY = [
+	"report.regressed",
+	"report.noisy",
+	"review.finding",
+	"scenario_history",
+	"report.improved",
+];
 const SEVERITY_PRIORITY = {
 	blocker: 0,
 	high: 1,
@@ -147,7 +148,6 @@ function normalizeSeverity(value) {
 }
 
 function normalizeOptimizer(inputOptimizer) {
-	const kind = OPTIMIZER_KINDS.includes(inputOptimizer?.kind) ? inputOptimizer.kind : "repair";
 	const budget = Object.prototype.hasOwnProperty.call(OPTIMIZER_BUDGETS, inputOptimizer?.budget)
 		? inputOptimizer.budget
 		: "medium";
@@ -155,7 +155,7 @@ function normalizeOptimizer(inputOptimizer) {
 		...OPTIMIZER_BUDGETS[budget],
 		...(inputOptimizer?.plan && typeof inputOptimizer.plan === "object" ? inputOptimizer.plan : {}),
 	};
-	return { kind, budget, plan };
+	return { budget, plan };
 }
 
 function gatherReviewFindings(reviewSummary, reviewVariantLimit) {
@@ -246,11 +246,10 @@ function buildEvidenceUniverse(packet, optimizer) {
 	];
 }
 
-function rankEvidence(evidence, optimizerKind) {
-	const sourcePriority = OPTIMIZER_SOURCE_PRIORITY[optimizerKind] || OPTIMIZER_SOURCE_PRIORITY.repair;
+function rankEvidence(evidence) {
 	return [...evidence].sort((left, right) => {
-		const leftSourceRank = sourcePriority.indexOf(left.source);
-		const rightSourceRank = sourcePriority.indexOf(right.source);
+		const leftSourceRank = OPTIMIZE_EVIDENCE_SOURCE_PRIORITY.indexOf(left.source);
+		const rightSourceRank = OPTIMIZE_EVIDENCE_SOURCE_PRIORITY.indexOf(right.source);
 		if (leftSourceRank !== rightSourceRank) {
 			return leftSourceRank - rightSourceRank;
 		}
@@ -283,7 +282,7 @@ function buildPrioritizedEvidence(packet, optimizer) {
 	}
 	return {
 		evidenceUniverse,
-		prioritizedEvidence: rankEvidence(evidenceUniverse, optimizer.kind).slice(0, optimizer.plan.evidenceLimit),
+		prioritizedEvidence: rankEvidence(evidenceUniverse).slice(0, optimizer.plan.evidenceLimit),
 	};
 }
 
@@ -463,7 +462,7 @@ function resolveProposalIntentProfile(packet) {
 function buildProposalRationale(decision, optimizer, evidence) {
 	return decision === "hold"
 		? "Current evidence does not justify another bounded revision."
-		: `The next revision is bounded by ${countHighSignalEvidence(evidence)} high-signal issue(s) selected under the ${optimizer.budget} ${optimizer.kind} plan.`;
+		: `The next revision is bounded by ${countHighSignalEvidence(evidence)} high-signal issue(s) selected under the ${optimizer.budget} budget plan.`;
 }
 
 function buildProposalFollowUpChecks(decision) {

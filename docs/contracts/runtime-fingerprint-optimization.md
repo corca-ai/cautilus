@@ -48,9 +48,9 @@ Runtime wrappers and adapter flows may also pass `priorEvidence` and `runtimePol
   This is a common selection objective, not a separate optimizer kind.
 - A model-runtime change may unlock a passing simplification pass when the existing tests still pass.
   It should not directly auto-edit consumer-owned prompts, skills, or instruction files.
-- `repair`, `reflection`, and `history_followup` should not be treated as a clean long-term user-facing taxonomy.
-  They currently behave more like evidence-priority presets than distinct optimizer concepts.
-  During migration, `optimizer.kind` may remain as a compatibility alias, but `revisionReason`, `evidenceFocus`, `mutation`, and `selectionObjective` are the canonical conceptual axes when present.
+- `optimizer.kind` has been removed from the user-facing optimize surface.
+  The previous `repair`, `reflection`, and `history_followup` presets resolved to identical evidence priority in practice and added no behavioral distinction.
+  `revisionReasons` and `evidenceFocus` are now derived from the evidence shape itself and surfaced in the proposal packet.
 
 ## Runtime Fingerprint Shape
 
@@ -120,7 +120,7 @@ Default runtime-context severity:
 
 ## Optimize Contract
 
-Optimize should separate concepts that the current `optimizer.kind` mixes together:
+The optimize packet separates four conceptual axes that were previously collapsed under a single `optimizer.kind` selector:
 
 - `revisionReason`: why a revision is considered
 - `evidenceFocus`: which evidence source should receive priority
@@ -212,8 +212,6 @@ Model-change-driven optimize suggestions should preserve:
 - multi-target simplification across coupled skill files and instruction surfaces
 - automatic candidate application after tests pass
 - automatic comparison evidence selection from active-run state, scenario history, or deployment evidence
-- retiring `optimizer.kind` from the user-facing CLI after compatibility aliases are no longer needed
-
 ## Deliberately Not Doing
 
 - Do not add `simplification` as a fourth optimizer kind in the first design.
@@ -244,18 +242,11 @@ Act before ship:
 
 Bundle anyway:
 
-- Keep `optimizer.kind` as a compatibility alias while new conceptual axes are introduced.
-  Do not let it remain the only canonical place for revision reason and evidence focus.
 - Keep runtime-context reason codes distinct from behavior-outcome reason codes.
 - State that `passing_simplification` is a reason to consider a revision, while shorter-target preference is a selection objective.
 - State that `model_runtime_changed` can enable a simplification pass, but does not imply simplification is safe.
 - Define warning versus context note in operator terms.
 - Treat pinned mismatch as a workflow block for skill and instruction-surface summaries.
-
-Over-worry:
-
-- Renaming `reflection` immediately is not required.
-  The first slice can preserve the compatibility alias while the cleaner axes become canonical.
 
 ## First Implementation Slice
 

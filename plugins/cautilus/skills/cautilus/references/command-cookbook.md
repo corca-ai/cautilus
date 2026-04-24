@@ -125,7 +125,6 @@ cautilus optimize prepare-input \
   --review-summary /tmp/cautilus-review/review-summary.json \
   --history-file /tmp/cautilus-history/scenario-history.snapshot.json \
   --target prompt \
-  --optimizer reflection \
   --budget medium
 
 cautilus optimize search prepare-input \

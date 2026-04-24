@@ -21,7 +21,6 @@ This makes the proposal less reproducible than the surrounding evaluation packet
 
 This slice adds a small DSPy-inspired control surface without importing a DSPy runtime:
 
-- a declared optimizer kind
 - a declared bounded budget
 - a materialized trial plan derived from that budget
 - proposal telemetry that explains how much evidence was seen, selected, and converted into the next bounded revision brief
@@ -74,9 +73,10 @@ The packet should include:
 - optional `cautilus.scenario_history.v1`
 - product-owned objective and guardrail constraints
 - optimizer configuration
-  - `kind`: `repair`, `reflection`, or `history_followup`
   - `budget`: `light`, `medium`, or `heavy`
   - `plan`: bounded limits derived from the budget, such as evidence and review consumption caps
+
+Revision reasons and evidence focus are derived from the evidence shape itself, not from a user-selected optimizer kind.
 
 Current surface:
 
@@ -86,7 +86,6 @@ cautilus optimize prepare-input \
   --review-summary /tmp/cautilus-review/review-summary.json \
   --history-file /tmp/cautilus-history/scenario-history.snapshot.json \
   --target prompt \
-  --optimizer reflection \
   --budget medium
 ```
 
@@ -129,7 +128,7 @@ cautilus optimize build-artifact \
 
 ## Success Criteria
 
-- `optimize prepare-input` can declare optimizer kind and budget explicitly.
+- `optimize prepare-input` can declare optimizer budget explicitly.
 - `optimize prepare-input` keeps a shared behavior-intent profile above raw prompt or adapter mechanics.
 - The input packet materializes a bounded plan instead of leaving budget behavior implicit.
 - `optimize propose` records optimizer telemetry that explains why the final revision brief is bounded the way it is.
@@ -138,7 +137,7 @@ cautilus optimize build-artifact \
 
 ## Acceptance Checks
 
-- `cautilus optimize prepare-input --report-file ./fixtures/reports/report-input.json --target prompt --optimizer repair --budget light`
+- `cautilus optimize prepare-input --report-file ./fixtures/reports/report-input.json --target prompt --budget light`
 - `cautilus optimize propose --input ./fixtures/optimize/example-input.json`
 - `cautilus optimize build-artifact --proposal-file ./fixtures/optimize/example-proposal.json --input-file ./fixtures/optimize/example-input.json`
 - `node --test ./scripts/agent-runtime/optimize-flow.test.mjs`

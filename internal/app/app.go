@@ -413,7 +413,6 @@ type optimizePrepareArgs struct {
 	historyFile   *string
 	target        string
 	targetFile    *string
-	optimizer     string
 	budget        string
 	output        *string
 }
@@ -1373,7 +1372,7 @@ func handleOptimizePrepareInput(repoRoot string, cwd string, args []string, stdo
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
-	packet, err := runtime.BuildOptimizeInput(options.repoRoot, options.reportFile, options.reviewSummary, options.historyFile, options.target, options.targetFile, options.optimizer, options.budget, activeRunDir, time.Now())
+	packet, err := runtime.BuildOptimizeInput(options.repoRoot, options.reportFile, options.reviewSummary, options.historyFile, options.target, options.targetFile, options.budget, activeRunDir, time.Now())
 	if err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
@@ -2345,10 +2344,9 @@ func parseEvidencePrepareArgs(args []string, cwd string) (*evidencePrepareArgs, 
 
 func parseOptimizePrepareArgs(args []string, cwd string) (*optimizePrepareArgs, error) {
 	options := &optimizePrepareArgs{
-		repoRoot:  cwd,
-		target:    "prompt",
-		optimizer: "repair",
-		budget:    "medium",
+		repoRoot: cwd,
+		target:   "prompt",
+		budget:   "medium",
 	}
 	for index := 0; index < len(args); index++ {
 		arg := args[index]
@@ -2401,16 +2399,6 @@ func parseOptimizePrepareArgs(args []string, cwd string) (*optimizePrepareArgs, 
 			index = next
 			resolved := resolvePath(cwd, value)
 			options.targetFile = &resolved
-		case "--optimizer":
-			value, next, err := requiredValue(args, index, arg)
-			if err != nil {
-				return nil, err
-			}
-			index = next
-			if _, ok := map[string]struct{}{"repair": {}, "reflection": {}, "history_followup": {}}[value]; !ok {
-				return nil, fmt.Errorf("--optimizer must be one of: repair, reflection, history_followup")
-			}
-			options.optimizer = value
 		case "--budget":
 			value, next, err := requiredValue(args, index, arg)
 			if err != nil {

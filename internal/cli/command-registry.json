@@ -308,7 +308,7 @@
       "path": ["optimize", "prepare-input"],
       "group": "results",
       "usage": "cautilus optimize prepare-input [args]",
-      "example": "cautilus optimize prepare-input --report-file /tmp/cautilus-mode/report.json --review-summary /tmp/cautilus-review/review-summary.json --history-file /tmp/cautilus-history/scenario-history.snapshot.json --target prompt --optimizer reflection --budget medium"
+      "example": "cautilus optimize prepare-input --report-file /tmp/cautilus-mode/report.json --review-summary /tmp/cautilus-review/review-summary.json --history-file /tmp/cautilus-history/scenario-history.snapshot.json --target prompt --budget medium"
     },
     {
       "path": ["optimize", "search", "prepare-input"],

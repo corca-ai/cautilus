@@ -134,7 +134,7 @@ placeholder drift + specdown 기반 spec source guard) + Go race test + standing
 
 | # | 명령 | 통과 조건 | 실행자 |
 |---|---|---|---|
-| 3.16 | `cautilus optimize prepare-input --report-file ./fixtures/reports/report-input.json --target prompt --optimizer repair --budget light` | JSON 출력, exit 0 | 기계적 |
+| 3.16 | `cautilus optimize prepare-input --report-file ./fixtures/reports/report-input.json --target prompt --budget light` | JSON 출력, exit 0 | 기계적 |
 | 3.17 | `cautilus optimize propose --input ./fixtures/optimize/example-input.json` | JSON 출력, exit 0 | 기계적 |
 | 3.18 | `cautilus optimize build-artifact --proposal-file ./fixtures/optimize/example-proposal.json --input-file ./fixtures/optimize/example-input.json` | JSON 출력, exit 0 | 기계적 |
 

@@ -138,8 +138,6 @@ test("buildOptimizeInput assembles a bounded optimization packet from explicit e
 				"prompt",
 				"--target-file",
 				targetFile,
-				"--optimizer",
-				"reflection",
 				"--budget",
 				"heavy",
 			],
@@ -149,7 +147,7 @@ test("buildOptimizeInput assembles a bounded optimization packet from explicit e
 		assert.equal(packet.optimizationTarget, "prompt");
 		assert.equal(packet.intentProfile.intentId, "intent-operator-recovery-guidance");
 		assert.equal(packet.intentProfile.guardrailDimensions.length, 4);
-		assert.equal(packet.optimizer.kind, "reflection");
+		assert.equal(packet.optimizer.kind, undefined);
 		assert.equal(packet.optimizer.budget, "heavy");
 		assert.equal(packet.optimizer.plan.evidenceLimit, 8);
 		assert.equal(packet.targetFile.exists, true);
@@ -178,8 +176,6 @@ test("generateOptimizeProposal turns explicit evidence into one bounded revision
 				"prompt",
 				"--target-file",
 				targetFile,
-				"--optimizer",
-				"reflection",
 				"--budget",
 				"light",
 			],
@@ -192,11 +188,11 @@ test("generateOptimizeProposal turns explicit evidence into one bounded revision
 		assert.equal(proposal.schemaVersion, "cautilus.optimize_proposal.v1");
 		assert.equal(proposal.decision, "revise");
 		assert.equal(proposal.intentProfile.intentId, "intent-operator-recovery-guidance");
-		assert.equal(proposal.optimizer.kind, "reflection");
+		assert.equal(proposal.optimizer.kind, undefined);
 		assert.equal(proposal.optimizer.budget, "light");
 		assert.equal(proposal.trialTelemetry.plan.evidenceLimit, 3);
 		assert.equal(proposal.prioritizedEvidence.length, 3);
-		assert.equal(proposal.prioritizedEvidence[0].source, "review.finding");
+		assert.equal(proposal.prioritizedEvidence[0].source, "report.regressed");
 		assert.equal(proposal.suggestedChanges[0].changeKind, "prompt_revision");
 		assert.match(proposal.revisionBrief, /Operator guidance should stay legible under recovery pressure/);
 		assert.equal(proposal.trialTelemetry.suggestedChangeCount, 2);
@@ -222,8 +218,6 @@ test("buildRevisionArtifact materializes one durable revision packet from propos
 				"prompt",
 				"--target-file",
 				targetFile,
-				"--optimizer",
-				"repair",
 				"--budget",
 				"medium",
 			],

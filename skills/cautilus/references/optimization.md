@@ -25,7 +25,6 @@ packets and leaves too much optimizer behavior implicit.
 This slice adds a small DSPy-inspired control surface without importing a DSPy
 runtime:
 
-- a declared optimizer kind
 - a declared bounded budget
 - a materialized trial plan derived from that budget
 - proposal telemetry that explains how much evidence was seen, selected, and
@@ -84,10 +83,12 @@ The packet should include:
 - optional `cautilus.scenario_history.v1`
 - product-owned objective and guardrail constraints
 - optimizer configuration
-  - `kind`: `repair`, `reflection`, or `history_followup`
   - `budget`: `light`, `medium`, or `heavy`
   - `plan`: bounded limits derived from the budget, such as evidence and review
     consumption caps
+
+Revision reasons and evidence focus are derived from the evidence shape itself
+and surfaced in the proposal packet.
 
 Current surface:
 
@@ -97,7 +98,6 @@ cautilus optimize prepare-input \
   --review-summary /tmp/cautilus-review/review-summary.json \
   --history-file /tmp/cautilus-history/scenario-history.snapshot.json \
   --target prompt \
-  --optimizer reflection \
   --budget medium
 ```
 
@@ -175,7 +175,7 @@ deferred to a later slice.
 
 ## Success Criteria
 
-- `optimize prepare-input` can declare optimizer kind and budget explicitly.
+- `optimize prepare-input` can declare optimizer budget explicitly.
 - `optimize prepare-input` keeps a shared behavior-intent profile above raw
   prompt or adapter mechanics.
 - The input packet materializes a bounded plan instead of leaving budget
@@ -188,7 +188,7 @@ deferred to a later slice.
 
 ## Acceptance Checks
 
-- `cautilus optimize prepare-input --report-file ./fixtures/reports/report-input.json --target prompt --optimizer repair --budget light`
+- `cautilus optimize prepare-input --report-file ./fixtures/reports/report-input.json --target prompt --budget light`
 - `cautilus optimize search prepare-input --optimize-input ./fixtures/optimize/example-input.json --held-out-results-file ./fixtures/scenario-results/example-results.json --target-file ./fixtures/prompts/example.prompt.md --budget light`
 - `cautilus optimize search run --input ./fixtures/optimize-search/example-input.json`
 - `cautilus optimize propose --from-search ./fixtures/optimize-search/example-result.json`

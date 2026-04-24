@@ -26,15 +26,19 @@ var optimizerBudgets = map[string]map[string]any{
 	"heavy":  {"evidenceLimit": 8, "suggestedChangeLimit": 4, "reviewVariantLimit": 3, "historySignalLimit": 4},
 }
 
-var optimizerSourcePriority = map[string][]string{
-	"repair":           {"report.regressed", "report.noisy", "report.review_finding", "review.finding", "report.compare_reason", "scenario_history", "report.improved"},
-	"reflection":       {"report.regressed", "report.noisy", "report.review_finding", "review.finding", "report.compare_reason", "scenario_history", "report.improved"},
-	"history_followup": {"report.regressed", "report.noisy", "report.review_finding", "review.finding", "report.compare_reason", "scenario_history", "report.improved"},
+var optimizeEvidenceSourcePriority = []string{
+	"report.regressed",
+	"report.noisy",
+	"report.review_finding",
+	"review.finding",
+	"report.compare_reason",
+	"scenario_history",
+	"report.improved",
 }
 
 var optimizeSeverityPriority = map[string]int{"blocker": 0, "high": 1, "medium": 2, "concern": 2, "low": 3}
 
-func BuildOptimizeInput(repoRoot string, reportFile string, reviewSummaryFile *string, historyFile *string, target string, targetFile *string, optimizerKind string, budget string, activeRunDir *string, now time.Time) (map[string]any, error) {
+func BuildOptimizeInput(repoRoot string, reportFile string, reviewSummaryFile *string, historyFile *string, target string, targetFile *string, budget string, activeRunDir *string, now time.Time) (map[string]any, error) {
 	resolvedReportFile := reportFile
 	if activeRunDir != nil {
 		if strings.TrimSpace(resolvedReportFile) == "" {
@@ -70,7 +74,7 @@ func BuildOptimizeInput(repoRoot string, reportFile string, reviewSummaryFile *s
 		"repoRoot":           repoRoot,
 		"optimizationTarget": target,
 		"intentProfile":      anyFromProfile(intentProfile),
-		"optimizer":          buildOptimizerPlan(optimizerKind, budget),
+		"optimizer":          buildOptimizerPlan(budget),
 		"reportFile":         resolvedReportFile,
 		"report":             report,
 		"objective": map[string]any{
@@ -114,15 +118,11 @@ func BuildOptimizeInput(repoRoot string, reportFile string, reviewSummaryFile *s
 	return packet, nil
 }
 
-func buildOptimizerPlan(kind string, budget string) map[string]any {
+func buildOptimizerPlan(budget string) map[string]any {
 	if _, ok := optimizerBudgets[budget]; !ok {
 		budget = "medium"
 	}
-	if _, ok := optimizerSourcePriority[kind]; !ok {
-		kind = "repair"
-	}
 	return map[string]any{
-		"kind":   kind,
 		"budget": budget,
 		"plan":   optimizerBudgets[budget],
 	}
@@ -135,7 +135,7 @@ func GenerateOptimizeProposal(packet map[string]any, inputFile *string, now time
 		return nil, err
 	}
 	evidenceUniverse := buildEvidenceUniverse(packet, optimizer)
-	rankedEvidence := rankOptimizeEvidence(evidenceUniverse, optimizer)
+	rankedEvidence := rankOptimizeEvidence(evidenceUniverse)
 	prioritizedEvidence := buildPrioritizedEvidence(rankedEvidence, optimizer)
 	evidence := prioritizedEvidence
 	deprioritizedEvidence := []map[string]any{}
@@ -234,10 +234,6 @@ func BuildRevisionArtifact(proposal map[string]any, proposalFile string, optimiz
 
 func normalizeOptimizer(value any) map[string]any {
 	record := asMap(value)
-	kind := stringOrEmpty(record["kind"])
-	if _, ok := optimizerSourcePriority[kind]; !ok {
-		kind = "repair"
-	}
 	budget := stringOrEmpty(record["budget"])
 	if _, ok := optimizerBudgets[budget]; !ok {
 		budget = "medium"
@@ -253,7 +249,7 @@ func normalizeOptimizer(value any) map[string]any {
 		}
 		plan = merged
 	}
-	return map[string]any{"kind": kind, "budget": budget, "plan": plan}
+	return map[string]any{"budget": budget, "plan": plan}
 }
 
 func buildEvidenceUniverse(packet map[string]any, optimizer map[string]any) []map[string]any {
@@ -494,12 +490,11 @@ func gatherOptimizeHistorySignals(history map[string]any, limit int) []map[strin
 	return evidence
 }
 
-func rankOptimizeEvidence(evidence []map[string]any, optimizer map[string]any) []map[string]any {
-	sourcePriority := optimizerSourcePriority[stringOrEmpty(optimizer["kind"])]
+func rankOptimizeEvidence(evidence []map[string]any) []map[string]any {
 	ranked := append([]map[string]any{}, evidence...)
 	sort.Slice(ranked, func(left, right int) bool {
-		leftSourceRank := indexOf(sourcePriority, stringOrEmpty(ranked[left]["source"]))
-		rightSourceRank := indexOf(sourcePriority, stringOrEmpty(ranked[right]["source"]))
+		leftSourceRank := indexOf(optimizeEvidenceSourcePriority, stringOrEmpty(ranked[left]["source"]))
+		rightSourceRank := indexOf(optimizeEvidenceSourcePriority, stringOrEmpty(ranked[right]["source"]))
 		if leftSourceRank != rightSourceRank {
 			return leftSourceRank < rightSourceRank
 		}
@@ -735,7 +730,7 @@ func buildProposalRationale(decision string, optimizer map[string]any, evidence 
 	if decision == "hold" {
 		return "Current evidence does not justify another bounded revision."
 	}
-	return fmt.Sprintf("The next revision is bounded by %d high-signal issue(s) selected under the %s %s plan.", countHighSignalEvidence(evidence), stringOrEmpty(optimizer["budget"]), stringOrEmpty(optimizer["kind"]))
+	return fmt.Sprintf("The next revision is bounded by %d high-signal issue(s) selected under the %s budget plan.", countHighSignalEvidence(evidence), stringOrEmpty(optimizer["budget"]))
 }
 
 func buildFollowUpChecks(decision string) []string {
