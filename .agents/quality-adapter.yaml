@@ -20,7 +20,14 @@ specdown_smoke_patterns: []
 recommendation_defaults_version: issue-64
 prompt_asset_roots: []
 adapter_review_sources: []
-acknowledged_recommendations: []
+acknowledged_recommendations:
+  - id: public_skill_validation_missing_policy
+    reason: >-
+      This repo owns public-skill validation through `npm run dogfood:self`,
+      which is executor-backed and deeper than the generic
+      `suggest_public_skill_dogfood` smoke matrix. The matrix helper is
+      intentionally left unconfigured. Revisit only if the product stops
+      self-dogfooding.
 gate_design_review_globs: []
 prompt_asset_policy:
   source_globs: []
