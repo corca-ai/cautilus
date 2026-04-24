@@ -4,7 +4,7 @@ import { resolve, dirname, relative, isAbsolute } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const REPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const LCOV_PATH = resolve(REPO_ROOT, "coverage/node.lcov");
+const LCOV_PATH = resolve(REPO_ROOT, "coverage/lcov.info");
 const OUTPUT_PATH = resolve(REPO_ROOT, "coverage/node.json");
 
 const raw = readFileSync(LCOV_PATH, "utf8");

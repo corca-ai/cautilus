@@ -41,7 +41,7 @@
     "test:node": "node --test --test-reporter=dot --test-reporter-destination=stdout bin/*.test.mjs scripts/*.test.mjs scripts/agent-runtime/*.test.mjs scripts/release/*.test.mjs",
     "test:node:spec": "node --test --test-reporter=spec --test-reporter-destination=stdout bin/*.test.mjs scripts/*.test.mjs scripts/agent-runtime/*.test.mjs scripts/release/*.test.mjs",
     "test:node:on-demand": "node --test --test-reporter=dot --test-reporter-destination=stdout scripts/on-demand/*.test.mjs",
-    "test:node:coverage": "mkdir -p coverage && node --test --experimental-test-coverage --test-coverage-exclude='**/*.test.mjs' --test-reporter=lcov --test-reporter-destination=coverage/node.lcov bin/*.test.mjs scripts/*.test.mjs scripts/agent-runtime/*.test.mjs scripts/release/*.test.mjs && node scripts/summarize-node-coverage.mjs",
+    "test:node:coverage": "c8 --reporter=lcov --reports-dir=coverage --include='scripts/**' --include='bin/**' --exclude='**/*.test.mjs' --exclude='scripts/on-demand/**' node --test bin/*.test.mjs scripts/*.test.mjs scripts/agent-runtime/*.test.mjs scripts/release/*.test.mjs && node scripts/summarize-node-coverage.mjs",
     "test:coverage": "npm run test:go:coverage && npm run test:node:coverage && node scripts/aggregate-coverage.mjs",
     "coverage:floor:check": "./scripts/coverage-floor-quality-gate.sh",
     "coverage:floor:write": "node scripts/write-coverage-floor.mjs",
@@ -53,6 +53,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.24.0",
+    "c8": "^11.0.0",
     "eslint": "^9.24.0",
     "eslint-plugin-sonarjs": "^4.0.2"
   }
