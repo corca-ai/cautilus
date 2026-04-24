@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
   "artifact_kind": "find-skills-inventory",
-  "generated_at": "2026-04-24T00:05:14Z",
+  "generated_at": "2026-04-24T11:02:18Z",
   "repo": "cautilus",
   "inventory": {
     "adapter": {
       "found": true,
       "valid": true,
-      "path": "/home/hwidong/codes/cautilus/.agents/find-skills-adapter.yaml",
+      "path": ".agents/find-skills-adapter.yaml",
       "warnings": [
         "No trusted_skill_roots configured; discovery stays local-first only."
       ],
@@ -178,7 +178,8 @@
         ],
         "referenced_paths": [
           "skills/ideation/references/sequence-discipline.md",
-          "skills/ideation/references/effectuation.md"
+          "skills/ideation/references/effectuation.md",
+          "skills/ideation/references/decision-question-response.md"
         ],
         "source": "local-public",
         "layer": "public skill"
@@ -256,7 +257,9 @@
           "premortem 스킬",
           "charness:premortem"
         ],
-        "referenced_paths": [],
+        "referenced_paths": [
+          "skills/premortem/references/subagent-capability-check.md"
+        ],
         "source": "local-public",
         "layer": "public skill"
       },
@@ -918,6 +921,27 @@
         ],
         "recommendation_role": "runtime",
         "path": "integrations/tools/gws-cli.json",
+        "source": "local-integration",
+        "layer": "external integration"
+      },
+      {
+        "id": "ruff",
+        "kind": "external_binary",
+        "access_modes": [
+          "binary"
+        ],
+        "support_state": "integration-only",
+        "support_skill_path": null,
+        "discovery_stub_path": null,
+        "capability_requirements": {},
+        "intent_triggers": [],
+        "config_layers": [],
+        "readiness_checks": [],
+        "supports_public_skills": [
+          "quality"
+        ],
+        "recommendation_role": "validation",
+        "path": "integrations/tools/ruff.json",
         "source": "local-integration",
         "layer": "external integration"
       },
