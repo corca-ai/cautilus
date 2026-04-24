@@ -51,8 +51,17 @@ The instruction-surface routing-fidelity improvement is fixture-only for now.
 
 ## Public Release
 
-To be closed after `node scripts/release/publish-release.mjs --version 0.13.0` pushes the tag and GitHub Actions `release-artifacts` completes.
-`npm run release:smoke-install -- --channel install_sh --version v0.13.0 --repo corca-ai/cautilus --installer-source local --skip-update --json` should return `ok: true`.
+- URL: https://github.com/corca-ai/cautilus/releases/tag/v0.13.0
+- Tag: `v0.13.0` at `b3e90f4`.
+- Assets: darwin/linux arm64/x64 archives, checksum manifest, source-archive SHA-256, release notes.
+- GitHub Actions: `release-artifacts` (incl. `verify-public-release`) green in 3m40s.
+- `npm run release:smoke-install -- --channel install_sh --version v0.13.0 --repo corca-ai/cautilus --installer-source local --skip-update --json`: `ok: true`, installed binary reports `cautilus 0.13.0` and `version --verbose` returns the expected product packet.
+
+## Post-release Follow-ups
+
+- `npm run verify` passed locally without the coverage-floor gate, but CI runs that gate separately and initially failed on three drifted files (`instruction-surface-case-suite.mjs`, `optimize.go`, `generate-optimize-proposal.mjs`).
+  Realigned in `d211888 Realign coverage floors after 0.13.0 release surface changes` after two local measurements produced identical hashes.
+  Main `verify` is green again.
 
 ## Operator Update Steps
 

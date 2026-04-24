@@ -8,6 +8,11 @@
 
 ## Current State
 
+- 세션 말미에 Cautilus `v0.13.0`이 게시됐다 ([release](https://github.com/corca-ai/cautilus/releases/tag/v0.13.0), 태그 `b3e90f4`).
+  minor bump 근거: `optimizer.kind` 제거(breaking) + HTML report `runtimeContext` 렌더(additive) + instruction-surface fixture 5/5(additive, fixture-only).
+  `release-artifacts`, `verify-public-release`, install-sh smoke install 모두 green.
+  릴리즈 직후 coverage-floor 게이트가 3개 파일 drift로 CI 붉은색이 됐고 `d211888 Realign coverage floors after 0.13.0 release surface changes`에서 동일 해시 2회 측정 후 realign하여 main 복구.
+  전체 기록은 [charness-artifacts/release/latest.md](../../charness-artifacts/release/latest.md).
 - 이번 세션은 handoff candidate 1 (`instruction-surface` 경계 확장)의 첫 축을 닫았다.
   `fixtures/instruction-surface/cases.json`의 `claude-only-routing`과 `claude-symlink-routing`에 `expectedRouting: { selectedSkill: "none" }`이 추가됐고, 같은 기대치와 호환되도록 `fixture-results.json`의 `claude-symlink-routing` routing decision도 채워졌다.
   fixture backend e2e 기준 `evaluationsWithExpectedRoute`와 `matchedExpectedRoute`가 3 → 5로 올랐고, summary recommendation은 `accept-now`.
