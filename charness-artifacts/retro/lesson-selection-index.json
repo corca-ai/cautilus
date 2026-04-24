@@ -1,0 +1,600 @@
+{
+  "schema_version": 1,
+  "kind": "retro-lesson-selection-index",
+  "source": "charness-artifacts/retro/*.md Context/Waste/Next Improvements",
+  "selection_policy": {
+    "advisory": true,
+    "recency_half_life_days": 14,
+    "alpha_base": 0.35,
+    "warmup_n": 5,
+    "recurrence_multiplier": "1 + alpha_t * max(0, source_count - 1)",
+    "alpha_t": "alpha_base * min(1, source_count / warmup_n)"
+  },
+  "as_of_source_date": "2026-04-24",
+  "source_artifact_count": 1,
+  "candidate_count": 17,
+  "top_candidates": [
+    {
+      "candidate_id": "current_focus:001840cb3322",
+      "kind": "current_focus",
+      "lesson": "One continuous session that started with `/init-repo` + `/quality`, produced 17 commits including coverage-floor gate introduction, evaluate-skill split, gitleaks wiring, Node coverage driver swap (to `c8`), two charness issues (#70, #71), one debug artifact, and the v0.12.3 release.",
+      "normalized_key": "one continuous session that started with init repo quality produced 17 commits including coverage",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+      "latest_source_date": "2026-04-24",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+          "date": "2026-04-24",
+          "section": "Context"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:8e9cfc711797",
+      "kind": "next_improvement",
+      "lesson": "Already landed: charness issues #70 (bootstrap defaults) and #71 (delegation eyeball gravity). These are the right platform-level leverage.",
+      "normalized_key": "already landed charness issues 70 bootstrap defaults and 71 delegation eyeball gravity these are",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+      "latest_source_date": "2026-04-24",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+          "date": "2026-04-24",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:d99555814344",
+      "kind": "next_improvement",
+      "lesson": "Before introducing any measurement-based gate (coverage, runtime budget, token cost, etc.), run the underlying measurement **three times on the same commit** and confirm drift < threshold. Only then initialize the floor/baseline and wire it into CI. Record that repeatability check as a one-liner in the gate's script header.",
+      "normalized_key": "before introducing any measurement based gate coverage runtime budget token cost etc run the",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+      "latest_source_date": "2026-04-24",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+          "date": "2026-04-24",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:4240ab7efd81",
+      "kind": "next_improvement",
+      "lesson": "Consider a lightweight repo-local `scripts/check-workflow-parity.mjs` that fails when two workflow files reference the same `npm run` script but differ in tool-install lines. Low priority, revisit if this miss recurs. ### memory",
+      "normalized_key": "consider a lightweight repo local scripts check workflow parity mjs that fails when two",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+      "latest_source_date": "2026-04-24",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+          "date": "2026-04-24",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:b328666eb8a8",
+      "kind": "next_improvement",
+      "lesson": "The release adapter now exists (`cbf3d1f`); future release flows will see declared seams up front.",
+      "normalized_key": "the release adapter now exists cbf3d1f future release flows will see declared seams up",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+      "latest_source_date": "2026-04-24",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+          "date": "2026-04-24",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:c04bdc5ef82c",
+      "kind": "next_improvement",
+      "lesson": "When a charness skill has an auto-write helper (`bootstrap_adapter`, `init_adapter`, `seed_*`), read the produced diff before committing. Never let the helper's output propagate without a review. ### capability",
+      "normalized_key": "when a charness skill has an auto write helper bootstrap adapter init adapter seed",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+      "latest_source_date": "2026-04-24",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+          "date": "2026-04-24",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:3b0063377f87",
+      "kind": "next_improvement",
+      "lesson": "When a refactor reshapes files that a floor/baseline gate reads, refresh the floor in the same slice. Add this to `AGENTS.md` \"Before Stopping on a Spec-Driven Slice\" if it happens again.",
+      "normalized_key": "when a refactor reshapes files that a floor baseline gate reads refresh the floor",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+      "latest_source_date": "2026-04-24",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+          "date": "2026-04-24",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:b8dc5b74e9ba",
+      "kind": "next_improvement",
+      "lesson": "When adding a new CI step to any workflow, grep the other `.github/workflows/*.yml` files for the same invocation (`npm run verify`, `npm run lint`, etc.) and patch them in the same PR.",
+      "normalized_key": "when adding a new ci step to any workflow grep the other github workflows",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+      "latest_source_date": "2026-04-24",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+          "date": "2026-04-24",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:eec9ea4043ea",
+      "kind": "next_improvement",
+      "lesson": "Write the \"grep all workflow files before landing a verify-step change\" rule into the same file.",
+      "normalized_key": "write the grep all workflow files before landing a verify step change rule into",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+      "latest_source_date": "2026-04-24",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+          "date": "2026-04-24",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:68788669d4c9",
+      "kind": "next_improvement",
+      "lesson": "Write the \"run debug before reaching for a tolerance knob\" rule into the same file.",
+      "normalized_key": "write the run debug before reaching for a tolerance knob rule into the same",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+      "latest_source_date": "2026-04-24",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+          "date": "2026-04-24",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:69060aa9b91c",
+      "kind": "next_improvement",
+      "lesson": "Write the three-times-repeatability rule into `charness-artifacts/retro/recent-lessons.md` so the next session inherits it.",
+      "normalized_key": "write the three times repeatability rule into charness artifacts retro recent lessons md so",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+      "latest_source_date": "2026-04-24",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+          "date": "2026-04-24",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "repeat_trap:bc2270eb608b",
+      "kind": "repeat_trap",
+      "lesson": "**Adapter side-effects accepted without review.** `bootstrap_adapter.py` wrote pytest-shaped defaults into a Node+Go adapter; I committed some of them before the user caught it. Running a charness skill's auto-write helpers without first reading the diff is the shape of waste that keeps repeating.",
+      "normalized_key": "adapter side effects accepted without review bootstrap adapter py wrote pytest shaped defaults into",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+      "latest_source_date": "2026-04-24",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+          "date": "2026-04-24",
+          "section": "Waste"
+        }
+      ]
+    }
+  ],
+  "candidates": [
+    {
+      "candidate_id": "current_focus:001840cb3322",
+      "kind": "current_focus",
+      "lesson": "One continuous session that started with `/init-repo` + `/quality`, produced 17 commits including coverage-floor gate introduction, evaluate-skill split, gitleaks wiring, Node coverage driver swap (to `c8`), two charness issues (#70, #71), one debug artifact, and the v0.12.3 release.",
+      "normalized_key": "one continuous session that started with init repo quality produced 17 commits including coverage",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+      "latest_source_date": "2026-04-24",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+          "date": "2026-04-24",
+          "section": "Context"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:8e9cfc711797",
+      "kind": "next_improvement",
+      "lesson": "Already landed: charness issues #70 (bootstrap defaults) and #71 (delegation eyeball gravity). These are the right platform-level leverage.",
+      "normalized_key": "already landed charness issues 70 bootstrap defaults and 71 delegation eyeball gravity these are",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+      "latest_source_date": "2026-04-24",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+          "date": "2026-04-24",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:d99555814344",
+      "kind": "next_improvement",
+      "lesson": "Before introducing any measurement-based gate (coverage, runtime budget, token cost, etc.), run the underlying measurement **three times on the same commit** and confirm drift < threshold. Only then initialize the floor/baseline and wire it into CI. Record that repeatability check as a one-liner in the gate's script header.",
+      "normalized_key": "before introducing any measurement based gate coverage runtime budget token cost etc run the",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+      "latest_source_date": "2026-04-24",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+          "date": "2026-04-24",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:4240ab7efd81",
+      "kind": "next_improvement",
+      "lesson": "Consider a lightweight repo-local `scripts/check-workflow-parity.mjs` that fails when two workflow files reference the same `npm run` script but differ in tool-install lines. Low priority, revisit if this miss recurs. ### memory",
+      "normalized_key": "consider a lightweight repo local scripts check workflow parity mjs that fails when two",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+      "latest_source_date": "2026-04-24",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+          "date": "2026-04-24",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:b328666eb8a8",
+      "kind": "next_improvement",
+      "lesson": "The release adapter now exists (`cbf3d1f`); future release flows will see declared seams up front.",
+      "normalized_key": "the release adapter now exists cbf3d1f future release flows will see declared seams up",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+      "latest_source_date": "2026-04-24",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+          "date": "2026-04-24",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:c04bdc5ef82c",
+      "kind": "next_improvement",
+      "lesson": "When a charness skill has an auto-write helper (`bootstrap_adapter`, `init_adapter`, `seed_*`), read the produced diff before committing. Never let the helper's output propagate without a review. ### capability",
+      "normalized_key": "when a charness skill has an auto write helper bootstrap adapter init adapter seed",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+      "latest_source_date": "2026-04-24",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+          "date": "2026-04-24",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:3b0063377f87",
+      "kind": "next_improvement",
+      "lesson": "When a refactor reshapes files that a floor/baseline gate reads, refresh the floor in the same slice. Add this to `AGENTS.md` \"Before Stopping on a Spec-Driven Slice\" if it happens again.",
+      "normalized_key": "when a refactor reshapes files that a floor baseline gate reads refresh the floor",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+      "latest_source_date": "2026-04-24",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+          "date": "2026-04-24",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:b8dc5b74e9ba",
+      "kind": "next_improvement",
+      "lesson": "When adding a new CI step to any workflow, grep the other `.github/workflows/*.yml` files for the same invocation (`npm run verify`, `npm run lint`, etc.) and patch them in the same PR.",
+      "normalized_key": "when adding a new ci step to any workflow grep the other github workflows",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+      "latest_source_date": "2026-04-24",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+          "date": "2026-04-24",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:eec9ea4043ea",
+      "kind": "next_improvement",
+      "lesson": "Write the \"grep all workflow files before landing a verify-step change\" rule into the same file.",
+      "normalized_key": "write the grep all workflow files before landing a verify step change rule into",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+      "latest_source_date": "2026-04-24",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+          "date": "2026-04-24",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:68788669d4c9",
+      "kind": "next_improvement",
+      "lesson": "Write the \"run debug before reaching for a tolerance knob\" rule into the same file.",
+      "normalized_key": "write the run debug before reaching for a tolerance knob rule into the same",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+      "latest_source_date": "2026-04-24",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+          "date": "2026-04-24",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:69060aa9b91c",
+      "kind": "next_improvement",
+      "lesson": "Write the three-times-repeatability rule into `charness-artifacts/retro/recent-lessons.md` so the next session inherits it.",
+      "normalized_key": "write the three times repeatability rule into charness artifacts retro recent lessons md so",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+      "latest_source_date": "2026-04-24",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+          "date": "2026-04-24",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "repeat_trap:bc2270eb608b",
+      "kind": "repeat_trap",
+      "lesson": "**Adapter side-effects accepted without review.** `bootstrap_adapter.py` wrote pytest-shaped defaults into a Node+Go adapter; I committed some of them before the user caught it. Running a charness skill's auto-write helpers without first reading the diff is the shape of waste that keeps repeating.",
+      "normalized_key": "adapter side effects accepted without review bootstrap adapter py wrote pytest shaped defaults into",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+      "latest_source_date": "2026-04-24",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+          "date": "2026-04-24",
+          "section": "Waste"
+        }
+      ]
+    },
+    {
+      "candidate_id": "repeat_trap:429bcde41451",
+      "kind": "repeat_trap",
+      "lesson": "**Coverage floor written before a refactor that changed the layout.** I initialized `coverage-floor.json` from a measurement, then split `evaluate-skill.mjs` afterwards. CI then failed on the first bump because the floor still referenced the old file shape. The cost was two \"realign floor\" commits that the agenda never planned for.",
+      "normalized_key": "coverage floor written before a refactor that changed the layout i initialized coverage floor",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+      "latest_source_date": "2026-04-24",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+          "date": "2026-04-24",
+          "section": "Waste"
+        }
+      ]
+    },
+    {
+      "candidate_id": "repeat_trap:7bb6c1ff71e5",
+      "kind": "repeat_trap",
+      "lesson": "**Debug skill arrived late.** AGENTS.md names `charness:debug` as the route for \"any bug, error, regression, or unexpected behavior,\" but when coverage became non-deterministic I tried a tolerance knob first and only ran `debug` after the user asked me to. The real fix (c8) came directly from the debug flow once it was invoked; everything before it was wasted motion.",
+      "normalized_key": "debug skill arrived late agents md names charness debug as the route for any",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+      "latest_source_date": "2026-04-24",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+          "date": "2026-04-24",
+          "section": "Waste"
+        }
+      ]
+    },
+    {
+      "candidate_id": "repeat_trap:1ea29ee59c5a",
+      "kind": "repeat_trap",
+      "lesson": "**Host-capability question asked the user.** During `release` I asked the user whether the host allows subagent spawning and whether to \"skip premortem.\" AGENTS.md L80–84 explicitly forbids that pattern: delegation is by repo contract, and host blocks get reported, not polled. The rule was in my context but lost eyeball gravity mid-flow.",
+      "normalized_key": "host capability question asked the user during release i asked the user whether the",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+      "latest_source_date": "2026-04-24",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+          "date": "2026-04-24",
+          "section": "Waste"
+        }
+      ]
+    },
+    {
+      "candidate_id": "repeat_trap:dd76fc72bdc7",
+      "kind": "repeat_trap",
+      "lesson": "**Second workflow forgotten on release-artifacts.yml.** `verify.yml` got `gitleaks` installed; `release-artifacts.yml` did not. The tag was pushed, the release pipeline exited 127, and I had to force-move `v0.12.3`. Scope of \"any workflow that runs verify\" was not checked at install-time.",
+      "normalized_key": "second workflow forgotten on release artifacts yml verify yml got gitleaks installed release artifacts",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+      "latest_source_date": "2026-04-24",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+          "date": "2026-04-24",
+          "section": "Waste"
+        }
+      ]
+    },
+    {
+      "candidate_id": "repeat_trap:d9a3c8fcbf15",
+      "kind": "repeat_trap",
+      "lesson": "**Web search arrived even later.** `debug` itself flags web search as the default tool for \"gather more information.\" I reasoned about Node's V8 pipeline from first principles before searching. A three-minute search would have surfaced Jest/Vitest/NYC and the Node `experimental` label immediately.",
+      "normalized_key": "web search arrived even later debug itself flags web search as the default tool",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+      "latest_source_date": "2026-04-24",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
+          "date": "2026-04-24",
+          "section": "Waste"
+        }
+      ]
+    }
+  ]
+}

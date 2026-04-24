@@ -14,3 +14,4 @@ artifacts/self-dogfood/latest/*
 !artifacts/self-dogfood/latest/review-summary.json
 !artifacts/self-dogfood/latest/latest.md
 !artifacts/self-dogfood/latest/index.html
+.charness/retro/
