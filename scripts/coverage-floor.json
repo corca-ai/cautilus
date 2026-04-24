@@ -52,7 +52,7 @@
   "scripts/agent-runtime/codex-pricing.mjs": 89.87,
   "scripts/agent-runtime/contract-versions.mjs": 100,
   "scripts/agent-runtime/deployment-evidence.mjs": 88.68,
-  "scripts/agent-runtime/evaluate-skill.mjs": 78.7,
+  "scripts/agent-runtime/evaluate-skill.mjs": 50.41,
   "scripts/agent-runtime/generate-optimize-proposal.mjs": 73.67,
   "scripts/agent-runtime/generate-scenario-proposals.mjs": 44.37,
   "scripts/agent-runtime/instruction-surface-case-suite.mjs": 84.93,
@@ -70,6 +70,9 @@
   "scripts/agent-runtime/scenario-proposals.mjs": 93.06,
   "scripts/agent-runtime/scenario-result-telemetry.mjs": 98.48,
   "scripts/agent-runtime/scenario-results.mjs": 74.6,
+  "scripts/agent-runtime/skill-evaluation-normalizers.mjs": 75.44,
+  "scripts/agent-runtime/skill-evaluation-runs.mjs": 91.43,
+  "scripts/agent-runtime/skill-evaluation-summary.mjs": 100,
   "scripts/agent-runtime/skill-test-case-suite.mjs": 81.69,
   "scripts/agent-runtime/skill-test-claude-backend.mjs": 49.66,
   "scripts/agent-runtime/skill-test-observed.mjs": 93.55,
@@ -94,7 +97,7 @@
   "scripts/resolve_adapter.mjs": 65.42,
   "scripts/run-govulncheck.mjs": 94.55,
   "scripts/run-self-dogfood-instruction-surface.mjs": 76.53,
-  "scripts/run-verify.mjs": 76.36,
+  "scripts/run-verify.mjs": 76.58,
   "scripts/self-dogfood-experiment-prompt.mjs": 93.63,
   "scripts/self-dogfood-published-snapshot.mjs": 64.41
 }
