@@ -3,66 +3,66 @@ Date: 2026-04-24
 
 ## Summary
 
-Released Cautilus `v0.12.3`.
+Released Cautilus `v0.13.0`.
 
 ## Release Scope
 
-Maintenance release bundling developer- and operator-facing improvements landed this session. No user-visible CLI, bundled skill, install path, or public API change.
+Minor bump because the optimize surface shed a user-facing field (breaking for host repos that still read `optimizer.kind`) and gained an additive runtime-context surface on HTML reports.
+The instruction-surface routing-fidelity improvement is fixture-only for now.
 
-- Durable skill outputs unified under `charness-artifacts/`; `skill-outputs/` tree retired.
-- `AGENTS.md` normalized to init-repo's expectations (charness-artifacts repo-state clause, compact Skill Routing, task-completing review scopes).
-- Per-file coverage-floor gate wired for Go and Node with a regression check against declared floors.
-- Node coverage driver switched from `--experimental-test-coverage` to `c8` after diagnosing non-deterministic LCOV aggregation.
-- `scripts/agent-runtime/evaluate-skill.mjs` split into three responsibility-scoped modules, file-level `max-lines` suppression removed.
-- `gitleaks` secret scan added to `verify` and `release-artifacts` workflows.
-- Quality adapter acknowledges `self-dogfood` as the owning public-skill validation seam so future reviews do not re-surface the missing-policy finding.
+- **Breaking**: `optimizer.kind` removed from the user-facing optimize packet (`913d973`).
+  `repair` / `reflection` / `history_followup` preset decisions are derived from evidence shape instead.
+  Host repo migration notes and reader-path fixes: [corca-ai/cautilus#31](https://github.com/corca-ai/cautilus/issues/31).
+  `fixtures/optimize/input.schema.json` enforces `additionalProperties: false` on the optimizer object, so a stale host packet with `kind` is rejected at the contract boundary.
+- **Additive**: HTML report renders `report.runtimeContext` (warnings / notes / comparisons) on the Decision Signals section (`6f543c9`).
+  Pinned-runtime mismatches now elevate aggregate status to `blocker`.
+  Consumers gating CI on the aggregate signal may turn red on the first pinned-runtime drift after upgrade and need to re-pin or widen their policy.
+- **Additive (fixture-only)**: `claude-only-routing` and `claude-symlink-routing` fixtures got `expectedRouting: { selectedSkill: "none" }` so the self-dogfood fixture summary reports `matchedExpectedRoute` 5/5 instead of 3/5 (`d93084a`).
+  Known leak: `scripts/agent-runtime/instruction-surface-support.mjs` `ROOT_ENTRY_ALIASES` still masks only root AGENTS.md/CLAUDE.md, so the bundled `skills/cautilus/SKILL.md` and `plugins/cautilus/skills/cautilus/SKILL.md` remain visible to a real agent.
+  The next real-codex `dogfood:self:instruction-surface` run will likely reject `claude-only-routing`.
+  Real-runner routing fidelity is not 5/5 yet; handoff flags the surface-isolation follow-up.
+- Release-adapter hygiene: CLI+skill surface probe now points at `SKILL.md` files and includes `--help` (`841ac85`).
 
 ## Commits
 
-- `063b7da` ci(release): install gitleaks in release-artifacts workflow
-- `f789eb1` fix(coverage): switch node coverage driver from experimental-test-coverage to c8
-- `3bd2dd4` chore(coverage): realign floor for build-evidence-input (measurement drift)
-- `848ac98` Prepare Cautilus 0.12.3 release
-- `37e3a4c` chore(coverage): realign floors after evaluate-skill split
-- `987c475` ci(security): use gitleaks canonical go-install path
-- `9342da9` feat(security): add gitleaks secret scan to verify
-- `70cae68` docs(quality-adapter): acknowledge self-dogfood as public-skill validation seam
-- `26989c7` refactor(skill-evaluation): split evaluate-skill.mjs by responsibility
-- `2b7a096` ci(coverage): run coverage-floor gate in verify workflow
-- `554bced` feat(coverage): add per-file coverage-floor gate
-- `a98b606` build(coverage): aggregate per-file coverage across go and node
-- `33bc78a` build(coverage): wire node per-file coverage measurement
-- `d33ee20` build(coverage): wire go per-file coverage measurement
-- `ea6bd07` docs(agents): sync AGENTS.md with init-repo normalization findings
-- `3f538ee` chore(artifacts): unify durable skill outputs under charness-artifacts/
+- `6f543c9` Render runtime context in HTML report
+- `913d973` Remove optimizer.kind from user-facing optimize surface
+- `14230e1` chore(retro): seed durable retro memory and record session lessons
+- `cbf3d1f` chore(adapters): record repo-owned release seams in release-adapter.yaml
+- `a1802c8` Refresh handoff after runtime fingerprint and optimizer.kind closeout
+- `d93084a` Assert routing fidelity on all instruction-surface variants
+- `9005f27` Refresh handoff after instruction-surface routing fidelity slice
+- `f5713c8` Refresh find-skills inventory with newly referenced paths
+- `841ac85` Point release CLI+skill check at SKILL.md files and --help probe
 
 ## Review
 
-- `init-repo` and `quality` review runs: completed at session start; findings drove the commits above.
-- `debug`: investigation of Node coverage non-determinism captured in `charness-artifacts/debug/debug-2026-04-24-node-coverage-nondeterminism.md`.
-- Premortem: skipped — this release changed no compatibility expectation, install/update instruction, deletion, or real-host-proof boundary per the release skill body's trigger criteria.
-- Delegated bounded review: not run. The session's risks (CI step additions, secret-scan introduction, coverage driver swap) were exercised directly by CI itself on the tag before publish.
+- Premortem: delegated via Agent subagent. Returned four angles (silent `kind` accept, blocker-escalation CI break, routing-fidelity false-green, brew-vs-curl PATH shadow) with verdict "ship with named changes."
+  Act-before-ship items: schema `additionalProperties: false` confirmed at `fixtures/optimize/input.schema.json:77`; 5/5 claim qualified as fixture-only here and in the handoff.
+  Bundle-anyway items encoded as release-note bullets above.
 
 ## Verification
 
-- `npm run verify` — green locally and on CI for every commit after fix landed.
-- `npm run test:coverage && npm run coverage:floor:check` — green on CI.
-- `npm run release:publish -- --version 0.12.3 --dry-run --json` — clean.
-- `npm run release:publish -- --version 0.12.3 --json` — tag `v0.12.3` pushed (force-moved once after release-artifacts.yml fix).
-- GitHub Actions `verify` (`24879702704`): success.
-- GitHub Actions `spec-report` (`24879702702`): success.
-- GitHub Actions `release-artifacts` (`24879719597`): success, including `verify-public-release`.
-- `npm run release:smoke-install -- --channel install_sh --version v0.12.3 --repo corca-ai/cautilus --installer-source local --skip-update --json`: `ok: true`, installed binary reports `cautilus 0.12.3`.
+- `npm run release:prepare -- 0.13.0`: surfaces synced, package.json, package-lock.json, marketplace.json, plugin.json (claude + codex) advanced to 0.13.0.
+- `npm run verify` (31.43s): green.
+- `npm run hooks:check`: ready.
+- `python3 check_cli_skill_surface.py --run-probes`: status `ok` with 5/5 probes returning 0.
+- `python3 current_release.py`: `drift: []` with every surface reporting 0.13.0.
 
 ## Public Release
 
-- URL: https://github.com/corca-ai/cautilus/releases/tag/v0.12.3
-- Tag: `v0.12.3`
-- Head: `063b7da` (tag force-moved from initial `f789eb1` after wiring gitleaks into release-artifacts.yml)
-- Assets: source-archive checksum, release notes, and darwin/linux arm64/x64 binary archives with checksum manifest.
+To be closed after `node scripts/release/publish-release.mjs --version 0.13.0` pushes the tag and GitHub Actions `release-artifacts` completes.
+`npm run release:smoke-install -- --channel install_sh --version v0.13.0 --repo corca-ai/cautilus --installer-source local --skip-update --json` should return `ok: true`.
 
-## Notes For Next Session
+## Operator Update Steps
 
-- Related charness issues filed: [#70](https://github.com/corca-ai/charness/issues/70) (bootstrap_adapter defaults + absolute paths), [#71](https://github.com/corca-ai/charness/issues/71) (delegation-clause eyeball gravity).
-- Coverage-floor gate is standing. `build-optimize-input.mjs` and friends stayed stable under c8 across 4 runs; floor values are captured from a single measurement, so any new volatile seam should be measured N≥3 times before floor promotion.
-- `release-adapter.yaml` is still absent; the release skill used inferred defaults and hit a declared-seam mismatch that had to be reasoned around. A small adapter file recording this repo's real `release:prepare` / `release:publish` / `release:smoke-install` contract would remove that friction on the next release.
+1. Refresh the binary via the install-sh channel:
+   `curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh | sh`.
+   Operators who previously installed via Homebrew should first run `brew uninstall cautilus` (and `hash -r`) to avoid a PATH shadow where a stale `cautilus` still reports `0.12.x`.
+2. Claude Code and Codex plugin consumers pick up the bundled skill refresh via `charness update` or by re-running `cautilus install` in the host repo.
+3. Host repos still reading `optimizer.kind` from proposals need the migration from [#31](https://github.com/corca-ai/cautilus/issues/31) before upgrading.
+
+## Open Risks
+
+- `ROOT_ENTRY_ALIASES` surface-isolation leak is known and tracked in the handoff as the natural follow-up slice.
+- No standing real-codex dogfood was run for this tag; the fixture-backend self-dogfood is green, but real-runner routing fidelity on `claude-only-routing` is expected to regress under the new expectation until the leak is closed.
