@@ -1,0 +1,4 @@
+# Paths excluded from coverage-floor discipline.
+# One repo-root-relative path per line. Lines starting with `#` are ignored.
+#
+# Use sparingly: prefer writing real tests over widening this list.
