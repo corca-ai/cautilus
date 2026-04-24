@@ -2,56 +2,57 @@
 
 ## Workflow Trigger
 
-다음 세션의 기본 pickup은 `charness:impl`로 Go runtime consolidation의 다음 슬라이스를 진행하는 것이다.
-먼저 [docs/contracts/go-runtime-consolidation.md](../contracts/go-runtime-consolidation.md), [docs/maintainers/go-runtime-consolidation-premortem.md](../maintainers/go-runtime-consolidation-premortem.md), [docs/contracts/active-run.md](../contracts/active-run.md), [docs/contracts/live-run-invocation.md](../contracts/live-run-invocation.md), [docs/contracts/workbench-instance-discovery.md](../contracts/workbench-instance-discovery.md)를 다시 읽는다.
-이번 pickup의 기준은 shipped runtime semantics를 Go가 소유하고, runtime duplicate는 하위호환성 고려 없이 제거할 수 있다는 점이다.
-instruction-surface나 init-repo 운영 표면을 건드리는 요청이면 먼저 [docs/contracts/instruction-surface.md](../contracts/instruction-surface.md), [docs/internal/working-patterns.md](./working-patterns.md), [charness-artifacts/init-repo/latest.md](../../charness-artifacts/init-repo/latest.md)를 같이 읽는다.
+다음 세션의 기본 pickup은 `charness:impl`로 runtime fingerprint / model-runtime drift 첫 구현 슬라이스를 시작하는 것이다.
+첫 행동은 `git status --short`로 live worktree를 확인하는 것이고, 그 다음 [docs/contracts/runtime-fingerprint-optimization.md](../contracts/runtime-fingerprint-optimization.md)와 관련 계약 문서를 읽는다.
+관련 계약 문서는 [docs/contracts/reporting.md](../contracts/reporting.md), [docs/contracts/adapter-contract.md](../contracts/adapter-contract.md), [docs/contracts/skill-testing.md](../contracts/skill-testing.md), [docs/contracts/instruction-surface.md](../contracts/instruction-surface.md), [docs/contracts/optimization.md](../contracts/optimization.md), [docs/contracts/optimization-search.md](../contracts/optimization-search.md)다.
 이 handoff는 mention-only pickup 기준 문서이며, handoff adapter는 `docs/internal/handoff.md`를 canonical artifact로 해석한다.
 
 ## Current State
 
-- Go runtime consolidation의 first implementation slice는 landed 상태다.
-- `mode evaluate`의 profile-backed scenario selection, history persistence, baseline-cache seed semantics는 Go path에 있다.
-  구현 시작점은 [internal/app/remaining_commands.go](../../internal/app/remaining_commands.go)와 [internal/runtime/scenario_history.go](../../internal/runtime/scenario_history.go)다.
-- `workbench discover`, `workbench run-live`, `workbench run-simulator-persona`, product-owned evaluator contract, `workbench run-scenarios`, `workbench prepare-request-batch`의 shipped semantics는 Go command surface가 소유한다.
-  자세한 runtime 상태는 [docs/contracts/go-runtime-consolidation.md](../contracts/go-runtime-consolidation.md)와 관련 command files를 따른다.
-- `run-executor-variants`와 `evaluate-adapter-mode` direct Node entrypoint는 아직 thin Go CLI shim으로 남아 있다.
-  유지 정책은 없고, equivalent Go path가 landed한 seam부터 제거할 수 있다.
-- 이번 세션에서 init-repo 운영 표면 정규화가 landed 됐다.
-  관련 커밋은 `6466341`, `5e7cdc6`, `24fdec0`이다.
-  핵심은 install pointer를 `README.md`로 맞춘 것, `docs/internal/working-patterns.md`를 repo memory에 넣은 것, startup bootstrap을 `find-skills` 중심으로 명확히 한 것, bundled `skills/cautilus/` semantic-change proof policy와 operator acceptance read-first path를 보강한 것이다.
-- instruction-surface nested override failure는 coding-agent root-first 계약으로 정리됐다.
-  관련 커밋은 `60fd201`과 `fd41fa2`이며, 실제 구현 결정은 `fd41fa2`다.
-  `charness-artifacts/debug/latest.md`에는 실패 분석이 남아 있으므로, 그 문서를 읽을 때는 root-first fix가 이미 landed 됐다는 점을 같이 적용한다.
-- 최근 확인 결과 `./bin/cautilus instruction-surface test --repo-root . --adapter-name self-dogfood-instruction-surface`는 `accept-now`, 5/5 passed 상태였고, `npm run verify`, `npm run hooks:check`도 통과했다.
-- Charness 쪽 후속은 `corca-ai/charness#64`에 남겨져 있다.
-  init-repo/quality 권장사항 수용, multi-review posture, 게이트와 어댑터의 강결합 위험은 Cautilus 기본 runtime pickup의 범위가 아니라 Charness follow-up로 다룬다.
+- 이번 세션에서 runtime fingerprint / model-runtime drift / optimize simplification 설계 계약이 landed 됐다.
+  커밋은 `ae8d6df Define runtime fingerprint optimization contract`다.
+- 새 canonical 설계 문서는 [docs/contracts/runtime-fingerprint-optimization.md](../contracts/runtime-fingerprint-optimization.md)다.
+  핵심 결정은 `telemetry.runtimeFingerprint`를 canonical write path로 쓰고, flat telemetry는 compatibility input으로 읽는 것이다.
+- 첫 구현 비교 기준은 자동 추론이 아니라 explicit prior-evidence input이다.
+  active run, scenario history, deployment evidence에서 자동 prior를 고르는 일은 deferred다.
+- runtime drift code는 behavior-outcome `reasonCodes`와 섞지 않는다.
+  `model_runtime_changed`는 warning/context이고, pinned policy mismatch만 workflow block이 될 수 있다.
+- adapter-owned pinned runtime policy는 `runtime_policy`로 문서화됐다.
+  기본은 `mode: observe`, pinned path는 declared runtime fields와 observed `telemetry.runtimeFingerprint`를 비교한다.
+- optimize 설계는 새 `simplification` kind를 추가하지 않는다.
+  `passing_simplification`은 revision reason이고, shorter target preference는 selection objective / `shorter_target` tie-breaker다.
+- premortem과 counterweight 결과는 runtime fingerprint 계약 문서의 `Premortem` 섹션에 반영됐다.
+- charness 쪽 workflow 개선 이슈는 `corca-ai/charness#66`에 열려 있다.
+  내용은 ideation/spec이 새 mode/kind를 제안하기 전에 enum-axis consistency를 점검해야 한다는 것이다.
+- `npm run verify`와 `npm run hooks:check`는 통과했다.
+  마지막 확인 기준으로 Cautilus worktree는 clean이었다.
 
 ## Next Session
 
-1. `git status --short`로 사용자 변경과 이전 세션 변경을 먼저 분리한다.
-2. 기본 경로라면 `charness:impl`로 next runtime slice를 시작하고, [docs/contracts/go-runtime-consolidation.md](../contracts/go-runtime-consolidation.md)의 완료된 first implementation slice와 이어지는 workbench/live-run migration 우선순위를 다시 확인한다.
-3. batch primitive의 next probe는 prep surface 확장 쪽이다.
-   draft scenario 배열만으로 충분한지, 아니면 scenario proposals packet이나 consumer scenario catalog를 product prep command가 직접 읽어야 하는지 다시 자른다.
-4. `run-executor-variants`와 `evaluate-adapter-mode` shim removal은 early cleanup 후보다.
-   하위호환성은 고려하지 않으므로 equivalent Go path가 landed한 seam은 direct Node runtime entrypoint를 제거할 수 있다.
-5. packet-builder surfaces는 첫 대상이 아니다.
-   workbench/live-run runtime seam과 batch primitive 후속 slice를 먼저 정리한 뒤, builder 계층이 실제 shipped semantics를 소유하는지 다시 분류한다.
-6. 해당 seam을 옮기면 docs와 bundled skill references도 같은 슬라이스에서 같이 정리한다.
+1. `git status --short`로 사용자 변경 여부를 먼저 확인한다.
+2. [docs/contracts/runtime-fingerprint-optimization.md](../contracts/runtime-fingerprint-optimization.md)의 `First Implementation Slice`를 기준으로 작업 범위를 자른다.
+3. 첫 구현은 기존 telemetry에서 `telemetry.runtimeFingerprint`를 정규화하는 것부터 시작한다.
+   flat `provider`, `model`, `session_mode`, `pricing_version`은 compatibility input으로 읽는다.
+4. prior-evidence input의 minimal packet/file surface를 먼저 정하고, 그 explicit prior evidence와 current fingerprint를 비교해 runtime-context codes를 emit한다.
+   current identity가 없으면 `model_runtime_unobserved`, prior identity가 없으면 non-failing no-prior context로 처리한다.
+5. 기본 warning path가 선명해진 뒤 `runtime_policy.mode: pinned`와 `model_runtime_pinned_mismatch` block path를 추가한다.
+6. optimize wiring은 이번 첫 구현 슬라이스에 끌어오지 않는다.
+   runtime warning path와 pinned mismatch path가 landed된 뒤 별도 슬라이스에서 `model_runtime_changed`와 `passing_simplification`을 proposal context로 넣는다.
 
 ## Discuss
 
-- second-wave migration에서 packet-builder surfaces를 어디까지 Go로 끌어올릴지
-- `prepare-request-batch`의 다음 제품 소유 범위를 scenario proposals packet이나 consumer scenario catalog reading까지 넓힐지
-- instruction-surface나 init-repo 쪽 요청으로 전환되면, root-first 계약과 Charness issue #64의 범위를 Cautilus runtime 작업과 섞지 않을지
+- explicit prior-evidence input의 CLI/API 이름과 packet 위치
+- runtime-context reason codes를 어느 packet path에 둘지
+- HTML report가 첫 슬라이스에서 runtime warnings를 보여줘야 하는지
+- `optimizer.kind`를 언제 사용자-facing surface에서 축소할지
 
 ## References
 
-- [docs/contracts/go-runtime-consolidation.md](../contracts/go-runtime-consolidation.md)
-- [docs/maintainers/go-runtime-consolidation-premortem.md](../maintainers/go-runtime-consolidation-premortem.md)
-- [docs/contracts/active-run.md](../contracts/active-run.md)
-- [docs/contracts/live-run-invocation.md](../contracts/live-run-invocation.md)
-- [docs/contracts/workbench-instance-discovery.md](../contracts/workbench-instance-discovery.md)
+- [docs/contracts/runtime-fingerprint-optimization.md](../contracts/runtime-fingerprint-optimization.md)
+- [docs/contracts/reporting.md](../contracts/reporting.md)
+- [docs/contracts/adapter-contract.md](../contracts/adapter-contract.md)
+- [docs/contracts/skill-testing.md](../contracts/skill-testing.md)
 - [docs/contracts/instruction-surface.md](../contracts/instruction-surface.md)
-- [docs/internal/working-patterns.md](./working-patterns.md)
-- [charness-artifacts/init-repo/latest.md](../../charness-artifacts/init-repo/latest.md)
+- [docs/contracts/optimization.md](../contracts/optimization.md)
+- [docs/contracts/optimization-search.md](../contracts/optimization-search.md)
+- [corca-ai/charness#66](https://github.com/corca-ai/charness/issues/66)
