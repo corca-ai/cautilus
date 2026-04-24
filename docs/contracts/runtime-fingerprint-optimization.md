@@ -14,8 +14,8 @@ That creates two product responsibilities:
 
 ## Current Slice
 
-This contract defines the first runtime-fingerprint design for skill, instruction-surface, report, and optimize flows.
-It is a design contract, not yet a fully implemented packet migration.
+This contract defines the first runtime-fingerprint implementation for skill, instruction-surface, report, and optimize flows.
+The current implementation covers explicit prior-evidence comparison, adapter-owned pinned runtime policy, and optimize proposal context.
 
 The current slice should:
 
@@ -24,6 +24,9 @@ The current slice should:
 - surface model-runtime changes as evidence context, not as default test failure
 - let `optimize` consume the runtime-change context as one revision reason
 - keep prompt compression as a general selection preference instead of a new optimizer kind
+
+The explicit CLI comparison path is `cautilus report build --prior-evidence-file <path>`.
+Runtime wrappers and adapter flows may also pass `priorEvidence` and `runtimePolicy` directly in packet input JSON.
 
 ## Fixed Decisions
 
@@ -191,11 +194,11 @@ Model-change-driven optimize suggestions should preserve:
 
 ## Acceptance Checks
 
-- Add a fixture where current skill-test telemetry differs from an explicit prior evidence file and the summary includes `model_runtime_changed` while preserving a passing recommendation.
-- Add a fixture where a pinned model policy mismatches the observed telemetry and the result is blocked with `model_runtime_pinned_mismatch`.
-- Add an optimize fixture where the report is passing, runtime changed, and the proposal reason includes `passing_simplification` rather than a new optimizer kind.
-- Add an optimize-search fixture where two candidates tie on behavioral scores and the shorter candidate wins only after guardrails pass, with `targetSizeDelta` recorded.
-- Add a backward-compatibility fixture where prior evidence lacks runtime identity and the result emits `model_runtime_unobserved` rather than failing.
+- Covered: current skill-test telemetry differs from explicit prior evidence and the summary includes `model_runtime_changed` while preserving a passing recommendation.
+- Covered: a pinned model policy mismatches observed telemetry and the result is blocked with `model_runtime_pinned_mismatch`.
+- Covered: a passing report with runtime change yields `passing_simplification` without adding a new optimizer kind.
+- Covered: two optimize-search candidates tied on behavioral scores prefer the shorter target and record `targetSizeDelta`.
+- Covered: prior evidence without runtime identity emits `model_runtime_unobserved` rather than failing.
 
 ## Probe Questions
 

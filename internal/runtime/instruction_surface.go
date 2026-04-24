@@ -92,13 +92,26 @@ func BuildInstructionSurfaceSummary(input map[string]any, now time.Time) (map[st
 		accumulateInstructionVariantSummary(variantAccumulators, asMap(result["instructionSurface"]), status, asMap(result["routingEvaluation"]))
 		evaluations = append(evaluations, result)
 	}
+	runtimePolicy, err := normalizeRuntimePolicy(input["runtimePolicy"], "runtimePolicy")
+	if err != nil {
+		return nil, err
+	}
+	runtimeContext := buildRuntimeContext(
+		map[string]any{"telemetry": summarizeEvaluationRuntimeTelemetry(evaluations)},
+		asMap(input["priorEvidence"]),
+		runtimeContextSource(input),
+		runtimePolicy,
+	)
 	recommendation := "accept-now"
 	if counts["failed"] > 0 {
 		recommendation = "reject"
 	} else if counts["blocked"] > 0 {
 		recommendation = "defer"
 	}
-	return map[string]any{
+	if stringOrEmpty(asMap(runtimeContext)["severity"]) == "blocked" {
+		recommendation = "defer"
+	}
+	summary := map[string]any{
 		"schemaVersion":    contracts.InstructionSurfaceSummarySchema,
 		"suiteId":          suiteID,
 		"suiteDisplayName": suiteDisplayName,
@@ -114,7 +127,11 @@ func BuildInstructionSurfaceSummary(input map[string]any, now time.Time) (map[st
 		"routingSummary":   routingSummary,
 		"variantSummaries": finalizeInstructionVariantSummaries(variantAccumulators),
 		"evaluations":      evaluations,
-	}, nil
+	}
+	if runtimeContext != nil {
+		summary["runtimeContext"] = runtimeContext
+	}
+	return summary, nil
 }
 
 func normalizeInstructionSurfaceEvaluationInput(input map[string]any, index int, now time.Time) (*instructionSurfaceEvaluationInput, error) {

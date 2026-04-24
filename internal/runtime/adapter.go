@@ -464,6 +464,14 @@ func validateAdapterData(data map[string]any) (map[string]any, []string) {
 			validated["optimize_search"] = normalized
 		}
 	}
+	if runtimePolicy, ok := data["runtime_policy"]; ok && runtimePolicy != nil {
+		normalized, err := normalizeRuntimePolicy(runtimePolicy, "runtime_policy")
+		if err != nil {
+			errors = append(errors, err.Error())
+		} else if normalized != nil {
+			validated["runtime_policy"] = normalized
+		}
+	}
 	return validated, errors
 }
 

@@ -18,6 +18,7 @@
 - optional `adapter_context`: product-owned adapter identity such as `adapter` or `adapterName` when downstream review or optimize bridges must reuse the same adapter without operator restatement
 - optional `telemetry`: wall-clock latency plus any adapter- or provider-owned cost and token metrics
 - optional `telemetry.runtimeFingerprint` signals derived from explicit telemetry; see [runtime-fingerprint-optimization.md](./runtime-fingerprint-optimization.md)
+- optional `runtimeContext` when `cautilus report build --prior-evidence-file <path>` or packet-level `priorEvidence` is provided
 - optional `reasonCodes`: machine-readable report-level outcome classification such as `behavior_regression`, `provider_rate_limit_contamination`, or `infrastructure_failure`
 - optional `warnings`: machine-readable warnings promoted from persisted artifacts when the evidence is contaminated or otherwise narrow
 - `improved`: scenarios or metrics that improved

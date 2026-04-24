@@ -349,8 +349,9 @@ type workspaceStartArgs struct {
 }
 
 type inputOutputArgs struct {
-	input  string
-	output *string
+	input             string
+	output            *string
+	priorEvidenceFile *string
 }
 
 type optimizeProposeArgs struct {
@@ -1128,7 +1129,7 @@ func handleReportBuild(repoRoot string, cwd string, args []string, stdout io.Wri
 		fmt.Fprint(stdout, reportBuildExampleInput)
 		return 0
 	}
-	options, err := parseInputOutputOrActiveRunArgs(args, cwd, "report-input.json", "report.json")
+	options, err := parseReportBuildArgs(args, cwd)
 	if err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
@@ -1137,6 +1138,15 @@ func handleReportBuild(repoRoot string, cwd string, args []string, stdout io.Wri
 	if err != nil {
 		fmt.Fprintf(stderr, "Failed to read JSON from %s: %s\n", options.input, err)
 		return 1
+	}
+	if options.priorEvidenceFile != nil {
+		priorEvidence, err := readJSONObject(*options.priorEvidenceFile)
+		if err != nil {
+			fmt.Fprintf(stderr, "Failed to read JSON from %s: %s\n", *options.priorEvidenceFile, err)
+			return 1
+		}
+		input["priorEvidence"] = priorEvidence
+		input["priorEvidenceFile"] = *options.priorEvidenceFile
 	}
 	packet, err := runtime.BuildReportPacket(input, time.Now())
 	if err != nil {
@@ -1921,6 +1931,55 @@ func parseInputOutputOrActiveRunArgs(args []string, cwd string, defaultInputName
 	}
 	if options.output == nil && activeRunDir != nil {
 		value := filepath.Join(*activeRunDir, defaultOutputName)
+		options.output = &value
+	}
+	return options, nil
+}
+
+func parseReportBuildArgs(args []string, cwd string) (*inputOutputArgs, error) {
+	options := &inputOutputArgs{}
+	for index := 0; index < len(args); index++ {
+		arg := args[index]
+		switch arg {
+		case "--input":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.input = resolvePath(cwd, value)
+		case "--output":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			resolved := resolvePath(cwd, value)
+			options.output = &resolved
+		case "--prior-evidence-file":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			resolved := resolvePath(cwd, value)
+			options.priorEvidenceFile = &resolved
+		default:
+			return nil, fmt.Errorf("unknown argument: %s", arg)
+		}
+	}
+	activeRunDir, err := readActiveRunDir()
+	if err != nil {
+		return nil, err
+	}
+	if strings.TrimSpace(options.input) == "" && activeRunDir != nil {
+		options.input = filepath.Join(*activeRunDir, "report-input.json")
+	}
+	if strings.TrimSpace(options.input) == "" {
+		return nil, fmt.Errorf("--input is required")
+	}
+	if options.output == nil && activeRunDir != nil {
+		value := filepath.Join(*activeRunDir, "report.json")
 		options.output = &value
 	}
 	return options, nil

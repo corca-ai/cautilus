@@ -105,10 +105,24 @@ func BuildSkillEvaluationSummary(input map[string]any, now time.Time) (map[strin
 		accumulateSkillComparisonSummary(comparisonSummary, asMap(result["evaluation"])["baselineComparison"])
 	}
 
+	runtimePolicy, err := normalizeRuntimePolicy(input["runtimePolicy"], "runtimePolicy")
+	if err != nil {
+		return nil, err
+	}
+	runtimeContext := buildRuntimeContext(
+		map[string]any{"telemetry": summarizeEvaluationRuntimeTelemetry(evaluationRuns)},
+		asMap(input["priorEvidence"]),
+		runtimeContextSource(input),
+		runtimePolicy,
+	)
+
 	recommendation := "accept-now"
 	if counts["failed"] > 0 {
 		recommendation = "reject"
 	} else if counts["degraded"] > 0 || counts["blocked"] > 0 || counts["unstable"] > 0 || intFromAny(comparisonSummary["worseThanBaseline"]) > 0 {
+		recommendation = "defer"
+	}
+	if stringOrEmpty(asMap(runtimeContext)["severity"]) == "blocked" {
 		recommendation = "defer"
 	}
 	if value := ratioFromAny(samplingSummary["totalPassingSamples"], samplingSummary["totalSamples"]); value != nil {
@@ -121,7 +135,7 @@ func BuildSkillEvaluationSummary(input map[string]any, now time.Time) (map[strin
 		samplingSummary["overallConsensusRate"] = *value
 	}
 
-	return map[string]any{
+	summary := map[string]any{
 		"schemaVersion":    contracts.SkillEvaluationSummarySchema,
 		"skillId":          skillID,
 		"skillDisplayName": skillDisplayName,
@@ -141,7 +155,40 @@ func BuildSkillEvaluationSummary(input map[string]any, now time.Time) (map[strin
 		"comparisonSummary": comparisonSummary,
 		"evaluations":       evaluations,
 		"evaluationRuns":    evaluationRuns,
-	}, nil
+	}
+	if runtimeContext != nil {
+		summary["runtimeContext"] = runtimeContext
+	}
+	return summary, nil
+}
+
+func summarizeEvaluationRuntimeTelemetry(evaluationRuns []any) map[string]any {
+	fingerprints := []any{}
+	seen := map[string]struct{}{}
+	for _, rawRun := range evaluationRuns {
+		fingerprint := runtimeFingerprintFromEvidence(map[string]any{"telemetry": asMap(asMap(rawRun)["telemetry"])})
+		if len(fingerprint) == 0 {
+			continue
+		}
+		keyParts := []string{}
+		for _, field := range runtimeFingerprintFields {
+			keyParts = append(keyParts, field+"="+stringOrEmpty(fingerprint[field]))
+		}
+		key := strings.Join(keyParts, "\x00")
+		if _, ok := seen[key]; ok {
+			continue
+		}
+		seen[key] = struct{}{}
+		fingerprints = append(fingerprints, fingerprint)
+	}
+	telemetry := map[string]any{}
+	if len(fingerprints) > 0 {
+		telemetry["runtimeFingerprints"] = fingerprints
+		if len(fingerprints) == 1 {
+			telemetry["runtimeFingerprint"] = asMap(fingerprints[0])
+		}
+	}
+	return telemetry
 }
 
 func normalizeSkillEvaluationCase(input map[string]any, index int, now time.Time) (*skillEvaluationCase, error) {

@@ -86,6 +86,10 @@ func BuildReportPacket(input map[string]any, now time.Time) (map[string]any, err
 	if err != nil {
 		return nil, err
 	}
+	runtimePolicy, err := normalizeRuntimePolicy(input["runtimePolicy"], "runtimePolicy")
+	if err != nil {
+		return nil, err
+	}
 	modeSummaries := make([]any, 0, len(modeRuns))
 	modesRun := make([]string, 0, len(modeRuns))
 	for _, modeRun := range modeRuns {
@@ -142,6 +146,7 @@ func BuildReportPacket(input map[string]any, now time.Time) (map[string]any, err
 		return nil, err
 	}
 	reasonCodes, warnings := summarizeReportReasons(modeSummaries)
+	reportTelemetry := summarizeReportTelemetry(modeSummaries)
 	report := map[string]any{
 		"schemaVersion":       contracts.ReportPacketSchema,
 		"generatedAt":         now.UTC().Format(time.RFC3339Nano),
@@ -153,7 +158,7 @@ func BuildReportPacket(input map[string]any, now time.Time) (map[string]any, err
 		"commandObservations": commandObservations,
 		"modesRun":            modesRun,
 		"modeSummaries":       modeSummaries,
-		"telemetry":           summarizeReportTelemetry(modeSummaries),
+		"telemetry":           reportTelemetry,
 		"improved":            normalizeBucketOrEmpty(input["improved"], "improved"),
 		"regressed":           normalizeBucketOrEmpty(input["regressed"], "regressed"),
 		"unchanged":           normalizeBucketOrEmpty(input["unchanged"], "unchanged"),
@@ -169,6 +174,17 @@ func BuildReportPacket(input map[string]any, now time.Time) (map[string]any, err
 	}
 	if adapterContext != nil {
 		report["adapterContext"] = adapterContext
+	}
+	if runtimePolicy != nil {
+		report["runtimePolicy"] = runtimePolicy
+	}
+	if runtimeContext := buildRuntimeContext(
+		map[string]any{"telemetry": reportTelemetry},
+		asMap(input["priorEvidence"]),
+		runtimeContextSource(input),
+		runtimePolicy,
+	); runtimeContext != nil {
+		report["runtimeContext"] = runtimeContext
 	}
 	return report, nil
 }
@@ -407,6 +423,9 @@ func createModeTelemetry(modeRun map[string]any, scenarioTelemetrySummary map[st
 	if len(models) > 0 {
 		telemetry["models"] = models
 	}
+	if fingerprint := runtimeFingerprintFromEvidence(map[string]any{"telemetry": asMap(modeRun["telemetry"])}); len(fingerprint) > 0 {
+		telemetry["runtimeFingerprint"] = fingerprint
+	}
 	if len(telemetry) == 0 {
 		return nil
 	}
@@ -440,7 +459,37 @@ func summarizeReportTelemetry(modeSummaries []any) map[string]any {
 	if models := collectModeSummaryStrings(modeSummaries, "models"); len(models) > 0 {
 		summary["models"] = models
 	}
+	if fingerprints := collectModeSummaryRuntimeFingerprints(modeSummaries); len(fingerprints) > 0 {
+		summary["runtimeFingerprints"] = fingerprints
+		if len(fingerprints) == 1 {
+			summary["runtimeFingerprint"] = asMap(fingerprints[0])
+		}
+	} else if fingerprint := runtimeFingerprintFromSummary(summary); len(fingerprint) > 0 {
+		summary["runtimeFingerprint"] = fingerprint
+	}
 	return summary
+}
+
+func collectModeSummaryRuntimeFingerprints(modeSummaries []any) []any {
+	seen := map[string]struct{}{}
+	result := []any{}
+	for _, raw := range modeSummaries {
+		fingerprint := runtimeFingerprintFromEvidence(map[string]any{"telemetry": asMap(asMap(raw)["telemetry"])})
+		if len(fingerprint) == 0 {
+			continue
+		}
+		keyParts := []string{}
+		for _, field := range runtimeFingerprintFields {
+			keyParts = append(keyParts, field+"="+stringOrEmpty(fingerprint[field]))
+		}
+		key := strings.Join(keyParts, "\x00")
+		if _, ok := seen[key]; ok {
+			continue
+		}
+		seen[key] = struct{}{}
+		result = append(result, fingerprint)
+	}
+	return result
 }
 
 func normalizeBucketOrEmpty(value any, field string) []any {

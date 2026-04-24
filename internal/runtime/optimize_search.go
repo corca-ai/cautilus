@@ -359,7 +359,7 @@ func buildOptimizeSearchConfig(budget string, preset map[string]any, reviewCheck
 func normalizeOptimizeSearchSelectionPolicy(value map[string]any) map[string]any {
 	result := map[string]any{
 		"primaryObjective": "held_out_behavior",
-		"tieBreakers":      []any{"lower_cost", "lower_latency"},
+		"tieBreakers":      []any{"shorter_target", "lower_cost", "lower_latency"},
 		"constraintCaps":   map[string]any{},
 	}
 	if len(value) == 0 {
@@ -3039,6 +3039,7 @@ func optimizeSearchCandidateRegistry(candidates []map[string]any) []any {
 			"targetSnapshot":     candidate["targetSnapshot"],
 			"mutationRationale":  candidate["mutationRationale"],
 			"telemetry":          firstNonNil(candidate["telemetry"], map[string]any{}),
+			"targetSizeDelta":    optimizeSearchTargetSizeDelta(candidate, candidates[0]),
 		}
 		for _, key := range []string{"expectedImprovements", "preservedStrengths", "riskNotes", "checkpointFeedback", "artifacts", "evaluationArtifacts"} {
 			if value := candidate[key]; value != nil {
@@ -3145,6 +3146,13 @@ func optimizeSearchRankCandidateIDs(candidateIDs []string, matrix []any, candida
 		}
 		leftTelemetry := telemetryByID[leftID]
 		rightTelemetry := telemetryByID[rightID]
+		leftCandidate := optimizeSearchCandidateByID(candidates, leftID)
+		rightCandidate := optimizeSearchCandidateByID(candidates, rightID)
+		leftSize, leftSizeOK := toFloat(asMap(asMap(leftCandidate)["targetSnapshot"])["sizeBytes"])
+		rightSize, rightSizeOK := toFloat(asMap(asMap(rightCandidate)["targetSnapshot"])["sizeBytes"])
+		if leftSizeOK && rightSizeOK && leftSize != rightSize {
+			return leftSize < rightSize
+		}
 		leftCost, _ := toFloat(leftTelemetry["totalCostUsd"])
 		rightCost, _ := toFloat(rightTelemetry["totalCostUsd"])
 		if leftCost != rightCost {
@@ -3158,6 +3166,18 @@ func optimizeSearchRankCandidateIDs(candidateIDs []string, matrix []any, candida
 		return leftID < rightID
 	})
 	return ranked
+}
+
+func optimizeSearchTargetSizeDelta(candidate map[string]any, seed map[string]any) any {
+	candidateSize, candidateOK := toFloat(asMap(candidate["targetSnapshot"])["sizeBytes"])
+	seedSize, seedOK := toFloat(asMap(seed["targetSnapshot"])["sizeBytes"])
+	if !candidateOK || !seedOK {
+		return "unknown"
+	}
+	return map[string]any{
+		"basisCandidateId": stringOrEmpty(seed["id"]),
+		"sizeBytes":        candidateSize - seedSize,
+	}
 }
 
 func optimizeSearchAverageHeldOutScore(matrix []any, candidateID string, scenarioIDs []string) float64 {

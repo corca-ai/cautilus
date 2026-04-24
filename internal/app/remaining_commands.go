@@ -719,6 +719,9 @@ func handleModeEvaluate(repoRoot string, cwd string, args []string, stdout io.Wr
 		}
 		reportInput["adapterContext"] = adapterContext
 	}
+	if runtimePolicy := asMapAny(adapterPayload.Data["runtime_policy"]); len(runtimePolicy) > 0 {
+		reportInput["runtimePolicy"] = runtimePolicy
+	}
 	_ = writeOutputResolved(stdout, &reportInputFile, reportInput)
 	report, err := runtime.BuildReportPacket(reportInput, time.Now())
 	if err != nil {

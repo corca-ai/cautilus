@@ -72,18 +72,18 @@ func normalizeCompareArtifact(value any, field string) (map[string]any, error) {
 		}
 		normalized["deltas"] = deltas
 	}
-		if rawReasons, err := assertArray(record["reasons"], field+".reasons"); err != nil {
+	if rawReasons, err := assertArray(record["reasons"], field+".reasons"); err != nil {
+		return nil, err
+	} else if len(rawReasons) > 0 {
+		reasons, err := stringSliceFromAny(rawReasons, field+".reasons")
+		if err != nil {
 			return nil, err
-		} else if len(rawReasons) > 0 {
-			reasons, err := stringSliceFromAny(rawReasons, field+".reasons")
-			if err != nil {
-				return nil, err
-			}
-			normalized["reasons"] = reasons
 		}
-		if rawPaths, err := assertArray(record["artifactPaths"], field+".artifactPaths"); err != nil {
-			return nil, err
-		} else if len(rawPaths) > 0 {
+		normalized["reasons"] = reasons
+	}
+	if rawPaths, err := assertArray(record["artifactPaths"], field+".artifactPaths"); err != nil {
+		return nil, err
+	} else if len(rawPaths) > 0 {
 		paths, err := stringSliceFromAny(rawPaths, field+".artifactPaths")
 		if err != nil {
 			return nil, err
@@ -195,7 +195,7 @@ func normalizeScenarioTelemetry(value any, field string) (map[string]any, error)
 		return nil, fmt.Errorf("%s must be an object", field)
 	}
 	telemetry := map[string]any{}
-	for _, key := range []string{"provider", "model", "cost_truth", "pricing_source", "pricing_version"} {
+	for _, key := range []string{"runtime", "provider", "model", "resolved_model", "model_revision", "session_mode", "cost_truth", "pricing_source", "pricing_version", "source"} {
 		value, err := normalizeOptionalString(record[key], field+"."+key)
 		if err != nil {
 			return nil, err
@@ -203,6 +203,13 @@ func normalizeScenarioTelemetry(value any, field string) (map[string]any, error)
 		if value != nil {
 			telemetry[key] = *value
 		}
+	}
+	fingerprint, err := normalizeRuntimeFingerprint(record["runtimeFingerprint"], record, field+".runtimeFingerprint")
+	if err != nil {
+		return nil, err
+	}
+	if len(fingerprint) > 0 {
+		telemetry["runtimeFingerprint"] = fingerprint
 	}
 	for _, key := range telemetryNumericFields {
 		value, err := normalizeNonNegativeNumber(record[key], field+"."+key)

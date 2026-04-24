@@ -83,6 +83,9 @@ func BuildOptimizeInput(repoRoot string, reportFile string, reviewSummaryFile *s
 			},
 		},
 	}
+	if runtimeContext := asMap(report["runtimeContext"]); len(runtimeContext) > 0 {
+		packet["runtimeContext"] = runtimeContext
+	}
 	if targetFile != nil && strings.TrimSpace(*targetFile) != "" {
 		packet["targetFile"] = map[string]any{
 			"path":   resolvePath(repoRoot, *targetFile),
@@ -155,6 +158,8 @@ func GenerateOptimizeProposal(packet map[string]any, inputFile *string, now time
 		"optimizer":            optimizer,
 		"reportRecommendation": stringOrEmpty(asMap(packet["report"])["recommendation"]),
 		"decision":             decision,
+		"revisionReasons":      buildRevisionReasons(packet, evidence),
+		"evidenceFocus":        buildEvidenceFocus(evidence),
 		"rationale":            buildProposalRationale(decision, optimizer, evidence),
 		"prioritizedEvidence":  evidence,
 		"suggestedChanges":     suggestedChanges,
@@ -172,6 +177,9 @@ func GenerateOptimizeProposal(packet map[string]any, inputFile *string, now time
 	}
 	if targetFile := asMap(packet["targetFile"]); len(targetFile) > 0 {
 		proposal["targetFile"] = targetFile
+	}
+	if runtimeContext := asMap(packet["runtimeContext"]); len(runtimeContext) > 0 {
+		proposal["runtimeContext"] = runtimeContext
 	}
 	return proposal, nil
 }
@@ -278,6 +286,52 @@ func buildEvidenceUniverse(packet map[string]any, optimizer map[string]any) []ma
 	evidence = append(evidence, gatherOptimizeResidualCompareReasons(report)...)
 	evidence = append(evidence, gatherOptimizeHistorySignals(asMap(packet["scenarioHistory"]), int(numberOrDefault(asMap(optimizer["plan"])["historySignalLimit"], 2)))...)
 	return evidence
+}
+
+func buildRevisionReasons(packet map[string]any, evidence []any) []any {
+	reasons := []string{}
+	for _, rawEvidence := range evidence {
+		switch stringOrEmpty(asMap(rawEvidence)["source"]) {
+		case "report.regressed", "report.compare_reason":
+			reasons = append(reasons, "known_regression")
+		case "report.review_finding", "review.finding":
+			reasons = append(reasons, "review_concern")
+		case "scenario_history":
+			reasons = append(reasons, "unstable_history")
+		case "report.noisy":
+			reasons = append(reasons, "noisy_evidence")
+		}
+	}
+	runtimeContext := asMap(firstNonNil(packet["runtimeContext"], asMap(asMap(packet["report"])["runtimeContext"])))
+	if containsString(stringSliceValue(runtimeContext["reasonCodes"]), "model_runtime_changed") {
+		reasons = append(reasons, "model_runtime_changed")
+		if reportLooksPassing(asMap(packet["report"])) {
+			reasons = append(reasons, "passing_simplification")
+		}
+	}
+	reasons = uniqueStrings(reasons)
+	result := make([]any, 0, len(reasons))
+	for _, reason := range reasons {
+		result = append(result, reason)
+	}
+	return result
+}
+
+func buildEvidenceFocus(evidence []any) string {
+	sources := map[string]bool{}
+	for _, rawEvidence := range evidence {
+		sources[stringOrEmpty(asMap(rawEvidence)["source"])] = true
+	}
+	if sources["report.review_finding"] || sources["review.finding"] {
+		return "review"
+	}
+	if sources["scenario_history"] {
+		return "history"
+	}
+	if len(sources) > 0 {
+		return "current_report"
+	}
+	return "balanced"
 }
 
 func gatherOptimizeReportReviewFindings(report map[string]any) []map[string]any {
@@ -489,6 +543,9 @@ func buildFallbackOptimizeEvidence(packet map[string]any) []any {
 
 func buildSuggestedChanges(packet map[string]any, evidence []any) []any {
 	result := []any{}
+	if simplification := buildPassingSimplificationChange(packet); simplification != nil {
+		result = append(result, simplification)
+	}
 	if primary := buildPrimaryChange(packet, evidence); primary != nil {
 		result = append(result, primary)
 	}
@@ -499,6 +556,52 @@ func buildSuggestedChanges(packet map[string]any, evidence []any) []any {
 		result = append(result, history)
 	}
 	return result
+}
+
+func buildPassingSimplificationChange(packet map[string]any) any {
+	report := asMap(packet["report"])
+	runtimeContext := asMap(firstNonNil(packet["runtimeContext"], report["runtimeContext"]))
+	if !containsString(stringSliceValue(runtimeContext["reasonCodes"]), "model_runtime_changed") || !reportLooksPassing(report) {
+		return nil
+	}
+	return map[string]any{
+		"id":                "passing-simplification",
+		"changeKind":        "prompt_simplification",
+		"target":            stringOrEmpty(packet["optimizationTarget"]),
+		"summary":           "Consider a shorter target only if the same behavior and review gates continue to pass.",
+		"rationale":         "The current evidence passes under a changed model runtime, so a bounded simplification candidate may be worth evaluating.",
+		"runtimeComparison": firstNonNil(firstArrayItem(runtimeContext["comparisons"]), map[string]any{}),
+		"passingEvidence":   passingEvidenceSummary(report),
+		"targetSizeDelta":   "unknown",
+		"optional":          true,
+	}
+}
+
+func reportLooksPassing(report map[string]any) bool {
+	if stringOrEmpty(report["recommendation"]) != "accept-now" {
+		return false
+	}
+	return len(arrayOrEmpty(report["regressed"])) == 0 && len(arrayOrEmpty(report["noisy"])) == 0
+}
+
+func passingEvidenceSummary(report map[string]any) []any {
+	evidence := []any{}
+	for _, mode := range arrayOrEmpty(report["modeSummaries"]) {
+		record := asMap(mode)
+		status := stringOrEmpty(record["status"])
+		if status == "" || status == "completed" || status == "passed" {
+			evidence = append(evidence, map[string]any{
+				"mode":   record["mode"],
+				"status": firstNonEmpty(status, "completed"),
+			})
+		}
+	}
+	if len(evidence) == 0 {
+		evidence = append(evidence, map[string]any{
+			"recommendation": report["recommendation"],
+		})
+	}
+	return evidence
 }
 
 func buildPrimaryChange(packet map[string]any, evidence []any) any {
