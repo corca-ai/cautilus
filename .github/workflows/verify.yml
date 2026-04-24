@@ -23,3 +23,5 @@ jobs:
       - run: go install golang.org/x/vuln/cmd/govulncheck@v1.1.4
       - run: npm ci
       - run: npm run verify
+      - run: npm run test:coverage
+      - run: npm run coverage:floor:check
