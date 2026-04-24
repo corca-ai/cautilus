@@ -26,6 +26,7 @@ product_surfaces:
 
 cli_skill_surface_probe_commands:
   - "./bin/cautilus --version"
+  - "./bin/cautilus --help"
   - "./bin/cautilus healthcheck --json"
   - "./bin/cautilus commands --json"
   - "./bin/cautilus scenarios --json"
@@ -33,8 +34,8 @@ cli_skill_surface_probe_commands:
 cli_skill_surface_command_docs: []
 
 cli_skill_surface_skill_paths:
-  - skills/cautilus
-  - plugins/cautilus/skills/cautilus
+  - skills/cautilus/SKILL.md
+  - plugins/cautilus/skills/cautilus/SKILL.md
 
 cli_skill_surface_change_globs:
   - "bin/**"
