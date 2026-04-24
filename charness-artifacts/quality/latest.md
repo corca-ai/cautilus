@@ -4,9 +4,9 @@ Date: 2026-04-24
 
 Prior durable reviews:
 
-- `skill-outputs/quality/history/2026-04-22.md`
-- `skill-outputs/quality/quality.md` (2026-04-15)
-- `skill-outputs/quality/history/2026-04-12.md`
+- `charness-artifacts/quality/history/2026-04-22.md`
+- `charness-artifacts/quality/quality.md` (2026-04-15)
+- `charness-artifacts/quality/history/2026-04-12.md`
 
 ## Scope
 
@@ -149,7 +149,7 @@ The most likely ownership seam to be wrong is still proof placement: public exec
 - `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.5.8/skills/quality/scripts/resolve_adapter.py --repo-root .`
 - `rg --files .`
 - `git status --short`
-- `sed -n '1,260p' skill-outputs/quality/latest.md`
+- `sed -n '1,260p' charness-artifacts/quality/latest.md`
 - `sed -n '1,240p' package.json`
 - `sed -n '1,220p' go.mod`
 - `rg -n "eslint|ruff|mypy|pyright|tsc|pytest|vitest|jest|coverage|..." .`

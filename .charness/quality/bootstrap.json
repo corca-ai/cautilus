@@ -1,0 +1,41 @@
+{
+  "adapter_path": ".agents/quality-adapter.yaml",
+  "adapter_status": "updated",
+  "artifact_path": "charness-artifacts/quality/latest.md",
+  "report_path": ".charness/quality/bootstrap.json",
+  "preset_lineage": [
+    "specdown-quality"
+  ],
+  "field_statuses": {
+    "preset_lineage": "inferred",
+    "coverage_fragile_margin_pp": "defaulted",
+    "coverage_floor_policy": "defaulted",
+    "specdown_smoke_patterns": "inferred",
+    "spec_pytest_reference_format": "defaulted",
+    "recommendation_defaults_version": "defaulted",
+    "prompt_asset_roots": "defaulted",
+    "adapter_review_sources": "defaulted",
+    "acknowledged_recommendations": "defaulted",
+    "gate_design_review_globs": "defaulted",
+    "prompt_asset_policy": "defaulted",
+    "skill_ergonomics_gate_rules": "preserved",
+    "runtime_budgets": "defaulted",
+    "startup_probes": "preserved",
+    "concept_paths": "preserved",
+    "preflight_commands": "preserved",
+    "gate_commands": "preserved",
+    "security_commands": "deferred",
+    "review_commands": "preserved"
+  },
+  "deferred_setup": [
+    {
+      "field": "security_commands",
+      "status": "deferred",
+      "reason": "No repo-owned security helper was detected.",
+      "suggested_families": [
+        "secret scan",
+        "dependency or supply-chain audit"
+      ]
+    }
+  ]
+}

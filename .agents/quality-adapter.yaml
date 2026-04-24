@@ -1,74 +1,99 @@
 version: 1
 repo: cautilus
 language: en
-output_dir: skill-outputs/quality
-concept_paths:
-- AGENTS.md
-- README.md
-- docs/cli-reference.md
-- docs/master-plan.md
-- docs/guides/evaluation-process.md
-- docs/maintainers/consumer-readiness.md
-- docs/maintainers/releasing.md
-- docs/specs/self-dogfood.spec.md
-- docs/internal/handoff.md
-- skills/cautilus/SKILL.md
-- plugins/cautilus/skills/cautilus/SKILL.md
-- skill-outputs/quality/quality.md
-preflight_commands:
-- ./bin/cautilus adapter resolve --repo-root .
+output_dir: charness-artifacts/quality
+preset_id: portable-defaults
+customized_from: portable-defaults
+preset_lineage:
+  - specdown-quality
+coverage_fragile_margin_pp: 1.0
+coverage_floor_policy:
+  min_statements_threshold: 30
+  fail_below_pct: 80.0
+  warn_ceiling_pct: 95.0
+  floor_drift_lock_pp: 1.0
+  exemption_list_path: scripts/coverage-floor-exemptions.txt
+  gate_script_pattern: "*-quality-gate.sh"
+  lefthook_path: lefthook.yml
+  ci_workflow_glob: .github/workflows/*.yml
+specdown_smoke_patterns: []
+recommendation_defaults_version: issue-64
+prompt_asset_roots: []
+adapter_review_sources: []
+acknowledged_recommendations: []
+gate_design_review_globs: []
+prompt_asset_policy:
+  source_globs: []
+  min_multiline_chars: 400
+  exemption_globs: []
 skill_ergonomics_gate_rules:
-- progressive_disclosure_risk
+  - progressive_disclosure_risk
+runtime_budgets:
 startup_probes:
-- label: cautilus-version
-  command:
-  - ./bin/cautilus
-  - --version
-  class: standing
-  startup_mode: warm
-  surface: installable_cli
-  samples: 1
-- label: cautilus-healthcheck
-  command:
-  - ./bin/cautilus
-  - healthcheck
-  - --json
-  class: standing
-  startup_mode: warm
-  surface: installable_cli
-  samples: 1
-- label: cautilus-command-registry
-  command:
-  - ./bin/cautilus
-  - commands
-  - --json
-  class: release
-  startup_mode: warm
-  surface: cli_discovery
-  samples: 1
-- label: cautilus-scenario-catalog
-  command:
-  - ./bin/cautilus
-  - scenarios
-  - --json
-  class: release
-  startup_mode: warm
-  surface: cli_discovery
-  samples: 1
-- label: cautilus-agent-surface-install
-  command:
-  - sh
-  - -c
-  - tmpdir="$(mktemp -d /tmp/cautilus-agent-surface-XXXXXX)" && ./bin/cautilus install --repo-root "$tmpdir" --json >/dev/null && ./bin/cautilus doctor --repo-root "$tmpdir" --scope agent-surface >/dev/null
-  class: release
-  startup_mode: first-launch
-  surface: bundled_skill
-  samples: 1
+  - label: cautilus-version
+    command:
+      - ./bin/cautilus
+      - "--version"
+    class: standing
+    startup_mode: warm
+    surface: installable_cli
+    samples: 1
+  - label: cautilus-healthcheck
+    command:
+      - ./bin/cautilus
+      - healthcheck
+      - "--json"
+    class: standing
+    startup_mode: warm
+    surface: installable_cli
+    samples: 1
+  - label: cautilus-command-registry
+    command:
+      - ./bin/cautilus
+      - commands
+      - "--json"
+    class: release
+    startup_mode: warm
+    surface: cli_discovery
+    samples: 1
+  - label: cautilus-scenario-catalog
+    command:
+      - ./bin/cautilus
+      - scenarios
+      - "--json"
+    class: release
+    startup_mode: warm
+    surface: cli_discovery
+    samples: 1
+  - label: cautilus-agent-surface-install
+    command:
+      - sh
+      - "-c"
+      - tmpdir="$(mktemp -d /tmp/cautilus-agent-surface-XXXXXX)" && ./bin/cautilus install --repo-root "$tmpdir" --json >/dev/null && ./bin/cautilus doctor --repo-root "$tmpdir" --scope agent-surface >/dev/null
+    class: release
+    startup_mode: first-launch
+    surface: bundled_skill
+    samples: 1
+concept_paths:
+  - AGENTS.md
+  - README.md
+  - docs/cli-reference.md
+  - docs/master-plan.md
+  - docs/guides/evaluation-process.md
+  - docs/maintainers/consumer-readiness.md
+  - docs/maintainers/releasing.md
+  - docs/specs/self-dogfood.spec.md
+  - docs/internal/handoff.md
+  - skills/cautilus/SKILL.md
+  - plugins/cautilus/skills/cautilus/SKILL.md
+  - charness-artifacts/quality/quality.md
+preflight_commands:
+  - ./bin/cautilus adapter resolve --repo-root .
 gate_commands:
-- npm run verify
-- npm run dogfood:self
+  - npm run verify
+  - npm run dogfood:self
 review_commands:
-- npm run lint:skill-disclosure
-- ./bin/cautilus commands --json
-- ./bin/cautilus scenarios --json
+  - npm run lint:skill-disclosure
+  - ./bin/cautilus commands --json
+  - ./bin/cautilus scenarios --json
 security_commands: []
