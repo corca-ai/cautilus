@@ -82,6 +82,84 @@ func TestRenderReportHTMLRendersReasonCodesAndWarnings(t *testing.T) {
 	}
 }
 
+func TestRenderReportHTMLRendersRuntimeContext(t *testing.T) {
+	packet := sampleReportPacket()
+	packet["runtimeContext"] = map[string]any{
+		"severity": "warning",
+		"reasonCodes": []any{
+			"model_runtime_changed",
+			"model_runtime_unobserved",
+		},
+		"warnings": []any{
+			map[string]any{
+				"reasonCode": "model_runtime_changed",
+				"summary":    "Observed runtime identity differs from the prior evidence.",
+			},
+		},
+		"notes": []any{
+			map[string]any{
+				"reasonCode": "model_runtime_unobserved",
+				"summary":    "Prior evidence does not include comparable runtime identity.",
+			},
+		},
+		"comparisons": []any{
+			map[string]any{
+				"reasonCode": "model_runtime_changed",
+				"severity":   "warning",
+				"fields":     []any{"model"},
+				"current":    map[string]any{"provider": "openai", "model": "gpt-5.4-mini"},
+				"prior":      map[string]any{"provider": "openai", "model": "gpt-4.9-mini"},
+			},
+		},
+	}
+	rendered := RenderReportHTML(packet)
+	for _, pattern := range []string{
+		`<h3>Runtime Context</h3>`,
+		`data-severity="warning"`,
+		`data-runtime-code="model_runtime_changed"`,
+		`data-runtime-code="model_runtime_unobserved"`,
+		`Observed runtime identity differs from the prior evidence.`,
+		`Prior evidence does not include comparable runtime identity.`,
+		`data-runtime-comparison="model_runtime_changed"`,
+		`provider=openai · model=gpt-5.4-mini`,
+		`provider=openai · model=gpt-4.9-mini`,
+	} {
+		if !strings.Contains(rendered, pattern) {
+			t.Fatalf("expected %q in rendered report html", pattern)
+		}
+	}
+}
+
+func TestRenderReportHTMLRuntimeBlockedBlocksDecisionPressure(t *testing.T) {
+	packet := sampleReportPacket()
+	packet["warnings"] = []any{}
+	packet["regressed"] = []any{}
+	packet["noisy"] = []any{}
+	packet["improved"] = []any{}
+	packet["runtimeContext"] = map[string]any{
+		"severity": "blocked",
+		"reasonCodes": []any{
+			"model_runtime_pinned_mismatch",
+		},
+		"warnings": []any{
+			map[string]any{
+				"reasonCode": "model_runtime_pinned_mismatch",
+				"summary":    "Observed runtime identity does not match the pinned runtime policy.",
+			},
+		},
+	}
+	if got := reportDecisionSignalsAggregateStatus(packet); got != "blocker" {
+		t.Fatalf("expected signals aggregate blocker when runtime severity is blocked, got %s", got)
+	}
+	rendered := RenderReportHTML(packet)
+	if !strings.Contains(rendered, "pinned runtime policy mismatch is currently blocking the recommendation") {
+		t.Fatalf("expected pinned mismatch decision pressure in rendered html")
+	}
+	if !strings.Contains(rendered, `data-severity="blocked"`) {
+		t.Fatalf("expected data-severity=blocked in rendered html")
+	}
+}
+
 func TestRenderReportHTMLFromFileRejectsLegacySchema(t *testing.T) {
 	tempDir := t.TempDir()
 	legacy := map[string]any{"schemaVersion": "cautilus.report_packet.v1"}

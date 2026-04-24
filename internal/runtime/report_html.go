@@ -143,6 +143,7 @@ func renderReportDecisionSignalsPanel(report map[string]any) string {
 	</div>
 	%s
 	%s
+	%s
 </section>`,
 		escapeHTML(reportDecisionPressure(report)),
 		selfDogfoodStatusColor(stringOrEmpty(report["recommendation"])),
@@ -153,6 +154,7 @@ func renderReportDecisionSignalsPanel(report map[string]any) string {
 		len(warnings),
 		renderReportReasonCodes(reasonCodes),
 		renderReportWarnings(warnings),
+		renderReportRuntimeContext(asMap(report["runtimeContext"])),
 	)
 }
 
@@ -216,6 +218,131 @@ func renderReportReasonCodes(reasonCodes []any) string {
 		chips = append(chips, fmt.Sprintf(`<span class="chip neutral">%s</span>`, escapeHTML(stringOrEmpty(raw))))
 	}
 	return `<p class="chip-row">` + strings.Join(chips, " ") + `</p>`
+}
+
+func renderReportRuntimeContext(runtimeContext map[string]any) string {
+	if len(runtimeContext) == 0 {
+		return ""
+	}
+	warnings := arrayOrEmpty(runtimeContext["warnings"])
+	notes := arrayOrEmpty(runtimeContext["notes"])
+	comparisons := arrayOrEmpty(runtimeContext["comparisons"])
+	if len(warnings) == 0 && len(notes) == 0 && len(comparisons) == 0 {
+		return ""
+	}
+	severity := stringOrEmpty(runtimeContext["severity"])
+	var block strings.Builder
+	block.WriteString(fmt.Sprintf(`
+	<div class="runtime-context" data-severity="%s">
+		<h3>Runtime Context</h3>`, escapeHTML(severity)))
+	if len(warnings) > 0 || len(notes) > 0 {
+		block.WriteString(`<ul class="findings">`)
+		chipColor := selfDogfoodStatusColor(runtimeSeverityStatus(severity))
+		chipLabel := runtimeSeverityLabel(severity)
+		for _, raw := range warnings {
+			entry := asMap(raw)
+			block.WriteString(fmt.Sprintf(`
+			<li class="finding" data-runtime-code="%s">
+				<span class="chip" style="background:%s">%s</span>
+				<div class="finding-body">
+					<div class="finding-message">%s</div>
+					<div class="finding-path"><code>%s</code></div>
+				</div>
+			</li>`,
+				escapeHTML(defaultString(entry["reasonCode"], "")),
+				chipColor,
+				escapeHTML(chipLabel),
+				escapeHTML(defaultString(entry["summary"], "")),
+				escapeHTML(defaultString(entry["reasonCode"], "")),
+			))
+		}
+		for _, raw := range notes {
+			entry := asMap(raw)
+			block.WriteString(fmt.Sprintf(`
+			<li class="finding" data-runtime-code="%s">
+				<span class="chip neutral">note</span>
+				<div class="finding-body">
+					<div class="finding-message">%s</div>
+					<div class="finding-path"><code>%s</code></div>
+				</div>
+			</li>`,
+				escapeHTML(defaultString(entry["reasonCode"], "")),
+				escapeHTML(defaultString(entry["summary"], "")),
+				escapeHTML(defaultString(entry["reasonCode"], "")),
+			))
+		}
+		block.WriteString(`</ul>`)
+	}
+	if len(comparisons) > 0 {
+		block.WriteString(renderRuntimeComparisons(comparisons))
+	}
+	block.WriteString(`
+	</div>`)
+	return block.String()
+}
+
+func renderRuntimeComparisons(comparisons []any) string {
+	var rows strings.Builder
+	rows.WriteString(`
+		<table class="data-table runtime-comparisons">
+			<thead><tr><th>reasonCode</th><th>fields</th><th>current</th><th>prior</th></tr></thead>
+			<tbody>`)
+	for _, raw := range comparisons {
+		entry := asMap(raw)
+		rows.WriteString(fmt.Sprintf(`
+				<tr data-runtime-comparison="%s">
+					<td><code>%s</code></td>
+					<td>%s</td>
+					<td>%s</td>
+					<td>%s</td>
+				</tr>`,
+			escapeHTML(defaultString(entry["reasonCode"], "")),
+			escapeHTML(defaultString(entry["reasonCode"], "")),
+			escapeHTML(strings.Join(stringSliceValue(entry["fields"]), ", ")),
+			escapeHTML(runtimeFingerprintInline(asMap(entry["current"]))),
+			escapeHTML(runtimeFingerprintInline(asMap(entry["prior"]))),
+		))
+	}
+	rows.WriteString(`
+			</tbody>
+		</table>`)
+	return rows.String()
+}
+
+func runtimeFingerprintInline(fingerprint map[string]any) string {
+	if len(fingerprint) == 0 {
+		return "—"
+	}
+	parts := []string{}
+	for _, key := range []string{"runtime", "provider", "model", "resolved_model", "model_revision", "pricing_version"} {
+		if value := strings.TrimSpace(stringOrEmpty(fingerprint[key])); value != "" {
+			parts = append(parts, key+"="+value)
+		}
+	}
+	if len(parts) == 0 {
+		return "—"
+	}
+	return strings.Join(parts, " · ")
+}
+
+func runtimeSeverityStatus(severity string) string {
+	switch severity {
+	case "blocked":
+		return "blocker"
+	case "warning":
+		return "concern"
+	}
+	return "unknown"
+}
+
+func runtimeSeverityLabel(severity string) string {
+	switch severity {
+	case "blocked":
+		return "blocked"
+	case "warning":
+		return "warning"
+	}
+	return "note"
 }
 
 func renderReportWarnings(warnings []any) string {
@@ -439,14 +566,22 @@ func reportFindingsAggregateStatus(report map[string]any) string {
 }
 
 func reportDecisionSignalsAggregateStatus(report map[string]any) string {
-	if len(arrayOrEmpty(report["warnings"])) > 0 {
+	runtimeSeverity := stringOrEmpty(asMap(report["runtimeContext"])["severity"])
+	if runtimeSeverity == "blocked" {
+		return "blocker"
+	}
+	if len(arrayOrEmpty(report["warnings"])) > 0 || runtimeSeverity == "warning" {
 		return "concern"
 	}
 	return reportScenarioBucketsAggregateStatus(report)
 }
 
 func reportDecisionPressure(report map[string]any) string {
-	if len(arrayOrEmpty(report["warnings"])) > 0 {
+	runtimeSeverity := stringOrEmpty(asMap(report["runtimeContext"])["severity"])
+	if runtimeSeverity == "blocked" {
+		return "pinned runtime policy mismatch is currently blocking the recommendation"
+	}
+	if len(arrayOrEmpty(report["warnings"])) > 0 || runtimeSeverity == "warning" {
 		return "contamination or runtime warnings are currently limiting confidence"
 	}
 	if len(arrayOrEmpty(report["regressed"])) > 0 {
