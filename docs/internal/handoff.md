@@ -2,57 +2,50 @@
 
 ## Workflow Trigger
 
-다음 세션의 기본 pickup은 `charness:impl`로 runtime fingerprint / model-runtime drift 첫 구현 슬라이스를 시작하는 것이다.
-첫 행동은 `git status --short`로 live worktree를 확인하는 것이고, 그 다음 [docs/contracts/runtime-fingerprint-optimization.md](../contracts/runtime-fingerprint-optimization.md)와 관련 계약 문서를 읽는다.
-관련 계약 문서는 [docs/contracts/reporting.md](../contracts/reporting.md), [docs/contracts/adapter-contract.md](../contracts/adapter-contract.md), [docs/contracts/skill-testing.md](../contracts/skill-testing.md), [docs/contracts/instruction-surface.md](../contracts/instruction-surface.md), [docs/contracts/optimization.md](../contracts/optimization.md), [docs/contracts/optimization-search.md](../contracts/optimization-search.md)다.
+다음 세션의 기본 pickup은 `charness:find-skills`로 설치된 스킬 지도를 먼저 재확인한 뒤, [docs/master-plan.md](../master-plan.md)의 `Immediate Next Moves`에서 evidence가 축적된 슬라이스를 고르는 것이다.
+첫 행동은 `git status --short`로 live worktree를 확인하는 것이고, 그 다음 이 handoff의 `Next Session` 섹션을 읽는다.
 이 handoff는 mention-only pickup 기준 문서이며, handoff adapter는 `docs/internal/handoff.md`를 canonical artifact로 해석한다.
 
 ## Current State
 
-- 이번 세션에서 runtime fingerprint / model-runtime drift / optimize simplification 설계 계약이 landed 됐다.
-  커밋은 `ae8d6df Define runtime fingerprint optimization contract`다.
-- 새 canonical 설계 문서는 [docs/contracts/runtime-fingerprint-optimization.md](../contracts/runtime-fingerprint-optimization.md)다.
-  핵심 결정은 `telemetry.runtimeFingerprint`를 canonical write path로 쓰고, flat telemetry는 compatibility input으로 읽는 것이다.
-- 첫 구현 비교 기준은 자동 추론이 아니라 explicit prior-evidence input이다.
-  active run, scenario history, deployment evidence에서 자동 prior를 고르는 일은 deferred다.
-- runtime drift code는 behavior-outcome `reasonCodes`와 섞지 않는다.
-  `model_runtime_changed`는 warning/context이고, pinned policy mismatch만 workflow block이 될 수 있다.
-- adapter-owned pinned runtime policy는 `runtime_policy`로 문서화됐다.
-  기본은 `mode: observe`, pinned path는 declared runtime fields와 observed `telemetry.runtimeFingerprint`를 비교한다.
-- optimize 설계는 새 `simplification` kind를 추가하지 않는다.
-  `passing_simplification`은 revision reason이고, shorter target preference는 selection objective / `shorter_target` tie-breaker다.
-- premortem과 counterweight 결과는 runtime fingerprint 계약 문서의 `Premortem` 섹션에 반영됐다.
-- charness 쪽 workflow 개선 이슈는 `corca-ai/charness#66`에 열려 있다.
-  내용은 ideation/spec이 새 mode/kind를 제안하기 전에 enum-axis consistency를 점검해야 한다는 것이다.
-- `npm run verify`와 `npm run hooks:check`는 통과했다.
-  마지막 확인 기준으로 Cautilus worktree는 clean이었다.
+- 직전 세션의 handoff은 `ae8d6df Define runtime fingerprint optimization contract` 시점에 멈춰 있었으나, 그 이후 `de6169f Implement runtime fingerprint optimization flow`와 0.12.3 release, coverage-floor gate, gitleaks 스캔 등이 landed 돼 stale 상태였다.
+- 이번 세션은 stale handoff을 확인하고 그 이후 남아 있던 runtime fingerprint 첫 구현 슬라이스의 열린 결정 2개를 닫았다.
+  - HTML report가 `report.runtimeContext`의 warnings / notes / comparisons를 Decision Signals 섹션에 렌더링한다.
+    pinned mismatch는 aggregate status를 `blocker`로 끌어올리고, 패널 lead 문구가 pinned 블록을 명시한다.
+    커밋은 `6f543c9 Render runtime context in HTML report`다.
+  - `optimizer.kind`는 사용자-facing surface에서 완전히 제거됐다.
+    `repair` / `reflection` / `history_followup` 세 preset이 Go 경로에서는 동일한 evidence priority로 수렴했고 Node 경로도 단일 ordering으로 정리됐다.
+    `revisionReasons`와 `evidenceFocus`는 evidence shape에서 derive돼 proposal packet에 이미 실린다.
+    하위호환 별도 유지 없음. 커밋은 `913d973 Remove optimizer.kind from user-facing optimize surface`다.
+- `optimizer.kind` 제거는 breaking change라 host repo migration 가이드를 GitHub 이슈로 남겼다.
+  - [corca-ai/cautilus#31](https://github.com/corca-ai/cautilus/issues/31): optimizer.kind 제거, old/new packet shape, CLI migration, proposal 읽기 경로.
+- runtime fingerprint 계약 문서와 optimize 계약 문서에서 `optimizer.kind` compatibility alias 관련 문구는 모두 제거됐다.
+  `docs/contracts/runtime-fingerprint-optimization.md`의 Premortem `Bundle anyway` 항목과 Deferred Decisions에서 관련 줄을 지웠다.
+- `npm run verify` (go vet + lint + specdown + gitleaks + go race + node tests)와 `npm run hooks:check`는 통과했다.
+  Cautilus worktree는 `913d973` 이후 clean이었다가 이 handoff 업데이트 커밋 전까지 변경 없음.
 
 ## Next Session
 
 1. `git status --short`로 사용자 변경 여부를 먼저 확인한다.
-2. [docs/contracts/runtime-fingerprint-optimization.md](../contracts/runtime-fingerprint-optimization.md)의 `First Implementation Slice`를 기준으로 작업 범위를 자른다.
-3. 첫 구현은 기존 telemetry에서 `telemetry.runtimeFingerprint`를 정규화하는 것부터 시작한다.
-   flat `provider`, `model`, `session_mode`, `pricing_version`은 compatibility input으로 읽는다.
-4. prior-evidence input의 minimal packet/file surface를 먼저 정하고, 그 explicit prior evidence와 current fingerprint를 비교해 runtime-context codes를 emit한다.
-   current identity가 없으면 `model_runtime_unobserved`, prior identity가 없으면 non-failing no-prior context로 처리한다.
-5. 기본 warning path가 선명해진 뒤 `runtime_policy.mode: pinned`와 `model_runtime_pinned_mismatch` block path를 추가한다.
-6. optimize wiring은 이번 첫 구현 슬라이스에 끌어오지 않는다.
-   runtime warning path와 pinned mismatch path가 landed된 뒤 별도 슬라이스에서 `model_runtime_changed`와 `passing_simplification`을 proposal context로 넣는다.
+2. `charness:find-skills`로 설치된 public / support / integration 스킬 지도를 한 번 갱신한다.
+3. [docs/master-plan.md](../master-plan.md)의 `Immediate Next Moves` 중 dogfood evidence가 축적된 슬라이스를 하나만 고른다.
+   - 후보 1: `instruction-surface` 경계 확장 — 추가 routing fidelity 증거가 필요한지 먼저 점검한다.
+   - 후보 2: `optimize-search`의 richer merge heuristic — 최근 self-dogfood / 리뷰 artifact에 "현재 heuristic이 부족하다"는 관찰이 있는 경우에만 진입한다.
+   - 후보 3: `scenario-history` 확장 — reusable baseline result 쪽 evidence가 있는 경우에만 진입한다.
+4. 선택한 슬라이스에 대해 `charness:spec` → `charness:impl` 순으로 작업하되, 이미 landed된 계약이 있으면 `impl`로 바로 들어간다.
 
 ## Discuss
 
-- explicit prior-evidence input의 CLI/API 이름과 packet 위치
-- runtime-context reason codes를 어느 packet path에 둘지
-- HTML report가 첫 슬라이스에서 runtime warnings를 보여줘야 하는지
-- `optimizer.kind`를 언제 사용자-facing surface에서 축소할지
+- runtime fingerprint의 두 번째 슬라이스 (automatic prior-evidence selection, provider API 연동)를 언제 시작할지
+- `optimizer.kind` 제거 이후 host repo 쪽에서 packet validation error가 관찰되는지 (이슈 #31 반응 모니터링)
+- HTML report에 `runtimeContext.comparisons` 테이블이 실제 dogfood에서 읽히는지, 줄여야 할지 늘려야 할지
 
 ## References
 
+- [docs/master-plan.md](../master-plan.md)
 - [docs/contracts/runtime-fingerprint-optimization.md](../contracts/runtime-fingerprint-optimization.md)
+- [docs/contracts/optimization.md](../contracts/optimization.md)
 - [docs/contracts/reporting.md](../contracts/reporting.md)
 - [docs/contracts/adapter-contract.md](../contracts/adapter-contract.md)
-- [docs/contracts/skill-testing.md](../contracts/skill-testing.md)
-- [docs/contracts/instruction-surface.md](../contracts/instruction-surface.md)
-- [docs/contracts/optimization.md](../contracts/optimization.md)
-- [docs/contracts/optimization-search.md](../contracts/optimization-search.md)
-- [corca-ai/charness#66](https://github.com/corca-ai/charness/issues/66)
+- [corca-ai/cautilus#31](https://github.com/corca-ai/cautilus/issues/31) — optimizer.kind 제거 마이그레이션 노트
+- [corca-ai/charness#66](https://github.com/corca-ai/charness/issues/66) — ideation/spec의 enum-axis consistency 점검 제안 (여전히 열려 있음)
