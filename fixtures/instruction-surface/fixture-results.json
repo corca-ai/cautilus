@@ -53,6 +53,9 @@
     "entryFile": "AGENTS.md",
     "loadedInstructionFiles": ["AGENTS.md"],
     "loadedSupportingFiles": [],
-    "routingDecision": {}
+    "routingDecision": {
+      "selectedSkill": "none",
+      "reasonSummary": "The AGENTS symlink resolved to CLAUDE.md which only asked for discovery-first routing, so no durable work skill was committed yet."
+    }
   }
 }

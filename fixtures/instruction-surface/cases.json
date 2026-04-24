@@ -27,7 +27,10 @@
         ]
       },
       "expectedEntryFile": "CLAUDE.md",
-      "requiredInstructionFiles": ["CLAUDE.md"]
+      "requiredInstructionFiles": ["CLAUDE.md"],
+      "expectedRouting": {
+        "selectedSkill": "none"
+      }
     },
     {
       "evaluationId": "nested-override-routing",
@@ -91,6 +94,9 @@
             "targetPath": "CLAUDE.md"
           }
         ]
+      },
+      "expectedRouting": {
+        "selectedSkill": "none"
       }
     }
   ]
