@@ -13,6 +13,7 @@ export const PHASES = [
 	{ id: "lint:go", label: "lint · golangci-lint" },
 	{ id: "vet:go", label: "lint · go vet" },
 	{ id: "security:govulncheck", label: "security · govulncheck" },
+	{ id: "security:secrets", label: "security · secret scan" },
 	{ id: "test:go:race", label: "test · go race" },
 	{ id: "test:node", verboseId: "test:node:spec", label: "test · node" },
 ];

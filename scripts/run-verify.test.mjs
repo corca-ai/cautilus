@@ -43,6 +43,7 @@ test("PHASES covers every npm run verify sub-phase", () => {
 		"lint:go",
 		"vet:go",
 		"security:govulncheck",
+		"security:secrets",
 		"test:go:race",
 		"test:node",
 	]);

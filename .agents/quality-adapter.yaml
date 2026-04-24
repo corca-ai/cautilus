@@ -103,4 +103,6 @@ review_commands:
   - npm run lint:skill-disclosure
   - ./bin/cautilus commands --json
   - ./bin/cautilus scenarios --json
-security_commands: []
+security_commands:
+  - npm run security:govulncheck
+  - npm run security:secrets
