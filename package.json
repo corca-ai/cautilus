@@ -36,6 +36,7 @@
     "security:govulncheck": "node scripts/run-govulncheck.mjs ./...",
     "test:go": "go test ./cmd/... ./internal/...",
     "test:go:race": "go test -race ./cmd/... ./internal/...",
+    "test:go:coverage": "mkdir -p coverage && go test -covermode=atomic -coverprofile=coverage/go.out ./internal/... && node scripts/summarize-go-coverage.mjs",
     "test:node": "node --test --test-reporter=dot --test-reporter-destination=stdout bin/*.test.mjs scripts/*.test.mjs scripts/agent-runtime/*.test.mjs scripts/release/*.test.mjs",
     "test:node:spec": "node --test --test-reporter=spec --test-reporter-destination=stdout bin/*.test.mjs scripts/*.test.mjs scripts/agent-runtime/*.test.mjs scripts/release/*.test.mjs",
     "test:node:on-demand": "node --test --test-reporter=dot --test-reporter-destination=stdout scripts/on-demand/*.test.mjs",
