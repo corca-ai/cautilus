@@ -35,6 +35,8 @@ This slice adds a small DSPy-inspired control surface without importing a DSPy r
 - The optimizer still emits one bounded next-revision brief, not a compile loop.
 - Consumer prompts, adapter files, and policy remain consumer-owned targets.
 - Review findings, compare results, and scenario history remain the evidence sources for this seam.
+- Runtime fingerprint changes can become optimization context without becoming a separate refresh workflow; see [runtime-fingerprint-optimization.md](./runtime-fingerprint-optimization.md).
+- Shorter and less specialized prompts should win only after behavior, held-out, comparison, and review guardrails remain satisfied.
 
 ## Probe Questions
 
@@ -154,4 +156,5 @@ Update the optimize input builder, optimize proposal generator, revision artifac
 - Do not treat optimizer output as permission to weaken held-out, comparison, or structured review gates.
 - Do not turn one bounded revision brief into an infinite retry loop.
 - Prefer repairing cited regressions over widening scope.
+- Do not add a new optimizer kind when the concept is really a revision reason, evidence focus, mutation behavior, or selection objective.
 - Keep consumer prompts, policies, and target files consumer-owned even when packet assembly and proposal framing are product-owned.

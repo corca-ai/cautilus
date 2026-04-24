@@ -17,6 +17,7 @@
 - optional `command_observations`: executed command records with timing, exit code, and stdout/stderr artifact paths
 - optional `adapter_context`: product-owned adapter identity such as `adapter` or `adapterName` when downstream review or optimize bridges must reuse the same adapter without operator restatement
 - optional `telemetry`: wall-clock latency plus any adapter- or provider-owned cost and token metrics
+- optional `telemetry.runtimeFingerprint` signals derived from explicit telemetry; see [runtime-fingerprint-optimization.md](./runtime-fingerprint-optimization.md)
 - optional `reasonCodes`: machine-readable report-level outcome classification such as `behavior_regression`, `provider_rate_limit_contamination`, or `infrastructure_failure`
 - optional `warnings`: machine-readable warnings promoted from persisted artifacts when the evidence is contaminated or otherwise narrow
 - `improved`: scenarios or metrics that improved
@@ -105,6 +106,9 @@ Optional adapter- or provider-owned telemetry fields:
 
 The key rule is that cost telemetry must come from an explicit checked-in wrapper or output payload.
 `Cautilus` should not guess cost from opaque CLI logs.
+The same rule applies to runtime identity.
+Model and provider truth should come from explicit runner output, adapter metadata, or checked-in wrappers, not from retroactive log scraping.
+Runtime drift codes should be recorded as runtime context rather than primary behavior-outcome reason codes unless a pinned-runtime policy blocks the run.
 
 For `review variants`, the summary packet should use `cautilus.review_summary.v1`, and each per-variant file should use `cautilus.review_variant_result.v1`.
 

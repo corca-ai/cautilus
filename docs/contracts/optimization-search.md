@@ -137,7 +137,7 @@ The packet should include:
   - `fullGateCheckpointPolicy`: `final_only`
   - optional `selectionPolicy`
     - `primaryObjective`: `held_out_behavior`
-    - optional `tieBreakers`, such as `lower_cost` and `lower_latency`
+    - optional `tieBreakers`, such as `shorter_target`, `lower_cost`, and `lower_latency`
     - optional `constraintCaps`, such as `maxCostUsd` or `maxDurationMs`
   - optional `mergeEnabled`
   - optional `threeParentPolicy`
@@ -389,6 +389,9 @@ In v1:
 - the current runner only uses them as late ranking tie-breakers when telemetry is present
 
 This avoids selecting a prompt merely because it is short or cheap when the behavior objective is worse.
+
+When target snapshots are available, prompt length should follow the same late tie-breaker rule.
+`shorter_target` may break ties only after held-out behavior, comparison, and review guardrails remain satisfied, and search results should preserve the measured target-size delta or mark it `unknown`.
 
 If two candidates are behaviorally near-equivalent on held-out scenarios, the cheaper or faster one may win final selection.
 

@@ -55,6 +55,12 @@ The adapter-owned runner still owns:
 - how output files or transcripts are collected
 - any host-specific backend choice such as `codex exec`
 
+By default, skill tests should exercise the runtime that the local CLI would actually use.
+They should not pin a model unless the adapter command template or a pinned-runtime policy explicitly does so.
+When runtime telemetry is available, downstream summaries should preserve enough runtime identity to report model-runtime changes without making ordinary default-runtime changes fail the test.
+A pinned-runtime mismatch blocks the workflow because the run did not test the declared runtime.
+See [runtime-fingerprint-optimization.md](./runtime-fingerprint-optimization.md).
+
 ## Adapter Boundary
 
 The adapter may define:

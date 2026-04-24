@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "artifact_kind": "find-skills-inventory",
-  "generated_at": "2026-04-22T09:02:29Z",
+  "generated_at": "2026-04-24T00:05:14Z",
   "repo": "cautilus",
   "inventory": {
     "adapter": {
@@ -767,6 +767,9 @@
           "evaluation",
           "review",
           "behavior review",
+          "closeout",
+          "issue closeout",
+          "operator reading test",
           "검증",
           "평가",
           "리뷰"

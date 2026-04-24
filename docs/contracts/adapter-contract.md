@@ -40,6 +40,8 @@ required_prerequisites:
   - choose a real baseline before comparing results
 preflight_commands:
   - npm run check
+runtime_policy:
+  mode: observe
 instruction_surface_cases_default: fixtures/instruction-surface/cases.json
 instruction_surface_test_command_templates:
   - node scripts/agent-runtime/run-local-instruction-surface-test.mjs --repo-root . --workspace {candidate_repo} --cases-file {instruction_surface_cases_file} --output-file {instruction_surface_input_file} --artifact-dir {output_dir}/instruction-surface-test --backend {backend} --sandbox read-only
@@ -100,6 +102,7 @@ optimize_search:
   selection_policy:
     primary_objective: held_out_behavior
     tie_breakers:
+      - shorter_target
       - lower_cost
       - lower_latency
     constraint_caps: {}
@@ -157,6 +160,9 @@ default_schema_file: fixtures/review/review-verdict.schema.json
 - `baseline_options`: allowed baseline choices and how the agent should think about them.
 - `required_prerequisites`: conditions that should stop the evaluation early.
 - `preflight_commands`: fast commands to run before long evaluations.
+- `runtime_policy`: optional runtime identity policy.
+  `mode: observe` is the default and records runtime identity without blocking ordinary default-runtime changes.
+  `mode: pinned` requires declared runtime fields to match observed `telemetry.runtimeFingerprint` fields and should block with `model_runtime_pinned_mismatch` when they do not.
 - `instruction_surface_cases_default`: optional checked-in `cautilus.instruction_surface_cases.v1` path used by `cautilus instruction-surface test` when the operator does not pass `--cases-file`.
 - `instruction_surface_test_command_templates`: commands that turn a checked-in instruction-surface case suite into an observed `cautilus.instruction_surface_inputs.v1` packet.
 - `skill_cases_default`: optional checked-in `cautilus.skill_test_cases.v1` path used by `cautilus skill test` when the operator does not pass `--cases-file`.

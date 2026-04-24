@@ -112,6 +112,11 @@ The summary should expose:
 - work-skill counts
 - grouped variant summaries for route comparison
 
+Instruction-surface tests follow the same runtime policy as skill tests.
+By default they should use the local CLI runtime instead of pinning a model, while preserving explicit runtime telemetry so reports can explain model-runtime changes.
+A pinned-runtime mismatch blocks the workflow before the instruction-surface recommendation can be trusted.
+See [runtime-fingerprint-optimization.md](./runtime-fingerprint-optimization.md).
+
 ## Current Recommendation Rules
 
 - any failed expectation -> `reject`
