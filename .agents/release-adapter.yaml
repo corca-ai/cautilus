@@ -1,0 +1,47 @@
+version: 1
+repo: cautilus
+language: en
+output_dir: charness-artifacts/release
+
+package_id: cautilus
+packaging_manifest_path: package.json
+checked_in_plugin_root: plugins/cautilus
+
+sync_command: npm run skills:sync-packaged
+quality_command: npm run verify
+
+update_instructions:
+  - "Operators with an existing install refresh the binary via the install-sh channel: re-run `curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh | sh`. Any legacy Homebrew copy should be removed first with `brew uninstall cautilus`."
+  - "Claude Code and Codex plugin consumers pick up the bundled skill refresh via `charness update` or by re-running `cautilus install` in the host repo."
+
+real_host_required_surfaces: []
+real_host_required_path_globs: []
+real_host_checklist: []
+
+requested_review_commands: []
+
+product_surfaces:
+  - installable_cli
+  - bundled_skill
+
+cli_skill_surface_probe_commands:
+  - "./bin/cautilus --version"
+  - "./bin/cautilus healthcheck --json"
+  - "./bin/cautilus commands --json"
+  - "./bin/cautilus scenarios --json"
+
+cli_skill_surface_command_docs: []
+
+cli_skill_surface_skill_paths:
+  - skills/cautilus
+  - plugins/cautilus/skills/cautilus
+
+cli_skill_surface_change_globs:
+  - "bin/**"
+  - "cmd/cautilus/**"
+  - "internal/cli/**"
+  - "internal/app/**"
+  - "skills/cautilus/**"
+  - "plugins/cautilus/**"
+  - "install.sh"
+  - "scripts/release/**"
