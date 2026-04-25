@@ -28,10 +28,6 @@ const STRING_LIST_FIELDS = [
 	"required_prerequisites",
 	"preflight_commands",
 	"eval_test_command_templates",
-	"iterate_command_templates",
-	"held_out_command_templates",
-	"comparison_command_templates",
-	"full_gate_command_templates",
 	"artifact_paths",
 	"report_paths",
 	"comparison_questions",
@@ -39,10 +35,6 @@ const STRING_LIST_FIELDS = [
 
 const INTEGER_FIELDS = [
 	"version",
-	"iterate_samples_default",
-	"held_out_samples_default",
-	"comparison_samples_default",
-	"full_gate_samples_default",
 	"review_timeout_ms",
 ];
 
@@ -468,28 +460,6 @@ export function inferRepoDefaults(repoRoot) {
 	if (typeof scripts.check === "string") {
 		inferred.preflight_commands = ["npm run check"];
 	}
-	if (typeof scripts["prompt:bench:train"] === "string") {
-		inferred.iterate_command_templates = [
-			"npm run prompt:bench:train -- --baseline-ref {baseline_ref} --history-file {history_file} --samples {iterate_samples}",
-		];
-	}
-	if (typeof scripts["prompt:bench:test"] === "string") {
-		inferred.held_out_command_templates = [
-			"npm run prompt:bench:test -- --baseline-ref {baseline_ref} --samples {held_out_samples}",
-		];
-	}
-	if (typeof scripts["prompt:bench:full"] === "string") {
-		inferred.full_gate_command_templates = [
-			"npm run prompt:bench:full -- --baseline-ref {baseline_ref} --history-file {history_file} --samples {full_gate_samples}",
-		];
-	}
-
-	const compareScript = resolve(repoRoot, "scripts/agent-runtime/compare-prompt-worktrees.mjs");
-	if (existsSync(compareScript)) {
-		inferred.comparison_command_templates = [
-			"node scripts/agent-runtime/compare-prompt-worktrees.mjs --baseline-ref {baseline_ref} --profile {profile} --split {split} --samples {comparison_samples}",
-		];
-	}
 
 	const reportPath = resolve(repoRoot, "specs/report/audit-report.html");
 	if (existsSync(reportPath)) {
@@ -497,10 +467,6 @@ export function inferRepoDefaults(repoRoot) {
 	}
 
 	inferred.repo = repoRoot.split(/[\\/]/u).at(-1);
-	inferred.iterate_samples_default = 2;
-	inferred.held_out_samples_default = 2;
-	inferred.comparison_samples_default = 2;
-	inferred.full_gate_samples_default = 2;
 	inferred.history_file_hint = "/tmp/cautilus-history.json";
 	return inferred;
 }

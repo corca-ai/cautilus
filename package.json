@@ -8,11 +8,8 @@
     "node": ">=22"
   },
   "scripts": {
-    "dogfood:self": "node scripts/run-self-dogfood.mjs",
     "dogfood:self:eval": "./bin/cautilus eval test --repo-root . --adapter-name self-dogfood-eval --output-dir ./artifacts/self-dogfood/eval/latest",
-    "dogfood:self:experiments": "node scripts/run-self-dogfood-experiments.mjs",
     "dogfood:self:html": "./bin/cautilus self-dogfood render-html",
-    "dogfood:self:experiments:html": "./bin/cautilus self-dogfood render-experiments-html",
     "consumer:onboard:smoke": "node scripts/on-demand/smoke-external-consumer.mjs",
     "skills:sync-packaged": "node scripts/release/sync-packaged-skill.mjs",
     "release:prepare": "npm run skills:sync-packaged && node scripts/release/bump-version.mjs",

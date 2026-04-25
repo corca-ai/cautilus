@@ -100,15 +100,6 @@ export function dumpYamlDocument(data) {
 	return `${dumpYaml(data).join("\n")}\n`;
 }
 
-function numericDefaults(inferred) {
-	return {
-		iterate_samples_default: inferred.iterate_samples_default ?? 2,
-		held_out_samples_default: inferred.held_out_samples_default ?? 2,
-		comparison_samples_default: inferred.comparison_samples_default ?? 2,
-		full_gate_samples_default: inferred.full_gate_samples_default ?? 2,
-	};
-}
-
 export function scaffoldAdapter(repoRoot, repoName) {
 	const inferred = inferRepoDefaults(repoRoot);
 	return {
@@ -119,10 +110,6 @@ export function scaffoldAdapter(repoRoot, repoName) {
 		required_prerequisites: ["choose a real baseline before comparing results"],
 		preflight_commands: inferred.preflight_commands ?? [],
 		eval_test_command_templates: inferred.eval_test_command_templates ?? [],
-		iterate_command_templates: inferred.iterate_command_templates ?? [],
-		held_out_command_templates: inferred.held_out_command_templates ?? [],
-		comparison_command_templates: inferred.comparison_command_templates ?? [],
-		full_gate_command_templates: inferred.full_gate_command_templates ?? [],
 		executor_variants: [],
 		artifact_paths: [],
 		report_paths: inferred.report_paths ?? [],
@@ -135,7 +122,6 @@ export function scaffoldAdapter(repoRoot, repoName) {
 				prompt: "Where would a real user still judge the candidate worse despite benchmark wins?",
 			},
 		],
-		...numericDefaults(inferred),
 		history_file_hint: inferred.history_file_hint ?? "/tmp/cautilus-history.json",
 		profile_default: inferred.profile_default ?? "default",
 	};

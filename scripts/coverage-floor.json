@@ -58,7 +58,6 @@
   "scripts/agent-runtime/generate-scenario-proposals.mjs": 44.37,
   "scripts/agent-runtime/instruction-surface-case-suite.mjs": 90.41,
   "scripts/agent-runtime/instruction-surface-support.mjs": 81.02,
-  "scripts/agent-runtime/mode-evaluation-summary.mjs": 44.71,
   "scripts/agent-runtime/prepare-compare-worktrees.mjs": 84.24,
   "scripts/agent-runtime/prune-workspace-artifacts.mjs": 80.27,
   "scripts/agent-runtime/render-review-prompt.mjs": 70.27,
@@ -99,6 +98,5 @@
   "scripts/run-govulncheck.mjs": 90.91,
   "scripts/run-self-dogfood-eval.mjs": 76.53,
   "scripts/run-verify.mjs": 76.58,
-  "scripts/self-dogfood-experiment-prompt.mjs": 93.63,
   "scripts/self-dogfood-published-snapshot.mjs": 64.41
 }

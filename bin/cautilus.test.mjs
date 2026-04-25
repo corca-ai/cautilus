@@ -37,7 +37,7 @@ test("repo shim preserves caller cwd while resolving doctor against a consumer r
 				"  - smoke",
 				"baseline_options:",
 				"  - baseline git ref via {baseline_ref}",
-				"iterate_command_templates:",
+				"eval_test_command_templates:",
 				"  - npm run check",
 				"",
 			].join("\n"),
