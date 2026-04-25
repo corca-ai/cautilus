@@ -41,8 +41,8 @@ Current `core validated surface`:
 
 Current `product-owned helper surface`:
 
-- `skill test` workflow seam above adapter-owned local skill runners, including consensus-based repeated tests and output-review warning surfacing
-- `skill evaluate` packet summarizer (`cautilus.skill_evaluation_summary.v1`) for trigger and execution behavior
+- `eval test` with the `repo/skill` preset wraps adapter-owned local skill runners, including consensus-based repeated tests and output-review warning surfacing
+- `eval evaluate` packet summarizer dispatches to `cautilus.skill_evaluation_summary.v1` for trigger and execution behavior when the observed packet's schema is `cautilus.skill_evaluation_inputs.v1`
 - `chatbot`, `skill`, and `workflow` normalization helpers (one per first-class archetype; see [archetype-boundary.spec.md](./specs/archetype-boundary.spec.md))
 - scenario proposal packet assembly and proposal generation
 - scenario-adjacent conversation review packet and HTML surface over normalized chatbot threads plus proposal candidates
@@ -141,7 +141,7 @@ Still open:
 
 ## Immediate Next Moves
 
-1. Roll out the remaining `cautilus eval` presets in spec order: `repo / skill`, then `app / chat`, then `app / prompt`. See [docs/specs/evaluation-surfaces.spec.md](./specs/evaluation-surfaces.spec.md).
+1. Roll out the remaining `cautilus eval` presets in spec order: `app / chat`, then `app / prompt`. `repo / skill` shipped 2026-04-25. See [docs/specs/evaluation-surfaces.spec.md](./specs/evaluation-surfaces.spec.md).
 2. Pick the next bounded improvement seam for the optimization layer: either close a specific richer merge heuristic that dogfood evidence asks for, or move to another roadmap slice rather than extending heuristics speculatively.
 3. Expand scenario-history beyond the first profile-backed comparison cache-key path toward reusable baseline results and broader compare ownership.
 4. Continue moving host-specific runtime seams out of the product boundary into consumer-owned adapters, prompts, and storage readers.

@@ -235,7 +235,8 @@ Per-slice impl notes live in commits and the migration tracking issue.
 
 Follow-up slices proceed in this order:
 
-1. `repo / skill` preset — replace `cautilus skill test/evaluate`.
+1. ~~`repo / skill` preset — replace `cautilus skill test/evaluate`.~~ Shipped 2026-04-25.
+   `cautilus.evaluation_input.v1` now translates `surface=repo, preset=skill` cases into the existing `cautilus.skill_test_cases.v1` shape, the `cautilus eval evaluate` handler dispatches to `BuildSkillEvaluationSummary` when the observed packet uses `cautilus.skill_evaluation_inputs.v1`, and the `cautilus skill test/evaluate` commands plus their adapter slots and example fixtures were cut without aliases.
 2. `app / chat` preset — replace `cautilus mode evaluate` chatbot mode.
 3. `app / prompt` preset — new.
 4. C2–C4 composition primitives, one per slice.

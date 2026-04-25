@@ -11,23 +11,29 @@
 - Cautilus `v0.13.0`이 게시됐다 ([release](https://github.com/corca-ai/cautilus/releases/tag/v0.13.0)).
   release-artifacts / verify-public-release / install-sh smoke 모두 green.
   세부 기록은 [charness-artifacts/release/latest.md](../../charness-artifacts/release/latest.md).
-- `evaluation-surfaces` 재설계의 첫 슬라이스(`repo / whole-repo` preset)가 들어왔다 — [docs/specs/evaluation-surfaces.spec.md](../specs/evaluation-surfaces.spec.md).
-  - 사용자 노출 surface는 `cautilus eval test` / `cautilus eval evaluate` 두 개로 통일.
-  - fixture schema는 `cautilus.evaluation_input.v1` (top-level `surface`, `preset`, `cases[]`).
-  - `surface=repo, preset=whole-repo` 외 조합과 C2/C3/C4 composition 필드는 stub-error.
-- 외부 사용자가 없는 시점이라 backward compatibility 없이 깨끗하게 cut했다.
-  사라진 것: `cautilus instruction-surface test/evaluate`, `cautilus.instruction_surface_*` schema, `instruction_surface_*` adapter field, `workflow` first-class archetype.
+- `evaluation-surfaces` 재설계의 두 번째 슬라이스(`repo / skill` preset)가 들어왔다 — [docs/specs/evaluation-surfaces.spec.md](../specs/evaluation-surfaces.spec.md).
+  - `cautilus.evaluation_input.v1`이 `surface=repo, preset=skill`을 받아 기존 `cautilus.skill_test_cases.v1` 케이스 슈트로 번역한다.
+  - `cautilus eval test`는 `eval_test_command_templates`을 통해 `run-local-skill-test.mjs`-style 러너를 그대로 재사용한다.
+  - `cautilus eval evaluate`는 입력 packet의 schemaVersion으로 `BuildEvaluationSummary` 또는 `BuildSkillEvaluationSummary`를 dispatch한다.
+- `cautilus skill test/evaluate`는 별칭 없이 잘렸다.
+  사라진 것: 해당 두 CLI 커맨드, `skill_test_command_templates` / `skill_cases_default` adapter slot, `{skill_id}` / `{skill_cases_file}` / `{skill_eval_input_file}` placeholder, `skillEvaluateExampleInput`, `fixtures/skill-test/`, `fixtures/skill-evaluation/`, `self-dogfood-skill-test.yaml` adapter, Node 측 schema validation tests.
+  내부 Go 헬퍼 `BuildSkillEvaluationSummary`와 `NormalizeSkillTestCaseSuite`는 새 surface의 mechanics로 그대로 남아 있다.
   마이그레이션 트래킹: [corca-ai/cautilus#32](https://github.com/corca-ai/cautilus/issues/32).
-- self-dogfood adapter는 `.agents/cautilus-adapters/self-dogfood-eval.yaml`, npm 스크립트는 `dogfood:self:eval`, fixture는 `fixtures/eval/whole-repo/checked-in-agents-routing.fixture.json`.
-- 잔여 신호: 현재 fixture는 `expectedRouting: { selectedSkill: "none" }`을 기대하지만 real-codex로 cautilus 실제 AGENTS.md를 돌리면 `reject`가 난다.
-  fixture 기대치 vs. 실제 AGENTS.md routing 사이 정직성 결정이 필요하다 — fixture를 현실에 맞춰 풀어주거나, AGENTS.md를 더 엄격하게 routing-pinning하거나, 둘 다 손보거나.
+- self-dogfood adapter는 `.agents/cautilus-adapters/self-dogfood-eval-skill.yaml`로 새 이름으로 들어갔다.
+  새 fixture는 `fixtures/eval/skill/cautilus-skill-routing.fixture.json`.
+  Node-side runner test용으로 `fixtures/eval/skill/internal-runner-cases.json` + `internal-runner-fixture-results.json`도 함께 옮겼다.
+- 잔여 신호: `repo/skill` 슬라이스에서는 real-codex/claude로 cautilus 자체 dogfood eval을 돌린 evidence를 아직 수집하지 않았다.
+  `charness-artifacts/cautilus/latest.md` refresh도 함께 미뤘다 — 다음 슬라이스 작업 중 자연스럽게 닿을 때 수집한다.
+- 잔여 신호 (이전 슬라이스에서): 현재 fixture는 `expectedRouting: { selectedSkill: "none" }`을 기대하지만 real-codex로 cautilus 실제 AGENTS.md를 돌리면 `reject`가 난다.
+  fixture 기대치 vs. 실제 AGENTS.md routing 사이 정직성 결정이 필요하다.
 
 ## Next Session
 
 1. `git status --short`로 사용자 변경 여부를 먼저 확인한다.
 2. `charness:find-skills`로 설치된 public / support / integration 스킬 지도를 한 번 갱신한다.
-3. spec [§ First Implementation Slice](../specs/evaluation-surfaces.spec.md)의 follow-up 1번 — `repo / skill` preset 슬라이스로 진입.
-   기존 `cautilus skill test/evaluate`를 새 surface 아래로 옮기고, 같은 cutover 패턴(no backward compat)으로 정리.
+3. spec [§ First Implementation Slice](../specs/evaluation-surfaces.spec.md)의 follow-up 2번 — `app / chat` preset 슬라이스로 진입.
+   기존 `cautilus mode evaluate` chatbot 모드를 새 surface 아래로 옮기고, 같은 cutover 패턴(no backward compat)으로 정리.
+   `app` surface는 messaging runtime이므로 fixture가 system prompt + `messages: [...]`를 carry하고 provider stance는 fixture-level model pin.
 4. `charness:impl`로 들어가되 spec이 이미 명시한 follow-up 순서를 따른다.
 
 ## Discuss
@@ -35,7 +41,8 @@
 - runtime fingerprint의 두 번째 슬라이스 (automatic prior-evidence selection, provider API 연동)를 언제 시작할지.
 - `app / chat` preset 진입 시점에 `mode evaluate` chatbot 모드를 동시에 cut할지, 단독 슬라이스로 분리할지.
 - `archetype-boundary.spec.md` retire는 spec follow-up 5번. 모든 preset 출시 후 한 번에 정리할지, 더 빨리 끊을지.
-- 잔여 신호의 fixture vs. AGENTS.md 정직성 결정 — `repo / skill` 슬라이스 작업 중 자연스럽게 닿을 수 있음.
+- 잔여 신호의 fixture vs. AGENTS.md 정직성 결정 — `app / chat` 슬라이스 작업 중 자연스럽게 닿을 수 있음.
+- `repo/skill` 슬라이스에 대한 self-dogfood real-codex/claude 증거 수집 시점.
 
 ## References
 
