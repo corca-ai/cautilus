@@ -109,11 +109,6 @@ This surface should not become:
 
 ## Open Redesign
 
-The current self-dogfood suite carries one product hypothesis and routes mechanical capability checks back to unit tests.
-Before broadening the suite again, the surface itself needs a redesign pass:
-
-- Is `instruction-surface` evaluation conceptually a special shape of chatbot system-prompt evaluation, or a separate first-class surface?
-- If it stays separate, what dimensions (routing fidelity, contract adherence, progressive disclosure, scope-boundary fidelity) should each have a dedicated dogfood fixture using cautilus's real instruction surface and real linked docs?
-- If it folds into chatbot evaluation, how does the chatbot surface accept a workspace-shaped system prompt (file tree with overlays / nesting / symlinks) instead of a plain string?
-
-Resolve the redesign question before adding new fixtures to the suite.
+Resolved 2026-04-25 by [evaluation-surfaces.spec.md](./evaluation-surfaces.spec.md).
+This file's contract becomes the `repo / whole-repo` preset under that spec once the first impl slice ports `instruction-surface test/evaluate` to `cautilus eval`.
+Until that slice lands, this file remains the live contract for the shipped `instruction-surface` commands; afterward it gets archived or rescoped to per-preset detail.
