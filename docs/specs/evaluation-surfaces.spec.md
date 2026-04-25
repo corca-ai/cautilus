@@ -98,25 +98,19 @@ Every result records `{provider, model, harness, mode (workspace|messaging), dur
 
 These rules are validated by acceptance check in this spec, not invented at impl time.
 
-### Workflow archetype
+### Workflow archetype and prior commands
 
-Dropped from the public surface.
-Replaced by C3 multi-step composition.
-`scenario normalize workflow` and the `workflow` value in archetype-boundary references will point to deprecation guidance during the migration window, then be removed.
+The redesign cuts cleanly with no backward compatibility (no external users yet).
+Removed in this slice:
 
-### Deprecation aliases and migration window
+- `cautilus instruction-surface test/evaluate` — replaced by `cautilus eval test/evaluate` with `surface=repo, preset=whole-repo`.
+- The `workflow` first-class archetype — multi-step composition (C3) replaces it.
+- `cautilus.instruction_surface_*` schemas — replaced by `cautilus.evaluation_*` schemas.
+- `instruction_surface_*` adapter fields — replaced by `eval_test_command_templates` and `evaluation_input_default`.
 
-Each existing public command keeps working as a **deprecation alias** until the corresponding new preset ships:
+`scenario normalize chatbot|skill|workflow` are unchanged for now (they feed proposal-input normalization, not evaluation). They lose their archetype framing once the corresponding `cautilus eval` presets ship and proposal-input normalization is rescoped in a later slice.
 
-- An alias prints a one-line deprecation pointer to its new `cautilus eval` equivalent on every invocation.
-- An alias preserves its previous behavior (does NOT silently re-route through `cautilus eval` until the matching preset has shipped).
-- Once the matching preset has shipped, the alias's behavior is implemented by translating to the new command. The pointer keeps printing.
-- The alias is removed when (a) all four presets have shipped, (b) a release announcement has run through `charness:announcement`, and (c) `docs/master-plan.md` Phase 6 records the alias-removal row with date.
-- `archetype-boundary.spec.md` is retired in the same alias-removal cut.
-
-This rule applies to: `cautilus instruction-surface test/evaluate`, `cautilus skill test/evaluate`, `cautilus mode evaluate` (chatbot mode), and `cautilus scenario normalize workflow`.
-The first three each pair to a single `cautilus eval` preset.
-`scenario normalize workflow` is the proposal-input normalization path, not an evaluation path; it points to "use C3 multi-step composition in your evaluation fixture" and stays functional for proposal flows that still consume it.
+Migration tracked at [corca-ai/cautilus#32](https://github.com/corca-ai/cautilus/issues/32).
 
 ## Probe Questions
 
@@ -165,8 +159,7 @@ Answers should land through implementation slices, not through more spec churn:
 - `app` surface MUST work without an API key when the user has Claude or Codex CLI installed.
 - Preset is deterministic from `(surface, preset)` and validated offline.
 - Result packet schema MUST stay stable across surfaces so downstream consumers (`optimize prepare-input`, `report.json`) treat all four presets uniformly.
-- Existing public commands (`instruction-surface test/evaluate`, `skill test/evaluate`, `mode evaluate`) MUST continue to function under the deprecation-alias rule defined in `Fixed Decisions § Deprecation aliases and migration window`.
-  Aliases are removed only when (a) all four presets have shipped, (b) `charness:announcement` has run, and (c) the master-plan alias-removal row is filed.
+- No backward compatibility for prior public commands or schemas. Cuts are clean.
 
 ## Success Criteria
 
@@ -191,10 +184,8 @@ Each criterion has at least one executable check.
   - `app / chat`: multi-turn fixture against fixture-backend (no real model).
   - `app / prompt`: single-turn fixture against fixture-backend.
 - **CLI runtime parity**: `app / chat` fixture run via direct API and via `claude -p --system-prompt` produces packets where the MUST-be-byte-equal fields match, the MUST-be-present-and-non-empty fields are populated on both sides, and the MAY-differ fields are carried with a harness tag.
-- **Deprecation aliases**: `cautilus instruction-surface test` prints a deprecation pointer and either preserves prior behavior (if the matching preset hasn't shipped yet) or translates to the new command (once the preset has shipped). Verified by one snapshot test per existing alias.
-- **Alias removal gate**: `lint:eval-surfaces` checks that any alias still in the source tree has a corresponding deprecation pointer; the lint passes only when removal happens together with the master-plan row.
-- **Spec lint**: `npm run lint:specs` accepts this spec; `npm run lint:archetypes` updated for the dropped `workflow` archetype.
-- **Taxonomy axis**: per-surface preset enums kept narrow; mixed-axis values (e.g., adding `repo / chat`) rejected.
+- **Spec lint**: `npm run lint:specs` accepts this spec; archetype lint scope follows the workflow-archetype removal.
+- **Taxonomy axis**: per-surface preset enums kept narrow; mixed-axis values (e.g., adding `repo / chat`) rejected at the schema validator.
 
 ## Premortem
 
@@ -219,41 +210,33 @@ Anchored re-litigation notes:
    Documented in `Fixed Decisions § Fixture composition`.
 
 4. **"`workflow` archetype removal breaks existing host repos."**
-   Each existing public command becomes a deprecation alias under the rule in `Fixed Decisions § Deprecation aliases and migration window`.
-   Aliases preserve prior behavior until the matching preset ships; pointer prints from day one.
-   Removal requires all four presets shipped + `charness:announcement` + a master-plan row.
+   No external host repos exist yet, so the workflow archetype and prior public commands are cut without aliases.
+   Migration noted in a tracking issue rather than in code.
 
 5. **"Taxonomy-axis checkpoint passed because the spec asserts it did."**
-   The per-surface axes are spelled out and the schema validator plus `lint:eval-surfaces` reject cross-axis values.
-   Adding a fifth value requires both the checkpoint pass and updating the lint.
+   The per-surface axes are spelled out and the schema validator rejects cross-axis values.
+   Adding a fifth value requires both the checkpoint pass and explicit reasoning in the next spec edit.
 
 ## Canonical Artifact
 
 `docs/specs/evaluation-surfaces.spec.md`.
 
 This spec is the implementation contract.
-Migration plan and per-slice impl notes live elsewhere — link from `docs/master-plan.md` after first slice lands.
-
-The existing `docs/specs/instruction-surface.spec.md`'s `Open Redesign` section is now resolved by this spec; that file becomes a per-preset spec for `repo / whole-repo` once the impl slice lands or gets archived.
+Per-slice impl notes live in commits and the migration tracking issue.
 
 ## First Implementation Slice
 
-Port `instruction-surface test/evaluate` to `cautilus eval` under `surface: repo, preset: whole-repo`.
+`repo / whole-repo` preset shipped:
 
-Concretely:
+- `cautilus eval test`, `cautilus eval evaluate` accept `cautilus.evaluation_input.v1` fixtures.
+- Schema validates `surface=repo, preset=whole-repo` only; C2/C3/C4 fields stub-error until their slices land.
+- Self-dogfood fixture lives at `fixtures/eval/whole-repo/checked-in-agents-routing.fixture.json`; runner under `scripts/run-self-dogfood-eval.mjs`.
+- Prior `cautilus instruction-surface test/evaluate`, `cautilus.instruction_surface_*` schemas, `instruction_surface_*` adapter fields, and the `workflow` archetype framing in this layer are removed without aliases.
 
-- New CLI entrypoints: `cautilus eval test`, `cautilus eval evaluate`.
-  Behavior wraps the existing `instruction-surface` runner under the new fixture schema.
-- New fixture schema versioned `cautilus.evaluation_input.v1` (or similar) carrying `surface`, `preset`, and the C1 multi-case shape.
-  C2/C3/C4 parsers stubbed, error on use until those slices land.
-- Existing `cautilus instruction-surface test` and `instruction-surface evaluate` stay as deprecation aliases that translate to the new command and print a one-line pointer.
-- Self-dogfood fixture (current `fixtures/instruction-surface/cases.json`, one variant) ported to `fixtures/eval/whole-repo/checked-in-agents-routing.fixture.json` shape.
-- All existing instruction-surface unit tests stay green; deprecation aliases exercised by one CLI smoke test.
+Follow-up slices proceed in this order:
 
-After this slice ships, follow-ups proceed in this order:
-
-1. `repo / skill` preset — port skill test/evaluate.
-2. `app / chat` preset — port chatbot mode evaluate.
+1. `repo / skill` preset — replace `cautilus skill test/evaluate`.
+2. `app / chat` preset — replace `cautilus mode evaluate` chatbot mode.
 3. `app / prompt` preset — new.
 4. C2–C4 composition primitives, one per slice.
-5. Migration window close: remove deprecation aliases, retire `archetype-boundary.spec.md`.
+5. Retire `archetype-boundary.spec.md` and rescope `scenario normalize` proposal-input lineage.

@@ -16,7 +16,7 @@ import process from "node:process";
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(SCRIPT_DIR, "..");
 const BIN_PATH = join(REPO_ROOT, "bin", "cautilus");
-const RUNNER_PATH = join(REPO_ROOT, "scripts", "agent-runtime", "run-local-instruction-surface-test.mjs");
+const RUNNER_PATH = join(REPO_ROOT, "scripts", "agent-runtime", "run-local-eval-test.mjs");
 const EXCLUDED_SOURCE_PATH_PREFIXES = [".agents/skills/", ".cautilus/runs/", ".claude/"];
 
 function fail(message) {
@@ -27,7 +27,7 @@ function fail(message) {
 function usage(exitCode = 0) {
 	const text = [
 		"Usage:",
-		"  node ./scripts/run-self-dogfood-instruction-surface.mjs --repo-root <dir> --output-dir <dir> --cases-file <file> --output-file <file> [--backend codex_exec|claude_code|fixture] [--fixture-results-file <file>] [--sandbox read-only|workspace-write] [--timeout-ms <ms>] [--codex-model <model>] [--codex-reasoning-effort <level>] [--claude-model <model>] [--claude-permission-mode <mode>] [--claude-allowed-tools <rules>]",
+		"  node ./scripts/run-self-dogfood-eval.mjs --repo-root <dir> --output-dir <dir> --cases-file <file> --output-file <file> [--backend codex_exec|claude_code|fixture] [--fixture-results-file <file>] [--sandbox read-only|workspace-write] [--timeout-ms <ms>] [--codex-model <model>] [--codex-reasoning-effort <level>] [--claude-model <model>] [--claude-permission-mode <mode>] [--claude-allowed-tools <rules>]",
 	].join("\n");
 	const out = exitCode === 0 ? process.stdout : process.stderr;
 	out.write(`${text}\n`);
@@ -228,7 +228,7 @@ function buildRunnerArgs(options, candidateRepo) {
 		"--output-file",
 		options.outputFile,
 		"--artifact-dir",
-		join(options.outputDir, "instruction-surface-test"),
+		join(options.outputDir, "eval-test"),
 		"--backend",
 		options.backend,
 		"--sandbox",

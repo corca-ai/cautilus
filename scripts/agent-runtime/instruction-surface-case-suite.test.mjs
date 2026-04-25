@@ -3,7 +3,7 @@ import test from "node:test";
 
 import { normalizeInstructionSurfaceCaseSuite } from "./instruction-surface-case-suite.mjs";
 
-const SCHEMA = "cautilus.instruction_surface_cases.v1";
+const SCHEMA = "cautilus.evaluation_cases.v1";
 
 function normalize(evaluation) {
 	return normalizeInstructionSurfaceCaseSuite({
@@ -113,7 +113,7 @@ test("normalize rejects unknown schemaVersion", () => {
 		schemaVersion: "wrong",
 		suiteId: "demo",
 		evaluations: [{ evaluationId: "x", prompt: "y" }],
-	}), /schemaVersion must be cautilus\.instruction_surface_cases\.v1/);
+	}), /schemaVersion must be cautilus\.evaluation_cases\.v1/);
 });
 
 test("normalize rejects empty evaluations array", () => {

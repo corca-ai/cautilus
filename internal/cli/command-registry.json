@@ -54,25 +54,13 @@
       "path": ["eval", "test"],
       "group": "run",
       "usage": "cautilus eval test [args]",
-      "example": "cautilus eval test --repo-root . --adapter-name self-dogfood-instruction-surface --fixture ./fixtures/eval/whole-repo/checked-in-agents-routing.fixture.json"
+      "example": "cautilus eval test --repo-root . --adapter-name self-dogfood-eval --fixture ./fixtures/eval/whole-repo/checked-in-agents-routing.fixture.json"
     },
     {
       "path": ["eval", "evaluate"],
       "group": "run",
       "usage": "cautilus eval evaluate [args]",
-      "example": "cautilus eval evaluate --input ./fixtures/instruction-surface/input.json"
-    },
-    {
-      "path": ["instruction-surface", "test"],
-      "group": "run",
-      "usage": "cautilus instruction-surface test [args]",
-      "example": "cautilus instruction-surface test --repo-root . --adapter-name self-dogfood-instruction-surface"
-    },
-    {
-      "path": ["instruction-surface", "evaluate"],
-      "group": "run",
-      "usage": "cautilus instruction-surface evaluate [args]",
-      "example": "cautilus instruction-surface evaluate --input ./fixtures/instruction-surface/input.json"
+      "example": "cautilus eval evaluate --input ./eval-observed.json"
     },
     {
       "path": ["skill", "test"],

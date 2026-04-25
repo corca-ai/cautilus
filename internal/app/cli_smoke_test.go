@@ -5697,114 +5697,6 @@ JSON
 	}
 }
 
-func TestCLIInstructionSurfaceTestRunsAdapterCommandsAndWritesSummary(t *testing.T) {
-	root := t.TempDir()
-	adapterDir := filepath.Join(root, ".agents")
-	fixtureDir := filepath.Join(root, "fixtures", "instruction-surface")
-	outputDir := filepath.Join(root, "outputs")
-	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
-		t.Fatalf("MkdirAll returned error: %v", err)
-	}
-	if err := os.MkdirAll(fixtureDir, 0o755); err != nil {
-		t.Fatalf("MkdirAll returned error: %v", err)
-	}
-	scriptPath := filepath.Join(root, "instruction-surface-test.sh")
-	script := `#!/bin/sh
-cat <<'JSON' > "$1"
-{
-  "schemaVersion": "cautilus.instruction_surface_inputs.v1",
-  "suiteId": "instruction-surface-demo",
-  "evaluations": [
-    {
-      "evaluationId": "agents-routing",
-      "displayName": "agents-routing",
-      "prompt": "Read the repo instructions first and decide how to route this task.",
-      "startedAt": "2026-04-18T00:00:00.000Z",
-      "observationStatus": "observed",
-      "summary": "Started from AGENTS.md, used discovery first as a bootstrap helper, and then selected the durable work skill.",
-      "entryFile": "AGENTS.md",
-      "loadedInstructionFiles": ["AGENTS.md"],
-      "loadedSupportingFiles": ["docs/internal/handoff.md"],
-      "routingDecision": {
-        "selectedSkill": "impl",
-        "bootstrapHelper": "find-skills",
-        "workSkill": "impl",
-        "firstToolCall": "find-skills --repo-root ."
-      },
-      "instructionSurface": {
-        "surfaceLabel": "compact_agents",
-        "files": [
-          {
-            "path": "AGENTS.md",
-            "kind": "file",
-            "sourceKind": "workspace_default"
-          }
-        ]
-      },
-      "expectedEntryFile": "AGENTS.md",
-      "requiredInstructionFiles": ["AGENTS.md"],
-      "requiredSupportingFiles": ["docs/internal/handoff.md"],
-      "expectedRouting": {
-        "bootstrapHelper": "find-skills",
-        "workSkill": "impl",
-        "firstToolCallPattern": "find-skills"
-      },
-      "artifactRefs": []
-    }
-  ]
-}
-JSON
-`
-	if err := os.WriteFile(scriptPath, []byte(script), 0o755); err != nil {
-		t.Fatalf("WriteFile returned error: %v", err)
-	}
-	writeJSONFile(t, filepath.Join(fixtureDir, "cases.json"), map[string]any{
-		"schemaVersion": contracts.InstructionSurfaceCasesSchema,
-		"suiteId":       "instruction-surface-demo",
-		"evaluations": []map[string]any{
-			{
-				"evaluationId":             "agents-routing",
-				"prompt":                   "Read the repo instructions first and decide how to route this task.",
-				"expectedEntryFile":        "AGENTS.md",
-				"requiredInstructionFiles": []string{"AGENTS.md"},
-				"requiredSupportingFiles":  []string{"docs/internal/handoff.md"},
-				"expectedRouting": map[string]any{
-					"bootstrapHelper":      "find-skills",
-					"workSkill":            "impl",
-					"firstToolCallPattern": "find-skills",
-				},
-			},
-		},
-	})
-	if err := os.WriteFile(filepath.Join(adapterDir, "cautilus-adapter.yaml"), []byte(strings.Join([]string{
-		"version: 1",
-		"repo: temp",
-		"evaluation_surfaces:",
-		"  - instruction surface fidelity",
-		"baseline_options:",
-		"  - baseline git ref via {baseline_ref}",
-		"instruction_surface_cases_default: fixtures/instruction-surface/cases.json",
-		"instruction_surface_test_command_templates:",
-		"  - sh ./instruction-surface-test.sh {instruction_surface_input_file}",
-		"",
-	}, "\n")), 0o644); err != nil {
-		t.Fatalf("WriteFile returned error: %v", err)
-	}
-
-	stdout, stderr, exitCode := runCLI(t, root, "instruction-surface", "test", "--repo-root", root, "--output-dir", outputDir)
-	if exitCode != 0 {
-		t.Fatalf("instruction-surface test failed: %s", stderr)
-	}
-	if !strings.Contains(stderr, "deprecation: `cautilus instruction-surface test`") {
-		t.Fatalf("expected deprecation pointer on stderr, got: %s", stderr)
-	}
-	summaryPath := strings.TrimSpace(stdout)
-	summary := readJSONObjectFile(t, summaryPath)
-	if summary["schemaVersion"] != contracts.InstructionSurfaceSummarySchema || summary["recommendation"] != "accept-now" {
-		t.Fatalf("unexpected instruction-surface summary: %#v", summary)
-	}
-}
-
 func TestCLIEvalTestRunsRepoWholeRepoFixture(t *testing.T) {
 	root := t.TempDir()
 	adapterDir := filepath.Join(root, ".agents")
@@ -5816,11 +5708,11 @@ func TestCLIEvalTestRunsRepoWholeRepoFixture(t *testing.T) {
 	if err := os.MkdirAll(fixtureDir, 0o755); err != nil {
 		t.Fatalf("MkdirAll returned error: %v", err)
 	}
-	scriptPath := filepath.Join(root, "instruction-surface-test.sh")
+	scriptPath := filepath.Join(root, "eval-test.sh")
 	script := `#!/bin/sh
 cat <<'JSON' > "$1"
 {
-  "schemaVersion": "cautilus.instruction_surface_inputs.v1",
+  "schemaVersion": "cautilus.evaluation_observed.v1",
   "suiteId": "instruction-surface-demo",
   "evaluations": [
     {
@@ -5883,8 +5775,8 @@ JSON
 		"baseline_options:",
 		"  - baseline git ref via {baseline_ref}",
 		"evaluation_input_default: fixtures/eval/whole-repo/checked-in-agents-routing.fixture.json",
-		"instruction_surface_test_command_templates:",
-		"  - sh ./instruction-surface-test.sh {instruction_surface_input_file}",
+		"eval_test_command_templates:",
+		"  - sh ./eval-test.sh {eval_observed_file}",
 		"",
 	}, "\n")), 0o644); err != nil {
 		t.Fatalf("WriteFile returned error: %v", err)
@@ -5899,13 +5791,13 @@ JSON
 	}
 	summaryPath := strings.TrimSpace(stdout)
 	summary := readJSONObjectFile(t, summaryPath)
-	if summary["schemaVersion"] != contracts.InstructionSurfaceSummarySchema || summary["recommendation"] != "accept-now" {
+	if summary["schemaVersion"] != contracts.EvaluationSummarySchema || summary["recommendation"] != "accept-now" {
 		t.Fatalf("unexpected eval test summary: %#v", summary)
 	}
-	translatedPath := filepath.Join(outputDir, "translated-cases.json")
-	translated := readJSONObjectFile(t, translatedPath)
-	if translated["schemaVersion"] != contracts.InstructionSurfaceCasesSchema {
-		t.Fatalf("translated cases must use the existing case-suite schema, got: %v", translated["schemaVersion"])
+	casesPath := filepath.Join(outputDir, "eval-cases.json")
+	cases := readJSONObjectFile(t, casesPath)
+	if cases["schemaVersion"] != contracts.EvaluationCasesSchema {
+		t.Fatalf("eval-cases must use the evaluation_cases schema, got: %v", cases["schemaVersion"])
 	}
 }
 
@@ -5933,7 +5825,7 @@ func TestCLIEvalTestRejectsUnsupportedSurfacePresetCombo(t *testing.T) {
 		"  - app fidelity",
 		"baseline_options:",
 		"  - baseline git ref via {baseline_ref}",
-		"instruction_surface_test_command_templates:",
+		"eval_test_command_templates:",
 		"  - 'true'",
 		"",
 	}, "\n")), 0o644); err != nil {
@@ -5945,84 +5837,6 @@ func TestCLIEvalTestRejectsUnsupportedSurfacePresetCombo(t *testing.T) {
 	}
 	if !strings.Contains(stderr, "surface") || !strings.Contains(stderr, "app") {
 		t.Fatalf("expected surface rejection message, got: %s", stderr)
-	}
-}
-
-func TestCLIInstructionSurfaceEvaluatePrintsDeprecationPointer(t *testing.T) {
-	root := t.TempDir()
-	inputPath := filepath.Join(root, "input.json")
-	writeJSONFile(t, inputPath, map[string]any{
-		"schemaVersion": contracts.InstructionSurfaceInputsSchema,
-		"suiteId":       "demo",
-		"evaluations": []map[string]any{
-			{
-				"evaluationId":      "deprecation-smoke",
-				"prompt":            "Smoke prompt.",
-				"startedAt":         "2026-04-25T00:00:00.000Z",
-				"observationStatus": "blocked",
-				"summary":           "smoke",
-				"loadedInstructionFiles": []string{},
-				"loadedSupportingFiles":  []string{},
-				"routingDecision": map[string]any{
-					"selectedSkill":   "none",
-					"bootstrapHelper": "none",
-					"workSkill":       "none",
-					"firstToolCall":   "none",
-					"reasonSummary":   "smoke",
-				},
-				"instructionSurface": map[string]any{
-					"surfaceLabel": "smoke",
-					"files":        []map[string]any{{"path": "AGENTS.md", "kind": "file", "sourceKind": "workspace_default"}},
-				},
-				"artifactRefs": []any{},
-			},
-		},
-	})
-	_, stderr, exitCode := runCLI(t, root, "instruction-surface", "evaluate", "--input", inputPath)
-	if exitCode != 0 {
-		t.Fatalf("instruction-surface evaluate failed: %s", stderr)
-	}
-	if !strings.Contains(stderr, "deprecation: `cautilus instruction-surface evaluate`") {
-		t.Fatalf("expected deprecation pointer, got: %s", stderr)
-	}
-}
-
-func TestCLIEvalEvaluateDoesNotPrintDeprecationPointer(t *testing.T) {
-	root := t.TempDir()
-	inputPath := filepath.Join(root, "input.json")
-	writeJSONFile(t, inputPath, map[string]any{
-		"schemaVersion": contracts.InstructionSurfaceInputsSchema,
-		"suiteId":       "demo",
-		"evaluations": []map[string]any{
-			{
-				"evaluationId":      "deprecation-smoke",
-				"prompt":            "Smoke prompt.",
-				"startedAt":         "2026-04-25T00:00:00.000Z",
-				"observationStatus": "blocked",
-				"summary":           "smoke",
-				"loadedInstructionFiles": []string{},
-				"loadedSupportingFiles":  []string{},
-				"routingDecision": map[string]any{
-					"selectedSkill":   "none",
-					"bootstrapHelper": "none",
-					"workSkill":       "none",
-					"firstToolCall":   "none",
-					"reasonSummary":   "smoke",
-				},
-				"instructionSurface": map[string]any{
-					"surfaceLabel": "smoke",
-					"files":        []map[string]any{{"path": "AGENTS.md", "kind": "file", "sourceKind": "workspace_default"}},
-				},
-				"artifactRefs": []any{},
-			},
-		},
-	})
-	_, stderr, exitCode := runCLI(t, root, "eval", "evaluate", "--input", inputPath)
-	if exitCode != 0 {
-		t.Fatalf("eval evaluate failed: %s", stderr)
-	}
-	if strings.Contains(stderr, "deprecation:") {
-		t.Fatalf("eval evaluate must not emit a deprecation pointer, got: %s", stderr)
 	}
 }
 
@@ -7222,7 +7036,7 @@ func TestCLIExampleInputEmitsPacketsThatRoundTripThroughTheSameCommand(t *testin
 		{"skill", []string{"scenario", "normalize", "skill"}, contracts.SkillNormalizationInputsSchema},
 		{"workflow", []string{"scenario", "normalize", "workflow"}, contracts.WorkflowNormalizationInputsSchema},
 		{"scenario-review-conversations", []string{"scenario", "review-conversations"}, contracts.ScenarioConversationReviewInputsSchema},
-		{"instruction-surface-evaluate", []string{"instruction-surface", "evaluate"}, contracts.InstructionSurfaceInputsSchema},
+		{"eval-evaluate", []string{"eval", "evaluate"}, contracts.EvaluationObservedSchema},
 		{"skill-evaluate", []string{"skill", "evaluate"}, contracts.SkillEvaluationInputsSchema},
 		{"report-build", []string{"report", "build"}, contracts.ReportInputsSchema},
 	}

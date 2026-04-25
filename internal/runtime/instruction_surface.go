@@ -33,9 +33,9 @@ type instructionSurfaceEvaluationInput struct {
 	telemetry                 map[string]any
 }
 
-func BuildInstructionSurfaceSummary(input map[string]any, now time.Time) (map[string]any, error) {
-	if input["schemaVersion"] != contracts.InstructionSurfaceInputsSchema {
-		return nil, fmt.Errorf("schemaVersion must be %s", contracts.InstructionSurfaceInputsSchema)
+func BuildEvaluationSummary(input map[string]any, now time.Time) (map[string]any, error) {
+	if input["schemaVersion"] != contracts.EvaluationObservedSchema {
+		return nil, fmt.Errorf("schemaVersion must be %s", contracts.EvaluationObservedSchema)
 	}
 	suiteID, err := normalizeNonEmptyString(input["suiteId"], "suiteId")
 	if err != nil {
@@ -112,7 +112,7 @@ func BuildInstructionSurfaceSummary(input map[string]any, now time.Time) (map[st
 		recommendation = "defer"
 	}
 	summary := map[string]any{
-		"schemaVersion":    contracts.InstructionSurfaceSummarySchema,
+		"schemaVersion":    contracts.EvaluationSummarySchema,
 		"suiteId":          suiteID,
 		"suiteDisplayName": suiteDisplayName,
 		"evaluatedAt":      now.UTC().Format(time.RFC3339Nano),
@@ -176,11 +176,11 @@ func normalizeInstructionSurfaceEvaluationInput(input map[string]any, index int,
 	if err != nil {
 		return nil, err
 	}
-	loadedInstructionFiles, err := normalizeInstructionSurfacePathList(input["loadedInstructionFiles"], fmt.Sprintf("evaluations[%d].loadedInstructionFiles", index))
+	loadedInstructionFiles, err := normalizeEvaluationCasePathList(input["loadedInstructionFiles"], fmt.Sprintf("evaluations[%d].loadedInstructionFiles", index))
 	if err != nil {
 		return nil, err
 	}
-	loadedSupportingFiles, err := normalizeInstructionSurfacePathList(input["loadedSupportingFiles"], fmt.Sprintf("evaluations[%d].loadedSupportingFiles", index))
+	loadedSupportingFiles, err := normalizeEvaluationCasePathList(input["loadedSupportingFiles"], fmt.Sprintf("evaluations[%d].loadedSupportingFiles", index))
 	if err != nil {
 		return nil, err
 	}
@@ -196,23 +196,23 @@ func normalizeInstructionSurfaceEvaluationInput(input map[string]any, index int,
 	if err != nil {
 		return nil, err
 	}
-	requiredInstructionFiles, err := normalizeInstructionSurfacePathList(input["requiredInstructionFiles"], fmt.Sprintf("evaluations[%d].requiredInstructionFiles", index))
+	requiredInstructionFiles, err := normalizeEvaluationCasePathList(input["requiredInstructionFiles"], fmt.Sprintf("evaluations[%d].requiredInstructionFiles", index))
 	if err != nil {
 		return nil, err
 	}
-	forbiddenInstructionFiles, err := normalizeInstructionSurfacePathList(input["forbiddenInstructionFiles"], fmt.Sprintf("evaluations[%d].forbiddenInstructionFiles", index))
+	forbiddenInstructionFiles, err := normalizeEvaluationCasePathList(input["forbiddenInstructionFiles"], fmt.Sprintf("evaluations[%d].forbiddenInstructionFiles", index))
 	if err != nil {
 		return nil, err
 	}
-	requiredSupportingFiles, err := normalizeInstructionSurfacePathList(input["requiredSupportingFiles"], fmt.Sprintf("evaluations[%d].requiredSupportingFiles", index))
+	requiredSupportingFiles, err := normalizeEvaluationCasePathList(input["requiredSupportingFiles"], fmt.Sprintf("evaluations[%d].requiredSupportingFiles", index))
 	if err != nil {
 		return nil, err
 	}
-	forbiddenSupportingFiles, err := normalizeInstructionSurfacePathList(input["forbiddenSupportingFiles"], fmt.Sprintf("evaluations[%d].forbiddenSupportingFiles", index))
+	forbiddenSupportingFiles, err := normalizeEvaluationCasePathList(input["forbiddenSupportingFiles"], fmt.Sprintf("evaluations[%d].forbiddenSupportingFiles", index))
 	if err != nil {
 		return nil, err
 	}
-	expectedRouting, err := normalizeInstructionSurfaceExpectedRouting(input["expectedRouting"], fmt.Sprintf("evaluations[%d].expectedRouting", index))
+	expectedRouting, err := normalizeEvaluationCaseExpectedRouting(input["expectedRouting"], fmt.Sprintf("evaluations[%d].expectedRouting", index))
 	if err != nil {
 		return nil, err
 	}

@@ -7,7 +7,7 @@ import test from "node:test";
 import {
 	buildObservedInstructionSurfaceInput,
 	codexArgs,
-} from "./run-local-instruction-surface-test.mjs";
+} from "./run-local-eval-test.mjs";
 import {
 	materializeInstructionSurface,
 	normalizeRoutingDecision,
@@ -23,18 +23,43 @@ function createInstructionSurfaceWorkspace() {
 }
 
 test("buildObservedInstructionSurfaceInput materializes fixture-backed instruction-surface observations", () => {
-	const artifactDir = mkdtempSync(join(tmpdir(), "cautilus-instruction-surface-"));
+	const artifactDir = mkdtempSync(join(tmpdir(), "cautilus-eval-"));
 	const workspace = createInstructionSurfaceWorkspace();
+	const casesFile = join(artifactDir, "eval-cases.json");
+	const fixtureResultsFile = join(artifactDir, "fixture-results.json");
+	writeFileSync(casesFile, JSON.stringify({
+		schemaVersion: "cautilus.evaluation_cases.v1",
+		suiteId: "eval-demo",
+		evaluations: [
+			{
+				evaluationId: "checked-in-agents-routing",
+				prompt: "Read the repo instructions first and decide how to route this task.",
+				expectedEntryFile: "AGENTS.md",
+				requiredInstructionFiles: ["AGENTS.md"],
+				expectedRouting: { selectedSkill: "none" },
+			},
+		],
+	}));
+	writeFileSync(fixtureResultsFile, JSON.stringify({
+		"checked-in-agents-routing": {
+			observationStatus: "observed",
+			summary: "Started from AGENTS.md and kept routing narrow.",
+			entryFile: "AGENTS.md",
+			loadedInstructionFiles: ["AGENTS.md"],
+			loadedSupportingFiles: [],
+			routingDecision: { selectedSkill: "none" },
+		},
+	}));
 	const packet = buildObservedInstructionSurfaceInput({
 		repoRoot: process.cwd(),
 		workspace,
-		casesFile: join(process.cwd(), "fixtures", "instruction-surface", "cases.json"),
+		casesFile,
 		artifactDir,
 		backend: "fixture",
-		fixtureResultsFile: join(process.cwd(), "fixtures", "instruction-surface", "fixture-results.json"),
+		fixtureResultsFile,
 	});
-	assert.equal(packet.schemaVersion, "cautilus.instruction_surface_inputs.v1");
-	assert.equal(packet.suiteId, "instruction-surface-demo");
+	assert.equal(packet.schemaVersion, "cautilus.evaluation_observed.v1");
+	assert.equal(packet.suiteId, "eval-demo");
 	assert.equal(packet.evaluations.length, 1);
 	assert.equal(packet.evaluations[0].evaluationId, "checked-in-agents-routing");
 	assert.equal(packet.evaluations[0].expectedEntryFile, "AGENTS.md");

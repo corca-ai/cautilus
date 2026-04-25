@@ -5,10 +5,10 @@ import (
 	"time"
 )
 
-func TestBuildInstructionSurfaceSummaryScoresRoutingAndFiles(t *testing.T) {
+func TestBuildEvaluationSummaryScoresRoutingAndFiles(t *testing.T) {
 	now := time.Date(2026, 4, 18, 0, 0, 0, 0, time.UTC)
-	summary, err := BuildInstructionSurfaceSummary(map[string]any{
-		"schemaVersion": "cautilus.instruction_surface_inputs.v1",
+	summary, err := BuildEvaluationSummary(map[string]any{
+		"schemaVersion": "cautilus.evaluation_observed.v1",
 		"suiteId":       "instruction-surface-demo",
 		"evaluations": []any{
 			map[string]any{
@@ -74,9 +74,9 @@ func TestBuildInstructionSurfaceSummaryScoresRoutingAndFiles(t *testing.T) {
 		},
 	}, now)
 	if err != nil {
-		t.Fatalf("BuildInstructionSurfaceSummary returned error: %v", err)
+		t.Fatalf("BuildEvaluationSummary returned error: %v", err)
 	}
-	if summary["schemaVersion"] != "cautilus.instruction_surface_summary.v1" {
+	if summary["schemaVersion"] != "cautilus.evaluation_summary.v1" {
 		t.Fatalf("unexpected schema version: %#v", summary["schemaVersion"])
 	}
 	if summary["recommendation"] != "reject" {

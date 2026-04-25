@@ -13,7 +13,7 @@ import (
 type EvaluationInput struct {
 	Surface         string
 	Preset          string
-	CaseSuite       *InstructionSurfaceCaseSuite
+	CaseSuite       *EvaluationCases
 	TranslatedCases map[string]any
 }
 
@@ -76,12 +76,12 @@ func NormalizeEvaluationInput(input map[string]any) (*EvaluationInput, error) {
 		translatedEvaluations = append(translatedEvaluations, translated)
 	}
 	translatedSuite := map[string]any{
-		"schemaVersion":    contracts.InstructionSurfaceCasesSchema,
+		"schemaVersion":    contracts.EvaluationCasesSchema,
 		"suiteId":          suiteID,
 		"suiteDisplayName": suiteDisplayName,
 		"evaluations":      translatedEvaluations,
 	}
-	caseSuite, err := NormalizeInstructionSurfaceCaseSuite(translatedSuite)
+	caseSuite, err := NormalizeEvaluationCases(translatedSuite)
 	if err != nil {
 		return nil, err
 	}

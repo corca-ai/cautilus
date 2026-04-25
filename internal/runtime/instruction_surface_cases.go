@@ -6,7 +6,7 @@ import (
 	"github.com/corca-ai/cautilus/internal/contracts"
 )
 
-type InstructionSurfaceFileSpec struct {
+type EvaluationCaseFileSpec struct {
 	Path       string
 	Kind       string
 	Content    *string
@@ -14,17 +14,17 @@ type InstructionSurfaceFileSpec struct {
 	TargetPath *string
 }
 
-type InstructionSurfaceVariant struct {
+type EvaluationCaseVariant struct {
 	SurfaceLabel string
-	Files        []InstructionSurfaceFileSpec
+	Files        []EvaluationCaseFileSpec
 }
 
-type InstructionSurfaceCase struct {
+type EvaluationCase struct {
 	EvaluationID              string
 	DisplayName               string
 	Prompt                    string
 	TaskPath                  *string
-	InstructionSurface        *InstructionSurfaceVariant
+	InstructionSurface        *EvaluationCaseVariant
 	ExpectedEntryFile         *string
 	RequiredInstructionFiles  []string
 	ForbiddenInstructionFiles []string
@@ -33,15 +33,15 @@ type InstructionSurfaceCase struct {
 	ExpectedRouting           map[string]any
 }
 
-type InstructionSurfaceCaseSuite struct {
+type EvaluationCases struct {
 	SuiteID          string
 	SuiteDisplayName string
-	Evaluations      []InstructionSurfaceCase
+	Evaluations      []EvaluationCase
 }
 
-func NormalizeInstructionSurfaceCaseSuite(input map[string]any) (*InstructionSurfaceCaseSuite, error) {
-	if input["schemaVersion"] != contracts.InstructionSurfaceCasesSchema {
-		return nil, fmt.Errorf("schemaVersion must be %s", contracts.InstructionSurfaceCasesSchema)
+func NormalizeEvaluationCases(input map[string]any) (*EvaluationCases, error) {
+	if input["schemaVersion"] != contracts.EvaluationCasesSchema {
+		return nil, fmt.Errorf("schemaVersion must be %s", contracts.EvaluationCasesSchema)
 	}
 	suiteID, err := normalizeNonEmptyString(input["suiteId"], "suiteId")
 	if err != nil {
@@ -60,26 +60,26 @@ func NormalizeInstructionSurfaceCaseSuite(input map[string]any) (*InstructionSur
 	if len(rawEvaluations) == 0 {
 		return nil, fmt.Errorf("evaluations must be a non-empty array")
 	}
-	evaluations := make([]InstructionSurfaceCase, 0, len(rawEvaluations))
+	evaluations := make([]EvaluationCase, 0, len(rawEvaluations))
 	for index, rawEvaluation := range rawEvaluations {
 		record, ok := rawEvaluation.(map[string]any)
 		if !ok {
 			return nil, fmt.Errorf("evaluations[%d] must be an object", index)
 		}
-		evaluation, err := normalizeInstructionSurfaceCase(record, index)
+		evaluation, err := normalizeEvaluationCase(record, index)
 		if err != nil {
 			return nil, err
 		}
 		evaluations = append(evaluations, *evaluation)
 	}
-	return &InstructionSurfaceCaseSuite{
+	return &EvaluationCases{
 		SuiteID:          suiteID,
 		SuiteDisplayName: suiteDisplayName,
 		Evaluations:      evaluations,
 	}, nil
 }
 
-func normalizeInstructionSurfaceCase(input map[string]any, index int) (*InstructionSurfaceCase, error) {
+func normalizeEvaluationCase(input map[string]any, index int) (*EvaluationCase, error) {
 	evaluationID, err := normalizeNonEmptyString(input["evaluationId"], fmt.Sprintf("evaluations[%d].evaluationId", index))
 	if err != nil {
 		return nil, err
@@ -98,7 +98,7 @@ func normalizeInstructionSurfaceCase(input map[string]any, index int) (*Instruct
 	if err != nil {
 		return nil, err
 	}
-	instructionSurface, err := normalizeInstructionSurfaceVariant(input["instructionSurface"], fmt.Sprintf("evaluations[%d].instructionSurface", index))
+	instructionSurface, err := normalizeEvaluationCaseVariant(input["instructionSurface"], fmt.Sprintf("evaluations[%d].instructionSurface", index))
 	if err != nil {
 		return nil, err
 	}
@@ -106,27 +106,27 @@ func normalizeInstructionSurfaceCase(input map[string]any, index int) (*Instruct
 	if err != nil {
 		return nil, err
 	}
-	requiredInstructionFiles, err := normalizeInstructionSurfacePathList(input["requiredInstructionFiles"], fmt.Sprintf("evaluations[%d].requiredInstructionFiles", index))
+	requiredInstructionFiles, err := normalizeEvaluationCasePathList(input["requiredInstructionFiles"], fmt.Sprintf("evaluations[%d].requiredInstructionFiles", index))
 	if err != nil {
 		return nil, err
 	}
-	forbiddenInstructionFiles, err := normalizeInstructionSurfacePathList(input["forbiddenInstructionFiles"], fmt.Sprintf("evaluations[%d].forbiddenInstructionFiles", index))
+	forbiddenInstructionFiles, err := normalizeEvaluationCasePathList(input["forbiddenInstructionFiles"], fmt.Sprintf("evaluations[%d].forbiddenInstructionFiles", index))
 	if err != nil {
 		return nil, err
 	}
-	requiredSupportingFiles, err := normalizeInstructionSurfacePathList(input["requiredSupportingFiles"], fmt.Sprintf("evaluations[%d].requiredSupportingFiles", index))
+	requiredSupportingFiles, err := normalizeEvaluationCasePathList(input["requiredSupportingFiles"], fmt.Sprintf("evaluations[%d].requiredSupportingFiles", index))
 	if err != nil {
 		return nil, err
 	}
-	forbiddenSupportingFiles, err := normalizeInstructionSurfacePathList(input["forbiddenSupportingFiles"], fmt.Sprintf("evaluations[%d].forbiddenSupportingFiles", index))
+	forbiddenSupportingFiles, err := normalizeEvaluationCasePathList(input["forbiddenSupportingFiles"], fmt.Sprintf("evaluations[%d].forbiddenSupportingFiles", index))
 	if err != nil {
 		return nil, err
 	}
-	expectedRouting, err := normalizeInstructionSurfaceExpectedRouting(input["expectedRouting"], fmt.Sprintf("evaluations[%d].expectedRouting", index))
+	expectedRouting, err := normalizeEvaluationCaseExpectedRouting(input["expectedRouting"], fmt.Sprintf("evaluations[%d].expectedRouting", index))
 	if err != nil {
 		return nil, err
 	}
-	return &InstructionSurfaceCase{
+	return &EvaluationCase{
 		EvaluationID:              evaluationID,
 		DisplayName:               displayName,
 		Prompt:                    prompt,
@@ -141,7 +141,7 @@ func normalizeInstructionSurfaceCase(input map[string]any, index int) (*Instruct
 	}, nil
 }
 
-func normalizeInstructionSurfaceVariant(value any, field string) (*InstructionSurfaceVariant, error) {
+func normalizeEvaluationCaseVariant(value any, field string) (*EvaluationCaseVariant, error) {
 	if value == nil {
 		return nil, nil
 	}
@@ -162,25 +162,25 @@ func normalizeInstructionSurfaceVariant(value any, field string) (*InstructionSu
 	if len(rawFiles) == 0 {
 		return nil, fmt.Errorf("%s.files must be a non-empty array", field)
 	}
-	files := make([]InstructionSurfaceFileSpec, 0, len(rawFiles))
+	files := make([]EvaluationCaseFileSpec, 0, len(rawFiles))
 	for index, rawFile := range rawFiles {
 		entry, ok := rawFile.(map[string]any)
 		if !ok {
 			return nil, fmt.Errorf("%s.files[%d] must be an object", field, index)
 		}
-		file, err := normalizeInstructionSurfaceFileSpec(entry, fmt.Sprintf("%s.files[%d]", field, index))
+		file, err := normalizeEvaluationCaseFileSpec(entry, fmt.Sprintf("%s.files[%d]", field, index))
 		if err != nil {
 			return nil, err
 		}
 		files = append(files, *file)
 	}
-	return &InstructionSurfaceVariant{
+	return &EvaluationCaseVariant{
 		SurfaceLabel: surfaceLabel,
 		Files:        files,
 	}, nil
 }
 
-func normalizeInstructionSurfaceFileSpec(input map[string]any, field string) (*InstructionSurfaceFileSpec, error) {
+func normalizeEvaluationCaseFileSpec(input map[string]any, field string) (*EvaluationCaseFileSpec, error) {
 	path, err := normalizeNonEmptyString(input["path"], field+".path")
 	if err != nil {
 		return nil, err
@@ -221,7 +221,7 @@ func normalizeInstructionSurfaceFileSpec(input map[string]any, field string) (*I
 			return nil, fmt.Errorf("%s must not set content or sourceFile for kind=symlink", field)
 		}
 	}
-	return &InstructionSurfaceFileSpec{
+	return &EvaluationCaseFileSpec{
 		Path:       path,
 		Kind:       kind,
 		Content:    content,
@@ -230,7 +230,7 @@ func normalizeInstructionSurfaceFileSpec(input map[string]any, field string) (*I
 	}, nil
 }
 
-func normalizeInstructionSurfacePathList(value any, field string) ([]string, error) {
+func normalizeEvaluationCasePathList(value any, field string) ([]string, error) {
 	items, err := assertArray(value, field)
 	if err != nil {
 		return nil, err
@@ -246,7 +246,7 @@ func normalizeInstructionSurfacePathList(value any, field string) ([]string, err
 	return result, nil
 }
 
-func normalizeInstructionSurfaceExpectedRouting(value any, field string) (map[string]any, error) {
+func normalizeEvaluationCaseExpectedRouting(value any, field string) (map[string]any, error) {
 	if value == nil {
 		return nil, nil
 	}

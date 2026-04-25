@@ -71,8 +71,8 @@ const skillEvaluateExampleInput = `{
 }
 `
 
-const instructionSurfaceEvaluateExampleInput = `{
-  "schemaVersion": "cautilus.instruction_surface_inputs.v1",
+const evalEvaluateExampleInput = `{
+  "schemaVersion": "cautilus.evaluation_observed.v1",
   "suiteId": "instruction-surface-example",
   "suiteDisplayName": "Instruction Surface Example",
   "evaluations": [

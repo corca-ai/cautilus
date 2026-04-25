@@ -101,9 +101,9 @@ func TestBuildSkillEvaluationSummaryPreservesPassingRecommendationWithRuntimeCha
 	}
 }
 
-func TestBuildInstructionSurfaceSummaryBlocksPinnedRuntimeMismatch(t *testing.T) {
-	summary, err := BuildInstructionSurfaceSummary(map[string]any{
-		"schemaVersion": contracts.InstructionSurfaceInputsSchema,
+func TestBuildEvaluationSummaryBlocksPinnedRuntimeMismatch(t *testing.T) {
+	summary, err := BuildEvaluationSummary(map[string]any{
+		"schemaVersion": contracts.EvaluationObservedSchema,
 		"suiteId":       "root-routing",
 		"runtimePolicy": map[string]any{
 			"mode":     "pinned",
@@ -136,7 +136,7 @@ func TestBuildInstructionSurfaceSummaryBlocksPinnedRuntimeMismatch(t *testing.T)
 		},
 	}, time.Date(2026, 4, 24, 0, 0, 0, 0, time.UTC))
 	if err != nil {
-		t.Fatalf("BuildInstructionSurfaceSummary returned error: %v", err)
+		t.Fatalf("BuildEvaluationSummary returned error: %v", err)
 	}
 	runtimeContext := asMap(summary["runtimeContext"])
 	if !containsString(stringSliceValue(runtimeContext["reasonCodes"]), "model_runtime_pinned_mismatch") {

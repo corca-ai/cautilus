@@ -195,32 +195,34 @@ cautilus scenario summarize-telemetry \
   --results ./fixtures/scenario-results/example-results.json
 ```
 
-Every normalize command plus `cautilus skill evaluate`, `cautilus instruction-surface evaluate`, and `cautilus report build` accepts `--example-input`: it prints a minimal valid packet to stdout that can be piped back into the same command, so operators can inspect the expected shape without clicking into a fixture on GitHub.
+Every normalize command plus `cautilus skill evaluate`, `cautilus eval evaluate`, and `cautilus report build` accepts `--example-input`: it prints a minimal valid packet to stdout that can be piped back into the same command, so operators can inspect the expected shape without clicking into a fixture on GitHub.
 `cautilus scenarios --json` now exposes those same inspect commands under `exampleInputCli` for each archetype.
 `cautilus scenario propose` now preserves the full ranked `proposals` list in the canonical JSON output.
 The same packet also emits an `attentionView`, which is a bounded human-facing shortlist derived from the full ranked set.
 `cautilus scenario review-conversations` stays intentionally narrower than a generic audit UI.
 It links normalized chatbot threads to scenario proposals and coverage hints so an operator can review behavior-eval evidence without browsing every live operator turn.
 
-## Instruction surface
+## Evaluation surfaces
+
+The shipped surface is `cautilus eval` (see [docs/specs/evaluation-surfaces.spec.md](./specs/evaluation-surfaces.spec.md)).
+The first preset, `repo / whole-repo`, replaces the prior `cautilus instruction-surface` commands.
 
 ```bash
-# official on-demand self-dogfood wrapper for the repo's own instruction surface
-npm run dogfood:self:instruction-surface
+# official on-demand self-dogfood wrapper for the repo's own AGENTS.md
+npm run dogfood:self:eval
 
-# run one checked-in instruction-surface suite through an adapter-owned runner
-cautilus instruction-surface test \
+# run a checked-in evaluation_input.v1 fixture through an adapter-owned runner
+cautilus eval test \
   --repo-root . \
-  --adapter-name self-dogfood-instruction-surface
+  --adapter-name self-dogfood-eval
 
-# evaluate one normalized instruction-surface packet
-cautilus instruction-surface evaluate \
-  --input ./fixtures/instruction-surface/input.json \
-  --output /tmp/cautilus-instruction-surface-summary.json
+# evaluate one observed eval packet
+cautilus eval evaluate \
+  --input ./eval-observed.json \
+  --output /tmp/cautilus-eval-summary.json
 ```
 
 The npm wrapper is the canonical maintainer-facing self-dogfood path for this repo.
-It keeps `instruction-surface` first-class without overloading the root unnamed adapter.
 
 ## Skill testing & evaluation
 

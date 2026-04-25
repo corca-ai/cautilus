@@ -1,0 +1,26 @@
+version: 1
+repo: cautilus
+evaluation_surfaces:
+  - repo / whole-repo evaluation against the checked-in instruction surface
+baseline_options:
+  - baseline git ref in the same repo via {baseline_ref}
+required_prerequisites:
+  - keep the candidate workspace on the exact checkout under evaluation
+evaluation_input_default: fixtures/eval/whole-repo/checked-in-agents-routing.fixture.json
+eval_test_command_templates:
+  - node ./scripts/run-self-dogfood-eval.mjs --repo-root . --output-dir {output_dir} --cases-file {eval_cases_file} --output-file {eval_observed_file} --backend {backend} --sandbox read-only --timeout-ms 180000 --codex-model gpt-5.4-mini --codex-reasoning-effort low --claude-permission-mode dontAsk
+artifact_paths:
+  - AGENTS.md
+  - docs/internal/handoff.md
+  - docs/specs/evaluation-surfaces.spec.md
+  - fixtures/eval/whole-repo/checked-in-agents-routing.fixture.json
+  - scripts/agent-runtime/run-local-eval-test.mjs
+  - scripts/run-self-dogfood-eval.mjs
+comparison_questions:
+  - Does the current AGENTS.md help the agent start from the right entry file before improvising a repo-local workflow?
+  - Does the current AGENTS.md keep ambiguous routing prompts on the discovery-first path instead of over-eager direct skill selection?
+human_review_prompts:
+  - id: entry-surface
+    prompt: Where would an operator still conclude that AGENTS.md or CLAUDE.md is not being treated as a trustworthy entry instruction surface?
+  - id: contract-adherence
+    prompt: Where would an operator still conclude that the current AGENTS.md fails to keep the routing promises stated in README or master-plan?

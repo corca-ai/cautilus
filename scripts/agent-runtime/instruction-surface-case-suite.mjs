@@ -1,4 +1,4 @@
-import { INSTRUCTION_SURFACE_CASES_SCHEMA } from "./contract-versions.mjs";
+import { EVALUATION_CASES_SCHEMA } from "./contract-versions.mjs";
 
 function assertObject(value, field) {
 	if (!value || typeof value !== "object" || Array.isArray(value)) {
@@ -129,8 +129,8 @@ function normalizeEvaluation(record, index) {
 }
 
 export function normalizeInstructionSurfaceCaseSuite(input) {
-	if (input?.schemaVersion !== INSTRUCTION_SURFACE_CASES_SCHEMA) {
-		throw new Error(`schemaVersion must be ${INSTRUCTION_SURFACE_CASES_SCHEMA}`);
+	if (input?.schemaVersion !== EVALUATION_CASES_SCHEMA) {
+		throw new Error(`schemaVersion must be ${EVALUATION_CASES_SCHEMA}`);
 	}
 	if (!Array.isArray(input.evaluations) || input.evaluations.length === 0) {
 		throw new Error("evaluations must be a non-empty array");

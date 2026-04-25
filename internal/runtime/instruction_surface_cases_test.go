@@ -2,9 +2,9 @@ package runtime
 
 import "testing"
 
-func TestNormalizeInstructionSurfaceCaseSuiteAcceptsFileAndSymlinkVariants(t *testing.T) {
-	suite, err := NormalizeInstructionSurfaceCaseSuite(map[string]any{
-		"schemaVersion": "cautilus.instruction_surface_cases.v1",
+func TestNormalizeEvaluationCasesAcceptsFileAndSymlinkVariants(t *testing.T) {
+	suite, err := NormalizeEvaluationCases(map[string]any{
+		"schemaVersion": "cautilus.evaluation_cases.v1",
 		"suiteId":       "instruction-surface-demo",
 		"evaluations": []any{
 			map[string]any{
@@ -34,7 +34,7 @@ func TestNormalizeInstructionSurfaceCaseSuiteAcceptsFileAndSymlinkVariants(t *te
 		},
 	})
 	if err != nil {
-		t.Fatalf("NormalizeInstructionSurfaceCaseSuite returned error: %v", err)
+		t.Fatalf("NormalizeEvaluationCases returned error: %v", err)
 	}
 	if suite.SuiteID != "instruction-surface-demo" {
 		t.Fatalf("unexpected suite id: %#v", suite.SuiteID)
@@ -47,9 +47,9 @@ func TestNormalizeInstructionSurfaceCaseSuiteAcceptsFileAndSymlinkVariants(t *te
 	}
 }
 
-func TestNormalizeInstructionSurfaceCaseSuiteRejectsBrokenFileSpec(t *testing.T) {
-	_, err := NormalizeInstructionSurfaceCaseSuite(map[string]any{
-		"schemaVersion": "cautilus.instruction_surface_cases.v1",
+func TestNormalizeEvaluationCasesRejectsBrokenFileSpec(t *testing.T) {
+	_, err := NormalizeEvaluationCases(map[string]any{
+		"schemaVersion": "cautilus.evaluation_cases.v1",
 		"suiteId":       "instruction-surface-demo",
 		"evaluations": []any{
 			map[string]any{

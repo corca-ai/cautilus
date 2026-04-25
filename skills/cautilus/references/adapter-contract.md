@@ -40,9 +40,9 @@ required_prerequisites:
   - choose a real baseline before comparing results
 preflight_commands:
   - npm run check
-instruction_surface_cases_default: fixtures/instruction-surface/cases.json
-instruction_surface_test_command_templates:
-  - node scripts/agent-runtime/run-local-instruction-surface-test.mjs --repo-root . --workspace {candidate_repo} --cases-file {instruction_surface_cases_file} --output-file {instruction_surface_input_file} --artifact-dir {output_dir}/instruction-surface-test --backend {backend} --sandbox read-only
+evaluation_input_default: fixtures/eval/whole-repo/example.fixture.json
+eval_test_command_templates:
+  - node scripts/agent-runtime/run-local-eval-test.mjs --repo-root . --workspace {candidate_repo} --cases-file {eval_cases_file} --output-file {eval_observed_file} --artifact-dir {output_dir}/eval-test --backend {backend} --sandbox read-only
 skill_cases_default: fixtures/skill-test/cases.json
 skill_test_command_templates:
   - node scripts/agent-runtime/run-local-skill-test.mjs --repo-root . --workspace {candidate_repo} --cases-file {skill_cases_file} --output-file {skill_eval_input_file} --artifact-dir {output_dir}/local-skill-test --backend codex_exec --sandbox read-only
@@ -138,8 +138,8 @@ default_schema_file: fixtures/review/review-verdict.schema.json
 - `baseline_options`: allowed baseline choices and how the agent should think about them.
 - `required_prerequisites`: conditions that should stop the evaluation early.
 - `preflight_commands`: fast commands to run before long evaluations.
-- `instruction_surface_cases_default`: optional checked-in `cautilus.instruction_surface_cases.v1` path used by `cautilus instruction-surface test` when the operator does not pass `--cases-file`.
-- `instruction_surface_test_command_templates`: commands that turn a checked-in instruction-surface case suite into an observed `cautilus.instruction_surface_inputs.v1` packet.
+- `evaluation_input_default`: optional checked-in `cautilus.evaluation_input.v1` path used by `cautilus eval test` when the operator does not pass `--fixture`.
+- `eval_test_command_templates`: commands that turn the validated fixture's translated case suite into an observed `cautilus.evaluation_observed.v1` packet.
 - `skill_cases_default`: optional checked-in `cautilus.skill_test_cases.v1` path used by `cautilus skill test` when the operator does not pass `--cases-file`.
 - `skill_test_command_templates`: commands that turn a checked-in skill-test case suite into an observed `cautilus.skill_evaluation_inputs.v1` packet.
 - `default_runtime`: optional runtime choice (`codex` or `claude`), defaults to `codex`. Overridden by `cautilus skill test --runtime`.
@@ -176,7 +176,7 @@ Example names:
 - `code-quality`
 - `skill-smoke`
 - `skill-test`
-- `instruction-surface`
+- `eval`
 - `self-dogfood`
 - `meta-eval`
 

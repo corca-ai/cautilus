@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dogfood:self": "node scripts/run-self-dogfood.mjs",
-    "dogfood:self:instruction-surface": "./bin/cautilus instruction-surface test --repo-root . --adapter-name self-dogfood-instruction-surface --output-dir ./artifacts/self-dogfood/instruction-surface/latest",
+    "dogfood:self:eval": "./bin/cautilus eval test --repo-root . --adapter-name self-dogfood-eval --output-dir ./artifacts/self-dogfood/eval/latest",
     "dogfood:self:experiments": "node scripts/run-self-dogfood-experiments.mjs",
     "dogfood:self:html": "./bin/cautilus self-dogfood render-html",
     "dogfood:self:experiments:html": "./bin/cautilus self-dogfood render-experiments-html",

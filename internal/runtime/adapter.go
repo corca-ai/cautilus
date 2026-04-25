@@ -33,7 +33,7 @@ var adapterStringListFields = []string{
 	"baseline_options",
 	"required_prerequisites",
 	"preflight_commands",
-	"instruction_surface_test_command_templates",
+	"eval_test_command_templates",
 	"skill_test_command_templates",
 	"iterate_command_templates",
 	"held_out_command_templates",
@@ -59,7 +59,6 @@ var adapterStringFields = []string{
 	"profile_default",
 	"default_prompt_file",
 	"default_schema_file",
-	"instruction_surface_cases_default",
 	"evaluation_input_default",
 	"skill_cases_default",
 }
@@ -816,7 +815,7 @@ func ScaffoldAdapter(repoRoot string, repoName string, scenario string) map[stri
 		"baseline_options":       []string{"baseline git ref in the same repo via {baseline_ref}"},
 		"required_prerequisites": []string{"choose a real baseline before comparing results"},
 		"preflight_commands":     stringArrayOrEmpty(inferred["preflight_commands"]),
-		"instruction_surface_test_command_templates": []string{},
+		"eval_test_command_templates": []string{},
 		"skill_test_command_templates":               []string{},
 		"iterate_command_templates":                  stringArrayOrEmpty(inferred["iterate_command_templates"]),
 		"held_out_command_templates":                 stringArrayOrEmpty(inferred["held_out_command_templates"]),
@@ -1039,7 +1038,7 @@ func DoctorRepo(repoRoot string, adapterPath *string, adapterName *string) (map[
 	appendFieldCheck(&checks, &suggestions, "evaluation_surfaces", len(stringArrayOrEmpty(data["evaluation_surfaces"])) > 0, "Adapter declares evaluation surfaces.", "Adapter is missing evaluation_surfaces.", "Add at least one evaluation_surfaces entry that states what the adapter judges.")
 	appendFieldCheck(&checks, &suggestions, "baseline_options", len(stringArrayOrEmpty(data["baseline_options"])) > 0, "Adapter declares baseline options.", "Adapter is missing baseline_options.", "Add at least one baseline_options entry so comparisons stay explicit.")
 	automatedCommands := len(stringArrayOrEmpty(data["iterate_command_templates"])) > 0 ||
-		len(stringArrayOrEmpty(data["instruction_surface_test_command_templates"])) > 0 ||
+		len(stringArrayOrEmpty(data["eval_test_command_templates"])) > 0 ||
 		len(stringArrayOrEmpty(data["skill_test_command_templates"])) > 0 ||
 		len(stringArrayOrEmpty(data["held_out_command_templates"])) > 0 ||
 		len(stringArrayOrEmpty(data["comparison_command_templates"])) > 0 ||
@@ -1171,7 +1170,7 @@ func adapterLooksDeterministicOnly(data map[string]any) bool {
 	}
 	commands := []string{}
 	for _, key := range []string{
-		"instruction_surface_test_command_templates",
+		"eval_test_command_templates",
 		"skill_test_command_templates",
 		"iterate_command_templates",
 		"held_out_command_templates",

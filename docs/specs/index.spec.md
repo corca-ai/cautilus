@@ -26,9 +26,7 @@ The first proof deliberately shows a small end-to-end product move: `Cautilus` t
 ## Documents
 
 - [Evaluation Surfaces](evaluation-surfaces.spec.md)
-  Redesign-in-progress contract that collapses the current evaluation surfaces into two top-level boundaries (`repo`, `app`) with bounded presets and a single fixture composition schema; takes over from the per-surface specs as their preset slices ship.
-- [Instruction Surface](instruction-surface.spec.md)
-  Defines the shipped instruction-surface boundary for evaluating whether repo instruction files (`AGENTS.md`, `CLAUDE.md`, symlinks, nested instruction files, and linked follow-up docs) actually steer agent behavior honestly.
+  The current contract that defines the two top-level evaluation surfaces (`repo`, `app`) with bounded presets and a single fixture composition schema. Implementation rolls out preset by preset.
 - [Current Product](current-product.spec.md)
   Explains the packet-first evaluation workflow that ships today: normalize inputs, build reusable packets, and reopen the result through review and HTML surfaces.
 - [Standalone Surface](standalone-surface.spec.md)

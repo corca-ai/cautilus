@@ -46,7 +46,7 @@ func TestNormalizeEvaluationInputAcceptsRepoWholeRepo(t *testing.T) {
 	if got, want := result.CaseSuite.Evaluations[0].EvaluationID, "case-one"; got != want {
 		t.Fatalf("EvaluationID got %q want %q", got, want)
 	}
-	if result.TranslatedCases["schemaVersion"] != contracts.InstructionSurfaceCasesSchema {
+	if result.TranslatedCases["schemaVersion"] != contracts.EvaluationCasesSchema {
 		t.Fatalf("translated suite must use the existing case-suite schema")
 	}
 }

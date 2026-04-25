@@ -44,7 +44,7 @@ runtime_policy:
   mode: observe
 instruction_surface_cases_default: fixtures/instruction-surface/cases.json
 instruction_surface_test_command_templates:
-  - node scripts/agent-runtime/run-local-instruction-surface-test.mjs --repo-root . --workspace {candidate_repo} --cases-file {instruction_surface_cases_file} --output-file {instruction_surface_input_file} --artifact-dir {output_dir}/instruction-surface-test --backend {backend} --sandbox read-only
+  - node scripts/agent-runtime/run-local-eval-test.mjs --repo-root . --workspace {candidate_repo} --cases-file {instruction_surface_cases_file} --output-file {instruction_surface_input_file} --artifact-dir {output_dir}/instruction-surface-test --backend {backend} --sandbox read-only
 skill_cases_default: fixtures/skill-test/cases.json
 skill_test_command_templates:
   - node scripts/agent-runtime/run-local-skill-test.mjs --repo-root . --workspace {candidate_repo} --cases-file {skill_cases_file} --output-file {skill_eval_input_file} --artifact-dir {output_dir}/local-skill-test --backend codex_exec --sandbox read-only --codex-session-mode ephemeral

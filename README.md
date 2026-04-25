@@ -172,8 +172,7 @@ The `cautilus install` step also lands a bundled skill at `.agents/skills/cautil
 "Run a chatbot regression with these logs" feeds into the exact same adapter.
 Use `cautilus doctor --scope agent-surface` when you want to verify only this bundled skill surface.
 If the repo treats `AGENTS.md`, `CLAUDE.md`, or linked instruction files as part of the behavior contract, verify that separately with the `cautilus eval` seam (preset `repo / whole-repo`) rather than assuming install-time discoverability already proves routing fidelity.
-The `cautilus instruction-surface test/evaluate` commands keep working as deprecation aliases until all four `cautilus eval` presets ship; see [docs/specs/evaluation-surfaces.spec.md](./docs/specs/evaluation-surfaces.spec.md).
-For the product repo itself, this is also a first-class on-demand self-dogfood surface through `npm run dogfood:self:instruction-surface`.
+For the product repo itself, this is also a first-class on-demand self-dogfood surface through `npm run dogfood:self:eval`; see [docs/specs/evaluation-surfaces.spec.md](./docs/specs/evaluation-surfaces.spec.md) for the evaluation-surfaces design.
 
 Minimal host-repo layout:
 
