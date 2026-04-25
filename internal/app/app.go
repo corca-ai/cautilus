@@ -205,8 +205,6 @@ func nativeHandler(path []string) handlerFunc {
 		return handleReportBuild
 	case "report render-html":
 		return handleReportRenderHTML
-	case "mode evaluate":
-		return handleModeEvaluate
 	case "skills install":
 		return handleSkillsInstall
 	case "review prepare-input":

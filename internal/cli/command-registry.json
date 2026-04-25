@@ -63,12 +63,6 @@
       "example": "cautilus eval evaluate --input ./eval-observed.json"
     },
     {
-      "path": ["mode", "evaluate"],
-      "group": "run",
-      "usage": "cautilus mode evaluate [args]",
-      "example": "cautilus mode evaluate --repo-root . --mode held_out --intent 'Operator-facing behavior should remain legible.' --baseline-ref origin/main --output-dir /tmp/cautilus-mode"
-    },
-    {
       "path": ["workspace", "start"],
       "group": "run",
       "usage": "cautilus workspace start [args]",
