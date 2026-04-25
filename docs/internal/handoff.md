@@ -49,6 +49,7 @@
    - Docs: `README.md`, `docs/master-plan.md`, `docs/cli-reference.md`, `docs/contracts/{scenario-history.md, scenario-results.md, active-run.md, reporting.md, adapter-contract.md}`, `docs/guides/consumer-adoption.md`, 그리고 `examples/starters/{chatbot,workflow}/cautilus-adapter.yaml`, `examples/adapter.example.yaml`, `skills/cautilus/SKILL.md`와 references, `plugins/cautilus/skills/cautilus/...` 미러.
 4. cut 슬라이스 종료 후 self-dogfood real-codex/claude evidence 수집과 `charness-artifacts/cautilus/latest.md` refresh 시점을 결정한다.
 5. 다음 spec follow-up은 #3 `app / prompt` preset.
+6. spec follow-up #4 (C2–C4 composition primitives, 슬라이스당 하나)와 #5 (`archetype-boundary.spec.md` retire + `scenario normalize` 재범위)는 #3 이후 순서대로.
 
 ## Discuss
 
