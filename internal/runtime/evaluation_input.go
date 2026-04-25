@@ -7,18 +7,19 @@ import (
 )
 
 // EvaluationInput is the v1 fixture envelope defined in
-// docs/specs/evaluation-surfaces.spec.md. The first slice supports only the
-// repo / whole-repo preset; other surface/preset combinations and the C2/C3/C4
-// composition primitives error out until their slices ship.
+// docs/specs/evaluation-surfaces.spec.md. The current slice supports only the
+// repo/whole-repo and repo/skill presets; other surface/preset combinations
+// and the C2/C3/C4 composition primitives error out until their slices ship.
 type EvaluationInput struct {
-	Surface         string
-	Preset          string
-	CaseSuite       *EvaluationCases
-	TranslatedCases map[string]any
+	Surface          string
+	Preset           string
+	SuiteID          string
+	SuiteDisplayName string
+	TranslatedCases  map[string]any
 }
 
 var supportedEvaluationCombos = map[string]map[string]bool{
-	"repo": {"whole-repo": true},
+	"repo": {"whole-repo": true, "skill": true},
 }
 
 func NormalizeEvaluationInput(input map[string]any) (*EvaluationInput, error) {
@@ -56,6 +57,37 @@ func NormalizeEvaluationInput(input map[string]any) (*EvaluationInput, error) {
 	} else if value != nil {
 		suiteDisplayName = *value
 	}
+	switch preset {
+	case "whole-repo":
+		translated, err := translateWholeRepoFixture(input, suiteID, suiteDisplayName)
+		if err != nil {
+			return nil, err
+		}
+		return &EvaluationInput{
+			Surface:          surface,
+			Preset:           preset,
+			SuiteID:          suiteID,
+			SuiteDisplayName: suiteDisplayName,
+			TranslatedCases:  translated,
+		}, nil
+	case "skill":
+		translated, err := translateSkillFixture(input, suiteID, suiteDisplayName)
+		if err != nil {
+			return nil, err
+		}
+		return &EvaluationInput{
+			Surface:          surface,
+			Preset:           preset,
+			SuiteID:          suiteID,
+			SuiteDisplayName: suiteDisplayName,
+			TranslatedCases:  translated,
+		}, nil
+	default:
+		return nil, fmt.Errorf("preset %q has no translator", preset)
+	}
+}
+
+func translateWholeRepoFixture(input map[string]any, suiteID string, suiteDisplayName string) (map[string]any, error) {
 	rawCases, err := assertArray(input["cases"], "cases")
 	if err != nil {
 		return nil, err
@@ -69,7 +101,7 @@ func NormalizeEvaluationInput(input map[string]any) (*EvaluationInput, error) {
 		if !ok {
 			return nil, fmt.Errorf("cases[%d] must be an object", index)
 		}
-		translated, err := translateEvaluationCase(entry, index)
+		translated, err := translateWholeRepoCase(entry, index)
 		if err != nil {
 			return nil, err
 		}
@@ -81,19 +113,13 @@ func NormalizeEvaluationInput(input map[string]any) (*EvaluationInput, error) {
 		"suiteDisplayName": suiteDisplayName,
 		"evaluations":      translatedEvaluations,
 	}
-	caseSuite, err := NormalizeEvaluationCases(translatedSuite)
-	if err != nil {
+	if _, err := NormalizeEvaluationCases(translatedSuite); err != nil {
 		return nil, err
 	}
-	return &EvaluationInput{
-		Surface:         surface,
-		Preset:          preset,
-		CaseSuite:       caseSuite,
-		TranslatedCases: translatedSuite,
-	}, nil
+	return translatedSuite, nil
 }
 
-func translateEvaluationCase(entry map[string]any, index int) (map[string]any, error) {
+func translateWholeRepoCase(entry map[string]any, index int) (map[string]any, error) {
 	caseID, err := normalizeNonEmptyString(entry["caseId"], fmt.Sprintf("cases[%d].caseId", index))
 	if err != nil {
 		return nil, err
@@ -113,4 +139,63 @@ func translateEvaluationCase(entry map[string]any, index int) (map[string]any, e
 	}
 	translated["evaluationId"] = caseID
 	return translated, nil
+}
+
+func translateSkillFixture(input map[string]any, suiteID string, suiteDisplayName string) (map[string]any, error) {
+	skillID := suiteID
+	if value, err := normalizeOptionalString(input["skillId"], "skillId"); err != nil {
+		return nil, err
+	} else if value != nil {
+		skillID = *value
+	}
+	skillDisplayName := suiteDisplayName
+	if value, err := normalizeOptionalString(input["skillDisplayName"], "skillDisplayName"); err != nil {
+		return nil, err
+	} else if value != nil {
+		skillDisplayName = *value
+	}
+	rawCases, err := assertArray(input["cases"], "cases")
+	if err != nil {
+		return nil, err
+	}
+	if len(rawCases) == 0 {
+		return nil, fmt.Errorf("cases must be a non-empty array")
+	}
+	translatedCases := make([]any, 0, len(rawCases))
+	for index, rawCase := range rawCases {
+		entry, ok := rawCase.(map[string]any)
+		if !ok {
+			return nil, fmt.Errorf("cases[%d] must be an object", index)
+		}
+		if expected, present := entry["expected"]; present {
+			expectedMap := asMap(expected)
+			if _, snapshot := expectedMap["snapshot"]; snapshot {
+				return nil, fmt.Errorf("cases[%d].expected.snapshot is reserved for a future composition slice (C4)", index)
+			}
+		}
+		translated := map[string]any{}
+		for key, value := range entry {
+			if key == "expected" {
+				continue
+			}
+			translated[key] = value
+		}
+		translatedCases = append(translatedCases, translated)
+	}
+	translatedSuite := map[string]any{
+		"schemaVersion":    contracts.SkillTestCasesSchema,
+		"skillId":          skillID,
+		"skillDisplayName": skillDisplayName,
+		"cases":            translatedCases,
+	}
+	if value, present := input["repeatCount"]; present {
+		translatedSuite["repeatCount"] = value
+	}
+	if value, present := input["minConsensusCount"]; present {
+		translatedSuite["minConsensusCount"] = value
+	}
+	if _, err := NormalizeSkillTestCaseSuite(translatedSuite); err != nil {
+		return nil, err
+	}
+	return translatedSuite, nil
 }

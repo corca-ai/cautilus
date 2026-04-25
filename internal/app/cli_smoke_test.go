@@ -5801,6 +5801,121 @@ JSON
 	}
 }
 
+func TestCLIEvalTestRunsRepoSkillFixture(t *testing.T) {
+	root := t.TempDir()
+	adapterDir := filepath.Join(root, ".agents")
+	fixtureDir := filepath.Join(root, "fixtures", "eval", "skill")
+	outputDir := filepath.Join(root, "outputs")
+	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.MkdirAll(fixtureDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	scriptPath := filepath.Join(root, "eval-test.sh")
+	script := `#!/bin/sh
+cat <<'JSON' > "$1"
+{
+  "schemaVersion": "cautilus.skill_evaluation_inputs.v1",
+  "skillId": "demo",
+  "skillDisplayName": "demo",
+  "evaluations": [
+    {
+      "evaluationId": "trigger-demo",
+      "targetKind": "public_skill",
+      "targetId": "demo",
+      "displayName": "demo",
+      "evaluationKind": "trigger",
+      "prompt": "Use $demo here.",
+      "startedAt": "2026-04-25T00:00:00.000Z",
+      "expectedTrigger": "must_invoke",
+      "invoked": true,
+      "summary": "demo was invoked as expected."
+    }
+  ]
+}
+JSON
+`
+	if err := os.WriteFile(scriptPath, []byte(script), 0o755); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	writeJSONFile(t, filepath.Join(fixtureDir, "demo.fixture.json"), map[string]any{
+		"schemaVersion": contracts.EvaluationInputSchema,
+		"surface":       "repo",
+		"preset":        "skill",
+		"suiteId":       "demo",
+		"skillId":       "demo",
+		"cases": []map[string]any{
+			{
+				"caseId":          "trigger-demo",
+				"evaluationKind":  "trigger",
+				"prompt":          "Use $demo here.",
+				"expectedTrigger": "must_invoke",
+			},
+		},
+	})
+	if err := os.WriteFile(filepath.Join(adapterDir, "cautilus-adapter.yaml"), []byte(strings.Join([]string{
+		"version: 1",
+		"repo: temp",
+		"evaluation_surfaces:",
+		"  - skill trigger fidelity",
+		"baseline_options:",
+		"  - baseline git ref via {baseline_ref}",
+		"evaluation_input_default: fixtures/eval/skill/demo.fixture.json",
+		"eval_test_command_templates:",
+		"  - sh ./eval-test.sh {eval_observed_file}",
+		"",
+	}, "\n")), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+
+	stdout, stderr, exitCode := runCLI(t, root, "eval", "test", "--repo-root", root, "--output-dir", outputDir)
+	if exitCode != 0 {
+		t.Fatalf("eval test failed: %s", stderr)
+	}
+	summaryPath := strings.TrimSpace(stdout)
+	summary := readJSONObjectFile(t, summaryPath)
+	if summary["schemaVersion"] != contracts.SkillEvaluationSummarySchema || summary["recommendation"] != "accept-now" {
+		t.Fatalf("unexpected eval test summary: %#v", summary)
+	}
+	casesPath := filepath.Join(outputDir, "eval-cases.json")
+	cases := readJSONObjectFile(t, casesPath)
+	if cases["schemaVersion"] != contracts.SkillTestCasesSchema {
+		t.Fatalf("eval-cases must use the skill_test_cases schema, got: %v", cases["schemaVersion"])
+	}
+}
+
+func TestCLIEvalEvaluateAcceptsSkillObservedPacket(t *testing.T) {
+	root := t.TempDir()
+	inputPath := filepath.Join(root, "skill-observed.json")
+	writeJSONFile(t, inputPath, map[string]any{
+		"schemaVersion": contracts.SkillEvaluationInputsSchema,
+		"skillId":       "demo",
+		"evaluations": []map[string]any{
+			{
+				"evaluationId":    "trigger-demo",
+				"targetKind":      "public_skill",
+				"targetId":        "demo",
+				"displayName":     "demo",
+				"evaluationKind":  "trigger",
+				"prompt":          "Use $demo here.",
+				"startedAt":       "2026-04-25T00:00:00.000Z",
+				"expectedTrigger": "must_invoke",
+				"invoked":         true,
+				"summary":         "demo was invoked as expected.",
+			},
+		},
+	})
+	stdout, stderr, exitCode := runCLI(t, root, "eval", "evaluate", "--input", inputPath)
+	if exitCode != 0 {
+		t.Fatalf("eval evaluate failed: %s", stderr)
+	}
+	summary := parseJSONObject(t, stdout)
+	if summary["schemaVersion"] != contracts.SkillEvaluationSummarySchema {
+		t.Fatalf("expected skill summary schema, got: %#v", summary["schemaVersion"])
+	}
+}
+
 func TestCLIEvalTestRejectsUnsupportedSurfacePresetCombo(t *testing.T) {
 	root := t.TempDir()
 	adapterDir := filepath.Join(root, ".agents")

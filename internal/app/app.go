@@ -802,7 +802,7 @@ func handleEvalEvaluate(repoRoot string, cwd string, args []string, stdout io.Wr
 		fmt.Fprintf(stderr, "Failed to read JSON from %s: %s\n", options.input, err)
 		return 1
 	}
-	summary, err := runtime.BuildEvaluationSummary(input, time.Now())
+	summary, err := buildEvalEvaluateSummary(input)
 	if err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
@@ -812,6 +812,17 @@ func handleEvalEvaluate(repoRoot string, cwd string, args []string, stdout io.Wr
 		return 1
 	}
 	return 0
+}
+
+func buildEvalEvaluateSummary(input map[string]any) (map[string]any, error) {
+	switch input["schemaVersion"] {
+	case contracts.EvaluationObservedSchema:
+		return runtime.BuildEvaluationSummary(input, time.Now())
+	case contracts.SkillEvaluationInputsSchema:
+		return runtime.BuildSkillEvaluationSummary(input, time.Now())
+	default:
+		return nil, fmt.Errorf("unsupported schemaVersion %v: cautilus eval evaluate accepts %s or %s", input["schemaVersion"], contracts.EvaluationObservedSchema, contracts.SkillEvaluationInputsSchema)
+	}
 }
 
 //nolint:errcheck // CLI stderr reporting is best-effort.

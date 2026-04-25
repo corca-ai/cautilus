@@ -903,7 +903,7 @@ type reviewPromptArtifacts struct {
 func runEvalTestPipeline(
 	options *evalTestArgs,
 	adapterPayload *runtime.AdapterPayload,
-	caseSuite *runtime.EvaluationCases,
+	suiteID string,
 	prepareCasesFile func(outputDir string) (string, error),
 	cwd string,
 	stdout io.Writer,
@@ -954,7 +954,7 @@ func runEvalTestPipeline(
 		"eval_observed_file": runtime.ShellSingleQuote(inputFile),
 		"backend":            backendValue,
 	}
-	log(fmt.Sprintf("%s start: repo=%s workspace=%s suite=%s runtime=%s output=%s", progressLabel, options.repoRoot, workspace, caseSuite.SuiteID, effectiveRuntime, outputDir))
+	log(fmt.Sprintf("%s start: repo=%s workspace=%s suite=%s runtime=%s output=%s", progressLabel, options.repoRoot, workspace, suiteID, effectiveRuntime, outputDir))
 	commandTimeout := defaultShellCommandTimeout()
 	commandsPassed := true
 	if !options.skipPreflight {
@@ -1012,7 +1012,7 @@ func runEvalTestPipeline(
 		}
 		return 1
 	}
-	summary, err := runtime.BuildEvaluationSummary(input, time.Now())
+	summary, err := buildEvalEvaluateSummary(input)
 	if err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
@@ -1074,7 +1074,7 @@ func handleEvalTest(repoRoot string, cwd string, args []string, stdout io.Writer
 		}
 		return path, nil
 	}
-	return runEvalTestPipeline(options, adapterPayload, evaluation.CaseSuite, prepareCasesFile, cwd, stdout, stderr, fmt.Sprintf("eval test (%s/%s)", evaluation.Surface, evaluation.Preset))
+	return runEvalTestPipeline(options, adapterPayload, evaluation.SuiteID, prepareCasesFile, cwd, stdout, stderr, fmt.Sprintf("eval test (%s/%s)", evaluation.Surface, evaluation.Preset))
 }
 
 func parseEvalTestArgs(args []string, cwd string) (*evalTestArgs, string, error) {

@@ -26,6 +26,26 @@ func validRepoWholeRepoFixture() map[string]any {
 	}
 }
 
+func validRepoSkillFixture() map[string]any {
+	return map[string]any{
+		"schemaVersion":    contracts.EvaluationInputSchema,
+		"surface":          "repo",
+		"preset":           "skill",
+		"suiteId":          "demo-skill",
+		"suiteDisplayName": "Demo Skill",
+		"skillId":          "demo",
+		"skillDisplayName": "Demo",
+		"cases": []any{
+			map[string]any{
+				"caseId":          "trigger-demo",
+				"evaluationKind":  "trigger",
+				"prompt":          "Use $demo here.",
+				"expectedTrigger": "must_invoke",
+			},
+		},
+	}
+}
+
 func TestNormalizeEvaluationInputAcceptsRepoWholeRepo(t *testing.T) {
 	result, err := NormalizeEvaluationInput(validRepoWholeRepoFixture())
 	if err != nil {
@@ -34,20 +54,86 @@ func TestNormalizeEvaluationInputAcceptsRepoWholeRepo(t *testing.T) {
 	if result.Surface != "repo" || result.Preset != "whole-repo" {
 		t.Fatalf("unexpected surface/preset: %s/%s", result.Surface, result.Preset)
 	}
-	if result.CaseSuite == nil {
-		t.Fatalf("CaseSuite is nil")
-	}
-	if got, want := result.CaseSuite.SuiteID, "demo"; got != want {
-		t.Fatalf("SuiteID got %q want %q", got, want)
-	}
-	if len(result.CaseSuite.Evaluations) != 1 {
-		t.Fatalf("expected 1 evaluation, got %d", len(result.CaseSuite.Evaluations))
-	}
-	if got, want := result.CaseSuite.Evaluations[0].EvaluationID, "case-one"; got != want {
-		t.Fatalf("EvaluationID got %q want %q", got, want)
+	if result.SuiteID != "demo" {
+		t.Fatalf("SuiteID got %q want %q", result.SuiteID, "demo")
 	}
 	if result.TranslatedCases["schemaVersion"] != contracts.EvaluationCasesSchema {
 		t.Fatalf("translated suite must use the existing case-suite schema")
+	}
+	evaluations, ok := result.TranslatedCases["evaluations"].([]any)
+	if !ok || len(evaluations) != 1 {
+		t.Fatalf("expected 1 translated evaluation, got %#v", result.TranslatedCases["evaluations"])
+	}
+	first := evaluations[0].(map[string]any)
+	if first["evaluationId"] != "case-one" {
+		t.Fatalf("expected caseId to translate into evaluationId, got %#v", first)
+	}
+}
+
+func TestNormalizeEvaluationInputAcceptsRepoSkill(t *testing.T) {
+	result, err := NormalizeEvaluationInput(validRepoSkillFixture())
+	if err != nil {
+		t.Fatalf("expected success, got error: %v", err)
+	}
+	if result.Surface != "repo" || result.Preset != "skill" {
+		t.Fatalf("unexpected surface/preset: %s/%s", result.Surface, result.Preset)
+	}
+	if result.SuiteID != "demo-skill" {
+		t.Fatalf("SuiteID got %q want %q", result.SuiteID, "demo-skill")
+	}
+	if result.TranslatedCases["schemaVersion"] != contracts.SkillTestCasesSchema {
+		t.Fatalf("translated suite must use the existing skill-test-cases schema, got %v", result.TranslatedCases["schemaVersion"])
+	}
+	if result.TranslatedCases["skillId"] != "demo" {
+		t.Fatalf("translated skillId got %v want demo", result.TranslatedCases["skillId"])
+	}
+	cases, ok := result.TranslatedCases["cases"].([]any)
+	if !ok || len(cases) != 1 {
+		t.Fatalf("expected 1 translated case, got %#v", result.TranslatedCases["cases"])
+	}
+	first := cases[0].(map[string]any)
+	if first["caseId"] != "trigger-demo" {
+		t.Fatalf("expected caseId to round-trip, got %#v", first)
+	}
+}
+
+func TestNormalizeEvaluationInputSkillDefaultsSkillIdFromSuiteId(t *testing.T) {
+	fixture := validRepoSkillFixture()
+	delete(fixture, "skillId")
+	delete(fixture, "skillDisplayName")
+	result, err := NormalizeEvaluationInput(fixture)
+	if err != nil {
+		t.Fatalf("expected success, got error: %v", err)
+	}
+	if result.TranslatedCases["skillId"] != "demo-skill" {
+		t.Fatalf("expected skillId to default to suiteId, got %v", result.TranslatedCases["skillId"])
+	}
+}
+
+func TestNormalizeEvaluationInputSkillForwardsRepeatConsensus(t *testing.T) {
+	fixture := validRepoSkillFixture()
+	fixture["repeatCount"] = 3
+	fixture["minConsensusCount"] = 2
+	result, err := NormalizeEvaluationInput(fixture)
+	if err != nil {
+		t.Fatalf("expected success, got error: %v", err)
+	}
+	if result.TranslatedCases["repeatCount"] != 3 {
+		t.Fatalf("expected repeatCount=3, got %v", result.TranslatedCases["repeatCount"])
+	}
+	if result.TranslatedCases["minConsensusCount"] != 2 {
+		t.Fatalf("expected minConsensusCount=2, got %v", result.TranslatedCases["minConsensusCount"])
+	}
+}
+
+func TestNormalizeEvaluationInputSkillRejectsTriggerWithoutExpected(t *testing.T) {
+	fixture := validRepoSkillFixture()
+	cases := fixture["cases"].([]any)
+	caseEntry := cases[0].(map[string]any)
+	delete(caseEntry, "expectedTrigger")
+	_, err := NormalizeEvaluationInput(fixture)
+	if err == nil || !strings.Contains(err.Error(), "expectedTrigger") {
+		t.Fatalf("expected trigger validation error, got %v", err)
 	}
 }
 
@@ -71,7 +157,7 @@ func TestNormalizeEvaluationInputRejectsUnsupportedSurface(t *testing.T) {
 
 func TestNormalizeEvaluationInputRejectsUnsupportedPreset(t *testing.T) {
 	fixture := validRepoWholeRepoFixture()
-	fixture["preset"] = "skill"
+	fixture["preset"] = "made-up"
 	_, err := NormalizeEvaluationInput(fixture)
 	if err == nil || !strings.Contains(err.Error(), "preset") {
 		t.Fatalf("expected preset error, got %v", err)
@@ -108,6 +194,17 @@ func TestNormalizeEvaluationInputRejectsSteps(t *testing.T) {
 
 func TestNormalizeEvaluationInputRejectsSnapshotExpectation(t *testing.T) {
 	fixture := validRepoWholeRepoFixture()
+	cases := fixture["cases"].([]any)
+	caseEntry := cases[0].(map[string]any)
+	caseEntry["expected"] = map[string]any{"snapshot": "./golden.json"}
+	_, err := NormalizeEvaluationInput(fixture)
+	if err == nil || !strings.Contains(err.Error(), "C4") {
+		t.Fatalf("expected snapshot C4 stub error, got %v", err)
+	}
+}
+
+func TestNormalizeEvaluationInputSkillRejectsSnapshotExpectation(t *testing.T) {
+	fixture := validRepoSkillFixture()
 	cases := fixture["cases"].([]any)
 	caseEntry := cases[0].(map[string]any)
 	caseEntry["expected"] = map[string]any{"snapshot": "./golden.json"}
