@@ -147,7 +147,7 @@ func currentProductSurfaceSummary() ProductSurfaceSummary {
 			{
 				Archetype:  "skill",
 				UseWhen:    "a checked-in skill or agent should still trigger, execute, and validate cleanly",
-				EntryPoint: "cautilus skill test --repo-root . --adapter-name <name>",
+				EntryPoint: "cautilus eval test --repo-root . --adapter-name <name>",
 			},
 			{
 				Archetype:  "workflow",

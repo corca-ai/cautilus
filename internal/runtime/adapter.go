@@ -34,7 +34,6 @@ var adapterStringListFields = []string{
 	"required_prerequisites",
 	"preflight_commands",
 	"eval_test_command_templates",
-	"skill_test_command_templates",
 	"iterate_command_templates",
 	"held_out_command_templates",
 	"comparison_command_templates",
@@ -60,7 +59,6 @@ var adapterStringFields = []string{
 	"default_prompt_file",
 	"default_schema_file",
 	"evaluation_input_default",
-	"skill_cases_default",
 }
 
 var adapterOptimizeSearchBudgetNames = []string{"light", "medium", "heavy"}
@@ -814,9 +812,8 @@ func ScaffoldAdapter(repoRoot string, repoName string, scenario string) map[stri
 		"evaluation_surfaces":    []string{"prompt behavior", "workflow behavior"},
 		"baseline_options":       []string{"baseline git ref in the same repo via {baseline_ref}"},
 		"required_prerequisites": []string{"choose a real baseline before comparing results"},
-		"preflight_commands":     stringArrayOrEmpty(inferred["preflight_commands"]),
-		"eval_test_command_templates": []string{},
-		"skill_test_command_templates":               []string{},
+		"preflight_commands":                         stringArrayOrEmpty(inferred["preflight_commands"]),
+		"eval_test_command_templates":                []string{},
 		"iterate_command_templates":                  stringArrayOrEmpty(inferred["iterate_command_templates"]),
 		"held_out_command_templates":                 stringArrayOrEmpty(inferred["held_out_command_templates"]),
 		"comparison_command_templates":               stringArrayOrEmpty(inferred["comparison_command_templates"]),
@@ -890,9 +887,9 @@ func applyScenarioOverlay(scaffold map[string]any, scenario string) {
 		}
 	case "skill":
 		scaffold["evaluation_surfaces"] = []string{"skill trigger, execution, and validation behavior"}
-		scaffold["skill_cases_default"] = "fixtures/skill-test/cases.json"
-		scaffold["skill_test_command_templates"] = []string{
-			"cautilus skill test --repo-root {candidate_repo} --adapter-name {adapter_name}",
+		scaffold["evaluation_input_default"] = "fixtures/eval/skill/cases.fixture.json"
+		scaffold["eval_test_command_templates"] = []string{
+			"cautilus eval test --repo-root {candidate_repo} --adapter-name {adapter_name}",
 		}
 	case "workflow":
 		scaffold["evaluation_surfaces"] = []string{"workflow recovery behavior across sessions"}
@@ -1039,12 +1036,11 @@ func DoctorRepo(repoRoot string, adapterPath *string, adapterName *string) (map[
 	appendFieldCheck(&checks, &suggestions, "baseline_options", len(stringArrayOrEmpty(data["baseline_options"])) > 0, "Adapter declares baseline options.", "Adapter is missing baseline_options.", "Add at least one baseline_options entry so comparisons stay explicit.")
 	automatedCommands := len(stringArrayOrEmpty(data["iterate_command_templates"])) > 0 ||
 		len(stringArrayOrEmpty(data["eval_test_command_templates"])) > 0 ||
-		len(stringArrayOrEmpty(data["skill_test_command_templates"])) > 0 ||
 		len(stringArrayOrEmpty(data["held_out_command_templates"])) > 0 ||
 		len(stringArrayOrEmpty(data["comparison_command_templates"])) > 0 ||
 		len(stringArrayOrEmpty(data["full_gate_command_templates"])) > 0
 	hasVariants := len(arrayOrEmpty(data["executor_variants"])) > 0
-	appendFieldCheck(&checks, &suggestions, "execution_surface", automatedCommands || hasVariants, "Adapter declares runnable command templates or executor variants.", "Adapter has no command templates or executor variants yet.", "Add at least one skill_test/iterate/held_out/comparison/full_gate command template or executor_variants entry.")
+	appendFieldCheck(&checks, &suggestions, "execution_surface", automatedCommands || hasVariants, "Adapter declares runnable command templates or executor variants.", "Adapter has no command templates or executor variants yet.", "Add at least one eval_test/iterate/held_out/comparison/full_gate command template or executor_variants entry.")
 	if adapterLooksDeterministicOnly(data) {
 		warnings = append(warnings, "Adapter commands look like repo-local deterministic gates only. Keep pytest/lint/type/spec checks in CI or pre-push hooks; use Cautilus for LLM-behavior, judge, or operator-facing review surfaces.")
 		suggestions = append(suggestions, "Inventory LLM-behavior surfaces first (system prompts, agent/chat loops, LLM-backed analysis, operator copy reviewed by a judge) before hand-editing adapter YAML.")
@@ -1171,7 +1167,6 @@ func adapterLooksDeterministicOnly(data map[string]any) bool {
 	commands := []string{}
 	for _, key := range []string{
 		"eval_test_command_templates",
-		"skill_test_command_templates",
 		"iterate_command_templates",
 		"held_out_command_templates",
 		"comparison_command_templates",

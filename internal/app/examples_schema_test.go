@@ -30,11 +30,6 @@ func TestExampleInputConstantsValidateAgainstPublishedSchemas(t *testing.T) {
 			schemaAt: filepath.Join("..", "..", "fixtures", "scenario-proposals", "workflow-input.schema.json"),
 		},
 		{
-			name:     "skill_evaluate",
-			example:  skillEvaluateExampleInput,
-			schemaAt: filepath.Join("..", "..", "fixtures", "skill-evaluation", "input.schema.json"),
-		},
-		{
 			name:     "report_build",
 			example:  reportBuildExampleInput,
 			schemaAt: filepath.Join("..", "..", "fixtures", "reports", "report-input.schema.json"),

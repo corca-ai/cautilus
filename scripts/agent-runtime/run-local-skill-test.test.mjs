@@ -17,10 +17,10 @@ test("buildObservedSkillEvaluationInput materializes a normalized packet from fi
 	const packet = buildObservedSkillEvaluationInput({
 		repoRoot: process.cwd(),
 		workspace: process.cwd(),
-		casesFile: join(process.cwd(), "fixtures", "skill-test", "cases.json"),
+		casesFile: join(process.cwd(), "fixtures", "eval", "skill", "internal-runner-cases.json"),
 		artifactDir,
 		backend: "fixture",
-		fixtureResultsFile: join(process.cwd(), "fixtures", "skill-test", "fixture-results.json"),
+		fixtureResultsFile: join(process.cwd(), "fixtures", "eval", "skill", "internal-runner-fixture-results.json"),
 	});
 	assert.equal(packet.schemaVersion, "cautilus.skill_evaluation_inputs.v1");
 	assert.equal(packet.skillId, "cautilus");

@@ -187,16 +187,12 @@ func nativeHandler(path []string) handlerFunc {
 		return handleEvalTest
 	case "eval evaluate":
 		return handleEvalEvaluate
-	case "skill test":
-		return handleSkillTest
 	case "scenario normalize chatbot":
 		return handleScenarioNormalizeChatbot
 	case "scenario normalize skill":
 		return handleScenarioNormalizeSkill
 	case "scenario normalize workflow":
 		return handleScenarioNormalizeWorkflow
-	case "skill evaluate":
-		return handleSkillEvaluate
 	case "scenario summarize-telemetry":
 		return handleScenarioSummarizeTelemetry
 	case "scenario prepare-input":
@@ -755,34 +751,6 @@ func handleScenarioNormalizeSkill(repoRoot string, cwd string, args []string, st
 
 func handleScenarioNormalizeWorkflow(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
 	return handleScenarioNormalize(args, cwd, stdout, stderr, "workflow")
-}
-
-//nolint:errcheck // CLI stderr reporting is best-effort.
-func handleSkillEvaluate(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
-	if hasExampleInputFlag(args) {
-		fmt.Fprint(stdout, skillEvaluateExampleInput)
-		return 0
-	}
-	options, err := parseInputOutputArgs(args)
-	if err != nil {
-		fmt.Fprintf(stderr, "%s\n", err)
-		return 1
-	}
-	input, err := readJSONObject(resolvePath(cwd, options.input))
-	if err != nil {
-		fmt.Fprintf(stderr, "Failed to read JSON from %s: %s\n", options.input, err)
-		return 1
-	}
-	summary, err := runtime.BuildSkillEvaluationSummary(input, time.Now())
-	if err != nil {
-		fmt.Fprintf(stderr, "%s\n", err)
-		return 1
-	}
-	if err := writeOutput(stdout, cwd, options.output, summary); err != nil {
-		fmt.Fprintf(stderr, "%s\n", err)
-		return 1
-	}
-	return 0
 }
 
 //nolint:errcheck // CLI stderr reporting is best-effort.

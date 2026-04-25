@@ -50,27 +50,6 @@ const workflowExampleInput = `{
 }
 `
 
-const skillEvaluateExampleInput = `{
-  "schemaVersion": "cautilus.skill_evaluation_inputs.v1",
-  "skillId": "example",
-  "skillDisplayName": "example",
-  "evaluations": [
-    {
-      "evaluationId": "trigger-example-positive",
-      "targetKind": "public_skill",
-      "targetId": "example",
-      "displayName": "example",
-      "evaluationKind": "trigger",
-      "prompt": "Run the example skill.",
-      "startedAt": "2026-04-14T00:00:00.000Z",
-      "expectedTrigger": "must_invoke",
-      "invoked": true,
-      "summary": "The prompt clearly called for the example skill and it was invoked."
-    }
-  ]
-}
-`
-
 const evalEvaluateExampleInput = `{
   "schemaVersion": "cautilus.evaluation_observed.v1",
   "suiteId": "instruction-surface-example",

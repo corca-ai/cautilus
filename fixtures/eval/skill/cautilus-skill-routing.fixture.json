@@ -1,5 +1,9 @@
 {
-  "schemaVersion": "cautilus.skill_test_cases.v1",
+  "schemaVersion": "cautilus.evaluation_input.v1",
+  "surface": "repo",
+  "preset": "skill",
+  "suiteId": "cautilus-skill-routing",
+  "suiteDisplayName": "Cautilus Skill Routing",
   "skillId": "cautilus",
   "skillDisplayName": "cautilus",
   "cases": [
@@ -14,7 +18,7 @@
     {
       "caseId": "execution-cautilus-test-request",
       "evaluationKind": "execution",
-      "prompt": "Use $cautilus to test the local impl skill with the checked-in fixture at ./fixtures/skill-evaluation/accept-now-input.json and summarize the recommendation.",
+      "prompt": "Use $cautilus to test the local impl skill with the checked-in fixture at ./fixtures/eval/skill/cautilus-skill-routing.fixture.json and summarize the recommendation.",
       "thresholds": {
         "max_duration_ms": 120000
       }

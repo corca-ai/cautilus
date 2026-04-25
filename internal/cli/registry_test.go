@@ -60,12 +60,6 @@ func TestRenderUsageIncludesLifecycleCommands(t *testing.T) {
 	if !strings.Contains(usage, "cautilus eval evaluate --input ./eval-observed.json") {
 		t.Fatalf("usage missing eval evaluate example:\n%s", usage)
 	}
-	if !strings.Contains(usage, "cautilus skill test --repo-root . --adapter-name self-dogfood-skill-test") {
-		t.Fatalf("usage missing skill test example:\n%s", usage)
-	}
-	if !strings.Contains(usage, "cautilus skill evaluate --input ./fixtures/skill-evaluation/input.json") {
-		t.Fatalf("usage missing skill evaluate example:\n%s", usage)
-	}
 	if !strings.Contains(usage, "cautilus review variants --repo-root . --workspace . --prompt-file ./review.md --schema-file ./schema.json --output-dir /tmp/cautilus-review") {
 		t.Fatalf("usage missing review variants example:\n%s", usage)
 	}

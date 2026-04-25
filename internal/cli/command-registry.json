@@ -63,18 +63,6 @@
       "example": "cautilus eval evaluate --input ./eval-observed.json"
     },
     {
-      "path": ["skill", "test"],
-      "group": "run",
-      "usage": "cautilus skill test [args]",
-      "example": "cautilus skill test --repo-root . --adapter-name self-dogfood-skill-test"
-    },
-    {
-      "path": ["skill", "evaluate"],
-      "group": "run",
-      "usage": "cautilus skill evaluate [args]",
-      "example": "cautilus skill evaluate --input ./fixtures/skill-evaluation/input.json"
-    },
-    {
       "path": ["mode", "evaluate"],
       "group": "run",
       "usage": "cautilus mode evaluate [args]",

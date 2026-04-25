@@ -1,0 +1,24 @@
+version: 1
+repo: cautilus
+evaluation_surfaces:
+  - local bundled cautilus skill can orchestrate a checked-in repo/skill eval request
+baseline_options:
+  - baseline git ref in the same repo via {baseline_ref}
+required_prerequisites:
+  - materialize the local cautilus skill surface before running nested skill evals
+preflight_commands:
+  - ./bin/cautilus install --repo-root . --overwrite
+  - ./bin/cautilus doctor --repo-root . --scope agent-surface
+evaluation_input_default: fixtures/eval/skill/cautilus-skill-routing.fixture.json
+eval_test_command_templates:
+  - node ./scripts/agent-runtime/run-local-skill-test.mjs --repo-root . --workspace {candidate_repo} --cases-file {eval_cases_file} --output-file {eval_observed_file} --artifact-dir {output_dir}/local-skill-test --backend {backend} --sandbox workspace-write --timeout-ms 180000 --codex-model gpt-5.4-mini --codex-reasoning-effort low --codex-config project_doc_max_bytes=0 --codex-config include_apps_instructions=false --codex-config include_environment_context=false --claude-permission-mode dontAsk --claude-allowed-tools 'Bash(cautilus *)'
+artifact_paths:
+  - skills/cautilus/SKILL.md
+  - skills/cautilus/references/skill-evaluation.md
+  - skills/cautilus/references/evaluation-process.md
+  - fixtures/eval/skill/cautilus-skill-routing.fixture.json
+comparison_questions:
+  - Can the bundled cautilus skill follow a concrete repo/skill eval request without hand-held packet editing?
+human_review_prompts:
+  - id: local-skill-eval
+    prompt: Where would an operator still conclude that the bundled cautilus skill cannot reliably run a repo/skill eval end to end?
