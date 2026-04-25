@@ -5726,6 +5726,134 @@ func TestCLIEvalEvaluateAcceptsSkillObservedPacket(t *testing.T) {
 	}
 }
 
+func TestCLIEvalTestRunsAppChatFixture(t *testing.T) {
+	root := t.TempDir()
+	adapterDir := filepath.Join(root, ".agents")
+	fixtureDir := filepath.Join(root, "fixtures", "eval", "app", "chat")
+	outputDir := filepath.Join(root, "outputs")
+	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.MkdirAll(fixtureDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	scriptPath := filepath.Join(root, "eval-test.sh")
+	script := `#!/bin/sh
+cat <<'JSON' > "$1"
+{
+  "schemaVersion": "cautilus.app_chat_evaluation_inputs.v1",
+  "suiteId": "demo-chat",
+  "suiteDisplayName": "Demo Chat",
+  "evaluations": [
+    {
+      "caseId": "say-hello",
+      "displayName": "Greeting",
+      "provider": "anthropic",
+      "model": "claude-sonnet-4-6",
+      "harness": "fixture-backend",
+      "mode": "messaging",
+      "durationMs": 42,
+      "observed": {
+        "messages": [
+          {"role": "user", "content": "Say hello in one short sentence."},
+          {"role": "assistant", "content": "Hello there, friend."}
+        ],
+        "finalText": "Hello there, friend."
+      },
+      "expected": {"finalText": "Hello"}
+    }
+  ]
+}
+JSON
+`
+	if err := os.WriteFile(scriptPath, []byte(script), 0o755); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	writeJSONFile(t, filepath.Join(fixtureDir, "demo.fixture.json"), map[string]any{
+		"schemaVersion": contracts.EvaluationInputSchema,
+		"surface":       "app",
+		"preset":        "chat",
+		"suiteId":       "demo-chat",
+		"provider":      "anthropic",
+		"model":         "claude-sonnet-4-6",
+		"system":        "You are a careful assistant.",
+		"cases": []map[string]any{
+			{
+				"caseId": "say-hello",
+				"messages": []map[string]any{
+					{"role": "user", "content": "Say hello in one short sentence."},
+				},
+				"expected": map[string]any{"finalText": "Hello"},
+			},
+		},
+	})
+	if err := os.WriteFile(filepath.Join(adapterDir, "cautilus-adapter.yaml"), []byte(strings.Join([]string{
+		"version: 1",
+		"repo: temp",
+		"evaluation_surfaces:",
+		"  - app messaging behavior",
+		"baseline_options:",
+		"  - fixture-level model pin",
+		"evaluation_input_default: fixtures/eval/app/chat/demo.fixture.json",
+		"eval_test_command_templates:",
+		"  - sh ./eval-test.sh {eval_observed_file}",
+		"",
+	}, "\n")), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+
+	stdout, stderr, exitCode := runCLI(t, root, "eval", "test", "--repo-root", root, "--output-dir", outputDir)
+	if exitCode != 0 {
+		t.Fatalf("eval test failed: %s", stderr)
+	}
+	summaryPath := strings.TrimSpace(stdout)
+	summary := readJSONObjectFile(t, summaryPath)
+	if summary["schemaVersion"] != contracts.AppChatEvaluationSummarySchema || summary["recommendation"] != "accept-now" {
+		t.Fatalf("unexpected eval test summary: %#v", summary)
+	}
+	casesPath := filepath.Join(outputDir, "eval-cases.json")
+	cases := readJSONObjectFile(t, casesPath)
+	if cases["schemaVersion"] != contracts.AppChatTestCasesSchema {
+		t.Fatalf("eval-cases must use the app_chat_test_cases schema, got: %v", cases["schemaVersion"])
+	}
+}
+
+func TestCLIEvalEvaluateAcceptsAppChatObservedPacket(t *testing.T) {
+	root := t.TempDir()
+	inputPath := filepath.Join(root, "app-chat-observed.json")
+	writeJSONFile(t, inputPath, map[string]any{
+		"schemaVersion": contracts.AppChatEvaluationInputsSchema,
+		"suiteId":       "demo-chat",
+		"evaluations": []map[string]any{
+			{
+				"caseId":      "say-hello",
+				"displayName": "Greeting",
+				"provider":    "anthropic",
+				"model":       "claude-sonnet-4-6",
+				"harness":     "fixture-backend",
+				"mode":        "messaging",
+				"durationMs":  42,
+				"observed": map[string]any{
+					"messages": []map[string]any{
+						{"role": "user", "content": "Say hello in one short sentence."},
+						{"role": "assistant", "content": "Hello there, friend."},
+					},
+					"finalText": "Hello there, friend.",
+				},
+				"expected": map[string]any{"finalText": "Hello"},
+			},
+		},
+	})
+	stdout, stderr, exitCode := runCLI(t, root, "eval", "evaluate", "--input", inputPath)
+	if exitCode != 0 {
+		t.Fatalf("eval evaluate failed: %s", stderr)
+	}
+	summary := parseJSONObject(t, stdout)
+	if summary["schemaVersion"] != contracts.AppChatEvaluationSummarySchema {
+		t.Fatalf("expected app/chat summary schema, got: %#v", summary["schemaVersion"])
+	}
+}
+
 func TestCLIEvalTestRejectsUnsupportedSurfacePresetCombo(t *testing.T) {
 	root := t.TempDir()
 	adapterDir := filepath.Join(root, ".agents")
@@ -5739,7 +5867,7 @@ func TestCLIEvalTestRejectsUnsupportedSurfacePresetCombo(t *testing.T) {
 	writeJSONFile(t, filepath.Join(fixtureDir, "bad.fixture.json"), map[string]any{
 		"schemaVersion": contracts.EvaluationInputSchema,
 		"surface":       "app",
-		"preset":        "chat",
+		"preset":        "skill",
 		"suiteId":       "demo",
 		"cases":         []map[string]any{{"caseId": "x", "prompt": "y"}},
 	})
@@ -5760,8 +5888,8 @@ func TestCLIEvalTestRejectsUnsupportedSurfacePresetCombo(t *testing.T) {
 	if exitCode == 0 {
 		t.Fatalf("expected non-zero exit, got success with stderr: %s", stderr)
 	}
-	if !strings.Contains(stderr, "surface") || !strings.Contains(stderr, "app") {
-		t.Fatalf("expected surface rejection message, got: %s", stderr)
+	if !strings.Contains(stderr, "preset") {
+		t.Fatalf("expected cross-axis preset rejection message, got: %s", stderr)
 	}
 }
 

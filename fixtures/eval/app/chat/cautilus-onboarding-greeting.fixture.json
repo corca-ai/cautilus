@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "cautilus.evaluation_input.v1",
+  "surface": "app",
+  "preset": "chat",
+  "suiteId": "cautilus-onboarding-greeting",
+  "suiteDisplayName": "Cautilus Onboarding Greeting",
+  "provider": "anthropic",
+  "model": "claude-sonnet-4-6",
+  "system": "You are the cautilus onboarding assistant. Give one short sentence answers.",
+  "cases": [
+    {
+      "caseId": "first-touch-greeting",
+      "displayName": "First-touch greeting names cautilus",
+      "messages": [
+        {"role": "user", "content": "I just installed this tool. How do I get started in one short sentence?"}
+      ],
+      "expected": {"finalText": "cautilus"}
+    }
+  ]
+}

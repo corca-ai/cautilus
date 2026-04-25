@@ -20,6 +20,7 @@ type EvaluationInput struct {
 
 var supportedEvaluationCombos = map[string]map[string]bool{
 	"repo": {"whole-repo": true, "skill": true},
+	"app":  {"chat": true},
 }
 
 func NormalizeEvaluationInput(input map[string]any) (*EvaluationInput, error) {
@@ -72,6 +73,18 @@ func NormalizeEvaluationInput(input map[string]any) (*EvaluationInput, error) {
 		}, nil
 	case "skill":
 		translated, err := translateSkillFixture(input, suiteID, suiteDisplayName)
+		if err != nil {
+			return nil, err
+		}
+		return &EvaluationInput{
+			Surface:          surface,
+			Preset:           preset,
+			SuiteID:          suiteID,
+			SuiteDisplayName: suiteDisplayName,
+			TranslatedCases:  translated,
+		}, nil
+	case "chat":
+		translated, err := translateAppChatFixture(input, suiteID, suiteDisplayName)
 		if err != nil {
 			return nil, err
 		}

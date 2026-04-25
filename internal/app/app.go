@@ -788,8 +788,10 @@ func buildEvalEvaluateSummary(input map[string]any) (map[string]any, error) {
 		return runtime.BuildEvaluationSummary(input, time.Now())
 	case contracts.SkillEvaluationInputsSchema:
 		return runtime.BuildSkillEvaluationSummary(input, time.Now())
+	case contracts.AppChatEvaluationInputsSchema:
+		return runtime.BuildAppChatEvaluationSummary(input, time.Now())
 	default:
-		return nil, fmt.Errorf("unsupported schemaVersion %v: cautilus eval evaluate accepts %s or %s", input["schemaVersion"], contracts.EvaluationObservedSchema, contracts.SkillEvaluationInputsSchema)
+		return nil, fmt.Errorf("unsupported schemaVersion %v: cautilus eval evaluate accepts %s, %s, or %s", input["schemaVersion"], contracts.EvaluationObservedSchema, contracts.SkillEvaluationInputsSchema, contracts.AppChatEvaluationInputsSchema)
 	}
 }
 
