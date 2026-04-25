@@ -43,7 +43,7 @@ This repo is the standalone product boundary for `Cautilus`.
 - [docs/internal/working-patterns.md](./docs/internal/working-patterns.md): durable operating patterns and review-trigger policy
 - [docs/master-plan.md](./docs/master-plan.md): durable product direction and priority order
 - [docs/specs/index.spec.md](./docs/specs/index.spec.md): currently claimed product surface
-- [docs/specs/archetype-boundary.spec.md](./docs/specs/archetype-boundary.spec.md): first-class archetype 1:1 contract (chatbot / skill / workflow)
+- [docs/specs/evaluation-surfaces.spec.md](./docs/specs/evaluation-surfaces.spec.md): live implementation contract for `cautilus eval test`/`evaluate` (two surfaces, four presets, fixture composition)
 - [docs/maintainers/operator-acceptance.md](./docs/maintainers/operator-acceptance.md): tiered human acceptance checklist
 - [docs/guides/consumer-adoption.md](./docs/guides/consumer-adoption.md): generic consumer adoption path
 - [charness-artifacts/retro/recent-lessons.md](./charness-artifacts/retro/recent-lessons.md): compact digest of recent retro repeat-traps and next-time checklist, auto-refreshed from durable retro artifacts

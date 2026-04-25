@@ -33,8 +33,8 @@ The first proof deliberately shows a small end-to-end product move: `Cautilus` t
   Proves that the standalone binary and bundled skill can be installed into a fresh repo and discovered through stable operator-facing commands.
 - [Self-Dogfood Publication](self-dogfood.spec.md)
   Defines the narrow claim of the published latest self-dogfood bundle: record the result honestly and reopen it without replaying the expensive review.
-- [Archetype Boundary](archetype-boundary.spec.md)
-  Defines the three first-class evaluation archetypes and proves that each normalization command stays distinct at the user-facing boundary.
+- [Evaluation Surfaces](evaluation-surfaces.spec.md)
+  The current implementation contract for `cautilus eval test`/`evaluate`: two surfaces (`repo`, `app`), four presets (`whole-repo`, `skill`, `chat`, `prompt`), and the four fixture composition primitives that replace the older first-class archetype boundary.
 - [HTML Report Surface](html-report.spec.md)
   Proves the currently shipped static HTML outputs that let a human review packet-based artifacts in a browser.
 - [Git Preconditions And Runtime Choice](git-precondition.spec.md)

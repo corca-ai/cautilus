@@ -94,9 +94,10 @@ It is the shortest honest example of the product claim: `Cautilus` turns behavio
 
 ## Scenarios
 
-Cautilus has three first-class evaluation archetypes.
-They share one pipeline — normalize → propose → evaluate → review — but each has its own input shape and starting command.
-Read the 1:1 boundary in `docs/specs/archetype-boundary.spec.md`.
+Cautilus exposes two top-level evaluation surfaces (`repo` and `app`) with four presets between them; the surface preset, not a separate archetype, decides whether the runner needs a workspace or a messaging runtime.
+The legacy first-class archetype boundary (chatbot / skill / workflow) is retired.
+For the live contract, read [docs/specs/evaluation-surfaces.spec.md](./docs/specs/evaluation-surfaces.spec.md).
+The `chatbot`, `skill`, and `workflow` `scenario normalize` helpers below still ship; they feed the proposal-input pipeline rather than the evaluation surface.
 
 ### 1. Chatbot conversation regression
 
@@ -217,7 +218,7 @@ Top picks:
 - <https://corca-ai.github.io/cautilus/> — standing executable spec report
 - [docs/guides/consumer-adoption.md](./docs/guides/consumer-adoption.md) — canonical fresh-consumer bootstrap path after the binary is on `PATH`
 - [docs/guides/evaluation-process.md](./docs/guides/evaluation-process.md) — canonical evaluation loop
-- [docs/specs/archetype-boundary.spec.md](./docs/specs/archetype-boundary.spec.md) — chatbot/skill/workflow 1:1 contract
+- [docs/specs/evaluation-surfaces.spec.md](./docs/specs/evaluation-surfaces.spec.md) — surface/preset/composition contract for `cautilus eval test`/`evaluate`
 - [docs/contracts/adapter-contract.md](./docs/contracts/adapter-contract.md) — adapter schema
 - [docs/contracts/review-packet.md](./docs/contracts/review-packet.md) — review packet boundary
 - [docs/cli-reference.md](./docs/cli-reference.md) — full CLI reference

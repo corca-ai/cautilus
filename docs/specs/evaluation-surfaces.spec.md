@@ -244,4 +244,5 @@ Follow-up slices proceed in this order:
    Until the cut lands, both `cautilus mode evaluate` and `cautilus eval test --fixture <app/chat fixture>` coexist; the `app/chat` path is the supported one.
 3. `app / prompt` preset — new.
 4. C2–C4 composition primitives, one per slice.
-5. Retire `archetype-boundary.spec.md` and rescope `scenario normalize` proposal-input lineage.
+5. Rescope `scenario normalize` proposal-input lineage.
+   The `archetype-boundary.spec.md` retirement was absorbed into the `mode evaluate` cut slice (2026-04-26): the spec was removed, `lint:archetypes` was reframed as a runtime-completeness check for the surviving `scenario normalize` plumbing, and AGENTS.md / CLAUDE.md / README.md / master-plan.md were realigned to point at this spec instead.

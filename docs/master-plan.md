@@ -43,7 +43,7 @@ Current `product-owned helper surface`:
 
 - `eval test` with the `repo/skill` preset wraps adapter-owned local skill runners, including consensus-based repeated tests and output-review warning surfacing
 - `eval evaluate` packet summarizer dispatches to `cautilus.skill_evaluation_summary.v1` for trigger and execution behavior when the observed packet's schema is `cautilus.skill_evaluation_inputs.v1`
-- `chatbot`, `skill`, and `workflow` normalization helpers (one per first-class archetype; see [archetype-boundary.spec.md](./specs/archetype-boundary.spec.md))
+- `chatbot`, `skill`, and `workflow` `scenario normalize` helpers feeding the proposal-input pipeline; their archetype-shaped framing in evaluation no longer applies (see [evaluation-surfaces.spec.md](./specs/evaluation-surfaces.spec.md))
 - scenario proposal packet assembly and proposal generation
 - scenario-adjacent conversation review packet and HTML surface over normalized chatbot threads plus proposal candidates
 - scenario-level telemetry summaries for cost and token transparency
@@ -55,8 +55,9 @@ Current `product-owned helper surface`:
 Dogfood and migration evidence now lives separately from the product concept.
 Use [consumer-readiness.md](./maintainers/consumer-readiness.md) for checked-in host evidence instead of treating any one consumer repo as the product definition.
 
-The first-class evaluation archetype boundary (chatbot / skill / workflow) is pinned as a standing contract in [specs/archetype-boundary.spec.md](./specs/archetype-boundary.spec.md) and reinforced by `npm run lint:specs` plus `npm run lint:archetypes`.
-New user-facing copy must reconcile with that contract before landing.
+The current evaluation contract lives in [specs/evaluation-surfaces.spec.md](./specs/evaluation-surfaces.spec.md): two surfaces (`repo`, `app`), four presets (`whole-repo`, `skill`, `chat`, `prompt`), and four fixture composition primitives.
+The earlier first-class archetype boundary (chatbot / skill / workflow) was retired with that redesign.
+`npm run lint:specs` and `npm run lint:archetypes` still gate the runtime completeness of the surviving `scenario normalize` helpers; new user-facing copy must reconcile with the surface/preset contract before landing.
 
 ## Phase Plan
 
@@ -95,7 +96,7 @@ Guardrail: do not import a host repo's built-in benchmark profiles unchanged if 
 
 Product-owned pieces shipped:
 
-- `chatbot`, `skill`, and `workflow` normalization commands plus candidate helpers (one per first-class archetype)
+- `chatbot`, `skill`, and `workflow` `scenario normalize` commands plus candidate helpers (proposal-input pipeline; the evaluation-surface archetype framing was retired)
 - `scenario prepare-input`, `scenario propose`, `scenario summarize-telemetry`
 - checked-in schema artifacts and archetype fixtures (chatbot, skill-validation, durable-workflow)
 - bundled-skill reference prompts point at these helpers

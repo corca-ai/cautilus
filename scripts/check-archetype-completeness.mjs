@@ -2,30 +2,27 @@ import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import process from "node:process";
 
-// Runtime-completeness lint for first-class archetypes.
+// Runtime-completeness lint for the scenario-normalize archetypes.
 //
-// This check intentionally avoids locking public prose structure.
-// Public specs and landing docs should stay free to evolve toward
-// clearer reader-facing wording without tripping a brittle parser.
+// The original first-class evaluation archetype boundary spec was retired
+// alongside the evaluation-surfaces redesign; the chatbot / skill / workflow
+// `scenario normalize` plumbing still ships, and this lint keeps that
+// plumbing whole.
 //
-// What remains gated here is the durable product surface behind each
-// first-class archetype:
-//   1. the public spec still names the archetype
-//   2. the schema constant exists
-//   3. the normalize helper exists
-//   4. the CLI subcommand exists
-//   5. the handler exists
-//   6. the scenarios catalog entry exists
-//   7. the contract doc exists
-//   8. the example input fixture exists
+// What remains gated here for each scenario-normalize archetype:
+//   1. the schema constant exists
+//   2. the normalize helper exists
+//   3. the CLI subcommand exists
+//   4. the handler exists
+//   5. the scenarios catalog entry exists
+//   6. the contract doc exists
+//   7. the example input fixture exists
 
 const repoRoot = process.cwd();
-const specRel = "docs/specs/archetype-boundary.spec.md";
 
 const ARCHETYPES = [
 	{
 		name: "chatbot",
-		specHeading: "Chatbot",
 		schemaId: "cautilus.chatbot_normalization_inputs.v1",
 		helperFunc: "NormalizeChatbotProposalCandidates",
 		handlerFunc: "handleScenarioNormalizeChatbot",
@@ -35,7 +32,6 @@ const ARCHETYPES = [
 	},
 	{
 		name: "skill",
-		specHeading: "Skill",
 		schemaId: "cautilus.skill_normalization_inputs.v2",
 		helperFunc: "NormalizeSkillProposalCandidates",
 		handlerFunc: "handleScenarioNormalizeSkill",
@@ -45,7 +41,6 @@ const ARCHETYPES = [
 	},
 	{
 		name: "workflow",
-		specHeading: "Workflow",
 		schemaId: "cautilus.workflow_normalization_inputs.v1",
 		helperFunc: "NormalizeWorkflowProposalCandidates",
 		handlerFunc: "handleScenarioNormalizeWorkflow",
@@ -64,24 +59,12 @@ function readRequired(relPath) {
 	return readFileSync(full, "utf-8");
 }
 
-function extractArchetypesSection(content) {
-	const start = content.indexOf("\n## Archetypes");
-	if (start < 0) {
-		process.stderr.write(`${specRel}: missing "## Archetypes" heading\n`);
-		process.exit(1);
-	}
-	const rest = content.slice(start + 1);
-	const nextH2 = rest.slice(3).search(/\n## /);
-	return nextH2 < 0 ? rest : rest.slice(0, nextH2 + 3);
-}
-
 function registryPathPattern(parts) {
 	return `"path": [${parts.map((part) => `"${part}"`).join(", ")}]`;
 }
 
 function loadSources() {
 	return {
-		specArchetypes: extractArchetypesSection(readRequired(specRel)),
 		constants: readRequired("internal/contracts/constants.go"),
 		proposals: readRequired("internal/runtime/proposals.go"),
 		app: readRequired("internal/app/app.go"),
@@ -91,11 +74,8 @@ function loadSources() {
 }
 
 function checkArchetype(def, sources, issues) {
-	const fail = (message) => issues.push(`archetype ${def.specHeading}: ${message}`);
+	const fail = (message) => issues.push(`archetype ${def.name}: ${message}`);
 
-	if (!new RegExp(`^###\\s+${def.specHeading}\\s*$`, "m").test(sources.specArchetypes)) {
-		fail(`public spec missing "### ${def.specHeading}" heading`);
-	}
 	if (!sources.constants.includes(`"${def.schemaId}"`)) {
 		fail(`schema id "${def.schemaId}" missing from internal/contracts/constants.go`);
 	}
