@@ -7,13 +7,16 @@ baseline_options:
 required_prerequisites:
   - keep the candidate workspace on the exact checkout under evaluation
 instruction_surface_cases_default: fixtures/instruction-surface/cases.json
+evaluation_input_default: fixtures/eval/whole-repo/checked-in-agents-routing.fixture.json
 instruction_surface_test_command_templates:
   - node ./scripts/run-self-dogfood-instruction-surface.mjs --repo-root . --output-dir {output_dir} --cases-file {instruction_surface_cases_file} --output-file {instruction_surface_input_file} --backend {backend} --sandbox read-only --timeout-ms 180000 --codex-model gpt-5.4-mini --codex-reasoning-effort low --claude-permission-mode dontAsk
 artifact_paths:
   - AGENTS.md
   - docs/internal/handoff.md
+  - docs/specs/evaluation-surfaces.spec.md
   - docs/specs/instruction-surface.spec.md
   - docs/contracts/instruction-surface.md
+  - fixtures/eval/whole-repo/checked-in-agents-routing.fixture.json
   - fixtures/instruction-surface/cases.json
   - scripts/agent-runtime/run-local-instruction-surface-test.mjs
   - scripts/run-self-dogfood-instruction-surface.mjs

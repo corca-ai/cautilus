@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "cautilus.evaluation_input.v1",
+  "surface": "repo",
+  "preset": "whole-repo",
+  "suiteId": "instruction-surface-demo",
+  "suiteDisplayName": "Instruction Surface Demo",
+  "cases": [
+    {
+      "caseId": "checked-in-agents-routing",
+      "displayName": "Checked-in AGENTS routing",
+      "prompt": "Read the repo instructions first and decide how to route this task.",
+      "expectedEntryFile": "AGENTS.md",
+      "requiredInstructionFiles": ["AGENTS.md"],
+      "expectedRouting": {
+        "selectedSkill": "none"
+      }
+    }
+  ]
+}

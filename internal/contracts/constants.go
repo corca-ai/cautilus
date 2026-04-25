@@ -6,6 +6,7 @@ const (
 	ChatbotNormalizationInputsSchema                = "cautilus.chatbot_normalization_inputs.v1"
 	CompareArtifactSchema                           = "cautilus.compare_artifact.v1"
 	DraftScenarioSchema                             = "cautilus.scenario.v1"
+	EvaluationInputSchema                           = "cautilus.evaluation_input.v1"
 	EvidenceBundleInputsSchema                      = "cautilus.evidence_bundle_inputs.v1"
 	EvidenceBundleSchema                            = "cautilus.evidence_bundle.v1"
 	InstructionSurfaceCasesSchema                   = "cautilus.instruction_surface_cases.v1"

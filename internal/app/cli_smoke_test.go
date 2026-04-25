@@ -5795,10 +5795,234 @@ JSON
 	if exitCode != 0 {
 		t.Fatalf("instruction-surface test failed: %s", stderr)
 	}
+	if !strings.Contains(stderr, "deprecation: `cautilus instruction-surface test`") {
+		t.Fatalf("expected deprecation pointer on stderr, got: %s", stderr)
+	}
 	summaryPath := strings.TrimSpace(stdout)
 	summary := readJSONObjectFile(t, summaryPath)
 	if summary["schemaVersion"] != contracts.InstructionSurfaceSummarySchema || summary["recommendation"] != "accept-now" {
 		t.Fatalf("unexpected instruction-surface summary: %#v", summary)
+	}
+}
+
+func TestCLIEvalTestRunsRepoWholeRepoFixture(t *testing.T) {
+	root := t.TempDir()
+	adapterDir := filepath.Join(root, ".agents")
+	fixtureDir := filepath.Join(root, "fixtures", "eval", "whole-repo")
+	outputDir := filepath.Join(root, "outputs")
+	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.MkdirAll(fixtureDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	scriptPath := filepath.Join(root, "instruction-surface-test.sh")
+	script := `#!/bin/sh
+cat <<'JSON' > "$1"
+{
+  "schemaVersion": "cautilus.instruction_surface_inputs.v1",
+  "suiteId": "instruction-surface-demo",
+  "evaluations": [
+    {
+      "evaluationId": "checked-in-agents-routing",
+      "displayName": "checked-in-agents-routing",
+      "prompt": "Read the repo instructions first and decide how to route this task.",
+      "startedAt": "2026-04-25T00:00:00.000Z",
+      "observationStatus": "observed",
+      "summary": "Started from AGENTS.md and kept the first routing decision narrow without committing to a durable work skill yet.",
+      "entryFile": "AGENTS.md",
+      "loadedInstructionFiles": ["AGENTS.md"],
+      "loadedSupportingFiles": [],
+      "routingDecision": {
+        "selectedSkill": "none"
+      },
+      "instructionSurface": {
+        "surfaceLabel": "compact_agents",
+        "files": [
+          {
+            "path": "AGENTS.md",
+            "kind": "file",
+            "sourceKind": "workspace_default"
+          }
+        ]
+      },
+      "expectedEntryFile": "AGENTS.md",
+      "requiredInstructionFiles": ["AGENTS.md"],
+      "expectedRouting": { "selectedSkill": "none" },
+      "artifactRefs": []
+    }
+  ]
+}
+JSON
+`
+	if err := os.WriteFile(scriptPath, []byte(script), 0o755); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	writeJSONFile(t, filepath.Join(fixtureDir, "checked-in-agents-routing.fixture.json"), map[string]any{
+		"schemaVersion": contracts.EvaluationInputSchema,
+		"surface":       "repo",
+		"preset":        "whole-repo",
+		"suiteId":       "instruction-surface-demo",
+		"cases": []map[string]any{
+			{
+				"caseId":                   "checked-in-agents-routing",
+				"prompt":                   "Read the repo instructions first and decide how to route this task.",
+				"expectedEntryFile":        "AGENTS.md",
+				"requiredInstructionFiles": []string{"AGENTS.md"},
+				"expectedRouting": map[string]any{
+					"selectedSkill": "none",
+				},
+			},
+		},
+	})
+	if err := os.WriteFile(filepath.Join(adapterDir, "cautilus-adapter.yaml"), []byte(strings.Join([]string{
+		"version: 1",
+		"repo: temp",
+		"evaluation_surfaces:",
+		"  - instruction surface fidelity",
+		"baseline_options:",
+		"  - baseline git ref via {baseline_ref}",
+		"evaluation_input_default: fixtures/eval/whole-repo/checked-in-agents-routing.fixture.json",
+		"instruction_surface_test_command_templates:",
+		"  - sh ./instruction-surface-test.sh {instruction_surface_input_file}",
+		"",
+	}, "\n")), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+
+	stdout, stderr, exitCode := runCLI(t, root, "eval", "test", "--repo-root", root, "--output-dir", outputDir)
+	if exitCode != 0 {
+		t.Fatalf("eval test failed: %s", stderr)
+	}
+	if strings.Contains(stderr, "deprecation:") {
+		t.Fatalf("eval test must not emit a deprecation pointer, got: %s", stderr)
+	}
+	summaryPath := strings.TrimSpace(stdout)
+	summary := readJSONObjectFile(t, summaryPath)
+	if summary["schemaVersion"] != contracts.InstructionSurfaceSummarySchema || summary["recommendation"] != "accept-now" {
+		t.Fatalf("unexpected eval test summary: %#v", summary)
+	}
+	translatedPath := filepath.Join(outputDir, "translated-cases.json")
+	translated := readJSONObjectFile(t, translatedPath)
+	if translated["schemaVersion"] != contracts.InstructionSurfaceCasesSchema {
+		t.Fatalf("translated cases must use the existing case-suite schema, got: %v", translated["schemaVersion"])
+	}
+}
+
+func TestCLIEvalTestRejectsUnsupportedSurfacePresetCombo(t *testing.T) {
+	root := t.TempDir()
+	adapterDir := filepath.Join(root, ".agents")
+	fixtureDir := filepath.Join(root, "fixtures", "eval", "whole-repo")
+	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.MkdirAll(fixtureDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	writeJSONFile(t, filepath.Join(fixtureDir, "bad.fixture.json"), map[string]any{
+		"schemaVersion": contracts.EvaluationInputSchema,
+		"surface":       "app",
+		"preset":        "chat",
+		"suiteId":       "demo",
+		"cases":         []map[string]any{{"caseId": "x", "prompt": "y"}},
+	})
+	if err := os.WriteFile(filepath.Join(adapterDir, "cautilus-adapter.yaml"), []byte(strings.Join([]string{
+		"version: 1",
+		"repo: temp",
+		"evaluation_surfaces:",
+		"  - app fidelity",
+		"baseline_options:",
+		"  - baseline git ref via {baseline_ref}",
+		"instruction_surface_test_command_templates:",
+		"  - 'true'",
+		"",
+	}, "\n")), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	_, stderr, exitCode := runCLI(t, root, "eval", "test", "--repo-root", root, "--fixture", filepath.Join(fixtureDir, "bad.fixture.json"))
+	if exitCode == 0 {
+		t.Fatalf("expected non-zero exit, got success with stderr: %s", stderr)
+	}
+	if !strings.Contains(stderr, "surface") || !strings.Contains(stderr, "app") {
+		t.Fatalf("expected surface rejection message, got: %s", stderr)
+	}
+}
+
+func TestCLIInstructionSurfaceEvaluatePrintsDeprecationPointer(t *testing.T) {
+	root := t.TempDir()
+	inputPath := filepath.Join(root, "input.json")
+	writeJSONFile(t, inputPath, map[string]any{
+		"schemaVersion": contracts.InstructionSurfaceInputsSchema,
+		"suiteId":       "demo",
+		"evaluations": []map[string]any{
+			{
+				"evaluationId":      "deprecation-smoke",
+				"prompt":            "Smoke prompt.",
+				"startedAt":         "2026-04-25T00:00:00.000Z",
+				"observationStatus": "blocked",
+				"summary":           "smoke",
+				"loadedInstructionFiles": []string{},
+				"loadedSupportingFiles":  []string{},
+				"routingDecision": map[string]any{
+					"selectedSkill":   "none",
+					"bootstrapHelper": "none",
+					"workSkill":       "none",
+					"firstToolCall":   "none",
+					"reasonSummary":   "smoke",
+				},
+				"instructionSurface": map[string]any{
+					"surfaceLabel": "smoke",
+					"files":        []map[string]any{{"path": "AGENTS.md", "kind": "file", "sourceKind": "workspace_default"}},
+				},
+				"artifactRefs": []any{},
+			},
+		},
+	})
+	_, stderr, exitCode := runCLI(t, root, "instruction-surface", "evaluate", "--input", inputPath)
+	if exitCode != 0 {
+		t.Fatalf("instruction-surface evaluate failed: %s", stderr)
+	}
+	if !strings.Contains(stderr, "deprecation: `cautilus instruction-surface evaluate`") {
+		t.Fatalf("expected deprecation pointer, got: %s", stderr)
+	}
+}
+
+func TestCLIEvalEvaluateDoesNotPrintDeprecationPointer(t *testing.T) {
+	root := t.TempDir()
+	inputPath := filepath.Join(root, "input.json")
+	writeJSONFile(t, inputPath, map[string]any{
+		"schemaVersion": contracts.InstructionSurfaceInputsSchema,
+		"suiteId":       "demo",
+		"evaluations": []map[string]any{
+			{
+				"evaluationId":      "deprecation-smoke",
+				"prompt":            "Smoke prompt.",
+				"startedAt":         "2026-04-25T00:00:00.000Z",
+				"observationStatus": "blocked",
+				"summary":           "smoke",
+				"loadedInstructionFiles": []string{},
+				"loadedSupportingFiles":  []string{},
+				"routingDecision": map[string]any{
+					"selectedSkill":   "none",
+					"bootstrapHelper": "none",
+					"workSkill":       "none",
+					"firstToolCall":   "none",
+					"reasonSummary":   "smoke",
+				},
+				"instructionSurface": map[string]any{
+					"surfaceLabel": "smoke",
+					"files":        []map[string]any{{"path": "AGENTS.md", "kind": "file", "sourceKind": "workspace_default"}},
+				},
+				"artifactRefs": []any{},
+			},
+		},
+	})
+	_, stderr, exitCode := runCLI(t, root, "eval", "evaluate", "--input", inputPath)
+	if exitCode != 0 {
+		t.Fatalf("eval evaluate failed: %s", stderr)
+	}
+	if strings.Contains(stderr, "deprecation:") {
+		t.Fatalf("eval evaluate must not emit a deprecation pointer, got: %s", stderr)
 	}
 }
 

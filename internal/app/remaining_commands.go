@@ -902,6 +902,7 @@ type reviewPromptArtifacts struct {
 
 //nolint:errcheck // CLI stdout/stderr reporting is best-effort.
 func handleInstructionSurfaceTest(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	fmt.Fprintln(stderr, "deprecation: `cautilus instruction-surface test` is now an alias for `cautilus eval test` (surface=repo, preset=whole-repo). See docs/specs/evaluation-surfaces.spec.md.")
 	options, err := parseInstructionSurfaceTestArgs(args, cwd)
 	if err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
@@ -914,11 +915,6 @@ func handleInstructionSurfaceTest(repoRoot string, cwd string, args []string, st
 	}
 	if !adapterPayload.Valid {
 		fmt.Fprintf(stderr, "Adapter is invalid: %s\n", toJSONString(adapterPayload.Errors))
-		return 1
-	}
-	templates := stringArray(adapterPayload.Data["instruction_surface_test_command_templates"])
-	if len(templates) == 0 {
-		fmt.Fprintf(stderr, "Adapter does not define instruction_surface_test_command_templates\n")
 		return 1
 	}
 	if strings.TrimSpace(options.casesFile) == "" {
@@ -939,6 +935,26 @@ func handleInstructionSurfaceTest(repoRoot string, cwd string, args []string, st
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
+	prepareCasesFile := func(_ string) (string, error) { return options.casesFile, nil }
+	return runInstructionSurfaceTestPipeline(options, adapterPayload, caseSuite, prepareCasesFile, cwd, stdout, stderr, "instruction-surface test")
+}
+
+//nolint:errcheck // CLI stdout/stderr reporting is best-effort.
+func runInstructionSurfaceTestPipeline(
+	options *instructionSurfaceTestArgs,
+	adapterPayload *runtime.AdapterPayload,
+	caseSuite *runtime.InstructionSurfaceCaseSuite,
+	prepareCasesFile func(outputDir string) (string, error),
+	cwd string,
+	stdout io.Writer,
+	stderr io.Writer,
+	progressLabel string,
+) int {
+	templates := stringArray(adapterPayload.Data["instruction_surface_test_command_templates"])
+	if len(templates) == 0 {
+		fmt.Fprintf(stderr, "Adapter does not define instruction_surface_test_command_templates\n")
+		return 1
+	}
 	resolvedRun, err := runtime.ResolveRunDir(options.outputDir, nil, nil, environmentMap(), time.Now(), cwd)
 	if err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
@@ -948,6 +964,11 @@ func handleInstructionSurfaceTest(repoRoot string, cwd string, args []string, st
 		fmt.Fprintf(stderr, "Active run: %s\n", resolvedRun.RunDir)
 	}
 	outputDir := resolvedRun.RunDir
+	casesFile, err := prepareCasesFile(outputDir)
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
 	summaryFile := filepath.Join(outputDir, "instruction-surface-summary.json")
 	if options.output != nil {
 		summaryFile = *options.output
@@ -969,11 +990,11 @@ func handleInstructionSurfaceTest(repoRoot string, cwd string, args []string, st
 	replacements := map[string]string{
 		"candidate_repo":                 runtime.ShellSingleQuote(workspace),
 		"output_dir":                     runtime.ShellSingleQuote(outputDir),
-		"instruction_surface_cases_file": runtime.ShellSingleQuote(options.casesFile),
+		"instruction_surface_cases_file": runtime.ShellSingleQuote(casesFile),
 		"instruction_surface_input_file": runtime.ShellSingleQuote(inputFile),
 		"backend":                        backendValue,
 	}
-	log(fmt.Sprintf("instruction-surface test start: repo=%s workspace=%s suite=%s runtime=%s output=%s", options.repoRoot, workspace, caseSuite.SuiteID, effectiveRuntime, outputDir))
+	log(fmt.Sprintf("%s start: repo=%s workspace=%s suite=%s runtime=%s output=%s", progressLabel, options.repoRoot, workspace, caseSuite.SuiteID, effectiveRuntime, outputDir))
 	commandTimeout := defaultShellCommandTimeout()
 	commandsPassed := true
 	if !options.skipPreflight {
@@ -1013,7 +1034,7 @@ func handleInstructionSurfaceTest(repoRoot string, cwd string, args []string, st
 				filepath.Join(outputDir, fmt.Sprintf("instruction-surface-test-%d.stdout", index+1)),
 				filepath.Join(outputDir, fmt.Sprintf("instruction-surface-test-%d.stderr", index+1)),
 				log,
-				fmt.Sprintf("instruction-surface test %d/%d", index+1, len(templates)),
+				fmt.Sprintf("%s %d/%d", progressLabel, index+1, len(templates)),
 				commandTimeout,
 			)
 			if anyString(result["status"]) != "passed" {
@@ -1025,7 +1046,7 @@ func handleInstructionSurfaceTest(repoRoot string, cwd string, args []string, st
 	input, err := readJSONObject(inputFile)
 	if err != nil {
 		if !commandsPassed {
-			fmt.Fprintf(stderr, "instruction-surface test commands failed before producing %s\n", inputFile)
+			fmt.Fprintf(stderr, "%s commands failed before producing %s\n", progressLabel, inputFile)
 		} else {
 			fmt.Fprintf(stderr, "Failed to read JSON from %s: %s\n", inputFile, err)
 		}
@@ -1040,12 +1061,148 @@ func handleInstructionSurfaceTest(repoRoot string, cwd string, args []string, st
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
-	log(fmt.Sprintf("instruction-surface test complete: recommendation=%s summary=%s", anyString(summary["recommendation"]), summaryFile))
+	log(fmt.Sprintf("%s complete: recommendation=%s summary=%s", progressLabel, anyString(summary["recommendation"]), summaryFile))
 	fmt.Fprintf(stdout, "%s\n", summaryFile)
 	if !commandsPassed {
 		return 1
 	}
 	return 0
+}
+
+//nolint:errcheck // CLI stdout/stderr reporting is best-effort.
+func handleEvalTest(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	options, fixturePath, err := parseEvalTestArgs(args, cwd)
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	adapterPayload, err := runtime.LoadAdapter(options.repoRoot, options.adapter, options.adapterName)
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	if !adapterPayload.Valid {
+		fmt.Fprintf(stderr, "Adapter is invalid: %s\n", toJSONString(adapterPayload.Errors))
+		return 1
+	}
+	if strings.TrimSpace(fixturePath) == "" {
+		defaultFixture := strings.TrimSpace(anyString(adapterPayload.Data["evaluation_input_default"]))
+		if defaultFixture == "" {
+			fmt.Fprintf(stderr, "--fixture is required when the adapter does not declare evaluation_input_default\n")
+			return 1
+		}
+		fixturePath = resolvePath(options.repoRoot, defaultFixture)
+	}
+	fixtureInput, err := readJSONObject(fixturePath)
+	if err != nil {
+		fmt.Fprintf(stderr, "Failed to read JSON from %s: %s\n", fixturePath, err)
+		return 1
+	}
+	evaluation, err := runtime.NormalizeEvaluationInput(fixtureInput)
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	prepareCasesFile := func(outputDir string) (string, error) {
+		path := filepath.Join(outputDir, "translated-cases.json")
+		body, err := json.MarshalIndent(evaluation.TranslatedCases, "", "  ")
+		if err != nil {
+			return "", fmt.Errorf("marshal translated cases: %w", err)
+		}
+		if err := os.WriteFile(path, body, 0o644); err != nil {
+			return "", fmt.Errorf("write translated cases: %w", err)
+		}
+		return path, nil
+	}
+	return runInstructionSurfaceTestPipeline(options, adapterPayload, evaluation.CaseSuite, prepareCasesFile, cwd, stdout, stderr, fmt.Sprintf("eval test (%s/%s)", evaluation.Surface, evaluation.Preset))
+}
+
+func parseEvalTestArgs(args []string, cwd string) (*instructionSurfaceTestArgs, string, error) {
+	options := &instructionSurfaceTestArgs{
+		repoRoot:  cwd,
+		workspace: cwd,
+	}
+	fixturePath := ""
+	for index := 0; index < len(args); index++ {
+		arg := args[index]
+		switch arg {
+		case "--repo-root":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, "", err
+			}
+			index = next
+			options.repoRoot = resolvePath(cwd, value)
+			if options.workspace == cwd {
+				options.workspace = options.repoRoot
+			}
+		case "--workspace":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, "", err
+			}
+			index = next
+			options.workspace = resolvePath(cwd, value)
+		case "--fixture":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, "", err
+			}
+			index = next
+			fixturePath = resolvePath(cwd, value)
+		case "--adapter":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, "", err
+			}
+			index = next
+			resolved := resolvePath(cwd, value)
+			options.adapter = &resolved
+		case "--adapter-name":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, "", err
+			}
+			index = next
+			options.adapterName = &value
+		case "--output-dir":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, "", err
+			}
+			index = next
+			resolved := resolvePath(cwd, value)
+			options.outputDir = &resolved
+		case "--output":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, "", err
+			}
+			index = next
+			resolved := resolvePath(cwd, value)
+			options.output = &resolved
+		case "--runtime":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, "", err
+			}
+			index = next
+			if value != "codex" && value != "claude" {
+				return nil, "", fmt.Errorf("--runtime must be codex or claude")
+			}
+			options.runtime = value
+		case "--quiet":
+			options.quiet = true
+		case "--skip-preflight":
+			options.skipPreflight = true
+		default:
+			return nil, "", fmt.Errorf("unknown argument: %s", arg)
+		}
+	}
+	if options.adapter != nil && options.adapterName != nil {
+		return nil, "", fmt.Errorf("use either --adapter or --adapter-name, not both")
+	}
+	return options, fixturePath, nil
 }
 
 //nolint:errcheck // CLI stdout/stderr reporting is best-effort.

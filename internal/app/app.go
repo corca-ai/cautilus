@@ -187,6 +187,10 @@ func nativeHandler(path []string) handlerFunc {
 		return handleInstructionSurfaceTest
 	case "instruction-surface evaluate":
 		return handleInstructionSurfaceEvaluate
+	case "eval test":
+		return handleEvalTest
+	case "eval evaluate":
+		return handleEvalEvaluate
 	case "skill test":
 		return handleSkillTest
 	case "scenario normalize chatbot":
@@ -787,6 +791,12 @@ func handleSkillEvaluate(repoRoot string, cwd string, args []string, stdout io.W
 
 //nolint:errcheck // CLI stderr reporting is best-effort.
 func handleInstructionSurfaceEvaluate(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	fmt.Fprintln(stderr, "deprecation: `cautilus instruction-surface evaluate` is now an alias for `cautilus eval evaluate`. See docs/specs/evaluation-surfaces.spec.md.")
+	return runInstructionSurfaceEvaluate(cwd, args, stdout, stderr)
+}
+
+//nolint:errcheck // CLI stderr reporting is best-effort.
+func runInstructionSurfaceEvaluate(cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
 	if hasExampleInputFlag(args) {
 		fmt.Fprint(stdout, instructionSurfaceEvaluateExampleInput)
 		return 0
@@ -811,6 +821,12 @@ func handleInstructionSurfaceEvaluate(repoRoot string, cwd string, args []string
 		return 1
 	}
 	return 0
+}
+
+//nolint:errcheck // CLI stderr reporting is best-effort.
+func handleEvalEvaluate(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	_ = repoRoot
+	return runInstructionSurfaceEvaluate(cwd, args, stdout, stderr)
 }
 
 //nolint:errcheck // CLI stderr reporting is best-effort.

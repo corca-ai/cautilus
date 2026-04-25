@@ -171,8 +171,9 @@ cautilus mode evaluate --mode held_out
 The `cautilus install` step also lands a bundled skill at `.agents/skills/cautilus/` with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally.
 "Run a chatbot regression with these logs" feeds into the exact same adapter.
 Use `cautilus doctor --scope agent-surface` when you want to verify only this bundled skill surface.
-If the repo treats `AGENTS.md`, `CLAUDE.md`, or linked instruction files as part of the behavior contract, verify that separately with the `instruction-surface` seam rather than assuming install-time discoverability already proves routing fidelity.
-For the product repo itself, `instruction-surface` is also a first-class on-demand self-dogfood surface through `npm run dogfood:self:instruction-surface`.
+If the repo treats `AGENTS.md`, `CLAUDE.md`, or linked instruction files as part of the behavior contract, verify that separately with the `cautilus eval` seam (preset `repo / whole-repo`) rather than assuming install-time discoverability already proves routing fidelity.
+The `cautilus instruction-surface test/evaluate` commands keep working as deprecation aliases until all four `cautilus eval` presets ship; see [docs/specs/evaluation-surfaces.spec.md](./docs/specs/evaluation-surfaces.spec.md).
+For the product repo itself, this is also a first-class on-demand self-dogfood surface through `npm run dogfood:self:instruction-surface`.
 
 Minimal host-repo layout:
 

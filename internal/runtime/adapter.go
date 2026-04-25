@@ -60,6 +60,7 @@ var adapterStringFields = []string{
 	"default_prompt_file",
 	"default_schema_file",
 	"instruction_surface_cases_default",
+	"evaluation_input_default",
 	"skill_cases_default",
 }
 
