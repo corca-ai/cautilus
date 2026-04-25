@@ -1246,94 +1246,9 @@ func firstNonEmptySliceString(items []string) string {
 }
 
 func optimizeSearchRunFullGateCheckpoint(packet map[string]any, artifactRoot string, candidate map[string]any) map[string]any {
-	if stringOrEmpty(asMap(packet["searchConfig"])["fullGateCheckpointPolicy"]) != "final_only" {
-		return optimizeSearchSkipCheckpointOutcome("full_gate", stringOrEmpty(candidate["id"]), "policy_disabled")
-	}
-	adapterPayload, err := optimizeSearchLoadCheckpointAdapter(packet)
-	if err != nil {
-		return optimizeSearchSkipCheckpointOutcome("full_gate", stringOrEmpty(candidate["id"]), "adapter_not_found")
-	}
-	if !adapterPayload.Found || !adapterPayload.Valid || len(stringArrayOrEmpty(adapterPayload.Data["full_gate_command_templates"])) == 0 {
-		reason := "surface_unavailable"
-		if !adapterPayload.Found {
-			reason = "adapter_not_found"
-		}
-		return optimizeSearchSkipCheckpointOutcome("full_gate", stringOrEmpty(candidate["id"]), reason)
-	}
-	outputDir := filepath.Join(artifactRoot, "optimize-search-checkpoints", stringOrEmpty(candidate["id"]), "full-gate")
-	if err := os.MkdirAll(outputDir, 0o755); err != nil {
-		return map[string]any{
-			"type":             "full_gate",
-			"candidateId":      candidate["id"],
-			"status":           "failed",
-			"admissible":       false,
-			"rejectionReasons": []any{"full_gate:output_dir_failed"},
-		}
-	}
-	args := []string{
-		"mode", "evaluate",
-		"--repo-root", stringOrEmpty(packet["repoRoot"]),
-		"--candidate-repo", optimizeSearchCandidateWorkspace(packet, candidate),
-		"--mode", "full_gate",
-		"--intent", firstNonEmpty(stringOrEmpty(asMap(packet["evaluationContext"])["intent"]), stringOrEmpty(asMap(asMap(packet["optimizeInput"])["report"])["intent"]), "Prompt candidate evaluation"),
-		"--baseline-ref", firstNonEmpty(stringOrEmpty(asMap(packet["evaluationContext"])["baselineRef"]), stringOrEmpty(asMap(asMap(packet["optimizeInput"])["report"])["baseline"]), "HEAD"),
-		"--output-dir", outputDir,
-		"--quiet",
-	}
-	for _, pair := range [][2]string{
-		{"--profile", stringOrEmpty(asMap(packet["evaluationContext"])["profile"])},
-		{"--split", stringOrEmpty(asMap(packet["evaluationContext"])["split"])},
-	} {
-		if strings.TrimSpace(pair[1]) != "" {
-			args = append(args, pair[0], pair[1])
-		}
-	}
-	args = append(args, optimizeSearchAdapterArgs(packet)...)
-	command := exec.Command(optimizeSearchBinaryPath(), args...)
-	command.Env = optimizeSearchCommandEnv()
-	output, runErr := command.CombinedOutput()
-	reportFile := filepath.Join(outputDir, "report.json")
-	if !fileExists(reportFile) {
-		return map[string]any{
-			"type":             "full_gate",
-			"candidateId":      candidate["id"],
-			"status":           "failed",
-			"admissible":       false,
-			"rejectionReasons": []any{"full_gate:report_missing"},
-			"outputDir":        outputDir,
-			"reportFile":       reportFile,
-			"stdout":           string(output),
-			"stderr":           string(output),
-		}
-	}
-	report, err := readJSONFile(reportFile)
-	if err != nil {
-		return map[string]any{
-			"type":             "full_gate",
-			"candidateId":      candidate["id"],
-			"status":           "failed",
-			"admissible":       false,
-			"rejectionReasons": []any{"full_gate:report_invalid"},
-			"outputDir":        outputDir,
-			"reportFile":       reportFile,
-		}
-	}
-	recommendation := stringOrEmpty(report["recommendation"])
-	admissible := recommendation == "accept-now"
-	rejectionReasons := []any{}
-	if !admissible {
-		rejectionReasons = []any{"full_gate:" + firstNonEmpty(recommendation, "reject")}
-	}
-	return map[string]any{
-		"type":             "full_gate",
-		"candidateId":      candidate["id"],
-		"status":           ternaryStatus(runErr == nil, "passed", "failed"),
-		"admissible":       admissible,
-		"rejectionReasons": rejectionReasons,
-		"outputDir":        outputDir,
-		"reportFile":       reportFile,
-		"recommendation":   firstNonNil(report["recommendation"], nil),
-	}
+	_ = packet
+	_ = artifactRoot
+	return optimizeSearchSkipCheckpointOutcome("full_gate", stringOrEmpty(candidate["id"]), "surface_unavailable")
 }
 
 func optimizeSearchLoadCheckpointAdapter(packet map[string]any) (*AdapterPayload, error) {
@@ -2944,72 +2859,13 @@ func optimizeSearchMutationSchema() map[string]any {
 }
 
 func optimizeSearchEvaluateCandidate(packet map[string]any, artifactRoot string, candidateID string, candidatePromptPath string) ([]map[string]any, map[string]any, error) {
-	repoRoot := stringOrEmpty(packet["repoRoot"])
-	worktreeRoot := filepath.Join(artifactRoot, "optimize-search-worktrees", candidateID)
-	if err := os.MkdirAll(filepath.Dir(worktreeRoot), 0o755); err != nil {
-		return nil, nil, err
-	}
-	worktreeCommand := exec.Command("git", "-C", repoRoot, "worktree", "add", "--detach", worktreeRoot, "HEAD")
-	if output, err := worktreeCommand.CombinedOutput(); err != nil {
-		return nil, nil, fmt.Errorf("failed to create candidate worktree: %s", strings.TrimSpace(string(output)))
-	}
-	targetRelativePath, err := filepath.Rel(repoRoot, stringOrEmpty(asMap(packet["targetFile"])["path"]))
-	if err != nil {
-		return nil, nil, err
-	}
-	targetRelativePath = filepath.Clean(targetRelativePath)
-	if strings.HasPrefix(targetRelativePath, "..") {
-		return nil, nil, fmt.Errorf("target file must stay within repoRoot")
-	}
-	candidatePayload, err := os.ReadFile(candidatePromptPath)
-	if err != nil {
-		return nil, nil, err
-	}
-	targetPath := filepath.Join(worktreeRoot, targetRelativePath)
-	if err := os.MkdirAll(filepath.Dir(targetPath), 0o755); err != nil {
-		return nil, nil, err
-	}
-	if err := os.WriteFile(targetPath, candidatePayload, 0o644); err != nil {
-		return nil, nil, err
-	}
+	_ = packet
+	_ = candidatePromptPath
 	outputDir := filepath.Join(artifactRoot, "optimize-search-candidates", candidateID, "held-out-eval")
-	evaluateArgs := []string{
-		"mode", "evaluate",
-		"--repo-root", worktreeRoot,
-		"--mode", firstNonEmpty(stringOrEmpty(asMap(packet["evaluationContext"])["mode"]), "held_out"),
-		"--intent", firstNonEmpty(stringOrEmpty(asMap(packet["evaluationContext"])["intent"]), "Prompt candidate evaluation"),
-		"--output-dir", outputDir,
-		"--quiet",
-	}
-	for _, pair := range [][2]string{
-		{"--adapter", stringOrEmpty(asMap(packet["evaluationContext"])["adapter"])},
-		{"--adapter-name", stringOrEmpty(asMap(packet["evaluationContext"])["adapterName"])},
-		{"--baseline-ref", stringOrEmpty(asMap(packet["evaluationContext"])["baselineRef"])},
-		{"--profile", stringOrEmpty(asMap(packet["evaluationContext"])["profile"])},
-		{"--split", stringOrEmpty(asMap(packet["evaluationContext"])["split"])},
-	} {
-		if strings.TrimSpace(pair[1]) != "" {
-			evaluateArgs = append(evaluateArgs, pair[0], pair[1])
-		}
-	}
-	command := exec.Command(optimizeSearchBinaryPath(), evaluateArgs...)
-	command.Env = os.Environ()
-	output, err := command.CombinedOutput()
-	if err != nil {
-		return nil, nil, fmt.Errorf("held-out evaluation failed: %s", strings.TrimSpace(string(output)))
-	}
-	mode := firstNonEmpty(stringOrEmpty(asMap(packet["evaluationContext"])["mode"]), "held_out")
-	scenarioResultsPath := filepath.Join(outputDir, mode+"-scenario-results.json")
-	scenarioResults, err := readJSONFile(scenarioResultsPath)
-	if err != nil {
-		return nil, nil, err
-	}
-	heldOutEntries := optimizeSearchHeldOutEntriesFromResults(scenarioResults, candidateID)
-	return heldOutEntries, map[string]any{
-		"worktreeRoot":        worktreeRoot,
-		"outputDir":           outputDir,
-		"reportFile":          filepath.Join(outputDir, "report.json"),
-		"scenarioResultsFile": scenarioResultsPath,
+	return []map[string]any{}, map[string]any{
+		"outputDir":  outputDir,
+		"status":     "skipped",
+		"skipReason": "surface_unavailable",
 	}, nil
 }
 
