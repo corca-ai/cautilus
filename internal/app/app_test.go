@@ -281,8 +281,8 @@ func TestRunAdapterInitSkillScenarioPrefillsEvalTestSlot(t *testing.T) {
 	if !strings.Contains(yaml, "eval_test_command_templates:") || !strings.Contains(yaml, "- cautilus eval test") {
 		t.Fatalf("expected eval_test_command_templates to be pre-filled, got:\n%s", yaml)
 	}
-	if !strings.Contains(yaml, "evaluation_input_default: fixtures/eval/skill/") {
-		t.Fatalf("expected evaluation_input_default to point at fixtures/eval/skill/, got:\n%s", yaml)
+	if !strings.Contains(yaml, "--fixture fixtures/eval/skill/") {
+		t.Fatalf("expected eval_test_command_templates to reference fixtures/eval/skill/, got:\n%s", yaml)
 	}
 }
 

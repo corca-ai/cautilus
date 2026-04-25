@@ -24,6 +24,7 @@
   Node-side runner test용으로 `fixtures/eval/skill/internal-runner-cases.json` + `internal-runner-fixture-results.json`도 함께 옮겼다.
 - 잔여 신호: `repo/skill` 슬라이스에서는 real-codex/claude로 cautilus 자체 dogfood eval을 돌린 evidence를 아직 수집하지 않았다.
   `charness-artifacts/cautilus/latest.md` refresh도 함께 미뤘다 — 다음 슬라이스 작업 중 자연스럽게 닿을 때 수집한다.
+- premortem 후 deferred: (a) 결과 packet의 surface-agnostic 필드 (`provider`, `model`, `harness`, `mode`, `durationMs`, `costUsd?`) emission은 `app` 슬라이스에서 통일적으로 정착시킬 예정 — spec § Result packet 문장이 surface-agnostic처럼 읽히는 부분은 `app` 슬라이스 시점에 명시적으로 분리하거나 채운다. (b) `cautilus eval evaluate` 디스패처는 입력 packet의 `schemaVersion`만 보고 라우팅한다; fixture preset과의 cross-check는 hardening 항목으로 follow-up. (c) Node 측 `scripts/agent-runtime/evaluate-skill.mjs`와 동반 `skill-evaluation-{normalizers,runs,summary}.mjs` 모듈은 self-test와 coverage floor에만 의해 살아있다 — 별도 dead-code sweep slice에서 정리.
 - 잔여 신호 (이전 슬라이스에서): 현재 fixture는 `expectedRouting: { selectedSkill: "none" }`을 기대하지만 real-codex로 cautilus 실제 AGENTS.md를 돌리면 `reject`가 난다.
   fixture 기대치 vs. 실제 AGENTS.md routing 사이 정직성 결정이 필요하다.
 

@@ -47,8 +47,9 @@ Each preset belongs to one surface and locks fixture shape so an adapter can val
 | app     | `chat`       | system prompt + `messages: [...]`             | does this multi-turn behavior match expectations?    |
 | app     | `prompt`     | system prompt + `input` + `expected`          | does this single-turn I/O match expectations?        |
 
-`repo / skill` covers both repo-local skills (fixture's `workspace` points at the consuming repo) and portable plugins (fixture's `workspace` points at a plugin-authored fixture workspace).
-The `--workspace` knob distinguishes them; no separate preset.
+`repo / skill` covers both repo-local skills (workspace points at the consuming repo) and portable plugins (workspace points at a plugin-authored fixture workspace).
+The `--workspace` CLI flag is the source of truth for workspace resolution and defaults to the operator's `cwd`; the fixture body itself does not carry a workspace path.
+Skill identity also defaults from `suiteId`; the fixture may override it through the optional top-level `skillId` field.
 
 **Per-surface preset axes are different on purpose:**
 - `repo` preset axis = **scope** (`whole-repo` = open-ended agent behavior, `skill` = one bounded capability).

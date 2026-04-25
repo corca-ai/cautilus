@@ -214,6 +214,35 @@ func TestNormalizeEvaluationInputSkillRejectsSnapshotExpectation(t *testing.T) {
 	}
 }
 
+func TestNormalizeEvaluationInputSkillRejectsNonSnapshotExpected(t *testing.T) {
+	fixture := validRepoSkillFixture()
+	cases := fixture["cases"].([]any)
+	caseEntry := cases[0].(map[string]any)
+	caseEntry["expected"] = map[string]any{"trigger": "must_invoke"}
+	_, err := NormalizeEvaluationInput(fixture)
+	if err == nil || !strings.Contains(err.Error(), "expected") {
+		t.Fatalf("expected non-snapshot expected to be rejected, got %v", err)
+	}
+}
+
+func TestNormalizeEvaluationInputSkillRejectsExtends(t *testing.T) {
+	fixture := validRepoSkillFixture()
+	fixture["extends"] = "./base.fixture.json"
+	_, err := NormalizeEvaluationInput(fixture)
+	if err == nil || !strings.Contains(err.Error(), "C2") {
+		t.Fatalf("expected extends C2 stub error, got %v", err)
+	}
+}
+
+func TestNormalizeEvaluationInputSkillRejectsSteps(t *testing.T) {
+	fixture := validRepoSkillFixture()
+	fixture["steps"] = []any{}
+	_, err := NormalizeEvaluationInput(fixture)
+	if err == nil || !strings.Contains(err.Error(), "C3") {
+		t.Fatalf("expected steps C3 stub error, got %v", err)
+	}
+}
+
 func TestNormalizeEvaluationInputRejectsEmptyCases(t *testing.T) {
 	fixture := validRepoWholeRepoFixture()
 	fixture["cases"] = []any{}

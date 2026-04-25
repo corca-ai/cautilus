@@ -172,12 +172,10 @@ func translateSkillFixture(input map[string]any, suiteID string, suiteDisplayNam
 			if _, snapshot := expectedMap["snapshot"]; snapshot {
 				return nil, fmt.Errorf("cases[%d].expected.snapshot is reserved for a future composition slice (C4)", index)
 			}
+			return nil, fmt.Errorf("cases[%d].expected is not supported on repo/skill; declare expectedTrigger or thresholds at the case level instead", index)
 		}
 		translated := map[string]any{}
 		for key, value := range entry {
-			if key == "expected" {
-				continue
-			}
 			translated[key] = value
 		}
 		translatedCases = append(translatedCases, translated)

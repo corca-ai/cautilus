@@ -445,9 +445,9 @@ Good placeholders:
 - `{baseline_ref}`
 - `{baseline_repo}`
 - `{candidate_repo}`
-- `{skill_id}`
-- `{skill_cases_file}`
-- `{skill_eval_input_file}`
+- `{eval_cases_file}`
+- `{eval_observed_file}`
+- `{backend}`
 - `{history_file}`
 - `{profile}`
 - `{selected_scenario_ids_file}`
