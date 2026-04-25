@@ -4,7 +4,7 @@
 
 ## Problem
 
-Skill tests and instruction-surface tests are meant to exercise the same local CLI environment a real user or agent would use.
+Skill tests and eval tests are meant to exercise the same local CLI environment a real user or agent would use.
 By default, those tests should not force a model choice just to make evaluation evidence easier to compare.
 
 That creates two product responsibilities:
@@ -14,7 +14,7 @@ That creates two product responsibilities:
 
 ## Current Slice
 
-This contract defines the first runtime-fingerprint implementation for skill, instruction-surface, report, and optimize flows.
+This contract defines the first runtime-fingerprint implementation for skill, eval, report, and optimize flows.
 The current implementation covers explicit prior-evidence comparison, adapter-owned pinned runtime policy, and optimize proposal context.
 
 The current slice should:
@@ -30,7 +30,7 @@ Runtime wrappers and adapter flows may also pass `priorEvidence` and `runtimePol
 
 ## Fixed Decisions
 
-- Skill and instruction-surface tests do not pin a model by default.
+- Skill and eval tests do not pin a model by default.
   Adapter command templates may still pin a model when the evaluated product explicitly requires one.
 - Runtime identity is evidence context unless a consumer or adapter declares a pinned-runtime policy.
   Under the default policy, a model or provider change should produce a context warning, not a failing result.
@@ -43,7 +43,7 @@ Runtime wrappers and adapter flows may also pass `priorEvidence` and `runtimePol
 - Runtime drift reason codes belong under a runtime or evidence context, not the primary behavior-outcome `reasonCodes`.
   Reports may summarize the context, but downstream accept/reject decisions should not treat `model_runtime_changed` like `behavior_regression`.
 - Pinned runtime policy is adapter-owned and should be declared through a top-level `runtime_policy` block.
-  A pinned mismatch blocks the workflow packet because the run did not evaluate the declared runtime, including skill and instruction-surface summaries.
+  A pinned mismatch blocks the workflow packet because the run did not evaluate the declared runtime, including skill and eval summaries.
 - Optimization should prefer the shortest, least specialized target that preserves or improves the evaluated behavior.
   This is a common selection objective, not a separate optimizer kind.
 - A model-runtime change may unlock a passing simplification pass when the existing tests still pass.
@@ -170,7 +170,7 @@ Model-change-driven optimize suggestions should preserve:
 - no automatic prompt, skill, or AGENTS.md file edits
 - no separate top-level `refresh` command in the first slice
 - no provider API polling for model release notes
-- no mandatory model pinning for ordinary skill or instruction-surface tests
+- no mandatory model pinning for ordinary skill or eval tests
 - no hidden scraping of CLI stderr to invent model truth
 - no new `simplification` optimizer kind unless later evidence proves a user-facing mode is necessary
 
@@ -185,7 +185,7 @@ Model-change-driven optimize suggestions should preserve:
 
 ## Success Criteria
 
-- A skill or instruction-surface test can pass while still reporting that the observed runtime changed from the comparison evidence.
+- A skill or eval test can pass while still reporting that the observed runtime changed from the comparison evidence.
 - A pinned-runtime adapter can block when the observed runtime does not match its declared requirement.
 - Report and evidence packets can carry runtime-context reason codes without treating them as behavior regressions.
 - Optimize can propose a bounded simplification candidate after a runtime change without adding a new user-facing optimizer kind.
@@ -246,7 +246,7 @@ Bundle anyway:
 - State that `passing_simplification` is a reason to consider a revision, while shorter-target preference is a selection objective.
 - State that `model_runtime_changed` can enable a simplification pass, but does not imply simplification is safe.
 - Define warning versus context note in operator terms.
-- Treat pinned mismatch as a workflow block for skill and instruction-surface summaries.
+- Treat pinned mismatch as a workflow block for skill and eval summaries.
 
 ## First Implementation Slice
 

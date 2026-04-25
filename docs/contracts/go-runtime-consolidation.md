@@ -55,7 +55,7 @@ These are product runtime seams and should move first:
 
 These are not the first operational risk, but they still represent duplicate runtime ownership:
 
-- local instruction-surface and skill-test runners
+- local eval-test and skill-test runners
 - packet builders and prompt/render helpers whose shipped semantics still matter, once the public runtime seams are no longer JS-owned
 - active-run and artifact-preparation helpers that remain authoritative only because other Node seams still depend on them
 

@@ -20,7 +20,7 @@ Evidence:
 - checked-in root adapter: [.agents/cautilus-adapter.yaml](../../.agents/cautilus-adapter.yaml)
 - checked-in named adapter: [.agents/cautilus-adapters/self-dogfood.yaml](../../.agents/cautilus-adapters/self-dogfood.yaml)
 - explicit self-dogfood command: `npm run dogfood:self`
-- explicit instruction-surface self-dogfood command: `npm run dogfood:self:instruction-surface`
+- explicit `repo / whole-repo` self-dogfood command: `npm run dogfood:self:eval`
 - explicit tuning command: `npm run dogfood:self:experiments`
 
 What this means:
@@ -86,8 +86,8 @@ Current role: external bootstrap-heavy agent-runtime archetype
 
 Evidence:
 
-- one real external bootstrap-heavy consumer now validates the released `instruction-surface` split on `Cautilus v0.5.5`
-- the checked-in consumer seam exercises `cautilus instruction-surface test --repo-root .` against a routing case that now expects `bootstrapHelper=find-skills` and `workSkill=impl`
+- one real external bootstrap-heavy consumer validated the released `instruction-surface` split on `Cautilus v0.5.5` (now folded into the `repo / whole-repo` preset under `cautilus eval`).
+- the consumer seam now exercises `cautilus eval test --repo-root .` (formerly `cautilus instruction-surface test`) against a routing case that expects `bootstrapHelper=find-skills` and `workSkill=impl`
 - the same consumer keeps its standing repo-owned evaluator path green on the released binary:
   `python3 scripts/run-evals.py --repo-root .` passed its maintained scenario set and `pytest tests/test_cautilus_scenarios.py` stayed green
 - the checked validation artifact records `recommendation=accept-now` plus explicit `bootstrapHelperCounts` / `workSkillCounts` output instead of the older collapsed single-lane interpretation
@@ -116,7 +116,7 @@ It keeps one official adapter contract while still grounding the normalization l
 
 1. Keep proving the deepest binary and bundled-skill behavior against `cautilus` itself.
 2. Keep checked-in consumer-shaped normalized packet examples for the chatbot, skill-validation, and durable-workflow archetypes.
-3. Keep one explicit external bootstrap-heavy consumer proof for `instruction-surface`, but treat it as archetype validation rather than named-repo product ownership.
+3. Keep one explicit external bootstrap-heavy consumer proof for the `repo / whole-repo` preset, but treat it as archetype validation rather than named-repo product ownership.
 4. Treat the next external-consumer question as whether the first bounded run should expand beyond `mode evaluate` into the first review loop, not as whether `bootstrapHelper` / `workSkill` works at all.
 5. If a stronger claim needs one real external consumer, record that proof as an appendix update without turning the named repo into canonical vocabulary.
 6. Keep the current product-owned onboarding smoke honest: today it proves fresh-consumer install to `doctor ready` and one completed bounded `mode evaluate` run; the next proof question is whether that smoke should also reach `review prepare-input` without turning the helper into a consumer-specific workflow.

@@ -174,9 +174,9 @@ placeholder drift + specdown 기반 spec source guard) + Go race test + standing
 - `gateRecommendation`은 cheap deterministic gate의 판정이고,
   `reportRecommendation`은 LLM review까지 포함한 최종 판정이다.
   둘 다 `accept-now`여야 통과.
-- `dogfood:self:instruction-surface`는 현재 checked-in routing case suite를 재실행해
-  `instruction-surface-summary.json`을 갱신해야 한다.
-  `status=accept-now`와 전 case 통과가 기본 통과선이다.
+- `dogfood:self:eval`은 현재 checked-in `cautilus.evaluation_input.v1` fixture(`fixtures/eval/whole-repo/`)를 재실행해
+  `eval-summary.json`을 갱신해야 한다.
+  `recommendation=accept-now`와 전 case 통과가 기본 통과선이다.
 - experiment 결과에서 기존 대비 regression이 발견되면 불통과.
   개별 experiment의 `gateRecommendation`이 `needs-work`여도
   전체 regression이 아니면 인간이 판단한다.

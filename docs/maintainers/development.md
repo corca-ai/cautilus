@@ -109,16 +109,16 @@ The `latest/` bundle is the published snapshot meant to be checked into Git, so 
 
 The rendered HTML is written alongside the other published files at `artifacts/self-dogfood/latest/index.html` and is automatically refreshed every time `npm run dogfood:self` rewrites the latest bundle.
 
-Refresh the canonical instruction-surface self-dogfood bundle:
+Refresh the canonical `repo / whole-repo` self-dogfood bundle:
 
 ```bash
-npm run dogfood:self:instruction-surface
+npm run dogfood:self:eval
 ```
 
 This is also on-demand quality work, not a standing pre-push or CI gate.
-It refreshes `artifacts/self-dogfood/instruction-surface/latest/`.
+It refreshes `artifacts/self-dogfood/eval/latest/`.
 The canonical claim is narrower than the broader self-dogfood report:
-it proves that the shipped `instruction-surface` runner can exercise the repo's checked-in self-dogfood adapter and materialize a current summary packet without relying on one-off manual wiring.
+it proves that the shipped `cautilus eval` runner can exercise the repo's checked-in self-dogfood adapter and materialize a current evaluation summary packet without relying on one-off manual wiring.
 
 Tuning path for named A/B and split-surface reviews, including stronger binary and skill surface claims:
 

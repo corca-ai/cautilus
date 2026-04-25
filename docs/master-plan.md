@@ -141,7 +141,7 @@ Still open:
 
 ## Immediate Next Moves
 
-1. Expand the shipped `instruction-surface` boundary from the first routing-fidelity slice only when new evidence needs a broader but still bounded contract.
+1. Roll out the remaining `cautilus eval` presets in spec order: `repo / skill`, then `app / chat`, then `app / prompt`. See [docs/specs/evaluation-surfaces.spec.md](./specs/evaluation-surfaces.spec.md).
 2. Pick the next bounded improvement seam for the optimization layer: either close a specific richer merge heuristic that dogfood evidence asks for, or move to another roadmap slice rather than extending heuristics speculatively.
 3. Expand scenario-history beyond the first profile-backed comparison cache-key path toward reusable baseline results and broader compare ownership.
 4. Continue moving host-specific runtime seams out of the product boundary into consumer-owned adapters, prompts, and storage readers.
