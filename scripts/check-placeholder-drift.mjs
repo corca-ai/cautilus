@@ -11,9 +11,9 @@ const repoRoot = process.cwd();
 
 const TARGETS = [
 	{
-		label: "skill_test replacements",
+		label: "eval_test replacements",
 		goFile: "internal/app/remaining_commands.go",
-		mapAnchor: "skill test start", // a string unique to the handler
+		mapAnchor: "eval_observed_file", // unique to the eval test pipeline replacements map
 		contractDoc: "docs/contracts/skill-testing.md",
 	},
 ];

@@ -195,7 +195,7 @@ cautilus scenario summarize-telemetry \
   --results ./fixtures/scenario-results/example-results.json
 ```
 
-Every normalize command plus `cautilus skill evaluate`, `cautilus eval evaluate`, and `cautilus report build` accepts `--example-input`: it prints a minimal valid packet to stdout that can be piped back into the same command, so operators can inspect the expected shape without clicking into a fixture on GitHub.
+Every normalize command plus `cautilus eval evaluate` and `cautilus report build` accepts `--example-input`: it prints a minimal valid packet to stdout that can be piped back into the same command, so operators can inspect the expected shape without clicking into a fixture on GitHub.
 `cautilus scenarios --json` now exposes those same inspect commands under `exampleInputCli` for each archetype.
 `cautilus scenario propose` now preserves the full ranked `proposals` list in the canonical JSON output.
 The same packet also emits an `attentionView`, which is a bounded human-facing shortlist derived from the full ranked set.
@@ -227,14 +227,16 @@ The npm wrapper is the canonical maintainer-facing self-dogfood path for this re
 ## Skill testing & evaluation
 
 ```bash
-# run one checked-in local skill test through an adapter-owned runner
-cautilus skill test \
+# run one checked-in local skill probe through an adapter-owned runner
+# (cautilus.evaluation_input.v1 fixture with surface=repo, preset=skill)
+cautilus eval test \
   --repo-root . \
-  --adapter-name self-dogfood-skill-test
+  --adapter-name self-dogfood-eval-skill
 
 # evaluate one normalized skill packet for trigger accuracy and execution quality
-cautilus skill evaluate \
-  --input ./fixtures/skill-evaluation/input.json \
+# (cautilus.skill_evaluation_inputs.v1 input)
+cautilus eval evaluate \
+  --input ./eval-observed.json \
   --output /tmp/cautilus-skill-summary.json
 ```
 

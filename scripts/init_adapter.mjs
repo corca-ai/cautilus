@@ -118,7 +118,7 @@ export function scaffoldAdapter(repoRoot, repoName) {
 		baseline_options: ["baseline git ref in the same repo via {baseline_ref}"],
 		required_prerequisites: ["choose a real baseline before comparing results"],
 		preflight_commands: inferred.preflight_commands ?? [],
-		skill_test_command_templates: inferred.skill_test_command_templates ?? [],
+		eval_test_command_templates: inferred.eval_test_command_templates ?? [],
 		iterate_command_templates: inferred.iterate_command_templates ?? [],
 		held_out_command_templates: inferred.held_out_command_templates ?? [],
 		comparison_command_templates: inferred.comparison_command_templates ?? [],

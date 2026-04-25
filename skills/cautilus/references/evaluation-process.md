@@ -323,24 +323,24 @@ first-class skill workflow and then chain it into the checked-in normalization
 helper instead of inventing repo-local one-off shapers:
 
 ```bash
-cautilus skill test \
+cautilus eval test \
   --repo-root . \
-  --adapter-name self-dogfood-skill-test
+  --adapter-name self-dogfood-eval-skill
 
-cautilus skill evaluate \
-  --input ./fixtures/skill-evaluation/input.json \
+cautilus eval evaluate \
+  --input ./eval-observed.json \
   --output /tmp/cautilus-skill-summary.json
 
 cautilus scenario normalize skill \
   --input /tmp/cautilus-skill-summary.json
 ```
 
-`skill test` is the operator-facing workflow seam above adapter-owned local
-skill runners. `skill evaluate` remains the first-class packet boundary for
-skill trigger and execution quality. The host still owns raw invocation and
-transcript capture; `Cautilus` owns the case-suite/runDir workflow,
-packet-level recommendation, behavior-intent framing, and the direct chain into
-`scenario normalize skill`.
+`eval test` with a `surface=repo, preset=skill` fixture is the operator-facing
+workflow seam above adapter-owned local skill runners. `eval evaluate` remains
+the first-class packet boundary for skill trigger and execution quality.
+The host still owns raw invocation and transcript capture; `Cautilus` owns the
+case-suite/runDir workflow, packet-level recommendation, behavior-intent
+framing, and the direct chain into `scenario normalize skill`.
 
 For this pattern:
 

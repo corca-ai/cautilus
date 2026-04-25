@@ -110,7 +110,7 @@ When you want a read-only operator page before promoting or refreshing scenarios
 ### 2. Skill / agent execution regression
 
 Use when you change a skill or agent and want to know whether it still triggers on the right prompts, executes cleanly, and keeps its static validation passing.
-CLI: `cautilus skill test --repo-root . --adapter-name <name>`
+CLI: `cautilus eval test --repo-root . --adapter-name <name>` with a `surface=repo, preset=skill` fixture
 For agent: "Run the checked-in case suite against the skill I just edited."
 You get a report, a review file, and compare-ready evidence instead of one trigger-only smoke result.
 

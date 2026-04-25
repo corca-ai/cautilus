@@ -1,8 +1,9 @@
 # Skill Evaluation Contract
 
-`Cautilus` should support a first-class `skill evaluate` surface for judging whether a skill is invoked on the right prompts and whether it performs its intended task once invoked.
+`Cautilus` exposes the skill judgment surface through `cautilus eval evaluate` when the input packet's schema is `cautilus.skill_evaluation_inputs.v1`.
+That surface answers whether a skill is invoked on the right prompts and whether it performs its intended task once invoked.
 
-When the operator still needs to run the host-specific skill invocation loop, use [skill-testing.md](./skill-testing.md) first and treat `skill evaluate` as the packet summarizer one step downstream.
+When the operator still needs to run the host-specific skill invocation loop, use [skill-testing.md](./skill-testing.md) first and treat `eval evaluate` as the packet summarizer one step downstream.
 
 Use `cautilus.skill_evaluation_inputs.v1` for the input packet and `cautilus.skill_evaluation_summary.v1` for the summary packet.
 
@@ -10,9 +11,9 @@ Use `cautilus.skill_evaluation_inputs.v1` for the input packet and `cautilus.ski
 
 `scenario normalize skill` is useful once a host repo already has normalized skill-evaluation summaries, but that helper starts one step too late when the host wants `skill` to be an explicit product-owned evaluation target.
 
-The product boundary for the first slice should be:
+The product boundary for the first slice is:
 
-`host-observed skill eval packet -> cautilus skill evaluate -> skill evaluation summary -> cautilus scenario normalize skill`
+`host-observed skill eval packet -> cautilus eval evaluate -> skill evaluation summary -> cautilus scenario normalize skill`
 
 This keeps raw runner ownership in the host repo while letting `Cautilus` own the packet shape, behavior framing, status rollup, and downstream chaining.
 
@@ -147,7 +148,7 @@ Current product-owned surfaces for this seam:
 
 ## Guardrails
 
-- Do not let `skill evaluate` read raw repos, `SKILL.md`, or logs directly.
+- Do not let `eval evaluate` read raw repos, `SKILL.md`, or logs directly.
 - Do not pretend this slice owns skill execution infrastructure.
 - Do not collapse deterministic packaging or bootstrap validation into this seam; those remain repo-owned local gates.
 - Do not make budget drift invisible when the host declared explicit runtime or token thresholds.

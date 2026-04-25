@@ -24,16 +24,16 @@ function runAt(cwd) {
 
 test("passes when every placeholder in go replacements map is in contract doc", () => {
 	const goBody = [
-		"func handleSkillTest() {",
+		"func runEvalTestPipeline() {",
 		"    replacements := map[string]string{",
-		'        "candidate_repo": foo,',
-		'        "backend":        bar,',
+		'        "candidate_repo":     foo,',
+		'        "backend":            bar,',
+		'        "eval_observed_file": baz,',
 		"    }",
-		'    log("skill test start")',
 		"}",
 		"",
 	].join("\n");
-	const contractBody = "Supported placeholders include `{candidate_repo}` and `{backend}`.\n";
+	const contractBody = "Supported placeholders include `{candidate_repo}`, `{backend}`, and `{eval_observed_file}`.\n";
 	const root = setupFakeRepo(goBody, contractBody);
 	try {
 		const result = runAt(root);
@@ -46,16 +46,16 @@ test("passes when every placeholder in go replacements map is in contract doc", 
 
 test("fails when a placeholder is missing from the contract doc", () => {
 	const goBody = [
-		"func handleSkillTest() {",
+		"func runEvalTestPipeline() {",
 		"    replacements := map[string]string{",
-		'        "candidate_repo": foo,',
-		'        "new_placeholder": bar,',
+		'        "candidate_repo":     foo,',
+		'        "new_placeholder":    bar,',
+		'        "eval_observed_file": baz,',
 		"    }",
-		'    log("skill test start")',
 		"}",
 		"",
 	].join("\n");
-	const contractBody = "Only `{candidate_repo}` is mentioned here.\n";
+	const contractBody = "Only `{candidate_repo}` and `{eval_observed_file}` are mentioned here.\n";
 	const root = setupFakeRepo(goBody, contractBody);
 	try {
 		const result = runAt(root);

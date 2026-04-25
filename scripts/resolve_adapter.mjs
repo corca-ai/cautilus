@@ -28,7 +28,6 @@ const STRING_LIST_FIELDS = [
 	"required_prerequisites",
 	"preflight_commands",
 	"eval_test_command_templates",
-	"skill_test_command_templates",
 	"iterate_command_templates",
 	"held_out_command_templates",
 	"comparison_command_templates",
@@ -54,7 +53,6 @@ const STRING_FIELDS = [
 	"default_prompt_file",
 	"default_schema_file",
 	"evaluation_input_default",
-	"skill_cases_default",
 ];
 
 const EXECUTOR_VARIANT_STRING_FIELDS = [

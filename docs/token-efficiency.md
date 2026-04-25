@@ -85,7 +85,7 @@ Those rows are labeled with `cost_truth=derived_pricing`,
 
 ### Self-dogfood adapter-only runtime knobs
 
-The checked-in `self-dogfood-skill-test` adapter now applies a narrower
+The checked-in `self-dogfood-eval-skill` adapter now applies a narrower
 runtime-specific tuning layer:
 
 - Codex: `--model gpt-5.4-mini`, `-c model_reasoning_effort="low"`,
@@ -278,7 +278,7 @@ instructions.
 ### Codex self-dogfood outcome
 
 With `gpt-5.4-mini`, low reasoning effort, and the three repo-local Codex
-prompt reductions above, the checked-in `self-dogfood-skill-test` adapter
+prompt reductions above, the checked-in `self-dogfood-eval-skill` adapter
 passed again on Codex:
 
 - trigger: `2/2` matched `must_invoke`

@@ -45,9 +45,6 @@ runtime_policy:
 evaluation_input_default: fixtures/eval/whole-repo/example.fixture.json
 eval_test_command_templates:
   - node scripts/agent-runtime/run-local-eval-test.mjs --repo-root . --workspace {candidate_repo} --cases-file {eval_cases_file} --output-file {eval_observed_file} --artifact-dir {output_dir}/eval-test --backend {backend} --sandbox read-only
-skill_cases_default: fixtures/skill-test/cases.json
-skill_test_command_templates:
-  - node scripts/agent-runtime/run-local-skill-test.mjs --repo-root . --workspace {candidate_repo} --cases-file {skill_cases_file} --output-file {skill_eval_input_file} --artifact-dir {output_dir}/local-skill-test --backend codex_exec --sandbox read-only --codex-session-mode ephemeral
 iterate_command_templates:
   - npm run bench:train -- --baseline-ref {baseline_ref} --history-file {history_file} --samples {iterate_samples}
 held_out_command_templates:
@@ -165,9 +162,7 @@ default_schema_file: fixtures/review/review-verdict.schema.json
   `mode: pinned` requires declared runtime fields to match observed `telemetry.runtimeFingerprint` fields and should block with `model_runtime_pinned_mismatch` when they do not.
 - `evaluation_input_default`: optional checked-in `cautilus.evaluation_input.v1` path used by `cautilus eval test` when the operator does not pass `--fixture`.
 - `eval_test_command_templates`: commands that turn the validated fixture's translated case suite into an observed `cautilus.evaluation_observed.v1` packet.
-- `skill_cases_default`: optional checked-in `cautilus.skill_test_cases.v1` path used by `cautilus skill test` when the operator does not pass `--cases-file`.
-- `skill_test_command_templates`: commands that turn a checked-in skill-test case suite into an observed `cautilus.skill_evaluation_inputs.v1` packet.
-- `default_runtime`: optional runtime choice (`codex` or `claude`), defaults to `codex`. Overridden by `cautilus skill test --runtime`.
+- `default_runtime`: optional runtime choice (`codex` or `claude`), defaults to `codex`. Overridden by `cautilus eval test --runtime`.
 - `iterate_command_templates`: commands for training or iterate loops.
 - `held_out_command_templates`: commands for the held-out split or equivalent validation.
 - `comparison_command_templates`: optional commands that produce scenario-by-scenario deltas.

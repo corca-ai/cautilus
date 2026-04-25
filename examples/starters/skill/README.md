@@ -43,9 +43,9 @@ cautilus scenario normalize skill --input input.json
 ```
 
 If you want to generate such a summary in the first place, run
-`cautilus skill test` against an adapter-owned runner, then feed its
-output into `skill evaluate` and from there into `scenario normalize
-skill`.
+`cautilus eval test` with a `surface=repo, preset=skill` fixture against
+an adapter-owned runner, then feed its observed packet into
+`cautilus eval evaluate` and from there into `scenario normalize skill`.
 
 See
 [skill-normalization.md](../../../docs/contracts/skill-normalization.md)
@@ -54,7 +54,7 @@ for the full input shape.
 ## Next
 
 - Replace the smoke placeholders with real commands.
-- Run `cautilus skill test` and `cautilus skill evaluate` against your
-  real skill case suite.
+- Run `cautilus eval test --fixture <skill.fixture.json>` and
+  `cautilus eval evaluate` against your real skill case suite.
 - When you have regressions worth saving, pipe them into
   `cautilus scenario propose`.

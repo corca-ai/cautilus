@@ -10,22 +10,23 @@ LLM-behavior surfaces (see `bootstrap-inventory.md`). Use it to turn the
 normalized evidence into bounded scenarios before widening adapter YAML by
 hand.
 
-## Skill test / skill evaluate
+## Eval test / eval evaluate (repo/skill)
 
 ```bash
-cautilus skill test \
+cautilus eval test \
   --repo-root . \
-  --adapter-name self-dogfood-skill-test
+  --adapter-name self-dogfood-eval-skill
 
-cautilus skill evaluate \
-  --input ./fixtures/skill-evaluation/input.json \
+cautilus eval evaluate \
+  --input ./eval-observed.json \
   --output /tmp/cautilus-skill-summary.json
 ```
 
-Prefer `skill test` when the repo already has a checked-in case suite plus
-adapter-owned runner for a local skill. Fall back to `skill evaluate` when the
-host already produced a normalized observed packet and only needs the product
-summary/recommendation layer.
+Prefer `eval test` with a `surface=repo, preset=skill` fixture when the repo
+already has a checked-in case suite plus adapter-owned runner for a local
+skill. Fall back to `eval evaluate` when the host already produced a normalized
+observed packet (`cautilus.skill_evaluation_inputs.v1`) and only needs the
+product summary/recommendation layer.
 
 ## Scenario normalize / prepare / propose / conversation review / telemetry
 

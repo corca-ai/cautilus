@@ -5,7 +5,7 @@ import { resolve } from "node:path";
 import { loadAdapter } from "./resolve_adapter.mjs";
 
 const COMMAND_FIELDS = [
-	"skill_test_command_templates",
+	"eval_test_command_templates",
 	"iterate_command_templates",
 	"held_out_command_templates",
 	"comparison_command_templates",
