@@ -9,9 +9,11 @@ evaluation commands.
 
 A single skill or agent invocation: does it trigger on the right
 prompts, execute the intended task cleanly, and keep declared validation
-surfaces passing. Full contract lives in
-[archetype-boundary.spec.md](../../../docs/specs/archetype-boundary.spec.md)
-under the `skill` section.
+surfaces passing. The `scenario normalize skill` proposal-input lineage owns
+the input shape; see
+[skill-normalization.md](../../../docs/contracts/skill-normalization.md)
+and the surface contract in
+[evaluation-surfaces.spec.md](../../../docs/specs/evaluation-surfaces.spec.md).
 
 ## Setup
 
@@ -26,10 +28,9 @@ under the `skill` section.
    cautilus doctor --repo-root .
    ```
 
-The starter ships `node -e` smoke placeholders for every command
-template, so `doctor` returns `ready` immediately. Replace each
-placeholder (iterate / held_out / comparison / full_gate) with your real
-command over time.
+The starter ships a `node -e` smoke placeholder for `eval_test_command_templates`,
+so `doctor` returns `ready` immediately. Replace the placeholder with your
+real `cautilus eval test` command over time.
 
 ## Run the skill entry point
 

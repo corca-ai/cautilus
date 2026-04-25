@@ -9,10 +9,12 @@ commands.
 
 Stateful automation that persists across multiple invocations and must
 recover when it hits a known blocker: CLI workflows, long-running agent
-sessions, pipelines that keep getting stuck on the same step. Full
-contract lives in
-[archetype-boundary.spec.md](../../../docs/specs/archetype-boundary.spec.md)
-under the `workflow` section.
+sessions, pipelines that keep getting stuck on the same step. The
+`scenario normalize workflow` proposal-input lineage owns the input shape;
+see
+[workflow-normalization.md](../../../docs/contracts/workflow-normalization.md)
+and the surface contract in
+[evaluation-surfaces.spec.md](../../../docs/specs/evaluation-surfaces.spec.md).
 
 ## Setup
 
@@ -27,10 +29,9 @@ under the `workflow` section.
    cautilus doctor --repo-root .
    ```
 
-The starter ships `node -e` smoke placeholders for every command
-template, so `doctor` returns `ready` immediately. Replace each
-placeholder (iterate / held_out / comparison / full_gate) with your real
-command over time.
+The starter ships a `node -e` smoke placeholder for `eval_test_command_templates`,
+so `doctor` returns `ready` immediately. Replace the placeholder with your
+real `cautilus eval test` command over time.
 
 ## Run the workflow entry point
 

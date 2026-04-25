@@ -65,7 +65,7 @@ Current role: external durable-workflow archetype
 Evidence:
 
 - `workflow` normalization owns a checked-in durable-workflow fixture: [fixtures/scenario-proposals/samples/workflow-recovery-input.json](../../fixtures/scenario-proposals/samples/workflow-recovery-input.json).
-  Routed through `cautilus scenario normalize workflow` per the [archetype boundary spec](../specs/archetype-boundary.spec.md).
+  Routed through `cautilus scenario normalize workflow`; the proposal-input lineage stays in this surface even though the legacy archetype boundary was retired (see [evaluation-surfaces.spec.md](../specs/evaluation-surfaces.spec.md)).
 - `eval test`, `review variants`, and comparison flows are all exercised in-tree against workflow-shaped packets and adapters
 - the external proof bar remains:
   - `cautilus doctor --repo-root <workflow-consumer-path>` returns `ready`

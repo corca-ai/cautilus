@@ -9,9 +9,11 @@ evaluation commands.
 
 Multi-turn conversational behavior inside a single session: follow-up
 handling, context recovery after ambiguous confirmations, and intent
-continuity across turns. Full contract lives in
-[archetype-boundary.spec.md](../../../docs/specs/archetype-boundary.spec.md)
-under the `chatbot` section.
+continuity across turns. The `scenario normalize chatbot` proposal-input
+lineage owns the input shape; see
+[chatbot-normalization.md](../../../docs/contracts/chatbot-normalization.md)
+and the surface contract in
+[evaluation-surfaces.spec.md](../../../docs/specs/evaluation-surfaces.spec.md).
 
 ## Setup
 
@@ -26,10 +28,9 @@ under the `chatbot` section.
    cautilus doctor --repo-root .
    ```
 
-The starter ships `node -e` smoke placeholders for every command
-template, so `doctor` returns `ready` immediately. Replace each
-placeholder (iterate / held_out / comparison / full_gate) with your real
-command over time.
+The starter ships a `node -e` smoke placeholder for `eval_test_command_templates`,
+so `doctor` returns `ready` immediately. Replace the placeholder with your
+real `cautilus eval test` command over time.
 
 ## Run the chatbot entry point
 
