@@ -1848,30 +1848,6 @@ func artifactMarkers(path string) ([]string, error) {
 	return markers, nil
 }
 
-func commandObservation(stage string, index int, result map[string]any, commandText string) map[string]any {
-	packet := map[string]any{
-		"stage":       stage,
-		"index":       index,
-		"status":      result["status"],
-		"command":     commandText,
-		"startedAt":   result["startedAt"],
-		"completedAt": result["completedAt"],
-		"durationMs":  result["durationMs"],
-		"stdoutFile":  result["stdoutFile"],
-		"stderrFile":  result["stderrFile"],
-	}
-	if result["exitCode"] != nil {
-		packet["exitCode"] = result["exitCode"]
-	}
-	if result["timedOut"] == true {
-		packet["timedOut"] = true
-	}
-	if result["error"] != nil {
-		packet["error"] = result["error"]
-	}
-	return packet
-}
-
 func sumDuration(items []any) int64 {
 	var total int64
 	for _, raw := range items {
@@ -2096,13 +2072,6 @@ func asMapAny(value any) map[string]any {
 	return record
 }
 
-func intOrDefault(value *int, fallback int) int {
-	if value == nil {
-		return fallback
-	}
-	return *value
-}
-
 func intFromAny(value any, fallback int) int {
 	if number, ok := anyInt(value); ok {
 		return number
@@ -2140,15 +2109,6 @@ func anyNumber(value any) (float64, bool) {
 	default:
 		return 0, false
 	}
-}
-
-func firstNonEmpty(values ...string) string {
-	for _, value := range values {
-		if strings.TrimSpace(value) != "" {
-			return value
-		}
-	}
-	return ""
 }
 
 func stringSliceToAny(values []string) []any {

@@ -1718,11 +1718,7 @@ func optimizeSearchEvaluateMutation(packet map[string]any, inputFile string, opt
 		diagnostics["status"] = "candidate_setup_failed"
 		return nil, diagnostics, err
 	}
-	heldOutEntries, evaluationArtifacts, err := optimizeSearchEvaluateCandidate(packet, artifactRoot, candidateID, candidatePromptPath)
-	if err != nil {
-		diagnostics["status"] = "held_out_evaluation_failed"
-		return nil, diagnostics, err
-	}
+	heldOutEntries, evaluationArtifacts := optimizeSearchEvaluateCandidate(packet, artifactRoot, candidateID, candidatePromptPath)
 	diagnostics["status"] = "candidate_generated"
 	diagnostics["candidateId"] = candidateID
 	return map[string]any{
@@ -1852,10 +1848,7 @@ func optimizeSearchEvaluateMerge(packet map[string]any, inputFile string, genera
 	if err := os.WriteFile(candidatePromptPath, []byte(promptMarkdown+"\n"), 0o644); err != nil {
 		return nil, err
 	}
-	heldOutEntries, evaluationArtifacts, err := optimizeSearchEvaluateCandidate(packet, artifactRoot, candidateID, candidatePromptPath)
-	if err != nil {
-		return nil, err
-	}
+	heldOutEntries, evaluationArtifacts := optimizeSearchEvaluateCandidate(packet, artifactRoot, candidateID, candidatePromptPath)
 	parentIDs := make([]any, 0, len(parents))
 	for _, parent := range parents {
 		parentIDs = append(parentIDs, stringOrEmpty(parent["id"]))
@@ -2858,7 +2851,7 @@ func optimizeSearchMutationSchema() map[string]any {
 	}
 }
 
-func optimizeSearchEvaluateCandidate(packet map[string]any, artifactRoot string, candidateID string, candidatePromptPath string) ([]map[string]any, map[string]any, error) {
+func optimizeSearchEvaluateCandidate(packet map[string]any, artifactRoot string, candidateID string, candidatePromptPath string) ([]map[string]any, map[string]any) {
 	_ = packet
 	_ = candidatePromptPath
 	outputDir := filepath.Join(artifactRoot, "optimize-search-candidates", candidateID, "held-out-eval")
@@ -2866,7 +2859,7 @@ func optimizeSearchEvaluateCandidate(packet map[string]any, artifactRoot string,
 		"outputDir":  outputDir,
 		"status":     "skipped",
 		"skipReason": "surface_unavailable",
-	}, nil
+	}
 }
 
 func optimizeSearchBinaryPath() string {

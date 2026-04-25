@@ -101,15 +101,6 @@ func readJSONArrayFile(t *testing.T, path string) []any {
 	return value
 }
 
-func mustReadFile(t *testing.T, path string) []byte {
-	t.Helper()
-	payload, err := os.ReadFile(path)
-	if err != nil {
-		t.Fatalf("ReadFile returned error: %v", err)
-	}
-	return payload
-}
-
 func parseJSONObject(t *testing.T, payload string) map[string]any {
 	t.Helper()
 	var value map[string]any
@@ -1788,85 +1779,6 @@ func TestCLIOptimizeSearchPrepareInputAppliesAdapterSearchDefaults(t *testing.T)
 	if searchConfigSources["budget"] != "adapter_default" || searchConfigSources["preset"] != "adapter_preset" || searchConfigSources["mergeEnabled"] != "adapter_preset" {
 		t.Fatalf("unexpected search config sources: %#v", searchConfigSources)
 	}
-}
-
-func createScenarioHistoryModeRepo(t *testing.T) (string, string) {
-	t.Helper()
-	root := t.TempDir()
-	adapterDir := filepath.Join(root, ".agents")
-	workspace := filepath.Join(root, "workspace")
-	profilesDir := filepath.Join(root, "profiles")
-	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
-		t.Fatalf("MkdirAll returned error: %v", err)
-	}
-	if err := os.MkdirAll(workspace, 0o755); err != nil {
-		t.Fatalf("MkdirAll returned error: %v", err)
-	}
-	if err := os.MkdirAll(profilesDir, 0o755); err != nil {
-		t.Fatalf("MkdirAll returned error: %v", err)
-	}
-	writeExecutableFile(t, workspace, "bench-history.sh", `#!/bin/sh
-mode="$1"
-scenario_results_file="$2"
-profile_file="$3"
-selected_ids_file="$4"
-selection_snapshot="$5"
-node - "$profile_file" "$selected_ids_file" "$scenario_results_file" "$selection_snapshot" "$mode" <<'EOF'
-const [profileFile, selectedIdsFile, scenarioResultsFile, selectionSnapshot, mode] = process.argv.slice(2);
-const { readFileSync, writeFileSync } = await import("node:fs");
-const profile = JSON.parse(readFileSync(profileFile, "utf-8"));
-const selectedIds = JSON.parse(readFileSync(selectedIdsFile, "utf-8"));
-const scenarioIds = profile.scenarios.map((entry) => entry.scenarioId);
-writeFileSync(selectionSnapshot, scenarioIds.join(","), "utf-8");
-const packet = {
-  schemaVersion: "cautilus.scenario_results.v1",
-  mode,
-  results: scenarioIds.map((scenarioId) => ({
-    scenarioId,
-    status: "passed",
-    overallScore: 100,
-    passRate: 1
-  }))
-};
-writeFileSync(scenarioResultsFile, JSON.stringify(packet) + "\n", "utf-8");
-if (JSON.stringify(scenarioIds) !== JSON.stringify(selectedIds)) {
-  throw new Error(
-    "profile scenarios " + JSON.stringify(scenarioIds) + " did not match selected ids " + JSON.stringify(selectedIds),
-  );
-}
-EOF
-echo "$mode ok"
-`)
-	writeJSONFile(t, filepath.Join(profilesDir, "default-train.json"), map[string]any{
-		"schemaVersion": contracts.ScenarioProfileSchema,
-		"profileId":     "default-train",
-		"historyPolicy": map[string]any{
-			"maxGraduationInterval": 5,
-			"recentResultsLimit":    12,
-		},
-		"scenarios": []any{
-			map[string]any{"scenarioId": "probe-a", "split": "train", "cadence": "graduated", "cohort": "probe"},
-			map[string]any{"scenarioId": "control-a", "split": "train", "cadence": "always", "cohort": "control"},
-			map[string]any{"scenarioId": "held-out-a", "split": "test", "cadence": "always", "cohort": "held-out"},
-		},
-	})
-	adapterText := strings.Join([]string{
-		"version: 1",
-		"repo: temp",
-		"evaluation_surfaces:",
-		"  - operator workflow",
-		"baseline_options:",
-		"  - baseline git ref via {baseline_ref}",
-		"eval_test_command_templates:",
-		"  - sh {candidate_repo}/bench-history.sh eval {scenario_results_file} {profile} {selected_scenario_ids_file} {output_dir}/selection.txt",
-		"profile_default: profiles/default-train.json",
-		"history_file_hint: .cautilus/history.json",
-		"",
-	}, "\n")
-	if err := os.WriteFile(filepath.Join(adapterDir, "cautilus-adapter.yaml"), []byte(adapterText), 0o644); err != nil {
-		t.Fatalf("WriteFile returned error: %v", err)
-	}
-	return root, workspace
 }
 
 func TestCLIReviewBuildPromptInputAndRenderPromptCloseMetaPromptSeam(t *testing.T) {
