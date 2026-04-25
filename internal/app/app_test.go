@@ -73,7 +73,7 @@ func TestRunDoctorDoesNotRequireToolRootForNativeCommands(t *testing.T) {
 		"  - smoke",
 		"baseline_options:",
 		"  - baseline git ref via {baseline_ref}",
-		"iterate_command_templates:",
+		"eval_test_command_templates:",
 		"  - npm run check",
 		"",
 	}, "\n")
@@ -283,48 +283,6 @@ func TestRunAdapterInitSkillScenarioPrefillsEvalTestSlot(t *testing.T) {
 	}
 	if !strings.Contains(yaml, "--fixture fixtures/eval/skill/") {
 		t.Fatalf("expected eval_test_command_templates to reference fixtures/eval/skill/, got:\n%s", yaml)
-	}
-}
-
-func TestRunAdapterInitChatbotScenarioPrefillsIterateSlot(t *testing.T) {
-	repoRoot := t.TempDir()
-	t.Setenv("CAUTILUS_CALLER_CWD", repoRoot)
-	t.Setenv("CAUTILUS_TOOL_ROOT", "")
-
-	var stdout bytes.Buffer
-	var stderr bytes.Buffer
-	exitCode := Run([]string{"adapter", "init", "--repo-root", repoRoot, "--scenario", "chatbot"}, &stdout, &stderr)
-	if exitCode != 0 {
-		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
-	}
-	contents, err := os.ReadFile(filepath.Join(repoRoot, ".agents", "cautilus-adapter.yaml"))
-	if err != nil {
-		t.Fatalf("ReadFile returned error: %v", err)
-	}
-	yaml := string(contents)
-	if !strings.Contains(yaml, "iterate_command_templates:") || !strings.Contains(yaml, "- cautilus scenario normalize chatbot") {
-		t.Fatalf("expected iterate_command_templates to carry a chatbot-archetype command, got:\n%s", yaml)
-	}
-}
-
-func TestRunAdapterInitWorkflowScenarioPrefillsIterateSlot(t *testing.T) {
-	repoRoot := t.TempDir()
-	t.Setenv("CAUTILUS_CALLER_CWD", repoRoot)
-	t.Setenv("CAUTILUS_TOOL_ROOT", "")
-
-	var stdout bytes.Buffer
-	var stderr bytes.Buffer
-	exitCode := Run([]string{"adapter", "init", "--repo-root", repoRoot, "--scenario", "workflow"}, &stdout, &stderr)
-	if exitCode != 0 {
-		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
-	}
-	contents, err := os.ReadFile(filepath.Join(repoRoot, ".agents", "cautilus-adapter.yaml"))
-	if err != nil {
-		t.Fatalf("ReadFile returned error: %v", err)
-	}
-	yaml := string(contents)
-	if !strings.Contains(yaml, "iterate_command_templates:") || !strings.Contains(yaml, "- cautilus scenario normalize workflow") {
-		t.Fatalf("expected iterate_command_templates to carry a workflow-archetype command, got:\n%s", yaml)
 	}
 }
 

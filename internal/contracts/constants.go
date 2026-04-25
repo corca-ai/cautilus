@@ -1,7 +1,6 @@
 package contracts
 
 const (
-	AdapterModeEvaluationPacketSchema               = "cautilus.adapter_mode_evaluation.v1"
 	AppChatEvaluationInputsSchema                   = "cautilus.app_chat_evaluation_inputs.v1"
 	AppChatEvaluationSummarySchema                  = "cautilus.app_chat_evaluation_summary.v1"
 	AppChatTestCasesSchema                          = "cautilus.app_chat_test_cases.v1"

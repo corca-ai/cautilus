@@ -199,24 +199,3 @@ func TestScaffoldAdapterSkillPrefillsEvalTestSlot(t *testing.T) {
 	}
 }
 
-func TestScaffoldAdapterChatbotPrefillsIterateSlot(t *testing.T) {
-	scaffold := ScaffoldAdapter(t.TempDir(), "repo-x", "chatbot")
-	slot, ok := scaffold["iterate_command_templates"].([]string)
-	if !ok || len(slot) == 0 {
-		t.Fatalf("expected iterate_command_templates to be pre-filled for chatbot scenario, got %#v", scaffold["iterate_command_templates"])
-	}
-	if !strings.Contains(slot[0], "chatbot") {
-		t.Fatalf("expected chatbot-archetype command template, got %q", slot[0])
-	}
-}
-
-func TestScaffoldAdapterWorkflowPrefillsIterateSlot(t *testing.T) {
-	scaffold := ScaffoldAdapter(t.TempDir(), "repo-x", "workflow")
-	slot, ok := scaffold["iterate_command_templates"].([]string)
-	if !ok || len(slot) == 0 {
-		t.Fatalf("expected iterate_command_templates to be pre-filled for workflow scenario, got %#v", scaffold["iterate_command_templates"])
-	}
-	if !strings.Contains(slot[0], "workflow") {
-		t.Fatalf("expected workflow-archetype command template, got %q", slot[0])
-	}
-}

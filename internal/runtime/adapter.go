@@ -34,10 +34,6 @@ var adapterStringListFields = []string{
 	"required_prerequisites",
 	"preflight_commands",
 	"eval_test_command_templates",
-	"iterate_command_templates",
-	"held_out_command_templates",
-	"comparison_command_templates",
-	"full_gate_command_templates",
 	"artifact_paths",
 	"report_paths",
 	"comparison_questions",
@@ -45,10 +41,6 @@ var adapterStringListFields = []string{
 
 var adapterIntegerFields = []string{
 	"version",
-	"iterate_samples_default",
-	"held_out_samples_default",
-	"comparison_samples_default",
-	"full_gate_samples_default",
 	"review_timeout_ms",
 }
 
@@ -95,36 +87,11 @@ func InferRepoDefaults(repoRoot string) map[string]any {
 	if _, ok := scripts["check"].(string); ok {
 		inferred["preflight_commands"] = []string{"npm run check"}
 	}
-	if _, ok := scripts["prompt:bench:train"].(string); ok {
-		inferred["iterate_command_templates"] = []string{
-			"npm run prompt:bench:train -- --baseline-ref {baseline_ref} --history-file {history_file} --samples {iterate_samples}",
-		}
-	}
-	if _, ok := scripts["prompt:bench:test"].(string); ok {
-		inferred["held_out_command_templates"] = []string{
-			"npm run prompt:bench:test -- --baseline-ref {baseline_ref} --samples {held_out_samples}",
-		}
-	}
-	if _, ok := scripts["prompt:bench:full"].(string); ok {
-		inferred["full_gate_command_templates"] = []string{
-			"npm run prompt:bench:full -- --baseline-ref {baseline_ref} --history-file {history_file} --samples {full_gate_samples}",
-		}
-	}
-	compareScript := filepath.Join(repoRoot, "scripts", "agent-runtime", "compare-prompt-worktrees.mjs")
-	if fileExists(compareScript) {
-		inferred["comparison_command_templates"] = []string{
-			"node scripts/agent-runtime/compare-prompt-worktrees.mjs --baseline-ref {baseline_ref} --profile {profile} --split {split} --samples {comparison_samples}",
-		}
-	}
 	reportPath := filepath.Join(repoRoot, "specs", "report", "audit-report.html")
 	if fileExists(reportPath) {
 		inferred["report_paths"] = []string{"specs/report/audit-report.html"}
 	}
 	inferred["repo"] = filepath.Base(repoRoot)
-	inferred["iterate_samples_default"] = 2
-	inferred["held_out_samples_default"] = 2
-	inferred["comparison_samples_default"] = 2
-	inferred["full_gate_samples_default"] = 2
 	inferred["history_file_hint"] = "/tmp/cautilus-history.json"
 	return inferred
 }
@@ -789,39 +756,20 @@ func stringSliceNoValidate(items []any) []string {
 	return result
 }
 
-func numericDefaults(inferred map[string]any) map[string]any {
-	defaultValue := func(key string) int {
-		if value, ok := toFloat(inferred[key]); ok && int(value) > 0 {
-			return int(value)
-		}
-		return 2
-	}
-	return map[string]any{
-		"iterate_samples_default":    defaultValue("iterate_samples_default"),
-		"held_out_samples_default":   defaultValue("held_out_samples_default"),
-		"comparison_samples_default": defaultValue("comparison_samples_default"),
-		"full_gate_samples_default":  defaultValue("full_gate_samples_default"),
-	}
-}
-
 func ScaffoldAdapter(repoRoot string, repoName string, scenario string) map[string]any {
 	inferred := InferRepoDefaults(repoRoot)
 	scaffold := map[string]any{
-		"version":                1,
-		"repo":                   repoName,
-		"evaluation_surfaces":    []string{"prompt behavior", "workflow behavior"},
-		"baseline_options":       []string{"baseline git ref in the same repo via {baseline_ref}"},
-		"required_prerequisites": []string{"choose a real baseline before comparing results"},
-		"preflight_commands":                         stringArrayOrEmpty(inferred["preflight_commands"]),
-		"eval_test_command_templates":                []string{},
-		"iterate_command_templates":                  stringArrayOrEmpty(inferred["iterate_command_templates"]),
-		"held_out_command_templates":                 stringArrayOrEmpty(inferred["held_out_command_templates"]),
-		"comparison_command_templates":               stringArrayOrEmpty(inferred["comparison_command_templates"]),
-		"full_gate_command_templates":                stringArrayOrEmpty(inferred["full_gate_command_templates"]),
-		"executor_variants":                          []any{},
-		"artifact_paths":                             []any{},
-		"report_paths":                               stringArrayOrEmpty(inferred["report_paths"]),
-		"comparison_questions":                       []string{"Which scenarios improved, regressed, or stayed noisy after repeated samples?"},
+		"version":                     1,
+		"repo":                        repoName,
+		"evaluation_surfaces":         []string{"prompt behavior", "workflow behavior"},
+		"baseline_options":            []string{"baseline git ref in the same repo via {baseline_ref}"},
+		"required_prerequisites":      []string{"choose a real baseline before comparing results"},
+		"preflight_commands":          stringArrayOrEmpty(inferred["preflight_commands"]),
+		"eval_test_command_templates": []string{},
+		"executor_variants":           []any{},
+		"artifact_paths":              []any{},
+		"report_paths":                stringArrayOrEmpty(inferred["report_paths"]),
+		"comparison_questions":        []string{"Which scenarios improved, regressed, or stayed noisy after repeated samples?"},
 		"human_review_prompts": []any{map[string]any{
 			"id":     "real-user",
 			"prompt": "Where would a real user still judge the candidate worse despite benchmark wins?",
@@ -829,9 +777,6 @@ func ScaffoldAdapter(repoRoot string, repoName string, scenario string) map[stri
 		"history_file_hint": inferred["history_file_hint"],
 		"profile_default":   firstNonEmptyString(inferred["profile_default"], "default"),
 		"optimize_search":   defaultAdapterOptimizeSearchConfig(),
-	}
-	for key, value := range numericDefaults(inferred) {
-		scaffold[key] = value
 	}
 	applyScenarioOverlay(scaffold, scenario)
 	return scaffold
@@ -874,26 +819,16 @@ func defaultAdapterOptimizeSearchConfig() map[string]any {
 	}
 }
 
-// applyScenarioOverlay pre-fills the command slot that matches the selected
-// evaluation archetype so a first-time operator sees a concrete starting
-// point instead of an empty list. Unknown scenarios leave the scaffold
-// untouched; the CLI parser is expected to validate the flag value first.
+// applyScenarioOverlay pre-fills surface defaults for the selected scenario so
+// a first-time operator sees a concrete starting point. Unknown scenarios
+// leave the scaffold untouched; the CLI parser is expected to validate the
+// flag value first.
 func applyScenarioOverlay(scaffold map[string]any, scenario string) {
 	switch scenario {
-	case "chatbot":
-		scaffold["evaluation_surfaces"] = []string{"chatbot conversation behavior"}
-		scaffold["iterate_command_templates"] = []string{
-			"cautilus scenario normalize chatbot --input {chatbot_input_file}",
-		}
 	case "skill":
 		scaffold["evaluation_surfaces"] = []string{"skill trigger, execution, and validation behavior"}
 		scaffold["eval_test_command_templates"] = []string{
 			"cautilus eval test --repo-root {candidate_repo} --adapter-name {adapter_name} --fixture fixtures/eval/skill/example.fixture.json",
-		}
-	case "workflow":
-		scaffold["evaluation_surfaces"] = []string{"workflow recovery behavior across sessions"}
-		scaffold["iterate_command_templates"] = []string{
-			"cautilus scenario normalize workflow --input {workflow_input_file}",
 		}
 	}
 }
@@ -1033,13 +968,9 @@ func DoctorRepo(repoRoot string, adapterPath *string, adapterName *string) (map[
 	appendFieldCheck(&checks, &suggestions, "repo_name", strings.TrimSpace(stringOrEmpty(data["repo"])) != "", "Adapter declares repo.", "Adapter is missing a repo name.", "Set adapter.repo to the host repo name.")
 	appendFieldCheck(&checks, &suggestions, "evaluation_surfaces", len(stringArrayOrEmpty(data["evaluation_surfaces"])) > 0, "Adapter declares evaluation surfaces.", "Adapter is missing evaluation_surfaces.", "Add at least one evaluation_surfaces entry that states what the adapter judges.")
 	appendFieldCheck(&checks, &suggestions, "baseline_options", len(stringArrayOrEmpty(data["baseline_options"])) > 0, "Adapter declares baseline options.", "Adapter is missing baseline_options.", "Add at least one baseline_options entry so comparisons stay explicit.")
-	automatedCommands := len(stringArrayOrEmpty(data["iterate_command_templates"])) > 0 ||
-		len(stringArrayOrEmpty(data["eval_test_command_templates"])) > 0 ||
-		len(stringArrayOrEmpty(data["held_out_command_templates"])) > 0 ||
-		len(stringArrayOrEmpty(data["comparison_command_templates"])) > 0 ||
-		len(stringArrayOrEmpty(data["full_gate_command_templates"])) > 0
+	automatedCommands := len(stringArrayOrEmpty(data["eval_test_command_templates"])) > 0
 	hasVariants := len(arrayOrEmpty(data["executor_variants"])) > 0
-	appendFieldCheck(&checks, &suggestions, "execution_surface", automatedCommands || hasVariants, "Adapter declares runnable command templates or executor variants.", "Adapter has no command templates or executor variants yet.", "Add at least one eval_test/iterate/held_out/comparison/full_gate command template or executor_variants entry.")
+	appendFieldCheck(&checks, &suggestions, "execution_surface", automatedCommands || hasVariants, "Adapter declares runnable command templates or executor variants.", "Adapter has no command templates or executor variants yet.", "Add at least one eval_test_command_templates entry or executor_variants entry.")
 	if adapterLooksDeterministicOnly(data) {
 		warnings = append(warnings, "Adapter commands look like repo-local deterministic gates only. Keep pytest/lint/type/spec checks in CI or pre-push hooks; use Cautilus for LLM-behavior, judge, or operator-facing review surfaces.")
 		suggestions = append(suggestions, "Inventory LLM-behavior surfaces first (system prompts, agent/chat loops, LLM-backed analysis, operator copy reviewed by a judge) before hand-editing adapter YAML.")
@@ -1163,16 +1094,7 @@ func adapterLooksDeterministicOnly(data map[string]any) bool {
 	if len(arrayOrEmpty(data["executor_variants"])) > 0 {
 		return false
 	}
-	commands := []string{}
-	for _, key := range []string{
-		"eval_test_command_templates",
-		"iterate_command_templates",
-		"held_out_command_templates",
-		"comparison_command_templates",
-		"full_gate_command_templates",
-	} {
-		commands = append(commands, stringArrayOrEmpty(data[key])...)
-	}
+	commands := stringArrayOrEmpty(data["eval_test_command_templates"])
 	if len(commands) == 0 {
 		return false
 	}

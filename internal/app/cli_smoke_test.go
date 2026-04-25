@@ -245,7 +245,7 @@ func TestCLIDoctorReportsReadyWithExecutionSurface(t *testing.T) {
 		"  - smoke",
 		"baseline_options:",
 		"  - baseline git ref via {baseline_ref}",
-		"iterate_command_templates:",
+		"eval_test_command_templates:",
 		"  - npm run check",
 		"",
 	}, "\n")
@@ -289,8 +289,8 @@ func TestCLIDoctorReportsReadyWithExecutionSurface(t *testing.T) {
 	if !ok || len(decisionLoopCommands) != 3 {
 		t.Fatalf("expected three decision loop commands, got %#v", firstBoundedRun["decisionLoopCommands"])
 	}
-	if !strings.Contains(anyToString(decisionLoopCommands[0]), "cautilus mode evaluate --repo-root "+root) {
-		t.Fatalf("expected mode evaluate first bounded run command, got %#v", decisionLoopCommands[0])
+	if !strings.Contains(anyToString(decisionLoopCommands[0]), "cautilus eval test --repo-root "+root) {
+		t.Fatalf("expected eval test first bounded run command, got %#v", decisionLoopCommands[0])
 	}
 	archetypes, ok := firstBoundedRun["archetypes"].([]any)
 	if !ok || len(archetypes) != 3 {
@@ -357,8 +357,8 @@ func TestCLIDoctorAcknowledgesNamedAdaptersWhenDefaultAdapterIsMissing(t *testin
 		"  - smoke",
 		"baseline_options:",
 		"  - baseline git ref via {baseline_ref}",
-		"held_out_command_templates:",
-		"  - echo held-out",
+		"eval_test_command_templates:",
+		"  - echo eval-test",
 		"",
 	}, "\n")
 	if err := os.WriteFile(filepath.Join(namedAdapterDir, "data-final-prompt-ab.yaml"), []byte(adapter), 0o644); err != nil {
@@ -977,7 +977,7 @@ func TestCLIDoctorWarnsWhenAdapterOnlyWrapsDeterministicGates(t *testing.T) {
 		"  - cli smoke",
 		"baseline_options:",
 		"  - baseline git ref via {baseline_ref}",
-		"full_gate_command_templates:",
+		"eval_test_command_templates:",
 		"  - uv run python -m pytest tests/test_cli.py -q",
 		"  - ruff check .",
 		"",
@@ -1528,8 +1528,8 @@ func TestCLIReviewPrepareInputFallsBackToSoleNamedAdapterWhenReportLacksAdapterC
 		"  - operator workflow",
 		"baseline_options:",
 		"  - baseline git ref via {baseline_ref}",
-		"held_out_command_templates:",
-		"  - echo held-out",
+		"eval_test_command_templates:",
+		"  - echo eval-test",
 		"default_prompt_file: prompts/review.md",
 		"default_schema_file: fixtures/review.schema.json",
 		"",
@@ -1603,8 +1603,8 @@ func TestCLIOptimizeSearchPrepareInputFallsBackToSoleNamedAdapterWhenReportLacks
 		"  - operator workflow",
 		"baseline_options:",
 		"  - baseline git ref via {baseline_ref}",
-		"held_out_command_templates:",
-		"  - echo held-out",
+		"eval_test_command_templates:",
+		"  - echo eval-test",
 		"",
 	}, "\n")
 	if err := os.WriteFile(filepath.Join(namedAdapterDir, "data-final-prompt-ab.yaml"), []byte(adapter), 0o644); err != nil {
@@ -1691,8 +1691,8 @@ func TestCLIOptimizeSearchPrepareInputAppliesAdapterSearchDefaults(t *testing.T)
 		"  - operator workflow",
 		"baseline_options:",
 		"  - baseline git ref via {baseline_ref}",
-		"held_out_command_templates:",
-		"  - echo held-out",
+		"eval_test_command_templates:",
+		"  - echo eval-test",
 		"optimize_search:",
 		"  default_budget: heavy",
 		"  budgets:",
@@ -1857,10 +1857,8 @@ echo "$mode ok"
 		"  - operator workflow",
 		"baseline_options:",
 		"  - baseline git ref via {baseline_ref}",
-		"iterate_command_templates:",
-		"  - sh {candidate_repo}/bench-history.sh iterate {scenario_results_file} {profile} {selected_scenario_ids_file} {output_dir}/selection.txt",
-		"comparison_command_templates:",
-		"  - sh {candidate_repo}/bench-history.sh comparison {scenario_results_file} {profile} {selected_scenario_ids_file} {output_dir}/selection.txt",
+		"eval_test_command_templates:",
+		"  - sh {candidate_repo}/bench-history.sh eval {scenario_results_file} {profile} {selected_scenario_ids_file} {output_dir}/selection.txt",
 		"profile_default: profiles/default-train.json",
 		"history_file_hint: .cautilus/history.json",
 		"",

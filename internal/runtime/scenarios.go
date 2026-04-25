@@ -79,10 +79,10 @@ func LoadScenarioCatalog() ScenarioCatalog {
 
 func LoadFirstBoundedRunGuide(repoRoot string) FirstBoundedRunGuide {
 	return FirstBoundedRunGuide{
-		Summary:          "Pick one archetype, then complete one bounded mode evaluate -> review path instead of stopping at doctor.",
+		Summary:          "Pick one preset, then complete one bounded eval test -> review path instead of stopping at doctor.",
 		DiscoveryCommand: "cautilus scenarios --json",
 		DecisionLoopCommands: []string{
-			fmt.Sprintf("cautilus mode evaluate --repo-root %s --mode held_out --intent '<intent>' --baseline-ref origin/main --output-dir /tmp/cautilus-first-run", repoRoot),
+			fmt.Sprintf("cautilus eval test --repo-root %s --fixture <fixture.json> --output-dir /tmp/cautilus-first-run", repoRoot),
 			fmt.Sprintf("cautilus review prepare-input --repo-root %s --report-file /tmp/cautilus-first-run/report.json", repoRoot),
 			fmt.Sprintf("cautilus review variants --repo-root %s --workspace %s --output-dir /tmp/cautilus-first-review", repoRoot, repoRoot),
 		},
