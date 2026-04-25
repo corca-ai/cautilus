@@ -31,9 +31,10 @@ test("run-self-dogfood-instruction-surface materializes a disposable candidate w
 		assert.equal(existsSync(join(candidateRepo, ".agents", "skills", "cautilus", "SKILL.md")), true);
 		const packet = JSON.parse(readFileSync(outputFile, "utf-8"));
 		assert.equal(packet.schemaVersion, "cautilus.instruction_surface_inputs.v1");
-		assert.equal(packet.evaluations.length, 5);
+		assert.equal(packet.evaluations.length, 1);
+		assert.equal(packet.evaluations[0].evaluationId, "checked-in-agents-routing");
 		assert.equal(packet.evaluations[0].entryFile, "AGENTS.md");
-		assert.equal(packet.evaluations[3].loadedInstructionFiles[0], "AGENTS.md");
+		assert.equal(packet.evaluations[0].loadedInstructionFiles[0], "AGENTS.md");
 	} finally {
 		try {
 			execFileSync("git", ["-C", process.cwd(), "worktree", "remove", "--force", candidateRepo], {

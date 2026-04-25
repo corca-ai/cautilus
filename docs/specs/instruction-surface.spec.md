@@ -60,15 +60,11 @@ Instruction-surface evaluation is only useful when the evidence stays bounded an
 
 ## Fixture Shapes
 
-The checked-in fixture suite covers these shapes:
+The checked-in fixture suite is intentionally narrow.
+It carries one product hypothesis: cautilus's own real `AGENTS.md` should steer the agent's first routing decision in line with the repo's stated contract.
 
-1. root `AGENTS.md` only
-2. root `CLAUDE.md` only
-3. root instruction file plus nested instruction override
-4. root instruction file plus linked progressive-disclosure doc
-5. root `AGENTS.md` symlinked to `CLAUDE.md`
-
-The product still permits host repos to declare equivalent local instruction aliases through adapter-owned configuration instead of forcing one filename convention.
+Mechanical capabilities of the runner — alternative root filename conventions, nested overrides, linked progressive-disclosure follow-up docs, and `AGENTS.md` ↔ `CLAUDE.md` symlinks — are exercised through unit tests on `instruction-surface-support.mjs`, not through the on-demand self-dogfood fixture.
+Host repos still declare equivalent local instruction aliases through adapter-owned configuration when their own conventions differ.
 
 ## Review Questions
 
@@ -105,6 +101,19 @@ This surface should not become:
 ## Decisions
 
 - `instruction-surface` is the preferred product name for this boundary.
-- The surface is broader than `AGENTS.md` and covers `CLAUDE.md`, symlinks, nested instruction files, and progressive disclosure.
-- The surface is first-class and separate from `skill evaluate`.
+- The surface stays archetype-neutral and the runner still supports `CLAUDE.md`, symlinks, nested instruction files, and linked follow-up docs at the schema level.
+  Whether each of those mechanical capabilities deserves a dogfood-level fixture is a content decision the suite expresses, not a contract claim.
+- The surface is currently first-class and separate from `skill evaluate`.
+  Whether to keep it separate or fold it into a chatbot-shaped system-prompt evaluation is left as an explicit redesign question (see `Open Redesign`).
 - The first self-dogfood pass uses `Cautilus` itself as the initial real consumer while keeping the contract repo-agnostic.
+
+## Open Redesign
+
+The current self-dogfood suite carries one product hypothesis and routes mechanical capability checks back to unit tests.
+Before broadening the suite again, the surface itself needs a redesign pass:
+
+- Is `instruction-surface` evaluation conceptually a special shape of chatbot system-prompt evaluation, or a separate first-class surface?
+- If it stays separate, what dimensions (routing fidelity, contract adherence, progressive disclosure, scope-boundary fidelity) should each have a dedicated dogfood fixture using cautilus's real instruction surface and real linked docs?
+- If it folds into chatbot evaluation, how does the chatbot surface accept a workspace-shaped system prompt (file tree with overlays / nesting / symlinks) instead of a plain string?
+
+Resolve the redesign question before adding new fixtures to the suite.

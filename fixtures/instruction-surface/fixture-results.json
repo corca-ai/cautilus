@@ -12,50 +12,5 @@
       "firstToolCall": "none",
       "reasonSummary": "The repo instruction surface is sufficient to answer the routing question itself, so no bootstrap helper or durable work skill is committed yet."
     }
-  },
-  "claude-only-routing": {
-    "observationStatus": "observed",
-    "summary": "Started from CLAUDE.md and chose discovery-first routing without selecting a skill yet.",
-    "entryFile": "CLAUDE.md",
-    "loadedInstructionFiles": ["CLAUDE.md"],
-    "loadedSupportingFiles": [],
-    "routingDecision": {
-      "selectedSkill": "none",
-      "reasonSummary": "The root instruction surface only exposed CLAUDE.md and it directed discovery-first routing."
-    }
-  },
-  "nested-override-routing": {
-    "observationStatus": "observed",
-    "summary": "Read the root instruction file and then the scoped nested override before routing.",
-    "entryFile": "AGENTS.md",
-    "loadedInstructionFiles": ["AGENTS.md", "apps/demo/AGENTS.md"],
-    "loadedSupportingFiles": [],
-    "routingDecision": {
-      "selectedSkill": "none",
-      "reasonSummary": "The nested override confirmed that the scoped subtree should still start with shared-skill discovery."
-    }
-  },
-  "linked-doc-routing": {
-    "observationStatus": "observed",
-    "summary": "Started from AGENTS.md and kept the first routing decision narrow before choosing a helper.",
-    "entryFile": "AGENTS.md",
-    "loadedInstructionFiles": ["AGENTS.md"],
-    "loadedSupportingFiles": [],
-    "routingDecision": {
-      "selectedSkill": "none",
-      "selectedSupport": "none",
-      "reasonSummary": "The linked follow-up doc made the discovery-first preference explicit for routing fidelity work."
-    }
-  },
-  "claude-symlink-routing": {
-    "observationStatus": "observed",
-    "summary": "Entered through the AGENTS symlink surface and kept the first routing decision narrow.",
-    "entryFile": "AGENTS.md",
-    "loadedInstructionFiles": ["AGENTS.md"],
-    "loadedSupportingFiles": [],
-    "routingDecision": {
-      "selectedSkill": "none",
-      "reasonSummary": "The AGENTS symlink resolved to CLAUDE.md which only asked for discovery-first routing, so no durable work skill was committed yet."
-    }
   }
 }

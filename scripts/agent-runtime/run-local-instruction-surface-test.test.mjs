@@ -35,12 +35,10 @@ test("buildObservedInstructionSurfaceInput materializes fixture-backed instructi
 	});
 	assert.equal(packet.schemaVersion, "cautilus.instruction_surface_inputs.v1");
 	assert.equal(packet.suiteId, "instruction-surface-demo");
-	assert.equal(packet.evaluations.length, 5);
+	assert.equal(packet.evaluations.length, 1);
+	assert.equal(packet.evaluations[0].evaluationId, "checked-in-agents-routing");
 	assert.equal(packet.evaluations[0].expectedEntryFile, "AGENTS.md");
-	assert.equal(packet.evaluations[1].instructionSurface.surfaceLabel, "claude_only");
-	assert.equal(packet.evaluations[3].loadedInstructionFiles[0], "AGENTS.md");
-	assert.equal(packet.evaluations[4].instructionSurface.files[1].kind, "symlink");
-	assert.equal(packet.evaluations[4].instructionSurface.files[1].targetPath, "CLAUDE.md");
+	assert.equal(packet.evaluations[0].loadedInstructionFiles[0], "AGENTS.md");
 	assert.equal(readFileSync(join(workspace, "AGENTS.md"), "utf-8"), readFileSync(join(process.cwd(), "AGENTS.md"), "utf-8"));
 });
 
@@ -163,6 +161,93 @@ test("materializeInstructionSurface masks unspecified root aliases while a varia
 	} else {
 		assert.equal(existsSync(join(workspace, "CLAUDE.md")), false);
 	}
+});
+
+test("materializeInstructionSurface materializes a symlink entry and restores the original alias", () => {
+	const artifactDir = mkdtempSync(join(tmpdir(), "cautilus-instruction-surface-"));
+	const workspace = createInstructionSurfaceWorkspace();
+	const originalAgents = readFileSync(join(workspace, "AGENTS.md"), "utf-8");
+	const materialized = materializeInstructionSurface(
+		{
+			workspace,
+			casesFile: join(workspace, "fixtures", "instruction-surface", "cases.json"),
+		},
+		{
+			instructionSurface: {
+				surfaceLabel: "claude_symlink",
+				files: [
+					{ path: "CLAUDE.md", content: "# CLAUDE\n\nUse discovery-first routing.\n" },
+					{ path: "AGENTS.md", kind: "symlink", targetPath: "CLAUDE.md" },
+				],
+			},
+		},
+		artifactDir,
+	);
+	try {
+		assert.equal(readFileSync(join(workspace, "AGENTS.md"), "utf-8"), "# CLAUDE\n\nUse discovery-first routing.\n");
+		assert.equal(readFileSync(join(workspace, "CLAUDE.md"), "utf-8"), "# CLAUDE\n\nUse discovery-first routing.\n");
+		const symlinkEntry = materialized.instructionSurface.files.find((file) => file.kind === "symlink");
+		assert.equal(symlinkEntry.targetPath, "CLAUDE.md");
+		assert.equal(symlinkEntry.sourceKind, "inline_symlink");
+	} finally {
+		materialized.restore();
+	}
+	assert.equal(readFileSync(join(workspace, "AGENTS.md"), "utf-8"), originalAgents);
+});
+
+test("materializeInstructionSurface writes nested instruction overrides under scoped subtrees", () => {
+	const artifactDir = mkdtempSync(join(tmpdir(), "cautilus-instruction-surface-"));
+	const workspace = createInstructionSurfaceWorkspace();
+	const materialized = materializeInstructionSurface(
+		{
+			workspace,
+			casesFile: join(workspace, "fixtures", "instruction-surface", "cases.json"),
+		},
+		{
+			instructionSurface: {
+				surfaceLabel: "nested_override",
+				files: [
+					{ path: "AGENTS.md", content: "# AGENTS\n\nRead nested overrides.\n" },
+					{ path: "apps/demo/AGENTS.md", content: "# Nested AGENTS\n\nUse discovery-first routing inside apps/demo.\n" },
+				],
+			},
+		},
+		artifactDir,
+	);
+	try {
+		assert.equal(readFileSync(join(workspace, "AGENTS.md"), "utf-8"), "# AGENTS\n\nRead nested overrides.\n");
+		assert.equal(readFileSync(join(workspace, "apps/demo/AGENTS.md"), "utf-8"), "# Nested AGENTS\n\nUse discovery-first routing inside apps/demo.\n");
+	} finally {
+		materialized.restore();
+	}
+	assert.equal(existsSync(join(workspace, "apps/demo/AGENTS.md")), false);
+});
+
+test("materializeInstructionSurface writes linked progressive-disclosure docs that remain after the run", () => {
+	const artifactDir = mkdtempSync(join(tmpdir(), "cautilus-instruction-surface-"));
+	const workspace = createInstructionSurfaceWorkspace();
+	const materialized = materializeInstructionSurface(
+		{
+			workspace,
+			casesFile: join(workspace, "fixtures", "instruction-surface", "cases.json"),
+		},
+		{
+			instructionSurface: {
+				surfaceLabel: "linked_progressive_doc",
+				files: [
+					{ path: "AGENTS.md", content: "# AGENTS\n\nRead docs/internal/routing-note.md when routing.\n" },
+					{ path: "docs/internal/routing-note.md", content: "# Routing Note\n\nPrefer discovery-first routing.\n" },
+				],
+			},
+		},
+		artifactDir,
+	);
+	try {
+		assert.equal(readFileSync(join(workspace, "docs/internal/routing-note.md"), "utf-8"), "# Routing Note\n\nPrefer discovery-first routing.\n");
+	} finally {
+		materialized.restore();
+	}
+	assert.equal(existsSync(join(workspace, "docs/internal/routing-note.md")), false);
 });
 
 test("relativizeObservedPath keeps workspace-relative evidence stable", () => {
