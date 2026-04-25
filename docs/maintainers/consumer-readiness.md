@@ -66,12 +66,12 @@ Evidence:
 
 - `workflow` normalization owns a checked-in durable-workflow fixture: [fixtures/scenario-proposals/samples/workflow-recovery-input.json](../../fixtures/scenario-proposals/samples/workflow-recovery-input.json).
   Routed through `cautilus scenario normalize workflow` per the [archetype boundary spec](../specs/archetype-boundary.spec.md).
-- `mode evaluate`, `review variants`, and comparison flows are all exercised in-tree against workflow-shaped packets and adapters
+- `eval test`, `review variants`, and comparison flows are all exercised in-tree against workflow-shaped packets and adapters
 - the external proof bar remains:
   - `cautilus doctor --repo-root <workflow-consumer-path>` returns `ready`
-  - one deep path such as `mode evaluate` or `review variants` passes against that consumer before release
+  - one deep path such as `eval test` or `review variants` passes against that consumer before release
 - one real external workflow-style consumer run now exists in internal research:
-  it reached `doctor ready`, completed `mode evaluate --mode held_out`, and completed `review variants` with an explicit schema-file override.
+  it reached `doctor ready`, completed `eval test`, and completed `review variants` with an explicit schema-file override.
   The value of that run was twofold:
   it exposed repairable consumer-readiness gaps, and after those were fixed it produced an honest rejection rather than a false positive.
   The report surface is now also expected to distinguish a clean behavior regression from provider-contaminated evidence when persisted artifacts carry signatures such as repeated rate limits.
@@ -117,6 +117,6 @@ It keeps one official adapter contract while still grounding the normalization l
 1. Keep proving the deepest binary and bundled-skill behavior against `cautilus` itself.
 2. Keep checked-in consumer-shaped normalized packet examples for the chatbot, skill-validation, and durable-workflow archetypes.
 3. Keep one explicit external bootstrap-heavy consumer proof for the `repo / whole-repo` preset, but treat it as archetype validation rather than named-repo product ownership.
-4. Treat the next external-consumer question as whether the first bounded run should expand beyond `mode evaluate` into the first review loop, not as whether `bootstrapHelper` / `workSkill` works at all.
+4. Treat the next external-consumer question as whether the first bounded run should expand beyond `eval test` into the first review loop, not as whether `bootstrapHelper` / `workSkill` works at all.
 5. If a stronger claim needs one real external consumer, record that proof as an appendix update without turning the named repo into canonical vocabulary.
-6. Keep the current product-owned onboarding smoke honest: today it proves fresh-consumer install to `doctor ready` and one completed bounded `mode evaluate` run; the next proof question is whether that smoke should also reach `review prepare-input` without turning the helper into a consumer-specific workflow.
+6. Keep the current product-owned onboarding smoke honest: today it proves fresh-consumer install to `doctor ready` and one completed bounded `eval test` run; the next proof question is whether that smoke should also reach `review prepare-input` without turning the helper into a consumer-specific workflow.

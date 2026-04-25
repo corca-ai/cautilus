@@ -43,14 +43,6 @@ preflight_commands:
 evaluation_input_default: fixtures/eval/whole-repo/example.fixture.json
 eval_test_command_templates:
   - node scripts/agent-runtime/run-local-eval-test.mjs --repo-root . --workspace {candidate_repo} --cases-file {eval_cases_file} --output-file {eval_observed_file} --artifact-dir {output_dir}/eval-test --backend {backend} --sandbox read-only
-iterate_command_templates:
-  - npm run bench:train -- --baseline-ref {baseline_ref} --history-file {history_file} --samples {iterate_samples}
-held_out_command_templates:
-  - npm run bench:test -- --baseline-ref {baseline_ref} --samples {held_out_samples}
-comparison_command_templates:
-  - npm run bench:compare -- --baseline-ref {baseline_ref} --profile {profile} --split {split} --samples {comparison_samples}
-full_gate_command_templates:
-  - npm run bench:full -- --baseline-ref {baseline_ref} --history-file {history_file} --samples {full_gate_samples}
 optimize_search:
   default_budget: medium
   budgets:
@@ -116,10 +108,6 @@ comparison_questions:
 human_review_prompts:
   - id: real-user
     prompt: Where would a real user still judge the candidate worse despite benchmark wins?
-iterate_samples_default: 2
-held_out_samples_default: 2
-comparison_samples_default: 2
-full_gate_samples_default: 2
 review_timeout_ms: 30000
 history_file_hint: /tmp/cautilus-history.json
 profile_default: default
@@ -138,10 +126,6 @@ default_schema_file: fixtures/review/review-verdict.schema.json
 - `evaluation_input_default`: optional checked-in `cautilus.evaluation_input.v1` path used by `cautilus eval test` when the operator does not pass `--fixture`.
 - `eval_test_command_templates`: commands that turn the validated fixture's translated case suite into an observed packet (`cautilus.evaluation_observed.v1` for `repo/whole-repo`, `cautilus.skill_evaluation_inputs.v1` for `repo/skill`).
 - `default_runtime`: optional runtime choice (`codex` or `claude`), defaults to `codex`. Overridden by `cautilus eval test --runtime`.
-- `iterate_command_templates`: commands for training or iterate loops.
-- `held_out_command_templates`: commands for the held-out split or equivalent validation.
-- `comparison_command_templates`: optional commands that produce scenario-by-scenario deltas.
-- `full_gate_command_templates`: commands for the final shipping gate.
 - `executor_variants`: optional backend-specific review or simulation runners.
 - `optimize_search`: optional repo-owned defaults for `cautilus optimize search`.
   The product still owns the shared tier labels `light`, `medium`, and `heavy`.
@@ -151,10 +135,6 @@ default_schema_file: fixtures/review/review-verdict.schema.json
 - `report_paths`: machine-readable or HTML output paths worth checking after runs.
 - `comparison_questions`: prompts to keep result interpretation focused on real deltas.
 - `human_review_prompts`: lenses that test whether benchmark wins survive human judgment.
-- `iterate_samples_default`: default sample count for iterate runs.
-- `held_out_samples_default`: default sample count for held-out runs.
-- `comparison_samples_default`: default sample count for explicit compare runs.
-- `full_gate_samples_default`: default sample count for full gate runs.
 - `review_timeout_ms`: optional bounded timeout for executor-variant review runs that this adapter expects by default.
 - `history_file_hint`: default history file path when the workflow uses graduation or cadence.
 - `profile_default`: default scenario profile reference when the backend supports profiles.
@@ -202,7 +182,7 @@ Split only when `Cautilus` itself would become less legible or less bounded if t
 
 ### Compare Artifact Pattern
 
-A named adapter whose `comparison_command_templates` produce rich scenario-by-scenario signals should also persist them as files so executor variants and human reviewers can ground their verdicts on the same numbers.
+A named adapter whose eval-test commands produce rich scenario-by-scenario signals should also persist them as files so executor variants and human reviewers can ground their verdicts on the same numbers.
 
 Recommended shape:
 
@@ -283,10 +263,6 @@ Good placeholders:
 - `{prompt_file}`
 - `{schema_file}`
 - `{output_file}`
-- `{iterate_samples}`
-- `{held_out_samples}`
-- `{comparison_samples}`
-- `{full_gate_samples}`
 - `{output_dir}`
 - `{scenario_results_file}`
 - `{candidate_results_file}` for migration-only compatibility

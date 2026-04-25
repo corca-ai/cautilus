@@ -140,15 +140,15 @@ placeholder drift + specdown 기반 spec source guard) + Go race test + standing
 
 ### 3f. Review (fixture 기반, LLM 없음)
 
-의존: 3.13의 report 출력이 필요하므로, 먼저 mode evaluate를 통해 review
-입력을 만들거나 fixture를 사용한다.
+의존: review 입력은 `cautilus eval test`가 만든 report.json을 사용하거나
+체크인된 fixture를 사용한다.
 
 | # | 명령 | 통과 조건 | 실행자 |
 |---|---|---|---|
-| 3.19 | `cautilus mode evaluate --repo-root . --mode held_out --intent "Operator-facing behavior should remain legible." --baseline-ref origin/main --output-dir /tmp/cautilus-oa-mode` | report.json 생성, exit 0 | 기계적 |
-| 3.20 | `cautilus review prepare-input --repo-root . --report-file /tmp/cautilus-oa-mode/report.json` | review.json 생성, exit 0. 의존: 3.19 | 기계적 |
-| 3.21 | `cautilus review build-prompt-input --review-packet /tmp/cautilus-oa-mode/review.json` | review-prompt-input.json 생성, exit 0. 의존: 3.20 | 기계적 |
-| 3.22 | `cautilus review render-prompt --input /tmp/cautilus-oa-mode/review-prompt-input.json` | 프롬프트 텍스트 출력, exit 0. 의존: 3.21 | 기계적 |
+| 3.19 | `cautilus eval test --repo-root . --fixture fixtures/eval/whole-repo/checked-in-agents-routing.fixture.json --output-dir /tmp/cautilus-oa-eval` | observed packet 생성, exit 0 | 기계적 |
+| 3.20 | `cautilus review prepare-input --repo-root . --report-file /tmp/cautilus-oa-eval/report.json` | review.json 생성, exit 0. 의존: 3.19 | 기계적 |
+| 3.21 | `cautilus review build-prompt-input --review-packet /tmp/cautilus-oa-eval/review.json` | review-prompt-input.json 생성, exit 0. 의존: 3.20 | 기계적 |
+| 3.22 | `cautilus review render-prompt --input /tmp/cautilus-oa-eval/review-prompt-input.json` | 프롬프트 텍스트 출력, exit 0. 의존: 3.21 | 기계적 |
 
 ---
 
@@ -206,7 +206,7 @@ source of truth다.
 
 | # | 명령 (각 repo에서) | 통과 조건 | 실행자 |
 |---|---|---|---|
-| 5.0 | `npm run consumer:onboard:smoke` | temp consumer repo가 `install -> adapter init -> doctor ready -> held_out mode evaluate(report.json 생성)`까지 통과, exit 0 | 기계적 |
+| 5.0 | `npm run consumer:onboard:smoke` | temp consumer repo가 `install -> adapter init -> doctor ready`까지 통과, exit 0 (eval-test로의 first bounded run 재배선은 후속 슬라이스) | 기계적 |
 | 5.1 | `cautilus doctor --repo-root <repo-path>` | `ready` 출력, exit 0 | 기계적 |
 | 5.2 | `cautilus adapter resolve --repo-root <repo-path>` | adapter 경로 출력, exit 0 | 기계적 |
 
@@ -226,7 +226,7 @@ consumer-readiness.md에 기록된 deeper evidence path. 전부 돌릴 필요는
 
 | # | 대상 | 명령 예시 | 통과 조건 | 비용 |
 |---|---|---|---|---|
-| 5.3 | workflow consumer | `cautilus mode evaluate --repo-root <workflow-consumer-path> --mode full_gate --intent '...' --baseline-ref origin/main --output-dir /tmp/cautilus-workflow-full-gate` | report의 recommendation이 `accept-now` | 무료 |
+| 5.3 | workflow consumer | `cautilus eval test --repo-root <workflow-consumer-path> --fixture <fixture.json> --output-dir /tmp/cautilus-workflow-eval` | observed packet의 recommendation이 `accept-now` | 무료 |
 | 5.4 | workflow consumer | `cautilus review variants --repo-root <workflow-consumer-path> --adapter-name operator-recovery ...` | review summary에 passing variant 존재 | LLM |
 
 ---

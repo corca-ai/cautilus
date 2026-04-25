@@ -9,14 +9,8 @@ required_prerequisites:
   - choose a real baseline before comparing results
 preflight_commands:
   - npm run check
-iterate_command_templates:
-  - npm run bench:train -- --baseline-ref {baseline_ref} --history-file {history_file} --samples {iterate_samples}
-held_out_command_templates:
-  - npm run bench:test -- --baseline-ref {baseline_ref} --samples {held_out_samples}
-comparison_command_templates:
-  - npm run bench:compare -- --baseline-ref {baseline_ref} --profile {profile} --split {split} --samples {comparison_samples}
-full_gate_command_templates:
-  - npm run bench:full -- --baseline-ref {baseline_ref} --history-file {history_file} --samples {full_gate_samples}
+eval_test_command_templates:
+  - node scripts/agent-runtime/run-local-eval-test.mjs --repo-root . --workspace {candidate_repo} --cases-file {eval_cases_file} --output-file {eval_observed_file} --artifact-dir {output_dir}/eval-test --backend {backend} --sandbox read-only
 instance_discovery:
   kind: explicit
   instances:
@@ -69,10 +63,6 @@ comparison_questions:
 human_review_prompts:
   - id: real-user
     prompt: Where would a real user still judge the candidate worse despite benchmark wins?
-iterate_samples_default: 2
-held_out_samples_default: 2
-comparison_samples_default: 2
-full_gate_samples_default: 2
 history_file_hint: /tmp/cautilus-history.json
 profile_default: default
 default_prompt_file: fixtures/review/skill-smoke.prompt.md

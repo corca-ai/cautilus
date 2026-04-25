@@ -235,7 +235,7 @@ Recorded here so the next session does not re-run the same analysis.
 
 - **Part 1 — reusable baseline result store.** Re-key the baseline-cache from `(profileId, scenarioIds, baselineFingerprint, scenarioFingerprint)` to a broader key that lets multiple profiles and entry points share one baseline result per evaluated commit (e.g.
   `(commitSha, scenarioId, adapterId, mode)`).
-- **Part 2 — broader compare ownership.** Extend history / compare hooks beyond the single profile-backed `mode evaluate --profile <X>` path so `review variants`, `mode evaluate` without a profile, and `skill evaluate` can also update history and materialize compare artifacts.
+- **Part 2 — broader compare ownership.** Extend history / compare hooks beyond the single profile-backed eval path so `review variants`, profile-less eval test runs, and skill evaluation can also update history and materialize compare artifacts.
 
 The two parts were planned as one coordinated slice, with README, [skills/cautilus/SKILL.md](../../skills/cautilus/SKILL.md), `cautilus --help` (registry), and this contract updated together.
 
@@ -243,8 +243,8 @@ The two parts were planned as one coordinated slice, with README, [skills/cautil
 
 Premortem (4 angles: cache migration / external consumer / devil's advocate / doc cascade) surfaced a devil's-advocate finding strong enough to block execution and verified against repo state:
 
-- `cautilus mode evaluate --mode comparison` is the only path that materializes a baseline-cache file today.
-- The repo's only live dogfood path, `run-self-dogfood.mjs`, runs with `--mode full_gate`, which never reaches the cache-materialization branch.
+- The legacy `cautilus mode evaluate --mode comparison` path was the only one that materialized a baseline-cache file. That command was retired with the evaluation-surfaces redesign; rebuilding the cache materialization on the new `cautilus eval test` surface is itself a separate slice and has not been picked up.
+- The legacy `run-self-dogfood.mjs` script that drove the cache-materialization branch was also retired; the new `dogfood:self:eval` flow does not yet exercise the comparison cache.
 - Zero scenario profile files are checked in across `.agents/`, `fixtures/`, and the repo root.
 - `cautilus review variants` and `cautilus eval evaluate` still contain zero `scenario-history` or `baseline-cache` persistence hooks today, so Part 2 still has no current call site.
 - Live external consumers are not yet tracked in [consumer-readiness.md](../maintainers/consumer-readiness.md); the chatbot, skill-validation, and workflow entries are archetype reference fixtures, not live deployments.
@@ -256,8 +256,8 @@ Master-plan Phase 5 guidance ("dogfood evidence should justify the next seam rat
 
 Any one of the following is enough to revisit:
 
-1. A live external consumer (not an archetype fixture) runs `mode evaluate --profile <X>` across two or more adapter commands and measures baseline recomputation cost that the shared store would eliminate.
-2. A live consumer or dogfood adapter begins using `mode evaluate --mode comparison` with a checked-in profile, so the existing baseline-cache path becomes hot enough to matter.
+1. A live external consumer (not an archetype fixture) runs an eval-test path across two or more adapter commands and measures baseline recomputation cost that the shared store would eliminate.
+2. A live consumer or dogfood adapter begins materializing a baseline-cache file from the new `cautilus eval test` surface with a checked-in profile, so the cache path becomes hot enough to matter.
 3. A concrete request to make `review variants` or `skill evaluate` history-aware lands with a named use case (e.g.
    "remember which skill test cases already passed last week").
 

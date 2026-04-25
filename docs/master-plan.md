@@ -27,17 +27,17 @@ Current `core validated surface`:
 - a minimal CLI plus a bundled `cautilus` skill entrypoint embedded through `skills/bundled.go`
 - repo-local Codex and Claude plugin packages, marketplace wiring, and local proof paths for the bundled skill
 - adapter readiness checks through `doctor`
-- bounded runtime execution through `mode evaluate`
+- bounded runtime execution through `eval test`
 - scenario-history-aware profile selection and history updates for profile-backed mode runs
 - comparison-mode baseline-cache seed materialization for profile-backed runs
 - explicit workspace preparation through `workspace prepare-compare`
 - explicit artifact-root pruning through `workspace prune-artifacts`
 - explicit per-run artifact-root materialization through `workspace start`, with a `CAUTILUS_RUN_DIR` env var contract documented in [active-run.md](./contracts/active-run.md).
-  `mode evaluate` is wired into `resolveRunDir`; remaining consumer commands are being pulled in one slice at a time.
+  `eval test` is wired into `resolveRunDir`; remaining consumer commands are being pulled in one slice at a time.
 - report packet assembly, review packet assembly, and review-variant fanout
 - native self-dogfood HTML rendering through `cautilus self-dogfood render-html` and `render-experiments-html`
 - tagged-release install surface (`install.sh`, checksum + `actions/attest` subject attestation) plus product-owned public-release verification and `release:smoke-install` helpers
-- checked-in local gates, GitHub workflows that run `verify`, and an external consumer onboarding smoke (`consumer:onboard:smoke`) that proves install → adapter init → minimal wiring → adapter resolve → doctor ready → one bounded `mode evaluate` run
+- checked-in local gates, GitHub workflows that run `verify`, and an external consumer onboarding smoke (`consumer:onboard:smoke`) that proves install → adapter init → minimal wiring → adapter resolve → doctor ready (the bounded eval-test run is rewired in a follow-up slice)
 
 Current `product-owned helper surface`:
 
@@ -82,7 +82,7 @@ Moved into the product runtime:
 - scenario split selection rules (train / held-out / full-gate)
 - history update and scenario graduation logic for profile-backed runs
 - baseline-cache key materialization for profile-backed comparison runs
-- compare artifact conventions shared by `mode evaluate` and `review variants`
+- compare artifact conventions shared by `eval test` and `review variants`
 
 Still open (both deferred 2026-04-15 pending dogfood evidence — see [scenario-history.md § Deferred Expansion](./contracts/scenario-history.md) for premortem findings and the triggers that would unlock the slice):
 
@@ -130,7 +130,7 @@ Still intentionally excluded:
 
 Shipped:
 
-- [docs/guides/consumer-adoption.md](./guides/consumer-adoption.md) plus `npm run consumer:onboard:smoke` prove install → adapter init → minimal runnable wiring → adapter resolve → doctor ready → one bounded `mode evaluate` run in a temp git repo
+- [docs/guides/consumer-adoption.md](./guides/consumer-adoption.md) plus `npm run consumer:onboard:smoke` prove install → adapter init → minimal runnable wiring → adapter resolve → doctor ready in a temp git repo (the bounded eval-test run is rewired in a follow-up slice)
 - release discipline boundary documented in [release-boundary.md](./maintainers/release-boundary.md)
 
 Still open:

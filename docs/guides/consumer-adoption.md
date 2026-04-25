@@ -45,7 +45,7 @@ What each step proves:
 3. `doctor --next-action` narrows that full state down to one current action plus the exact doctor command to continue with.
 4. Follow that loop until `doctor` returns `ready`.
 5. `doctor` then proves the repo is ready against the checked-in runtime contract.
-   The ready payload now includes `first_bounded_run`, which mirrors the `cautilus scenarios --json` archetype catalog and adds a starter `mode evaluate -> review prepare-input -> review variants` loop.
+   The ready payload now includes `first_bounded_run`, which mirrors the `cautilus scenarios --json` archetype catalog and adds a starter `eval test -> review prepare-input -> review variants` loop.
    If the repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, use `cautilus doctor --adapter-name <name>` for repo-scope validation.
 6. After repo-scope `doctor` is ready, run one bounded evaluation path rather than stopping at wiring.
    Use `first_bounded_run.archetypes[*].exampleInputCli` when you want a minimal valid packet before reaching for repo-local fixtures.
@@ -95,10 +95,10 @@ This helper:
 - creates a temp git repo
 - runs `cautilus install` inside that temp repo
 - runs `cautilus adapter init` inside that temp repo
-- seeds one minimal `held_out_command_templates` entry into the generated adapter so the repo reaches `doctor ready`
+- seeds one minimal `eval_test_command_templates` entry into the generated adapter so the repo reaches `doctor ready`
 - runs `cautilus adapter resolve` inside that temp repo
 - runs `cautilus doctor` inside that temp repo
-- runs `cautilus mode evaluate --mode held_out` inside that temp repo
+- runs `cautilus eval test --fixture <fixture.json>` inside that temp repo
 - proves the fresh consumer reaches one bounded `report.json` instead of stopping at wiring
 
 ## Deprecated Surface Names

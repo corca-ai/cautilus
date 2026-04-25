@@ -70,7 +70,7 @@ cautilus report build \
 # CAUTILUS_RUN_DIR. Pass it explicitly only when you need to override the
 # active run (for example, inside a self-dogfood script that mints its own
 # curated bundle path).
-cautilus mode evaluate \
+cautilus eval test \
   --repo-root . \
   --mode held_out \
   --intent "Operator-facing behavior should remain legible." \

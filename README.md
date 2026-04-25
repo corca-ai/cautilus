@@ -164,7 +164,7 @@ curl -fsSL \
 cd /path/to/host-repo
 cautilus install
 cautilus adapter init
-cautilus mode evaluate --mode held_out
+cautilus eval test --fixture <fixture.json>
 ```
 
 **Agent track — Claude / Codex plugin.**

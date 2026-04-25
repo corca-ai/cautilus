@@ -116,7 +116,7 @@ When the target repo is `Cautilus` itself, prefer the checked-in self-dogfood wr
 
 ## Report Reading
 
-When `mode evaluate` or `report build` emits `report.json`, read it in this order:
+When `eval test` or `report build` emits `report.json`, read it in this order:
 
 1. `recommendation`
 2. `modeSummaries[*].status` and `modeSummaries[*].summary`

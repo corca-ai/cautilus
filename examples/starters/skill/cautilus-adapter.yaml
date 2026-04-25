@@ -1,23 +1,13 @@
 version: 1
 repo: your-skill-repo
 evaluation_surfaces:
-  - skill trigger accuracy and execution quality
+  - skill trigger, execution, and validation behavior
 baseline_options:
   - baseline git ref in the same repo via {baseline_ref}
 required_prerequisites:
   - choose a real baseline before comparing results
 preflight_commands:
   - node -e "console.log('preflight smoke ok')"
-iterate_command_templates:
-  - node -e "console.log('iterate smoke ok')"
-held_out_command_templates:
-  - node -e "console.log('held out smoke ok')"
-comparison_command_templates:
-  - node -e "console.log('comparison smoke ok')"
-full_gate_command_templates:
-  - node -e "console.log('full gate smoke ok')"
-iterate_samples_default: 1
-held_out_samples_default: 1
-comparison_samples_default: 1
-full_gate_samples_default: 1
+eval_test_command_templates:
+  - node -e "console.log('eval test smoke ok')"
 profile_default: default

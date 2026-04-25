@@ -49,8 +49,8 @@ Treat starter placeholders as bootstrap help, not as proof that a real consumer 
 A minimal adapter must wire at least one real runnable path to reach `doctor ready`:
 
 ```yaml
-held_out_command_templates:
-  - npm run bench:test -- --baseline-ref {baseline_ref} --samples {held_out_samples}
+eval_test_command_templates:
+  - node scripts/agent-runtime/run-local-eval-test.mjs --repo-root . --workspace {candidate_repo} --cases-file {eval_cases_file} --output-file {eval_observed_file} --artifact-dir {output_dir}/eval-test --backend {backend} --sandbox read-only
 ```
 
 ## Probes & discovery
@@ -79,7 +79,7 @@ cautilus scenarios --json
 Use `doctor --next-action` when you want one current onboarding step plus the exact follow-up loop.
 Use `doctor --scope agent-surface` to verify only the bundled skill and local agent-surface install.
 Use default `doctor` (`--scope repo`) to verify the repo has a real runnable evaluation path.
-When repo-scope `doctor` returns `ready`, the JSON payload includes `first_bounded_run`: the same archetype catalog as `cautilus scenarios --json` plus a starter `mode evaluate -> review prepare-input -> review variants` loop.
+When repo-scope `doctor` returns `ready`, the JSON payload includes `first_bounded_run`: the same archetype catalog as `cautilus scenarios --json` plus a starter `eval test -> review prepare-input -> review variants` loop.
 When a repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, run `cautilus doctor --repo-root /path/to/repo --adapter-name <name>` for repo-scope validation instead of expecting plain `doctor` to guess which named adapter you mean.
 
 For the shortest end-to-end adoption proof in a fresh consumer repo:
@@ -152,7 +152,7 @@ cautilus workspace prune-artifacts \
 
 `workspace start` defaults `--root` to `./.cautilus/runs/` (auto-created on first use) and prints `export CAUTILUS_RUN_DIR=<absolute runDir>`.
 Pass `--json` instead of `eval` when a script needs the machine-readable payload.
-When `CAUTILUS_RUN_DIR` is already pinned, downstream commands (`workspace prepare-compare`, `mode evaluate`) reuse that active `runDir`; if nothing is pinned they auto-materialize a fresh `runDir` and print `Active run: <path>` to stderr.
+When `CAUTILUS_RUN_DIR` is already pinned, downstream commands (`workspace prepare-compare`, `eval test`) reuse that active `runDir`; if nothing is pinned they auto-materialize a fresh `runDir` and print `Active run: <path>` to stderr.
 
 ## Scenarios
 
@@ -239,28 +239,6 @@ cautilus eval evaluate \
   --input ./eval-observed.json \
   --output /tmp/cautilus-skill-summary.json
 ```
-
-## Mode evaluation
-
-```bash
-# execute one adapter-defined mode directly and emit a report packet
-cautilus mode evaluate \
-  --repo-root . \
-  --mode held_out \
-  --intent "Operator-facing behavior should remain legible." \
-  --baseline-ref origin/main \
-  --output-dir /tmp/cautilus-mode
-```
-
-This command answers:
-"did the bounded evaluation complete, and if it rejected, was that a clean
-behavior regression or a contaminated result?"
-
-Start with `report.json`.
-Read `recommendation`, then `modeSummaries[*].status`, then `reasonCodes` and
-`warnings`.
-`provider_rate_limit_contamination` means persisted artifacts suggest
-provider/runtime pressure polluted the result.
 
 ## Reports
 

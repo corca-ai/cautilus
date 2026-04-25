@@ -39,7 +39,7 @@ The standalone builder should start from an explicit input packet:
 - optional `intentProfile` when present, it must use the product-owned behavior-intent catalog
 - `commands`: explicit mode-to-command mapping
 - optional `commandObservations`: bounded executed-command records
-- optional `adapterContext`: product-owned adapter identity preserved from `mode evaluate` when the run was executed against an explicit adapter path or named adapter
+- optional `adapterContext`: product-owned adapter identity preserved from `eval test` when the run was executed against an explicit adapter path or named adapter
 - `modeRuns`: checked-in or persisted mode execution records Each mode run may include one `scenarioResults` packet using `cautilus.scenario_results.v1`.
 - optional `improved`, `regressed`, `unchanged`, `noisy`
 - optional `humanReviewFindings`

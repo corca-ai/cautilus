@@ -3,34 +3,14 @@
 Use this reference when the target repo is `Cautilus` itself.
 These are maintainer-local wrappers around the product CLI; host repos do not need to reach for them.
 
-## Canonical operator-facing record
+## Canonical eval-test record
 
 ```bash
-npm run dogfood:self
+npm run dogfood:self:eval
 ```
 
-Use this when the job is to refresh the canonical operator-facing record of the current self-dogfood result.
-Rebuilds the checked-in `latest/` bundle.
-
-## Tuning experiments
-
-```bash
-npm run dogfood:self:experiments
-```
-
-Use this when the job is tuning the self-dogfood review budget or comparing review surfaces.
-This is the place for stronger claims such as binary-surface, skill-surface, and gate-honesty probes.
-Does not overwrite the canonical `latest/` bundle.
-
-## Experiment HTML view
-
-```bash
-npm run dogfood:self:experiments:html
-cautilus self-dogfood render-experiments-html
-```
-
-Refreshes the static HTML compare view of the current latest experiments bundle.
-Treat the experiments `index.html` as a read-only compare view of the latest experiment summary/report bundle so A/B outcomes are visible side by side.
+Use this when the job is to refresh the canonical operator-facing record of the current self-dogfood eval-test result.
+Rebuilds the checked-in `artifacts/self-dogfood/eval/latest/` bundle by invoking `cautilus eval test --adapter-name self-dogfood-eval` against the repo.
 
 ## Checked-in bundle HTML view
 
@@ -45,6 +25,6 @@ The product-owned renderer is `cautilus self-dogfood render-html`; the `npm run`
 
 ## Claim boundaries
 
-- `dogfood:self` is canonical — the operator-facing record of the current self-dogfood result.
-- `dogfood:self:experiments` is for stronger claims (binary-surface, skill-surface, gate-honesty).
-- Both HTML views are read-only; the JSON bundles remain the source of truth.
+- `dogfood:self:eval` is canonical — the operator-facing record of the current self-dogfood result.
+- The HTML view is read-only; the JSON bundle remains the source of truth.
+- The legacy `dogfood:self` and `dogfood:self:experiments` runners were retired alongside `cautilus mode evaluate`; rebuilding tuning-experiment evidence on top of the eval-test surface is a follow-up slice.

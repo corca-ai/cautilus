@@ -53,7 +53,7 @@ cautilus workspace prepare-compare \
 ```
 
 The helper emits machine-readable baseline and candidate paths you can pass
-back into `mode evaluate` or `review variants`.
+back into `eval test` or `review variants`.
 
 `--output-dir` is optional. When `cautilus workspace start` has already
 pinned `CAUTILUS_RUN_DIR`, omit it and the helper materializes `baseline/`
@@ -84,7 +84,7 @@ eval "$(cautilus workspace start --label mode-held-out)"
 
 `workspace start` defaults `--root` to `./.cautilus/runs/` (auto-created on
 first use). After the `eval`, `CAUTILUS_RUN_DIR` is set in the current shell
-and consumer commands like `mode evaluate`, `review variants`, `review
+and consumer commands like `eval test`, `review variants`, `review
 prepare-input`, and `workspace prepare-compare` resolve their runDir from
 that env var without operator path-threading. Pass `--json` instead of
 `eval` if a script needs the machine-readable payload.
@@ -155,10 +155,6 @@ Command templates may contain placeholders such as:
 - `{prompt_file}`
 - `{schema_file}`
 - `{output_file}`
-- `{iterate_samples}`
-- `{held_out_samples}`
-- `{comparison_samples}`
-- `{full_gate_samples}`
 - `{scenario_results_file}`
 - `{report_input_file}`
 - `{report_file}`
@@ -172,9 +168,10 @@ scenario set before execution, persist the selected ids as
 `{selected_scenario_ids_file}`, and pass a filtered profile file through
 `{profile}` for that invocation.
 
-When that run is `comparison`, `Cautilus` also materializes a
-`baseline-cache.json` seed beside the mode-evaluation packet so later bounded
-compare flows can reuse a stable cache key instead of guessing it ad hoc.
+When that run materializes baseline state, `Cautilus` also writes a
+`baseline-cache.json` seed beside the observed eval-test packet so later
+bounded compare flows can reuse a stable cache key instead of guessing it ad
+hoc.
 
 ## Workflow
 
@@ -182,37 +179,25 @@ compare flows can reuse a stable cache key instead of guessing it ad hoc.
    Name the candidate change surface, baseline choice, and intended decision.
 2. Run adapter-defined `preflight_commands`.
    Stop if a prerequisite is missing or the baseline is still vague.
-3. Choose the evaluation mode.
-   Use iterate mode while tuning, held-out mode to validate without tuning, and
-   full gate mode before calling the change successful.
-4. Start with iterate commands.
-   Use the adapter's `iterate_command_templates` with real placeholder values.
-   Keep the held-out split unread while iterating.
-5. Run comparison commands when available.
-   Use them to expose scenario-by-scenario deltas instead of relying only on a
-   single summary score.
-6. Run held-out commands before making any success claim.
-   If the held-out split regresses, do not bury that behind training wins.
-7. Run full gate commands for ship/no-ship decisions.
-   This should be the final automatic check, not an optional bonus.
-   When the adapter command itself is the thing to run, prefer the checked-in
-   mode runner over ad-hoc manual rendering:
+3. Run the adapter's eval-test command via `cautilus eval test`.
+   The fixture's translated case suite drives the runner; iterate / held-out /
+   comparison / full-gate framing now lives inside the surface preset rather
+   than as separate CLI modes.
+   Prefer the checked-in eval runner over ad-hoc manual rendering:
 
 ```bash
-cautilus mode evaluate \
+cautilus eval test \
   --repo-root . \
-  --mode held_out \
-  --intent "Operator-facing behavior should remain legible." \
-  --baseline-ref origin/main \
-  --output-dir /tmp/cautilus-mode
+  --fixture fixtures/eval/whole-repo/example.fixture.json \
+  --output-dir /tmp/cautilus-eval
 ```
 
    `--output-dir` is optional. When `cautilus workspace start` has already
-   pinned `CAUTILUS_RUN_DIR`, omit it and `mode evaluate` writes its report
-   packet into that active `runDir`. When nothing is pinned, `mode evaluate`
+   pinned `CAUTILUS_RUN_DIR`, omit it and `eval test` writes its observed
+   packet into that active `runDir`. When nothing is pinned, `eval test`
    auto-materializes a fresh `runDir` under `./.cautilus/runs/` and prints
    `Active run: <path>` to stderr.
-8. Review artifacts and run the adapter's `human_review_prompts`.
+4. Review artifacts and run the adapter's `human_review_prompts`.
    Benchmark wins do not override obvious human-visible failures.
    When useful, run 2-3 independent review variants that judge the same
    candidate from different lenses.
@@ -273,11 +258,11 @@ cautilus review build-prompt-input \
 cautilus review render-prompt \
   --input /tmp/cautilus-mode/review-prompt-input.json
 ```
-9. If the user wants a repeatable local evaluator and none exists, create a
+5. If the user wants a repeatable local evaluator and none exists, create a
    checked-in bounded runner first.
    Prefer a repo script with fixed inputs, fixed prompt variants, and a small
    retry cap over ad-hoc terminal loops.
-10. Classify the result.
+6. Classify the result.
    `accept-now` if the change survives automatic and human review,
    `defer` if the signal is real but not yet good enough to ship,
    `reject` if the candidate clearly regresses or overfits.

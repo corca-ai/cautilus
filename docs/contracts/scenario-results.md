@@ -49,7 +49,7 @@ It also gives `optimize search` a textual feedback path that does not depend on 
 
 The current standalone chain is:
 
-1. `mode evaluate` asks the adapter command to write one scenario-results file
+1. `eval test` asks the adapter command to write one scenario-results file
 2. `report build` lifts that packet into `cautilus.report_packet.v2`
 3. `review prepare-input` and `review build-prompt-input` keep the same compare surface visible to review variants
 

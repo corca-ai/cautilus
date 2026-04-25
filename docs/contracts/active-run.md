@@ -1,7 +1,7 @@
 # Active Run
 
 `Cautilus` pins one product-owned per-run workspace root per workflow and keeps the reference sticky across consumer command invocations with a shell environment variable.
-This contract is what makes `mode evaluate`, `review prepare-input`, `review variants`, `workspace prepare-compare`, and related consumers drop all of their artifacts into one coherent `runDir` without operator path-threading.
+This contract is what makes `eval test`, `review prepare-input`, `review variants`, `workspace prepare-compare`, and related consumers drop all of their artifacts into one coherent `runDir` without operator path-threading.
 
 It owns:
 
@@ -80,12 +80,12 @@ Explicit `--output-dir`, `--output`, `--output-file`, `--report-file`, etc. rema
 | File or subdirectory              | Written by                          | Consumed by                                                 | Notes                                               |
 | --------------------------------- | ----------------------------------- | ----------------------------------------------------------- | --------------------------------------------------- |
 | `run.json`                        | `workspace start`                   | `workspace prune-artifacts`                                 | Manifest marker. `cautilus.workspace_run_manifest.v1`. |
-| `report-input.json`               | `mode evaluate` (intermediate)      | `report build` (optional)                                   | Assembled report packet inputs. Defaults here when `CAUTILUS_RUN_DIR` is pinned and `report build --input` is omitted. |
-| `report.json`                     | `mode evaluate`, `report build`     | `review prepare-input`, `evidence prepare-input`, `optimize prepare-input` | `cautilus.report_packet.v2`. Defaults here when an active-run-aware helper omits `--report-file`. |
-| `<mode>-scenario-results.json`    | `mode evaluate`                     | `report build`, `evidence prepare-input`                    | Mode-prefixed so multiple modes coexist.            |
-| `selected-profile.json`           | `mode evaluate` (profile-backed)    | internal                                                    | Scenario profile selection snapshot.                |
-| `selected-scenario-ids.json`      | `mode evaluate` (profile-backed)    | internal                                                    | Materialized scenario id list.                      |
-| `baseline-cache.json`             | `mode evaluate` (comparison)        | internal                                                    | Baseline cache seed key.                            |
+| `report-input.json`               | `eval test` (intermediate)      | `report build` (optional)                                   | Assembled report packet inputs. Defaults here when `CAUTILUS_RUN_DIR` is pinned and `report build --input` is omitted. |
+| `report.json`                     | `eval test`, `report build`     | `review prepare-input`, `evidence prepare-input`, `optimize prepare-input` | `cautilus.report_packet.v2`. Defaults here when an active-run-aware helper omits `--report-file`. |
+| `<mode>-scenario-results.json`    | `eval test`                     | `report build`, `evidence prepare-input`                    | Mode-prefixed so multiple modes coexist.            |
+| `selected-profile.json`           | `eval test` (profile-backed)    | internal                                                    | Scenario profile selection snapshot.                |
+| `selected-scenario-ids.json`      | `eval test` (profile-backed)    | internal                                                    | Materialized scenario id list.                      |
+| `baseline-cache.json`             | `eval test` (comparison)        | internal                                                    | Baseline cache seed key.                            |
 | `baseline/`                       | `workspace prepare-compare`         | adapter commands                                            | Git worktree. Directory marker.                     |
 | `candidate/`                      | `workspace prepare-compare`         | adapter commands                                            | Git worktree. Directory marker.                     |
 | `review-packet.json`              | `review prepare-input`              | `review build-prompt-input`, `review variants`              | `cautilus.review_packet.v1`. Defaults here when `CAUTILUS_RUN_DIR` is pinned and `--output` is omitted. |
@@ -93,7 +93,7 @@ Explicit `--output-dir`, `--output`, `--output-file`, `--report-file`, etc. rema
 | `review.prompt.md`                | `review render-prompt`              | executor variants (optional)                                | Rendered meta-prompt.                               |
 | `review-summary.json`             | `review variants`                   | `optimize prepare-input`                                    | Executor-variant summary. Uses `cautilus.review_summary.v1` and preserves execution `status` plus flattened review findings. Used as the default `--review-summary` target inside an active run when the file exists. |
 | `run-audit-summary.json`          | host audit tooling                  | `evidence prepare-input`                                    | Product-owned canonical filename for host-normalized run-audit summary inside an active run. Used as the default `--run-audit-file` when the file exists. |
-| `scenario-history.snapshot.json`  | `mode evaluate` (profile-backed)    | `evidence prepare-input`, `optimize prepare-input`          | Snapshot artifact copied from the repo-level scenario-history source of truth at the end of the run. Used as the default history input when the file exists. |
+| `scenario-history.snapshot.json`  | `eval test` (profile-backed)    | `evidence prepare-input`, `optimize prepare-input`          | Snapshot artifact copied from the repo-level scenario-history source of truth at the end of the run. Used as the default history input when the file exists. |
 | `evidence-input.json`             | `evidence prepare-input`            | `evidence bundle`                                           | `cautilus.evidence_bundle_inputs.v1`. Defaults here when `CAUTILUS_RUN_DIR` is pinned and `evidence prepare-input --output` or `evidence bundle --input` is omitted. |
 | `evidence-bundle.json`            | `evidence bundle`                   | `optimize prepare-input` (optional)                         | `cautilus.evidence_bundle.v1`. Defaults here when `CAUTILUS_RUN_DIR` is pinned and `evidence bundle --output` is omitted. |
 | `optimize-input.json`             | `optimize prepare-input`            | `optimize propose`                                          | `cautilus.optimize_inputs.v1`. Defaults here when `CAUTILUS_RUN_DIR` is pinned and `optimize prepare-input --output` or `optimize propose --input` is omitted. |
@@ -103,8 +103,8 @@ Explicit `--output-dir`, `--output`, `--output-file`, `--report-file`, etc. rema
 | `optimize-proposal.json`          | `optimize propose`                  | `optimize build-artifact`                                   | `cautilus.optimize_proposal.v1`. Defaults here when `CAUTILUS_RUN_DIR` is pinned and `optimize propose --output` or `optimize build-artifact --proposal-file` is omitted. |
 | `revision-artifact.json`          | `optimize build-artifact`           | operator                                                    | `cautilus.revision_artifact.v1`. Defaults here when `CAUTILUS_RUN_DIR` is pinned and `optimize build-artifact --output` is omitted. |
 | `variant-*.json`                  | `review variants`                   | operator / review                                           | One file per executor variant. Uses `cautilus.review_variant_result.v1`; wraps host verdict JSON into a product-owned execution envelope with `passed|blocked|failed` status. |
-| `<stage>-<index>.stdout`          | `review variants`, `mode evaluate`  | debug, audit                                                | Captured process stdout.                            |
-| `<stage>-<index>.stderr`          | `review variants`, `mode evaluate`  | debug, audit                                                | Captured process stderr.                            |
+| `<stage>-<index>.stdout`          | `review variants`, `eval test`  | debug, audit                                                | Captured process stdout.                            |
+| `<stage>-<index>.stderr`          | `review variants`, `eval test`  | debug, audit                                                | Captured process stderr.                            |
 
 ### Wired Consumers
 
@@ -112,14 +112,14 @@ Consumer commands marked **wired** resolve their target `runDir` through one of 
 
 - **Workflow-creating commands** call `resolveRunDir` and honor the full precedence chain (explicit `--output-dir` > `CAUTILUS_RUN_DIR` > auto-materialize under `./.cautilus/runs/`).
   They emit `Active run: <abs path>` to stderr exactly once when they auto-materialize.
-  Currently wired: `mode evaluate`, `workspace prepare-compare`, `review variants`.
+  Currently wired: `eval test`, `workspace prepare-compare`, `review variants`.
 - **Consume-only file-in/file-out helpers** call `readActiveRunDir` instead.
   They never mint a fresh `runDir`, never auto-materialize, and never emit the `Active run:` banner.
   The `### Consume-Only Helpers` subsection documents the exact rule.
 
 | Consumer              | Status     | Canonical rows                                                      | Notes                                                         |
 | --------------------- | ---------- | ------------------------------------------------------------------- | ------------------------------------------------------------- |
-| `mode evaluate`       | wired      | `report-input.json`, `report.json`, `<mode>-scenario-results.json`, `selected-profile.json`, `selected-scenario-ids.json`, `baseline-cache.json`, `scenario-history.snapshot.json`, `<stage>-<index>.stdout/stderr` | `--output-dir` is optional. Mode-prefixed scenario-results keeps multi-mode coexistence inside one `runDir`. Profile-backed runs also snapshot the updated scenario history into `scenario-history.snapshot.json` while keeping the repo-level history file as source of truth. |
+| `eval test`       | wired      | `report-input.json`, `report.json`, `<mode>-scenario-results.json`, `selected-profile.json`, `selected-scenario-ids.json`, `baseline-cache.json`, `scenario-history.snapshot.json`, `<stage>-<index>.stdout/stderr` | `--output-dir` is optional. Mode-prefixed scenario-results keeps multi-mode coexistence inside one `runDir`. Profile-backed runs also snapshot the updated scenario history into `scenario-history.snapshot.json` while keeping the repo-level history file as source of truth. |
 | `workspace prepare-compare` | wired  | `baseline/`, `candidate/`                                        | `--output-dir` is optional. Retries inside one active `runDir` reuse the git worktree registrations and rebuild `baseline/` and `candidate/` without requiring `--force`. |
 | `report build`               | wired   | `report-input.json`, `report.json`                              | Consume-only helper. Defaults `--input` to `report-input.json` and `--output` to `report.json` inside the active run; keeps stdout fallback when no active run is pinned. |
 | `review prepare-input`      | wired   | `review-packet.json`                                             | Consume-only helper. Defaults `--report-file` to `report.json` and `--output` to `review-packet.json` inside the active run; keeps stdout fallback when no active run is pinned. |
@@ -138,7 +138,7 @@ File-in/file-out helpers that read and write inside an existing `runDir` do **no
 They use a separate `readActiveRunDir({ env = process.env })` helper from `scripts/agent-runtime/active-run.mjs` that returns the absolute path in `CAUTILUS_RUN_DIR` when it is set and points at an existing directory, throws loud if the env var is set but the path is missing or is not a directory, and returns `null` when the env var is unset.
 
 This separation is load-bearing because consume-only helpers must never mint a fresh `runDir`.
-Only `mode evaluate` and `workspace prepare-compare` are permitted to start a workflow; every other runDir-aware command reads an existing active run or falls back to command-specific legacy behavior when no active run is pinned and the operator did not thread explicit paths.
+Only `eval test` and `workspace prepare-compare` are permitted to start a workflow; every other runDir-aware command reads an existing active run or falls back to command-specific legacy behavior when no active run is pinned and the operator did not thread explicit paths.
 
 Consume-only helpers also do **not** emit the `Active run:` stderr banner.
 The banner is a workflow-creation signal, and consume-only commands never create a workflow.
@@ -215,10 +215,10 @@ Record these so future sessions do not re-propose them:
 - Should `evidence prepare-input`, `optimize prepare-input`, `report build`, `optimize propose`, and sibling helpers auto-resolve their `--input` / `--output` to canonical names inside the active run?
   **Resolved (slice 5 decision)**: yes, via a new `readActiveRunDir` helper rather than `resolveRunDir`.
   The full rule is captured in the `### Consume-Only Helpers` subsection above.
-  Each consume-only slice decides its own canonical defaults and its own legacy fallback behavior, but the helper shape, the loud-fail validation rule, and the "no workflow minting, no `Active run:` banner" invariants are fixed for every file-in/file-out consumer after `mode evaluate` and `workspace prepare-compare`.
+  Each consume-only slice decides its own canonical defaults and its own legacy fallback behavior, but the helper shape, the loud-fail validation rule, and the "no workflow minting, no `Active run:` banner" invariants are fixed for every file-in/file-out consumer after `eval test` and `workspace prepare-compare`.
 - Is `review variants` a workflow-creating command that mints runDirs (and therefore uses `resolveRunDir`), or is it a consume-only command that only reads an existing active run (and therefore uses `readActiveRunDir`)?
   **Resolved (slice 6 decision)**: workflow-creating.
-  An operator can legitimately run `review variants` standalone with a hand-rolled `--prompt-file` plus `--schema-file`, no prior `mode evaluate`, and expect a fresh runDir for the resulting `variant-*.json` outputs.
+  An operator can legitimately run `review variants` standalone with a hand-rolled `--prompt-file` plus `--schema-file`, no prior `eval test`, and expect a fresh runDir for the resulting `variant-*.json` outputs.
   The command therefore follows the same precedence chain as other workflow-creating helpers (explicit `--output-dir` > `CAUTILUS_RUN_DIR` > auto-materialize under `./.cautilus/runs/`) and emits `Active run: <abs path>` once only when it auto-materializes.
 
 ## Source References
