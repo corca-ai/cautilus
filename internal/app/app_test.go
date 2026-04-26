@@ -139,6 +139,86 @@ func TestRunCommandsJSONReturnsRegistry(t *testing.T) {
 	if !ok || len(commands) == 0 {
 		t.Fatalf("expected commands payload, got %#v", payload)
 	}
+	foundClaimDiscover := false
+	for _, raw := range commands {
+		command := raw.(map[string]any)
+		path := command["path"].([]any)
+		if len(path) == 2 && path[0] == "claim" && path[1] == "discover" {
+			foundClaimDiscover = true
+		}
+	}
+	if !foundClaimDiscover {
+		t.Fatalf("expected commands payload to include claim discover, got %#v", commands)
+	}
+}
+
+func TestRunClaimDiscoverWritesProofPlanFromTinyRepo(t *testing.T) {
+	repoRoot := t.TempDir()
+	if err := os.WriteFile(filepath.Join(repoRoot, "README.md"), []byte(strings.Join([]string{
+		"# Tiny Product",
+		"",
+		"This tool emits a human-auditable setup checklist.",
+		"The deterministic unit test suite proves the parser accepts valid packets.",
+		"",
+	}, "\n")), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(repoRoot, "AGENTS.md"), []byte(strings.Join([]string{
+		"# Agent Contract",
+		"",
+		"Agents must follow the repo operating contract before changing code.",
+		"",
+	}, "\n")), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	outputPath := filepath.Join(repoRoot, "claims.json")
+
+	t.Setenv("CAUTILUS_CALLER_CWD", repoRoot)
+	t.Setenv("CAUTILUS_TOOL_ROOT", "")
+
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	exitCode := Run([]string{"claim", "discover", "--repo-root", ".", "--output", outputPath}, &stdout, &stderr)
+	if exitCode != 0 {
+		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
+	}
+	if stdout.Len() != 0 {
+		t.Fatalf("expected empty stdout when writing output, got %q", stdout.String())
+	}
+	payload := readJSONObjectFile(t, outputPath)
+	if payload["schemaVersion"] != "cautilus.claim_proof_plan.v1" {
+		t.Fatalf("unexpected schemaVersion: %#v", payload["schemaVersion"])
+	}
+	candidates := payload["claimCandidates"].([]any)
+	seenLayers := map[string]bool{}
+	for _, raw := range candidates {
+		entry := raw.(map[string]any)
+		seenLayers[entry["proofLayer"].(string)] = true
+	}
+	for _, layer := range []string{"human-auditable", "deterministic", "cautilus-eval"} {
+		if !seenLayers[layer] {
+			t.Fatalf("expected %s candidate in %#v", layer, candidates)
+		}
+	}
+}
+
+func TestRunClaimDiscoverExampleOutputMatchesFixture(t *testing.T) {
+	t.Setenv("CAUTILUS_CALLER_CWD", t.TempDir())
+	t.Setenv("CAUTILUS_TOOL_ROOT", "")
+
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	exitCode := Run([]string{"claim", "discover", "--example-output"}, &stdout, &stderr)
+	if exitCode != 0 {
+		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
+	}
+	fixture, err := os.ReadFile(filepath.Join("..", "..", "fixtures", "claim-discovery", "example-proof-plan.json"))
+	if err != nil {
+		t.Fatalf("ReadFile returned error: %v", err)
+	}
+	if stdout.String() != string(fixture) {
+		t.Fatalf("example output drifted from fixture\nstdout:\n%s\nfixture:\n%s", stdout.String(), string(fixture))
+	}
 }
 
 func TestRunScenariosReturnsCatalog(t *testing.T) {

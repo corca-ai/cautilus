@@ -159,6 +159,8 @@ func nativeHandler(path []string) handlerFunc {
 		return handleVersion
 	case "doctor":
 		return handleDoctor
+	case "claim discover":
+		return handleClaimDiscover
 	case "workbench discover":
 		return handleWorkbenchDiscover
 	case "workbench run-live":
@@ -315,6 +317,12 @@ type scenariosArgs struct {
 
 type healthcheckArgs struct {
 	json bool
+}
+
+type claimDiscoverArgs struct {
+	repoRoot string
+	sources  []string
+	output   *string
 }
 
 type installArgs struct {
@@ -682,6 +690,33 @@ func handleDoctor(repoRoot string, cwd string, args []string, stdout io.Writer, 
 		return 1
 	}
 	return exitCode
+}
+
+//nolint:errcheck // CLI stderr/stdout reporting is best-effort.
+func handleClaimDiscover(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	_ = repoRoot
+	if hasExampleOutputFlag(args) {
+		fmt.Fprint(stdout, claimDiscoverExampleOutput)
+		return 0
+	}
+	options, err := parseClaimDiscoverArgs(args, cwd)
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	plan, err := runtime.DiscoverClaimProofPlan(runtime.ClaimDiscoveryOptions{
+		RepoRoot:    options.repoRoot,
+		SourcePaths: options.sources,
+	})
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	if err := writeOutput(stdout, cwd, options.output, plan); err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	return 0
 }
 
 //nolint:errcheck // CLI stdout/stderr reporting is best-effort.
@@ -1769,6 +1804,45 @@ func parseHealthcheckArgs(args []string) (*healthcheckArgs, error) {
 		default:
 			return nil, fmt.Errorf("unexpected argument %q", args[index])
 		}
+	}
+	return options, nil
+}
+
+func parseClaimDiscoverArgs(args []string, cwd string) (*claimDiscoverArgs, error) {
+	options := &claimDiscoverArgs{
+		repoRoot: cwd,
+		sources:  []string{},
+	}
+	for index := 0; index < len(args); index++ {
+		arg := args[index]
+		switch arg {
+		case "--repo-root":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.repoRoot = resolvePath(cwd, value)
+		case "--source":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.sources = append(options.sources, value)
+		case "--output":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.output = &value
+		default:
+			return nil, fmt.Errorf("unknown argument: %s", arg)
+		}
+	}
+	if strings.TrimSpace(options.repoRoot) == "" {
+		return nil, fmt.Errorf("--repo-root must not be empty")
 	}
 	return options, nil
 }

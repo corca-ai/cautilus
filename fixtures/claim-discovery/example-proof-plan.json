@@ -1,0 +1,67 @@
+{
+  "candidateCount": 3,
+  "candidateLimit": 120,
+  "claimCandidates": [
+    {
+      "claimId": "claim-readme-md-3",
+      "nextAction": "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
+      "proofLayer": "human-auditable",
+      "sourceRefs": [
+        {
+          "excerpt": "This tool emits a human-auditable setup checklist.",
+          "line": 3,
+          "path": "README.md"
+        }
+      ],
+      "summary": "This tool emits a human-auditable setup checklist.",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimId": "claim-readme-md-4",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "proofLayer": "deterministic",
+      "sourceRefs": [
+        {
+          "excerpt": "The deterministic unit test suite proves the parser accepts valid packets.",
+          "line": 4,
+          "path": "README.md"
+        }
+      ],
+      "summary": "The deterministic unit test suite proves the parser accepts valid packets.",
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+    },
+    {
+      "claimId": "claim-agents-md-3",
+      "nextAction": "Create a host-owned repo/whole-repo fixture and run it through cautilus eval test.",
+      "proofLayer": "cautilus-eval",
+      "recommendedEvalSurface": "repo/whole-repo",
+      "sourceRefs": [
+        {
+          "excerpt": "Agents must follow the repo operating contract before changing code.",
+          "line": 3,
+          "path": "AGENTS.md"
+        }
+      ],
+      "summary": "Agents must follow the repo operating contract before changing code.",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    }
+  ],
+  "discoveryMode": "deterministic-source-inventory",
+  "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
+  "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
+  "schemaVersion": "cautilus.claim_proof_plan.v1",
+  "sourceCount": 2,
+  "sourceInventory": [
+    {
+      "kind": "readme",
+      "path": "README.md",
+      "status": "read"
+    },
+    {
+      "kind": "repo-instructions",
+      "path": "AGENTS.md",
+      "status": "read"
+    }
+  ],
+  "sourceRoot": "."
+}

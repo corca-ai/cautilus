@@ -21,6 +21,7 @@ Use these probes before improvising:
 ```bash
 cautilus healthcheck --json
 cautilus commands --json
+cautilus claim discover --repo-root . --output /tmp/cautilus-claims.json
 cautilus scenarios --json
 cautilus doctor --repo-root . --next-action
 cautilus doctor --repo-root . --scope agent-surface
@@ -38,6 +39,8 @@ Use [command-cookbook.md](references/command-cookbook.md) only after the binary 
 - build report, review, evidence, optimize, and revision packets through the CLI
 - run adapter-owned review variants through checked-in executor templates
 - keep host-repo fixtures, prompts, wrappers, and policy outside the product boundary
+
+The three product front doors are `claim`, `eval`, and `optimize`.
 
 ## Evaluation Surface Routing
 
@@ -57,6 +60,7 @@ For scenario proposal input shapes, prefer the relevant `--example-input` comman
 ## Declared Claim Discovery
 
 Use this step when the user asks whether a repo proves what it claims, whether documentation and behavior are aligned, or which scenarios still need to be created.
+Start with `cautilus claim discover --repo-root . --output <claims.json>` before building a hand-written claim inventory.
 Do not hard-code the search to README.
 Treat README, docs, AGENTS.md, CLI help, specs, skill docs, release notes, and adapter files as possible repo-owned truth surfaces.
 
@@ -121,7 +125,7 @@ When default `doctor` returns `ready`, read its `first_bounded_run` payload befo
 
 ## Workflow
 
-1. Resolve the adapter and restate the candidate claim, baseline, intended behavior, and decision boundary.
+1. Run `cautilus claim discover` or read its existing proof-plan packet, then restate the selected claim, baseline, intended behavior, and decision boundary.
 2. Use `workspace start` for a multi-command run instead of inventing unrelated `/tmp` paths by hand.
 3. Use `workspace prepare-compare` when the run needs clean git-ref A/B workspaces.
 4. Run adapter-defined preflight commands before long evaluations.
@@ -164,6 +168,7 @@ Interpretation rules:
 Use product-owned outputs instead of paraphrasing command results from memory.
 
 - `eval-cases.json`: product-normalized test cases handed to the host-owned runner.
+- `cautilus.claim_proof_plan.v1`: source-ref-backed claim candidates and proof-layer routing, not a verdict.
 - `eval-observed.json`: observed behavior packet written by the runner.
 - `eval-summary.json`: first bounded evaluation decision packet.
 - `report.json`: broader report packet for review, evidence, and optimization workflows.

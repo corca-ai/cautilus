@@ -2904,17 +2904,17 @@ cat <<'JSON' > "$1"
     {
       "evaluationId": "checked-in-agents-routing",
       "displayName": "checked-in-agents-routing",
-      "prompt": "Read the repo instructions first and decide how to route this task.",
+      "prompt": "User request: continue from docs/internal/handoff.md and implement the next slice. Read the repo instructions first, then decide the first routing step for this task.",
       "startedAt": "2026-04-25T00:00:00.000Z",
       "observationStatus": "observed",
-      "summary": "Started from AGENTS.md and kept the first routing decision narrow without committing to a durable work skill yet.",
+      "summary": "Started from AGENTS.md, used find-skills as the bootstrap helper, and selected impl as the durable work skill.",
       "entryFile": "AGENTS.md",
       "loadedInstructionFiles": ["AGENTS.md"],
       "loadedSupportingFiles": [],
       "routingDecision": {
-        "selectedSkill": "none",
+        "selectedSkill": "impl",
         "bootstrapHelper": "find-skills",
-        "workSkill": "none"
+        "workSkill": "impl"
       },
       "instructionSurface": {
         "surfaceLabel": "compact_agents",
@@ -2928,7 +2928,7 @@ cat <<'JSON' > "$1"
       },
       "expectedEntryFile": "AGENTS.md",
       "requiredInstructionFiles": ["AGENTS.md"],
-      "expectedRouting": { "bootstrapHelper": "find-skills", "workSkill": "none" },
+      "expectedRouting": { "bootstrapHelper": "find-skills", "workSkill": "impl" },
       "artifactRefs": []
     }
   ]
@@ -2946,12 +2946,12 @@ JSON
 		"cases": []map[string]any{
 			{
 				"caseId":                   "checked-in-agents-routing",
-				"prompt":                   "Read the repo instructions first and decide how to route this task.",
+				"prompt":                   "User request: continue from docs/internal/handoff.md and implement the next slice. Read the repo instructions first, then decide the first routing step for this task.",
 				"expectedEntryFile":        "AGENTS.md",
 				"requiredInstructionFiles": []string{"AGENTS.md"},
 				"expectedRouting": map[string]any{
 					"bootstrapHelper": "find-skills",
-					"workSkill":       "none",
+					"workSkill":       "impl",
 				},
 			},
 		},

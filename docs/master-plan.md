@@ -68,6 +68,7 @@ Dogfood and migration evidence now lives separately from the product concept.
 Use [consumer-readiness.md](./maintainers/consumer-readiness.md) for checked-in host evidence instead of treating any one consumer repo as the product definition.
 
 The three command-family contract lives in [specs/command-surfaces.spec.md](./specs/command-surfaces.spec.md): `claim` for declared-claim discovery and proof planning, `eval` for verification, and `optimize` for bounded improvement.
+The first `claim` slice ships as deterministic `cautilus claim discover`, which emits a source-ref-backed proof plan rather than a verdict.
 The current evaluation contract lives in [specs/evaluation-surfaces.spec.md](./specs/evaluation-surfaces.spec.md): two surfaces (`repo`, `app`), four presets (`whole-repo`, `skill`, `chat`, `prompt`), and four fixture composition primitives.
 The earlier first-class archetype boundary (chatbot / skill / workflow) was retired with that redesign.
 `npm run lint:specs` and `npm run lint:archetypes` still gate the runtime completeness of the surviving `scenario normalize` helpers; new user-facing copy must reconcile with the surface/preset contract before landing.

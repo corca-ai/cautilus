@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "discoveryMode",
+    "sourceInventory",
+    "claimCandidates"
+  ],
+  "properties": {
+    "schemaVersion": { "type": "string", "const": "cautilus.claim_proof_plan.v1" },
+    "discoveryMode": { "type": "string" },
+    "sourceRoot": { "type": "string" },
+    "sourceInventory": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "kind", "status"],
+        "properties": {
+          "path": { "type": "string" },
+          "kind": { "type": "string" },
+          "status": { "type": "string" }
+        }
+      }
+    },
+    "candidateLimit": { "type": "integer", "minimum": 1 },
+    "claimCandidates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["claimId", "summary", "sourceRefs", "proofLayer", "whyThisLayer", "nextAction"],
+        "properties": {
+          "claimId": { "type": "string" },
+          "summary": { "type": "string" },
+          "sourceRefs": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": ["path", "line", "excerpt"],
+              "properties": {
+                "path": { "type": "string" },
+                "line": { "type": "integer", "minimum": 1 },
+                "excerpt": { "type": "string" }
+              }
+            }
+          },
+          "proofLayer": {
+            "type": "string",
+            "enum": ["human-auditable", "deterministic", "cautilus-eval", "scenario-candidate", "alignment-work"]
+          },
+          "recommendedEvalSurface": {
+            "type": "string",
+            "enum": ["repo/whole-repo", "repo/skill", "app/chat", "app/prompt"]
+          },
+          "whyThisLayer": { "type": "string" },
+          "nextAction": { "type": "string" }
+        }
+      }
+    }
+  }
+}

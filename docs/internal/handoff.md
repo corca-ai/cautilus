@@ -15,8 +15,8 @@
   `repo/whole-repo`, `repo/skill`, `app/chat`, `app/prompt` 모두 `cautilus eval test --fixture ...` / `cautilus eval evaluate --input ...` 경로가 있다.
   `app/prompt`는 2026-04-26에 추가됐고 `cautilus.app_prompt_test_cases.v1` / `cautilus.app_prompt_evaluation_inputs.v1` / `cautilus.app_prompt_evaluation_summary.v1`를 쓴다.
   evaluator는 app-surface 공통 runtime 필드(provider, model, harness, mode=`messaging`, durationMs, observed.messages, observed.finalText)에 더해 `app/prompt`에서 `observed.input`을 요구한다.
-- 이번 command-surface spec slice의 closeout verification: `npm run verify`, `npm run hooks:check` green.
-  같은 세션의 이전 implementation slice에서 `npm run dogfood:self`도 green이었다.
+- 이번 command-surface implementation slice의 closeout verification: `npm run verify`, `npm run hooks:check`, `npm run test:on-demand`, `npm run dogfood:self` green.
+  `cautilus claim discover --repo-root . --output /tmp/cautilus-claims-self.json`도 self repo에서 `candidateLimit=120`의 bounded proof plan을 생성했다.
 - `mode evaluate` cut + archetype-boundary retire 슬라이스는 이미 들어왔고, 상세 기록은 이 spec의 follow-up notes와 git history를 본다.
 - `dogfood:self` canonical alias가 복원됐고 현재 `dogfood:self:eval`로 위임한다.
   2026-04-26 실행 기준 `repo/whole-repo` checked-in AGENTS routing fixture는 real Codex (`gpt-5.4-mini`, low)에서 `recommendation=accept-now`, `evaluationCounts.passed=1`, `failed=0`, `blocked=0`.
@@ -26,9 +26,9 @@
   (3) bounded improvement / optimization.
   README proof는 (1)의 예시일 뿐이며 Cautilus 표면은 README에 강결합하지 않는다.
   세 축은 장기적으로 각각 first-class binary command surface가 있어야 한다.
-- 세 핵심 기능의 command-family 설계는 [docs/specs/command-surfaces.spec.md](../specs/command-surfaces.spec.md)에 정착됐다.
-  canonical front doors는 `cautilus claim ...`, `cautilus eval ...`, `cautilus optimize ...`이며, 첫 누락 구현은 `cautilus claim discover --repo-root . --output <claims.json>`다.
-  이 command는 repo-owned truth surface에서 `cautilus.claim_proof_plan.v1`을 만들되 verdict가 아니라 proof plan만 낸다.
+- 세 핵심 기능의 command-family 설계와 첫 `claim` 구현은 [docs/specs/command-surfaces.spec.md](../specs/command-surfaces.spec.md)에 정착됐다.
+  canonical front doors는 `cautilus claim ...`, `cautilus eval ...`, `cautilus optimize ...`이며, `cautilus claim discover --repo-root . --output <claims.json>`는 repo-owned truth surface에서 bounded `cautilus.claim_proof_plan.v1`을 만든다.
+  이 packet은 verdict가 아니라 proof plan이며, source별/전체 candidate limit 초과는 `read-truncated` 또는 `skipped-candidate-limit`로 드러낸다.
 - 잔여 신호: `repo/skill` / `app/chat` / `app/prompt` real-codex/claude self-dogfood 증거는 아직 없다.
   `charness-artifacts/cautilus/latest.md` refresh도 별도 artifact-refresh 슬라이스로 남아 있다.
 - premortem deferral 상태:
@@ -44,9 +44,9 @@
 
 1. `git status --short`로 사용자 변경 여부를 먼저 확인한다.
 2. `charness:find-skills`로 설치된 public / support / integration 스킬 지도를 한 번 갱신한다.
-3. `cautilus claim discover`의 첫 구현 슬라이스를 진행한다.
-   시작점은 deterministic source inventory, checked fixture-backed `cautilus.claim_proof_plan.v1`, command registry entry, tiny temp repo CLI smoke다.
-   bundled skill은 command가 실제로 생긴 뒤 hand-written claim inventory보다 이 command를 먼저 호출하도록 바꾼다.
+3. `cautilus claim discover` 다음 슬라이스를 고른다.
+   선택지는 (a) `claim` packet render/validate 보조 command, (b) source inventory heuristics hardening, (c) model-backed extraction runner boundary 설계 중 하나다.
+   현재 구현은 deterministic bounded plan까지만 의도적으로 ship한다.
 4. optimize-search held-out/full-gate 신호를 현재 `cautilus eval test` surface 위로 재배선할지, 아니면 C2/C3/C4 composition landing까지 honest-skip으로 둘지 결정한다.
 5. spec follow-up #4 — C2/C3/C4 composition primitives (extends / multi-step / snapshot), 슬라이스당 하나.
 6. spec follow-up #5 — `scenario normalize` 재범위만 남음.

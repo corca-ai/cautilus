@@ -41,6 +41,17 @@
       ]
     },
     {
+      "path": ["claim", "discover"],
+      "group": "run",
+      "usage": "cautilus claim discover --repo-root <path> [--source <path>] [--output <claims.json>]",
+      "example": "cautilus claim discover --repo-root . --output /tmp/cautilus-claims.json",
+      "notes": [
+        "`--example-output` prints a minimal proof-plan packet.",
+        "The command emits `cautilus.claim_proof_plan.v1`: a source-ref-backed plan, not a verdict that the repo is correct.",
+        "Use `--source` repeatedly when the host repo wants an explicit truth-surface inventory instead of the conservative defaults."
+      ]
+    },
+    {
       "path": ["scenario", "review-conversations"],
       "group": "results",
       "usage": "cautilus scenario review-conversations [args]",

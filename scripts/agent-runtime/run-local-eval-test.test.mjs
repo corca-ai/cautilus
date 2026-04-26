@@ -33,7 +33,7 @@ test("buildObservedInstructionSurfaceInput materializes fixture-backed instructi
 		evaluations: [
 			{
 				evaluationId: "checked-in-agents-routing",
-				prompt: "Read the repo instructions first and decide how to route this task.",
+				prompt: "User request: continue from docs/internal/handoff.md and implement the next slice. Read the repo instructions first, then decide the first routing step for this task.",
 				expectedEntryFile: "AGENTS.md",
 				requiredInstructionFiles: ["AGENTS.md"],
 				expectedRouting: { selectedSkill: "none" },

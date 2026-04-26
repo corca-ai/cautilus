@@ -8,9 +8,11 @@ const REQUIRED_FRAGMENTS = [
 	"## CLI First",
 	"cautilus --help",
 	"cautilus commands --json",
+	"cautilus claim discover --repo-root .",
 	"cautilus scenarios --json",
 	"--example-input",
 	"## Declared Claim Discovery",
+	"`claim`, `eval`, and `optimize`",
 	"eval-summary.json",
 	"repo / whole-repo",
 	"app / prompt",
@@ -39,6 +41,7 @@ const GLOBAL_FORBIDDEN_FRAGMENTS = [
 	"| `report.json`                     | `eval test`, `report build`",
 	"| `eval test`       | wired      | `report-input.json`, `report.json`",
 	"The legacy `dogfood:self`",
+	"README proof",
 ];
 
 function read(path) {

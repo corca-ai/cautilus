@@ -6,7 +6,7 @@
 2. `eval` — verify selected claims through bounded evaluation fixtures and summary packets
 3. `optimize` — improve behavior after the proof surface is honest
 
-This spec defines the command-surface contract before adding the missing `claim` implementation.
+This spec defines the command-surface contract and the first deterministic `claim discover` implementation.
 The goal is to keep `Cautilus` repo-agnostic while making the product understandable from the binary and bundled skill alone.
 
 ## Problem
@@ -23,9 +23,21 @@ That creates two risks:
 
 ## Current Slice
 
-Define the stable command-family map and the first missing command family.
-Do not implement the command in this slice.
-The next implementation slice should add the smallest useful `claim` command without disturbing the already-shipped `eval` and `optimize` families.
+Define the stable command-family map and ship the first `claim` command without disturbing the already-shipped `eval` and `optimize` families.
+The implemented slice is intentionally deterministic: it inventories explicit truth surfaces and emits source-ref-backed proof-plan candidates.
+Default output is bounded so a large repo gets a reviewable first plan instead of an unbounded document scrape.
+
+## See It Work
+
+```run:shell
+tmpdir=$(mktemp -d)
+./bin/cautilus claim discover --repo-root ./fixtures/claim-discovery/tiny-repo --output "$tmpdir/claims.json"
+grep -q '"schemaVersion": "cautilus.claim_proof_plan.v1"' "$tmpdir/claims.json"
+grep -q '"proofLayer": "human-auditable"' "$tmpdir/claims.json"
+grep -q '"proofLayer": "deterministic"' "$tmpdir/claims.json"
+grep -q '"proofLayer": "cautilus-eval"' "$tmpdir/claims.json"
+grep -q '"recommendedEvalSurface": "repo/whole-repo"' "$tmpdir/claims.json"
+```
 
 ## Fixed Decisions
 
@@ -33,7 +45,7 @@ The next implementation slice should add the smallest useful `claim` command wit
 
 | Product job | Command family | Current status | Primary packet |
 | --- | --- | --- | --- |
-| discover declared behavior claims and proof layers | `cautilus claim ...` | missing | `cautilus.claim_proof_plan.v1` |
+| discover declared behavior claims and proof layers | `cautilus claim ...` | deterministic discovery slice shipped | `cautilus.claim_proof_plan.v1` |
 | verify a selected claim | `cautilus eval ...` | shipped | `eval-cases.json`, `eval-observed.json`, `eval-summary.json` |
 | improve behavior against an honest proof surface | `cautilus optimize ...` | shipped | `cautilus.optimize_*` and `cautilus.revision_artifact.v1` |
 
@@ -75,6 +87,7 @@ Each claim candidate records:
 The output is a plan, not a verdict.
 It does not claim that the repo is correct.
 It tells an operator or agent what should be proven where.
+When default source inventory finds more candidate-looking lines than the first pass should review, the packet reports a `candidateLimit` and marks affected sources as truncated or skipped by the candidate limit.
 
 ### Eval Surface
 
@@ -156,14 +169,14 @@ It should point to the relevant scenario command rather than duplicating scenari
 2. A proof plan can distinguish human-auditable, deterministic, eval-backed, scenario-candidate, and alignment-work claims.
 3. Claims that need Cautilus eval are mapped to one of the four current eval presets.
 4. The command registry and bundled skill present `claim`, `eval`, and `optimize` as the three product front doors.
-5. Existing `eval` and `optimize` behavior remains backward compatible while the missing `claim` surface lands.
+5. Existing `eval` and `optimize` behavior remains backward compatible while the first deterministic `claim` surface lands.
 
 ## Acceptance Checks
 
-The first implementation slice should add:
+The first implementation slice includes:
 
 - command registry entry for `cautilus claim discover`
-- `cautilus claim discover --example-output` or an equivalent fixture-backed example command
+- `cautilus claim discover --example-output`
 - fixture-backed unit tests for `cautilus.claim_proof_plan.v1`
 - a CLI smoke test that discovers claims from a tiny temp repo with README, AGENTS.md, and one deterministic-test-like claim
 - a bundled-skill disclosure check that requires the `claim`, `eval`, and `optimize` family names and forbids README-specific naming as the core concept
@@ -191,5 +204,5 @@ This file is the command-surface implementation contract.
 
 ## First Implementation Slice
 
-Implement `cautilus claim discover` with a conservative deterministic source inventory and a fixture-backed proof-plan packet.
-Add the command to `cautilus commands --json`, update the bundled skill to call it before hand-written claim inventories, and prove the command against checked-in fixture truth surfaces.
+The first implementation slice shipped `cautilus claim discover` with a conservative deterministic source inventory and a fixture-backed proof-plan packet.
+The next slice should decide whether `claim` needs a validation or render subcommand, or whether source inventory heuristics should remain deliberately simple until model-backed extraction has its own runner boundary.
