@@ -2,6 +2,7 @@ version: 1
 repo: cautilus
 evaluation_surfaces:
   - deterministic self-consumer standing gate for the product repo
+  - repo / whole-repo self-dogfood evaluation against the checked-in instruction surface
 baseline_options:
   - baseline git ref in the same repo via {baseline_ref}
 required_prerequisites:
@@ -10,6 +11,9 @@ required_prerequisites:
 review_timeout_ms: 30000
 preflight_commands:
   - npm run hooks:check
+evaluation_input_default: fixtures/eval/whole-repo/checked-in-agents-routing.fixture.json
+eval_test_command_templates:
+  - node ./scripts/run-self-dogfood-eval.mjs --repo-root . --output-dir {output_dir} --cases-file {eval_cases_file} --output-file {eval_observed_file} --backend {backend} --sandbox read-only --timeout-ms 180000 --codex-model gpt-5.4-mini --codex-reasoning-effort low --claude-permission-mode dontAsk
 full_gate_command_templates:
   - npm run verify
 executor_variants:

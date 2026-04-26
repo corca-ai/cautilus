@@ -116,4 +116,4 @@ The first reference seam expects JSON arrays in three separate files.
 
 - [scenario-proposal-sources.md](./scenario-proposal-sources.md)
 - [scenario-proposal-inputs.md](./scenario-proposal-inputs.md)
-- [build-scenario-proposal-input.mjs](../../../scripts/agent-runtime/build-scenario-proposal-input.mjs)
+- [build-scenario-proposal-input.mjs](../../../../scripts/agent-runtime/build-scenario-proposal-input.mjs)

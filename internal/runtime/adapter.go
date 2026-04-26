@@ -1015,7 +1015,10 @@ func DoctorRepo(repoRoot string, adapterPath *string, adapterName *string) (map[
 	appendFieldCheck(&checks, &suggestions, "baseline_options", len(stringArrayOrEmpty(data["baseline_options"])) > 0, "Adapter declares baseline options.", "Adapter is missing baseline_options.", "Add at least one baseline_options entry so comparisons stay explicit.")
 	automatedCommands := len(stringArrayOrEmpty(data["eval_test_command_templates"])) > 0
 	hasVariants := len(arrayOrEmpty(data["executor_variants"])) > 0
-	appendFieldCheck(&checks, &suggestions, "execution_surface", automatedCommands || hasVariants, "Adapter declares runnable command templates or executor variants.", "Adapter has no command templates or executor variants yet.", "Add at least one eval_test_command_templates entry or executor_variants entry.")
+	appendFieldCheck(&checks, &suggestions, "execution_surface", automatedCommands, "Adapter declares runnable eval test command templates.", "Adapter has no eval test command templates yet.", "Add at least one eval_test_command_templates entry so `cautilus eval test` and `first_bounded_run` are runnable.")
+	if !automatedCommands && hasVariants {
+		suggestions = append(suggestions, "executor_variants can run bounded review after a report packet exists, but they do not provide the eval test runner required by first_bounded_run.")
+	}
 	if adapterLooksDeterministicOnly(data) {
 		warnings = append(warnings, "Adapter commands look like repo-local deterministic gates only. Keep pytest/lint/type/spec checks in CI or pre-push hooks; use Cautilus for LLM-behavior, judge, or operator-facing review surfaces.")
 		suggestions = append(suggestions, "Inventory LLM-behavior surfaces first (system prompts, agent/chat loops, LLM-backed analysis, operator copy reviewed by a judge) before hand-editing adapter YAML.")

@@ -296,6 +296,58 @@ func TestCLIDoctorReportsReadyWithExecutionSurface(t *testing.T) {
 	}
 }
 
+func TestCLIDoctorDoesNotTreatExecutorVariantsAsFirstBoundedRun(t *testing.T) {
+	root := t.TempDir()
+	initGitRepo(t, root)
+	adapterDir := filepath.Join(root, ".agents")
+	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	adapter := strings.Join([]string{
+		"version: 1",
+		"repo: temp",
+		"evaluation_surfaces:",
+		"  - smoke",
+		"baseline_options:",
+		"  - baseline git ref via {baseline_ref}",
+		"executor_variants:",
+		"  - id: standalone",
+		"    tool: command",
+		"    command_template: sh {candidate_repo}/variant.sh {output_file}",
+		"",
+	}, "\n")
+	if err := os.WriteFile(filepath.Join(adapterDir, "cautilus-adapter.yaml"), []byte(adapter), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+
+	stdout, stderr, exitCode := runCLI(t, root, "doctor", "--repo-root", root)
+	if exitCode != 1 {
+		t.Fatalf("expected incomplete adapter exit code, got %d, stdout=%s stderr=%s", exitCode, stdout, stderr)
+	}
+	payload := parseJSONObject(t, stdout)
+	if payload["ready"] != false || payload["status"] != "incomplete_adapter" {
+		t.Fatalf("expected incomplete doctor payload, got %#v", payload)
+	}
+	if _, ok := payload["first_bounded_run"]; ok {
+		t.Fatalf("executor-variant-only adapter should not receive first_bounded_run: %#v", payload["first_bounded_run"])
+	}
+	nextAction, ok := payload["next_action"].(map[string]any)
+	if !ok || anyToString(nextAction["kind"]) != "edit_adapter" {
+		t.Fatalf("expected edit_adapter next_action, got %#v", payload["next_action"])
+	}
+	suggestions, ok := payload["suggestions"].([]any)
+	foundSuggestion := false
+	for _, suggestion := range suggestions {
+		if strings.Contains(anyToString(suggestion), "executor_variants can run bounded review") {
+			foundSuggestion = true
+			break
+		}
+	}
+	if !ok || !foundSuggestion {
+		t.Fatalf("expected executor_variants explanation in suggestions, got %#v", payload["suggestions"])
+	}
+}
+
 func TestCLIScenariosExposeExampleInputCLI(t *testing.T) {
 	root := t.TempDir()
 	stdout, stderr, exitCode := runCLI(t, root, "scenarios", "--json")
