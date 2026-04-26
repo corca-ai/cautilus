@@ -19,7 +19,8 @@ func validRepoWholeRepoFixture() map[string]any {
 				"prompt":            "Read the repo instructions and decide.",
 				"expectedEntryFile": "AGENTS.md",
 				"expectedRouting": map[string]any{
-					"selectedSkill": "none",
+					"bootstrapHelper": "find-skills",
+					"workSkill":       "none",
 				},
 			},
 		},

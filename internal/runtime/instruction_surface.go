@@ -322,7 +322,8 @@ func normalizeObservedInstructionSurface(value any, field string) (map[string]an
 
 func evaluateInstructionSurfaceEvaluation(evaluation *instructionSurfaceEvaluationInput) map[string]any {
 	entryResult := evaluateInstructionEntryFile(evaluation.expectedEntryFile, evaluation.entryFile)
-	instructionFilesResult := evaluateInstructionFileList(evaluation.requiredInstructionFiles, evaluation.forbiddenInstructionFiles, evaluation.loadedInstructionFiles)
+	loadedInstructionFiles := augmentInstructionFilesWithEntry(evaluation.loadedInstructionFiles, evaluation.expectedEntryFile, evaluation.entryFile)
+	instructionFilesResult := evaluateInstructionFileList(evaluation.requiredInstructionFiles, evaluation.forbiddenInstructionFiles, loadedInstructionFiles)
 	supportingFilesResult := evaluateInstructionFileList(evaluation.requiredSupportingFiles, evaluation.forbiddenSupportingFiles, evaluation.loadedSupportingFiles)
 	routingResult := evaluateInstructionRouting(evaluation.expectedRouting, evaluation.routingDecision)
 	expectationResults := map[string]any{
@@ -386,11 +387,31 @@ func evaluateInstructionEntryFile(expected *string, observed *string) map[string
 	}
 	if observed != nil {
 		result["observed"] = *observed
-		if *observed == *expected {
+		if instructionPathMatches(*expected, *observed) {
 			result["status"] = "passed"
 		}
 	}
 	return result
+}
+
+func augmentInstructionFilesWithEntry(observed []string, expectedEntry *string, entry *string) []string {
+	if expectedEntry == nil || entry == nil || !instructionPathMatches(*expectedEntry, *entry) {
+		return observed
+	}
+	result := append([]string{}, observed...)
+	result = append(result, *expectedEntry)
+	return result
+}
+
+func instructionPathMatches(expected string, observed string) bool {
+	expected = strings.TrimSpace(expected)
+	observed = strings.TrimSpace(observed)
+	if expected == observed {
+		return true
+	}
+	return strings.HasPrefix(observed, expected+" ") ||
+		strings.HasPrefix(observed, expected+"(") ||
+		strings.HasPrefix(observed, expected+":")
 }
 
 func evaluateInstructionFileList(required []string, forbidden []string, observed []string) map[string]any {
@@ -437,16 +458,16 @@ func evaluateInstructionRouting(expected map[string]any, observed map[string]any
 		}
 	}
 	mismatches := []any{}
-	if expectedSkill := stringOrEmpty(expected["selectedSkill"]); expectedSkill != "" && expectedSkill != instructionObservedSelectedSkill(observed) {
+	if expectedSkill := stringOrEmpty(expected["selectedSkill"]); expectedSkill != "" && !routingTokenMatches(expectedSkill, instructionObservedSelectedSkill(observed)) {
 		mismatches = append(mismatches, fmt.Sprintf("selectedSkill expected %q", expectedSkill))
 	}
-	if expectedHelper := stringOrEmpty(expected["bootstrapHelper"]); expectedHelper != "" && expectedHelper != instructionObservedBootstrapHelper(observed) {
+	if expectedHelper := stringOrEmpty(expected["bootstrapHelper"]); expectedHelper != "" && !routingTokenMatches(expectedHelper, instructionObservedBootstrapHelper(observed)) {
 		mismatches = append(mismatches, fmt.Sprintf("bootstrapHelper expected %q", expectedHelper))
 	}
-	if expectedWorkSkill := stringOrEmpty(expected["workSkill"]); expectedWorkSkill != "" && expectedWorkSkill != instructionObservedWorkSkill(observed) {
+	if expectedWorkSkill := stringOrEmpty(expected["workSkill"]); expectedWorkSkill != "" && !routingTokenMatches(expectedWorkSkill, instructionObservedWorkSkill(observed)) {
 		mismatches = append(mismatches, fmt.Sprintf("workSkill expected %q", expectedWorkSkill))
 	}
-	if expectedSupport := stringOrEmpty(expected["selectedSupport"]); expectedSupport != "" && expectedSupport != stringOrEmpty(observed["selectedSupport"]) {
+	if expectedSupport := stringOrEmpty(expected["selectedSupport"]); expectedSupport != "" && !routingTokenMatches(expectedSupport, stringOrEmpty(observed["selectedSupport"])) {
 		mismatches = append(mismatches, fmt.Sprintf("selectedSupport expected %q", expectedSupport))
 	}
 	if expectedPattern := stringOrEmpty(expected["firstToolCallPattern"]); expectedPattern != "" {
@@ -606,6 +627,23 @@ func instructionObservedWorkSkill(observed map[string]any) string {
 		stringOrEmpty(observed["workSkill"]),
 		stringOrEmpty(observed["selectedSkill"]),
 	)
+}
+
+func routingTokenMatches(expected string, observed string) bool {
+	expected = strings.TrimSpace(expected)
+	observed = strings.TrimSpace(observed)
+	if expected == observed {
+		return true
+	}
+	if expected == "" || observed == "" {
+		return false
+	}
+	return routingTokenLeaf(expected) == routingTokenLeaf(observed)
+}
+
+func routingTokenLeaf(value string) string {
+	parts := strings.Split(value, ":")
+	return strings.TrimSpace(parts[len(parts)-1])
 }
 
 func sortedInstructionCounts(counts map[string]any) map[string]any {

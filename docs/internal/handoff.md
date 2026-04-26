@@ -20,6 +20,12 @@
 - `mode evaluate` cut + archetype-boundary retire 슬라이스는 이미 들어왔고, 상세 기록은 이 spec의 follow-up notes와 git history를 본다.
 - `dogfood:self` canonical alias가 복원됐고 현재 `dogfood:self:eval`로 위임한다.
   2026-04-26 실행 기준 `repo/whole-repo` checked-in AGENTS routing fixture는 real Codex (`gpt-5.4-mini`, low)에서 `recommendation=accept-now`, `evaluationCounts.passed=1`, `failed=0`, `blocked=0`.
+- 제품 프레임은 세 축으로 정리됐다:
+  (1) declared behavior claim discovery / proof planning,
+  (2) bounded eval verification,
+  (3) bounded improvement / optimization.
+  README proof는 (1)의 예시일 뿐이며 Cautilus 표면은 README에 강결합하지 않는다.
+  세 축은 장기적으로 각각 first-class binary command surface가 있어야 한다.
 - 잔여 신호: `repo/skill` / `app/chat` / `app/prompt` real-codex/claude self-dogfood 증거는 아직 없다.
   `charness-artifacts/cautilus/latest.md` refresh도 별도 artifact-refresh 슬라이스로 남아 있다.
 - premortem deferral 상태:
@@ -35,11 +41,15 @@
 
 1. `git status --short`로 사용자 변경 여부를 먼저 확인한다.
 2. `charness:find-skills`로 설치된 public / support / integration 스킬 지도를 한 번 갱신한다.
-3. optimize-search held-out/full-gate 신호를 현재 `cautilus eval test` surface 위로 재배선할지, 아니면 C2/C3/C4 composition landing까지 honest-skip으로 둘지 결정한다.
-4. spec follow-up #4 — C2/C3/C4 composition primitives (extends / multi-step / snapshot), 슬라이스당 하나.
-5. spec follow-up #5 — `scenario normalize` 재범위만 남음.
+3. 세 핵심 기능의 first-class command surface를 설계한다.
+   claim discovery / proof planning은 README-specific 이름을 피하고 repo-owned truth surface 전체를 다룬다.
+   verification은 현재 `eval` family와 어떻게 맞물리는지 정리한다.
+   improvement는 현재 `optimize` / GEPA-style search family와 어떻게 맞물리는지 정리한다.
+4. optimize-search held-out/full-gate 신호를 현재 `cautilus eval test` surface 위로 재배선할지, 아니면 C2/C3/C4 composition landing까지 honest-skip으로 둘지 결정한다.
+5. spec follow-up #4 — C2/C3/C4 composition primitives (extends / multi-step / snapshot), 슬라이스당 하나.
+6. spec follow-up #5 — `scenario normalize` 재범위만 남음.
    archetype-boundary retire는 cut 슬라이스에 흡수됨.
-6. `repo/skill` / `app/chat` / `app/prompt` preset 중 어떤 surface에 real-codex/claude self-dogfood evidence를 먼저 붙일지 결정한다.
+7. `repo/skill` / `app/chat` / `app/prompt` preset 중 어떤 surface에 real-codex/claude self-dogfood evidence를 먼저 붙일지 결정한다.
 
 ## Discuss
 

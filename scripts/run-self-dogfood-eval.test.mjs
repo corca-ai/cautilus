@@ -20,7 +20,7 @@ test("run-self-dogfood-eval materializes a disposable candidate workspace", () =
 				prompt: "Read the repo instructions first and decide how to route this task.",
 				expectedEntryFile: "AGENTS.md",
 				requiredInstructionFiles: ["AGENTS.md"],
-				expectedRouting: { selectedSkill: "none" },
+				expectedRouting: { bootstrapHelper: "find-skills", workSkill: "none" },
 			},
 		],
 	};
@@ -31,7 +31,7 @@ test("run-self-dogfood-eval materializes a disposable candidate workspace", () =
 			entryFile: "AGENTS.md",
 			loadedInstructionFiles: ["AGENTS.md"],
 			loadedSupportingFiles: [],
-			routingDecision: { selectedSkill: "none" },
+			routingDecision: { selectedSkill: "none", bootstrapHelper: "find-skills", workSkill: "none" },
 		},
 	};
 	writeFileSync(casesFile, JSON.stringify(cases));

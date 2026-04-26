@@ -151,9 +151,9 @@ func TestRenderUsageGroupsCommandsByPurpose(t *testing.T) {
 		t.Fatalf("RenderUsage returned error: %v", err)
 	}
 	expectedGroups := []string{
-		"Run an evaluation scenario:",
+		"Discover and verify behavior claims:",
 		"Set up and check a repo:",
-		"Turn results into next moves:",
+		"Review evidence and improve behavior:",
 		"Introspection:",
 	}
 	previousIndex := -1
@@ -167,7 +167,7 @@ func TestRenderUsageGroupsCommandsByPurpose(t *testing.T) {
 		}
 		previousIndex = index
 	}
-	runIndex := strings.Index(usage, "Run an evaluation scenario:")
+	runIndex := strings.Index(usage, "Discover and verify behavior claims:")
 	setupIndex := strings.Index(usage, "Set up and check a repo:")
 	scenarioLine := strings.Index(usage, "cautilus scenario normalize chatbot [args]")
 	installLine := strings.Index(usage, "cautilus install [--repo-root <path>] [--overwrite] [--json]")

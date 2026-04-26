@@ -2,6 +2,8 @@
 
 `Cautilus` keeps agent and workflow behavior honest while prompts keep changing.
 It is a repo-local contract layer for agent and workflow behavior evaluation: define the behavior you are trying to protect once, then verify it survives prompt, skill, and wrapper changes.
+The product has three connected jobs:
+discover declared behavior claims worth proving, verify those claims through bounded evaluation packets, and improve behavior with budgeted optimization once the proof surface is honest.
 Ships as a standalone binary plus a bundled skill a host repo can install without copying another scaffold first.
 `Cautilus` installs as a machine-level binary, but its agent-facing surface is intentionally repo-local.
 The binary is shared across repos.
@@ -71,6 +73,7 @@ The spec pages are the shipped contract.
 
 Start here if you want one concrete picture before reading the full surface.
 You need one checked-in proposal input, or one new behavior input you want to turn into a reusable scenario.
+This loop sits in the claim-discovery layer: it turns messy behavior evidence into candidate claims and scenarios before those candidates become protected eval fixtures.
 
 **Input (CLI)**
 
@@ -94,6 +97,11 @@ It is the shortest honest example of the product claim: `Cautilus` turns behavio
 
 ## Scenarios
 
+Cautilus has three connected product layers.
+First, claim discovery and scenario proposal surfaces find behavior claims worth proving from docs, logs, specs, AGENTS.md, CLI help, and other repo-owned truth surfaces.
+Second, `cautilus eval test` / `eval evaluate` verify selected claims through explicit fixtures and summary packets.
+Third, optimize and GEPA-style search improve prompts or behavior only after the proof surface is clear.
+
 Cautilus exposes two top-level evaluation surfaces (`repo` and `app`) with four presets between them; the surface preset, not a separate archetype, decides whether the runner needs a workspace or a messaging runtime.
 The legacy first-class archetype boundary (chatbot / skill / workflow) is retired.
 For the live contract, read [docs/specs/evaluation-surfaces.spec.md](./docs/specs/evaluation-surfaces.spec.md).
@@ -113,7 +121,7 @@ When you want a read-only operator page before promoting or refreshing scenarios
 Use when you change a skill or agent and want to know whether it still triggers on the right prompts, executes cleanly, and keeps its static validation passing.
 CLI: `cautilus eval test --repo-root . --adapter-name <name>` with a `surface=repo, preset=skill` fixture
 For agent: "Run the checked-in case suite against the skill I just edited."
-You get a report, a review file, and compare-ready evidence instead of one trigger-only smoke result.
+You get `eval-cases.json`, `eval-observed.json`, and `eval-summary.json` instead of one trigger-only smoke result.
 
 ### 3. Durable workflow recovery
 
@@ -180,14 +188,15 @@ Minimal host-repo layout:
 ```text
 .agents/cautilus-adapter.yaml
 .agents/skills/cautilus/
-artifacts/<run>/report.json
-artifacts/<run>/review-packet.json
+artifacts/<run>/eval-cases.json
+artifacts/<run>/eval-observed.json
+artifacts/<run>/eval-summary.json
 ```
 
 What the operator gets back is not just a pass/fail bit:
 
 - a repo-local adapter that declares the evaluation surface explicitly
-- machine-readable run artifacts (reports and review files) that agents can consume directly
+- machine-readable eval, report, review, evidence, and optimization packets that agents can consume directly
 - static HTML views of the same artifacts so a human reviewer can judge them in a browser without an agent in the loop
 See `docs/specs/html-report.spec.md` for the rendered contract.
 - bounded compare and review surfaces reopenable from files

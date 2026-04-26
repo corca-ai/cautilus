@@ -1,4 +1,5 @@
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync, statSync } from "node:fs";
+import { join } from "node:path";
 const SOURCE_SKILL = "skills/cautilus/SKILL.md";
 const PACKAGED_SKILL = "plugins/cautilus/skills/cautilus/SKILL.md";
 const MAX_NONEMPTY_LINES = 180;
@@ -9,6 +10,10 @@ const REQUIRED_FRAGMENTS = [
 	"cautilus commands --json",
 	"cautilus scenarios --json",
 	"--example-input",
+	"## Declared Claim Discovery",
+	"eval-summary.json",
+	"repo / whole-repo",
+	"app / prompt",
 	"cautilus install --repo-root",
 	"doctor --scope agent-surface",
 	"review variants are requested but unavailable",
@@ -22,10 +27,36 @@ const FORBIDDEN_FRAGMENTS = [
 	"fixtures/scenario-proposals/chatbot-input.json",
 	"fixtures/scenario-proposals/skill-input.json",
 	"fixtures/scenario-proposals/workflow-input.json",
+	"When `eval test` or `report build` emits `report.json`",
+	"Build `report.json` and treat it as the first decision surface.",
+	"Use iterate mode for tuning, held-out mode for validation, and full gate for ship decisions.",
+];
+
+const GLOBAL_FORBIDDEN_FRAGMENTS = [
+	"When `eval test` or `report build` emits `report.json`",
+	"Build `report.json` and treat it as the first decision surface.",
+	"Use iterate mode for tuning, held-out mode for validation, and full gate for ship decisions.",
+	"| `report.json`                     | `eval test`, `report build`",
+	"| `eval test`       | wired      | `report-input.json`, `report.json`",
+	"The legacy `dogfood:self`",
 ];
 
 function read(path) {
 	return readFileSync(path, "utf8");
+}
+
+function markdownFilesUnder(root) {
+	const entries = readdirSync(root, { withFileTypes: true });
+	const paths = [];
+	for (const entry of entries) {
+		const path = join(root, entry.name);
+		if (entry.isDirectory()) {
+			paths.push(...markdownFilesUnder(path));
+		} else if (entry.isFile() && path.endsWith(".md")) {
+			paths.push(path);
+		}
+	}
+	return paths;
 }
 
 function stripFrontmatter(markdown) {
@@ -64,6 +95,22 @@ function checkSkill(path, body) {
 	return { lineCount, problems };
 }
 
+function checkSkillTree(root) {
+	const problems = [];
+	for (const path of markdownFilesUnder(root)) {
+		if (!statSync(path).isFile()) {
+			continue;
+		}
+		const body = read(path);
+		for (const fragment of GLOBAL_FORBIDDEN_FRAGMENTS) {
+			if (body.includes(fragment)) {
+				problems.push(`${path}: stale operational guidance remains: ${fragment}`);
+			}
+		}
+	}
+	return problems;
+}
+
 const source = read(SOURCE_SKILL);
 const packaged = read(PACKAGED_SKILL);
 const problems = [];
@@ -75,6 +122,7 @@ if (source !== packaged) {
 const sourceResult = checkSkill(SOURCE_SKILL, source);
 const packagedResult = checkSkill(PACKAGED_SKILL, packaged);
 problems.push(...sourceResult.problems, ...packagedResult.problems);
+problems.push(...checkSkillTree("skills/cautilus"), ...checkSkillTree("plugins/cautilus/skills/cautilus"));
 
 if (problems.length > 0) {
 	console.error("check-cautilus-skill-disclosure: failed");
@@ -95,6 +143,7 @@ console.log(
 			packagedNonemptyLines: packagedResult.lineCount,
 			requiredFragments: REQUIRED_FRAGMENTS.length,
 			forbiddenFragments: FORBIDDEN_FRAGMENTS.length,
+			globalForbiddenFragments: GLOBAL_FORBIDDEN_FRAGMENTS.length,
 		},
 		null,
 		2,

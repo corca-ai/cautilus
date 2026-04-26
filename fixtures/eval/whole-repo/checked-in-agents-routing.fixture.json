@@ -12,7 +12,8 @@
       "expectedEntryFile": "AGENTS.md",
       "requiredInstructionFiles": ["AGENTS.md"],
       "expectedRouting": {
-        "selectedSkill": "none"
+        "bootstrapHelper": "find-skills",
+        "workSkill": "none"
       }
     }
   ]

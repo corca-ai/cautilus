@@ -2912,7 +2912,9 @@ cat <<'JSON' > "$1"
       "loadedInstructionFiles": ["AGENTS.md"],
       "loadedSupportingFiles": [],
       "routingDecision": {
-        "selectedSkill": "none"
+        "selectedSkill": "none",
+        "bootstrapHelper": "find-skills",
+        "workSkill": "none"
       },
       "instructionSurface": {
         "surfaceLabel": "compact_agents",
@@ -2926,7 +2928,7 @@ cat <<'JSON' > "$1"
       },
       "expectedEntryFile": "AGENTS.md",
       "requiredInstructionFiles": ["AGENTS.md"],
-      "expectedRouting": { "selectedSkill": "none" },
+      "expectedRouting": { "bootstrapHelper": "find-skills", "workSkill": "none" },
       "artifactRefs": []
     }
   ]
@@ -2948,7 +2950,8 @@ JSON
 				"expectedEntryFile":        "AGENTS.md",
 				"requiredInstructionFiles": []string{"AGENTS.md"},
 				"expectedRouting": map[string]any{
-					"selectedSkill": "none",
+					"bootstrapHelper": "find-skills",
+					"workSkill":       "none",
 				},
 			},
 		},

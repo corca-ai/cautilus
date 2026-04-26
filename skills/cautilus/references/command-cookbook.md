@@ -19,7 +19,7 @@ cautilus eval test \
   --output-dir /tmp/cautilus-eval
 
 cautilus eval evaluate \
-  --input ./eval-observed.json \
+  --input /tmp/cautilus-eval/eval-observed.json \
   --output /tmp/cautilus-eval-summary.json
 ```
 

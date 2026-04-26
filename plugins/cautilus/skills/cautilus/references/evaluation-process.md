@@ -168,11 +168,6 @@ scenario set before execution, persist the selected ids as
 `{selected_scenario_ids_file}`, and pass a filtered profile file through
 `{profile}` for that invocation.
 
-When that run materializes baseline state, `Cautilus` also writes a
-`baseline-cache.json` seed beside the observed eval-test packet so later
-bounded compare flows can reuse a stable cache key instead of guessing it ad
-hoc.
-
 ## Workflow
 
 1. Resolve the adapter and restate what is being evaluated.

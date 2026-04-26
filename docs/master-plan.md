@@ -7,6 +7,7 @@ Turn `Cautilus` from an extraction scaffold into a standalone intentful behavior
 The target product is:
 
 - a standalone installable CLI plus bundled reusable skill
+- declared-claim discovery that turns repo-owned truth surfaces into proof backlogs
 - host-repo adapters that define baselines, iterate loops, held-out checks, compare passes, and full gates
 - optional executor-variant runners for bounded external review
 - product-owned helper scripts and bundled-skill references for bounded evidence mining and optimization loops
@@ -14,6 +15,17 @@ The target product is:
 - scenario proposal flows that mine runtime logs and audit traces into draft evaluation cases
 - first-class evaluation surfaces for chatbot, skill, and durable workflow behavior
 - an intent-first workflow where prompts are mutable implementation details and evaluation contracts define success
+
+The product has three connected jobs:
+
+1. discover declared behavior claims worth proving from README, docs, AGENTS.md, specs, CLI help, skill docs, logs, and other repo-owned truth surfaces
+2. verify selected claims through bounded evaluation fixtures, observed packets, summaries, reports, and review surfaces
+3. improve behavior through bounded optimization and GEPA-style search after the proof surface is honest
+
+README proof is one instance of the first job, not a product-specific concept.
+Cautilus owns the generic claim-to-proof workflow; consumer repos own their local fixtures, runners, prompts, wrappers, and policy.
+Each job should eventually have a first-class command surface instead of living only as bundled-skill prose.
+The current `eval` and `optimize` families cover most of jobs 2 and 3; the claim-discovery command surface still needs an explicit design.
 
 ## Current State
 
@@ -142,11 +154,13 @@ Still open:
 
 ## Immediate Next Moves
 
-1. Decide and implement the next optimize-search held-out/full-gate path on top of the eval-test surface, or keep it explicitly skipped while C2/C3/C4 composition lands.
-2. Ship the remaining evaluation-surface composition primitives in spec order: C2 `extends`, C3 `steps`, and C4 `expected.snapshot`. See [docs/specs/evaluation-surfaces.spec.md](./specs/evaluation-surfaces.spec.md).
-3. Pick the next bounded improvement seam for the optimization layer: either close a specific richer merge heuristic that dogfood evidence asks for, or move to another roadmap slice rather than extending heuristics speculatively.
-4. Expand scenario-history beyond the first profile-backed comparison cache-key path toward reusable baseline results and broader compare ownership.
-5. Continue moving host-specific runtime seams out of the product boundary into consumer-owned adapters, prompts, and storage readers.
-6. Keep expanding normalization-pattern coverage as new consumer archetypes appear, while preserving one official adapter contract (`cautilus-adapter.yaml`).
-7. Decide whether to grow external-consumer onboarding into archetype-specific starter kits while keeping the supported installer surface centered on `install.sh`.
-8. Keep widening the HTML report surface only when the packet boundary stays stable and the added page meaningfully improves human review, rather than mirroring every lower-level test seam.
+1. Design the three first-class command surfaces for claim discovery, claim verification, and behavior improvement.
+   Keep the design repo-agnostic and avoid README-specific naming.
+2. Decide and implement the next optimize-search held-out/full-gate path on top of the eval-test surface, or keep it explicitly skipped while C2/C3/C4 composition lands.
+3. Ship the remaining evaluation-surface composition primitives in spec order: C2 `extends`, C3 `steps`, and C4 `expected.snapshot`. See [docs/specs/evaluation-surfaces.spec.md](./specs/evaluation-surfaces.spec.md).
+4. Pick the next bounded improvement seam for the optimization layer: either close a specific richer merge heuristic that dogfood evidence asks for, or move to another roadmap slice rather than extending heuristics speculatively.
+5. Expand scenario-history beyond the first profile-backed comparison cache-key path toward reusable baseline results and broader compare ownership.
+6. Continue moving host-specific runtime seams out of the product boundary into consumer-owned adapters, prompts, and storage readers.
+7. Keep expanding normalization-pattern coverage as new consumer archetypes appear, while preserving one official adapter contract (`cautilus-adapter.yaml`).
+8. Decide whether to grow external-consumer onboarding into archetype-specific starter kits while keeping the supported installer surface centered on `install.sh`.
+9. Keep widening the HTML report surface only when the packet boundary stays stable and the added page meaningfully improves human review, rather than mirroring every lower-level test seam.

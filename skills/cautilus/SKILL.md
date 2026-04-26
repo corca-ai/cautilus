@@ -5,7 +5,7 @@ description: "Use when intentful behavior evaluation itself is the task and the 
 
 # Cautilus
 
-Use this bundled skill when intentful behavior evaluation itself is the task and the repo wants to run the checked-in `Cautilus` workflow instead of rebuilding compare, held-out, report, review, or optimize commands by hand.
+Use this bundled skill when intentful behavior evaluation itself is the task and the repo wants to run the checked-in `Cautilus` workflow instead of rebuilding claim discovery, eval fixtures, report, review, or optimize commands by hand.
 
 The installed skill assumes `cautilus` is already available on `PATH`.
 If it is not, install the CLI first and verify with `cautilus --version`.
@@ -33,6 +33,7 @@ Use [command-cookbook.md](references/command-cookbook.md) only after the binary 
 `Cautilus` should stay usable as a standalone product:
 
 - resolve or scaffold repo-local adapters
+- discover declared behavior claims worth proving
 - evaluate one bounded behavior surface with explicit intent
 - build report, review, evidence, optimize, and revision packets through the CLI
 - run adapter-owned review variants through checked-in executor templates
@@ -52,6 +53,24 @@ Use this minimal routing rule:
 - `app / prompt`: a single-turn prompt input/output behavior must remain stable.
 
 For scenario proposal input shapes, prefer the relevant `--example-input` command from `cautilus scenarios --json` over hand-written JSON.
+
+## Declared Claim Discovery
+
+Use this step when the user asks whether a repo proves what it claims, whether documentation and behavior are aligned, or which scenarios still need to be created.
+Do not hard-code the search to README.
+Treat README, docs, AGENTS.md, CLI help, specs, skill docs, release notes, and adapter files as possible repo-owned truth surfaces.
+
+Classify each candidate claim before creating fixtures:
+
+- `human-auditable`: the claim can be checked by reading current source or docs.
+- `deterministic`: the claim belongs in unit, lint, type, build, or CI checks.
+- `cautilus-eval`: the claim needs model, agent, prompt, skill, or workflow behavior evidence.
+- `scenario-candidate`: the claim needs normalized proposal input before it becomes a protected eval fixture.
+- `alignment-work`: the code, docs, adapter, or skill surface must be reconciled before proof would be honest.
+
+For `cautilus-eval` claims, route to `repo / whole-repo`, `repo / skill`, `app / chat`, or `app / prompt`.
+Keep the fixture, runner, prompt files, wrapper scripts, and acceptance policy in the host repo.
+Use Cautilus for the generic packet contract, bounded run loop, and reusable decision artifacts.
 
 ## Bootstrap
 
@@ -102,22 +121,30 @@ When default `doctor` returns `ready`, read its `first_bounded_run` payload befo
 
 ## Workflow
 
-1. Resolve the adapter and restate the candidate, baseline, intended behavior, and decision boundary.
+1. Resolve the adapter and restate the candidate claim, baseline, intended behavior, and decision boundary.
 2. Use `workspace start` for a multi-command run instead of inventing unrelated `/tmp` paths by hand.
 3. Use `workspace prepare-compare` when the run needs clean git-ref A/B workspaces.
 4. Run adapter-defined preflight commands before long evaluations.
-5. Use iterate mode for tuning, held-out mode for validation, and full gate for ship decisions.
-6. Build `report.json` and treat it as the first decision surface.
+5. Run `cautilus eval test` for checked-in fixtures and read `eval-summary.json` as the first bounded evaluation decision.
+6. Build `report.json` only when the workflow needs the broader report/review/evidence/optimize packet layer.
 7. If the adapter defines `executor_variants`, run `cautilus review variants` instead of retyping ad hoc shell commands.
 8. If review variants are requested but unavailable on the selected adapter, treat that as a gate defect to fix or explicitly waive before release.
 9. Use `scenario propose` when normalized proposal candidates already exist and the next move is a checked-in scenario packet.
-10. Report exact commands, exact adapter selection, exact artifact paths, and the final recommendation.
+10. Use optimize or GEPA-style search only after the claim and held-out proof surface are explicit.
+11. Report exact commands, exact adapter selection, exact artifact paths, and the final recommendation.
 
 When the target repo is `Cautilus` itself, prefer the checked-in self-dogfood wrappers over rebuilding the mode/report/review chain by hand; see [self-dogfood-runner.md](references/self-dogfood-runner.md) for wrapper entries and claim boundaries.
 
-## Report Reading
+## Eval And Report Reading
 
-When `eval test` or `report build` emits `report.json`, read it in this order:
+When `eval test` writes `eval-summary.json`, read it in this order:
+
+1. `recommendation`
+2. per-case status counts and failed or blocked evaluations
+3. expectation results, routing summaries, or surface-specific mismatch details
+4. artifact refs and runtime telemetry
+
+When `report build` emits `report.json`, read it in this order:
 
 1. `recommendation`
 2. `modeSummaries[*].status` and `modeSummaries[*].summary`
@@ -136,7 +163,10 @@ Interpretation rules:
 
 Use product-owned outputs instead of paraphrasing command results from memory.
 
-- `report.json`: first machine-readable decision packet.
+- `eval-cases.json`: product-normalized test cases handed to the host-owned runner.
+- `eval-observed.json`: observed behavior packet written by the runner.
+- `eval-summary.json`: first bounded evaluation decision packet.
+- `report.json`: broader report packet for review, evidence, and optimization workflows.
 - `review.json`: durable review packet built around one report plus adapter-owned prompt and artifact context.
 - `review-prompt-input.json`: portable meta-prompt packet for human or model review.
 - `review-summary.json`: multi-variant judge summary with verdicts, reason codes, and aggregate telemetry.

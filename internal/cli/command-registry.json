@@ -1,8 +1,8 @@
 {
   "groups": [
-    { "id": "run", "label": "Run an evaluation scenario" },
+    { "id": "run", "label": "Discover and verify behavior claims" },
     { "id": "setup", "label": "Set up and check a repo" },
-    { "id": "results", "label": "Turn results into next moves" },
+    { "id": "results", "label": "Review evidence and improve behavior" },
     { "id": "introspection", "label": "Introspection" }
   ],
   "commands": [
