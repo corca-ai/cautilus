@@ -98,9 +98,18 @@ It is the shortest honest example of the product claim: `Cautilus` turns behavio
 ## Scenarios
 
 Cautilus has three connected product layers.
-First, claim discovery and scenario proposal surfaces find behavior claims worth proving from docs, logs, specs, AGENTS.md, CLI help, and other repo-owned truth surfaces.
+First, `cautilus claim discover` and scenario proposal surfaces find behavior claims worth proving from docs, logs, specs, AGENTS.md, CLI help, and other repo-owned truth surfaces.
 Second, `cautilus eval test` / `eval evaluate` verify selected claims through explicit fixtures and summary packets.
 Third, optimize and GEPA-style search improve prompts or behavior only after the proof surface is clear.
+
+For the generic first pass, ask for a proof plan:
+
+```bash
+cautilus claim discover --repo-root . --output /tmp/cautilus-claims.json
+```
+
+The output is `cautilus.claim_proof_plan.v1`: source-ref-backed candidate claims with proof-layer routing.
+It is not a verdict that the repo is correct.
 
 Cautilus exposes two top-level evaluation surfaces (`repo` and `app`) with four presets between them; the surface preset, not a separate archetype, decides whether the runner needs a workspace or a messaging runtime.
 The legacy first-class archetype boundary (chatbot / skill / workflow) is retired.

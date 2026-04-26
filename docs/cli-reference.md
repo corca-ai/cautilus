@@ -71,6 +71,9 @@ cautilus doctor --repo-root /path/to/repo --next-action
 # local agent-skill discoverability in a consumer repo
 cautilus doctor --repo-root /path/to/repo --scope agent-surface
 
+# declared-claim discovery and proof planning
+cautilus claim discover --repo-root /path/to/repo --output /tmp/cautilus-claims.json
+
 # scenario-normalization catalog, for agents that need proposal-input examples
 cautilus scenarios --json
 ```
@@ -81,6 +84,8 @@ Use `doctor --scope agent-surface` to verify only the bundled skill and local ag
 Use default `doctor` (`--scope repo`) to verify the repo has a real runnable evaluation path.
 When repo-scope `doctor` returns `ready`, the JSON payload includes `first_bounded_run`: a starter `eval test -> eval evaluate` packet loop plus the scenario-normalization catalog for agents that still need proposal-input examples.
 When a repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, run `cautilus doctor --repo-root /path/to/repo --adapter-name <name>` for repo-scope validation instead of expecting plain `doctor` to guess which named adapter you mean.
+Use `cautilus claim discover` before writing eval fixtures when you need to inventory declared behavior claims and decide whether each belongs in human review, deterministic CI, Cautilus eval, scenario proposal work, or alignment work.
+The packet is `cautilus.claim_proof_plan.v1`, and it is a proof plan rather than a verdict.
 
 For the shortest end-to-end adoption proof in a fresh consumer repo:
 
