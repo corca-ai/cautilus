@@ -12,6 +12,7 @@ const (
 	ClaimProofPlanSchema                            = "cautilus.claim_proof_plan.v1"
 	ClaimRefreshPlanSchema                          = "cautilus.claim_refresh_plan.v1"
 	ClaimReviewInputSchema                          = "cautilus.claim_review_input.v1"
+	ClaimReviewResultSchema                         = "cautilus.claim_review_result.v1"
 	ClaimStatusSummarySchema                        = "cautilus.claim_status_summary.v1"
 	CompareArtifactSchema                           = "cautilus.compare_artifact.v1"
 	DraftScenarioSchema                             = "cautilus.scenario.v1"

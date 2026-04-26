@@ -165,6 +165,8 @@ func nativeHandler(path []string) handlerFunc {
 		return handleClaimShow
 	case "claim review prepare-input":
 		return handleClaimReviewPrepareInput
+	case "claim review apply-result":
+		return handleClaimReviewApplyResult
 	case "workbench discover":
 		return handleWorkbenchDiscover
 	case "workbench run-live":
@@ -343,6 +345,12 @@ type claimReviewPrepareInputArgs struct {
 	maxClaimsPerCluster int
 	excerptChars        int
 	clusterPolicy       string
+}
+
+type claimReviewApplyResultArgs struct {
+	claims       string
+	reviewResult string
+	output       *string
 }
 
 type installArgs struct {
@@ -791,6 +799,39 @@ func handleClaimReviewPrepareInput(repoRoot string, cwd string, args []string, s
 		return 1
 	}
 	if err := writeOutput(stdout, cwd, options.output, reviewInput); err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	return 0
+}
+
+//nolint:errcheck // CLI stderr/stdout reporting is best-effort.
+func handleClaimReviewApplyResult(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	_ = repoRoot
+	options, err := parseClaimReviewApplyResultArgs(args, cwd)
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	claimPacket, err := readJSONObject(options.claims)
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	reviewResult, err := readJSONObject(options.reviewResult)
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	updated, err := runtime.ApplyClaimReviewResult(claimPacket, reviewResult, runtime.ClaimReviewApplyOptions{
+		ClaimsPath:       options.claims,
+		ReviewResultPath: options.reviewResult,
+	})
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	if err := writeOutput(stdout, cwd, options.output, updated); err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
@@ -2028,6 +2069,45 @@ func parseClaimReviewPrepareInputArgs(args []string, cwd string) (*claimReviewPr
 	}
 	if strings.TrimSpace(options.claims) == "" {
 		return nil, fmt.Errorf("--claims is required")
+	}
+	return options, nil
+}
+
+func parseClaimReviewApplyResultArgs(args []string, cwd string) (*claimReviewApplyResultArgs, error) {
+	options := &claimReviewApplyResultArgs{}
+	for index := 0; index < len(args); index++ {
+		arg := args[index]
+		switch arg {
+		case "--claims", "--input":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.claims = resolvePath(cwd, value)
+		case "--review-result":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.reviewResult = resolvePath(cwd, value)
+		case "--output":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.output = &value
+		default:
+			return nil, fmt.Errorf("unknown argument: %s", arg)
+		}
+	}
+	if strings.TrimSpace(options.claims) == "" {
+		return nil, fmt.Errorf("--claims is required")
+	}
+	if strings.TrimSpace(options.reviewResult) == "" {
+		return nil, fmt.Errorf("--review-result is required")
 	}
 	return options, nil
 }

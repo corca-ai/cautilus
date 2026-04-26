@@ -36,9 +36,38 @@ tmpdir=$(mktemp -d)
 ./bin/cautilus claim discover --repo-root ./fixtures/claim-discovery/tiny-repo --output "$tmpdir/claims.json"
 ./bin/cautilus claim show --input "$tmpdir/claims.json" --output "$tmpdir/claim-status.json"
 ./bin/cautilus claim review prepare-input --claims "$tmpdir/claims.json" --max-clusters 2 --output "$tmpdir/claim-review-input.json"
+cat >"$tmpdir/claim-review-result.json" <<'JSON'
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewRun": {"reviewer": "spec-fixture"},
+  "clusterResults": [
+    {
+      "clusterId": "cluster-spec",
+      "claimUpdates": [
+        {
+          "claimId": "claim-agents-md-3",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "satisfied",
+          "evidenceRefs": [
+            {
+              "kind": "test",
+              "path": "docs/specs/command-surfaces.spec.md",
+              "matchKind": "direct",
+              "contentHash": "sha256:spec",
+              "supportsClaimIds": ["claim-agents-md-3"]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+JSON
+./bin/cautilus claim review apply-result --claims "$tmpdir/claims.json" --review-result "$tmpdir/claim-review-result.json" --output "$tmpdir/reviewed-claims.json"
 grep -q '"schemaVersion": "cautilus.claim_proof_plan.v1"' "$tmpdir/claims.json"
 grep -q '"schemaVersion": "cautilus.claim_status_summary.v1"' "$tmpdir/claim-status.json"
 grep -q '"schemaVersion": "cautilus.claim_review_input.v1"' "$tmpdir/claim-review-input.json"
+grep -q '"reviewApplication": {' "$tmpdir/reviewed-claims.json"
 grep -q '"proofLayer": "human-auditable"' "$tmpdir/claims.json"
 grep -q '"proofLayer": "deterministic"' "$tmpdir/claims.json"
 grep -q '"proofLayer": "cautilus-eval"' "$tmpdir/claims.json"
@@ -108,6 +137,10 @@ It summarizes an existing proof-plan packet without rescanning.
 It groups candidates into deterministic review clusters and records the review budget.
 It does not call an LLM, schedule subagents, merge duplicates, or mark evidence satisfied.
 
+`cautilus claim review apply-result --claims <claims.json> --review-result <review-result.json>` consumes `cautilus.claim_review_result.v1` and emits an updated claim packet.
+It applies reviewed labels, evidence refs, provenance, merge decisions, and unresolved questions.
+It rejects `evidenceStatus=satisfied` unless a direct or verified evidence ref supports the claim.
+
 ### Eval Surface
 
 `eval` remains the verification family.
@@ -153,7 +186,7 @@ It should point to the relevant scenario command rather than duplicating scenari
 
 ## Deferred Decisions
 
-- Whether `claim` gets companion commands such as `claim validate`, `claim review apply-result`, `claim plan-evals`, or `claim render-html`.
+- Whether `claim` gets companion commands such as `claim validate`, `claim plan-evals`, or `claim render-html`.
 - Whether `scenario` commands eventually move under `claim` or stay as their own long-lived family.
 - Whether `optimize` should gain a user-facing `improve` alias.
   The current command remains `optimize`.
@@ -196,9 +229,11 @@ The first implementation slice includes:
 
 - command registry entry for `cautilus claim discover`
 - command registry entries for `cautilus claim show` and `cautilus claim review prepare-input`
+- command registry entry for `cautilus claim review apply-result`
 - `cautilus claim discover --example-output`
 - fixture-backed unit tests for `cautilus.claim_proof_plan.v1`
 - fixture-backed unit tests for `cautilus.claim_status_summary.v1` and `cautilus.claim_review_input.v1`
+- fixture-backed unit tests for `cautilus.claim_review_result.v1` application and satisfied-evidence rejection
 - a CLI smoke test that discovers claims from a tiny temp repo with README, AGENTS.md, and one deterministic-test-like claim
 - a bundled-skill disclosure check that requires the `claim`, `eval`, and `optimize` family names and forbids README-specific naming as the core concept
 - public spec proof that the command can emit at least one `human-auditable`, one `deterministic`, and one `cautilus-eval` candidate from checked-in fixtures
@@ -227,4 +262,5 @@ This file is the command-surface implementation contract.
 
 The first implementation slice shipped `cautilus claim discover` with a conservative deterministic source inventory and a fixture-backed proof-plan packet.
 The next slice shipped `claim show` and `claim review prepare-input` as existing-packet deterministic helpers.
-The next open slice is `claim review apply-result` after review-result schema and dogfood evidence are stable enough to avoid overfitting the merge contract.
+The next slice shipped `claim review apply-result` with guarded evidence satisfaction.
+The next open slice is likely `claim plan-evals`, but only after reviewed claim packets provide enough stable input signal.

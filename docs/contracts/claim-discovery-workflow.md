@@ -395,6 +395,7 @@ Follow-on commands are justified only when they operate on an existing claim-sta
 
 - `claim show`: summarize an existing packet for agents without rescanning
 - `claim review prepare-input`: turn selected candidate clusters into a deterministic review-input packet without calling an LLM
+- `claim review apply-result`: merge `cautilus.claim_review_result.v1` labels and evidence refs into an existing claim packet without calling an LLM
 - `claim plan-evals`: turn selected `cautilus-eval` claims into draft eval scenario or fixture packets
 - `claim validate`: validate packet shape and evidence refs
 
@@ -542,3 +543,5 @@ LLM-backed cluster review should come after the deterministic packet and skill c
 The next deterministic helper slice added `claim show` and `claim review prepare-input`.
 `claim show` emits `cautilus.claim_status_summary.v1`.
 `claim review prepare-input` emits `cautilus.claim_review_input.v1` and records bounded clusters and skipped clusters, but still does not call an LLM or merge review results.
+The review-result application slice added `claim review apply-result`.
+It consumes `cautilus.claim_review_result.v1`, applies reviewed labels and evidence refs, records provenance, and rejects `evidenceStatus=satisfied` unless a direct or verified evidence ref supports the claim.

@@ -120,6 +120,100 @@ func TestBuildClaimReviewInputClustersAndSkipsDeterministically(t *testing.T) {
 	}
 }
 
+func TestApplyClaimReviewResultUpdatesLabelsWithVerifiedEvidence(t *testing.T) {
+	repoRoot := filepath.Join("..", "..", "fixtures", "claim-discovery", "tiny-repo")
+	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan returned error: %v", err)
+	}
+	firstClaim := asMap(arrayOrEmpty(plan["claimCandidates"])[0])
+	claimID := stringFromAny(firstClaim["claimId"])
+	reviewResult := map[string]any{
+		"schemaVersion": contracts.ClaimReviewResultSchema,
+		"reviewRun": map[string]any{
+			"reviewer": "fixture-reviewer",
+		},
+		"clusterResults": []any{
+			map[string]any{
+				"clusterId": "cluster-fixture",
+				"claimUpdates": []any{
+					map[string]any{
+						"claimId":              claimID,
+						"reviewStatus":         "agent-reviewed",
+						"evidenceStatus":       "satisfied",
+						"evidenceStatusReason": "Fixture review found direct evidence.",
+						"evidenceRefs": []any{
+							map[string]any{
+								"refId":            "evidence-fixture-1",
+								"kind":             "test",
+								"path":             "internal/runtime/claim_discovery_test.go",
+								"matchKind":        "direct",
+								"contentHash":      "sha256:test",
+								"supportsClaimIds": []any{claimID},
+							},
+						},
+					},
+				},
+			},
+		},
+	}
+	updated, err := ApplyClaimReviewResult(plan, reviewResult, ClaimReviewApplyOptions{
+		ClaimsPath:       "claims.json",
+		ReviewResultPath: "review-result.json",
+	})
+	if err != nil {
+		t.Fatalf("ApplyClaimReviewResult returned error: %v", err)
+	}
+	candidate := asMap(arrayOrEmpty(updated["claimCandidates"])[0])
+	if candidate["reviewStatus"] != "agent-reviewed" || candidate["evidenceStatus"] != "satisfied" {
+		t.Fatalf("expected reviewed satisfied candidate, got %#v", candidate)
+	}
+	application := asMap(updated["reviewApplication"])
+	if application["appliedUpdateCount"] != 1 {
+		t.Fatalf("expected one applied update, got %#v", application)
+	}
+	if len(arrayOrEmpty(updated["reviewRuns"])) != 1 {
+		t.Fatalf("expected review run provenance, got %#v", updated["reviewRuns"])
+	}
+}
+
+func TestApplyClaimReviewResultRejectsSatisfiedWithoutVerifiedEvidence(t *testing.T) {
+	repoRoot := filepath.Join("..", "..", "fixtures", "claim-discovery", "tiny-repo")
+	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan returned error: %v", err)
+	}
+	claimID := stringFromAny(asMap(arrayOrEmpty(plan["claimCandidates"])[0])["claimId"])
+	reviewResult := map[string]any{
+		"schemaVersion": contracts.ClaimReviewResultSchema,
+		"clusterResults": []any{
+			map[string]any{
+				"clusterId": "cluster-fixture",
+				"claimUpdates": []any{
+					map[string]any{
+						"claimId":        claimID,
+						"reviewStatus":   "agent-reviewed",
+						"evidenceStatus": "satisfied",
+						"evidenceRefs": []any{
+							map[string]any{
+								"kind":             "test",
+								"path":             "internal/runtime/claim_discovery_test.go",
+								"matchKind":        "possible",
+								"contentHash":      "sha256:test",
+								"supportsClaimIds": []any{claimID},
+							},
+						},
+					},
+				},
+			},
+		},
+	}
+	_, err = ApplyClaimReviewResult(plan, reviewResult, ClaimReviewApplyOptions{})
+	if err == nil || !strings.Contains(err.Error(), "evidenceStatus satisfied requires") {
+		t.Fatalf("expected satisfied evidence validation error, got %v", err)
+	}
+}
+
 func mustWriteFile(t *testing.T, path string, content string) {
 	t.Helper()
 	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {

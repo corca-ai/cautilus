@@ -33,6 +33,11 @@ type ClaimReviewInputOptions struct {
 	ClusterPolicy       string
 }
 
+type ClaimReviewApplyOptions struct {
+	ClaimsPath       string
+	ReviewResultPath string
+}
+
 type claimSource struct {
 	absPath        string
 	relPath        string
@@ -1149,6 +1154,224 @@ func renderClaimReviewClusters(clusters []claimReviewCluster, options ClaimRevie
 		rendered = append(rendered, entry)
 	}
 	return rendered, skipped
+}
+
+func ApplyClaimReviewResult(claimPacket map[string]any, reviewResult map[string]any, options ClaimReviewApplyOptions) (map[string]any, error) {
+	if err := ValidateClaimProofPlan(claimPacket); err != nil {
+		return nil, err
+	}
+	if err := validateClaimReviewResult(reviewResult); err != nil {
+		return nil, err
+	}
+	updated, err := cloneJSON(claimPacket)
+	if err != nil {
+		return nil, err
+	}
+	candidates := arrayOrEmpty(updated["claimCandidates"])
+	candidatesByID := map[string]map[string]any{}
+	for _, raw := range candidates {
+		entry := asMap(raw)
+		claimID := stringFromAny(entry["claimId"])
+		if claimID != "" {
+			candidatesByID[claimID] = entry
+		}
+	}
+	appliedUpdates := []any{}
+	for _, rawCluster := range arrayOrEmpty(reviewResult["clusterResults"]) {
+		cluster := asMap(rawCluster)
+		clusterID := stringFromAny(cluster["clusterId"])
+		for _, rawUpdate := range arrayOrEmpty(cluster["claimUpdates"]) {
+			update := asMap(rawUpdate)
+			claimID := stringFromAny(update["claimId"])
+			candidate := candidatesByID[claimID]
+			if candidate == nil {
+				return nil, fmt.Errorf("review result references unknown claimId %q", claimID)
+			}
+			appliedFields, err := applyClaimUpdate(candidate, update)
+			if err != nil {
+				return nil, fmt.Errorf("claim %s: %w", claimID, err)
+			}
+			appliedUpdates = append(appliedUpdates, map[string]any{
+				"clusterId":     clusterID,
+				"claimId":       claimID,
+				"appliedFields": appliedFields,
+			})
+		}
+	}
+	updated["claimSummary"] = summarizeClaimCandidates(candidates)
+	updated["candidateCount"] = len(candidates)
+	updated["reviewApplication"] = map[string]any{
+		"schemaVersion":       contracts.ClaimReviewResultSchema,
+		"claimsPath":          filepath.ToSlash(filepath.Clean(options.ClaimsPath)),
+		"reviewResultPath":    filepath.ToSlash(filepath.Clean(options.ReviewResultPath)),
+		"appliedUpdateCount":  len(appliedUpdates),
+		"appliedUpdates":      appliedUpdates,
+		"mergeDecisions":      collectClaimMergeDecisions(reviewResult),
+		"unresolvedQuestions": collectClaimUnresolvedQuestions(reviewResult),
+	}
+	reviewRuns := append(arrayOrEmpty(updated["reviewRuns"]), renderClaimReviewRun(reviewResult))
+	updated["reviewRuns"] = reviewRuns
+	if err := ValidateClaimProofPlan(updated); err != nil {
+		return nil, err
+	}
+	return updated, nil
+}
+
+func validateClaimReviewResult(result map[string]any) error {
+	if result["schemaVersion"] != contracts.ClaimReviewResultSchema {
+		return fmt.Errorf("schemaVersion must be %s", contracts.ClaimReviewResultSchema)
+	}
+	if _, err := assertArray(result["clusterResults"], "clusterResults"); err != nil {
+		return err
+	}
+	for clusterIndex, rawCluster := range arrayOrEmpty(result["clusterResults"]) {
+		cluster := asMap(rawCluster)
+		if _, err := normalizeNonEmptyString(cluster["clusterId"], fmt.Sprintf("clusterResults[%d].clusterId", clusterIndex)); err != nil {
+			return err
+		}
+		for updateIndex, rawUpdate := range arrayOrEmpty(cluster["claimUpdates"]) {
+			update := asMap(rawUpdate)
+			field := fmt.Sprintf("clusterResults[%d].claimUpdates[%d]", clusterIndex, updateIndex)
+			if _, err := normalizeNonEmptyString(update["claimId"], field+".claimId"); err != nil {
+				return err
+			}
+			if err := validateClaimUpdateFields(update, field); err != nil {
+				return err
+			}
+		}
+	}
+	return nil
+}
+
+func validateClaimUpdateFields(update map[string]any, field string) error {
+	if value := stringFromAny(update["recommendedProof"]); value != "" && !validRecommendedProof(value) {
+		return fmt.Errorf("%s.recommendedProof %q is unsupported", field, value)
+	}
+	if value := stringFromAny(update["verificationReadiness"]); value != "" && !validVerificationReadiness(value) {
+		return fmt.Errorf("%s.verificationReadiness %q is unsupported", field, value)
+	}
+	if value := stringFromAny(update["evidenceStatus"]); value != "" && !validEvidenceStatus(value) {
+		return fmt.Errorf("%s.evidenceStatus %q is unsupported", field, value)
+	}
+	if value := stringFromAny(update["reviewStatus"]); value != "" && !validReviewStatus(value) {
+		return fmt.Errorf("%s.reviewStatus %q is unsupported", field, value)
+	}
+	if value := stringFromAny(update["lifecycle"]); value != "" && !validClaimLifecycle(value) {
+		return fmt.Errorf("%s.lifecycle %q is unsupported", field, value)
+	}
+	if value := stringFromAny(update["recommendedEvalSurface"]); value != "" && !validEvalSurface(value) {
+		return fmt.Errorf("%s.recommendedEvalSurface %q is unsupported", field, value)
+	}
+	return nil
+}
+
+func applyClaimUpdate(candidate map[string]any, update map[string]any) ([]any, error) {
+	applied := []any{}
+	for _, field := range []string{"recommendedProof", "verificationReadiness", "evidenceStatus", "reviewStatus", "lifecycle", "recommendedEvalSurface"} {
+		if value := stringFromAny(update[field]); value != "" {
+			candidate[field] = value
+			applied = append(applied, field)
+		}
+	}
+	if refs := arrayOrEmpty(update["evidenceRefs"]); len(refs) > 0 {
+		candidate["evidenceRefs"] = refs
+		applied = append(applied, "evidenceRefs")
+	}
+	if nextAction := stringFromAny(update["nextAction"]); nextAction != "" {
+		candidate["nextAction"] = nextAction
+		applied = append(applied, "nextAction")
+	}
+	if reason := stringFromAny(update["evidenceStatusReason"]); reason != "" {
+		candidate["evidenceStatusReason"] = reason
+		applied = append(applied, "evidenceStatusReason")
+	}
+	if questions := arrayOrEmpty(update["unresolvedQuestions"]); len(questions) > 0 {
+		candidate["unresolvedQuestions"] = questions
+		applied = append(applied, "unresolvedQuestions")
+	}
+	recommendedProof := stringFromAny(candidate["recommendedProof"])
+	readiness := stringFromAny(candidate["verificationReadiness"])
+	candidate["proofLayer"] = derivedProofLayer(recommendedProof, readiness)
+	if err := validateClaimEvidenceSatisfaction(candidate); err != nil {
+		return nil, err
+	}
+	return applied, nil
+}
+
+func validateClaimEvidenceSatisfaction(candidate map[string]any) error {
+	if stringFromAny(candidate["evidenceStatus"]) != "satisfied" {
+		return nil
+	}
+	if stringFromAny(candidate["reviewStatus"]) == "heuristic" {
+		return fmt.Errorf("evidenceStatus satisfied requires agent-reviewed or human-reviewed reviewStatus")
+	}
+	claimID := stringFromAny(candidate["claimId"])
+	for _, rawRef := range arrayOrEmpty(candidate["evidenceRefs"]) {
+		ref := asMap(rawRef)
+		matchKind := stringFromAny(ref["matchKind"])
+		if matchKind != "verified" && matchKind != "direct" {
+			continue
+		}
+		if stringFromAny(ref["path"]) == "" || stringFromAny(ref["kind"]) == "" {
+			continue
+		}
+		if stringFromAny(ref["commit"]) == "" && stringFromAny(ref["contentHash"]) == "" {
+			continue
+		}
+		if !evidenceRefSupportsClaim(ref, claimID) {
+			continue
+		}
+		return nil
+	}
+	return fmt.Errorf("evidenceStatus satisfied requires a direct or verified evidenceRef with path, kind, commit or contentHash, and supportsClaimIds containing the claim")
+}
+
+func evidenceRefSupportsClaim(ref map[string]any, claimID string) bool {
+	for _, raw := range arrayOrEmpty(ref["supportsClaimIds"]) {
+		if stringFromAny(raw) == claimID {
+			return true
+		}
+	}
+	return false
+}
+
+func collectClaimMergeDecisions(result map[string]any) []any {
+	decisions := []any{}
+	for _, rawCluster := range arrayOrEmpty(result["clusterResults"]) {
+		cluster := asMap(rawCluster)
+		clusterID := stringFromAny(cluster["clusterId"])
+		for _, rawDecision := range arrayOrEmpty(cluster["mergeDecisions"]) {
+			decision := asMap(rawDecision)
+			decision["clusterId"] = clusterID
+			decisions = append(decisions, decision)
+		}
+	}
+	return decisions
+}
+
+func collectClaimUnresolvedQuestions(result map[string]any) []any {
+	questions := []any{}
+	for _, rawCluster := range arrayOrEmpty(result["clusterResults"]) {
+		cluster := asMap(rawCluster)
+		clusterID := stringFromAny(cluster["clusterId"])
+		for _, rawQuestion := range arrayOrEmpty(cluster["unresolvedQuestions"]) {
+			questions = append(questions, map[string]any{
+				"clusterId": clusterID,
+				"question":  rawQuestion,
+			})
+		}
+	}
+	return questions
+}
+
+func renderClaimReviewRun(result map[string]any) map[string]any {
+	reviewRun := asMap(result["reviewRun"])
+	return map[string]any{
+		"schemaVersion":     contracts.ClaimReviewResultSchema,
+		"reviewRun":         reviewRun,
+		"sourceReviewInput": asMap(result["sourceReviewInput"]),
+		"clusterCount":      len(arrayOrEmpty(result["clusterResults"])),
+	}
 }
 
 func incrementStringCount(counts map[string]int, value any) {

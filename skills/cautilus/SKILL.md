@@ -92,6 +92,8 @@ After discovery or refresh, summarize the packet before choosing work:
 
 Only launch LLM-backed review after a separate review-budget confirmation that states maximum clusters, parallel review lanes, clusters per reviewer, excerpt budget, retry policy, and skipped-cluster policy.
 After that budget is confirmed, run `cautilus claim review prepare-input --claims <claims.json> --max-clusters <n> --output <review-input.json>` to create deterministic review clusters, then give those clusters to reviewers.
+When reviewers return `cautilus.claim_review_result.v1`, run `cautilus claim review apply-result --claims <claims.json> --review-result <review-result.json> --output <reviewed-claims.json>`.
+Treat an apply-result rejection as a proof-quality blocker, especially when a reviewer tried to satisfy a claim with only possible evidence.
 When autonomous continuation is already delegated, keep that review inside the stated budget and record the budget in the resulting artifact or handoff.
 
 ## Bootstrap

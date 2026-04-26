@@ -74,6 +74,16 @@
       ]
     },
     {
+      "path": ["claim", "review", "apply-result"],
+      "group": "results",
+      "usage": "cautilus claim review apply-result --claims <claims.json> --review-result <review-result.json> [--output <reviewed-claims.json>]",
+      "example": "cautilus claim review apply-result --claims /tmp/cautilus-claims.json --review-result /tmp/cautilus-claim-review-result.json --output /tmp/cautilus-reviewed-claims.json",
+      "notes": [
+        "Applies deterministic label and evidence updates from `cautilus.claim_review_result.v1` to an existing claim packet.",
+        "`evidenceStatus=satisfied` requires direct or verified evidence refs; possible evidence refs cannot satisfy a claim."
+      ]
+    },
+    {
       "path": ["scenario", "review-conversations"],
       "group": "results",
       "usage": "cautilus scenario review-conversations [args]",

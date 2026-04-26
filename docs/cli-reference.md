@@ -75,6 +75,7 @@ cautilus doctor --repo-root /path/to/repo --scope agent-surface
 cautilus claim discover --repo-root /path/to/repo --output /tmp/cautilus-claims.json
 cautilus claim show --input /tmp/cautilus-claims.json
 cautilus claim review prepare-input --claims /tmp/cautilus-claims.json --output /tmp/cautilus-claim-review-input.json
+cautilus claim review apply-result --claims /tmp/cautilus-claims.json --review-result /tmp/cautilus-claim-review-result.json --output /tmp/cautilus-reviewed-claims.json
 
 # scenario-normalization catalog, for agents that need proposal-input examples
 cautilus scenarios --json
@@ -93,6 +94,8 @@ The packet is `cautilus.claim_proof_plan.v1`, and it is a proof plan rather than
 Use `cautilus claim show --input <claims.json>` to summarize an existing claim packet without rescanning.
 Use `cautilus claim review prepare-input --claims <claims.json>` to prepare bounded deterministic review clusters for an agent or subagent.
 It emits `cautilus.claim_review_input.v1` and does not call an LLM or mark claims satisfied.
+Use `cautilus claim review apply-result --claims <claims.json> --review-result <review-result.json>` to merge reviewed labels and evidence refs back into a claim packet.
+It emits an updated claim packet and rejects `evidenceStatus=satisfied` unless a direct or verified evidence ref supports the claim.
 
 For the shortest end-to-end adoption proof in a fresh consumer repo:
 
