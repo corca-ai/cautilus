@@ -90,6 +90,9 @@
 6. spec follow-up #5 — `scenario normalize` 재범위만 남음.
    archetype-boundary retire는 cut 슬라이스에 흡수됨.
 7. `repo/skill` / `app/chat` / `app/prompt` preset 중 어떤 surface에 real-codex/claude self-dogfood evidence를 먼저 붙일지 결정한다.
+8. 후속 후보: multi-turn `repo/skill` session scenario를 설계한다.
+   현재 no-input `$cautilus`는 첫 status 응답을 검증하지만, 사용자가 매우 구체적인 다음 프롬프트를 알아서 넣어야 한다면 실패다.
+   스킬이 status 뒤에 안전한 다음 행동을 추천하고, 사용자의 짧은 승인만으로 claim discover / claim show / planning으로 이어지는지 검증하는 멀티턴 시나리오가 필요하다.
 
 ## Discuss
 
