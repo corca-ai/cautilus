@@ -167,6 +167,12 @@ func TestCLIDoctorScopeAgentSurfaceTracksInstalledSkillSurface(t *testing.T) {
 	if payload["status"] != "ready" || payload["ready"] != true {
 		t.Fatalf("expected ready payload after install, got %#v", payload)
 	}
+	if _, ok := payload["next_action"]; ok {
+		t.Fatalf("agent-surface ready should not prescribe repo-scope next_action, got %#v", payload["next_action"])
+	}
+	if _, ok := payload["next_prompt"]; ok {
+		t.Fatalf("agent-surface ready should not prescribe repo-scope next_prompt, got %#v", payload["next_prompt"])
+	}
 }
 
 func TestCLIVersionVerboseIncludesProductSurfaceSummary(t *testing.T) {

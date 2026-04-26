@@ -29,15 +29,15 @@ if [ -x ./bin/cautilus ]; then CAUTILUS_BIN=./bin/cautilus; fi
 
 If `commands --json` does not include the command family you need and `./bin/cautilus` exists, retry with `./bin/cautilus` before concluding that the command is unavailable.
 
-Use these probes before improvising:
+Use these probes before improvising in the selected workflow; this is a menu, not a startup checklist, and in no-input routing the only allowed doctor probe is `doctor --scope agent-surface`.
 
 ```bash
 "$CAUTILUS_BIN" healthcheck --json
 "$CAUTILUS_BIN" commands --json
+"$CAUTILUS_BIN" doctor --repo-root . --scope agent-surface
 "$CAUTILUS_BIN" claim discover --repo-root . --output /tmp/cautilus-claims.json
 "$CAUTILUS_BIN" scenarios --json
 "$CAUTILUS_BIN" doctor --repo-root . --next-action
-"$CAUTILUS_BIN" doctor --repo-root . --scope agent-surface
 ```
 
 Use `cautilus --help` for human-readable command discovery.
@@ -58,9 +58,11 @@ The three product front doors are `claim`, `eval`, and `optimize`.
 ## No-Input Routing
 
 When invoked with no task detail, run only bootstrap and status work until the user delegates a branch.
-Allowed bootstrap is binary health, command registry, agent-surface install/readiness, and adapter resolve/init when missing or invalid.
+Allowed bootstrap is binary health, command registry, agent-surface install/readiness, required adapter resolve, and adapter init when missing or invalid.
 After adapter readiness, inspect claim state; if no claim packet exists, state scan entries/depth and ask before the first scan unless autonomous continuation was already delegated.
-Do not turn default `doctor` readiness into `eval test`, quality review, code edits, or commits.
+Do not call default repo `doctor` or `doctor --next-action` during no-input routing; those are eval-readiness loops, not claim/status summaries.
+Default `doctor` output and `first_bounded_run` may be read only as readiness evidence during no-input routing; do not recommend `first_bounded_run`, bounded eval, `eval test`, quality review, code edits, or commits as the next branch unless the user explicitly asked to verify/evaluate or a selected claim/eval plan has made evaluation the current branch.
+No-input next branches must include only claim/status/stop: show an existing packet, confirm the first bounded `claim discover` scan, inspect grouped claim status, plan deterministic/alignment/scenario next steps, or stop; do not offer eval readiness, bounded run, or generic workflow execution as sibling options.
 
 ## Evaluation Surface Routing
 
@@ -130,14 +132,15 @@ cautilus healthcheck --json
 cautilus commands --json
 ```
 
-2. Resolve the target repo adapter and current next action:
+2. Resolve the target repo adapter and, when the user asked for setup/eval readiness, the current next action:
 
 ```bash
-cautilus doctor --repo-root . --next-action
 cautilus adapter resolve --repo-root .
+cautilus doctor --repo-root . --next-action
 ```
 
 For a named adapter, pass `--adapter-name <name>` to both adapter and doctor commands when the target surface is intentionally named.
+For no-input routing, skip `doctor --next-action`; use `adapter resolve` plus `doctor --scope agent-surface` for readiness, then return to claim/status routing.
 
 3. If the repo does not have an adapter yet, scaffold one:
 
@@ -151,11 +154,11 @@ cautilus adapter init --repo-root .
 cautilus doctor --repo-root .
 ```
 
-`doctor --next-action`, `doctor --scope agent-surface`, and default `doctor` answer different questions.
+Skip this step for no-input routing unless the user explicitly asked for evaluation readiness; `doctor --next-action`, `doctor --scope agent-surface`, and default `doctor` answer different questions.
 `doctor --next-action` gives one current onboarding step plus the exact follow-up loop.
 `doctor --scope agent-surface` checks the bundled skill and local agent-surface install.
 Default `doctor` checks whether the repo is actually wired for a real runnable evaluation path.
-When default `doctor` returns `ready`, read its `first_bounded_run` payload before inventing your own next command sequence.
+When default `doctor` returns `ready` in an eval-readiness branch, read its `first_bounded_run` payload before inventing your own next command sequence.
 
 5. Before hand-editing adapter YAML, run the inventory in [bootstrap-inventory.md](references/bootstrap-inventory.md) so `Cautilus` is only pointed at LLM-behavior surfaces, not cheap deterministic gates that belong in CI.
 

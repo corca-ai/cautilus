@@ -103,12 +103,7 @@ func buildAgentSurfaceNextAction(result map[string]any, repoRoot string) map[str
 			currentDoctorCommand,
 		)
 	case "ready":
-		return doctorAction(
-			"switch_context",
-			"Agent surface is ready. Continue the onboarding loop through repo-scope doctor.",
-			doctorNextActionCommand(repoRoot, nil, "repo"),
-			doctorNextActionCommand(repoRoot, nil, "repo"),
-		)
+		return map[string]any{}
 	default:
 		return doctorAction("manual", "Inspect the agent-surface doctor payload and continue from the first incomplete requirement.", "", currentDoctorCommand)
 	}
