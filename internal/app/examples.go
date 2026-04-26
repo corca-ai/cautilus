@@ -99,38 +99,21 @@ const claimDiscoverExampleOutput = `{
   "candidateCount": 3,
   "claimCandidates": [
     {
-      "claimId": "claim-readme-md-3",
-      "nextAction": "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
-      "proofLayer": "human-auditable",
-      "sourceRefs": [
-        {
-          "excerpt": "This tool emits a human-auditable setup checklist.",
-          "line": 3,
-          "path": "README.md"
-        }
-      ],
-      "summary": "This tool emits a human-auditable setup checklist.",
-      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
-    },
-    {
-      "claimId": "claim-readme-md-4",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
-      "sourceRefs": [
-        {
-          "excerpt": "The deterministic unit test suite proves the parser accepts valid packets.",
-          "line": 4,
-          "path": "README.md"
-        }
-      ],
-      "summary": "The deterministic unit test suite proves the parser accepts valid packets.",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
-    },
-    {
+      "claimFingerprint": "sha256:cbdff5252f071715609373d741cef98aebb0c89bd7902356a28e2aa1cbaaa8a3",
       "claimId": "claim-agents-md-3",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "cautilus-eval",
+        "repo-instructions",
+        "repo/whole-repo"
+      ],
+      "lifecycle": "new",
       "nextAction": "Create a host-owned repo/whole-repo fixture and run it through cautilus eval test.",
       "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "repo/whole-repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "Agents must follow the repo operating contract before changing code.",
@@ -139,23 +122,126 @@ const claimDiscoverExampleOutput = `{
         }
       ],
       "summary": "Agents must follow the repo operating contract before changing code.",
+      "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimFingerprint": "sha256:bb05425b9156ff8ca84244f268b351d037db8b1a2b977d68b11699deef37551b",
+      "claimId": "claim-readme-md-3",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "human-auditable",
+        "readme"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
+      "proofLayer": "human-auditable",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "This tool emits a human-auditable setup checklist.",
+          "line": 3,
+          "path": "README.md"
+        }
+      ],
+      "summary": "This tool emits a human-auditable setup checklist.",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimFingerprint": "sha256:cdb76722909d648d2e14cba35846e75225270fbcc416dccd507351c83204afe4",
+      "claimId": "claim-readme-md-4",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "deterministic",
+        "readme"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "proofLayer": "deterministic",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "The deterministic unit test suite proves the parser accepts valid packets.",
+          "line": 4,
+          "path": "README.md"
+        }
+      ],
+      "summary": "The deterministic unit test suite proves the parser accepts valid packets.",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     }
   ],
+  "claimState": {
+    "path": ".cautilus/claims/latest.json",
+    "pathSource": "default"
+  },
+  "claimSummary": {
+    "byEvidenceStatus": {
+      "unknown": 3
+    },
+    "byLifecycle": {
+      "new": 3
+    },
+    "byProofLayer": {
+      "cautilus-eval": 1,
+      "deterministic": 1,
+      "human-auditable": 1
+    },
+    "byRecommendedProof": {
+      "cautilus-eval": 1,
+      "deterministic": 1,
+      "human-auditable": 1
+    },
+    "byReviewStatus": {
+      "heuristic": 3
+    },
+    "byVerificationReadiness": {
+      "ready-to-verify": 3
+    }
+  },
   "discoveryMode": "deterministic-source-inventory",
+  "effectiveScanScope": {
+    "adapterFound": false,
+    "adapterPath": "",
+    "entries": [
+      "README.md",
+      "AGENTS.md",
+      "CLAUDE.md"
+    ],
+    "exclude": [
+      ".git/**",
+      "node_modules/**",
+      "dist/**",
+      "coverage/**",
+      "artifacts/**",
+      "charness-artifacts/**"
+    ],
+    "explicitSources": false,
+    "include": [],
+    "linkedMarkdownDepth": 3,
+    "traversal": "entry-markdown-links"
+  },
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "schemaVersion": "cautilus.claim_proof_plan.v1",
   "sourceCount": 2,
+  "sourceGraph": [],
   "sourceInventory": [
     {
-      "kind": "readme",
-      "path": "README.md",
+      "depth": 0,
+      "kind": "repo-instructions",
+      "path": "AGENTS.md",
       "status": "read"
     },
     {
-      "kind": "repo-instructions",
-      "path": "AGENTS.md",
+      "depth": 0,
+      "kind": "readme",
+      "path": "README.md",
       "status": "read"
     }
   ],

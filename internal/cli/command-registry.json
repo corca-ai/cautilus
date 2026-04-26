@@ -43,12 +43,14 @@
     {
       "path": ["claim", "discover"],
       "group": "run",
-      "usage": "cautilus claim discover --repo-root <path> [--source <path>] [--output <claims.json>]",
+      "usage": "cautilus claim discover --repo-root <path> [--source <path>] [--previous <claims.json> --refresh-plan] [--output <claims.json>]",
       "example": "cautilus claim discover --repo-root . --output /tmp/cautilus-claims.json",
       "notes": [
         "`--example-output` prints a minimal proof-plan packet.",
         "The command emits `cautilus.claim_proof_plan.v1`: a source-ref-backed plan, not a verdict that the repo is correct.",
-        "Use `--source` repeatedly when the host repo wants an explicit truth-surface inventory instead of the conservative defaults."
+        "Default discovery starts from adapter-owned entries or README.md/AGENTS.md/CLAUDE.md and follows repo-local Markdown links to depth 3.",
+        "Use `--source` repeatedly when the host repo wants an explicit truth-surface inventory instead of the conservative defaults.",
+        "Use `--previous <claims.json> --refresh-plan` when an agent workflow needs deterministic refresh planning without a separate refresh command."
       ]
     },
     {

@@ -11,6 +11,39 @@
     "schemaVersion": { "type": "string", "const": "cautilus.claim_proof_plan.v1" },
     "discoveryMode": { "type": "string" },
     "sourceRoot": { "type": "string" },
+    "effectiveScanScope": {
+      "type": "object",
+      "properties": {
+        "entries": { "type": "array", "items": { "type": "string" } },
+        "include": { "type": "array", "items": { "type": "string" } },
+        "exclude": { "type": "array", "items": { "type": "string" } },
+        "linkedMarkdownDepth": { "type": "integer", "minimum": 0 },
+        "explicitSources": { "type": "boolean" },
+        "adapterFound": { "type": "boolean" },
+        "adapterPath": { "type": "string" },
+        "traversal": { "type": "string" }
+      }
+    },
+    "claimState": {
+      "type": "object",
+      "properties": {
+        "path": { "type": "string" },
+        "pathSource": { "type": "string" }
+      }
+    },
+    "sourceGraph": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "from": { "type": "string" },
+          "to": { "type": "string" },
+          "depth": { "type": "integer", "minimum": 1 },
+          "kind": { "type": "string" }
+        }
+      }
+    },
+    "claimSummary": { "type": "object" },
     "sourceInventory": {
       "type": "array",
       "items": {
@@ -19,7 +52,10 @@
         "properties": {
           "path": { "type": "string" },
           "kind": { "type": "string" },
-          "status": { "type": "string" }
+          "status": { "type": "string" },
+          "depth": { "type": "integer", "minimum": 0 },
+          "discoveredFrom": { "type": "string" },
+          "contentHash": { "type": "string" }
         }
       }
     },
@@ -27,9 +63,10 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["claimId", "summary", "sourceRefs", "proofLayer", "whyThisLayer", "nextAction"],
+        "required": ["claimId", "claimFingerprint", "summary", "sourceRefs", "proofLayer", "recommendedProof", "verificationReadiness", "evidenceStatus", "reviewStatus", "lifecycle", "evidenceRefs", "whyThisLayer", "nextAction"],
         "properties": {
           "claimId": { "type": "string" },
+          "claimFingerprint": { "type": "string" },
           "summary": { "type": "string" },
           "sourceRefs": {
             "type": "array",
@@ -51,6 +88,33 @@
           "recommendedEvalSurface": {
             "type": "string",
             "enum": ["repo/whole-repo", "repo/skill", "app/chat", "app/prompt"]
+          },
+          "recommendedProof": {
+            "type": "string",
+            "enum": ["human-auditable", "deterministic", "cautilus-eval"]
+          },
+          "verificationReadiness": {
+            "type": "string",
+            "enum": ["ready-to-verify", "needs-scenario", "needs-alignment", "blocked"]
+          },
+          "evidenceStatus": {
+            "type": "string",
+            "enum": ["satisfied", "missing", "partial", "stale", "unknown"]
+          },
+          "reviewStatus": {
+            "type": "string",
+            "enum": ["heuristic", "agent-reviewed", "human-reviewed"]
+          },
+          "lifecycle": {
+            "type": "string",
+            "enum": ["new", "carried-forward", "changed", "retired"]
+          },
+          "groupHints": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "evidenceRefs": {
+            "type": "array"
           },
           "whyThisLayer": { "type": "string" },
           "nextAction": { "type": "string" }

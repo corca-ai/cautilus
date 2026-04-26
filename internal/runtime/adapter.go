@@ -429,6 +429,13 @@ func validateAdapterData(data map[string]any) (map[string]any, []string) {
 			validated["optimize_search"] = normalized
 		}
 	}
+	if claimDiscovery, ok := data["claim_discovery"]; ok && claimDiscovery != nil {
+		normalized, claimErrors := validateAdapterClaimDiscovery(claimDiscovery)
+		errors = append(errors, claimErrors...)
+		if normalized != nil {
+			validated["claim_discovery"] = normalized
+		}
+	}
 	if runtimePolicy, ok := data["runtime_policy"]; ok && runtimePolicy != nil {
 		normalized, err := normalizeRuntimePolicy(runtimePolicy, "runtime_policy")
 		if err != nil {
@@ -438,6 +445,44 @@ func validateAdapterData(data map[string]any) (map[string]any, []string) {
 		}
 	}
 	return validated, errors
+}
+
+func validateAdapterClaimDiscovery(value any) (map[string]any, []string) {
+	record, ok := value.(map[string]any)
+	if !ok {
+		return nil, []string{"claim_discovery must be a mapping"}
+	}
+	errors := []string{}
+	normalized := map[string]any{}
+	for _, field := range []string{"entries", "include", "exclude", "evidence_roots"} {
+		if raw, exists := record[field]; exists && raw != nil {
+			items, err := assertArray(raw, "claim_discovery."+field)
+			if err != nil {
+				errors = append(errors, "claim_discovery."+field+" must be a list of strings")
+				continue
+			}
+			normalized[field] = stringSliceNoValidate(items)
+		}
+	}
+	if raw, exists := record["linked_markdown_depth"]; exists && raw != nil {
+		depth, err := normalizeInteger(raw, "claim_discovery.linked_markdown_depth")
+		if err != nil {
+			errors = append(errors, err.Error())
+		} else if depth != nil && *depth < 0 {
+			errors = append(errors, "claim_discovery.linked_markdown_depth must be greater than or equal to 0")
+		} else if depth != nil {
+			normalized["linked_markdown_depth"] = *depth
+		}
+	}
+	if raw, exists := record["state_path"]; exists && raw != nil {
+		text, err := normalizeNonEmptyString(raw, "claim_discovery.state_path")
+		if err != nil {
+			errors = append(errors, "claim_discovery.state_path must be a non-empty string")
+		} else {
+			normalized["state_path"] = text
+		}
+	}
+	return normalized, errors
 }
 
 func validateAdapterLiveRunInvocation(value any) (map[string]any, []string) {

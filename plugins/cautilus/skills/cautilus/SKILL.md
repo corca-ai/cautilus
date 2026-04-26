@@ -62,7 +62,9 @@ For scenario proposal input shapes, prefer the relevant `--example-input` comman
 Use this step when the user asks whether a repo proves what it claims, whether documentation and behavior are aligned, or which scenarios still need to be created.
 Start with `cautilus claim discover --repo-root . --output <claims.json>` before building a hand-written claim inventory.
 Do not hard-code the search to README.
-Treat README, docs, AGENTS.md, CLI help, specs, skill docs, release notes, and adapter files as possible repo-owned truth surfaces.
+By default, the binary starts from adapter-owned `claim_discovery.entries` or README.md/AGENTS.md/CLAUDE.md and follows repo-local Markdown links to depth 3.
+Use repeated `--source` arguments only when the user or adapter has selected an explicit truth-surface inventory.
+If an existing claim JSON exists, use `cautilus claim discover --previous <claims.json> --refresh-plan` inside the same discover workflow rather than inventing a separate refresh command.
 
 Classify each candidate claim before creating fixtures:
 

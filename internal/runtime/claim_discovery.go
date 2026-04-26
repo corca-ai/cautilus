@@ -1,11 +1,17 @@
 package runtime
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
+	"encoding/json"
 	"fmt"
 	"io/fs"
 	"os"
+	"os/exec"
+	pathpkg "path"
 	"path/filepath"
 	"regexp"
+	"sort"
 	"strings"
 	"unicode/utf8"
 
@@ -13,26 +19,37 @@ import (
 )
 
 type ClaimDiscoveryOptions struct {
-	RepoRoot    string
-	SourcePaths []string
+	RepoRoot        string
+	SourcePaths     []string
+	PreviousPath    string
+	RefreshPlanOnly bool
 }
 
 type claimSource struct {
-	absPath string
-	relPath string
-	kind    string
+	absPath        string
+	relPath        string
+	kind           string
+	depth          int
+	discoveredFrom string
 }
 
 type claimCandidate struct {
 	claimID                string
+	claimFingerprint       string
 	summary                string
 	sourcePath             string
 	line                   int
 	excerpt                string
 	proofLayer             string
+	recommendedProof       string
+	verificationReadiness  string
+	evidenceStatus         string
+	reviewStatus           string
+	lifecycle              string
 	recommendedEvalSurface string
 	whyThisLayer           string
 	nextAction             string
+	groupHints             []string
 }
 
 type claimExtraction struct {
@@ -42,6 +59,28 @@ type claimExtraction struct {
 type claimTextBlock struct {
 	line int
 	text string
+}
+
+type claimClassification struct {
+	proofLayer             string
+	recommendedProof       string
+	verificationReadiness  string
+	recommendedEvalSurface string
+	why                    string
+	next                   string
+}
+
+type claimDiscoveryConfig struct {
+	entries             []string
+	include             []string
+	exclude             []string
+	evidenceRoots       []string
+	linkedMarkdownDepth int
+	statePath           string
+	statePathSource     string
+	adapterPath         string
+	adapterFound        bool
+	explicitSources     bool
 }
 
 func DiscoverClaimProofPlan(options ClaimDiscoveryOptions) (map[string]any, error) {
@@ -61,7 +100,18 @@ func DiscoverClaimProofPlan(options ClaimDiscoveryOptions) (map[string]any, erro
 		return nil, fmt.Errorf("repo root must be a directory: %s", repoRoot)
 	}
 
-	sources, err := discoverClaimSources(resolvedRoot, options.SourcePaths)
+	config, err := resolveClaimDiscoveryConfig(resolvedRoot, options.SourcePaths)
+	if err != nil {
+		return nil, err
+	}
+	if options.RefreshPlanOnly {
+		return BuildClaimRefreshPlan(ClaimRefreshPlanOptions{
+			RepoRoot:     resolvedRoot,
+			PreviousPath: options.PreviousPath,
+			Config:       config,
+		})
+	}
+	sources, sourceGraph, err := discoverClaimSources(resolvedRoot, config)
 	if err != nil {
 		return nil, err
 	}
@@ -80,123 +130,287 @@ func DiscoverClaimProofPlan(options ClaimDiscoveryOptions) (map[string]any, erro
 				candidates = append(candidates, extraction.candidates...)
 			}
 		}
-		inventory = append(inventory, map[string]any{
+		entry := map[string]any{
 			"path":   source.relPath,
 			"kind":   source.kind,
 			"status": status,
-		})
+			"depth":  source.depth,
+		}
+		if source.discoveredFrom != "" {
+			entry["discoveredFrom"] = source.discoveredFrom
+		}
+		if status == "read" {
+			if hash, hashErr := fileSHA256(source.absPath); hashErr == nil {
+				entry["contentHash"] = hash
+			}
+		}
+		inventory = append(inventory, entry)
 	}
+	renderedCandidates := renderClaimCandidates(candidates)
 
 	return map[string]any{
-		"schemaVersion":    contracts.ClaimProofPlanSchema,
-		"discoveryMode":    "deterministic-source-inventory",
-		"sourceRoot":       ".",
-		"sourceInventory":  inventory,
-		"claimCandidates":  renderClaimCandidates(candidates),
-		"candidateCount":   len(candidates),
-		"sourceCount":      len(sources),
-		"nextRecommended":  "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
-		"nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
+		"schemaVersion":      contracts.ClaimProofPlanSchema,
+		"discoveryMode":      "deterministic-source-inventory",
+		"sourceRoot":         ".",
+		"gitCommit":          currentGitCommit(resolvedRoot),
+		"effectiveScanScope": renderClaimScanScope(config),
+		"sourceInventory":    inventory,
+		"sourceGraph":        sourceGraph,
+		"claimState":         renderClaimState(config),
+		"claimSummary":       summarizeClaimCandidates(renderedCandidates),
+		"claimCandidates":    renderedCandidates,
+		"candidateCount":     len(candidates),
+		"sourceCount":        len(sources),
+		"nextRecommended":    "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
+		"nonVerdictNotice":   "This packet is a proof plan, not proof that the claims are true.",
 	}, nil
 }
 
-func discoverClaimSources(repoRoot string, explicit []string) ([]claimSource, error) {
-	if len(explicit) > 0 {
-		sources := make([]claimSource, 0, len(explicit))
-		seen := map[string]struct{}{}
-		for _, raw := range explicit {
-			path := strings.TrimSpace(raw)
-			if path == "" {
-				continue
-			}
-			if !filepath.IsAbs(path) {
-				path = filepath.Join(repoRoot, path)
-			}
-			absPath, err := filepath.Abs(path)
-			if err != nil {
-				return nil, err
-			}
-			relPath := relativeClaimPath(repoRoot, absPath)
-			if _, exists := seen[relPath]; exists {
-				continue
-			}
-			seen[relPath] = struct{}{}
-			sources = append(sources, claimSource{absPath: absPath, relPath: relPath, kind: claimSourceKind(relPath)})
-		}
-		return sources, nil
+func resolveClaimDiscoveryConfig(repoRoot string, explicit []string) (claimDiscoveryConfig, error) {
+	config := claimDiscoveryConfig{
+		entries:             []string{"README.md", "AGENTS.md", "CLAUDE.md"},
+		exclude:             []string{".git/**", "node_modules/**", "dist/**", "coverage/**", "artifacts/**", "charness-artifacts/**"},
+		linkedMarkdownDepth: 3,
+		statePath:           ".cautilus/claims/latest.json",
+		statePathSource:     "default",
+		explicitSources:     len(explicit) > 0,
 	}
+	if len(explicit) > 0 {
+		config.entries = normalizeClaimPathList(explicit)
+		config.linkedMarkdownDepth = 0
+		return config, nil
+	}
+	adapter, err := LoadAdapter(repoRoot, nil, nil)
+	if err != nil {
+		return config, err
+	}
+	if adapter != nil {
+		config.adapterFound = adapter.Found
+		if adapter.Path != nil {
+			config.adapterPath = relativeClaimPath(repoRoot, stringOrEmpty(adapter.Path))
+		}
+		claimConfig := asMap(adapter.Data["claim_discovery"])
+		if entries := stringArrayOrEmpty(claimConfig["entries"]); len(entries) > 0 {
+			config.entries = normalizeClaimPathList(entries)
+		}
+		if include := stringArrayOrEmpty(claimConfig["include"]); len(include) > 0 {
+			config.include = normalizeClaimPathList(include)
+		}
+		if exclude := stringArrayOrEmpty(claimConfig["exclude"]); len(exclude) > 0 {
+			config.exclude = append(config.exclude, normalizeClaimPathList(exclude)...)
+		}
+		if evidenceRoots := stringArrayOrEmpty(claimConfig["evidence_roots"]); len(evidenceRoots) > 0 {
+			config.evidenceRoots = normalizeClaimPathList(evidenceRoots)
+		}
+		if depth, ok := claimConfig["linked_markdown_depth"].(int); ok {
+			config.linkedMarkdownDepth = depth
+		}
+		if statePath := strings.TrimSpace(stringOrEmpty(claimConfig["state_path"])); statePath != "" {
+			config.statePath = filepath.ToSlash(filepath.Clean(statePath))
+			config.statePathSource = "adapter"
+		}
+	}
+	return config, nil
+}
 
+func discoverClaimSources(repoRoot string, config claimDiscoveryConfig) ([]claimSource, []any, error) {
 	seen := map[string]struct{}{}
 	sources := []claimSource{}
-	addPath := func(path string) {
-		absPath := filepath.Join(repoRoot, path)
+	graph := []any{}
+	queue := []claimSource{}
+	addSource := func(relPath string, depth int, from string) {
+		relPath = filepath.ToSlash(filepath.Clean(strings.TrimSpace(relPath)))
+		if relPath == "." || relPath == "" || claimPathExcluded(relPath, config.exclude) {
+			return
+		}
+		absPath := filepath.Join(repoRoot, filepath.FromSlash(relPath))
 		info, err := os.Stat(absPath)
 		if err != nil || info.IsDir() {
 			return
 		}
-		relPath := filepath.ToSlash(filepath.Clean(path))
 		if _, exists := seen[relPath]; exists {
 			return
 		}
 		seen[relPath] = struct{}{}
-		sources = append(sources, claimSource{absPath: absPath, relPath: relPath, kind: claimSourceKind(relPath)})
-	}
-
-	for _, path := range []string{"README.md", "README", "AGENTS.md", "CLAUDE.md", "internal/cli/command-registry.json"} {
-		addPath(path)
-	}
-	for _, root := range []string{"docs", "skills", "plugins", ".agents"} {
-		if err := walkClaimSourceTree(repoRoot, root, addPath); err != nil {
-			return nil, err
+		source := claimSource{
+			absPath:        absPath,
+			relPath:        relPath,
+			kind:           claimSourceKind(relPath),
+			depth:          depth,
+			discoveredFrom: from,
+		}
+		sources = append(sources, source)
+		if isMarkdownClaimSource(relPath) && depth < config.linkedMarkdownDepth {
+			queue = append(queue, source)
 		}
 	}
-	return sources, nil
+	for _, entry := range config.entries {
+		addSource(entry, 0, "")
+	}
+	if len(config.include) > 0 {
+		if err := walkIncludedClaimSources(repoRoot, config, addSource); err != nil {
+			return nil, nil, err
+		}
+	}
+	for len(queue) > 0 {
+		source := queue[0]
+		queue = queue[1:]
+		links, err := linkedMarkdownSources(source)
+		if err != nil {
+			continue
+		}
+		for _, target := range links {
+			if claimPathExcluded(target, config.exclude) {
+				continue
+			}
+			graph = append(graph, map[string]any{
+				"from":  source.relPath,
+				"to":    target,
+				"depth": source.depth + 1,
+				"kind":  "markdown-link",
+			})
+			addSource(target, source.depth+1, source.relPath)
+		}
+	}
+	sort.Slice(sources, func(i, j int) bool {
+		if sources[i].depth != sources[j].depth {
+			return sources[i].depth < sources[j].depth
+		}
+		return sources[i].relPath < sources[j].relPath
+	})
+	return sources, graph, nil
 }
 
-func walkClaimSourceTree(repoRoot string, root string, addPath func(string)) error {
-	base := filepath.Join(repoRoot, root)
-	info, err := os.Stat(base)
-	if err != nil {
-		if os.IsNotExist(err) {
-			return nil
-		}
-		return err
-	}
-	if !info.IsDir() {
-		return nil
-	}
-	return filepath.WalkDir(base, func(path string, entry fs.DirEntry, err error) error {
+func walkIncludedClaimSources(repoRoot string, config claimDiscoveryConfig, addPath func(string, int, string)) error {
+	return filepath.WalkDir(repoRoot, func(path string, entry fs.DirEntry, err error) error {
 		if err != nil {
 			return err
-		}
-		name := entry.Name()
-		if entry.IsDir() {
-			switch name {
-			case ".git", "node_modules", "dist", "coverage", "artifacts", "charness-artifacts":
-				return filepath.SkipDir
-			default:
-				return nil
-			}
-		}
-		if !isClaimSourceFile(path) {
-			return nil
 		}
 		rel, relErr := filepath.Rel(repoRoot, path)
 		if relErr != nil {
 			return relErr
 		}
-		addPath(rel)
+		relPath := filepath.ToSlash(filepath.Clean(rel))
+		if entry.IsDir() {
+			if relPath != "." && claimPathExcluded(relPath+"/", config.exclude) {
+				return filepath.SkipDir
+			}
+			return nil
+		}
+		if !isMarkdownClaimSource(relPath) || !claimPathIncluded(relPath, config.include) {
+			return nil
+		}
+		addPath(relPath, 0, "")
 		return nil
 	})
 }
 
-func isClaimSourceFile(path string) bool {
-	switch strings.ToLower(filepath.Ext(path)) {
-	case ".md", ".json", ".yaml", ".yml":
-		return true
-	default:
+func isMarkdownClaimSource(path string) bool {
+	return strings.EqualFold(filepath.Ext(path), ".md")
+}
+
+func linkedMarkdownSources(source claimSource) ([]string, error) {
+	content, err := os.ReadFile(source.absPath)
+	if err != nil {
+		return nil, err
+	}
+	if !utf8.Valid(content) {
+		return nil, nil
+	}
+	linkPattern := regexp.MustCompile(`\[[^\]]+\]\(([^)]+)\)`)
+	matches := linkPattern.FindAllStringSubmatch(string(content), -1)
+	result := []string{}
+	seen := map[string]struct{}{}
+	for _, match := range matches {
+		if len(match) < 2 {
+			continue
+		}
+		target := strings.TrimSpace(match[1])
+		target = strings.Trim(target, `"'`)
+		if target == "" || strings.Contains(target, "://") || strings.HasPrefix(target, "#") || strings.HasPrefix(target, "/") {
+			continue
+		}
+		if hash := strings.Index(target, "#"); hash >= 0 {
+			target = target[:hash]
+		}
+		if query := strings.Index(target, "?"); query >= 0 {
+			target = target[:query]
+		}
+		if !strings.EqualFold(filepath.Ext(target), ".md") {
+			continue
+		}
+		joined := filepath.ToSlash(filepath.Clean(filepath.Join(filepath.Dir(source.relPath), filepath.FromSlash(target))))
+		if strings.HasPrefix(joined, "../") || joined == ".." {
+			continue
+		}
+		if _, exists := seen[joined]; exists {
+			continue
+		}
+		seen[joined] = struct{}{}
+		result = append(result, joined)
+	}
+	sort.Strings(result)
+	return result, nil
+}
+
+func normalizeClaimPathList(values []string) []string {
+	result := []string{}
+	seen := map[string]struct{}{}
+	for _, raw := range values {
+		value := strings.TrimSpace(raw)
+		if value == "" {
+			continue
+		}
+		value = filepath.ToSlash(filepath.Clean(value))
+		if value == "." {
+			continue
+		}
+		if _, exists := seen[value]; exists {
+			continue
+		}
+		seen[value] = struct{}{}
+		result = append(result, value)
+	}
+	return result
+}
+
+func claimPathIncluded(relPath string, patterns []string) bool {
+	if len(patterns) == 0 {
 		return false
 	}
+	for _, pattern := range patterns {
+		if claimGlobMatch(pattern, relPath) {
+			return true
+		}
+	}
+	return false
+}
+
+func claimPathExcluded(relPath string, patterns []string) bool {
+	for _, pattern := range patterns {
+		if claimGlobMatch(pattern, relPath) {
+			return true
+		}
+	}
+	return false
+}
+
+func claimGlobMatch(pattern string, relPath string) bool {
+	pattern = filepath.ToSlash(filepath.Clean(strings.TrimSpace(pattern)))
+	relPath = filepath.ToSlash(filepath.Clean(strings.TrimSpace(relPath)))
+	if strings.HasSuffix(pattern, "/**") {
+		prefix := strings.TrimSuffix(pattern, "/**")
+		return relPath == prefix || strings.HasPrefix(relPath, prefix+"/")
+	}
+	if strings.HasSuffix(pattern, "/") {
+		return strings.HasPrefix(relPath, pattern)
+	}
+	if strings.Contains(pattern, "**") {
+		parts := strings.SplitN(pattern, "**", 2)
+		return strings.HasPrefix(relPath, strings.TrimSuffix(parts[0], "/")) && strings.HasSuffix(relPath, strings.TrimPrefix(parts[1], "/"))
+	}
+	matched, err := pathpkg.Match(pattern, relPath)
+	return err == nil && matched
 }
 
 func claimSourceKind(relPath string) string {
@@ -239,7 +453,7 @@ func extractClaimCandidates(source claimSource, seenIDs map[string]int) (claimEx
 		if !claimLineLooksUseful(block.text) {
 			continue
 		}
-		layer, surface, why, next, ok := classifyClaimLine(block.text)
+		classification, ok := classifyClaimLine(block.text)
 		if !ok {
 			continue
 		}
@@ -250,14 +464,21 @@ func extractClaimCandidates(source claimSource, seenIDs map[string]int) (claimEx
 		id := uniqueClaimID(source.relPath, block.line, seenIDs)
 		candidates = append(candidates, claimCandidate{
 			claimID:                id,
+			claimFingerprint:       claimFingerprint(source.relPath, block.text),
 			summary:                summary,
 			sourcePath:             source.relPath,
 			line:                   block.line,
 			excerpt:                summary,
-			proofLayer:             layer,
-			recommendedEvalSurface: surface,
-			whyThisLayer:           why,
-			nextAction:             next,
+			proofLayer:             classification.proofLayer,
+			recommendedProof:       classification.recommendedProof,
+			verificationReadiness:  classification.verificationReadiness,
+			evidenceStatus:         "unknown",
+			reviewStatus:           "heuristic",
+			lifecycle:              "new",
+			recommendedEvalSurface: classification.recommendedEvalSurface,
+			whyThisLayer:           classification.why,
+			nextAction:             classification.next,
+			groupHints:             claimGroupHints(source, classification),
 		})
 	}
 	return claimExtraction{candidates: candidates}, nil
@@ -338,22 +559,53 @@ func claimLineLooksUseful(line string) bool {
 	})
 }
 
-func classifyClaimLine(line string) (string, string, string, string, bool) {
+func classifyClaimLine(line string) (claimClassification, bool) {
 	lower := " " + strings.ToLower(line) + " "
 	switch {
 	case containsAny(lower, []string{" unit test", " tests ", " lint", " typecheck", " type-check", " build ", " ci ", " compile", " schema ", " deterministic"}):
-		return "deterministic", "", "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.", "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.", true
+		return claimClassification{
+			proofLayer:            "deterministic",
+			recommendedProof:      "deterministic",
+			verificationReadiness: "ready-to-verify",
+			why:                   "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+			next:                  "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+		}, true
 	case containsAny(lower, []string{" align", " aligned", " alignment", " drift", " reconcile", " mismatch", " consistent with", " consistency"}):
-		return "alignment-work", "", "The claim says surfaces should agree, so proof is not honest until the mismatched surfaces are reconciled.", "Reconcile the named docs, code, skill, adapter, or CLI surface before treating this as a verification target.", true
+		return claimClassification{
+			proofLayer:            "alignment-work",
+			recommendedProof:      "human-auditable",
+			verificationReadiness: "needs-alignment",
+			why:                   "The claim says surfaces should agree, so proof is not honest until the mismatched surfaces are reconciled.",
+			next:                  "Reconcile the named docs, code, skill, adapter, or CLI surface before treating this as a verification target.",
+		}, true
 	case containsAny(lower, []string{" scenario", " proposal", " candidate", " coverage"}):
-		return "scenario-candidate", "", "The claim points at scenario or proposal work before it is ready as a protected eval fixture.", "Use the scenario proposal flow to normalize candidate evidence before creating a checked-in eval fixture.", true
+		return claimClassification{
+			proofLayer:            "scenario-candidate",
+			recommendedProof:      "cautilus-eval",
+			verificationReadiness: "needs-scenario",
+			why:                   "The claim points at scenario or proposal work before it is ready as a protected eval fixture.",
+			next:                  "Use the scenario proposal flow to normalize candidate evidence before creating a checked-in eval fixture.",
+		}, true
 	case containsAny(lower, []string{" agent", " prompt", " skill", " workflow", " llm", " model", " conversation", " assistant", " behavior", " eval "}):
 		surface := recommendedEvalSurface(lower)
-		return "cautilus-eval", surface, "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.", fmt.Sprintf("Create a host-owned %s fixture and run it through cautilus eval test.", surface), true
+		return claimClassification{
+			proofLayer:             "cautilus-eval",
+			recommendedProof:       "cautilus-eval",
+			verificationReadiness:  "ready-to-verify",
+			recommendedEvalSurface: surface,
+			why:                    "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
+			next:                   fmt.Sprintf("Create a host-owned %s fixture and run it through cautilus eval test.", surface),
+		}, true
 	case containsAny(lower, []string{" human", " auditable", " read ", " docs", " document", " visible", " inspect"}):
-		return "human-auditable", "", "The claim can be checked by reading current source, docs, or generated artifacts.", "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.", true
+		return claimClassification{
+			proofLayer:            "human-auditable",
+			recommendedProof:      "human-auditable",
+			verificationReadiness: "ready-to-verify",
+			why:                   "The claim can be checked by reading current source, docs, or generated artifacts.",
+			next:                  "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
+		}, true
 	default:
-		return "", "", "", "", false
+		return claimClassification{}, false
 	}
 }
 
@@ -417,12 +669,48 @@ func slugifyClaimID(value string) string {
 	return result
 }
 
+func claimFingerprint(sourcePath string, text string) string {
+	hash := sha256.Sum256([]byte(filepath.ToSlash(sourcePath) + "\n" + normalizeClaimSummary(text)))
+	return "sha256:" + hex.EncodeToString(hash[:])
+}
+
+func fileSHA256(path string) (string, error) {
+	content, err := os.ReadFile(path)
+	if err != nil {
+		return "", err
+	}
+	hash := sha256.Sum256(content)
+	return "sha256:" + hex.EncodeToString(hash[:]), nil
+}
+
+func claimGroupHints(source claimSource, classification claimClassification) []string {
+	hints := []string{classification.recommendedProof, source.kind}
+	if classification.verificationReadiness != "" && classification.verificationReadiness != "ready-to-verify" {
+		hints = append(hints, classification.verificationReadiness)
+	}
+	if classification.recommendedEvalSurface != "" {
+		hints = append(hints, classification.recommendedEvalSurface)
+	}
+	if source.discoveredFrom != "" {
+		hints = append(hints, "linked-from:"+source.discoveredFrom)
+	}
+	return hints
+}
+
 func renderClaimCandidates(candidates []claimCandidate) []any {
 	result := make([]any, 0, len(candidates))
 	for _, candidate := range candidates {
 		entry := map[string]any{
-			"claimId": candidate.claimID,
-			"summary": candidate.summary,
+			"claimId":               candidate.claimID,
+			"claimFingerprint":      candidate.claimFingerprint,
+			"summary":               candidate.summary,
+			"recommendedProof":      candidate.recommendedProof,
+			"verificationReadiness": candidate.verificationReadiness,
+			"evidenceStatus":        candidate.evidenceStatus,
+			"reviewStatus":          candidate.reviewStatus,
+			"lifecycle":             candidate.lifecycle,
+			"groupHints":            candidate.groupHints,
+			"evidenceRefs":          []any{},
 			"sourceRefs": []any{
 				map[string]any{
 					"path":    candidate.sourcePath,
@@ -440,6 +728,176 @@ func renderClaimCandidates(candidates []claimCandidate) []any {
 		result = append(result, entry)
 	}
 	return result
+}
+
+func renderClaimScanScope(config claimDiscoveryConfig) map[string]any {
+	return map[string]any{
+		"entries":             config.entries,
+		"include":             nonNilStringSlice(config.include),
+		"exclude":             nonNilStringSlice(config.exclude),
+		"linkedMarkdownDepth": config.linkedMarkdownDepth,
+		"explicitSources":     config.explicitSources,
+		"adapterFound":        config.adapterFound,
+		"adapterPath":         config.adapterPath,
+		"traversal":           "entry-markdown-links",
+	}
+}
+
+func nonNilStringSlice(values []string) []string {
+	if values == nil {
+		return []string{}
+	}
+	return values
+}
+
+func renderClaimState(config claimDiscoveryConfig) map[string]any {
+	return map[string]any{
+		"path":       config.statePath,
+		"pathSource": config.statePathSource,
+	}
+}
+
+func summarizeClaimCandidates(candidates []any) map[string]any {
+	byProof := map[string]int{}
+	byReadiness := map[string]int{}
+	byEvidence := map[string]int{}
+	byReview := map[string]int{}
+	byLifecycle := map[string]int{}
+	byProofLayer := map[string]int{}
+	for _, raw := range candidates {
+		entry := asMap(raw)
+		incrementStringCount(byProof, entry["recommendedProof"])
+		incrementStringCount(byReadiness, entry["verificationReadiness"])
+		incrementStringCount(byEvidence, entry["evidenceStatus"])
+		incrementStringCount(byReview, entry["reviewStatus"])
+		incrementStringCount(byLifecycle, entry["lifecycle"])
+		incrementStringCount(byProofLayer, entry["proofLayer"])
+	}
+	return map[string]any{
+		"byRecommendedProof":      sortedCountMap(byProof),
+		"byVerificationReadiness": sortedCountMap(byReadiness),
+		"byEvidenceStatus":        sortedCountMap(byEvidence),
+		"byReviewStatus":          sortedCountMap(byReview),
+		"byLifecycle":             sortedCountMap(byLifecycle),
+		"byProofLayer":            sortedCountMap(byProofLayer),
+	}
+}
+
+func incrementStringCount(counts map[string]int, value any) {
+	text := strings.TrimSpace(stringOrEmpty(value))
+	if text == "" {
+		return
+	}
+	counts[text]++
+}
+
+func sortedCountMap(counts map[string]int) map[string]any {
+	keys := make([]string, 0, len(counts))
+	for key := range counts {
+		keys = append(keys, key)
+	}
+	sort.Strings(keys)
+	result := map[string]any{}
+	for _, key := range keys {
+		result[key] = counts[key]
+	}
+	return result
+}
+
+func currentGitCommit(repoRoot string) string {
+	command := exec.Command("git", "-C", repoRoot, "rev-parse", "HEAD")
+	output, err := command.Output()
+	if err != nil {
+		return ""
+	}
+	return strings.TrimSpace(string(output))
+}
+
+type ClaimRefreshPlanOptions struct {
+	RepoRoot     string
+	PreviousPath string
+	Config       claimDiscoveryConfig
+}
+
+func BuildClaimRefreshPlan(options ClaimRefreshPlanOptions) (map[string]any, error) {
+	if strings.TrimSpace(options.PreviousPath) == "" {
+		return nil, fmt.Errorf("--previous is required with --refresh-plan")
+	}
+	content, err := os.ReadFile(resolvePath(options.RepoRoot, options.PreviousPath))
+	if err != nil {
+		return nil, err
+	}
+	var previous map[string]any
+	if err := json.Unmarshal(content, &previous); err != nil {
+		return nil, err
+	}
+	baseCommit := strings.TrimSpace(stringOrEmpty(previous["gitCommit"]))
+	targetCommit := currentGitCommit(options.RepoRoot)
+	changedSources := []string{}
+	if baseCommit != "" && targetCommit != "" {
+		changedSources = gitChangedFiles(options.RepoRoot, baseCommit, targetCommit)
+	}
+	previousCandidates := arrayOrEmpty(previous["claimCandidates"])
+	claims := []any{}
+	for _, raw := range previousCandidates {
+		entry := asMap(raw)
+		claimID := stringOrEmpty(entry["claimId"])
+		sourceChanged := false
+		for _, sourceRef := range arrayOrEmpty(entry["sourceRefs"]) {
+			path := stringOrEmpty(asMap(sourceRef)["path"])
+			if claimStringListContains(changedSources, path) {
+				sourceChanged = true
+				break
+			}
+		}
+		lifecycle := "carried-forward"
+		if sourceChanged {
+			lifecycle = "changed"
+		}
+		claims = append(claims, map[string]any{
+			"claimId":   claimID,
+			"lifecycle": lifecycle,
+		})
+	}
+	return map[string]any{
+		"schemaVersion":      contracts.ClaimRefreshPlanSchema,
+		"sourceRoot":         ".",
+		"previousPath":       filepath.ToSlash(filepath.Clean(options.PreviousPath)),
+		"baseCommit":         baseCommit,
+		"targetCommit":       targetCommit,
+		"workingTreePolicy":  "excluded",
+		"changedSources":     changedSources,
+		"claimPlan":          claims,
+		"claimState":         renderClaimState(options.Config),
+		"effectiveScanScope": renderClaimScanScope(options.Config),
+	}, nil
+}
+
+func gitChangedFiles(repoRoot string, baseCommit string, targetCommit string) []string {
+	command := exec.Command("git", "-C", repoRoot, "diff", "--name-only", baseCommit, targetCommit)
+	output, err := command.Output()
+	if err != nil {
+		return []string{}
+	}
+	lines := strings.Split(strings.TrimSpace(string(output)), "\n")
+	result := []string{}
+	for _, line := range lines {
+		text := strings.TrimSpace(line)
+		if text != "" {
+			result = append(result, filepath.ToSlash(filepath.Clean(text)))
+		}
+	}
+	sort.Strings(result)
+	return result
+}
+
+func claimStringListContains(values []string, value string) bool {
+	for _, item := range values {
+		if item == value {
+			return true
+		}
+	}
+	return false
 }
 
 func containsAny(value string, needles []string) bool {
@@ -475,6 +933,9 @@ func ValidateClaimProofPlan(plan map[string]any) error {
 		if _, err := normalizeNonEmptyString(entry["claimId"], fmt.Sprintf("claimCandidates[%d].claimId", index)); err != nil {
 			return err
 		}
+		if _, err := normalizeNonEmptyString(entry["claimFingerprint"], fmt.Sprintf("claimCandidates[%d].claimFingerprint", index)); err != nil {
+			return err
+		}
 		if _, err := normalizeNonEmptyString(entry["summary"], fmt.Sprintf("claimCandidates[%d].summary", index)); err != nil {
 			return err
 		}
@@ -485,8 +946,52 @@ func ValidateClaimProofPlan(plan map[string]any) error {
 		if !validProofLayer(layer) {
 			return fmt.Errorf("claimCandidates[%d].proofLayer %q is unsupported", index, layer)
 		}
+		recommendedProof, err := normalizeNonEmptyString(entry["recommendedProof"], fmt.Sprintf("claimCandidates[%d].recommendedProof", index))
+		if err != nil {
+			return err
+		}
+		if !validRecommendedProof(recommendedProof) {
+			return fmt.Errorf("claimCandidates[%d].recommendedProof %q is unsupported", index, recommendedProof)
+		}
+		readiness, err := normalizeNonEmptyString(entry["verificationReadiness"], fmt.Sprintf("claimCandidates[%d].verificationReadiness", index))
+		if err != nil {
+			return err
+		}
+		if !validVerificationReadiness(readiness) {
+			return fmt.Errorf("claimCandidates[%d].verificationReadiness %q is unsupported", index, readiness)
+		}
+		if !claimProofLayerMatchesSplitFields(layer, recommendedProof, readiness) {
+			return fmt.Errorf("claimCandidates[%d].proofLayer %q does not match recommendedProof=%q verificationReadiness=%q", index, layer, recommendedProof, readiness)
+		}
+		evidenceStatus, err := normalizeNonEmptyString(entry["evidenceStatus"], fmt.Sprintf("claimCandidates[%d].evidenceStatus", index))
+		if err != nil {
+			return err
+		}
+		if !validEvidenceStatus(evidenceStatus) {
+			return fmt.Errorf("claimCandidates[%d].evidenceStatus %q is unsupported", index, evidenceStatus)
+		}
+		reviewStatus, err := normalizeNonEmptyString(entry["reviewStatus"], fmt.Sprintf("claimCandidates[%d].reviewStatus", index))
+		if err != nil {
+			return err
+		}
+		if !validReviewStatus(reviewStatus) {
+			return fmt.Errorf("claimCandidates[%d].reviewStatus %q is unsupported", index, reviewStatus)
+		}
+		lifecycle, err := normalizeNonEmptyString(entry["lifecycle"], fmt.Sprintf("claimCandidates[%d].lifecycle", index))
+		if err != nil {
+			return err
+		}
+		if !validClaimLifecycle(lifecycle) {
+			return fmt.Errorf("claimCandidates[%d].lifecycle %q is unsupported", index, lifecycle)
+		}
+		if evidenceStatus == "satisfied" && reviewStatus == "heuristic" {
+			return fmt.Errorf("claimCandidates[%d].evidenceStatus satisfied requires agent-reviewed or human-reviewed reviewStatus", index)
+		}
 		if surface := strings.TrimSpace(stringFromAny(entry["recommendedEvalSurface"])); surface != "" && !validEvalSurface(surface) {
 			return fmt.Errorf("claimCandidates[%d].recommendedEvalSurface %q is unsupported", index, surface)
+		}
+		if _, err := assertArray(entry["evidenceRefs"], fmt.Sprintf("claimCandidates[%d].evidenceRefs", index)); err != nil {
+			return err
 		}
 		refs, err := assertArray(entry["sourceRefs"], fmt.Sprintf("claimCandidates[%d].sourceRefs", index))
 		if err != nil {
@@ -502,6 +1007,66 @@ func ValidateClaimProofPlan(plan map[string]any) error {
 func validProofLayer(value string) bool {
 	switch value {
 	case "human-auditable", "deterministic", "cautilus-eval", "scenario-candidate", "alignment-work":
+		return true
+	default:
+		return false
+	}
+}
+
+func claimProofLayerMatchesSplitFields(proofLayer string, recommendedProof string, readiness string) bool {
+	return proofLayer == derivedProofLayer(recommendedProof, readiness)
+}
+
+func derivedProofLayer(recommendedProof string, readiness string) string {
+	switch {
+	case readiness == "needs-alignment":
+		return "alignment-work"
+	case recommendedProof == "cautilus-eval" && readiness == "needs-scenario":
+		return "scenario-candidate"
+	default:
+		return recommendedProof
+	}
+}
+
+func validRecommendedProof(value string) bool {
+	switch value {
+	case "human-auditable", "deterministic", "cautilus-eval":
+		return true
+	default:
+		return false
+	}
+}
+
+func validVerificationReadiness(value string) bool {
+	switch value {
+	case "ready-to-verify", "needs-scenario", "needs-alignment", "blocked":
+		return true
+	default:
+		return false
+	}
+}
+
+func validEvidenceStatus(value string) bool {
+	switch value {
+	case "satisfied", "missing", "partial", "stale", "unknown":
+		return true
+	default:
+		return false
+	}
+}
+
+func validReviewStatus(value string) bool {
+	switch value {
+	case "heuristic", "agent-reviewed", "human-reviewed":
+		return true
+	default:
+		return false
+	}
+}
+
+func validClaimLifecycle(value string) bool {
+	switch value {
+	case "new", "carried-forward", "changed", "retired":
 		return true
 	default:
 		return false

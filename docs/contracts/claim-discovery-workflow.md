@@ -517,9 +517,9 @@ The implementation slice that follows this design should include:
 - Do not raise default link depth above `3` yet.
   That risks turning entry-surface discovery into broad documentation crawling.
 
-## First Implementation Slice
+## Implementation Slices
 
-The next implementation slice should change the binary skeleton first:
+The first implementation slice changed the binary skeleton:
 
 1. add adapter-owned `claim_discovery` entries, include/exclude globs, and `linked_markdown_depth`
 2. implement entry plus repo-local Markdown link traversal with default depth `3`

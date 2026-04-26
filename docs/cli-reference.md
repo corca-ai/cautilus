@@ -85,6 +85,8 @@ Use default `doctor` (`--scope repo`) to verify the repo has a real runnable eva
 When repo-scope `doctor` returns `ready`, the JSON payload includes `first_bounded_run`: a starter `eval test -> eval evaluate` packet loop plus the scenario-normalization catalog for agents that still need proposal-input examples.
 When a repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, run `cautilus doctor --repo-root /path/to/repo --adapter-name <name>` for repo-scope validation instead of expecting plain `doctor` to guess which named adapter you mean.
 Use `cautilus claim discover` before writing eval fixtures when you need to inventory declared behavior claims and decide whether each belongs in human review, deterministic CI, Cautilus eval, scenario proposal work, or alignment work.
+Default discovery starts from adapter-owned claim entries or README.md/AGENTS.md/CLAUDE.md and follows repo-local Markdown links to depth 3.
+Use `--previous <claims.json> --refresh-plan` for deterministic refresh planning inside the same discover workflow.
 The packet is `cautilus.claim_proof_plan.v1`, and it is a proof plan rather than a verdict.
 
 For the shortest end-to-end adoption proof in a fresh consumer repo:

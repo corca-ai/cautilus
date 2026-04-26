@@ -320,9 +320,11 @@ type healthcheckArgs struct {
 }
 
 type claimDiscoverArgs struct {
-	repoRoot string
-	sources  []string
-	output   *string
+	repoRoot        string
+	sources         []string
+	previous        *string
+	refreshPlanOnly bool
+	output          *string
 }
 
 type installArgs struct {
@@ -705,8 +707,10 @@ func handleClaimDiscover(repoRoot string, cwd string, args []string, stdout io.W
 		return 1
 	}
 	plan, err := runtime.DiscoverClaimProofPlan(runtime.ClaimDiscoveryOptions{
-		RepoRoot:    options.repoRoot,
-		SourcePaths: options.sources,
+		RepoRoot:        options.repoRoot,
+		SourcePaths:     options.sources,
+		PreviousPath:    derefString(options.previous),
+		RefreshPlanOnly: options.refreshPlanOnly,
 	})
 	if err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
@@ -1830,6 +1834,15 @@ func parseClaimDiscoverArgs(args []string, cwd string) (*claimDiscoverArgs, erro
 			}
 			index = next
 			options.sources = append(options.sources, value)
+		case "--previous":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.previous = &value
+		case "--refresh-plan":
+			options.refreshPlanOnly = true
 		case "--output":
 			value, next, err := requiredValue(args, index, arg)
 			if err != nil {

@@ -140,6 +140,42 @@ func TestValidateAdapterDataAcceptsLiveRunInvocation(t *testing.T) {
 	}
 }
 
+func TestValidateAdapterDataAcceptsClaimDiscoveryConfig(t *testing.T) {
+	validated, errors := validateAdapterData(map[string]any{
+		"version": float64(1),
+		"repo":    "demo",
+		"claim_discovery": map[string]any{
+			"entries":               []any{"README.md", "AGENTS.md"},
+			"linked_markdown_depth": float64(3),
+			"include":               []any{"docs/**/*.md"},
+			"exclude":               []any{"artifacts/**"},
+			"state_path":            ".cautilus/claims/latest.json",
+			"evidence_roots":        []any{"artifacts/self-dogfood/eval/latest"},
+		},
+	})
+	if len(errors) > 0 {
+		t.Fatalf("validateAdapterData returned errors: %#v", errors)
+	}
+	claimDiscovery := asMap(validated["claim_discovery"])
+	if claimDiscovery["linked_markdown_depth"] != 3 {
+		t.Fatalf("expected linked_markdown_depth=3, got %#v", claimDiscovery)
+	}
+	if claimDiscovery["state_path"] != ".cautilus/claims/latest.json" {
+		t.Fatalf("expected state path in claim_discovery, got %#v", claimDiscovery)
+	}
+}
+
+func TestValidateAdapterDataRejectsNegativeClaimDiscoveryDepth(t *testing.T) {
+	_, errors := validateAdapterData(map[string]any{
+		"claim_discovery": map[string]any{
+			"linked_markdown_depth": float64(-1),
+		},
+	})
+	if len(errors) == 0 {
+		t.Fatalf("expected claim_discovery depth validation error")
+	}
+}
+
 func TestValidateAdapterDataRejectsLiveRunInvocationWithoutCommandTemplate(t *testing.T) {
 	_, errors := validateAdapterData(map[string]any{
 		"live_run_invocation": map[string]any{
@@ -198,4 +234,3 @@ func TestScaffoldAdapterSkillPrefillsEvalTestSlot(t *testing.T) {
 		t.Fatalf("expected evaluation_surfaces to mention skill, got %#v", surfaces)
 	}
 }
-

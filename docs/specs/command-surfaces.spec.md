@@ -26,6 +26,7 @@ That creates two risks:
 Define the stable command-family map and ship the first `claim` command without disturbing the already-shipped `eval` and `optimize` families.
 The implemented slice is intentionally deterministic: it inventories explicit truth surfaces and emits source-ref-backed proof-plan candidates.
 Default output is not silently capped; agents are first-class readers of the packet and should filter or select claims explicitly instead of inheriting a hidden product limit.
+Current discovery starts from adapter-owned entries or README.md/AGENTS.md/CLAUDE.md and follows repo-local Markdown links to depth 3.
 
 ## See It Work
 
@@ -61,12 +62,12 @@ cautilus claim discover --repo-root . --output /tmp/cautilus-claims.json
 ```
 
 The command discovers candidate claims from explicit repo-owned truth surfaces.
-Default truth surfaces are:
+Default truth surfaces are entry-first rather than repo-wide:
 
-- README and top-level docs
-- AGENTS.md, CLAUDE.md, bundled-skill docs, and plugin manifests
-- CLI help and command registry output when the repo ships a CLI
-- specs, contracts, release notes, and operator acceptance docs when present
+- adapter-configured `claim_discovery.entries`, when present
+- otherwise README.md, AGENTS.md, and CLAUDE.md when present
+- repo-local Markdown files linked from those entries up to depth 3
+- explicit `--source` paths when an agent or host repo wants to override the default inventory
 
 The command MUST keep host-specific policy local.
 It may point at source files and propose proof layers, but it must not import host-specific adapters, prompts, storage readers, or private workflow conventions into Cautilus.
@@ -80,6 +81,12 @@ Each claim candidate records:
 - `summary`
 - `sourceRefs[]`
 - `proofLayer`: `human-auditable`, `deterministic`, `cautilus-eval`, `scenario-candidate`, or `alignment-work`
+- `recommendedProof`
+- `verificationReadiness`
+- `evidenceStatus`
+- `reviewStatus`
+- `lifecycle`
+- `claimFingerprint`
 - optional `recommendedEvalSurface`: one of `repo/whole-repo`, `repo/skill`, `app/chat`, `app/prompt`
 - `whyThisLayer`
 - `nextAction`
