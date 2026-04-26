@@ -17,7 +17,7 @@
   evaluator는 app-surface 공통 runtime 필드(provider, model, harness, mode=`messaging`, durationMs, observed.messages, observed.finalText)에 더해 `app/prompt`에서 `observed.input`을 요구한다.
 - 이번 command-surface implementation slice의 closeout verification: `npm run verify`, `npm run hooks:check`, `npm run test:on-demand`, `npm run dogfood:self` green.
   이후 hardcoded claim candidate cap은 제거됐다.
-  2026-04-26 후속 구현 기준 `cautilus claim discover --repo-root . --output /tmp/cautilus-claims-self.json`는 adapter/default entries에서 repo-local Markdown links depth 3을 따라가며, `candidateLimit` 없이 `candidateCount=279`, `sourceCount=36`의 source-ref-backed proof plan을 만든다.
+  2026-04-26 후속 구현 기준 `cautilus claim discover --repo-root . --output /tmp/cautilus-claims-self.json`는 adapter/default entries에서 repo-local Markdown links depth 3을 따라가며, `candidateLimit` 없이 `candidateCount=282`의 source-ref-backed proof plan을 만든다.
   기본 출력은 숨은 product limit으로 잘라내지 않는다.
 - `mode evaluate` cut + archetype-boundary retire 슬라이스는 이미 들어왔고, 상세 기록은 이 spec의 follow-up notes와 git history를 본다.
 - `dogfood:self` canonical alias가 복원됐고 현재 `dogfood:self:eval`로 위임한다.
@@ -48,6 +48,9 @@
 - 2026-04-26 후속 구현으로 packet/evidence validation helper도 들어왔다.
   `claim validate --claims <claims.json>`는 `cautilus.claim_validation_report.v1`를 만들고, packet shape 또는 evidence refs가 invalid면 non-zero exit한다.
   이 command는 claim을 mutate하거나 evidence를 찾지 않는다.
+  실제 Cautilus repo dogfood에서 fresh discover packet은 `issueCount=0`, `valid=true`였다.
+  `claim review prepare-input --max-clusters 8 --max-claims-per-cluster 4` 기준 top 8 clusters는 모두 entry-surface priority 10이고, skipped clusters는 30개였다.
+  즉 지금 병목은 evidence preflight보다 bounded review budget / reviewed-claim promotion 쪽이다.
 - 잔여 신호: `repo/skill` / `app/chat` / `app/prompt` real-codex/claude self-dogfood 증거는 아직 없다.
   `charness-artifacts/cautilus/latest.md` refresh도 별도 artifact-refresh 슬라이스로 남아 있다.
 - premortem deferral 상태:
