@@ -17,7 +17,7 @@
   evaluator는 app-surface 공통 runtime 필드(provider, model, harness, mode=`messaging`, durationMs, observed.messages, observed.finalText)에 더해 `app/prompt`에서 `observed.input`을 요구한다.
 - 이번 command-surface implementation slice의 closeout verification: `npm run verify`, `npm run hooks:check`, `npm run test:on-demand`, `npm run dogfood:self` green.
   이후 hardcoded claim candidate cap은 제거됐다.
-  2026-04-26 후속 구현 기준 `cautilus claim discover --repo-root . --output /tmp/cautilus-claims-self.json`는 adapter/default entries에서 repo-local Markdown links depth 3을 따라가며, `candidateLimit` 없이 `candidateCount=279`, `sourceCount=36`의 source-ref-backed proof plan을 만든다.
+  2026-04-26 후속 구현 기준 `cautilus claim discover --repo-root . --output /tmp/cautilus-claims-self.json`는 adapter/default entries에서 repo-local Markdown links depth 3을 따라가며, `candidateLimit` 없이 `candidateCount=278`, `sourceCount=36`의 source-ref-backed proof plan을 만든다.
   기본 출력은 숨은 product limit으로 잘라내지 않는다.
 - `mode evaluate` cut + archetype-boundary retire 슬라이스는 이미 들어왔고, 상세 기록은 이 spec의 follow-up notes와 git history를 본다.
 - `dogfood:self` canonical alias가 복원됐고 현재 `dogfood:self:eval`로 위임한다.
@@ -35,6 +35,9 @@
 - 다음 claim-discovery workflow 설계는 [docs/contracts/claim-discovery-workflow.md](../contracts/claim-discovery-workflow.md)에 있다.
   핵심 결정은 binary가 deterministic skeleton / scan scope / state path / refresh plan / packet semantics를 소유하고, bundled skill이 user confirmation / LLM review / grouping / final evidence interpretation / next-action conversation을 소유한다는 것이다.
   default scan은 entry sources plus repo-local Markdown links depth 3이며, scan confirmation과 LLM review-budget confirmation은 분리한다.
+- 2026-04-26 후속 구현으로 bundled skill control-flow slice도 들어왔다.
+  no-input invocation은 claim-state availability를 확인하고, prior JSON이 없으면 scan scope를 설명한 뒤 `claim discover`를 쓰며, deterministic scan 뒤 LLM review budget을 별도로 확인하고, prior JSON이 있으면 `claim discover --previous ... --refresh-plan`을 쓴다는 지침이 `skills/cautilus/SKILL.md`와 packaged skill에 반영됐다.
+  `repo/skill` self-dogfood fixture에는 `execution-cautilus-no-input-claim-discovery-status` 케이스가 추가됐다.
 - 잔여 신호: `repo/skill` / `app/chat` / `app/prompt` real-codex/claude self-dogfood 증거는 아직 없다.
   `charness-artifacts/cautilus/latest.md` refresh도 별도 artifact-refresh 슬라이스로 남아 있다.
 - premortem deferral 상태:
@@ -50,9 +53,9 @@
 
 1. `git status --short`로 사용자 변경 여부를 먼저 확인한다.
 2. `charness:find-skills`로 설치된 public / support / integration 스킬 지도를 한 번 갱신한다.
-3. `cautilus claim discover` 다음 슬라이스는 [docs/contracts/claim-discovery-workflow.md](../contracts/claim-discovery-workflow.md)의 bundled-skill half다.
-   no-input invocation이 claim state를 확인하고, 필요하면 scan-scope confirmation을 묻고, deterministic scan 뒤 LLM review-budget confirmation을 분리하며, prior JSON이 있으면 refresh-plan helper output을 사용해 status를 요약해야 한다.
-   public `claim refresh` command는 만들지 않는다.
+3. `cautilus claim discover` 다음 슬라이스는 [docs/contracts/claim-discovery-workflow.md](../contracts/claim-discovery-workflow.md)의 LLM-backed claim review seam이다.
+   versioned review input/result packets, bounded cluster batching, provenance, duplicate merge decisions, evidence-status review, 그리고 possible evidence가 satisfied proof로 승격되지 않는 규칙을 구현해야 한다.
+   public `claim group` 또는 `claim refresh` command는 만들지 않는다.
 4. optimize-search held-out/full-gate 신호를 현재 `cautilus eval test` surface 위로 재배선할지, 아니면 C2/C3/C4 composition landing까지 honest-skip으로 둘지 결정한다.
 5. spec follow-up #4 — C2/C3/C4 composition primitives (extends / multi-step / snapshot), 슬라이스당 하나.
 6. spec follow-up #5 — `scenario normalize` 재범위만 남음.

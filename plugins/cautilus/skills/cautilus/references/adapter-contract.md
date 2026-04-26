@@ -43,6 +43,20 @@ preflight_commands:
 evaluation_input_default: fixtures/eval/whole-repo/example.fixture.json
 eval_test_command_templates:
   - node scripts/agent-runtime/run-local-eval-test.mjs --repo-root . --workspace {candidate_repo} --cases-file {eval_cases_file} --output-file {eval_observed_file} --artifact-dir {output_dir}/eval-test --backend {backend} --sandbox read-only
+claim_discovery:
+  entries:
+    - README.md
+    - AGENTS.md
+  linked_markdown_depth: 3
+  include:
+    - docs/**/*.md
+  exclude:
+    - artifacts/**
+    - node_modules/**
+  state_path: .cautilus/claims/latest.json
+  evidence_roots:
+    - docs/specs
+    - fixtures
 optimize_search:
   default_budget: medium
   budgets:
@@ -126,6 +140,12 @@ default_schema_file: fixtures/review/review-verdict.schema.json
 - `evaluation_input_default`: optional checked-in `cautilus.evaluation_input.v1` path used by `cautilus eval test` when the operator does not pass `--fixture`.
 - `eval_test_command_templates`: commands that turn the validated fixture's translated case suite into an observed packet (`cautilus.evaluation_observed.v1` for `repo/whole-repo`, `cautilus.skill_evaluation_inputs.v1` for `repo/skill`).
 - `default_runtime`: optional runtime choice (`codex` or `claude`), defaults to `codex`. Overridden by `cautilus eval test --runtime`.
+- `claim_discovery`: optional bounded truth-surface configuration for `cautilus claim discover`.
+  `entries` replaces the product default entry set (`README.md`, `AGENTS.md`, and `CLAUDE.md` when present).
+  `linked_markdown_depth` defaults to `3` and controls repo-local Markdown link traversal from those entries.
+  `include` and `exclude` are repo-relative glob filters applied to discovered Markdown sources.
+  `state_path` tells agents where the repo expects the current claim-state packet to live.
+  `evidence_roots` declares repo-relative roots worth checking during later evidence reconciliation; it does not prove claims by itself.
 - `executor_variants`: optional backend-specific review or simulation runners.
 - `optimize_search`: optional repo-owned defaults for `cautilus optimize search`.
   The product still owns the shared tier labels `light`, `medium`, and `heavy`.

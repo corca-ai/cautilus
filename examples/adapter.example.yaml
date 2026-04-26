@@ -11,6 +11,20 @@ preflight_commands:
   - npm run check
 eval_test_command_templates:
   - node scripts/agent-runtime/run-local-eval-test.mjs --repo-root . --workspace {candidate_repo} --cases-file {eval_cases_file} --output-file {eval_observed_file} --artifact-dir {output_dir}/eval-test --backend {backend} --sandbox read-only
+claim_discovery:
+  entries:
+    - README.md
+    - AGENTS.md
+  linked_markdown_depth: 3
+  include:
+    - docs/**/*.md
+  exclude:
+    - artifacts/**
+    - node_modules/**
+  state_path: .cautilus/claims/latest.json
+  evidence_roots:
+    - docs/specs
+    - fixtures
 instance_discovery:
   kind: explicit
   instances:

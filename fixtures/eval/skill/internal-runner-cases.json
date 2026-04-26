@@ -18,6 +18,14 @@
       "thresholds": {
         "max_duration_ms": 120000
       }
+    },
+    {
+      "caseId": "execution-cautilus-no-input-claim-discovery-status",
+      "evaluationKind": "execution",
+      "prompt": "Use $cautilus with no more task detail on this repo. Determine whether there is a current claim-state packet; if there is none, choose the claim discovery status path, explain the bounded scan scope before discovery, avoid LLM review until a separate review budget is confirmed, and summarize the next branch options.",
+      "thresholds": {
+        "max_duration_ms": 180000
+      }
     }
   ]
 }

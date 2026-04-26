@@ -60,11 +60,14 @@ For scenario proposal input shapes, prefer the relevant `--example-input` comman
 ## Declared Claim Discovery
 
 Use this step when the user asks whether a repo proves what it claims, whether documentation and behavior are aligned, or which scenarios still need to be created.
-Start with `cautilus claim discover --repo-root . --output <claims.json>` before building a hand-written claim inventory.
+Also use this path when the user invokes the skill with no detailed task and the repo has no active Cautilus run to resume.
 Do not hard-code the search to README.
 By default, the binary starts from adapter-owned `claim_discovery.entries` or README.md/AGENTS.md/CLAUDE.md and follows repo-local Markdown links to depth 3.
 Use repeated `--source` arguments only when the user or adapter has selected an explicit truth-surface inventory.
-If an existing claim JSON exists, use `cautilus claim discover --previous <claims.json> --refresh-plan` inside the same discover workflow rather than inventing a separate refresh command.
+Before the first scan, tell the user the entries and depth that will be scanned and ask for confirmation unless they already delegated autonomous continuation.
+Then run `cautilus claim discover --repo-root . --output <claims.json>`.
+If an existing claim JSON exists, use `cautilus claim discover --previous <claims.json> --refresh-plan --output <refresh-plan.json>` inside the same discover workflow rather than inventing a separate refresh command.
+Do not treat scan confirmation as permission for LLM review, subagent fanout, broad edits, or expensive eval runs.
 
 Classify each candidate claim before creating fixtures:
 
@@ -77,6 +80,17 @@ Classify each candidate claim before creating fixtures:
 For `cautilus-eval` claims, route to `repo / whole-repo`, `repo / skill`, `app / chat`, or `app / prompt`.
 Keep the fixture, runner, prompt files, wrapper scripts, and acceptance policy in the host repo.
 Use Cautilus for the generic packet contract, bounded run loop, and reusable decision artifacts.
+
+After discovery or refresh, summarize the packet before choosing work:
+
+- scanned entry files, linked Markdown count, and depth
+- raw candidate count and claim summary by proof mechanism, readiness, evidence status, review status, and lifecycle
+- refresh baseline and changed source count when a previous packet was used
+- which groups look ready for deterministic tests, Cautilus scenarios, alignment work, or human-auditable review
+- the next branch options: plan eval scenario drafts, add deterministic proof, resolve alignment, show the full packet, or stop
+
+Only launch LLM-backed review after a separate review-budget confirmation that states maximum clusters, parallel review lanes, clusters per reviewer, excerpt budget, retry policy, and skipped-cluster policy.
+When autonomous continuation is already delegated, keep that review inside the stated budget and record the budget in the resulting artifact or handoff.
 
 ## Bootstrap
 

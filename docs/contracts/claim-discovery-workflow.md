@@ -528,7 +528,7 @@ The first implementation slice changed the binary skeleton:
 5. add claim fingerprints, evidence ref shape, and summary groups to the discover packet
 6. add deterministic state-path resolution and refresh-plan helper output without adding `claim refresh`
 
-The following slice should update the bundled skill:
+The second implementation slice updated the bundled skill control flow:
 
 1. no-input invocation checks adapter and claim-state availability
 2. no prior state triggers scan-scope confirmation before calling the binary
@@ -536,4 +536,5 @@ The following slice should update the bundled skill:
 4. prior state triggers diff-aware refresh planning through binary helper output
 5. the skill summarizes status and asks which next branch to run
 
+This slice is covered by the bundled skill text, adapter contract docs, and the `execution-cautilus-no-input-claim-discovery-status` self-dogfood fixture.
 LLM-backed cluster review should come after the deterministic packet and skill control flow are stable enough to dogfood.

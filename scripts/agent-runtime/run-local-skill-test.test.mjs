@@ -24,7 +24,7 @@ test("buildObservedSkillEvaluationInput materializes a normalized packet from fi
 	});
 	assert.equal(packet.schemaVersion, "cautilus.skill_evaluation_inputs.v1");
 	assert.equal(packet.skillId, "cautilus");
-	assert.equal(packet.evaluations.length, 2);
+	assert.equal(packet.evaluations.length, 3);
 	assert.equal(packet.evaluations[0].expectedTrigger, "must_invoke");
 	assert.equal(packet.evaluations[0].invoked, true);
 	assert.equal(packet.evaluations[0].metrics.duration_ms, 1850);
@@ -33,6 +33,10 @@ test("buildObservedSkillEvaluationInput materializes a normalized packet from fi
 	assert.equal(packet.evaluations[1].thresholds.max_duration_ms, 120000);
 	assert.ok(Array.isArray(packet.evaluations[1].artifactRefs));
 	assert.equal(packet.evaluations[1].metrics.duration_ms, 2600);
+	assert.equal(packet.evaluations[2].evaluationId, "execution-cautilus-no-input-claim-discovery-status");
+	assert.equal(packet.evaluations[2].outcome, "passed");
+	assert.equal(packet.evaluations[2].thresholds.max_duration_ms, 180000);
+	assert.equal(packet.evaluations[2].metrics.duration_ms, 3200);
 	assert.ok(packet.evaluations[0].artifactRefs.some((ref) => ref.kind === "aggregate"));
 });
 
