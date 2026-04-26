@@ -43,6 +43,10 @@ type ClaimEvalPlanOptions struct {
 	MaxClaims  int
 }
 
+type ClaimValidationOptions struct {
+	InputPath string
+}
+
 type claimSource struct {
 	absPath        string
 	relPath        string
@@ -1313,6 +1317,85 @@ func claimEvalPlanIntent(candidate map[string]any) string {
 		return "Verify the selected claim through a bounded Cautilus eval fixture."
 	}
 	return "Verify that " + strings.TrimSuffix(summary, ".") + "."
+}
+
+func BuildClaimValidationReport(packet map[string]any, options ClaimValidationOptions) map[string]any {
+	issues := []any{}
+	if err := ValidateClaimProofPlan(packet); err != nil {
+		issues = append(issues, claimValidationIssue("$", err.Error()))
+	}
+	for index, raw := range arrayOrEmpty(packet["claimCandidates"]) {
+		candidate := asMap(raw)
+		path := fmt.Sprintf("$.claimCandidates[%d]", index)
+		claimID := stringFromAny(candidate["claimId"])
+		if err := validateClaimEvidenceSatisfaction(candidate); err != nil {
+			issues = append(issues, claimValidationIssue(path+".evidenceRefs", err.Error()))
+		}
+		for refIndex, rawRef := range arrayOrEmpty(candidate["sourceRefs"]) {
+			ref, ok := rawRef.(map[string]any)
+			refPath := fmt.Sprintf("%s.sourceRefs[%d]", path, refIndex)
+			if !ok {
+				issues = append(issues, claimValidationIssue(refPath, "source ref must be an object"))
+				continue
+			}
+			if stringFromAny(ref["path"]) == "" {
+				issues = append(issues, claimValidationIssue(refPath+".path", "source ref requires path"))
+			}
+			if intFromAny(ref["line"]) <= 0 {
+				issues = append(issues, claimValidationIssue(refPath+".line", "source ref requires a positive line"))
+			}
+		}
+		for refIndex, rawRef := range arrayOrEmpty(candidate["evidenceRefs"]) {
+			refPath := fmt.Sprintf("%s.evidenceRefs[%d]", path, refIndex)
+			ref, ok := rawRef.(map[string]any)
+			if !ok {
+				issues = append(issues, claimValidationIssue(refPath, "evidence ref must be an object"))
+				continue
+			}
+			matchKind := stringFromAny(ref["matchKind"])
+			if matchKind != "" && matchKind != "possible" && matchKind != "direct" && matchKind != "verified" {
+				issues = append(issues, claimValidationIssue(refPath+".matchKind", fmt.Sprintf("matchKind %q is unsupported", matchKind)))
+			}
+			if matchKind == "direct" || matchKind == "verified" {
+				if stringFromAny(ref["path"]) == "" {
+					issues = append(issues, claimValidationIssue(refPath+".path", "direct or verified evidence refs require path"))
+				}
+				if stringFromAny(ref["kind"]) == "" {
+					issues = append(issues, claimValidationIssue(refPath+".kind", "direct or verified evidence refs require kind"))
+				}
+				if stringFromAny(ref["commit"]) == "" && stringFromAny(ref["contentHash"]) == "" {
+					issues = append(issues, claimValidationIssue(refPath, "direct or verified evidence refs require commit or contentHash"))
+				}
+				if claimID != "" && !evidenceRefSupportsClaim(ref, claimID) {
+					issues = append(issues, claimValidationIssue(refPath+".supportsClaimIds", "evidence ref must include this claimId in supportsClaimIds"))
+				}
+			}
+			if _, ok := ref["supportsClaimIds"]; ok {
+				if _, err := assertArray(ref["supportsClaimIds"], refPath+".supportsClaimIds"); err != nil {
+					issues = append(issues, claimValidationIssue(refPath+".supportsClaimIds", err.Error()))
+				}
+			}
+		}
+	}
+	return map[string]any{
+		"schemaVersion":            contracts.ClaimValidationReportSchema,
+		"inputPath":                filepath.ToSlash(filepath.Clean(options.InputPath)),
+		"inputSchemaVersion":       packet["schemaVersion"],
+		"candidateCount":           len(arrayOrEmpty(packet["claimCandidates"])),
+		"issueCount":               len(issues),
+		"valid":                    len(issues) == 0,
+		"issues":                   issues,
+		"evidenceValidationPolicy": "satisfied claims require agent/human review plus a direct or verified evidence ref with path, kind, commit or contentHash, and supportsClaimIds containing the claim.",
+		"nonMutationNotice":        "This command validates the packet and evidence refs but does not change claims or search for evidence.",
+	}
+}
+
+func claimValidationIssue(path string, message string) map[string]any {
+	return map[string]any{
+		"severity": "error",
+		"path":     path,
+		"message":  message,
+	}
 }
 
 func validateClaimReviewResult(result map[string]any) error {

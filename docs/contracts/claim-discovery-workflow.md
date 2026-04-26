@@ -397,7 +397,7 @@ Follow-on commands are justified only when they operate on an existing claim-sta
 - `claim review prepare-input`: turn selected candidate clusters into a deterministic review-input packet without calling an LLM
 - `claim review apply-result`: merge `cautilus.claim_review_result.v1` labels and evidence refs into an existing claim packet without calling an LLM
 - `claim plan-evals`: turn reviewed `cautilus-eval` claims into `cautilus.claim_eval_plan.v1` intermediate packets without writing host-owned fixtures
-- `claim validate`: validate packet shape and evidence refs
+- `claim validate`: emit `cautilus.claim_validation_report.v1` for packet shape and evidence-ref checks without mutating claims
 
 These commands are optional later surfaces.
 They should not be required for the normal first discovery experience.
@@ -547,3 +547,5 @@ The review-result application slice added `claim review apply-result`.
 It consumes `cautilus.claim_review_result.v1`, applies reviewed labels and evidence refs, records provenance, and rejects `evidenceStatus=satisfied` unless a direct or verified evidence ref supports the claim.
 The eval-planning slice added `claim plan-evals`.
 It emits `cautilus.claim_eval_plan.v1` from reviewed `cautilus-eval` claims that are ready to verify, while preserving the host boundary by not writing fixtures, prompts, runners, wrappers, or policy.
+The validation slice added `claim validate`.
+It emits `cautilus.claim_validation_report.v1`, exits non-zero for invalid packet shape or evidence refs, and does not mutate claims or search for evidence.

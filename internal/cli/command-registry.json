@@ -94,6 +94,16 @@
       ]
     },
     {
+      "path": ["claim", "validate"],
+      "group": "results",
+      "usage": "cautilus claim validate --claims <claims.json> [--output <validation-report.json>]",
+      "example": "cautilus claim validate --claims /tmp/cautilus-reviewed-claims.json --output /tmp/cautilus-claim-validation.json",
+      "notes": [
+        "Emits `cautilus.claim_validation_report.v1` and exits non-zero when packet shape or evidence refs are invalid.",
+        "The command validates existing packets but does not mutate claims or search for evidence."
+      ]
+    },
+    {
       "path": ["scenario", "review-conversations"],
       "group": "results",
       "usage": "cautilus scenario review-conversations [args]",

@@ -295,6 +295,64 @@ func TestBuildClaimEvalPlanSkipsHeuristicEvalClaims(t *testing.T) {
 	}
 }
 
+func TestBuildClaimValidationReportValidatesEvidenceRefs(t *testing.T) {
+	packet := map[string]any{
+		"schemaVersion": contracts.ClaimProofPlanSchema,
+		"claimCandidates": []any{
+			map[string]any{
+				"claimId":               "claim-fixture-1",
+				"claimFingerprint":      "sha256:fixture",
+				"summary":               "Agents must follow the repo operating contract.",
+				"proofLayer":            "cautilus-eval",
+				"recommendedProof":      "cautilus-eval",
+				"verificationReadiness": "ready-to-verify",
+				"evidenceStatus":        "satisfied",
+				"reviewStatus":          "agent-reviewed",
+				"lifecycle":             "new",
+				"groupHints":            []any{"cautilus-eval"},
+				"sourceRefs": []any{
+					map[string]any{"path": "AGENTS.md", "line": 3, "excerpt": "Agents must follow the repo operating contract."},
+				},
+				"evidenceRefs": []any{
+					map[string]any{
+						"kind":             "test",
+						"path":             "internal/runtime/claim_discovery_test.go",
+						"matchKind":        "possible",
+						"contentHash":      "sha256:test",
+						"supportsClaimIds": []any{"claim-fixture-1"},
+					},
+				},
+			},
+		},
+	}
+	report := BuildClaimValidationReport(packet, ClaimValidationOptions{InputPath: "claims.json"})
+	if report["schemaVersion"] != contracts.ClaimValidationReportSchema {
+		t.Fatalf("unexpected schemaVersion: %#v", report["schemaVersion"])
+	}
+	if report["valid"] != false {
+		t.Fatalf("expected invalid report, got %#v", report)
+	}
+	issues := arrayOrEmpty(report["issues"])
+	if len(issues) == 0 {
+		t.Fatalf("expected validation issues, got %#v", report)
+	}
+	if !strings.Contains(stringFromAny(asMap(issues[0])["message"]), "evidenceStatus satisfied requires") {
+		t.Fatalf("expected satisfied evidence issue, got %#v", issues)
+	}
+}
+
+func TestBuildClaimValidationReportAcceptsValidPacket(t *testing.T) {
+	repoRoot := filepath.Join("..", "..", "fixtures", "claim-discovery", "tiny-repo")
+	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan returned error: %v", err)
+	}
+	report := BuildClaimValidationReport(plan, ClaimValidationOptions{InputPath: "claims.json"})
+	if report["valid"] != true || report["issueCount"] != 0 {
+		t.Fatalf("expected valid report, got %#v", report)
+	}
+}
+
 func mustWriteFile(t *testing.T, path string, content string) {
 	t.Helper()
 	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {

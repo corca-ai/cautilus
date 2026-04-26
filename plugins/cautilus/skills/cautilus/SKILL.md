@@ -94,6 +94,8 @@ Only launch LLM-backed review after a separate review-budget confirmation that s
 After that budget is confirmed, run `cautilus claim review prepare-input --claims <claims.json> --max-clusters <n> --output <review-input.json>` to create deterministic review clusters, then give those clusters to reviewers.
 When reviewers return `cautilus.claim_review_result.v1`, run `cautilus claim review apply-result --claims <claims.json> --review-result <review-result.json> --output <reviewed-claims.json>`.
 Treat an apply-result rejection as a proof-quality blocker, especially when a reviewer tried to satisfy a claim with only possible evidence.
+Run `cautilus claim validate --claims <claims.json> --output <validation-report.json>` before depending on a reviewed packet in automation.
+If validation exits non-zero, read `cautilus.claim_validation_report.v1` and fix packet shape or evidence refs before planning evals.
 For reviewed `cautilus-eval` claims that are `ready-to-verify`, run `cautilus claim plan-evals --claims <reviewed-claims.json> --output <eval-plan.json>` before writing any host-owned fixtures.
 Treat `cautilus.claim_eval_plan.v1` as an intermediate planning packet: it can guide fixture creation, but the host repo still owns fixture contents, runner code, prompts, wrappers, and acceptance policy.
 When autonomous continuation is already delegated, keep that review inside the stated budget and record the budget in the resulting artifact or handoff.
@@ -191,6 +193,7 @@ Use product-owned outputs instead of paraphrasing command results from memory.
 
 - `eval-cases.json`: product-normalized test cases handed to the host-owned runner.
 - `cautilus.claim_proof_plan.v1`: source-ref-backed claim candidates and proof-layer routing, not a verdict.
+- `cautilus.claim_validation_report.v1`: claim packet and evidence-ref validation, not evidence discovery.
 - `cautilus.claim_eval_plan.v1`: intermediate eval-fixture planning over reviewed claims, not a host fixture writer.
 - `eval-observed.json`: observed behavior packet written by the runner.
 - `eval-summary.json`: first bounded evaluation decision packet.

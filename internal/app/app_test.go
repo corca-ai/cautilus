@@ -144,6 +144,7 @@ func TestRunCommandsJSONReturnsRegistry(t *testing.T) {
 	foundClaimReviewPrepare := false
 	foundClaimReviewApply := false
 	foundClaimPlanEvals := false
+	foundClaimValidate := false
 	for _, raw := range commands {
 		command := raw.(map[string]any)
 		path := command["path"].([]any)
@@ -162,8 +163,11 @@ func TestRunCommandsJSONReturnsRegistry(t *testing.T) {
 		if len(path) == 2 && path[0] == "claim" && path[1] == "plan-evals" {
 			foundClaimPlanEvals = true
 		}
+		if len(path) == 2 && path[0] == "claim" && path[1] == "validate" {
+			foundClaimValidate = true
+		}
 	}
-	if !foundClaimDiscover || !foundClaimShow || !foundClaimReviewPrepare || !foundClaimReviewApply || !foundClaimPlanEvals {
+	if !foundClaimDiscover || !foundClaimShow || !foundClaimReviewPrepare || !foundClaimReviewApply || !foundClaimPlanEvals || !foundClaimValidate {
 		t.Fatalf("expected commands payload to include claim commands, got %#v", commands)
 	}
 }
@@ -453,6 +457,66 @@ func TestRunClaimPlanEvalsWritesIntermediatePlan(t *testing.T) {
 	first := plans[0].(map[string]any)
 	if first["claimId"] != "claim-agents-md-3" || first["targetSurface"] != "repo/whole-repo" {
 		t.Fatalf("unexpected eval plan: %#v", first)
+	}
+}
+
+func TestRunClaimValidateWritesReportAndFailsInvalidEvidence(t *testing.T) {
+	repoRoot := t.TempDir()
+	claimsPath := filepath.Join(repoRoot, "claims.json")
+	outputPath := filepath.Join(repoRoot, "validation.json")
+	if err := os.WriteFile(claimsPath, []byte(strings.Join([]string{
+		`{`,
+		`  "schemaVersion": "cautilus.claim_proof_plan.v1",`,
+		`  "sourceRoot": ".",`,
+		`  "sourceInventory": [{"path": "AGENTS.md", "kind": "repo-instructions", "status": "read", "depth": 0}],`,
+		`  "claimCandidates": [`,
+		`    {`,
+		`      "claimId": "claim-agents-md-3",`,
+		`      "claimFingerprint": "sha256:demo",`,
+		`      "summary": "Agents must follow the repo operating contract before changing code.",`,
+		`      "recommendedProof": "cautilus-eval",`,
+		`      "recommendedEvalSurface": "repo/whole-repo",`,
+		`      "verificationReadiness": "ready-to-verify",`,
+		`      "evidenceStatus": "satisfied",`,
+		`      "reviewStatus": "agent-reviewed",`,
+		`      "lifecycle": "new",`,
+		`      "groupHints": ["cautilus-eval"],`,
+		`      "evidenceRefs": [`,
+		`        {`,
+		`          "kind": "test",`,
+		`          "path": "internal/app/app_test.go",`,
+		`          "matchKind": "possible",`,
+		`          "contentHash": "sha256:test",`,
+		`          "supportsClaimIds": ["claim-agents-md-3"]`,
+		`        }`,
+		`      ],`,
+		`      "sourceRefs": [{"path": "AGENTS.md", "line": 3, "excerpt": "Agents must follow the repo operating contract before changing code."}],`,
+		`      "proofLayer": "cautilus-eval"`,
+		`    }`,
+		`  ]`,
+		`}`,
+	}, "\n")), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	t.Setenv("CAUTILUS_CALLER_CWD", repoRoot)
+	t.Setenv("CAUTILUS_TOOL_ROOT", "")
+
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	exitCode := Run([]string{
+		"claim", "validate",
+		"--claims", claimsPath,
+		"--output", outputPath,
+	}, &stdout, &stderr)
+	if exitCode == 0 {
+		t.Fatalf("expected non-zero exit code for invalid evidence")
+	}
+	payload := readJSONObjectFile(t, outputPath)
+	if payload["schemaVersion"] != "cautilus.claim_validation_report.v1" || payload["valid"] != false {
+		t.Fatalf("unexpected validation payload: %#v", payload)
+	}
+	if issues := payload["issues"].([]any); len(issues) == 0 {
+		t.Fatalf("expected validation issues, got %#v", payload)
 	}
 }
 

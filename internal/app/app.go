@@ -169,6 +169,8 @@ func nativeHandler(path []string) handlerFunc {
 		return handleClaimReviewApplyResult
 	case "claim plan-evals":
 		return handleClaimPlanEvals
+	case "claim validate":
+		return handleClaimValidate
 	case "workbench discover":
 		return handleWorkbenchDiscover
 	case "workbench run-live":
@@ -359,6 +361,11 @@ type claimPlanEvalsArgs struct {
 	claims    string
 	output    *string
 	maxClaims int
+}
+
+type claimValidateArgs struct {
+	claims string
+	output *string
 }
 
 type installArgs struct {
@@ -869,6 +876,32 @@ func handleClaimPlanEvals(repoRoot string, cwd string, args []string, stdout io.
 	}
 	if err := writeOutput(stdout, cwd, options.output, plan); err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	return 0
+}
+
+//nolint:errcheck // CLI stderr/stdout reporting is best-effort.
+func handleClaimValidate(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	_ = repoRoot
+	options, err := parseClaimValidateArgs(args, cwd)
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	claimPacket, err := readJSONObject(options.claims)
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	report := runtime.BuildClaimValidationReport(claimPacket, runtime.ClaimValidationOptions{
+		InputPath: options.claims,
+	})
+	if err := writeOutput(stdout, cwd, options.output, report); err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	if valid, _ := report["valid"].(bool); !valid {
 		return 1
 	}
 	return 0
@@ -2178,6 +2211,35 @@ func parseClaimPlanEvalsArgs(args []string, cwd string) (*claimPlanEvalsArgs, er
 				return nil, parseErr
 			}
 			options.maxClaims = parsed
+		default:
+			return nil, fmt.Errorf("unknown argument: %s", arg)
+		}
+	}
+	if strings.TrimSpace(options.claims) == "" {
+		return nil, fmt.Errorf("--claims is required")
+	}
+	return options, nil
+}
+
+func parseClaimValidateArgs(args []string, cwd string) (*claimValidateArgs, error) {
+	options := &claimValidateArgs{}
+	for index := 0; index < len(args); index++ {
+		arg := args[index]
+		switch arg {
+		case "--claims", "--input":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.claims = resolvePath(cwd, value)
+		case "--output":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.output = &value
 		default:
 			return nil, fmt.Errorf("unknown argument: %s", arg)
 		}

@@ -76,6 +76,7 @@ cautilus claim discover --repo-root /path/to/repo --output /tmp/cautilus-claims.
 cautilus claim show --input /tmp/cautilus-claims.json
 cautilus claim review prepare-input --claims /tmp/cautilus-claims.json --output /tmp/cautilus-claim-review-input.json
 cautilus claim review apply-result --claims /tmp/cautilus-claims.json --review-result /tmp/cautilus-claim-review-result.json --output /tmp/cautilus-reviewed-claims.json
+cautilus claim validate --claims /tmp/cautilus-reviewed-claims.json --output /tmp/cautilus-claim-validation.json
 cautilus claim plan-evals --claims /tmp/cautilus-reviewed-claims.json --output /tmp/cautilus-eval-plan.json
 
 # scenario-normalization catalog, for agents that need proposal-input examples
@@ -97,6 +98,8 @@ Use `cautilus claim review prepare-input --claims <claims.json>` to prepare boun
 It emits `cautilus.claim_review_input.v1` and does not call an LLM or mark claims satisfied.
 Use `cautilus claim review apply-result --claims <claims.json> --review-result <review-result.json>` to merge reviewed labels and evidence refs back into a claim packet.
 It emits an updated claim packet and rejects `evidenceStatus=satisfied` unless a direct or verified evidence ref supports the claim.
+Use `cautilus claim validate --claims <claims.json>` to emit `cautilus.claim_validation_report.v1` and fail fast on invalid packet shape or evidence refs.
+It does not mutate the packet or search for evidence.
 Use `cautilus claim plan-evals --claims <reviewed-claims.json>` after review to turn ready `cautilus-eval` claims into `cautilus.claim_eval_plan.v1`.
 That packet preserves claim ids, target eval surfaces, source refs, draft intents, and unresolved questions, but it deliberately does not write host-owned fixtures or runners.
 
