@@ -27,6 +27,8 @@ The first proof deliberately shows a small end-to-end product move: `Cautilus` t
 
 - [Evaluation Surfaces](evaluation-surfaces.spec.md)
   The current contract that defines the two top-level evaluation surfaces (`repo`, `app`) with bounded presets and a single fixture composition schema. Implementation rolls out preset by preset.
+- [Command Surfaces](command-surfaces.spec.md)
+  Defines the three first-class product command families: `claim` for declared-claim discovery and proof planning, `eval` for verification, and `optimize` for bounded improvement.
 - [Current Product](current-product.spec.md)
   Explains the packet-first evaluation workflow that ships today: normalize inputs, build reusable packets, and reopen the result through review and HTML surfaces.
 - [Standalone Surface](standalone-surface.spec.md)
