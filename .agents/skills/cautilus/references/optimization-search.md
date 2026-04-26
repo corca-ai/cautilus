@@ -1,0 +1,483 @@
+# Optimization Search
+
+`Cautilus` should expose one bounded prompt-search seam above explicit evaluation, review, and history evidence.
+
+The goal is not to import DSPy's runtime.
+The goal is to bring the useful shape of `dspy.GEPA` into `Cautilus`'s packet-first product boundary so an operator can run bounded prompt evolution without weakening held-out, comparison, or structured review discipline.
+
+## Problem
+
+The current optimization seam turns one evaluated candidate into one bounded revision brief.
+That is useful, but it leaves a gap between:
+
+- "the current candidate has explicit failures"
+- and "which alternate prompt candidate should we try next"
+
+When prompt search remains outside the product boundary, hosts end up re-implementing the same control plane:
+
+- how many candidate prompts to try
+- which failures to reflect on
+- which candidate survives train versus held-out
+- how to preserve complementary strengths instead of collapsing to one scalar score too early
+
+`dspy.GEPA` is a strong reference here because it keeps three things explicit:
+
+- per-example or per-task scores, not only aggregate scores
+- textual feedback that explains why a candidate failed
+- Pareto-frontier retention so complementary strategies are not discarded too early
+
+## Current Slice
+
+This slice defines a first `GEPA`-inspired search contract for `Cautilus`:
+
+- v1 is `prompt`-only
+- v1 assumes one consumer-owned target prompt file
+- search remains packet-first and file-based
+- candidate evaluation is bounded by declared budgets and checkpoint policies
+- adapters may override the repo's default search budget and tier-specific search limits through one optional `optimize_search` block while the product still owns the tier labels `light`, `medium`, and `heavy`
+- candidate selection is Pareto-based over per-scenario validation scores
+- the current implementation closes packet assembly, readiness gating, a bounded frontier-following reflective mutation loop that consumes `generationLimit` and stops when total candidate count reaches `populationLimit`, held-out reevaluation of each promoted candidate, telemetry-aware frontier ranking, and the proposal bridge
+- reflective mutation is evidence-aware rewriting, not random string editing
+- the canonical search packet records both the resolved search configuration and the source of each resolved knob so operators can tell whether the final budget, packet-level merge toggle, and selection policy came from product defaults, adapter defaults, or explicit overrides
+- the search output stays reopenable as a durable artifact and can feed the existing bounded `optimize propose` seam
+
+## Fixed Decisions
+
+- `Cautilus` keeps the existing `optimize prepare-input`, `optimize propose`, and `optimize build-artifact` seams.
+- Search is an additional seam above the current optimize input, not a replacement for it.
+- v1 targets `prompt` only.
+- v1 targets exactly one consumer-owned prompt file at a time.
+- Held-out scenarios remain selection and validation surfaces, not mutation training material.
+- Review findings are binding evidence for reflective mutation readiness and candidate shaping.
+- The default review checkpoint policy is budget-aware: `final_only` for `light`, `frontier_promotions` for `medium` and `heavy`.
+- The product owns the shared search-budget tier labels `light`, `medium`, and `heavy`.
+  Adapters may override the default tier choice and the numeric limits inside each tier, but they may not rename the shared tier labels.
+- Candidate retention uses a Pareto frontier over per-scenario validation scores, not only one aggregate score.
+- Cost and latency telemetry are mandatory when available, but are not primary Pareto frontier dimensions in v1.
+- Declared selection policy and optional merge knobs are preserved in the canonical packet even when the current runner does not yet consume every knob.
+- Prompt mutation is reflective prompt rewriting based on explicit evidence, not random token- or substring-level crossover.
+- Merge synthesis stays opt-in in the resolved search packet.
+  `Cautilus` preserves adapter- or direct-input merge settings, but the current runner does not yet synthesize merge candidates from them.
+- The search output recommends a best next candidate and preserves lineage, but does not auto-apply prompt edits.
+- If search-readiness evidence is insufficient, `Cautilus` must stop before candidate generation and emit a machine-readable blocked result.
+- Inline JSON ingress is allowed, but `Cautilus` must materialize it into a canonical input file before continuing.
+
+## Deferred Decisions
+
+- multi-prompt or multi-component coupled updates
+- `adapter` target search
+- weight updates, fine-tuning, or external trainer orchestration
+- automatic prompt patch application to consumer-owned files
+- actual multi-generation execution that fully consumes `generationLimit` and `populationLimit`
+- review-checkpoint execution beyond packet-level policy shaping
+- runtime consumption of `mergeEnabled` and `threeParentPolicy`
+- runtime enforcement of declared selection `constraintCaps`
+- richer merge selection and smarter crossover heuristics
+
+## Non-Goals
+
+- importing DSPy's `Module`, `Predict`, `ReAct`, or teleprompt runtime
+- mutating consumer-owned prompts without a durable candidate artifact
+- evaluating every candidate through full gate on every search step
+- training on held-out failures
+- open-ended autonomous retries without explicit budget and stop conditions
+
+## Constraints
+
+- keep the product boundary packet-first and file-based
+- preserve the current `cautilus.optimize_inputs.v1`, `cautilus.optimize_proposal.v1`, and `cautilus.revision_artifact.v1` contracts
+- keep consumer prompts, adapters, and policy language consumer-owned
+- prefer explicit candidate snapshot files and fingerprints over inlining large prompt bodies into search packets
+- keep the packet shape extensible to richer frontier heuristics and broader checkpoint execution later
+- when JSON is provided directly over CLI or stdin, materialize the raw input and the normalized canonical packet under the active run before running readiness checks or search
+- keep telemetry truth machine-readable
+  Do not scrape human-oriented stderr summaries into product-owned token or cost fields
+
+## Reference Mapping
+
+`dspy.GEPA` concepts should map into `Cautilus` terms like this:
+
+- `candidate`: one prompt candidate snapshot plus its fingerprint and lineage
+- `trainset`: iterate or train scenarios used for reflective mutation
+- `valset`: held-out scenarios used for Pareto retention and candidate selection
+- `metric + feedback`: explicit per-scenario score plus bounded textual failure digest assembled from compare artifacts, review findings, and scenario history
+- `Pareto frontier`: the set of candidates that remain best on at least one held-out scenario
+- `reflective mutation`: rewriting the target prompt using structured evidence about where a candidate succeeded or failed
+- `merge`: a reserved future seam for bounded synthesis of one new prompt from complementary frontier strengths without raw string splicing
+
+This keeps the useful GEPA shape while staying honest about `Cautilus`'s different product boundary.
+
+## Search Input Packet
+
+Use `cautilus.optimize_search_inputs.v1` for the search boundary.
+
+The packet should include:
+
+- repo root
+- the source `cautilus.optimize_inputs.v1` packet or explicit file reference
+- optimization target
+  - v1 must be `prompt`
+- one explicit consumer-owned target file reference
+- one seed candidate snapshot reference and fingerprint
+- search configuration
+  - `algorithm`: `reflective_pareto`
+  - `budget`: `light`, `medium`, or `heavy`
+  - `generationLimit`
+  - `populationLimit`
+  - `mutationBatchSize`
+  - `candidateSelection`: `pareto`
+  - `reviewCheckpointPolicy`: `final_only` or `frontier_promotions`
+  - `fullGateCheckpointPolicy`: `final_only`
+  - optional `selectionPolicy`
+    - `primaryObjective`: `held_out_behavior`
+    - optional `tieBreakers`, such as `lower_cost` and `lower_latency`
+    - optional `constraintCaps`, such as `maxCostUsd` or `maxDurationMs`
+  - optional `mergeEnabled`
+  - optional `threeParentPolicy`
+    - `coverage_expansion`
+    - `disabled`
+- `searchConfigSources`
+  - optional `adapterPath`
+  - one source label per resolved knob, such as:
+    - `budget`
+    - `preset`
+    - `selectionPolicy`
+    - `reviewCheckpointPolicy`
+    - `mergeEnabled`
+    - `threeParentPolicy`
+  - valid values are:
+    - `product_default`
+    - `adapter_default`
+    - `adapter_preset`
+    - `explicit_override`
+- mutation evidence policy
+  - which report buckets can seed mutation
+  - how many review findings can enter one reflective batch
+  - whether scenario history can appear in reflective feedback
+  - whether frontier-promotion checkpoint feedback should be reinjected into later mutation prompts
+- explicit scenario sets
+  - `trainScenarioSet`
+  - `heldOutScenarioSet`
+- evaluation surface references
+  - report file
+  - optional review summary file
+  - optional scenario history file
+  - optional held-out scenario-results file
+  - optional scenario result files used to materialize scenario ids and past failures
+- objective and guardrail constraints copied from the source optimize input
+
+Current intended surface:
+
+```bash
+cautilus optimize search prepare-input \
+  --optimize-input /tmp/cautilus-optimize/input.json \
+  --held-out-results-file /tmp/cautilus-mode/held_out-scenario-results.json \
+  --target-file .agents/review.prompt.md \
+  --budget light
+```
+
+For agent-driven ingress, `Cautilus` may also accept direct JSON input, but it must immediately materialize:
+
+- the raw input payload
+- the normalized canonical search input packet
+
+under the active run directory before returning success or blocked status.
+
+This keeps the ingress convenient without giving up replayable file-based artifacts.
+
+Adapter-owned search presets use one optional adapter block:
+
+```yaml
+optimize_search:
+  default_budget: medium
+  budgets:
+    light:
+      generation_limit: 1
+      population_limit: 3
+      mutation_batch_size: 3
+      review_checkpoint_policy: final_only
+      merge_enabled: false
+      three_parent_policy: coverage_expansion
+    medium:
+      generation_limit: 2
+      population_limit: 5
+      mutation_batch_size: 4
+      review_checkpoint_policy: frontier_promotions
+      merge_enabled: false
+      three_parent_policy: coverage_expansion
+    heavy:
+      generation_limit: 3
+      population_limit: 8
+      mutation_batch_size: 5
+      review_checkpoint_policy: frontier_promotions
+      merge_enabled: false
+      three_parent_policy: coverage_expansion
+  selection_policy:
+    primary_objective: held_out_behavior
+    tie_breakers:
+      - lower_cost
+      - lower_latency
+    constraint_caps: {}
+```
+
+Resolution order is:
+
+1. explicit direct-input overrides
+2. adapter `optimize_search` defaults and presets
+3. product defaults
+
+Current runtime note:
+
+- `generationLimit`, `populationLimit`, `mergeEnabled`, `threeParentPolicy`, and declared selection caps are preserved in the canonical packet for replay and future expansion
+- the current runner follows the best current frontier candidate and evaluates one reflective mutation per generation until `generationLimit` or total candidate count is exhausted
+- the current runner does not yet synthesize merge candidates or reject finalists purely because a declared selection cap was breached
+
+## Search Readiness
+
+`Cautilus` should refuse candidate generation when the repo is not search-ready.
+
+The minimum search-ready evidence for v1 is:
+
+- held-out scenario ids
+- per-scenario score or pass/fail outcomes for the selected evaluation surface
+- at least one textual feedback source that can ground reflective mutation
+  - compare-artifact reason
+  - human-review finding
+  - scenario-history instability note
+
+If these are missing, `Cautilus` must stop before candidate generation and emit a blocked result with:
+
+- non-zero exit status in normal CLI mode
+- a machine-readable JSON payload when `--json` is requested
+- a canonical input file reference so an operator or agent can reopen the same blocked state and discuss what evidence should be created next
+
+The blocked payload should make the next discussion possible instead of merely reporting generic failure.
+
+Example shape:
+
+```json
+{
+  "status": "blocked",
+  "inputFile": "/tmp/cautilus-run/optimize-search-input.json",
+  "reasonCodes": [
+    "missing_held_out_scenarios",
+    "missing_per_scenario_scores",
+    "missing_textual_feedback"
+  ],
+  "missingEvidence": [
+    "held_out scenario ids",
+    "per-scenario score or pass/fail records",
+    "compareArtifact reasons or humanReviewFindings"
+  ],
+  "suggestedNextSteps": [
+    "run held_out evaluation with scenario results enabled",
+    "build a report packet with compare artifacts",
+    "collect at least one review summary for the target behavior"
+  ]
+}
+```
+
+## Candidate Artifact
+
+Each candidate should materialize as a small explicit snapshot bundle under the active run directory, not only as an in-memory string.
+
+Candidate metadata should include:
+
+- candidate id
+- generation index
+- parent candidate ids
+- candidate origin
+  - `seed`
+  - `mutation`
+  - `merge`
+- target file snapshot path
+- fingerprint
+- concise mutation rationale
+- reflective evidence references used to create the candidate
+
+The point is to keep lineage and rollback explicit without inlining large prompt bodies into the top-level search packet.
+
+## Reflective Dataset
+
+The reflective dataset should stay grounded in explicit artifacts.
+
+Each reflective example should be assembled from:
+
+- scenario id
+- mode and split identity
+- candidate output status
+- candidate score for that scenario
+- optional baseline delta from compare artifacts
+- bounded textual feedback assembled from:
+  - compare-artifact reasons
+  - report regressions or noisy signals
+  - matching review findings
+  - matching scenario-history instability notes
+
+This is the `Cautilus` equivalent of GEPA's "inputs, outputs, feedback" reflection set.
+
+If the repo cannot provide enough explicit scenario evidence to assemble this dataset honestly, `Cautilus` should refuse search rather than hallucinating a reflection surface from loose logs.
+
+## Deliberately Not Doing
+
+- letting adapters invent new budget tier names that break cross-repo comparison
+- promoting Codex stderr summaries into product-owned telemetry truth
+- forcing merge synthesis on for every repo just because the engine can perform it
+
+## Search Loop
+
+The current bounded loop works like this:
+
+1. Start with one seed candidate from the current target prompt file.
+2. Evaluate the seed candidate on the held-out scenario set to establish the initial per-scenario score vector and frontier.
+3. If the packet is mutation-ready, build one reflective dataset from explicit evidence and ask one selected backend to produce one bounded mutated candidate.
+4. Evaluate that candidate on held-out scenarios and update the frontier using per-scenario scores plus late telemetry tie-breaks when present.
+5. Emit one selected best next candidate plus the durable search record.
+
+Current implementation note:
+
+- v1 executes packet assembly, readiness blocking, one reflective mutation per generation, held-out reevaluation, telemetry-aware frontier ranking, and proposal bridging
+- `reviewCheckpointPolicy` currently shapes packet policy and checkpoint-feedback inclusion, but does not yet trigger separate review-checkpoint executions inside `optimize search run`
+- `mergeEnabled`, `threeParentPolicy`, and declared selection caps are preserved in the packet today so future runners and artifacts can reopen the same intent honestly
+
+In v1, review checkpoint policy means:
+
+- `final_only`
+  - keep checkpoint policy conservative in the canonical packet
+- `frontier_promotions`
+  - preserve the intent to allow earlier checkpointing once the runner grows beyond the current one-mutation slice
+
+The current bounded default is budget-aware at packet-construction time: `light` stays `final_only`, while `medium` and `heavy` default to `frontier_promotions`.
+
+## Cost And Latency
+
+Cost and latency telemetry should be recorded for every candidate whenever the evaluation surface exposes them.
+
+In v1:
+
+- they are mandatory telemetry when available
+- they are not primary Pareto frontier dimensions by default
+- they should act as:
+  - explicit constraint caps
+  - or tie-breakers between behaviorally similar candidates
+- the current runner only uses them as late ranking tie-breakers when telemetry is present
+
+This avoids selecting a prompt merely because it is short or cheap when the behavior objective is worse.
+
+If two candidates are behaviorally near-equivalent on held-out scenarios, the cheaper or faster one may win final selection.
+
+## Search Result Packet
+
+Use `cautilus.optimize_search_result.v1` for the durable search record.
+
+The packet should include:
+
+- repo root
+- source search input file reference
+- search configuration
+- `searchConfigSources`
+  - the same resolved source labels emitted by the canonical input packet so result-only readers can still tell which knobs came from product defaults, adapter defaults, adapter presets, or explicit overrides
+- `experimentContext`
+  - mode, intent, baseline ref, adapter identity, target file, resolved budget, and mutation backend list
+- `telemetryCompleteness`
+  - one small truth surface that says which held-out and candidate-aggregate telemetry dimensions are `complete`, `partial`, or `absent`
+- selected candidate id
+- candidate registry
+  - candidate ids
+  - lineage
+  - snapshot references
+  - mutation rationales
+- generation summaries
+  - candidate ids proposed
+  - candidates promoted to held-out
+  - frontier membership after each generation
+- held-out evaluation matrix
+  - per-candidate per-scenario scores
+- Pareto metadata
+  - frontier candidate ids
+  - per-scenario best candidate ids
+  - optional frontier coverage counts
+- checkpoint outcomes
+  - review checkpoint results
+  - full-gate checkpoint results are reserved for future runner expansion
+- selection telemetry
+  - ranked frontier candidate ids
+- search telemetry
+  - candidate count
+  - generation count
+  - mutation invocation count
+  - held-out evaluation count
+  - review checkpoint count
+  - stop reason
+- proposal bridge
+  - the selected candidate snapshot reference
+  - the bounded rationale for why it should feed `optimize propose`
+
+## Proposal Bridge
+
+The search seam should compose with the current optimize seam like this:
+
+1. `optimize prepare-input` still materializes the generic optimize context.
+2. `optimize search prepare-input` derives a bounded search plan from that context.
+3. `optimize search run` emits a durable search result and selected candidate.
+4. `optimize propose --from-search` or an equivalent helper emits one bounded next-revision brief for the selected candidate.
+5. `optimize build-artifact` stays the durable handoff object for operator review and follow-up implementation.
+
+This preserves the current "one bounded revision brief" contract while adding search before the final proposal.
+
+## Success Criteria
+
+- `Cautilus` can run a bounded prompt-search loop from explicit packets and explicit target-file snapshots.
+- The first search surface is honest about `prompt`-only ownership and single target-file scope.
+- Candidate selection preserves complementary strengths through a Pareto frontier over per-scenario held-out scores.
+- Reflective mutation uses explicit textual feedback derived from report, review, compare, and history artifacts.
+- Adapter-owned search presets can override product defaults without inventing repo-specific tier names.
+- The canonical search packet records resolved search config sources so operators can reopen why a given run used a given budget or policy.
+- Search output preserves enough lineage and per-scenario scoring detail for an operator to understand why the selected candidate won.
+- Search output lets a result-only reader reconstruct the experiment conditions without reopening the input packet by hand.
+- The selected candidate can feed the existing bounded optimize proposal seam without weakening held-out or review discipline.
+
+## Acceptance Checks
+
+- `cautilus optimize search prepare-input --optimize-input ./fixtures/optimize/example-input.json --target-file ./fixtures/prompts/example.prompt.md --budget light`
+- `cautilus optimize search prepare-input --optimize-input ./fixtures/optimize/example-input.json --held-out-results-file ./fixtures/scenario-results/example-results.json --target-file ./fixtures/prompts/example.prompt.md --budget light`
+- `cautilus optimize search prepare-input --input-json '{...}' --json`
+- `cautilus optimize search run --input ./fixtures/optimize/search-input.json`
+- `cautilus optimize propose --from-search ./fixtures/optimize/search-result.json`
+- one checked-in flow test that proves:
+  - candidate lineage is preserved
+  - Pareto frontier metadata is emitted
+  - adapter-owned search presets are reflected in the canonical packet
+  - direct JSON ingress can still override preserved packet defaults
+  - the selected candidate remains reopenable as a bounded revision artifact
+  - blocked readiness emits machine-readable reason codes and the canonical input file path
+
+## Canonical Artifact
+
+This document is the canonical contract for the bounded prompt-search seam in this slice.
+
+## Implemented Bounded Slice
+
+The current bounded slice already proves:
+
+- one explicit seed candidate plus durable descendant candidates
+- explicit search input and result packets
+- held-out readiness blocking with machine-readable JSON output
+- reflective mutation from explicit evidence
+- one reevaluated held-out frontier above the seed candidate
+- packet-level review-checkpoint policy resolution
+- adapter-owned budget preset resolution with explicit source tracking
+- Codex machine-readable token telemetry preserved in downstream evidence packets
+- selected-candidate emission and proposal bridging back into the existing optimize artifact flow
+
+The next slice can build on this by extending the same packet boundary into true multi-generation execution, actual checkpoint runners, merge synthesis, and selection-cap enforcement without reshaping the product surface.
+
+## Guardrails
+
+- Do not treat search as permission to train on held-out or review outputs.
+- Do not reduce candidate selection to one aggregate score when per-scenario vectors are available.
+- Do not inline large prompt bodies into product-owned search packets.
+- Do not run review or full-gate checkpoints on every candidate by default.
+- Do not let the search loop auto-apply consumer-owned prompt edits.
+- Do not weaken held-out, comparison, or structured review gates to make a frontier candidate survive.
+- Do not silently continue past sparse-evidence readiness failures.

@@ -7,6 +7,7 @@ import test from "node:test";
 import {
 	buildObservedInstructionSurfaceInput,
 	codexArgs,
+	renderPrompt,
 } from "./run-local-eval-test.mjs";
 import {
 	materializeInstructionSurface,
@@ -21,6 +22,15 @@ function createInstructionSurfaceWorkspace() {
 	writeFileSync(join(workspace, "CLAUDE.md"), agents);
 	return workspace;
 }
+
+test("renderPrompt explains how prompt-provided root instructions map to AGENTS.md", () => {
+	const prompt = renderPrompt({
+		prompt: "User request: continue from docs/internal/handoff.md and implement the next slice.",
+	});
+	assert.match(prompt, /report the root instruction artifact path as the entry file/);
+	assert.match(prompt, /that artifact path is AGENTS\.md/);
+	assert.match(prompt, /Do not report a user-referenced task document as the entry file/);
+});
 
 test("buildObservedInstructionSurfaceInput materializes fixture-backed instruction-surface observations", () => {
 	const artifactDir = mkdtempSync(join(tmpdir(), "cautilus-eval-"));

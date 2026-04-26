@@ -17,7 +17,7 @@
   evaluator는 app-surface 공통 runtime 필드(provider, model, harness, mode=`messaging`, durationMs, observed.messages, observed.finalText)에 더해 `app/prompt`에서 `observed.input`을 요구한다.
 - 이번 command-surface implementation slice의 closeout verification: `npm run verify`, `npm run hooks:check`, `npm run test:on-demand`, `npm run dogfood:self` green.
   이후 hardcoded claim candidate cap은 제거됐다.
-  2026-04-26 후속 구현 기준 `cautilus claim discover --repo-root . --output /tmp/cautilus-claims-self.json`는 adapter/default entries에서 repo-local Markdown links depth 3을 따라가며, `candidateLimit` 없이 `candidateCount=282`의 source-ref-backed proof plan을 만든다.
+  2026-04-26 후속 구현 기준 `cautilus claim discover --repo-root . --output /tmp/cautilus-claims-self.json`는 adapter/default entries에서 repo-local Markdown links depth 3을 따라가며, `candidateLimit` 없이 `candidateCount=283`의 source-ref-backed proof plan을 만든다.
   기본 출력은 숨은 product limit으로 잘라내지 않는다.
 - `mode evaluate` cut + archetype-boundary retire 슬라이스는 이미 들어왔고, 상세 기록은 이 spec의 follow-up notes와 git history를 본다.
 - `dogfood:self` canonical alias가 복원됐고 현재 `dogfood:self:eval`로 위임한다.
@@ -38,6 +38,12 @@
 - 2026-04-26 후속 구현으로 bundled skill control-flow slice도 들어왔다.
   no-input invocation은 claim-state availability를 확인하고, prior JSON이 없으면 scan scope를 설명한 뒤 `claim discover`를 쓰며, deterministic scan 뒤 LLM review budget을 별도로 확인하고, prior JSON이 있으면 `claim discover --previous ... --refresh-plan`을 쓴다는 지침이 `skills/cautilus/SKILL.md`와 packaged skill에 반영됐다.
   `repo/skill` self-dogfood fixture에는 `execution-cautilus-no-input-claim-discovery-status` 케이스가 추가됐다.
+  2026-04-26에 product repo 자체의 `.agents/skills/cautilus`와 `.claude/skills -> ../.agents/skills`도 materialize했다.
+  `./bin/cautilus doctor --repo-root . --scope agent-surface`는 `ready=true`.
+  새 `codex exec` no-input dogfood는 `$cautilus` 경로에서 `./bin/cautilus`를 사용했고, `.cautilus/claims/latest.json` 부재를 감지한 뒤 `/tmp/cautilus-claims-discovery-status.json`와 `/tmp/cautilus-claim-status-summary.json`만 생성했다.
+  LLM review는 별도 review budget이 없어서 실행하지 않았다.
+  사전 실패 방지로 bundled skill은 Cautilus product repo에서 `cautilus` PATH binary보다 `./bin/cautilus`를 우선하도록 바뀌었다.
+  이유: 이 host의 PATH `cautilus`는 v0.12.1로 claim command family가 없었고, checkout `./bin/cautilus`는 v0.13.0로 claim command family가 있었다.
 - 2026-04-26 후속 구현으로 existing-packet helper slice도 들어왔다.
   `claim show --input <claims.json>`는 `cautilus.claim_status_summary.v1`를 만들고, `claim review prepare-input --claims <claims.json>`는 LLM 호출 없이 bounded `cautilus.claim_review_input.v1` cluster packet을 만든다.
   그 다음 `claim review apply-result --claims <claims.json> --review-result <review-result.json>`도 들어왔다.

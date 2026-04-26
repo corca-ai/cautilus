@@ -7,8 +7,10 @@ description: "Use when intentful behavior evaluation itself is the task and the 
 
 Use this bundled skill when intentful behavior evaluation itself is the task and the repo wants to run the checked-in `Cautilus` workflow instead of rebuilding claim discovery, eval fixtures, report, review, or optimize commands by hand.
 
-The installed skill assumes `cautilus` is already available on `PATH`.
-If it is not, install the CLI first and verify with `cautilus --version`.
+The installed skill assumes a Cautilus binary is available.
+In the Cautilus product repo itself, prefer the checked-in source launcher `./bin/cautilus` over `cautilus` on `PATH`, because the installed machine binary can lag the current checkout.
+In consumer repos, use `cautilus` on `PATH`.
+If no binary is available, install the CLI first and verify with `cautilus --version`.
 To materialize this skill in a host repo, run `cautilus install --repo-root .`.
 
 ## CLI First
@@ -16,15 +18,26 @@ To materialize this skill in a host repo, run `cautilus install --repo-root .`.
 Let the binary own command discovery and packet examples.
 Do not copy broad command lists or packet shapes into the answer when the CLI can print them.
 
+Resolve the command you will use before running workflow commands:
+
+```bash
+CAUTILUS_BIN=cautilus
+if [ -x ./bin/cautilus ]; then CAUTILUS_BIN=./bin/cautilus; fi
+"$CAUTILUS_BIN" healthcheck --json
+"$CAUTILUS_BIN" commands --json
+```
+
+If `commands --json` does not include the command family you need and `./bin/cautilus` exists, retry with `./bin/cautilus` before concluding that the command is unavailable.
+
 Use these probes before improvising:
 
 ```bash
-cautilus healthcheck --json
-cautilus commands --json
-cautilus claim discover --repo-root . --output /tmp/cautilus-claims.json
-cautilus scenarios --json
-cautilus doctor --repo-root . --next-action
-cautilus doctor --repo-root . --scope agent-surface
+"$CAUTILUS_BIN" healthcheck --json
+"$CAUTILUS_BIN" commands --json
+"$CAUTILUS_BIN" claim discover --repo-root . --output /tmp/cautilus-claims.json
+"$CAUTILUS_BIN" scenarios --json
+"$CAUTILUS_BIN" doctor --repo-root . --next-action
+"$CAUTILUS_BIN" doctor --repo-root . --scope agent-surface
 ```
 
 Use `cautilus --help` for human-readable command discovery.

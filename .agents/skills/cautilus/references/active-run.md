@@ -1,0 +1,294 @@
+# Active Run
+
+`Cautilus` pins one product-owned per-run workspace root per workflow and
+keeps the reference sticky across consumer command invocations with a shell
+environment variable. This contract is what makes `eval test`, `review
+prepare-input`, `review variants`, `workspace prepare-compare`, and related
+consumers drop all of their artifacts into one coherent `runDir` without
+operator path-threading.
+
+It owns:
+
+- the env var name, precedence rule, and default root
+- the shell-evalable stdout format of `cautilus workspace start`
+- the canonical filenames each consumer command writes under a `runDir`
+- the load-bearing "one workflow = one runDir" invariant
+- the rejected alternatives that operators should not re-propose
+
+It does not own:
+
+- adapter-specific artifacts inside the `runDir` (host-owned)
+- per-run telemetry, cost, or token schema (owned by `reporting.md`,
+  `scenario-results.md`, `optimization.md`, and sibling contracts)
+- pruning policy (owned by `workspace prune-artifacts`, explicitly opt-in)
+
+## Env Var Contract
+
+- **Name**: `CAUTILUS_RUN_DIR`
+- **Value**: absolute path to the currently active `runDir`
+- **Scope**: the current shell (or agent runtime) process. No state files.
+
+Consumer commands resolve their target `runDir` through one shared helper,
+`scripts/agent-runtime/active-run.mjs::resolveRunDir`, using this precedence:
+
+1. `options.outputDir` (the explicit `--output-dir`, `--output`, or
+   equivalent flag). Wins unconditionally. Created recursively if missing.
+2. `process.env.CAUTILUS_RUN_DIR`. Loud fail if the path is missing or is
+   not a directory — that indicates the active run was lost or corrupted.
+3. Auto-materialize a fresh `runDir` under the configured or default root
+   (`./.cautilus/runs/`, cwd-relative, created on first use). Consumers
+   that auto-materialize MUST emit `Active run: <abs path>` to stderr once
+   so the operator sees where artifacts landed.
+
+## One Workflow = One runDir
+
+This is a load-bearing invariant. A workflow is one evaluation intent; its
+mode runs, compare worktrees, review packets, review variants, and
+optimization outputs belong under one marker-bearing directory.
+
+The pruner (`scripts/agent-runtime/prune-workspace-artifacts.mjs`) is
+designed around it — its `EXACT_MARKERS` set is intentionally
+non-exclusive so multiple consumer commands can leave recognized markers
+inside the same directory without producing sibling directories.
+
+Start a workflow once:
+
+```bash
+eval "$(cautilus workspace start --label <meaningful-label>)"
+```
+
+Every consumer command in that shell inherits `CAUTILUS_RUN_DIR` and
+resolves the same target `runDir`. An operator never has to thread paths
+between commands or parse JSON payloads.
+
+## Default Root
+
+- Path: `./.cautilus/runs/` relative to the current working directory.
+- Auto-created with `mkdirSync(..., { recursive: true })` on first use, by
+  both `workspace start` and `resolveRunDir`'s auto-materialize branch.
+- Each `runDir` inside the root is named `<YYYYMMDDTHHMMSSmmmZ>-<slug>`
+  where `slug` is a slugified `--label` (default `run`).
+- Every `runDir` carries a `run.json` manifest at its top. The manifest is
+  only a recognition marker for the pruner; workflow metadata belongs in
+  per-command artifacts, not in the manifest.
+
+## Shell-Export stdout Format
+
+`cautilus workspace start` (without `--json`) emits exactly one line on
+stdout:
+
+```
+export CAUTILUS_RUN_DIR='/abs/path/to/.cautilus/runs/20260411T103215123Z-<slug>'
+```
+
+The path is wrapped in POSIX single-quoted form, with embedded single
+quotes escaped as `'\''`. This makes `eval "$(...)"` safe even for roots
+that contain spaces or shell metacharacters.
+
+`--json` flips the stdout to the `cautilus.workspace_run_manifest.v1`
+payload used by automation and internal test scripts. `--json` is the
+machine path, not the operator happy path — no JSON parser dependency is
+introduced for the default flow.
+
+## Canonical Filenames
+
+Consumer commands invoked inside an active run default their reads and
+writes to these canonical names within the resolved `runDir`. Explicit
+`--output-dir`, `--output`, `--output-file`, `--report-file`, etc. remain
+as overrides for automation and tests.
+
+| File or subdirectory              | Written by                          | Consumed by                                                 | Notes                                               |
+| --------------------------------- | ----------------------------------- | ----------------------------------------------------------- | --------------------------------------------------- |
+| `run.json`                        | `workspace start`                   | `workspace prune-artifacts`                                 | Manifest marker. `cautilus.workspace_run_manifest.v1`. |
+| `eval-cases.json`                 | `eval test`                     | adapter-owned eval runner                                   | Product-normalized test-case packet. Schema depends on the selected evaluation surface and preset. |
+| `eval-observed.json`              | adapter-owned eval runner       | `eval test`, `eval evaluate`                                | Product-owned observed packet. Schema depends on the selected evaluation surface and preset. |
+| `eval-summary.json`               | `eval test`, `eval evaluate`    | operator                                                    | Product-owned evaluation summary. Schema depends on the selected evaluation surface and preset. |
+| `report-input.json`               | operator / agent                | `report build` (optional)                                   | Assembled report packet inputs. Defaults here when `CAUTILUS_RUN_DIR` is pinned and `report build --input` is omitted. |
+| `report.json`                     | `report build`                  | `review prepare-input`, `evidence prepare-input`, `optimize prepare-input` | `cautilus.report_packet.v2`. Defaults here when an active-run-aware helper omits `--report-file`. |
+| `baseline/`                       | `workspace prepare-compare`         | adapter commands                                            | Git worktree. Directory marker.                     |
+| `candidate/`                      | `workspace prepare-compare`         | adapter commands                                            | Git worktree. Directory marker.                     |
+| `review-packet.json`              | `review prepare-input`              | `review build-prompt-input`, `review variants`              | `cautilus.review_packet.v1`. Defaults here when `CAUTILUS_RUN_DIR` is pinned and `--output` is omitted. |
+| `review-prompt-input.json`        | `review build-prompt-input`         | `review render-prompt`                                      | `cautilus.review_prompt_inputs.v1`.                 |
+| `review.prompt.md`                | `review render-prompt`              | executor variants (optional)                                | Rendered meta-prompt.                               |
+| `review-summary.json`             | `review variants`                   | `optimize prepare-input`                                    | Executor-variant summary. Used as the default `--review-summary` target inside an active run when the file exists. |
+| `run-audit-summary.json`          | host audit tooling                  | `evidence prepare-input`                                    | Product-owned canonical filename for host-normalized run-audit summary inside an active run. Used as the default `--run-audit-file` when the file exists. |
+| `scenario-history.snapshot.json`  | operator / agent                | `evidence prepare-input`, `optimize prepare-input`          | Snapshot artifact copied from the repo-level scenario-history source of truth when a workflow needs historical evidence. Used as the default history input when the file exists. |
+| `evidence-input.json`             | `evidence prepare-input`            | `evidence bundle`                                           | `cautilus.evidence_bundle_inputs.v1`. Defaults here when `CAUTILUS_RUN_DIR` is pinned and `evidence prepare-input --output` or `evidence bundle --input` is omitted. |
+| `evidence-bundle.json`            | `evidence bundle`                   | `optimize prepare-input` (optional)                         | `cautilus.evidence_bundle.v1`. Defaults here when `CAUTILUS_RUN_DIR` is pinned and `evidence bundle --output` is omitted. |
+| `optimize-input.json`             | `optimize prepare-input`            | `optimize propose`                                          | `cautilus.optimize_inputs.v1`. Defaults here when `CAUTILUS_RUN_DIR` is pinned and `optimize prepare-input --output` or `optimize propose --input` is omitted. |
+| `optimize-search-input.raw.json`  | `optimize search prepare-input`     | operator / agent                                            | Raw direct-JSON ingress snapshot. Written only when `--input-json` is used and the canonical search input is materialized to a file. |
+| `optimize-search-input.json`      | `optimize search prepare-input`     | `optimize search run`                                       | `cautilus.optimize_search_inputs.v1`. Defaults here when `CAUTILUS_RUN_DIR` is pinned and `optimize search prepare-input --output` or `optimize search run --input` is omitted. |
+| `optimize-search-result.json`     | `optimize search run`               | `optimize propose --from-search`                            | `cautilus.optimize_search_result.v1`. Defaults here when `CAUTILUS_RUN_DIR` is pinned and `optimize search run --output` is omitted. |
+| `optimize-proposal.json`          | `optimize propose`                  | `optimize build-artifact`                                   | `cautilus.optimize_proposal.v1`. Defaults here when `CAUTILUS_RUN_DIR` is pinned and `optimize propose --output` or `optimize build-artifact --proposal-file` is omitted. |
+| `revision-artifact.json`          | `optimize build-artifact`           | operator                                                    | `cautilus.revision_artifact.v1`. Defaults here when `CAUTILUS_RUN_DIR` is pinned and `optimize build-artifact --output` is omitted. |
+| `variant-*.json`                  | `review variants`                   | operator / review                                           | One file per executor variant.                      |
+| `<stage>-<index>.stdout`          | `review variants`, `eval test`  | debug, audit                                                | Captured process stdout.                            |
+| `<stage>-<index>.stderr`          | `review variants`, `eval test`  | debug, audit                                                | Captured process stderr.                            |
+
+### Wired Consumers
+
+Consumer commands marked **wired** resolve their target `runDir` through
+one of two helpers in `scripts/agent-runtime/active-run.mjs`:
+
+- **Workflow-creating commands** call `resolveRunDir` and honor the
+  full precedence chain (explicit `--output-dir` > `CAUTILUS_RUN_DIR` >
+  auto-materialize under `./.cautilus/runs/`). They emit `Active run:
+  <abs path>` to stderr exactly once when they auto-materialize.
+  Currently wired: `eval test`, `workspace prepare-compare`,
+  `review variants`.
+- **Consume-only file-in/file-out helpers** call `readActiveRunDir`
+  instead. They never mint a fresh `runDir`, never auto-materialize,
+  and never emit the `Active run:` banner. The `### Consume-Only
+  Helpers` subsection documents the exact rule.
+
+| Consumer              | Status     | Canonical rows                                                      | Notes                                                         |
+| --------------------- | ---------- | ------------------------------------------------------------------- | ------------------------------------------------------------- |
+| `eval test`       | wired      | `eval-cases.json`, `eval-observed.json`, `eval-summary.json`, `<stage>-<index>.stdout/stderr` | `--output-dir` is optional. The eval runner receives `{eval_cases_file}` and `{eval_observed_file}`, then `eval test` evaluates the observed packet into the summary file. |
+| `workspace prepare-compare` | wired  | `baseline/`, `candidate/`                                        | `--output-dir` is optional. Retries inside one active `runDir` reuse the git worktree registrations and rebuild `baseline/` and `candidate/` without requiring `--force`. |
+| `report build`               | wired   | `report-input.json`, `report.json`                              | Consume-only helper. Defaults `--input` to `report-input.json` and `--output` to `report.json` inside the active run; keeps stdout fallback when no active run is pinned. |
+| `review prepare-input`      | wired   | `review-packet.json`                                             | Consume-only helper. Defaults `--report-file` to `report.json` and `--output` to `review-packet.json` inside the active run; keeps stdout fallback when no active run is pinned. |
+| `evidence prepare-input`    | wired   | `evidence-input.json`                                            | Consume-only helper. Defaults `--report-file` to `report.json` and `--output` to `evidence-input.json` inside the active run. Optional `--run-audit-file` and `--history-file` default to `run-audit-summary.json` and `scenario-history.snapshot.json` only when those files already exist. `--scenario-results-file` defaults to `<scenario-mode>-scenario-results.json` only when the operator passes `--scenario-mode`; otherwise it stays explicit. |
+| `evidence bundle`           | wired   | `evidence-bundle.json`                                           | Consume-only helper. Defaults `--input` to `evidence-input.json` and `--output` to `evidence-bundle.json` inside the active run; keeps stdout fallback when no active run is pinned. |
+| `optimize prepare-input`    | wired   | `optimize-input.json`                                            | Consume-only helper. Defaults `--report-file` to `report.json` and `--output` to `optimize-input.json` inside the active run. Optional `--review-summary` and `--history-file` default to `review-summary.json` and `scenario-history.snapshot.json` only when those files already exist. |
+| `optimize search prepare-input` | wired | `optimize-search-input.json`, `optimize-search-input.raw.json` | Consume-only helper. Defaults `--output` to `optimize-search-input.json` inside the active run. When `--input-json` is used, it also materializes `optimize-search-input.raw.json` beside the canonical packet. |
+| `optimize search run`      | wired   | `optimize-search-result.json`                                    | Consume-only helper. Defaults `--input` to `optimize-search-input.json` and `--output` to `optimize-search-result.json` inside the active run; emits blocked JSON to stdout when `--json` is requested. |
+| `optimize propose`          | wired   | `optimize-proposal.json`                                         | Consume-only helper. Defaults `--input` to `optimize-input.json` and `--output` to `optimize-proposal.json` inside the active run; keeps stdout fallback when no active run is pinned. |
+| `optimize build-artifact`   | wired   | `revision-artifact.json`                                         | Consume-only helper. Defaults `--proposal-file` to `optimize-proposal.json` and `--output` to `revision-artifact.json` inside the active run; preserves the proposal-carried `inputFile` fallback. |
+| `review variants`           | wired    | `review-summary.json`, `variant-*.json`, `<stage>-<index>.stdout/stderr` | Workflow-creating helper. `--output-dir` is optional; explicit path wins, otherwise it uses `CAUTILUS_RUN_DIR`, otherwise it auto-materializes a fresh runDir and emits `Active run:` once. |
+
+### Consume-Only Helpers
+
+File-in/file-out helpers that read and write inside an existing `runDir`
+do **not** reuse the `resolveRunDir` helper. They use a separate
+`readActiveRunDir({ env = process.env })` helper from
+`scripts/agent-runtime/active-run.mjs` that returns the absolute path in
+`CAUTILUS_RUN_DIR` when it is set and points at an existing directory,
+throws loud if the env var is set but the path is missing or is not a
+directory, and returns `null` when the env var is unset.
+
+This separation is load-bearing because consume-only helpers must never
+mint a fresh `runDir`. Only `eval test` and `workspace
+prepare-compare` are permitted to start a workflow; every other
+runDir-aware command reads an existing active run or falls back to
+command-specific legacy behavior when no active run is pinned and the
+operator did not thread explicit paths.
+
+Consume-only helpers also do **not** emit the `Active run:` stderr
+banner. The banner is a workflow-creation signal, and consume-only
+commands never create a workflow.
+
+Commands that follow this pattern:
+
+- `review prepare-input` (wired in slice 5)
+- `evidence prepare-input` (wired with report, run-audit, history, and output defaults; scenario-results defaults stay operator-selected via `--scenario-mode`)
+- `optimize prepare-input` (wired with report, review summary, history, and output defaults)
+- `optimize search prepare-input` (wired with canonical search-input and raw-input defaults)
+- `optimize search run` (wired)
+- `report build` (wired)
+- `evidence bundle` (wired)
+- `optimize propose` (wired)
+- `optimize build-artifact` (wired)
+
+Each consume-only slice decides which canonical filenames become the
+default for its `--input`-style and `--output`-style flags, records the
+decision inline in the Canonical Filenames table above, and preserves
+whatever pre-active-run backwards-compatible behavior the command
+already had (for example, `review prepare-input` keeps writing to stdout
+when neither an active run nor an explicit `--output` is available).
+
+The conservative rule is load-bearing: only helpers whose source and
+destination filenames are already singular and product-owned get
+automatic active-run defaults. Inputs that still have multiple plausible
+runDir candidates, such as mode-prefixed scenario-results files, require
+an operator-selected discriminator (`--scenario-mode`) instead of silent
+guessing.
+
+## Entry Surface
+
+- `cautilus workspace start [--root R] [--label L] [--json]`
+  - library: `scripts/agent-runtime/workspace-start.mjs`
+  - default stdout: `export CAUTILUS_RUN_DIR='<abs runDir>'`
+  - `--json` alternate: `cautilus.workspace_run_manifest.v1` payload
+- `cautilus workspace prune-artifacts --root R [--keep-last N] [--max-age-days N]`
+  - explicit opt-in. `workspace start` does not clean up older runs.
+
+## Rejected Alternatives
+
+Record these so future sessions do not re-propose them:
+
+1. **Consumer `--artifact-root` flag (Option D)**. Each consumer would
+   mint its own `runDir` when given `--artifact-root`. Breaks "one workflow
+   = one runDir" — sibling directories proliferate inside one root, and
+   the pruner sees N bundles per workflow instead of 1. Rejected.
+2. **State file (`./.cautilus/active-run`)**. Persists the active `runDir`
+   in a repo-local file instead of an env var. Stale across sessions
+   (forgetting to finish lingers), unsafe across multiple shells, and adds
+   a new failure mode (corrupt/missing state file). Rejected.
+3. **mtime-latest resolution**. No env var; consumers resolve `runDir` by
+   finding the most recently touched directory under the root. Ambiguous
+   across parallel workflows, silently grabs yesterday's workflow across
+   session gaps, requires a magic freshness threshold. Rejected.
+4. **Zero-ceremony default (no `workspace start` at all)**. Each consumer
+   materializes a fresh `runDir` by default. Multi-command workflows
+   collapse back to explicit path threading — the original pain point.
+   Rejected.
+5. **Bundling `jq` as a dependency**. Only needed if stdout were JSON; the
+   shell-export format makes `jq` unnecessary for the happy path. The
+   `--json` branch stays available for automation that already has a JSON
+   parser at hand. Rejected as unnecessary.
+
+## Fixed Decisions
+
+- Env var name is `CAUTILUS_RUN_DIR`. Single source of truth across the
+  product, the bundled skill, and the packaged skill copy.
+- Default root is `./.cautilus/runs/`, cwd-relative, auto-created.
+- `workspace start` is the only per-run materializer entry. `workspace
+  new-run` is removed, not aliased.
+- The `run.json` manifest is intentionally thin: `schemaVersion`, `label`,
+  `startedAt` — marker only.
+- `workspace start` stdout is POSIX `export`, single-quoted.
+- `--json` is the machine branch, not a drop-in alias.
+
+## Probe Questions
+
+- Should `--shell fish` (or similar) emit shell-specific `set -gx` syntax?
+  Currently defer: `eval "$(...)"` inside a bash subshell from fish works
+  via `bass`/`babelfish` and fish users typically already have that
+  wrapper in place.
+- Should `run.json` carry workflow metadata (mode, baseline ref, adapter
+  name) so the pruner and HTML views can present richer summaries?
+  Currently defer: per-command artifacts already carry that context.
+- Should `evidence prepare-input`, `optimize prepare-input`, `report
+  build`, `optimize propose`, and sibling helpers auto-resolve their
+  `--input` / `--output` to canonical names inside the active run?
+  **Resolved (slice 5 decision)**: yes, via a new `readActiveRunDir`
+  helper rather than `resolveRunDir`. The full rule is captured in the
+  `### Consume-Only Helpers` subsection above. Each consume-only slice
+  decides its own canonical defaults and its own legacy fallback
+  behavior, but the helper shape, the loud-fail validation rule, and
+  the "no workflow minting, no `Active run:` banner" invariants are
+  fixed for every file-in/file-out consumer after `eval test` and
+  `workspace prepare-compare`.
+- Is `review variants` a workflow-creating command that mints runDirs
+  (and therefore uses `resolveRunDir`), or is it a consume-only
+  command that only reads an existing active run (and therefore uses
+  `readActiveRunDir`)?
+  **Resolved (slice 6 decision)**: workflow-creating. An operator can
+  legitimately run `review variants` standalone with a hand-rolled
+  `--prompt-file` plus `--schema-file`, no prior `eval test`, and
+  expect a fresh runDir for the resulting `variant-*.json` outputs.
+  The command therefore follows the same precedence chain as other
+  workflow-creating helpers (explicit `--output-dir` >
+  `CAUTILUS_RUN_DIR` > auto-materialize under `./.cautilus/runs/`) and
+  emits `Active run: <abs path>` once only when it auto-materializes.
+
+## Source References
+
+- [active-run.mjs](../../../scripts/agent-runtime/active-run.mjs)
+- [active-run.test.mjs](../../../scripts/agent-runtime/active-run.test.mjs)
+- [workspace-start.mjs](../../../scripts/agent-runtime/workspace-start.mjs)
+- [workspace-start.test.mjs](../../../scripts/agent-runtime/workspace-start.test.mjs)
+- [prune-workspace-artifacts.mjs](../../../scripts/agent-runtime/prune-workspace-artifacts.mjs)
+- [./reporting.md](./reporting.md)
+- [./review-packet.md](./review-packet.md)
+- [./optimization.md](./optimization.md)
