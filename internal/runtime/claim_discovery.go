@@ -44,6 +44,11 @@ type claimExtraction struct {
 	truncated  bool
 }
 
+type claimTextBlock struct {
+	line int
+	text string
+}
+
 func DiscoverClaimProofPlan(options ClaimDiscoveryOptions) (map[string]any, error) {
 	repoRoot := strings.TrimSpace(options.RepoRoot)
 	if repoRoot == "" {
@@ -247,36 +252,28 @@ func extractClaimCandidates(source claimSource, seenIDs map[string]int) (claimEx
 	if !utf8.Valid(content) {
 		return claimExtraction{}, fmt.Errorf("claim source is not utf-8: %s", source.relPath)
 	}
-	lines := strings.Split(string(content), "\n")
 	candidates := make([]claimCandidate, 0)
-	inFence := false
-	for index, raw := range lines {
-		lineNo := index + 1
-		trimmed := strings.TrimSpace(raw)
-		if strings.HasPrefix(trimmed, "```") {
-			inFence = !inFence
+	for _, block := range claimTextBlocks(string(content)) {
+		if !claimLineLooksUseful(block.text) {
 			continue
 		}
-		if inFence || !claimLineLooksUseful(trimmed) {
-			continue
-		}
-		layer, surface, why, next, ok := classifyClaimLine(trimmed)
+		layer, surface, why, next, ok := classifyClaimLine(block.text)
 		if !ok {
 			continue
 		}
 		if len(candidates) >= maxClaimCandidatesPerSource {
 			return claimExtraction{candidates: candidates, truncated: true}, nil
 		}
-		summary := normalizeClaimSummary(trimmed)
+		summary := normalizeClaimSummary(block.text)
 		if summary == "" {
 			continue
 		}
-		id := uniqueClaimID(source.relPath, lineNo, seenIDs)
+		id := uniqueClaimID(source.relPath, block.line, seenIDs)
 		candidates = append(candidates, claimCandidate{
 			claimID:                id,
 			summary:                summary,
 			sourcePath:             source.relPath,
-			line:                   lineNo,
+			line:                   block.line,
 			excerpt:                summary,
 			proofLayer:             layer,
 			recommendedEvalSurface: surface,
@@ -285,6 +282,65 @@ func extractClaimCandidates(source claimSource, seenIDs map[string]int) (claimEx
 		})
 	}
 	return claimExtraction{candidates: candidates}, nil
+}
+
+func claimTextBlocks(content string) []claimTextBlock {
+	lines := strings.Split(content, "\n")
+	blocks := []claimTextBlock{}
+	buffer := []string{}
+	startLine := 0
+	inFence := false
+	flush := func() {
+		if len(buffer) == 0 {
+			return
+		}
+		blocks = append(blocks, claimTextBlock{
+			line: startLine,
+			text: strings.Join(buffer, " "),
+		})
+		buffer = []string{}
+		startLine = 0
+	}
+	for index, raw := range lines {
+		lineNo := index + 1
+		trimmed := strings.TrimSpace(raw)
+		if strings.HasPrefix(trimmed, "```") {
+			flush()
+			inFence = !inFence
+			continue
+		}
+		if inFence {
+			continue
+		}
+		if trimmed == "" || strings.HasPrefix(trimmed, "|") || strings.HasPrefix(trimmed, "---") {
+			flush()
+			continue
+		}
+		if startsNewClaimBlock(trimmed) || previousLineEndsClaimBlock(buffer) {
+			flush()
+		}
+		if len(buffer) == 0 {
+			startLine = lineNo
+		}
+		buffer = append(buffer, trimmed)
+	}
+	flush()
+	return blocks
+}
+
+func startsNewClaimBlock(line string) bool {
+	if strings.HasPrefix(line, "#") || strings.HasPrefix(line, "- ") || strings.HasPrefix(line, "* ") {
+		return true
+	}
+	return regexp.MustCompile(`^\d+\.\s+`).MatchString(line)
+}
+
+func previousLineEndsClaimBlock(buffer []string) bool {
+	if len(buffer) == 0 {
+		return false
+	}
+	previous := strings.TrimSpace(buffer[len(buffer)-1])
+	return strings.HasSuffix(previous, ".") || strings.HasSuffix(previous, "?") || strings.HasSuffix(previous, "!")
 }
 
 func claimLineLooksUseful(line string) bool {
