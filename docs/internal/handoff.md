@@ -44,6 +44,12 @@
   LLM review는 별도 review budget이 없어서 실행하지 않았다.
   사전 실패 방지로 bundled skill은 Cautilus product repo에서 `cautilus` PATH binary보다 `./bin/cautilus`를 우선하도록 바뀌었다.
   이유: 이 host의 PATH `cautilus`는 v0.12.1로 claim command family가 없었고, checkout `./bin/cautilus`는 v0.13.0로 claim command family가 있었다.
+- 2026-04-26 no-input `$cautilus` 경로는 다시 조여졌다.
+  최초 실행은 binary / command registry / agent surface / adapter bootstrap까지 허용하고, 그 다음 claim-state/status와 next branch만 요약한다.
+  default `doctor`가 ready라고 해서 `eval test`, quality review, code edit, commit으로 넘어가지 않도록 `skills/cautilus/SKILL.md`, packaged skill, `.agents/skills/cautilus/SKILL.md`, repo/skill fixture expectation에 반영했다.
+  실제 `codex_exec` read-only 단독 no-input 검증은 `/tmp/cautilus-no-input-live/observed.json` 기준 `outcome=passed`였고, 금지된 eval/quality/test/commit command expectation을 통과했다.
+  source checkout launcher `bin/cautilus`는 read-only agent sandbox에서 `go run`/`cgo`가 깨지지 않도록 external scratch root(`/dev/shm/cautilus-go` 우선, `/tmp/cautilus-go` fallback, `CAUTILUS_GO_TMP_ROOT` override)를 쓰도록 바뀌었다.
+  관련 debug record는 [charness-artifacts/debug/debug-2026-04-26-source-shim-read-only-go-cache.md](../../charness-artifacts/debug/debug-2026-04-26-source-shim-read-only-go-cache.md).
 - 2026-04-26 후속 구현으로 existing-packet helper slice도 들어왔다.
   `claim show --input <claims.json>`는 `cautilus.claim_status_summary.v1`를 만들고, `claim review prepare-input --claims <claims.json>`는 LLM 호출 없이 bounded `cautilus.claim_review_input.v1` cluster packet을 만든다.
   그 다음 `claim review apply-result --claims <claims.json> --review-result <review-result.json>`도 들어왔다.
@@ -57,7 +63,11 @@
   실제 Cautilus repo dogfood에서 fresh discover packet은 `issueCount=0`, `valid=true`였다.
   `claim review prepare-input --max-clusters 8 --max-claims-per-cluster 4` 기준 top 8 clusters는 모두 entry-surface priority 10이고, skipped clusters는 30개였다.
   즉 지금 병목은 evidence preflight보다 bounded review budget / reviewed-claim promotion 쪽이다.
-- 잔여 신호: `repo/skill` / `app/chat` / `app/prompt` real-codex/claude self-dogfood 증거는 아직 없다.
+- 잔여 신호: no-input `repo/skill` 단독 real-codex 검증은 있다.
+  하지만 전체 `self-dogfood-eval-skill` suite는 아직 stable accept-now가 아니다.
+  2026-04-26 live run에서 broader `execution-cautilus-test-request`가 같은 `repo/skill` fixture를 다시 `eval test`하려 하면서 nested self-eval이 무겁고 timeout/reject로 끝났다.
+  다음 hardening slice는 이 케이스를 재귀 없는 cheap skill-eval proof로 바꾸거나, fixture backend/runtime을 `cautilus eval test`의 first-class runtime으로 노출해야 한다.
+  `app/chat` / `app/prompt` real-codex/claude self-dogfood 증거도 아직 없다.
   `charness-artifacts/cautilus/latest.md` refresh도 별도 artifact-refresh 슬라이스로 남아 있다.
 - premortem deferral 상태:
   (a) Result packet surface-agnostic 필드 — `app/chat` / `app/prompt` evaluator에서 require로 명시 정착됨; `repo/whole-repo`/`repo/skill`로 backport는 후속 hardening 슬라이스에서.

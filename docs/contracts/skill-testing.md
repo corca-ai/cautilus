@@ -44,6 +44,10 @@ Minimum shape:
     - `must_invoke`
     - `must_not_invoke`
   - optional execution `thresholds`
+  - optional `requiredSummaryFragments`
+  - optional `forbiddenSummaryFragments`
+  - optional `requiredCommandFragments`
+  - optional `forbiddenCommandFragments`
   - optional `repeatCount`
   - optional `minConsensusCount`
 
@@ -54,6 +58,9 @@ When `repeatCount` is greater than `1`, the adapter-owned runner should execute 
 If omitted, it defaults to `repeatCount`.
 
 The checked-in fixture owns the prompts and expectations.
+Fragment expectations are intentionally runner-level guardrails, not product-owned host log parsing.
+They let a skill fixture say which final summary fragments must or must not appear, and which structured command-log fragments must or must not appear when the selected runner can observe commands.
+If a backend cannot observe commands, command expectations should be treated as unavailable evidence rather than inferred from prose.
 The adapter-owned runner still owns:
 
 - how the local host runtime is actually invoked

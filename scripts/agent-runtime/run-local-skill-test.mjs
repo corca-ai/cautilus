@@ -17,8 +17,13 @@ import {
 	aggregateObservedMetrics,
 	buildObservedBaseResult,
 } from "./skill-test-observed.mjs";
+import {
+	applyObservationExpectations,
+	extractCodexCommandText,
+} from "./skill-test-expectations.mjs";
 
 export { normalizeSkillTestCaseSuite } from "./skill-test-case-suite.mjs";
+export { extractCodexCommandText } from "./skill-test-expectations.mjs";
 
 const CODEX_SESSION_MODES = ["ephemeral", "persistent"];
 
@@ -386,7 +391,11 @@ function runFixtureSample(testCase, fixtureResults, artifactDir, sampleIndex) {
 		`fixtureResults.${testCase.caseId}`,
 	);
 	const artifactRefs = [artifactRef("prompt", promptFile)];
-	return normalizeObservedResult(testCase, observed, Number(observed.duration_ms ?? 0), artifactRefs);
+	return applyObservationExpectations(
+		testCase,
+		normalizeObservedResult(testCase, observed, Number(observed.duration_ms ?? 0), artifactRefs),
+		null,
+	);
 }
 
 function runCodexSample(options, testCase, artifactDir, sampleIndex) {
@@ -436,7 +445,7 @@ function runCodexSample(options, testCase, artifactDir, sampleIndex) {
 	}
 	artifactRefs.push(artifactRef("result", outputFile));
 	const telemetry = extractCodexTelemetry(result.stdout, options);
-	return normalizeObservedResult(
+	return applyObservationExpectations(testCase, normalizeObservedResult(
 		testCase,
 		{
 			...observed,
@@ -444,7 +453,7 @@ function runCodexSample(options, testCase, artifactDir, sampleIndex) {
 		},
 		durationMs,
 		artifactRefs,
-	);
+	), extractCodexCommandText(result.stdout));
 }
 
 function summarizeStatusCounts(statusCounts) {

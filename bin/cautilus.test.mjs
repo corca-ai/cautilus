@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { existsSync, lstatSync, mkdirSync, mkdtempSync, readFileSync, readlinkSync, rmSync, writeFileSync } from "node:fs";
+import { chmodSync, existsSync, lstatSync, mkdirSync, mkdtempSync, readFileSync, readlinkSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
@@ -15,6 +15,35 @@ test("repo shim forwards --version to the Go CLI entry", () => {
 	assert.equal(result.status, 0, result.stderr);
 	const packageJSON = JSON.parse(readFileSync(join(process.cwd(), "package.json"), "utf-8"));
 	assert.equal(result.stdout.trim(), packageJSON.version);
+});
+
+test("repo shim uses tmp-backed Go caches when caller does not provide them", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-repo-shim-go-cache-"));
+	const readOnlyTmp = join(root, "caller-tmp");
+	try {
+		mkdirSync(readOnlyTmp);
+		chmodSync(readOnlyTmp, 0o555);
+		const result = spawnSync(BIN_PATH, ["--version"], {
+			cwd: process.cwd(),
+			encoding: "utf-8",
+			env: {
+				...process.env,
+				CAUTILUS_GO_TMP_ROOT: root,
+				TMPDIR: readOnlyTmp,
+				GOCACHE: "",
+				GOTMPDIR: "",
+			},
+		});
+		assert.equal(result.status, 0, result.stderr);
+		assert.equal(existsSync(join(root, "cautilus-go-build-cache")), true);
+		assert.equal(existsSync(join(root, "cautilus-go-tmp")), true);
+		assert.equal(existsSync(join(root, "cautilus-cgo-tmp")), true);
+	} finally {
+		if (existsSync(readOnlyTmp)) {
+			chmodSync(readOnlyTmp, 0o755);
+		}
+		rmSync(root, { recursive: true, force: true });
+	}
 });
 
 test("repo shim preserves caller cwd while resolving doctor against a consumer repo", () => {

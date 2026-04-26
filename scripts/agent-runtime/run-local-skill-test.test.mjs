@@ -7,6 +7,7 @@ import test from "node:test";
 import {
 	buildObservedSkillEvaluationInput,
 	codexArgs,
+	extractCodexCommandText,
 	normalizeObservedResult,
 	normalizeSkillTestCaseSuite,
 } from "./run-local-skill-test.mjs";
@@ -38,6 +39,53 @@ test("buildObservedSkillEvaluationInput materializes a normalized packet from fi
 	assert.equal(packet.evaluations[2].thresholds.max_duration_ms, 180000);
 	assert.equal(packet.evaluations[2].metrics.duration_ms, 3200);
 	assert.ok(packet.evaluations[0].artifactRefs.some((ref) => ref.kind === "aggregate"));
+});
+
+test("fixture-backed execution cases fail when summary expectations are violated", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-skill-test-expectations-"));
+	const casesFile = join(root, "cases.json");
+	const fixtureResultsFile = join(root, "fixture-results.json");
+	writeFileSync(casesFile, `${JSON.stringify({
+		schemaVersion: "cautilus.skill_test_cases.v1",
+		skillId: "demo",
+		cases: [
+			{
+				caseId: "execution-demo",
+				evaluationKind: "execution",
+				prompt: "Use $demo.",
+				requiredSummaryFragments: ["adapter"],
+				forbiddenSummaryFragments: ["commit"],
+			},
+		],
+	}, null, 2)}\n`);
+	writeFileSync(fixtureResultsFile, `${JSON.stringify({
+		"execution-demo": {
+			invoked: true,
+			summary: "The agent made a commit without checking the requested status.",
+			outcome: "passed",
+			duration_ms: 1000,
+		},
+	}, null, 2)}\n`);
+	const packet = buildObservedSkillEvaluationInput({
+		repoRoot: process.cwd(),
+		workspace: process.cwd(),
+		casesFile,
+		artifactDir: join(root, "artifacts"),
+		backend: "fixture",
+		fixtureResultsFile,
+	});
+	assert.equal(packet.evaluations[0].outcome, "failed");
+	assert.match(packet.evaluations[0].summary, /missing required fragment: adapter/);
+	assert.match(packet.evaluations[0].summary, /included forbidden fragment: commit/);
+});
+
+test("extractCodexCommandText finds commands from codex jsonl events", () => {
+	const stdout = [
+		JSON.stringify({ payload: { type: "function_call", arguments: JSON.stringify({ cmd: "./bin/cautilus doctor --repo-root ." }) } }),
+		JSON.stringify({ payload: { command: ["/usr/bin/zsh", "-lc", "git status --short"] } }),
+	].join("\n");
+	assert.match(extractCodexCommandText(stdout), /cautilus doctor/);
+	assert.match(extractCodexCommandText(stdout), /git status --short/);
 });
 
 test("normalizeSkillTestCaseSuite applies repeat defaults and validates consensus bounds", () => {

@@ -13,7 +13,24 @@ REPO_ROOT=$(
 
 : "${CAUTILUS_TOOL_ROOT:=$REPO_ROOT}"
 : "${CAUTILUS_CALLER_CWD:=$PWD}"
+if [ -n "${CAUTILUS_GO_TMP_ROOT:-}" ]; then
+  TMP_ROOT=$CAUTILUS_GO_TMP_ROOT
+elif [ -d /dev/shm ] && [ -w /dev/shm ]; then
+  TMP_ROOT=/dev/shm/cautilus-go
+else
+  TMP_ROOT=/tmp/cautilus-go
+fi
+: "${GOCACHE:=$TMP_ROOT/cautilus-go-build-cache}"
+: "${GOTMPDIR:=$TMP_ROOT/cautilus-go-tmp}"
+if [ -z "${TMPDIR:-}" ] || [ ! -w "$TMPDIR" ]; then
+  TMPDIR=$TMP_ROOT/cautilus-cgo-tmp
+fi
 export CAUTILUS_TOOL_ROOT
 export CAUTILUS_CALLER_CWD
+export GOCACHE
+export GOTMPDIR
+export TMPDIR
+
+mkdir -p "$GOCACHE" "$GOTMPDIR" "$TMPDIR"
 
 exec go -C "$REPO_ROOT" run ./cmd/cautilus "$@"

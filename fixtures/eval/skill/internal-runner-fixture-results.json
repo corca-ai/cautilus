@@ -19,7 +19,7 @@
   },
   "execution-cautilus-no-input-claim-discovery-status": {
     "invoked": true,
-    "summary": "The agent used the cautilus skill's no-input path, checked claim-state availability, chose bounded claim discovery status, kept scan confirmation separate from LLM review, and offered next branch options.",
+    "summary": "The agent used the cautilus skill's no-input path, checked adapter readiness and claim-state availability, kept scan confirmation separate from LLM review, and offered next branch options.",
     "outcome": "passed",
     "duration_ms": 3200
   }

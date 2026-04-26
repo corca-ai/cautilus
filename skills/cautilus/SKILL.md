@@ -55,10 +55,18 @@ Use [command-cookbook.md](references/command-cookbook.md) only after the binary 
 
 The three product front doors are `claim`, `eval`, and `optimize`.
 
+## No-Input Routing
+
+When invoked with no task detail, run only bootstrap and status work until the user delegates a branch.
+Allowed bootstrap is binary health, command registry, agent-surface install/readiness, and adapter resolve/init when missing or invalid.
+After adapter readiness, inspect claim state; if no claim packet exists, state scan entries/depth and ask before the first scan unless autonomous continuation was already delegated.
+Do not turn default `doctor` readiness into `eval test`, quality review, code edits, or commits.
+
 ## Evaluation Surface Routing
 
 `Cautilus` has two top-level evaluation surfaces and four fixture presets.
 Use `cautilus eval test --fixture <fixture.json>` when the repo already has a checked-in fixture and adapter-owned runner.
+When the agent runtime is read-only, pass an explicit writable `--output-dir`; prefer `/dev/shm/cautilus-<label>` when available, otherwise a writable external temp directory.
 Use `cautilus scenarios --json` only when you need the proposal-input normalization catalog.
 
 Use this minimal routing rule:

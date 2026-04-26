@@ -57,6 +57,16 @@ function nonNegativeMetricObject(value, field) {
 	return Object.keys(normalized).length > 0 ? normalized : null;
 }
 
+function stringList(value, field) {
+	if (value === undefined || value === null) {
+		return [];
+	}
+	if (!Array.isArray(value)) {
+		throw new Error(`${field} must be an array`);
+	}
+	return value.map((entry, index) => assertString(entry, `${field}[${index}]`));
+}
+
 function normalizeExpectedTrigger(record, index, evaluationKind) {
 	const expectedTrigger = optionalString(record.expectedTrigger, `cases[${index}].expectedTrigger`);
 	if (evaluationKind === "trigger" && !["must_invoke", "must_not_invoke"].includes(expectedTrigger ?? "")) {
@@ -106,6 +116,10 @@ function normalizeCase(record, index, skillId, skillDisplayName, suiteRepeatCoun
 		evaluationKind,
 		prompt: assertString(record.prompt, `cases[${index}].prompt`),
 		expectedTrigger,
+		requiredSummaryFragments: stringList(record.requiredSummaryFragments, `cases[${index}].requiredSummaryFragments`),
+		forbiddenSummaryFragments: stringList(record.forbiddenSummaryFragments, `cases[${index}].forbiddenSummaryFragments`),
+		requiredCommandFragments: stringList(record.requiredCommandFragments, `cases[${index}].requiredCommandFragments`),
+		forbiddenCommandFragments: stringList(record.forbiddenCommandFragments, `cases[${index}].forbiddenCommandFragments`),
 		thresholds: nonNegativeMetricObject(record.thresholds, `cases[${index}].thresholds`),
 		repeatCount,
 		minConsensusCount,
