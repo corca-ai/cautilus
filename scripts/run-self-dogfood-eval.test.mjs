@@ -17,7 +17,7 @@ test("run-self-dogfood-eval materializes a disposable candidate workspace", () =
 		evaluations: [
 			{
 				evaluationId: "checked-in-agents-routing",
-				prompt: "User request: continue from docs/internal/handoff.md and implement the next slice. Read the repo instructions first, then decide the first routing step for this task.",
+				prompt: "User request: continue from docs/internal/handoff.md and implement the next slice. Read the repo instructions first, then identify both the startup bootstrap helper and the durable work skill you would use for this implementation task.",
 				expectedEntryFile: "AGENTS.md",
 				requiredInstructionFiles: ["AGENTS.md"],
 				expectedRouting: { bootstrapHelper: "find-skills", workSkill: "impl" },

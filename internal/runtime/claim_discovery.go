@@ -12,10 +12,6 @@ import (
 	"github.com/corca-ai/cautilus/internal/contracts"
 )
 
-const maxClaimSourceBytes = 512 * 1024
-const maxClaimCandidates = 120
-const maxClaimCandidatesPerSource = 8
-
 type ClaimDiscoveryOptions struct {
 	RepoRoot    string
 	SourcePaths []string
@@ -41,7 +37,6 @@ type claimCandidate struct {
 
 type claimExtraction struct {
 	candidates []claimCandidate
-	truncated  bool
 }
 
 type claimTextBlock struct {
@@ -75,26 +70,14 @@ func DiscoverClaimProofPlan(options ClaimDiscoveryOptions) (map[string]any, erro
 	seenIDs := map[string]int{}
 	for _, source := range sources {
 		status := "read"
-		if info, err := os.Stat(source.absPath); err != nil {
+		if _, err := os.Stat(source.absPath); err != nil {
 			status = "missing"
-		} else if info.Size() > maxClaimSourceBytes {
-			status = "skipped-too-large"
-		} else if len(candidates) >= maxClaimCandidates {
-			status = "skipped-candidate-limit"
 		} else {
 			extraction, readErr := extractClaimCandidates(source, seenIDs)
 			if readErr != nil {
 				status = "unreadable"
 			} else {
-				sourceCandidates := extraction.candidates
-				if remaining := maxClaimCandidates - len(candidates); len(sourceCandidates) > remaining {
-					sourceCandidates = sourceCandidates[:remaining]
-					extraction.truncated = true
-				}
-				candidates = append(candidates, sourceCandidates...)
-				if extraction.truncated {
-					status = "read-truncated"
-				}
+				candidates = append(candidates, extraction.candidates...)
 			}
 		}
 		inventory = append(inventory, map[string]any{
@@ -111,7 +94,6 @@ func DiscoverClaimProofPlan(options ClaimDiscoveryOptions) (map[string]any, erro
 		"sourceInventory":  inventory,
 		"claimCandidates":  renderClaimCandidates(candidates),
 		"candidateCount":   len(candidates),
-		"candidateLimit":   maxClaimCandidates,
 		"sourceCount":      len(sources),
 		"nextRecommended":  "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
 		"nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
@@ -260,9 +242,6 @@ func extractClaimCandidates(source claimSource, seenIDs map[string]int) (claimEx
 		layer, surface, why, next, ok := classifyClaimLine(block.text)
 		if !ok {
 			continue
-		}
-		if len(candidates) >= maxClaimCandidatesPerSource {
-			return claimExtraction{candidates: candidates, truncated: true}, nil
 		}
 		summary := normalizeClaimSummary(block.text)
 		if summary == "" {

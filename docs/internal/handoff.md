@@ -16,7 +16,9 @@
   `app/prompt`는 2026-04-26에 추가됐고 `cautilus.app_prompt_test_cases.v1` / `cautilus.app_prompt_evaluation_inputs.v1` / `cautilus.app_prompt_evaluation_summary.v1`를 쓴다.
   evaluator는 app-surface 공통 runtime 필드(provider, model, harness, mode=`messaging`, durationMs, observed.messages, observed.finalText)에 더해 `app/prompt`에서 `observed.input`을 요구한다.
 - 이번 command-surface implementation slice의 closeout verification: `npm run verify`, `npm run hooks:check`, `npm run test:on-demand`, `npm run dogfood:self` green.
-  `cautilus claim discover --repo-root . --output /tmp/cautilus-claims-self.json`도 self repo에서 `candidateLimit=120`의 bounded proof plan을 생성했다.
+  이후 hardcoded claim candidate cap은 제거됐다.
+  2026-04-26 확인 기준 `cautilus claim discover --repo-root . --output /tmp/cautilus-claims-self.json`는 `candidateLimit` 없이 `candidateCount=561`, `sourceCount=124`, source status `read`만 있는 source-ref-backed proof plan을 만든다.
+  기본 출력은 숨은 product limit으로 잘라내지 않는다.
 - `mode evaluate` cut + archetype-boundary retire 슬라이스는 이미 들어왔고, 상세 기록은 이 spec의 follow-up notes와 git history를 본다.
 - `dogfood:self` canonical alias가 복원됐고 현재 `dogfood:self:eval`로 위임한다.
   2026-04-26 실행 기준 `repo/whole-repo` checked-in AGENTS routing fixture는 real Codex (`gpt-5.4-mini`, low)에서 `recommendation=accept-now`, `evaluationCounts.passed=1`, `failed=0`, `blocked=0`.
@@ -27,8 +29,9 @@
   README proof는 (1)의 예시일 뿐이며 Cautilus 표면은 README에 강결합하지 않는다.
   세 축은 장기적으로 각각 first-class binary command surface가 있어야 한다.
 - 세 핵심 기능의 command-family 설계와 첫 `claim` 구현은 [docs/specs/command-surfaces.spec.md](../specs/command-surfaces.spec.md)에 정착됐다.
-  canonical front doors는 `cautilus claim ...`, `cautilus eval ...`, `cautilus optimize ...`이며, `cautilus claim discover --repo-root . --output <claims.json>`는 repo-owned truth surface에서 bounded `cautilus.claim_proof_plan.v1`을 만든다.
-  이 packet은 verdict가 아니라 proof plan이며, source별/전체 candidate limit 초과는 `read-truncated` 또는 `skipped-candidate-limit`로 드러낸다.
+  canonical front doors는 `cautilus claim ...`, `cautilus eval ...`, `cautilus optimize ...`이며, `cautilus claim discover --repo-root . --output <claims.json>`는 repo-owned truth surface에서 `cautilus.claim_proof_plan.v1`을 만든다.
+  이 packet은 verdict가 아니라 proof plan이며, 발견된 backlog를 정직하게 보존한다.
+  selection이나 prioritization이 필요하면 future explicit command option, adapter-owned policy, 또는 다음 agent step으로 드러내야 한다.
 - 잔여 신호: `repo/skill` / `app/chat` / `app/prompt` real-codex/claude self-dogfood 증거는 아직 없다.
   `charness-artifacts/cautilus/latest.md` refresh도 별도 artifact-refresh 슬라이스로 남아 있다.
 - premortem deferral 상태:

@@ -14,6 +14,7 @@ The target product is:
 - train-vs-held-out discipline backed by scenario history
 - scenario proposal flows that mine runtime logs and audit traces into draft evaluation cases
 - first-class evaluation surfaces for chatbot, skill, and durable workflow behavior
+- agent-first command and packet surfaces that reveal user intent while hiding lower-level helper detail
 - an intent-first workflow where prompts are mutable implementation details and evaluation contracts define success
 
 The product has three connected jobs:
@@ -24,8 +25,9 @@ The product has three connected jobs:
 
 README proof is one instance of the first job, not a product-specific concept.
 Cautilus owns the generic claim-to-proof workflow; consumer repos own their local fixtures, runners, prompts, wrappers, and policy.
-Each job should eventually have a first-class command surface instead of living only as bundled-skill prose.
-The current `eval` and `optimize` families cover most of jobs 2 and 3; the claim-discovery command surface still needs an explicit design.
+Each job now has a first-class command family: `claim`, `eval`, and `optimize`.
+The product surface should keep following the same discipline as `charness`: expose the user's intent at the public command boundary, keep tool-specific mechanics underneath it, and preserve durable artifacts that another agent can resume.
+Do not hide arbitrary caps or host-specific defaults inside generic discovery; use explicit packet fields, adapter-owned policy, or explicit command options when selection is needed.
 
 ## Current State
 
@@ -156,13 +158,12 @@ Still open:
 
 ## Immediate Next Moves
 
-1. Design the three first-class command surfaces for claim discovery, claim verification, and behavior improvement.
-   Keep the design repo-agnostic and avoid README-specific naming.
-2. Decide and implement the next optimize-search held-out/full-gate path on top of the eval-test surface, or keep it explicitly skipped while C2/C3/C4 composition lands.
-3. Ship the remaining evaluation-surface composition primitives in spec order: C2 `extends`, C3 `steps`, and C4 `expected.snapshot`. See [docs/specs/evaluation-surfaces.spec.md](./specs/evaluation-surfaces.spec.md).
+1. Decide and implement the next optimize-search held-out/full-gate path on top of the `eval test` surface, or keep it explicitly skipped while C2/C3/C4 composition lands.
+2. Ship the remaining evaluation-surface composition primitives in spec order: C2 `extends`, C3 `steps`, and C4 `expected.snapshot`. See [docs/specs/evaluation-surfaces.spec.md](./specs/evaluation-surfaces.spec.md).
+3. Keep `claim discover` deterministic, source-ref-backed, and uncapped by default; add explicit selection or prioritization only when a real consumer workflow demands it.
 4. Pick the next bounded improvement seam for the optimization layer: either close a specific richer merge heuristic that dogfood evidence asks for, or move to another roadmap slice rather than extending heuristics speculatively.
 5. Expand scenario-history beyond the first profile-backed comparison cache-key path toward reusable baseline results and broader compare ownership.
 6. Continue moving host-specific runtime seams out of the product boundary into consumer-owned adapters, prompts, and storage readers.
 7. Keep expanding normalization-pattern coverage as new consumer archetypes appear, while preserving one official adapter contract (`cautilus-adapter.yaml`).
 8. Decide whether to grow external-consumer onboarding into archetype-specific starter kits while keeping the supported installer surface centered on `install.sh`.
-9. Keep widening the HTML report surface only when the packet boundary stays stable and the added page meaningfully improves human review, rather than mirroring every lower-level test seam.
+9. Keep widening HTML surfaces only when the packet boundary stays stable and the page meaningfully improves human review; agents should consume durable packets first.

@@ -23,7 +23,6 @@
         }
       }
     },
-    "candidateLimit": { "type": "integer", "minimum": 1 },
     "claimCandidates": {
       "type": "array",
       "items": {

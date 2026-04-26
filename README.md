@@ -5,6 +5,8 @@ It is a repo-local contract layer for agent and workflow behavior evaluation: de
 The product has three connected jobs:
 discover declared behavior claims worth proving, verify those claims through bounded evaluation packets, and improve behavior with budgeted optimization once the proof surface is honest.
 Ships as a standalone binary plus a bundled skill a host repo can install without copying another scaffold first.
+Agents are first-class users of the product surface.
+Commands should emit durable packets with enough state for the next agent to resume, not only terminal prose for a human operator.
 `Cautilus` installs as a machine-level binary, but its agent-facing surface is intentionally repo-local.
 The binary is shared across repos.
 The skill, adapter wiring, prompts, and instruction-routing surface are not.
@@ -158,10 +160,17 @@ Later docs use the shorthand `held-out` for that protected validation path and `
 
 The stance, in four contrasts:
 
+- Unlike a dashboard-first review tool, `Cautilus` treats packets, CLI commands, and repo instructions as agent-facing interfaces first; HTML is a human-readable mirror, not the source of truth.
 - Unlike a prompt manager, `Cautilus` does not freeze one prompt string as the contract — it treats the behavior under evaluation as the contract (`intent-first`).
 - Unlike a benchmark scrapbook, `Cautilus` separates iteration from protected validation and keeps evidence reopenable from files (`held-out honesty`, `packet-first`).
 - Unlike ad hoc eval scripts, `Cautilus` makes adapters, reports, review files, and compare artifacts first-class product boundaries (`structured review`).
 - Unlike open-ended optimizer loops, `Cautilus` keeps search and revision explicitly bounded by budgets, checkpoints, and blocked-readiness conditions (`bounded autonomy`).
+
+The proof layers are deliberately split because humans, code, and AI are good at different work.
+Human-auditable claims stay readable.
+Deterministic claims belong in ordinary tests and CI.
+Evaluator-dependent behavior goes through `cautilus eval`.
+Improvement work waits until the proof surface is explicit.
 
 `Cautilus` also ships a GEPA-style bounded prompt search seam above the one-shot optimizer: multi-generation reflective mutation, protected reevaluation, frontier-promotion review reuse, checkpoint feedback reinjection, bounded merge synthesis, and Pareto-style frontier selection.
 Deep dive: `docs/gepa.md`.

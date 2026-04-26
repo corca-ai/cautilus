@@ -25,7 +25,7 @@ That creates two risks:
 
 Define the stable command-family map and ship the first `claim` command without disturbing the already-shipped `eval` and `optimize` families.
 The implemented slice is intentionally deterministic: it inventories explicit truth surfaces and emits source-ref-backed proof-plan candidates.
-Default output is bounded so a large repo gets a reviewable first plan instead of an unbounded document scrape.
+Default output is not silently capped; agents are first-class readers of the packet and should filter or select claims explicitly instead of inheriting a hidden product limit.
 
 ## See It Work
 
@@ -87,7 +87,7 @@ Each claim candidate records:
 The output is a plan, not a verdict.
 It does not claim that the repo is correct.
 It tells an operator or agent what should be proven where.
-When default source inventory finds more candidate-looking lines than the first pass should review, the packet reports a `candidateLimit` and marks affected sources as truncated or skipped by the candidate limit.
+It should preserve the discovered backlog honestly; prioritization belongs in the next agent step or a future explicit selection command, not in a hidden cap.
 
 ### Eval Surface
 

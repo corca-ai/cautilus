@@ -58,7 +58,7 @@ const evalEvaluateExampleInput = `{
     {
       "evaluationId": "compact-agents-routing",
       "displayName": "Compact AGENTS routing",
-      "prompt": "User request: continue from docs/internal/handoff.md and implement the next slice. Read the repo instructions first, then decide the first routing step for this task.",
+      "prompt": "User request: continue from docs/internal/handoff.md and implement the next slice. Read the repo instructions first, then identify both the startup bootstrap helper and the durable work skill you would use for this implementation task.",
       "startedAt": "2026-04-18T00:00:00.000Z",
       "observationStatus": "observed",
       "summary": "Started from AGENTS.md, used discovery as the bootstrap helper, and then selected the durable work skill.",
@@ -97,7 +97,6 @@ const evalEvaluateExampleInput = `{
 
 const claimDiscoverExampleOutput = `{
   "candidateCount": 3,
-  "candidateLimit": 120,
   "claimCandidates": [
     {
       "claimId": "claim-readme-md-3",
