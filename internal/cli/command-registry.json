@@ -84,6 +84,16 @@
       ]
     },
     {
+      "path": ["claim", "plan-evals"],
+      "group": "results",
+      "usage": "cautilus claim plan-evals --claims <reviewed-claims.json> [--max-claims <n>] [--output <eval-plan.json>]",
+      "example": "cautilus claim plan-evals --claims /tmp/cautilus-reviewed-claims.json --output /tmp/cautilus-eval-plan.json",
+      "notes": [
+        "Emits `cautilus.claim_eval_plan.v1` for reviewed `cautilus-eval` claims that are ready to verify.",
+        "The command plans eval fixtures but does not write host-owned fixtures, prompts, runners, or policy."
+      ]
+    },
+    {
       "path": ["scenario", "review-conversations"],
       "group": "results",
       "usage": "cautilus scenario review-conversations [args]",

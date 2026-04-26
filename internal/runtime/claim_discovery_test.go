@@ -214,6 +214,87 @@ func TestApplyClaimReviewResultRejectsSatisfiedWithoutVerifiedEvidence(t *testin
 	}
 }
 
+func TestBuildClaimEvalPlanSelectsReviewedEvalClaims(t *testing.T) {
+	repoRoot := filepath.Join("..", "..", "fixtures", "claim-discovery", "tiny-repo")
+	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan returned error: %v", err)
+	}
+	reviewResult := map[string]any{
+		"schemaVersion": contracts.ClaimReviewResultSchema,
+		"reviewRun": map[string]any{
+			"reviewer": "fixture-reviewer",
+		},
+		"clusterResults": []any{
+			map[string]any{
+				"clusterId": "cluster-fixture",
+				"claimUpdates": []any{
+					map[string]any{
+						"claimId":              "claim-agents-md-3",
+						"reviewStatus":         "agent-reviewed",
+						"evidenceStatus":       "missing",
+						"evidenceStatusReason": "Needs a checked-in eval fixture.",
+						"unresolvedQuestions":  []any{"Which host-owned fixture should protect this contract?"},
+					},
+				},
+			},
+		},
+	}
+	reviewed, err := ApplyClaimReviewResult(plan, reviewResult, ClaimReviewApplyOptions{
+		ClaimsPath:       "claims.json",
+		ReviewResultPath: "review-result.json",
+	})
+	if err != nil {
+		t.Fatalf("ApplyClaimReviewResult returned error: %v", err)
+	}
+	evalPlan, err := BuildClaimEvalPlan(reviewed, ClaimEvalPlanOptions{
+		ClaimsPath: "reviewed-claims.json",
+		MaxClaims:  1,
+	})
+	if err != nil {
+		t.Fatalf("BuildClaimEvalPlan returned error: %v", err)
+	}
+	if evalPlan["schemaVersion"] != contracts.ClaimEvalPlanSchema {
+		t.Fatalf("unexpected schemaVersion: %#v", evalPlan["schemaVersion"])
+	}
+	plans := arrayOrEmpty(evalPlan["evalPlans"])
+	if len(plans) != 1 {
+		t.Fatalf("expected one eval plan, got %#v", evalPlan)
+	}
+	first := asMap(plans[0])
+	if first["claimId"] != "claim-agents-md-3" || first["targetSurface"] != "repo/whole-repo" {
+		t.Fatalf("unexpected eval plan: %#v", first)
+	}
+	if first["draftIntent"] == "" || evalPlan["nonWriterNotice"] == "" {
+		t.Fatalf("expected draft intent and non-writer notice, got %#v", evalPlan)
+	}
+}
+
+func TestBuildClaimEvalPlanSkipsHeuristicEvalClaims(t *testing.T) {
+	repoRoot := filepath.Join("..", "..", "fixtures", "claim-discovery", "tiny-repo")
+	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan returned error: %v", err)
+	}
+	evalPlan, err := BuildClaimEvalPlan(plan, ClaimEvalPlanOptions{ClaimsPath: "claims.json"})
+	if err != nil {
+		t.Fatalf("BuildClaimEvalPlan returned error: %v", err)
+	}
+	if plans := arrayOrEmpty(evalPlan["evalPlans"]); len(plans) != 0 {
+		t.Fatalf("expected no eval plans before review, got %#v", plans)
+	}
+	seenNotReviewed := false
+	for _, raw := range arrayOrEmpty(evalPlan["skippedClaims"]) {
+		skipped := asMap(raw)
+		if skipped["claimId"] == "claim-agents-md-3" && skipped["reason"] == "not-reviewed" {
+			seenNotReviewed = true
+		}
+	}
+	if !seenNotReviewed {
+		t.Fatalf("expected not-reviewed skip for heuristic eval claim, got %#v", evalPlan["skippedClaims"])
+	}
+}
+
 func mustWriteFile(t *testing.T, path string, content string) {
 	t.Helper()
 	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {

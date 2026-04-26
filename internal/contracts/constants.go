@@ -10,6 +10,7 @@ const (
 	BehaviorIntentSchema                            = "cautilus.behavior_intent.v1"
 	ChatbotNormalizationInputsSchema                = "cautilus.chatbot_normalization_inputs.v1"
 	ClaimProofPlanSchema                            = "cautilus.claim_proof_plan.v1"
+	ClaimEvalPlanSchema                             = "cautilus.claim_eval_plan.v1"
 	ClaimRefreshPlanSchema                          = "cautilus.claim_refresh_plan.v1"
 	ClaimReviewInputSchema                          = "cautilus.claim_review_input.v1"
 	ClaimReviewResultSchema                         = "cautilus.claim_review_result.v1"

@@ -42,6 +42,9 @@
   `claim show --input <claims.json>`는 `cautilus.claim_status_summary.v1`를 만들고, `claim review prepare-input --claims <claims.json>`는 LLM 호출 없이 bounded `cautilus.claim_review_input.v1` cluster packet을 만든다.
   그 다음 `claim review apply-result --claims <claims.json> --review-result <review-result.json>`도 들어왔다.
   `cautilus.claim_review_result.v1`를 적용하되, `evidenceStatus=satisfied`는 direct/verified evidence ref가 claim을 support할 때만 허용한다.
+- 2026-04-26 후속 구현으로 reviewed-claim eval planning helper도 들어왔다.
+  `claim plan-evals --claims <reviewed-claims.json>`는 reviewed `cautilus-eval` + `ready-to-verify` claims만 골라 `cautilus.claim_eval_plan.v1` intermediate packet을 만든다.
+  host-owned fixture, prompt, runner, wrapper, policy는 쓰지 않는다.
 - 잔여 신호: `repo/skill` / `app/chat` / `app/prompt` real-codex/claude self-dogfood 증거는 아직 없다.
   `charness-artifacts/cautilus/latest.md` refresh도 별도 artifact-refresh 슬라이스로 남아 있다.
 - premortem deferral 상태:
@@ -57,8 +60,8 @@
 
 1. `git status --short`로 사용자 변경 여부를 먼저 확인한다.
 2. `charness:find-skills`로 설치된 public / support / integration 스킬 지도를 한 번 갱신한다.
-3. `cautilus claim discover` 다음 슬라이스는 reviewed `cautilus-eval` claims로부터 eval scenario draft plan을 만드는 `claim plan-evals`류의 intermediate packet seam이다.
-   host-owned fixture를 바로 쓰지 말고, 우선 plan packet으로 claim id, target eval surface, draft intent, source refs, unresolved questions를 보존해야 한다.
+3. `cautilus claim discover` 다음 작은 hardening 후보는 `claim validate`류의 packet shape / evidence refs 검증 helper다.
+   더 큰 evidence preflight는 false satisfaction 위험이 있으므로, dogfood가 구체적으로 요구할 때 bounded slice로 잡는다.
    public `claim group` 또는 `claim refresh` command는 만들지 않는다.
 4. optimize-search held-out/full-gate 신호를 현재 `cautilus eval test` surface 위로 재배선할지, 아니면 C2/C3/C4 composition landing까지 honest-skip으로 둘지 결정한다.
 5. spec follow-up #4 — C2/C3/C4 composition primitives (extends / multi-step / snapshot), 슬라이스당 하나.

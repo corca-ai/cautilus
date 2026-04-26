@@ -111,12 +111,14 @@ cautilus claim discover --repo-root . --output /tmp/cautilus-claims.json
 cautilus claim show --input /tmp/cautilus-claims.json
 cautilus claim review prepare-input --claims /tmp/cautilus-claims.json --output /tmp/cautilus-claim-review-input.json
 cautilus claim review apply-result --claims /tmp/cautilus-claims.json --review-result /tmp/cautilus-claim-review-result.json --output /tmp/cautilus-reviewed-claims.json
+cautilus claim plan-evals --claims /tmp/cautilus-reviewed-claims.json --output /tmp/cautilus-eval-plan.json
 ```
 
 The output is `cautilus.claim_proof_plan.v1`: source-ref-backed candidate claims with split proof, readiness, evidence, review, and lifecycle fields.
 It is not a verdict that the repo is correct.
 For agents, the bundled skill turns that packet into a status workflow: scan scope first, existing-packet summary via `claim show`, then a separate review budget before `claim review prepare-input` creates deterministic clusters for LLM-backed review.
 When reviewed clusters come back, `claim review apply-result` merges reviewed labels and evidence refs while enforcing that possible evidence cannot satisfy a claim.
+For reviewed `cautilus-eval` claims, `claim plan-evals` emits `cautilus.claim_eval_plan.v1`: an intermediate plan for host-owned eval fixtures, not a writer for prompts, runners, fixtures, or policy.
 Next branches stay explicit: deterministic proof, Cautilus scenarios, alignment work, or a full report.
 
 Cautilus exposes two top-level evaluation surfaces (`repo` and `app`) with four presets between them; the surface preset, not a separate archetype, decides whether the runner needs a workspace or a messaging runtime.

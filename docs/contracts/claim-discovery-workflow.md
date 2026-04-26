@@ -396,7 +396,7 @@ Follow-on commands are justified only when they operate on an existing claim-sta
 - `claim show`: summarize an existing packet for agents without rescanning
 - `claim review prepare-input`: turn selected candidate clusters into a deterministic review-input packet without calling an LLM
 - `claim review apply-result`: merge `cautilus.claim_review_result.v1` labels and evidence refs into an existing claim packet without calling an LLM
-- `claim plan-evals`: turn selected `cautilus-eval` claims into draft eval scenario or fixture packets
+- `claim plan-evals`: turn reviewed `cautilus-eval` claims into `cautilus.claim_eval_plan.v1` intermediate packets without writing host-owned fixtures
 - `claim validate`: validate packet shape and evidence refs
 
 These commands are optional later surfaces.
@@ -461,7 +461,7 @@ Valid but defer:
 
 - How much deterministic evidence preflight should the binary do before it risks false satisfaction?
 - What subagent batch size and cluster shape keeps review cost bounded on repos with hundreds of raw candidates?
-- Should `claim plan-evals` write draft fixtures directly or produce an intermediate plan packet first?
+- How much fixture-template detail should `claim plan-evals` include before it starts to look like host-owned policy?
 - How much of the refresh-plan helper should ship in the first binary slice versus the first skill slice?
 
 ## Deferred Decisions
@@ -545,3 +545,5 @@ The next deterministic helper slice added `claim show` and `claim review prepare
 `claim review prepare-input` emits `cautilus.claim_review_input.v1` and records bounded clusters and skipped clusters, but still does not call an LLM or merge review results.
 The review-result application slice added `claim review apply-result`.
 It consumes `cautilus.claim_review_result.v1`, applies reviewed labels and evidence refs, records provenance, and rejects `evidenceStatus=satisfied` unless a direct or verified evidence ref supports the claim.
+The eval-planning slice added `claim plan-evals`.
+It emits `cautilus.claim_eval_plan.v1` from reviewed `cautilus-eval` claims that are ready to verify, while preserving the host boundary by not writing fixtures, prompts, runners, wrappers, or policy.

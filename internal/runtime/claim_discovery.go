@@ -38,6 +38,11 @@ type ClaimReviewApplyOptions struct {
 	ReviewResultPath string
 }
 
+type ClaimEvalPlanOptions struct {
+	ClaimsPath string
+	MaxClaims  int
+}
+
 type claimSource struct {
 	absPath        string
 	relPath        string
@@ -1215,6 +1220,99 @@ func ApplyClaimReviewResult(claimPacket map[string]any, reviewResult map[string]
 		return nil, err
 	}
 	return updated, nil
+}
+
+func BuildClaimEvalPlan(packet map[string]any, options ClaimEvalPlanOptions) (map[string]any, error) {
+	if err := ValidateClaimProofPlan(packet); err != nil {
+		return nil, err
+	}
+	maxClaims := options.MaxClaims
+	if maxClaims <= 0 {
+		maxClaims = 20
+	}
+	plans := []any{}
+	skipped := []any{}
+	for _, raw := range arrayOrEmpty(packet["claimCandidates"]) {
+		candidate := asMap(raw)
+		claimID := stringFromAny(candidate["claimId"])
+		if stringFromAny(candidate["recommendedProof"]) != "cautilus-eval" {
+			skipped = append(skipped, skippedClaimEvalPlan(claimID, "not-cautilus-eval"))
+			continue
+		}
+		if stringFromAny(candidate["verificationReadiness"]) != "ready-to-verify" {
+			skipped = append(skipped, skippedClaimEvalPlan(claimID, "not-ready-to-verify"))
+			continue
+		}
+		if !claimEvalPlanReviewAccepted(stringFromAny(candidate["reviewStatus"])) {
+			skipped = append(skipped, skippedClaimEvalPlan(claimID, "not-reviewed"))
+			continue
+		}
+		if len(plans) >= maxClaims {
+			skipped = append(skipped, skippedClaimEvalPlan(claimID, "max-claims-exceeded"))
+			continue
+		}
+		plans = append(plans, map[string]any{
+			"planId":              "eval-plan-" + slugifyClaimID(claimID),
+			"claimId":             claimID,
+			"claimFingerprint":    candidate["claimFingerprint"],
+			"targetSurface":       claimEvalPlanSurface(candidate),
+			"draftIntent":         claimEvalPlanIntent(candidate),
+			"sourceRefs":          arrayOrEmpty(candidate["sourceRefs"]),
+			"evidenceStatus":      candidate["evidenceStatus"],
+			"reviewStatus":        candidate["reviewStatus"],
+			"unresolvedQuestions": arrayOrEmpty(candidate["unresolvedQuestions"]),
+			"nextStep":            "Create a host-owned cautilus.evaluation_input.v1 fixture and adapter-owned runner for this plan.",
+		})
+	}
+	return map[string]any{
+		"schemaVersion": contracts.ClaimEvalPlanSchema,
+		"inputPath":     filepath.ToSlash(filepath.Clean(options.ClaimsPath)),
+		"sourceClaimPacket": map[string]any{
+			"schemaVersion":  packet["schemaVersion"],
+			"gitCommit":      packet["gitCommit"],
+			"candidateCount": len(arrayOrEmpty(packet["claimCandidates"])),
+		},
+		"selectionPolicy": map[string]any{
+			"requiresRecommendedProof":      "cautilus-eval",
+			"requiresVerificationReadiness": "ready-to-verify",
+			"requiresReviewStatus":          []any{"agent-reviewed", "human-reviewed"},
+			"maxClaims":                     maxClaims,
+		},
+		"evalPlans":       plans,
+		"skippedClaims":   skipped,
+		"nonWriterNotice": "This packet plans eval fixtures but does not write host-owned fixtures, prompts, runners, or policy.",
+	}, nil
+}
+
+func skippedClaimEvalPlan(claimID string, reason string) map[string]any {
+	return map[string]any{
+		"claimId": claimID,
+		"reason":  reason,
+	}
+}
+
+func claimEvalPlanReviewAccepted(status string) bool {
+	switch status {
+	case "agent-reviewed", "human-reviewed":
+		return true
+	default:
+		return false
+	}
+}
+
+func claimEvalPlanSurface(candidate map[string]any) string {
+	if surface := stringFromAny(candidate["recommendedEvalSurface"]); surface != "" {
+		return surface
+	}
+	return "repo/whole-repo"
+}
+
+func claimEvalPlanIntent(candidate map[string]any) string {
+	summary := stringFromAny(candidate["summary"])
+	if summary == "" {
+		return "Verify the selected claim through a bounded Cautilus eval fixture."
+	}
+	return "Verify that " + strings.TrimSuffix(summary, ".") + "."
 }
 
 func validateClaimReviewResult(result map[string]any) error {

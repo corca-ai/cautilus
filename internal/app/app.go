@@ -167,6 +167,8 @@ func nativeHandler(path []string) handlerFunc {
 		return handleClaimReviewPrepareInput
 	case "claim review apply-result":
 		return handleClaimReviewApplyResult
+	case "claim plan-evals":
+		return handleClaimPlanEvals
 	case "workbench discover":
 		return handleWorkbenchDiscover
 	case "workbench run-live":
@@ -351,6 +353,12 @@ type claimReviewApplyResultArgs struct {
 	claims       string
 	reviewResult string
 	output       *string
+}
+
+type claimPlanEvalsArgs struct {
+	claims    string
+	output    *string
+	maxClaims int
 }
 
 type installArgs struct {
@@ -832,6 +840,34 @@ func handleClaimReviewApplyResult(repoRoot string, cwd string, args []string, st
 		return 1
 	}
 	if err := writeOutput(stdout, cwd, options.output, updated); err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	return 0
+}
+
+//nolint:errcheck // CLI stderr/stdout reporting is best-effort.
+func handleClaimPlanEvals(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	_ = repoRoot
+	options, err := parseClaimPlanEvalsArgs(args, cwd)
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	claimPacket, err := readJSONObject(options.claims)
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	plan, err := runtime.BuildClaimEvalPlan(claimPacket, runtime.ClaimEvalPlanOptions{
+		ClaimsPath: options.claims,
+		MaxClaims:  options.maxClaims,
+	})
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	if err := writeOutput(stdout, cwd, options.output, plan); err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
@@ -2108,6 +2144,46 @@ func parseClaimReviewApplyResultArgs(args []string, cwd string) (*claimReviewApp
 	}
 	if strings.TrimSpace(options.reviewResult) == "" {
 		return nil, fmt.Errorf("--review-result is required")
+	}
+	return options, nil
+}
+
+func parseClaimPlanEvalsArgs(args []string, cwd string) (*claimPlanEvalsArgs, error) {
+	options := &claimPlanEvalsArgs{}
+	for index := 0; index < len(args); index++ {
+		arg := args[index]
+		switch arg {
+		case "--claims", "--input":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.claims = resolvePath(cwd, value)
+		case "--output":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.output = &value
+		case "--max-claims":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			parsed, parseErr := parsePositiveCLIInt(value, arg)
+			if parseErr != nil {
+				return nil, parseErr
+			}
+			options.maxClaims = parsed
+		default:
+			return nil, fmt.Errorf("unknown argument: %s", arg)
+		}
+	}
+	if strings.TrimSpace(options.claims) == "" {
+		return nil, fmt.Errorf("--claims is required")
 	}
 	return options, nil
 }
