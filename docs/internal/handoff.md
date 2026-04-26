@@ -32,6 +32,9 @@
   canonical front doors는 `cautilus claim ...`, `cautilus eval ...`, `cautilus optimize ...`이며, `cautilus claim discover --repo-root . --output <claims.json>`는 repo-owned truth surface에서 `cautilus.claim_proof_plan.v1`을 만든다.
   이 packet은 verdict가 아니라 proof plan이며, 발견된 backlog를 정직하게 보존한다.
   selection이나 prioritization이 필요하면 future explicit command option, adapter-owned policy, 또는 다음 agent step으로 드러내야 한다.
+- 다음 claim-discovery workflow 설계는 [docs/contracts/claim-discovery-workflow.md](../contracts/claim-discovery-workflow.md)에 있다.
+  핵심 결정은 binary가 deterministic skeleton / scan scope / state path / refresh plan / packet semantics를 소유하고, bundled skill이 user confirmation / LLM review / grouping / final evidence interpretation / next-action conversation을 소유한다는 것이다.
+  default scan은 entry sources plus repo-local Markdown links depth 3이며, scan confirmation과 LLM review-budget confirmation은 분리한다.
 - 잔여 신호: `repo/skill` / `app/chat` / `app/prompt` real-codex/claude self-dogfood 증거는 아직 없다.
   `charness-artifacts/cautilus/latest.md` refresh도 별도 artifact-refresh 슬라이스로 남아 있다.
 - premortem deferral 상태:
@@ -47,9 +50,9 @@
 
 1. `git status --short`로 사용자 변경 여부를 먼저 확인한다.
 2. `charness:find-skills`로 설치된 public / support / integration 스킬 지도를 한 번 갱신한다.
-3. `cautilus claim discover` 다음 슬라이스를 고른다.
-   선택지는 (a) `claim` packet render/validate 보조 command, (b) source inventory heuristics hardening, (c) model-backed extraction runner boundary 설계 중 하나다.
-   현재 구현은 deterministic bounded plan까지만 의도적으로 ship한다.
+3. `cautilus claim discover` 다음 슬라이스는 [docs/contracts/claim-discovery-workflow.md](../contracts/claim-discovery-workflow.md)를 따른다.
+   우선순위는 adapter-owned entries/depth 3 Markdown link traversal, effective scan scope/source graph recording, split claim fields plus legacy `proofLayer` compatibility, conservative evidence refs, deterministic state-path resolution and refresh-plan helper output이다.
+   public `claim refresh` command는 만들지 않고, skill이 prior JSON 여부에 따라 discover workflow 안에서 refresh를 선택한다.
 4. optimize-search held-out/full-gate 신호를 현재 `cautilus eval test` surface 위로 재배선할지, 아니면 C2/C3/C4 composition landing까지 honest-skip으로 둘지 결정한다.
 5. spec follow-up #4 — C2/C3/C4 composition primitives (extends / multi-step / snapshot), 슬라이스당 하나.
 6. spec follow-up #5 — `scenario normalize` 재범위만 남음.
