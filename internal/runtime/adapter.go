@@ -984,7 +984,7 @@ func DoctorRepo(repoRoot string, adapterPath *string, adapterName *string) (map[
 		result["summary"] = "Adapter is ready for standalone Cautilus use."
 		result["first_bounded_run"] = LoadFirstBoundedRunGuide(repoRoot)
 		result["next_steps"] = []any{
-			"Inspect `first_bounded_run` or run `cautilus scenarios --json` to pick one archetype and its first bounded loop.",
+			"Inspect `first_bounded_run` or run `cautilus scenarios --json` when you need the scenario-normalization catalog.",
 		}
 		return AttachDoctorGuidance(result, repoRoot, "repo", adapterName), 0, nil
 	}

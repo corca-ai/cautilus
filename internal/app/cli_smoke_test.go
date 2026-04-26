@@ -266,8 +266,8 @@ func TestCLIDoctorReportsReadyWithExecutionSurface(t *testing.T) {
 	if !ok || len(nextSteps) == 0 {
 		t.Fatalf("expected next_steps hint on ready payload, got %#v", payload["next_steps"])
 	}
-	if !strings.Contains(anyToString(nextSteps[0]), "cautilus scenarios") {
-		t.Fatalf("expected next_steps to mention `cautilus scenarios`, got %#v", nextSteps)
+	if !strings.Contains(anyToString(nextSteps[0]), "scenario-normalization") {
+		t.Fatalf("expected next_steps to mention scenario-normalization, got %#v", nextSteps)
 	}
 	firstBoundedRun, ok := payload["first_bounded_run"].(map[string]any)
 	if !ok {
@@ -277,11 +277,14 @@ func TestCLIDoctorReportsReadyWithExecutionSurface(t *testing.T) {
 		t.Fatalf("unexpected first_bounded_run discovery command: %#v", firstBoundedRun["discoveryCommand"])
 	}
 	decisionLoopCommands, ok := firstBoundedRun["decisionLoopCommands"].([]any)
-	if !ok || len(decisionLoopCommands) != 3 {
-		t.Fatalf("expected three decision loop commands, got %#v", firstBoundedRun["decisionLoopCommands"])
+	if !ok || len(decisionLoopCommands) != 2 {
+		t.Fatalf("expected two decision loop commands, got %#v", firstBoundedRun["decisionLoopCommands"])
 	}
 	if !strings.Contains(anyToString(decisionLoopCommands[0]), "cautilus eval test --repo-root "+root) {
 		t.Fatalf("expected eval test first bounded run command, got %#v", decisionLoopCommands[0])
+	}
+	if !strings.Contains(anyToString(decisionLoopCommands[1]), "cautilus eval evaluate --input /tmp/cautilus-first-run/eval-observed.json") {
+		t.Fatalf("expected eval evaluate packet recheck command, got %#v", decisionLoopCommands[1])
 	}
 	archetypes, ok := firstBoundedRun["archetypes"].([]any)
 	if !ok || len(archetypes) != 3 {

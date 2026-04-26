@@ -103,11 +103,8 @@ npm run dogfood:self
 ```
 
 `dogfood:self` is explicit quality work, not a standing pre-push or CI gate.
-It refreshes `artifacts/self-dogfood/latest/`.
-Its canonical claim is intentionally narrow: it should tell operators whether Cautilus is recording and surfacing its own self-dogfood result honestly, not whether every stronger binary or skill claim has already been proven.
-The `latest/` bundle is the published snapshot meant to be checked into Git, so CI or a static HTML report can inspect the latest result without replaying the LLM-backed review.
-
-The rendered HTML is written alongside the other published files at `artifacts/self-dogfood/latest/index.html` and is automatically refreshed every time `npm run dogfood:self` rewrites the latest bundle.
+It currently delegates to `dogfood:self:eval` and refreshes `artifacts/self-dogfood/eval/latest/`.
+Its canonical claim is intentionally narrow: the shipped `cautilus eval` runner can exercise the repo's checked-in self-dogfood adapter and materialize a current evaluation summary packet without relying on one-off manual wiring.
 
 Refresh the canonical `repo / whole-repo` self-dogfood bundle:
 
@@ -117,26 +114,17 @@ npm run dogfood:self:eval
 
 This is also on-demand quality work, not a standing pre-push or CI gate.
 It refreshes `artifacts/self-dogfood/eval/latest/`.
-The canonical claim is narrower than the broader self-dogfood report:
-it proves that the shipped `cautilus eval` runner can exercise the repo's checked-in self-dogfood adapter and materialize a current evaluation summary packet without relying on one-off manual wiring.
-
-Tuning path for named A/B and split-surface reviews, including stronger binary and skill surface claims:
-
-```bash
-npm run dogfood:self:experiments
-```
-
-Writes aggregate experiment results under `artifacts/self-dogfood/experiments/latest/`, including a static `index.html` comparison view.
-The view exists so the deterministic gate baseline and named experiment adapters can be compared side by side without reconstructing an A/B diff by hand.
+The canonical claim is the same as `dogfood:self`: the shipped `cautilus eval` runner can exercise the repo's checked-in self-dogfood adapter and materialize a current evaluation summary packet without relying on one-off manual wiring.
+The broader report/review self-dogfood and tuning-experiment runners were retired with `mode evaluate`.
+Rebuild them on the eval-test surface before restoring commands that claim report/review or experiment coverage.
 
 Refresh the HTML views without replaying LLM-backed reviews:
 
 ```bash
 npm run dogfood:self:html
-npm run dogfood:self:experiments:html
 ```
 
-These are thin wrappers around the product-owned `cautilus self-dogfood render-html` and `cautilus self-dogfood render-experiments-html` commands (see [cli-reference.md](../cli-reference.md)).
+This is a thin wrapper around the product-owned `cautilus self-dogfood render-html` command (see [cli-reference.md](../cli-reference.md)).
 
 ## Runtime ownership
 

@@ -21,13 +21,13 @@ Evidence:
 - checked-in named adapter: [.agents/cautilus-adapters/self-dogfood.yaml](../../.agents/cautilus-adapters/self-dogfood.yaml)
 - explicit self-dogfood command: `npm run dogfood:self`
 - explicit `repo / whole-repo` self-dogfood command: `npm run dogfood:self:eval`
-- explicit tuning command: `npm run dogfood:self:experiments`
+- prior tuning-experiment path: retired until it is rebuilt on the current `cautilus eval` surfaces
 
 What this means:
 
 - `cautilus` satisfies its own official adapter discovery contract.
 - The repo keeps cheap deterministic proof in the root adapter and explicit LLM-backed self-dogfood paths in named adapters.
-- Stronger binary or bundled-skill claims stay in named experiment adapters instead of being smuggled into the canonical latest report.
+- Stronger binary or bundled-skill claims should come back as explicit eval presets, fixture series, or named adapters instead of being smuggled into the canonical latest eval summary.
 
 ## Chatbot Consumer
 

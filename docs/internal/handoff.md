@@ -15,37 +15,38 @@
   `repo/whole-repo`, `repo/skill`, `app/chat`, `app/prompt` 모두 `cautilus eval test --fixture ...` / `cautilus eval evaluate --input ...` 경로가 있다.
   `app/prompt`는 2026-04-26에 추가됐고 `cautilus.app_prompt_test_cases.v1` / `cautilus.app_prompt_evaluation_inputs.v1` / `cautilus.app_prompt_evaluation_summary.v1`를 쓴다.
   evaluator는 app-surface 공통 runtime 필드(provider, model, harness, mode=`messaging`, durationMs, observed.messages, observed.finalText)에 더해 `app/prompt`에서 `observed.input`을 요구한다.
-- 이번 세션의 closeout verification: `go test ./internal/runtime ./internal/app`, `npm run lint:skill-disclosure`, `npm run lint:specs`, `npm run verify`, `npm run hooks:check` green.
+- 이번 세션의 closeout verification: `npm run verify`, `npm run dogfood:self` green.
+  `npm run hooks:check`는 stop 전에 다시 확인한다.
 - `mode evaluate` cut + archetype-boundary retire 슬라이스는 이미 들어왔고, 상세 기록은 이 spec의 follow-up notes와 git history를 본다.
-- 잔여 신호: `repo/skill` / `app/chat` / `app/prompt` 모두 real-codex/claude self-dogfood 증거는 아직 없다.
-  `charness-artifacts/cautilus/latest.md` refresh도 self-dogfood 재배선 슬라이스로 미룬다.
-- 잔여 신호 (`repo/whole-repo`): 현재 fixture는 `expectedRouting: { selectedSkill: "none" }`을 기대하지만 real-codex로 cautilus 실제 AGENTS.md를 돌리면 `reject`가 난다.
-  fixture 기대치 vs. 실제 AGENTS.md routing 사이 정직성 결정은 self-dogfood 재배선 또는 별도 fixture 정직성 마이크로-슬라이스에서 처리.
+- `dogfood:self` canonical alias가 복원됐고 현재 `dogfood:self:eval`로 위임한다.
+  2026-04-26 실행 기준 `repo/whole-repo` checked-in AGENTS routing fixture는 real Codex (`gpt-5.4-mini`, low)에서 `recommendation=accept-now`, `evaluationCounts.passed=1`, `failed=0`, `blocked=0`.
+- 잔여 신호: `repo/skill` / `app/chat` / `app/prompt` real-codex/claude self-dogfood 증거는 아직 없다.
+  `charness-artifacts/cautilus/latest.md` refresh도 별도 artifact-refresh 슬라이스로 남아 있다.
 - premortem deferral 상태:
   (a) Result packet surface-agnostic 필드 — `app/chat` / `app/prompt` evaluator에서 require로 명시 정착됨; `repo/whole-repo`/`repo/skill`로 backport는 후속 hardening 슬라이스에서.
   (b) `cautilus eval evaluate` 디스패처는 여전히 schemaVersion만으로 라우팅; fixture preset cross-check는 follow-up.
   (c) Node 측 `scripts/agent-runtime/evaluate-skill.mjs`와 동반 모듈은 self-test와 coverage floor에만 의해 살아있다 — dead-code sweep slice에서 정리.
   (d) optimize-search held-out gating은 honest-skip 상태 — 새 surface 위로 재배선은 별도 슬라이스(아래 Next Session #3 참조).
-  (e) consumer onboarding smoke (`npm run consumer:onboard:smoke`)는 `doctor ready`까지만 검증; eval-test 기반 first bounded run으로 재배선은 별도 슬라이스.
+  (e) consumer onboarding smoke (`npm run consumer:onboard:smoke`)는 2026-04-26에 `doctor ready` 이후 one bounded `eval test`까지 재배선됐다.
+  temp consumer repo에 `app/prompt` fixture와 fixture-backend runner를 심고 `eval-summary.json`의 `accept-now`까지 확인한다.
 - 마이그레이션 트래킹: [corca-ai/cautilus#32](https://github.com/corca-ai/cautilus/issues/32).
 
 ## Next Session
 
 1. `git status --short`로 사용자 변경 여부를 먼저 확인한다.
 2. `charness:find-skills`로 설치된 public / support / integration 스킬 지도를 한 번 갱신한다.
-3. self-dogfood / consumer onboarding 재배선 — `cautilus eval test` 위로 `dogfood:self`(canonical)와 `consumer:onboard:smoke`의 first bounded run을 재구축.
-   대상 fixture, 호출 시퀀스, `report.json` 대체 산출물(observed packet 기반)을 결정한다.
-   optimize-search held-out 신호의 재배선도 같은 슬라이스 또는 직후 슬라이스에서 결정.
+3. optimize-search held-out/full-gate 신호를 현재 `cautilus eval test` surface 위로 재배선할지, 아니면 C2/C3/C4 composition landing까지 honest-skip으로 둘지 결정한다.
 4. spec follow-up #4 — C2/C3/C4 composition primitives (extends / multi-step / snapshot), 슬라이스당 하나.
 5. spec follow-up #5 — `scenario normalize` 재범위만 남음.
    archetype-boundary retire는 cut 슬라이스에 흡수됨.
-6. fixture vs AGENTS.md 정직성 결정 (잔여 신호 — `repo/whole-repo`)을 self-dogfood 재배선 또는 fixture 정직성 마이크로-슬라이스에서 처리.
+6. `repo/skill` / `app/chat` / `app/prompt` preset 중 어떤 surface에 real-codex/claude self-dogfood evidence를 먼저 붙일지 결정한다.
 
 ## Discuss
 
 - runtime fingerprint의 두 번째 슬라이스 (automatic prior-evidence selection, provider API 연동)를 언제 시작할지.
 - self-dogfood / consumer onboarding 재배선 슬라이스에서 optimize-search held-out gating까지 같이 풀지, 별도 슬라이스로 분리할지.
-- `dogfood:self:eval`이 현재 단일 entry point — tuning experiments(`dogfood:self:experiments`)에 해당하는 강한 클레임을 어떤 형태로 부활시킬지(예: 새 preset, 새 fixture 시리즈, 또는 그대로 폐기).
+- `dogfood:self`는 현재 canonical self-dogfood entry point이고 `dogfood:self:eval`로 위임한다.
+  이전 tuning experiments(`dogfood:self:experiments`)에 해당하던 강한 클레임을 새 preset, 새 fixture 시리즈, 또는 폐기 중 어느 쪽으로 정리할지는 아직 결정 필요.
 - premortem deferral (a)–(e) 중 어느 것을 다음 hardening 슬라이스로 묶을지.
 
 ## References

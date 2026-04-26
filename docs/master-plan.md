@@ -37,7 +37,7 @@ Current `core validated surface`:
 - report packet assembly, review packet assembly, and review-variant fanout
 - native self-dogfood HTML rendering through `cautilus self-dogfood render-html` and `render-experiments-html`
 - tagged-release install surface (`install.sh`, checksum + `actions/attest` subject attestation) plus product-owned public-release verification and `release:smoke-install` helpers
-- checked-in local gates, GitHub workflows that run `verify`, and an external consumer onboarding smoke (`consumer:onboard:smoke`) that proves install → adapter init → minimal wiring → adapter resolve → doctor ready (the bounded eval-test run is rewired in a follow-up slice)
+- checked-in local gates, GitHub workflows that run `verify`, and an external consumer onboarding smoke (`consumer:onboard:smoke`) that proves install → adapter init → minimal wiring → adapter resolve → doctor ready → one bounded `eval test`
 
 Current `product-owned helper surface`:
 
@@ -131,7 +131,7 @@ Still intentionally excluded:
 
 Shipped:
 
-- [docs/guides/consumer-adoption.md](./guides/consumer-adoption.md) plus `npm run consumer:onboard:smoke` prove install → adapter init → minimal runnable wiring → adapter resolve → doctor ready in a temp git repo (the bounded eval-test run is rewired in a follow-up slice)
+- [docs/guides/consumer-adoption.md](./guides/consumer-adoption.md) plus `npm run consumer:onboard:smoke` prove install → adapter init → minimal runnable wiring → adapter resolve → doctor ready → one bounded `eval test` in a temp git repo
 - release discipline boundary documented in [release-boundary.md](./maintainers/release-boundary.md)
 
 Still open:
@@ -142,7 +142,7 @@ Still open:
 
 ## Immediate Next Moves
 
-1. Rebuild self-dogfood and consumer onboarding on top of `cautilus eval test`: make `dogfood:self` canonical again, add the first bounded eval-test run to `consumer:onboard:smoke`, and decide whether optimize-search held-out gating is rewired in the same slice or the next one.
+1. Decide and implement the next optimize-search held-out/full-gate path on top of the eval-test surface, or keep it explicitly skipped while C2/C3/C4 composition lands.
 2. Ship the remaining evaluation-surface composition primitives in spec order: C2 `extends`, C3 `steps`, and C4 `expected.snapshot`. See [docs/specs/evaluation-surfaces.spec.md](./specs/evaluation-surfaces.spec.md).
 3. Pick the next bounded improvement seam for the optimization layer: either close a specific richer merge heuristic that dogfood evidence asks for, or move to another roadmap slice rather than extending heuristics speculatively.
 4. Expand scenario-history beyond the first profile-backed comparison cache-key path toward reusable baseline results and broader compare ownership.

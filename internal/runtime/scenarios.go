@@ -76,12 +76,11 @@ func LoadScenarioCatalog() ScenarioCatalog {
 
 func LoadFirstBoundedRunGuide(repoRoot string) FirstBoundedRunGuide {
 	return FirstBoundedRunGuide{
-		Summary:          "Pick one preset, then complete one bounded eval test -> review path instead of stopping at doctor.",
+		Summary:          "Pick one checked-in fixture, then complete one bounded eval test and packet recheck instead of stopping at doctor.",
 		DiscoveryCommand: "cautilus scenarios --json",
 		DecisionLoopCommands: []string{
 			fmt.Sprintf("cautilus eval test --repo-root %s --fixture <fixture.json> --output-dir /tmp/cautilus-first-run", repoRoot),
-			fmt.Sprintf("cautilus review prepare-input --repo-root %s --report-file /tmp/cautilus-first-run/report.json", repoRoot),
-			fmt.Sprintf("cautilus review variants --repo-root %s --workspace %s --output-dir /tmp/cautilus-first-review", repoRoot, repoRoot),
+			"cautilus eval evaluate --input /tmp/cautilus-first-run/eval-observed.json --output /tmp/cautilus-first-run/eval-summary.recheck.json",
 		},
 		Archetypes: LoadScenarioCatalog().Archetypes,
 	}

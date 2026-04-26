@@ -71,7 +71,7 @@ cautilus doctor --repo-root /path/to/repo --next-action
 # local agent-skill discoverability in a consumer repo
 cautilus doctor --repo-root /path/to/repo --scope agent-surface
 
-# archetype catalog, for agents that need to discover archetypes
+# scenario-normalization catalog, for agents that need proposal-input examples
 cautilus scenarios --json
 ```
 
@@ -79,7 +79,7 @@ cautilus scenarios --json
 Use `doctor --next-action` when you want one current onboarding step plus the exact follow-up loop.
 Use `doctor --scope agent-surface` to verify only the bundled skill and local agent-surface install.
 Use default `doctor` (`--scope repo`) to verify the repo has a real runnable evaluation path.
-When repo-scope `doctor` returns `ready`, the JSON payload includes `first_bounded_run`: the same archetype catalog as `cautilus scenarios --json` plus a starter `eval test -> review prepare-input -> review variants` loop.
+When repo-scope `doctor` returns `ready`, the JSON payload includes `first_bounded_run`: a starter `eval test -> eval evaluate` packet loop plus the scenario-normalization catalog for agents that still need proposal-input examples.
 When a repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, run `cautilus doctor --repo-root /path/to/repo --adapter-name <name>` for repo-scope validation instead of expecting plain `doctor` to guess which named adapter you mean.
 
 For the shortest end-to-end adoption proof in a fresh consumer repo:
@@ -209,7 +209,7 @@ The first preset, `repo / whole-repo`, replaces the prior `cautilus instruction-
 
 ```bash
 # official on-demand self-dogfood wrapper for the repo's own AGENTS.md
-npm run dogfood:self:eval
+npm run dogfood:self
 
 # run a checked-in evaluation_input.v1 fixture through an adapter-owned runner
 cautilus eval test \

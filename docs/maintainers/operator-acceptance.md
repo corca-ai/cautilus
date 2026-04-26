@@ -140,13 +140,13 @@ placeholder drift + specdown 기반 spec source guard) + Go race test + standing
 
 ### 3f. Review (fixture 기반, LLM 없음)
 
-의존: review 입력은 `cautilus eval test`가 만든 report.json을 사용하거나
-체크인된 fixture를 사용한다.
+의존: review 입력은 체크인된 report fixture에서 만든 `report.json`을 사용한다.
+`cautilus eval test`는 현재 `eval-observed.json`과 `eval-summary.json`을 만들며, review packet 입력을 직접 만들지는 않는다.
 
 | # | 명령 | 통과 조건 | 실행자 |
 |---|---|---|---|
 | 3.19 | `cautilus eval test --repo-root . --fixture fixtures/eval/whole-repo/checked-in-agents-routing.fixture.json --output-dir /tmp/cautilus-oa-eval` | observed packet 생성, exit 0 | 기계적 |
-| 3.20 | `cautilus review prepare-input --repo-root . --report-file /tmp/cautilus-oa-eval/report.json` | review.json 생성, exit 0. 의존: 3.19 | 기계적 |
+| 3.20 | `cautilus report build --input ./fixtures/reports/report-input.json --output /tmp/cautilus-oa-eval/report.json && cautilus review prepare-input --repo-root . --report-file /tmp/cautilus-oa-eval/report.json --output /tmp/cautilus-oa-eval/review.json` | review.json 생성, exit 0. 의존: report fixture | 기계적 |
 | 3.21 | `cautilus review build-prompt-input --review-packet /tmp/cautilus-oa-eval/review.json` | review-prompt-input.json 생성, exit 0. 의존: 3.20 | 기계적 |
 | 3.22 | `cautilus review render-prompt --input /tmp/cautilus-oa-eval/review-prompt-input.json` | 프롬프트 텍스트 출력, exit 0. 의존: 3.21 | 기계적 |
 
@@ -162,31 +162,23 @@ placeholder drift + specdown 기반 spec source guard) + Go race test + standing
 
 | # | 명령 | 통과 조건 | 실행자 | 비용 |
 |---|---|---|---|---|
-| 4.1 | `npm run dogfood:self` | `artifacts/self-dogfood/latest/summary.json`의 `overallStatus`가 `pass`이고, `reportRecommendation`이 `accept-now` | 인간 판단 | LLM |
-| 4.2 | `npm run dogfood:self:instruction-surface` | `artifacts/self-dogfood/instruction-surface/latest/instruction-surface-summary.json` 생성, `status`가 `accept-now`, `passedCaseCount`가 `totalCaseCount`와 동일 | 인간 판단 | LLM |
-| 4.3 | `npm run dogfood:self:experiments` | `artifacts/self-dogfood/experiments/latest/summary.json`의 각 experiment에 `gateRecommendation` 존재, 전체 결과가 regression 없음 | 인간 판단 | LLM |
+| 4.1 | `npm run dogfood:self` | `artifacts/self-dogfood/eval/latest/eval-summary.json` 생성, `recommendation=accept-now`, `evaluationCounts.failed=0`, `evaluationCounts.blocked=0`, `evaluationCounts.passed=evaluationCounts.total` | 인간 판단 | LLM |
+| 4.2 | `npm run dogfood:self:eval` | `artifacts/self-dogfood/eval/latest/eval-summary.json` 생성, `recommendation=accept-now`, `evaluationCounts.failed=0`, `evaluationCounts.blocked=0`, `evaluationCounts.passed=evaluationCounts.total` | 인간 판단 | LLM |
 
 **통과 판정 기준 상세:**
 
-- `dogfood:self`는 `summary.json`, `report.json`, `review-summary.json`,
-  `latest.md`, `index.html` 5개 파일을 `artifacts/self-dogfood/latest/`에
-  생성해야 한다.
-- `gateRecommendation`은 cheap deterministic gate의 판정이고,
-  `reportRecommendation`은 LLM review까지 포함한 최종 판정이다.
-  둘 다 `accept-now`여야 통과.
+- `dogfood:self`는 현재 `dogfood:self:eval`의 canonical alias다.
 - `dogfood:self:eval`은 현재 checked-in `cautilus.evaluation_input.v1` fixture(`fixtures/eval/whole-repo/`)를 재실행해
   `eval-summary.json`을 갱신해야 한다.
-  `recommendation=accept-now`와 전 case 통과가 기본 통과선이다.
-- experiment 결과에서 기존 대비 regression이 발견되면 불통과.
-  개별 experiment의 `gateRecommendation`이 `needs-work`여도
-  전체 regression이 아니면 인간이 판단한다.
+  `recommendation=accept-now`와 `evaluationCounts.failed=0`, `evaluationCounts.blocked=0`, `evaluationCounts.passed=evaluationCounts.total`이 기본 통과선이다.
+- broader report/review self-dogfood와 experiments runner는 `mode evaluate` cut 이후 아직 새 eval surface 위로 재구축되지 않았다.
 
 **HTML 뷰만 갱신 (LLM 호출 없음):**
 
 | # | 명령 | 통과 조건 | 실행자 | 비용 |
 |---|---|---|---|---|
 | 4.4 | `npm run dogfood:self:html` | `index.html` 갱신, exit 0 | 기계적 | 무료 |
-| 4.5 | `npm run dogfood:self:experiments:html` | experiments `index.html` 갱신, exit 0 | 기계적 | 무료 |
+| 4.5 | broader self-dogfood HTML | report/review self-dogfood가 새 eval surface 위로 재구축될 때 다시 정의 | 기계적 | 무료 |
 
 ---
 
@@ -206,7 +198,7 @@ source of truth다.
 
 | # | 명령 (각 repo에서) | 통과 조건 | 실행자 |
 |---|---|---|---|
-| 5.0 | `npm run consumer:onboard:smoke` | temp consumer repo가 `install -> adapter init -> doctor ready`까지 통과, exit 0 (eval-test로의 first bounded run 재배선은 후속 슬라이스) | 기계적 |
+| 5.0 | `npm run consumer:onboard:smoke` | temp consumer repo가 `install -> adapter init -> doctor ready -> eval test`까지 통과, `eval-summary.json` recommendation이 `accept-now`, exit 0 | 기계적 |
 | 5.1 | `cautilus doctor --repo-root <repo-path>` | `ready` 출력, exit 0 | 기계적 |
 | 5.2 | `cautilus adapter resolve --repo-root <repo-path>` | adapter 경로 출력, exit 0 | 기계적 |
 

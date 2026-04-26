@@ -8,6 +8,7 @@
     "node": ">=22"
   },
   "scripts": {
+    "dogfood:self": "npm run dogfood:self:eval",
     "dogfood:self:eval": "./bin/cautilus eval test --repo-root . --adapter-name self-dogfood-eval --output-dir ./artifacts/self-dogfood/eval/latest",
     "dogfood:self:html": "./bin/cautilus self-dogfood render-html",
     "consumer:onboard:smoke": "node scripts/on-demand/smoke-external-consumer.mjs",

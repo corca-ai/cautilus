@@ -140,11 +140,137 @@ function seedReadyAdapter(adapterPath) {
 	const next = current.replace(
 		"eval_test_command_templates: []",
 		[
+			"evaluation_input_default: fixtures/eval/app/prompt/onboarding-smoke.fixture.json",
 			"eval_test_command_templates:",
-			"    - node -e \"console.log('external consumer smoke ok')\"",
+			"    - node ./.agents/cautilus-smoke-eval.mjs {eval_cases_file} {eval_observed_file}",
 		].join("\n"),
 	);
 	writeFileSync(adapterPath, next, "utf-8");
+}
+
+function seedFirstBoundedRunFixture(repoRoot) {
+	const fixtureDir = join(repoRoot, "fixtures", "eval", "app", "prompt");
+	mkdirSync(fixtureDir, { recursive: true });
+	const fixturePath = join(fixtureDir, "onboarding-smoke.fixture.json");
+	writeFileSync(
+		fixturePath,
+		JSON.stringify(
+			{
+				schemaVersion: "cautilus.evaluation_input.v1",
+				surface: "app",
+				preset: "prompt",
+				suiteId: "consumer-onboarding-smoke",
+				suiteDisplayName: "Consumer Onboarding Smoke",
+				provider: "fixture",
+				model: "fixture-backend",
+				system: "Answer with the product name and a short status.",
+				cases: [
+					{
+						caseId: "fresh-consumer-first-bounded-run",
+						displayName: "Fresh consumer first bounded run",
+						input: "Confirm this fresh repo can run Cautilus once.",
+						expected: { finalText: "Cautilus" },
+					},
+				],
+			},
+			null,
+			2,
+		) + "\n",
+		"utf-8",
+	);
+	return fixturePath;
+}
+
+function seedFirstBoundedRunRunner(repoRoot) {
+	const runnerPath = join(repoRoot, ".agents", "cautilus-smoke-eval.mjs");
+	writeFileSync(
+		runnerPath,
+		[
+			"import { readFileSync, writeFileSync } from 'node:fs';",
+			"",
+			"const [casesFile, outputFile] = process.argv.slice(2);",
+			"if (!casesFile || !outputFile) {",
+			"  console.error('usage: node .agents/cautilus-smoke-eval.mjs <cases-file> <output-file>');",
+			"  process.exit(2);",
+			"}",
+			"const suite = JSON.parse(readFileSync(casesFile, 'utf-8'));",
+			"const evaluations = suite.cases.map((entry) => {",
+			"  const input = entry.input;",
+			"  const finalText = 'Cautilus onboarding smoke ok.';",
+			"  return {",
+			"    caseId: entry.caseId,",
+			"    displayName: entry.displayName || entry.caseId,",
+			"    provider: entry.provider || suite.provider,",
+			"    model: entry.model || suite.model,",
+			"    harness: 'fixture-backend',",
+			"    mode: 'messaging',",
+			"    durationMs: 1,",
+			"    observed: {",
+			"      input,",
+			"      messages: [",
+			"        { role: 'user', content: input },",
+			"        { role: 'assistant', content: finalText },",
+			"      ],",
+			"      finalText,",
+			"    },",
+			"    expected: entry.expected,",
+			"  };",
+			"});",
+			"writeFileSync(outputFile, JSON.stringify({",
+			"  schemaVersion: 'cautilus.app_prompt_evaluation_inputs.v1',",
+			"  suiteId: suite.suiteId,",
+			"  suiteDisplayName: suite.suiteDisplayName,",
+			"  evaluations,",
+			"}, null, 2) + '\\n');",
+			"",
+		].join("\n"),
+		"utf-8",
+	);
+	return runnerPath;
+}
+
+function recordSyntheticCommand(summary, command, args, stdout) {
+	summary.commands.push({
+		command,
+		args,
+		exitCode: 0,
+		stdout,
+		stderr: "",
+	});
+}
+
+function seedFirstBoundedRunAssets(summary, repoRoot) {
+	const fixturePath = seedFirstBoundedRunFixture(repoRoot);
+	recordSyntheticCommand(summary, "seed-first-bounded-run-fixture", [fixturePath], "wrote app/prompt evaluation fixture\n");
+	const runnerPath = seedFirstBoundedRunRunner(repoRoot);
+	recordSyntheticCommand(summary, "seed-first-bounded-run-runner", [runnerPath], "wrote fixture-backend eval runner\n");
+	return { fixturePath, runnerPath };
+}
+
+function runFirstBoundedEval(summary, cautilusBin, repoRoot, execCommand) {
+	const evalOutputDir = join(repoRoot, "tmp", "cautilus-eval");
+	const args = ["eval", "test", "--repo-root", repoRoot, "--output-dir", evalOutputDir];
+	const evalTest = execCommand(cautilusBin, args);
+	summary.commands.push(summarizeCommand(cautilusBin, args, evalTest));
+	const evalSummaryPath = evalTest.stdout.trim().split(/\r?\n/).at(-1);
+	return {
+		evalOutputDir,
+		evalSummaryPath,
+		evalObservedPath: join(evalOutputDir, "eval-observed.json"),
+		evalCasesPath: join(evalOutputDir, "eval-cases.json"),
+		evalSummary: JSON.parse(readFileSync(evalSummaryPath, "utf-8")),
+	};
+}
+
+function ensureSmokeArtifacts(paths) {
+	ensurePathExists(paths.adapterPath, "root adapter");
+	ensurePathExists(paths.fixturePath, "first bounded run fixture");
+	ensurePathExists(paths.runnerPath, "first bounded run runner");
+	ensurePathExists(paths.evalSummaryPath, "eval summary");
+	ensurePathExists(paths.evalObservedPath, "eval observed packet");
+	ensurePathExists(paths.evalCasesPath, "eval cases packet");
+	ensurePathExists(join(paths.agentSkillRoot, "SKILL.md"), "bundled skill");
+	ensureSymlink(paths.claudeSkillLink, "Claude skill compatibility link");
 }
 
 export function readDoctorReady(stdout) {
@@ -198,18 +324,13 @@ export async function runExternalConsumerOnboardingSmoke(
 		summary.commands.push(summarizeCommand(cautilusBin, ["adapter", "init", "--repo-root", workspace.repoRoot], adapterInit));
 
 		const adapterPath = join(workspace.repoRoot, ".agents", "cautilus-adapter.yaml");
+		const { fixturePath, runnerPath } = seedFirstBoundedRunAssets(summary, workspace.repoRoot);
 		seedReadyAdapter(adapterPath);
-		summary.commands.push({
-			command: "seed-ready-adapter",
-			args: [adapterPath],
-			exitCode: 0,
-			stdout: "added minimal held_out command template\n",
-			stderr: "",
-		});
+		recordSyntheticCommand(summary, "seed-ready-adapter", [adapterPath], "added minimal eval-test fixture and command template\n");
 
-		const gitAdd = execCommand("git", ["-C", workspace.repoRoot, "add", ".gitignore", ".agents", ".claude"]);
+		const gitAdd = execCommand("git", ["-C", workspace.repoRoot, "add", ".gitignore", ".agents", ".claude", "fixtures"]);
 		summary.commands.push(
-			summarizeCommand("git", ["-C", workspace.repoRoot, "add", ".gitignore", ".agents", ".claude"], gitAdd),
+			summarizeCommand("git", ["-C", workspace.repoRoot, "add", ".gitignore", ".agents", ".claude", "fixtures"], gitAdd),
 		);
 
 		const gitCommit = execCommand("git", [
@@ -237,18 +358,24 @@ export async function runExternalConsumerOnboardingSmoke(
 		summary.commands.push(summarizeCommand(cautilusBin, ["doctor", "--repo-root", workspace.repoRoot], doctor));
 		const doctorPayload = JSON.parse(doctor.stdout);
 
+		const evalResult = runFirstBoundedEval(summary, cautilusBin, workspace.repoRoot, execCommand);
 		const agentSkillRoot = join(workspace.repoRoot, ".agents", "skills", "cautilus");
 		const claudeSkillLink = join(workspace.repoRoot, ".claude", "skills");
-		ensurePathExists(adapterPath, "root adapter");
-		ensurePathExists(join(agentSkillRoot, "SKILL.md"), "bundled skill");
-		ensureSymlink(claudeSkillLink, "Claude skill compatibility link");
+		ensureSmokeArtifacts({ adapterPath, fixturePath, runnerPath, agentSkillRoot, claudeSkillLink, ...evalResult });
 
 		summary.ready = readDoctorReady(doctor.stdout);
 		summary.firstBoundedRun = doctorPayload.first_bounded_run ?? null;
+		summary.fixturePath = fixturePath;
+		summary.runnerPath = runnerPath;
+		summary.evalOutputDir = evalResult.evalOutputDir;
+		summary.evalSummaryPath = evalResult.evalSummaryPath;
+		summary.evalObservedPath = evalResult.evalObservedPath;
+		summary.evalCasesPath = evalResult.evalCasesPath;
+		summary.evalSummary = evalResult.evalSummary;
 		summary.adapterPath = adapterPath;
 		summary.agentSkillRoot = agentSkillRoot;
 		summary.claudeSkillLink = claudeSkillLink;
-		summary.ok = summary.ready === true;
+		summary.ok = summary.ready === true && evalResult.evalSummary.recommendation === "accept-now";
 		return summary;
 	} finally {
 		if (!keepWorkdir && !outputDir) {

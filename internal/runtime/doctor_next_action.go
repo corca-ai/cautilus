@@ -83,7 +83,7 @@ func buildRepoNextAction(result map[string]any, repoRoot string, adapterName *st
 		}
 		return doctorAction(
 			"complete_first_bounded_run",
-			fmt.Sprintf("Repo is ready. Read first_bounded_run and complete one bounded run instead of rerunning doctor. Start with `%s` if you still need the archetype catalog.", discoveryCommand),
+			fmt.Sprintf("Repo is ready. Read first_bounded_run and complete one bounded run instead of rerunning doctor. Start with `%s` if you still need the scenario-normalization catalog.", discoveryCommand),
 			"",
 			"",
 		)
