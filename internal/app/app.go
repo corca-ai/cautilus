@@ -161,6 +161,10 @@ func nativeHandler(path []string) handlerFunc {
 		return handleDoctor
 	case "claim discover":
 		return handleClaimDiscover
+	case "claim show":
+		return handleClaimShow
+	case "claim review prepare-input":
+		return handleClaimReviewPrepareInput
 	case "workbench discover":
 		return handleWorkbenchDiscover
 	case "workbench run-live":
@@ -325,6 +329,20 @@ type claimDiscoverArgs struct {
 	previous        *string
 	refreshPlanOnly bool
 	output          *string
+}
+
+type claimShowArgs struct {
+	input  string
+	output *string
+}
+
+type claimReviewPrepareInputArgs struct {
+	claims              string
+	output              *string
+	maxClusters         int
+	maxClaimsPerCluster int
+	excerptChars        int
+	clusterPolicy       string
 }
 
 type installArgs struct {
@@ -717,6 +735,62 @@ func handleClaimDiscover(repoRoot string, cwd string, args []string, stdout io.W
 		return 1
 	}
 	if err := writeOutput(stdout, cwd, options.output, plan); err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	return 0
+}
+
+//nolint:errcheck // CLI stderr/stdout reporting is best-effort.
+func handleClaimShow(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	_ = repoRoot
+	options, err := parseClaimShowArgs(args, cwd)
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	packet, err := readJSONObject(options.input)
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	summary, err := runtime.BuildClaimStatusSummary(packet, options.input)
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	if err := writeOutput(stdout, cwd, options.output, summary); err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	return 0
+}
+
+//nolint:errcheck // CLI stderr/stdout reporting is best-effort.
+func handleClaimReviewPrepareInput(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	_ = repoRoot
+	options, err := parseClaimReviewPrepareInputArgs(args, cwd)
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	packet, err := readJSONObject(options.claims)
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	reviewInput, err := runtime.BuildClaimReviewInput(packet, runtime.ClaimReviewInputOptions{
+		InputPath:           options.claims,
+		MaxClusters:         options.maxClusters,
+		MaxClaimsPerCluster: options.maxClaimsPerCluster,
+		ExcerptChars:        options.excerptChars,
+		ClusterPolicy:       options.clusterPolicy,
+	})
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	if err := writeOutput(stdout, cwd, options.output, reviewInput); err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
@@ -1858,6 +1932,112 @@ func parseClaimDiscoverArgs(args []string, cwd string) (*claimDiscoverArgs, erro
 		return nil, fmt.Errorf("--repo-root must not be empty")
 	}
 	return options, nil
+}
+
+func parseClaimShowArgs(args []string, cwd string) (*claimShowArgs, error) {
+	options := &claimShowArgs{}
+	for index := 0; index < len(args); index++ {
+		arg := args[index]
+		switch arg {
+		case "--input":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.input = resolvePath(cwd, value)
+		case "--output":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.output = &value
+		default:
+			return nil, fmt.Errorf("unknown argument: %s", arg)
+		}
+	}
+	if strings.TrimSpace(options.input) == "" {
+		return nil, fmt.Errorf("--input is required")
+	}
+	return options, nil
+}
+
+func parseClaimReviewPrepareInputArgs(args []string, cwd string) (*claimReviewPrepareInputArgs, error) {
+	options := &claimReviewPrepareInputArgs{}
+	for index := 0; index < len(args); index++ {
+		arg := args[index]
+		switch arg {
+		case "--claims", "--input":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.claims = resolvePath(cwd, value)
+		case "--output":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.output = &value
+		case "--max-clusters":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			parsed, parseErr := parsePositiveCLIInt(value, arg)
+			if parseErr != nil {
+				return nil, parseErr
+			}
+			options.maxClusters = parsed
+		case "--max-claims-per-cluster":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			parsed, parseErr := parsePositiveCLIInt(value, arg)
+			if parseErr != nil {
+				return nil, parseErr
+			}
+			options.maxClaimsPerCluster = parsed
+		case "--excerpt-chars":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			parsed, parseErr := parsePositiveCLIInt(value, arg)
+			if parseErr != nil {
+				return nil, parseErr
+			}
+			options.excerptChars = parsed
+		case "--cluster-policy":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.clusterPolicy = value
+		default:
+			return nil, fmt.Errorf("unknown argument: %s", arg)
+		}
+	}
+	if strings.TrimSpace(options.claims) == "" {
+		return nil, fmt.Errorf("--claims is required")
+	}
+	return options, nil
+}
+
+func parsePositiveCLIInt(value string, option string) (int, error) {
+	parsed, err := strconv.Atoi(strings.TrimSpace(value))
+	if err != nil || parsed <= 0 {
+		return 0, fmt.Errorf("%s must be a positive integer", option)
+	}
+	return parsed, nil
 }
 
 func parseInstallArgs(args []string, cwd string) (*installArgs, error) {

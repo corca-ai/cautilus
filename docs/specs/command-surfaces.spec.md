@@ -6,7 +6,7 @@
 2. `eval` — verify selected claims through bounded evaluation fixtures and summary packets
 3. `optimize` — improve behavior after the proof surface is honest
 
-This spec defines the command-surface contract and the first deterministic `claim discover` implementation.
+This spec defines the command-surface contract and the deterministic `claim` packet helpers around `claim discover`.
 The goal is to keep `Cautilus` repo-agnostic while making the product understandable from the binary and bundled skill alone.
 
 ## Problem
@@ -23,17 +23,22 @@ That creates two risks:
 
 ## Current Slice
 
-Define the stable command-family map and ship the first `claim` command without disturbing the already-shipped `eval` and `optimize` families.
+Define the stable command-family map and ship the first `claim` commands without disturbing the already-shipped `eval` and `optimize` families.
 The implemented slice is intentionally deterministic: it inventories explicit truth surfaces and emits source-ref-backed proof-plan candidates.
 Default output is not silently capped; agents are first-class readers of the packet and should filter or select claims explicitly instead of inheriting a hidden product limit.
 Current discovery starts from adapter-owned entries or README.md/AGENTS.md/CLAUDE.md and follows repo-local Markdown links to depth 3.
+Existing-packet helpers summarize a proof plan and prepare bounded review clusters without calling an LLM.
 
 ## See It Work
 
 ```run:shell
 tmpdir=$(mktemp -d)
 ./bin/cautilus claim discover --repo-root ./fixtures/claim-discovery/tiny-repo --output "$tmpdir/claims.json"
+./bin/cautilus claim show --input "$tmpdir/claims.json" --output "$tmpdir/claim-status.json"
+./bin/cautilus claim review prepare-input --claims "$tmpdir/claims.json" --max-clusters 2 --output "$tmpdir/claim-review-input.json"
 grep -q '"schemaVersion": "cautilus.claim_proof_plan.v1"' "$tmpdir/claims.json"
+grep -q '"schemaVersion": "cautilus.claim_status_summary.v1"' "$tmpdir/claim-status.json"
+grep -q '"schemaVersion": "cautilus.claim_review_input.v1"' "$tmpdir/claim-review-input.json"
 grep -q '"proofLayer": "human-auditable"' "$tmpdir/claims.json"
 grep -q '"proofLayer": "deterministic"' "$tmpdir/claims.json"
 grep -q '"proofLayer": "cautilus-eval"' "$tmpdir/claims.json"
@@ -96,6 +101,13 @@ It does not claim that the repo is correct.
 It tells an operator or agent what should be proven where.
 It should preserve the discovered backlog honestly; prioritization belongs in the next agent step or a future explicit selection command, not in a hidden cap.
 
+`cautilus claim show --input <claims.json>` emits `cautilus.claim_status_summary.v1`.
+It summarizes an existing proof-plan packet without rescanning.
+
+`cautilus claim review prepare-input --claims <claims.json>` emits `cautilus.claim_review_input.v1`.
+It groups candidates into deterministic review clusters and records the review budget.
+It does not call an LLM, schedule subagents, merge duplicates, or mark evidence satisfied.
+
 ### Eval Surface
 
 `eval` remains the verification family.
@@ -141,7 +153,7 @@ It should point to the relevant scenario command rather than duplicating scenari
 
 ## Deferred Decisions
 
-- Whether `claim discover` gets companion commands such as `claim validate` or `claim render-html`.
+- Whether `claim` gets companion commands such as `claim validate`, `claim review apply-result`, `claim plan-evals`, or `claim render-html`.
 - Whether `scenario` commands eventually move under `claim` or stay as their own long-lived family.
 - Whether `optimize` should gain a user-facing `improve` alias.
   The current command remains `optimize`.
@@ -183,8 +195,10 @@ It should point to the relevant scenario command rather than duplicating scenari
 The first implementation slice includes:
 
 - command registry entry for `cautilus claim discover`
+- command registry entries for `cautilus claim show` and `cautilus claim review prepare-input`
 - `cautilus claim discover --example-output`
 - fixture-backed unit tests for `cautilus.claim_proof_plan.v1`
+- fixture-backed unit tests for `cautilus.claim_status_summary.v1` and `cautilus.claim_review_input.v1`
 - a CLI smoke test that discovers claims from a tiny temp repo with README, AGENTS.md, and one deterministic-test-like claim
 - a bundled-skill disclosure check that requires the `claim`, `eval`, and `optimize` family names and forbids README-specific naming as the core concept
 - public spec proof that the command can emit at least one `human-auditable`, one `deterministic`, and one `cautilus-eval` candidate from checked-in fixtures
@@ -209,7 +223,8 @@ This file is the command-surface implementation contract.
 `docs/master-plan.md` carries only the durable roadmap summary.
 `skills/cautilus/SKILL.md` should stay short and route through the binary once the `claim` command exists.
 
-## First Implementation Slice
+## Implementation Slices
 
 The first implementation slice shipped `cautilus claim discover` with a conservative deterministic source inventory and a fixture-backed proof-plan packet.
-The next slice should decide whether `claim` needs a validation or render subcommand, or whether source inventory heuristics should remain deliberately simple until model-backed extraction has its own runner boundary.
+The next slice shipped `claim show` and `claim review prepare-input` as existing-packet deterministic helpers.
+The next open slice is `claim review apply-result` after review-result schema and dogfood evidence are stable enough to avoid overfitting the merge contract.

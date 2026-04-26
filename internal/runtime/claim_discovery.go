@@ -25,6 +25,14 @@ type ClaimDiscoveryOptions struct {
 	RefreshPlanOnly bool
 }
 
+type ClaimReviewInputOptions struct {
+	InputPath           string
+	MaxClusters         int
+	MaxClaimsPerCluster int
+	ExcerptChars        int
+	ClusterPolicy       string
+}
+
 type claimSource struct {
 	absPath        string
 	relPath        string
@@ -81,6 +89,17 @@ type claimDiscoveryConfig struct {
 	adapterPath         string
 	adapterFound        bool
 	explicitSources     bool
+}
+
+type claimReviewCluster struct {
+	clusterID              string
+	groupKey               string
+	priority               int
+	reason                 string
+	recommendedProof       string
+	verificationReadiness  string
+	recommendedEvalSurface string
+	candidates             []map[string]any
 }
 
 func DiscoverClaimProofPlan(options ClaimDiscoveryOptions) (map[string]any, error) {
@@ -781,6 +800,355 @@ func summarizeClaimCandidates(candidates []any) map[string]any {
 		"byLifecycle":             sortedCountMap(byLifecycle),
 		"byProofLayer":            sortedCountMap(byProofLayer),
 	}
+}
+
+func BuildClaimStatusSummary(packet map[string]any, inputPath string) (map[string]any, error) {
+	if err := ValidateClaimProofPlan(packet); err != nil {
+		return nil, err
+	}
+	candidates := arrayOrEmpty(packet["claimCandidates"])
+	sourceInventory := arrayOrEmpty(packet["sourceInventory"])
+	scanScope := asMap(packet["effectiveScanScope"])
+	claimSummary := asMap(packet["claimSummary"])
+	if len(claimSummary) == 0 {
+		claimSummary = summarizeClaimCandidates(candidates)
+	}
+	status := map[string]any{
+		"schemaVersion":             contracts.ClaimStatusSummarySchema,
+		"inputPath":                 filepath.ToSlash(filepath.Clean(inputPath)),
+		"inputSchemaVersion":        packet["schemaVersion"],
+		"sourceRoot":                packet["sourceRoot"],
+		"gitCommit":                 packet["gitCommit"],
+		"candidateCount":            len(candidates),
+		"sourceCount":               len(sourceInventory),
+		"claimSummary":              claimSummary,
+		"effectiveScanScope":        scanScope,
+		"claimState":                asMap(packet["claimState"]),
+		"nonVerdictNotice":          packet["nonVerdictNotice"],
+		"reviewReadinessSummary":    claimReviewReadinessSummary(candidates),
+		"recommendedNextActions":    claimStatusNextActions(claimSummary),
+		"linkedMarkdownSourceCount": linkedMarkdownSourceCount(sourceInventory),
+	}
+	return status, nil
+}
+
+func linkedMarkdownSourceCount(sourceInventory []any) int {
+	count := 0
+	for _, raw := range sourceInventory {
+		entry := asMap(raw)
+		if intFromAny(entry["depth"]) > 0 {
+			count++
+		}
+	}
+	return count
+}
+
+func claimReviewReadinessSummary(candidates []any) map[string]any {
+	readyForReview := 0
+	needsScenario := 0
+	needsAlignment := 0
+	for _, raw := range candidates {
+		entry := asMap(raw)
+		switch stringFromAny(entry["verificationReadiness"]) {
+		case "needs-scenario":
+			needsScenario++
+		case "needs-alignment":
+			needsAlignment++
+		default:
+			if stringFromAny(entry["reviewStatus"]) == "heuristic" {
+				readyForReview++
+			}
+		}
+	}
+	return map[string]any{
+		"heuristicClaimsReadyForReview": readyForReview,
+		"needsScenario":                 needsScenario,
+		"needsAlignment":                needsAlignment,
+	}
+}
+
+func claimStatusNextActions(summary map[string]any) []any {
+	byProof := asMap(summary["byRecommendedProof"])
+	byReadiness := asMap(summary["byVerificationReadiness"])
+	actions := []any{}
+	if intFromAny(byProof["cautilus-eval"]) > 0 {
+		actions = append(actions, map[string]any{
+			"id":      "prepare-claim-review",
+			"summary": "Prepare bounded claim review clusters before drafting eval scenarios.",
+		})
+	}
+	if intFromAny(byProof["deterministic"]) > 0 {
+		actions = append(actions, map[string]any{
+			"id":      "add-deterministic-proof",
+			"summary": "Add or connect unit, lint, build, schema, or CI proof for deterministic claims.",
+		})
+	}
+	if intFromAny(byReadiness["needs-alignment"]) > 0 {
+		actions = append(actions, map[string]any{
+			"id":      "resolve-alignment",
+			"summary": "Reconcile alignment-work claims before treating them as verification targets.",
+		})
+	}
+	if len(actions) == 0 {
+		actions = append(actions, map[string]any{
+			"id":      "inspect-full-packet",
+			"summary": "Inspect the full claim packet and select claims manually.",
+		})
+	}
+	return actions
+}
+
+func BuildClaimReviewInput(packet map[string]any, options ClaimReviewInputOptions) (map[string]any, error) {
+	if err := ValidateClaimProofPlan(packet); err != nil {
+		return nil, err
+	}
+	normalized := normalizeClaimReviewInputOptions(options)
+	clusters := buildClaimReviewClusters(arrayOrEmpty(packet["claimCandidates"]), normalized)
+	renderedClusters, skipped := renderClaimReviewClusters(clusters, normalized)
+	return map[string]any{
+		"schemaVersion": contracts.ClaimReviewInputSchema,
+		"inputPath":     filepath.ToSlash(filepath.Clean(normalized.InputPath)),
+		"sourceRoot":    packet["sourceRoot"],
+		"sourceClaimPacket": map[string]any{
+			"schemaVersion":  packet["schemaVersion"],
+			"gitCommit":      packet["gitCommit"],
+			"candidateCount": len(arrayOrEmpty(packet["claimCandidates"])),
+		},
+		"reviewBudget": map[string]any{
+			"maxClusters":         normalized.MaxClusters,
+			"maxClaimsPerCluster": normalized.MaxClaimsPerCluster,
+			"excerptChars":        normalized.ExcerptChars,
+			"clusterPolicy":       normalized.ClusterPolicy,
+			"budgetSource":        "cli-or-default",
+		},
+		"clusters":        renderedClusters,
+		"skippedClusters": skipped,
+		"packetNotice":    "This packet prepares deterministic claim review input. It does not call an LLM or assert that any claim is satisfied.",
+	}, nil
+}
+
+func normalizeClaimReviewInputOptions(options ClaimReviewInputOptions) ClaimReviewInputOptions {
+	if options.MaxClusters <= 0 {
+		options.MaxClusters = 20
+	}
+	if options.MaxClaimsPerCluster <= 0 {
+		options.MaxClaimsPerCluster = 8
+	}
+	if options.ExcerptChars <= 0 {
+		options.ExcerptChars = 1200
+	}
+	if strings.TrimSpace(options.ClusterPolicy) == "" {
+		options.ClusterPolicy = "default"
+	}
+	return options
+}
+
+func buildClaimReviewClusters(candidates []any, options ClaimReviewInputOptions) []claimReviewCluster {
+	clustersByKey := map[string]*claimReviewCluster{}
+	keys := []string{}
+	for _, raw := range candidates {
+		entry := asMap(raw)
+		key := claimReviewClusterKey(entry)
+		cluster := clustersByKey[key]
+		if cluster == nil {
+			cluster = &claimReviewCluster{
+				groupKey:               key,
+				clusterID:              "cluster-" + slugifyClaimID(key),
+				priority:               claimReviewPriority(entry),
+				reason:                 claimReviewReason(entry),
+				recommendedProof:       stringFromAny(entry["recommendedProof"]),
+				verificationReadiness:  stringFromAny(entry["verificationReadiness"]),
+				recommendedEvalSurface: stringFromAny(entry["recommendedEvalSurface"]),
+			}
+			clustersByKey[key] = cluster
+			keys = append(keys, key)
+		}
+		cluster.candidates = append(cluster.candidates, renderClaimReviewCandidate(entry, options.ExcerptChars))
+		if priority := claimReviewPriority(entry); priority < cluster.priority {
+			cluster.priority = priority
+			cluster.reason = claimReviewReason(entry)
+		}
+	}
+	clusters := make([]claimReviewCluster, 0, len(keys))
+	for _, key := range keys {
+		cluster := clustersByKey[key]
+		sort.SliceStable(cluster.candidates, func(i, j int) bool {
+			return stringFromAny(cluster.candidates[i]["claimId"]) < stringFromAny(cluster.candidates[j]["claimId"])
+		})
+		clusters = append(clusters, *cluster)
+	}
+	sort.SliceStable(clusters, func(i, j int) bool {
+		if clusters[i].priority != clusters[j].priority {
+			return clusters[i].priority < clusters[j].priority
+		}
+		return clusters[i].groupKey < clusters[j].groupKey
+	})
+	return clusters
+}
+
+func claimReviewClusterKey(candidate map[string]any) string {
+	readiness := stringFromAny(candidate["verificationReadiness"])
+	proof := stringFromAny(candidate["recommendedProof"])
+	surface := stringFromAny(candidate["recommendedEvalSurface"])
+	sourceKind := primaryClaimSourceKind(candidate)
+	switch {
+	case readiness == "needs-alignment":
+		return "alignment:" + sourceKind
+	case proof == "cautilus-eval" && surface != "":
+		return "cautilus-eval:" + surface + ":" + sourceKind
+	case proof != "":
+		return proof + ":" + sourceKind
+	default:
+		return "unclassified:" + sourceKind
+	}
+}
+
+func primaryClaimSourceKind(candidate map[string]any) string {
+	refs := arrayOrEmpty(candidate["sourceRefs"])
+	if len(refs) == 0 {
+		return "unknown-source"
+	}
+	path := stringFromAny(asMap(refs[0])["path"])
+	return claimSourceKind(path)
+}
+
+func claimReviewPriority(candidate map[string]any) int {
+	if claimHasEntrySource(candidate) {
+		return 10
+	}
+	if stringFromAny(candidate["recommendedProof"]) == "cautilus-eval" {
+		return 20
+	}
+	if stringFromAny(candidate["verificationReadiness"]) == "needs-alignment" {
+		return 30
+	}
+	if claimTouchesProductSurface(candidate) {
+		return 40
+	}
+	if stringFromAny(candidate["evidenceStatus"]) != "satisfied" {
+		return 50
+	}
+	return 90
+}
+
+func claimReviewReason(candidate map[string]any) string {
+	switch {
+	case claimHasEntrySource(candidate):
+		return "Entry-surface claims are reviewed first because they define the visible repo contract."
+	case stringFromAny(candidate["recommendedProof"]) == "cautilus-eval":
+		return "Evaluator-dependent claims need review before scenario drafting."
+	case stringFromAny(candidate["verificationReadiness"]) == "needs-alignment":
+		return "Alignment work needs review before proof would be honest."
+	case claimTouchesProductSurface(candidate):
+		return "Claims touching commands, skills, adapters, or release surfaces are high-impact."
+	default:
+		return "Claims with weak or missing evidence refs should be reviewed before next action selection."
+	}
+}
+
+func claimHasEntrySource(candidate map[string]any) bool {
+	for _, raw := range arrayOrEmpty(candidate["sourceRefs"]) {
+		path := strings.ToLower(stringFromAny(asMap(raw)["path"]))
+		if path == "readme.md" || path == "agents.md" || path == "claude.md" {
+			return true
+		}
+	}
+	return false
+}
+
+func claimTouchesProductSurface(candidate map[string]any) bool {
+	text := strings.ToLower(stringFromAny(candidate["summary"]))
+	return containsAny(text, []string{" command", " cli", " skill", " adapter", " release", " install", " plugin"})
+}
+
+func renderClaimReviewCandidate(candidate map[string]any, excerptChars int) map[string]any {
+	return map[string]any{
+		"claimId":          candidate["claimId"],
+		"claimFingerprint": candidate["claimFingerprint"],
+		"summary":          candidate["summary"],
+		"sourceRefs":       truncateReviewSourceRefs(arrayOrEmpty(candidate["sourceRefs"]), excerptChars),
+		"currentLabels":    currentClaimLabels(candidate),
+		"groupHints":       arrayOrEmpty(candidate["groupHints"]),
+		"evidenceRefs":     arrayOrEmpty(candidate["evidenceRefs"]),
+		"nextAction":       candidate["nextAction"],
+	}
+}
+
+func truncateReviewSourceRefs(refs []any, excerptChars int) []any {
+	result := make([]any, 0, len(refs))
+	for _, raw := range refs {
+		ref := asMap(raw)
+		rendered := map[string]any{
+			"path": ref["path"],
+			"line": ref["line"],
+		}
+		excerpt := stringFromAny(ref["excerpt"])
+		if excerptChars > 0 && len(excerpt) > excerptChars {
+			excerpt = excerpt[:excerptChars]
+		}
+		rendered["excerpt"] = excerpt
+		result = append(result, rendered)
+	}
+	return result
+}
+
+func currentClaimLabels(candidate map[string]any) map[string]any {
+	labels := map[string]any{
+		"recommendedProof":      candidate["recommendedProof"],
+		"verificationReadiness": candidate["verificationReadiness"],
+		"evidenceStatus":        candidate["evidenceStatus"],
+		"reviewStatus":          candidate["reviewStatus"],
+		"lifecycle":             candidate["lifecycle"],
+		"proofLayer":            candidate["proofLayer"],
+	}
+	if surface := stringFromAny(candidate["recommendedEvalSurface"]); surface != "" {
+		labels["recommendedEvalSurface"] = surface
+	}
+	return labels
+}
+
+func renderClaimReviewClusters(clusters []claimReviewCluster, options ClaimReviewInputOptions) ([]any, []any) {
+	rendered := []any{}
+	skipped := []any{}
+	for index, cluster := range clusters {
+		if index >= options.MaxClusters {
+			skipped = append(skipped, map[string]any{
+				"clusterId":  cluster.clusterID,
+				"groupKey":   cluster.groupKey,
+				"reason":     "max-clusters-exceeded",
+				"claimCount": len(cluster.candidates),
+			})
+			continue
+		}
+		candidates := cluster.candidates
+		truncatedCount := 0
+		if len(candidates) > options.MaxClaimsPerCluster {
+			truncatedCount = len(candidates) - options.MaxClaimsPerCluster
+			candidates = candidates[:options.MaxClaimsPerCluster]
+		}
+		entry := map[string]any{
+			"clusterId":             cluster.clusterID,
+			"groupKey":              cluster.groupKey,
+			"priority":              cluster.priority,
+			"reason":                cluster.reason,
+			"recommendedProof":      cluster.recommendedProof,
+			"verificationReadiness": cluster.verificationReadiness,
+			"claimCount":            len(cluster.candidates),
+		}
+		if cluster.recommendedEvalSurface != "" {
+			entry["recommendedEvalSurface"] = cluster.recommendedEvalSurface
+		}
+		if truncatedCount > 0 {
+			entry["truncatedClaimCount"] = truncatedCount
+		}
+		renderedCandidates := make([]any, 0, len(candidates))
+		for _, candidate := range candidates {
+			renderedCandidates = append(renderedCandidates, candidate)
+		}
+		entry["candidates"] = renderedCandidates
+		rendered = append(rendered, entry)
+	}
+	return rendered, skipped
 }
 
 func incrementStringCount(counts map[string]int, value any) {

@@ -67,6 +67,7 @@ Use repeated `--source` arguments only when the user or adapter has selected an 
 Before the first scan, tell the user the entries and depth that will be scanned and ask for confirmation unless they already delegated autonomous continuation.
 Then run `cautilus claim discover --repo-root . --output <claims.json>`.
 If an existing claim JSON exists, use `cautilus claim discover --previous <claims.json> --refresh-plan --output <refresh-plan.json>` inside the same discover workflow rather than inventing a separate refresh command.
+Use `cautilus claim show --input <claims.json>` when you need status from an existing packet without rescanning.
 Do not treat scan confirmation as permission for LLM review, subagent fanout, broad edits, or expensive eval runs.
 
 Classify each candidate claim before creating fixtures:
@@ -90,6 +91,7 @@ After discovery or refresh, summarize the packet before choosing work:
 - the next branch options: plan eval scenario drafts, add deterministic proof, resolve alignment, show the full packet, or stop
 
 Only launch LLM-backed review after a separate review-budget confirmation that states maximum clusters, parallel review lanes, clusters per reviewer, excerpt budget, retry policy, and skipped-cluster policy.
+After that budget is confirmed, run `cautilus claim review prepare-input --claims <claims.json> --max-clusters <n> --output <review-input.json>` to create deterministic review clusters, then give those clusters to reviewers.
 When autonomous continuation is already delegated, keep that review inside the stated budget and record the budget in the resulting artifact or handoff.
 
 ## Bootstrap

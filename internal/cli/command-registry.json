@@ -54,6 +54,26 @@
       ]
     },
     {
+      "path": ["claim", "show"],
+      "group": "results",
+      "usage": "cautilus claim show --input <claims.json> [--output <summary.json>]",
+      "example": "cautilus claim show --input /tmp/cautilus-claims.json",
+      "notes": [
+        "Summarizes an existing `cautilus.claim_proof_plan.v1` packet without rescanning.",
+        "This command emits `cautilus.claim_status_summary.v1` for agents that need current status before choosing review, test, scenario, or alignment work."
+      ]
+    },
+    {
+      "path": ["claim", "review", "prepare-input"],
+      "group": "results",
+      "usage": "cautilus claim review prepare-input --claims <claims.json> [--max-clusters <n>] [--max-claims-per-cluster <n>] [--excerpt-chars <n>] [--output <review-input.json>]",
+      "example": "cautilus claim review prepare-input --claims /tmp/cautilus-claims.json --max-clusters 20 --output /tmp/cautilus-claim-review-input.json",
+      "notes": [
+        "Prepares deterministic `cautilus.claim_review_input.v1` clusters for agent or subagent review.",
+        "The command does not call an LLM and does not mark claims satisfied."
+      ]
+    },
+    {
       "path": ["scenario", "review-conversations"],
       "group": "results",
       "usage": "cautilus scenario review-conversations [args]",

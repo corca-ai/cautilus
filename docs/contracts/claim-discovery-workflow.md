@@ -393,7 +393,8 @@ Grouping is part of useful discovery output.
 
 Follow-on commands are justified only when they operate on an existing claim-state packet:
 
-- `claim show` or `claim report`: render an existing packet for agents or humans without rescanning
+- `claim show`: summarize an existing packet for agents without rescanning
+- `claim review prepare-input`: turn selected candidate clusters into a deterministic review-input packet without calling an LLM
 - `claim plan-evals`: turn selected `cautilus-eval` claims into draft eval scenario or fixture packets
 - `claim validate`: validate packet shape and evidence refs
 
@@ -465,7 +466,7 @@ Valid but defer:
 ## Deferred Decisions
 
 - Whether to commit `.cautilus/claims/latest.json` by default in Cautilus itself.
-- Whether `claim show` should render Markdown, JSON summary, or HTML first.
+- Whether `claim show` should grow Markdown or HTML rendering beyond its JSON summary packet.
 - Whether model-backed extraction should ever become a binary runner behind an explicit provider contract.
 - Whether adapter configuration should support non-Markdown truth surfaces beyond explicit `--source` paths in the next slice.
 
@@ -538,3 +539,6 @@ The second implementation slice updated the bundled skill control flow:
 
 This slice is covered by the bundled skill text, adapter contract docs, and the `execution-cautilus-no-input-claim-discovery-status` self-dogfood fixture.
 LLM-backed cluster review should come after the deterministic packet and skill control flow are stable enough to dogfood.
+The next deterministic helper slice added `claim show` and `claim review prepare-input`.
+`claim show` emits `cautilus.claim_status_summary.v1`.
+`claim review prepare-input` emits `cautilus.claim_review_input.v1` and records bounded clusters and skipped clusters, but still does not call an LLM or merge review results.

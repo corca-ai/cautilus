@@ -108,11 +108,14 @@ For the generic first pass, ask for a proof plan:
 
 ```bash
 cautilus claim discover --repo-root . --output /tmp/cautilus-claims.json
+cautilus claim show --input /tmp/cautilus-claims.json
+cautilus claim review prepare-input --claims /tmp/cautilus-claims.json --output /tmp/cautilus-claim-review-input.json
 ```
 
 The output is `cautilus.claim_proof_plan.v1`: source-ref-backed candidate claims with split proof, readiness, evidence, review, and lifecycle fields.
 It is not a verdict that the repo is correct.
-For agents, the bundled skill turns that packet into a status workflow: scan scope first, then a separate review budget before LLM-backed grouping, then next branches for deterministic proof, Cautilus scenarios, alignment work, or a full report.
+For agents, the bundled skill turns that packet into a status workflow: scan scope first, existing-packet summary via `claim show`, then a separate review budget before `claim review prepare-input` creates deterministic clusters for LLM-backed review.
+Next branches stay explicit: deterministic proof, Cautilus scenarios, alignment work, or a full report.
 
 Cautilus exposes two top-level evaluation surfaces (`repo` and `app`) with four presets between them; the surface preset, not a separate archetype, decides whether the runner needs a workspace or a messaging runtime.
 The legacy first-class archetype boundary (chatbot / skill / workflow) is retired.

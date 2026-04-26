@@ -72,7 +72,8 @@ Use [consumer-readiness.md](./maintainers/consumer-readiness.md) for checked-in 
 The three command-family contract lives in [specs/command-surfaces.spec.md](./specs/command-surfaces.spec.md): `claim` for declared-claim discovery and proof planning, `eval` for verification, and `optimize` for bounded improvement.
 The first `claim` slice ships as deterministic `cautilus claim discover`, which emits a source-ref-backed proof plan rather than a verdict.
 The next claim-discovery workflow contract lives in [claim-discovery-workflow.md](./contracts/claim-discovery-workflow.md): the binary owns deterministic skeletons, scan scope, state paths, refresh plans, and packet semantics; the bundled skill owns user confirmation, LLM review, grouping, evidence interpretation, and next-action conversation.
-The deterministic binary slice and the first bundled-skill control-flow slice are now implemented; LLM-backed cluster review and evidence reconciliation remain the next claim-discovery hardening seam.
+The deterministic binary slice, first bundled-skill control-flow slice, and deterministic review-input helper slice are now implemented.
+LLM-backed review-result application and evidence reconciliation remain the next claim-discovery hardening seam.
 The current evaluation contract lives in [specs/evaluation-surfaces.spec.md](./specs/evaluation-surfaces.spec.md): two surfaces (`repo`, `app`), four presets (`whole-repo`, `skill`, `chat`, `prompt`), and four fixture composition primitives.
 The earlier first-class archetype boundary (chatbot / skill / workflow) was retired with that redesign.
 `npm run lint:specs` and `npm run lint:archetypes` still gate the runtime completeness of the surviving `scenario normalize` helpers; new user-facing copy must reconcile with the surface/preset contract before landing.
@@ -162,7 +163,7 @@ Still open:
 
 1. Decide and implement the next optimize-search held-out/full-gate path on top of the `eval test` surface, or keep it explicitly skipped while C2/C3/C4 composition lands.
 2. Ship the remaining evaluation-surface composition primitives in spec order: C2 `extends`, C3 `steps`, and C4 `expected.snapshot`. See [docs/specs/evaluation-surfaces.spec.md](./specs/evaluation-surfaces.spec.md).
-3. Implement the LLM-backed claim review seam from [claim-discovery-workflow.md](./contracts/claim-discovery-workflow.md): versioned review input/result packets, bounded cluster batching, provenance, duplicate merge decisions, and evidence-status review without letting possible matches become satisfied proof.
+3. Implement the review-result application half of the LLM-backed claim review seam from [claim-discovery-workflow.md](./contracts/claim-discovery-workflow.md): versioned review-result packets, provenance, duplicate merge decisions, and evidence-status review without letting possible matches become satisfied proof.
 4. Pick the next bounded improvement seam for the optimization layer: either close a specific richer merge heuristic that dogfood evidence asks for, or move to another roadmap slice rather than extending heuristics speculatively.
 5. Expand scenario-history beyond the first profile-backed comparison cache-key path toward reusable baseline results and broader compare ownership.
 6. Continue moving host-specific runtime seams out of the product boundary into consumer-owned adapters, prompts, and storage readers.

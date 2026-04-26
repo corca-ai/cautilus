@@ -140,15 +140,23 @@ func TestRunCommandsJSONReturnsRegistry(t *testing.T) {
 		t.Fatalf("expected commands payload, got %#v", payload)
 	}
 	foundClaimDiscover := false
+	foundClaimShow := false
+	foundClaimReviewPrepare := false
 	for _, raw := range commands {
 		command := raw.(map[string]any)
 		path := command["path"].([]any)
 		if len(path) == 2 && path[0] == "claim" && path[1] == "discover" {
 			foundClaimDiscover = true
 		}
+		if len(path) == 2 && path[0] == "claim" && path[1] == "show" {
+			foundClaimShow = true
+		}
+		if len(path) == 3 && path[0] == "claim" && path[1] == "review" && path[2] == "prepare-input" {
+			foundClaimReviewPrepare = true
+		}
 	}
-	if !foundClaimDiscover {
-		t.Fatalf("expected commands payload to include claim discover, got %#v", commands)
+	if !foundClaimDiscover || !foundClaimShow || !foundClaimReviewPrepare {
+		t.Fatalf("expected commands payload to include claim commands, got %#v", commands)
 	}
 }
 
@@ -199,6 +207,106 @@ func TestRunClaimDiscoverWritesProofPlanFromTinyRepo(t *testing.T) {
 		if !seenLayers[layer] {
 			t.Fatalf("expected %s candidate in %#v", layer, candidates)
 		}
+	}
+}
+
+func TestRunClaimShowSummarizesExistingProofPlan(t *testing.T) {
+	repoRoot := t.TempDir()
+	claimsPath := filepath.Join(repoRoot, "claims.json")
+	if err := os.WriteFile(claimsPath, []byte(strings.Join([]string{
+		`{`,
+		`  "schemaVersion": "cautilus.claim_proof_plan.v1",`,
+		`  "sourceRoot": ".",`,
+		`  "sourceInventory": [{"path": "README.md", "kind": "readme", "status": "read", "depth": 0}],`,
+		`  "claimCandidates": [`,
+		`    {`,
+		`      "claimId": "claim-readme-md-3",`,
+		`      "claimFingerprint": "sha256:demo",`,
+		`      "summary": "Agents must keep behavior review bounded.",`,
+		`      "recommendedProof": "cautilus-eval",`,
+		`      "recommendedEvalSurface": "repo/whole-repo",`,
+		`      "verificationReadiness": "ready-to-verify",`,
+		`      "evidenceStatus": "unknown",`,
+		`      "reviewStatus": "heuristic",`,
+		`      "lifecycle": "new",`,
+		`      "groupHints": ["cautilus-eval"],`,
+		`      "evidenceRefs": [],`,
+		`      "sourceRefs": [{"path": "README.md", "line": 3, "excerpt": "Agents must keep behavior review bounded."}],`,
+		`      "proofLayer": "cautilus-eval"`,
+		`    }`,
+		`  ]`,
+		`}`,
+	}, "\n")), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	t.Setenv("CAUTILUS_CALLER_CWD", repoRoot)
+	t.Setenv("CAUTILUS_TOOL_ROOT", "")
+
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	exitCode := Run([]string{"claim", "show", "--input", claimsPath}, &stdout, &stderr)
+	if exitCode != 0 {
+		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
+	}
+	var payload map[string]any
+	if err := json.Unmarshal(stdout.Bytes(), &payload); err != nil {
+		t.Fatalf("Unmarshal returned error: %v", err)
+	}
+	if payload["schemaVersion"] != "cautilus.claim_status_summary.v1" || payload["candidateCount"] != float64(1) {
+		t.Fatalf("unexpected claim show payload: %#v", payload)
+	}
+}
+
+func TestRunClaimReviewPrepareInputWritesClusters(t *testing.T) {
+	repoRoot := t.TempDir()
+	claimsPath := filepath.Join(repoRoot, "claims.json")
+	outputPath := filepath.Join(repoRoot, "review-input.json")
+	if err := os.WriteFile(claimsPath, []byte(strings.Join([]string{
+		`{`,
+		`  "schemaVersion": "cautilus.claim_proof_plan.v1",`,
+		`  "sourceRoot": ".",`,
+		`  "sourceInventory": [{"path": "README.md", "kind": "readme", "status": "read", "depth": 0}],`,
+		`  "claimCandidates": [`,
+		`    {`,
+		`      "claimId": "claim-readme-md-3",`,
+		`      "claimFingerprint": "sha256:demo",`,
+		`      "summary": "Agents must keep behavior review bounded.",`,
+		`      "recommendedProof": "cautilus-eval",`,
+		`      "recommendedEvalSurface": "repo/whole-repo",`,
+		`      "verificationReadiness": "ready-to-verify",`,
+		`      "evidenceStatus": "unknown",`,
+		`      "reviewStatus": "heuristic",`,
+		`      "lifecycle": "new",`,
+		`      "groupHints": ["cautilus-eval"],`,
+		`      "evidenceRefs": [],`,
+		`      "sourceRefs": [{"path": "README.md", "line": 3, "excerpt": "Agents must keep behavior review bounded."}],`,
+		`      "proofLayer": "cautilus-eval"`,
+		`    }`,
+		`  ]`,
+		`}`,
+	}, "\n")), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	t.Setenv("CAUTILUS_CALLER_CWD", repoRoot)
+	t.Setenv("CAUTILUS_TOOL_ROOT", "")
+
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	exitCode := Run([]string{
+		"claim", "review", "prepare-input",
+		"--claims", claimsPath,
+		"--max-clusters", "1",
+		"--output", outputPath,
+	}, &stdout, &stderr)
+	if exitCode != 0 {
+		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
+	}
+	payload := readJSONObjectFile(t, outputPath)
+	if payload["schemaVersion"] != "cautilus.claim_review_input.v1" {
+		t.Fatalf("unexpected schemaVersion: %#v", payload["schemaVersion"])
+	}
+	if clusters := payload["clusters"].([]any); len(clusters) != 1 {
+		t.Fatalf("expected one review cluster, got %#v", payload)
 	}
 }
 

@@ -73,6 +73,8 @@ cautilus doctor --repo-root /path/to/repo --scope agent-surface
 
 # declared-claim discovery and proof planning
 cautilus claim discover --repo-root /path/to/repo --output /tmp/cautilus-claims.json
+cautilus claim show --input /tmp/cautilus-claims.json
+cautilus claim review prepare-input --claims /tmp/cautilus-claims.json --output /tmp/cautilus-claim-review-input.json
 
 # scenario-normalization catalog, for agents that need proposal-input examples
 cautilus scenarios --json
@@ -88,6 +90,9 @@ Use `cautilus claim discover` before writing eval fixtures when you need to inve
 Default discovery starts from adapter-owned claim entries or README.md/AGENTS.md/CLAUDE.md and follows repo-local Markdown links to depth 3.
 Use `--previous <claims.json> --refresh-plan` for deterministic refresh planning inside the same discover workflow.
 The packet is `cautilus.claim_proof_plan.v1`, and it is a proof plan rather than a verdict.
+Use `cautilus claim show --input <claims.json>` to summarize an existing claim packet without rescanning.
+Use `cautilus claim review prepare-input --claims <claims.json>` to prepare bounded deterministic review clusters for an agent or subagent.
+It emits `cautilus.claim_review_input.v1` and does not call an LLM or mark claims satisfied.
 
 For the shortest end-to-end adoption proof in a fresh consumer repo:
 

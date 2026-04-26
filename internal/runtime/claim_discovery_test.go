@@ -57,6 +57,69 @@ func TestDiscoverClaimProofPlanClassifiesFixtureClaims(t *testing.T) {
 	}
 }
 
+func TestBuildClaimStatusSummarySummarizesExistingPacket(t *testing.T) {
+	repoRoot := filepath.Join("..", "..", "fixtures", "claim-discovery", "tiny-repo")
+	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan returned error: %v", err)
+	}
+	summary, err := BuildClaimStatusSummary(plan, "claims.json")
+	if err != nil {
+		t.Fatalf("BuildClaimStatusSummary returned error: %v", err)
+	}
+	if summary["schemaVersion"] != contracts.ClaimStatusSummarySchema {
+		t.Fatalf("unexpected schemaVersion: %#v", summary["schemaVersion"])
+	}
+	if summary["candidateCount"] != 3 {
+		t.Fatalf("expected three candidates, got %#v", summary)
+	}
+	readiness := asMap(summary["reviewReadinessSummary"])
+	if readiness["heuristicClaimsReadyForReview"] != 3 {
+		t.Fatalf("expected heuristic review readiness, got %#v", readiness)
+	}
+	if len(arrayOrEmpty(summary["recommendedNextActions"])) == 0 {
+		t.Fatalf("expected recommended next actions, got %#v", summary)
+	}
+}
+
+func TestBuildClaimReviewInputClustersAndSkipsDeterministically(t *testing.T) {
+	repoRoot := filepath.Join("..", "..", "fixtures", "claim-discovery", "tiny-repo")
+	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan returned error: %v", err)
+	}
+	reviewInput, err := BuildClaimReviewInput(plan, ClaimReviewInputOptions{
+		InputPath:           "claims.json",
+		MaxClusters:         2,
+		MaxClaimsPerCluster: 1,
+		ExcerptChars:        20,
+	})
+	if err != nil {
+		t.Fatalf("BuildClaimReviewInput returned error: %v", err)
+	}
+	if reviewInput["schemaVersion"] != contracts.ClaimReviewInputSchema {
+		t.Fatalf("unexpected schemaVersion: %#v", reviewInput["schemaVersion"])
+	}
+	clusters := arrayOrEmpty(reviewInput["clusters"])
+	if len(clusters) != 2 {
+		t.Fatalf("expected two rendered clusters, got %#v", clusters)
+	}
+	skipped := arrayOrEmpty(reviewInput["skippedClusters"])
+	if len(skipped) == 0 {
+		t.Fatalf("expected at least one skipped cluster from max-clusters, got %#v", reviewInput)
+	}
+	first := asMap(clusters[0])
+	candidates := arrayOrEmpty(first["candidates"])
+	if len(candidates) != 1 {
+		t.Fatalf("expected max one candidate in first cluster, got %#v", first)
+	}
+	candidate := asMap(candidates[0])
+	labels := asMap(candidate["currentLabels"])
+	if labels["reviewStatus"] != "heuristic" {
+		t.Fatalf("expected current labels to preserve review status, got %#v", candidate)
+	}
+}
+
 func mustWriteFile(t *testing.T, path string, content string) {
 	t.Helper()
 	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
