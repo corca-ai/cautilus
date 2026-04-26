@@ -21,13 +21,11 @@ recommendation_defaults_version: issue-64
 prompt_asset_roots: []
 adapter_review_sources: []
 acknowledged_recommendations:
-  - id: public_skill_validation_missing_policy
-    reason: >-
-      This repo owns public-skill validation through `npm run dogfood:self`,
-      which is executor-backed and deeper than the generic
-      `suggest_public_skill_dogfood` smoke matrix. The matrix helper is
-      intentionally left unconfigured. Revisit only if the product stops
-      self-dogfooding.
+  # This repo owns public-skill validation through `npm run dogfood:self`,
+  # which is executor-backed and deeper than the generic
+  # `suggest_public_skill_dogfood` smoke matrix. Revisit only if the
+  # product stops self-dogfooding.
+  - public_skill_validation_missing_policy
 gate_design_review_globs: []
 prompt_asset_policy:
   source_globs: []
@@ -35,6 +33,38 @@ prompt_asset_policy:
   exemption_globs: []
 skill_ergonomics_gate_rules:
   - progressive_disclosure_risk
+skill_ergonomics_skill_paths:
+  - skills/cautilus/SKILL.md
+  - plugins/cautilus/skills/cautilus/SKILL.md
+product_surfaces:
+  - installable_cli
+  - bundled_skill
+cli_skill_surface_probe_commands:
+  - "./bin/cautilus --version"
+  - "./bin/cautilus --help"
+  - "./bin/cautilus healthcheck --json"
+  - "./bin/cautilus commands --json"
+  - "./bin/cautilus scenarios --json"
+  - "./bin/cautilus doctor --repo-root . --scope agent-surface"
+cli_skill_surface_command_docs:
+  - README.md
+  - docs/cli-reference.md
+  - docs/guides/consumer-adoption.md
+  - docs/specs/evaluation-surfaces.spec.md
+cli_skill_surface_skill_paths:
+  - skills/cautilus/SKILL.md
+  - plugins/cautilus/skills/cautilus/SKILL.md
+cli_skill_surface_change_globs:
+  - "bin/**"
+  - "cmd/cautilus/**"
+  - "internal/app/**"
+  - "internal/cli/**"
+  - "internal/runtime/**"
+  - "skills/cautilus/**"
+  - "plugins/cautilus/**"
+  - "docs/cli-reference.md"
+  - "docs/guides/consumer-adoption.md"
+  - "docs/specs/evaluation-surfaces.spec.md"
 runtime_budgets:
 startup_probes:
   - label: cautilus-version
