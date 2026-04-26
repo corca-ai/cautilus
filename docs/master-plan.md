@@ -142,10 +142,11 @@ Still open:
 
 ## Immediate Next Moves
 
-1. Roll out the remaining `cautilus eval` presets in spec order: `app / chat`, then `app / prompt`. `repo / skill` shipped 2026-04-25. See [docs/specs/evaluation-surfaces.spec.md](./specs/evaluation-surfaces.spec.md).
-2. Pick the next bounded improvement seam for the optimization layer: either close a specific richer merge heuristic that dogfood evidence asks for, or move to another roadmap slice rather than extending heuristics speculatively.
-3. Expand scenario-history beyond the first profile-backed comparison cache-key path toward reusable baseline results and broader compare ownership.
-4. Continue moving host-specific runtime seams out of the product boundary into consumer-owned adapters, prompts, and storage readers.
-5. Keep expanding normalization-pattern coverage as new consumer archetypes appear, while preserving one official adapter contract (`cautilus-adapter.yaml`).
-6. Decide whether to grow external-consumer onboarding into archetype-specific starter kits while keeping the supported installer surface centered on `install.sh`.
-7. Keep widening the HTML report surface only when the packet boundary stays stable and the added page meaningfully improves human review, rather than mirroring every lower-level test seam.
+1. Rebuild self-dogfood and consumer onboarding on top of `cautilus eval test`: make `dogfood:self` canonical again, add the first bounded eval-test run to `consumer:onboard:smoke`, and decide whether optimize-search held-out gating is rewired in the same slice or the next one.
+2. Ship the remaining evaluation-surface composition primitives in spec order: C2 `extends`, C3 `steps`, and C4 `expected.snapshot`. See [docs/specs/evaluation-surfaces.spec.md](./specs/evaluation-surfaces.spec.md).
+3. Pick the next bounded improvement seam for the optimization layer: either close a specific richer merge heuristic that dogfood evidence asks for, or move to another roadmap slice rather than extending heuristics speculatively.
+4. Expand scenario-history beyond the first profile-backed comparison cache-key path toward reusable baseline results and broader compare ownership.
+5. Continue moving host-specific runtime seams out of the product boundary into consumer-owned adapters, prompts, and storage readers.
+6. Keep expanding normalization-pattern coverage as new consumer archetypes appear, while preserving one official adapter contract (`cautilus-adapter.yaml`).
+7. Decide whether to grow external-consumer onboarding into archetype-specific starter kits while keeping the supported installer surface centered on `install.sh`.
+8. Keep widening the HTML report surface only when the packet boundary stays stable and the added page meaningfully improves human review, rather than mirroring every lower-level test seam.

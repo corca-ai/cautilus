@@ -378,6 +378,89 @@ func TestNormalizeEvaluationInputAppChatRejectsSteps(t *testing.T) {
 	}
 }
 
+func validAppPromptFixture() map[string]any {
+	return map[string]any{
+		"schemaVersion":    contracts.EvaluationInputSchema,
+		"surface":          "app",
+		"preset":           "prompt",
+		"suiteId":          "demo-prompt",
+		"suiteDisplayName": "Demo Prompt",
+		"provider":         "anthropic",
+		"model":            "claude-sonnet-4-6",
+		"system":           "You are a careful assistant.",
+		"cases": []any{
+			map[string]any{
+				"caseId":      "summarize-one-line",
+				"displayName": "One-line summary",
+				"input":       "Summarize: Cautilus evaluates behavior.",
+				"expected":    map[string]any{"finalText": "behavior"},
+			},
+		},
+	}
+}
+
+func TestNormalizeEvaluationInputAcceptsAppPrompt(t *testing.T) {
+	result, err := NormalizeEvaluationInput(validAppPromptFixture())
+	if err != nil {
+		t.Fatalf("expected success, got error: %v", err)
+	}
+	if result.Surface != "app" || result.Preset != "prompt" {
+		t.Fatalf("unexpected surface/preset: %s/%s", result.Surface, result.Preset)
+	}
+	if result.SuiteID != "demo-prompt" {
+		t.Fatalf("SuiteID got %q want %q", result.SuiteID, "demo-prompt")
+	}
+	if result.TranslatedCases["schemaVersion"] != contracts.AppPromptTestCasesSchema {
+		t.Fatalf("translated suite must use the app/prompt case-suite schema, got %v", result.TranslatedCases["schemaVersion"])
+	}
+	cases, ok := result.TranslatedCases["cases"].([]any)
+	if !ok || len(cases) != 1 {
+		t.Fatalf("expected 1 translated case, got %#v", result.TranslatedCases["cases"])
+	}
+	first := cases[0].(map[string]any)
+	if first["input"] != "Summarize: Cautilus evaluates behavior." {
+		t.Fatalf("expected input to round-trip, got %#v", first)
+	}
+}
+
+func TestNormalizeEvaluationInputAppPromptRequiresInput(t *testing.T) {
+	fixture := validAppPromptFixture()
+	cases := fixture["cases"].([]any)
+	delete(cases[0].(map[string]any), "input")
+	_, err := NormalizeEvaluationInput(fixture)
+	if err == nil || !strings.Contains(err.Error(), "input") {
+		t.Fatalf("expected input requirement error, got %v", err)
+	}
+}
+
+func TestNormalizeEvaluationInputAppPromptRejectsSnapshotExpectation(t *testing.T) {
+	fixture := validAppPromptFixture()
+	cases := fixture["cases"].([]any)
+	cases[0].(map[string]any)["expected"] = map[string]any{"snapshot": "./golden.json"}
+	_, err := NormalizeEvaluationInput(fixture)
+	if err == nil || !strings.Contains(err.Error(), "C4") {
+		t.Fatalf("expected snapshot C4 stub error, got %v", err)
+	}
+}
+
+func TestNormalizeEvaluationInputAppPromptRejectsExtends(t *testing.T) {
+	fixture := validAppPromptFixture()
+	fixture["extends"] = "./base.fixture.json"
+	_, err := NormalizeEvaluationInput(fixture)
+	if err == nil || !strings.Contains(err.Error(), "C2") {
+		t.Fatalf("expected extends C2 stub error, got %v", err)
+	}
+}
+
+func TestNormalizeEvaluationInputAppPromptRejectsSteps(t *testing.T) {
+	fixture := validAppPromptFixture()
+	fixture["steps"] = []any{}
+	_, err := NormalizeEvaluationInput(fixture)
+	if err == nil || !strings.Contains(err.Error(), "C3") {
+		t.Fatalf("expected steps C3 stub error, got %v", err)
+	}
+}
+
 func TestNormalizeEvaluationInputRejectsEmptyCases(t *testing.T) {
 	fixture := validRepoWholeRepoFixture()
 	fixture["cases"] = []any{}

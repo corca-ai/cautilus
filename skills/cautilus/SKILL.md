@@ -38,19 +38,20 @@ Use [command-cookbook.md](references/command-cookbook.md) only after the binary 
 - run adapter-owned review variants through checked-in executor templates
 - keep host-repo fixtures, prompts, wrappers, and policy outside the product boundary
 
-## Archetype Routing
+## Evaluation Surface Routing
 
-`Cautilus` has exactly three first-class evaluation archetypes: `chatbot`, `skill`, and `workflow`.
-Run `cautilus scenarios --json` before choosing an archetype unless the user already named one.
-That catalog is the source of truth for summaries, example input commands, behavior focus, and contract docs.
+`Cautilus` has two top-level evaluation surfaces and four fixture presets.
+Use `cautilus eval test --fixture <fixture.json>` when the repo already has a checked-in fixture and adapter-owned runner.
+Use `cautilus scenarios --json` only when you need the proposal-input normalization catalog.
 
 Use this minimal routing rule:
 
-- `chatbot`: multi-turn assistant behavior regressed after a prompt or wrapper change.
-- `skill`: a checked-in skill or agent must still trigger, execute, and validate cleanly.
-- `workflow`: a stateful automation keeps stalling on the same recovery step.
+- `repo / whole-repo`: an agent must obey the whole repo's operating contract.
+- `repo / skill`: a checked-in skill or agent must still trigger, execute, and validate cleanly.
+- `app / chat`: multi-turn assistant behavior regressed after a prompt or wrapper change.
+- `app / prompt`: a single-turn prompt input/output behavior must remain stable.
 
-For input shapes, prefer the relevant `--example-input` command from `cautilus scenarios --json` over hand-written JSON.
+For scenario proposal input shapes, prefer the relevant `--example-input` command from `cautilus scenarios --json` over hand-written JSON.
 
 ## Bootstrap
 
@@ -96,7 +97,7 @@ When default `doctor` returns `ready`, read its `first_bounded_run` payload befo
 - adapter shape: [adapter-contract.md](references/adapter-contract.md)
 - report and review: [reporting.md](references/reporting.md), [review-packet.md](references/review-packet.md), [review-prompt-inputs.md](references/review-prompt-inputs.md)
 - scenario proposal flow: [scenario-proposal-sources.md](references/scenario-proposal-sources.md), [scenario-proposal-inputs.md](references/scenario-proposal-inputs.md), [scenario-proposal-normalization.md](references/scenario-proposal-normalization.md)
-- archetype details: [chatbot-normalization.md](references/chatbot-normalization.md), [skill-testing.md](references/skill-testing.md), [skill-evaluation.md](references/skill-evaluation.md), [skill-normalization.md](references/skill-normalization.md), [workflow-normalization.md](references/workflow-normalization.md)
+- evaluation and normalization details: [skill-testing.md](references/skill-testing.md), [skill-evaluation.md](references/skill-evaluation.md), [chatbot-normalization.md](references/chatbot-normalization.md), [skill-normalization.md](references/skill-normalization.md), [workflow-normalization.md](references/workflow-normalization.md)
 - evidence and optimize: [evidence-bundle.md](references/evidence-bundle.md), [optimization.md](references/optimization.md), [optimization-search.md](references/optimization-search.md), [revision-artifact.md](references/revision-artifact.md)
 
 ## Workflow

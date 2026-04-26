@@ -397,5 +397,5 @@ node scripts/agent-runtime/build-optimize-input.mjs --report-file /tmp/cautilus-
 node scripts/agent-runtime/generate-optimize-proposal.mjs --input /tmp/cautilus-optimize/input.json
 node scripts/agent-runtime/summarize-scenario-telemetry.mjs --results ./fixtures/scenario-proposals/results.json
 node scripts/agent-runtime/build-report-packet.mjs --input ./fixtures/reports/report-input.json
-node scripts/agent-runtime/evaluate-adapter-mode.mjs --repo-root . --mode held_out --intent "Operator-facing behavior should remain legible." --baseline-ref origin/main --output-dir /tmp/cautilus-mode
+./bin/cautilus eval test --repo-root . --fixture fixtures/eval/app/prompt/cautilus-tagline.fixture.json --output-dir /tmp/cautilus-eval
 ```

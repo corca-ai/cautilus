@@ -1,26 +1,22 @@
 package runtime
 
-// Per-archetype contract enforced inside this file.
+// Per-normalization-family contract enforced inside this file.
 //
-// The three first-class evaluation archetypes (chatbot, skill, workflow)
-// each ship the same shape inside this file:
-//   - top-level `Normalize<Archetype>ProposalCandidates(...)` entry point.
-//   - per-pattern `build<Archetype>...Candidate(...)` builder helpers.
-//   - input-isolation `assert<Archetype>TargetKind(...)` (skill, workflow).
+// The three scenario-normalization families (chatbot, skill, workflow) each
+// ship the same shape inside this file:
+//   - top-level `Normalize<Family>ProposalCandidates(...)` entry point.
+//   - per-pattern `build<Family>...Candidate(...)` builder helpers.
+//   - input-isolation `assert<Family>TargetKind(...)` (skill, workflow).
 //   - shared `mergeCandidatesByProposalKey` for deterministic ordering.
 //
-// `mergeCandidatesByProposalKey` stays shared across archetypes; do not
-// duplicate it per archetype.
+// `mergeCandidatesByProposalKey` stays shared across families; do not
+// duplicate it per family.
 //
-// Adding a fourth archetype means adding the per-archetype shapes here
-// in the same slice as the schema constant, contract document,
-// fixtures, CLI subcommand, README block, and
-// `internal/runtime/scenarios.go` catalog entry. The Source Guard table
-// in archetype-boundary.spec.md only proves named patterns exist;
-// widening this file without the matching scenarios.go entry will pass
-// `npm run lint` and break `cautilus scenarios` only at runtime. See
-// the Adding-A-New-First-Class-Archetype walkthrough in the spec for
-// the ordered checklist.
+// Adding another normalization family means adding the per-family shapes here
+// in the same slice as the schema constant, contract document, fixtures, CLI
+// subcommand, README block, and `internal/runtime/scenarios.go` catalog entry.
+// Widening this file without the matching scenarios.go entry will pass
+// `npm run lint` and break `cautilus scenarios` only at runtime.
 
 import (
 	"fmt"

@@ -125,11 +125,10 @@ host 가 subagent spawning 을 막으면 same-agent pass 로 대체하지 말고
 
 항상 의식해야 하는 함정들.
 
-- **아키타입 확장 욕심**.
+- **normalization family 확장 욕심**.
   네 번째 (`tool_use`, `pipeline` 등) 유혹이 와도 추가하지 말 것.
-  `archetype-boundary.spec.md` 가 요구하는 대로, 새 아키타입은 schema + helper + CLI + contract + fixture + README + SKILL.md + scenarios.go + starter kit 까지 한 슬라이스에 같이 가져올 때만.
-  순서는 스펙의 "Adding A New First-Class Archetype" 12-step walkthrough.
-  `npm run lint:archetypes` 가 이 완결성을 자동 검증 (starter kit 은 optional).
+  새 family 는 schema + helper + CLI + contract + fixture + README + SKILL.md + scenarios.go + starter kit 까지 한 슬라이스에 같이 가져올 때만.
+  `npm run lint:archetypes` 가 survivor `scenario normalize` 런타임 완결성을 검증한다.
 - **프로토타입 격리**.
   프로토타입은 `internal/runtime/prototypes/` 로 간다 (escape hatch).
   `cautilus.<name>_prototype.v0` 네이밍.

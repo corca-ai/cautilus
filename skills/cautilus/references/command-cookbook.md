@@ -10,23 +10,22 @@ LLM-behavior surfaces (see `bootstrap-inventory.md`). Use it to turn the
 normalized evidence into bounded scenarios before widening adapter YAML by
 hand.
 
-## Eval test / eval evaluate (repo/skill)
+## Eval test / eval evaluate
 
 ```bash
 cautilus eval test \
   --repo-root . \
-  --adapter-name self-dogfood-eval-skill
+  --fixture fixtures/eval/app/prompt/cautilus-tagline.fixture.json \
+  --output-dir /tmp/cautilus-eval
 
 cautilus eval evaluate \
   --input ./eval-observed.json \
-  --output /tmp/cautilus-skill-summary.json
+  --output /tmp/cautilus-eval-summary.json
 ```
 
-Prefer `eval test` with a `surface=repo, preset=skill` fixture when the repo
-already has a checked-in case suite plus adapter-owned runner for a local
-skill. Fall back to `eval evaluate` when the host already produced a normalized
-observed packet (`cautilus.skill_evaluation_inputs.v1`) and only needs the
-product summary/recommendation layer.
+Prefer `eval test` when the repo already has a checked-in `cautilus.evaluation_input.v1` fixture plus adapter-owned runner.
+The currently shipped presets are `repo / whole-repo`, `repo / skill`, `app / chat`, and `app / prompt`.
+Fall back to `eval evaluate` when the host already produced a normalized observed packet and only needs the product summary/recommendation layer.
 
 ## Scenario normalize / prepare / propose / conversation review / telemetry
 
@@ -63,7 +62,7 @@ cautilus report build \
   --input ./fixtures/reports/report-input.json
 ```
 
-## Mode evaluate
+## Eval test with active run
 
 ```bash
 # --output-dir is optional when cautilus workspace start has already pinned
@@ -72,9 +71,7 @@ cautilus report build \
 # curated bundle path).
 cautilus eval test \
   --repo-root . \
-  --mode held_out \
-  --intent "Operator-facing behavior should remain legible." \
-  --baseline-ref origin/main \
+  --fixture fixtures/eval/whole-repo/checked-in-agents-routing.fixture.json \
   --output-dir /tmp/cautilus-mode
 ```
 

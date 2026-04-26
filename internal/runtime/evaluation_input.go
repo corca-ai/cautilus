@@ -8,8 +8,8 @@ import (
 
 // EvaluationInput is the v1 fixture envelope defined in
 // docs/specs/evaluation-surfaces.spec.md. The current slice supports only the
-// repo/whole-repo and repo/skill presets; other surface/preset combinations
-// and the C2/C3/C4 composition primitives error out until their slices ship.
+// repo/whole-repo, repo/skill, app/chat, and app/prompt presets; the C2/C3/C4
+// composition primitives error out until their slices ship.
 type EvaluationInput struct {
 	Surface          string
 	Preset           string
@@ -20,7 +20,7 @@ type EvaluationInput struct {
 
 var supportedEvaluationCombos = map[string]map[string]bool{
 	"repo": {"whole-repo": true, "skill": true},
-	"app":  {"chat": true},
+	"app":  {"chat": true, "prompt": true},
 }
 
 func NormalizeEvaluationInput(input map[string]any) (*EvaluationInput, error) {
@@ -85,6 +85,18 @@ func NormalizeEvaluationInput(input map[string]any) (*EvaluationInput, error) {
 		}, nil
 	case "chat":
 		translated, err := translateAppChatFixture(input, suiteID, suiteDisplayName)
+		if err != nil {
+			return nil, err
+		}
+		return &EvaluationInput{
+			Surface:          surface,
+			Preset:           preset,
+			SuiteID:          suiteID,
+			SuiteDisplayName: suiteDisplayName,
+			TranslatedCases:  translated,
+		}, nil
+	case "prompt":
+		translated, err := translateAppPromptFixture(input, suiteID, suiteDisplayName)
 		if err != nil {
 			return nil, err
 		}

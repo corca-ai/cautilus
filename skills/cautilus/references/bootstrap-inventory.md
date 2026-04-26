@@ -19,8 +19,7 @@ After the inventory:
 - if the repo has no LLM-behavior surface, `Cautilus` is not the right tool
   yet — keep the deterministic gates and revisit once behavior evaluation is
   the actual question
-- if the repo has one surface, start with the matching archetype (chatbot /
-  skill / workflow) from `SKILL.md` § Scenarios before widening adapter YAML
+- if the repo has one surface, start with the matching evaluation surface and preset from `SKILL.md` § Evaluation Surface Routing before widening adapter YAML
 - if the repo has several surfaces, prefer one adapter per surface over a
   single omnibus adapter; `cautilus adapter init --repo-root .` scaffolds
   per-adapter YAML

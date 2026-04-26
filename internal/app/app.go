@@ -543,7 +543,7 @@ func handleScenarios(repoRoot string, cwd string, args []string, stdout io.Write
 		}
 		return 0
 	}
-	lines := []string{"Cautilus evaluation archetypes (1:1 to archetype-boundary.spec.md):", ""}
+	lines := []string{"Cautilus scenario normalization families:", ""}
 	for _, entry := range catalog.Archetypes {
 		lines = append(lines,
 			fmt.Sprintf("  %s", entry.Archetype),
@@ -788,8 +788,10 @@ func buildEvalEvaluateSummary(input map[string]any) (map[string]any, error) {
 		return runtime.BuildSkillEvaluationSummary(input, time.Now())
 	case contracts.AppChatEvaluationInputsSchema:
 		return runtime.BuildAppChatEvaluationSummary(input, time.Now())
+	case contracts.AppPromptEvaluationInputsSchema:
+		return runtime.BuildAppPromptEvaluationSummary(input, time.Now())
 	default:
-		return nil, fmt.Errorf("unsupported schemaVersion %v: cautilus eval evaluate accepts %s, %s, or %s", input["schemaVersion"], contracts.EvaluationObservedSchema, contracts.SkillEvaluationInputsSchema, contracts.AppChatEvaluationInputsSchema)
+		return nil, fmt.Errorf("unsupported schemaVersion %v: cautilus eval evaluate accepts %s, %s, %s, or %s", input["schemaVersion"], contracts.EvaluationObservedSchema, contracts.SkillEvaluationInputsSchema, contracts.AppChatEvaluationInputsSchema, contracts.AppPromptEvaluationInputsSchema)
 	}
 }
 
