@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/corca-ai/cautilus/internal/cli"
+	"github.com/corca-ai/cautilus/internal/contracts"
 )
 
 func TestRunVersionUsesEnvVersionWithoutToolRoot(t *testing.T) {
@@ -145,6 +146,7 @@ func TestRunCommandsJSONReturnsRegistry(t *testing.T) {
 	foundClaimReviewApply := false
 	foundClaimPlanEvals := false
 	foundClaimValidate := false
+	foundAgentStatus := false
 	for _, raw := range commands {
 		command := raw.(map[string]any)
 		path := command["path"].([]any)
@@ -166,9 +168,82 @@ func TestRunCommandsJSONReturnsRegistry(t *testing.T) {
 		if len(path) == 2 && path[0] == "claim" && path[1] == "validate" {
 			foundClaimValidate = true
 		}
+		if len(path) == 2 && path[0] == "agent" && path[1] == "status" {
+			foundAgentStatus = true
+		}
 	}
-	if !foundClaimDiscover || !foundClaimShow || !foundClaimReviewPrepare || !foundClaimReviewApply || !foundClaimPlanEvals || !foundClaimValidate {
+	if !foundClaimDiscover || !foundClaimShow || !foundClaimReviewPrepare || !foundClaimReviewApply || !foundClaimPlanEvals || !foundClaimValidate || !foundAgentStatus {
 		t.Fatalf("expected commands payload to include claim commands, got %#v", commands)
+	}
+}
+
+func TestRunAgentStatusJSONReturnsNoInputOrientation(t *testing.T) {
+	repoRoot := t.TempDir()
+	initGitRepo(t, repoRoot)
+	if err := os.MkdirAll(filepath.Join(repoRoot, ".agents", "skills", "cautilus"), 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(repoRoot, ".agents", "skills", "cautilus", "SKILL.md"), []byte("# Cautilus\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	if err := os.MkdirAll(filepath.Join(repoRoot, ".claude", "skills"), 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	adapter := strings.Join([]string{
+		"version: 1",
+		"repo: temp",
+		"evaluation_surfaces:",
+		"  - skill",
+		"claim_discovery:",
+		"  entries:",
+		"    - README.md",
+		"  linked_markdown_depth: 3",
+		"",
+	}, "\n")
+	if err := os.WriteFile(filepath.Join(repoRoot, ".agents", "cautilus-adapter.yaml"), []byte(adapter), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(repoRoot, "README.md"), []byte("# Temp\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+
+	t.Setenv("CAUTILUS_CALLER_CWD", repoRoot)
+	t.Setenv("CAUTILUS_TOOL_ROOT", "")
+	t.Setenv("CAUTILUS_VERSION", "v1.2.3")
+	t.Setenv("XDG_CACHE_HOME", t.TempDir())
+
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	exitCode := Run([]string{"agent", "status", "--repo-root", ".", "--json"}, &stdout, &stderr)
+	if exitCode != 0 {
+		t.Fatalf("Run returned exit code %d, stderr=%s", exitCode, stderr.String())
+	}
+	var payload map[string]any
+	if err := json.Unmarshal(stdout.Bytes(), &payload); err != nil {
+		t.Fatalf("Unmarshal returned error: %v", err)
+	}
+	if payload["schemaVersion"] != contracts.AgentStatusSchema {
+		t.Fatalf("unexpected schemaVersion: %#v", payload["schemaVersion"])
+	}
+	if payload["mode"] != "orientation" {
+		t.Fatalf("expected orientation mode, got %#v", payload["mode"])
+	}
+	claimState := payload["claimState"].(map[string]any)
+	if claimState["status"] != "missing" {
+		t.Fatalf("expected missing claim state, got %#v", claimState)
+	}
+	scanScope := payload["scanScope"].(map[string]any)
+	if scanScope["linkedMarkdownDepth"] != float64(3) {
+		t.Fatalf("expected depth 3 scan scope, got %#v", scanScope["linkedMarkdownDepth"])
+	}
+	body := stdout.String()
+	if !strings.Contains(body, "run_first_claim_scan") {
+		t.Fatalf("expected first claim scan branch, got %s", body)
+	}
+	for _, forbidden := range []string{"eval test", "review variants", "optimize", "git commit"} {
+		if strings.Contains(body, forbidden) {
+			t.Fatalf("agent status should not offer %q, got %s", forbidden, body)
+		}
 	}
 }
 

@@ -22,10 +22,11 @@
     {
       "caseId": "execution-cautilus-no-input-claim-discovery-status",
       "evaluationKind": "execution",
-      "prompt": "Use $cautilus with no more task detail on this repo. Treat this as a first-touch status run: bootstrap the binary, agent surface, and adapter if needed; then determine whether there is a current claim-state packet. If there is no packet, explain the bounded scan scope and ask or stop before the first scan unless autonomous continuation is explicitly delegated. Do not run eval tests, quality review, code edits, or commits from this no-input request. Summarize the adapter state, claim state, and next branch options.",
+      "prompt": "Use $cautilus with no more task detail on this repo. Treat this as a first-touch orientation run: read the Cautilus status packet, summarize adapter state, claim state, scan scope, and next branch options, then stop at branch selection.",
       "requiredSummaryFragments": ["adapter", "claim", "next branch"],
       "forbiddenSummaryFragments": ["first_bounded_run", "first bounded run", "bounded eval", "bounded run", "첫 bounded run", "eval readiness", "eval test", "eval 실행", "scenarios --json"],
-      "forbiddenCommandFragments": ["git commit", "npm run lint", "npm run test", "npm run verify", "eval test", "quality/SKILL.md", "doctor --repo-root . --next-action", "--next-action"],
+      "requiredCommandFragments": ["agent status"],
+      "forbiddenCommandFragments": ["git commit", "git add", "claim discover", "npm run lint", "npm run test", "npm run verify", "eval test", "quality/SKILL.md", "doctor --repo-root . --next-action", "--next-action"],
       "thresholds": {
         "max_duration_ms": 180000
       }

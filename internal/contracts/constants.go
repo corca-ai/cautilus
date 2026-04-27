@@ -7,6 +7,7 @@ const (
 	AppPromptEvaluationInputsSchema                 = "cautilus.app_prompt_evaluation_inputs.v1"
 	AppPromptEvaluationSummarySchema                = "cautilus.app_prompt_evaluation_summary.v1"
 	AppPromptTestCasesSchema                        = "cautilus.app_prompt_test_cases.v1"
+	AgentStatusSchema                               = "cautilus.agent_status.v1"
 	BehaviorIntentSchema                            = "cautilus.behavior_intent.v1"
 	ChatbotNormalizationInputsSchema                = "cautilus.chatbot_normalization_inputs.v1"
 	ClaimProofPlanSchema                            = "cautilus.claim_proof_plan.v1"

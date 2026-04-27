@@ -30,11 +30,13 @@ Current discovery starts from adapter-owned entries or README.md/AGENTS.md/CLAUD
 Existing-packet helpers summarize a proof plan and prepare bounded review clusters without calling an LLM.
 The reviewed-claim helper plans eval fixtures from reviewed `cautilus-eval` claims without writing host-owned fixtures, prompts, runners, or policy.
 The validation helper gives automation a packet-shape and evidence-ref gate before a reviewed claim packet is reused.
+The no-input agent entry point is `agent status`: it emits a read-only orientation packet so the bundled skill can summarize readiness, claim-state availability, scan scope, and branch choices before running discovery, evaluation, review, optimization, edits, or commits.
 
 ## See It Work
 
 ```run:shell
 tmpdir=$(mktemp -d)
+./bin/cautilus agent status --repo-root . --json >"$tmpdir/agent-status.json"
 ./bin/cautilus claim discover --repo-root ./fixtures/claim-discovery/tiny-repo --output "$tmpdir/claims.json"
 ./bin/cautilus claim show --input "$tmpdir/claims.json" --output "$tmpdir/claim-status.json"
 ./bin/cautilus claim review prepare-input --claims "$tmpdir/claims.json" --max-clusters 2 --output "$tmpdir/claim-review-input.json"
@@ -68,6 +70,7 @@ JSON
 ./bin/cautilus claim review apply-result --claims "$tmpdir/claims.json" --review-result "$tmpdir/claim-review-result.json" --output "$tmpdir/reviewed-claims.json"
 ./bin/cautilus claim validate --claims "$tmpdir/reviewed-claims.json" --output "$tmpdir/claim-validation.json"
 ./bin/cautilus claim plan-evals --claims "$tmpdir/reviewed-claims.json" --output "$tmpdir/claim-eval-plan.json"
+grep -q '"schemaVersion": "cautilus.agent_status.v1"' "$tmpdir/agent-status.json"
 grep -q '"schemaVersion": "cautilus.claim_proof_plan.v1"' "$tmpdir/claims.json"
 grep -q '"schemaVersion": "cautilus.claim_status_summary.v1"' "$tmpdir/claim-status.json"
 grep -q '"schemaVersion": "cautilus.claim_review_input.v1"' "$tmpdir/claim-review-input.json"

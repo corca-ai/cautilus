@@ -50,6 +50,11 @@
   실제 `codex_exec` read-only 단독 no-input 검증은 `/tmp/cautilus-no-input-live/observed.json` 기준 `outcome=passed`였고, 금지된 eval/quality/test/commit command expectation을 통과했다.
   source checkout launcher `bin/cautilus`는 read-only agent sandbox에서 `go run`/`cgo`가 깨지지 않도록 external scratch root(`/dev/shm/cautilus-go` 우선, `/tmp/cautilus-go` fallback, `CAUTILUS_GO_TMP_ROOT` override)를 쓰도록 바뀌었다.
   관련 debug record는 [charness-artifacts/debug/debug-2026-04-26-source-shim-read-only-go-cache.md](../../charness-artifacts/debug/debug-2026-04-26-source-shim-read-only-go-cache.md).
+- 2026-04-27 후속 구현으로 no-input 경로는 `cautilus agent status --repo-root . --json`를 canonical orientation packet으로 읽는다.
+  이 command는 `cautilus.agent_status.v1`를 내보내며 binary health, agent-surface readiness, adapter state, repo-local claim-state availability, scan scope, next branches를 읽기 전용으로 묶는다.
+  bundled skill은 prompt-level 금지 목록 대신 `agent status`를 먼저 읽고 branch selection에서 멈추는 what/why 계약으로 정리됐다.
+  `scripts/agent-runtime/audit-cautilus-no-input-log.mjs`는 real `codex exec '$cautilus'` JSONL 전체에서 command/tool/message를 훑어 `agent status` 사용 여부와 discovery/eval/review/optimize/debug/edit/commit 회귀를 잡는다.
+  실제 self-check `/tmp/cautilus-no-input-1777250621.jsonl`는 audit `passed`였고 실행 command는 `find-skills` bootstrap 뒤 `./bin/cautilus agent status --repo-root . --json`까지였다.
 - 2026-04-26 후속 구현으로 existing-packet helper slice도 들어왔다.
   `claim show --input <claims.json>`는 `cautilus.claim_status_summary.v1`를 만들고, `claim review prepare-input --claims <claims.json>`는 LLM 호출 없이 bounded `cautilus.claim_review_input.v1` cluster packet을 만든다.
   그 다음 `claim review apply-result --claims <claims.json> --review-result <review-result.json>`도 들어왔다.
@@ -91,8 +96,8 @@
    archetype-boundary retire는 cut 슬라이스에 흡수됨.
 7. `repo/skill` / `app/chat` / `app/prompt` preset 중 어떤 surface에 real-codex/claude self-dogfood evidence를 먼저 붙일지 결정한다.
 8. 후속 후보: multi-turn `repo/skill` session scenario를 설계한다.
-   현재 no-input `$cautilus`는 첫 status 응답을 검증하지만, 사용자가 매우 구체적인 다음 프롬프트를 알아서 넣어야 한다면 실패다.
-   스킬이 status 뒤에 안전한 다음 행동을 추천하고, 사용자의 짧은 승인만으로 claim discover / claim show / planning으로 이어지는지 검증하는 멀티턴 시나리오가 필요하다.
+   현재 no-input `$cautilus` 첫 턴은 `agent status`와 auditor로 방어된다.
+   다음 검증은 사용자의 짧은 승인만으로 claim discover / claim show / planning으로 이어지는지, 그리고 스킬이 추가로 필요한 확인을 스스로 설명하는지다.
 
 ## Discuss
 

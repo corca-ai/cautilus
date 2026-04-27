@@ -54,6 +54,16 @@
       ]
     },
     {
+      "path": ["agent", "status"],
+      "group": "introspection",
+      "usage": "cautilus agent status --repo-root <path> [--json]",
+      "example": "cautilus agent status --repo-root . --json",
+      "notes": [
+        "Emits the no-input orientation packet for bundled skills.",
+        "The packet reads binary, agent-surface, adapter, and claim-state availability before a branch is selected."
+      ]
+    },
+    {
       "path": ["claim", "show"],
       "group": "results",
       "usage": "cautilus claim show --input <claims.json> [--output <summary.json>]",

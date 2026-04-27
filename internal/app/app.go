@@ -151,6 +151,8 @@ func nativeHandler(path []string) handlerFunc {
 		return handleScenarios
 	case "healthcheck":
 		return handleHealthcheck
+	case "agent status":
+		return handleAgentStatus
 	case "adapter resolve":
 		return handleAdapterResolve
 	case "adapter init":
@@ -327,6 +329,11 @@ type scenariosArgs struct {
 
 type healthcheckArgs struct {
 	json bool
+}
+
+type agentStatusArgs struct {
+	repoRoot *string
+	json     bool
 }
 
 type claimDiscoverArgs struct {
@@ -656,6 +663,45 @@ func handleHealthcheck(repoRoot string, cwd string, args []string, stdout io.Wri
 	}
 	_, _ = fmt.Fprintf(stdout, "healthy\n")
 	return 0
+}
+
+func handleAgentStatus(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	options, err := parseAgentStatusArgs(args)
+	if err != nil {
+		_, _ = fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	resolvedRepoRoot := resolveRepoRoot(cwd, options.repoRoot)
+	state, err := cli.InspectVersionState(repoRoot, cli.VersionStateOptions{
+		Now:              time.Now(),
+		AllowRemoteCheck: false,
+	})
+	if err != nil {
+		_, _ = fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	registry, err := cli.LoadRegistry()
+	if err != nil {
+		_, _ = fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	payload, exitCode, err := runtime.BuildAgentStatus(resolvedRepoRoot, runtime.AgentStatusOptions{
+		Current:      state.Current,
+		CommandCount: len(registry.Commands),
+	})
+	if err != nil {
+		_, _ = fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	if options.json {
+		if err := writeJSON(stdout, payload); err != nil {
+			_, _ = fmt.Fprintf(stderr, "%s\n", err)
+			return 1
+		}
+		return exitCode
+	}
+	_, _ = fmt.Fprintf(stdout, "%s\n", anyString(payload["status"]))
+	return exitCode
 }
 
 //nolint:errcheck // CLI stderr/stdout reporting is best-effort.
@@ -1991,6 +2037,27 @@ func parseHealthcheckArgs(args []string) (*healthcheckArgs, error) {
 			options.json = true
 		default:
 			return nil, fmt.Errorf("unexpected argument %q", args[index])
+		}
+	}
+	return options, nil
+}
+
+func parseAgentStatusArgs(args []string) (*agentStatusArgs, error) {
+	options := &agentStatusArgs{}
+	for index := 0; index < len(args); index++ {
+		arg := args[index]
+		switch arg {
+		case "--repo-root":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.repoRoot = &value
+		case "--json":
+			options.json = true
+		default:
+			return nil, fmt.Errorf("unexpected argument %q", arg)
 		}
 	}
 	return options, nil

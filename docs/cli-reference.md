@@ -62,6 +62,9 @@ cautilus healthcheck --json
 # command discovery, safe for wrapper tooling and agent runtimes
 cautilus commands --json
 
+# no-input agent orientation over binary, adapter, agent-surface, and claim state
+cautilus agent status --repo-root /path/to/repo --json
+
 # repo readiness for evaluation
 cautilus doctor --repo-root /path/to/repo
 
@@ -84,6 +87,8 @@ cautilus scenarios --json
 ```
 
 `cautilus <subcommand> --help` exits `0` for the registered native command surface, including grouped topics such as `cautilus optimize search --help`.
+Use `agent status --json` when a bundled skill or agent is invoked without a detailed task.
+It emits `cautilus.agent_status.v1`: a read-only orientation packet over binary health, local agent-surface readiness, adapter state, claim-state availability, scan scope, and branch choices.
 Use `doctor --next-action` when you want one current onboarding step plus the exact follow-up loop.
 Use `doctor --scope agent-surface` to verify only the bundled skill and local agent-surface install.
 Use default `doctor` (`--scope repo`) to verify the repo has a real runnable evaluation path.

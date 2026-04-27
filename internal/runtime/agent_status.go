@@ -1,0 +1,179 @@
+package runtime
+
+import (
+	"path/filepath"
+	"strings"
+
+	"github.com/corca-ai/cautilus/internal/contracts"
+)
+
+type AgentStatusOptions struct {
+	Current      any
+	CommandCount int
+}
+
+func BuildAgentStatus(repoRoot string, options AgentStatusOptions) (map[string]any, int, error) {
+	agentSurface, agentSurfaceExitCode, err := DoctorAgentSurface(repoRoot)
+	if err != nil {
+		return nil, 1, err
+	}
+	adapter, err := LoadAdapter(repoRoot, nil, nil)
+	if err != nil {
+		return nil, 1, err
+	}
+	claimOrientation, err := BuildClaimOrientation(repoRoot)
+	if err != nil {
+		return nil, 1, err
+	}
+
+	status := "ready"
+	if agentSurfaceExitCode != 0 || adapter == nil || !adapter.Valid {
+		status = "needs-setup"
+	}
+
+	payload := map[string]any{
+		"schemaVersion": contracts.AgentStatusSchema,
+		"mode":          "orientation",
+		"status":        status,
+		"repoRoot":      repoRoot,
+		"binary": map[string]any{
+			"status":       "healthy",
+			"current":      options.Current,
+			"commandCount": options.CommandCount,
+		},
+		"agentSurface": agentSurface,
+		"adapter":      renderAgentStatusAdapter(adapter),
+		"claimState":   claimOrientation["claimState"],
+		"scanScope":    claimOrientation["scanScope"],
+		"nextBranches": mergeAgentStatusBranches(adapter, claimOrientation["nextBranches"]),
+		"notice":       "Orientation packet only: it reads product readiness and claim-state availability so the agent can offer a branch before running discovery, evaluation, review, optimization, edits, or commits.",
+	}
+	return payload, 0, nil
+}
+
+func BuildClaimOrientation(repoRoot string) (map[string]any, error) {
+	config, err := resolveClaimDiscoveryConfig(repoRoot, nil)
+	if err != nil {
+		return nil, err
+	}
+	claimState := renderClaimState(config)
+	claimState["status"] = "missing"
+
+	statePath := strings.TrimSpace(config.statePath)
+	if statePath != "" && !filepath.IsAbs(statePath) {
+		resolvedStatePath := filepath.Join(repoRoot, filepath.FromSlash(statePath))
+		if fileExists(resolvedStatePath) {
+			packet, readErr := readJSONFile(resolvedStatePath)
+			if readErr != nil {
+				claimState["status"] = "invalid"
+				claimState["validation"] = map[string]any{
+					"valid": false,
+					"error": readErr.Error(),
+				}
+			} else if packet["schemaVersion"] != contracts.ClaimProofPlanSchema {
+				claimState["status"] = "unsupported"
+				claimState["validation"] = map[string]any{
+					"valid":         false,
+					"schemaVersion": packet["schemaVersion"],
+					"expected":      contracts.ClaimProofPlanSchema,
+				}
+			} else if summary, summaryErr := BuildClaimStatusSummary(packet, statePath); summaryErr != nil {
+				claimState["status"] = "invalid"
+				claimState["validation"] = map[string]any{
+					"valid": false,
+					"error": summaryErr.Error(),
+				}
+			} else {
+				claimState["status"] = "present"
+				claimState["summary"] = summary
+			}
+		}
+	} else if statePath != "" {
+		claimState["status"] = "unsupported_state_path"
+		claimState["validation"] = map[string]any{
+			"valid": false,
+			"error": "claim_discovery.state_path must be repo-relative for agent status orientation",
+		}
+	}
+
+	return map[string]any{
+		"claimState":   claimState,
+		"scanScope":    renderClaimScanScope(config),
+		"nextBranches": claimOrientationBranches(claimState, config),
+	}, nil
+}
+
+func renderAgentStatusAdapter(adapter *AdapterPayload) map[string]any {
+	if adapter == nil {
+		return map[string]any{
+			"found":    false,
+			"valid":    false,
+			"errors":   []string{"adapter payload was unavailable"},
+			"warnings": []string{},
+		}
+	}
+	return map[string]any{
+		"found":         adapter.Found,
+		"valid":         adapter.Valid,
+		"path":          adapter.Path,
+		"errors":        adapter.Errors,
+		"warnings":      adapter.Warnings,
+		"searchedPaths": adapter.SearchedPaths,
+	}
+}
+
+func mergeAgentStatusBranches(adapter *AdapterPayload, branches any) []any {
+	result := []any{}
+	if adapter == nil || !adapter.Found || !adapter.Valid {
+		result = append(result, map[string]any{
+			"id":      "initialize_adapter",
+			"label":   "Initialize or repair the repo adapter",
+			"command": "cautilus adapter init --repo-root .",
+			"reason":  "Adapter readiness is separate from claim discovery and should be resolved before deeper Cautilus workflows.",
+		})
+	}
+	result = append(result, arrayOrEmpty(branches)...)
+	result = append(result, map[string]any{
+		"id":     "stop",
+		"label":  "Stop after orientation",
+		"reason": "The status packet is enough when the user only wanted a first-touch read.",
+	})
+	return result
+}
+
+func claimOrientationBranches(claimState map[string]any, config claimDiscoveryConfig) []any {
+	switch stringOrEmpty(claimState["status"]) {
+	case "present":
+		return []any{
+			map[string]any{
+				"id":      "show_existing_claims",
+				"label":   "Summarize the existing claim packet",
+				"command": "cautilus claim show --input " + config.statePath,
+				"reason":  "Existing claim state should be read before refreshing or planning work.",
+			},
+			map[string]any{
+				"id":      "refresh_claims_from_diff",
+				"label":   "Plan a refresh from the existing packet",
+				"command": "cautilus claim discover --previous " + config.statePath + " --refresh-plan --output <refresh-plan.json>",
+				"reason":  "Refresh planning keeps prior claim state explicit before a new scan.",
+			},
+		}
+	case "missing":
+		return []any{
+			map[string]any{
+				"id":      "run_first_claim_scan",
+				"label":   "Run the first bounded claim scan",
+				"command": "cautilus claim discover --repo-root . --output " + config.statePath,
+				"reason":  "No repo-local claim packet exists yet; discovery starts from the reported entry files and link depth.",
+			},
+		}
+	default:
+		return []any{
+			map[string]any{
+				"id":     "repair_claim_state",
+				"label":  "Repair or replace the configured claim packet",
+				"reason": "The configured claim-state path exists or is configured but cannot be used as a valid Cautilus claim proof plan.",
+			},
+		}
+	}
+}
