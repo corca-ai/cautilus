@@ -23,7 +23,7 @@ This keeps host execution ownership in the adapter while letting `Cautilus` own 
 
 Minimum shape:
 
-- `surface: repo`
+- `surface: dev`
 - `preset: skill`
 - `suiteId`
 - optional `suiteDisplayName`
@@ -39,7 +39,8 @@ Minimum shape:
   - `evaluationKind`
     - `trigger`
     - `execution`
-  - `prompt`
+  - `prompt`, or `turns` for a bounded multi-turn episode
+  - optional episode `auditKind`
   - trigger-only `expectedTrigger`
     - `must_invoke`
     - `must_not_invoke`

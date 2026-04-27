@@ -15,7 +15,7 @@ asks for the local flow:
 `cautilus eval test` consumes a checked-in `cautilus.evaluation_input.v1`
 fixture with:
 
-- `surface: repo`
+- `surface: dev`
 - `preset: skill`
 - `suiteId`
 - optional `suiteDisplayName`
@@ -28,11 +28,16 @@ fixture with:
   - `evaluationKind`
     - `trigger`
     - `execution`
-  - `prompt`
+  - `prompt`, or `turns` for a multi-turn episode
   - trigger-only `expectedTrigger`
   - optional execution `thresholds`
+  - optional execution `auditKind` when the runner derives the result from a product-owned audit packet
   - optional `repeatCount`
   - optional `minConsensusCount`
+
+Each `turns` entry must include an `input` string.
+Dev-surface runners may also accept adapter hints such as `injectSkill: true` when the coding-agent CLI needs an explicit skill body in the first turn.
+The first shipped audit-backed episode is `auditKind: cautilus_refresh_flow`, used by the Cautilus refresh-flow dogfood fixture.
 
 Repeated cases should be run multiple times by the checked-in runner and
 collapsed into one observed evaluation result. `minConsensusCount` is the

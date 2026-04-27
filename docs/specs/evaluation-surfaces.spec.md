@@ -55,6 +55,17 @@ Skill identity also defaults from `suiteId`; the fixture may override it through
 Both surfaces are conceptually episode-based.
 A one-turn fixture is the degenerate case of a multi-turn episode; `app / prompt` stays intentionally one-turn because prompt I/O is the operator-facing concept.
 
+### Episode turns
+
+`turns: [...]` is the shared episode model.
+Each turn has one required `input` string.
+Dev-surface turns may also carry runtime-adapter hints such as `injectSkill: true` when the runner must materialize a portable skill body for a coding-agent CLI that does not perform host skill expansion itself.
+Those hints are adapter instructions, not product concepts; the portable fixture contract remains the ordered user inputs and the expected behavior evidence.
+
+Single-turn fixtures may continue to use the preset's compact field (`prompt`, `messages`, or `input`) when that is clearer.
+When a case provides `turns`, the runner must preserve turn order, record a transcript or runtime log artifact, and evaluate the resulting episode rather than treating each turn as an independent case.
+For `dev / skill`, the first shipped multi-turn slice is audit-backed: a case can set `auditKind` to a supported product audit, and the runner derives the case outcome from the audit packet instead of asking the agent to self-report JSON at the end of the episode.
+
 **Per-surface preset axes are different on purpose:**
 - `dev` preset axis = **development-work scope** (`repo` = open-ended repo/work contract, `skill` = one bounded capability).
 - `app` preset axis = **turn shape** (`chat` = multi-turn conversation, `prompt` = single-turn I/O).
@@ -186,6 +197,7 @@ Each criterion has at least one executable check.
 - **Per-preset proof**:
   - `dev / repo`: cautilus's own AGENTS.md routing test (current self-dogfood, ported).
   - `dev / skill`: portable plugin probe in fixture workspace (port from current skill test fixtures).
+  - `dev / skill` multi-turn: Cautilus refresh-flow episode fixture (`$cautilus`, then `1`) produces a transcript artifact and audit-backed skill evaluation packet.
   - `app / chat`: multi-turn fixture against fixture-backend (no real model).
   - `app / prompt`: single-turn fixture against fixture-backend.
 - **CLI runtime parity**: `app / chat` fixture run via direct API and via `claude -p --system-prompt` produces packets where the MUST-be-byte-equal fields match, the MUST-be-present-and-non-empty fields are populated on both sides, and the MAY-differ fields are carried with a harness tag.
@@ -242,6 +254,7 @@ Follow-up slices proceed in this order:
 
 1. ~~`dev / skill` preset — replace `cautilus skill test/evaluate`.~~ Shipped 2026-04-25.
    `cautilus.evaluation_input.v1` now translates `surface=dev, preset=skill` cases into the existing `cautilus.skill_test_cases.v1` shape, the `cautilus eval evaluate` handler dispatches to `BuildSkillEvaluationSummary` when the observed packet uses `cautilus.skill_evaluation_inputs.v1`, and the `cautilus skill test/evaluate` commands plus their adapter slots and example fixtures were cut without aliases.
+   Multi-turn episode support shipped 2026-04-27 for audit-backed `dev / skill` cases: fixtures may use `turns` and `auditKind`, and the local skill runner can drive a persistent Codex episode, write transcript artifacts, and derive the observed case result from the audit packet.
 2. `app / chat` preset — replace `cautilus mode evaluate` chatbot mode.
    Additive accept shipped 2026-04-25: `cautilus.evaluation_input.v1` accepts `surface=app, preset=chat` and translates fixtures to `cautilus.app_chat_test_cases.v1`; `cautilus eval evaluate` dispatches `BuildAppChatEvaluationSummary` on `cautilus.app_chat_evaluation_inputs.v1`; the result packet enforces the cross-runtime equivalence rules (provider/model/harness/mode=`messaging`/durationMs/observed.messages/observed.finalText required) at the evaluator boundary.
    The matching cut shipped 2026-04-26: `cautilus mode evaluate`, the `iterate / held_out / comparison / full_gate` adapter slots, and the chatbot scenario init scaffold were removed without aliases.

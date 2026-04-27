@@ -53,6 +53,8 @@ Summarize binary health, agent-surface readiness, adapter state, claim-state ava
 Then help the user pick the next branch or stop.
 Present branch labels and reasons in coordinator-facing language first.
 Keep internal branch ids as secondary references, not the option title.
+Treat each `nextBranches[].label` as the human choice name.
+The branch `id` is for stable packet references and should only appear after the label when it helps auditability.
 
 If `nextBranches` includes `initialize_adapter` and the user delegated setup continuation, run the adapter setup branch and then rerun `agent status`.
 If claim state is missing, present the bounded scan entries and depth before entering claim discovery.

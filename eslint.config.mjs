@@ -18,6 +18,7 @@ export default [
 			"node_modules/**",
 			"coverage/**",
 			"dist/**",
+			"artifacts/**",
 			".artifacts/**",
 			"_site/**",
 			"__pycache__/**",

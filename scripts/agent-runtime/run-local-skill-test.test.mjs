@@ -79,6 +79,67 @@ test("fixture-backed execution cases fail when summary expectations are violated
 	assert.match(packet.evaluations[0].summary, /included forbidden fragment: commit/);
 });
 
+test("skill case suites preserve audit-backed episode turns", () => {
+	const suite = normalizeSkillTestCaseSuite({
+		schemaVersion: "cautilus.skill_test_cases.v1",
+		skillId: "cautilus",
+		cases: [
+			{
+				caseId: "episode-cautilus-refresh-flow",
+				evaluationKind: "execution",
+				turns: [
+					{ input: "$cautilus", injectSkill: true },
+					{ input: "1" },
+				],
+				auditKind: "cautilus_refresh_flow",
+			},
+		],
+	});
+	assert.equal(suite.cases[0].prompt, "Multi-turn episode starting with: $cautilus");
+	assert.equal(suite.cases[0].turns.length, 2);
+	assert.equal(suite.cases[0].turns[0].injectSkill, true);
+	assert.equal(suite.cases[0].auditKind, "cautilus_refresh_flow");
+});
+
+test("fixture-backed episode cases still materialize skill evaluation packets", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-skill-test-episode-"));
+	const casesFile = join(root, "cases.json");
+	const fixtureResultsFile = join(root, "fixture-results.json");
+	writeFileSync(casesFile, `${JSON.stringify({
+		schemaVersion: "cautilus.skill_test_cases.v1",
+		skillId: "cautilus",
+		cases: [
+			{
+				caseId: "episode-cautilus-refresh-flow",
+				evaluationKind: "execution",
+				turns: [
+					{ input: "$cautilus", injectSkill: true },
+					{ input: "1" },
+				],
+				auditKind: "cautilus_refresh_flow",
+			},
+		],
+	}, null, 2)}\n`);
+	writeFileSync(fixtureResultsFile, `${JSON.stringify({
+		"episode-cautilus-refresh-flow": {
+			invoked: true,
+			summary: "Audit passed for the refresh-flow episode.",
+			outcome: "passed",
+			duration_ms: 1000,
+		},
+	}, null, 2)}\n`);
+	const packet = buildObservedSkillEvaluationInput({
+		repoRoot: process.cwd(),
+		workspace: process.cwd(),
+		casesFile,
+		artifactDir: join(root, "artifacts"),
+		backend: "fixture",
+		fixtureResultsFile,
+	});
+	assert.equal(packet.evaluations[0].prompt, "Multi-turn episode starting with: $cautilus");
+	assert.equal(packet.evaluations[0].outcome, "passed");
+});
+
 test("extractCodexCommandText finds commands from codex jsonl events", () => {
 	const stdout = [
 		JSON.stringify({ payload: { type: "function_call", arguments: JSON.stringify({ cmd: "./bin/cautilus doctor --repo-root ." }) } }),

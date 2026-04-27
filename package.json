@@ -11,6 +11,7 @@
     "dogfood:self": "npm run dogfood:self:eval",
     "dogfood:self:eval": "./bin/cautilus eval test --repo-root . --adapter-name self-dogfood-eval --output-dir ./artifacts/self-dogfood/eval/latest",
     "dogfood:cautilus-refresh-flow": "node scripts/agent-runtime/run-cautilus-refresh-flow-dogfood.mjs --repo-root . --output-dir ./artifacts/self-dogfood/cautilus-refresh-flow/latest",
+    "dogfood:cautilus-refresh-flow:eval": "./bin/cautilus eval test --repo-root . --adapter-name self-dogfood-refresh-flow --output-dir ./artifacts/self-dogfood/cautilus-refresh-flow-eval/latest",
     "dogfood:self:html": "./bin/cautilus self-dogfood render-html",
     "consumer:onboard:smoke": "node scripts/on-demand/smoke-external-consumer.mjs",
     "skills:sync-packaged": "node scripts/release/sync-packaged-skill.mjs",

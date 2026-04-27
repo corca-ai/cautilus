@@ -8,6 +8,7 @@ import {
 	SKILL_EVALUATION_INPUTS_SCHEMA,
 } from "./contract-versions.mjs";
 import { normalizeSkillTestCaseSuite } from "./skill-test-case-suite.mjs";
+import { baseSchema } from "./skill-test-schema.mjs";
 import { runClaudeSample } from "./skill-test-claude-backend.mjs";
 import {
 	aggregateSkillTelemetry,
@@ -21,16 +22,18 @@ import {
 	applyObservationExpectations,
 	extractCodexCommandText,
 } from "./skill-test-expectations.mjs";
+import { runCodexEpisodeSample as runCodexEpisodeSampleFromRuntime } from "./skill-test-codex-episode.mjs";
 
 export { normalizeSkillTestCaseSuite } from "./skill-test-case-suite.mjs";
 export { extractCodexCommandText } from "./skill-test-expectations.mjs";
+export { baseSchema } from "./skill-test-schema.mjs";
 
 const CODEX_SESSION_MODES = ["ephemeral", "persistent"];
 
 function usage(exitCode = 0) {
 	const text = [
 		"Usage:",
-		"  node ./scripts/agent-runtime/run-local-skill-test.mjs --repo-root <dir> --workspace <dir> --cases-file <file> --output-file <file> [--artifact-dir <dir>] [--backend codex_exec|fixture] [--fixture-results-file <file>] [--sandbox read-only|workspace-write] [--timeout-ms <ms>] [--model <model>] [--reasoning-effort <level>] [--codex-model <model>] [--codex-reasoning-effort <level>] [--codex-session-mode ephemeral|persistent] [--codex-ephemeral true|false] [--codex-config <key=value>] [--claude-model <model>] [--claude-permission-mode <mode>] [--claude-allowed-tools <rules>]",
+		"  node ./scripts/agent-runtime/run-local-skill-test.mjs --repo-root <dir> --workspace <dir> --cases-file <file> --output-file <file> [--artifact-dir <dir>] [--backend codex_exec|claude_code|fixture] [--fixture-results-file <file>] [--sandbox read-only|workspace-write] [--timeout-ms <ms>] [--model <model>] [--reasoning-effort <level>] [--codex-model <model>] [--codex-reasoning-effort <level>] [--codex-session-mode ephemeral|persistent] [--codex-ephemeral true|false] [--codex-config <key=value>] [--claude-model <model>] [--claude-permission-mode <mode>] [--claude-allowed-tools <rules>]",
 	].join("\n");
 	const out = exitCode === 0 ? process.stdout : process.stderr;
 	out.write(`${text}\n`);
@@ -219,30 +222,6 @@ function assertString(value, field) {
 	return value;
 }
 
-export function baseSchema(evaluationKind) {
-	if (evaluationKind === "trigger") {
-		return {
-			type: "object",
-			additionalProperties: false,
-			required: ["invoked", "summary"],
-			properties: {
-				invoked: { type: "boolean" },
-				summary: { type: "string" },
-			},
-		};
-	}
-	return {
-		type: "object",
-		additionalProperties: false,
-		required: ["invoked", "summary", "outcome"],
-		properties: {
-			invoked: { type: "boolean" },
-			summary: { type: "string" },
-			outcome: { type: "string", enum: ["passed", "failed", "degraded", "blocked"] },
-		},
-	};
-}
-
 export function renderPrompt(skillId, testCase) {
 	const lines = [
 		`You are being evaluated on whether you can use the local skill "${skillId}" when appropriate.`,
@@ -399,6 +378,17 @@ function runFixtureSample(testCase, fixtureResults, artifactDir, sampleIndex) {
 }
 
 function runCodexSample(options, testCase, artifactDir, sampleIndex) {
+	if ((testCase.turns ?? []).length > 0) {
+		return runCodexEpisodeSampleFromRuntime({
+			options,
+			testCase,
+			artifactDir,
+			sampleIndex,
+			artifactRef,
+			sampleDir,
+			backendFailureResult,
+		});
+	}
 	const caseDir = join(artifactDir, testCase.caseId);
 	const outputDir = sampleDir(caseDir, sampleIndex, testCase.repeatCount);
 	mkdirSync(outputDir, { recursive: true });

@@ -67,6 +67,39 @@ function stringList(value, field) {
 	return value.map((entry, index) => assertString(entry, `${field}[${index}]`));
 }
 
+function normalizeTurns(value, field) {
+	if (value === undefined || value === null) {
+		return [];
+	}
+	if (!Array.isArray(value) || value.length === 0) {
+		throw new Error(`${field} must be a non-empty array`);
+	}
+	return value.map((entry, index) => {
+		const record = assertObject(entry, `${field}[${index}]`);
+		const normalized = {
+			input: assertString(record.input, `${field}[${index}].input`),
+		};
+		if (record.injectSkill !== undefined) {
+			if (typeof record.injectSkill !== "boolean") {
+				throw new Error(`${field}[${index}].injectSkill must be a boolean`);
+			}
+			normalized.injectSkill = record.injectSkill;
+		}
+		return normalized;
+	});
+}
+
+function normalizeAuditKind(value, field) {
+	const auditKind = optionalString(value, field);
+	if (auditKind === null) {
+		return null;
+	}
+	if (!["cautilus_refresh_flow"].includes(auditKind)) {
+		throw new Error(`${field} must be cautilus_refresh_flow`);
+	}
+	return auditKind;
+}
+
 function normalizeExpectedTrigger(record, index, evaluationKind) {
 	const expectedTrigger = optionalString(record.expectedTrigger, `cases[${index}].expectedTrigger`);
 	if (evaluationKind === "trigger" && !["must_invoke", "must_not_invoke"].includes(expectedTrigger ?? "")) {
@@ -108,13 +141,26 @@ function normalizeCase(record, index, skillId, skillDisplayName, suiteRepeatCoun
 		suiteRepeatCount,
 		suiteMinConsensusCount,
 	);
+	const turns = normalizeTurns(record.turns, `cases[${index}].turns`);
+	const prompt = turns.length > 0
+		? optionalString(record.prompt, `cases[${index}].prompt`) ?? `Multi-turn episode starting with: ${turns[0].input}`
+		: assertString(record.prompt, `cases[${index}].prompt`);
+	const auditKind = normalizeAuditKind(record.auditKind, `cases[${index}].auditKind`);
+	if (turns.length > 0 && evaluationKind !== "execution") {
+		throw new Error(`cases[${index}].turns is only supported for execution cases`);
+	}
+	if (auditKind !== null && turns.length === 0) {
+		throw new Error(`cases[${index}].auditKind requires turns`);
+	}
 	return {
 		caseId: assertString(record.caseId, `cases[${index}].caseId`),
 		targetKind,
 		targetId: optionalString(record.targetId, `cases[${index}].targetId`) ?? skillId,
 		displayName: optionalString(record.displayName, `cases[${index}].displayName`) ?? skillDisplayName,
 		evaluationKind,
-		prompt: assertString(record.prompt, `cases[${index}].prompt`),
+		prompt,
+		turns,
+		auditKind,
 		expectedTrigger,
 		requiredSummaryFragments: stringList(record.requiredSummaryFragments, `cases[${index}].requiredSummaryFragments`),
 		forbiddenSummaryFragments: stringList(record.forbiddenSummaryFragments, `cases[${index}].forbiddenSummaryFragments`),

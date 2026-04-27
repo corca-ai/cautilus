@@ -13,6 +13,8 @@ type SkillTestCase struct {
 	DisplayName     string
 	EvaluationKind  string
 	Prompt          string
+	Turns           []map[string]any
+	AuditKind       *string
 	ExpectedTrigger *string
 	Thresholds      map[string]any
 	RepeatCount     int
@@ -102,9 +104,35 @@ func NormalizeSkillTestCaseSuite(input map[string]any) (*SkillTestCaseSuite, err
 		} else if value != nil {
 			displayName = *value
 		}
-		prompt, err := normalizeNonEmptyString(record["prompt"], fmt.Sprintf("cases[%d].prompt", index))
+		turns, err := normalizeSkillCaseTurns(record["turns"], fmt.Sprintf("cases[%d].turns", index))
 		if err != nil {
 			return nil, err
+		}
+		prompt := ""
+		if len(turns) > 0 {
+			if value, err := normalizeOptionalString(record["prompt"], fmt.Sprintf("cases[%d].prompt", index)); err != nil {
+				return nil, err
+			} else if value != nil {
+				prompt = *value
+			} else {
+				prompt = fmt.Sprintf("Multi-turn episode starting with: %s", stringOrEmpty(turns[0]["input"]))
+			}
+			if evaluationKind != "execution" {
+				return nil, fmt.Errorf("cases[%d].turns is only supported for execution cases", index)
+			}
+		} else {
+			var promptErr error
+			prompt, promptErr = normalizeNonEmptyString(record["prompt"], fmt.Sprintf("cases[%d].prompt", index))
+			if promptErr != nil {
+				return nil, promptErr
+			}
+		}
+		auditKind, err := normalizeSkillCaseAuditKind(record["auditKind"], fmt.Sprintf("cases[%d].auditKind", index))
+		if err != nil {
+			return nil, err
+		}
+		if auditKind != nil && len(turns) == 0 {
+			return nil, fmt.Errorf("cases[%d].auditKind requires turns", index)
 		}
 		expectedTrigger, err := normalizeOptionalString(record["expectedTrigger"], fmt.Sprintf("cases[%d].expectedTrigger", index))
 		if err != nil {
@@ -156,6 +184,8 @@ func NormalizeSkillTestCaseSuite(input map[string]any) (*SkillTestCaseSuite, err
 			DisplayName:     displayName,
 			EvaluationKind:  evaluationKind,
 			Prompt:          prompt,
+			Turns:           turns,
+			AuditKind:       auditKind,
 			ExpectedTrigger: expectedTrigger,
 			Thresholds:      thresholds,
 			RepeatCount:     repeatCount,
@@ -185,4 +215,49 @@ func normalizeOptionalPositiveInt(value any, field string) (*int, error) {
 	}
 	normalized := int(*number)
 	return &normalized, nil
+}
+
+func normalizeSkillCaseTurns(value any, field string) ([]map[string]any, error) {
+	if value == nil {
+		return []map[string]any{}, nil
+	}
+	rawTurns, err := assertArray(value, field)
+	if err != nil {
+		return nil, err
+	}
+	if len(rawTurns) == 0 {
+		return nil, fmt.Errorf("%s must be a non-empty array", field)
+	}
+	turns := make([]map[string]any, 0, len(rawTurns))
+	for index, rawTurn := range rawTurns {
+		record, ok := rawTurn.(map[string]any)
+		if !ok {
+			return nil, fmt.Errorf("%s[%d] must be an object", field, index)
+		}
+		input, err := normalizeNonEmptyString(record["input"], fmt.Sprintf("%s[%d].input", field, index))
+		if err != nil {
+			return nil, err
+		}
+		turn := map[string]any{"input": input}
+		if value, present := record["injectSkill"]; present {
+			boolValue, ok := value.(bool)
+			if !ok {
+				return nil, fmt.Errorf("%s[%d].injectSkill must be a boolean", field, index)
+			}
+			turn["injectSkill"] = boolValue
+		}
+		turns = append(turns, turn)
+	}
+	return turns, nil
+}
+
+func normalizeSkillCaseAuditKind(value any, field string) (*string, error) {
+	auditKind, err := normalizeOptionalString(value, field)
+	if err != nil || auditKind == nil {
+		return auditKind, err
+	}
+	if *auditKind != "cautilus_refresh_flow" {
+		return nil, fmt.Errorf("%s must be cautilus_refresh_flow", field)
+	}
+	return auditKind, nil
 }

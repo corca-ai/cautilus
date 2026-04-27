@@ -262,6 +262,11 @@ cautilus eval test \
   --repo-root . \
   --adapter-name self-dogfood-eval-skill
 
+# run the multi-turn Cautilus refresh-flow episode through the same eval seam
+cautilus eval test \
+  --repo-root . \
+  --adapter-name self-dogfood-refresh-flow
+
 # evaluate one normalized skill packet for trigger accuracy and execution quality
 # (cautilus.skill_evaluation_inputs.v1 input)
 cautilus eval evaluate \

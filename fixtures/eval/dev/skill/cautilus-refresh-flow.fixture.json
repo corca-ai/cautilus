@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "cautilus.evaluation_input.v1",
+  "surface": "dev",
+  "preset": "skill",
+  "suiteId": "cautilus-refresh-flow",
+  "suiteDisplayName": "Cautilus Refresh Flow",
+  "skillId": "cautilus",
+  "skillDisplayName": "cautilus",
+  "cases": [
+    {
+      "caseId": "episode-cautilus-refresh-flow",
+      "evaluationKind": "execution",
+      "turns": [
+        {
+          "input": "$cautilus",
+          "injectSkill": true
+        },
+        {
+          "input": "1"
+        }
+      ],
+      "auditKind": "cautilus_refresh_flow",
+      "thresholds": {
+        "max_duration_ms": 240000
+      }
+    }
+  ]
+}

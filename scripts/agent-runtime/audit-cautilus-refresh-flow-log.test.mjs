@@ -73,6 +73,28 @@ test("fails when branch labels start from internal ids or flow overruns", () => 
 	assert(ids.includes("forbidden_command:claim_review_prepare"));
 });
 
+test("does not treat prose inside another shell command as an eval overrun", () => {
+	const audit = auditRefreshFlowLogText(jsonl([
+		toolCall(1, "./bin/cautilus agent status --repo-root . --json"),
+		toolCall(2, "./bin/cautilus claim discover --repo-root . --previous .cautilus/claims/latest.json --refresh-plan --output .cautilus/claims/refresh-plan.json"),
+		toolCall(3, "jq '.refreshSummary' .cautilus/claims/refresh-plan.json"),
+		toolCall(4, "perl -0pi -e 's/Create a host-owned repo\\/skill fixture and run it through cautilus eval test/Create a host-owned dev\\/skill fixture and run it through cautilus eval test/g' .cautilus/claims/latest.json"),
+		assistant("The saved claim map was not updated."),
+	]));
+	assert.equal(audit.findings.some((finding) => finding.id === "forbidden_command:eval_test"), false);
+});
+
+test("still rejects an actual eval test command during the refresh branch", () => {
+	const audit = auditRefreshFlowLogText(jsonl([
+		toolCall(1, "./bin/cautilus agent status --repo-root . --json"),
+		toolCall(2, "./bin/cautilus claim discover --repo-root . --previous .cautilus/claims/latest.json --refresh-plan --output .cautilus/claims/refresh-plan.json"),
+		toolCall(3, "jq '.refreshSummary' .cautilus/claims/refresh-plan.json"),
+		toolCall(4, "./bin/cautilus eval test --repo-root ."),
+		assistant("The saved claim map was not updated."),
+	]));
+	assert(audit.findings.some((finding) => finding.id === "forbidden_command:eval_test"));
+});
+
 test("accepts Korean wording that says the saved claim map was not refreshed", () => {
 	const audit = auditRefreshFlowLogText(jsonl([
 		toolCall(1, "./bin/cautilus agent status --repo-root . --json"),

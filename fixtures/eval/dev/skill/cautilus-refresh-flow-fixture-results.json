@@ -1,0 +1,8 @@
+{
+  "episode-cautilus-refresh-flow": {
+    "invoked": true,
+    "summary": "Audit passed for the multi-turn Cautilus refresh-flow episode.",
+    "outcome": "passed",
+    "duration_ms": 1000
+  }
+}

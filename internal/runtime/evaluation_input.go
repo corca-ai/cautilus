@@ -203,6 +203,12 @@ func translateSkillFixture(input map[string]any, suiteID string, suiteDisplayNam
 		for key, value := range entry {
 			translated[key] = value
 		}
+		if _, hasPrompt := translated["prompt"]; !hasPrompt {
+			if turns := arrayOrEmpty(translated["turns"]); len(turns) > 0 {
+				firstTurn := asMap(turns[0])
+				translated["prompt"] = fmt.Sprintf("Multi-turn episode starting with: %s", stringFromAny(firstTurn["input"]))
+			}
+		}
 		translatedCases = append(translatedCases, translated)
 	}
 	translatedSuite := map[string]any{

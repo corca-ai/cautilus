@@ -98,6 +98,43 @@ func TestNormalizeEvaluationInputAcceptsDevSkill(t *testing.T) {
 	}
 }
 
+func TestNormalizeEvaluationInputAcceptsDevSkillEpisodeTurns(t *testing.T) {
+	fixture := validDevSkillFixture()
+	cases := fixture["cases"].([]any)
+	cases[0] = map[string]any{
+		"caseId":         "episode-demo",
+		"evaluationKind": "execution",
+		"turns": []any{
+			map[string]any{"input": "$demo", "injectSkill": true},
+			map[string]any{"input": "1"},
+		},
+		"auditKind": "cautilus_refresh_flow",
+	}
+	result, err := NormalizeEvaluationInput(fixture)
+	if err != nil {
+		t.Fatalf("expected success, got error: %v", err)
+	}
+	casesOut := result.TranslatedCases["cases"].([]any)
+	first := casesOut[0].(map[string]any)
+	if first["prompt"] != "Multi-turn episode starting with: $demo" {
+		t.Fatalf("expected synthesized prompt, got %#v", first["prompt"])
+	}
+	if len(first["turns"].([]any)) != 2 || first["auditKind"] != "cautilus_refresh_flow" {
+		t.Fatalf("expected turns and auditKind to round-trip, got %#v", first)
+	}
+}
+
+func TestNormalizeEvaluationInputRejectsDevSkillTurnsOnTrigger(t *testing.T) {
+	fixture := validDevSkillFixture()
+	cases := fixture["cases"].([]any)
+	caseEntry := cases[0].(map[string]any)
+	caseEntry["turns"] = []any{map[string]any{"input": "$demo"}}
+	_, err := NormalizeEvaluationInput(fixture)
+	if err == nil || !strings.Contains(err.Error(), "turns") {
+		t.Fatalf("expected turns trigger validation error, got %v", err)
+	}
+}
+
 func TestNormalizeEvaluationInputSkillDefaultsSkillIdFromSuiteId(t *testing.T) {
 	fixture := validDevSkillFixture()
 	delete(fixture, "skillId")
