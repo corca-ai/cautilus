@@ -1553,6 +1553,10 @@ func handleReviewRenderPrompt(repoRoot string, cwd string, args []string, stdout
 	}
 	if options.output != nil {
 		outputPath := resolvePath(cwd, *options.output)
+		if err := ensureParentDir(&outputPath); err != nil {
+			fmt.Fprintf(stderr, "%s\n", err)
+			return 1
+		}
 		if err := os.WriteFile(outputPath, []byte(prompt), 0o644); err != nil {
 			fmt.Fprintf(stderr, "%s\n", err)
 			return 1

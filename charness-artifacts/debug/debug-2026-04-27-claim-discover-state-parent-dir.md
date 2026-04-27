@@ -61,6 +61,8 @@ Updated `TestRunClaimDiscoverWritesProofPlanFromTinyRepo` to write to `.cautilus
 `go test ./internal/app -run TestRunClaimDiscoverWritesProofPlanFromTinyRepo` passed.
 After the fix, `./bin/cautilus claim discover --repo-root . --output .cautilus/claims/latest.json` succeeded.
 `./bin/cautilus claim show --input .cautilus/claims/latest.json --output .cautilus/claims/status-summary.json` succeeded.
+Follow-up verification also found that committed claim packets can trip gitleaks' Sourcegraph token rule on the `gitCommit` metadata field.
+Added a narrow `.gitleaks.toml` allowlist for `gitCommit` lines under `.cautilus/claims/*.json`.
 
 ## Root Cause
 
@@ -84,8 +86,10 @@ The command worked only when the chosen output directory already existed.
 
 ## Prevention
 
-Keep parent-directory creation in the shared JSON output helper so product-suggested nested output paths work consistently.
+Keep parent-directory creation in shared output helpers so product-suggested nested output paths work consistently.
+When a native CLI command writes a non-JSON text artifact outside `writeOutputResolved`, call `ensureParentDir` before `os.WriteFile`.
 When adding a command that prints a default repo-local state path, include a test that writes to a previously missing nested directory.
+Keep the secret-scan allowlist scoped to claim-packet `gitCommit` metadata only; do not broaden it to arbitrary 40-character tokens.
 
 ## Related Prior Incidents
 

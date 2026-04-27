@@ -1845,7 +1845,7 @@ func TestCLIOptimizeSearchPrepareInputAppliesAdapterSearchDefaults(t *testing.T)
 func TestCLIReviewBuildPromptInputAndRenderPromptCloseMetaPromptSeam(t *testing.T) {
 	root := t.TempDir()
 	reviewPacketPath := filepath.Join(root, "review-packet.json")
-	promptPath := filepath.Join(root, "review.prompt.md")
+	promptPath := filepath.Join(root, "artifacts", "prompts", "review.prompt.md")
 	promptInputPath := filepath.Join(root, "review-prompt-input.json")
 	outputUnderTestPath := filepath.Join(root, "artifacts", "analysis-output.json")
 	if err := os.MkdirAll(filepath.Join(root, "fixtures"), 0o755); err != nil {
