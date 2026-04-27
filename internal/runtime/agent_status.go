@@ -152,19 +152,19 @@ func claimOrientationBranches(claimState map[string]any, config claimDiscoveryCo
 	case "present":
 		showBranch := map[string]any{
 			"id":      "show_existing_claims",
-			"label":   "Summarize the existing claim packet",
+			"label":   "Inspect the saved claim map",
 			"command": "cautilus claim show --input " + quotedStatePath + " --sample-claims 10",
-			"reason":  "Existing claim state should be read before refreshing or planning work.",
+			"reason":  "Use this when the saved claim map is current enough to decide whether to review claims, add deterministic tests, or plan Cautilus eval scenarios.",
 		}
 		refreshBranch := map[string]any{
 			"id":      "refresh_claims_from_diff",
-			"label":   "Plan a refresh from the existing packet",
+			"label":   "Compare the saved claim map with recent repo changes",
 			"command": "cautilus claim discover --repo-root " + quotedRepoRoot + " --previous " + quotedStatePath + " --refresh-plan --output <refresh-plan.json>",
-			"reason":  "Refresh planning keeps prior claim state explicit before a new scan.",
+			"reason":  "This records what changed since the claim map was saved, without launching review or eval work.",
 		}
 		if asMap(asMap(claimState["summary"])["gitState"])["isStale"] == true {
-			refreshBranch["reason"] = "The existing claim packet is stale against the current checkout; refresh planning should happen before review or eval planning."
-			showBranch["reason"] = "Use this only to inspect stale claim state; refresh planning is the safer next branch before review or eval planning."
+			refreshBranch["reason"] = "The saved claim map was made from an older checkout; compare it with the current repo before review or eval planning."
+			showBranch["reason"] = "Use this only to inspect the older saved map; it should not drive review or eval planning until the map is refreshed."
 			return []any{refreshBranch, showBranch}
 		}
 		return []any{showBranch, refreshBranch}

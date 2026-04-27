@@ -657,4 +657,19 @@ func TestBuildClaimRefreshPlanMarksChangedSources(t *testing.T) {
 	if asMap(claimPlan[0])["lifecycle"] != "changed" {
 		t.Fatalf("expected changed lifecycle, got %#v", claimPlan)
 	}
+	refreshSummary := asMap(plan["refreshSummary"])
+	if refreshSummary["status"] != "changes-detected" {
+		t.Fatalf("expected changes-detected refresh summary, got %#v", refreshSummary)
+	}
+	if refreshSummary["changedSourceCount"] != 1 || refreshSummary["changedClaimCount"] != 1 || refreshSummary["carriedForwardClaimCount"] != 0 {
+		t.Fatalf("unexpected refresh counts: %#v", refreshSummary)
+	}
+	changedClaimSources := arrayOrEmpty(refreshSummary["changedClaimSources"])
+	if len(changedClaimSources) != 1 || asMap(changedClaimSources[0])["path"] != "README.md" || asMap(changedClaimSources[0])["claimCount"] != 1 {
+		t.Fatalf("expected README.md changed claim source, got %#v", changedClaimSources)
+	}
+	nextActions := arrayOrEmpty(refreshSummary["nextActions"])
+	if len(nextActions) == 0 || asMap(nextActions[0])["id"] != "update_saved_claim_map" {
+		t.Fatalf("expected update_saved_claim_map first next action, got %#v", nextActions)
+	}
 }

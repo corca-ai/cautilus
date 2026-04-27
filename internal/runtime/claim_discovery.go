@@ -1766,26 +1766,39 @@ func BuildClaimRefreshPlan(options ClaimRefreshPlanOptions) (map[string]any, err
 	}
 	previousCandidates := arrayOrEmpty(previous["claimCandidates"])
 	claims := []any{}
+	changedClaimCount := 0
+	carriedForwardClaimCount := 0
+	changedClaimSourceCounts := map[string]int{}
 	for _, raw := range previousCandidates {
 		entry := asMap(raw)
 		claimID := stringOrEmpty(entry["claimId"])
 		sourceChanged := false
+		changedClaimSources := []string{}
 		for _, sourceRef := range arrayOrEmpty(entry["sourceRefs"]) {
 			path := stringOrEmpty(asMap(sourceRef)["path"])
 			if claimStringListContains(changedSources, path) {
 				sourceChanged = true
-				break
+				if !claimStringListContains(changedClaimSources, path) {
+					changedClaimSources = append(changedClaimSources, path)
+				}
 			}
 		}
 		lifecycle := "carried-forward"
 		if sourceChanged {
 			lifecycle = "changed"
+			changedClaimCount++
+			for _, path := range changedClaimSources {
+				changedClaimSourceCounts[path]++
+			}
+		} else {
+			carriedForwardClaimCount++
 		}
 		claims = append(claims, map[string]any{
 			"claimId":   claimID,
 			"lifecycle": lifecycle,
 		})
 	}
+	refreshSummary := renderClaimRefreshSummary(baseCommit, targetCommit, changedSources, changedClaimCount, carriedForwardClaimCount, changedClaimSourceCounts)
 	return map[string]any{
 		"schemaVersion":      contracts.ClaimRefreshPlanSchema,
 		"sourceRoot":         ".",
@@ -1795,9 +1808,96 @@ func BuildClaimRefreshPlan(options ClaimRefreshPlanOptions) (map[string]any, err
 		"workingTreePolicy":  "excluded",
 		"changedSources":     changedSources,
 		"claimPlan":          claims,
+		"refreshSummary":     refreshSummary,
 		"claimState":         renderClaimState(options.Config),
 		"effectiveScanScope": renderClaimScanScope(options.Config),
 	}, nil
+}
+
+func renderClaimRefreshSummary(baseCommit string, targetCommit string, changedSources []string, changedClaimCount int, carriedForwardClaimCount int, changedClaimSourceCounts map[string]int) map[string]any {
+	status := "up-to-date"
+	summary := "The saved claim map already matches the current checkout; no refresh work is needed before review or eval planning."
+	if baseCommit == "" || targetCommit == "" {
+		status = "unknown"
+		summary = "Cautilus could not compare the saved claim map with the current checkout because git commit information is missing."
+	} else if baseCommit != targetCommit {
+		if changedClaimCount > 0 {
+			status = "changes-detected"
+			summary = "The saved claim map was made from an older checkout; this plan identifies claims whose source files changed and does not update the saved claim map yet."
+		} else if len(changedSources) > 0 {
+			status = "repo-changed-no-claim-source-hit"
+			summary = "The repo changed since the saved claim map, but none of the changed files are referenced by existing claims in this packet."
+		} else {
+			status = "commit-changed-no-file-diff"
+			summary = "The saved claim map points at an older commit, but Cautilus did not find changed files between the two commits."
+		}
+	}
+	nextActions := []any{
+		map[string]any{
+			"id":     "update_saved_claim_map",
+			"label":  "Update the saved claim map before review or eval planning",
+			"detail": "Run claim discovery to write a fresh claim packet, then use claim show to inspect the updated status.",
+		},
+		map[string]any{
+			"id":     "inspect_refresh_plan",
+			"label":  "Inspect which files and claims changed",
+			"detail": "Use this refresh plan to focus review on changed sources before launching any reviewer or eval workflow.",
+		},
+		map[string]any{
+			"id":     "stop",
+			"label":  "Stop after recording the refresh plan",
+			"detail": "Choose this if the coordinator only wanted to make the stale state explicit for a later session.",
+		},
+	}
+	if status == "up-to-date" {
+		nextActions = []any{
+			map[string]any{
+				"id":     "show_saved_claim_map",
+				"label":  "Inspect the saved claim map",
+				"detail": "Use claim show to decide whether to review claims, add deterministic tests, or plan Cautilus eval scenarios.",
+			},
+			map[string]any{
+				"id":     "stop",
+				"label":  "Stop after confirming the claim map is current",
+				"detail": "Choose this if no review or eval planning is needed now.",
+			},
+		}
+	}
+	return map[string]any{
+		"status":                   status,
+		"summary":                  summary,
+		"baseCommit":               baseCommit,
+		"targetCommit":             targetCommit,
+		"workingTreePolicy":        "excluded",
+		"changedSourceCount":       len(changedSources),
+		"changedClaimCount":        changedClaimCount,
+		"carriedForwardClaimCount": carriedForwardClaimCount,
+		"changedClaimSources":      renderCountEntries(changedClaimSourceCounts),
+		"nextActions":              nextActions,
+	}
+}
+
+func renderCountEntries(counts map[string]int) []any {
+	keys := make([]string, 0, len(counts))
+	for key := range counts {
+		keys = append(keys, key)
+	}
+	sort.Slice(keys, func(i int, j int) bool {
+		left := counts[keys[i]]
+		right := counts[keys[j]]
+		if left != right {
+			return left > right
+		}
+		return keys[i] < keys[j]
+	})
+	result := []any{}
+	for _, key := range keys {
+		result = append(result, map[string]any{
+			"path":       key,
+			"claimCount": counts[key],
+		})
+	}
+	return result
 }
 
 func gitChangedFiles(repoRoot string, baseCommit string, targetCommit string) []string {

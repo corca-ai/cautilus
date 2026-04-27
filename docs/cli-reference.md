@@ -97,6 +97,7 @@ When a repo intentionally keeps only named adapters under `.agents/cautilus-adap
 Use `cautilus claim discover` before writing eval fixtures when you need to inventory declared behavior claims and decide whether each belongs in human review, deterministic CI, Cautilus eval, scenario proposal work, or alignment work.
 Default discovery starts from adapter-owned claim entries or README.md/AGENTS.md/CLAUDE.md and follows repo-local Markdown links to depth 3.
 Use `--previous <claims.json> --refresh-plan` for deterministic refresh planning inside the same discover workflow.
+The refresh-plan packet includes `refreshSummary`, which gives agent-readable counts, changed claim source hotspots, and coordinator-facing next actions so agents do not need to infer the plan from raw packet fields.
 The packet is `cautilus.claim_proof_plan.v1`, and it is a proof plan rather than a verdict.
 Use `cautilus claim show --input <claims.json> --sample-claims <n>` to summarize an existing claim packet without rescanning and include bounded claim examples when an agent needs concrete candidates before choosing the next branch.
 The summary includes `gitState`; when it reports `isStale=true`, run `cautilus claim discover --previous <claims.json> --refresh-plan` before review, review application, or eval planning.

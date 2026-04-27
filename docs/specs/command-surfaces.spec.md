@@ -141,6 +141,10 @@ It does not claim that the repo is correct.
 It tells an operator or agent what should be proven where.
 It should preserve the discovered backlog honestly; prioritization belongs in the next agent step or a future explicit selection command, not in a hidden cap.
 
+When `cautilus claim discover --previous <claims.json> --refresh-plan` emits `cautilus.claim_refresh_plan.v1`, the packet includes `refreshSummary`.
+`refreshSummary` gives the coordinator-facing status, changed source count, changed claim count, carried-forward claim count, changed claim source hotspots, and next actions.
+Agents should use that summary before hand-inspecting raw `changedSources` or `claimPlan`.
+
 `cautilus claim show --input <claims.json>` emits `cautilus.claim_status_summary.v1`.
 It summarizes an existing proof-plan packet without rescanning.
 When called with `--sample-claims <n>`, it includes a bounded `sampleClaims` list so agents can inspect stable candidate fields without guessing raw packet keys.

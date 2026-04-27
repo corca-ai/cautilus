@@ -79,6 +79,11 @@ Refresh from existing state:
 "$CAUTILUS_BIN" claim discover --previous <claims.json> --refresh-plan --output <refresh-plan.json>
 ```
 
+Read `refreshSummary` first.
+Explain it as a saved claim map catching up to current repo changes, not as a completed claim refresh.
+Say what was recorded, what was not changed yet, and which next choice is safest.
+Prefer labels such as "compare the saved claim map with recent repo changes" and "update the saved claim map before review or eval planning"; include internal branch ids only as references when needed.
+
 Status from existing state:
 
 ```bash
@@ -99,6 +104,13 @@ If `claim show` or `agent status` reports `gitState.isStale=true`, run `claim di
 Do not launch reviewers, apply review results, plan evals, edit files, or commit artifacts from a stale claim packet unless the user explicitly asks to override stale state.
 If a view is missing, prefer adding a product-owned summary option or review packet over guessing raw JSON keys with ad hoc `jq`.
 If a new discovery run changes only volatile metadata such as the reviewed git commit and not source inventory, candidate claims, labels, or evidence refs, report it as a semantic no-op and do not create a pointer-only commit.
+
+When reporting a refresh-plan result to a coordinator, use this shape:
+
+- What I did: recorded a comparison between the saved claim map and the current checkout.
+- What I found: cite `refreshSummary.changedSourceCount`, `changedClaimCount`, `carriedForwardClaimCount`, and the top `changedClaimSources`.
+- What I did not do: did not update the saved claim map, review claims, plan evals, or edit product files unless the user selected that branch.
+- Recommended next choice: use the first safe `refreshSummary.nextActions` item in plain language.
 
 LLM-backed claim review is a separate branch.
 Before launching it, state the review budget: maximum clusters, parallel lanes, clusters per reviewer, excerpt budget, retry policy, and skipped-cluster policy.

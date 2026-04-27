@@ -50,7 +50,8 @@
         "The command emits `cautilus.claim_proof_plan.v1`: a source-ref-backed plan, not a verdict that the repo is correct.",
         "Default discovery starts from adapter-owned entries or README.md/AGENTS.md/CLAUDE.md and follows repo-local Markdown links to depth 3.",
         "Use `--source` repeatedly when the host repo wants an explicit truth-surface inventory instead of the conservative defaults.",
-        "Use `--previous <claims.json> --refresh-plan` when an agent workflow needs deterministic refresh planning without a separate refresh command."
+        "Use `--previous <claims.json> --refresh-plan` when an agent workflow needs deterministic refresh planning without a separate refresh command.",
+        "Refresh-plan packets include `refreshSummary` so agents can explain changed sources, changed claims, and next choices without guessing raw JSON fields."
       ]
     },
     {

@@ -344,7 +344,7 @@ When a previous claim-state packet exists, the skill should:
 
 1. read the prior packet and its reviewed commit
 2. ask the binary for a deterministic refresh plan from that packet and the chosen target
-3. show the baseline commit, target commit or working-tree policy, dirty files included or excluded, changed source count, stale evidence count, and proposed review clusters
+3. show the binary-owned `refreshSummary`: whether the saved claim map is current, how many sources and claims changed, which source files concentrate the changed claims, what was not updated yet, and the recommended next choices
 4. call the binary for affected sources or the effective entry graph
 5. carry forward unchanged claims
 6. mark claims with changed source or meaning as `changed`
@@ -354,6 +354,19 @@ When a previous claim-state packet exists, the skill should:
 
 The binary may provide helper flags such as `claim discover --previous <packet> --refresh-plan`, but the public user-level workflow remains `discover`.
 No separate binary `claim refresh` command is planned for this stage.
+
+The refresh-plan packet should include a coordinator-facing summary rather than requiring every agent to reverse-engineer raw JSON fields:
+
+- `status`
+- `summary`
+- `changedSourceCount`
+- `changedClaimCount`
+- `carriedForwardClaimCount`
+- `changedClaimSources`
+- `nextActions`
+
+This summary is a plan, not the refreshed claim packet itself.
+It should say plainly when the saved claim map has not been updated yet.
 
 ## User Status Summary
 
