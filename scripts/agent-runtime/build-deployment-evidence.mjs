@@ -1,9 +1,10 @@
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
 
 import { buildDeploymentEvidence } from "./deployment-evidence.mjs";
+import { writeJsonOutput } from "./output-files.mjs";
 
 function usage(exitCode = 0) {
 	const text = [
@@ -64,10 +65,10 @@ function writeJson(path, value) {
 		process.stdout.write(`${JSON.stringify(value, null, 2)}\n`);
 		return;
 	}
-	writeFileSync(resolve(path), `${JSON.stringify(value, null, 2)}\n`);
+	writeJsonOutput(path, value);
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
 	const options = parseArgs(process.argv.slice(2));
 	const packet = buildDeploymentEvidence(readJson(options.input));
 	writeJson(options.output, packet);

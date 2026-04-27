@@ -2,12 +2,14 @@ function makeRepoRelative(repoRoot, value) {
 	if (typeof value !== "string") {
 		return value;
 	}
-	const normalizedRepoRoot = repoRoot.endsWith("/") ? repoRoot : `${repoRoot}/`;
-	if (value === repoRoot) {
+	const normalizedRepoRoot = repoRoot.replaceAll("\\", "/").replace(/\/+$/, "");
+	const normalizedValue = value.replaceAll("\\", "/");
+	if (normalizedValue === normalizedRepoRoot) {
 		return ".";
 	}
-	if (value.startsWith(normalizedRepoRoot)) {
-		return value.slice(normalizedRepoRoot.length);
+	const prefix = `${normalizedRepoRoot}/`;
+	if (normalizedValue.startsWith(prefix)) {
+		return normalizedValue.slice(prefix.length);
 	}
 	return value;
 }
@@ -19,6 +21,26 @@ function sanitizeFinding(repoRoot, finding) {
 	return {
 		...finding,
 		...(typeof finding.path === "string" ? { path: makeRepoRelative(repoRoot, finding.path) } : {}),
+	};
+}
+
+function sanitizeVariantOutput(repoRoot, output) {
+	if (!output || typeof output !== "object") {
+		return output;
+	}
+	return {
+		...output,
+		findings: Array.isArray(output.findings)
+			? output.findings.map((finding) => sanitizeFinding(repoRoot, finding))
+			: output.findings,
+		rawOutput: output.rawOutput && typeof output.rawOutput === "object"
+			? {
+				...output.rawOutput,
+				findings: Array.isArray(output.rawOutput.findings)
+					? output.rawOutput.findings.map((finding) => sanitizeFinding(repoRoot, finding))
+					: output.rawOutput.findings,
+			}
+			: output.rawOutput,
 	};
 }
 
@@ -77,6 +99,15 @@ export function buildPublishedReviewSummary(repoRoot, reviewSummary) {
 		reviewPromptInputFile: null,
 		schemaFile: makeRepoRelative(repoRoot, reviewSummary.schemaFile),
 		outputDir: null,
+		humanReviewFindings: Array.isArray(reviewSummary.humanReviewFindings)
+			? reviewSummary.humanReviewFindings.map((finding) => sanitizeFinding(repoRoot, finding))
+			: reviewSummary.humanReviewFindings,
+		successfulVariantOutputs: Array.isArray(reviewSummary.successfulVariantOutputs)
+			? reviewSummary.successfulVariantOutputs.map((output) => ({
+				...output,
+				outputFile: makeRepoRelative(repoRoot, output.outputFile),
+			}))
+			: reviewSummary.successfulVariantOutputs,
 		variants: Array.isArray(reviewSummary.variants)
 			? reviewSummary.variants.map((variant) => ({
 				...variant,
@@ -86,14 +117,7 @@ export function buildPublishedReviewSummary(repoRoot, reviewSummary) {
 				command: null,
 				stdout: "",
 				stderr: "",
-				output: variant.output
-					? {
-						...variant.output,
-						findings: Array.isArray(variant.output.findings)
-							? variant.output.findings.map((finding) => sanitizeFinding(repoRoot, finding))
-							: variant.output.findings,
-					}
-					: variant.output,
+				output: sanitizeVariantOutput(repoRoot, variant.output),
 			}))
 			: reviewSummary.variants,
 	};

@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
@@ -10,6 +10,7 @@ import {
 	OPTIMIZE_PROPOSAL_SCHEMA,
 	OPTIMIZE_SEARCH_RESULT_SCHEMA,
 } from "./contract-versions.mjs";
+import { writeTextOutput } from "./output-files.mjs";
 
 const OPTIMIZER_BUDGETS = {
 	light: {
@@ -560,7 +561,7 @@ export function main(argv = process.argv.slice(2)) {
 		}
 		const text = `${JSON.stringify(proposal, null, 2)}\n`;
 		if (options.output) {
-			writeFileSync(resolve(options.output), text, "utf-8");
+			writeTextOutput(options.output, text);
 			return;
 		}
 		process.stdout.write(text);

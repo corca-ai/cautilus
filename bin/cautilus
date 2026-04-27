@@ -3,11 +3,15 @@
 set -eu
 
 BIN_DIR=$(
-  CDPATH= cd -- "$(dirname -- "$0")"
+  SCRIPT_DIR=$(dirname "$0")
+  case "$SCRIPT_DIR" in
+    -*) SCRIPT_DIR=./$SCRIPT_DIR ;;
+  esac
+  CDPATH= cd "$SCRIPT_DIR"
   pwd
 )
 REPO_ROOT=$(
-  CDPATH= cd -- "$BIN_DIR/.."
+  CDPATH= cd "$BIN_DIR/.."
   pwd
 )
 

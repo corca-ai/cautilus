@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { existsSync, readFileSync, statSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, statSync } from "node:fs";
 import { join, resolve } from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
@@ -11,6 +11,7 @@ import {
 	OPTIMIZE_PROPOSAL_SCHEMA,
 	REVISION_ARTIFACT_SCHEMA,
 } from "./contract-versions.mjs";
+import { writeTextOutput } from "./output-files.mjs";
 
 function usage(exitCode = 0) {
 	const text = [
@@ -210,7 +211,7 @@ export function main(argv = process.argv.slice(2)) {
 		const packet = buildRevisionArtifact(argv);
 		const text = `${JSON.stringify(packet, null, 2)}\n`;
 		if (options.output) {
-			writeFileSync(resolve(options.output), text, "utf-8");
+			writeTextOutput(options.output, text);
 			return;
 		}
 		process.stdout.write(text);

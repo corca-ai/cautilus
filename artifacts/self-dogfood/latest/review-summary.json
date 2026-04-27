@@ -5,19 +5,19 @@
   "humanReviewFindings": [
     {
       "message": "`report.json` captures the run outcome, `gateRecommendation`, and `reportRecommendation`, which is the right shape for surfacing the self-dogfood result honestly to operators.",
-      "path": "/home/hwidong/codes/cautilus/artifacts/self-dogfood/runs/2026-04-23T22-03-45.008Z/mode/report.json",
+      "path": "artifacts/self-dogfood/runs/2026-04-23T22-03-45.008Z/mode/report.json",
       "severity": "pass",
       "variantId": "codex-review"
     },
     {
       "message": "`scripts/run-self-dogfood.mjs` writes the published bundle artifacts and then renders HTML from the current latest directory, which supports the claim that the result is surfaced rather than only recorded internally.",
-      "path": "/home/hwidong/codes/cautilus/scripts/run-self-dogfood.mjs",
+      "path": "scripts/run-self-dogfood.mjs",
       "severity": "pass",
       "variantId": "codex-review"
     },
     {
       "message": "The current full gate passed, so there is no evidence in this packet that the operator-facing self-dogfood surface is misleading or contradicts the recorded result.",
-      "path": "/home/hwidong/codes/cautilus/artifacts/self-dogfood/runs/2026-04-23T22-03-45.008Z/mode/report.json",
+      "path": "artifacts/self-dogfood/runs/2026-04-23T22-03-45.008Z/mode/report.json",
       "severity": "pass",
       "variantId": "codex-review"
     }
@@ -39,7 +39,7 @@
     {
       "findingsCount": 3,
       "id": "codex-review",
-      "outputFile": "/home/hwidong/codes/cautilus/artifacts/self-dogfood/runs/2026-04-23T22-03-45.008Z/review/codex-review.json",
+      "outputFile": "artifacts/self-dogfood/runs/2026-04-23T22-03-45.008Z/review/codex-review.json",
       "summary": "The current report packet supports the narrow operator-facing claim: it records the self-dogfood run, exposes the deterministic gate recommendation, and appears to publish the folded operator recommendation from the run status. The only evidence available here is the current report packet and related product artifacts, and that is enough to support accept-now for this intent.",
       "tool": "codex_exec",
       "verdict": "pass"
@@ -85,17 +85,17 @@
           "findings": [
             {
               "message": "`report.json` captures the run outcome, `gateRecommendation`, and `reportRecommendation`, which is the right shape for surfacing the self-dogfood result honestly to operators.",
-              "path": "/home/hwidong/codes/cautilus/artifacts/self-dogfood/runs/2026-04-23T22-03-45.008Z/mode/report.json",
+              "path": "artifacts/self-dogfood/runs/2026-04-23T22-03-45.008Z/mode/report.json",
               "severity": "pass"
             },
             {
               "message": "`scripts/run-self-dogfood.mjs` writes the published bundle artifacts and then renders HTML from the current latest directory, which supports the claim that the result is surfaced rather than only recorded internally.",
-              "path": "/home/hwidong/codes/cautilus/scripts/run-self-dogfood.mjs",
+              "path": "scripts/run-self-dogfood.mjs",
               "severity": "pass"
             },
             {
               "message": "The current full gate passed, so there is no evidence in this packet that the operator-facing self-dogfood surface is misleading or contradicts the recorded result.",
-              "path": "/home/hwidong/codes/cautilus/artifacts/self-dogfood/runs/2026-04-23T22-03-45.008Z/mode/report.json",
+              "path": "artifacts/self-dogfood/runs/2026-04-23T22-03-45.008Z/mode/report.json",
               "severity": "pass"
             }
           ],

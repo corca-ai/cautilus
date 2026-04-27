@@ -1,9 +1,10 @@
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
 
 import { REVIEW_PROMPT_INPUTS_SCHEMA } from "./contract-versions.mjs";
+import { writeTextOutput } from "./output-files.mjs";
 
 function usage(exitCode = 0) {
 	const text = [
@@ -313,7 +314,7 @@ export function main(argv = process.argv.slice(2)) {
 		const options = parseArgs(argv);
 		const prompt = renderReviewPrompt(parsePromptInput(options.input));
 		if (options.output) {
-			writeFileSync(resolve(options.output), prompt, "utf-8");
+			writeTextOutput(options.output, prompt);
 			return;
 		}
 		process.stdout.write(prompt);

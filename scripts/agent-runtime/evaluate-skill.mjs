@@ -1,4 +1,3 @@
-import { writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
@@ -24,6 +23,7 @@ import {
 	serializeEvaluation,
 	serializeEvaluationRun,
 } from "./skill-evaluation-summary.mjs";
+import { writeTextOutput } from "./output-files.mjs";
 
 export { SKILL_EVALUATION_INPUTS_SCHEMA, SKILL_EVALUATION_SUMMARY_SCHEMA } from "./contract-versions.mjs";
 
@@ -105,7 +105,7 @@ export function main(argv = process.argv.slice(2)) {
 		const summary = buildSkillEvaluationSummary(input);
 		const text = `${JSON.stringify(summary, null, 2)}\n`;
 		if (outputPath) {
-			writeFileSync(outputPath, text, "utf-8");
+			writeTextOutput(outputPath, text);
 			return;
 		}
 		process.stdout.write(text);

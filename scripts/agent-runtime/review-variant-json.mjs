@@ -1,7 +1,8 @@
-import { readFileSync, rmSync, writeFileSync } from "node:fs";
+import { readFileSync, rmSync } from "node:fs";
 import process from "node:process";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
+import { writeTextOutput } from "./output-files.mjs";
 
 function fail(message) {
 	process.stderr.write(`${message}\n`);
@@ -177,7 +178,7 @@ function normalizeCodexSchemaFile(schemaFile, outputFile) {
 	const outputPath = resolve(outputFile);
 	const parsed = JSON.parse(readFileSync(inputPath, "utf-8"));
 	const normalized = normalizeCodexSchema(parsed);
-	writeFileSync(outputPath, `${JSON.stringify(normalized, null, 2)}\n`, "utf-8");
+	writeTextOutput(outputPath, `${JSON.stringify(normalized, null, 2)}\n`);
 }
 
 function normalizeClaudeOutput(rawOutputFile, outputFile) {
@@ -191,7 +192,7 @@ function normalizeClaudeOutput(rawOutputFile, outputFile) {
 	const normalized = structured && typeof structured === "object" && !Array.isArray(structured)
 		? structured
 		: payload;
-	writeFileSync(outputPath, `${JSON.stringify(normalized, null, 2)}\n`, "utf-8");
+	writeTextOutput(outputPath, `${JSON.stringify(normalized, null, 2)}\n`);
 	rmSync(rawPath, { force: true });
 }
 

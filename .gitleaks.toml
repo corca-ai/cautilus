@@ -1,5 +1,9 @@
+[extend]
+useDefault = true
+
 [[allowlists]]
 description = "Allow Cautilus claim packet git commit metadata"
 paths = ['''^\.cautilus/claims/.*\.json$''']
+regexTarget = "line"
 regexes = ['''"gitCommit"\s*:\s*"[0-9a-f]{40}"''']
 condition = "AND"

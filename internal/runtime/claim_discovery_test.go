@@ -545,6 +545,26 @@ func TestDiscoverClaimProofPlanUsesAdapterClaimDiscoveryEntries(t *testing.T) {
 	}
 }
 
+func TestDiscoverClaimProofPlanRejectsEscapingAdapterStatePath(t *testing.T) {
+	repoRoot := t.TempDir()
+	mustWriteFile(t, filepath.Join(repoRoot, "README.md"), "Agents must keep claim state inside the repo.\n")
+	mustWriteFile(t, filepath.Join(repoRoot, ".agents", "cautilus-adapter.yaml"), strings.Join([]string{
+		"version: 1",
+		"repo: demo",
+		"claim_discovery:",
+		"  state_path: ../claims.json",
+		"",
+	}, "\n"))
+
+	_, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
+	if err == nil {
+		t.Fatalf("expected escaping claim_discovery.state_path to fail")
+	}
+	if !strings.Contains(err.Error(), "claim_discovery.state_path must stay inside the repo") {
+		t.Fatalf("unexpected error: %v", err)
+	}
+}
+
 func TestBuildClaimRefreshPlanMarksChangedSources(t *testing.T) {
 	repoRoot := t.TempDir()
 	if err := execGit(repoRoot, "init"); err != nil {

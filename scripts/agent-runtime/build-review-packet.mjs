@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import process from "node:process";
@@ -7,6 +7,7 @@ import { loadAdapter as loadAdapterPayload } from "../resolve_adapter.mjs";
 import { REVIEW_PACKET_SCHEMA } from "./contract-versions.mjs";
 import { readActiveRunDir } from "./active-run.mjs";
 import { validateReportPacket } from "./report-packet.mjs";
+import { writeTextOutput } from "./output-files.mjs";
 
 export { REVIEW_PACKET_SCHEMA } from "./contract-versions.mjs";
 
@@ -185,7 +186,7 @@ export function main(argv = process.argv.slice(2)) {
 		const packet = buildReviewPacket(argv);
 		const text = `${JSON.stringify(packet, null, 2)}\n`;
 		if (options.output) {
-			writeFileSync(resolve(options.output), text, "utf-8");
+			writeTextOutput(options.output, text);
 			return;
 		}
 		process.stdout.write(text);

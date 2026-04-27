@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
@@ -12,6 +12,7 @@ import {
 	classifyModeSummary,
 	summarizeReportReasons,
 } from "./report-reason-classification.mjs";
+import { writeTextOutput } from "./output-files.mjs";
 
 export { REPORT_INPUTS_SCHEMA, REPORT_PACKET_SCHEMA } from "./contract-versions.mjs";
 
@@ -525,7 +526,7 @@ export function main(argv = process.argv.slice(2)) {
 		const packet = buildReportPacket(parseJsonFile(inputPath));
 		const text = `${JSON.stringify(packet, null, 2)}\n`;
 		if (outputPath) {
-			writeFileSync(outputPath, text, "utf-8");
+			writeTextOutput(outputPath, text);
 			return;
 		}
 		process.stdout.write(text);

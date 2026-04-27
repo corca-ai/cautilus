@@ -1,10 +1,11 @@
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
 
 import { SCENARIO_PROPOSAL_INPUTS_SCHEMA } from "./contract-versions.mjs";
 import { generateScenarioProposals } from "./scenario-proposals.mjs";
+import { writeTextOutput } from "./output-files.mjs";
 
 export { SCENARIO_PROPOSAL_INPUTS_SCHEMA } from "./contract-versions.mjs";
 
@@ -135,7 +136,7 @@ export function main(argv = process.argv.slice(2)) {
 		const packet = buildScenarioProposalPacket(input);
 		const text = `${JSON.stringify(packet, null, 2)}\n`;
 		if (outputPath) {
-			writeFileSync(outputPath, text, "utf-8");
+			writeTextOutput(outputPath, text);
 			return;
 		}
 		process.stdout.write(text);

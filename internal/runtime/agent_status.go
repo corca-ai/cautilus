@@ -45,7 +45,7 @@ func BuildAgentStatus(repoRoot string, options AgentStatusOptions) (map[string]a
 		"adapter":      renderAgentStatusAdapter(adapter),
 		"claimState":   claimOrientation["claimState"],
 		"scanScope":    claimOrientation["scanScope"],
-		"nextBranches": mergeAgentStatusBranches(adapter, claimOrientation["nextBranches"]),
+		"nextBranches": mergeAgentStatusBranches(adapter, claimOrientation["nextBranches"], repoRoot),
 		"notice":       "Orientation packet only: it reads product readiness and claim-state availability so the agent can offer a branch before running discovery, evaluation, review, optimization, edits, or commits.",
 	}
 	return payload, 0, nil
@@ -99,7 +99,7 @@ func BuildClaimOrientation(repoRoot string) (map[string]any, error) {
 	return map[string]any{
 		"claimState":   claimState,
 		"scanScope":    renderClaimScanScope(config),
-		"nextBranches": claimOrientationBranches(claimState, config),
+		"nextBranches": claimOrientationBranches(claimState, config, repoRoot),
 	}, nil
 }
 
@@ -122,13 +122,13 @@ func renderAgentStatusAdapter(adapter *AdapterPayload) map[string]any {
 	}
 }
 
-func mergeAgentStatusBranches(adapter *AdapterPayload, branches any) []any {
+func mergeAgentStatusBranches(adapter *AdapterPayload, branches any, repoRoot string) []any {
 	result := []any{}
 	if adapter == nil || !adapter.Found || !adapter.Valid {
 		result = append(result, map[string]any{
 			"id":      "initialize_adapter",
 			"label":   "Initialize or repair the repo adapter",
-			"command": "cautilus adapter init --repo-root .",
+			"command": "cautilus adapter init --repo-root " + ShellSingleQuote(repoRoot),
 			"reason":  "Adapter readiness is separate from claim discovery and should be resolved before deeper Cautilus workflows.",
 		})
 	}
@@ -141,20 +141,23 @@ func mergeAgentStatusBranches(adapter *AdapterPayload, branches any) []any {
 	return result
 }
 
-func claimOrientationBranches(claimState map[string]any, config claimDiscoveryConfig) []any {
+func claimOrientationBranches(claimState map[string]any, config claimDiscoveryConfig, repoRoot string) []any {
+	statePath := filepath.Join(repoRoot, filepath.FromSlash(config.statePath))
+	quotedRepoRoot := ShellSingleQuote(repoRoot)
+	quotedStatePath := ShellSingleQuote(statePath)
 	switch stringOrEmpty(claimState["status"]) {
 	case "present":
 		return []any{
 			map[string]any{
 				"id":      "show_existing_claims",
 				"label":   "Summarize the existing claim packet",
-				"command": "cautilus claim show --input " + config.statePath,
+				"command": "cautilus claim show --input " + quotedStatePath,
 				"reason":  "Existing claim state should be read before refreshing or planning work.",
 			},
 			map[string]any{
 				"id":      "refresh_claims_from_diff",
 				"label":   "Plan a refresh from the existing packet",
-				"command": "cautilus claim discover --previous " + config.statePath + " --refresh-plan --output <refresh-plan.json>",
+				"command": "cautilus claim discover --repo-root " + quotedRepoRoot + " --previous " + quotedStatePath + " --refresh-plan --output <refresh-plan.json>",
 				"reason":  "Refresh planning keeps prior claim state explicit before a new scan.",
 			},
 		}
@@ -163,7 +166,7 @@ func claimOrientationBranches(claimState map[string]any, config claimDiscoveryCo
 			map[string]any{
 				"id":      "run_first_claim_scan",
 				"label":   "Run the first bounded claim scan",
-				"command": "cautilus claim discover --repo-root . --output " + config.statePath,
+				"command": "cautilus claim discover --repo-root " + quotedRepoRoot + " --output " + quotedStatePath,
 				"reason":  "No repo-local claim packet exists yet; discovery starts from the reported entry files and link depth.",
 			},
 		}

@@ -1,6 +1,10 @@
 #!/usr/bin/env node
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import process from "node:process";
+import { resolve } from "node:path";
+import { pathToFileURL } from "node:url";
+
+import { writeTextOutput } from "./output-files.mjs";
 
 export const NO_INPUT_AUDIT_SCHEMA = "cautilus.no_input_audit.v1";
 
@@ -221,13 +225,14 @@ function parseArgs(argv) {
 	return options;
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+const entryHref = process.argv[1] ? pathToFileURL(resolve(process.argv[1])).href : "";
+if (import.meta.url === entryHref) {
 	try {
 		const options = parseArgs(process.argv.slice(2));
 		const audit = auditNoInputLogText(readFileSync(options.input, "utf-8"));
 		const body = `${JSON.stringify(audit, null, 2)}\n`;
 		if (options.output) {
-			writeFileSync(options.output, body);
+			writeTextOutput(options.output, body);
 		} else {
 			process.stdout.write(body);
 		}

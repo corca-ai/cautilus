@@ -1,6 +1,6 @@
 package runtime
 
-import "fmt"
+import "path/filepath"
 
 // Scenario normalization catalog for `cautilus scenarios`.
 //
@@ -75,12 +75,13 @@ func LoadScenarioCatalog() ScenarioCatalog {
 }
 
 func LoadFirstBoundedRunGuide(repoRoot string) FirstBoundedRunGuide {
+	outputDir := filepath.Join(repoRoot, ".cautilus", "runs", "first-bounded-run")
 	return FirstBoundedRunGuide{
 		Summary:          "Pick one checked-in fixture, then complete one bounded eval test and packet recheck instead of stopping at doctor.",
 		DiscoveryCommand: "cautilus scenarios --json",
 		DecisionLoopCommands: []string{
-			fmt.Sprintf("cautilus eval test --repo-root %s --fixture <fixture.json> --output-dir /tmp/cautilus-first-run", repoRoot),
-			"cautilus eval evaluate --input /tmp/cautilus-first-run/eval-observed.json --output /tmp/cautilus-first-run/eval-summary.recheck.json",
+			"cautilus eval test --repo-root " + ShellSingleQuote(repoRoot) + " --fixture <fixture.json> --output-dir " + ShellSingleQuote(outputDir),
+			"cautilus eval evaluate --input " + ShellSingleQuote(filepath.Join(outputDir, "eval-observed.json")) + " --output " + ShellSingleQuote(filepath.Join(outputDir, "eval-summary.recheck.json")),
 		},
 		Archetypes: LoadScenarioCatalog().Archetypes,
 	}

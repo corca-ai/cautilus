@@ -178,7 +178,11 @@ func TestRunCommandsJSONReturnsRegistry(t *testing.T) {
 }
 
 func TestRunAgentStatusJSONReturnsNoInputOrientation(t *testing.T) {
-	repoRoot := t.TempDir()
+	baseDir := t.TempDir()
+	repoRoot := filepath.Join(baseDir, "repo with spaces")
+	if err := os.MkdirAll(repoRoot, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
 	initGitRepo(t, repoRoot)
 	if err := os.MkdirAll(filepath.Join(repoRoot, ".agents", "skills", "cautilus"), 0o755); err != nil {
 		t.Fatalf("MkdirAll returned error: %v", err)
@@ -198,6 +202,7 @@ func TestRunAgentStatusJSONReturnsNoInputOrientation(t *testing.T) {
 		"  entries:",
 		"    - README.md",
 		"  linked_markdown_depth: 3",
+		"  state_path: state dir/latest claims.json",
 		"",
 	}, "\n")
 	if err := os.WriteFile(filepath.Join(repoRoot, ".agents", "cautilus-adapter.yaml"), []byte(adapter), 0o644); err != nil {
@@ -207,14 +212,18 @@ func TestRunAgentStatusJSONReturnsNoInputOrientation(t *testing.T) {
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
 
-	t.Setenv("CAUTILUS_CALLER_CWD", repoRoot)
+	callerCWD := filepath.Join(baseDir, "caller")
+	if err := os.MkdirAll(callerCWD, 0o755); err != nil {
+		t.Fatalf("MkdirAll caller cwd returned error: %v", err)
+	}
+	t.Setenv("CAUTILUS_CALLER_CWD", callerCWD)
 	t.Setenv("CAUTILUS_TOOL_ROOT", "")
 	t.Setenv("CAUTILUS_VERSION", "v1.2.3")
 	t.Setenv("XDG_CACHE_HOME", t.TempDir())
 
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
-	exitCode := Run([]string{"agent", "status", "--repo-root", ".", "--json"}, &stdout, &stderr)
+	exitCode := Run([]string{"agent", "status", "--repo-root", repoRoot, "--json"}, &stdout, &stderr)
 	if exitCode != 0 {
 		t.Fatalf("Run returned exit code %d, stderr=%s", exitCode, stderr.String())
 	}
@@ -239,6 +248,9 @@ func TestRunAgentStatusJSONReturnsNoInputOrientation(t *testing.T) {
 	body := stdout.String()
 	if !strings.Contains(body, "run_first_claim_scan") {
 		t.Fatalf("expected first claim scan branch, got %s", body)
+	}
+	if !strings.Contains(body, "cautilus claim discover --repo-root '"+repoRoot+"' --output '"+filepath.Join(repoRoot, "state dir", "latest claims.json")+"'") {
+		t.Fatalf("expected claim branch to keep the requested repo root and quote paths, got %s", body)
 	}
 	for _, forbidden := range []string{"eval test", "review variants", "optimize", "git commit"} {
 		if strings.Contains(body, forbidden) {
@@ -341,6 +353,9 @@ func TestRunClaimShowSummarizesExistingProofPlan(t *testing.T) {
 	}
 	if payload["schemaVersion"] != "cautilus.claim_status_summary.v1" || payload["candidateCount"] != float64(1) {
 		t.Fatalf("unexpected claim show payload: %#v", payload)
+	}
+	if payload["inputPath"] != "claims.json" {
+		t.Fatalf("expected repo-relative display input path, got %#v", payload["inputPath"])
 	}
 }
 
@@ -589,6 +604,9 @@ func TestRunClaimValidateWritesReportAndFailsInvalidEvidence(t *testing.T) {
 	payload := readJSONObjectFile(t, outputPath)
 	if payload["schemaVersion"] != "cautilus.claim_validation_report.v1" || payload["valid"] != false {
 		t.Fatalf("unexpected validation payload: %#v", payload)
+	}
+	if payload["inputPath"] != "claims.json" {
+		t.Fatalf("expected repo-relative validation input path, got %#v", payload["inputPath"])
 	}
 	if issues := payload["issues"].([]any); len(issues) == 0 {
 		t.Fatalf("expected validation issues, got %#v", payload)

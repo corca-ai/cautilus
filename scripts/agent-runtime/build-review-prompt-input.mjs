@@ -1,10 +1,11 @@
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { basename, resolve } from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
 
 import { buildBehaviorIntentProfile } from "./behavior-intent.mjs";
 import { loadAdapter as loadAdapterPayload } from "../resolve_adapter.mjs";
+import { writeTextOutput } from "./output-files.mjs";
 import {
 	DRAFT_SCENARIO_SCHEMA,
 	REVIEW_PACKET_SCHEMA,
@@ -466,7 +467,7 @@ export function main(argv = process.argv.slice(2)) {
 		const packet = buildReviewPromptInput(argv);
 		const text = `${JSON.stringify(packet, null, 2)}\n`;
 		if (options.output) {
-			writeFileSync(resolve(options.output), text, "utf-8");
+			writeTextOutput(options.output, text);
 			return;
 		}
 		process.stdout.write(text);

@@ -2,6 +2,7 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 import process from "node:process";
+import { pathToFileURL } from "node:url";
 
 import { EVALUATION_OBSERVED_SCHEMA } from "./contract-versions.mjs";
 import { normalizeInstructionSurfaceCaseSuite } from "./instruction-surface-case-suite.mjs";
@@ -12,6 +13,7 @@ import {
 	normalizeRoutingDecision,
 	relativizeObservedPath,
 } from "./instruction-surface-support.mjs";
+import { writeTextOutput } from "./output-files.mjs";
 import { extractClaudeTelemetry } from "./skill-test-telemetry.mjs";
 
 export { normalizeInstructionSurfaceCaseSuite } from "./instruction-surface-case-suite.mjs";
@@ -596,9 +598,9 @@ function main() {
 	const options = parseArgs(process.argv.slice(2));
 	mkdirSync(options.artifactDir, { recursive: true });
 	const packet = buildObservedInstructionSurfaceInput(options);
-	writeFileSync(options.outputFile, `${JSON.stringify(packet, null, 2)}\n`);
+	writeTextOutput(options.outputFile, `${JSON.stringify(packet, null, 2)}\n`);
 }
 
-if (import.meta.url === new URL(process.argv[1], "file:").href) {
+if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
 	main();
 }

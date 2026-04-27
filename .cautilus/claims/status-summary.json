@@ -54,7 +54,7 @@
     "traversal": "entry-markdown-links"
   },
   "gitCommit": "346fb27233f2ba3557b8e681a85e211c02d72e51",
-  "inputPath": "/home/hwidong/codes/cautilus/.cautilus/claims/latest.json",
+  "inputPath": ".cautilus/claims/latest.json",
   "inputSchemaVersion": "cautilus.claim_proof_plan.v1",
   "linkedMarkdownSourceCount": 33,
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",

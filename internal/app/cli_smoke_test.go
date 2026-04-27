@@ -286,10 +286,10 @@ func TestCLIDoctorReportsReadyWithExecutionSurface(t *testing.T) {
 	if !ok || len(decisionLoopCommands) != 2 {
 		t.Fatalf("expected two decision loop commands, got %#v", firstBoundedRun["decisionLoopCommands"])
 	}
-	if !strings.Contains(anyToString(decisionLoopCommands[0]), "cautilus eval test --repo-root "+root) {
+	if !strings.Contains(anyToString(decisionLoopCommands[0]), "cautilus eval test --repo-root '"+root+"'") {
 		t.Fatalf("expected eval test first bounded run command, got %#v", decisionLoopCommands[0])
 	}
-	if !strings.Contains(anyToString(decisionLoopCommands[1]), "cautilus eval evaluate --input /tmp/cautilus-first-run/eval-observed.json") {
+	if !strings.Contains(anyToString(decisionLoopCommands[1]), "cautilus eval evaluate --input '"+filepath.Join(root, ".cautilus", "runs", "first-bounded-run", "eval-observed.json")+"'") {
 		t.Fatalf("expected eval evaluate packet recheck command, got %#v", decisionLoopCommands[1])
 	}
 	archetypes, ok := firstBoundedRun["archetypes"].([]any)

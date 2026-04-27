@@ -345,8 +345,9 @@ type claimDiscoverArgs struct {
 }
 
 type claimShowArgs struct {
-	input  string
-	output *string
+	input        string
+	displayInput string
+	output       *string
 }
 
 type claimReviewPrepareInputArgs struct {
@@ -371,8 +372,9 @@ type claimPlanEvalsArgs struct {
 }
 
 type claimValidateArgs struct {
-	claims string
-	output *string
+	claims        string
+	displayClaims string
+	output        *string
 }
 
 type installArgs struct {
@@ -823,7 +825,7 @@ func handleClaimShow(repoRoot string, cwd string, args []string, stdout io.Write
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
-	summary, err := runtime.BuildClaimStatusSummary(packet, options.input)
+	summary, err := runtime.BuildClaimStatusSummary(packet, options.displayInput)
 	if err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
@@ -941,7 +943,7 @@ func handleClaimValidate(repoRoot string, cwd string, args []string, stdout io.W
 		return 1
 	}
 	report := runtime.BuildClaimValidationReport(claimPacket, runtime.ClaimValidationOptions{
-		InputPath: options.claims,
+		InputPath: options.displayClaims,
 	})
 	if err := writeOutput(stdout, cwd, options.output, report); err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
@@ -2127,6 +2129,7 @@ func parseClaimShowArgs(args []string, cwd string) (*claimShowArgs, error) {
 			}
 			index = next
 			options.input = resolvePath(cwd, value)
+			options.displayInput = displayPathForCWD(cwd, value, options.input)
 		case "--output":
 			value, next, err := requiredValue(args, index, arg)
 			if err != nil {
@@ -2304,6 +2307,7 @@ func parseClaimValidateArgs(args []string, cwd string) (*claimValidateArgs, erro
 			}
 			index = next
 			options.claims = resolvePath(cwd, value)
+			options.displayClaims = displayPathForCWD(cwd, value, options.claims)
 		case "--output":
 			value, next, err := requiredValue(args, index, arg)
 			if err != nil {
@@ -3335,6 +3339,17 @@ func resolvePath(base string, value string) string {
 		return filepath.Clean(value)
 	}
 	return filepath.Clean(filepath.Join(base, value))
+}
+
+func displayPathForCWD(cwd string, raw string, resolved string) string {
+	trimmed := strings.TrimSpace(raw)
+	if trimmed != "" && !filepath.IsAbs(trimmed) {
+		return filepath.ToSlash(filepath.Clean(trimmed))
+	}
+	if rel, err := filepath.Rel(cwd, resolved); err == nil && rel != "." && rel != ".." && !strings.HasPrefix(rel, ".."+string(filepath.Separator)) {
+		return filepath.ToSlash(filepath.Clean(rel))
+	}
+	return filepath.ToSlash(filepath.Clean(resolved))
 }
 
 func deriveSiblingRawJSONPath(path string) string {

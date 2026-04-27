@@ -241,7 +241,7 @@ test("build-review-packet lets an explicit output path override the active run d
 		const runDir = join(root, "active-run");
 		mkdirSync(runDir, { recursive: true });
 		writeValidReport(join(runDir, "report.json"));
-		const explicitOutput = join(root, "reports", "explicit-review-packet.json");
+		const explicitOutput = join(root, "reports", "nested", "explicit-review-packet.json");
 		const result = runBuildReviewPacket(
 			["--repo-root", root, "--output", explicitOutput],
 			{

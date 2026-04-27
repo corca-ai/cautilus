@@ -239,11 +239,39 @@ func resolveClaimDiscoveryConfig(repoRoot string, explicit []string) (claimDisco
 			config.linkedMarkdownDepth = depth
 		}
 		if statePath := strings.TrimSpace(stringOrEmpty(claimConfig["state_path"])); statePath != "" {
-			config.statePath = filepath.ToSlash(filepath.Clean(statePath))
+			normalized, err := normalizeClaimStatePath(statePath)
+			if err != nil {
+				return config, err
+			}
+			config.statePath = normalized
 			config.statePathSource = "adapter"
 		}
 	}
 	return config, nil
+}
+
+func normalizeClaimStatePath(value string) (string, error) {
+	trimmed := strings.TrimSpace(value)
+	if trimmed == "" {
+		return "", fmt.Errorf("claim_discovery.state_path must be a non-empty repo-relative path")
+	}
+	slashValue := strings.ReplaceAll(trimmed, "\\", "/")
+	if filepath.IsAbs(trimmed) || strings.HasPrefix(slashValue, "/") || looksLikeWindowsAbsolutePath(slashValue) {
+		return "", fmt.Errorf("claim_discovery.state_path must be repo-relative, got %q", value)
+	}
+	cleaned := pathpkg.Clean(slashValue)
+	if cleaned == "." || cleaned == ".." || strings.HasPrefix(cleaned, "../") || strings.Contains(cleaned, "/../") {
+		return "", fmt.Errorf("claim_discovery.state_path must stay inside the repo, got %q", value)
+	}
+	return cleaned, nil
+}
+
+func looksLikeWindowsAbsolutePath(value string) bool {
+	if len(value) < 3 {
+		return false
+	}
+	first := value[0]
+	return ((first >= 'A' && first <= 'Z') || (first >= 'a' && first <= 'z')) && value[1] == ':' && value[2] == '/'
 }
 
 func discoverClaimSources(repoRoot string, config claimDiscoveryConfig) ([]claimSource, []any, error) {

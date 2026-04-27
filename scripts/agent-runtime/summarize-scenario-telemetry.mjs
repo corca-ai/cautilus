@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
@@ -10,6 +10,7 @@ import {
 	summarizeScenarioTelemetryEntries,
 	summarizeScenarioTelemetryFromHistory,
 } from "./scenario-result-telemetry.mjs";
+import { writeTextOutput } from "./output-files.mjs";
 
 function usage(exitCode = 0) {
 	const text = [
@@ -93,7 +94,7 @@ export function main(argv = process.argv.slice(2)) {
 		});
 		const text = `${JSON.stringify(packet, null, 2)}\n`;
 		if (outputPath) {
-			writeFileSync(outputPath, text, "utf-8");
+			writeTextOutput(outputPath, text);
 			return;
 		}
 		process.stdout.write(text);

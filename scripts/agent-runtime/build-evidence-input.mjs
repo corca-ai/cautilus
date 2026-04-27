@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
@@ -10,6 +10,7 @@ import {
 	SCENARIO_RESULTS_SCHEMA,
 } from "./contract-versions.mjs";
 import { validateReportPacket } from "./report-packet.mjs";
+import { writeTextOutput } from "./output-files.mjs";
 
 const EVIDENCE_OBJECTIVE =
 	"Bundle host-normalized evidence into one machine-readable packet before mining scenarios or revisions.";
@@ -269,7 +270,7 @@ export function main(argv = process.argv.slice(2)) {
 		const packet = buildEvidenceInput(argv);
 		const text = `${JSON.stringify(packet, null, 2)}\n`;
 		if (options.output) {
-			writeFileSync(resolve(options.output), text, "utf-8");
+			writeTextOutput(options.output, text);
 			return;
 		}
 		process.stdout.write(text);
