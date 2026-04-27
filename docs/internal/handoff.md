@@ -63,6 +63,11 @@
   `npm run dogfood:cautilus-refresh-flow`는 disposable candidate worktree에서 실제 `codex exec "$cautilus"`를 실행하고, 같은 session id로 `codex exec resume <id> "1"`을 이어 실행한 뒤 `scripts/agent-runtime/audit-cautilus-refresh-flow-log.mjs`로 combined JSONL을 판정한다.
   이 감사는 branch 선택 뒤 fresh `agent status` 재확인, `refreshSummary` 읽기, coordinator-facing saved-claim-map 언어, 내부 branch id를 option title로 쓰는 회귀, review/eval 과진행을 잡는다.
   같은 수동 검증을 사용자가 새 세션에서 반복하는 것은 더 이상 기본 경로가 아니다.
+- 2026-04-27 후속 구현으로 위 two-turn refresh-flow가 `cautilus eval test`의 `dev/skill` multi-turn episode fixture로 들어왔다.
+  `fixtures/eval/dev/skill/cautilus-refresh-flow.fixture.json`는 `$cautilus` 다음 `1`을 ordered `turns`로 표현하고 `auditKind=cautilus_refresh_flow`로 결과를 판정한다.
+  `npm run dogfood:cautilus-refresh-flow:eval`는 adapter-owned wrapper를 통해 disposable candidate worktree를 만들고, source checkout을 오염시키지 않는 상태로 live Codex episode를 실행한다.
+  최종 실행은 `recommendation=accept-now`, `passed=1`, `failed=0`이며 artifact는 `artifacts/self-dogfood/cautilus-refresh-flow-eval/latest/eval-summary.json`.
+  이 과정에서 `.cautilus/claims/latest.json`의 legacy `repo/whole-repo` / `repo/skill` labels도 `dev/repo` / `dev/skill`로 정리되어 `agent status`가 `claimState.status=present`와 `refresh_claims_from_diff` 첫 branch를 보여준다.
 - 2026-04-26 후속 구현으로 existing-packet helper slice도 들어왔다.
   `claim show --input <claims.json> --sample-claims <n>`는 `cautilus.claim_status_summary.v1`를 만들고 bounded `sampleClaims`와 `gitState`로 stable candidate fields와 claim-packet freshness를 보여준다.
   `agent status`도 claim summary 안에 `gitState`를 포함하고, stale packet이면 `refresh_claims_from_diff`를 `show_existing_claims`보다 먼저 제안한다.
@@ -81,7 +86,7 @@
 - 잔여 신호: no-input `dev/skill` 단독 real-codex 검증은 있다.
   하지만 전체 `self-dogfood-eval-skill` suite는 아직 stable accept-now가 아니다.
   2026-04-26 live run에서 broader `execution-cautilus-test-request`가 같은 `dev/skill` fixture를 다시 `eval test`하려 하면서 nested self-eval이 무겁고 timeout/reject로 끝났다.
-  다음 hardening slice는 이 케이스를 재귀 없는 cheap skill-eval proof로 바꾸거나, fixture backend/runtime을 `cautilus eval test`의 first-class runtime으로 노출해야 한다.
+  다음 hardening slice는 이 케이스를 새 multi-turn episode / audit-backed runner 위로 바꿔 재귀 없는 cheap skill-eval proof로 만들거나, fixture backend/runtime을 `cautilus eval test`의 first-class runtime으로 노출해야 한다.
   `app/chat` / `app/prompt` real-codex/claude self-dogfood 증거도 아직 없다.
   `charness-artifacts/cautilus/latest.md` refresh도 별도 artifact-refresh 슬라이스로 남아 있다.
 - 2026-04-27 skill-surface verification 중 shared charness guidance가 removed `cautilus instruction-surface test --repo-root .`를 아직 참조한다는 것을 확인했다.
@@ -113,10 +118,9 @@
 5. spec follow-up #4 — C2/C3/C4 composition primitives (extends / multi-step / snapshot), 슬라이스당 하나.
 6. spec follow-up #5 — `scenario normalize` 재범위만 남음.
    archetype-boundary retire는 cut 슬라이스에 흡수됨.
-7. `dev/skill` / `app/chat` / `app/prompt` preset 중 어떤 surface에 real-codex/claude self-dogfood evidence를 먼저 붙일지 결정한다.
-8. 후속 후보: multi-turn `dev/skill` session scenario를 설계한다.
-   현재 no-input `$cautilus` 첫 턴은 `agent status`와 auditor로 방어된다.
-   다음 검증은 사용자의 짧은 승인만으로 claim discover / claim show / planning으로 이어지는지, 그리고 스킬이 추가로 필요한 확인을 스스로 설명하는지다.
+7. `app/chat` / `app/prompt` 중 어느 surface에 real-codex/claude self-dogfood evidence를 먼저 붙일지 결정한다.
+8. 후속 후보: broader `self-dogfood-eval-skill` suite의 nested self-eval 케이스를 새 `turns` + `auditKind` 구조로 치환한다.
+   이미 refresh-flow는 `cautilus eval test` 안에서 live Codex multi-turn proof까지 통과했으므로, 다음 검증은 같은 구조를 재귀 없는 skill proof에 적용하는 것이다.
 
 ## Discuss
 
