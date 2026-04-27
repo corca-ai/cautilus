@@ -42,7 +42,7 @@ cautilus adapter init --repo-root .
 cautilus adapter resolve --repo-root .
 ```
 
-If you already know which archetype your repo evaluates, start from an archetype-specific starter kit under [examples/starters/](../examples/starters/) instead of `cautilus adapter init`.
+If you already know which evaluation surface your repo needs, start from the closest starter kit under [examples/starters/](../examples/starters/) instead of `cautilus adapter init`.
 Each starter ships a pre-filled `cautilus-adapter.yaml`, a canonical input fixture, and a README that explains what to replace next.
 Treat starter placeholders as bootstrap help, not as proof that a real consumer workflow is already wired.
 
@@ -235,6 +235,10 @@ It links normalized chatbot threads to scenario proposals and coverage hints so 
 
 The shipped surface is `cautilus eval` (see [docs/specs/evaluation-surfaces.spec.md](./specs/evaluation-surfaces.spec.md)).
 The first preset, `dev / repo`, replaces the prior `cautilus instruction-surface` commands.
+Cautilus exposes two top-level surfaces and four presets:
+`dev / repo` for repo work contracts, `dev / skill` for checked-in or portable development skills, `app / chat` for multi-turn product conversation behavior, and `app / prompt` for single product input/output behavior.
+`cautilus eval test` runs a checked-in fixture through an adapter-owned runner and then evaluates the observed packet.
+`cautilus eval evaluate` evaluates an already-observed packet without launching the runner again.
 
 ```bash
 # official on-demand self-dogfood wrapper for the repo's own AGENTS.md
@@ -267,12 +271,22 @@ cautilus eval test \
   --repo-root . \
   --adapter-name self-dogfood-refresh-flow
 
+# smoke the local skill routing path without recursively launching a model eval
+cautilus eval test \
+  --repo-root . \
+  --adapter-name self-dogfood-eval-skill \
+  --runtime fixture \
+  --skip-preflight
+
 # evaluate one normalized skill packet for trigger accuracy and execution quality
 # (cautilus.skill_evaluation_inputs.v1 input)
 cautilus eval evaluate \
   --input ./eval-observed.json \
   --output /tmp/cautilus-skill-summary.json
 ```
+
+Use `--runtime fixture` when the goal is cheap command-routing proof over fixture-backed runner results.
+It is not evidence that a model-backed skill execution is good; it is evidence that the Cautilus command surface, adapter, fixture translation, and packet evaluation path still line up.
 
 ## Reports
 
@@ -371,6 +385,8 @@ scenario, audit, and history evidence all matter together?"
 
 ## Optimization
 
+`cautilus optimize` is the improvement front door.
+Use it only after the claim and eval proof surface are explicit enough that an improvement loop has something honest to optimize against.
 The bounded one-shot optimizer:
 
 ```bash

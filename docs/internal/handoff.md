@@ -88,6 +88,9 @@
   `execution-cautilus-test-request`는 이제 live Codex 안에서 `$cautilus`를 호출해 same suite를 `--runtime fixture --skip-preflight`로 cheap smoke하고 `accept-now`를 요약한다.
   실제 live run `./bin/cautilus eval test --repo-root . --adapter-name self-dogfood-eval-skill --output-dir /tmp/cautilus-skill-live`는 `recommendation=accept-now`, `passed=3`, `failed=0`이었다.
   `app/chat` / `app/prompt` real-codex/claude self-dogfood 증거는 아직 없다.
+- 2026-04-27 후속 구현으로 README / CLI reference / binary help도 네 evaluation presets와 세 command-family front doors에 맞춰 조정됐다.
+  `cautilus --help`의 첫 run group은 이제 `claim discover`, `eval test`, `eval evaluate`를 먼저 보여주고, `eval --help`는 `dev/repo`, `dev/skill`, `app/chat`, `app/prompt`와 `--runtime fixture`의 cheap command-routing 의미를 설명한다.
+  `optimize --help`는 optimize가 proof surface 이후의 improvement front door임을 명시한다.
   `charness-artifacts/cautilus/latest.md` refresh도 별도 artifact-refresh 슬라이스로 남아 있다.
 - 2026-04-27 skill-surface verification 중 shared charness guidance가 removed `cautilus instruction-surface test --repo-root .`를 아직 참조한다는 것을 확인했다.
   Cautilus binary는 현재 spec대로 해당 command를 제거했고, replacement path는 `cautilus eval test --adapter-name self-dogfood-eval` 또는 `npm run dogfood:self`다.
@@ -119,7 +122,7 @@
 6. spec follow-up #5 — `scenario normalize` 재범위만 남음.
    archetype-boundary retire는 cut 슬라이스에 흡수됨.
 7. `app/chat` / `app/prompt` 중 어느 surface에 real-codex/claude self-dogfood evidence를 먼저 붙일지 결정한다.
-8. 후속 후보: `dev/skill` fixture runtime smoke는 통과했으므로, 다음은 command help / README / skill 본문에서 `dev/repo`, `dev/skill`, `app/chat`, `app/prompt` 표면과 `claim` / `eval` / `optimize` command families가 과장 없이 정렬됐는지 점검한다.
+8. 후속 후보: `app/chat` / `app/prompt` fixture 중 하나에 cheap fixture-backed smoke와, 가능하면 real runtime proof를 붙여 app surface가 문서상 약속에만 머물지 않게 한다.
 
 ## Discuss
 

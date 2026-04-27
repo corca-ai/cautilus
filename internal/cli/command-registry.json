@@ -1,45 +1,11 @@
 {
   "groups": [
-    { "id": "run", "label": "Discover and verify behavior claims" },
+    { "id": "run", "label": "Discover claims and run bounded evals" },
     { "id": "setup", "label": "Set up and check a repo" },
-    { "id": "results", "label": "Review evidence and improve behavior" },
+    { "id": "results", "label": "Review proof packets and improve behavior" },
     { "id": "introspection", "label": "Introspection" }
   ],
   "commands": [
-    {
-      "path": ["scenario", "normalize", "chatbot"],
-      "group": "run",
-      "usage": "cautilus scenario normalize chatbot [args]",
-      "example": "cautilus scenario normalize chatbot --input ./fixtures/scenario-proposals/chatbot-input.json"
-    },
-    {
-      "path": ["scenario", "normalize", "skill"],
-      "group": "run",
-      "usage": "cautilus scenario normalize skill [args]",
-      "example": "cautilus scenario normalize skill --input ./fixtures/scenario-proposals/skill-input.json"
-    },
-    {
-      "path": ["scenario", "normalize", "workflow"],
-      "group": "run",
-      "usage": "cautilus scenario normalize workflow [args]",
-      "example": "cautilus scenario normalize workflow --input ./fixtures/scenario-proposals/workflow-input.json"
-    },
-    {
-      "path": ["scenario", "prepare-input"],
-      "group": "run",
-      "usage": "cautilus scenario prepare-input [args]",
-      "example": "cautilus scenario prepare-input --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json"
-    },
-    {
-      "path": ["scenario", "propose"],
-      "group": "run",
-      "usage": "cautilus scenario propose [args]",
-      "example": "cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json",
-      "notes": [
-        "The canonical JSON output preserves the full ranked proposal list for agents.",
-        "The output packet also emits an `attentionView`, which is a bounded human-facing shortlist derived from the full ranked set."
-      ]
-    },
     {
       "path": ["claim", "discover"],
       "group": "run",
@@ -132,13 +98,56 @@
       "path": ["eval", "test"],
       "group": "run",
       "usage": "cautilus eval test [args]",
-      "example": "cautilus eval test --repo-root . --adapter-name self-dogfood-eval --fixture ./fixtures/eval/dev/repo/checked-in-agents-routing.fixture.json"
+      "example": "cautilus eval test --repo-root . --adapter-name self-dogfood-eval --fixture ./fixtures/eval/dev/repo/checked-in-agents-routing.fixture.json",
+      "notes": [
+        "Runs one checked-in evaluation fixture through an adapter-owned runner, then evaluates the observed packet.",
+        "The four first-class presets are `dev/repo`, `dev/skill`, `app/chat`, and `app/prompt`.",
+        "`--runtime codex|claude|fixture` selects the runner backend placeholder; use `fixture` for cheap command-routing smoke tests, not model-quality proof."
+      ]
     },
     {
       "path": ["eval", "evaluate"],
       "group": "run",
       "usage": "cautilus eval evaluate [args]",
-      "example": "cautilus eval evaluate --input ./eval-observed.json"
+      "example": "cautilus eval evaluate --input ./eval-observed.json",
+      "notes": [
+        "Evaluates one already-observed packet without launching the host runner again.",
+        "The packet schema selects the preset: `dev/repo`, `dev/skill`, `app/chat`, or `app/prompt`."
+      ]
+    },
+    {
+      "path": ["scenario", "propose"],
+      "group": "run",
+      "usage": "cautilus scenario propose [args]",
+      "example": "cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json",
+      "notes": [
+        "The canonical JSON output preserves the full ranked proposal list for agents.",
+        "The output packet also emits an `attentionView`, which is a bounded human-facing shortlist derived from the full ranked set."
+      ]
+    },
+    {
+      "path": ["scenario", "prepare-input"],
+      "group": "run",
+      "usage": "cautilus scenario prepare-input [args]",
+      "example": "cautilus scenario prepare-input --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json"
+    },
+    {
+      "path": ["scenario", "normalize", "chatbot"],
+      "group": "run",
+      "usage": "cautilus scenario normalize chatbot [args]",
+      "example": "cautilus scenario normalize chatbot --input ./fixtures/scenario-proposals/chatbot-input.json"
+    },
+    {
+      "path": ["scenario", "normalize", "skill"],
+      "group": "run",
+      "usage": "cautilus scenario normalize skill [args]",
+      "example": "cautilus scenario normalize skill --input ./fixtures/scenario-proposals/skill-input.json"
+    },
+    {
+      "path": ["scenario", "normalize", "workflow"],
+      "group": "run",
+      "usage": "cautilus scenario normalize workflow [args]",
+      "example": "cautilus scenario normalize workflow --input ./fixtures/scenario-proposals/workflow-input.json"
     },
     {
       "path": ["workspace", "start"],
@@ -368,31 +377,47 @@
       "path": ["optimize", "prepare-input"],
       "group": "results",
       "usage": "cautilus optimize prepare-input [args]",
-      "example": "cautilus optimize prepare-input --report-file /tmp/cautilus-mode/report.json --review-summary /tmp/cautilus-review/review-summary.json --history-file /tmp/cautilus-history/scenario-history.snapshot.json --target prompt --budget medium"
+      "example": "cautilus optimize prepare-input --report-file /tmp/cautilus-mode/report.json --review-summary /tmp/cautilus-review/review-summary.json --history-file /tmp/cautilus-history/scenario-history.snapshot.json --target prompt --budget medium",
+      "notes": [
+        "`optimize` is the improvement front door; use it only after the claim and eval proof surface are explicit.",
+        "This command prepares a bounded improvement packet from report, review, and history evidence."
+      ]
     },
     {
       "path": ["optimize", "search", "prepare-input"],
       "group": "results",
       "usage": "cautilus optimize search prepare-input [args]",
-      "example": "cautilus optimize search prepare-input --optimize-input /tmp/cautilus-optimize/input.json --held-out-results-file /tmp/cautilus-mode/held_out-scenario-results.json --target-file .agents/review.prompt.md --budget light"
+      "example": "cautilus optimize search prepare-input --optimize-input /tmp/cautilus-optimize/input.json --held-out-results-file /tmp/cautilus-mode/held_out-scenario-results.json --target-file .agents/review.prompt.md --budget light",
+      "notes": [
+        "Prepares a bounded search packet above an explicit optimize input and held-out evidence."
+      ]
     },
     {
       "path": ["optimize", "search", "run"],
       "group": "results",
       "usage": "cautilus optimize search run [args]",
-      "example": "cautilus optimize search run --input /tmp/cautilus-optimize/search-input.json --json"
+      "example": "cautilus optimize search run --input /tmp/cautilus-optimize/search-input.json --json",
+      "notes": [
+        "Runs the bounded search and emits a checkpointed result packet; it is not an open-ended retry loop."
+      ]
     },
     {
       "path": ["optimize", "propose"],
       "group": "results",
       "usage": "cautilus optimize propose [args]",
-      "example": "cautilus optimize propose --input /tmp/cautilus-optimize/input.json"
+      "example": "cautilus optimize propose --input /tmp/cautilus-optimize/input.json",
+      "notes": [
+        "Produces a bounded improvement proposal from an explicit optimize input."
+      ]
     },
     {
       "path": ["optimize", "build-artifact"],
       "group": "results",
       "usage": "cautilus optimize build-artifact [args]",
-      "example": "cautilus optimize build-artifact --proposal-file /tmp/cautilus-optimize/proposal.json"
+      "example": "cautilus optimize build-artifact --proposal-file /tmp/cautilus-optimize/proposal.json",
+      "notes": [
+        "Builds the reviewable revision artifact from an accepted improvement proposal."
+      ]
     },
     {
       "path": ["self-dogfood", "render-html"],
