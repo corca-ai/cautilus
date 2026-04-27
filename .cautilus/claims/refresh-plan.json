@@ -3,6 +3,8 @@
   "changedSources": [
     ".agents/skills/cautilus/SKILL.md",
     ".cautilus/claims/latest.json",
+    ".cautilus/claims/refresh-plan.json",
+    "charness-artifacts/debug/debug-2026-04-27-refresh-plan-internal-language.md",
     "charness-artifacts/debug/debug-2026-04-27-stale-claim-review-overrun.md",
     "charness-artifacts/debug/debug-2026-04-27-stale-instruction-surface-command.md",
     "charness-artifacts/debug/latest.md",
@@ -1172,8 +1174,53 @@
     "traversal": "entry-markdown-links"
   },
   "previousPath": ".cautilus/claims/latest.json",
+  "refreshSummary": {
+    "baseCommit": "bec65ce20af8b3d20429e766287ab1a9aef5db90",
+    "carriedForwardClaimCount": 180,
+    "changedClaimCount": 100,
+    "changedClaimSources": [
+      {
+        "claimCount": 56,
+        "path": "docs/contracts/claim-discovery-workflow.md"
+      },
+      {
+        "claimCount": 21,
+        "path": "docs/specs/command-surfaces.spec.md"
+      },
+      {
+        "claimCount": 12,
+        "path": "docs/cli-reference.md"
+      },
+      {
+        "claimCount": 11,
+        "path": "skills/cautilus/SKILL.md"
+      }
+    ],
+    "changedSourceCount": 24,
+    "nextActions": [
+      {
+        "detail": "Run claim discovery to write a fresh claim packet, then use claim show to inspect the updated status.",
+        "id": "update_saved_claim_map",
+        "label": "Update the saved claim map before review or eval planning"
+      },
+      {
+        "detail": "Use this refresh plan to focus review on changed sources before launching any reviewer or eval workflow.",
+        "id": "inspect_refresh_plan",
+        "label": "Inspect which files and claims changed"
+      },
+      {
+        "detail": "Choose this if the coordinator only wanted to make the stale state explicit for a later session.",
+        "id": "stop",
+        "label": "Stop after recording the refresh plan"
+      }
+    ],
+    "status": "changes-detected",
+    "summary": "The saved claim map was made from an older checkout; this plan identifies claims whose source files changed and does not update the saved claim map yet.",
+    "targetCommit": "34e2fc871c6d73fd78bd1dd5a79069baa6a73f68",
+    "workingTreePolicy": "excluded"
+  },
   "schemaVersion": "cautilus.claim_refresh_plan.v1",
   "sourceRoot": ".",
-  "targetCommit": "148d6066eb3d16681bace15fc9ab1338068428ac",
+  "targetCommit": "34e2fc871c6d73fd78bd1dd5a79069baa6a73f68",
   "workingTreePolicy": "excluded"
 }
