@@ -2964,10 +2964,10 @@ func TestCLIScenarioNormalizeChatbotProducesCandidatesThatChainIntoPrepareAndPro
 	}
 }
 
-func TestCLIEvalTestRunsRepoWholeRepoFixture(t *testing.T) {
+func TestCLIEvalTestRunsDevRepoFixture(t *testing.T) {
 	root := t.TempDir()
 	adapterDir := filepath.Join(root, ".agents")
-	fixtureDir := filepath.Join(root, "fixtures", "eval", "whole-repo")
+	fixtureDir := filepath.Join(root, "fixtures", "eval", "dev", "repo")
 	outputDir := filepath.Join(root, "outputs")
 	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
 		t.Fatalf("MkdirAll returned error: %v", err)
@@ -3021,8 +3021,8 @@ JSON
 	}
 	writeJSONFile(t, filepath.Join(fixtureDir, "checked-in-agents-routing.fixture.json"), map[string]any{
 		"schemaVersion": contracts.EvaluationInputSchema,
-		"surface":       "repo",
-		"preset":        "whole-repo",
+		"surface":       "dev",
+		"preset":        "repo",
 		"suiteId":       "instruction-surface-demo",
 		"cases": []map[string]any{
 			{
@@ -3044,7 +3044,7 @@ JSON
 		"  - instruction surface fidelity",
 		"baseline_options:",
 		"  - baseline git ref via {baseline_ref}",
-		"evaluation_input_default: fixtures/eval/whole-repo/checked-in-agents-routing.fixture.json",
+		"evaluation_input_default: fixtures/eval/dev/repo/checked-in-agents-routing.fixture.json",
 		"eval_test_command_templates:",
 		"  - sh ./eval-test.sh {eval_observed_file}",
 		"",
@@ -3071,10 +3071,10 @@ JSON
 	}
 }
 
-func TestCLIEvalTestRunsRepoSkillFixture(t *testing.T) {
+func TestCLIEvalTestRunsDevSkillFixture(t *testing.T) {
 	root := t.TempDir()
 	adapterDir := filepath.Join(root, ".agents")
-	fixtureDir := filepath.Join(root, "fixtures", "eval", "skill")
+	fixtureDir := filepath.Join(root, "fixtures", "eval", "dev", "skill")
 	outputDir := filepath.Join(root, "outputs")
 	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
 		t.Fatalf("MkdirAll returned error: %v", err)
@@ -3111,7 +3111,7 @@ JSON
 	}
 	writeJSONFile(t, filepath.Join(fixtureDir, "demo.fixture.json"), map[string]any{
 		"schemaVersion": contracts.EvaluationInputSchema,
-		"surface":       "repo",
+		"surface":       "dev",
 		"preset":        "skill",
 		"suiteId":       "demo",
 		"skillId":       "demo",
@@ -3131,7 +3131,7 @@ JSON
 		"  - skill trigger fidelity",
 		"baseline_options:",
 		"  - baseline git ref via {baseline_ref}",
-		"evaluation_input_default: fixtures/eval/skill/demo.fixture.json",
+		"evaluation_input_default: fixtures/eval/dev/skill/demo.fixture.json",
 		"eval_test_command_templates:",
 		"  - sh ./eval-test.sh {eval_observed_file}",
 		"",
@@ -3444,7 +3444,7 @@ func TestCLIEvalEvaluateAcceptsAppPromptObservedPacket(t *testing.T) {
 func TestCLIEvalTestRejectsUnsupportedSurfacePresetCombo(t *testing.T) {
 	root := t.TempDir()
 	adapterDir := filepath.Join(root, ".agents")
-	fixtureDir := filepath.Join(root, "fixtures", "eval", "whole-repo")
+	fixtureDir := filepath.Join(root, "fixtures", "eval", "dev", "repo")
 	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
 		t.Fatalf("MkdirAll returned error: %v", err)
 	}

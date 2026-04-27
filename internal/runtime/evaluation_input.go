@@ -8,7 +8,7 @@ import (
 
 // EvaluationInput is the v1 fixture envelope defined in
 // docs/specs/evaluation-surfaces.spec.md. The current slice supports only the
-// repo/whole-repo, repo/skill, app/chat, and app/prompt presets; the C2/C3/C4
+// dev/repo, dev/skill, app/chat, and app/prompt presets; the C2/C3/C4
 // composition primitives error out until their slices ship.
 type EvaluationInput struct {
 	Surface          string
@@ -19,8 +19,8 @@ type EvaluationInput struct {
 }
 
 var supportedEvaluationCombos = map[string]map[string]bool{
-	"repo": {"whole-repo": true, "skill": true},
-	"app":  {"chat": true, "prompt": true},
+	"dev": {"repo": true, "skill": true},
+	"app": {"chat": true, "prompt": true},
 }
 
 func NormalizeEvaluationInput(input map[string]any) (*EvaluationInput, error) {
@@ -59,8 +59,8 @@ func NormalizeEvaluationInput(input map[string]any) (*EvaluationInput, error) {
 		suiteDisplayName = *value
 	}
 	switch preset {
-	case "whole-repo":
-		translated, err := translateWholeRepoFixture(input, suiteID, suiteDisplayName)
+	case "repo":
+		translated, err := translateDevRepoFixture(input, suiteID, suiteDisplayName)
 		if err != nil {
 			return nil, err
 		}
@@ -112,7 +112,7 @@ func NormalizeEvaluationInput(input map[string]any) (*EvaluationInput, error) {
 	}
 }
 
-func translateWholeRepoFixture(input map[string]any, suiteID string, suiteDisplayName string) (map[string]any, error) {
+func translateDevRepoFixture(input map[string]any, suiteID string, suiteDisplayName string) (map[string]any, error) {
 	rawCases, err := assertArray(input["cases"], "cases")
 	if err != nil {
 		return nil, err
@@ -126,7 +126,7 @@ func translateWholeRepoFixture(input map[string]any, suiteID string, suiteDispla
 		if !ok {
 			return nil, fmt.Errorf("cases[%d] must be an object", index)
 		}
-		translated, err := translateWholeRepoCase(entry, index)
+		translated, err := translateDevRepoCase(entry, index)
 		if err != nil {
 			return nil, err
 		}
@@ -144,7 +144,7 @@ func translateWholeRepoFixture(input map[string]any, suiteID string, suiteDispla
 	return translatedSuite, nil
 }
 
-func translateWholeRepoCase(entry map[string]any, index int) (map[string]any, error) {
+func translateDevRepoCase(entry map[string]any, index int) (map[string]any, error) {
 	caseID, err := normalizeNonEmptyString(entry["caseId"], fmt.Sprintf("cases[%d].caseId", index))
 	if err != nil {
 		return nil, err
@@ -197,7 +197,7 @@ func translateSkillFixture(input map[string]any, suiteID string, suiteDisplayNam
 			if _, snapshot := expectedMap["snapshot"]; snapshot {
 				return nil, fmt.Errorf("cases[%d].expected.snapshot is reserved for a future composition slice (C4)", index)
 			}
-			return nil, fmt.Errorf("cases[%d].expected is not supported on repo/skill; declare expectedTrigger or thresholds at the case level instead", index)
+			return nil, fmt.Errorf("cases[%d].expected is not supported on dev/skill; declare expectedTrigger or thresholds at the case level instead", index)
 		}
 		translated := map[string]any{}
 		for key, value := range entry {

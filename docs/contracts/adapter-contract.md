@@ -42,7 +42,7 @@ preflight_commands:
   - npm run check
 runtime_policy:
   mode: observe
-evaluation_input_default: fixtures/eval/whole-repo/example.fixture.json
+evaluation_input_default: fixtures/eval/dev/repo/example.fixture.json
 eval_test_command_templates:
   - node scripts/agent-runtime/run-local-eval-test.mjs --repo-root . --workspace {candidate_repo} --cases-file {eval_cases_file} --output-file {eval_observed_file} --artifact-dir {output_dir}/eval-test --backend {backend} --sandbox read-only
 claim_discovery:

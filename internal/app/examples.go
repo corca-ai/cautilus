@@ -106,12 +106,12 @@ const claimDiscoverExampleOutput = `{
       "groupHints": [
         "cautilus-eval",
         "repo-instructions",
-        "repo/whole-repo"
+        "dev/repo"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned repo/whole-repo fixture and run it through cautilus eval test.",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
       "proofLayer": "cautilus-eval",
-      "recommendedEvalSurface": "repo/whole-repo",
+      "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [

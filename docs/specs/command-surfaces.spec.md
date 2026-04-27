@@ -82,7 +82,7 @@ grep -q '"nonWriterNotice":' "$tmpdir/claim-eval-plan.json"
 grep -q '"proofLayer": "human-auditable"' "$tmpdir/claims.json"
 grep -q '"proofLayer": "deterministic"' "$tmpdir/claims.json"
 grep -q '"proofLayer": "cautilus-eval"' "$tmpdir/claims.json"
-grep -q '"recommendedEvalSurface": "repo/whole-repo"' "$tmpdir/claims.json"
+grep -q '"recommendedEvalSurface": "dev/repo"' "$tmpdir/claims.json"
 ```
 
 ## Fixed Decisions
@@ -132,7 +132,7 @@ Each claim candidate records:
 - `reviewStatus`
 - `lifecycle`
 - `claimFingerprint`
-- optional `recommendedEvalSurface`: one of `repo/whole-repo`, `repo/skill`, `app/chat`, `app/prompt`
+- optional `recommendedEvalSurface`: one of `dev/repo`, `dev/skill`, `app/chat`, `app/prompt`
 - `whyThisLayer`
 - `nextAction`
 

@@ -132,7 +132,7 @@
       "path": ["eval", "test"],
       "group": "run",
       "usage": "cautilus eval test [args]",
-      "example": "cautilus eval test --repo-root . --adapter-name self-dogfood-eval --fixture ./fixtures/eval/whole-repo/checked-in-agents-routing.fixture.json"
+      "example": "cautilus eval test --repo-root . --adapter-name self-dogfood-eval --fixture ./fixtures/eval/dev/repo/checked-in-agents-routing.fixture.json"
     },
     {
       "path": ["eval", "evaluate"],

@@ -12,7 +12,7 @@
   release-artifacts / verify-public-release / install-sh smoke 모두 green.
   세부 기록은 [charness-artifacts/release/latest.md](../../charness-artifacts/release/latest.md).
 - `evaluation-surfaces` 재설계의 네 preset은 모두 shipped 상태다 — [docs/specs/evaluation-surfaces.spec.md](../specs/evaluation-surfaces.spec.md).
-  `repo/whole-repo`, `repo/skill`, `app/chat`, `app/prompt` 모두 `cautilus eval test --fixture ...` / `cautilus eval evaluate --input ...` 경로가 있다.
+  `dev/repo`, `dev/skill`, `app/chat`, `app/prompt` 모두 `cautilus eval test --fixture ...` / `cautilus eval evaluate --input ...` 경로가 있다.
   `app/prompt`는 2026-04-26에 추가됐고 `cautilus.app_prompt_test_cases.v1` / `cautilus.app_prompt_evaluation_inputs.v1` / `cautilus.app_prompt_evaluation_summary.v1`를 쓴다.
   evaluator는 app-surface 공통 runtime 필드(provider, model, harness, mode=`messaging`, durationMs, observed.messages, observed.finalText)에 더해 `app/prompt`에서 `observed.input`을 요구한다.
 - 이번 command-surface implementation slice의 closeout verification: `npm run verify`, `npm run hooks:check`, `npm run test:on-demand`, `npm run dogfood:self` green.
@@ -21,7 +21,7 @@
   기본 출력은 숨은 product limit으로 잘라내지 않는다.
 - `mode evaluate` cut + archetype-boundary retire 슬라이스는 이미 들어왔고, 상세 기록은 이 spec의 follow-up notes와 git history를 본다.
 - `dogfood:self` canonical alias가 복원됐고 현재 `dogfood:self:eval`로 위임한다.
-  2026-04-26 실행 기준 `repo/whole-repo` checked-in AGENTS routing fixture는 real Codex (`gpt-5.4-mini`, low)에서 `recommendation=accept-now`, `evaluationCounts.passed=1`, `failed=0`, `blocked=0`.
+  2026-04-26 실행 기준 `dev/repo` checked-in AGENTS routing fixture는 real Codex (`gpt-5.4-mini`, low)에서 `recommendation=accept-now`, `evaluationCounts.passed=1`, `failed=0`, `blocked=0`.
 - 제품 프레임은 세 축으로 정리됐다:
   (1) declared behavior claim discovery / proof planning,
   (2) bounded eval verification,
@@ -37,7 +37,7 @@
   default scan은 entry sources plus repo-local Markdown links depth 3이며, scan confirmation과 LLM review-budget confirmation은 분리한다.
 - 2026-04-26 후속 구현으로 bundled skill control-flow slice도 들어왔다.
   no-input invocation은 claim-state availability를 확인하고, prior JSON이 없으면 scan scope를 설명한 뒤 `claim discover`를 쓰며, deterministic scan 뒤 LLM review budget을 별도로 확인하고, prior JSON이 있으면 `claim discover --previous ... --refresh-plan`을 쓴다는 지침이 `skills/cautilus/SKILL.md`와 packaged skill에 반영됐다.
-  `repo/skill` self-dogfood fixture에는 `execution-cautilus-no-input-claim-discovery-status` 케이스가 추가됐다.
+  `dev/skill` self-dogfood fixture에는 `execution-cautilus-no-input-claim-discovery-status` 케이스가 추가됐다.
   2026-04-26에 product repo 자체의 `.agents/skills/cautilus`와 `.claude/skills -> ../.agents/skills`도 materialize했다.
   `./bin/cautilus doctor --repo-root . --scope agent-surface`는 `ready=true`.
   새 `codex exec` no-input dogfood는 `$cautilus` 경로에서 `./bin/cautilus`를 사용했고, `.cautilus/claims/latest.json` 부재를 감지한 뒤 `/tmp/cautilus-claims-discovery-status.json`와 `/tmp/cautilus-claim-status-summary.json`만 생성했다.
@@ -46,7 +46,7 @@
   이유: 이 host의 PATH `cautilus`는 v0.12.1로 claim command family가 없었고, checkout `./bin/cautilus`는 v0.13.0로 claim command family가 있었다.
 - 2026-04-26 no-input `$cautilus` 경로는 다시 조여졌다.
   최초 실행은 binary / command registry / agent surface / adapter bootstrap까지 허용하고, 그 다음 claim-state/status와 next branch만 요약한다.
-  default `doctor`가 ready라고 해서 `eval test`, quality review, code edit, commit으로 넘어가지 않도록 `skills/cautilus/SKILL.md`, packaged skill, `.agents/skills/cautilus/SKILL.md`, repo/skill fixture expectation에 반영했다.
+  default `doctor`가 ready라고 해서 `eval test`, quality review, code edit, commit으로 넘어가지 않도록 `skills/cautilus/SKILL.md`, packaged skill, `.agents/skills/cautilus/SKILL.md`, dev/skill fixture expectation에 반영했다.
   실제 `codex_exec` read-only 단독 no-input 검증은 `/tmp/cautilus-no-input-live/observed.json` 기준 `outcome=passed`였고, 금지된 eval/quality/test/commit command expectation을 통과했다.
   source checkout launcher `bin/cautilus`는 read-only agent sandbox에서 `go run`/`cgo`가 깨지지 않도록 external scratch root(`/dev/shm/cautilus-go` 우선, `/tmp/cautilus-go` fallback, `CAUTILUS_GO_TMP_ROOT` override)를 쓰도록 바뀌었다.
   관련 debug record는 [charness-artifacts/debug/debug-2026-04-26-source-shim-read-only-go-cache.md](../../charness-artifacts/debug/debug-2026-04-26-source-shim-read-only-go-cache.md).
@@ -78,9 +78,9 @@
   실제 Cautilus repo dogfood에서 fresh discover packet은 `issueCount=0`, `valid=true`였다.
   `claim review prepare-input --max-clusters 8 --max-claims-per-cluster 4` 기준 top 8 clusters는 모두 entry-surface priority 10이고, skipped clusters는 30개였다.
   즉 지금 병목은 evidence preflight보다 bounded review budget / reviewed-claim promotion 쪽이다.
-- 잔여 신호: no-input `repo/skill` 단독 real-codex 검증은 있다.
+- 잔여 신호: no-input `dev/skill` 단독 real-codex 검증은 있다.
   하지만 전체 `self-dogfood-eval-skill` suite는 아직 stable accept-now가 아니다.
-  2026-04-26 live run에서 broader `execution-cautilus-test-request`가 같은 `repo/skill` fixture를 다시 `eval test`하려 하면서 nested self-eval이 무겁고 timeout/reject로 끝났다.
+  2026-04-26 live run에서 broader `execution-cautilus-test-request`가 같은 `dev/skill` fixture를 다시 `eval test`하려 하면서 nested self-eval이 무겁고 timeout/reject로 끝났다.
   다음 hardening slice는 이 케이스를 재귀 없는 cheap skill-eval proof로 바꾸거나, fixture backend/runtime을 `cautilus eval test`의 first-class runtime으로 노출해야 한다.
   `app/chat` / `app/prompt` real-codex/claude self-dogfood 증거도 아직 없다.
   `charness-artifacts/cautilus/latest.md` refresh도 별도 artifact-refresh 슬라이스로 남아 있다.
@@ -94,7 +94,7 @@
   The fix is binary-backed: `claim show` / `agent status` now expose `gitState`, and review/eval-planning commands reject stale packets unless `--allow-stale-claims` is explicitly passed.
   debug record: [charness-artifacts/debug/debug-2026-04-27-stale-claim-review-overrun.md](../../charness-artifacts/debug/debug-2026-04-27-stale-claim-review-overrun.md).
 - premortem deferral 상태:
-  (a) Result packet surface-agnostic 필드 — `app/chat` / `app/prompt` evaluator에서 require로 명시 정착됨; `repo/whole-repo`/`repo/skill`로 backport는 후속 hardening 슬라이스에서.
+  (a) Result packet surface-agnostic 필드 — `app/chat` / `app/prompt` evaluator에서 require로 명시 정착됨; `dev/repo`/`dev/skill`로 backport는 후속 hardening 슬라이스에서.
   (b) `cautilus eval evaluate` 디스패처는 여전히 schemaVersion만으로 라우팅; fixture preset cross-check는 follow-up.
   (c) Node 측 `scripts/agent-runtime/evaluate-skill.mjs`와 동반 모듈은 self-test와 coverage floor에만 의해 살아있다 — dead-code sweep slice에서 정리.
   (d) optimize-search held-out gating은 honest-skip 상태 — 새 surface 위로 재배선은 별도 슬라이스(아래 Next Session #3 참조).
@@ -113,8 +113,8 @@
 5. spec follow-up #4 — C2/C3/C4 composition primitives (extends / multi-step / snapshot), 슬라이스당 하나.
 6. spec follow-up #5 — `scenario normalize` 재범위만 남음.
    archetype-boundary retire는 cut 슬라이스에 흡수됨.
-7. `repo/skill` / `app/chat` / `app/prompt` preset 중 어떤 surface에 real-codex/claude self-dogfood evidence를 먼저 붙일지 결정한다.
-8. 후속 후보: multi-turn `repo/skill` session scenario를 설계한다.
+7. `dev/skill` / `app/chat` / `app/prompt` preset 중 어떤 surface에 real-codex/claude self-dogfood evidence를 먼저 붙일지 결정한다.
+8. 후속 후보: multi-turn `dev/skill` session scenario를 설계한다.
    현재 no-input `$cautilus` 첫 턴은 `agent status`와 auditor로 방어된다.
    다음 검증은 사용자의 짧은 승인만으로 claim discover / claim show / planning으로 이어지는지, 그리고 스킬이 추가로 필요한 확인을 스스로 설명하는지다.
 

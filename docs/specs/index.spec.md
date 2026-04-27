@@ -26,7 +26,7 @@ The first proof deliberately shows a small end-to-end product move: `Cautilus` t
 ## Documents
 
 - [Evaluation Surfaces](evaluation-surfaces.spec.md)
-  The current contract that defines the two top-level evaluation surfaces (`repo`, `app`) with bounded presets and a single fixture composition schema. Implementation rolls out preset by preset.
+  The current contract that defines the two top-level evaluation surfaces (`dev`, `app`) with bounded presets and a single fixture composition schema. Implementation rolls out preset by preset.
 - [Command Surfaces](command-surfaces.spec.md)
   Defines the three first-class product command families: `claim` for declared-claim discovery and proof planning, `eval` for verification, and `optimize` for bounded improvement.
 - [Current Product](current-product.spec.md)
@@ -36,7 +36,7 @@ The first proof deliberately shows a small end-to-end product move: `Cautilus` t
 - [Self-Dogfood Publication](self-dogfood.spec.md)
   Defines the narrow claim of the published latest self-dogfood bundle: record the result honestly and reopen it without replaying the expensive review.
 - [Evaluation Surfaces](evaluation-surfaces.spec.md)
-  The current implementation contract for `cautilus eval test`/`evaluate`: two surfaces (`repo`, `app`), four presets (`whole-repo`, `skill`, `chat`, `prompt`), and the four fixture composition primitives that replace the older first-class archetype boundary.
+  The current implementation contract for `cautilus eval test`/`evaluate`: two surfaces (`dev`, `app`), four presets (`repo`, `skill`, `chat`, `prompt`), and the four fixture composition primitives that replace the older first-class archetype boundary.
 - [HTML Report Surface](html-report.spec.md)
   Proves the currently shipped static HTML outputs that let a human review packet-based artifacts in a browser.
 - [Git Preconditions And Runtime Choice](git-precondition.spec.md)

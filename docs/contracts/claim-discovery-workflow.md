@@ -152,7 +152,7 @@ The next packet should split those concepts:
   "sourceRefs": [],
   "claimFingerprint": "sha256:...",
   "recommendedProof": "cautilus-eval",
-  "recommendedEvalSurface": "repo/whole-repo",
+  "recommendedEvalSurface": "dev/repo",
   "verificationReadiness": "ready-to-verify",
   "evidenceStatus": "missing",
   "reviewStatus": "agent-reviewed",

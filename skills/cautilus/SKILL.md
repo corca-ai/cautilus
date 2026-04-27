@@ -128,6 +128,8 @@ The review and eval-planning commands reject stale claim packets by default; tre
 ## Eval Routing
 
 `Cautilus` has two top-level evaluation surfaces and four fixture presets.
+Use `dev` for AI-assisted development work such as repo contracts, tools, and skills.
+Use `app` for AI-powered product behavior such as chat, prompt, and service responses.
 The canonical command families are `claim`, `eval`, and `optimize`.
 Use `cautilus eval test --fixture <fixture.json>` when the repo already has a checked-in fixture and adapter-owned runner.
 When the agent runtime is read-only, pass an explicit writable `--output-dir`; prefer `/dev/shm/cautilus-<label>` when available, otherwise a writable external temp directory.
@@ -135,10 +137,10 @@ Use `cautilus scenarios --json` only when you need the proposal-input normalizat
 
 Routing rule:
 
-- `repo / whole-repo`: an agent must obey the whole repo's operating contract.
-- `repo / skill`: a checked-in skill or agent must still trigger, execute, and validate cleanly.
-- `app / chat`: multi-turn assistant behavior regressed after a prompt or wrapper change.
-- `app / prompt`: a single-turn prompt input/output behavior must remain stable.
+- `dev / repo`: an AI development agent must obey the repo work contract.
+- `dev / skill`: a checked-in or portable development skill must still trigger, execute, and validate cleanly.
+- `app / chat`: multi-turn product conversation behavior regressed after a prompt or wrapper change.
+- `app / prompt`: a single product input/output behavior must remain stable.
 
 For scenario proposal input shapes, prefer the relevant `--example-input` command from `cautilus scenarios --json` over hand-written JSON.
 

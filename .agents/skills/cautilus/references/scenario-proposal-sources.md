@@ -39,7 +39,7 @@ the storage-reader layer.
 
 The first checked-in helper entrypoints now exist as:
 
-- `cautilus eval test` (any surface/preset combo, including `repo/skill`)
+- `cautilus eval test` (any surface/preset combo, including `dev/skill`)
 - `cautilus eval evaluate`
 - `cautilus scenario normalize chatbot`
 - `cautilus scenario normalize skill`

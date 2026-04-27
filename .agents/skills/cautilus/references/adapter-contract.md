@@ -40,7 +40,7 @@ required_prerequisites:
   - choose a real baseline before comparing results
 preflight_commands:
   - npm run check
-evaluation_input_default: fixtures/eval/whole-repo/example.fixture.json
+evaluation_input_default: fixtures/eval/dev/repo/example.fixture.json
 eval_test_command_templates:
   - node scripts/agent-runtime/run-local-eval-test.mjs --repo-root . --workspace {candidate_repo} --cases-file {eval_cases_file} --output-file {eval_observed_file} --artifact-dir {output_dir}/eval-test --backend {backend} --sandbox read-only
 claim_discovery:
@@ -138,7 +138,7 @@ default_schema_file: fixtures/review/review-verdict.schema.json
 - `required_prerequisites`: conditions that should stop the evaluation early.
 - `preflight_commands`: fast commands to run before long evaluations.
 - `evaluation_input_default`: optional checked-in `cautilus.evaluation_input.v1` path used by `cautilus eval test` when the operator does not pass `--fixture`.
-- `eval_test_command_templates`: commands that turn the validated fixture's translated case suite into an observed packet (`cautilus.evaluation_observed.v1` for `repo/whole-repo`, `cautilus.skill_evaluation_inputs.v1` for `repo/skill`).
+- `eval_test_command_templates`: commands that turn the validated fixture's translated case suite into an observed packet (`cautilus.evaluation_observed.v1` for `dev/repo`, `cautilus.skill_evaluation_inputs.v1` for `dev/skill`).
 - `default_runtime`: optional runtime choice (`codex` or `claude`), defaults to `codex`. Overridden by `cautilus eval test --runtime`.
 - `claim_discovery`: optional bounded truth-surface configuration for `cautilus claim discover`.
   `entries` replaces the product default entry set (`README.md`, `AGENTS.md`, and `CLAUDE.md` when present).

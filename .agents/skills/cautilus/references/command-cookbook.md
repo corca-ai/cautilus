@@ -24,7 +24,7 @@ cautilus eval evaluate \
 ```
 
 Prefer `eval test` when the repo already has a checked-in `cautilus.evaluation_input.v1` fixture plus adapter-owned runner.
-The currently shipped presets are `repo / whole-repo`, `repo / skill`, `app / chat`, and `app / prompt`.
+The currently shipped presets are `dev / repo`, `dev / skill`, `app / chat`, and `app / prompt`.
 Fall back to `eval evaluate` when the host already produced a normalized observed packet and only needs the product summary/recommendation layer.
 
 ## Scenario normalize / prepare / propose / conversation review / telemetry
@@ -71,7 +71,7 @@ cautilus report build \
 # curated bundle path).
 cautilus eval test \
   --repo-root . \
-  --fixture fixtures/eval/whole-repo/checked-in-agents-routing.fixture.json \
+  --fixture fixtures/eval/dev/repo/checked-in-agents-routing.fixture.json \
   --output-dir /tmp/cautilus-mode
 ```
 

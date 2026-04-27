@@ -183,7 +183,7 @@ scenario set before execution, persist the selected ids as
 ```bash
 cautilus eval test \
   --repo-root . \
-  --fixture fixtures/eval/whole-repo/example.fixture.json \
+  --fixture fixtures/eval/dev/repo/example.fixture.json \
   --output-dir /tmp/cautilus-eval
 ```
 
@@ -315,7 +315,7 @@ cautilus scenario normalize skill \
   --input /tmp/cautilus-skill-summary.json
 ```
 
-`eval test` with a `surface=repo, preset=skill` fixture is the operator-facing
+`eval test` with a `surface=dev, preset=skill` fixture is the operator-facing
 workflow seam above adapter-owned local skill runners. `eval evaluate` remains
 the first-class packet boundary for skill trigger and execution quality.
 The host still owns raw invocation and transcript capture; `Cautilus` owns the

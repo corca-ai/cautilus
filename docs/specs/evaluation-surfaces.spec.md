@@ -1,6 +1,6 @@
 # Evaluation Surfaces
 
-`Cautilus` exposes two top-level evaluation surfaces, distinguished by whether the thing under test needs a workspace runtime or a messaging runtime.
+`Cautilus` exposes two top-level evaluation surfaces, distinguished by the user problem being protected: AI-assisted development work versus AI-powered product behavior.
 This spec replaces the prior split across `instruction-surface test/evaluate`, `skill test/evaluate`, `mode evaluate` chatbot mode, and the `chatbot/skill/workflow` archetype layer.
 
 Status: redesign in progress.
@@ -20,19 +20,21 @@ The redesign collapses these into two surfaces (each with a small preset set) an
 ## Current Slice
 
 Define the two-surface contract, the four presets, and the four fixture composition primitives.
-The first impl slice ports `instruction-surface test/evaluate` to the new shape under `surface: repo, preset: whole-repo`.
+The first impl slice ports `instruction-surface test/evaluate` to the new shape under `surface: dev, preset: repo`.
 Subsequent slices port skill, chat, and prompt presets one at a time.
 
 ## Fixed Decisions
 
 ### Two surfaces
 
-- `repo` — workspace runtime.
+- `dev` — AI-assisted development work.
+  Use this when the thing being protected is how an agent helps build, maintain, or operate a repo or portable development capability.
   The runner drives a coding-agent harness (Claude Code, Codex) with a real or fixture workspace.
   Provider stance: ride the operator's habitual setup.
   Acceptance checks live in tools the harness provides (file system, tool calls, first-routing decisions).
-- `app` — messaging runtime.
-  The runner sends system prompt + messages to an LLM provider and inspects the response.
+- `app` — AI-powered product behavior.
+  Use this when the thing being protected is an AI-powered product, chat loop, prompt endpoint, or service response.
+  The runner sends system prompt + messages to an LLM provider or an equivalent CLI messaging runtime and inspects the response.
   Provider stance: pin model in fixture.
   Provider can be direct API (anthropic/openai/...) **or** a coding-agent CLI in messaging mode (`claude -p` with `--system-prompt` override, `codex exec` equivalent), so a user who only has CLI tooling installed can still run app fixtures.
 
@@ -40,24 +42,26 @@ Subsequent slices port skill, chat, and prompt presets one at a time.
 
 Each preset belongs to one surface and locks fixture shape so an adapter can validate offline:
 
-| surface | preset       | fixture shape                                 | answers                                              |
-| ------- | ------------ | --------------------------------------------- | ---------------------------------------------------- |
-| repo    | `whole-repo` | workspace + prompt                            | does the agent obey this repo's stated contract?     |
-| repo    | `skill`      | workspace (real or fixture) + skill reference | does this one skill trigger / execute / validate?    |
-| app     | `chat`       | system prompt + `messages: [...]`             | does this multi-turn behavior match expectations?    |
-| app     | `prompt`     | system prompt + `input` + `expected`          | does this single-turn I/O match expectations?        |
+| surface | preset   | fixture shape                                 | answers                                                   |
+| ------- | -------- | --------------------------------------------- | --------------------------------------------------------- |
+| dev     | `repo`   | workspace + prompt                            | does the agent obey this repo's stated work contract?     |
+| dev     | `skill`  | workspace (real or fixture) + skill reference | does this one skill trigger / execute / validate?         |
+| app     | `chat`   | system prompt + `messages: [...]`             | does this product conversation match expectations?        |
+| app     | `prompt` | system prompt + `input` + `expected`          | does this single product response match expectations?     |
 
-`repo / skill` covers both repo-local skills (workspace points at the consuming repo) and portable plugins (workspace points at a plugin-authored fixture workspace).
+`dev / skill` covers both repo-local skills (workspace points at the consuming repo) and portable plugins (workspace points at a plugin-authored fixture workspace).
 The `--workspace` CLI flag is the source of truth for workspace resolution and defaults to the operator's `cwd`; the fixture body itself does not carry a workspace path.
 Skill identity also defaults from `suiteId`; the fixture may override it through the optional top-level `skillId` field.
+Both surfaces are conceptually episode-based.
+A one-turn fixture is the degenerate case of a multi-turn episode; `app / prompt` stays intentionally one-turn because prompt I/O is the operator-facing concept.
 
 **Per-surface preset axes are different on purpose:**
-- `repo` preset axis = **scope** (`whole-repo` = open-ended agent behavior, `skill` = one bounded capability).
+- `dev` preset axis = **development-work scope** (`repo` = open-ended repo/work contract, `skill` = one bounded capability).
 - `app` preset axis = **turn shape** (`chat` = multi-turn conversation, `prompt` = single-turn I/O).
 
 This is acknowledged mixed-axis usage at the surface level, not within one surface.
-Adding a cross-axis value (e.g., `repo / chat` or `app / skill`) is rejected by the schema validator and by `lint:eval-surfaces` (a new lint added with this spec).
-A new value on either axis must pass the taxonomy-axis checkpoint and update the lint.
+Adding a cross-axis value (e.g., `dev / chat` or `app / skill`) is rejected by the evaluation-input schema normalizer and covered by unit tests.
+A new value on either axis must pass the taxonomy-axis checkpoint and update the normalizer tests.
 
 ### Uniform CLI
 
@@ -104,7 +108,7 @@ These rules are validated by acceptance check in this spec, not invented at impl
 The redesign cuts cleanly with no backward compatibility (no external users yet).
 Removed in this slice:
 
-- `cautilus instruction-surface test/evaluate` — replaced by `cautilus eval test/evaluate` with `surface=repo, preset=whole-repo`.
+- `cautilus instruction-surface test/evaluate` — replaced by `cautilus eval test/evaluate` with `surface=dev, preset=repo`.
 - The `workflow` first-class archetype — multi-step composition (C3) replaces it.
 - `cautilus.instruction_surface_*` schemas — replaced by `cautilus.evaluation_*` schemas.
 - `instruction_surface_*` adapter fields — replaced by `eval_test_command_templates` and `evaluation_input_default`.
@@ -129,7 +133,7 @@ Answers should land through implementation slices, not through more spec churn:
 - **migration plan for `scenario normalize chatbot|skill|workflow`**: those commands feed proposals, not evaluations. The redesign here is on the evaluation surface; proposal-input normalization is unchanged. The deprecation of the archetype layer lives in a separate handoff slice.
 - **plugin author distinct CLI flow**: stick with `--workspace` flag for now.
   Revisit if plugin authors need richer fixture-workspace tooling (linting plugin manifest from fixture, etc.).
-- **cross-surface composition**: a `repo` step that invokes an `app` fixture, or vice versa.
+- **cross-surface composition**: a `dev` step that invokes an `app` fixture, or vice versa.
   Out of v1.
 - **LLM-judge as a preset**: `app / judge` could land later. Not in v1.
 
@@ -145,7 +149,7 @@ Answers should land through implementation slices, not through more spec churn:
 - **Keeping `workflow` as a first-class archetype.**
   Multi-step composition (C3) covers stateful sequences with less ceremony.
   The current archetype-boundary spec will be retired or rescoped after migration.
-- **Per-preset CLI commands** like `cautilus repo whole-repo test`.
+- **Per-preset CLI commands** like `cautilus dev repo test`.
   Preset lives in the fixture; CLI stays uniform.
   Otherwise the operator surface grows with every preset added.
 - **Direct API as the only app runtime.**
@@ -156,7 +160,7 @@ Answers should land through implementation slices, not through more spec churn:
 ## Constraints
 
 - All four composition features (C1–C4) MUST be expressible in the v1 fixture schema, even if impl wires them across multiple slices.
-- `repo` surface MUST work with the operator's installed Claude Code or Codex without re-pinning model versions.
+- `dev` surface MUST work with the operator's installed Claude Code or Codex without re-pinning model versions.
 - `app` surface MUST work without an API key when the user has Claude or Codex CLI installed.
 - Preset is deterministic from `(surface, preset)` and validated offline.
 - Result packet schema MUST stay stable across surfaces so downstream consumers (`optimize prepare-input`, `report.json`) treat all four presets uniformly.
@@ -164,7 +168,7 @@ Answers should land through implementation slices, not through more spec churn:
 
 ## Success Criteria
 
-1. A user with Claude Code installed and no other config can run `cautilus eval test --fixture <whole-repo.fixture.json>` against their own repo and get a usable result with provider, model, harness, durationMs, and costUsd recorded.
+1. A user with Claude Code installed and no other config can run `cautilus eval test --fixture <dev-repo.fixture.json>` against their own repo and get a usable result with provider, model, harness, durationMs, and costUsd recorded.
 2. A user with Claude CLI but no API key can run `cautilus eval test --fixture <chat.fixture.json>` and get a usable result.
 3. A fixture using `extends: ./base.fixture.json` correctly inherits base fields and applies overrides.
 4. A `steps: [...]` fixture executes each step in order, and step N can read step (N-1)'s output.
@@ -180,13 +184,13 @@ Each criterion has at least one executable check.
 - **C3 multi-step**: 2-step fixture where step 2 reads `${steps[0].output.text}` (dotted path) AND a separate fixture using bare `${steps[0].output}` (whole-output substitution); both pass, and an invalid placeholder (`${steps[0]}`, forward ref, missing index) errors with a parse-error.
 - **C4 snapshot**: pass case (output matches snapshot) and mismatch case (output diff surfaces in result).
 - **Per-preset proof**:
-  - `repo / whole-repo`: cautilus's own AGENTS.md routing test (current self-dogfood, ported).
-  - `repo / skill`: portable plugin probe in fixture workspace (port from current skill test fixtures).
+  - `dev / repo`: cautilus's own AGENTS.md routing test (current self-dogfood, ported).
+  - `dev / skill`: portable plugin probe in fixture workspace (port from current skill test fixtures).
   - `app / chat`: multi-turn fixture against fixture-backend (no real model).
   - `app / prompt`: single-turn fixture against fixture-backend.
 - **CLI runtime parity**: `app / chat` fixture run via direct API and via `claude -p --system-prompt` produces packets where the MUST-be-byte-equal fields match, the MUST-be-present-and-non-empty fields are populated on both sides, and the MAY-differ fields are carried with a harness tag.
 - **Spec lint**: `npm run lint:specs` accepts this spec; archetype lint scope follows the workflow-archetype removal.
-- **Taxonomy axis**: per-surface preset enums kept narrow; mixed-axis values (e.g., adding `repo / chat`) rejected at the schema validator.
+- **Taxonomy axis**: per-surface preset enums kept narrow; mixed-axis values (e.g., adding `dev / chat`) rejected at the schema validator.
 
 ## Premortem
 
@@ -196,10 +200,10 @@ Five findings folded back into Fixed Decisions, Constraints, and Acceptance Chec
 
 Anchored re-litigation notes:
 
-1. **"`repo / skill` and `repo / whole-repo` look like duplicate tests at fixture level."**
+1. **"`dev / skill` and `dev / repo` look like duplicate tests at fixture level."**
    They differ in scope, not runtime.
-   `whole-repo` asks an open-ended question against the real repo; `skill` is bounded to one capability and the workspace knob distinguishes plugin-fixture from real-repo.
-   The per-surface preset axes (scope for `repo`, turn-shape for `app`) are explicit in `Fixed Decisions`.
+   `repo` asks an open-ended question against the real repo or fixture workspace; `skill` is bounded to one capability and the workspace knob distinguishes plugin-fixture from real-repo.
+   The per-surface preset axes (development-work scope for `dev`, turn-shape for `app`) are explicit in `Fixed Decisions`.
 
 2. **"Coding-agent CLI in messaging mode is the same as direct API."**
    It is not.
@@ -227,17 +231,17 @@ Per-slice impl notes live in commits and the migration tracking issue.
 
 ## First Implementation Slice
 
-`repo / whole-repo` preset shipped:
+`dev / repo` preset shipped:
 
 - `cautilus eval test`, `cautilus eval evaluate` accept `cautilus.evaluation_input.v1` fixtures.
-- Schema validates `surface=repo, preset=whole-repo` only; C2/C3/C4 fields stub-error until their slices land.
-- Self-dogfood fixture lives at `fixtures/eval/whole-repo/checked-in-agents-routing.fixture.json`; runner under `scripts/run-self-dogfood-eval.mjs`.
+- Schema validates `surface=dev, preset=repo` only; C2/C3/C4 fields stub-error until their slices land.
+- Self-dogfood fixture lives at `fixtures/eval/dev/repo/checked-in-agents-routing.fixture.json`; runner under `scripts/run-self-dogfood-eval.mjs`.
 - Prior `cautilus instruction-surface test/evaluate`, `cautilus.instruction_surface_*` schemas, `instruction_surface_*` adapter fields, and the `workflow` archetype framing in this layer are removed without aliases.
 
 Follow-up slices proceed in this order:
 
-1. ~~`repo / skill` preset — replace `cautilus skill test/evaluate`.~~ Shipped 2026-04-25.
-   `cautilus.evaluation_input.v1` now translates `surface=repo, preset=skill` cases into the existing `cautilus.skill_test_cases.v1` shape, the `cautilus eval evaluate` handler dispatches to `BuildSkillEvaluationSummary` when the observed packet uses `cautilus.skill_evaluation_inputs.v1`, and the `cautilus skill test/evaluate` commands plus their adapter slots and example fixtures were cut without aliases.
+1. ~~`dev / skill` preset — replace `cautilus skill test/evaluate`.~~ Shipped 2026-04-25.
+   `cautilus.evaluation_input.v1` now translates `surface=dev, preset=skill` cases into the existing `cautilus.skill_test_cases.v1` shape, the `cautilus eval evaluate` handler dispatches to `BuildSkillEvaluationSummary` when the observed packet uses `cautilus.skill_evaluation_inputs.v1`, and the `cautilus skill test/evaluate` commands plus their adapter slots and example fixtures were cut without aliases.
 2. `app / chat` preset — replace `cautilus mode evaluate` chatbot mode.
    Additive accept shipped 2026-04-25: `cautilus.evaluation_input.v1` accepts `surface=app, preset=chat` and translates fixtures to `cautilus.app_chat_test_cases.v1`; `cautilus eval evaluate` dispatches `BuildAppChatEvaluationSummary` on `cautilus.app_chat_evaluation_inputs.v1`; the result packet enforces the cross-runtime equivalence rules (provider/model/harness/mode=`messaging`/durationMs/observed.messages/observed.finalText required) at the evaluator boundary.
    The matching cut shipped 2026-04-26: `cautilus mode evaluate`, the `iterate / held_out / comparison / full_gate` adapter slots, and the chatbot scenario init scaffold were removed without aliases.

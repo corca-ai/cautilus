@@ -14,7 +14,7 @@ const REQUIRED_FRAGMENTS = [
 	"## Declared Claim Discovery",
 	"`claim`, `eval`, and `optimize`",
 	"eval-summary.json",
-	"repo / whole-repo",
+	"dev / repo",
 	"app / prompt",
 	"cautilus install --repo-root",
 	"doctor --scope agent-surface",

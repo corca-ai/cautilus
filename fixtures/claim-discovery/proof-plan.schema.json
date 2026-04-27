@@ -87,7 +87,7 @@
           },
           "recommendedEvalSurface": {
             "type": "string",
-            "enum": ["repo/whole-repo", "repo/skill", "app/chat", "app/prompt"]
+            "enum": ["dev/repo", "dev/skill", "app/chat", "app/prompt"]
           },
           "recommendedProof": {
             "type": "string",

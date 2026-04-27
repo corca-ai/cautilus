@@ -873,7 +873,7 @@ func applyScenarioOverlay(scaffold map[string]any, scenario string) {
 	case "skill":
 		scaffold["evaluation_surfaces"] = []string{"skill trigger, execution, and validation behavior"}
 		scaffold["eval_test_command_templates"] = []string{
-			"cautilus eval test --repo-root {candidate_repo} --adapter-name {adapter_name} --fixture fixtures/eval/skill/example.fixture.json",
+			"cautilus eval test --repo-root {candidate_repo} --adapter-name {adapter_name} --fixture fixtures/eval/dev/skill/example.fixture.json",
 		}
 	}
 }

@@ -216,8 +216,8 @@ func TestScaffoldAdapterSkillPrefillsEvalTestSlot(t *testing.T) {
 	if !ok || len(slot) == 0 {
 		t.Fatalf("expected eval_test_command_templates to be pre-filled for skill scenario, got %#v", scaffold["eval_test_command_templates"])
 	}
-	if !strings.Contains(slot[0], "--fixture fixtures/eval/skill/") {
-		t.Fatalf("expected eval_test_command_templates to point at fixtures/eval/skill/, got %#v", slot[0])
+	if !strings.Contains(slot[0], "--fixture fixtures/eval/dev/skill/") {
+		t.Fatalf("expected eval_test_command_templates to point at fixtures/eval/dev/skill/, got %#v", slot[0])
 	}
 	surfaces, ok := scaffold["evaluation_surfaces"].([]string)
 	if !ok || len(surfaces) == 0 {

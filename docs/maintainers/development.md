@@ -106,7 +106,7 @@ npm run dogfood:self
 It currently delegates to `dogfood:self:eval` and refreshes `artifacts/self-dogfood/eval/latest/`.
 Its canonical claim is intentionally narrow: the shipped `cautilus eval` runner can exercise the repo's checked-in self-dogfood adapter and materialize a current evaluation summary packet without relying on one-off manual wiring.
 
-Refresh the canonical `repo / whole-repo` self-dogfood bundle:
+Refresh the canonical `dev / repo` self-dogfood bundle:
 
 ```bash
 npm run dogfood:self:eval

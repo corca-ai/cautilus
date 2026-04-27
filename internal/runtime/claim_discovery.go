@@ -689,9 +689,9 @@ func recommendedEvalSurface(lower string) string {
 	case strings.Contains(lower, " conversation") || strings.Contains(lower, " chat") || strings.Contains(lower, " assistant"):
 		return "app/chat"
 	case strings.Contains(lower, " skill"):
-		return "repo/skill"
+		return "dev/skill"
 	default:
-		return "repo/whole-repo"
+		return "dev/repo"
 	}
 }
 
@@ -1463,7 +1463,7 @@ func claimEvalPlanSurface(candidate map[string]any) string {
 	if surface := stringFromAny(candidate["recommendedEvalSurface"]); surface != "" {
 		return surface
 	}
-	return "repo/whole-repo"
+	return "dev/repo"
 }
 
 func claimEvalPlanIntent(candidate map[string]any) string {
@@ -2102,7 +2102,7 @@ func validClaimLifecycle(value string) bool {
 
 func validEvalSurface(value string) bool {
 	switch value {
-	case "repo/whole-repo", "repo/skill", "app/chat", "app/prompt":
+	case "dev/repo", "dev/skill", "app/chat", "app/prompt":
 		return true
 	default:
 		return false

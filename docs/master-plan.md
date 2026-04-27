@@ -55,7 +55,7 @@ Current `core validated surface`:
 
 Current `product-owned helper surface`:
 
-- `eval test` with the `repo/skill` preset wraps adapter-owned local skill runners, including consensus-based repeated tests and output-review warning surfacing
+- `eval test` with the `dev/skill` preset wraps adapter-owned local skill runners, including consensus-based repeated tests and output-review warning surfacing
 - `eval evaluate` packet summarizer dispatches to `cautilus.skill_evaluation_summary.v1` for trigger and execution behavior when the observed packet's schema is `cautilus.skill_evaluation_inputs.v1`
 - `chatbot`, `skill`, and `workflow` `scenario normalize` helpers feeding the proposal-input pipeline; their archetype-shaped framing in evaluation no longer applies (see [evaluation-surfaces.spec.md](./specs/evaluation-surfaces.spec.md))
 - scenario proposal packet assembly and proposal generation
@@ -74,7 +74,7 @@ The first `claim` slice ships as deterministic `cautilus claim discover`, which 
 The next claim-discovery workflow contract lives in [claim-discovery-workflow.md](./contracts/claim-discovery-workflow.md): the binary owns deterministic skeletons, scan scope, state paths, refresh plans, and packet semantics; the bundled skill owns user confirmation, LLM review, grouping, evidence interpretation, and next-action conversation.
 The deterministic binary slice, first bundled-skill control-flow slice, deterministic review-input helper slice, and guarded review-result application slice are now implemented.
 Eval-scenario planning and deeper evidence reconciliation remain the next claim-discovery hardening seams.
-The current evaluation contract lives in [specs/evaluation-surfaces.spec.md](./specs/evaluation-surfaces.spec.md): two surfaces (`repo`, `app`), four presets (`whole-repo`, `skill`, `chat`, `prompt`), and four fixture composition primitives.
+The current evaluation contract lives in [specs/evaluation-surfaces.spec.md](./specs/evaluation-surfaces.spec.md): two surfaces (`dev`, `app`), four presets (`repo`, `skill`, `chat`, `prompt`), and four fixture composition primitives.
 The earlier first-class archetype boundary (chatbot / skill / workflow) was retired with that redesign.
 `npm run lint:specs` and `npm run lint:archetypes` still gate the runtime completeness of the surviving `scenario normalize` helpers; new user-facing copy must reconcile with the surface/preset contract before landing.
 

@@ -1,6 +1,6 @@
 # Skill Testing Contract
 
-`Cautilus` exposes the `repo / skill` preset under `cautilus eval test` for the common operator request:
+`Cautilus` exposes the `dev / skill` preset under `cautilus eval test` for the common operator request:
 
 `Use Cautilus to test this skill.`
 
@@ -19,7 +19,7 @@ This keeps host execution ownership in the adapter while letting `Cautilus` own 
 
 ## Input Boundary
 
-`cautilus eval test` accepts a checked-in fixture with schema `cautilus.evaluation_input.v1` and `surface=repo, preset=skill`.
+`cautilus eval test` accepts a checked-in fixture with schema `cautilus.evaluation_input.v1` and `surface=dev, preset=skill`.
 
 Minimum shape:
 

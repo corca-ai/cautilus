@@ -48,8 +48,8 @@ func TestDiscoverClaimProofPlanClassifiesFixtureClaims(t *testing.T) {
 			t.Fatalf("legacy proofLayer does not match split fields: %#v", entry)
 		}
 	}
-	if byLayer["cautilus-eval"]["recommendedEvalSurface"] != "repo/whole-repo" {
-		t.Fatalf("expected repo/whole-repo eval surface, got %#v", byLayer["cautilus-eval"])
+	if byLayer["cautilus-eval"]["recommendedEvalSurface"] != "dev/repo" {
+		t.Fatalf("expected dev/repo eval surface, got %#v", byLayer["cautilus-eval"])
 	}
 	summary := asMap(plan["claimSummary"])
 	if asMap(summary["byEvidenceStatus"])["unknown"] != 3 {
@@ -296,7 +296,7 @@ func TestBuildClaimEvalPlanSelectsReviewedEvalClaims(t *testing.T) {
 		t.Fatalf("expected one eval plan, got %#v", evalPlan)
 	}
 	first := asMap(plans[0])
-	if first["claimId"] != "claim-agents-md-3" || first["targetSurface"] != "repo/whole-repo" {
+	if first["claimId"] != "claim-agents-md-3" || first["targetSurface"] != "dev/repo" {
 		t.Fatalf("unexpected eval plan: %#v", first)
 	}
 	if first["draftIntent"] == "" || evalPlan["nonWriterNotice"] == "" {

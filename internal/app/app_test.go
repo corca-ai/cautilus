@@ -324,7 +324,7 @@ func TestRunClaimShowSummarizesExistingProofPlan(t *testing.T) {
 		`      "claimFingerprint": "sha256:demo",`,
 		`      "summary": "Agents must keep behavior review bounded.",`,
 		`      "recommendedProof": "cautilus-eval",`,
-		`      "recommendedEvalSurface": "repo/whole-repo",`,
+		`      "recommendedEvalSurface": "dev/repo",`,
 		`      "verificationReadiness": "ready-to-verify",`,
 		`      "evidenceStatus": "unknown",`,
 		`      "reviewStatus": "heuristic",`,
@@ -412,7 +412,7 @@ func TestRunClaimReviewPrepareInputWritesClusters(t *testing.T) {
 		`      "claimFingerprint": "sha256:demo",`,
 		`      "summary": "Agents must keep behavior review bounded.",`,
 		`      "recommendedProof": "cautilus-eval",`,
-		`      "recommendedEvalSurface": "repo/whole-repo",`,
+		`      "recommendedEvalSurface": "dev/repo",`,
 		`      "verificationReadiness": "ready-to-verify",`,
 		`      "evidenceStatus": "unknown",`,
 		`      "reviewStatus": "heuristic",`,
@@ -495,7 +495,7 @@ func TestRunClaimReviewApplyResultWritesReviewedClaims(t *testing.T) {
 		`      "claimFingerprint": "sha256:demo",`,
 		`      "summary": "Agents must keep behavior review bounded.",`,
 		`      "recommendedProof": "cautilus-eval",`,
-		`      "recommendedEvalSurface": "repo/whole-repo",`,
+		`      "recommendedEvalSurface": "dev/repo",`,
 		`      "verificationReadiness": "ready-to-verify",`,
 		`      "evidenceStatus": "unknown",`,
 		`      "reviewStatus": "heuristic",`,
@@ -573,7 +573,7 @@ func minimalClaimPacketJSON(gitCommit string) string {
 		`      "claimFingerprint": "sha256:demo",`,
 		`      "summary": "Agents must keep behavior review bounded.",`,
 		`      "recommendedProof": "cautilus-eval",`,
-		`      "recommendedEvalSurface": "repo/whole-repo",`,
+		`      "recommendedEvalSurface": "dev/repo",`,
 		`      "verificationReadiness": "ready-to-verify",`,
 		`      "evidenceStatus": "unknown",`,
 		`      "reviewStatus": "heuristic",`,
@@ -603,7 +603,7 @@ func TestRunClaimPlanEvalsWritesIntermediatePlan(t *testing.T) {
 		`      "claimFingerprint": "sha256:demo",`,
 		`      "summary": "Agents must follow the repo operating contract before changing code.",`,
 		`      "recommendedProof": "cautilus-eval",`,
-		`      "recommendedEvalSurface": "repo/whole-repo",`,
+		`      "recommendedEvalSurface": "dev/repo",`,
 		`      "verificationReadiness": "ready-to-verify",`,
 		`      "evidenceStatus": "missing",`,
 		`      "reviewStatus": "agent-reviewed",`,
@@ -640,7 +640,7 @@ func TestRunClaimPlanEvalsWritesIntermediatePlan(t *testing.T) {
 		t.Fatalf("expected one eval plan, got %#v", payload)
 	}
 	first := plans[0].(map[string]any)
-	if first["claimId"] != "claim-agents-md-3" || first["targetSurface"] != "repo/whole-repo" {
+	if first["claimId"] != "claim-agents-md-3" || first["targetSurface"] != "dev/repo" {
 		t.Fatalf("unexpected eval plan: %#v", first)
 	}
 }
@@ -660,7 +660,7 @@ func TestRunClaimValidateWritesReportAndFailsInvalidEvidence(t *testing.T) {
 		`      "claimFingerprint": "sha256:demo",`,
 		`      "summary": "Agents must follow the repo operating contract before changing code.",`,
 		`      "recommendedProof": "cautilus-eval",`,
-		`      "recommendedEvalSurface": "repo/whole-repo",`,
+		`      "recommendedEvalSurface": "dev/repo",`,
 		`      "verificationReadiness": "ready-to-verify",`,
 		`      "evidenceStatus": "satisfied",`,
 		`      "reviewStatus": "agent-reviewed",`,
@@ -867,8 +867,8 @@ func TestRunAdapterInitSkillScenarioPrefillsEvalTestSlot(t *testing.T) {
 	if !strings.Contains(yaml, "eval_test_command_templates:") || !strings.Contains(yaml, "- cautilus eval test") {
 		t.Fatalf("expected eval_test_command_templates to be pre-filled, got:\n%s", yaml)
 	}
-	if !strings.Contains(yaml, "--fixture fixtures/eval/skill/") {
-		t.Fatalf("expected eval_test_command_templates to reference fixtures/eval/skill/, got:\n%s", yaml)
+	if !strings.Contains(yaml, "--fixture fixtures/eval/dev/skill/") {
+		t.Fatalf("expected eval_test_command_templates to reference fixtures/eval/dev/skill/, got:\n%s", yaml)
 	}
 }
 

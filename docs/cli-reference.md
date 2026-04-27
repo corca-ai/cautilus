@@ -234,7 +234,7 @@ It links normalized chatbot threads to scenario proposals and coverage hints so 
 ## Evaluation surfaces
 
 The shipped surface is `cautilus eval` (see [docs/specs/evaluation-surfaces.spec.md](./specs/evaluation-surfaces.spec.md)).
-The first preset, `repo / whole-repo`, replaces the prior `cautilus instruction-surface` commands.
+The first preset, `dev / repo`, replaces the prior `cautilus instruction-surface` commands.
 
 ```bash
 # official on-demand self-dogfood wrapper for the repo's own AGENTS.md
@@ -257,7 +257,7 @@ The npm wrapper is the canonical maintainer-facing self-dogfood path for this re
 
 ```bash
 # run one checked-in local skill probe through an adapter-owned runner
-# (cautilus.evaluation_input.v1 fixture with surface=repo, preset=skill)
+# (cautilus.evaluation_input.v1 fixture with surface=dev, preset=skill)
 cautilus eval test \
   --repo-root . \
   --adapter-name self-dogfood-eval-skill

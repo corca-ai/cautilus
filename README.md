@@ -123,7 +123,9 @@ When reviewed clusters come back, `claim review apply-result` merges reviewed la
 For reviewed `cautilus-eval` claims, `claim plan-evals` emits `cautilus.claim_eval_plan.v1`: an intermediate plan for host-owned eval fixtures, not a writer for prompts, runners, fixtures, or policy.
 Next branches stay explicit: deterministic proof, Cautilus scenarios, alignment work, or a full report.
 
-Cautilus exposes two top-level evaluation surfaces (`repo` and `app`) with four presets between them; the surface preset, not a separate archetype, decides whether the runner needs a workspace or a messaging runtime.
+Cautilus exposes two top-level evaluation surfaces (`dev` and `app`) with four presets between them.
+Use `dev` for AI-assisted development work such as repo contracts, tools, and skills.
+Use `app` for AI-powered product behavior such as chat, prompt, and service responses.
 The legacy first-class archetype boundary (chatbot / skill / workflow) is retired.
 For the live contract, read [docs/specs/evaluation-surfaces.spec.md](./docs/specs/evaluation-surfaces.spec.md).
 The `chatbot`, `skill`, and `workflow` `scenario normalize` helpers below still ship; they feed the proposal-input pipeline rather than the evaluation surface.
@@ -140,7 +142,7 @@ When you want a read-only operator page before promoting or refreshing scenarios
 ### 2. Skill / agent execution regression
 
 Use when you change a skill or agent and want to know whether it still triggers on the right prompts, executes cleanly, and keeps its static validation passing.
-CLI: `cautilus eval test --repo-root . --adapter-name <name>` with a `surface=repo, preset=skill` fixture
+CLI: `cautilus eval test --repo-root . --adapter-name <name>` with a `surface=dev, preset=skill` fixture
 For agent: "Run the checked-in case suite against the skill I just edited."
 You get `eval-cases.json`, `eval-observed.json`, and `eval-summary.json` instead of one trigger-only smoke result.
 
@@ -208,7 +210,7 @@ cautilus eval test --fixture <fixture.json>
 The `cautilus install` step also lands a bundled skill at `.agents/skills/cautilus/` with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally.
 "Run a chatbot regression with these logs" feeds into the exact same adapter.
 Use `cautilus doctor --scope agent-surface` when you want to verify only this bundled skill surface.
-If the repo treats `AGENTS.md`, `CLAUDE.md`, or linked instruction files as part of the behavior contract, verify that separately with the `cautilus eval` seam (preset `repo / whole-repo`) rather than assuming install-time discoverability already proves routing fidelity.
+If the repo treats `AGENTS.md`, `CLAUDE.md`, or linked instruction files as part of the behavior contract, verify that separately with the `cautilus eval` seam (preset `dev / repo`) rather than assuming install-time discoverability already proves routing fidelity.
 For the product repo itself, this is also a first-class on-demand self-dogfood surface through `npm run dogfood:self`; see [docs/specs/evaluation-surfaces.spec.md](./docs/specs/evaluation-surfaces.spec.md) for the evaluation-surfaces design.
 
 Minimal host-repo layout:

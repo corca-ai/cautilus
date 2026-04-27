@@ -1,6 +1,6 @@
 # Skill Testing Contract
 
-Use `eval test` with a `surface=repo, preset=skill` fixture when the operator
+Use `eval test` with a `surface=dev, preset=skill` fixture when the operator
 asks for the local flow:
 
 `Use Cautilus to test this skill.`
@@ -54,7 +54,7 @@ Useful placeholders:
 
 The adapter-owned runner still owns actual host execution and invocation
 observation.
-For `repo/skill`, the file written to `{eval_cases_file}` is a
+For `dev/skill`, the file written to `{eval_cases_file}` is a
 `cautilus.skill_test_cases.v1` packet that any `run-local-skill-test.mjs`-style
 runner already consumes.
 

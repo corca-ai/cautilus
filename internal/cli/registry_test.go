@@ -54,7 +54,7 @@ func TestRenderUsageIncludesLifecycleCommands(t *testing.T) {
 	if !strings.Contains(usage, "cautilus update [--repo-root <path>] [--json]") {
 		t.Fatalf("usage missing update line:\n%s", usage)
 	}
-	if !strings.Contains(usage, "cautilus eval test --repo-root . --adapter-name self-dogfood-eval --fixture ./fixtures/eval/whole-repo/checked-in-agents-routing.fixture.json") {
+	if !strings.Contains(usage, "cautilus eval test --repo-root . --adapter-name self-dogfood-eval --fixture ./fixtures/eval/dev/repo/checked-in-agents-routing.fixture.json") {
 		t.Fatalf("usage missing eval test example:\n%s", usage)
 	}
 	if !strings.Contains(usage, "cautilus eval evaluate --input ./eval-observed.json") {

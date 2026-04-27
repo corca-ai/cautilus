@@ -7,11 +7,11 @@ import (
 	"github.com/corca-ai/cautilus/internal/contracts"
 )
 
-func validRepoWholeRepoFixture() map[string]any {
+func validDevRepoFixture() map[string]any {
 	return map[string]any{
 		"schemaVersion": contracts.EvaluationInputSchema,
-		"surface":       "repo",
-		"preset":        "whole-repo",
+		"surface":       "dev",
+		"preset":        "repo",
 		"suiteId":       "demo",
 		"cases": []any{
 			map[string]any{
@@ -27,10 +27,10 @@ func validRepoWholeRepoFixture() map[string]any {
 	}
 }
 
-func validRepoSkillFixture() map[string]any {
+func validDevSkillFixture() map[string]any {
 	return map[string]any{
 		"schemaVersion":    contracts.EvaluationInputSchema,
-		"surface":          "repo",
+		"surface":          "dev",
 		"preset":           "skill",
 		"suiteId":          "demo-skill",
 		"suiteDisplayName": "Demo Skill",
@@ -47,12 +47,12 @@ func validRepoSkillFixture() map[string]any {
 	}
 }
 
-func TestNormalizeEvaluationInputAcceptsRepoWholeRepo(t *testing.T) {
-	result, err := NormalizeEvaluationInput(validRepoWholeRepoFixture())
+func TestNormalizeEvaluationInputAcceptsDevRepo(t *testing.T) {
+	result, err := NormalizeEvaluationInput(validDevRepoFixture())
 	if err != nil {
 		t.Fatalf("expected success, got error: %v", err)
 	}
-	if result.Surface != "repo" || result.Preset != "whole-repo" {
+	if result.Surface != "dev" || result.Preset != "repo" {
 		t.Fatalf("unexpected surface/preset: %s/%s", result.Surface, result.Preset)
 	}
 	if result.SuiteID != "demo" {
@@ -71,12 +71,12 @@ func TestNormalizeEvaluationInputAcceptsRepoWholeRepo(t *testing.T) {
 	}
 }
 
-func TestNormalizeEvaluationInputAcceptsRepoSkill(t *testing.T) {
-	result, err := NormalizeEvaluationInput(validRepoSkillFixture())
+func TestNormalizeEvaluationInputAcceptsDevSkill(t *testing.T) {
+	result, err := NormalizeEvaluationInput(validDevSkillFixture())
 	if err != nil {
 		t.Fatalf("expected success, got error: %v", err)
 	}
-	if result.Surface != "repo" || result.Preset != "skill" {
+	if result.Surface != "dev" || result.Preset != "skill" {
 		t.Fatalf("unexpected surface/preset: %s/%s", result.Surface, result.Preset)
 	}
 	if result.SuiteID != "demo-skill" {
@@ -99,7 +99,7 @@ func TestNormalizeEvaluationInputAcceptsRepoSkill(t *testing.T) {
 }
 
 func TestNormalizeEvaluationInputSkillDefaultsSkillIdFromSuiteId(t *testing.T) {
-	fixture := validRepoSkillFixture()
+	fixture := validDevSkillFixture()
 	delete(fixture, "skillId")
 	delete(fixture, "skillDisplayName")
 	result, err := NormalizeEvaluationInput(fixture)
@@ -112,7 +112,7 @@ func TestNormalizeEvaluationInputSkillDefaultsSkillIdFromSuiteId(t *testing.T) {
 }
 
 func TestNormalizeEvaluationInputSkillForwardsRepeatConsensus(t *testing.T) {
-	fixture := validRepoSkillFixture()
+	fixture := validDevSkillFixture()
 	fixture["repeatCount"] = 3
 	fixture["minConsensusCount"] = 2
 	result, err := NormalizeEvaluationInput(fixture)
@@ -128,7 +128,7 @@ func TestNormalizeEvaluationInputSkillForwardsRepeatConsensus(t *testing.T) {
 }
 
 func TestNormalizeEvaluationInputSkillRejectsTriggerWithoutExpected(t *testing.T) {
-	fixture := validRepoSkillFixture()
+	fixture := validDevSkillFixture()
 	cases := fixture["cases"].([]any)
 	caseEntry := cases[0].(map[string]any)
 	delete(caseEntry, "expectedTrigger")
@@ -139,7 +139,7 @@ func TestNormalizeEvaluationInputSkillRejectsTriggerWithoutExpected(t *testing.T
 }
 
 func TestNormalizeEvaluationInputRejectsWrongSchemaVersion(t *testing.T) {
-	fixture := validRepoWholeRepoFixture()
+	fixture := validDevRepoFixture()
 	fixture["schemaVersion"] = "cautilus.something.v0"
 	_, err := NormalizeEvaluationInput(fixture)
 	if err == nil || !strings.Contains(err.Error(), "schemaVersion must be") {
@@ -148,7 +148,7 @@ func TestNormalizeEvaluationInputRejectsWrongSchemaVersion(t *testing.T) {
 }
 
 func TestNormalizeEvaluationInputRejectsUnsupportedSurface(t *testing.T) {
-	fixture := validRepoWholeRepoFixture()
+	fixture := validDevRepoFixture()
 	fixture["surface"] = "no-such-surface"
 	_, err := NormalizeEvaluationInput(fixture)
 	if err == nil || !strings.Contains(err.Error(), "surface") {
@@ -157,7 +157,7 @@ func TestNormalizeEvaluationInputRejectsUnsupportedSurface(t *testing.T) {
 }
 
 func TestNormalizeEvaluationInputRejectsUnsupportedPreset(t *testing.T) {
-	fixture := validRepoWholeRepoFixture()
+	fixture := validDevRepoFixture()
 	fixture["preset"] = "made-up"
 	_, err := NormalizeEvaluationInput(fixture)
 	if err == nil || !strings.Contains(err.Error(), "preset") {
@@ -166,14 +166,14 @@ func TestNormalizeEvaluationInputRejectsUnsupportedPreset(t *testing.T) {
 }
 
 func TestNormalizeEvaluationInputRejectsCrossAxisCombo(t *testing.T) {
-	fixture := validRepoWholeRepoFixture()
-	fixture["surface"] = "repo"
+	fixture := validDevRepoFixture()
+	fixture["surface"] = "dev"
 	fixture["preset"] = "chat"
 	_, err := NormalizeEvaluationInput(fixture)
 	if err == nil || !strings.Contains(err.Error(), "preset") {
-		t.Fatalf("expected cross-axis preset error (repo/chat), got %v", err)
+		t.Fatalf("expected cross-axis preset error (dev/chat), got %v", err)
 	}
-	fixture = validRepoWholeRepoFixture()
+	fixture = validDevRepoFixture()
 	fixture["surface"] = "app"
 	fixture["preset"] = "skill"
 	_, err = NormalizeEvaluationInput(fixture)
@@ -183,7 +183,7 @@ func TestNormalizeEvaluationInputRejectsCrossAxisCombo(t *testing.T) {
 }
 
 func TestNormalizeEvaluationInputRejectsExtends(t *testing.T) {
-	fixture := validRepoWholeRepoFixture()
+	fixture := validDevRepoFixture()
 	fixture["extends"] = "./base.fixture.json"
 	_, err := NormalizeEvaluationInput(fixture)
 	if err == nil || !strings.Contains(err.Error(), "C2") {
@@ -192,7 +192,7 @@ func TestNormalizeEvaluationInputRejectsExtends(t *testing.T) {
 }
 
 func TestNormalizeEvaluationInputRejectsSteps(t *testing.T) {
-	fixture := validRepoWholeRepoFixture()
+	fixture := validDevRepoFixture()
 	fixture["steps"] = []any{}
 	_, err := NormalizeEvaluationInput(fixture)
 	if err == nil || !strings.Contains(err.Error(), "C3") {
@@ -201,7 +201,7 @@ func TestNormalizeEvaluationInputRejectsSteps(t *testing.T) {
 }
 
 func TestNormalizeEvaluationInputRejectsSnapshotExpectation(t *testing.T) {
-	fixture := validRepoWholeRepoFixture()
+	fixture := validDevRepoFixture()
 	cases := fixture["cases"].([]any)
 	caseEntry := cases[0].(map[string]any)
 	caseEntry["expected"] = map[string]any{"snapshot": "./golden.json"}
@@ -212,7 +212,7 @@ func TestNormalizeEvaluationInputRejectsSnapshotExpectation(t *testing.T) {
 }
 
 func TestNormalizeEvaluationInputSkillRejectsSnapshotExpectation(t *testing.T) {
-	fixture := validRepoSkillFixture()
+	fixture := validDevSkillFixture()
 	cases := fixture["cases"].([]any)
 	caseEntry := cases[0].(map[string]any)
 	caseEntry["expected"] = map[string]any{"snapshot": "./golden.json"}
@@ -223,7 +223,7 @@ func TestNormalizeEvaluationInputSkillRejectsSnapshotExpectation(t *testing.T) {
 }
 
 func TestNormalizeEvaluationInputSkillRejectsNonSnapshotExpected(t *testing.T) {
-	fixture := validRepoSkillFixture()
+	fixture := validDevSkillFixture()
 	cases := fixture["cases"].([]any)
 	caseEntry := cases[0].(map[string]any)
 	caseEntry["expected"] = map[string]any{"trigger": "must_invoke"}
@@ -234,7 +234,7 @@ func TestNormalizeEvaluationInputSkillRejectsNonSnapshotExpected(t *testing.T) {
 }
 
 func TestNormalizeEvaluationInputSkillRejectsExtends(t *testing.T) {
-	fixture := validRepoSkillFixture()
+	fixture := validDevSkillFixture()
 	fixture["extends"] = "./base.fixture.json"
 	_, err := NormalizeEvaluationInput(fixture)
 	if err == nil || !strings.Contains(err.Error(), "C2") {
@@ -243,7 +243,7 @@ func TestNormalizeEvaluationInputSkillRejectsExtends(t *testing.T) {
 }
 
 func TestNormalizeEvaluationInputSkillRejectsSteps(t *testing.T) {
-	fixture := validRepoSkillFixture()
+	fixture := validDevSkillFixture()
 	fixture["steps"] = []any{}
 	_, err := NormalizeEvaluationInput(fixture)
 	if err == nil || !strings.Contains(err.Error(), "C3") {
@@ -463,7 +463,7 @@ func TestNormalizeEvaluationInputAppPromptRejectsSteps(t *testing.T) {
 }
 
 func TestNormalizeEvaluationInputRejectsEmptyCases(t *testing.T) {
-	fixture := validRepoWholeRepoFixture()
+	fixture := validDevRepoFixture()
 	fixture["cases"] = []any{}
 	_, err := NormalizeEvaluationInput(fixture)
 	if err == nil || !strings.Contains(err.Error(), "cases must be a non-empty") {

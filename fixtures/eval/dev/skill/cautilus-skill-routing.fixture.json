@@ -1,6 +1,6 @@
 {
   "schemaVersion": "cautilus.evaluation_input.v1",
-  "surface": "repo",
+  "surface": "dev",
   "preset": "skill",
   "suiteId": "cautilus-skill-routing",
   "suiteDisplayName": "Cautilus Skill Routing",
@@ -18,7 +18,7 @@
     {
       "caseId": "execution-cautilus-test-request",
       "evaluationKind": "execution",
-      "prompt": "Use $cautilus to test the local impl skill with the checked-in fixture at ./fixtures/eval/skill/cautilus-skill-routing.fixture.json and summarize the recommendation. If the agent runtime is read-only, use an explicit writable output dir outside the repo.",
+      "prompt": "Use $cautilus to test the local impl skill with the checked-in fixture at ./fixtures/eval/dev/skill/cautilus-skill-routing.fixture.json and summarize the recommendation. If the agent runtime is read-only, use an explicit writable output dir outside the repo.",
       "thresholds": {
         "max_duration_ms": 120000
       }

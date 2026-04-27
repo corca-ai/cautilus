@@ -145,7 +145,7 @@ placeholder drift + specdown 기반 spec source guard) + Go race test + standing
 
 | # | 명령 | 통과 조건 | 실행자 |
 |---|---|---|---|
-| 3.19 | `cautilus eval test --repo-root . --fixture fixtures/eval/whole-repo/checked-in-agents-routing.fixture.json --output-dir /tmp/cautilus-oa-eval` | observed packet 생성, exit 0 | 기계적 |
+| 3.19 | `cautilus eval test --repo-root . --fixture fixtures/eval/dev/repo/checked-in-agents-routing.fixture.json --output-dir /tmp/cautilus-oa-eval` | observed packet 생성, exit 0 | 기계적 |
 | 3.20 | `cautilus report build --input ./fixtures/reports/report-input.json --output /tmp/cautilus-oa-eval/report.json && cautilus review prepare-input --repo-root . --report-file /tmp/cautilus-oa-eval/report.json --output /tmp/cautilus-oa-eval/review.json` | review.json 생성, exit 0. 의존: report fixture | 기계적 |
 | 3.21 | `cautilus review build-prompt-input --review-packet /tmp/cautilus-oa-eval/review.json` | review-prompt-input.json 생성, exit 0. 의존: 3.20 | 기계적 |
 | 3.22 | `cautilus review render-prompt --input /tmp/cautilus-oa-eval/review-prompt-input.json` | 프롬프트 텍스트 출력, exit 0. 의존: 3.21 | 기계적 |
@@ -168,7 +168,7 @@ placeholder drift + specdown 기반 spec source guard) + Go race test + standing
 **통과 판정 기준 상세:**
 
 - `dogfood:self`는 현재 `dogfood:self:eval`의 canonical alias다.
-- `dogfood:self:eval`은 현재 checked-in `cautilus.evaluation_input.v1` fixture(`fixtures/eval/whole-repo/`)를 재실행해
+- `dogfood:self:eval`은 현재 checked-in `cautilus.evaluation_input.v1` fixture(`fixtures/eval/dev/repo/`)를 재실행해
   `eval-summary.json`을 갱신해야 한다.
   `recommendation=accept-now`와 `evaluationCounts.failed=0`, `evaluationCounts.blocked=0`, `evaluationCounts.passed=evaluationCounts.total`이 기본 통과선이다.
 - broader report/review self-dogfood와 experiments runner는 `mode evaluate` cut 이후 아직 새 eval surface 위로 재구축되지 않았다.
