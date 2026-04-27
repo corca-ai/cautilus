@@ -95,6 +95,8 @@
   이 과정에서 adapter loader가 `default_runtime`을 버리던 버그를 고쳐 named adapter의 `default_runtime: fixture`가 실제 `eval test` runtime으로 쓰이게 했다.
   같은 runner를 Codex CLI messaging mode로도 확장했다.
   `npm run dogfood:app-prompt:live`와 `npm run dogfood:app-chat:live` 모두 `recommendation=accept-now`, `passed=1`, `failed=0`이다.
+  2026-04-27 후속 구현으로 같은 app runner가 Claude CLI messaging mode도 지원한다.
+  `npm run dogfood:app-prompt:claude`와 `npm run dogfood:app-chat:claude` 모두 실제 `claude -p` 경로에서 `recommendation=accept-now`, `passed=1`, `failed=0`이다.
   app/chat live의 첫 시도는 fixture가 제품명을 기대하면서도 user turn에 제품명을 넣지 않아 `reject`였고, debug record는 [charness-artifacts/debug/debug-2026-04-27-app-chat-live-fixture-ambiguity.md](../../charness-artifacts/debug/debug-2026-04-27-app-chat-live-fixture-ambiguity.md).
   이전 handoff에 적힌 `charness-artifacts/cautilus/latest.md`는 현재 repo에 존재하지 않는 artifact path였으므로 다음 작업 후보에서 제거했다.
 - 2026-04-27 skill-surface verification 중 shared charness guidance가 removed `cautilus instruction-surface test --repo-root .`를 아직 참조한다는 것을 확인했다.
@@ -126,8 +128,8 @@
 5. spec follow-up #4 — C2/C3/C4 composition primitives (extends / multi-step / snapshot), 슬라이스당 하나.
 6. spec follow-up #5 — `scenario normalize` 재범위만 남음.
    archetype-boundary retire는 cut 슬라이스에 흡수됨.
-7. 후속 후보: fixture-backed app smoke와 one-case live Codex proof를 broader app quality proof로 과장하지 않도록 release / quality artifact 쪽 proof boundary 표현을 점검한다.
-8. 후속 후보: Claude CLI parity 또는 direct provider parity가 필요한지 결정한다.
+7. 후속 후보: fixture-backed app smoke와 one-case live Codex/Claude proof를 broader app quality proof로 과장하지 않도록 release / quality artifact 쪽 proof boundary 표현을 점검한다.
+8. 후속 후보: direct provider parity가 필요한지 결정한다.
 
 ## Discuss
 

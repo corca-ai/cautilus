@@ -8,11 +8,23 @@ const CHAT_OBSERVED_SCHEMA = "cautilus.app_chat_evaluation_inputs.v1";
 const PROMPT_CASES_SCHEMA = "cautilus.app_prompt_test_cases.v1";
 const PROMPT_OBSERVED_SCHEMA = "cautilus.app_prompt_evaluation_inputs.v1";
 const CODEX_SESSION_MODES = ["ephemeral", "persistent"];
+const BACKENDS = ["fixture", "codex_exec", "claude_code"];
+
+const CLAUDE_CLI_ENV = {
+	CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: "1",
+	CLAUDE_CODE_DISABLE_AUTO_MEMORY: "1",
+	ENABLE_CLAUDEAI_MCP_SERVERS: "false",
+	DISABLE_TELEMETRY: "1",
+	DISABLE_AUTOUPDATER: "1",
+	DISABLE_BUG_COMMAND: "1",
+	DISABLE_ERROR_REPORTING: "1",
+	CLAUDE_CODE_IDE_SKIP_AUTO_INSTALL: "1",
+};
 
 function usage(exitCode = 0) {
 	const text = [
 		"Usage:",
-		"  node scripts/agent-runtime/run-app-eval.mjs --cases-file <file> --output-file <file> --backend fixture|codex_exec [--workspace <dir>] [--artifact-dir <dir>] [--timeout-ms <ms>] [--codex-model <model>] [--codex-reasoning-effort <level>] [--codex-session-mode ephemeral|persistent] [--codex-config <key=value>]",
+		"  node scripts/agent-runtime/run-app-eval.mjs --cases-file <file> --output-file <file> --backend fixture|codex_exec|claude_code [--workspace <dir>] [--artifact-dir <dir>] [--timeout-ms <ms>] [--codex-model <model>] [--codex-reasoning-effort <level>] [--codex-session-mode ephemeral|persistent] [--codex-config <key=value>] [--claude-model <model>] [--claude-permission-mode <mode>] [--claude-allowed-tools <rules>]",
 	].join("\n");
 	const out = exitCode === 0 ? process.stdout : process.stderr;
 	out.write(`${text}\n`);
@@ -59,6 +71,9 @@ function defaultOptions() {
 		codexReasoningEffort: null,
 		codexSessionMode: "ephemeral",
 		codexConfigOverrides: [],
+		claudeModel: null,
+		claudePermissionMode: null,
+		claudeAllowedTools: null,
 	};
 }
 
@@ -72,6 +87,9 @@ const VALUE_OPTIONS = {
 	"--codex-reasoning-effort": (options, value) => { options.codexReasoningEffort = value; },
 	"--codex-session-mode": (options, value) => { options.codexSessionMode = parseCodexSessionMode(value); },
 	"--codex-config": (options, value) => { options.codexConfigOverrides.push(value); },
+	"--claude-model": (options, value) => { options.claudeModel = value; },
+	"--claude-permission-mode": (options, value) => { options.claudePermissionMode = value; },
+	"--claude-allowed-tools": (options, value) => { options.claudeAllowedTools = value; },
 };
 
 function applyArgument(options, argv, index) {
@@ -102,8 +120,8 @@ function parseArgs(argv) {
 	if (!options.outputFile) {
 		fail("--output-file is required");
 	}
-	if (!["fixture", "codex_exec"].includes(options.backend)) {
-		fail("--backend must be fixture or codex_exec");
+	if (!BACKENDS.includes(options.backend)) {
+		fail("--backend must be fixture, codex_exec, or claude_code");
 	}
 	if (!options.artifactDir) {
 		options.artifactDir = join(dirname(options.outputFile), "app-eval");
@@ -169,6 +187,15 @@ function codexRuntime(options, durationMs) {
 	};
 }
 
+function claudeRuntime(options, durationMs) {
+	return {
+		provider: "anthropic",
+		model: options.claudeModel || "claude-default",
+		harness: "claude_code",
+		durationMs,
+	};
+}
+
 function chatEvaluation(testCase, cases, runtime, finalText) {
 	const messages = Array.isArray(testCase.messages) ? testCase.messages : [];
 	return {
@@ -223,6 +250,25 @@ function codexArgs(options, schemaFile, resultFile) {
 	return args;
 }
 
+function claudeArgs(options) {
+	const args = [
+		"-p",
+		"--no-session-persistence",
+		"--output-format", "json",
+		"--exclude-dynamic-system-prompt-sections",
+	];
+	if (options.claudeModel) {
+		args.push("--model", options.claudeModel);
+	}
+	if (options.claudePermissionMode) {
+		args.push("--permission-mode", options.claudePermissionMode);
+	}
+	if (options.claudeAllowedTools) {
+		args.push("--allowedTools", options.claudeAllowedTools);
+	}
+	return args;
+}
+
 function outputSchema() {
 	return {
 		type: "object",
@@ -232,6 +278,41 @@ function outputSchema() {
 			finalText: { type: "string" },
 		},
 	};
+}
+
+function renderClaudePrompt(cases, testCase) {
+	return [
+		renderPrompt(cases, testCase),
+		"",
+		"You MUST respond with ONLY a JSON object matching this schema, with no markdown fences or commentary:",
+		"",
+		JSON.stringify(outputSchema(), null, 2),
+		"",
+	].join("\n");
+}
+
+function extractJSON(text) {
+	const fenced = text.match(/```(?:json)?\s*\n([\s\S]*?)\n\s*```/);
+	if (fenced) {
+		return JSON.parse(fenced[1]);
+	}
+	const braceMatch = text.match(/\{[\s\S]*\}/);
+	if (braceMatch) {
+		return JSON.parse(braceMatch[0]);
+	}
+	return JSON.parse(text);
+}
+
+function parseClaudeOutput(raw) {
+	try {
+		const parsed = JSON.parse(raw);
+		if (parsed.result !== undefined) {
+			return extractJSON(typeof parsed.result === "string" ? parsed.result : JSON.stringify(parsed.result));
+		}
+		return parsed;
+	} catch {
+		return extractJSON(raw);
+	}
 }
 
 function renderPrompt(cases, testCase) {
@@ -286,6 +367,55 @@ function runCodexCase(options, cases, testCase, index) {
 	};
 }
 
+function runClaudeCase(options, cases, testCase, index) {
+	const caseID = assertString(testCase.caseId, `cases[${index}].caseId`);
+	const caseDir = join(options.artifactDir, caseID);
+	mkdirSync(caseDir, { recursive: true });
+	const promptFile = join(caseDir, "prompt.md");
+	const resultFile = join(caseDir, "result.json");
+	const rawFile = join(caseDir, "result.raw");
+	const stderrFile = join(caseDir, "stderr.txt");
+	const prompt = renderClaudePrompt(cases, testCase);
+	writeFileSync(promptFile, prompt, "utf-8");
+	const started = Date.now();
+	const completed = spawnSync("claude", claudeArgs(options), {
+		cwd: options.workspace,
+		encoding: "utf-8",
+		env: {
+			...process.env,
+			...CLAUDE_CLI_ENV,
+		},
+		input: prompt,
+		timeout: options.timeoutMs,
+		maxBuffer: 20 * 1024 * 1024,
+	});
+	const durationMs = Date.now() - started;
+	writeFileSync(rawFile, completed.stdout || "", "utf-8");
+	writeFileSync(stderrFile, completed.stderr || "", "utf-8");
+	if (completed.error) {
+		throw completed.error;
+	}
+	if (completed.status !== 0) {
+		throw new Error(`claude_code failed for ${caseID} with exit ${completed.status}: ${completed.stderr || completed.stdout}`);
+	}
+	const result = parseClaudeOutput(completed.stdout ?? "");
+	writeFileSync(resultFile, `${JSON.stringify(result, null, 2)}\n`, "utf-8");
+	return {
+		finalText: assertString(result.finalText, `claude result for ${caseID}.finalText`),
+		runtime: claudeRuntime(options, durationMs),
+	};
+}
+
+function backendResult(options, cases, entry, index) {
+	if (options.backend === "codex_exec") {
+		return runCodexCase(options, cases, entry, index);
+	}
+	if (options.backend === "claude_code") {
+		return runClaudeCase(options, cases, entry, index);
+	}
+	return { finalText: fixtureAssistantText(entry), runtime: fixtureRuntime(entry, cases) };
+}
+
 export function buildObservedAppInput(cases, options = { backend: "fixture" }) {
 	const schemaVersion = cases.schemaVersion;
 	const evaluations = Array.isArray(cases.cases) ? cases.cases : [];
@@ -293,9 +423,7 @@ export function buildObservedAppInput(cases, options = { backend: "fixture" }) {
 		throw new Error(`unsupported cases schemaVersion: ${schemaVersion}`);
 	}
 	const observedEvaluations = evaluations.map((entry, index) => {
-		const result = options.backend === "codex_exec"
-			? runCodexCase(options, cases, entry, index)
-			: { finalText: fixtureAssistantText(entry), runtime: fixtureRuntime(entry, cases) };
+		const result = backendResult(options, cases, entry, index);
 		return schemaVersion === CHAT_CASES_SCHEMA
 			? chatEvaluation(entry, cases, result.runtime, result.finalText)
 			: promptEvaluation(entry, cases, result.runtime, result.finalText);

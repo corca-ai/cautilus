@@ -13,7 +13,7 @@ artifact_paths:
   - scripts/agent-runtime/run-app-eval.mjs
   - docs/specs/evaluation-surfaces.spec.md
 comparison_questions:
-  - Does the app/prompt fixture still translate and evaluate through the public eval seam under both fixture and live Codex runtimes?
+  - Does the app/prompt fixture still translate and evaluate through the public eval seam under fixture, live Codex, and live Claude runtimes?
 human_review_prompts:
   - id: app-prompt-proof-boundary
-    prompt: Where might an operator overread this minimal app/prompt proof beyond fixture translation and one live Codex messaging run?
+    prompt: Where might an operator overread this minimal app/prompt proof beyond fixture translation and one live coding-agent messaging run per supported CLI?
