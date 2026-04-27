@@ -278,6 +278,12 @@ function collectLooseSignalsFromValue(value, result, index, timestamp) {
 	collectLooseCommand(value, type, result);
 	collectLooseMessage(value, type, result, index, timestamp);
 	collectLooseToolCall(value, type, result, index, timestamp);
+	for (const [key, child] of Object.entries(value)) {
+		if (key === "payload") {
+			continue;
+		}
+		collectLooseSignalsFromValue(child, result, index, timestamp);
+	}
 }
 
 function collectLooseCommand(value, type, result) {

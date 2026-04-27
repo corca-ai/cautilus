@@ -54,6 +54,14 @@ Ran `npm run dogfood:self`, which returned `recommendation=accept-now` with one 
 Ran `npm run verify`.
 Ran `npm run hooks:check`.
 After the follow-up session review, tightened the bundled skill so no-input branch menus present labels before internal ids and branch execution confirmation must be backed by a fresh observed status or state-path check.
+Added `dogfood:cautilus-refresh-flow` to run a real two-turn Codex session over a disposable candidate worktree.
+The first live run proved the new audit path works and isolated the remaining failure to a missing branch recheck after the user selected `1`.
+Tightened the skill again so the next shell command after a numbered branch selection should be `agent status`.
+The next live run isolated two more automation defects: `codex exec resume` was launched from the source repo instead of the candidate worktree, and the agent said it would read `refreshSummary` but rebuilt counts from raw `changedSources` and `claimPlan`.
+The runner now resumes from the candidate worktree, and the skill explicitly requires direct `.refreshSummary` inspection instead of raw-field reconstruction.
+After another live run, the only remaining failure was the audit's overstrict second-status requirement.
+For refresh-plan-only work, proceeding from the immediately preceding orientation is acceptable because it writes a separate plan and does not update the saved claim map.
+The audit now records that as a warning instead of a failure, while the skill still requires a fresh status before branches that overwrite saved state, launch review, plan evals, edit files, or commit.
 
 ## Root Cause
 
@@ -79,3 +87,4 @@ That forced each agent to infer coordinator language from internal fields, which
 
 Put coordinator-facing summaries into packets for workflow decision points.
 Use skill text to route agents to those summaries before raw packet inspection, keep internal branch ids as references rather than the first thing a user sees, and require branch execution claims to match actual observed commands.
+Automate the repeated `$cautilus` plus `1` dogfood loop so a maintainer does not have to act as the regression runner.

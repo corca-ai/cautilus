@@ -69,6 +69,38 @@ test("summarizes Codex rollout messages, tool calls, outputs, and commit signals
 	assert.equal(summary.commits[0].commit, "9a39ccd");
 });
 
+test("summarizes codex exec json item.completed command events", () => {
+	const text = jsonl([
+		{
+			type: "thread.started",
+			thread_id: "019dcd80-623b-78f1-baf7-eb780d7f87c2",
+		},
+		{
+			type: "item.completed",
+			item: {
+				id: "item_1",
+				type: "command_execution",
+				command: "/usr/bin/zsh -lc './bin/cautilus agent status --repo-root . --json'",
+				aggregated_output: "{}",
+				exit_code: 0,
+				status: "completed",
+			},
+		},
+		{
+			type: "item.completed",
+			item: {
+				id: "item_2",
+				type: "agent_message",
+				text: "상태를 읽었습니다.",
+			},
+		},
+	]);
+
+	const summary = summarizeCodexSessionLogText(text);
+	assert.equal(summary.commands[0], "/usr/bin/zsh -lc './bin/cautilus agent status --repo-root . --json'");
+	assert.equal(summary.assistantMessages[0].text, "상태를 읽었습니다.");
+});
+
 test("cli writes a nested session summary artifact", () => {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-session-summary-"));
 	const input = join(root, "session.jsonl");

@@ -59,6 +59,10 @@
   `scripts/agent-runtime/summarize-codex-session-log.mjs --session-id <id>`는 JSONL 전체에서 user/assistant messages, tool calls, command outputs, shell commands, commits, parse warnings를 `cautilus.codex_session_summary.v1`로 요약한다.
   `audit-cautilus-no-input-log.mjs`도 이 shared summarizer를 재사용한다.
   이 helper는 public Cautilus command가 아니라 self-dogfood/debug aid이며, raw `jq` 추측을 줄이는 것이 목적이다.
+- 2026-04-27 후속 구현으로 `$cautilus` two-turn refresh-flow dogfood가 생겼다.
+  `npm run dogfood:cautilus-refresh-flow`는 disposable candidate worktree에서 실제 `codex exec "$cautilus"`를 실행하고, 같은 session id로 `codex exec resume <id> "1"`을 이어 실행한 뒤 `scripts/agent-runtime/audit-cautilus-refresh-flow-log.mjs`로 combined JSONL을 판정한다.
+  이 감사는 branch 선택 뒤 fresh `agent status` 재확인, `refreshSummary` 읽기, coordinator-facing saved-claim-map 언어, 내부 branch id를 option title로 쓰는 회귀, review/eval 과진행을 잡는다.
+  같은 수동 검증을 사용자가 새 세션에서 반복하는 것은 더 이상 기본 경로가 아니다.
 - 2026-04-26 후속 구현으로 existing-packet helper slice도 들어왔다.
   `claim show --input <claims.json> --sample-claims <n>`는 `cautilus.claim_status_summary.v1`를 만들고 bounded `sampleClaims`와 `gitState`로 stable candidate fields와 claim-packet freshness를 보여준다.
   `agent status`도 claim summary 안에 `gitState`를 포함하고, stale packet이면 `refresh_claims_from_diff`를 `show_existing_claims`보다 먼저 제안한다.

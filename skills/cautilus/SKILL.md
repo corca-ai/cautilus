@@ -58,8 +58,11 @@ If `nextBranches` includes `initialize_adapter` and the user delegated setup con
 If claim state is missing, present the bounded scan entries and depth before entering claim discovery.
 If claim state exists, read or refresh that packet before planning new proof work.
 Branch execution starts from the selected branch; no-input orientation is a status turn, not an eval, review, optimize, edit, or commit turn.
-Branch execution confirmation is evidence-backed: before executing a branch selected from an earlier turn, rerun `agent status` or check the referenced state path and mention the fresh observation.
-This prevents a stale `run_first_claim_scan` or stale refresh choice from overwriting useful state.
+Branch execution confirmation is evidence-backed.
+When the user selects a numbered branch from a previous orientation turn, rerun `"$CAUTILUS_BIN" agent status --repo-root . --json` before any branch that writes or overwrites the saved claim map, launches review, plans evals, edits files, or commits.
+For the refresh-plan branch, it is acceptable to proceed from the immediately preceding orientation when the command only writes a separate refresh-plan artifact and the agent does not claim it rechecked status.
+If you say you rechecked status, the command log must show that fresh status command before the branch command.
+This prevents a stale `run_first_claim_scan` or stale review/eval choice from overwriting useful state.
 If the current status no longer matches the selected branch, summarize the new status and ask for the next branch instead of continuing from the stale menu.
 
 ## Declared Claim Discovery
@@ -86,6 +89,8 @@ Read `refreshSummary` first.
 Explain it as a saved claim map catching up to current repo changes, not as a completed claim refresh.
 Say what was recorded, what was not changed yet, and which next choice is safest.
 Prefer labels such as "compare the saved claim map with recent repo changes" and "update the saved claim map before review or eval planning"; include internal branch ids only as references when needed.
+After writing a refresh plan, inspect `.refreshSummary` directly, for example with `jq '.refreshSummary' <refresh-plan.json>`.
+Do not reconstruct `changedClaimCount`, `carriedForwardClaimCount`, or source hotspots from raw `changedSources` or `claimPlan` when `refreshSummary` exists.
 
 Status from existing state:
 
