@@ -256,6 +256,15 @@ cautilus eval evaluate \
 ```
 
 The npm wrapper is the canonical maintainer-facing self-dogfood path for this repo.
+For cheap fixture-backed product-surface smoke tests, use:
+
+```bash
+npm run dogfood:app-chat:fixture
+npm run dogfood:app-prompt:fixture
+```
+
+These prove the `app / chat` and `app / prompt` fixture translation, adapter runner, and evaluator packet paths.
+They do not prove live model response quality.
 
 ## Skill testing & evaluation
 

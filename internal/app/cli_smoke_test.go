@@ -3215,6 +3215,7 @@ JSON
 		"evaluation_surfaces:",
 		"  - fixture runtime selection",
 		"evaluation_input_default: fixtures/eval/dev/skill/demo.fixture.json",
+		"default_runtime: fixture",
 		"eval_test_command_templates:",
 		"  - sh ./eval-test.sh {backend} {eval_observed_file}",
 		"",
@@ -3222,7 +3223,7 @@ JSON
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
 
-	stdout, stderr, exitCode := runCLI(t, root, "eval", "test", "--repo-root", root, "--output-dir", outputDir, "--runtime", "fixture")
+	stdout, stderr, exitCode := runCLI(t, root, "eval", "test", "--repo-root", root, "--output-dir", outputDir)
 	if exitCode != 0 {
 		t.Fatalf("eval test failed: %s", stderr)
 	}

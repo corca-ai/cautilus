@@ -91,6 +91,9 @@
 - 2026-04-27 후속 구현으로 README / CLI reference / binary help도 네 evaluation presets와 세 command-family front doors에 맞춰 조정됐다.
   `cautilus --help`의 첫 run group은 이제 `claim discover`, `eval test`, `eval evaluate`를 먼저 보여주고, `eval --help`는 `dev/repo`, `dev/skill`, `app/chat`, `app/prompt`와 `--runtime fixture`의 cheap command-routing 의미를 설명한다.
   `optimize --help`는 optimize가 proof surface 이후의 improvement front door임을 명시한다.
+  `app/chat`과 `app/prompt`도 fixture-backed self-dogfood entry가 생겼다.
+  `npm run dogfood:app-chat:fixture`와 `npm run dogfood:app-prompt:fixture`는 각각 `recommendation=accept-now`, `passed=1`, `failed=0`으로 통과했다.
+  이 과정에서 adapter loader가 `default_runtime`을 버리던 버그를 고쳐 named adapter의 `default_runtime: fixture`가 실제 `eval test` runtime으로 쓰이게 했다.
   `charness-artifacts/cautilus/latest.md` refresh도 별도 artifact-refresh 슬라이스로 남아 있다.
 - 2026-04-27 skill-surface verification 중 shared charness guidance가 removed `cautilus instruction-surface test --repo-root .`를 아직 참조한다는 것을 확인했다.
   Cautilus binary는 현재 spec대로 해당 command를 제거했고, replacement path는 `cautilus eval test --adapter-name self-dogfood-eval` 또는 `npm run dogfood:self`다.
@@ -122,7 +125,7 @@
 6. spec follow-up #5 — `scenario normalize` 재범위만 남음.
    archetype-boundary retire는 cut 슬라이스에 흡수됨.
 7. `app/chat` / `app/prompt` 중 어느 surface에 real-codex/claude self-dogfood evidence를 먼저 붙일지 결정한다.
-8. 후속 후보: `app/chat` / `app/prompt` fixture 중 하나에 cheap fixture-backed smoke와, 가능하면 real runtime proof를 붙여 app surface가 문서상 약속에만 머물지 않게 한다.
+8. 후속 후보: `charness-artifacts/cautilus/latest.md`를 최신 self-dogfood evidence로 refresh하되, fixture-backed app smoke와 live model quality evidence를 혼동하지 않게 proof boundary를 명시한다.
 
 ## Discuss
 

@@ -1,0 +1,19 @@
+version: 1
+repo: cautilus
+evaluation_surfaces:
+  - app / prompt fixture-backed smoke for the product-facing evaluation surface
+required_prerequisites:
+  - use fixture runtime for command-routing proof; this is not model-quality evidence
+default_runtime: fixture
+evaluation_input_default: fixtures/eval/app/prompt/cautilus-tagline.fixture.json
+eval_test_command_templates:
+  - node ./scripts/agent-runtime/run-app-fixture-eval.mjs --cases-file {eval_cases_file} --output-file {eval_observed_file} --backend {backend}
+artifact_paths:
+  - fixtures/eval/app/prompt/cautilus-tagline.fixture.json
+  - scripts/agent-runtime/run-app-fixture-eval.mjs
+  - docs/specs/evaluation-surfaces.spec.md
+comparison_questions:
+  - Does the app/prompt fixture still translate and evaluate through the public eval seam?
+human_review_prompts:
+  - id: app-prompt-proof-boundary
+    prompt: Where might an operator mistake fixture-backed app/prompt routing proof for real model quality evidence?

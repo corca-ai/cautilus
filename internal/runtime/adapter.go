@@ -51,6 +51,7 @@ var adapterStringFields = []string{
 	"default_prompt_file",
 	"default_schema_file",
 	"evaluation_input_default",
+	"default_runtime",
 }
 
 var adapterOptimizeSearchBudgetNames = []string{"light", "medium", "heavy"}
