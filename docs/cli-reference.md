@@ -76,7 +76,7 @@ cautilus doctor --repo-root /path/to/repo --scope agent-surface
 
 # declared-claim discovery and proof planning
 cautilus claim discover --repo-root /path/to/repo --output /tmp/cautilus-claims.json
-cautilus claim show --input /tmp/cautilus-claims.json
+cautilus claim show --input /tmp/cautilus-claims.json --sample-claims 10
 cautilus claim review prepare-input --claims /tmp/cautilus-claims.json --output /tmp/cautilus-claim-review-input.json
 cautilus claim review apply-result --claims /tmp/cautilus-claims.json --review-result /tmp/cautilus-claim-review-result.json --output /tmp/cautilus-reviewed-claims.json
 cautilus claim validate --claims /tmp/cautilus-reviewed-claims.json --output /tmp/cautilus-claim-validation.json
@@ -98,7 +98,7 @@ Use `cautilus claim discover` before writing eval fixtures when you need to inve
 Default discovery starts from adapter-owned claim entries or README.md/AGENTS.md/CLAUDE.md and follows repo-local Markdown links to depth 3.
 Use `--previous <claims.json> --refresh-plan` for deterministic refresh planning inside the same discover workflow.
 The packet is `cautilus.claim_proof_plan.v1`, and it is a proof plan rather than a verdict.
-Use `cautilus claim show --input <claims.json>` to summarize an existing claim packet without rescanning.
+Use `cautilus claim show --input <claims.json> --sample-claims <n>` to summarize an existing claim packet without rescanning and include bounded claim examples when an agent needs concrete candidates before choosing the next branch.
 Use `cautilus claim review prepare-input --claims <claims.json>` to prepare bounded deterministic review clusters for an agent or subagent.
 It emits `cautilus.claim_review_input.v1` and does not call an LLM or mark claims satisfied.
 Use `cautilus claim review apply-result --claims <claims.json> --review-result <review-result.json>` to merge reviewed labels and evidence refs back into a claim packet.

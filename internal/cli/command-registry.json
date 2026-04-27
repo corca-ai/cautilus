@@ -66,10 +66,11 @@
     {
       "path": ["claim", "show"],
       "group": "results",
-      "usage": "cautilus claim show --input <claims.json> [--output <summary.json>]",
-      "example": "cautilus claim show --input /tmp/cautilus-claims.json",
+      "usage": "cautilus claim show --input <claims.json> [--sample-claims <n>] [--output <summary.json>]",
+      "example": "cautilus claim show --input /tmp/cautilus-claims.json --sample-claims 10",
       "notes": [
         "Summarizes an existing `cautilus.claim_proof_plan.v1` packet without rescanning.",
+        "`--sample-claims` includes a bounded set of stable claim fields for agents that need examples before choosing the next branch.",
         "This command emits `cautilus.claim_status_summary.v1` for agents that need current status before choosing review, test, scenario, or alignment work."
       ]
     },

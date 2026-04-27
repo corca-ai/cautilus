@@ -82,6 +82,40 @@ func TestBuildClaimStatusSummarySummarizesExistingPacket(t *testing.T) {
 	}
 }
 
+func TestBuildClaimStatusSummaryCanIncludeBoundedSampleClaims(t *testing.T) {
+	repoRoot := filepath.Join("..", "..", "fixtures", "claim-discovery", "tiny-repo")
+	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan returned error: %v", err)
+	}
+	summary, err := BuildClaimStatusSummaryWithOptions(plan, ClaimStatusSummaryOptions{
+		InputPath:    "claims.json",
+		SampleClaims: 2,
+	})
+	if err != nil {
+		t.Fatalf("BuildClaimStatusSummaryWithOptions returned error: %v", err)
+	}
+	samples := arrayOrEmpty(summary["sampleClaims"])
+	if len(samples) != 2 {
+		t.Fatalf("expected two sample claims, got %#v", samples)
+	}
+	first := asMap(samples[0])
+	if stringFromAny(first["claimId"]) == "" || stringFromAny(first["summary"]) == "" {
+		t.Fatalf("expected sample claim identity and summary, got %#v", first)
+	}
+	if stringFromAny(first["proofLayer"]) == "" || stringFromAny(first["recommendedProof"]) == "" {
+		t.Fatalf("expected sample claim proof labels, got %#v", first)
+	}
+	refs := arrayOrEmpty(first["sourceRefs"])
+	if len(refs) != 1 {
+		t.Fatalf("expected one bounded source ref, got %#v", first)
+	}
+	ref := asMap(refs[0])
+	if stringFromAny(ref["path"]) == "" || ref["excerpt"] != nil {
+		t.Fatalf("expected source path without excerpt bloat, got %#v", ref)
+	}
+}
+
 func TestBuildClaimReviewInputClustersAndSkipsDeterministically(t *testing.T) {
 	repoRoot := filepath.Join("..", "..", "fixtures", "claim-discovery", "tiny-repo")
 	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})

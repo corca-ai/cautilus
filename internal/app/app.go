@@ -348,6 +348,7 @@ type claimShowArgs struct {
 	input        string
 	displayInput string
 	output       *string
+	sampleClaims int
 }
 
 type claimReviewPrepareInputArgs struct {
@@ -825,7 +826,10 @@ func handleClaimShow(repoRoot string, cwd string, args []string, stdout io.Write
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
-	summary, err := runtime.BuildClaimStatusSummary(packet, options.displayInput)
+	summary, err := runtime.BuildClaimStatusSummaryWithOptions(packet, runtime.ClaimStatusSummaryOptions{
+		InputPath:    options.displayInput,
+		SampleClaims: options.sampleClaims,
+	})
 	if err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
@@ -2137,6 +2141,17 @@ func parseClaimShowArgs(args []string, cwd string) (*claimShowArgs, error) {
 			}
 			index = next
 			options.output = &value
+		case "--sample-claims":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			parsed, parseErr := parsePositiveCLIInt(value, arg)
+			if parseErr != nil {
+				return nil, parseErr
+			}
+			options.sampleClaims = parsed
 		default:
 			return nil, fmt.Errorf("unknown argument: %s", arg)
 		}

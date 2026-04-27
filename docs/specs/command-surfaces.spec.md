@@ -38,7 +38,7 @@ The no-input agent entry point is `agent status`: it emits a read-only orientati
 tmpdir=$(mktemp -d)
 ./bin/cautilus agent status --repo-root . --json >"$tmpdir/agent-status.json"
 ./bin/cautilus claim discover --repo-root ./fixtures/claim-discovery/tiny-repo --output "$tmpdir/claims.json"
-./bin/cautilus claim show --input "$tmpdir/claims.json" --output "$tmpdir/claim-status.json"
+./bin/cautilus claim show --input "$tmpdir/claims.json" --sample-claims 2 --output "$tmpdir/claim-status.json"
 ./bin/cautilus claim review prepare-input --claims "$tmpdir/claims.json" --max-clusters 2 --output "$tmpdir/claim-review-input.json"
 cat >"$tmpdir/claim-review-result.json" <<'JSON'
 {
@@ -143,6 +143,7 @@ It should preserve the discovered backlog honestly; prioritization belongs in th
 
 `cautilus claim show --input <claims.json>` emits `cautilus.claim_status_summary.v1`.
 It summarizes an existing proof-plan packet without rescanning.
+When called with `--sample-claims <n>`, it includes a bounded `sampleClaims` list so agents can inspect stable candidate fields without guessing raw packet keys.
 
 `cautilus claim review prepare-input --claims <claims.json>` emits `cautilus.claim_review_input.v1`.
 It groups candidates into deterministic review clusters and records the review budget.

@@ -393,7 +393,7 @@ Grouping is part of useful discovery output.
 
 Follow-on commands are justified only when they operate on an existing claim-state packet:
 
-- `claim show`: summarize an existing packet for agents without rescanning
+- `claim show`: summarize an existing packet for agents without rescanning, optionally with bounded `sampleClaims`
 - `claim review prepare-input`: turn selected candidate clusters into a deterministic review-input packet without calling an LLM
 - `claim review apply-result`: merge `cautilus.claim_review_result.v1` labels and evidence refs into an existing claim packet without calling an LLM
 - `claim plan-evals`: turn reviewed `cautilus-eval` claims into `cautilus.claim_eval_plan.v1` intermediate packets without writing host-owned fixtures
@@ -541,7 +541,7 @@ The second implementation slice updated the bundled skill control flow:
 This slice is covered by the bundled skill text, adapter contract docs, and the `execution-cautilus-no-input-claim-discovery-status` self-dogfood fixture.
 LLM-backed cluster review should come after the deterministic packet and skill control flow are stable enough to dogfood.
 The next deterministic helper slice added `claim show` and `claim review prepare-input`.
-`claim show` emits `cautilus.claim_status_summary.v1`.
+`claim show` emits `cautilus.claim_status_summary.v1` and can include bounded `sampleClaims` for agents that need concrete candidates before choosing the next branch.
 `claim review prepare-input` emits `cautilus.claim_review_input.v1` and records bounded clusters and skipped clusters, but still does not call an LLM or merge review results.
 The review-result application slice added `claim review apply-result`.
 It consumes `cautilus.claim_review_result.v1`, applies reviewed labels and evidence refs, records provenance, and rejects `evidenceStatus=satisfied` unless a direct or verified evidence ref supports the claim.

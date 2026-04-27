@@ -47,6 +47,11 @@ type ClaimValidationOptions struct {
 	InputPath string
 }
 
+type ClaimStatusSummaryOptions struct {
+	InputPath    string
+	SampleClaims int
+}
+
 type claimSource struct {
 	absPath        string
 	relPath        string
@@ -845,6 +850,10 @@ func summarizeClaimCandidates(candidates []any) map[string]any {
 }
 
 func BuildClaimStatusSummary(packet map[string]any, inputPath string) (map[string]any, error) {
+	return BuildClaimStatusSummaryWithOptions(packet, ClaimStatusSummaryOptions{InputPath: inputPath})
+}
+
+func BuildClaimStatusSummaryWithOptions(packet map[string]any, options ClaimStatusSummaryOptions) (map[string]any, error) {
 	if err := ValidateClaimProofPlan(packet); err != nil {
 		return nil, err
 	}
@@ -857,7 +866,7 @@ func BuildClaimStatusSummary(packet map[string]any, inputPath string) (map[strin
 	}
 	status := map[string]any{
 		"schemaVersion":             contracts.ClaimStatusSummarySchema,
-		"inputPath":                 filepath.ToSlash(filepath.Clean(inputPath)),
+		"inputPath":                 filepath.ToSlash(filepath.Clean(options.InputPath)),
 		"inputSchemaVersion":        packet["schemaVersion"],
 		"sourceRoot":                packet["sourceRoot"],
 		"gitCommit":                 packet["gitCommit"],
@@ -871,7 +880,54 @@ func BuildClaimStatusSummary(packet map[string]any, inputPath string) (map[strin
 		"recommendedNextActions":    claimStatusNextActions(claimSummary),
 		"linkedMarkdownSourceCount": linkedMarkdownSourceCount(sourceInventory),
 	}
+	if options.SampleClaims > 0 {
+		status["sampleClaims"] = claimStatusSampleClaims(candidates, options.SampleClaims)
+	}
 	return status, nil
+}
+
+func claimStatusSampleClaims(candidates []any, limit int) []any {
+	if limit <= 0 {
+		return []any{}
+	}
+	result := make([]any, 0, minInt(limit, len(candidates)))
+	for _, raw := range candidates {
+		if len(result) >= limit {
+			break
+		}
+		candidate := asMap(raw)
+		entry := map[string]any{
+			"claimId":               candidate["claimId"],
+			"summary":               candidate["summary"],
+			"proofLayer":            candidate["proofLayer"],
+			"recommendedProof":      candidate["recommendedProof"],
+			"verificationReadiness": candidate["verificationReadiness"],
+			"evidenceStatus":        candidate["evidenceStatus"],
+			"reviewStatus":          candidate["reviewStatus"],
+			"lifecycle":             candidate["lifecycle"],
+			"groupHints":            arrayOrEmpty(candidate["groupHints"]),
+			"sourceRefs":            claimStatusSampleSourceRefs(arrayOrEmpty(candidate["sourceRefs"])),
+			"nextAction":            candidate["nextAction"],
+		}
+		if surface := strings.TrimSpace(stringFromAny(candidate["recommendedEvalSurface"])); surface != "" {
+			entry["recommendedEvalSurface"] = surface
+		}
+		result = append(result, entry)
+	}
+	return result
+}
+
+func claimStatusSampleSourceRefs(refs []any) []any {
+	if len(refs) == 0 {
+		return []any{}
+	}
+	ref := asMap(refs[0])
+	return []any{
+		map[string]any{
+			"path": ref["path"],
+			"line": ref["line"],
+		},
+	}
 }
 
 func linkedMarkdownSourceCount(sourceInventory []any) int {

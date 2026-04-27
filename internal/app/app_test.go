@@ -343,7 +343,7 @@ func TestRunClaimShowSummarizesExistingProofPlan(t *testing.T) {
 
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
-	exitCode := Run([]string{"claim", "show", "--input", claimsPath}, &stdout, &stderr)
+	exitCode := Run([]string{"claim", "show", "--input", claimsPath, "--sample-claims", "1"}, &stdout, &stderr)
 	if exitCode != 0 {
 		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
 	}
@@ -356,6 +356,14 @@ func TestRunClaimShowSummarizesExistingProofPlan(t *testing.T) {
 	}
 	if payload["inputPath"] != "claims.json" {
 		t.Fatalf("expected repo-relative display input path, got %#v", payload["inputPath"])
+	}
+	samples := payload["sampleClaims"].([]any)
+	if len(samples) != 1 {
+		t.Fatalf("expected one sample claim, got %#v", payload)
+	}
+	sample := samples[0].(map[string]any)
+	if sample["claimId"] != "claim-readme-md-3" || sample["summary"] == "" {
+		t.Fatalf("expected sample claim identity and summary, got %#v", sample)
 	}
 }
 
