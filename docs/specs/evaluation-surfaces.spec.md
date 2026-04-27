@@ -197,7 +197,7 @@ Each criterion has at least one executable check.
 - **Per-preset proof**:
   - `dev / repo`: cautilus's own AGENTS.md routing test (current self-dogfood, ported).
   - `dev / skill`: portable plugin probe in fixture workspace (port from current skill test fixtures).
-  - `dev / skill` multi-turn: Cautilus first-scan and refresh-flow episode fixtures (`$cautilus`, then `1`) produce transcript artifacts and audit-backed skill evaluation packets.
+  - `dev / skill` multi-turn: Cautilus first-scan, refresh-flow, and review-prepare episode fixtures produce transcript artifacts and audit-backed skill evaluation packets.
   - `app / chat`: multi-turn fixture against fixture-backend (no real model).
   - `app / prompt`: single-turn fixture against fixture-backend.
 - **CLI runtime parity**: `app / chat` fixture run via direct API and via `claude -p --system-prompt` produces packets where the MUST-be-byte-equal fields match, the MUST-be-present-and-non-empty fields are populated on both sides, and the MAY-differ fields are carried with a harness tag.
@@ -257,6 +257,7 @@ Follow-up slices proceed in this order:
    Multi-turn episode support shipped 2026-04-27 for audit-backed `dev / skill` cases: fixtures may use `turns` and `auditKind`, and the local skill runner can drive persistent Codex and Claude episodes, write transcript artifacts, and derive the observed case result from the audit packet.
    Live refresh-flow proof shipped for both runtimes: `npm run dogfood:cautilus-refresh-flow:eval:codex` and `npm run dogfood:cautilus-refresh-flow:eval:claude` both returned `recommendation=accept-now`.
    Live first-scan proof shipped for both runtimes: `npm run dogfood:cautilus-first-scan-flow:eval:codex` and `npm run dogfood:cautilus-first-scan-flow:eval:claude` both returned `recommendation=accept-now`.
+   Live review-prepare proof shipped for both runtimes: `npm run dogfood:cautilus-review-prepare-flow:eval:codex` and `npm run dogfood:cautilus-review-prepare-flow:eval:claude` both returned `recommendation=accept-now`.
 2. `app / chat` preset — replace `cautilus mode evaluate` chatbot mode.
    Additive accept shipped 2026-04-25: `cautilus.evaluation_input.v1` accepts `surface=app, preset=chat` and translates fixtures to `cautilus.app_chat_test_cases.v1`; `cautilus eval evaluate` dispatches `BuildAppChatEvaluationSummary` on `cautilus.app_chat_evaluation_inputs.v1`; the result packet enforces the cross-runtime equivalence rules (provider/model/harness/mode=`messaging`/durationMs/observed.messages/observed.finalText required) at the evaluator boundary.
    The matching cut shipped 2026-04-26: `cautilus mode evaluate`, the `iterate / held_out / comparison / full_gate` adapter slots, and the chatbot scenario init scaffold were removed without aliases.

@@ -126,6 +126,8 @@ When reporting a refresh-plan result to a coordinator, use this shape:
 
 LLM-backed claim review is a separate branch.
 Before launching it, state the review budget: maximum clusters, parallel lanes, clusters per reviewer, excerpt budget, retry policy, and skipped-cluster policy.
+If the user selects the review branch without naming a budget, use the command defaults as a conservative deterministic prepare-input budget and say so before running `claim review prepare-input`.
+After `claim review prepare-input`, stop at the packet boundary unless the user has explicitly delegated reviewer launch.
 Then run `claim review prepare-input`, give the deterministic clusters to reviewers, apply `cautilus.claim_review_result.v1`, validate the reviewed packet, and only then plan eval fixtures for reviewed `cautilus-eval` claims that are `ready-to-verify`.
 The review and eval-planning commands reject stale claim packets by default; treat that error as a prompt to refresh, not as a reason to pass `--allow-stale-claims` automatically.
 

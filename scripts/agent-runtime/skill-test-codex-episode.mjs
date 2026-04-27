@@ -5,6 +5,7 @@ import process from "node:process";
 
 import { auditRefreshFlowLogText } from "./audit-cautilus-refresh-flow-log.mjs";
 import { auditFirstScanFlowLogText } from "./audit-cautilus-first-scan-flow-log.mjs";
+import { auditReviewPrepareFlowLogText } from "./audit-cautilus-review-prepare-flow-log.mjs";
 import { applyObservationExpectations } from "./skill-test-expectations.mjs";
 
 function renderTurnInput(options, testCase, turn) {
@@ -126,6 +127,9 @@ function auditEpisode(testCase, combined, artifactRefs, outputDir, started, arti
 	}
 	if (testCase.auditKind === "cautilus_first_scan_flow") {
 		audit = auditFirstScanFlowLogText(combined);
+	}
+	if (testCase.auditKind === "cautilus_review_prepare_flow") {
+		audit = auditReviewPrepareFlowLogText(combined);
 	}
 	if (!audit) {
 		return null;

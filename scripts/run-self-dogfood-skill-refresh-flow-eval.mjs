@@ -214,8 +214,6 @@ function runCautilus(sourceRepoRoot, args) {
 function installCandidateSurface(sourceRepoRoot, candidateRepo) {
 	runCautilus(sourceRepoRoot, ["install", "--repo-root", candidateRepo, "--overwrite"]);
 	runCautilus(sourceRepoRoot, ["doctor", "--repo-root", candidateRepo, "--scope", "agent-surface"]);
-	execFileSync("git", ["-C", candidateRepo, "config", "user.email", "cautilus@example.com"]);
-	execFileSync("git", ["-C", candidateRepo, "config", "user.name", "Cautilus Dogfood"]);
 }
 
 function prepareClaimState(options, candidateRepo) {

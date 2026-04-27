@@ -75,6 +75,11 @@
   `fixtures/eval/dev/skill/cautilus-first-scan-flow.fixture.json`는 candidate worktree에서 `.cautilus/claims/`를 제거한 뒤 `$cautilus`, `1`을 실행하고 `auditKind=cautilus_first_scan_flow`로 판정한다.
   이 감사는 branch 선택 전 `agent status`, 최초 `claim discover`, 후속 `claim show --sample-claims`, scan scope 설명, LLM review budget boundary를 요구하고 review/eval/edit/commit 과진행을 막는다.
   `npm run dogfood:cautilus-first-scan-flow:eval:codex`와 `npm run dogfood:cautilus-first-scan-flow:eval:claude`는 모두 `recommendation=accept-now`, `passed=1`, `failed=0`이다.
+  2026-04-27 후속 구현으로 discover 다음의 review-prepare branch도 `dev/skill` multi-turn episode로 증명된다.
+  `fixtures/eval/dev/skill/cautilus-review-prepare-flow.fixture.json`는 `$cautilus`, `1`, `1`을 실행하고 `auditKind=cautilus_review_prepare_flow`로 판정한다.
+  이 감사는 first scan 이후 `claim review prepare-input`까지만 허용하고 reviewer launch, review-result application, eval planning, product edit, commit 과진행을 막는다.
+  `npm run dogfood:cautilus-review-prepare-flow:eval:codex`와 `npm run dogfood:cautilus-review-prepare-flow:eval:claude`는 모두 `recommendation=accept-now`, `passed=1`, `failed=0`이다.
+  debug record는 [charness-artifacts/debug/debug-2026-04-27-review-prepare-flow-dogfood-hardening.md](../../charness-artifacts/debug/debug-2026-04-27-review-prepare-flow-dogfood-hardening.md).
   이 과정에서 `.cautilus/claims/latest.json`의 legacy `repo/whole-repo` / `repo/skill` labels도 `dev/repo` / `dev/skill`로 정리되어 `agent status`가 `claimState.status=present`와 `refresh_claims_from_diff` 첫 branch를 보여준다.
 - 2026-04-26 후속 구현으로 existing-packet helper slice도 들어왔다.
   `claim show --input <claims.json> --sample-claims <n>`는 `cautilus.claim_status_summary.v1`를 만들고 bounded `sampleClaims`와 `gitState`로 stable candidate fields와 claim-packet freshness를 보여준다.
@@ -129,8 +134,8 @@
 
 1. `git status --short`로 사용자 변경 여부를 먼저 확인한다.
 2. `charness:find-skills`로 설치된 public / support / integration 스킬 지도를 한 번 갱신한다.
-3. `cautilus claim discover` 다음 claim hardening 후보는 LLM review prepare-input branch proof, bounded evidence preflight, 또는 eval-fixture authoring guidance다.
-   다음으로 증명 가치가 가장 큰 것은 saved claim map이 fresh일 때 agent가 `claim review prepare-input`까지만 만들고 실제 reviewer launch / apply-result / eval planning으로 과진행하지 않는지 확인하는 episode다.
+3. `cautilus claim discover` 다음 claim hardening 후보는 reviewer launch branch proof, bounded evidence preflight, 또는 eval-fixture authoring guidance다.
+   review prepare-input branch proof는 Codex/Claude 양쪽에서 완료됐다.
    evidence preflight는 false satisfaction 위험이 있으므로 possible evidence hint까지만 허용하는 식의 bounded slice가 필요하다.
    public `claim group` 또는 `claim refresh` command는 만들지 않는다.
 4. optimize-search held-out/full-gate 신호를 현재 `cautilus eval test` surface 위로 재배선할지, 아니면 C2/C3/C4 composition landing까지 honest-skip으로 둘지 결정한다.

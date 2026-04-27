@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "cautilus.evaluation_input.v1",
+  "surface": "dev",
+  "preset": "skill",
+  "suiteId": "cautilus-review-prepare-flow",
+  "suiteDisplayName": "Cautilus Review Prepare Flow",
+  "skillId": "cautilus",
+  "skillDisplayName": "cautilus",
+  "cases": [
+    {
+      "caseId": "episode-cautilus-review-prepare-flow",
+      "evaluationKind": "execution",
+      "turns": [
+        {
+          "input": "$cautilus",
+          "injectSkill": true
+        },
+        {
+          "input": "1"
+        },
+        {
+          "input": "1"
+        }
+      ],
+      "auditKind": "cautilus_review_prepare_flow",
+      "thresholds": {
+        "max_duration_ms": 300000
+      }
+    }
+  ]
+}
