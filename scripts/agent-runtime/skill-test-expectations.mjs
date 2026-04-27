@@ -30,6 +30,10 @@ function collectCommandString(key, entry, output) {
 		output.push(entry.join(" "));
 		return true;
 	}
+	if (key === "command" && typeof entry === "string") {
+		output.push(entry);
+		return true;
+	}
 	if (key === "arguments" && typeof entry === "string") {
 		collectFunctionArguments(entry, output);
 		return true;

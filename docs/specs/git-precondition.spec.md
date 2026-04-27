@@ -18,5 +18,5 @@ git -C "$tmpdir" init >/dev/null 2>&1
 ./bin/cautilus doctor --repo-root "$tmpdir" >"$tmpdir/no-commits.json" 2>&1 || true
 grep -q '"status": "no_commits"' "$tmpdir/no-commits.json"
 ./bin/cautilus eval test --repo-root . --adapter-name self-dogfood-eval-skill --runtime banana >"$tmpdir/runtime.txt" 2>&1 || true
-grep -q -- '--runtime must be codex or claude' "$tmpdir/runtime.txt"
+grep -q -- '--runtime must be codex, claude, or fixture' "$tmpdir/runtime.txt"
 ```

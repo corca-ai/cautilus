@@ -3155,6 +3155,83 @@ JSON
 	}
 }
 
+func TestCLIEvalTestAcceptsFixtureRuntime(t *testing.T) {
+	root := t.TempDir()
+	adapterDir := filepath.Join(root, ".agents")
+	fixtureDir := filepath.Join(root, "fixtures", "eval", "dev", "skill")
+	outputDir := filepath.Join(root, "outputs")
+	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.MkdirAll(fixtureDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	scriptPath := filepath.Join(root, "eval-test.sh")
+	script := `#!/bin/sh
+if [ "$1" != "fixture" ]; then
+  echo "expected fixture backend, got $1" >&2
+  exit 1
+fi
+cat <<'JSON' > "$2"
+{
+  "schemaVersion": "cautilus.skill_evaluation_inputs.v1",
+  "skillId": "demo",
+  "evaluations": [
+    {
+      "evaluationId": "execution-demo",
+      "targetKind": "public_skill",
+      "targetId": "demo",
+      "evaluationKind": "execution",
+      "prompt": "Run the fixture runtime.",
+      "startedAt": "2026-04-27T00:00:00.000Z",
+      "invoked": true,
+      "summary": "fixture runtime was selected.",
+      "outcome": "passed"
+    }
+  ]
+}
+JSON
+`
+	if err := os.WriteFile(scriptPath, []byte(script), 0o755); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	writeJSONFile(t, filepath.Join(fixtureDir, "demo.fixture.json"), map[string]any{
+		"schemaVersion": contracts.EvaluationInputSchema,
+		"surface":       "dev",
+		"preset":        "skill",
+		"suiteId":       "demo",
+		"skillId":       "demo",
+		"cases": []map[string]any{
+			{
+				"caseId":         "execution-demo",
+				"evaluationKind": "execution",
+				"prompt":         "Run the fixture runtime.",
+			},
+		},
+	})
+	if err := os.WriteFile(filepath.Join(adapterDir, "cautilus-adapter.yaml"), []byte(strings.Join([]string{
+		"version: 1",
+		"repo: temp",
+		"evaluation_surfaces:",
+		"  - fixture runtime selection",
+		"evaluation_input_default: fixtures/eval/dev/skill/demo.fixture.json",
+		"eval_test_command_templates:",
+		"  - sh ./eval-test.sh {backend} {eval_observed_file}",
+		"",
+	}, "\n")), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+
+	stdout, stderr, exitCode := runCLI(t, root, "eval", "test", "--repo-root", root, "--output-dir", outputDir, "--runtime", "fixture")
+	if exitCode != 0 {
+		t.Fatalf("eval test failed: %s", stderr)
+	}
+	summary := readJSONObjectFile(t, strings.TrimSpace(stdout))
+	if summary["recommendation"] != "accept-now" {
+		t.Fatalf("unexpected eval test summary: %#v", summary)
+	}
+}
+
 func TestCLIEvalEvaluateAcceptsSkillObservedPacket(t *testing.T) {
 	root := t.TempDir()
 	inputPath := filepath.Join(root, "skill-observed.json")

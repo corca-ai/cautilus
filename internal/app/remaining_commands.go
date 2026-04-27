@@ -621,8 +621,11 @@ func runEvalTestPipeline(
 		effectiveRuntime = "codex"
 	}
 	backendValue := "codex_exec"
-	if effectiveRuntime == "claude" {
+	switch effectiveRuntime {
+	case "claude":
 		backendValue = "claude_code"
+	case "fixture":
+		backendValue = "fixture"
 	}
 	replacements := map[string]string{
 		"candidate_repo":     runtime.ShellSingleQuote(workspace),
@@ -824,8 +827,8 @@ func parseEvalTestArgs(args []string, cwd string) (*evalTestArgs, string, error)
 				return nil, "", err
 			}
 			index = next
-			if value != "codex" && value != "claude" {
-				return nil, "", fmt.Errorf("--runtime must be codex or claude")
+			if value != "codex" && value != "claude" && value != "fixture" {
+				return nil, "", fmt.Errorf("--runtime must be codex, claude, or fixture")
 			}
 			options.runtime = value
 		case "--quiet":

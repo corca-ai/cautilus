@@ -13,7 +13,7 @@
   ],
   "execution-cautilus-test-request": {
     "invoked": true,
-    "summary": "The agent used the cautilus skill to run the checked-in impl fixture and summarized the accept-now recommendation.",
+    "summary": "The agent used the cautilus skill to run the checked-in dev/skill eval fixture with --runtime fixture, --skip-preflight, and summarized the accept-now recommendation.",
     "outcome": "passed",
     "duration_ms": 2600
   },

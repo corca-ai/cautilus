@@ -164,7 +164,7 @@ default_schema_file: fixtures/review/review-verdict.schema.json
   `mode: pinned` requires declared runtime fields to match observed `telemetry.runtimeFingerprint` fields and should block with `model_runtime_pinned_mismatch` when they do not.
 - `evaluation_input_default`: optional checked-in `cautilus.evaluation_input.v1` path used by `cautilus eval test` when the operator does not pass `--fixture`.
 - `eval_test_command_templates`: commands that turn the validated fixture's translated case suite into an observed `cautilus.evaluation_observed.v1` packet.
-- `default_runtime`: optional runtime choice (`codex` or `claude`), defaults to `codex`. Overridden by `cautilus eval test --runtime`.
+- `default_runtime`: optional runtime choice (`codex`, `claude`, or `fixture`), defaults to `codex`. Overridden by `cautilus eval test --runtime`.
 - `claim_discovery`: optional bounded truth-surface configuration for `cautilus claim discover`.
   `entries` replaces the product default entry set (`README.md`, `AGENTS.md`, and `CLAUDE.md` when present).
   `linked_markdown_depth` defaults to `3` and controls repo-local Markdown link traversal from those entries.

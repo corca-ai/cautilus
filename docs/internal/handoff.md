@@ -83,11 +83,11 @@
   실제 Cautilus repo dogfood에서 fresh discover packet은 `issueCount=0`, `valid=true`였다.
   `claim review prepare-input --max-clusters 8 --max-claims-per-cluster 4` 기준 top 8 clusters는 모두 entry-surface priority 10이고, skipped clusters는 30개였다.
   즉 지금 병목은 evidence preflight보다 bounded review budget / reviewed-claim promotion 쪽이다.
-- 잔여 신호: no-input `dev/skill` 단독 real-codex 검증은 있다.
-  하지만 전체 `self-dogfood-eval-skill` suite는 아직 stable accept-now가 아니다.
-  2026-04-26 live run에서 broader `execution-cautilus-test-request`가 같은 `dev/skill` fixture를 다시 `eval test`하려 하면서 nested self-eval이 무겁고 timeout/reject로 끝났다.
-  다음 hardening slice는 이 케이스를 새 multi-turn episode / audit-backed runner 위로 바꿔 재귀 없는 cheap skill-eval proof로 만들거나, fixture backend/runtime을 `cautilus eval test`의 first-class runtime으로 노출해야 한다.
-  `app/chat` / `app/prompt` real-codex/claude self-dogfood 증거도 아직 없다.
+- 2026-04-27 후속 구현으로 broader `self-dogfood-eval-skill` suite의 nested self-eval 실패도 해소됐다.
+  `cautilus eval test --runtime fixture`가 public `dev/skill` test runtime으로 노출됐고, adapter template은 `{backend}=fixture`를 받을 수 있다.
+  `execution-cautilus-test-request`는 이제 live Codex 안에서 `$cautilus`를 호출해 same suite를 `--runtime fixture --skip-preflight`로 cheap smoke하고 `accept-now`를 요약한다.
+  실제 live run `./bin/cautilus eval test --repo-root . --adapter-name self-dogfood-eval-skill --output-dir /tmp/cautilus-skill-live`는 `recommendation=accept-now`, `passed=3`, `failed=0`이었다.
+  `app/chat` / `app/prompt` real-codex/claude self-dogfood 증거는 아직 없다.
   `charness-artifacts/cautilus/latest.md` refresh도 별도 artifact-refresh 슬라이스로 남아 있다.
 - 2026-04-27 skill-surface verification 중 shared charness guidance가 removed `cautilus instruction-surface test --repo-root .`를 아직 참조한다는 것을 확인했다.
   Cautilus binary는 현재 spec대로 해당 command를 제거했고, replacement path는 `cautilus eval test --adapter-name self-dogfood-eval` 또는 `npm run dogfood:self`다.
@@ -119,8 +119,7 @@
 6. spec follow-up #5 — `scenario normalize` 재범위만 남음.
    archetype-boundary retire는 cut 슬라이스에 흡수됨.
 7. `app/chat` / `app/prompt` 중 어느 surface에 real-codex/claude self-dogfood evidence를 먼저 붙일지 결정한다.
-8. 후속 후보: broader `self-dogfood-eval-skill` suite의 nested self-eval 케이스를 새 `turns` + `auditKind` 구조로 치환한다.
-   이미 refresh-flow는 `cautilus eval test` 안에서 live Codex multi-turn proof까지 통과했으므로, 다음 검증은 같은 구조를 재귀 없는 skill proof에 적용하는 것이다.
+8. 후속 후보: `dev/skill` fixture runtime smoke는 통과했으므로, 다음은 command help / README / skill 본문에서 `dev/repo`, `dev/skill`, `app/chat`, `app/prompt` 표면과 `claim` / `eval` / `optimize` command families가 과장 없이 정렬됐는지 점검한다.
 
 ## Discuss
 

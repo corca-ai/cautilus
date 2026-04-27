@@ -144,9 +144,11 @@ test("extractCodexCommandText finds commands from codex jsonl events", () => {
 	const stdout = [
 		JSON.stringify({ payload: { type: "function_call", arguments: JSON.stringify({ cmd: "./bin/cautilus doctor --repo-root ." }) } }),
 		JSON.stringify({ payload: { command: ["/usr/bin/zsh", "-lc", "git status --short"] } }),
+		JSON.stringify({ item: { type: "command_execution", command: "/usr/bin/zsh -lc './bin/cautilus agent status --repo-root . --json'" } }),
 	].join("\n");
 	assert.match(extractCodexCommandText(stdout), /cautilus doctor/);
 	assert.match(extractCodexCommandText(stdout), /git status --short/);
+	assert.match(extractCodexCommandText(stdout), /agent status/);
 });
 
 test("normalizeSkillTestCaseSuite applies repeat defaults and validates consensus bounds", () => {

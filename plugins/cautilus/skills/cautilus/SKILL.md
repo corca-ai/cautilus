@@ -135,6 +135,7 @@ Use `app` for AI-powered product behavior such as chat, prompt, and service resp
 The canonical command families are `claim`, `eval`, and `optimize`.
 Use `cautilus eval test --fixture <fixture.json>` when the repo already has a checked-in fixture and adapter-owned runner.
 When the agent runtime is read-only, pass an explicit writable `--output-dir`; prefer `/dev/shm/cautilus-<label>` when available, otherwise a writable external temp directory.
+For a fixture-runtime smoke where `doctor --scope agent-surface` or `agent status` already shows the local skill surface is ready, `--skip-preflight` is the right boundary in a read-only agent runtime; state that preflight was skipped because the ready state was already observed.
 Use `cautilus scenarios --json` only when you need the proposal-input normalization catalog.
 
 Routing rule:
