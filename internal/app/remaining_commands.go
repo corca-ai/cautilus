@@ -256,9 +256,7 @@ func handleUpdate(repoRoot string, cwd string, args []string, stdout io.Writer, 
 	if cli.CompareVersions(latest.Version, current.Version) > 0 {
 		switch current.InstallKind {
 		case cli.InstallKindInstallScript, cli.InstallKindStandalone, cli.InstallKindUnknown:
-			installResult, installErr := installManagedReleaseForLifecycle(cli.ReleaseInstallOptions{
-				Version: "v" + latest.Version,
-			})
+			installResult, installErr := installManagedReleaseForLifecycle(managedUpdateInstallOptions(current, "v"+latest.Version))
 			if installErr != nil {
 				fmt.Fprintf(stderr, "%s\n", installErr)
 				return 1
@@ -305,6 +303,54 @@ func handleUpdate(repoRoot string, cwd string, args []string, stdout io.Writer, 
 		fmt.Fprintf(stdout, "Next: %s\n", step)
 	}
 	return 0
+}
+
+func managedUpdateInstallOptions(current cli.VersionInfo, version string) cli.ReleaseInstallOptions {
+	options := cli.ReleaseInstallOptions{Version: version}
+	if installRoot := strings.TrimSpace(os.Getenv("CAUTILUS_INSTALL_ROOT")); installRoot != "" {
+		options.InstallRoot = installRoot
+	} else if inferred := inferManagedInstallRoot(current.ExecutablePath); inferred != "" {
+		options.InstallRoot = inferred
+	}
+	if binDir := strings.TrimSpace(os.Getenv("CAUTILUS_BIN_DIR")); binDir != "" {
+		options.BinDir = binDir
+	} else if inferred := inferManagedBinDir(current); inferred != "" {
+		options.BinDir = inferred
+	}
+	return options
+}
+
+func inferManagedInstallRoot(executablePath string) string {
+	clean := filepath.Clean(strings.TrimSpace(executablePath))
+	if clean == "." || filepath.Base(clean) != "cautilus-real" {
+		return ""
+	}
+	binDir := filepath.Dir(clean)
+	versionDir := filepath.Dir(binDir)
+	installRoot := filepath.Dir(versionDir)
+	if installRoot == "." || installRoot == versionDir {
+		return ""
+	}
+	return installRoot
+}
+
+func inferManagedBinDir(current cli.VersionInfo) string {
+	executablePath := filepath.Clean(strings.TrimSpace(current.ExecutablePath))
+	if current.InstallKind == cli.InstallKindStandalone && executablePath != "." {
+		return filepath.Dir(executablePath)
+	}
+	if current.InstallKind != cli.InstallKindInstallScript {
+		return ""
+	}
+	wrapperPath, err := exec.LookPath("cautilus")
+	if err != nil {
+		return ""
+	}
+	cleanWrapperPath := filepath.Clean(wrapperPath)
+	if filepath.Base(cleanWrapperPath) != "cautilus" || cleanWrapperPath == executablePath {
+		return ""
+	}
+	return filepath.Dir(cleanWrapperPath)
 }
 
 //nolint:errcheck // CLI stdout/stderr reporting is best-effort.
@@ -846,7 +892,6 @@ func parseWorkspacePrepareCompareArgs(args []string, cwd string) (*workspacePrep
 	}
 	return options, nil
 }
-
 
 func parseWorkspacePruneArtifactsArgs(args []string, cwd string) (*workspacePruneArtifactsArgs, error) {
 	options := &workspacePruneArtifactsArgs{}

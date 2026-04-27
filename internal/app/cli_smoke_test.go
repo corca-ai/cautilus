@@ -1120,7 +1120,11 @@ func TestCLISkillsInstallMigratesLegacyClaudeSkills(t *testing.T) {
 
 func TestCLIUpdateRefreshesStandaloneInstallAndRepoSkill(t *testing.T) {
 	root := t.TempDir()
+	installRoot := filepath.Join(root, "managed install")
+	binDir := filepath.Join(root, "custom bin")
 	t.Setenv("CAUTILUS_VERSION", "v1.2.3")
+	t.Setenv("CAUTILUS_INSTALL_ROOT", installRoot)
+	t.Setenv("CAUTILUS_BIN_DIR", binDir)
 
 	previousLatest := latestReleaseMetadataForLifecycle
 	previousInstall := installManagedReleaseForLifecycle
@@ -1139,9 +1143,15 @@ func TestCLIUpdateRefreshesStandaloneInstallAndRepoSkill(t *testing.T) {
 		if options.Version != "v1.2.4" {
 			t.Fatalf("expected install version v1.2.4, got %q", options.Version)
 		}
+		if options.InstallRoot != installRoot {
+			t.Fatalf("expected update to preserve install root %q, got %q", installRoot, options.InstallRoot)
+		}
+		if options.BinDir != binDir {
+			t.Fatalf("expected update to preserve bin dir %q, got %q", binDir, options.BinDir)
+		}
 		return cli.ReleaseInstallResult{
 			Version:     "1.2.4",
-			WrapperPath: filepath.Join(root, ".local", "bin", "cautilus"),
+			WrapperPath: filepath.Join(binDir, "cautilus"),
 		}, nil
 	}
 
@@ -1157,11 +1167,24 @@ func TestCLIUpdateRefreshesStandaloneInstallAndRepoSkill(t *testing.T) {
 		t.Fatalf("expected updated=true, got %#v", summary["updated"])
 	}
 	installResult := summary["installResult"].(map[string]any)
-	if installResult["wrapperPath"] != filepath.Join(root, ".local", "bin", "cautilus") {
+	if installResult["wrapperPath"] != filepath.Join(binDir, "cautilus") {
 		t.Fatalf("unexpected wrapperPath: %#v", installResult["wrapperPath"])
 	}
 	if _, err := os.Stat(filepath.Join(root, ".agents", "skills", "cautilus", "SKILL.md")); err != nil {
 		t.Fatalf("expected refreshed skill: %v", err)
+	}
+}
+
+func TestManagedUpdateInstallOptionsInfersCurrentManagedInstall(t *testing.T) {
+	root := t.TempDir()
+	executablePath := filepath.Join(root, "share", "cautilus", "1.2.3", "bin", "cautilus-real")
+	options := managedUpdateInstallOptions(cli.VersionInfo{
+		Version:        "1.2.3",
+		InstallKind:    cli.InstallKindInstallScript,
+		ExecutablePath: executablePath,
+	}, "v1.2.4")
+	if options.InstallRoot != filepath.Join(root, "share", "cautilus") {
+		t.Fatalf("expected install root inferred from executable, got %#v", options.InstallRoot)
 	}
 }
 
