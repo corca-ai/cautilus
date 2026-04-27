@@ -6,6 +6,7 @@ import process from "node:process";
 import { auditRefreshFlowLogText } from "./audit-cautilus-refresh-flow-log.mjs";
 import { auditFirstScanFlowLogText } from "./audit-cautilus-first-scan-flow-log.mjs";
 import { auditReviewPrepareFlowLogText } from "./audit-cautilus-review-prepare-flow-log.mjs";
+import { auditReviewerLaunchFlowLogText } from "./audit-cautilus-reviewer-launch-flow-log.mjs";
 import { applyObservationExpectations } from "./skill-test-expectations.mjs";
 
 function renderTurnInput(options, testCase, turn) {
@@ -103,6 +104,8 @@ function runEpisodeTurn(options, prompt, threadId) {
 		encoding: "utf-8",
 		env: {
 			...process.env,
+			CAUTILUS_SKILL_TEST_BACKEND: "codex_exec",
+			...(options.reviewerSmokeBackend ? { CAUTILUS_REVIEWER_SMOKE_BACKEND: options.reviewerSmokeBackend } : {}),
 			PATH: `${join(options.repoRoot, "bin")}:${process.env.PATH ?? ""}`,
 		},
 		timeout: options.timeoutMs,
@@ -130,6 +133,9 @@ function auditEpisode(testCase, combined, artifactRefs, outputDir, started, arti
 	}
 	if (testCase.auditKind === "cautilus_review_prepare_flow") {
 		audit = auditReviewPrepareFlowLogText(combined);
+	}
+	if (testCase.auditKind === "cautilus_reviewer_launch_flow") {
+		audit = auditReviewerLaunchFlowLogText(combined);
 	}
 	if (!audit) {
 		return null;

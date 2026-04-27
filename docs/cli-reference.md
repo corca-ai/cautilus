@@ -295,11 +295,18 @@ cautilus eval test \
   --repo-root . \
   --adapter-name self-dogfood-review-prepare-flow
 
+# run first scan, prepare review input, launch one default reviewer lane, then stop at the result packet
+cautilus eval test \
+  --repo-root . \
+  --adapter-name self-dogfood-reviewer-launch-flow
+
 # maintainer proof for both supported coding-agent CLI runtimes
 npm run dogfood:cautilus-first-scan-flow:eval:codex
 npm run dogfood:cautilus-first-scan-flow:eval:claude
 npm run dogfood:cautilus-review-prepare-flow:eval:codex
 npm run dogfood:cautilus-review-prepare-flow:eval:claude
+npm run dogfood:cautilus-reviewer-launch-flow:eval:codex
+npm run dogfood:cautilus-reviewer-launch-flow:eval:claude
 npm run dogfood:cautilus-refresh-flow:eval:codex
 npm run dogfood:cautilus-refresh-flow:eval:claude
 

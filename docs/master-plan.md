@@ -163,7 +163,7 @@ Still open:
 
 1. Decide and implement the next optimize-search held-out/full-gate path on top of the `eval test` surface, or keep it explicitly skipped while C2/C3/C4 composition lands.
 2. Ship the remaining evaluation-surface composition primitives in spec order: C2 `extends`, C3 `steps`, and C4 `expected.snapshot`. See [docs/specs/evaluation-surfaces.spec.md](./specs/evaluation-surfaces.spec.md).
-3. Decide the next claim-discovery hardening slice from [claim-discovery-workflow.md](./contracts/claim-discovery-workflow.md): bounded evidence preflight if dogfood needs possible-evidence hints, or eval-fixture authoring guidance if reviewed eval plans are the clearer blocker.
+3. Decide the next claim-discovery hardening slice from [claim-discovery-workflow.md](./contracts/claim-discovery-workflow.md): bounded evidence preflight if dogfood needs possible-evidence hints, review-result application if reviewed labels should become durable state, or eval-fixture authoring guidance if reviewed eval plans are the clearer blocker.
 4. Pick the next bounded improvement seam for the optimization layer: either close a specific richer merge heuristic that dogfood evidence asks for, or move to another roadmap slice rather than extending heuristics speculatively.
 5. Expand scenario-history beyond the first profile-backed comparison cache-key path toward reusable baseline results and broader compare ownership.
 6. Continue moving host-specific runtime seams out of the product boundary into consumer-owned adapters, prompts, and storage readers.

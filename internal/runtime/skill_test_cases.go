@@ -256,8 +256,8 @@ func normalizeSkillCaseAuditKind(value any, field string) (*string, error) {
 	if err != nil || auditKind == nil {
 		return auditKind, err
 	}
-	if *auditKind != "cautilus_refresh_flow" && *auditKind != "cautilus_first_scan_flow" && *auditKind != "cautilus_review_prepare_flow" {
-		return nil, fmt.Errorf("%s must be cautilus_refresh_flow, cautilus_first_scan_flow, or cautilus_review_prepare_flow", field)
+	if *auditKind != "cautilus_refresh_flow" && *auditKind != "cautilus_first_scan_flow" && *auditKind != "cautilus_review_prepare_flow" && *auditKind != "cautilus_reviewer_launch_flow" {
+		return nil, fmt.Errorf("%s must be cautilus_refresh_flow, cautilus_first_scan_flow, cautilus_review_prepare_flow, or cautilus_reviewer_launch_flow", field)
 	}
 	return auditKind, nil
 }

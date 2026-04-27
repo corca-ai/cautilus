@@ -32,10 +32,7 @@ export { baseSchema } from "./skill-test-schema.mjs";
 const CODEX_SESSION_MODES = ["ephemeral", "persistent"];
 
 function usage(exitCode = 0) {
-	const text = [
-		"Usage:",
-		"  node ./scripts/agent-runtime/run-local-skill-test.mjs --repo-root <dir> --workspace <dir> --cases-file <file> --output-file <file> [--artifact-dir <dir>] [--backend codex_exec|claude_code|fixture] [--fixture-results-file <file>] [--sandbox read-only|workspace-write] [--timeout-ms <ms>] [--model <model>] [--reasoning-effort <level>] [--codex-model <model>] [--codex-reasoning-effort <level>] [--codex-session-mode ephemeral|persistent] [--codex-ephemeral true|false] [--codex-config <key=value>] [--claude-model <model>] [--claude-permission-mode <mode>] [--claude-allowed-tools <rules>]",
-	].join("\n");
+	const text = "Usage:\n  node ./scripts/agent-runtime/run-local-skill-test.mjs --repo-root <dir> --workspace <dir> --cases-file <file> --output-file <file> [--artifact-dir <dir>] [--backend codex_exec|claude_code|fixture] [--fixture-results-file <file>] [--sandbox read-only|workspace-write|danger-full-access] [--timeout-ms <ms>] [--model <model>] [--reasoning-effort <level>] [--codex-model <model>] [--codex-reasoning-effort <level>] [--codex-session-mode ephemeral|persistent] [--codex-ephemeral true|false] [--codex-config <key=value>] [--claude-model <model>] [--claude-permission-mode <mode>] [--claude-allowed-tools <rules>] [--reviewer-smoke-backend codex_exec|claude_code]";
 	const out = exitCode === 0 ? process.stdout : process.stderr;
 	out.write(`${text}\n`);
 	process.exit(exitCode);
@@ -156,6 +153,9 @@ const VALUE_OPTIONS = {
 	"--claude-allowed-tools": (options, value) => {
 		options.claudeAllowedTools = value;
 	},
+	"--reviewer-smoke-backend": (options, value) => {
+		options.reviewerSmokeBackend = value;
+	},
 };
 
 function applyArgument(options, argv, index) {
@@ -190,8 +190,11 @@ function parseArgs(argv) {
 	if (!["codex_exec", "claude_code", "fixture"].includes(options.backend)) {
 		fail("--backend must be codex_exec, claude_code, or fixture");
 	}
-	if (!["read-only", "workspace-write"].includes(options.sandbox)) {
-		fail("--sandbox must be read-only or workspace-write");
+	if (options.reviewerSmokeBackend && !["codex_exec", "claude_code"].includes(options.reviewerSmokeBackend)) {
+		fail("--reviewer-smoke-backend must be codex_exec or claude_code");
+	}
+	if (!["read-only", "workspace-write", "danger-full-access"].includes(options.sandbox)) {
+		fail("--sandbox must be read-only, workspace-write, or danger-full-access");
 	}
 	if (!CODEX_SESSION_MODES.includes(options.codexSessionMode)) {
 		fail("--codex-session-mode must be ephemeral or persistent");

@@ -28,7 +28,7 @@ function fail(message) {
 function usage(exitCode = 0) {
 	const text = [
 		"Usage:",
-		"  node ./scripts/run-self-dogfood-skill-refresh-flow-eval.mjs --repo-root <dir> --output-dir <dir> --cases-file <file> --output-file <file> [--backend codex_exec|claude_code|fixture] [--fixture-results-file <file>] [--sandbox read-only|workspace-write] [--timeout-ms <ms>] [--codex-model <model>] [--codex-reasoning-effort <level>] [--codex-config <key=value>] [--claude-model <model>] [--claude-permission-mode <mode>] [--claude-allowed-tools <rules>]",
+		"  node ./scripts/run-self-dogfood-skill-refresh-flow-eval.mjs --repo-root <dir> --output-dir <dir> --cases-file <file> --output-file <file> [--backend codex_exec|claude_code|fixture] [--fixture-results-file <file>] [--sandbox read-only|workspace-write|danger-full-access] [--timeout-ms <ms>] [--codex-model <model>] [--codex-reasoning-effort <level>] [--codex-config <key=value>] [--claude-model <model>] [--claude-permission-mode <mode>] [--claude-allowed-tools <rules>] [--reviewer-smoke-backend codex_exec|claude_code]",
 	].join("\n");
 	const out = exitCode === 0 ? process.stdout : process.stderr;
 	out.write(`${text}\n`);
@@ -67,6 +67,7 @@ function defaultOptions() {
 		claudeModel: null,
 		claudePermissionMode: null,
 		claudeAllowedTools: null,
+		reviewerSmokeBackend: null,
 		claimState: "present",
 		artifactSubdir: "refresh-flow",
 	};
@@ -86,6 +87,7 @@ const VALUE_OPTIONS = {
 	"--claude-model": (options, value) => { options.claudeModel = value; },
 	"--claude-permission-mode": (options, value) => { options.claudePermissionMode = value; },
 	"--claude-allowed-tools": (options, value) => { options.claudeAllowedTools = value; },
+	"--reviewer-smoke-backend": (options, value) => { options.reviewerSmokeBackend = value; },
 	"--claim-state": (options, value) => { options.claimState = value; },
 	"--artifact-subdir": (options, value) => { options.artifactSubdir = value; },
 };
@@ -120,8 +122,11 @@ function parseArgs(argv) {
 	if (!["codex_exec", "claude_code", "fixture"].includes(options.backend)) {
 		fail("--backend must be codex_exec, claude_code, or fixture");
 	}
-	if (!["read-only", "workspace-write"].includes(options.sandbox)) {
-		fail("--sandbox must be read-only or workspace-write");
+	if (options.reviewerSmokeBackend && !["codex_exec", "claude_code"].includes(options.reviewerSmokeBackend)) {
+		fail("--reviewer-smoke-backend must be codex_exec or claude_code");
+	}
+	if (!["read-only", "workspace-write", "danger-full-access"].includes(options.sandbox)) {
+		fail("--sandbox must be read-only, workspace-write, or danger-full-access");
 	}
 	if (options.backend === "fixture" && !options.fixtureResultsFile) {
 		fail("--fixture-results-file is required when --backend fixture");
@@ -262,6 +267,9 @@ function buildRunnerArgs(options, candidateRepo) {
 	}
 	if (options.claudeAllowedTools) {
 		args.push("--claude-allowed-tools", options.claudeAllowedTools);
+	}
+	if (options.reviewerSmokeBackend) {
+		args.push("--reviewer-smoke-backend", options.reviewerSmokeBackend);
 	}
 	return args;
 }

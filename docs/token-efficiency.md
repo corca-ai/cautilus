@@ -72,8 +72,8 @@ Current args (`codexArgs` in `scripts/agent-runtime/run-local-skill-test.mjs`):
 - `--output-schema`, `-o <file>` for structured capture
 - `-c model_reasoning_effort=<level>` when the caller sets effort
 
-Sandbox mode is intentionally caller-controlled (`read-only` or
-`workspace-write`) because different skills have different authority needs.
+Sandbox mode is intentionally caller-controlled (`read-only`, `workspace-write`, or `danger-full-access`) because different skills have different authority needs.
+Use `danger-full-access` only for cases that must launch a nested provider CLI from inside the evaluated agent runtime; ordinary review-only loops should stay read-only or workspace-write.
 
 Codex `skill test` telemetry now reads the machine-readable `codex exec --json`
 event stream.

@@ -128,7 +128,17 @@ LLM-backed claim review is a separate branch.
 Before launching it, state the review budget: maximum clusters, parallel lanes, clusters per reviewer, excerpt budget, retry policy, and skipped-cluster policy.
 If the user selects the review branch without naming a budget, use the command defaults as a conservative deterministic prepare-input budget and say so before running `claim review prepare-input`.
 After `claim review prepare-input`, stop at the packet boundary unless the user has explicitly delegated reviewer launch.
-Then run `claim review prepare-input`, give the deterministic clusters to reviewers, apply `cautilus.claim_review_result.v1`, validate the reviewed packet, and only then plan eval fixtures for reviewed `cautilus-eval` claims that are `ready-to-verify`.
+When reviewer launch is explicitly delegated, use the smallest honest launch budget if none was provided: one cluster, one claim, one reviewer lane, no retries.
+The default single-lane launch in an agent session is the current agent acting as the reviewer lane: review the selected cluster and write a valid `cautilus.claim_review_result.v1` packet.
+For claim evidence, prefer `evidenceStatus=unknown` unless the review input includes direct verified evidence for that claim.
+Use an external reviewer CLI helper only when that external lane was explicitly selected.
+The launch is only complete when the selected reviewer lane returns a `cautilus.claim_review_result.v1` packet; if an external lane is blocked from reaching its model provider, report a blocked reviewer launch rather than treating the helper invocation as evidence.
+This branch proves reviewer launch, not review-result merge behavior.
+It ends when the selected reviewer lane writes the `cautilus.claim_review_result.v1` packet and reports the packet path, reviewed claim count, evidence label decisions, unresolved questions, and next branch choices.
+If you need local confidence before stopping, inspect the written JSON shape directly; do not call `claim review apply-result` as packet validation inside the reviewer-launch branch.
+Treat `claim review apply-result` as the next branch even when the output path is temporary and the intent is only validation.
+After reviewer launch, stop before review-result application, eval planning, edits, or commits unless the user explicitly delegates the next branch.
+In the later review-to-eval branch, apply `cautilus.claim_review_result.v1`, validate the reviewed claim packet, and only then plan eval fixtures for reviewed `cautilus-eval` claims that are `ready-to-verify`.
 The review and eval-planning commands reject stale claim packets by default; treat that error as a prompt to refresh, not as a reason to pass `--allow-stale-claims` automatically.
 
 ## Eval Routing

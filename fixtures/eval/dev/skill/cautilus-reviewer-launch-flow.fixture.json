@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "cautilus.evaluation_input.v1",
+  "surface": "dev",
+  "preset": "skill",
+  "suiteId": "cautilus-reviewer-launch-flow",
+  "suiteDisplayName": "Cautilus Reviewer Launch Flow",
+  "skillId": "cautilus",
+  "skillDisplayName": "cautilus",
+  "cases": [
+    {
+      "caseId": "episode-cautilus-reviewer-launch-flow",
+      "evaluationKind": "execution",
+      "turns": [
+        {
+          "input": "$cautilus",
+          "injectSkill": true
+        },
+        {
+          "input": "1"
+        },
+        {
+          "input": "1"
+        },
+        {
+          "input": "launch the default single reviewer lane and stop at the review-result packet boundary"
+        }
+      ],
+      "auditKind": "cautilus_reviewer_launch_flow",
+      "thresholds": {
+        "max_duration_ms": 420000
+      }
+    }
+  ]
+}
