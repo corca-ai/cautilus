@@ -48,7 +48,8 @@
     "test:on-demand": "npm run test:node:on-demand",
     "verify": "node scripts/run-verify.mjs",
     "verify:verbose": "node scripts/run-verify.mjs --verbose",
-    "vet:go": "go vet ./cmd/... ./internal/..."
+    "vet:go": "go vet ./cmd/... ./internal/...",
+    "session:summarize": "node scripts/agent-runtime/summarize-codex-session-log.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^9.24.0",

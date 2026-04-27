@@ -56,6 +56,8 @@ If `nextBranches` includes `initialize_adapter` and the user delegated setup con
 If claim state is missing, present the bounded scan entries and depth before entering claim discovery.
 If claim state exists, read or refresh that packet before planning new proof work.
 Branch execution starts from the selected branch; no-input orientation is a status turn, not an eval, review, optimize, edit, or commit turn.
+Before executing a branch selected from an earlier turn, rerun `agent status` or check the referenced state path so a stale `run_first_claim_scan` choice cannot overwrite an existing claim packet.
+If the current status no longer matches the selected branch, summarize the new status and ask for the next branch instead of continuing from the stale menu.
 
 ## Declared Claim Discovery
 
@@ -92,6 +94,9 @@ Classify each candidate claim before creating fixtures:
 - `alignment-work`: the code, docs, adapter, or skill surface must be reconciled before proof would be honest.
 
 After discovery or refresh, summarize scanned entry files, linked Markdown count and depth, raw candidate count, claim summary by proof mechanism/readiness/evidence/review/lifecycle, and the groups that look ready for deterministic tests, Cautilus scenarios, alignment work, or human-auditable review.
+Use `claim show` as the canonical status view before hand-inspecting packet fields.
+If a view is missing, prefer adding a product-owned summary option or review packet over guessing raw JSON keys with ad hoc `jq`.
+If a new discovery run changes only volatile metadata such as the reviewed git commit and not source inventory, candidate claims, labels, or evidence refs, report it as a semantic no-op and do not create a pointer-only commit.
 
 LLM-backed claim review is a separate branch.
 Before launching it, state the review budget: maximum clusters, parallel lanes, clusters per reviewer, excerpt budget, retry policy, and skipped-cluster policy.

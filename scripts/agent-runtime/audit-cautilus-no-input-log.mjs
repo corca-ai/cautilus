@@ -4,6 +4,7 @@ import process from "node:process";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
+import { summarizeCodexSessionLogText } from "./codex-session-summary.mjs";
 import { writeTextOutput } from "./output-files.mjs";
 
 export const NO_INPUT_AUDIT_SCHEMA = "cautilus.no_input_audit.v1";
@@ -42,25 +43,17 @@ const FORBIDDEN_MESSAGE_PATTERNS = [
 ];
 
 export function parseCodexJsonl(text) {
-	const commands = [];
-	const messages = [];
-	const toolCalls = [];
-	const parseErrors = [];
-	for (const [index, line] of text.split(/\r?\n/).entries()) {
-		const trimmed = line.trim();
-		if (!trimmed) {
-			continue;
-		}
-		let event;
-		try {
-			event = JSON.parse(trimmed);
-		} catch (error) {
-			parseErrors.push({ line: index + 1, error: error.message });
-			continue;
-		}
-		collectFromValue(event, { commands, messages, toolCalls });
-	}
-	return { commands: unique(commands), messages, toolCalls, parseErrors };
+	const summary = summarizeCodexSessionLogText(text);
+	return {
+		commands: summary.commands,
+		messages: summary.assistantMessages.map((message) => message.text),
+		toolCalls: summary.toolCalls.map((call) => ({
+			name: call.name,
+			arguments: call.parsedArguments ?? call.arguments,
+		})),
+		parseErrors: summary.parseErrors,
+		sessionSummary: summary,
+	};
 }
 
 export function auditNoInputLogText(text) {
@@ -123,85 +116,9 @@ function forbiddenToolFindings(toolCalls) {
 		}));
 }
 
-function collectFromValue(value, result) {
-	if (value == null) {
-		return;
-	}
-	if (Array.isArray(value)) {
-		for (const item of value) {
-			collectFromValue(item, result);
-		}
-		return;
-	}
-	if (typeof value !== "object") {
-		return;
-	}
-	collectCommand(value, result.commands);
-	collectMessage(value, result.messages);
-	collectToolCall(value, result.toolCalls);
-	for (const nested of Object.values(value)) {
-		if (nested && typeof nested === "object") {
-			collectFromValue(nested, result);
-		}
-	}
-}
-
-function collectCommand(value, commands) {
-	const type = stringField(value.type);
-	const command = commandText(value.command);
-	if (command && commandLooksExecutable(type, value)) {
-		commands.push(command);
-	}
-	if (value.cmd && typeof value.cmd === "string") {
-		commands.push(value.cmd);
-	}
-}
-
-function collectMessage(value, messages) {
-	const type = stringField(value.type);
-	const text = stringField(value.text) || stringField(value.message);
-	if (text && /agent_message|assistant|message|response/.test(type)) {
-		messages.push(text);
-	}
-}
-
-function collectToolCall(value, toolCalls) {
-	const name = stringField(value.name) || stringField(value.tool_name);
-	const type = stringField(value.type);
-	if (!name || !/function_call|tool_call|tool/.test(type)) {
-		return;
-	}
-	toolCalls.push({ name, arguments: value.arguments ?? value.args ?? null });
-}
-
-function commandLooksExecutable(type, value) {
-	if (/command|exec|shell/.test(type)) {
-		return true;
-	}
-	return value.cmd != null || value.exit_code != null || value.output != null;
-}
-
-function commandText(value) {
-	if (typeof value === "string") {
-		return value;
-	}
-	if (Array.isArray(value)) {
-		return value.map((part) => String(part)).join(" ");
-	}
-	return "";
-}
-
-function stringField(value) {
-	return typeof value === "string" ? value : "";
-}
-
 function trimForFinding(text) {
 	const oneLine = text.replace(/\s+/g, " ").trim();
 	return oneLine.length > 180 ? `${oneLine.slice(0, 177)}...` : oneLine;
-}
-
-function unique(values) {
-	return [...new Set(values.map((value) => value.trim()).filter(Boolean))];
 }
 
 function parseArgs(argv) {
