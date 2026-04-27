@@ -94,7 +94,7 @@
   `app/chat`과 `app/prompt`도 fixture-backed self-dogfood entry가 생겼다.
   `npm run dogfood:app-chat:fixture`와 `npm run dogfood:app-prompt:fixture`는 각각 `recommendation=accept-now`, `passed=1`, `failed=0`으로 통과했다.
   이 과정에서 adapter loader가 `default_runtime`을 버리던 버그를 고쳐 named adapter의 `default_runtime: fixture`가 실제 `eval test` runtime으로 쓰이게 했다.
-  `charness-artifacts/cautilus/latest.md` refresh도 별도 artifact-refresh 슬라이스로 남아 있다.
+  이전 handoff에 적힌 `charness-artifacts/cautilus/latest.md`는 현재 repo에 존재하지 않는 artifact path였으므로 다음 작업 후보에서 제거했다.
 - 2026-04-27 skill-surface verification 중 shared charness guidance가 removed `cautilus instruction-surface test --repo-root .`를 아직 참조한다는 것을 확인했다.
   Cautilus binary는 현재 spec대로 해당 command를 제거했고, replacement path는 `cautilus eval test --adapter-name self-dogfood-eval` 또는 `npm run dogfood:self`다.
   debug record는 [charness-artifacts/debug/debug-2026-04-27-stale-instruction-surface-command.md](../../charness-artifacts/debug/debug-2026-04-27-stale-instruction-surface-command.md)이고, charness follow-up은 [corca-ai/charness#76](https://github.com/corca-ai/charness/issues/76).
@@ -125,7 +125,7 @@
 6. spec follow-up #5 — `scenario normalize` 재범위만 남음.
    archetype-boundary retire는 cut 슬라이스에 흡수됨.
 7. `app/chat` / `app/prompt` 중 어느 surface에 real-codex/claude self-dogfood evidence를 먼저 붙일지 결정한다.
-8. 후속 후보: `charness-artifacts/cautilus/latest.md`를 최신 self-dogfood evidence로 refresh하되, fixture-backed app smoke와 live model quality evidence를 혼동하지 않게 proof boundary를 명시한다.
+8. 후속 후보: fixture-backed app smoke와 live model quality evidence를 혼동하지 않도록 release / quality artifact 쪽 proof boundary 표현을 점검한다.
 
 ## Discuss
 
