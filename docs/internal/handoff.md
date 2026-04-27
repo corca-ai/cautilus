@@ -60,12 +60,13 @@
   `audit-cautilus-no-input-log.mjs`도 이 shared summarizer를 재사용한다.
   이 helper는 public Cautilus command가 아니라 self-dogfood/debug aid이며, raw `jq` 추측을 줄이는 것이 목적이다.
 - 2026-04-26 후속 구현으로 existing-packet helper slice도 들어왔다.
-  `claim show --input <claims.json> --sample-claims <n>`는 `cautilus.claim_status_summary.v1`를 만들고 bounded `sampleClaims`로 stable candidate fields를 보여준다.
-  `claim review prepare-input --claims <claims.json>`는 LLM 호출 없이 bounded `cautilus.claim_review_input.v1` cluster packet을 만든다.
+  `claim show --input <claims.json> --sample-claims <n>`는 `cautilus.claim_status_summary.v1`를 만들고 bounded `sampleClaims`와 `gitState`로 stable candidate fields와 claim-packet freshness를 보여준다.
+  `agent status`도 claim summary 안에 `gitState`를 포함하고, stale packet이면 `refresh_claims_from_diff`를 `show_existing_claims`보다 먼저 제안한다.
+  `claim review prepare-input --claims <claims.json>`는 LLM 호출 없이 bounded `cautilus.claim_review_input.v1` cluster packet을 만들되, stale packet은 기본 거부한다.
   그 다음 `claim review apply-result --claims <claims.json> --review-result <review-result.json>`도 들어왔다.
-  `cautilus.claim_review_result.v1`를 적용하되, `evidenceStatus=satisfied`는 direct/verified evidence ref가 claim을 support할 때만 허용한다.
+  `cautilus.claim_review_result.v1`를 적용하되, `evidenceStatus=satisfied`는 direct/verified evidence ref가 claim을 support할 때만 허용하며 stale packet은 기본 거부한다.
 - 2026-04-26 후속 구현으로 reviewed-claim eval planning helper도 들어왔다.
-  `claim plan-evals --claims <reviewed-claims.json>`는 reviewed `cautilus-eval` + `ready-to-verify` claims만 골라 `cautilus.claim_eval_plan.v1` intermediate packet을 만든다.
+  `claim plan-evals --claims <reviewed-claims.json>`는 reviewed `cautilus-eval` + `ready-to-verify` claims만 골라 `cautilus.claim_eval_plan.v1` intermediate packet을 만들고, stale packet은 기본 거부한다.
   host-owned fixture, prompt, runner, wrapper, policy는 쓰지 않는다.
 - 2026-04-26 후속 구현으로 packet/evidence validation helper도 들어왔다.
   `claim validate --claims <claims.json>`는 `cautilus.claim_validation_report.v1`를 만들고, packet shape 또는 evidence refs가 invalid면 non-zero exit한다.
@@ -83,6 +84,11 @@
   Cautilus binary는 현재 spec대로 해당 command를 제거했고, replacement path는 `cautilus eval test --adapter-name self-dogfood-eval` 또는 `npm run dogfood:self`다.
   debug record는 [charness-artifacts/debug/debug-2026-04-27-stale-instruction-surface-command.md](../../charness-artifacts/debug/debug-2026-04-27-stale-instruction-surface-command.md)이고, charness follow-up은 [corca-ai/charness#76](https://github.com/corca-ai/charness/issues/76).
   같은 검증에서 `npm run dogfood:self`는 real Codex로 `recommendation=accept-now`, `caseCount=1`을 통과했다.
+- 2026-04-27 resumed `$cautilus` test session exposed a stale-claim overrun.
+  The session used updated skill text, but after `claim show` it accepted `prepare-claim-review`, spawned reviewer lanes, applied results, planned evals, verified, and committed artifacts from stale `.cautilus/claims/latest.json`.
+  That artifact commit `7048548` was reverted by `0fe2942`.
+  The fix is binary-backed: `claim show` / `agent status` now expose `gitState`, and review/eval-planning commands reject stale packets unless `--allow-stale-claims` is explicitly passed.
+  debug record: [charness-artifacts/debug/debug-2026-04-27-stale-claim-review-overrun.md](../../charness-artifacts/debug/debug-2026-04-27-stale-claim-review-overrun.md).
 - premortem deferral 상태:
   (a) Result packet surface-agnostic 필드 — `app/chat` / `app/prompt` evaluator에서 require로 명시 정착됨; `repo/whole-repo`/`repo/skill`로 backport는 후속 hardening 슬라이스에서.
   (b) `cautilus eval evaluate` 디스패처는 여전히 schemaVersion만으로 라우팅; fixture preset cross-check는 follow-up.

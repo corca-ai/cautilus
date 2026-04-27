@@ -77,7 +77,10 @@ func BuildClaimOrientation(repoRoot string) (map[string]any, error) {
 					"schemaVersion": packet["schemaVersion"],
 					"expected":      contracts.ClaimProofPlanSchema,
 				}
-			} else if summary, summaryErr := BuildClaimStatusSummary(packet, statePath); summaryErr != nil {
+			} else if summary, summaryErr := BuildClaimStatusSummaryWithOptions(packet, ClaimStatusSummaryOptions{
+				InputPath: statePath,
+				RepoRoot:  repoRoot,
+			}); summaryErr != nil {
 				claimState["status"] = "invalid"
 				claimState["validation"] = map[string]any{
 					"valid": false,
@@ -147,20 +150,24 @@ func claimOrientationBranches(claimState map[string]any, config claimDiscoveryCo
 	quotedStatePath := ShellSingleQuote(statePath)
 	switch stringOrEmpty(claimState["status"]) {
 	case "present":
-		return []any{
-			map[string]any{
-				"id":      "show_existing_claims",
-				"label":   "Summarize the existing claim packet",
-				"command": "cautilus claim show --input " + quotedStatePath,
-				"reason":  "Existing claim state should be read before refreshing or planning work.",
-			},
-			map[string]any{
-				"id":      "refresh_claims_from_diff",
-				"label":   "Plan a refresh from the existing packet",
-				"command": "cautilus claim discover --repo-root " + quotedRepoRoot + " --previous " + quotedStatePath + " --refresh-plan --output <refresh-plan.json>",
-				"reason":  "Refresh planning keeps prior claim state explicit before a new scan.",
-			},
+		showBranch := map[string]any{
+			"id":      "show_existing_claims",
+			"label":   "Summarize the existing claim packet",
+			"command": "cautilus claim show --input " + quotedStatePath + " --sample-claims 10",
+			"reason":  "Existing claim state should be read before refreshing or planning work.",
 		}
+		refreshBranch := map[string]any{
+			"id":      "refresh_claims_from_diff",
+			"label":   "Plan a refresh from the existing packet",
+			"command": "cautilus claim discover --repo-root " + quotedRepoRoot + " --previous " + quotedStatePath + " --refresh-plan --output <refresh-plan.json>",
+			"reason":  "Refresh planning keeps prior claim state explicit before a new scan.",
+		}
+		if asMap(asMap(claimState["summary"])["gitState"])["isStale"] == true {
+			refreshBranch["reason"] = "The existing claim packet is stale against the current checkout; refresh planning should happen before review or eval planning."
+			showBranch["reason"] = "Use this only to inspect stale claim state; refresh planning is the safer next branch before review or eval planning."
+			return []any{refreshBranch, showBranch}
+		}
+		return []any{showBranch, refreshBranch}
 	case "missing":
 		return []any{
 			map[string]any{

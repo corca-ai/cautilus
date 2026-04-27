@@ -95,12 +95,15 @@ Classify each candidate claim before creating fixtures:
 
 After discovery or refresh, summarize scanned entry files, linked Markdown count and depth, raw candidate count, claim summary by proof mechanism/readiness/evidence/review/lifecycle, and the groups that look ready for deterministic tests, Cautilus scenarios, alignment work, or human-auditable review.
 Use `claim show --sample-claims <n>` as the canonical status view before hand-inspecting packet fields.
+If `claim show` or `agent status` reports `gitState.isStale=true`, run `claim discover --previous <claims.json> --refresh-plan` before claim review, review-result application, or eval planning.
+Do not launch reviewers, apply review results, plan evals, edit files, or commit artifacts from a stale claim packet unless the user explicitly asks to override stale state.
 If a view is missing, prefer adding a product-owned summary option or review packet over guessing raw JSON keys with ad hoc `jq`.
 If a new discovery run changes only volatile metadata such as the reviewed git commit and not source inventory, candidate claims, labels, or evidence refs, report it as a semantic no-op and do not create a pointer-only commit.
 
 LLM-backed claim review is a separate branch.
 Before launching it, state the review budget: maximum clusters, parallel lanes, clusters per reviewer, excerpt budget, retry policy, and skipped-cluster policy.
 Then run `claim review prepare-input`, give the deterministic clusters to reviewers, apply `cautilus.claim_review_result.v1`, validate the reviewed packet, and only then plan eval fixtures for reviewed `cautilus-eval` claims that are `ready-to-verify`.
+The review and eval-planning commands reject stale claim packets by default; treat that error as a prompt to refresh, not as a reason to pass `--allow-stale-claims` automatically.
 
 ## Eval Routing
 

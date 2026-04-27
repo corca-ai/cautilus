@@ -31,16 +31,22 @@ type ClaimReviewInputOptions struct {
 	MaxClaimsPerCluster int
 	ExcerptChars        int
 	ClusterPolicy       string
+	RepoRoot            string
+	AllowStaleClaims    bool
 }
 
 type ClaimReviewApplyOptions struct {
 	ClaimsPath       string
 	ReviewResultPath string
+	RepoRoot         string
+	AllowStaleClaims bool
 }
 
 type ClaimEvalPlanOptions struct {
-	ClaimsPath string
-	MaxClaims  int
+	ClaimsPath       string
+	MaxClaims        int
+	RepoRoot         string
+	AllowStaleClaims bool
 }
 
 type ClaimValidationOptions struct {
@@ -50,6 +56,7 @@ type ClaimValidationOptions struct {
 type ClaimStatusSummaryOptions struct {
 	InputPath    string
 	SampleClaims int
+	RepoRoot     string
 }
 
 type claimSource struct {
@@ -880,10 +887,65 @@ func BuildClaimStatusSummaryWithOptions(packet map[string]any, options ClaimStat
 		"recommendedNextActions":    claimStatusNextActions(claimSummary),
 		"linkedMarkdownSourceCount": linkedMarkdownSourceCount(sourceInventory),
 	}
+	if strings.TrimSpace(options.RepoRoot) != "" {
+		status["gitState"] = ClaimPacketGitState(packet, options.RepoRoot)
+	}
 	if options.SampleClaims > 0 {
 		status["sampleClaims"] = claimStatusSampleClaims(candidates, options.SampleClaims)
 	}
 	return status, nil
+}
+
+func ClaimPacketGitState(packet map[string]any, repoRoot string) map[string]any {
+	packetCommit := strings.TrimSpace(stringFromAny(packet["gitCommit"]))
+	currentCommit := ""
+	if strings.TrimSpace(repoRoot) != "" {
+		currentCommit = currentGitCommit(repoRoot)
+	}
+	isStale := packetCommit != "" && currentCommit != "" && packetCommit != currentCommit
+	state := map[string]any{
+		"packetGitCommit":   packetCommit,
+		"currentGitCommit":  currentCommit,
+		"isStale":           isStale,
+		"workingTreePolicy": "excluded",
+		"comparisonStatus":  "unchecked",
+		"recommendedAction": "Continue only after checking whether the packet commit still matches the current checkout.",
+	}
+	switch {
+	case packetCommit == "":
+		state["comparisonStatus"] = "missing-packet-commit"
+		state["recommendedAction"] = "Regenerate the claim packet before review or eval planning."
+	case currentCommit == "":
+		state["comparisonStatus"] = "missing-current-commit"
+		state["recommendedAction"] = "Use explicit operator judgment before consuming this claim packet."
+	case isStale:
+		changedSources := gitChangedFiles(repoRoot, packetCommit, currentCommit)
+		state["comparisonStatus"] = "stale"
+		state["changedSourceCount"] = len(changedSources)
+		state["changedSources"] = changedSources
+		state["recommendedAction"] = "Run claim discover --previous <claims.json> --refresh-plan before review, review application, or eval planning."
+	default:
+		state["comparisonStatus"] = "fresh"
+		state["changedSourceCount"] = 0
+		state["changedSources"] = []string{}
+		state["recommendedAction"] = "The claim packet commit matches the current checkout."
+	}
+	return state
+}
+
+func RequireFreshClaimPacket(packet map[string]any, repoRoot string, commandName string, allowStale bool) error {
+	if allowStale {
+		return nil
+	}
+	gitState := ClaimPacketGitState(packet, repoRoot)
+	if gitState["isStale"] != true {
+		return nil
+	}
+	return fmt.Errorf("%s requires a fresh claim packet: packet gitCommit %s differs from current HEAD %s; run claim discover --previous <claims.json> --refresh-plan first or pass --allow-stale-claims",
+		commandName,
+		stringFromAny(gitState["packetGitCommit"]),
+		stringFromAny(gitState["currentGitCommit"]),
+	)
 }
 
 func claimStatusSampleClaims(candidates []any, limit int) []any {
@@ -998,6 +1060,9 @@ func claimStatusNextActions(summary map[string]any) []any {
 
 func BuildClaimReviewInput(packet map[string]any, options ClaimReviewInputOptions) (map[string]any, error) {
 	if err := ValidateClaimProofPlan(packet); err != nil {
+		return nil, err
+	}
+	if err := RequireFreshClaimPacket(packet, options.RepoRoot, "claim review prepare-input", options.AllowStaleClaims); err != nil {
 		return nil, err
 	}
 	normalized := normalizeClaimReviewInputOptions(options)
@@ -1253,6 +1318,9 @@ func ApplyClaimReviewResult(claimPacket map[string]any, reviewResult map[string]
 	if err := ValidateClaimProofPlan(claimPacket); err != nil {
 		return nil, err
 	}
+	if err := RequireFreshClaimPacket(claimPacket, options.RepoRoot, "claim review apply-result", options.AllowStaleClaims); err != nil {
+		return nil, err
+	}
 	if err := validateClaimReviewResult(reviewResult); err != nil {
 		return nil, err
 	}
@@ -1312,6 +1380,9 @@ func ApplyClaimReviewResult(claimPacket map[string]any, reviewResult map[string]
 
 func BuildClaimEvalPlan(packet map[string]any, options ClaimEvalPlanOptions) (map[string]any, error) {
 	if err := ValidateClaimProofPlan(packet); err != nil {
+		return nil, err
+	}
+	if err := RequireFreshClaimPacket(packet, options.RepoRoot, "claim plan-evals", options.AllowStaleClaims); err != nil {
 		return nil, err
 	}
 	maxClaims := options.MaxClaims

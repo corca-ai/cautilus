@@ -144,14 +144,18 @@ It should preserve the discovered backlog honestly; prioritization belongs in th
 `cautilus claim show --input <claims.json>` emits `cautilus.claim_status_summary.v1`.
 It summarizes an existing proof-plan packet without rescanning.
 When called with `--sample-claims <n>`, it includes a bounded `sampleClaims` list so agents can inspect stable candidate fields without guessing raw packet keys.
+The summary includes `gitState`.
+If `gitState.isStale=true`, review, review-application, and eval-planning commands must reject the packet unless the operator explicitly passes `--allow-stale-claims`.
 
 `cautilus claim review prepare-input --claims <claims.json>` emits `cautilus.claim_review_input.v1`.
 It groups candidates into deterministic review clusters and records the review budget.
 It does not call an LLM, schedule subagents, merge duplicates, or mark evidence satisfied.
+It rejects stale claim packets by default.
 
 `cautilus claim review apply-result --claims <claims.json> --review-result <review-result.json>` consumes `cautilus.claim_review_result.v1` and emits an updated claim packet.
 It applies reviewed labels, evidence refs, provenance, merge decisions, and unresolved questions.
 It rejects `evidenceStatus=satisfied` unless a direct or verified evidence ref supports the claim.
+It rejects stale claim packets by default before merging review results.
 
 `cautilus claim validate --claims <claims.json>` emits `cautilus.claim_validation_report.v1`.
 It checks packet shape and evidence refs without mutating claims or searching for new evidence.
@@ -159,6 +163,7 @@ It exits non-zero when the packet is invalid.
 
 `cautilus claim plan-evals --claims <reviewed-claims.json>` emits `cautilus.claim_eval_plan.v1`.
 It selects reviewed `cautilus-eval` claims whose `verificationReadiness` is `ready-to-verify`.
+It rejects stale claim packets by default.
 It records claim ids, target eval surfaces, draft intents, source refs, evidence status, review status, and unresolved questions.
 It does not write host-owned fixtures, prompts, runners, wrappers, or acceptance policy.
 

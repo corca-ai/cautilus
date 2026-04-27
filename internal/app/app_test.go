@@ -3,6 +3,7 @@ package app
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -367,6 +368,35 @@ func TestRunClaimShowSummarizesExistingProofPlan(t *testing.T) {
 	}
 }
 
+func TestRunClaimShowReportsStaleGitState(t *testing.T) {
+	repoRoot := t.TempDir()
+	initGitRepo(t, repoRoot)
+	claimsPath := filepath.Join(repoRoot, "claims.json")
+	if err := os.WriteFile(claimsPath, []byte(minimalClaimPacketJSON("0000000000000000000000000000000000000000")), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	t.Setenv("CAUTILUS_CALLER_CWD", repoRoot)
+	t.Setenv("CAUTILUS_TOOL_ROOT", "")
+
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	exitCode := Run([]string{"claim", "show", "--input", claimsPath}, &stdout, &stderr)
+	if exitCode != 0 {
+		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
+	}
+	var payload map[string]any
+	if err := json.Unmarshal(stdout.Bytes(), &payload); err != nil {
+		t.Fatalf("Unmarshal returned error: %v", err)
+	}
+	gitState := payload["gitState"].(map[string]any)
+	if gitState["isStale"] != true || gitState["comparisonStatus"] != "stale" {
+		t.Fatalf("expected stale git state, got %#v", gitState)
+	}
+	if gitState["currentGitCommit"] == "" {
+		t.Fatalf("expected current git commit in %#v", gitState)
+	}
+}
+
 func TestRunClaimReviewPrepareInputWritesClusters(t *testing.T) {
 	repoRoot := t.TempDir()
 	claimsPath := filepath.Join(repoRoot, "claims.json")
@@ -417,6 +447,35 @@ func TestRunClaimReviewPrepareInputWritesClusters(t *testing.T) {
 	}
 	if clusters := payload["clusters"].([]any); len(clusters) != 1 {
 		t.Fatalf("expected one review cluster, got %#v", payload)
+	}
+}
+
+func TestRunClaimReviewPrepareInputRejectsStaleClaimPacket(t *testing.T) {
+	repoRoot := t.TempDir()
+	initGitRepo(t, repoRoot)
+	claimsPath := filepath.Join(repoRoot, "claims.json")
+	outputPath := filepath.Join(repoRoot, "review-input.json")
+	if err := os.WriteFile(claimsPath, []byte(minimalClaimPacketJSON("0000000000000000000000000000000000000000")), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	t.Setenv("CAUTILUS_CALLER_CWD", repoRoot)
+	t.Setenv("CAUTILUS_TOOL_ROOT", "")
+
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	exitCode := Run([]string{"claim", "review", "prepare-input", "--claims", claimsPath, "--output", outputPath}, &stdout, &stderr)
+	if exitCode != 1 {
+		t.Fatalf("expected stale claim packet rejection, got exit %d stdout=%s stderr=%s", exitCode, stdout.String(), stderr.String())
+	}
+	if !strings.Contains(stderr.String(), "requires a fresh claim packet") {
+		t.Fatalf("expected freshness error, got %q", stderr.String())
+	}
+
+	stdout.Reset()
+	stderr.Reset()
+	exitCode = Run([]string{"claim", "review", "prepare-input", "--claims", claimsPath, "--allow-stale-claims", "--output", outputPath}, &stdout, &stderr)
+	if exitCode != 0 {
+		t.Fatalf("expected override to succeed, got exit %d stderr=%s", exitCode, stderr.String())
 	}
 }
 
@@ -499,6 +558,34 @@ func TestRunClaimReviewApplyResultWritesReviewedClaims(t *testing.T) {
 	if candidate["reviewStatus"] != "agent-reviewed" || candidate["evidenceStatus"] != "satisfied" {
 		t.Fatalf("expected reviewed satisfied candidate, got %#v", candidate)
 	}
+}
+
+func minimalClaimPacketJSON(gitCommit string) string {
+	return strings.Join([]string{
+		`{`,
+		`  "schemaVersion": "cautilus.claim_proof_plan.v1",`,
+		`  "sourceRoot": ".",`,
+		fmt.Sprintf(`  "gitCommit": %q,`, gitCommit),
+		`  "sourceInventory": [{"path": "README.md", "kind": "readme", "status": "read", "depth": 0}],`,
+		`  "claimCandidates": [`,
+		`    {`,
+		`      "claimId": "claim-readme-md-3",`,
+		`      "claimFingerprint": "sha256:demo",`,
+		`      "summary": "Agents must keep behavior review bounded.",`,
+		`      "recommendedProof": "cautilus-eval",`,
+		`      "recommendedEvalSurface": "repo/whole-repo",`,
+		`      "verificationReadiness": "ready-to-verify",`,
+		`      "evidenceStatus": "unknown",`,
+		`      "reviewStatus": "heuristic",`,
+		`      "lifecycle": "new",`,
+		`      "groupHints": ["cautilus-eval"],`,
+		`      "evidenceRefs": [],`,
+		`      "sourceRefs": [{"path": "README.md", "line": 3, "excerpt": "Agents must keep behavior review bounded."}],`,
+		`      "proofLayer": "cautilus-eval"`,
+		`    }`,
+		`  ]`,
+		`}`,
+	}, "\n")
 }
 
 func TestRunClaimPlanEvalsWritesIntermediatePlan(t *testing.T) {

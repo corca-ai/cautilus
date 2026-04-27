@@ -358,18 +358,21 @@ type claimReviewPrepareInputArgs struct {
 	maxClaimsPerCluster int
 	excerptChars        int
 	clusterPolicy       string
+	allowStaleClaims    bool
 }
 
 type claimReviewApplyResultArgs struct {
-	claims       string
-	reviewResult string
-	output       *string
+	claims           string
+	reviewResult     string
+	output           *string
+	allowStaleClaims bool
 }
 
 type claimPlanEvalsArgs struct {
-	claims    string
-	output    *string
-	maxClaims int
+	claims           string
+	output           *string
+	maxClaims        int
+	allowStaleClaims bool
 }
 
 type claimValidateArgs struct {
@@ -829,6 +832,7 @@ func handleClaimShow(repoRoot string, cwd string, args []string, stdout io.Write
 	summary, err := runtime.BuildClaimStatusSummaryWithOptions(packet, runtime.ClaimStatusSummaryOptions{
 		InputPath:    options.displayInput,
 		SampleClaims: options.sampleClaims,
+		RepoRoot:     cwd,
 	})
 	if err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
@@ -860,6 +864,8 @@ func handleClaimReviewPrepareInput(repoRoot string, cwd string, args []string, s
 		MaxClaimsPerCluster: options.maxClaimsPerCluster,
 		ExcerptChars:        options.excerptChars,
 		ClusterPolicy:       options.clusterPolicy,
+		RepoRoot:            cwd,
+		AllowStaleClaims:    options.allowStaleClaims,
 	})
 	if err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
@@ -893,6 +899,8 @@ func handleClaimReviewApplyResult(repoRoot string, cwd string, args []string, st
 	updated, err := runtime.ApplyClaimReviewResult(claimPacket, reviewResult, runtime.ClaimReviewApplyOptions{
 		ClaimsPath:       options.claims,
 		ReviewResultPath: options.reviewResult,
+		RepoRoot:         cwd,
+		AllowStaleClaims: options.allowStaleClaims,
 	})
 	if err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
@@ -919,8 +927,10 @@ func handleClaimPlanEvals(repoRoot string, cwd string, args []string, stdout io.
 		return 1
 	}
 	plan, err := runtime.BuildClaimEvalPlan(claimPacket, runtime.ClaimEvalPlanOptions{
-		ClaimsPath: options.claims,
-		MaxClaims:  options.maxClaims,
+		ClaimsPath:       options.claims,
+		MaxClaims:        options.maxClaims,
+		RepoRoot:         cwd,
+		AllowStaleClaims: options.allowStaleClaims,
 	})
 	if err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
@@ -2221,6 +2231,8 @@ func parseClaimReviewPrepareInputArgs(args []string, cwd string) (*claimReviewPr
 			}
 			index = next
 			options.clusterPolicy = value
+		case "--allow-stale-claims":
+			options.allowStaleClaims = true
 		default:
 			return nil, fmt.Errorf("unknown argument: %s", arg)
 		}
@@ -2257,6 +2269,8 @@ func parseClaimReviewApplyResultArgs(args []string, cwd string) (*claimReviewApp
 			}
 			index = next
 			options.output = &value
+		case "--allow-stale-claims":
+			options.allowStaleClaims = true
 		default:
 			return nil, fmt.Errorf("unknown argument: %s", arg)
 		}
@@ -2300,6 +2314,8 @@ func parseClaimPlanEvalsArgs(args []string, cwd string) (*claimPlanEvalsArgs, er
 				return nil, parseErr
 			}
 			options.maxClaims = parsed
+		case "--allow-stale-claims":
+			options.allowStaleClaims = true
 		default:
 			return nil, fmt.Errorf("unknown argument: %s", arg)
 		}

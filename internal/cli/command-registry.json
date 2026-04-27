@@ -77,30 +77,33 @@
     {
       "path": ["claim", "review", "prepare-input"],
       "group": "results",
-      "usage": "cautilus claim review prepare-input --claims <claims.json> [--max-clusters <n>] [--max-claims-per-cluster <n>] [--excerpt-chars <n>] [--output <review-input.json>]",
+      "usage": "cautilus claim review prepare-input --claims <claims.json> [--max-clusters <n>] [--max-claims-per-cluster <n>] [--excerpt-chars <n>] [--allow-stale-claims] [--output <review-input.json>]",
       "example": "cautilus claim review prepare-input --claims /tmp/cautilus-claims.json --max-clusters 20 --output /tmp/cautilus-claim-review-input.json",
       "notes": [
         "Prepares deterministic `cautilus.claim_review_input.v1` clusters for agent or subagent review.",
+        "Rejects stale claim packets by default; use `claim discover --previous <claims.json> --refresh-plan` first unless an operator explicitly passes `--allow-stale-claims`.",
         "The command does not call an LLM and does not mark claims satisfied."
       ]
     },
     {
       "path": ["claim", "review", "apply-result"],
       "group": "results",
-      "usage": "cautilus claim review apply-result --claims <claims.json> --review-result <review-result.json> [--output <reviewed-claims.json>]",
+      "usage": "cautilus claim review apply-result --claims <claims.json> --review-result <review-result.json> [--allow-stale-claims] [--output <reviewed-claims.json>]",
       "example": "cautilus claim review apply-result --claims /tmp/cautilus-claims.json --review-result /tmp/cautilus-claim-review-result.json --output /tmp/cautilus-reviewed-claims.json",
       "notes": [
         "Applies deterministic label and evidence updates from `cautilus.claim_review_result.v1` to an existing claim packet.",
+        "Rejects stale claim packets by default before merging review results.",
         "`evidenceStatus=satisfied` requires direct or verified evidence refs; possible evidence refs cannot satisfy a claim."
       ]
     },
     {
       "path": ["claim", "plan-evals"],
       "group": "results",
-      "usage": "cautilus claim plan-evals --claims <reviewed-claims.json> [--max-claims <n>] [--output <eval-plan.json>]",
+      "usage": "cautilus claim plan-evals --claims <reviewed-claims.json> [--max-claims <n>] [--allow-stale-claims] [--output <eval-plan.json>]",
       "example": "cautilus claim plan-evals --claims /tmp/cautilus-reviewed-claims.json --output /tmp/cautilus-eval-plan.json",
       "notes": [
         "Emits `cautilus.claim_eval_plan.v1` for reviewed `cautilus-eval` claims that are ready to verify.",
+        "Rejects stale claim packets by default before planning eval fixtures.",
         "The command plans eval fixtures but does not write host-owned fixtures, prompts, runners, or policy."
       ]
     },

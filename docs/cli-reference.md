@@ -99,6 +99,7 @@ Default discovery starts from adapter-owned claim entries or README.md/AGENTS.md
 Use `--previous <claims.json> --refresh-plan` for deterministic refresh planning inside the same discover workflow.
 The packet is `cautilus.claim_proof_plan.v1`, and it is a proof plan rather than a verdict.
 Use `cautilus claim show --input <claims.json> --sample-claims <n>` to summarize an existing claim packet without rescanning and include bounded claim examples when an agent needs concrete candidates before choosing the next branch.
+The summary includes `gitState`; when it reports `isStale=true`, run `cautilus claim discover --previous <claims.json> --refresh-plan` before review, review application, or eval planning.
 Use `cautilus claim review prepare-input --claims <claims.json>` to prepare bounded deterministic review clusters for an agent or subagent.
 It emits `cautilus.claim_review_input.v1` and does not call an LLM or mark claims satisfied.
 Use `cautilus claim review apply-result --claims <claims.json> --review-result <review-result.json>` to merge reviewed labels and evidence refs back into a claim packet.
@@ -107,6 +108,7 @@ Use `cautilus claim validate --claims <claims.json>` to emit `cautilus.claim_val
 It does not mutate the packet or search for evidence.
 Use `cautilus claim plan-evals --claims <reviewed-claims.json>` after review to turn ready `cautilus-eval` claims into `cautilus.claim_eval_plan.v1`.
 That packet preserves claim ids, target eval surfaces, source refs, draft intents, and unresolved questions, but it deliberately does not write host-owned fixtures or runners.
+`claim review prepare-input`, `claim review apply-result`, and `claim plan-evals` reject stale claim packets by default; `--allow-stale-claims` is an explicit operator override, not the normal agent path.
 
 For the shortest end-to-end adoption proof in a fresh consumer repo:
 
