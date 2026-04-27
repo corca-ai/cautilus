@@ -51,12 +51,15 @@ When invoked with no task detail, orient first:
 Read `cautilus.agent_status.v1` as the current product map.
 Summarize binary health, agent-surface readiness, adapter state, claim-state availability, scan entries, linked Markdown depth, and `nextBranches`.
 Then help the user pick the next branch or stop.
+Present branch labels and reasons in coordinator-facing language first.
+Keep internal branch ids as secondary references, not the option title.
 
 If `nextBranches` includes `initialize_adapter` and the user delegated setup continuation, run the adapter setup branch and then rerun `agent status`.
 If claim state is missing, present the bounded scan entries and depth before entering claim discovery.
 If claim state exists, read or refresh that packet before planning new proof work.
 Branch execution starts from the selected branch; no-input orientation is a status turn, not an eval, review, optimize, edit, or commit turn.
-Before executing a branch selected from an earlier turn, rerun `agent status` or check the referenced state path so a stale `run_first_claim_scan` choice cannot overwrite an existing claim packet.
+Branch execution confirmation is evidence-backed: before executing a branch selected from an earlier turn, rerun `agent status` or check the referenced state path and mention the fresh observation.
+This prevents a stale `run_first_claim_scan` or stale refresh choice from overwriting useful state.
 If the current status no longer matches the selected branch, summarize the new status and ask for the next branch instead of continuing from the stale menu.
 
 ## Declared Claim Discovery

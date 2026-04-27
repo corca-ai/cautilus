@@ -18,6 +18,8 @@ Given a saved claim map was produced from an older checkout, when an agent runs 
 - It committed `.cautilus/claims/refresh-plan.json` as `7439e87 Record claim refresh plan`, which is consistent with this repo's artifact commit policy.
 - The agent guessed non-existent refresh-plan fields with `jq`, then inspected raw keys and rebuilt a summary from internal `claimPlan` lifecycle counts.
 - The resulting user response was mechanically accurate but too product-internal for a human coordinator.
+- Follow-up session `019dcd4c-56c8-7382-9068-e231aa52f9f1` improved materially: it read `refreshSummary`, explained that the saved claim map was not updated, avoided review and eval planning, and committed only the refresh-plan artifact.
+- That follow-up still used the internal branch id as the numbered option title and said it would rerun `agent status` before executing the selected branch, but the command log shows only the initial `agent status` call.
 
 ## Reproduction
 
@@ -51,6 +53,7 @@ Ran `./bin/cautilus doctor --repo-root . --scope agent-surface`.
 Ran `npm run dogfood:self`, which returned `recommendation=accept-now` with one passed case.
 Ran `npm run verify`.
 Ran `npm run hooks:check`.
+After the follow-up session review, tightened the bundled skill so no-input branch menus present labels before internal ids and branch execution confirmation must be backed by a fresh observed status or state-path check.
 
 ## Root Cause
 
@@ -75,4 +78,4 @@ That forced each agent to infer coordinator language from internal fields, which
 ## Prevention
 
 Put coordinator-facing summaries into packets for workflow decision points.
-Use skill text to route agents to those summaries before raw packet inspection, and keep internal branch ids as references rather than the first thing a user sees.
+Use skill text to route agents to those summaries before raw packet inspection, keep internal branch ids as references rather than the first thing a user sees, and require branch execution claims to match actual observed commands.
