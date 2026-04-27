@@ -1034,7 +1034,7 @@ func claimStatusNextActions(summary map[string]any) []any {
 	if intFromAny(byProof["cautilus-eval"]) > 0 {
 		actions = append(actions, map[string]any{
 			"id":      "prepare-claim-review",
-			"summary": "Prepare bounded claim review clusters before drafting eval scenarios.",
+			"summary": "Prepare bounded LLM claim review clusters after setting a review budget, before drafting eval scenarios.",
 		})
 	}
 	if intFromAny(byProof["deterministic"]) > 0 {

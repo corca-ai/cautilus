@@ -145,7 +145,7 @@ Use when you change a skill or agent and want to know whether it still triggers 
 CLI: `cautilus eval test --repo-root . --adapter-name <name>` with a `surface=dev, preset=skill` fixture
 For agent: "Run the checked-in case suite against the skill I just edited."
 You get `eval-cases.json`, `eval-observed.json`, and `eval-summary.json` instead of one trigger-only smoke result.
-The same preset can evaluate a multi-turn agent episode when the fixture provides `turns`; Cautilus's own refresh-flow dogfood uses `$cautilus` followed by `1` and derives the result from an audit packet.
+The same preset can evaluate a multi-turn agent episode when the fixture provides `turns`; Cautilus's own first-scan and refresh-flow dogfood fixtures use `$cautilus` followed by `1` and derive the result from audit packets.
 When the goal is only to prove command routing and packet evaluation, `cautilus eval test --runtime fixture` can run the same product path with adapter-owned fixture results instead of launching a nested model eval.
 
 ### 3. Durable workflow recovery

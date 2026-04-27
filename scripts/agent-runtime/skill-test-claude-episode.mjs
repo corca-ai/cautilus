@@ -4,6 +4,7 @@ import { spawnSync } from "node:child_process";
 import process from "node:process";
 
 import { auditRefreshFlowLogText } from "./audit-cautilus-refresh-flow-log.mjs";
+import { auditFirstScanFlowLogText } from "./audit-cautilus-first-scan-flow-log.mjs";
 import { applyObservationExpectations } from "./skill-test-expectations.mjs";
 import { CLAUDE_CLI_ENV } from "./skill-test-claude-backend.mjs";
 
@@ -100,10 +101,16 @@ function turnFailureMessage(result, turnIndex, options) {
 }
 
 function auditEpisode(testCase, combined, artifactRefs, outputDir, started, artifactRef) {
-	if (testCase.auditKind !== "cautilus_refresh_flow") {
+	let audit = null;
+	if (testCase.auditKind === "cautilus_refresh_flow") {
+		audit = auditRefreshFlowLogText(combined);
+	}
+	if (testCase.auditKind === "cautilus_first_scan_flow") {
+		audit = auditFirstScanFlowLogText(combined);
+	}
+	if (!audit) {
 		return null;
 	}
-	const audit = auditRefreshFlowLogText(combined);
 	const auditFile = join(outputDir, "audit.json");
 	writeFileSync(auditFile, `${JSON.stringify(audit, null, 2)}\n`);
 	artifactRefs.push(artifactRef("audit", auditFile));

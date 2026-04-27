@@ -67,6 +67,8 @@ function defaultOptions() {
 		claudeModel: null,
 		claudePermissionMode: null,
 		claudeAllowedTools: null,
+		claimState: "present",
+		artifactSubdir: "refresh-flow",
 	};
 }
 
@@ -84,6 +86,8 @@ const VALUE_OPTIONS = {
 	"--claude-model": (options, value) => { options.claudeModel = value; },
 	"--claude-permission-mode": (options, value) => { options.claudePermissionMode = value; },
 	"--claude-allowed-tools": (options, value) => { options.claudeAllowedTools = value; },
+	"--claim-state": (options, value) => { options.claimState = value; },
+	"--artifact-subdir": (options, value) => { options.artifactSubdir = value; },
 };
 
 function applyArgument(options, argv, index) {
@@ -121,6 +125,9 @@ function parseArgs(argv) {
 	}
 	if (options.backend === "fixture" && !options.fixtureResultsFile) {
 		fail("--fixture-results-file is required when --backend fixture");
+	}
+	if (!["present", "absent"].includes(options.claimState)) {
+		fail("--claim-state must be present or absent");
 	}
 	return options;
 }
@@ -211,6 +218,12 @@ function installCandidateSurface(sourceRepoRoot, candidateRepo) {
 	execFileSync("git", ["-C", candidateRepo, "config", "user.name", "Cautilus Dogfood"]);
 }
 
+function prepareClaimState(options, candidateRepo) {
+	if (options.claimState === "absent") {
+		rmSync(join(candidateRepo, ".cautilus", "claims"), { recursive: true, force: true });
+	}
+}
+
 function buildRunnerArgs(options, candidateRepo) {
 	const args = [
 		RUNNER_PATH,
@@ -223,7 +236,7 @@ function buildRunnerArgs(options, candidateRepo) {
 		"--output-file",
 		options.outputFile,
 		"--artifact-dir",
-		join(options.outputDir, "refresh-flow"),
+		join(options.outputDir, options.artifactSubdir),
 		"--backend",
 		options.backend,
 		"--sandbox",
@@ -261,6 +274,7 @@ function main() {
 	const candidateRepo = ensureDetachedWorktree(options.repoRoot, join(options.outputDir, "candidate"));
 	syncSourceCheckout(options.repoRoot, candidateRepo);
 	installCandidateSurface(options.repoRoot, candidateRepo);
+	prepareClaimState(options, candidateRepo);
 	const result = spawnSync(process.execPath, buildRunnerArgs(options, candidateRepo), {
 		cwd: options.repoRoot,
 		encoding: "utf-8",

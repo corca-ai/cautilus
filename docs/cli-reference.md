@@ -285,7 +285,14 @@ cautilus eval test \
   --repo-root . \
   --adapter-name self-dogfood-refresh-flow
 
+# run the multi-turn Cautilus first-scan episode through the same eval seam
+cautilus eval test \
+  --repo-root . \
+  --adapter-name self-dogfood-first-scan-flow
+
 # maintainer proof for both supported coding-agent CLI runtimes
+npm run dogfood:cautilus-first-scan-flow:eval:codex
+npm run dogfood:cautilus-first-scan-flow:eval:claude
 npm run dogfood:cautilus-refresh-flow:eval:codex
 npm run dogfood:cautilus-refresh-flow:eval:claude
 

@@ -109,6 +109,8 @@ Classify each candidate claim before creating fixtures:
 - `alignment-work`: the code, docs, adapter, or skill surface must be reconciled before proof would be honest.
 
 After discovery or refresh, summarize scanned entry files, linked Markdown count and depth, raw candidate count, claim summary by proof mechanism/readiness/evidence/review/lifecycle, and the groups that look ready for deterministic tests, Cautilus scenarios, alignment work, or human-auditable review.
+When the next natural branch is claim review, explain that it is a budgeted LLM review branch before presenting it as a choice.
+The coordinator should understand that choosing review means setting a review budget before any reviewer lanes, result application, eval planning, edits, or commits happen.
 Use `claim show --sample-claims <n>` as the canonical status view before hand-inspecting packet fields.
 If `claim show` or `agent status` reports `gitState.isStale=true`, run `claim discover --previous <claims.json> --refresh-plan` before claim review, review-result application, or eval planning.
 Do not launch reviewers, apply review results, plan evals, edit files, or commit artifacts from a stale claim packet unless the user explicitly asks to override stale state.

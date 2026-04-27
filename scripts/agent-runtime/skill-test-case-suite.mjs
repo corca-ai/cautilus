@@ -94,8 +94,8 @@ function normalizeAuditKind(value, field) {
 	if (auditKind === null) {
 		return null;
 	}
-	if (!["cautilus_refresh_flow"].includes(auditKind)) {
-		throw new Error(`${field} must be cautilus_refresh_flow`);
+	if (!["cautilus_refresh_flow", "cautilus_first_scan_flow"].includes(auditKind)) {
+		throw new Error(`${field} must be cautilus_refresh_flow or cautilus_first_scan_flow`);
 	}
 	return auditKind;
 }
