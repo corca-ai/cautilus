@@ -55,8 +55,13 @@
   bundled skill은 prompt-level 금지 목록 대신 `agent status`를 먼저 읽고 branch selection에서 멈추는 what/why 계약으로 정리됐다.
   `scripts/agent-runtime/audit-cautilus-no-input-log.mjs`는 real `codex exec '$cautilus'` JSONL 전체에서 command/tool/message를 훑어 `agent status` 사용 여부와 discovery/eval/review/optimize/debug/edit/commit 회귀를 잡는다.
   실제 self-check `/tmp/cautilus-no-input-1777250621.jsonl`는 audit `passed`였고 실행 command는 `find-skills` bootstrap 뒤 `./bin/cautilus agent status --repo-root . --json`까지였다.
+- 2026-04-27 후속 구현으로 Codex session log review는 repo-local normalized helper를 갖는다.
+  `scripts/agent-runtime/summarize-codex-session-log.mjs --session-id <id>`는 JSONL 전체에서 user/assistant messages, tool calls, command outputs, shell commands, commits, parse warnings를 `cautilus.codex_session_summary.v1`로 요약한다.
+  `audit-cautilus-no-input-log.mjs`도 이 shared summarizer를 재사용한다.
+  이 helper는 public Cautilus command가 아니라 self-dogfood/debug aid이며, raw `jq` 추측을 줄이는 것이 목적이다.
 - 2026-04-26 후속 구현으로 existing-packet helper slice도 들어왔다.
-  `claim show --input <claims.json>`는 `cautilus.claim_status_summary.v1`를 만들고, `claim review prepare-input --claims <claims.json>`는 LLM 호출 없이 bounded `cautilus.claim_review_input.v1` cluster packet을 만든다.
+  `claim show --input <claims.json> --sample-claims <n>`는 `cautilus.claim_status_summary.v1`를 만들고 bounded `sampleClaims`로 stable candidate fields를 보여준다.
+  `claim review prepare-input --claims <claims.json>`는 LLM 호출 없이 bounded `cautilus.claim_review_input.v1` cluster packet을 만든다.
   그 다음 `claim review apply-result --claims <claims.json> --review-result <review-result.json>`도 들어왔다.
   `cautilus.claim_review_result.v1`를 적용하되, `evidenceStatus=satisfied`는 direct/verified evidence ref가 claim을 support할 때만 허용한다.
 - 2026-04-26 후속 구현으로 reviewed-claim eval planning helper도 들어왔다.
@@ -74,6 +79,10 @@
   다음 hardening slice는 이 케이스를 재귀 없는 cheap skill-eval proof로 바꾸거나, fixture backend/runtime을 `cautilus eval test`의 first-class runtime으로 노출해야 한다.
   `app/chat` / `app/prompt` real-codex/claude self-dogfood 증거도 아직 없다.
   `charness-artifacts/cautilus/latest.md` refresh도 별도 artifact-refresh 슬라이스로 남아 있다.
+- 2026-04-27 skill-surface verification 중 shared charness guidance가 removed `cautilus instruction-surface test --repo-root .`를 아직 참조한다는 것을 확인했다.
+  Cautilus binary는 현재 spec대로 해당 command를 제거했고, replacement path는 `cautilus eval test --adapter-name self-dogfood-eval` 또는 `npm run dogfood:self`다.
+  debug record는 [charness-artifacts/debug/debug-2026-04-27-stale-instruction-surface-command.md](../../charness-artifacts/debug/debug-2026-04-27-stale-instruction-surface-command.md)이고, charness follow-up은 [corca-ai/charness#76](https://github.com/corca-ai/charness/issues/76).
+  같은 검증에서 `npm run dogfood:self`는 real Codex로 `recommendation=accept-now`, `caseCount=1`을 통과했다.
 - premortem deferral 상태:
   (a) Result packet surface-agnostic 필드 — `app/chat` / `app/prompt` evaluator에서 require로 명시 정착됨; `repo/whole-repo`/`repo/skill`로 backport는 후속 hardening 슬라이스에서.
   (b) `cautilus eval evaluate` 디스패처는 여전히 schemaVersion만으로 라우팅; fixture preset cross-check는 follow-up.
