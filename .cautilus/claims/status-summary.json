@@ -1,0 +1,83 @@
+{
+  "candidateCount": 280,
+  "claimState": {
+    "path": ".cautilus/claims/latest.json",
+    "pathSource": "default"
+  },
+  "claimSummary": {
+    "byEvidenceStatus": {
+      "unknown": 280
+    },
+    "byLifecycle": {
+      "new": 280
+    },
+    "byProofLayer": {
+      "alignment-work": 6,
+      "cautilus-eval": 137,
+      "deterministic": 51,
+      "human-auditable": 18,
+      "scenario-candidate": 68
+    },
+    "byRecommendedProof": {
+      "cautilus-eval": 205,
+      "deterministic": 51,
+      "human-auditable": 24
+    },
+    "byReviewStatus": {
+      "heuristic": 280
+    },
+    "byVerificationReadiness": {
+      "needs-alignment": 6,
+      "needs-scenario": 68,
+      "ready-to-verify": 206
+    }
+  },
+  "effectiveScanScope": {
+    "adapterFound": true,
+    "adapterPath": ".agents/cautilus-adapter.yaml",
+    "entries": [
+      "README.md",
+      "AGENTS.md",
+      "CLAUDE.md"
+    ],
+    "exclude": [
+      ".git/**",
+      "node_modules/**",
+      "dist/**",
+      "coverage/**",
+      "artifacts/**",
+      "charness-artifacts/**"
+    ],
+    "explicitSources": false,
+    "include": [],
+    "linkedMarkdownDepth": 3,
+    "traversal": "entry-markdown-links"
+  },
+  "gitCommit": "346fb27233f2ba3557b8e681a85e211c02d72e51",
+  "inputPath": "/home/hwidong/codes/cautilus/.cautilus/claims/latest.json",
+  "inputSchemaVersion": "cautilus.claim_proof_plan.v1",
+  "linkedMarkdownSourceCount": 33,
+  "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
+  "recommendedNextActions": [
+    {
+      "id": "prepare-claim-review",
+      "summary": "Prepare bounded claim review clusters before drafting eval scenarios."
+    },
+    {
+      "id": "add-deterministic-proof",
+      "summary": "Add or connect unit, lint, build, schema, or CI proof for deterministic claims."
+    },
+    {
+      "id": "resolve-alignment",
+      "summary": "Reconcile alignment-work claims before treating them as verification targets."
+    }
+  ],
+  "reviewReadinessSummary": {
+    "heuristicClaimsReadyForReview": 206,
+    "needsAlignment": 6,
+    "needsScenario": 68
+  },
+  "schemaVersion": "cautilus.claim_status_summary.v1",
+  "sourceCount": 36,
+  "sourceRoot": "."
+}

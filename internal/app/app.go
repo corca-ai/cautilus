@@ -3400,6 +3400,9 @@ func writeOutputResolved(stdout io.Writer, output *string, value any) error {
 	if output == nil {
 		return writeJSON(stdout, value)
 	}
+	if err := ensureParentDir(output); err != nil {
+		return err
+	}
 	payload, err := json.MarshalIndent(value, "", "  ")
 	if err != nil {
 		return err

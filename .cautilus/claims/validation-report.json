@@ -1,0 +1,11 @@
+{
+  "candidateCount": 280,
+  "evidenceValidationPolicy": "satisfied claims require agent/human review plus a direct or verified evidence ref with path, kind, commit or contentHash, and supportsClaimIds containing the claim.",
+  "inputPath": "/home/hwidong/codes/cautilus/.cautilus/claims/latest.json",
+  "inputSchemaVersion": "cautilus.claim_proof_plan.v1",
+  "issueCount": 0,
+  "issues": [],
+  "nonMutationNotice": "This command validates the packet and evidence refs but does not change claims or search for evidence.",
+  "schemaVersion": "cautilus.claim_validation_report.v1",
+  "valid": true
+}

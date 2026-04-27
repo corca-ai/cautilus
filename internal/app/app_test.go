@@ -266,7 +266,7 @@ func TestRunClaimDiscoverWritesProofPlanFromTinyRepo(t *testing.T) {
 	}, "\n")), 0o644); err != nil {
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
-	outputPath := filepath.Join(repoRoot, "claims.json")
+	outputPath := filepath.Join(repoRoot, ".cautilus", "claims", "latest.json")
 
 	t.Setenv("CAUTILUS_CALLER_CWD", repoRoot)
 	t.Setenv("CAUTILUS_TOOL_ROOT", "")
