@@ -4,10 +4,10 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
 
-import { buildObservedAppFixtureInput, main } from "./run-app-fixture-eval.mjs";
+import { buildObservedAppInput, main } from "./run-app-eval.mjs";
 
-test("buildObservedAppFixtureInput materializes app/chat fixture observations", () => {
-	const packet = buildObservedAppFixtureInput({
+test("buildObservedAppInput materializes fixture-backed app/chat observations", () => {
+	const packet = buildObservedAppInput({
 		schemaVersion: "cautilus.app_chat_test_cases.v1",
 		suiteId: "chat-demo",
 		suiteDisplayName: "Chat Demo",
@@ -30,8 +30,8 @@ test("buildObservedAppFixtureInput materializes app/chat fixture observations", 
 	});
 });
 
-test("buildObservedAppFixtureInput materializes app/prompt fixture observations", () => {
-	const packet = buildObservedAppFixtureInput({
+test("buildObservedAppInput materializes fixture-backed app/prompt observations", () => {
+	const packet = buildObservedAppInput({
 		schemaVersion: "cautilus.app_prompt_test_cases.v1",
 		suiteId: "prompt-demo",
 		provider: "fixture",
@@ -49,7 +49,7 @@ test("buildObservedAppFixtureInput materializes app/prompt fixture observations"
 	assert.equal(packet.evaluations[0].observed.finalText, "Fixture response includes behavior.");
 });
 
-test("main writes observed packet from a cases file", () => {
+test("main writes fixture-backed observed packet from a cases file", () => {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-app-fixture-"));
 	const casesFile = join(root, "cases.json");
 	const outputFile = join(root, "observed.json");

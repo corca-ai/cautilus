@@ -7,13 +7,13 @@ required_prerequisites:
 default_runtime: fixture
 evaluation_input_default: fixtures/eval/app/chat/cautilus-onboarding-greeting.fixture.json
 eval_test_command_templates:
-  - node ./scripts/agent-runtime/run-app-fixture-eval.mjs --cases-file {eval_cases_file} --output-file {eval_observed_file} --backend {backend}
+  - node ./scripts/agent-runtime/run-app-eval.mjs --workspace {candidate_repo} --cases-file {eval_cases_file} --output-file {eval_observed_file} --artifact-dir {output_dir}/app-eval --backend {backend} --timeout-ms 180000 --codex-model gpt-5.4-mini --codex-reasoning-effort low --codex-config project_doc_max_bytes=0 --codex-config include_apps_instructions=false --codex-config include_environment_context=false
 artifact_paths:
   - fixtures/eval/app/chat/cautilus-onboarding-greeting.fixture.json
-  - scripts/agent-runtime/run-app-fixture-eval.mjs
+  - scripts/agent-runtime/run-app-eval.mjs
   - docs/specs/evaluation-surfaces.spec.md
 comparison_questions:
-  - Does the app/chat fixture still translate and evaluate through the public eval seam?
+  - Does the app/chat fixture still translate and evaluate through the public eval seam under both fixture and live Codex runtimes?
 human_review_prompts:
   - id: app-chat-proof-boundary
-    prompt: Where might an operator mistake fixture-backed app/chat routing proof for real model quality evidence?
+    prompt: Where might an operator overread this minimal app/chat proof beyond fixture translation and one live Codex messaging run?

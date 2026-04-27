@@ -87,13 +87,15 @@
   `cautilus eval test --runtime fixture`가 public `dev/skill` test runtime으로 노출됐고, adapter template은 `{backend}=fixture`를 받을 수 있다.
   `execution-cautilus-test-request`는 이제 live Codex 안에서 `$cautilus`를 호출해 same suite를 `--runtime fixture --skip-preflight`로 cheap smoke하고 `accept-now`를 요약한다.
   실제 live run `./bin/cautilus eval test --repo-root . --adapter-name self-dogfood-eval-skill --output-dir /tmp/cautilus-skill-live`는 `recommendation=accept-now`, `passed=3`, `failed=0`이었다.
-  `app/chat` / `app/prompt` real-codex/claude self-dogfood 증거는 아직 없다.
 - 2026-04-27 후속 구현으로 README / CLI reference / binary help도 네 evaluation presets와 세 command-family front doors에 맞춰 조정됐다.
   `cautilus --help`의 첫 run group은 이제 `claim discover`, `eval test`, `eval evaluate`를 먼저 보여주고, `eval --help`는 `dev/repo`, `dev/skill`, `app/chat`, `app/prompt`와 `--runtime fixture`의 cheap command-routing 의미를 설명한다.
   `optimize --help`는 optimize가 proof surface 이후의 improvement front door임을 명시한다.
   `app/chat`과 `app/prompt`도 fixture-backed self-dogfood entry가 생겼다.
   `npm run dogfood:app-chat:fixture`와 `npm run dogfood:app-prompt:fixture`는 각각 `recommendation=accept-now`, `passed=1`, `failed=0`으로 통과했다.
   이 과정에서 adapter loader가 `default_runtime`을 버리던 버그를 고쳐 named adapter의 `default_runtime: fixture`가 실제 `eval test` runtime으로 쓰이게 했다.
+  같은 runner를 Codex CLI messaging mode로도 확장했다.
+  `npm run dogfood:app-prompt:live`와 `npm run dogfood:app-chat:live` 모두 `recommendation=accept-now`, `passed=1`, `failed=0`이다.
+  app/chat live의 첫 시도는 fixture가 제품명을 기대하면서도 user turn에 제품명을 넣지 않아 `reject`였고, debug record는 [charness-artifacts/debug/debug-2026-04-27-app-chat-live-fixture-ambiguity.md](../../charness-artifacts/debug/debug-2026-04-27-app-chat-live-fixture-ambiguity.md).
   이전 handoff에 적힌 `charness-artifacts/cautilus/latest.md`는 현재 repo에 존재하지 않는 artifact path였으므로 다음 작업 후보에서 제거했다.
 - 2026-04-27 skill-surface verification 중 shared charness guidance가 removed `cautilus instruction-surface test --repo-root .`를 아직 참조한다는 것을 확인했다.
   Cautilus binary는 현재 spec대로 해당 command를 제거했고, replacement path는 `cautilus eval test --adapter-name self-dogfood-eval` 또는 `npm run dogfood:self`다.
@@ -124,8 +126,8 @@
 5. spec follow-up #4 — C2/C3/C4 composition primitives (extends / multi-step / snapshot), 슬라이스당 하나.
 6. spec follow-up #5 — `scenario normalize` 재범위만 남음.
    archetype-boundary retire는 cut 슬라이스에 흡수됨.
-7. `app/chat` / `app/prompt` 중 어느 surface에 real-codex/claude self-dogfood evidence를 먼저 붙일지 결정한다.
-8. 후속 후보: fixture-backed app smoke와 live model quality evidence를 혼동하지 않도록 release / quality artifact 쪽 proof boundary 표현을 점검한다.
+7. 후속 후보: fixture-backed app smoke와 one-case live Codex proof를 broader app quality proof로 과장하지 않도록 release / quality artifact 쪽 proof boundary 표현을 점검한다.
+8. 후속 후보: Claude CLI parity 또는 direct provider parity가 필요한지 결정한다.
 
 ## Discuss
 

@@ -260,11 +260,13 @@ For cheap fixture-backed product-surface smoke tests, use:
 
 ```bash
 npm run dogfood:app-chat:fixture
+npm run dogfood:app-chat:live
 npm run dogfood:app-prompt:fixture
+npm run dogfood:app-prompt:live
 ```
 
-These prove the `app / chat` and `app / prompt` fixture translation, adapter runner, and evaluator packet paths.
-They do not prove live model response quality.
+The fixture variants prove the `app / chat` and `app / prompt` fixture translation, adapter runner, and evaluator packet paths.
+The live variants run the same checked-in fixtures through Codex CLI in messaging mode and prove the app-surface CLI runtime path.
 
 ## Skill testing & evaluation
 
