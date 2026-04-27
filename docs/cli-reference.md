@@ -285,6 +285,10 @@ cautilus eval test \
   --repo-root . \
   --adapter-name self-dogfood-refresh-flow
 
+# maintainer proof for both supported coding-agent CLI runtimes
+npm run dogfood:cautilus-refresh-flow:eval:codex
+npm run dogfood:cautilus-refresh-flow:eval:claude
+
 # smoke the local skill routing path without recursively launching a model eval
 cautilus eval test \
   --repo-root . \

@@ -89,6 +89,9 @@ function collectLooseTopLevelSignals(event, index, timestamp, { looseCommands, m
 	if (event.type === "response_item" || event.type === "turn_context") {
 		return;
 	}
+	const claude = collectClaudeSignals(event, index, timestamp);
+	messages.push(...claude.messages);
+	toolCalls.push(...claude.toolCalls);
 	const loose = collectLooseSignals(event, index, timestamp);
 	looseCommands.push(...loose.commands);
 	messages.push(...loose.messages);
@@ -309,16 +312,66 @@ function collectLooseToolCall(value, type, result, index, timestamp) {
 	if (!name || !/function_call|tool_call|tool/.test(type) || type === "response_item") {
 		return;
 	}
+	const parsedArguments = value.input ?? value.arguments ?? value.args ?? null;
 	result.toolCalls.push({
 		index,
 		timestamp,
 		callId: stringOrNull(value.call_id) ?? stringOrNull(value.id),
 		name,
-		arguments: value.arguments ?? value.args ?? null,
-		parsedArguments: value.arguments ?? value.args ?? null,
-		command: "",
+		arguments: value.arguments ?? value.args ?? value.input ?? null,
+		parsedArguments,
+		command: commandFromArguments(parsedArguments),
 		workdir: null,
 	});
+}
+
+function collectClaudeSignals(event, index, timestamp) {
+	const result = { messages: [], toolCalls: [] };
+	const message = claudeMessage(event);
+	if (!message) {
+		return result;
+	}
+	const role = stringOrNull(message.role);
+	const text = contentText(message.content);
+	if ((role === "assistant" || role === "user") && text) {
+		result.messages.push({ index, timestamp, role, text });
+	}
+	result.toolCalls.push(...claudeToolCalls(message.content, index, timestamp));
+	return result;
+}
+
+function claudeMessage(event) {
+	if (!event || typeof event !== "object") {
+		return null;
+	}
+	if (event.message && typeof event.message === "object") {
+		return event.message;
+	}
+	if (event.type === "result" && typeof event.result === "string" && event.result.trim()) {
+		return { role: "assistant", content: event.result };
+	}
+	return null;
+}
+
+function claudeToolCalls(content, index, timestamp) {
+	if (!Array.isArray(content)) {
+		return [];
+	}
+	return content
+		.filter((item) => item && typeof item === "object" && item.type === "tool_use")
+		.map((item) => {
+			const parsedArguments = item.input ?? null;
+			return {
+				index,
+				timestamp,
+				callId: stringOrNull(item.id),
+				name: stringOrNull(item.name) ?? "unknown",
+				arguments: parsedArguments,
+				parsedArguments,
+				command: commandFromArguments(parsedArguments),
+				workdir: null,
+			};
+		});
 }
 
 function extractExitCode(output) {

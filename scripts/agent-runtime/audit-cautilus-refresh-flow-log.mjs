@@ -9,8 +9,9 @@ import { writeTextOutput } from "./output-files.mjs";
 
 export const REFRESH_FLOW_AUDIT_SCHEMA = "cautilus.refresh_flow_audit.v1";
 
-const AGENT_STATUS_PATTERN = /\b(?:\.\/bin\/)?cautilus\b.*\bagent\s+status\b/;
-const REFRESH_DISCOVER_PATTERN = /\b(?:\.\/bin\/)?cautilus\b.*\bclaim\s+discover\b(?=.*--previous\b)(?=.*--refresh-plan\b)/;
+const CAUTILUS_COMMAND_PATTERN = /(?:\b(?:\.\/bin\/)?cautilus\b|\$CAUTILUS_BIN)/;
+const AGENT_STATUS_PATTERN = new RegExp(`${CAUTILUS_COMMAND_PATTERN.source}[\\s\\S]*\\bagent\\s+status\\b`);
+const REFRESH_DISCOVER_PATTERN = new RegExp(`${CAUTILUS_COMMAND_PATTERN.source}[\\s\\S]*\\bclaim\\s+discover\\b(?=[\\s\\S]*--previous\\b)(?=[\\s\\S]*--refresh-plan\\b)`);
 const REFRESH_SUMMARY_PATTERN = /\brefreshSummary\b/;
 
 const FORBIDDEN_COMMAND_PATTERNS = [
@@ -131,14 +132,14 @@ function messageFindings(messages) {
 			message: "Branch options should present coordinator-facing labels before internal branch ids.",
 		});
 	}
-	if (!/saved claim map|저장된 claim (?:map|맵)/i.test(joined)) {
+	if (!/saved claim map|저장된 (?:claim|클레임) (?:map|맵)/i.test(joined)) {
 		findings.push({
 			severity: "error",
 			id: "missing_saved_claim_map_language",
 			message: "The refresh flow should explain the state as a saved claim map, not only as a packet or branch id.",
 		});
 	}
-	if (!/did not update|not update|아직 .*업데이트|업데이트하지|갱신되지|갱신하지|쓰지 않았/.test(joined)) {
+	if (!/did not update|not update|아직 .*업데이트|업데이트하지|갱신되지|갱신하지|갱신 안 함|그대로 두|변경되지|쓰지 않았/.test(joined)) {
 		findings.push({
 			severity: "error",
 			id: "missing_not_updated_boundary",

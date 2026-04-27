@@ -33,6 +33,24 @@ function assistant(text) {
 	};
 }
 
+function claudeAssistantWithBash(text, command) {
+	return {
+		type: "assistant",
+		message: {
+			role: "assistant",
+			content: [
+				{ type: "text", text },
+				{
+					type: "tool_use",
+					id: `toolu-${command.length}`,
+					name: "Bash",
+					input: { command },
+				},
+			],
+		},
+	};
+}
+
 test("passes a bounded two-turn refresh branch flow", () => {
 	const audit = auditRefreshFlowLogText(jsonl([
 		toolCall(1, "./bin/cautilus agent status --repo-root . --json"),
@@ -41,6 +59,36 @@ test("passes a bounded two-turn refresh branch flow", () => {
 		toolCall(3, "./bin/cautilus claim discover --repo-root . --previous .cautilus/claims/latest.json --refresh-plan --output .cautilus/claims/refresh-plan.json"),
 		toolCall(4, "jq '.refreshSummary' .cautilus/claims/refresh-plan.json"),
 		assistant("What I did: recorded a comparison for the saved claim map. What I did not do: did not update the saved claim map, review claims, or plan evals."),
+	]));
+	assert.equal(audit.status, "passed");
+	assert.deepEqual(audit.findings, []);
+});
+
+test("passes a bounded Claude stream-json refresh branch flow", () => {
+	const audit = auditRefreshFlowLogText(jsonl([
+		claudeAssistantWithBash(
+			"1. Compare the saved claim map with recent repo changes (`refresh_claims_from_diff`)",
+			"./bin/cautilus agent status --repo-root . --json",
+		),
+		claudeAssistantWithBash(
+			"agent status를 재확인합니다.",
+			"./bin/cautilus agent status --repo-root . --json",
+		),
+		claudeAssistantWithBash(
+			"refresh plan을 기록합니다.",
+			"./bin/cautilus claim discover --repo-root . --previous .cautilus/claims/latest.json --refresh-plan --output .cautilus/claims/refresh-plan.json",
+		),
+		claudeAssistantWithBash(
+			"refreshSummary를 읽겠습니다.",
+			"jq '.refreshSummary' .cautilus/claims/refresh-plan.json",
+		),
+		{
+			type: "assistant",
+			message: {
+				role: "assistant",
+				content: [{ type: "text", text: "저장된 claim map은 아직 업데이트하지 않았습니다." }],
+			},
+		},
 	]));
 	assert.equal(audit.status, "passed");
 	assert.deepEqual(audit.findings, []);
@@ -102,6 +150,17 @@ test("accepts Korean wording that says the saved claim map was not refreshed", (
 		toolCall(3, "./bin/cautilus claim discover --repo-root . --previous .cautilus/claims/latest.json --refresh-plan --output .cautilus/claims/refresh-plan.json"),
 		toolCall(4, "jq '.refreshSummary' .cautilus/claims/refresh-plan.json"),
 		assistant("저장된 claim map은 아직 갱신되지 않았고, 새 claim 패킷을 쓰지 않았습니다."),
+	]));
+	assert.equal(audit.status, "passed");
+});
+
+test("accepts Korean wording that says the saved claim map was left as-is", () => {
+	const audit = auditRefreshFlowLogText(jsonl([
+		toolCall(1, "./bin/cautilus agent status --repo-root . --json"),
+		toolCall(2, "./bin/cautilus agent status --repo-root . --json"),
+		toolCall(3, "./bin/cautilus claim discover --repo-root . --previous .cautilus/claims/latest.json --refresh-plan --output .cautilus/claims/refresh-plan.json"),
+		toolCall(4, "jq '.refreshSummary' .cautilus/claims/refresh-plan.json"),
+		assistant("저장된 클레임 맵은 그대로 두었고 claim 리뷰와 eval 계획은 하지 않았습니다."),
 	]));
 	assert.equal(audit.status, "passed");
 });

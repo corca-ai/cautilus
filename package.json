@@ -18,6 +18,8 @@
     "dogfood:app-prompt:claude": "./bin/cautilus eval test --repo-root . --adapter-name self-dogfood-app-prompt --runtime claude --output-dir ./artifacts/self-dogfood/app-prompt-claude/latest",
     "dogfood:cautilus-refresh-flow": "node scripts/agent-runtime/run-cautilus-refresh-flow-dogfood.mjs --repo-root . --output-dir ./artifacts/self-dogfood/cautilus-refresh-flow/latest",
     "dogfood:cautilus-refresh-flow:eval": "./bin/cautilus eval test --repo-root . --adapter-name self-dogfood-refresh-flow --output-dir ./artifacts/self-dogfood/cautilus-refresh-flow-eval/latest",
+    "dogfood:cautilus-refresh-flow:eval:codex": "./bin/cautilus eval test --repo-root . --adapter-name self-dogfood-refresh-flow --runtime codex --output-dir ./artifacts/self-dogfood/cautilus-refresh-flow-eval-codex/latest",
+    "dogfood:cautilus-refresh-flow:eval:claude": "./bin/cautilus eval test --repo-root . --adapter-name self-dogfood-refresh-flow --runtime claude --output-dir ./artifacts/self-dogfood/cautilus-refresh-flow-eval-claude/latest",
     "dogfood:self:html": "./bin/cautilus self-dogfood render-html",
     "consumer:onboard:smoke": "node scripts/on-demand/smoke-external-consumer.mjs",
     "skills:sync-packaged": "node scripts/release/sync-packaged-skill.mjs",

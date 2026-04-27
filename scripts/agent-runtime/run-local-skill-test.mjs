@@ -10,6 +10,7 @@ import {
 import { normalizeSkillTestCaseSuite } from "./skill-test-case-suite.mjs";
 import { baseSchema } from "./skill-test-schema.mjs";
 import { runClaudeSample } from "./skill-test-claude-backend.mjs";
+import { runClaudeEpisodeSample as runClaudeEpisodeSampleFromRuntime } from "./skill-test-claude-episode.mjs";
 import {
 	aggregateSkillTelemetry,
 	extractCodexTelemetry,
@@ -566,7 +567,17 @@ function runCaseSamples(options, testCase, fixtureResults) {
 		if (options.backend === "fixture") {
 			observed = runFixtureSample(testCase, fixtureResults, options.artifactDir, sampleIndex);
 		} else if (options.backend === "claude_code") {
-			observed = runClaudeSample(options, testCase, options.artifactDir, sampleIndex);
+			observed = (testCase.turns ?? []).length > 0
+				? runClaudeEpisodeSampleFromRuntime({
+					options,
+					testCase,
+					artifactDir: options.artifactDir,
+					sampleIndex,
+					artifactRef,
+					sampleDir,
+					backendFailureResult,
+				})
+				: runClaudeSample(options, testCase, options.artifactDir, sampleIndex);
 		} else {
 			observed = runCodexSample(options, testCase, options.artifactDir, sampleIndex);
 		}

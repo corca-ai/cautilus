@@ -101,6 +101,45 @@ test("summarizes codex exec json item.completed command events", () => {
 	assert.equal(summary.assistantMessages[0].text, "상태를 읽었습니다.");
 });
 
+test("summarizes Claude stream-json assistant text and Bash tool calls", () => {
+	const text = jsonl([
+		{
+			type: "system",
+			subtype: "init",
+			session_id: "claude-session-1",
+		},
+		{
+			type: "assistant",
+			message: {
+				role: "assistant",
+				content: [
+					{ type: "text", text: "상태를 확인하겠습니다." },
+					{
+						type: "tool_use",
+						id: "toolu_1",
+						name: "Bash",
+						input: {
+							command: "./bin/cautilus agent status --repo-root . --json",
+							description: "Read Cautilus status",
+						},
+					},
+				],
+			},
+		},
+		{
+			type: "result",
+			result: "완료했습니다.",
+		},
+	]);
+
+	const summary = summarizeCodexSessionLogText(text);
+	assert.equal(summary.assistantMessages[0].text, "상태를 확인하겠습니다.");
+	assert.equal(summary.toolCalls[0].name, "Bash");
+	assert.equal(summary.toolCalls[0].command, "./bin/cautilus agent status --repo-root . --json");
+	assert.equal(summary.commands[0], "./bin/cautilus agent status --repo-root . --json");
+	assert.equal(summary.assistantMessages.at(-1).text, "완료했습니다.");
+});
+
 test("cli writes a nested session summary artifact", () => {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-session-summary-"));
 	const input = join(root, "session.jsonl");

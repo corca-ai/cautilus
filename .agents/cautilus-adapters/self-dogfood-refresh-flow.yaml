@@ -11,7 +11,7 @@ preflight_commands:
   - ./bin/cautilus doctor --repo-root . --scope agent-surface
 evaluation_input_default: fixtures/eval/dev/skill/cautilus-refresh-flow.fixture.json
 eval_test_command_templates:
-  - node ./scripts/run-self-dogfood-skill-refresh-flow-eval.mjs --repo-root . --output-dir {output_dir} --cases-file {eval_cases_file} --output-file {eval_observed_file} --backend {backend} --sandbox workspace-write --timeout-ms 240000 --codex-model gpt-5.4-mini --codex-reasoning-effort low --codex-config project_doc_max_bytes=0 --codex-config include_apps_instructions=false --codex-config include_environment_context=false --claude-permission-mode dontAsk --claude-allowed-tools 'Bash(cautilus *)'
+  - node ./scripts/run-self-dogfood-skill-refresh-flow-eval.mjs --repo-root . --output-dir {output_dir} --cases-file {eval_cases_file} --output-file {eval_observed_file} --backend {backend} --sandbox workspace-write --timeout-ms 240000 --codex-model gpt-5.4-mini --codex-reasoning-effort low --codex-config project_doc_max_bytes=0 --codex-config include_apps_instructions=false --codex-config include_environment_context=false --claude-permission-mode dontAsk --claude-allowed-tools 'Bash(*)'
 artifact_paths:
   - skills/cautilus/SKILL.md
   - fixtures/eval/dev/skill/cautilus-refresh-flow.fixture.json
@@ -20,7 +20,7 @@ artifact_paths:
   - scripts/agent-runtime/run-local-skill-test.mjs
   - scripts/agent-runtime/audit-cautilus-refresh-flow-log.mjs
 comparison_questions:
-  - Can the bundled cautilus skill orient from no input and complete the selected claim-refresh branch without overrun?
+  - Can the bundled cautilus skill orient from no input and complete the selected claim-refresh branch without overrun under both Codex and Claude CLI runtimes?
 human_review_prompts:
   - id: refresh-flow-episode
     prompt: Where would an operator still conclude that the multi-turn refresh-flow episode is not represented by the eval fixture and audit packet?

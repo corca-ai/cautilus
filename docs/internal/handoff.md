@@ -67,6 +67,10 @@
   `fixtures/eval/dev/skill/cautilus-refresh-flow.fixture.json`는 `$cautilus` 다음 `1`을 ordered `turns`로 표현하고 `auditKind=cautilus_refresh_flow`로 결과를 판정한다.
   `npm run dogfood:cautilus-refresh-flow:eval`는 adapter-owned wrapper를 통해 disposable candidate worktree를 만들고, source checkout을 오염시키지 않는 상태로 live Codex episode를 실행한다.
   최종 실행은 `recommendation=accept-now`, `passed=1`, `failed=0`이며 artifact는 `artifacts/self-dogfood/cautilus-refresh-flow-eval/latest/eval-summary.json`.
+  2026-04-27 후속 구현으로 같은 refresh-flow eval이 Codex와 Claude 양쪽 live runtime에서 명시적으로 증명됐다.
+  `npm run dogfood:cautilus-refresh-flow:eval:codex`와 `npm run dogfood:cautilus-refresh-flow:eval:claude`는 모두 `recommendation=accept-now`, `passed=1`, `failed=0`이다.
+  Claude parity를 위해 `run-local-skill-test`는 Claude `stream-json` + `--resume` 기반 multi-turn episode runner를 갖고, refresh-flow audit은 Claude stream-json tool calls / `$CAUTILUS_BIN` command shape / 한국어 saved-claim-map 표현을 인식한다.
+  debug record는 [charness-artifacts/debug/debug-2026-04-27-claude-refresh-flow-parity.md](../../charness-artifacts/debug/debug-2026-04-27-claude-refresh-flow-parity.md).
   이 과정에서 `.cautilus/claims/latest.json`의 legacy `repo/whole-repo` / `repo/skill` labels도 `dev/repo` / `dev/skill`로 정리되어 `agent status`가 `claimState.status=present`와 `refresh_claims_from_diff` 첫 branch를 보여준다.
 - 2026-04-26 후속 구현으로 existing-packet helper slice도 들어왔다.
   `claim show --input <claims.json> --sample-claims <n>`는 `cautilus.claim_status_summary.v1`를 만들고 bounded `sampleClaims`와 `gitState`로 stable candidate fields와 claim-packet freshness를 보여준다.
