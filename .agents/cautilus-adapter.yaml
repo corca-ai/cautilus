@@ -16,6 +16,29 @@ eval_test_command_templates:
   - node ./scripts/run-self-dogfood-eval.mjs --repo-root . --output-dir {output_dir} --cases-file {eval_cases_file} --output-file {eval_observed_file} --backend {backend} --sandbox read-only --timeout-ms 180000 --codex-model gpt-5.4-mini --codex-reasoning-effort low --claude-permission-mode dontAsk
 full_gate_command_templates:
   - npm run verify
+claim_discovery:
+  entries:
+    - README.md
+    - AGENTS.md
+    - CLAUDE.md
+  linked_markdown_depth: 3
+  state_path: .cautilus/claims/latest.json
+  audience_hints:
+    user:
+      - README.md
+      - docs/cli-reference.md
+      - docs/guides/**
+      - docs/contracts/**
+      - docs/specs/**
+      - skills/cautilus/**
+      - plugins/cautilus/skills/cautilus/**
+    developer:
+      - AGENTS.md
+      - docs/internal/**
+      - docs/maintainers/**
+      - .agents/**
+      - scripts/**
+      - internal/**
 executor_variants:
   - id: codex-root-review
     tool: codex_exec

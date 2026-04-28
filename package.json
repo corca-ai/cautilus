@@ -60,6 +60,7 @@
     "audit:first-scan-flow-log": "node scripts/agent-runtime/audit-cautilus-first-scan-flow-log.mjs",
     "audit:review-prepare-flow-log": "node scripts/agent-runtime/audit-cautilus-review-prepare-flow-log.mjs",
     "audit:reviewer-launch-flow-log": "node scripts/agent-runtime/audit-cautilus-reviewer-launch-flow-log.mjs",
+    "claims:review-worksheet": "node scripts/agent-runtime/render-claim-discovery-review.mjs --claims .cautilus/claims/latest.json --status .cautilus/claims/status-summary.json --output .cautilus/claims/discovery-review.md",
     "test:node:coverage": "c8 --reporter=lcov --reports-dir=coverage --include='scripts/**' --include='bin/**' --exclude='**/*.test.mjs' --exclude='scripts/on-demand/**' node --test bin/*.test.mjs scripts/*.test.mjs scripts/agent-runtime/*.test.mjs scripts/release/*.test.mjs && node scripts/summarize-node-coverage.mjs",
     "test:coverage": "npm run test:go:coverage && npm run test:node:coverage && node scripts/aggregate-coverage.mjs",
     "coverage:floor:check": "./scripts/coverage-floor-quality-gate.sh",

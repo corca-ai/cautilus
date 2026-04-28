@@ -151,6 +151,10 @@ func TestValidateAdapterDataAcceptsClaimDiscoveryConfig(t *testing.T) {
 			"exclude":               []any{"artifacts/**"},
 			"state_path":            ".cautilus/claims/latest.json",
 			"evidence_roots":        []any{"artifacts/self-dogfood/eval/latest"},
+			"audience_hints": map[string]any{
+				"user":      []any{"README.md", "docs/guides/**"},
+				"developer": []any{"AGENTS.md", "docs/internal/**"},
+			},
 		},
 	})
 	if len(errors) > 0 {
@@ -162,6 +166,23 @@ func TestValidateAdapterDataAcceptsClaimDiscoveryConfig(t *testing.T) {
 	}
 	if claimDiscovery["state_path"] != ".cautilus/claims/latest.json" {
 		t.Fatalf("expected state path in claim_discovery, got %#v", claimDiscovery)
+	}
+	hints := asMap(claimDiscovery["audience_hints"])
+	if len(stringArrayOrEmpty(hints["user"])) != 2 || len(stringArrayOrEmpty(hints["developer"])) != 2 {
+		t.Fatalf("expected audience hints to survive normalization, got %#v", hints)
+	}
+}
+
+func TestValidateAdapterDataRejectsUnknownClaimDiscoveryAudienceHint(t *testing.T) {
+	_, errors := validateAdapterData(map[string]any{
+		"claim_discovery": map[string]any{
+			"audience_hints": map[string]any{
+				"operator": []any{"docs/**"},
+			},
+		},
+	})
+	if len(errors) == 0 {
+		t.Fatalf("expected unknown claim_discovery audience hint to fail")
 	}
 }
 

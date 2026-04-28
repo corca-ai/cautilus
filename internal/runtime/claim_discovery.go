@@ -63,6 +63,8 @@ type claimSource struct {
 	absPath        string
 	relPath        string
 	kind           string
+	audience       string
+	audienceSource string
 	depth          int
 	discoveredFrom string
 }
@@ -82,6 +84,8 @@ type claimCandidate struct {
 	whyThisLayer           string
 	nextAction             string
 	groupHints             []string
+	claimAudience          string
+	claimAudienceSource    string
 }
 
 type claimSourceRef struct {
@@ -113,6 +117,7 @@ type claimDiscoveryConfig struct {
 	include             []string
 	exclude             []string
 	evidenceRoots       []string
+	audienceHints       map[string][]string
 	linkedMarkdownDepth int
 	statePath           string
 	statePathSource     string
@@ -180,10 +185,12 @@ func DiscoverClaimProofPlan(options ClaimDiscoveryOptions) (map[string]any, erro
 			}
 		}
 		entry := map[string]any{
-			"path":   source.relPath,
-			"kind":   source.kind,
-			"status": status,
-			"depth":  source.depth,
+			"path":                source.relPath,
+			"kind":                source.kind,
+			"status":              status,
+			"depth":               source.depth,
+			"claimAudience":       source.audience,
+			"claimAudienceSource": source.audienceSource,
 		}
 		if source.discoveredFrom != "" {
 			entry["discoveredFrom"] = source.discoveredFrom
@@ -252,6 +259,9 @@ func resolveClaimDiscoveryConfig(repoRoot string, explicit []string) (claimDisco
 		if evidenceRoots := stringArrayOrEmpty(claimConfig["evidence_roots"]); len(evidenceRoots) > 0 {
 			config.evidenceRoots = normalizeClaimPathList(evidenceRoots)
 		}
+		if audienceHints := resolveClaimAudienceHints(claimConfig["audience_hints"]); len(audienceHints) > 0 {
+			config.audienceHints = audienceHints
+		}
 		if depth, ok := claimConfig["linked_markdown_depth"].(int); ok {
 			config.linkedMarkdownDepth = depth
 		}
@@ -265,6 +275,17 @@ func resolveClaimDiscoveryConfig(repoRoot string, explicit []string) (claimDisco
 		}
 	}
 	return config, nil
+}
+
+func resolveClaimAudienceHints(value any) map[string][]string {
+	record := asMap(value)
+	result := map[string][]string{}
+	for _, audience := range []string{"user", "developer"} {
+		if patterns := normalizeClaimPathList(stringArrayOrEmpty(record[audience])); len(patterns) > 0 {
+			result[audience] = patterns
+		}
+	}
+	return result
 }
 
 func normalizeClaimStatePath(value string) (string, error) {
@@ -320,10 +341,13 @@ func discoverClaimSources(repoRoot string, config claimDiscoveryConfig) ([]claim
 		}
 		seen[relPath] = struct{}{}
 		seenCanonicalFiles[filepath.Clean(canonicalPath)] = relPath
+		audience, audienceSource := claimAudienceForSource(relPath, config)
 		source := claimSource{
 			absPath:        absPath,
 			relPath:        relPath,
 			kind:           claimSourceKind(relPath),
+			audience:       audience,
+			audienceSource: audienceSource,
 			depth:          depth,
 			discoveredFrom: from,
 		}
@@ -501,6 +525,33 @@ func claimGlobMatch(pattern string, relPath string) bool {
 	return err == nil && matched
 }
 
+func claimAudienceForSource(relPath string, config claimDiscoveryConfig) (string, string) {
+	matches := []string{}
+	for _, audience := range []string{"user", "developer"} {
+		for _, pattern := range config.audienceHints[audience] {
+			if claimGlobMatch(pattern, relPath) {
+				matches = append(matches, audience)
+				break
+			}
+		}
+	}
+	if len(matches) == 1 {
+		return matches[0], "adapter-hint"
+	}
+	if len(matches) > 1 {
+		return "unclear", "conflicting-adapter-hints"
+	}
+	lower := strings.ToLower(filepath.ToSlash(relPath))
+	switch lower {
+	case "readme.md":
+		return "user", "entry-default"
+	case "agents.md", "claude.md":
+		return "developer", "entry-default"
+	default:
+		return "unclear", "unknown"
+	}
+}
+
 func claimSourceKind(relPath string) string {
 	slash := filepath.ToSlash(relPath)
 	lower := strings.ToLower(slash)
@@ -551,9 +602,9 @@ func extractClaimCandidates(source claimSource, seenIDs map[string]int) (claimEx
 		}
 		id := uniqueClaimID(source.relPath, block.line, seenIDs)
 		candidates = append(candidates, claimCandidate{
-			claimID:                id,
-			claimFingerprint:       claimFingerprint(summary),
-			summary:                summary,
+			claimID:          id,
+			claimFingerprint: claimFingerprint(summary),
+			summary:          summary,
 			sourceRefs: []claimSourceRef{{
 				path:    source.relPath,
 				line:    block.line,
@@ -569,6 +620,8 @@ func extractClaimCandidates(source claimSource, seenIDs map[string]int) (claimEx
 			whyThisLayer:           classification.why,
 			nextAction:             classification.next,
 			groupHints:             claimGroupHints(source, classification),
+			claimAudience:          source.audience,
+			claimAudienceSource:    source.audienceSource,
 		})
 	}
 	return claimExtraction{candidates: candidates}, nil
@@ -775,6 +828,9 @@ func fileSHA256(path string) (string, error) {
 
 func claimGroupHints(source claimSource, classification claimClassification) []string {
 	hints := []string{classification.recommendedProof, source.kind}
+	if source.audience != "" {
+		hints = append(hints, "audience:"+source.audience)
+	}
 	if classification.verificationReadiness != "" && classification.verificationReadiness != "ready-to-verify" {
 		hints = append(hints, classification.verificationReadiness)
 	}
@@ -800,12 +856,38 @@ func mergeIdenticalClaimCandidates(candidates []claimCandidate) []claimCandidate
 		existing := &merged[index]
 		existing.sourceRefs = appendClaimSourceRefs(existing.sourceRefs, candidate.sourceRefs)
 		existing.groupHints = mergeStringSet(existing.groupHints, candidate.groupHints)
+		existing.claimAudience = mergeClaimAudience(existing.claimAudience, candidate.claimAudience)
+		existing.claimAudienceSource = mergeClaimAudienceSource(existing.claimAudienceSource, candidate.claimAudienceSource)
 	}
 	for index := range merged {
 		sortClaimSourceRefs(merged[index].sourceRefs)
 		sort.Strings(merged[index].groupHints)
 	}
 	return merged
+}
+
+func mergeClaimAudience(existing string, incoming string) string {
+	existing = strings.TrimSpace(existing)
+	incoming = strings.TrimSpace(incoming)
+	if existing == "" {
+		return incoming
+	}
+	if incoming == "" || existing == incoming {
+		return existing
+	}
+	return "unclear"
+}
+
+func mergeClaimAudienceSource(existing string, incoming string) string {
+	existing = strings.TrimSpace(existing)
+	incoming = strings.TrimSpace(incoming)
+	if existing == "" {
+		return incoming
+	}
+	if incoming == "" || existing == incoming {
+		return existing
+	}
+	return "mixed"
 }
 
 func appendClaimSourceRefs(existing []claimSourceRef, incoming []claimSourceRef) []claimSourceRef {
@@ -870,12 +952,14 @@ func renderClaimCandidates(candidates []claimCandidate) []any {
 			"evidenceStatus":        candidate.evidenceStatus,
 			"reviewStatus":          candidate.reviewStatus,
 			"lifecycle":             candidate.lifecycle,
+			"claimAudience":         claimAudienceOrUnclear(candidate.claimAudience),
+			"claimAudienceSource":   claimAudienceSourceOrUnknown(candidate.claimAudienceSource),
 			"groupHints":            candidate.groupHints,
 			"evidenceRefs":          []any{},
-			"sourceRefs":   renderClaimSourceRefs(candidate.sourceRefs),
-			"proofLayer":   candidate.proofLayer,
-			"whyThisLayer": candidate.whyThisLayer,
-			"nextAction":   candidate.nextAction,
+			"sourceRefs":            renderClaimSourceRefs(candidate.sourceRefs),
+			"proofLayer":            candidate.proofLayer,
+			"whyThisLayer":          candidate.whyThisLayer,
+			"nextAction":            candidate.nextAction,
 		}
 		if candidate.recommendedEvalSurface != "" {
 			entry["recommendedEvalSurface"] = candidate.recommendedEvalSurface
@@ -897,17 +981,43 @@ func renderClaimSourceRefs(refs []claimSourceRef) []any {
 	return result
 }
 
+func claimAudienceOrUnclear(value string) string {
+	switch strings.TrimSpace(value) {
+	case "user", "developer":
+		return strings.TrimSpace(value)
+	default:
+		return "unclear"
+	}
+}
+
+func claimAudienceSourceOrUnknown(value string) string {
+	trimmed := strings.TrimSpace(value)
+	if trimmed == "" {
+		return "unknown"
+	}
+	return trimmed
+}
+
 func renderClaimScanScope(config claimDiscoveryConfig) map[string]any {
 	return map[string]any{
 		"entries":             config.entries,
 		"include":             nonNilStringSlice(config.include),
 		"exclude":             nonNilStringSlice(config.exclude),
+		"audienceHints":       renderClaimAudienceHints(config.audienceHints),
 		"linkedMarkdownDepth": config.linkedMarkdownDepth,
 		"explicitSources":     config.explicitSources,
 		"adapterFound":        config.adapterFound,
 		"adapterPath":         config.adapterPath,
 		"traversal":           "entry-markdown-links",
 	}
+}
+
+func renderClaimAudienceHints(hints map[string][]string) map[string]any {
+	rendered := map[string]any{}
+	for _, audience := range []string{"user", "developer"} {
+		rendered[audience] = nonNilStringSlice(hints[audience])
+	}
+	return rendered
 }
 
 func nonNilStringSlice(values []string) []string {
@@ -931,6 +1041,7 @@ func summarizeClaimCandidates(candidates []any) map[string]any {
 	byReview := map[string]int{}
 	byLifecycle := map[string]int{}
 	byProofLayer := map[string]int{}
+	byAudience := map[string]int{}
 	for _, raw := range candidates {
 		entry := asMap(raw)
 		incrementStringCount(byProof, entry["recommendedProof"])
@@ -939,6 +1050,7 @@ func summarizeClaimCandidates(candidates []any) map[string]any {
 		incrementStringCount(byReview, entry["reviewStatus"])
 		incrementStringCount(byLifecycle, entry["lifecycle"])
 		incrementStringCount(byProofLayer, entry["proofLayer"])
+		incrementStringCount(byAudience, claimAudienceOrUnclear(stringFromAny(entry["claimAudience"])))
 	}
 	return map[string]any{
 		"byRecommendedProof":      sortedCountMap(byProof),
@@ -947,6 +1059,7 @@ func summarizeClaimCandidates(candidates []any) map[string]any {
 		"byReviewStatus":          sortedCountMap(byReview),
 		"byLifecycle":             sortedCountMap(byLifecycle),
 		"byProofLayer":            sortedCountMap(byProofLayer),
+		"byClaimAudience":         sortedCountMap(byAudience),
 	}
 }
 
@@ -1357,6 +1470,7 @@ func currentClaimLabels(candidate map[string]any) map[string]any {
 		"reviewStatus":          candidate["reviewStatus"],
 		"lifecycle":             candidate["lifecycle"],
 		"proofLayer":            candidate["proofLayer"],
+		"claimAudience":         candidate["claimAudience"],
 	}
 	if surface := stringFromAny(candidate["recommendedEvalSurface"]); surface != "" {
 		labels["recommendedEvalSurface"] = surface
@@ -2111,6 +2225,9 @@ func ValidateClaimProofPlan(plan map[string]any) error {
 		if surface := strings.TrimSpace(stringFromAny(entry["recommendedEvalSurface"])); surface != "" && !validEvalSurface(surface) {
 			return fmt.Errorf("claimCandidates[%d].recommendedEvalSurface %q is unsupported", index, surface)
 		}
+		if audience := strings.TrimSpace(stringFromAny(entry["claimAudience"])); audience != "" && !validClaimAudience(audience) {
+			return fmt.Errorf("claimCandidates[%d].claimAudience %q is unsupported", index, audience)
+		}
 		if _, err := assertArray(entry["evidenceRefs"], fmt.Sprintf("claimCandidates[%d].evidenceRefs", index)); err != nil {
 			return err
 		}
@@ -2123,6 +2240,15 @@ func ValidateClaimProofPlan(plan map[string]any) error {
 		}
 	}
 	return nil
+}
+
+func validClaimAudience(value string) bool {
+	switch value {
+	case "user", "developer", "unclear":
+		return true
+	default:
+		return false
+	}
 }
 
 func validProofLayer(value string) bool {

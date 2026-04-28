@@ -59,6 +59,13 @@ claim_discovery:
   evidence_roots:
     - docs/specs
     - fixtures
+  audience_hints:
+    user:
+      - README.md
+      - docs/guides/**
+    developer:
+      - AGENTS.md
+      - docs/internal/**
 instance_discovery:
   kind: explicit
   instances:
@@ -171,6 +178,8 @@ default_schema_file: fixtures/review/review-verdict.schema.json
   `include` and `exclude` are repo-relative glob filters applied to discovered Markdown sources.
   `state_path` tells agents where the repo expects the current claim-state packet to live.
   `evidence_roots` declares repo-relative roots worth checking during later evidence reconciliation; it does not prove claims by itself.
+  `audience_hints` optionally maps discovered sources into `user` and `developer` claim audiences.
+  The binary uses these hints to label review queues, while the bundled skill or a human reviewer may still correct semantic edge cases.
 - `instance_discovery`: optional local-first instance routing contract for future workbench flows.
   Use `kind: explicit` when the adapter can check in a small stable instance list directly.
   Use `kind: command` when the consumer must probe one or more host-local roots at runtime and print `cautilus.workbench_instance_catalog.v1` to stdout.

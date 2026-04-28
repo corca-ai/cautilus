@@ -465,6 +465,13 @@ func validateAdapterClaimDiscovery(value any) (map[string]any, []string) {
 			normalized[field] = stringSliceNoValidate(items)
 		}
 	}
+	if raw, exists := record["audience_hints"]; exists && raw != nil {
+		hints, hintErrors := normalizeClaimDiscoveryAudienceHints(raw)
+		errors = append(errors, hintErrors...)
+		if hints != nil {
+			normalized["audience_hints"] = hints
+		}
+	}
 	if raw, exists := record["linked_markdown_depth"]; exists && raw != nil {
 		depth, err := normalizeInteger(raw, "claim_discovery.linked_markdown_depth")
 		if err != nil {
@@ -481,6 +488,33 @@ func validateAdapterClaimDiscovery(value any) (map[string]any, []string) {
 			errors = append(errors, "claim_discovery.state_path must be a non-empty string")
 		} else {
 			normalized["state_path"] = text
+		}
+	}
+	return normalized, errors
+}
+
+func normalizeClaimDiscoveryAudienceHints(value any) (map[string]any, []string) {
+	record, ok := value.(map[string]any)
+	if !ok {
+		return nil, []string{"claim_discovery.audience_hints must be a mapping"}
+	}
+	errors := []string{}
+	normalized := map[string]any{}
+	for _, audience := range []string{"user", "developer"} {
+		raw, exists := record[audience]
+		if !exists || raw == nil {
+			continue
+		}
+		items, err := assertArray(raw, "claim_discovery.audience_hints."+audience)
+		if err != nil {
+			errors = append(errors, "claim_discovery.audience_hints."+audience+" must be a list of strings")
+			continue
+		}
+		normalized[audience] = stringSliceNoValidate(items)
+	}
+	for audience := range record {
+		if audience != "user" && audience != "developer" {
+			errors = append(errors, "claim_discovery.audience_hints."+audience+" is unsupported")
 		}
 	}
 	return normalized, errors

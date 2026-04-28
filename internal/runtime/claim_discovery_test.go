@@ -44,6 +44,9 @@ func TestDiscoverClaimProofPlanClassifiesFixtureClaims(t *testing.T) {
 				t.Fatalf("candidate missing %s: %#v", field, entry)
 			}
 		}
+		if audience := stringFromAny(entry["claimAudience"]); audience == "" {
+			t.Fatalf("candidate missing claimAudience: %#v", entry)
+		}
 		if entry["proofLayer"] != derivedProofLayer(stringFromAny(entry["recommendedProof"]), stringFromAny(entry["verificationReadiness"])) {
 			t.Fatalf("legacy proofLayer does not match split fields: %#v", entry)
 		}
@@ -54,6 +57,10 @@ func TestDiscoverClaimProofPlanClassifiesFixtureClaims(t *testing.T) {
 	summary := asMap(plan["claimSummary"])
 	if asMap(summary["byEvidenceStatus"])["unknown"] != 3 {
 		t.Fatalf("expected unknown evidence summary, got %#v", summary)
+	}
+	byAudience := asMap(summary["byClaimAudience"])
+	if byAudience["user"] != 2 || byAudience["developer"] != 1 {
+		t.Fatalf("expected README claims as user and AGENTS claim as developer, got %#v", summary)
 	}
 }
 
@@ -130,6 +137,9 @@ func TestDiscoverClaimProofPlanMergesIdenticalClaimsAcrossDistinctSources(t *tes
 	}
 	if plan["candidateCount"] != 1 {
 		t.Fatalf("expected candidateCount to reflect merged claims, got %#v", plan["candidateCount"])
+	}
+	if stringFromAny(first["claimAudience"]) != "unclear" || stringFromAny(first["claimAudienceSource"]) != "entry-default" {
+		t.Fatalf("expected merged README/AGENTS claim audience to be unclear, got %#v", first)
 	}
 }
 
@@ -615,6 +625,11 @@ func TestDiscoverClaimProofPlanUsesAdapterClaimDiscoveryEntries(t *testing.T) {
 		"    - docs/start.md",
 		"  linked_markdown_depth: 1",
 		"  state_path: .cautilus/claims/custom.json",
+		"  audience_hints:",
+		"    user:",
+		"      - docs/start.md",
+		"    developer:",
+		"      - docs/next.md",
 		"",
 	}, "\n"))
 	mustWriteFile(t, filepath.Join(repoRoot, "docs", "start.md"), strings.Join([]string{
@@ -652,6 +667,17 @@ func TestDiscoverClaimProofPlanUsesAdapterClaimDiscoveryEntries(t *testing.T) {
 		if stringFromAny(asMap(raw)["path"]) == "README.md" {
 			t.Fatalf("adapter entries should override README default: %#v", inventory)
 		}
+	}
+	bySummary := map[string]map[string]any{}
+	for _, raw := range arrayOrEmpty(plan["claimCandidates"]) {
+		entry := asMap(raw)
+		bySummary[stringFromAny(entry["summary"])] = entry
+	}
+	if stringFromAny(bySummary["Agents must follow adapter-owned claim discovery entries."]["claimAudience"]) != "user" {
+		t.Fatalf("expected adapter user audience hint on docs/start.md claim, got %#v", bySummary)
+	}
+	if stringFromAny(bySummary["The deterministic unit test suite proves linked packets compile."]["claimAudience"]) != "developer" {
+		t.Fatalf("expected adapter developer audience hint on docs/next.md claim, got %#v", bySummary)
 	}
 }
 

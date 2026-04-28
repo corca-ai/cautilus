@@ -109,7 +109,17 @@ claim_discovery:
   exclude:
     - artifacts/**
     - node_modules/**
+  audience_hints:
+    user:
+      - README.md
+      - docs/guides/**
+    developer:
+      - AGENTS.md
+      - docs/internal/**
 ```
+
+`audience_hints` is adapter-owned because user-versus-developer meaning depends on the repo's documentation layout.
+The binary only understands the portable labels `user`, `developer`, and `unclear`; richer semantic grouping remains review work for the skill and reviewer loop.
 
 Before running a first broad scan, the skill should say which entries and depth it will use.
 It should also show the deterministic bounds that will be applied:
