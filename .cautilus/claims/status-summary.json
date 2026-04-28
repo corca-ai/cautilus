@@ -6,9 +6,17 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 25,
-      "unclear": 7,
-      "user": 258
+      "developer": 226,
+      "user": 64
+    },
+    "byClaimSemanticGroup": {
+      "Adapter and portability": 46,
+      "Agent and skill workflow": 13,
+      "Claim discovery and review": 18,
+      "Documentation and contracts": 34,
+      "Improvement and optimization": 15,
+      "Packets and reporting": 21,
+      "Quality gates": 143
     },
     "byEvidenceStatus": {
       "unknown": 290
@@ -43,8 +51,12 @@
     "audienceHints": {
       "developer": [
         "AGENTS.md",
+        "docs/contracts/**",
+        "docs/specs/**",
         "docs/internal/**",
         "docs/maintainers/**",
+        "docs/master-plan.md",
+        "docs/gepa.md",
         ".agents/**",
         "scripts/**",
         "internal/**"
@@ -53,8 +65,6 @@
         "README.md",
         "docs/cli-reference.md",
         "docs/guides/**",
-        "docs/contracts/**",
-        "docs/specs/**",
         "skills/cautilus/**",
         "plugins/cautilus/skills/cautilus/**"
       ]
@@ -77,14 +87,14 @@
     "linkedMarkdownDepth": 3,
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "7935cccc24b823510ba092312927f0cace560db8",
+  "gitCommit": "691d4f48fcf408d3834b40cf1f0d90f66c240cff",
   "gitState": {
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "7935cccc24b823510ba092312927f0cace560db8",
+    "currentGitCommit": "691d4f48fcf408d3834b40cf1f0d90f66c240cff",
     "isStale": false,
-    "packetGitCommit": "7935cccc24b823510ba092312927f0cace560db8",
+    "packetGitCommit": "691d4f48fcf408d3834b40cf1f0d90f66c240cff",
     "recommendedAction": "The claim packet commit matches the current checkout.",
     "workingTreePolicy": "excluded"
   },
@@ -113,7 +123,9 @@
   },
   "sampleClaims": [
     {
+      "claimAudience": "developer",
       "claimId": "claim-agents-md-12",
+      "claimSemanticGroup": "Adapter and portability",
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:developer",
@@ -135,7 +147,9 @@
       "verificationReadiness": "ready-to-verify"
     },
     {
+      "claimAudience": "developer",
       "claimId": "claim-agents-md-26",
+      "claimSemanticGroup": "Quality gates",
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:developer",
@@ -159,7 +173,9 @@
       "verificationReadiness": "ready-to-verify"
     },
     {
+      "claimAudience": "developer",
       "claimId": "claim-agents-md-29",
+      "claimSemanticGroup": "Quality gates",
       "evidenceStatus": "unknown",
       "groupHints": [
         "app/prompt",
@@ -183,7 +199,9 @@
       "verificationReadiness": "ready-to-verify"
     },
     {
+      "claimAudience": "developer",
       "claimId": "claim-agents-md-61",
+      "claimSemanticGroup": "Quality gates",
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:developer",
@@ -207,7 +225,9 @@
       "verificationReadiness": "ready-to-verify"
     },
     {
+      "claimAudience": "developer",
       "claimId": "claim-agents-md-73",
+      "claimSemanticGroup": "Quality gates",
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:developer",
@@ -231,7 +251,9 @@
       "verificationReadiness": "ready-to-verify"
     },
     {
+      "claimAudience": "developer",
       "claimId": "claim-agents-md-78",
+      "claimSemanticGroup": "Quality gates",
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:developer",
@@ -254,7 +276,9 @@
       "verificationReadiness": "needs-scenario"
     },
     {
+      "claimAudience": "developer",
       "claimId": "claim-agents-md-79",
+      "claimSemanticGroup": "Adapter and portability",
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:developer",
@@ -278,7 +302,9 @@
       "verificationReadiness": "ready-to-verify"
     },
     {
+      "claimAudience": "developer",
       "claimId": "claim-agents-md-123",
+      "claimSemanticGroup": "Quality gates",
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:developer",
@@ -302,7 +328,9 @@
       "verificationReadiness": "ready-to-verify"
     },
     {
+      "claimAudience": "user",
       "claimId": "claim-readme-md-3",
+      "claimSemanticGroup": "Quality gates",
       "evidenceStatus": "unknown",
       "groupHints": [
         "app/prompt",
@@ -326,7 +354,9 @@
       "verificationReadiness": "ready-to-verify"
     },
     {
+      "claimAudience": "user",
       "claimId": "claim-readme-md-7",
+      "claimSemanticGroup": "Adapter and portability",
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:user",
@@ -350,7 +380,9 @@
       "verificationReadiness": "ready-to-verify"
     },
     {
+      "claimAudience": "user",
       "claimId": "claim-readme-md-9",
+      "claimSemanticGroup": "Quality gates",
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:user",
@@ -374,7 +406,9 @@
       "verificationReadiness": "ready-to-verify"
     },
     {
+      "claimAudience": "user",
       "claimId": "claim-readme-md-13",
+      "claimSemanticGroup": "Adapter and portability",
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:user",
@@ -398,7 +432,9 @@
       "verificationReadiness": "ready-to-verify"
     },
     {
+      "claimAudience": "user",
       "claimId": "claim-readme-md-91",
+      "claimSemanticGroup": "Agent and skill workflow",
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:user",
@@ -421,7 +457,9 @@
       "verificationReadiness": "needs-scenario"
     },
     {
+      "claimAudience": "user",
       "claimId": "claim-readme-md-95",
+      "claimSemanticGroup": "Agent and skill workflow",
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:user",
@@ -444,7 +482,9 @@
       "verificationReadiness": "needs-scenario"
     },
     {
+      "claimAudience": "user",
       "claimId": "claim-readme-md-123",
+      "claimSemanticGroup": "Quality gates",
       "evidenceStatus": "unknown",
       "groupHints": [
         "app/prompt",
@@ -468,7 +508,9 @@
       "verificationReadiness": "ready-to-verify"
     },
     {
+      "claimAudience": "user",
       "claimId": "claim-readme-md-137",
+      "claimSemanticGroup": "Agent and skill workflow",
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:user",
@@ -491,7 +533,9 @@
       "verificationReadiness": "needs-scenario"
     },
     {
+      "claimAudience": "user",
       "claimId": "claim-readme-md-144",
+      "claimSemanticGroup": "Quality gates",
       "evidenceStatus": "unknown",
       "groupHints": [
         "app/prompt",
@@ -515,7 +559,9 @@
       "verificationReadiness": "ready-to-verify"
     },
     {
+      "claimAudience": "user",
       "claimId": "claim-readme-md-148",
+      "claimSemanticGroup": "Claim discovery and review",
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:user",
@@ -539,7 +585,9 @@
       "verificationReadiness": "ready-to-verify"
     },
     {
+      "claimAudience": "user",
       "claimId": "claim-readme-md-149",
+      "claimSemanticGroup": "Adapter and portability",
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:user",
@@ -563,7 +611,9 @@
       "verificationReadiness": "ready-to-verify"
     },
     {
+      "claimAudience": "user",
       "claimId": "claim-readme-md-153",
+      "claimSemanticGroup": "Quality gates",
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:user",
