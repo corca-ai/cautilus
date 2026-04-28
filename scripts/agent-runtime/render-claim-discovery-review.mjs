@@ -172,9 +172,11 @@ function sourceTrace(candidate) {
 }
 
 function sourceExcerpts(candidate) {
+	const summary = plainText(candidate.summary);
 	return asArray(candidate.sourceRefs)
 		.map((ref) => plainText(ref.excerpt))
 		.filter(Boolean)
+		.filter((excerpt) => excerpt !== summary)
 		.filter((excerpt, index, excerpts) => excerpts.indexOf(excerpt) === index)
 		.slice(0, 2);
 }
@@ -184,7 +186,16 @@ function renderCandidate(candidate) {
 	lines.push(`##### ${candidate.claimId}`);
 	lines.push("");
 	lines.push(`- Summary: ${plainText(candidate.summary)}`);
-	lines.push(`- Current labels: audience=${candidate.claimAudience || "unclear"}; proof=${candidate.recommendedProof || "unknown"}; surface=${candidate.recommendedEvalSurface || "none"}; readiness=${candidate.verificationReadiness || "unknown"}; evidence=${candidate.evidenceStatus || "unknown"}`);
+	const currentLabels = [
+		`audience=${candidate.claimAudience || "unclear"}`,
+		`proof=${candidate.recommendedProof || "unknown"}`,
+	];
+	if (candidate.recommendedProof === "cautilus-eval") {
+		currentLabels.push(`eval surface=${candidate.recommendedEvalSurface || "surface undecided"}`);
+	}
+	currentLabels.push(`readiness=${candidate.verificationReadiness || "unknown"}`);
+	currentLabels.push(`evidence=${candidate.evidenceStatus || "unknown"}`);
+	lines.push(`- Current labels: ${currentLabels.join("; ")}`);
 	for (const excerpt of sourceExcerpts(candidate)) {
 		lines.push(`- Source excerpt: ${excerpt}`);
 	}
@@ -193,7 +204,9 @@ function renderCandidate(candidate) {
 	lines.push("- Human corrected audience: keep");
 	lines.push("- Human corrected semantic group: keep");
 	lines.push("- Human corrected proof: keep");
-	lines.push("- Human corrected eval surface: keep");
+	if (candidate.recommendedProof === "cautilus-eval") {
+		lines.push("- Human corrected eval surface: keep");
+	}
 	lines.push("- Human readiness: keep");
 	lines.push("- Human priority: TODO");
 	lines.push("- Human notes:");
@@ -269,7 +282,7 @@ function renderReviewDocument(claimsPacket, statusPacket) {
 	const candidates = asArray(claimsPacket.claimCandidates);
 	const grouped = groupCandidates(candidates);
 	const lines = [];
-lines.push("# Claim Discovery Review Worksheet");
+	lines.push("# Claim Discovery Review Worksheet");
 	lines.push("");
 	lines.push("This worksheet is for human review of the deterministic Cautilus claim-discovery packet.");
 	lines.push("It is grouped by intended audience, semantic area, and verification shape instead of by source file.");
@@ -303,7 +316,8 @@ lines.push("# Claim Discovery Review Worksheet");
 	lines.push("Suggested values for `Human corrected audience`: keep, user, developer, unclear.");
 	lines.push("Suggested values for `Human corrected semantic group`: keep, or write a short replacement group.");
 	lines.push("Suggested values for `Human corrected proof`: keep, human-auditable, deterministic, cautilus-eval.");
-	lines.push("Suggested values for `Human corrected eval surface`: keep, none, dev/repo, dev/skill, app/chat, app/prompt.");
+	lines.push("Suggested values for `Human corrected eval surface`: keep, dev/repo, dev/skill, app/chat, app/prompt.");
+	lines.push("Only set an eval surface when the corrected proof is `cautilus-eval`; otherwise this field is not applicable.");
 	lines.push("Suggested values for `Human readiness`: keep, ready-to-verify, needs-scenario, needs-alignment, blocked.");
 	lines.push("Suggested values for `Human priority`: high, medium, low, later.");
 	lines.push("");
