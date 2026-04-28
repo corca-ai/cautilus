@@ -28,14 +28,16 @@ claim_discovery:
       - README.md
       - docs/cli-reference.md
       - docs/guides/**
-      - docs/contracts/**
-      - docs/specs/**
       - skills/cautilus/**
       - plugins/cautilus/skills/cautilus/**
     developer:
       - AGENTS.md
+      - docs/contracts/**
+      - docs/specs/**
       - docs/internal/**
       - docs/maintainers/**
+      - docs/master-plan.md
+      - docs/gepa.md
       - .agents/**
       - scripts/**
       - internal/**

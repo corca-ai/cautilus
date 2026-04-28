@@ -74,6 +74,9 @@ function proofLabel(candidate) {
 }
 
 function semanticGroup(candidate) {
+	if (candidate.claimSemanticGroup) {
+		return String(candidate.claimSemanticGroup);
+	}
 	const haystack = [
 		candidate.summary,
 		candidate.nextAction,
@@ -84,15 +87,15 @@ function semanticGroup(candidate) {
 		.join(" ")
 		.toLowerCase();
 	const rules = [
-		["Evaluation surfaces", ["dev/repo", "dev/skill", "app/chat", "app/prompt", "eval", "scenario"]],
 		["Claim discovery and review", ["claim discover", "claim-discovery", "claim review", "review input", "reviewer"]],
 		["Improvement and optimization", ["optimize", "gepa", "improve", "search", "frontier"]],
 		["Adapter and portability", ["adapter", "portable", "consumer", "host repo", "repo-specific"]],
+		["Quality gates", ["test", "verify", "lint", "quality", "doctor", "hook"]],
 		["Agent and skill workflow", ["skill", "agent", "no-input", "$cautilus", "codex", "claude"]],
 		["Packets and reporting", ["packet", "report", "html", "artifact", "summary", "status"]],
 		["Release and packaging", ["release", "plugin", "install", "publish", "version"]],
-		["Quality gates", ["test", "verify", "lint", "quality", "doctor", "hook"]],
 		["Documentation and contracts", ["readme", "contract", "spec", "document", "guide"]],
+		["Evaluation surfaces", ["dev/repo", "dev/skill", "app/chat", "app/prompt", "eval", "scenario"]],
 	];
 	for (const [label, terms] of rules) {
 		if (terms.some((term) => haystack.includes(term))) {
@@ -100,6 +103,10 @@ function semanticGroup(candidate) {
 		}
 	}
 	return "General product behavior";
+}
+
+function audienceCounts(candidates) {
+	return new Map(countBy(candidates, (candidate) => candidate.claimAudience || "unclear"));
 }
 
 function readinessLabel(candidate) {
@@ -164,12 +171,23 @@ function sourceTrace(candidate) {
 	return `${refs.length} source ref${refs.length === 1 ? "" : "s"}; ${rendered}${suffix}`;
 }
 
+function sourceExcerpts(candidate) {
+	return asArray(candidate.sourceRefs)
+		.map((ref) => plainText(ref.excerpt))
+		.filter(Boolean)
+		.filter((excerpt, index, excerpts) => excerpts.indexOf(excerpt) === index)
+		.slice(0, 2);
+}
+
 function renderCandidate(candidate) {
 	const lines = [];
 	lines.push(`##### ${candidate.claimId}`);
 	lines.push("");
 	lines.push(`- Summary: ${plainText(candidate.summary)}`);
 	lines.push(`- Current labels: audience=${candidate.claimAudience || "unclear"}; proof=${candidate.recommendedProof || "unknown"}; surface=${candidate.recommendedEvalSurface || "none"}; readiness=${candidate.verificationReadiness || "unknown"}; evidence=${candidate.evidenceStatus || "unknown"}`);
+	for (const excerpt of sourceExcerpts(candidate)) {
+		lines.push(`- Source excerpt: ${excerpt}`);
+	}
 	lines.push(`- Suggested next action: ${plainText(candidate.nextAction || "Review whether the claim is unique, product-relevant, and correctly labeled.")}`);
 	lines.push("- Human claim quality: TODO");
 	lines.push("- Human corrected audience: keep");
@@ -188,7 +206,7 @@ function renderGroupedCandidates(grouped) {
 	const lines = [];
 	const audienceOrder = ["user", "developer", "unclear"];
 	for (const [audience, bySemantic] of sortedMapEntries(grouped, audienceOrder)) {
-		lines.push(`## ${audienceLabel(audience)} Claims`);
+		lines.push(`## ${audienceLabel(audience)} Claims (${countGroupedClaims(bySemantic)})`);
 		lines.push("");
 		lines.push(...renderSemanticGroups(bySemantic));
 	}
@@ -198,7 +216,7 @@ function renderGroupedCandidates(grouped) {
 function renderSemanticGroups(bySemantic) {
 	const lines = [];
 	for (const [semantic, byReadiness] of sortedMapEntries(bySemantic)) {
-		lines.push(`### ${semantic}`);
+		lines.push(`### ${semantic} (${countGroupedClaims(byReadiness)})`);
 		lines.push("");
 		for (const [readiness, groupCandidatesForReadiness] of sortedMapEntries(byReadiness)) {
 			lines.push(...renderReadinessGroup(readiness, groupCandidatesForReadiness));
@@ -209,7 +227,7 @@ function renderSemanticGroups(bySemantic) {
 
 function renderReadinessGroup(readiness, candidates) {
 	const lines = [];
-	lines.push(`#### ${readiness}`);
+	lines.push(`#### ${readiness} (${candidates.length})`);
 	lines.push("");
 	candidates.sort((left, right) => String(left.claimId).localeCompare(String(right.claimId)));
 	for (const candidate of candidates) {
@@ -218,15 +236,44 @@ function renderReadinessGroup(readiness, candidates) {
 	return lines;
 }
 
+function countGroupedClaims(value) {
+	if (Array.isArray(value)) {
+		return value.length;
+	}
+	let total = 0;
+	for (const child of value.values()) {
+		total += countGroupedClaims(child);
+	}
+	return total;
+}
+
+function renderFirstPassPlan(lines, candidates) {
+	const counts = audienceCounts(candidates);
+	const unclear = counts.get("unclear") ?? 0;
+	const developer = counts.get("developer") ?? 0;
+	const user = counts.get("user") ?? 0;
+	lines.push("## Recommended First Pass");
+	lines.push("");
+	if (unclear > 0) {
+		lines.push(`1. Review all ` + "`Unclear Claims`" + ` first (${unclear} item${unclear === 1 ? "" : "s"}).`);
+	} else {
+		lines.push("1. No `Unclear Claims` are present in this packet.");
+	}
+	lines.push(`2. Review ` + "`User Claims`" + ` next (${user} item${user === 1 ? "" : "s"}) because these are closest to product promises.`);
+	lines.push(`3. Spot-check ` + "`Developer Claims`" + ` last (${developer} item${developer === 1 ? "" : "s"}) to catch internal conventions that leaked into product promises.`);
+	lines.push("Do not try to clear every claim in the first pass; mark duplicates, fragments, and obvious audience mistakes first.");
+	lines.push("");
+}
+
 function renderReviewDocument(claimsPacket, statusPacket) {
 	const candidates = asArray(claimsPacket.claimCandidates);
 	const grouped = groupCandidates(candidates);
 	const lines = [];
-	lines.push("# Claim Discovery Review Worksheet");
+lines.push("# Claim Discovery Review Worksheet");
 	lines.push("");
 	lines.push("This worksheet is for human review of the deterministic Cautilus claim-discovery packet.");
 	lines.push("It is grouped by intended audience, semantic area, and verification shape instead of by source file.");
-	lines.push("Source refs are kept only as trace data at the bottom of each item.");
+	lines.push("Source excerpts are included for local judgment; source refs are trace data, not the primary grouping axis.");
 	lines.push("");
 	lines.push("## Packet Summary");
 	lines.push("");
@@ -234,9 +281,9 @@ function renderReviewDocument(claimsPacket, statusPacket) {
 	lines.push(`- Git commit in packet: ${claimsPacket.gitCommit || "unknown"}`);
 	lines.push(`- Candidate count: ${candidates.length}`);
 	lines.push(`- Source count: ${claimsPacket.sourceCount ?? asArray(claimsPacket.sourceInventory).length}`);
-	const audienceCounts = new Map(countBy(candidates, (candidate) => candidate.claimAudience || "unclear"));
+	const counts = audienceCounts(candidates);
 	for (const audience of ["user", "developer", "unclear"]) {
-		const count = audienceCounts.get(audience);
+		const count = counts.get(audience);
 		if (count === undefined) {
 			continue;
 		}
@@ -245,8 +292,12 @@ function renderReviewDocument(claimsPacket, statusPacket) {
 	lines.push("");
 	lines.push("## How To Review");
 	lines.push("");
-	lines.push("For each item, decide whether it is a real product or developer claim, a duplicate, a fragment, or noise.");
+	lines.push("This is a batching worksheet, not a demand to finish all candidates in one pass.");
+	lines.push("For each reviewed item, decide whether it is a real product or developer claim, a duplicate, a fragment, or noise.");
 	lines.push("Use the correction fields to mark obvious relabeling without editing the JSON directly.");
+	lines.push("`ready-to-verify` means the claim is shaped enough to choose a proof path; it does not mean evidence already exists.");
+	lines.push("`evidence unknown` means this deterministic pass has not reconciled tests, eval packets, or human review evidence yet.");
+	lines.push("Semantic groups are batching hints, not final taxonomy.");
 	lines.push("");
 	lines.push("Suggested values for `Human claim quality`: keep, merge, split, reword, drop, unsure.");
 	lines.push("Suggested values for `Human corrected audience`: keep, user, developer, unclear.");
@@ -257,6 +308,7 @@ function renderReviewDocument(claimsPacket, statusPacket) {
 	lines.push("Suggested values for `Human priority`: high, medium, low, later.");
 	lines.push("");
 
+	renderFirstPassPlan(lines, candidates);
 	lines.push(...renderGroupedCandidates(grouped));
 	return `${lines.join("\n").replace(/\n{3,}/g, "\n\n")}\n`;
 }

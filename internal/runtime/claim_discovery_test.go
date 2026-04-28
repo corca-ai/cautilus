@@ -39,7 +39,7 @@ func TestDiscoverClaimProofPlanClassifiesFixtureClaims(t *testing.T) {
 	}
 	for _, raw := range candidates {
 		entry := asMap(raw)
-		for _, field := range []string{"claimFingerprint", "recommendedProof", "verificationReadiness", "evidenceStatus", "reviewStatus", "lifecycle"} {
+		for _, field := range []string{"claimFingerprint", "recommendedProof", "verificationReadiness", "evidenceStatus", "reviewStatus", "lifecycle", "claimSemanticGroup"} {
 			if stringFromAny(entry[field]) == "" {
 				t.Fatalf("candidate missing %s: %#v", field, entry)
 			}
@@ -61,6 +61,9 @@ func TestDiscoverClaimProofPlanClassifiesFixtureClaims(t *testing.T) {
 	byAudience := asMap(summary["byClaimAudience"])
 	if byAudience["user"] != 2 || byAudience["developer"] != 1 {
 		t.Fatalf("expected README claims as user and AGENTS claim as developer, got %#v", summary)
+	}
+	if len(asMap(summary["byClaimSemanticGroup"])) == 0 {
+		t.Fatalf("expected semantic group summary, got %#v", summary)
 	}
 }
 
@@ -192,6 +195,9 @@ func TestBuildClaimStatusSummaryCanIncludeBoundedSampleClaims(t *testing.T) {
 	if stringFromAny(first["proofLayer"]) == "" || stringFromAny(first["recommendedProof"]) == "" {
 		t.Fatalf("expected sample claim proof labels, got %#v", first)
 	}
+	if stringFromAny(first["claimAudience"]) == "" || stringFromAny(first["claimSemanticGroup"]) == "" {
+		t.Fatalf("expected sample claim audience and semantic group labels, got %#v", first)
+	}
 	refs := arrayOrEmpty(first["sourceRefs"])
 	if len(refs) != 1 {
 		t.Fatalf("expected one bounded source ref, got %#v", first)
@@ -237,6 +243,55 @@ func TestBuildClaimReviewInputClustersAndSkipsDeterministically(t *testing.T) {
 	labels := asMap(candidate["currentLabels"])
 	if labels["reviewStatus"] != "heuristic" {
 		t.Fatalf("expected current labels to preserve review status, got %#v", candidate)
+	}
+	if stringFromAny(labels["claimSemanticGroup"]) == "" {
+		t.Fatalf("expected current labels to preserve semantic group, got %#v", candidate)
+	}
+}
+
+func TestBuildClaimReviewInputSeparatesAudienceAndSemanticGroup(t *testing.T) {
+	repoRoot := t.TempDir()
+	mustWriteFile(t, filepath.Join(repoRoot, "README.md"), strings.Join([]string{
+		"# Product",
+		"",
+		"Cautilus claim discovery workflow must prepare review input for users.",
+		"",
+	}, "\n"))
+	mustWriteFile(t, filepath.Join(repoRoot, "AGENTS.md"), strings.Join([]string{
+		"# Agents",
+		"",
+		"The verify workflow must run before stopping.",
+		"",
+	}, "\n"))
+
+	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan returned error: %v", err)
+	}
+	reviewInput, err := BuildClaimReviewInput(plan, ClaimReviewInputOptions{
+		InputPath:           "claims.json",
+		MaxClusters:         10,
+		MaxClaimsPerCluster: 10,
+	})
+	if err != nil {
+		t.Fatalf("BuildClaimReviewInput returned error: %v", err)
+	}
+	clusters := arrayOrEmpty(reviewInput["clusters"])
+	if len(clusters) < 2 {
+		t.Fatalf("expected separate audience or semantic clusters, got %#v", clusters)
+	}
+	seenAudiences := map[string]bool{}
+	seenSemanticGroups := map[string]bool{}
+	for _, raw := range clusters {
+		cluster := asMap(raw)
+		seenAudiences[stringFromAny(cluster["claimAudience"])] = true
+		seenSemanticGroups[stringFromAny(cluster["claimSemanticGroup"])] = true
+	}
+	if !seenAudiences["user"] || !seenAudiences["developer"] {
+		t.Fatalf("expected review clusters to preserve claim audiences, got %#v", clusters)
+	}
+	if !seenSemanticGroups["Claim discovery and review"] || !seenSemanticGroups["Quality gates"] {
+		t.Fatalf("expected review clusters to preserve semantic groups, got %#v", clusters)
 	}
 }
 
@@ -429,6 +484,7 @@ func TestBuildClaimValidationReportValidatesEvidenceRefs(t *testing.T) {
 				"evidenceStatus":        "satisfied",
 				"reviewStatus":          "agent-reviewed",
 				"lifecycle":             "new",
+				"claimSemanticGroup":    "Agent and skill workflow",
 				"groupHints":            []any{"cautilus-eval"},
 				"sourceRefs": []any{
 					map[string]any{"path": "AGENTS.md", "line": 3, "excerpt": "Agents must follow the repo operating contract."},

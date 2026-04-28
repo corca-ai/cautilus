@@ -170,6 +170,8 @@ The next packet should split those concepts:
   "evidenceStatus": "missing",
   "reviewStatus": "agent-reviewed",
   "lifecycle": "new",
+  "claimAudience": "user",
+  "claimSemanticGroup": "Packets and reporting",
   "groups": ["agent-first-packets"],
   "evidenceRefs": [],
   "nextActions": []
@@ -214,6 +216,15 @@ Line number is a locator, not identity.
 - `carried-forward`
 - `changed`
 - `retired`
+
+`claimAudience` answers who would most directly rely on the claim:
+
+- `user`
+- `developer`
+- `unclear`
+
+`claimSemanticGroup` is a deterministic review-batching hint.
+It is not a final taxonomy; the bundled skill or human reviewer may correct it during review.
 
 The old `proofLayer` field may remain for one compatibility window as a derived or deprecated field, but new workflow logic should use the split fields.
 During that window, derivation must be deterministic and tested:

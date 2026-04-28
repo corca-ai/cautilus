@@ -86,6 +86,7 @@ type claimCandidate struct {
 	groupHints             []string
 	claimAudience          string
 	claimAudienceSource    string
+	claimSemanticGroup     string
 }
 
 type claimSourceRef struct {
@@ -134,6 +135,8 @@ type claimReviewCluster struct {
 	recommendedProof       string
 	verificationReadiness  string
 	recommendedEvalSurface string
+	claimAudience          string
+	claimSemanticGroup     string
 	candidates             []map[string]any
 }
 
@@ -601,6 +604,7 @@ func extractClaimCandidates(source claimSource, seenIDs map[string]int) (claimEx
 			continue
 		}
 		id := uniqueClaimID(source.relPath, block.line, seenIDs)
+		groupHints := claimGroupHints(source, classification)
 		candidates = append(candidates, claimCandidate{
 			claimID:          id,
 			claimFingerprint: claimFingerprint(summary),
@@ -619,9 +623,10 @@ func extractClaimCandidates(source claimSource, seenIDs map[string]int) (claimEx
 			recommendedEvalSurface: classification.recommendedEvalSurface,
 			whyThisLayer:           classification.why,
 			nextAction:             classification.next,
-			groupHints:             claimGroupHints(source, classification),
+			groupHints:             groupHints,
 			claimAudience:          source.audience,
 			claimAudienceSource:    source.audienceSource,
+			claimSemanticGroup:     claimSemanticGroup(summary, classification.next, classification.why, classification.recommendedEvalSurface, groupHints),
 		})
 	}
 	return claimExtraction{candidates: candidates}, nil
@@ -754,6 +759,8 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 
 func recommendedEvalSurface(lower string) string {
 	switch {
+	case strings.Contains(lower, " review prompt"):
+		return "dev/repo"
 	case strings.Contains(lower, " prompt"):
 		return "app/prompt"
 	case strings.Contains(lower, " conversation") || strings.Contains(lower, " chat") || strings.Contains(lower, " assistant"):
@@ -843,6 +850,30 @@ func claimGroupHints(source claimSource, classification claimClassification) []s
 	return hints
 }
 
+func claimSemanticGroup(summary string, nextAction string, why string, surface string, hints []string) string {
+	haystack := strings.ToLower(strings.Join(append([]string{summary, nextAction, why, surface}, hints...), " "))
+	rules := []struct {
+		label string
+		terms []string
+	}{
+		{"Claim discovery and review", []string{"claim discover", "claim-discovery", "claim review", "review input", "reviewer"}},
+		{"Improvement and optimization", []string{"optimize", "gepa", "improve", "search", "frontier"}},
+		{"Adapter and portability", []string{"adapter", "portable", "consumer", "host repo", "repo-specific"}},
+		{"Quality gates", []string{"test", "verify", "lint", "quality", "doctor", "hook"}},
+		{"Agent and skill workflow", []string{"skill", "agent", "no-input", "$cautilus", "codex", "claude"}},
+		{"Packets and reporting", []string{"packet", "report", "html", "artifact", "summary", "status"}},
+		{"Release and packaging", []string{"release", "plugin", "install", "publish", "version"}},
+		{"Documentation and contracts", []string{"readme", "contract", "spec", "document", "guide"}},
+		{"Evaluation surfaces", []string{"dev/repo", "dev/skill", "app/chat", "app/prompt", "eval", "scenario"}},
+	}
+	for _, rule := range rules {
+		if containsAny(haystack, rule.terms) {
+			return rule.label
+		}
+	}
+	return "General product behavior"
+}
+
 func mergeIdenticalClaimCandidates(candidates []claimCandidate) []claimCandidate {
 	merged := make([]claimCandidate, 0, len(candidates))
 	byFingerprint := map[string]int{}
@@ -858,12 +889,25 @@ func mergeIdenticalClaimCandidates(candidates []claimCandidate) []claimCandidate
 		existing.groupHints = mergeStringSet(existing.groupHints, candidate.groupHints)
 		existing.claimAudience = mergeClaimAudience(existing.claimAudience, candidate.claimAudience)
 		existing.claimAudienceSource = mergeClaimAudienceSource(existing.claimAudienceSource, candidate.claimAudienceSource)
+		existing.claimSemanticGroup = mergeClaimSemanticGroup(existing.claimSemanticGroup, candidate.claimSemanticGroup)
 	}
 	for index := range merged {
 		sortClaimSourceRefs(merged[index].sourceRefs)
 		sort.Strings(merged[index].groupHints)
 	}
 	return merged
+}
+
+func mergeClaimSemanticGroup(existing string, incoming string) string {
+	existing = strings.TrimSpace(existing)
+	incoming = strings.TrimSpace(incoming)
+	if existing == "" {
+		return incoming
+	}
+	if incoming == "" || existing == incoming {
+		return existing
+	}
+	return "General product behavior"
 }
 
 func mergeClaimAudience(existing string, incoming string) string {
@@ -954,6 +998,7 @@ func renderClaimCandidates(candidates []claimCandidate) []any {
 			"lifecycle":             candidate.lifecycle,
 			"claimAudience":         claimAudienceOrUnclear(candidate.claimAudience),
 			"claimAudienceSource":   claimAudienceSourceOrUnknown(candidate.claimAudienceSource),
+			"claimSemanticGroup":    claimSemanticGroupOrGeneral(candidate.claimSemanticGroup),
 			"groupHints":            candidate.groupHints,
 			"evidenceRefs":          []any{},
 			"sourceRefs":            renderClaimSourceRefs(candidate.sourceRefs),
@@ -994,6 +1039,14 @@ func claimAudienceSourceOrUnknown(value string) string {
 	trimmed := strings.TrimSpace(value)
 	if trimmed == "" {
 		return "unknown"
+	}
+	return trimmed
+}
+
+func claimSemanticGroupOrGeneral(value string) string {
+	trimmed := strings.TrimSpace(value)
+	if trimmed == "" {
+		return "General product behavior"
 	}
 	return trimmed
 }
@@ -1042,6 +1095,7 @@ func summarizeClaimCandidates(candidates []any) map[string]any {
 	byLifecycle := map[string]int{}
 	byProofLayer := map[string]int{}
 	byAudience := map[string]int{}
+	bySemanticGroup := map[string]int{}
 	for _, raw := range candidates {
 		entry := asMap(raw)
 		incrementStringCount(byProof, entry["recommendedProof"])
@@ -1051,6 +1105,7 @@ func summarizeClaimCandidates(candidates []any) map[string]any {
 		incrementStringCount(byLifecycle, entry["lifecycle"])
 		incrementStringCount(byProofLayer, entry["proofLayer"])
 		incrementStringCount(byAudience, claimAudienceOrUnclear(stringFromAny(entry["claimAudience"])))
+		incrementStringCount(bySemanticGroup, claimSemanticGroupOrGeneral(stringFromAny(entry["claimSemanticGroup"])))
 	}
 	return map[string]any{
 		"byRecommendedProof":      sortedCountMap(byProof),
@@ -1060,6 +1115,7 @@ func summarizeClaimCandidates(candidates []any) map[string]any {
 		"byLifecycle":             sortedCountMap(byLifecycle),
 		"byProofLayer":            sortedCountMap(byProofLayer),
 		"byClaimAudience":         sortedCountMap(byAudience),
+		"byClaimSemanticGroup":    sortedCountMap(bySemanticGroup),
 	}
 }
 
@@ -1174,6 +1230,8 @@ func claimStatusSampleClaims(candidates []any, limit int) []any {
 			"evidenceStatus":        candidate["evidenceStatus"],
 			"reviewStatus":          candidate["reviewStatus"],
 			"lifecycle":             candidate["lifecycle"],
+			"claimAudience":         candidate["claimAudience"],
+			"claimSemanticGroup":    candidate["claimSemanticGroup"],
 			"groupHints":            arrayOrEmpty(candidate["groupHints"]),
 			"sourceRefs":            claimStatusSampleSourceRefs(arrayOrEmpty(candidate["sourceRefs"])),
 			"nextAction":            candidate["nextAction"],
@@ -1329,6 +1387,8 @@ func buildClaimReviewClusters(candidates []any, options ClaimReviewInputOptions)
 				recommendedProof:       stringFromAny(entry["recommendedProof"]),
 				verificationReadiness:  stringFromAny(entry["verificationReadiness"]),
 				recommendedEvalSurface: stringFromAny(entry["recommendedEvalSurface"]),
+				claimAudience:          claimAudienceOrUnclear(stringFromAny(entry["claimAudience"])),
+				claimSemanticGroup:     claimSemanticGroupOrGeneral(stringFromAny(entry["claimSemanticGroup"])),
 			}
 			clustersByKey[key] = cluster
 			keys = append(keys, key)
@@ -1360,16 +1420,19 @@ func claimReviewClusterKey(candidate map[string]any) string {
 	readiness := stringFromAny(candidate["verificationReadiness"])
 	proof := stringFromAny(candidate["recommendedProof"])
 	surface := stringFromAny(candidate["recommendedEvalSurface"])
+	audience := claimAudienceOrUnclear(stringFromAny(candidate["claimAudience"]))
+	semanticGroup := claimSemanticGroupOrGeneral(stringFromAny(candidate["claimSemanticGroup"]))
 	sourceKind := primaryClaimSourceKind(candidate)
+	prefix := audience + ":" + semanticGroup + ":"
 	switch {
 	case readiness == "needs-alignment":
-		return "alignment:" + sourceKind
+		return prefix + "alignment:" + sourceKind
 	case proof == "cautilus-eval" && surface != "":
-		return "cautilus-eval:" + surface + ":" + sourceKind
+		return prefix + "cautilus-eval:" + surface + ":" + sourceKind
 	case proof != "":
-		return proof + ":" + sourceKind
+		return prefix + proof + ":" + sourceKind
 	default:
-		return "unclassified:" + sourceKind
+		return prefix + "unclassified:" + sourceKind
 	}
 }
 
@@ -1383,28 +1446,45 @@ func primaryClaimSourceKind(candidate map[string]any) string {
 }
 
 func claimReviewPriority(candidate map[string]any) int {
-	if claimHasEntrySource(candidate) {
+	audience := claimAudienceOrUnclear(stringFromAny(candidate["claimAudience"]))
+	if audience == "unclear" {
+		return 5
+	}
+	if claimHasEntrySource(candidate) && audience == "user" {
 		return 10
 	}
-	if stringFromAny(candidate["recommendedProof"]) == "cautilus-eval" {
+	if claimHasEntrySource(candidate) {
+		return 15
+	}
+	if audience == "user" {
 		return 20
 	}
-	if stringFromAny(candidate["verificationReadiness"]) == "needs-alignment" {
+	if stringFromAny(candidate["recommendedProof"]) == "cautilus-eval" {
 		return 30
 	}
-	if claimTouchesProductSurface(candidate) {
+	if stringFromAny(candidate["verificationReadiness"]) == "needs-alignment" {
 		return 40
 	}
-	if stringFromAny(candidate["evidenceStatus"]) != "satisfied" {
+	if claimTouchesProductSurface(candidate) {
 		return 50
+	}
+	if stringFromAny(candidate["evidenceStatus"]) != "satisfied" {
+		return 60
 	}
 	return 90
 }
 
 func claimReviewReason(candidate map[string]any) string {
+	audience := claimAudienceOrUnclear(stringFromAny(candidate["claimAudience"]))
 	switch {
+	case audience == "unclear":
+		return "Unclear-audience claims are reviewed first because they need routing before proof planning."
+	case claimHasEntrySource(candidate) && audience == "user":
+		return "User-facing entry-surface claims are reviewed first because they define product promises."
 	case claimHasEntrySource(candidate):
-		return "Entry-surface claims are reviewed first because they define the visible repo contract."
+		return "Developer-facing entry-surface claims are reviewed after user promises because they define repo-worker behavior."
+	case audience == "user":
+		return "User-facing claims are reviewed before developer conventions because they are closest to product promises."
 	case stringFromAny(candidate["recommendedProof"]) == "cautilus-eval":
 		return "Evaluator-dependent claims need review before scenario drafting."
 	case stringFromAny(candidate["verificationReadiness"]) == "needs-alignment":
@@ -1471,6 +1551,7 @@ func currentClaimLabels(candidate map[string]any) map[string]any {
 		"lifecycle":             candidate["lifecycle"],
 		"proofLayer":            candidate["proofLayer"],
 		"claimAudience":         candidate["claimAudience"],
+		"claimSemanticGroup":    candidate["claimSemanticGroup"],
 	}
 	if surface := stringFromAny(candidate["recommendedEvalSurface"]); surface != "" {
 		labels["recommendedEvalSurface"] = surface
@@ -1504,6 +1585,8 @@ func renderClaimReviewClusters(clusters []claimReviewCluster, options ClaimRevie
 			"reason":                cluster.reason,
 			"recommendedProof":      cluster.recommendedProof,
 			"verificationReadiness": cluster.verificationReadiness,
+			"claimAudience":         cluster.claimAudience,
+			"claimSemanticGroup":    cluster.claimSemanticGroup,
 			"claimCount":            len(cluster.candidates),
 		}
 		if cluster.recommendedEvalSurface != "" {
@@ -2227,6 +2310,9 @@ func ValidateClaimProofPlan(plan map[string]any) error {
 		}
 		if audience := strings.TrimSpace(stringFromAny(entry["claimAudience"])); audience != "" && !validClaimAudience(audience) {
 			return fmt.Errorf("claimCandidates[%d].claimAudience %q is unsupported", index, audience)
+		}
+		if _, err := normalizeNonEmptyString(entry["claimSemanticGroup"], fmt.Sprintf("claimCandidates[%d].claimSemanticGroup", index)); err != nil {
+			return err
 		}
 		if _, err := assertArray(entry["evidenceRefs"], fmt.Sprintf("claimCandidates[%d].evidenceRefs", index)); err != nil {
 			return err

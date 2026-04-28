@@ -155,6 +155,7 @@ If `gitState.isStale=true`, review, review-application, and eval-planning comman
 
 `cautilus claim review prepare-input --claims <claims.json>` emits `cautilus.claim_review_input.v1`.
 It groups candidates into deterministic review clusters and records the review budget.
+Review clusters preserve `claimAudience` and `claimSemanticGroup` so user-facing, developer-facing, and unclear claims do not collapse into the same review queue.
 It does not call an LLM, schedule subagents, merge duplicates, or mark evidence satisfied.
 It rejects stale claim packets by default.
 
