@@ -86,12 +86,15 @@ The default entry set is:
 
 - `README.md`
 - `AGENTS.md`
-- `CLAUDE.md` when it exists as an instruction-surface alias or symlink
+- `CLAUDE.md` when it exists as a distinct instruction surface.
+  A symlink alias to the same canonical file is not a separate source.
 - adapter-configured `claim_discovery.entries`
 
 The default Markdown link depth is `3`.
 Depth counts only links from discovered Markdown sources to other repo-local Markdown sources.
 It does not traverse arbitrary source files, generated artifacts, binary files, dependency directories, or external URLs.
+When different real files declare the same normalized claim text, discovery should emit one claim candidate and preserve every declaration location in `sourceRefs`.
+Semantic duplicates with different wording are grouping/review work, not deterministic source dedupe.
 
 The adapter may override entries, depth, include globs, and exclude globs:
 

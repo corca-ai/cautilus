@@ -57,6 +57,82 @@ func TestDiscoverClaimProofPlanClassifiesFixtureClaims(t *testing.T) {
 	}
 }
 
+func TestDiscoverClaimProofPlanDedupesSymlinkedEntrySources(t *testing.T) {
+	repoRoot := t.TempDir()
+	mustWriteFile(t, filepath.Join(repoRoot, "AGENTS.md"), strings.Join([]string{
+		"# AGENTS",
+		"",
+		"Agents must follow one canonical instruction surface.",
+		"",
+	}, "\n"))
+	if err := os.Symlink("AGENTS.md", filepath.Join(repoRoot, "CLAUDE.md")); err != nil {
+		t.Fatalf("symlink failed: %v", err)
+	}
+
+	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan returned error: %v", err)
+	}
+	candidates := arrayOrEmpty(plan["claimCandidates"])
+	if len(candidates) != 1 {
+		t.Fatalf("expected symlinked AGENTS/CLAUDE entries to produce one candidate, got %#v", candidates)
+	}
+	first := asMap(candidates[0])
+	refs := arrayOrEmpty(first["sourceRefs"])
+	if len(refs) != 1 || stringFromAny(asMap(refs[0])["path"]) != "AGENTS.md" {
+		t.Fatalf("expected canonical AGENTS.md source ref only, got %#v", first)
+	}
+	inventory := arrayOrEmpty(plan["sourceInventory"])
+	paths := map[string]bool{}
+	for _, raw := range inventory {
+		paths[stringFromAny(asMap(raw)["path"])] = true
+	}
+	if !paths["AGENTS.md"] || paths["CLAUDE.md"] {
+		t.Fatalf("expected source inventory to omit duplicate symlink alias, got %#v", inventory)
+	}
+}
+
+func TestDiscoverClaimProofPlanMergesIdenticalClaimsAcrossDistinctSources(t *testing.T) {
+	repoRoot := t.TempDir()
+	claim := "Agents must preserve durable packets for later review."
+	mustWriteFile(t, filepath.Join(repoRoot, "README.md"), strings.Join([]string{
+		"# Demo",
+		"",
+		claim,
+		"",
+	}, "\n"))
+	mustWriteFile(t, filepath.Join(repoRoot, "AGENTS.md"), strings.Join([]string{
+		"# AGENTS",
+		"",
+		claim,
+		"",
+	}, "\n"))
+
+	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan returned error: %v", err)
+	}
+	candidates := arrayOrEmpty(plan["claimCandidates"])
+	if len(candidates) != 1 {
+		t.Fatalf("expected identical claims to merge into one candidate, got %#v", candidates)
+	}
+	first := asMap(candidates[0])
+	refs := arrayOrEmpty(first["sourceRefs"])
+	if len(refs) != 2 {
+		t.Fatalf("expected merged claim to keep both source refs, got %#v", first)
+	}
+	paths := map[string]bool{}
+	for _, raw := range refs {
+		paths[stringFromAny(asMap(raw)["path"])] = true
+	}
+	if !paths["README.md"] || !paths["AGENTS.md"] {
+		t.Fatalf("expected README and AGENTS refs, got %#v", refs)
+	}
+	if plan["candidateCount"] != 1 {
+		t.Fatalf("expected candidateCount to reflect merged claims, got %#v", plan["candidateCount"])
+	}
+}
+
 func TestBuildClaimStatusSummarySummarizesExistingPacket(t *testing.T) {
 	repoRoot := filepath.Join("..", "..", "fixtures", "claim-discovery", "tiny-repo")
 	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})

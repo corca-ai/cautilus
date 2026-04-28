@@ -71,9 +71,7 @@ type claimCandidate struct {
 	claimID                string
 	claimFingerprint       string
 	summary                string
-	sourcePath             string
-	line                   int
-	excerpt                string
+	sourceRefs             []claimSourceRef
 	proofLayer             string
 	recommendedProof       string
 	verificationReadiness  string
@@ -84,6 +82,12 @@ type claimCandidate struct {
 	whyThisLayer           string
 	nextAction             string
 	groupHints             []string
+}
+
+type claimSourceRef struct {
+	path    string
+	line    int
+	excerpt string
 }
 
 type claimExtraction struct {
@@ -191,7 +195,8 @@ func DiscoverClaimProofPlan(options ClaimDiscoveryOptions) (map[string]any, erro
 		}
 		inventory = append(inventory, entry)
 	}
-	renderedCandidates := renderClaimCandidates(candidates)
+	mergedCandidates := mergeIdenticalClaimCandidates(candidates)
+	renderedCandidates := renderClaimCandidates(mergedCandidates)
 
 	return map[string]any{
 		"schemaVersion":      contracts.ClaimProofPlanSchema,
@@ -204,7 +209,7 @@ func DiscoverClaimProofPlan(options ClaimDiscoveryOptions) (map[string]any, erro
 		"claimState":         renderClaimState(config),
 		"claimSummary":       summarizeClaimCandidates(renderedCandidates),
 		"claimCandidates":    renderedCandidates,
-		"candidateCount":     len(candidates),
+		"candidateCount":     len(mergedCandidates),
 		"sourceCount":        len(sources),
 		"nextRecommended":    "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
 		"nonVerdictNotice":   "This packet is a proof plan, not proof that the claims are true.",
@@ -288,6 +293,7 @@ func looksLikeWindowsAbsolutePath(value string) bool {
 
 func discoverClaimSources(repoRoot string, config claimDiscoveryConfig) ([]claimSource, []any, error) {
 	seen := map[string]struct{}{}
+	seenCanonicalFiles := map[string]string{}
 	sources := []claimSource{}
 	graph := []any{}
 	queue := []claimSource{}
@@ -304,7 +310,16 @@ func discoverClaimSources(repoRoot string, config claimDiscoveryConfig) ([]claim
 		if _, exists := seen[relPath]; exists {
 			return
 		}
+		canonicalPath, canonicalErr := filepath.EvalSymlinks(absPath)
+		if canonicalErr != nil {
+			canonicalPath = absPath
+		}
+		if _, exists := seenCanonicalFiles[filepath.Clean(canonicalPath)]; exists {
+			seen[relPath] = struct{}{}
+			return
+		}
 		seen[relPath] = struct{}{}
+		seenCanonicalFiles[filepath.Clean(canonicalPath)] = relPath
 		source := claimSource{
 			absPath:        absPath,
 			relPath:        relPath,
@@ -537,11 +552,13 @@ func extractClaimCandidates(source claimSource, seenIDs map[string]int) (claimEx
 		id := uniqueClaimID(source.relPath, block.line, seenIDs)
 		candidates = append(candidates, claimCandidate{
 			claimID:                id,
-			claimFingerprint:       claimFingerprint(source.relPath, block.text),
+			claimFingerprint:       claimFingerprint(summary),
 			summary:                summary,
-			sourcePath:             source.relPath,
-			line:                   block.line,
-			excerpt:                summary,
+			sourceRefs: []claimSourceRef{{
+				path:    source.relPath,
+				line:    block.line,
+				excerpt: summary,
+			}},
 			proofLayer:             classification.proofLayer,
 			recommendedProof:       classification.recommendedProof,
 			verificationReadiness:  classification.verificationReadiness,
@@ -742,8 +759,8 @@ func slugifyClaimID(value string) string {
 	return result
 }
 
-func claimFingerprint(sourcePath string, text string) string {
-	hash := sha256.Sum256([]byte(filepath.ToSlash(sourcePath) + "\n" + normalizeClaimSummary(text)))
+func claimFingerprint(summary string) string {
+	hash := sha256.Sum256([]byte(normalizeClaimSummary(summary)))
 	return "sha256:" + hex.EncodeToString(hash[:])
 }
 
@@ -770,6 +787,77 @@ func claimGroupHints(source claimSource, classification claimClassification) []s
 	return hints
 }
 
+func mergeIdenticalClaimCandidates(candidates []claimCandidate) []claimCandidate {
+	merged := make([]claimCandidate, 0, len(candidates))
+	byFingerprint := map[string]int{}
+	for _, candidate := range candidates {
+		index, exists := byFingerprint[candidate.claimFingerprint]
+		if !exists {
+			byFingerprint[candidate.claimFingerprint] = len(merged)
+			merged = append(merged, candidate)
+			continue
+		}
+		existing := &merged[index]
+		existing.sourceRefs = appendClaimSourceRefs(existing.sourceRefs, candidate.sourceRefs)
+		existing.groupHints = mergeStringSet(existing.groupHints, candidate.groupHints)
+	}
+	for index := range merged {
+		sortClaimSourceRefs(merged[index].sourceRefs)
+		sort.Strings(merged[index].groupHints)
+	}
+	return merged
+}
+
+func appendClaimSourceRefs(existing []claimSourceRef, incoming []claimSourceRef) []claimSourceRef {
+	seen := map[string]struct{}{}
+	for _, ref := range existing {
+		seen[claimSourceRefKey(ref)] = struct{}{}
+	}
+	result := append([]claimSourceRef{}, existing...)
+	for _, ref := range incoming {
+		key := claimSourceRefKey(ref)
+		if _, ok := seen[key]; ok {
+			continue
+		}
+		seen[key] = struct{}{}
+		result = append(result, ref)
+	}
+	return result
+}
+
+func claimSourceRefKey(ref claimSourceRef) string {
+	return fmt.Sprintf("%s:%d:%s", filepath.ToSlash(ref.path), ref.line, ref.excerpt)
+}
+
+func sortClaimSourceRefs(refs []claimSourceRef) {
+	sort.Slice(refs, func(i, j int) bool {
+		if refs[i].path != refs[j].path {
+			return refs[i].path < refs[j].path
+		}
+		if refs[i].line != refs[j].line {
+			return refs[i].line < refs[j].line
+		}
+		return refs[i].excerpt < refs[j].excerpt
+	})
+}
+
+func mergeStringSet(existing []string, incoming []string) []string {
+	seen := map[string]struct{}{}
+	result := []string{}
+	for _, value := range append(existing, incoming...) {
+		trimmed := strings.TrimSpace(value)
+		if trimmed == "" {
+			continue
+		}
+		if _, ok := seen[trimmed]; ok {
+			continue
+		}
+		seen[trimmed] = struct{}{}
+		result = append(result, trimmed)
+	}
+	return result
+}
+
 func renderClaimCandidates(candidates []claimCandidate) []any {
 	result := make([]any, 0, len(candidates))
 	for _, candidate := range candidates {
@@ -784,13 +872,7 @@ func renderClaimCandidates(candidates []claimCandidate) []any {
 			"lifecycle":             candidate.lifecycle,
 			"groupHints":            candidate.groupHints,
 			"evidenceRefs":          []any{},
-			"sourceRefs": []any{
-				map[string]any{
-					"path":    candidate.sourcePath,
-					"line":    candidate.line,
-					"excerpt": candidate.excerpt,
-				},
-			},
+			"sourceRefs":   renderClaimSourceRefs(candidate.sourceRefs),
 			"proofLayer":   candidate.proofLayer,
 			"whyThisLayer": candidate.whyThisLayer,
 			"nextAction":   candidate.nextAction,
@@ -799,6 +881,18 @@ func renderClaimCandidates(candidates []claimCandidate) []any {
 			entry["recommendedEvalSurface"] = candidate.recommendedEvalSurface
 		}
 		result = append(result, entry)
+	}
+	return result
+}
+
+func renderClaimSourceRefs(refs []claimSourceRef) []any {
+	result := make([]any, 0, len(refs))
+	for _, ref := range refs {
+		result = append(result, map[string]any{
+			"path":    ref.path,
+			"line":    ref.line,
+			"excerpt": ref.excerpt,
+		})
 	}
 	return result
 }

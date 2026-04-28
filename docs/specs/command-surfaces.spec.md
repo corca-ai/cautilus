@@ -110,12 +110,14 @@ The command discovers candidate claims from explicit repo-owned truth surfaces.
 Default truth surfaces are entry-first rather than repo-wide:
 
 - adapter-configured `claim_discovery.entries`, when present
-- otherwise README.md, AGENTS.md, and CLAUDE.md when present
+- otherwise README.md, AGENTS.md, and CLAUDE.md when present as distinct canonical files
 - repo-local Markdown files linked from those entries up to depth 3
 - explicit `--source` paths when an agent or host repo wants to override the default inventory
 
 The command MUST keep host-specific policy local.
 It may point at source files and propose proof layers, but it must not import host-specific adapters, prompts, storage readers, or private workflow conventions into Cautilus.
+The command MUST dedupe canonical-file aliases such as symlinks before claim extraction.
+When the same normalized claim text appears in multiple distinct files, it should emit one claim candidate with multiple `sourceRefs` rather than duplicate candidates.
 
 ### Claim Output
 
