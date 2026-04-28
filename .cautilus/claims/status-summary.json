@@ -1,35 +1,35 @@
 {
-  "candidateCount": 280,
+  "candidateCount": 294,
   "claimState": {
     "path": ".cautilus/claims/latest.json",
     "pathSource": "default"
   },
   "claimSummary": {
     "byEvidenceStatus": {
-      "unknown": 280
+      "unknown": 294
     },
     "byLifecycle": {
-      "new": 280
+      "new": 294
     },
     "byProofLayer": {
       "alignment-work": 6,
-      "cautilus-eval": 137,
-      "deterministic": 51,
+      "cautilus-eval": 150,
+      "deterministic": 50,
       "human-auditable": 18,
-      "scenario-candidate": 68
+      "scenario-candidate": 70
     },
     "byRecommendedProof": {
-      "cautilus-eval": 205,
-      "deterministic": 51,
+      "cautilus-eval": 220,
+      "deterministic": 50,
       "human-auditable": 24
     },
     "byReviewStatus": {
-      "heuristic": 280
+      "heuristic": 294
     },
     "byVerificationReadiness": {
       "needs-alignment": 6,
-      "needs-scenario": 68,
-      "ready-to-verify": 206
+      "needs-scenario": 70,
+      "ready-to-verify": 218
     }
   },
   "effectiveScanScope": {
@@ -53,7 +53,17 @@
     "linkedMarkdownDepth": 3,
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "346fb27233f2ba3557b8e681a85e211c02d72e51",
+  "gitCommit": "a9239c58a702ca55ed68336ceb5c1629400bf0cc",
+  "gitState": {
+    "changedSourceCount": 0,
+    "changedSources": [],
+    "comparisonStatus": "fresh",
+    "currentGitCommit": "a9239c58a702ca55ed68336ceb5c1629400bf0cc",
+    "isStale": false,
+    "packetGitCommit": "a9239c58a702ca55ed68336ceb5c1629400bf0cc",
+    "recommendedAction": "The claim packet commit matches the current checkout.",
+    "workingTreePolicy": "excluded"
+  },
   "inputPath": ".cautilus/claims/latest.json",
   "inputSchemaVersion": "cautilus.claim_proof_plan.v1",
   "linkedMarkdownSourceCount": 33,
@@ -61,7 +71,7 @@
   "recommendedNextActions": [
     {
       "id": "prepare-claim-review",
-      "summary": "Prepare bounded claim review clusters before drafting eval scenarios."
+      "summary": "Prepare bounded LLM claim review clusters after setting a review budget, before drafting eval scenarios."
     },
     {
       "id": "add-deterministic-proof",
@@ -73,10 +83,466 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 206,
+    "heuristicClaimsReadyForReview": 218,
     "needsAlignment": 6,
-    "needsScenario": 68
+    "needsScenario": 70
   },
+  "sampleClaims": [
+    {
+      "claimId": "claim-agents-md-12",
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "deterministic",
+        "repo-instructions"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "proofLayer": "deterministic",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "line": 12,
+          "path": "AGENTS.md"
+        }
+      ],
+      "summary": "Deterministic behavior belongs in code, scripts, adapters, tests, and specs.",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "claimId": "claim-agents-md-26",
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "cautilus-eval",
+        "repo-instructions",
+        "dev/repo"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
+      "proofLayer": "cautilus-eval",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "line": 26,
+          "path": "AGENTS.md"
+        }
+      ],
+      "summary": "`Cautilus` owns generic intentful behavior evaluation workflow contracts.",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "claimId": "claim-agents-md-29",
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "cautilus-eval",
+        "repo-instructions",
+        "app/prompt"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus eval test.",
+      "proofLayer": "cautilus-eval",
+      "recommendedEvalSurface": "app/prompt",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "line": 29,
+          "path": "AGENTS.md"
+        }
+      ],
+      "summary": "The long-term direction is intent-first and intentful behavior evaluation: prompts can change if the evaluated behavior gets better.",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "claimId": "claim-agents-md-61",
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "cautilus-eval",
+        "repo-instructions",
+        "dev/skill"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
+      "proofLayer": "cautilus-eval",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "line": 61,
+          "path": "AGENTS.md"
+        }
+      ],
+      "summary": "Keep this block short. Detailed routing belongs in installed skill metadata and `find-skills` output, not in a long checked-in catalog.",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "claimId": "claim-agents-md-73",
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "cautilus-eval",
+        "repo-instructions",
+        "dev/repo"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
+      "proofLayer": "cautilus-eval",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "line": 73,
+          "path": "AGENTS.md"
+        }
+      ],
+      "summary": "While implementing, any bug, error, regression, or unexpected behavior routes to `charness:debug` before further fixes.",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "claimId": "claim-agents-md-78",
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "cautilus-eval",
+        "repo-instructions",
+        "needs-scenario"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Use the scenario proposal flow to normalize candidate evidence before creating a checked-in eval fixture.",
+      "proofLayer": "scenario-candidate",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "line": 78,
+          "path": "AGENTS.md"
+        }
+      ],
+      "summary": "The skill should own routing, sequencing, guardrails, and decision boundaries; the binary should own broad command discovery, help text, scenario catalogs, packet examples, install smoke, and doctor/readiness details.",
+      "verificationReadiness": "needs-scenario"
+    },
+    {
+      "claimId": "claim-agents-md-79",
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "cautilus-eval",
+        "repo-instructions",
+        "dev/repo"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
+      "proofLayer": "cautilus-eval",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "line": 79,
+          "path": "AGENTS.md"
+        }
+      ],
+      "summary": "When a quality or release review asks for evaluator, review, CLI-discovery, or agent-surface proof, verify that the selected adapter can actually run that surface before treating the gate as available.",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "claimId": "claim-agents-md-123",
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "cautilus-eval",
+        "repo-instructions",
+        "dev/repo"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
+      "proofLayer": "cautilus-eval",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "line": 123,
+          "path": "AGENTS.md"
+        }
+      ],
+      "summary": "`npm run test:on-demand` currently owns the heavier self-dogfood workflow script tests.",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "claimId": "claim-claude-md-12",
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "deterministic",
+        "repo-instructions"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "proofLayer": "deterministic",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "line": 12,
+          "path": "CLAUDE.md"
+        }
+      ],
+      "summary": "Deterministic behavior belongs in code, scripts, adapters, tests, and specs.",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "claimId": "claim-claude-md-26",
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "cautilus-eval",
+        "repo-instructions",
+        "dev/repo"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
+      "proofLayer": "cautilus-eval",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "line": 26,
+          "path": "CLAUDE.md"
+        }
+      ],
+      "summary": "`Cautilus` owns generic intentful behavior evaluation workflow contracts.",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "claimId": "claim-claude-md-29",
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "cautilus-eval",
+        "repo-instructions",
+        "app/prompt"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus eval test.",
+      "proofLayer": "cautilus-eval",
+      "recommendedEvalSurface": "app/prompt",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "line": 29,
+          "path": "CLAUDE.md"
+        }
+      ],
+      "summary": "The long-term direction is intent-first and intentful behavior evaluation: prompts can change if the evaluated behavior gets better.",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "claimId": "claim-claude-md-61",
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "cautilus-eval",
+        "repo-instructions",
+        "dev/skill"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
+      "proofLayer": "cautilus-eval",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "line": 61,
+          "path": "CLAUDE.md"
+        }
+      ],
+      "summary": "Keep this block short. Detailed routing belongs in installed skill metadata and `find-skills` output, not in a long checked-in catalog.",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "claimId": "claim-claude-md-73",
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "cautilus-eval",
+        "repo-instructions",
+        "dev/repo"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
+      "proofLayer": "cautilus-eval",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "line": 73,
+          "path": "CLAUDE.md"
+        }
+      ],
+      "summary": "While implementing, any bug, error, regression, or unexpected behavior routes to `charness:debug` before further fixes.",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "claimId": "claim-claude-md-78",
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "cautilus-eval",
+        "repo-instructions",
+        "needs-scenario"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Use the scenario proposal flow to normalize candidate evidence before creating a checked-in eval fixture.",
+      "proofLayer": "scenario-candidate",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "line": 78,
+          "path": "CLAUDE.md"
+        }
+      ],
+      "summary": "The skill should own routing, sequencing, guardrails, and decision boundaries; the binary should own broad command discovery, help text, scenario catalogs, packet examples, install smoke, and doctor/readiness details.",
+      "verificationReadiness": "needs-scenario"
+    },
+    {
+      "claimId": "claim-claude-md-79",
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "cautilus-eval",
+        "repo-instructions",
+        "dev/repo"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
+      "proofLayer": "cautilus-eval",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "line": 79,
+          "path": "CLAUDE.md"
+        }
+      ],
+      "summary": "When a quality or release review asks for evaluator, review, CLI-discovery, or agent-surface proof, verify that the selected adapter can actually run that surface before treating the gate as available.",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "claimId": "claim-claude-md-123",
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "cautilus-eval",
+        "repo-instructions",
+        "dev/repo"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
+      "proofLayer": "cautilus-eval",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "line": 123,
+          "path": "CLAUDE.md"
+        }
+      ],
+      "summary": "`npm run test:on-demand` currently owns the heavier self-dogfood workflow script tests.",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "claimId": "claim-readme-md-3",
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "cautilus-eval",
+        "readme",
+        "app/prompt"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus eval test.",
+      "proofLayer": "cautilus-eval",
+      "recommendedEvalSurface": "app/prompt",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "line": 3,
+          "path": "README.md"
+        }
+      ],
+      "summary": "`Cautilus` keeps agent and workflow behavior honest while prompts keep changing.",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "claimId": "claim-readme-md-7",
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "cautilus-eval",
+        "readme",
+        "dev/skill"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
+      "proofLayer": "cautilus-eval",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "line": 7,
+          "path": "README.md"
+        }
+      ],
+      "summary": "Ships as a standalone binary plus a bundled skill a host repo can install without copying another scaffold first.",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "claimId": "claim-readme-md-9",
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "cautilus-eval",
+        "readme",
+        "dev/repo"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
+      "proofLayer": "cautilus-eval",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "line": 9,
+          "path": "README.md"
+        }
+      ],
+      "summary": "Commands should emit durable packets with enough state for the next agent to resume, not only terminal prose for a human operator.",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "claimId": "claim-readme-md-13",
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "cautilus-eval",
+        "readme",
+        "dev/repo"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
+      "proofLayer": "cautilus-eval",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "line": 13,
+          "path": "README.md"
+        }
+      ],
+      "summary": "They stay checked into each host repo so evaluation behavior remains reproducible, reviewable, and owned by the repo that declares it.",
+      "verificationReadiness": "ready-to-verify"
+    }
+  ],
   "schemaVersion": "cautilus.claim_status_summary.v1",
   "sourceCount": 36,
   "sourceRoot": "."
