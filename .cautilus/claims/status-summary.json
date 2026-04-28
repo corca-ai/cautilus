@@ -1,40 +1,64 @@
 {
-  "candidateCount": 288,
+  "candidateCount": 290,
   "claimState": {
     "path": ".cautilus/claims/latest.json",
-    "pathSource": "default"
+    "pathSource": "adapter"
   },
   "claimSummary": {
+    "byClaimAudience": {
+      "developer": 25,
+      "unclear": 7,
+      "user": 258
+    },
     "byEvidenceStatus": {
-      "unknown": 288
+      "unknown": 290
     },
     "byLifecycle": {
-      "new": 288
+      "new": 290
     },
     "byProofLayer": {
       "alignment-work": 6,
-      "cautilus-eval": 144,
+      "cautilus-eval": 146,
       "deterministic": 49,
       "human-auditable": 18,
       "scenario-candidate": 71
     },
     "byRecommendedProof": {
-      "cautilus-eval": 215,
+      "cautilus-eval": 217,
       "deterministic": 49,
       "human-auditable": 24
     },
     "byReviewStatus": {
-      "heuristic": 288
+      "heuristic": 290
     },
     "byVerificationReadiness": {
       "needs-alignment": 6,
       "needs-scenario": 71,
-      "ready-to-verify": 211
+      "ready-to-verify": 213
     }
   },
   "effectiveScanScope": {
     "adapterFound": true,
     "adapterPath": ".agents/cautilus-adapter.yaml",
+    "audienceHints": {
+      "developer": [
+        "AGENTS.md",
+        "docs/internal/**",
+        "docs/maintainers/**",
+        ".agents/**",
+        "scripts/**",
+        "internal/**"
+      ],
+      "user": [
+        "README.md",
+        "docs/cli-reference.md",
+        "docs/guides/**",
+        "docs/contracts/**",
+        "docs/specs/**",
+        "skills/cautilus/**",
+        "plugins/cautilus/skills/cautilus/**"
+      ]
+    },
     "entries": [
       "README.md",
       "AGENTS.md",
@@ -53,14 +77,14 @@
     "linkedMarkdownDepth": 3,
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "246e1514e2f88bb2a83debc01a2210865f17f9d7",
+  "gitCommit": "7935cccc24b823510ba092312927f0cace560db8",
   "gitState": {
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "246e1514e2f88bb2a83debc01a2210865f17f9d7",
+    "currentGitCommit": "7935cccc24b823510ba092312927f0cace560db8",
     "isStale": false,
-    "packetGitCommit": "246e1514e2f88bb2a83debc01a2210865f17f9d7",
+    "packetGitCommit": "7935cccc24b823510ba092312927f0cace560db8",
     "recommendedAction": "The claim packet commit matches the current checkout.",
     "workingTreePolicy": "excluded"
   },
@@ -83,7 +107,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 211,
+    "heuristicClaimsReadyForReview": 213,
     "needsAlignment": 6,
     "needsScenario": 71
   },
@@ -92,6 +116,7 @@
       "claimId": "claim-agents-md-12",
       "evidenceStatus": "unknown",
       "groupHints": [
+        "audience:developer",
         "deterministic",
         "repo-instructions"
       ],
@@ -113,6 +138,7 @@
       "claimId": "claim-agents-md-26",
       "evidenceStatus": "unknown",
       "groupHints": [
+        "audience:developer",
         "cautilus-eval",
         "dev/repo",
         "repo-instructions"
@@ -137,6 +163,7 @@
       "evidenceStatus": "unknown",
       "groupHints": [
         "app/prompt",
+        "audience:developer",
         "cautilus-eval",
         "repo-instructions"
       ],
@@ -159,6 +186,7 @@
       "claimId": "claim-agents-md-61",
       "evidenceStatus": "unknown",
       "groupHints": [
+        "audience:developer",
         "cautilus-eval",
         "dev/skill",
         "repo-instructions"
@@ -182,6 +210,7 @@
       "claimId": "claim-agents-md-73",
       "evidenceStatus": "unknown",
       "groupHints": [
+        "audience:developer",
         "cautilus-eval",
         "dev/repo",
         "repo-instructions"
@@ -205,6 +234,7 @@
       "claimId": "claim-agents-md-78",
       "evidenceStatus": "unknown",
       "groupHints": [
+        "audience:developer",
         "cautilus-eval",
         "needs-scenario",
         "repo-instructions"
@@ -227,6 +257,7 @@
       "claimId": "claim-agents-md-79",
       "evidenceStatus": "unknown",
       "groupHints": [
+        "audience:developer",
         "cautilus-eval",
         "dev/repo",
         "repo-instructions"
@@ -250,6 +281,7 @@
       "claimId": "claim-agents-md-123",
       "evidenceStatus": "unknown",
       "groupHints": [
+        "audience:developer",
         "cautilus-eval",
         "dev/repo",
         "repo-instructions"
@@ -274,6 +306,7 @@
       "evidenceStatus": "unknown",
       "groupHints": [
         "app/prompt",
+        "audience:user",
         "cautilus-eval",
         "readme"
       ],
@@ -296,6 +329,7 @@
       "claimId": "claim-readme-md-7",
       "evidenceStatus": "unknown",
       "groupHints": [
+        "audience:user",
         "cautilus-eval",
         "dev/skill",
         "readme"
@@ -319,6 +353,7 @@
       "claimId": "claim-readme-md-9",
       "evidenceStatus": "unknown",
       "groupHints": [
+        "audience:user",
         "cautilus-eval",
         "dev/repo",
         "readme"
@@ -342,6 +377,7 @@
       "claimId": "claim-readme-md-13",
       "evidenceStatus": "unknown",
       "groupHints": [
+        "audience:user",
         "cautilus-eval",
         "dev/repo",
         "readme"
@@ -365,6 +401,7 @@
       "claimId": "claim-readme-md-91",
       "evidenceStatus": "unknown",
       "groupHints": [
+        "audience:user",
         "cautilus-eval",
         "needs-scenario",
         "readme"
@@ -387,6 +424,7 @@
       "claimId": "claim-readme-md-95",
       "evidenceStatus": "unknown",
       "groupHints": [
+        "audience:user",
         "cautilus-eval",
         "needs-scenario",
         "readme"
@@ -410,6 +448,7 @@
       "evidenceStatus": "unknown",
       "groupHints": [
         "app/prompt",
+        "audience:user",
         "cautilus-eval",
         "readme"
       ],
@@ -432,6 +471,7 @@
       "claimId": "claim-readme-md-137",
       "evidenceStatus": "unknown",
       "groupHints": [
+        "audience:user",
         "cautilus-eval",
         "needs-scenario",
         "readme"
@@ -455,6 +495,7 @@
       "evidenceStatus": "unknown",
       "groupHints": [
         "app/prompt",
+        "audience:user",
         "cautilus-eval",
         "readme"
       ],
@@ -477,6 +518,7 @@
       "claimId": "claim-readme-md-148",
       "evidenceStatus": "unknown",
       "groupHints": [
+        "audience:user",
         "cautilus-eval",
         "dev/repo",
         "readme"
@@ -500,6 +542,7 @@
       "claimId": "claim-readme-md-149",
       "evidenceStatus": "unknown",
       "groupHints": [
+        "audience:user",
         "cautilus-eval",
         "dev/repo",
         "readme"
@@ -523,6 +566,7 @@
       "claimId": "claim-readme-md-153",
       "evidenceStatus": "unknown",
       "groupHints": [
+        "audience:user",
         "cautilus-eval",
         "dev/repo",
         "readme"
