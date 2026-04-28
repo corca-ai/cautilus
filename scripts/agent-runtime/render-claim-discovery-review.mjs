@@ -181,6 +181,10 @@ function sourceExcerpts(candidate) {
 		.slice(0, 2);
 }
 
+function checkboxOptions(label, options) {
+	return `- ${label}: ${options.map((option) => `[ ] ${option}`).join(" ")}`;
+}
+
 function renderCandidate(candidate) {
 	const lines = [];
 	lines.push(`##### ${candidate.claimId}`);
@@ -200,15 +204,15 @@ function renderCandidate(candidate) {
 		lines.push(`- Source excerpt: ${excerpt}`);
 	}
 	lines.push(`- Suggested next action: ${plainText(candidate.nextAction || "Review whether the claim is unique, product-relevant, and correctly labeled.")}`);
-	lines.push("- Human claim quality: TODO");
-	lines.push("- Human corrected audience: keep");
-	lines.push("- Human corrected semantic group: keep");
-	lines.push("- Human corrected proof: keep");
+	lines.push(checkboxOptions("Human claim quality", ["keep", "merge", "split", "reword", "drop", "unsure"]));
+	lines.push(checkboxOptions("Human corrected audience", ["keep", "user", "developer", "unclear"]));
+	lines.push(checkboxOptions("Human corrected semantic group", ["keep", "Adapter and portability", "Agent and skill workflow", "Claim discovery and review", "Documentation and contracts", "Improvement and optimization", "Packets and reporting", "Quality gates", "Evaluation surfaces", "General product behavior", "other:"]));
+	lines.push(checkboxOptions("Human corrected proof", ["keep", "human-auditable", "deterministic", "cautilus-eval"]));
 	if (candidate.recommendedProof === "cautilus-eval") {
-		lines.push("- Human corrected eval surface: keep");
+		lines.push(checkboxOptions("Human corrected eval surface", ["keep", "dev/repo", "dev/skill", "app/chat", "app/prompt", "surface undecided"]));
 	}
-	lines.push("- Human readiness: keep");
-	lines.push("- Human priority: TODO");
+	lines.push(checkboxOptions("Human readiness", ["keep", "ready-to-verify", "needs-scenario", "needs-alignment", "blocked"]));
+	lines.push(checkboxOptions("Human priority", ["high", "medium", "low", "later", "unsure"]));
 	lines.push("- Human notes:");
 	lines.push(`- Trace: ${sourceTrace(candidate)}`);
 	lines.push("");
@@ -311,15 +315,9 @@ function renderReviewDocument(claimsPacket, statusPacket) {
 	lines.push("`ready-to-verify` means the claim is shaped enough to choose a proof path; it does not mean evidence already exists.");
 	lines.push("`evidence unknown` means this deterministic pass has not reconciled tests, eval packets, or human review evidence yet.");
 	lines.push("Semantic groups are batching hints, not final taxonomy.");
+	lines.push("Each correction line lists its allowed values as checkboxes; mark the selected box with `[x]`.");
 	lines.push("");
-	lines.push("Suggested values for `Human claim quality`: keep, merge, split, reword, drop, unsure.");
-	lines.push("Suggested values for `Human corrected audience`: keep, user, developer, unclear.");
-	lines.push("Suggested values for `Human corrected semantic group`: keep, or write a short replacement group.");
-	lines.push("Suggested values for `Human corrected proof`: keep, human-auditable, deterministic, cautilus-eval.");
-	lines.push("Suggested values for `Human corrected eval surface`: keep, dev/repo, dev/skill, app/chat, app/prompt.");
 	lines.push("Only set an eval surface when the corrected proof is `cautilus-eval`; otherwise this field is not applicable.");
-	lines.push("Suggested values for `Human readiness`: keep, ready-to-verify, needs-scenario, needs-alignment, blocked.");
-	lines.push("Suggested values for `Human priority`: high, medium, low, later.");
 	lines.push("");
 
 	renderFirstPassPlan(lines, candidates);
