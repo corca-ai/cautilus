@@ -1231,7 +1231,7 @@ func claimStatusSampleClaims(candidates []any, limit int) []any {
 			"reviewStatus":          candidate["reviewStatus"],
 			"lifecycle":             candidate["lifecycle"],
 			"claimAudience":         candidate["claimAudience"],
-			"claimSemanticGroup":    candidate["claimSemanticGroup"],
+			"claimSemanticGroup":    claimSemanticGroupOrGeneral(stringFromAny(candidate["claimSemanticGroup"])),
 			"groupHints":            arrayOrEmpty(candidate["groupHints"]),
 			"sourceRefs":            claimStatusSampleSourceRefs(arrayOrEmpty(candidate["sourceRefs"])),
 			"nextAction":            candidate["nextAction"],
@@ -1551,7 +1551,7 @@ func currentClaimLabels(candidate map[string]any) map[string]any {
 		"lifecycle":             candidate["lifecycle"],
 		"proofLayer":            candidate["proofLayer"],
 		"claimAudience":         candidate["claimAudience"],
-		"claimSemanticGroup":    candidate["claimSemanticGroup"],
+		"claimSemanticGroup":    claimSemanticGroupOrGeneral(stringFromAny(candidate["claimSemanticGroup"])),
 	}
 	if surface := stringFromAny(candidate["recommendedEvalSurface"]); surface != "" {
 		labels["recommendedEvalSurface"] = surface
@@ -2311,8 +2311,10 @@ func ValidateClaimProofPlan(plan map[string]any) error {
 		if audience := strings.TrimSpace(stringFromAny(entry["claimAudience"])); audience != "" && !validClaimAudience(audience) {
 			return fmt.Errorf("claimCandidates[%d].claimAudience %q is unsupported", index, audience)
 		}
-		if _, err := normalizeNonEmptyString(entry["claimSemanticGroup"], fmt.Sprintf("claimCandidates[%d].claimSemanticGroup", index)); err != nil {
-			return err
+		if _, exists := entry["claimSemanticGroup"]; exists {
+			if _, err := normalizeNonEmptyString(entry["claimSemanticGroup"], fmt.Sprintf("claimCandidates[%d].claimSemanticGroup", index)); err != nil {
+				return err
+			}
 		}
 		if _, err := assertArray(entry["evidenceRefs"], fmt.Sprintf("claimCandidates[%d].evidenceRefs", index)); err != nil {
 			return err
