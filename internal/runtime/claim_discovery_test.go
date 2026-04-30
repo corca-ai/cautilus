@@ -251,6 +251,19 @@ func TestBuildClaimReviewInputClustersAndSkipsDeterministically(t *testing.T) {
 
 func TestBuildClaimReviewInputSeparatesAudienceAndSemanticGroup(t *testing.T) {
 	repoRoot := t.TempDir()
+	mustWriteFile(t, filepath.Join(repoRoot, ".agents", "cautilus-adapter.yaml"), strings.Join([]string{
+		"version: 1",
+		"repo: demo",
+		"claim_discovery:",
+		"  semantic_groups:",
+		"    - label: Claim discovery and review",
+		"      terms:",
+		"        - claim discovery",
+		"    - label: Quality gates",
+		"      terms:",
+		"        - verify",
+		"",
+	}, "\n"))
 	mustWriteFile(t, filepath.Join(repoRoot, "README.md"), strings.Join([]string{
 		"# Product",
 		"",
@@ -686,6 +699,10 @@ func TestDiscoverClaimProofPlanUsesAdapterClaimDiscoveryEntries(t *testing.T) {
 		"      - docs/start.md",
 		"    developer:",
 		"      - docs/next.md",
+		"  semantic_groups:",
+		"    - label: Adapter setup",
+		"      terms:",
+		"        - adapter-owned",
 		"",
 	}, "\n"))
 	mustWriteFile(t, filepath.Join(repoRoot, "docs", "start.md"), strings.Join([]string{
@@ -734,6 +751,9 @@ func TestDiscoverClaimProofPlanUsesAdapterClaimDiscoveryEntries(t *testing.T) {
 	}
 	if stringFromAny(bySummary["The deterministic unit test suite proves linked packets compile."]["claimAudience"]) != "developer" {
 		t.Fatalf("expected adapter developer audience hint on docs/next.md claim, got %#v", bySummary)
+	}
+	if stringFromAny(bySummary["Agents must follow adapter-owned claim discovery entries."]["claimSemanticGroup"]) != "Adapter setup" {
+		t.Fatalf("expected adapter semantic group on docs/start.md claim, got %#v", bySummary)
 	}
 }
 

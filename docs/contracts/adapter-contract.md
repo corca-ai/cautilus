@@ -66,6 +66,17 @@ claim_discovery:
     developer:
       - AGENTS.md
       - docs/internal/**
+  semantic_groups:
+    - label: Product promises
+      terms:
+        - user
+        - promise
+        - behavior
+    - label: Quality gates
+      terms:
+        - test
+        - lint
+        - verify
 instance_discovery:
   kind: explicit
   instances:
@@ -180,6 +191,8 @@ default_schema_file: fixtures/review/review-verdict.schema.json
   `evidence_roots` declares repo-relative roots worth checking during later evidence reconciliation; it does not prove claims by itself.
   `audience_hints` optionally maps discovered sources into `user` and `developer` claim audiences.
   The binary uses these hints to label review queues, while the bundled skill or a human reviewer may still correct semantic edge cases.
+  `semantic_groups` optionally declares repo-owned review batching labels and text terms.
+  If omitted, discovery uses the portable fallback group `General product behavior` instead of assuming a product-specific taxonomy.
 - `instance_discovery`: optional local-first instance routing contract for future workbench flows.
   Use `kind: explicit` when the adapter can check in a small stable instance list directly.
   Use `kind: command` when the consumer must probe one or more host-local roots at runtime and print `cautilus.workbench_instance_catalog.v1` to stdout.

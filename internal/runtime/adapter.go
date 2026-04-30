@@ -472,6 +472,13 @@ func validateAdapterClaimDiscovery(value any) (map[string]any, []string) {
 			normalized["audience_hints"] = hints
 		}
 	}
+	if raw, exists := record["semantic_groups"]; exists && raw != nil {
+		groups, groupErrors := normalizeClaimDiscoverySemanticGroups(raw)
+		errors = append(errors, groupErrors...)
+		if groups != nil {
+			normalized["semantic_groups"] = groups
+		}
+	}
 	if raw, exists := record["linked_markdown_depth"]; exists && raw != nil {
 		depth, err := normalizeInteger(raw, "claim_discovery.linked_markdown_depth")
 		if err != nil {
@@ -489,6 +496,43 @@ func validateAdapterClaimDiscovery(value any) (map[string]any, []string) {
 		} else {
 			normalized["state_path"] = text
 		}
+	}
+	return normalized, errors
+}
+
+func normalizeClaimDiscoverySemanticGroups(value any) ([]any, []string) {
+	items, err := assertArray(value, "claim_discovery.semantic_groups")
+	if err != nil {
+		return nil, []string{"claim_discovery.semantic_groups must be a list of mappings"}
+	}
+	errors := []string{}
+	normalized := []any{}
+	for index, raw := range items {
+		field := fmt.Sprintf("claim_discovery.semantic_groups[%d]", index)
+		record, ok := raw.(map[string]any)
+		if !ok {
+			errors = append(errors, field+" must be a mapping")
+			continue
+		}
+		label, err := normalizeNonEmptyString(record["label"], field+".label")
+		if err != nil {
+			errors = append(errors, field+".label must be a non-empty string")
+			continue
+		}
+		rawTerms, err := assertArray(record["terms"], field+".terms")
+		if err != nil {
+			errors = append(errors, field+".terms must be a list of strings")
+			continue
+		}
+		terms := stringSliceNoValidate(rawTerms)
+		if len(terms) == 0 {
+			errors = append(errors, field+".terms must contain at least one string")
+			continue
+		}
+		normalized = append(normalized, map[string]any{
+			"label": label,
+			"terms": terms,
+		})
 	}
 	return normalized, errors
 }

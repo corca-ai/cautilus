@@ -77,31 +77,6 @@ function semanticGroup(candidate) {
 	if (candidate.claimSemanticGroup) {
 		return String(candidate.claimSemanticGroup);
 	}
-	const haystack = [
-		candidate.summary,
-		candidate.nextAction,
-		candidate.whyThisLayer,
-		candidate.recommendedEvalSurface,
-		...asArray(candidate.groupHints),
-	]
-		.join(" ")
-		.toLowerCase();
-	const rules = [
-		["Claim discovery and review", ["claim discover", "claim-discovery", "claim review", "review input", "reviewer"]],
-		["Improvement and optimization", ["optimize", "gepa", "improve", "search", "frontier"]],
-		["Adapter and portability", ["adapter", "portable", "consumer", "host repo", "repo-specific"]],
-		["Quality gates", ["test", "verify", "lint", "quality", "doctor", "hook"]],
-		["Agent and skill workflow", ["skill", "agent", "no-input", "$cautilus", "codex", "claude"]],
-		["Packets and reporting", ["packet", "report", "html", "artifact", "summary", "status"]],
-		["Release and packaging", ["release", "plugin", "install", "publish", "version"]],
-		["Documentation and contracts", ["readme", "contract", "spec", "document", "guide"]],
-		["Evaluation surfaces", ["dev/repo", "dev/skill", "app/chat", "app/prompt", "eval", "scenario"]],
-	];
-	for (const [label, terms] of rules) {
-		if (terms.some((term) => haystack.includes(term))) {
-			return label;
-		}
-	}
 	return "General product behavior";
 }
 
@@ -185,7 +160,20 @@ function checkboxOptions(label, options) {
 	return `- ${label}: ${options.map((option) => `[ ] ${option}`).join(" ")}`;
 }
 
-function renderCandidate(candidate) {
+function semanticGroupOptions(candidates, claimsPacket) {
+	const declaredGroups = asArray(claimsPacket?.effectiveScanScope?.semanticGroups)
+		.map((group) => plainText(group.label))
+		.filter(Boolean);
+	const observedGroups = candidates.map((candidate) => semanticGroup(candidate));
+	const groups = [...new Set([...declaredGroups, ...observedGroups])].sort((left, right) => left.localeCompare(right));
+	if (!groups.includes("General product behavior")) {
+		groups.push("General product behavior");
+	}
+	groups.push("other:");
+	return ["keep", ...groups];
+}
+
+function renderCandidate(candidate, semanticOptions) {
 	const lines = [];
 	lines.push(`##### ${candidate.claimId}`);
 	lines.push("");
@@ -206,7 +194,7 @@ function renderCandidate(candidate) {
 	lines.push(`- Suggested next action: ${plainText(candidate.nextAction || "Review whether the claim is unique, product-relevant, and correctly labeled.")}`);
 	lines.push(checkboxOptions("Human claim quality", ["keep", "merge", "split", "reword", "drop", "unsure"]));
 	lines.push(checkboxOptions("Human corrected audience", ["keep", "user", "developer", "unclear"]));
-	lines.push(checkboxOptions("Human corrected semantic group", ["keep", "Adapter and portability", "Agent and skill workflow", "Claim discovery and review", "Documentation and contracts", "Improvement and optimization", "Packets and reporting", "Quality gates", "Evaluation surfaces", "General product behavior", "other:"]));
+	lines.push(checkboxOptions("Human corrected semantic group", semanticOptions));
 	lines.push(checkboxOptions("Human corrected proof", ["keep", "human-auditable", "deterministic", "cautilus-eval"]));
 	if (candidate.recommendedProof === "cautilus-eval") {
 		lines.push(checkboxOptions("Human corrected eval surface", ["keep", "dev/repo", "dev/skill", "app/chat", "app/prompt", "surface undecided"]));
@@ -219,36 +207,36 @@ function renderCandidate(candidate) {
 	return lines;
 }
 
-function renderGroupedCandidates(grouped) {
+function renderGroupedCandidates(grouped, semanticOptions) {
 	const lines = [];
 	const audienceOrder = ["user", "developer", "unclear"];
 	for (const [audience, bySemantic] of sortedMapEntries(grouped, audienceOrder)) {
 		lines.push(`## ${audienceLabel(audience)} Claims (${countGroupedClaims(bySemantic)})`);
 		lines.push("");
-		lines.push(...renderSemanticGroups(bySemantic));
+		lines.push(...renderSemanticGroups(bySemantic, semanticOptions));
 	}
 	return lines;
 }
 
-function renderSemanticGroups(bySemantic) {
+function renderSemanticGroups(bySemantic, semanticOptions) {
 	const lines = [];
 	for (const [semantic, byReadiness] of sortedMapEntries(bySemantic)) {
 		lines.push(`### ${semantic} (${countGroupedClaims(byReadiness)})`);
 		lines.push("");
 		for (const [readiness, groupCandidatesForReadiness] of sortedMapEntries(byReadiness)) {
-			lines.push(...renderReadinessGroup(readiness, groupCandidatesForReadiness));
+			lines.push(...renderReadinessGroup(readiness, groupCandidatesForReadiness, semanticOptions));
 		}
 	}
 	return lines;
 }
 
-function renderReadinessGroup(readiness, candidates) {
+function renderReadinessGroup(readiness, candidates, semanticOptions) {
 	const lines = [];
 	lines.push(`#### ${readiness} (${candidates.length})`);
 	lines.push("");
 	candidates.sort((left, right) => String(left.claimId).localeCompare(String(right.claimId)));
 	for (const candidate of candidates) {
-		lines.push(...renderCandidate(candidate));
+		lines.push(...renderCandidate(candidate, semanticOptions));
 	}
 	return lines;
 }
@@ -285,6 +273,7 @@ function renderFirstPassPlan(lines, candidates) {
 function renderReviewDocument(claimsPacket, statusPacket) {
 	const candidates = asArray(claimsPacket.claimCandidates);
 	const grouped = groupCandidates(candidates);
+	const semanticOptions = semanticGroupOptions(candidates, claimsPacket);
 	const lines = [];
 	lines.push("# Claim Discovery Review Worksheet");
 	lines.push("");
@@ -321,7 +310,7 @@ function renderReviewDocument(claimsPacket, statusPacket) {
 	lines.push("");
 
 	renderFirstPassPlan(lines, candidates);
-	lines.push(...renderGroupedCandidates(grouped));
+	lines.push(...renderGroupedCandidates(grouped, semanticOptions));
 	return `${lines.join("\n").replace(/\n{3,}/g, "\n\n")}\n`;
 }
 

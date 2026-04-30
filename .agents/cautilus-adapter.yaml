@@ -41,6 +41,74 @@ claim_discovery:
       - .agents/**
       - scripts/**
       - internal/**
+  semantic_groups:
+    - label: Claim discovery and review
+      terms:
+        - claim discover
+        - claim-discovery
+        - claim review
+        - review input
+        - reviewer
+    - label: Improvement and optimization
+      terms:
+        - optimize
+        - gepa
+        - improve
+        - search
+        - frontier
+    - label: Adapter and portability
+      terms:
+        - adapter
+        - portable
+        - consumer
+        - host repo
+        - repo-specific
+    - label: Quality gates
+      terms:
+        - test
+        - verify
+        - lint
+        - quality
+        - doctor
+        - hook
+    - label: Agent and skill workflow
+      terms:
+        - skill
+        - agent
+        - no-input
+        - $cautilus
+        - codex
+        - claude
+    - label: Packets and reporting
+      terms:
+        - packet
+        - report
+        - html
+        - artifact
+        - summary
+        - status
+    - label: Release and packaging
+      terms:
+        - release
+        - plugin
+        - install
+        - publish
+        - version
+    - label: Documentation and contracts
+      terms:
+        - readme
+        - contract
+        - spec
+        - document
+        - guide
+    - label: Evaluation surfaces
+      terms:
+        - dev/repo
+        - dev/skill
+        - app/chat
+        - app/prompt
+        - eval
+        - scenario
 executor_variants:
   - id: codex-root-review
     tool: codex_exec

@@ -119,12 +119,18 @@ type claimDiscoveryConfig struct {
 	exclude             []string
 	evidenceRoots       []string
 	audienceHints       map[string][]string
+	semanticGroups      []claimSemanticGroupRule
 	linkedMarkdownDepth int
 	statePath           string
 	statePathSource     string
 	adapterPath         string
 	adapterFound        bool
 	explicitSources     bool
+}
+
+type claimSemanticGroupRule struct {
+	label string
+	terms []string
 }
 
 type claimReviewCluster struct {
@@ -180,7 +186,7 @@ func DiscoverClaimProofPlan(options ClaimDiscoveryOptions) (map[string]any, erro
 		if _, err := os.Stat(source.absPath); err != nil {
 			status = "missing"
 		} else {
-			extraction, readErr := extractClaimCandidates(source, seenIDs)
+			extraction, readErr := extractClaimCandidates(source, seenIDs, config)
 			if readErr != nil {
 				status = "unreadable"
 			} else {
@@ -265,6 +271,9 @@ func resolveClaimDiscoveryConfig(repoRoot string, explicit []string) (claimDisco
 		if audienceHints := resolveClaimAudienceHints(claimConfig["audience_hints"]); len(audienceHints) > 0 {
 			config.audienceHints = audienceHints
 		}
+		if semanticGroups := resolveClaimSemanticGroups(claimConfig["semantic_groups"]); len(semanticGroups) > 0 {
+			config.semanticGroups = semanticGroups
+		}
 		if depth, ok := claimConfig["linked_markdown_depth"].(int); ok {
 			config.linkedMarkdownDepth = depth
 		}
@@ -287,6 +296,37 @@ func resolveClaimAudienceHints(value any) map[string][]string {
 		if patterns := normalizeClaimPathList(stringArrayOrEmpty(record[audience])); len(patterns) > 0 {
 			result[audience] = patterns
 		}
+	}
+	return result
+}
+
+func resolveClaimSemanticGroups(value any) []claimSemanticGroupRule {
+	result := []claimSemanticGroupRule{}
+	for _, raw := range arrayOrEmpty(value) {
+		record := asMap(raw)
+		label := strings.TrimSpace(stringFromAny(record["label"]))
+		terms := normalizeClaimSemanticTerms(stringArrayOrEmpty(record["terms"]))
+		if label == "" || len(terms) == 0 {
+			continue
+		}
+		result = append(result, claimSemanticGroupRule{label: label, terms: terms})
+	}
+	return result
+}
+
+func normalizeClaimSemanticTerms(values []string) []string {
+	result := []string{}
+	seen := map[string]struct{}{}
+	for _, raw := range values {
+		value := strings.ToLower(strings.TrimSpace(raw))
+		if value == "" {
+			continue
+		}
+		if _, exists := seen[value]; exists {
+			continue
+		}
+		seen[value] = struct{}{}
+		result = append(result, value)
 	}
 	return result
 }
@@ -582,7 +622,7 @@ func claimSourceKind(relPath string) string {
 	}
 }
 
-func extractClaimCandidates(source claimSource, seenIDs map[string]int) (claimExtraction, error) {
+func extractClaimCandidates(source claimSource, seenIDs map[string]int, config claimDiscoveryConfig) (claimExtraction, error) {
 	content, err := os.ReadFile(source.absPath)
 	if err != nil {
 		return claimExtraction{}, err
@@ -626,7 +666,7 @@ func extractClaimCandidates(source claimSource, seenIDs map[string]int) (claimEx
 			groupHints:             groupHints,
 			claimAudience:          source.audience,
 			claimAudienceSource:    source.audienceSource,
-			claimSemanticGroup:     claimSemanticGroup(summary, classification.next, classification.why, classification.recommendedEvalSurface, groupHints),
+			claimSemanticGroup:     claimSemanticGroup(summary, classification.next, classification.why, classification.recommendedEvalSurface, groupHints, config),
 		})
 	}
 	return claimExtraction{candidates: candidates}, nil
@@ -850,23 +890,9 @@ func claimGroupHints(source claimSource, classification claimClassification) []s
 	return hints
 }
 
-func claimSemanticGroup(summary string, nextAction string, why string, surface string, hints []string) string {
+func claimSemanticGroup(summary string, nextAction string, why string, surface string, hints []string, config claimDiscoveryConfig) string {
 	haystack := strings.ToLower(strings.Join(append([]string{summary, nextAction, why, surface}, hints...), " "))
-	rules := []struct {
-		label string
-		terms []string
-	}{
-		{"Claim discovery and review", []string{"claim discover", "claim-discovery", "claim review", "review input", "reviewer"}},
-		{"Improvement and optimization", []string{"optimize", "gepa", "improve", "search", "frontier"}},
-		{"Adapter and portability", []string{"adapter", "portable", "consumer", "host repo", "repo-specific"}},
-		{"Quality gates", []string{"test", "verify", "lint", "quality", "doctor", "hook"}},
-		{"Agent and skill workflow", []string{"skill", "agent", "no-input", "$cautilus", "codex", "claude"}},
-		{"Packets and reporting", []string{"packet", "report", "html", "artifact", "summary", "status"}},
-		{"Release and packaging", []string{"release", "plugin", "install", "publish", "version"}},
-		{"Documentation and contracts", []string{"readme", "contract", "spec", "document", "guide"}},
-		{"Evaluation surfaces", []string{"dev/repo", "dev/skill", "app/chat", "app/prompt", "eval", "scenario"}},
-	}
-	for _, rule := range rules {
+	for _, rule := range config.semanticGroups {
 		if containsAny(haystack, rule.terms) {
 			return rule.label
 		}
@@ -1057,6 +1083,7 @@ func renderClaimScanScope(config claimDiscoveryConfig) map[string]any {
 		"include":             nonNilStringSlice(config.include),
 		"exclude":             nonNilStringSlice(config.exclude),
 		"audienceHints":       renderClaimAudienceHints(config.audienceHints),
+		"semanticGroups":      renderClaimSemanticGroups(config.semanticGroups),
 		"linkedMarkdownDepth": config.linkedMarkdownDepth,
 		"explicitSources":     config.explicitSources,
 		"adapterFound":        config.adapterFound,
@@ -1069,6 +1096,17 @@ func renderClaimAudienceHints(hints map[string][]string) map[string]any {
 	rendered := map[string]any{}
 	for _, audience := range []string{"user", "developer"} {
 		rendered[audience] = nonNilStringSlice(hints[audience])
+	}
+	return rendered
+}
+
+func renderClaimSemanticGroups(groups []claimSemanticGroupRule) []any {
+	rendered := make([]any, 0, len(groups))
+	for _, group := range groups {
+		rendered = append(rendered, map[string]any{
+			"label": group.label,
+			"terms": nonNilStringSlice(group.terms),
+		})
 	}
 	return rendered
 }

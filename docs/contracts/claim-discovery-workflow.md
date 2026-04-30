@@ -116,10 +116,18 @@ claim_discovery:
     developer:
       - AGENTS.md
       - docs/internal/**
+  semantic_groups:
+    - label: Product promises
+      terms:
+        - user
+        - promise
+        - behavior
 ```
 
 `audience_hints` is adapter-owned because user-versus-developer meaning depends on the repo's documentation layout.
 The binary only understands the portable labels `user`, `developer`, and `unclear`; richer semantic grouping remains review work for the skill and reviewer loop.
+`semantic_groups` is also adapter-owned because product areas differ across repos.
+When the adapter omits semantic groups, the binary emits `General product behavior` instead of using a Cautilus-specific taxonomy.
 
 Before running a first broad scan, the skill should say which entries and depth it will use.
 It should also show the deterministic bounds that will be applied:

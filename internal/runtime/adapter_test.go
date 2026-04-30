@@ -155,6 +155,12 @@ func TestValidateAdapterDataAcceptsClaimDiscoveryConfig(t *testing.T) {
 				"user":      []any{"README.md", "docs/guides/**"},
 				"developer": []any{"AGENTS.md", "docs/internal/**"},
 			},
+			"semantic_groups": []any{
+				map[string]any{
+					"label": "Product promises",
+					"terms": []any{"promise", "user"},
+				},
+			},
 		},
 	})
 	if len(errors) > 0 {
@@ -170,6 +176,25 @@ func TestValidateAdapterDataAcceptsClaimDiscoveryConfig(t *testing.T) {
 	hints := asMap(claimDiscovery["audience_hints"])
 	if len(stringArrayOrEmpty(hints["user"])) != 2 || len(stringArrayOrEmpty(hints["developer"])) != 2 {
 		t.Fatalf("expected audience hints to survive normalization, got %#v", hints)
+	}
+	groups := arrayOrEmpty(claimDiscovery["semantic_groups"])
+	if len(groups) != 1 || asMap(groups[0])["label"] != "Product promises" {
+		t.Fatalf("expected semantic groups to survive normalization, got %#v", groups)
+	}
+}
+
+func TestValidateAdapterDataRejectsInvalidClaimDiscoverySemanticGroups(t *testing.T) {
+	_, errors := validateAdapterData(map[string]any{
+		"claim_discovery": map[string]any{
+			"semantic_groups": []any{
+				map[string]any{
+					"label": "Missing terms",
+				},
+			},
+		},
+	})
+	if len(errors) == 0 {
+		t.Fatalf("expected invalid claim_discovery semantic group to fail")
 	}
 }
 
