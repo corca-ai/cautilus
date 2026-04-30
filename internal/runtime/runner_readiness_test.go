@@ -1,0 +1,194 @@
+package runtime
+
+import (
+	"encoding/json"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"strings"
+	"testing"
+
+	"github.com/corca-ai/cautilus/internal/contracts"
+)
+
+func TestDoctorRunnerReadinessKeepsAdapterReadyWithMissingAssessment(t *testing.T) {
+	repoRoot := setupRunnerReadinessRepo(t)
+
+	payload, exitCode, err := DoctorRepo(repoRoot, nil, nil)
+	if err != nil {
+		t.Fatalf("DoctorRepo returned error: %v", err)
+	}
+	if exitCode != 0 || payload["ready"] != true || payload["status"] != "ready" {
+		t.Fatalf("expected top-level doctor readiness to remain ready, got exit=%d payload=%#v", exitCode, payload)
+	}
+	readiness := asMap(payload["runnerReadiness"])
+	if readiness["state"] != "missing-assessment" || readiness["runnerDeclared"] != true {
+		t.Fatalf("expected missing runner assessment without changing adapter readiness, got %#v", readiness)
+	}
+	if readiness["declaredRunnerKind"] != "declared-eval-runner" || readiness["proofClass"] != "unknown" {
+		t.Fatalf("expected plain eval template to stay proof-neutral, got %#v", readiness)
+	}
+	nextBranch := asMap(readiness["nextBranch"])
+	if nextBranch["id"] != "create_runner_assessment" || nextBranch["writesFiles"] != true {
+		t.Fatalf("expected create assessment branch, got %#v", nextBranch)
+	}
+}
+
+func TestRunnerReadinessReportsAssessedSmokeOnlyAndStaleStates(t *testing.T) {
+	repoRoot := setupRunnerReadinessRepo(t)
+	adapter, err := LoadAdapter(repoRoot, nil, nil)
+	if err != nil {
+		t.Fatalf("LoadAdapter returned error: %v", err)
+	}
+	writeRunnerAssessment(t, repoRoot, adapter, "smoke-only", "fixture-smoke")
+	readiness := BuildRunnerReadiness(repoRoot, adapter)
+	if readiness["state"] != "smoke-only" || readiness["recommendation"] != "smoke-only" {
+		t.Fatalf("expected smoke-only readiness, got %#v", readiness)
+	}
+	if readiness["proofClass"] != "fixture-smoke" || readiness["proofClassSource"] != "assessment" {
+		t.Fatalf("expected assessment proof class, got %#v", readiness)
+	}
+
+	writeRunnerAssessment(t, repoRoot, adapter, "ready-for-selected-surface", "in-process-product-runner")
+	readiness = BuildRunnerReadiness(repoRoot, adapter)
+	if readiness["state"] != "assessed" || readiness["recommendation"] != "ready-for-selected-surface" {
+		t.Fatalf("expected assessed readiness, got %#v", readiness)
+	}
+
+	if err := os.WriteFile(filepath.Join(repoRoot, "scripts", "eval", "run-product-chat.mjs"), []byte("changed\n"), 0o755); err != nil {
+		t.Fatalf("WriteFile runner change returned error: %v", err)
+	}
+	readiness = BuildRunnerReadiness(repoRoot, adapter)
+	if readiness["state"] != "stale" {
+		t.Fatalf("expected stale readiness after runner file changed, got %#v", readiness)
+	}
+	staleReasons := arrayOrEmpty(readiness["staleReasons"])
+	if len(staleReasons) == 0 || asMap(staleReasons[0])["kind"] != "runnerFile" {
+		t.Fatalf("expected runnerFile stale reason, got %#v", staleReasons)
+	}
+}
+
+func TestAgentStatusIncludesRunnerReadinessBranchBeforeClaimBranches(t *testing.T) {
+	repoRoot := setupRunnerReadinessRepo(t)
+	payload, exitCode, err := BuildAgentStatus(repoRoot, AgentStatusOptions{})
+	if err != nil {
+		t.Fatalf("BuildAgentStatus returned error: %v", err)
+	}
+	if exitCode != 0 || payload["status"] != "ready" {
+		t.Fatalf("expected ready agent status, got exit=%d payload=%#v", exitCode, payload)
+	}
+	readiness := asMap(payload["runnerReadiness"])
+	if readiness["state"] != "missing-assessment" {
+		t.Fatalf("expected missing assessment runner readiness, got %#v", readiness)
+	}
+	branches := arrayOrEmpty(payload["nextBranches"])
+	if len(branches) < 2 {
+		t.Fatalf("expected runner and claim branches, got %#v", branches)
+	}
+	if asMap(branches[0])["id"] != "create_runner_assessment" {
+		t.Fatalf("expected runner readiness branch before claim branches, got %#v", branches)
+	}
+	if asMap(branches[1])["id"] != "run_first_claim_scan" {
+		t.Fatalf("expected claim branch after runner readiness branch, got %#v", branches)
+	}
+}
+
+func setupRunnerReadinessRepo(t *testing.T) string {
+	t.Helper()
+	repoRoot := t.TempDir()
+	runGitForRunnerReadiness(t, repoRoot, "init")
+	runGitForRunnerReadiness(t, repoRoot, "config", "user.email", "test@example.com")
+	runGitForRunnerReadiness(t, repoRoot, "config", "user.name", "Cautilus Test")
+	if err := os.MkdirAll(filepath.Join(repoRoot, ".agents"), 0o755); err != nil {
+		t.Fatalf("MkdirAll .agents returned error: %v", err)
+	}
+	if err := os.MkdirAll(filepath.Join(repoRoot, ".agents", "skills", "cautilus"), 0o755); err != nil {
+		t.Fatalf("MkdirAll cautilus skill returned error: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(repoRoot, ".agents", "skills", "cautilus", "SKILL.md"), []byte("# Cautilus\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile skill returned error: %v", err)
+	}
+	if err := os.MkdirAll(filepath.Join(repoRoot, ".claude", "skills"), 0o755); err != nil {
+		t.Fatalf("MkdirAll claude skills returned error: %v", err)
+	}
+	if err := os.MkdirAll(filepath.Join(repoRoot, "scripts", "eval"), 0o755); err != nil {
+		t.Fatalf("MkdirAll scripts returned error: %v", err)
+	}
+	adapter := strings.Join([]string{
+		"version: 1",
+		"repo: runner-demo",
+		"evaluation_surfaces:",
+		"  - app / chat",
+		"baseline_options:",
+		"  - compare current checkout with a selected baseline ref",
+		"eval_test_command_templates:",
+		"  - node scripts/eval/run-product-chat.mjs --cases-file {eval_cases_file} --output-file {eval_observed_file}",
+		"",
+	}, "\n")
+	if err := os.WriteFile(filepath.Join(repoRoot, ".agents", "cautilus-adapter.yaml"), []byte(adapter), 0o644); err != nil {
+		t.Fatalf("WriteFile adapter returned error: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(repoRoot, "scripts", "eval", "run-product-chat.mjs"), []byte("console.log('runner');\n"), 0o755); err != nil {
+		t.Fatalf("WriteFile runner returned error: %v", err)
+	}
+	runGitForRunnerReadiness(t, repoRoot, "add", ".")
+	runGitForRunnerReadiness(t, repoRoot, "commit", "-m", "initial")
+	return repoRoot
+}
+
+func writeRunnerAssessment(t *testing.T, repoRoot string, adapter *AdapterPayload, recommendation string, proofClass string) {
+	t.Helper()
+	adapterPath := stringOrEmpty(adapter.Path)
+	adapterHash, err := fileSHA256(adapterPath)
+	if err != nil {
+		t.Fatalf("fileSHA256 adapter returned error: %v", err)
+	}
+	runnerPath := filepath.Join(repoRoot, "scripts", "eval", "run-product-chat.mjs")
+	runnerHash, err := fileSHA256(runnerPath)
+	if err != nil {
+		t.Fatalf("fileSHA256 runner returned error: %v", err)
+	}
+	assessment := map[string]any{
+		"schemaVersion": contracts.RunnerAssessmentSchema,
+		"runnerId":      defaultRunnerID,
+		"surface":       "app/chat",
+		"proofClass":    proofClass,
+		"assessedBy":    "test",
+		"assessedAt":    "2026-04-30T00:00:00Z",
+		"repoCommit":    currentGitCommit(repoRoot),
+		"adapterPath":   ".agents/cautilus-adapter.yaml",
+		"adapterHash":   adapterHash,
+		"runnerFiles":   []any{map[string]any{"path": "scripts/eval/run-product-chat.mjs", "sha256": runnerHash}},
+		"claims":        []any{map[string]any{"claimId": "claim-readme-md-1"}},
+		"assessedRequirement": map[string]any{
+			"proofMechanism":           "cautilus-eval",
+			"recommendedEvalSurface":   "app/chat",
+			"requiredRunnerCapability": "headless-product-chat-runner",
+			"requiredObservability":    []any{"transcript", "finalText"},
+		},
+		"productionPathReuse": map[string]any{"modules": []any{"src/app/chat/route.ts"}},
+		"observability":       map[string]any{"emits": []any{"finalText"}},
+		"knownGaps":           []any{},
+		"recommendation":      recommendation,
+	}
+	assessmentPath := filepath.Join(repoRoot, filepath.FromSlash(defaultRunnerAssessmentPath(defaultRunnerID)))
+	if err := os.MkdirAll(filepath.Dir(assessmentPath), 0o755); err != nil {
+		t.Fatalf("MkdirAll assessment returned error: %v", err)
+	}
+	payload, err := json.MarshalIndent(assessment, "", "  ")
+	if err != nil {
+		t.Fatalf("MarshalIndent assessment returned error: %v", err)
+	}
+	if err := os.WriteFile(assessmentPath, append(payload, '\n'), 0o644); err != nil {
+		t.Fatalf("WriteFile assessment returned error: %v", err)
+	}
+}
+
+func runGitForRunnerReadiness(t *testing.T, repoRoot string, args ...string) {
+	t.Helper()
+	cmd := exec.Command("git", append([]string{"-C", repoRoot}, args...)...)
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		t.Fatalf("git %v failed: %v\n%s", args, err, output)
+	}
+}

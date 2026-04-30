@@ -30,6 +30,7 @@ func BuildAgentStatus(repoRoot string, options AgentStatusOptions) (map[string]a
 	if agentSurfaceExitCode != 0 || adapter == nil || !adapter.Valid {
 		status = "needs-setup"
 	}
+	runnerReadiness := BuildRunnerReadiness(repoRoot, adapter)
 
 	payload := map[string]any{
 		"schemaVersion": contracts.AgentStatusSchema,
@@ -41,12 +42,13 @@ func BuildAgentStatus(repoRoot string, options AgentStatusOptions) (map[string]a
 			"current":      options.Current,
 			"commandCount": options.CommandCount,
 		},
-		"agentSurface": agentSurface,
-		"adapter":      renderAgentStatusAdapter(adapter),
-		"claimState":   claimOrientation["claimState"],
-		"scanScope":    claimOrientation["scanScope"],
-		"nextBranches": mergeAgentStatusBranches(adapter, claimOrientation["nextBranches"], repoRoot),
-		"notice":       "Orientation packet only: it reads product readiness and claim-state availability so the agent can offer a branch before running discovery, evaluation, review, optimization, edits, or commits.",
+		"agentSurface":    agentSurface,
+		"adapter":         renderAgentStatusAdapter(adapter),
+		"runnerReadiness": runnerReadiness,
+		"claimState":      claimOrientation["claimState"],
+		"scanScope":       claimOrientation["scanScope"],
+		"nextBranches":    mergeAgentStatusBranches(adapter, runnerReadiness, claimOrientation["nextBranches"], repoRoot),
+		"notice":          "Orientation packet only: it reads product readiness and claim-state availability so the agent can offer a branch before running discovery, evaluation, review, optimization, edits, or commits.",
 	}
 	return payload, 0, nil
 }
@@ -125,7 +127,7 @@ func renderAgentStatusAdapter(adapter *AdapterPayload) map[string]any {
 	}
 }
 
-func mergeAgentStatusBranches(adapter *AdapterPayload, branches any, repoRoot string) []any {
+func mergeAgentStatusBranches(adapter *AdapterPayload, runnerReadiness map[string]any, branches any, repoRoot string) []any {
 	result := []any{}
 	if adapter == nil || !adapter.Found || !adapter.Valid {
 		result = append(result, map[string]any{
@@ -134,6 +136,12 @@ func mergeAgentStatusBranches(adapter *AdapterPayload, branches any, repoRoot st
 			"command": "cautilus adapter init --repo-root " + ShellSingleQuote(repoRoot),
 			"reason":  "Adapter readiness is separate from claim discovery and should be resolved before deeper Cautilus workflows.",
 		})
+	}
+	if adapter != nil && adapter.Found && adapter.Valid {
+		nextBranch := asMap(runnerReadiness["nextBranch"])
+		if branchID := strings.TrimSpace(stringOrEmpty(nextBranch["id"])); branchID != "" && branchID != "run_eval_with_assessed_runner" {
+			result = append(result, nextBranch)
+		}
 	}
 	result = append(result, arrayOrEmpty(branches)...)
 	result = append(result, map[string]any{

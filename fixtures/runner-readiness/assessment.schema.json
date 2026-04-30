@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schemaVersion",
+    "runnerId",
+    "surface",
+    "proofClass",
+    "assessedBy",
+    "assessedAt",
+    "repoCommit",
+    "adapterPath",
+    "adapterHash",
+    "runnerFiles",
+    "claims",
+    "assessedRequirement",
+    "productionPathReuse",
+    "observability",
+    "knownGaps",
+    "recommendation"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "cautilus.runner_assessment.v1"
+    },
+    "runnerId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "surface": {
+      "enum": ["dev/repo", "dev/skill", "app/chat", "app/prompt"]
+    },
+    "proofClass": {
+      "enum": ["fixture-smoke", "coding-agent-messaging", "in-process-product-runner", "live-product-runner"]
+    },
+    "assessedBy": {
+      "type": "string",
+      "minLength": 1
+    },
+    "assessedAt": {
+      "type": "string",
+      "minLength": 1
+    },
+    "repoCommit": {
+      "type": "string",
+      "minLength": 1
+    },
+    "adapterPath": {
+      "type": "string",
+      "minLength": 1
+    },
+    "adapterHash": {
+      "type": "string",
+      "pattern": "^sha256:[a-fA-F0-9]{64}$"
+    },
+    "runnerFiles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "sha256"],
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^sha256:[a-fA-F0-9]{64}$"
+          }
+        }
+      }
+    },
+    "claims": {
+      "type": "array"
+    },
+    "assessedRequirement": {
+      "type": "object"
+    },
+    "productionPathReuse": {
+      "type": "object"
+    },
+    "observability": {
+      "type": "object"
+    },
+    "knownGaps": {
+      "type": "array"
+    },
+    "recommendation": {
+      "enum": [
+        "ready-for-selected-surface",
+        "smoke-only",
+        "needs-instrumentation",
+        "needs-production-path-reuse",
+        "blocked"
+      ]
+    }
+  }
+}

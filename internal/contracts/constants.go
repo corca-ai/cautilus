@@ -49,6 +49,7 @@ const (
 	ReviewPromptInputsSchema                        = "cautilus.review_prompt_inputs.v1"
 	ReviewSummarySchema                             = "cautilus.review_summary.v1"
 	ReviewVariantResultSchema                       = "cautilus.review_variant_result.v1"
+	RunnerAssessmentSchema                          = "cautilus.runner_assessment.v1"
 	ScenarioBaselineCacheSchema                     = "cautilus.scenario_baseline_cache.v1"
 	ScenarioConversationReviewInputsSchema          = "cautilus.scenario_conversation_review_inputs.v1"
 	ScenarioConversationReviewSchema                = "cautilus.scenario_conversation_review.v1"

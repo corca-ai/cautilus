@@ -1023,13 +1023,14 @@ func DoctorRepo(repoRoot string, adapterPath *string, adapterName *string) (map[
 	warnings := append([]string{}, payload.Warnings...)
 	baseResult := func() map[string]any {
 		return map[string]any{
-			"repo_root":      repoRoot,
-			"adapter_path":   payload.Path,
-			"searched_paths": payload.SearchedPaths,
-			"checks":         checks,
-			"suggestions":    suggestions,
-			"warnings":       warnings,
-			"errors":         payload.Errors,
+			"repo_root":       repoRoot,
+			"adapter_path":    payload.Path,
+			"searched_paths":  payload.SearchedPaths,
+			"checks":          checks,
+			"suggestions":     suggestions,
+			"warnings":        warnings,
+			"errors":          payload.Errors,
+			"runnerReadiness": BuildRunnerReadiness(repoRoot, payload),
 		}
 	}
 	if !payload.Found {
