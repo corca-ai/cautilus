@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "artifact_kind": "find-skills-inventory",
-  "generated_at": "2026-04-24T11:02:18Z",
+  "generated_at": "2026-04-30T05:09:38Z",
   "repo": "cautilus",
   "inventory": {
     "adapter": {
@@ -764,18 +764,17 @@
         "discovery_stub_path": null,
         "capability_requirements": {},
         "intent_triggers": [
-          "verify",
-          "verification",
-          "evaluate",
-          "evaluation",
-          "review",
+          "evaluator-backed behavior review",
+          "behavior evaluation",
           "behavior review",
-          "closeout",
-          "issue closeout",
+          "prompt behavior regression",
+          "instruction behavior regression",
+          "baseline compare",
+          "cautilus eval",
+          "cautilus scenario",
           "operator reading test",
-          "검증",
-          "평가",
-          "리뷰"
+          "프롬프트 회귀",
+          "동작 평가"
         ],
         "config_layers": [],
         "readiness_checks": [],
@@ -963,6 +962,29 @@
         "supports_public_skills": [],
         "recommendation_role": null,
         "path": "integrations/tools/specdown.json",
+        "source": "local-integration",
+        "layer": "external integration"
+      },
+      {
+        "id": "vulture",
+        "kind": "external_binary",
+        "access_modes": [
+          "binary",
+          "degraded"
+        ],
+        "support_state": "integration-only",
+        "support_skill_path": null,
+        "discovery_stub_path": null,
+        "capability_requirements": {},
+        "intent_triggers": [],
+        "config_layers": [],
+        "readiness_checks": [],
+        "supports_public_skills": [
+          "quality",
+          "init-repo"
+        ],
+        "recommendation_role": "validation",
+        "path": "integrations/tools/vulture.json",
         "source": "local-integration",
         "layer": "external integration"
       }
