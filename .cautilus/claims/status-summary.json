@@ -1,51 +1,51 @@
 {
-  "candidateCount": 308,
+  "candidateCount": 324,
   "claimState": {
     "path": ".cautilus/claims/latest.json",
     "pathSource": "adapter"
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 240,
-      "user": 68
+      "developer": 255,
+      "user": 69
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 49,
-      "Agent and skill workflow": 84,
+      "Agent and skill workflow": 89,
       "Claim discovery and review": 19,
-      "Documentation and contracts": 79,
+      "Documentation and contracts": 84,
       "Evaluation surfaces": 2,
       "Improvement and optimization": 21,
       "Packets and reporting": 21,
-      "Quality gates": 28,
+      "Quality gates": 34,
       "Release and packaging": 5
     },
     "byEvidenceStatus": {
-      "unknown": 308
+      "unknown": 324
     },
     "byLifecycle": {
-      "new": 308
+      "new": 324
     },
     "byProofLayer": {
       "alignment-work": 7,
-      "cautilus-eval": 155,
-      "deterministic": 114,
-      "human-auditable": 26,
+      "cautilus-eval": 161,
+      "deterministic": 122,
+      "human-auditable": 28,
       "scenario-candidate": 6
     },
     "byRecommendedProof": {
-      "cautilus-eval": 161,
-      "deterministic": 114,
-      "human-auditable": 33
+      "cautilus-eval": 167,
+      "deterministic": 122,
+      "human-auditable": 35
     },
     "byReviewStatus": {
-      "heuristic": 308
+      "heuristic": 324
     },
     "byVerificationReadiness": {
       "blocked": 1,
       "needs-alignment": 7,
       "needs-scenario": 6,
-      "ready-to-verify": 294
+      "ready-to-verify": 310
     }
   },
   "effectiveScanScope": {
@@ -187,20 +187,20 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "2842f5d466a3cb3fd4e1c7e397ec79928224545f",
+  "gitCommit": "7e9986ea7b0a91009d399f0ee349079f19ac750d",
   "gitState": {
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "2842f5d466a3cb3fd4e1c7e397ec79928224545f",
+    "currentGitCommit": "7e9986ea7b0a91009d399f0ee349079f19ac750d",
     "isStale": false,
-    "packetGitCommit": "2842f5d466a3cb3fd4e1c7e397ec79928224545f",
+    "packetGitCommit": "7e9986ea7b0a91009d399f0ee349079f19ac750d",
     "recommendedAction": "The claim packet commit matches the current checkout.",
     "workingTreePolicy": "excluded"
   },
   "inputPath": ".cautilus/claims/latest.json",
   "inputSchemaVersion": "cautilus.claim_proof_plan.v1",
-  "linkedMarkdownSourceCount": 34,
+  "linkedMarkdownSourceCount": 36,
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "recommendedNextActions": [
     {
@@ -217,7 +217,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 295,
+    "heuristicClaimsReadyForReview": 311,
     "needsAlignment": 7,
     "needsScenario": 6
   },
@@ -473,57 +473,9 @@
       ],
       "summary": "Ships as a standalone binary plus a bundled skill a host repo can install without copying another scaffold first.",
       "verificationReadiness": "ready-to-verify"
-    },
-    {
-      "claimAudience": "user",
-      "claimId": "claim-readme-md-9",
-      "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:user",
-        "deterministic",
-        "readme"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
-      "proofLayer": "deterministic",
-      "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "line": 9,
-          "path": "README.md"
-        }
-      ],
-      "summary": "Commands should emit durable packets with enough state for the next agent to resume, not only terminal prose for a human operator.",
-      "verificationReadiness": "ready-to-verify"
-    },
-    {
-      "claimAudience": "user",
-      "claimId": "claim-readme-md-10",
-      "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:user",
-        "deterministic",
-        "readme"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
-      "proofLayer": "deterministic",
-      "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "line": 10,
-          "path": "README.md"
-        }
-      ],
-      "summary": "`Cautilus` installs as a machine-level binary, but its agent-facing surface is intentionally repo-local.",
-      "verificationReadiness": "ready-to-verify"
     }
   ],
   "schemaVersion": "cautilus.claim_status_summary.v1",
-  "sourceCount": 36,
+  "sourceCount": 38,
   "sourceRoot": "."
 }
