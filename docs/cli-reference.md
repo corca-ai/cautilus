@@ -53,6 +53,22 @@ eval_test_command_templates:
   - node scripts/agent-runtime/run-local-eval-test.mjs --repo-root . --workspace {candidate_repo} --cases-file {eval_cases_file} --output-file {eval_observed_file} --artifact-dir {output_dir}/eval-test --backend {backend} --sandbox read-only
 ```
 
+Repos with multiple surfaces can use typed runner metadata instead:
+
+```yaml
+runner_readiness:
+  runners:
+    - id: app-chat-live
+      surfaces:
+        - app/chat
+      proof_class: live-product-runner
+      command_template: node scripts/eval/run-live-chat.mjs --cases-file {eval_cases_file} --output-file {eval_observed_file}
+      assessment_path: .cautilus/runners/app-chat-live.assessment.json
+```
+
+When typed runners are present, `eval test` chooses the runner whose `surfaces` contains the fixture surface key.
+The `{runner_id}` placeholder is available to command templates.
+
 ## Probes & discovery
 
 ```bash
@@ -240,6 +256,7 @@ Cautilus exposes two top-level surfaces and four presets:
 `dev / repo` for repo work contracts, `dev / skill` for checked-in or portable development skills, `app / chat` for multi-turn product conversation behavior, and `app / prompt` for single product input/output behavior.
 `cautilus eval test` runs a checked-in fixture through an adapter-owned runner and then evaluates the observed packet.
 The command records a top-level `proof` object in `eval-observed.json` and `eval-summary.json` when runner readiness can identify the proof class or assessment state.
+When the adapter declares `runner_readiness.runners`, the command selects the runner by the fixture surface key before rendering the command template.
 `cautilus eval evaluate` evaluates an already-observed packet without launching the runner again.
 
 ```bash

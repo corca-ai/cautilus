@@ -140,6 +140,70 @@ func TestValidateAdapterDataAcceptsLiveRunInvocation(t *testing.T) {
 	}
 }
 
+func TestValidateAdapterDataAcceptsTypedRunnerReadiness(t *testing.T) {
+	validated, errors := validateAdapterData(map[string]any{
+		"runner_readiness": map[string]any{
+			"runners": []any{
+				map[string]any{
+					"id":                     "app-chat-live",
+					"surfaces":               []any{"app/chat"},
+					"proof_class":            "live-product-runner",
+					"command_template":       "node scripts/eval/run-live-chat.mjs --cases-file {eval_cases_file} --output-file {eval_observed_file}",
+					"smoke_command_template": "node scripts/eval/run-live-chat.mjs --smoke",
+					"assessment_path":        ".cautilus/runners/app-chat-live.assessment.json",
+					"default_runtime":        "fixture",
+				},
+				map[string]any{
+					"id":               "dev-skill",
+					"surfaces":         []any{"dev/skill"},
+					"proof_class":      "coding-agent-messaging",
+					"command_template": "node scripts/eval/run-skill.mjs --cases-file {eval_cases_file} --output-file {eval_observed_file}",
+				},
+			},
+		},
+	})
+	if len(errors) != 0 {
+		t.Fatalf("expected runner_readiness to validate, got %v", errors)
+	}
+	runners := arrayOrEmpty(asMap(validated["runner_readiness"])["runners"])
+	if len(runners) != 2 {
+		t.Fatalf("expected two typed runners, got %#v", runners)
+	}
+	first := asMap(runners[0])
+	if first["id"] != "app-chat-live" || first["proof_class"] != "live-product-runner" || first["default_runtime"] != "fixture" {
+		t.Fatalf("unexpected normalized runner: %#v", first)
+	}
+}
+
+func TestValidateAdapterDataRejectsInvalidTypedRunnerReadiness(t *testing.T) {
+	_, errors := validateAdapterData(map[string]any{
+		"runner_readiness": map[string]any{
+			"runners": []any{
+				map[string]any{
+					"id":               "dup",
+					"surfaces":         []any{"app/chat"},
+					"proof_class":      "wishful-product-runner",
+					"command_template": "node scripts/eval/run-chat.mjs",
+				},
+				map[string]any{
+					"id":               "dup",
+					"surfaces":         []any{"app/mobile"},
+					"command_template": "node scripts/eval/run-mobile.mjs",
+				},
+			},
+		},
+	})
+	if len(errors) == 0 {
+		t.Fatalf("expected invalid runner_readiness errors")
+	}
+	joined := strings.Join(errors, "\n")
+	for _, fragment := range []string{"id must be unique", "proof_class must be a known runner proof class", "surfaces[0] must be one of"} {
+		if !strings.Contains(joined, fragment) {
+			t.Fatalf("expected %q in errors, got %v", fragment, errors)
+		}
+	}
+}
+
 func TestValidateAdapterDataAcceptsClaimDiscoveryConfig(t *testing.T) {
 	validated, errors := validateAdapterData(map[string]any{
 		"version": float64(1),

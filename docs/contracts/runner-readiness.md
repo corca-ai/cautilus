@@ -223,17 +223,12 @@ Recommendation values should be narrow:
 - `needs-production-path-reuse`
 - `blocked`
 
-## Adapter Boundary
+## Typed Adapter Runners
 
-The adapter should declare runner commands and any cheap smoke checks.
-The adapter should not carry long prose arguments for why the runner is honest.
-That belongs in the runner assessment packet.
+Adapters may declare multiple typed eval runners under `runner_readiness.runners`.
+This lets one adapter expose separate commands for `dev/repo`, `dev/skill`, `app/chat`, and `app/prompt` without relying on named-adapter sprawl or command-template guessing.
 
-The first implementation may reuse `eval_test_command_templates` for execution, but plain templates imply only `declared-eval-runner`.
-They do not imply `fixture-smoke`, `coding-agent-messaging`, `in-process-product-runner`, or `live-product-runner`.
-A proof class is visible only when supplied by `cautilus.runner_assessment.v1` or an explicitly typed future adapter runner entry.
-
-A future typed adapter section may include:
+Minimum runner shape:
 
 ```yaml
 runner_readiness:
@@ -242,15 +237,37 @@ runner_readiness:
       surfaces:
         - app/chat
       proof_class: in-process-product-runner
-      command_template: node scripts/eval/run-product-chat.mjs --request-file {eval_cases_file} --output-file {eval_observed_file}
+      command_template: node scripts/eval/run-product-chat.mjs --cases-file {eval_cases_file} --output-file {eval_observed_file}
       smoke_command_template: node scripts/eval/run-product-chat.mjs --smoke --output-file {output_dir}/runner-smoke.json
       assessment_path: .cautilus/runners/app-chat-local.assessment.json
+      default_runtime: fixture
 ```
 
-This is an example shape, not a locked schema.
-The first implementation should reuse the existing `eval_test_command_templates` path where possible before adding a new adapter section.
-If the first slice adds metadata beside existing templates, it should add only the minimum binding needed for readiness status: `runnerId`, `surfaces`, `proofClass`, optional `smokeCommandTemplate`, and `assessmentPath`.
-`doctor` should report specific missing-field diagnostics for those bindings instead of collapsing them into generic adapter-not-ready output.
+Rules:
+
+- `id`, `surfaces`, and `command_template` are required.
+- `surfaces` entries use the canonical eval surface keys: `dev/repo`, `dev/skill`, `app/chat`, and `app/prompt`.
+- `cautilus eval test` selects the typed runner whose `surfaces` contains the fixture's surface key.
+- `{runner_id}` is available as a command-template placeholder alongside `{candidate_repo}`, `{output_dir}`, `{eval_cases_file}`, `{eval_observed_file}`, and `{backend}`.
+- `default_runtime` may be `codex`, `claude`, or `fixture` and is used only when the operator does not pass `--runtime`.
+- `proof_class` may describe the declared proof class, but it is not enough to make app product proof ready.
+- `assessment_path` defaults to `.cautilus/runners/<runner-id>.assessment.json`.
+
+`doctor` and `agent status` report aggregate runner readiness plus per-runner readiness entries when multiple typed runners exist.
+The first blocking runner-readiness branch remains the next setup action.
+
+## Adapter Boundary
+
+The adapter should declare runner commands and any cheap smoke checks.
+The adapter should not carry long prose arguments for why the runner is honest.
+That belongs in the runner assessment packet.
+
+Plain `eval_test_command_templates` remain valid for simple adopters and imply only `declared-eval-runner`.
+They do not imply `fixture-smoke`, `coding-agent-messaging`, `in-process-product-runner`, or `live-product-runner`.
+A proof class is visible only when supplied by `cautilus.runner_assessment.v1` or an explicitly typed adapter runner entry.
+
+The shipped schema uses `id`, `surfaces`, `proof_class`, `command_template`, optional `smoke_command_template`, optional `assessment_path`, and optional `default_runtime`.
+`doctor` reports specific missing-field diagnostics for those bindings instead of collapsing them into generic adapter-not-ready output.
 
 ## Skill Design
 
@@ -397,9 +414,10 @@ Start with read-only packet and status visibility before broad behavior changes.
 4. Treat plain `eval_test_command_templates` as `declared-eval-runner` only.
 5. Teach `agent status` to surface missing, stale, smoke-only, not-ready, and ready runner states as read-only next branches.
 
-Follow-up implementation slices:
+Implemented slices:
 
-1. Implemented: add `proofRequirement.requiredRunnerCapability` and `proofRequirement.requiredObservability` to claim eval-planning output without using those fields as readiness verdicts.
-2. Implemented: add `proof.proofClass` and runner-readiness metadata to `eval-observed.json` and preserve it in `eval-summary.json` when `eval test` can derive it from runner readiness.
-3. Implemented: block behavior-changing `optimize` for reports whose `proofSummary` says product-runner proof is required but not ready.
-4. Implemented: add a live-run-backed runner assessment example that references the existing eval-live contracts without making instance discovery mandatory for simple app repos.
+1. `claim plan-evals` adds `proofRequirement.requiredRunnerCapability` and `proofRequirement.requiredObservability` without using those fields as readiness verdicts.
+2. `eval test` adds `proof.proofClass` and runner-readiness metadata to `eval-observed.json` and preserves it in `eval-summary.json`.
+3. `optimize` blocks behavior-changing work for reports whose `proofSummary` says product-runner proof is required but not ready.
+4. The fixture set includes a live-run-backed runner assessment example that references the existing eval-live contracts without making instance discovery mandatory for simple app repos.
+5. Adapters can declare typed multi-runner metadata under `runner_readiness.runners`, and `eval test` selects the runner by fixture surface.

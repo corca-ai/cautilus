@@ -169,6 +169,47 @@ func TestAgentStatusIncludesRunnerReadinessBranchBeforeClaimBranches(t *testing.
 	}
 }
 
+func TestRunnerReadinessSupportsTypedMultiRunnerAdapters(t *testing.T) {
+	repoRoot := setupTypedRunnerReadinessRepo(t)
+	adapter, err := LoadAdapter(repoRoot, nil, nil)
+	if err != nil {
+		t.Fatalf("LoadAdapter returned error: %v", err)
+	}
+	appRunner, err := ResolveEvalRunner(adapter, "app/chat")
+	if err != nil {
+		t.Fatalf("ResolveEvalRunner app/chat returned error: %v", err)
+	}
+	if appRunner["runnerId"] != "app-chat-live" || EvalRunnerDefaultRuntime(appRunner) != "fixture" {
+		t.Fatalf("expected app/chat typed runner, got %#v", appRunner)
+	}
+	skillRunner, err := ResolveEvalRunner(adapter, "dev/skill")
+	if err != nil {
+		t.Fatalf("ResolveEvalRunner dev/skill returned error: %v", err)
+	}
+	if skillRunner["runnerId"] != "dev-skill-agent" {
+		t.Fatalf("expected dev/skill typed runner, got %#v", skillRunner)
+	}
+	if _, err := ResolveEvalRunner(adapter, "app/prompt"); err == nil {
+		t.Fatalf("expected missing app/prompt runner to fail")
+	}
+
+	readiness := BuildRunnerReadiness(repoRoot, adapter)
+	if readiness["runnerCount"] != 2 {
+		t.Fatalf("expected aggregate readiness for two runners, got %#v", readiness)
+	}
+	runners := arrayOrEmpty(readiness["runners"])
+	if len(runners) != 2 {
+		t.Fatalf("expected per-runner readiness entries, got %#v", readiness)
+	}
+	appReadiness := BuildRunnerReadinessForSurface(repoRoot, adapter, "app/chat")
+	if appReadiness["runnerId"] != "app-chat-live" || appReadiness["assessmentPath"] != ".cautilus/runners/app-chat-live.assessment.json" {
+		t.Fatalf("expected surface readiness to select app runner, got %#v", appReadiness)
+	}
+	if appReadiness["proofClass"] != "live-product-runner" || appReadiness["proofClassSource"] != "adapter-runner" {
+		t.Fatalf("expected typed runner proof metadata before assessment, got %#v", appReadiness)
+	}
+}
+
 func setupRunnerReadinessRepo(t *testing.T) string {
 	t.Helper()
 	repoRoot := t.TempDir()
@@ -206,6 +247,55 @@ func setupRunnerReadinessRepo(t *testing.T) string {
 	}
 	if err := os.WriteFile(filepath.Join(repoRoot, "scripts", "eval", "run-product-chat.mjs"), []byte("console.log('runner');\n"), 0o755); err != nil {
 		t.Fatalf("WriteFile runner returned error: %v", err)
+	}
+	runGitForRunnerReadiness(t, repoRoot, "add", ".")
+	runGitForRunnerReadiness(t, repoRoot, "commit", "-m", "initial")
+	return repoRoot
+}
+
+func setupTypedRunnerReadinessRepo(t *testing.T) string {
+	t.Helper()
+	repoRoot := t.TempDir()
+	runGitForRunnerReadiness(t, repoRoot, "init")
+	runGitForRunnerReadiness(t, repoRoot, "config", "user.email", "test@example.com")
+	runGitForRunnerReadiness(t, repoRoot, "config", "user.name", "Cautilus Test")
+	if err := os.MkdirAll(filepath.Join(repoRoot, ".agents"), 0o755); err != nil {
+		t.Fatalf("MkdirAll .agents returned error: %v", err)
+	}
+	if err := os.MkdirAll(filepath.Join(repoRoot, "scripts", "eval"), 0o755); err != nil {
+		t.Fatalf("MkdirAll scripts returned error: %v", err)
+	}
+	adapter := strings.Join([]string{
+		"version: 1",
+		"repo: typed-runner-demo",
+		"evaluation_surfaces:",
+		"  - app / chat",
+		"  - dev / skill",
+		"baseline_options:",
+		"  - compare current checkout with a selected baseline ref",
+		"runner_readiness:",
+		"  runners:",
+		"    - id: app-chat-live",
+		"      surfaces:",
+		"        - app/chat",
+		"      proof_class: live-product-runner",
+		"      command_template: node scripts/eval/run-live-chat.mjs --cases-file {eval_cases_file} --output-file {eval_observed_file} --runner-id {runner_id}",
+		"      assessment_path: .cautilus/runners/app-chat-live.assessment.json",
+		"      default_runtime: fixture",
+		"    - id: dev-skill-agent",
+		"      surfaces:",
+		"        - dev/skill",
+		"      proof_class: coding-agent-messaging",
+		"      command_template: node scripts/eval/run-skill.mjs --cases-file {eval_cases_file} --output-file {eval_observed_file}",
+		"",
+	}, "\n")
+	if err := os.WriteFile(filepath.Join(repoRoot, ".agents", "cautilus-adapter.yaml"), []byte(adapter), 0o644); err != nil {
+		t.Fatalf("WriteFile adapter returned error: %v", err)
+	}
+	for _, file := range []string{"run-live-chat.mjs", "run-skill.mjs"} {
+		if err := os.WriteFile(filepath.Join(repoRoot, "scripts", "eval", file), []byte("console.log('runner');\n"), 0o755); err != nil {
+			t.Fatalf("WriteFile runner returned error: %v", err)
+		}
 	}
 	runGitForRunnerReadiness(t, repoRoot, "add", ".")
 	runGitForRunnerReadiness(t, repoRoot, "commit", "-m", "initial")

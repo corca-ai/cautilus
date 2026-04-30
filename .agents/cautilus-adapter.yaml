@@ -14,6 +14,14 @@ preflight_commands:
 evaluation_input_default: fixtures/eval/dev/repo/checked-in-agents-routing.fixture.json
 eval_test_command_templates:
   - node ./scripts/run-self-dogfood-eval.mjs --repo-root . --output-dir {output_dir} --cases-file {eval_cases_file} --output-file {eval_observed_file} --backend {backend} --sandbox read-only --timeout-ms 180000 --codex-model gpt-5.4-mini --codex-reasoning-effort low --claude-permission-mode dontAsk
+runner_readiness:
+  runners:
+    - id: dev-repo-self-dogfood
+      surfaces:
+        - dev/repo
+      proof_class: coding-agent-messaging
+      command_template: node ./scripts/run-self-dogfood-eval.mjs --repo-root . --output-dir {output_dir} --cases-file {eval_cases_file} --output-file {eval_observed_file} --backend {backend} --sandbox read-only --timeout-ms 180000 --codex-model gpt-5.4-mini --codex-reasoning-effort low --claude-permission-mode dontAsk
+      assessment_path: .cautilus/runners/dev-repo-self-dogfood.assessment.json
 full_gate_command_templates:
   - npm run verify
 claim_discovery:

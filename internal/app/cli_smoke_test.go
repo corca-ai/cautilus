@@ -3367,6 +3367,106 @@ JSON
 	}
 }
 
+func TestCLIEvalTestSelectsTypedRunnerBySurface(t *testing.T) {
+	root := t.TempDir()
+	adapterDir := filepath.Join(root, ".agents")
+	fixtureDir := filepath.Join(root, "fixtures", "eval", "app", "chat")
+	outputDir := filepath.Join(root, "out")
+	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.MkdirAll(fixtureDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	scriptPath := filepath.Join(root, "typed-chat-runner.sh")
+	script := `#!/bin/sh
+set -eu
+if [ "$1" != "app-chat-live" ]; then
+  echo "unexpected runner id: $1" >&2
+  exit 7
+fi
+cat > "$2" <<'JSON'
+{
+  "schemaVersion": "cautilus.app_chat_evaluation_inputs.v1",
+  "suiteId": "typed-chat",
+  "evaluations": [
+    {
+      "caseId": "say-hello",
+      "provider": "fixture",
+      "model": "fixture-model",
+      "harness": "typed-runner",
+      "mode": "messaging",
+      "durationMs": 1,
+      "observed": {
+        "messages": [
+          {"role": "assistant", "content": "Hello from typed runner."}
+        ],
+        "finalText": "Hello from typed runner."
+      },
+      "expected": {"finalText": "Hello"}
+    }
+  ]
+}
+JSON
+`
+	if err := os.WriteFile(scriptPath, []byte(script), 0o755); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	writeJSONFile(t, filepath.Join(fixtureDir, "typed.fixture.json"), map[string]any{
+		"schemaVersion": contracts.EvaluationInputSchema,
+		"surface":       "app",
+		"preset":        "chat",
+		"suiteId":       "typed-chat",
+		"provider":      "fixture",
+		"model":         "fixture-model",
+		"cases": []map[string]any{
+			{
+				"caseId":   "say-hello",
+				"messages": []map[string]any{{"role": "user", "content": "Say hello."}},
+				"expected": map[string]any{"finalText": "Hello"},
+			},
+		},
+	})
+	if err := os.WriteFile(filepath.Join(adapterDir, "cautilus-adapter.yaml"), []byte(strings.Join([]string{
+		"version: 1",
+		"repo: temp",
+		"evaluation_surfaces:",
+		"  - app chat behavior",
+		"baseline_options:",
+		"  - fixture-level model pin",
+		"evaluation_input_default: fixtures/eval/app/chat/typed.fixture.json",
+		"runner_readiness:",
+		"  runners:",
+		"    - id: app-chat-live",
+		"      surfaces:",
+		"        - app/chat",
+		"      proof_class: live-product-runner",
+		"      command_template: sh ./typed-chat-runner.sh {runner_id} {eval_observed_file}",
+		"      default_runtime: fixture",
+		"    - id: app-prompt-live",
+		"      surfaces:",
+		"        - app/prompt",
+		"      proof_class: live-product-runner",
+		"      command_template: sh -c 'echo wrong typed runner >&2; exit 9'",
+		"",
+	}, "\n")), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+
+	stdout, stderr, exitCode := runCLI(t, root, "eval", "test", "--repo-root", root, "--output-dir", outputDir)
+	if exitCode != 0 {
+		t.Fatalf("eval test failed: %s", stderr)
+	}
+	summary := readJSONObjectFile(t, strings.TrimSpace(stdout))
+	if summary["recommendation"] != "accept-now" {
+		t.Fatalf("expected typed runner eval to pass, got %#v", summary)
+	}
+	proof := mapOrEmpty(summary["proof"])
+	if proof["proofClass"] != "live-product-runner" || proof["proofClassSource"] != "adapter-runner" || proof["productProofReady"] != false {
+		t.Fatalf("expected typed runner proof metadata without product readiness, got %#v", proof)
+	}
+}
+
 func TestCLIEvalEvaluateAcceptsAppChatObservedPacket(t *testing.T) {
 	root := t.TempDir()
 	inputPath := filepath.Join(root, "app-chat-observed.json")

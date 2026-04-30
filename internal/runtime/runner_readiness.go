@@ -1,6 +1,7 @@
 package runtime
 
 import (
+	"fmt"
 	"path/filepath"
 	"strings"
 
@@ -56,6 +57,48 @@ var runnerVerificationLegStates = map[string]bool{
 }
 
 func BuildRunnerReadiness(repoRoot string, adapter *AdapterPayload) map[string]any {
+	return buildRunnerReadiness(repoRoot, adapter, "")
+}
+
+func BuildRunnerReadinessForSurface(repoRoot string, adapter *AdapterPayload, targetSurface string) map[string]any {
+	return buildRunnerReadiness(repoRoot, adapter, targetSurface)
+}
+
+func ResolveEvalRunner(adapter *AdapterPayload, targetSurface string) (map[string]any, error) {
+	targetSurface = strings.TrimSpace(targetSurface)
+	runners := adapterRunnerBindings(adapter)
+	typedRunnerCount := 0
+	for _, runner := range runners {
+		if truthy(runner["typed"]) {
+			typedRunnerCount++
+		}
+	}
+	if typedRunnerCount > 0 {
+		for _, runner := range runners {
+			if runnerSupportsSurface(runner, targetSurface) {
+				return runner, nil
+			}
+		}
+		if targetSurface == "" && len(runners) > 0 {
+			return runners[0], nil
+		}
+		return nil, fmt.Errorf("adapter runner_readiness.runners has no runner for target surface %q", targetSurface)
+	}
+	if len(runners) > 0 {
+		return runners[0], nil
+	}
+	return nil, fmt.Errorf("adapter does not define an eval runner")
+}
+
+func EvalRunnerCommandTemplates(runner map[string]any) []string {
+	return stringArrayOrEmpty(runner["commandTemplates"])
+}
+
+func EvalRunnerDefaultRuntime(runner map[string]any) string {
+	return strings.TrimSpace(stringOrEmpty(runner["defaultRuntime"]))
+}
+
+func buildRunnerReadiness(repoRoot string, adapter *AdapterPayload, targetSurface string) map[string]any {
 	result := map[string]any{
 		"state":              "unknown",
 		"runnerDeclared":     false,
@@ -73,21 +116,66 @@ func BuildRunnerReadiness(repoRoot string, adapter *AdapterPayload) map[string]a
 		result["reason"] = "adapter-not-ready"
 		return result
 	}
-	templates := stringArrayOrEmpty(adapter.Data["eval_test_command_templates"])
-	if len(templates) == 0 {
+	runners := adapterRunnerBindings(adapter)
+	if len(runners) == 0 {
 		result["state"] = "unknown"
 		result["reason"] = "runner-template-missing"
 		return result
 	}
+	if strings.TrimSpace(targetSurface) != "" {
+		runner, err := ResolveEvalRunner(adapter, targetSurface)
+		if err != nil {
+			result["state"] = "unknown"
+			result["reason"] = "runner-surface-missing"
+			result["targetSurface"] = targetSurface
+			result["availableRunners"] = runnerSummaries(runners)
+			result["nextBranch"] = runnerReadinessBranchForRunner(defaultRunnerID, "bind_runner_metadata", "Bind runner metadata", "No adapter runner supports the selected evaluation surface.", "", false)
+			return result
+		}
+		return buildRunnerReadinessForRunner(repoRoot, adapter, runner, targetSurface)
+	}
+	readinesses := []any{}
+	for _, runner := range runners {
+		readinesses = append(readinesses, buildRunnerReadinessForRunner(repoRoot, adapter, runner, ""))
+	}
+	primary := cloneMap(selectPrimaryRunnerReadiness(readinesses))
+	primary["runners"] = readinesses
+	primary["runnerCount"] = len(readinesses)
+	return primary
+}
+
+func buildRunnerReadinessForRunner(repoRoot string, adapter *AdapterPayload, runner map[string]any, targetSurface string) map[string]any {
+	runnerID := firstNonEmptyString(runner["runnerId"], defaultRunnerID)
+	assessmentPath := firstNonEmptyString(runner["assessmentPath"], defaultRunnerAssessmentPath(runnerID))
+	proofClass := firstNonEmptyString(runner["proofClass"], "unknown")
+	proofClassSource := firstNonEmptyString(runner["proofClassSource"], "none")
+	result := map[string]any{
+		"state":              "unknown",
+		"runnerDeclared":     false,
+		"runnerId":           runnerID,
+		"surfaces":           firstNonNil(runner["surfaces"], []any{}),
+		"assessmentPath":     assessmentPath,
+		"assessmentRequired": true,
+		"proofClass":         proofClass,
+		"proofClassSource":   proofClassSource,
+		"nextBranch":         runnerReadinessBranchForRunner(runnerID, "bind_runner_metadata", "Bind runner metadata", "No valid adapter eval runner is declared yet.", "", false),
+		"notice":             "Plain eval_test_command_templates imply only declared-eval-runner, not a product proof class.",
+		"scaffoldSource":     "fixtures/runner-readiness/example-assessment.json",
+	}
+	if strings.TrimSpace(targetSurface) != "" {
+		result["targetSurface"] = targetSurface
+	}
 	result["runnerDeclared"] = true
-	result["declaredRunnerKind"] = "declared-eval-runner"
-	assessmentPath := defaultRunnerAssessmentPath(defaultRunnerID)
-	result["assessmentPath"] = assessmentPath
+	result["declaredRunnerKind"] = firstNonEmptyString(runner["declaredRunnerKind"], "declared-eval-runner")
+	if truthy(runner["typed"]) {
+		result["notice"] = "Typed adapter runners bind surfaces to command templates; product-proof readiness still requires a current runner assessment."
+	}
 	resolvedAssessmentPath := filepath.Join(repoRoot, filepath.FromSlash(assessmentPath))
 	if !fileExists(resolvedAssessmentPath) {
 		result["state"] = "missing-assessment"
 		result["reason"] = "runner-assessment-missing"
-		result["nextBranch"] = runnerReadinessBranch(
+		result["nextBranch"] = runnerReadinessBranchForRunner(
+			runnerID,
 			"create_runner_assessment",
 			"Create the runner assessment",
 			"The adapter declares an eval runner, but no runner assessment exists yet.",
@@ -101,7 +189,8 @@ func BuildRunnerReadiness(repoRoot string, adapter *AdapterPayload) map[string]a
 		result["state"] = "unknown"
 		result["reason"] = "runner-assessment-invalid-json"
 		result["error"] = err.Error()
-		result["nextBranch"] = runnerReadinessBranch(
+		result["nextBranch"] = runnerReadinessBranchForRunner(
+			runnerID,
 			"repair_runner_assessment",
 			"Repair the runner assessment",
 			"The runner assessment exists but cannot be parsed as JSON.",
@@ -112,12 +201,13 @@ func BuildRunnerReadiness(repoRoot string, adapter *AdapterPayload) map[string]a
 	}
 	result["assessment"] = summarizeRunnerAssessment(assessment)
 	validationIssues := validateRunnerAssessmentShape(assessment)
-	validationIssues = append(validationIssues, validateRunnerAssessmentBinding(repoRoot, adapter, assessment)...)
+	validationIssues = append(validationIssues, validateRunnerAssessmentBinding(repoRoot, adapter, assessment, runner)...)
 	if len(validationIssues) > 0 {
 		result["state"] = "unknown"
 		result["reason"] = "runner-assessment-invalid"
 		result["issues"] = validationIssues
-		result["nextBranch"] = runnerReadinessBranch(
+		result["nextBranch"] = runnerReadinessBranchForRunner(
+			runnerID,
 			"repair_runner_assessment",
 			"Repair the runner assessment",
 			"The runner assessment is present but does not match the minimal schema.",
@@ -133,7 +223,8 @@ func BuildRunnerReadiness(repoRoot string, adapter *AdapterPayload) map[string]a
 		result["staleReasons"] = staleReasons
 		result["proofClass"] = firstNonEmptyString(assessment["proofClass"], "unknown")
 		result["proofClassSource"] = "assessment"
-		result["nextBranch"] = runnerReadinessBranch(
+		result["nextBranch"] = runnerReadinessBranchForRunner(
+			runnerID,
 			"refresh_runner_assessment",
 			"Refresh the runner assessment",
 			"The runner assessment was made against older repo, adapter, or runner file state.",
@@ -142,7 +233,7 @@ func BuildRunnerReadiness(repoRoot string, adapter *AdapterPayload) map[string]a
 		)
 		return result
 	}
-	proofClass := firstNonEmptyString(assessment["proofClass"], "unknown")
+	proofClass = firstNonEmptyString(assessment["proofClass"], "unknown")
 	recommendation := firstNonEmptyString(assessment["recommendation"], "blocked")
 	result["proofClass"] = proofClass
 	result["proofClassSource"] = "assessment"
@@ -155,7 +246,8 @@ func BuildRunnerReadiness(repoRoot string, adapter *AdapterPayload) map[string]a
 		result["reason"] = "runner-assessment-missing-verification-capabilities"
 		result["effectiveRecommendation"] = "blocked"
 		result["verificationIssues"] = verificationIssues
-		result["nextBranch"] = runnerReadinessBranch(
+		result["nextBranch"] = runnerReadinessBranchForRunner(
+			runnerID,
 			"upgrade_runner_assessment",
 			"Upgrade runner assessment before product-behavior proof",
 			"The assessment claims product-proof readiness, but required runner verification capability evidence is missing.",
@@ -168,7 +260,8 @@ func BuildRunnerReadiness(repoRoot string, adapter *AdapterPayload) map[string]a
 	case "ready-for-selected-surface":
 		result["state"] = "assessed"
 		result["reason"] = "runner-assessment-ready"
-		result["nextBranch"] = runnerReadinessBranch(
+		result["nextBranch"] = runnerReadinessBranchForRunner(
+			runnerID,
 			"run_eval_with_assessed_runner",
 			"Run eval with the assessed runner",
 			"The runner assessment is current and scoped to the selected requirement.",
@@ -178,7 +271,8 @@ func BuildRunnerReadiness(repoRoot string, adapter *AdapterPayload) map[string]a
 	case "smoke-only":
 		result["state"] = "smoke-only"
 		result["reason"] = "runner-assessment-smoke-only"
-		result["nextBranch"] = runnerReadinessBranch(
+		result["nextBranch"] = runnerReadinessBranchForRunner(
+			runnerID,
 			"upgrade_runner_assessment",
 			"Upgrade runner assessment before product-behavior proof",
 			"The current assessment says this runner is only suitable for smoke validation.",
@@ -188,7 +282,8 @@ func BuildRunnerReadiness(repoRoot string, adapter *AdapterPayload) map[string]a
 	default:
 		result["state"] = "assessed"
 		result["reason"] = "runner-assessment-not-ready"
-		result["nextBranch"] = runnerReadinessBranch(
+		result["nextBranch"] = runnerReadinessBranchForRunner(
+			runnerID,
 			"address_runner_assessment_gaps",
 			"Address runner assessment gaps",
 			"The runner assessment is current but not ready for selected product-behavior proof.",
@@ -199,18 +294,142 @@ func BuildRunnerReadiness(repoRoot string, adapter *AdapterPayload) map[string]a
 	return result
 }
 
+func adapterRunnerBindings(adapter *AdapterPayload) []map[string]any {
+	if adapter == nil || adapter.Data == nil {
+		return nil
+	}
+	typed := []map[string]any{}
+	for _, raw := range arrayOrEmpty(asMap(adapter.Data["runner_readiness"])["runners"]) {
+		record := asMap(raw)
+		runnerID := strings.TrimSpace(stringOrEmpty(record["id"]))
+		if runnerID == "" {
+			continue
+		}
+		proofClass := strings.TrimSpace(stringOrEmpty(record["proof_class"]))
+		proofClassSource := "none"
+		if proofClass != "" {
+			proofClassSource = "adapter-runner"
+		}
+		assessmentPath := strings.TrimSpace(stringOrEmpty(record["assessment_path"]))
+		if assessmentPath == "" {
+			assessmentPath = defaultRunnerAssessmentPath(runnerID)
+		}
+		typed = append(typed, map[string]any{
+			"runnerId":           runnerID,
+			"surfaces":           stringArrayToAny(stringArrayOrEmpty(record["surfaces"])),
+			"commandTemplates":   []string{strings.TrimSpace(stringOrEmpty(record["command_template"]))},
+			"assessmentPath":     assessmentPath,
+			"proofClass":         firstNonEmptyString(proofClass, "unknown"),
+			"proofClassSource":   proofClassSource,
+			"declaredRunnerKind": "typed-eval-runner",
+			"defaultRuntime":     strings.TrimSpace(stringOrEmpty(record["default_runtime"])),
+			"typed":              true,
+		})
+	}
+	if len(typed) > 0 {
+		return typed
+	}
+	templates := stringArrayOrEmpty(adapter.Data["eval_test_command_templates"])
+	if len(templates) == 0 {
+		return nil
+	}
+	return []map[string]any{
+		{
+			"runnerId":           defaultRunnerID,
+			"surfaces":           []any{},
+			"commandTemplates":   templates,
+			"assessmentPath":     defaultRunnerAssessmentPath(defaultRunnerID),
+			"proofClass":         "unknown",
+			"proofClassSource":   "none",
+			"declaredRunnerKind": "declared-eval-runner",
+			"typed":              false,
+		},
+	}
+}
+
+func runnerSupportsSurface(runner map[string]any, targetSurface string) bool {
+	targetSurface = strings.TrimSpace(targetSurface)
+	surfaces := stringArrayOrEmpty(runner["surfaces"])
+	if len(surfaces) == 0 {
+		return true
+	}
+	for _, surface := range surfaces {
+		if surface == targetSurface {
+			return true
+		}
+	}
+	return false
+}
+
+func runnerSummaries(runners []map[string]any) []any {
+	summaries := []any{}
+	for _, runner := range runners {
+		summaries = append(summaries, map[string]any{
+			"runnerId":           runner["runnerId"],
+			"surfaces":           firstNonNil(runner["surfaces"], []any{}),
+			"declaredRunnerKind": runner["declaredRunnerKind"],
+			"proofClass":         runner["proofClass"],
+			"assessmentPath":     runner["assessmentPath"],
+		})
+	}
+	return summaries
+}
+
+func selectPrimaryRunnerReadiness(readinesses []any) map[string]any {
+	if len(readinesses) == 0 {
+		return map[string]any{}
+	}
+	rank := map[string]int{
+		"unknown":            0,
+		"missing-assessment": 1,
+		"stale":              2,
+		"smoke-only":         3,
+		"assessed":           4,
+	}
+	best := asMap(readinesses[0])
+	bestRank := 99
+	for _, raw := range readinesses {
+		readiness := asMap(raw)
+		state := strings.TrimSpace(stringOrEmpty(readiness["state"]))
+		currentRank, ok := rank[state]
+		if !ok {
+			currentRank = 50
+		}
+		if state == "assessed" && asMap(readiness["nextBranch"])["id"] == "run_eval_with_assessed_runner" {
+			currentRank = 90
+		}
+		if currentRank < bestRank {
+			best = readiness
+			bestRank = currentRank
+		}
+	}
+	return best
+}
+
+func cloneMap(value map[string]any) map[string]any {
+	cloned := map[string]any{}
+	for key, raw := range value {
+		cloned[key] = raw
+	}
+	return cloned
+}
+
 func defaultRunnerAssessmentPath(runnerID string) string {
 	return filepath.ToSlash(filepath.Join(".cautilus", "runners", runnerID+".assessment.json"))
 }
 
 func runnerReadinessBranch(id string, label string, reason string, artifactPath string, writesFiles bool) map[string]any {
+	return runnerReadinessBranchForRunner(defaultRunnerID, id, label, reason, artifactPath, writesFiles)
+}
+
+func runnerReadinessBranchForRunner(runnerID string, id string, label string, reason string, artifactPath string, writesFiles bool) map[string]any {
 	branch := map[string]any{
 		"id":            id,
 		"label":         label,
 		"reason":        reason,
 		"writesFiles":   writesFiles,
 		"owningSurface": "setup/readiness",
-		"runnerId":      defaultRunnerID,
+		"runnerId":      firstNonEmptyString(runnerID, defaultRunnerID),
 	}
 	if strings.TrimSpace(artifactPath) != "" {
 		branch["artifactPath"] = artifactPath
@@ -315,10 +534,14 @@ func validateRunnerAssessmentShape(assessment map[string]any) []any {
 	return issues
 }
 
-func validateRunnerAssessmentBinding(repoRoot string, adapter *AdapterPayload, assessment map[string]any) []any {
+func validateRunnerAssessmentBinding(repoRoot string, adapter *AdapterPayload, assessment map[string]any, runner map[string]any) []any {
 	issues := []any{}
-	if runnerID := strings.TrimSpace(stringOrEmpty(assessment["runnerId"])); runnerID != "" && runnerID != defaultRunnerID {
-		issues = append(issues, map[string]any{"field": "runnerId", "message": "plain eval_test_command_templates currently bind only " + defaultRunnerID})
+	expectedRunnerID := firstNonEmptyString(runner["runnerId"], defaultRunnerID)
+	if runnerID := strings.TrimSpace(stringOrEmpty(assessment["runnerId"])); runnerID != "" && runnerID != expectedRunnerID {
+		issues = append(issues, map[string]any{"field": "runnerId", "message": "runnerId must match the selected adapter runner", "expected": expectedRunnerID, "actual": runnerID})
+	}
+	if assessmentSurface := strings.TrimSpace(stringOrEmpty(assessment["surface"])); assessmentSurface != "" && !runnerSupportsSurface(runner, assessmentSurface) {
+		issues = append(issues, map[string]any{"field": "surface", "message": "assessment surface must be declared by the selected adapter runner", "expected": runner["surfaces"], "actual": assessmentSurface})
 	}
 	if adapter != nil {
 		expectedPath := repoRelativePath(repoRoot, stringOrEmpty(adapter.Path))

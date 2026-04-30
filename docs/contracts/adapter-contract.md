@@ -45,6 +45,15 @@ runtime_policy:
 evaluation_input_default: fixtures/eval/dev/repo/example.fixture.json
 eval_test_command_templates:
   - node scripts/agent-runtime/run-local-eval-test.mjs --repo-root . --workspace {candidate_repo} --cases-file {eval_cases_file} --output-file {eval_observed_file} --artifact-dir {output_dir}/eval-test --backend {backend} --sandbox read-only
+runner_readiness:
+  runners:
+    - id: dev-repo-agent
+      surfaces:
+        - dev/repo
+      proof_class: coding-agent-messaging
+      command_template: node scripts/agent-runtime/run-local-eval-test.mjs --repo-root . --workspace {candidate_repo} --cases-file {eval_cases_file} --output-file {eval_observed_file} --artifact-dir {output_dir}/eval-test --backend {backend} --sandbox read-only
+      assessment_path: .cautilus/runners/dev-repo-agent.assessment.json
+      default_runtime: codex
 claim_discovery:
   entries:
     - README.md
@@ -183,6 +192,12 @@ default_schema_file: fixtures/review/review-verdict.schema.json
 - `evaluation_input_default`: optional checked-in `cautilus.evaluation_input.v1` path used by `cautilus eval test` when the operator does not pass `--fixture`.
 - `eval_test_command_templates`: commands that turn the validated fixture's translated case suite into an observed `cautilus.evaluation_observed.v1` packet.
 - `default_runtime`: optional runtime choice (`codex`, `claude`, or `fixture`), defaults to `codex`. Overridden by `cautilus eval test --runtime`.
+- `runner_readiness`: optional typed runner declarations used by `doctor`, `agent status`, and `eval test`.
+  When present, `runner_readiness.runners[]` is the preferred command source for `eval test`; the runner whose `surfaces` contains the fixture's surface/preset is selected.
+  Each runner needs `id`, `surfaces`, and `command_template`.
+  `proof_class`, `smoke_command_template`, `assessment_path`, and `default_runtime` are optional metadata fields.
+  `proof_class` must be one of `fixture-smoke`, `coding-agent-messaging`, `in-process-product-runner`, or `live-product-runner`.
+  Adapter-declared proof class is metadata, not product-proof readiness; app product-proof readiness still requires a current `cautilus.runner_assessment.v1` packet.
 - `claim_discovery`: optional bounded truth-surface configuration for `cautilus claim discover`.
   `entries` replaces the product default entry set (`README.md`, `AGENTS.md`, and `CLAUDE.md` when present).
   `linked_markdown_depth` defaults to `3` and controls repo-local Markdown link traversal from those entries.

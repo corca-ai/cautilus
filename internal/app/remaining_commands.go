@@ -588,9 +588,14 @@ func runEvalTestPipeline(
 	stderr io.Writer,
 	progressLabel string,
 ) int {
-	templates := stringArray(adapterPayload.Data["eval_test_command_templates"])
+	runner, err := runtime.ResolveEvalRunner(adapterPayload, targetSurface)
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	templates := runtime.EvalRunnerCommandTemplates(runner)
 	if len(templates) == 0 {
-		fmt.Fprintf(stderr, "Adapter does not define eval_test_command_templates\n")
+		fmt.Fprintf(stderr, "Adapter does not define eval runner command templates\n")
 		return 1
 	}
 	resolvedRun, err := runtime.ResolveRunDir(options.outputDir, nil, nil, environmentMap(), time.Now(), cwd)
@@ -616,6 +621,9 @@ func runEvalTestPipeline(
 	workspace := resolvePath(cwd, options.workspace)
 	effectiveRuntime := options.runtime
 	if effectiveRuntime == "" {
+		effectiveRuntime = runtime.EvalRunnerDefaultRuntime(runner)
+	}
+	if effectiveRuntime == "" {
 		effectiveRuntime = strings.TrimSpace(anyString(adapterPayload.Data["default_runtime"]))
 	}
 	if effectiveRuntime == "" {
@@ -634,8 +642,9 @@ func runEvalTestPipeline(
 		"eval_cases_file":    runtime.ShellSingleQuote(casesFile),
 		"eval_observed_file": runtime.ShellSingleQuote(inputFile),
 		"backend":            backendValue,
+		"runner_id":          runtime.ShellSingleQuote(anyString(runner["runnerId"])),
 	}
-	log(fmt.Sprintf("%s start: repo=%s workspace=%s suite=%s runtime=%s output=%s", progressLabel, options.repoRoot, workspace, suiteID, effectiveRuntime, outputDir))
+	log(fmt.Sprintf("%s start: repo=%s workspace=%s suite=%s runner=%s runtime=%s output=%s", progressLabel, options.repoRoot, workspace, suiteID, anyString(runner["runnerId"]), effectiveRuntime, outputDir))
 	commandTimeout := defaultShellCommandTimeout()
 	commandsPassed := true
 	if !options.skipPreflight {
@@ -693,7 +702,7 @@ func runEvalTestPipeline(
 		}
 		return 1
 	}
-	readiness := runtime.BuildRunnerReadiness(options.repoRoot, adapterPayload)
+	readiness := runtime.BuildRunnerReadinessForSurface(options.repoRoot, adapterPayload, targetSurface)
 	proof := runtime.BuildEvaluationProofFromRunnerReadiness(readiness, targetSurface, effectiveRuntime)
 	input["proof"] = runtime.MergeEvaluationProof(input["proof"], proof)
 	if payload, err := json.MarshalIndent(input, "", "  "); err != nil {

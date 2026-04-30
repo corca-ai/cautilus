@@ -423,6 +423,13 @@ func validateAdapterData(data map[string]any) (map[string]any, []string) {
 			validated["live_run_invocation"] = normalized
 		}
 	}
+	if runnerReadiness, ok := data["runner_readiness"]; ok && runnerReadiness != nil {
+		normalized, runnerErrors := validateAdapterRunnerReadiness(runnerReadiness)
+		errors = append(errors, runnerErrors...)
+		if normalized != nil {
+			validated["runner_readiness"] = normalized
+		}
+	}
 	if optimizeSearch, ok := data["optimize_search"]; ok && optimizeSearch != nil {
 		normalized, optimizeErrors := validateAdapterOptimizeSearch(optimizeSearch)
 		errors = append(errors, optimizeErrors...)
@@ -446,6 +453,119 @@ func validateAdapterData(data map[string]any) (map[string]any, []string) {
 		}
 	}
 	return validated, errors
+}
+
+func validateAdapterRunnerReadiness(value any) (map[string]any, []string) {
+	record, ok := value.(map[string]any)
+	if !ok {
+		return nil, []string{"runner_readiness must be a mapping"}
+	}
+	errors := []string{}
+	normalized := map[string]any{}
+	rawRunners, exists := record["runners"]
+	if !exists || rawRunners == nil {
+		return normalized, errors
+	}
+	items, err := assertArray(rawRunners, "runner_readiness.runners")
+	if err != nil {
+		return nil, []string{"runner_readiness.runners must be a list of mappings"}
+	}
+	seen := map[string]bool{}
+	runners := []any{}
+	for index, raw := range items {
+		field := fmt.Sprintf("runner_readiness.runners[%d]", index)
+		runner, ok := raw.(map[string]any)
+		if !ok {
+			errors = append(errors, field+" must be a mapping")
+			continue
+		}
+		entry := map[string]any{}
+		id, err := normalizeNonEmptyString(runner["id"], field+".id")
+		if err != nil {
+			errors = append(errors, field+".id must be a non-empty string")
+		} else if seen[id] {
+			errors = append(errors, field+".id must be unique")
+		} else {
+			seen[id] = true
+			entry["id"] = id
+		}
+		if rawSurfaces, ok := runner["surfaces"]; ok && rawSurfaces != nil {
+			surfaces, err := assertArray(rawSurfaces, field+".surfaces")
+			if err != nil {
+				errors = append(errors, field+".surfaces must be a list of strings")
+			} else {
+				normalizedSurfaces := []string{}
+				for surfaceIndex, rawSurface := range surfaces {
+					surface, ok := rawSurface.(string)
+					if !ok || strings.TrimSpace(surface) == "" {
+						errors = append(errors, fmt.Sprintf("%s.surfaces[%d] must be a non-empty string", field, surfaceIndex))
+						continue
+					}
+					surface = strings.TrimSpace(surface)
+					if !runnerAssessmentSurfaces[surface] {
+						errors = append(errors, fmt.Sprintf("%s.surfaces[%d] must be one of: dev/repo, dev/skill, app/chat, app/prompt", field, surfaceIndex))
+						continue
+					}
+					normalizedSurfaces = append(normalizedSurfaces, surface)
+				}
+				if len(normalizedSurfaces) == 0 {
+					errors = append(errors, field+".surfaces must contain at least one supported surface")
+				}
+				entry["surfaces"] = normalizedSurfaces
+			}
+		} else {
+			errors = append(errors, field+".surfaces must contain at least one supported surface")
+		}
+		commandTemplate, err := normalizeNonEmptyString(runner["command_template"], field+".command_template")
+		if err != nil {
+			errors = append(errors, field+".command_template must be a non-empty string")
+		} else {
+			entry["command_template"] = commandTemplate
+		}
+		if proofClass, ok := runner["proof_class"]; ok && proofClass != nil {
+			text, err := normalizeNonEmptyString(proofClass, field+".proof_class")
+			if err != nil {
+				errors = append(errors, field+".proof_class must be a non-empty string")
+			} else if !runnerAssessmentProofClasses[text] {
+				errors = append(errors, field+".proof_class must be a known runner proof class")
+			} else {
+				entry["proof_class"] = text
+			}
+		}
+		if smokeTemplate, ok := runner["smoke_command_template"]; ok && smokeTemplate != nil {
+			text, err := normalizeNonEmptyString(smokeTemplate, field+".smoke_command_template")
+			if err != nil {
+				errors = append(errors, field+".smoke_command_template must be a non-empty string")
+			} else {
+				entry["smoke_command_template"] = text
+			}
+		}
+		if assessmentPath, ok := runner["assessment_path"]; ok && assessmentPath != nil {
+			text, err := normalizeNonEmptyString(assessmentPath, field+".assessment_path")
+			if err != nil {
+				errors = append(errors, field+".assessment_path must be a non-empty string")
+			} else if filepath.IsAbs(text) {
+				errors = append(errors, field+".assessment_path must be repo-relative")
+			} else {
+				entry["assessment_path"] = filepath.ToSlash(filepath.Clean(text))
+			}
+		}
+		if defaultRuntime, ok := runner["default_runtime"]; ok && defaultRuntime != nil {
+			text, err := normalizeNonEmptyString(defaultRuntime, field+".default_runtime")
+			if err != nil {
+				errors = append(errors, field+".default_runtime must be a non-empty string")
+			} else if text != "codex" && text != "claude" && text != "fixture" {
+				errors = append(errors, field+".default_runtime must be one of: codex, claude, fixture")
+			} else {
+				entry["default_runtime"] = text
+			}
+		}
+		if len(entry) > 0 {
+			runners = append(runners, entry)
+		}
+	}
+	normalized["runners"] = runners
+	return normalized, errors
 }
 
 func validateAdapterClaimDiscovery(value any) (map[string]any, []string) {
@@ -1093,9 +1213,9 @@ func DoctorRepo(repoRoot string, adapterPath *string, adapterName *string) (map[
 	appendFieldCheck(&checks, &suggestions, "repo_name", strings.TrimSpace(stringOrEmpty(data["repo"])) != "", "Adapter declares repo.", "Adapter is missing a repo name.", "Set adapter.repo to the host repo name.")
 	appendFieldCheck(&checks, &suggestions, "evaluation_surfaces", len(stringArrayOrEmpty(data["evaluation_surfaces"])) > 0, "Adapter declares evaluation surfaces.", "Adapter is missing evaluation_surfaces.", "Add at least one evaluation_surfaces entry that states what the adapter judges.")
 	appendFieldCheck(&checks, &suggestions, "baseline_options", len(stringArrayOrEmpty(data["baseline_options"])) > 0, "Adapter declares baseline options.", "Adapter is missing baseline_options.", "Add at least one baseline_options entry so comparisons stay explicit.")
-	automatedCommands := len(stringArrayOrEmpty(data["eval_test_command_templates"])) > 0
+	automatedCommands := len(stringArrayOrEmpty(data["eval_test_command_templates"])) > 0 || len(arrayOrEmpty(asMap(data["runner_readiness"])["runners"])) > 0
 	hasVariants := len(arrayOrEmpty(data["executor_variants"])) > 0
-	appendFieldCheck(&checks, &suggestions, "execution_surface", automatedCommands, "Adapter declares runnable eval test command templates.", "Adapter has no eval test command templates yet.", "Add at least one eval_test_command_templates entry so `cautilus eval test` and `first_bounded_run` are runnable.")
+	appendFieldCheck(&checks, &suggestions, "execution_surface", automatedCommands, "Adapter declares runnable eval runner commands.", "Adapter has no eval runner command templates yet.", "Add at least one runner_readiness.runners entry or eval_test_command_templates entry so `cautilus eval test` and `first_bounded_run` are runnable.")
 	if !automatedCommands && hasVariants {
 		suggestions = append(suggestions, "executor_variants can run bounded review after a report packet exists, but they do not provide the eval test runner required by first_bounded_run.")
 	}

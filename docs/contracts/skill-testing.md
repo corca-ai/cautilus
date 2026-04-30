@@ -89,6 +89,7 @@ Placeholders for the runner template:
 - `{eval_cases_file}` — translated `cautilus.skill_test_cases.v1` packet
 - `{eval_observed_file}` — runner writes a `cautilus.skill_evaluation_inputs.v1` packet here
 - `{backend}` — resolved from `--runtime` CLI flag, adapter `default_runtime`, or `codex_exec` fallback
+- `{runner_id}` — selected adapter runner id, useful when `runner_readiness.runners` routes multiple surfaces
 
 For Codex-backed runners, default session mode should stay `ephemeral`, but a command template may opt into persistent mode for bounded probes that intentionally depend on session or fork tool surface.
 When that opt-out is used, the emitted telemetry should include `session_mode`.
