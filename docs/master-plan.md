@@ -14,6 +14,7 @@ The target product is:
 - train-vs-held-out discipline backed by scenario history
 - scenario proposal flows that mine runtime logs and audit traces into draft evaluation cases
 - first-class evaluation surfaces for chatbot, skill, and durable workflow behavior
+- runner readiness as a setup substrate under `claim`, `eval`, and `optimize`, especially for app behavior proof
 - agent-first command and packet surfaces that reveal user intent while hiding lower-level helper detail
 - an intent-first workflow where prompts are mutable implementation details and evaluation contracts define success
 
@@ -77,6 +78,8 @@ Eval-scenario planning and deeper evidence reconciliation remain the next claim-
 The current evaluation contract lives in [specs/evaluation-surfaces.spec.md](./specs/evaluation-surfaces.spec.md): two surfaces (`dev`, `app`), four presets (`repo`, `skill`, `chat`, `prompt`), and four fixture composition primitives.
 The earlier first-class archetype boundary (chatbot / skill / workflow) was retired with that redesign.
 `npm run lint:specs` and `npm run lint:archetypes` still gate the runtime completeness of the surviving `scenario normalize` helpers; new user-facing copy must reconcile with the surface/preset contract before landing.
+The runner readiness contract lives in [runner-readiness.md](./contracts/runner-readiness.md).
+It keeps headless product runners as setup/readiness substrate rather than a fourth command family, and it separates proof requirements from readiness verdicts.
 
 ## Phase Plan
 
@@ -165,8 +168,9 @@ Still open:
 2. Ship the remaining evaluation-surface composition primitives in spec order: C2 `extends`, C3 `steps`, and C4 `expected.snapshot`. See [docs/specs/evaluation-surfaces.spec.md](./specs/evaluation-surfaces.spec.md).
 3. Decide the next claim-discovery hardening slice from [claim-discovery-workflow.md](./contracts/claim-discovery-workflow.md): bounded evidence preflight if dogfood needs possible-evidence hints, review-result application if reviewed labels should become durable state, or eval-fixture authoring guidance if reviewed eval plans are the clearer blocker.
 4. Pick the next bounded improvement seam for the optimization layer: either close a specific richer merge heuristic that dogfood evidence asks for, or move to another roadmap slice rather than extending heuristics speculatively.
-5. Expand scenario-history beyond the first profile-backed comparison cache-key path toward reusable baseline results and broader compare ownership.
-6. Continue moving host-specific runtime seams out of the product boundary into consumer-owned adapters, prompts, and storage readers.
-7. Keep expanding normalization-pattern coverage as new consumer archetypes appear, while preserving one official adapter contract (`cautilus-adapter.yaml`).
-8. Decide whether to grow external-consumer onboarding into archetype-specific starter kits while keeping the supported installer surface centered on `install.sh`.
-9. Keep widening HTML surfaces only when the packet boundary stays stable and the page meaningfully improves human review; agents should consume durable packets first.
+5. Shape the first runner-readiness implementation slice from [runner-readiness.md](./contracts/runner-readiness.md): read-only status visibility and a minimal runner assessment packet before proof-class propagation or source-code inference.
+6. Expand scenario-history beyond the first profile-backed comparison cache-key path toward reusable baseline results and broader compare ownership.
+7. Continue moving host-specific runtime seams out of the product boundary into consumer-owned adapters, prompts, and storage readers.
+8. Keep expanding normalization-pattern coverage as new consumer archetypes appear, while preserving one official adapter contract (`cautilus-adapter.yaml`).
+9. Decide whether to grow external-consumer onboarding into archetype-specific starter kits while keeping the supported installer surface centered on `install.sh`.
+10. Keep widening HTML surfaces only when the packet boundary stays stable and the page meaningfully improves human review; agents should consume durable packets first.
