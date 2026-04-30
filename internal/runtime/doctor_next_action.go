@@ -77,6 +77,9 @@ func buildRepoNextAction(result map[string]any, repoRoot string, adapterName *st
 	case "incomplete_adapter":
 		return doctorAction("edit_adapter", incompleteAdapterMessage(result, adapterPath), "", currentDoctorCommand)
 	case "ready":
+		if action := buildRunnerReadinessNextAction(result, currentDoctorCommand); len(action) > 0 {
+			return action
+		}
 		discoveryCommand := strings.TrimSpace(stringOrEmpty(asMap(result["first_bounded_run"])["discoveryCommand"]))
 		if discoveryCommand == "" {
 			discoveryCommand = "cautilus scenarios --json"
@@ -90,6 +93,34 @@ func buildRepoNextAction(result map[string]any, repoRoot string, adapterName *st
 	default:
 		return doctorAction("manual", "Inspect the doctor payload and continue from the first incomplete requirement.", "", currentDoctorCommand)
 	}
+}
+
+func buildRunnerReadinessNextAction(result map[string]any, currentDoctorCommand string) map[string]any {
+	runnerReadiness := asMap(result["runnerReadiness"])
+	nextBranch := asMap(runnerReadiness["nextBranch"])
+	branchID := strings.TrimSpace(stringOrEmpty(nextBranch["id"]))
+	if branchID == "" || branchID == "run_eval_with_assessed_runner" {
+		return map[string]any{}
+	}
+	message := strings.TrimSpace(stringOrEmpty(nextBranch["reason"]))
+	if label := strings.TrimSpace(stringOrEmpty(nextBranch["label"])); label != "" {
+		if message != "" {
+			message = label + ". " + message
+		} else {
+			message = label + "."
+		}
+	}
+	if message == "" {
+		return map[string]any{}
+	}
+	action := doctorAction("runner_readiness", message, "", currentDoctorCommand)
+	action["branchId"] = branchID
+	for _, key := range []string{"artifactPath", "scaffoldSource", "runnerId", "scopeNote"} {
+		if value, ok := nextBranch[key]; ok {
+			action[key] = value
+		}
+	}
+	return action
 }
 
 func buildAgentSurfaceNextAction(result map[string]any, repoRoot string) map[string]any {

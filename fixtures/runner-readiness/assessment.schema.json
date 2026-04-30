@@ -85,6 +85,33 @@
     "observability": {
       "type": "object"
     },
+    "verificationCapabilities": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "inputSimulation": {
+          "$ref": "#/$defs/verificationCapabilityLeg"
+        },
+        "externalSubstitution": {
+          "$ref": "#/$defs/verificationCapabilityLeg"
+        },
+        "triggerControl": {
+          "$ref": "#/$defs/verificationCapabilityLeg"
+        },
+        "externalObservation": {
+          "$ref": "#/$defs/verificationCapabilityLeg"
+        },
+        "reset": {
+          "$ref": "#/$defs/verificationCapabilityLeg"
+        },
+        "fingerprint": {
+          "$ref": "#/$defs/verificationCapabilityLeg"
+        },
+        "stateReusePolicy": {
+          "$ref": "#/$defs/verificationCapabilityLeg"
+        }
+      }
+    },
     "knownGaps": {
       "type": "array"
     },
@@ -96,6 +123,38 @@
         "needs-production-path-reuse",
         "blocked"
       ]
+    }
+  },
+  "$defs": {
+    "verificationCapabilityLeg": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["state"],
+      "properties": {
+        "state": {
+          "enum": ["present", "missing", "not-required", "unknown"]
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidenceRefs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "knownGaps": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
     }
   }
 }

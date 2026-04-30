@@ -27,11 +27,42 @@
     "requiredObservability": ["transcript", "finalText", "runtimeFingerprint"]
   },
   "productionPathReuse": {
-    "modules": ["src/app/chat/route.ts", "src/ai/prompt-builder.ts"],
-    "notes": "The runner imports the product route handler and prompt builder instead of copying the prompt."
+    "modules": ["product/chat/handler.ts", "product/ai/prompt-builder.ts"],
+    "notes": "The runner imports product behavior modules instead of copying the prompt."
   },
   "observability": {
     "emits": ["normalizedMessages", "transcript", "finalText", "runtimeFingerprint", "diagnostics"]
+  },
+  "verificationCapabilities": {
+    "inputSimulation": {
+      "state": "present",
+      "summary": "The runner accepts normalized eval cases through the same product-readable request shape used by the selected chat surface.",
+      "evidenceRefs": ["scripts/eval/run-product-chat.mjs"]
+    },
+    "externalSubstitution": {
+      "state": "present",
+      "summary": "The runner points the product model boundary at a deterministic local provider for repeatable evaluation.",
+      "evidenceRefs": ["scripts/eval/run-product-chat.mjs", "fixtures/eval/app/chat/model-fixture.json"]
+    },
+    "triggerControl": {
+      "state": "present",
+      "summary": "The runner is a bounded CLI command and waits for the product behavior path to finish before writing the observed packet.",
+      "evidenceRefs": ["scripts/eval/run-product-chat.mjs"]
+    },
+    "externalObservation": {
+      "state": "present",
+      "summary": "The wrapper writes the observed packet after the product behavior path returns, preserving transcript, final text, and runtime fingerprint outside the response function.",
+      "evidenceRefs": ["eval-observed.json"]
+    },
+    "reset": {
+      "state": "unknown",
+      "knownGaps": ["The example does not declare state reset commands."]
+    },
+    "fingerprint": {
+      "state": "present",
+      "summary": "The runner records a runtime fingerprint in the observed packet.",
+      "evidenceRefs": ["eval-observed.json"]
+    }
   },
   "knownGaps": [],
   "recommendation": "ready-for-selected-surface"

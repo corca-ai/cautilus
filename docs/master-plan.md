@@ -82,6 +82,8 @@ The earlier first-class archetype boundary (chatbot / skill / workflow) was reti
 `npm run lint:specs` and `npm run lint:archetypes` still gate the runtime completeness of the surviving `scenario normalize` helpers; new user-facing copy must reconcile with the surface/preset contract before landing.
 The runner readiness contract lives in [runner-readiness.md](./contracts/runner-readiness.md).
 It keeps headless product runners as setup/readiness substrate rather than a fourth command family, and it separates proof requirements from readiness verdicts.
+The runner verification capability contract lives in [runner-verification.md](./contracts/runner-verification.md).
+It requires product-proof runner assessments to explain input simulation, external substitution, trigger control, and external observation before `doctor` or `agent status` can present product-behavior proof as ready.
 The live app runner contracts live in [workbench-instance-discovery.md](./contracts/workbench-instance-discovery.md), [live-run-invocation.md](./contracts/live-run-invocation.md), and [live-run-invocation-batch.md](./contracts/live-run-invocation-batch.md).
 Their public command namespace is `eval live`; the `workbench` name is reserved for a possible future GUI where operators can browse and edit claims, scenarios, and evidence.
 
@@ -172,7 +174,7 @@ Still open:
 2. Ship the remaining evaluation-surface composition primitives in spec order: C2 `extends`, C3 `steps`, and C4 `expected.snapshot`. See [docs/specs/evaluation-surfaces.spec.md](./specs/evaluation-surfaces.spec.md).
 3. Decide the next claim-discovery hardening slice from [claim-discovery-workflow.md](./contracts/claim-discovery-workflow.md): bounded evidence preflight if dogfood needs possible-evidence hints, review-result application if reviewed labels should become durable state, or eval-fixture authoring guidance if reviewed eval plans are the clearer blocker.
 4. Pick the next bounded improvement seam for the optimization layer: either close a specific richer merge heuristic that dogfood evidence asks for, or move to another roadmap slice rather than extending heuristics speculatively.
-5. Shape the first runner-readiness implementation slice from [runner-readiness.md](./contracts/runner-readiness.md): read-only status visibility and a minimal runner assessment packet before proof-class propagation or source-code inference.
+5. Continue the runner-readiness implementation after [runner-readiness.md](./contracts/runner-readiness.md) and [runner-verification.md](./contracts/runner-verification.md): claim/eval/optimize may now consume runner proof requirements and proof classes, but source-code inference and typed multi-runner adapter metadata remain deferred.
 6. Expand scenario-history beyond the first profile-backed comparison cache-key path toward reusable baseline results and broader compare ownership.
 7. Continue moving host-specific runtime seams out of the product boundary into consumer-owned adapters, prompts, and storage readers.
 8. Keep expanding normalization-pattern coverage as new consumer archetypes appear, while preserving one official adapter contract (`cautilus-adapter.yaml`).

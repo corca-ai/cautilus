@@ -168,6 +168,9 @@ App claims that depend on route policy, tools, retrieval, state, middleware, or 
 
 The first implementation should define a minimal `cautilus.runner_assessment.v1` packet.
 The packet should be checkable by `doctor` and readable by `agent status`.
+Runner assessment shape now has two layers.
+This document owns assessment existence, scope, freshness, proof class, and recommendation.
+[Runner verification](./runner-verification.md) owns the optional-to-required capability evidence that explains whether product-proof classes are honest enough for the selected surface.
 
 Minimum fields:
 
@@ -203,6 +206,9 @@ It means the assessed runner is fit for the listed requirement with the listed k
 `productionPathReuse` should name the reused modules, route handlers, services, prompt builders, tool registries, state stores, or policy modules.
 `observability` should state which artifacts the runner emits, such as normalized messages, transcript, final text, tool calls, tool results, runtime fingerprint, side-effect summary, and diagnostics.
 `knownGaps` should be explicit so a runner can be useful without pretending to be full E2E.
+`verificationCapabilities` should be present when `proofClass` is `in-process-product-runner` or `live-product-runner` and `recommendation` is `ready-for-selected-surface`.
+For those product proof classes, the four required capability legs are `inputSimulation`, `externalSubstitution`, `triggerControl`, and `externalObservation`.
+Each required leg must be `present` or explicitly `not-required` with a reason before `doctor` and `agent status` may present the runner as ready for product-behavior proof.
 
 The default assessment path is `.cautilus/runners/<runner-id>.assessment.json`.
 The first implementation must provide one operator-copyable assessment scaffold path through the existing product surface without introducing a public `runner` command family.
@@ -291,6 +297,7 @@ More complex apps can use instance discovery and live-run invocation when select
 - generic SDK-specific prompt extraction for frameworks such as Vercel AI SDK
 - a public `runner` command family
 - making runner assessments mandatory for all `dev` surfaces
+- making repeatability support legs such as reset and fingerprint mandatory for every product-proof runner
 
 ## Non-Goals
 
@@ -335,6 +342,7 @@ The first implementation slice should include:
 
 - doctor packet tests proving top-level `ready` semantics do not change when `runnerReadiness` is missing or stale
 - doctor packet tests for `runnerReadiness.state`: `missing-assessment`, `smoke-only`, `assessed`, `stale`, and `unknown`
+- doctor packet tests proving product-proof readiness is blocked when `verificationCapabilities` omits required legs
 - agent status tests showing runner readiness next branches and branch ordering
 - schema or fixture tests for one valid `cautilus.runner_assessment.v1` packet and one stale packet
 - adapter fixture coverage proving plain `eval_test_command_templates` imply only `declared-eval-runner`, not a product proof class

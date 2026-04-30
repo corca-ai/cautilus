@@ -259,11 +259,14 @@ func TestCLIDoctorReportsReadyWithExecutionSurface(t *testing.T) {
 		t.Fatalf("expected ready doctor payload, got %#v", payload)
 	}
 	nextAction, ok := payload["next_action"].(map[string]any)
-	if !ok || anyToString(nextAction["kind"]) != "complete_first_bounded_run" {
-		t.Fatalf("expected first bounded run next_action, got %#v", payload["next_action"])
+	if !ok || anyToString(nextAction["kind"]) != "runner_readiness" {
+		t.Fatalf("expected runner readiness next_action, got %#v", payload["next_action"])
 	}
-	if !strings.Contains(anyToString(payload["next_prompt"]), "first_bounded_run") {
-		t.Fatalf("expected next_prompt to mention first_bounded_run, got %#v", payload["next_prompt"])
+	if anyToString(nextAction["branchId"]) != "create_runner_assessment" {
+		t.Fatalf("expected create runner assessment branch, got %#v", payload["next_action"])
+	}
+	if !strings.Contains(anyToString(payload["next_prompt"]), "runner assessment") {
+		t.Fatalf("expected next_prompt to mention runner assessment, got %#v", payload["next_prompt"])
 	}
 	if payload["adapter_path"] != filepath.Join(root, ".agents", "cautilus-adapter.yaml") {
 		t.Fatalf("unexpected adapter path: %#v", payload["adapter_path"])

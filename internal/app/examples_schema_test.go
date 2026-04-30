@@ -143,6 +143,11 @@ func TestFixtureExamplesValidateAgainstPublishedSchemas(t *testing.T) {
 			example:  filepath.Join("..", "..", "fixtures", "claim-discovery", "example-proof-plan.json"),
 			schemaAt: filepath.Join("..", "..", "fixtures", "claim-discovery", "proof-plan.schema.json"),
 		},
+		{
+			name:     "runner_assessment",
+			example:  filepath.Join("..", "..", "fixtures", "runner-readiness", "example-assessment.json"),
+			schemaAt: filepath.Join("..", "..", "fixtures", "runner-readiness", "assessment.schema.json"),
+		},
 	}
 
 	for _, tc := range cases {
@@ -167,6 +172,29 @@ func TestFixtureExamplesValidateAgainstPublishedSchemas(t *testing.T) {
 				t.Fatalf("example failed schema %s: %v", tc.schemaAt, err)
 			}
 		})
+	}
+}
+
+func TestRunnerAssessmentSchemaAllowsReadinessBlockedProductProofPacket(t *testing.T) {
+	schemaBytes, err := os.ReadFile(filepath.Join("..", "..", "fixtures", "runner-readiness", "assessment.schema.json"))
+	if err != nil {
+		t.Fatalf("read runner assessment schema: %v", err)
+	}
+	var schema map[string]any
+	if err := json.Unmarshal(schemaBytes, &schema); err != nil {
+		t.Fatalf("parse runner assessment schema: %v", err)
+	}
+	exampleBytes, err := os.ReadFile(filepath.Join("..", "..", "fixtures", "runner-readiness", "example-assessment.json"))
+	if err != nil {
+		t.Fatalf("read runner assessment example: %v", err)
+	}
+	var value map[string]any
+	if err := json.Unmarshal(exampleBytes, &value); err != nil {
+		t.Fatalf("parse runner assessment example: %v", err)
+	}
+	delete(value, "verificationCapabilities")
+	if err := validateAgainstJSONSchema(schema, value, "root"); err != nil {
+		t.Fatalf("schema should allow missing verificationCapabilities so runtime can report blocked readiness: %v", err)
 	}
 }
 

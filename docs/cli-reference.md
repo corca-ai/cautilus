@@ -90,6 +90,7 @@ cautilus scenarios --json
 Use `agent status --json` when a bundled skill or agent is invoked without a detailed task.
 It emits `cautilus.agent_status.v1`: a read-only orientation packet over binary health, local agent-surface readiness, adapter state, claim-state availability, scan scope, and branch choices.
 Use `doctor --next-action` when you want one current onboarding step plus the exact follow-up loop.
+If repo setup is ready but runner proof is not, that next action can point at runner assessment setup before the first bounded eval loop.
 Use `doctor --scope agent-surface` to verify only the bundled skill and local agent-surface install.
 Use default `doctor` (`--scope repo`) to verify the repo has a real runnable evaluation path.
 When repo-scope `doctor` returns `ready`, the JSON payload includes `first_bounded_run`: a starter `eval test -> eval evaluate` packet loop plus the scenario-normalization catalog for agents that still need proposal-input examples.
