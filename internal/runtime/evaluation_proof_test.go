@@ -59,6 +59,20 @@ func TestEvaluationProofIgnoresSelfCertifiedProductProofReady(t *testing.T) {
 	}
 }
 
+func TestEvaluationProofDowngradesFixtureRuntimeProofClass(t *testing.T) {
+	proof := BuildEvaluationProofFromRunnerReadiness(map[string]any{
+		"state":            "missing-assessment",
+		"proofClass":       "live-product-runner",
+		"proofClassSource": "adapter-runner",
+	}, "app/chat", "fixture")
+	if proof["proofClass"] != "fixture-smoke" || proof["proofClassSource"] != "runtime" {
+		t.Fatalf("expected fixture runtime proof class, got %#v", proof)
+	}
+	if proof["declaredProofClass"] != "live-product-runner" || proof["productProofReady"] != false {
+		t.Fatalf("expected declared proof metadata without product readiness, got %#v", proof)
+	}
+}
+
 func TestEvaluationProofRequiresReadyAssessmentRecommendation(t *testing.T) {
 	proof := EvaluationProofFromInput(map[string]any{
 		"proof": map[string]any{

@@ -62,6 +62,12 @@ func BuildEvaluationProofFromRunnerReadiness(readiness map[string]any, targetSur
 	if runtimeName = strings.TrimSpace(runtimeName); runtimeName != "" {
 		proof["runtime"] = runtimeName
 	}
+	if runtimeName == "fixture" && proofClass != "fixture-smoke" {
+		proof["declaredProofClass"] = proofClass
+		proof["declaredProofClassSource"] = proofClassSource
+		proof["proofClass"] = "fixture-smoke"
+		proof["proofClassSource"] = "runtime"
+	}
 	if recommendation := strings.TrimSpace(stringOrEmpty(readiness["recommendation"])); recommendation != "" {
 		proof["runnerAssessmentRecommendation"] = recommendation
 	}
@@ -108,6 +114,8 @@ func EvaluationProofFromInput(input map[string]any) map[string]any {
 		"runtime",
 		"requiresProductRunnerProof",
 		"productProofReady",
+		"declaredProofClass",
+		"declaredProofClassSource",
 		"runnerVerification",
 		"proofRequirement",
 		"proofBlockers",

@@ -1,0 +1,21 @@
+{
+  "checked-in-agents-routing": {
+    "observationStatus": "observed",
+    "summary": "The agent read AGENTS.md, used find-skills as the startup bootstrap helper, and selected impl as the durable work skill for the implementation task.",
+    "entryFile": "AGENTS.md",
+    "loadedInstructionFiles": [
+      "AGENTS.md"
+    ],
+    "loadedSupportingFiles": [
+      "docs/internal/handoff.md"
+    ],
+    "routingDecision": {
+      "selectedSkill": "cautilus",
+      "bootstrapHelper": "find-skills",
+      "workSkill": "impl",
+      "selectedSupport": "",
+      "firstToolCall": "python3 .../find-skills/scripts/list_capabilities.py --repo-root .",
+      "reasonSummary": "The task starts with repo instruction routing and then moves into implementation."
+    }
+  }
+}

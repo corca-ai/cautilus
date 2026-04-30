@@ -68,6 +68,7 @@ runner_readiness:
 
 When typed runners are present, `eval test` chooses the runner whose `surfaces` contains the fixture surface key.
 The `{runner_id}` placeholder is available to command templates.
+If the selected runtime is `fixture`, the observed proof class is `fixture-smoke` even when the adapter declares a stronger possible runner class.
 
 ## Probes & discovery
 
@@ -257,6 +258,7 @@ Cautilus exposes two top-level surfaces and four presets:
 `cautilus eval test` runs a checked-in fixture through an adapter-owned runner and then evaluates the observed packet.
 The command records a top-level `proof` object in `eval-observed.json` and `eval-summary.json` when runner readiness can identify the proof class or assessment state.
 When the adapter declares `runner_readiness.runners`, the command selects the runner by the fixture surface key before rendering the command template.
+Fixture-runtime runs are reported as `fixture-smoke`; adapter-declared proof class is preserved only as declared metadata.
 `cautilus eval evaluate` evaluates an already-observed packet without launching the runner again.
 
 ```bash

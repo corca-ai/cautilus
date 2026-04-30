@@ -3462,7 +3462,7 @@ JSON
 		t.Fatalf("expected typed runner eval to pass, got %#v", summary)
 	}
 	proof := mapOrEmpty(summary["proof"])
-	if proof["proofClass"] != "live-product-runner" || proof["proofClassSource"] != "adapter-runner" || proof["productProofReady"] != false {
+	if proof["proofClass"] != "fixture-smoke" || proof["proofClassSource"] != "runtime" || proof["declaredProofClass"] != "live-product-runner" || proof["productProofReady"] != false {
 		t.Fatalf("expected typed runner proof metadata without product readiness, got %#v", proof)
 	}
 }

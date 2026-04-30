@@ -198,6 +198,7 @@ default_schema_file: fixtures/review/review-verdict.schema.json
   `proof_class`, `smoke_command_template`, `assessment_path`, and `default_runtime` are optional metadata fields.
   `proof_class` must be one of `fixture-smoke`, `coding-agent-messaging`, `in-process-product-runner`, or `live-product-runner`.
   Adapter-declared proof class is metadata, not product-proof readiness; app product-proof readiness still requires a current `cautilus.runner_assessment.v1` packet.
+  When an eval run uses `runtime=fixture`, observed proof is downgraded to `fixture-smoke` and the adapter-declared class is preserved only as declared metadata.
 - `claim_discovery`: optional bounded truth-surface configuration for `cautilus claim discover`.
   `entries` replaces the product default entry set (`README.md`, `AGENTS.md`, and `CLAUDE.md` when present).
   `linked_markdown_depth` defaults to `3` and controls repo-local Markdown link traversal from those entries.
