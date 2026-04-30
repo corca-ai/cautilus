@@ -709,7 +709,7 @@ func extractClaimCandidates(source claimSource, seenIDs map[string]int, config c
 			groupHints:             groupHints,
 			claimAudience:          source.audience,
 			claimAudienceSource:    source.audienceSource,
-			claimSemanticGroup:     claimSemanticGroup(summary, classification.next, classification.why, classification.recommendedEvalSurface, groupHints, config),
+			claimSemanticGroup:     claimSemanticGroup(summary, classification.recommendedEvalSurface, groupHints, config),
 		})
 	}
 	return claimExtraction{candidates: candidates}, nil
@@ -1019,7 +1019,7 @@ func claimGroupHints(source claimSource, classification claimClassification) []s
 	return hints
 }
 
-func claimSemanticGroup(summary string, nextAction string, why string, surface string, hints []string, config claimDiscoveryConfig) string {
+func claimSemanticGroup(summary string, surface string, hints []string, config claimDiscoveryConfig) string {
 	haystack := strings.ToLower(strings.Join(append([]string{summary, surface}, hints...), " "))
 	for _, rule := range config.semanticGroups {
 		if containsAny(haystack, rule.terms) {
