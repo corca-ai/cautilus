@@ -1,0 +1,1363 @@
+{
+  "evalPlans": [
+    {
+      "claimFingerprint": "sha256:d64c1c7f70e5ceeafbb8f9db6cbf8dd14cce336ab2de37c280a9934a2a91bda7",
+      "claimId": "claim-readme-md-148",
+      "draftIntent": "Verify that The same preset can evaluate a multi-turn agent episode when the fixture provides `turns`; Cautilus's own first-scan, refresh-flow, review-prepare, and reviewer-launch dogfood fixtures derive their results from audit packets.",
+      "evidenceStatus": "unknown",
+      "nextStep": "Create a host-owned cautilus.evaluation_input.v1 fixture and adapter-owned runner for this plan.",
+      "planId": "eval-plan-claim-readme-md-148",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "The same preset can evaluate a multi-turn agent episode when the fixture provides `turns`; Cautilus's own first-scan, refresh-flow, review-prepare, and reviewer-launch dogfood fixtures derive their results from audit packets.",
+          "line": 148,
+          "path": "README.md"
+        }
+      ],
+      "targetSurface": "dev/skill",
+      "unresolvedQuestions": [
+        "Should the claim be split into multi-turn fixture support and dogfood fixture audit-packet derivation?"
+      ]
+    },
+    {
+      "claimFingerprint": "sha256:0326670200c2a6f36720afd68b0bf4dded8a6d931270b22ff70f68d3fe459927",
+      "claimId": "claim-readme-md-211",
+      "draftIntent": "Verify that Agent track — Claude / Codex plugin.** The `cautilus install` step also lands a bundled skill at `.agents/skills/cautilus/` with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally.",
+      "evidenceStatus": "unknown",
+      "nextStep": "Create a host-owned cautilus.evaluation_input.v1 fixture and adapter-owned runner for this plan.",
+      "planId": "eval-plan-claim-readme-md-211",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "Agent track — Claude / Codex plugin.** The `cautilus install` step also lands a bundled skill at `.agents/skills/cautilus/` with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally.",
+          "line": 211,
+          "path": "README.md"
+        }
+      ],
+      "targetSurface": "dev/skill",
+      "unresolvedQuestions": [
+        "Should the deterministic install-manifest claim be split from the agent conversational-driving claim?"
+      ]
+    }
+  ],
+  "inputPath": "/home/hwidong/codes/cautilus/.cautilus/claims/reviewed-loop1.json",
+  "nonWriterNotice": "This packet plans eval fixtures but does not write host-owned fixtures, prompts, runners, or policy.",
+  "schemaVersion": "cautilus.claim_eval_plan.v1",
+  "selectionPolicy": {
+    "maxClaims": 12,
+    "requiresRecommendedProof": "cautilus-eval",
+    "requiresReviewStatus": [
+      "agent-reviewed",
+      "human-reviewed"
+    ],
+    "requiresVerificationReadiness": "ready-to-verify"
+  },
+  "skippedClaims": [
+    {
+      "claimId": "claim-agents-md-12",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-agents-md-26",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-agents-md-29",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-agents-md-61",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-agents-md-73",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-agents-md-78",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-agents-md-79",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-agents-md-123",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-readme-md-3",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-readme-md-7",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-readme-md-9",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-readme-md-13",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-readme-md-91",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-readme-md-95",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-readme-md-123",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-readme-md-137",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-readme-md-144",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-readme-md-149",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-readme-md-153",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-readme-md-159",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-readme-md-171",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-readme-md-192",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-readme-md-231",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-readme-md-232",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-cli-reference-md-32",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-cli-reference-md-91",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-cli-reference-md-97",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-cli-reference-md-105",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-cli-reference-md-147",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-cli-reference-md-159",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-cli-reference-md-160",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-cli-reference-md-230",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-cli-reference-md-231",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-cli-reference-md-232",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-cli-reference-md-240",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-cli-reference-md-241",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-cli-reference-md-401",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-cli-reference-md-421",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-cli-reference-md-456",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-cli-reference-md-474",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-adapter-contract-md-3",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-adapter-contract-md-177",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-adapter-contract-md-193",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-adapter-contract-md-195",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-adapter-contract-md-205",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-adapter-contract-md-210",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-adapter-contract-md-211",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-contracts-adapter-contract-md-292",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-contracts-adapter-contract-md-380",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-adapter-contract-md-399",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-contracts-adapter-contract-md-405",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-adapter-contract-md-451",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-adapter-contract-md-508",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-adapter-contract-md-510",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-review-packet-md-3",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-gepa-md-15",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-guides-consumer-adoption-md-25",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-guides-consumer-adoption-md-29",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-guides-consumer-adoption-md-48",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-guides-consumer-adoption-md-83",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-guides-consumer-adoption-md-106",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-guides-consumer-adoption-md-107",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-guides-evaluation-process-md-10",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-guides-evaluation-process-md-52",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-guides-evaluation-process-md-186",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-guides-evaluation-process-md-253",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-guides-evaluation-process-md-269",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-guides-evaluation-process-md-270",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-guides-evaluation-process-md-289",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-guides-evaluation-process-md-293",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-guides-evaluation-process-md-304",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-guides-evaluation-process-md-308",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-guides-evaluation-process-md-320",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-maintainers-consumer-readiness-md-5",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-maintainers-consumer-readiness-md-29",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-maintainers-consumer-readiness-md-30",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-maintainers-consumer-readiness-md-59",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-maintainers-consumer-readiness-md-68",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-maintainers-consumer-readiness-md-91",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-maintainers-consumer-readiness-md-98",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-maintainers-development-md-36",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-maintainers-development-md-38",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-maintainers-development-md-79",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-maintainers-development-md-83",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-maintainers-development-md-85",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-maintainers-development-md-133",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-maintainers-development-md-136",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-maintainers-operator-acceptance-md-256",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-master-plan-md-29",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-master-plan-md-31",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-master-plan-md-56",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-master-plan-md-76",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-master-plan-md-82",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-master-plan-md-86",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-master-plan-md-180",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-56",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-62",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-63",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-174",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-177",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-182",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-183",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-185",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-249",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-specs-index-spec-md-7",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-specs-index-spec-md-24",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-specs-index-spec-md-34",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-specs-index-spec-md-40",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-active-run-md-3",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-active-run-md-59",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-active-run-md-186",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-active-run-md-212",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-active-run-md-218",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-active-run-md-221",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-5",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-21",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-39",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-47",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-60",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-65",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-78",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-98",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-130",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-132",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-134",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-135",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-143",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-144",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-149",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-162",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-163",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-239",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-240",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-256",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-258",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-262",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-290",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-291",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-304",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-307",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-311",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-312",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-321",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-330",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-332",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-334",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-339",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-389",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-392",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-407",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-431",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-434",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-438",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-459",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-461",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-464",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-482",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-483",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-484",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-489",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-495",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-496",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-501",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-509",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-510",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-512",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-518",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-532",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-537",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-538",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-563",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-589",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-591",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-592",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-598",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-live-run-invocation-batch-md-5",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-live-run-invocation-batch-md-77",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-live-run-invocation-batch-md-104",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-contracts-live-run-invocation-md-3",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-contracts-live-run-invocation-md-58",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-live-run-invocation-md-194",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-contracts-reporting-md-14",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-reporting-md-39",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-reporting-md-48",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-reporting-md-69",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-reporting-md-111",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-reporting-md-112",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-reporting-md-124",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-reporting-md-127",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-contracts-reporting-md-129",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-contracts-reporting-md-150",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-runner-readiness-md-13",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-runner-readiness-md-19",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-runner-readiness-md-29",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-runner-readiness-md-37",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-runner-readiness-md-43",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-runner-readiness-md-44",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-runner-readiness-md-45",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-runner-readiness-md-61",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-runner-readiness-md-111",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-runner-readiness-md-117",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-runner-readiness-md-118",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-runner-readiness-md-121",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-runner-readiness-md-134",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-runner-readiness-md-147",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-runner-readiness-md-150",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-runner-readiness-md-156",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-runner-readiness-md-203",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-runner-readiness-md-210",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-runner-readiness-md-251",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-runner-readiness-md-252",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-runner-readiness-md-254",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-runner-readiness-md-267",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-runner-readiness-md-274",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-runner-readiness-md-283",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-runner-readiness-md-319",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-runner-readiness-md-321",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-runner-readiness-md-330",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-runner-readiness-md-368",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-runner-readiness-md-380",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-3",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-8",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-34",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-36",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-41",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-47",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-50",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-100",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-154",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-161",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-188",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-190",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-191",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-241",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-261",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-scenario-history-md-3",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-contracts-scenario-history-md-25",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-contracts-scenario-history-md-123",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-contracts-scenario-history-md-171",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-contracts-scenario-history-md-175",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-contracts-scenario-history-md-216",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-contracts-scenario-history-md-238",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-scenario-history-md-289",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-contracts-workbench-instance-discovery-md-5",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-contracts-workbench-instance-discovery-md-25",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-workbench-instance-discovery-md-87",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-contracts-workbench-instance-discovery-md-99",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-workbench-instance-discovery-md-100",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-workbench-instance-discovery-md-101",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-maintainers-release-boundary-md-61",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-maintainers-release-boundary-md-62",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-27",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-28",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-111",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-122",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-124",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-147",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-148",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-152",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-156",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-193",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-215",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-224",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-228",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-260",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-266",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-268",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-269",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-273",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-274",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-277",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-294",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-296",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-301",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-304",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-specs-current-product-spec-md-3",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-specs-current-product-spec-md-9",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-specs-current-product-spec-md-16",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-specs-current-product-spec-md-50",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-specs-git-precondition-spec-md-8",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-specs-html-report-spec-md-3",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-specs-html-report-spec-md-31",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-specs-self-dogfood-spec-md-9",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-specs-standalone-surface-spec-md-3",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-specs-standalone-surface-spec-md-4",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-specs-standalone-surface-spec-md-14",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-optimization-md-27",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-contracts-optimization-md-34",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-optimization-md-37",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-optimization-md-38",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-optimization-md-96",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-contracts-optimization-md-122",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-contracts-optimization-md-132",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-optimization-md-151",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-scenario-proposal-sources-md-3",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-contracts-scenario-proposal-sources-md-5",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-contracts-scenario-proposal-sources-md-28",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-contracts-scenario-proposal-sources-md-40",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-contracts-scenario-proposal-sources-md-81",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-contracts-scenario-proposal-sources-md-95",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-contracts-scenario-proposal-sources-md-108",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-contracts-scenario-proposal-sources-md-152",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-scenario-proposal-sources-md-216",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-contracts-scenario-proposal-sources-md-235",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-contracts-scenario-proposal-sources-md-236",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-scenario-proposal-sources-md-240",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-contracts-scenario-proposal-sources-md-245",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-contracts-scenario-proposal-sources-md-246",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-contracts-scenario-proposal-sources-md-248",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-docs-contracts-scenario-proposal-sources-md-254",
+      "reason": "not-ready-to-verify"
+    },
+    {
+      "claimId": "claim-skills-cautilus-skill-md-2",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-skills-cautilus-skill-md-20",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-skills-cautilus-skill-md-21",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-skills-cautilus-skill-md-64",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-skills-cautilus-skill-md-65",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-skills-cautilus-skill-md-72",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-skills-cautilus-skill-md-105",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-skills-cautilus-skill-md-106",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-skills-cautilus-skill-md-109",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-skills-cautilus-skill-md-113",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-skills-cautilus-skill-md-136",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-skills-cautilus-skill-md-157",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-skills-cautilus-skill-md-158",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-skills-cautilus-skill-md-160",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-skills-cautilus-skill-md-200",
+      "reason": "not-reviewed"
+    }
+  ],
+  "sourceClaimPacket": {
+    "candidateCount": 327,
+    "gitCommit": "ed2d2479f590a7c1880005b1b0e3434cf6d0a367",
+    "schemaVersion": "cautilus.claim_proof_plan.v1"
+  }
+}

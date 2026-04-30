@@ -146,6 +146,77 @@ func TestDiscoverClaimProofPlanMergesIdenticalClaimsAcrossDistinctSources(t *tes
 	}
 }
 
+func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
+	repoRoot := t.TempDir()
+	mustWriteFile(t, filepath.Join(repoRoot, "README.md"), strings.Join([]string{
+		"# Demo",
+		"",
+		"## Scenarios",
+		"",
+		"**Input (For Agent)**: \"Turn this behavior input into reusable scenarios and render an HTML page I can review.\"",
+		"",
+		"The `cautilus scenario normalize chatbot` command emits reopenable proposal packets for review.",
+		"",
+		"Context-recovery should become a protected scenario for follow-up behavior.",
+		"",
+		"Next step: a human decides whether to promote the scenario into a protected evaluation path, while an agent can reopen the saved result.",
+		"",
+		"## Skill / agent execution regression",
+		"",
+		"The same preset can evaluate a multi-turn agent episode when the fixture provides turns.",
+		"",
+		"When the goal is only to prove command routing, `cautilus eval test --runtime fixture` can run adapter-owned fixture results.",
+		"",
+		"The Agent track provides bundled skill and plugin manifests through cautilus install.",
+		"",
+		"The static HTML renderer emits browser-readable views for human review.",
+		"",
+	}, "\n"))
+
+	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan returned error: %v", err)
+	}
+	bySummary := map[string]map[string]any{}
+	for _, raw := range arrayOrEmpty(plan["claimCandidates"]) {
+		entry := asMap(raw)
+		bySummary[stringFromAny(entry["summary"])] = entry
+	}
+	for summary := range bySummary {
+		if strings.Contains(summary, "Input (For Agent)") {
+			t.Fatalf("expected prompt examples to be excluded from claims, got %#v", bySummary[summary])
+		}
+	}
+	scenarioCommand := bySummary["The `cautilus scenario normalize chatbot` command emits reopenable proposal packets for review."]
+	if scenarioCommand == nil || scenarioCommand["recommendedProof"] != "deterministic" {
+		t.Fatalf("expected scenario command documentation to be deterministic, got %#v", scenarioCommand)
+	}
+	contextRecovery := bySummary["Context-recovery should become a protected scenario for follow-up behavior."]
+	if contextRecovery == nil || contextRecovery["verificationReadiness"] != "needs-scenario" || contextRecovery["recommendedEvalSurface"] != "app/chat" {
+		t.Fatalf("expected context recovery to stay an app/chat scenario candidate, got %#v", contextRecovery)
+	}
+	reopen := bySummary["Next step: a human decides whether to promote the scenario into a protected evaluation path, while an agent can reopen the saved result."]
+	if reopen == nil || reopen["recommendedProof"] != "deterministic" {
+		t.Fatalf("expected reopenable scenario-loop claim to be deterministic, got %#v", reopen)
+	}
+	skillEpisode := bySummary["The same preset can evaluate a multi-turn agent episode when the fixture provides turns."]
+	if skillEpisode == nil || skillEpisode["recommendedEvalSurface"] != "dev/skill" {
+		t.Fatalf("expected audit-backed agent episode to route to dev/skill, got %#v", skillEpisode)
+	}
+	fixtureRuntime := bySummary["When the goal is only to prove command routing, `cautilus eval test --runtime fixture` can run adapter-owned fixture results."]
+	if fixtureRuntime == nil || fixtureRuntime["recommendedProof"] != "deterministic" {
+		t.Fatalf("expected fixture runtime routing claim to be deterministic, got %#v", fixtureRuntime)
+	}
+	install := bySummary["The Agent track provides bundled skill and plugin manifests through cautilus install."]
+	if install == nil || install["recommendedProof"] != "deterministic" {
+		t.Fatalf("expected install and plugin materialization to be deterministic, got %#v", install)
+	}
+	renderer := bySummary["The static HTML renderer emits browser-readable views for human review."]
+	if renderer == nil || renderer["recommendedProof"] != "deterministic" {
+		t.Fatalf("expected static HTML renderer claim to be deterministic, got %#v", renderer)
+	}
+}
+
 func TestBuildClaimStatusSummarySummarizesExistingPacket(t *testing.T) {
 	repoRoot := filepath.Join("..", "..", "fixtures", "claim-discovery", "tiny-repo")
 	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
@@ -400,6 +471,101 @@ func TestApplyClaimReviewResultRejectsSatisfiedWithoutVerifiedEvidence(t *testin
 	if err == nil || !strings.Contains(err.Error(), "evidenceStatus satisfied requires") {
 		t.Fatalf("expected satisfied evidence validation error, got %v", err)
 	}
+}
+
+func TestApplyClaimReviewResultCanClearRecommendedEvalSurface(t *testing.T) {
+	repoRoot := filepath.Join("..", "..", "fixtures", "claim-discovery", "tiny-repo")
+	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan returned error: %v", err)
+	}
+	claimID := "claim-agents-md-3"
+	reviewResult := map[string]any{
+		"schemaVersion": contracts.ClaimReviewResultSchema,
+		"clusterResults": []any{
+			map[string]any{
+				"clusterId": "cluster-fixture",
+				"claimUpdates": []any{
+					map[string]any{
+						"claimId":                claimID,
+						"reviewStatus":           "agent-reviewed",
+						"evidenceStatus":         "unknown",
+						"recommendedProof":       "deterministic",
+						"verificationReadiness":  "ready-to-verify",
+						"recommendedEvalSurface": nil,
+					},
+				},
+			},
+		},
+	}
+	updated, err := ApplyClaimReviewResult(plan, reviewResult, ClaimReviewApplyOptions{
+		ClaimsPath:       "claims.json",
+		ReviewResultPath: "review-result.json",
+	})
+	if err != nil {
+		t.Fatalf("ApplyClaimReviewResult returned error: %v", err)
+	}
+	var updatedClaim map[string]any
+	for _, raw := range arrayOrEmpty(updated["claimCandidates"]) {
+		candidate := asMap(raw)
+		if stringFromAny(candidate["claimId"]) == claimID {
+			updatedClaim = candidate
+			break
+		}
+	}
+	if updatedClaim == nil {
+		t.Fatalf("missing updated claim in %#v", updated)
+	}
+	if _, exists := updatedClaim["recommendedEvalSurface"]; exists {
+		t.Fatalf("expected recommendedEvalSurface to be cleared, got %#v", updatedClaim)
+	}
+	if updatedClaim["proofLayer"] != "deterministic" {
+		t.Fatalf("expected proofLayer to follow deterministic review update, got %#v", updatedClaim)
+	}
+}
+
+func TestApplyClaimReviewResultClearsSurfaceForNonEvalProof(t *testing.T) {
+	repoRoot := filepath.Join("..", "..", "fixtures", "claim-discovery", "tiny-repo")
+	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan returned error: %v", err)
+	}
+	claimID := "claim-agents-md-3"
+	reviewResult := map[string]any{
+		"schemaVersion": contracts.ClaimReviewResultSchema,
+		"clusterResults": []any{
+			map[string]any{
+				"clusterId": "cluster-fixture",
+				"claimUpdates": []any{
+					map[string]any{
+						"claimId":               claimID,
+						"reviewStatus":          "agent-reviewed",
+						"evidenceStatus":        "unknown",
+						"recommendedProof":      "deterministic",
+						"verificationReadiness": "ready-to-verify",
+					},
+				},
+			},
+		},
+	}
+	updated, err := ApplyClaimReviewResult(plan, reviewResult, ClaimReviewApplyOptions{
+		ClaimsPath:       "claims.json",
+		ReviewResultPath: "review-result.json",
+	})
+	if err != nil {
+		t.Fatalf("ApplyClaimReviewResult returned error: %v", err)
+	}
+	for _, raw := range arrayOrEmpty(updated["claimCandidates"]) {
+		candidate := asMap(raw)
+		if stringFromAny(candidate["claimId"]) != claimID {
+			continue
+		}
+		if _, exists := candidate["recommendedEvalSurface"]; exists {
+			t.Fatalf("expected non-eval proof update to clear recommendedEvalSurface, got %#v", candidate)
+		}
+		return
+	}
+	t.Fatalf("missing updated claim in %#v", updated)
 }
 
 func TestBuildClaimEvalPlanSelectsReviewedEvalClaims(t *testing.T) {

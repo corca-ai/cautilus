@@ -1,30 +1,42 @@
 {
-  "baseCommit": "bec65ce20af8b3d20429e766287ab1a9aef5db90",
+  "baseCommit": "dafdde5a5d71415aebb2345059cd92a455737d04",
   "changedSources": [
-    ".agents/skills/cautilus/SKILL.md",
+    ".cautilus/claims/discovery-review.md",
     ".cautilus/claims/latest.json",
-    ".cautilus/claims/refresh-plan.json",
-    "charness-artifacts/debug/debug-2026-04-27-refresh-plan-internal-language.md",
-    "charness-artifacts/debug/debug-2026-04-27-stale-claim-review-overrun.md",
-    "charness-artifacts/debug/debug-2026-04-27-stale-instruction-surface-command.md",
+    ".cautilus/claims/status-summary.json",
+    ".cautilus/claims/validation-report.json",
+    "charness-artifacts/debug/debug-2026-04-30-workbench-command-removal-test.md",
     "charness-artifacts/debug/latest.md",
+    "charness-artifacts/find-skills/latest.json",
+    "charness-artifacts/find-skills/latest.md",
     "docs/cli-reference.md",
+    "docs/contracts/adapter-contract.md",
     "docs/contracts/claim-discovery-workflow.md",
-    "docs/internal/handoff.md",
+    "docs/contracts/go-runtime-consolidation.md",
+    "docs/contracts/live-run-invocation-batch.md",
+    "docs/contracts/live-run-invocation.md",
+    "docs/contracts/runner-readiness.md",
+    "docs/contracts/workbench-instance-discovery.md",
+    "docs/internal/working-patterns.md",
+    "docs/maintainers/operator-acceptance.md",
+    "docs/master-plan.md",
     "docs/specs/command-surfaces.spec.md",
+    "docs/specs/standalone-surface.spec.md",
+    "fixtures/runner-readiness/assessment.schema.json",
+    "fixtures/runner-readiness/example-assessment.json",
     "internal/app/app.go",
     "internal/app/app_test.go",
+    "internal/app/cli_smoke_test.go",
+    "internal/app/workbench_commands.go",
     "internal/cli/command-registry.json",
+    "internal/contracts/constants.go",
+    "internal/runtime/adapter.go",
+    "internal/runtime/adapter_test.go",
     "internal/runtime/agent_status.go",
     "internal/runtime/claim_discovery.go",
     "internal/runtime/claim_discovery_test.go",
-    "package.json",
-    "plugins/cautilus/skills/cautilus/SKILL.md",
-    "scripts/agent-runtime/audit-cautilus-no-input-log.mjs",
-    "scripts/agent-runtime/codex-session-summary.mjs",
-    "scripts/agent-runtime/codex-session-summary.test.mjs",
-    "scripts/agent-runtime/summarize-codex-session-log.mjs",
-    "skills/cautilus/SKILL.md"
+    "internal/runtime/runner_readiness.go",
+    "internal/runtime/runner_readiness_test.go"
   ],
   "claimPlan": [
     {
@@ -60,38 +72,6 @@
       "lifecycle": "carried-forward"
     },
     {
-      "claimId": "claim-claude-md-12",
-      "lifecycle": "carried-forward"
-    },
-    {
-      "claimId": "claim-claude-md-26",
-      "lifecycle": "carried-forward"
-    },
-    {
-      "claimId": "claim-claude-md-29",
-      "lifecycle": "carried-forward"
-    },
-    {
-      "claimId": "claim-claude-md-61",
-      "lifecycle": "carried-forward"
-    },
-    {
-      "claimId": "claim-claude-md-73",
-      "lifecycle": "carried-forward"
-    },
-    {
-      "claimId": "claim-claude-md-78",
-      "lifecycle": "carried-forward"
-    },
-    {
-      "claimId": "claim-claude-md-79",
-      "lifecycle": "carried-forward"
-    },
-    {
-      "claimId": "claim-claude-md-123",
-      "lifecycle": "carried-forward"
-    },
-    {
       "claimId": "claim-readme-md-3",
       "lifecycle": "carried-forward"
     },
@@ -120,11 +100,15 @@
       "lifecycle": "carried-forward"
     },
     {
-      "claimId": "claim-readme-md-135",
+      "claimId": "claim-readme-md-137",
       "lifecycle": "carried-forward"
     },
     {
-      "claimId": "claim-readme-md-142",
+      "claimId": "claim-readme-md-144",
+      "lifecycle": "carried-forward"
+    },
+    {
+      "claimId": "claim-readme-md-148",
       "lifecycle": "carried-forward"
     },
     {
@@ -132,27 +116,31 @@
       "lifecycle": "carried-forward"
     },
     {
-      "claimId": "claim-readme-md-155",
+      "claimId": "claim-readme-md-153",
       "lifecycle": "carried-forward"
     },
     {
-      "claimId": "claim-readme-md-167",
+      "claimId": "claim-readme-md-159",
       "lifecycle": "carried-forward"
     },
     {
-      "claimId": "claim-readme-md-188",
+      "claimId": "claim-readme-md-171",
       "lifecycle": "carried-forward"
     },
     {
-      "claimId": "claim-readme-md-207",
+      "claimId": "claim-readme-md-192",
       "lifecycle": "carried-forward"
     },
     {
-      "claimId": "claim-readme-md-227",
+      "claimId": "claim-readme-md-211",
       "lifecycle": "carried-forward"
     },
     {
-      "claimId": "claim-readme-md-228",
+      "claimId": "claim-readme-md-231",
+      "lifecycle": "carried-forward"
+    },
+    {
+      "claimId": "claim-readme-md-232",
       "lifecycle": "carried-forward"
     },
     {
@@ -168,88 +156,104 @@
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-cli-reference-md-103",
+      "claimId": "claim-docs-cli-reference-md-105",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-cli-reference-md-156",
+      "claimId": "claim-docs-cli-reference-md-159",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-cli-reference-md-157",
+      "claimId": "claim-docs-cli-reference-md-160",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-cli-reference-md-227",
+      "claimId": "claim-docs-cli-reference-md-230",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-cli-reference-md-228",
+      "claimId": "claim-docs-cli-reference-md-231",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-cli-reference-md-229",
+      "claimId": "claim-docs-cli-reference-md-232",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-cli-reference-md-340",
+      "claimId": "claim-docs-cli-reference-md-240",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-cli-reference-md-360",
+      "claimId": "claim-docs-cli-reference-md-241",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-cli-reference-md-393",
+      "claimId": "claim-docs-cli-reference-md-401",
+      "lifecycle": "changed"
+    },
+    {
+      "claimId": "claim-docs-cli-reference-md-421",
+      "lifecycle": "changed"
+    },
+    {
+      "claimId": "claim-docs-cli-reference-md-456",
       "lifecycle": "changed"
     },
     {
       "claimId": "claim-docs-contracts-adapter-contract-md-3",
-      "lifecycle": "carried-forward"
+      "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-adapter-contract-md-159",
-      "lifecycle": "carried-forward"
+      "claimId": "claim-docs-contracts-adapter-contract-md-177",
+      "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-adapter-contract-md-183",
-      "lifecycle": "carried-forward"
+      "claimId": "claim-docs-contracts-adapter-contract-md-193",
+      "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-adapter-contract-md-188",
-      "lifecycle": "carried-forward"
+      "claimId": "claim-docs-contracts-adapter-contract-md-195",
+      "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-adapter-contract-md-189",
-      "lifecycle": "carried-forward"
+      "claimId": "claim-docs-contracts-adapter-contract-md-205",
+      "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-adapter-contract-md-270",
-      "lifecycle": "carried-forward"
+      "claimId": "claim-docs-contracts-adapter-contract-md-210",
+      "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-adapter-contract-md-358",
-      "lifecycle": "carried-forward"
+      "claimId": "claim-docs-contracts-adapter-contract-md-211",
+      "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-adapter-contract-md-377",
-      "lifecycle": "carried-forward"
+      "claimId": "claim-docs-contracts-adapter-contract-md-292",
+      "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-adapter-contract-md-383",
-      "lifecycle": "carried-forward"
+      "claimId": "claim-docs-contracts-adapter-contract-md-380",
+      "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-adapter-contract-md-429",
-      "lifecycle": "carried-forward"
+      "claimId": "claim-docs-contracts-adapter-contract-md-399",
+      "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-adapter-contract-md-486",
-      "lifecycle": "carried-forward"
+      "claimId": "claim-docs-contracts-adapter-contract-md-405",
+      "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-adapter-contract-md-488",
-      "lifecycle": "carried-forward"
+      "claimId": "claim-docs-contracts-adapter-contract-md-451",
+      "lifecycle": "changed"
+    },
+    {
+      "claimId": "claim-docs-contracts-adapter-contract-md-508",
+      "lifecycle": "changed"
+    },
+    {
+      "claimId": "claim-docs-contracts-adapter-contract-md-510",
+      "lifecycle": "changed"
     },
     {
       "claimId": "claim-docs-contracts-review-packet-md-3",
@@ -385,58 +389,66 @@
     },
     {
       "claimId": "claim-docs-maintainers-operator-acceptance-md-256",
-      "lifecycle": "carried-forward"
+      "lifecycle": "changed"
     },
     {
       "claimId": "claim-docs-master-plan-md-27",
-      "lifecycle": "carried-forward"
+      "lifecycle": "changed"
     },
     {
       "claimId": "claim-docs-master-plan-md-29",
-      "lifecycle": "carried-forward"
+      "lifecycle": "changed"
     },
     {
       "claimId": "claim-docs-master-plan-md-54",
-      "lifecycle": "carried-forward"
+      "lifecycle": "changed"
     },
     {
       "claimId": "claim-docs-master-plan-md-73",
-      "lifecycle": "carried-forward"
+      "lifecycle": "changed"
     },
     {
       "claimId": "claim-docs-master-plan-md-79",
-      "lifecycle": "carried-forward"
+      "lifecycle": "changed"
     },
     {
       "claimId": "claim-docs-master-plan-md-172",
+      "lifecycle": "changed"
+    },
+    {
+      "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-56",
       "lifecycle": "carried-forward"
     },
     {
-      "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-60",
+      "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-62",
       "lifecycle": "carried-forward"
     },
     {
-      "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-159",
+      "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-63",
       "lifecycle": "carried-forward"
     },
     {
-      "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-162",
+      "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-174",
       "lifecycle": "carried-forward"
     },
     {
-      "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-167",
+      "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-177",
       "lifecycle": "carried-forward"
     },
     {
-      "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-168",
+      "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-182",
       "lifecycle": "carried-forward"
     },
     {
-      "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-170",
+      "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-183",
       "lifecycle": "carried-forward"
     },
     {
-      "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-233",
+      "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-185",
+      "lifecycle": "carried-forward"
+    },
+    {
+      "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-249",
       "lifecycle": "carried-forward"
     },
     {
@@ -508,51 +520,55 @@
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-111",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-96",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-112",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-128",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-120",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-130",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-121",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-132",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-126",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-133",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-139",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-141",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-140",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-142",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-205",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-147",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-206",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-160",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-222",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-161",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-224",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-237",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-228",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-238",
+      "lifecycle": "changed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-254",
       "lifecycle": "changed"
     },
     {
@@ -560,39 +576,19 @@
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-257",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-260",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-270",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-288",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-273",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-289",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-277",
-      "lifecycle": "changed"
-    },
-    {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-278",
-      "lifecycle": "changed"
-    },
-    {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-287",
-      "lifecycle": "changed"
-    },
-    {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-296",
-      "lifecycle": "changed"
-    },
-    {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-298",
-      "lifecycle": "changed"
-    },
-    {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-300",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-302",
       "lifecycle": "changed"
     },
     {
@@ -600,15 +596,31 @@
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-355",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-309",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-360",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-310",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-384",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-319",
+      "lifecycle": "changed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-328",
+      "lifecycle": "changed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-330",
+      "lifecycle": "changed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-332",
+      "lifecycle": "changed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-337",
       "lifecycle": "changed"
     },
     {
@@ -616,23 +628,19 @@
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-391",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-390",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-412",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-405",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-414",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-429",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-417",
-      "lifecycle": "changed"
-    },
-    {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-435",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-432",
       "lifecycle": "changed"
     },
     {
@@ -640,23 +648,11 @@
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-437",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-457",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-442",
-      "lifecycle": "changed"
-    },
-    {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-448",
-      "lifecycle": "changed"
-    },
-    {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-449",
-      "lifecycle": "changed"
-    },
-    {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-454",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-459",
       "lifecycle": "changed"
     },
     {
@@ -664,27 +660,43 @@
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-463",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-480",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-465",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-481",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-471",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-482",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-485",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-487",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-490",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-493",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-491",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-494",
+      "lifecycle": "changed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-499",
+      "lifecycle": "changed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-507",
+      "lifecycle": "changed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-508",
+      "lifecycle": "changed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-510",
       "lifecycle": "changed"
     },
     {
@@ -692,28 +704,48 @@
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-542",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-530",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-545",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-535",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-549",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-536",
+      "lifecycle": "changed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-561",
+      "lifecycle": "changed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-587",
+      "lifecycle": "changed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-589",
+      "lifecycle": "changed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-590",
+      "lifecycle": "changed"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-596",
       "lifecycle": "changed"
     },
     {
       "claimId": "claim-docs-contracts-live-run-invocation-md-3",
-      "lifecycle": "carried-forward"
+      "lifecycle": "changed"
     },
     {
       "claimId": "claim-docs-contracts-live-run-invocation-md-58",
-      "lifecycle": "carried-forward"
+      "lifecycle": "changed"
     },
     {
       "claimId": "claim-docs-contracts-live-run-invocation-md-194",
-      "lifecycle": "carried-forward"
+      "lifecycle": "changed"
     },
     {
       "claimId": "claim-docs-contracts-reporting-md-14",
@@ -849,19 +881,19 @@
     },
     {
       "claimId": "claim-docs-contracts-workbench-instance-discovery-md-5",
-      "lifecycle": "carried-forward"
+      "lifecycle": "changed"
     },
     {
       "claimId": "claim-docs-contracts-workbench-instance-discovery-md-24",
-      "lifecycle": "carried-forward"
+      "lifecycle": "changed"
     },
     {
       "claimId": "claim-docs-contracts-workbench-instance-discovery-md-97",
-      "lifecycle": "carried-forward"
+      "lifecycle": "changed"
     },
     {
       "claimId": "claim-docs-contracts-workbench-instance-discovery-md-98",
-      "lifecycle": "carried-forward"
+      "lifecycle": "changed"
     },
     {
       "claimId": "claim-docs-maintainers-release-boundary-md-61",
@@ -888,23 +920,27 @@
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-141",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-120",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-142",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-143",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-176",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-144",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-184",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-148",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-193",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-152",
+      "lifecycle": "changed"
+    },
+    {
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-189",
       "lifecycle": "changed"
     },
     {
@@ -912,19 +948,11 @@
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-227",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-206",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-233",
-      "lifecycle": "changed"
-    },
-    {
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-235",
-      "lifecycle": "changed"
-    },
-    {
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-236",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-210",
       "lifecycle": "changed"
     },
     {
@@ -932,27 +960,43 @@
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-241",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-246",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-244",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-248",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-261",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-249",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-263",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-253",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-268",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-254",
       "lifecycle": "changed"
     },
     {
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-271",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-257",
+      "lifecycle": "changed"
+    },
+    {
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-274",
+      "lifecycle": "changed"
+    },
+    {
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-276",
+      "lifecycle": "changed"
+    },
+    {
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-281",
+      "lifecycle": "changed"
+    },
+    {
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-284",
       "lifecycle": "changed"
     },
     {
@@ -989,23 +1033,23 @@
     },
     {
       "claimId": "claim-docs-specs-standalone-surface-spec-md-3",
-      "lifecycle": "carried-forward"
+      "lifecycle": "changed"
     },
     {
       "claimId": "claim-docs-specs-standalone-surface-spec-md-4",
-      "lifecycle": "carried-forward"
+      "lifecycle": "changed"
     },
     {
       "claimId": "claim-docs-specs-standalone-surface-spec-md-14",
-      "lifecycle": "carried-forward"
+      "lifecycle": "changed"
     },
     {
       "claimId": "claim-docs-contracts-live-run-invocation-batch-md-77",
-      "lifecycle": "carried-forward"
+      "lifecycle": "changed"
     },
     {
       "claimId": "claim-docs-contracts-live-run-invocation-batch-md-104",
-      "lifecycle": "carried-forward"
+      "lifecycle": "changed"
     },
     {
       "claimId": "claim-docs-contracts-optimization-md-27",
@@ -1105,56 +1149,93 @@
     },
     {
       "claimId": "claim-skills-cautilus-skill-md-2",
-      "lifecycle": "changed"
+      "lifecycle": "carried-forward"
     },
     {
       "claimId": "claim-skills-cautilus-skill-md-20",
-      "lifecycle": "changed"
+      "lifecycle": "carried-forward"
     },
     {
       "claimId": "claim-skills-cautilus-skill-md-21",
-      "lifecycle": "changed"
+      "lifecycle": "carried-forward"
     },
     {
-      "claimId": "claim-skills-cautilus-skill-md-62",
-      "lifecycle": "changed"
+      "claimId": "claim-skills-cautilus-skill-md-64",
+      "lifecycle": "carried-forward"
     },
     {
-      "claimId": "claim-skills-cautilus-skill-md-88",
-      "lifecycle": "changed"
+      "claimId": "claim-skills-cautilus-skill-md-65",
+      "lifecycle": "carried-forward"
     },
     {
-      "claimId": "claim-skills-cautilus-skill-md-89",
-      "lifecycle": "changed"
+      "claimId": "claim-skills-cautilus-skill-md-72",
+      "lifecycle": "carried-forward"
     },
     {
-      "claimId": "claim-skills-cautilus-skill-md-92",
-      "lifecycle": "changed"
+      "claimId": "claim-skills-cautilus-skill-md-105",
+      "lifecycle": "carried-forward"
     },
     {
-      "claimId": "claim-skills-cautilus-skill-md-110",
-      "lifecycle": "changed"
+      "claimId": "claim-skills-cautilus-skill-md-106",
+      "lifecycle": "carried-forward"
     },
     {
-      "claimId": "claim-skills-cautilus-skill-md-111",
-      "lifecycle": "changed"
+      "claimId": "claim-skills-cautilus-skill-md-109",
+      "lifecycle": "carried-forward"
     },
     {
       "claimId": "claim-skills-cautilus-skill-md-113",
-      "lifecycle": "changed"
+      "lifecycle": "carried-forward"
     },
     {
-      "claimId": "claim-skills-cautilus-skill-md-153",
-      "lifecycle": "changed"
+      "claimId": "claim-skills-cautilus-skill-md-136",
+      "lifecycle": "carried-forward"
+    },
+    {
+      "claimId": "claim-skills-cautilus-skill-md-157",
+      "lifecycle": "carried-forward"
+    },
+    {
+      "claimId": "claim-skills-cautilus-skill-md-158",
+      "lifecycle": "carried-forward"
+    },
+    {
+      "claimId": "claim-skills-cautilus-skill-md-160",
+      "lifecycle": "carried-forward"
+    },
+    {
+      "claimId": "claim-skills-cautilus-skill-md-200",
+      "lifecycle": "carried-forward"
     }
   ],
   "claimState": {
     "path": ".cautilus/claims/latest.json",
-    "pathSource": "default"
+    "pathSource": "adapter"
   },
   "effectiveScanScope": {
     "adapterFound": true,
     "adapterPath": ".agents/cautilus-adapter.yaml",
+    "audienceHints": {
+      "developer": [
+        "AGENTS.md",
+        "docs/contracts/**",
+        "docs/specs/**",
+        "docs/internal/**",
+        "docs/maintainers/**",
+        "docs/master-plan.md",
+        "docs/gepa.md",
+        ".agents/**",
+        "scripts/**",
+        "internal/**"
+      ],
+      "user": [
+        "README.md",
+        "docs/cli-reference.md",
+        "docs/guides/**",
+        "skills/cautilus/**",
+        "plugins/cautilus/skills/cautilus/**"
+      ]
+    },
     "entries": [
       "README.md",
       "AGENTS.md",
@@ -1169,34 +1250,155 @@
       "charness-artifacts/**"
     ],
     "explicitSources": false,
+    "gitignorePolicy": "respect-repo-gitignore",
     "include": [],
     "linkedMarkdownDepth": 3,
+    "semanticGroups": [
+      {
+        "label": "Claim discovery and review",
+        "terms": [
+          "claim discover",
+          "claim-discovery",
+          "claim review",
+          "review input",
+          "reviewer"
+        ]
+      },
+      {
+        "label": "Improvement and optimization",
+        "terms": [
+          "optimize",
+          "gepa",
+          "improve",
+          "search",
+          "frontier"
+        ]
+      },
+      {
+        "label": "Adapter and portability",
+        "terms": [
+          "adapter",
+          "portable",
+          "consumer",
+          "host repo",
+          "repo-specific"
+        ]
+      },
+      {
+        "label": "Quality gates",
+        "terms": [
+          "test",
+          "verify",
+          "lint",
+          "quality",
+          "doctor",
+          "hook"
+        ]
+      },
+      {
+        "label": "Agent and skill workflow",
+        "terms": [
+          "skill",
+          "agent",
+          "no-input",
+          "$cautilus",
+          "codex",
+          "claude"
+        ]
+      },
+      {
+        "label": "Packets and reporting",
+        "terms": [
+          "packet",
+          "report",
+          "html",
+          "artifact",
+          "summary",
+          "status"
+        ]
+      },
+      {
+        "label": "Release and packaging",
+        "terms": [
+          "release",
+          "plugin",
+          "install",
+          "publish",
+          "version"
+        ]
+      },
+      {
+        "label": "Documentation and contracts",
+        "terms": [
+          "readme",
+          "contract",
+          "spec",
+          "document",
+          "guide"
+        ]
+      },
+      {
+        "label": "Evaluation surfaces",
+        "terms": [
+          "dev/repo",
+          "dev/skill",
+          "app/chat",
+          "app/prompt",
+          "eval",
+          "scenario"
+        ]
+      }
+    ],
     "traversal": "entry-markdown-links"
   },
   "previousPath": ".cautilus/claims/latest.json",
   "refreshSummary": {
-    "baseCommit": "bec65ce20af8b3d20429e766287ab1a9aef5db90",
-    "carriedForwardClaimCount": 180,
-    "changedClaimCount": 100,
+    "baseCommit": "dafdde5a5d71415aebb2345059cd92a455737d04",
+    "carriedForwardClaimCount": 160,
+    "changedClaimCount": 132,
     "changedClaimSources": [
       {
-        "claimCount": 56,
+        "claimCount": 61,
         "path": "docs/contracts/claim-discovery-workflow.md"
       },
       {
-        "claimCount": 21,
+        "claimCount": 24,
         "path": "docs/specs/command-surfaces.spec.md"
       },
       {
-        "claimCount": 12,
+        "claimCount": 14,
         "path": "docs/cli-reference.md"
       },
       {
-        "claimCount": 11,
-        "path": "skills/cautilus/SKILL.md"
+        "claimCount": 14,
+        "path": "docs/contracts/adapter-contract.md"
+      },
+      {
+        "claimCount": 6,
+        "path": "docs/master-plan.md"
+      },
+      {
+        "claimCount": 4,
+        "path": "docs/contracts/workbench-instance-discovery.md"
+      },
+      {
+        "claimCount": 3,
+        "path": "docs/contracts/live-run-invocation.md"
+      },
+      {
+        "claimCount": 3,
+        "path": "docs/specs/standalone-surface.spec.md"
+      },
+      {
+        "claimCount": 2,
+        "path": "docs/contracts/live-run-invocation-batch.md"
+      },
+      {
+        "claimCount": 1,
+        "path": "docs/maintainers/operator-acceptance.md"
       }
     ],
-    "changedSourceCount": 24,
+    "changedSourceCount": 36,
     "nextActions": [
       {
         "detail": "Run claim discovery to write a fresh claim packet, then use claim show to inspect the updated status.",
@@ -1216,11 +1418,11 @@
     ],
     "status": "changes-detected",
     "summary": "The saved claim map was made from an older checkout; this plan identifies claims whose source files changed and does not update the saved claim map yet.",
-    "targetCommit": "34e2fc871c6d73fd78bd1dd5a79069baa6a73f68",
+    "targetCommit": "ed2d2479f590a7c1880005b1b0e3434cf6d0a367",
     "workingTreePolicy": "excluded"
   },
   "schemaVersion": "cautilus.claim_refresh_plan.v1",
   "sourceRoot": ".",
-  "targetCommit": "34e2fc871c6d73fd78bd1dd5a79069baa6a73f68",
+  "targetCommit": "ed2d2479f590a7c1880005b1b0e3434cf6d0a367",
   "workingTreePolicy": "excluded"
 }

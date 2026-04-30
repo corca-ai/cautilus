@@ -1,48 +1,50 @@
 {
-  "candidateCount": 292,
+  "candidateCount": 300,
   "claimState": {
     "path": ".cautilus/claims/latest.json",
     "pathSource": "adapter"
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 228,
-      "user": 64
+      "developer": 234,
+      "user": 66
     },
     "byClaimSemanticGroup": {
-      "Adapter and portability": 48,
-      "Agent and skill workflow": 13,
-      "Claim discovery and review": 18,
-      "Documentation and contracts": 34,
-      "Improvement and optimization": 15,
-      "Packets and reporting": 21,
-      "Quality gates": 143
+      "Adapter and portability": 47,
+      "Agent and skill workflow": 84,
+      "Claim discovery and review": 19,
+      "Documentation and contracts": 76,
+      "Evaluation surfaces": 2,
+      "Improvement and optimization": 20,
+      "Packets and reporting": 20,
+      "Quality gates": 27,
+      "Release and packaging": 5
     },
     "byEvidenceStatus": {
-      "unknown": 292
+      "unknown": 300
     },
     "byLifecycle": {
-      "new": 292
+      "new": 300
     },
     "byProofLayer": {
-      "alignment-work": 6,
-      "cautilus-eval": 148,
-      "deterministic": 49,
-      "human-auditable": 18,
-      "scenario-candidate": 71
+      "alignment-work": 7,
+      "cautilus-eval": 157,
+      "deterministic": 104,
+      "human-auditable": 25,
+      "scenario-candidate": 7
     },
     "byRecommendedProof": {
-      "cautilus-eval": 219,
-      "deterministic": 49,
-      "human-auditable": 24
+      "cautilus-eval": 164,
+      "deterministic": 104,
+      "human-auditable": 32
     },
     "byReviewStatus": {
-      "heuristic": 292
+      "heuristic": 300
     },
     "byVerificationReadiness": {
-      "needs-alignment": 6,
-      "needs-scenario": 71,
-      "ready-to-verify": 215
+      "needs-alignment": 7,
+      "needs-scenario": 7,
+      "ready-to-verify": 286
     }
   },
   "effectiveScanScope": {
@@ -83,6 +85,7 @@
       "charness-artifacts/**"
     ],
     "explicitSources": false,
+    "gitignorePolicy": "respect-repo-gitignore",
     "include": [],
     "linkedMarkdownDepth": 3,
     "semanticGroups": [
@@ -183,20 +186,20 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "dafdde5a5d71415aebb2345059cd92a455737d04",
+  "gitCommit": "ed2d2479f590a7c1880005b1b0e3434cf6d0a367",
   "gitState": {
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "dafdde5a5d71415aebb2345059cd92a455737d04",
+    "currentGitCommit": "ed2d2479f590a7c1880005b1b0e3434cf6d0a367",
     "isStale": false,
-    "packetGitCommit": "dafdde5a5d71415aebb2345059cd92a455737d04",
+    "packetGitCommit": "ed2d2479f590a7c1880005b1b0e3434cf6d0a367",
     "recommendedAction": "The claim packet commit matches the current checkout.",
     "workingTreePolicy": "excluded"
   },
   "inputPath": ".cautilus/claims/latest.json",
   "inputSchemaVersion": "cautilus.claim_proof_plan.v1",
-  "linkedMarkdownSourceCount": 33,
+  "linkedMarkdownSourceCount": 34,
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "recommendedNextActions": [
     {
@@ -213,9 +216,9 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 215,
-    "needsAlignment": 6,
-    "needsScenario": 71
+    "heuristicClaimsReadyForReview": 286,
+    "needsAlignment": 7,
+    "needsScenario": 7
   },
   "sampleClaims": [
     {
@@ -245,7 +248,7 @@
     {
       "claimAudience": "developer",
       "claimId": "claim-agents-md-26",
-      "claimSemanticGroup": "Quality gates",
+      "claimSemanticGroup": "Documentation and contracts",
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:developer",
@@ -271,7 +274,7 @@
     {
       "claimAudience": "developer",
       "claimId": "claim-agents-md-29",
-      "claimSemanticGroup": "Quality gates",
+      "claimSemanticGroup": "Evaluation surfaces",
       "evidenceStatus": "unknown",
       "groupHints": [
         "app/prompt",
@@ -297,19 +300,17 @@
     {
       "claimAudience": "developer",
       "claimId": "claim-agents-md-61",
-      "claimSemanticGroup": "Quality gates",
+      "claimSemanticGroup": "Agent and skill workflow",
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:developer",
-        "cautilus-eval",
-        "dev/skill",
+        "deterministic",
         "repo-instructions"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
-      "recommendedEvalSurface": "dev/skill",
-      "recommendedProof": "cautilus-eval",
+      "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
+      "proofLayer": "deterministic",
+      "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
@@ -323,7 +324,7 @@
     {
       "claimAudience": "developer",
       "claimId": "claim-agents-md-73",
-      "claimSemanticGroup": "Quality gates",
+      "claimSemanticGroup": "Evaluation surfaces",
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:developer",
@@ -353,14 +354,13 @@
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:developer",
-        "cautilus-eval",
-        "needs-scenario",
+        "deterministic",
         "repo-instructions"
       ],
       "lifecycle": "new",
-      "nextAction": "Use the scenario proposal flow to normalize candidate evidence before creating a checked-in eval fixture.",
-      "proofLayer": "scenario-candidate",
-      "recommendedProof": "cautilus-eval",
+      "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
+      "proofLayer": "deterministic",
+      "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
@@ -369,7 +369,7 @@
         }
       ],
       "summary": "The skill should own routing, sequencing, guardrails, and decision boundaries; the binary should own broad command discovery, help text, scenario catalogs, packet examples, install smoke, and doctor/readiness details.",
-      "verificationReadiness": "needs-scenario"
+      "verificationReadiness": "ready-to-verify"
     },
     {
       "claimAudience": "developer",
@@ -426,7 +426,7 @@
     {
       "claimAudience": "user",
       "claimId": "claim-readme-md-3",
-      "claimSemanticGroup": "Quality gates",
+      "claimSemanticGroup": "Agent and skill workflow",
       "evidenceStatus": "unknown",
       "groupHints": [
         "app/prompt",
@@ -456,15 +456,13 @@
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:user",
-        "cautilus-eval",
-        "dev/skill",
+        "deterministic",
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
-      "recommendedEvalSurface": "dev/skill",
-      "recommendedProof": "cautilus-eval",
+      "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
+      "proofLayer": "deterministic",
+      "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
@@ -478,7 +476,7 @@
     {
       "claimAudience": "user",
       "claimId": "claim-readme-md-9",
-      "claimSemanticGroup": "Quality gates",
+      "claimSemanticGroup": "Agent and skill workflow",
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:user",
@@ -503,237 +501,30 @@
     },
     {
       "claimAudience": "user",
-      "claimId": "claim-readme-md-13",
-      "claimSemanticGroup": "Adapter and portability",
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:user",
-        "cautilus-eval",
-        "dev/repo",
-        "readme"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "line": 13,
-          "path": "README.md"
-        }
-      ],
-      "summary": "They stay checked into each host repo so evaluation behavior remains reproducible, reviewable, and owned by the repo that declares it.",
-      "verificationReadiness": "ready-to-verify"
-    },
-    {
-      "claimAudience": "user",
-      "claimId": "claim-readme-md-91",
+      "claimId": "claim-readme-md-10",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:user",
-        "cautilus-eval",
-        "needs-scenario",
+        "deterministic",
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Use the scenario proposal flow to normalize candidate evidence before creating a checked-in eval fixture.",
-      "proofLayer": "scenario-candidate",
-      "recommendedProof": "cautilus-eval",
+      "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
+      "proofLayer": "deterministic",
+      "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "line": 91,
+          "line": 10,
           "path": "README.md"
         }
       ],
-      "summary": "Input (For Agent)**: \"Turn this behavior input into reusable scenarios and render an HTML page I can review.\"",
-      "verificationReadiness": "needs-scenario"
-    },
-    {
-      "claimAudience": "user",
-      "claimId": "claim-readme-md-95",
-      "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:user",
-        "cautilus-eval",
-        "needs-scenario",
-        "readme"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Use the scenario proposal flow to normalize candidate evidence before creating a checked-in eval fixture.",
-      "proofLayer": "scenario-candidate",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "line": 95,
-          "path": "README.md"
-        }
-      ],
-      "summary": "Next step: a human decides whether to promote the scenario into a protected evaluation path, while an agent can reopen the saved result, compare variants, or feed it into the next bounded step.",
-      "verificationReadiness": "needs-scenario"
-    },
-    {
-      "claimAudience": "user",
-      "claimId": "claim-readme-md-123",
-      "claimSemanticGroup": "Quality gates",
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "app/prompt",
-        "audience:user",
-        "cautilus-eval",
-        "readme"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
-      "recommendedEvalSurface": "app/prompt",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "line": 123,
-          "path": "README.md"
-        }
-      ],
-      "summary": "For reviewed `cautilus-eval` claims, `claim plan-evals` emits `cautilus.claim_eval_plan.v1`: an intermediate plan for host-owned eval fixtures, not a writer for prompts, runners, fixtures, or policy.",
-      "verificationReadiness": "ready-to-verify"
-    },
-    {
-      "claimAudience": "user",
-      "claimId": "claim-readme-md-137",
-      "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:user",
-        "cautilus-eval",
-        "needs-scenario",
-        "readme"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Use the scenario proposal flow to normalize candidate evidence before creating a checked-in eval fixture.",
-      "proofLayer": "scenario-candidate",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "line": 137,
-          "path": "README.md"
-        }
-      ],
-      "summary": "CLI: `cautilus scenario normalize chatbot --input logs.json` For agent: \"Run a chatbot regression with these logs and my new system prompt.\" You get reopenable `proposals.json` candidates that can be kept out of tuning as protected checks.",
-      "verificationReadiness": "needs-scenario"
-    },
-    {
-      "claimAudience": "user",
-      "claimId": "claim-readme-md-144",
-      "claimSemanticGroup": "Quality gates",
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "app/prompt",
-        "audience:user",
-        "cautilus-eval",
-        "readme"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
-      "recommendedEvalSurface": "app/prompt",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "line": 144,
-          "path": "README.md"
-        }
-      ],
-      "summary": "Use when you change a skill or agent and want to know whether it still triggers on the right prompts, executes cleanly, and keeps its static validation passing.",
-      "verificationReadiness": "ready-to-verify"
-    },
-    {
-      "claimAudience": "user",
-      "claimId": "claim-readme-md-148",
-      "claimSemanticGroup": "Claim discovery and review",
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:user",
-        "cautilus-eval",
-        "dev/repo",
-        "readme"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "line": 148,
-          "path": "README.md"
-        }
-      ],
-      "summary": "The same preset can evaluate a multi-turn agent episode when the fixture provides `turns`; Cautilus's own first-scan, refresh-flow, review-prepare, and reviewer-launch dogfood fixtures derive their results from audit packets.",
-      "verificationReadiness": "ready-to-verify"
-    },
-    {
-      "claimAudience": "user",
-      "claimId": "claim-readme-md-149",
-      "claimSemanticGroup": "Adapter and portability",
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:user",
-        "cautilus-eval",
-        "dev/repo",
-        "readme"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "line": 149,
-          "path": "README.md"
-        }
-      ],
-      "summary": "When the goal is only to prove command routing and packet evaluation, `cautilus eval test --runtime fixture` can run the same product path with adapter-owned fixture results instead of launching a nested model eval.",
-      "verificationReadiness": "ready-to-verify"
-    },
-    {
-      "claimAudience": "user",
-      "claimId": "claim-readme-md-153",
-      "claimSemanticGroup": "Quality gates",
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:user",
-        "cautilus-eval",
-        "dev/repo",
-        "readme"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "line": 153,
-          "path": "README.md"
-        }
-      ],
-      "summary": "Use when a stateful automation — a CLI workflow, long-running agent session, or pipeline that persists state across invocations — keeps stalling on the same step.",
+      "summary": "`Cautilus` installs as a machine-level binary, but its agent-facing surface is intentionally repo-local.",
       "verificationReadiness": "ready-to-verify"
     }
   ],
   "schemaVersion": "cautilus.claim_status_summary.v1",
-  "sourceCount": 35,
+  "sourceCount": 36,
   "sourceRoot": "."
 }

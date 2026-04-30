@@ -1,0 +1,106 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewRun": {
+    "reviewer": "codex",
+    "lane": "lane-a",
+    "inputPath": ".cautilus/claims/review-input-loop1.json",
+    "assignedClusterIndexes": [0, 1, 2, 3],
+    "evidencePolicy": "Only mark evidenceStatus=satisfied when this lane verifies direct evidence refs; otherwise leave evidenceStatus=unknown."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-user-adapter-and-portability-cautilus-eval-dev-repo-readme",
+      "claimUpdates": [
+        {
+          "claimId": "claim-readme-md-13",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as a packaging/adoption contract claim; this lane did not verify a direct install or host-repo materialization artifact.",
+          "nextAction": "Prove with a deterministic install or adoption fixture that checks repo-local adapter, skill, prompt, and routing files are materialized and remain checked in."
+        },
+        {
+          "claimId": "claim-readme-md-149",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as a CLI/runtime fixture-path claim; this lane did not run or cite a direct fixture-runtime proof packet.",
+          "nextAction": "Prove with deterministic coverage for `cautilus eval test --runtime fixture` and adapter-owned fixture results through the normal eval packet path."
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-user-adapter-and-portability-cautilus-eval-dev-skill-readme",
+      "claimUpdates": [
+        {
+          "claimId": "claim-readme-md-7",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as an install and distribution claim; this lane did not verify the installer, binary, and bundled skill together as direct evidence.",
+          "nextAction": "Prove with an install smoke or doctor readiness fixture that starts from the binary and verifies the bundled skill is installed without a copied scaffold."
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-user-agent-and-skill-workflow-cautilus-eval-readme",
+      "claimUpdates": [
+        {
+          "claimId": "claim-readme-md-137",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as documentation for the scenario-normalization command path; this lane did not verify a direct scenario output packet.",
+          "nextAction": "Prove with deterministic scenario normalization or proposal tests that produce reopenable proposal candidates from chatbot input."
+        },
+        {
+          "claimId": "claim-readme-md-91",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "blocked",
+          "lifecycle": "retired",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as a quoted agent prompt example rather than an independent product claim.",
+          "nextAction": "Exclude quoted `Input (For Agent)` examples from claim candidates or attach them only as context to the surrounding scenario-proposal claim."
+        },
+        {
+          "claimId": "claim-readme-md-95",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as a scenario-proposal workflow contract; this lane did not verify direct proposal or render artifacts.",
+          "nextAction": "Prove with deterministic scenario proposal and render coverage that the JSON can be reopened and the human promotion decision remains explicit."
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-user-claim-discovery-and-review-cautilus-eval-dev-repo-readme",
+      "claimUpdates": [
+        {
+          "claimId": "claim-readme-md-148",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/skill",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as a multi-turn skill/agent episode claim; this lane did not verify direct audit-backed eval outputs.",
+          "nextAction": "Prove with the existing dev/skill audit-backed fixtures for first-scan, refresh-flow, review-prepare, and reviewer-launch behavior."
+        },
+        {
+          "claimId": "claim-readme-md-232",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as a renderer and static-artifact claim; this lane did not verify direct HTML render outputs.",
+          "nextAction": "Prove with deterministic HTML renderer specs or tests that the relevant packets produce browser-readable static pages."
+        }
+      ]
+    }
+  ]
+}

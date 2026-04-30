@@ -779,6 +779,9 @@ func claimLineLooksUseful(line string) bool {
 		return false
 	}
 	normalized := normalizeClaimSummary(line)
+	if claimLineLooksLikePromptExample(normalized) {
+		return false
+	}
 	if len(normalized) < 20 || len(normalized) > 260 {
 		return false
 	}
@@ -786,14 +789,23 @@ func claimLineLooksUseful(line string) bool {
 	return containsAny(lower, []string{
 		" must ", " should ", " can ", " will ", " owns ", " keeps ", " uses ", " emits ", " writes ", " runs ",
 		" routes ", " discovers ", " evaluates ", " improves ", " verifies ", " validates ", " proves ", " supports ",
-		" requires ", " guarantees ", " provides ", " belongs ", " remains ", " stays ",
+		" requires ", " guarantees ", " provides ", " belongs ", " remains ", " stays ", " installs ", " produces ",
 	})
+}
+
+func claimLineLooksLikePromptExample(summary string) bool {
+	lower := strings.ToLower(strings.TrimSpace(summary))
+	return strings.HasPrefix(lower, "input (for agent)") ||
+		strings.HasPrefix(lower, "for agent:") ||
+		strings.HasPrefix(lower, "for agent ") ||
+		strings.Contains(lower, "input (for agent)**") ||
+		strings.Contains(lower, "input (for agent):")
 }
 
 func classifyClaimLine(line string) (claimClassification, bool) {
 	lower := " " + strings.ToLower(line) + " "
 	switch {
-	case containsAny(lower, []string{" unit test", " tests ", " lint", " typecheck", " type-check", " build ", " ci ", " compile", " schema ", " deterministic"}):
+	case containsAny(lower, []string{" unit test", " tests ", " lint", " typecheck", " type-check", " build ", " ci ", " compile", " schema ", " deterministic", " eval test ", " --runtime fixture", " fixture runtime", " fixture-backed"}):
 		return claimClassification{
 			proofLayer:            "deterministic",
 			recommendedProof:      "deterministic",
@@ -809,13 +821,42 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 			why:                   "The claim says surfaces should agree, so proof is not honest until the mismatched surfaces are reconciled.",
 			next:                  "Reconcile the named docs, code, skill, adapter, or CLI surface before treating this as a verification target.",
 		}, true
-	case containsAny(lower, []string{" scenario", " proposal", " candidate", " coverage"}):
+	case containsAny(lower, []string{" static html", " html ", " render-html", " renderer", " browser-readable", " exampleinputcli", " catalog entry", " command catalog"}):
 		return claimClassification{
-			proofLayer:            "scenario-candidate",
-			recommendedProof:      "cautilus-eval",
-			verificationReadiness: "needs-scenario",
-			why:                   "The claim points at scenario or proposal work before it is ready as a protected eval fixture.",
-			next:                  "Use the scenario proposal flow to normalize candidate evidence before creating a checked-in eval fixture.",
+			proofLayer:            "deterministic",
+			recommendedProof:      "deterministic",
+			verificationReadiness: "ready-to-verify",
+			why:                   "The claim names packet, catalog, or renderer behavior that should be protected by deterministic command, schema, or render tests.",
+			next:                  "Keep or add deterministic packet, catalog, schema, or renderer proof for this claim.",
+		}, true
+	case containsAny(lower, []string{" install", " installs ", " installer", " standalone binary", " checked into each host repo", " bundled skill", " plugin manifest", " plugin manifests", ".agents/skills", ".agents/cautilus-adapter"}):
+		return claimClassification{
+			proofLayer:            "deterministic",
+			recommendedProof:      "deterministic",
+			verificationReadiness: "ready-to-verify",
+			why:                   "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks.",
+			next:                  "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
+		}, true
+	case claimNeedsScenario(lower):
+		surface := ""
+		if containsAny(lower, []string{" conversation", " chat", " context recovery", " context-recovery", " turn", " turns", " follow-up"}) {
+			surface = "app/chat"
+		}
+		return claimClassification{
+			proofLayer:             "scenario-candidate",
+			recommendedProof:       "cautilus-eval",
+			verificationReadiness:  "needs-scenario",
+			recommendedEvalSurface: surface,
+			why:                    "The claim points at behavior that needs scenario shaping before it is ready as a protected eval fixture.",
+			next:                   "Use the scenario proposal flow to normalize candidate evidence before creating a checked-in eval fixture.",
+		}, true
+	case claimDocumentsScenarioCommand(lower):
+		return claimClassification{
+			proofLayer:            "deterministic",
+			recommendedProof:      "deterministic",
+			verificationReadiness: "ready-to-verify",
+			why:                   "The claim documents scenario command or proposal-packet behavior rather than asking for a new behavior scenario.",
+			next:                  "Keep or add deterministic scenario command, packet, or render proof for this claim.",
 		}, true
 	case containsAny(lower, []string{" agent", " prompt", " skill", " workflow", " llm", " model", " conversation", " assistant", " behavior", " eval "}):
 		surface := recommendedEvalSurface(lower)
@@ -840,16 +881,34 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 	}
 }
 
+func claimNeedsScenario(lower string) bool {
+	if !containsAny(lower, []string{" scenario", " proposal", " candidate", " coverage", " protected check", " protected scenario"}) {
+		return false
+	}
+	if claimDocumentsScenarioCommand(lower) {
+		return false
+	}
+	return containsAny(lower, []string{" needs ", " need ", " future ", " missing ", " create ", " author ", " promote ", " protect ", " protected ", " context recovery", " follow-up"})
+}
+
+func claimDocumentsScenarioCommand(lower string) bool {
+	return containsAny(lower, []string{" cautilus scenario", " scenario normalize", " scenario propose", " proposal packet", " proposal candidates", " proposals.json", " render-proposals-html", " reopen the saved result"})
+}
+
 func recommendedEvalSurface(lower string) string {
 	switch {
 	case strings.Contains(lower, " review prompt"):
 		return "dev/repo"
+	case strings.Contains(lower, " skill"):
+		return "dev/skill"
+	case strings.Contains(lower, " plugin"):
+		return "dev/skill"
+	case strings.Contains(lower, " agent") && containsAny(lower, []string{" episode", " turns", " audit", " first-scan", " refresh-flow", " review-prepare", " reviewer-launch"}):
+		return "dev/skill"
 	case strings.Contains(lower, " prompt"):
 		return "app/prompt"
 	case strings.Contains(lower, " conversation") || strings.Contains(lower, " chat") || strings.Contains(lower, " assistant"):
 		return "app/chat"
-	case strings.Contains(lower, " skill"):
-		return "dev/skill"
 	default:
 		return "dev/repo"
 	}
@@ -934,7 +993,7 @@ func claimGroupHints(source claimSource, classification claimClassification) []s
 }
 
 func claimSemanticGroup(summary string, nextAction string, why string, surface string, hints []string, config claimDiscoveryConfig) string {
-	haystack := strings.ToLower(strings.Join(append([]string{summary, nextAction, why, surface}, hints...), " "))
+	haystack := strings.ToLower(strings.Join(append([]string{summary, surface}, hints...), " "))
 	for _, rule := range config.semanticGroups {
 		if containsAny(haystack, rule.terms) {
 			return rule.label
@@ -1976,10 +2035,26 @@ func validateClaimUpdateFields(update map[string]any, field string) error {
 
 func applyClaimUpdate(candidate map[string]any, update map[string]any) ([]any, error) {
 	applied := []any{}
-	for _, field := range []string{"recommendedProof", "verificationReadiness", "evidenceStatus", "reviewStatus", "lifecycle", "recommendedEvalSurface"} {
+	for _, field := range []string{"recommendedProof", "verificationReadiness", "evidenceStatus", "reviewStatus", "lifecycle"} {
 		if value := stringFromAny(update[field]); value != "" {
 			candidate[field] = value
 			applied = append(applied, field)
+		}
+	}
+	if _, exists := update["recommendedEvalSurface"]; exists {
+		if value := stringFromAny(update["recommendedEvalSurface"]); value != "" {
+			candidate["recommendedEvalSurface"] = value
+		} else {
+			delete(candidate, "recommendedEvalSurface")
+		}
+		applied = append(applied, "recommendedEvalSurface")
+	}
+	if stringFromAny(candidate["recommendedProof"]) != "cautilus-eval" {
+		if _, hadSurface := candidate["recommendedEvalSurface"]; hadSurface {
+			delete(candidate, "recommendedEvalSurface")
+			if !appliedFieldContains(applied, "recommendedEvalSurface") {
+				applied = append(applied, "recommendedEvalSurface")
+			}
 		}
 	}
 	if refs := arrayOrEmpty(update["evidenceRefs"]); len(refs) > 0 {
@@ -2005,6 +2080,15 @@ func applyClaimUpdate(candidate map[string]any, update map[string]any) ([]any, e
 		return nil, err
 	}
 	return applied, nil
+}
+
+func appliedFieldContains(fields []any, field string) bool {
+	for _, raw := range fields {
+		if stringFromAny(raw) == field {
+			return true
+		}
+	}
+	return false
 }
 
 func validateClaimEvidenceSatisfaction(candidate map[string]any) error {
