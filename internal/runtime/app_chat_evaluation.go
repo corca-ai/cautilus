@@ -314,6 +314,9 @@ func BuildAppChatEvaluationSummary(input map[string]any, now time.Time) (map[str
 		},
 		"evaluations": evaluations,
 	}
+	if proof := EvaluationProofFromInput(input); len(proof) > 0 {
+		summary["proof"] = proof
+	}
 	return summary, nil
 }
 

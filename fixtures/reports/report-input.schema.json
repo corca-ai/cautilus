@@ -87,6 +87,9 @@
                 "type": "object"
               }
             }
+          },
+          "proof": {
+            "type": "object"
           }
         }
       }

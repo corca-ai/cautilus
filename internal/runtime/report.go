@@ -114,6 +114,9 @@ func BuildReportPacket(input map[string]any, now time.Time) (map[string]any, err
 		if scenarioSummary != nil {
 			modeSummary["scenarioTelemetrySummary"] = scenarioSummary
 		}
+		if proof := asMap(modeRun["proof"]); len(proof) > 0 {
+			modeSummary["proof"] = proof
+		}
 		reasonCodes, warnings := classifyModeSummary(modeSummary, modeRun, commandObservations)
 		if len(reasonCodes) > 0 {
 			modeSummary["reasonCodes"] = reasonCodes
@@ -147,6 +150,7 @@ func BuildReportPacket(input map[string]any, now time.Time) (map[string]any, err
 	}
 	reasonCodes, warnings := summarizeReportReasons(modeSummaries)
 	reportTelemetry := summarizeReportTelemetry(modeSummaries)
+	proofSummary := SummarizeReportProof(modeSummaries)
 	report := map[string]any{
 		"schemaVersion":       contracts.ReportPacketSchema,
 		"generatedAt":         now.UTC().Format(time.RFC3339Nano),
@@ -165,6 +169,9 @@ func BuildReportPacket(input map[string]any, now time.Time) (map[string]any, err
 		"noisy":               normalizeBucketOrEmpty(input["noisy"], "noisy"),
 		"humanReviewFindings": humanReviewFindings,
 		"recommendation":      mustString(input["recommendation"], "recommendation"),
+	}
+	if proofSummary != nil {
+		report["proofSummary"] = proofSummary
 	}
 	if len(reasonCodes) > 0 {
 		report["reasonCodes"] = reasonCodes
@@ -237,6 +244,9 @@ func normalizeModeRun(value any, index int) (map[string]any, error) {
 		} else if scenarioResults != nil {
 			normalized["scenarioResults"] = scenarioResults
 		}
+	}
+	if proof := EvaluationProofFromInput(record); len(proof) > 0 {
+		normalized["proof"] = proof
 	}
 	return normalized, nil
 }

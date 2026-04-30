@@ -239,6 +239,7 @@ The first preset, `dev / repo`, replaces the prior `cautilus instruction-surface
 Cautilus exposes two top-level surfaces and four presets:
 `dev / repo` for repo work contracts, `dev / skill` for checked-in or portable development skills, `app / chat` for multi-turn product conversation behavior, and `app / prompt` for single product input/output behavior.
 `cautilus eval test` runs a checked-in fixture through an adapter-owned runner and then evaluates the observed packet.
+The command records a top-level `proof` object in `eval-observed.json` and `eval-summary.json` when runner readiness can identify the proof class or assessment state.
 `cautilus eval evaluate` evaluates an already-observed packet without launching the runner again.
 
 ```bash
@@ -427,6 +428,7 @@ scenario, audit, and history evidence all matter together?"
 
 `cautilus optimize` is the improvement front door.
 Use it only after the claim and eval proof surface are explicit enough that an improvement loop has something honest to optimize against.
+For app behavior claims, reports whose `proofSummary.productRunnerProofReadiness` is blocked cannot become optimize inputs until runner-backed product proof is ready.
 The bounded one-shot optimizer:
 
 ```bash

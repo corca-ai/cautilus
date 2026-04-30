@@ -246,6 +246,9 @@ func BuildAppPromptEvaluationSummary(input map[string]any, now time.Time) (map[s
 		},
 		"evaluations": evaluations,
 	}
+	if proof := EvaluationProofFromInput(input); len(proof) > 0 {
+		summary["proof"] = proof
+	}
 	return summary, nil
 }
 

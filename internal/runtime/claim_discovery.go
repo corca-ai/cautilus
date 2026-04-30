@@ -1874,6 +1874,7 @@ func BuildClaimEvalPlan(packet map[string]any, options ClaimEvalPlanOptions) (ma
 			"claimId":             claimID,
 			"claimFingerprint":    candidate["claimFingerprint"],
 			"targetSurface":       claimEvalPlanSurface(candidate),
+			"proofRequirement":    BuildClaimProofRequirement(claimEvalPlanSurface(candidate)),
 			"draftIntent":         claimEvalPlanIntent(candidate),
 			"sourceRefs":          arrayOrEmpty(candidate["sourceRefs"]),
 			"evidenceStatus":      candidate["evidenceStatus"],

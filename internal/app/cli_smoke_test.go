@@ -3352,6 +3352,14 @@ JSON
 	if summary["schemaVersion"] != contracts.AppChatEvaluationSummarySchema || summary["recommendation"] != "accept-now" {
 		t.Fatalf("unexpected eval test summary: %#v", summary)
 	}
+	proof := mapOrEmpty(summary["proof"])
+	if proof["targetSurface"] != "app/chat" || proof["proofClass"] != "declared-eval-runner" || proof["productProofReady"] != false {
+		t.Fatalf("expected app/chat eval summary to preserve non-product proof metadata, got %#v", proof)
+	}
+	observed := readJSONObjectFile(t, filepath.Join(outputDir, "eval-observed.json"))
+	if mapOrEmpty(observed["proof"])["targetSurface"] != "app/chat" {
+		t.Fatalf("expected eval-observed proof metadata, got %#v", observed["proof"])
+	}
 	casesPath := filepath.Join(outputDir, "eval-cases.json")
 	cases := readJSONObjectFile(t, casesPath)
 	if cases["schemaVersion"] != contracts.AppChatTestCasesSchema {

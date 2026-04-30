@@ -74,6 +74,9 @@
     "modeSummaries": {
       "type": "array"
     },
+    "proofSummary": {
+      "type": "object"
+    },
     "telemetry": {
       "type": "object"
     },

@@ -64,6 +64,9 @@ func BuildOptimizeInput(repoRoot string, reportFile string, reviewSummaryFile *s
 	if err := ValidateReportPacket(report, resolvedReportFile); err != nil {
 		return nil, fmt.Errorf("%s: %w", resolvedReportFile, err)
 	}
+	if err := requireOptimizeRunnerProof(report); err != nil {
+		return nil, err
+	}
 	intentProfile, err := BuildBehaviorIntentProfile(report["intent"], asMap(report["intentProfile"]), BehaviorSurfaces["OPERATOR_BEHAVIOR"], nil, optimizeGuardrailDimensions)
 	if err != nil {
 		return nil, err
@@ -116,6 +119,20 @@ func BuildOptimizeInput(repoRoot string, reportFile string, reviewSummaryFile *s
 		packet["scenarioHistory"] = history
 	}
 	return packet, nil
+}
+
+func requireOptimizeRunnerProof(report map[string]any) error {
+	proofSummary := asMap(report["proofSummary"])
+	if len(proofSummary) == 0 {
+		return nil
+	}
+	if !truthy(proofSummary["requiresProductRunnerProof"]) {
+		return nil
+	}
+	if stringOrEmpty(proofSummary["productRunnerProofReadiness"]) == "ready" {
+		return nil
+	}
+	return fmt.Errorf("optimize requires runner-backed product proof before behavior improvement; productRunnerProofReadiness=%s", firstNonEmptyString(proofSummary["productRunnerProofReadiness"], "unknown"))
 }
 
 func buildOptimizerPlan(budget string) map[string]any {

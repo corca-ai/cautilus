@@ -1,0 +1,74 @@
+{
+  "schemaVersion": "cautilus.runner_assessment.v1",
+  "runnerId": "default-eval-runner",
+  "surface": "app/chat",
+  "proofClass": "live-product-runner",
+  "assessedBy": "maintainer-review",
+  "assessedAt": "2026-04-30T00:00:00Z",
+  "repoCommit": "0123456789abcdef0123456789abcdef01234567",
+  "adapterPath": ".agents/cautilus-adapter.yaml",
+  "adapterHash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "runnerFiles": [
+    {
+      "path": "scripts/eval/run-live-chat.mjs",
+      "sha256": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    }
+  ],
+  "claims": [
+    {
+      "claimId": "claim-readme-md-4",
+      "summary": "The product chat follows the selected live instance policy."
+    }
+  ],
+  "assessedRequirement": {
+    "proofMechanism": "cautilus-eval",
+    "recommendedEvalSurface": "app/chat",
+    "requiredRunnerCapability": "headless-product-chat-runner",
+    "requiredObservability": ["transcript", "finalText", "runtimeFingerprint", "diagnostics"]
+  },
+  "productionPathReuse": {
+    "runtime": "local live server selected by eval live discovery",
+    "contracts": ["docs/contracts/live-run-invocation.md"],
+    "notes": "The runner invokes the selected product instance instead of replaying a copied prompt."
+  },
+  "observability": {
+    "emits": ["transcript", "finalText", "runtimeFingerprint", "diagnostics", "sideEffectSummary"]
+  },
+  "verificationCapabilities": {
+    "inputSimulation": {
+      "state": "present",
+      "summary": "The runner sends normalized live-run requests to the same instance boundary used by eval live invocation.",
+      "evidenceRefs": ["docs/contracts/live-run-invocation.md", "scripts/eval/run-live-chat.mjs"]
+    },
+    "externalSubstitution": {
+      "state": "not-required",
+      "reason": "This assessment targets a selected live product instance; model/provider substitution is intentionally not part of this proof.",
+      "knownGaps": ["Provider nondeterminism remains part of the live proof surface."]
+    },
+    "triggerControl": {
+      "state": "present",
+      "summary": "The runner owns the request lifecycle and waits for the live invocation result before writing the observed packet.",
+      "evidenceRefs": ["scripts/eval/run-live-chat.mjs"]
+    },
+    "externalObservation": {
+      "state": "present",
+      "summary": "The live invocation result and evaluator diagnostics are written outside the product response path.",
+      "evidenceRefs": ["eval-observed.json", "docs/contracts/live-run-invocation.md"]
+    },
+    "reset": {
+      "state": "missing",
+      "knownGaps": ["The selected live instance must be reset by host-owned setup outside this generic example."]
+    },
+    "fingerprint": {
+      "state": "present",
+      "summary": "The observed packet records the selected instance and runtime fingerprint.",
+      "evidenceRefs": ["eval-observed.json"]
+    },
+    "stateReusePolicy": {
+      "state": "present",
+      "summary": "The assessment scopes state reuse to the selected instance and requires known gaps when reset is unavailable."
+    }
+  },
+  "knownGaps": ["Live instance state reset is host-owned and not declared by this example."],
+  "recommendation": "ready-for-selected-surface"
+}

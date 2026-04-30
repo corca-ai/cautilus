@@ -649,8 +649,54 @@ func TestBuildClaimEvalPlanSelectsReviewedEvalClaims(t *testing.T) {
 	if first["claimId"] != "claim-agents-md-3" || first["targetSurface"] != "dev/repo" {
 		t.Fatalf("unexpected eval plan: %#v", first)
 	}
+	requirement := asMap(first["proofRequirement"])
+	if requirement["requiredRunnerCapability"] != "development-repo-eval-runner" || requirement["requiresProductRunnerProof"] != false {
+		t.Fatalf("expected dev/repo proof requirement, got %#v", requirement)
+	}
 	if first["draftIntent"] == "" || evalPlan["nonWriterNotice"] == "" {
 		t.Fatalf("expected draft intent and non-writer notice, got %#v", evalPlan)
+	}
+}
+
+func TestBuildClaimEvalPlanMarksAppClaimsAsProductRunnerProof(t *testing.T) {
+	reviewed := map[string]any{
+		"schemaVersion": contracts.ClaimProofPlanSchema,
+		"sourceRoot":    ".",
+		"sourceInventory": []any{
+			map[string]any{"path": "README.md", "kind": "markdown", "status": "read", "depth": 0},
+		},
+		"claimCandidates": []any{
+			map[string]any{
+				"claimId":                "claim-readme-md-1",
+				"claimFingerprint":       "sha256:app",
+				"summary":                "The chat remembers prior preferences.",
+				"recommendedProof":       "cautilus-eval",
+				"recommendedEvalSurface": "app/chat",
+				"verificationReadiness":  "ready-to-verify",
+				"evidenceStatus":         "missing",
+				"reviewStatus":           "agent-reviewed",
+				"lifecycle":              "new",
+				"groupHints":             []any{"cautilus-eval"},
+				"evidenceRefs":           []any{},
+				"sourceRefs":             []any{map[string]any{"path": "README.md", "line": 1, "excerpt": "The chat remembers prior preferences."}},
+				"proofLayer":             "cautilus-eval",
+			},
+		},
+	}
+	evalPlan, err := BuildClaimEvalPlan(reviewed, ClaimEvalPlanOptions{ClaimsPath: "reviewed-claims.json"})
+	if err != nil {
+		t.Fatalf("BuildClaimEvalPlan returned error: %v", err)
+	}
+	plans := arrayOrEmpty(evalPlan["evalPlans"])
+	if len(plans) != 1 {
+		t.Fatalf("expected one eval plan, got %#v", evalPlan)
+	}
+	requirement := asMap(asMap(plans[0])["proofRequirement"])
+	if requirement["requiredRunnerCapability"] != "headless-product-chat-runner" || requirement["requiresProductRunnerProof"] != true {
+		t.Fatalf("expected app/chat product runner proof requirement, got %#v", requirement)
+	}
+	if observability := stringArrayOrEmpty(requirement["requiredObservability"]); !containsString(observability, "transcript") || !containsString(observability, "finalText") {
+		t.Fatalf("expected chat observability requirements, got %#v", observability)
 	}
 }
 

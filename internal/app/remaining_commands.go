@@ -581,6 +581,7 @@ func runEvalTestPipeline(
 	options *evalTestArgs,
 	adapterPayload *runtime.AdapterPayload,
 	suiteID string,
+	targetSurface string,
 	prepareCasesFile func(outputDir string) (string, error),
 	cwd string,
 	stdout io.Writer,
@@ -692,6 +693,16 @@ func runEvalTestPipeline(
 		}
 		return 1
 	}
+	readiness := runtime.BuildRunnerReadiness(options.repoRoot, adapterPayload)
+	proof := runtime.BuildEvaluationProofFromRunnerReadiness(readiness, targetSurface, effectiveRuntime)
+	input["proof"] = runtime.MergeEvaluationProof(input["proof"], proof)
+	if payload, err := json.MarshalIndent(input, "", "  "); err != nil {
+		fmt.Fprintf(stderr, "marshal eval observed with proof metadata: %s\n", err)
+		return 1
+	} else if err := os.WriteFile(inputFile, append(payload, '\n'), 0o644); err != nil {
+		fmt.Fprintf(stderr, "write eval observed proof metadata: %s\n", err)
+		return 1
+	}
 	summary, err := buildEvalEvaluateSummary(input)
 	if err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
@@ -754,7 +765,8 @@ func handleEvalTest(repoRoot string, cwd string, args []string, stdout io.Writer
 		}
 		return path, nil
 	}
-	return runEvalTestPipeline(options, adapterPayload, evaluation.SuiteID, prepareCasesFile, cwd, stdout, stderr, fmt.Sprintf("eval test (%s/%s)", evaluation.Surface, evaluation.Preset))
+	targetSurface := runtime.EvalSurfaceKey(evaluation.Surface, evaluation.Preset)
+	return runEvalTestPipeline(options, adapterPayload, evaluation.SuiteID, targetSurface, prepareCasesFile, cwd, stdout, stderr, fmt.Sprintf("eval test (%s/%s)", evaluation.Surface, evaluation.Preset))
 }
 
 func parseEvalTestArgs(args []string, cwd string) (*evalTestArgs, string, error) {

@@ -399,7 +399,7 @@ Start with read-only packet and status visibility before broad behavior changes.
 
 Follow-up implementation slices:
 
-1. Add `requiredRunnerCapability` and `requiredObservability` to claim eval-planning output without using those fields as readiness verdicts.
-2. Add `proofClass` to `eval-observed.json` and `eval-summary.json` under a stable `proof` path once the runner or assessment can supply it.
-3. Block behavior-changing `optimize` for app claims when runner-backed product-path evidence is missing.
-4. Add a live-run-backed runner example that references the existing eval-live contracts without making instance discovery mandatory for simple app repos.
+1. Implemented: add `proofRequirement.requiredRunnerCapability` and `proofRequirement.requiredObservability` to claim eval-planning output without using those fields as readiness verdicts.
+2. Implemented: add `proof.proofClass` and runner-readiness metadata to `eval-observed.json` and preserve it in `eval-summary.json` when `eval test` can derive it from runner readiness.
+3. Implemented: block behavior-changing `optimize` for reports whose `proofSummary` says product-runner proof is required but not ready.
+4. Implemented: add a live-run-backed runner assessment example that references the existing eval-live contracts without making instance discovery mandatory for simple app repos.

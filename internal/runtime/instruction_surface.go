@@ -131,6 +131,9 @@ func BuildEvaluationSummary(input map[string]any, now time.Time) (map[string]any
 	if runtimeContext != nil {
 		summary["runtimeContext"] = runtimeContext
 	}
+	if proof := EvaluationProofFromInput(input); len(proof) > 0 {
+		summary["proof"] = proof
+	}
 	return summary, nil
 }
 

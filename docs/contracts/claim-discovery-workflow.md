@@ -444,6 +444,7 @@ Follow-on commands are justified only when they operate on an existing claim-sta
 - `claim review prepare-input`: turn selected candidate clusters into a deterministic review-input packet without calling an LLM, rejecting stale packets by default
 - `claim review apply-result`: merge `cautilus.claim_review_result.v1` labels and evidence refs into an existing claim packet without calling an LLM, rejecting stale packets by default
 - `claim plan-evals`: turn reviewed `cautilus-eval` claims into `cautilus.claim_eval_plan.v1` intermediate packets without writing host-owned fixtures, rejecting stale packets by default
+- `claim plan-evals`: each plan carries `proofRequirement.requiredRunnerCapability`, `proofRequirement.requiredObservability`, and whether the target surface requires product-runner proof; these are requirements for later setup/eval work, not readiness verdicts
 - `claim validate`: emit `cautilus.claim_validation_report.v1` for packet shape and evidence-ref checks without mutating claims
 
 These commands are optional later surfaces.
