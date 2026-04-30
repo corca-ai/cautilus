@@ -1,50 +1,51 @@
 {
-  "candidateCount": 300,
+  "candidateCount": 308,
   "claimState": {
     "path": ".cautilus/claims/latest.json",
     "pathSource": "adapter"
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 234,
-      "user": 66
+      "developer": 240,
+      "user": 68
     },
     "byClaimSemanticGroup": {
-      "Adapter and portability": 47,
+      "Adapter and portability": 49,
       "Agent and skill workflow": 84,
       "Claim discovery and review": 19,
-      "Documentation and contracts": 76,
+      "Documentation and contracts": 79,
       "Evaluation surfaces": 2,
-      "Improvement and optimization": 20,
-      "Packets and reporting": 20,
-      "Quality gates": 27,
+      "Improvement and optimization": 21,
+      "Packets and reporting": 21,
+      "Quality gates": 28,
       "Release and packaging": 5
     },
     "byEvidenceStatus": {
-      "unknown": 300
+      "unknown": 308
     },
     "byLifecycle": {
-      "new": 300
+      "new": 308
     },
     "byProofLayer": {
       "alignment-work": 7,
-      "cautilus-eval": 157,
-      "deterministic": 104,
-      "human-auditable": 25,
-      "scenario-candidate": 7
+      "cautilus-eval": 155,
+      "deterministic": 114,
+      "human-auditable": 26,
+      "scenario-candidate": 6
     },
     "byRecommendedProof": {
-      "cautilus-eval": 164,
-      "deterministic": 104,
-      "human-auditable": 32
+      "cautilus-eval": 161,
+      "deterministic": 114,
+      "human-auditable": 33
     },
     "byReviewStatus": {
-      "heuristic": 300
+      "heuristic": 308
     },
     "byVerificationReadiness": {
+      "blocked": 1,
       "needs-alignment": 7,
-      "needs-scenario": 7,
-      "ready-to-verify": 286
+      "needs-scenario": 6,
+      "ready-to-verify": 294
     }
   },
   "effectiveScanScope": {
@@ -186,14 +187,14 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "ed2d2479f590a7c1880005b1b0e3434cf6d0a367",
+  "gitCommit": "2842f5d466a3cb3fd4e1c7e397ec79928224545f",
   "gitState": {
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "ed2d2479f590a7c1880005b1b0e3434cf6d0a367",
+    "currentGitCommit": "2842f5d466a3cb3fd4e1c7e397ec79928224545f",
     "isStale": false,
-    "packetGitCommit": "ed2d2479f590a7c1880005b1b0e3434cf6d0a367",
+    "packetGitCommit": "2842f5d466a3cb3fd4e1c7e397ec79928224545f",
     "recommendedAction": "The claim packet commit matches the current checkout.",
     "workingTreePolicy": "excluded"
   },
@@ -216,9 +217,9 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 286,
+    "heuristicClaimsReadyForReview": 295,
     "needsAlignment": 7,
-    "needsScenario": 7
+    "needsScenario": 6
   },
   "sampleClaims": [
     {
@@ -429,15 +430,15 @@
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceStatus": "unknown",
       "groupHints": [
-        "app/prompt",
         "audience:user",
         "cautilus-eval",
+        "dev/skill",
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus eval test.",
+      "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
       "proofLayer": "cautilus-eval",
-      "recommendedEvalSurface": "app/prompt",
+      "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -480,15 +481,13 @@
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:user",
-        "cautilus-eval",
-        "dev/repo",
+        "deterministic",
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
+      "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
+      "proofLayer": "deterministic",
+      "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {

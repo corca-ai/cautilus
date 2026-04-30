@@ -1,0 +1,90 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewRun": {
+    "reviewer": "codex-lane-b",
+    "lane": "b",
+    "inputPath": ".cautilus/claims/review-input-loop2.json",
+    "scope": "clusters 3-5 only",
+    "evidencePolicy": "No satisfied evidence labels were emitted because this lane did not attach direct or verified evidence refs."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-user-agent-and-skill-workflow-cautilus-eval-dev-skill-readme",
+      "claimUpdates": [
+        {
+          "claimId": "claim-readme-md-144",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/skill",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatusReason": "The claim describes skill or agent execution behavior after edits, so dev/skill evaluation is the right proof route; the review input itself does not provide verified evidence.",
+          "unresolvedQuestions": []
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-user-agent-and-skill-workflow-deterministic-readme",
+      "claimUpdates": [
+        {
+          "claimId": "claim-readme-md-10",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatusReason": "This is an install and repo-local surface claim that should be covered by deterministic install or doctor checks; the review input itself does not provide verified evidence.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-readme-md-137",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatusReason": "The excerpt includes a prompt example, but the extracted claim is mainly the scenario normalize command and its proposal packet output rather than a pure prompt-example line; the review input itself does not provide verified evidence.",
+          "unresolvedQuestions": [
+            "The extractor still joins the CLI line, the For agent example, and the output promise into one claim; splitting those sentences would make later review cleaner."
+          ]
+        },
+        {
+          "claimId": "claim-readme-md-211",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/skill",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatusReason": "The install-manifest portion is deterministic, but the same sentence also promises that an in-editor agent can drive the contracts conversationally, which needs dev/skill evaluation or a split claim; the review input itself does not provide verified evidence.",
+          "unresolvedQuestions": [
+            "Should discovery split this into a deterministic install/materialization claim and a separate dev/skill conversational-driving claim?"
+          ]
+        },
+        {
+          "claimId": "claim-readme-md-95",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatusReason": "The claim is about reopening saved scenario results and feeding them into bounded follow-up steps, which is better covered by deterministic packet and command-flow checks than by an app/chat eval; the review input itself does not provide verified evidence.",
+          "unresolvedQuestions": []
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-user-claim-discovery-and-review-cautilus-eval-dev-skill-readme",
+      "claimUpdates": [
+        {
+          "claimId": "claim-readme-md-148",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/skill",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatusReason": "The claim describes multi-turn skill fixture behavior and dogfood audit-packet derivation, so dev/skill evaluation is the right proof route; the review input itself does not provide verified evidence.",
+          "unresolvedQuestions": [
+            "If the review-to-eval dogfood fixture is now part of the public promise, the README sentence may need to include it alongside first-scan, refresh-flow, review-prepare, and reviewer-launch."
+          ]
+        }
+      ]
+    }
+  ]
+}

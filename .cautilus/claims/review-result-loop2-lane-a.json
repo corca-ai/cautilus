@@ -1,0 +1,95 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewRun": {
+    "reviewer": "codex",
+    "lane": "lane-a",
+    "inputPath": ".cautilus/claims/review-input-loop2.json",
+    "assignedClusterIndexes": [
+      0,
+      1,
+      2
+    ],
+    "evidencePolicy": "Only mark evidenceStatus=satisfied when this lane verifies direct evidence refs; otherwise leave evidenceStatus=unknown."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-user-adapter-and-portability-deterministic-readme",
+      "claimUpdates": [
+        {
+          "claimId": "claim-readme-md-13",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as a host-repo ownership and reproducibility claim; this lane did not verify direct adapter or checked-in host artifact evidence.",
+          "nextAction": "Prove with deterministic adoption or adapter-materialization coverage that host repos keep evaluation behavior checked in and reviewable."
+        },
+        {
+          "claimId": "claim-readme-md-149",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as a CLI fixture-runtime product-path claim; this lane did not verify direct fixture-runtime output.",
+          "nextAction": "Prove with deterministic coverage for `cautilus eval test --runtime fixture` using adapter-owned fixture results through the normal eval packet path."
+        },
+        {
+          "claimId": "claim-readme-md-7",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as a standalone binary and bundled-skill distribution claim; this lane did not run an install smoke.",
+          "nextAction": "Prove with deterministic install or doctor-readiness coverage that the standalone binary and bundled skill can be installed without copying a scaffold first."
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-user-agent-and-skill-workflow-cautilus-eval-app-prompt-readme",
+      "claimUpdates": [
+        {
+          "claimId": "claim-readme-md-3",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/skill",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as a Cautilus agent/workflow honesty claim rather than a host app prompt claim; this lane did not verify direct eval evidence.",
+          "nextAction": "Prove with dev/skill dogfood episodes that Cautilus keeps agent workflow behavior reviewable across prompt or instruction changes."
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-user-agent-and-skill-workflow-cautilus-eval-dev-repo-readme",
+      "claimUpdates": [
+        {
+          "claimId": "claim-readme-md-153",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "blocked",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as usage guidance for when to apply Cautilus, not a directly executable product behavior claim in the review input.",
+          "nextAction": "Keep as a human-auditable positioning claim unless a concrete stalled-state scenario is promoted into an explicit fixture or deterministic readiness check."
+        },
+        {
+          "claimId": "claim-readme-md-231",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as a packet-shape and machine-readability claim; this lane did not inspect direct schema or golden-output evidence.",
+          "nextAction": "Prove with deterministic schema, packet example, or CLI golden-output coverage for eval, report, review, evidence, and optimize packets."
+        },
+        {
+          "claimId": "claim-readme-md-9",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as a command-output durability and resumability contract; this lane did not verify direct packet contents.",
+          "nextAction": "Prove with deterministic packet contract tests that command outputs include enough structured state for a later agent to resume."
+        }
+      ]
+    }
+  ]
+}

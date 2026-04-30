@@ -829,6 +829,23 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 			why:                   "The claim names packet, catalog, or renderer behavior that should be protected by deterministic command, schema, or render tests.",
 			next:                  "Keep or add deterministic packet, catalog, schema, or renderer proof for this claim.",
 		}, true
+	case containsAny(lower, []string{" durable packet", " durable packets", " machine-readable ", " eval-cases.json", " eval-observed.json", " eval-summary.json"}):
+		return claimClassification{
+			proofLayer:            "deterministic",
+			recommendedProof:      "deterministic",
+			verificationReadiness: "ready-to-verify",
+			why:                   "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks.",
+			next:                  "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
+		}, true
+	case containsAny(lower, []string{" in-editor agent ", " drive the same contracts conversationally", " conversationally "}) && containsAny(lower, []string{" agent", " skill", " codex", " claude"}):
+		return claimClassification{
+			proofLayer:             "cautilus-eval",
+			recommendedProof:       "cautilus-eval",
+			verificationReadiness:  "ready-to-verify",
+			recommendedEvalSurface: "dev/skill",
+			why:                    "The claim says an agent or skill can drive the workflow conversationally, which needs skill-behavior evidence rather than only install proof.",
+			next:                   "Create or use a dev/skill fixture that proves the installed skill can drive the named workflow.",
+		}, true
 	case containsAny(lower, []string{" install", " installs ", " installer", " standalone binary", " checked into each host repo", " bundled skill", " plugin manifest", " plugin manifests", ".agents/skills", ".agents/cautilus-adapter"}):
 		return claimClassification{
 			proofLayer:            "deterministic",
@@ -857,6 +874,14 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 			verificationReadiness: "ready-to-verify",
 			why:                   "The claim documents scenario command or proposal-packet behavior rather than asking for a new behavior scenario.",
 			next:                  "Keep or add deterministic scenario command, packet, or render proof for this claim.",
+		}, true
+	case strings.HasPrefix(strings.TrimSpace(lower), "use when ") && containsAny(lower, []string{" stateful automation ", " keeps stalling ", " persists state "}):
+		return claimClassification{
+			proofLayer:            "human-auditable",
+			recommendedProof:      "human-auditable",
+			verificationReadiness: "blocked",
+			why:                   "The claim is broad usage guidance until a concrete stalled-workflow scenario or evidence packet is promoted.",
+			next:                  "Keep this as human-auditable positioning or promote a concrete stalled-workflow example before creating a protected eval fixture.",
 		}, true
 	case containsAny(lower, []string{" agent", " prompt", " skill", " workflow", " llm", " model", " conversation", " assistant", " behavior", " eval "}):
 		surface := recommendedEvalSurface(lower)
@@ -902,6 +927,8 @@ func recommendedEvalSurface(lower string) string {
 	case strings.Contains(lower, " skill"):
 		return "dev/skill"
 	case strings.Contains(lower, " plugin"):
+		return "dev/skill"
+	case strings.Contains(lower, " agent") && strings.Contains(lower, "workflow"):
 		return "dev/skill"
 	case strings.Contains(lower, " agent") && containsAny(lower, []string{" episode", " turns", " audit", " first-scan", " refresh-flow", " review-prepare", " reviewer-launch", "review-to-eval"}):
 		return "dev/skill"

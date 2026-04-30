@@ -171,6 +171,16 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 		"",
 		"The static HTML renderer emits browser-readable views for human review.",
 		"",
+		"`Cautilus` keeps agent and workflow behavior honest while prompts keep changing.",
+		"",
+		"Commands should emit durable packets with enough state for the next agent to resume.",
+		"",
+		"machine-readable eval, report, review, evidence, and optimization packets that agents can consume directly",
+		"",
+		"Use when a stateful automation keeps stalling on the same step.",
+		"",
+		"The `cautilus install` step also lands a bundled skill with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally.",
+		"",
 	}, "\n"))
 
 	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
@@ -214,6 +224,26 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 	renderer := bySummary["The static HTML renderer emits browser-readable views for human review."]
 	if renderer == nil || renderer["recommendedProof"] != "deterministic" {
 		t.Fatalf("expected static HTML renderer claim to be deterministic, got %#v", renderer)
+	}
+	honesty := bySummary["`Cautilus` keeps agent and workflow behavior honest while prompts keep changing."]
+	if honesty == nil || honesty["recommendedEvalSurface"] != "dev/skill" {
+		t.Fatalf("expected agent/workflow honesty claim to route to dev/skill, got %#v", honesty)
+	}
+	durablePackets := bySummary["Commands should emit durable packets with enough state for the next agent to resume."]
+	if durablePackets == nil || durablePackets["recommendedProof"] != "deterministic" {
+		t.Fatalf("expected durable packet claim to be deterministic, got %#v", durablePackets)
+	}
+	machineReadable := bySummary["machine-readable eval, report, review, evidence, and optimization packets that agents can consume directly"]
+	if machineReadable == nil || machineReadable["recommendedProof"] != "deterministic" {
+		t.Fatalf("expected machine-readable packet claim to be deterministic, got %#v", machineReadable)
+	}
+	stalledGuidance := bySummary["Use when a stateful automation keeps stalling on the same step."]
+	if stalledGuidance == nil || stalledGuidance["recommendedProof"] != "human-auditable" || stalledGuidance["verificationReadiness"] != "blocked" {
+		t.Fatalf("expected broad stalled-workflow guidance to be blocked human-auditable, got %#v", stalledGuidance)
+	}
+	conversationalAgent := bySummary["The `cautilus install` step also lands a bundled skill with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally."]
+	if conversationalAgent == nil || conversationalAgent["recommendedProof"] != "cautilus-eval" || conversationalAgent["recommendedEvalSurface"] != "dev/skill" {
+		t.Fatalf("expected conversational installed-agent claim to route to dev/skill eval, got %#v", conversationalAgent)
 	}
 }
 
