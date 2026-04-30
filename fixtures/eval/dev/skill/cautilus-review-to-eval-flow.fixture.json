@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "cautilus.evaluation_input.v1",
+  "surface": "dev",
+  "preset": "skill",
+  "suiteId": "cautilus-review-to-eval-flow",
+  "suiteDisplayName": "Cautilus Review To Eval Flow",
+  "skillId": "cautilus",
+  "skillDisplayName": "cautilus",
+  "cases": [
+    {
+      "caseId": "episode-cautilus-review-to-eval-flow",
+      "evaluationKind": "execution",
+      "turns": [
+        {
+          "input": "$cautilus",
+          "injectSkill": true
+        },
+        {
+          "input": "1"
+        },
+        {
+          "input": "1"
+        },
+        {
+          "input": "continue through the review-to-eval branch: after fresh discovery, run claim show before review prepare-input; launch the default single reviewer lane, apply the review result, validate the reviewed claim packet, plan evals, and stop before writing fixtures or editing product files"
+        }
+      ],
+      "auditKind": "cautilus_review_to_eval_flow",
+      "thresholds": {
+        "max_duration_ms": 600000
+      }
+    }
+  ]
+}

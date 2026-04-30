@@ -57,24 +57,6 @@ claim_discovery:
   evidence_roots:
     - docs/specs
     - fixtures
-  audience_hints:
-    user:
-      - README.md
-      - docs/guides/**
-    developer:
-      - AGENTS.md
-      - docs/internal/**
-  semantic_groups:
-    - label: Product promises
-      terms:
-        - user
-        - promise
-        - behavior
-    - label: Quality gates
-      terms:
-        - test
-        - lint
-        - verify
 optimize_search:
   default_budget: medium
   budgets:
@@ -164,10 +146,6 @@ default_schema_file: fixtures/review/review-verdict.schema.json
   `include` and `exclude` are repo-relative glob filters applied to discovered Markdown sources.
   `state_path` tells agents where the repo expects the current claim-state packet to live.
   `evidence_roots` declares repo-relative roots worth checking during later evidence reconciliation; it does not prove claims by itself.
-  `audience_hints` optionally maps discovered sources into `user` and `developer` claim audiences.
-  The binary uses these hints to label review queues, while the bundled skill or a human reviewer may still correct semantic edge cases.
-  `semantic_groups` optionally declares repo-owned review batching labels and text terms.
-  If omitted, discovery uses the portable fallback group `General product behavior` instead of assuming a product-specific taxonomy.
 - `executor_variants`: optional backend-specific review or simulation runners.
 - `optimize_search`: optional repo-owned defaults for `cautilus optimize search`.
   The product still owns the shared tier labels `light`, `medium`, and `heavy`.

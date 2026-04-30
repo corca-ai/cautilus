@@ -37,7 +37,7 @@ fixture with:
 
 Each `turns` entry must include an `input` string.
 Dev-surface runners may also accept adapter hints such as `injectSkill: true` when the coding-agent CLI needs an explicit skill body in the first turn.
-The first shipped audit-backed episodes are `auditKind: cautilus_first_scan_flow`, used when no saved claim map exists, `auditKind: cautilus_refresh_flow`, used when a saved claim map must be compared with current repo changes, and `auditKind: cautilus_review_prepare_flow`, used when the agent should prepare deterministic claim review input after first scan without launching reviewers.
+The first shipped audit-backed episodes are `auditKind: cautilus_first_scan_flow`, used when no saved claim map exists, `auditKind: cautilus_refresh_flow`, used when a saved claim map must be compared with current repo changes, `auditKind: cautilus_review_prepare_flow`, used when the agent should prepare deterministic claim review input after first scan without launching reviewers, `auditKind: cautilus_reviewer_launch_flow`, used when the agent should launch one bounded reviewer lane and stop at the review result boundary, and `auditKind: cautilus_review_to_eval_flow`, used when the agent should apply the bounded reviewer result, validate the reviewed packet, plan evals, and stop before fixture authoring.
 
 Repeated cases should be run multiple times by the checked-in runner and
 collapsed into one observed evaluation result. `minConsensusCount` is the

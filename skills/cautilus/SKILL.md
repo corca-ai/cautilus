@@ -127,6 +127,7 @@ When reporting a refresh-plan result to a coordinator, use this shape:
 LLM-backed claim review is a separate branch.
 Before launching it, state the review budget: maximum clusters, parallel lanes, clusters per reviewer, excerpt budget, retry policy, and skipped-cluster policy.
 If the user selects the review branch without naming a budget, use the command defaults as a conservative deterministic prepare-input budget and say so before running `claim review prepare-input`.
+After a fresh first discovery for any review branch, run `claim show --input <claims.json> --sample-claims <n>` before `claim review prepare-input`; this is the product-owned review queue summary, not optional narration.
 After `claim review prepare-input`, stop at the packet boundary unless the user has explicitly delegated reviewer launch.
 When reviewer launch is explicitly delegated, use the smallest honest launch budget if none was provided: one cluster, one claim, one reviewer lane, no retries.
 The default single-lane launch in an agent session is the current agent acting as the reviewer lane: review the selected cluster and write a valid `cautilus.claim_review_result.v1` packet.
@@ -139,6 +140,7 @@ If you need local confidence before stopping, inspect the written JSON shape dir
 Treat `claim review apply-result` as the next branch even when the output path is temporary and the intent is only validation.
 After reviewer launch, stop before review-result application, eval planning, edits, or commits unless the user explicitly delegates the next branch.
 In the later review-to-eval branch, apply `cautilus.claim_review_result.v1`, validate the reviewed claim packet, and only then plan eval fixtures for reviewed `cautilus-eval` claims that are `ready-to-verify`.
+When review-to-eval is explicitly delegated in the same agent turn, keep the same bounded reviewer budget unless the user names a larger one, write the applied claim packet to a separate artifact, validate that artifact, run `claim plan-evals` from the validated artifact, and stop before fixture authoring, eval execution, product edits, or commits.
 The review and eval-planning commands reject stale claim packets by default; treat that error as a prompt to refresh, not as a reason to pass `--allow-stale-claims` automatically.
 
 ## Eval Routing

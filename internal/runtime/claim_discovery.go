@@ -903,7 +903,7 @@ func recommendedEvalSurface(lower string) string {
 		return "dev/skill"
 	case strings.Contains(lower, " plugin"):
 		return "dev/skill"
-	case strings.Contains(lower, " agent") && containsAny(lower, []string{" episode", " turns", " audit", " first-scan", " refresh-flow", " review-prepare", " reviewer-launch"}):
+	case strings.Contains(lower, " agent") && containsAny(lower, []string{" episode", " turns", " audit", " first-scan", " refresh-flow", " review-prepare", " reviewer-launch", "review-to-eval"}):
 		return "dev/skill"
 	case strings.Contains(lower, " prompt"):
 		return "app/prompt"
