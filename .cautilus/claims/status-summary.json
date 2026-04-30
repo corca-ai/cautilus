@@ -1,16 +1,16 @@
 {
-  "candidateCount": 290,
+  "candidateCount": 292,
   "claimState": {
     "path": ".cautilus/claims/latest.json",
     "pathSource": "adapter"
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 226,
+      "developer": 228,
       "user": 64
     },
     "byClaimSemanticGroup": {
-      "Adapter and portability": 46,
+      "Adapter and portability": 48,
       "Agent and skill workflow": 13,
       "Claim discovery and review": 18,
       "Documentation and contracts": 34,
@@ -19,30 +19,30 @@
       "Quality gates": 143
     },
     "byEvidenceStatus": {
-      "unknown": 290
+      "unknown": 292
     },
     "byLifecycle": {
-      "new": 290
+      "new": 292
     },
     "byProofLayer": {
       "alignment-work": 6,
-      "cautilus-eval": 146,
+      "cautilus-eval": 148,
       "deterministic": 49,
       "human-auditable": 18,
       "scenario-candidate": 71
     },
     "byRecommendedProof": {
-      "cautilus-eval": 217,
+      "cautilus-eval": 219,
       "deterministic": 49,
       "human-auditable": 24
     },
     "byReviewStatus": {
-      "heuristic": 290
+      "heuristic": 292
     },
     "byVerificationReadiness": {
       "needs-alignment": 6,
       "needs-scenario": 71,
-      "ready-to-verify": 213
+      "ready-to-verify": 215
     }
   },
   "effectiveScanScope": {
@@ -85,16 +85,112 @@
     "explicitSources": false,
     "include": [],
     "linkedMarkdownDepth": 3,
+    "semanticGroups": [
+      {
+        "label": "Claim discovery and review",
+        "terms": [
+          "claim discover",
+          "claim-discovery",
+          "claim review",
+          "review input",
+          "reviewer"
+        ]
+      },
+      {
+        "label": "Improvement and optimization",
+        "terms": [
+          "optimize",
+          "gepa",
+          "improve",
+          "search",
+          "frontier"
+        ]
+      },
+      {
+        "label": "Adapter and portability",
+        "terms": [
+          "adapter",
+          "portable",
+          "consumer",
+          "host repo",
+          "repo-specific"
+        ]
+      },
+      {
+        "label": "Quality gates",
+        "terms": [
+          "test",
+          "verify",
+          "lint",
+          "quality",
+          "doctor",
+          "hook"
+        ]
+      },
+      {
+        "label": "Agent and skill workflow",
+        "terms": [
+          "skill",
+          "agent",
+          "no-input",
+          "$cautilus",
+          "codex",
+          "claude"
+        ]
+      },
+      {
+        "label": "Packets and reporting",
+        "terms": [
+          "packet",
+          "report",
+          "html",
+          "artifact",
+          "summary",
+          "status"
+        ]
+      },
+      {
+        "label": "Release and packaging",
+        "terms": [
+          "release",
+          "plugin",
+          "install",
+          "publish",
+          "version"
+        ]
+      },
+      {
+        "label": "Documentation and contracts",
+        "terms": [
+          "readme",
+          "contract",
+          "spec",
+          "document",
+          "guide"
+        ]
+      },
+      {
+        "label": "Evaluation surfaces",
+        "terms": [
+          "dev/repo",
+          "dev/skill",
+          "app/chat",
+          "app/prompt",
+          "eval",
+          "scenario"
+        ]
+      }
+    ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "691d4f48fcf408d3834b40cf1f0d90f66c240cff",
+  "gitCommit": "dafdde5a5d71415aebb2345059cd92a455737d04",
   "gitState": {
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "691d4f48fcf408d3834b40cf1f0d90f66c240cff",
+    "currentGitCommit": "dafdde5a5d71415aebb2345059cd92a455737d04",
     "isStale": false,
-    "packetGitCommit": "691d4f48fcf408d3834b40cf1f0d90f66c240cff",
+    "packetGitCommit": "dafdde5a5d71415aebb2345059cd92a455737d04",
     "recommendedAction": "The claim packet commit matches the current checkout.",
     "workingTreePolicy": "excluded"
   },
@@ -117,7 +213,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 213,
+    "heuristicClaimsReadyForReview": 215,
     "needsAlignment": 6,
     "needsScenario": 71
   },
