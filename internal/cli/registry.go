@@ -27,7 +27,6 @@ type CommandEntry struct {
 	Usage   string   `json:"usage"`
 	Example string   `json:"example"`
 	Notes   []string `json:"notes,omitempty"`
-	Hidden  bool     `json:"hidden,omitempty"`
 }
 
 type Match struct {
@@ -109,7 +108,7 @@ func validateRegistry(r Registry) error {
 // Kept for the `cautilus commands --json` payload.
 func (r Registry) UsageLines() []string {
 	lines := make([]string, 0, len(r.Commands))
-	for _, command := range r.orderedCommands(false) {
+	for _, command := range r.orderedCommands() {
 		lines = append(lines, command.Usage)
 	}
 	return lines
@@ -119,23 +118,16 @@ func (r Registry) UsageLines() []string {
 // Kept for the `cautilus commands --json` payload.
 func (r Registry) ExampleLines() []string {
 	lines := make([]string, 0, len(r.Commands))
-	for _, command := range r.orderedCommands(false) {
+	for _, command := range r.orderedCommands() {
 		lines = append(lines, command.Example)
 	}
 	return lines
 }
 
-func (r Registry) PublicCommands() []CommandEntry {
-	return r.orderedCommands(false)
-}
-
-func (r Registry) orderedCommands(includeHidden bool) []CommandEntry {
+func (r Registry) orderedCommands() []CommandEntry {
 	ordered := make([]CommandEntry, 0, len(r.Commands))
 	for _, group := range r.Groups {
 		for _, command := range r.Commands {
-			if command.Hidden && !includeHidden {
-				continue
-			}
 			if command.Group == group.ID {
 				ordered = append(ordered, command)
 			}
@@ -195,7 +187,7 @@ func RenderUsage() (string, error) {
 		}
 	}
 	lines = append(lines, "", "Examples:")
-	for _, command := range loaded.orderedCommands(false) {
+	for _, command := range loaded.orderedCommands() {
 		lines = append(lines, fmt.Sprintf("  %s", command.Example))
 	}
 	return strings.Join(lines, "\n"), nil
@@ -250,9 +242,6 @@ func FindTopicHelp(topic []string) (*TopicHelp, bool, error) {
 func commandsInGroup(loaded Registry, groupID string) []CommandEntry {
 	commands := make([]CommandEntry, 0)
 	for _, command := range loaded.Commands {
-		if command.Hidden {
-			continue
-		}
 		if command.Group == groupID {
 			commands = append(commands, command)
 		}
@@ -268,7 +257,7 @@ func findTopicHelp(loaded Registry, topic []string) (TopicHelp, bool) {
 	seenChildren := map[string]struct{}{}
 	seenNotes := map[string]struct{}{}
 
-	for _, command := range loaded.orderedCommands(true) {
+	for _, command := range loaded.orderedCommands() {
 		if len(topic) == 0 {
 			key := strings.Join(command.Path, "\x00")
 			if _, ok := seenChildren[key]; ok {

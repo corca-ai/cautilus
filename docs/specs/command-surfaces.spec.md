@@ -33,7 +33,6 @@ The reviewed-claim helper plans eval fixtures from reviewed `cautilus-eval` clai
 The validation helper gives automation a packet-shape and evidence-ref gate before a reviewed claim packet is reused.
 The no-input agent entry point is `agent status`: it emits a read-only orientation packet so the bundled skill can summarize readiness, claim-state availability, scan scope, and branch choices before running discovery, evaluation, review, optimization, edits, or commits.
 Live app execution is now exposed under `cautilus eval live ...`.
-The older `cautilus workbench ...` commands remain compatibility aliases for the same packet contracts, but they are not a fourth product job.
 
 ## See It Work
 
@@ -206,8 +205,6 @@ cautilus eval live run-scenarios --repo-root . --instance-id <id> --requests-fil
 ```
 
 These commands reuse the existing live-run invocation packets.
-The packet schema names still contain `workbench` where already shipped; a future schema version may rename those once compatibility pressure justifies it.
-`cautilus workbench ...` remains as a legacy alias while agents and docs migrate to `eval live`.
 
 ### Optimize Surface
 

@@ -223,7 +223,7 @@ Command-backed discovery:
 ```yaml
 instance_discovery:
   kind: command
-  command_template: node scripts/consumer/discover-workbench-instances.mjs --repo-root {repo_root} --adapter-path {adapter_path}
+  command_template: node scripts/consumer/discover-live-eval-instances.mjs --repo-root {repo_root} --adapter-path {adapter_path}
   required_prerequisites:
     - keep stdout machine-readable and reserve stderr for operator hints
 ```
@@ -251,7 +251,6 @@ Fixed rules:
 - `kind: explicit` keeps fixture-backed repos and simple single-instance adopters cheap without forcing a probe script.
 - `command_template` should print `cautilus.workbench_instance_catalog.v1` JSON to stdout.
 `cautilus eval live discover` resolves either `kind: explicit` or `kind: command` into the canonical catalog packet.
-`cautilus workbench discover` remains a compatibility alias.
 When the adapter uses `kind: command`, point `command_template` directly at a consumer-owned probe command instead of wrapping the product command around itself.
 
 Current placeholders for `instance_discovery.command_template`:

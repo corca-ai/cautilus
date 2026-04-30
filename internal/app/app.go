@@ -173,16 +173,6 @@ func nativeHandler(path []string) handlerFunc {
 		return handleClaimPlanEvals
 	case "claim validate":
 		return handleClaimValidate
-	case "workbench discover":
-		return handleWorkbenchDiscover
-	case "workbench run-live":
-		return handleWorkbenchRunLive
-	case "workbench prepare-request-batch":
-		return handleWorkbenchPrepareRequestBatch
-	case "workbench run-scenarios":
-		return handleWorkbenchRunScenarios
-	case "workbench run-simulator-persona":
-		return handleWorkbenchRunSimulatorPersona
 	case "install":
 		return handleInstall
 	case "update":
@@ -585,7 +575,7 @@ func handleCommands(repoRoot string, cwd string, args []string, stdout io.Writer
 			"usage":         registry.UsageLines(),
 			"examples":      registry.ExampleLines(),
 			"groups":        registry.Groups,
-			"commands":      registry.PublicCommands(),
+			"commands":      registry.Commands,
 		}
 		if err := writeJSON(stdout, payload); err != nil {
 			_, _ = fmt.Fprintf(stderr, "%s\n", err)

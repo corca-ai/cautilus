@@ -51,7 +51,7 @@ func TestValidateAdapterDataAcceptsCommandInstanceDiscovery(t *testing.T) {
 		"repo": "repo-x",
 		"instance_discovery": map[string]any{
 			"kind":             "command",
-			"command_template": "node scripts/consumer/discover-workbench-instances.mjs --repo-root {repo_root} --adapter-path {adapter_path}",
+			"command_template": "node scripts/consumer/discover-live-eval-instances.mjs --repo-root {repo_root} --adapter-path {adapter_path}",
 			"required_prerequisites": []any{
 				"Install the consumer runtime before discovery.",
 			},
@@ -102,12 +102,12 @@ func TestValidateAdapterDataRejectsExplicitInstanceDiscoveryWithoutLocation(t *t
 func TestValidateAdapterDataAcceptsLiveRunInvocation(t *testing.T) {
 	validated, errors := validateAdapterData(map[string]any{
 		"live_run_invocation": map[string]any{
-			"command_template":                      "cautilus workbench run-live --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
+			"command_template":                      "cautilus eval live run --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
 			"consumer_command_template":             "node scripts/consumer/run-live-instance-scenario.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
 			"consumer_single_turn_command_template": "node scripts/consumer/run-live-turn.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --turn-request-file {turn_request_file} --turn-result-file {turn_result_file}",
 			"workspace_prepare_command_template":    "node scripts/consumer/prepare-live-run-workspace.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --workspace-dir {workspace_dir}",
 			"consumer_evaluator_command_template":   "node scripts/consumer/evaluate-live-run.mjs --repo-root {repo_root} --adapter-path {adapter_path} --request-file {request_file} --input-file {evaluator_input_file} --output-file {evaluation_output_file}",
-			"simulator_persona_command_template":    "cautilus workbench run-simulator-persona --workspace {repo_root} --simulator-request-file {simulator_request_file} --simulator-result-file {simulator_result_file} --backend fixture --fixture-results-file fixtures/live-run/persona-fixture.json",
+			"simulator_persona_command_template":    "cautilus eval live run-simulator-persona --workspace {repo_root} --simulator-request-file {simulator_request_file} --simulator-result-file {simulator_result_file} --backend fixture --fixture-results-file fixtures/live-run/persona-fixture.json",
 			"required_prerequisites": []any{
 				"Keep the invocation command bounded to one selected local instance.",
 			},
@@ -135,7 +135,7 @@ func TestValidateAdapterDataAcceptsLiveRunInvocation(t *testing.T) {
 	if !strings.Contains(liveRunInvocation["consumer_evaluator_command_template"].(string), "scripts/consumer/evaluate-live-run.mjs") {
 		t.Fatalf("expected consumer evaluator command template to survive normalization, got %#v", liveRunInvocation["consumer_evaluator_command_template"])
 	}
-	if !strings.Contains(liveRunInvocation["simulator_persona_command_template"].(string), "cautilus workbench run-simulator-persona") {
+	if !strings.Contains(liveRunInvocation["simulator_persona_command_template"].(string), "cautilus eval live run-simulator-persona") {
 		t.Fatalf("expected simulator persona command template to survive normalization, got %#v", liveRunInvocation["simulator_persona_command_template"])
 	}
 }

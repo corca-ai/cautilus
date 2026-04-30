@@ -1588,11 +1588,15 @@ func ensureParentDir(path *string) error {
 }
 
 func isRecursiveWorkbenchDiscoverCommand(command string) bool {
-	return strings.Contains(command, "cautilus workbench discover") ||
+	trimmed := strings.TrimSpace(command)
+	return strings.Contains(command, "cautilus eval live discover ") ||
+		strings.HasSuffix(trimmed, "cautilus eval live discover") ||
 		strings.Contains(command, "scripts/agent-runtime/discover-workbench-instances.mjs")
 }
 
 func isRecursiveWorkbenchRunLiveCommand(command string) bool {
-	return strings.Contains(command, "cautilus workbench run-live") ||
+	trimmed := strings.TrimSpace(command)
+	return strings.Contains(command, "cautilus eval live run ") ||
+		strings.HasSuffix(trimmed, "cautilus eval live run") ||
 		strings.Contains(command, "scripts/agent-runtime/run-live-instance-scenario.mjs")
 }

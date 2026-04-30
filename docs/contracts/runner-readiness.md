@@ -267,13 +267,13 @@ Its value is sequencing and judgment:
 For app repos, the skill should prefer creating a headless product runner over extracting prompts into a standalone mock.
 Prompt-only fixtures are useful smoke tests, not the highest-confidence app proof.
 
-## Relationship To Live Run Workbench
+## Relationship To Eval Live
 
-The existing workbench instance and live-run invocation contracts are compatible with this design.
+The existing eval-live instance and live-run invocation contracts are compatible with this design.
 They are one way to implement a `live-product-runner`.
 They should not become the only runner model.
 
-Simple app repos should be able to expose one in-process product runner without adopting multi-instance workbench concepts.
+Simple app repos should be able to expose one in-process product runner without adopting multi-instance live-instance discovery.
 More complex apps can use instance discovery and live-run invocation when selected local or live targets matter.
 
 ## Probe Questions
@@ -327,7 +327,7 @@ Proof class must remain visible in downstream summaries and reports.
 3. `doctor` and `agent status` can show runner assessment existence and freshness without pretending to perform semantic review.
 4. `eval` summaries preserve proof class so humans and agents do not overread weak runs.
 5. `optimize` refuses or blocks when an app claim requires runner-backed proof and only smoke evidence exists.
-6. A simple app repo can adopt Cautilus with one headless product runner without adopting the full workbench instance model.
+6. A simple app repo can adopt Cautilus with one headless product runner without adopting the full eval-live instance model.
 
 ## Acceptance Checks
 
@@ -345,7 +345,7 @@ Follow-up slices should include:
 - claim packet tests proving `requiredRunnerCapability` is a requirement field, not a readiness verdict
 - eval-summary tests preserving proof class from observed packets
 - optimize preflight tests blocking app improvement when runner-backed proof is missing
-- one workbench-backed live runner example showing live-run compatibility while preserving `knownGaps`, not claiming full app E2E coverage
+- one eval-live-backed runner example showing live-run compatibility while preserving `knownGaps`, not claiming full app E2E coverage
 
 ## Premortem
 
@@ -366,7 +366,7 @@ Bundle Anyway:
 Over-Worry:
 
 - Treating `agent status` branch labels as a fourth product workflow is over-worry once the branch ordering keeps ownership visible and status remains read-only.
-- Removing workbench compatibility from this contract is over-worry; it should stay as compatibility framing, not first-slice scope.
+- Renaming the already-shipped packet schemas is over-worry for this slice; the public command surface is already `eval live`.
 
 Valid But Defer:
 
@@ -394,4 +394,4 @@ Follow-up implementation slices:
 1. Add `requiredRunnerCapability` and `requiredObservability` to claim eval-planning output without using those fields as readiness verdicts.
 2. Add `proofClass` to `eval-observed.json` and `eval-summary.json` under a stable `proof` path once the runner or assessment can supply it.
 3. Block behavior-changing `optimize` for app claims when runner-backed product-path evidence is missing.
-4. Add a live-run-backed runner example that references the existing workbench contracts without making workbench mandatory for simple app repos.
+4. Add a live-run-backed runner example that references the existing eval-live contracts without making instance discovery mandatory for simple app repos.

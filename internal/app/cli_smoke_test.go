@@ -3614,7 +3614,7 @@ func TestCLIEvalLiveDiscoverNormalizesExplicitInstances(t *testing.T) {
 	}
 }
 
-func TestCLIWorkbenchDiscoverExecutesConsumerProbeCommand(t *testing.T) {
+func TestCLILiveEvalDiscoverExecutesConsumerProbeCommand(t *testing.T) {
 	root := t.TempDir()
 	adapterDir := filepath.Join(root, ".agents")
 	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
@@ -3640,7 +3640,7 @@ func TestCLIWorkbenchDiscoverExecutesConsumerProbeCommand(t *testing.T) {
 		"version: 1",
 		"repo: temp",
 		"evaluation_surfaces:",
-		"  - workbench smoke",
+		"  - live eval smoke",
 		"baseline_options:",
 		"  - baseline git ref via {baseline_ref}",
 		"instance_discovery:",
@@ -3652,9 +3652,9 @@ func TestCLIWorkbenchDiscoverExecutesConsumerProbeCommand(t *testing.T) {
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
 
-	stdout, stderr, exitCode := runCLI(t, root, "workbench", "discover", "--repo-root", root)
+	stdout, stderr, exitCode := runCLI(t, root, "eval", "live", "discover", "--repo-root", root)
 	if exitCode != 0 {
-		t.Fatalf("workbench discover failed: %s", stderr)
+		t.Fatalf("eval live discover failed: %s", stderr)
 	}
 	payload := parseJSONObject(t, stdout)
 	instances := payload["instances"].([]any)
@@ -3664,7 +3664,7 @@ func TestCLIWorkbenchDiscoverExecutesConsumerProbeCommand(t *testing.T) {
 	}
 }
 
-func TestCLIWorkbenchDiscoverIgnoresProbeWarningsOnStderr(t *testing.T) {
+func TestCLILiveEvalDiscoverIgnoresProbeWarningsOnStderr(t *testing.T) {
 	root := t.TempDir()
 	adapterDir := filepath.Join(root, ".agents")
 	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
@@ -3691,7 +3691,7 @@ func TestCLIWorkbenchDiscoverIgnoresProbeWarningsOnStderr(t *testing.T) {
 		"version: 1",
 		"repo: temp",
 		"evaluation_surfaces:",
-		"  - workbench smoke",
+		"  - live eval smoke",
 		"baseline_options:",
 		"  - baseline git ref via {baseline_ref}",
 		"instance_discovery:",
@@ -3703,9 +3703,9 @@ func TestCLIWorkbenchDiscoverIgnoresProbeWarningsOnStderr(t *testing.T) {
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
 
-	stdout, stderr, exitCode := runCLI(t, root, "workbench", "discover", "--repo-root", root)
+	stdout, stderr, exitCode := runCLI(t, root, "eval", "live", "discover", "--repo-root", root)
 	if exitCode != 0 {
-		t.Fatalf("workbench discover failed: %s", stderr)
+		t.Fatalf("eval live discover failed: %s", stderr)
 	}
 	payload := parseJSONObject(t, stdout)
 	instances := payload["instances"].([]any)
@@ -3715,7 +3715,7 @@ func TestCLIWorkbenchDiscoverIgnoresProbeWarningsOnStderr(t *testing.T) {
 	}
 }
 
-func TestCLIWorkbenchRunLiveDispatchesConsumerCommand(t *testing.T) {
+func TestCLILiveEvalRunLiveDispatchesConsumerCommand(t *testing.T) {
 	root := t.TempDir()
 	adapterDir := filepath.Join(root, ".agents")
 	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
@@ -3749,11 +3749,11 @@ func TestCLIWorkbenchRunLiveDispatchesConsumerCommand(t *testing.T) {
 		"version: 1",
 		"repo: temp",
 		"evaluation_surfaces:",
-		"  - workbench smoke",
+		"  - live eval smoke",
 		"baseline_options:",
 		"  - baseline git ref via {baseline_ref}",
 		"live_run_invocation:",
-		"  command_template: cautilus workbench run-live --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
+		"  command_template: cautilus eval live run --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
 		"  consumer_command_template: ./run-live.sh {instance_id} {request_file} {output_file}",
 		"",
 	}, "\n")
@@ -3780,8 +3780,7 @@ func TestCLIWorkbenchRunLiveDispatchesConsumerCommand(t *testing.T) {
 	stdout, stderr, exitCode := runCLI(
 		t,
 		root,
-		"workbench",
-		"run-live",
+		"eval", "live", "run",
 		"--repo-root",
 		root,
 		"--instance-id",
@@ -3792,7 +3791,7 @@ func TestCLIWorkbenchRunLiveDispatchesConsumerCommand(t *testing.T) {
 		outputPath,
 	)
 	if exitCode != 0 {
-		t.Fatalf("workbench run-live failed: %s", stderr)
+		t.Fatalf("eval live run failed: %s", stderr)
 	}
 	if strings.TrimSpace(stdout) != outputPath {
 		t.Fatalf("expected stdout to point at result file, got %q", stdout)
@@ -3806,7 +3805,7 @@ func TestCLIWorkbenchRunLiveDispatchesConsumerCommand(t *testing.T) {
 	}
 }
 
-func TestCLIWorkbenchRunLiveAcceptsBlockedConsumerResult(t *testing.T) {
+func TestCLILiveEvalRunLiveAcceptsBlockedConsumerResult(t *testing.T) {
 	root := t.TempDir()
 	adapterDir := filepath.Join(root, ".agents")
 	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
@@ -3842,11 +3841,11 @@ func TestCLIWorkbenchRunLiveAcceptsBlockedConsumerResult(t *testing.T) {
 		"version: 1",
 		"repo: temp",
 		"evaluation_surfaces:",
-		"  - workbench smoke",
+		"  - live eval smoke",
 		"baseline_options:",
 		"  - baseline git ref via {baseline_ref}",
 		"live_run_invocation:",
-		"  command_template: cautilus workbench run-live --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
+		"  command_template: cautilus eval live run --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
 		"  consumer_command_template: ./run-live.sh {instance_id} {request_file} {output_file}",
 		"",
 	}, "\n")
@@ -3873,8 +3872,7 @@ func TestCLIWorkbenchRunLiveAcceptsBlockedConsumerResult(t *testing.T) {
 	stdout, stderr, exitCode := runCLI(
 		t,
 		root,
-		"workbench",
-		"run-live",
+		"eval", "live", "run",
 		"--repo-root",
 		root,
 		"--instance-id",
@@ -3885,7 +3883,7 @@ func TestCLIWorkbenchRunLiveAcceptsBlockedConsumerResult(t *testing.T) {
 		outputPath,
 	)
 	if exitCode != 0 {
-		t.Fatalf("workbench run-live failed: %s", stderr)
+		t.Fatalf("eval live run failed: %s", stderr)
 	}
 	if strings.TrimSpace(stdout) != outputPath {
 		t.Fatalf("expected stdout to point at blocked result file, got %q", stdout)
@@ -3900,7 +3898,7 @@ func TestCLIWorkbenchRunLiveAcceptsBlockedConsumerResult(t *testing.T) {
 	}
 }
 
-func TestCLIWorkbenchRunLiveCanExecuteProductOwnedScriptedLoop(t *testing.T) {
+func TestCLILiveEvalRunLiveCanExecuteProductOwnedScriptedLoop(t *testing.T) {
 	root := t.TempDir()
 	adapterDir := filepath.Join(root, ".agents")
 	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
@@ -3978,7 +3976,7 @@ func TestCLIWorkbenchRunLiveCanExecuteProductOwnedScriptedLoop(t *testing.T) {
 		"baseline_options:",
 		"  - baseline git ref via {baseline_ref}",
 		"live_run_invocation:",
-		"  command_template: cautilus workbench run-live --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
+		"  command_template: cautilus eval live run --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
 		"  consumer_single_turn_command_template: ./run-live-turn.sh {turn_request_file} {turn_result_file} {workspace_dir}",
 		"  workspace_prepare_command_template: ./prepare-live-run.sh {workspace_dir}",
 		"  consumer_evaluator_command_template: ./evaluate-live-run.sh {evaluator_input_file} {evaluation_output_file}",
@@ -4017,8 +4015,7 @@ func TestCLIWorkbenchRunLiveCanExecuteProductOwnedScriptedLoop(t *testing.T) {
 	stdout, stderr, exitCode := runCLI(
 		t,
 		root,
-		"workbench",
-		"run-live",
+		"eval", "live", "run",
 		"--repo-root",
 		root,
 		"--instance-id",
@@ -4029,7 +4026,7 @@ func TestCLIWorkbenchRunLiveCanExecuteProductOwnedScriptedLoop(t *testing.T) {
 		outputPath,
 	)
 	if exitCode != 0 {
-		t.Fatalf("workbench run-live failed: %s", stderr)
+		t.Fatalf("eval live run failed: %s", stderr)
 	}
 	if strings.TrimSpace(stdout) != outputPath {
 		t.Fatalf("expected stdout to point at result file, got %q", stdout)
@@ -4080,7 +4077,7 @@ func TestCLIWorkbenchRunLiveCanExecuteProductOwnedScriptedLoop(t *testing.T) {
 	}
 }
 
-func TestCLIWorkbenchRunScenariosExecutesExplicitRequestBatch(t *testing.T) {
+func TestCLILiveEvalRunScenariosExecutesExplicitRequestBatch(t *testing.T) {
 	root := t.TempDir()
 	adapterDir := filepath.Join(root, ".agents")
 	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
@@ -4127,7 +4124,7 @@ func TestCLIWorkbenchRunScenariosExecutesExplicitRequestBatch(t *testing.T) {
 		"baseline_options:",
 		"  - baseline git ref via {baseline_ref}",
 		"live_run_invocation:",
-		"  command_template: cautilus workbench run-live --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
+		"  command_template: cautilus eval live run --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
 		"  consumer_single_turn_command_template: ./run-live-turn.sh {turn_request_file} {turn_result_file} {workspace_dir}",
 		"  workspace_prepare_command_template: ./prepare-live-run.sh {workspace_dir}",
 		"",
@@ -4177,15 +4174,14 @@ func TestCLIWorkbenchRunScenariosExecutesExplicitRequestBatch(t *testing.T) {
 	prepareStdout, prepareStderr, prepareExitCode := runCLI(
 		t,
 		root,
-		"workbench",
-		"prepare-request-batch",
+		"eval", "live", "prepare-request-batch",
 		"--input",
 		prepareInputPath,
 		"--output",
 		requestBatchPath,
 	)
 	if prepareExitCode != 0 {
-		t.Fatalf("workbench prepare-request-batch failed: %s", prepareStderr)
+		t.Fatalf("eval live prepare-request-batch failed: %s", prepareStderr)
 	}
 	if strings.TrimSpace(prepareStdout) != requestBatchPath {
 		t.Fatalf("expected batch prepare stdout to point at request batch file, got %q", prepareStdout)
@@ -4203,8 +4199,7 @@ func TestCLIWorkbenchRunScenariosExecutesExplicitRequestBatch(t *testing.T) {
 	stdout, stderr, exitCode := runCLI(
 		t,
 		root,
-		"workbench",
-		"run-scenarios",
+		"eval", "live", "run-scenarios",
 		"--repo-root",
 		root,
 		"--instance-id",
@@ -4217,7 +4212,7 @@ func TestCLIWorkbenchRunScenariosExecutesExplicitRequestBatch(t *testing.T) {
 		"2",
 	)
 	if exitCode != 0 {
-		t.Fatalf("workbench run-scenarios failed: %s", stderr)
+		t.Fatalf("eval live run-scenarios failed: %s", stderr)
 	}
 	if strings.TrimSpace(stdout) != outputPath {
 		t.Fatalf("expected stdout to point at batch result file, got %q", stdout)
@@ -4265,7 +4260,7 @@ func TestCLIWorkbenchRunScenariosExecutesExplicitRequestBatch(t *testing.T) {
 	}
 }
 
-func TestCLIWorkbenchPrepareRequestBatchAcceptsCatalogCandidates(t *testing.T) {
+func TestCLILiveEvalPrepareRequestBatchAcceptsCatalogCandidates(t *testing.T) {
 	root := t.TempDir()
 	inputPath := filepath.Join(root, "catalog-input.json")
 	outputPath := filepath.Join(root, "request-batch.json")
@@ -4325,15 +4320,14 @@ func TestCLIWorkbenchPrepareRequestBatchAcceptsCatalogCandidates(t *testing.T) {
 	stdout, stderr, exitCode := runCLI(
 		t,
 		root,
-		"workbench",
-		"prepare-request-batch",
+		"eval", "live", "prepare-request-batch",
 		"--input",
 		inputPath,
 		"--output",
 		outputPath,
 	)
 	if exitCode != 0 {
-		t.Fatalf("workbench prepare-request-batch failed: %s", stderr)
+		t.Fatalf("eval live prepare-request-batch failed: %s", stderr)
 	}
 	if strings.TrimSpace(stdout) != outputPath {
 		t.Fatalf("expected stdout to point at request batch file, got %q", stdout)
@@ -4357,7 +4351,7 @@ func TestCLIWorkbenchPrepareRequestBatchAcceptsCatalogCandidates(t *testing.T) {
 	}
 }
 
-func TestCLIWorkbenchRunScenariosRetriesTransientFailures(t *testing.T) {
+func TestCLILiveEvalRunScenariosRetriesTransientFailures(t *testing.T) {
 	root := t.TempDir()
 	adapterDir := filepath.Join(root, ".agents")
 	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
@@ -4462,8 +4456,7 @@ func TestCLIWorkbenchRunScenariosRetriesTransientFailures(t *testing.T) {
 	stdout, stderr, exitCode := runCLI(
 		t,
 		root,
-		"workbench",
-		"run-scenarios",
+		"eval", "live", "run-scenarios",
 		"--repo-root",
 		root,
 		"--instance-id",
@@ -4474,7 +4467,7 @@ func TestCLIWorkbenchRunScenariosRetriesTransientFailures(t *testing.T) {
 		outputPath,
 	)
 	if exitCode != 0 {
-		t.Fatalf("workbench run-scenarios failed: %s", stderr)
+		t.Fatalf("eval live run-scenarios failed: %s", stderr)
 	}
 	if strings.TrimSpace(stdout) != outputPath {
 		t.Fatalf("expected stdout to point at batch result file, got %q", stdout)
@@ -4513,7 +4506,7 @@ func TestCLIWorkbenchRunScenariosRetriesTransientFailures(t *testing.T) {
 	}
 }
 
-func TestCLIWorkbenchRunLiveCanExecutePersonaPromptLoop(t *testing.T) {
+func TestCLILiveEvalRunLiveCanExecutePersonaPromptLoop(t *testing.T) {
 	root := t.TempDir()
 	adapterDir := filepath.Join(root, ".agents")
 	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
@@ -4565,9 +4558,9 @@ func TestCLIWorkbenchRunLiveCanExecutePersonaPromptLoop(t *testing.T) {
 		"baseline_options:",
 		"  - baseline git ref via {baseline_ref}",
 		"live_run_invocation:",
-		"  command_template: cautilus workbench run-live --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
+		"  command_template: cautilus eval live run --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
 		"  consumer_single_turn_command_template: ./run-live-turn.sh {turn_request_file} {turn_result_file}",
-		fmt.Sprintf("  simulator_persona_command_template: %s workbench run-simulator-persona --workspace {repo_root} --simulator-request-file {simulator_request_file} --simulator-result-file {simulator_result_file} --backend fixture --fixture-results-file %s", cautilusBin, fixtureFile),
+		fmt.Sprintf("  simulator_persona_command_template: %s eval live run-simulator-persona --workspace {repo_root} --simulator-request-file {simulator_request_file} --simulator-result-file {simulator_result_file} --backend fixture --fixture-results-file %s", cautilusBin, fixtureFile),
 		"",
 	}, "\n")
 	if err := os.WriteFile(filepath.Join(adapterDir, "cautilus-adapter.yaml"), []byte(adapter), 0o644); err != nil {
@@ -4597,8 +4590,7 @@ func TestCLIWorkbenchRunLiveCanExecutePersonaPromptLoop(t *testing.T) {
 	stdout, stderr, exitCode := runCLI(
 		t,
 		root,
-		"workbench",
-		"run-live",
+		"eval", "live", "run",
 		"--repo-root",
 		root,
 		"--instance-id",
@@ -4609,7 +4601,7 @@ func TestCLIWorkbenchRunLiveCanExecutePersonaPromptLoop(t *testing.T) {
 		outputPath,
 	)
 	if exitCode != 0 {
-		t.Fatalf("workbench run-live failed: %s", stderr)
+		t.Fatalf("eval live run failed: %s", stderr)
 	}
 	if strings.TrimSpace(stdout) != outputPath {
 		t.Fatalf("expected stdout to point at result file, got %q", stdout)
@@ -4624,7 +4616,7 @@ func TestCLIWorkbenchRunLiveCanExecutePersonaPromptLoop(t *testing.T) {
 	}
 }
 
-func TestCLIWorkbenchRunSimulatorPersonaCanContinueFromFixture(t *testing.T) {
+func TestCLILiveEvalRunSimulatorPersonaCanContinueFromFixture(t *testing.T) {
 	root := t.TempDir()
 	fixtureFile := filepath.Join(root, "persona-fixture.json")
 	requestPath := filepath.Join(root, "simulator-request.json")
@@ -4652,8 +4644,7 @@ func TestCLIWorkbenchRunSimulatorPersonaCanContinueFromFixture(t *testing.T) {
 	stdout, stderr, exitCode := runCLI(
 		t,
 		root,
-		"workbench",
-		"run-simulator-persona",
+		"eval", "live", "run-simulator-persona",
 		"--workspace",
 		root,
 		"--simulator-request-file",
@@ -4666,7 +4657,7 @@ func TestCLIWorkbenchRunSimulatorPersonaCanContinueFromFixture(t *testing.T) {
 		fixtureFile,
 	)
 	if exitCode != 0 {
-		t.Fatalf("workbench run-simulator-persona failed: %s", stderr)
+		t.Fatalf("eval live run-simulator-persona failed: %s", stderr)
 	}
 	if strings.TrimSpace(stdout) != outputPath {
 		t.Fatalf("expected stdout to point at result file, got %q", stdout)
@@ -4680,7 +4671,7 @@ func TestCLIWorkbenchRunSimulatorPersonaCanContinueFromFixture(t *testing.T) {
 	}
 }
 
-func TestCLIWorkbenchRunSimulatorPersonaCanStopFromFixture(t *testing.T) {
+func TestCLILiveEvalRunSimulatorPersonaCanStopFromFixture(t *testing.T) {
 	root := t.TempDir()
 	fixtureFile := filepath.Join(root, "persona-fixture.json")
 	requestPath := filepath.Join(root, "simulator-request.json")
@@ -4719,8 +4710,7 @@ func TestCLIWorkbenchRunSimulatorPersonaCanStopFromFixture(t *testing.T) {
 	stdout, stderr, exitCode := runCLI(
 		t,
 		root,
-		"workbench",
-		"run-simulator-persona",
+		"eval", "live", "run-simulator-persona",
 		"--workspace",
 		root,
 		"--simulator-request-file",
@@ -4733,7 +4723,7 @@ func TestCLIWorkbenchRunSimulatorPersonaCanStopFromFixture(t *testing.T) {
 		fixtureFile,
 	)
 	if exitCode != 0 {
-		t.Fatalf("workbench run-simulator-persona failed: %s", stderr)
+		t.Fatalf("eval live run-simulator-persona failed: %s", stderr)
 	}
 	if strings.TrimSpace(stdout) != outputPath {
 		t.Fatalf("expected stdout to point at result file, got %q", stdout)

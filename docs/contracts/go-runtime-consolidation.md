@@ -128,7 +128,7 @@ This file is the canonical design note for runtime consolidation onto Go-owned s
 1. Migrate `run-executor-variants` and `evaluate-adapter-mode` semantics fully into Go-owned command paths and treat the current JS implementations as removable duplicates.
 2. Move the shared active-run and process-execution invariants that those seams still depend on into Go-owned helpers.
 3. Replace public docs and adapter guidance so the preferred shipped path cites `cautilus ...` commands instead of direct `node scripts/agent-runtime/...` commands.
-4. Migrate workbench discovery and live-run execution seams next, because they are also product runtime surfaces with subprocess and workspace risk.
+4. Migrate eval-live discovery and live-run execution seams next, because they are also product runtime surfaces with subprocess and workspace risk.
 5. Reclassify the remaining JS files into either second-wave runtime migration candidates or explicit non-runtime tooling.
 
 ## Premortem

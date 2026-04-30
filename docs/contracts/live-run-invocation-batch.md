@@ -191,7 +191,7 @@ It also writes one nested request and result pair per attempt under `<output-fil
 - catalog prepare example at [fixtures/live-run-invocation/example-batch-prepare-catalog-input.json](../../fixtures/live-run-invocation/example-batch-prepare-catalog-input.json) validates against [fixtures/live-run-invocation/batch-prepare-catalog-input.schema.json](../../fixtures/live-run-invocation/batch-prepare-catalog-input.schema.json)
 - request batch example at [fixtures/live-run-invocation/example-request-batch.json](../../fixtures/live-run-invocation/example-request-batch.json) validates against [fixtures/live-run-invocation/request-batch.schema.json](../../fixtures/live-run-invocation/request-batch.schema.json)
 - batch result example at [fixtures/live-run-invocation/example-result-batch.json](../../fixtures/live-run-invocation/example-result-batch.json) validates against [fixtures/live-run-invocation/result-batch.schema.json](../../fixtures/live-run-invocation/result-batch.schema.json)
-- `go test ./internal/app -run 'TestCLIWorkbench(PrepareRequestBatchAcceptsCatalogCandidates|RunScenariosExecutesExplicitRequestBatch|RunScenariosRetriesTransientFailures)$'`
+- `go test ./internal/app -run 'TestCLILiveEval(PrepareRequestBatchAcceptsCatalogCandidates|RunScenariosExecutesExplicitRequestBatch|RunScenariosRetriesTransientFailures)$'`
 
 ## Canonical Artifact
 

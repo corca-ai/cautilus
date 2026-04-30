@@ -100,7 +100,7 @@ placeholder drift + specdown 기반 spec source guard) + Go race test + standing
 | 3.1 | `cautilus adapter resolve --repo-root .` | adapter 경로 출력, exit 0 | 기계적 |
 | 3.2 | `cautilus doctor --repo-root .` | stdout에 `ready` 포함, exit 0 | 기계적 |
 | 3.3 | `node ./scripts/init_adapter.mjs --repo-root /tmp/cautilus-oa-check --output /tmp/cautilus-oa-check/cautilus-adapter.yaml --force` | YAML 파일 생성, exit 0 | 기계적 |
-| 3.3a | `go test ./internal/app -run 'TestCLIEvalLive|TestCLIWorkbench'` | synthetic consumer repo에서 `eval live` 표면과 legacy `workbench` alias smoke 통과, exit 0 | 기계적 |
+| 3.3a | `go test ./internal/app -run 'TestCLIEvalLive|TestCLILiveEval'` | synthetic consumer repo에서 `eval live` 표면과 `eval live` smoke 통과, exit 0 | 기계적 |
 
 ### 3b. Workspace 명령
 

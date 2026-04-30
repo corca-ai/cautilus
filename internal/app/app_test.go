@@ -149,7 +149,7 @@ func TestRunCommandsJSONReturnsRegistry(t *testing.T) {
 	foundClaimValidate := false
 	foundAgentStatus := false
 	foundEvalLiveRun := false
-	foundWorkbenchAlias := false
+	foundWorkbenchCommand := false
 	for _, raw := range commands {
 		command := raw.(map[string]any)
 		path := command["path"].([]any)
@@ -178,14 +178,35 @@ func TestRunCommandsJSONReturnsRegistry(t *testing.T) {
 			foundEvalLiveRun = true
 		}
 		if len(path) > 0 && path[0] == "workbench" {
-			foundWorkbenchAlias = true
+			foundWorkbenchCommand = true
 		}
 	}
 	if !foundClaimDiscover || !foundClaimShow || !foundClaimReviewPrepare || !foundClaimReviewApply || !foundClaimPlanEvals || !foundClaimValidate || !foundAgentStatus || !foundEvalLiveRun {
 		t.Fatalf("expected commands payload to include claim commands, got %#v", commands)
 	}
-	if foundWorkbenchAlias {
-		t.Fatalf("commands payload should hide legacy workbench aliases, got %#v", commands)
+	if foundWorkbenchCommand {
+		t.Fatalf("commands payload should not include top-level workbench commands, got %#v", commands)
+	}
+}
+
+func TestRunWorkbenchCommandIsNotRegistered(t *testing.T) {
+	t.Setenv("CAUTILUS_CALLER_CWD", t.TempDir())
+	t.Setenv("CAUTILUS_TOOL_ROOT", "")
+
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	exitCode := Run([]string{"workbench", "discover", "--repo-root", "."}, &stdout, &stderr)
+	if exitCode == 0 {
+		t.Fatalf("expected workbench command to fail after removal, stdout=%s", stdout.String())
+	}
+	if stdout.Len() != 0 {
+		t.Fatalf("expected no stdout for unregistered workbench command, got %q", stdout.String())
+	}
+	if !strings.Contains(stderr.String(), "Usage:") {
+		t.Fatalf("expected usage for unregistered workbench command, got stderr=%q", stderr.String())
+	}
+	if strings.Contains(stderr.String(), "cautilus workbench") {
+		t.Fatalf("usage should not list removed workbench commands, got stderr=%q", stderr.String())
 	}
 }
 

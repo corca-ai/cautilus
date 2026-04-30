@@ -59,7 +59,7 @@ Current `product-owned helper surface`:
 
 - `eval test` with the `dev/skill` preset wraps adapter-owned local skill runners, including consensus-based repeated tests and output-review warning surfacing
 - `eval evaluate` packet summarizer dispatches to `cautilus.skill_evaluation_summary.v1` for trigger and execution behavior when the observed packet's schema is `cautilus.skill_evaluation_inputs.v1`
-- `eval live` commands expose the live app runner seam that was formerly named `workbench`; old `workbench` commands remain compatibility aliases and are not a fourth product job
+- `eval live` commands expose the live app runner seam; it is not a fourth product job
 - `chatbot`, `skill`, and `workflow` `scenario normalize` helpers feeding the proposal-input pipeline; their archetype-shaped framing in evaluation no longer applies (see [evaluation-surfaces.spec.md](./specs/evaluation-surfaces.spec.md))
 - scenario proposal packet assembly and proposal generation
 - scenario-adjacent conversation review packet and HTML surface over normalized chatbot threads plus proposal candidates

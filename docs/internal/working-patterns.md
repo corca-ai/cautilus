@@ -95,11 +95,11 @@ host 가 subagent spawning 을 막으면 same-agent pass 로 대체하지 말고
   `Go` 로 승격하는 순간 그 seam 은 standalone binary release, install surface, 장기 backward compatibility 기대를 같이 짊어진다.
   그 비용을 치를 만큼 benefit 이 아직 없으면 `JS` helper 로 남기는 편이 맞다.
 
-### Workbench Seams 에 적용
+### Eval Live Seams 에 적용
 
-- **workbench discovery/live invocation 은 `JS` 에서 먼저 proof 하고, operator-facing entrypoint 가 합의되면 `Go` 로 승격한다.**
+- **live app discovery/invocation 은 `JS` 에서 먼저 proof 하고, operator-facing entrypoint 가 합의되면 `Go` 로 승격한다.**
   초기에는 `scripts/agent-runtime/` helper 로 explicit normalization, packet validation, synthetic consumer proof 를 먼저 닫았다.
-  그다음 `instance` 를 "이 호스트에서 `Cautilus` 가 선택하는 live consumer target 하나" 라는 사용자 언어로 설명할 수 있고, `cautilus workbench discover` / `cautilus workbench run-live` 라는 명령 이름이 자연스러워졌을 때 Go CLI 로 끌어올렸다.
+  그다음 `instance` 를 "이 호스트에서 `Cautilus` 가 선택하는 live consumer target 하나" 라는 사용자 언어로 설명할 수 있고, 현재처럼 `cautilus eval live discover` / `cautilus eval live run` 이 `eval` 의 하위 실행 표면으로 설명될 때 Go CLI 로 끌어올린다.
 - **승격 후에도 consumer-owned seam 은 그대로 남는다.**
   `kind: command` discovery 는 여전히 consumer probe command 가 catalog 를 출력한다.
   live invocation 도 여전히 adapter 의 `consumer_command_template` 가 actual launch/runtime wiring 을 담당한다.

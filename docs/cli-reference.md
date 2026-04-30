@@ -151,7 +151,6 @@ For a simple adopter, the catalog may contain only one default instance.
 `cautilus eval live run` takes one selected instance id plus one request packet and returns one bounded result packet.
 `cautilus eval live prepare-request-batch` is the agent-facing prep surface above that seam: it turns either `cautilus.scenario.v1` draft scenarios or a normalized catalog-candidate packet into a canonical `cautilus.live_run_invocation_request_batch.v1` artifact.
 `cautilus eval live run-scenarios` is the product-owned batch primitive above that seam: it accepts an explicit `cautilus.live_run_invocation_request_batch.v1` file for one selected instance, schedules the requests in-process, retries only when the batch packet asks for it and a prior attempt returned an explicit transient class, and writes one aggregated `cautilus.live_run_invocation_batch_result.v1` packet.
-The older `cautilus workbench ...` commands remain compatibility aliases while docs and agents move to the eval-namespaced surface.
 The product owns the packet boundary and status semantics.
 The consumer still owns actual launch, auth, and runtime wiring through its adapter command.
 When the adapter declares `consumer_single_turn_command_template`, the same command can also own a product-managed multi-turn chatbot loop above a consumer-owned single-turn seam.

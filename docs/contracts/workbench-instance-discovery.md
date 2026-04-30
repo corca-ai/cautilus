@@ -4,7 +4,6 @@ Issue `#17` closes only if `Cautilus` can talk about consumer instances without 
 The missing seam is not another HTML page.
 It is the local-first routing contract that says which instances exist on this host and where each instance keeps its scenario-adjacent data.
 The public command surface for this seam is now `cautilus eval live discover`.
-The older `cautilus workbench discover` command remains a compatibility alias, and the shipped packet schema keeps the `workbench` name until a versioned schema rename is worth the migration cost.
 
 ## Current Slice
 
