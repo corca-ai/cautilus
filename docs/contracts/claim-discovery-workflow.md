@@ -93,6 +93,8 @@ The default entry set is:
 The default Markdown link depth is `3`.
 Depth counts only links from discovered Markdown sources to other repo-local Markdown sources.
 It does not traverse arbitrary source files, generated artifacts, binary files, dependency directories, or external URLs.
+Discovery also honors the repo's `.gitignore` for every path selection route, including default entries, adapter entries, explicit `--source` paths, linked Markdown, and include globs.
+This keeps generated spec reports and latest artifact bundles out of the source claim graph without inventing a Cautilus-specific generated-block marker.
 When different real files declare the same normalized claim text, discovery should emit one claim candidate and preserve every declaration location in `sourceRefs`.
 Semantic duplicates with different wording are grouping/review work, not deterministic source dedupe.
 

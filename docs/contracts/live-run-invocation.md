@@ -10,7 +10,7 @@ For the first product-owned batch scheduler above this seam, see [live-run-invoc
 The adapter may either execute that packet directly as one bounded command or let `Cautilus` own a multi-turn chatbot loop above a consumer-owned single-turn command.
 The product owns the request intent, result summary shape, and failure semantics.
 When the product-owned loop is active, `Cautilus` also owns one stable per-request workspace directory under `<output_file>.d/workspace/` and may run one optional prepare hook before the first turn.
-The selected instance is one live consumer target returned by workbench discovery, not a scenario definition or an adapter name.
+The selected instance is one live consumer target returned by `cautilus eval live discover`, not a scenario definition or an adapter name.
 
 ## Fixed Decisions
 
@@ -141,7 +141,7 @@ That separation is the main reason this seam should be a product-owned packet in
 
 The adapter-owned entry lives under `live_run_invocation` in `cautilus-adapter.yaml`.
 The minimal legacy path still uses one `consumer_command_template` that reads `request_file` and writes `output_file`.
-For the product-owned chatbot loop, the adapter instead points `command_template` at `cautilus workbench run-live` and provides:
+For the product-owned chatbot loop, the adapter instead points `command_template` at `cautilus eval live run` and provides:
 
 - `consumer_single_turn_command_template`
   - called once per simulated turn with `{turn_request_file}` and `{turn_result_file}`
@@ -150,7 +150,7 @@ For the product-owned chatbot loop, the adapter instead points `command_template
   - receives the stable `{workspace_dir}` placeholder
 - `simulator_persona_command_template`
   - required when `simulator.kind` is `persona_prompt`
-  - usually points at `cautilus workbench run-simulator-persona`
+  - usually points at `cautilus eval live run-simulator-persona`
   - called once per persona-generated turn with `{simulator_request_file}` and `{simulator_result_file}`
 - `consumer_evaluator_command_template`
   - optional post-run hook with `{evaluator_input_file}` and `{evaluation_output_file}`

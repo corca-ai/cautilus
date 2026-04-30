@@ -116,6 +116,53 @@
       ]
     },
     {
+      "path": ["eval", "live", "discover"],
+      "group": "run",
+      "usage": "cautilus eval live discover [args]",
+      "example": "cautilus eval live discover --repo-root .",
+      "notes": [
+        "Discovers live app targets for app evals."
+      ]
+    },
+    {
+      "path": ["eval", "live", "run"],
+      "group": "run",
+      "usage": "cautilus eval live run --instance-id <id> --request-file <request.json> --output-file <result.json> [args]",
+      "example": "cautilus eval live run --repo-root . --instance-id ceal --request-file /tmp/request.json --output-file /tmp/result.json",
+      "notes": [
+        "Runs one bounded live app request and writes `cautilus.live_run_invocation_result.v1`.",
+        "The adapter may still delegate actual runtime launch to a consumer-owned command template."
+      ]
+    },
+    {
+      "path": ["eval", "live", "prepare-request-batch"],
+      "group": "run",
+      "usage": "cautilus eval live prepare-request-batch --input <prepare-input.json> [--output <request-batch.json>]",
+      "example": "cautilus eval live prepare-request-batch --input /tmp/prepare-input.json --output /tmp/request-batch.json",
+      "notes": [
+        "Turns draft scenarios or normalized catalog candidates into `cautilus.live_run_invocation_request_batch.v1`."
+      ]
+    },
+    {
+      "path": ["eval", "live", "run-scenarios"],
+      "group": "run",
+      "usage": "cautilus eval live run-scenarios --instance-id <id> --requests-file <batch.json> --output-file <result.json> [--concurrency <n>] [args]",
+      "example": "cautilus eval live run-scenarios --repo-root . --instance-id ceal --requests-file /tmp/request-batch.json --output-file /tmp/batch-result.json --concurrency 4",
+      "notes": [
+        "Runs an explicit live request batch for app evals and writes `cautilus.live_run_invocation_batch_result.v1`.",
+        "Each attempt writes nested request/result artifacts under `<output-file>.d/runs/`."
+      ]
+    },
+    {
+      "path": ["eval", "live", "run-simulator-persona"],
+      "group": "run",
+      "usage": "cautilus eval live run-simulator-persona --workspace <dir> --simulator-request-file <request.json> --simulator-result-file <result.json> --backend codex_exec|claude_p|fixture [args]",
+      "example": "cautilus eval live run-simulator-persona --workspace . --simulator-request-file /tmp/simulator-request.json --simulator-result-file /tmp/simulator-result.json --backend fixture --fixture-results-file fixtures/live-run/persona-fixture.json",
+      "notes": [
+        "Turns one persona_prompt simulator request into one canonical simulator result packet for app evals."
+      ]
+    },
+    {
       "path": ["scenario", "propose"],
       "group": "run",
       "usage": "cautilus scenario propose [args]",
@@ -200,29 +247,34 @@
     {
       "path": ["workbench", "discover"],
       "group": "introspection",
+      "hidden": true,
       "usage": "cautilus workbench discover [args]",
       "example": "cautilus workbench discover --repo-root .",
       "notes": [
-        "A workbench instance is one live consumer target on this host that Cautilus can select by stable id.",
+        "Compatibility alias for `cautilus eval live discover`.",
         "The command resolves either explicit adapter instances or a consumer-owned discovery probe into the canonical catalog packet."
       ]
     },
     {
       "path": ["workbench", "run-live"],
       "group": "run",
+      "hidden": true,
       "usage": "cautilus workbench run-live --instance-id <id> --request-file <request.json> --output-file <result.json> [args]",
       "example": "cautilus workbench run-live --repo-root . --instance-id ceal --request-file /tmp/request.json --output-file /tmp/result.json",
       "notes": [
-        "The selected instance id must come from `cautilus workbench discover`.",
+        "Compatibility alias for `cautilus eval live run`.",
+        "The selected instance id must come from `cautilus eval live discover`.",
         "The adapter may still delegate actual runtime launch to a consumer-owned `consumer_command_template`."
       ]
     },
     {
       "path": ["workbench", "prepare-request-batch"],
       "group": "run",
+      "hidden": true,
       "usage": "cautilus workbench prepare-request-batch --input <prepare-input.json> [--output <request-batch.json>]",
       "example": "cautilus workbench prepare-request-batch --input /tmp/prepare-input.json --output /tmp/request-batch.json",
       "notes": [
+        "Compatibility alias for `cautilus eval live prepare-request-batch`.",
         "This command turns either `cautilus.live_run_invocation_batch_prepare_input.v1` or `cautilus.live_run_invocation_batch_prepare_catalog_input.v1` into the canonical `cautilus.live_run_invocation_request_batch.v1` batch artifact.",
         "The current slice accepts checked-in `cautilus.scenario.v1` draft scenarios or normalized catalog candidates, preserves optional batch retry policy, and supports exact `scenarioIds` plus `requiredTags` filtering."
       ]
@@ -230,9 +282,11 @@
     {
       "path": ["workbench", "run-scenarios"],
       "group": "run",
+      "hidden": true,
       "usage": "cautilus workbench run-scenarios --instance-id <id> --requests-file <batch.json> --output-file <result.json> [--concurrency <n>] [args]",
       "example": "cautilus workbench run-scenarios --repo-root . --instance-id ceal --requests-file /tmp/request-batch.json --output-file /tmp/batch-result.json --concurrency 4",
       "notes": [
+        "Compatibility alias for `cautilus eval live run-scenarios`.",
         "This command accepts an explicit `cautilus.live_run_invocation_request_batch.v1` file and reuses the same live-run adapter seam per request.",
         "Each attempt writes its own nested result artifact under `<output-file>.d/runs/`, while the top-level output aggregates final request counts, retry attempt counts, transient-class counts, and per-request attempt history."
       ]
@@ -240,9 +294,11 @@
     {
       "path": ["workbench", "run-simulator-persona"],
       "group": "run",
+      "hidden": true,
       "usage": "cautilus workbench run-simulator-persona --workspace <dir> --simulator-request-file <request.json> --simulator-result-file <result.json> --backend codex_exec|claude_p|fixture [args]",
       "example": "cautilus workbench run-simulator-persona --workspace . --simulator-request-file /tmp/simulator-request.json --simulator-result-file /tmp/simulator-result.json --backend fixture --fixture-results-file fixtures/live-run/persona-fixture.json",
       "notes": [
+        "Compatibility alias for `cautilus eval live run-simulator-persona`.",
         "This product-owned helper turns one persona_prompt simulator request into one canonical simulator result packet.",
         "The adapter still chooses the backend and any fixture or provider-specific flags through its command template."
       ]

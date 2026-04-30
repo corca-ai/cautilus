@@ -683,6 +683,75 @@ func TestDiscoverClaimProofPlanFollowsMarkdownLinksToDepthThree(t *testing.T) {
 	}
 }
 
+func TestDiscoverClaimProofPlanRespectsGitignore(t *testing.T) {
+	repoRoot := t.TempDir()
+	if err := execGit(repoRoot, "init"); err != nil {
+		t.Fatalf("git init failed: %v", err)
+	}
+	mustWriteFile(t, filepath.Join(repoRoot, ".gitignore"), strings.Join([]string{
+		"generated/",
+		"ignored-entry.md",
+		"",
+	}, "\n"))
+	mustWriteFile(t, filepath.Join(repoRoot, "README.md"), strings.Join([]string{
+		"# Root",
+		"",
+		"[Generated](generated/report.md)",
+		"",
+		"Agents must keep public claim discovery focused on source docs.",
+		"",
+	}, "\n"))
+	mustWriteFile(t, filepath.Join(repoRoot, "generated", "report.md"), strings.Join([]string{
+		"# Generated",
+		"",
+		"Agents must not discover generated report claims.",
+		"",
+	}, "\n"))
+	mustWriteFile(t, filepath.Join(repoRoot, "ignored-entry.md"), strings.Join([]string{
+		"# Ignored",
+		"",
+		"Agents must not discover explicit ignored entries.",
+		"",
+	}, "\n"))
+
+	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan returned error: %v", err)
+	}
+	inventory := arrayOrEmpty(plan["sourceInventory"])
+	paths := map[string]bool{}
+	for _, raw := range inventory {
+		paths[stringFromAny(asMap(raw)["path"])] = true
+	}
+	if !paths["README.md"] {
+		t.Fatalf("expected README.md in inventory, got %#v", inventory)
+	}
+	if paths["ignored-entry.md"] || paths["generated/report.md"] {
+		t.Fatalf("gitignored sources must be omitted from inventory, got %#v", inventory)
+	}
+	for _, raw := range arrayOrEmpty(plan["claimCandidates"]) {
+		summary := stringFromAny(asMap(raw)["summary"])
+		if strings.Contains(summary, "generated report") || strings.Contains(summary, "explicit ignored") {
+			t.Fatalf("gitignored claim leaked into candidates: %#v", raw)
+		}
+	}
+	scope := asMap(plan["effectiveScanScope"])
+	if scope["gitignorePolicy"] != "respect-repo-gitignore" {
+		t.Fatalf("expected gitignore policy in scan scope, got %#v", scope)
+	}
+
+	explicitPlan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{
+		RepoRoot:    repoRoot,
+		SourcePaths: []string{"ignored-entry.md"},
+	})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan with explicit ignored source returned error: %v", err)
+	}
+	if inventory := arrayOrEmpty(explicitPlan["sourceInventory"]); len(inventory) != 0 {
+		t.Fatalf("explicit gitignored source must be omitted, got %#v", inventory)
+	}
+}
+
 func TestDiscoverClaimProofPlanUsesAdapterClaimDiscoveryEntries(t *testing.T) {
 	repoRoot := t.TempDir()
 	mustWriteFile(t, filepath.Join(repoRoot, "README.md"), "README should not be scanned when adapter entries override defaults.\n")

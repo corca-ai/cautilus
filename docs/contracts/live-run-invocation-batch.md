@@ -2,14 +2,14 @@
 
 Issue `#22` starts with the smallest honest batch primitive:
 `Cautilus` accepts either an explicit file of already-materialized live-run request packets or an agent-friendly batch-prepare packet for one selected instance, schedules the resulting requests in-process, and emits one aggregated result packet.
-This slice exists to stop adopters from re-implementing the per-scenario scheduler once `cautilus workbench run-live` already owns the single-request runtime semantics.
+This slice exists to stop adopters from re-implementing the per-scenario scheduler once `cautilus eval live run` already owns the single-request runtime semantics.
 
 ## Current Slice
 
-Use `cautilus workbench prepare-request-batch` when an agent has either draft scenarios or a normalized consumer-catalog candidate packet and needs a deterministic request-batch artifact.
+Use `cautilus eval live prepare-request-batch` when an agent has either draft scenarios or a normalized consumer-catalog candidate packet and needs a deterministic request-batch artifact.
 That prep command accepts either `cautilus.live_run_invocation_batch_prepare_input.v1` or `cautilus.live_run_invocation_batch_prepare_catalog_input.v1` and emits `cautilus.live_run_invocation_request_batch.v1`.
-Use `cautilus workbench run-scenarios` with `--instance-id`, `--requests-file`, and `--output-file` once that explicit request batch exists.
-The command reuses the same adapter-owned `live_run_invocation` seam that powers `cautilus workbench run-live`, but it executes many request packets inside one product-owned scheduler instead of spawning one new `cautilus` subprocess per scenario.
+Use `cautilus eval live run-scenarios` with `--instance-id`, `--requests-file`, and `--output-file` once that explicit request batch exists.
+The command reuses the same adapter-owned `live_run_invocation` seam that powers `cautilus eval live run`, but it executes many request packets inside one product-owned scheduler instead of spawning one new `cautilus` subprocess per scenario.
 This slice now owns request synthesis from:
 
 - checked-in `cautilus.scenario.v1` draft scenarios plus exact `scenarioIds` filtering and `samplesPerScenario` expansion
@@ -143,18 +143,18 @@ Each `results[]` entry includes:
 - `attempts`
 - `result`
 
-`result` is the same `cautilus.live_run_invocation_result.v1` packet that `cautilus workbench run-live` would have written for that request.
+`result` is the same `cautilus.live_run_invocation_result.v1` packet that `cautilus eval live run` would have written for that request.
 `attempts[]` records each attempt in order with its nested `outputFile` and canonical `result`.
 `outputFile` and `result` at the top level duplicate the final attempt for convenience.
 
 ## CLI Surface
 
 ```bash
-cautilus workbench prepare-request-batch \
+cautilus eval live prepare-request-batch \
   --input /tmp/prepare-input.json \
   --output /tmp/request-batch.json
 
-cautilus workbench run-scenarios \
+cautilus eval live run-scenarios \
   --repo-root /path/to/repo \
   --instance-id ceal \
   --requests-file /tmp/request-batch.json \
@@ -180,7 +180,7 @@ It also writes one nested request and result pair per attempt under `<output-fil
 
 - Consumers can hand `Cautilus` many explicit live-run request packets in one file.
 - Consumers can hand `Cautilus` a normalized catalog-candidate prep packet without teaching the product a raw host-specific catalog schema.
-- The product schedules those requests without a host-side wrapper spawning one `cautilus workbench run-live` subprocess per scenario.
+- The product schedules those requests without a host-side wrapper spawning one `cautilus eval live run` subprocess per scenario.
 - Operators receive one aggregated packet plus stable per-attempt artifacts.
 - The batch scheduler preserves the existing single-request runtime contract instead of inventing a second adapter seam.
 

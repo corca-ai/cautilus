@@ -27,10 +27,13 @@ Define the stable command-family map and ship the first `claim` commands without
 The implemented slice is intentionally deterministic: it inventories explicit truth surfaces and emits source-ref-backed proof-plan candidates.
 Default output is not silently capped; agents are first-class readers of the packet and should filter or select claims explicitly instead of inheriting a hidden product limit.
 Current discovery starts from adapter-owned entries or README.md/AGENTS.md/CLAUDE.md and follows repo-local Markdown links to depth 3.
+Discovery must also respect the repo's `.gitignore`; ignored generated reports, bundles, and scratch notes are not claim sources even when linked or explicitly named.
 Existing-packet helpers summarize a proof plan and prepare bounded review clusters without calling an LLM.
 The reviewed-claim helper plans eval fixtures from reviewed `cautilus-eval` claims without writing host-owned fixtures, prompts, runners, or policy.
 The validation helper gives automation a packet-shape and evidence-ref gate before a reviewed claim packet is reused.
 The no-input agent entry point is `agent status`: it emits a read-only orientation packet so the bundled skill can summarize readiness, claim-state availability, scan scope, and branch choices before running discovery, evaluation, review, optimization, edits, or commits.
+Live app execution is now exposed under `cautilus eval live ...`.
+The older `cautilus workbench ...` commands remain compatibility aliases for the same packet contracts, but they are not a fourth product job.
 
 ## See It Work
 
@@ -114,6 +117,8 @@ Default truth surfaces are entry-first rather than repo-wide:
 - repo-local Markdown files linked from those entries up to depth 3
 - explicit `--source` paths when an agent or host repo wants to override the default inventory
 
+All source selection paths must honor the repo's `.gitignore`, including explicit sources and adapter-configured entries.
+The default generated-artifact excludes stay as a fallback, but `.gitignore` is the repo-owned source of truth for ignored generated files.
 The command MUST keep host-specific policy local.
 It may point at source files and propose proof layers, but it must not import host-specific adapters, prompts, storage readers, or private workflow conventions into Cautilus.
 The command MUST dedupe canonical-file aliases such as symlinks before claim extraction.
@@ -188,6 +193,22 @@ cautilus eval evaluate --input <run-dir>/eval-observed.json --output <run-dir>/e
 Cautilus owns the fixture schema, observed packet, summary packet, and bounded execution loop.
 The host repo owns the fixture contents, runner implementation, prompt files, wrappers, and acceptance policy.
 
+#### Live App Surface
+
+Live app execution belongs under `eval` because users should learn the top-level intent, not an intermediate implementation surface.
+The supported command names are:
+
+```bash
+cautilus eval live discover --repo-root .
+cautilus eval live run --repo-root . --instance-id <id> --request-file <request.json> --output-file <result.json>
+cautilus eval live prepare-request-batch --input <prepare-input.json> --output <request-batch.json>
+cautilus eval live run-scenarios --repo-root . --instance-id <id> --requests-file <batch.json> --output-file <result.json>
+```
+
+These commands reuse the existing live-run invocation packets.
+The packet schema names still contain `workbench` where already shipped; a future schema version may rename those once compatibility pressure justifies it.
+`cautilus workbench ...` remains as a legacy alias while agents and docs migrate to `eval live`.
+
 ### Optimize Surface
 
 `optimize` remains the improvement family.
@@ -223,6 +244,8 @@ It should point to the relevant scenario command rather than duplicating scenari
 - Whether `scenario` commands eventually move under `claim` or stay as their own long-lived family.
 - Whether `optimize` should gain a user-facing `improve` alias.
   The current command remains `optimize`.
+- Whether the future GUI workbench becomes a separate product surface for browsing and editing claims, scenarios, and evidence.
+  That future workbench is not the current live app runner surface.
 
 ## Non-Goals
 

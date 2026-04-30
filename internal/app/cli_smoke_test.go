@@ -3558,7 +3558,7 @@ func TestCLIEvalTestRejectsUnsupportedSurfacePresetCombo(t *testing.T) {
 	}
 }
 
-func TestCLIWorkbenchDiscoverNormalizesExplicitInstances(t *testing.T) {
+func TestCLIEvalLiveDiscoverNormalizesExplicitInstances(t *testing.T) {
 	root := t.TempDir()
 	adapterDir := filepath.Join(root, ".agents")
 	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
@@ -3568,7 +3568,7 @@ func TestCLIWorkbenchDiscoverNormalizesExplicitInstances(t *testing.T) {
 		"version: 1",
 		"repo: temp",
 		"evaluation_surfaces:",
-		"  - workbench smoke",
+		"  - live eval smoke",
 		"baseline_options:",
 		"  - baseline git ref via {baseline_ref}",
 		"instance_discovery:",
@@ -3586,9 +3586,9 @@ func TestCLIWorkbenchDiscoverNormalizesExplicitInstances(t *testing.T) {
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
 
-	stdout, stderr, exitCode := runCLI(t, root, "workbench", "discover", "--repo-root", root)
+	stdout, stderr, exitCode := runCLI(t, root, "eval", "live", "discover", "--repo-root", root)
 	if exitCode != 0 {
-		t.Fatalf("workbench discover failed: %s", stderr)
+		t.Fatalf("eval live discover failed: %s", stderr)
 	}
 	payload := parseJSONObject(t, stdout)
 	if payload["schemaVersion"] != contracts.WorkbenchInstanceCatalogSchema {

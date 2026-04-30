@@ -8,7 +8,7 @@ Three discovery surfaces matter here:
 - `./bin/cautilus healthcheck --json` for binary health
 - `./bin/cautilus commands --json` and `./bin/cautilus scenarios --json` for safe machine-readable discovery
 - `./bin/cautilus doctor --repo-root <path>` for repo-local readiness plus the first bounded-run handoff once a repo is ready
-- `./bin/cautilus workbench discover` and `./bin/cautilus workbench run-live` when a repo exposes live local instances through the generic workbench contracts
+- `./bin/cautilus eval live discover` and `./bin/cautilus eval live run` when a repo exposes live local instances for app evals
 
 The bundled skill matters because the standalone binary is not the only entry point.
 `cautilus install` materializes the same product surface for an in-repo assistant, while the operator still uses the CLI directly.
@@ -28,17 +28,17 @@ $ ./bin/cautilus doctor --repo-root . | grep '"first_bounded_run": {'
   "first_bounded_run": {
 ```
 
-## Workbench Proof
+## Live Eval Proof
 
 ```run:shell
-# A standalone checkout should also drive the generic workbench contracts in a tiny synthetic consumer repo.
+# A standalone checkout should also drive the generic live app eval contracts in a tiny synthetic consumer repo.
 tmpdir=$(mktemp -d)
 mkdir -p "$tmpdir/.agents"
 cat > "$tmpdir/.agents/cautilus-adapter.yaml" <<EOF
 version: 1
 repo: temp
 evaluation_surfaces:
-  - workbench smoke
+  - live eval smoke
 baseline_options:
   - baseline git ref via {baseline_ref}
 instance_discovery:
@@ -50,7 +50,7 @@ instance_discovery:
       paths:
         scenario_store: $tmpdir/runtime/default/scenarios.json
 live_run_invocation:
-  command_template: cautilus workbench run-live --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}
+  command_template: cautilus eval live run --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}
   consumer_single_turn_command_template: sh ./run-live-turn.sh {turn_request_file} {turn_result_file} {workspace_dir}
   workspace_prepare_command_template: sh ./prepare-live-run.sh {workspace_dir}
 EOF
@@ -90,12 +90,12 @@ chmod +x "$tmpdir/run-live-turn.sh"
 cat > "$tmpdir/request.json" <<'EOF'
 {
   "schemaVersion": "cautilus.live_run_invocation_request.v1",
-  "requestId": "req-workbench-smoke",
+  "requestId": "req-live-eval-smoke",
   "instanceId": "default",
   "timeoutMs": 30000,
   "scenario": {
     "scenarioId": "scenario-smoke",
-    "name": "Workbench smoke",
+    "name": "Live eval smoke",
     "description": "Prove the standalone CLI can route one bounded live request.",
     "maxTurns": 1,
     "sideEffectsMode": "read_only",
@@ -108,8 +108,8 @@ cat > "$tmpdir/request.json" <<'EOF'
   }
 }
 EOF
-./bin/cautilus workbench discover --repo-root "$tmpdir" --output "$tmpdir/catalog.json" >/dev/null
-./bin/cautilus workbench run-live --repo-root "$tmpdir" --instance-id default --request-file "$tmpdir/request.json" --output-file "$tmpdir/result.json" >/dev/null
+./bin/cautilus eval live discover --repo-root "$tmpdir" --output "$tmpdir/catalog.json" >/dev/null
+./bin/cautilus eval live run --repo-root "$tmpdir" --instance-id default --request-file "$tmpdir/request.json" --output-file "$tmpdir/result.json" >/dev/null
 grep -q '"instanceId": "default"' "$tmpdir/catalog.json"
 grep -q '"displayLabel": "Local Default"' "$tmpdir/catalog.json"
 grep -q '"executionStatus": "completed"' "$tmpdir/result.json"

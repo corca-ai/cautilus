@@ -1,14 +1,16 @@
-# Workbench Instance Discovery Contract
+# Live Eval Instance Discovery Contract
 
 Issue `#17` closes only if `Cautilus` can talk about consumer instances without copying one consumer's filesystem layout into the product.
 The missing seam is not another HTML page.
 It is the local-first routing contract that says which instances exist on this host and where each instance keeps its scenario-adjacent data.
+The public command surface for this seam is now `cautilus eval live discover`.
+The older `cautilus workbench discover` command remains a compatibility alias, and the shipped packet schema keeps the `workbench` name until a versioned schema rename is worth the migration cost.
 
 ## Current Slice
 
-`Cautilus` now defines `cautilus.workbench_instance_catalog.v1` as the neutral discovery packet for future workbench flows.
+`Cautilus` now defines `cautilus.workbench_instance_catalog.v1` as the neutral discovery packet for live app eval flows.
 The adapter may provide that catalog either through an explicit checked-in instance list or through a local command that prints the catalog to stdout.
-Both modes normalize to the same packet so future read-only and interactive flows can route by `instanceId` without learning consumer-specific directory rules.
+Both modes normalize to the same packet so `eval live` commands can route by `instanceId` without learning consumer-specific directory rules.
 
 ## What An Instance Means
 
@@ -83,6 +85,8 @@ For `kind: explicit`:
 - authenticated remote discovery
 - product-owned mutation of consumer instance metadata
 - any generic admin or compliance browsing surface
+- future GUI workbench behavior for browsing and editing claims, scenarios, evidence, and related review state
+  That future workbench should be specified as an interactive product surface, not as the current live app runner seam.
 
 ## Non-Goals
 
@@ -93,7 +97,7 @@ For `kind: explicit`:
 
 ## Success Criteria
 
-- A future workbench flow can refer to one selected instance by stable id.
+- A future live app eval flow can refer to one selected instance by stable id.
 - The product can render a human-facing instance chooser without learning consumer-native labels itself.
 - The product can read scenario-adjacent paths from typed packet fields instead of hardcoded route templates.
 - The same contract works for a simple explicit single-instance repo and a dynamic multi-instance consumer.

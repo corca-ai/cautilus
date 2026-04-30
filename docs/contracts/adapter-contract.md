@@ -89,10 +89,10 @@ instance_discovery:
   required_prerequisites:
     - keep instance ids stable and keep typed paths machine-readable
 live_run_invocation:
-  command_template: cautilus workbench run-live --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}
+  command_template: cautilus eval live run --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}
   consumer_single_turn_command_template: node scripts/consumer/run-live-turn.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --turn-request-file {turn_request_file} --turn-result-file {turn_result_file}
   workspace_prepare_command_template: node scripts/consumer/prepare-live-run-workspace.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --workspace-dir {workspace_dir}
-  simulator_persona_command_template: cautilus workbench run-simulator-persona --workspace {repo_root} --simulator-request-file {simulator_request_file} --simulator-result-file {simulator_result_file} --backend fixture --fixture-results-file fixtures/live-run/persona-fixture.json
+  simulator_persona_command_template: cautilus eval live run-simulator-persona --workspace {repo_root} --simulator-request-file {simulator_request_file} --simulator-result-file {simulator_result_file} --backend fixture --fixture-results-file fixtures/live-run/persona-fixture.json
   consumer_evaluator_command_template: node scripts/consumer/evaluate-live-run.mjs --repo-root {repo_root} --adapter-path {adapter_path} --request-file {request_file} --input-file {evaluator_input_file} --output-file {evaluation_output_file}
   required_prerequisites:
     - keep invocation bounded to one selected local instance and one request packet
@@ -193,7 +193,7 @@ default_schema_file: fixtures/review/review-verdict.schema.json
   The binary uses these hints to label review queues, while the bundled skill or a human reviewer may still correct semantic edge cases.
   `semantic_groups` optionally declares repo-owned review batching labels and text terms.
   If omitted, discovery uses the portable fallback group `General product behavior` instead of assuming a product-specific taxonomy.
-- `instance_discovery`: optional local-first instance routing contract for future workbench flows.
+- `instance_discovery`: optional local-first instance routing contract for live app eval flows.
   Use `kind: explicit` when the adapter can check in a small stable instance list directly.
   Use `kind: command` when the consumer must probe one or more host-local roots at runtime and print `cautilus.workbench_instance_catalog.v1` to stdout.
 - `live_run_invocation`: optional command contract for running one bounded scenario packet against one selected live instance.
@@ -215,7 +215,7 @@ default_schema_file: fixtures/review/review-verdict.schema.json
 
 ## Instance Discovery Shape
 
-Future workbench flows need one neutral way to enumerate consumer instances and route follow-up reads or invocations by a stable instance id.
+Live app eval flows need one neutral way to enumerate consumer instances and route follow-up reads or invocations by a stable instance id.
 The adapter therefore may declare one optional `instance_discovery` stanza.
 
 Command-backed discovery:
@@ -250,7 +250,8 @@ Fixed rules:
 - `kind: command` is the default fit for consumers that enumerate multiple host-local instances dynamically.
 - `kind: explicit` keeps fixture-backed repos and simple single-instance adopters cheap without forcing a probe script.
 - `command_template` should print `cautilus.workbench_instance_catalog.v1` JSON to stdout.
-`cautilus workbench discover` resolves either `kind: explicit` or `kind: command` into the canonical catalog packet.
+`cautilus eval live discover` resolves either `kind: explicit` or `kind: command` into the canonical catalog packet.
+`cautilus workbench discover` remains a compatibility alias.
 When the adapter uses `kind: command`, point `command_template` directly at a consumer-owned probe command instead of wrapping the product command around itself.
 
 Current placeholders for `instance_discovery.command_template`:
@@ -267,10 +268,10 @@ The adapter may therefore declare one optional `live_run_invocation` stanza.
 
 ```yaml
 live_run_invocation:
-  command_template: cautilus workbench run-live --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}
+  command_template: cautilus eval live run --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}
   consumer_single_turn_command_template: node scripts/consumer/run-live-turn.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --turn-request-file {turn_request_file} --turn-result-file {turn_result_file}
   workspace_prepare_command_template: node scripts/consumer/prepare-live-run-workspace.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --workspace-dir {workspace_dir}
-  simulator_persona_command_template: cautilus workbench run-simulator-persona --workspace {repo_root} --simulator-request-file {simulator_request_file} --simulator-result-file {simulator_result_file} --backend fixture --fixture-results-file fixtures/live-run/persona-fixture.json
+  simulator_persona_command_template: cautilus eval live run-simulator-persona --workspace {repo_root} --simulator-request-file {simulator_request_file} --simulator-result-file {simulator_result_file} --backend fixture --fixture-results-file fixtures/live-run/persona-fixture.json
   consumer_evaluator_command_template: node scripts/consumer/evaluate-live-run.mjs --repo-root {repo_root} --adapter-path {adapter_path} --request-file {request_file} --input-file {evaluator_input_file} --output-file {evaluation_output_file}
   required_prerequisites:
     - keep invocation bounded to one selected local instance and one request packet
@@ -279,11 +280,11 @@ live_run_invocation:
 Fixed rules:
 
 - The command handles exactly one selected `instance_id` per invocation.
-- `command_template` may point at the product-owned `cautilus workbench run-live` command.
+- `command_template` may point at the product-owned `cautilus eval live run` command.
   For the legacy one-shot path, that command must then receive a consumer-owned `consumer_command_template` to avoid recursive self-invocation.
   For the product-owned chatbot loop, it must instead receive `consumer_single_turn_command_template`.
   When the public request uses `simulator.kind: persona_prompt`, it must also receive `simulator_persona_command_template`.
-  The canonical path is the product-owned `cautilus workbench run-simulator-persona` helper plus adapter-selected backend flags.
+  The canonical path is the product-owned `cautilus eval live run-simulator-persona` helper plus adapter-selected backend flags.
 - When the product-owned chatbot loop is active, `Cautilus` allocates one stable workspace directory at `<output_file>.d/workspace/`.
   If `workspace_prepare_command_template` is present, `Cautilus` runs it once per request before the first turn.
 - The command reads one request packet from `request_file`.

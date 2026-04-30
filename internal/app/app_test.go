@@ -148,6 +148,8 @@ func TestRunCommandsJSONReturnsRegistry(t *testing.T) {
 	foundClaimPlanEvals := false
 	foundClaimValidate := false
 	foundAgentStatus := false
+	foundEvalLiveRun := false
+	foundWorkbenchAlias := false
 	for _, raw := range commands {
 		command := raw.(map[string]any)
 		path := command["path"].([]any)
@@ -172,9 +174,18 @@ func TestRunCommandsJSONReturnsRegistry(t *testing.T) {
 		if len(path) == 2 && path[0] == "agent" && path[1] == "status" {
 			foundAgentStatus = true
 		}
+		if len(path) == 3 && path[0] == "eval" && path[1] == "live" && path[2] == "run" {
+			foundEvalLiveRun = true
+		}
+		if len(path) > 0 && path[0] == "workbench" {
+			foundWorkbenchAlias = true
+		}
 	}
-	if !foundClaimDiscover || !foundClaimShow || !foundClaimReviewPrepare || !foundClaimReviewApply || !foundClaimPlanEvals || !foundClaimValidate || !foundAgentStatus {
+	if !foundClaimDiscover || !foundClaimShow || !foundClaimReviewPrepare || !foundClaimReviewApply || !foundClaimPlanEvals || !foundClaimValidate || !foundAgentStatus || !foundEvalLiveRun {
 		t.Fatalf("expected commands payload to include claim commands, got %#v", commands)
+	}
+	if foundWorkbenchAlias {
+		t.Fatalf("commands payload should hide legacy workbench aliases, got %#v", commands)
 	}
 }
 

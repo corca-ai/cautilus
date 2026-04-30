@@ -201,6 +201,16 @@ func nativeHandler(path []string) handlerFunc {
 		return handleEvalTest
 	case "eval evaluate":
 		return handleEvalEvaluate
+	case "eval live discover":
+		return handleWorkbenchDiscover
+	case "eval live run":
+		return handleWorkbenchRunLive
+	case "eval live prepare-request-batch":
+		return handleWorkbenchPrepareRequestBatch
+	case "eval live run-scenarios":
+		return handleWorkbenchRunScenarios
+	case "eval live run-simulator-persona":
+		return handleWorkbenchRunSimulatorPersona
 	case "scenario normalize chatbot":
 		return handleScenarioNormalizeChatbot
 	case "scenario normalize skill":
@@ -575,7 +585,7 @@ func handleCommands(repoRoot string, cwd string, args []string, stdout io.Writer
 			"usage":         registry.UsageLines(),
 			"examples":      registry.ExampleLines(),
 			"groups":        registry.Groups,
-			"commands":      registry.Commands,
+			"commands":      registry.PublicCommands(),
 		}
 		if err := writeJSON(stdout, payload); err != nil {
 			_, _ = fmt.Fprintf(stderr, "%s\n", err)

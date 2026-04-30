@@ -361,9 +361,10 @@ func discoverClaimSources(repoRoot string, config claimDiscoveryConfig) ([]claim
 	sources := []claimSource{}
 	graph := []any{}
 	queue := []claimSource{}
+	ignoreChecker := newGitIgnoreChecker(repoRoot)
 	addSource := func(relPath string, depth int, from string) {
 		relPath = filepath.ToSlash(filepath.Clean(strings.TrimSpace(relPath)))
-		if relPath == "." || relPath == "" || claimPathExcluded(relPath, config.exclude) {
+		if relPath == "." || relPath == "" || claimPathExcluded(relPath, config.exclude) || ignoreChecker.Ignored(relPath) {
 			return
 		}
 		absPath := filepath.Join(repoRoot, filepath.FromSlash(relPath))
@@ -403,7 +404,7 @@ func discoverClaimSources(repoRoot string, config claimDiscoveryConfig) ([]claim
 		addSource(entry, 0, "")
 	}
 	if len(config.include) > 0 {
-		if err := walkIncludedClaimSources(repoRoot, config, addSource); err != nil {
+		if err := walkIncludedClaimSources(repoRoot, config, ignoreChecker, addSource); err != nil {
 			return nil, nil, err
 		}
 	}
@@ -416,6 +417,9 @@ func discoverClaimSources(repoRoot string, config claimDiscoveryConfig) ([]claim
 		}
 		for _, target := range links {
 			if claimPathExcluded(target, config.exclude) {
+				continue
+			}
+			if ignoreChecker.Ignored(target) {
 				continue
 			}
 			graph = append(graph, map[string]any{
@@ -436,7 +440,43 @@ func discoverClaimSources(repoRoot string, config claimDiscoveryConfig) ([]claim
 	return sources, graph, nil
 }
 
-func walkIncludedClaimSources(repoRoot string, config claimDiscoveryConfig, addPath func(string, int, string)) error {
+type gitIgnoreChecker struct {
+	repoRoot string
+	enabled  bool
+	cache    map[string]bool
+}
+
+func newGitIgnoreChecker(repoRoot string) *gitIgnoreChecker {
+	checker := &gitIgnoreChecker{
+		repoRoot: repoRoot,
+		cache:    map[string]bool{},
+	}
+	command := exec.Command("git", "-C", repoRoot, "rev-parse", "--is-inside-work-tree")
+	if err := command.Run(); err == nil {
+		checker.enabled = true
+	}
+	return checker
+}
+
+func (checker *gitIgnoreChecker) Ignored(relPath string) bool {
+	if checker == nil || !checker.enabled {
+		return false
+	}
+	relPath = filepath.ToSlash(filepath.Clean(strings.TrimSpace(relPath)))
+	if relPath == "" || relPath == "." {
+		return false
+	}
+	if ignored, exists := checker.cache[relPath]; exists {
+		return ignored
+	}
+	command := exec.Command("git", "-C", checker.repoRoot, "check-ignore", "--no-index", "-q", "--", relPath)
+	err := command.Run()
+	ignored := err == nil
+	checker.cache[relPath] = ignored
+	return ignored
+}
+
+func walkIncludedClaimSources(repoRoot string, config claimDiscoveryConfig, ignoreChecker *gitIgnoreChecker, addPath func(string, int, string)) error {
 	return filepath.WalkDir(repoRoot, func(path string, entry fs.DirEntry, err error) error {
 		if err != nil {
 			return err
@@ -450,9 +490,12 @@ func walkIncludedClaimSources(repoRoot string, config claimDiscoveryConfig, addP
 			if relPath != "." && claimPathExcluded(relPath+"/", config.exclude) {
 				return filepath.SkipDir
 			}
+			if relPath != "." && ignoreChecker.Ignored(relPath+"/") {
+				return filepath.SkipDir
+			}
 			return nil
 		}
-		if !isMarkdownClaimSource(relPath) || !claimPathIncluded(relPath, config.include) {
+		if !isMarkdownClaimSource(relPath) || !claimPathIncluded(relPath, config.include) || ignoreChecker.Ignored(relPath) {
 			return nil
 		}
 		addPath(relPath, 0, "")
@@ -1089,6 +1132,7 @@ func renderClaimScanScope(config claimDiscoveryConfig) map[string]any {
 		"adapterFound":        config.adapterFound,
 		"adapterPath":         config.adapterPath,
 		"traversal":           "entry-markdown-links",
+		"gitignorePolicy":     "respect-repo-gitignore",
 	}
 }
 

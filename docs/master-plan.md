@@ -15,6 +15,7 @@ The target product is:
 - scenario proposal flows that mine runtime logs and audit traces into draft evaluation cases
 - first-class evaluation surfaces for chatbot, skill, and durable workflow behavior
 - runner readiness as a setup substrate under `claim`, `eval`, and `optimize`, especially for app behavior proof
+- `eval live` as the command surface for live app runner discovery, single-run invocation, and batched live scenarios
 - agent-first command and packet surfaces that reveal user intent while hiding lower-level helper detail
 - an intent-first workflow where prompts are mutable implementation details and evaluation contracts define success
 
@@ -58,6 +59,7 @@ Current `product-owned helper surface`:
 
 - `eval test` with the `dev/skill` preset wraps adapter-owned local skill runners, including consensus-based repeated tests and output-review warning surfacing
 - `eval evaluate` packet summarizer dispatches to `cautilus.skill_evaluation_summary.v1` for trigger and execution behavior when the observed packet's schema is `cautilus.skill_evaluation_inputs.v1`
+- `eval live` commands expose the live app runner seam that was formerly named `workbench`; old `workbench` commands remain compatibility aliases and are not a fourth product job
 - `chatbot`, `skill`, and `workflow` `scenario normalize` helpers feeding the proposal-input pipeline; their archetype-shaped framing in evaluation no longer applies (see [evaluation-surfaces.spec.md](./specs/evaluation-surfaces.spec.md))
 - scenario proposal packet assembly and proposal generation
 - scenario-adjacent conversation review packet and HTML surface over normalized chatbot threads plus proposal candidates
@@ -80,6 +82,8 @@ The earlier first-class archetype boundary (chatbot / skill / workflow) was reti
 `npm run lint:specs` and `npm run lint:archetypes` still gate the runtime completeness of the surviving `scenario normalize` helpers; new user-facing copy must reconcile with the surface/preset contract before landing.
 The runner readiness contract lives in [runner-readiness.md](./contracts/runner-readiness.md).
 It keeps headless product runners as setup/readiness substrate rather than a fourth command family, and it separates proof requirements from readiness verdicts.
+The live app runner contracts live in [workbench-instance-discovery.md](./contracts/workbench-instance-discovery.md), [live-run-invocation.md](./contracts/live-run-invocation.md), and [live-run-invocation-batch.md](./contracts/live-run-invocation-batch.md).
+Their public command namespace is `eval live`; the `workbench` name is reserved for a possible future GUI where operators can browse and edit claims, scenarios, and evidence.
 
 ## Phase Plan
 
@@ -174,3 +178,5 @@ Still open:
 8. Keep expanding normalization-pattern coverage as new consumer archetypes appear, while preserving one official adapter contract (`cautilus-adapter.yaml`).
 9. Decide whether to grow external-consumer onboarding into archetype-specific starter kits while keeping the supported installer surface centered on `install.sh`.
 10. Keep widening HTML surfaces only when the packet boundary stays stable and the page meaningfully improves human review; agents should consume durable packets first.
+11. Specify a future interactive workbench only when the product is ready to support GUI-backed claim and scenario browsing, editing, deletion, and addition.
+    Do not use the current live app runner seam as that GUI workbench concept.
