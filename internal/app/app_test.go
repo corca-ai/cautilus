@@ -330,14 +330,14 @@ func TestRunClaimDiscoverWritesProofPlanFromTinyRepo(t *testing.T) {
 		t.Fatalf("unexpected schemaVersion: %#v", payload["schemaVersion"])
 	}
 	candidates := payload["claimCandidates"].([]any)
-	seenLayers := map[string]bool{}
+	seenProofs := map[string]bool{}
 	for _, raw := range candidates {
 		entry := raw.(map[string]any)
-		seenLayers[entry["proofLayer"].(string)] = true
+		seenProofs[entry["recommendedProof"].(string)] = true
 	}
-	for _, layer := range []string{"human-auditable", "deterministic", "cautilus-eval"} {
-		if !seenLayers[layer] {
-			t.Fatalf("expected %s candidate in %#v", layer, candidates)
+	for _, proof := range []string{"human-auditable", "deterministic", "cautilus-eval"} {
+		if !seenProofs[proof] {
+			t.Fatalf("expected %s candidate in %#v", proof, candidates)
 		}
 	}
 }
@@ -363,8 +363,7 @@ func TestRunClaimShowSummarizesExistingProofPlan(t *testing.T) {
 		`      "lifecycle": "new",`,
 		`      "groupHints": ["cautilus-eval"],`,
 		`      "evidenceRefs": [],`,
-		`      "sourceRefs": [{"path": "README.md", "line": 3, "excerpt": "Agents must keep behavior review bounded."}],`,
-		`      "proofLayer": "cautilus-eval"`,
+		`      "sourceRefs": [{"path": "README.md", "line": 3, "excerpt": "Agents must keep behavior review bounded."}]`,
 		`    }`,
 		`  ]`,
 		`}`,
@@ -491,8 +490,7 @@ func TestRunClaimReviewPrepareInputWritesClusters(t *testing.T) {
 		`      "lifecycle": "new",`,
 		`      "groupHints": ["cautilus-eval"],`,
 		`      "evidenceRefs": [],`,
-		`      "sourceRefs": [{"path": "README.md", "line": 3, "excerpt": "Agents must keep behavior review bounded."}],`,
-		`      "proofLayer": "cautilus-eval"`,
+		`      "sourceRefs": [{"path": "README.md", "line": 3, "excerpt": "Agents must keep behavior review bounded."}]`,
 		`    }`,
 		`  ]`,
 		`}`,
@@ -574,8 +572,7 @@ func TestRunClaimReviewApplyResultWritesReviewedClaims(t *testing.T) {
 		`      "lifecycle": "new",`,
 		`      "groupHints": ["cautilus-eval"],`,
 		`      "evidenceRefs": [],`,
-		`      "sourceRefs": [{"path": "README.md", "line": 3, "excerpt": "Agents must keep behavior review bounded."}],`,
-		`      "proofLayer": "cautilus-eval"`,
+		`      "sourceRefs": [{"path": "README.md", "line": 3, "excerpt": "Agents must keep behavior review bounded."}]`,
 		`    }`,
 		`  ]`,
 		`}`,
@@ -652,8 +649,7 @@ func minimalClaimPacketJSON(gitCommit string) string {
 		`      "lifecycle": "new",`,
 		`      "groupHints": ["cautilus-eval"],`,
 		`      "evidenceRefs": [],`,
-		`      "sourceRefs": [{"path": "README.md", "line": 3, "excerpt": "Agents must keep behavior review bounded."}],`,
-		`      "proofLayer": "cautilus-eval"`,
+		`      "sourceRefs": [{"path": "README.md", "line": 3, "excerpt": "Agents must keep behavior review bounded."}]`,
 		`    }`,
 		`  ]`,
 		`}`,
@@ -682,8 +678,7 @@ func TestRunClaimPlanEvalsWritesIntermediatePlan(t *testing.T) {
 		`      "lifecycle": "new",`,
 		`      "groupHints": ["cautilus-eval"],`,
 		`      "evidenceRefs": [],`,
-		`      "sourceRefs": [{"path": "AGENTS.md", "line": 3, "excerpt": "Agents must follow the repo operating contract before changing code."}],`,
-		`      "proofLayer": "cautilus-eval"`,
+		`      "sourceRefs": [{"path": "AGENTS.md", "line": 3, "excerpt": "Agents must follow the repo operating contract before changing code."}]`,
 		`    }`,
 		`  ]`,
 		`}`,
@@ -747,8 +742,7 @@ func TestRunClaimValidateWritesReportAndFailsInvalidEvidence(t *testing.T) {
 		`          "supportsClaimIds": ["claim-agents-md-3"]`,
 		`        }`,
 		`      ],`,
-		`      "sourceRefs": [{"path": "AGENTS.md", "line": 3, "excerpt": "Agents must follow the repo operating contract before changing code."}],`,
-		`      "proofLayer": "cautilus-eval"`,
+		`      "sourceRefs": [{"path": "AGENTS.md", "line": 3, "excerpt": "Agents must follow the repo operating contract before changing code."}]`,
 		`    }`,
 		`  ]`,
 		`}`,

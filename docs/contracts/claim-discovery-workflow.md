@@ -176,9 +176,9 @@ If the user already delegated autonomous continuation, the skill may proceed wit
 
 ## Claim Model
 
-The current `proofLayer` field is overloaded.
-It mixes proof mechanism, readiness, and alignment state.
-The next packet should split those concepts:
+The old `proofLayer` field was overloaded.
+It mixed proof mechanism, readiness, and alignment state.
+The current packet splits those concepts:
 
 ```json
 {
@@ -251,14 +251,8 @@ Line number is a locator, not identity.
 `claimSemanticGroup` is a deterministic review-batching hint.
 It is not a final taxonomy; the bundled skill or human reviewer may correct it during review.
 
-The old `proofLayer` field may remain for one compatibility window as a derived or deprecated field, but new workflow logic should use the split fields.
-During that window, derivation must be deterministic and tested:
-
-- `recommendedProof=human-auditable` derives `proofLayer=human-auditable`.
-- `recommendedProof=deterministic` derives `proofLayer=deterministic`.
-- `recommendedProof=cautilus-eval` and `verificationReadiness=needs-scenario` derives `proofLayer=scenario-candidate`.
-- `verificationReadiness=needs-alignment` derives `proofLayer=alignment-work`.
-- otherwise `recommendedProof=cautilus-eval` derives `proofLayer=cautilus-eval`.
+`proofLayer` is no longer emitted in new claim packets.
+Agents and validators must read the split fields directly instead of deriving a compatibility label.
 
 ## Packet Semantics
 
@@ -484,7 +478,7 @@ Act before ship:
   Possible evidence refs cannot produce `evidenceStatus=satisfied`.
 - Claim identity must not depend on source line numbers alone.
   `claimFingerprint` is required for refresh matching.
-- Legacy `proofLayer` compatibility needs a deterministic mapping and tests before split fields ship.
+- The old `proofLayer` compatibility field should be removed instead of preserved now that split fields have shipped.
 
 Bundle anyway:
 
@@ -516,7 +510,7 @@ Valid but defer:
 - LLM review needs separate review-budget confirmation after deterministic scan.
 - Existing state refresh is selected by the skill when prior claim JSON exists, but deterministic refresh-plan output owns the state transition.
 - No separate binary `claim refresh` command is planned for the next slice.
-- `proofLayer` should be split into proof mechanism, verification readiness, evidence status, review status, and lifecycle fields.
+- The old `proofLayer` label is replaced by proof mechanism, verification readiness, evidence status, review status, and lifecycle fields.
 - Grouping belongs in the discovery result, not in a required `claim group` subcommand.
 - Binary evidence preflight may emit possible evidence refs, but cannot mark a claim satisfied by itself.
 
@@ -561,7 +555,7 @@ The implementation slice that follows this design should include:
 - fixture coverage for adapter-configured claim discovery entries and depth 3 Markdown link traversal
 - packet schema tests for the split claim fields
 - CLI tests proving `claim discover` records effective scan scope and source graph
-- compatibility tests for legacy `proofLayer` derivation
+- tests proving new packets use split proof fields without emitting `proofLayer`
 - bundled-skill tests or self-dogfood evidence showing no-input skill invocation chooses claim discovery status when no current claim state exists
 - refresh-plan tests showing a prior packet plus a changed source marks affected claims changed while carrying forward unchanged claims
 - evidence stale tests showing changed evidence anchors produce `evidenceStatus=stale`
@@ -589,7 +583,7 @@ The first implementation slice changed the binary skeleton:
 1. add adapter-owned `claim_discovery` entries, include/exclude globs, and `linked_markdown_depth`
 2. implement entry plus repo-local Markdown link traversal with default depth `3`
 3. record effective scan scope and source graph in `cautilus.claim_proof_plan.v1` or the next schema
-4. split `proofLayer` into the new fields while preserving compatibility for one window
+4. replace `proofLayer` with the new split fields
 5. add claim fingerprints, evidence ref shape, and summary groups to the discover packet
 6. add deterministic state-path resolution and refresh-plan helper output without adding `claim refresh`
 

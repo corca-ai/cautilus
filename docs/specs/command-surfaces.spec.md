@@ -81,9 +81,9 @@ grep -q '"schemaVersion": "cautilus.claim_eval_plan.v1"' "$tmpdir/claim-eval-pla
 grep -q '"valid": true' "$tmpdir/claim-validation.json"
 grep -q '"reviewApplication": {' "$tmpdir/reviewed-claims.json"
 grep -q '"nonWriterNotice":' "$tmpdir/claim-eval-plan.json"
-grep -q '"proofLayer": "human-auditable"' "$tmpdir/claims.json"
-grep -q '"proofLayer": "deterministic"' "$tmpdir/claims.json"
-grep -q '"proofLayer": "cautilus-eval"' "$tmpdir/claims.json"
+grep -q '"recommendedProof": "human-auditable"' "$tmpdir/claims.json"
+grep -q '"recommendedProof": "deterministic"' "$tmpdir/claims.json"
+grep -q '"recommendedProof": "cautilus-eval"' "$tmpdir/claims.json"
 grep -q '"recommendedEvalSurface": "dev/repo"' "$tmpdir/claims.json"
 ```
 
@@ -131,7 +131,6 @@ Each claim candidate records:
 - `claimId`
 - `summary`
 - `sourceRefs[]`
-- `proofLayer`: `human-auditable`, `deterministic`, `cautilus-eval`, `scenario-candidate`, or `alignment-work`
 - `recommendedProof`
 - `verificationReadiness`
 - `evidenceStatus`
@@ -283,7 +282,7 @@ It should point to the relevant scenario command rather than duplicating scenari
 2. A proof plan can distinguish human-auditable, deterministic, eval-backed, scenario-candidate, and alignment-work claims.
 3. Claims that need Cautilus eval are mapped to one of the four current eval presets.
 4. The command registry and bundled skill present `claim`, `eval`, and `optimize` as the three product front doors.
-5. Existing `eval` and `optimize` behavior remains backward compatible while the first deterministic `claim` surface lands.
+5. Existing `eval` and `optimize` behavior remains unchanged while the first deterministic `claim` surface lands.
 
 ## Acceptance Checks
 
@@ -310,7 +309,7 @@ Potential failure: `claim discover` becomes a vague AI reviewer.
 Countermeasure: first slice emits source-ref-backed proof plans and keeps model-backed extraction out until a runner boundary exists.
 
 Potential failure: users think every claim should become a Cautilus eval.
-Countermeasure: `proofLayer` is required, and deterministic claims must point away from eval fixtures.
+Countermeasure: `recommendedProof` and `verificationReadiness` are required, and deterministic claims must point away from eval fixtures.
 
 Potential failure: the command becomes README-specific because README is the easiest demo.
 Countermeasure: examples must include at least one non-README truth surface, and command names must use `claim`, not `readme`.

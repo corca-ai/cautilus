@@ -63,7 +63,7 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["claimId", "claimFingerprint", "summary", "sourceRefs", "proofLayer", "recommendedProof", "verificationReadiness", "evidenceStatus", "reviewStatus", "lifecycle", "evidenceRefs", "whyThisLayer", "nextAction"],
+        "required": ["claimId", "claimFingerprint", "summary", "sourceRefs", "recommendedProof", "verificationReadiness", "evidenceStatus", "reviewStatus", "lifecycle", "evidenceRefs", "whyThisLayer", "nextAction"],
         "properties": {
           "claimId": { "type": "string" },
           "claimFingerprint": { "type": "string" },
@@ -80,10 +80,6 @@
                 "excerpt": { "type": "string" }
               }
             }
-          },
-          "proofLayer": {
-            "type": "string",
-            "enum": ["human-auditable", "deterministic", "cautilus-eval", "scenario-candidate", "alignment-work"]
           },
           "recommendedEvalSurface": {
             "type": "string",

@@ -74,7 +74,6 @@ type claimCandidate struct {
 	claimFingerprint       string
 	summary                string
 	sourceRefs             []claimSourceRef
-	proofLayer             string
 	recommendedProof       string
 	verificationReadiness  string
 	evidenceStatus         string
@@ -105,7 +104,6 @@ type claimTextBlock struct {
 }
 
 type claimClassification struct {
-	proofLayer             string
 	recommendedProof       string
 	verificationReadiness  string
 	recommendedEvalSurface string
@@ -732,7 +730,6 @@ func extractClaimCandidates(source claimSource, seenIDs map[string]int, config c
 				line:    block.line,
 				excerpt: summary,
 			}},
-			proofLayer:             classification.proofLayer,
 			recommendedProof:       classification.recommendedProof,
 			verificationReadiness:  classification.verificationReadiness,
 			evidenceStatus:         "unknown",
@@ -842,7 +839,6 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 	switch {
 	case containsAny(lower, []string{" unit test", " tests ", " lint", " typecheck", " type-check", " build ", " ci ", " compile", " schema ", " deterministic", " eval test ", " --runtime fixture", " fixture runtime", " fixture-backed"}):
 		return claimClassification{
-			proofLayer:            "deterministic",
 			recommendedProof:      "deterministic",
 			verificationReadiness: "ready-to-verify",
 			why:                   "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
@@ -850,7 +846,6 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 		}, true
 	case containsAny(lower, []string{" align", " aligned", " alignment", " drift", " reconcile", " mismatch", " consistent with", " consistency"}):
 		return claimClassification{
-			proofLayer:            "alignment-work",
 			recommendedProof:      "human-auditable",
 			verificationReadiness: "needs-alignment",
 			why:                   "The claim says surfaces should agree, so proof is not honest until the mismatched surfaces are reconciled.",
@@ -858,7 +853,6 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 		}, true
 	case containsAny(lower, []string{" static html", " html ", " render-html", " renderer", " browser-readable", " exampleinputcli", " catalog entry", " command catalog"}):
 		return claimClassification{
-			proofLayer:            "deterministic",
 			recommendedProof:      "deterministic",
 			verificationReadiness: "ready-to-verify",
 			why:                   "The claim names packet, catalog, or renderer behavior that should be protected by deterministic command, schema, or render tests.",
@@ -866,7 +860,6 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 		}, true
 	case containsAny(lower, []string{" durable packet", " durable packets", " machine-readable ", " eval-cases.json", " eval-observed.json", " eval-summary.json"}):
 		return claimClassification{
-			proofLayer:            "deterministic",
 			recommendedProof:      "deterministic",
 			verificationReadiness: "ready-to-verify",
 			why:                   "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks.",
@@ -874,7 +867,6 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 		}, true
 	case containsAny(lower, []string{" in-editor agent ", " drive the same contracts conversationally", " conversationally "}) && containsAny(lower, []string{" agent", " skill", " codex", " claude"}):
 		return claimClassification{
-			proofLayer:             "cautilus-eval",
 			recommendedProof:       "cautilus-eval",
 			verificationReadiness:  "ready-to-verify",
 			recommendedEvalSurface: "dev/skill",
@@ -883,7 +875,6 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 		}, true
 	case containsAny(lower, []string{" install", " installs ", " installer", " standalone binary", " checked into each host repo", " bundled skill", " plugin manifest", " plugin manifests", ".agents/skills", ".agents/cautilus-adapter"}):
 		return claimClassification{
-			proofLayer:            "deterministic",
 			recommendedProof:      "deterministic",
 			verificationReadiness: "ready-to-verify",
 			why:                   "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks.",
@@ -895,7 +886,6 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 			surface = "app/chat"
 		}
 		return claimClassification{
-			proofLayer:             "scenario-candidate",
 			recommendedProof:       "cautilus-eval",
 			verificationReadiness:  "needs-scenario",
 			recommendedEvalSurface: surface,
@@ -904,7 +894,6 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 		}, true
 	case claimDocumentsScenarioCommand(lower):
 		return claimClassification{
-			proofLayer:            "deterministic",
 			recommendedProof:      "deterministic",
 			verificationReadiness: "ready-to-verify",
 			why:                   "The claim documents scenario command or proposal-packet behavior rather than asking for a new behavior scenario.",
@@ -912,7 +901,6 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 		}, true
 	case strings.HasPrefix(strings.TrimSpace(lower), "use when ") && containsAny(lower, []string{" stateful automation ", " keeps stalling ", " persists state "}):
 		return claimClassification{
-			proofLayer:            "human-auditable",
 			recommendedProof:      "human-auditable",
 			verificationReadiness: "blocked",
 			why:                   "The claim is broad usage guidance until a concrete stalled-workflow scenario or evidence packet is promoted.",
@@ -920,7 +908,6 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 		}, true
 	case broadPositioningClaim(lower):
 		return claimClassification{
-			proofLayer:            "human-auditable",
 			recommendedProof:      "human-auditable",
 			verificationReadiness: "blocked",
 			why:                   "The claim is a broad positioning or aggregate product promise; a single eval fixture would overclaim until concrete subclaims are named.",
@@ -929,7 +916,6 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 	case containsAny(lower, []string{" agent", " prompt", " skill", " workflow", " llm", " model", " conversation", " assistant", " behavior", " eval "}):
 		surface := recommendedEvalSurface(lower)
 		return claimClassification{
-			proofLayer:             "cautilus-eval",
 			recommendedProof:       "cautilus-eval",
 			verificationReadiness:  "ready-to-verify",
 			recommendedEvalSurface: surface,
@@ -938,7 +924,6 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 		}, true
 	case containsAny(lower, []string{" human", " auditable", " read ", " docs", " document", " visible", " inspect"}):
 		return claimClassification{
-			proofLayer:            "human-auditable",
 			recommendedProof:      "human-auditable",
 			verificationReadiness: "ready-to-verify",
 			why:                   "The claim can be checked by reading current source, docs, or generated artifacts.",
@@ -1207,7 +1192,6 @@ func renderClaimCandidates(candidates []claimCandidate) []any {
 			"groupHints":            candidate.groupHints,
 			"evidenceRefs":          []any{},
 			"sourceRefs":            renderClaimSourceRefs(candidate.sourceRefs),
-			"proofLayer":            candidate.proofLayer,
 			"whyThisLayer":          candidate.whyThisLayer,
 			"nextAction":            candidate.nextAction,
 		}
@@ -1324,7 +1308,6 @@ func summarizeClaimCandidates(candidates []any) map[string]any {
 	byEvidence := map[string]int{}
 	byReview := map[string]int{}
 	byLifecycle := map[string]int{}
-	byProofLayer := map[string]int{}
 	byAudience := map[string]int{}
 	bySemanticGroup := map[string]int{}
 	for _, raw := range candidates {
@@ -1334,7 +1317,6 @@ func summarizeClaimCandidates(candidates []any) map[string]any {
 		incrementStringCount(byEvidence, entry["evidenceStatus"])
 		incrementStringCount(byReview, entry["reviewStatus"])
 		incrementStringCount(byLifecycle, entry["lifecycle"])
-		incrementStringCount(byProofLayer, entry["proofLayer"])
 		incrementStringCount(byAudience, claimAudienceOrUnclear(stringFromAny(entry["claimAudience"])))
 		incrementStringCount(bySemanticGroup, claimSemanticGroupOrGeneral(stringFromAny(entry["claimSemanticGroup"])))
 	}
@@ -1344,7 +1326,6 @@ func summarizeClaimCandidates(candidates []any) map[string]any {
 		"byEvidenceStatus":        sortedCountMap(byEvidence),
 		"byReviewStatus":          sortedCountMap(byReview),
 		"byLifecycle":             sortedCountMap(byLifecycle),
-		"byProofLayer":            sortedCountMap(byProofLayer),
 		"byClaimAudience":         sortedCountMap(byAudience),
 		"byClaimSemanticGroup":    sortedCountMap(bySemanticGroup),
 	}
@@ -1505,7 +1486,6 @@ func claimStatusSampleClaims(candidates []any, limit int) []any {
 		entry := map[string]any{
 			"claimId":               candidate["claimId"],
 			"summary":               candidate["summary"],
-			"proofLayer":            candidate["proofLayer"],
 			"recommendedProof":      candidate["recommendedProof"],
 			"verificationReadiness": candidate["verificationReadiness"],
 			"evidenceStatus":        candidate["evidenceStatus"],
@@ -1987,7 +1967,6 @@ func currentClaimLabels(candidate map[string]any) map[string]any {
 		"evidenceStatus":        candidate["evidenceStatus"],
 		"reviewStatus":          candidate["reviewStatus"],
 		"lifecycle":             candidate["lifecycle"],
-		"proofLayer":            candidate["proofLayer"],
 		"claimAudience":         candidate["claimAudience"],
 		"claimSemanticGroup":    claimSemanticGroupOrGeneral(stringFromAny(candidate["claimSemanticGroup"])),
 	}
@@ -2432,9 +2411,6 @@ func applyClaimUpdate(candidate map[string]any, update map[string]any) ([]any, e
 		candidate["unresolvedQuestions"] = questions
 		applied = append(applied, "unresolvedQuestions")
 	}
-	recommendedProof := stringFromAny(candidate["recommendedProof"])
-	readiness := stringFromAny(candidate["verificationReadiness"])
-	candidate["proofLayer"] = derivedProofLayer(recommendedProof, readiness)
 	if err := validateClaimEvidenceSatisfaction(candidate); err != nil {
 		return nil, err
 	}
@@ -2875,13 +2851,6 @@ func ValidateClaimProofPlan(plan map[string]any) error {
 		if _, err := normalizeNonEmptyString(entry["summary"], fmt.Sprintf("claimCandidates[%d].summary", index)); err != nil {
 			return err
 		}
-		layer, err := normalizeNonEmptyString(entry["proofLayer"], fmt.Sprintf("claimCandidates[%d].proofLayer", index))
-		if err != nil {
-			return err
-		}
-		if !validProofLayer(layer) {
-			return fmt.Errorf("claimCandidates[%d].proofLayer %q is unsupported", index, layer)
-		}
 		recommendedProof, err := normalizeNonEmptyString(entry["recommendedProof"], fmt.Sprintf("claimCandidates[%d].recommendedProof", index))
 		if err != nil {
 			return err
@@ -2895,9 +2864,6 @@ func ValidateClaimProofPlan(plan map[string]any) error {
 		}
 		if !validVerificationReadiness(readiness) {
 			return fmt.Errorf("claimCandidates[%d].verificationReadiness %q is unsupported", index, readiness)
-		}
-		if !claimProofLayerMatchesSplitFields(layer, recommendedProof, readiness) {
-			return fmt.Errorf("claimCandidates[%d].proofLayer %q does not match recommendedProof=%q verificationReadiness=%q", index, layer, recommendedProof, readiness)
 		}
 		evidenceStatus, err := normalizeNonEmptyString(entry["evidenceStatus"], fmt.Sprintf("claimCandidates[%d].evidenceStatus", index))
 		if err != nil {
@@ -2954,30 +2920,6 @@ func validClaimAudience(value string) bool {
 		return true
 	default:
 		return false
-	}
-}
-
-func validProofLayer(value string) bool {
-	switch value {
-	case "human-auditable", "deterministic", "cautilus-eval", "scenario-candidate", "alignment-work":
-		return true
-	default:
-		return false
-	}
-}
-
-func claimProofLayerMatchesSplitFields(proofLayer string, recommendedProof string, readiness string) bool {
-	return proofLayer == derivedProofLayer(recommendedProof, readiness)
-}
-
-func derivedProofLayer(recommendedProof string, readiness string) string {
-	switch {
-	case readiness == "needs-alignment":
-		return "alignment-work"
-	case recommendedProof == "cautilus-eval" && readiness == "needs-scenario":
-		return "scenario-candidate"
-	default:
-		return recommendedProof
 	}
 }
 

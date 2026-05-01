@@ -220,7 +220,6 @@ func TestAgentStatusIncludesRelatedClaimStates(t *testing.T) {
 				"claimId":               "claim-readme-md-1",
 				"claimFingerprint":      "abc123",
 				"summary":               "Demo behavior is evidenced.",
-				"proofLayer":            "deterministic",
 				"recommendedProof":      "deterministic",
 				"verificationReadiness": "ready-to-verify",
 				"evidenceStatus":        "satisfied",

@@ -28,14 +28,14 @@ func TestDiscoverClaimProofPlanClassifiesFixtureClaims(t *testing.T) {
 	if len(candidates) != 3 {
 		t.Fatalf("expected 3 fixture candidates, got %#v", candidates)
 	}
-	byLayer := map[string]map[string]any{}
+	byProof := map[string]map[string]any{}
 	for _, raw := range candidates {
 		entry := asMap(raw)
-		byLayer[stringFromAny(entry["proofLayer"])] = entry
+		byProof[stringFromAny(entry["recommendedProof"])] = entry
 	}
-	for _, layer := range []string{"human-auditable", "deterministic", "cautilus-eval"} {
-		if byLayer[layer] == nil {
-			t.Fatalf("missing %s candidate in %#v", layer, candidates)
+	for _, proof := range []string{"human-auditable", "deterministic", "cautilus-eval"} {
+		if byProof[proof] == nil {
+			t.Fatalf("missing %s candidate in %#v", proof, candidates)
 		}
 	}
 	for _, raw := range candidates {
@@ -48,12 +48,9 @@ func TestDiscoverClaimProofPlanClassifiesFixtureClaims(t *testing.T) {
 		if audience := stringFromAny(entry["claimAudience"]); audience == "" {
 			t.Fatalf("candidate missing claimAudience: %#v", entry)
 		}
-		if entry["proofLayer"] != derivedProofLayer(stringFromAny(entry["recommendedProof"]), stringFromAny(entry["verificationReadiness"])) {
-			t.Fatalf("legacy proofLayer does not match split fields: %#v", entry)
-		}
 	}
-	if byLayer["cautilus-eval"]["recommendedEvalSurface"] != "dev/repo" {
-		t.Fatalf("expected dev/repo eval surface, got %#v", byLayer["cautilus-eval"])
+	if byProof["cautilus-eval"]["recommendedEvalSurface"] != "dev/repo" {
+		t.Fatalf("expected dev/repo eval surface, got %#v", byProof["cautilus-eval"])
 	}
 	summary := asMap(plan["claimSummary"])
 	if asMap(summary["byEvidenceStatus"])["unknown"] != 3 {
@@ -294,7 +291,7 @@ func TestBuildClaimStatusSummaryCanIncludeBoundedSampleClaims(t *testing.T) {
 	if stringFromAny(first["claimId"]) == "" || stringFromAny(first["summary"]) == "" {
 		t.Fatalf("expected sample claim identity and summary, got %#v", first)
 	}
-	if stringFromAny(first["proofLayer"]) == "" || stringFromAny(first["recommendedProof"]) == "" {
+	if stringFromAny(first["recommendedProof"]) == "" || stringFromAny(first["verificationReadiness"]) == "" {
 		t.Fatalf("expected sample claim proof labels, got %#v", first)
 	}
 	if stringFromAny(first["claimAudience"]) == "" || stringFromAny(first["claimSemanticGroup"]) == "" {
@@ -337,7 +334,6 @@ func TestBuildClaimStatusSummaryIncludesSatisfiedEvidence(t *testing.T) {
 					"supportsClaimIds": []any{"claim-readme-md-1"},
 				}},
 				"sourceRefs": []any{map[string]any{"path": "README.md", "line": 1, "excerpt": "The skill flow is already covered."}},
-				"proofLayer": "cautilus-eval",
 			},
 		},
 	}
@@ -442,7 +438,6 @@ func TestBuildClaimReviewInputIncludesPossibleEvidenceRefs(t *testing.T) {
 				"groupHints":             []any{"cautilus-eval"},
 				"evidenceRefs":           []any{},
 				"sourceRefs":             []any{map[string]any{"path": "README.md", "line": 1, "excerpt": "The skill flow might already have evidence."}},
-				"proofLayer":             "cautilus-eval",
 			},
 		},
 	}
@@ -674,8 +669,8 @@ func TestApplyClaimReviewResultCanClearRecommendedEvalSurface(t *testing.T) {
 	if _, exists := updatedClaim["recommendedEvalSurface"]; exists {
 		t.Fatalf("expected recommendedEvalSurface to be cleared, got %#v", updatedClaim)
 	}
-	if updatedClaim["proofLayer"] != "deterministic" {
-		t.Fatalf("expected proofLayer to follow deterministic review update, got %#v", updatedClaim)
+	if updatedClaim["recommendedProof"] != "deterministic" {
+		t.Fatalf("expected recommendedProof to follow deterministic review update, got %#v", updatedClaim)
 	}
 }
 
@@ -804,7 +799,6 @@ func TestBuildClaimEvalPlanMarksAppClaimsAsProductRunnerProof(t *testing.T) {
 				"groupHints":             []any{"cautilus-eval"},
 				"evidenceRefs":           []any{},
 				"sourceRefs":             []any{map[string]any{"path": "README.md", "line": 1, "excerpt": "The chat remembers prior preferences."}},
-				"proofLayer":             "cautilus-eval",
 			},
 		},
 	}
@@ -877,7 +871,6 @@ func TestBuildClaimEvalPlanSkipsSatisfiedEvalClaims(t *testing.T) {
 					"supportsClaimIds": []any{"claim-readme-md-1"},
 				}},
 				"sourceRefs": []any{map[string]any{"path": "README.md", "line": 1, "excerpt": "The skill flow is already covered."}},
-				"proofLayer": "cautilus-eval",
 			},
 		},
 	}
@@ -917,7 +910,6 @@ func TestBuildClaimValidationReportValidatesEvidenceRefs(t *testing.T) {
 				"claimId":               "claim-fixture-1",
 				"claimFingerprint":      "sha256:fixture",
 				"summary":               "Agents must follow the repo operating contract.",
-				"proofLayer":            "cautilus-eval",
 				"recommendedProof":      "cautilus-eval",
 				"verificationReadiness": "ready-to-verify",
 				"evidenceStatus":        "satisfied",
@@ -1036,7 +1028,7 @@ func TestDiscoverClaimProofPlanHonorsExplicitSources(t *testing.T) {
 		t.Fatalf("expected only the AGENTS.md candidate, got %#v", candidates)
 	}
 	entry := asMap(candidates[0])
-	if entry["proofLayer"] != "cautilus-eval" {
+	if entry["recommendedProof"] != "cautilus-eval" {
 		t.Fatalf("expected cautilus-eval candidate, got %#v", entry)
 	}
 }

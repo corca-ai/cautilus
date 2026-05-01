@@ -10,9 +10,8 @@
             "claimSemanticGroup": "Adapter and portability",
             "evidenceStatus": "unknown",
             "lifecycle": "new",
-            "proofLayer": "deterministic",
             "recommendedProof": "deterministic",
-            "reviewStatus": "heuristic",
+            "reviewStatus": "agent-reviewed",
             "verificationReadiness": "ready-to-verify"
           },
           "evidenceRefs": [],
@@ -21,7 +20,7 @@
             "deterministic",
             "readme"
           ],
-          "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
+          "nextAction": "Prove with deterministic adoption or adapter-materialization coverage that host repos keep evaluation behavior checked in and reviewable.",
           "sourceRefs": [
             {
               "excerpt": "They stay checked into each host repo so evaluation behavior remains reproducible, reviewable, and owned by the repo that declares it.",
@@ -39,9 +38,8 @@
             "claimSemanticGroup": "Adapter and portability",
             "evidenceStatus": "unknown",
             "lifecycle": "new",
-            "proofLayer": "deterministic",
             "recommendedProof": "deterministic",
-            "reviewStatus": "heuristic",
+            "reviewStatus": "agent-reviewed",
             "verificationReadiness": "ready-to-verify"
           },
           "evidenceRefs": [],
@@ -50,7 +48,7 @@
             "deterministic",
             "readme"
           ],
-          "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+          "nextAction": "Prove with deterministic coverage for `cautilus eval test --runtime fixture` using adapter-owned fixture results through the normal eval packet path.",
           "sourceRefs": [
             {
               "excerpt": "When the goal is only to prove command routing and packet evaluation, `cautilus eval test --runtime fixture` can run the same product path with adapter-owned fixture results instead of launching a nested model eval.",
@@ -68,9 +66,8 @@
             "claimSemanticGroup": "Adapter and portability",
             "evidenceStatus": "unknown",
             "lifecycle": "new",
-            "proofLayer": "deterministic",
             "recommendedProof": "deterministic",
-            "reviewStatus": "heuristic",
+            "reviewStatus": "agent-reviewed",
             "verificationReadiness": "ready-to-verify"
           },
           "evidenceRefs": [],
@@ -79,7 +76,7 @@
             "deterministic",
             "readme"
           ],
-          "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
+          "nextAction": "Prove with deterministic install or doctor-readiness coverage that the standalone binary and bundled skill can be installed without copying a scaffold first.",
           "sourceRefs": [
             {
               "excerpt": "Ships as a standalone binary plus a bundled skill a host repo can install without copying another scaffold first.",
@@ -108,22 +105,31 @@
           "currentLabels": {
             "claimAudience": "user",
             "claimSemanticGroup": "Agent and skill workflow",
-            "evidenceStatus": "unknown",
+            "evidenceStatus": "satisfied",
             "lifecycle": "new",
-            "proofLayer": "cautilus-eval",
             "recommendedEvalSurface": "dev/skill",
             "recommendedProof": "cautilus-eval",
-            "reviewStatus": "heuristic",
+            "reviewStatus": "agent-reviewed",
             "verificationReadiness": "ready-to-verify"
           },
-          "evidenceRefs": [],
+          "evidenceRefs": [
+            {
+              "contentHash": "sha256:dd7e4a590d4439cf31cb119491f2cb73c150f3454cf1f79d51ff6b9064c18cc5",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "path": ".cautilus/claims/evidence-dev-skill-routing-install.json",
+              "supportsClaimIds": [
+                "claim-readme-md-144"
+              ]
+            }
+          ],
           "groupHints": [
             "audience:user",
             "cautilus-eval",
             "dev/skill",
             "readme"
           ],
-          "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
+          "nextAction": "Keep this claim covered by rerunning self-dogfood-eval-skill when bundled skill routing, eval skill fixtures, install behavior, or static skill validation changes.",
           "possibleEvidenceRefs": [
             {
               "bundleId": "evidence-dev-skill-routing-install-codex-2026-05-01",
@@ -156,22 +162,31 @@
           "currentLabels": {
             "claimAudience": "user",
             "claimSemanticGroup": "Agent and skill workflow",
-            "evidenceStatus": "unknown",
+            "evidenceStatus": "satisfied",
             "lifecycle": "new",
-            "proofLayer": "cautilus-eval",
             "recommendedEvalSurface": "dev/skill",
             "recommendedProof": "cautilus-eval",
-            "reviewStatus": "heuristic",
+            "reviewStatus": "agent-reviewed",
             "verificationReadiness": "ready-to-verify"
           },
-          "evidenceRefs": [],
+          "evidenceRefs": [
+            {
+              "contentHash": "sha256:dd7e4a590d4439cf31cb119491f2cb73c150f3454cf1f79d51ff6b9064c18cc5",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "path": ".cautilus/claims/evidence-dev-skill-routing-install.json",
+              "supportsClaimIds": [
+                "claim-readme-md-211"
+              ]
+            }
+          ],
           "groupHints": [
             "audience:user",
             "cautilus-eval",
             "dev/skill",
             "readme"
           ],
-          "nextAction": "Create or use a dev/skill fixture that proves the installed skill can drive the named workflow.",
+          "nextAction": "Keep install and agent-surface proof aligned with self-dogfood-eval-skill plus install/doctor smoke when plugin manifests or skill packaging change.",
           "possibleEvidenceRefs": [
             {
               "bundleId": "evidence-dev-skill-routing-install-codex-2026-05-01",
@@ -220,9 +235,8 @@
             "claimSemanticGroup": "Agent and skill workflow",
             "evidenceStatus": "unknown",
             "lifecycle": "new",
-            "proofLayer": "deterministic",
             "recommendedProof": "deterministic",
-            "reviewStatus": "heuristic",
+            "reviewStatus": "agent-reviewed",
             "verificationReadiness": "ready-to-verify"
           },
           "evidenceRefs": [],
@@ -249,9 +263,8 @@
             "claimSemanticGroup": "Agent and skill workflow",
             "evidenceStatus": "unknown",
             "lifecycle": "new",
-            "proofLayer": "deterministic",
             "recommendedProof": "deterministic",
-            "reviewStatus": "heuristic",
+            "reviewStatus": "agent-reviewed",
             "verificationReadiness": "ready-to-verify"
           },
           "evidenceRefs": [],
@@ -278,9 +291,8 @@
             "claimSemanticGroup": "Agent and skill workflow",
             "evidenceStatus": "unknown",
             "lifecycle": "new",
-            "proofLayer": "deterministic",
             "recommendedProof": "deterministic",
-            "reviewStatus": "heuristic",
+            "reviewStatus": "agent-reviewed",
             "verificationReadiness": "ready-to-verify"
           },
           "evidenceRefs": [],
@@ -289,7 +301,7 @@
             "deterministic",
             "readme"
           ],
-          "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
+          "nextAction": "Prove with deterministic schema, packet example, or CLI golden-output coverage for eval, report, review, evidence, and optimize packets.",
           "sourceRefs": [
             {
               "excerpt": "machine-readable eval, report, review, evidence, and optimization packets that agents can consume directly",
@@ -307,9 +319,8 @@
             "claimSemanticGroup": "Agent and skill workflow",
             "evidenceStatus": "unknown",
             "lifecycle": "new",
-            "proofLayer": "deterministic",
             "recommendedProof": "deterministic",
-            "reviewStatus": "heuristic",
+            "reviewStatus": "agent-reviewed",
             "verificationReadiness": "ready-to-verify"
           },
           "evidenceRefs": [],
@@ -318,7 +329,7 @@
             "deterministic",
             "readme"
           ],
-          "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
+          "nextAction": "Prove with deterministic packet contract tests that command outputs include enough structured state for a later agent to resume.",
           "sourceRefs": [
             {
               "excerpt": "Commands should emit durable packets with enough state for the next agent to resume, not only terminal prose for a human operator.",
@@ -327,6 +338,34 @@
             }
           ],
           "summary": "Commands should emit durable packets with enough state for the next agent to resume, not only terminal prose for a human operator."
+        },
+        {
+          "claimFingerprint": "sha256:c6ac22b52078515a66470c72cc5fb595fb1e06f9a762f720b6c9a0f058d2aa50",
+          "claimId": "claim-readme-md-95",
+          "currentLabels": {
+            "claimAudience": "user",
+            "claimSemanticGroup": "Agent and skill workflow",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "agent-reviewed",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:user",
+            "deterministic",
+            "readme"
+          ],
+          "nextAction": "Keep or add deterministic scenario command, packet, or render proof for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "Next step: a human decides whether to promote the scenario into a protected evaluation path, while an agent can reopen the saved result, compare variants, or feed it into the next bounded step.",
+              "line": 95,
+              "path": "README.md"
+            }
+          ],
+          "summary": "Next step: a human decides whether to promote the scenario into a protected evaluation path, while an agent can reopen the saved result, compare variants, or feed it into the next bounded step."
         }
       ],
       "claimAudience": "user",
@@ -337,7 +376,6 @@
       "priority": 10,
       "reason": "User-facing entry-surface claims are reviewed first because they define product promises.",
       "recommendedProof": "deterministic",
-      "truncatedClaimCount": 1,
       "verificationReadiness": "ready-to-verify"
     },
     {
@@ -350,9 +388,8 @@
             "claimSemanticGroup": "Agent and skill workflow",
             "evidenceStatus": "unknown",
             "lifecycle": "new",
-            "proofLayer": "human-auditable",
             "recommendedProof": "human-auditable",
-            "reviewStatus": "heuristic",
+            "reviewStatus": "agent-reviewed",
             "verificationReadiness": "blocked"
           },
           "evidenceRefs": [],
@@ -362,7 +399,7 @@
             "human-auditable",
             "readme"
           ],
-          "nextAction": "Keep this as human-auditable positioning or promote a concrete stalled-workflow example before creating a protected eval fixture.",
+          "nextAction": "Keep as a human-auditable positioning claim unless a concrete stalled-state scenario is promoted into an explicit fixture or deterministic readiness check.",
           "sourceRefs": [
             {
               "excerpt": "Use when a stateful automation — a CLI workflow, long-running agent session, or pipeline that persists state across invocations — keeps stalling on the same step.",
@@ -380,9 +417,8 @@
             "claimSemanticGroup": "Agent and skill workflow",
             "evidenceStatus": "unknown",
             "lifecycle": "new",
-            "proofLayer": "human-auditable",
             "recommendedProof": "human-auditable",
-            "reviewStatus": "heuristic",
+            "reviewStatus": "agent-reviewed",
             "verificationReadiness": "blocked"
           },
           "evidenceRefs": [],
@@ -392,7 +428,7 @@
             "human-auditable",
             "readme"
           ],
-          "nextAction": "Keep this as human-auditable positioning or decompose it into concrete deterministic or Cautilus eval claims before proof planning.",
+          "nextAction": "Keep the claim visible as positioning, or decompose it into concrete deterministic, dev/skill, and packet-surface claims before proof planning.",
           "sourceRefs": [
             {
               "excerpt": "`Cautilus` keeps agent and workflow behavior honest while prompts keep changing.",
@@ -421,22 +457,31 @@
           "currentLabels": {
             "claimAudience": "user",
             "claimSemanticGroup": "Claim discovery and review",
-            "evidenceStatus": "unknown",
+            "evidenceStatus": "satisfied",
             "lifecycle": "new",
-            "proofLayer": "cautilus-eval",
             "recommendedEvalSurface": "dev/skill",
             "recommendedProof": "cautilus-eval",
-            "reviewStatus": "heuristic",
+            "reviewStatus": "agent-reviewed",
             "verificationReadiness": "ready-to-verify"
           },
-          "evidenceRefs": [],
+          "evidenceRefs": [
+            {
+              "contentHash": "sha256:bdc972a2b15d5207596491d2e4048af7af6ce725c928ae05ddf988508c9303ba",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "path": ".cautilus/claims/evidence-dev-skill-dogfood.json",
+              "supportsClaimIds": [
+                "claim-readme-md-148"
+              ]
+            }
+          ],
           "groupHints": [
             "audience:user",
             "cautilus-eval",
             "dev/skill",
             "readme"
           ],
-          "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
+          "nextAction": "Keep this claim covered by rerunning the named dev/skill dogfood episodes when their fixtures, audit scripts, or bundled skill routing change.",
           "possibleEvidenceRefs": [
             {
               "bundleId": "evidence-dev-skill-dogfood-codex-2026-05-01",
@@ -485,7 +530,6 @@
             "claimSemanticGroup": "Claim discovery and review",
             "evidenceStatus": "unknown",
             "lifecycle": "new",
-            "proofLayer": "deterministic",
             "recommendedProof": "deterministic",
             "reviewStatus": "heuristic",
             "verificationReadiness": "ready-to-verify"
@@ -527,7 +571,6 @@
             "claimSemanticGroup": "Documentation and contracts",
             "evidenceStatus": "unknown",
             "lifecycle": "new",
-            "proofLayer": "scenario-candidate",
             "recommendedEvalSurface": "app/chat",
             "recommendedProof": "cautilus-eval",
             "reviewStatus": "heuristic",
@@ -573,7 +616,6 @@
             "claimSemanticGroup": "Documentation and contracts",
             "evidenceStatus": "unknown",
             "lifecycle": "new",
-            "proofLayer": "cautilus-eval",
             "recommendedEvalSurface": "app/prompt",
             "recommendedProof": "cautilus-eval",
             "reviewStatus": "heuristic",
@@ -604,7 +646,6 @@
             "claimSemanticGroup": "Documentation and contracts",
             "evidenceStatus": "unknown",
             "lifecycle": "new",
-            "proofLayer": "cautilus-eval",
             "recommendedEvalSurface": "app/prompt",
             "recommendedProof": "cautilus-eval",
             "reviewStatus": "heuristic",
@@ -638,6 +679,647 @@
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "candidates": [
+        {
+          "claimFingerprint": "sha256:cb717dd9c88c18787242dd04a0d050f2d64914b8a1b7c17ce68f7ed09436899c",
+          "claimId": "claim-readme-md-159",
+          "currentLabels": {
+            "claimAudience": "user",
+            "claimSemanticGroup": "Packets and reporting",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:user",
+            "deterministic",
+            "readme"
+          ],
+          "nextAction": "Keep or add deterministic packet, catalog, schema, or renderer proof for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "Each catalog entry now also includes `exampleInputCli`, so an operator or wrapper can inspect a minimal valid packet shape without opening a fixture path first.",
+              "line": 159,
+              "path": "README.md"
+            }
+          ],
+          "summary": "Each catalog entry now also includes `exampleInputCli`, so an operator or wrapper can inspect a minimal valid packet shape without opening a fixture path first."
+        }
+      ],
+      "claimAudience": "user",
+      "claimCount": 1,
+      "claimSemanticGroup": "Packets and reporting",
+      "clusterId": "cluster-user-packets-and-reporting-deterministic-readme",
+      "groupKey": "user:Packets and reporting:deterministic:readme",
+      "priority": 10,
+      "reason": "User-facing entry-surface claims are reviewed first because they define product promises.",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "candidates": [
+        {
+          "claimFingerprint": "sha256:460f483e43d6c0fbf170e58f385550bae84a4940a4f8f9a2818affbccec87cf1",
+          "claimId": "claim-agents-md-79",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Adapter and portability",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedEvalSurface": "dev/repo",
+            "recommendedProof": "cautilus-eval",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "cautilus-eval",
+            "dev/repo",
+            "repo-instructions"
+          ],
+          "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
+          "sourceRefs": [
+            {
+              "excerpt": "When a quality or release review asks for evaluator, review, CLI-discovery, or agent-surface proof, verify that the selected adapter can actually run that surface before treating the gate as available.",
+              "line": 79,
+              "path": "AGENTS.md"
+            }
+          ],
+          "summary": "When a quality or release review asks for evaluator, review, CLI-discovery, or agent-surface proof, verify that the selected adapter can actually run that surface before treating the gate as available."
+        }
+      ],
+      "claimAudience": "developer",
+      "claimCount": 1,
+      "claimSemanticGroup": "Adapter and portability",
+      "clusterId": "cluster-developer-adapter-and-portability-cautilus-eval-dev-repo-repo-in",
+      "groupKey": "developer:Adapter and portability:cautilus-eval:dev/repo:repo-instructions",
+      "priority": 15,
+      "reason": "Developer-facing entry-surface claims are reviewed after user promises because they define repo-worker behavior.",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "candidates": [
+        {
+          "claimFingerprint": "sha256:0bae4dba5995735432a7ab4cf307999b1c1a2dda82841939daff988c016548a5",
+          "claimId": "claim-agents-md-12",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Adapter and portability",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "deterministic",
+            "repo-instructions"
+          ],
+          "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "Deterministic behavior belongs in code, scripts, adapters, tests, and specs.",
+              "line": 12,
+              "path": "AGENTS.md"
+            }
+          ],
+          "summary": "Deterministic behavior belongs in code, scripts, adapters, tests, and specs."
+        }
+      ],
+      "claimAudience": "developer",
+      "claimCount": 1,
+      "claimSemanticGroup": "Adapter and portability",
+      "clusterId": "cluster-developer-adapter-and-portability-deterministic-repo-instruction",
+      "groupKey": "developer:Adapter and portability:deterministic:repo-instructions",
+      "priority": 15,
+      "reason": "Developer-facing entry-surface claims are reviewed after user promises because they define repo-worker behavior.",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "candidates": [
+        {
+          "claimFingerprint": "sha256:15e5fbc575df9af76ba40b6ba314c6fe604ab6b50f792524416b12e01e871e42",
+          "claimId": "claim-agents-md-61",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Agent and skill workflow",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "deterministic",
+            "repo-instructions"
+          ],
+          "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "Keep this block short. Detailed routing belongs in installed skill metadata and `find-skills` output, not in a long checked-in catalog.",
+              "line": 61,
+              "path": "AGENTS.md"
+            }
+          ],
+          "summary": "Keep this block short. Detailed routing belongs in installed skill metadata and `find-skills` output, not in a long checked-in catalog."
+        }
+      ],
+      "claimAudience": "developer",
+      "claimCount": 1,
+      "claimSemanticGroup": "Agent and skill workflow",
+      "clusterId": "cluster-developer-agent-and-skill-workflow-deterministic-repo-instructio",
+      "groupKey": "developer:Agent and skill workflow:deterministic:repo-instructions",
+      "priority": 15,
+      "reason": "Developer-facing entry-surface claims are reviewed after user promises because they define repo-worker behavior.",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "candidates": [
+        {
+          "claimFingerprint": "sha256:367f95519e0813c875bfa7e39244a69fa73e6cad1dc133bc6338767ce229d3fa",
+          "claimId": "claim-agents-md-26",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Documentation and contracts",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedEvalSurface": "dev/repo",
+            "recommendedProof": "cautilus-eval",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "cautilus-eval",
+            "dev/repo",
+            "repo-instructions"
+          ],
+          "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
+          "sourceRefs": [
+            {
+              "excerpt": "`Cautilus` owns generic intentful behavior evaluation workflow contracts.",
+              "line": 26,
+              "path": "AGENTS.md"
+            }
+          ],
+          "summary": "`Cautilus` owns generic intentful behavior evaluation workflow contracts."
+        }
+      ],
+      "claimAudience": "developer",
+      "claimCount": 1,
+      "claimSemanticGroup": "Documentation and contracts",
+      "clusterId": "cluster-developer-documentation-and-contracts-cautilus-eval-dev-repo-rep",
+      "groupKey": "developer:Documentation and contracts:cautilus-eval:dev/repo:repo-instructions",
+      "priority": 15,
+      "reason": "Developer-facing entry-surface claims are reviewed after user promises because they define repo-worker behavior.",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "candidates": [
+        {
+          "claimFingerprint": "sha256:23a867598176c24e844968b2700a44f31228da6e0f368e8194124a5ee0df47c9",
+          "claimId": "claim-agents-md-29",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Evaluation surfaces",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedEvalSurface": "app/prompt",
+            "recommendedProof": "cautilus-eval",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "app/prompt",
+            "audience:developer",
+            "cautilus-eval",
+            "repo-instructions"
+          ],
+          "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus eval test.",
+          "sourceRefs": [
+            {
+              "excerpt": "The long-term direction is intent-first and intentful behavior evaluation: prompts can change if the evaluated behavior gets better.",
+              "line": 29,
+              "path": "AGENTS.md"
+            }
+          ],
+          "summary": "The long-term direction is intent-first and intentful behavior evaluation: prompts can change if the evaluated behavior gets better."
+        }
+      ],
+      "claimAudience": "developer",
+      "claimCount": 1,
+      "claimSemanticGroup": "Evaluation surfaces",
+      "clusterId": "cluster-developer-evaluation-surfaces-cautilus-eval-app-prompt-repo-inst",
+      "groupKey": "developer:Evaluation surfaces:cautilus-eval:app/prompt:repo-instructions",
+      "priority": 15,
+      "reason": "Developer-facing entry-surface claims are reviewed after user promises because they define repo-worker behavior.",
+      "recommendedEvalSurface": "app/prompt",
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "candidates": [
+        {
+          "claimFingerprint": "sha256:96b7f51516ba4c8a8d89e4e5a77652f179a81105dc574ab340fab051182ee0a8",
+          "claimId": "claim-agents-md-73",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Evaluation surfaces",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedEvalSurface": "dev/repo",
+            "recommendedProof": "cautilus-eval",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "cautilus-eval",
+            "dev/repo",
+            "repo-instructions"
+          ],
+          "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
+          "sourceRefs": [
+            {
+              "excerpt": "While implementing, any bug, error, regression, or unexpected behavior routes to `charness:debug` before further fixes.",
+              "line": 73,
+              "path": "AGENTS.md"
+            }
+          ],
+          "summary": "While implementing, any bug, error, regression, or unexpected behavior routes to `charness:debug` before further fixes."
+        }
+      ],
+      "claimAudience": "developer",
+      "claimCount": 1,
+      "claimSemanticGroup": "Evaluation surfaces",
+      "clusterId": "cluster-developer-evaluation-surfaces-cautilus-eval-dev-repo-repo-instru",
+      "groupKey": "developer:Evaluation surfaces:cautilus-eval:dev/repo:repo-instructions",
+      "priority": 15,
+      "reason": "Developer-facing entry-surface claims are reviewed after user promises because they define repo-worker behavior.",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "candidates": [
+        {
+          "claimFingerprint": "sha256:ea6f3cae604c3d4b5379b19b8017420cc345e82362bf13c51c4424a44856efde",
+          "claimId": "claim-agents-md-123",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Quality gates",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedEvalSurface": "dev/repo",
+            "recommendedProof": "cautilus-eval",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "cautilus-eval",
+            "dev/repo",
+            "repo-instructions"
+          ],
+          "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
+          "sourceRefs": [
+            {
+              "excerpt": "`npm run test:on-demand` currently owns the heavier self-dogfood workflow script tests.",
+              "line": 123,
+              "path": "AGENTS.md"
+            }
+          ],
+          "summary": "`npm run test:on-demand` currently owns the heavier self-dogfood workflow script tests."
+        }
+      ],
+      "claimAudience": "developer",
+      "claimCount": 1,
+      "claimSemanticGroup": "Quality gates",
+      "clusterId": "cluster-developer-quality-gates-cautilus-eval-dev-repo-repo-instructions",
+      "groupKey": "developer:Quality gates:cautilus-eval:dev/repo:repo-instructions",
+      "priority": 15,
+      "reason": "Developer-facing entry-surface claims are reviewed after user promises because they define repo-worker behavior.",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "candidates": [
+        {
+          "claimFingerprint": "sha256:a1b09b95c632460ea8aa2c6e7db22945815a35d0b753f235e7103923c4c9f29c",
+          "claimId": "claim-agents-md-78",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Quality gates",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "deterministic",
+            "repo-instructions"
+          ],
+          "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "The skill should own routing, sequencing, guardrails, and decision boundaries; the binary should own broad command discovery, help text, scenario catalogs, packet examples, install smoke, and doctor/readiness details.",
+              "line": 78,
+              "path": "AGENTS.md"
+            }
+          ],
+          "summary": "The skill should own routing, sequencing, guardrails, and decision boundaries; the binary should own broad command discovery, help text, scenario catalogs, packet examples, install smoke, and doctor/readiness details."
+        }
+      ],
+      "claimAudience": "developer",
+      "claimCount": 1,
+      "claimSemanticGroup": "Quality gates",
+      "clusterId": "cluster-developer-quality-gates-deterministic-repo-instructions",
+      "groupKey": "developer:Quality gates:deterministic:repo-instructions",
+      "priority": 15,
+      "reason": "Developer-facing entry-surface claims are reviewed after user promises because they define repo-worker behavior.",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "candidates": [
+        {
+          "claimFingerprint": "sha256:4e1b74a33833e5563c110aed8884c3149b707c50ead3cdff95b8240aaaddf0d2",
+          "claimId": "claim-skills-cautilus-skill-md-109",
+          "currentLabels": {
+            "claimAudience": "user",
+            "claimSemanticGroup": "Adapter and portability",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "human-auditable",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "needs-alignment"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:user",
+            "human-auditable",
+            "linked-from:docs/contracts/scenario-history.md",
+            "needs-alignment",
+            "skill-doc"
+          ],
+          "nextAction": "Reconcile the named docs, code, skill, adapter, or CLI surface before treating this as a verification target.",
+          "sourceRefs": [
+            {
+              "excerpt": "`alignment-work`: the code, docs, adapter, or skill surface must be reconciled before proof would be honest.",
+              "line": 109,
+              "path": "skills/cautilus/SKILL.md"
+            }
+          ],
+          "summary": "`alignment-work`: the code, docs, adapter, or skill surface must be reconciled before proof would be honest."
+        }
+      ],
+      "claimAudience": "user",
+      "claimCount": 1,
+      "claimSemanticGroup": "Adapter and portability",
+      "clusterId": "cluster-user-adapter-and-portability-alignment-skill-doc",
+      "groupKey": "user:Adapter and portability:alignment:skill-doc",
+      "priority": 20,
+      "reason": "User-facing claims are reviewed before developer conventions because they are closest to product promises.",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "needs-alignment"
+    },
+    {
+      "candidates": [
+        {
+          "claimFingerprint": "sha256:0fb7d2b87e1402f9d2997f30c4fe48f61e05ea9654c80981f5c80b85574f2e1d",
+          "claimId": "claim-docs-cli-reference-md-183",
+          "currentLabels": {
+            "claimAudience": "user",
+            "claimSemanticGroup": "Adapter and portability",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedEvalSurface": "app/prompt",
+            "recommendedProof": "cautilus-eval",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "app/prompt",
+            "audience:user",
+            "cautilus-eval",
+            "docs",
+            "linked-from:README.md"
+          ],
+          "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus eval test.",
+          "sourceRefs": [
+            {
+              "excerpt": "That keeps persona prompt shaping and result semantics product-owned while backend selection stays adapter-owned.",
+              "line": 183,
+              "path": "docs/cli-reference.md"
+            }
+          ],
+          "summary": "That keeps persona prompt shaping and result semantics product-owned while backend selection stays adapter-owned."
+        }
+      ],
+      "claimAudience": "user",
+      "claimCount": 1,
+      "claimSemanticGroup": "Adapter and portability",
+      "clusterId": "cluster-user-adapter-and-portability-cautilus-eval-app-prompt-docs",
+      "groupKey": "user:Adapter and portability:cautilus-eval:app/prompt:docs",
+      "priority": 20,
+      "reason": "User-facing claims are reviewed before developer conventions because they are closest to product promises.",
+      "recommendedEvalSurface": "app/prompt",
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "candidates": [
+        {
+          "claimFingerprint": "sha256:027d54c6a13e15d151b75ec2d5c4acd54f3cb49571cd36e66deece32a54cff2c",
+          "claimId": "claim-docs-cli-reference-md-108",
+          "currentLabels": {
+            "claimAudience": "user",
+            "claimSemanticGroup": "Adapter and portability",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedEvalSurface": "dev/repo",
+            "recommendedProof": "cautilus-eval",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:user",
+            "cautilus-eval",
+            "dev/repo",
+            "docs",
+            "linked-from:README.md"
+          ],
+          "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
+          "sourceRefs": [
+            {
+              "excerpt": "It emits `cautilus.agent_status.v1`: a read-only orientation packet over binary health, local agent-surface readiness, adapter state, claim-state availability, scan scope, and branch choices.",
+              "line": 108,
+              "path": "docs/cli-reference.md"
+            }
+          ],
+          "summary": "It emits `cautilus.agent_status.v1`: a read-only orientation packet over binary health, local agent-surface readiness, adapter state, claim-state availability, scan scope, and branch choices."
+        },
+        {
+          "claimFingerprint": "sha256:10dc5fd8f817011f748f06bba796f3567abb6cfd596947ecff3ff1f6fdf00e95",
+          "claimId": "claim-docs-cli-reference-md-170",
+          "currentLabels": {
+            "claimAudience": "user",
+            "claimSemanticGroup": "Adapter and portability",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedEvalSurface": "dev/repo",
+            "recommendedProof": "cautilus-eval",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:user",
+            "cautilus-eval",
+            "dev/repo",
+            "docs",
+            "linked-from:README.md"
+          ],
+          "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
+          "sourceRefs": [
+            {
+              "excerpt": "An eval live instance is one live consumer target on this host that `Cautilus` can select by stable id.",
+              "line": 170,
+              "path": "docs/cli-reference.md"
+            }
+          ],
+          "summary": "An eval live instance is one live consumer target on this host that `Cautilus` can select by stable id."
+        },
+        {
+          "claimFingerprint": "sha256:d3e7739baffe7430517819e439f1f2430e91a74ff7123b0de3241b8c17aceef8",
+          "claimId": "claim-docs-cli-reference-md-182",
+          "currentLabels": {
+            "claimAudience": "user",
+            "claimSemanticGroup": "Adapter and portability",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedEvalSurface": "dev/repo",
+            "recommendedProof": "cautilus-eval",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:user",
+            "cautilus-eval",
+            "dev/repo",
+            "docs",
+            "linked-from:README.md"
+          ],
+          "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
+          "sourceRefs": [
+            {
+              "excerpt": "When the public scenario uses `simulator.kind: persona_prompt`, the adapter additionally provides `simulator_persona_command_template`, which normally calls `cautilus eval live run-simulator-persona` with repo-specific backend flags.",
+              "line": 182,
+              "path": "docs/cli-reference.md"
+            }
+          ],
+          "summary": "When the public scenario uses `simulator.kind: persona_prompt`, the adapter additionally provides `simulator_persona_command_template`, which normally calls `cautilus eval live run-simulator-persona` with repo-specific backend flags."
+        },
+        {
+          "claimFingerprint": "sha256:3abe64a979d238c9760ba219c69eccf79d874dd45f4d7c8bf954e9ad207a2e33",
+          "claimId": "claim-docs-cli-reference-md-263",
+          "currentLabels": {
+            "claimAudience": "user",
+            "claimSemanticGroup": "Adapter and portability",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedEvalSurface": "dev/repo",
+            "recommendedProof": "cautilus-eval",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:user",
+            "cautilus-eval",
+            "dev/repo",
+            "docs",
+            "linked-from:README.md"
+          ],
+          "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
+          "sourceRefs": [
+            {
+              "excerpt": "`cautilus eval test` runs a checked-in fixture through an adapter-owned runner and then evaluates the observed packet.",
+              "line": 263,
+              "path": "docs/cli-reference.md"
+            }
+          ],
+          "summary": "`cautilus eval test` runs a checked-in fixture through an adapter-owned runner and then evaluates the observed packet."
+        },
+        {
+          "claimFingerprint": "sha256:5c3061a13544c3262868dcf8badb89865d72baf4fa92d20e8ace297f22d0cda5",
+          "claimId": "claim-docs-guides-evaluation-process-md-10",
+          "currentLabels": {
+            "claimAudience": "user",
+            "claimSemanticGroup": "Adapter and portability",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedEvalSurface": "dev/repo",
+            "recommendedProof": "cautilus-eval",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:user",
+            "cautilus-eval",
+            "dev/repo",
+            "docs",
+            "linked-from:README.md"
+          ],
+          "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
+          "sourceRefs": [
+            {
+              "excerpt": "That seam owns the checked-in case suite, adapter-runner invocation, and chained summary artifacts before the flow returns to packet-level `cautilus eval evaluate` and proposal normalization.",
+              "line": 10,
+              "path": "docs/guides/evaluation-process.md"
+            }
+          ],
+          "summary": "That seam owns the checked-in case suite, adapter-runner invocation, and chained summary artifacts before the flow returns to packet-level `cautilus eval evaluate` and proposal normalization."
+        }
+      ],
+      "claimAudience": "user",
+      "claimCount": 5,
+      "claimSemanticGroup": "Adapter and portability",
+      "clusterId": "cluster-user-adapter-and-portability-cautilus-eval-dev-repo-docs",
+      "groupKey": "user:Adapter and portability:cautilus-eval:dev/repo:docs",
+      "priority": 20,
+      "reason": "User-facing claims are reviewed before developer conventions because they are closest to product promises.",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "ready-to-verify"
     }
   ],
   "evidencePreflight": {
@@ -650,89 +1332,17 @@
     "status": "completed",
     "walkErrorCount": 0
   },
-  "inputPath": "/home/hwidong/codes/cautilus/.cautilus/claims/latest.json",
+  "inputPath": "/home/hwidong/codes/cautilus/.cautilus/claims/evidenced-typed-runners.json",
   "packetNotice": "This packet prepares deterministic claim review input. It does not call an LLM or assert that any claim is satisfied.",
   "reviewBudget": {
     "budgetSource": "cli-or-default",
     "clusterPolicy": "default",
     "excerptChars": 1200,
-    "maxClaimsPerCluster": 4,
-    "maxClusters": 8
+    "maxClaimsPerCluster": 8,
+    "maxClusters": 20
   },
   "schemaVersion": "cautilus.claim_review_input.v1",
   "skippedClusters": [
-    {
-      "claimCount": 1,
-      "clusterId": "cluster-user-packets-and-reporting-deterministic-readme",
-      "groupKey": "user:Packets and reporting:deterministic:readme",
-      "reason": "max-clusters-exceeded"
-    },
-    {
-      "claimCount": 1,
-      "clusterId": "cluster-developer-adapter-and-portability-cautilus-eval-dev-repo-repo-in",
-      "groupKey": "developer:Adapter and portability:cautilus-eval:dev/repo:repo-instructions",
-      "reason": "max-clusters-exceeded"
-    },
-    {
-      "claimCount": 1,
-      "clusterId": "cluster-developer-adapter-and-portability-deterministic-repo-instruction",
-      "groupKey": "developer:Adapter and portability:deterministic:repo-instructions",
-      "reason": "max-clusters-exceeded"
-    },
-    {
-      "claimCount": 1,
-      "clusterId": "cluster-developer-agent-and-skill-workflow-deterministic-repo-instructio",
-      "groupKey": "developer:Agent and skill workflow:deterministic:repo-instructions",
-      "reason": "max-clusters-exceeded"
-    },
-    {
-      "claimCount": 1,
-      "clusterId": "cluster-developer-documentation-and-contracts-cautilus-eval-dev-repo-rep",
-      "groupKey": "developer:Documentation and contracts:cautilus-eval:dev/repo:repo-instructions",
-      "reason": "max-clusters-exceeded"
-    },
-    {
-      "claimCount": 1,
-      "clusterId": "cluster-developer-evaluation-surfaces-cautilus-eval-app-prompt-repo-inst",
-      "groupKey": "developer:Evaluation surfaces:cautilus-eval:app/prompt:repo-instructions",
-      "reason": "max-clusters-exceeded"
-    },
-    {
-      "claimCount": 1,
-      "clusterId": "cluster-developer-evaluation-surfaces-cautilus-eval-dev-repo-repo-instru",
-      "groupKey": "developer:Evaluation surfaces:cautilus-eval:dev/repo:repo-instructions",
-      "reason": "max-clusters-exceeded"
-    },
-    {
-      "claimCount": 1,
-      "clusterId": "cluster-developer-quality-gates-cautilus-eval-dev-repo-repo-instructions",
-      "groupKey": "developer:Quality gates:cautilus-eval:dev/repo:repo-instructions",
-      "reason": "max-clusters-exceeded"
-    },
-    {
-      "claimCount": 1,
-      "clusterId": "cluster-developer-quality-gates-deterministic-repo-instructions",
-      "groupKey": "developer:Quality gates:deterministic:repo-instructions",
-      "reason": "max-clusters-exceeded"
-    },
-    {
-      "claimCount": 1,
-      "clusterId": "cluster-user-adapter-and-portability-alignment-skill-doc",
-      "groupKey": "user:Adapter and portability:alignment:skill-doc",
-      "reason": "max-clusters-exceeded"
-    },
-    {
-      "claimCount": 1,
-      "clusterId": "cluster-user-adapter-and-portability-cautilus-eval-app-prompt-docs",
-      "groupKey": "user:Adapter and portability:cautilus-eval:app/prompt:docs",
-      "reason": "max-clusters-exceeded"
-    },
-    {
-      "claimCount": 5,
-      "clusterId": "cluster-user-adapter-and-portability-cautilus-eval-dev-repo-docs",
-      "groupKey": "user:Adapter and portability:cautilus-eval:dev/repo:docs",
-      "reason": "max-clusters-exceeded"
-    },
     {
       "claimCount": 1,
       "clusterId": "cluster-user-adapter-and-portability-cautilus-eval-dev-skill-docs",
@@ -956,7 +1566,7 @@
       "reason": "max-clusters-exceeded"
     },
     {
-      "claimCount": 6,
+      "claimCount": 7,
       "clusterId": "cluster-developer-agent-and-skill-workflow-cautilus-eval-dev-repo-contra",
       "groupKey": "developer:Agent and skill workflow:cautilus-eval:dev/repo:contract",
       "reason": "max-clusters-exceeded"
@@ -1022,7 +1632,7 @@
       "reason": "max-clusters-exceeded"
     },
     {
-      "claimCount": 21,
+      "claimCount": 20,
       "clusterId": "cluster-developer-documentation-and-contracts-cautilus-eval-dev-repo-con",
       "groupKey": "developer:Documentation and contracts:cautilus-eval:dev/repo:contract",
       "reason": "max-clusters-exceeded"
@@ -1232,7 +1842,7 @@
       "reason": "max-clusters-exceeded"
     },
     {
-      "claimCount": 7,
+      "claimCount": 6,
       "clusterId": "cluster-developer-quality-gates-deterministic-contract",
       "groupKey": "developer:Quality gates:deterministic:contract",
       "reason": "max-clusters-exceeded"
@@ -1341,8 +1951,8 @@
     }
   ],
   "sourceClaimPacket": {
-    "candidateCount": 319,
-    "gitCommit": "288fa82bec8b9759f1e8130f290f12ec3eda7aa2",
+    "candidateCount": 318,
+    "gitCommit": "07a51767195f1a7788a1ffc79595e32a76dfddb3",
     "schemaVersion": "cautilus.claim_proof_plan.v1"
   },
   "sourceRoot": "."

@@ -17,11 +17,12 @@
   `./bin/cautilus eval test --repo-root . --runtime codex --output-dir ./artifacts/self-dogfood/dev-repo-self-dogfood/latest`는 `recommendation=accept-now`, `passed=1`, `failed=0`이었다.
   `.cautilus/runners/dev-repo-self-dogfood.assessment.json`는 adapter hash와 runner file hashes 기준으로 fresh이고, `agent status`에서 `runnerReadiness.state=assessed`, `reason=runner-assessment-ready`다.
   이제 dev proof promotion은 selected runtime name만 믿지 않고 observed telemetry runtime을 요구한다.
-- 2026-05-01 claim state는 `.cautilus/claims/latest.json` 기준 `candidateCount=319`이다.
+- 2026-05-01 claim state는 `.cautilus/claims/latest.json` 기준 `candidateCount=318`이다.
   `claim_discovery.state_path`는 raw discovery baseline인 `.cautilus/claims/latest.json`이고, `agent status`는 `related_state_paths`로 reviewed/evidenced packets도 함께 요약한다.
-  `agent-reviewed=13`, `heuristic=307`인 reviewed packet은 `.cautilus/claims/reviewed-typed-runners.json`에 있다.
-  `.cautilus/claims/evidenced-typed-runners.json`는 `claim-readme-md-144`, `claim-readme-md-148`, `claim-readme-md-211`, `claim-docs-contracts-claim-discovery-workflow-md-617`을 `evidenceStatus=satisfied`로 올린다.
-  그래서 evidenced packet의 evidence status는 `satisfied=4`, `unknown=315`이다.
+  `agent-reviewed=13`, `heuristic=305`인 reviewed packet은 `.cautilus/claims/reviewed-typed-runners.json`에 있다.
+  `.cautilus/claims/evidenced-typed-runners.json`는 `claim-readme-md-144`, `claim-readme-md-148`, `claim-readme-md-211`, `claim-docs-contracts-claim-discovery-workflow-md-611`을 `evidenceStatus=satisfied`로 올린다.
+  그래서 evidenced packet의 review status는 `agent-reviewed=14`, `heuristic=304`이고 evidence status는 `satisfied=4`, `unknown=314`이다.
+  Generated claim packets no longer emit the old `proofLayer` compatibility field; downstream workflow logic reads `recommendedProof`, `verificationReadiness`, `evidenceStatus`, `reviewStatus`, and `lifecycle` directly.
   `docs/internal/handoff.md`와 `docs/internal/research/**`는 claim source에서 제외된다.
   `docs/internal/working-patterns.md`는 durable operating pattern 문서라 developer-facing source로 남아 있다.
   Evidence bundles are `.cautilus/claims/evidence-dev-skill-dogfood.json`, `.cautilus/claims/evidence-dev-skill-routing-install.json`, and `.cautilus/claims/evidence-review-to-eval-flow.json`.
@@ -37,7 +38,7 @@
 - 2026-05-01 후속 dogfood로 `npm run dogfood:cautilus-review-to-eval-flow:eval:codex`를 다시 실행했다.
   결과는 `recommendation=accept-now`, `passed=1`, `failed=0`이고 artifact는 `artifacts/self-dogfood/cautilus-review-to-eval-flow-eval-codex/latest/eval-summary.json`이다.
   기존 first-scan / refresh-flow / review-prepare / reviewer-launch Codex dogfood summaries and audit packets도 모두 accept/pass 상태라, 이 다섯 run을 묶은 evidence bundle로 `claim-readme-md-148`은 satisfied 상태가 됐다.
-  별도 evidence bundle `.cautilus/claims/evidence-review-to-eval-flow.json`는 review-to-eval audit에서 `claim review apply-result`, `claim validate`, `claim plan-evals` 실행과 fixture/product edits 없음이 확인되어 `claim-docs-contracts-claim-discovery-workflow-md-617`도 satisfied로 올린다.
+  별도 evidence bundle `.cautilus/claims/evidence-review-to-eval-flow.json`는 review-to-eval audit에서 `claim review apply-result`, `claim validate`, `claim plan-evals` 실행과 fixture/product edits 없음이 확인되어 `claim-docs-contracts-claim-discovery-workflow-md-611`도 satisfied로 올린다.
 - 2026-05-01 후속 dogfood로 `./bin/cautilus eval test --repo-root . --adapter-name self-dogfood-eval-skill --runtime codex --output-dir ./artifacts/self-dogfood/eval-skill-codex/latest`를 실행했다.
   결과는 `recommendation=accept-now`, `passed=3`, `failed=0`, trigger case 1개와 execution case 2개다.
   이 run과 install/doctor preflight, installed skill/plugin manifest content hashes를 묶은 evidence bundle로 `claim-readme-md-144`와 `claim-readme-md-211`은 satisfied 상태가 됐다.

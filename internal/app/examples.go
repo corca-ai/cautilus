@@ -110,7 +110,6 @@ const claimDiscoverExampleOutput = `{
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -136,7 +135,6 @@ const claimDiscoverExampleOutput = `{
       ],
       "lifecycle": "new",
       "nextAction": "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
-      "proofLayer": "human-auditable",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -161,7 +159,6 @@ const claimDiscoverExampleOutput = `{
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -186,11 +183,6 @@ const claimDiscoverExampleOutput = `{
     },
     "byLifecycle": {
       "new": 3
-    },
-    "byProofLayer": {
-      "cautilus-eval": 1,
-      "deterministic": 1,
-      "human-auditable": 1
     },
     "byRecommendedProof": {
       "cautilus-eval": 1,

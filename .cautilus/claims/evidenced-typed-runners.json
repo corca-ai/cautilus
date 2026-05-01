@@ -1,5 +1,5 @@
 {
-  "candidateCount": 319,
+  "candidateCount": 318,
   "claimCandidates": [
     {
       "claimAudience": "developer",
@@ -16,7 +16,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -46,7 +45,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -77,7 +75,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -107,7 +104,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -137,7 +133,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -167,7 +162,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -197,7 +191,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -228,7 +221,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -259,7 +251,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep the claim visible as positioning, or decompose it into concrete deterministic, dev/skill, and packet-surface claims before proof planning.",
-      "proofLayer": "human-auditable",
       "recommendedProof": "human-auditable",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -271,10 +262,7 @@
       ],
       "summary": "`Cautilus` keeps agent and workflow behavior honest while prompts keep changing.",
       "verificationReadiness": "blocked",
-      "whyThisLayer": "The claim is a broad positioning or aggregate product promise; a single eval fixture would overclaim until concrete subclaims are named.",
-      "unresolvedQuestions": [
-        "Which concrete subclaims should be treated as sufficient public coverage for this umbrella promise?"
-      ]
+      "whyThisLayer": "The claim is a broad positioning or aggregate product promise; a single eval fixture would overclaim until concrete subclaims are named."
     },
     {
       "claimAudience": "user",
@@ -291,7 +279,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Prove with deterministic install or doctor-readiness coverage that the standalone binary and bundled skill can be installed without copying a scaffold first.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -320,7 +307,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Prove with deterministic packet contract tests that command outputs include enough structured state for a later agent to resume.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -349,7 +335,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -378,7 +363,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Prove with deterministic adoption or adapter-materialization coverage that host repos keep evaluation behavior checked in and reviewable.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -407,7 +391,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic scenario command, packet, or render proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -437,7 +420,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -467,7 +449,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic scenario command, packet, or render proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -479,10 +460,7 @@
       ],
       "summary": "CLI: `cautilus scenario normalize chatbot --input logs.json` For agent: \"Run a chatbot regression with these logs and my new system prompt.\" You get reopenable `proposals.json` candidates that can be kept out of tuning as protected checks.",
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim documents scenario command or proposal-packet behavior rather than asking for a new behavior scenario.",
-      "unresolvedQuestions": [
-        "The extractor still joins the CLI line, the For agent example, and the output promise into one claim; splitting those sentences would make later review cleaner."
-      ]
+      "whyThisLayer": "The claim documents scenario command or proposal-packet behavior rather than asking for a new behavior scenario."
     },
     {
       "claimAudience": "user",
@@ -510,7 +488,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep this claim covered by rerunning self-dogfood-eval-skill when bundled skill routing, eval skill fixtures, install behavior, or static skill validation changes.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
@@ -551,7 +528,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep this claim covered by rerunning the named dev/skill dogfood episodes when their fixtures, audit scripts, or bundled skill routing change.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
@@ -564,10 +540,7 @@
       ],
       "summary": "The same preset can evaluate a multi-turn agent episode when the fixture provides `turns`; Cautilus's own first-scan, refresh-flow, review-prepare, reviewer-launch, and review-to-eval dogfood fixtures derive their results from audit packets.",
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
-      "unresolvedQuestions": [
-        "If the review-to-eval dogfood fixture is now part of the public promise, the README sentence may need to include it alongside first-scan, refresh-flow, review-prepare, and reviewer-launch."
-      ]
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
       "claimAudience": "user",
@@ -584,7 +557,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Prove with deterministic coverage for `cautilus eval test --runtime fixture` using adapter-owned fixture results through the normal eval packet path.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -614,7 +586,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep as a human-auditable positioning claim unless a concrete stalled-state scenario is promoted into an explicit fixture or deterministic readiness check.",
-      "proofLayer": "human-auditable",
       "recommendedProof": "human-auditable",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -643,7 +614,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic packet, catalog, schema, or renderer proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -674,7 +644,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Use the scenario proposal flow to normalize candidate evidence before creating a checked-in eval fixture.",
-      "proofLayer": "scenario-candidate",
       "recommendedEvalSurface": "app/chat",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -705,7 +674,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -746,7 +714,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep install and agent-surface proof aligned with self-dogfood-eval-skill plus install/doctor smoke when plugin manifests or skill packaging change.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
@@ -759,10 +726,7 @@
       ],
       "summary": "Agent track — Claude / Codex plugin.** The `cautilus install` step also lands a bundled skill at `.agents/skills/cautilus/` with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally.",
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim says an agent or skill can drive the workflow conversationally, which needs skill-behavior evidence rather than only install proof.",
-      "unresolvedQuestions": [
-        "Should discovery split this into a deterministic install/materialization claim and a separate dev/skill conversational-driving claim?"
-      ]
+      "whyThisLayer": "The claim says an agent or skill can drive the workflow conversationally, which needs skill-behavior evidence rather than only install proof."
     },
     {
       "claimAudience": "user",
@@ -779,7 +743,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Prove with deterministic schema, packet example, or CLI golden-output coverage for eval, report, review, evidence, and optimize packets.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -808,7 +771,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic packet, catalog, schema, or renderer proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -827,7 +789,7 @@
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:671bbb74f00daae3b1fc95c03a26ee69ad1317df7b6b0210ed589f6cfe159d66",
       "claimId": "claim-docs-cli-reference-md-32",
-      "claimSemanticGroup": "Agent and skill workflow",
+      "claimSemanticGroup": "Release and packaging",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
@@ -838,7 +800,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -869,7 +830,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -901,7 +861,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -932,7 +891,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -951,7 +909,7 @@
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:677531528b5130a8cb2c449a6df5177abb7ee7d925262299b9123f87c1e7e60c",
       "claimId": "claim-docs-cli-reference-md-115",
-      "claimSemanticGroup": "Adapter and portability",
+      "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
@@ -962,7 +920,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -974,7 +931,7 @@
       ],
       "summary": "Use `cautilus claim discover` before writing eval fixtures when you need to inventory declared behavior claims and decide whether each belongs in human review, deterministic CI, Cautilus eval, scenario proposal work, or alignment work.",
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
       "claimAudience": "user",
@@ -993,7 +950,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -1025,7 +981,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -1057,7 +1012,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -1089,7 +1043,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -1120,7 +1073,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
-      "proofLayer": "human-auditable",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -1151,7 +1103,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned app/chat fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "app/chat",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -1183,7 +1134,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -1215,7 +1165,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -1246,7 +1195,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -1277,7 +1225,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -1308,7 +1255,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic packet, catalog, schema, or renderer proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -1339,7 +1285,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -1371,7 +1316,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -1403,7 +1347,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -1435,7 +1378,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -1466,7 +1408,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -1497,7 +1438,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -1528,7 +1468,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
-      "proofLayer": "human-auditable",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -1559,7 +1498,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -1590,7 +1528,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -1620,7 +1557,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -1639,20 +1575,18 @@
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:a062995eb812d2cbdb2124001081cdbc1d3f13b11d0341b66c21a5eee78cb673",
       "claimId": "claim-docs-contracts-adapter-contract-md-422",
-      "claimSemanticGroup": "Documentation and contracts",
+      "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:developer",
-        "cautilus-eval",
         "contract",
-        "dev/repo",
+        "human-auditable",
         "linked-from:README.md"
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
-      "recommendedProof": "cautilus-eval",
+      "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
@@ -1663,8 +1597,7 @@
       ],
       "summary": "A named adapter whose eval-test commands produce rich scenario-by-scenario signals should also persist them as files so executor variants and human reviewers can ground their verdicts on the same numbers.",
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
-      "recommendedEvalSurface": "dev/repo"
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
     {
       "claimAudience": "developer",
@@ -1683,7 +1616,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -1715,7 +1647,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -1746,7 +1677,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -1777,7 +1707,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -1809,7 +1738,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -1840,7 +1768,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -1871,7 +1798,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -1903,7 +1829,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -1935,7 +1860,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -1966,7 +1890,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -1997,7 +1920,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -2029,7 +1951,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -2060,7 +1981,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -2091,7 +2011,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -2122,7 +2041,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -2153,7 +2071,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -2185,7 +2102,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -2217,7 +2133,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -2248,7 +2163,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -2278,7 +2192,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
-      "proofLayer": "human-auditable",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -2309,7 +2222,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -2341,7 +2253,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -2372,7 +2283,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -2402,7 +2312,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
-      "proofLayer": "human-auditable",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -2432,7 +2341,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -2463,7 +2371,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -2495,7 +2402,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Reconcile the named docs, code, skill, adapter, or CLI surface before treating this as a verification target.",
-      "proofLayer": "alignment-work",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -2525,7 +2431,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic scenario command, packet, or render proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -2556,7 +2461,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Reconcile the named docs, code, skill, adapter, or CLI surface before treating this as a verification target.",
-      "proofLayer": "alignment-work",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -2586,7 +2490,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -2616,7 +2519,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -2647,7 +2549,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -2678,7 +2579,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -2709,7 +2609,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -2740,7 +2639,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -2771,7 +2669,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -2803,7 +2700,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -2834,7 +2730,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic packet, catalog, schema, or renderer proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -2865,7 +2760,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -2897,7 +2791,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -2928,7 +2821,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -2958,7 +2850,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -2988,7 +2879,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -3019,7 +2909,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Use the scenario proposal flow to normalize candidate evidence before creating a checked-in eval fixture.",
-      "proofLayer": "scenario-candidate",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -3049,7 +2938,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic packet, catalog, schema, or renderer proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -3079,7 +2967,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -3110,7 +2997,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -3142,7 +3028,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -3174,7 +3059,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -3205,7 +3089,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -3235,7 +3118,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -3265,7 +3147,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -3295,7 +3176,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -3325,7 +3205,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -3355,7 +3234,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
-      "proofLayer": "human-auditable",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -3385,7 +3263,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -3415,7 +3292,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -3445,7 +3321,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
-      "proofLayer": "human-auditable",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -3475,7 +3350,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -3505,7 +3379,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic packet, catalog, schema, or renderer proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -3536,7 +3409,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -3568,7 +3440,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -3600,7 +3471,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -3631,7 +3501,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic packet, catalog, schema, or renderer proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -3662,7 +3531,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -3694,7 +3562,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -3725,7 +3592,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -3755,7 +3621,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -3785,7 +3650,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -3815,7 +3679,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -3846,7 +3709,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -3877,7 +3739,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -3908,7 +3769,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -3928,20 +3788,19 @@
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:e68e561b1d78adfab37ef338a0da9363a45e871a4d0523abdca848bf36274479",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-140",
-      "claimSemanticGroup": "Adapter and portability",
+      "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:developer",
         "cautilus-eval",
         "contract",
-        "dev/repo",
+        "dev/skill",
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
-      "recommendedEvalSurface": "dev/repo",
+      "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -3972,7 +3831,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -4004,7 +3862,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -4035,7 +3892,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -4066,7 +3922,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -4098,7 +3953,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -4129,7 +3983,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -4160,7 +4013,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -4192,7 +4044,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -4223,7 +4074,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -4253,7 +4103,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
-      "proofLayer": "human-auditable",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -4270,9 +4119,9 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:3f1b68d3d766581574bf5f05b56c6d4657910af421bad42d918ecef49f77e74c",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-254",
-      "claimSemanticGroup": "Documentation and contracts",
+      "claimFingerprint": "sha256:4a7ed1cd52c43528fd327f34e1db3925267ec53e1ebd68c70726c5310947dd20",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-255",
+      "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
@@ -4283,57 +4132,26 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "The old `proofLayer` field may remain for one compatibility window as a derived or deprecated field, but new workflow logic should use the split fields.",
-          "line": 254,
+          "excerpt": "Agents and validators must read the split fields directly instead of deriving a compatibility label.",
+          "line": 255,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
-      "summary": "The old `proofLayer` field may remain for one compatibility window as a derived or deprecated field, but new workflow logic should use the split fields.",
+      "summary": "Agents and validators must read the split fields directly instead of deriving a compatibility label.",
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:f5b1f4bcf89b95f7a8099b950d968618eaf18f5586610f19f172d7516981705b",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-255",
-      "claimSemanticGroup": "Quality gates",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "contract",
-        "deterministic",
-        "linked-from:docs/master-plan.md"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
-      "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "During that window, derivation must be deterministic and tested:",
-          "line": 255,
-          "path": "docs/contracts/claim-discovery-workflow.md"
-        }
-      ],
-      "summary": "During that window, derivation must be deterministic and tested:",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:3f1f7361e7d218ea05d47457857af1633664e2b8e28cfd571dc5dc2d4bbe5e74",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-271",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-265",
       "claimSemanticGroup": "Quality gates",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4345,13 +4163,12 @@
       ],
       "lifecycle": "new",
       "nextAction": "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
-      "proofLayer": "human-auditable",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "`verificationReadiness=ready-to-verify` with `evidenceStatus=missing` means proof is absent but a test, fixture, or human-auditable check can now be created or run.",
-          "line": 271,
+          "line": 265,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -4363,7 +4180,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:3ae052d2e69bce5fd477651716c93abdc26b8279663de5c98b4c7f3922bbea72",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-273",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-267",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4376,13 +4193,12 @@
       ],
       "lifecycle": "new",
       "nextAction": "Reconcile the named docs, code, skill, adapter, or CLI surface before treating this as a verification target.",
-      "proofLayer": "alignment-work",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "`verificationReadiness=needs-alignment` means at least two truth surfaces must be reconciled before proof would be honest.",
-          "line": 273,
+          "line": 267,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -4394,7 +4210,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:cd6b3240fca5d92670e322831630b4d7532d9189f8a6f4af5654af0103b65116",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-277",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-271",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4406,13 +4222,12 @@
       ],
       "lifecycle": "new",
       "nextAction": "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
-      "proofLayer": "human-auditable",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "`evidenceRefs[]` should use a minimum inspectable shape:",
-          "line": 277,
+          "line": 271,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -4424,7 +4239,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:1844fc5f59ff44a652520ea491bcacebf795a1dcb4a536a5f38d913f351d74d5",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-306",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-300",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4436,13 +4251,12 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "The binary can do cheap deterministic preflight, but the skill owns final interpretation.",
-          "line": 306,
+          "line": 300,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -4454,27 +4268,26 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:fbfa1b74f0f2eb0484273b680e070c94e65cfeb6add53a630bf2ca8f48be4d61",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-319",
-      "claimSemanticGroup": "Documentation and contracts",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-313",
+      "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:developer",
         "cautilus-eval",
         "contract",
-        "dev/repo",
+        "dev/skill",
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
-      "recommendedEvalSurface": "dev/repo",
+      "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
+      "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "The skill review can upgrade them to `satisfied`, `partial`, `stale`, or `missing` only when the packet semantics above are met.",
-          "line": 319,
+          "line": 313,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -4486,7 +4299,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:9f1f52d5759d9b763f4e181c99e9e5d6da380819a69f14de78a12c4e396eb1eb",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-322",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-316",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4499,14 +4312,13 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "`unknown` should be used when the workflow did not inspect enough evidence to make an honest statement.",
-          "line": 322,
+          "line": 316,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -4518,7 +4330,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:9bf39257967e8679266bbb31122162ae4714240eecfa9117e32c6e84bd1247a5",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-326",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-320",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4531,14 +4343,13 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "The workflow should not send every raw candidate to an LLM independently.",
-          "line": 326,
+          "line": 320,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -4550,7 +4361,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:4ebcb6776a40613cddaea25e17e6a777434b73564b371822ff93a88182a6b1e9",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-327",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-321",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4562,13 +4373,12 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "The deterministic pass should emit grouping hints:",
-          "line": 327,
+          "line": 321,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -4580,7 +4390,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:d63aff27f89631ee4ca274aa5a66ef8fc03be36cbee5d5a836f9de494185539d",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-336",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-330",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4593,14 +4403,13 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "The skill should review clusters in priority order:",
-          "line": 336,
+          "line": 330,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -4612,7 +4421,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:07cfb886e14a82742a41cf1e255357dce81dade3f1bdbd0dbe812e448368e426",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-347",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-341",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4625,14 +4434,13 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "The parent skill should merge results and keep review provenance in the packet.",
-          "line": 347,
+          "line": 341,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -4644,7 +4452,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:8c74d01a69910bc7763524d8dd19949d087bc30b23b07492608fe975eaf3e434",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-349",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-343",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4657,14 +4465,13 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "The LLM review seam should use versioned packets instead of hidden prompt-only behavior:",
-          "line": 349,
+          "line": 343,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -4676,7 +4483,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:6760bf2ea6521a5f35690ef7eed832fa059cf7870a1bf5149fd68c7174212fa4",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-354",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-348",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4689,14 +4496,13 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "Those packets should record cluster IDs, candidate IDs, source refs, prompt/reference hashes, runtime/model identity when available, merge decisions, label changes, evidence-status reasons, unresolved questions, and skipped clusters.",
-          "line": 354,
+          "line": 348,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -4708,8 +4514,8 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:9524a84a0b9b0a11aca4d95485397b220bf0a53a254096663f7b1dcfcf69c4fd",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-404",
-      "claimSemanticGroup": "Agent and skill workflow",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-398",
+      "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
@@ -4721,14 +4527,13 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "The binary may provide helper flags such as `claim discover --previous <packet> --refresh-plan`, but the public user-level workflow remains `discover`.",
-          "line": 404,
+          "line": 398,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -4740,7 +4545,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:d04d8eb163d803e2a529f013956a4a4cb5102b5eaf3da8c9dc592c131c78228f",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-407",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-401",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4753,14 +4558,13 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "The refresh-plan packet should include a coordinator-facing summary rather than requiring every agent to reverse-engineer raw JSON fields:",
-          "line": 407,
+          "line": 401,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -4772,7 +4576,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:36fbc258e71c31485963d2c661bc4b76eaf69a54332b8acae73686a83b9f5be6",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-422",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-416",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4785,14 +4589,13 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "After discovery or refresh, the skill should report status in a compact decision-oriented shape:",
-          "line": 422,
+          "line": 416,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -4804,7 +4607,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:af4bc0b6d9aeeaf585750b151f5b17c18bf8063b1c1331a19d4a3495e85c4bf4",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-446",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-440",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4817,14 +4620,13 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "The skill should then ask the user which branch to take.",
-          "line": 446,
+          "line": 440,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -4836,7 +4638,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:857f37f990a98b3ae0dd80c3ce484046c16bc3e2304b0b79702d4a04081034b4",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-449",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-443",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4849,14 +4651,13 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "The skill should not automatically launch expensive evaluator runs or broad code edits after status unless the user has already delegated that continuation and the recorded budget covers it.",
-          "line": 449,
+          "line": 443,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -4868,7 +4669,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:cf9b996efe054da8c1c4215651aad9eb3dadee70df68452d653c2761fd1b720b",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-453",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-447",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4881,14 +4682,13 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "The workflow should avoid a `claim group` command.",
-          "line": 453,
+          "line": 447,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -4900,7 +4700,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:a193435e176f49736db5b80cce7b172a5c37c50552974e6415814b8109df52c5",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-475",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-469",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4913,14 +4713,13 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "Scan confirmation and LLM review confirmation must be separate.",
-          "line": 475,
+          "line": 469,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -4932,37 +4731,36 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:cce31c9469a568f2944264556e5aa5b7b3f7d4d4c960d15d51184c3218bd4b0b",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-477",
-      "claimSemanticGroup": "Agent and skill workflow",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-471",
+      "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:developer",
         "contract",
-        "deterministic",
+        "human-auditable",
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
-      "recommendedProof": "deterministic",
+      "nextAction": "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
+      "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "Depth 3 must be paired with visible source, candidate, cluster, and review-budget bounds.",
-          "line": 477,
+          "line": 471,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
       "summary": "Depth 3 must be paired with visible source, candidate, cluster, and review-budget bounds.",
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:ec44ab256f9a1f76a634ff4891760069518ff698390dc48dbf9b082c91fa88dd",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-480",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-474",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4974,13 +4772,12 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "The skill may select refresh, but deterministic refresh-plan output must record baseline commit, target policy, changed sources, carried-forward claims, stale evidence reasons, and dirty-working-tree treatment.",
-          "line": 480,
+          "line": 474,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -4992,7 +4789,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:c46a1bfd5efa1342b0731e4254060a988a3f8dc71245a4fe13f96d0d1a6f3f87",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-498",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-492",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -5005,14 +4802,13 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "Helper flags under `claim discover` are enough if the skill keeps the user-facing action as discover.",
-          "line": 498,
+          "line": 492,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -5024,7 +4820,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:3e06a05ddb6d71228dee3c8278f6b5bd447fcde0331e4d9cd39c1e62f5c4782b",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-499",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-493",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -5037,14 +4833,13 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "LLM extraction should not move into the binary.",
-          "line": 499,
+          "line": 493,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -5056,7 +4851,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:81b8b877012bef9579d984e72840ca6e06cf5700742f6d9f16642c41d9f7edaa",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-500",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-494",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -5068,13 +4863,12 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "The binary stays deterministic and provider-neutral.",
-          "line": 500,
+          "line": 494,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -5086,7 +4880,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:7de8c9a43753e5fa399bc925d09b5cd194092042ee884a565b09c916ec9d60f8",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-505",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-499",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -5097,14 +4891,13 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "Perfect subagent batch sizing should wait until the deterministic packet and skill control flow are dogfooded.",
-          "line": 505,
+          "line": 499,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -5116,7 +4909,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:e31f110df8cb61eb72e045c7636b0d3a5e1b71043ef60a855f1c3dfcfa21d8fd",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-511",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-505",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -5128,13 +4921,12 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "The binary remains deterministic and does not directly call an LLM.",
-          "line": 511,
+          "line": 505,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -5146,7 +4938,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:bacb56b91aa60707a0d4ae7fae720f44d76f9b9f6140843366863b01a5a53188",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-512",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-506",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -5158,13 +4950,12 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "The bundled skill owns LLM review and subagent orchestration.",
-          "line": 512,
+          "line": 506,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -5176,7 +4967,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:e69d60f7c92a20a2320993d00a9b6841701ba2806fa758b2c19f69acfd54279d",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-517",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-511",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -5188,13 +4979,12 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "Existing state refresh is selected by the skill when prior claim JSON exists, but deterministic refresh-plan output owns the state transition.",
-          "line": 517,
+          "line": 511,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -5206,39 +4996,36 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:3442f8c32e392c6d5294ed9ee2c304cc4590f31c897d84fef79e06692fe75284",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-525",
-      "claimSemanticGroup": "Agent and skill workflow",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-519",
+      "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:developer",
-        "cautilus-eval",
         "contract",
-        "dev/skill",
+        "deterministic",
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
-      "recommendedProof": "cautilus-eval",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "How much deterministic evidence preflight should the binary do before it risks false satisfaction?",
-          "line": 525,
+          "line": 519,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
       "summary": "How much deterministic evidence preflight should the binary do before it risks false satisfaction?",
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
-      "recommendedEvalSurface": "dev/skill"
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:982d0c8daed16595e6ca14ff184eb842dd1f73c0ee708c5e9fa0b7231f00b785",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-528",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-522",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -5251,14 +5038,13 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "How much of the refresh-plan helper should ship in the first binary slice versus the first skill slice?",
-          "line": 528,
+          "line": 522,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -5270,7 +5056,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:c0c7d0f38d477c81974441fe12254d670a3a1fc6fb362622769dc305a89dcb8f",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-533",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-527",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -5282,13 +5068,12 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic packet, catalog, schema, or renderer proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "Whether `claim show` should grow Markdown or HTML rendering beyond its JSON summary packet.",
-          "line": 533,
+          "line": 527,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -5300,7 +5085,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:6fd233d3ffafd0f2392f61109f17dd94ba308f158d01a415610d25adf4e7c2cd",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-534",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-528",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -5312,15 +5097,14 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
+      "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "Whether model-backed extraction should ever become a binary runner behind an explicit provider contract.",
-          "line": 534,
+          "line": 528,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -5332,7 +5116,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:f3946d4b74ff6c434c6b8b7a693c7f5bfc4bbaa3fd6f16d89f21e5243b5ccfd3",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-548",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-542",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -5345,14 +5129,13 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "A user can invoke the Cautilus skill without detailed input and get a clear status summary rather than a raw 500-claim dump.",
-          "line": 548,
+          "line": 542,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -5364,7 +5147,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:2f006cdc0b2c26694835121869f8eb2d65ff4327e293477d439a86c4f58f58a7",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-553",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-547",
       "claimSemanticGroup": "Quality gates",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -5376,13 +5159,12 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "The workflow can say which claims already have deterministic or Cautilus evidence, and which still need scenarios, tests, or alignment work.",
-          "line": 553,
+          "line": 547,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -5394,7 +5176,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:f55435ef267dad864cbd1d818ce3a0dc1651c0feabb49fecc5b72c8bbb9a361b",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-554",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-548",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -5405,14 +5187,13 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
-      "proofLayer": "deterministic",
+      "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "The binary/skill boundary stays clean enough that consumer repos can use the binary plus bundled skill without Cautilus importing host-specific prompts or adapters.",
-          "line": 554,
+          "line": 548,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -5424,7 +5205,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:b2338ca8431457f9797b38b147840619b01ad7549557616dd7b394b5972ef6b0",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-579",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-573",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -5436,13 +5217,12 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "The binary should remain deterministic and provider-neutral.",
-          "line": 579,
+          "line": 573,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -5454,7 +5234,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:97777d7b82dc5cce5cb38b19082240250c0408eb628dc1f44dec30706a5c5a47",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-605",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-599",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -5466,13 +5246,12 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "LLM-backed cluster review should come after the deterministic packet and skill control flow are stable enough to dogfood.",
-          "line": 605,
+          "line": 599,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -5484,39 +5263,37 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:201b64a8ff613496c0ab6030dc9f00e7c7e7a39a86c6d739cf68f67a43b3ed44",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-607",
-      "claimSemanticGroup": "Claim discovery and review",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-601",
+      "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:developer",
         "cautilus-eval",
         "contract",
-        "dev/repo",
-        "linked-from:docs/master-plan.md"
+        "linked-from:docs/master-plan.md",
+        "needs-scenario"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
+      "nextAction": "Use the scenario proposal flow to normalize candidate evidence before creating a checked-in eval fixture.",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "`claim show` emits `cautilus.claim_status_summary.v1` and can include bounded `sampleClaims` plus `gitState` for agents that need concrete candidates before choosing the next branch.",
-          "line": 607,
+          "line": 601,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
       "summary": "`claim show` emits `cautilus.claim_status_summary.v1` and can include bounded `sampleClaims` plus `gitState` for agents that need concrete candidates before choosing the next branch.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
-      "recommendedEvalSurface": "dev/repo"
+      "verificationReadiness": "needs-scenario",
+      "whyThisLayer": "The claim points at behavior that needs scenario shaping before it is ready as a protected eval fixture."
     },
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:21c53f5ec4d397e49c7affa5c7be9dd23e9709e1649e3989c5fbaad619211e98",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-610",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-604",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -5529,13 +5306,12 @@
       ],
       "lifecycle": "new",
       "nextAction": "Reconcile the named docs, code, skill, adapter, or CLI surface before treating this as a verification target.",
-      "proofLayer": "alignment-work",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "Commit drift caused only by generated claim artifacts remains visible as head drift without blocking review or eval planning.",
-          "line": 610,
+          "line": 604,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -5547,7 +5323,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:1e595692e1c29eaec7f060f74a7a5eba37bc3bfc530bd2834cf71597ab225ab3",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-611",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-605",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -5559,15 +5335,14 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "`claim review prepare-input` emits `cautilus.claim_review_input.v1` and records bounded clusters and skipped clusters, but still does not call an LLM or merge review results.",
-          "line": 611,
+          "line": 605,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -5579,16 +5354,16 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:e1f238b94302fc34437333c1a961bf8ea0289588ea97402ae9be1b6b733217c9",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-617",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-611",
       "claimSemanticGroup": "Quality gates",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:3fe27b659855ee02c31087f899b2eced89e167075a4e550a93d1380551d8ab60",
+          "contentHash": "sha256:9a2f513755c36e041c41c77b8cb4844a34804f852b5391e0c326e419cd17bc17",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-review-to-eval-flow.json",
           "supportsClaimIds": [
-            "claim-docs-contracts-claim-discovery-workflow-md-617"
+            "claim-docs-contracts-claim-discovery-workflow-md-611"
           ]
         }
       ],
@@ -5602,23 +5377,19 @@
       ],
       "lifecycle": "new",
       "nextAction": "No new fixture is needed for this claim while the referenced review-to-eval evidence bundle remains current.",
-      "proofLayer": "cautilus-eval",
-      "recommendedEvalSurface": "dev/skill",
+      "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "It emits `cautilus.claim_eval_plan.v1` from reviewed `cautilus-eval` claims that are ready to verify, while preserving the host boundary by not writing fixtures, prompts, runners, wrappers, or policy.",
-          "line": 617,
+          "line": 611,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
       "summary": "It emits `cautilus.claim_eval_plan.v1` from reviewed `cautilus-eval` claims that are ready to verify, while preserving the host boundary by not writing fixtures, prompts, runners, wrappers, or policy.",
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
-      "unresolvedQuestions": [
-        "Claude parity for this review-to-eval branch remains outside this evidence bundle."
-      ]
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
       "claimAudience": "developer",
@@ -5637,7 +5408,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -5668,7 +5438,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -5699,7 +5468,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -5730,7 +5498,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -5761,7 +5528,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -5793,7 +5559,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -5824,7 +5589,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -5854,7 +5618,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
-      "proofLayer": "human-auditable",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -5885,7 +5648,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -5917,7 +5679,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Reconcile the named docs, code, skill, adapter, or CLI surface before treating this as a verification target.",
-      "proofLayer": "alignment-work",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -5947,7 +5708,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -5977,7 +5737,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
-      "proofLayer": "human-auditable",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -6007,7 +5766,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -6037,7 +5795,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
-      "proofLayer": "human-auditable",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -6068,7 +5825,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -6100,7 +5856,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -6131,7 +5886,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -6162,7 +5916,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -6194,7 +5947,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -6226,7 +5978,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -6258,7 +6009,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -6290,7 +6040,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -6322,7 +6071,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -6354,7 +6102,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -6385,7 +6132,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
-      "proofLayer": "human-auditable",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -6416,7 +6162,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -6447,7 +6192,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
-      "proofLayer": "human-auditable",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -6477,7 +6221,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -6508,7 +6251,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -6540,7 +6282,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -6572,7 +6313,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -6603,7 +6343,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
-      "proofLayer": "human-auditable",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -6634,7 +6373,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Reconcile the named docs, code, skill, adapter, or CLI surface before treating this as a verification target.",
-      "proofLayer": "alignment-work",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -6665,7 +6403,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -6696,7 +6433,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -6726,7 +6462,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -6757,7 +6492,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -6789,7 +6523,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -6821,7 +6554,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -6852,7 +6584,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic packet, catalog, schema, or renderer proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -6883,7 +6614,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -6915,7 +6645,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -6946,7 +6675,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -6976,7 +6704,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -7006,7 +6733,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
-      "proofLayer": "human-auditable",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -7037,7 +6763,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -7069,7 +6794,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -7101,7 +6825,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -7132,7 +6855,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -7162,7 +6884,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -7193,7 +6914,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -7224,7 +6944,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -7255,7 +6974,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Use the scenario proposal flow to normalize candidate evidence before creating a checked-in eval fixture.",
-      "proofLayer": "scenario-candidate",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -7286,7 +7004,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Use the scenario proposal flow to normalize candidate evidence before creating a checked-in eval fixture.",
-      "proofLayer": "scenario-candidate",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -7316,7 +7033,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -7347,7 +7063,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -7378,7 +7093,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
-      "proofLayer": "human-auditable",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -7409,7 +7123,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Use the scenario proposal flow to normalize candidate evidence before creating a checked-in eval fixture.",
-      "proofLayer": "scenario-candidate",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -7440,7 +7153,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -7471,7 +7183,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
-      "proofLayer": "human-auditable",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -7501,7 +7212,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
-      "proofLayer": "human-auditable",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -7532,7 +7242,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Reconcile the named docs, code, skill, adapter, or CLI surface before treating this as a verification target.",
-      "proofLayer": "alignment-work",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -7562,7 +7271,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
-      "proofLayer": "human-auditable",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -7592,7 +7300,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -7622,7 +7329,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -7652,7 +7358,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -7683,7 +7388,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -7715,7 +7419,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -7734,6 +7437,37 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:bd162868eb3fbf0e64d2ae21c810cca5a2bdeb42f47de8eb2b92597b58f3a30d",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-146",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "cautilus-eval",
+        "dev/repo",
+        "linked-from:docs/master-plan.md",
+        "spec"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "It tells an operator or agent what should be proven where.",
+          "line": 146,
+          "path": "docs/specs/command-surfaces.spec.md"
+        }
+      ],
+      "summary": "It tells an operator or agent what should be proven where.",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:69b29098c9da8c1f0a50214edf4007743e08e9b876896a5a17e64c9dc2875d8e",
       "claimId": "claim-docs-specs-command-surfaces-spec-md-147",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
@@ -7747,46 +7481,13 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "It tells an operator or agent what should be proven where.",
-          "line": 147,
-          "path": "docs/specs/command-surfaces.spec.md"
-        }
-      ],
-      "summary": "It tells an operator or agent what should be proven where.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:69b29098c9da8c1f0a50214edf4007743e08e9b876896a5a17e64c9dc2875d8e",
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-148",
-      "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "cautilus-eval",
-        "dev/repo",
-        "linked-from:docs/master-plan.md",
-        "spec"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "It should preserve the discovered backlog honestly; prioritization belongs in the next agent step or a future explicit selection command, not in a hidden cap.",
-          "line": 148,
+          "line": 147,
           "path": "docs/specs/command-surfaces.spec.md"
         }
       ],
@@ -7798,7 +7499,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:07cbcbc4f8c23c5c4e8f85195fff45dd2000763c8ef634816c6743c091b19604",
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-152",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-151",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -7811,14 +7512,13 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "Agents should use that summary before hand-inspecting raw `changedSources` or `claimPlan`.",
-          "line": 152,
+          "line": 151,
           "path": "docs/specs/command-surfaces.spec.md"
         }
       ],
@@ -7830,7 +7530,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:00527afa6ec1004a0c90845836eaa2114b73fa8b1d9575c7048764a07af0e7cc",
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-156",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-155",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -7843,14 +7543,13 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "When called with `--sample-claims <n>`, it includes a bounded `sampleClaims` list so agents can inspect stable candidate fields without guessing raw packet keys.",
-          "line": 156,
+          "line": 155,
           "path": "docs/specs/command-surfaces.spec.md"
         }
       ],
@@ -7862,7 +7561,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:2982e7e4ca58f29a0f6f869aa771beb64156d93dfd8d45b1abe7bd889a9fda7f",
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-202",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-201",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -7875,14 +7574,13 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "The host repo owns the fixture contents, runner implementation, prompt files, wrappers, and acceptance policy.",
-          "line": 202,
+          "line": 201,
           "path": "docs/specs/command-surfaces.spec.md"
         }
       ],
@@ -7894,7 +7592,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:442a84b465ac9453bfb7a95d617b0600a3efbaf429c53107106d2f3bc981098c",
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-224",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-223",
       "claimSemanticGroup": "Improvement and optimization",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -7907,14 +7605,13 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "GEPA-style search belongs under `optimize`, not under `claim` or `eval`, because it changes behavior after the proof surface exists.",
-          "line": 224,
+          "line": 223,
           "path": "docs/specs/command-surfaces.spec.md"
         }
       ],
@@ -7926,7 +7623,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:6bba603d71ca23b021bff6b4d3731e36ee825b73a4df174404d2e71079bd2093",
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-237",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-236",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -7938,13 +7635,12 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "**How semantic should claim extraction be?** Start with deterministic source inventory and lightweight claim candidates that can be audited from file references.",
-          "line": 237,
+          "line": 236,
           "path": "docs/specs/command-surfaces.spec.md"
         }
       ],
@@ -7956,7 +7652,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:96cdef142713fe0a90c7e3099b413ffb43dadc41ecb7c834b1f2677e1d9a9f83",
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-275",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-274",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -7967,27 +7663,25 @@
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
+      "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "The bundled skill must route claim discovery, evaluation, and optimization to the same family names as the binary.",
-          "line": 275,
+          "line": 274,
           "path": "docs/specs/command-surfaces.spec.md"
         }
       ],
       "summary": "The bundled skill must route claim discovery, evaluation, and optimization to the same family names as the binary.",
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
-      "recommendedEvalSurface": "dev/repo"
+      "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
     },
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:852fc848e875441bfbc8e33876c42fb2cfef5a43ef19bc759b18017328440553",
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-277",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-276",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -8000,14 +7694,13 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "`claim discover` must be useful before a repo has a runnable eval adapter.",
-          "line": 277,
+          "line": 276,
           "path": "docs/specs/command-surfaces.spec.md"
         }
       ],
@@ -8019,7 +7712,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:2c87af624dd2a669b51fff1c7d2438f931bf98207a0851808985898de284dc59",
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-278",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-277",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -8030,14 +7723,13 @@
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "`claim discover` must not imply that deterministic unit-test claims belong in Cautilus eval fixtures.",
-          "line": 278,
+          "line": 277,
           "path": "docs/specs/command-surfaces.spec.md"
         }
       ],
@@ -8049,7 +7741,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:5fcf19de40fdfcdb5b58d001bac1e2a76046e983201dcd88a25abcb107286567",
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-282",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-281",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -8062,14 +7754,13 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "A fresh consumer can ask Cautilus what declared behavior claims still need proof before writing eval fixtures.",
-          "line": 282,
+          "line": 281,
           "path": "docs/specs/command-surfaces.spec.md"
         }
       ],
@@ -8081,7 +7772,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:85008847dee58a2c41a1a62cab79f04005a1a38dc00d46118bec022657e7bd0b",
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-283",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-282",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -8092,14 +7783,13 @@
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "A proof plan can distinguish human-auditable, deterministic, eval-backed, scenario-candidate, and alignment-work claims.",
-          "line": 283,
+          "line": 282,
           "path": "docs/specs/command-surfaces.spec.md"
         }
       ],
@@ -8110,8 +7800,8 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:d8ceeb1eeab0f271f460da8271a48bae435161c2adde2a707007604876dc8020",
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-286",
+      "claimFingerprint": "sha256:4dbe32caafc9f3845386b5d5f11f9c019e4fce7a8c3fd17b4cf1ab874c6a6da9",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-285",
       "claimSemanticGroup": "Improvement and optimization",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -8123,17 +7813,16 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "Existing `eval` and `optimize` behavior remains backward compatible while the first deterministic `claim` surface lands.",
-          "line": 286,
+          "excerpt": "Existing `eval` and `optimize` behavior remains unchanged while the first deterministic `claim` surface lands.",
+          "line": 285,
           "path": "docs/specs/command-surfaces.spec.md"
         }
       ],
-      "summary": "Existing `eval` and `optimize` behavior remains backward compatible while the first deterministic `claim` surface lands.",
+      "summary": "Existing `eval` and `optimize` behavior remains unchanged while the first deterministic `claim` surface lands.",
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
@@ -8141,7 +7830,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:0d744a80a1c9359b604f4b0ed9be1b5aa018f3a38052d027979caa6deb118904",
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-303",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-302",
       "claimSemanticGroup": "Quality gates",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -8153,13 +7842,12 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "a CLI smoke test that discovers claims from a tiny temp repo with README, AGENTS.md, and one deterministic-test-like claim",
-          "line": 303,
+          "line": 302,
           "path": "docs/specs/command-surfaces.spec.md"
         }
       ],
@@ -8171,7 +7859,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:1371476711311dbd25b60a103d2bdf038d314ef39717359316381b0f7d4fbb51",
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-310",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-309",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -8184,14 +7872,13 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "Countermeasure: first slice emits source-ref-backed proof plans and keeps model-backed extraction out until a runner boundary exists.",
-          "line": 310,
+          "line": 309,
           "path": "docs/specs/command-surfaces.spec.md"
         }
       ],
@@ -8202,8 +7889,8 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:e85bcd4305b117be5d5b543e390c8d36513a26a2899925a4ed11133357728af5",
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-313",
+      "claimFingerprint": "sha256:5f5c745e1fed6f0efec046c1c115097e1a76a524e466231099dd9609129484e4",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-312",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -8215,17 +7902,16 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "Countermeasure: `proofLayer` is required, and deterministic claims must point away from eval fixtures.",
-          "line": 313,
+          "excerpt": "Countermeasure: `recommendedProof` and `verificationReadiness` are required, and deterministic claims must point away from eval fixtures.",
+          "line": 312,
           "path": "docs/specs/command-surfaces.spec.md"
         }
       ],
-      "summary": "Countermeasure: `proofLayer` is required, and deterministic claims must point away from eval fixtures.",
+      "summary": "Countermeasure: `recommendedProof` and `verificationReadiness` are required, and deterministic claims must point away from eval fixtures.",
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
@@ -8246,7 +7932,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -8278,7 +7963,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned app/chat fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "app/chat",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -8309,7 +7993,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic packet, catalog, schema, or renderer proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -8340,7 +8023,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -8372,7 +8054,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -8403,7 +8084,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic packet, catalog, schema, or renderer proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -8433,7 +8113,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic packet, catalog, schema, or renderer proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -8463,7 +8142,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
-      "proofLayer": "human-auditable",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -8494,7 +8172,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -8525,7 +8202,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -8555,7 +8231,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -8585,7 +8260,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -8615,7 +8289,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -8646,7 +8319,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -8678,7 +8350,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -8710,7 +8381,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -8741,7 +8411,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -8771,7 +8440,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -8802,7 +8470,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -8833,7 +8500,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -8864,7 +8530,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -8896,7 +8561,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -8928,7 +8592,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -8959,7 +8622,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -8990,7 +8652,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -9022,7 +8683,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -9054,7 +8714,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -9085,7 +8744,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -9116,7 +8774,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -9147,7 +8804,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -9178,7 +8834,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -9210,7 +8865,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -9241,7 +8895,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic scenario command, packet, or render proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -9271,7 +8924,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
-      "proofLayer": "human-auditable",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -9302,7 +8954,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -9333,7 +8984,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
-      "proofLayer": "human-auditable",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -9363,7 +9013,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -9394,7 +9043,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -9425,7 +9073,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
-      "proofLayer": "human-auditable",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -9456,7 +9103,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -9487,7 +9133,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -9517,7 +9162,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -9548,7 +9192,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -9580,7 +9223,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -9612,7 +9254,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -9644,7 +9285,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Reconcile the named docs, code, skill, adapter, or CLI surface before treating this as a verification target.",
-      "proofLayer": "alignment-work",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -9674,7 +9314,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
-      "proofLayer": "human-auditable",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -9704,7 +9343,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -9735,7 +9373,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Reconcile the named docs, code, skill, adapter, or CLI surface before treating this as a verification target.",
-      "proofLayer": "alignment-work",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -9766,7 +9403,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -9798,7 +9434,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -9830,7 +9465,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -9862,7 +9496,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -9894,7 +9527,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -9925,7 +9557,6 @@
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic packet, catalog, schema, or renderer proof for this claim.",
-      "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -9955,134 +9586,43 @@
     ]
   },
   "claimSummary": {
-    "byRecommendedProof": [
-      {
-        "key": "cautilus-eval",
-        "count": 165
-      },
-      {
-        "key": "deterministic",
-        "count": 118
-      },
-      {
-        "key": "human-auditable",
-        "count": 36
-      }
-    ],
-    "byVerificationReadiness": [
-      {
-        "key": "ready-to-verify",
-        "count": 303
-      },
-      {
-        "key": "needs-alignment",
-        "count": 9
-      },
-      {
-        "key": "needs-scenario",
-        "count": 5
-      },
-      {
-        "key": "blocked",
-        "count": 2
-      }
-    ],
-    "byEvidenceStatus": [
-      {
-        "key": "unknown",
-        "count": 315
-      },
-      {
-        "key": "satisfied",
-        "count": 4
-      }
-    ],
-    "byReviewStatus": [
-      {
-        "key": "heuristic",
-        "count": 305
-      },
-      {
-        "key": "agent-reviewed",
-        "count": 14
-      }
-    ],
-    "byLifecycle": [
-      {
-        "key": "new",
-        "count": 319
-      }
-    ],
-    "byProofLayer": [
-      {
-        "key": "cautilus-eval",
-        "count": 160
-      },
-      {
-        "key": "deterministic",
-        "count": 118
-      },
-      {
-        "key": "human-auditable",
-        "count": 27
-      },
-      {
-        "key": "alignment-work",
-        "count": 9
-      },
-      {
-        "key": "scenario-candidate",
-        "count": 5
-      }
-    ],
-    "byClaimAudience": [
-      {
-        "key": "developer",
-        "count": 251
-      },
-      {
-        "key": "user",
-        "count": 68
-      }
-    ],
-    "byClaimSemanticGroup": [
-      {
-        "key": "Agent and skill workflow",
-        "count": 86
-      },
-      {
-        "key": "Documentation and contracts",
-        "count": 81
-      },
-      {
-        "key": "Adapter and portability",
-        "count": 53
-      },
-      {
-        "key": "Quality gates",
-        "count": 29
-      },
-      {
-        "key": "Packets and reporting",
-        "count": 27
-      },
-      {
-        "key": "Improvement and optimization",
-        "count": 21
-      },
-      {
-        "key": "Claim discovery and review",
-        "count": 16
-      },
-      {
-        "key": "Release and packaging",
-        "count": 4
-      },
-      {
-        "key": "Evaluation surfaces",
-        "count": 2
-      }
-    ]
+    "byClaimAudience": {
+      "developer": 250,
+      "user": 68
+    },
+    "byClaimSemanticGroup": {
+      "Adapter and portability": 51,
+      "Documentation and contracts": 80,
+      "Evaluation surfaces": 2,
+      "Agent and skill workflow": 85,
+      "Quality gates": 28,
+      "Claim discovery and review": 19,
+      "Packets and reporting": 27,
+      "Release and packaging": 5,
+      "Improvement and optimization": 21
+    },
+    "byEvidenceStatus": {
+      "unknown": 314,
+      "satisfied": 4
+    },
+    "byLifecycle": {
+      "new": 318
+    },
+    "byRecommendedProof": {
+      "deterministic": 117,
+      "cautilus-eval": 163,
+      "human-auditable": 38
+    },
+    "byReviewStatus": {
+      "heuristic": 304,
+      "agent-reviewed": 14
+    },
+    "byVerificationReadiness": {
+      "ready-to-verify": 301,
+      "blocked": 2,
+      "needs-scenario": 6,
+      "needs-alignment": 9
+    }
   },
   "discoveryMode": "deterministic-source-inventory",
   "effectiveScanScope": {
@@ -10229,7 +9769,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "288fa82bec8b9759f1e8130f290f12ec3eda7aa2",
+  "gitCommit": "07a51767195f1a7788a1ffc79595e32a76dfddb3",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "schemaVersion": "cautilus.claim_proof_plan.v1",
@@ -10812,7 +10352,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:3aba3ddad1b00a101e555b19d64a5e68ab145fd3d2f504ce423acd576f5957f7",
+      "contentHash": "sha256:b536e45ae271395502f7bdbe4d037af787ae7fc0fb912ba5ddfe0ee189046941",
       "depth": 2,
       "discoveredFrom": "docs/master-plan.md",
       "kind": "contract",
@@ -10912,7 +10452,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:8cc5c7b46292353d5d0ce2c5a16f7cf4db9dfe689a81e1c642fea70909818077",
+      "contentHash": "sha256:967fd9aef8db3656791f39a0de9f487fa4e08314f9107fc2f3d15e9ab4931b43",
       "depth": 2,
       "discoveredFrom": "docs/master-plan.md",
       "kind": "spec",
@@ -11068,6 +10608,42 @@
       },
       "schemaVersion": "cautilus.claim_review_result.v1",
       "sourceReviewInput": {}
+    },
+    {
+      "clusterCount": 1,
+      "reviewRun": {
+        "backend": "codex_exec",
+        "evidencePolicy": "Only mark evidenceStatus=satisfied when a checked-in evidence bundle records direct or verified proof for the exact claim boundary.",
+        "mode": "direct-evidence-application",
+        "reviewer": "codex-current-agent-evidence-review"
+      },
+      "schemaVersion": "cautilus.claim_review_result.v1",
+      "sourceReviewInput": {}
     }
-  ]
+  ],
+  "reviewApplication": {
+    "appliedUpdateCount": 1,
+    "appliedUpdates": [
+      {
+        "appliedFields": [
+          "recommendedProof",
+          "verificationReadiness",
+          "evidenceStatus",
+          "reviewStatus",
+          "recommendedEvalSurface",
+          "evidenceRefs",
+          "nextAction",
+          "evidenceStatusReason",
+          "unresolvedQuestions"
+        ],
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-611",
+        "clusterId": "cluster-developer-quality-gates-cautilus-eval-review-to-eval"
+      }
+    ],
+    "claimsPath": "/home/hwidong/codes/cautilus/.cautilus/claims/evidenced-typed-runners.json",
+    "mergeDecisions": [],
+    "reviewResultPath": "/home/hwidong/codes/cautilus/.cautilus/claims/review-result-evidence-review-to-eval-flow.json",
+    "schemaVersion": "cautilus.claim_review_result.v1",
+    "unresolvedQuestions": []
+  }
 }
