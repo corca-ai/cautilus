@@ -27,7 +27,7 @@
     ],
     "byClaimSemanticGroup": [
       {
-        "count": 84,
+        "count": 85,
         "key": "Documentation and contracts"
       },
       {
@@ -35,7 +35,7 @@
         "key": "Agent and skill workflow"
       },
       {
-        "count": 51,
+        "count": 50,
         "key": "Adapter and portability"
       },
       {
@@ -81,11 +81,11 @@
     ],
     "byProofLayer": [
       {
-        "count": 158,
+        "count": 156,
         "key": "cautilus-eval"
       },
       {
-        "count": 120,
+        "count": 122,
         "key": "deterministic"
       },
       {
@@ -103,11 +103,11 @@
     ],
     "byRecommendedProof": [
       {
-        "count": 164,
+        "count": 162,
         "key": "cautilus-eval"
       },
       {
-        "count": 120,
+        "count": 122,
         "key": "deterministic"
       },
       {
@@ -285,17 +285,17 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "df37156b331f86caea938e86e814c449c5f24099",
+  "gitCommit": "a79547f0a739023399ea375539edfaf995a09717",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "df37156b331f86caea938e86e814c449c5f24099",
+    "currentGitCommit": "a79547f0a739023399ea375539edfaf995a09717",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "df37156b331f86caea938e86e814c449c5f24099",
+    "packetGitCommit": "a79547f0a739023399ea375539edfaf995a09717",
     "recommendedAction": "The claim packet commit matches the current checkout.",
     "workingTreePolicy": "excluded"
   },

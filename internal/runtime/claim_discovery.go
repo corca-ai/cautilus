@@ -1941,23 +1941,23 @@ func BuildClaimEvalPlan(packet map[string]any, options ClaimEvalPlanOptions) (ma
 		candidate := asMap(raw)
 		claimID := stringFromAny(candidate["claimId"])
 		if stringFromAny(candidate["recommendedProof"]) != "cautilus-eval" {
-			skipped = append(skipped, skippedClaimEvalPlan(claimID, "not-cautilus-eval"))
+			skipped = append(skipped, skippedClaimEvalPlan(candidate, "not-cautilus-eval"))
 			continue
 		}
 		if stringFromAny(candidate["verificationReadiness"]) != "ready-to-verify" {
-			skipped = append(skipped, skippedClaimEvalPlan(claimID, "not-ready-to-verify"))
+			skipped = append(skipped, skippedClaimEvalPlan(candidate, "not-ready-to-verify"))
 			continue
 		}
 		if !claimEvalPlanReviewAccepted(stringFromAny(candidate["reviewStatus"])) {
-			skipped = append(skipped, skippedClaimEvalPlan(claimID, "not-reviewed"))
+			skipped = append(skipped, skippedClaimEvalPlan(candidate, "not-reviewed"))
 			continue
 		}
 		if stringFromAny(candidate["evidenceStatus"]) == "satisfied" {
-			skipped = append(skipped, skippedClaimEvalPlan(claimID, "already-satisfied"))
+			skipped = append(skipped, skippedClaimEvalPlan(candidate, "already-satisfied"))
 			continue
 		}
 		if len(plans) >= maxClaims {
-			skipped = append(skipped, skippedClaimEvalPlan(claimID, "max-claims-exceeded"))
+			skipped = append(skipped, skippedClaimEvalPlan(candidate, "max-claims-exceeded"))
 			continue
 		}
 		plans = append(plans, map[string]any{
@@ -2039,11 +2039,23 @@ func claimEvalPlanZeroReason(plans []any, skipped []any) string {
 	}
 }
 
-func skippedClaimEvalPlan(claimID string, reason string) map[string]any {
-	return map[string]any{
-		"claimId": claimID,
-		"reason":  reason,
+func skippedClaimEvalPlan(candidate map[string]any, reason string) map[string]any {
+	entry := map[string]any{
+		"claimId":                stringFromAny(candidate["claimId"]),
+		"claimFingerprint":       candidate["claimFingerprint"],
+		"reason":                 reason,
+		"recommendedProof":       candidate["recommendedProof"],
+		"verificationReadiness":  candidate["verificationReadiness"],
+		"recommendedEvalSurface": claimEvalPlanSurface(candidate),
+		"evidenceStatus":         candidate["evidenceStatus"],
+		"reviewStatus":           candidate["reviewStatus"],
 	}
+	if reason == "already-satisfied" {
+		entry["sourceRefs"] = arrayOrEmpty(candidate["sourceRefs"])
+		entry["evidenceRefs"] = arrayOrEmpty(candidate["evidenceRefs"])
+		entry["unresolvedQuestions"] = arrayOrEmpty(candidate["unresolvedQuestions"])
+	}
+	return entry
 }
 
 func claimEvalPlanReviewAccepted(status string) bool {

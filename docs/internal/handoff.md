@@ -26,6 +26,7 @@
   `docs/internal/working-patterns.md`는 durable operating pattern 문서라 developer-facing source로 남아 있다.
   Evidence bundles are `.cautilus/claims/evidence-dev-skill-dogfood.json` and `.cautilus/claims/evidence-dev-skill-routing-install.json`.
   `.cautilus/claims/eval-plan-evidenced-typed-runners.json`는 `selectionPolicy.excludesEvidenceStatus=["satisfied"]`를 기록하고, satisfied claims를 `already-satisfied`로 skip하며, 현재 남은 ready eval target은 0개다.
+  `already-satisfied` skipped claims now carry their evidence refs directly, so the 0-plan packet maps the three reviewed `dev/skill` plans back to their evidence bundles without joining against `.cautilus/claims/evidenced-typed-runners.json`.
   같은 packet의 `planSummary.zeroPlanReason`은 `all-reviewed-eval-targets-satisfied-and-remaining-reviewed-claims-not-eval-targets`다.
   `claim-readme-md-3`은 README tagline/umbrella promise로 보존하되 `human-auditable`, `verificationReadiness=blocked`로 라우팅한다.
   그래서 eval-plan files에 `claim-readme-md-3`가 보이면 target이 아니라 `skippedClaims.reason=not-cautilus-eval`이다.
@@ -173,8 +174,8 @@
 
 1. `git status --short`로 사용자 변경 여부를 먼저 확인한다.
 2. `charness:find-skills`로 설치된 public / support / integration 스킬 지도를 한 번 갱신한다.
-3. 현재 가장 직접적인 Cautilus next slice는 `.cautilus/claims/eval-plan-reviewed-typed-runners.json`의 4개 `dev/skill` eval plans를 실제 checked-in fixture 또는 기존 dogfood fixture와 매핑하는 것이다.
-   새 fixture를 바로 만들기 전에 각 plan이 이미 first-scan / refresh-flow / review-prepare / reviewer-launch / review-to-eval dogfood fixture로 증명되는지 확인한다.
+3. 현재 reviewed eval plan은 3개 `dev/skill` claims이고, evidenced eval plan은 이 셋을 `already-satisfied`로 skip하면서 evidence refs를 직접 싣는다.
+   다음 claim-hardening 후보는 satisfied skip의 evidence refs를 사람이 읽는 report/HTML에도 잘 보여주는 것이다.
 4. 그 다음 claim hardening 후보는 review-result application branch proof, bounded evidence preflight, 또는 eval-fixture authoring guidance다.
    review prepare-input과 reviewer launch branch proof는 Codex/Claude 양쪽에서 완료됐다.
    evidence preflight는 false satisfaction 위험이 있으므로 possible evidence hint까지만 허용하는 식의 bounded slice가 필요하다.

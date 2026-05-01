@@ -613,6 +613,8 @@ The eval-planning slice added `claim plan-evals`.
 It emits `cautilus.claim_eval_plan.v1` from reviewed `cautilus-eval` claims that are ready to verify, while preserving the host boundary by not writing fixtures, prompts, runners, wrappers, or policy.
 It skips satisfied claims by default and records that exclusion in `selectionPolicy.excludesEvidenceStatus`.
 It also records `planSummary`, including skipped counts and a zero-plan reason, so `evalPlans=[]` is inspectable rather than silently ambiguous.
+Skipped claims retain proof routing, readiness, evidence status, and review status.
+`already-satisfied` skips also retain source refs, evidence refs, and unresolved questions so they can be audited from the eval-plan packet itself.
 It rejects stale claim packets by default.
 The validation slice added `claim validate`.
 It emits `cautilus.claim_validation_report.v1`, exits non-zero for invalid packet shape or evidence refs, and does not mutate claims or search for evidence.

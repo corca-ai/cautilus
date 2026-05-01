@@ -776,6 +776,13 @@ func TestBuildClaimEvalPlanSkipsSatisfiedEvalClaims(t *testing.T) {
 	if len(skipped) != 1 || asMap(skipped[0])["reason"] != "already-satisfied" {
 		t.Fatalf("expected already-satisfied skip, got %#v", skipped)
 	}
+	firstSkipped := asMap(skipped[0])
+	if firstSkipped["evidenceStatus"] != "satisfied" || len(arrayOrEmpty(firstSkipped["evidenceRefs"])) != 1 {
+		t.Fatalf("expected skipped satisfied claim to retain evidence context, got %#v", firstSkipped)
+	}
+	if firstSkipped["recommendedEvalSurface"] != "dev/skill" || len(arrayOrEmpty(firstSkipped["sourceRefs"])) != 1 {
+		t.Fatalf("expected skipped claim to retain plan context, got %#v", firstSkipped)
+	}
 }
 
 func TestBuildClaimValidationReportValidatesEvidenceRefs(t *testing.T) {
