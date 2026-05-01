@@ -1,0 +1,152 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewRun": {
+    "reviewer": "codex-current-agent",
+    "backend": "same-agent-review",
+    "mode": "action-bucket-focused-review",
+    "reviewInputPath": ".cautilus/claims/review-input-human-confirm-action-bucket.json",
+    "reviewPolicy": "Review the human-confirm-or-decompose queue for claims that should instead become deterministic proof, split/defer policy, or actual human confirmation. Keep evidenceStatus unknown unless direct evidence is present."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-user-packets-and-reporting-human-auditable-docs",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-cli-reference-md-256",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "This is a concrete packet-shape claim about `attentionView`; it should be checked deterministically against report/review packet output rather than left for human confirmation.",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "nextAction": "Add or connect a deterministic packet test proving `attentionView` is emitted as a bounded human-facing shortlist derived from the ranked set.",
+          "unresolvedQuestions": []
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-developer-adapter-and-portability-human-auditable-contract",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-runner-readiness-md-118",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "This is a concrete agent-status branch-shape claim and should be proven by deterministic status packet tests.",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "nextAction": "Add or connect deterministic agent-status tests for initialize-adapter, refresh-claim-state, runner-assessment, runner-smoke, inspect-claims, and run-eval branch exposure.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-workbench-instance-discovery-md-100",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "This is an observable workbench/instance packet rendering capability. It should be proven by deterministic packet or renderer tests once the surface is implemented.",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "nextAction": "Add or connect deterministic instance-chooser rendering proof, or defer the claim if the workbench UI remains future work.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-workbench-instance-discovery-md-101",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "This is a packet-field routing claim and should be tested deterministically instead of confirmed manually.",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "nextAction": "Add or connect deterministic tests proving scenario-adjacent paths come from typed packet fields rather than hardcoded route templates.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-workbench-instance-discovery-md-25",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Stable `instanceId` and `displayLabel` are adapter/packet contract fields and should be validated deterministically.",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "nextAction": "Add or connect adapter/packet validation for stable `instanceId` and human-facing `displayLabel` fields.",
+          "unresolvedQuestions": []
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-developer-claim-discovery-and-review-human-auditable-contract",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-adapter-contract-md-422",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "This is a concrete adapter-output persistence requirement. It should be proven by deterministic adapter fixture or schema checks.",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "nextAction": "Add or connect deterministic adapter checks that rich scenario-by-scenario signals are persisted as files for executor variants and human reviewers.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-648",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "This is a concrete claim-review selection behavior and should be covered by deterministic review-input tests.",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "nextAction": "Add or connect deterministic `claim review prepare-input` tests for excluding satisfied and already reviewed non-stale claims while preserving skipped audit entries.",
+          "unresolvedQuestions": []
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-developer-packets-and-reporting-human-auditable-contract",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-153",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "This is concrete agent-status orientation behavior and should be proven by deterministic tests.",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "nextAction": "Add or connect deterministic agent-status tests proving the selected related claim map drives status summaries and inspect/refresh branch commands while `state_path` remains the first-discovery output path.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-220",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "This is a broad anti-overclaim policy. It should remain visible, but it is not a ready verification target until decomposed into concrete routing checks.",
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "blocked",
+          "nextAction": "Split this umbrella overclaim policy into concrete deterministic routing checks before treating it as proof work.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-reporting-md-124",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "This is a concrete summary-packet aggregation behavior and should be tested deterministically.",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "nextAction": "Add or connect deterministic report-summary tests for aggregating numeric telemetry across variants.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-runner-readiness-md-134",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "This is a concrete branch packet-shape claim and should be tested deterministically.",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "nextAction": "Add or connect deterministic runner-readiness branch-shape tests for stable id, human label, blocking reason, command/artifact, owning surface, and write flag.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-runner-readiness-md-349",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "This is a concrete downstream packet/report field visibility claim and should be tested deterministically.",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "nextAction": "Add or connect deterministic summary/report tests proving proof class stays visible downstream.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}
