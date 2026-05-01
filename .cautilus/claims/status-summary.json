@@ -1,5 +1,5 @@
 {
-  "candidateCount": 331,
+  "candidateCount": 333,
   "claimState": {
     "path": ".cautilus/claims/latest.json",
     "pathSource": "adapter",
@@ -16,42 +16,42 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 265,
+      "developer": 267,
       "user": 66
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 57,
       "Agent and skill workflow": 82,
       "Claim discovery and review": 21,
-      "Documentation and contracts": 81,
+      "Documentation and contracts": 82,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
       "Improvement and optimization": 20,
-      "Packets and reporting": 29,
+      "Packets and reporting": 30,
       "Quality gates": 34,
       "Release and packaging": 5
     },
     "byEvidenceStatus": {
       "satisfied": 27,
-      "unknown": 304
+      "unknown": 306
     },
     "byLifecycle": {
-      "new": 331
+      "new": 333
     },
     "byRecommendedProof": {
-      "cautilus-eval": 140,
-      "deterministic": 130,
-      "human-auditable": 61
+      "cautilus-eval": 136,
+      "deterministic": 129,
+      "human-auditable": 68
     },
     "byReviewStatus": {
       "agent-reviewed": 42,
-      "heuristic": 289
+      "heuristic": 291
     },
     "byVerificationReadiness": {
-      "blocked": 10,
-      "needs-alignment": 26,
+      "blocked": 12,
+      "needs-alignment": 31,
       "needs-scenario": 7,
-      "ready-to-verify": 288
+      "ready-to-verify": 283
     }
   },
   "effectiveScanScope": {
@@ -633,8 +633,8 @@
             ]
           }
         ],
-        "recommendedEvalSurface": "dev/skill",
-        "recommendedProof": "cautilus-eval",
+        "recommendedEvalSurface": null,
+        "recommendedProof": "human-auditable",
         "reviewStatus": "agent-reviewed",
         "summary": "It emits `cautilus.claim_eval_plan.v1` from reviewed `cautilus-eval` claims that are ready to verify, while preserving the host boundary by not writing fixtures, prompts, runners, wrappers, or policy."
       },
@@ -716,17 +716,17 @@
       }
     ]
   },
-  "gitCommit": "c02f4a410854a07ff602565fc63d6e73bafe03aa",
+  "gitCommit": "3a2bfe96ef1a59505b36dd0dedd6968b3b1b7977",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "c02f4a410854a07ff602565fc63d6e73bafe03aa",
+    "currentGitCommit": "3a2bfe96ef1a59505b36dd0dedd6968b3b1b7977",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "c02f4a410854a07ff602565fc63d6e73bafe03aa",
+    "packetGitCommit": "3a2bfe96ef1a59505b36dd0dedd6968b3b1b7977",
     "recommendedAction": "The claim packet commit matches the current checkout.",
     "workingTreePolicy": "excluded"
   },
@@ -749,8 +749,8 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 259,
-    "needsAlignment": 26,
+    "heuristicClaimsReadyForReview": 257,
+    "needsAlignment": 31,
     "needsScenario": 7
   },
   "sampleClaims": [

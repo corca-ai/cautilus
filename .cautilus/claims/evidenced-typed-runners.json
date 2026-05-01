@@ -1,14 +1,14 @@
 {
-  "candidateCount": 331,
+  "candidateCount": 333,
   "carryForward": {
     "changedEvidenceRefCount": 0,
-    "evidenceSupportIdRewriteCount": 1,
-    "matchedClaimCount": 325,
+    "evidenceSupportIdRewriteCount": 0,
+    "matchedClaimCount": 330,
     "missingEvidenceRefCount": 0,
     "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
-    "staleEvidenceClaimCount": 1,
+    "staleEvidenceClaimCount": 0,
     "strategy": "claimFingerprint",
-    "unsupportedEvidenceRefCount": 1
+    "unsupportedEvidenceRefCount": 0
   },
   "claimCandidates": [
     {
@@ -1713,6 +1713,36 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:30809430ddd6084516693e4e61aa78edcd386bf19c693df0ca749489c2df3106",
+      "claimId": "claim-docs-contracts-adapter-contract-md-470",
+      "claimSemanticGroup": "Documentation and contracts",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "blocked",
+        "contract",
+        "human-auditable",
+        "linked-from:README.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep this as human-auditable context or promote a concrete regression scenario if the caveat should block releases.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "If a checked-in wrapper can observe provider cost or token usage, let it emit an optional `telemetry` object in the structured verdict payload instead of hiding that data in stderr text.",
+          "line": 470,
+          "path": "docs/contracts/adapter-contract.md"
+        }
+      ],
+      "summary": "If a checked-in wrapper can observe provider cost or token usage, let it emit an optional `telemetry` object in the structured verdict payload instead of hiding that data in stderr text.",
+      "verificationReadiness": "blocked",
+      "whyThisLayer": "The claim records provider or host-runtime caveat context; it can guide future protection but is not itself a ready product proof target."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:b286a640322877c0e8e2aa64af228aaf01155e349464dd1cc83d21a79b51083d",
       "claimId": "claim-docs-contracts-adapter-contract-md-474",
       "claimSemanticGroup": "Documentation and contracts",
@@ -1798,7 +1828,7 @@
       ],
       "summary": "Past sessions showed `codex exec` can emit skill-load errors on stderr while still returning a successful exit code.",
       "verificationReadiness": "blocked",
-      "whyThisLayer": "The claim records a historical observation; it can guide future scenarios but is not itself a ready eval target."
+      "whyThisLayer": "The claim records provider or host-runtime caveat context; it can guide future protection but is not itself a ready product proof target."
     },
     {
       "claimAudience": "developer",
@@ -2139,15 +2169,14 @@
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:user",
-        "cautilus-eval",
-        "dev/repo",
         "docs",
-        "linked-from:README.md"
+        "human-auditable",
+        "linked-from:README.md",
+        "needs-alignment"
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
+      "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
@@ -2157,8 +2186,8 @@
         }
       ],
       "summary": "That seam owns the checked-in case suite, adapter-runner invocation, and chained summary artifacts before the flow returns to packet-level `cautilus eval evaluate` and proposal normalization.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "verificationReadiness": "needs-alignment",
+      "whyThisLayer": "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof."
     },
     {
       "claimAudience": "user",
@@ -2261,15 +2290,14 @@
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:user",
-        "cautilus-eval",
-        "dev/skill",
         "docs",
-        "linked-from:README.md"
+        "human-auditable",
+        "linked-from:README.md",
+        "needs-alignment"
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
-      "recommendedEvalSurface": "dev/skill",
-      "recommendedProof": "cautilus-eval",
+      "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
@@ -2279,8 +2307,8 @@
         }
       ],
       "summary": "The host still owns raw invocation and transcript capture; `Cautilus` owns the case-suite/runDir workflow, packet-level recommendation, behavior-intent framing, and the direct chain into `scenario normalize skill`.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "verificationReadiness": "needs-alignment",
+      "whyThisLayer": "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof."
     },
     {
       "claimAudience": "user",
@@ -2368,7 +2396,7 @@
       ],
       "summary": "Past sessions showed `codex exec` can emit fatal skill-loading errors on stderr while the final process exit still looks successful.",
       "verificationReadiness": "blocked",
-      "whyThisLayer": "The claim records a historical observation; it can guide future scenarios but is not itself a ready eval target."
+      "whyThisLayer": "The claim records provider or host-runtime caveat context; it can guide future protection but is not itself a ready product proof target."
     },
     {
       "claimAudience": "user",
@@ -2440,13 +2468,14 @@
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:user",
-        "deterministic",
+        "blocked",
         "docs",
+        "human-auditable",
         "linked-from:README.md"
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "recommendedProof": "deterministic",
+      "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
@@ -2456,8 +2485,8 @@
         }
       ],
       "summary": "In JSON mode, `claude -p` can wrap the verdict under `structured_output` instead of printing the schema payload as the top-level object.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "verificationReadiness": "blocked",
+      "whyThisLayer": "The claim records provider or host-runtime caveat context; it can guide future protection but is not itself a ready product proof target."
     },
     {
       "claimAudience": "user",
@@ -3048,16 +3077,15 @@
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
-        "app/prompt",
         "audience:developer",
-        "cautilus-eval",
         "docs",
-        "linked-from:README.md"
+        "human-auditable",
+        "linked-from:README.md",
+        "needs-alignment"
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus eval test.",
-      "recommendedEvalSurface": "app/prompt",
-      "recommendedProof": "cautilus-eval",
+      "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
@@ -3067,8 +3095,8 @@
         }
       ],
       "summary": "Cautilus owns the generic claim-to-proof workflow; consumer repos own their local fixtures, runners, prompts, wrappers, and policy.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "verificationReadiness": "needs-alignment",
+      "whyThisLayer": "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof."
     },
     {
       "claimAudience": "developer",
@@ -4749,7 +4777,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:7a8056c657930e40d41685c8dfad57c5ca47cf778d318ef834dfe23bca2a4706",
+      "claimFingerprint": "sha256:12366ae1b1010607eff115267924c54661536c62df6052d080c79608e4d3e1b3",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-217",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
@@ -4767,12 +4795,12 @@
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "Historical observation statements can inform future scenarios, but they should stay `human-auditable` and `blocked` until promoted into a concrete regression claim.",
+          "excerpt": "Historical observation and provider-caveat statements can inform future scenarios, but they should stay `human-auditable` and `blocked` until promoted into a concrete regression claim.",
           "line": 217,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
-      "summary": "Historical observation statements can inform future scenarios, but they should stay `human-auditable` and `blocked` until promoted into a concrete regression claim.",
+      "summary": "Historical observation and provider-caveat statements can inform future scenarios, but they should stay `human-auditable` and `blocked` until promoted into a concrete regression claim.",
       "verificationReadiness": "needs-scenario",
       "whyThisLayer": "The claim points at behavior that needs scenario shaping before it is ready as a protected eval fixture."
     },
@@ -6100,8 +6128,7 @@
       ],
       "lifecycle": "new",
       "nextAction": "No new fixture is needed for this claim while the referenced review-to-eval evidence bundle remains current.",
-      "recommendedEvalSurface": "dev/skill",
-      "recommendedProof": "cautilus-eval",
+      "recommendedProof": "human-auditable",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
@@ -6111,8 +6138,7 @@
         }
       ],
       "summary": "It emits `cautilus.claim_eval_plan.v1` from reviewed `cautilus-eval` claims that are ready to verify, while preserving the host boundary by not writing fixtures, prompts, runners, wrappers, or policy.",
-      "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "needs-alignment",
       "whyThisLayer": "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof."
     },
     {
@@ -8411,6 +8437,36 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:bba8e857fc5e1c66b081de58f10a51735a96bf6d9532f41a588ccbbb947b5919",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-206",
+      "claimSemanticGroup": "Packets and reporting",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "human-auditable",
+        "linked-from:docs/master-plan.md",
+        "needs-alignment",
+        "spec"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Reconcile or cite the matching adapter, CLI, docs, and test surfaces before treating this as satisfied.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "Cautilus owns the fixture schema, observed packet, summary packet, and bounded execution loop.",
+          "line": 206,
+          "path": "docs/specs/command-surfaces.spec.md"
+        }
+      ],
+      "summary": "Cautilus owns the fixture schema, observed packet, summary packet, and bounded execution loop.",
+      "verificationReadiness": "needs-alignment",
+      "whyThisLayer": "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:2982e7e4ca58f29a0f6f869aa771beb64156d93dfd8d45b1abe7bd889a9fda7f",
       "claimId": "claim-docs-specs-command-surfaces-spec-md-207",
       "claimSemanticGroup": "Adapter and portability",
@@ -10255,42 +10311,42 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 265,
+      "developer": 267,
       "user": 66
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 57,
       "Agent and skill workflow": 82,
       "Claim discovery and review": 21,
-      "Documentation and contracts": 81,
+      "Documentation and contracts": 82,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
       "Improvement and optimization": 20,
-      "Packets and reporting": 29,
+      "Packets and reporting": 30,
       "Quality gates": 34,
       "Release and packaging": 5
     },
     "byEvidenceStatus": {
       "satisfied": 27,
-      "unknown": 304
+      "unknown": 306
     },
     "byLifecycle": {
-      "new": 331
+      "new": 333
     },
     "byRecommendedProof": {
-      "cautilus-eval": 140,
-      "deterministic": 130,
-      "human-auditable": 61
+      "cautilus-eval": 136,
+      "deterministic": 129,
+      "human-auditable": 68
     },
     "byReviewStatus": {
       "agent-reviewed": 42,
-      "heuristic": 289
+      "heuristic": 291
     },
     "byVerificationReadiness": {
-      "blocked": 10,
-      "needs-alignment": 26,
+      "blocked": 12,
+      "needs-alignment": 31,
       "needs-scenario": 7,
-      "ready-to-verify": 288
+      "ready-to-verify": 283
     }
   },
   "discoveryMode": "deterministic-source-inventory",
@@ -10438,7 +10494,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "c02f4a410854a07ff602565fc63d6e73bafe03aa",
+  "gitCommit": "3a2bfe96ef1a59505b36dd0dedd6968b3b1b7977",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "reviewApplication": {
@@ -11212,7 +11268,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:021ac3883804879980b5da9c8e052d169a857fa44d4dfa76658f45a8506e075e",
+      "contentHash": "sha256:3af51e8685087c160e8d781156622be60c54f42127d3cfd570e78196c4e2d270",
       "depth": 2,
       "discoveredFrom": "docs/master-plan.md",
       "kind": "contract",
