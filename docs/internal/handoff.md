@@ -198,11 +198,13 @@
    C2 `extends`는 2026-05-01에 file-backed `eval test` fixture에서 shipped 됐다.
    C3 `steps`도 2026-05-01에 strict explicit `outputProjection` 기반으로 shipped 됐다.
    C4 `expected.snapshot`은 2026-05-01에 app `finalText` snapshot 비교로 shipped 됐다.
-6. spec follow-up #5 — `scenario normalize` 재범위만 남음.
-   archetype-boundary retire는 cut 슬라이스에 흡수됨.
+6. spec follow-up #5 — `scenario normalize` 재범위는 2026-05-01 `27cfb2d`에서 닫힘.
+   `cautilus scenarios --json`, `first_bounded_run`, version state, lint/test/docs가 `archetypes` 대신 `normalizationFamilies`를 쓴다.
+   `lint:archetypes`는 `lint:scenario-normalizers`로 바뀌었고, refresh-plan overwrite guard도 같이 들어왔다.
 8. 2026-05-01 proof-boundary quality pass에서 app Codex dogfood script 이름은 `:live`에서 `:codex`로 바뀌었고, `check-proof-boundary-names`가 `dogfood:*:live` script가 `cautilus eval live`를 호출하지 않으면 실패한다.
    `npm run dogfood:app-chat:codex`와 `npm run dogfood:app-prompt:codex`는 둘 다 `accept-now`, `passed=1`, `failed=0`이며 summary proof는 `productProofReady=false`, `runnerAssessmentState=missing-assessment`다.
-9. 후속 후보: direct provider parity가 필요한지 결정한다.
+9. 후속 후보: direct provider parity는 현재 요구사항으로 잠그지 않는다.
+   실제 consumer adapter가 direct API와 CLI messaging 비교를 요구할 때 다시 연다.
 
 ## Discuss
 
