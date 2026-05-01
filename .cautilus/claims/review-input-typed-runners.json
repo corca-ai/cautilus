@@ -1704,6 +1704,12 @@
       "reason": "max-clusters-exceeded"
     },
     {
+      "claimCount": 1,
+      "clusterId": "cluster-developer-packets-and-reporting-cautilus-eval-dev-repo-spec",
+      "groupKey": "developer:Packets and reporting:cautilus-eval:dev/repo:spec",
+      "reason": "max-clusters-exceeded"
+    },
+    {
       "claimCount": 2,
       "clusterId": "cluster-developer-quality-gates-cautilus-eval-app-prompt-contract",
       "groupKey": "developer:Quality gates:cautilus-eval:app/prompt:contract",
@@ -1951,8 +1957,8 @@
     }
   ],
   "sourceClaimPacket": {
-    "candidateCount": 320,
-    "gitCommit": "6c177e94e7b03702a5984b442cd1ccc8b7e06cc7",
+    "candidateCount": 321,
+    "gitCommit": "ee4bdc6349a311a711db6f3c464f8f7af2774363",
     "schemaVersion": "cautilus.claim_proof_plan.v1"
   },
   "sourceRoot": "."

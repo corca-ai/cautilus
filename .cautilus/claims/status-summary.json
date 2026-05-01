@@ -1,5 +1,5 @@
 {
-  "candidateCount": 320,
+  "candidateCount": 321,
   "claimState": {
     "path": ".cautilus/claims/latest.json",
     "pathSource": "adapter",
@@ -16,7 +16,7 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 252,
+      "developer": 253,
       "user": 68
     },
     "byClaimSemanticGroup": {
@@ -26,31 +26,31 @@
       "Documentation and contracts": 80,
       "Evaluation surfaces": 2,
       "Improvement and optimization": 21,
-      "Packets and reporting": 27,
+      "Packets and reporting": 28,
       "Quality gates": 30,
       "Release and packaging": 5
     },
     "byEvidenceStatus": {
       "satisfied": 4,
-      "unknown": 316
+      "unknown": 317
     },
     "byLifecycle": {
-      "new": 320
+      "new": 321
     },
     "byRecommendedProof": {
-      "cautilus-eval": 165,
+      "cautilus-eval": 166,
       "deterministic": 117,
       "human-auditable": 38
     },
     "byReviewStatus": {
       "agent-reviewed": 14,
-      "heuristic": 306
+      "heuristic": 307
     },
     "byVerificationReadiness": {
       "blocked": 2,
       "needs-alignment": 9,
       "needs-scenario": 6,
-      "ready-to-verify": 303
+      "ready-to-verify": 304
     }
   },
   "effectiveScanScope": {
@@ -278,17 +278,17 @@
       }
     ]
   },
-  "gitCommit": "6c177e94e7b03702a5984b442cd1ccc8b7e06cc7",
+  "gitCommit": "ee4bdc6349a311a711db6f3c464f8f7af2774363",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "6c177e94e7b03702a5984b442cd1ccc8b7e06cc7",
+    "currentGitCommit": "ee4bdc6349a311a711db6f3c464f8f7af2774363",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "6c177e94e7b03702a5984b442cd1ccc8b7e06cc7",
+    "packetGitCommit": "ee4bdc6349a311a711db6f3c464f8f7af2774363",
     "recommendedAction": "The claim packet commit matches the current checkout.",
     "workingTreePolicy": "excluded"
   },
@@ -311,7 +311,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 291,
+    "heuristicClaimsReadyForReview": 292,
     "needsAlignment": 9,
     "needsScenario": 6
   },

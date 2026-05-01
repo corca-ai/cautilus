@@ -11,6 +11,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"regexp"
 	"sort"
 	"strconv"
 	"strings"
@@ -21,6 +22,8 @@ import (
 	"github.com/corca-ai/cautilus/internal/runtime"
 	bundledskills "github.com/corca-ai/cautilus/skills"
 )
+
+var evalStepPlaceholderPattern = regexp.MustCompile(`\$\{steps\[(\d+)\]\.output(?:\.([^}]+))?\}`)
 
 var (
 	latestReleaseMetadataForLifecycle = cli.LatestReleaseMetadata
@@ -733,7 +736,15 @@ func handleEvalTest(repoRoot string, cwd string, args []string, stdout io.Writer
 		}
 		fixturePath = resolvePath(options.repoRoot, defaultFixture)
 	}
-	evaluation, err := runtime.NormalizeEvaluationInputFromFile(fixturePath)
+	fixtureInput, err := runtime.LoadEvaluationInputFile(fixturePath)
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	if _, hasSteps := fixtureInput["steps"]; hasSteps {
+		return runEvalTestSteps(options, adapterPayload, fixtureInput, fixturePath, cwd, stdout, stderr)
+	}
+	evaluation, err := runtime.NormalizeEvaluationInput(fixtureInput)
 	if err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
@@ -751,6 +762,323 @@ func handleEvalTest(repoRoot string, cwd string, args []string, stdout io.Writer
 	}
 	targetSurface := runtime.EvalSurfaceKey(evaluation.Surface, evaluation.Preset)
 	return runEvalTestPipeline(options, adapterPayload, evaluation.SuiteID, targetSurface, prepareCasesFile, cwd, stdout, stderr, fmt.Sprintf("eval test (%s/%s)", evaluation.Surface, evaluation.Preset))
+}
+
+//nolint:errcheck // CLI stdout/stderr reporting is best-effort.
+func runEvalTestSteps(options *evalTestArgs, adapterPayload *runtime.AdapterPayload, fixtureInput map[string]any, fixturePath string, cwd string, stdout io.Writer, stderr io.Writer) int {
+	rawSteps, ok := fixtureInput["steps"].([]any)
+	if !ok {
+		fmt.Fprintf(stderr, "steps must be an array\n")
+		return 1
+	}
+	if len(rawSteps) == 0 {
+		fmt.Fprintf(stderr, "steps must contain at least one step\n")
+		return 1
+	}
+	resolvedRun, err := runtime.ResolveRunDir(options.outputDir, nil, nil, environmentMap(), time.Now(), cwd)
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	if resolvedRun.Source == "auto" {
+		fmt.Fprintf(stderr, "Active run: %s\n", resolvedRun.RunDir)
+	}
+	outputDir := resolvedRun.RunDir
+	stepOutputs := []any{}
+	stepResults := []any{}
+	recommendation := "accept-now"
+	counts := map[string]int{"total": 0, "passed": 0, "failed": 0}
+	for index, rawStep := range rawSteps {
+		step, ok := rawStep.(map[string]any)
+		if !ok {
+			fmt.Fprintf(stderr, "steps[%d] must be an object\n", index)
+			return 1
+		}
+		stepFixture, projection, err := buildEvalStepFixture(step, fixturePath, stepOutputs, index)
+		if err != nil {
+			fmt.Fprintf(stderr, "%s\n", err)
+			return 1
+		}
+		evaluation, err := runtime.NormalizeEvaluationInput(stepFixture)
+		if err != nil {
+			fmt.Fprintf(stderr, "steps[%d]: %s\n", index, err)
+			return 1
+		}
+		stepOutputDir := filepath.Join(outputDir, "steps", fmt.Sprintf("step-%d", index))
+		stepOptions := *options
+		stepOptions.outputDir = &stepOutputDir
+		stepOptions.output = nil
+		prepareCasesFile := func(outputDir string) (string, error) {
+			path := filepath.Join(outputDir, "eval-cases.json")
+			body, err := json.MarshalIndent(evaluation.TranslatedCases, "", "  ")
+			if err != nil {
+				return "", fmt.Errorf("marshal eval cases: %w", err)
+			}
+			if err := os.WriteFile(path, body, 0o644); err != nil {
+				return "", fmt.Errorf("write eval cases: %w", err)
+			}
+			return path, nil
+		}
+		targetSurface := runtime.EvalSurfaceKey(evaluation.Surface, evaluation.Preset)
+		exitCode := runEvalTestPipeline(&stepOptions, adapterPayload, evaluation.SuiteID, targetSurface, prepareCasesFile, cwd, io.Discard, stderr, fmt.Sprintf("eval test step %d (%s/%s)", index, evaluation.Surface, evaluation.Preset))
+		summaryFile := filepath.Join(stepOutputDir, "eval-summary.json")
+		summary, readErr := readJSONObject(summaryFile)
+		if readErr != nil {
+			fmt.Fprintf(stderr, "steps[%d] failed before producing %s: %s\n", index, summaryFile, readErr)
+			return 1
+		}
+		accumulateEvalStepCounts(counts, summary)
+		projectedOutput, err := projectEvalStepOutput(summary, projection, index)
+		if err != nil {
+			fmt.Fprintf(stderr, "%s\n", err)
+			return 1
+		}
+		stepOutputs = append(stepOutputs, projectedOutput)
+		stepResult := map[string]any{
+			"stepIndex":   index,
+			"surface":     evaluation.Surface,
+			"preset":      evaluation.Preset,
+			"suiteId":     evaluation.SuiteID,
+			"summaryFile": summaryFile,
+			"outputDir":   stepOutputDir,
+			"output":      projectedOutput,
+			"status":      firstNonEmptyString(anyString(summary["recommendation"]), "unknown"),
+		}
+		stepResults = append(stepResults, stepResult)
+		if exitCode != 0 || anyString(summary["recommendation"]) != "accept-now" {
+			recommendation = "reject"
+			break
+		}
+	}
+	summaryFile := filepath.Join(outputDir, "eval-summary.json")
+	if options.output != nil {
+		summaryFile = *options.output
+	}
+	suiteID := firstNonEmptyString(anyString(fixtureInput["suiteId"]), strings.TrimSuffix(filepath.Base(fixturePath), filepath.Ext(fixturePath)))
+	summary := map[string]any{
+		"schemaVersion":    contracts.EvaluationSummarySchema,
+		"suiteId":          suiteID,
+		"suiteDisplayName": firstNonEmptyString(anyString(fixtureInput["suiteDisplayName"]), suiteID),
+		"recommendation":   recommendation,
+		"evaluationCounts": map[string]any{
+			"total":  counts["total"],
+			"passed": counts["passed"],
+			"failed": counts["failed"],
+		},
+		"steps": stepResults,
+	}
+	if err := writeOutputResolved(stdout, &summaryFile, summary); err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	fmt.Fprintf(stdout, "%s\n", summaryFile)
+	if recommendation != "accept-now" {
+		return 1
+	}
+	return 0
+}
+
+func buildEvalStepFixture(step map[string]any, parentFixturePath string, priorOutputs []any, stepIndex int) (map[string]any, map[string]any, error) {
+	projection := mapOrEmpty(step["outputProjection"])
+	if len(projection) == 0 {
+		return nil, nil, fmt.Errorf("steps[%d].outputProjection is required", stepIndex)
+	}
+	stepFixture := map[string]any{}
+	if ref := strings.TrimSpace(anyString(step["$ref"])); ref != "" {
+		if filepath.IsAbs(ref) {
+			return nil, nil, fmt.Errorf("steps[%d].$ref must be relative", stepIndex)
+		}
+		loaded, err := runtime.LoadEvaluationInputFile(filepath.Join(filepath.Dir(parentFixturePath), ref))
+		if err != nil {
+			return nil, nil, fmt.Errorf("steps[%d].$ref: %w", stepIndex, err)
+		}
+		stepFixture = loaded
+	}
+	overrides := map[string]any{}
+	for key, value := range step {
+		if key == "$ref" || key == "outputProjection" {
+			continue
+		}
+		overrides[key] = value
+	}
+	if len(stepFixture) == 0 {
+		stepFixture = overrides
+	} else if len(overrides) > 0 {
+		stepFixture = runtime.DeepMergeEvaluationFixture(stepFixture, overrides)
+	}
+	resolved, err := substituteEvalStepPlaceholders(stepFixture, priorOutputs)
+	if err != nil {
+		return nil, nil, fmt.Errorf("steps[%d]: %w", stepIndex, err)
+	}
+	resolvedFixture, ok := resolved.(map[string]any)
+	if !ok {
+		return nil, nil, fmt.Errorf("steps[%d] did not resolve to a fixture object", stepIndex)
+	}
+	return resolvedFixture, projection, nil
+}
+
+func substituteEvalStepPlaceholders(value any, priorOutputs []any) (any, error) {
+	switch typed := value.(type) {
+	case map[string]any:
+		resolved := map[string]any{}
+		for key, item := range typed {
+			next, err := substituteEvalStepPlaceholders(item, priorOutputs)
+			if err != nil {
+				return nil, err
+			}
+			resolved[key] = next
+		}
+		return resolved, nil
+	case []any:
+		resolved := make([]any, 0, len(typed))
+		for _, item := range typed {
+			next, err := substituteEvalStepPlaceholders(item, priorOutputs)
+			if err != nil {
+				return nil, err
+			}
+			resolved = append(resolved, next)
+		}
+		return resolved, nil
+	case string:
+		return substituteEvalStepPlaceholderString(typed, priorOutputs)
+	default:
+		return value, nil
+	}
+}
+
+func substituteEvalStepPlaceholderString(value string, priorOutputs []any) (any, error) {
+	matches := evalStepPlaceholderPattern.FindAllStringSubmatchIndex(value, -1)
+	if len(matches) == 0 {
+		if strings.Contains(value, "${steps[") {
+			return nil, fmt.Errorf("invalid step placeholder %q", value)
+		}
+		return value, nil
+	}
+	if len(matches) == 1 && matches[0][0] == 0 && matches[0][1] == len(value) {
+		return evalStepPlaceholderValue(value[matches[0][2]:matches[0][3]], evalStepPlaceholderPath(value, matches[0]), priorOutputs)
+	}
+	var builder strings.Builder
+	last := 0
+	for _, match := range matches {
+		builder.WriteString(value[last:match[0]])
+		replacement, err := evalStepPlaceholderValue(value[match[2]:match[3]], evalStepPlaceholderPath(value, match), priorOutputs)
+		if err != nil {
+			return nil, err
+		}
+		if text, ok := replacement.(string); ok {
+			builder.WriteString(text)
+		} else {
+			builder.WriteString(toJSONString(replacement))
+		}
+		last = match[1]
+	}
+	builder.WriteString(value[last:])
+	return builder.String(), nil
+}
+
+func evalStepPlaceholderPath(value string, match []int) string {
+	if len(match) < 6 || match[4] < 0 || match[5] < 0 {
+		return ""
+	}
+	return value[match[4]:match[5]]
+}
+
+func evalStepPlaceholderValue(indexText string, path string, priorOutputs []any) (any, error) {
+	index, err := strconv.Atoi(indexText)
+	if err != nil {
+		return nil, fmt.Errorf("invalid step placeholder index %q", indexText)
+	}
+	if index < 0 || index >= len(priorOutputs) {
+		return nil, fmt.Errorf("step placeholder references unavailable or forward step %d", index)
+	}
+	if strings.TrimSpace(path) == "" {
+		return priorOutputs[index], nil
+	}
+	return valueAtDottedPath(priorOutputs[index], path)
+}
+
+func projectEvalStepOutput(summary map[string]any, projection map[string]any, stepIndex int) (map[string]any, error) {
+	output := map[string]any{}
+	for key, rawPath := range projection {
+		path := strings.TrimSpace(anyString(rawPath))
+		if path == "" {
+			return nil, fmt.Errorf("steps[%d].outputProjection.%s must be a non-empty dotted path", stepIndex, key)
+		}
+		value, err := valueAtDottedPath(summary, path)
+		if err != nil {
+			return nil, fmt.Errorf("steps[%d].outputProjection.%s: %w", stepIndex, key, err)
+		}
+		output[key] = value
+	}
+	return output, nil
+}
+
+func valueAtDottedPath(value any, path string) (any, error) {
+	current := value
+	for _, segment := range strings.Split(path, ".") {
+		if strings.TrimSpace(segment) == "" {
+			return nil, fmt.Errorf("empty path segment in %q", path)
+		}
+		key, indexes, err := parseDottedPathSegment(segment)
+		if err != nil {
+			return nil, err
+		}
+		if key != "" {
+			object, ok := current.(map[string]any)
+			if !ok {
+				return nil, fmt.Errorf("%q is not an object", key)
+			}
+			next, ok := object[key]
+			if !ok {
+				return nil, fmt.Errorf("missing key %q", key)
+			}
+			current = next
+		}
+		for _, index := range indexes {
+			items, ok := current.([]any)
+			if !ok {
+				return nil, fmt.Errorf("[%d] is not an array", index)
+			}
+			if index < 0 || index >= len(items) {
+				return nil, fmt.Errorf("[%d] is out of range", index)
+			}
+			current = items[index]
+		}
+	}
+	return current, nil
+}
+
+func parseDottedPathSegment(segment string) (string, []int, error) {
+	keyEnd := strings.Index(segment, "[")
+	if keyEnd < 0 {
+		return segment, nil, nil
+	}
+	key := segment[:keyEnd]
+	rest := segment[keyEnd:]
+	indexes := []int{}
+	for rest != "" {
+		if !strings.HasPrefix(rest, "[") {
+			return "", nil, fmt.Errorf("invalid path segment %q", segment)
+		}
+		closeIndex := strings.Index(rest, "]")
+		if closeIndex < 0 {
+			return "", nil, fmt.Errorf("invalid path segment %q", segment)
+		}
+		index, err := strconv.Atoi(rest[1:closeIndex])
+		if err != nil {
+			return "", nil, fmt.Errorf("invalid array index in %q", segment)
+		}
+		indexes = append(indexes, index)
+		rest = rest[closeIndex+1:]
+	}
+	return key, indexes, nil
+}
+
+func accumulateEvalStepCounts(counts map[string]int, summary map[string]any) {
+	source := mapOrEmpty(summary["evaluationCounts"])
+	for _, key := range []string{"total", "passed", "failed"} {
+		counts[key] += intFromAny(source[key], 0)
+	}
 }
 
 func parseEvalTestArgs(args []string, cwd string) (*evalTestArgs, string, error) {

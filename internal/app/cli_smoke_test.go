@@ -3168,6 +3168,184 @@ JSON
 	}
 }
 
+func TestCLIEvalTestRunsMultiStepFixtureWithStrictProjection(t *testing.T) {
+	root := t.TempDir()
+	adapterDir := filepath.Join(root, ".agents")
+	fixtureDir := filepath.Join(root, "fixtures", "eval", "app", "prompt")
+	outputDir := filepath.Join(root, "outputs")
+	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.MkdirAll(fixtureDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	scriptPath := filepath.Join(root, "eval-test.sh")
+	script := `#!/bin/sh
+node - "$1" "$2" <<'EOF'
+const fs = require('fs');
+const [casesFile, observedFile] = process.argv.slice(2);
+const cases = JSON.parse(fs.readFileSync(casesFile, 'utf8'));
+const evaluations = cases.cases.map((testCase) => {
+  let finalText = testCase.input;
+  if (testCase.input === "Start") {
+    finalText = "seed text";
+  } else if (testCase.input.startsWith("Second saw ")) {
+    finalText = testCase.input.slice("Second saw ".length);
+  }
+  return {
+    caseId: testCase.caseId,
+    displayName: testCase.displayName,
+    provider: cases.provider,
+    model: cases.model,
+    harness: "fixture-backend",
+    mode: "messaging",
+    durationMs: 1,
+    expected: testCase.expected,
+    observed: {
+      input: testCase.input,
+      messages: [
+        { role: "user", content: testCase.input },
+        { role: "assistant", content: finalText }
+      ],
+      finalText
+    }
+  };
+});
+fs.writeFileSync(observedFile, JSON.stringify({
+  schemaVersion: "cautilus.app_prompt_evaluation_inputs.v1",
+  suiteId: cases.suiteId,
+  suiteDisplayName: cases.suiteDisplayName,
+  evaluations
+}, null, 2) + "\n");
+EOF
+`
+	if err := os.WriteFile(scriptPath, []byte(script), 0o755); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(adapterDir, "cautilus-adapter.yaml"), []byte(strings.Join([]string{
+		"version: 1",
+		"repo: temp",
+		"evaluation_surfaces:",
+		"  - app / prompt",
+		"baseline_options:",
+		"  - baseline git ref via {baseline_ref}",
+		"default_runtime: fixture",
+		"eval_test_command_templates:",
+		"  - sh ./eval-test.sh {eval_cases_file} {eval_observed_file}",
+		"",
+	}, "\n")), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	writeJSONFile(t, filepath.Join(fixtureDir, "first.fixture.json"), map[string]any{
+		"schemaVersion":    contracts.EvaluationInputSchema,
+		"surface":          "app",
+		"preset":           "prompt",
+		"suiteId":          "first-step",
+		"suiteDisplayName": "First Step",
+		"provider":         "fixture",
+		"model":            "fixture",
+		"system":           "Return fixture text.",
+		"cases": []map[string]any{
+			{
+				"caseId":      "first",
+				"displayName": "First",
+				"input":       "Start",
+				"expected":    map[string]any{"finalText": "seed text"},
+			},
+		},
+	})
+	writeJSONFile(t, filepath.Join(fixtureDir, "second.fixture.json"), map[string]any{
+		"schemaVersion":    contracts.EvaluationInputSchema,
+		"surface":          "app",
+		"preset":           "prompt",
+		"suiteId":          "second-step",
+		"suiteDisplayName": "Second Step",
+		"provider":         "fixture",
+		"model":            "fixture",
+		"system":           "Return fixture text.",
+		"cases": []map[string]any{
+			{
+				"caseId":      "second",
+				"displayName": "Second",
+				"input":       "Second saw ${steps[0].output.text}",
+				"expected":    "${steps[0].output}",
+			},
+		},
+	})
+	writeJSONFile(t, filepath.Join(fixtureDir, "multi-step.fixture.json"), map[string]any{
+		"schemaVersion":    contracts.EvaluationInputSchema,
+		"suiteId":          "multi-step",
+		"suiteDisplayName": "Multi Step",
+		"steps": []map[string]any{
+			{
+				"$ref": "./first.fixture.json",
+				"outputProjection": map[string]any{
+					"finalText": "evaluations[0].observed.finalText",
+					"text":      "evaluations[0].observed.finalText",
+				},
+			},
+			{
+				"$ref": "./second.fixture.json",
+				"outputProjection": map[string]any{
+					"text": "evaluations[0].observed.finalText",
+				},
+			},
+		},
+	})
+	stdout, stderr, exitCode := runCLI(t, root, "eval", "test", "--repo-root", root, "--fixture", filepath.Join(fixtureDir, "multi-step.fixture.json"), "--output-dir", outputDir)
+	if exitCode != 0 {
+		t.Fatalf("multi-step eval test failed: %s", stderr)
+	}
+	summary := readJSONObjectFile(t, strings.TrimSpace(stdout))
+	if summary["recommendation"] != "accept-now" {
+		t.Fatalf("unexpected multi-step summary: %#v", summary)
+	}
+	steps := summary["steps"].([]any)
+	if len(steps) != 2 {
+		t.Fatalf("expected two step summaries, got %#v", steps)
+	}
+	secondCases := readJSONObjectFile(t, filepath.Join(outputDir, "steps", "step-1", "eval-cases.json"))
+	secondCase := secondCases["cases"].([]any)[0].(map[string]any)
+	if secondCase["input"] != "Second saw seed text" {
+		t.Fatalf("expected dotted-path interpolation, got %#v", secondCase)
+	}
+	if secondCase["expected"].(map[string]any)["finalText"] != "seed text" {
+		t.Fatalf("expected whole-output JSON substitution, got %#v", secondCase["expected"])
+	}
+
+	badFixturePath := filepath.Join(fixtureDir, "bad-step.fixture.json")
+	writeJSONFile(t, badFixturePath, map[string]any{
+		"schemaVersion": contracts.EvaluationInputSchema,
+		"suiteId":       "bad-step",
+		"steps": []map[string]any{
+			{
+				"$ref": "./first.fixture.json",
+				"outputProjection": map[string]any{
+					"text": "evaluations[0].observed.finalText",
+				},
+			},
+			{
+				"$ref": "./second.fixture.json",
+				"cases": []map[string]any{
+					{
+						"caseId":      "bad",
+						"displayName": "Bad",
+						"input":       "${steps[0]}",
+						"expected":    map[string]any{"finalText": "seed text"},
+					},
+				},
+				"outputProjection": map[string]any{
+					"text": "evaluations[0].observed.finalText",
+				},
+			},
+		},
+	})
+	_, stderr, exitCode = runCLI(t, root, "eval", "test", "--repo-root", root, "--fixture", badFixturePath, "--output-dir", filepath.Join(root, "bad-output"))
+	if exitCode == 0 || !strings.Contains(stderr, "invalid step placeholder") {
+		t.Fatalf("expected invalid placeholder error, exit=%d stderr=%s", exitCode, stderr)
+	}
+}
+
 func TestCLIEvalTestRunsDevSkillFixture(t *testing.T) {
 	root := t.TempDir()
 	adapterDir := filepath.Join(root, ".agents")

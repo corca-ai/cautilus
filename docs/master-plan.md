@@ -170,7 +170,7 @@ Still open:
 
 ## Immediate Next Moves
 
-1. Ship the remaining evaluation-surface composition primitives in spec order: C3 `steps`, then C4 `expected.snapshot`. See [docs/specs/evaluation-surfaces.spec.md](./specs/evaluation-surfaces.spec.md).
+1. Ship the remaining evaluation-surface composition primitive C4 `expected.snapshot`. See [docs/specs/evaluation-surfaces.spec.md](./specs/evaluation-surfaces.spec.md).
 2. Decide the next claim-discovery hardening slice from [claim-discovery-workflow.md](./contracts/claim-discovery-workflow.md): review-result application branch proof, deeper evidence reconciliation, or eval-fixture authoring guidance.
 3. Pick the next bounded improvement seam for the optimization layer: either close a specific richer merge heuristic that dogfood evidence asks for, or move to another roadmap slice rather than extending heuristics speculatively.
 4. Expand typed multi-runner metadata from the shipped `runner_readiness.runners` base only when real consumer adapters need additional fields; source-code inference remains deferred.

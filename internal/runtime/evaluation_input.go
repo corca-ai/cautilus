@@ -117,11 +117,15 @@ func NormalizeEvaluationInput(input map[string]any) (*EvaluationInput, error) {
 }
 
 func NormalizeEvaluationInputFromFile(path string) (*EvaluationInput, error) {
-	input, err := loadEvaluationInputWithExtends(path, map[string]bool{})
+	input, err := LoadEvaluationInputFile(path)
 	if err != nil {
 		return nil, err
 	}
 	return NormalizeEvaluationInput(input)
+}
+
+func LoadEvaluationInputFile(path string) (map[string]any, error) {
+	return loadEvaluationInputWithExtends(path, map[string]bool{})
 }
 
 func loadEvaluationInputWithExtends(path string, stack map[string]bool) (map[string]any, error) {
@@ -159,10 +163,10 @@ func loadEvaluationInputWithExtends(path string, stack map[string]bool) (map[str
 		return nil, err
 	}
 	delete(input, "extends")
-	return deepMergeEvaluationFixture(base, input), nil
+	return DeepMergeEvaluationFixture(base, input), nil
 }
 
-func deepMergeEvaluationFixture(base map[string]any, override map[string]any) map[string]any {
+func DeepMergeEvaluationFixture(base map[string]any, override map[string]any) map[string]any {
 	merged := map[string]any{}
 	for key, value := range base {
 		merged[key] = value
@@ -170,7 +174,7 @@ func deepMergeEvaluationFixture(base map[string]any, override map[string]any) ma
 	for key, value := range override {
 		if baseMap, ok := merged[key].(map[string]any); ok {
 			if overrideMap, ok := value.(map[string]any); ok {
-				merged[key] = deepMergeEvaluationFixture(baseMap, overrideMap)
+				merged[key] = DeepMergeEvaluationFixture(baseMap, overrideMap)
 				continue
 			}
 		}

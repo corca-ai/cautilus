@@ -88,11 +88,14 @@ A new value on either axis must pass the taxonomy-axis checkpoint and update the
   Shipped 2026-05-01 for file-backed `cautilus eval test` fixtures: object fields deep-merge, arrays replace, scalar child fields override, and `extends` paths must be relative to the child fixture.
   Lets users compare model variants, prompt variants, or workspace variants without copy-paste.
 - **C3 — multi-step composition**: `steps: [...]` carries a sequence where each step references another fixture (`$ref`) or is inline.
-  Step output is addressable in later steps via a single placeholder grammar:
+  Shipped 2026-05-01 with strict explicit projection: every step must declare `outputProjection`, a mapping from output keys to dotted paths in that step's eval summary.
+  Cautilus does not infer a generic output node from heterogeneous preset summaries.
+  Projected step output is addressable in later steps via a single placeholder grammar:
 
   - shape: `${steps[<index>].output(.<dotted.path>)?}`
   - `<index>` is 0-based and refers to a previously executed step in the same suite.
-  - `output` is the literal output node of the previous step's result packet.
+  - `output` is the explicit projection object declared by the previous step's `outputProjection`.
+  - `outputProjection` paths are dotted paths into that step's eval summary, such as `evaluations[0].observed.finalText`.
   - `<dotted.path>` is an optional dotted JSON path into that node (e.g., `${steps[0].output.text}` or `${steps[1].output.evidence[0].title}`).
   - Bare `${steps[0]}` is an error; `output` is required.
   - Forward references (`${steps[N]}` where N is the current or later step) are an error.
@@ -193,7 +196,7 @@ Each criterion has at least one executable check.
 
 - **C1 multi-case**: a suite with `cases: [a, b]` evaluates both, fixture-backend driver.
 - **C2 extends**: `child.fixture.json` extends `base.fixture.json`, asserts inherited and overridden fields.
-- **C3 multi-step**: 2-step fixture where step 2 reads `${steps[0].output.text}` (dotted path) AND a separate fixture using bare `${steps[0].output}` (whole-output substitution); both pass, and an invalid placeholder (`${steps[0]}`, forward ref, missing index) errors with a parse-error.
+- **C3 multi-step**: 2-step fixture where step 1 declares `outputProjection`, step 2 reads `${steps[0].output.text}` (dotted path), step 2 uses `${steps[0].output}` as a whole-output JSON substitution, and an invalid placeholder (`${steps[0]}`, forward ref, missing index) errors with a parse-error.
 - **C4 snapshot**: pass case (output matches snapshot) and mismatch case (output diff surfaces in result).
 - **Per-preset proof**:
   - `dev / repo`: cautilus's own AGENTS.md routing test (current self-dogfood, ported).
@@ -273,6 +276,8 @@ Follow-up slices proceed in this order:
    Claude CLI messaging proof shipped 2026-04-27: `npm run dogfood:app-prompt:claude` runs the same checked-in fixture with `--runtime claude`; the live run returned `recommendation=accept-now`.
 4. ~~C2 `extends` composition primitive.~~ Shipped 2026-05-01.
    File-backed `cautilus eval test` fixtures can extend a relative base fixture; object fields deep-merge, arrays replace, and scalar child fields override.
-5. C3–C4 composition primitives, one per slice.
-6. Rescope `scenario normalize` proposal-input lineage.
+5. ~~C3 `steps` composition primitive.~~ Shipped 2026-05-01.
+   Multi-step `eval test` fixtures execute each step in order, require explicit `outputProjection`, and allow only prior projected outputs to feed later step placeholders.
+6. C4 `expected.snapshot` composition primitive.
+7. Rescope `scenario normalize` proposal-input lineage.
    The `archetype-boundary.spec.md` retirement was absorbed into the `mode evaluate` cut slice (2026-04-26): the spec was removed, `lint:archetypes` was reframed as a runtime-completeness check for the surviving `scenario normalize` plumbing, and AGENTS.md / CLAUDE.md / README.md / master-plan.md were realigned to point at this spec instead.
