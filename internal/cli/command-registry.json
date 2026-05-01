@@ -52,7 +52,7 @@
         "Prepares deterministic `cautilus.claim_review_input.v1` clusters for agent or subagent review.",
         "Rejects stale claim packets by default; staleness means recorded claim sources changed, not merely that generated claim artifacts were committed later.",
         "May include `possibleEvidenceRefs` from adapter `evidence_roots`, but those refs are hints and cannot satisfy claims.",
-        "Skips claims already marked `evidenceStatus=satisfied` by default and records them under `skippedClaims` so review budget stays focused on unresolved claims.",
+        "Skips claims already marked `evidenceStatus=satisfied` or already reviewed by default and records them under `skippedClaims` so review budget stays focused on unresolved heuristic claims.",
         "The command does not call an LLM and does not mark claims satisfied."
       ]
     },

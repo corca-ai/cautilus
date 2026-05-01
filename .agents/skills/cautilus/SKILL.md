@@ -129,7 +129,7 @@ Before launching it, state the review budget: maximum clusters, parallel lanes, 
 If the user selects the review branch without naming a budget, use the command defaults as a conservative deterministic prepare-input budget and say so before running `claim review prepare-input`.
 After a fresh first discovery for any review branch, run `claim show --input <claims.json> --sample-claims <n>` before `claim review prepare-input`; this is the product-owned review queue summary, not optional narration.
 After `claim review prepare-input`, stop at the packet boundary unless the user has explicitly delegated reviewer launch.
-The review input skips already satisfied claims by default; inspect `skippedClaims` only when you need to audit carried evidence.
+The review input skips already satisfied and already reviewed non-stale claims by default; inspect `skippedClaims` only when you need to audit carried evidence or prior decisions.
 When reviewer launch is explicitly delegated, use the smallest honest launch budget if none was provided: one cluster, one claim, one reviewer lane, no retries.
 The default single-lane launch in an agent session is the current agent acting as the reviewer lane: review the selected cluster and write a valid `cautilus.claim_review_result.v1` packet.
 For claim evidence, prefer `evidenceStatus=unknown` unless the review input includes direct verified evidence for that claim.

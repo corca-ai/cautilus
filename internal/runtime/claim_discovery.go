@@ -1828,7 +1828,8 @@ func BuildClaimReviewInput(packet map[string]any, options ClaimReviewInputOption
 		},
 		"selectionPolicy": map[string]any{
 			"excludesEvidenceStatus": []any{"satisfied"},
-			"reason":                 "already-satisfied claims do not need LLM review by default; inspect `skippedClaims` to audit carried evidence.",
+			"excludesReviewStatus":   []any{"agent-reviewed", "human-reviewed"},
+			"reason":                 "already-satisfied and already-reviewed non-stale claims do not need LLM review by default; inspect `skippedClaims` to audit carried evidence and prior decisions.",
 		},
 		"clusters":        renderedClusters,
 		"skippedClusters": skipped,
@@ -1862,6 +1863,10 @@ func selectClaimReviewCandidates(candidates []any) ([]any, []any) {
 			skipped = append(skipped, skippedClaimReviewCandidate(candidate, "already-satisfied"))
 			continue
 		}
+		if claimReviewAlreadyAccepted(stringFromAny(candidate["reviewStatus"])) && stringFromAny(candidate["evidenceStatus"]) != "stale" {
+			skipped = append(skipped, skippedClaimReviewCandidate(candidate, "already-reviewed"))
+			continue
+		}
 		selected = append(selected, raw)
 	}
 	return selected, skipped
@@ -1884,6 +1889,15 @@ func skippedClaimReviewCandidate(candidate map[string]any, reason string) map[st
 		entry["unresolvedQuestions"] = arrayOrEmpty(candidate["unresolvedQuestions"])
 	}
 	return entry
+}
+
+func claimReviewAlreadyAccepted(status string) bool {
+	switch status {
+	case "agent-reviewed", "human-reviewed":
+		return true
+	default:
+		return false
+	}
 }
 
 func attachPossibleEvidenceRefs(candidates []any, refsByClaimID map[string][]any) []any {

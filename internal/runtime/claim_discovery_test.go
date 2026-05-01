@@ -644,6 +644,20 @@ func TestBuildClaimReviewInputSkipsSatisfiedClaims(t *testing.T) {
 				"evidenceRefs":           []any{},
 				"sourceRefs":             []any{map[string]any{"path": "README.md", "line": 2, "excerpt": "The skill flow still needs review."}},
 			},
+			map[string]any{
+				"claimId":                "claim-readme-md-3",
+				"claimFingerprint":       "sha256:reviewed",
+				"summary":                "The skill flow was already reviewed and needs proof.",
+				"recommendedProof":       "cautilus-eval",
+				"recommendedEvalSurface": "dev/skill",
+				"verificationReadiness":  "ready-to-verify",
+				"evidenceStatus":         "unknown",
+				"reviewStatus":           "agent-reviewed",
+				"lifecycle":              "new",
+				"groupHints":             []any{"cautilus-eval"},
+				"evidenceRefs":           []any{},
+				"sourceRefs":             []any{map[string]any{"path": "README.md", "line": 3, "excerpt": "The skill flow was already reviewed and needs proof."}},
+			},
 		},
 	}
 	reviewInput, err := BuildClaimReviewInput(packet, ClaimReviewInputOptions{
@@ -663,15 +677,24 @@ func TestBuildClaimReviewInputSkipsSatisfiedClaims(t *testing.T) {
 		t.Fatalf("expected only unknown claim in review cluster, got %#v", candidates)
 	}
 	skippedClaims := arrayOrEmpty(reviewInput["skippedClaims"])
-	if len(skippedClaims) != 1 {
-		t.Fatalf("expected one skipped satisfied claim, got %#v", reviewInput)
+	if len(skippedClaims) != 2 {
+		t.Fatalf("expected two skipped claims, got %#v", reviewInput)
 	}
-	skipped := asMap(skippedClaims[0])
-	if skipped["reason"] != "already-satisfied" || skipped["claimId"] != "claim-readme-md-1" {
+	skippedByID := map[string]map[string]any{}
+	for _, raw := range skippedClaims {
+		entry := asMap(raw)
+		skippedByID[stringFromAny(entry["claimId"])] = entry
+	}
+	skipped := skippedByID["claim-readme-md-1"]
+	if skipped["reason"] != "already-satisfied" {
 		t.Fatalf("expected already-satisfied skip entry, got %#v", skipped)
 	}
 	if len(arrayOrEmpty(skipped["evidenceRefs"])) != 1 {
 		t.Fatalf("expected skipped satisfied claim to retain evidence refs, got %#v", skipped)
+	}
+	reviewed := skippedByID["claim-readme-md-3"]
+	if reviewed["reason"] != "already-reviewed" {
+		t.Fatalf("expected already-reviewed skip entry, got %#v", reviewed)
 	}
 	policy := asMap(reviewInput["selectionPolicy"])
 	if statuses := stringArrayOrEmpty(policy["excludesEvidenceStatus"]); !containsString(statuses, "satisfied") {
