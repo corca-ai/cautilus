@@ -1,51 +1,51 @@
 {
-  "candidateCount": 327,
+  "candidateCount": 329,
   "claimState": {
     "path": ".cautilus/claims/latest.json",
     "pathSource": "adapter"
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 258,
+      "developer": 260,
       "user": 69
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 51,
       "Agent and skill workflow": 89,
       "Claim discovery and review": 19,
-      "Documentation and contracts": 84,
+      "Documentation and contracts": 85,
       "Evaluation surfaces": 2,
       "Improvement and optimization": 21,
-      "Packets and reporting": 22,
+      "Packets and reporting": 23,
       "Quality gates": 34,
       "Release and packaging": 5
     },
     "byEvidenceStatus": {
-      "unknown": 327
+      "unknown": 329
     },
     "byLifecycle": {
-      "new": 327
+      "new": 329
     },
     "byProofLayer": {
       "alignment-work": 9,
-      "cautilus-eval": 162,
-      "deterministic": 122,
-      "human-auditable": 28,
+      "cautilus-eval": 161,
+      "deterministic": 123,
+      "human-auditable": 30,
       "scenario-candidate": 6
     },
     "byRecommendedProof": {
-      "cautilus-eval": 168,
-      "deterministic": 122,
-      "human-auditable": 37
+      "cautilus-eval": 167,
+      "deterministic": 123,
+      "human-auditable": 39
     },
     "byReviewStatus": {
-      "heuristic": 327
+      "heuristic": 329
     },
     "byVerificationReadiness": {
-      "blocked": 1,
+      "blocked": 2,
       "needs-alignment": 9,
       "needs-scenario": 6,
-      "ready-to-verify": 311
+      "ready-to-verify": 312
     }
   },
   "effectiveScanScope": {
@@ -187,17 +187,17 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "7d3ada2f9d078355572c74de9a11a388a99000f7",
+  "gitCommit": "aa9a6e96437119db829d875e0016cc857e2743e8",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "7d3ada2f9d078355572c74de9a11a388a99000f7",
+    "currentGitCommit": "aa9a6e96437119db829d875e0016cc857e2743e8",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "7d3ada2f9d078355572c74de9a11a388a99000f7",
+    "packetGitCommit": "aa9a6e96437119db829d875e0016cc857e2743e8",
     "recommendedAction": "The claim packet commit matches the current checkout.",
     "workingTreePolicy": "excluded"
   },
@@ -220,7 +220,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 312,
+    "heuristicClaimsReadyForReview": 314,
     "needsAlignment": 9,
     "needsScenario": 6
   },

@@ -227,8 +227,8 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 		t.Fatalf("expected static HTML renderer claim to be deterministic, got %#v", renderer)
 	}
 	honesty := bySummary["`Cautilus` keeps agent and workflow behavior honest while prompts keep changing."]
-	if honesty == nil || honesty["recommendedEvalSurface"] != "dev/skill" {
-		t.Fatalf("expected agent/workflow honesty claim to route to dev/skill, got %#v", honesty)
+	if honesty == nil || honesty["recommendedProof"] != "human-auditable" || honesty["verificationReadiness"] != "blocked" {
+		t.Fatalf("expected broad honesty claim to stay human-auditable until decomposed, got %#v", honesty)
 	}
 	durablePackets := bySummary["Commands should emit durable packets with enough state for the next agent to resume."]
 	if durablePackets == nil || durablePackets["recommendedProof"] != "deterministic" {

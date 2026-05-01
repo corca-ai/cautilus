@@ -194,6 +194,9 @@ The next packet should split those concepts:
 - `deterministic`
 - `cautilus-eval`
 
+Broad positioning or aggregate product promises should stay `human-auditable` and `verificationReadiness=blocked` until they are decomposed into concrete deterministic checks, scenario candidates, or Cautilus eval claims.
+The claim should remain visible in the packet, but it should not become a fixture plan by default because one passing fixture would overclaim the umbrella promise.
+
 `claimId` is a display handle and packet reference.
 Refresh matching should use `claimFingerprint`, not source line number alone.
 The fingerprint should combine normalized summary, primary source path, heading or section anchor when available, and source excerpt hash.

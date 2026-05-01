@@ -1,5 +1,5 @@
 {
-  "candidateCount": 327,
+  "candidateCount": 329,
   "claimCandidates": [
     {
       "claimAudience": "developer",
@@ -251,18 +251,17 @@
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
-      "evidenceStatusReason": "Reviewed as a Cautilus agent/workflow honesty claim rather than a host app prompt claim; this lane did not verify direct eval evidence.",
+      "evidenceStatusReason": "Reviewed as a broad positioning claim summarizing multiple proof surfaces; this should not be satisfied or planned as one dev/skill eval until decomposed into concrete claims.",
       "groupHints": [
         "audience:user",
-        "cautilus-eval",
-        "dev/skill",
+        "blocked",
+        "human-auditable",
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Prove with dev/skill dogfood episodes that Cautilus keeps agent workflow behavior reviewable across prompt or instruction changes.",
-      "proofLayer": "cautilus-eval",
-      "recommendedEvalSurface": "dev/skill",
-      "recommendedProof": "cautilus-eval",
+      "nextAction": "Keep the claim visible as positioning, or decompose it into concrete deterministic, dev/skill, and packet-surface claims before proof planning.",
+      "proofLayer": "human-auditable",
+      "recommendedProof": "human-auditable",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
@@ -272,8 +271,11 @@
         }
       ],
       "summary": "`Cautilus` keeps agent and workflow behavior honest while prompts keep changing.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "unresolvedQuestions": [
+        "Which concrete subclaims should be treated as sufficient public coverage for this umbrella promise?"
+      ],
+      "verificationReadiness": "blocked",
+      "whyThisLayer": "The claim is a broad positioning or aggregate product promise; a single eval fixture would overclaim until concrete subclaims are named."
     },
     {
       "claimAudience": "user",
@@ -4219,8 +4221,68 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:8ca72db113d324be35c266102e9b03f89f0798792273549ac3040280249aac80",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-197",
+      "claimSemanticGroup": "Documentation and contracts",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "deterministic",
+        "linked-from:docs/master-plan.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "proofLayer": "deterministic",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "Broad positioning or aggregate product promises should stay `human-auditable` and `verificationReadiness=blocked` until they are decomposed into concrete deterministic checks, scenario candidates, or Cautilus eval claims.",
+          "line": 197,
+          "path": "docs/contracts/claim-discovery-workflow.md"
+        }
+      ],
+      "summary": "Broad positioning or aggregate product promises should stay `human-auditable` and `verificationReadiness=blocked` until they are decomposed into concrete deterministic checks, scenario candidates, or Cautilus eval claims.",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:da572ed3286b0f1ef82c84812bf748fbf889422e9874b45fcd7cd5197eb0faa7",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-198",
+      "claimSemanticGroup": "Packets and reporting",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "human-auditable",
+        "linked-from:docs/master-plan.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
+      "proofLayer": "human-auditable",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "The claim should remain visible in the packet, but it should not become a fixture plan by default because one passing fixture would overclaim the umbrella promise.",
+          "line": 198,
+          "path": "docs/contracts/claim-discovery-workflow.md"
+        }
+      ],
+      "summary": "The claim should remain visible in the packet, but it should not become a fixture plan by default because one passing fixture would overclaim the umbrella promise.",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:3f1b68d3d766581574bf5f05b56c6d4657910af421bad42d918ecef49f77e74c",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-239",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-242",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4240,7 +4302,7 @@
       "sourceRefs": [
         {
           "excerpt": "The old `proofLayer` field may remain for one compatibility window as a derived or deprecated field, but new workflow logic should use the split fields.",
-          "line": 239,
+          "line": 242,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -4252,7 +4314,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:f5b1f4bcf89b95f7a8099b950d968618eaf18f5586610f19f172d7516981705b",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-240",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-243",
       "claimSemanticGroup": "Quality gates",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4270,7 +4332,7 @@
       "sourceRefs": [
         {
           "excerpt": "During that window, derivation must be deterministic and tested:",
-          "line": 240,
+          "line": 243,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -4282,7 +4344,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:3f1f7361e7d218ea05d47457857af1633664e2b8e28cfd571dc5dc2d4bbe5e74",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-256",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-259",
       "claimSemanticGroup": "Quality gates",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4300,7 +4362,7 @@
       "sourceRefs": [
         {
           "excerpt": "`verificationReadiness=ready-to-verify` with `evidenceStatus=missing` means proof is absent but a test, fixture, or human-auditable check can now be created or run.",
-          "line": 256,
+          "line": 259,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -4312,7 +4374,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:3ae052d2e69bce5fd477651716c93abdc26b8279663de5c98b4c7f3922bbea72",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-258",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-261",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4331,7 +4393,7 @@
       "sourceRefs": [
         {
           "excerpt": "`verificationReadiness=needs-alignment` means at least two truth surfaces must be reconciled before proof would be honest.",
-          "line": 258,
+          "line": 261,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -4343,7 +4405,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:cd6b3240fca5d92670e322831630b4d7532d9189f8a6f4af5654af0103b65116",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-262",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-265",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4361,7 +4423,7 @@
       "sourceRefs": [
         {
           "excerpt": "`evidenceRefs[]` should use a minimum inspectable shape:",
-          "line": 262,
+          "line": 265,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -4373,7 +4435,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:1844fc5f59ff44a652520ea491bcacebf795a1dcb4a536a5f38d913f351d74d5",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-291",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-294",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4391,7 +4453,7 @@
       "sourceRefs": [
         {
           "excerpt": "The binary can do cheap deterministic preflight, but the skill owns final interpretation.",
-          "line": 291,
+          "line": 294,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -4403,7 +4465,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:fbfa1b74f0f2eb0484273b680e070c94e65cfeb6add53a630bf2ca8f48be4d61",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-304",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-307",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4423,7 +4485,7 @@
       "sourceRefs": [
         {
           "excerpt": "The skill review can upgrade them to `satisfied`, `partial`, `stale`, or `missing` only when the packet semantics above are met.",
-          "line": 304,
+          "line": 307,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -4435,7 +4497,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:9f1f52d5759d9b763f4e181c99e9e5d6da380819a69f14de78a12c4e396eb1eb",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-307",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-310",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4455,7 +4517,7 @@
       "sourceRefs": [
         {
           "excerpt": "`unknown` should be used when the workflow did not inspect enough evidence to make an honest statement.",
-          "line": 307,
+          "line": 310,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -4467,7 +4529,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:9bf39257967e8679266bbb31122162ae4714240eecfa9117e32c6e84bd1247a5",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-311",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-314",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4487,7 +4549,7 @@
       "sourceRefs": [
         {
           "excerpt": "The workflow should not send every raw candidate to an LLM independently.",
-          "line": 311,
+          "line": 314,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -4499,7 +4561,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:4ebcb6776a40613cddaea25e17e6a777434b73564b371822ff93a88182a6b1e9",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-312",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-315",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4517,7 +4579,7 @@
       "sourceRefs": [
         {
           "excerpt": "The deterministic pass should emit grouping hints:",
-          "line": 312,
+          "line": 315,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -4529,7 +4591,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:d63aff27f89631ee4ca274aa5a66ef8fc03be36cbee5d5a836f9de494185539d",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-321",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-324",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4549,7 +4611,7 @@
       "sourceRefs": [
         {
           "excerpt": "The skill should review clusters in priority order:",
-          "line": 321,
+          "line": 324,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -4561,7 +4623,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:07cfb886e14a82742a41cf1e255357dce81dade3f1bdbd0dbe812e448368e426",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-332",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-335",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4581,7 +4643,7 @@
       "sourceRefs": [
         {
           "excerpt": "The parent skill should merge results and keep review provenance in the packet.",
-          "line": 332,
+          "line": 335,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -4593,7 +4655,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:8c74d01a69910bc7763524d8dd19949d087bc30b23b07492608fe975eaf3e434",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-334",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-337",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4613,7 +4675,7 @@
       "sourceRefs": [
         {
           "excerpt": "The LLM review seam should use versioned packets instead of hidden prompt-only behavior:",
-          "line": 334,
+          "line": 337,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -4625,7 +4687,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:6760bf2ea6521a5f35690ef7eed832fa059cf7870a1bf5149fd68c7174212fa4",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-339",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-342",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4645,7 +4707,7 @@
       "sourceRefs": [
         {
           "excerpt": "Those packets should record cluster IDs, candidate IDs, source refs, prompt/reference hashes, runtime/model identity when available, merge decisions, label changes, evidence-status reasons, unresolved questions, and skipped clusters.",
-          "line": 339,
+          "line": 342,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -4657,7 +4719,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:9524a84a0b9b0a11aca4d95485397b220bf0a53a254096663f7b1dcfcf69c4fd",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-389",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-392",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4677,7 +4739,7 @@
       "sourceRefs": [
         {
           "excerpt": "The binary may provide helper flags such as `claim discover --previous \u003cpacket\u003e --refresh-plan`, but the public user-level workflow remains `discover`.",
-          "line": 389,
+          "line": 392,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -4689,7 +4751,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:d04d8eb163d803e2a529f013956a4a4cb5102b5eaf3da8c9dc592c131c78228f",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-392",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-395",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4709,7 +4771,7 @@
       "sourceRefs": [
         {
           "excerpt": "The refresh-plan packet should include a coordinator-facing summary rather than requiring every agent to reverse-engineer raw JSON fields:",
-          "line": 392,
+          "line": 395,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -4721,7 +4783,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:36fbc258e71c31485963d2c661bc4b76eaf69a54332b8acae73686a83b9f5be6",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-407",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-410",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4741,7 +4803,7 @@
       "sourceRefs": [
         {
           "excerpt": "After discovery or refresh, the skill should report status in a compact decision-oriented shape:",
-          "line": 407,
+          "line": 410,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -4753,38 +4815,6 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:af4bc0b6d9aeeaf585750b151f5b17c18bf8063b1c1331a19d4a3495e85c4bf4",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-431",
-      "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "cautilus-eval",
-        "contract",
-        "dev/skill",
-        "linked-from:docs/master-plan.md"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
-      "recommendedEvalSurface": "dev/skill",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "The skill should then ask the user which branch to take.",
-          "line": 431,
-          "path": "docs/contracts/claim-discovery-workflow.md"
-        }
-      ],
-      "summary": "The skill should then ask the user which branch to take.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:857f37f990a98b3ae0dd80c3ce484046c16bc3e2304b0b79702d4a04081034b4",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-434",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
@@ -4804,8 +4834,40 @@
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "The skill should not automatically launch expensive evaluator runs or broad code edits after status unless the user has already delegated that continuation and the recorded budget covers it.",
+          "excerpt": "The skill should then ask the user which branch to take.",
           "line": 434,
+          "path": "docs/contracts/claim-discovery-workflow.md"
+        }
+      ],
+      "summary": "The skill should then ask the user which branch to take.",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:857f37f990a98b3ae0dd80c3ce484046c16bc3e2304b0b79702d4a04081034b4",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-437",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "cautilus-eval",
+        "contract",
+        "dev/skill",
+        "linked-from:docs/master-plan.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
+      "proofLayer": "cautilus-eval",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "The skill should not automatically launch expensive evaluator runs or broad code edits after status unless the user has already delegated that continuation and the recorded budget covers it.",
+          "line": 437,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -4817,7 +4879,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:cf9b996efe054da8c1c4215651aad9eb3dadee70df68452d653c2761fd1b720b",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-438",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-441",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4837,7 +4899,7 @@
       "sourceRefs": [
         {
           "excerpt": "The workflow should avoid a `claim group` command.",
-          "line": 438,
+          "line": 441,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -4849,7 +4911,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:a193435e176f49736db5b80cce7b172a5c37c50552974e6415814b8109df52c5",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-460",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-463",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4869,7 +4931,7 @@
       "sourceRefs": [
         {
           "excerpt": "Scan confirmation and LLM review confirmation must be separate.",
-          "line": 460,
+          "line": 463,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -4881,7 +4943,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:cce31c9469a568f2944264556e5aa5b7b3f7d4d4c960d15d51184c3218bd4b0b",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-462",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-465",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4899,7 +4961,7 @@
       "sourceRefs": [
         {
           "excerpt": "Depth 3 must be paired with visible source, candidate, cluster, and review-budget bounds.",
-          "line": 462,
+          "line": 465,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -4911,7 +4973,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:ec44ab256f9a1f76a634ff4891760069518ff698390dc48dbf9b082c91fa88dd",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-465",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-468",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4929,7 +4991,7 @@
       "sourceRefs": [
         {
           "excerpt": "The skill may select refresh, but deterministic refresh-plan output must record baseline commit, target policy, changed sources, carried-forward claims, stale evidence reasons, and dirty-working-tree treatment.",
-          "line": 465,
+          "line": 468,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -4941,7 +5003,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:c46a1bfd5efa1342b0731e4254060a988a3f8dc71245a4fe13f96d0d1a6f3f87",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-483",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-486",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4961,7 +5023,7 @@
       "sourceRefs": [
         {
           "excerpt": "Helper flags under `claim discover` are enough if the skill keeps the user-facing action as discover.",
-          "line": 483,
+          "line": 486,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -4973,7 +5035,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:3e06a05ddb6d71228dee3c8278f6b5bd447fcde0331e4d9cd39c1e62f5c4782b",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-484",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-487",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4993,7 +5055,7 @@
       "sourceRefs": [
         {
           "excerpt": "LLM extraction should not move into the binary.",
-          "line": 484,
+          "line": 487,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -5005,7 +5067,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:81b8b877012bef9579d984e72840ca6e06cf5700742f6d9f16642c41d9f7edaa",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-485",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-488",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -5023,7 +5085,7 @@
       "sourceRefs": [
         {
           "excerpt": "The binary stays deterministic and provider-neutral.",
-          "line": 485,
+          "line": 488,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -5035,7 +5097,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:7de8c9a43753e5fa399bc925d09b5cd194092042ee884a565b09c916ec9d60f8",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-490",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-493",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -5053,7 +5115,7 @@
       "sourceRefs": [
         {
           "excerpt": "Perfect subagent batch sizing should wait until the deterministic packet and skill control flow are dogfooded.",
-          "line": 490,
+          "line": 493,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -5065,7 +5127,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:e31f110df8cb61eb72e045c7636b0d3a5e1b71043ef60a855f1c3dfcfa21d8fd",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-496",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-499",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -5083,7 +5145,7 @@
       "sourceRefs": [
         {
           "excerpt": "The binary remains deterministic and does not directly call an LLM.",
-          "line": 496,
+          "line": 499,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -5095,7 +5157,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:bacb56b91aa60707a0d4ae7fae720f44d76f9b9f6140843366863b01a5a53188",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-497",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-500",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -5113,7 +5175,7 @@
       "sourceRefs": [
         {
           "excerpt": "The bundled skill owns LLM review and subagent orchestration.",
-          "line": 497,
+          "line": 500,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -5125,7 +5187,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:e69d60f7c92a20a2320993d00a9b6841701ba2806fa758b2c19f69acfd54279d",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-502",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-505",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -5143,7 +5205,7 @@
       "sourceRefs": [
         {
           "excerpt": "Existing state refresh is selected by the skill when prior claim JSON exists, but deterministic refresh-plan output owns the state transition.",
-          "line": 502,
+          "line": 505,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -5155,7 +5217,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:3442f8c32e392c6d5294ed9ee2c304cc4590f31c897d84fef79e06692fe75284",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-510",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-513",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -5173,7 +5235,7 @@
       "sourceRefs": [
         {
           "excerpt": "How much deterministic evidence preflight should the binary do before it risks false satisfaction?",
-          "line": 510,
+          "line": 513,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -5185,7 +5247,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:982d0c8daed16595e6ca14ff184eb842dd1f73c0ee708c5e9fa0b7231f00b785",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-513",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-516",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -5205,7 +5267,7 @@
       "sourceRefs": [
         {
           "excerpt": "How much of the refresh-plan helper should ship in the first binary slice versus the first skill slice?",
-          "line": 513,
+          "line": 516,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -5217,7 +5279,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:c0c7d0f38d477c81974441fe12254d670a3a1fc6fb362622769dc305a89dcb8f",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-518",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-521",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -5235,7 +5297,7 @@
       "sourceRefs": [
         {
           "excerpt": "Whether `claim show` should grow Markdown or HTML rendering beyond its JSON summary packet.",
-          "line": 518,
+          "line": 521,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -5247,7 +5309,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:6fd233d3ffafd0f2392f61109f17dd94ba308f158d01a415610d25adf4e7c2cd",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-519",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-522",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -5267,7 +5329,7 @@
       "sourceRefs": [
         {
           "excerpt": "Whether model-backed extraction should ever become a binary runner behind an explicit provider contract.",
-          "line": 519,
+          "line": 522,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -5279,7 +5341,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:f3946d4b74ff6c434c6b8b7a693c7f5bfc4bbaa3fd6f16d89f21e5243b5ccfd3",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-533",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-536",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -5299,7 +5361,7 @@
       "sourceRefs": [
         {
           "excerpt": "A user can invoke the Cautilus skill without detailed input and get a clear status summary rather than a raw 500-claim dump.",
-          "line": 533,
+          "line": 536,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -5311,7 +5373,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:2f006cdc0b2c26694835121869f8eb2d65ff4327e293477d439a86c4f58f58a7",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-538",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-541",
       "claimSemanticGroup": "Quality gates",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -5329,7 +5391,7 @@
       "sourceRefs": [
         {
           "excerpt": "The workflow can say which claims already have deterministic or Cautilus evidence, and which still need scenarios, tests, or alignment work.",
-          "line": 538,
+          "line": 541,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -5341,7 +5403,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:f55435ef267dad864cbd1d818ce3a0dc1651c0feabb49fecc5b72c8bbb9a361b",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-539",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-542",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -5359,7 +5421,7 @@
       "sourceRefs": [
         {
           "excerpt": "The binary/skill boundary stays clean enough that consumer repos can use the binary plus bundled skill without Cautilus importing host-specific prompts or adapters.",
-          "line": 539,
+          "line": 542,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -5371,7 +5433,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:b2338ca8431457f9797b38b147840619b01ad7549557616dd7b394b5972ef6b0",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-564",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-567",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -5389,7 +5451,7 @@
       "sourceRefs": [
         {
           "excerpt": "The binary should remain deterministic and provider-neutral.",
-          "line": 564,
+          "line": 567,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -5401,7 +5463,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:97777d7b82dc5cce5cb38b19082240250c0408eb628dc1f44dec30706a5c5a47",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-590",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-593",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -5419,7 +5481,7 @@
       "sourceRefs": [
         {
           "excerpt": "LLM-backed cluster review should come after the deterministic packet and skill control flow are stable enough to dogfood.",
-          "line": 590,
+          "line": 593,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -5431,7 +5493,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:201b64a8ff613496c0ab6030dc9f00e7c7e7a39a86c6d739cf68f67a43b3ed44",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-592",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-595",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -5450,7 +5512,7 @@
       "sourceRefs": [
         {
           "excerpt": "`claim show` emits `cautilus.claim_status_summary.v1` and can include bounded `sampleClaims` plus `gitState` for agents that need concrete candidates before choosing the next branch.",
-          "line": 592,
+          "line": 595,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -5462,7 +5524,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:21c53f5ec4d397e49c7affa5c7be9dd23e9709e1649e3989c5fbaad619211e98",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-594",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-597",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -5481,7 +5543,7 @@
       "sourceRefs": [
         {
           "excerpt": "Commit drift caused only by generated claim artifacts remains visible as head drift without blocking review or eval planning.",
-          "line": 594,
+          "line": 597,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -5493,7 +5555,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:1e595692e1c29eaec7f060f74a7a5eba37bc3bfc530bd2834cf71597ab225ab3",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-595",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-598",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -5513,7 +5575,7 @@
       "sourceRefs": [
         {
           "excerpt": "`claim review prepare-input` emits `cautilus.claim_review_input.v1` and records bounded clusters and skipped clusters, but still does not call an LLM or merge review results.",
-          "line": 595,
+          "line": 598,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -5525,7 +5587,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:e1f238b94302fc34437333c1a961bf8ea0289588ea97402ae9be1b6b733217c9",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-601",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-604",
       "claimSemanticGroup": "Quality gates",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -5545,7 +5607,7 @@
       "sourceRefs": [
         {
           "excerpt": "It emits `cautilus.claim_eval_plan.v1` from reviewed `cautilus-eval` claims that are ready to verify, while preserving the host boundary by not writing fixtures, prompts, runners, wrappers, or policy.",
-          "line": 601,
+          "line": 604,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -10156,47 +10218,47 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 258,
+      "developer": 260,
       "user": 69
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 51,
       "Agent and skill workflow": 89,
       "Claim discovery and review": 19,
-      "Documentation and contracts": 84,
+      "Documentation and contracts": 85,
       "Evaluation surfaces": 2,
       "Improvement and optimization": 21,
-      "Packets and reporting": 22,
+      "Packets and reporting": 23,
       "Quality gates": 34,
       "Release and packaging": 5
     },
     "byEvidenceStatus": {
-      "unknown": 327
+      "unknown": 329
     },
     "byLifecycle": {
-      "new": 327
+      "new": 329
     },
     "byProofLayer": {
       "alignment-work": 9,
-      "cautilus-eval": 162,
-      "deterministic": 122,
-      "human-auditable": 28,
+      "cautilus-eval": 161,
+      "deterministic": 123,
+      "human-auditable": 30,
       "scenario-candidate": 6
     },
     "byRecommendedProof": {
-      "cautilus-eval": 168,
-      "deterministic": 122,
-      "human-auditable": 37
+      "cautilus-eval": 167,
+      "deterministic": 123,
+      "human-auditable": 39
     },
     "byReviewStatus": {
       "agent-reviewed": 13,
-      "heuristic": 314
+      "heuristic": 316
     },
     "byVerificationReadiness": {
-      "blocked": 1,
+      "blocked": 2,
       "needs-alignment": 9,
       "needs-scenario": 6,
-      "ready-to-verify": 311
+      "ready-to-verify": 312
     }
   },
   "discoveryMode": "deterministic-source-inventory",
@@ -10339,11 +10401,11 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "7d3ada2f9d078355572c74de9a11a388a99000f7",
+  "gitCommit": "aa9a6e96437119db829d875e0016cc857e2743e8",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "reviewApplication": {
-    "appliedUpdateCount": 6,
+    "appliedUpdateCount": 1,
     "appliedUpdates": [
       {
         "appliedFields": [
@@ -10352,75 +10414,17 @@
           "evidenceStatus",
           "reviewStatus",
           "recommendedEvalSurface",
-          "evidenceStatusReason"
-        ],
-        "claimId": "claim-readme-md-144",
-        "clusterId": "cluster-user-agent-and-skill-workflow-cautilus-eval-dev-skill-readme"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "evidenceStatusReason"
-        ],
-        "claimId": "claim-readme-md-10",
-        "clusterId": "cluster-user-agent-and-skill-workflow-deterministic-readme"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
+          "nextAction",
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-readme-md-137",
-        "clusterId": "cluster-user-agent-and-skill-workflow-deterministic-readme"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "recommendedEvalSurface",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-readme-md-211",
-        "clusterId": "cluster-user-agent-and-skill-workflow-deterministic-readme"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "evidenceStatusReason"
-        ],
-        "claimId": "claim-readme-md-95",
-        "clusterId": "cluster-user-agent-and-skill-workflow-deterministic-readme"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "recommendedEvalSurface",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-readme-md-148",
-        "clusterId": "cluster-user-claim-discovery-and-review-cautilus-eval-dev-skill-readme"
+        "claimId": "claim-readme-md-3",
+        "clusterId": "cluster-user-agent-and-skill-workflow-positioning-readme"
       }
     ],
-    "claimsPath": "/tmp/cautilus-reviewed-typed-runners-a.json",
+    "claimsPath": "/tmp/cautilus-reviewed-typed-runners-b.json",
     "mergeDecisions": [],
-    "reviewResultPath": "/home/hwidong/codes/cautilus/.cautilus/claims/review-result-loop2-lane-b.json",
+    "reviewResultPath": "/home/hwidong/codes/cautilus/.cautilus/claims/review-result-positioning-boundary.json",
     "schemaVersion": "cautilus.claim_review_result.v1",
     "unresolvedQuestions": []
   },
@@ -10450,6 +10454,12 @@
         "reviewer": "codex-lane-b",
         "scope": "clusters 3-5 only"
       },
+      "schemaVersion": "cautilus.claim_review_result.v1",
+      "sourceReviewInput": {}
+    },
+    {
+      "clusterCount": 1,
+      "reviewRun": {},
       "schemaVersion": "cautilus.claim_review_result.v1",
       "sourceReviewInput": {}
     }
@@ -11026,7 +11036,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:d35e9cbd2d85a9e6389a0f9c0319c22649af3e6b73c6251c960a8f2209f8dccd",
+      "contentHash": "sha256:a0a5145f796351b2a7cf66106b9c031cbc75d59ded2d197e2c2ed18fa311f5b4",
       "depth": 1,
       "discoveredFrom": "AGENTS.md",
       "kind": "docs",
@@ -11116,7 +11126,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:1018d5db18f75af26f940bbe264c8d9f6513b7e1daf262497c656998e917ece1",
+      "contentHash": "sha256:68d6eff2a22093fc2089deedb7ac5e0e3a248313f509b602978809fa97527c05",
       "depth": 2,
       "discoveredFrom": "docs/master-plan.md",
       "kind": "contract",

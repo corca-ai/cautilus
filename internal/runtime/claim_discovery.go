@@ -886,6 +886,14 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 			why:                   "The claim is broad usage guidance until a concrete stalled-workflow scenario or evidence packet is promoted.",
 			next:                  "Keep this as human-auditable positioning or promote a concrete stalled-workflow example before creating a protected eval fixture.",
 		}, true
+	case broadPositioningClaim(lower):
+		return claimClassification{
+			proofLayer:            "human-auditable",
+			recommendedProof:      "human-auditable",
+			verificationReadiness: "blocked",
+			why:                   "The claim is a broad positioning or aggregate product promise; a single eval fixture would overclaim until concrete subclaims are named.",
+			next:                  "Keep this as human-auditable positioning or decompose it into concrete deterministic or Cautilus eval claims before proof planning.",
+		}, true
 	case containsAny(lower, []string{" agent", " prompt", " skill", " workflow", " llm", " model", " conversation", " assistant", " behavior", " eval "}):
 		surface := recommendedEvalSurface(lower)
 		return claimClassification{
@@ -907,6 +915,13 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 	default:
 		return claimClassification{}, false
 	}
+}
+
+func broadPositioningClaim(lower string) bool {
+	return containsAny(lower, []string{" keeps ", " remains ", " stays "}) &&
+		containsAny(lower, []string{" honest", " reliable", " trustworthy", " correct", " safe "}) &&
+		containsAny(lower, []string{" while ", " as "}) &&
+		containsAny(lower, []string{" prompt", " agent", " workflow", " behavior", " model"})
 }
 
 func claimNeedsScenario(lower string) bool {
