@@ -20,9 +20,9 @@
 - 2026-05-01 claim state는 `.cautilus/claims/latest.json` 기준 `candidateCount=322`이다.
   `claim_discovery.state_path`는 raw discovery baseline인 `.cautilus/claims/latest.json`이고, `agent status`는 `related_state_paths`로 reviewed/evidenced packets도 함께 요약한다.
   `agent-reviewed=13`, `heuristic=309`인 reviewed packet은 `.cautilus/claims/reviewed-typed-runners.json`에 있다.
-  `.cautilus/claims/evidenced-typed-runners.json`는 `claim-readme-md-144`, `claim-readme-md-148`, `claim-readme-md-211`, `claim-docs-contracts-claim-discovery-workflow-md-618`을 `evidenceStatus=satisfied`로 올린다.
+  `.cautilus/claims/evidenced-typed-runners.json`는 `claim-readme-md-144`, `claim-readme-md-148`, `claim-readme-md-211`, `claim-docs-contracts-claim-discovery-workflow-md-619`을 `evidenceStatus=satisfied`로 올린다.
   그래서 evidenced packet의 review status는 `agent-reviewed=14`, `heuristic=308`이고 evidence status는 `satisfied=4`, `unknown=318`이다.
-  `claim-docs-contracts-claim-discovery-workflow-md-612`는 현재 source line 기준 `claim-docs-contracts-claim-discovery-workflow-md-618`로 이동했고, claim fingerprint와 evidence bundle target id를 확인한 뒤 satisfied 상태로 다시 적용됐다.
+  `claim-docs-contracts-claim-discovery-workflow-md-612`는 현재 source line 기준 `claim-docs-contracts-claim-discovery-workflow-md-619`로 이동했고, claim fingerprint와 evidence bundle target id를 확인한 뒤 satisfied 상태로 다시 적용됐다.
   `claim discover --previous`는 current evidenced packet에서 `carryForward.matchedClaimCount=322`, `evidenceSupportIdRewriteCount=0`, `staleEvidenceClaimCount=0`을 기록한다.
   이제 direct/verified evidence ref의 `contentHash`도 repo-local evidence file에 대해 다시 확인하고, 파일 누락/변경/레포 밖 경로/claim evidence bundle의 `createdForClaimIds` 불일치가 있으면 carried `satisfied`를 `stale`로 낮춘다.
   Generated claim packets no longer emit the old `proofLayer` compatibility field; downstream workflow logic reads `recommendedProof`, `verificationReadiness`, `evidenceStatus`, `reviewStatus`, and `lifecycle` directly.
@@ -38,10 +38,10 @@
   For this repo `.cautilus/claims/review-input-typed-runners.json` reports `matchedRefCount=4` from `.cautilus/claims`, and the refs stay `matchKind=possible` with `evidenceStatus=unknown` until review/apply-result verifies them.
   `claim-readme-md-3`은 README tagline/umbrella promise로 보존하되 `human-auditable`, `verificationReadiness=blocked`로 라우팅한다.
   그래서 eval-plan files에 `claim-readme-md-3`가 보이면 target이 아니라 `skippedClaims.reason=not-cautilus-eval`이다.
-- 2026-05-01 후속 dogfood로 `npm run dogfood:cautilus-review-to-eval-flow:eval:codex`를 다시 실행했다.
-  결과는 `recommendation=accept-now`, `passed=1`, `failed=0`이고 artifact는 `artifacts/self-dogfood/cautilus-review-to-eval-flow-eval-codex/latest/eval-summary.json`이다.
+- 2026-05-01 후속 dogfood로 `npm run dogfood:cautilus-review-to-eval-flow:eval:codex`와 `npm run dogfood:cautilus-review-to-eval-flow:eval:claude` 증거를 claim evidence bundle에 반영했다.
+  두 artifact 모두 `recommendation=accept-now`, `passed=1`, `failed=0`이고 각각 `artifacts/self-dogfood/cautilus-review-to-eval-flow-eval-codex/latest/eval-summary.json`, `artifacts/self-dogfood/cautilus-review-to-eval-flow-eval-claude/latest/eval-summary.json`에 있다.
   기존 first-scan / refresh-flow / review-prepare / reviewer-launch Codex dogfood summaries and audit packets도 모두 accept/pass 상태라, 이 다섯 run을 묶은 evidence bundle로 `claim-readme-md-148`은 satisfied 상태가 됐다.
-  별도 evidence bundle `.cautilus/claims/evidence-review-to-eval-flow.json`는 review-to-eval audit에서 `claim review apply-result`, `claim validate`, `claim plan-evals` 실행과 fixture/product edits 없음이 확인되어 `claim-docs-contracts-claim-discovery-workflow-md-612`도 satisfied로 올린다.
+  별도 evidence bundle `.cautilus/claims/evidence-review-to-eval-flow.json`는 Codex/Claude review-to-eval audits에서 `claim review apply-result`, `claim validate`, `claim plan-evals` 실행과 fixture/product edits 없음이 확인되어 `claim-docs-contracts-claim-discovery-workflow-md-619`도 satisfied로 올린다.
 - 2026-05-01 후속 dogfood로 `./bin/cautilus eval test --repo-root . --adapter-name self-dogfood-eval-skill --runtime codex --output-dir ./artifacts/self-dogfood/eval-skill-codex/latest`를 실행했다.
   결과는 `recommendation=accept-now`, `passed=3`, `failed=0`, trigger case 1개와 execution case 2개다.
   이 run과 install/doctor preflight, installed skill/plugin manifest content hashes를 묶은 evidence bundle로 `claim-readme-md-144`와 `claim-readme-md-211`은 satisfied 상태가 됐다.
@@ -186,12 +186,12 @@
 2. `charness:find-skills`로 설치된 public / support / integration 스킬 지도를 한 번 갱신한다.
 3. 현재 reviewed eval plan은 3개 `dev/skill` claims이고, evidenced eval plan과 `claim show` summary both expose the evidence refs that close them.
    다음 claim-hardening 후보는 dedicated claim report/HTML을 만들지, 아니면 JSON packet 우선 원칙을 유지할지 결정하는 것이다.
-4. 그 다음 claim hardening 후보는 review-result application branch proof, deeper evidence reconciliation, 또는 eval-fixture authoring guidance다.
+4. 그 다음 claim hardening 후보는 새 dogfood evidence가 드러내는 구체적 실패에서 고른다.
    review prepare-input과 reviewer launch branch proof는 Codex/Claude 양쪽에서 완료됐다.
    evidence preflight의 첫 slice는 possible evidence hint까지만 허용하는 형태로 들어왔다.
    public `claim group` 또는 `claim refresh` command는 만들지 않는다.
    `claim plan-evals`는 이제 각 plan에 `fixtureAuthoringGuidance`를 포함해 surface/preset, 최소 fixture 필드, runner output schema, required runner capability/observability, host-owned non-writer boundary를 보여준다.
-   그래서 eval-fixture authoring guidance 자체는 닫혔고, 남은 claim-hardening 후보는 review-result application branch proof와 deeper evidence reconciliation이다.
+   그래서 eval-fixture authoring guidance, review-result application branch proof, stale evidence reconciliation 첫 slice는 닫혔다.
    `claim discover --previous <packet>`는 fingerprint가 같은 claim의 reviewed/evidenced state를 carry forward하고, line-number 기반 `claimId`가 바뀌면 evidence ref `supportsClaimIds`를 현재 claim id로 재기록한다.
    carried evidence는 `contentHash`와 claim-evidence bundle target id를 재확인하므로, stale evidence reconciliation 첫 slice도 닫혔다.
 5. evaluation-surface composition primitives C2/C3/C4는 모두 shipped 상태다.

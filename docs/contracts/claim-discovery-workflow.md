@@ -613,6 +613,7 @@ Commit drift caused only by generated claim artifacts remains visible as head dr
 It rejects stale claim packets by default unless `--allow-stale-claims` is explicitly passed.
 The review-result application slice added `claim review apply-result`.
 It consumes `cautilus.claim_review_result.v1`, applies reviewed labels and evidence refs, records provenance, and rejects `evidenceStatus=satisfied` unless a direct or verified evidence ref supports the claim.
+For mutable reviewer state, explicit empty arrays are meaningful: `unresolvedQuestions: []` clears older questions, while an omitted field leaves them unchanged.
 It also rejects stale claim packets by default.
 The eval-planning slice added `claim plan-evals`.
 It emits `cautilus.claim_eval_plan.v1` from reviewed `cautilus-eval` claims that are ready to verify, while preserving the host boundary by not writing fixtures, prompts, runners, wrappers, or policy.

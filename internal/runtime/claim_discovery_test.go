@@ -880,6 +880,71 @@ func TestApplyClaimReviewResultCanClearRecommendedEvalSurface(t *testing.T) {
 	}
 }
 
+func TestApplyClaimReviewResultCanClearUnresolvedQuestions(t *testing.T) {
+	repoRoot := filepath.Join("..", "..", "fixtures", "claim-discovery", "tiny-repo")
+	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan returned error: %v", err)
+	}
+	claimID := "claim-agents-md-3"
+	firstResult := map[string]any{
+		"schemaVersion": contracts.ClaimReviewResultSchema,
+		"clusterResults": []any{
+			map[string]any{
+				"clusterId": "cluster-fixture",
+				"claimUpdates": []any{
+					map[string]any{
+						"claimId":               claimID,
+						"reviewStatus":          "agent-reviewed",
+						"evidenceStatus":        "unknown",
+						"verificationReadiness": "ready-to-verify",
+						"unresolvedQuestions":   []any{"Does this need Claude parity?"},
+					},
+				},
+			},
+		},
+	}
+	withQuestion, err := ApplyClaimReviewResult(plan, firstResult, ClaimReviewApplyOptions{
+		ClaimsPath:       "claims.json",
+		ReviewResultPath: "review-result.json",
+	})
+	if err != nil {
+		t.Fatalf("first ApplyClaimReviewResult returned error: %v", err)
+	}
+	clearResult := map[string]any{
+		"schemaVersion": contracts.ClaimReviewResultSchema,
+		"clusterResults": []any{
+			map[string]any{
+				"clusterId": "cluster-fixture",
+				"claimUpdates": []any{
+					map[string]any{
+						"claimId":             claimID,
+						"unresolvedQuestions": []any{},
+					},
+				},
+			},
+		},
+	}
+	cleared, err := ApplyClaimReviewResult(withQuestion, clearResult, ClaimReviewApplyOptions{
+		ClaimsPath:       "claims.json",
+		ReviewResultPath: "review-result.json",
+	})
+	if err != nil {
+		t.Fatalf("clear ApplyClaimReviewResult returned error: %v", err)
+	}
+	for _, raw := range arrayOrEmpty(cleared["claimCandidates"]) {
+		candidate := asMap(raw)
+		if stringFromAny(candidate["claimId"]) != claimID {
+			continue
+		}
+		if questions := arrayOrEmpty(candidate["unresolvedQuestions"]); len(questions) != 0 {
+			t.Fatalf("expected unresolvedQuestions to be cleared, got %#v", questions)
+		}
+		return
+	}
+	t.Fatalf("missing updated claim in %#v", cleared)
+}
+
 func TestApplyClaimReviewResultClearsSurfaceForNonEvalProof(t *testing.T) {
 	repoRoot := filepath.Join("..", "..", "fixtures", "claim-discovery", "tiny-repo")
 	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})

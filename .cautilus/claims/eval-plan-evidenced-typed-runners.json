@@ -1057,7 +1057,7 @@
     },
     {
       "claimFingerprint": "sha256:8c15df06769d6900be11672ff1c723937ad20bc3eb3212c84d2d740feb54edfb",
-      "claimId": "claim-docs-master-plan-md-180",
+      "claimId": "claim-docs-master-plan-md-179",
       "evidenceStatus": "unknown",
       "reason": "not-cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
@@ -1197,7 +1197,7 @@
     },
     {
       "claimFingerprint": "sha256:faa7b391177f9e5d365a0e544e390a5dafc9651102baf958c093a51351566498",
-      "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-279",
+      "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-280",
       "evidenceStatus": "unknown",
       "reason": "not-reviewed",
       "recommendedEvalSurface": "dev/repo",
@@ -1907,15 +1907,15 @@
     },
     {
       "claimFingerprint": "sha256:e1f238b94302fc34437333c1a961bf8ea0289588ea97402ae9be1b6b733217c9",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-618",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-619",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:64e6df8fc6677ab027a19ce958f0ca7024bbf19b5769a29629f14ef97405ee82",
+          "contentHash": "sha256:732f188c8bf8250609d2f953590fe0a6847af219c3fecb3f2c8825d12be32e0e",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-review-to-eval-flow.json",
           "supportsClaimIds": [
-            "claim-docs-contracts-claim-discovery-workflow-md-618"
+            "claim-docs-contracts-claim-discovery-workflow-md-619"
           ]
         }
       ],
@@ -1927,13 +1927,11 @@
       "sourceRefs": [
         {
           "excerpt": "It emits `cautilus.claim_eval_plan.v1` from reviewed `cautilus-eval` claims that are ready to verify, while preserving the host boundary by not writing fixtures, prompts, runners, wrappers, or policy.",
-          "line": 618,
+          "line": 619,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
-      "unresolvedQuestions": [
-        "Claude parity for this review-to-eval branch remains outside this evidence bundle."
-      ],
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify"
     },
     {
@@ -2658,7 +2656,7 @@
     },
     {
       "claimFingerprint": "sha256:2982e7e4ca58f29a0f6f869aa771beb64156d93dfd8d45b1abe7bd889a9fda7f",
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-206",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-207",
       "evidenceStatus": "unknown",
       "reason": "not-reviewed",
       "recommendedEvalSurface": "app/prompt",
@@ -2668,7 +2666,7 @@
     },
     {
       "claimFingerprint": "sha256:442a84b465ac9453bfb7a95d617b0600a3efbaf429c53107106d2f3bc981098c",
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-228",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-229",
       "evidenceStatus": "unknown",
       "reason": "not-reviewed",
       "recommendedEvalSurface": "dev/repo",
@@ -2678,7 +2676,7 @@
     },
     {
       "claimFingerprint": "sha256:6bba603d71ca23b021bff6b4d3731e36ee825b73a4df174404d2e71079bd2093",
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-241",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-242",
       "evidenceStatus": "unknown",
       "reason": "not-cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
@@ -2688,7 +2686,7 @@
     },
     {
       "claimFingerprint": "sha256:96cdef142713fe0a90c7e3099b413ffb43dadc41ecb7c834b1f2677e1d9a9f83",
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-279",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-280",
       "evidenceStatus": "unknown",
       "reason": "not-cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
@@ -2698,7 +2696,7 @@
     },
     {
       "claimFingerprint": "sha256:852fc848e875441bfbc8e33876c42fb2cfef5a43ef19bc759b18017328440553",
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-281",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-282",
       "evidenceStatus": "unknown",
       "reason": "not-reviewed",
       "recommendedEvalSurface": "dev/repo",
@@ -2708,7 +2706,7 @@
     },
     {
       "claimFingerprint": "sha256:2c87af624dd2a669b51fff1c7d2438f931bf98207a0851808985898de284dc59",
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-282",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-283",
       "evidenceStatus": "unknown",
       "reason": "not-cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
@@ -2718,7 +2716,7 @@
     },
     {
       "claimFingerprint": "sha256:5fcf19de40fdfcdb5b58d001bac1e2a76046e983201dcd88a25abcb107286567",
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-286",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-287",
       "evidenceStatus": "unknown",
       "reason": "not-reviewed",
       "recommendedEvalSurface": "dev/repo",
@@ -2728,7 +2726,7 @@
     },
     {
       "claimFingerprint": "sha256:85008847dee58a2c41a1a62cab79f04005a1a38dc00d46118bec022657e7bd0b",
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-287",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-288",
       "evidenceStatus": "unknown",
       "reason": "not-cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
@@ -2738,7 +2736,7 @@
     },
     {
       "claimFingerprint": "sha256:4dbe32caafc9f3845386b5d5f11f9c019e4fce7a8c3fd17b4cf1ab874c6a6da9",
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-290",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-291",
       "evidenceStatus": "unknown",
       "reason": "not-cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
@@ -2748,7 +2746,7 @@
     },
     {
       "claimFingerprint": "sha256:0d744a80a1c9359b604f4b0ed9be1b5aa018f3a38052d027979caa6deb118904",
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-307",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-308",
       "evidenceStatus": "unknown",
       "reason": "not-cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
@@ -2758,7 +2756,7 @@
     },
     {
       "claimFingerprint": "sha256:1371476711311dbd25b60a103d2bdf038d314ef39717359316381b0f7d4fbb51",
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-314",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-315",
       "evidenceStatus": "unknown",
       "reason": "not-reviewed",
       "recommendedEvalSurface": "dev/repo",
@@ -2768,7 +2766,7 @@
     },
     {
       "claimFingerprint": "sha256:5f5c745e1fed6f0efec046c1c115097e1a76a524e466231099dd9609129484e4",
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-317",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-318",
       "evidenceStatus": "unknown",
       "reason": "not-cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
@@ -3329,7 +3327,7 @@
   ],
   "sourceClaimPacket": {
     "candidateCount": 322,
-    "gitCommit": "f4f146b063a035b3d83d3fbe29143aa83cf4c974",
+    "gitCommit": "2ee827d68e9ba21a1ed4ca8f8b90bbc68ace0e78",
     "schemaVersion": "cautilus.claim_proof_plan.v1"
   }
 }

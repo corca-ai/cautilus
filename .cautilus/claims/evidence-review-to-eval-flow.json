@@ -1,17 +1,16 @@
 {
   "schemaVersion": "cautilus.claim_evidence_bundle.v1",
-  "bundleId": "evidence-review-to-eval-flow-codex-2026-05-01",
+  "bundleId": "evidence-review-to-eval-flow-codex-claude-2026-05-01",
   "createdForClaimIds": [
-    "claim-docs-contracts-claim-discovery-workflow-md-618"
+    "claim-docs-contracts-claim-discovery-workflow-md-619"
   ],
   "repoCommit": "90d4088329d3d2a09981ede50941ff55efd9fbd0",
-  "summary": "Codex-backed review-to-eval dogfood passed and its audit confirms the branch applied a claim review result, validated the reviewed claim packet, planned evals, and did not write fixtures or product files.",
+  "summary": "Codex-backed and Claude-backed review-to-eval dogfood passed, and both audits confirm the branch applied a claim review result, validated the reviewed claim packet, planned evals, and did not write fixtures or product files.",
   "evidenceScope": {
     "targetSurface": "dev/skill",
-    "runtime": "codex",
+    "runtime": "codex+claude",
     "claimBoundary": "Supports the contract claim that the review-to-eval branch emits a claim eval plan from reviewed ready-to-verify cautilus-eval claims while preserving the host-owned fixture, prompt, runner, wrapper, and policy boundary.",
     "notClaimed": [
-      "Claude parity for this specific evidence bundle",
       "All claim review branches",
       "App product-path proof"
     ]
@@ -37,11 +36,32 @@
       "auditContentHash": "sha256:88d229ee02abc2e1328fc6afc6ec65a928a48759b60fd2781d7ec26fb1b9d358",
       "aggregatePath": "artifacts/self-dogfood/cautilus-review-to-eval-flow-eval-codex/latest/review-to-eval-flow/episode-cautilus-review-to-eval-flow/aggregate.json",
       "aggregateContentHash": "sha256:47b25ae8d01989f7c5cafbf4d44ff98d418ca04aebce73742ce1f73e2b4b6dac"
+    },
+    {
+      "id": "review-to-eval-flow-claude",
+      "command": "npm run dogfood:cautilus-review-to-eval-flow:eval:claude",
+      "recommendation": "accept-now",
+      "passed": 1,
+      "failed": 0,
+      "auditStatus": "passed",
+      "auditFindings": 0,
+      "auditChecks": {
+        "claimReviewApplyResult": true,
+        "claimValidate": true,
+        "claimPlanEvals": true,
+        "productOrFixtureEdits": false
+      },
+      "summaryPath": "artifacts/self-dogfood/cautilus-review-to-eval-flow-eval-claude/latest/eval-summary.json",
+      "summaryContentHash": "sha256:63b1314b026f357261d68321139e1af29f305368ab8aa5e2b4820580d9873f21",
+      "auditPath": "artifacts/self-dogfood/cautilus-review-to-eval-flow-eval-claude/latest/review-to-eval-flow/episode-cautilus-review-to-eval-flow/audit.json",
+      "auditContentHash": "sha256:82312407a413266102b188168c82aefc4bd2e7542d14223a215f9fdb4f481998",
+      "aggregatePath": "artifacts/self-dogfood/cautilus-review-to-eval-flow-eval-claude/latest/review-to-eval-flow/episode-cautilus-review-to-eval-flow/aggregate.json",
+      "aggregateContentHash": "sha256:39260ec287ed191a7e7dd1012c353436efd155c619b3a4d05bf2d798138caa7b"
     }
   ],
   "decision": {
     "evidenceStatus": "satisfied",
     "matchKind": "verified",
-    "reason": "The audit packet records the required review-result application, validation, and eval-planning commands, with zero findings and without fixture or product edits."
+    "reason": "The Codex and Claude audit packets record the required review-result application, validation, and eval-planning commands, with zero findings and without fixture or product edits."
   }
 }

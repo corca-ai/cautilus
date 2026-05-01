@@ -173,6 +173,7 @@ It rejects stale claim packets by default.
 
 `cautilus claim review apply-result --claims <claims.json> --review-result <review-result.json>` consumes `cautilus.claim_review_result.v1` and emits an updated claim packet.
 It applies reviewed labels, evidence refs, provenance, merge decisions, and unresolved questions.
+An explicit empty `unresolvedQuestions` array clears prior reviewer questions; omitting the field leaves prior questions unchanged.
 It rejects `evidenceStatus=satisfied` unless a direct or verified evidence ref supports the claim.
 It rejects stale claim packets by default before merging review results.
 

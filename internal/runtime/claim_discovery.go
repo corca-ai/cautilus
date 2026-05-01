@@ -2632,6 +2632,11 @@ func validateClaimUpdateFields(update map[string]any, field string) error {
 	if value := stringFromAny(update["recommendedEvalSurface"]); value != "" && !validEvalSurface(value) {
 		return fmt.Errorf("%s.recommendedEvalSurface %q is unsupported", field, value)
 	}
+	if _, ok := update["unresolvedQuestions"]; ok {
+		if _, err := assertArray(update["unresolvedQuestions"], field+".unresolvedQuestions"); err != nil {
+			return err
+		}
+	}
 	return nil
 }
 
@@ -2671,8 +2676,8 @@ func applyClaimUpdate(candidate map[string]any, update map[string]any) ([]any, e
 		candidate["evidenceStatusReason"] = reason
 		applied = append(applied, "evidenceStatusReason")
 	}
-	if questions := arrayOrEmpty(update["unresolvedQuestions"]); len(questions) > 0 {
-		candidate["unresolvedQuestions"] = questions
+	if _, exists := update["unresolvedQuestions"]; exists {
+		candidate["unresolvedQuestions"] = arrayOrEmpty(update["unresolvedQuestions"])
 		applied = append(applied, "unresolvedQuestions")
 	}
 	if err := validateClaimEvidenceSatisfaction(candidate); err != nil {
