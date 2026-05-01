@@ -49,7 +49,7 @@ That is wrong for Cautilus claim artifacts because filenames are workflow labels
 ## Seam Risk
 
 - Interrupt ID: claim-status-report-refresh-plan-ordering
-- Risk Class: none
+- Risk Class: output-trust
 - Seam: human-readable projection over multiple generated claim artifacts
 - Disproving Observation: the underlying refresh-plan JSON was correct; only the projection selected the wrong detail packet.
 - What Local Reasoning Cannot Prove: whether modification time is the long-term best ordering signal after checkout or artifact restore.

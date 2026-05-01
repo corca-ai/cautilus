@@ -110,6 +110,24 @@ test("renderStatusReport summarizes status, review results, validation, and eval
 				zeroPlanExpectation: "Zero eval plans are expected for deterministic-only claims.",
 			},
 		],
+		refreshPlans: [
+			{
+				path: ".cautilus/claims/refresh-plan-claim-status-report.json",
+				status: "changes-detected",
+				changedSourceCount: 1,
+				changedClaimCount: 2,
+				carriedForwardClaimCount: 0,
+				summary: "The saved claim map is stale.",
+				changedClaimSources: [{ path: "skills/cautilus/SKILL.md", claimCount: 2 }],
+				nextActions: [
+					{
+						id: "update_saved_claim_map",
+						label: "Update the saved claim map before review or eval planning",
+						detail: "Run claim discovery to write a fresh claim packet.",
+					},
+				],
+			},
+		],
 	};
 
 	const report = renderStatusReport({ claimsPacket, statusPacket, digests, args });
@@ -121,5 +139,7 @@ test("renderStatusReport summarizes status, review results, validation, and eval
 	assert.match(report, /review-result-human-align-action-bucket\.json/);
 	assert.match(report, /validation-report\.json/);
 	assert.match(report, /Zero eval plans are expected/);
+	assert.match(report, /refresh-plan-claim-status-report\.json/);
+	assert.match(report, /Update the saved claim map before review or eval planning/);
 	assert.match(report, /Gitignore policy: respect-repo-gitignore/);
 });

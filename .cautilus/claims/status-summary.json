@@ -1105,27 +1105,40 @@
   },
   "gitCommit": "0349e6ce1b0b2ddf997b5f285cd5603ab22c9f43",
   "gitState": {
-    "changedFileCount": 10,
+    "changedFileCount": 21,
     "changedFiles": [
+      ".agents/skills/cautilus/SKILL.md",
+      ".cautilus/claims/claim-status-report.md",
       ".cautilus/claims/evidence-review-to-eval-flow.json",
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
       ".cautilus/claims/refresh-plan-action-bucket-breakdowns.json",
       ".cautilus/claims/refresh-plan-action-bucket-review-focus.json",
       ".cautilus/claims/review-input-human-align-action-bucket.json",
+      ".cautilus/claims/review-input-human-confirm-action-bucket.json",
       ".cautilus/claims/review-result-evidence-review-to-eval-flow.json",
       ".cautilus/claims/review-result-human-align-action-bucket.json",
+      ".cautilus/claims/review-result-human-confirm-action-bucket.json",
       ".cautilus/claims/reviewed-typed-runners.json",
-      ".cautilus/claims/status-summary.json"
+      ".cautilus/claims/status-summary.json",
+      "charness-artifacts/debug/debug-2026-05-02-claim-status-report-eslint.md",
+      "charness-artifacts/debug/latest.md",
+      "package.json",
+      "plugins/cautilus/skills/cautilus/SKILL.md",
+      "scripts/agent-runtime/render-claim-status-report.mjs",
+      "scripts/agent-runtime/render-claim-status-report.test.mjs",
+      "skills/cautilus/SKILL.md"
     ],
-    "changedSourceCount": 0,
-    "changedSources": [],
-    "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "5285e03c505e796d5f4008c69fd9b0c83050965b",
+    "changedSourceCount": 1,
+    "changedSources": [
+      "skills/cautilus/SKILL.md"
+    ],
+    "comparisonStatus": "stale",
+    "currentGitCommit": "c5f03c72bc1a889c2628d4bd4d57ec535292cda7",
     "headDrift": true,
-    "isStale": false,
+    "isStale": true,
     "packetGitCommit": "0349e6ce1b0b2ddf997b5f285cd5603ab22c9f43",
-    "recommendedAction": "The current HEAD differs from the packet commit, but no recorded claim source changed; review and eval planning may continue.",
+    "recommendedAction": "Run claim discover --previous \u003cclaims.json\u003e --refresh-plan before review, review application, or eval planning.",
     "workingTreePolicy": "excluded"
   },
   "inputPath": ".cautilus/claims/evidenced-typed-runners.json",
@@ -1340,53 +1353,6 @@
         }
       ],
       "summary": "`npm run test:on-demand` currently owns the heavier self-dogfood workflow script tests.",
-      "verificationReadiness": "ready-to-verify"
-    },
-    {
-      "claimAudience": "user",
-      "claimId": "claim-readme-md-3",
-      "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:user",
-        "blocked",
-        "human-auditable",
-        "readme"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Do not try to satisfy this claim directly; treat it as covered only through narrower child claims or rewrite it as positioning outside the proof queue.",
-      "recommendedProof": "human-auditable",
-      "reviewStatus": "agent-reviewed",
-      "sourceRefs": [
-        {
-          "line": 3,
-          "path": "README.md"
-        }
-      ],
-      "summary": "`Cautilus` keeps agent and workflow behavior honest while prompts keep changing.",
-      "verificationReadiness": "blocked"
-    },
-    {
-      "claimAudience": "user",
-      "claimId": "claim-readme-md-7",
-      "claimSemanticGroup": "Adapter and portability",
-      "evidenceStatus": "satisfied",
-      "groupHints": [
-        "audience:user",
-        "deterministic",
-        "readme"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Keep covered by consumer:onboard:smoke and install smoke when install, starter, or adapter bootstrap behavior changes.",
-      "recommendedProof": "deterministic",
-      "reviewStatus": "agent-reviewed",
-      "sourceRefs": [
-        {
-          "line": 7,
-          "path": "README.md"
-        }
-      ],
-      "summary": "Ships as a standalone binary plus a bundled skill a host repo can install without copying another scaffold first.",
       "verificationReadiness": "ready-to-verify"
     }
   ],

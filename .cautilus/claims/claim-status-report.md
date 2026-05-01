@@ -10,8 +10,8 @@ Use the JSON packets as the audit source; use this report to decide what to insp
 - Candidate count: 338
 - Source count: 36
 - Claims git commit: 0349e6ce1b0b2ddf997b5f285cd5603ab22c9f43
-- Git state: fresh-with-head-drift; stale=no
-- Git recommendation: The current HEAD differs from the packet commit, but no recorded claim source changed; review and eval planning may continue.
+- Git state: stale; stale=yes
+- Git recommendation: Run claim discover --previous <claims.json> --refresh-plan before review, review application, or eval planning.
 
 ## Scoreboard
 
@@ -207,6 +207,30 @@ Split broad, historical, provider-caveated, policy-like, or otherwise blocked cl
 | .cautilus/claims/eval-plan-typed-runners.json | 3 | 319 | not-cautilus-eval: 155, not-ready-to-verify: 6, not-reviewed: 158 | - |
 
 Latest zero-plan expectation: Zero eval plans can be expected when reviewed eval-ready claims are already satisfied or when remaining reviewed claims are not Cautilus eval targets.
+
+## Refresh Plans
+
+| Packet | Status | Changed sources | Changed claims | Carried forward |
+| --- | --- | --- | --- | --- |
+| .cautilus/claims/refresh-plan-action-boundaries.json | changes-detected | 1 | 65 | 268 |
+| .cautilus/claims/refresh-plan-action-bucket-breakdowns.json | changes-detected | 1 | 68 | 269 |
+| .cautilus/claims/refresh-plan-action-bucket-review-focus.json | changes-detected | 3 | 98 | 239 |
+| .cautilus/claims/refresh-plan-after-frontmatter-heuristics.json | changes-detected | 1 | 63 | 263 |
+| .cautilus/claims/refresh-plan-after-provider-caveat-heuristics.json | changes-detected | 1 | 65 | 266 |
+| .cautilus/claims/refresh-plan-after-review-input-skip.json | changes-detected | 3 | 94 | 230 |
+| .cautilus/claims/refresh-plan-after-routing-heuristics.json | changes-detected | 2 | 62 | 263 |
+| .cautilus/claims/refresh-plan-agent-status-selected-state.json | changes-detected | 2 | 77 | 259 |
+| .cautilus/claims/refresh-plan-claim-status-report.json | changes-detected | 1 | 10 | 328 |
+| .cautilus/claims/refresh-plan-final.json | changes-detected | 35 | 16 | 284 |
+| .cautilus/claims/refresh-plan-skill-action-buckets.json | changes-detected | 1 | 9 | 326 |
+| .cautilus/claims/refresh-plan-typed-runners.json | up-to-date | 0 | 0 | 324 |
+| .cautilus/claims/refresh-plan.json | changes-detected | 36 | 132 | 160 |
+
+Latest refresh summary: The saved claim map was made from an older checkout; this plan identifies claims whose source files changed and does not update the saved claim map yet.
+Latest changed claim sources: skills/cautilus/SKILL.md: 10
+- Update the saved claim map before review or eval planning: Run claim discovery to write a fresh claim packet, then use claim show to inspect the updated status.
+- Inspect which files and claims changed: Use this refresh plan to focus review on changed sources before launching any reviewer or eval workflow.
+- Stop after recording the refresh plan: Choose this if the coordinator only wanted to make the stale state explicit for a later session.
 
 ## Discovery Boundary
 

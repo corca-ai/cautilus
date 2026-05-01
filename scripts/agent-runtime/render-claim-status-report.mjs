@@ -245,11 +245,33 @@ function evalPlanDigest(filePath) {
 	};
 }
 
+function refreshPlanDigest(filePath) {
+	const packet = readOptionalJSON(filePath);
+	if (!packet) {
+		return null;
+	}
+	const summary = asObject(packet.refreshSummary);
+	return {
+		path: filePath,
+		mtimeMs: fs.statSync(filePath).mtimeMs,
+		status: summary.status ?? "-",
+		changedSourceCount: summary.changedSourceCount ?? 0,
+		changedClaimCount: summary.changedClaimCount ?? 0,
+		carriedForwardClaimCount: summary.carriedForwardClaimCount ?? 0,
+		baseCommit: summary.baseCommit ?? "-",
+		targetCommit: summary.targetCommit ?? "-",
+		changedClaimSources: asArray(summary.changedClaimSources),
+		nextActions: asArray(summary.nextActions),
+		summary: summary.summary ?? "",
+	};
+}
+
 function collectDigests(args) {
 	return {
 		reviewResults: discoverJSONFiles(args.claimsDir, "review-result-").map(reviewResultDigest).filter(Boolean),
 		validationReports: discoverJSONFiles(args.claimsDir, "validation-").map(validationDigest).filter(Boolean),
 		evalPlans: discoverJSONFiles(args.claimsDir, "eval-plan-").map(evalPlanDigest).filter(Boolean),
+		refreshPlans: discoverJSONFiles(args.claimsDir, "refresh-plan").map(refreshPlanDigest).filter(Boolean),
 	};
 }
 
@@ -457,6 +479,44 @@ function renderEvalPlans(lines, evalPlans) {
 	}
 }
 
+function renderRefreshPlans(lines, refreshPlans) {
+	lines.push("## Refresh Plans");
+	lines.push("");
+	if (refreshPlans.length === 0) {
+		lines.push("No refresh-plan packets were found.");
+		lines.push("");
+		return;
+	}
+	lines.push(...table(["Packet", "Status", "Changed sources", "Changed claims", "Carried forward"], refreshPlans.map((digest) => [
+		digest.path,
+		digest.status,
+		digest.changedSourceCount,
+		digest.changedClaimCount,
+		digest.carriedForwardClaimCount,
+	])));
+	lines.push("");
+	const latest = latestByMtime(refreshPlans);
+	if (!latest) {
+		return;
+	}
+	lines.push(`Latest refresh summary: ${compactText(latest.summary) || "-"}`);
+	if (latest.changedClaimSources.length > 0) {
+		const sources = latest.changedClaimSources
+			.slice(0, 5)
+			.map((source) => `${source.path}: ${source.claimCount}`)
+			.join(", ");
+		lines.push(`Latest changed claim sources: ${sources}${latest.changedClaimSources.length > 5 ? ", ..." : ""}`);
+	}
+	for (const action of latest.nextActions.slice(0, 3)) {
+		lines.push(`- ${action.label ?? action.id}: ${compactText(action.detail)}`);
+	}
+	lines.push("");
+}
+
+function latestByMtime(digests) {
+	return [...digests].sort((left, right) => Number(right.mtimeMs ?? 0) - Number(left.mtimeMs ?? 0))[0];
+}
+
 function nextWorkLines(statusPacket) {
 	const buckets = primaryBuckets(statusPacket);
 	const byId = new Map(buckets.map((bucket) => [bucket.id, bucket]));
@@ -504,6 +564,7 @@ export function renderStatusReport({ claimsPacket, statusPacket, digests, args }
 	renderReviewResults(lines, digests.reviewResults, claimsById, args.reviewSample);
 	renderValidation(lines, digests.validationReports);
 	renderEvalPlans(lines, digests.evalPlans);
+	renderRefreshPlans(lines, digests.refreshPlans);
 	renderDiscoveryBoundary(lines, claimsPacket);
 	return `${lines.join("\n").replace(/\n{3,}/g, "\n\n")}\n`;
 }
