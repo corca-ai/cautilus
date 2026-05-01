@@ -644,9 +644,9 @@
     "evidenceRoots": [
       ".cautilus/claims"
     ],
-    "matchedRefCount": 3,
+    "matchedRefCount": 4,
     "policy": "possible evidence refs are hints only and cannot satisfy claims without review.",
-    "scannedFileCount": 2,
+    "scannedFileCount": 3,
     "status": "completed",
     "walkErrorCount": 0
   },

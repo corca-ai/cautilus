@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-review-to-eval-flow-codex-2026-05-01",
+  "createdForClaimIds": [
+    "claim-docs-contracts-claim-discovery-workflow-md-617"
+  ],
+  "repoCommit": "90d4088329d3d2a09981ede50941ff55efd9fbd0",
+  "summary": "Codex-backed review-to-eval dogfood passed and its audit confirms the branch applied a claim review result, validated the reviewed claim packet, planned evals, and did not write fixtures or product files.",
+  "evidenceScope": {
+    "targetSurface": "dev/skill",
+    "runtime": "codex",
+    "claimBoundary": "Supports the contract claim that the review-to-eval branch emits a claim eval plan from reviewed ready-to-verify cautilus-eval claims while preserving the host-owned fixture, prompt, runner, wrapper, and policy boundary.",
+    "notClaimed": [
+      "Claude parity for this specific evidence bundle",
+      "All claim review branches",
+      "App product-path proof"
+    ]
+  },
+  "runs": [
+    {
+      "id": "review-to-eval-flow",
+      "command": "npm run dogfood:cautilus-review-to-eval-flow:eval:codex",
+      "recommendation": "accept-now",
+      "passed": 1,
+      "failed": 0,
+      "auditStatus": "passed",
+      "auditFindings": 0,
+      "auditChecks": {
+        "claimReviewApplyResult": true,
+        "claimValidate": true,
+        "claimPlanEvals": true,
+        "productOrFixtureEdits": false
+      },
+      "summaryPath": "artifacts/self-dogfood/cautilus-review-to-eval-flow-eval-codex/latest/eval-summary.json",
+      "summaryContentHash": "sha256:f26f8310231858fc875e5468c3dcf037728b91495a7235bb834c36089418c120",
+      "auditPath": "artifacts/self-dogfood/cautilus-review-to-eval-flow-eval-codex/latest/review-to-eval-flow/episode-cautilus-review-to-eval-flow/audit.json",
+      "auditContentHash": "sha256:88d229ee02abc2e1328fc6afc6ec65a928a48759b60fd2781d7ec26fb1b9d358",
+      "aggregatePath": "artifacts/self-dogfood/cautilus-review-to-eval-flow-eval-codex/latest/review-to-eval-flow/episode-cautilus-review-to-eval-flow/aggregate.json",
+      "aggregateContentHash": "sha256:47b25ae8d01989f7c5cafbf4d44ff98d418ca04aebce73742ce1f73e2b4b6dac"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The audit packet records the required review-result application, validation, and eval-planning commands, with zero findings and without fixture or product edits."
+  }
+}

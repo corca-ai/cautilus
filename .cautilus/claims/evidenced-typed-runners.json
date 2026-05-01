@@ -270,11 +270,11 @@
         }
       ],
       "summary": "`Cautilus` keeps agent and workflow behavior honest while prompts keep changing.",
-      "verificationReadiness": "blocked",
-      "whyThisLayer": "The claim is a broad positioning or aggregate product promise; a single eval fixture would overclaim until concrete subclaims are named.",
       "unresolvedQuestions": [
         "Which concrete subclaims should be treated as sufficient public coverage for this umbrella promise?"
-      ]
+      ],
+      "verificationReadiness": "blocked",
+      "whyThisLayer": "The claim is a broad positioning or aggregate product promise; a single eval fixture would overclaim until concrete subclaims are named."
     },
     {
       "claimAudience": "user",
@@ -478,11 +478,11 @@
         }
       ],
       "summary": "CLI: `cautilus scenario normalize chatbot --input logs.json` For agent: \"Run a chatbot regression with these logs and my new system prompt.\" You get reopenable `proposals.json` candidates that can be kept out of tuning as protected checks.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim documents scenario command or proposal-packet behavior rather than asking for a new behavior scenario.",
       "unresolvedQuestions": [
         "The extractor still joins the CLI line, the For agent example, and the output promise into one claim; splitting those sentences would make later review cleaner."
-      ]
+      ],
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim documents scenario command or proposal-packet behavior rather than asking for a new behavior scenario."
     },
     {
       "claimAudience": "user",
@@ -563,11 +563,11 @@
         }
       ],
       "summary": "The same preset can evaluate a multi-turn agent episode when the fixture provides `turns`; Cautilus's own first-scan, refresh-flow, review-prepare, reviewer-launch, and review-to-eval dogfood fixtures derive their results from audit packets.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
       "unresolvedQuestions": [
         "If the review-to-eval dogfood fixture is now part of the public promise, the README sentence may need to include it alongside first-scan, refresh-flow, review-prepare, and reviewer-launch."
-      ]
+      ],
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
       "claimAudience": "user",
@@ -758,11 +758,11 @@
         }
       ],
       "summary": "Agent track — Claude / Codex plugin.** The `cautilus install` step also lands a bundled skill at `.agents/skills/cautilus/` with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim says an agent or skill can drive the workflow conversationally, which needs skill-behavior evidence rather than only install proof.",
       "unresolvedQuestions": [
         "Should discovery split this into a deterministic install/materialization claim and a separate dev/skill conversational-driving claim?"
-      ]
+      ],
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim says an agent or skill can drive the workflow conversationally, which needs skill-behavior evidence rather than only install proof."
     },
     {
       "claimAudience": "user",
@@ -967,12 +967,12 @@
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "When a repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, run `cautilus doctor --repo-root /path/to/repo --adapter-name <name>` for repo-scope validation instead of expecting plain `doctor` to guess which named adapter you mean.",
+          "excerpt": "When a repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, run `cautilus doctor --repo-root /path/to/repo --adapter-name \u003cname\u003e` for repo-scope validation instead of expecting plain `doctor` to guess which named adapter you mean.",
           "line": 115,
           "path": "docs/cli-reference.md"
         }
       ],
-      "summary": "When a repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, run `cautilus doctor --repo-root /path/to/repo --adapter-name <name>` for repo-scope validation instead of expecting plain `doctor` to guess which named adapter you mean.",
+      "summary": "When a repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, run `cautilus doctor --repo-root /path/to/repo --adapter-name \u003cname\u003e` for repo-scope validation instead of expecting plain `doctor` to guess which named adapter you mean.",
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
     },
@@ -1682,6 +1682,7 @@
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
       "proofLayer": "cautilus-eval",
+      "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -1693,8 +1694,7 @@
       ],
       "summary": "A named adapter whose eval-test commands produce rich scenario-by-scenario signals should also persist them as files so executor variants and human reviewers can ground their verdicts on the same numbers.",
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
-      "recommendedEvalSurface": "dev/repo"
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
       "claimAudience": "developer",
@@ -1971,12 +1971,12 @@
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "The ready payload now includes `first_bounded_run`, which adds a starter `eval test -> eval evaluate` packet loop and keeps the `cautilus scenarios --json` catalog nearby only for proposal-input examples.",
+          "excerpt": "The ready payload now includes `first_bounded_run`, which adds a starter `eval test -\u003e eval evaluate` packet loop and keeps the `cautilus scenarios --json` catalog nearby only for proposal-input examples.",
           "line": 48,
           "path": "docs/guides/consumer-adoption.md"
         }
       ],
-      "summary": "The ready payload now includes `first_bounded_run`, which adds a starter `eval test -> eval evaluate` packet loop and keeps the `cautilus scenarios --json` catalog nearby only for proposal-input examples.",
+      "summary": "The ready payload now includes `first_bounded_run`, which adds a starter `eval test -\u003e eval evaluate` packet loop and keeps the `cautilus scenarios --json` catalog nearby only for proposal-input examples.",
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
@@ -2001,12 +2001,12 @@
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "If the repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, use `cautilus doctor --adapter-name <name>` for repo-scope validation.",
+          "excerpt": "If the repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, use `cautilus doctor --adapter-name \u003cname\u003e` for repo-scope validation.",
           "line": 49,
           "path": "docs/guides/consumer-adoption.md"
         }
       ],
-      "summary": "If the repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, use `cautilus doctor --adapter-name <name>` for repo-scope validation.",
+      "summary": "If the repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, use `cautilus doctor --adapter-name \u003cname\u003e` for repo-scope validation.",
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
     },
@@ -3330,12 +3330,12 @@
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "A user with Claude Code installed and no other config can run `cautilus eval test --fixture <dev-repo.fixture.json>` against their own repo and get a usable result with provider, model, harness, durationMs, and costUsd recorded.",
+          "excerpt": "A user with Claude Code installed and no other config can run `cautilus eval test --fixture \u003cdev-repo.fixture.json\u003e` against their own repo and get a usable result with provider, model, harness, durationMs, and costUsd recorded.",
           "line": 182,
           "path": "docs/specs/evaluation-surfaces.spec.md"
         }
       ],
-      "summary": "A user with Claude Code installed and no other config can run `cautilus eval test --fixture <dev-repo.fixture.json>` against their own repo and get a usable result with provider, model, harness, durationMs, and costUsd recorded.",
+      "summary": "A user with Claude Code installed and no other config can run `cautilus eval test --fixture \u003cdev-repo.fixture.json\u003e` against their own repo and get a usable result with provider, model, harness, durationMs, and costUsd recorded.",
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
@@ -3360,12 +3360,12 @@
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "A user with Claude CLI but no API key can run `cautilus eval test --fixture <chat.fixture.json>` and get a usable result.",
+          "excerpt": "A user with Claude CLI but no API key can run `cautilus eval test --fixture \u003cchat.fixture.json\u003e` and get a usable result.",
           "line": 183,
           "path": "docs/specs/evaluation-surfaces.spec.md"
         }
       ],
-      "summary": "A user with Claude CLI but no API key can run `cautilus eval test --fixture <chat.fixture.json>` and get a usable result.",
+      "summary": "A user with Claude CLI but no API key can run `cautilus eval test --fixture \u003cchat.fixture.json\u003e` and get a usable result.",
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
@@ -3730,12 +3730,12 @@
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "The command therefore follows the same precedence chain as other workflow-creating helpers (explicit `--output-dir` > `CAUTILUS_RUN_DIR` > auto-materialize under `./.cautilus/runs/`) and emits `Active run: <abs path>` once only when it auto-materializes.",
+          "excerpt": "The command therefore follows the same precedence chain as other workflow-creating helpers (explicit `--output-dir` \u003e `CAUTILUS_RUN_DIR` \u003e auto-materialize under `./.cautilus/runs/`) and emits `Active run: \u003cabs path\u003e` once only when it auto-materializes.",
           "line": 221,
           "path": "docs/contracts/active-run.md"
         }
       ],
-      "summary": "The command therefore follows the same precedence chain as other workflow-creating helpers (explicit `--output-dir` > `CAUTILUS_RUN_DIR` > auto-materialize under `./.cautilus/runs/`) and emits `Active run: <abs path>` once only when it auto-materializes.",
+      "summary": "The command therefore follows the same precedence chain as other workflow-creating helpers (explicit `--output-dir` \u003e `CAUTILUS_RUN_DIR` \u003e auto-materialize under `./.cautilus/runs/`) and emits `Active run: \u003cabs path\u003e` once only when it auto-materializes.",
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
@@ -4757,12 +4757,12 @@
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "The binary may provide helper flags such as `claim discover --previous <packet> --refresh-plan`, but the public user-level workflow remains `discover`.",
+          "excerpt": "The binary may provide helper flags such as `claim discover --previous \u003cpacket\u003e --refresh-plan`, but the public user-level workflow remains `discover`.",
           "line": 404,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
-      "summary": "The binary may provide helper flags such as `claim discover --previous <packet> --refresh-plan`, but the public user-level workflow remains `discover`.",
+      "summary": "The binary may provide helper flags such as `claim discover --previous \u003cpacket\u003e --refresh-plan`, but the public user-level workflow remains `discover`.",
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
@@ -5250,6 +5250,7 @@
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
       "proofLayer": "cautilus-eval",
+      "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -5261,8 +5262,7 @@
       ],
       "summary": "How much deterministic evidence preflight should the binary do before it risks false satisfaction?",
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
-      "recommendedEvalSurface": "dev/skill"
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
       "claimAudience": "developer",
@@ -5528,6 +5528,7 @@
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
       "proofLayer": "cautilus-eval",
+      "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -5539,8 +5540,7 @@
       ],
       "summary": "`claim show` emits `cautilus.claim_status_summary.v1` and can include bounded `sampleClaims` plus `gitState` for agents that need concrete candidates before choosing the next branch.",
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
-      "recommendedEvalSurface": "dev/repo"
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
       "claimAudience": "developer",
@@ -5611,8 +5611,19 @@
       "claimFingerprint": "sha256:e1f238b94302fc34437333c1a961bf8ea0289588ea97402ae9be1b6b733217c9",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-617",
       "claimSemanticGroup": "Quality gates",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:3fe27b659855ee02c31087f899b2eced89e167075a4e550a93d1380551d8ab60",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-review-to-eval-flow.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-claim-discovery-workflow-md-617"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by the checked-in review-to-eval evidence bundle: the Codex dogfood run returned accept-now, and its audit confirms claim review apply-result, claim validate, and claim plan-evals ran without fixture or product edits.",
       "groupHints": [
         "app/prompt",
         "audience:developer",
@@ -5621,11 +5632,11 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus eval test.",
+      "nextAction": "No new fixture is needed for this claim while the referenced review-to-eval evidence bundle remains current.",
       "proofLayer": "cautilus-eval",
-      "recommendedEvalSurface": "app/prompt",
+      "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "It emits `cautilus.claim_eval_plan.v1` from reviewed `cautilus-eval` claims that are ready to verify, while preserving the host boundary by not writing fixtures, prompts, runners, wrappers, or policy.",
@@ -5634,6 +5645,9 @@
         }
       ],
       "summary": "It emits `cautilus.claim_eval_plan.v1` from reviewed `cautilus-eval` claims that are ready to verify, while preserving the host boundary by not writing fixtures, prompts, runners, wrappers, or policy.",
+      "unresolvedQuestions": [
+        "Claude parity for this review-to-eval branch remains outside this evidence bundle."
+      ],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
@@ -7866,12 +7880,12 @@
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "When called with `--sample-claims <n>`, it includes a bounded `sampleClaims` list so agents can inspect stable candidate fields without guessing raw packet keys.",
+          "excerpt": "When called with `--sample-claims \u003cn\u003e`, it includes a bounded `sampleClaims` list so agents can inspect stable candidate fields without guessing raw packet keys.",
           "line": 156,
           "path": "docs/specs/command-surfaces.spec.md"
         }
       ],
-      "summary": "When called with `--sample-claims <n>`, it includes a bounded `sampleClaims` list so agents can inspect stable candidate fields without guessing raw packet keys.",
+      "summary": "When called with `--sample-claims \u003cn\u003e`, it includes a bounded `sampleClaims` list so agents can inspect stable candidate fields without guessing raw packet keys.",
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
@@ -7986,6 +8000,7 @@
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
       "proofLayer": "deterministic",
+      "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -7997,8 +8012,7 @@
       ],
       "summary": "The bundled skill must route claim discovery, evaluation, and optimization to the same family names as the binary.",
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
-      "recommendedEvalSurface": "dev/repo"
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
       "claimAudience": "developer",
@@ -9972,134 +9986,50 @@
     ]
   },
   "claimSummary": {
-    "byRecommendedProof": [
-      {
-        "key": "cautilus-eval",
-        "count": 165
-      },
-      {
-        "key": "deterministic",
-        "count": 119
-      },
-      {
-        "key": "human-auditable",
-        "count": 36
-      }
-    ],
-    "byVerificationReadiness": [
-      {
-        "key": "ready-to-verify",
-        "count": 304
-      },
-      {
-        "key": "needs-alignment",
-        "count": 9
-      },
-      {
-        "key": "needs-scenario",
-        "count": 5
-      },
-      {
-        "key": "blocked",
-        "count": 2
-      }
-    ],
-    "byEvidenceStatus": [
-      {
-        "key": "unknown",
-        "count": 317
-      },
-      {
-        "key": "satisfied",
-        "count": 3
-      }
-    ],
-    "byReviewStatus": [
-      {
-        "key": "heuristic",
-        "count": 307
-      },
-      {
-        "key": "agent-reviewed",
-        "count": 13
-      }
-    ],
-    "byLifecycle": [
-      {
-        "key": "new",
-        "count": 320
-      }
-    ],
-    "byProofLayer": [
-      {
-        "key": "cautilus-eval",
-        "count": 160
-      },
-      {
-        "key": "deterministic",
-        "count": 119
-      },
-      {
-        "key": "human-auditable",
-        "count": 27
-      },
-      {
-        "key": "alignment-work",
-        "count": 9
-      },
-      {
-        "key": "scenario-candidate",
-        "count": 5
-      }
-    ],
-    "byClaimAudience": [
-      {
-        "key": "developer",
-        "count": 251
-      },
-      {
-        "key": "user",
-        "count": 69
-      }
-    ],
-    "byClaimSemanticGroup": [
-      {
-        "key": "Agent and skill workflow",
-        "count": 86
-      },
-      {
-        "key": "Documentation and contracts",
-        "count": 81
-      },
-      {
-        "key": "Adapter and portability",
-        "count": 52
-      },
-      {
-        "key": "Quality gates",
-        "count": 29
-      },
-      {
-        "key": "Packets and reporting",
-        "count": 27
-      },
-      {
-        "key": "Improvement and optimization",
-        "count": 21
-      },
-      {
-        "key": "Claim discovery and review",
-        "count": 17
-      },
-      {
-        "key": "Release and packaging",
-        "count": 5
-      },
-      {
-        "key": "Evaluation surfaces",
-        "count": 2
-      }
-    ]
+    "byClaimAudience": {
+      "developer": 251,
+      "user": 69
+    },
+    "byClaimSemanticGroup": {
+      "Adapter and portability": 52,
+      "Agent and skill workflow": 86,
+      "Claim discovery and review": 17,
+      "Documentation and contracts": 81,
+      "Evaluation surfaces": 2,
+      "Improvement and optimization": 21,
+      "Packets and reporting": 27,
+      "Quality gates": 29,
+      "Release and packaging": 5
+    },
+    "byEvidenceStatus": {
+      "satisfied": 4,
+      "unknown": 316
+    },
+    "byLifecycle": {
+      "new": 320
+    },
+    "byProofLayer": {
+      "alignment-work": 9,
+      "cautilus-eval": 160,
+      "deterministic": 119,
+      "human-auditable": 27,
+      "scenario-candidate": 5
+    },
+    "byRecommendedProof": {
+      "cautilus-eval": 165,
+      "deterministic": 119,
+      "human-auditable": 36
+    },
+    "byReviewStatus": {
+      "agent-reviewed": 14,
+      "heuristic": 306
+    },
+    "byVerificationReadiness": {
+      "blocked": 2,
+      "needs-alignment": 9,
+      "needs-scenario": 5,
+      "ready-to-verify": 304
+    }
   },
   "discoveryMode": "deterministic-source-inventory",
   "effectiveScanScope": {
@@ -10249,6 +10179,90 @@
   "gitCommit": "34c16621621456ae28b2552f222dcf89e23a5b5b",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
+  "reviewApplication": {
+    "appliedUpdateCount": 1,
+    "appliedUpdates": [
+      {
+        "appliedFields": [
+          "recommendedProof",
+          "verificationReadiness",
+          "evidenceStatus",
+          "reviewStatus",
+          "recommendedEvalSurface",
+          "evidenceRefs",
+          "nextAction",
+          "evidenceStatusReason",
+          "unresolvedQuestions"
+        ],
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-617",
+        "clusterId": "cluster-developer-quality-gates-cautilus-eval-review-to-eval"
+      }
+    ],
+    "claimsPath": "/home/hwidong/codes/cautilus/.cautilus/claims/evidenced-typed-runners.json",
+    "mergeDecisions": [],
+    "reviewResultPath": "/home/hwidong/codes/cautilus/.cautilus/claims/review-result-evidence-review-to-eval-flow.json",
+    "schemaVersion": "cautilus.claim_review_result.v1",
+    "unresolvedQuestions": []
+  },
+  "reviewRuns": [
+    {
+      "clusterCount": 3,
+      "reviewRun": {
+        "assignedClusterIndexes": [
+          0,
+          1,
+          2
+        ],
+        "evidencePolicy": "Only mark evidenceStatus=satisfied when this lane verifies direct evidence refs; otherwise leave evidenceStatus=unknown.",
+        "inputPath": ".cautilus/claims/review-input-loop2.json",
+        "lane": "lane-a",
+        "reviewer": "codex"
+      },
+      "schemaVersion": "cautilus.claim_review_result.v1",
+      "sourceReviewInput": {}
+    },
+    {
+      "clusterCount": 3,
+      "reviewRun": {
+        "evidencePolicy": "No satisfied evidence labels were emitted because this lane did not attach direct or verified evidence refs.",
+        "inputPath": ".cautilus/claims/review-input-loop2.json",
+        "lane": "b",
+        "reviewer": "codex-lane-b",
+        "scope": "clusters 3-5 only"
+      },
+      "schemaVersion": "cautilus.claim_review_result.v1",
+      "sourceReviewInput": {}
+    },
+    {
+      "clusterCount": 1,
+      "reviewRun": {},
+      "schemaVersion": "cautilus.claim_review_result.v1",
+      "sourceReviewInput": {}
+    },
+    {
+      "clusterCount": 1,
+      "reviewRun": {},
+      "schemaVersion": "cautilus.claim_review_result.v1",
+      "sourceReviewInput": {}
+    },
+    {
+      "clusterCount": 1,
+      "reviewRun": {},
+      "schemaVersion": "cautilus.claim_review_result.v1",
+      "sourceReviewInput": {}
+    },
+    {
+      "clusterCount": 1,
+      "reviewRun": {
+        "backend": "codex_exec",
+        "evidencePolicy": "Only mark evidenceStatus=satisfied when a checked-in evidence bundle records direct or verified proof for the exact claim boundary.",
+        "mode": "direct-evidence-application",
+        "reviewer": "codex-current-agent-evidence-review"
+      },
+      "schemaVersion": "cautilus.claim_review_result.v1",
+      "sourceReviewInput": {}
+    }
+  ],
   "schemaVersion": "cautilus.claim_proof_plan.v1",
   "sourceCount": 36,
   "sourceGraph": [
@@ -11027,53 +11041,5 @@
       "status": "read"
     }
   ],
-  "sourceRoot": ".",
-  "reviewRuns": [
-    {
-      "clusterCount": 3,
-      "reviewRun": {
-        "assignedClusterIndexes": [
-          0,
-          1,
-          2
-        ],
-        "evidencePolicy": "Only mark evidenceStatus=satisfied when this lane verifies direct evidence refs; otherwise leave evidenceStatus=unknown.",
-        "inputPath": ".cautilus/claims/review-input-loop2.json",
-        "lane": "lane-a",
-        "reviewer": "codex"
-      },
-      "schemaVersion": "cautilus.claim_review_result.v1",
-      "sourceReviewInput": {}
-    },
-    {
-      "clusterCount": 3,
-      "reviewRun": {
-        "evidencePolicy": "No satisfied evidence labels were emitted because this lane did not attach direct or verified evidence refs.",
-        "inputPath": ".cautilus/claims/review-input-loop2.json",
-        "lane": "b",
-        "reviewer": "codex-lane-b",
-        "scope": "clusters 3-5 only"
-      },
-      "schemaVersion": "cautilus.claim_review_result.v1",
-      "sourceReviewInput": {}
-    },
-    {
-      "clusterCount": 1,
-      "reviewRun": {},
-      "schemaVersion": "cautilus.claim_review_result.v1",
-      "sourceReviewInput": {}
-    },
-    {
-      "clusterCount": 1,
-      "reviewRun": {},
-      "schemaVersion": "cautilus.claim_review_result.v1",
-      "sourceReviewInput": {}
-    },
-    {
-      "clusterCount": 1,
-      "reviewRun": {},
-      "schemaVersion": "cautilus.claim_review_result.v1",
-      "sourceReviewInput": {}
-    }
-  ]
+  "sourceRoot": "."
 }

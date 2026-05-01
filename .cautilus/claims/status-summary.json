@@ -15,134 +15,50 @@
     ]
   },
   "claimSummary": {
-    "byClaimAudience": [
-      {
-        "count": 251,
-        "key": "developer"
-      },
-      {
-        "count": 69,
-        "key": "user"
-      }
-    ],
-    "byClaimSemanticGroup": [
-      {
-        "count": 86,
-        "key": "Agent and skill workflow"
-      },
-      {
-        "count": 81,
-        "key": "Documentation and contracts"
-      },
-      {
-        "count": 52,
-        "key": "Adapter and portability"
-      },
-      {
-        "count": 29,
-        "key": "Quality gates"
-      },
-      {
-        "count": 27,
-        "key": "Packets and reporting"
-      },
-      {
-        "count": 21,
-        "key": "Improvement and optimization"
-      },
-      {
-        "count": 17,
-        "key": "Claim discovery and review"
-      },
-      {
-        "count": 5,
-        "key": "Release and packaging"
-      },
-      {
-        "count": 2,
-        "key": "Evaluation surfaces"
-      }
-    ],
-    "byEvidenceStatus": [
-      {
-        "count": 317,
-        "key": "unknown"
-      },
-      {
-        "count": 3,
-        "key": "satisfied"
-      }
-    ],
-    "byLifecycle": [
-      {
-        "count": 320,
-        "key": "new"
-      }
-    ],
-    "byProofLayer": [
-      {
-        "count": 160,
-        "key": "cautilus-eval"
-      },
-      {
-        "count": 119,
-        "key": "deterministic"
-      },
-      {
-        "count": 27,
-        "key": "human-auditable"
-      },
-      {
-        "count": 9,
-        "key": "alignment-work"
-      },
-      {
-        "count": 5,
-        "key": "scenario-candidate"
-      }
-    ],
-    "byRecommendedProof": [
-      {
-        "count": 165,
-        "key": "cautilus-eval"
-      },
-      {
-        "count": 119,
-        "key": "deterministic"
-      },
-      {
-        "count": 36,
-        "key": "human-auditable"
-      }
-    ],
-    "byReviewStatus": [
-      {
-        "count": 307,
-        "key": "heuristic"
-      },
-      {
-        "count": 13,
-        "key": "agent-reviewed"
-      }
-    ],
-    "byVerificationReadiness": [
-      {
-        "count": 304,
-        "key": "ready-to-verify"
-      },
-      {
-        "count": 9,
-        "key": "needs-alignment"
-      },
-      {
-        "count": 5,
-        "key": "needs-scenario"
-      },
-      {
-        "count": 2,
-        "key": "blocked"
-      }
-    ]
+    "byClaimAudience": {
+      "developer": 251,
+      "user": 69
+    },
+    "byClaimSemanticGroup": {
+      "Adapter and portability": 52,
+      "Agent and skill workflow": 86,
+      "Claim discovery and review": 17,
+      "Documentation and contracts": 81,
+      "Evaluation surfaces": 2,
+      "Improvement and optimization": 21,
+      "Packets and reporting": 27,
+      "Quality gates": 29,
+      "Release and packaging": 5
+    },
+    "byEvidenceStatus": {
+      "satisfied": 4,
+      "unknown": 316
+    },
+    "byLifecycle": {
+      "new": 320
+    },
+    "byProofLayer": {
+      "alignment-work": 9,
+      "cautilus-eval": 160,
+      "deterministic": 119,
+      "human-auditable": 27,
+      "scenario-candidate": 5
+    },
+    "byRecommendedProof": {
+      "cautilus-eval": 165,
+      "deterministic": 119,
+      "human-auditable": 36
+    },
+    "byReviewStatus": {
+      "agent-reviewed": 14,
+      "heuristic": 306
+    },
+    "byVerificationReadiness": {
+      "blocked": 2,
+      "needs-alignment": 9,
+      "needs-scenario": 5,
+      "ready-to-verify": 304
+    }
   },
   "effectiveScanScope": {
     "adapterFound": true,
@@ -289,7 +205,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 3,
+    "satisfiedClaimCount": 4,
     "satisfiedClaims": [
       {
         "claimId": "claim-readme-md-144",
@@ -347,21 +263,62 @@
         "recommendedProof": "cautilus-eval",
         "reviewStatus": "agent-reviewed",
         "summary": "Agent track — Claude / Codex plugin.** The `cautilus install` step also lands a bundled skill at `.agents/skills/cautilus/` with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally."
+      },
+      {
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-617",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:3fe27b659855ee02c31087f899b2eced89e167075a4e550a93d1380551d8ab60",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-review-to-eval-flow.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-claim-discovery-workflow-md-617"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": "dev/skill",
+        "recommendedProof": "cautilus-eval",
+        "reviewStatus": "agent-reviewed",
+        "summary": "It emits `cautilus.claim_eval_plan.v1` from reviewed `cautilus-eval` claims that are ready to verify, while preserving the host boundary by not writing fixtures, prompts, runners, wrappers, or policy."
       }
     ]
   },
   "gitCommit": "34c16621621456ae28b2552f222dcf89e23a5b5b",
   "gitState": {
-    "changedFileCount": 0,
-    "changedFiles": [],
+    "changedFileCount": 21,
+    "changedFiles": [
+      ".agents/cautilus-adapter.yaml",
+      ".cautilus/claims/eval-plan-evidenced-typed-runners.json",
+      ".cautilus/claims/eval-plan-reviewed-typed-runners.json",
+      ".cautilus/claims/eval-plan-typed-runners.json",
+      ".cautilus/claims/evidenced-typed-runners.json",
+      ".cautilus/claims/latest.json",
+      ".cautilus/claims/review-input-typed-runners.json",
+      ".cautilus/claims/reviewed-typed-runners.json",
+      ".cautilus/claims/status-summary.json",
+      ".cautilus/runners/dev-repo-self-dogfood.assessment.json",
+      "charness-artifacts/debug/debug-2026-05-01-evidence-preflight-nilerr.md",
+      "docs/cli-reference.md",
+      "docs/contracts/adapter-contract.md",
+      "docs/contracts/claim-discovery-workflow.md",
+      "docs/internal/handoff.md",
+      "docs/master-plan.md",
+      "docs/specs/command-surfaces.spec.md",
+      "internal/cli/command-registry.json",
+      "internal/contracts/constants.go",
+      "internal/runtime/claim_discovery.go",
+      "internal/runtime/claim_discovery_test.go"
+    ],
     "changedSourceCount": 0,
     "changedSources": [],
-    "comparisonStatus": "fresh",
-    "currentGitCommit": "34c16621621456ae28b2552f222dcf89e23a5b5b",
-    "headDrift": false,
+    "comparisonStatus": "fresh-with-head-drift",
+    "currentGitCommit": "90d4088329d3d2a09981ede50941ff55efd9fbd0",
+    "headDrift": true,
     "isStale": false,
     "packetGitCommit": "34c16621621456ae28b2552f222dcf89e23a5b5b",
-    "recommendedAction": "The claim packet commit matches the current checkout.",
+    "recommendedAction": "The current HEAD differs from the packet commit, but no recorded claim source changed; review and eval planning may continue.",
     "workingTreePolicy": "excluded"
   },
   "inputPath": ".cautilus/claims/evidenced-typed-runners.json",
@@ -370,12 +327,20 @@
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "recommendedNextActions": [
     {
-      "id": "inspect-full-packet",
-      "summary": "Inspect the full claim packet and select claims manually."
+      "id": "prepare-claim-review",
+      "summary": "Prepare bounded LLM claim review clusters after setting a review budget, before drafting eval scenarios."
+    },
+    {
+      "id": "add-deterministic-proof",
+      "summary": "Add or connect unit, lint, build, schema, or CI proof for deterministic claims."
+    },
+    {
+      "id": "resolve-alignment",
+      "summary": "Reconcile alignment-work claims before treating them as verification targets."
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 293,
+    "heuristicClaimsReadyForReview": 292,
     "needsAlignment": 9,
     "needsScenario": 5
   },

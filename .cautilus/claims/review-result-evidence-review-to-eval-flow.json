@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewRun": {
+    "reviewer": "codex-current-agent-evidence-review",
+    "backend": "codex_exec",
+    "mode": "direct-evidence-application",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied when a checked-in evidence bundle records direct or verified proof for the exact claim boundary."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-developer-quality-gates-cautilus-eval-review-to-eval",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-617",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the checked-in review-to-eval evidence bundle: the Codex dogfood run returned accept-now, and its audit confirms claim review apply-result, claim validate, and claim plan-evals ran without fixture or product edits.",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/skill",
+          "verificationReadiness": "ready-to-verify",
+          "nextAction": "No new fixture is needed for this claim while the referenced review-to-eval evidence bundle remains current.",
+          "unresolvedQuestions": [
+            "Claude parity for this review-to-eval branch remains outside this evidence bundle."
+          ],
+          "evidenceRefs": [
+            {
+              "kind": "cautilus-claim-evidence-bundle",
+              "path": ".cautilus/claims/evidence-review-to-eval-flow.json",
+              "contentHash": "sha256:3fe27b659855ee02c31087f899b2eced89e167075a4e550a93d1380551d8ab60",
+              "matchKind": "verified",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-617"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

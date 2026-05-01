@@ -5,10 +5,10 @@
   "planSummary": {
     "evalPlanCount": 0,
     "skippedByReason": {
-      "already-satisfied": 3,
+      "already-satisfied": 4,
       "not-cautilus-eval": 155,
       "not-ready-to-verify": 5,
-      "not-reviewed": 157
+      "not-reviewed": 156
     },
     "skippedClaimCount": 320,
     "zeroPlanExpectation": "Zero eval plans can be expected when reviewed eval-ready claims are already satisfied or when remaining reviewed claims are not Cautilus eval targets.",
@@ -1892,11 +1892,32 @@
     {
       "claimFingerprint": "sha256:e1f238b94302fc34437333c1a961bf8ea0289588ea97402ae9be1b6b733217c9",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-617",
-      "evidenceStatus": "unknown",
-      "reason": "not-reviewed",
-      "recommendedEvalSurface": "app/prompt",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:3fe27b659855ee02c31087f899b2eced89e167075a4e550a93d1380551d8ab60",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-review-to-eval-flow.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-claim-discovery-workflow-md-617"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "reason": "already-satisfied",
+      "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "It emits `cautilus.claim_eval_plan.v1` from reviewed `cautilus-eval` claims that are ready to verify, while preserving the host boundary by not writing fixtures, prompts, runners, wrappers, or policy.",
+          "line": 617,
+          "path": "docs/contracts/claim-discovery-workflow.md"
+        }
+      ],
+      "unresolvedQuestions": [
+        "Claude parity for this review-to-eval branch remains outside this evidence bundle."
+      ],
       "verificationReadiness": "ready-to-verify"
     },
     {
