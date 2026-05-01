@@ -98,6 +98,14 @@ This keeps generated spec reports and latest artifact bundles out of the source 
 When different real files declare the same normalized claim text, discovery should emit one claim candidate and preserve every declaration location in `sourceRefs`.
 Semantic duplicates with different wording are grouping/review work, not deterministic source dedupe.
 
+This entry-surface boundary is also the product's false-negative boundary.
+`claim discover` is expected to find declared claims in README-like entry documents and linked Markdown, not every latent user-facing behavior hidden in code, transcripts, issue threads, or private operator memory.
+If a core user-facing feature is not stated in the configured entry documents or their linked Markdown graph, deterministic discovery may miss it.
+That is not automatically a binary bug.
+It is a product signal that the repo's public narrative or adoption surface is underspecified.
+The bundled skill, `charness:quality`, `charness:narrative`, or a human reviewer may still explore the codebase and discover such missing public claims.
+Those findings should be recorded as narrative, alignment, or documentation work before expecting `claim discover` to emit them by default.
+
 The adapter may override entries, depth, include globs, and exclude globs:
 
 ```yaml
@@ -452,6 +460,22 @@ The skill should then ask the user which branch to take.
 Next actions should distinguish `plan only`, `top N`, `selected groups`, and `full batch`.
 Full-batch work should show estimated claim count, affected files, and review or edit budget before it starts.
 The skill should not automatically launch expensive evaluator runs or broad code edits after status unless the user has already delegated that continuation and the recorded budget covers it.
+
+`claim show` should expose the same decision boundary in `cautilus.claim_status_summary.v1`.
+The status packet should include a `discoveryBoundary` block that says the packet is based on entry documents and linked Markdown, and that undeclared user-facing behavior is an entry-surface gap rather than a discoverable claim.
+The status packet should also include `actionSummary.primaryBuckets`, so a caller can separate work without rereading every claim:
+
+- `already-satisfied`: proof is already attached and valid under packet semantics.
+- `agent-add-deterministic-proof`: an agent can add or connect unit, lint, build, schema, spec, or CI proof.
+- `agent-plan-cautilus-eval`: an agent can draft or select Cautilus eval scenarios.
+- `agent-design-scenario`: an agent should first decompose the behavior into an evaluable scenario.
+- `human-align-surfaces`: a human or maintainer needs to reconcile conflicting docs, code, adapters, or ownership boundaries.
+- `human-confirm-or-decompose`: a human-auditable claim needs confirmation, decomposition, or an explicit acceptance artifact.
+- `split-or-defer`: the claim is blocked because it is too broad, historical, provider-caveated, policy-like, or otherwise not a ready verification target.
+- `inspect-manually`: the packet does not have enough label confidence to choose a stronger branch.
+
+The status packet may also include cross-cutting signals such as `heuristic-review-needed` and `stale-evidence`.
+These are not exclusive primary buckets because a claim can both need review and belong to a proof branch.
 
 ## Follow-On Commands
 

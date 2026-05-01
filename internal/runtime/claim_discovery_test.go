@@ -554,6 +554,14 @@ func TestBuildClaimStatusSummarySummarizesExistingPacket(t *testing.T) {
 	if readiness["heuristicClaimsReadyForReview"] != 3 {
 		t.Fatalf("expected heuristic review readiness, got %#v", readiness)
 	}
+	boundary := asMap(summary["discoveryBoundary"])
+	if boundary["sourceBasis"] != "entry-docs-and-linked-markdown" || !strings.Contains(stringFromAny(boundary["omissionPolicy"]), "outside deterministic discovery scope") {
+		t.Fatalf("expected explicit discovery boundary, got %#v", boundary)
+	}
+	actions := asMap(summary["actionSummary"])
+	if len(arrayOrEmpty(actions["primaryBuckets"])) == 0 {
+		t.Fatalf("expected action summary buckets, got %#v", summary)
+	}
 	if len(arrayOrEmpty(summary["recommendedNextActions"])) == 0 {
 		t.Fatalf("expected recommended next actions, got %#v", summary)
 	}
@@ -641,6 +649,15 @@ func TestBuildClaimStatusSummaryIncludesSatisfiedEvidence(t *testing.T) {
 	first := asMap(claims[0])
 	if first["claimId"] != "claim-readme-md-1" || first["evidenceRefCount"] != 1 {
 		t.Fatalf("expected satisfied evidence context, got %#v", first)
+	}
+	actions := asMap(summary["actionSummary"])
+	buckets := arrayOrEmpty(actions["primaryBuckets"])
+	if len(buckets) != 1 {
+		t.Fatalf("expected one primary action bucket, got %#v", actions)
+	}
+	bucket := asMap(buckets[0])
+	if bucket["id"] != "already-satisfied" || bucket["count"] != 1 {
+		t.Fatalf("expected satisfied claim action bucket, got %#v", bucket)
 	}
 }
 

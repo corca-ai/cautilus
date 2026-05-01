@@ -1645,10 +1645,12 @@ func BuildClaimStatusSummaryWithOptions(packet map[string]any, options ClaimStat
 		"sourceCount":               len(sourceInventory),
 		"claimSummary":              claimSummary,
 		"effectiveScanScope":        scanScope,
+		"discoveryBoundary":         claimStatusDiscoveryBoundary(scanScope),
 		"claimState":                asMap(packet["claimState"]),
 		"nonVerdictNotice":          packet["nonVerdictNotice"],
 		"reviewReadinessSummary":    claimReviewReadinessSummary(candidates),
 		"evidenceSatisfaction":      claimEvidenceSatisfactionSummary(candidates),
+		"actionSummary":             claimStatusActionSummary(candidates),
 		"recommendedNextActions":    claimStatusNextActions(claimSummary),
 		"linkedMarkdownSourceCount": linkedMarkdownSourceCount(sourceInventory),
 	}
@@ -1816,6 +1818,120 @@ func linkedMarkdownSourceCount(sourceInventory []any) int {
 		}
 	}
 	return count
+}
+
+func claimStatusDiscoveryBoundary(scanScope map[string]any) map[string]any {
+	return map[string]any{
+		"sourceBasis":      "entry-docs-and-linked-markdown",
+		"traversal":        scanScope["traversal"],
+		"entries":          arrayOrEmpty(scanScope["entries"]),
+		"linkedDepth":      scanScope["linkedMarkdownDepth"],
+		"gitignorePolicy":  scanScope["gitignorePolicy"],
+		"omissionPolicy":   "Claims not declared in configured entry documents or linked Markdown are outside deterministic discovery scope.",
+		"productSignal":    "A core user-facing feature missing from entry docs is a narrative or adoption-surface gap, not automatically a claim discover false negative.",
+		"agentEscapeHatch": "Agent-led quality or narrative review may explore the codebase for missing public claims, then record alignment or documentation work before expecting deterministic discovery.",
+	}
+}
+
+type claimStatusActionBucket struct {
+	id               string
+	recommendedActor string
+	summary          string
+	count            int
+	sampleClaimIDs   []string
+}
+
+func claimStatusActionSummary(candidates []any) map[string]any {
+	primaryDefinitions := []*claimStatusActionBucket{
+		{id: "already-satisfied", recommendedActor: "none", summary: "Proof is already attached and valid under packet semantics."},
+		{id: "agent-add-deterministic-proof", recommendedActor: "agent", summary: "Add or connect unit, lint, build, schema, spec, or CI proof."},
+		{id: "agent-plan-cautilus-eval", recommendedActor: "agent", summary: "Draft or select Cautilus eval scenarios for ready eval claims."},
+		{id: "agent-design-scenario", recommendedActor: "agent", summary: "Decompose the behavior into a concrete scenario before protected eval planning."},
+		{id: "human-align-surfaces", recommendedActor: "human", summary: "Reconcile conflicting docs, code, adapters, or ownership boundaries before proof would be honest."},
+		{id: "human-confirm-or-decompose", recommendedActor: "human", summary: "Confirm, decompose, or accept a human-auditable claim before treating it as proven."},
+		{id: "split-or-defer", recommendedActor: "human", summary: "Split broad, historical, provider-caveated, policy-like, or otherwise blocked claims before verification."},
+		{id: "inspect-manually", recommendedActor: "agent", summary: "Inspect claims whose labels do not choose a stronger branch yet."},
+	}
+	primary := map[string]*claimStatusActionBucket{}
+	for _, bucket := range primaryDefinitions {
+		primary[bucket.id] = bucket
+	}
+	crossDefinitions := []*claimStatusActionBucket{
+		{id: "heuristic-review-needed", recommendedActor: "agent", summary: "Review heuristic labels before spending proof or eval budget."},
+		{id: "stale-evidence", recommendedActor: "agent", summary: "Refresh or recheck stale evidence before consuming it as proof."},
+	}
+	cross := map[string]*claimStatusActionBucket{}
+	for _, bucket := range crossDefinitions {
+		cross[bucket.id] = bucket
+	}
+	for _, raw := range candidates {
+		candidate := asMap(raw)
+		claimID := stringFromAny(candidate["claimId"])
+		claimEvidence := stringFromAny(candidate["evidenceStatus"])
+		claimReview := stringFromAny(candidate["reviewStatus"])
+		incrementClaimStatusActionBucket(primary[claimStatusPrimaryActionID(candidate)], claimID)
+		if claimReview == "heuristic" && claimEvidence != "satisfied" {
+			incrementClaimStatusActionBucket(cross["heuristic-review-needed"], claimID)
+		}
+		if claimEvidence == "stale" {
+			incrementClaimStatusActionBucket(cross["stale-evidence"], claimID)
+		}
+	}
+	return map[string]any{
+		"primaryBuckets":      renderClaimStatusActionBuckets(primaryDefinitions),
+		"crossCuttingSignals": renderClaimStatusActionBuckets(crossDefinitions),
+	}
+}
+
+func claimStatusPrimaryActionID(candidate map[string]any) string {
+	if stringFromAny(candidate["evidenceStatus"]) == "satisfied" {
+		return "already-satisfied"
+	}
+	switch stringFromAny(candidate["verificationReadiness"]) {
+	case "blocked":
+		return "split-or-defer"
+	case "needs-alignment":
+		return "human-align-surfaces"
+	case "needs-scenario":
+		return "agent-design-scenario"
+	case "ready-to-verify":
+		switch stringFromAny(candidate["recommendedProof"]) {
+		case "deterministic":
+			return "agent-add-deterministic-proof"
+		case "cautilus-eval":
+			return "agent-plan-cautilus-eval"
+		case "human-auditable":
+			return "human-confirm-or-decompose"
+		}
+	}
+	return "inspect-manually"
+}
+
+func incrementClaimStatusActionBucket(bucket *claimStatusActionBucket, claimID string) {
+	if bucket == nil {
+		return
+	}
+	bucket.count++
+	if claimID != "" && len(bucket.sampleClaimIDs) < 5 {
+		bucket.sampleClaimIDs = append(bucket.sampleClaimIDs, claimID)
+	}
+}
+
+func renderClaimStatusActionBuckets(buckets []*claimStatusActionBucket) []any {
+	rendered := make([]any, 0, len(buckets))
+	for _, bucket := range buckets {
+		if bucket.count == 0 {
+			continue
+		}
+		rendered = append(rendered, map[string]any{
+			"id":               bucket.id,
+			"recommendedActor": bucket.recommendedActor,
+			"count":            bucket.count,
+			"sampleClaimIds":   nonNilStringSlice(bucket.sampleClaimIDs),
+			"summary":          bucket.summary,
+		})
+	}
+	return rendered
 }
 
 func claimReviewReadinessSummary(candidates []any) map[string]any {
