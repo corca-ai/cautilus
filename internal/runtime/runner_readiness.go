@@ -217,6 +217,7 @@ func buildRunnerReadinessForRunner(repoRoot string, adapter *AdapterPayload, run
 		return result
 	}
 	staleReasons := runnerAssessmentStaleReasons(repoRoot, adapter, assessment)
+	result["assessmentProvenance"] = runnerAssessmentProvenance(repoRoot, assessment)
 	if len(staleReasons) > 0 {
 		result["state"] = "stale"
 		result["reason"] = "runner-assessment-stale"
@@ -700,9 +701,6 @@ func repoRelativePath(repoRoot string, path string) string {
 
 func runnerAssessmentStaleReasons(repoRoot string, adapter *AdapterPayload, assessment map[string]any) []any {
 	reasons := []any{}
-	if commit := currentGitCommit(repoRoot); commit != "" && commit != stringOrEmpty(assessment["repoCommit"]) {
-		reasons = append(reasons, map[string]any{"kind": "repoCommit", "expected": assessment["repoCommit"], "current": commit})
-	}
 	if adapterPath := stringOrEmpty(adapter.Path); adapterPath != "" {
 		if hash, err := fileSHA256(adapterPath); err != nil {
 			reasons = append(reasons, map[string]any{"kind": "adapterHash", "path": adapterPath, "error": err.Error()})
@@ -727,4 +725,25 @@ func runnerAssessmentStaleReasons(repoRoot string, adapter *AdapterPayload, asse
 		}
 	}
 	return reasons
+}
+
+func runnerAssessmentProvenance(repoRoot string, assessment map[string]any) map[string]any {
+	packetCommit := strings.TrimSpace(stringOrEmpty(assessment["repoCommit"]))
+	currentCommit := currentGitCommit(repoRoot)
+	headDrift := packetCommit != "" && currentCommit != "" && packetCommit != currentCommit
+	status := "fresh"
+	if packetCommit == "" {
+		status = "missing-assessment-commit"
+	} else if currentCommit == "" {
+		status = "missing-current-commit"
+	} else if headDrift {
+		status = "fresh-with-head-drift"
+	}
+	return map[string]any{
+		"assessmentRepoCommit": packetCommit,
+		"currentGitCommit":     currentCommit,
+		"headDrift":            headDrift,
+		"comparisonStatus":     status,
+		"freshnessPolicy":      "adapter-and-runner-file-hashes",
+	}
 }

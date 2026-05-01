@@ -48,6 +48,16 @@ func TestRunnerReadinessReportsAssessedSmokeOnlyAndStaleStates(t *testing.T) {
 	if readiness["proofClass"] != "fixture-smoke" || readiness["proofClassSource"] != "assessment" {
 		t.Fatalf("expected assessment proof class, got %#v", readiness)
 	}
+	runGitForRunnerReadiness(t, repoRoot, "add", ".cautilus/runners")
+	runGitForRunnerReadiness(t, repoRoot, "commit", "-m", "commit runner assessment")
+	readiness = BuildRunnerReadiness(repoRoot, adapter)
+	if readiness["state"] != "smoke-only" || readiness["recommendation"] != "smoke-only" {
+		t.Fatalf("expected committed assessment artifact to remain smoke-only, got %#v", readiness)
+	}
+	provenance := asMap(readiness["assessmentProvenance"])
+	if provenance["headDrift"] != true || provenance["comparisonStatus"] != "fresh-with-head-drift" {
+		t.Fatalf("expected assessment commit drift to stay provenance-only, got %#v", provenance)
+	}
 
 	writeRunnerAssessment(t, repoRoot, adapter, "ready-for-selected-surface", "in-process-product-runner")
 	readiness = BuildRunnerReadiness(repoRoot, adapter)

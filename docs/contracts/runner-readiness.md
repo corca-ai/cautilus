@@ -193,7 +193,9 @@ Minimum fields:
 
 `runnerFiles[]` is an array of `{path, sha256}` records with repo-relative paths.
 `adapterHash` is a `sha256:<hex>` hash of the adapter file.
-An assessment is stale when the current git commit differs from `repoCommit`, the current adapter hash differs from `adapterHash`, any listed runner file is missing, or any listed runner file hash differs.
+`repoCommit` is provenance, not the primary freshness key.
+An assessment is stale when the current adapter hash differs from `adapterHash`, any listed runner file is missing, or any listed runner file hash differs.
+If the current git commit differs from `repoCommit` but the adapter and listed runner file hashes still match, `doctor` and `agent status` should expose the drift as assessment provenance without marking the assessment stale.
 `runnerFiles` must include every host-owned file the assessment relies on for production path reuse, not only the wrapper script.
 If the host cannot enumerate transitive files, `knownGaps` must say so.
 A claim that depends on untracked production-path components cannot receive `ready-for-selected-surface`.
@@ -411,7 +413,7 @@ Start with read-only packet and status visibility before broad behavior changes.
 
 1. Add a separate `runnerReadiness` object to `doctor` and `agent status` without changing top-level adapter `ready` semantics.
 2. Define `cautilus.runner_assessment.v1` and one checked example under the default assessment path shape.
-3. Implement stale assessment detection for repo commit, adapter hash, and listed runner file hashes.
+3. Implement stale assessment detection for adapter hash and listed runner file hashes, with repo commit drift exposed as provenance.
 4. Treat plain `eval_test_command_templates` as `declared-eval-runner` only.
 5. Teach `agent status` to surface missing, stale, smoke-only, not-ready, and ready runner states as read-only next branches.
 
