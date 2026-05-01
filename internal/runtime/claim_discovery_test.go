@@ -395,6 +395,14 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 		"",
 		"`npm run test:on-demand` currently owns the heavier self-dogfood workflow script tests.",
 		"",
+		"It emits `cautilus.agent_status.v1`: a read-only orientation packet over binary health and branch choices.",
+		"",
+		"`cautilus --version` must work on `PATH` before any consumer adapter or skill wiring is treated as valid.",
+		"",
+		"The skill owns routing, sequencing, user-facing decision boundaries, and LLM-backed review work.",
+		"",
+		"Past sessions showed `codex exec` can emit fatal skill-loading errors on stderr while the final process exit still looks successful.",
+		"",
 	}, "\n"))
 
 	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
@@ -477,6 +485,40 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 	onDemand := bySummary["`npm run test:on-demand` currently owns the heavier self-dogfood workflow script tests."]
 	if onDemand == nil || onDemand["recommendedProof"] != "deterministic" {
 		t.Fatalf("expected on-demand test ownership to be deterministic, got %#v", onDemand)
+	}
+	agentStatusPacket := bySummary["It emits `cautilus.agent_status.v1`: a read-only orientation packet over binary health and branch choices."]
+	if agentStatusPacket == nil || agentStatusPacket["recommendedProof"] != "deterministic" {
+		t.Fatalf("expected agent status packet claim to be deterministic, got %#v", agentStatusPacket)
+	}
+	pathCheck := bySummary["`cautilus --version` must work on `PATH` before any consumer adapter or skill wiring is treated as valid."]
+	if pathCheck == nil || pathCheck["recommendedProof"] != "deterministic" {
+		t.Fatalf("expected PATH/version readiness claim to be deterministic, got %#v", pathCheck)
+	}
+	skillBoundary := bySummary["The skill owns routing, sequencing, user-facing decision boundaries, and LLM-backed review work."]
+	if skillBoundary == nil || skillBoundary["recommendedProof"] != "human-auditable" || skillBoundary["verificationReadiness"] != "needs-alignment" {
+		t.Fatalf("expected skill ownership boundary to require human-auditable alignment, got %#v", skillBoundary)
+	}
+	history := bySummary["Past sessions showed `codex exec` can emit fatal skill-loading errors on stderr while the final process exit still looks successful."]
+	if history == nil || history["recommendedProof"] != "human-auditable" || history["verificationReadiness"] != "blocked" {
+		t.Fatalf("expected historical observation to stay blocked human-auditable, got %#v", history)
+	}
+}
+
+func TestClaimTextBlocksSkipsYamlFrontmatter(t *testing.T) {
+	blocks := claimTextBlocks(strings.Join([]string{
+		"---",
+		"name: cautilus",
+		"description: Use when intentful behavior evaluation itself is the task.",
+		"---",
+		"",
+		"The skill owns routing, sequencing, and decision boundaries.",
+		"",
+	}, "\n"))
+	if len(blocks) != 1 {
+		t.Fatalf("expected one body block, got %#v", blocks)
+	}
+	if strings.Contains(blocks[0].text, "description:") || !strings.Contains(blocks[0].text, "The skill owns routing") {
+		t.Fatalf("expected frontmatter to be skipped, got %#v", blocks)
 	}
 }
 

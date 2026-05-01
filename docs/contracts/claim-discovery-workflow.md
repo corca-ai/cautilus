@@ -212,6 +212,9 @@ Product-direction statements and operator-policy rules follow the same boundary.
 They may be important durable guidance, but they are not ready eval targets until they are split into concrete behavior, deterministic gate, or audited-process claims.
 Markdown glossary bullets that only define a code-styled label, such as `` `alignment-work`: ... ``, should not become claim candidates by default.
 Ownership-boundary explanations, such as product-owned versus adapter-owned responsibilities, should stay `human-auditable` and `needs-alignment` until the matching docs, code, adapters, and tests are reconciled.
+YAML frontmatter is metadata, not claim prose.
+Command, packet, runner, and readiness statements should prefer deterministic proof unless they explicitly depend on model or agent behavior.
+Historical observation statements can inform future scenarios, but they should stay `human-auditable` and `blocked` until promoted into a concrete regression claim.
 
 `claimId` is a display handle and packet reference.
 Refresh matching should use `claimFingerprint`, not source line number alone.

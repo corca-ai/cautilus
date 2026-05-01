@@ -965,6 +965,7 @@ func claimTextBlocks(content string) []claimTextBlock {
 	buffer := []string{}
 	startLine := 0
 	inFence := false
+	inFrontmatter := false
 	flush := func() {
 		if len(buffer) == 0 {
 			return
@@ -979,6 +980,16 @@ func claimTextBlocks(content string) []claimTextBlock {
 	for index, raw := range lines {
 		lineNo := index + 1
 		trimmed := strings.TrimSpace(raw)
+		if index == 0 && trimmed == "---" {
+			inFrontmatter = true
+			continue
+		}
+		if inFrontmatter {
+			if trimmed == "---" {
+				inFrontmatter = false
+			}
+			continue
+		}
 		if strings.HasPrefix(trimmed, "```") {
 			flush()
 			inFence = !inFence
@@ -1059,7 +1070,7 @@ func claimLineLooksLikeDefinitionLabel(summary string) bool {
 func classifyClaimLine(line string) (claimClassification, bool) {
 	lower := " " + strings.ToLower(line) + " "
 	switch {
-	case containsAny(lower, []string{" unit test", " tests ", " tests.", " test:on-demand", " lint", " typecheck", " type-check", " build ", " ci ", " compile", " schema ", " deterministic", " eval test ", " --runtime fixture", " fixture runtime", " fixture-backed"}):
+	case containsAny(lower, []string{" unit test", " tests ", " tests.", " test:on-demand", " lint", " typecheck", " type-check", " build ", " ci ", " compile", " schema ", " deterministic", " eval test ", " eval live ", " --runtime fixture", " fixture runtime", " fixture-backed", " adapter-owned runner", " command template", " command_template", " run-simulator-persona", " --version", " on path ", " doctor --", " --adapter-name", " go-owned", " cli instead of", "cautilus.agent_status.v1"}):
 		return claimClassification{
 			recommendedProof:      "deterministic",
 			verificationReadiness: "ready-to-verify",
@@ -1079,6 +1090,13 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 			verificationReadiness: "needs-alignment",
 			why:                   "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof.",
 			next:                  "Reconcile or cite the matching adapter, CLI, docs, and test surfaces before treating this as satisfied.",
+		}, true
+	case historicalObservationClaim(lower):
+		return claimClassification{
+			recommendedProof:      "human-auditable",
+			verificationReadiness: "blocked",
+			why:                   "The claim records a historical observation; it can guide future scenarios but is not itself a ready eval target.",
+			next:                  "Keep this as human-auditable context or promote a concrete regression scenario if the failure mode needs protection.",
 		}, true
 	case containsAny(lower, []string{" align", " aligned", " alignment", " drift", " reconcile", " mismatch", " consistent with", " consistency"}):
 		return claimClassification{
@@ -1177,8 +1195,12 @@ func operatorPolicyClaim(lower string) bool {
 }
 
 func ownershipBoundaryClaim(lower string) bool {
-	return containsAny(lower, []string{" product-owned", " adapter-owned", " host-owned", " repo-owned", " consumer-owned", " backend selection", " boundary"}) &&
+	return containsAny(lower, []string{" product-owned", " adapter-owned", " host-owned", " repo-owned", " consumer-owned", " backend selection", " boundary", " skill owns", " binary owns"}) &&
 		containsAny(lower, []string{" while ", " stays ", " keeps ", " owns ", " owned"})
+}
+
+func historicalObservationClaim(lower string) bool {
+	return containsAny(lower, []string{" past sessions showed", " recent sessions showed", " earlier sessions showed", " previous sessions showed"})
 }
 
 func broadPositioningClaim(lower string) bool {
