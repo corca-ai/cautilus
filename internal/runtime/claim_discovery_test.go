@@ -1222,3 +1222,50 @@ func TestBuildClaimRefreshPlanIgnoresCommittedClaimPacketDrift(t *testing.T) {
 		t.Fatalf("expected changedFiles to record packet-only drift, got %#v", changedFiles)
 	}
 }
+
+func TestClaimGitStateMarksSymlinkTargetChangeStale(t *testing.T) {
+	repoRoot := t.TempDir()
+	if err := execGit(repoRoot, "init"); err != nil {
+		t.Fatalf("git init failed: %v", err)
+	}
+	if err := execGit(repoRoot, "config", "user.email", "cautilus@example.com"); err != nil {
+		t.Fatalf("git config failed: %v", err)
+	}
+	if err := execGit(repoRoot, "config", "user.name", "Cautilus Test"); err != nil {
+		t.Fatalf("git config failed: %v", err)
+	}
+	mustWriteFile(t, filepath.Join(repoRoot, "docs", "source.md"), "Agents must follow the symlinked workflow behavior.\n")
+	if err := os.Symlink(filepath.Join("docs", "source.md"), filepath.Join(repoRoot, "LINK.md")); err != nil {
+		t.Fatalf("Symlink returned error: %v", err)
+	}
+	if err := execGit(repoRoot, "add", "docs/source.md", "LINK.md"); err != nil {
+		t.Fatalf("git add failed: %v", err)
+	}
+	if err := execGit(repoRoot, "commit", "-m", "initial"); err != nil {
+		t.Fatalf("git commit failed: %v", err)
+	}
+	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot, SourcePaths: []string{"LINK.md"}})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan returned error: %v", err)
+	}
+	inventory := arrayOrEmpty(plan["sourceInventory"])
+	if asMap(inventory[0])["contentPath"] != "docs/source.md" {
+		t.Fatalf("expected symlink contentPath, got %#v", inventory)
+	}
+	mustWriteFile(t, filepath.Join(repoRoot, "docs", "source.md"), "Agents must follow the changed symlinked workflow behavior.\n")
+	if err := execGit(repoRoot, "add", "docs/source.md"); err != nil {
+		t.Fatalf("git add changed failed: %v", err)
+	}
+	if err := execGit(repoRoot, "commit", "-m", "change symlink target"); err != nil {
+		t.Fatalf("git commit changed failed: %v", err)
+	}
+
+	gitState := ClaimPacketGitState(plan, repoRoot)
+	if gitState["isStale"] != true {
+		t.Fatalf("expected symlink target change to make claim packet stale, got %#v", gitState)
+	}
+	changedSources := stringArrayOrEmpty(gitState["changedSources"])
+	if len(changedSources) != 1 || changedSources[0] != "docs/source.md" {
+		t.Fatalf("expected changed symlink target as changed source, got %#v", changedSources)
+	}
+}

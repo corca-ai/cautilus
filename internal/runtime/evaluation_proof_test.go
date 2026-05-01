@@ -76,14 +76,18 @@ func TestEvaluationProofDowngradesFixtureRuntimeProofClass(t *testing.T) {
 }
 
 func TestEvaluationProofPromotesCodexDevRunnerDeclaredProof(t *testing.T) {
-	proof := BuildEvaluationProofFromRunnerReadiness(map[string]any{
+	proof := BuildEvaluationProofFromRunnerReadinessWithObserved(map[string]any{
 		"state":                    "smoke-only",
 		"proofClass":               "fixture-smoke",
 		"proofClassSource":         "assessment",
 		"declaredProofClass":       "coding-agent-messaging",
 		"declaredProofClassSource": "adapter-runner",
 		"recommendation":           "smoke-only",
-	}, "dev/repo", "codex")
+	}, "dev/repo", "codex", map[string]any{
+		"evaluations": []any{
+			map[string]any{"telemetry": map[string]any{"runtime": "codex_exec"}},
+		},
+	})
 	if proof["proofClass"] != "coding-agent-messaging" || proof["proofClassSource"] != "runtime" {
 		t.Fatalf("expected codex dev runtime proof promotion, got %#v", proof)
 	}
@@ -92,15 +96,37 @@ func TestEvaluationProofPromotesCodexDevRunnerDeclaredProof(t *testing.T) {
 	}
 }
 
+func TestEvaluationProofDoesNotPromoteDevRunnerWithoutObservedRuntime(t *testing.T) {
+	proof := BuildEvaluationProofFromRunnerReadinessWithObserved(map[string]any{
+		"state":                    "smoke-only",
+		"proofClass":               "fixture-smoke",
+		"proofClassSource":         "assessment",
+		"declaredProofClass":       "coding-agent-messaging",
+		"declaredProofClassSource": "adapter-runner",
+		"recommendation":           "smoke-only",
+	}, "dev/repo", "codex", map[string]any{
+		"evaluations": []any{
+			map[string]any{"telemetry": map[string]any{"runtime": "fixture"}},
+		},
+	})
+	if proof["proofClass"] != "fixture-smoke" || proof["proofClassSource"] != "assessment" {
+		t.Fatalf("expected missing observed runtime to keep smoke proof, got %#v", proof)
+	}
+}
+
 func TestEvaluationProofDoesNotPromoteAppProductRunnerFromSmokeAssessment(t *testing.T) {
-	proof := BuildEvaluationProofFromRunnerReadiness(map[string]any{
+	proof := BuildEvaluationProofFromRunnerReadinessWithObserved(map[string]any{
 		"state":                    "smoke-only",
 		"proofClass":               "fixture-smoke",
 		"proofClassSource":         "assessment",
 		"declaredProofClass":       "live-product-runner",
 		"declaredProofClassSource": "adapter-runner",
 		"recommendation":           "smoke-only",
-	}, "app/chat", "codex")
+	}, "app/chat", "codex", map[string]any{
+		"evaluations": []any{
+			map[string]any{"telemetry": map[string]any{"runtime": "codex_exec"}},
+		},
+	})
 	if proof["proofClass"] != "fixture-smoke" || proof["productProofReady"] != false {
 		t.Fatalf("expected app product runner to stay smoke-only without ready assessment, got %#v", proof)
 	}

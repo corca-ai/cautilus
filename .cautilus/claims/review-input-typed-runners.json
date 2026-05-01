@@ -794,8 +794,8 @@
   "reviewBudget": {
     "budgetSource": "cli-or-default",
     "clusterPolicy": "default",
-    "excerptChars": 900,
-    "maxClaimsPerCluster": 5,
+    "excerptChars": 1200,
+    "maxClaimsPerCluster": 8,
     "maxClusters": 12
   },
   "schemaVersion": "cautilus.claim_review_input.v1",
@@ -1469,7 +1469,7 @@
   ],
   "sourceClaimPacket": {
     "candidateCount": 327,
-    "gitCommit": "2b239ae69a27b60a218673c4061f501146a3828c",
+    "gitCommit": "905735f0fa87c3d01d3f9cc152629b7a787361f4",
     "schemaVersion": "cautilus.claim_proof_plan.v1"
   },
   "sourceRoot": "."

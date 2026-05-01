@@ -44,6 +44,10 @@ func BuildClaimProofRequirement(surface string) map[string]any {
 }
 
 func BuildEvaluationProofFromRunnerReadiness(readiness map[string]any, targetSurface string, runtimeName string) map[string]any {
+	return BuildEvaluationProofFromRunnerReadinessWithObserved(readiness, targetSurface, runtimeName, nil)
+}
+
+func BuildEvaluationProofFromRunnerReadinessWithObserved(readiness map[string]any, targetSurface string, runtimeName string, observed map[string]any) map[string]any {
 	proofClass := strings.TrimSpace(stringOrEmpty(readiness["proofClass"]))
 	proofClassSource := strings.TrimSpace(stringOrEmpty(readiness["proofClassSource"]))
 	if proofClass == "" || proofClass == "unknown" {
@@ -73,7 +77,7 @@ func BuildEvaluationProofFromRunnerReadiness(readiness map[string]any, targetSur
 		proof["declaredProofClassSource"] = firstNonEmptyString(declaredProofClassSource, proofClassSource)
 		proof["proofClass"] = "fixture-smoke"
 		proof["proofClassSource"] = "runtime"
-	} else if runtimeName != "" && runtimeName != "fixture" && canRuntimePromoteDevProof(targetSurface, proofClass, declaredProofClass) {
+	} else if runtimeName != "" && runtimeName != "fixture" && canRuntimePromoteDevProof(targetSurface, proofClass, declaredProofClass, runtimeName, observed) {
 		proof["assessmentProofClass"] = proofClass
 		proof["assessmentProofClassSource"] = proofClassSource
 		proof["proofClass"] = declaredProofClass
@@ -197,11 +201,31 @@ func SummarizeReportProof(modeSummaries []any) map[string]any {
 	}
 }
 
-func canRuntimePromoteDevProof(targetSurface string, proofClass string, declaredProofClass string) bool {
+func canRuntimePromoteDevProof(targetSurface string, proofClass string, declaredProofClass string, runtimeName string, observed map[string]any) bool {
 	if targetSurface != "dev/repo" && targetSurface != "dev/skill" {
 		return false
 	}
-	return proofClass == "fixture-smoke" && declaredProofClass == "coding-agent-messaging"
+	if proofClass != "fixture-smoke" || declaredProofClass != "coding-agent-messaging" {
+		return false
+	}
+	expectedRuntime := map[string]string{
+		"codex":  "codex_exec",
+		"claude": "claude_code",
+	}[runtimeName]
+	if expectedRuntime == "" {
+		return false
+	}
+	return observedIncludesTelemetryRuntime(observed, expectedRuntime)
+}
+
+func observedIncludesTelemetryRuntime(observed map[string]any, expectedRuntime string) bool {
+	for _, raw := range arrayOrEmpty(observed["evaluations"]) {
+		telemetry := asMap(asMap(raw)["telemetry"])
+		if strings.TrimSpace(stringOrEmpty(telemetry["runtime"])) == expectedRuntime {
+			return true
+		}
+	}
+	return false
 }
 
 func requiredRunnerCapability(surface string) string {

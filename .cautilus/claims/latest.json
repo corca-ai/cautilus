@@ -10316,7 +10316,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "2b239ae69a27b60a218673c4061f501146a3828c",
+  "gitCommit": "905735f0fa87c3d01d3f9cc152629b7a787361f4",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "schemaVersion": "cautilus.claim_proof_plan.v1",
@@ -10831,7 +10831,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:dc66f7b2c3892d321bb3d5b4ec857d597f4f1e610e6011685fde878e8c00c6f8",
+      "contentHash": "sha256:2deda312c5be90dd90e5dfc4337b7a63f1fa25975648ed55c203f96950a881e5",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "docs",
@@ -10841,7 +10841,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:dedad12ede7f049c82946c912a0a6d078a9726d0faeadaf0380ff9dba7b412f9",
+      "contentHash": "sha256:451bdc9a0a19bf83434b52bd4a059ad1cd1705693af5a710d4a5a7c15cafb582",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "contract",
@@ -11021,7 +11021,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:662c7e88e49b9232628dbcfede76273bf25b5ecb45839db4b715186397e5a37f",
+      "contentHash": "sha256:91cb9010a1f8dc6d385602192aae430ae7027f645a6b6c124f445ca034ade1bc",
       "depth": 2,
       "discoveredFrom": "docs/master-plan.md",
       "kind": "contract",

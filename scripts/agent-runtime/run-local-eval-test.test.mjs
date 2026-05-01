@@ -74,6 +74,7 @@ test("buildObservedInstructionSurfaceInput materializes fixture-backed instructi
 	assert.equal(packet.evaluations[0].evaluationId, "checked-in-agents-routing");
 	assert.equal(packet.evaluations[0].expectedEntryFile, "AGENTS.md");
 	assert.equal(packet.evaluations[0].loadedInstructionFiles[0], "AGENTS.md");
+	assert.equal(packet.evaluations[0].telemetry, undefined);
 	assert.equal(readFileSync(join(workspace, "AGENTS.md"), "utf-8"), readFileSync(join(process.cwd(), "AGENTS.md"), "utf-8"));
 });
 

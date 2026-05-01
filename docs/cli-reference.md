@@ -69,7 +69,7 @@ runner_readiness:
 When typed runners are present, `eval test` chooses the runner whose `surfaces` contains the fixture surface key.
 The `{runner_id}` placeholder is available to command templates.
 If the selected runtime is `fixture`, the observed proof class is `fixture-smoke` even when the adapter declares a stronger possible runner class.
-For `dev/repo` and `dev/skill`, a non-fixture coding-agent runtime may report the adapter-declared `coding-agent-messaging` class while preserving the smoke assessment as assessment metadata.
+For `dev/repo` and `dev/skill`, a non-fixture coding-agent runtime may report the adapter-declared `coding-agent-messaging` class while preserving the smoke assessment as assessment metadata, but only when the observed packet reports the matching runtime telemetry.
 
 ## Probes & discovery
 

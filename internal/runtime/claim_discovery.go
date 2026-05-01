@@ -208,6 +208,9 @@ func DiscoverClaimProofPlan(options ClaimDiscoveryOptions) (map[string]any, erro
 			if hash, hashErr := fileSHA256(source.absPath); hashErr == nil {
 				entry["contentHash"] = hash
 			}
+			if contentPath := claimSourceContentPath(repoRoot, source.absPath, source.relPath); contentPath != "" {
+				entry["contentPath"] = contentPath
+			}
 		}
 		inventory = append(inventory, entry)
 	}
@@ -2456,9 +2459,12 @@ func filterClaimSourceChanges(packet map[string]any, changedFiles []string) []st
 func claimPacketSourcePathSet(packet map[string]any) map[string]bool {
 	paths := map[string]bool{}
 	for _, raw := range arrayOrEmpty(packet["sourceInventory"]) {
-		path := filepath.ToSlash(filepath.Clean(stringOrEmpty(asMap(raw)["path"])))
-		if path != "." && strings.TrimSpace(path) != "" {
-			paths[path] = true
+		entry := asMap(raw)
+		for _, key := range []string{"path", "contentPath"} {
+			path := filepath.ToSlash(filepath.Clean(stringOrEmpty(entry[key])))
+			if path != "." && strings.TrimSpace(path) != "" {
+				paths[path] = true
+			}
 		}
 	}
 	for _, raw := range arrayOrEmpty(packet["claimCandidates"]) {
@@ -2470,6 +2476,22 @@ func claimPacketSourcePathSet(packet map[string]any) map[string]bool {
 		}
 	}
 	return paths
+}
+
+func claimSourceContentPath(repoRoot string, absPath string, relPath string) string {
+	canonicalPath, err := filepath.EvalSymlinks(absPath)
+	if err != nil {
+		return ""
+	}
+	rel, err := filepath.Rel(repoRoot, canonicalPath)
+	if err != nil {
+		return ""
+	}
+	rel = filepath.ToSlash(filepath.Clean(rel))
+	if rel == "." || rel == "" || strings.HasPrefix(rel, "../") || filepath.IsAbs(rel) || rel == relPath {
+		return ""
+	}
+	return rel
 }
 
 func claimStringListContains(values []string, value string) bool {

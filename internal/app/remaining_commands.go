@@ -703,7 +703,7 @@ func runEvalTestPipeline(
 		return 1
 	}
 	readiness := runtime.BuildRunnerReadinessForSurface(options.repoRoot, adapterPayload, targetSurface)
-	proof := runtime.BuildEvaluationProofFromRunnerReadiness(readiness, targetSurface, effectiveRuntime)
+	proof := runtime.BuildEvaluationProofFromRunnerReadinessWithObserved(readiness, targetSurface, effectiveRuntime, input)
 	input["proof"] = runtime.MergeEvaluationProof(input["proof"], proof)
 	if payload, err := json.MarshalIndent(input, "", "  "); err != nil {
 		fmt.Fprintf(stderr, "marshal eval observed with proof metadata: %s\n", err)

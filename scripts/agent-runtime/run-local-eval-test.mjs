@@ -497,6 +497,7 @@ function runCodexEvaluation(options, evaluation, outputDir, startedAt) {
 	const model = options.codexModel ?? options.model;
 	const sessionMode = options.codexSessionMode ?? "ephemeral";
 	const telemetry = {
+		runtime: "codex_exec",
 		...(model ? { model } : {}),
 		session_mode: sessionMode,
 	};
@@ -550,7 +551,10 @@ function runClaudeEvaluation(options, evaluation, outputDir, startedAt) {
 	}
 	writeFileSync(outputFile, `${JSON.stringify(observed, null, 2)}\n`);
 	artifactRefs.push(artifactRef("result", outputFile));
-	const telemetry = extractClaudeTelemetry(result.stdout ?? "", options);
+	const telemetry = {
+		runtime: "claude_code",
+		...(extractClaudeTelemetry(result.stdout ?? "", options) ?? {}),
+	};
 	return normalizeObservedResult(evaluation, observed, artifactRefs, startedAt, telemetry);
 }
 
