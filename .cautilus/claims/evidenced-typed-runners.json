@@ -253,6 +253,7 @@
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "Reviewed as a broad positioning claim. It is too broad to satisfy directly because it summarizes many narrower proof surfaces across claim discovery, eval, packets, and optimization.",
       "groupHints": [
         "audience:user",
         "blocked",
@@ -260,7 +261,7 @@
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep the claim visible as positioning, or decompose it into concrete deterministic, dev/skill, and packet-surface claims before proof planning.",
+      "nextAction": "Do not try to satisfy this claim directly; treat it as covered only through narrower child claims or rewrite it as positioning outside the proof queue.",
       "recommendedProof": "human-auditable",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -271,6 +272,9 @@
         }
       ],
       "summary": "`Cautilus` keeps agent and workflow behavior honest while prompts keep changing.",
+      "unresolvedQuestions": [
+        "Should top-level README positioning claims be excluded from proof queues or explicitly marked blocked until decomposed?"
+      ],
       "verificationReadiness": "blocked",
       "whyThisLayer": "The claim is a broad positioning or aggregate product promise; a single eval fixture would overclaim until concrete subclaims are named."
     },
@@ -322,13 +326,14 @@
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "Reviewed as a broad command-surface durability claim. Existing packet evidence proves representative commands, but not that commands generally emit enough durable state for agent resume.",
       "groupHints": [
         "audience:user",
         "deterministic",
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Prove with deterministic packet contract tests that command outputs include enough structured state for a later agent to resume.",
+      "nextAction": "Add a command packet inventory or narrow the claim to the command families currently proven by eval, claim, report, review, and optimize packet examples.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -339,6 +344,9 @@
         }
       ],
       "summary": "Commands should emit durable packets with enough state for the next agent to resume, not only terminal prose for a human operator.",
+      "unresolvedQuestions": [
+        "Which command families must be included before this product-level durability claim is considered proved?"
+      ],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks."
     },
@@ -390,13 +398,14 @@
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "Reviewed as a host-repo ownership and reproducibility claim. The current consumer onboarding smoke proves install and adapter bootstrap, but does not directly prove that prompts and instruction-routing surfaces stay checked in for real host repos.",
       "groupHints": [
         "audience:user",
         "deterministic",
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Prove with deterministic adoption or adapter-materialization coverage that host repos keep evaluation behavior checked in and reviewable.",
+      "nextAction": "Add a consumer-adoption proof that inspects checked-in adapter, skill, prompt, and instruction-routing files in a fixture consumer repo, or split this broad claim into narrower install/adoption claims.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -407,6 +416,9 @@
         }
       ],
       "summary": "They stay checked into each host repo so evaluation behavior remains reproducible, reviewable, and owned by the repo that declares it.",
+      "unresolvedQuestions": [
+        "Should prompts and instruction-routing surfaces be mandatory in the generic consumer fixture, or should this remain a policy claim checked by human review?"
+      ],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
     },
@@ -418,13 +430,14 @@
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "Reviewed as a scenario lifecycle claim. The review input does not include direct evidence that a saved proposal can be reopened, compared through variants, or fed into the next bounded step.",
       "groupHints": [
         "audience:user",
         "deterministic",
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic scenario command, packet, or render proof for this claim.",
+      "nextAction": "Create or link a deterministic scenario-history/proposal lifecycle smoke that covers saved result reopening and the next bounded step.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -435,7 +448,10 @@
         }
       ],
       "summary": "Next step: a human decides whether to promote the scenario into a protected evaluation path, while an agent can reopen the saved result, compare variants, or feed it into the next bounded step.",
-      "verificationReadiness": "ready-to-verify",
+      "unresolvedQuestions": [
+        "Should compare-variant reopening be covered by scenario-history contracts or by review variants?"
+      ],
+      "verificationReadiness": "needs-scenario",
       "whyThisLayer": "The claim documents scenario command or proposal-packet behavior rather than asking for a new behavior scenario."
     },
     {
@@ -594,15 +610,26 @@
       "claimFingerprint": "sha256:2439661f4452be243c0dab17f3fe5f51d86ae2155ef8e79a8e9ef32ca0d2591c",
       "claimId": "claim-readme-md-149",
       "claimSemanticGroup": "Adapter and portability",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:447f4934cf5671867f47de0374c58c18546d94cc6aeb4c41e84cb4e4e67c73be",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-readme-packet-html-2026-05-01.json",
+          "supportsClaimIds": [
+            "claim-readme-md-149"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by the checked fixture-backed self-dogfood eval evidence bundle: `npm run dogfood:self:eval` produced eval packets through the normal product path with recommendation accept-now.",
       "groupHints": [
         "audience:user",
         "deterministic",
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Prove with deterministic coverage for `cautilus eval test --runtime fixture` using adapter-owned fixture results through the normal eval packet path.",
+      "nextAction": "Keep covered by fixture-backed self-dogfood eval when `eval test`, fixture runtime, or packet summary behavior changes.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -613,6 +640,7 @@
         }
       ],
       "summary": "When the goal is only to prove command routing and packet evaluation, `cautilus eval test --runtime fixture` can run the same product path with adapter-owned fixture results instead of launching a nested model eval.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
@@ -624,6 +652,7 @@
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "Reviewed as use-case positioning for stateful workflow recovery. It should not be satisfied until a workflow scenario or deterministic recovery smoke demonstrates the repeated-stall use case.",
       "groupHints": [
         "audience:user",
         "blocked",
@@ -631,7 +660,7 @@
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep as a human-auditable positioning claim unless a concrete stalled-state scenario is promoted into an explicit fixture or deterministic readiness check.",
+      "nextAction": "Link this to a workflow-normalization or scenario-history fixture that demonstrates repeated recovery from a stalled step, or keep it as human-auditable product positioning.",
       "recommendedProof": "human-auditable",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -642,7 +671,8 @@
         }
       ],
       "summary": "Use when a stateful automation — a CLI workflow, long-running agent session, or pipeline that persists state across invocations — keeps stalling on the same step.",
-      "verificationReadiness": "blocked",
+      "unresolvedQuestions": [],
+      "verificationReadiness": "needs-scenario",
       "whyThisLayer": "The claim is broad usage guidance until a concrete stalled-workflow scenario or evidence packet is promoted."
     },
     {
@@ -794,13 +824,14 @@
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "Reviewed as a broad packet-surface inventory claim. Current eval/report/review/evidence packet artifacts exist, but this lane did not verify optimization packet coverage or a full command-to-packet inventory.",
       "groupHints": [
         "audience:user",
         "deterministic",
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Prove with deterministic schema, packet example, or CLI golden-output coverage for eval, report, review, evidence, and optimize packets.",
+      "nextAction": "Add a deterministic packet-surface inventory gate that verifies eval, report, review, evidence, and optimize packet examples or generated artifacts before satisfying this claim.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -811,6 +842,9 @@
         }
       ],
       "summary": "machine-readable eval, report, review, evidence, and optimization packets that agents can consume directly",
+      "unresolvedQuestions": [
+        "Should this be one broad packet inventory claim or split into separate eval/report/review/evidence/optimize claims?"
+      ],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks."
     },
@@ -820,17 +854,28 @@
       "claimFingerprint": "sha256:7a8711ca2f1f27e4419951dad2bf11c236250a5e0502f7e14d87745169249c5d",
       "claimId": "claim-readme-md-232",
       "claimSemanticGroup": "Claim discovery and review",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:447f4934cf5671867f47de0374c58c18546d94cc6aeb4c41e84cb4e4e67c73be",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-readme-packet-html-2026-05-01.json",
+          "supportsClaimIds": [
+            "claim-readme-md-232"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by the checked self-dogfood HTML evidence bundle: `npm run dogfood:self:html` produced `artifacts/self-dogfood/latest/index.html` from the packet surface for human review.",
       "groupHints": [
         "audience:user",
         "deterministic",
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic packet, catalog, schema, or renderer proof for this claim.",
+      "nextAction": "Keep covered by self-dogfood HTML render and html-report spec checks when HTML review surfaces change.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "static HTML views of the same artifacts so a human reviewer can judge them in a browser without an agent in the loop See `docs/specs/html-report.spec.md` for the rendered contract.",
@@ -839,6 +884,7 @@
         }
       ],
       "summary": "static HTML views of the same artifacts so a human reviewer can judge them in a browser without an agent in the loop See `docs/specs/html-report.spec.md` for the rendered contract.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names packet, catalog, or renderer behavior that should be protected by deterministic command, schema, or render tests."
     },
@@ -10011,8 +10057,8 @@
       "Release and packaging": 5
     },
     "byEvidenceStatus": {
-      "satisfied": 22,
-      "unknown": 302
+      "satisfied": 24,
+      "unknown": 300
     },
     "byLifecycle": {
       "new": 324
@@ -10023,14 +10069,14 @@
       "human-auditable": 38
     },
     "byReviewStatus": {
-      "agent-reviewed": 29,
-      "heuristic": 295
+      "agent-reviewed": 30,
+      "heuristic": 294
     },
     "byVerificationReadiness": {
-      "blocked": 2,
+      "blocked": 1,
       "needs-alignment": 9,
-      "needs-scenario": 6,
-      "ready-to-verify": 307
+      "needs-scenario": 8,
+      "ready-to-verify": 306
     }
   },
   "discoveryMode": "deterministic-source-inventory",
@@ -10182,7 +10228,7 @@
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "reviewApplication": {
-    "appliedUpdateCount": 18,
+    "appliedUpdateCount": 8,
     "appliedUpdates": [
       {
         "appliedFields": [
@@ -10190,13 +10236,12 @@
           "verificationReadiness",
           "evidenceStatus",
           "reviewStatus",
-          "evidenceRefs",
           "nextAction",
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-readme-md-7",
-        "clusterId": "cluster-deterministic-gates-2026-05-01"
+        "claimId": "claim-readme-md-13",
+        "clusterId": "cluster-user-adapter-and-portability-deterministic-readme"
       },
       {
         "appliedFields": [
@@ -10209,8 +10254,73 @@
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-readme-md-10",
-        "clusterId": "cluster-deterministic-gates-2026-05-01"
+        "claimId": "claim-readme-md-149",
+        "clusterId": "cluster-user-adapter-and-portability-deterministic-readme"
+      },
+      {
+        "appliedFields": [
+          "recommendedProof",
+          "verificationReadiness",
+          "evidenceStatus",
+          "reviewStatus",
+          "nextAction",
+          "evidenceStatusReason",
+          "unresolvedQuestions"
+        ],
+        "claimId": "claim-readme-md-231",
+        "clusterId": "cluster-user-agent-and-skill-workflow-deterministic-readme"
+      },
+      {
+        "appliedFields": [
+          "recommendedProof",
+          "verificationReadiness",
+          "evidenceStatus",
+          "reviewStatus",
+          "nextAction",
+          "evidenceStatusReason",
+          "unresolvedQuestions"
+        ],
+        "claimId": "claim-readme-md-9",
+        "clusterId": "cluster-user-agent-and-skill-workflow-deterministic-readme"
+      },
+      {
+        "appliedFields": [
+          "recommendedProof",
+          "verificationReadiness",
+          "evidenceStatus",
+          "reviewStatus",
+          "nextAction",
+          "evidenceStatusReason",
+          "unresolvedQuestions"
+        ],
+        "claimId": "claim-readme-md-95",
+        "clusterId": "cluster-user-agent-and-skill-workflow-deterministic-readme"
+      },
+      {
+        "appliedFields": [
+          "recommendedProof",
+          "verificationReadiness",
+          "evidenceStatus",
+          "reviewStatus",
+          "nextAction",
+          "evidenceStatusReason",
+          "unresolvedQuestions"
+        ],
+        "claimId": "claim-readme-md-153",
+        "clusterId": "cluster-user-agent-and-skill-workflow-human-auditable-readme"
+      },
+      {
+        "appliedFields": [
+          "recommendedProof",
+          "verificationReadiness",
+          "evidenceStatus",
+          "reviewStatus",
+          "nextAction",
+          "evidenceStatusReason",
+          "unresolvedQuestions"
+        ],
+        "claimId": "claim-readme-md-3",
+        "clusterId": "cluster-user-agent-and-skill-workflow-human-auditable-readme"
       },
       {
         "appliedFields": [
@@ -10223,223 +10333,13 @@
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-readme-md-137",
-        "clusterId": "cluster-deterministic-gates-2026-05-01"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-readme-md-159",
-        "clusterId": "cluster-deterministic-gates-2026-05-01"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-maintainers-consumer-readiness-md-68",
-        "clusterId": "cluster-deterministic-gates-2026-05-01"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-maintainers-development-md-36",
-        "clusterId": "cluster-deterministic-gates-2026-05-01"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-maintainers-development-md-38",
-        "clusterId": "cluster-deterministic-gates-2026-05-01"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-maintainers-development-md-80",
-        "clusterId": "cluster-deterministic-gates-2026-05-01"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-master-plan-md-56",
-        "clusterId": "cluster-deterministic-gates-2026-05-01"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-master-plan-md-82",
-        "clusterId": "cluster-deterministic-gates-2026-05-01"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-211",
-        "clusterId": "cluster-deterministic-gates-2026-05-01"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-288",
-        "clusterId": "cluster-deterministic-gates-2026-05-01"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-specs-index-spec-md-7",
-        "clusterId": "cluster-deterministic-gates-2026-05-01"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-specs-index-spec-md-34",
-        "clusterId": "cluster-deterministic-gates-2026-05-01"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-maintainers-releasing-md-88",
-        "clusterId": "cluster-deterministic-gates-2026-05-01"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-specs-standalone-surface-spec-md-3",
-        "clusterId": "cluster-deterministic-gates-2026-05-01"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-specs-standalone-surface-spec-md-4",
-        "clusterId": "cluster-deterministic-gates-2026-05-01"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-specs-standalone-surface-spec-md-14",
-        "clusterId": "cluster-deterministic-gates-2026-05-01"
+        "claimId": "claim-readme-md-232",
+        "clusterId": "cluster-user-claim-discovery-and-review-deterministic-readme"
       }
     ],
     "claimsPath": "/home/hwidong/codes/cautilus/.cautilus/claims/evidenced-typed-runners.json",
     "mergeDecisions": [],
-    "reviewResultPath": "/home/hwidong/codes/cautilus/.cautilus/claims/review-result-deterministic-gates-2026-05-01.json",
+    "reviewResultPath": "/home/hwidong/codes/cautilus/.cautilus/claims/review-result-llm-batch1.json",
     "schemaVersion": "cautilus.claim_review_result.v1",
     "unresolvedQuestions": []
   },
@@ -10536,6 +10436,12 @@
     },
     {
       "clusterCount": 1,
+      "reviewRun": {},
+      "schemaVersion": "cautilus.claim_review_result.v1",
+      "sourceReviewInput": {}
+    },
+    {
+      "clusterCount": 4,
       "reviewRun": {},
       "schemaVersion": "cautilus.claim_review_result.v1",
       "sourceReviewInput": {}

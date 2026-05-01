@@ -1,0 +1,149 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-llm-review-batch1",
+    "type": "agent",
+    "reviewedAt": "2026-05-01T00:00:00Z",
+    "evidencePolicy": "Satisfy only claims backed by a direct verified evidence bundle. Mark reviewed-but-unknown when the claim is broad, partially evidenced, or requires a separate packet inventory, scenario, eval, or decomposition."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-user-adapter-and-portability-deterministic-readme",
+      "claimUpdates": [
+        {
+          "claimId": "claim-readme-md-13",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as a host-repo ownership and reproducibility claim. The current consumer onboarding smoke proves install and adapter bootstrap, but does not directly prove that prompts and instruction-routing surfaces stay checked in for real host repos.",
+          "evidenceRefs": [],
+          "nextAction": "Add a consumer-adoption proof that inspects checked-in adapter, skill, prompt, and instruction-routing files in a fixture consumer repo, or split this broad claim into narrower install/adoption claims.",
+          "unresolvedQuestions": [
+            "Should prompts and instruction-routing surfaces be mandatory in the generic consumer fixture, or should this remain a policy claim checked by human review?"
+          ]
+        },
+        {
+          "claimId": "claim-readme-md-149",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the checked fixture-backed self-dogfood eval evidence bundle: `npm run dogfood:self:eval` produced eval packets through the normal product path with recommendation accept-now.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-readme-packet-html-2026-05-01.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:447f4934cf5671867f47de0374c58c18546d94cc6aeb4c41e84cb4e4e67c73be",
+              "supportsClaimIds": [
+                "claim-readme-md-149"
+              ]
+            }
+          ],
+          "nextAction": "Keep covered by fixture-backed self-dogfood eval when `eval test`, fixture runtime, or packet summary behavior changes.",
+          "unresolvedQuestions": []
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-user-agent-and-skill-workflow-deterministic-readme",
+      "claimUpdates": [
+        {
+          "claimId": "claim-readme-md-231",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as a broad packet-surface inventory claim. Current eval/report/review/evidence packet artifacts exist, but this lane did not verify optimization packet coverage or a full command-to-packet inventory.",
+          "evidenceRefs": [],
+          "nextAction": "Add a deterministic packet-surface inventory gate that verifies eval, report, review, evidence, and optimize packet examples or generated artifacts before satisfying this claim.",
+          "unresolvedQuestions": [
+            "Should this be one broad packet inventory claim or split into separate eval/report/review/evidence/optimize claims?"
+          ]
+        },
+        {
+          "claimId": "claim-readme-md-9",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as a broad command-surface durability claim. Existing packet evidence proves representative commands, but not that commands generally emit enough durable state for agent resume.",
+          "evidenceRefs": [],
+          "nextAction": "Add a command packet inventory or narrow the claim to the command families currently proven by eval, claim, report, review, and optimize packet examples.",
+          "unresolvedQuestions": [
+            "Which command families must be included before this product-level durability claim is considered proved?"
+          ]
+        },
+        {
+          "claimId": "claim-readme-md-95",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "needs-scenario",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as a scenario lifecycle claim. The review input does not include direct evidence that a saved proposal can be reopened, compared through variants, or fed into the next bounded step.",
+          "evidenceRefs": [],
+          "nextAction": "Create or link a deterministic scenario-history/proposal lifecycle smoke that covers saved result reopening and the next bounded step.",
+          "unresolvedQuestions": [
+            "Should compare-variant reopening be covered by scenario-history contracts or by review variants?"
+          ]
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-user-agent-and-skill-workflow-human-auditable-readme",
+      "claimUpdates": [
+        {
+          "claimId": "claim-readme-md-153",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "needs-scenario",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as use-case positioning for stateful workflow recovery. It should not be satisfied until a workflow scenario or deterministic recovery smoke demonstrates the repeated-stall use case.",
+          "evidenceRefs": [],
+          "nextAction": "Link this to a workflow-normalization or scenario-history fixture that demonstrates repeated recovery from a stalled step, or keep it as human-auditable product positioning.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-readme-md-3",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "blocked",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as a broad positioning claim. It is too broad to satisfy directly because it summarizes many narrower proof surfaces across claim discovery, eval, packets, and optimization.",
+          "evidenceRefs": [],
+          "nextAction": "Do not try to satisfy this claim directly; treat it as covered only through narrower child claims or rewrite it as positioning outside the proof queue.",
+          "unresolvedQuestions": [
+            "Should top-level README positioning claims be excluded from proof queues or explicitly marked blocked until decomposed?"
+          ]
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-user-claim-discovery-and-review-deterministic-readme",
+      "claimUpdates": [
+        {
+          "claimId": "claim-readme-md-232",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the checked self-dogfood HTML evidence bundle: `npm run dogfood:self:html` produced `artifacts/self-dogfood/latest/index.html` from the packet surface for human review.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-readme-packet-html-2026-05-01.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:447f4934cf5671867f47de0374c58c18546d94cc6aeb4c41e84cb4e4e67c73be",
+              "supportsClaimIds": [
+                "claim-readme-md-232"
+              ]
+            }
+          ],
+          "nextAction": "Keep covered by self-dogfood HTML render and html-report spec checks when HTML review surfaces change.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

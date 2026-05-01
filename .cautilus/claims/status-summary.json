@@ -31,8 +31,8 @@
       "Release and packaging": 5
     },
     "byEvidenceStatus": {
-      "satisfied": 22,
-      "unknown": 302
+      "satisfied": 24,
+      "unknown": 300
     },
     "byLifecycle": {
       "new": 324
@@ -43,14 +43,14 @@
       "human-auditable": 38
     },
     "byReviewStatus": {
-      "agent-reviewed": 29,
-      "heuristic": 295
+      "agent-reviewed": 30,
+      "heuristic": 294
     },
     "byVerificationReadiness": {
-      "blocked": 2,
+      "blocked": 1,
       "needs-alignment": 9,
-      "needs-scenario": 6,
-      "ready-to-verify": 307
+      "needs-scenario": 8,
+      "ready-to-verify": 306
     }
   },
   "effectiveScanScope": {
@@ -198,7 +198,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 22,
+    "satisfiedClaimCount": 24,
     "satisfiedClaims": [
       {
         "claimId": "claim-readme-md-7",
@@ -296,6 +296,25 @@
         "summary": "The same preset can evaluate a multi-turn agent episode when the fixture provides `turns`; Cautilus's own first-scan, refresh-flow, review-prepare, reviewer-launch, and review-to-eval dogfood fixtures derive their results from audit packets."
       },
       {
+        "claimId": "claim-readme-md-149",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:447f4934cf5671867f47de0374c58c18546d94cc6aeb4c41e84cb4e4e67c73be",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-readme-packet-html-2026-05-01.json",
+            "supportsClaimIds": [
+              "claim-readme-md-149"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "When the goal is only to prove command routing and packet evaluation, `cautilus eval test --runtime fixture` can run the same product path with adapter-owned fixture results instead of launching a nested model eval."
+      },
+      {
         "claimId": "claim-readme-md-159",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -332,6 +351,25 @@
         "recommendedProof": "cautilus-eval",
         "reviewStatus": "agent-reviewed",
         "summary": "Agent track — Claude / Codex plugin.** The `cautilus install` step also lands a bundled skill at `.agents/skills/cautilus/` with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally."
+      },
+      {
+        "claimId": "claim-readme-md-232",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:447f4934cf5671867f47de0374c58c18546d94cc6aeb4c41e84cb4e4e67c73be",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-readme-packet-html-2026-05-01.json",
+            "supportsClaimIds": [
+              "claim-readme-md-232"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "static HTML views of the same artifacts so a human reviewer can judge them in a browser without an agent in the loop See `docs/specs/html-report.spec.md` for the rendered contract."
       },
       {
         "claimId": "claim-docs-maintainers-consumer-readiness-md-68",
@@ -622,21 +660,25 @@
   },
   "gitCommit": "40192266f7f7a62479872ceff9c732ae33107a89",
   "gitState": {
-    "changedFileCount": 8,
+    "changedFileCount": 12,
     "changedFiles": [
       ".cautilus/claims/eval-plan-evidenced-typed-runners.json",
       ".cautilus/claims/eval-plan-reviewed-typed-runners.json",
+      ".cautilus/claims/evidence-deterministic-gates-2026-05-01.json",
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
       ".cautilus/claims/refresh-plan-typed-runners.json",
       ".cautilus/claims/review-input-typed-runners.json",
+      ".cautilus/claims/review-result-deterministic-gates-2026-05-01.json",
       ".cautilus/claims/reviewed-typed-runners.json",
-      ".cautilus/claims/status-summary.json"
+      ".cautilus/claims/status-summary.json",
+      "charness-artifacts/debug/debug-2026-05-01-release-smoke-required-channel.md",
+      "charness-artifacts/debug/latest.md"
     ],
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "501dd80f8fa9b2cba13230f0d543d19259983234",
+    "currentGitCommit": "45c8d6a9f5c701dd4476f46e60dad44bef71ceb7",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "40192266f7f7a62479872ceff9c732ae33107a89",
@@ -662,9 +704,9 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 280,
+    "heuristicClaimsReadyForReview": 279,
     "needsAlignment": 9,
-    "needsScenario": 6
+    "needsScenario": 8
   },
   "sampleClaims": [
     {
@@ -873,7 +915,7 @@
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep the claim visible as positioning, or decompose it into concrete deterministic, dev/skill, and packet-surface claims before proof planning.",
+      "nextAction": "Do not try to satisfy this claim directly; treat it as covered only through narrower child claims or rewrite it as positioning outside the proof queue.",
       "recommendedProof": "human-auditable",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [

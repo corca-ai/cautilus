@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-readme-packet-html-2026-05-01",
+  "createdForClaimIds": [
+    "claim-readme-md-149",
+    "claim-readme-md-232"
+  ],
+  "repoCommit": "45c8d6a9f5c701dd4476f46e60dad44bef71ceb7",
+  "summary": "This bundle records a fixture-backed self-dogfood eval and native self-dogfood HTML render rerun on 2026-05-01 for the README packet and HTML-view claims.",
+  "evidenceScope": {
+    "targetSurface": "README fixture eval and HTML review surface claims",
+    "claimBoundary": "Only the README claims that `eval test --runtime fixture` can run the normal product packet path and that static HTML views exist for human review are marked satisfied.",
+    "notClaimed": [
+      "All Cautilus commands emit durable packets",
+      "Optimization packet coverage",
+      "Scenario promotion or compare-variant reopening",
+      "All HTML views across every packet kind"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "npm run dogfood:self:eval",
+      "stdoutPath": "artifacts/self-dogfood/llm-review-batch1/latest/npm-run-dogfood-self-eval.stdout",
+      "stdoutContentHash": "sha256:3bddabf3377ef239a5e80d1c4a2fffe0a416548ead0bff33a08b20818ffab6b2",
+      "stderrPath": "artifacts/self-dogfood/llm-review-batch1/latest/npm-run-dogfood-self-eval.stderr",
+      "stderrContentHash": "sha256:e2e7934548162b22de2cb8daf7312b87678784e20a7d4a44f7fe2857b8ada0e0",
+      "exitCode": 0
+    },
+    {
+      "command": "npm run dogfood:self:html",
+      "stdoutPath": "artifacts/self-dogfood/llm-review-batch1/latest/npm-run-dogfood-self-html.stdout",
+      "stdoutContentHash": "sha256:592e35f8047e556b282789a2996c0a58cc27d5254aa42b9651d7eb056ab4e971",
+      "stderrPath": "artifacts/self-dogfood/llm-review-batch1/latest/npm-run-dogfood-self-html.stderr",
+      "stderrContentHash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exitCode": 0
+    }
+  ],
+  "packetEvidence": [
+    {
+      "path": "artifacts/self-dogfood/eval/latest/eval-summary.json",
+      "kind": "eval-summary-packet",
+      "contentHash": "sha256:dbac7161d0798676c75b64cf05467f814619432d76374c165985873e09af8a06",
+      "recommendation": "accept-now"
+    },
+    {
+      "path": "artifacts/self-dogfood/eval/latest/eval-observed.json",
+      "kind": "eval-observed-packet",
+      "contentHash": "sha256:a6e7d9dfb6d952434a171287c796e6effb9bbd1f6d166bce968b2cbd6ffc1c49"
+    },
+    {
+      "path": "artifacts/self-dogfood/latest/report.json",
+      "kind": "report-packet",
+      "contentHash": "sha256:aa6262a29bddfd0de0ea4d855af15280b965ca49dd1344fe17a4c0d9763046a6"
+    },
+    {
+      "path": "artifacts/self-dogfood/latest/review-summary.json",
+      "kind": "review-summary-packet",
+      "contentHash": "sha256:ee0fecd6a84b2de3cf2b4026c9e0df4316dfca988c0833f733ff01b27716589d"
+    },
+    {
+      "path": "artifacts/self-dogfood/latest/summary.json",
+      "kind": "self-dogfood-summary-packet",
+      "contentHash": "sha256:bc4a937466a53096f9490ed5866a730977d2613b73c9912f3a2979eeb8475206"
+    },
+    {
+      "path": "artifacts/self-dogfood/latest/index.html",
+      "kind": "static-html-review-view",
+      "contentHash": "sha256:42b6538e15742c74acde250d34afc35ee438dc854e76ecb5579d3e7dbe9fd496"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The fixture-backed self-dogfood eval produced durable eval packets with accept-now, and the native HTML renderer produced a checked static HTML review view from the same packet surface."
+  }
+}
