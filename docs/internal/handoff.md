@@ -17,11 +17,11 @@
   `./bin/cautilus eval test --repo-root . --runtime codex --output-dir ./artifacts/self-dogfood/dev-repo-self-dogfood/latest`는 `recommendation=accept-now`, `passed=1`, `failed=0`이었다.
   `.cautilus/runners/dev-repo-self-dogfood.assessment.json`는 adapter hash와 runner file hashes 기준으로 fresh이고, `agent status`에서 `runnerReadiness.state=assessed`, `reason=runner-assessment-ready`다.
   이제 dev proof promotion은 selected runtime name만 믿지 않고 observed telemetry runtime을 요구한다.
-- 2026-05-01 claim state는 `.cautilus/claims/latest.json` 기준 `candidateCount=318`이다.
+- 2026-05-01 claim state는 `.cautilus/claims/latest.json` 기준 `candidateCount=320`이다.
   `claim_discovery.state_path`는 raw discovery baseline인 `.cautilus/claims/latest.json`이고, `agent status`는 `related_state_paths`로 reviewed/evidenced packets도 함께 요약한다.
-  `agent-reviewed=13`, `heuristic=305`인 reviewed packet은 `.cautilus/claims/reviewed-typed-runners.json`에 있다.
+  `agent-reviewed=13`, `heuristic=307`인 reviewed packet은 `.cautilus/claims/reviewed-typed-runners.json`에 있다.
   `.cautilus/claims/evidenced-typed-runners.json`는 `claim-readme-md-144`, `claim-readme-md-148`, `claim-readme-md-211`, `claim-docs-contracts-claim-discovery-workflow-md-611`을 `evidenceStatus=satisfied`로 올린다.
-  그래서 evidenced packet의 review status는 `agent-reviewed=14`, `heuristic=304`이고 evidence status는 `satisfied=4`, `unknown=314`이다.
+  그래서 evidenced packet의 review status는 `agent-reviewed=14`, `heuristic=306`이고 evidence status는 `satisfied=4`, `unknown=316`이다.
   Generated claim packets no longer emit the old `proofLayer` compatibility field; downstream workflow logic reads `recommendedProof`, `verificationReadiness`, `evidenceStatus`, `reviewStatus`, and `lifecycle` directly.
   `docs/internal/handoff.md`와 `docs/internal/research/**`는 claim source에서 제외된다.
   `docs/internal/working-patterns.md`는 durable operating pattern 문서라 developer-facing source로 남아 있다.
@@ -187,7 +187,8 @@
    review prepare-input과 reviewer launch branch proof는 Codex/Claude 양쪽에서 완료됐다.
    evidence preflight의 첫 slice는 possible evidence hint까지만 허용하는 형태로 들어왔다.
    public `claim group` 또는 `claim refresh` command는 만들지 않는다.
-5. spec follow-up #4 — C2/C3/C4 composition primitives (extends / multi-step / snapshot), 슬라이스당 하나.
+5. spec follow-up #4 — C3/C4 composition primitives (multi-step / snapshot), 슬라이스당 하나.
+   C2 `extends`는 2026-05-01에 file-backed `eval test` fixture에서 shipped 됐다.
 6. spec follow-up #5 — `scenario normalize` 재범위만 남음.
    archetype-boundary retire는 cut 슬라이스에 흡수됨.
 8. 후속 후보: fixture-backed app smoke와 one-case live Codex/Claude proof를 broader app quality proof로 과장하지 않도록 release / quality artifact 쪽 proof boundary 표현을 점검한다.

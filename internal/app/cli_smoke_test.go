@@ -3097,11 +3097,27 @@ JSON
 	if err := os.WriteFile(scriptPath, []byte(script), 0o755); err != nil {
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
+	writeJSONFile(t, filepath.Join(fixtureDir, "base.fixture.json"), map[string]any{
+		"schemaVersion":    contracts.EvaluationInputSchema,
+		"surface":          "dev",
+		"preset":           "repo",
+		"suiteId":          "instruction-surface-demo",
+		"suiteDisplayName": "Instruction Surface Demo",
+		"cases": []map[string]any{
+			{
+				"caseId":            "base-placeholder",
+				"prompt":            "Base case should be replaced by the child fixture.",
+				"expectedEntryFile": "AGENTS.md",
+				"expectedRouting": map[string]any{
+					"bootstrapHelper": "find-skills",
+					"workSkill":       "impl",
+				},
+			},
+		},
+	})
 	writeJSONFile(t, filepath.Join(fixtureDir, "checked-in-agents-routing.fixture.json"), map[string]any{
 		"schemaVersion": contracts.EvaluationInputSchema,
-		"surface":       "dev",
-		"preset":        "repo",
-		"suiteId":       "instruction-surface-demo",
+		"extends":       "./base.fixture.json",
 		"cases": []map[string]any{
 			{
 				"caseId":                   "checked-in-agents-routing",
@@ -3146,6 +3162,9 @@ JSON
 	cases := readJSONObjectFile(t, casesPath)
 	if cases["schemaVersion"] != contracts.EvaluationCasesSchema {
 		t.Fatalf("eval-cases must use the evaluation_cases schema, got: %v", cases["schemaVersion"])
+	}
+	if cases["suiteDisplayName"] != "Instruction Surface Demo" {
+		t.Fatalf("expected child fixture to inherit suiteDisplayName, got: %#v", cases)
 	}
 }
 

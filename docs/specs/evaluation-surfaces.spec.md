@@ -85,6 +85,7 @@ A new value on either axis must pass the taxonomy-axis checkpoint and update the
 - **C1 — multi-case suite**: one fixture file holds N cases under `cases: [...]`.
   Carries N evaluations through the same surface/preset and shares fields like `system` or `workspace` at the suite level.
 - **C2 — inheritance**: `extends: <path>` deep-merges a base fixture before applying overrides.
+  Shipped 2026-05-01 for file-backed `cautilus eval test` fixtures: object fields deep-merge, arrays replace, scalar child fields override, and `extends` paths must be relative to the child fixture.
   Lets users compare model variants, prompt variants, or workspace variants without copy-paste.
 - **C3 — multi-step composition**: `steps: [...]` carries a sequence where each step references another fixture (`$ref`) or is inline.
   Step output is addressable in later steps via a single placeholder grammar:
@@ -270,6 +271,8 @@ Follow-up slices proceed in this order:
    The result packet keeps the app-surface runtime fields from `app/chat` (`provider`, `model`, `harness`, `mode=messaging`, `durationMs`, `observed.messages`, `observed.finalText`) and adds required `observed.input` for the single-turn I/O boundary.
    Codex CLI messaging proof shipped 2026-04-27: `npm run dogfood:app-prompt:fixture` and `npm run dogfood:app-prompt:live` both run the checked-in `app / prompt` fixture through `cautilus eval test`; the live run returned `recommendation=accept-now`.
    Claude CLI messaging proof shipped 2026-04-27: `npm run dogfood:app-prompt:claude` runs the same checked-in fixture with `--runtime claude`; the live run returned `recommendation=accept-now`.
-4. C2–C4 composition primitives, one per slice.
-5. Rescope `scenario normalize` proposal-input lineage.
+4. ~~C2 `extends` composition primitive.~~ Shipped 2026-05-01.
+   File-backed `cautilus eval test` fixtures can extend a relative base fixture; object fields deep-merge, arrays replace, and scalar child fields override.
+5. C3–C4 composition primitives, one per slice.
+6. Rescope `scenario normalize` proposal-input lineage.
    The `archetype-boundary.spec.md` retirement was absorbed into the `mode evaluate` cut slice (2026-04-26): the spec was removed, `lint:archetypes` was reframed as a runtime-completeness check for the surviving `scenario normalize` plumbing, and AGENTS.md / CLAUDE.md / README.md / master-plan.md were realigned to point at this spec instead.

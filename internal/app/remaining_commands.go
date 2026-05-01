@@ -733,12 +733,7 @@ func handleEvalTest(repoRoot string, cwd string, args []string, stdout io.Writer
 		}
 		fixturePath = resolvePath(options.repoRoot, defaultFixture)
 	}
-	fixtureInput, err := readJSONObject(fixturePath)
-	if err != nil {
-		fmt.Fprintf(stderr, "Failed to read JSON from %s: %s\n", fixturePath, err)
-		return 1
-	}
-	evaluation, err := runtime.NormalizeEvaluationInput(fixtureInput)
+	evaluation, err := runtime.NormalizeEvaluationInputFromFile(fixturePath)
 	if err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1

@@ -1,15 +1,19 @@
 package runtime
 
 import (
+	"encoding/json"
 	"fmt"
+	"os"
+	"path/filepath"
 
 	"github.com/corca-ai/cautilus/internal/contracts"
 )
 
 // EvaluationInput is the v1 fixture envelope defined in
 // docs/specs/evaluation-surfaces.spec.md. The current slice supports only the
-// dev/repo, dev/skill, app/chat, and app/prompt presets; the C2/C3/C4
-// composition primitives error out until their slices ship.
+// dev/repo, dev/skill, app/chat, and app/prompt presets; C2 extends is
+// supported through NormalizeEvaluationInputFromFile so relative base paths have
+// an honest file anchor.
 type EvaluationInput struct {
 	Surface          string
 	Preset           string
@@ -43,7 +47,7 @@ func NormalizeEvaluationInput(input map[string]any) (*EvaluationInput, error) {
 		return nil, fmt.Errorf("preset %q is not supported on surface %q in this slice", preset, surface)
 	}
 	if _, present := input["extends"]; present {
-		return nil, fmt.Errorf("extends is reserved for a future composition slice (C2)")
+		return nil, fmt.Errorf("extends requires file-backed normalization")
 	}
 	if _, present := input["steps"]; present {
 		return nil, fmt.Errorf("steps is reserved for a future composition slice (C3)")
@@ -110,6 +114,69 @@ func NormalizeEvaluationInput(input map[string]any) (*EvaluationInput, error) {
 	default:
 		return nil, fmt.Errorf("preset %q has no translator", preset)
 	}
+}
+
+func NormalizeEvaluationInputFromFile(path string) (*EvaluationInput, error) {
+	input, err := loadEvaluationInputWithExtends(path, map[string]bool{})
+	if err != nil {
+		return nil, err
+	}
+	return NormalizeEvaluationInput(input)
+}
+
+func loadEvaluationInputWithExtends(path string, stack map[string]bool) (map[string]any, error) {
+	resolved, err := filepath.Abs(path)
+	if err != nil {
+		return nil, err
+	}
+	if stack[resolved] {
+		return nil, fmt.Errorf("evaluation fixture extends cycle includes %s", path)
+	}
+	payload, err := os.ReadFile(resolved)
+	if err != nil {
+		return nil, fmt.Errorf("read evaluation fixture %s: %w", path, err)
+	}
+	var input map[string]any
+	if err := json.Unmarshal(payload, &input); err != nil {
+		return nil, fmt.Errorf("parse evaluation fixture %s: %w", path, err)
+	}
+	extendsValue, hasExtends := input["extends"]
+	if !hasExtends {
+		return input, nil
+	}
+	extendsPath, err := normalizeNonEmptyString(extendsValue, "extends")
+	if err != nil {
+		return nil, err
+	}
+	if filepath.IsAbs(extendsPath) {
+		return nil, fmt.Errorf("extends must be repo-local and relative: %s", extendsPath)
+	}
+	stack[resolved] = true
+	basePath := filepath.Join(filepath.Dir(resolved), extendsPath)
+	base, err := loadEvaluationInputWithExtends(basePath, stack)
+	delete(stack, resolved)
+	if err != nil {
+		return nil, err
+	}
+	delete(input, "extends")
+	return deepMergeEvaluationFixture(base, input), nil
+}
+
+func deepMergeEvaluationFixture(base map[string]any, override map[string]any) map[string]any {
+	merged := map[string]any{}
+	for key, value := range base {
+		merged[key] = value
+	}
+	for key, value := range override {
+		if baseMap, ok := merged[key].(map[string]any); ok {
+			if overrideMap, ok := value.(map[string]any); ok {
+				merged[key] = deepMergeEvaluationFixture(baseMap, overrideMap)
+				continue
+			}
+		}
+		merged[key] = value
+	}
+	return merged
 }
 
 func translateDevRepoFixture(input map[string]any, suiteID string, suiteDisplayName string) (map[string]any, error) {

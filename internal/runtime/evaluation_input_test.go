@@ -1,6 +1,9 @@
 package runtime
 
 import (
+	"encoding/json"
+	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 
@@ -223,8 +226,56 @@ func TestNormalizeEvaluationInputRejectsExtends(t *testing.T) {
 	fixture := validDevRepoFixture()
 	fixture["extends"] = "./base.fixture.json"
 	_, err := NormalizeEvaluationInput(fixture)
-	if err == nil || !strings.Contains(err.Error(), "C2") {
-		t.Fatalf("expected extends C2 stub error, got %v", err)
+	if err == nil || !strings.Contains(err.Error(), "file-backed") {
+		t.Fatalf("expected file-backed extends error, got %v", err)
+	}
+}
+
+func TestNormalizeEvaluationInputFromFileAppliesExtends(t *testing.T) {
+	root := t.TempDir()
+	base := validDevRepoFixture()
+	base["suiteId"] = "base-suite"
+	base["suiteDisplayName"] = "Base Suite"
+	base["metadata"] = map[string]any{
+		"owner": "base",
+		"labels": map[string]any{
+			"tier": "smoke",
+		},
+	}
+	child := map[string]any{
+		"schemaVersion": contracts.EvaluationInputSchema,
+		"extends":       "./base.fixture.json",
+		"suiteId":       "child-suite",
+		"metadata": map[string]any{
+			"labels": map[string]any{
+				"surface": "dev/repo",
+			},
+		},
+		"cases": []any{
+			map[string]any{
+				"caseId":            "case-child",
+				"prompt":            "Read the child instructions.",
+				"expectedEntryFile": "CLAUDE.md",
+				"expectedRouting": map[string]any{
+					"bootstrapHelper": "find-skills",
+					"workSkill":       "impl",
+				},
+			},
+		},
+	}
+	writeEvaluationFixture(t, filepath.Join(root, "base.fixture.json"), base)
+	writeEvaluationFixture(t, filepath.Join(root, "child.fixture.json"), child)
+
+	result, err := NormalizeEvaluationInputFromFile(filepath.Join(root, "child.fixture.json"))
+	if err != nil {
+		t.Fatalf("expected extends to normalize, got %v", err)
+	}
+	if result.SuiteID != "child-suite" || result.SuiteDisplayName != "Base Suite" {
+		t.Fatalf("unexpected suite inheritance: %#v", result)
+	}
+	evaluations := result.TranslatedCases["evaluations"].([]any)
+	if len(evaluations) != 1 || evaluations[0].(map[string]any)["evaluationId"] != "case-child" {
+		t.Fatalf("expected child cases to replace base cases, got %#v", evaluations)
 	}
 }
 
@@ -274,8 +325,8 @@ func TestNormalizeEvaluationInputSkillRejectsExtends(t *testing.T) {
 	fixture := validDevSkillFixture()
 	fixture["extends"] = "./base.fixture.json"
 	_, err := NormalizeEvaluationInput(fixture)
-	if err == nil || !strings.Contains(err.Error(), "C2") {
-		t.Fatalf("expected extends C2 stub error, got %v", err)
+	if err == nil || !strings.Contains(err.Error(), "file-backed") {
+		t.Fatalf("expected file-backed extends error, got %v", err)
 	}
 }
 
@@ -402,8 +453,8 @@ func TestNormalizeEvaluationInputAppChatRejectsExtends(t *testing.T) {
 	fixture := validAppChatFixture()
 	fixture["extends"] = "./base.fixture.json"
 	_, err := NormalizeEvaluationInput(fixture)
-	if err == nil || !strings.Contains(err.Error(), "C2") {
-		t.Fatalf("expected extends C2 stub error, got %v", err)
+	if err == nil || !strings.Contains(err.Error(), "file-backed") {
+		t.Fatalf("expected file-backed extends error, got %v", err)
 	}
 }
 
@@ -485,8 +536,8 @@ func TestNormalizeEvaluationInputAppPromptRejectsExtends(t *testing.T) {
 	fixture := validAppPromptFixture()
 	fixture["extends"] = "./base.fixture.json"
 	_, err := NormalizeEvaluationInput(fixture)
-	if err == nil || !strings.Contains(err.Error(), "C2") {
-		t.Fatalf("expected extends C2 stub error, got %v", err)
+	if err == nil || !strings.Contains(err.Error(), "file-backed") {
+		t.Fatalf("expected file-backed extends error, got %v", err)
 	}
 }
 
@@ -505,5 +556,16 @@ func TestNormalizeEvaluationInputRejectsEmptyCases(t *testing.T) {
 	_, err := NormalizeEvaluationInput(fixture)
 	if err == nil || !strings.Contains(err.Error(), "cases must be a non-empty") {
 		t.Fatalf("expected empty cases error, got %v", err)
+	}
+}
+
+func writeEvaluationFixture(t *testing.T, path string, value map[string]any) {
+	t.Helper()
+	payload, err := json.MarshalIndent(value, "", "  ")
+	if err != nil {
+		t.Fatalf("MarshalIndent returned error: %v", err)
+	}
+	if err := os.WriteFile(path, append(payload, '\n'), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
 	}
 }

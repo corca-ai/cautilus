@@ -1722,7 +1722,7 @@
       "reason": "max-clusters-exceeded"
     },
     {
-      "claimCount": 1,
+      "claimCount": 3,
       "clusterId": "cluster-developer-quality-gates-cautilus-eval-dev-repo-spec",
       "groupKey": "developer:Quality gates:cautilus-eval:dev/repo:spec",
       "reason": "max-clusters-exceeded"
@@ -1951,8 +1951,8 @@
     }
   ],
   "sourceClaimPacket": {
-    "candidateCount": 318,
-    "gitCommit": "b961d5d59b62fe080e28f23eeeb02ddfd23145ff",
+    "candidateCount": 320,
+    "gitCommit": "6c177e94e7b03702a5984b442cd1ccc8b7e06cc7",
     "schemaVersion": "cautilus.claim_proof_plan.v1"
   },
   "sourceRoot": "."
