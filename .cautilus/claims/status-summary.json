@@ -1,5 +1,5 @@
 {
-  "candidateCount": 325,
+  "candidateCount": 326,
   "claimState": {
     "path": ".cautilus/claims/latest.json",
     "pathSource": "adapter",
@@ -16,41 +16,42 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 257,
-      "user": 68
+      "developer": 263,
+      "user": 63
     },
     "byClaimSemanticGroup": {
-      "Adapter and portability": 51,
-      "Agent and skill workflow": 85,
+      "Adapter and portability": 57,
+      "Agent and skill workflow": 81,
       "Claim discovery and review": 21,
-      "Documentation and contracts": 80,
-      "Evaluation surfaces": 2,
-      "Improvement and optimization": 21,
-      "Packets and reporting": 28,
+      "Documentation and contracts": 79,
+      "Evaluation surfaces": 1,
+      "General product behavior": 1,
+      "Improvement and optimization": 20,
+      "Packets and reporting": 29,
       "Quality gates": 32,
       "Release and packaging": 5
     },
     "byEvidenceStatus": {
       "satisfied": 27,
-      "unknown": 298
+      "unknown": 299
     },
     "byLifecycle": {
-      "new": 325
+      "new": 326
     },
     "byRecommendedProof": {
-      "cautilus-eval": 161,
-      "deterministic": 120,
-      "human-auditable": 44
+      "cautilus-eval": 152,
+      "deterministic": 119,
+      "human-auditable": 55
     },
     "byReviewStatus": {
-      "agent-reviewed": 43,
-      "heuristic": 282
+      "agent-reviewed": 42,
+      "heuristic": 284
     },
     "byVerificationReadiness": {
-      "blocked": 6,
-      "needs-alignment": 10,
+      "blocked": 5,
+      "needs-alignment": 25,
       "needs-scenario": 6,
-      "ready-to-verify": 303
+      "ready-to-verify": 290
     }
   },
   "effectiveScanScope": {
@@ -443,7 +444,7 @@
           }
         ],
         "recommendedEvalSurface": null,
-        "recommendedProof": "deterministic",
+        "recommendedProof": "human-auditable",
         "reviewStatus": "agent-reviewed",
         "summary": "Routed through `cautilus scenario normalize workflow`; the proposal-input lineage stays in this surface even though the legacy archetype boundary was retired (see [evaluation-surfaces.spec.md](../specs/evaluation-surfaces.spec.md))."
       },
@@ -619,16 +620,16 @@
         "summary": "[Standalone Surface](standalone-surface.spec.md) Proves that the standalone binary and bundled skill can be installed into a fresh repo and discovered through stable operator-facing commands."
       },
       {
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-620",
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-624",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
-            "contentHash": "sha256:746eed91ca515fca786168362a43aac864788ced52ec29d66ff88954e316df25",
+            "contentHash": "sha256:227404dad5434740e56d9d3b4c16a79278042fc10e5f97cbef5643e899e72a50",
             "kind": "cautilus-claim-evidence-bundle",
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-review-to-eval-flow.json",
             "supportsClaimIds": [
-              "claim-docs-contracts-claim-discovery-workflow-md-620"
+              "claim-docs-contracts-claim-discovery-workflow-md-624"
             ]
           }
         ],
@@ -715,27 +716,18 @@
       }
     ]
   },
-  "gitCommit": "8221f63f83beeaacf1ad73df93a618dd8b8a166b",
+  "gitCommit": "0e3d8f6b498ffd00e16efdca7feb5c4daeae5155",
   "gitState": {
-    "changedFileCount": 8,
-    "changedFiles": [
-      ".cautilus/claims/evidence-claim-eval-plan-2026-05-01.json",
-      ".cautilus/claims/evidenced-typed-runners.json",
-      ".cautilus/claims/latest.json",
-      ".cautilus/claims/review-input-llm-batch3.json",
-      ".cautilus/claims/review-result-evidence-claim-eval-plan-2026-05-01.json",
-      ".cautilus/claims/review-result-llm-batch3.json",
-      ".cautilus/claims/reviewed-typed-runners.json",
-      ".cautilus/claims/status-summary.json"
-    ],
+    "changedFileCount": 0,
+    "changedFiles": [],
     "changedSourceCount": 0,
     "changedSources": [],
-    "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "3da3c7677805e54465950ceeefe76c70d4ed1e37",
-    "headDrift": true,
+    "comparisonStatus": "fresh",
+    "currentGitCommit": "0e3d8f6b498ffd00e16efdca7feb5c4daeae5155",
+    "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "8221f63f83beeaacf1ad73df93a618dd8b8a166b",
-    "recommendedAction": "The current HEAD differs from the packet commit, but no recorded claim source changed; review and eval planning may continue.",
+    "packetGitCommit": "0e3d8f6b498ffd00e16efdca7feb5c4daeae5155",
+    "recommendedAction": "The claim packet commit matches the current checkout.",
     "workingTreePolicy": "excluded"
   },
   "inputPath": ".cautilus/claims/evidenced-typed-runners.json",
@@ -757,8 +749,8 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 269,
-    "needsAlignment": 10,
+    "heuristicClaimsReadyForReview": 256,
+    "needsAlignment": 25,
     "needsScenario": 6
   },
   "sampleClaims": [
@@ -798,7 +790,8 @@
       ],
       "lifecycle": "new",
       "nextAction": "Do not satisfy directly; either leave as positioning or decompose into narrower contract ownership claims.",
-      "recommendedProof": "human-auditable",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
@@ -807,7 +800,7 @@
         }
       ],
       "summary": "`Cautilus` owns generic intentful behavior evaluation workflow contracts.",
-      "verificationReadiness": "blocked"
+      "verificationReadiness": "ready-to-verify"
     },
     {
       "claimAudience": "developer",
@@ -815,9 +808,9 @@
       "claimSemanticGroup": "Evaluation surfaces",
       "evidenceStatus": "unknown",
       "groupHints": [
-        "app/prompt",
         "audience:developer",
-        "cautilus-eval",
+        "blocked",
+        "human-auditable",
         "repo-instructions"
       ],
       "lifecycle": "new",
@@ -859,12 +852,12 @@
     {
       "claimAudience": "developer",
       "claimId": "claim-agents-md-73",
-      "claimSemanticGroup": "Evaluation surfaces",
+      "claimSemanticGroup": "General product behavior",
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:developer",
-        "cautilus-eval",
-        "dev/repo",
+        "blocked",
+        "human-auditable",
         "repo-instructions"
       ],
       "lifecycle": "new",
@@ -935,8 +928,7 @@
       "evidenceStatus": "satisfied",
       "groupHints": [
         "audience:developer",
-        "cautilus-eval",
-        "dev/repo",
+        "deterministic",
         "repo-instructions"
       ],
       "lifecycle": "new",
@@ -950,6 +942,53 @@
         }
       ],
       "summary": "`npm run test:on-demand` currently owns the heavier self-dogfood workflow script tests.",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "claimAudience": "user",
+      "claimId": "claim-readme-md-3",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "blocked",
+        "human-auditable",
+        "readme"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Do not try to satisfy this claim directly; treat it as covered only through narrower child claims or rewrite it as positioning outside the proof queue.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "line": 3,
+          "path": "README.md"
+        }
+      ],
+      "summary": "`Cautilus` keeps agent and workflow behavior honest while prompts keep changing.",
+      "verificationReadiness": "blocked"
+    },
+    {
+      "claimAudience": "user",
+      "claimId": "claim-readme-md-7",
+      "claimSemanticGroup": "Adapter and portability",
+      "evidenceStatus": "satisfied",
+      "groupHints": [
+        "audience:user",
+        "deterministic",
+        "readme"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep covered by consumer:onboard:smoke and install smoke when install, starter, or adapter bootstrap behavior changes.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "line": 7,
+          "path": "README.md"
+        }
+      ],
+      "summary": "Ships as a standalone binary plus a bundled skill a host repo can install without copying another scaffold first.",
       "verificationReadiness": "ready-to-verify"
     }
   ],
