@@ -2728,7 +2728,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:039b81d3330981fc629faefa3cde9518b9e4cd3ecafcb132032719aa440264a6",
-      "claimId": "claim-docs-maintainers-operator-acceptance-md-256",
+      "claimId": "claim-docs-maintainers-operator-acceptance-md-254",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -2745,7 +2745,7 @@
       "sourceRefs": [
         {
           "excerpt": "리드미는 *\"static HTML views of the same artifacts so a human reviewer can judge them in a browser without an agent in the loop\"*을 약속한다.",
-          "line": 256,
+          "line": 254,
           "path": "docs/maintainers/operator-acceptance.md"
         }
       ],
@@ -9962,7 +9962,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "ddf4a1f2ad11f609e92caa607f174d354418d56a",
+  "gitCommit": "40192266f7f7a62479872ceff9c732ae33107a89",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "reviewApplication": {
@@ -10612,7 +10612,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:74592855caa662e410e1ff02bb40d782164856a5ab2cc4a66d2b3b19645c02aa",
+      "contentHash": "sha256:a45610774f79aa321fcf2fba1ec1b8d0f861658e6a6fc057ba8e4527ce537a5d",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "docs",

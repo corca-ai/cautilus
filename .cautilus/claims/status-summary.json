@@ -278,17 +278,17 @@
       }
     ]
   },
-  "gitCommit": "ddf4a1f2ad11f609e92caa607f174d354418d56a",
+  "gitCommit": "40192266f7f7a62479872ceff9c732ae33107a89",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "ddf4a1f2ad11f609e92caa607f174d354418d56a",
+    "currentGitCommit": "40192266f7f7a62479872ceff9c732ae33107a89",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "ddf4a1f2ad11f609e92caa607f174d354418d56a",
+    "packetGitCommit": "40192266f7f7a62479872ceff9c732ae33107a89",
     "recommendedAction": "The claim packet commit matches the current checkout.",
     "workingTreePolicy": "excluded"
   },

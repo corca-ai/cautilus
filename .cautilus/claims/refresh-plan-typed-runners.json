@@ -1,5 +1,5 @@
 {
-  "baseCommit": "ddf4a1f2ad11f609e92caa607f174d354418d56a",
+  "baseCommit": "40192266f7f7a62479872ceff9c732ae33107a89",
   "changedFiles": [],
   "changedSources": [],
   "claimPlan": [
@@ -364,7 +364,7 @@
       "lifecycle": "carried-forward"
     },
     {
-      "claimId": "claim-docs-maintainers-operator-acceptance-md-256",
+      "claimId": "claim-docs-maintainers-operator-acceptance-md-254",
       "lifecycle": "carried-forward"
     },
     {
@@ -1460,7 +1460,7 @@
   },
   "previousPath": ".cautilus/claims/evidenced-typed-runners.json",
   "refreshSummary": {
-    "baseCommit": "ddf4a1f2ad11f609e92caa607f174d354418d56a",
+    "baseCommit": "40192266f7f7a62479872ceff9c732ae33107a89",
     "carriedForwardClaimCount": 324,
     "changedClaimCount": 0,
     "changedClaimSources": [],
@@ -1479,11 +1479,11 @@
     ],
     "status": "up-to-date",
     "summary": "The saved claim map already matches the current checkout; no refresh work is needed before review or eval planning.",
-    "targetCommit": "ddf4a1f2ad11f609e92caa607f174d354418d56a",
+    "targetCommit": "40192266f7f7a62479872ceff9c732ae33107a89",
     "workingTreePolicy": "excluded"
   },
   "schemaVersion": "cautilus.claim_refresh_plan.v1",
   "sourceRoot": ".",
-  "targetCommit": "ddf4a1f2ad11f609e92caa607f174d354418d56a",
+  "targetCommit": "40192266f7f7a62479872ceff9c732ae33107a89",
   "workingTreePolicy": "excluded"
 }

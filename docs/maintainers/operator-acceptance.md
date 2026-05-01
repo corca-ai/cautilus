@@ -244,9 +244,7 @@ Tier 3이 "CLI가 돌아가는가"라면 이 tier는 "리드미의 각 문장이
 | 6.4 | Claude marketplace manifest | `claude plugins validate ./.claude-plugin/marketplace.json` | exit 0 |
 | 6.5 | Claude plugin manifest (packaged) | `claude plugins validate ./plugins/cautilus/.claude-plugin/plugin.json` | exit 0 |
 | 6.6 | Codex marketplace 발견 | `node ./scripts/release/check-codex-marketplace.mjs --repo-root .` | exit 0 |
-| 6.7 | Starter kit — chatbot resolves | `cautilus adapter resolve --repo-root ./examples/starters/chatbot` | adapter 경로, exit 0 |
-| 6.8 | Starter kit — skill resolves | `cautilus adapter resolve --repo-root ./examples/starters/skill` | adapter 경로, exit 0 |
-| 6.9 | Starter kit — workflow resolves | `cautilus adapter resolve --repo-root ./examples/starters/workflow` | adapter 경로, exit 0 |
+| 6.7 | Starter kits — normalization families | `npm run consumer:starters:smoke` | 3개 starter가 `adapter resolve`, `doctor`, `scenario normalize` 통과 |
 | 6.10 | Packet shape — 3 normalization families (optional, `jq` 필요) | `cautilus scenario normalize chatbot --input ./fixtures/scenario-proposals/chatbot-input.json \| jq -e '.candidates\|length>0'` (skill, workflow도 동일 패턴으로) | 각각 exit 0 |
 
 `jq`가 없는 환경에서는 6.10을 스킵해도 된다. 나머지 행은 의존성 없이 돈다.
