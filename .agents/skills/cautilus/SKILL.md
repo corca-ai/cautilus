@@ -49,7 +49,9 @@ When invoked with no task detail, orient first:
 ```
 
 Read `cautilus.agent_status.v1` as the current product map.
-Summarize binary health, agent-surface readiness, adapter state, claim-state availability, scan entries, linked Markdown depth, and `nextBranches`.
+Summarize binary health, agent-surface readiness, adapter state, selected claim-state availability, scan entries, linked Markdown depth, and `nextBranches`.
+When `claimState.orientationState` is present, treat it as the selected claim map for status and branch commands.
+Keep `claimState.configuredState` as the writable discovery baseline, not necessarily the most useful review packet.
 Then help the user pick the next branch or stop.
 Present branch labels and reasons in coordinator-facing language first.
 Keep internal branch ids as secondary references, not the option title.

@@ -206,6 +206,43 @@ func TestAgentStatusIncludesRelatedClaimStates(t *testing.T) {
 	if err := os.MkdirAll(claimsDir, 0o755); err != nil {
 		t.Fatalf("MkdirAll claims returned error: %v", err)
 	}
+	latestPacket := map[string]any{
+		"schemaVersion": contracts.ClaimProofPlanSchema,
+		"sourceRoot":    ".",
+		"gitCommit":     currentGitCommit(repoRoot),
+		"claimState": map[string]any{
+			"path": ".cautilus/claims/latest.json",
+		},
+		"effectiveScanScope": map[string]any{},
+		"sourceInventory":    []any{},
+		"claimCandidates": []any{
+			map[string]any{
+				"claimId":               "claim-readme-md-1",
+				"claimFingerprint":      "abc123",
+				"summary":               "Demo behavior is discovered.",
+				"recommendedProof":      "deterministic",
+				"verificationReadiness": "ready-to-verify",
+				"evidenceStatus":        "unknown",
+				"reviewStatus":          "heuristic",
+				"lifecycle":             "new",
+				"evidenceRefs":          []any{},
+				"sourceRefs": []any{
+					map[string]any{
+						"path":    "README.md",
+						"line":    1,
+						"excerpt": "Demo behavior is discovered.",
+					},
+				},
+			},
+		},
+	}
+	latestPayload, err := json.MarshalIndent(latestPacket, "", "  ")
+	if err != nil {
+		t.Fatalf("MarshalIndent latest packet returned error: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(claimsDir, "latest.json"), latestPayload, 0o644); err != nil {
+		t.Fatalf("WriteFile latest claims returned error: %v", err)
+	}
 	packet := map[string]any{
 		"schemaVersion": contracts.ClaimProofPlanSchema,
 		"sourceRoot":    ".",
@@ -255,6 +292,29 @@ func TestAgentStatusIncludesRelatedClaimStates(t *testing.T) {
 	relatedStates := arrayOrEmpty(claimState["relatedStates"])
 	if len(relatedStates) != 1 {
 		t.Fatalf("expected one related claim state, got %#v", relatedStates)
+	}
+	if claimState["role"] != "evidenced" || claimState["path"] != ".cautilus/claims/evidenced.json" {
+		t.Fatalf("expected orientation to prefer evidenced related state, got %#v", claimState)
+	}
+	selectedSummary := asMap(claimState["summary"])
+	if selectedSummary["candidateCount"] != 1 {
+		t.Fatalf("expected selected evidenced summary, got %#v", selectedSummary)
+	}
+	configured := asMap(claimState["configuredState"])
+	if configured["role"] != "current" || configured["path"] != ".cautilus/claims/latest.json" {
+		t.Fatalf("expected configured state to preserve writable latest path, got %#v", configured)
+	}
+	branches := arrayOrEmpty(status["nextBranches"])
+	showBranch := map[string]any{}
+	for _, raw := range branches {
+		branch := asMap(raw)
+		if branch["id"] == "show_existing_claims" {
+			showBranch = branch
+			break
+		}
+	}
+	if !strings.Contains(stringFromAny(showBranch["command"]), ".cautilus/claims/evidenced.json") {
+		t.Fatalf("expected first claim branch to inspect evidenced state, got %#v", branches)
 	}
 	evidenced := asMap(relatedStates[0])
 	if evidenced["role"] != "evidenced" || evidenced["status"] != "present" {

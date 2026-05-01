@@ -149,6 +149,8 @@ The binary only understands the portable labels `user`, `developer`, and `unclea
 `semantic_groups` is also adapter-owned because product areas differ across repos.
 When the adapter omits semantic groups, the binary emits `General product behavior` instead of using a Cautilus-specific taxonomy.
 `state_path` is the writable discovery baseline for `claim discover`; `related_state_paths` are read-only orientation hints for reviewed, evidenced, or promoted claim packets that `agent status` can summarize without making them the next discovery target.
+`agent status` should use the most advanced non-stale related claim packet as the selected orientation map when it is more useful than the writable baseline.
+That selected map should drive status summaries and inspect/refresh branch commands, while `state_path` remains the default output path for first discovery.
 `evidence_roots` are read-only roots for deterministic possible-evidence preflight; they may add `possibleEvidenceRefs` to review input, but they never mark claims satisfied.
 
 Before running a first broad scan, the skill should say which entries and depth it will use.

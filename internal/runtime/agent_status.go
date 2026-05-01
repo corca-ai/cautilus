@@ -60,26 +60,41 @@ func BuildClaimOrientation(repoRoot string) (map[string]any, error) {
 	}
 	claimState := renderClaimState(config)
 	claimState["status"] = "missing"
-	claimState["relatedStates"] = buildRelatedClaimStates(repoRoot, config)
+	claimState["orientationPolicy"] = "Prefer the most advanced non-stale related claim packet for status and next-branch commands while preserving claim_discovery.state_path as the writable discovery baseline."
+	relatedStates := buildRelatedClaimStates(repoRoot, config)
+	claimState["relatedStates"] = relatedStates
+	stateCandidates := []map[string]any{}
 
 	statePath := strings.TrimSpace(config.statePath)
 	if statePath != "" && !filepath.IsAbs(statePath) {
 		resolvedStatePath := filepath.Join(repoRoot, filepath.FromSlash(statePath))
-		if fileExists(resolvedStatePath) {
-			state := buildClaimStateFileSummary(repoRoot, "current", statePath, resolvedStatePath)
-			claimState["status"] = state["status"]
-			if validation := asMap(state["validation"]); len(validation) > 0 {
-				claimState["validation"] = validation
-			}
-			if summary := asMap(state["summary"]); len(summary) > 0 {
-				claimState["summary"] = summary
-			}
-		}
+		state := buildClaimStateFileSummary(repoRoot, "current", statePath, resolvedStatePath)
+		claimState["configuredState"] = state
+		stateCandidates = append(stateCandidates, state)
 	} else if statePath != "" {
 		claimState["status"] = "unsupported_state_path"
 		claimState["validation"] = map[string]any{
 			"valid": false,
 			"error": "claim_discovery.state_path must be repo-relative for agent status orientation",
+		}
+	}
+	for _, raw := range relatedStates {
+		stateCandidates = append(stateCandidates, asMap(raw))
+	}
+	if selected := selectClaimOrientationState(stateCandidates); len(selected) > 0 {
+		claimState["status"] = selected["status"]
+		claimState["role"] = selected["role"]
+		claimState["path"] = selected["path"]
+		claimState["orientationState"] = selected
+		if validation := asMap(selected["validation"]); len(validation) > 0 {
+			claimState["validation"] = validation
+		} else {
+			delete(claimState, "validation")
+		}
+		if summary := asMap(selected["summary"]); len(summary) > 0 {
+			claimState["summary"] = summary
+		} else {
+			delete(claimState, "summary")
 		}
 	}
 
@@ -144,6 +159,56 @@ func buildClaimStateFileSummary(repoRoot string, role string, statePath string, 
 	return state
 }
 
+func selectClaimOrientationState(states []map[string]any) map[string]any {
+	var best map[string]any
+	bestScore := -1
+	for _, state := range states {
+		if len(state) == 0 || stringOrEmpty(state["status"]) != "present" {
+			continue
+		}
+		summary := asMap(state["summary"])
+		if asMap(summary["gitState"])["isStale"] == true {
+			continue
+		}
+		score := claimOrientationStateScore(state)
+		if best == nil || score > bestScore {
+			best = state
+			bestScore = score
+		}
+	}
+	if best != nil {
+		return best
+	}
+	for _, state := range states {
+		if len(state) > 0 && stringOrEmpty(state["status"]) == "present" {
+			return state
+		}
+	}
+	return map[string]any{}
+}
+
+func claimOrientationStateScore(state map[string]any) int {
+	score := 0
+	switch stringOrEmpty(state["role"]) {
+	case "evidenced":
+		score += 3000
+	case "reviewed":
+		score += 2000
+	case "current":
+		score += 1000
+	default:
+		score += 500
+	}
+	summary := asMap(state["summary"])
+	claimSummary := asMap(summary["claimSummary"])
+	byEvidence := asMap(claimSummary["byEvidenceStatus"])
+	byReview := asMap(claimSummary["byReviewStatus"])
+	score += 10 * intFromAny(byEvidence["satisfied"])
+	score += 3 * intFromAny(byReview["human-reviewed"])
+	score += 2 * intFromAny(byReview["agent-reviewed"])
+	return score
+}
+
 func renderAgentStatusAdapter(adapter *AdapterPayload) map[string]any {
 	if adapter == nil {
 		return map[string]any{
@@ -189,26 +254,34 @@ func mergeAgentStatusBranches(adapter *AdapterPayload, runnerReadiness map[strin
 }
 
 func claimOrientationBranches(claimState map[string]any, config claimDiscoveryConfig, repoRoot string) []any {
-	statePath := filepath.Join(repoRoot, filepath.FromSlash(config.statePath))
+	orientationPath := strings.TrimSpace(stringOrEmpty(claimState["path"]))
+	if orientationPath == "" {
+		orientationPath = config.statePath
+	}
+	statePath := filepath.Join(repoRoot, filepath.FromSlash(orientationPath))
 	quotedRepoRoot := ShellSingleQuote(repoRoot)
 	quotedStatePath := ShellSingleQuote(statePath)
 	switch stringOrEmpty(claimState["status"]) {
 	case "present":
+		stateLabel := "saved claim map"
+		if role := stringOrEmpty(claimState["role"]); role != "" && role != "current" {
+			stateLabel = role + " claim map"
+		}
 		showBranch := map[string]any{
 			"id":      "show_existing_claims",
-			"label":   "Inspect the saved claim map",
+			"label":   "Inspect the " + stateLabel,
 			"command": "cautilus claim show --input " + quotedStatePath + " --sample-claims 10",
-			"reason":  "Use this when the saved claim map is current enough to decide whether to review claims, add deterministic tests, or plan Cautilus eval scenarios.",
+			"reason":  "Use this when the selected claim map is current enough to decide whether to review claims, add deterministic tests, or plan Cautilus eval scenarios.",
 		}
 		refreshBranch := map[string]any{
 			"id":      "refresh_claims_from_diff",
-			"label":   "Compare the saved claim map with recent repo changes",
+			"label":   "Compare the " + stateLabel + " with recent repo changes",
 			"command": "cautilus claim discover --repo-root " + quotedRepoRoot + " --previous " + quotedStatePath + " --refresh-plan --output <refresh-plan.json>",
-			"reason":  "This records what changed since the claim map was saved, without launching review or eval work.",
+			"reason":  "This records what changed since the selected claim map was saved, without launching review or eval work.",
 		}
 		if asMap(asMap(claimState["summary"])["gitState"])["isStale"] == true {
-			refreshBranch["reason"] = "The saved claim map was made from an older checkout; compare it with the current repo before review or eval planning."
-			showBranch["reason"] = "Use this only to inspect the older saved map; it should not drive review or eval planning until the map is refreshed."
+			refreshBranch["reason"] = "The selected claim map was made from an older checkout; compare it with the current repo before review or eval planning."
+			showBranch["reason"] = "Use this only to inspect the older selected map; it should not drive review or eval planning until the map is refreshed."
 			return []any{refreshBranch, showBranch}
 		}
 		return []any{showBranch, refreshBranch}
