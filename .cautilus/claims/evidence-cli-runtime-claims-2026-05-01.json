@@ -1,0 +1,152 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-cli-runtime-claims-2026-05-01",
+  "createdForClaimIds": [
+    "claim-docs-cli-reference-md-108",
+    "claim-docs-cli-reference-md-114",
+    "claim-docs-cli-reference-md-173",
+    "claim-docs-cli-reference-md-185",
+    "claim-docs-cli-reference-md-266",
+    "claim-docs-cli-reference-md-505",
+    "claim-docs-guides-consumer-adoption-md-25",
+    "claim-docs-guides-consumer-adoption-md-49",
+    "claim-docs-guides-evaluation-process-md-253",
+    "claim-skills-cautilus-skill-md-11",
+    "claim-skills-cautilus-skill-md-20"
+  ],
+  "repoCommit": "b731cd8b5d5264cc2ea7dc699766f5a549f989cd",
+  "summary": "This bundle records deterministic CLI/runtime checks for claim-review batch 5: agent status, named-adapter doctor, eval live help surfaces, eval test over the self-dogfood adapter, version discovery, skill scenario normalization example output, and skill/binary disclosure lint.",
+  "evidenceScope": {
+    "targetSurface": "CLI/runtime deterministic claims",
+    "claimBoundary": "Only command, packet, runtime-entrypoint, named-adapter doctor, eval-test, source-launcher, scenario-normalization helper, and skill/binary disclosure claims listed in createdForClaimIds are marked satisfied.",
+    "notClaimed": [
+      "Future agent compliance with bundled-skill sequencing rules",
+      "Human-auditable ownership-boundary alignment claims",
+      "Live consumer app behavior beyond command/help surface availability",
+      "Provider caveat regression protection"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "./bin/cautilus agent status --repo-root . --json",
+      "stdoutPath": "artifacts/self-dogfood/llm-review-batch5/latest/cautilus-agent-status-json.stdout",
+      "stdoutContentHash": "sha256:529c98dc187ce0c0f17fd7d7e122fbec9bcd554a499af72dbc226f819e1a3f82",
+      "stderrPath": "artifacts/self-dogfood/llm-review-batch5/latest/cautilus-agent-status-json.stderr",
+      "stderrContentHash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exitCode": 0
+    },
+    {
+      "command": "./bin/cautilus doctor --repo-root . --adapter-name self-dogfood-eval",
+      "stdoutPath": "artifacts/self-dogfood/llm-review-batch5/latest/cautilus-doctor-self-dogfood-eval.stdout",
+      "stdoutContentHash": "sha256:693f24f6f203c5bde6b47a56621e5826163a145fa82a7decdcc19bc55d57d9a8",
+      "stderrPath": "artifacts/self-dogfood/llm-review-batch5/latest/cautilus-doctor-self-dogfood-eval.stderr",
+      "stderrContentHash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exitCode": 0
+    },
+    {
+      "command": "./bin/cautilus eval live discover --help",
+      "stdoutPath": "artifacts/self-dogfood/llm-review-batch5/latest/cautilus-eval-live-discover-help.stdout",
+      "stdoutContentHash": "sha256:1f6b3a25db367cd4981bf32e15aa0c2664acae8b45d14033bd15ac24428137f1",
+      "stderrPath": "artifacts/self-dogfood/llm-review-batch5/latest/cautilus-eval-live-discover-help.stderr",
+      "stderrContentHash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exitCode": 0
+    },
+    {
+      "command": "./bin/cautilus eval live run --help",
+      "stdoutPath": "artifacts/self-dogfood/llm-review-batch5/latest/cautilus-eval-live-run-help.stdout",
+      "stdoutContentHash": "sha256:e8693386cea4ea348faa6b693b573cd264bc5736258d86350ee3856c0158c9a1",
+      "stderrPath": "artifacts/self-dogfood/llm-review-batch5/latest/cautilus-eval-live-run-help.stderr",
+      "stderrContentHash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exitCode": 0
+    },
+    {
+      "command": "./bin/cautilus eval live run-simulator-persona --help",
+      "stdoutPath": "artifacts/self-dogfood/llm-review-batch5/latest/cautilus-eval-live-run-simulator-persona-help.stdout",
+      "stdoutContentHash": "sha256:799d577d2cb360da3e7fe0396674312579f57d37e4a9dc96df92889ec482284f",
+      "stderrPath": "artifacts/self-dogfood/llm-review-batch5/latest/cautilus-eval-live-run-simulator-persona-help.stderr",
+      "stderrContentHash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exitCode": 0
+    },
+    {
+      "command": "./bin/cautilus eval test --repo-root . --adapter-name self-dogfood-eval --output-dir artifacts/self-dogfood/llm-review-batch5/latest/eval-test-self-dogfood",
+      "stdoutPath": "artifacts/self-dogfood/llm-review-batch5/latest/cautilus-eval-test-self-dogfood.stdout",
+      "stdoutContentHash": "sha256:6f1213b72d67cb1b9ed6686a0389bbc68723a22d16899c2fb71e74f25f9a438f",
+      "stderrPath": "artifacts/self-dogfood/llm-review-batch5/latest/cautilus-eval-test-self-dogfood.stderr",
+      "stderrContentHash": "sha256:8c6a0b6da1a8ae57d346ce8ef7736e5b63ab721808125185274e6263be7d5c98",
+      "exitCode": 0,
+      "summaryPath": "artifacts/self-dogfood/llm-review-batch5/latest/eval-test-self-dogfood/eval-summary.json",
+      "summaryContentHash": "sha256:c05a91026032ea434c7eb331b66fdff649e834c1779da213227ded6c441423a9"
+    },
+    {
+      "command": "./bin/cautilus --version",
+      "stdoutPath": "artifacts/self-dogfood/llm-review-batch5/latest/cautilus-version.stdout",
+      "stdoutContentHash": "sha256:d84c9e596c7d6a94e5f74579ef8d8912a807b0d28582474900ad35dfb3edfcf4",
+      "stderrPath": "artifacts/self-dogfood/llm-review-batch5/latest/cautilus-version.stderr",
+      "stderrContentHash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exitCode": 0
+    },
+    {
+      "command": "./bin/cautilus scenario normalize skill --example-input",
+      "stdoutPath": "artifacts/self-dogfood/llm-review-batch5/latest/cautilus-scenario-normalize-skill-example-input.stdout",
+      "stdoutContentHash": "sha256:96d6c4e652f9d61fc973e085b74d7f8adba50b3fbf491dbd988e3072f76e6ca6",
+      "stderrPath": "artifacts/self-dogfood/llm-review-batch5/latest/cautilus-scenario-normalize-skill-example-input.stderr",
+      "stderrContentHash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exitCode": 0
+    },
+    {
+      "command": "npm run lint:skill-disclosure",
+      "stdoutPath": "artifacts/self-dogfood/llm-review-batch5/latest/npm-run-lint-skill-disclosure.stdout",
+      "stdoutContentHash": "sha256:949c33a9bcf5cab0b30da03348195dded4d08f9a79e04472676dace9295913d6",
+      "stderrPath": "artifacts/self-dogfood/llm-review-batch5/latest/npm-run-lint-skill-disclosure.stderr",
+      "stderrContentHash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exitCode": 0
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "package.json",
+      "kind": "npm-script-registry",
+      "contentHash": "sha256:275adc956947f28e1bda2006228da297fd93fb29aa47f06adddd6e28aa718503"
+    },
+    {
+      "path": "scripts/check-cautilus-skill-disclosure.mjs",
+      "kind": "skill-binary-disclosure-check",
+      "contentHash": "sha256:aa3cf232ef8bee1dcc74de9a85c494e75e7d95af13cb9f0c5332dcab78e2e2d2"
+    },
+    {
+      "path": "skills/cautilus/SKILL.md",
+      "kind": "bundled-skill-source",
+      "contentHash": "sha256:bc784470252994658933e204ee7c4da7b7d757509c31dd1eb7091242b0e68c6f"
+    },
+    {
+      "path": "internal/cli/command-registry.json",
+      "kind": "binary-command-registry",
+      "contentHash": "sha256:50393129fc01020daed5da57742f01d0dc900ad9e90046b2f591cd59e97c6d1d"
+    },
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "cli-smoke-tests",
+      "contentHash": "sha256:4bd08efc3f27d6f3613c8e78b839830e9113a837e635b24faac3a49055908328"
+    },
+    {
+      "path": "docs/cli-reference.md",
+      "kind": "cli-reference",
+      "contentHash": "sha256:834196281364ce805efe6da99a5dc9d2566dbd2ebd23e557ac3bb37b3b012b2d"
+    },
+    {
+      "path": "docs/guides/consumer-adoption.md",
+      "kind": "consumer-guide",
+      "contentHash": "sha256:061b87bab1dec62dfdc702ed6443b9a62468e22f476dfe750b0a933014fd8733"
+    },
+    {
+      "path": "docs/guides/evaluation-process.md",
+      "kind": "evaluation-guide",
+      "contentHash": "sha256:0d0577a9c6f683507024c8570de6303d164b7044f81914293d3931c697888f3e"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The listed CLI/runtime commands exit 0 and directly exercise or expose the command, packet, named-adapter doctor, eval live, eval test, source launcher, scenario-normalization helper, and skill/binary disclosure surfaces for the selected deterministic claims."
+  }
+}

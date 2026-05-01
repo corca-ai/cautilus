@@ -1,0 +1,383 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "codex-local-llm-review-batch5",
+    "kind": "same-agent",
+    "reviewedAt": "2026-05-01T07:00:00Z",
+    "notes": [
+      "Reviewed the fifth heuristic-only claim batch after routing-heuristic improvements.",
+      "Satisfied deterministic CLI/runtime claims only when the batch5 evidence bundle records direct command proof.",
+      "Kept ownership-boundary and bundled-skill behavior rules unknown unless the evidence directly proved the behavior."
+    ]
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-user-adapter-and-portability-alignment-docs",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-guides-evaluation-process-md-10",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "human-auditable",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "needs-alignment",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as an ownership-boundary statement about the evaluation-process seam. The statement is plausible, but satisfaction needs cross-surface alignment proof rather than one eval run.",
+          "evidenceRefs": [],
+          "nextAction": "Link this claim to the matching adapter contract, eval test implementation, and packet-level evaluate/proposal-normalization tests before marking it satisfied.",
+          "unresolvedQuestions": [
+            "Which deterministic test should be the canonical proof that this seam owns exactly the checked-in case suite, adapter-runner invocation, and chained summary artifacts?"
+          ]
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-user-adapter-and-portability-deterministic-docs",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-cli-reference-md-108",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the batch5 CLI/runtime evidence bundle: `agent status --json` exits 0 and emits the orientation packet surface.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-cli-runtime-claims-2026-05-01.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:927c11f634b7f52fabb4cca7e405f915eb70fb8a3af769aaca9b8a6bf207b8b7",
+              "supportsClaimIds": [
+                "claim-docs-cli-reference-md-108"
+              ]
+            }
+          ],
+          "nextAction": "Keep covered by agent-status command and packet-shape tests when orientation output changes.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-cli-reference-md-114",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the batch5 CLI/runtime evidence bundle: `doctor --adapter-name self-dogfood-eval` exits 0 and the checked CLI smoke surface covers doctor behavior.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-cli-runtime-claims-2026-05-01.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:927c11f634b7f52fabb4cca7e405f915eb70fb8a3af769aaca9b8a6bf207b8b7",
+              "supportsClaimIds": [
+                "claim-docs-cli-reference-md-114"
+              ]
+            }
+          ],
+          "nextAction": "Keep covered by named-adapter doctor smoke when adapter resolution changes.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-cli-reference-md-173",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the batch5 CLI/runtime evidence bundle: eval live discover/run help surfaces exit 0 and the checked CLI smoke file covers live eval instance behavior.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-cli-runtime-claims-2026-05-01.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:927c11f634b7f52fabb4cca7e405f915eb70fb8a3af769aaca9b8a6bf207b8b7",
+              "supportsClaimIds": [
+                "claim-docs-cli-reference-md-173"
+              ]
+            }
+          ],
+          "nextAction": "Keep covered by eval-live command and CLI smoke tests when live instance discovery changes.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-cli-reference-md-185",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the batch5 CLI/runtime evidence bundle: `eval live run-simulator-persona --help` exits 0 and exposes the persona simulator runtime surface.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-cli-runtime-claims-2026-05-01.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:927c11f634b7f52fabb4cca7e405f915eb70fb8a3af769aaca9b8a6bf207b8b7",
+              "supportsClaimIds": [
+                "claim-docs-cli-reference-md-185"
+              ]
+            }
+          ],
+          "nextAction": "Keep covered by eval-live persona command tests when simulator persona dispatch changes.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-cli-reference-md-266",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the batch5 CLI/runtime evidence bundle: `eval test --adapter-name self-dogfood-eval` exits 0 and writes an eval-summary packet.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-cli-runtime-claims-2026-05-01.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:927c11f634b7f52fabb4cca7e405f915eb70fb8a3af769aaca9b8a6bf207b8b7",
+              "supportsClaimIds": [
+                "claim-docs-cli-reference-md-266"
+              ]
+            }
+          ],
+          "nextAction": "Keep covered by eval-test dogfood when adapter-owned runner behavior changes.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-guides-consumer-adoption-md-25",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the batch5 CLI/runtime evidence bundle: `./bin/cautilus --version` exits 0 before adapter or skill wiring proof is considered.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-cli-runtime-claims-2026-05-01.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:927c11f634b7f52fabb4cca7e405f915eb70fb8a3af769aaca9b8a6bf207b8b7",
+              "supportsClaimIds": [
+                "claim-docs-guides-consumer-adoption-md-25"
+              ]
+            }
+          ],
+          "nextAction": "Keep covered by install/version smoke when binary discovery changes.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-guides-consumer-adoption-md-49",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the batch5 CLI/runtime evidence bundle: named-adapter doctor exits 0 and covers the documented validation path.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-cli-runtime-claims-2026-05-01.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:927c11f634b7f52fabb4cca7e405f915eb70fb8a3af769aaca9b8a6bf207b8b7",
+              "supportsClaimIds": [
+                "claim-docs-guides-consumer-adoption-md-49"
+              ]
+            }
+          ],
+          "nextAction": "Keep covered by named-adapter doctor smoke when consumer adapter layouts change.",
+          "unresolvedQuestions": []
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-user-agent-and-skill-workflow-alignment-docs",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-guides-evaluation-process-md-270",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "human-auditable",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "needs-alignment",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as an ownership-boundary statement about host-owned raw invocation versus Cautilus-owned workflow and packet semantics. The batch5 CLI evidence supports pieces of the command surface but not the whole cross-surface ownership boundary.",
+          "evidenceRefs": [],
+          "nextAction": "Connect this claim to adapter contract tests plus skill-normalization and packet recommendation tests before marking it satisfied.",
+          "unresolvedQuestions": []
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-user-agent-and-skill-workflow-alignment-skill-doc",
+      "claimUpdates": [
+        {
+          "claimId": "claim-skills-cautilus-skill-md-21",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "human-auditable",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "needs-alignment",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as a skill/binary ownership-boundary statement. `lint:skill-disclosure` supports nearby fragments, but this exact broad ownership claim should remain unknown until tied to the full progressive-disclosure contract.",
+          "evidenceRefs": [],
+          "nextAction": "Either split into deterministic disclosure checks or link the claim to the skill/binary disclosure lint contract before satisfying it.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-skills-cautilus-skill-md-72",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "human-auditable",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "needs-alignment",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as route-selection guidance for proof/discovery workflows. It names an important behavior path but needs either a skill eval scenario or deterministic branch-selection proof before satisfaction.",
+          "evidenceRefs": [],
+          "nextAction": "Create a dev/skill scenario or deterministic skill guidance check for repo-proves-claims routing.",
+          "unresolvedQuestions": []
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-user-agent-and-skill-workflow-cautilus-eval-dev-repo-docs",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-guides-evaluation-process-md-253",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the batch5 CLI/runtime evidence bundle: `scenario normalize skill --example-input` exits 0 and exposes the checked-in skill normalization helper path.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-cli-runtime-claims-2026-05-01.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:927c11f634b7f52fabb4cca7e405f915eb70fb8a3af769aaca9b8a6bf207b8b7",
+              "supportsClaimIds": [
+                "claim-docs-guides-evaluation-process-md-253"
+              ]
+            }
+          ],
+          "nextAction": "Keep covered by scenario-normalize skill examples and schema tests when normalization helper behavior changes.",
+          "unresolvedQuestions": []
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-user-agent-and-skill-workflow-cautilus-eval-dev-repo-skill-doc",
+      "claimUpdates": [
+        {
+          "claimId": "claim-skills-cautilus-skill-md-64",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/skill",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as concrete bundled-skill sequencing behavior. It needs dev/skill scenario proof that the agent reruns `agent status` before mutating claim state or launching review/eval branches from a previous menu.",
+          "evidenceRefs": [],
+          "nextAction": "Add or link a dev/skill fixture for stale numbered-branch selection before satisfying this claim.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-skills-cautilus-skill-md-65",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/skill",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as concrete bundled-skill sequencing behavior for the refresh-plan exception. It needs dev/skill proof over the branch boundary before satisfaction.",
+          "evidenceRefs": [],
+          "nextAction": "Add or link a dev/skill fixture that distinguishes refresh-plan writes from branch execution that claims a fresh status recheck.",
+          "unresolvedQuestions": []
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-user-agent-and-skill-workflow-deterministic-docs",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-cli-reference-md-505",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the batch5 CLI/runtime evidence bundle: eval live discover/run help surfaces exit 0 through the binary rather than direct Node paths.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-cli-runtime-claims-2026-05-01.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:927c11f634b7f52fabb4cca7e405f915eb70fb8a3af769aaca9b8a6bf207b8b7",
+              "supportsClaimIds": [
+                "claim-docs-cli-reference-md-505"
+              ]
+            }
+          ],
+          "nextAction": "Keep covered by command discovery/help and CLI smoke when eval-live entrypoints move.",
+          "unresolvedQuestions": []
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-user-agent-and-skill-workflow-deterministic-skill-doc",
+      "claimUpdates": [
+        {
+          "claimId": "claim-skills-cautilus-skill-md-11",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the batch5 CLI/runtime evidence bundle: the checked-in source launcher exits 0 for `--version` in this checkout.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-cli-runtime-claims-2026-05-01.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:927c11f634b7f52fabb4cca7e405f915eb70fb8a3af769aaca9b8a6bf207b8b7",
+              "supportsClaimIds": [
+                "claim-skills-cautilus-skill-md-11"
+              ]
+            }
+          ],
+          "nextAction": "Keep covered by source-launcher version smoke.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-skills-cautilus-skill-md-20",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the batch5 CLI/runtime evidence bundle: `lint:skill-disclosure` exits 0 and the command registry plus skill text hashes are recorded.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-cli-runtime-claims-2026-05-01.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:927c11f634b7f52fabb4cca7e405f915eb70fb8a3af769aaca9b8a6bf207b8b7",
+              "supportsClaimIds": [
+                "claim-skills-cautilus-skill-md-20"
+              ]
+            }
+          ],
+          "nextAction": "Keep covered by skill-disclosure lint when binary/skill ownership changes.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-skills-cautilus-skill-md-203",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/skill",
+          "verificationReadiness": "needs-scenario",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as bundled-skill reading behavior. It needs a dev/skill scenario that asks for an HTML deliverable and verifies packet-first reading before citation.",
+          "evidenceRefs": [],
+          "nextAction": "Create a dev/skill scenario for packet-first reading and HTML citation behavior if this rule should be satisfaction-tracked.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

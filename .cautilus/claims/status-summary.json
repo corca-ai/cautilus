@@ -32,8 +32,8 @@
       "Release and packaging": 5
     },
     "byEvidenceStatus": {
-      "satisfied": 27,
-      "unknown": 306
+      "satisfied": 38,
+      "unknown": 295
     },
     "byLifecycle": {
       "new": 333
@@ -44,14 +44,14 @@
       "human-auditable": 68
     },
     "byReviewStatus": {
-      "agent-reviewed": 42,
-      "heuristic": 291
+      "agent-reviewed": 60,
+      "heuristic": 273
     },
     "byVerificationReadiness": {
       "blocked": 12,
       "needs-alignment": 31,
-      "needs-scenario": 7,
-      "ready-to-verify": 283
+      "needs-scenario": 8,
+      "ready-to-verify": 282
     }
   },
   "effectiveScanScope": {
@@ -199,7 +199,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 27,
+    "satisfiedClaimCount": 38,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-78",
@@ -428,6 +428,177 @@
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
         "summary": "static HTML views of the same artifacts so a human reviewer can judge them in a browser without an agent in the loop See `docs/specs/html-report.spec.md` for the rendered contract."
+      },
+      {
+        "claimId": "claim-docs-cli-reference-md-108",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:927c11f634b7f52fabb4cca7e405f915eb70fb8a3af769aaca9b8a6bf207b8b7",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-cli-runtime-claims-2026-05-01.json",
+            "supportsClaimIds": [
+              "claim-docs-cli-reference-md-108"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "It emits `cautilus.agent_status.v1`: a read-only orientation packet over binary health, local agent-surface readiness, adapter state, claim-state availability, scan scope, and branch choices."
+      },
+      {
+        "claimId": "claim-docs-cli-reference-md-114",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:927c11f634b7f52fabb4cca7e405f915eb70fb8a3af769aaca9b8a6bf207b8b7",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-cli-runtime-claims-2026-05-01.json",
+            "supportsClaimIds": [
+              "claim-docs-cli-reference-md-114"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "When a repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, run `cautilus doctor --repo-root /path/to/repo --adapter-name \u003cname\u003e` for repo-scope validation instead of expecting plain `doctor` to guess which named adapter you mean."
+      },
+      {
+        "claimId": "claim-docs-cli-reference-md-173",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:927c11f634b7f52fabb4cca7e405f915eb70fb8a3af769aaca9b8a6bf207b8b7",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-cli-runtime-claims-2026-05-01.json",
+            "supportsClaimIds": [
+              "claim-docs-cli-reference-md-173"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "An eval live instance is one live consumer target on this host that `Cautilus` can select by stable id."
+      },
+      {
+        "claimId": "claim-docs-cli-reference-md-185",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:927c11f634b7f52fabb4cca7e405f915eb70fb8a3af769aaca9b8a6bf207b8b7",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-cli-runtime-claims-2026-05-01.json",
+            "supportsClaimIds": [
+              "claim-docs-cli-reference-md-185"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "When the public scenario uses `simulator.kind: persona_prompt`, the adapter additionally provides `simulator_persona_command_template`, which normally calls `cautilus eval live run-simulator-persona` with repo-specific backend flags."
+      },
+      {
+        "claimId": "claim-docs-cli-reference-md-266",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:927c11f634b7f52fabb4cca7e405f915eb70fb8a3af769aaca9b8a6bf207b8b7",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-cli-runtime-claims-2026-05-01.json",
+            "supportsClaimIds": [
+              "claim-docs-cli-reference-md-266"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "`cautilus eval test` runs a checked-in fixture through an adapter-owned runner and then evaluates the observed packet."
+      },
+      {
+        "claimId": "claim-docs-cli-reference-md-505",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:927c11f634b7f52fabb4cca7e405f915eb70fb8a3af769aaca9b8a6bf207b8b7",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-cli-runtime-claims-2026-05-01.json",
+            "supportsClaimIds": [
+              "claim-docs-cli-reference-md-505"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Shipped runtime entrypoints such as `cautilus eval live discover` and `cautilus eval live run` are Go-owned now and should be called through the CLI instead of direct `node scripts/agent-runtime/...` paths."
+      },
+      {
+        "claimId": "claim-docs-guides-consumer-adoption-md-25",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:927c11f634b7f52fabb4cca7e405f915eb70fb8a3af769aaca9b8a6bf207b8b7",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-cli-runtime-claims-2026-05-01.json",
+            "supportsClaimIds": [
+              "claim-docs-guides-consumer-adoption-md-25"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "`cautilus --version` must work on `PATH` before any consumer adapter or skill wiring is treated as valid."
+      },
+      {
+        "claimId": "claim-docs-guides-consumer-adoption-md-49",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:927c11f634b7f52fabb4cca7e405f915eb70fb8a3af769aaca9b8a6bf207b8b7",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-cli-runtime-claims-2026-05-01.json",
+            "supportsClaimIds": [
+              "claim-docs-guides-consumer-adoption-md-49"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "If the repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, use `cautilus doctor --adapter-name \u003cname\u003e` for repo-scope validation."
+      },
+      {
+        "claimId": "claim-docs-guides-evaluation-process-md-253",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:927c11f634b7f52fabb4cca7e405f915eb70fb8a3af769aaca9b8a6bf207b8b7",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-cli-runtime-claims-2026-05-01.json",
+            "supportsClaimIds": [
+              "claim-docs-guides-evaluation-process-md-253"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "When repeated workflow failures should become durable scenario coverage, prefer the checked-in `skill` normalization helper over repo-local one-off shapers:"
       },
       {
         "claimId": "claim-docs-maintainers-consumer-readiness-md-68",
@@ -713,21 +884,65 @@
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
         "summary": "`cautilus install` materializes the same product surface for an in-repo assistant, while the operator still uses the CLI directly."
+      },
+      {
+        "claimId": "claim-skills-cautilus-skill-md-11",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:927c11f634b7f52fabb4cca7e405f915eb70fb8a3af769aaca9b8a6bf207b8b7",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-cli-runtime-claims-2026-05-01.json",
+            "supportsClaimIds": [
+              "claim-skills-cautilus-skill-md-11"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "In the Cautilus product repo itself, prefer the checked-in source launcher `./bin/cautilus` over `cautilus` on `PATH`, because the installed machine binary can lag the current checkout."
+      },
+      {
+        "claimId": "claim-skills-cautilus-skill-md-20",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:927c11f634b7f52fabb4cca7e405f915eb70fb8a3af769aaca9b8a6bf207b8b7",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-cli-runtime-claims-2026-05-01.json",
+            "supportsClaimIds": [
+              "claim-skills-cautilus-skill-md-20"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The binary owns command discovery, packet examples, deterministic scans, validation, and reusable evaluation artifacts."
       }
     ]
   },
   "gitCommit": "3a2bfe96ef1a59505b36dd0dedd6968b3b1b7977",
   "gitState": {
-    "changedFileCount": 0,
-    "changedFiles": [],
+    "changedFileCount": 5,
+    "changedFiles": [
+      ".cautilus/claims/evidenced-typed-runners.json",
+      ".cautilus/claims/latest.json",
+      ".cautilus/claims/refresh-plan-after-provider-caveat-heuristics.json",
+      ".cautilus/claims/reviewed-typed-runners.json",
+      ".cautilus/claims/status-summary.json"
+    ],
     "changedSourceCount": 0,
     "changedSources": [],
-    "comparisonStatus": "fresh",
-    "currentGitCommit": "3a2bfe96ef1a59505b36dd0dedd6968b3b1b7977",
-    "headDrift": false,
+    "comparisonStatus": "fresh-with-head-drift",
+    "currentGitCommit": "b731cd82a69ae091470e83b68a393ce3586a5168",
+    "headDrift": true,
     "isStale": false,
     "packetGitCommit": "3a2bfe96ef1a59505b36dd0dedd6968b3b1b7977",
-    "recommendedAction": "The claim packet commit matches the current checkout.",
+    "recommendedAction": "The current HEAD differs from the packet commit, but no recorded claim source changed; review and eval planning may continue.",
     "workingTreePolicy": "excluded"
   },
   "inputPath": ".cautilus/claims/evidenced-typed-runners.json",
@@ -749,9 +964,9 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 257,
+    "heuristicClaimsReadyForReview": 243,
     "needsAlignment": 31,
-    "needsScenario": 7
+    "needsScenario": 8
   },
   "sampleClaims": [
     {
