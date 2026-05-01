@@ -495,9 +495,19 @@
       "claimFingerprint": "sha256:cca48e23143767450d964a26876792773f2f92ca2d3588c21e022181f0c06a2e",
       "claimId": "claim-readme-md-144",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "The claim describes skill or agent execution behavior after edits, so dev/skill evaluation is the right proof route; the review input itself does not provide verified evidence.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:548add3d40d3b601c89ce9339b6eaa162ac5ddceaf3fe160998157876745a2a7",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-dev-skill-routing-install.json",
+          "supportsClaimIds": [
+            "claim-readme-md-144"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by the checked-in dev/skill routing/install evidence bundle: the self-dogfood-eval-skill Codex run passed one trigger case and two execution cases after install and agent-surface doctor preflight.",
       "groupHints": [
         "audience:user",
         "cautilus-eval",
@@ -505,7 +515,7 @@
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
+      "nextAction": "Keep this claim covered by rerunning self-dogfood-eval-skill when bundled skill routing, eval skill fixtures, install behavior, or static skill validation changes.",
       "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
@@ -725,9 +735,19 @@
       "claimFingerprint": "sha256:0326670200c2a6f36720afd68b0bf4dded8a6d931270b22ff70f68d3fe459927",
       "claimId": "claim-readme-md-211",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "The install-manifest portion is deterministic, but the same sentence also promises that an in-editor agent can drive the contracts conversationally, which needs dev/skill evaluation or a split claim; the review input itself does not provide verified evidence.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:548add3d40d3b601c89ce9339b6eaa162ac5ddceaf3fe160998157876745a2a7",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-dev-skill-routing-install.json",
+          "supportsClaimIds": [
+            "claim-readme-md-211"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by the checked-in dev/skill routing/install evidence bundle: install and doctor preflight passed, installed skill and Claude/Codex plugin manifests are present with recorded content hashes, and the installed skill drove trigger/execution contracts conversationally under Codex.",
       "groupHints": [
         "audience:user",
         "cautilus-eval",
@@ -735,7 +755,7 @@
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Create or use a dev/skill fixture that proves the installed skill can drive the named workflow.",
+      "nextAction": "Keep install and agent-surface proof aligned with self-dogfood-eval-skill plus install/doctor smoke when plugin manifests or skill packaging change.",
       "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
@@ -10181,8 +10201,8 @@
       "Release and packaging": 5
     },
     "byEvidenceStatus": {
-      "satisfied": 1,
-      "unknown": 326
+      "satisfied": 3,
+      "unknown": 324
     },
     "byLifecycle": {
       "new": 327
@@ -10350,11 +10370,11 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "5f400b3d5b14a055d8b0f544d780f44865d7e621",
+  "gitCommit": "6f6010b7a657a76aab9e517f34549b5a7b27b7b9",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "reviewApplication": {
-    "appliedUpdateCount": 1,
+    "appliedUpdateCount": 2,
     "appliedUpdates": [
       {
         "appliedFields": [
@@ -10367,13 +10387,27 @@
           "nextAction",
           "evidenceStatusReason"
         ],
-        "claimId": "claim-readme-md-148",
-        "clusterId": "cluster-user-claim-discovery-and-review-cautilus-eval-dev-skill-readme"
+        "claimId": "claim-readme-md-144",
+        "clusterId": "cluster-user-agent-and-skill-workflow-cautilus-eval-dev-skill-readme"
+      },
+      {
+        "appliedFields": [
+          "recommendedProof",
+          "verificationReadiness",
+          "evidenceStatus",
+          "reviewStatus",
+          "recommendedEvalSurface",
+          "evidenceRefs",
+          "nextAction",
+          "evidenceStatusReason"
+        ],
+        "claimId": "claim-readme-md-211",
+        "clusterId": "cluster-user-agent-and-skill-workflow-cautilus-eval-dev-skill-readme"
       }
     ],
-    "claimsPath": "/home/hwidong/codes/cautilus/.cautilus/claims/reviewed-typed-runners.json",
+    "claimsPath": "/tmp/cautilus-evidenced-typed-runners-a.json",
     "mergeDecisions": [],
-    "reviewResultPath": "/home/hwidong/codes/cautilus/.cautilus/claims/review-result-evidence-dev-skill-dogfood.json",
+    "reviewResultPath": "/home/hwidong/codes/cautilus/.cautilus/claims/review-result-evidence-dev-skill-routing-install.json",
     "schemaVersion": "cautilus.claim_review_result.v1",
     "unresolvedQuestions": []
   },
@@ -10403,6 +10437,12 @@
         "reviewer": "codex-lane-b",
         "scope": "clusters 3-5 only"
       },
+      "schemaVersion": "cautilus.claim_review_result.v1",
+      "sourceReviewInput": {}
+    },
+    {
+      "clusterCount": 1,
+      "reviewRun": {},
       "schemaVersion": "cautilus.claim_review_result.v1",
       "sourceReviewInput": {}
     },
@@ -10985,7 +11025,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:6cb402368a76eb5eae0d2d93ffd6d7b5e299b076bc6af9514e5382ed4d688392",
+      "contentHash": "sha256:cdcc3db4690a74eb06d4d1dc03927699097804bc284590e970ad2f9d5bee039c",
       "depth": 1,
       "discoveredFrom": "AGENTS.md",
       "kind": "docs",

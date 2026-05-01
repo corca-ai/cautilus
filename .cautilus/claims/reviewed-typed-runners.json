@@ -10339,7 +10339,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "5f400b3d5b14a055d8b0f544d780f44865d7e621",
+  "gitCommit": "6f6010b7a657a76aab9e517f34549b5a7b27b7b9",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "reviewApplication": {
@@ -11026,7 +11026,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:6cb402368a76eb5eae0d2d93ffd6d7b5e299b076bc6af9514e5382ed4d688392",
+      "contentHash": "sha256:cdcc3db4690a74eb06d4d1dc03927699097804bc284590e970ad2f9d5bee039c",
       "depth": 1,
       "discoveredFrom": "AGENTS.md",
       "kind": "docs",

@@ -1,0 +1,96 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-dev-skill-routing-install-codex-2026-05-01",
+  "createdForClaimIds": [
+    "claim-readme-md-144",
+    "claim-readme-md-211"
+  ],
+  "repoCommit": "6f6010b7a657a76aab9e517f34549b5a7b27b7b9",
+  "summary": "The self-dogfood-eval-skill Codex run returned accept-now for three dev/skill cases after install and agent-surface doctor preflight. The checked-in installed skill copy, Codex plugin marketplace, and Claude marketplace/plugin manifests are present with recorded content hashes.",
+  "evidenceScope": {
+    "targetSurface": "dev/skill",
+    "runtime": "codex",
+    "claimBoundary": "Supports the README claims that Cautilus can be used to check skill or agent trigger/execution/static-readiness behavior, and that the install path lands a bundled skill plus Codex/Claude agent plugin surfaces that can drive the contracts conversationally.",
+    "notClaimed": [
+      "Every possible skill prompt",
+      "All Cautilus claims",
+      "App/product behavior proof"
+    ]
+  },
+  "evalRun": {
+    "command": "./bin/cautilus eval test --repo-root . --adapter-name self-dogfood-eval-skill --runtime codex --output-dir ./artifacts/self-dogfood/eval-skill-codex/latest",
+    "recommendation": "accept-now",
+    "passed": 3,
+    "failed": 0,
+    "triggerCases": 1,
+    "executionCases": 2,
+    "summaryPath": "artifacts/self-dogfood/eval-skill-codex/latest/eval-summary.json",
+    "summaryContentHash": "sha256:54599e71786017268cf47cb2b19b5dbc30c02d53159fa2859a3cd262cf08137b",
+    "observedPath": "artifacts/self-dogfood/eval-skill-codex/latest/eval-observed.json",
+    "observedContentHash": "sha256:0d975e4a7b21bc1c426dd440cd1f67b71d00d7418d1c425464944fd3b328a5ea"
+  },
+  "caseEvidence": [
+    {
+      "caseId": "trigger-cautilus-test-request",
+      "kind": "trigger",
+      "aggregatePath": "artifacts/self-dogfood/eval-skill-codex/latest/local-skill-test/trigger-cautilus-test-request/aggregate.json",
+      "aggregateContentHash": "sha256:aeaccc12b003e1347c0b67d8fe02cf36e6400b5ad05f7abba6d48ef8f363da9c"
+    },
+    {
+      "caseId": "execution-cautilus-test-request",
+      "kind": "execution",
+      "aggregatePath": "artifacts/self-dogfood/eval-skill-codex/latest/local-skill-test/execution-cautilus-test-request/aggregate.json",
+      "aggregateContentHash": "sha256:8405f0741336949e65ef3d3311366d6aabf7af99619b99beabd61c77ada403bf"
+    },
+    {
+      "caseId": "execution-cautilus-no-input-claim-discovery-status",
+      "kind": "execution",
+      "aggregatePath": "artifacts/self-dogfood/eval-skill-codex/latest/local-skill-test/execution-cautilus-no-input-claim-discovery-status/aggregate.json",
+      "aggregateContentHash": "sha256:06ad671521fadc76de284d721de49cbd96199ecfef1dbd275dd39fff489a94f5"
+    }
+  ],
+  "installSurfaceEvidence": [
+    {
+      "path": ".agents/skills/cautilus/SKILL.md",
+      "kind": "installed-bundled-skill",
+      "contentHash": "sha256:0eebf7d5c7568b3703db2137d07cba5cf29f44353418e286a9ed6af919fc8968"
+    },
+    {
+      "path": ".agents/plugins/marketplace.json",
+      "kind": "codex-plugin-marketplace",
+      "contentHash": "sha256:243da35cfff71dbc3fc55fee6e4b19984a45e35a3f444b557a33923a888abdc7"
+    },
+    {
+      "path": ".claude-plugin/marketplace.json",
+      "kind": "claude-plugin-marketplace",
+      "contentHash": "sha256:1232c3f0fc5aacf65b102cf9bb8778107d554c19f19c50bfd73e3930f92c0537"
+    },
+    {
+      "path": "plugins/cautilus/.codex-plugin/plugin.json",
+      "kind": "codex-plugin-manifest",
+      "contentHash": "sha256:397ee8e6f2c4965789fcfe0ad2e18ac937fbe5e675b9bb4161bef5ab25de6a78"
+    },
+    {
+      "path": "plugins/cautilus/.claude-plugin/plugin.json",
+      "kind": "claude-plugin-manifest",
+      "contentHash": "sha256:213cd699b12694468e8f761467346931e906c1897c7d353497e28e1e3d41bdc2"
+    }
+  ],
+  "preflightEvidence": [
+    {
+      "command": "./bin/cautilus install --repo-root . --overwrite",
+      "stdoutPath": "artifacts/self-dogfood/eval-skill-codex/latest/preflight-1.stdout",
+      "stdoutContentHash": "sha256:d846b5dcc4c55354489b52c06dc56445fa28dc28e8db795c3b1429da25de6513"
+    },
+    {
+      "command": "./bin/cautilus doctor --repo-root . --scope agent-surface",
+      "stdoutPath": "artifacts/self-dogfood/eval-skill-codex/latest/preflight-2.stdout",
+      "stdoutContentHash": "sha256:17d74b0b1b5fc9a2eec0785d703992be036f0831eebec7ffedce01a1bf88c7fa"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The checked-in dev/skill self-dogfood suite passed trigger and execution cases under Codex after install and agent-surface doctor preflight, and the installed skill/plugin manifest surfaces are present with stable content hashes."
+  }
+}

@@ -19,11 +19,16 @@
   이제 dev proof promotion은 selected runtime name만 믿지 않고 observed telemetry runtime을 요구한다.
 - 2026-05-01 claim state는 `.cautilus/claims/latest.json` 기준 `candidateCount=327`이다.
   `agent-reviewed=13`, `heuristic=314`인 reviewed packet은 `.cautilus/claims/reviewed-typed-runners.json`에 있다.
-  `.cautilus/claims/evidenced-typed-runners.json`는 `claim-readme-md-148`을 `evidenceStatus=satisfied`로 올리고 `.cautilus/claims/evidence-dev-skill-dogfood.json`를 verified evidence ref로 연결한다.
-  `.cautilus/claims/eval-plan-evidenced-typed-runners.json`는 satisfied claim을 `already-satisfied`로 skip하고 남은 3개 `dev/skill` eval targets를 드러낸다.
+  `.cautilus/claims/evidenced-typed-runners.json`는 `claim-readme-md-144`, `claim-readme-md-148`, `claim-readme-md-211`을 `evidenceStatus=satisfied`로 올린다.
+  Evidence bundles are `.cautilus/claims/evidence-dev-skill-dogfood.json` and `.cautilus/claims/evidence-dev-skill-routing-install.json`.
+  `.cautilus/claims/eval-plan-evidenced-typed-runners.json`는 satisfied claims를 `already-satisfied`로 skip하고 남은 1개 `dev/skill` eval target, `claim-readme-md-3`, 를 드러낸다.
 - 2026-05-01 후속 dogfood로 `npm run dogfood:cautilus-review-to-eval-flow:eval:codex`를 다시 실행했다.
   결과는 `recommendation=accept-now`, `passed=1`, `failed=0`이고 artifact는 `artifacts/self-dogfood/cautilus-review-to-eval-flow-eval-codex/latest/eval-summary.json`이다.
   기존 first-scan / refresh-flow / review-prepare / reviewer-launch Codex dogfood summaries and audit packets도 모두 accept/pass 상태라, 이 다섯 run을 묶은 evidence bundle로 `claim-readme-md-148`은 satisfied 상태가 됐다.
+- 2026-05-01 후속 dogfood로 `./bin/cautilus eval test --repo-root . --adapter-name self-dogfood-eval-skill --runtime codex --output-dir ./artifacts/self-dogfood/eval-skill-codex/latest`를 실행했다.
+  결과는 `recommendation=accept-now`, `passed=3`, `failed=0`, trigger case 1개와 execution case 2개다.
+  이 run과 install/doctor preflight, installed skill/plugin manifest content hashes를 묶은 evidence bundle로 `claim-readme-md-144`와 `claim-readme-md-211`은 satisfied 상태가 됐다.
+  `claim-readme-md-3`은 더 넓은 positioning claim이라 아직 unknown으로 남겼다.
 - 2026-05-01 Cautilus dogfood 중 Charness follow-up 두 개를 열었다.
   [corca-ai/charness#87](https://github.com/corca-ai/charness/issues/87)는 delegated premortem reviewer가 nested subagent capability check를 다시 수행해 blocked로 끝나는 문제다.
   [corca-ai/charness#88](https://github.com/corca-ai/charness/issues/88)는 `debug` scaffold가 consumer repo에 없는 `scripts/validate_debug_artifact.py` 경로를 안내하는 문제다.

@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-01T00:00:00Z",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied when a checked-in evidence bundle records direct or verified proof for the claim boundary."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-user-agent-and-skill-workflow-cautilus-eval-dev-skill-readme",
+      "claimUpdates": [
+        {
+          "claimId": "claim-readme-md-144",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/skill",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the checked-in dev/skill routing/install evidence bundle: the self-dogfood-eval-skill Codex run passed one trigger case and two execution cases after install and agent-surface doctor preflight.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-dev-skill-routing-install.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:548add3d40d3b601c89ce9339b6eaa162ac5ddceaf3fe160998157876745a2a7",
+              "supportsClaimIds": [
+                "claim-readme-md-144"
+              ]
+            }
+          ],
+          "nextAction": "Keep this claim covered by rerunning self-dogfood-eval-skill when bundled skill routing, eval skill fixtures, install behavior, or static skill validation changes.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-readme-md-211",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/skill",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the checked-in dev/skill routing/install evidence bundle: install and doctor preflight passed, installed skill and Claude/Codex plugin manifests are present with recorded content hashes, and the installed skill drove trigger/execution contracts conversationally under Codex.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-dev-skill-routing-install.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:548add3d40d3b601c89ce9339b6eaa162ac5ddceaf3fe160998157876745a2a7",
+              "supportsClaimIds": [
+                "claim-readme-md-211"
+              ]
+            }
+          ],
+          "nextAction": "Keep install and agent-surface proof aligned with self-dogfood-eval-skill plus install/doctor smoke when plugin manifests or skill packaging change.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

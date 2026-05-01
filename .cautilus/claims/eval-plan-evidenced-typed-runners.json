@@ -34,78 +34,6 @@
       ],
       "targetSurface": "dev/skill",
       "unresolvedQuestions": []
-    },
-    {
-      "claimFingerprint": "sha256:cca48e23143767450d964a26876792773f2f92ca2d3588c21e022181f0c06a2e",
-      "claimId": "claim-readme-md-144",
-      "draftIntent": "Verify that Use when you change a skill or agent and want to know whether it still triggers on the right prompts, executes cleanly, and keeps its static validation passing.",
-      "evidenceStatus": "unknown",
-      "nextStep": "Create a host-owned cautilus.evaluation_input.v1 fixture and adapter-owned runner for this plan.",
-      "planId": "eval-plan-claim-readme-md-144",
-      "proofRequirement": {
-        "minimumProofClasses": [
-          "fixture-smoke",
-          "coding-agent-messaging",
-          "declared-eval-runner"
-        ],
-        "proofMechanism": "cautilus-eval",
-        "recommendedEvalSurface": "dev/skill",
-        "requiredObservability": [
-          "trigger",
-          "execution",
-          "loadedInstructionFiles",
-          "runtimeFingerprint"
-        ],
-        "requiredRunnerCapability": "development-skill-eval-runner",
-        "requiresProductRunnerProof": false
-      },
-      "reviewStatus": "agent-reviewed",
-      "sourceRefs": [
-        {
-          "excerpt": "Use when you change a skill or agent and want to know whether it still triggers on the right prompts, executes cleanly, and keeps its static validation passing.",
-          "line": 144,
-          "path": "README.md"
-        }
-      ],
-      "targetSurface": "dev/skill",
-      "unresolvedQuestions": []
-    },
-    {
-      "claimFingerprint": "sha256:0326670200c2a6f36720afd68b0bf4dded8a6d931270b22ff70f68d3fe459927",
-      "claimId": "claim-readme-md-211",
-      "draftIntent": "Verify that Agent track — Claude / Codex plugin.** The `cautilus install` step also lands a bundled skill at `.agents/skills/cautilus/` with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally.",
-      "evidenceStatus": "unknown",
-      "nextStep": "Create a host-owned cautilus.evaluation_input.v1 fixture and adapter-owned runner for this plan.",
-      "planId": "eval-plan-claim-readme-md-211",
-      "proofRequirement": {
-        "minimumProofClasses": [
-          "fixture-smoke",
-          "coding-agent-messaging",
-          "declared-eval-runner"
-        ],
-        "proofMechanism": "cautilus-eval",
-        "recommendedEvalSurface": "dev/skill",
-        "requiredObservability": [
-          "trigger",
-          "execution",
-          "loadedInstructionFiles",
-          "runtimeFingerprint"
-        ],
-        "requiredRunnerCapability": "development-skill-eval-runner",
-        "requiresProductRunnerProof": false
-      },
-      "reviewStatus": "agent-reviewed",
-      "sourceRefs": [
-        {
-          "excerpt": "Agent track — Claude / Codex plugin.** The `cautilus install` step also lands a bundled skill at `.agents/skills/cautilus/` with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally.",
-          "line": 211,
-          "path": "README.md"
-        }
-      ],
-      "targetSurface": "dev/skill",
-      "unresolvedQuestions": [
-        "Should discovery split this into a deterministic install/materialization claim and a separate dev/skill conversational-driving claim?"
-      ]
     }
   ],
   "inputPath": "/home/hwidong/codes/cautilus/.cautilus/claims/evidenced-typed-runners.json",
@@ -182,6 +110,10 @@
       "reason": "not-cautilus-eval"
     },
     {
+      "claimId": "claim-readme-md-144",
+      "reason": "already-satisfied"
+    },
+    {
       "claimId": "claim-readme-md-148",
       "reason": "already-satisfied"
     },
@@ -204,6 +136,10 @@
     {
       "claimId": "claim-readme-md-192",
       "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-readme-md-211",
+      "reason": "already-satisfied"
     },
     {
       "claimId": "claim-readme-md-231",
@@ -1420,7 +1356,7 @@
   ],
   "sourceClaimPacket": {
     "candidateCount": 327,
-    "gitCommit": "5f400b3d5b14a055d8b0f544d780f44865d7e621",
+    "gitCommit": "6f6010b7a657a76aab9e517f34549b5a7b27b7b9",
     "schemaVersion": "cautilus.claim_proof_plan.v1"
   }
 }
