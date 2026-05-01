@@ -1,5 +1,5 @@
 {
-  "candidateCount": 320,
+  "candidateCount": 319,
   "claimCandidates": [
     {
       "claimAudience": "developer",
@@ -783,38 +783,8 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:f7c182da0fc450111f698b596f940382cb060ee2db86ebdb9c5194ec4ca0f98d",
-      "claimId": "claim-docs-cli-reference-md-32",
-      "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:user",
-        "deterministic",
-        "docs",
-        "linked-from:README.md"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
-      "proofLayer": "deterministic",
-      "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "The lower-level compatibility command `cautilus skills install` remains available when a workflow needs to call the skill installer directly.",
-          "line": 32,
-          "path": "docs/cli-reference.md"
-        }
-      ],
-      "summary": "The lower-level compatibility command `cautilus skills install` remains available when a workflow needs to call the skill installer directly.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
-    },
-    {
-      "claimAudience": "user",
-      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:671bbb74f00daae3b1fc95c03a26ee69ad1317df7b6b0210ed589f6cfe159d66",
-      "claimId": "claim-docs-cli-reference-md-33",
+      "claimId": "claim-docs-cli-reference-md-32",
       "claimSemanticGroup": "Release and packaging",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -832,7 +802,7 @@
       "sourceRefs": [
         {
           "excerpt": "Legacy Homebrew installs are not a supported update channel anymore; remove them and reinstall through `install.sh` instead of mixing channels.",
-          "line": 33,
+          "line": 32,
           "path": "docs/cli-reference.md"
         }
       ],
@@ -844,7 +814,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:027d54c6a13e15d151b75ec2d5c4acd54f3cb49571cd36e66deece32a54cff2c",
-      "claimId": "claim-docs-cli-reference-md-109",
+      "claimId": "claim-docs-cli-reference-md-108",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -864,7 +834,7 @@
       "sourceRefs": [
         {
           "excerpt": "It emits `cautilus.agent_status.v1`: a read-only orientation packet over binary health, local agent-surface readiness, adapter state, claim-state availability, scan scope, and branch choices.",
-          "line": 109,
+          "line": 108,
           "path": "docs/cli-reference.md"
         }
       ],
@@ -876,7 +846,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:005c3b9342e1ac04e79a401f42a143ac17f820945d363db8f38004ec518975e1",
-      "claimId": "claim-docs-cli-reference-md-111",
+      "claimId": "claim-docs-cli-reference-md-110",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -896,7 +866,7 @@
       "sourceRefs": [
         {
           "excerpt": "If repo setup is ready but runner proof is not, that next action can point at runner assessment setup before the first bounded eval loop.",
-          "line": 111,
+          "line": 110,
           "path": "docs/cli-reference.md"
         }
       ],
@@ -908,7 +878,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:05cfeb55eaea8684b0ead0e9d6949afc8e31e32d5d2fa6bf2c36d978b6c248e9",
-      "claimId": "claim-docs-cli-reference-md-115",
+      "claimId": "claim-docs-cli-reference-md-114",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -926,7 +896,7 @@
       "sourceRefs": [
         {
           "excerpt": "When a repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, run `cautilus doctor --repo-root /path/to/repo --adapter-name \u003cname\u003e` for repo-scope validation instead of expecting plain `doctor` to guess which named adapter you mean.",
-          "line": 115,
+          "line": 114,
           "path": "docs/cli-reference.md"
         }
       ],
@@ -938,7 +908,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:677531528b5130a8cb2c449a6df5177abb7ee7d925262299b9123f87c1e7e60c",
-      "claimId": "claim-docs-cli-reference-md-116",
+      "claimId": "claim-docs-cli-reference-md-115",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -956,7 +926,7 @@
       "sourceRefs": [
         {
           "excerpt": "Use `cautilus claim discover` before writing eval fixtures when you need to inventory declared behavior claims and decide whether each belongs in human review, deterministic CI, Cautilus eval, scenario proposal work, or alignment work.",
-          "line": 116,
+          "line": 115,
           "path": "docs/cli-reference.md"
         }
       ],
@@ -968,7 +938,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:ddd6e85737a56116b1eb1766cd75a85b6d2d11e7f7775ff3ce6d9f62d9748829",
-      "claimId": "claim-docs-cli-reference-md-127",
+      "claimId": "claim-docs-cli-reference-md-126",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -988,7 +958,7 @@
       "sourceRefs": [
         {
           "excerpt": "It emits `cautilus.claim_review_input.v1` and does not call an LLM or mark claims satisfied.",
-          "line": 127,
+          "line": 126,
           "path": "docs/cli-reference.md"
         }
       ],
@@ -1000,7 +970,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:10dc5fd8f817011f748f06bba796f3567abb6cfd596947ecff3ff1f6fdf00e95",
-      "claimId": "claim-docs-cli-reference-md-171",
+      "claimId": "claim-docs-cli-reference-md-170",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -1020,7 +990,7 @@
       "sourceRefs": [
         {
           "excerpt": "An eval live instance is one live consumer target on this host that `Cautilus` can select by stable id.",
-          "line": 171,
+          "line": 170,
           "path": "docs/cli-reference.md"
         }
       ],
@@ -1032,7 +1002,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:d3e7739baffe7430517819e439f1f2430e91a74ff7123b0de3241b8c17aceef8",
-      "claimId": "claim-docs-cli-reference-md-183",
+      "claimId": "claim-docs-cli-reference-md-182",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -1052,7 +1022,7 @@
       "sourceRefs": [
         {
           "excerpt": "When the public scenario uses `simulator.kind: persona_prompt`, the adapter additionally provides `simulator_persona_command_template`, which normally calls `cautilus eval live run-simulator-persona` with repo-specific backend flags.",
-          "line": 183,
+          "line": 182,
           "path": "docs/cli-reference.md"
         }
       ],
@@ -1064,7 +1034,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:0fb7d2b87e1402f9d2997f30c4fe48f61e05ea9654c80981f5c80b85574f2e1d",
-      "claimId": "claim-docs-cli-reference-md-184",
+      "claimId": "claim-docs-cli-reference-md-183",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -1084,7 +1054,7 @@
       "sourceRefs": [
         {
           "excerpt": "That keeps persona prompt shaping and result semantics product-owned while backend selection stays adapter-owned.",
-          "line": 184,
+          "line": 183,
           "path": "docs/cli-reference.md"
         }
       ],
@@ -1096,7 +1066,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:313275317465567a22c5d4992ec031f8aa811338e2281d6c84520f52f8f7b556",
-      "claimId": "claim-docs-cli-reference-md-254",
+      "claimId": "claim-docs-cli-reference-md-253",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -1114,7 +1084,7 @@
       "sourceRefs": [
         {
           "excerpt": "The same packet also emits an `attentionView`, which is a bounded human-facing shortlist derived from the full ranked set.",
-          "line": 254,
+          "line": 253,
           "path": "docs/cli-reference.md"
         }
       ],
@@ -1126,7 +1096,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:c92e1512edd768678bfa8a2047aed48205fdc5b1b4eac23b5affe38b4f8a68c3",
-      "claimId": "claim-docs-cli-reference-md-256",
+      "claimId": "claim-docs-cli-reference-md-255",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -1146,7 +1116,7 @@
       "sourceRefs": [
         {
           "excerpt": "It links normalized chatbot threads to scenario proposals and coverage hints so an operator can review behavior-eval evidence without browsing every live operator turn.",
-          "line": 256,
+          "line": 255,
           "path": "docs/cli-reference.md"
         }
       ],
@@ -1158,7 +1128,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:3abe64a979d238c9760ba219c69eccf79d874dd45f4d7c8bf954e9ad207a2e33",
-      "claimId": "claim-docs-cli-reference-md-264",
+      "claimId": "claim-docs-cli-reference-md-263",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -1178,7 +1148,7 @@
       "sourceRefs": [
         {
           "excerpt": "`cautilus eval test` runs a checked-in fixture through an adapter-owned runner and then evaluates the observed packet.",
-          "line": 264,
+          "line": 263,
           "path": "docs/cli-reference.md"
         }
       ],
@@ -1190,7 +1160,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:1e30b87e2f299951a03c64f4f891326883f447714f997c5b496c8f5a130c8219",
-      "claimId": "claim-docs-cli-reference-md-268",
+      "claimId": "claim-docs-cli-reference-md-267",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -1210,7 +1180,7 @@
       "sourceRefs": [
         {
           "excerpt": "`cautilus eval evaluate` evaluates an already-observed packet without launching the runner again.",
-          "line": 268,
+          "line": 267,
           "path": "docs/cli-reference.md"
         }
       ],
@@ -1222,7 +1192,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:83c81805880b9762061d7ae0e99d4469f41a78b6e801d6b775db03151fe12d8d",
-      "claimId": "claim-docs-cli-reference-md-424",
+      "claimId": "claim-docs-cli-reference-md-423",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -1240,7 +1210,7 @@
       "sourceRefs": [
         {
           "excerpt": "A variant can finish as `passed`, `blocked`, or `failed`; blocked runs carry machine-readable reason codes instead of prose-only abort text.",
-          "line": 424,
+          "line": 423,
           "path": "docs/cli-reference.md"
         }
       ],
@@ -1252,7 +1222,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:84f315418d5b081d4b95da8d83048ba5c06db7fc31de2ab8b4105677a087e315",
-      "claimId": "claim-docs-cli-reference-md-428",
+      "claimId": "claim-docs-cli-reference-md-427",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -1272,7 +1242,7 @@
       "sourceRefs": [
         {
           "excerpt": "When `--output-text-key` is present, Cautilus also extracts that JSON narrative span into the rendered prompt so the judge can read the realized output directly.",
-          "line": 428,
+          "line": 427,
           "path": "docs/cli-reference.md"
         }
       ],
@@ -1284,7 +1254,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:4e71a63710e91c116f1577d1c862f0a10316bb0d32592a8caf8703b79ad2f4ce",
-      "claimId": "claim-docs-cli-reference-md-484",
+      "claimId": "claim-docs-cli-reference-md-483",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -1302,7 +1272,7 @@
       "sourceRefs": [
         {
           "excerpt": "These renderers answer: \"what should a human reviewer open first if they should inspect the same decision surface without parsing raw JSON?\"",
-          "line": 484,
+          "line": 483,
           "path": "docs/cli-reference.md"
         }
       ],
@@ -1314,7 +1284,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:0d2d0ae18ce22c8340114c00a1c819ca126769c3214c11aeeb592815afda81e2",
-      "claimId": "claim-docs-cli-reference-md-502",
+      "claimId": "claim-docs-cli-reference-md-501",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -1334,7 +1304,7 @@
       "sourceRefs": [
         {
           "excerpt": "Shipped runtime entrypoints such as `cautilus eval live discover` and `cautilus eval live run` are Go-owned now and should be called through the CLI instead of direct `node scripts/agent-runtime/...` paths.",
-          "line": 502,
+          "line": 501,
           "path": "docs/cli-reference.md"
         }
       ],
@@ -9926,11 +9896,11 @@
   "claimSummary": {
     "byClaimAudience": {
       "developer": 251,
-      "user": 69
+      "user": 68
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 51,
-      "Agent and skill workflow": 85,
+      "Agent and skill workflow": 84,
       "Claim discovery and review": 19,
       "Documentation and contracts": 81,
       "Evaluation surfaces": 2,
@@ -9940,31 +9910,31 @@
       "Release and packaging": 5
     },
     "byEvidenceStatus": {
-      "unknown": 320
+      "unknown": 319
     },
     "byLifecycle": {
-      "new": 320
+      "new": 319
     },
     "byProofLayer": {
       "alignment-work": 9,
       "cautilus-eval": 157,
-      "deterministic": 119,
+      "deterministic": 118,
       "human-auditable": 29,
       "scenario-candidate": 6
     },
     "byRecommendedProof": {
       "cautilus-eval": 163,
-      "deterministic": 119,
+      "deterministic": 118,
       "human-auditable": 38
     },
     "byReviewStatus": {
-      "heuristic": 320
+      "heuristic": 319
     },
     "byVerificationReadiness": {
       "blocked": 2,
       "needs-alignment": 9,
       "needs-scenario": 6,
-      "ready-to-verify": 303
+      "ready-to-verify": 302
     }
   },
   "discoveryMode": "deterministic-source-inventory",
@@ -10112,7 +10082,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "34c16621621456ae28b2552f222dcf89e23a5b5b",
+  "gitCommit": "288fa82bec8b9759f1e8130f290f12ec3eda7aa2",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "schemaVersion": "cautilus.claim_proof_plan.v1",
@@ -10555,7 +10525,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:1339a303bd4623059cb207576c18b6f1a17b842e805f7af6b0d4e5cc83f60d3d",
+      "contentHash": "sha256:e5bf4836febc8aa3e2a4ccb94799f0147545e76136f450fc8306f1ca91173700",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "docs",

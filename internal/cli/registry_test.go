@@ -48,8 +48,8 @@ func TestRenderUsageIncludesLifecycleCommands(t *testing.T) {
 	if !strings.Contains(usage, "cautilus install [--repo-root <path>] [--overwrite] [--json]") {
 		t.Fatalf("usage missing install line:\n%s", usage)
 	}
-	if !strings.Contains(usage, "cautilus skills install [--overwrite]") {
-		t.Fatalf("usage missing skills install line:\n%s", usage)
+	if strings.Contains(usage, "cautilus skills install") {
+		t.Fatalf("usage still includes removed skills install command:\n%s", usage)
 	}
 	if !strings.Contains(usage, "cautilus update [--repo-root <path>] [--json]") {
 		t.Fatalf("usage missing update line:\n%s", usage)
@@ -129,10 +129,10 @@ func TestDecodeRegistryRejectsUnknownCommandFields(t *testing.T) {
 		"groups": [{"id": "setup", "label": "Set up and check a repo"}],
 		"commands": [
 			{
-				"path": ["skills", "install"],
+				"path": ["install"],
 				"group": "setup",
-				"usage": "cautilus skills install [--overwrite]",
-				"example": "cautilus skills install",
+				"usage": "cautilus install [--repo-root <path>] [--overwrite] [--json]",
+				"example": "cautilus install --repo-root .",
 				"script": "scripts/install-skills.mjs"
 			}
 		]

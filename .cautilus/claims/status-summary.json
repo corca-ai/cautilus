@@ -1,5 +1,5 @@
 {
-  "candidateCount": 320,
+  "candidateCount": 319,
   "claimState": {
     "path": ".cautilus/claims/latest.json",
     "pathSource": "adapter",
@@ -15,50 +15,134 @@
     ]
   },
   "claimSummary": {
-    "byClaimAudience": {
-      "developer": 251,
-      "user": 69
-    },
-    "byClaimSemanticGroup": {
-      "Adapter and portability": 52,
-      "Agent and skill workflow": 86,
-      "Claim discovery and review": 17,
-      "Documentation and contracts": 81,
-      "Evaluation surfaces": 2,
-      "Improvement and optimization": 21,
-      "Packets and reporting": 27,
-      "Quality gates": 29,
-      "Release and packaging": 5
-    },
-    "byEvidenceStatus": {
-      "satisfied": 4,
-      "unknown": 316
-    },
-    "byLifecycle": {
-      "new": 320
-    },
-    "byProofLayer": {
-      "alignment-work": 9,
-      "cautilus-eval": 160,
-      "deterministic": 119,
-      "human-auditable": 27,
-      "scenario-candidate": 5
-    },
-    "byRecommendedProof": {
-      "cautilus-eval": 165,
-      "deterministic": 119,
-      "human-auditable": 36
-    },
-    "byReviewStatus": {
-      "agent-reviewed": 14,
-      "heuristic": 306
-    },
-    "byVerificationReadiness": {
-      "blocked": 2,
-      "needs-alignment": 9,
-      "needs-scenario": 5,
-      "ready-to-verify": 304
-    }
+    "byClaimAudience": [
+      {
+        "count": 251,
+        "key": "developer"
+      },
+      {
+        "count": 68,
+        "key": "user"
+      }
+    ],
+    "byClaimSemanticGroup": [
+      {
+        "count": 86,
+        "key": "Agent and skill workflow"
+      },
+      {
+        "count": 81,
+        "key": "Documentation and contracts"
+      },
+      {
+        "count": 53,
+        "key": "Adapter and portability"
+      },
+      {
+        "count": 29,
+        "key": "Quality gates"
+      },
+      {
+        "count": 27,
+        "key": "Packets and reporting"
+      },
+      {
+        "count": 21,
+        "key": "Improvement and optimization"
+      },
+      {
+        "count": 16,
+        "key": "Claim discovery and review"
+      },
+      {
+        "count": 4,
+        "key": "Release and packaging"
+      },
+      {
+        "count": 2,
+        "key": "Evaluation surfaces"
+      }
+    ],
+    "byEvidenceStatus": [
+      {
+        "count": 315,
+        "key": "unknown"
+      },
+      {
+        "count": 4,
+        "key": "satisfied"
+      }
+    ],
+    "byLifecycle": [
+      {
+        "count": 319,
+        "key": "new"
+      }
+    ],
+    "byProofLayer": [
+      {
+        "count": 160,
+        "key": "cautilus-eval"
+      },
+      {
+        "count": 118,
+        "key": "deterministic"
+      },
+      {
+        "count": 27,
+        "key": "human-auditable"
+      },
+      {
+        "count": 9,
+        "key": "alignment-work"
+      },
+      {
+        "count": 5,
+        "key": "scenario-candidate"
+      }
+    ],
+    "byRecommendedProof": [
+      {
+        "count": 165,
+        "key": "cautilus-eval"
+      },
+      {
+        "count": 118,
+        "key": "deterministic"
+      },
+      {
+        "count": 36,
+        "key": "human-auditable"
+      }
+    ],
+    "byReviewStatus": [
+      {
+        "count": 305,
+        "key": "heuristic"
+      },
+      {
+        "count": 14,
+        "key": "agent-reviewed"
+      }
+    ],
+    "byVerificationReadiness": [
+      {
+        "count": 303,
+        "key": "ready-to-verify"
+      },
+      {
+        "count": 9,
+        "key": "needs-alignment"
+      },
+      {
+        "count": 5,
+        "key": "needs-scenario"
+      },
+      {
+        "count": 2,
+        "key": "blocked"
+      }
+    ]
   },
   "effectiveScanScope": {
     "adapterFound": true,
@@ -285,40 +369,18 @@
       }
     ]
   },
-  "gitCommit": "34c16621621456ae28b2552f222dcf89e23a5b5b",
+  "gitCommit": "288fa82bec8b9759f1e8130f290f12ec3eda7aa2",
   "gitState": {
-    "changedFileCount": 21,
-    "changedFiles": [
-      ".agents/cautilus-adapter.yaml",
-      ".cautilus/claims/eval-plan-evidenced-typed-runners.json",
-      ".cautilus/claims/eval-plan-reviewed-typed-runners.json",
-      ".cautilus/claims/eval-plan-typed-runners.json",
-      ".cautilus/claims/evidenced-typed-runners.json",
-      ".cautilus/claims/latest.json",
-      ".cautilus/claims/review-input-typed-runners.json",
-      ".cautilus/claims/reviewed-typed-runners.json",
-      ".cautilus/claims/status-summary.json",
-      ".cautilus/runners/dev-repo-self-dogfood.assessment.json",
-      "charness-artifacts/debug/debug-2026-05-01-evidence-preflight-nilerr.md",
-      "docs/cli-reference.md",
-      "docs/contracts/adapter-contract.md",
-      "docs/contracts/claim-discovery-workflow.md",
-      "docs/internal/handoff.md",
-      "docs/master-plan.md",
-      "docs/specs/command-surfaces.spec.md",
-      "internal/cli/command-registry.json",
-      "internal/contracts/constants.go",
-      "internal/runtime/claim_discovery.go",
-      "internal/runtime/claim_discovery_test.go"
-    ],
+    "changedFileCount": 0,
+    "changedFiles": [],
     "changedSourceCount": 0,
     "changedSources": [],
-    "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "90d4088329d3d2a09981ede50941ff55efd9fbd0",
-    "headDrift": true,
+    "comparisonStatus": "fresh",
+    "currentGitCommit": "288fa82bec8b9759f1e8130f290f12ec3eda7aa2",
+    "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "34c16621621456ae28b2552f222dcf89e23a5b5b",
-    "recommendedAction": "The current HEAD differs from the packet commit, but no recorded claim source changed; review and eval planning may continue.",
+    "packetGitCommit": "288fa82bec8b9759f1e8130f290f12ec3eda7aa2",
+    "recommendedAction": "The claim packet commit matches the current checkout.",
     "workingTreePolicy": "excluded"
   },
   "inputPath": ".cautilus/claims/evidenced-typed-runners.json",
@@ -327,20 +389,12 @@
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "recommendedNextActions": [
     {
-      "id": "prepare-claim-review",
-      "summary": "Prepare bounded LLM claim review clusters after setting a review budget, before drafting eval scenarios."
-    },
-    {
-      "id": "add-deterministic-proof",
-      "summary": "Add or connect unit, lint, build, schema, or CI proof for deterministic claims."
-    },
-    {
-      "id": "resolve-alignment",
-      "summary": "Reconcile alignment-work claims before treating them as verification targets."
+      "id": "inspect-full-packet",
+      "summary": "Inspect the full claim packet and select claims manually."
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 292,
+    "heuristicClaimsReadyForReview": 291,
     "needsAlignment": 9,
     "needsScenario": 5
   },

@@ -218,12 +218,6 @@
       "example": "cautilus update --repo-root ."
     },
     {
-      "path": ["skills", "install"],
-      "group": "setup",
-      "usage": "cautilus skills install [--overwrite]",
-      "example": "cautilus skills install"
-    },
-    {
       "path": ["adapter", "resolve"],
       "group": "setup",
       "usage": "cautilus adapter resolve [args]",

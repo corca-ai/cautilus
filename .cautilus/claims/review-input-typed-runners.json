@@ -788,7 +788,7 @@
       "reason": "max-clusters-exceeded"
     },
     {
-      "claimCount": 2,
+      "claimCount": 1,
       "clusterId": "cluster-user-agent-and-skill-workflow-deterministic-docs",
       "groupKey": "user:Agent and skill workflow:deterministic:docs",
       "reason": "max-clusters-exceeded"
@@ -1341,8 +1341,8 @@
     }
   ],
   "sourceClaimPacket": {
-    "candidateCount": 320,
-    "gitCommit": "34c16621621456ae28b2552f222dcf89e23a5b5b",
+    "candidateCount": 319,
+    "gitCommit": "288fa82bec8b9759f1e8130f290f12ec3eda7aa2",
     "schemaVersion": "cautilus.claim_proof_plan.v1"
   },
   "sourceRoot": "."

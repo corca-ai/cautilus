@@ -29,7 +29,6 @@ cautilus version --verbose
 who it is for, which archetype to start from, and which report fields now matter
 when a run rejects.
 
-The lower-level compatibility command `cautilus skills install` remains available when a workflow needs to call the skill installer directly.
 Legacy Homebrew installs are not a supported update channel anymore; remove them and reinstall through `install.sh` instead of mixing channels.
 
 ## Adapter bootstrap

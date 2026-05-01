@@ -954,12 +954,12 @@ func TestCLIReviewVariantsCanUseDirectScenarioOutputReview(t *testing.T) {
 	}
 }
 
-func TestCLISkillsInstallCreatesRepoLocalCanonicalSkill(t *testing.T) {
+func TestCLIInstallCreatesRepoLocalCanonicalSkill(t *testing.T) {
 	root := t.TempDir()
 
-	stdout, stderr, exitCode := runCLI(t, root, "skills", "install")
+	stdout, stderr, exitCode := runCLI(t, root, "install", "--repo-root", ".")
 	if exitCode != 0 {
-		t.Fatalf("skills install failed: %s", stderr)
+		t.Fatalf("install failed: %s", stderr)
 	}
 	if !strings.Contains(stdout, ".agents/skills/cautilus") {
 		t.Fatalf("expected install output, got %q", stdout)
@@ -1013,7 +1013,7 @@ func TestCLISkillsInstallCreatesRepoLocalCanonicalSkill(t *testing.T) {
 		t.Fatalf("unexpected symlink target: %s", target)
 	}
 
-	_, stderr, exitCode = runCLI(t, root, "skills", "install")
+	_, stderr, exitCode = runCLI(t, root, "install", "--repo-root", ".")
 	if exitCode != 1 || !strings.Contains(stderr, "already exists") {
 		t.Fatalf("expected already exists failure, got exit=%d stderr=%q", exitCode, stderr)
 	}
@@ -1095,7 +1095,7 @@ func TestCLIInstallCreatesRepoLocalCanonicalSkillAndReportsCurrentCLI(t *testing
 	}
 }
 
-func TestCLISkillsInstallMigratesLegacyClaudeSkills(t *testing.T) {
+func TestCLIInstallMigratesLegacyClaudeSkills(t *testing.T) {
 	root := t.TempDir()
 	legacyDir := filepath.Join(root, ".claude", "skills", "legacy")
 	if err := os.MkdirAll(legacyDir, 0o755); err != nil {
@@ -1105,9 +1105,9 @@ func TestCLISkillsInstallMigratesLegacyClaudeSkills(t *testing.T) {
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
 
-	_, stderr, exitCode := runCLI(t, root, "skills", "install", "--overwrite")
+	_, stderr, exitCode := runCLI(t, root, "install", "--repo-root", ".", "--overwrite")
 	if exitCode != 0 {
-		t.Fatalf("skills install --overwrite failed: %s", stderr)
+		t.Fatalf("install --overwrite failed: %s", stderr)
 	}
 	if _, err := os.Stat(filepath.Join(root, ".agents", "skills", "legacy", "SKILL.md")); err != nil {
 		t.Fatalf("expected migrated legacy skill: %v", err)

@@ -170,26 +170,6 @@ func handleInstall(repoRoot string, cwd string, args []string, stdout io.Writer,
 }
 
 //nolint:errcheck // CLI stdout/stderr reporting is best-effort.
-func handleSkillsInstall(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
-	options, err := parseInstallArgs(args, cwd)
-	if err != nil {
-		fmt.Fprintf(stderr, "%s\n", err)
-		return 1
-	}
-	var logBuffer bytes.Buffer
-	targetRepo := resolveRepoRoot(cwd, options.repoRoot)
-	skill, err := installBundledSkill(targetRepo, options.overwrite, &logBuffer)
-	if err != nil {
-		fmt.Fprintf(stderr, "%s\n", err)
-		return 1
-	}
-	writeLifecycleMessages(stdout, logLines(logBuffer.String()))
-	fmt.Fprintf(stdout, "Installed %s\n", skill.DestinationDir)
-	_, _ = fmt.Fprintln(stdout, "Installed skill expects `cautilus` to be available on PATH.")
-	return 0
-}
-
-//nolint:errcheck // CLI stdout/stderr reporting is best-effort.
 func handleUpdate(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
 	options, err := parseUpdateArgs(args, cwd)
 	if err != nil {

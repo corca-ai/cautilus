@@ -894,7 +894,7 @@ func TestRunPrefixHelpWorksForCommandGroups(t *testing.T) {
 	}
 }
 
-func TestRunSkillsInstallDoesNotRequireToolRoot(t *testing.T) {
+func TestRunInstallDoesNotRequireToolRoot(t *testing.T) {
 	repoRoot := t.TempDir()
 	t.Setenv("CAUTILUS_CALLER_CWD", repoRoot)
 	t.Setenv("CAUTILUS_TOOL_ROOT", "")
@@ -904,7 +904,7 @@ func TestRunSkillsInstallDoesNotRequireToolRoot(t *testing.T) {
 
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
-	exitCode := Run([]string{"skills", "install"}, &stdout, &stderr)
+	exitCode := Run([]string{"install", "--repo-root", "."}, &stdout, &stderr)
 	if exitCode != 0 {
 		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
 	}
