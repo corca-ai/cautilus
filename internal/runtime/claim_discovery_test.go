@@ -144,6 +144,71 @@ func TestDiscoverClaimProofPlanMergesIdenticalClaimsAcrossDistinctSources(t *tes
 	}
 }
 
+func TestDiscoverClaimProofPlanCarriesPreviousEvidenceByFingerprint(t *testing.T) {
+	repoRoot := t.TempDir()
+	mustWriteFile(t, filepath.Join(repoRoot, "README.md"), strings.Join([]string{
+		"# Product",
+		"",
+		"Cautilus should keep reviewed evidence attached when line-number claim ids drift.",
+		"",
+	}, "\n"))
+	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan returned error: %v", err)
+	}
+	candidate := asMap(arrayOrEmpty(plan["claimCandidates"])[0])
+	currentClaimID := stringFromAny(candidate["claimId"])
+	previousClaimID := "claim-readme-md-999"
+	previous := map[string]any{
+		"schemaVersion":   contracts.ClaimProofPlanSchema,
+		"sourceRoot":      ".",
+		"sourceInventory": plan["sourceInventory"],
+		"claimCandidates": []any{
+			map[string]any{
+				"claimId":                previousClaimID,
+				"claimFingerprint":       candidate["claimFingerprint"],
+				"summary":                candidate["summary"],
+				"recommendedProof":       candidate["recommendedProof"],
+				"recommendedEvalSurface": candidate["recommendedEvalSurface"],
+				"verificationReadiness":  candidate["verificationReadiness"],
+				"evidenceStatus":         "satisfied",
+				"reviewStatus":           "agent-reviewed",
+				"lifecycle":              "carried-forward",
+				"groupHints":             []any{"cautilus-eval"},
+				"evidenceRefs": []any{
+					map[string]any{
+						"kind":             "test",
+						"path":             "internal/runtime/claim_discovery_test.go",
+						"matchKind":        "verified",
+						"contentHash":      "sha256:test",
+						"supportsClaimIds": []any{previousClaimID},
+					},
+				},
+				"sourceRefs": candidate["sourceRefs"],
+			},
+		},
+	}
+	previousPath := filepath.Join(repoRoot, "previous-claims.json")
+	writeClaimDiscoveryJSONFixture(t, previousPath, previous)
+
+	refreshed, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot, PreviousPath: previousPath})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan with previous returned error: %v", err)
+	}
+	refreshedCandidate := asMap(arrayOrEmpty(refreshed["claimCandidates"])[0])
+	if refreshedCandidate["reviewStatus"] != "agent-reviewed" || refreshedCandidate["evidenceStatus"] != "satisfied" {
+		t.Fatalf("expected reviewed evidence to carry forward, got %#v", refreshedCandidate)
+	}
+	ref := asMap(arrayOrEmpty(refreshedCandidate["evidenceRefs"])[0])
+	if supports := stringArrayOrEmpty(ref["supportsClaimIds"]); !containsString(supports, currentClaimID) || containsString(supports, previousClaimID) {
+		t.Fatalf("expected evidence supportsClaimIds to be rewritten to current claim id, got %#v", ref)
+	}
+	carryForward := asMap(refreshed["carryForward"])
+	if carryForward["matchedClaimCount"] != 1 || carryForward["evidenceSupportIdRewriteCount"] != 1 {
+		t.Fatalf("expected carry-forward summary to record match and rewrite, got %#v", carryForward)
+	}
+}
+
 func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 	repoRoot := t.TempDir()
 	mustWriteFile(t, filepath.Join(repoRoot, "README.md"), strings.Join([]string{
@@ -1000,6 +1065,17 @@ func mustWriteFile(t *testing.T, path string, content string) {
 		t.Fatalf("MkdirAll returned error: %v", err)
 	}
 	if err := os.WriteFile(path, []byte(content), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+}
+
+func writeClaimDiscoveryJSONFixture(t *testing.T, path string, value map[string]any) {
+	t.Helper()
+	payload, err := json.MarshalIndent(value, "", "  ")
+	if err != nil {
+		t.Fatalf("MarshalIndent returned error: %v", err)
+	}
+	if err := os.WriteFile(path, append(payload, '\n'), 0o644); err != nil {
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
 }

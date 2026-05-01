@@ -17,11 +17,12 @@
   `./bin/cautilus eval test --repo-root . --runtime codex --output-dir ./artifacts/self-dogfood/dev-repo-self-dogfood/latest`는 `recommendation=accept-now`, `passed=1`, `failed=0`이었다.
   `.cautilus/runners/dev-repo-self-dogfood.assessment.json`는 adapter hash와 runner file hashes 기준으로 fresh이고, `agent status`에서 `runnerReadiness.state=assessed`, `reason=runner-assessment-ready`다.
   이제 dev proof promotion은 selected runtime name만 믿지 않고 observed telemetry runtime을 요구한다.
-- 2026-05-01 claim state는 `.cautilus/claims/latest.json` 기준 `candidateCount=321`이다.
+- 2026-05-01 claim state는 `.cautilus/claims/latest.json` 기준 `candidateCount=322`이다.
   `claim_discovery.state_path`는 raw discovery baseline인 `.cautilus/claims/latest.json`이고, `agent status`는 `related_state_paths`로 reviewed/evidenced packets도 함께 요약한다.
-  `agent-reviewed=13`, `heuristic=308`인 reviewed packet은 `.cautilus/claims/reviewed-typed-runners.json`에 있다.
-  `.cautilus/claims/evidenced-typed-runners.json`는 `claim-readme-md-144`, `claim-readme-md-148`, `claim-readme-md-211`, `claim-docs-contracts-claim-discovery-workflow-md-611`을 `evidenceStatus=satisfied`로 올린다.
-  그래서 evidenced packet의 review status는 `agent-reviewed=14`, `heuristic=307`이고 evidence status는 `satisfied=4`, `unknown=317`이다.
+  `agent-reviewed=13`, `heuristic=309`인 reviewed packet은 `.cautilus/claims/reviewed-typed-runners.json`에 있다.
+  `.cautilus/claims/evidenced-typed-runners.json`는 `claim-readme-md-144`, `claim-readme-md-148`, `claim-readme-md-211`, `claim-docs-contracts-claim-discovery-workflow-md-612`을 `evidenceStatus=satisfied`로 올린다.
+  그래서 evidenced packet의 review status는 `agent-reviewed=14`, `heuristic=308`이고 evidence status는 `satisfied=4`, `unknown=318`이다.
+  `claim discover --previous`는 current evidenced packet에서 `carryForward.matchedClaimCount=321`, `evidenceSupportIdRewriteCount=1`을 기록해 line-number 기반 claim id drift를 evidence ref에 반영했다.
   Generated claim packets no longer emit the old `proofLayer` compatibility field; downstream workflow logic reads `recommendedProof`, `verificationReadiness`, `evidenceStatus`, `reviewStatus`, and `lifecycle` directly.
   `docs/internal/handoff.md`와 `docs/internal/research/**`는 claim source에서 제외된다.
   `docs/internal/working-patterns.md`는 durable operating pattern 문서라 developer-facing source로 남아 있다.
@@ -38,7 +39,7 @@
 - 2026-05-01 후속 dogfood로 `npm run dogfood:cautilus-review-to-eval-flow:eval:codex`를 다시 실행했다.
   결과는 `recommendation=accept-now`, `passed=1`, `failed=0`이고 artifact는 `artifacts/self-dogfood/cautilus-review-to-eval-flow-eval-codex/latest/eval-summary.json`이다.
   기존 first-scan / refresh-flow / review-prepare / reviewer-launch Codex dogfood summaries and audit packets도 모두 accept/pass 상태라, 이 다섯 run을 묶은 evidence bundle로 `claim-readme-md-148`은 satisfied 상태가 됐다.
-  별도 evidence bundle `.cautilus/claims/evidence-review-to-eval-flow.json`는 review-to-eval audit에서 `claim review apply-result`, `claim validate`, `claim plan-evals` 실행과 fixture/product edits 없음이 확인되어 `claim-docs-contracts-claim-discovery-workflow-md-611`도 satisfied로 올린다.
+  별도 evidence bundle `.cautilus/claims/evidence-review-to-eval-flow.json`는 review-to-eval audit에서 `claim review apply-result`, `claim validate`, `claim plan-evals` 실행과 fixture/product edits 없음이 확인되어 `claim-docs-contracts-claim-discovery-workflow-md-612`도 satisfied로 올린다.
 - 2026-05-01 후속 dogfood로 `./bin/cautilus eval test --repo-root . --adapter-name self-dogfood-eval-skill --runtime codex --output-dir ./artifacts/self-dogfood/eval-skill-codex/latest`를 실행했다.
   결과는 `recommendation=accept-now`, `passed=3`, `failed=0`, trigger case 1개와 execution case 2개다.
   이 run과 install/doctor preflight, installed skill/plugin manifest content hashes를 묶은 evidence bundle로 `claim-readme-md-144`와 `claim-readme-md-211`은 satisfied 상태가 됐다.
@@ -189,6 +190,7 @@
    public `claim group` 또는 `claim refresh` command는 만들지 않는다.
    `claim plan-evals`는 이제 각 plan에 `fixtureAuthoringGuidance`를 포함해 surface/preset, 최소 fixture 필드, runner output schema, required runner capability/observability, host-owned non-writer boundary를 보여준다.
    그래서 eval-fixture authoring guidance 자체는 닫혔고, 남은 claim-hardening 후보는 review-result application branch proof와 deeper evidence reconciliation이다.
+   `claim discover --previous <packet>`는 fingerprint가 같은 claim의 reviewed/evidenced state를 carry forward하고, line-number 기반 `claimId`가 바뀌면 evidence ref `supportsClaimIds`를 현재 claim id로 재기록한다.
 5. evaluation-surface composition primitives C2/C3/C4는 모두 shipped 상태다.
    C2 `extends`는 2026-05-01에 file-backed `eval test` fixture에서 shipped 됐다.
    C3 `steps`도 2026-05-01에 strict explicit `outputProjection` 기반으로 shipped 됐다.

@@ -220,8 +220,18 @@ func DiscoverClaimProofPlan(options ClaimDiscoveryOptions) (map[string]any, erro
 	}
 	mergedCandidates := mergeIdenticalClaimCandidates(candidates)
 	renderedCandidates := renderClaimCandidates(mergedCandidates)
+	carryForward := map[string]any{}
+	var previousPacket map[string]any
+	if strings.TrimSpace(options.PreviousPath) != "" {
+		previous, err := readClaimPacketFile(resolvedRoot, options.PreviousPath)
+		if err != nil {
+			return nil, err
+		}
+		previousPacket = previous
+		carryForward = applyPreviousClaimState(renderedCandidates, previous)
+	}
 
-	return map[string]any{
+	packet := map[string]any{
 		"schemaVersion":      contracts.ClaimProofPlanSchema,
 		"discoveryMode":      "deterministic-source-inventory",
 		"sourceRoot":         ".",
@@ -236,7 +246,101 @@ func DiscoverClaimProofPlan(options ClaimDiscoveryOptions) (map[string]any, erro
 		"sourceCount":        len(sources),
 		"nextRecommended":    "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
 		"nonVerdictNotice":   "This packet is a proof plan, not proof that the claims are true.",
-	}, nil
+	}
+	if len(carryForward) > 0 {
+		packet["carryForward"] = carryForward
+		if reviewRuns := arrayOrEmpty(previousPacket["reviewRuns"]); len(reviewRuns) > 0 {
+			packet["reviewRuns"] = reviewRuns
+		}
+		if reviewApplication := asMap(previousPacket["reviewApplication"]); len(reviewApplication) > 0 {
+			packet["reviewApplication"] = reviewApplication
+		}
+	}
+	return packet, nil
+}
+
+func readClaimPacketFile(repoRoot string, path string) (map[string]any, error) {
+	content, err := os.ReadFile(resolvePath(repoRoot, path))
+	if err != nil {
+		return nil, err
+	}
+	var packet map[string]any
+	if err := json.Unmarshal(content, &packet); err != nil {
+		return nil, err
+	}
+	return packet, nil
+}
+
+func applyPreviousClaimState(candidates []any, previous map[string]any) map[string]any {
+	previousByFingerprint := map[string]map[string]any{}
+	for _, raw := range arrayOrEmpty(previous["claimCandidates"]) {
+		entry := asMap(raw)
+		fingerprint := stringFromAny(entry["claimFingerprint"])
+		if fingerprint != "" {
+			previousByFingerprint[fingerprint] = entry
+		}
+	}
+	matched := 0
+	idRewritten := 0
+	for _, raw := range candidates {
+		candidate := asMap(raw)
+		fingerprint := stringFromAny(candidate["claimFingerprint"])
+		previousCandidate := previousByFingerprint[fingerprint]
+		if previousCandidate == nil {
+			continue
+		}
+		matched++
+		previousClaimID := stringFromAny(previousCandidate["claimId"])
+		currentClaimID := stringFromAny(candidate["claimId"])
+		for _, key := range []string{"reviewStatus", "evidenceStatus", "lifecycle", "nextAction", "evidenceStatusReason"} {
+			if value, exists := previousCandidate[key]; exists {
+				candidate[key] = value
+			}
+		}
+		for _, key := range []string{"evidenceRefs", "reviewRefs", "unresolvedQuestions"} {
+			if value := arrayOrEmpty(previousCandidate[key]); len(value) > 0 {
+				cloned, err := cloneJSON(value)
+				if err != nil {
+					continue
+				}
+				candidate[key] = cloned
+			}
+		}
+		if previousClaimID != "" && currentClaimID != "" && previousClaimID != currentClaimID {
+			if rewriteEvidenceRefClaimIDs(candidate, previousClaimID, currentClaimID) {
+				idRewritten++
+			}
+		}
+	}
+	return map[string]any{
+		"strategy":                      "claimFingerprint",
+		"matchedClaimCount":             matched,
+		"evidenceSupportIdRewriteCount": idRewritten,
+		"notice":                        "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints.",
+	}
+}
+
+func rewriteEvidenceRefClaimIDs(candidate map[string]any, previousClaimID string, currentClaimID string) bool {
+	rewritten := false
+	for _, rawRef := range arrayOrEmpty(candidate["evidenceRefs"]) {
+		ref := asMap(rawRef)
+		supports := arrayOrEmpty(ref["supportsClaimIds"])
+		if len(supports) == 0 {
+			continue
+		}
+		nextSupports := make([]any, 0, len(supports))
+		for _, rawID := range supports {
+			claimID := stringFromAny(rawID)
+			if claimID == previousClaimID {
+				nextSupports = append(nextSupports, currentClaimID)
+				rewritten = true
+				continue
+			}
+			nextSupports = append(nextSupports, rawID)
+		}
+		ref["supportsClaimIds"] = nextSupports
+	}
+	return rewritten
 }
 
 func resolveClaimDiscoveryConfig(repoRoot string, explicit []string) (claimDiscoveryConfig, error) {

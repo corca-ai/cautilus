@@ -1,5 +1,5 @@
 {
-  "candidateCount": 321,
+  "candidateCount": 322,
   "claimState": {
     "path": ".cautilus/claims/latest.json",
     "pathSource": "adapter",
@@ -16,13 +16,13 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 253,
+      "developer": 254,
       "user": 68
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 51,
       "Agent and skill workflow": 85,
-      "Claim discovery and review": 19,
+      "Claim discovery and review": 20,
       "Documentation and contracts": 80,
       "Evaluation surfaces": 2,
       "Improvement and optimization": 21,
@@ -32,25 +32,25 @@
     },
     "byEvidenceStatus": {
       "satisfied": 4,
-      "unknown": 317
+      "unknown": 318
     },
     "byLifecycle": {
-      "new": 321
+      "new": 322
     },
     "byRecommendedProof": {
-      "cautilus-eval": 166,
+      "cautilus-eval": 167,
       "deterministic": 117,
       "human-auditable": 38
     },
     "byReviewStatus": {
       "agent-reviewed": 14,
-      "heuristic": 307
+      "heuristic": 308
     },
     "byVerificationReadiness": {
       "blocked": 2,
       "needs-alignment": 9,
       "needs-scenario": 6,
-      "ready-to-verify": 304
+      "ready-to-verify": 305
     }
   },
   "effectiveScanScope": {
@@ -258,7 +258,7 @@
         "summary": "Agent track — Claude / Codex plugin.** The `cautilus install` step also lands a bundled skill at `.agents/skills/cautilus/` with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally."
       },
       {
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-612",
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-615",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -267,7 +267,7 @@
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-review-to-eval-flow.json",
             "supportsClaimIds": [
-              "claim-docs-contracts-claim-discovery-workflow-md-612"
+              "claim-docs-contracts-claim-discovery-workflow-md-615"
             ]
           }
         ],
@@ -278,17 +278,17 @@
       }
     ]
   },
-  "gitCommit": "30d9f6303e7097661d0195a789454f954e74a3be",
+  "gitCommit": "c7dfb5abc6e7d3aa5c114fe40782e9d08b9c4aa1",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "30d9f6303e7097661d0195a789454f954e74a3be",
+    "currentGitCommit": "c7dfb5abc6e7d3aa5c114fe40782e9d08b9c4aa1",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "30d9f6303e7097661d0195a789454f954e74a3be",
+    "packetGitCommit": "c7dfb5abc6e7d3aa5c114fe40782e9d08b9c4aa1",
     "recommendedAction": "The claim packet commit matches the current checkout.",
     "workingTreePolicy": "excluded"
   },
@@ -311,7 +311,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 292,
+    "heuristicClaimsReadyForReview": 293,
     "needsAlignment": 9,
     "needsScenario": 6
   },

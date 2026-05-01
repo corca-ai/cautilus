@@ -397,6 +397,8 @@ When a previous claim-state packet exists, the skill should:
 
 The binary may provide helper flags such as `claim discover --previous <packet> --refresh-plan`, but the public user-level workflow remains `discover`.
 No separate binary `claim refresh` command is planned for this stage.
+When the skill runs `claim discover --previous <packet>` for the actual refreshed proof plan, unchanged claim fingerprints carry forward reviewed labels, evidence refs, unresolved questions, and next-action state.
+If a line-number-derived display `claimId` changes while the fingerprint remains stable, carried evidence refs rewrite `supportsClaimIds` to the current claim id before validation.
 
 The refresh-plan packet should include a coordinator-facing summary rather than requiring every agent to reverse-engineer raw JSON fields:
 
@@ -587,6 +589,7 @@ The first implementation slice changed the binary skeleton:
 4. replace `proofLayer` with the new split fields
 5. add claim fingerprints, evidence ref shape, and summary groups to the discover packet
 6. add deterministic state-path resolution and refresh-plan helper output without adding `claim refresh`
+7. carry forward reviewed/evidenced state from `--previous` by stable `claimFingerprint`, including evidence support id rewrites when display claim ids drift
 
 The second implementation slice updated the bundled skill control flow:
 

@@ -1326,7 +1326,7 @@
     "evidenceRoots": [
       ".cautilus/claims"
     ],
-    "matchedRefCount": 4,
+    "matchedRefCount": 3,
     "policy": "possible evidence refs are hints only and cannot satisfy claims without review.",
     "scannedFileCount": 3,
     "status": "completed",
@@ -1608,7 +1608,7 @@
       "reason": "max-clusters-exceeded"
     },
     {
-      "claimCount": 2,
+      "claimCount": 3,
       "clusterId": "cluster-developer-claim-discovery-and-review-cautilus-eval-dev-skill-con",
       "groupKey": "developer:Claim discovery and review:cautilus-eval:dev/skill:contract",
       "reason": "max-clusters-exceeded"
@@ -1957,8 +1957,8 @@
     }
   ],
   "sourceClaimPacket": {
-    "candidateCount": 321,
-    "gitCommit": "30d9f6303e7097661d0195a789454f954e74a3be",
+    "candidateCount": 322,
+    "gitCommit": "c7dfb5abc6e7d3aa5c114fe40782e9d08b9c4aa1",
     "schemaVersion": "cautilus.claim_proof_plan.v1"
   },
   "sourceRoot": "."

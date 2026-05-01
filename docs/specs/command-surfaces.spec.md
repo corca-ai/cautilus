@@ -149,6 +149,8 @@ It should preserve the discovered backlog honestly; prioritization belongs in th
 When `cautilus claim discover --previous <claims.json> --refresh-plan` emits `cautilus.claim_refresh_plan.v1`, the packet includes `refreshSummary`.
 `refreshSummary` gives the coordinator-facing status, changed source count, changed claim count, carried-forward claim count, changed claim source hotspots, and next actions.
 Agents should use that summary before hand-inspecting raw `changedSources` or `claimPlan`.
+When `cautilus claim discover --previous <claims.json>` emits a refreshed `cautilus.claim_proof_plan.v1`, unchanged claim fingerprints carry forward reviewed labels, evidence refs, unresolved questions, and next-action state.
+If the display `claimId` changes while the fingerprint stays stable, carried evidence refs rewrite `supportsClaimIds` to the current claim id so validation remains honest.
 
 `cautilus claim show --input <claims.json>` emits `cautilus.claim_status_summary.v1`.
 It summarizes an existing proof-plan packet without rescanning.
