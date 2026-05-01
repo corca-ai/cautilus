@@ -1,14 +1,14 @@
 {
-  "candidateCount": 335,
+  "candidateCount": 336,
   "carryForward": {
     "changedEvidenceRefCount": 0,
-    "evidenceSupportIdRewriteCount": 1,
-    "matchedClaimCount": 333,
+    "evidenceSupportIdRewriteCount": 0,
+    "matchedClaimCount": 335,
     "missingEvidenceRefCount": 0,
     "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
-    "staleEvidenceClaimCount": 1,
+    "staleEvidenceClaimCount": 0,
     "strategy": "claimFingerprint",
-    "unsupportedEvidenceRefCount": 1
+    "unsupportedEvidenceRefCount": 0
   },
   "claimCandidates": [
     {
@@ -6310,8 +6310,7 @@
       ],
       "lifecycle": "new",
       "nextAction": "No new fixture is needed for this claim while the referenced review-to-eval evidence bundle remains current.",
-      "recommendedEvalSurface": "dev/skill",
-      "recommendedProof": "cautilus-eval",
+      "recommendedProof": "human-auditable",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
@@ -6321,8 +6320,7 @@
         }
       ],
       "summary": "It emits `cautilus.claim_eval_plan.v1` from reviewed `cautilus-eval` claims that are ready to verify, while preserving the host boundary by not writing fixtures, prompts, runners, wrappers, or policy.",
-      "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "needs-alignment",
       "whyThisLayer": "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof."
     },
     {
@@ -10448,8 +10446,37 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:ebff670a7be2ce628a7746f3a30e31c98d21eb103137e70a4ff70fa52b2bfdba",
+      "claimId": "claim-skills-cautilus-skill-md-116",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "human-auditable",
+        "linked-from:docs/contracts/scenario-history.md",
+        "skill-doc"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "If a user-facing feature is missing from the configured entry docs or linked Markdown graph, report it as an entry-surface or narrative gap unless another reviewed artifact proves the binary skipped an in-scope declaration.",
+          "line": 116,
+          "path": "skills/cautilus/SKILL.md"
+        }
+      ],
+      "summary": "If a user-facing feature is missing from the configured entry docs or linked Markdown graph, report it as an entry-surface or narrative gap unless another reviewed artifact proves the binary skipped an in-scope declaration.",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:c575861c975813835a93a64b3d0ca6aafdb2ee55d71de1ffb6211b433852c558",
-      "claimId": "claim-skills-cautilus-skill-md-138",
+      "claimId": "claim-skills-cautilus-skill-md-143",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -10469,7 +10496,7 @@
       "sourceRefs": [
         {
           "excerpt": "This branch proves reviewer launch, not review-result merge behavior.",
-          "line": 138,
+          "line": 143,
           "path": "skills/cautilus/SKILL.md"
         }
       ],
@@ -10481,7 +10508,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:0430d8a298c4e11b0f53d621d1b7c1c908425d463f7a66dc5efbf4043936efbd",
-      "claimId": "claim-skills-cautilus-skill-md-203",
+      "claimId": "claim-skills-cautilus-skill-md-208",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -10499,7 +10526,7 @@
       "sourceRefs": [
         {
           "excerpt": "Agents should read the packet first, then cite HTML only when a browser view is the deliverable.",
-          "line": 203,
+          "line": 208,
           "path": "skills/cautilus/SKILL.md"
         }
       ],
@@ -10525,11 +10552,11 @@
   "claimSummary": {
     "byClaimAudience": {
       "developer": 269,
-      "user": 66
+      "user": 67
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 57,
-      "Agent and skill workflow": 82,
+      "Agent and skill workflow": 83,
       "Claim discovery and review": 22,
       "Documentation and contracts": 82,
       "Evaluation surfaces": 1,
@@ -10541,23 +10568,23 @@
     },
     "byEvidenceStatus": {
       "satisfied": 38,
-      "unknown": 297
+      "unknown": 298
     },
     "byLifecycle": {
-      "new": 335
+      "new": 336
     },
     "byRecommendedProof": {
-      "cautilus-eval": 138,
+      "cautilus-eval": 137,
       "deterministic": 129,
-      "human-auditable": 68
+      "human-auditable": 70
     },
     "byReviewStatus": {
       "agent-reviewed": 79,
-      "heuristic": 256
+      "heuristic": 257
     },
     "byVerificationReadiness": {
       "blocked": 12,
-      "needs-alignment": 31,
+      "needs-alignment": 32,
       "needs-scenario": 7,
       "ready-to-verify": 285
     }
@@ -10707,7 +10734,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "3215d35ec48fd5f1f36463ab2e8dfdabb6c64a2c",
+  "gitCommit": "70db0c6ede8c91ad5daf06da35de4f28c53d59c3",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "reviewApplication": {
@@ -11694,7 +11721,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:bc784470252994658933e204ee7c4da7b7d757509c31dd1eb7091242b0e68c6f",
+      "contentHash": "sha256:8e6e9c764b42c0e176d963fe2e7a40ba7e7f84c48a7ff2c2e6c5628296aa828f",
       "depth": 3,
       "discoveredFrom": "docs/contracts/scenario-history.md",
       "kind": "skill-doc",

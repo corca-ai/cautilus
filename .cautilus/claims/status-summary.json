@@ -2,7 +2,7 @@
   "actionSummary": {
     "crossCuttingSignals": [
       {
-        "count": 256,
+        "count": 257,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -82,7 +82,7 @@
         "summary": "Reconcile conflicting docs, code, adapters, or ownership boundaries before proof would be honest."
       },
       {
-        "count": 25,
+        "count": 26,
         "id": "human-confirm-or-decompose",
         "recommendedActor": "human",
         "sampleClaimIds": [
@@ -109,7 +109,7 @@
       }
     ]
   },
-  "candidateCount": 335,
+  "candidateCount": 336,
   "claimState": {
     "path": ".cautilus/claims/latest.json",
     "pathSource": "adapter",
@@ -127,11 +127,11 @@
   "claimSummary": {
     "byClaimAudience": {
       "developer": 269,
-      "user": 66
+      "user": 67
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 57,
-      "Agent and skill workflow": 82,
+      "Agent and skill workflow": 83,
       "Claim discovery and review": 22,
       "Documentation and contracts": 82,
       "Evaluation surfaces": 1,
@@ -143,23 +143,23 @@
     },
     "byEvidenceStatus": {
       "satisfied": 38,
-      "unknown": 297
+      "unknown": 298
     },
     "byLifecycle": {
-      "new": 335
+      "new": 336
     },
     "byRecommendedProof": {
-      "cautilus-eval": 138,
+      "cautilus-eval": 137,
       "deterministic": 129,
-      "human-auditable": 68
+      "human-auditable": 70
     },
     "byReviewStatus": {
       "agent-reviewed": 79,
-      "heuristic": 256
+      "heuristic": 257
     },
     "byVerificationReadiness": {
       "blocked": 12,
-      "needs-alignment": 31,
+      "needs-alignment": 32,
       "needs-scenario": 7,
       "ready-to-verify": 285
     }
@@ -928,8 +928,8 @@
             ]
           }
         ],
-        "recommendedEvalSurface": "dev/skill",
-        "recommendedProof": "cautilus-eval",
+        "recommendedEvalSurface": null,
+        "recommendedProof": "human-auditable",
         "reviewStatus": "agent-reviewed",
         "summary": "It emits `cautilus.claim_eval_plan.v1` from reviewed `cautilus-eval` claims that are ready to verify, while preserving the host boundary by not writing fixtures, prompts, runners, wrappers, or policy."
       },
@@ -1049,17 +1049,17 @@
       }
     ]
   },
-  "gitCommit": "3215d35ec48fd5f1f36463ab2e8dfdabb6c64a2c",
+  "gitCommit": "70db0c6ede8c91ad5daf06da35de4f28c53d59c3",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "3215d35ec48fd5f1f36463ab2e8dfdabb6c64a2c",
+    "currentGitCommit": "70db0c6ede8c91ad5daf06da35de4f28c53d59c3",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "3215d35ec48fd5f1f36463ab2e8dfdabb6c64a2c",
+    "packetGitCommit": "70db0c6ede8c91ad5daf06da35de4f28c53d59c3",
     "recommendedAction": "The claim packet commit matches the current checkout.",
     "workingTreePolicy": "excluded"
   },
@@ -1082,8 +1082,8 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 225,
-    "needsAlignment": 31,
+    "heuristicClaimsReadyForReview": 226,
+    "needsAlignment": 32,
     "needsScenario": 7
   },
   "sampleClaims": [
