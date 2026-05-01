@@ -1,5 +1,115 @@
 {
-  "candidateCount": 333,
+  "actionSummary": {
+    "crossCuttingSignals": [
+      {
+        "count": 256,
+        "id": "heuristic-review-needed",
+        "recommendedActor": "agent",
+        "sampleClaimIds": [
+          "claim-docs-cli-reference-md-32",
+          "claim-docs-cli-reference-md-180",
+          "claim-docs-cli-reference-md-256",
+          "claim-docs-cli-reference-md-270",
+          "claim-docs-contracts-adapter-contract-md-3"
+        ],
+        "summary": "Review heuristic labels before spending proof or eval budget."
+      }
+    ],
+    "primaryBuckets": [
+      {
+        "count": 38,
+        "id": "already-satisfied",
+        "recommendedActor": "none",
+        "sampleClaimIds": [
+          "claim-agents-md-78",
+          "claim-agents-md-123",
+          "claim-readme-md-7",
+          "claim-readme-md-10",
+          "claim-readme-md-123"
+        ],
+        "summary": "Proof is already attached and valid under packet semantics."
+      },
+      {
+        "count": 98,
+        "id": "agent-add-deterministic-proof",
+        "recommendedActor": "agent",
+        "sampleClaimIds": [
+          "claim-agents-md-12",
+          "claim-agents-md-61",
+          "claim-readme-md-9",
+          "claim-readme-md-13",
+          "claim-readme-md-95"
+        ],
+        "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
+      },
+      {
+        "count": 125,
+        "id": "agent-plan-cautilus-eval",
+        "recommendedActor": "agent",
+        "sampleClaimIds": [
+          "claim-agents-md-26",
+          "claim-agents-md-79",
+          "claim-docs-cli-reference-md-110",
+          "claim-docs-cli-reference-md-128",
+          "claim-docs-cli-reference-md-258"
+        ],
+        "summary": "Draft or select Cautilus eval scenarios for ready eval claims."
+      },
+      {
+        "count": 7,
+        "id": "agent-design-scenario",
+        "recommendedActor": "agent",
+        "sampleClaimIds": [
+          "claim-readme-md-171",
+          "claim-docs-master-plan-md-88",
+          "claim-docs-contracts-claim-discovery-workflow-md-225",
+          "claim-docs-contracts-claim-discovery-workflow-md-639",
+          "claim-docs-contracts-scenario-history-md-3"
+        ],
+        "summary": "Decompose the behavior into a concrete scenario before protected eval planning."
+      },
+      {
+        "count": 30,
+        "id": "human-align-surfaces",
+        "recommendedActor": "human",
+        "sampleClaimIds": [
+          "claim-docs-cli-reference-md-180",
+          "claim-docs-cli-reference-md-186",
+          "claim-docs-guides-evaluation-process-md-10",
+          "claim-docs-guides-evaluation-process-md-270",
+          "claim-docs-maintainers-consumer-readiness-md-59"
+        ],
+        "summary": "Reconcile conflicting docs, code, adapters, or ownership boundaries before proof would be honest."
+      },
+      {
+        "count": 25,
+        "id": "human-confirm-or-decompose",
+        "recommendedActor": "human",
+        "sampleClaimIds": [
+          "claim-docs-cli-reference-md-256",
+          "claim-docs-contracts-adapter-contract-md-422",
+          "claim-docs-guides-evaluation-process-md-293",
+          "claim-docs-maintainers-consumer-readiness-md-5",
+          "claim-docs-specs-evaluation-surfaces-spec-md-192"
+        ],
+        "summary": "Confirm, decompose, or accept a human-auditable claim before treating it as proven."
+      },
+      {
+        "count": 12,
+        "id": "split-or-defer",
+        "recommendedActor": "human",
+        "sampleClaimIds": [
+          "claim-agents-md-29",
+          "claim-agents-md-73",
+          "claim-readme-md-3",
+          "claim-readme-md-153",
+          "claim-readme-md-192"
+        ],
+        "summary": "Split broad, historical, provider-caveated, policy-like, or otherwise blocked claims before verification."
+      }
+    ]
+  },
+  "candidateCount": 335,
   "claimState": {
     "path": ".cautilus/claims/latest.json",
     "pathSource": "adapter",
@@ -16,43 +126,57 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 267,
+      "developer": 269,
       "user": 66
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 57,
       "Agent and skill workflow": 82,
-      "Claim discovery and review": 21,
+      "Claim discovery and review": 22,
       "Documentation and contracts": 82,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
       "Improvement and optimization": 20,
-      "Packets and reporting": 30,
+      "Packets and reporting": 31,
       "Quality gates": 34,
       "Release and packaging": 5
     },
     "byEvidenceStatus": {
       "satisfied": 38,
-      "unknown": 295
+      "unknown": 297
     },
     "byLifecycle": {
-      "new": 333
+      "new": 335
     },
     "byRecommendedProof": {
-      "cautilus-eval": 129,
-      "deterministic": 133,
-      "human-auditable": 71
+      "cautilus-eval": 138,
+      "deterministic": 129,
+      "human-auditable": 68
     },
     "byReviewStatus": {
       "agent-reviewed": 79,
-      "heuristic": 254
+      "heuristic": 256
     },
     "byVerificationReadiness": {
       "blocked": 12,
-      "needs-alignment": 35,
-      "needs-scenario": 8,
-      "ready-to-verify": 278
+      "needs-alignment": 31,
+      "needs-scenario": 7,
+      "ready-to-verify": 285
     }
+  },
+  "discoveryBoundary": {
+    "agentEscapeHatch": "Agent-led quality or narrative review may explore the codebase for missing public claims, then record alignment or documentation work before expecting deterministic discovery.",
+    "entries": [
+      "README.md",
+      "AGENTS.md",
+      "CLAUDE.md"
+    ],
+    "gitignorePolicy": "respect-repo-gitignore",
+    "linkedDepth": 3,
+    "omissionPolicy": "Claims not declared in configured entry documents or linked Markdown are outside deterministic discovery scope.",
+    "productSignal": "A core user-facing feature missing from entry docs is a narrative or adoption-surface gap, not automatically a claim discover false negative.",
+    "sourceBasis": "entry-docs-and-linked-markdown",
+    "traversal": "entry-markdown-links"
   },
   "effectiveScanScope": {
     "adapterFound": true,
@@ -595,8 +719,8 @@
             ]
           }
         ],
-        "recommendedEvalSurface": null,
-        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": "dev/repo",
+        "recommendedProof": "cautilus-eval",
         "reviewStatus": "agent-reviewed",
         "summary": "When repeated workflow failures should become durable scenario coverage, prefer the checked-in `skill` normalization helper over repo-local one-off shapers:"
       },
@@ -791,21 +915,21 @@
         "summary": "[Standalone Surface](standalone-surface.spec.md) Proves that the standalone binary and bundled skill can be installed into a fresh repo and discovered through stable operator-facing commands."
       },
       {
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-627",
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-651",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
-            "contentHash": "sha256:b61814438de0660b26dfef1fed1741b9d9b68404be4fd59ac4b794427b2ecaf4",
+            "contentHash": "sha256:5f331141107cfc6f6f1addd593ea4b0e1b1d2185248878a7e0469827dca316f3",
             "kind": "cautilus-claim-evidence-bundle",
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-review-to-eval-flow.json",
             "supportsClaimIds": [
-              "claim-docs-contracts-claim-discovery-workflow-md-627"
+              "claim-docs-contracts-claim-discovery-workflow-md-651"
             ]
           }
         ],
-        "recommendedEvalSurface": null,
-        "recommendedProof": "human-auditable",
+        "recommendedEvalSurface": "dev/skill",
+        "recommendedProof": "cautilus-eval",
         "reviewStatus": "agent-reviewed",
         "summary": "It emits `cautilus.claim_eval_plan.v1` from reviewed `cautilus-eval` claims that are ready to verify, while preserving the host boundary by not writing fixtures, prompts, runners, wrappers, or policy."
       },
@@ -925,27 +1049,18 @@
       }
     ]
   },
-  "gitCommit": "3a2bfe96ef1a59505b36dd0dedd6968b3b1b7977",
+  "gitCommit": "3215d35ec48fd5f1f36463ab2e8dfdabb6c64a2c",
   "gitState": {
-    "changedFileCount": 8,
-    "changedFiles": [
-      ".cautilus/claims/evidence-cli-runtime-claims-2026-05-01.json",
-      ".cautilus/claims/evidenced-typed-runners.json",
-      ".cautilus/claims/latest.json",
-      ".cautilus/claims/refresh-plan-after-provider-caveat-heuristics.json",
-      ".cautilus/claims/review-input-llm-batch5.json",
-      ".cautilus/claims/review-result-llm-batch5.json",
-      ".cautilus/claims/reviewed-typed-runners.json",
-      ".cautilus/claims/status-summary.json"
-    ],
+    "changedFileCount": 0,
+    "changedFiles": [],
     "changedSourceCount": 0,
     "changedSources": [],
-    "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "54f19bd50f5f8a4122806108b15d111dcba3125e",
-    "headDrift": true,
+    "comparisonStatus": "fresh",
+    "currentGitCommit": "3215d35ec48fd5f1f36463ab2e8dfdabb6c64a2c",
+    "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "3a2bfe96ef1a59505b36dd0dedd6968b3b1b7977",
-    "recommendedAction": "The current HEAD differs from the packet commit, but no recorded claim source changed; review and eval planning may continue.",
+    "packetGitCommit": "3215d35ec48fd5f1f36463ab2e8dfdabb6c64a2c",
+    "recommendedAction": "The claim packet commit matches the current checkout.",
     "workingTreePolicy": "excluded"
   },
   "inputPath": ".cautilus/claims/evidenced-typed-runners.json",
@@ -967,9 +1082,9 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 224,
-    "needsAlignment": 35,
-    "needsScenario": 8
+    "heuristicClaimsReadyForReview": 225,
+    "needsAlignment": 31,
+    "needsScenario": 7
   },
   "sampleClaims": [
     {
