@@ -2,7 +2,7 @@
   "actionSummary": {
     "crossCuttingSignals": [
       {
-        "count": 257,
+        "count": 256,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -43,7 +43,7 @@
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
       {
-        "count": 125,
+        "count": 126,
         "id": "agent-plan-cautilus-eval",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -82,7 +82,7 @@
         "summary": "Reconcile conflicting docs, code, adapters, or ownership boundaries before proof would be honest."
       },
       {
-        "count": 26,
+        "count": 25,
         "id": "human-confirm-or-decompose",
         "recommendedActor": "human",
         "sampleClaimIds": [
@@ -149,13 +149,13 @@
       "new": 336
     },
     "byRecommendedProof": {
-      "cautilus-eval": 137,
+      "cautilus-eval": 138,
       "deterministic": 129,
-      "human-auditable": 70
+      "human-auditable": 69
     },
     "byReviewStatus": {
-      "agent-reviewed": 79,
-      "heuristic": 257
+      "agent-reviewed": 80,
+      "heuristic": 256
     },
     "byVerificationReadiness": {
       "blocked": 12,
@@ -1051,16 +1051,22 @@
   },
   "gitCommit": "70db0c6ede8c91ad5daf06da35de4f28c53d59c3",
   "gitState": {
-    "changedFileCount": 0,
-    "changedFiles": [],
+    "changedFileCount": 5,
+    "changedFiles": [
+      ".cautilus/claims/evidenced-typed-runners.json",
+      ".cautilus/claims/latest.json",
+      ".cautilus/claims/refresh-plan-skill-action-buckets.json",
+      ".cautilus/claims/reviewed-typed-runners.json",
+      ".cautilus/claims/status-summary.json"
+    ],
     "changedSourceCount": 0,
     "changedSources": [],
-    "comparisonStatus": "fresh",
-    "currentGitCommit": "70db0c6ede8c91ad5daf06da35de4f28c53d59c3",
-    "headDrift": false,
+    "comparisonStatus": "fresh-with-head-drift",
+    "currentGitCommit": "cc571db3ad58ee4a6ab479e03ef297f0f7ad6a1e",
+    "headDrift": true,
     "isStale": false,
     "packetGitCommit": "70db0c6ede8c91ad5daf06da35de4f28c53d59c3",
-    "recommendedAction": "The claim packet commit matches the current checkout.",
+    "recommendedAction": "The current HEAD differs from the packet commit, but no recorded claim source changed; review and eval planning may continue.",
     "workingTreePolicy": "excluded"
   },
   "inputPath": ".cautilus/claims/evidenced-typed-runners.json",
@@ -1082,7 +1088,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 226,
+    "heuristicClaimsReadyForReview": 225,
     "needsAlignment": 32,
     "needsScenario": 7
   },

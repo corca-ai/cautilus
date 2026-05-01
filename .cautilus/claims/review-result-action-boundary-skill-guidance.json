@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewRun": {
+    "reviewer": "codex-current-agent",
+    "backend": "same-agent-review",
+    "mode": "bounded-single-cluster",
+    "reviewInputPath": ".cautilus/claims/review-input-action-bucket-batch.json",
+    "reviewPolicy": "Correct labels conservatively; prefer evidenceStatus=unknown unless direct or verified evidence is already present."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-user-agent-and-skill-workflow-human-auditable-skill-doc",
+      "claimUpdates": [
+        {
+          "claimId": "claim-skills-cautilus-skill-md-116",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The source is a bundled-skill instruction, but there is no checked behavior evidence yet that an agent following the skill reports missing undeclared user-facing features as entry-surface or narrative gaps.",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/skill",
+          "verificationReadiness": "ready-to-verify",
+          "nextAction": "Add a bounded dev/skill scenario where the repo has a user-facing behavior missing from entry docs and the skill must report the gap as narrative or alignment work rather than a binary false negative.",
+          "unresolvedQuestions": [],
+          "evidenceRefs": []
+        }
+      ]
+    }
+  ]
+}

@@ -10451,6 +10451,7 @@
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "The source is a bundled-skill instruction, but there is no checked behavior evidence yet that an agent following the skill reports missing undeclared user-facing features as entry-surface or narrative gaps.",
       "groupHints": [
         "audience:user",
         "human-auditable",
@@ -10458,9 +10459,10 @@
         "skill-doc"
       ],
       "lifecycle": "new",
-      "nextAction": "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
-      "recommendedProof": "human-auditable",
-      "reviewStatus": "heuristic",
+      "nextAction": "Add a bounded dev/skill scenario where the repo has a user-facing behavior missing from entry docs and the skill must report the gap as narrative or alignment work rather than a binary false negative.",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "If a user-facing feature is missing from the configured entry docs or linked Markdown graph, report it as an entry-surface or narrative gap unless another reviewed artifact proves the binary skipped an in-scope declaration.",
@@ -10469,6 +10471,7 @@
         }
       ],
       "summary": "If a user-facing feature is missing from the configured entry docs or linked Markdown graph, report it as an entry-surface or narrative gap unless another reviewed artifact proves the binary skipped an in-scope declaration.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
@@ -10574,13 +10577,13 @@
       "new": 336
     },
     "byRecommendedProof": {
-      "cautilus-eval": 137,
+      "cautilus-eval": 138,
       "deterministic": 129,
-      "human-auditable": 70
+      "human-auditable": 69
     },
     "byReviewStatus": {
-      "agent-reviewed": 79,
-      "heuristic": 257
+      "agent-reviewed": 80,
+      "heuristic": 256
     },
     "byVerificationReadiness": {
       "blocked": 12,
@@ -10747,18 +10750,17 @@
           "evidenceStatus",
           "reviewStatus",
           "recommendedEvalSurface",
-          "evidenceRefs",
           "nextAction",
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-651",
-        "clusterId": "cluster-developer-quality-gates-cautilus-eval-review-to-eval"
+        "claimId": "claim-skills-cautilus-skill-md-116",
+        "clusterId": "cluster-user-agent-and-skill-workflow-human-auditable-skill-doc"
       }
     ],
     "claimsPath": "/home/hwidong/codes/cautilus/.cautilus/claims/evidenced-typed-runners.json",
     "mergeDecisions": [],
-    "reviewResultPath": "/home/hwidong/codes/cautilus/.cautilus/claims/review-result-evidence-review-to-eval-flow.json",
+    "reviewResultPath": "/home/hwidong/codes/cautilus/.cautilus/claims/review-result-action-boundary-skill-guidance.json",
     "schemaVersion": "cautilus.claim_review_result.v1",
     "unresolvedQuestions": []
   },
@@ -10946,6 +10948,18 @@
         "evidencePolicy": "Only mark evidenceStatus=satisfied when a checked-in evidence bundle records direct or verified proof for the exact claim boundary.",
         "mode": "direct-evidence-application",
         "reviewer": "codex-current-agent-evidence-review"
+      },
+      "schemaVersion": "cautilus.claim_review_result.v1",
+      "sourceReviewInput": {}
+    },
+    {
+      "clusterCount": 1,
+      "reviewRun": {
+        "backend": "same-agent-review",
+        "mode": "bounded-single-cluster",
+        "reviewInputPath": ".cautilus/claims/review-input-action-bucket-batch.json",
+        "reviewPolicy": "Correct labels conservatively; prefer evidenceStatus=unknown unless direct or verified evidence is already present.",
+        "reviewer": "codex-current-agent"
       },
       "schemaVersion": "cautilus.claim_review_result.v1",
       "sourceReviewInput": {}
