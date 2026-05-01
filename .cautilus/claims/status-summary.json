@@ -31,26 +31,26 @@
       "Release and packaging": 5
     },
     "byEvidenceStatus": {
-      "satisfied": 24,
-      "unknown": 301
+      "satisfied": 25,
+      "unknown": 300
     },
     "byLifecycle": {
       "new": 325
     },
     "byRecommendedProof": {
-      "cautilus-eval": 167,
+      "cautilus-eval": 165,
       "deterministic": 119,
-      "human-auditable": 39
+      "human-auditable": 41
     },
     "byReviewStatus": {
-      "agent-reviewed": 30,
-      "heuristic": 295
+      "agent-reviewed": 37,
+      "heuristic": 288
     },
     "byVerificationReadiness": {
-      "blocked": 2,
+      "blocked": 4,
       "needs-alignment": 9,
       "needs-scenario": 6,
-      "ready-to-verify": 308
+      "ready-to-verify": 306
     }
   },
   "effectiveScanScope": {
@@ -198,7 +198,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 24,
+    "satisfiedClaimCount": 25,
     "satisfiedClaims": [
       {
         "claimId": "claim-readme-md-7",
@@ -237,6 +237,25 @@
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
         "summary": "`Cautilus` installs as a machine-level binary, but its agent-facing surface is intentionally repo-local."
+      },
+      {
+        "claimId": "claim-readme-md-123",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:97f1c86b6b037fd02df377681d62b71bded29bbdc78357e880b9f87027af6a8d",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-claim-eval-plan-2026-05-01.json",
+            "supportsClaimIds": [
+              "claim-readme-md-123"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": "app/prompt",
+        "recommendedProof": "cautilus-eval",
+        "reviewStatus": "agent-reviewed",
+        "summary": "For reviewed `cautilus-eval` claims, `claim plan-evals` emits `cautilus.claim_eval_plan.v1`: an intermediate plan for host-owned eval fixtures, not a writer for prompts, runners, fixtures, or policy."
       },
       {
         "claimId": "claim-readme-md-137",
@@ -660,16 +679,22 @@
   },
   "gitCommit": "8221f63f83beeaacf1ad73df93a618dd8b8a166b",
   "gitState": {
-    "changedFileCount": 0,
-    "changedFiles": [],
+    "changedFileCount": 5,
+    "changedFiles": [
+      ".cautilus/claims/evidenced-typed-runners.json",
+      ".cautilus/claims/latest.json",
+      ".cautilus/claims/review-input-llm-batch3.json",
+      ".cautilus/claims/reviewed-typed-runners.json",
+      ".cautilus/claims/status-summary.json"
+    ],
     "changedSourceCount": 0,
     "changedSources": [],
-    "comparisonStatus": "fresh",
-    "currentGitCommit": "8221f63f83beeaacf1ad73df93a618dd8b8a166b",
-    "headDrift": false,
+    "comparisonStatus": "fresh-with-head-drift",
+    "currentGitCommit": "099b45199757cb3d706e98ed8673aa0b9ae5939b",
+    "headDrift": true,
     "isStale": false,
     "packetGitCommit": "8221f63f83beeaacf1ad73df93a618dd8b8a166b",
-    "recommendedAction": "The claim packet commit matches the current checkout.",
+    "recommendedAction": "The current HEAD differs from the packet commit, but no recorded claim source changed; review and eval planning may continue.",
     "workingTreePolicy": "excluded"
   },
   "inputPath": ".cautilus/claims/evidenced-typed-runners.json",
@@ -691,7 +716,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 280,
+    "heuristicClaimsReadyForReview": 274,
     "needsAlignment": 9,
     "needsScenario": 6
   },
@@ -707,9 +732,9 @@
         "repo-instructions"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "nextAction": "Decompose into concrete deterministic surfaces or create a policy inventory that maps deterministic behavior claims to code, scripts, adapters, tests, and specs.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "line": 12,
@@ -731,10 +756,9 @@
         "repo-instructions"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
+      "nextAction": "Do not satisfy directly; either leave as positioning or decompose into narrower contract ownership claims.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "line": 26,
@@ -742,7 +766,7 @@
         }
       ],
       "summary": "`Cautilus` owns generic intentful behavior evaluation workflow contracts.",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "blocked"
     },
     {
       "claimAudience": "developer",
@@ -780,9 +804,9 @@
         "repo-instructions"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
+      "nextAction": "Add a small instruction-surface lint or evidence bundle that checks AGENTS length and verifies detailed routing is discoverable through skill metadata and find-skills artifacts.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "line": 61,

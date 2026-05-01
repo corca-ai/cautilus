@@ -1,0 +1,127 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-llm-review-batch3",
+    "type": "agent",
+    "reviewedAt": "2026-05-01T00:00:00Z",
+    "evidencePolicy": "This batch reviews heuristic claim boundaries only. It leaves evidenceStatus unknown unless direct verified evidence exists for the exact claim."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-user-documentation-and-contracts-cautilus-eval-app-chat-readme",
+      "claimUpdates": [
+        {
+          "claimId": "claim-readme-md-171",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "app/chat",
+          "verificationReadiness": "needs-scenario",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as a context-recovery scenario protection claim. The current app/chat fixture smoke covers a first-touch greeting, not context recovery or kept-out-of-tuning scenario protection.",
+          "evidenceRefs": [],
+          "nextAction": "Create or link an app/chat context-recovery scenario that is explicitly excluded from tuning and verified through the app/chat runner.",
+          "unresolvedQuestions": [
+            "Which checked-in scenario registry or history packet records that the context-recovery case is protected and kept out of tuning?"
+          ]
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-user-documentation-and-contracts-cautilus-eval-app-prompt-readme",
+      "claimUpdates": [
+        {
+          "claimId": "claim-readme-md-123",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "app/prompt",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as a claim-plan packet behavior claim. It can be verified after this review result is applied by rerunning `claim plan-evals` and checking the emitted `cautilus.claim_eval_plan.v1` packet and non-writer boundary.",
+          "evidenceRefs": [],
+          "nextAction": "Apply this review result, rerun `claim plan-evals`, and attach the resulting eval-plan packet as deterministic evidence if it records the non-writer boundary.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-readme-md-192",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "blocked",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as broad long-term positioning. It summarizes intent-first product philosophy and should not be satisfied directly by one app/prompt eval.",
+          "evidenceRefs": [],
+          "nextAction": "Treat as positioning or decompose into concrete prompt-change behavior claims with held-out eval evidence.",
+          "unresolvedQuestions": [
+            "Should long-term positioning lines be excluded from proof queues unless rewritten as concrete behavior claims?"
+          ]
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-developer-adapter-and-portability-cautilus-eval-dev-repo-repo-in",
+      "claimUpdates": [
+        {
+          "claimId": "claim-agents-md-79",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/repo",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as an operator-gate honesty claim. It needs evidence that the selected adapter can run the requested evaluator, review, CLI-discovery, or agent-surface proof before that gate is treated as available.",
+          "evidenceRefs": [],
+          "nextAction": "Attach adapter capability proof from doctor, agent-surface doctor, review variants, or the concrete evaluator command required by the selected gate.",
+          "unresolvedQuestions": [
+            "Should this be split into separate evaluator, review-variant, CLI-discovery, and agent-surface readiness claims?"
+          ]
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-developer-adapter-and-portability-deterministic-repo-instruction",
+      "claimUpdates": [
+        {
+          "claimId": "claim-agents-md-12",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as a broad repo operating-policy claim. Existing tests and scripts show many deterministic behaviors are encoded, but the claim is wider than a single gate and needs either decomposition or a policy inventory.",
+          "evidenceRefs": [],
+          "nextAction": "Decompose into concrete deterministic surfaces or create a policy inventory that maps deterministic behavior claims to code, scripts, adapters, tests, and specs.",
+          "unresolvedQuestions": []
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-developer-agent-and-skill-workflow-deterministic-repo-instructio",
+      "claimUpdates": [
+        {
+          "claimId": "claim-agents-md-61",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as an instruction-surface structure claim. It needs deterministic evidence that AGENTS stays short and detailed routing remains in installed skill metadata and find-skills output.",
+          "evidenceRefs": [],
+          "nextAction": "Add a small instruction-surface lint or evidence bundle that checks AGENTS length and verifies detailed routing is discoverable through skill metadata and find-skills artifacts.",
+          "unresolvedQuestions": []
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-developer-documentation-and-contracts-cautilus-eval-dev-repo-rep",
+      "claimUpdates": [
+        {
+          "claimId": "claim-agents-md-26",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "blocked",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as broad product ownership positioning. It is too broad for a single dev/repo eval and should be decomposed into concrete binary, skill, adapter, and workflow-contract claims.",
+          "evidenceRefs": [],
+          "nextAction": "Do not satisfy directly; either leave as positioning or decompose into narrower contract ownership claims.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

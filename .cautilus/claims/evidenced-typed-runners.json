@@ -19,15 +19,16 @@
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "Reviewed as a broad repo operating-policy claim. Existing tests and scripts show many deterministic behaviors are encoded, but the claim is wider than a single gate and needs either decomposition or a policy inventory.",
       "groupHints": [
         "audience:developer",
         "deterministic",
         "repo-instructions"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "nextAction": "Decompose into concrete deterministic surfaces or create a policy inventory that maps deterministic behavior claims to code, scripts, adapters, tests, and specs.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Deterministic behavior belongs in code, scripts, adapters, tests, and specs.",
@@ -36,6 +37,7 @@
         }
       ],
       "summary": "Deterministic behavior belongs in code, scripts, adapters, tests, and specs.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
@@ -47,6 +49,7 @@
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "Reviewed as broad product ownership positioning. It is too broad for a single dev/repo eval and should be decomposed into concrete binary, skill, adapter, and workflow-contract claims.",
       "groupHints": [
         "audience:developer",
         "cautilus-eval",
@@ -54,10 +57,9 @@
         "repo-instructions"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
+      "nextAction": "Do not satisfy directly; either leave as positioning or decompose into narrower contract ownership claims.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "`Cautilus` owns generic intentful behavior evaluation workflow contracts.",
@@ -66,7 +68,8 @@
         }
       ],
       "summary": "`Cautilus` owns generic intentful behavior evaluation workflow contracts.",
-      "verificationReadiness": "ready-to-verify",
+      "unresolvedQuestions": [],
+      "verificationReadiness": "blocked",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -107,15 +110,16 @@
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "Reviewed as an instruction-surface structure claim. It needs deterministic evidence that AGENTS stays short and detailed routing remains in installed skill metadata and find-skills output.",
       "groupHints": [
         "audience:developer",
         "deterministic",
         "repo-instructions"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
+      "nextAction": "Add a small instruction-surface lint or evidence bundle that checks AGENTS length and verifies detailed routing is discoverable through skill metadata and find-skills artifacts.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Keep this block short. Detailed routing belongs in installed skill metadata and `find-skills` output, not in a long checked-in catalog.",
@@ -124,6 +128,7 @@
         }
       ],
       "summary": "Keep this block short. Detailed routing belongs in installed skill metadata and `find-skills` output, not in a long checked-in catalog.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
     },
@@ -193,6 +198,7 @@
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "Reviewed as an operator-gate honesty claim. It needs evidence that the selected adapter can run the requested evaluator, review, CLI-discovery, or agent-surface proof before that gate is treated as available.",
       "groupHints": [
         "audience:developer",
         "cautilus-eval",
@@ -200,10 +206,10 @@
         "repo-instructions"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
+      "nextAction": "Attach adapter capability proof from doctor, agent-surface doctor, review variants, or the concrete evaluator command required by the selected gate.",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "When a quality or release review asks for evaluator, review, CLI-discovery, or agent-surface proof, verify that the selected adapter can actually run that surface before treating the gate as available.",
@@ -212,6 +218,9 @@
         }
       ],
       "summary": "When a quality or release review asks for evaluator, review, CLI-discovery, or agent-surface proof, verify that the selected adapter can actually run that surface before treating the gate as available.",
+      "unresolvedQuestions": [
+        "Should this be split into separate evaluator, review-variant, CLI-discovery, and agent-surface readiness claims?"
+      ],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
@@ -458,8 +467,19 @@
       "claimFingerprint": "sha256:df4aa9115fa3cb65ef65be956336be165bc67437d0f039e64c13baf95891493d",
       "claimId": "claim-readme-md-123",
       "claimSemanticGroup": "Documentation and contracts",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:97f1c86b6b037fd02df377681d62b71bded29bbdc78357e880b9f87027af6a8d",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-claim-eval-plan-2026-05-01.json",
+          "supportsClaimIds": [
+            "claim-readme-md-123"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by the checked claim-eval-plan evidence bundle: after review, `claim plan-evals` emitted `cautilus.claim_eval_plan.v1`, included an app/prompt plan for this claim, and preserved the non-writer boundary.",
       "groupHints": [
         "app/prompt",
         "audience:user",
@@ -467,10 +487,10 @@
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus eval test.",
+      "nextAction": "Keep covered by a reviewed claim-plan smoke when claim eval planning or fixture-authoring guidance changes.",
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "For reviewed `cautilus-eval` claims, `claim plan-evals` emits `cautilus.claim_eval_plan.v1`: an intermediate plan for host-owned eval fixtures, not a writer for prompts, runners, fixtures, or policy.",
@@ -479,6 +499,7 @@
         }
       ],
       "summary": "For reviewed `cautilus-eval` claims, `claim plan-evals` emits `cautilus.claim_eval_plan.v1`: an intermediate plan for host-owned eval fixtures, not a writer for prompts, runners, fixtures, or policy.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
@@ -717,6 +738,7 @@
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "Reviewed as a context-recovery scenario protection claim. The current app/chat fixture smoke covers a first-touch greeting, not context recovery or kept-out-of-tuning scenario protection.",
       "groupHints": [
         "app/chat",
         "audience:user",
@@ -725,10 +747,10 @@
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Use the scenario proposal flow to normalize candidate evidence before creating a checked-in eval fixture.",
+      "nextAction": "Create or link an app/chat context-recovery scenario that is explicitly excluded from tuning and verified through the app/chat runner.",
       "recommendedEvalSurface": "app/chat",
       "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "`Cautilus` treats the context-recovery case as a protected scenario kept out of tuning so the signal stays honest.",
@@ -737,6 +759,9 @@
         }
       ],
       "summary": "`Cautilus` treats the context-recovery case as a protected scenario kept out of tuning so the signal stays honest.",
+      "unresolvedQuestions": [
+        "Which checked-in scenario registry or history packet records that the context-recovery case is protected and kept out of tuning?"
+      ],
       "verificationReadiness": "needs-scenario",
       "whyThisLayer": "The claim points at behavior that needs scenario shaping before it is ready as a protected eval fixture."
     },
@@ -748,6 +773,7 @@
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "Reviewed as broad long-term positioning. It summarizes intent-first product philosophy and should not be satisfied directly by one app/prompt eval.",
       "groupHints": [
         "app/prompt",
         "audience:user",
@@ -755,10 +781,9 @@
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus eval test.",
-      "recommendedEvalSurface": "app/prompt",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
+      "nextAction": "Treat as positioning or decompose into concrete prompt-change behavior claims with held-out eval evidence.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "The longer-term direction is close to the workflow philosophy behind DSPy: prompts can change as long as the evaluated behavior survives.",
@@ -767,7 +792,10 @@
         }
       ],
       "summary": "The longer-term direction is close to the workflow philosophy behind DSPy: prompts can change as long as the evaluated behavior survives.",
-      "verificationReadiness": "ready-to-verify",
+      "unresolvedQuestions": [
+        "Should long-term positioning lines be excluded from proof queues unless rewritten as concrete behavior claims?"
+      ],
+      "verificationReadiness": "blocked",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -10066,26 +10094,26 @@
       "Release and packaging": 5
     },
     "byEvidenceStatus": {
-      "satisfied": 24,
-      "unknown": 301
+      "satisfied": 25,
+      "unknown": 300
     },
     "byLifecycle": {
       "new": 325
     },
     "byRecommendedProof": {
-      "cautilus-eval": 167,
+      "cautilus-eval": 165,
       "deterministic": 119,
-      "human-auditable": 39
+      "human-auditable": 41
     },
     "byReviewStatus": {
-      "agent-reviewed": 30,
-      "heuristic": 295
+      "agent-reviewed": 37,
+      "heuristic": 288
     },
     "byVerificationReadiness": {
-      "blocked": 2,
+      "blocked": 4,
       "needs-alignment": 9,
       "needs-scenario": 6,
-      "ready-to-verify": 308
+      "ready-to-verify": 306
     }
   },
   "discoveryMode": "deterministic-source-inventory",
@@ -10251,13 +10279,13 @@
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-620",
-        "clusterId": "cluster-developer-quality-gates-cautilus-eval-review-to-eval"
+        "claimId": "claim-readme-md-123",
+        "clusterId": "cluster-user-documentation-and-contracts-cautilus-eval-app-prompt-readme"
       }
     ],
     "claimsPath": "/home/hwidong/codes/cautilus/.cautilus/claims/evidenced-typed-runners.json",
     "mergeDecisions": [],
-    "reviewResultPath": "/home/hwidong/codes/cautilus/.cautilus/claims/review-result-evidence-review-to-eval-flow.json",
+    "reviewResultPath": "/home/hwidong/codes/cautilus/.cautilus/claims/review-result-evidence-claim-eval-plan-2026-05-01.json",
     "schemaVersion": "cautilus.claim_review_result.v1",
     "unresolvedQuestions": []
   },
@@ -10383,6 +10411,18 @@
         "mode": "direct-evidence-application",
         "reviewer": "codex-current-agent-evidence-review"
       },
+      "schemaVersion": "cautilus.claim_review_result.v1",
+      "sourceReviewInput": {}
+    },
+    {
+      "clusterCount": 6,
+      "reviewRun": {},
+      "schemaVersion": "cautilus.claim_review_result.v1",
+      "sourceReviewInput": {}
+    },
+    {
+      "clusterCount": 1,
+      "reviewRun": {},
       "schemaVersion": "cautilus.claim_review_result.v1",
       "sourceReviewInput": {}
     }

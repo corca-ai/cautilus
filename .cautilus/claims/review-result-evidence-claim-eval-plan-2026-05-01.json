@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-01T00:00:00Z",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied when a checked-in evidence bundle records direct or verified proof for the exact claim boundary."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-user-documentation-and-contracts-cautilus-eval-app-prompt-readme",
+      "claimUpdates": [
+        {
+          "claimId": "claim-readme-md-123",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "app/prompt",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the checked claim-eval-plan evidence bundle: after review, `claim plan-evals` emitted `cautilus.claim_eval_plan.v1`, included an app/prompt plan for this claim, and preserved the non-writer boundary.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-claim-eval-plan-2026-05-01.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:97f1c86b6b037fd02df377681d62b71bded29bbdc78357e880b9f87027af6a8d",
+              "supportsClaimIds": [
+                "claim-readme-md-123"
+              ]
+            }
+          ],
+          "nextAction": "Keep covered by a reviewed claim-plan smoke when claim eval planning or fixture-authoring guidance changes.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-claim-eval-plan-2026-05-01",
+  "createdForClaimIds": [
+    "claim-readme-md-123"
+  ],
+  "repoCommit": "099b4518c5192f44211b6e57ae71d4225066b9a7",
+  "summary": "This bundle records `claim plan-evals` after the batch3 review result made reviewed Cautilus-eval claims available for planning. The emitted packet uses `cautilus.claim_eval_plan.v1`, includes an app/prompt plan for the README claim, and preserves the non-writer boundary.",
+  "evidenceScope": {
+    "targetSurface": "claim eval planning",
+    "claimBoundary": "Supports the README claim that reviewed `cautilus-eval` claims produce an intermediate `cautilus.claim_eval_plan.v1` plan for host-owned fixtures rather than writing prompts, runners, fixtures, or policy.",
+    "notClaimed": [
+      "The host fixture itself exists",
+      "The planned app/prompt eval has run",
+      "All reviewed eval claims are satisfied",
+      "The adapter can provide product-runner proof"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "./bin/cautilus claim plan-evals --claims .cautilus/claims/evidenced-typed-runners.json --max-claims 10 --output artifacts/self-dogfood/llm-review-batch3/latest/claim-eval-plan-after-review.json",
+      "stdoutPath": "artifacts/self-dogfood/llm-review-batch3/latest/claim-plan-evals-after-review.stdout",
+      "stdoutContentHash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrPath": "artifacts/self-dogfood/llm-review-batch3/latest/claim-plan-evals-after-review.stderr",
+      "stderrContentHash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exitCode": 0
+    }
+  ],
+  "packetEvidence": [
+    {
+      "path": "artifacts/self-dogfood/llm-review-batch3/latest/claim-eval-plan-after-review.json",
+      "kind": "claim-eval-plan-packet",
+      "schemaVersion": "cautilus.claim_eval_plan.v1",
+      "contentHash": "sha256:2d9dc04a5e5789c5eb47172aa1e3f868c525313b741fc222d406d8f3e4e58ed8",
+      "observedClaimIds": [
+        "claim-agents-md-79",
+        "claim-readme-md-123"
+      ],
+      "nonWriterNotice": "This packet plans eval fixtures but does not write host-owned fixtures, prompts, runners, or policy."
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The reviewed README claim appears in a generated `cautilus.claim_eval_plan.v1` packet with app/prompt fixture guidance and the explicit non-writer notice."
+  }
+}
