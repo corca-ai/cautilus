@@ -208,6 +208,10 @@ The current packet splits those concepts:
 
 Broad positioning or aggregate product promises should stay `human-auditable` and `verificationReadiness=blocked` until they are decomposed into concrete deterministic checks, scenario candidates, or Cautilus eval claims.
 The claim should remain visible in the packet, but it should not become a fixture plan by default because one passing fixture would overclaim the umbrella promise.
+Product-direction statements and operator-policy rules follow the same boundary.
+They may be important durable guidance, but they are not ready eval targets until they are split into concrete behavior, deterministic gate, or audited-process claims.
+Markdown glossary bullets that only define a code-styled label, such as `` `alignment-work`: ... ``, should not become claim candidates by default.
+Ownership-boundary explanations, such as product-owned versus adapter-owned responsibilities, should stay `human-auditable` and `needs-alignment` until the matching docs, code, adapters, and tests are reconciled.
 
 `claimId` is a display handle and packet reference.
 Refresh matching should use `claimFingerprint`, not source line number alone.

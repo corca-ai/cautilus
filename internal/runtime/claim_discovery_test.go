@@ -385,6 +385,16 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 		"",
 		"The `cautilus install` step also lands a bundled skill with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally.",
 		"",
+		"The long-term direction is intent-first and intentful behavior evaluation: prompts can change if the evaluated behavior gets better.",
+		"",
+		"While implementing, any bug, error, regression, or unexpected behavior routes to `charness:debug` before further fixes.",
+		"",
+		"`alignment-work`: the code, docs, adapter, or skill surface must be reconciled before proof would be honest.",
+		"",
+		"That keeps persona prompt shaping and result semantics product-owned while backend selection stays adapter-owned.",
+		"",
+		"`npm run test:on-demand` currently owns the heavier self-dogfood workflow script tests.",
+		"",
 	}, "\n"))
 
 	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
@@ -448,6 +458,25 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 	conversationalAgent := bySummary["The `cautilus install` step also lands a bundled skill with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally."]
 	if conversationalAgent == nil || conversationalAgent["recommendedProof"] != "cautilus-eval" || conversationalAgent["recommendedEvalSurface"] != "dev/skill" {
 		t.Fatalf("expected conversational installed-agent claim to route to dev/skill eval, got %#v", conversationalAgent)
+	}
+	direction := bySummary["The long-term direction is intent-first and intentful behavior evaluation: prompts can change if the evaluated behavior gets better."]
+	if direction == nil || direction["recommendedProof"] != "human-auditable" || direction["verificationReadiness"] != "blocked" {
+		t.Fatalf("expected product direction to stay blocked human-auditable, got %#v", direction)
+	}
+	policy := bySummary["While implementing, any bug, error, regression, or unexpected behavior routes to `charness:debug` before further fixes."]
+	if policy == nil || policy["recommendedProof"] != "human-auditable" || policy["verificationReadiness"] != "blocked" {
+		t.Fatalf("expected operator policy to stay blocked human-auditable, got %#v", policy)
+	}
+	if glossary := bySummary["`alignment-work`: the code, docs, adapter, or skill surface must be reconciled before proof would be honest."]; glossary != nil {
+		t.Fatalf("expected label definition to be excluded from claims, got %#v", glossary)
+	}
+	boundary := bySummary["That keeps persona prompt shaping and result semantics product-owned while backend selection stays adapter-owned."]
+	if boundary == nil || boundary["recommendedProof"] != "human-auditable" || boundary["verificationReadiness"] != "needs-alignment" {
+		t.Fatalf("expected ownership boundary explanation to require human-auditable alignment, got %#v", boundary)
+	}
+	onDemand := bySummary["`npm run test:on-demand` currently owns the heavier self-dogfood workflow script tests."]
+	if onDemand == nil || onDemand["recommendedProof"] != "deterministic" {
+		t.Fatalf("expected on-demand test ownership to be deterministic, got %#v", onDemand)
 	}
 }
 

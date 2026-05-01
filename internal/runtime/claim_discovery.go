@@ -1026,6 +1026,9 @@ func claimLineLooksUseful(line string) bool {
 	if claimLineLooksLikePromptExample(normalized) {
 		return false
 	}
+	if claimLineLooksLikeDefinitionLabel(normalized) {
+		return false
+	}
 	if len(normalized) < 20 || len(normalized) > 260 {
 		return false
 	}
@@ -1046,15 +1049,36 @@ func claimLineLooksLikePromptExample(summary string) bool {
 		strings.Contains(lower, "input (for agent):")
 }
 
+func claimLineLooksLikeDefinitionLabel(summary string) bool {
+	trimmed := strings.TrimSpace(summary)
+	trimmed = strings.TrimPrefix(trimmed, "- ")
+	trimmed = strings.TrimPrefix(trimmed, "* ")
+	return regexp.MustCompile("^`[^`]+`:\\s+").MatchString(trimmed)
+}
+
 func classifyClaimLine(line string) (claimClassification, bool) {
 	lower := " " + strings.ToLower(line) + " "
 	switch {
-	case containsAny(lower, []string{" unit test", " tests ", " lint", " typecheck", " type-check", " build ", " ci ", " compile", " schema ", " deterministic", " eval test ", " --runtime fixture", " fixture runtime", " fixture-backed"}):
+	case containsAny(lower, []string{" unit test", " tests ", " tests.", " test:on-demand", " lint", " typecheck", " type-check", " build ", " ci ", " compile", " schema ", " deterministic", " eval test ", " --runtime fixture", " fixture runtime", " fixture-backed"}):
 		return claimClassification{
 			recommendedProof:      "deterministic",
 			verificationReadiness: "ready-to-verify",
 			why:                   "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
 			next:                  "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+		}, true
+	case operatorPolicyClaim(lower):
+		return claimClassification{
+			recommendedProof:      "human-auditable",
+			verificationReadiness: "blocked",
+			why:                   "The claim is an operator-policy rule; a single eval fixture cannot prove every future agent will follow it.",
+			next:                  "Keep this as an operating rule or narrow it into an audited process claim with concrete incident evidence.",
+		}, true
+	case ownershipBoundaryClaim(lower):
+		return claimClassification{
+			recommendedProof:      "human-auditable",
+			verificationReadiness: "needs-alignment",
+			why:                   "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof.",
+			next:                  "Reconcile or cite the matching adapter, CLI, docs, and test surfaces before treating this as satisfied.",
 		}, true
 	case containsAny(lower, []string{" align", " aligned", " alignment", " drift", " reconcile", " mismatch", " consistent with", " consistency"}):
 		return claimClassification{
@@ -1146,7 +1170,26 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 	}
 }
 
+func operatorPolicyClaim(lower string) bool {
+	return containsAny(lower, []string{" while implementing", " during implementation", " operating rule", " working rule", " before further fixes"}) &&
+		containsAny(lower, []string{" bug", " error", " regression", " unexpected behavior", " incident"}) &&
+		containsAny(lower, []string{" routes ", " route ", " through debug", " debug"})
+}
+
+func ownershipBoundaryClaim(lower string) bool {
+	return containsAny(lower, []string{" product-owned", " adapter-owned", " host-owned", " repo-owned", " consumer-owned", " backend selection", " boundary"}) &&
+		containsAny(lower, []string{" while ", " stays ", " keeps ", " owns ", " owned"})
+}
+
 func broadPositioningClaim(lower string) bool {
+	if containsAny(lower, []string{" long-term direction", " product direction", " direction is "}) {
+		return true
+	}
+	if containsAny(lower, []string{" prompt", " prompts"}) &&
+		containsAny(lower, []string{" can change", " may change", " keep changing"}) &&
+		containsAny(lower, []string{" evaluated behavior", " behavior gets better", " behavior improves", " intent-first"}) {
+		return true
+	}
 	return containsAny(lower, []string{" keeps ", " remains ", " stays "}) &&
 		containsAny(lower, []string{" honest", " reliable", " trustworthy", " correct", " safe "}) &&
 		containsAny(lower, []string{" while ", " as "}) &&
