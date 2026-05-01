@@ -1,5 +1,5 @@
 {
-  "candidateCount": 322,
+  "candidateCount": 324,
   "evidenceValidationPolicy": "satisfied claims require agent/human review plus a direct or verified evidence ref with path, kind, commit or contentHash, and supportsClaimIds containing the claim.",
   "inputPath": ".cautilus/claims/evidenced-typed-runners.json",
   "inputSchemaVersion": "cautilus.claim_proof_plan.v1",

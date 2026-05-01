@@ -295,13 +295,13 @@ func TestCLIDoctorReportsReadyWithExecutionSurface(t *testing.T) {
 	if !strings.Contains(anyToString(decisionLoopCommands[1]), "cautilus eval evaluate --input '"+filepath.Join(root, ".cautilus", "runs", "first-bounded-run", "eval-observed.json")+"'") {
 		t.Fatalf("expected eval evaluate packet recheck command, got %#v", decisionLoopCommands[1])
 	}
-	archetypes, ok := firstBoundedRun["archetypes"].([]any)
-	if !ok || len(archetypes) != 3 {
-		t.Fatalf("expected three archetype hints, got %#v", firstBoundedRun["archetypes"])
+	families, ok := firstBoundedRun["normalizationFamilies"].([]any)
+	if !ok || len(families) != 3 {
+		t.Fatalf("expected three normalization-family hints, got %#v", firstBoundedRun["normalizationFamilies"])
 	}
-	firstArchetype, ok := archetypes[0].(map[string]any)
-	if !ok || anyToString(firstArchetype["exampleInputCli"]) == "" {
-		t.Fatalf("expected exampleInputCli in archetype hint, got %#v", archetypes[0])
+	firstFamily, ok := families[0].(map[string]any)
+	if !ok || anyToString(firstFamily["exampleInputCli"]) == "" {
+		t.Fatalf("expected exampleInputCli in normalization-family hint, got %#v", families[0])
 	}
 }
 
@@ -367,13 +367,13 @@ func TestCLIScenariosExposeExampleInputCLI(t *testing.T) {
 	if payload["schemaVersion"] != cautilusruntime.ScenarioCatalogSchema {
 		t.Fatalf("unexpected scenarios schema: %#v", payload["schemaVersion"])
 	}
-	archetypes, ok := payload["archetypes"].([]any)
-	if !ok || len(archetypes) != 3 {
-		t.Fatalf("expected three archetypes, got %#v", payload["archetypes"])
+	families, ok := payload["normalizationFamilies"].([]any)
+	if !ok || len(families) != 3 {
+		t.Fatalf("expected three normalization families, got %#v", payload["normalizationFamilies"])
 	}
-	firstArchetype, ok := archetypes[0].(map[string]any)
-	if !ok || anyToString(firstArchetype["exampleInputCli"]) == "" {
-		t.Fatalf("expected exampleInputCli on first archetype, got %#v", archetypes[0])
+	firstFamily, ok := families[0].(map[string]any)
+	if !ok || anyToString(firstFamily["exampleInputCli"]) == "" {
+		t.Fatalf("expected exampleInputCli on first normalization family, got %#v", families[0])
 	}
 }
 

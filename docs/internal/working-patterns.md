@@ -128,7 +128,7 @@ host 가 subagent spawning 을 막으면 same-agent pass 로 대체하지 말고
 - **normalization family 확장 욕심**.
   네 번째 (`tool_use`, `pipeline` 등) 유혹이 와도 추가하지 말 것.
   새 family 는 schema + helper + CLI + contract + fixture + README + SKILL.md + scenarios.go + starter kit 까지 한 슬라이스에 같이 가져올 때만.
-  `npm run lint:archetypes` 가 survivor `scenario normalize` 런타임 완결성을 검증한다.
+  `npm run lint:scenario-normalizers` 가 survivor `scenario normalize` 런타임 완결성을 검증한다.
 - **프로토타입 격리**.
   프로토타입은 `internal/runtime/prototypes/` 로 간다 (escape hatch).
   `cautilus.<name>_prototype.v0` 네이밍.

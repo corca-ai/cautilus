@@ -606,9 +606,9 @@ func handleScenarios(repoRoot string, cwd string, args []string, stdout io.Write
 		return 0
 	}
 	lines := []string{"Cautilus scenario normalization families:", ""}
-	for _, entry := range catalog.Archetypes {
+	for _, entry := range catalog.NormalizationFamilies {
 		lines = append(lines,
-			fmt.Sprintf("  %s", entry.Archetype),
+			fmt.Sprintf("  %s", entry.Family),
 			fmt.Sprintf("    %s", entry.Summary),
 			fmt.Sprintf("    behavior focus: %s", entry.BehaviorFocus),
 			fmt.Sprintf("    example input:  %s", entry.ExampleInput),
@@ -807,11 +807,55 @@ func handleClaimDiscover(repoRoot string, cwd string, args []string, stdout io.W
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
+	if options.refreshPlanOnly {
+		if err := rejectRefreshPlanClaimStateOverwrite(cwd, options.repoRoot, options.output, plan); err != nil {
+			fmt.Fprintf(stderr, "%s\n", err)
+			return 1
+		}
+	}
 	if err := writeOutput(stdout, cwd, options.output, plan); err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
 	return 0
+}
+
+func rejectRefreshPlanClaimStateOverwrite(cwd string, repoRoot string, output *string, plan map[string]any) error {
+	if output == nil || strings.TrimSpace(*output) == "" {
+		return nil
+	}
+	outputPath, err := filepath.Abs(resolvePath(cwd, *output))
+	if err != nil {
+		return err
+	}
+	outputPath = filepath.Clean(outputPath)
+	claimState, _ := plan["claimState"].(map[string]any)
+	if claimState == nil {
+		return nil
+	}
+	statePaths := []string{}
+	if path := strings.TrimSpace(anyString(claimState["path"])); path != "" {
+		statePaths = append(statePaths, path)
+	}
+	for _, raw := range arrayOrEmpty(claimState["relatedStatePaths"]) {
+		entry, _ := raw.(map[string]any)
+		if entry == nil {
+			continue
+		}
+		if path := strings.TrimSpace(anyString(entry["path"])); path != "" {
+			statePaths = append(statePaths, path)
+		}
+	}
+	for _, statePath := range statePaths {
+		resolvedStatePath, err := filepath.Abs(resolvePath(repoRoot, statePath))
+		if err != nil {
+			return err
+		}
+		if outputPath == filepath.Clean(resolvedStatePath) {
+			return fmt.Errorf("refusing to write claim refresh plan over saved claim state %s; use a refresh-plan output path, or rerun claim discover without --refresh-plan to update saved claims", statePath)
+		}
+	}
+	return nil
 }
 
 //nolint:errcheck // CLI stderr/stdout reporting is best-effort.

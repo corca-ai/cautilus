@@ -155,9 +155,9 @@ CLI: `cautilus scenario normalize workflow --input runs.json`
 For agent: "Look at last week's automation runs and flag anything that stalled on the same step twice."
 You get reusable workflow-recovery proposals that keep the operator question attached to concrete evidence.
 
-`cautilus scenarios --json` prints the same catalog for agents that need to discover archetypes programmatically.
+`cautilus scenarios --json` prints the same catalog for agents that need to discover proposal-input normalization families programmatically.
 Each catalog entry now also includes `exampleInputCli`, so an operator or wrapper can inspect a minimal valid packet shape without opening a fixture path first.
-Sample inputs for these archetypes live in `examples/starters/` and the checked-in fixture directories under `fixtures/`.
+Sample inputs for these normalization families live in `examples/starters/` and the checked-in fixture directories under `fixtures/`.
 
 ## Why Cautilus
 
@@ -247,7 +247,7 @@ Verification gates:
 docs/
 ├── guides/                        # operator and consumer guides
 ├── contracts/                     # adapter, reports, review, scenarios
-├── specs/                         # active product surface + archetypes
+├── specs/                         # active product surface
 ├── maintainers/                   # maintainer-only operations and release docs
 ├── master-plan.md                 # durable direction
 ├── cli-reference.md               # full CLI command catalog
@@ -267,6 +267,6 @@ Top picks:
 - [docs/maintainers/operator-acceptance.md](./docs/maintainers/operator-acceptance.md) — human takeover and acceptance checklist
 - [docs/gepa.md](./docs/gepa.md) — GEPA-style prompt search
 - [docs/master-plan.md](./docs/master-plan.md) — roadmap
-- [examples/starters/](./examples/starters/) — archetype-specific starter kits
+- [examples/starters/](./examples/starters/) — normalization-family starter kits
 
 Dogfood and migration evidence lives in [consumer-readiness.md](./docs/maintainers/consumer-readiness.md), which is an evidence appendix rather than the canonical bootstrap guide.

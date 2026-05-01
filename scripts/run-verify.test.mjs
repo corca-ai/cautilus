@@ -36,7 +36,7 @@ test("PHASES covers every npm run verify sub-phase", () => {
 	assert.deepEqual(ids, [
 		"lint:eslint",
 		"lint:specs",
-		"lint:archetypes",
+		"lint:scenario-normalizers",
 		"lint:contracts",
 		"lint:links",
 		"lint:skill-disclosure",

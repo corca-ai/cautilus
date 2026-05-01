@@ -43,19 +43,19 @@ type UpdateCheck struct {
 	UpgradeHint   string       `json:"upgradeHint,omitempty"`
 }
 
-type ProductArchetypeSummary struct {
-	Archetype  string `json:"archetype"`
+type ProductNormalizationFamilySummary struct {
+	Family     string `json:"family"`
 	UseWhen    string `json:"useWhen"`
 	EntryPoint string `json:"entryPoint"`
 }
 
 type ProductSurfaceSummary struct {
-	Summary            string                    `json:"summary"`
-	BestFor            []string                  `json:"bestFor,omitempty"`
-	Archetypes         []ProductArchetypeSummary `json:"archetypes,omitempty"`
-	DecisionLoop       []string                  `json:"decisionLoop,omitempty"`
-	ReportSurface      []string                  `json:"reportSurface,omitempty"`
-	CurrentSurfaceNote []string                  `json:"currentSurfaceNote,omitempty"`
+	Summary               string                              `json:"summary"`
+	BestFor               []string                            `json:"bestFor,omitempty"`
+	NormalizationFamilies []ProductNormalizationFamilySummary `json:"normalizationFamilies,omitempty"`
+	DecisionLoop          []string                            `json:"decisionLoop,omitempty"`
+	ReportSurface         []string                            `json:"reportSurface,omitempty"`
+	CurrentSurfaceNote    []string                            `json:"currentSurfaceNote,omitempty"`
 }
 
 type VersionState struct {
@@ -138,19 +138,19 @@ func currentProductSurfaceSummary() ProductSurfaceSummary {
 			"repo-owned skills that need protected validation instead of trigger-only smoke checks",
 			"operators who want review-ready compare evidence before accepting workflow changes",
 		},
-		Archetypes: []ProductArchetypeSummary{
+		NormalizationFamilies: []ProductNormalizationFamilySummary{
 			{
-				Archetype:  "chatbot",
+				Family:     "chatbot",
 				UseWhen:    "a multi-turn assistant gets worse after a prompt or wrapper change",
 				EntryPoint: "cautilus scenario normalize chatbot --input <conversation-logs.json>",
 			},
 			{
-				Archetype:  "skill",
+				Family:     "skill",
 				UseWhen:    "a checked-in skill or agent should still trigger, execute, and validate cleanly",
 				EntryPoint: "cautilus eval test --repo-root . --adapter-name <name>",
 			},
 			{
-				Archetype:  "workflow",
+				Family:     "workflow",
 				UseWhen:    "a stateful automation keeps stalling on the same recovery step",
 				EntryPoint: "cautilus scenario normalize workflow --input <workflow-runs.json>",
 			},
@@ -168,7 +168,7 @@ func currentProductSurfaceSummary() ProductSurfaceSummary {
 		},
 		CurrentSurfaceNote: []string{
 			"inspect report.json reasonCodes and warnings before treating reject as a clean regression",
-			"use cautilus scenarios or the bundled skill when the right archetype is unclear",
+			"use cautilus scenarios or the bundled skill when the right normalization family is unclear",
 		},
 	}
 }

@@ -27,8 +27,8 @@ func TestInspectVersionStateRecordsCurrentVersionWithoutRemoteCheck(t *testing.T
 	if state.Product.Summary == "" {
 		t.Fatal("expected product summary to be present")
 	}
-	if len(state.Product.Archetypes) != 3 {
-		t.Fatalf("expected 3 archetypes, got %#v", state.Product.Archetypes)
+	if len(state.Product.NormalizationFamilies) != 3 {
+		t.Fatalf("expected 3 normalization families, got %#v", state.Product.NormalizationFamilies)
 	}
 	if len(state.Product.ReportSurface) == 0 {
 		t.Fatalf("expected report surface notes, got %#v", state.Product.ReportSurface)

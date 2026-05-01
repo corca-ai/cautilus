@@ -247,7 +247,7 @@ Premortem (4 angles: cache migration / external consumer / devil's advocate / do
 - The legacy `run-self-dogfood.mjs` script that drove the cache-materialization branch was also retired; the new `dogfood:self:eval` flow does not yet exercise the comparison cache.
 - Zero scenario profile files are checked in across `.agents/`, `fixtures/`, and the repo root.
 - `cautilus review variants` and `cautilus eval evaluate` still contain zero `scenario-history` or `baseline-cache` persistence hooks today, so Part 2 still has no current call site.
-- Live external consumers are not yet tracked in [consumer-readiness.md](../maintainers/consumer-readiness.md); the chatbot, skill-validation, and workflow entries are archetype reference fixtures, not live deployments.
+- Live external consumers are not yet tracked in [consumer-readiness.md](../maintainers/consumer-readiness.md); the chatbot, skill-validation, and workflow entries are normalization-family reference fixtures, not live deployments.
 
 Conclusion: the "shared baseline across multiple profiles" problem Part 1 solves has zero occurrences today, and the "other entry points also want history" problem Part 2 solves has zero requesters.
 Master-plan Phase 5 guidance ("dogfood evidence should justify the next seam rather than adding heuristics speculatively") applies directly.
@@ -256,7 +256,7 @@ Master-plan Phase 5 guidance ("dogfood evidence should justify the next seam rat
 
 Any one of the following is enough to revisit:
 
-1. A live external consumer (not an archetype fixture) runs an eval-test path across two or more adapter commands and measures baseline recomputation cost that the shared store would eliminate.
+1. A live external consumer (not a normalization-family fixture) runs an eval-test path across two or more adapter commands and measures baseline recomputation cost that the shared store would eliminate.
 2. A live consumer or dogfood adapter begins materializing a baseline-cache file from the new `cautilus eval test` surface with a checked-in profile, so the cache path becomes hot enough to matter.
 3. A concrete request to make `review variants` or `skill evaluate` history-aware lands with a named use case (e.g.
    "remember which skill test cases already passed last week").

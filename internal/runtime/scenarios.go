@@ -11,10 +11,10 @@ import "path/filepath"
 // Widening proposals.go without a matching entry here will pass `npm run lint`
 // and silently leave the new family invisible to `cautilus scenarios`.
 
-const ScenarioCatalogSchema = "cautilus.scenarios.v1"
+const ScenarioCatalogSchema = "cautilus.scenario_normalization_catalog.v1"
 
 type ScenarioCatalogEntry struct {
-	Archetype       string `json:"archetype"`
+	Family          string `json:"family"`
 	Summary         string `json:"summary"`
 	ExampleInput    string `json:"exampleInput"`
 	ExampleInputCLI string `json:"exampleInputCli"`
@@ -25,23 +25,23 @@ type ScenarioCatalogEntry struct {
 }
 
 type ScenarioCatalog struct {
-	SchemaVersion string                 `json:"schemaVersion"`
-	Archetypes    []ScenarioCatalogEntry `json:"archetypes"`
+	SchemaVersion         string                 `json:"schemaVersion"`
+	NormalizationFamilies []ScenarioCatalogEntry `json:"normalizationFamilies"`
 }
 
 type FirstBoundedRunGuide struct {
-	Summary              string                 `json:"summary"`
-	DiscoveryCommand     string                 `json:"discoveryCommand"`
-	DecisionLoopCommands []string               `json:"decisionLoopCommands"`
-	Archetypes           []ScenarioCatalogEntry `json:"archetypes"`
+	Summary               string                 `json:"summary"`
+	DiscoveryCommand      string                 `json:"discoveryCommand"`
+	DecisionLoopCommands  []string               `json:"decisionLoopCommands"`
+	NormalizationFamilies []ScenarioCatalogEntry `json:"normalizationFamilies"`
 }
 
 func LoadScenarioCatalog() ScenarioCatalog {
 	return ScenarioCatalog{
 		SchemaVersion: ScenarioCatalogSchema,
-		Archetypes: []ScenarioCatalogEntry{
+		NormalizationFamilies: []ScenarioCatalogEntry{
 			{
-				Archetype:       "chatbot",
+				Family:          "chatbot",
 				Summary:         "Multi-turn conversational behavior inside a single session.",
 				ExampleInput:    "fixtures/scenario-proposals/chatbot-input.json",
 				ExampleInputCLI: "cautilus scenario normalize chatbot --example-input",
@@ -51,7 +51,7 @@ func LoadScenarioCatalog() ScenarioCatalog {
 				BehaviorFocus:   "follow-up, context recovery, preference retention",
 			},
 			{
-				Archetype:       "skill",
+				Family:          "skill",
 				Summary:         "Single skill or agent invocation: trigger, task execution, and validation surfaces.",
 				ExampleInput:    "fixtures/scenario-proposals/skill-input.json",
 				ExampleInputCLI: "cautilus scenario normalize skill --example-input",
@@ -61,7 +61,7 @@ func LoadScenarioCatalog() ScenarioCatalog {
 				BehaviorFocus:   "validation, trigger selection, execution quality",
 			},
 			{
-				Archetype:       "workflow",
+				Family:          "workflow",
 				Summary:         "Stateful automation that persists across invocations and must recover from known blockers.",
 				ExampleInput:    "fixtures/scenario-proposals/workflow-input.json",
 				ExampleInputCLI: "cautilus scenario normalize workflow --example-input",
@@ -83,6 +83,6 @@ func LoadFirstBoundedRunGuide(repoRoot string) FirstBoundedRunGuide {
 			"cautilus eval test --repo-root " + ShellSingleQuote(repoRoot) + " --fixture <fixture.json> --output-dir " + ShellSingleQuote(outputDir),
 			"cautilus eval evaluate --input " + ShellSingleQuote(filepath.Join(outputDir, "eval-observed.json")) + " --output " + ShellSingleQuote(filepath.Join(outputDir, "eval-summary.recheck.json")),
 		},
-		Archetypes: LoadScenarioCatalog().Archetypes,
+		NormalizationFamilies: LoadScenarioCatalog().NormalizationFamilies,
 	}
 }

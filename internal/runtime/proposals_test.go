@@ -112,8 +112,8 @@ func TestNormalizeChatbotProposalCandidatesEmitsEventTriggeredFollowup(t *testin
 }
 
 // TestNormalizeWorkflowProposalCandidatesUsesCLIWorkflowLabel asserts
-// that the workflow archetype renders the canonical "CLI Workflow"
-// human label inside its description copy. Closes the test gap called
+// that the workflow normalization family renders the canonical
+// "CLI Workflow" human label inside its description copy. Closes the test gap called
 // out in archetype-extension hardening: a future refactor that drops
 // the label from `humanizeTargetKind` would otherwise ship silently.
 func TestNormalizeWorkflowProposalCandidatesUsesCLIWorkflowLabel(t *testing.T) {

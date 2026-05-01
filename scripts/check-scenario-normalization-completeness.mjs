@@ -2,14 +2,14 @@ import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import process from "node:process";
 
-// Runtime-completeness lint for the scenario-normalize archetypes.
+// Runtime-completeness lint for the scenario-normalize families.
 //
 // The original first-class evaluation archetype boundary spec was retired
 // alongside the evaluation-surfaces redesign; the chatbot / skill / workflow
 // `scenario normalize` plumbing still ships, and this lint keeps that
 // plumbing whole.
 //
-// What remains gated here for each scenario-normalize archetype:
+// What remains gated here for each scenario-normalize family:
 //   1. the schema constant exists
 //   2. the normalize helper exists
 //   3. the CLI subcommand exists
@@ -20,7 +20,7 @@ import process from "node:process";
 
 const repoRoot = process.cwd();
 
-const ARCHETYPES = [
+const NORMALIZATION_FAMILIES = [
 	{
 		name: "chatbot",
 		schemaId: "cautilus.chatbot_normalization_inputs.v1",
@@ -73,8 +73,9 @@ function loadSources() {
 	};
 }
 
-function checkArchetype(def, sources, issues) {
-	const fail = (message) => issues.push(`archetype ${def.name}: ${message}`);
+function checkNormalizationFamily(def, sources, issues) {
+	const fail = (message) =>
+		issues.push(`normalization family ${def.name}: ${message}`);
 
 	if (!sources.constants.includes(`"${def.schemaId}"`)) {
 		fail(`schema id "${def.schemaId}" missing from internal/contracts/constants.go`);
@@ -88,8 +89,8 @@ function checkArchetype(def, sources, issues) {
 	if (!sources.app.includes(`func ${def.handlerFunc}`)) {
 		fail(`handler func ${def.handlerFunc} missing from internal/app/app.go`);
 	}
-	if (!new RegExp(`Archetype:\\s+"${def.name}"`).test(sources.scenarios)) {
-		fail(`scenarios catalog entry Archetype: "${def.name}" missing from internal/runtime/scenarios.go`);
+	if (!new RegExp(`Family:\\s+"${def.name}"`).test(sources.scenarios)) {
+		fail(`scenarios catalog entry Family: "${def.name}" missing from internal/runtime/scenarios.go`);
 	}
 	if (!existsSync(resolve(repoRoot, def.contractDoc))) {
 		fail(`contract document ${def.contractDoc} does not exist`);
@@ -103,8 +104,8 @@ function main() {
 	const sources = loadSources();
 	const issues = [];
 
-	for (const archetype of ARCHETYPES) {
-		checkArchetype(archetype, sources, issues);
+	for (const family of NORMALIZATION_FAMILIES) {
+		checkNormalizationFamily(family, sources, issues);
 	}
 
 	if (issues.length > 0) {
@@ -115,7 +116,7 @@ function main() {
 	}
 
 	process.stdout.write(
-		`archetype runtime completeness: ${ARCHETYPES.length} archetypes pass 8-surface check\n`,
+		`scenario normalization runtime completeness: ${NORMALIZATION_FAMILIES.length} families pass 7-surface check\n`,
 	);
 }
 

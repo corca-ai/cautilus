@@ -26,7 +26,7 @@ cautilus version --verbose
 
 `cautilus version --verbose` is also the quickest binary-only summary of what
 `Cautilus` currently considers its product surface:
-who it is for, which archetype to start from, and which report fields now matter
+who it is for, which normalization family or eval surface to start from, and which report fields now matter
 when a run rejects.
 
 Legacy Homebrew installs are not a supported update channel anymore; remove them and reinstall through `install.sh` instead of mixing channels.
@@ -116,7 +116,9 @@ Use `cautilus claim discover` before writing eval fixtures when you need to inve
 Default discovery starts from adapter-owned claim entries or README.md/AGENTS.md/CLAUDE.md and follows repo-local Markdown links to depth 3.
 Use `--previous <claims.json> --refresh-plan` for deterministic refresh planning inside the same discover workflow.
 The refresh-plan packet includes `refreshSummary`, which gives agent-readable counts, changed claim source hotspots, and coordinator-facing next actions so agents do not need to infer the plan from raw packet fields.
-The packet is `cautilus.claim_proof_plan.v1`, and it is a proof plan rather than a verdict.
+Refresh-plan output is not a saved claim map update; write it to a `refresh-plan*.json` artifact, not to the configured latest/reviewed/evidenced claim-state paths.
+The CLI rejects that overwrite because refresh-plan packets use `cautilus.claim_refresh_plan.v1`, while saved claim maps must remain `cautilus.claim_proof_plan.v1`.
+Normal discovery output is `cautilus.claim_proof_plan.v1`, and it is a proof plan rather than a verdict.
 Use `cautilus claim show --input <claims.json> --sample-claims <n>` to summarize an existing claim packet without rescanning and include bounded claim examples when an agent needs concrete candidates before choosing the next branch.
 The summary includes `gitState`; when it reports `isStale=true`, run `cautilus claim discover --previous <claims.json> --refresh-plan` before review, review application, or eval planning.
 The summary also includes `evidenceSatisfaction` so satisfied claims and their evidence refs are visible without reading the full claim packet first.
@@ -248,7 +250,7 @@ cautilus scenario summarize-telemetry \
 ```
 
 Every normalize command plus `cautilus eval evaluate` and `cautilus report build` accepts `--example-input`: it prints a minimal valid packet to stdout that can be piped back into the same command, so operators can inspect the expected shape without clicking into a fixture on GitHub.
-`cautilus scenarios --json` now exposes those same inspect commands under `exampleInputCli` for each archetype.
+`cautilus scenarios --json` now exposes those same inspect commands under `normalizationFamilies[*].exampleInputCli`.
 `cautilus scenario propose` now preserves the full ranked `proposals` list in the canonical JSON output.
 The same packet also emits an `attentionView`, which is a bounded human-facing shortlist derived from the full ranked set.
 `cautilus scenario review-conversations` stays intentionally narrower than a generic audit UI.

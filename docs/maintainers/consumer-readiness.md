@@ -4,7 +4,7 @@ This note is an evidence appendix.
 It records the current dogfood and external-consumer proof for `Cautilus`, but it is not the canonical product vocabulary.
 Product-facing docs should describe repo-agnostic surfaces such as `chatbot`, `skill`, `workflow`, and `agent runtime` first, then point here for checked-in evidence shapes and proof expectations.
 
-This note intentionally groups evidence by consumer archetype rather than by specific private repo name.
+This note intentionally groups evidence by consumer pattern rather than by specific private repo name.
 
 ## Snapshot
 
@@ -31,7 +31,7 @@ What this means:
 
 ## Chatbot Consumer
 
-Current role: external conversational consumer archetype
+Current role: external conversational consumer pattern
 
 Evidence:
 
@@ -42,11 +42,11 @@ Evidence:
 What this means:
 
 - `Cautilus` has a reusable `chatbot` normalization contract that does not require one named repo's storage ownership.
-- The product claim is about the archetype, not about one privileged chatbot host repo.
+- The product claim is about the consumer pattern, not about one privileged chatbot host repo.
 
 ## Skill-Validation Consumer
 
-Current role: external skill and validation archetype
+Current role: external skill and validation consumer pattern
 
 Evidence:
 
@@ -60,7 +60,7 @@ What this means:
 
 ## Workflow Consumer
 
-Current role: external durable-workflow archetype
+Current role: external durable-workflow consumer pattern
 
 Evidence:
 
@@ -78,11 +78,11 @@ Evidence:
 
 What this means:
 
-- The durable-workflow claim is about a reusable archetype, not about one named repo becoming part of the product definition.
+- The durable-workflow claim is about a reusable consumer pattern, not about one named repo becoming part of the product definition.
 
 ## Agent-Runtime Consumer
 
-Current role: external bootstrap-heavy agent-runtime archetype
+Current role: external bootstrap-heavy agent-runtime consumer pattern
 
 Evidence:
 
@@ -104,10 +104,10 @@ What this means:
 Right now the honest product stance is:
 
 - `cautilus` is the product repo self-consumer and explicit self-dogfood target
-- `chatbot consumer` is the primary conversational reference archetype
-- `skill-validation consumer` is the primary validation reference archetype
-- `workflow consumer` is the primary durable-workflow reference archetype
-- `agent-runtime consumer` is the current bootstrap-heavy routing reference archetype
+- `chatbot consumer` is the primary conversational reference pattern
+- `skill-validation consumer` is the primary validation reference pattern
+- `workflow consumer` is the primary durable-workflow reference pattern
+- `agent-runtime consumer` is the current bootstrap-heavy routing reference pattern
 
 This split is acceptable.
 It keeps one official adapter contract while still grounding the normalization layer in multiple checked-in consumer shapes.
@@ -115,8 +115,8 @@ It keeps one official adapter contract while still grounding the normalization l
 ## Near-Term Implications
 
 1. Keep proving the deepest binary and bundled-skill behavior against `cautilus` itself.
-2. Keep checked-in consumer-shaped normalized packet examples for the chatbot, skill-validation, and durable-workflow archetypes.
-3. Keep one explicit external bootstrap-heavy consumer proof for the `dev / repo` preset, but treat it as archetype validation rather than named-repo product ownership.
+2. Keep checked-in consumer-shaped normalized packet examples for the chatbot, skill-validation, and durable-workflow normalization families.
+3. Keep one explicit external bootstrap-heavy consumer proof for the `dev / repo` preset, but treat it as pattern validation rather than named-repo product ownership.
 4. Treat the next external-consumer question as whether the first bounded run should expand beyond `eval test` into the first review loop, not as whether `bootstrapHelper` / `workSkill` works at all.
 5. If a stronger claim needs one real external consumer, record that proof as an appendix update without turning the named repo into canonical vocabulary.
 6. Keep the current product-owned onboarding smoke honest: today it proves fresh-consumer install to `doctor ready` and one completed bounded `eval test` run; the next proof question is whether that smoke should also reach `review prepare-input` without turning the helper into a consumer-specific workflow.

@@ -10,8 +10,8 @@ This helper covers evaluation signals such as:
 - skill trigger-selection regressions
 - skill execution-quality regressions
 
-Durable automation workflow regressions are handled by a separate first-class
-archetype. See
+Durable automation workflow regressions are handled by a separate
+normalization family. See
 [workflow-normalization.md](./workflow-normalization.md) for that contract.
 
 ## Problem
@@ -77,7 +77,7 @@ Minimum input class:
   - optional `metrics`
 
 `targetKind: cli_workflow` is rejected with a pointer to the workflow
-archetype.
+normalization family.
 
 The helper must not:
 
@@ -129,8 +129,8 @@ instead of repo-specific validation IDs.
   runners stay consumer-owned.
 - The helper consumes normalized summaries, not repo-local scans of
   `skills/`, `profiles/`, `runs/`, or CI logs.
-- `cli_workflow` inputs are handled by the workflow archetype and rejected
-  here with an actionable pointer.
+- `cli_workflow` inputs are handled by the workflow normalization family and
+  rejected here with an actionable pointer.
 - The helper outputs proposal candidates that can feed the existing
   `scenario prepare-input` and `scenario propose` chain unchanged.
 
@@ -158,7 +158,7 @@ instead of repo-specific validation IDs.
 - a trigger/execution-heavy consumer can normalize packet-shaped trigger or
   execution regressions without extra host mapping.
 - the helper rejects workflow-shaped inputs with a clear pointer to the
-  workflow archetype.
+  workflow normalization family.
 
 ## Acceptance Checks
 

@@ -3,7 +3,7 @@
 Internal adopters will ask one practical question before they trust `Cautilus`
 for repeated validation work:
 
-> On which archetype, on which runtime and model, with what success rate, time,
+> On which behavior surface, on which runtime and model, with what success rate, time,
 > token use, and cost, did this actually work?
 
 `Cautilus` already has the raw ingredients for that answer in

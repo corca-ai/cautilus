@@ -5,24 +5,24 @@ import test from "node:test";
 
 const STARTER_PAIRS = [
 	{
-		archetype: "chatbot",
+		family: "chatbot",
 		canonical: "fixtures/scenario-proposals/chatbot-input.json",
 		starter: "examples/starters/chatbot/input.json",
 	},
 	{
-		archetype: "skill",
+		family: "skill",
 		canonical: "fixtures/scenario-proposals/skill-input.json",
 		starter: "examples/starters/skill/input.json",
 	},
 	{
-		archetype: "workflow",
+		family: "workflow",
 		canonical: "fixtures/scenario-proposals/workflow-input.json",
 		starter: "examples/starters/workflow/input.json",
 	},
 ];
 
 for (const pair of STARTER_PAIRS) {
-	test(`starter kit ${pair.archetype} input.json matches the canonical fixture byte-for-byte`, () => {
+	test(`starter kit ${pair.family} input.json matches the canonical fixture byte-for-byte`, () => {
 		const canonicalPath = join(process.cwd(), pair.canonical);
 		const starterPath = join(process.cwd(), pair.starter);
 		const canonical = readFileSync(canonicalPath, "utf-8");

@@ -53,7 +53,7 @@ It was an operator workflow error caused by using a refresh-plan packet path as 
 ## Seam Risk
 
 - Interrupt ID: claim-refresh-plan-overwrite
-- Risk Class: none
+- Risk Class: workflow-guard
 - Seam: claim refresh planning versus saved claim-map update
 - Disproving Observation: the binary accepted an output path that was already configured as a saved claim-state path and replaced it with a different schema.
 - What Local Reasoning Cannot Prove: whether future agents will reliably remember the two-step distinction without a stronger CLI guard or clearer skill text.

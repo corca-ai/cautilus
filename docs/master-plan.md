@@ -79,7 +79,7 @@ The deterministic binary slice, first bundled-skill control-flow slice, determin
 The next claim-discovery hardening seam should come from fresh dogfood evidence rather than the old review-result application / evidence reconciliation backlog.
 The current evaluation contract lives in [specs/evaluation-surfaces.spec.md](./specs/evaluation-surfaces.spec.md): two surfaces (`dev`, `app`), four presets (`repo`, `skill`, `chat`, `prompt`), and four fixture composition primitives.
 The earlier first-class archetype boundary (chatbot / skill / workflow) was retired with that redesign.
-`npm run lint:specs` and `npm run lint:archetypes` still gate the runtime completeness of the surviving `scenario normalize` helpers; new user-facing copy must reconcile with the surface/preset contract before landing.
+`npm run lint:specs` and `npm run lint:scenario-normalizers` still gate the runtime completeness of the surviving `scenario normalize` helpers; new user-facing copy must reconcile with the surface/preset contract before landing.
 The runner readiness contract lives in [runner-readiness.md](./contracts/runner-readiness.md).
 It keeps headless product runners as setup/readiness substrate rather than a fourth command family, and it separates proof requirements from readiness verdicts.
 The runner verification capability contract lives in [runner-verification.md](./contracts/runner-verification.md).
@@ -126,13 +126,13 @@ Product-owned pieces shipped:
 
 - `chatbot`, `skill`, and `workflow` `scenario normalize` commands plus candidate helpers (proposal-input pipeline; the evaluation-surface archetype framing was retired)
 - `scenario prepare-input`, `scenario propose`, `scenario summarize-telemetry`
-- checked-in schema artifacts and archetype fixtures (chatbot, skill-validation, durable-workflow)
+- checked-in schema artifacts and normalization-family fixtures (chatbot, skill-validation, durable-workflow)
 - bundled-skill reference prompts point at these helpers
 
 Still open:
 
 - keep raw log readers, storage access, and host-specific trace retrieval consumer-owned
-- expand normalization coverage as new consumer archetypes show up
+- expand normalization coverage as new consumer patterns show up
 
 ### Phase 5: Intent-First Optimization Surface — mostly done
 
@@ -164,7 +164,7 @@ Shipped:
 
 Still open:
 
-- archetype-specific starter kits beyond the generic onboarding smoke
+- normalization-family starter kits beyond the generic onboarding smoke
 - keep the supported install smoke focused on `install.sh`
 - continue moving host-specific runtime seams (raw log readers, host storage conventions) out of the product boundary
 
@@ -174,8 +174,8 @@ Still open:
 2. Expand typed multi-runner metadata from the shipped `runner_readiness.runners` base only when real consumer adapters need additional fields; source-code inference remains deferred.
 3. Expand scenario-history beyond the first profile-backed comparison cache-key path toward reusable baseline results and broader compare ownership.
 4. Continue moving host-specific runtime seams out of the product boundary into consumer-owned adapters, prompts, and storage readers.
-5. Keep expanding normalization-pattern coverage as new consumer archetypes appear, while preserving one official adapter contract (`cautilus-adapter.yaml`).
-6. Decide whether to grow external-consumer onboarding into archetype-specific starter kits while keeping the supported installer surface centered on `install.sh`.
+5. Keep expanding normalization-pattern coverage as new consumer patterns appear, while preserving one official adapter contract (`cautilus-adapter.yaml`).
+6. Decide whether to grow external-consumer onboarding into normalization-family starter kits while keeping the supported installer surface centered on `install.sh`.
 7. Keep widening HTML surfaces only when the packet boundary stays stable and the page meaningfully improves human review; agents should consume durable packets first.
 8. Specify a future interactive workbench only when the product is ready to support GUI-backed claim and scenario browsing, editing, deletion, and addition.
     Do not use the current live app runner seam as that GUI workbench concept.

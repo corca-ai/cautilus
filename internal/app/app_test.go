@@ -342,6 +342,43 @@ func TestRunClaimDiscoverWritesProofPlanFromTinyRepo(t *testing.T) {
 	}
 }
 
+func TestRunClaimDiscoverRefreshPlanRefusesSavedClaimStateOutput(t *testing.T) {
+	repoRoot := t.TempDir()
+	statePath := filepath.Join(repoRoot, ".cautilus", "claims", "latest.json")
+	if err := os.MkdirAll(filepath.Dir(statePath), 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	previous := strings.Join([]string{
+		`{`,
+		`  "schemaVersion": "cautilus.claim_proof_plan.v1",`,
+		`  "sourceRoot": ".",`,
+		`  "claimCandidates": []`,
+		`}`,
+	}, "\n")
+	if err := os.WriteFile(statePath, []byte(previous), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(repoRoot, "README.md"), []byte("# Temp\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile README returned error: %v", err)
+	}
+	t.Setenv("CAUTILUS_CALLER_CWD", repoRoot)
+	t.Setenv("CAUTILUS_TOOL_ROOT", "")
+
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	exitCode := Run([]string{"claim", "discover", "--repo-root", ".", "--previous", statePath, "--refresh-plan", "--output", statePath}, &stdout, &stderr)
+	if exitCode != 1 {
+		t.Fatalf("expected exit code 1, got %d, stdout=%s stderr=%s", exitCode, stdout.String(), stderr.String())
+	}
+	if !strings.Contains(stderr.String(), "refusing to write claim refresh plan over saved claim state") {
+		t.Fatalf("expected saved-state overwrite guard, got stderr=%s", stderr.String())
+	}
+	payload := readJSONObjectFile(t, statePath)
+	if payload["schemaVersion"] != "cautilus.claim_proof_plan.v1" {
+		t.Fatalf("refresh plan should not overwrite saved claim state, got %#v", payload["schemaVersion"])
+	}
+}
+
 func TestRunClaimShowSummarizesExistingProofPlan(t *testing.T) {
 	repoRoot := t.TempDir()
 	claimsPath := filepath.Join(repoRoot, "claims.json")
@@ -803,14 +840,14 @@ func TestRunScenariosReturnsCatalog(t *testing.T) {
 	if exitCode != 0 {
 		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
 	}
-	for _, want := range []string{"chatbot", "skill", "workflow", "cautilus.scenarios.v1"} {
+	for _, want := range []string{"chatbot", "skill", "workflow", "cautilus.scenario_normalization_catalog.v1"} {
 		if !strings.Contains(stdout.String(), want) {
 			t.Fatalf("expected stdout to mention %q, got %q", want, stdout.String())
 		}
 	}
 }
 
-func TestRunScenariosJSONReturnsThreeArchetypes(t *testing.T) {
+func TestRunScenariosJSONReturnsThreeNormalizationFamilies(t *testing.T) {
 	t.Setenv("CAUTILUS_CALLER_CWD", t.TempDir())
 	t.Setenv("CAUTILUS_TOOL_ROOT", "")
 
@@ -824,30 +861,30 @@ func TestRunScenariosJSONReturnsThreeArchetypes(t *testing.T) {
 	if err := json.Unmarshal(stdout.Bytes(), &payload); err != nil {
 		t.Fatalf("Unmarshal returned error: %v", err)
 	}
-	if payload["schemaVersion"] != "cautilus.scenarios.v1" {
+	if payload["schemaVersion"] != "cautilus.scenario_normalization_catalog.v1" {
 		t.Fatalf("unexpected schemaVersion: %#v", payload["schemaVersion"])
 	}
-	archetypes, ok := payload["archetypes"].([]any)
-	if !ok || len(archetypes) != 3 {
-		t.Fatalf("expected 3 archetypes, got %#v", payload["archetypes"])
+	families, ok := payload["normalizationFamilies"].([]any)
+	if !ok || len(families) != 3 {
+		t.Fatalf("expected 3 normalization families, got %#v", payload["normalizationFamilies"])
 	}
 	seen := map[string]bool{}
-	for _, entry := range archetypes {
+	for _, entry := range families {
 		obj, ok := entry.(map[string]any)
 		if !ok {
-			t.Fatalf("archetype entry is not an object: %#v", entry)
+			t.Fatalf("normalization family entry is not an object: %#v", entry)
 		}
-		name, _ := obj["archetype"].(string)
+		name, _ := obj["family"].(string)
 		seen[name] = true
 		for _, field := range []string{"summary", "exampleInput", "nextStepCli", "contractDoc", "inputSchema", "behaviorFocus"} {
 			if value, _ := obj[field].(string); strings.TrimSpace(value) == "" {
-				t.Fatalf("archetype %q missing %s: %#v", name, field, obj)
+				t.Fatalf("normalization family %q missing %s: %#v", name, field, obj)
 			}
 		}
 	}
 	for _, want := range []string{"chatbot", "skill", "workflow"} {
 		if !seen[want] {
-			t.Fatalf("expected archetype %q in payload, got %#v", want, seen)
+			t.Fatalf("expected normalization family %q in payload, got %#v", want, seen)
 		}
 	}
 }

@@ -8,7 +8,7 @@ This helper covers evaluation signals such as:
 - skill trigger-selection regressions
 - skill execution-quality regressions
 
-Durable automation workflow regressions are handled by a separate first-class archetype.
+Durable automation workflow regressions are handled by a separate normalization family.
 See [workflow-normalization.md](./workflow-normalization.md) for that contract.
 
 ## Problem
@@ -63,7 +63,7 @@ Minimum input class:
   - optional `artifactRefs`
   - optional `metrics`
 
-`targetKind: cli_workflow` is rejected with a pointer to the workflow archetype.
+`targetKind: cli_workflow` is rejected with a pointer to the workflow normalization family.
 
 The helper must not:
 
@@ -108,7 +108,7 @@ Those derived profiles should use the shared product-owned dimension catalog ins
 
 - `skill` normalization is product-owned; runtime readers and command runners stay consumer-owned.
 - The helper consumes normalized summaries, not repo-local scans of `skills/`, `profiles/`, `runs/`, or CI logs.
-- `cli_workflow` inputs are handled by the workflow archetype and rejected here with an actionable pointer.
+- `cli_workflow` inputs are handled by the workflow normalization family and rejected here with an actionable pointer.
 - The helper outputs proposal candidates that can feed the existing `scenario prepare-input` and `scenario propose` chain unchanged.
 
 ## Non-Goals
@@ -130,7 +130,7 @@ Those derived profiles should use the shared product-owned dimension catalog ins
 
 - a validation-heavy consumer can normalize failed smoke-scenario or validation summaries into reusable proposal candidates without teaching `Cautilus` how to read the whole repo.
 - a trigger/execution-heavy consumer can normalize packet-shaped trigger or execution regressions without extra host mapping.
-- the helper rejects workflow-shaped inputs with a clear pointer to the workflow archetype.
+- the helper rejects workflow-shaped inputs with a clear pointer to the workflow normalization family.
 
 ## Acceptance Checks
 

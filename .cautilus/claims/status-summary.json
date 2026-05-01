@@ -1,5 +1,5 @@
 {
-  "candidateCount": 322,
+  "candidateCount": 324,
   "claimState": {
     "path": ".cautilus/claims/latest.json",
     "pathSource": "adapter",
@@ -16,7 +16,7 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 254,
+      "developer": 256,
       "user": 68
     },
     "byClaimSemanticGroup": {
@@ -27,28 +27,30 @@
       "Evaluation surfaces": 2,
       "Improvement and optimization": 21,
       "Packets and reporting": 28,
-      "Quality gates": 30,
+      "Quality gates": 32,
       "Release and packaging": 5
     },
     "byEvidenceStatus": {
-      "unknown": 322
+      "satisfied": 4,
+      "unknown": 320
     },
     "byLifecycle": {
-      "new": 322
+      "new": 324
     },
     "byRecommendedProof": {
       "cautilus-eval": 167,
-      "deterministic": 117,
+      "deterministic": 119,
       "human-auditable": 38
     },
     "byReviewStatus": {
-      "heuristic": 322
+      "agent-reviewed": 14,
+      "heuristic": 310
     },
     "byVerificationReadiness": {
       "blocked": 2,
       "needs-alignment": 9,
       "needs-scenario": 6,
-      "ready-to-verify": 305
+      "ready-to-verify": 307
     }
   },
   "effectiveScanScope": {
@@ -196,24 +198,101 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 0,
-    "satisfiedClaims": []
+    "satisfiedClaimCount": 4,
+    "satisfiedClaims": [
+      {
+        "claimId": "claim-readme-md-144",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:dd7e4a590d4439cf31cb119491f2cb73c150f3454cf1f79d51ff6b9064c18cc5",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-dev-skill-routing-install.json",
+            "supportsClaimIds": [
+              "claim-readme-md-144"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": "dev/skill",
+        "recommendedProof": "cautilus-eval",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Use when you change a skill or agent and want to know whether it still triggers on the right prompts, executes cleanly, and keeps its static validation passing."
+      },
+      {
+        "claimId": "claim-readme-md-148",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:bdc972a2b15d5207596491d2e4048af7af6ce725c928ae05ddf988508c9303ba",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-dev-skill-dogfood.json",
+            "supportsClaimIds": [
+              "claim-readme-md-148"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": "dev/skill",
+        "recommendedProof": "cautilus-eval",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The same preset can evaluate a multi-turn agent episode when the fixture provides `turns`; Cautilus's own first-scan, refresh-flow, review-prepare, reviewer-launch, and review-to-eval dogfood fixtures derive their results from audit packets."
+      },
+      {
+        "claimId": "claim-readme-md-211",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:dd7e4a590d4439cf31cb119491f2cb73c150f3454cf1f79d51ff6b9064c18cc5",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-dev-skill-routing-install.json",
+            "supportsClaimIds": [
+              "claim-readme-md-211"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": "dev/skill",
+        "recommendedProof": "cautilus-eval",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Agent track — Claude / Codex plugin.** The `cautilus install` step also lands a bundled skill at `.agents/skills/cautilus/` with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally."
+      },
+      {
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-619",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:732f188c8bf8250609d2f953590fe0a6847af219c3fecb3f2c8825d12be32e0e",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-review-to-eval-flow.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-claim-discovery-workflow-md-619"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": "app/prompt",
+        "recommendedProof": "cautilus-eval",
+        "reviewStatus": "agent-reviewed",
+        "summary": "It emits `cautilus.claim_eval_plan.v1` from reviewed `cautilus-eval` claims that are ready to verify, while preserving the host boundary by not writing fixtures, prompts, runners, wrappers, or policy."
+      }
+    ]
   },
-  "gitCommit": "51263a7d74fcb9dfd62e23ae896fd6685c764002",
+  "gitCommit": "ddf4a1f2ad11f609e92caa607f174d354418d56a",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "51263a7d74fcb9dfd62e23ae896fd6685c764002",
+    "currentGitCommit": "ddf4a1f2ad11f609e92caa607f174d354418d56a",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "51263a7d74fcb9dfd62e23ae896fd6685c764002",
+    "packetGitCommit": "ddf4a1f2ad11f609e92caa607f174d354418d56a",
     "recommendedAction": "The claim packet commit matches the current checkout.",
     "workingTreePolicy": "excluded"
   },
-  "inputPath": ".cautilus/claims/latest.json",
+  "inputPath": ".cautilus/claims/evidenced-typed-runners.json",
   "inputSchemaVersion": "cautilus.claim_proof_plan.v1",
   "linkedMarkdownSourceCount": 34,
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
@@ -232,7 +311,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 307,
+    "heuristicClaimsReadyForReview": 295,
     "needsAlignment": 9,
     "needsScenario": 6
   },

@@ -48,7 +48,7 @@ What each step proves:
    The ready payload now includes `first_bounded_run`, which adds a starter `eval test -> eval evaluate` packet loop and keeps the `cautilus scenarios --json` catalog nearby only for proposal-input examples.
    If the repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, use `cautilus doctor --adapter-name <name>` for repo-scope validation.
 6. After repo-scope `doctor` is ready, run one bounded evaluation path rather than stopping at wiring.
-   Use `first_bounded_run.decisionLoopCommands[*]` for the generic packet loop, and use `first_bounded_run.archetypes[*].exampleInputCli` only when you want a minimal scenario-normalization packet before reaching for repo-local fixtures.
+   Use `first_bounded_run.decisionLoopCommands[*]` for the generic packet loop, and use `first_bounded_run.normalizationFamilies[*].exampleInputCli` only when you want a minimal scenario-normalization packet before reaching for repo-local fixtures.
 
 ## Migration Checklist
 
@@ -104,7 +104,7 @@ This helper:
 ## Deprecated Surface Names
 
 The product owns the behavior-surface vocabulary in `cautilus.behavior_intent.v1`.
-The schema version stays at `v1`, but some surface strings have been renamed for archetype-vocabulary hygiene.
+The schema version stays at `v1`, but some surface strings have been renamed for legacy vocabulary hygiene.
 Old names still work as deprecated input aliases, and Cautilus silently normalizes them, but new emitters should use the canonical name.
 
 | Deprecated name (still accepted on input) | Canonical name |

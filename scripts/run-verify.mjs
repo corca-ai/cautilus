@@ -6,7 +6,7 @@ import process from "node:process";
 export const PHASES = [
 	{ id: "lint:eslint", label: "lint · eslint" },
 	{ id: "lint:specs", label: "lint · specs" },
-	{ id: "lint:archetypes", label: "lint · archetypes" },
+	{ id: "lint:scenario-normalizers", label: "lint · scenario normalizers" },
 	{ id: "lint:contracts", label: "lint · contracts" },
 	{ id: "lint:links", label: "lint · links" },
 	{ id: "lint:skill-disclosure", label: "lint · skill disclosure" },

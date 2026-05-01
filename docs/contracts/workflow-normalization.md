@@ -1,8 +1,8 @@
 # Workflow Scenario Normalization Contract
 
-`Cautilus` supports a first-class `workflow` normalization helper that turns summaries of stateful automation runs into scenario proposal candidates.
+`Cautilus` supports a `workflow` normalization helper that turns summaries of stateful automation runs into scenario proposal candidates.
 
-The workflow archetype is about **durable automation that persists across invocations**: CLI workflows, long-running agent sessions, replay seeds, pipelines.
+The workflow normalization family is about **durable automation that persists across invocations**: CLI workflows, long-running agent sessions, replay seeds, pipelines.
 What matters is that the automation has discrete steps, a persistable state, and can be blocked mid-progression.
 The helper exists so that a recurring blocker stops living as prose in a document and becomes a reusable evaluation case instead.
 
@@ -79,7 +79,7 @@ When no `intentProfile` is declared, the helper derives a thin profile with beha
 
 - `workflow` normalization is product-owned; runtime readers, replay-seed storage, and trace retrieval stay consumer-owned.
 - The helper consumes normalized workflow summaries, not repo-local scans of `runs/`, `scenario.yaml` files, or CI logs.
-- Skill-shaped `targetKind` values (`public_skill`, `profile`, `integration`) are rejected and handled by the skill archetype.
+- Skill-shaped `targetKind` values (`public_skill`, `profile`, `integration`) are rejected and handled by the skill normalization family.
 
 ## Non-Goals
 
@@ -98,13 +98,13 @@ When no `intentProfile` is declared, the helper derives a thin profile with beha
 ## Success Criteria
 
 - a workflow-heavy consumer can normalize blocked or degraded run summaries into reusable proposal candidates without giving `Cautilus` runtime ownership of its automation surfaces.
-- the helper rejects skill-shaped inputs with a clear pointer to the skill archetype.
+- the helper rejects skill-shaped inputs with a clear pointer to the skill normalization family.
 
 ## Acceptance Checks
 
 - fixture: workflow-shaped degraded run with `blockedSteps` evidence becomes a candidate with operator-recovery rationale.
 - fixture: helper output feeds directly into `scenario prepare-input` or `scenario propose` without extra mapping.
-- skill-shaped input returns a non-zero exit with stderr mentioning the workflow archetype vocabulary.
+- skill-shaped input returns a non-zero exit with stderr mentioning the workflow normalization family vocabulary.
 
 ## Canonical Artifact
 

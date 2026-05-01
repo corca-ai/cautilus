@@ -202,7 +202,7 @@ source of truth다.
 | 5.1 | `cautilus doctor --repo-root <repo-path>` | `ready` 출력, exit 0 | 기계적 |
 | 5.2 | `cautilus adapter resolve --repo-root <repo-path>` | adapter 경로 출력, exit 0 | 기계적 |
 
-현재 확인 중인 consumer archetype:
+현재 확인 중인 consumer normalization family:
 
 | target | 역할 | 경로 예시 |
 |---|---|---|
@@ -247,7 +247,7 @@ Tier 3이 "CLI가 돌아가는가"라면 이 tier는 "리드미의 각 문장이
 | 6.7 | Starter kit — chatbot resolves | `cautilus adapter resolve --repo-root ./examples/starters/chatbot` | adapter 경로, exit 0 |
 | 6.8 | Starter kit — skill resolves | `cautilus adapter resolve --repo-root ./examples/starters/skill` | adapter 경로, exit 0 |
 | 6.9 | Starter kit — workflow resolves | `cautilus adapter resolve --repo-root ./examples/starters/workflow` | adapter 경로, exit 0 |
-| 6.10 | Packet shape — 3 archetype normalize (optional, `jq` 필요) | `cautilus scenario normalize chatbot --input ./fixtures/scenario-proposals/chatbot-input.json \| jq -e '.candidates\|length>0'` (skill, workflow도 동일 패턴으로) | 각각 exit 0 |
+| 6.10 | Packet shape — 3 normalization families (optional, `jq` 필요) | `cautilus scenario normalize chatbot --input ./fixtures/scenario-proposals/chatbot-input.json \| jq -e '.candidates\|length>0'` (skill, workflow도 동일 패턴으로) | 각각 exit 0 |
 
 `jq`가 없는 환경에서는 6.10을 스킵해도 된다. 나머지 행은 의존성 없이 돈다.
 

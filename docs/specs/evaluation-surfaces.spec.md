@@ -129,7 +129,8 @@ Removed in this slice:
 - `cautilus.instruction_surface_*` schemas — replaced by `cautilus.evaluation_*` schemas.
 - `instruction_surface_*` adapter fields — replaced by `eval_test_command_templates` and `evaluation_input_default`.
 
-`scenario normalize chatbot|skill|workflow` are unchanged for now (they feed proposal-input normalization, not evaluation). They lose their archetype framing once the corresponding `cautilus eval` presets ship and proposal-input normalization is rescoped in a later slice.
+`scenario normalize chatbot|skill|workflow` feed proposal-input normalization, not evaluation.
+Their public catalog now presents them as scenario normalization families through `normalizationFamilies`, not evaluation archetypes.
 
 Migration tracked at [corca-ai/cautilus#32](https://github.com/corca-ai/cautilus/issues/32).
 
@@ -146,7 +147,8 @@ Answers should land through implementation slices, not through more spec churn:
 
 ## Deferred Decisions
 
-- **migration plan for `scenario normalize chatbot|skill|workflow`**: those commands feed proposals, not evaluations. The redesign here is on the evaluation surface; proposal-input normalization is unchanged. The deprecation of the archetype layer lives in a separate handoff slice.
+- **migration plan for `scenario normalize chatbot|skill|workflow`**: closed 2026-05-01.
+  The commands still feed proposals, not evaluations; their catalog, doctor guide, version state, lint script, tests, and docs now use normalization-family vocabulary instead of public archetype vocabulary.
 - **plugin author distinct CLI flow**: stick with `--workspace` flag for now.
   Revisit if plugin authors need richer fixture-workspace tooling (linting plugin manifest from fixture, etc.).
 - **cross-surface composition**: a `dev` step that invokes an `app` fixture, or vice versa.
@@ -206,7 +208,7 @@ Each criterion has at least one executable check.
   - `app / chat`: multi-turn fixture against fixture-backend (no real model).
   - `app / prompt`: single-turn fixture against fixture-backend.
 - **CLI runtime parity**: `app / chat` fixture run via direct API and via `claude -p --system-prompt` produces packets where the MUST-be-byte-equal fields match, the MUST-be-present-and-non-empty fields are populated on both sides, and the MAY-differ fields are carried with a harness tag.
-- **Spec lint**: `npm run lint:specs` accepts this spec; archetype lint scope follows the workflow-archetype removal.
+- **Spec lint**: `npm run lint:specs` accepts this spec; `npm run lint:scenario-normalizers` keeps the surviving proposal-input normalizers complete.
 - **Taxonomy axis**: per-surface preset enums kept narrow; mixed-axis values (e.g., adding `dev / chat`) rejected at the schema validator.
 
 ## Premortem
@@ -281,5 +283,6 @@ Follow-up slices proceed in this order:
 5. ~~C3 `steps` composition primitive.~~ Shipped 2026-05-01.
    Multi-step `eval test` fixtures execute each step in order, require explicit `outputProjection`, and allow only prior projected outputs to feed later step placeholders.
 6. ~~C4 `expected.snapshot` composition primitive.~~ Shipped 2026-05-01 for app `finalText` snapshots.
-7. Rescope `scenario normalize` proposal-input lineage.
-   The `archetype-boundary.spec.md` retirement was absorbed into the `mode evaluate` cut slice (2026-04-26): the spec was removed, `lint:archetypes` was reframed as a runtime-completeness check for the surviving `scenario normalize` plumbing, and AGENTS.md / CLAUDE.md / README.md / master-plan.md were realigned to point at this spec instead.
+7. ~~Rescope `scenario normalize` proposal-input lineage.~~ Shipped 2026-05-01.
+   The `archetype-boundary.spec.md` retirement was absorbed into the `mode evaluate` cut slice (2026-04-26): the spec was removed, the runtime-completeness check for surviving `scenario normalize` plumbing was later renamed to `lint:scenario-normalizers`, and AGENTS.md / CLAUDE.md / README.md / master-plan.md were realigned to point at this spec instead.
+   This slice completes the vocabulary cut: `cautilus scenarios --json` emits `cautilus.scenario_normalization_catalog.v1` with `normalizationFamilies`, `first_bounded_run` uses the same field, and the lint command is now `lint:scenario-normalizers`.

@@ -272,17 +272,17 @@ func NormalizeWorkflowProposalCandidates(evaluationRuns []any) ([]any, error) {
 func assertSkillTargetKind(run map[string]any, index int) error {
 	targetKind := stringOrEmpty(run["targetKind"])
 	if targetKind == "cli_workflow" {
-		return fmt.Errorf("evaluationRuns[%d].targetKind is %q; this belongs to the workflow archetype. Use `cautilus scenario normalize workflow` with the %s schema", index, targetKind, contracts.WorkflowNormalizationInputsSchema)
+		return fmt.Errorf("evaluationRuns[%d].targetKind is %q; this belongs to the workflow normalization family. Use `cautilus scenario normalize workflow` with the %s schema", index, targetKind, contracts.WorkflowNormalizationInputsSchema)
 	}
 	if !containsString([]string{"public_skill", "profile", "integration"}, targetKind) {
-		return fmt.Errorf("evaluationRuns[%d].targetKind must be one of public_skill, profile, integration for the skill archetype", index)
+		return fmt.Errorf("evaluationRuns[%d].targetKind must be one of public_skill, profile, integration for the skill normalization family", index)
 	}
 	return nil
 }
 
 func assertWorkflowTargetKind(run map[string]any, index int) error {
 	if stringOrEmpty(run["targetKind"]) != "cli_workflow" {
-		return fmt.Errorf("evaluationRuns[%d].targetKind must be cli_workflow for the workflow archetype", index)
+		return fmt.Errorf("evaluationRuns[%d].targetKind must be cli_workflow for the workflow normalization family", index)
 	}
 	return nil
 }
