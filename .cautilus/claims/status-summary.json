@@ -1,5 +1,5 @@
 {
-  "candidateCount": 326,
+  "candidateCount": 331,
   "claimState": {
     "path": ".cautilus/claims/latest.json",
     "pathSource": "adapter",
@@ -16,42 +16,42 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 263,
-      "user": 63
+      "developer": 265,
+      "user": 66
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 57,
-      "Agent and skill workflow": 81,
+      "Agent and skill workflow": 82,
       "Claim discovery and review": 21,
-      "Documentation and contracts": 79,
+      "Documentation and contracts": 81,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
       "Improvement and optimization": 20,
       "Packets and reporting": 29,
-      "Quality gates": 32,
+      "Quality gates": 34,
       "Release and packaging": 5
     },
     "byEvidenceStatus": {
       "satisfied": 27,
-      "unknown": 299
+      "unknown": 304
     },
     "byLifecycle": {
-      "new": 326
+      "new": 331
     },
     "byRecommendedProof": {
-      "cautilus-eval": 152,
-      "deterministic": 119,
-      "human-auditable": 55
+      "cautilus-eval": 140,
+      "deterministic": 130,
+      "human-auditable": 61
     },
     "byReviewStatus": {
       "agent-reviewed": 42,
-      "heuristic": 284
+      "heuristic": 289
     },
     "byVerificationReadiness": {
-      "blocked": 5,
-      "needs-alignment": 25,
-      "needs-scenario": 6,
-      "ready-to-verify": 290
+      "blocked": 10,
+      "needs-alignment": 26,
+      "needs-scenario": 7,
+      "ready-to-verify": 288
     }
   },
   "effectiveScanScope": {
@@ -620,16 +620,16 @@
         "summary": "[Standalone Surface](standalone-surface.spec.md) Proves that the standalone binary and bundled skill can be installed into a fresh repo and discovered through stable operator-facing commands."
       },
       {
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-624",
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-627",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
-            "contentHash": "sha256:227404dad5434740e56d9d3b4c16a79278042fc10e5f97cbef5643e899e72a50",
+            "contentHash": "sha256:b61814438de0660b26dfef1fed1741b9d9b68404be4fd59ac4b794427b2ecaf4",
             "kind": "cautilus-claim-evidence-bundle",
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-review-to-eval-flow.json",
             "supportsClaimIds": [
-              "claim-docs-contracts-claim-discovery-workflow-md-624"
+              "claim-docs-contracts-claim-discovery-workflow-md-627"
             ]
           }
         ],
@@ -716,17 +716,17 @@
       }
     ]
   },
-  "gitCommit": "0e3d8f6b498ffd00e16efdca7feb5c4daeae5155",
+  "gitCommit": "c02f4a410854a07ff602565fc63d6e73bafe03aa",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "0e3d8f6b498ffd00e16efdca7feb5c4daeae5155",
+    "currentGitCommit": "c02f4a410854a07ff602565fc63d6e73bafe03aa",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "0e3d8f6b498ffd00e16efdca7feb5c4daeae5155",
+    "packetGitCommit": "c02f4a410854a07ff602565fc63d6e73bafe03aa",
     "recommendedAction": "The claim packet commit matches the current checkout.",
     "workingTreePolicy": "excluded"
   },
@@ -749,9 +749,9 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 256,
-    "needsAlignment": 25,
-    "needsScenario": 6
+    "heuristicClaimsReadyForReview": 259,
+    "needsAlignment": 26,
+    "needsScenario": 7
   },
   "sampleClaims": [
     {
