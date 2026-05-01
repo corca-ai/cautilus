@@ -1893,6 +1893,10 @@ func BuildClaimEvalPlan(packet map[string]any, options ClaimEvalPlanOptions) (ma
 			skipped = append(skipped, skippedClaimEvalPlan(claimID, "not-reviewed"))
 			continue
 		}
+		if stringFromAny(candidate["evidenceStatus"]) == "satisfied" {
+			skipped = append(skipped, skippedClaimEvalPlan(claimID, "already-satisfied"))
+			continue
+		}
 		if len(plans) >= maxClaims {
 			skipped = append(skipped, skippedClaimEvalPlan(claimID, "max-claims-exceeded"))
 			continue

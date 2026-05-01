@@ -1,0 +1,86 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-dev-skill-dogfood-codex-2026-05-01",
+  "createdForClaimIds": [
+    "claim-readme-md-148"
+  ],
+  "repoCommit": "5f400b3d5b14a055d8b0f544d780f44865d7e621",
+  "summary": "Codex-backed dev/skill dogfood episodes for first-scan, refresh-flow, review-prepare, reviewer-launch, and review-to-eval all returned accept-now and audit status passed.",
+  "evidenceScope": {
+    "targetSurface": "dev/skill",
+    "runtime": "codex",
+    "claimBoundary": "Supports the README claim that Cautilus's named multi-turn dev/skill dogfood fixtures derive their results from audit packets.",
+    "notClaimed": [
+      "Claude parity for this specific evidence bundle",
+      "All Cautilus claims",
+      "App/product behavior proof"
+    ]
+  },
+  "runs": [
+    {
+      "id": "first-scan-flow",
+      "command": "npm run dogfood:cautilus-first-scan-flow:eval:codex",
+      "recommendation": "accept-now",
+      "passed": 1,
+      "failed": 0,
+      "auditStatus": "passed",
+      "summaryPath": "artifacts/self-dogfood/cautilus-first-scan-flow-eval-codex/latest/eval-summary.json",
+      "summaryContentHash": "sha256:e6eed316138fe6be7a211b141657895ca3b3a82105ebf15b1de871a6c5285d52",
+      "auditPath": "artifacts/self-dogfood/cautilus-first-scan-flow-eval-codex/latest/first-scan-flow/episode-cautilus-first-scan-flow/audit.json",
+      "auditContentHash": "sha256:10e8119f5f19a0f16547ceb09d58775b420c1a98115879ef590e48fd2c8fea8d"
+    },
+    {
+      "id": "refresh-flow",
+      "command": "npm run dogfood:cautilus-refresh-flow:eval:codex",
+      "recommendation": "accept-now",
+      "passed": 1,
+      "failed": 0,
+      "auditStatus": "passed",
+      "summaryPath": "artifacts/self-dogfood/cautilus-refresh-flow-eval-codex/latest/eval-summary.json",
+      "summaryContentHash": "sha256:be0408f5d74235f4968c907500ad34ad822a5a322411ca503d6fe48e917d212b",
+      "auditPath": "artifacts/self-dogfood/cautilus-refresh-flow-eval-codex/latest/refresh-flow/episode-cautilus-refresh-flow/audit.json",
+      "auditContentHash": "sha256:3d8e8b494fb9a25dd12866b4c658bc13ebf4ec9537b780feb909516e95b58559"
+    },
+    {
+      "id": "review-prepare-flow",
+      "command": "npm run dogfood:cautilus-review-prepare-flow:eval:codex",
+      "recommendation": "accept-now",
+      "passed": 1,
+      "failed": 0,
+      "auditStatus": "passed",
+      "summaryPath": "artifacts/self-dogfood/cautilus-review-prepare-flow-eval-codex/latest/eval-summary.json",
+      "summaryContentHash": "sha256:f933f9be77dac256293d4194984a92c85b0afd110f83b8dbef03288babbcb03c",
+      "auditPath": "artifacts/self-dogfood/cautilus-review-prepare-flow-eval-codex/latest/review-prepare-flow/episode-cautilus-review-prepare-flow/audit.json",
+      "auditContentHash": "sha256:e86d14798b6c6f9b72adc6a643694f7ace04da3e034b867548e546831d826aca"
+    },
+    {
+      "id": "reviewer-launch-flow",
+      "command": "npm run dogfood:cautilus-reviewer-launch-flow:eval:codex",
+      "recommendation": "accept-now",
+      "passed": 1,
+      "failed": 0,
+      "auditStatus": "passed",
+      "summaryPath": "artifacts/self-dogfood/cautilus-reviewer-launch-flow-eval-codex/latest/eval-summary.json",
+      "summaryContentHash": "sha256:552ea631ace29728af567a2784a4e35b00f49ae861c6c4a25c30809c002dd34e",
+      "auditPath": "artifacts/self-dogfood/cautilus-reviewer-launch-flow-eval-codex/latest/reviewer-launch-flow/episode-cautilus-reviewer-launch-flow/audit.json",
+      "auditContentHash": "sha256:6b12399aeb11d71ccbdaed1b8bf2a820202eaf9701de7574002fb43fd906255f"
+    },
+    {
+      "id": "review-to-eval-flow",
+      "command": "npm run dogfood:cautilus-review-to-eval-flow:eval:codex",
+      "recommendation": "accept-now",
+      "passed": 1,
+      "failed": 0,
+      "auditStatus": "passed",
+      "summaryPath": "artifacts/self-dogfood/cautilus-review-to-eval-flow-eval-codex/latest/eval-summary.json",
+      "summaryContentHash": "sha256:f26f8310231858fc875e5468c3dcf037728b91495a7235bb834c36089418c120",
+      "auditPath": "artifacts/self-dogfood/cautilus-review-to-eval-flow-eval-codex/latest/review-to-eval-flow/episode-cautilus-review-to-eval-flow/audit.json",
+      "auditContentHash": "sha256:88d229ee02abc2e1328fc6afc6ec65a928a48759b60fd2781d7ec26fb1b9d358"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "Every named dogfood episode in the claim has a current Codex eval summary with accept-now and a corresponding audit packet with status passed."
+  }
+}

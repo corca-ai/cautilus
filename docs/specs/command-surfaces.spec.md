@@ -176,6 +176,7 @@ It exits non-zero when the packet is invalid.
 
 `cautilus claim plan-evals --claims <reviewed-claims.json>` emits `cautilus.claim_eval_plan.v1`.
 It selects reviewed `cautilus-eval` claims whose `verificationReadiness` is `ready-to-verify`.
+It skips claims that already have `evidenceStatus=satisfied`.
 It rejects stale claim packets by default.
 It records claim ids, target eval surfaces, draft intents, source refs, evidence status, review status, and unresolved questions.
 It does not write host-owned fixtures, prompts, runners, wrappers, or acceptance policy.

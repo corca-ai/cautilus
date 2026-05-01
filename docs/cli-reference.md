@@ -129,6 +129,7 @@ It emits an updated claim packet and rejects `evidenceStatus=satisfied` unless a
 Use `cautilus claim validate --claims <claims.json>` to emit `cautilus.claim_validation_report.v1` and fail fast on invalid packet shape or evidence refs.
 It does not mutate the packet or search for evidence.
 Use `cautilus claim plan-evals --claims <reviewed-claims.json>` after review to turn ready `cautilus-eval` claims into `cautilus.claim_eval_plan.v1`.
+Claims already marked `evidenceStatus=satisfied` are skipped by default because they do not need a new eval fixture plan.
 That packet preserves claim ids, target eval surfaces, source refs, draft intents, and unresolved questions, but it deliberately does not write host-owned fixtures or runners.
 `claim review prepare-input`, `claim review apply-result`, and `claim plan-evals` reject stale claim packets by default; `--allow-stale-claims` is an explicit operator override, not the normal agent path.
 

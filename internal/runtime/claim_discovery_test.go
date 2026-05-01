@@ -726,6 +726,50 @@ func TestBuildClaimEvalPlanSkipsHeuristicEvalClaims(t *testing.T) {
 	}
 }
 
+func TestBuildClaimEvalPlanSkipsSatisfiedEvalClaims(t *testing.T) {
+	reviewed := map[string]any{
+		"schemaVersion": contracts.ClaimProofPlanSchema,
+		"sourceRoot":    ".",
+		"sourceInventory": []any{
+			map[string]any{"path": "README.md", "kind": "markdown", "status": "read", "depth": 0},
+		},
+		"claimCandidates": []any{
+			map[string]any{
+				"claimId":                "claim-readme-md-1",
+				"claimFingerprint":       "sha256:satisfied",
+				"summary":                "The skill flow is already covered.",
+				"recommendedProof":       "cautilus-eval",
+				"recommendedEvalSurface": "dev/skill",
+				"verificationReadiness":  "ready-to-verify",
+				"evidenceStatus":         "satisfied",
+				"reviewStatus":           "agent-reviewed",
+				"lifecycle":              "new",
+				"groupHints":             []any{"cautilus-eval"},
+				"evidenceRefs": []any{map[string]any{
+					"path":             ".cautilus/claims/evidence.json",
+					"kind":             "cautilus-claim-evidence-bundle",
+					"matchKind":        "verified",
+					"contentHash":      "sha256:test",
+					"supportsClaimIds": []any{"claim-readme-md-1"},
+				}},
+				"sourceRefs": []any{map[string]any{"path": "README.md", "line": 1, "excerpt": "The skill flow is already covered."}},
+				"proofLayer": "cautilus-eval",
+			},
+		},
+	}
+	evalPlan, err := BuildClaimEvalPlan(reviewed, ClaimEvalPlanOptions{ClaimsPath: "reviewed-claims.json"})
+	if err != nil {
+		t.Fatalf("BuildClaimEvalPlan returned error: %v", err)
+	}
+	if plans := arrayOrEmpty(evalPlan["evalPlans"]); len(plans) != 0 {
+		t.Fatalf("expected satisfied claim to be skipped, got %#v", plans)
+	}
+	skipped := arrayOrEmpty(evalPlan["skippedClaims"])
+	if len(skipped) != 1 || asMap(skipped[0])["reason"] != "already-satisfied" {
+		t.Fatalf("expected already-satisfied skip, got %#v", skipped)
+	}
+}
+
 func TestBuildClaimValidationReportValidatesEvidenceRefs(t *testing.T) {
 	packet := map[string]any{
 		"schemaVersion": contracts.ClaimProofPlanSchema,

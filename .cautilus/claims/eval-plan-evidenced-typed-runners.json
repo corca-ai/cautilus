@@ -71,43 +71,6 @@
       "unresolvedQuestions": []
     },
     {
-      "claimFingerprint": "sha256:16b357f816005aa1da9b6ff24f4188e6e6057e0e73d8f39e58c8cb4b153d8c05",
-      "claimId": "claim-readme-md-148",
-      "draftIntent": "Verify that The same preset can evaluate a multi-turn agent episode when the fixture provides `turns`; Cautilus's own first-scan, refresh-flow, review-prepare, reviewer-launch, and review-to-eval dogfood fixtures derive their results from audit packets.",
-      "evidenceStatus": "unknown",
-      "nextStep": "Create a host-owned cautilus.evaluation_input.v1 fixture and adapter-owned runner for this plan.",
-      "planId": "eval-plan-claim-readme-md-148",
-      "proofRequirement": {
-        "minimumProofClasses": [
-          "fixture-smoke",
-          "coding-agent-messaging",
-          "declared-eval-runner"
-        ],
-        "proofMechanism": "cautilus-eval",
-        "recommendedEvalSurface": "dev/skill",
-        "requiredObservability": [
-          "trigger",
-          "execution",
-          "loadedInstructionFiles",
-          "runtimeFingerprint"
-        ],
-        "requiredRunnerCapability": "development-skill-eval-runner",
-        "requiresProductRunnerProof": false
-      },
-      "reviewStatus": "agent-reviewed",
-      "sourceRefs": [
-        {
-          "excerpt": "The same preset can evaluate a multi-turn agent episode when the fixture provides `turns`; Cautilus's own first-scan, refresh-flow, review-prepare, reviewer-launch, and review-to-eval dogfood fixtures derive their results from audit packets.",
-          "line": 148,
-          "path": "README.md"
-        }
-      ],
-      "targetSurface": "dev/skill",
-      "unresolvedQuestions": [
-        "If the review-to-eval dogfood fixture is now part of the public promise, the README sentence may need to include it alongside first-scan, refresh-flow, review-prepare, and reviewer-launch."
-      ]
-    },
-    {
       "claimFingerprint": "sha256:0326670200c2a6f36720afd68b0bf4dded8a6d931270b22ff70f68d3fe459927",
       "claimId": "claim-readme-md-211",
       "draftIntent": "Verify that Agent track — Claude / Codex plugin.** The `cautilus install` step also lands a bundled skill at `.agents/skills/cautilus/` with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally.",
@@ -145,7 +108,7 @@
       ]
     }
   ],
-  "inputPath": "/home/hwidong/codes/cautilus/.cautilus/claims/reviewed-typed-runners.json",
+  "inputPath": "/home/hwidong/codes/cautilus/.cautilus/claims/evidenced-typed-runners.json",
   "nonWriterNotice": "This packet plans eval fixtures but does not write host-owned fixtures, prompts, runners, or policy.",
   "schemaVersion": "cautilus.claim_eval_plan.v1",
   "selectionPolicy": {
@@ -217,6 +180,10 @@
     {
       "claimId": "claim-readme-md-137",
       "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-readme-md-148",
+      "reason": "already-satisfied"
     },
     {
       "claimId": "claim-readme-md-149",

@@ -146,11 +146,7 @@
       "reason": "not-reviewed"
     },
     {
-      "claimId": "claim-docs-cli-reference-md-168",
-      "reason": "not-reviewed"
-    },
-    {
-      "claimId": "claim-docs-cli-reference-md-180",
+      "claimId": "claim-docs-cli-reference-md-169",
       "reason": "not-reviewed"
     },
     {
@@ -158,35 +154,39 @@
       "reason": "not-reviewed"
     },
     {
-      "claimId": "claim-docs-cli-reference-md-251",
+      "claimId": "claim-docs-cli-reference-md-182",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-cli-reference-md-252",
       "reason": "not-cautilus-eval"
     },
     {
-      "claimId": "claim-docs-cli-reference-md-253",
+      "claimId": "claim-docs-cli-reference-md-254",
       "reason": "not-reviewed"
     },
     {
-      "claimId": "claim-docs-cli-reference-md-261",
+      "claimId": "claim-docs-cli-reference-md-262",
       "reason": "not-reviewed"
     },
     {
-      "claimId": "claim-docs-cli-reference-md-265",
+      "claimId": "claim-docs-cli-reference-md-266",
       "reason": "not-reviewed"
     },
     {
-      "claimId": "claim-docs-cli-reference-md-421",
+      "claimId": "claim-docs-cli-reference-md-422",
       "reason": "not-cautilus-eval"
     },
     {
-      "claimId": "claim-docs-cli-reference-md-425",
+      "claimId": "claim-docs-cli-reference-md-426",
       "reason": "not-reviewed"
     },
     {
-      "claimId": "claim-docs-cli-reference-md-481",
+      "claimId": "claim-docs-cli-reference-md-482",
       "reason": "not-cautilus-eval"
     },
     {
-      "claimId": "claim-docs-cli-reference-md-499",
+      "claimId": "claim-docs-cli-reference-md-500",
       "reason": "not-reviewed"
     },
     {
@@ -1074,51 +1074,51 @@
       "reason": "not-reviewed"
     },
     {
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-195",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-196",
       "reason": "not-reviewed"
     },
     {
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-217",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-218",
       "reason": "not-reviewed"
     },
     {
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-230",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-231",
       "reason": "not-cautilus-eval"
     },
     {
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-268",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-269",
       "reason": "not-cautilus-eval"
-    },
-    {
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-270",
-      "reason": "not-reviewed"
     },
     {
       "claimId": "claim-docs-specs-command-surfaces-spec-md-271",
-      "reason": "not-cautilus-eval"
+      "reason": "not-reviewed"
     },
     {
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-275",
-      "reason": "not-reviewed"
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-272",
+      "reason": "not-cautilus-eval"
     },
     {
       "claimId": "claim-docs-specs-command-surfaces-spec-md-276",
-      "reason": "not-cautilus-eval"
-    },
-    {
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-279",
-      "reason": "not-cautilus-eval"
-    },
-    {
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-296",
-      "reason": "not-cautilus-eval"
-    },
-    {
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-303",
       "reason": "not-reviewed"
     },
     {
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-306",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-277",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-280",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-297",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-304",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-307",
       "reason": "not-cautilus-eval"
     },
     {
@@ -1324,7 +1324,7 @@
   ],
   "sourceClaimPacket": {
     "candidateCount": 327,
-    "gitCommit": "ab33da6d9a7725503543a54890294b69857817f2",
+    "gitCommit": "5f400b3d5b14a055d8b0f544d780f44865d7e621",
     "schemaVersion": "cautilus.claim_proof_plan.v1"
   }
 }

@@ -70,6 +70,7 @@
       "example": "cautilus claim plan-evals --claims /tmp/cautilus-reviewed-claims.json --output /tmp/cautilus-eval-plan.json",
       "notes": [
         "Emits `cautilus.claim_eval_plan.v1` for reviewed `cautilus-eval` claims that are ready to verify.",
+        "Skips claims that already have `evidenceStatus=satisfied`; they do not need a new eval fixture plan by default.",
         "Rejects stale claim packets by default before planning eval fixtures; generated claim artifact commits do not make the source inventory stale.",
         "The command plans eval fixtures but does not write host-owned fixtures, prompts, runners, or policy."
       ]

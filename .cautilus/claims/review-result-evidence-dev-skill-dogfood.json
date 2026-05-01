@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-01T00:00:00Z",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied when a checked-in evidence bundle records direct or verified proof for the claim boundary."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-user-claim-discovery-and-review-cautilus-eval-dev-skill-readme",
+      "claimUpdates": [
+        {
+          "claimId": "claim-readme-md-148",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/skill",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the checked-in dev/skill dogfood evidence bundle: first-scan, refresh-flow, review-prepare, reviewer-launch, and review-to-eval Codex eval summaries are accept-now and their audit packets are passed.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-dev-skill-dogfood.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:bdc972a2b15d5207596491d2e4048af7af6ce725c928ae05ddf988508c9303ba",
+              "supportsClaimIds": [
+                "claim-readme-md-148"
+              ]
+            }
+          ],
+          "nextAction": "Keep this claim covered by rerunning the named dev/skill dogfood episodes when their fixtures, audit scripts, or bundled skill routing change.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

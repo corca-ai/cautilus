@@ -18,12 +18,12 @@
   `/tmp/cautilus-dev-repo-codex-eval-v4/eval-observed.json`에는 `telemetry.runtime=codex_exec`가 기록됐다.
   이제 dev proof promotion은 selected runtime name만 믿지 않고 observed telemetry runtime을 요구한다.
 - 2026-05-01 claim state는 `.cautilus/claims/latest.json` 기준 `candidateCount=327`이다.
-  `agent-reviewed=13`, `heuristic=314`, `evidenceStatus=unknown=327`인 reviewed packet은 `.cautilus/claims/reviewed-typed-runners.json`에 있다.
-  `.cautilus/claims/eval-plan-reviewed-typed-runners.json`는 reviewed claims 중 4개를 `dev/skill` eval plan으로 드러낸다.
-  이것은 proof 완료가 아니라 다음 fixture/eval authoring target을 구체화한 상태다.
+  `agent-reviewed=13`, `heuristic=314`인 reviewed packet은 `.cautilus/claims/reviewed-typed-runners.json`에 있다.
+  `.cautilus/claims/evidenced-typed-runners.json`는 `claim-readme-md-148`을 `evidenceStatus=satisfied`로 올리고 `.cautilus/claims/evidence-dev-skill-dogfood.json`를 verified evidence ref로 연결한다.
+  `.cautilus/claims/eval-plan-evidenced-typed-runners.json`는 satisfied claim을 `already-satisfied`로 skip하고 남은 3개 `dev/skill` eval targets를 드러낸다.
 - 2026-05-01 후속 dogfood로 `npm run dogfood:cautilus-review-to-eval-flow:eval:codex`를 다시 실행했다.
   결과는 `recommendation=accept-now`, `passed=1`, `failed=0`이고 artifact는 `artifacts/self-dogfood/cautilus-review-to-eval-flow-eval-codex/latest/eval-summary.json`이다.
-  이 증거는 `claim-readme-md-148`의 일부를 직접 뒷받침하지만, 해당 README claim은 first-scan / refresh-flow / review-prepare / reviewer-launch / review-to-eval 전체를 함께 말하므로 아직 `satisfied`로 승격하지 않았다.
+  기존 first-scan / refresh-flow / review-prepare / reviewer-launch Codex dogfood summaries and audit packets도 모두 accept/pass 상태라, 이 다섯 run을 묶은 evidence bundle로 `claim-readme-md-148`은 satisfied 상태가 됐다.
 - 2026-05-01 Cautilus dogfood 중 Charness follow-up 두 개를 열었다.
   [corca-ai/charness#87](https://github.com/corca-ai/charness/issues/87)는 delegated premortem reviewer가 nested subagent capability check를 다시 수행해 blocked로 끝나는 문제다.
   [corca-ai/charness#88](https://github.com/corca-ai/charness/issues/88)는 `debug` scaffold가 consumer repo에 없는 `scripts/validate_debug_artifact.py` 경로를 안내하는 문제다.
