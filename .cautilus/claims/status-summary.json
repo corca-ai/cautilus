@@ -39,19 +39,19 @@
       "new": 333
     },
     "byRecommendedProof": {
-      "cautilus-eval": 136,
-      "deterministic": 129,
-      "human-auditable": 68
+      "cautilus-eval": 129,
+      "deterministic": 133,
+      "human-auditable": 71
     },
     "byReviewStatus": {
-      "agent-reviewed": 60,
-      "heuristic": 273
+      "agent-reviewed": 79,
+      "heuristic": 254
     },
     "byVerificationReadiness": {
       "blocked": 12,
-      "needs-alignment": 31,
+      "needs-alignment": 35,
       "needs-scenario": 8,
-      "ready-to-verify": 282
+      "ready-to-verify": 278
     }
   },
   "effectiveScanScope": {
@@ -927,18 +927,21 @@
   },
   "gitCommit": "3a2bfe96ef1a59505b36dd0dedd6968b3b1b7977",
   "gitState": {
-    "changedFileCount": 5,
+    "changedFileCount": 8,
     "changedFiles": [
+      ".cautilus/claims/evidence-cli-runtime-claims-2026-05-01.json",
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
       ".cautilus/claims/refresh-plan-after-provider-caveat-heuristics.json",
+      ".cautilus/claims/review-input-llm-batch5.json",
+      ".cautilus/claims/review-result-llm-batch5.json",
       ".cautilus/claims/reviewed-typed-runners.json",
       ".cautilus/claims/status-summary.json"
     ],
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "b731cd82a69ae091470e83b68a393ce3586a5168",
+    "currentGitCommit": "54f19bd50f5f8a4122806108b15d111dcba3125e",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "3a2bfe96ef1a59505b36dd0dedd6968b3b1b7977",
@@ -964,8 +967,8 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 243,
-    "needsAlignment": 31,
+    "heuristicClaimsReadyForReview": 224,
+    "needsAlignment": 35,
     "needsScenario": 8
   },
   "sampleClaims": [

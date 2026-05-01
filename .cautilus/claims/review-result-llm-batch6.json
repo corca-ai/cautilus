@@ -1,0 +1,283 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "codex-local-llm-review-batch6",
+    "kind": "same-agent",
+    "reviewedAt": "2026-05-01T07:12:00Z",
+    "notes": [
+      "Reviewed the sixth heuristic-only claim batch.",
+      "No claims were marked satisfied because this pass did not add direct evidence bundles for the selected claims.",
+      "The pass primarily corrected proof routing for historical caveats, packet/rendering commands, ownership vocabulary, and skill-review branch behavior."
+    ]
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-user-agent-and-skill-workflow-human-auditable-docs",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-guides-evaluation-process-md-304",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "human-auditable",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "blocked",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Historical provider/runtime caveat. It should inform a future regression scenario, but no current evidence bundle proves a protected behavior claim.",
+          "evidenceRefs": [],
+          "nextAction": "Promote to a concrete dev/skill regression scenario only if fatal skill-loading stderr with successful final exit must be release-protected.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-guides-evaluation-process-md-308",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "human-auditable",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "blocked",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Historical prompt/tool compatibility caveat. It is useful review context but not itself a ready proof target.",
+          "evidenceRefs": [],
+          "nextAction": "Promote to a concrete dev/skill regression scenario if effort override/tool-surface conflict should be release-protected.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-guides-evaluation-process-md-320",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "human-auditable",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "blocked",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Provider JSON-output caveat. It should stay human-auditable until a reviewer-runtime parser scenario or deterministic parser test is named.",
+          "evidenceRefs": [],
+          "nextAction": "Add a deterministic parser fixture or dev/skill runtime scenario if `structured_output` wrapping needs product protection.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-guides-evaluation-process-md-322",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "human-auditable",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "blocked",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Provider latency/operator-polling caveat. It is review context, not current product proof.",
+          "evidenceRefs": [],
+          "nextAction": "Promote to a timeout/progress-reporting scenario only if this should become a protected runtime behavior.",
+          "unresolvedQuestions": []
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-user-claim-discovery-and-review-cautilus-eval-dev-repo-skill-doc",
+      "claimUpdates": [
+        {
+          "claimId": "claim-skills-cautilus-skill-md-113",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/skill",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Bundled-skill coordinator behavior claim. It needs dev/skill transcript proof that review budget is explained before reviewer lanes, apply-result, eval planning, edits, or commits.",
+          "evidenceRefs": [],
+          "nextAction": "Add or link a dev/skill review-branch fixture that checks budget framing before branch execution.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-skills-cautilus-skill-md-138",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/skill",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Bundled-skill reviewer-launch boundary claim. It needs dev/skill transcript proof that reviewer launch stops at the review-result packet and does not merge results.",
+          "evidenceRefs": [],
+          "nextAction": "Link to reviewer-launch flow dogfood evidence or add a current evidence bundle for this exact boundary.",
+          "unresolvedQuestions": []
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-user-claim-discovery-and-review-deterministic-docs",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-cli-reference-md-115",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Deterministic command-ordering documentation claim. It was not satisfied in this pass because no evidence bundle was added for `claim discover` before fixture-writing workflow.",
+          "evidenceRefs": [],
+          "nextAction": "Add or link a claim-discovery workflow proof showing `claim discover` inventories declared behavior before eval fixtures are written.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-cli-reference-md-487",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Renderer documentation claim. It needs render-html or renderer test evidence for human-first decision surface behavior.",
+          "evidenceRefs": [],
+          "nextAction": "Attach static HTML renderer evidence or a render-index/self-dogfood HTML test bundle.",
+          "unresolvedQuestions": []
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-user-documentation-and-contracts-cautilus-eval-app-chat-docs",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-cli-reference-md-258",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Scenario proposal/rendering linkage claim. It is command/packet behavior, not app/chat behavior, and needs deterministic scenario proposal/render proof.",
+          "evidenceRefs": [],
+          "nextAction": "Attach scenario normalize/prepare/propose evidence or CLI smoke tests covering chatbot thread linkage to proposals and coverage hints.",
+          "unresolvedQuestions": []
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-user-documentation-and-contracts-cautilus-eval-app-prompt-docs",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-cli-reference-md-431",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Review-prompt rendering claim. It is deterministic JSON extraction/rendering behavior rather than app/prompt model behavior.",
+          "evidenceRefs": [],
+          "nextAction": "Attach review-prompt rendering test evidence for `--output-text-key` extraction.",
+          "unresolvedQuestions": []
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-user-documentation-and-contracts-cautilus-eval-dev-repo-docs",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-cli-reference-md-110",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Agent-status next-action claim. It is deterministic readiness packet behavior, not dev/repo eval behavior.",
+          "evidenceRefs": [],
+          "nextAction": "Attach agent-status runner-readiness evidence for setup-before-eval next action behavior.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-cli-reference-md-128",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Claim-review prepare-input packet claim. It is deterministic command behavior and needs command output evidence, not an LLM eval.",
+          "evidenceRefs": [],
+          "nextAction": "Attach a `claim review prepare-input` command evidence bundle showing the schema and non-satisfaction boundary.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-guides-consumer-adoption-md-106",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "human-auditable",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "needs-alignment",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Vocabulary ownership claim. It should be checked across schema, docs, and adapter surfaces before satisfaction.",
+          "evidenceRefs": [],
+          "nextAction": "Link behavior-intent schema and docs evidence before marking this ownership claim satisfied.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-guides-consumer-adoption-md-29",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "human-auditable",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "needs-alignment",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Generic product-boundary ownership claim. It is not a dev/repo eval target until decomposed into concrete CLI, workflow-contract, and normalization-helper claims.",
+          "evidenceRefs": [],
+          "nextAction": "Split or link deterministic proof for generic workflow contract, CLI, and normalization helper ownership.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-guides-consumer-adoption-md-83",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "human-auditable",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "needs-alignment",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Default-evaluation guidance claim. It needs adapter-status or doctor evidence that the default evaluation is discoverable without operator sorting.",
+          "evidenceRefs": [],
+          "nextAction": "Attach doctor/agent-status adapter evidence for the default evaluation path in a consumer repo.",
+          "unresolvedQuestions": []
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-user-documentation-and-contracts-deterministic-docs",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-cli-reference-md-427",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Review-variant status-shape claim. It needs deterministic review variant packet/schema evidence.",
+          "evidenceRefs": [],
+          "nextAction": "Attach review-variant command or schema test evidence for passed/blocked/failed status and machine-readable reason codes.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-guides-evaluation-process-md-289",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewer-loop schema guidance claim. It needs deterministic schema/output-path proof for blocker/concern/pass parsing.",
+          "evidenceRefs": [],
+          "nextAction": "Attach review variant JSON schema or parser evidence.",
+          "unresolvedQuestions": []
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-user-documentation-and-contracts-human-auditable-docs",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-guides-evaluation-process-md-293",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "human-auditable",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "needs-alignment",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Review-variant non-mutation claim. It needs alignment with runner policy and tests before satisfaction.",
+          "evidenceRefs": [],
+          "nextAction": "Attach review variant non-mutation evidence or runner policy checks.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-guides-evaluation-process-md-317",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "human-auditable",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "blocked",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Historical host-auth caveat. It is useful context but not current product proof.",
+          "evidenceRefs": [],
+          "nextAction": "Promote to a runtime authentication scenario only if `--bare` behavior should become release-protected.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}
