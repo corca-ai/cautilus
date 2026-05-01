@@ -2,13 +2,13 @@
   "candidateCount": 325,
   "carryForward": {
     "changedEvidenceRefCount": 0,
-    "evidenceSupportIdRewriteCount": 1,
+    "evidenceSupportIdRewriteCount": 0,
     "matchedClaimCount": 323,
     "missingEvidenceRefCount": 0,
     "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
-    "staleEvidenceClaimCount": 1,
+    "staleEvidenceClaimCount": 0,
     "strategy": "claimFingerprint",
-    "unsupportedEvidenceRefCount": 1
+    "unsupportedEvidenceRefCount": 0
   },
   "claimCandidates": [
     {
@@ -5711,7 +5711,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:d96b212774e44d988d8a9cdcb1b2f1bbcae7a242b384a7908702e5328adc5b9d",
+      "claimFingerprint": "sha256:5710c92253395bbda0e82175a3f1696b96f8f17275875d7b96f48b951e4ebd09",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-612",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
@@ -5730,19 +5730,19 @@
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "`claim review prepare-input` emits `cautilus.claim_review_input.v1` and records bounded clusters, skipped clusters, and already satisfied skipped claims, but still does not call an LLM or merge review results.",
+          "excerpt": "`claim review prepare-input` emits `cautilus.claim_review_input.v1` and records bounded clusters, skipped clusters, and skipped claims, but still does not call an LLM or merge review results.",
           "line": 612,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
-      "summary": "`claim review prepare-input` emits `cautilus.claim_review_input.v1` and records bounded clusters, skipped clusters, and already satisfied skipped claims, but still does not call an LLM or merge review results.",
+      "summary": "`claim review prepare-input` emits `cautilus.claim_review_input.v1` and records bounded clusters, skipped clusters, and skipped claims, but still does not call an LLM or merge review results.",
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:b04885bb15b93ada5c99184ea7b5c0ac1243f43211c06c22264fb072efb337de",
+      "claimFingerprint": "sha256:d94d8642a7467878df80b58d110e874368ba1402147ff447dc961b4732eca82b",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-613",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
@@ -5759,12 +5759,12 @@
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "Already satisfied claims are excluded from review clusters by default so reviewer budget stays focused on unresolved claims while carried evidence remains auditable under `skippedClaims`.",
+          "excerpt": "Already satisfied and already reviewed non-stale claims are excluded from review clusters by default so reviewer budget stays focused on unresolved heuristic claims while carried evidence and prior decisions remain auditable under `skippedClaims`.",
           "line": 613,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
-      "summary": "Already satisfied claims are excluded from review clusters by default so reviewer budget stays focused on unresolved claims while carried evidence remains auditable under `skippedClaims`.",
+      "summary": "Already satisfied and already reviewed non-stale claims are excluded from review clusters by default so reviewer budget stays focused on unresolved heuristic claims while carried evidence and prior decisions remain auditable under `skippedClaims`.",
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
@@ -10233,7 +10233,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "83c1cd5099e0a29068701e391c10f0917f1f008a",
+  "gitCommit": "8221f63f83beeaacf1ad73df93a618dd8b8a166b",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "reviewApplication": {
@@ -10361,6 +10361,17 @@
     {
       "clusterCount": 4,
       "reviewRun": {},
+      "schemaVersion": "cautilus.claim_review_result.v1",
+      "sourceReviewInput": {}
+    },
+    {
+      "clusterCount": 1,
+      "reviewRun": {
+        "backend": "codex_exec",
+        "evidencePolicy": "Only mark evidenceStatus=satisfied when a checked-in evidence bundle records direct or verified proof for the exact claim boundary.",
+        "mode": "direct-evidence-application",
+        "reviewer": "codex-current-agent-evidence-review"
+      },
       "schemaVersion": "cautilus.claim_review_result.v1",
       "sourceReviewInput": {}
     },
@@ -10816,7 +10827,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:220d4c0fe9a3154de23f01e8a146477783a532f576fcc6d822a4c3c68a55a293",
+      "contentHash": "sha256:834196281364ce805efe6da99a5dc9d2566dbd2ebd23e557ac3bb37b3b012b2d",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "docs",
@@ -10956,7 +10967,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:b98a620bc0058e039188a137f51a907cbef2fc907319e4bdcd94b80537ebe2eb",
+      "contentHash": "sha256:916e09992500aab5390d6f792a5e767b27a70e1a0e82e553fb07b651313169b2",
       "depth": 2,
       "discoveredFrom": "docs/master-plan.md",
       "kind": "contract",
@@ -11146,7 +11157,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:fb2d7bc1c8fde2b4afa93c7be78866c2141645681f8c3842578ba6e117e0b241",
+      "contentHash": "sha256:bc784470252994658933e204ee7c4da7b7d757509c31dd1eb7091242b0e68c6f",
       "depth": 3,
       "discoveredFrom": "docs/contracts/scenario-history.md",
       "kind": "skill-doc",
