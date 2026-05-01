@@ -254,6 +254,7 @@ Rules:
 - `default_runtime` may be `codex`, `claude`, or `fixture` and is used only when the operator does not pass `--runtime`.
 - `proof_class` may describe the declared proof class, but it is not enough to make app product proof ready.
 - A run that actually uses `runtime=fixture` records observed `proofClass=fixture-smoke` and preserves the adapter-declared class as metadata.
+- For `dev/repo` and `dev/skill`, a non-fixture coding-agent runtime may report adapter-declared `coding-agent-messaging` as observed proof while preserving any smoke-only assessment as assessment metadata.
 - `assessment_path` defaults to `.cautilus/runners/<runner-id>.assessment.json`.
 
 `doctor` and `agent status` report aggregate runner readiness plus per-runner readiness entries when multiple typed runners exist.

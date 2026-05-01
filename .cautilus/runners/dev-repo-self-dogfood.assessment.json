@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "cautilus.runner_assessment.v1",
+  "runnerId": "dev-repo-self-dogfood",
+  "surface": "dev/repo",
+  "proofClass": "coding-agent-messaging",
+  "assessedBy": "codex-local-backend-eval",
+  "assessedAt": "2026-05-01T00:00:00Z",
+  "repoCommit": "4c59a79704a59b1d1f940ae4cc355321ff858fb6",
+  "adapterPath": ".agents/cautilus-adapter.yaml",
+  "adapterHash": "sha256:56957ffe8d991648f8ab80e10b0ee4591415943f0c75bc718b6b249546a0792f",
+  "runnerFiles": [
+    {
+      "path": "scripts/run-self-dogfood-eval.mjs",
+      "sha256": "sha256:7aa44e0f494d06e4c685d0a6f57b2699f998ddd95f277fe9d081974fec168368"
+    },
+    {
+      "path": "scripts/agent-runtime/run-local-eval-test.mjs",
+      "sha256": "sha256:880de8b82f39c183dd188d23fc9f62ad1264011b9b2e0c8adeb48da8ff641ac3"
+    },
+    {
+      "path": "fixtures/eval/dev/repo/internal-runner-fixture-results.json",
+      "sha256": "sha256:f79c41041301df7549234dceb9498ab2275d46f1c119fffc177cf25b355b9089"
+    }
+  ],
+  "claims": [
+    {
+      "claimId": "claim-agents-md-26",
+      "summary": "Cautilus owns generic intentful behavior evaluation workflow contracts."
+    }
+  ],
+  "assessedRequirement": {
+    "proofMechanism": "cautilus-eval",
+    "recommendedEvalSurface": "dev/repo",
+    "requiredRunnerCapability": "development-repo-eval-runner",
+    "requiredObservability": [
+      "loadedInstructionFiles",
+      "routingDecision",
+      "runtimeFingerprint"
+    ]
+  },
+  "productionPathReuse": {
+    "runtime": "Codex CLI messaging backend through the checked-in self-dogfood eval wrapper",
+    "notes": "This assessment covers the dev/repo instruction-surface runner and does not claim app product-path proof."
+  },
+  "observability": {
+    "emits": [
+      "loadedInstructionFiles",
+      "loadedSupportingFiles",
+      "routingDecision",
+      "eval-summary.json"
+    ],
+    "evidenceRefs": [
+      "/tmp/cautilus-dev-repo-codex-eval-v2/eval-summary.json",
+      "/tmp/cautilus-dev-repo-codex-eval-v2/eval-observed.json",
+      "/tmp/cautilus-dev-repo-codex-eval-v2/eval-test/checked-in-agents-routing/result.json"
+    ]
+  },
+  "knownGaps": [
+    "Claude messaging backend was not executed for this assessment.",
+    "This is dev/repo instruction-surface proof, not app product-runner proof."
+  ],
+  "recommendation": "ready-for-selected-surface"
+}

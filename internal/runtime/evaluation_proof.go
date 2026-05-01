@@ -50,6 +50,8 @@ func BuildEvaluationProofFromRunnerReadiness(readiness map[string]any, targetSur
 		proofClass = "declared-eval-runner"
 		proofClassSource = "adapter-template"
 	}
+	declaredProofClass := strings.TrimSpace(stringOrEmpty(readiness["declaredProofClass"]))
+	declaredProofClassSource := strings.TrimSpace(stringOrEmpty(readiness["declaredProofClassSource"]))
 	proof := map[string]any{
 		"proofClass":                 proofClass,
 		"proofClassSource":           proofClassSource,
@@ -62,10 +64,19 @@ func BuildEvaluationProofFromRunnerReadiness(readiness map[string]any, targetSur
 	if runtimeName = strings.TrimSpace(runtimeName); runtimeName != "" {
 		proof["runtime"] = runtimeName
 	}
+	if declaredProofClass != "" && declaredProofClass != "unknown" {
+		proof["declaredProofClass"] = declaredProofClass
+		proof["declaredProofClassSource"] = firstNonEmptyString(declaredProofClassSource, "adapter-runner")
+	}
 	if runtimeName == "fixture" && proofClass != "fixture-smoke" {
-		proof["declaredProofClass"] = proofClass
-		proof["declaredProofClassSource"] = proofClassSource
+		proof["declaredProofClass"] = firstNonEmptyString(declaredProofClass, proofClass)
+		proof["declaredProofClassSource"] = firstNonEmptyString(declaredProofClassSource, proofClassSource)
 		proof["proofClass"] = "fixture-smoke"
+		proof["proofClassSource"] = "runtime"
+	} else if runtimeName != "" && runtimeName != "fixture" && canRuntimePromoteDevProof(targetSurface, proofClass, declaredProofClass) {
+		proof["assessmentProofClass"] = proofClass
+		proof["assessmentProofClassSource"] = proofClassSource
+		proof["proofClass"] = declaredProofClass
 		proof["proofClassSource"] = "runtime"
 	}
 	if recommendation := strings.TrimSpace(stringOrEmpty(readiness["recommendation"])); recommendation != "" {
@@ -116,6 +127,8 @@ func EvaluationProofFromInput(input map[string]any) map[string]any {
 		"productProofReady",
 		"declaredProofClass",
 		"declaredProofClassSource",
+		"assessmentProofClass",
+		"assessmentProofClassSource",
 		"runnerVerification",
 		"proofRequirement",
 		"proofBlockers",
@@ -182,6 +195,13 @@ func SummarizeReportProof(modeSummaries []any) map[string]any {
 		"productRunnerProofReadiness": readiness,
 		"blockingReasons":             blocking,
 	}
+}
+
+func canRuntimePromoteDevProof(targetSurface string, proofClass string, declaredProofClass string) bool {
+	if targetSurface != "dev/repo" && targetSurface != "dev/skill" {
+		return false
+	}
+	return proofClass == "fixture-smoke" && declaredProofClass == "coding-agent-messaging"
 }
 
 func requiredRunnerCapability(surface string) string {

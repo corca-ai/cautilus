@@ -162,6 +162,10 @@ func buildRunnerReadinessForRunner(repoRoot string, adapter *AdapterPayload, run
 		"notice":             "Plain eval_test_command_templates imply only declared-eval-runner, not a product proof class.",
 		"scaffoldSource":     "fixtures/runner-readiness/example-assessment.json",
 	}
+	if proofClass != "" && proofClass != "unknown" {
+		result["declaredProofClass"] = proofClass
+		result["declaredProofClassSource"] = proofClassSource
+	}
 	if strings.TrimSpace(targetSurface) != "" {
 		result["targetSurface"] = targetSurface
 	}
