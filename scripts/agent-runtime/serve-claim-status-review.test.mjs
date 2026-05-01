@@ -1,0 +1,134 @@
+import assert from "node:assert/strict";
+import fs from "node:fs";
+import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import http from "node:http";
+import { tmpdir } from "node:os";
+import path from "node:path";
+import test from "node:test";
+
+import {
+	buildCommentPacket,
+	createReviewServer,
+	parseArgs,
+	renderMarkdownFragment,
+	splitMarkdownSections,
+} from "./serve-claim-status-review.mjs";
+
+test("parseArgs accepts report server options", () => {
+	assert.deepEqual(parseArgs(["node", "script", "--report", "report.md", "--comments", "comments.json", "--host", "0.0.0.0", "--port", "18080", "--token", "abc"]), {
+		report: "report.md",
+		comments: "comments.json",
+		host: "0.0.0.0",
+		port: 18080,
+		token: "abc",
+	});
+});
+
+test("splitMarkdownSections groups h1-h3 sections with stable ids", () => {
+	const sections = splitMarkdownSections("# Title\n\nIntro\n\n## Next Work\n\n- A\n\n## Next Work\n\n- B\n");
+	assert.deepEqual(
+		sections.map((section) => [section.id, section.title, section.level]),
+		[
+			["overview", "Overview", 1],
+			["title", "Title", 1],
+			["next-work", "Next Work", 2],
+			["next-work-2", "Next Work", 2],
+		],
+	);
+});
+
+test("renderMarkdownFragment renders tables, lists, and inline code", () => {
+	const html = renderMarkdownFragment(["- Use `claim show`", "", "| A | B |", "| --- | --- |", "| x | y |"].join("\n"));
+	assert.match(html, /<ul>/);
+	assert.match(html, /<code>claim show<\/code>/);
+	assert.match(html, /<table>/);
+	assert.match(html, /<td>x<\/td>/);
+});
+
+test("buildCommentPacket normalizes and fingerprints comments", () => {
+	const packet = buildCommentPacket({
+		reportPath: "report.md",
+		commentsPath: "comments.json",
+		markdown: "# Report\n",
+		reviewer: "tester",
+		comments: [
+			{
+				sectionId: "next-work",
+				sectionTitle: "Next Work",
+				status: "needs-agent",
+				comment: "Please continue.",
+			},
+			{
+				sectionId: "",
+				sectionTitle: "Dropped",
+				status: "not-valid",
+				comment: "ignored",
+			},
+		],
+	});
+	assert.equal(packet.schemaVersion, "cautilus.claim_status_comments.v1");
+	assert.equal(packet.reportFingerprint.startsWith("sha256:"), true);
+	assert.equal(packet.comments.length, 1);
+	assert.equal(packet.comments[0].status, "needs-agent");
+});
+
+test("createReviewServer requires token and writes comment packet", async () => {
+	const root = mkdtempSync(path.join(tmpdir(), "cautilus-claim-review-"));
+	try {
+		const reportPath = path.join(root, "report.md");
+		const commentsPath = path.join(root, "comments.json");
+		writeFileSync(reportPath, "# Report\n\n## Next Work\n\n- Continue\n");
+		const server = createReviewServer({ reportPath, commentsPath, token: "secret" });
+		await listen(server);
+		try {
+			const address = server.address();
+			const base = `http://127.0.0.1:${address.port}`;
+			const forbidden = await requestJSON(`${base}/api/state`);
+			assert.equal(forbidden.status, 403);
+			const state = await requestJSON(`${base}/api/state?token=secret`);
+			assert.equal(state.status, 200);
+			assert.equal(state.body.sections.some((section) => section.id === "next-work"), true);
+			const saved = await requestJSON(`${base}/api/comments?token=secret`, {
+				method: "POST",
+				body: JSON.stringify({
+					comments: [{ sectionId: "next-work", sectionTitle: "Next Work", status: "ok", comment: "Looks good." }],
+				}),
+			});
+			assert.equal(saved.status, 200);
+			const packet = JSON.parse(fs.readFileSync(commentsPath, "utf8"));
+			assert.equal(packet.comments[0].comment, "Looks good.");
+		} finally {
+			await close(server);
+		}
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+function listen(server) {
+	return new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
+}
+
+function close(server) {
+	return new Promise((resolve, reject) => server.close((error) => (error ? reject(error) : resolve())));
+}
+
+function requestJSON(url, options = {}) {
+	return new Promise((resolve, reject) => {
+		const request = http.request(url, { method: options.method ?? "GET", headers: { "content-type": "application/json" } }, (response) => {
+			let body = "";
+			response.setEncoding("utf8");
+			response.on("data", (chunk) => {
+				body += chunk;
+			});
+			response.on("end", () => {
+				resolve({ status: response.statusCode, body: JSON.parse(body) });
+			});
+		});
+		request.on("error", reject);
+		if (options.body) {
+			request.write(options.body);
+		}
+		request.end();
+	});
+}

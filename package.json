@@ -66,6 +66,7 @@
     "audit:review-to-eval-flow-log": "node scripts/agent-runtime/audit-cautilus-review-to-eval-flow-log.mjs",
     "claims:review-worksheet": "node scripts/agent-runtime/render-claim-discovery-review.mjs --claims .cautilus/claims/latest.json --status .cautilus/claims/status-summary.json --output .cautilus/claims/discovery-review.md",
     "claims:status-report": "node scripts/agent-runtime/render-claim-status-report.mjs --claims .cautilus/claims/evidenced-typed-runners.json --status .cautilus/claims/status-summary.json --output .cautilus/claims/claim-status-report.md",
+    "claims:status-server": "node scripts/agent-runtime/serve-claim-status-review.mjs",
     "test:node:coverage": "c8 --reporter=lcov --reports-dir=coverage --include='scripts/**' --include='bin/**' --exclude='**/*.test.mjs' --exclude='scripts/on-demand/**' node --test bin/*.test.mjs scripts/*.test.mjs scripts/agent-runtime/*.test.mjs scripts/release/*.test.mjs && node scripts/summarize-node-coverage.mjs",
     "test:coverage": "npm run test:go:coverage && npm run test:node:coverage && node scripts/aggregate-coverage.mjs",
     "coverage:floor:check": "./scripts/coverage-floor-quality-gate.sh",
