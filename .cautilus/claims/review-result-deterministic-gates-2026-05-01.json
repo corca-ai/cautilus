@@ -1,0 +1,394 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-deterministic-gate-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-01T00:00:00Z",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied when the deterministic gate bundle records a direct command, checked-in runner, or workflow proof for the exact claim boundary."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-deterministic-gates-2026-05-01",
+      "claimUpdates": [
+        {
+          "claimId": "claim-readme-md-7",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by install and consumer-onboarding smoke: the binary installs, the repo-local skill is materialized in a fresh repo, adapter init/resolve and doctor pass, and the bounded eval path runs without copying a separate scaffold.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-gates-2026-05-01.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:d9f53769c40b22044ed7e39ebb2e27caa88d3e3c1661cf4eb2b1ac5e1b8069cb",
+              "supportsClaimIds": [
+                "claim-readme-md-7"
+              ]
+            }
+          ],
+          "nextAction": "Keep covered by consumer:onboard:smoke and install smoke when install, starter, or adapter bootstrap behavior changes.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-readme-md-10",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by release install smoke and consumer onboarding smoke: the installed binary reports machine-level install provenance while `cautilus install` writes the agent-facing skill into the target repo.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-gates-2026-05-01.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:d9f53769c40b22044ed7e39ebb2e27caa88d3e3c1661cf4eb2b1ac5e1b8069cb",
+              "supportsClaimIds": [
+                "claim-readme-md-10"
+              ]
+            }
+          ],
+          "nextAction": "Rerun install and consumer onboarding smoke when binary provenance or installed skill materialization changes.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-readme-md-137",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by starter-kit smoke: the chatbot starter runs `scenario normalize chatbot` successfully and emits proposal candidates from the checked-in starter input.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-gates-2026-05-01.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:d9f53769c40b22044ed7e39ebb2e27caa88d3e3c1661cf4eb2b1ac5e1b8069cb",
+              "supportsClaimIds": [
+                "claim-readme-md-137"
+              ]
+            }
+          ],
+          "nextAction": "Keep covered by consumer:starters:smoke when chatbot proposal input shape or starter docs change.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-readme-md-159",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by `cautilus scenarios --json`: the scenario normalization catalog emits entries with `exampleInputCli` for each normalization family.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-gates-2026-05-01.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:d9f53769c40b22044ed7e39ebb2e27caa88d3e3c1661cf4eb2b1ac5e1b8069cb",
+              "supportsClaimIds": [
+                "claim-readme-md-159"
+              ]
+            }
+          ],
+          "nextAction": "Keep covered by scenario catalog JSON tests and `cautilus scenarios --json` smoke.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-maintainers-consumer-readiness-md-68",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by starter-kit smoke: the workflow starter resolves, passes doctor, and runs `scenario normalize workflow` successfully under the current proposal-input lineage.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-gates-2026-05-01.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:d9f53769c40b22044ed7e39ebb2e27caa88d3e3c1661cf4eb2b1ac5e1b8069cb",
+              "supportsClaimIds": [
+                "claim-docs-maintainers-consumer-readiness-md-68"
+              ]
+            }
+          ],
+          "nextAction": "Keep covered by consumer:starters:smoke when workflow starter or workflow normalizer behavior changes.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-maintainers-development-md-36",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by `npm run verify`: the run reported all lint phases, `go test -race`, and the standing Node suite passing.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-gates-2026-05-01.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:d9f53769c40b22044ed7e39ebb2e27caa88d3e3c1661cf4eb2b1ac5e1b8069cb",
+              "supportsClaimIds": [
+                "claim-docs-maintainers-development-md-36"
+              ]
+            }
+          ],
+          "nextAction": "Keep covered by `npm run verify` and update this claim if verify phase composition changes.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-maintainers-development-md-38",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by `npm run verify`: the lint/specs phase ran `npm run lint:specs`, reported spec checks passing, and completed the standing specdown gate.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-gates-2026-05-01.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:d9f53769c40b22044ed7e39ebb2e27caa88d3e3c1661cf4eb2b1ac5e1b8069cb",
+              "supportsClaimIds": [
+                "claim-docs-maintainers-development-md-38"
+              ]
+            }
+          ],
+          "nextAction": "Keep covered by `npm run lint:specs` and verify output.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-maintainers-development-md-80",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by `npm run verify` running Go race tests plus the checked-in `internal/app/cli_smoke_test.go` hash, which owns multi-command integration smoke behavior.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-gates-2026-05-01.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:d9f53769c40b22044ed7e39ebb2e27caa88d3e3c1661cf4eb2b1ac5e1b8069cb",
+              "supportsClaimIds": [
+                "claim-docs-maintainers-development-md-80"
+              ]
+            }
+          ],
+          "nextAction": "Keep covered by Go tests when CLI integration-flow ownership changes.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-master-plan-md-56",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by local gate output, checked-in GitHub workflows that run verify, consumer onboarding smoke, and install smoke. The consumer smoke covers install, adapter init, minimal wiring, adapter resolve, doctor, and one bounded eval test.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-gates-2026-05-01.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:d9f53769c40b22044ed7e39ebb2e27caa88d3e3c1661cf4eb2b1ac5e1b8069cb",
+              "supportsClaimIds": [
+                "claim-docs-master-plan-md-56"
+              ]
+            }
+          ],
+          "nextAction": "Keep covered by verify, workflow-file review, consumer:onboard:smoke, and release install smoke.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-master-plan-md-82",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by `npm run verify`: `lint:specs` and `lint:scenario-normalizers` both passed, including the runtime completeness check for three normalization families.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-gates-2026-05-01.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:d9f53769c40b22044ed7e39ebb2e27caa88d3e3c1661cf4eb2b1ac5e1b8069cb",
+              "supportsClaimIds": [
+                "claim-docs-master-plan-md-82"
+              ]
+            }
+          ],
+          "nextAction": "Keep covered by lint:specs and lint:scenario-normalizers whenever scenario-normalization vocabulary changes.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-211",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the spec and scenario-normalizer lint phases in `npm run verify`, both of which passed on this checkout.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-gates-2026-05-01.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:d9f53769c40b22044ed7e39ebb2e27caa88d3e3c1661cf4eb2b1ac5e1b8069cb",
+              "supportsClaimIds": [
+                "claim-docs-specs-evaluation-surfaces-spec-md-211"
+              ]
+            }
+          ],
+          "nextAction": "Keep covered by verify when evaluation-surface spec or normalizer completeness changes.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-288",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by `cautilus scenarios --json`, `doctor` first_bounded_run output, and `lint:scenario-normalizers`: the catalog schema uses `cautilus.scenario_normalization_catalog.v1`, the family field is `normalizationFamilies`, first_bounded_run exposes that same field, and the renamed lint command passes.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-gates-2026-05-01.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:d9f53769c40b22044ed7e39ebb2e27caa88d3e3c1661cf4eb2b1ac5e1b8069cb",
+              "supportsClaimIds": [
+                "claim-docs-specs-evaluation-surfaces-spec-md-288"
+              ]
+            }
+          ],
+          "nextAction": "Keep covered by scenario catalog smoke, doctor output, and scenario-normalizer lint.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-specs-index-spec-md-7",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the `lint:specs` phase inside `npm run verify`, which reported spec checks passing.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-gates-2026-05-01.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:d9f53769c40b22044ed7e39ebb2e27caa88d3e3c1661cf4eb2b1ac5e1b8069cb",
+              "supportsClaimIds": [
+                "claim-docs-specs-index-spec-md-7"
+              ]
+            }
+          ],
+          "nextAction": "Keep covered by lint:specs.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-specs-index-spec-md-34",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by standalone discovery, install, doctor, and consumer onboarding smoke: the standalone surface is discoverable, installable into a fresh repo, and usable through stable readiness commands.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-gates-2026-05-01.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:d9f53769c40b22044ed7e39ebb2e27caa88d3e3c1661cf4eb2b1ac5e1b8069cb",
+              "supportsClaimIds": [
+                "claim-docs-specs-index-spec-md-34"
+              ]
+            }
+          ],
+          "nextAction": "Keep covered by standalone command discovery, doctor, install, and consumer onboarding smoke.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-maintainers-releasing-md-88",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by install smoke with `--channel install_sh --installer-source local --json`: the flow used an isolated temp install root, installed from `install.sh`, verified `--version`, verified `version --verbose`, and ran update successfully.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-gates-2026-05-01.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:d9f53769c40b22044ed7e39ebb2e27caa88d3e3c1661cf4eb2b1ac5e1b8069cb",
+              "supportsClaimIds": [
+                "claim-docs-maintainers-releasing-md-88"
+              ]
+            }
+          ],
+          "nextAction": "Before an actual release, rerun the documented versioned public-channel form and native OS matrix.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-specs-standalone-surface-spec-md-3",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by command discovery, release install smoke, and consumer onboarding smoke: the product is operable as a standalone binary plus installed bundled skill.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-gates-2026-05-01.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:d9f53769c40b22044ed7e39ebb2e27caa88d3e3c1661cf4eb2b1ac5e1b8069cb",
+              "supportsClaimIds": [
+                "claim-docs-specs-standalone-surface-spec-md-3"
+              ]
+            }
+          ],
+          "nextAction": "Keep covered by standalone smoke and consumer onboarding smoke.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-specs-standalone-surface-spec-md-4",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by consumer onboarding smoke: a fresh repo can install the skill, initialize an adapter, resolve it, run doctor, and complete one bounded eval test without a host-specific migration story.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-gates-2026-05-01.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:d9f53769c40b22044ed7e39ebb2e27caa88d3e3c1661cf4eb2b1ac5e1b8069cb",
+              "supportsClaimIds": [
+                "claim-docs-specs-standalone-surface-spec-md-4"
+              ]
+            }
+          ],
+          "nextAction": "Keep covered by consumer:onboard:smoke.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-specs-standalone-surface-spec-md-14",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by consumer onboarding smoke: `cautilus install` materializes the repo-local skill surface while the binary remains the direct operator entry point.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-gates-2026-05-01.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:d9f53769c40b22044ed7e39ebb2e27caa88d3e3c1661cf4eb2b1ac5e1b8069cb",
+              "supportsClaimIds": [
+                "claim-docs-specs-standalone-surface-spec-md-14"
+              ]
+            }
+          ],
+          "nextAction": "Keep covered by consumer onboarding smoke and install summary shape checks.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

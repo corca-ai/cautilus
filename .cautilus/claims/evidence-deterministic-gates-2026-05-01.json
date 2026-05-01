@@ -1,0 +1,189 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-deterministic-gates-2026-05-01",
+  "createdForClaimIds": [
+    "claim-readme-md-7",
+    "claim-readme-md-10",
+    "claim-readme-md-137",
+    "claim-readme-md-159",
+    "claim-docs-maintainers-consumer-readiness-md-68",
+    "claim-docs-maintainers-development-md-36",
+    "claim-docs-maintainers-development-md-38",
+    "claim-docs-maintainers-development-md-80",
+    "claim-docs-master-plan-md-56",
+    "claim-docs-master-plan-md-82",
+    "claim-docs-specs-evaluation-surfaces-spec-md-211",
+    "claim-docs-specs-evaluation-surfaces-spec-md-288",
+    "claim-docs-specs-index-spec-md-7",
+    "claim-docs-specs-index-spec-md-34",
+    "claim-docs-maintainers-releasing-md-88",
+    "claim-docs-specs-standalone-surface-spec-md-3",
+    "claim-docs-specs-standalone-surface-spec-md-4",
+    "claim-docs-specs-standalone-surface-spec-md-14"
+  ],
+  "repoCommit": "501dd80f8fa9b2cba13230f0d543d19259983234",
+  "summary": "This bundle records deterministic gates rerun on 2026-05-01 for the current Cautilus checkout: verify, on-demand tests, hook checks, starter-kit smoke, consumer onboarding smoke, local install.sh smoke including update, command discovery, scenario catalog discovery, doctor, and agent status.",
+  "evidenceScope": {
+    "targetSurface": "deterministic product gates",
+    "claimBoundary": "Only claims directly covered by command output, checked-in workflow/script files, or checked-in CLI smoke tests are marked satisfied.",
+    "notClaimed": [
+      "LLM-backed claim review for the remaining heuristic claims",
+      "Semantic truth of broad positioning claims",
+      "External consumer app behavior beyond the checked-in smoke contracts",
+      "Native macOS release smoke",
+      "Claude or Codex live conversational parity"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "npm run verify",
+      "stdoutPath": "artifacts/self-dogfood/deterministic-gates/latest/npm-run-verify.stdout",
+      "stdoutContentHash": "sha256:842b5a851864679e22d53fe3db0de50e0f4a3d1c18686682a0845fbcd12bf04a",
+      "stderrPath": "artifacts/self-dogfood/deterministic-gates/latest/npm-run-verify.stderr",
+      "stderrContentHash": "sha256:1449f4aa1c6868ecb3a068338d54f6de0c19ffa81dac7e3d6cc3ee98af5f1e22",
+      "exitCode": 0
+    },
+    {
+      "command": "npm run test:on-demand",
+      "stdoutPath": "artifacts/self-dogfood/deterministic-gates/latest/npm-run-test-on-demand.stdout",
+      "stdoutContentHash": "sha256:b0a655af4e5192b29d6210e5c6b5ca77fdc3acc4ee94e13d044fff1d4a4e25b9",
+      "stderrPath": "artifacts/self-dogfood/deterministic-gates/latest/npm-run-test-on-demand.stderr",
+      "stderrContentHash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exitCode": 0
+    },
+    {
+      "command": "npm run hooks:check",
+      "stdoutPath": "artifacts/self-dogfood/deterministic-gates/latest/npm-run-hooks-check.stdout",
+      "stdoutContentHash": "sha256:b936a9a75f869dda706986cc229d796df3aaf9d14ee023124721456fec0a2376",
+      "stderrPath": "artifacts/self-dogfood/deterministic-gates/latest/npm-run-hooks-check.stderr",
+      "stderrContentHash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exitCode": 0
+    },
+    {
+      "command": "npm run consumer:starters:smoke",
+      "stdoutPath": "artifacts/self-dogfood/deterministic-gates/latest/npm-run-consumer-starters-smoke.stdout",
+      "stdoutContentHash": "sha256:bac9e9b816762a6f884d3d7c379b7a195cc650770f4927b5e67063fd8e387374",
+      "stderrPath": "artifacts/self-dogfood/deterministic-gates/latest/npm-run-consumer-starters-smoke.stderr",
+      "stderrContentHash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exitCode": 0
+    },
+    {
+      "command": "npm run consumer:onboard:smoke",
+      "stdoutPath": "artifacts/self-dogfood/deterministic-gates/latest/npm-run-consumer-onboard-smoke.stdout",
+      "stdoutContentHash": "sha256:3e9a302e30dd52cf966a0367e5df52b4e27f5f9e336d5047554b250567a5c9fc",
+      "stderrPath": "artifacts/self-dogfood/deterministic-gates/latest/npm-run-consumer-onboard-smoke.stderr",
+      "stderrContentHash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exitCode": 0
+    },
+    {
+      "command": "npm run release:smoke-install -- --channel install_sh --installer-source local --json",
+      "stdoutPath": "artifacts/self-dogfood/deterministic-gates/latest/npm-run-release-smoke-install-local-update.stdout",
+      "stdoutContentHash": "sha256:1158ec6fa98111273a98fe3c8593470a727d61d56f600259bac2e82dec30a73a",
+      "stderrPath": "artifacts/self-dogfood/deterministic-gates/latest/npm-run-release-smoke-install-local-update.stderr",
+      "stderrContentHash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exitCode": 0
+    },
+    {
+      "command": "./bin/cautilus commands --json",
+      "stdoutPath": "artifacts/self-dogfood/deterministic-gates/latest/cautilus-commands-json.stdout",
+      "stdoutContentHash": "sha256:7eb8de44f2d673e4bdf3c8b603a26a99f046a97a814a059f12e3a0270fcd22a6",
+      "stderrPath": "artifacts/self-dogfood/deterministic-gates/latest/cautilus-commands-json.stderr",
+      "stderrContentHash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exitCode": 0
+    },
+    {
+      "command": "./bin/cautilus scenarios --json",
+      "stdoutPath": "artifacts/self-dogfood/deterministic-gates/latest/cautilus-scenarios-json.stdout",
+      "stdoutContentHash": "sha256:e2a4c111f37a68921179b55e8bbc59bee812287ebd9bd6be64df5821b385f2bc",
+      "stderrPath": "artifacts/self-dogfood/deterministic-gates/latest/cautilus-scenarios-json.stderr",
+      "stderrContentHash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exitCode": 0
+    },
+    {
+      "command": "./bin/cautilus doctor --repo-root .",
+      "stdoutPath": "artifacts/self-dogfood/deterministic-gates/latest/cautilus-doctor.stdout",
+      "stdoutContentHash": "sha256:ba8747f48b94e69f9e238918ad1a598b6bcc4fa22838e361f6bcfd6edb97b9d2",
+      "stderrPath": "artifacts/self-dogfood/deterministic-gates/latest/cautilus-doctor.stderr",
+      "stderrContentHash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exitCode": 0
+    },
+    {
+      "command": "./bin/cautilus doctor --repo-root . --scope agent-surface",
+      "stdoutPath": "artifacts/self-dogfood/deterministic-gates/latest/cautilus-doctor-agent-surface.stdout",
+      "stdoutContentHash": "sha256:17d74b0b1b5fc9a2eec0785d703992be036f0831eebec7ffedce01a1bf88c7fa",
+      "stderrPath": "artifacts/self-dogfood/deterministic-gates/latest/cautilus-doctor-agent-surface.stderr",
+      "stderrContentHash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exitCode": 0
+    },
+    {
+      "command": "./bin/cautilus agent status --repo-root . --json",
+      "stdoutPath": "artifacts/self-dogfood/deterministic-gates/latest/cautilus-agent-status-json.stdout",
+      "stdoutContentHash": "sha256:77e497fa374c2181bd62defe6cf9dec3477ea181556b517b9135480ea4256151",
+      "stderrPath": "artifacts/self-dogfood/deterministic-gates/latest/cautilus-agent-status-json.stderr",
+      "stderrContentHash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exitCode": 0
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": ".github/workflows/verify.yml",
+      "kind": "github-workflow",
+      "contentHash": "sha256:c181178c4178b8a6a6274534e25951e2c51b4455dc335fe02cb1106814956466"
+    },
+    {
+      "path": ".github/workflows/release-artifacts.yml",
+      "kind": "github-workflow",
+      "contentHash": "sha256:8af386f0d632cf8a5a5c1eada8538cbe9980a7aac56e17a798ac003bd5856972"
+    },
+    {
+      "path": "package.json",
+      "kind": "npm-script-registry",
+      "contentHash": "sha256:275adc956947f28e1bda2006228da297fd93fb29aa47f06adddd6e28aa718503"
+    },
+    {
+      "path": "scripts/run-verify.mjs",
+      "kind": "verify-runner",
+      "contentHash": "sha256:ab332c1b120578a68aa31c4d456240e0a7d1f0e225b473826f366735a2a8531d"
+    },
+    {
+      "path": "scripts/check-specs.mjs",
+      "kind": "spec-lint-runner",
+      "contentHash": "sha256:4c6d7bd4e330762ad8df430916b6a56fe19d9fcdf76663ec1551063091a62da6"
+    },
+    {
+      "path": "scripts/check-scenario-normalization-completeness.mjs",
+      "kind": "scenario-normalizer-lint-runner",
+      "contentHash": "sha256:d72254a5e13bc30c535710aef8401d8395e93e3d384ef9c191ea365caaefb992"
+    },
+    {
+      "path": "scripts/on-demand/smoke-starter-kits.mjs",
+      "kind": "starter-kit-smoke-runner",
+      "contentHash": "sha256:fceaebe74a8b23264675b0f8dd9ba01719c152d94c94f6fa0c3ffed6fec687a4"
+    },
+    {
+      "path": "scripts/on-demand/smoke-external-consumer.mjs",
+      "kind": "consumer-onboarding-smoke-runner",
+      "contentHash": "sha256:59e0f276c30a3054da925f76ff256f51a7554e7c61393613a7454c18f1ec9cd6"
+    },
+    {
+      "path": "scripts/release/run-install-smoke.mjs",
+      "kind": "install-smoke-runner",
+      "contentHash": "sha256:1297f1ccac563182d5a9bd9df36fc98f7f24bbebbc5c16b2a7d11b9e60556ac6"
+    },
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "go-cli-smoke-tests",
+      "contentHash": "sha256:4bd08efc3f27d6f3613c8e78b839830e9113a837e635b24faac3a49055908328"
+    },
+    {
+      "path": "install.sh",
+      "kind": "public-installer",
+      "contentHash": "sha256:9663da76306992a157fbf693f30bef9648a2494dde6ef1e4bfa5bf94d5d048f7"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The listed deterministic gates exited 0 and directly cover the selected claims' command, install, readiness, spec-lint, scenario-catalog, starter-kit, and consumer-onboarding boundaries."
+  }
+}
