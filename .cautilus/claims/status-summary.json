@@ -1,52 +1,148 @@
 {
-  "candidateCount": 329,
+  "candidateCount": 320,
   "claimState": {
     "path": ".cautilus/claims/latest.json",
-    "pathSource": "adapter"
+    "pathSource": "adapter",
+    "relatedStatePaths": [
+      {
+        "path": ".cautilus/claims/reviewed-typed-runners.json",
+        "role": "reviewed"
+      },
+      {
+        "path": ".cautilus/claims/evidenced-typed-runners.json",
+        "role": "evidenced"
+      }
+    ]
   },
   "claimSummary": {
-    "byClaimAudience": {
-      "developer": 260,
-      "user": 69
-    },
-    "byClaimSemanticGroup": {
-      "Adapter and portability": 51,
-      "Agent and skill workflow": 89,
-      "Claim discovery and review": 19,
-      "Documentation and contracts": 81,
-      "Evaluation surfaces": 2,
-      "Improvement and optimization": 21,
-      "Packets and reporting": 27,
-      "Quality gates": 34,
-      "Release and packaging": 5
-    },
-    "byEvidenceStatus": {
-      "unknown": 329
-    },
-    "byLifecycle": {
-      "new": 329
-    },
-    "byProofLayer": {
-      "alignment-work": 9,
-      "cautilus-eval": 161,
-      "deterministic": 123,
-      "human-auditable": 30,
-      "scenario-candidate": 6
-    },
-    "byRecommendedProof": {
-      "cautilus-eval": 167,
-      "deterministic": 123,
-      "human-auditable": 39
-    },
-    "byReviewStatus": {
-      "heuristic": 329
-    },
-    "byVerificationReadiness": {
-      "blocked": 2,
-      "needs-alignment": 9,
-      "needs-scenario": 6,
-      "ready-to-verify": 312
-    }
+    "byClaimAudience": [
+      {
+        "count": 251,
+        "key": "developer"
+      },
+      {
+        "count": 69,
+        "key": "user"
+      }
+    ],
+    "byClaimSemanticGroup": [
+      {
+        "count": 84,
+        "key": "Documentation and contracts"
+      },
+      {
+        "count": 83,
+        "key": "Agent and skill workflow"
+      },
+      {
+        "count": 51,
+        "key": "Adapter and portability"
+      },
+      {
+        "count": 30,
+        "key": "Quality gates"
+      },
+      {
+        "count": 27,
+        "key": "Packets and reporting"
+      },
+      {
+        "count": 21,
+        "key": "Improvement and optimization"
+      },
+      {
+        "count": 17,
+        "key": "Claim discovery and review"
+      },
+      {
+        "count": 5,
+        "key": "Release and packaging"
+      },
+      {
+        "count": 2,
+        "key": "Evaluation surfaces"
+      }
+    ],
+    "byEvidenceStatus": [
+      {
+        "count": 317,
+        "key": "unknown"
+      },
+      {
+        "count": 3,
+        "key": "satisfied"
+      }
+    ],
+    "byLifecycle": [
+      {
+        "count": 320,
+        "key": "new"
+      }
+    ],
+    "byProofLayer": [
+      {
+        "count": 158,
+        "key": "cautilus-eval"
+      },
+      {
+        "count": 120,
+        "key": "deterministic"
+      },
+      {
+        "count": 28,
+        "key": "human-auditable"
+      },
+      {
+        "count": 8,
+        "key": "alignment-work"
+      },
+      {
+        "count": 6,
+        "key": "scenario-candidate"
+      }
+    ],
+    "byRecommendedProof": [
+      {
+        "count": 164,
+        "key": "cautilus-eval"
+      },
+      {
+        "count": 120,
+        "key": "deterministic"
+      },
+      {
+        "count": 36,
+        "key": "human-auditable"
+      }
+    ],
+    "byReviewStatus": [
+      {
+        "count": 307,
+        "key": "heuristic"
+      },
+      {
+        "count": 13,
+        "key": "agent-reviewed"
+      }
+    ],
+    "byVerificationReadiness": [
+      {
+        "count": 304,
+        "key": "ready-to-verify"
+      },
+      {
+        "count": 8,
+        "key": "needs-alignment"
+      },
+      {
+        "count": 6,
+        "key": "needs-scenario"
+      },
+      {
+        "count": 2,
+        "key": "blocked"
+      }
+    ]
   },
   "effectiveScanScope": {
     "adapterFound": true,
@@ -84,7 +180,8 @@
       "coverage/**",
       "artifacts/**",
       "charness-artifacts/**",
-      "docs/internal/handoff.md"
+      "docs/internal/handoff.md",
+      "docs/internal/research/**"
     ],
     "explicitSources": false,
     "gitignorePolicy": "respect-repo-gitignore",
@@ -188,41 +285,33 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "e1fb62b3d40becfde925b0812c3a8fa8250f36cd",
+  "gitCommit": "df37156b331f86caea938e86e814c449c5f24099",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "e1fb62b3d40becfde925b0812c3a8fa8250f36cd",
+    "currentGitCommit": "df37156b331f86caea938e86e814c449c5f24099",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "e1fb62b3d40becfde925b0812c3a8fa8250f36cd",
+    "packetGitCommit": "df37156b331f86caea938e86e814c449c5f24099",
     "recommendedAction": "The claim packet commit matches the current checkout.",
     "workingTreePolicy": "excluded"
   },
-  "inputPath": ".cautilus/claims/latest.json",
+  "inputPath": ".cautilus/claims/evidenced-typed-runners.json",
   "inputSchemaVersion": "cautilus.claim_proof_plan.v1",
-  "linkedMarkdownSourceCount": 35,
+  "linkedMarkdownSourceCount": 34,
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "recommendedNextActions": [
     {
-      "id": "prepare-claim-review",
-      "summary": "Prepare bounded LLM claim review clusters after setting a review budget, before drafting eval scenarios."
-    },
-    {
-      "id": "add-deterministic-proof",
-      "summary": "Add or connect unit, lint, build, schema, or CI proof for deterministic claims."
-    },
-    {
-      "id": "resolve-alignment",
-      "summary": "Reconcile alignment-work claims before treating them as verification targets."
+      "id": "inspect-full-packet",
+      "summary": "Inspect the full claim packet and select claims manually."
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 314,
-    "needsAlignment": 9,
+    "heuristicClaimsReadyForReview": 293,
+    "needsAlignment": 8,
     "needsScenario": 6
   },
   "sampleClaims": [
@@ -351,9 +440,134 @@
       ],
       "summary": "While implementing, any bug, error, regression, or unexpected behavior routes to `charness:debug` before further fixes.",
       "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "claimAudience": "developer",
+      "claimId": "claim-agents-md-78",
+      "claimSemanticGroup": "Quality gates",
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "deterministic",
+        "repo-instructions"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
+      "proofLayer": "deterministic",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "line": 78,
+          "path": "AGENTS.md"
+        }
+      ],
+      "summary": "The skill should own routing, sequencing, guardrails, and decision boundaries; the binary should own broad command discovery, help text, scenario catalogs, packet examples, install smoke, and doctor/readiness details.",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "claimAudience": "developer",
+      "claimId": "claim-agents-md-79",
+      "claimSemanticGroup": "Adapter and portability",
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "cautilus-eval",
+        "dev/repo",
+        "repo-instructions"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
+      "proofLayer": "cautilus-eval",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "line": 79,
+          "path": "AGENTS.md"
+        }
+      ],
+      "summary": "When a quality or release review asks for evaluator, review, CLI-discovery, or agent-surface proof, verify that the selected adapter can actually run that surface before treating the gate as available.",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "claimAudience": "developer",
+      "claimId": "claim-agents-md-123",
+      "claimSemanticGroup": "Quality gates",
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "cautilus-eval",
+        "dev/repo",
+        "repo-instructions"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
+      "proofLayer": "cautilus-eval",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "line": 123,
+          "path": "AGENTS.md"
+        }
+      ],
+      "summary": "`npm run test:on-demand` currently owns the heavier self-dogfood workflow script tests.",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "claimAudience": "user",
+      "claimId": "claim-readme-md-3",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "blocked",
+        "human-auditable",
+        "readme"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep the claim visible as positioning, or decompose it into concrete deterministic, dev/skill, and packet-surface claims before proof planning.",
+      "proofLayer": "human-auditable",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "line": 3,
+          "path": "README.md"
+        }
+      ],
+      "summary": "`Cautilus` keeps agent and workflow behavior honest while prompts keep changing.",
+      "verificationReadiness": "blocked"
+    },
+    {
+      "claimAudience": "user",
+      "claimId": "claim-readme-md-7",
+      "claimSemanticGroup": "Adapter and portability",
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "deterministic",
+        "readme"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Prove with deterministic install or doctor-readiness coverage that the standalone binary and bundled skill can be installed without copying a scaffold first.",
+      "proofLayer": "deterministic",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "line": 7,
+          "path": "README.md"
+        }
+      ],
+      "summary": "Ships as a standalone binary plus a bundled skill a host repo can install without copying another scaffold first.",
+      "verificationReadiness": "ready-to-verify"
     }
   ],
   "schemaVersion": "cautilus.claim_status_summary.v1",
-  "sourceCount": 37,
+  "sourceCount": 36,
   "sourceRoot": "."
 }

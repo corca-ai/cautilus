@@ -178,6 +178,7 @@ It exits non-zero when the packet is invalid.
 It selects reviewed `cautilus-eval` claims whose `verificationReadiness` is `ready-to-verify`.
 It skips claims that already have `evidenceStatus=satisfied`.
 It records that default skip in `selectionPolicy.excludesEvidenceStatus`.
+It records `planSummary` so an empty `evalPlans` array explains whether nothing is left because claims are already satisfied, not eval targets, not reviewed, or not ready.
 It rejects stale claim packets by default.
 It records claim ids, target eval surfaces, draft intents, source refs, evidence status, review status, and unresolved questions.
 It does not write host-owned fixtures, prompts, runners, wrappers, or acceptance policy.

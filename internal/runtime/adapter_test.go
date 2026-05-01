@@ -214,7 +214,13 @@ func TestValidateAdapterDataAcceptsClaimDiscoveryConfig(t *testing.T) {
 			"include":               []any{"docs/**/*.md"},
 			"exclude":               []any{"artifacts/**"},
 			"state_path":            ".cautilus/claims/latest.json",
-			"evidence_roots":        []any{"artifacts/self-dogfood/eval/latest"},
+			"related_state_paths": []any{
+				map[string]any{
+					"role": "reviewed",
+					"path": ".cautilus/claims/reviewed.json",
+				},
+			},
+			"evidence_roots": []any{"artifacts/self-dogfood/eval/latest"},
 			"audience_hints": map[string]any{
 				"user":      []any{"README.md", "docs/guides/**"},
 				"developer": []any{"AGENTS.md", "docs/internal/**"},
@@ -236,6 +242,10 @@ func TestValidateAdapterDataAcceptsClaimDiscoveryConfig(t *testing.T) {
 	}
 	if claimDiscovery["state_path"] != ".cautilus/claims/latest.json" {
 		t.Fatalf("expected state path in claim_discovery, got %#v", claimDiscovery)
+	}
+	relatedStates := arrayOrEmpty(claimDiscovery["related_state_paths"])
+	if len(relatedStates) != 1 || asMap(relatedStates[0])["role"] != "reviewed" {
+		t.Fatalf("expected related state paths to survive normalization, got %#v", relatedStates)
 	}
 	hints := asMap(claimDiscovery["audience_hints"])
 	if len(stringArrayOrEmpty(hints["user"])) != 2 || len(stringArrayOrEmpty(hints["developer"])) != 2 {

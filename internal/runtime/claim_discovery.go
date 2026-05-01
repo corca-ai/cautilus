@@ -120,12 +120,18 @@ type claimDiscoveryConfig struct {
 	evidenceRoots       []string
 	audienceHints       map[string][]string
 	semanticGroups      []claimSemanticGroupRule
+	relatedStatePaths   []claimRelatedStatePath
 	linkedMarkdownDepth int
 	statePath           string
 	statePathSource     string
 	adapterPath         string
 	adapterFound        bool
 	explicitSources     bool
+}
+
+type claimRelatedStatePath struct {
+	role string
+	path string
 }
 
 type claimSemanticGroupRule struct {
@@ -288,8 +294,34 @@ func resolveClaimDiscoveryConfig(repoRoot string, explicit []string) (claimDisco
 			config.statePath = normalized
 			config.statePathSource = "adapter"
 		}
+		relatedStatePaths, err := resolveClaimRelatedStatePaths(claimConfig["related_state_paths"])
+		if err != nil {
+			return config, err
+		}
+		config.relatedStatePaths = relatedStatePaths
 	}
 	return config, nil
+}
+
+func resolveClaimRelatedStatePaths(value any) ([]claimRelatedStatePath, error) {
+	result := []claimRelatedStatePath{}
+	for index, raw := range arrayOrEmpty(value) {
+		record := asMap(raw)
+		role := strings.TrimSpace(stringFromAny(record["role"]))
+		path := strings.TrimSpace(stringFromAny(record["path"]))
+		if role == "" || path == "" {
+			return nil, fmt.Errorf("claim_discovery.related_state_paths[%d] must include non-empty role and path", index)
+		}
+		normalizedPath, err := normalizeClaimStatePath(path)
+		if err != nil {
+			return nil, fmt.Errorf("claim_discovery.related_state_paths[%d].path: %w", index, err)
+		}
+		result = append(result, claimRelatedStatePath{
+			role: role,
+			path: normalizedPath,
+		})
+	}
+	return result, nil
 }
 
 func resolveClaimAudienceHints(value any) map[string][]string {
@@ -1268,9 +1300,21 @@ func nonNilStringSlice(values []string) []string {
 
 func renderClaimState(config claimDiscoveryConfig) map[string]any {
 	return map[string]any{
-		"path":       config.statePath,
-		"pathSource": config.statePathSource,
+		"path":              config.statePath,
+		"pathSource":        config.statePathSource,
+		"relatedStatePaths": renderClaimRelatedStatePaths(config.relatedStatePaths),
 	}
+}
+
+func renderClaimRelatedStatePaths(paths []claimRelatedStatePath) []any {
+	result := make([]any, 0, len(paths))
+	for _, entry := range paths {
+		result = append(result, map[string]any{
+			"role": entry.role,
+			"path": entry.path,
+		})
+	}
+	return result
 }
 
 func summarizeClaimCandidates(candidates []any) map[string]any {
@@ -1945,10 +1989,54 @@ func BuildClaimEvalPlan(packet map[string]any, options ClaimEvalPlanOptions) (ma
 			"excludesEvidenceStatus":        []any{"satisfied"},
 			"maxClaims":                     maxClaims,
 		},
+		"planSummary": map[string]any{
+			"evalPlanCount":       len(plans),
+			"skippedClaimCount":   len(skipped),
+			"skippedByReason":     skippedClaimEvalPlanReasonCounts(skipped),
+			"zeroPlanReason":      claimEvalPlanZeroReason(plans, skipped),
+			"zeroPlanExpectation": "Zero eval plans can be expected when reviewed eval-ready claims are already satisfied or when remaining reviewed claims are not Cautilus eval targets.",
+		},
 		"evalPlans":       plans,
 		"skippedClaims":   skipped,
 		"nonWriterNotice": "This packet plans eval fixtures but does not write host-owned fixtures, prompts, runners, or policy.",
 	}, nil
+}
+
+func skippedClaimEvalPlanReasonCounts(skipped []any) map[string]any {
+	counts := map[string]any{}
+	for _, raw := range skipped {
+		reason := stringFromAny(asMap(raw)["reason"])
+		if reason == "" {
+			reason = "unknown"
+		}
+		current := 0
+		if value, ok := counts[reason].(int); ok {
+			current = value
+		}
+		counts[reason] = current + 1
+	}
+	return counts
+}
+
+func claimEvalPlanZeroReason(plans []any, skipped []any) string {
+	if len(plans) > 0 {
+		return ""
+	}
+	counts := skippedClaimEvalPlanReasonCounts(skipped)
+	alreadySatisfied := intFromAny(counts["already-satisfied"])
+	notEval := intFromAny(counts["not-cautilus-eval"])
+	notReviewed := intFromAny(counts["not-reviewed"])
+	notReady := intFromAny(counts["not-ready-to-verify"])
+	switch {
+	case alreadySatisfied > 0 && notEval > 0:
+		return "all-reviewed-eval-targets-satisfied-and-remaining-reviewed-claims-not-eval-targets"
+	case alreadySatisfied > 0:
+		return "all-reviewed-eval-targets-already-satisfied"
+	case notEval > 0 && notReviewed == 0 && notReady == 0:
+		return "reviewed-claims-are-not-cautilus-eval-targets"
+	default:
+		return "no-reviewed-ready-cautilus-eval-claims"
+	}
 }
 
 func skippedClaimEvalPlan(claimID string, reason string) map[string]any {

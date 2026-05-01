@@ -31,8 +31,14 @@ claim_discovery:
     - CLAUDE.md
   linked_markdown_depth: 3
   state_path: .cautilus/claims/latest.json
+  related_state_paths:
+    - role: reviewed
+      path: .cautilus/claims/reviewed-typed-runners.json
+    - role: evidenced
+      path: .cautilus/claims/evidenced-typed-runners.json
   exclude:
     - docs/internal/handoff.md
+    - docs/internal/research/**
   audience_hints:
     user:
       - README.md

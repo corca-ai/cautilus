@@ -60,36 +60,18 @@ func BuildClaimOrientation(repoRoot string) (map[string]any, error) {
 	}
 	claimState := renderClaimState(config)
 	claimState["status"] = "missing"
+	claimState["relatedStates"] = buildRelatedClaimStates(repoRoot, config)
 
 	statePath := strings.TrimSpace(config.statePath)
 	if statePath != "" && !filepath.IsAbs(statePath) {
 		resolvedStatePath := filepath.Join(repoRoot, filepath.FromSlash(statePath))
 		if fileExists(resolvedStatePath) {
-			packet, readErr := readJSONFile(resolvedStatePath)
-			if readErr != nil {
-				claimState["status"] = "invalid"
-				claimState["validation"] = map[string]any{
-					"valid": false,
-					"error": readErr.Error(),
-				}
-			} else if packet["schemaVersion"] != contracts.ClaimProofPlanSchema {
-				claimState["status"] = "unsupported"
-				claimState["validation"] = map[string]any{
-					"valid":         false,
-					"schemaVersion": packet["schemaVersion"],
-					"expected":      contracts.ClaimProofPlanSchema,
-				}
-			} else if summary, summaryErr := BuildClaimStatusSummaryWithOptions(packet, ClaimStatusSummaryOptions{
-				InputPath: statePath,
-				RepoRoot:  repoRoot,
-			}); summaryErr != nil {
-				claimState["status"] = "invalid"
-				claimState["validation"] = map[string]any{
-					"valid": false,
-					"error": summaryErr.Error(),
-				}
-			} else {
-				claimState["status"] = "present"
+			state := buildClaimStateFileSummary(repoRoot, "current", statePath, resolvedStatePath)
+			claimState["status"] = state["status"]
+			if validation := asMap(state["validation"]); len(validation) > 0 {
+				claimState["validation"] = validation
+			}
+			if summary := asMap(state["summary"]); len(summary) > 0 {
 				claimState["summary"] = summary
 			}
 		}
@@ -106,6 +88,60 @@ func BuildClaimOrientation(repoRoot string) (map[string]any, error) {
 		"scanScope":    renderClaimScanScope(config),
 		"nextBranches": claimOrientationBranches(claimState, config, repoRoot),
 	}, nil
+}
+
+func buildRelatedClaimStates(repoRoot string, config claimDiscoveryConfig) []any {
+	result := []any{}
+	for _, related := range config.relatedStatePaths {
+		resolvedPath := filepath.Join(repoRoot, filepath.FromSlash(related.path))
+		state := buildClaimStateFileSummary(repoRoot, related.role, related.path, resolvedPath)
+		result = append(result, state)
+	}
+	return result
+}
+
+func buildClaimStateFileSummary(repoRoot string, role string, statePath string, resolvedStatePath string) map[string]any {
+	state := map[string]any{
+		"role":   role,
+		"path":   statePath,
+		"status": "missing",
+	}
+	if !fileExists(resolvedStatePath) {
+		return state
+	}
+	packet, readErr := readJSONFile(resolvedStatePath)
+	if readErr != nil {
+		state["status"] = "invalid"
+		state["validation"] = map[string]any{
+			"valid": false,
+			"error": readErr.Error(),
+		}
+		return state
+	}
+	if packet["schemaVersion"] != contracts.ClaimProofPlanSchema {
+		state["status"] = "unsupported"
+		state["validation"] = map[string]any{
+			"valid":         false,
+			"schemaVersion": packet["schemaVersion"],
+			"expected":      contracts.ClaimProofPlanSchema,
+		}
+		return state
+	}
+	summary, summaryErr := BuildClaimStatusSummaryWithOptions(packet, ClaimStatusSummaryOptions{
+		InputPath: statePath,
+		RepoRoot:  repoRoot,
+	})
+	if summaryErr != nil {
+		state["status"] = "invalid"
+		state["validation"] = map[string]any{
+			"valid": false,
+			"error": summaryErr.Error(),
+		}
+		return state
+	}
+	state["status"] = "present"
+	state["summary"] = summary
+	return state
 }
 
 func renderAgentStatusAdapter(adapter *AdapterPayload) map[string]any {

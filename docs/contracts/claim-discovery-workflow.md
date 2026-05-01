@@ -111,6 +111,14 @@ claim_discovery:
   exclude:
     - artifacts/**
     - node_modules/**
+    - docs/internal/handoff.md
+    - docs/internal/research/**
+  state_path: .cautilus/claims/latest.json
+  related_state_paths:
+    - role: reviewed
+      path: .cautilus/claims/reviewed.json
+    - role: evidenced
+      path: .cautilus/claims/evidenced.json
   audience_hints:
     user:
       - README.md
@@ -130,6 +138,7 @@ claim_discovery:
 The binary only understands the portable labels `user`, `developer`, and `unclear`; richer semantic grouping remains review work for the skill and reviewer loop.
 `semantic_groups` is also adapter-owned because product areas differ across repos.
 When the adapter omits semantic groups, the binary emits `General product behavior` instead of using a Cautilus-specific taxonomy.
+`state_path` is the writable discovery baseline for `claim discover`; `related_state_paths` are read-only orientation hints for reviewed, evidenced, or promoted claim packets that `agent status` can summarize without making them the next discovery target.
 
 Before running a first broad scan, the skill should say which entries and depth it will use.
 It should also show the deterministic bounds that will be applied:
@@ -603,6 +612,7 @@ It also rejects stale claim packets by default.
 The eval-planning slice added `claim plan-evals`.
 It emits `cautilus.claim_eval_plan.v1` from reviewed `cautilus-eval` claims that are ready to verify, while preserving the host boundary by not writing fixtures, prompts, runners, wrappers, or policy.
 It skips satisfied claims by default and records that exclusion in `selectionPolicy.excludesEvidenceStatus`.
+It also records `planSummary`, including skipped counts and a zero-plan reason, so `evalPlans=[]` is inspectable rather than silently ambiguous.
 It rejects stale claim packets by default.
 The validation slice added `claim validate`.
 It emits `cautilus.claim_validation_report.v1`, exits non-zero for invalid packet shape or evidence refs, and does not mutate claims or search for evidence.

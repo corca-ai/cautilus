@@ -65,6 +65,11 @@ claim_discovery:
     - artifacts/**
     - node_modules/**
   state_path: .cautilus/claims/latest.json
+  related_state_paths:
+    - role: reviewed
+      path: .cautilus/claims/reviewed.json
+    - role: evidenced
+      path: .cautilus/claims/evidenced.json
   evidence_roots:
     - docs/specs
     - fixtures
@@ -205,6 +210,7 @@ default_schema_file: fixtures/review/review-verdict.schema.json
   `linked_markdown_depth` defaults to `3` and controls repo-local Markdown link traversal from those entries.
   `include` and `exclude` are repo-relative glob filters applied to discovered Markdown sources.
   `state_path` tells agents where the repo expects the current claim-state packet to live.
+  `related_state_paths` lets `agent status` summarize read-only reviewed, evidenced, or promoted claim packets without treating them as the writable discovery baseline.
   `evidence_roots` declares repo-relative roots worth checking during later evidence reconciliation; it does not prove claims by itself.
   `audience_hints` optionally maps discovered sources into `user` and `developer` claim audiences.
   The binary uses these hints to label review queues, while the bundled skill or a human reviewer may still correct semantic edge cases.

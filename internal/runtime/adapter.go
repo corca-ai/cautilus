@@ -599,6 +599,13 @@ func validateAdapterClaimDiscovery(value any) (map[string]any, []string) {
 			normalized["semantic_groups"] = groups
 		}
 	}
+	if raw, exists := record["related_state_paths"]; exists && raw != nil {
+		paths, pathErrors := normalizeClaimDiscoveryRelatedStatePaths(raw)
+		errors = append(errors, pathErrors...)
+		if paths != nil {
+			normalized["related_state_paths"] = paths
+		}
+	}
 	if raw, exists := record["linked_markdown_depth"]; exists && raw != nil {
 		depth, err := normalizeInteger(raw, "claim_discovery.linked_markdown_depth")
 		if err != nil {
@@ -616,6 +623,43 @@ func validateAdapterClaimDiscovery(value any) (map[string]any, []string) {
 		} else {
 			normalized["state_path"] = text
 		}
+	}
+	return normalized, errors
+}
+
+func normalizeClaimDiscoveryRelatedStatePaths(value any) ([]any, []string) {
+	items, err := assertArray(value, "claim_discovery.related_state_paths")
+	if err != nil {
+		return nil, []string{"claim_discovery.related_state_paths must be a list of mappings"}
+	}
+	errors := []string{}
+	normalized := []any{}
+	for index, raw := range items {
+		field := fmt.Sprintf("claim_discovery.related_state_paths[%d]", index)
+		record, ok := raw.(map[string]any)
+		if !ok {
+			errors = append(errors, field+" must be a mapping")
+			continue
+		}
+		role, err := normalizeNonEmptyString(record["role"], field+".role")
+		if err != nil {
+			errors = append(errors, field+".role must be a non-empty string")
+			continue
+		}
+		path, err := normalizeNonEmptyString(record["path"], field+".path")
+		if err != nil {
+			errors = append(errors, field+".path must be a non-empty string")
+			continue
+		}
+		normalizedPath, err := normalizeClaimStatePath(path)
+		if err != nil {
+			errors = append(errors, field+".path must be repo-relative and stay inside the repo")
+			continue
+		}
+		normalized = append(normalized, map[string]any{
+			"role": role,
+			"path": normalizedPath,
+		})
 	}
 	return normalized, errors
 }

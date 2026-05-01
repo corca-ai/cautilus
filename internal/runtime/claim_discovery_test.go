@@ -764,6 +764,10 @@ func TestBuildClaimEvalPlanSkipsSatisfiedEvalClaims(t *testing.T) {
 	if plans := arrayOrEmpty(evalPlan["evalPlans"]); len(plans) != 0 {
 		t.Fatalf("expected satisfied claim to be skipped, got %#v", plans)
 	}
+	summary := asMap(evalPlan["planSummary"])
+	if summary["evalPlanCount"] != 0 || stringFromAny(summary["zeroPlanReason"]) == "" {
+		t.Fatalf("expected zero-plan summary, got %#v", summary)
+	}
 	policy := asMap(evalPlan["selectionPolicy"])
 	if statuses := stringArrayOrEmpty(policy["excludesEvidenceStatus"]); !containsString(statuses, "satisfied") {
 		t.Fatalf("expected selection policy to document satisfied exclusion, got %#v", policy)

@@ -17,12 +17,16 @@
   `/tmp/cautilus-dev-repo-codex-eval-v4/eval-summary.json`는 `recommendation=accept-now`, `proof.proofClass=coding-agent-messaging`, `runnerAssessmentState=assessed`였다.
   `/tmp/cautilus-dev-repo-codex-eval-v4/eval-observed.json`에는 `telemetry.runtime=codex_exec`가 기록됐다.
   이제 dev proof promotion은 selected runtime name만 믿지 않고 observed telemetry runtime을 요구한다.
-- 2026-05-01 claim state는 `.cautilus/claims/latest.json` 기준 `candidateCount=329`이다.
-  `agent-reviewed=13`, `heuristic=316`인 reviewed packet은 `.cautilus/claims/reviewed-typed-runners.json`에 있다.
+- 2026-05-01 claim state는 `.cautilus/claims/latest.json` 기준 `candidateCount=320`이다.
+  `claim_discovery.state_path`는 raw discovery baseline인 `.cautilus/claims/latest.json`이고, `agent status`는 `related_state_paths`로 reviewed/evidenced packets도 함께 요약한다.
+  `agent-reviewed=13`, `heuristic=307`인 reviewed packet은 `.cautilus/claims/reviewed-typed-runners.json`에 있다.
   `.cautilus/claims/evidenced-typed-runners.json`는 `claim-readme-md-144`, `claim-readme-md-148`, `claim-readme-md-211`을 `evidenceStatus=satisfied`로 올린다.
-  그래서 evidenced packet의 evidence status는 `satisfied=3`, `unknown=326`이다.
+  그래서 evidenced packet의 evidence status는 `satisfied=3`, `unknown=317`이다.
+  `docs/internal/handoff.md`와 `docs/internal/research/**`는 claim source에서 제외된다.
+  `docs/internal/working-patterns.md`는 durable operating pattern 문서라 developer-facing source로 남아 있다.
   Evidence bundles are `.cautilus/claims/evidence-dev-skill-dogfood.json` and `.cautilus/claims/evidence-dev-skill-routing-install.json`.
   `.cautilus/claims/eval-plan-evidenced-typed-runners.json`는 `selectionPolicy.excludesEvidenceStatus=["satisfied"]`를 기록하고, satisfied claims를 `already-satisfied`로 skip하며, 현재 남은 ready eval target은 0개다.
+  같은 packet의 `planSummary.zeroPlanReason`은 `all-reviewed-eval-targets-satisfied-and-remaining-reviewed-claims-not-eval-targets`다.
   `claim-readme-md-3`은 README tagline/umbrella promise로 보존하되 `human-auditable`, `verificationReadiness=blocked`로 라우팅한다.
   그래서 eval-plan files에 `claim-readme-md-3`가 보이면 target이 아니라 `skippedClaims.reason=not-cautilus-eval`이다.
 - 2026-05-01 후속 dogfood로 `npm run dogfood:cautilus-review-to-eval-flow:eval:codex`를 다시 실행했다.

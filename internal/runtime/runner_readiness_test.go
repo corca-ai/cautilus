@@ -179,6 +179,94 @@ func TestAgentStatusIncludesRunnerReadinessBranchBeforeClaimBranches(t *testing.
 	}
 }
 
+func TestAgentStatusIncludesRelatedClaimStates(t *testing.T) {
+	repoRoot := setupRunnerReadinessRepo(t)
+	adapter := strings.Join([]string{
+		"version: 1",
+		"repo: runner-demo",
+		"evaluation_surfaces:",
+		"  - app / chat",
+		"baseline_options:",
+		"  - compare current checkout with a selected baseline ref",
+		"eval_test_command_templates:",
+		"  - node scripts/eval/run-product-chat.mjs --cases-file {eval_cases_file} --output-file {eval_observed_file}",
+		"claim_discovery:",
+		"  entries:",
+		"    - README.md",
+		"  state_path: .cautilus/claims/latest.json",
+		"  related_state_paths:",
+		"    - role: evidenced",
+		"      path: .cautilus/claims/evidenced.json",
+		"",
+	}, "\n")
+	if err := os.WriteFile(filepath.Join(repoRoot, ".agents", "cautilus-adapter.yaml"), []byte(adapter), 0o644); err != nil {
+		t.Fatalf("WriteFile adapter returned error: %v", err)
+	}
+	claimsDir := filepath.Join(repoRoot, ".cautilus", "claims")
+	if err := os.MkdirAll(claimsDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll claims returned error: %v", err)
+	}
+	packet := map[string]any{
+		"schemaVersion": contracts.ClaimProofPlanSchema,
+		"sourceRoot":    ".",
+		"gitCommit":     currentGitCommit(repoRoot),
+		"claimState": map[string]any{
+			"path": ".cautilus/claims/evidenced.json",
+		},
+		"effectiveScanScope": map[string]any{},
+		"sourceInventory":    []any{},
+		"claimCandidates": []any{
+			map[string]any{
+				"claimId":               "claim-readme-md-1",
+				"claimFingerprint":      "abc123",
+				"summary":               "Demo behavior is evidenced.",
+				"proofLayer":            "deterministic",
+				"recommendedProof":      "deterministic",
+				"verificationReadiness": "ready-to-verify",
+				"evidenceStatus":        "satisfied",
+				"reviewStatus":          "agent-reviewed",
+				"lifecycle":             "new",
+				"evidenceRefs":          []any{},
+				"sourceRefs": []any{
+					map[string]any{
+						"path":    "README.md",
+						"line":    1,
+						"excerpt": "Demo behavior is evidenced.",
+					},
+				},
+			},
+		},
+	}
+	payload, err := json.MarshalIndent(packet, "", "  ")
+	if err != nil {
+		t.Fatalf("MarshalIndent packet returned error: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(claimsDir, "evidenced.json"), payload, 0o644); err != nil {
+		t.Fatalf("WriteFile evidenced claims returned error: %v", err)
+	}
+
+	status, exitCode, err := BuildAgentStatus(repoRoot, AgentStatusOptions{})
+	if err != nil {
+		t.Fatalf("BuildAgentStatus returned error: %v", err)
+	}
+	if exitCode != 0 {
+		t.Fatalf("expected successful agent status, got exit=%d payload=%#v", exitCode, status)
+	}
+	claimState := asMap(status["claimState"])
+	relatedStates := arrayOrEmpty(claimState["relatedStates"])
+	if len(relatedStates) != 1 {
+		t.Fatalf("expected one related claim state, got %#v", relatedStates)
+	}
+	evidenced := asMap(relatedStates[0])
+	if evidenced["role"] != "evidenced" || evidenced["status"] != "present" {
+		t.Fatalf("expected present evidenced related state, got %#v", evidenced)
+	}
+	summary := asMap(evidenced["summary"])
+	if summary["candidateCount"] != 1 {
+		t.Fatalf("expected evidenced summary candidate count, got %#v", summary)
+	}
+}
+
 func TestRunnerReadinessSupportsTypedMultiRunnerAdapters(t *testing.T) {
 	repoRoot := setupTypedRunnerReadinessRepo(t)
 	adapter, err := LoadAdapter(repoRoot, nil, nil)
