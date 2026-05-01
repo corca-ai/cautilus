@@ -112,6 +112,11 @@ After discovery or refresh, summarize scanned entry files, linked Markdown count
 When the next natural branch is claim review, explain that it is a budgeted LLM review branch before presenting it as a choice.
 The coordinator should understand that choosing review means setting a review budget before any reviewer lanes, result application, eval planning, edits, or commits happen.
 Use `claim show --sample-claims <n>` as the canonical status view before hand-inspecting packet fields.
+Read `discoveryBoundary` before judging false negatives.
+If a user-facing feature is missing from the configured entry docs or linked Markdown graph, report it as an entry-surface or narrative gap unless another reviewed artifact proves the binary skipped an in-scope declaration.
+Read `actionSummary.primaryBuckets` before making a next-work recommendation.
+Use the bucket `recommendedActor` and `summary` fields to separate agent work, human confirmation, deterministic proof, Cautilus eval planning, scenario design, alignment, and split-or-defer branches.
+Use `actionSummary.crossCuttingSignals` for review debt or stale-evidence warnings that can coexist with a primary proof branch.
 If `claim show` or `agent status` reports `gitState.isStale=true`, run `claim discover --previous <claims.json> --refresh-plan` before claim review, review-result application, or eval planning.
 Do not launch reviewers, apply review results, plan evals, edit files, or commit artifacts from a stale claim packet unless the user explicitly asks to override stale state.
 If a view is missing, prefer adding a product-owned summary option or review packet over guessing raw JSON keys with ad hoc `jq`.
