@@ -2420,14 +2420,6 @@ func renderCountEntries(counts map[string]int) []any {
 	return result
 }
 
-func gitChangedFiles(repoRoot string, baseCommit string, targetCommit string) []string {
-	result, ok := gitChangedFilesWithStatus(repoRoot, baseCommit, targetCommit)
-	if !ok {
-		return []string{}
-	}
-	return result
-}
-
 func gitChangedFilesWithStatus(repoRoot string, baseCommit string, targetCommit string) ([]string, bool) {
 	command := exec.Command("git", "-C", repoRoot, "diff", "--name-only", baseCommit, targetCommit)
 	output, err := command.Output()
