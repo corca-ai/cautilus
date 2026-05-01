@@ -102,7 +102,8 @@ A new value on either axis must pass the taxonomy-axis checkpoint and update the
   - String interpolation in any string-shaped fixture field; non-string substitutions stay JSON-typed only when the entire field is the placeholder.
 
   This replaces the dropped workflow archetype.
-- **C4 — snapshot baselines**: `expected.snapshot: <path>` compares current output against a golden file.
+- **C4 — snapshot baselines**: `expected.snapshot: <path>` compares current app output against a golden text file.
+  Shipped 2026-05-01 for `app/chat` and `app/prompt` `finalText`: snapshot paths are resolved relative to the fixture file, must stay under the fixture file's directory, the resolved text is frozen into the test-cases packet, and mismatches surface a text-equality diff in the evaluation summary.
   Snapshots are explicit artifacts — no auto-init by default.
 
 ### Result packet
@@ -139,7 +140,7 @@ Answers should land through implementation slices, not through more spec churn:
 - **deep-merge semantics for `extends`**: arrays replace vs. concat, nested case-list merge rules, conflict detection.
   Start with deep-merge-replaces-arrays and tighten if real fixtures collide.
 - **snapshot diff granularity**: byte-equal vs. structural-equal vs. semantic-similar.
-  Default to structural-equal on parsed JSON / first-pass byte-equal on text; revisit when first preset hits real friction.
+  The first shipped snapshot slice is exact text equality for app `finalText`; structural JSON snapshots and semantic similarity stay deferred until real fixtures justify them.
 - **app surface CLI runtime parity in practice**: the cross-runtime equivalence rules in `Fixed Decisions § Result packet` define the contract. The probe is whether those rules are sufficient to keep consumer comparisons honest, or whether more fields need to be promoted to MUST-be-present.
   Track real-fixture cases that surface gaps and revisit the equivalence list, not the architectural decision.
 
@@ -187,7 +188,7 @@ Answers should land through implementation slices, not through more spec churn:
 2. A user with Claude CLI but no API key can run `cautilus eval test --fixture <chat.fixture.json>` and get a usable result.
 3. A fixture using `extends: ./base.fixture.json` correctly inherits base fields and applies overrides.
 4. A `steps: [...]` fixture executes each step in order, and step N can read step (N-1)'s output.
-5. A fixture with `expected.snapshot: ./golden.json` passes when output matches and fails with a diff when it doesn't.
+5. A fixture with `expected.snapshot: ./golden.txt` passes when app `finalText` matches the snapshot text and fails with a diff when it doesn't.
 6. Adding a fifth preset value requires the same justification as the existing four (taxonomy axis checkpoint passes).
 
 ## Acceptance Checks
@@ -197,7 +198,7 @@ Each criterion has at least one executable check.
 - **C1 multi-case**: a suite with `cases: [a, b]` evaluates both, fixture-backend driver.
 - **C2 extends**: `child.fixture.json` extends `base.fixture.json`, asserts inherited and overridden fields.
 - **C3 multi-step**: 2-step fixture where step 1 declares `outputProjection`, step 2 reads `${steps[0].output.text}` (dotted path), step 2 uses `${steps[0].output}` as a whole-output JSON substitution, and an invalid placeholder (`${steps[0]}`, forward ref, missing index) errors with a parse-error.
-- **C4 snapshot**: pass case (output matches snapshot) and mismatch case (output diff surfaces in result).
+- **C4 snapshot**: app/prompt pass case (output matches snapshot) and mismatch case (output diff surfaces in result).
 - **Per-preset proof**:
   - `dev / repo`: cautilus's own AGENTS.md routing test (current self-dogfood, ported).
   - `dev / skill`: portable plugin probe in fixture workspace (port from current skill test fixtures).
@@ -278,6 +279,6 @@ Follow-up slices proceed in this order:
    File-backed `cautilus eval test` fixtures can extend a relative base fixture; object fields deep-merge, arrays replace, and scalar child fields override.
 5. ~~C3 `steps` composition primitive.~~ Shipped 2026-05-01.
    Multi-step `eval test` fixtures execute each step in order, require explicit `outputProjection`, and allow only prior projected outputs to feed later step placeholders.
-6. C4 `expected.snapshot` composition primitive.
+6. ~~C4 `expected.snapshot` composition primitive.~~ Shipped 2026-05-01 for app `finalText` snapshots.
 7. Rescope `scenario normalize` proposal-input lineage.
    The `archetype-boundary.spec.md` retirement was absorbed into the `mode evaluate` cut slice (2026-04-26): the spec was removed, `lint:archetypes` was reframed as a runtime-completeness check for the surviving `scenario normalize` plumbing, and AGENTS.md / CLAUDE.md / README.md / master-plan.md were realigned to point at this spec instead.

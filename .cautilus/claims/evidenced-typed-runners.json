@@ -2926,7 +2926,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:8c15df06769d6900be11672ff1c723937ad20bc3eb3212c84d2d740feb54edfb",
-      "claimId": "claim-docs-master-plan-md-181",
+      "claimId": "claim-docs-master-plan-md-180",
       "claimSemanticGroup": "Improvement and optimization",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -2943,7 +2943,7 @@
       "sourceRefs": [
         {
           "excerpt": "Keep widening HTML surfaces only when the packet boundary stays stable and the page meaningfully improves human review; agents should consume durable packets first.",
-          "line": 181,
+          "line": 180,
           "path": "docs/master-plan.md"
         }
       ],
@@ -3139,35 +3139,6 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:7bca285d61cb1dc52368d98b1b56ef51fec24c442347a1b7a64b221bff9c0137",
-      "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-178",
-      "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "deterministic",
-        "linked-from:README.md",
-        "spec"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
-      "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "`dev` surface MUST work with the operator's installed Claude Code or Codex without re-pinning model versions.",
-          "line": 178,
-          "path": "docs/specs/evaluation-surfaces.spec.md"
-        }
-      ],
-      "summary": "`dev` surface MUST work with the operator's installed Claude Code or Codex without re-pinning model versions.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:053348c88724395a431e470fb37052cf9745b775bbaa9f84f67ec9302283f576",
       "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-179",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
@@ -3184,8 +3155,37 @@
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "`app` surface MUST work without an API key when the user has Claude or Codex CLI installed.",
+          "excerpt": "`dev` surface MUST work with the operator's installed Claude Code or Codex without re-pinning model versions.",
           "line": 179,
+          "path": "docs/specs/evaluation-surfaces.spec.md"
+        }
+      ],
+      "summary": "`dev` surface MUST work with the operator's installed Claude Code or Codex without re-pinning model versions.",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:053348c88724395a431e470fb37052cf9745b775bbaa9f84f67ec9302283f576",
+      "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-180",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "deterministic",
+        "linked-from:README.md",
+        "spec"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "`app` surface MUST work without an API key when the user has Claude or Codex CLI installed.",
+          "line": 180,
           "path": "docs/specs/evaluation-surfaces.spec.md"
         }
       ],
@@ -3197,7 +3197,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:902940cb7dd3d8fa5e408675cd937e109c1880db7c10265fe56a30fd33c65d7d",
-      "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-181",
+      "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-182",
       "claimSemanticGroup": "Improvement and optimization",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3214,7 +3214,7 @@
       "sourceRefs": [
         {
           "excerpt": "Result packet schema MUST stay stable across surfaces so downstream consumers (`optimize prepare-input`, `report.json`) treat all four presets uniformly.",
-          "line": 181,
+          "line": 182,
           "path": "docs/specs/evaluation-surfaces.spec.md"
         }
       ],
@@ -3226,35 +3226,6 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:e7b7dfceb57800d95d45adf63b990fce1d07c5e1305ca593b795d5fe113f9f37",
-      "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-186",
-      "claimSemanticGroup": "Quality gates",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "deterministic",
-        "linked-from:README.md",
-        "spec"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "A user with Claude Code installed and no other config can run `cautilus eval test --fixture <dev-repo.fixture.json>` against their own repo and get a usable result with provider, model, harness, durationMs, and costUsd recorded.",
-          "line": 186,
-          "path": "docs/specs/evaluation-surfaces.spec.md"
-        }
-      ],
-      "summary": "A user with Claude Code installed and no other config can run `cautilus eval test --fixture <dev-repo.fixture.json>` against their own repo and get a usable result with provider, model, harness, durationMs, and costUsd recorded.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:61dff758d9020f41b5427df1abdfd334234e2436df124862a0b23b726f87ef83",
       "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-187",
       "claimSemanticGroup": "Quality gates",
       "evidenceRefs": [],
@@ -3271,8 +3242,37 @@
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "A user with Claude CLI but no API key can run `cautilus eval test --fixture <chat.fixture.json>` and get a usable result.",
+          "excerpt": "A user with Claude Code installed and no other config can run `cautilus eval test --fixture <dev-repo.fixture.json>` against their own repo and get a usable result with provider, model, harness, durationMs, and costUsd recorded.",
           "line": 187,
+          "path": "docs/specs/evaluation-surfaces.spec.md"
+        }
+      ],
+      "summary": "A user with Claude Code installed and no other config can run `cautilus eval test --fixture <dev-repo.fixture.json>` against their own repo and get a usable result with provider, model, harness, durationMs, and costUsd recorded.",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:61dff758d9020f41b5427df1abdfd334234e2436df124862a0b23b726f87ef83",
+      "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-188",
+      "claimSemanticGroup": "Quality gates",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "deterministic",
+        "linked-from:README.md",
+        "spec"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "A user with Claude CLI but no API key can run `cautilus eval test --fixture <chat.fixture.json>` and get a usable result.",
+          "line": 188,
           "path": "docs/specs/evaluation-surfaces.spec.md"
         }
       ],
@@ -3284,7 +3284,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:bdf2b81edbc15db6e2e95d4dd0e65637403fc12b3d04c06e40f2d2ed2314df4a",
-      "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-189",
+      "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-190",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3301,7 +3301,7 @@
       "sourceRefs": [
         {
           "excerpt": "A `steps: [...]` fixture executes each step in order, and step N can read step (N-1)'s output.",
-          "line": 189,
+          "line": 190,
           "path": "docs/specs/evaluation-surfaces.spec.md"
         }
       ],
@@ -3313,7 +3313,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:7f32f259f8b488b7d2fe39820a1929e6a93b2776c557bc20b1d67fc85c5f1809",
-      "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-253",
+      "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-254",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3330,7 +3330,7 @@
       "sourceRefs": [
         {
           "excerpt": "Schema validates `surface=dev, preset=repo` only; C2/C3/C4 fields stub-error until their slices land.",
-          "line": 253,
+          "line": 254,
           "path": "docs/specs/evaluation-surfaces.spec.md"
         }
       ],
@@ -3342,7 +3342,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:faa7b391177f9e5d365a0e544e390a5dafc9651102baf958c093a51351566498",
-      "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-278",
+      "claimId": "claim-docs-specs-evaluation-surfaces-spec-md-279",
       "claimSemanticGroup": "Quality gates",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3361,7 +3361,7 @@
       "sourceRefs": [
         {
           "excerpt": "File-backed `cautilus eval test` fixtures can extend a relative base fixture; object fields deep-merge, arrays replace, and scalar child fields override.",
-          "line": 278,
+          "line": 279,
           "path": "docs/specs/evaluation-surfaces.spec.md"
         }
       ],
@@ -9862,7 +9862,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "ee4bdc6349a311a711db6f3c464f8f7af2774363",
+  "gitCommit": "9d44ca3c0f61d4e899bdf7bcfd1b98c7bf6de3bb",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "schemaVersion": "cautilus.claim_proof_plan.v1",
@@ -10405,7 +10405,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:676fade94939bd562ab5f49d3d02af172f15e4e3c798e344b7e4c423c662fe19",
+      "contentHash": "sha256:0ece10b385be1aabae3a33658940edefea6162842adbee07b527bdd9eb37931d",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "docs",
@@ -10415,7 +10415,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:19af429c00a9efd6863c90a126a5840882b1a023e577729fefb24c30cc2aab87",
+      "contentHash": "sha256:cf14dbed6de9eae57fc4502dbe9bbcaa75280640a810b1b9049ec3f49ba47352",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "spec",

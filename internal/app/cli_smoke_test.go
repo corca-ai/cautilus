@@ -3639,6 +3639,143 @@ JSON
 	}
 }
 
+func TestCLIEvalTestRunsAppChatSnapshotFixture(t *testing.T) {
+	root := t.TempDir()
+	adapterDir := filepath.Join(root, ".agents")
+	fixtureDir := filepath.Join(root, "fixtures", "eval", "app", "chat")
+	outputDir := filepath.Join(root, "outputs")
+	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.MkdirAll(fixtureDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(fixtureDir, "golden.txt"), []byte("Hello from the app chat snapshot.\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	scriptPath := filepath.Join(root, "eval-test.sh")
+	script := `#!/bin/sh
+node - "$1" "$2" <<'EOF'
+const fs = require('fs');
+const [casesFile, observedFile] = process.argv.slice(2);
+const cases = JSON.parse(fs.readFileSync(casesFile, 'utf8'));
+const testCase = cases.cases[0];
+fs.writeFileSync(observedFile, JSON.stringify({
+  schemaVersion: "cautilus.app_chat_evaluation_inputs.v1",
+  suiteId: cases.suiteId,
+  suiteDisplayName: cases.suiteDisplayName,
+  evaluations: [{
+    caseId: testCase.caseId,
+    displayName: testCase.displayName,
+    provider: cases.provider,
+    model: cases.model,
+    harness: "fixture-backend",
+    mode: "messaging",
+    durationMs: 1,
+    observed: {
+      messages: [
+        ...testCase.messages,
+        { role: "assistant", content: "Hello from the app chat snapshot.\n" }
+      ],
+      finalText: "Hello from the app chat snapshot.\n"
+    },
+    expected: testCase.expected
+  }]
+}, null, 2) + "\n");
+EOF
+`
+	if err := os.WriteFile(scriptPath, []byte(script), 0o755); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	writeJSONFile(t, filepath.Join(fixtureDir, "snapshot.fixture.json"), map[string]any{
+		"schemaVersion": contracts.EvaluationInputSchema,
+		"surface":       "app",
+		"preset":        "chat",
+		"suiteId":       "snapshot-chat",
+		"provider":      "fixture",
+		"model":         "fixture",
+		"cases": []map[string]any{
+			{
+				"caseId":      "snapshot-chat-case",
+				"displayName": "Snapshot chat case",
+				"messages": []map[string]any{
+					{"role": "user", "content": "Say hello from snapshot."},
+				},
+				"expected": map[string]any{"snapshot": "./golden.txt"},
+			},
+		},
+	})
+	if err := os.WriteFile(filepath.Join(adapterDir, "cautilus-adapter.yaml"), []byte(strings.Join([]string{
+		"version: 1",
+		"repo: temp",
+		"evaluation_surfaces:",
+		"  - app / chat",
+		"baseline_options:",
+		"  - fixture-level model pin",
+		"evaluation_input_default: fixtures/eval/app/chat/snapshot.fixture.json",
+		"eval_test_command_templates:",
+		"  - sh ./eval-test.sh {eval_cases_file} {eval_observed_file}",
+		"",
+	}, "\n")), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+
+	stdout, stderr, exitCode := runCLI(t, root, "eval", "test", "--repo-root", root, "--output-dir", outputDir)
+	if exitCode != 0 {
+		t.Fatalf("snapshot eval test failed: %s", stderr)
+	}
+	summary := readJSONObjectFile(t, strings.TrimSpace(stdout))
+	if summary["recommendation"] != "accept-now" {
+		t.Fatalf("unexpected snapshot summary: %#v", summary)
+	}
+	evaluations := summary["evaluations"].([]any)
+	if evaluations[0].(map[string]any)["match"] != true {
+		t.Fatalf("expected snapshot match, got %#v", evaluations[0])
+	}
+	cases := readJSONObjectFile(t, filepath.Join(outputDir, "eval-cases.json"))
+	expected := cases["cases"].([]any)[0].(map[string]any)["expected"].(map[string]any)
+	if expected["snapshotText"] != "Hello from the app chat snapshot.\n" {
+		t.Fatalf("expected snapshotText in eval cases, got %#v", expected)
+	}
+
+	mismatchInput := filepath.Join(root, "mismatch-chat-observed.json")
+	mismatchOutput := filepath.Join(root, "mismatch-chat-summary.json")
+	writeJSONFile(t, mismatchInput, map[string]any{
+		"schemaVersion": contracts.AppChatEvaluationInputsSchema,
+		"suiteId":       "snapshot-chat",
+		"evaluations": []map[string]any{
+			{
+				"caseId":     "snapshot-chat-case",
+				"provider":   "fixture",
+				"model":      "fixture",
+				"harness":    "fixture-backend",
+				"mode":       "messaging",
+				"durationMs": 1,
+				"observed": map[string]any{
+					"messages": []map[string]any{
+						{"role": "user", "content": "Say hello from snapshot."},
+						{"role": "assistant", "content": "Different text."},
+					},
+					"finalText": "Different text.",
+				},
+				"expected": expected,
+			},
+		},
+	})
+	_, stderr, exitCode = runCLI(t, root, "eval", "evaluate", "--input", mismatchInput, "--output", mismatchOutput)
+	if exitCode != 0 {
+		t.Fatalf("snapshot mismatch eval evaluate failed: %s", stderr)
+	}
+	mismatch := readJSONObjectFile(t, mismatchOutput)
+	if mismatch["recommendation"] != "reject" {
+		t.Fatalf("expected snapshot mismatch rejection, got %#v", mismatch)
+	}
+	mismatchEval := mismatch["evaluations"].([]any)[0].(map[string]any)
+	if mismatchEval["snapshotDiff"] == nil {
+		t.Fatalf("expected snapshot diff, got %#v", mismatchEval)
+	}
+}
+
 func TestCLIEvalTestSelectsTypedRunnerBySurface(t *testing.T) {
 	root := t.TempDir()
 	adapterDir := filepath.Join(root, ".agents")
@@ -3863,6 +4000,143 @@ JSON
 	cases := readJSONObjectFile(t, casesPath)
 	if cases["schemaVersion"] != contracts.AppPromptTestCasesSchema {
 		t.Fatalf("eval-cases must use the app_prompt_test_cases schema, got: %v", cases["schemaVersion"])
+	}
+}
+
+func TestCLIEvalTestRunsAppPromptSnapshotFixture(t *testing.T) {
+	root := t.TempDir()
+	adapterDir := filepath.Join(root, ".agents")
+	fixtureDir := filepath.Join(root, "fixtures", "eval", "app", "prompt")
+	outputDir := filepath.Join(root, "outputs")
+	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.MkdirAll(fixtureDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(fixtureDir, "golden.txt"), []byte("Cautilus evaluates behavior.\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	scriptPath := filepath.Join(root, "eval-test.sh")
+	script := `#!/bin/sh
+node - "$1" "$2" <<'EOF'
+const fs = require('fs');
+const [casesFile, observedFile] = process.argv.slice(2);
+const cases = JSON.parse(fs.readFileSync(casesFile, 'utf8'));
+const testCase = cases.cases[0];
+fs.writeFileSync(observedFile, JSON.stringify({
+  schemaVersion: "cautilus.app_prompt_evaluation_inputs.v1",
+  suiteId: cases.suiteId,
+  suiteDisplayName: cases.suiteDisplayName,
+  evaluations: [{
+    caseId: testCase.caseId,
+    displayName: testCase.displayName,
+    provider: cases.provider,
+    model: cases.model,
+    harness: "fixture-backend",
+    mode: "messaging",
+    durationMs: 1,
+    observed: {
+      input: testCase.input,
+      messages: [
+        { role: "user", content: testCase.input },
+        { role: "assistant", content: "Cautilus evaluates behavior.\n" }
+      ],
+      finalText: "Cautilus evaluates behavior.\n"
+    },
+    expected: testCase.expected
+  }]
+}, null, 2) + "\n");
+EOF
+`
+	if err := os.WriteFile(scriptPath, []byte(script), 0o755); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	writeJSONFile(t, filepath.Join(fixtureDir, "snapshot.fixture.json"), map[string]any{
+		"schemaVersion": contracts.EvaluationInputSchema,
+		"surface":       "app",
+		"preset":        "prompt",
+		"suiteId":       "snapshot-prompt",
+		"provider":      "fixture",
+		"model":         "fixture",
+		"cases": []map[string]any{
+			{
+				"caseId":      "snapshot-case",
+				"displayName": "Snapshot case",
+				"input":       "Summarize Cautilus.",
+				"expected":    map[string]any{"snapshot": "./golden.txt"},
+			},
+		},
+	})
+	if err := os.WriteFile(filepath.Join(adapterDir, "cautilus-adapter.yaml"), []byte(strings.Join([]string{
+		"version: 1",
+		"repo: temp",
+		"evaluation_surfaces:",
+		"  - app / prompt",
+		"baseline_options:",
+		"  - fixture-level model pin",
+		"evaluation_input_default: fixtures/eval/app/prompt/snapshot.fixture.json",
+		"eval_test_command_templates:",
+		"  - sh ./eval-test.sh {eval_cases_file} {eval_observed_file}",
+		"",
+	}, "\n")), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+
+	stdout, stderr, exitCode := runCLI(t, root, "eval", "test", "--repo-root", root, "--output-dir", outputDir)
+	if exitCode != 0 {
+		t.Fatalf("snapshot eval test failed: %s", stderr)
+	}
+	summary := readJSONObjectFile(t, strings.TrimSpace(stdout))
+	if summary["recommendation"] != "accept-now" {
+		t.Fatalf("unexpected snapshot summary: %#v", summary)
+	}
+	evaluations := summary["evaluations"].([]any)
+	if evaluations[0].(map[string]any)["match"] != true {
+		t.Fatalf("expected snapshot match, got %#v", evaluations[0])
+	}
+	cases := readJSONObjectFile(t, filepath.Join(outputDir, "eval-cases.json"))
+	expected := cases["cases"].([]any)[0].(map[string]any)["expected"].(map[string]any)
+	if expected["snapshotText"] != "Cautilus evaluates behavior.\n" {
+		t.Fatalf("expected snapshotText in eval cases, got %#v", expected)
+	}
+
+	mismatchInput := filepath.Join(root, "mismatch-observed.json")
+	mismatchOutput := filepath.Join(root, "mismatch-summary.json")
+	writeJSONFile(t, mismatchInput, map[string]any{
+		"schemaVersion": contracts.AppPromptEvaluationInputsSchema,
+		"suiteId":       "snapshot-prompt",
+		"evaluations": []map[string]any{
+			{
+				"caseId":     "snapshot-case",
+				"provider":   "fixture",
+				"model":      "fixture",
+				"harness":    "fixture-backend",
+				"mode":       "messaging",
+				"durationMs": 1,
+				"observed": map[string]any{
+					"input": "Summarize Cautilus.",
+					"messages": []map[string]any{
+						{"role": "user", "content": "Summarize Cautilus."},
+						{"role": "assistant", "content": "Different text."},
+					},
+					"finalText": "Different text.",
+				},
+				"expected": expected,
+			},
+		},
+	})
+	_, stderr, exitCode = runCLI(t, root, "eval", "evaluate", "--input", mismatchInput, "--output", mismatchOutput)
+	if exitCode != 0 {
+		t.Fatalf("snapshot mismatch eval evaluate failed: %s", stderr)
+	}
+	mismatch := readJSONObjectFile(t, mismatchOutput)
+	if mismatch["recommendation"] != "reject" {
+		t.Fatalf("expected snapshot mismatch rejection, got %#v", mismatch)
+	}
+	mismatchEval := mismatch["evaluations"].([]any)[0].(map[string]any)
+	if mismatchEval["snapshotDiff"] == nil {
+		t.Fatalf("expected snapshot diff, got %#v", mismatchEval)
 	}
 }
 

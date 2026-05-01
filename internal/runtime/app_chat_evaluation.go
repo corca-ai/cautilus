@@ -24,7 +24,10 @@ type appChatTestCase struct {
 }
 
 type appChatExpected struct {
-	finalText *string
+	finalText    *string
+	snapshot     *string
+	snapshotPath *string
+	snapshotText *string
 }
 
 type appChatTestCaseSuite struct {
@@ -185,17 +188,35 @@ func normalizeAppChatExpected(value any, field string) (*appChatExpected, error)
 	if !ok {
 		return nil, fmt.Errorf("%s must be an object", field)
 	}
-	if _, snapshot := record["snapshot"]; snapshot {
-		return nil, fmt.Errorf("%s.snapshot is reserved for a future composition slice (C4)", field)
-	}
 	expected := &appChatExpected{}
 	if value, err := normalizeOptionalString(record["finalText"], field+".finalText"); err != nil {
 		return nil, err
 	} else if value != nil {
 		expected.finalText = value
 	}
-	if expected.finalText == nil {
-		return nil, fmt.Errorf("%s must declare finalText (other expectation kinds land in later slices)", field)
+	if value, err := normalizeOptionalString(record["snapshot"], field+".snapshot"); err != nil {
+		return nil, err
+	} else if value != nil {
+		expected.snapshot = value
+	}
+	if value, err := normalizeOptionalString(record["snapshotPath"], field+".snapshotPath"); err != nil {
+		return nil, err
+	} else if value != nil {
+		expected.snapshotPath = value
+	}
+	if value, err := normalizeOptionalString(record["snapshotText"], field+".snapshotText"); err != nil {
+		return nil, err
+	} else if value != nil {
+		expected.snapshotText = value
+	}
+	if expected.snapshot != nil && expected.snapshotText == nil {
+		return nil, fmt.Errorf("%s.snapshot requires file-backed snapshotText", field)
+	}
+	if expected.finalText != nil && expected.snapshot != nil {
+		return nil, fmt.Errorf("%s must declare only one of finalText or snapshot", field)
+	}
+	if expected.finalText == nil && expected.snapshot == nil {
+		return nil, fmt.Errorf("%s must declare finalText or snapshot", field)
 	}
 	return expected, nil
 }
@@ -375,6 +396,15 @@ func evaluateAppChatRecord(record map[string]any, index int) (map[string]any, er
 			summary = fmt.Sprintf("%s final response did not contain the expected fragment under %s/%s.", displayName, provider, model)
 		}
 	}
+	snapshotMatched := true
+	if expected != nil && expected.snapshotText != nil {
+		if observed["finalText"].(string) != *expected.snapshotText {
+			status = "failed"
+			matched = false
+			snapshotMatched = false
+			summary = fmt.Sprintf("%s final response did not match snapshot under %s/%s.", displayName, provider, model)
+		}
+	}
 	result := map[string]any{
 		"caseId":      caseID,
 		"displayName": displayName,
@@ -390,6 +420,21 @@ func evaluateAppChatRecord(record map[string]any, index int) (map[string]any, er
 	if expected != nil && expected.finalText != nil {
 		result["expected"] = map[string]any{"finalText": *expected.finalText}
 		result["match"] = matched
+	}
+	if expected != nil && expected.snapshot != nil {
+		expectedPacket := map[string]any{"snapshot": *expected.snapshot}
+		if expected.snapshotPath != nil {
+			expectedPacket["snapshotPath"] = *expected.snapshotPath
+		}
+		result["expected"] = expectedPacket
+		result["match"] = matched
+		if !snapshotMatched {
+			result["snapshotDiff"] = map[string]any{
+				"kind":     "text-equality",
+				"expected": *expected.snapshotText,
+				"actual":   observed["finalText"].(string),
+			}
+		}
 	}
 	if value, ok := costUsdFromAny(record["costUsd"]); ok {
 		result["costUsd"] = value

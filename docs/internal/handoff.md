@@ -187,9 +187,10 @@
    review prepare-input과 reviewer launch branch proof는 Codex/Claude 양쪽에서 완료됐다.
    evidence preflight의 첫 slice는 possible evidence hint까지만 허용하는 형태로 들어왔다.
    public `claim group` 또는 `claim refresh` command는 만들지 않는다.
-5. spec follow-up #4 — C4 composition primitive (`expected.snapshot`).
+5. evaluation-surface composition primitives C2/C3/C4는 모두 shipped 상태다.
    C2 `extends`는 2026-05-01에 file-backed `eval test` fixture에서 shipped 됐다.
    C3 `steps`도 2026-05-01에 strict explicit `outputProjection` 기반으로 shipped 됐다.
+   C4 `expected.snapshot`은 2026-05-01에 app `finalText` snapshot 비교로 shipped 됐다.
 6. spec follow-up #5 — `scenario normalize` 재범위만 남음.
    archetype-boundary retire는 cut 슬라이스에 흡수됨.
 8. 후속 후보: fixture-backed app smoke와 one-case live Codex/Claude proof를 broader app quality proof로 과장하지 않도록 release / quality artifact 쪽 proof boundary 표현을 점검한다.

@@ -307,6 +307,15 @@ func evaluateAppPromptRecord(record map[string]any, index int) (map[string]any, 
 			summary = fmt.Sprintf("%s final response did not contain the expected fragment under %s/%s.", displayName, provider, model)
 		}
 	}
+	snapshotMatched := true
+	if expected != nil && expected.snapshotText != nil {
+		if observed["finalText"].(string) != *expected.snapshotText {
+			status = "failed"
+			matched = false
+			snapshotMatched = false
+			summary = fmt.Sprintf("%s final response did not match snapshot under %s/%s.", displayName, provider, model)
+		}
+	}
 	result := map[string]any{
 		"caseId":      caseID,
 		"displayName": displayName,
@@ -322,6 +331,21 @@ func evaluateAppPromptRecord(record map[string]any, index int) (map[string]any, 
 	if expected != nil && expected.finalText != nil {
 		result["expected"] = map[string]any{"finalText": *expected.finalText}
 		result["match"] = matched
+	}
+	if expected != nil && expected.snapshot != nil {
+		expectedPacket := map[string]any{"snapshot": *expected.snapshot}
+		if expected.snapshotPath != nil {
+			expectedPacket["snapshotPath"] = *expected.snapshotPath
+		}
+		result["expected"] = expectedPacket
+		result["match"] = matched
+		if !snapshotMatched {
+			result["snapshotDiff"] = map[string]any{
+				"kind":     "text-equality",
+				"expected": *expected.snapshotText,
+				"actual":   observed["finalText"].(string),
+			}
+		}
 	}
 	if value, ok := costUsdFromAny(record["costUsd"]); ok {
 		result["costUsd"] = value

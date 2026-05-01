@@ -144,6 +144,11 @@ func loadEvaluationInputWithExtends(path string, stack map[string]bool) (map[str
 	if err := json.Unmarshal(payload, &input); err != nil {
 		return nil, fmt.Errorf("parse evaluation fixture %s: %w", path, err)
 	}
+	if evaluationInputSupportsSnapshots(input) {
+		if err := resolveEvaluationSnapshotRefs(input, filepath.Dir(resolved)); err != nil {
+			return nil, err
+		}
+	}
 	extendsValue, hasExtends := input["extends"]
 	if !hasExtends {
 		return input, nil
@@ -164,6 +169,78 @@ func loadEvaluationInputWithExtends(path string, stack map[string]bool) (map[str
 	}
 	delete(input, "extends")
 	return DeepMergeEvaluationFixture(base, input), nil
+}
+
+func evaluationInputSupportsSnapshots(input map[string]any) bool {
+	surface, surfaceOK := input["surface"].(string)
+	preset, presetOK := input["preset"].(string)
+	if !surfaceOK || !presetOK {
+		return false
+	}
+	return surface == "app" && (preset == "chat" || preset == "prompt")
+}
+
+func resolveEvaluationSnapshotRefs(value any, baseDir string) error {
+	switch typed := value.(type) {
+	case map[string]any:
+		for key, item := range typed {
+			if key == "expected" {
+				expected, ok := item.(map[string]any)
+				if !ok {
+					continue
+				}
+				if err := resolveEvaluationExpectedSnapshotRef(expected, baseDir); err != nil {
+					return err
+				}
+			}
+			if err := resolveEvaluationSnapshotRefs(item, baseDir); err != nil {
+				return err
+			}
+		}
+	case []any:
+		for _, item := range typed {
+			if err := resolveEvaluationSnapshotRefs(item, baseDir); err != nil {
+				return err
+			}
+		}
+	}
+	return nil
+}
+
+func resolveEvaluationExpectedSnapshotRef(expected map[string]any, baseDir string) error {
+	rawSnapshot, ok := expected["snapshot"]
+	if !ok {
+		return nil
+	}
+	snapshotPath, err := normalizeNonEmptyString(rawSnapshot, "expected.snapshot")
+	if err != nil {
+		return err
+	}
+	if filepath.IsAbs(snapshotPath) {
+		return fmt.Errorf("expected.snapshot must be relative: %s", snapshotPath)
+	}
+	baseAbs, err := filepath.Abs(baseDir)
+	if err != nil {
+		return err
+	}
+	resolved, err := filepath.Abs(filepath.Join(baseDir, snapshotPath))
+	if err != nil {
+		return err
+	}
+	relative, err := filepath.Rel(baseAbs, resolved)
+	if err != nil {
+		return err
+	}
+	if relative == ".." || len(relative) >= 3 && relative[:3] == ".."+string(filepath.Separator) {
+		return fmt.Errorf("expected.snapshot must stay under fixture directory: %s", snapshotPath)
+	}
+	payload, err := os.ReadFile(resolved)
+	if err != nil {
+		return fmt.Errorf("read expected.snapshot %s: %w", snapshotPath, err)
+	}
+	expected["snapshotPath"] = snapshotPath
+	expected["snapshotText"] = string(payload)
+	return nil
 }
 
 func DeepMergeEvaluationFixture(base map[string]any, override map[string]any) map[string]any {

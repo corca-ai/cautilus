@@ -299,6 +299,21 @@ func TestNormalizeEvaluationInputRejectsSnapshotExpectation(t *testing.T) {
 	}
 }
 
+func TestNormalizeEvaluationInputDevRepoDoesNotResolveSnapshotExpectation(t *testing.T) {
+	root := t.TempDir()
+	fixture := validDevRepoFixture()
+	cases := fixture["cases"].([]any)
+	caseEntry := cases[0].(map[string]any)
+	caseEntry["expected"] = map[string]any{"snapshot": "./missing-golden.txt"}
+	fixturePath := filepath.Join(root, "dev-repo.fixture.json")
+	writeEvaluationFixture(t, fixturePath, fixture)
+
+	_, err := NormalizeEvaluationInputFromFile(fixturePath)
+	if err == nil || !strings.Contains(err.Error(), "C4") {
+		t.Fatalf("expected dev snapshot C4 error without file read, got %v", err)
+	}
+}
+
 func TestNormalizeEvaluationInputSkillRejectsSnapshotExpectation(t *testing.T) {
 	fixture := validDevSkillFixture()
 	cases := fixture["cases"].([]any)
@@ -417,13 +432,35 @@ func TestNormalizeEvaluationInputAppChatRequiresUserTerminalMessage(t *testing.T
 	}
 }
 
-func TestNormalizeEvaluationInputAppChatRejectsSnapshotExpectation(t *testing.T) {
+func TestNormalizeEvaluationInputAppChatRequiresFileBackedSnapshotExpectation(t *testing.T) {
 	fixture := validAppChatFixture()
 	cases := fixture["cases"].([]any)
 	cases[0].(map[string]any)["expected"] = map[string]any{"snapshot": "./golden.json"}
 	_, err := NormalizeEvaluationInput(fixture)
-	if err == nil || !strings.Contains(err.Error(), "C4") {
-		t.Fatalf("expected snapshot C4 stub error, got %v", err)
+	if err == nil || !strings.Contains(err.Error(), "file-backed") {
+		t.Fatalf("expected file-backed snapshot error, got %v", err)
+	}
+}
+
+func TestNormalizeEvaluationInputAppChatAcceptsFileBackedSnapshotExpectation(t *testing.T) {
+	root := t.TempDir()
+	fixture := validAppChatFixture()
+	cases := fixture["cases"].([]any)
+	cases[0].(map[string]any)["expected"] = map[string]any{"snapshot": "./golden.txt"}
+	if err := os.WriteFile(filepath.Join(root, "golden.txt"), []byte("Hello from snapshot.\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	fixturePath := filepath.Join(root, "snapshot.fixture.json")
+	writeEvaluationFixture(t, fixturePath, fixture)
+
+	result, err := NormalizeEvaluationInputFromFile(fixturePath)
+	if err != nil {
+		t.Fatalf("expected file-backed snapshot to normalize, got %v", err)
+	}
+	casesOut := result.TranslatedCases["cases"].([]any)
+	expected := casesOut[0].(map[string]any)["expected"].(map[string]any)
+	if expected["snapshotText"] != "Hello from snapshot.\n" || expected["snapshotPath"] != "./golden.txt" {
+		t.Fatalf("unexpected resolved snapshot expected: %#v", expected)
 	}
 }
 
@@ -522,13 +559,71 @@ func TestNormalizeEvaluationInputAppPromptRequiresInput(t *testing.T) {
 	}
 }
 
-func TestNormalizeEvaluationInputAppPromptRejectsSnapshotExpectation(t *testing.T) {
+func TestNormalizeEvaluationInputAppPromptAcceptsFileBackedSnapshotExpectation(t *testing.T) {
+	root := t.TempDir()
+	fixture := validAppPromptFixture()
+	fixture["metadata"] = map[string]any{"snapshot": "not-a-file.txt"}
+	cases := fixture["cases"].([]any)
+	cases[0].(map[string]any)["expected"] = map[string]any{"snapshot": "./golden.txt"}
+	if err := os.WriteFile(filepath.Join(root, "golden.txt"), []byte("Fixture response\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	fixturePath := filepath.Join(root, "snapshot.fixture.json")
+	writeEvaluationFixture(t, fixturePath, fixture)
+
+	result, err := NormalizeEvaluationInputFromFile(fixturePath)
+	if err != nil {
+		t.Fatalf("expected file-backed snapshot to normalize, got %v", err)
+	}
+	casesOut := result.TranslatedCases["cases"].([]any)
+	expected := casesOut[0].(map[string]any)["expected"].(map[string]any)
+	if expected["snapshotText"] != "Fixture response\n" || expected["snapshotPath"] != "./golden.txt" {
+		t.Fatalf("unexpected resolved snapshot expected: %#v", expected)
+	}
+}
+
+func TestNormalizeEvaluationInputAppPromptRejectsSnapshotOutsideFixtureDirectory(t *testing.T) {
+	root := t.TempDir()
+	fixtureDir := filepath.Join(root, "fixtures")
+	if err := os.MkdirAll(fixtureDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(root, "golden.txt"), []byte("Fixture response\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
 	fixture := validAppPromptFixture()
 	cases := fixture["cases"].([]any)
-	cases[0].(map[string]any)["expected"] = map[string]any{"snapshot": "./golden.json"}
+	cases[0].(map[string]any)["expected"] = map[string]any{"snapshot": "../golden.txt"}
+	fixturePath := filepath.Join(fixtureDir, "snapshot.fixture.json")
+	writeEvaluationFixture(t, fixturePath, fixture)
+
+	_, err := NormalizeEvaluationInputFromFile(fixturePath)
+	if err == nil || !strings.Contains(err.Error(), "fixture directory") {
+		t.Fatalf("expected snapshot containment error, got %v", err)
+	}
+}
+
+func TestNormalizeEvaluationInputAppPromptRequiresFileBackedSnapshotExpectation(t *testing.T) {
+	fixture := validAppPromptFixture()
+	cases := fixture["cases"].([]any)
+	cases[0].(map[string]any)["expected"] = map[string]any{"snapshot": "./golden.txt"}
 	_, err := NormalizeEvaluationInput(fixture)
-	if err == nil || !strings.Contains(err.Error(), "C4") {
-		t.Fatalf("expected snapshot C4 stub error, got %v", err)
+	if err == nil || !strings.Contains(err.Error(), "file-backed") {
+		t.Fatalf("expected file-backed snapshot error, got %v", err)
+	}
+}
+
+func TestNormalizeEvaluationInputAppPromptRejectsMixedFinalTextAndSnapshotExpectation(t *testing.T) {
+	fixture := validAppPromptFixture()
+	cases := fixture["cases"].([]any)
+	cases[0].(map[string]any)["expected"] = map[string]any{
+		"finalText":    "behavior",
+		"snapshot":     "./golden.txt",
+		"snapshotText": "behavior",
+	}
+	_, err := NormalizeEvaluationInput(fixture)
+	if err == nil || !strings.Contains(err.Error(), "only one") {
+		t.Fatalf("expected mixed expectation error, got %v", err)
 	}
 }
 
