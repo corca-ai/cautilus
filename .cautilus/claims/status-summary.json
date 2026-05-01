@@ -13,10 +13,10 @@
       "Adapter and portability": 51,
       "Agent and skill workflow": 89,
       "Claim discovery and review": 19,
-      "Documentation and contracts": 85,
+      "Documentation and contracts": 81,
       "Evaluation surfaces": 2,
       "Improvement and optimization": 21,
-      "Packets and reporting": 23,
+      "Packets and reporting": 27,
       "Quality gates": 34,
       "Release and packaging": 5
     },
@@ -83,7 +83,8 @@
       "dist/**",
       "coverage/**",
       "artifacts/**",
-      "charness-artifacts/**"
+      "charness-artifacts/**",
+      "docs/internal/handoff.md"
     ],
     "explicitSources": false,
     "gitignorePolicy": "respect-repo-gitignore",
@@ -187,23 +188,23 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "aa9a6e96437119db829d875e0016cc857e2743e8",
+  "gitCommit": "e1fb62b3d40becfde925b0812c3a8fa8250f36cd",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "aa9a6e96437119db829d875e0016cc857e2743e8",
+    "currentGitCommit": "e1fb62b3d40becfde925b0812c3a8fa8250f36cd",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "aa9a6e96437119db829d875e0016cc857e2743e8",
+    "packetGitCommit": "e1fb62b3d40becfde925b0812c3a8fa8250f36cd",
     "recommendedAction": "The claim packet commit matches the current checkout.",
     "workingTreePolicy": "excluded"
   },
   "inputPath": ".cautilus/claims/latest.json",
   "inputSchemaVersion": "cautilus.claim_proof_plan.v1",
-  "linkedMarkdownSourceCount": 36,
+  "linkedMarkdownSourceCount": 35,
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "recommendedNextActions": [
     {
@@ -353,6 +354,6 @@
     }
   ],
   "schemaVersion": "cautilus.claim_status_summary.v1",
-  "sourceCount": 38,
+  "sourceCount": 37,
   "sourceRoot": "."
 }

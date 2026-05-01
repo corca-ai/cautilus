@@ -18,8 +18,9 @@
   `/tmp/cautilus-dev-repo-codex-eval-v4/eval-observed.json`에는 `telemetry.runtime=codex_exec`가 기록됐다.
   이제 dev proof promotion은 selected runtime name만 믿지 않고 observed telemetry runtime을 요구한다.
 - 2026-05-01 claim state는 `.cautilus/claims/latest.json` 기준 `candidateCount=329`이다.
-  `agent-reviewed=13`, `heuristic=314`인 reviewed packet은 `.cautilus/claims/reviewed-typed-runners.json`에 있다.
+  `agent-reviewed=13`, `heuristic=316`인 reviewed packet은 `.cautilus/claims/reviewed-typed-runners.json`에 있다.
   `.cautilus/claims/evidenced-typed-runners.json`는 `claim-readme-md-144`, `claim-readme-md-148`, `claim-readme-md-211`을 `evidenceStatus=satisfied`로 올린다.
+  그래서 evidenced packet의 evidence status는 `satisfied=3`, `unknown=326`이다.
   Evidence bundles are `.cautilus/claims/evidence-dev-skill-dogfood.json` and `.cautilus/claims/evidence-dev-skill-routing-install.json`.
   `.cautilus/claims/eval-plan-evidenced-typed-runners.json`는 `selectionPolicy.excludesEvidenceStatus=["satisfied"]`를 기록하고, satisfied claims를 `already-satisfied`로 skip하며, 현재 남은 ready eval target은 0개다.
   `claim-readme-md-3`은 README tagline/umbrella promise로 보존하되 `human-auditable`, `verificationReadiness=blocked`로 라우팅한다.

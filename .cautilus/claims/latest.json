@@ -7211,446 +7211,6 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:9439758a64f49e80cb32475f05284116cb316d201c022b012b81deb8e0d582ab",
-      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-3",
-      "claimSemanticGroup": "Documentation and contracts",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "cautilus-eval",
-        "contract",
-        "dev/repo",
-        "linked-from:docs/internal/handoff.md"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "`Cautilus` should make model and provider changes visible without turning every evaluation into a pinned-model benchmark.",
-          "line": 3,
-          "path": "docs/contracts/runtime-fingerprint-optimization.md"
-        }
-      ],
-      "summary": "`Cautilus` should make model and provider changes visible without turning every evaluation into a pinned-model benchmark.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:08d93168049eadacc2c094b7a88b6d03a8526e9d1369ea055058ed10603f962d",
-      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-8",
-      "claimSemanticGroup": "Quality gates",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "contract",
-        "deterministic",
-        "linked-from:docs/internal/handoff.md"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
-      "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "By default, those tests should not force a model choice just to make evaluation evidence easier to compare.",
-          "line": 8,
-          "path": "docs/contracts/runtime-fingerprint-optimization.md"
-        }
-      ],
-      "summary": "By default, those tests should not force a model choice just to make evaluation evidence easier to compare.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:57cfb40c24ad1142b4c035e714fd8a92e9b4962c1f54cc3745fc4149a10aa4dd",
-      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-34",
-      "claimSemanticGroup": "Adapter and portability",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "cautilus-eval",
-        "contract",
-        "dev/repo",
-        "linked-from:docs/internal/handoff.md"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "Adapter command templates may still pin a model when the evaluated product explicitly requires one.",
-          "line": 34,
-          "path": "docs/contracts/runtime-fingerprint-optimization.md"
-        }
-      ],
-      "summary": "Adapter command templates may still pin a model when the evaluated product explicitly requires one.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:81bdce0a1a2f1a8f7a9340da04360ac8a8d0635bb4040f387076e82a21968b8c",
-      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-36",
-      "claimSemanticGroup": "Documentation and contracts",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "cautilus-eval",
-        "contract",
-        "dev/repo",
-        "linked-from:docs/internal/handoff.md"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "Under the default policy, a model or provider change should produce a context warning, not a failing result.",
-          "line": 36,
-          "path": "docs/contracts/runtime-fingerprint-optimization.md"
-        }
-      ],
-      "summary": "Under the default policy, a model or provider change should produce a context warning, not a failing result.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:65c37a743b4d55157f8794db1a2987d7fa756266493234ed05ac0093c2955853",
-      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-41",
-      "claimSemanticGroup": "Documentation and contracts",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "cautilus-eval",
-        "contract",
-        "dev/repo",
-        "linked-from:docs/internal/handoff.md"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "`Cautilus` should not infer hidden model identity from human-oriented logs.",
-          "line": 41,
-          "path": "docs/contracts/runtime-fingerprint-optimization.md"
-        }
-      ],
-      "summary": "`Cautilus` should not infer hidden model identity from human-oriented logs.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:59d8c133631e0b643a8528326ed3986dcb879eb6b39d42ca435dd9de4df24895",
-      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-42",
-      "claimSemanticGroup": "Adapter and portability",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "contract",
-        "deterministic",
-        "linked-from:docs/internal/handoff.md"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
-      "proofLayer": "deterministic",
-      "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "Runtime identity must come from explicit machine-readable runner output, adapter-provided metadata, or a checked-in wrapper.",
-          "line": 42,
-          "path": "docs/contracts/runtime-fingerprint-optimization.md"
-        }
-      ],
-      "summary": "Runtime identity must come from explicit machine-readable runner output, adapter-provided metadata, or a checked-in wrapper.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks."
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:f7a245a3ea62f8af7464f6c411c40a9367f4156a06f104325af836664ef874ff",
-      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-47",
-      "claimSemanticGroup": "Improvement and optimization",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "cautilus-eval",
-        "contract",
-        "dev/repo",
-        "linked-from:docs/internal/handoff.md"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "Optimization should prefer the shortest, least specialized target that preserves or improves the evaluated behavior.",
-          "line": 47,
-          "path": "docs/contracts/runtime-fingerprint-optimization.md"
-        }
-      ],
-      "summary": "Optimization should prefer the shortest, least specialized target that preserves or improves the evaluated behavior.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:5b4aa826a977bd6abed0596d72f0a3bba779e7c5d880765a0bd1e59d1439d44d",
-      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-50",
-      "claimSemanticGroup": "Adapter and portability",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "cautilus-eval",
-        "contract",
-        "dev/skill",
-        "linked-from:docs/internal/handoff.md"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
-      "recommendedEvalSurface": "dev/skill",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "It should not directly auto-edit consumer-owned prompts, skills, or instruction files.",
-          "line": 50,
-          "path": "docs/contracts/runtime-fingerprint-optimization.md"
-        }
-      ],
-      "summary": "It should not directly auto-edit consumer-owned prompts, skills, or instruction files.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:88135551ab27a00915b4ef2441bc41ba5de58ea3f13b85eadbac2506cf431f9d",
-      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-100",
-      "claimSemanticGroup": "Documentation and contracts",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "cautilus-eval",
-        "contract",
-        "dev/repo",
-        "linked-from:docs/internal/handoff.md"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "Alias matching is intentionally not inferred in the first slice unless the runtime emits both requested and resolved model fields.",
-          "line": 100,
-          "path": "docs/contracts/runtime-fingerprint-optimization.md"
-        }
-      ],
-      "summary": "Alias matching is intentionally not inferred in the first slice unless the runtime emits both requested and resolved model fields.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:cf22224c908691a76efd6ffc47cac4d7dcd50a298b34a655fc05fd00d31af065",
-      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-154",
-      "claimSemanticGroup": "Quality gates",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "contract",
-        "deterministic",
-        "linked-from:docs/internal/handoff.md"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
-      "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "It should generate a candidate or revision brief, then require the same tests and review gates before the candidate is trusted.",
-          "line": 154,
-          "path": "docs/contracts/runtime-fingerprint-optimization.md"
-        }
-      ],
-      "summary": "It should generate a candidate or revision brief, then require the same tests and review gates before the candidate is trusted.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:31d64ec42dc92ae1ed314aaec386b8f5ed1310ab6551f92a702941813f74472a",
-      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-161",
-      "claimSemanticGroup": "Improvement and optimization",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "cautilus-eval",
-        "contract",
-        "dev/repo",
-        "linked-from:docs/internal/handoff.md"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "Model-change-driven optimize suggestions should preserve:",
-          "line": 161,
-          "path": "docs/contracts/runtime-fingerprint-optimization.md"
-        }
-      ],
-      "summary": "Model-change-driven optimize suggestions should preserve:",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:fcfea5f504bd3665d363e93c6a62e485a89bf34e26feaf25970b1acbeaa448a2",
-      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-188",
-      "claimSemanticGroup": "Quality gates",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "contract",
-        "deterministic",
-        "linked-from:docs/internal/handoff.md"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "proofLayer": "deterministic",
-      "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "A skill or eval test can pass while still reporting that the observed runtime changed from the comparison evidence.",
-          "line": 188,
-          "path": "docs/contracts/runtime-fingerprint-optimization.md"
-        }
-      ],
-      "summary": "A skill or eval test can pass while still reporting that the observed runtime changed from the comparison evidence.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:67576f222383159761b9ea092fb7c44d591d2f1036800696b57a27efa7132625",
-      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-190",
-      "claimSemanticGroup": "Packets and reporting",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "cautilus-eval",
-        "contract",
-        "dev/repo",
-        "linked-from:docs/internal/handoff.md"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "Report and evidence packets can carry runtime-context reason codes without treating them as behavior regressions.",
-          "line": 190,
-          "path": "docs/contracts/runtime-fingerprint-optimization.md"
-        }
-      ],
-      "summary": "Report and evidence packets can carry runtime-context reason codes without treating them as behavior regressions.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:a38f781ccbff0d0118f18d4cba2545434af8ae7f86a844df7311099fc4ef5953",
-      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-261",
-      "claimSemanticGroup": "Improvement and optimization",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "app/prompt",
-        "audience:developer",
-        "cautilus-eval",
-        "contract",
-        "linked-from:docs/internal/handoff.md"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
-      "recommendedEvalSurface": "app/prompt",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "This sequence keeps the evidence honest before asking optimize search to mutate prompts more aggressively.",
-          "line": 261,
-          "path": "docs/contracts/runtime-fingerprint-optimization.md"
-        }
-      ],
-      "summary": "This sequence keeps the evidence honest before asking optimize search to mutate prompts more aggressively.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:fde2dba8906af77ca6a87865b51b67bfe1cdbe6055e706960f1164061dc20d4a",
       "claimId": "claim-docs-contracts-scenario-history-md-3",
       "claimSemanticGroup": "Documentation and contracts",
@@ -9197,6 +8757,446 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:9439758a64f49e80cb32475f05284116cb316d201c022b012b81deb8e0d582ab",
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-3",
+      "claimSemanticGroup": "Packets and reporting",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "cautilus-eval",
+        "contract",
+        "dev/repo",
+        "linked-from:docs/contracts/reporting.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
+      "proofLayer": "cautilus-eval",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "`Cautilus` should make model and provider changes visible without turning every evaluation into a pinned-model benchmark.",
+          "line": 3,
+          "path": "docs/contracts/runtime-fingerprint-optimization.md"
+        }
+      ],
+      "summary": "`Cautilus` should make model and provider changes visible without turning every evaluation into a pinned-model benchmark.",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:08d93168049eadacc2c094b7a88b6d03a8526e9d1369ea055058ed10603f962d",
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-8",
+      "claimSemanticGroup": "Quality gates",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "deterministic",
+        "linked-from:docs/contracts/reporting.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "proofLayer": "deterministic",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "By default, those tests should not force a model choice just to make evaluation evidence easier to compare.",
+          "line": 8,
+          "path": "docs/contracts/runtime-fingerprint-optimization.md"
+        }
+      ],
+      "summary": "By default, those tests should not force a model choice just to make evaluation evidence easier to compare.",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:57cfb40c24ad1142b4c035e714fd8a92e9b4962c1f54cc3745fc4149a10aa4dd",
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-34",
+      "claimSemanticGroup": "Adapter and portability",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "cautilus-eval",
+        "contract",
+        "dev/repo",
+        "linked-from:docs/contracts/reporting.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
+      "proofLayer": "cautilus-eval",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "Adapter command templates may still pin a model when the evaluated product explicitly requires one.",
+          "line": 34,
+          "path": "docs/contracts/runtime-fingerprint-optimization.md"
+        }
+      ],
+      "summary": "Adapter command templates may still pin a model when the evaluated product explicitly requires one.",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:81bdce0a1a2f1a8f7a9340da04360ac8a8d0635bb4040f387076e82a21968b8c",
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-36",
+      "claimSemanticGroup": "Packets and reporting",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "cautilus-eval",
+        "contract",
+        "dev/repo",
+        "linked-from:docs/contracts/reporting.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
+      "proofLayer": "cautilus-eval",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "Under the default policy, a model or provider change should produce a context warning, not a failing result.",
+          "line": 36,
+          "path": "docs/contracts/runtime-fingerprint-optimization.md"
+        }
+      ],
+      "summary": "Under the default policy, a model or provider change should produce a context warning, not a failing result.",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:65c37a743b4d55157f8794db1a2987d7fa756266493234ed05ac0093c2955853",
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-41",
+      "claimSemanticGroup": "Packets and reporting",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "cautilus-eval",
+        "contract",
+        "dev/repo",
+        "linked-from:docs/contracts/reporting.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
+      "proofLayer": "cautilus-eval",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "`Cautilus` should not infer hidden model identity from human-oriented logs.",
+          "line": 41,
+          "path": "docs/contracts/runtime-fingerprint-optimization.md"
+        }
+      ],
+      "summary": "`Cautilus` should not infer hidden model identity from human-oriented logs.",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:59d8c133631e0b643a8528326ed3986dcb879eb6b39d42ca435dd9de4df24895",
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-42",
+      "claimSemanticGroup": "Adapter and portability",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "deterministic",
+        "linked-from:docs/contracts/reporting.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
+      "proofLayer": "deterministic",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "Runtime identity must come from explicit machine-readable runner output, adapter-provided metadata, or a checked-in wrapper.",
+          "line": 42,
+          "path": "docs/contracts/runtime-fingerprint-optimization.md"
+        }
+      ],
+      "summary": "Runtime identity must come from explicit machine-readable runner output, adapter-provided metadata, or a checked-in wrapper.",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:f7a245a3ea62f8af7464f6c411c40a9367f4156a06f104325af836664ef874ff",
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-47",
+      "claimSemanticGroup": "Improvement and optimization",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "cautilus-eval",
+        "contract",
+        "dev/repo",
+        "linked-from:docs/contracts/reporting.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
+      "proofLayer": "cautilus-eval",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "Optimization should prefer the shortest, least specialized target that preserves or improves the evaluated behavior.",
+          "line": 47,
+          "path": "docs/contracts/runtime-fingerprint-optimization.md"
+        }
+      ],
+      "summary": "Optimization should prefer the shortest, least specialized target that preserves or improves the evaluated behavior.",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:5b4aa826a977bd6abed0596d72f0a3bba779e7c5d880765a0bd1e59d1439d44d",
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-50",
+      "claimSemanticGroup": "Adapter and portability",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "cautilus-eval",
+        "contract",
+        "dev/skill",
+        "linked-from:docs/contracts/reporting.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
+      "proofLayer": "cautilus-eval",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "It should not directly auto-edit consumer-owned prompts, skills, or instruction files.",
+          "line": 50,
+          "path": "docs/contracts/runtime-fingerprint-optimization.md"
+        }
+      ],
+      "summary": "It should not directly auto-edit consumer-owned prompts, skills, or instruction files.",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:88135551ab27a00915b4ef2441bc41ba5de58ea3f13b85eadbac2506cf431f9d",
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-100",
+      "claimSemanticGroup": "Packets and reporting",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "cautilus-eval",
+        "contract",
+        "dev/repo",
+        "linked-from:docs/contracts/reporting.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
+      "proofLayer": "cautilus-eval",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "Alias matching is intentionally not inferred in the first slice unless the runtime emits both requested and resolved model fields.",
+          "line": 100,
+          "path": "docs/contracts/runtime-fingerprint-optimization.md"
+        }
+      ],
+      "summary": "Alias matching is intentionally not inferred in the first slice unless the runtime emits both requested and resolved model fields.",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:cf22224c908691a76efd6ffc47cac4d7dcd50a298b34a655fc05fd00d31af065",
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-154",
+      "claimSemanticGroup": "Quality gates",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "deterministic",
+        "linked-from:docs/contracts/reporting.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "proofLayer": "deterministic",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "It should generate a candidate or revision brief, then require the same tests and review gates before the candidate is trusted.",
+          "line": 154,
+          "path": "docs/contracts/runtime-fingerprint-optimization.md"
+        }
+      ],
+      "summary": "It should generate a candidate or revision brief, then require the same tests and review gates before the candidate is trusted.",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:31d64ec42dc92ae1ed314aaec386b8f5ed1310ab6551f92a702941813f74472a",
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-161",
+      "claimSemanticGroup": "Improvement and optimization",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "cautilus-eval",
+        "contract",
+        "dev/repo",
+        "linked-from:docs/contracts/reporting.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
+      "proofLayer": "cautilus-eval",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "Model-change-driven optimize suggestions should preserve:",
+          "line": 161,
+          "path": "docs/contracts/runtime-fingerprint-optimization.md"
+        }
+      ],
+      "summary": "Model-change-driven optimize suggestions should preserve:",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:fcfea5f504bd3665d363e93c6a62e485a89bf34e26feaf25970b1acbeaa448a2",
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-188",
+      "claimSemanticGroup": "Quality gates",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "deterministic",
+        "linked-from:docs/contracts/reporting.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "proofLayer": "deterministic",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "A skill or eval test can pass while still reporting that the observed runtime changed from the comparison evidence.",
+          "line": 188,
+          "path": "docs/contracts/runtime-fingerprint-optimization.md"
+        }
+      ],
+      "summary": "A skill or eval test can pass while still reporting that the observed runtime changed from the comparison evidence.",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:67576f222383159761b9ea092fb7c44d591d2f1036800696b57a27efa7132625",
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-190",
+      "claimSemanticGroup": "Packets and reporting",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "cautilus-eval",
+        "contract",
+        "dev/repo",
+        "linked-from:docs/contracts/reporting.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
+      "proofLayer": "cautilus-eval",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "Report and evidence packets can carry runtime-context reason codes without treating them as behavior regressions.",
+          "line": 190,
+          "path": "docs/contracts/runtime-fingerprint-optimization.md"
+        }
+      ],
+      "summary": "Report and evidence packets can carry runtime-context reason codes without treating them as behavior regressions.",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:a38f781ccbff0d0118f18d4cba2545434af8ae7f86a844df7311099fc4ef5953",
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-261",
+      "claimSemanticGroup": "Improvement and optimization",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "app/prompt",
+        "audience:developer",
+        "cautilus-eval",
+        "contract",
+        "linked-from:docs/contracts/reporting.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus eval test.",
+      "proofLayer": "cautilus-eval",
+      "recommendedEvalSurface": "app/prompt",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "This sequence keeps the evidence honest before asking optimize search to mutate prompts more aggressively.",
+          "line": 261,
+          "path": "docs/contracts/runtime-fingerprint-optimization.md"
+        }
+      ],
+      "summary": "This sequence keeps the evidence honest before asking optimize search to mutate prompts more aggressively.",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:77a8da5194b241cb6d76b536a1d670c2edb7bce6d432ce4e2acffde0831356fd",
       "claimId": "claim-docs-contracts-scenario-proposal-sources-md-28",
       "claimSemanticGroup": "Packets and reporting",
@@ -10200,10 +10200,10 @@
       "Adapter and portability": 51,
       "Agent and skill workflow": 89,
       "Claim discovery and review": 19,
-      "Documentation and contracts": 85,
+      "Documentation and contracts": 81,
       "Evaluation surfaces": 2,
       "Improvement and optimization": 21,
-      "Packets and reporting": 23,
+      "Packets and reporting": 27,
       "Quality gates": 34,
       "Release and packaging": 5
     },
@@ -10271,7 +10271,8 @@
       "dist/**",
       "coverage/**",
       "artifacts/**",
-      "charness-artifacts/**"
+      "charness-artifacts/**",
+      "docs/internal/handoff.md"
     ],
     "explicitSources": false,
     "gitignorePolicy": "respect-repo-gitignore",
@@ -10375,11 +10376,11 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "aa9a6e96437119db829d875e0016cc857e2743e8",
+  "gitCommit": "e1fb62b3d40becfde925b0812c3a8fa8250f36cd",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "schemaVersion": "cautilus.claim_proof_plan.v1",
-  "sourceCount": 38,
+  "sourceCount": 37,
   "sourceGraph": [
     {
       "depth": 1,
@@ -10452,12 +10453,6 @@
       "from": "AGENTS.md",
       "kind": "markdown-link",
       "to": "docs/guides/consumer-adoption.md"
-    },
-    {
-      "depth": 1,
-      "from": "AGENTS.md",
-      "kind": "markdown-link",
-      "to": "docs/internal/handoff.md"
     },
     {
       "depth": 1,
@@ -10571,12 +10566,6 @@
       "depth": 2,
       "from": "docs/maintainers/operator-acceptance.md",
       "kind": "markdown-link",
-      "to": "docs/internal/handoff.md"
-    },
-    {
-      "depth": 2,
-      "from": "docs/maintainers/operator-acceptance.md",
-      "kind": "markdown-link",
       "to": "docs/maintainers/consumer-readiness.md"
     },
     {
@@ -10683,48 +10672,6 @@
     },
     {
       "depth": 2,
-      "from": "docs/internal/handoff.md",
-      "kind": "markdown-link",
-      "to": "docs/contracts/claim-discovery-workflow.md"
-    },
-    {
-      "depth": 2,
-      "from": "docs/internal/handoff.md",
-      "kind": "markdown-link",
-      "to": "docs/contracts/runtime-fingerprint-optimization.md"
-    },
-    {
-      "depth": 2,
-      "from": "docs/internal/handoff.md",
-      "kind": "markdown-link",
-      "to": "docs/contracts/scenario-history.md"
-    },
-    {
-      "depth": 2,
-      "from": "docs/internal/handoff.md",
-      "kind": "markdown-link",
-      "to": "docs/master-plan.md"
-    },
-    {
-      "depth": 2,
-      "from": "docs/internal/handoff.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/command-surfaces.spec.md"
-    },
-    {
-      "depth": 2,
-      "from": "docs/internal/handoff.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/evaluation-surfaces.spec.md"
-    },
-    {
-      "depth": 2,
-      "from": "docs/internal/working-patterns.md",
-      "kind": "markdown-link",
-      "to": "docs/internal/handoff.md"
-    },
-    {
-      "depth": 2,
       "from": "docs/specs/index.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/command-surfaces.spec.md"
@@ -10782,12 +10729,6 @@
       "from": "docs/maintainers/releasing.md",
       "kind": "markdown-link",
       "to": "README.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/maintainers/releasing.md",
-      "kind": "markdown-link",
-      "to": "docs/internal/handoff.md"
     },
     {
       "depth": 3,
@@ -10854,12 +10795,6 @@
       "from": "docs/contracts/scenario-history.md",
       "kind": "markdown-link",
       "to": "skills/cautilus/SKILL.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/maintainers/release-boundary.md",
-      "kind": "markdown-link",
-      "to": "docs/internal/handoff.md"
     },
     {
       "depth": 3,
@@ -10945,16 +10880,6 @@
       "discoveredFrom": "README.md",
       "kind": "docs",
       "path": "docs/guides/evaluation-process.md",
-      "status": "read"
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:a0a5145f796351b2a7cf66106b9c031cbc75d59ded2d197e2c2ed18fa311f5b4",
-      "depth": 1,
-      "discoveredFrom": "AGENTS.md",
-      "kind": "docs",
-      "path": "docs/internal/handoff.md",
       "status": "read"
     },
     {
@@ -11100,16 +11025,6 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:811fbe58b96aa02bde246cd104abef42c9d17cd4281095269dcc932cf5634250",
-      "depth": 2,
-      "discoveredFrom": "docs/internal/handoff.md",
-      "kind": "contract",
-      "path": "docs/contracts/runtime-fingerprint-optimization.md",
-      "status": "read"
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "adapter-hint",
       "contentHash": "sha256:241c125e317a869e75bc7505d7c8d6b92470da343dd19e467322347e340087a6",
       "depth": 2,
       "discoveredFrom": "docs/master-plan.md",
@@ -11215,6 +11130,16 @@
       "discoveredFrom": "docs/contracts/active-run.md",
       "kind": "contract",
       "path": "docs/contracts/optimization.md",
+      "status": "read"
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "contentHash": "sha256:811fbe58b96aa02bde246cd104abef42c9d17cd4281095269dcc932cf5634250",
+      "depth": 3,
+      "discoveredFrom": "docs/contracts/reporting.md",
+      "kind": "contract",
+      "path": "docs/contracts/runtime-fingerprint-optimization.md",
       "status": "read"
     },
     {

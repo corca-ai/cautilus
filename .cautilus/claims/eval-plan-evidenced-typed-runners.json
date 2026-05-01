@@ -949,62 +949,6 @@
       "reason": "not-cautilus-eval"
     },
     {
-      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-3",
-      "reason": "not-reviewed"
-    },
-    {
-      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-8",
-      "reason": "not-cautilus-eval"
-    },
-    {
-      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-34",
-      "reason": "not-reviewed"
-    },
-    {
-      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-36",
-      "reason": "not-reviewed"
-    },
-    {
-      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-41",
-      "reason": "not-reviewed"
-    },
-    {
-      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-42",
-      "reason": "not-cautilus-eval"
-    },
-    {
-      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-47",
-      "reason": "not-reviewed"
-    },
-    {
-      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-50",
-      "reason": "not-reviewed"
-    },
-    {
-      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-100",
-      "reason": "not-reviewed"
-    },
-    {
-      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-154",
-      "reason": "not-cautilus-eval"
-    },
-    {
-      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-161",
-      "reason": "not-reviewed"
-    },
-    {
-      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-188",
-      "reason": "not-cautilus-eval"
-    },
-    {
-      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-190",
-      "reason": "not-reviewed"
-    },
-    {
-      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-261",
-      "reason": "not-reviewed"
-    },
-    {
       "claimId": "claim-docs-contracts-scenario-history-md-3",
       "reason": "not-ready-to-verify"
     },
@@ -1205,6 +1149,62 @@
       "reason": "not-cautilus-eval"
     },
     {
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-3",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-8",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-34",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-36",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-41",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-42",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-47",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-50",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-100",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-154",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-161",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-188",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-190",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-261",
+      "reason": "not-reviewed"
+    },
+    {
       "claimId": "claim-docs-contracts-scenario-proposal-sources-md-28",
       "reason": "not-cautilus-eval"
     },
@@ -1335,7 +1335,7 @@
   ],
   "sourceClaimPacket": {
     "candidateCount": 329,
-    "gitCommit": "aa9a6e96437119db829d875e0016cc857e2743e8",
+    "gitCommit": "e1fb62b3d40becfde925b0812c3a8fa8250f36cd",
     "schemaVersion": "cautilus.claim_proof_plan.v1"
   }
 }
