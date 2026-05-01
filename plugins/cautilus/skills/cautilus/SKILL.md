@@ -119,6 +119,7 @@ If a user-facing feature is missing from the configured entry docs or linked Mar
 Read `actionSummary.primaryBuckets` before making a next-work recommendation.
 Use the bucket `recommendedActor` and `summary` fields to separate agent work, human confirmation, deterministic proof, Cautilus eval planning, scenario design, alignment, and split-or-defer branches.
 Use `actionSummary.crossCuttingSignals` for review debt or stale-evidence warnings that can coexist with a primary proof branch.
+When preparing a focused review queue, pass `--action-bucket <bucket>` to `claim review prepare-input` instead of hand-filtering claim JSON.
 If `claim show` or `agent status` reports `gitState.isStale=true`, run `claim discover --previous <claims.json> --refresh-plan` before claim review, review-result application, or eval planning.
 Do not launch reviewers, apply review results, plan evals, edit files, or commit artifacts from a stale claim packet unless the user explicitly asks to override stale state.
 If a view is missing, prefer adding a product-owned summary option or review packet over guessing raw JSON keys with ad hoc `jq`.

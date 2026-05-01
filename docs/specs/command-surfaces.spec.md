@@ -41,7 +41,7 @@ tmpdir=$(mktemp -d)
 ./bin/cautilus agent status --repo-root . --json >"$tmpdir/agent-status.json"
 ./bin/cautilus claim discover --repo-root ./fixtures/claim-discovery/tiny-repo --output "$tmpdir/claims.json"
 ./bin/cautilus claim show --input "$tmpdir/claims.json" --sample-claims 2 --output "$tmpdir/claim-status.json"
-./bin/cautilus claim review prepare-input --claims "$tmpdir/claims.json" --max-clusters 2 --output "$tmpdir/claim-review-input.json"
+./bin/cautilus claim review prepare-input --claims "$tmpdir/claims.json" --action-bucket agent-plan-cautilus-eval --max-clusters 2 --output "$tmpdir/claim-review-input.json"
 cat >"$tmpdir/claim-review-result.json" <<'JSON'
 {
   "schemaVersion": "cautilus.claim_review_result.v1",
@@ -165,6 +165,7 @@ A later commit that only records generated claim artifacts is reported as `headD
 
 `cautilus claim review prepare-input --claims <claims.json>` emits `cautilus.claim_review_input.v1`.
 It groups candidates into deterministic review clusters and records the review budget.
+When called with `--action-bucket <bucket>`, it focuses the review queue on that status action bucket and records non-matching candidates under `skippedClaims`.
 Review clusters preserve `claimAudience` and `claimSemanticGroup` so user-facing, developer-facing, and unclear claims do not collapse into the same review queue.
 It does not call an LLM, schedule subagents, merge duplicates, or mark evidence satisfied.
 When adapter-configured `evidence_roots` contain claim evidence bundles for known claim ids, it may include `possibleEvidenceRefs` in review candidates and `evidencePreflight` in the packet.

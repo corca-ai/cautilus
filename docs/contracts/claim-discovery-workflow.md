@@ -488,6 +488,7 @@ Follow-on commands are justified only when they operate on an existing claim-sta
 
 - `claim show`: summarize an existing packet for agents without rescanning, optionally with bounded `sampleClaims` and git freshness state
 - `claim review prepare-input`: turn selected candidate clusters into a deterministic review-input packet without calling an LLM, rejecting stale packets by default
+- `claim review prepare-input`: accepts an optional `--action-bucket <bucket>` focus so agents can prepare a human-alignment, human-confirmation, eval-planning, deterministic-proof, scenario-design, or split/defer review queue without hand-filtering raw JSON
 - `claim review apply-result`: merge `cautilus.claim_review_result.v1` labels and evidence refs into an existing claim packet without calling an LLM, rejecting stale packets by default
 - `claim plan-evals`: turn reviewed `cautilus-eval` claims into `cautilus.claim_eval_plan.v1` intermediate packets without writing host-owned fixtures, rejecting stale packets by default
 - `claim plan-evals`: each plan carries `proofRequirement.requiredRunnerCapability`, `proofRequirement.requiredObservability`, and whether the target surface requires product-runner proof; these are requirements for later setup/eval work, not readiness verdicts
@@ -644,6 +645,7 @@ It also includes `evidenceSatisfaction` so satisfied claims and their evidence r
 Commit drift caused only by generated claim artifacts remains visible as head drift without blocking review or eval planning.
 `claim review prepare-input` emits `cautilus.claim_review_input.v1` and records bounded clusters, skipped clusters, and skipped claims, but still does not call an LLM or merge review results.
 Already satisfied and already reviewed non-stale claims are excluded from review clusters by default so reviewer budget stays focused on unresolved heuristic claims while carried evidence and prior decisions remain auditable under `skippedClaims`.
+Its optional `--action-bucket` focus records the selected bucket in `reviewBudget` and `selectionPolicy`, includes each candidate's `actionBucket`, and marks non-matching claims as `action-bucket-mismatch` in `skippedClaims`.
 It rejects stale claim packets by default unless `--allow-stale-claims` is explicitly passed.
 The review-result application slice added `claim review apply-result`.
 It consumes `cautilus.claim_review_result.v1`, applies reviewed labels and evidence refs, records provenance, and rejects `evidenceStatus=satisfied` unless a direct or verified evidence ref supports the claim.

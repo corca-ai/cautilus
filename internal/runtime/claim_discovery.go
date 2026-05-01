@@ -31,6 +31,7 @@ type ClaimReviewInputOptions struct {
 	MaxClaimsPerCluster int
 	ExcerptChars        int
 	ClusterPolicy       string
+	ActionBucket        string
 	RepoRoot            string
 	AllowStaleClaims    bool
 }
@@ -1997,9 +1998,12 @@ func BuildClaimReviewInput(packet map[string]any, options ClaimReviewInputOption
 		return nil, err
 	}
 	normalized := normalizeClaimReviewInputOptions(options)
+	if err := validateClaimReviewActionBucket(normalized.ActionBucket); err != nil {
+		return nil, err
+	}
 	possibleEvidenceRefs, evidencePreflight := collectPossibleClaimEvidenceRefs(packet, normalized.RepoRoot)
 	candidates := attachPossibleEvidenceRefs(arrayOrEmpty(packet["claimCandidates"]), possibleEvidenceRefs)
-	reviewCandidates, skippedClaims := selectClaimReviewCandidates(candidates)
+	reviewCandidates, skippedClaims := selectClaimReviewCandidates(candidates, normalized.ActionBucket)
 	clusters := buildClaimReviewClusters(reviewCandidates, normalized)
 	renderedClusters, skipped := renderClaimReviewClusters(clusters, normalized)
 	return map[string]any{
@@ -2017,11 +2021,13 @@ func BuildClaimReviewInput(packet map[string]any, options ClaimReviewInputOption
 			"maxClaimsPerCluster": normalized.MaxClaimsPerCluster,
 			"excerptChars":        normalized.ExcerptChars,
 			"clusterPolicy":       normalized.ClusterPolicy,
+			"actionBucket":        normalized.ActionBucket,
 			"budgetSource":        "cli-or-default",
 		},
 		"selectionPolicy": map[string]any{
 			"excludesEvidenceStatus": []any{"satisfied"},
 			"excludesReviewStatus":   []any{"agent-reviewed", "human-reviewed"},
+			"actionBucket":           normalized.ActionBucket,
 			"reason":                 "already-satisfied and already-reviewed non-stale claims do not need LLM review by default; inspect `skippedClaims` to audit carried evidence and prior decisions.",
 		},
 		"clusters":        renderedClusters,
@@ -2044,14 +2050,31 @@ func normalizeClaimReviewInputOptions(options ClaimReviewInputOptions) ClaimRevi
 	if strings.TrimSpace(options.ClusterPolicy) == "" {
 		options.ClusterPolicy = "default"
 	}
+	options.ActionBucket = strings.TrimSpace(options.ActionBucket)
 	return options
 }
 
-func selectClaimReviewCandidates(candidates []any) ([]any, []any) {
+func validateClaimReviewActionBucket(bucket string) error {
+	if strings.TrimSpace(bucket) == "" {
+		return nil
+	}
+	switch bucket {
+	case "already-satisfied", "agent-add-deterministic-proof", "agent-plan-cautilus-eval", "agent-design-scenario", "human-align-surfaces", "human-confirm-or-decompose", "split-or-defer", "inspect-manually":
+		return nil
+	default:
+		return fmt.Errorf("unsupported --action-bucket %q", bucket)
+	}
+}
+
+func selectClaimReviewCandidates(candidates []any, actionBucket string) ([]any, []any) {
 	selected := []any{}
 	skipped := []any{}
 	for _, raw := range candidates {
 		candidate := asMap(raw)
+		if actionBucket != "" && claimStatusPrimaryActionID(candidate) != actionBucket {
+			skipped = append(skipped, skippedClaimReviewCandidate(candidate, "action-bucket-mismatch"))
+			continue
+		}
 		if stringFromAny(candidate["evidenceStatus"]) == "satisfied" {
 			skipped = append(skipped, skippedClaimReviewCandidate(candidate, "already-satisfied"))
 			continue
@@ -2075,6 +2098,7 @@ func skippedClaimReviewCandidate(candidate map[string]any, reason string) map[st
 		"recommendedEvalSurface": stringFromAny(candidate["recommendedEvalSurface"]),
 		"evidenceStatus":         candidate["evidenceStatus"],
 		"reviewStatus":           candidate["reviewStatus"],
+		"actionBucket":           claimStatusPrimaryActionID(candidate),
 	}
 	if reason == "already-satisfied" {
 		entry["sourceRefs"] = arrayOrEmpty(candidate["sourceRefs"])
@@ -2390,6 +2414,7 @@ func renderClaimReviewCandidate(candidate map[string]any, excerptChars int) map[
 		"summary":          candidate["summary"],
 		"sourceRefs":       truncateReviewSourceRefs(arrayOrEmpty(candidate["sourceRefs"]), excerptChars),
 		"currentLabels":    currentClaimLabels(candidate),
+		"actionBucket":     claimStatusPrimaryActionID(candidate),
 		"groupHints":       arrayOrEmpty(candidate["groupHints"]),
 		"evidenceRefs":     arrayOrEmpty(candidate["evidenceRefs"]),
 		"nextAction":       candidate["nextAction"],

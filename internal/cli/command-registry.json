@@ -46,12 +46,13 @@
     {
       "path": ["claim", "review", "prepare-input"],
       "group": "results",
-      "usage": "cautilus claim review prepare-input --claims <claims.json> [--max-clusters <n>] [--max-claims-per-cluster <n>] [--excerpt-chars <n>] [--allow-stale-claims] [--output <review-input.json>]",
-      "example": "cautilus claim review prepare-input --claims /tmp/cautilus-claims.json --max-clusters 20 --output /tmp/cautilus-claim-review-input.json",
+      "usage": "cautilus claim review prepare-input --claims <claims.json> [--action-bucket <bucket>] [--max-clusters <n>] [--max-claims-per-cluster <n>] [--excerpt-chars <n>] [--allow-stale-claims] [--output <review-input.json>]",
+      "example": "cautilus claim review prepare-input --claims /tmp/cautilus-claims.json --action-bucket human-align-surfaces --max-clusters 20 --output /tmp/cautilus-claim-review-input.json",
       "notes": [
         "Prepares deterministic `cautilus.claim_review_input.v1` clusters for agent or subagent review.",
         "Rejects stale claim packets by default; staleness means recorded claim sources changed, not merely that generated claim artifacts were committed later.",
         "May include `possibleEvidenceRefs` from adapter `evidence_roots`, but those refs are hints and cannot satisfy claims.",
+        "`--action-bucket` focuses review input on one status action bucket and records non-matching claims under `skippedClaims`.",
         "Skips claims already marked `evidenceStatus=satisfied` or already reviewed by default and records them under `skippedClaims` so review budget stays focused on unresolved heuristic claims.",
         "The command does not call an LLM and does not mark claims satisfied."
       ]

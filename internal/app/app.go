@@ -356,6 +356,7 @@ type claimReviewPrepareInputArgs struct {
 	maxClaimsPerCluster int
 	excerptChars        int
 	clusterPolicy       string
+	actionBucket        string
 	allowStaleClaims    bool
 }
 
@@ -906,6 +907,7 @@ func handleClaimReviewPrepareInput(repoRoot string, cwd string, args []string, s
 		MaxClaimsPerCluster: options.maxClaimsPerCluster,
 		ExcerptChars:        options.excerptChars,
 		ClusterPolicy:       options.clusterPolicy,
+		ActionBucket:        options.actionBucket,
 		RepoRoot:            cwd,
 		AllowStaleClaims:    options.allowStaleClaims,
 	})
@@ -2273,6 +2275,13 @@ func parseClaimReviewPrepareInputArgs(args []string, cwd string) (*claimReviewPr
 			}
 			index = next
 			options.clusterPolicy = value
+		case "--action-bucket":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.actionBucket = value
 		case "--allow-stale-claims":
 			options.allowStaleClaims = true
 		default:

@@ -802,6 +802,73 @@ func TestBuildClaimReviewInputSkipsSatisfiedClaims(t *testing.T) {
 	}
 }
 
+func TestBuildClaimReviewInputCanFocusActionBucket(t *testing.T) {
+	packet := map[string]any{
+		"schemaVersion": contracts.ClaimProofPlanSchema,
+		"sourceRoot":    ".",
+		"sourceInventory": []any{
+			map[string]any{"path": "README.md", "kind": "markdown", "status": "read", "depth": 0},
+		},
+		"claimCandidates": []any{
+			map[string]any{
+				"claimId":               "claim-readme-md-1",
+				"claimFingerprint":      "sha256:deterministic",
+				"summary":               "The CLI emits JSON.",
+				"recommendedProof":      "deterministic",
+				"verificationReadiness": "ready-to-verify",
+				"evidenceStatus":        "unknown",
+				"reviewStatus":          "heuristic",
+				"lifecycle":             "new",
+				"groupHints":            []any{"deterministic"},
+				"evidenceRefs":          []any{},
+				"sourceRefs":            []any{map[string]any{"path": "README.md", "line": 1, "excerpt": "The CLI emits JSON."}},
+			},
+			map[string]any{
+				"claimId":               "claim-readme-md-2",
+				"claimFingerprint":      "sha256:alignment",
+				"summary":               "Docs and adapters need alignment before proof.",
+				"recommendedProof":      "human-auditable",
+				"verificationReadiness": "needs-alignment",
+				"evidenceStatus":        "unknown",
+				"reviewStatus":          "heuristic",
+				"lifecycle":             "new",
+				"groupHints":            []any{"alignment-work"},
+				"evidenceRefs":          []any{},
+				"sourceRefs":            []any{map[string]any{"path": "README.md", "line": 2, "excerpt": "Docs and adapters need alignment before proof."}},
+			},
+		},
+	}
+	reviewInput, err := BuildClaimReviewInput(packet, ClaimReviewInputOptions{
+		InputPath:           "claims.json",
+		ActionBucket:        "human-align-surfaces",
+		MaxClusters:         10,
+		MaxClaimsPerCluster: 10,
+	})
+	if err != nil {
+		t.Fatalf("BuildClaimReviewInput returned error: %v", err)
+	}
+	budget := asMap(reviewInput["reviewBudget"])
+	if budget["actionBucket"] != "human-align-surfaces" {
+		t.Fatalf("expected action bucket in review budget, got %#v", budget)
+	}
+	clusters := arrayOrEmpty(reviewInput["clusters"])
+	if len(clusters) != 1 {
+		t.Fatalf("expected one focused cluster, got %#v", clusters)
+	}
+	candidates := arrayOrEmpty(asMap(clusters[0])["candidates"])
+	if len(candidates) != 1 {
+		t.Fatalf("expected one focused candidate, got %#v", candidates)
+	}
+	candidate := asMap(candidates[0])
+	if candidate["claimId"] != "claim-readme-md-2" || candidate["actionBucket"] != "human-align-surfaces" {
+		t.Fatalf("expected human alignment candidate with action bucket, got %#v", candidate)
+	}
+	skipped := arrayOrEmpty(reviewInput["skippedClaims"])
+	if len(skipped) != 1 || asMap(skipped[0])["reason"] != "action-bucket-mismatch" {
+		t.Fatalf("expected action-bucket mismatch skip, got %#v", skipped)
+	}
+}
+
 func TestBuildClaimReviewInputIncludesPossibleEvidenceRefs(t *testing.T) {
 	repoRoot := t.TempDir()
 	evidenceDir := filepath.Join(repoRoot, ".cautilus", "claims")
