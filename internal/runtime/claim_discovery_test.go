@@ -403,6 +403,10 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 		"",
 		"Past sessions showed `codex exec` can emit fatal skill-loading errors on stderr while the final process exit still looks successful.",
 		"",
+		"The host still owns raw invocation and transcript capture; `Cautilus` owns the case-suite/runDir workflow and packet-level recommendation.",
+		"",
+		"In JSON mode, `claude -p` can wrap the verdict under `structured_output` instead of printing the schema payload as the top-level object.",
+		"",
 	}, "\n"))
 
 	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
@@ -501,6 +505,14 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 	history := bySummary["Past sessions showed `codex exec` can emit fatal skill-loading errors on stderr while the final process exit still looks successful."]
 	if history == nil || history["recommendedProof"] != "human-auditable" || history["verificationReadiness"] != "blocked" {
 		t.Fatalf("expected historical observation to stay blocked human-auditable, got %#v", history)
+	}
+	hostBoundary := bySummary["The host still owns raw invocation and transcript capture; `Cautilus` owns the case-suite/runDir workflow and packet-level recommendation."]
+	if hostBoundary == nil || hostBoundary["recommendedProof"] != "human-auditable" || hostBoundary["verificationReadiness"] != "needs-alignment" {
+		t.Fatalf("expected host/Cautilus ownership boundary to require human-auditable alignment, got %#v", hostBoundary)
+	}
+	providerCaveat := bySummary["In JSON mode, `claude -p` can wrap the verdict under `structured_output` instead of printing the schema payload as the top-level object."]
+	if providerCaveat == nil || providerCaveat["recommendedProof"] != "human-auditable" || providerCaveat["verificationReadiness"] != "blocked" {
+		t.Fatalf("expected provider caveat to stay blocked human-auditable, got %#v", providerCaveat)
 	}
 }
 

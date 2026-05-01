@@ -1070,6 +1070,13 @@ func claimLineLooksLikeDefinitionLabel(summary string) bool {
 func classifyClaimLine(line string) (claimClassification, bool) {
 	lower := " " + strings.ToLower(line) + " "
 	switch {
+	case providerCaveatClaim(lower):
+		return claimClassification{
+			recommendedProof:      "human-auditable",
+			verificationReadiness: "blocked",
+			why:                   "The claim records provider or host-runtime caveat context; it can guide future protection but is not itself a ready product proof target.",
+			next:                  "Keep this as human-auditable context or promote a concrete regression scenario if the caveat should block releases.",
+		}, true
 	case containsAny(lower, []string{" unit test", " tests ", " tests.", " test:on-demand", " lint", " typecheck", " type-check", " build ", " ci ", " compile", " schema ", " deterministic", " eval test ", " eval live ", " --runtime fixture", " fixture runtime", " fixture-backed", " adapter-owned runner", " command template", " command_template", " run-simulator-persona", " --version", " on path ", " doctor --", " --adapter-name", " go-owned", " cli instead of", "cautilus.agent_status.v1"}):
 		return claimClassification{
 			recommendedProof:      "deterministic",
@@ -1195,8 +1202,13 @@ func operatorPolicyClaim(lower string) bool {
 }
 
 func ownershipBoundaryClaim(lower string) bool {
-	return containsAny(lower, []string{" product-owned", " adapter-owned", " host-owned", " repo-owned", " consumer-owned", " backend selection", " boundary", " skill owns", " binary owns"}) &&
+	return containsAny(lower, []string{" product-owned", " adapter-owned", " host-owned", " repo-owned", " consumer-owned", " backend selection", " boundary", " skill owns", " binary owns", " cautilus owns", " host still owns", " seam owns"}) &&
 		containsAny(lower, []string{" while ", " stays ", " keeps ", " owns ", " owned"})
+}
+
+func providerCaveatClaim(lower string) bool {
+	return containsAny(lower, []string{" claude -p ", "`claude -p`", " codex exec ", "`codex exec`", " provider "}) &&
+		containsAny(lower, []string{" can wrap ", " fatal ", " stderr ", " structured_output", " exit still looks successful"})
 }
 
 func historicalObservationClaim(lower string) bool {

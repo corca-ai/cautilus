@@ -214,7 +214,7 @@ Markdown glossary bullets that only define a code-styled label, such as `` `alig
 Ownership-boundary explanations, such as product-owned versus adapter-owned responsibilities, should stay `human-auditable` and `needs-alignment` until the matching docs, code, adapters, and tests are reconciled.
 YAML frontmatter is metadata, not claim prose.
 Command, packet, runner, and readiness statements should prefer deterministic proof unless they explicitly depend on model or agent behavior.
-Historical observation statements can inform future scenarios, but they should stay `human-auditable` and `blocked` until promoted into a concrete regression claim.
+Historical observation and provider-caveat statements can inform future scenarios, but they should stay `human-auditable` and `blocked` until promoted into a concrete regression claim.
 
 `claimId` is a display handle and packet reference.
 Refresh matching should use `claimFingerprint`, not source line number alone.
