@@ -1,0 +1,152 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewRun": {
+    "reviewer": "codex-current-agent",
+    "backend": "same-agent-review",
+    "mode": "action-bucket-focused-review",
+    "reviewInputPath": ".cautilus/claims/review-input-human-align-action-bucket.json",
+    "reviewPolicy": "Review the human-align-surfaces queue for whether each claim truly needs human alignment, deterministic proof, human confirmation, or decomposition. Keep evidenceStatus unknown unless direct evidence is present."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-user-packets-and-reporting-alignment-docs",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-cli-reference-md-180",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The claim is a broad product-ownership boundary over packet/status semantics. It is important for a human to confirm against CLI docs, packet schemas, and current implementation before treating it as proven.",
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "needs-alignment",
+          "nextAction": "Human-confirm the packet/status ownership boundary against CLI reference, packet schemas, and implementation before promoting narrower deterministic checks.",
+          "unresolvedQuestions": []
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-developer-adapter-and-portability-alignment-contract",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-active-run-md-3",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "This is an implementation behavior about active-run workspace allocation and sticky shell state. It should be proven by deterministic runtime tests rather than human alignment alone.",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "nextAction": "Add or connect a deterministic active-run test that proves the workspace root is pinned per workflow and reused through the shell environment variable.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-588",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "This is a cross-surface product boundary claim. It requires human or maintainer alignment across binary, bundled skill, adapter contract, and consumer adoption docs before proof would be honest.",
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "needs-alignment",
+          "nextAction": "Human-review the binary/skill/adapter boundary and split any executable subclaims into deterministic or dev/skill proof.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-live-run-invocation-batch-md-28",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "This is an ownership boundary over provider-error interpretation. It is not a fixture target until the public packet and consumer adapter behavior are aligned.",
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "needs-alignment",
+          "nextAction": "Confirm the provider-error ownership boundary against live-run packets and adapter docs; split concrete schema checks if needed.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-live-run-invocation-md-12",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The workspace directory and prepare-hook timing are runtime behavior and should be covered by deterministic invocation tests.",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "nextAction": "Add or connect deterministic live-run invocation tests for workspace directory allocation and one-time prepare hook timing.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-live-run-invocation-md-160",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "This is an ownership boundary over workspace contents. It needs alignment across product runtime and consumer-owned workspace behavior before proof would be honest.",
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "needs-alignment",
+          "nextAction": "Human-confirm which workspace contents are product-owned versus consumer-owned, then split any observable no-write guarantees into deterministic tests.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-live-run-invocation-md-24",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "This is a packet-shape and adapter-template behavior that can be checked deterministically.",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "nextAction": "Add or connect deterministic schema/template checks proving workspace lifecycle is not exposed through the public packet shape and flows through adapter placeholders.",
+          "unresolvedQuestions": []
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-developer-adapter-and-portability-alignment-docs",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-maintainers-consumer-readiness-md-91",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "This is a maintained external-consumer proof claim. The review input does not include direct evidence refs for the external commands, so it should become human confirmation or evidence-linking work rather than generic alignment.",
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "ready-to-verify",
+          "nextAction": "Human-confirm or attach direct evidence for the external consumer evaluator and pytest runs referenced by the maintainer note.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-maintainers-consumer-readiness-md-98",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "This is an external adoption proof claim. It needs direct evidence attachment or human confirmation, not broad alignment.",
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "ready-to-verify",
+          "nextAction": "Human-confirm the external adoption proof or attach the matching consumer proof artifact before treating it as satisfied.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-maintainers-development-md-20",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "This is a repository structure claim about where implementation surfaces live. It can be checked deterministically by inspecting command ownership and source layout.",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "nextAction": "Add or connect a deterministic source-layout or command-registry check for Node-owned bootstrap/release/provider wrappers.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-master-plan-md-29",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "This is a product/consumer ownership boundary and should remain human-auditable alignment work until docs, adapters, and examples agree.",
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "needs-alignment",
+          "nextAction": "Human-review the Cautilus-versus-consumer ownership boundary and split executable subclaims into deterministic or eval proof.",
+          "unresolvedQuestions": []
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-developer-agent-and-skill-workflow-alignment-contract",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-546",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "This is a binary-versus-skill ownership boundary. It still needs alignment against the bundled skill, contract docs, and actual command surfaces before proof would be honest.",
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "needs-alignment",
+          "nextAction": "Human-confirm the binary/skill ownership boundary, then split executable skill orchestration behavior into dev/skill scenarios.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}
