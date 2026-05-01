@@ -251,6 +251,7 @@
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "Reviewed as a Cautilus agent/workflow honesty claim rather than a host app prompt claim; this lane did not verify direct eval evidence.",
       "groupHints": [
         "audience:user",
         "cautilus-eval",
@@ -258,11 +259,11 @@
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
+      "nextAction": "Prove with dev/skill dogfood episodes that Cautilus keeps agent workflow behavior reviewable across prompt or instruction changes.",
       "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "`Cautilus` keeps agent and workflow behavior honest while prompts keep changing.",
@@ -282,16 +283,17 @@
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "Reviewed as a standalone binary and bundled-skill distribution claim; this lane did not run an install smoke.",
       "groupHints": [
         "audience:user",
         "deterministic",
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
+      "nextAction": "Prove with deterministic install or doctor-readiness coverage that the standalone binary and bundled skill can be installed without copying a scaffold first.",
       "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Ships as a standalone binary plus a bundled skill a host repo can install without copying another scaffold first.",
@@ -311,16 +313,17 @@
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "Reviewed as a command-output durability and resumability contract; this lane did not verify direct packet contents.",
       "groupHints": [
         "audience:user",
         "deterministic",
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
+      "nextAction": "Prove with deterministic packet contract tests that command outputs include enough structured state for a later agent to resume.",
       "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Commands should emit durable packets with enough state for the next agent to resume, not only terminal prose for a human operator.",
@@ -340,6 +343,7 @@
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "This is an install and repo-local surface claim that should be covered by deterministic install or doctor checks; the review input itself does not provide verified evidence.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -349,7 +353,7 @@
       "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
       "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "`Cautilus` installs as a machine-level binary, but its agent-facing surface is intentionally repo-local.",
@@ -369,16 +373,17 @@
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "Reviewed as a host-repo ownership and reproducibility claim; this lane did not verify direct adapter or checked-in host artifact evidence.",
       "groupHints": [
         "audience:user",
         "deterministic",
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
+      "nextAction": "Prove with deterministic adoption or adapter-materialization coverage that host repos keep evaluation behavior checked in and reviewable.",
       "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "They stay checked into each host repo so evaluation behavior remains reproducible, reviewable, and owned by the repo that declares it.",
@@ -398,6 +403,7 @@
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "The claim is about reopening saved scenario results and feeding them into bounded follow-up steps, which is better covered by deterministic packet and command-flow checks than by an app/chat eval; the review input itself does not provide verified evidence.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -407,7 +413,7 @@
       "nextAction": "Keep or add deterministic scenario command, packet, or render proof for this claim.",
       "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Next step: a human decides whether to promote the scenario into a protected evaluation path, while an agent can reopen the saved result, compare variants, or feed it into the next bounded step.",
@@ -458,6 +464,7 @@
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "The excerpt includes a prompt example, but the extracted claim is mainly the scenario normalize command and its proposal packet output rather than a pure prompt-example line; the review input itself does not provide verified evidence.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -467,7 +474,7 @@
       "nextAction": "Keep or add deterministic scenario command, packet, or render proof for this claim.",
       "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "CLI: `cautilus scenario normalize chatbot --input logs.json` For agent: \"Run a chatbot regression with these logs and my new system prompt.\" You get reopenable `proposals.json` candidates that can be kept out of tuning as protected checks.",
@@ -476,6 +483,9 @@
         }
       ],
       "summary": "CLI: `cautilus scenario normalize chatbot --input logs.json` For agent: \"Run a chatbot regression with these logs and my new system prompt.\" You get reopenable `proposals.json` candidates that can be kept out of tuning as protected checks.",
+      "unresolvedQuestions": [
+        "The extractor still joins the CLI line, the For agent example, and the output promise into one claim; splitting those sentences would make later review cleaner."
+      ],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim documents scenario command or proposal-packet behavior rather than asking for a new behavior scenario."
     },
@@ -487,6 +497,7 @@
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "The claim describes skill or agent execution behavior after edits, so dev/skill evaluation is the right proof route; the review input itself does not provide verified evidence.",
       "groupHints": [
         "audience:user",
         "cautilus-eval",
@@ -498,7 +509,7 @@
       "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Use when you change a skill or agent and want to know whether it still triggers on the right prompts, executes cleanly, and keeps its static validation passing.",
@@ -518,6 +529,7 @@
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "The claim describes multi-turn skill fixture behavior and dogfood audit-packet derivation, so dev/skill evaluation is the right proof route; the review input itself does not provide verified evidence.",
       "groupHints": [
         "audience:user",
         "cautilus-eval",
@@ -529,7 +541,7 @@
       "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "The same preset can evaluate a multi-turn agent episode when the fixture provides `turns`; Cautilus's own first-scan, refresh-flow, review-prepare, reviewer-launch, and review-to-eval dogfood fixtures derive their results from audit packets.",
@@ -538,6 +550,9 @@
         }
       ],
       "summary": "The same preset can evaluate a multi-turn agent episode when the fixture provides `turns`; Cautilus's own first-scan, refresh-flow, review-prepare, reviewer-launch, and review-to-eval dogfood fixtures derive their results from audit packets.",
+      "unresolvedQuestions": [
+        "If the review-to-eval dogfood fixture is now part of the public promise, the README sentence may need to include it alongside first-scan, refresh-flow, review-prepare, and reviewer-launch."
+      ],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
@@ -549,16 +564,17 @@
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "Reviewed as a CLI fixture-runtime product-path claim; this lane did not verify direct fixture-runtime output.",
       "groupHints": [
         "audience:user",
         "deterministic",
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "nextAction": "Prove with deterministic coverage for `cautilus eval test --runtime fixture` using adapter-owned fixture results through the normal eval packet path.",
       "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "When the goal is only to prove command routing and packet evaluation, `cautilus eval test --runtime fixture` can run the same product path with adapter-owned fixture results instead of launching a nested model eval.",
@@ -578,6 +594,7 @@
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "Reviewed as usage guidance for when to apply Cautilus, not a directly executable product behavior claim in the review input.",
       "groupHints": [
         "audience:user",
         "blocked",
@@ -585,10 +602,10 @@
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep this as human-auditable positioning or promote a concrete stalled-workflow example before creating a protected eval fixture.",
+      "nextAction": "Keep as a human-auditable positioning claim unless a concrete stalled-state scenario is promoted into an explicit fixture or deterministic readiness check.",
       "proofLayer": "human-auditable",
       "recommendedProof": "human-auditable",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Use when a stateful automation — a CLI workflow, long-running agent session, or pipeline that persists state across invocations — keeps stalling on the same step.",
@@ -700,6 +717,7 @@
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "The install-manifest portion is deterministic, but the same sentence also promises that an in-editor agent can drive the contracts conversationally, which needs dev/skill evaluation or a split claim; the review input itself does not provide verified evidence.",
       "groupHints": [
         "audience:user",
         "cautilus-eval",
@@ -711,7 +729,7 @@
       "proofLayer": "cautilus-eval",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Agent track — Claude / Codex plugin.** The `cautilus install` step also lands a bundled skill at `.agents/skills/cautilus/` with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally.",
@@ -720,6 +738,9 @@
         }
       ],
       "summary": "Agent track — Claude / Codex plugin.** The `cautilus install` step also lands a bundled skill at `.agents/skills/cautilus/` with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally.",
+      "unresolvedQuestions": [
+        "Should discovery split this into a deterministic install/materialization claim and a separate dev/skill conversational-driving claim?"
+      ],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim says an agent or skill can drive the workflow conversationally, which needs skill-behavior evidence rather than only install proof."
     },
@@ -731,16 +752,17 @@
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "Reviewed as a packet-shape and machine-readability claim; this lane did not inspect direct schema or golden-output evidence.",
       "groupHints": [
         "audience:user",
         "deterministic",
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
+      "nextAction": "Prove with deterministic schema, packet example, or CLI golden-output coverage for eval, report, review, evidence, and optimize packets.",
       "proofLayer": "deterministic",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "machine-readable eval, report, review, evidence, and optimization packets that agents can consume directly",
@@ -10167,7 +10189,8 @@
       "human-auditable": 37
     },
     "byReviewStatus": {
-      "heuristic": 327
+      "agent-reviewed": 13,
+      "heuristic": 314
     },
     "byVerificationReadiness": {
       "blocked": 1,
@@ -10319,6 +10342,118 @@
   "gitCommit": "c7c88b8d1253cba1cbdf8beb7fc900d25af0ffd1",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
+  "reviewApplication": {
+    "appliedUpdateCount": 6,
+    "appliedUpdates": [
+      {
+        "appliedFields": [
+          "recommendedProof",
+          "verificationReadiness",
+          "evidenceStatus",
+          "reviewStatus",
+          "recommendedEvalSurface",
+          "evidenceStatusReason"
+        ],
+        "claimId": "claim-readme-md-144",
+        "clusterId": "cluster-user-agent-and-skill-workflow-cautilus-eval-dev-skill-readme"
+      },
+      {
+        "appliedFields": [
+          "recommendedProof",
+          "verificationReadiness",
+          "evidenceStatus",
+          "reviewStatus",
+          "evidenceStatusReason"
+        ],
+        "claimId": "claim-readme-md-10",
+        "clusterId": "cluster-user-agent-and-skill-workflow-deterministic-readme"
+      },
+      {
+        "appliedFields": [
+          "recommendedProof",
+          "verificationReadiness",
+          "evidenceStatus",
+          "reviewStatus",
+          "evidenceStatusReason",
+          "unresolvedQuestions"
+        ],
+        "claimId": "claim-readme-md-137",
+        "clusterId": "cluster-user-agent-and-skill-workflow-deterministic-readme"
+      },
+      {
+        "appliedFields": [
+          "recommendedProof",
+          "verificationReadiness",
+          "evidenceStatus",
+          "reviewStatus",
+          "recommendedEvalSurface",
+          "evidenceStatusReason",
+          "unresolvedQuestions"
+        ],
+        "claimId": "claim-readme-md-211",
+        "clusterId": "cluster-user-agent-and-skill-workflow-deterministic-readme"
+      },
+      {
+        "appliedFields": [
+          "recommendedProof",
+          "verificationReadiness",
+          "evidenceStatus",
+          "reviewStatus",
+          "evidenceStatusReason"
+        ],
+        "claimId": "claim-readme-md-95",
+        "clusterId": "cluster-user-agent-and-skill-workflow-deterministic-readme"
+      },
+      {
+        "appliedFields": [
+          "recommendedProof",
+          "verificationReadiness",
+          "evidenceStatus",
+          "reviewStatus",
+          "recommendedEvalSurface",
+          "evidenceStatusReason",
+          "unresolvedQuestions"
+        ],
+        "claimId": "claim-readme-md-148",
+        "clusterId": "cluster-user-claim-discovery-and-review-cautilus-eval-dev-skill-readme"
+      }
+    ],
+    "claimsPath": "/tmp/cautilus-reviewed-typed-runners-a.json",
+    "mergeDecisions": [],
+    "reviewResultPath": "/home/hwidong/codes/cautilus/.cautilus/claims/review-result-loop2-lane-b.json",
+    "schemaVersion": "cautilus.claim_review_result.v1",
+    "unresolvedQuestions": []
+  },
+  "reviewRuns": [
+    {
+      "clusterCount": 3,
+      "reviewRun": {
+        "assignedClusterIndexes": [
+          0,
+          1,
+          2
+        ],
+        "evidencePolicy": "Only mark evidenceStatus=satisfied when this lane verifies direct evidence refs; otherwise leave evidenceStatus=unknown.",
+        "inputPath": ".cautilus/claims/review-input-loop2.json",
+        "lane": "lane-a",
+        "reviewer": "codex"
+      },
+      "schemaVersion": "cautilus.claim_review_result.v1",
+      "sourceReviewInput": {}
+    },
+    {
+      "clusterCount": 3,
+      "reviewRun": {
+        "evidencePolicy": "No satisfied evidence labels were emitted because this lane did not attach direct or verified evidence refs.",
+        "inputPath": ".cautilus/claims/review-input-loop2.json",
+        "lane": "b",
+        "reviewer": "codex-lane-b",
+        "scope": "clusters 3-5 only"
+      },
+      "schemaVersion": "cautilus.claim_review_result.v1",
+      "sourceReviewInput": {}
+    }
+  ],
   "schemaVersion": "cautilus.claim_proof_plan.v1",
   "sourceCount": 38,
   "sourceGraph": [

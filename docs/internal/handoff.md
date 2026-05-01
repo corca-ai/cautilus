@@ -8,6 +8,22 @@
 
 ## Current State
 
+- 2026-05-01 후속 구현으로 commit hash는 freshness 판정의 단독 기준이 아니라 provenance가 됐다.
+  Claim packet freshness는 recorded source path/content hash를 현재 checkout과 비교하고, runner assessment freshness는 adapter hash와 listed runner file hashes를 비교한다.
+  그래서 generated artifact commit이나 source+claim packet atomic commit 뒤에도 source content가 packet과 일치하면 `fresh-with-head-drift`, `isStale=false`로 review/eval planning이 계속 가능하다.
+  Symlinked claim source는 `sourceInventory[].contentPath`로 target path를 같이 기록해 target edit stale miss를 막는다.
+  관련 커밋은 `368e30a`, `4c59a79`, `f34ccf8`, `c7c88b8`.
+- 2026-05-01 live backend eval 기준 dev/repo self-dogfood runner는 실제 Codex backend proof를 갖는다.
+  `/tmp/cautilus-dev-repo-codex-eval-v4/eval-summary.json`는 `recommendation=accept-now`, `proof.proofClass=coding-agent-messaging`, `runnerAssessmentState=assessed`였다.
+  `/tmp/cautilus-dev-repo-codex-eval-v4/eval-observed.json`에는 `telemetry.runtime=codex_exec`가 기록됐다.
+  이제 dev proof promotion은 selected runtime name만 믿지 않고 observed telemetry runtime을 요구한다.
+- 2026-05-01 claim state는 `.cautilus/claims/latest.json` 기준 `candidateCount=327`이다.
+  `agent-reviewed=13`, `heuristic=314`, `evidenceStatus=unknown=327`인 reviewed packet은 `.cautilus/claims/reviewed-typed-runners.json`에 있다.
+  `.cautilus/claims/eval-plan-reviewed-typed-runners.json`는 reviewed claims 중 4개를 `dev/skill` eval plan으로 드러낸다.
+  이것은 proof 완료가 아니라 다음 fixture/eval authoring target을 구체화한 상태다.
+- 2026-05-01 Cautilus dogfood 중 Charness follow-up 두 개를 열었다.
+  [corca-ai/charness#87](https://github.com/corca-ai/charness/issues/87)는 delegated premortem reviewer가 nested subagent capability check를 다시 수행해 blocked로 끝나는 문제다.
+  [corca-ai/charness#88](https://github.com/corca-ai/charness/issues/88)는 `debug` scaffold가 consumer repo에 없는 `scripts/validate_debug_artifact.py` 경로를 안내하는 문제다.
 - Cautilus `v0.13.0` 게시 상태 그대로 ([release](https://github.com/corca-ai/cautilus/releases/tag/v0.13.0)).
   release-artifacts / verify-public-release / install-sh smoke 모두 green.
   세부 기록은 [charness-artifacts/release/latest.md](../../charness-artifacts/release/latest.md).
@@ -141,16 +157,18 @@
 
 1. `git status --short`로 사용자 변경 여부를 먼저 확인한다.
 2. `charness:find-skills`로 설치된 public / support / integration 스킬 지도를 한 번 갱신한다.
-3. `cautilus claim discover` 다음 claim hardening 후보는 review-result application branch proof, bounded evidence preflight, 또는 eval-fixture authoring guidance다.
+3. 현재 가장 직접적인 Cautilus next slice는 `.cautilus/claims/eval-plan-reviewed-typed-runners.json`의 4개 `dev/skill` eval plans를 실제 checked-in fixture 또는 기존 dogfood fixture와 매핑하는 것이다.
+   새 fixture를 바로 만들기 전에 각 plan이 이미 first-scan / refresh-flow / review-prepare / reviewer-launch / review-to-eval dogfood fixture로 증명되는지 확인한다.
+4. 그 다음 claim hardening 후보는 review-result application branch proof, bounded evidence preflight, 또는 eval-fixture authoring guidance다.
    review prepare-input과 reviewer launch branch proof는 Codex/Claude 양쪽에서 완료됐다.
    evidence preflight는 false satisfaction 위험이 있으므로 possible evidence hint까지만 허용하는 식의 bounded slice가 필요하다.
    public `claim group` 또는 `claim refresh` command는 만들지 않는다.
-4. optimize-search held-out/full-gate 신호를 현재 `cautilus eval test` surface 위로 재배선할지, 아니면 C2/C3/C4 composition landing까지 honest-skip으로 둘지 결정한다.
-5. spec follow-up #4 — C2/C3/C4 composition primitives (extends / multi-step / snapshot), 슬라이스당 하나.
-6. spec follow-up #5 — `scenario normalize` 재범위만 남음.
+5. optimize-search held-out/full-gate 신호를 현재 `cautilus eval test` surface 위로 재배선할지, 아니면 C2/C3/C4 composition landing까지 honest-skip으로 둘지 결정한다.
+6. spec follow-up #4 — C2/C3/C4 composition primitives (extends / multi-step / snapshot), 슬라이스당 하나.
+7. spec follow-up #5 — `scenario normalize` 재범위만 남음.
    archetype-boundary retire는 cut 슬라이스에 흡수됨.
-7. 후속 후보: fixture-backed app smoke와 one-case live Codex/Claude proof를 broader app quality proof로 과장하지 않도록 release / quality artifact 쪽 proof boundary 표현을 점검한다.
-8. 후속 후보: direct provider parity가 필요한지 결정한다.
+8. 후속 후보: fixture-backed app smoke와 one-case live Codex/Claude proof를 broader app quality proof로 과장하지 않도록 release / quality artifact 쪽 proof boundary 표현을 점검한다.
+9. 후속 후보: direct provider parity가 필요한지 결정한다.
 
 ## Discuss
 
