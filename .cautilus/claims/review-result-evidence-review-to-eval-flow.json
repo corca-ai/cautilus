@@ -11,7 +11,7 @@
       "clusterId": "cluster-developer-quality-gates-cautilus-eval-review-to-eval",
       "claimUpdates": [
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-651",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-653",
           "reviewStatus": "agent-reviewed",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by the checked-in review-to-eval evidence bundle: the Codex and Claude dogfood runs returned accept-now, and both audits confirm claim review apply-result, claim validate, and claim plan-evals ran without fixture or product edits.",
@@ -24,10 +24,10 @@
             {
               "kind": "cautilus-claim-evidence-bundle",
               "path": ".cautilus/claims/evidence-review-to-eval-flow.json",
-              "contentHash": "sha256:5f331141107cfc6f6f1addd593ea4b0e1b1d2185248878a7e0469827dca316f3",
+              "contentHash": "sha256:d290b513fca7ee27439770410b3cc95724d40b01dc1f7fa1e6a069f6ea46b875",
               "matchKind": "verified",
               "supportsClaimIds": [
-                "claim-docs-contracts-claim-discovery-workflow-md-651"
+                "claim-docs-contracts-claim-discovery-workflow-md-653"
               ]
             }
           ]
