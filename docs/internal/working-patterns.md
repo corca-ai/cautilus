@@ -58,6 +58,9 @@ host 가 subagent spawning 을 막으면 same-agent pass 로 대체하지 말고
   다수 파일 카스케이드를 수반하는 슬라이스를 계획 중이면 린터부터.
 - **Standing gate 가 landed 되면 escape hatch 를 재평가.**
   임시로 남겨둔 enforcement escape (`Must*` 헬퍼 등) 는 gate 가 들어온 뒤 삭제 가능한지 확인.
+- **같은 generated artifact 를 쓰고 읽는 명령은 병렬화하지 않는다.**
+  `claim show --output X` 와 `jq X` 처럼 writer/reader 가 같은 파일을 공유하면 reader 가 이전 파일을 먼저 읽어 false bug signal 을 만든다.
+  병렬화는 독립 read 나 서로 다른 output path 를 쓰는 명령에만 쓴다.
 
 ## Fixture 및 Copy 컨벤션
 

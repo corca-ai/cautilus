@@ -1,0 +1,95 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-agent-instruction-gates-2026-05-01",
+  "createdForClaimIds": [
+    "claim-agents-md-78",
+    "claim-agents-md-123"
+  ],
+  "repoCommit": "3da3c7677805e54465950ceeefe76c70d4ed1e37",
+  "summary": "This bundle records deterministic proof for two AGENTS.md operating-surface claims: the skill/binary progressive-disclosure boundary and the ownership of heavier on-demand self-dogfood workflow script tests.",
+  "evidenceScope": {
+    "targetSurface": "agent instruction quality gates",
+    "claimBoundary": "Only the two listed operating-surface claims are marked satisfied. The bundle does not prove broad product direction, future agent compliance with all instructions, or app behavior.",
+    "notClaimed": [
+      "The long-term intent-first product direction is fully realized.",
+      "Every future implementing agent will route every unexpected error through debug before fixing.",
+      "Application prompt behavior is correct.",
+      "All claim-review heuristics are semantically complete."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "npm run lint:skill-disclosure",
+      "stdoutPath": "artifacts/self-dogfood/llm-review-batch4/latest/npm-run-lint-skill-disclosure.stdout",
+      "stdoutContentHash": "sha256:949c33a9bcf5cab0b30da03348195dded4d08f9a79e04472676dace9295913d6",
+      "stderrPath": "artifacts/self-dogfood/llm-review-batch4/latest/npm-run-lint-skill-disclosure.stderr",
+      "stderrContentHash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exitCode": 0
+    },
+    {
+      "command": "npm run test:on-demand",
+      "stdoutPath": "artifacts/self-dogfood/llm-review-batch4/latest/npm-run-test-on-demand.stdout",
+      "stdoutContentHash": "sha256:b0a655af4e5192b29d6210e5c6b5ca77fdc3acc4ee94e13d044fff1d4a4e25b9",
+      "stderrPath": "artifacts/self-dogfood/llm-review-batch4/latest/npm-run-test-on-demand.stderr",
+      "stderrContentHash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exitCode": 0
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "package.json",
+      "kind": "npm-script-registry",
+      "contentHash": "sha256:275adc956947f28e1bda2006228da297fd93fb29aa47f06adddd6e28aa718503"
+    },
+    {
+      "path": "scripts/check-cautilus-skill-disclosure.mjs",
+      "kind": "skill-binary-disclosure-check",
+      "contentHash": "sha256:aa3cf232ef8bee1dcc74de9a85c494e75e7d95af13cb9f0c5332dcab78e2e2d2"
+    },
+    {
+      "path": "skills/cautilus/SKILL.md",
+      "kind": "bundled-skill-source",
+      "contentHash": "sha256:bc784470252994658933e204ee7c4da7b7d757509c31dd1eb7091242b0e68c6f"
+    },
+    {
+      "path": "plugins/cautilus/skills/cautilus/SKILL.md",
+      "kind": "packaged-skill-source",
+      "contentHash": "sha256:bc784470252994658933e204ee7c4da7b7d757509c31dd1eb7091242b0e68c6f"
+    },
+    {
+      "path": "internal/cli/command-registry.json",
+      "kind": "binary-command-registry",
+      "contentHash": "sha256:50393129fc01020daed5da57742f01d0dc900ad9e90046b2f591cd59e97c6d1d"
+    },
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "cli-smoke-tests",
+      "contentHash": "sha256:4bd08efc3f27d6f3613c8e78b839830e9113a837e635b24faac3a49055908328"
+    },
+    {
+      "path": "docs/cli-reference.md",
+      "kind": "binary-command-docs",
+      "contentHash": "sha256:834196281364ce805efe6da99a5dc9d2566dbd2ebd23e557ac3bb37b3b012b2d"
+    },
+    {
+      "path": "scripts/on-demand/smoke-external-consumer.test.mjs",
+      "kind": "on-demand-test",
+      "contentHash": "sha256:c246166e8b608dfad02df3d9badddf689a07896b31ca17dd61fb2ef2d2099a05"
+    },
+    {
+      "path": "scripts/on-demand/smoke-starter-kits.test.mjs",
+      "kind": "on-demand-test",
+      "contentHash": "sha256:b3aa5c6c8132b90a824adb5e5f83301db8714a6ec836468819d25ae27d6178f5"
+    },
+    {
+      "path": "docs/maintainers/development.md",
+      "kind": "maintainer-check-layering-doc",
+      "contentHash": "sha256:6bacfecd2c665d3756238ab39ef039ba15100a9b777895a4e05585c1919a6420"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The disclosure lint exits 0 and checks the progressive-disclosure split between bundled skill and binary-owned command discovery/examples. The on-demand test command exits 0, and package/docs/test files show the heavier self-dogfood workflow tests are intentionally owned by `npm run test:on-demand` rather than the standing gate."
+  }
+}

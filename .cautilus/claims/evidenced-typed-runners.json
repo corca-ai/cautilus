@@ -80,6 +80,7 @@
       "claimSemanticGroup": "Evaluation surfaces",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "Reviewed as a product-direction statement, not an app/prompt behavior claim. A single eval fixture cannot prove that the long-term product direction is realized or that future prompt changes remain intent-first.",
       "groupHints": [
         "app/prompt",
         "audience:developer",
@@ -87,10 +88,9 @@
         "repo-instructions"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus eval test.",
-      "recommendedEvalSurface": "app/prompt",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
+      "nextAction": "If this should remain a proof target, split it into concrete product claims under the roadmap/spec surface, such as claim/eval/optimize allowing prompt changes only when held-out behavior evidence improves.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "The long-term direction is intent-first and intentful behavior evaluation: prompts can change if the evaluated behavior gets better.",
@@ -99,7 +99,10 @@
         }
       ],
       "summary": "The long-term direction is intent-first and intentful behavior evaluation: prompts can change if the evaluated behavior gets better.",
-      "verificationReadiness": "ready-to-verify",
+      "unresolvedQuestions": [
+        "Should product-intent statements in AGENTS.md be discoverable claims, or should discovery demote them unless a concrete behavior surface is named?"
+      ],
+      "verificationReadiness": "blocked",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -140,6 +143,7 @@
       "claimSemanticGroup": "Evaluation surfaces",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "Reviewed as an operator-policy statement. Existing debug artifacts can show individual incidents followed the policy, but they cannot prove every future bug, error, regression, or unexpected behavior will route through debug.",
       "groupHints": [
         "audience:developer",
         "cautilus-eval",
@@ -147,10 +151,9 @@
         "repo-instructions"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
+      "nextAction": "Keep as an operating rule rather than a satisfied product claim, or add a narrower audited-process claim that points to recent debug artifacts and commit discipline.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "While implementing, any bug, error, regression, or unexpected behavior routes to `charness:debug` before further fixes.",
@@ -159,7 +162,10 @@
         }
       ],
       "summary": "While implementing, any bug, error, regression, or unexpected behavior routes to `charness:debug` before further fixes.",
-      "verificationReadiness": "ready-to-verify",
+      "unresolvedQuestions": [
+        "Should repo operating rules be excluded from default claim discovery or tagged as policy claims outside satisfaction counts?"
+      ],
+      "verificationReadiness": "blocked",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -168,17 +174,28 @@
       "claimFingerprint": "sha256:a1b09b95c632460ea8aa2c6e7db22945815a35d0b753f235e7103923c4c9f29c",
       "claimId": "claim-agents-md-78",
       "claimSemanticGroup": "Quality gates",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:f7c5aa59fe306bd1e9fd995bea3d4e8c373847f115817c0888f79d3875a79b8a",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-agent-instruction-gates-2026-05-01.json",
+          "supportsClaimIds": [
+            "claim-agents-md-78"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by the checked evidence bundle: `npm run lint:skill-disclosure` exits 0 and checks that the bundled and packaged skill preserve progressive-disclosure fragments while binary-owned command discovery, scenario catalogs, examples, and readiness details stay in command/help/registry surfaces.",
       "groupHints": [
         "audience:developer",
         "deterministic",
         "repo-instructions"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
+      "nextAction": "Keep covered by `npm run lint:skill-disclosure` whenever the bundled skill, packaged skill, CLI registry, examples, or command docs change.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "The skill should own routing, sequencing, guardrails, and decision boundaries; the binary should own broad command discovery, help text, scenario catalogs, packet examples, install smoke, and doctor/readiness details.",
@@ -187,6 +204,7 @@
         }
       ],
       "summary": "The skill should own routing, sequencing, guardrails, and decision boundaries; the binary should own broad command discovery, help text, scenario catalogs, packet examples, install smoke, and doctor/readiness details.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
     },
@@ -230,8 +248,19 @@
       "claimFingerprint": "sha256:ea6f3cae604c3d4b5379b19b8017420cc345e82362bf13c51c4424a44856efde",
       "claimId": "claim-agents-md-123",
       "claimSemanticGroup": "Quality gates",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:f7c5aa59fe306bd1e9fd995bea3d4e8c373847f115817c0888f79d3875a79b8a",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-agent-instruction-gates-2026-05-01.json",
+          "supportsClaimIds": [
+            "claim-agents-md-123"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by the checked evidence bundle: `npm run test:on-demand` exits 0, package.json delegates it to `test:node:on-demand`, and maintainer docs plus checked-in on-demand test files show this layer owns heavier workflow tests rather than the standing gate.",
       "groupHints": [
         "audience:developer",
         "cautilus-eval",
@@ -239,10 +268,9 @@
         "repo-instructions"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
+      "nextAction": "Keep covered by `npm run test:on-demand` and maintainer check-layering docs when on-demand workflow ownership changes.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "`npm run test:on-demand` currently owns the heavier self-dogfood workflow script tests.",
@@ -251,6 +279,7 @@
         }
       ],
       "summary": "`npm run test:on-demand` currently owns the heavier self-dogfood workflow script tests.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
@@ -1159,6 +1188,7 @@
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "Reviewed as a design-boundary explanation for backend selection. The sentence is not itself an app/prompt behavior claim and needs either an adapter-contract proof or a narrower CLI/config claim.",
       "groupHints": [
         "app/prompt",
         "audience:user",
@@ -1167,10 +1197,9 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus eval test.",
-      "recommendedEvalSurface": "app/prompt",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
+      "nextAction": "Link this to adapter-contract tests or split it into concrete claims about adapter-owned backend selection and product-owned prompt/result semantics.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "That keeps persona prompt shaping and result semantics product-owned while backend selection stays adapter-owned.",
@@ -1179,7 +1208,10 @@
         }
       ],
       "summary": "That keeps persona prompt shaping and result semantics product-owned while backend selection stays adapter-owned.",
-      "verificationReadiness": "ready-to-verify",
+      "unresolvedQuestions": [
+        "Should explanatory design-boundary sentences in CLI docs be classified as human-auditable alignment claims by default instead of app/prompt eval claims?"
+      ],
+      "verificationReadiness": "needs-alignment",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -9856,6 +9888,7 @@
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "Reviewed as a glossary/classification statement inside the skill. It is true as local terminology, but by itself it is not a behavior claim with independent evidence beyond the source sentence.",
       "groupHints": [
         "audience:user",
         "human-auditable",
@@ -9864,9 +9897,9 @@
         "skill-doc"
       ],
       "lifecycle": "new",
-      "nextAction": "Reconcile the named docs, code, skill, adapter, or CLI surface before treating this as a verification target.",
+      "nextAction": "If this taxonomy should be a product claim, point it at deterministic claim-discovery tests that classify alignment-work separately from ready-to-verify claims.",
       "recommendedProof": "human-auditable",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "`alignment-work`: the code, docs, adapter, or skill surface must be reconciled before proof would be honest.",
@@ -9875,6 +9908,9 @@
         }
       ],
       "summary": "`alignment-work`: the code, docs, adapter, or skill surface must be reconciled before proof would be honest.",
+      "unresolvedQuestions": [
+        "Should label-definition bullets inside the bundled skill be filtered out or grouped as glossary claims during discovery?"
+      ],
       "verificationReadiness": "needs-alignment",
       "whyThisLayer": "The claim says surfaces should agree, so proof is not honest until the mismatched surfaces are reconciled."
     },
@@ -10094,26 +10130,26 @@
       "Release and packaging": 5
     },
     "byEvidenceStatus": {
-      "satisfied": 25,
-      "unknown": 300
+      "satisfied": 27,
+      "unknown": 298
     },
     "byLifecycle": {
       "new": 325
     },
     "byRecommendedProof": {
-      "cautilus-eval": 165,
-      "deterministic": 119,
-      "human-auditable": 41
+      "cautilus-eval": 161,
+      "deterministic": 120,
+      "human-auditable": 44
     },
     "byReviewStatus": {
-      "agent-reviewed": 37,
-      "heuristic": 288
+      "agent-reviewed": 43,
+      "heuristic": 282
     },
     "byVerificationReadiness": {
-      "blocked": 4,
-      "needs-alignment": 9,
+      "blocked": 6,
+      "needs-alignment": 10,
       "needs-scenario": 6,
-      "ready-to-verify": 306
+      "ready-to-verify": 303
     }
   },
   "discoveryMode": "deterministic-source-inventory",
@@ -10265,8 +10301,36 @@
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "reviewApplication": {
-    "appliedUpdateCount": 1,
+    "appliedUpdateCount": 6,
     "appliedUpdates": [
+      {
+        "appliedFields": [
+          "recommendedProof",
+          "verificationReadiness",
+          "evidenceStatus",
+          "reviewStatus",
+          "recommendedEvalSurface",
+          "nextAction",
+          "evidenceStatusReason",
+          "unresolvedQuestions"
+        ],
+        "claimId": "claim-agents-md-29",
+        "clusterId": "cluster-developer-evaluation-surfaces-cautilus-eval-app-prompt-repo-inst"
+      },
+      {
+        "appliedFields": [
+          "recommendedProof",
+          "verificationReadiness",
+          "evidenceStatus",
+          "reviewStatus",
+          "recommendedEvalSurface",
+          "nextAction",
+          "evidenceStatusReason",
+          "unresolvedQuestions"
+        ],
+        "claimId": "claim-agents-md-73",
+        "clusterId": "cluster-developer-evaluation-surfaces-cautilus-eval-dev-repo-repo-instru"
+      },
       {
         "appliedFields": [
           "recommendedProof",
@@ -10279,13 +10343,56 @@
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-readme-md-123",
-        "clusterId": "cluster-user-documentation-and-contracts-cautilus-eval-app-prompt-readme"
+        "claimId": "claim-agents-md-123",
+        "clusterId": "cluster-developer-quality-gates-cautilus-eval-dev-repo-repo-instructions"
+      },
+      {
+        "appliedFields": [
+          "recommendedProof",
+          "verificationReadiness",
+          "evidenceStatus",
+          "reviewStatus",
+          "recommendedEvalSurface",
+          "evidenceRefs",
+          "nextAction",
+          "evidenceStatusReason",
+          "unresolvedQuestions"
+        ],
+        "claimId": "claim-agents-md-78",
+        "clusterId": "cluster-developer-quality-gates-deterministic-repo-instructions"
+      },
+      {
+        "appliedFields": [
+          "recommendedProof",
+          "verificationReadiness",
+          "evidenceStatus",
+          "reviewStatus",
+          "recommendedEvalSurface",
+          "nextAction",
+          "evidenceStatusReason",
+          "unresolvedQuestions"
+        ],
+        "claimId": "claim-skills-cautilus-skill-md-109",
+        "clusterId": "cluster-user-adapter-and-portability-alignment-skill-doc"
+      },
+      {
+        "appliedFields": [
+          "recommendedProof",
+          "verificationReadiness",
+          "evidenceStatus",
+          "reviewStatus",
+          "recommendedEvalSurface",
+          "nextAction",
+          "evidenceStatusReason",
+          "unresolvedQuestions"
+        ],
+        "claimId": "claim-docs-cli-reference-md-186",
+        "clusterId": "cluster-user-adapter-and-portability-cautilus-eval-app-prompt-docs"
       }
     ],
     "claimsPath": "/home/hwidong/codes/cautilus/.cautilus/claims/evidenced-typed-runners.json",
     "mergeDecisions": [],
-    "reviewResultPath": "/home/hwidong/codes/cautilus/.cautilus/claims/review-result-evidence-claim-eval-plan-2026-05-01.json",
+    "reviewResultPath": "/home/hwidong/codes/cautilus/.cautilus/claims/review-result-llm-batch4.json",
     "schemaVersion": "cautilus.claim_review_result.v1",
     "unresolvedQuestions": []
   },
@@ -10422,6 +10529,12 @@
     },
     {
       "clusterCount": 1,
+      "reviewRun": {},
+      "schemaVersion": "cautilus.claim_review_result.v1",
+      "sourceReviewInput": {}
+    },
+    {
+      "clusterCount": 6,
       "reviewRun": {},
       "schemaVersion": "cautilus.claim_review_result.v1",
       "sourceReviewInput": {}

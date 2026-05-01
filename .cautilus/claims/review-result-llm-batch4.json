@@ -1,0 +1,145 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "codex-local-llm-review-batch4",
+    "kind": "same-agent",
+    "reviewedAt": "2026-05-01T06:09:00Z",
+    "notes": [
+      "Reviewed the fourth bounded heuristic-only claim batch.",
+      "Satisfied only claims backed by direct deterministic command evidence.",
+      "Broad direction, future operator compliance, and label-taxonomy explanation claims remain unknown."
+    ]
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-developer-evaluation-surfaces-cautilus-eval-app-prompt-repo-inst",
+      "claimUpdates": [
+        {
+          "claimId": "claim-agents-md-29",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "human-auditable",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "blocked",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as a product-direction statement, not an app/prompt behavior claim. A single eval fixture cannot prove that the long-term product direction is realized or that future prompt changes remain intent-first.",
+          "evidenceRefs": [],
+          "nextAction": "If this should remain a proof target, split it into concrete product claims under the roadmap/spec surface, such as claim/eval/optimize allowing prompt changes only when held-out behavior evidence improves.",
+          "unresolvedQuestions": [
+            "Should product-intent statements in AGENTS.md be discoverable claims, or should discovery demote them unless a concrete behavior surface is named?"
+          ]
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-developer-evaluation-surfaces-cautilus-eval-dev-repo-repo-instru",
+      "claimUpdates": [
+        {
+          "claimId": "claim-agents-md-73",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "human-auditable",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "blocked",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as an operator-policy statement. Existing debug artifacts can show individual incidents followed the policy, but they cannot prove every future bug, error, regression, or unexpected behavior will route through debug.",
+          "evidenceRefs": [],
+          "nextAction": "Keep as an operating rule rather than a satisfied product claim, or add a narrower audited-process claim that points to recent debug artifacts and commit discipline.",
+          "unresolvedQuestions": [
+            "Should repo operating rules be excluded from default claim discovery or tagged as policy claims outside satisfaction counts?"
+          ]
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-developer-quality-gates-cautilus-eval-dev-repo-repo-instructions",
+      "claimUpdates": [
+        {
+          "claimId": "claim-agents-md-123",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the checked evidence bundle: `npm run test:on-demand` exits 0, package.json delegates it to `test:node:on-demand`, and maintainer docs plus checked-in on-demand test files show this layer owns heavier workflow tests rather than the standing gate.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-agent-instruction-gates-2026-05-01.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:f7c5aa59fe306bd1e9fd995bea3d4e8c373847f115817c0888f79d3875a79b8a",
+              "supportsClaimIds": [
+                "claim-agents-md-123"
+              ]
+            }
+          ],
+          "nextAction": "Keep covered by `npm run test:on-demand` and maintainer check-layering docs when on-demand workflow ownership changes.",
+          "unresolvedQuestions": []
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-developer-quality-gates-deterministic-repo-instructions",
+      "claimUpdates": [
+        {
+          "claimId": "claim-agents-md-78",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the checked evidence bundle: `npm run lint:skill-disclosure` exits 0 and checks that the bundled and packaged skill preserve progressive-disclosure fragments while binary-owned command discovery, scenario catalogs, examples, and readiness details stay in command/help/registry surfaces.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-agent-instruction-gates-2026-05-01.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:f7c5aa59fe306bd1e9fd995bea3d4e8c373847f115817c0888f79d3875a79b8a",
+              "supportsClaimIds": [
+                "claim-agents-md-78"
+              ]
+            }
+          ],
+          "nextAction": "Keep covered by `npm run lint:skill-disclosure` whenever the bundled skill, packaged skill, CLI registry, examples, or command docs change.",
+          "unresolvedQuestions": []
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-user-adapter-and-portability-alignment-skill-doc",
+      "claimUpdates": [
+        {
+          "claimId": "claim-skills-cautilus-skill-md-109",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "human-auditable",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "needs-alignment",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as a glossary/classification statement inside the skill. It is true as local terminology, but by itself it is not a behavior claim with independent evidence beyond the source sentence.",
+          "evidenceRefs": [],
+          "nextAction": "If this taxonomy should be a product claim, point it at deterministic claim-discovery tests that classify alignment-work separately from ready-to-verify claims.",
+          "unresolvedQuestions": [
+            "Should label-definition bullets inside the bundled skill be filtered out or grouped as glossary claims during discovery?"
+          ]
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-user-adapter-and-portability-cautilus-eval-app-prompt-docs",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-cli-reference-md-186",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "human-auditable",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "needs-alignment",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as a design-boundary explanation for backend selection. The sentence is not itself an app/prompt behavior claim and needs either an adapter-contract proof or a narrower CLI/config claim.",
+          "evidenceRefs": [],
+          "nextAction": "Link this to adapter-contract tests or split it into concrete claims about adapter-owned backend selection and product-owned prompt/result semantics.",
+          "unresolvedQuestions": [
+            "Should explanatory design-boundary sentences in CLI docs be classified as human-auditable alignment claims by default instead of app/prompt eval claims?"
+          ]
+        }
+      ]
+    }
+  ]
+}
