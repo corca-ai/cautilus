@@ -125,6 +125,7 @@ The summary also includes `evidenceSatisfaction` so satisfied claims and their e
 If a commit only adds or updates generated claim artifacts, `gitState` reports `headDrift=true` with `comparisonStatus=fresh-with-head-drift` and review or eval planning may continue.
 Use `cautilus claim review prepare-input --claims <claims.json>` to prepare bounded deterministic review clusters for an agent or subagent.
 It emits `cautilus.claim_review_input.v1` and does not call an LLM or mark claims satisfied.
+When adapter `evidence_roots` contain claim evidence bundles for known claim ids, review input may include `possibleEvidenceRefs`; these are reviewer hints only.
 Use `cautilus claim review apply-result --claims <claims.json> --review-result <review-result.json>` to merge reviewed labels and evidence refs back into a claim packet.
 It emits an updated claim packet and rejects `evidenceStatus=satisfied` unless a direct or verified evidence ref supports the claim.
 Use `cautilus claim validate --claims <claims.json>` to emit `cautilus.claim_validation_report.v1` and fail fast on invalid packet shape or evidence refs.

@@ -27,15 +27,15 @@
     ],
     "byClaimSemanticGroup": [
       {
-        "count": 85,
-        "key": "Documentation and contracts"
-      },
-      {
-        "count": 83,
+        "count": 86,
         "key": "Agent and skill workflow"
       },
       {
-        "count": 50,
+        "count": 81,
+        "key": "Documentation and contracts"
+      },
+      {
+        "count": 52,
         "key": "Adapter and portability"
       },
       {
@@ -51,7 +51,7 @@
         "key": "Improvement and optimization"
       },
       {
-        "count": 18,
+        "count": 17,
         "key": "Claim discovery and review"
       },
       {
@@ -81,33 +81,33 @@
     ],
     "byProofLayer": [
       {
-        "count": 156,
+        "count": 160,
         "key": "cautilus-eval"
       },
       {
-        "count": 122,
+        "count": 119,
         "key": "deterministic"
       },
       {
-        "count": 28,
+        "count": 27,
         "key": "human-auditable"
       },
       {
-        "count": 8,
+        "count": 9,
         "key": "alignment-work"
       },
       {
-        "count": 6,
+        "count": 5,
         "key": "scenario-candidate"
       }
     ],
     "byRecommendedProof": [
       {
-        "count": 162,
+        "count": 165,
         "key": "cautilus-eval"
       },
       {
-        "count": 122,
+        "count": 119,
         "key": "deterministic"
       },
       {
@@ -131,11 +131,11 @@
         "key": "ready-to-verify"
       },
       {
-        "count": 8,
+        "count": 9,
         "key": "needs-alignment"
       },
       {
-        "count": 6,
+        "count": 5,
         "key": "needs-scenario"
       },
       {
@@ -172,6 +172,9 @@
       "README.md",
       "AGENTS.md",
       "CLAUDE.md"
+    ],
+    "evidenceRoots": [
+      ".cautilus/claims"
     ],
     "exclude": [
       ".git/**",
@@ -347,17 +350,17 @@
       }
     ]
   },
-  "gitCommit": "4efe2b93a1a7f7feaf8819ea7a39ed1a5d6fc6c5",
+  "gitCommit": "34c16621621456ae28b2552f222dcf89e23a5b5b",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "4efe2b93a1a7f7feaf8819ea7a39ed1a5d6fc6c5",
+    "currentGitCommit": "34c16621621456ae28b2552f222dcf89e23a5b5b",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "4efe2b93a1a7f7feaf8819ea7a39ed1a5d6fc6c5",
+    "packetGitCommit": "34c16621621456ae28b2552f222dcf89e23a5b5b",
     "recommendedAction": "The claim packet commit matches the current checkout.",
     "workingTreePolicy": "excluded"
   },
@@ -373,8 +376,8 @@
   ],
   "reviewReadinessSummary": {
     "heuristicClaimsReadyForReview": 293,
-    "needsAlignment": 8,
-    "needsScenario": 6
+    "needsAlignment": 9,
+    "needsScenario": 5
   },
   "sampleClaims": [
     {

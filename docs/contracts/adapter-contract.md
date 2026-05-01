@@ -211,7 +211,7 @@ default_schema_file: fixtures/review/review-verdict.schema.json
   `include` and `exclude` are repo-relative glob filters applied to discovered Markdown sources.
   `state_path` tells agents where the repo expects the current claim-state packet to live.
   `related_state_paths` lets `agent status` summarize read-only reviewed, evidenced, or promoted claim packets without treating them as the writable discovery baseline.
-  `evidence_roots` declares repo-relative roots worth checking during later evidence reconciliation; it does not prove claims by itself.
+  `evidence_roots` declares repo-relative roots worth checking during later evidence reconciliation and review-input possible-evidence preflight; it does not prove claims by itself.
   `audience_hints` optionally maps discovered sources into `user` and `developer` claim audiences.
   The binary uses these hints to label review queues, while the bundled skill or a human reviewer may still correct semantic edge cases.
   `semantic_groups` optionally declares repo-owned review batching labels and text terms.

@@ -17,6 +17,7 @@ const (
 	ClaimReviewResultSchema                         = "cautilus.claim_review_result.v1"
 	ClaimStatusSummarySchema                        = "cautilus.claim_status_summary.v1"
 	ClaimValidationReportSchema                     = "cautilus.claim_validation_report.v1"
+	ClaimEvidenceBundleSchema                       = "cautilus.claim_evidence_bundle.v1"
 	CompareArtifactSchema                           = "cautilus.compare_artifact.v1"
 	DraftScenarioSchema                             = "cautilus.scenario.v1"
 	EvaluationCasesSchema                           = "cautilus.evaluation_cases.v1"

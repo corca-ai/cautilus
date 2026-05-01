@@ -119,6 +119,8 @@ claim_discovery:
       path: .cautilus/claims/reviewed.json
     - role: evidenced
       path: .cautilus/claims/evidenced.json
+  evidence_roots:
+    - .cautilus/claims
   audience_hints:
     user:
       - README.md
@@ -139,6 +141,7 @@ The binary only understands the portable labels `user`, `developer`, and `unclea
 `semantic_groups` is also adapter-owned because product areas differ across repos.
 When the adapter omits semantic groups, the binary emits `General product behavior` instead of using a Cautilus-specific taxonomy.
 `state_path` is the writable discovery baseline for `claim discover`; `related_state_paths` are read-only orientation hints for reviewed, evidenced, or promoted claim packets that `agent status` can summarize without making them the next discovery target.
+`evidence_roots` are read-only roots for deterministic possible-evidence preflight; they may add `possibleEvidenceRefs` to review input, but they never mark claims satisfied.
 
 Before running a first broad scan, the skill should say which entries and depth it will use.
 It should also show the deterministic bounds that will be applied:

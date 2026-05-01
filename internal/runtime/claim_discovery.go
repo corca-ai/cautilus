@@ -1261,6 +1261,7 @@ func renderClaimScanScope(config claimDiscoveryConfig) map[string]any {
 		"entries":             config.entries,
 		"include":             nonNilStringSlice(config.include),
 		"exclude":             nonNilStringSlice(config.exclude),
+		"evidenceRoots":       nonNilStringSlice(config.evidenceRoots),
 		"audienceHints":       renderClaimAudienceHints(config.audienceHints),
 		"semanticGroups":      renderClaimSemanticGroups(config.semanticGroups),
 		"linkedMarkdownDepth": config.linkedMarkdownDepth,
@@ -1611,7 +1612,9 @@ func BuildClaimReviewInput(packet map[string]any, options ClaimReviewInputOption
 		return nil, err
 	}
 	normalized := normalizeClaimReviewInputOptions(options)
-	clusters := buildClaimReviewClusters(arrayOrEmpty(packet["claimCandidates"]), normalized)
+	possibleEvidenceRefs, evidencePreflight := collectPossibleClaimEvidenceRefs(packet, normalized.RepoRoot)
+	candidates := attachPossibleEvidenceRefs(arrayOrEmpty(packet["claimCandidates"]), possibleEvidenceRefs)
+	clusters := buildClaimReviewClusters(candidates, normalized)
 	renderedClusters, skipped := renderClaimReviewClusters(clusters, normalized)
 	return map[string]any{
 		"schemaVersion": contracts.ClaimReviewInputSchema,
@@ -1622,6 +1625,7 @@ func BuildClaimReviewInput(packet map[string]any, options ClaimReviewInputOption
 			"gitCommit":      packet["gitCommit"],
 			"candidateCount": len(arrayOrEmpty(packet["claimCandidates"])),
 		},
+		"evidencePreflight": evidencePreflight,
 		"reviewBudget": map[string]any{
 			"maxClusters":         normalized.MaxClusters,
 			"maxClaimsPerCluster": normalized.MaxClaimsPerCluster,
@@ -1649,6 +1653,156 @@ func normalizeClaimReviewInputOptions(options ClaimReviewInputOptions) ClaimRevi
 		options.ClusterPolicy = "default"
 	}
 	return options
+}
+
+func attachPossibleEvidenceRefs(candidates []any, refsByClaimID map[string][]any) []any {
+	if len(refsByClaimID) == 0 {
+		return candidates
+	}
+	enriched := make([]any, 0, len(candidates))
+	for _, raw := range candidates {
+		candidate := asMap(raw)
+		claimID := stringFromAny(candidate["claimId"])
+		refs := refsByClaimID[claimID]
+		if len(refs) == 0 {
+			enriched = append(enriched, raw)
+			continue
+		}
+		next := map[string]any{}
+		for key, value := range candidate {
+			next[key] = value
+		}
+		next["possibleEvidenceRefs"] = refs
+		enriched = append(enriched, next)
+	}
+	return enriched
+}
+
+func collectPossibleClaimEvidenceRefs(packet map[string]any, repoRoot string) (map[string][]any, map[string]any) {
+	refsByClaimID := map[string][]any{}
+	scanScope := asMap(packet["effectiveScanScope"])
+	evidenceRoots := stringArrayOrEmpty(scanScope["evidenceRoots"])
+	summary := map[string]any{
+		"status":           "not-configured",
+		"policy":           "possible evidence refs are hints only and cannot satisfy claims without review.",
+		"evidenceRoots":    evidenceRoots,
+		"scannedFileCount": 0,
+		"matchedRefCount":  0,
+	}
+	if len(evidenceRoots) == 0 {
+		return refsByClaimID, summary
+	}
+	if strings.TrimSpace(repoRoot) == "" {
+		summary["status"] = "skipped-no-repo-root"
+		return refsByClaimID, summary
+	}
+	candidateIDs := claimCandidateIDSet(arrayOrEmpty(packet["claimCandidates"]))
+	if len(candidateIDs) == 0 {
+		summary["status"] = "skipped-no-claim-ids"
+		return refsByClaimID, summary
+	}
+	seenRefs := map[string]struct{}{}
+	scannedFiles := 0
+	matchedRefs := 0
+	walkErrorCount := 0
+	ignoreChecker := newGitIgnoreChecker(repoRoot)
+	for _, root := range evidenceRoots {
+		root = strings.TrimSpace(root)
+		if root == "" {
+			continue
+		}
+		normalizedRoot, err := normalizeClaimStatePath(root)
+		if err != nil {
+			continue
+		}
+		resolvedRoot := filepath.Join(repoRoot, filepath.FromSlash(normalizedRoot))
+		if !fileExists(resolvedRoot) {
+			continue
+		}
+		if walkErr := filepath.WalkDir(resolvedRoot, func(path string, entry fs.DirEntry, walkErr error) error {
+			if walkErr != nil {
+				return walkErr
+			}
+			relPath := relativeClaimPath(repoRoot, path)
+			if entry.IsDir() {
+				if relPath != "." && ignoreChecker.Ignored(relPath) {
+					return filepath.SkipDir
+				}
+				return nil
+			}
+			if filepath.Ext(path) != ".json" {
+				return nil
+			}
+			if ignoreChecker.Ignored(relPath) {
+				return nil
+			}
+			bundle, readErr := readJSONFile(path)
+			if readErr == nil && bundle["schemaVersion"] == contracts.ClaimEvidenceBundleSchema {
+				scannedFiles++
+				contentHash, _ := fileSHA256(path)
+				for _, claimID := range claimEvidenceBundleClaimIDs(bundle) {
+					if !candidateIDs[claimID] {
+						continue
+					}
+					refID := claimID + "\x00" + relPath
+					if _, exists := seenRefs[refID]; exists {
+						continue
+					}
+					seenRefs[refID] = struct{}{}
+					ref := map[string]any{
+						"kind":                "cautilus-claim-evidence-bundle",
+						"path":                relPath,
+						"schemaVersion":       bundle["schemaVersion"],
+						"bundleId":            bundle["bundleId"],
+						"summary":             bundle["summary"],
+						"contentHash":         contentHash,
+						"matchKind":           "possible",
+						"supportsClaimIds":    []any{claimID},
+						"reviewedBy":          "deterministic-preflight",
+						"preflightRoot":       normalizedRoot,
+						"nonSatisfactionNote": "Possible evidence refs are hints only; claim review must verify them before evidenceStatus can become satisfied.",
+					}
+					refsByClaimID[claimID] = append(refsByClaimID[claimID], ref)
+					matchedRefs++
+				}
+			}
+			return nil
+		}); walkErr != nil {
+			walkErrorCount++
+		}
+	}
+	summary["status"] = "completed"
+	summary["scannedFileCount"] = scannedFiles
+	summary["matchedRefCount"] = matchedRefs
+	summary["walkErrorCount"] = walkErrorCount
+	return refsByClaimID, summary
+}
+
+func claimCandidateIDSet(candidates []any) map[string]bool {
+	ids := map[string]bool{}
+	for _, raw := range candidates {
+		if claimID := stringFromAny(asMap(raw)["claimId"]); claimID != "" {
+			ids[claimID] = true
+		}
+	}
+	return ids
+}
+
+func claimEvidenceBundleClaimIDs(bundle map[string]any) []string {
+	ids := []string{}
+	seen := map[string]struct{}{}
+	for _, raw := range stringArrayOrEmpty(bundle["createdForClaimIds"]) {
+		claimID := strings.TrimSpace(raw)
+		if claimID == "" {
+			continue
+		}
+		if _, exists := seen[claimID]; exists {
+			continue
+		}
+		seen[claimID] = struct{}{}
+		ids = append(ids, claimID)
+	}
+	return ids
 }
 
 func buildClaimReviewClusters(candidates []any, options ClaimReviewInputOptions) []claimReviewCluster {
@@ -1792,7 +1946,7 @@ func claimTouchesProductSurface(candidate map[string]any) bool {
 }
 
 func renderClaimReviewCandidate(candidate map[string]any, excerptChars int) map[string]any {
-	return map[string]any{
+	entry := map[string]any{
 		"claimId":          candidate["claimId"],
 		"claimFingerprint": candidate["claimFingerprint"],
 		"summary":          candidate["summary"],
@@ -1802,6 +1956,10 @@ func renderClaimReviewCandidate(candidate map[string]any, excerptChars int) map[
 		"evidenceRefs":     arrayOrEmpty(candidate["evidenceRefs"]),
 		"nextAction":       candidate["nextAction"],
 	}
+	if refs := arrayOrEmpty(candidate["possibleEvidenceRefs"]); len(refs) > 0 {
+		entry["possibleEvidenceRefs"] = refs
+	}
+	return entry
 }
 
 func truncateReviewSourceRefs(refs []any, excerptChars int) []any {

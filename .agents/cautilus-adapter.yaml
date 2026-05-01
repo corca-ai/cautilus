@@ -36,6 +36,8 @@ claim_discovery:
       path: .cautilus/claims/reviewed-typed-runners.json
     - role: evidenced
       path: .cautilus/claims/evidenced-typed-runners.json
+  evidence_roots:
+    - .cautilus/claims
   exclude:
     - docs/internal/handoff.md
     - docs/internal/research/**

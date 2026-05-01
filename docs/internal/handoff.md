@@ -29,6 +29,8 @@
   `already-satisfied` skipped claims now carry their evidence refs directly, so the 0-plan packet maps the three reviewed `dev/skill` plans back to their evidence bundles without joining against `.cautilus/claims/evidenced-typed-runners.json`.
   같은 packet의 `planSummary.zeroPlanReason`은 `all-reviewed-eval-targets-satisfied-and-remaining-reviewed-claims-not-eval-targets`다.
   `claim show` status summary also includes `evidenceSatisfaction.satisfiedClaims`, currently the same three claims with one evidence ref each.
+  `claim review prepare-input` now runs deterministic possible-evidence preflight over adapter `evidence_roots`.
+  For this repo `.cautilus/claims/review-input-typed-runners.json` reports `matchedRefCount=3` from `.cautilus/claims`, and the refs stay `matchKind=possible` with `evidenceStatus=unknown` until review/apply-result verifies them.
   `claim-readme-md-3`은 README tagline/umbrella promise로 보존하되 `human-auditable`, `verificationReadiness=blocked`로 라우팅한다.
   그래서 eval-plan files에 `claim-readme-md-3`가 보이면 target이 아니라 `skippedClaims.reason=not-cautilus-eval`이다.
 - 2026-05-01 후속 dogfood로 `npm run dogfood:cautilus-review-to-eval-flow:eval:codex`를 다시 실행했다.
@@ -177,9 +179,9 @@
 2. `charness:find-skills`로 설치된 public / support / integration 스킬 지도를 한 번 갱신한다.
 3. 현재 reviewed eval plan은 3개 `dev/skill` claims이고, evidenced eval plan과 `claim show` summary both expose the evidence refs that close them.
    다음 claim-hardening 후보는 dedicated claim report/HTML을 만들지, 아니면 JSON packet 우선 원칙을 유지할지 결정하는 것이다.
-4. 그 다음 claim hardening 후보는 review-result application branch proof, bounded evidence preflight, 또는 eval-fixture authoring guidance다.
+4. 그 다음 claim hardening 후보는 review-result application branch proof, deeper evidence reconciliation, 또는 eval-fixture authoring guidance다.
    review prepare-input과 reviewer launch branch proof는 Codex/Claude 양쪽에서 완료됐다.
-   evidence preflight는 false satisfaction 위험이 있으므로 possible evidence hint까지만 허용하는 식의 bounded slice가 필요하다.
+   evidence preflight의 첫 slice는 possible evidence hint까지만 허용하는 형태로 들어왔다.
    public `claim group` 또는 `claim refresh` command는 만들지 않는다.
 5. optimize-search held-out/full-gate 신호를 현재 `cautilus eval test` surface 위로 재배선할지, 아니면 C2/C3/C4 composition landing까지 honest-skip으로 둘지 결정한다.
 6. spec follow-up #4 — C2/C3/C4 composition primitives (extends / multi-step / snapshot), 슬라이스당 하나.

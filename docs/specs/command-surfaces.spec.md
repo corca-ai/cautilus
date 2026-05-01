@@ -164,6 +164,8 @@ A later commit that only records generated claim artifacts is reported as `headD
 It groups candidates into deterministic review clusters and records the review budget.
 Review clusters preserve `claimAudience` and `claimSemanticGroup` so user-facing, developer-facing, and unclear claims do not collapse into the same review queue.
 It does not call an LLM, schedule subagents, merge duplicates, or mark evidence satisfied.
+When adapter-configured `evidence_roots` contain claim evidence bundles for known claim ids, it may include `possibleEvidenceRefs` in review candidates and `evidencePreflight` in the packet.
+Those possible refs are reviewer hints only and cannot mark claims satisfied.
 It rejects stale claim packets by default.
 
 `cautilus claim review apply-result --claims <claims.json> --review-result <review-result.json>` consumes `cautilus.claim_review_result.v1` and emits an updated claim packet.

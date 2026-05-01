@@ -400,6 +400,81 @@ func TestBuildClaimReviewInputClustersAndSkipsDeterministically(t *testing.T) {
 	}
 }
 
+func TestBuildClaimReviewInputIncludesPossibleEvidenceRefs(t *testing.T) {
+	repoRoot := t.TempDir()
+	evidenceDir := filepath.Join(repoRoot, ".cautilus", "claims")
+	if err := os.MkdirAll(evidenceDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll evidence dir returned error: %v", err)
+	}
+	evidenceBundle := map[string]any{
+		"schemaVersion":      contracts.ClaimEvidenceBundleSchema,
+		"bundleId":           "evidence-demo",
+		"createdForClaimIds": []any{"claim-readme-md-1"},
+		"summary":            "A checked-in bundle may support the claim after review.",
+	}
+	payload, err := json.MarshalIndent(evidenceBundle, "", "  ")
+	if err != nil {
+		t.Fatalf("MarshalIndent evidence bundle returned error: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(evidenceDir, "evidence-demo.json"), payload, 0o644); err != nil {
+		t.Fatalf("WriteFile evidence bundle returned error: %v", err)
+	}
+	packet := map[string]any{
+		"schemaVersion": contracts.ClaimProofPlanSchema,
+		"sourceRoot":    ".",
+		"effectiveScanScope": map[string]any{
+			"evidenceRoots": []any{".cautilus/claims"},
+		},
+		"sourceInventory": []any{
+			map[string]any{"path": "README.md", "kind": "markdown", "status": "read", "depth": 0},
+		},
+		"claimCandidates": []any{
+			map[string]any{
+				"claimId":                "claim-readme-md-1",
+				"claimFingerprint":       "sha256:possible",
+				"summary":                "The skill flow might already have evidence.",
+				"recommendedProof":       "cautilus-eval",
+				"recommendedEvalSurface": "dev/skill",
+				"verificationReadiness":  "ready-to-verify",
+				"evidenceStatus":         "unknown",
+				"reviewStatus":           "heuristic",
+				"lifecycle":              "new",
+				"groupHints":             []any{"cautilus-eval"},
+				"evidenceRefs":           []any{},
+				"sourceRefs":             []any{map[string]any{"path": "README.md", "line": 1, "excerpt": "The skill flow might already have evidence."}},
+				"proofLayer":             "cautilus-eval",
+			},
+		},
+	}
+	reviewInput, err := BuildClaimReviewInput(packet, ClaimReviewInputOptions{
+		InputPath:           "claims.json",
+		RepoRoot:            repoRoot,
+		MaxClusters:         1,
+		MaxClaimsPerCluster: 1,
+	})
+	if err != nil {
+		t.Fatalf("BuildClaimReviewInput returned error: %v", err)
+	}
+	preflight := asMap(reviewInput["evidencePreflight"])
+	if preflight["status"] != "completed" || preflight["matchedRefCount"] != 1 {
+		t.Fatalf("expected completed evidence preflight with one match, got %#v", preflight)
+	}
+	cluster := asMap(arrayOrEmpty(reviewInput["clusters"])[0])
+	candidate := asMap(arrayOrEmpty(cluster["candidates"])[0])
+	refs := arrayOrEmpty(candidate["possibleEvidenceRefs"])
+	if len(refs) != 1 {
+		t.Fatalf("expected one possible evidence ref, got %#v", candidate)
+	}
+	ref := asMap(refs[0])
+	if ref["matchKind"] != "possible" || len(arrayOrEmpty(ref["supportsClaimIds"])) != 1 {
+		t.Fatalf("expected possible evidence ref shape, got %#v", ref)
+	}
+	labels := asMap(candidate["currentLabels"])
+	if labels["evidenceStatus"] != "unknown" {
+		t.Fatalf("possible evidence must not satisfy the claim, got %#v", labels)
+	}
+}
+
 func TestBuildClaimReviewInputSeparatesAudienceAndSemanticGroup(t *testing.T) {
 	repoRoot := t.TempDir()
 	mustWriteFile(t, filepath.Join(repoRoot, ".agents", "cautilus-adapter.yaml"), strings.Join([]string{
