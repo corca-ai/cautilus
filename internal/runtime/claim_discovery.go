@@ -1377,6 +1377,7 @@ func BuildClaimStatusSummaryWithOptions(packet map[string]any, options ClaimStat
 		"claimState":                asMap(packet["claimState"]),
 		"nonVerdictNotice":          packet["nonVerdictNotice"],
 		"reviewReadinessSummary":    claimReviewReadinessSummary(candidates),
+		"evidenceSatisfaction":      claimEvidenceSatisfactionSummary(candidates),
 		"recommendedNextActions":    claimStatusNextActions(claimSummary),
 		"linkedMarkdownSourceCount": linkedMarkdownSourceCount(sourceInventory),
 	}
@@ -1387,6 +1388,30 @@ func BuildClaimStatusSummaryWithOptions(packet map[string]any, options ClaimStat
 		status["sampleClaims"] = claimStatusSampleClaims(candidates, options.SampleClaims)
 	}
 	return status, nil
+}
+
+func claimEvidenceSatisfactionSummary(candidates []any) map[string]any {
+	satisfiedClaims := []any{}
+	for _, raw := range candidates {
+		candidate := asMap(raw)
+		if stringFromAny(candidate["evidenceStatus"]) != "satisfied" {
+			continue
+		}
+		evidenceRefs := arrayOrEmpty(candidate["evidenceRefs"])
+		satisfiedClaims = append(satisfiedClaims, map[string]any{
+			"claimId":                candidate["claimId"],
+			"summary":                candidate["summary"],
+			"recommendedProof":       candidate["recommendedProof"],
+			"recommendedEvalSurface": candidate["recommendedEvalSurface"],
+			"reviewStatus":           candidate["reviewStatus"],
+			"evidenceRefCount":       len(evidenceRefs),
+			"evidenceRefs":           evidenceRefs,
+		})
+	}
+	return map[string]any{
+		"satisfiedClaimCount": len(satisfiedClaims),
+		"satisfiedClaims":     satisfiedClaims,
+	}
 }
 
 func ClaimPacketGitState(packet map[string]any, repoRoot string) map[string]any {

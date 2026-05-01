@@ -120,6 +120,7 @@ The refresh-plan packet includes `refreshSummary`, which gives agent-readable co
 The packet is `cautilus.claim_proof_plan.v1`, and it is a proof plan rather than a verdict.
 Use `cautilus claim show --input <claims.json> --sample-claims <n>` to summarize an existing claim packet without rescanning and include bounded claim examples when an agent needs concrete candidates before choosing the next branch.
 The summary includes `gitState`; when it reports `isStale=true`, run `cautilus claim discover --previous <claims.json> --refresh-plan` before review, review application, or eval planning.
+The summary also includes `evidenceSatisfaction` so satisfied claims and their evidence refs are visible without reading the full claim packet first.
 `gitState.isStale` tracks recorded claim-source changes, not every HEAD change.
 If a commit only adds or updates generated claim artifacts, `gitState` reports `headDrift=true` with `comparisonStatus=fresh-with-head-drift` and review or eval planning may continue.
 Use `cautilus claim review prepare-input --claims <claims.json>` to prepare bounded deterministic review clusters for an agent or subagent.

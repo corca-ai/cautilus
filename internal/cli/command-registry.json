@@ -38,6 +38,7 @@
       "notes": [
         "Summarizes an existing `cautilus.claim_proof_plan.v1` packet without rescanning.",
         "`--sample-claims` includes a bounded set of stable claim fields for agents that need examples before choosing the next branch.",
+        "Includes `evidenceSatisfaction` so satisfied claims and their evidence refs are visible from the status summary.",
         "This command emits `cautilus.claim_status_summary.v1` for agents that need current status before choosing review, test, scenario, or alignment work."
       ]
     },

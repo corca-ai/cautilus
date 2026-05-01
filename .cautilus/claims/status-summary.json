@@ -39,7 +39,7 @@
         "key": "Adapter and portability"
       },
       {
-        "count": 30,
+        "count": 29,
         "key": "Quality gates"
       },
       {
@@ -51,7 +51,7 @@
         "key": "Improvement and optimization"
       },
       {
-        "count": 17,
+        "count": 18,
         "key": "Claim discovery and review"
       },
       {
@@ -285,17 +285,79 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "a79547f0a739023399ea375539edfaf995a09717",
+  "evidenceSatisfaction": {
+    "satisfiedClaimCount": 3,
+    "satisfiedClaims": [
+      {
+        "claimId": "claim-readme-md-144",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:dd7e4a590d4439cf31cb119491f2cb73c150f3454cf1f79d51ff6b9064c18cc5",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-dev-skill-routing-install.json",
+            "supportsClaimIds": [
+              "claim-readme-md-144"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": "dev/skill",
+        "recommendedProof": "cautilus-eval",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Use when you change a skill or agent and want to know whether it still triggers on the right prompts, executes cleanly, and keeps its static validation passing."
+      },
+      {
+        "claimId": "claim-readme-md-148",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:bdc972a2b15d5207596491d2e4048af7af6ce725c928ae05ddf988508c9303ba",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-dev-skill-dogfood.json",
+            "supportsClaimIds": [
+              "claim-readme-md-148"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": "dev/skill",
+        "recommendedProof": "cautilus-eval",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The same preset can evaluate a multi-turn agent episode when the fixture provides `turns`; Cautilus's own first-scan, refresh-flow, review-prepare, reviewer-launch, and review-to-eval dogfood fixtures derive their results from audit packets."
+      },
+      {
+        "claimId": "claim-readme-md-211",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:dd7e4a590d4439cf31cb119491f2cb73c150f3454cf1f79d51ff6b9064c18cc5",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-dev-skill-routing-install.json",
+            "supportsClaimIds": [
+              "claim-readme-md-211"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": "dev/skill",
+        "recommendedProof": "cautilus-eval",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Agent track — Claude / Codex plugin.** The `cautilus install` step also lands a bundled skill at `.agents/skills/cautilus/` with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally."
+      }
+    ]
+  },
+  "gitCommit": "4efe2b93a1a7f7feaf8819ea7a39ed1a5d6fc6c5",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "a79547f0a739023399ea375539edfaf995a09717",
+    "currentGitCommit": "4efe2b93a1a7f7feaf8819ea7a39ed1a5d6fc6c5",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "a79547f0a739023399ea375539edfaf995a09717",
+    "packetGitCommit": "4efe2b93a1a7f7feaf8819ea7a39ed1a5d6fc6c5",
     "recommendedAction": "The claim packet commit matches the current checkout.",
     "workingTreePolicy": "excluded"
   },

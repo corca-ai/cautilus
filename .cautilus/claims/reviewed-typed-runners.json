@@ -980,7 +980,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:ddd6e85737a56116b1eb1766cd75a85b6d2d11e7f7775ff3ce6d9f62d9748829",
-      "claimId": "claim-docs-cli-reference-md-126",
+      "claimId": "claim-docs-cli-reference-md-127",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -1000,7 +1000,7 @@
       "sourceRefs": [
         {
           "excerpt": "It emits `cautilus.claim_review_input.v1` and does not call an LLM or mark claims satisfied.",
-          "line": 126,
+          "line": 127,
           "path": "docs/cli-reference.md"
         }
       ],
@@ -1012,7 +1012,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:10dc5fd8f817011f748f06bba796f3567abb6cfd596947ecff3ff1f6fdf00e95",
-      "claimId": "claim-docs-cli-reference-md-169",
+      "claimId": "claim-docs-cli-reference-md-170",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -1032,7 +1032,7 @@
       "sourceRefs": [
         {
           "excerpt": "An eval live instance is one live consumer target on this host that `Cautilus` can select by stable id.",
-          "line": 169,
+          "line": 170,
           "path": "docs/cli-reference.md"
         }
       ],
@@ -1044,38 +1044,6 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:d3e7739baffe7430517819e439f1f2430e91a74ff7123b0de3241b8c17aceef8",
-      "claimId": "claim-docs-cli-reference-md-181",
-      "claimSemanticGroup": "Adapter and portability",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:user",
-        "cautilus-eval",
-        "dev/repo",
-        "docs",
-        "linked-from:README.md"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "proofLayer": "cautilus-eval",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "When the public scenario uses `simulator.kind: persona_prompt`, the adapter additionally provides `simulator_persona_command_template`, which normally calls `cautilus eval live run-simulator-persona` with repo-specific backend flags.",
-          "line": 181,
-          "path": "docs/cli-reference.md"
-        }
-      ],
-      "summary": "When the public scenario uses `simulator.kind: persona_prompt`, the adapter additionally provides `simulator_persona_command_template`, which normally calls `cautilus eval live run-simulator-persona` with repo-specific backend flags.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
-    },
-    {
-      "claimAudience": "user",
-      "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:0fb7d2b87e1402f9d2997f30c4fe48f61e05ea9654c80981f5c80b85574f2e1d",
       "claimId": "claim-docs-cli-reference-md-182",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
@@ -1095,8 +1063,40 @@
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "That keeps persona prompt shaping and result semantics product-owned while backend selection stays adapter-owned.",
+          "excerpt": "When the public scenario uses `simulator.kind: persona_prompt`, the adapter additionally provides `simulator_persona_command_template`, which normally calls `cautilus eval live run-simulator-persona` with repo-specific backend flags.",
           "line": 182,
+          "path": "docs/cli-reference.md"
+        }
+      ],
+      "summary": "When the public scenario uses `simulator.kind: persona_prompt`, the adapter additionally provides `simulator_persona_command_template`, which normally calls `cautilus eval live run-simulator-persona` with repo-specific backend flags.",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:0fb7d2b87e1402f9d2997f30c4fe48f61e05ea9654c80981f5c80b85574f2e1d",
+      "claimId": "claim-docs-cli-reference-md-183",
+      "claimSemanticGroup": "Adapter and portability",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "app/prompt",
+        "audience:user",
+        "cautilus-eval",
+        "docs",
+        "linked-from:README.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus eval test.",
+      "proofLayer": "cautilus-eval",
+      "recommendedEvalSurface": "app/prompt",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "That keeps persona prompt shaping and result semantics product-owned while backend selection stays adapter-owned.",
+          "line": 183,
           "path": "docs/cli-reference.md"
         }
       ],
@@ -1108,7 +1108,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:313275317465567a22c5d4992ec031f8aa811338e2281d6c84520f52f8f7b556",
-      "claimId": "claim-docs-cli-reference-md-252",
+      "claimId": "claim-docs-cli-reference-md-253",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -1126,7 +1126,7 @@
       "sourceRefs": [
         {
           "excerpt": "The same packet also emits an `attentionView`, which is a bounded human-facing shortlist derived from the full ranked set.",
-          "line": 252,
+          "line": 253,
           "path": "docs/cli-reference.md"
         }
       ],
@@ -1138,7 +1138,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:c92e1512edd768678bfa8a2047aed48205fdc5b1b4eac23b5affe38b4f8a68c3",
-      "claimId": "claim-docs-cli-reference-md-254",
+      "claimId": "claim-docs-cli-reference-md-255",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -1158,7 +1158,7 @@
       "sourceRefs": [
         {
           "excerpt": "It links normalized chatbot threads to scenario proposals and coverage hints so an operator can review behavior-eval evidence without browsing every live operator turn.",
-          "line": 254,
+          "line": 255,
           "path": "docs/cli-reference.md"
         }
       ],
@@ -1170,7 +1170,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:3abe64a979d238c9760ba219c69eccf79d874dd45f4d7c8bf954e9ad207a2e33",
-      "claimId": "claim-docs-cli-reference-md-262",
+      "claimId": "claim-docs-cli-reference-md-263",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -1190,7 +1190,7 @@
       "sourceRefs": [
         {
           "excerpt": "`cautilus eval test` runs a checked-in fixture through an adapter-owned runner and then evaluates the observed packet.",
-          "line": 262,
+          "line": 263,
           "path": "docs/cli-reference.md"
         }
       ],
@@ -1202,7 +1202,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:1e30b87e2f299951a03c64f4f891326883f447714f997c5b496c8f5a130c8219",
-      "claimId": "claim-docs-cli-reference-md-266",
+      "claimId": "claim-docs-cli-reference-md-267",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -1222,7 +1222,7 @@
       "sourceRefs": [
         {
           "excerpt": "`cautilus eval evaluate` evaluates an already-observed packet without launching the runner again.",
-          "line": 266,
+          "line": 267,
           "path": "docs/cli-reference.md"
         }
       ],
@@ -1234,7 +1234,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:83c81805880b9762061d7ae0e99d4469f41a78b6e801d6b775db03151fe12d8d",
-      "claimId": "claim-docs-cli-reference-md-422",
+      "claimId": "claim-docs-cli-reference-md-423",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -1252,7 +1252,7 @@
       "sourceRefs": [
         {
           "excerpt": "A variant can finish as `passed`, `blocked`, or `failed`; blocked runs carry machine-readable reason codes instead of prose-only abort text.",
-          "line": 422,
+          "line": 423,
           "path": "docs/cli-reference.md"
         }
       ],
@@ -1264,7 +1264,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:84f315418d5b081d4b95da8d83048ba5c06db7fc31de2ab8b4105677a087e315",
-      "claimId": "claim-docs-cli-reference-md-426",
+      "claimId": "claim-docs-cli-reference-md-427",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -1284,7 +1284,7 @@
       "sourceRefs": [
         {
           "excerpt": "When `--output-text-key` is present, Cautilus also extracts that JSON narrative span into the rendered prompt so the judge can read the realized output directly.",
-          "line": 426,
+          "line": 427,
           "path": "docs/cli-reference.md"
         }
       ],
@@ -1296,7 +1296,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:4e71a63710e91c116f1577d1c862f0a10316bb0d32592a8caf8703b79ad2f4ce",
-      "claimId": "claim-docs-cli-reference-md-482",
+      "claimId": "claim-docs-cli-reference-md-483",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -1314,7 +1314,7 @@
       "sourceRefs": [
         {
           "excerpt": "These renderers answer: \"what should a human reviewer open first if they should inspect the same decision surface without parsing raw JSON?\"",
-          "line": 482,
+          "line": 483,
           "path": "docs/cli-reference.md"
         }
       ],
@@ -1326,7 +1326,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:0d2d0ae18ce22c8340114c00a1c819ca126769c3214c11aeeb592815afda81e2",
-      "claimId": "claim-docs-cli-reference-md-500",
+      "claimId": "claim-docs-cli-reference-md-501",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -1346,7 +1346,7 @@
       "sourceRefs": [
         {
           "excerpt": "Shipped runtime entrypoints such as `cautilus eval live discover` and `cautilus eval live run` are Go-owned now and should be called through the CLI instead of direct `node scripts/agent-runtime/...` paths.",
-          "line": 500,
+          "line": 501,
           "path": "docs/cli-reference.md"
         }
       ],
@@ -5512,39 +5512,39 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:21c53f5ec4d397e49c7affa5c7be9dd23e9709e1649e3989c5fbaad619211e98",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-606",
-      "claimSemanticGroup": "Quality gates",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-607",
+      "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
-        "app/prompt",
         "audience:developer",
         "cautilus-eval",
         "contract",
+        "dev/repo",
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus eval test.",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
       "proofLayer": "cautilus-eval",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "Commit drift caused only by generated claim artifacts remains visible as head drift without blocking review or eval planning.",
-          "line": 606,
+          "line": 607,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
       "summary": "Commit drift caused only by generated claim artifacts remains visible as head drift without blocking review or eval planning.",
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
-      "recommendedEvalSurface": "app/prompt"
+      "recommendedEvalSurface": "dev/repo"
     },
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:1e595692e1c29eaec7f060f74a7a5eba37bc3bfc530bd2834cf71597ab225ab3",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-607",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-608",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -5564,7 +5564,7 @@
       "sourceRefs": [
         {
           "excerpt": "`claim review prepare-input` emits `cautilus.claim_review_input.v1` and records bounded clusters and skipped clusters, but still does not call an LLM or merge review results.",
-          "line": 607,
+          "line": 608,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -5576,7 +5576,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:e1f238b94302fc34437333c1a961bf8ea0289588ea97402ae9be1b6b733217c9",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-613",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-614",
       "claimSemanticGroup": "Quality gates",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -5596,7 +5596,7 @@
       "sourceRefs": [
         {
           "excerpt": "It emits `cautilus.claim_eval_plan.v1` from reviewed `cautilus-eval` claims that are ready to verify, while preserving the host boundary by not writing fixtures, prompts, runners, wrappers, or policy.",
-          "line": 613,
+          "line": 614,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -7846,7 +7846,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:2982e7e4ca58f29a0f6f869aa771beb64156d93dfd8d45b1abe7bd889a9fda7f",
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-199",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-200",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -7866,7 +7866,7 @@
       "sourceRefs": [
         {
           "excerpt": "The host repo owns the fixture contents, runner implementation, prompt files, wrappers, and acceptance policy.",
-          "line": 199,
+          "line": 200,
           "path": "docs/specs/command-surfaces.spec.md"
         }
       ],
@@ -7878,7 +7878,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:442a84b465ac9453bfb7a95d617b0600a3efbaf429c53107106d2f3bc981098c",
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-221",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-222",
       "claimSemanticGroup": "Improvement and optimization",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -7898,7 +7898,7 @@
       "sourceRefs": [
         {
           "excerpt": "GEPA-style search belongs under `optimize`, not under `claim` or `eval`, because it changes behavior after the proof surface exists.",
-          "line": 221,
+          "line": 222,
           "path": "docs/specs/command-surfaces.spec.md"
         }
       ],
@@ -7910,7 +7910,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:6bba603d71ca23b021bff6b4d3731e36ee825b73a4df174404d2e71079bd2093",
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-234",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-235",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -7928,7 +7928,7 @@
       "sourceRefs": [
         {
           "excerpt": "**How semantic should claim extraction be?** Start with deterministic source inventory and lightweight claim candidates that can be audited from file references.",
-          "line": 234,
+          "line": 235,
           "path": "docs/specs/command-surfaces.spec.md"
         }
       ],
@@ -7940,7 +7940,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:96cdef142713fe0a90c7e3099b413ffb43dadc41ecb7c834b1f2677e1d9a9f83",
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-272",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-273",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -7958,7 +7958,7 @@
       "sourceRefs": [
         {
           "excerpt": "The bundled skill must route claim discovery, evaluation, and optimization to the same family names as the binary.",
-          "line": 272,
+          "line": 273,
           "path": "docs/specs/command-surfaces.spec.md"
         }
       ],
@@ -7970,7 +7970,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:852fc848e875441bfbc8e33876c42fb2cfef5a43ef19bc759b18017328440553",
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-274",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-275",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -7989,7 +7989,7 @@
       "sourceRefs": [
         {
           "excerpt": "`claim discover` must be useful before a repo has a runnable eval adapter.",
-          "line": 274,
+          "line": 275,
           "path": "docs/specs/command-surfaces.spec.md"
         }
       ],
@@ -8001,7 +8001,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:2c87af624dd2a669b51fff1c7d2438f931bf98207a0851808985898de284dc59",
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-275",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-276",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -8019,7 +8019,7 @@
       "sourceRefs": [
         {
           "excerpt": "`claim discover` must not imply that deterministic unit-test claims belong in Cautilus eval fixtures.",
-          "line": 275,
+          "line": 276,
           "path": "docs/specs/command-surfaces.spec.md"
         }
       ],
@@ -8031,7 +8031,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:5fcf19de40fdfcdb5b58d001bac1e2a76046e983201dcd88a25abcb107286567",
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-279",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-280",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -8050,7 +8050,7 @@
       "sourceRefs": [
         {
           "excerpt": "A fresh consumer can ask Cautilus what declared behavior claims still need proof before writing eval fixtures.",
-          "line": 279,
+          "line": 280,
           "path": "docs/specs/command-surfaces.spec.md"
         }
       ],
@@ -8062,7 +8062,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:85008847dee58a2c41a1a62cab79f04005a1a38dc00d46118bec022657e7bd0b",
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-280",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-281",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -8080,7 +8080,7 @@
       "sourceRefs": [
         {
           "excerpt": "A proof plan can distinguish human-auditable, deterministic, eval-backed, scenario-candidate, and alignment-work claims.",
-          "line": 280,
+          "line": 281,
           "path": "docs/specs/command-surfaces.spec.md"
         }
       ],
@@ -8092,7 +8092,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:d8ceeb1eeab0f271f460da8271a48bae435161c2adde2a707007604876dc8020",
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-283",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-284",
       "claimSemanticGroup": "Improvement and optimization",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -8110,7 +8110,7 @@
       "sourceRefs": [
         {
           "excerpt": "Existing `eval` and `optimize` behavior remains backward compatible while the first deterministic `claim` surface lands.",
-          "line": 283,
+          "line": 284,
           "path": "docs/specs/command-surfaces.spec.md"
         }
       ],
@@ -8122,7 +8122,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:0d744a80a1c9359b604f4b0ed9be1b5aa018f3a38052d027979caa6deb118904",
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-300",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-301",
       "claimSemanticGroup": "Quality gates",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -8140,7 +8140,7 @@
       "sourceRefs": [
         {
           "excerpt": "a CLI smoke test that discovers claims from a tiny temp repo with README, AGENTS.md, and one deterministic-test-like claim",
-          "line": 300,
+          "line": 301,
           "path": "docs/specs/command-surfaces.spec.md"
         }
       ],
@@ -8152,7 +8152,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:1371476711311dbd25b60a103d2bdf038d314ef39717359316381b0f7d4fbb51",
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-307",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-308",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -8172,7 +8172,7 @@
       "sourceRefs": [
         {
           "excerpt": "Countermeasure: first slice emits source-ref-backed proof plans and keeps model-backed extraction out until a runner boundary exists.",
-          "line": 307,
+          "line": 308,
           "path": "docs/specs/command-surfaces.spec.md"
         }
       ],
@@ -8184,7 +8184,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:e85bcd4305b117be5d5b543e390c8d36513a26a2899925a4ed11133357728af5",
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-310",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-311",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -8202,7 +8202,7 @@
       "sourceRefs": [
         {
           "excerpt": "Countermeasure: `proofLayer` is required, and deterministic claims must point away from eval fixtures.",
-          "line": 310,
+          "line": 311,
           "path": "docs/specs/command-surfaces.spec.md"
         }
       ],
@@ -10037,7 +10037,7 @@
       },
       {
         "key": "Quality gates",
-        "count": 30
+        "count": 29
       },
       {
         "key": "Packets and reporting",
@@ -10049,7 +10049,7 @@
       },
       {
         "key": "Claim discovery and review",
-        "count": 17
+        "count": 18
       },
       {
         "key": "Release and packaging",
@@ -10203,7 +10203,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "a79547f0a739023399ea375539edfaf995a09717",
+  "gitCommit": "4efe2b93a1a7f7feaf8819ea7a39ed1a5d6fc6c5",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "schemaVersion": "cautilus.claim_proof_plan.v1",
@@ -10646,7 +10646,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:f6ac2e8392e61de416d07a54cdd1ab7b38d5f6b16272cdbd863a9dbf78ae1049",
+      "contentHash": "sha256:48c17386cac60faa322677a4627aeb400edbb79ba5e415d8af9f1b31e6c7cd78",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "docs",
@@ -10786,7 +10786,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:c965db76038de07cbea83f4871cf01bf68db0a0af44f28f787f10675b33ee146",
+      "contentHash": "sha256:f506d8291b9b65a3966d3f4c6a6931f87d24ae53ffb1be9110dd10375befb7a7",
       "depth": 2,
       "discoveredFrom": "docs/master-plan.md",
       "kind": "contract",
@@ -10886,7 +10886,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:e7e60b89c1d9c1915f17cffd2babf5e22340f12851ec3842fa7f6e63a5b8da83",
+      "contentHash": "sha256:db611422d68e22bfe69a2e5f77e41c69a4d4ad5c7eca3fbca6840e86d72e880b",
       "depth": 2,
       "discoveredFrom": "docs/master-plan.md",
       "kind": "spec",

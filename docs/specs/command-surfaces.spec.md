@@ -155,6 +155,7 @@ Agents should use that summary before hand-inspecting raw `changedSources` or `c
 It summarizes an existing proof-plan packet without rescanning.
 When called with `--sample-claims <n>`, it includes a bounded `sampleClaims` list so agents can inspect stable candidate fields without guessing raw packet keys.
 The summary includes `gitState`.
+The summary includes `evidenceSatisfaction` for satisfied claims and their evidence refs.
 If `gitState.isStale=true`, review, review-application, and eval-planning commands must reject the packet unless the operator explicitly passes `--allow-stale-claims`.
 `gitState.isStale` means a recorded claim source changed.
 A later commit that only records generated claim artifacts is reported as `headDrift=true` and `comparisonStatus=fresh-with-head-drift`, not as stale.

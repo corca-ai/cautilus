@@ -310,6 +310,55 @@ func TestBuildClaimStatusSummaryCanIncludeBoundedSampleClaims(t *testing.T) {
 	}
 }
 
+func TestBuildClaimStatusSummaryIncludesSatisfiedEvidence(t *testing.T) {
+	packet := map[string]any{
+		"schemaVersion": contracts.ClaimProofPlanSchema,
+		"sourceRoot":    ".",
+		"sourceInventory": []any{
+			map[string]any{"path": "README.md", "kind": "markdown", "status": "read", "depth": 0},
+		},
+		"claimCandidates": []any{
+			map[string]any{
+				"claimId":                "claim-readme-md-1",
+				"claimFingerprint":       "sha256:satisfied",
+				"summary":                "The skill flow is already covered.",
+				"recommendedProof":       "cautilus-eval",
+				"recommendedEvalSurface": "dev/skill",
+				"verificationReadiness":  "ready-to-verify",
+				"evidenceStatus":         "satisfied",
+				"reviewStatus":           "agent-reviewed",
+				"lifecycle":              "new",
+				"groupHints":             []any{"cautilus-eval"},
+				"evidenceRefs": []any{map[string]any{
+					"path":             ".cautilus/claims/evidence.json",
+					"kind":             "cautilus-claim-evidence-bundle",
+					"matchKind":        "verified",
+					"contentHash":      "sha256:test",
+					"supportsClaimIds": []any{"claim-readme-md-1"},
+				}},
+				"sourceRefs": []any{map[string]any{"path": "README.md", "line": 1, "excerpt": "The skill flow is already covered."}},
+				"proofLayer": "cautilus-eval",
+			},
+		},
+	}
+	summary, err := BuildClaimStatusSummary(packet, "claims.json")
+	if err != nil {
+		t.Fatalf("BuildClaimStatusSummary returned error: %v", err)
+	}
+	evidence := asMap(summary["evidenceSatisfaction"])
+	if evidence["satisfiedClaimCount"] != 1 {
+		t.Fatalf("expected one satisfied claim, got %#v", evidence)
+	}
+	claims := arrayOrEmpty(evidence["satisfiedClaims"])
+	if len(claims) != 1 {
+		t.Fatalf("expected one satisfied claim entry, got %#v", claims)
+	}
+	first := asMap(claims[0])
+	if first["claimId"] != "claim-readme-md-1" || first["evidenceRefCount"] != 1 {
+		t.Fatalf("expected satisfied evidence context, got %#v", first)
+	}
+}
+
 func TestBuildClaimReviewInputClustersAndSkipsDeterministically(t *testing.T) {
 	repoRoot := filepath.Join("..", "..", "fixtures", "claim-discovery", "tiny-repo")
 	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
