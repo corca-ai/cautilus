@@ -187,6 +187,8 @@
    review prepare-input과 reviewer launch branch proof는 Codex/Claude 양쪽에서 완료됐다.
    evidence preflight의 첫 slice는 possible evidence hint까지만 허용하는 형태로 들어왔다.
    public `claim group` 또는 `claim refresh` command는 만들지 않는다.
+   `claim plan-evals`는 이제 각 plan에 `fixtureAuthoringGuidance`를 포함해 surface/preset, 최소 fixture 필드, runner output schema, required runner capability/observability, host-owned non-writer boundary를 보여준다.
+   그래서 eval-fixture authoring guidance 자체는 닫혔고, 남은 claim-hardening 후보는 review-result application branch proof와 deeper evidence reconciliation이다.
 5. evaluation-surface composition primitives C2/C3/C4는 모두 shipped 상태다.
    C2 `extends`는 2026-05-01에 file-backed `eval test` fixture에서 shipped 됐다.
    C3 `steps`도 2026-05-01에 strict explicit `outputProjection` 기반으로 shipped 됐다.

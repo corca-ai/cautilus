@@ -75,8 +75,8 @@ Use [consumer-readiness.md](./maintainers/consumer-readiness.md) for checked-in 
 The three command-family contract lives in [specs/command-surfaces.spec.md](./specs/command-surfaces.spec.md): `claim` for declared-claim discovery and proof planning, `eval` for verification, and `optimize` for bounded improvement.
 The first `claim` slice ships as deterministic `cautilus claim discover`, which emits a source-ref-backed proof plan rather than a verdict.
 The next claim-discovery workflow contract lives in [claim-discovery-workflow.md](./contracts/claim-discovery-workflow.md): the binary owns deterministic skeletons, scan scope, state paths, refresh plans, and packet semantics; the bundled skill owns user confirmation, LLM review, grouping, evidence interpretation, and next-action conversation.
-The deterministic binary slice, first bundled-skill control-flow slice, deterministic review-input helper slice, possible-evidence preflight, and guarded review-result application slice are now implemented.
-Eval-scenario planning and deeper evidence reconciliation remain the next claim-discovery hardening seams.
+The deterministic binary slice, first bundled-skill control-flow slice, deterministic review-input helper slice, possible-evidence preflight, guarded review-result application slice, eval planning, and fixture-authoring guidance are now implemented.
+Deeper evidence reconciliation remains the next claim-discovery hardening seam.
 The current evaluation contract lives in [specs/evaluation-surfaces.spec.md](./specs/evaluation-surfaces.spec.md): two surfaces (`dev`, `app`), four presets (`repo`, `skill`, `chat`, `prompt`), and four fixture composition primitives.
 The earlier first-class archetype boundary (chatbot / skill / workflow) was retired with that redesign.
 `npm run lint:specs` and `npm run lint:archetypes` still gate the runtime completeness of the surviving `scenario normalize` helpers; new user-facing copy must reconcile with the surface/preset contract before landing.
@@ -170,7 +170,7 @@ Still open:
 
 ## Immediate Next Moves
 
-1. Decide the next claim-discovery hardening slice from [claim-discovery-workflow.md](./contracts/claim-discovery-workflow.md): review-result application branch proof, deeper evidence reconciliation, or eval-fixture authoring guidance.
+1. Decide the next claim-discovery hardening slice from [claim-discovery-workflow.md](./contracts/claim-discovery-workflow.md): review-result application branch proof or deeper evidence reconciliation.
 2. Pick the next bounded improvement seam for the optimization layer: either close a specific richer merge heuristic that dogfood evidence asks for, or move to another roadmap slice rather than extending heuristics speculatively.
 3. Expand typed multi-runner metadata from the shipped `runner_readiness.runners` base only when real consumer adapters need additional fields; source-code inference remains deferred.
 4. Expand scenario-history beyond the first profile-backed comparison cache-key path toward reusable baseline results and broader compare ownership.

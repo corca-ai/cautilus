@@ -773,8 +773,29 @@ func TestBuildClaimEvalPlanSelectsReviewedEvalClaims(t *testing.T) {
 	if requirement["requiredRunnerCapability"] != "development-repo-eval-runner" || requirement["requiresProductRunnerProof"] != false {
 		t.Fatalf("expected dev/repo proof requirement, got %#v", requirement)
 	}
+	guidance := asMap(first["fixtureAuthoringGuidance"])
+	if guidance["evaluationInputSchema"] != contracts.EvaluationInputSchema || guidance["surface"] != "dev" || guidance["preset"] != "repo" {
+		t.Fatalf("expected dev/repo fixture guidance, got %#v", guidance)
+	}
+	if guidance["fixtureOwner"] != "host-repo" || guidance["runnerOwner"] != "host-repo-adapter" {
+		t.Fatalf("expected host-owned fixture and runner guidance, got %#v", guidance)
+	}
 	if first["draftIntent"] == "" || evalPlan["nonWriterNotice"] == "" {
 		t.Fatalf("expected draft intent and non-writer notice, got %#v", evalPlan)
+	}
+}
+
+func TestBuildClaimEvalFixtureAuthoringGuidanceIncludesSkillTriggerFields(t *testing.T) {
+	guidance := BuildClaimEvalFixtureAuthoringGuidance("dev/skill")
+	if guidance["surface"] != "dev" || guidance["preset"] != "skill" || guidance["runnerOutputSchema"] != contracts.SkillEvaluationInputsSchema {
+		t.Fatalf("expected dev/skill fixture guidance, got %#v", guidance)
+	}
+	if fields := stringArrayOrEmpty(guidance["minimumCaseFields"]); !containsString(fields, "evaluationKind") || !containsString(fields, "prompt") {
+		t.Fatalf("expected dev/skill required case fields, got %#v", fields)
+	}
+	triggerFields := stringArrayOrEmpty(asMap(guidance["conditionalCaseFields"])["trigger"])
+	if !containsString(triggerFields, "expectedTrigger") {
+		t.Fatalf("expected dev/skill trigger conditional fields, got %#v", guidance)
 	}
 }
 
@@ -816,6 +837,19 @@ func TestBuildClaimEvalPlanMarksAppClaimsAsProductRunnerProof(t *testing.T) {
 	}
 	if observability := stringArrayOrEmpty(requirement["requiredObservability"]); !containsString(observability, "transcript") || !containsString(observability, "finalText") {
 		t.Fatalf("expected chat observability requirements, got %#v", observability)
+	}
+	guidance := asMap(asMap(plans[0])["fixtureAuthoringGuidance"])
+	if guidance["surface"] != "app" || guidance["preset"] != "chat" || guidance["runnerOutputSchema"] != contracts.AppChatEvaluationInputsSchema {
+		t.Fatalf("expected app/chat fixture guidance, got %#v", guidance)
+	}
+	if fields := stringArrayOrEmpty(guidance["minimumCaseFields"]); !containsString(fields, "messages") || !containsString(fields, "expected") {
+		t.Fatalf("expected app/chat minimum case fields, got %#v", fields)
+	}
+	if fields := stringArrayOrEmpty(guidance["minimumSuiteFields"]); !containsString(fields, "provider") || !containsString(fields, "model") {
+		t.Fatalf("expected app/chat provider/model suite fields, got %#v", fields)
+	}
+	if !strings.Contains(stringFromAny(guidance["expectedShape"]), "expected.snapshot") {
+		t.Fatalf("expected snapshot guidance for app/chat, got %#v", guidance)
 	}
 }
 

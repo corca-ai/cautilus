@@ -454,6 +454,7 @@ Follow-on commands are justified only when they operate on an existing claim-sta
 - `claim review apply-result`: merge `cautilus.claim_review_result.v1` labels and evidence refs into an existing claim packet without calling an LLM, rejecting stale packets by default
 - `claim plan-evals`: turn reviewed `cautilus-eval` claims into `cautilus.claim_eval_plan.v1` intermediate packets without writing host-owned fixtures, rejecting stale packets by default
 - `claim plan-evals`: each plan carries `proofRequirement.requiredRunnerCapability`, `proofRequirement.requiredObservability`, and whether the target surface requires product-runner proof; these are requirements for later setup/eval work, not readiness verdicts
+- `claim plan-evals`: each plan carries `fixtureAuthoringGuidance` with the `cautilus.evaluation_input.v1` surface/preset, minimum suite and case fields, runner output schema, required runner capability, required observability, and a non-writer boundary so agents can author host-owned fixtures without guessing packet shape
 - `claim validate`: emit `cautilus.claim_validation_report.v1` for packet shape and evidence-ref checks without mutating claims
 
 These commands are optional later surfaces.
@@ -614,5 +615,7 @@ It also records `planSummary`, including skipped counts and a zero-plan reason, 
 Skipped claims retain proof routing, readiness, evidence status, and review status.
 `already-satisfied` skips also retain source refs, evidence refs, and unresolved questions so they can be audited from the eval-plan packet itself.
 It rejects stale claim packets by default.
+The fixture-authoring guidance slice added surface/preset-specific `fixtureAuthoringGuidance` to each eval plan.
+That guidance names the minimum host-owned fixture fields, expected shape, runner output schema, required runner capability, and required observability without writing host repo fixtures or policy.
 The validation slice added `claim validate`.
 It emits `cautilus.claim_validation_report.v1`, exits non-zero for invalid packet shape or evidence refs, and does not mutate claims or search for evidence.

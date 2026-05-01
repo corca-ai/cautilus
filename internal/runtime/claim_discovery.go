@@ -2123,17 +2123,18 @@ func BuildClaimEvalPlan(packet map[string]any, options ClaimEvalPlanOptions) (ma
 			continue
 		}
 		plans = append(plans, map[string]any{
-			"planId":              "eval-plan-" + slugifyClaimID(claimID),
-			"claimId":             claimID,
-			"claimFingerprint":    candidate["claimFingerprint"],
-			"targetSurface":       claimEvalPlanSurface(candidate),
-			"proofRequirement":    BuildClaimProofRequirement(claimEvalPlanSurface(candidate)),
-			"draftIntent":         claimEvalPlanIntent(candidate),
-			"sourceRefs":          arrayOrEmpty(candidate["sourceRefs"]),
-			"evidenceStatus":      candidate["evidenceStatus"],
-			"reviewStatus":        candidate["reviewStatus"],
-			"unresolvedQuestions": arrayOrEmpty(candidate["unresolvedQuestions"]),
-			"nextStep":            "Create a host-owned cautilus.evaluation_input.v1 fixture and adapter-owned runner for this plan.",
+			"planId":                   "eval-plan-" + slugifyClaimID(claimID),
+			"claimId":                  claimID,
+			"claimFingerprint":         candidate["claimFingerprint"],
+			"targetSurface":            claimEvalPlanSurface(candidate),
+			"proofRequirement":         BuildClaimProofRequirement(claimEvalPlanSurface(candidate)),
+			"fixtureAuthoringGuidance": BuildClaimEvalFixtureAuthoringGuidance(claimEvalPlanSurface(candidate)),
+			"draftIntent":              claimEvalPlanIntent(candidate),
+			"sourceRefs":               arrayOrEmpty(candidate["sourceRefs"]),
+			"evidenceStatus":           candidate["evidenceStatus"],
+			"reviewStatus":             candidate["reviewStatus"],
+			"unresolvedQuestions":      arrayOrEmpty(candidate["unresolvedQuestions"]),
+			"nextStep":                 "Create a host-owned cautilus.evaluation_input.v1 fixture and adapter-owned runner for this plan.",
 		})
 	}
 	return map[string]any{
@@ -2242,6 +2243,57 @@ func claimEvalPlanIntent(candidate map[string]any) string {
 		return "Verify the selected claim through a bounded Cautilus eval fixture."
 	}
 	return "Verify that " + strings.TrimSuffix(summary, ".") + "."
+}
+
+func BuildClaimEvalFixtureAuthoringGuidance(surface string) map[string]any {
+	surface = strings.TrimSpace(surface)
+	if surface == "" {
+		surface = "dev/repo"
+	}
+	parts := strings.SplitN(surface, "/", 2)
+	fixtureSurface := parts[0]
+	fixturePreset := ""
+	if len(parts) == 2 {
+		fixturePreset = parts[1]
+	}
+	guidance := map[string]any{
+		"schemaVersion":            "cautilus.claim_eval_fixture_authoring_guidance.v1",
+		"evaluationInputSchema":    contracts.EvaluationInputSchema,
+		"surface":                  fixtureSurface,
+		"preset":                   fixturePreset,
+		"fixtureOwner":             "host-repo",
+		"runnerOwner":              "host-repo-adapter",
+		"requiredRunnerCapability": requiredRunnerCapability(surface),
+		"requiredObservability":    stringArrayToAny(requiredObservability(surface)),
+		"nonWriterBoundary":        "Cautilus plans the fixture contract but does not write host-owned fixtures, prompts, runners, wrappers, or acceptance policy.",
+	}
+	switch surface {
+	case "app/chat":
+		guidance["minimumSuiteFields"] = []any{"schemaVersion", "surface", "preset", "suiteId", "provider", "model", "cases"}
+		guidance["minimumCaseFields"] = []any{"caseId", "messages", "expected"}
+		guidance["expectedShape"] = "expected.finalText for fragment checks or expected.snapshot for file-backed finalText snapshots"
+		guidance["runnerOutputSchema"] = contracts.AppChatEvaluationInputsSchema
+	case "app/prompt":
+		guidance["minimumSuiteFields"] = []any{"schemaVersion", "surface", "preset", "suiteId", "provider", "model", "cases"}
+		guidance["minimumCaseFields"] = []any{"caseId", "input", "expected"}
+		guidance["expectedShape"] = "expected.finalText for fragment checks or expected.snapshot for file-backed finalText snapshots"
+		guidance["runnerOutputSchema"] = contracts.AppPromptEvaluationInputsSchema
+	case "dev/skill":
+		guidance["minimumSuiteFields"] = []any{"schemaVersion", "surface", "preset", "suiteId", "cases"}
+		guidance["minimumCaseFields"] = []any{"caseId", "evaluationKind", "prompt"}
+		guidance["conditionalCaseFields"] = map[string]any{
+			"trigger":   []any{"expectedTrigger"},
+			"execution": []any{"thresholds or turns/auditKind when the evaluated behavior needs them"},
+		}
+		guidance["expectedShape"] = "trigger cases require expectedTrigger; execution cases use thresholds, turns, or auditKind depending on the skill contract"
+		guidance["runnerOutputSchema"] = contracts.SkillEvaluationInputsSchema
+	default:
+		guidance["minimumSuiteFields"] = []any{"schemaVersion", "surface", "preset", "suiteId", "cases"}
+		guidance["minimumCaseFields"] = []any{"caseId", "prompt"}
+		guidance["expectedShape"] = "case-level expected files, commands, or routing evidence owned by the repo runner"
+		guidance["runnerOutputSchema"] = contracts.EvaluationObservedSchema
+	}
+	return guidance
 }
 
 func BuildClaimValidationReport(packet map[string]any, options ClaimValidationOptions) map[string]any {

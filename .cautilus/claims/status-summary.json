@@ -258,16 +258,16 @@
         "summary": "Agent track — Claude / Codex plugin.** The `cautilus install` step also lands a bundled skill at `.agents/skills/cautilus/` with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally."
       },
       {
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-611",
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-612",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
-            "contentHash": "sha256:9a2f513755c36e041c41c77b8cb4844a34804f852b5391e0c326e419cd17bc17",
+            "contentHash": "sha256:f53d5b623ed0dbd05e5e29e2ae037a200bda6677eb92f2b330681f4499729bc7",
             "kind": "cautilus-claim-evidence-bundle",
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-review-to-eval-flow.json",
             "supportsClaimIds": [
-              "claim-docs-contracts-claim-discovery-workflow-md-611"
+              "claim-docs-contracts-claim-discovery-workflow-md-612"
             ]
           }
         ],
@@ -278,17 +278,17 @@
       }
     ]
   },
-  "gitCommit": "9d44ca3c0f61d4e899bdf7bcfd1b98c7bf6de3bb",
+  "gitCommit": "30d9f6303e7097661d0195a789454f954e74a3be",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "9d44ca3c0f61d4e899bdf7bcfd1b98c7bf6de3bb",
+    "currentGitCommit": "30d9f6303e7097661d0195a789454f954e74a3be",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "9d44ca3c0f61d4e899bdf7bcfd1b98c7bf6de3bb",
+    "packetGitCommit": "30d9f6303e7097661d0195a789454f954e74a3be",
     "recommendedAction": "The claim packet commit matches the current checkout.",
     "workingTreePolicy": "excluded"
   },

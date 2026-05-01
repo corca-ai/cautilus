@@ -183,6 +183,7 @@ It records that default skip in `selectionPolicy.excludesEvidenceStatus`.
 It records `planSummary` so an empty `evalPlans` array explains whether nothing is left because claims are already satisfied, not eval targets, not reviewed, or not ready.
 It rejects stale claim packets by default.
 It records claim ids, target eval surfaces, draft intents, source refs, evidence status, review status, and unresolved questions.
+Each eval plan includes `fixtureAuthoringGuidance`, which names the `cautilus.evaluation_input.v1` surface/preset, minimum suite and case fields, expected shape, runner output schema, required runner capability, required observability, and the host-owned non-writer boundary.
 Skipped claims retain claim ids, proof routing, readiness, evidence status, and review status; `already-satisfied` entries also retain source refs, evidence refs, and unresolved questions so they remain auditable without joining back to the source claim packet.
 It does not write host-owned fixtures, prompts, runners, wrappers, or acceptance policy.
 
