@@ -478,6 +478,7 @@ The status packet should also include `actionSummary.primaryBuckets`, so a calle
 
 The status packet may also include cross-cutting signals such as `heuristic-review-needed` and `stale-evidence`.
 These are not exclusive primary buckets because a claim can both need review and belong to a proof branch.
+Each action bucket should include `byReviewStatus` and `byEvidenceStatus` counts so a human can tell whether the queue is already reviewed enough to spend time on or still needs agent triage first.
 
 ## Follow-On Commands
 

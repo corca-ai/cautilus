@@ -659,6 +659,9 @@ func TestBuildClaimStatusSummaryIncludesSatisfiedEvidence(t *testing.T) {
 	if bucket["id"] != "already-satisfied" || bucket["count"] != 1 {
 		t.Fatalf("expected satisfied claim action bucket, got %#v", bucket)
 	}
+	if asMap(bucket["byReviewStatus"])["agent-reviewed"] != 1 || asMap(bucket["byEvidenceStatus"])["satisfied"] != 1 {
+		t.Fatalf("expected action bucket status breakdowns, got %#v", bucket)
+	}
 }
 
 func TestBuildClaimReviewInputClustersAndSkipsDeterministically(t *testing.T) {

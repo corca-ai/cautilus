@@ -1840,6 +1840,8 @@ type claimStatusActionBucket struct {
 	summary          string
 	count            int
 	sampleClaimIDs   []string
+	byReviewStatus   map[string]int
+	byEvidenceStatus map[string]int
 }
 
 func claimStatusActionSummary(candidates []any) map[string]any {
@@ -1870,12 +1872,12 @@ func claimStatusActionSummary(candidates []any) map[string]any {
 		claimID := stringFromAny(candidate["claimId"])
 		claimEvidence := stringFromAny(candidate["evidenceStatus"])
 		claimReview := stringFromAny(candidate["reviewStatus"])
-		incrementClaimStatusActionBucket(primary[claimStatusPrimaryActionID(candidate)], claimID)
+		incrementClaimStatusActionBucket(primary[claimStatusPrimaryActionID(candidate)], candidate, claimID)
 		if claimReview == "heuristic" && claimEvidence != "satisfied" {
-			incrementClaimStatusActionBucket(cross["heuristic-review-needed"], claimID)
+			incrementClaimStatusActionBucket(cross["heuristic-review-needed"], candidate, claimID)
 		}
 		if claimEvidence == "stale" {
-			incrementClaimStatusActionBucket(cross["stale-evidence"], claimID)
+			incrementClaimStatusActionBucket(cross["stale-evidence"], candidate, claimID)
 		}
 	}
 	return map[string]any{
@@ -1908,11 +1910,19 @@ func claimStatusPrimaryActionID(candidate map[string]any) string {
 	return "inspect-manually"
 }
 
-func incrementClaimStatusActionBucket(bucket *claimStatusActionBucket, claimID string) {
+func incrementClaimStatusActionBucket(bucket *claimStatusActionBucket, candidate map[string]any, claimID string) {
 	if bucket == nil {
 		return
 	}
 	bucket.count++
+	if bucket.byReviewStatus == nil {
+		bucket.byReviewStatus = map[string]int{}
+	}
+	if bucket.byEvidenceStatus == nil {
+		bucket.byEvidenceStatus = map[string]int{}
+	}
+	incrementStringCount(bucket.byReviewStatus, candidate["reviewStatus"])
+	incrementStringCount(bucket.byEvidenceStatus, candidate["evidenceStatus"])
 	if claimID != "" && len(bucket.sampleClaimIDs) < 5 {
 		bucket.sampleClaimIDs = append(bucket.sampleClaimIDs, claimID)
 	}
@@ -1928,6 +1938,8 @@ func renderClaimStatusActionBuckets(buckets []*claimStatusActionBucket) []any {
 			"id":               bucket.id,
 			"recommendedActor": bucket.recommendedActor,
 			"count":            bucket.count,
+			"byReviewStatus":   sortedCountMap(bucket.byReviewStatus),
+			"byEvidenceStatus": sortedCountMap(bucket.byEvidenceStatus),
 			"sampleClaimIds":   nonNilStringSlice(bucket.sampleClaimIDs),
 			"summary":          bucket.summary,
 		})
