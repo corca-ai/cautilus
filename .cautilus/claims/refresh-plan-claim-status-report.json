@@ -8,6 +8,7 @@
     ".cautilus/claims/latest.json",
     ".cautilus/claims/refresh-plan-action-bucket-breakdowns.json",
     ".cautilus/claims/refresh-plan-action-bucket-review-focus.json",
+    ".cautilus/claims/refresh-plan-claim-status-report.json",
     ".cautilus/claims/review-input-human-align-action-bucket.json",
     ".cautilus/claims/review-input-human-confirm-action-bucket.json",
     ".cautilus/claims/review-result-evidence-review-to-eval-flow.json",
@@ -16,11 +17,14 @@
     ".cautilus/claims/reviewed-typed-runners.json",
     ".cautilus/claims/status-summary.json",
     "charness-artifacts/debug/debug-2026-05-02-claim-status-report-eslint.md",
+    "charness-artifacts/debug/debug-2026-05-02-claim-status-report-refresh-plan-ordering.md",
     "charness-artifacts/debug/latest.md",
     "package.json",
     "plugins/cautilus/skills/cautilus/SKILL.md",
     "scripts/agent-runtime/render-claim-status-report.mjs",
     "scripts/agent-runtime/render-claim-status-report.test.mjs",
+    "scripts/agent-runtime/serve-claim-status-review.mjs",
+    "scripts/agent-runtime/serve-claim-status-review.test.mjs",
     "skills/cautilus/SKILL.md"
   ],
   "changedSources": [
@@ -1569,11 +1573,11 @@
     ],
     "status": "changes-detected",
     "summary": "The saved claim map was made from an older checkout; this plan identifies claims whose source files changed and does not update the saved claim map yet.",
-    "targetCommit": "c5f03c72bc1a889c2628d4bd4d57ec535292cda7",
+    "targetCommit": "0e232421abcfa1f880d212aca0c35f286d4f86df",
     "workingTreePolicy": "excluded"
   },
   "schemaVersion": "cautilus.claim_refresh_plan.v1",
   "sourceRoot": ".",
-  "targetCommit": "c5f03c72bc1a889c2628d4bd4d57ec535292cda7",
+  "targetCommit": "0e232421abcfa1f880d212aca0c35f286d4f86df",
   "workingTreePolicy": "excluded"
 }
