@@ -1806,7 +1806,8 @@ func BuildClaimReviewInput(packet map[string]any, options ClaimReviewInputOption
 	normalized := normalizeClaimReviewInputOptions(options)
 	possibleEvidenceRefs, evidencePreflight := collectPossibleClaimEvidenceRefs(packet, normalized.RepoRoot)
 	candidates := attachPossibleEvidenceRefs(arrayOrEmpty(packet["claimCandidates"]), possibleEvidenceRefs)
-	clusters := buildClaimReviewClusters(candidates, normalized)
+	reviewCandidates, skippedClaims := selectClaimReviewCandidates(candidates)
+	clusters := buildClaimReviewClusters(reviewCandidates, normalized)
 	renderedClusters, skipped := renderClaimReviewClusters(clusters, normalized)
 	return map[string]any{
 		"schemaVersion": contracts.ClaimReviewInputSchema,
@@ -1825,8 +1826,13 @@ func BuildClaimReviewInput(packet map[string]any, options ClaimReviewInputOption
 			"clusterPolicy":       normalized.ClusterPolicy,
 			"budgetSource":        "cli-or-default",
 		},
+		"selectionPolicy": map[string]any{
+			"excludesEvidenceStatus": []any{"satisfied"},
+			"reason":                 "already-satisfied claims do not need LLM review by default; inspect `skippedClaims` to audit carried evidence.",
+		},
 		"clusters":        renderedClusters,
 		"skippedClusters": skipped,
+		"skippedClaims":   skippedClaims,
 		"packetNotice":    "This packet prepares deterministic claim review input. It does not call an LLM or assert that any claim is satisfied.",
 	}, nil
 }
@@ -1845,6 +1851,39 @@ func normalizeClaimReviewInputOptions(options ClaimReviewInputOptions) ClaimRevi
 		options.ClusterPolicy = "default"
 	}
 	return options
+}
+
+func selectClaimReviewCandidates(candidates []any) ([]any, []any) {
+	selected := []any{}
+	skipped := []any{}
+	for _, raw := range candidates {
+		candidate := asMap(raw)
+		if stringFromAny(candidate["evidenceStatus"]) == "satisfied" {
+			skipped = append(skipped, skippedClaimReviewCandidate(candidate, "already-satisfied"))
+			continue
+		}
+		selected = append(selected, raw)
+	}
+	return selected, skipped
+}
+
+func skippedClaimReviewCandidate(candidate map[string]any, reason string) map[string]any {
+	entry := map[string]any{
+		"claimId":                stringFromAny(candidate["claimId"]),
+		"claimFingerprint":       candidate["claimFingerprint"],
+		"reason":                 reason,
+		"recommendedProof":       candidate["recommendedProof"],
+		"verificationReadiness":  candidate["verificationReadiness"],
+		"recommendedEvalSurface": stringFromAny(candidate["recommendedEvalSurface"]),
+		"evidenceStatus":         candidate["evidenceStatus"],
+		"reviewStatus":           candidate["reviewStatus"],
+	}
+	if reason == "already-satisfied" {
+		entry["sourceRefs"] = arrayOrEmpty(candidate["sourceRefs"])
+		entry["evidenceRefs"] = arrayOrEmpty(candidate["evidenceRefs"])
+		entry["unresolvedQuestions"] = arrayOrEmpty(candidate["unresolvedQuestions"])
+	}
+	return entry
 }
 
 func attachPossibleEvidenceRefs(candidates []any, refsByClaimID map[string][]any) []any {

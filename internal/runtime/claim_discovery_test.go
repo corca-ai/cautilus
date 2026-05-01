@@ -602,6 +602,83 @@ func TestBuildClaimReviewInputClustersAndSkipsDeterministically(t *testing.T) {
 	}
 }
 
+func TestBuildClaimReviewInputSkipsSatisfiedClaims(t *testing.T) {
+	packet := map[string]any{
+		"schemaVersion": contracts.ClaimProofPlanSchema,
+		"sourceRoot":    ".",
+		"sourceInventory": []any{
+			map[string]any{"path": "README.md", "kind": "markdown", "status": "read", "depth": 0},
+		},
+		"claimCandidates": []any{
+			map[string]any{
+				"claimId":                "claim-readme-md-1",
+				"claimFingerprint":       "sha256:satisfied",
+				"summary":                "The skill flow is already covered.",
+				"recommendedProof":       "cautilus-eval",
+				"recommendedEvalSurface": "dev/skill",
+				"verificationReadiness":  "ready-to-verify",
+				"evidenceStatus":         "satisfied",
+				"reviewStatus":           "agent-reviewed",
+				"lifecycle":              "new",
+				"groupHints":             []any{"cautilus-eval"},
+				"evidenceRefs": []any{map[string]any{
+					"path":             ".cautilus/claims/evidence.json",
+					"kind":             "cautilus-claim-evidence-bundle",
+					"matchKind":        "verified",
+					"contentHash":      "sha256:test",
+					"supportsClaimIds": []any{"claim-readme-md-1"},
+				}},
+				"sourceRefs": []any{map[string]any{"path": "README.md", "line": 1, "excerpt": "The skill flow is already covered."}},
+			},
+			map[string]any{
+				"claimId":                "claim-readme-md-2",
+				"claimFingerprint":       "sha256:unknown",
+				"summary":                "The skill flow still needs review.",
+				"recommendedProof":       "cautilus-eval",
+				"recommendedEvalSurface": "dev/skill",
+				"verificationReadiness":  "ready-to-verify",
+				"evidenceStatus":         "unknown",
+				"reviewStatus":           "heuristic",
+				"lifecycle":              "new",
+				"groupHints":             []any{"cautilus-eval"},
+				"evidenceRefs":           []any{},
+				"sourceRefs":             []any{map[string]any{"path": "README.md", "line": 2, "excerpt": "The skill flow still needs review."}},
+			},
+		},
+	}
+	reviewInput, err := BuildClaimReviewInput(packet, ClaimReviewInputOptions{
+		InputPath:           "claims.json",
+		MaxClusters:         10,
+		MaxClaimsPerCluster: 10,
+	})
+	if err != nil {
+		t.Fatalf("BuildClaimReviewInput returned error: %v", err)
+	}
+	clusters := arrayOrEmpty(reviewInput["clusters"])
+	if len(clusters) != 1 {
+		t.Fatalf("expected one review cluster for unsatisfied claim only, got %#v", clusters)
+	}
+	candidates := arrayOrEmpty(asMap(clusters[0])["candidates"])
+	if len(candidates) != 1 || asMap(candidates[0])["claimId"] != "claim-readme-md-2" {
+		t.Fatalf("expected only unknown claim in review cluster, got %#v", candidates)
+	}
+	skippedClaims := arrayOrEmpty(reviewInput["skippedClaims"])
+	if len(skippedClaims) != 1 {
+		t.Fatalf("expected one skipped satisfied claim, got %#v", reviewInput)
+	}
+	skipped := asMap(skippedClaims[0])
+	if skipped["reason"] != "already-satisfied" || skipped["claimId"] != "claim-readme-md-1" {
+		t.Fatalf("expected already-satisfied skip entry, got %#v", skipped)
+	}
+	if len(arrayOrEmpty(skipped["evidenceRefs"])) != 1 {
+		t.Fatalf("expected skipped satisfied claim to retain evidence refs, got %#v", skipped)
+	}
+	policy := asMap(reviewInput["selectionPolicy"])
+	if statuses := stringArrayOrEmpty(policy["excludesEvidenceStatus"]); !containsString(statuses, "satisfied") {
+		t.Fatalf("expected selection policy to document satisfied exclusion, got %#v", policy)
+	}
+}
+
 func TestBuildClaimReviewInputIncludesPossibleEvidenceRefs(t *testing.T) {
 	repoRoot := t.TempDir()
 	evidenceDir := filepath.Join(repoRoot, ".cautilus", "claims")

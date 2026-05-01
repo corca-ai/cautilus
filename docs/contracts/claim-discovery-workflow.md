@@ -609,7 +609,8 @@ The next deterministic helper slice added `claim show` and `claim review prepare
 It also includes `evidenceSatisfaction` so satisfied claims and their evidence refs are visible in the status packet without reading the full proof plan first.
 `gitState.isStale` is claim-source freshness, not raw commit equality.
 Commit drift caused only by generated claim artifacts remains visible as head drift without blocking review or eval planning.
-`claim review prepare-input` emits `cautilus.claim_review_input.v1` and records bounded clusters and skipped clusters, but still does not call an LLM or merge review results.
+`claim review prepare-input` emits `cautilus.claim_review_input.v1` and records bounded clusters, skipped clusters, and already satisfied skipped claims, but still does not call an LLM or merge review results.
+Already satisfied claims are excluded from review clusters by default so reviewer budget stays focused on unresolved claims while carried evidence remains auditable under `skippedClaims`.
 It rejects stale claim packets by default unless `--allow-stale-claims` is explicitly passed.
 The review-result application slice added `claim review apply-result`.
 It consumes `cautilus.claim_review_result.v1`, applies reviewed labels and evidence refs, records provenance, and rejects `evidenceStatus=satisfied` unless a direct or verified evidence ref supports the claim.
