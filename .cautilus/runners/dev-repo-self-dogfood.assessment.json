@@ -4,10 +4,10 @@
   "surface": "dev/repo",
   "proofClass": "coding-agent-messaging",
   "assessedBy": "codex-local-backend-eval",
-  "assessedAt": "2026-05-01T00:38:30Z",
-  "repoCommit": "905735f0fa87c3d01d3f9cc152629b7a787361f4",
+  "assessedAt": "2026-05-01T05:59:03Z",
+  "repoCommit": "665cc62e32ca642aec7534f150da3b687550736c",
   "adapterPath": ".agents/cautilus-adapter.yaml",
-  "adapterHash": "sha256:56957ffe8d991648f8ab80e10b0ee4591415943f0c75bc718b6b249546a0792f",
+  "adapterHash": "sha256:3f2d21dfc851920fa387900b64a36193266849f4727065caef4cc8e31e318585",
   "runnerFiles": [
     {
       "path": "scripts/run-self-dogfood-eval.mjs",
@@ -50,9 +50,9 @@
       "eval-summary.json"
     ],
     "evidenceRefs": [
-      "/tmp/cautilus-dev-repo-codex-eval-v4/eval-summary.json",
-      "/tmp/cautilus-dev-repo-codex-eval-v4/eval-observed.json",
-      "/tmp/cautilus-dev-repo-codex-eval-v4/eval-test/checked-in-agents-routing/result.json"
+      "artifacts/self-dogfood/dev-repo-self-dogfood/latest/eval-summary.json",
+      "artifacts/self-dogfood/dev-repo-self-dogfood/latest/eval-observed.json",
+      "artifacts/self-dogfood/dev-repo-self-dogfood/latest/eval-test/checked-in-agents-routing/result.json"
     ]
   },
   "knownGaps": [
