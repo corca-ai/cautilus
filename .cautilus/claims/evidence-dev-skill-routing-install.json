@@ -10,8 +10,9 @@
   "evidenceScope": {
     "targetSurface": "dev/skill",
     "runtime": "codex",
-    "claimBoundary": "Supports the README claims that Cautilus can be used to check skill or agent trigger/execution/static-readiness behavior, and that the install path lands a bundled skill plus Codex/Claude agent plugin surfaces that can drive the contracts conversationally.",
+    "claimBoundary": "Supports the README claims that Cautilus can be used to check skill or agent trigger/execution/static-readiness behavior, and that the install path lands a bundled skill plus Codex/Claude agent plugin manifests while the installed skill drives the contracts conversationally under Codex.",
     "notClaimed": [
+      "Claude conversational runtime parity for this evidence bundle",
       "Every possible skill prompt",
       "All Cautilus claims",
       "App/product behavior proof"

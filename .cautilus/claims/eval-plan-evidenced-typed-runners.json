@@ -40,6 +40,9 @@
   "nonWriterNotice": "This packet plans eval fixtures but does not write host-owned fixtures, prompts, runners, or policy.",
   "schemaVersion": "cautilus.claim_eval_plan.v1",
   "selectionPolicy": {
+    "excludesEvidenceStatus": [
+      "satisfied"
+    ],
     "maxClaims": 20,
     "requiresRecommendedProof": "cautilus-eval",
     "requiresReviewStatus": [
@@ -1106,51 +1109,51 @@
       "reason": "not-reviewed"
     },
     {
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-196",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-197",
       "reason": "not-reviewed"
     },
     {
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-218",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-219",
       "reason": "not-reviewed"
     },
     {
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-231",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-232",
       "reason": "not-cautilus-eval"
     },
     {
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-269",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-270",
       "reason": "not-cautilus-eval"
-    },
-    {
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-271",
-      "reason": "not-reviewed"
     },
     {
       "claimId": "claim-docs-specs-command-surfaces-spec-md-272",
-      "reason": "not-cautilus-eval"
+      "reason": "not-reviewed"
     },
     {
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-276",
-      "reason": "not-reviewed"
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-273",
+      "reason": "not-cautilus-eval"
     },
     {
       "claimId": "claim-docs-specs-command-surfaces-spec-md-277",
-      "reason": "not-cautilus-eval"
-    },
-    {
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-280",
-      "reason": "not-cautilus-eval"
-    },
-    {
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-297",
-      "reason": "not-cautilus-eval"
-    },
-    {
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-304",
       "reason": "not-reviewed"
     },
     {
-      "claimId": "claim-docs-specs-command-surfaces-spec-md-307",
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-278",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-281",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-298",
+      "reason": "not-cautilus-eval"
+    },
+    {
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-305",
+      "reason": "not-reviewed"
+    },
+    {
+      "claimId": "claim-docs-specs-command-surfaces-spec-md-308",
       "reason": "not-cautilus-eval"
     },
     {
@@ -1356,7 +1359,7 @@
   ],
   "sourceClaimPacket": {
     "candidateCount": 327,
-    "gitCommit": "6f6010b7a657a76aab9e517f34549b5a7b27b7b9",
+    "gitCommit": "7d3ada2f9d078355572c74de9a11a388a99000f7",
     "schemaVersion": "cautilus.claim_proof_plan.v1"
   }
 }

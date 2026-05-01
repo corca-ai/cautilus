@@ -3,17 +3,19 @@ Date: 2026-05-01
 
 ## Problem
 
-`claim plan-evals` keeps emitting an eval plan for a claim after that claim has `evidenceStatus=satisfied`.
+`claim plan-evals` kept emitting an eval plan for a claim after that claim had `evidenceStatus=satisfied`, and the first fix skipped satisfied claims without documenting that exclusion in the generated `selectionPolicy`.
 
 ## Correct Behavior
 
 Given a reviewed claim packet, when a `cautilus-eval` claim already has verified/direct evidence and `evidenceStatus=satisfied`, then default eval planning should skip that claim instead of asking the host to create or run another eval fixture.
+The generated eval-plan packet should also state that satisfied claims are excluded, so a downstream reader can understand the selection policy without reverse-engineering `skippedClaims`.
 
 ## Observed Facts
 
 - `.cautilus/claims/evidenced-typed-runners.json` marks `claim-readme-md-148` as `evidenceStatus=satisfied`.
 - `claim validate` accepted the packet with `valid=true` and `issueCount=0`.
 - `claim plan-evals --claims .cautilus/claims/evidenced-typed-runners.json` still included `claim-readme-md-148`.
+- Fresh-eye review later confirmed the skip behavior but found that `selectionPolicy` omitted the `evidenceStatus=satisfied` exclusion.
 
 ## Reproduction
 
@@ -30,19 +32,21 @@ Given a reviewed claim packet, when a `cautilus-eval` claim already has verified
 
 ## Hypothesis
 
-If `BuildClaimEvalPlan` skips claims with `evidenceStatus=satisfied`, then satisfied claims will stay valid evidence records but no longer appear in new eval fixture plans.
+If `BuildClaimEvalPlan` skips claims with `evidenceStatus=satisfied` and records `excludesEvidenceStatus=["satisfied"]` in `selectionPolicy`, then satisfied claims will stay valid evidence records, no longer appear in new eval fixture plans, and remain explainable from the packet itself.
 
 ## Verification
 
 - Added `TestBuildClaimEvalPlanSkipsSatisfiedEvalClaims`.
+- Extended the same test to assert `selectionPolicy.excludesEvidenceStatus` includes `satisfied`.
 - Ran `go test ./internal/runtime -run 'TestBuildClaimEvalPlan(SkipsSatisfiedEvalClaims|SelectsReviewedEvalClaims|SkipsHeuristicEvalClaims)'`.
 - Re-ran `./bin/cautilus claim plan-evals --claims .cautilus/claims/evidenced-typed-runners.json --output .cautilus/claims/eval-plan-evidenced-typed-runners.json`.
-- The evidenced eval plan now has three remaining plans and skips `claim-readme-md-148` with `reason=already-satisfied`.
+- The evidenced eval plan now has one remaining plan and skips `claim-readme-md-144`, `claim-readme-md-148`, and `claim-readme-md-211` with `reason=already-satisfied`.
 
 ## Root Cause
 
-`BuildClaimEvalPlan` did not consider `evidenceStatus`.
+`BuildClaimEvalPlan` did not initially consider `evidenceStatus`.
 Once a claim became satisfied, it still matched `recommendedProof=cautilus-eval`, `verificationReadiness=ready-to-verify`, and `reviewStatus=agent-reviewed`, so it stayed in the planning queue.
+The first repair added the filter but missed the packet-level policy metadata.
 
 ## Seam Risk
 
@@ -61,4 +65,4 @@ Once a claim became satisfied, it still matched `recommendedProof=cautilus-eval`
 
 ## Prevention
 
-Add a regression test that satisfied `cautilus-eval` claims are skipped by default eval planning.
+Add a regression test that satisfied `cautilus-eval` claims are skipped by default eval planning and that the generated selection policy documents the exclusion.

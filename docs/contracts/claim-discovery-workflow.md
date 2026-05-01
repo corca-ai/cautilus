@@ -599,6 +599,7 @@ It consumes `cautilus.claim_review_result.v1`, applies reviewed labels and evide
 It also rejects stale claim packets by default.
 The eval-planning slice added `claim plan-evals`.
 It emits `cautilus.claim_eval_plan.v1` from reviewed `cautilus-eval` claims that are ready to verify, while preserving the host boundary by not writing fixtures, prompts, runners, wrappers, or policy.
+It skips satisfied claims by default and records that exclusion in `selectionPolicy.excludesEvidenceStatus`.
 It rejects stale claim packets by default.
 The validation slice added `claim validate`.
 It emits `cautilus.claim_validation_report.v1`, exits non-zero for invalid packet shape or evidence refs, and does not mutate claims or search for evidence.

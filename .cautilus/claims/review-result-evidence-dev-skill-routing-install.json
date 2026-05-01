@@ -23,7 +23,7 @@
               "path": ".cautilus/claims/evidence-dev-skill-routing-install.json",
               "kind": "cautilus-claim-evidence-bundle",
               "matchKind": "verified",
-              "contentHash": "sha256:548add3d40d3b601c89ce9339b6eaa162ac5ddceaf3fe160998157876745a2a7",
+              "contentHash": "sha256:dd7e4a590d4439cf31cb119491f2cb73c150f3454cf1f79d51ff6b9064c18cc5",
               "supportsClaimIds": [
                 "claim-readme-md-144"
               ]
@@ -39,13 +39,13 @@
           "recommendedEvalSurface": "dev/skill",
           "verificationReadiness": "ready-to-verify",
           "evidenceStatus": "satisfied",
-          "evidenceStatusReason": "Verified by the checked-in dev/skill routing/install evidence bundle: install and doctor preflight passed, installed skill and Claude/Codex plugin manifests are present with recorded content hashes, and the installed skill drove trigger/execution contracts conversationally under Codex.",
+          "evidenceStatusReason": "Verified by the checked-in dev/skill routing/install evidence bundle: install and doctor preflight passed, installed skill and Claude/Codex plugin manifests are present with recorded content hashes, and the installed skill drove trigger/execution contracts conversationally under Codex; this does not claim Claude conversational runtime parity.",
           "evidenceRefs": [
             {
               "path": ".cautilus/claims/evidence-dev-skill-routing-install.json",
               "kind": "cautilus-claim-evidence-bundle",
               "matchKind": "verified",
-              "contentHash": "sha256:548add3d40d3b601c89ce9339b6eaa162ac5ddceaf3fe160998157876745a2a7",
+              "contentHash": "sha256:dd7e4a590d4439cf31cb119491f2cb73c150f3454cf1f79d51ff6b9064c18cc5",
               "supportsClaimIds": [
                 "claim-readme-md-211"
               ]

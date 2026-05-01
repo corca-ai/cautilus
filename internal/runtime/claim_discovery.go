@@ -1927,6 +1927,7 @@ func BuildClaimEvalPlan(packet map[string]any, options ClaimEvalPlanOptions) (ma
 			"requiresRecommendedProof":      "cautilus-eval",
 			"requiresVerificationReadiness": "ready-to-verify",
 			"requiresReviewStatus":          []any{"agent-reviewed", "human-reviewed"},
+			"excludesEvidenceStatus":        []any{"satisfied"},
 			"maxClaims":                     maxClaims,
 		},
 		"evalPlans":       plans,
