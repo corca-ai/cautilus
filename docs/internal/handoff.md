@@ -20,9 +20,11 @@
 - 2026-05-01 claim state는 `.cautilus/claims/latest.json` 기준 `candidateCount=322`이다.
   `claim_discovery.state_path`는 raw discovery baseline인 `.cautilus/claims/latest.json`이고, `agent status`는 `related_state_paths`로 reviewed/evidenced packets도 함께 요약한다.
   `agent-reviewed=13`, `heuristic=309`인 reviewed packet은 `.cautilus/claims/reviewed-typed-runners.json`에 있다.
-  `.cautilus/claims/evidenced-typed-runners.json`는 `claim-readme-md-144`, `claim-readme-md-148`, `claim-readme-md-211`, `claim-docs-contracts-claim-discovery-workflow-md-612`을 `evidenceStatus=satisfied`로 올린다.
+  `.cautilus/claims/evidenced-typed-runners.json`는 `claim-readme-md-144`, `claim-readme-md-148`, `claim-readme-md-211`, `claim-docs-contracts-claim-discovery-workflow-md-618`을 `evidenceStatus=satisfied`로 올린다.
   그래서 evidenced packet의 review status는 `agent-reviewed=14`, `heuristic=308`이고 evidence status는 `satisfied=4`, `unknown=318`이다.
-  `claim discover --previous`는 current evidenced packet에서 `carryForward.matchedClaimCount=321`, `evidenceSupportIdRewriteCount=1`을 기록해 line-number 기반 claim id drift를 evidence ref에 반영했다.
+  `claim-docs-contracts-claim-discovery-workflow-md-612`는 현재 source line 기준 `claim-docs-contracts-claim-discovery-workflow-md-618`로 이동했고, claim fingerprint와 evidence bundle target id를 확인한 뒤 satisfied 상태로 다시 적용됐다.
+  `claim discover --previous`는 current evidenced packet에서 `carryForward.matchedClaimCount=322`, `evidenceSupportIdRewriteCount=0`, `staleEvidenceClaimCount=0`을 기록한다.
+  이제 direct/verified evidence ref의 `contentHash`도 repo-local evidence file에 대해 다시 확인하고, 파일 누락/변경/레포 밖 경로/claim evidence bundle의 `createdForClaimIds` 불일치가 있으면 carried `satisfied`를 `stale`로 낮춘다.
   Generated claim packets no longer emit the old `proofLayer` compatibility field; downstream workflow logic reads `recommendedProof`, `verificationReadiness`, `evidenceStatus`, `reviewStatus`, and `lifecycle` directly.
   `docs/internal/handoff.md`와 `docs/internal/research/**`는 claim source에서 제외된다.
   `docs/internal/working-patterns.md`는 durable operating pattern 문서라 developer-facing source로 남아 있다.
@@ -191,6 +193,7 @@
    `claim plan-evals`는 이제 각 plan에 `fixtureAuthoringGuidance`를 포함해 surface/preset, 최소 fixture 필드, runner output schema, required runner capability/observability, host-owned non-writer boundary를 보여준다.
    그래서 eval-fixture authoring guidance 자체는 닫혔고, 남은 claim-hardening 후보는 review-result application branch proof와 deeper evidence reconciliation이다.
    `claim discover --previous <packet>`는 fingerprint가 같은 claim의 reviewed/evidenced state를 carry forward하고, line-number 기반 `claimId`가 바뀌면 evidence ref `supportsClaimIds`를 현재 claim id로 재기록한다.
+   carried evidence는 `contentHash`와 claim-evidence bundle target id를 재확인하므로, stale evidence reconciliation 첫 slice도 닫혔다.
 5. evaluation-surface composition primitives C2/C3/C4는 모두 shipped 상태다.
    C2 `extends`는 2026-05-01에 file-backed `eval test` fixture에서 shipped 됐다.
    C3 `steps`도 2026-05-01에 strict explicit `outputProjection` 기반으로 shipped 됐다.

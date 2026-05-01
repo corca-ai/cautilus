@@ -2,7 +2,7 @@
   "schemaVersion": "cautilus.claim_evidence_bundle.v1",
   "bundleId": "evidence-review-to-eval-flow-codex-2026-05-01",
   "createdForClaimIds": [
-    "claim-docs-contracts-claim-discovery-workflow-md-612"
+    "claim-docs-contracts-claim-discovery-workflow-md-618"
   ],
   "repoCommit": "90d4088329d3d2a09981ede50941ff55efd9fbd0",
   "summary": "Codex-backed review-to-eval dogfood passed and its audit confirms the branch applied a claim review result, validated the reviewed claim packet, planned evals, and did not write fixtures or product files.",

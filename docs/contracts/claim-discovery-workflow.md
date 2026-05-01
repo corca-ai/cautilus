@@ -399,6 +399,8 @@ The binary may provide helper flags such as `claim discover --previous <packet> 
 No separate binary `claim refresh` command is planned for this stage.
 When the skill runs `claim discover --previous <packet>` for the actual refreshed proof plan, unchanged claim fingerprints carry forward reviewed labels, evidence refs, unresolved questions, and next-action state.
 If a line-number-derived display `claimId` changes while the fingerprint remains stable, carried evidence refs rewrite `supportsClaimIds` to the current claim id before validation.
+Direct or verified carried evidence refs with `contentHash` are not blindly trusted.
+The refreshed proof plan rechecks repo-local evidence files, marks the claim `evidenceStatus=stale` when a referenced file is missing, changed, outside the repo root, or when a `cautilus.claim_evidence_bundle.v1` does not list the current claim id in `createdForClaimIds`, and records stale evidence counts in `carryForward`.
 
 The refresh-plan packet should include a coordinator-facing summary rather than requiring every agent to reverse-engineer raw JSON fields:
 
@@ -590,6 +592,7 @@ The first implementation slice changed the binary skeleton:
 5. add claim fingerprints, evidence ref shape, and summary groups to the discover packet
 6. add deterministic state-path resolution and refresh-plan helper output without adding `claim refresh`
 7. carry forward reviewed/evidenced state from `--previous` by stable `claimFingerprint`, including evidence support id rewrites when display claim ids drift
+8. recheck carried direct or verified evidence refs with `contentHash` and mark affected claims stale instead of preserving satisfied evidence when the evidence file no longer matches
 
 The second implementation slice updated the bundled skill control flow:
 

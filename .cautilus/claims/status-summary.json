@@ -31,8 +31,7 @@
       "Release and packaging": 5
     },
     "byEvidenceStatus": {
-      "satisfied": 4,
-      "unknown": 318
+      "unknown": 322
     },
     "byLifecycle": {
       "new": 322
@@ -43,8 +42,7 @@
       "human-auditable": 38
     },
     "byReviewStatus": {
-      "agent-reviewed": 14,
-      "heuristic": 308
+      "heuristic": 322
     },
     "byVerificationReadiness": {
       "blocked": 2,
@@ -198,101 +196,24 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 4,
-    "satisfiedClaims": [
-      {
-        "claimId": "claim-readme-md-144",
-        "evidenceRefCount": 1,
-        "evidenceRefs": [
-          {
-            "contentHash": "sha256:dd7e4a590d4439cf31cb119491f2cb73c150f3454cf1f79d51ff6b9064c18cc5",
-            "kind": "cautilus-claim-evidence-bundle",
-            "matchKind": "verified",
-            "path": ".cautilus/claims/evidence-dev-skill-routing-install.json",
-            "supportsClaimIds": [
-              "claim-readme-md-144"
-            ]
-          }
-        ],
-        "recommendedEvalSurface": "dev/skill",
-        "recommendedProof": "cautilus-eval",
-        "reviewStatus": "agent-reviewed",
-        "summary": "Use when you change a skill or agent and want to know whether it still triggers on the right prompts, executes cleanly, and keeps its static validation passing."
-      },
-      {
-        "claimId": "claim-readme-md-148",
-        "evidenceRefCount": 1,
-        "evidenceRefs": [
-          {
-            "contentHash": "sha256:bdc972a2b15d5207596491d2e4048af7af6ce725c928ae05ddf988508c9303ba",
-            "kind": "cautilus-claim-evidence-bundle",
-            "matchKind": "verified",
-            "path": ".cautilus/claims/evidence-dev-skill-dogfood.json",
-            "supportsClaimIds": [
-              "claim-readme-md-148"
-            ]
-          }
-        ],
-        "recommendedEvalSurface": "dev/skill",
-        "recommendedProof": "cautilus-eval",
-        "reviewStatus": "agent-reviewed",
-        "summary": "The same preset can evaluate a multi-turn agent episode when the fixture provides `turns`; Cautilus's own first-scan, refresh-flow, review-prepare, reviewer-launch, and review-to-eval dogfood fixtures derive their results from audit packets."
-      },
-      {
-        "claimId": "claim-readme-md-211",
-        "evidenceRefCount": 1,
-        "evidenceRefs": [
-          {
-            "contentHash": "sha256:dd7e4a590d4439cf31cb119491f2cb73c150f3454cf1f79d51ff6b9064c18cc5",
-            "kind": "cautilus-claim-evidence-bundle",
-            "matchKind": "verified",
-            "path": ".cautilus/claims/evidence-dev-skill-routing-install.json",
-            "supportsClaimIds": [
-              "claim-readme-md-211"
-            ]
-          }
-        ],
-        "recommendedEvalSurface": "dev/skill",
-        "recommendedProof": "cautilus-eval",
-        "reviewStatus": "agent-reviewed",
-        "summary": "Agent track — Claude / Codex plugin.** The `cautilus install` step also lands a bundled skill at `.agents/skills/cautilus/` with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally."
-      },
-      {
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-615",
-        "evidenceRefCount": 1,
-        "evidenceRefs": [
-          {
-            "contentHash": "sha256:f53d5b623ed0dbd05e5e29e2ae037a200bda6677eb92f2b330681f4499729bc7",
-            "kind": "cautilus-claim-evidence-bundle",
-            "matchKind": "verified",
-            "path": ".cautilus/claims/evidence-review-to-eval-flow.json",
-            "supportsClaimIds": [
-              "claim-docs-contracts-claim-discovery-workflow-md-615"
-            ]
-          }
-        ],
-        "recommendedEvalSurface": "app/prompt",
-        "recommendedProof": "cautilus-eval",
-        "reviewStatus": "agent-reviewed",
-        "summary": "It emits `cautilus.claim_eval_plan.v1` from reviewed `cautilus-eval` claims that are ready to verify, while preserving the host boundary by not writing fixtures, prompts, runners, wrappers, or policy."
-      }
-    ]
+    "satisfiedClaimCount": 0,
+    "satisfiedClaims": []
   },
-  "gitCommit": "c7dfb5abc6e7d3aa5c114fe40782e9d08b9c4aa1",
+  "gitCommit": "f4f146b063a035b3d83d3fbe29143aa83cf4c974",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "c7dfb5abc6e7d3aa5c114fe40782e9d08b9c4aa1",
+    "currentGitCommit": "f4f146b063a035b3d83d3fbe29143aa83cf4c974",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "c7dfb5abc6e7d3aa5c114fe40782e9d08b9c4aa1",
+    "packetGitCommit": "f4f146b063a035b3d83d3fbe29143aa83cf4c974",
     "recommendedAction": "The claim packet commit matches the current checkout.",
     "workingTreePolicy": "excluded"
   },
-  "inputPath": ".cautilus/claims/evidenced-typed-runners.json",
+  "inputPath": ".cautilus/claims/latest.json",
   "inputSchemaVersion": "cautilus.claim_proof_plan.v1",
   "linkedMarkdownSourceCount": 34,
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
@@ -311,7 +232,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 293,
+    "heuristicClaimsReadyForReview": 307,
     "needsAlignment": 9,
     "needsScenario": 6
   },

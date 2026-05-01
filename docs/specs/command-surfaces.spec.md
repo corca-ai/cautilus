@@ -151,6 +151,8 @@ When `cautilus claim discover --previous <claims.json> --refresh-plan` emits `ca
 Agents should use that summary before hand-inspecting raw `changedSources` or `claimPlan`.
 When `cautilus claim discover --previous <claims.json>` emits a refreshed `cautilus.claim_proof_plan.v1`, unchanged claim fingerprints carry forward reviewed labels, evidence refs, unresolved questions, and next-action state.
 If the display `claimId` changes while the fingerprint stays stable, carried evidence refs rewrite `supportsClaimIds` to the current claim id so validation remains honest.
+Carried direct or verified evidence refs with `contentHash` are rechecked against repo-local evidence files before a satisfied state is preserved.
+If the evidence file is missing, its content hash changed, its path escapes the repo root, or a `cautilus.claim_evidence_bundle.v1` no longer lists the current claim id in `createdForClaimIds`, the refreshed claim becomes `evidenceStatus=stale` and `carryForward` records the stale evidence counts.
 
 `cautilus claim show --input <claims.json>` emits `cautilus.claim_status_summary.v1`.
 It summarizes an existing proof-plan packet without rescanning.

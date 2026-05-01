@@ -228,7 +228,7 @@ func DiscoverClaimProofPlan(options ClaimDiscoveryOptions) (map[string]any, erro
 			return nil, err
 		}
 		previousPacket = previous
-		carryForward = applyPreviousClaimState(renderedCandidates, previous)
+		carryForward = applyPreviousClaimState(resolvedRoot, renderedCandidates, previous)
 	}
 
 	packet := map[string]any{
@@ -271,7 +271,7 @@ func readClaimPacketFile(repoRoot string, path string) (map[string]any, error) {
 	return packet, nil
 }
 
-func applyPreviousClaimState(candidates []any, previous map[string]any) map[string]any {
+func applyPreviousClaimState(repoRoot string, candidates []any, previous map[string]any) map[string]any {
 	previousByFingerprint := map[string]map[string]any{}
 	for _, raw := range arrayOrEmpty(previous["claimCandidates"]) {
 		entry := asMap(raw)
@@ -282,6 +282,10 @@ func applyPreviousClaimState(candidates []any, previous map[string]any) map[stri
 	}
 	matched := 0
 	idRewritten := 0
+	staleEvidenceClaims := 0
+	changedEvidenceRefs := 0
+	missingEvidenceRefs := 0
+	unsupportedEvidenceRefs := 0
 	for _, raw := range candidates {
 		candidate := asMap(raw)
 		fingerprint := stringFromAny(candidate["claimFingerprint"])
@@ -311,13 +315,117 @@ func applyPreviousClaimState(candidates []any, previous map[string]any) map[stri
 				idRewritten++
 			}
 		}
+		reconciliation := reconcileCarriedEvidenceRefs(repoRoot, candidate)
+		if reconciliation.staleClaim {
+			staleEvidenceClaims++
+			changedEvidenceRefs += reconciliation.changedRefs
+			missingEvidenceRefs += reconciliation.missingRefs
+			unsupportedEvidenceRefs += reconciliation.unsupportedRefs
+		}
 	}
 	return map[string]any{
 		"strategy":                      "claimFingerprint",
 		"matchedClaimCount":             matched,
 		"evidenceSupportIdRewriteCount": idRewritten,
-		"notice":                        "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints.",
+		"staleEvidenceClaimCount":       staleEvidenceClaims,
+		"changedEvidenceRefCount":       changedEvidenceRefs,
+		"missingEvidenceRefCount":       missingEvidenceRefs,
+		"unsupportedEvidenceRefCount":   unsupportedEvidenceRefs,
+		"notice":                        "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
 	}
+}
+
+type evidenceReconciliationResult struct {
+	staleClaim      bool
+	changedRefs     int
+	missingRefs     int
+	unsupportedRefs int
+	reasons         []string
+}
+
+func reconcileCarriedEvidenceRefs(repoRoot string, candidate map[string]any) evidenceReconciliationResult {
+	result := evidenceReconciliationResult{}
+	claimID := stringFromAny(candidate["claimId"])
+	for _, rawRef := range arrayOrEmpty(candidate["evidenceRefs"]) {
+		ref := asMap(rawRef)
+		matchKind := stringFromAny(ref["matchKind"])
+		if matchKind != "direct" && matchKind != "verified" {
+			continue
+		}
+		path := strings.TrimSpace(stringFromAny(ref["path"]))
+		contentHash := strings.TrimSpace(stringFromAny(ref["contentHash"]))
+		if path == "" || contentHash == "" {
+			continue
+		}
+		evidencePath, ok := repoRelativeEvidencePath(repoRoot, path)
+		if !ok {
+			result.unsupportedRefs++
+			result.reasons = append(result.reasons, fmt.Sprintf("evidence ref path %s is outside the repo root", path))
+			continue
+		}
+		currentHash, err := fileSHA256(evidencePath)
+		if err != nil {
+			result.missingRefs++
+			result.reasons = append(result.reasons, fmt.Sprintf("evidence ref %s could not be read", path))
+			continue
+		}
+		if currentHash != contentHash {
+			result.changedRefs++
+			result.reasons = append(result.reasons, fmt.Sprintf("evidence ref %s contentHash changed", path))
+			continue
+		}
+		if reason := evidenceBundleClaimMismatch(evidencePath, claimID); reason != "" {
+			result.unsupportedRefs++
+			result.reasons = append(result.reasons, reason)
+		}
+	}
+	if len(result.reasons) == 0 {
+		return result
+	}
+	result.staleClaim = true
+	if stringFromAny(candidate["evidenceStatus"]) == "satisfied" {
+		candidate["evidenceStatus"] = "stale"
+		candidate["evidenceStatusReason"] = "Carried evidence requires re-review: " + strings.Join(result.reasons, "; ") + "."
+		candidate["nextAction"] = "Refresh or re-review the stale evidence refs before treating this claim as satisfied."
+	}
+	return result
+}
+
+func repoRelativeEvidencePath(repoRoot string, value string) (string, bool) {
+	if filepath.IsAbs(value) {
+		rel, err := filepath.Rel(repoRoot, filepath.Clean(value))
+		if err != nil || rel == "." || strings.HasPrefix(rel, ".."+string(filepath.Separator)) || rel == ".." {
+			return "", false
+		}
+		return filepath.Clean(value), true
+	}
+	cleaned := filepath.Clean(value)
+	if cleaned == "." || strings.HasPrefix(cleaned, ".."+string(filepath.Separator)) || cleaned == ".." {
+		return "", false
+	}
+	return filepath.Join(repoRoot, cleaned), true
+}
+
+func evidenceBundleClaimMismatch(path string, claimID string) string {
+	if claimID == "" || !strings.HasSuffix(strings.ToLower(path), ".json") {
+		return ""
+	}
+	content, err := os.ReadFile(path)
+	if err != nil {
+		return ""
+	}
+	var packet map[string]any
+	if err := json.Unmarshal(content, &packet); err != nil {
+		return ""
+	}
+	if stringFromAny(packet["schemaVersion"]) != contracts.ClaimEvidenceBundleSchema {
+		return ""
+	}
+	createdFor := stringArrayOrEmpty(packet["createdForClaimIds"])
+	if len(createdFor) == 0 || containsString(createdFor, claimID) {
+		return ""
+	}
+	return fmt.Sprintf("evidence bundle %s does not list current claimId %s in createdForClaimIds", relativeClaimPath(filepath.Dir(path), path), claimID)
 }
 
 func rewriteEvidenceRefClaimIDs(candidate map[string]any, previousClaimID string, currentClaimID string) bool {
