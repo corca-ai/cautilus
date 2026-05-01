@@ -1153,7 +1153,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:83c81805880b9762061d7ae0e99d4469f41a78b6e801d6b775db03151fe12d8d",
-      "claimId": "claim-docs-cli-reference-md-423",
+      "claimId": "claim-docs-cli-reference-md-424",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -1170,7 +1170,7 @@
       "sourceRefs": [
         {
           "excerpt": "A variant can finish as `passed`, `blocked`, or `failed`; blocked runs carry machine-readable reason codes instead of prose-only abort text.",
-          "line": 423,
+          "line": 424,
           "path": "docs/cli-reference.md"
         }
       ],
@@ -1182,7 +1182,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:84f315418d5b081d4b95da8d83048ba5c06db7fc31de2ab8b4105677a087e315",
-      "claimId": "claim-docs-cli-reference-md-427",
+      "claimId": "claim-docs-cli-reference-md-428",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -1201,7 +1201,7 @@
       "sourceRefs": [
         {
           "excerpt": "When `--output-text-key` is present, Cautilus also extracts that JSON narrative span into the rendered prompt so the judge can read the realized output directly.",
-          "line": 427,
+          "line": 428,
           "path": "docs/cli-reference.md"
         }
       ],
@@ -1213,7 +1213,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:4e71a63710e91c116f1577d1c862f0a10316bb0d32592a8caf8703b79ad2f4ce",
-      "claimId": "claim-docs-cli-reference-md-483",
+      "claimId": "claim-docs-cli-reference-md-484",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -1230,7 +1230,7 @@
       "sourceRefs": [
         {
           "excerpt": "These renderers answer: \"what should a human reviewer open first if they should inspect the same decision surface without parsing raw JSON?\"",
-          "line": 483,
+          "line": 484,
           "path": "docs/cli-reference.md"
         }
       ],
@@ -1242,7 +1242,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:0d2d0ae18ce22c8340114c00a1c819ca126769c3214c11aeeb592815afda81e2",
-      "claimId": "claim-docs-cli-reference-md-501",
+      "claimId": "claim-docs-cli-reference-md-502",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -1261,7 +1261,7 @@
       "sourceRefs": [
         {
           "excerpt": "Shipped runtime entrypoints such as `cautilus eval live discover` and `cautilus eval live run` are Go-owned now and should be called through the CLI instead of direct `node scripts/agent-runtime/...` paths.",
-          "line": 501,
+          "line": 502,
           "path": "docs/cli-reference.md"
         }
       ],
@@ -9851,7 +9851,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "2ee827d68e9ba21a1ed4ca8f8b90bbc68ace0e78",
+  "gitCommit": "51263a7d74fcb9dfd62e23ae896fd6685c764002",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "schemaVersion": "cautilus.claim_proof_plan.v1",
@@ -10294,7 +10294,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:e5bf4836febc8aa3e2a4ccb94799f0147545e76136f450fc8306f1ca91173700",
+      "contentHash": "sha256:e84a45483935c7bdfc82c823a0edcc9fb0cd0bde81a223fc62cb3c684f2f9042",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "docs",
@@ -10404,7 +10404,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:8f9aa22ad8038a4d06c3f29161b859e58c20dab53800e4a197579c56ddf7eb60",
+      "contentHash": "sha256:3f8b0789e9052bb133ba10b289b441798f2afb816b259ed419efb81a1b894f84",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "spec",

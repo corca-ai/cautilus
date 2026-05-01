@@ -609,7 +609,7 @@
     },
     {
       "claimFingerprint": "sha256:83c81805880b9762061d7ae0e99d4469f41a78b6e801d6b775db03151fe12d8d",
-      "claimId": "claim-docs-cli-reference-md-423",
+      "claimId": "claim-docs-cli-reference-md-424",
       "evidenceStatus": "unknown",
       "reason": "not-cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
@@ -619,7 +619,7 @@
     },
     {
       "claimFingerprint": "sha256:84f315418d5b081d4b95da8d83048ba5c06db7fc31de2ab8b4105677a087e315",
-      "claimId": "claim-docs-cli-reference-md-427",
+      "claimId": "claim-docs-cli-reference-md-428",
       "evidenceStatus": "unknown",
       "reason": "not-reviewed",
       "recommendedEvalSurface": "app/prompt",
@@ -629,7 +629,7 @@
     },
     {
       "claimFingerprint": "sha256:4e71a63710e91c116f1577d1c862f0a10316bb0d32592a8caf8703b79ad2f4ce",
-      "claimId": "claim-docs-cli-reference-md-483",
+      "claimId": "claim-docs-cli-reference-md-484",
       "evidenceStatus": "unknown",
       "reason": "not-cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
@@ -639,7 +639,7 @@
     },
     {
       "claimFingerprint": "sha256:0d2d0ae18ce22c8340114c00a1c819ca126769c3214c11aeeb592815afda81e2",
-      "claimId": "claim-docs-cli-reference-md-501",
+      "claimId": "claim-docs-cli-reference-md-502",
       "evidenceStatus": "unknown",
       "reason": "not-reviewed",
       "recommendedEvalSurface": "dev/repo",
@@ -3440,7 +3440,7 @@
   ],
   "sourceClaimPacket": {
     "candidateCount": 322,
-    "gitCommit": "2ee827d68e9ba21a1ed4ca8f8b90bbc68ace0e78",
+    "gitCommit": "51263a7d74fcb9dfd62e23ae896fd6685c764002",
     "schemaVersion": "cautilus.claim_proof_plan.v1"
   }
 }

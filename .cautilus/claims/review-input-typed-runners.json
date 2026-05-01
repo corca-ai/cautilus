@@ -1928,7 +1928,7 @@
   ],
   "sourceClaimPacket": {
     "candidateCount": 322,
-    "gitCommit": "2ee827d68e9ba21a1ed4ca8f8b90bbc68ace0e78",
+    "gitCommit": "51263a7d74fcb9dfd62e23ae896fd6685c764002",
     "schemaVersion": "cautilus.claim_proof_plan.v1"
   },
   "sourceRoot": "."

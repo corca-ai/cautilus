@@ -1,186 +1,128 @@
 # Quality Review
 
-Date: 2026-04-24
+Date: 2026-05-01
 
 Prior durable reviews:
 
 - `charness-artifacts/quality/history/2026-04-22.md`
-- `charness-artifacts/quality/quality.md` (2026-04-15)
 - `charness-artifacts/quality/history/2026-04-12.md`
+- `charness-artifacts/quality/quality.md` (2026-04-15)
 
 ## Scope
 
-Repo-wide posture refresh for the current deterministic gate, maintainer-local enforcement, public spec layering, and evaluator-backed self-dogfood surface.
-The most likely ownership seam to be wrong is still proof placement: public executable specs, lower-level tests, generated self-dogfood artifacts, and first-touch docs all prove adjacent claims and can drift into duplicate or over-broad evidence.
+Proof-boundary audit for the current `claim` / `eval` / `optimize` posture after app surfaces, runner readiness, proof-class downgrades, claim evidence carry-forward, and review-to-eval evidence landed.
+The most likely ownership seam to be wrong is overclaiming: fixture-backed app smoke, Codex/Claude backend proof, `eval live` product-runner proof, and runner-assessed app proof must stay distinct.
 
 ## Concept Risks
 
+- `package.json` previously named Codex app messaging dogfood scripts `dogfood:app-chat:live` and `dogfood:app-prompt:live`.
+  That was misleading because the scripts execute `cautilus eval test --runtime codex`; they are not `cautilus eval live` product-runner proof.
+  The scripts are now renamed to `dogfood:app-chat:codex` and `dogfood:app-prompt:codex`, with no compatibility aliases.
+- `docs/cli-reference.md` now states explicitly that Codex/Claude app dogfood proves backend execution over checked-in fixtures, not product-runner app proof.
+- The runner-readiness and runner-verification contracts correctly say app product proof requires a host-owned runner assessment and product-proof capability evidence.
 - Public spec layering still shows duplicate-proof pressure.
   `inventory_public_spec_quality.py` reports `duplicate_public_spec_examples` and `proof_layering_review_needed`.
-- `README.md` remains a long first-touch entrypoint.
-  `inventory_entrypoint_docs_ergonomics.py` flags it as `long_entrypoint` at 171 lines.
-- The public-skill dogfood suggestion helper could not run because this repo has no `docs/public-skill-validation.json` policy.
-  That is not a product failure by itself, but it means public skill routing proof is still owned by repo-specific self-dogfood and deterministic tests rather than the generic public-skill matrix helper.
-- `scripts/agent-runtime/evaluate-skill.mjs` and the generated candidate copy carry file-level `max-lines` suppressions.
-  This is an explicit pressure signal, not harmless background lint debt.
+- `README.md` remains long for first-touch scanning at 209 lines.
+  This is a product-doc ownership issue, not a correctness blocker for this slice.
+- `skills/cautilus/SKILL.md` still has `option_pressure_terms_present`.
+  It is below the line limit and uses progressive disclosure, but branch wording should remain a review target when the skill changes.
 
 ## Current Gates
 
 - `npm run verify`
-  - `lint:eslint`
-  - `lint:specs`
-  - `lint:archetypes`
-  - `lint:contracts`
-  - `lint:links`
-  - `lint:go`
-  - `vet:go`
-  - `security:govulncheck`
-  - `test:go:race`
-  - `test:node`
 - `npm run hooks:check`
 - checked-in `.githooks/pre-push` running `npm run verify`
-- `npm run docs:preview:specs`
-- `npm run dogfood:self`
-  - explicit quality work, not standing pre-push
+- `npm run lint:specs`
+- `npm run lint:contracts`, including `check-proof-boundary-names`
+- `go test ./internal/runtime`
+- `python3 /home/hwidong/.codex/plugins/charness/scripts/validate_debug_artifact.py --repo-root .`
+- On-demand Cautilus dogfood commands remain outside standing pre-push unless a specific slice asks for them.
 
 ## Runtime Signals
 
-- `python3 .../resolve_adapter.py --repo-root .` found a valid quality adapter at `.agents/quality-adapter.yaml`.
-- `./bin/cautilus adapter resolve --repo-root .` found a valid product adapter at `.agents/cautilus-adapter.yaml`.
-- `git status --short` was clean at review start.
-- `npm run hooks:check` passed and confirmed `core.hooksPath=.githooks`, an existing `.githooks/pre-push`, and executable permissions.
-- `npm run docs:preview:specs` passed and rendered 16 snapshots across 8 spec files into `.artifacts/markdown-preview`.
-- `npm run verify` passed in 29.92s.
-- `npm run dogfood:self` passed and refreshed `artifacts/self-dogfood/latest/*`.
-  The run produced `overallStatus: pass`, `gateRecommendation: accept-now`, and one passing `codex-review` variant.
-- The self-dogfood review variant duration was 10.442s, down from the previous checked-in latest bundle's 17.964s.
+- `python3 .../quality/scripts/resolve_adapter.py --repo-root .` found a valid quality adapter at `.agents/quality-adapter.yaml`.
+- `python3 .../find-skills/scripts/list_capabilities.py --repo-root .` reported unchanged canonical find-skills artifacts.
+- `inventory_public_spec_quality.py` still reports spec layering review pressure, but no source-guard rows.
+- `inventory_entrypoint_docs_ergonomics.py` reports `README.md` as `long_entrypoint`.
+- `inventory_cli_ergonomics.py` produced no findings.
+- `inventory_skill_ergonomics.py` reports `option_pressure_terms_present` for the bundled skill.
+- `npm run dogfood:app-chat:codex` passed with `recommendation=accept-now`, `passed=1`, `failed=0`, and proof metadata `productProofReady=false`, `runnerAssessmentState=missing-assessment`.
+- `npm run dogfood:app-prompt:codex` passed with `recommendation=accept-now`, `passed=1`, `failed=0`, and proof metadata `productProofReady=false`, `runnerAssessmentState=missing-assessment`.
 
 ## Standing Test Economics
 
-- The standing gate is compact enough for pre-push and CI at about 30s in this run.
-- The dominant standing cost is `test:go:race` at 13.24s, followed by `lint:specs` at 8.49s and `lint:eslint` at 3.04s.
-- `dogfood:self` remains correctly outside the standing gate because it depends on the review executor and refreshes generated artifacts.
-- Phase-level signal is healthy in `scripts/run-verify.mjs`, but `.githooks/pre-push` only prints one umbrella line before handing off to `npm run verify`.
-  This is acceptable because `run-verify.mjs` owns phase labels and `verify:verbose` exists as the on-demand escape hatch.
+The latest full `npm run verify` in this session passed in about 42 seconds.
+The dominant standing costs were Go race tests and spec lint.
+That remains acceptable for the checked-in pre-push hook and CI.
 
 ## Coverage and Eval Depth
 
-- No standing coverage floor is enforced.
-  The quality adapter resolution reports a coverage-floor policy shape, but `coverage_floor_inventory.py` fails with `no gate scripts matched gate_script_pattern`, so there is no live coverage-floor gate.
-- Deterministic depth is healthy.
-  Standing lint, spec, archetype, contract, link, Go lint/vet, govulncheck, Go race, and Node tests are real and green.
-- Evaluator-backed depth is healthy for the narrow self-dogfood claim in this run.
-  It is still on-demand rather than standing, and it proves honest recording and surfacing of the self-dogfood result rather than broader binary or public-skill coverage.
+- No standing coverage-floor gate is enforced.
+  This remains intentionally deferred unless a concrete escaped behavior or release requirement makes percentage coverage a low-noise authority.
+- Deterministic depth is strong for the current product surface: lint, executable specs, contract checks, link checks, Go lint/vet/race tests, Node tests, govulncheck, and secret scan are all in the standing verify command.
+- Evaluator-backed depth is strong for the named dogfood branches that have fixtures and checked artifacts.
+  It should not be generalized to broad app quality unless the proof class is `in-process-product-runner` or `live-product-runner` with a ready runner assessment.
 
 ## Maintainer-Local Enforcement
 
 - `healthy`: checked-in `.githooks/pre-push`
 - `healthy`: `core.hooksPath=.githooks`
 - `healthy`: local pre-push and GitHub Actions both run `npm run verify`
-- `healthy`: `npm run hooks:check` verifies the local hook installation contract
-- `weak`: coverage-floor policy exists as adapter-shaped metadata but has no live gate script
+- `healthy`: `npm run hooks:check` verifies local hook installation
+- `weak`: coverage-floor policy exists in adapter-shaped metadata but has no live standing gate
 
 ## Enforcement Triage
 
-- `AUTO_EXISTING`
-  - `npm run verify`
-  - `npm run hooks:check`
-  - checked-in `.githooks/pre-push`
-  - GitHub Actions `verify`
-  - `npm run docs:preview:specs`
-  - `npm run dogfood:self`
-  - `lint:specs`
-  - `lint:archetypes`
-  - `lint:contracts`
-  - `lint:links`
-  - `golangci-lint`
-  - `go vet`
-  - `govulncheck`
-  - Go race tests
-  - standing Node tests
-- `AUTO_CANDIDATE`
-  - add or intentionally waive `docs/public-skill-validation.json` if the generic public-skill dogfood matrix should cover the bundled `cautilus` skill.
-    The structural question is whether public-skill routing proof belongs in the generic helper or remains owned by the product's self-dogfood adapter.
-    A failure should trigger adding the policy file or documenting that this product intentionally uses a different skill-validation seam.
-  - split or retire the file-level `max-lines` suppression in `scripts/agent-runtime/evaluate-skill.mjs` once the next edit touches that seam.
-    The structural question is whether skill evaluation has too many responsibilities in one runtime file.
-    A failure should trigger extracting schema parsing, execution, or summary rendering rather than widening the suppression.
-  - keep collapsing duplicate proof across public specs and lower-level deterministic tests.
-    The structural question is which layer owns examples versus executable behavior checks.
-    A failure should trigger deletion or relocation of duplicate proof, not adding more spec prose.
-- `NON_AUTOMATABLE`
-  - final concept judgment about whether `README.md` is too long for first-touch adoption
-  - final reviewer judgment in self-dogfood findings
+- `AUTO_EXISTING`: `npm run verify`, `npm run hooks:check`, `lint:specs`, `lint:contracts`, `check-proof-boundary-names`, Go race tests, Node tests, govulncheck, secret scan, `claim validate`, `claim plan-evals`, proof-class summarization, runner-readiness reporting.
+- `AUTO_EXISTING`: `check-proof-boundary-names` fails when a `dogfood:*:live` npm script does not call `cautilus eval live`.
+  The protected structure is proof-class vocabulary, and a failure should trigger renaming or an explicit `eval live` implementation.
+- `AUTO_CANDIDATE`: continue collapsing duplicate proof across public specs and lower-level deterministic tests.
+  A failure should trigger deleting or relocating duplicate examples, not widening public specs.
+- `NON_AUTOMATABLE`: final judgment about whether `README.md` should be split for first-touch adoption.
 
 ## Healthy
 
-- The standing deterministic bar is real, checked in, CI-backed, and green.
-- Maintainer-local enforcement is active and aligned with CI.
-- Rendered spec preview exists as repo-owned proof and passes.
-- Self-dogfood is currently passing with executor-backed review depth for its intentionally narrow claim.
-- No dual-implementation parity smell was found by the advisory inventory.
-- Inline prompt/content bulk inventory returned no findings under the current policy.
+- App fixture smoke, Codex/Claude backend proof, and product-runner proof are now separated in command names and docs.
+- `claim discover --previous` rechecks carried direct/verified evidence refs with `contentHash` before preserving satisfied evidence.
+- Review-to-eval proof is now supported by both Codex and Claude dogfood artifacts.
+- `claim review apply-result` can clear stale unresolved questions with an explicit empty array.
+- The standing deterministic gate is green and hook-backed.
 
 ## Weak
 
-- Public spec layering still needs structural cleanup rather than more executable prose.
-- `README.md` remains long for first-touch scanning.
-- Public-skill matrix dogfood is not configured for this repo.
-- File-level lint suppression pressure remains around `scripts/agent-runtime/evaluate-skill.mjs`.
+- `README.md` is still long and should be revisited during landing-doc work.
+- Public spec layering still has duplicate-proof pressure.
+- Generic public-skill validation policy is not configured for this repo; Cautilus still relies on product-owned dogfood fixtures and deterministic tests.
 
 ## Missing
 
 - No live coverage-floor gate exists.
-  This is not automatically a blocker, but the adapter-shaped policy can be misread as active enforcement.
-- No explicit public-skill validation policy exists for the generic dogfood suggestion helper.
+- No broad app-product proof exists for app/chat or app/prompt.
+  The current app dogfood proves fixture translation, evaluator packets, and Codex/Claude backend runs over checked-in fixtures.
+  It does not prove a host app's real route, tool, state, or middleware path.
 
 ## Deferred
 
-- Do not promote `dogfood:self` into the standing pre-push gate.
-  Its executor dependency and artifact writes make it explicit quality work.
-- Do not add a coverage floor yet unless a real escaped defect or product requirement makes percentage coverage the right authority.
-- Do not compress `README.md` as a cosmetic quality edit.
-  The structural move is to clarify first-touch ownership and progressive disclosure when landing-doc work resumes.
-- Fresh-eye subagent review was not run in this session because the host policy only permits subagents when the user explicitly requests sub-agent delegation.
-  This leaves a host-contract gap for the canonical fresh-eye path rather than a substitute same-agent pass.
+- Do not promote app fixture or Codex/Claude backend dogfood into broad app quality proof.
+- Do not promote `dogfood:self` or app dogfood into standing pre-push without a separate runtime-cost decision.
+- Fresh-eye subagent review was not run because the active host instructions only allow subagents when the user explicitly asks for sub-agent delegation.
+  This leaves delegated review `blocked`, not substituted by same-agent review.
 
 ## Commands Run
 
-- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.5.8/skills/quality/scripts/resolve_adapter.py --repo-root .`
-- `rg --files .`
-- `git status --short`
-- `sed -n '1,260p' charness-artifacts/quality/latest.md`
-- `sed -n '1,240p' package.json`
-- `sed -n '1,220p' go.mod`
-- `rg -n "eslint|ruff|mypy|pyright|tsc|pytest|vitest|jest|coverage|..." .`
-- `git config --get core.hooksPath`
-- `find .git/hooks -maxdepth 1 -type f`
-- `python3 .../inventory_cli_ergonomics.py --repo-root .`
-- `python3 .../inventory_standing_gate_verbosity.py --repo-root .`
-- `python3 .../inventory_dual_implementation.py --repo-root .`
-- `python3 .../inventory_entrypoint_docs_ergonomics.py --repo-root .`
-- `python3 .../inventory_public_spec_quality.py --repo-root .`
-- `python3 .../inventory_brittle_source_guards.py --repo-root .`
-- `python3 .../inventory_skill_ergonomics.py --repo-root .`
-- `python3 .../inventory_lint_ignores.py --repo-root .`
-- `python3 .../suggest_public_skill_dogfood.py --repo-root . --skill-id cautilus`
-- `python3 .../suggest_public_skill_dogfood.py --repo-root . --json`
-- `python3 .../find_inline_prompt_bulk.py --repo-root .`
-- `python3 .../coverage_floor_inventory.py --repo-root .`
-- `python3 .../list_tool_recommendations.py --repo-root .`
-- `./bin/cautilus adapter resolve --repo-root .`
-- `npm run hooks:check`
-- `npm run docs:preview:specs`
-- `npm run verify`
-- `npm run dogfood:self`
+- `python3 /home/hwidong/.codex/plugins/charness/skills/find-skills/scripts/resolve_adapter.py --repo-root .`
+- `python3 /home/hwidong/.codex/plugins/charness/skills/find-skills/scripts/list_capabilities.py --repo-root .`
+- `python3 /home/hwidong/.codex/plugins/charness/skills/quality/scripts/resolve_adapter.py --repo-root .`
+- `python3 /home/hwidong/.codex/plugins/charness/skills/quality/scripts/inventory_public_spec_quality.py --repo-root .`
+- `python3 /home/hwidong/.codex/plugins/charness/skills/quality/scripts/inventory_entrypoint_docs_ergonomics.py --repo-root .`
+- `python3 /home/hwidong/.codex/plugins/charness/skills/quality/scripts/inventory_cli_ergonomics.py --repo-root .`
+- `python3 /home/hwidong/.codex/plugins/charness/skills/quality/scripts/inventory_skill_ergonomics.py --repo-root .`
+- `rg -n "dogfood:app-(chat|prompt):live|app-(chat|prompt)-live|live variants|live run returned|one-case live Codex|live Codex" ...`
+- `node scripts/check-proof-boundary-names.mjs`
+- `npm run dogfood:app-chat:codex`
+- `npm run dogfood:app-prompt:codex`
 
 ## Recommended Next Gates
 
-- `active` / `AUTO_CANDIDATE`: decide whether to add `docs/public-skill-validation.json` for the bundled public skill.
-  If the generic helper should own public-skill routing proof, add the policy and a generated dogfood matrix case.
-  If not, document why `dogfood:self` and deterministic tests are the canonical seam.
-- `active` / `AUTO_CANDIDATE`: when `scripts/agent-runtime/evaluate-skill.mjs` changes next, split the responsibility that forced file-level `max-lines` suppression.
-  Do not simply raise the threshold.
-- `active` / `AUTO_CANDIDATE`: continue deleting or relocating duplicate proof across public specs and lower-level tests.
-  Treat the public spec as the reader-facing contract and unit/script tests as detailed behavior proof.
-- `passive`: keep coverage-floor work deferred until there is a concrete missed behavior or release requirement that makes coverage percentage a low-noise authority.
+- `active` / `AUTO_CANDIDATE`: keep public-spec proof layering cleanup in scope when editing specs.
+- `passive`: keep coverage-floor work deferred until a concrete missed behavior or release requirement makes it the right authority.
