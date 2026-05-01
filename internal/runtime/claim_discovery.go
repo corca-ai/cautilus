@@ -1343,7 +1343,7 @@ func ClaimPacketGitState(packet map[string]any, repoRoot string) map[string]any 
 	isStale := false
 	if headDrift {
 		changedFiles, changedFilesKnown = gitChangedFilesWithStatus(repoRoot, packetCommit, currentCommit)
-		changedSources = filterClaimSourceChanges(packet, changedFiles)
+		changedSources = filterClaimSourceChanges(repoRoot, packet, changedFiles)
 		isStale = !changedFilesKnown || len(changedSources) > 0
 	}
 	state := map[string]any{
@@ -2279,7 +2279,7 @@ func BuildClaimRefreshPlan(options ClaimRefreshPlanOptions) (map[string]any, err
 	if baseCommit != "" && targetCommit != "" {
 		changedFiles, changedFilesKnown = gitChangedFilesWithStatus(options.RepoRoot, baseCommit, targetCommit)
 		if changedFilesKnown {
-			changedSources = filterClaimSourceChanges(previous, changedFiles)
+			changedSources = filterClaimSourceChanges(options.RepoRoot, previous, changedFiles)
 		}
 	}
 	previousCandidates := arrayOrEmpty(previous["claimCandidates"])
@@ -2441,14 +2441,15 @@ func gitChangedFilesWithStatus(repoRoot string, baseCommit string, targetCommit 
 	return result, true
 }
 
-func filterClaimSourceChanges(packet map[string]any, changedFiles []string) []string {
+func filterClaimSourceChanges(repoRoot string, packet map[string]any, changedFiles []string) []string {
 	sourcePaths := claimPacketSourcePathSet(packet)
 	if len(sourcePaths) == 0 {
 		return append([]string{}, changedFiles...)
 	}
+	sourceHashes := claimPacketSourceContentHashSet(packet)
 	result := []string{}
 	for _, changed := range changedFiles {
-		if sourcePaths[changed] {
+		if sourcePaths[changed] && !claimSourceContentStillMatches(repoRoot, changed, sourceHashes[changed]) {
 			result = append(result, changed)
 		}
 	}
@@ -2476,6 +2477,35 @@ func claimPacketSourcePathSet(packet map[string]any) map[string]bool {
 		}
 	}
 	return paths
+}
+
+func claimPacketSourceContentHashSet(packet map[string]any) map[string]string {
+	hashes := map[string]string{}
+	for _, raw := range arrayOrEmpty(packet["sourceInventory"]) {
+		entry := asMap(raw)
+		contentHash := strings.TrimSpace(stringOrEmpty(entry["contentHash"]))
+		if contentHash == "" {
+			continue
+		}
+		for _, key := range []string{"path", "contentPath"} {
+			path := filepath.ToSlash(filepath.Clean(stringOrEmpty(entry[key])))
+			if path != "." && strings.TrimSpace(path) != "" {
+				hashes[path] = contentHash
+			}
+		}
+	}
+	return hashes
+}
+
+func claimSourceContentStillMatches(repoRoot string, path string, recordedHash string) bool {
+	if strings.TrimSpace(recordedHash) == "" {
+		return false
+	}
+	currentHash, err := fileSHA256(resolvePath(repoRoot, path))
+	if err != nil {
+		return false
+	}
+	return currentHash == recordedHash
 }
 
 func claimSourceContentPath(repoRoot string, absPath string, relPath string) string {

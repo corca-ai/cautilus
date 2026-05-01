@@ -1,6 +1,7 @@
 package runtime
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"os/exec"
@@ -1220,6 +1221,68 @@ func TestBuildClaimRefreshPlanIgnoresCommittedClaimPacketDrift(t *testing.T) {
 	changedFiles := stringArrayOrEmpty(plan["changedFiles"])
 	if len(changedFiles) != 1 || changedFiles[0] != ".cautilus/claims/latest.json" {
 		t.Fatalf("expected changedFiles to record packet-only drift, got %#v", changedFiles)
+	}
+}
+
+func TestClaimGitStateIgnoresCommittedSourceDriftWhenContentHashMatches(t *testing.T) {
+	repoRoot := t.TempDir()
+	if err := execGit(repoRoot, "init"); err != nil {
+		t.Fatalf("git init failed: %v", err)
+	}
+	if err := execGit(repoRoot, "config", "user.email", "cautilus@example.com"); err != nil {
+		t.Fatalf("git config failed: %v", err)
+	}
+	if err := execGit(repoRoot, "config", "user.name", "Cautilus Test"); err != nil {
+		t.Fatalf("git config failed: %v", err)
+	}
+	readmePath := filepath.Join(repoRoot, "README.md")
+	mustWriteFile(t, readmePath, "Agents must follow the first workflow behavior.\n")
+	if err := execGit(repoRoot, "add", "README.md"); err != nil {
+		t.Fatalf("git add failed: %v", err)
+	}
+	if err := execGit(repoRoot, "commit", "-m", "initial"); err != nil {
+		t.Fatalf("git commit failed: %v", err)
+	}
+	base, err := execGitOutput(repoRoot, "rev-parse", "HEAD")
+	if err != nil {
+		t.Fatalf("git rev-parse base failed: %v", err)
+	}
+	mustWriteFile(t, readmePath, "Agents must follow the changed workflow behavior.\n")
+	contentHash, err := fileSHA256(readmePath)
+	if err != nil {
+		t.Fatalf("hash changed readme failed: %v", err)
+	}
+	claimsPath := filepath.Join(repoRoot, ".cautilus", "claims", "latest.json")
+	mustWriteFile(t, claimsPath, fmt.Sprintf(`{
+  "schemaVersion": "cautilus.claim_proof_plan.v1",
+  "gitCommit": %q,
+  "sourceInventory": [{"path": "README.md", "kind": "readme", "status": "read", "depth": 0, "contentHash": %q}],
+  "claimCandidates": [
+    {"claimId": "claim-readme-md-1", "sourceRefs": [{"path": "README.md"}]}
+  ]
+}
+`, base, contentHash))
+	if err := execGit(repoRoot, "add", "README.md", ".cautilus/claims/latest.json"); err != nil {
+		t.Fatalf("git add changed source and claims failed: %v", err)
+	}
+	if err := execGit(repoRoot, "commit", "-m", "commit source and claim packet"); err != nil {
+		t.Fatalf("git commit source and claims failed: %v", err)
+	}
+	var packet map[string]any
+	packetBytes, err := os.ReadFile(claimsPath)
+	if err != nil {
+		t.Fatalf("read claim packet failed: %v", err)
+	}
+	if err := json.Unmarshal(packetBytes, &packet); err != nil {
+		t.Fatalf("parse claim packet failed: %v", err)
+	}
+
+	gitState := ClaimPacketGitState(packet, repoRoot)
+	if gitState["isStale"] == true || gitState["comparisonStatus"] != "fresh-with-head-drift" {
+		t.Fatalf("expected matching content hash to avoid stale state, got %#v", gitState)
+	}
+	if err := RequireFreshClaimPacket(packet, repoRoot, "claim review prepare-input", false); err != nil {
+		t.Fatalf("expected matching content hash to satisfy freshness: %v", err)
 	}
 }
 
