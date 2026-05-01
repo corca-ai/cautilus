@@ -1,0 +1,1476 @@
+{
+  "clusters": [
+    {
+      "candidates": [
+        {
+          "claimFingerprint": "sha256:84176dd7bded68a60234d7d79401c854d97c89ed2a87e54ace984ac70db490a4",
+          "claimId": "claim-readme-md-13",
+          "currentLabels": {
+            "claimAudience": "user",
+            "claimSemanticGroup": "Adapter and portability",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "proofLayer": "deterministic",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:user",
+            "deterministic",
+            "readme"
+          ],
+          "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "They stay checked into each host repo so evaluation behavior remains reproducible, reviewable, and owned by the repo that declares it.",
+              "line": 13,
+              "path": "README.md"
+            }
+          ],
+          "summary": "They stay checked into each host repo so evaluation behavior remains reproducible, reviewable, and owned by the repo that declares it."
+        },
+        {
+          "claimFingerprint": "sha256:2439661f4452be243c0dab17f3fe5f51d86ae2155ef8e79a8e9ef32ca0d2591c",
+          "claimId": "claim-readme-md-149",
+          "currentLabels": {
+            "claimAudience": "user",
+            "claimSemanticGroup": "Adapter and portability",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "proofLayer": "deterministic",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:user",
+            "deterministic",
+            "readme"
+          ],
+          "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "When the goal is only to prove command routing and packet evaluation, `cautilus eval test --runtime fixture` can run the same product path with adapter-owned fixture results instead of launching a nested model eval.",
+              "line": 149,
+              "path": "README.md"
+            }
+          ],
+          "summary": "When the goal is only to prove command routing and packet evaluation, `cautilus eval test --runtime fixture` can run the same product path with adapter-owned fixture results instead of launching a nested model eval."
+        },
+        {
+          "claimFingerprint": "sha256:320919049969c4267f56feeb209110e44d822f29703dc1fdd362d2f120d5484a",
+          "claimId": "claim-readme-md-7",
+          "currentLabels": {
+            "claimAudience": "user",
+            "claimSemanticGroup": "Adapter and portability",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "proofLayer": "deterministic",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:user",
+            "deterministic",
+            "readme"
+          ],
+          "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "Ships as a standalone binary plus a bundled skill a host repo can install without copying another scaffold first.",
+              "line": 7,
+              "path": "README.md"
+            }
+          ],
+          "summary": "Ships as a standalone binary plus a bundled skill a host repo can install without copying another scaffold first."
+        }
+      ],
+      "claimAudience": "user",
+      "claimCount": 3,
+      "claimSemanticGroup": "Adapter and portability",
+      "clusterId": "cluster-user-adapter-and-portability-deterministic-readme",
+      "groupKey": "user:Adapter and portability:deterministic:readme",
+      "priority": 10,
+      "reason": "User-facing entry-surface claims are reviewed first because they define product promises.",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "candidates": [
+        {
+          "claimFingerprint": "sha256:cca48e23143767450d964a26876792773f2f92ca2d3588c21e022181f0c06a2e",
+          "claimId": "claim-readme-md-144",
+          "currentLabels": {
+            "claimAudience": "user",
+            "claimSemanticGroup": "Agent and skill workflow",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "proofLayer": "cautilus-eval",
+            "recommendedEvalSurface": "dev/skill",
+            "recommendedProof": "cautilus-eval",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:user",
+            "cautilus-eval",
+            "dev/skill",
+            "readme"
+          ],
+          "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
+          "sourceRefs": [
+            {
+              "excerpt": "Use when you change a skill or agent and want to know whether it still triggers on the right prompts, executes cleanly, and keeps its static validation passing.",
+              "line": 144,
+              "path": "README.md"
+            }
+          ],
+          "summary": "Use when you change a skill or agent and want to know whether it still triggers on the right prompts, executes cleanly, and keeps its static validation passing."
+        },
+        {
+          "claimFingerprint": "sha256:0326670200c2a6f36720afd68b0bf4dded8a6d931270b22ff70f68d3fe459927",
+          "claimId": "claim-readme-md-211",
+          "currentLabels": {
+            "claimAudience": "user",
+            "claimSemanticGroup": "Agent and skill workflow",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "proofLayer": "cautilus-eval",
+            "recommendedEvalSurface": "dev/skill",
+            "recommendedProof": "cautilus-eval",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:user",
+            "cautilus-eval",
+            "dev/skill",
+            "readme"
+          ],
+          "nextAction": "Create or use a dev/skill fixture that proves the installed skill can drive the named workflow.",
+          "sourceRefs": [
+            {
+              "excerpt": "Agent track — Claude / Codex plugin.** The `cautilus install` step also lands a bundled skill at `.agents/skills/cautilus/` with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally.",
+              "line": 211,
+              "path": "README.md"
+            }
+          ],
+          "summary": "Agent track — Claude / Codex plugin.** The `cautilus install` step also lands a bundled skill at `.agents/skills/cautilus/` with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally."
+        },
+        {
+          "claimFingerprint": "sha256:bf72456c50e1505ba08fddf7e1c028aee5f233a950414edfdf5a3528d3749182",
+          "claimId": "claim-readme-md-3",
+          "currentLabels": {
+            "claimAudience": "user",
+            "claimSemanticGroup": "Agent and skill workflow",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "proofLayer": "cautilus-eval",
+            "recommendedEvalSurface": "dev/skill",
+            "recommendedProof": "cautilus-eval",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:user",
+            "cautilus-eval",
+            "dev/skill",
+            "readme"
+          ],
+          "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
+          "sourceRefs": [
+            {
+              "excerpt": "`Cautilus` keeps agent and workflow behavior honest while prompts keep changing.",
+              "line": 3,
+              "path": "README.md"
+            }
+          ],
+          "summary": "`Cautilus` keeps agent and workflow behavior honest while prompts keep changing."
+        }
+      ],
+      "claimAudience": "user",
+      "claimCount": 3,
+      "claimSemanticGroup": "Agent and skill workflow",
+      "clusterId": "cluster-user-agent-and-skill-workflow-cautilus-eval-dev-skill-readme",
+      "groupKey": "user:Agent and skill workflow:cautilus-eval:dev/skill:readme",
+      "priority": 10,
+      "reason": "User-facing entry-surface claims are reviewed first because they define product promises.",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "candidates": [
+        {
+          "claimFingerprint": "sha256:424580d0b53e416034e88a9299a9c47f1645659c1e4e36cb016a17053b65c8b0",
+          "claimId": "claim-readme-md-10",
+          "currentLabels": {
+            "claimAudience": "user",
+            "claimSemanticGroup": "Agent and skill workflow",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "proofLayer": "deterministic",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:user",
+            "deterministic",
+            "readme"
+          ],
+          "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "`Cautilus` installs as a machine-level binary, but its agent-facing surface is intentionally repo-local.",
+              "line": 10,
+              "path": "README.md"
+            }
+          ],
+          "summary": "`Cautilus` installs as a machine-level binary, but its agent-facing surface is intentionally repo-local."
+        },
+        {
+          "claimFingerprint": "sha256:278d2b24e86fda13b675714aeb0c57ae685fd07d2c02ed6320572f06d476cdb7",
+          "claimId": "claim-readme-md-137",
+          "currentLabels": {
+            "claimAudience": "user",
+            "claimSemanticGroup": "Agent and skill workflow",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "proofLayer": "deterministic",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:user",
+            "deterministic",
+            "readme"
+          ],
+          "nextAction": "Keep or add deterministic scenario command, packet, or render proof for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "CLI: `cautilus scenario normalize chatbot --input logs.json` For agent: \"Run a chatbot regression with these logs and my new system prompt.\" You get reopenable `proposals.json` candidates that can be kept out of tuning as protected checks.",
+              "line": 137,
+              "path": "README.md"
+            }
+          ],
+          "summary": "CLI: `cautilus scenario normalize chatbot --input logs.json` For agent: \"Run a chatbot regression with these logs and my new system prompt.\" You get reopenable `proposals.json` candidates that can be kept out of tuning as protected checks."
+        },
+        {
+          "claimFingerprint": "sha256:3022b028802b2727ebdc3d4e058efe037c29d529aa9580f5229aa3ac00dd2027",
+          "claimId": "claim-readme-md-231",
+          "currentLabels": {
+            "claimAudience": "user",
+            "claimSemanticGroup": "Agent and skill workflow",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "proofLayer": "deterministic",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:user",
+            "deterministic",
+            "readme"
+          ],
+          "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "machine-readable eval, report, review, evidence, and optimization packets that agents can consume directly",
+              "line": 231,
+              "path": "README.md"
+            }
+          ],
+          "summary": "machine-readable eval, report, review, evidence, and optimization packets that agents can consume directly"
+        },
+        {
+          "claimFingerprint": "sha256:b207b54490c0db2ab75bded7ba0421b0d2898a095ed7948180593c7e765f40e8",
+          "claimId": "claim-readme-md-9",
+          "currentLabels": {
+            "claimAudience": "user",
+            "claimSemanticGroup": "Agent and skill workflow",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "proofLayer": "deterministic",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:user",
+            "deterministic",
+            "readme"
+          ],
+          "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "Commands should emit durable packets with enough state for the next agent to resume, not only terminal prose for a human operator.",
+              "line": 9,
+              "path": "README.md"
+            }
+          ],
+          "summary": "Commands should emit durable packets with enough state for the next agent to resume, not only terminal prose for a human operator."
+        },
+        {
+          "claimFingerprint": "sha256:c6ac22b52078515a66470c72cc5fb595fb1e06f9a762f720b6c9a0f058d2aa50",
+          "claimId": "claim-readme-md-95",
+          "currentLabels": {
+            "claimAudience": "user",
+            "claimSemanticGroup": "Agent and skill workflow",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "proofLayer": "deterministic",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:user",
+            "deterministic",
+            "readme"
+          ],
+          "nextAction": "Keep or add deterministic scenario command, packet, or render proof for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "Next step: a human decides whether to promote the scenario into a protected evaluation path, while an agent can reopen the saved result, compare variants, or feed it into the next bounded step.",
+              "line": 95,
+              "path": "README.md"
+            }
+          ],
+          "summary": "Next step: a human decides whether to promote the scenario into a protected evaluation path, while an agent can reopen the saved result, compare variants, or feed it into the next bounded step."
+        }
+      ],
+      "claimAudience": "user",
+      "claimCount": 5,
+      "claimSemanticGroup": "Agent and skill workflow",
+      "clusterId": "cluster-user-agent-and-skill-workflow-deterministic-readme",
+      "groupKey": "user:Agent and skill workflow:deterministic:readme",
+      "priority": 10,
+      "reason": "User-facing entry-surface claims are reviewed first because they define product promises.",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "candidates": [
+        {
+          "claimFingerprint": "sha256:9bada1ab213276f56664107bebda9322010ab42d914bbc27bd0c1e1937c171b3",
+          "claimId": "claim-readme-md-153",
+          "currentLabels": {
+            "claimAudience": "user",
+            "claimSemanticGroup": "Agent and skill workflow",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "proofLayer": "human-auditable",
+            "recommendedProof": "human-auditable",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "blocked"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:user",
+            "blocked",
+            "human-auditable",
+            "readme"
+          ],
+          "nextAction": "Keep this as human-auditable positioning or promote a concrete stalled-workflow example before creating a protected eval fixture.",
+          "sourceRefs": [
+            {
+              "excerpt": "Use when a stateful automation — a CLI workflow, long-running agent session, or pipeline that persists state across invocations — keeps stalling on the same step.",
+              "line": 153,
+              "path": "README.md"
+            }
+          ],
+          "summary": "Use when a stateful automation — a CLI workflow, long-running agent session, or pipeline that persists state across invocations — keeps stalling on the same step."
+        }
+      ],
+      "claimAudience": "user",
+      "claimCount": 1,
+      "claimSemanticGroup": "Agent and skill workflow",
+      "clusterId": "cluster-user-agent-and-skill-workflow-human-auditable-readme",
+      "groupKey": "user:Agent and skill workflow:human-auditable:readme",
+      "priority": 10,
+      "reason": "User-facing entry-surface claims are reviewed first because they define product promises.",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "blocked"
+    },
+    {
+      "candidates": [
+        {
+          "claimFingerprint": "sha256:16b357f816005aa1da9b6ff24f4188e6e6057e0e73d8f39e58c8cb4b153d8c05",
+          "claimId": "claim-readme-md-148",
+          "currentLabels": {
+            "claimAudience": "user",
+            "claimSemanticGroup": "Claim discovery and review",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "proofLayer": "cautilus-eval",
+            "recommendedEvalSurface": "dev/skill",
+            "recommendedProof": "cautilus-eval",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:user",
+            "cautilus-eval",
+            "dev/skill",
+            "readme"
+          ],
+          "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
+          "sourceRefs": [
+            {
+              "excerpt": "The same preset can evaluate a multi-turn agent episode when the fixture provides `turns`; Cautilus's own first-scan, refresh-flow, review-prepare, reviewer-launch, and review-to-eval dogfood fixtures derive their results from audit packets.",
+              "line": 148,
+              "path": "README.md"
+            }
+          ],
+          "summary": "The same preset can evaluate a multi-turn agent episode when the fixture provides `turns`; Cautilus's own first-scan, refresh-flow, review-prepare, reviewer-launch, and review-to-eval dogfood fixtures derive their results from audit packets."
+        }
+      ],
+      "claimAudience": "user",
+      "claimCount": 1,
+      "claimSemanticGroup": "Claim discovery and review",
+      "clusterId": "cluster-user-claim-discovery-and-review-cautilus-eval-dev-skill-readme",
+      "groupKey": "user:Claim discovery and review:cautilus-eval:dev/skill:readme",
+      "priority": 10,
+      "reason": "User-facing entry-surface claims are reviewed first because they define product promises.",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "candidates": [
+        {
+          "claimFingerprint": "sha256:7a8711ca2f1f27e4419951dad2bf11c236250a5e0502f7e14d87745169249c5d",
+          "claimId": "claim-readme-md-232",
+          "currentLabels": {
+            "claimAudience": "user",
+            "claimSemanticGroup": "Claim discovery and review",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "proofLayer": "deterministic",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:user",
+            "deterministic",
+            "readme"
+          ],
+          "nextAction": "Keep or add deterministic packet, catalog, schema, or renderer proof for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "static HTML views of the same artifacts so a human reviewer can judge them in a browser without an agent in the loop See `docs/specs/html-report.spec.md` for the rendered contract.",
+              "line": 232,
+              "path": "README.md"
+            }
+          ],
+          "summary": "static HTML views of the same artifacts so a human reviewer can judge them in a browser without an agent in the loop See `docs/specs/html-report.spec.md` for the rendered contract."
+        }
+      ],
+      "claimAudience": "user",
+      "claimCount": 1,
+      "claimSemanticGroup": "Claim discovery and review",
+      "clusterId": "cluster-user-claim-discovery-and-review-deterministic-readme",
+      "groupKey": "user:Claim discovery and review:deterministic:readme",
+      "priority": 10,
+      "reason": "User-facing entry-surface claims are reviewed first because they define product promises.",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "candidates": [
+        {
+          "claimFingerprint": "sha256:0e3e74a4c062fc12acdce7ccc934dac0e4b36fc30fe6bd96ae0ceaf413d96302",
+          "claimId": "claim-readme-md-171",
+          "currentLabels": {
+            "claimAudience": "user",
+            "claimSemanticGroup": "Documentation and contracts",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "proofLayer": "scenario-candidate",
+            "recommendedEvalSurface": "app/chat",
+            "recommendedProof": "cautilus-eval",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "needs-scenario"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "app/chat",
+            "audience:user",
+            "cautilus-eval",
+            "needs-scenario",
+            "readme"
+          ],
+          "nextAction": "Use the scenario proposal flow to normalize candidate evidence before creating a checked-in eval fixture.",
+          "sourceRefs": [
+            {
+              "excerpt": "`Cautilus` treats the context-recovery case as a protected scenario kept out of tuning so the signal stays honest.",
+              "line": 171,
+              "path": "README.md"
+            }
+          ],
+          "summary": "`Cautilus` treats the context-recovery case as a protected scenario kept out of tuning so the signal stays honest."
+        }
+      ],
+      "claimAudience": "user",
+      "claimCount": 1,
+      "claimSemanticGroup": "Documentation and contracts",
+      "clusterId": "cluster-user-documentation-and-contracts-cautilus-eval-app-chat-readme",
+      "groupKey": "user:Documentation and contracts:cautilus-eval:app/chat:readme",
+      "priority": 10,
+      "reason": "User-facing entry-surface claims are reviewed first because they define product promises.",
+      "recommendedEvalSurface": "app/chat",
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "needs-scenario"
+    },
+    {
+      "candidates": [
+        {
+          "claimFingerprint": "sha256:df4aa9115fa3cb65ef65be956336be165bc67437d0f039e64c13baf95891493d",
+          "claimId": "claim-readme-md-123",
+          "currentLabels": {
+            "claimAudience": "user",
+            "claimSemanticGroup": "Documentation and contracts",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "proofLayer": "cautilus-eval",
+            "recommendedEvalSurface": "app/prompt",
+            "recommendedProof": "cautilus-eval",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "app/prompt",
+            "audience:user",
+            "cautilus-eval",
+            "readme"
+          ],
+          "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus eval test.",
+          "sourceRefs": [
+            {
+              "excerpt": "For reviewed `cautilus-eval` claims, `claim plan-evals` emits `cautilus.claim_eval_plan.v1`: an intermediate plan for host-owned eval fixtures, not a writer for prompts, runners, fixtures, or policy.",
+              "line": 123,
+              "path": "README.md"
+            }
+          ],
+          "summary": "For reviewed `cautilus-eval` claims, `claim plan-evals` emits `cautilus.claim_eval_plan.v1`: an intermediate plan for host-owned eval fixtures, not a writer for prompts, runners, fixtures, or policy."
+        },
+        {
+          "claimFingerprint": "sha256:26fb3d242b29d1859c5171dda55376329d47dc400c8136fb67df8562a6160c5a",
+          "claimId": "claim-readme-md-192",
+          "currentLabels": {
+            "claimAudience": "user",
+            "claimSemanticGroup": "Documentation and contracts",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "proofLayer": "cautilus-eval",
+            "recommendedEvalSurface": "app/prompt",
+            "recommendedProof": "cautilus-eval",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "app/prompt",
+            "audience:user",
+            "cautilus-eval",
+            "readme"
+          ],
+          "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus eval test.",
+          "sourceRefs": [
+            {
+              "excerpt": "The longer-term direction is close to the workflow philosophy behind DSPy: prompts can change as long as the evaluated behavior survives.",
+              "line": 192,
+              "path": "README.md"
+            }
+          ],
+          "summary": "The longer-term direction is close to the workflow philosophy behind DSPy: prompts can change as long as the evaluated behavior survives."
+        }
+      ],
+      "claimAudience": "user",
+      "claimCount": 2,
+      "claimSemanticGroup": "Documentation and contracts",
+      "clusterId": "cluster-user-documentation-and-contracts-cautilus-eval-app-prompt-readme",
+      "groupKey": "user:Documentation and contracts:cautilus-eval:app/prompt:readme",
+      "priority": 10,
+      "reason": "User-facing entry-surface claims are reviewed first because they define product promises.",
+      "recommendedEvalSurface": "app/prompt",
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "candidates": [
+        {
+          "claimFingerprint": "sha256:cb717dd9c88c18787242dd04a0d050f2d64914b8a1b7c17ce68f7ed09436899c",
+          "claimId": "claim-readme-md-159",
+          "currentLabels": {
+            "claimAudience": "user",
+            "claimSemanticGroup": "Packets and reporting",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "proofLayer": "deterministic",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:user",
+            "deterministic",
+            "readme"
+          ],
+          "nextAction": "Keep or add deterministic packet, catalog, schema, or renderer proof for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "Each catalog entry now also includes `exampleInputCli`, so an operator or wrapper can inspect a minimal valid packet shape without opening a fixture path first.",
+              "line": 159,
+              "path": "README.md"
+            }
+          ],
+          "summary": "Each catalog entry now also includes `exampleInputCli`, so an operator or wrapper can inspect a minimal valid packet shape without opening a fixture path first."
+        }
+      ],
+      "claimAudience": "user",
+      "claimCount": 1,
+      "claimSemanticGroup": "Packets and reporting",
+      "clusterId": "cluster-user-packets-and-reporting-deterministic-readme",
+      "groupKey": "user:Packets and reporting:deterministic:readme",
+      "priority": 10,
+      "reason": "User-facing entry-surface claims are reviewed first because they define product promises.",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "candidates": [
+        {
+          "claimFingerprint": "sha256:460f483e43d6c0fbf170e58f385550bae84a4940a4f8f9a2818affbccec87cf1",
+          "claimId": "claim-agents-md-79",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Adapter and portability",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "proofLayer": "cautilus-eval",
+            "recommendedEvalSurface": "dev/repo",
+            "recommendedProof": "cautilus-eval",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "cautilus-eval",
+            "dev/repo",
+            "repo-instructions"
+          ],
+          "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
+          "sourceRefs": [
+            {
+              "excerpt": "When a quality or release review asks for evaluator, review, CLI-discovery, or agent-surface proof, verify that the selected adapter can actually run that surface before treating the gate as available.",
+              "line": 79,
+              "path": "AGENTS.md"
+            }
+          ],
+          "summary": "When a quality or release review asks for evaluator, review, CLI-discovery, or agent-surface proof, verify that the selected adapter can actually run that surface before treating the gate as available."
+        }
+      ],
+      "claimAudience": "developer",
+      "claimCount": 1,
+      "claimSemanticGroup": "Adapter and portability",
+      "clusterId": "cluster-developer-adapter-and-portability-cautilus-eval-dev-repo-repo-in",
+      "groupKey": "developer:Adapter and portability:cautilus-eval:dev/repo:repo-instructions",
+      "priority": 15,
+      "reason": "Developer-facing entry-surface claims are reviewed after user promises because they define repo-worker behavior.",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "candidates": [
+        {
+          "claimFingerprint": "sha256:0bae4dba5995735432a7ab4cf307999b1c1a2dda82841939daff988c016548a5",
+          "claimId": "claim-agents-md-12",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Adapter and portability",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "proofLayer": "deterministic",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "deterministic",
+            "repo-instructions"
+          ],
+          "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "Deterministic behavior belongs in code, scripts, adapters, tests, and specs.",
+              "line": 12,
+              "path": "AGENTS.md"
+            }
+          ],
+          "summary": "Deterministic behavior belongs in code, scripts, adapters, tests, and specs."
+        }
+      ],
+      "claimAudience": "developer",
+      "claimCount": 1,
+      "claimSemanticGroup": "Adapter and portability",
+      "clusterId": "cluster-developer-adapter-and-portability-deterministic-repo-instruction",
+      "groupKey": "developer:Adapter and portability:deterministic:repo-instructions",
+      "priority": 15,
+      "reason": "Developer-facing entry-surface claims are reviewed after user promises because they define repo-worker behavior.",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "candidates": [
+        {
+          "claimFingerprint": "sha256:15e5fbc575df9af76ba40b6ba314c6fe604ab6b50f792524416b12e01e871e42",
+          "claimId": "claim-agents-md-61",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Agent and skill workflow",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "proofLayer": "deterministic",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "deterministic",
+            "repo-instructions"
+          ],
+          "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "Keep this block short. Detailed routing belongs in installed skill metadata and `find-skills` output, not in a long checked-in catalog.",
+              "line": 61,
+              "path": "AGENTS.md"
+            }
+          ],
+          "summary": "Keep this block short. Detailed routing belongs in installed skill metadata and `find-skills` output, not in a long checked-in catalog."
+        }
+      ],
+      "claimAudience": "developer",
+      "claimCount": 1,
+      "claimSemanticGroup": "Agent and skill workflow",
+      "clusterId": "cluster-developer-agent-and-skill-workflow-deterministic-repo-instructio",
+      "groupKey": "developer:Agent and skill workflow:deterministic:repo-instructions",
+      "priority": 15,
+      "reason": "Developer-facing entry-surface claims are reviewed after user promises because they define repo-worker behavior.",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-to-verify"
+    }
+  ],
+  "inputPath": "/home/hwidong/codes/cautilus/.cautilus/claims/latest.json",
+  "packetNotice": "This packet prepares deterministic claim review input. It does not call an LLM or assert that any claim is satisfied.",
+  "reviewBudget": {
+    "budgetSource": "cli-or-default",
+    "clusterPolicy": "default",
+    "excerptChars": 900,
+    "maxClaimsPerCluster": 5,
+    "maxClusters": 12
+  },
+  "schemaVersion": "cautilus.claim_review_input.v1",
+  "skippedClusters": [
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-developer-documentation-and-contracts-cautilus-eval-dev-repo-rep",
+      "groupKey": "developer:Documentation and contracts:cautilus-eval:dev/repo:repo-instructions",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-developer-evaluation-surfaces-cautilus-eval-app-prompt-repo-inst",
+      "groupKey": "developer:Evaluation surfaces:cautilus-eval:app/prompt:repo-instructions",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-developer-evaluation-surfaces-cautilus-eval-dev-repo-repo-instru",
+      "groupKey": "developer:Evaluation surfaces:cautilus-eval:dev/repo:repo-instructions",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-developer-quality-gates-cautilus-eval-dev-repo-repo-instructions",
+      "groupKey": "developer:Quality gates:cautilus-eval:dev/repo:repo-instructions",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-developer-quality-gates-deterministic-repo-instructions",
+      "groupKey": "developer:Quality gates:deterministic:repo-instructions",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-user-adapter-and-portability-alignment-skill-doc",
+      "groupKey": "user:Adapter and portability:alignment:skill-doc",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-user-adapter-and-portability-cautilus-eval-app-prompt-docs",
+      "groupKey": "user:Adapter and portability:cautilus-eval:app/prompt:docs",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 5,
+      "clusterId": "cluster-user-adapter-and-portability-cautilus-eval-dev-repo-docs",
+      "groupKey": "user:Adapter and portability:cautilus-eval:dev/repo:docs",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-user-adapter-and-portability-cautilus-eval-dev-skill-docs",
+      "groupKey": "user:Adapter and portability:cautilus-eval:dev/skill:docs",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-user-adapter-and-portability-cautilus-eval-dev-skill-skill-doc",
+      "groupKey": "user:Adapter and portability:cautilus-eval:dev/skill:skill-doc",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 2,
+      "clusterId": "cluster-user-adapter-and-portability-deterministic-docs",
+      "groupKey": "user:Adapter and portability:deterministic:docs",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-user-agent-and-skill-workflow-alignment-skill-doc",
+      "groupKey": "user:Agent and skill workflow:alignment:skill-doc",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-user-agent-and-skill-workflow-cautilus-eval-app-prompt-skill-doc",
+      "groupKey": "user:Agent and skill workflow:cautilus-eval:app/prompt:skill-doc",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 2,
+      "clusterId": "cluster-user-agent-and-skill-workflow-cautilus-eval-dev-repo-docs",
+      "groupKey": "user:Agent and skill workflow:cautilus-eval:dev/repo:docs",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 4,
+      "clusterId": "cluster-user-agent-and-skill-workflow-cautilus-eval-dev-repo-skill-doc",
+      "groupKey": "user:Agent and skill workflow:cautilus-eval:dev/repo:skill-doc",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 3,
+      "clusterId": "cluster-user-agent-and-skill-workflow-cautilus-eval-dev-skill-docs",
+      "groupKey": "user:Agent and skill workflow:cautilus-eval:dev/skill:docs",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-user-agent-and-skill-workflow-cautilus-eval-dev-skill-skill-doc",
+      "groupKey": "user:Agent and skill workflow:cautilus-eval:dev/skill:skill-doc",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 2,
+      "clusterId": "cluster-user-agent-and-skill-workflow-deterministic-docs",
+      "groupKey": "user:Agent and skill workflow:deterministic:docs",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 3,
+      "clusterId": "cluster-user-agent-and-skill-workflow-deterministic-skill-doc",
+      "groupKey": "user:Agent and skill workflow:deterministic:skill-doc",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-user-agent-and-skill-workflow-human-auditable-skill-doc",
+      "groupKey": "user:Agent and skill workflow:human-auditable:skill-doc",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 2,
+      "clusterId": "cluster-user-claim-discovery-and-review-cautilus-eval-dev-repo-skill-doc",
+      "groupKey": "user:Claim discovery and review:cautilus-eval:dev/repo:skill-doc",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 2,
+      "clusterId": "cluster-user-claim-discovery-and-review-deterministic-docs",
+      "groupKey": "user:Claim discovery and review:deterministic:docs",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-user-documentation-and-contracts-cautilus-eval-app-chat-docs",
+      "groupKey": "user:Documentation and contracts:cautilus-eval:app/chat:docs",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-user-documentation-and-contracts-cautilus-eval-app-prompt-docs",
+      "groupKey": "user:Documentation and contracts:cautilus-eval:app/prompt:docs",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 5,
+      "clusterId": "cluster-user-documentation-and-contracts-cautilus-eval-dev-repo-docs",
+      "groupKey": "user:Documentation and contracts:cautilus-eval:dev/repo:docs",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 2,
+      "clusterId": "cluster-user-documentation-and-contracts-deterministic-docs",
+      "groupKey": "user:Documentation and contracts:deterministic:docs",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-user-documentation-and-contracts-human-auditable-docs",
+      "groupKey": "user:Documentation and contracts:human-auditable:docs",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-user-packets-and-reporting-cautilus-eval-dev-repo-docs",
+      "groupKey": "user:Packets and reporting:cautilus-eval:dev/repo:docs",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-user-packets-and-reporting-human-auditable-docs",
+      "groupKey": "user:Packets and reporting:human-auditable:docs",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-user-quality-gates-cautilus-eval-dev-repo-docs",
+      "groupKey": "user:Quality gates:cautilus-eval:dev/repo:docs",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-user-quality-gates-cautilus-eval-dev-skill-docs",
+      "groupKey": "user:Quality gates:cautilus-eval:dev/skill:docs",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-user-quality-gates-deterministic-docs",
+      "groupKey": "user:Quality gates:deterministic:docs",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-user-quality-gates-deterministic-skill-doc",
+      "groupKey": "user:Quality gates:deterministic:skill-doc",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 2,
+      "clusterId": "cluster-user-release-and-packaging-deterministic-docs",
+      "groupKey": "user:Release and packaging:deterministic:docs",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-developer-adapter-and-portability-cautilus-eval-app-prompt-contr",
+      "groupKey": "developer:Adapter and portability:cautilus-eval:app/prompt:contract",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-developer-adapter-and-portability-cautilus-eval-app-prompt-docs",
+      "groupKey": "developer:Adapter and portability:cautilus-eval:app/prompt:docs",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 2,
+      "clusterId": "cluster-developer-adapter-and-portability-cautilus-eval-app-prompt-spec",
+      "groupKey": "developer:Adapter and portability:cautilus-eval:app/prompt:spec",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-developer-adapter-and-portability-cautilus-eval-contract",
+      "groupKey": "developer:Adapter and portability:cautilus-eval:contract",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 10,
+      "clusterId": "cluster-developer-adapter-and-portability-cautilus-eval-dev-repo-contrac",
+      "groupKey": "developer:Adapter and portability:cautilus-eval:dev/repo:contract",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-developer-adapter-and-portability-cautilus-eval-dev-repo-docs",
+      "groupKey": "developer:Adapter and portability:cautilus-eval:dev/repo:docs",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 2,
+      "clusterId": "cluster-developer-adapter-and-portability-cautilus-eval-dev-repo-spec",
+      "groupKey": "developer:Adapter and portability:cautilus-eval:dev/repo:spec",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 2,
+      "clusterId": "cluster-developer-adapter-and-portability-cautilus-eval-dev-skill-contra",
+      "groupKey": "developer:Adapter and portability:cautilus-eval:dev/skill:contract",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-developer-adapter-and-portability-cautilus-eval-dev-skill-spec",
+      "groupKey": "developer:Adapter and portability:cautilus-eval:dev/skill:spec",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-developer-agent-and-skill-workflow-cautilus-eval-app-chat-docs",
+      "groupKey": "developer:Agent and skill workflow:cautilus-eval:app/chat:docs",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-developer-agent-and-skill-workflow-cautilus-eval-app-prompt-cont",
+      "groupKey": "developer:Agent and skill workflow:cautilus-eval:app/prompt:contract",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-developer-agent-and-skill-workflow-cautilus-eval-contract",
+      "groupKey": "developer:Agent and skill workflow:cautilus-eval:contract",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 6,
+      "clusterId": "cluster-developer-agent-and-skill-workflow-cautilus-eval-dev-repo-contra",
+      "groupKey": "developer:Agent and skill workflow:cautilus-eval:dev/repo:contract",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 4,
+      "clusterId": "cluster-developer-agent-and-skill-workflow-cautilus-eval-dev-repo-docs",
+      "groupKey": "developer:Agent and skill workflow:cautilus-eval:dev/repo:docs",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 5,
+      "clusterId": "cluster-developer-agent-and-skill-workflow-cautilus-eval-dev-repo-spec",
+      "groupKey": "developer:Agent and skill workflow:cautilus-eval:dev/repo:spec",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 17,
+      "clusterId": "cluster-developer-agent-and-skill-workflow-cautilus-eval-dev-skill-contr",
+      "groupKey": "developer:Agent and skill workflow:cautilus-eval:dev/skill:contract",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-developer-agent-and-skill-workflow-cautilus-eval-dev-skill-spec",
+      "groupKey": "developer:Agent and skill workflow:cautilus-eval:dev/skill:spec",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 2,
+      "clusterId": "cluster-developer-claim-discovery-and-review-cautilus-eval-dev-repo-cont",
+      "groupKey": "developer:Claim discovery and review:cautilus-eval:dev/repo:contract",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-developer-claim-discovery-and-review-cautilus-eval-dev-repo-spec",
+      "groupKey": "developer:Claim discovery and review:cautilus-eval:dev/repo:spec",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 2,
+      "clusterId": "cluster-developer-claim-discovery-and-review-cautilus-eval-dev-skill-con",
+      "groupKey": "developer:Claim discovery and review:cautilus-eval:dev/skill:contract",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 4,
+      "clusterId": "cluster-developer-documentation-and-contracts-cautilus-eval-app-prompt-c",
+      "groupKey": "developer:Documentation and contracts:cautilus-eval:app/prompt:contract",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-developer-documentation-and-contracts-cautilus-eval-app-prompt-s",
+      "groupKey": "developer:Documentation and contracts:cautilus-eval:app/prompt:spec",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 2,
+      "clusterId": "cluster-developer-documentation-and-contracts-cautilus-eval-contract",
+      "groupKey": "developer:Documentation and contracts:cautilus-eval:contract",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 25,
+      "clusterId": "cluster-developer-documentation-and-contracts-cautilus-eval-dev-repo-con",
+      "groupKey": "developer:Documentation and contracts:cautilus-eval:dev/repo:contract",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 2,
+      "clusterId": "cluster-developer-documentation-and-contracts-cautilus-eval-dev-repo-doc",
+      "groupKey": "developer:Documentation and contracts:cautilus-eval:dev/repo:docs",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 3,
+      "clusterId": "cluster-developer-documentation-and-contracts-cautilus-eval-dev-repo-spe",
+      "groupKey": "developer:Documentation and contracts:cautilus-eval:dev/repo:spec",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-developer-documentation-and-contracts-cautilus-eval-docs",
+      "groupKey": "developer:Documentation and contracts:cautilus-eval:docs",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 2,
+      "clusterId": "cluster-developer-improvement-and-optimization-cautilus-eval-app-prompt",
+      "groupKey": "developer:Improvement and optimization:cautilus-eval:app/prompt:contract",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 7,
+      "clusterId": "cluster-developer-improvement-and-optimization-cautilus-eval-dev-repo-co",
+      "groupKey": "developer:Improvement and optimization:cautilus-eval:dev/repo:contract",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-developer-improvement-and-optimization-cautilus-eval-dev-repo-do",
+      "groupKey": "developer:Improvement and optimization:cautilus-eval:dev/repo:docs",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-developer-improvement-and-optimization-cautilus-eval-dev-repo-sp",
+      "groupKey": "developer:Improvement and optimization:cautilus-eval:dev/repo:spec",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-developer-improvement-and-optimization-cautilus-eval-dev-skill-c",
+      "groupKey": "developer:Improvement and optimization:cautilus-eval:dev/skill:contract",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-developer-packets-and-reporting-cautilus-eval-app-chat-spec",
+      "groupKey": "developer:Packets and reporting:cautilus-eval:app/chat:spec",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 2,
+      "clusterId": "cluster-developer-packets-and-reporting-cautilus-eval-app-prompt-contrac",
+      "groupKey": "developer:Packets and reporting:cautilus-eval:app/prompt:contract",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 4,
+      "clusterId": "cluster-developer-packets-and-reporting-cautilus-eval-dev-repo-contract",
+      "groupKey": "developer:Packets and reporting:cautilus-eval:dev/repo:contract",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 2,
+      "clusterId": "cluster-developer-quality-gates-cautilus-eval-app-prompt-contract",
+      "groupKey": "developer:Quality gates:cautilus-eval:app/prompt:contract",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 2,
+      "clusterId": "cluster-developer-quality-gates-cautilus-eval-dev-repo-contract",
+      "groupKey": "developer:Quality gates:cautilus-eval:dev/repo:contract",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-developer-quality-gates-cautilus-eval-dev-repo-docs",
+      "groupKey": "developer:Quality gates:cautilus-eval:dev/repo:docs",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-developer-quality-gates-cautilus-eval-dev-repo-spec",
+      "groupKey": "developer:Quality gates:cautilus-eval:dev/repo:spec",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-developer-adapter-and-portability-alignment-contract",
+      "groupKey": "developer:Adapter and portability:alignment:contract",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-developer-adapter-and-portability-alignment-docs",
+      "groupKey": "developer:Adapter and portability:alignment:docs",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-developer-agent-and-skill-workflow-alignment-docs",
+      "groupKey": "developer:Agent and skill workflow:alignment:docs",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 2,
+      "clusterId": "cluster-developer-documentation-and-contracts-alignment-contract",
+      "groupKey": "developer:Documentation and contracts:alignment:contract",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-developer-packets-and-reporting-alignment-contract",
+      "groupKey": "developer:Packets and reporting:alignment:contract",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-developer-release-and-packaging-alignment-docs",
+      "groupKey": "developer:Release and packaging:alignment:docs",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 6,
+      "clusterId": "cluster-developer-adapter-and-portability-deterministic-contract",
+      "groupKey": "developer:Adapter and portability:deterministic:contract",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 2,
+      "clusterId": "cluster-developer-adapter-and-portability-deterministic-docs",
+      "groupKey": "developer:Adapter and portability:deterministic:docs",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 4,
+      "clusterId": "cluster-developer-adapter-and-portability-human-auditable-contract",
+      "groupKey": "developer:Adapter and portability:human-auditable:contract",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 14,
+      "clusterId": "cluster-developer-agent-and-skill-workflow-deterministic-contract",
+      "groupKey": "developer:Agent and skill workflow:deterministic:contract",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-developer-agent-and-skill-workflow-deterministic-docs",
+      "groupKey": "developer:Agent and skill workflow:deterministic:docs",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 7,
+      "clusterId": "cluster-developer-agent-and-skill-workflow-deterministic-spec",
+      "groupKey": "developer:Agent and skill workflow:deterministic:spec",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 2,
+      "clusterId": "cluster-developer-claim-discovery-and-review-deterministic-contract",
+      "groupKey": "developer:Claim discovery and review:deterministic:contract",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 3,
+      "clusterId": "cluster-developer-claim-discovery-and-review-deterministic-spec",
+      "groupKey": "developer:Claim discovery and review:deterministic:spec",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-developer-claim-discovery-and-review-human-auditable-contract",
+      "groupKey": "developer:Claim discovery and review:human-auditable:contract",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 15,
+      "clusterId": "cluster-developer-documentation-and-contracts-deterministic-contract",
+      "groupKey": "developer:Documentation and contracts:deterministic:contract",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 5,
+      "clusterId": "cluster-developer-packets-and-reporting-deterministic-contract",
+      "groupKey": "developer:Packets and reporting:deterministic:contract",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 2,
+      "clusterId": "cluster-developer-packets-and-reporting-deterministic-spec",
+      "groupKey": "developer:Packets and reporting:deterministic:spec",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 4,
+      "clusterId": "cluster-developer-packets-and-reporting-human-auditable-contract",
+      "groupKey": "developer:Packets and reporting:human-auditable:contract",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 7,
+      "clusterId": "cluster-developer-quality-gates-deterministic-contract",
+      "groupKey": "developer:Quality gates:deterministic:contract",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 9,
+      "clusterId": "cluster-developer-quality-gates-deterministic-docs",
+      "groupKey": "developer:Quality gates:deterministic:docs",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 4,
+      "clusterId": "cluster-developer-quality-gates-deterministic-spec",
+      "groupKey": "developer:Quality gates:deterministic:spec",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-developer-release-and-packaging-deterministic-docs",
+      "groupKey": "developer:Release and packaging:deterministic:docs",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-developer-release-and-packaging-deterministic-spec",
+      "groupKey": "developer:Release and packaging:deterministic:spec",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-developer-agent-and-skill-workflow-human-auditable-docs",
+      "groupKey": "developer:Agent and skill workflow:human-auditable:docs",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-developer-agent-and-skill-workflow-human-auditable-spec",
+      "groupKey": "developer:Agent and skill workflow:human-auditable:spec",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 2,
+      "clusterId": "cluster-developer-claim-discovery-and-review-deterministic-docs",
+      "groupKey": "developer:Claim discovery and review:deterministic:docs",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-developer-documentation-and-contracts-deterministic-docs",
+      "groupKey": "developer:Documentation and contracts:deterministic:docs",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 5,
+      "clusterId": "cluster-developer-documentation-and-contracts-deterministic-spec",
+      "groupKey": "developer:Documentation and contracts:deterministic:spec",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 6,
+      "clusterId": "cluster-developer-documentation-and-contracts-human-auditable-contract",
+      "groupKey": "developer:Documentation and contracts:human-auditable:contract",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-developer-documentation-and-contracts-human-auditable-docs",
+      "groupKey": "developer:Documentation and contracts:human-auditable:docs",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 2,
+      "clusterId": "cluster-developer-documentation-and-contracts-human-auditable-spec",
+      "groupKey": "developer:Documentation and contracts:human-auditable:spec",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 3,
+      "clusterId": "cluster-developer-improvement-and-optimization-deterministic-contract",
+      "groupKey": "developer:Improvement and optimization:deterministic:contract",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 2,
+      "clusterId": "cluster-developer-improvement-and-optimization-deterministic-docs",
+      "groupKey": "developer:Improvement and optimization:deterministic:docs",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 2,
+      "clusterId": "cluster-developer-improvement-and-optimization-deterministic-spec",
+      "groupKey": "developer:Improvement and optimization:deterministic:spec",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 2,
+      "clusterId": "cluster-developer-improvement-and-optimization-human-auditable-contract",
+      "groupKey": "developer:Improvement and optimization:human-auditable:contract",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-developer-quality-gates-human-auditable-contract",
+      "groupKey": "developer:Quality gates:human-auditable:contract",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-developer-quality-gates-human-auditable-docs",
+      "groupKey": "developer:Quality gates:human-auditable:docs",
+      "reason": "max-clusters-exceeded"
+    }
+  ],
+  "sourceClaimPacket": {
+    "candidateCount": 327,
+    "gitCommit": "2b239ae69a27b60a218673c4061f501146a3828c",
+    "schemaVersion": "cautilus.claim_proof_plan.v1"
+  },
+  "sourceRoot": "."
+}
