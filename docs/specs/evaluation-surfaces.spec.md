@@ -264,7 +264,7 @@ Follow-up slices proceed in this order:
    The matching cut shipped 2026-04-26: `cautilus mode evaluate`, the `iterate / held_out / comparison / full_gate` adapter slots, and the chatbot scenario init scaffold were removed without aliases.
    Codex CLI messaging proof shipped 2026-04-27: `npm run dogfood:app-chat:fixture` and `npm run dogfood:app-chat:live` both run the checked-in `app / chat` fixture through `cautilus eval test`; the live run returned `recommendation=accept-now`.
    Claude CLI messaging proof shipped 2026-04-27: `npm run dogfood:app-chat:claude` runs the same checked-in fixture with `--runtime claude`; the live run returned `recommendation=accept-now`.
-   Optimize-search held-out and full-gate checkpoints now honest-skip with `status=skipped` and `skipReason=surface_unavailable` until the search layer is rewired onto the eval-test surface.
+   Optimize-search candidate held-out evaluation and final full-gate checkpoints now use `cautilus eval test` when the selected adapter exposes `evaluation_input_default`; they still honest-skip with `status=skipped` and `skipReason=surface_unavailable` when no eval-test surface is declared.
 3. ~~`app / prompt` preset — new.~~ Shipped 2026-04-26.
    `cautilus.evaluation_input.v1` now accepts `surface=app, preset=prompt` and translates fixtures to `cautilus.app_prompt_test_cases.v1`; `cautilus eval evaluate` dispatches `BuildAppPromptEvaluationSummary` on `cautilus.app_prompt_evaluation_inputs.v1`.
    The result packet keeps the app-surface runtime fields from `app/chat` (`provider`, `model`, `harness`, `mode=messaging`, `durationMs`, `observed.messages`, `observed.finalText`) and adds required `observed.input` for the single-turn I/O boundary.

@@ -2727,7 +2727,7 @@ func TestCLIOptimizeSearchPrepareInputJSONAndBlockedRunReturnMachineReadablePayl
 	}
 }
 
-func TestCLIOptimizeSearchRunHonestSkipsHeldOutAndFullGateAfterModeEvaluateCut(t *testing.T) {
+func TestCLIOptimizeSearchRunUsesEvalTestForHeldOutAndFullGate(t *testing.T) {
 	root := t.TempDir()
 	artifactRoot := t.TempDir()
 	targetPath := filepath.Join(root, "prompt.md")
@@ -2737,6 +2737,9 @@ func TestCLIOptimizeSearchRunHonestSkipsHeldOutAndFullGateAfterModeEvaluateCut(t
 	searchResultPath := filepath.Join(artifactRoot, "optimize-search-result.json")
 
 	if err := os.MkdirAll(filepath.Join(root, ".agents"), 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.MkdirAll(filepath.Join(root, "fixtures", "eval", "app", "prompt"), 0o755); err != nil {
 		t.Fatalf("MkdirAll returned error: %v", err)
 	}
 	if err := os.WriteFile(targetPath, []byte("Keep recovery instructions explicit.\n"), 0o644); err != nil {
@@ -2759,14 +2762,55 @@ func TestCLIOptimizeSearchRunHonestSkipsHeldOutAndFullGateAfterModeEvaluateCut(t
 		"EOF",
 		"",
 	}, "\n"))
+	writeExecutableFile(t, root, "run-eval.sh", strings.Join([]string{
+		"#!/bin/sh",
+		"cases_file=\"$1\"",
+		"observed_file=\"$2\"",
+		"candidate_repo=\"$3\"",
+		"node - \"$cases_file\" \"$observed_file\" \"$candidate_repo/prompt.md\" <<'EOF'",
+		"const fs = require('fs');",
+		"const [casesFile, observedFile, promptFile] = process.argv.slice(2);",
+		"const cases = JSON.parse(fs.readFileSync(casesFile, 'utf8'));",
+		"const prompt = fs.readFileSync(promptFile, 'utf8').trim();",
+		"const evaluations = cases.cases.map((testCase) => ({",
+		"  caseId: testCase.caseId,",
+		"  displayName: testCase.displayName,",
+		"  provider: cases.provider,",
+		"  model: cases.model,",
+		"  harness: 'fixture-backend',",
+		"  mode: 'messaging',",
+		"  durationMs: 1,",
+		"  expected: testCase.expected,",
+		"  observed: {",
+		"    input: testCase.input,",
+		"    messages: [",
+		"      { role: 'user', content: testCase.input },",
+		"      { role: 'assistant', content: prompt },",
+		"    ],",
+		"    finalText: prompt,",
+		"  },",
+		"}));",
+		"fs.writeFileSync(observedFile, JSON.stringify({",
+		"  schemaVersion: 'cautilus.app_prompt_evaluation_inputs.v1',",
+		"  suiteId: cases.suiteId,",
+		"  suiteDisplayName: cases.suiteDisplayName,",
+		"  evaluations,",
+		"}, null, 2) + '\\n');",
+		"EOF",
+		"",
+	}, "\n"))
 	if err := os.WriteFile(filepath.Join(root, ".agents", "cautilus-adapter.yaml"), []byte(strings.Join([]string{
 		"version: 1",
 		"repo: temp-optimize-search",
 		"evaluation_surfaces:",
-		"  - prompt behavior",
+		"  - app / prompt",
 		"baseline_options:",
 		"  - baseline git ref in the same repo via {baseline_ref}",
 		"required_prerequisites: []",
+		"evaluation_input_default: fixtures/eval/app/prompt/operator-recovery.fixture.json",
+		"default_runtime: fixture",
+		"eval_test_command_templates:",
+		"  - ./run-eval.sh {eval_cases_file} {eval_observed_file} {candidate_repo}",
 		"comparison_questions:",
 		"  - Did the held-out score improve?",
 		"human_review_prompts:",
@@ -2776,6 +2820,24 @@ func TestCLIOptimizeSearchRunHonestSkipsHeldOutAndFullGateAfterModeEvaluateCut(t
 	}, "\n")), 0o644); err != nil {
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
+	writeJSONFile(t, filepath.Join(root, "fixtures", "eval", "app", "prompt", "operator-recovery.fixture.json"), map[string]any{
+		"schemaVersion":    contracts.EvaluationInputSchema,
+		"surface":          "app",
+		"preset":           "prompt",
+		"suiteId":          "operator-recovery",
+		"suiteDisplayName": "Operator Recovery",
+		"provider":         "fixture",
+		"model":            "fixture",
+		"system":           "Use the checked-out candidate prompt.",
+		"cases": []map[string]any{
+			{
+				"caseId":      "operator-recovery",
+				"displayName": "Operator recovery guidance",
+				"input":       "What should the operator do next?",
+				"expected":    map[string]any{"finalText": "checklist"},
+			},
+		},
+	})
 	writeJSONFile(t, heldOutResultsPath, map[string]any{
 		"schemaVersion": contracts.ScenarioResultsSchema,
 		"mode":          "held_out",
@@ -2845,14 +2907,15 @@ func TestCLIOptimizeSearchRunHonestSkipsHeldOutAndFullGateAfterModeEvaluateCut(t
 	}
 	stdout, stderr, exitCode := runCLI(t, root, "optimize", "search", "run", "--input", searchInputPath, "--output", searchResultPath)
 	if exitCode != 0 {
-		t.Fatalf("optimize search run failed: stdout=%s stderr=%s", stdout, stderr)
+		resultPayload, _ := os.ReadFile(searchResultPath)
+		t.Fatalf("optimize search run failed: stdout=%s stderr=%s result=%s", stdout, stderr, string(resultPayload))
 	}
 	searchResult := readJSONObjectFile(t, searchResultPath)
 	if searchResult["status"] != "completed" {
 		t.Fatalf("unexpected search result status: %#v", searchResult)
 	}
-	if searchResult["selectedCandidateId"] != "seed" {
-		t.Fatalf("expected seed-only collapse after held-out cut, got %#v", searchResult["selectedCandidateId"])
+	if searchResult["selectedCandidateId"] == "seed" {
+		t.Fatalf("expected eval-backed mutation candidate to beat seed, got %#v", searchResult["selectedCandidateId"])
 	}
 	registry := searchResult["candidateRegistry"].([]any)
 	if len(registry) < 2 {
@@ -2869,23 +2932,35 @@ func TestCLIOptimizeSearchRunHonestSkipsHeldOutAndFullGateAfterModeEvaluateCut(t
 		if !ok {
 			t.Fatalf("mutation candidate %v missing evaluationArtifacts", entry["id"])
 		}
-		if artifacts["status"] != "skipped" || artifacts["skipReason"] != "surface_unavailable" {
-			t.Fatalf("expected honest-skip evaluationArtifacts, got %#v", artifacts)
-		}
-		if heldOut, ok := entry["heldOutEntries"].([]any); ok && len(heldOut) != 0 {
-			t.Fatalf("mutation candidate %v held-out entries should be empty after cut, got %#v", entry["id"], heldOut)
+		if artifacts["status"] != "passed" || artifacts["summaryFile"] == "" || artifacts["worktreeRoot"] == "" {
+			t.Fatalf("expected eval-backed evaluationArtifacts, got %#v", artifacts)
 		}
 	}
 	if !mutationFound {
 		t.Fatalf("expected at least one mutation candidate in registry, got %#v", registry)
 	}
+	matrix := searchResult["heldOutEvaluationMatrix"].([]any)
+	mutationMatrixEntryFound := false
+	for _, raw := range matrix {
+		entry := raw.(map[string]any)
+		if entry["candidateId"] == searchResult["selectedCandidateId"] {
+			mutationMatrixEntryFound = true
+			if entry["score"] != float64(100) {
+				t.Fatalf("unexpected held-out score for selected mutation candidate: %#v", entry)
+			}
+		}
+	}
+	if !mutationMatrixEntryFound {
+		t.Fatalf("expected held-out matrix entry for selected mutation candidate, got %#v", matrix)
+	}
 	searchTelemetry := searchResult["searchTelemetry"].(map[string]any)
-	if searchTelemetry["fullGateCheckpointCount"] != float64(0) {
-		t.Fatalf("expected fullGateCheckpointCount=0 after cut, got %#v", searchTelemetry)
+	if searchTelemetry["fullGateCheckpointCount"] != float64(1) {
+		t.Fatalf("expected one full-gate eval checkpoint, got %#v", searchTelemetry)
 	}
 	checkpointOutcomes := searchResult["checkpointOutcomes"].(map[string]any)
-	if fullGate, ok := checkpointOutcomes["fullGate"].([]any); ok && len(fullGate) != 0 {
-		t.Fatalf("expected no fullGate checkpoint executions, got %#v", fullGate)
+	fullGate, ok := checkpointOutcomes["fullGate"].([]any)
+	if !ok || len(fullGate) != 1 || fullGate[0].(map[string]any)["status"] != "passed" {
+		t.Fatalf("expected one passing fullGate checkpoint, got %#v", checkpointOutcomes["fullGate"])
 	}
 }
 

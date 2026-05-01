@@ -999,7 +999,7 @@
     },
     {
       "claimFingerprint": "sha256:8c15df06769d6900be11672ff1c723937ad20bc3eb3212c84d2d740feb54edfb",
-      "claimId": "claim-docs-master-plan-md-182",
+      "claimId": "claim-docs-master-plan-md-181",
       "evidenceStatus": "unknown",
       "reason": "not-cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
@@ -3210,7 +3210,7 @@
   ],
   "sourceClaimPacket": {
     "candidateCount": 318,
-    "gitCommit": "07a51767195f1a7788a1ffc79595e32a76dfddb3",
+    "gitCommit": "b961d5d59b62fe080e28f23eeeb02ddfd23145ff",
     "schemaVersion": "cautilus.claim_proof_plan.v1"
   }
 }

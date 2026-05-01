@@ -170,15 +170,14 @@ Still open:
 
 ## Immediate Next Moves
 
-1. Decide and implement the next optimize-search held-out/full-gate path on top of the `eval test` surface, or keep it explicitly skipped while C2/C3/C4 composition lands.
-2. Ship the remaining evaluation-surface composition primitives in spec order: C2 `extends`, C3 `steps`, and C4 `expected.snapshot`. See [docs/specs/evaluation-surfaces.spec.md](./specs/evaluation-surfaces.spec.md).
-3. Decide the next claim-discovery hardening slice from [claim-discovery-workflow.md](./contracts/claim-discovery-workflow.md): review-result application branch proof, deeper evidence reconciliation, or eval-fixture authoring guidance.
-4. Pick the next bounded improvement seam for the optimization layer: either close a specific richer merge heuristic that dogfood evidence asks for, or move to another roadmap slice rather than extending heuristics speculatively.
-5. Expand typed multi-runner metadata from the shipped `runner_readiness.runners` base only when real consumer adapters need additional fields; source-code inference remains deferred.
-6. Expand scenario-history beyond the first profile-backed comparison cache-key path toward reusable baseline results and broader compare ownership.
-7. Continue moving host-specific runtime seams out of the product boundary into consumer-owned adapters, prompts, and storage readers.
-8. Keep expanding normalization-pattern coverage as new consumer archetypes appear, while preserving one official adapter contract (`cautilus-adapter.yaml`).
-9. Decide whether to grow external-consumer onboarding into archetype-specific starter kits while keeping the supported installer surface centered on `install.sh`.
-10. Keep widening HTML surfaces only when the packet boundary stays stable and the page meaningfully improves human review; agents should consume durable packets first.
-11. Specify a future interactive workbench only when the product is ready to support GUI-backed claim and scenario browsing, editing, deletion, and addition.
+1. Ship the remaining evaluation-surface composition primitives in spec order: C2 `extends`, C3 `steps`, and C4 `expected.snapshot`. See [docs/specs/evaluation-surfaces.spec.md](./specs/evaluation-surfaces.spec.md).
+2. Decide the next claim-discovery hardening slice from [claim-discovery-workflow.md](./contracts/claim-discovery-workflow.md): review-result application branch proof, deeper evidence reconciliation, or eval-fixture authoring guidance.
+3. Pick the next bounded improvement seam for the optimization layer: either close a specific richer merge heuristic that dogfood evidence asks for, or move to another roadmap slice rather than extending heuristics speculatively.
+4. Expand typed multi-runner metadata from the shipped `runner_readiness.runners` base only when real consumer adapters need additional fields; source-code inference remains deferred.
+5. Expand scenario-history beyond the first profile-backed comparison cache-key path toward reusable baseline results and broader compare ownership.
+6. Continue moving host-specific runtime seams out of the product boundary into consumer-owned adapters, prompts, and storage readers.
+7. Keep expanding normalization-pattern coverage as new consumer archetypes appear, while preserving one official adapter contract (`cautilus-adapter.yaml`).
+8. Decide whether to grow external-consumer onboarding into archetype-specific starter kits while keeping the supported installer surface centered on `install.sh`.
+9. Keep widening HTML surfaces only when the packet boundary stays stable and the page meaningfully improves human review; agents should consume durable packets first.
+10. Specify a future interactive workbench only when the product is ready to support GUI-backed claim and scenario browsing, editing, deletion, and addition.
     Do not use the current live app runner seam as that GUI workbench concept.

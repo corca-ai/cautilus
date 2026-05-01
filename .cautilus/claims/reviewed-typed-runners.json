@@ -2896,7 +2896,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:8c15df06769d6900be11672ff1c723937ad20bc3eb3212c84d2d740feb54edfb",
-      "claimId": "claim-docs-master-plan-md-182",
+      "claimId": "claim-docs-master-plan-md-181",
       "claimSemanticGroup": "Improvement and optimization",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -2913,7 +2913,7 @@
       "sourceRefs": [
         {
           "excerpt": "Keep widening HTML surfaces only when the packet boundary stays stable and the page meaningfully improves human review; agents should consume durable packets first.",
-          "line": 182,
+          "line": 181,
           "path": "docs/master-plan.md"
         }
       ],
@@ -9728,7 +9728,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "07a51767195f1a7788a1ffc79595e32a76dfddb3",
+  "gitCommit": "b961d5d59b62fe080e28f23eeeb02ddfd23145ff",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "schemaVersion": "cautilus.claim_proof_plan.v1",
@@ -10271,7 +10271,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:cb7160bfe89427b605abb9dacc2cc9cb40a4b15d06e9a00c362ecfd4ed730814",
+      "contentHash": "sha256:87bee2f7c5e65f18db77e53a0213fa4250ad11d7cf2b3fab6ee5cbd137217e4a",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "docs",
@@ -10281,7 +10281,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:a9fb02f38d8ba11f439fd67c3e1700e9a344b4730f61f09e6130c50f1273460c",
+      "contentHash": "sha256:7a00223df44b63e329d53ca638ff79c036f7a3002fb990afe33b9a6d53a992e4",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "spec",

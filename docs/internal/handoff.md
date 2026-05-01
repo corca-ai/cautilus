@@ -171,7 +171,8 @@
   (a) Result packet surface-agnostic 필드 — `app/chat` / `app/prompt` evaluator에서 require로 명시 정착됨; `dev/repo`/`dev/skill`로 backport는 후속 hardening 슬라이스에서.
   (b) `cautilus eval evaluate` 디스패처는 여전히 schemaVersion만으로 라우팅; fixture preset cross-check는 follow-up.
   (c) Node 측 `scripts/agent-runtime/evaluate-skill.mjs`와 동반 모듈은 self-test와 coverage floor에만 의해 살아있다 — dead-code sweep slice에서 정리.
-  (d) optimize-search held-out gating은 honest-skip 상태 — 새 surface 위로 재배선은 별도 슬라이스(아래 Next Session #3 참조).
+  (d) optimize-search held-out/full-gate gating은 `evaluation_input_default`가 있는 adapter에서 `cautilus eval test`로 재배선됐다.
+  Adapter가 eval-test surface를 노출하지 않으면 기존처럼 `status=skipped`, `skipReason=surface_unavailable`로 남는다.
   (e) consumer onboarding smoke (`npm run consumer:onboard:smoke`)는 2026-04-26에 `doctor ready` 이후 one bounded `eval test`까지 재배선됐다.
   temp consumer repo에 `app/prompt` fixture와 fixture-backend runner를 심고 `eval-summary.json`의 `accept-now`까지 확인한다.
 - 마이그레이션 트래킹: [corca-ai/cautilus#32](https://github.com/corca-ai/cautilus/issues/32).
@@ -186,9 +187,8 @@
    review prepare-input과 reviewer launch branch proof는 Codex/Claude 양쪽에서 완료됐다.
    evidence preflight의 첫 slice는 possible evidence hint까지만 허용하는 형태로 들어왔다.
    public `claim group` 또는 `claim refresh` command는 만들지 않는다.
-5. optimize-search held-out/full-gate 신호를 현재 `cautilus eval test` surface 위로 재배선할지, 아니면 C2/C3/C4 composition landing까지 honest-skip으로 둘지 결정한다.
-6. spec follow-up #4 — C2/C3/C4 composition primitives (extends / multi-step / snapshot), 슬라이스당 하나.
-7. spec follow-up #5 — `scenario normalize` 재범위만 남음.
+5. spec follow-up #4 — C2/C3/C4 composition primitives (extends / multi-step / snapshot), 슬라이스당 하나.
+6. spec follow-up #5 — `scenario normalize` 재범위만 남음.
    archetype-boundary retire는 cut 슬라이스에 흡수됨.
 8. 후속 후보: fixture-backed app smoke와 one-case live Codex/Claude proof를 broader app quality proof로 과장하지 않도록 release / quality artifact 쪽 proof boundary 표현을 점검한다.
 9. 후속 후보: direct provider parity가 필요한지 결정한다.
@@ -196,7 +196,7 @@
 ## Discuss
 
 - runtime fingerprint의 두 번째 슬라이스 (automatic prior-evidence selection, provider API 연동)를 언제 시작할지.
-- self-dogfood / consumer onboarding 재배선 슬라이스에서 optimize-search held-out gating까지 같이 풀지, 별도 슬라이스로 분리할지.
+- self-dogfood / consumer onboarding 재배선 슬라이스에서 optimize-search의 `eval test` 기반 candidate worktree 평가를 어떤 consumer adapter까지 dogfood할지.
 - `dogfood:self`는 현재 canonical self-dogfood entry point이고 `dogfood:self:eval`로 위임한다.
   이전 tuning experiments(`dogfood:self:experiments`)에 해당하던 강한 클레임을 새 preset, 새 fixture 시리즈, 또는 폐기 중 어느 쪽으로 정리할지는 아직 결정 필요.
 - premortem deferral (a)–(e) 중 어느 것을 다음 hardening 슬라이스로 묶을지.

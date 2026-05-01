@@ -1246,9 +1246,23 @@ func firstNonEmptySliceString(items []string) string {
 }
 
 func optimizeSearchRunFullGateCheckpoint(packet map[string]any, artifactRoot string, candidate map[string]any) map[string]any {
-	_ = packet
-	_ = artifactRoot
-	return optimizeSearchSkipCheckpointOutcome("full_gate", stringOrEmpty(candidate["id"]), "surface_unavailable")
+	outputDir := filepath.Join(artifactRoot, "optimize-search-candidates", stringOrEmpty(candidate["id"]), "full-gate-eval")
+	result := optimizeSearchRunEvalTestForCandidate(packet, optimizeSearchCandidateWorkspace(packet, candidate), outputDir)
+	if stringOrEmpty(result["status"]) == "skipped" {
+		result["type"] = "full_gate"
+		result["candidateId"] = candidate["id"]
+		return result
+	}
+	admissible := stringOrEmpty(result["status"]) == "passed"
+	rejectionReasons := []any{}
+	if !admissible {
+		rejectionReasons = append(rejectionReasons, "full_gate:eval_test_failed")
+	}
+	result["type"] = "full_gate"
+	result["candidateId"] = candidate["id"]
+	result["admissible"] = admissible
+	result["rejectionReasons"] = rejectionReasons
+	return result
 }
 
 func optimizeSearchLoadCheckpointAdapter(packet map[string]any) (*AdapterPayload, error) {
@@ -2852,14 +2866,196 @@ func optimizeSearchMutationSchema() map[string]any {
 }
 
 func optimizeSearchEvaluateCandidate(packet map[string]any, artifactRoot string, candidateID string, candidatePromptPath string) ([]map[string]any, map[string]any) {
-	_ = packet
-	_ = candidatePromptPath
 	outputDir := filepath.Join(artifactRoot, "optimize-search-candidates", candidateID, "held-out-eval")
-	return []map[string]any{}, map[string]any{
-		"outputDir":  outputDir,
-		"status":     "skipped",
-		"skipReason": "surface_unavailable",
+	worktreeRoot, err := optimizeSearchCreateCandidateWorktree(packet, artifactRoot, candidateID, candidatePromptPath)
+	if err != nil {
+		return []map[string]any{}, map[string]any{
+			"outputDir":        outputDir,
+			"status":           "failed",
+			"failureReason":    "candidate_worktree_failed",
+			"rejectionReasons": []any{"held_out:candidate_worktree_failed"},
+			"error":            err.Error(),
+		}
 	}
+	artifacts := optimizeSearchRunEvalTestForCandidate(packet, worktreeRoot, outputDir)
+	artifacts["worktreeRoot"] = worktreeRoot
+	if stringOrEmpty(artifacts["status"]) != "passed" {
+		return []map[string]any{}, artifacts
+	}
+	summary, err := readJSONFile(stringOrEmpty(artifacts["summaryFile"]))
+	if err != nil {
+		artifacts["status"] = "failed"
+		artifacts["failureReason"] = "eval_summary_invalid"
+		artifacts["error"] = err.Error()
+		return []map[string]any{}, artifacts
+	}
+	return optimizeSearchHeldOutEntriesFromEvalSummary(summary, candidateID), artifacts
+}
+
+func optimizeSearchCreateCandidateWorktree(packet map[string]any, artifactRoot string, candidateID string, candidatePromptPath string) (string, error) {
+	repoRoot := stringOrEmpty(packet["repoRoot"])
+	if repoRoot == "" {
+		return "", fmt.Errorf("repoRoot is required")
+	}
+	targetPath := stringOrEmpty(asMap(packet["targetFile"])["path"])
+	if targetPath == "" {
+		return "", fmt.Errorf("targetFile.path is required")
+	}
+	relativeTarget, err := filepath.Rel(filepath.Clean(repoRoot), filepath.Clean(targetPath))
+	if err != nil {
+		return "", err
+	}
+	if relativeTarget == "." || strings.HasPrefix(relativeTarget, ".."+string(os.PathSeparator)) || relativeTarget == ".." || filepath.IsAbs(relativeTarget) {
+		return "", fmt.Errorf("target file must stay within repoRoot: %s", targetPath)
+	}
+	worktreeRoot := filepath.Join(artifactRoot, "optimize-search-worktrees", candidateID)
+	_ = exec.Command("git", "-C", repoRoot, "worktree", "remove", "--force", worktreeRoot).Run()
+	if err := os.RemoveAll(worktreeRoot); err != nil {
+		return "", err
+	}
+	if err := os.MkdirAll(filepath.Dir(worktreeRoot), 0o755); err != nil {
+		return "", err
+	}
+	if output, err := exec.Command("git", "-C", repoRoot, "worktree", "add", "--detach", worktreeRoot, "HEAD").CombinedOutput(); err != nil {
+		return "", fmt.Errorf("git worktree add failed: %s", strings.TrimSpace(string(output)))
+	}
+	promptBytes, err := os.ReadFile(candidatePromptPath)
+	if err != nil {
+		return "", err
+	}
+	worktreeTarget := filepath.Join(worktreeRoot, relativeTarget)
+	if err := os.MkdirAll(filepath.Dir(worktreeTarget), 0o755); err != nil {
+		return "", err
+	}
+	if err := os.WriteFile(worktreeTarget, promptBytes, 0o644); err != nil {
+		return "", err
+	}
+	return worktreeRoot, nil
+}
+
+func optimizeSearchRunEvalTestForCandidate(packet map[string]any, repoRoot string, outputDir string) map[string]any {
+	if repoRoot == "" {
+		return map[string]any{
+			"outputDir":   outputDir,
+			"status":      "skipped",
+			"skipReason":  "workspace_unavailable",
+			"admissible":  true,
+			"summaryFile": filepath.Join(outputDir, "eval-summary.json"),
+		}
+	}
+	adapterPayload, err := optimizeSearchLoadCheckpointAdapter(packet)
+	if err != nil {
+		return map[string]any{"outputDir": outputDir, "status": "skipped", "skipReason": "adapter_not_found", "admissible": true}
+	}
+	if !adapterPayload.Found || !adapterPayload.Valid {
+		reason := "surface_unavailable"
+		if !adapterPayload.Found {
+			reason = "adapter_not_found"
+		}
+		return map[string]any{"outputDir": outputDir, "status": "skipped", "skipReason": reason, "admissible": true}
+	}
+	if strings.TrimSpace(stringOrEmpty(adapterPayload.Data["evaluation_input_default"])) == "" {
+		return map[string]any{"outputDir": outputDir, "status": "skipped", "skipReason": "surface_unavailable", "admissible": true}
+	}
+	args := []string{
+		"eval", "test",
+		"--repo-root", repoRoot,
+		"--workspace", repoRoot,
+		"--output-dir", outputDir,
+		"--quiet",
+	}
+	evaluationContext := asMap(packet["evaluationContext"])
+	if adapterName := stringOrEmpty(evaluationContext["adapterName"]); adapterName != "" {
+		args = append(args, "--adapter-name", adapterName)
+	} else if adapter := stringOrEmpty(evaluationContext["adapter"]); adapter != "" {
+		args = append(args, "--adapter", adapter)
+	}
+	command := exec.Command(optimizeSearchBinaryPath(), args...)
+	command.Env = optimizeSearchCommandEnv()
+	output, runErr := command.CombinedOutput()
+	summaryFile := filepath.Join(outputDir, "eval-summary.json")
+	if !fileExists(summaryFile) {
+		status := "failed"
+		if runErr == nil {
+			status = "skipped"
+		}
+		return map[string]any{
+			"outputDir":     outputDir,
+			"summaryFile":   summaryFile,
+			"status":        status,
+			"skipReason":    "summary_missing",
+			"admissible":    runErr == nil,
+			"commandOutput": strings.TrimSpace(string(output)),
+		}
+	}
+	summary, err := readJSONFile(summaryFile)
+	if err != nil {
+		return map[string]any{
+			"outputDir":     outputDir,
+			"summaryFile":   summaryFile,
+			"status":        "failed",
+			"admissible":    false,
+			"failureReason": "summary_invalid",
+			"error":         err.Error(),
+		}
+	}
+	recommendation := stringOrEmpty(summary["recommendation"])
+	status := "passed"
+	if runErr != nil || recommendation != "accept-now" {
+		status = "failed"
+	}
+	return map[string]any{
+		"outputDir":        outputDir,
+		"summaryFile":      summaryFile,
+		"status":           status,
+		"admissible":       status == "passed",
+		"recommendation":   recommendation,
+		"evaluationCounts": firstNonNil(summary["evaluationCounts"], nil),
+	}
+}
+
+func optimizeSearchHeldOutEntriesFromEvalSummary(summary map[string]any, candidateID string) []map[string]any {
+	entries := []map[string]any{}
+	for _, rawEvaluation := range arrayOrEmpty(summary["evaluations"]) {
+		evaluation := asMap(rawEvaluation)
+		caseID := firstNonEmpty(stringOrEmpty(evaluation["caseId"]), stringOrEmpty(evaluation["displayName"]))
+		if caseID == "" {
+			continue
+		}
+		status := firstNonEmpty(stringOrEmpty(evaluation["status"]), "unknown")
+		score := 0.0
+		if status == "passed" {
+			score = 100
+		}
+		entry := map[string]any{
+			"candidateId":    candidateID,
+			"mode":           "held_out",
+			"scenarioId":     caseID,
+			"status":         status,
+			"overallScore":   score,
+			"score":          score,
+			"summary":        firstNonNil(evaluation["summary"], nil),
+			"recommendation": stringOrEmpty(summary["recommendation"]),
+		}
+		telemetry := map[string]any{}
+		if duration, ok := toFloat(evaluation["durationMs"]); ok {
+			telemetry["durationMs"] = duration
+		}
+		if provider := stringOrEmpty(evaluation["provider"]); provider != "" {
+			telemetry["provider"] = provider
+		}
+		if model := stringOrEmpty(evaluation["model"]); model != "" {
+			telemetry["model"] = model
+		}
+		if harness := stringOrEmpty(evaluation["harness"]); harness != "" {
+			telemetry["harness"] = harness
+		}
+		if len(telemetry) > 0 {
+			entry["telemetry"] = telemetry
+		}
+		entries = append(entries, entry)
+	}
+	return entries
 }
 
 func optimizeSearchBinaryPath() string {
