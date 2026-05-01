@@ -590,6 +590,8 @@ This slice is covered by the bundled skill text, adapter contract docs, and the 
 LLM-backed cluster review should come after the deterministic packet and skill control flow are stable enough to dogfood.
 The next deterministic helper slice added `claim show` and `claim review prepare-input`.
 `claim show` emits `cautilus.claim_status_summary.v1` and can include bounded `sampleClaims` plus `gitState` for agents that need concrete candidates before choosing the next branch.
+`gitState.isStale` is claim-source freshness, not raw commit equality.
+Commit drift caused only by generated claim artifacts remains visible as head drift without blocking review or eval planning.
 `claim review prepare-input` emits `cautilus.claim_review_input.v1` and records bounded clusters and skipped clusters, but still does not call an LLM or merge review results.
 It rejects stale claim packets by default unless `--allow-stale-claims` is explicitly passed.
 The review-result application slice added `claim review apply-result`.

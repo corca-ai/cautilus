@@ -156,6 +156,8 @@ It summarizes an existing proof-plan packet without rescanning.
 When called with `--sample-claims <n>`, it includes a bounded `sampleClaims` list so agents can inspect stable candidate fields without guessing raw packet keys.
 The summary includes `gitState`.
 If `gitState.isStale=true`, review, review-application, and eval-planning commands must reject the packet unless the operator explicitly passes `--allow-stale-claims`.
+`gitState.isStale` means a recorded claim source changed.
+A later commit that only records generated claim artifacts is reported as `headDrift=true` and `comparisonStatus=fresh-with-head-drift`, not as stale.
 
 `cautilus claim review prepare-input --claims <claims.json>` emits `cautilus.claim_review_input.v1`.
 It groups candidates into deterministic review clusters and records the review budget.

@@ -1333,10 +1333,20 @@ func ClaimPacketGitState(packet map[string]any, repoRoot string) map[string]any 
 	if strings.TrimSpace(repoRoot) != "" {
 		currentCommit = currentGitCommit(repoRoot)
 	}
-	isStale := packetCommit != "" && currentCommit != "" && packetCommit != currentCommit
+	headDrift := packetCommit != "" && currentCommit != "" && packetCommit != currentCommit
+	changedFiles := []string{}
+	changedFilesKnown := true
+	changedSources := []string{}
+	isStale := false
+	if headDrift {
+		changedFiles, changedFilesKnown = gitChangedFilesWithStatus(repoRoot, packetCommit, currentCommit)
+		changedSources = filterClaimSourceChanges(packet, changedFiles)
+		isStale = !changedFilesKnown || len(changedSources) > 0
+	}
 	state := map[string]any{
 		"packetGitCommit":   packetCommit,
 		"currentGitCommit":  currentCommit,
+		"headDrift":         headDrift,
 		"isStale":           isStale,
 		"workingTreePolicy": "excluded",
 		"comparisonStatus":  "unchecked",
@@ -1350,13 +1360,28 @@ func ClaimPacketGitState(packet map[string]any, repoRoot string) map[string]any 
 		state["comparisonStatus"] = "missing-current-commit"
 		state["recommendedAction"] = "Use explicit operator judgment before consuming this claim packet."
 	case isStale:
-		changedSources := gitChangedFiles(repoRoot, packetCommit, currentCommit)
 		state["comparisonStatus"] = "stale"
+		state["changedFileCount"] = len(changedFiles)
+		state["changedFiles"] = changedFiles
 		state["changedSourceCount"] = len(changedSources)
 		state["changedSources"] = changedSources
-		state["recommendedAction"] = "Run claim discover --previous <claims.json> --refresh-plan before review, review application, or eval planning."
+		if !changedFilesKnown {
+			state["comparisonStatus"] = "stale-unknown-diff"
+			state["recommendedAction"] = "Regenerate the claim packet because Cautilus could not compare the packet commit with the current checkout."
+		} else {
+			state["recommendedAction"] = "Run claim discover --previous <claims.json> --refresh-plan before review, review application, or eval planning."
+		}
+	case headDrift:
+		state["comparisonStatus"] = "fresh-with-head-drift"
+		state["changedFileCount"] = len(changedFiles)
+		state["changedFiles"] = changedFiles
+		state["changedSourceCount"] = 0
+		state["changedSources"] = []string{}
+		state["recommendedAction"] = "The current HEAD differs from the packet commit, but no recorded claim source changed; review and eval planning may continue."
 	default:
 		state["comparisonStatus"] = "fresh"
+		state["changedFileCount"] = 0
+		state["changedFiles"] = []string{}
 		state["changedSourceCount"] = 0
 		state["changedSources"] = []string{}
 		state["recommendedAction"] = "The claim packet commit matches the current checkout."
@@ -1372,7 +1397,7 @@ func RequireFreshClaimPacket(packet map[string]any, repoRoot string, commandName
 	if gitState["isStale"] != true {
 		return nil
 	}
-	return fmt.Errorf("%s requires a fresh claim packet: packet gitCommit %s differs from current HEAD %s; run claim discover --previous <claims.json> --refresh-plan first or pass --allow-stale-claims",
+	return fmt.Errorf("%s requires a fresh claim packet: recorded claim sources changed between packet gitCommit %s and current HEAD %s; run claim discover --previous <claims.json> --refresh-plan first or pass --allow-stale-claims",
 		commandName,
 		stringFromAny(gitState["packetGitCommit"]),
 		stringFromAny(gitState["currentGitCommit"]),
@@ -2245,9 +2270,14 @@ func BuildClaimRefreshPlan(options ClaimRefreshPlanOptions) (map[string]any, err
 	}
 	baseCommit := strings.TrimSpace(stringOrEmpty(previous["gitCommit"]))
 	targetCommit := currentGitCommit(options.RepoRoot)
+	changedFiles := []string{}
+	changedFilesKnown := true
 	changedSources := []string{}
 	if baseCommit != "" && targetCommit != "" {
-		changedSources = gitChangedFiles(options.RepoRoot, baseCommit, targetCommit)
+		changedFiles, changedFilesKnown = gitChangedFilesWithStatus(options.RepoRoot, baseCommit, targetCommit)
+		if changedFilesKnown {
+			changedSources = filterClaimSourceChanges(previous, changedFiles)
+		}
 	}
 	previousCandidates := arrayOrEmpty(previous["claimCandidates"])
 	claims := []any{}
@@ -2284,6 +2314,10 @@ func BuildClaimRefreshPlan(options ClaimRefreshPlanOptions) (map[string]any, err
 		})
 	}
 	refreshSummary := renderClaimRefreshSummary(baseCommit, targetCommit, changedSources, changedClaimCount, carriedForwardClaimCount, changedClaimSourceCounts)
+	if baseCommit != "" && targetCommit != "" && baseCommit != targetCommit && !changedFilesKnown {
+		refreshSummary["status"] = "unknown"
+		refreshSummary["summary"] = "Cautilus could not compare the saved claim map with the current checkout because git diff information is unavailable."
+	}
 	return map[string]any{
 		"schemaVersion":      contracts.ClaimRefreshPlanSchema,
 		"sourceRoot":         ".",
@@ -2291,6 +2325,7 @@ func BuildClaimRefreshPlan(options ClaimRefreshPlanOptions) (map[string]any, err
 		"baseCommit":         baseCommit,
 		"targetCommit":       targetCommit,
 		"workingTreePolicy":  "excluded",
+		"changedFiles":       changedFiles,
 		"changedSources":     changedSources,
 		"claimPlan":          claims,
 		"refreshSummary":     refreshSummary,
@@ -2310,11 +2345,11 @@ func renderClaimRefreshSummary(baseCommit string, targetCommit string, changedSo
 			status = "changes-detected"
 			summary = "The saved claim map was made from an older checkout; this plan identifies claims whose source files changed and does not update the saved claim map yet."
 		} else if len(changedSources) > 0 {
-			status = "repo-changed-no-claim-source-hit"
-			summary = "The repo changed since the saved claim map, but none of the changed files are referenced by existing claims in this packet."
+			status = "source-changes-detected"
+			summary = "The saved claim map was made from an older checkout; recorded claim source files changed even though no existing claim source refs matched."
 		} else {
-			status = "commit-changed-no-file-diff"
-			summary = "The saved claim map points at an older commit, but Cautilus did not find changed files between the two commits."
+			status = "up-to-date"
+			summary = "The saved claim map points at an older commit, but no recorded claim source files changed; no refresh work is needed before review or eval planning."
 		}
 	}
 	nextActions := []any{
@@ -2386,10 +2421,18 @@ func renderCountEntries(counts map[string]int) []any {
 }
 
 func gitChangedFiles(repoRoot string, baseCommit string, targetCommit string) []string {
+	result, ok := gitChangedFilesWithStatus(repoRoot, baseCommit, targetCommit)
+	if !ok {
+		return []string{}
+	}
+	return result
+}
+
+func gitChangedFilesWithStatus(repoRoot string, baseCommit string, targetCommit string) ([]string, bool) {
 	command := exec.Command("git", "-C", repoRoot, "diff", "--name-only", baseCommit, targetCommit)
 	output, err := command.Output()
 	if err != nil {
-		return []string{}
+		return []string{}, false
 	}
 	lines := strings.Split(strings.TrimSpace(string(output)), "\n")
 	result := []string{}
@@ -2400,7 +2443,41 @@ func gitChangedFiles(repoRoot string, baseCommit string, targetCommit string) []
 		}
 	}
 	sort.Strings(result)
+	return result, true
+}
+
+func filterClaimSourceChanges(packet map[string]any, changedFiles []string) []string {
+	sourcePaths := claimPacketSourcePathSet(packet)
+	if len(sourcePaths) == 0 {
+		return append([]string{}, changedFiles...)
+	}
+	result := []string{}
+	for _, changed := range changedFiles {
+		if sourcePaths[changed] {
+			result = append(result, changed)
+		}
+	}
+	sort.Strings(result)
 	return result
+}
+
+func claimPacketSourcePathSet(packet map[string]any) map[string]bool {
+	paths := map[string]bool{}
+	for _, raw := range arrayOrEmpty(packet["sourceInventory"]) {
+		path := filepath.ToSlash(filepath.Clean(stringOrEmpty(asMap(raw)["path"])))
+		if path != "." && strings.TrimSpace(path) != "" {
+			paths[path] = true
+		}
+	}
+	for _, raw := range arrayOrEmpty(packet["claimCandidates"]) {
+		for _, ref := range arrayOrEmpty(asMap(raw)["sourceRefs"]) {
+			path := filepath.ToSlash(filepath.Clean(stringOrEmpty(asMap(ref)["path"])))
+			if path != "." && strings.TrimSpace(path) != "" {
+				paths[path] = true
+			}
+		}
+	}
+	return paths
 }
 
 func claimStringListContains(values []string, value string) bool {

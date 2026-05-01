@@ -421,11 +421,51 @@ func TestRunClaimShowReportsStaleGitState(t *testing.T) {
 		t.Fatalf("Unmarshal returned error: %v", err)
 	}
 	gitState := payload["gitState"].(map[string]any)
-	if gitState["isStale"] != true || gitState["comparisonStatus"] != "stale" {
+	if gitState["isStale"] != true || !strings.HasPrefix(gitState["comparisonStatus"].(string), "stale") {
 		t.Fatalf("expected stale git state, got %#v", gitState)
 	}
 	if gitState["currentGitCommit"] == "" {
 		t.Fatalf("expected current git commit in %#v", gitState)
+	}
+}
+
+func TestRunClaimShowTreatsNonSourceHeadDriftAsFresh(t *testing.T) {
+	repoRoot := t.TempDir()
+	initGitRepo(t, repoRoot)
+	if err := os.WriteFile(filepath.Join(repoRoot, "README.md"), []byte("Agents must keep behavior review bounded.\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile README returned error: %v", err)
+	}
+	runGit(t, repoRoot, "add", "README.md")
+	runGit(t, repoRoot, "commit", "-m", "add source")
+	baseCommit := runGit(t, repoRoot, "rev-parse", "HEAD")
+	claimsPath := filepath.Join(repoRoot, ".cautilus", "claims", "latest.json")
+	if err := os.MkdirAll(filepath.Dir(claimsPath), 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.WriteFile(claimsPath, []byte(minimalClaimPacketJSON(baseCommit)), 0o644); err != nil {
+		t.Fatalf("WriteFile claims returned error: %v", err)
+	}
+	runGit(t, repoRoot, "add", claimsPath)
+	runGit(t, repoRoot, "commit", "-m", "commit claim packet")
+	t.Setenv("CAUTILUS_CALLER_CWD", repoRoot)
+	t.Setenv("CAUTILUS_TOOL_ROOT", "")
+
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	exitCode := Run([]string{"claim", "show", "--input", claimsPath}, &stdout, &stderr)
+	if exitCode != 0 {
+		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
+	}
+	var payload map[string]any
+	if err := json.Unmarshal(stdout.Bytes(), &payload); err != nil {
+		t.Fatalf("Unmarshal returned error: %v", err)
+	}
+	gitState := payload["gitState"].(map[string]any)
+	if gitState["isStale"] != false || gitState["comparisonStatus"] != "fresh-with-head-drift" {
+		t.Fatalf("expected non-source head drift to stay fresh, got %#v", gitState)
+	}
+	if gitState["headDrift"] != true || gitState["changedSourceCount"] != float64(0) {
+		t.Fatalf("expected head drift with no source impact, got %#v", gitState)
 	}
 }
 

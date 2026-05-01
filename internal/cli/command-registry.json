@@ -48,7 +48,7 @@
       "example": "cautilus claim review prepare-input --claims /tmp/cautilus-claims.json --max-clusters 20 --output /tmp/cautilus-claim-review-input.json",
       "notes": [
         "Prepares deterministic `cautilus.claim_review_input.v1` clusters for agent or subagent review.",
-        "Rejects stale claim packets by default; use `claim discover --previous <claims.json> --refresh-plan` first unless an operator explicitly passes `--allow-stale-claims`.",
+        "Rejects stale claim packets by default; staleness means recorded claim sources changed, not merely that generated claim artifacts were committed later.",
         "The command does not call an LLM and does not mark claims satisfied."
       ]
     },
@@ -59,7 +59,7 @@
       "example": "cautilus claim review apply-result --claims /tmp/cautilus-claims.json --review-result /tmp/cautilus-claim-review-result.json --output /tmp/cautilus-reviewed-claims.json",
       "notes": [
         "Applies deterministic label and evidence updates from `cautilus.claim_review_result.v1` to an existing claim packet.",
-        "Rejects stale claim packets by default before merging review results.",
+        "Rejects stale claim packets by default before merging review results; packet-only HEAD drift is reported without blocking this command.",
         "`evidenceStatus=satisfied` requires direct or verified evidence refs; possible evidence refs cannot satisfy a claim."
       ]
     },
@@ -70,7 +70,7 @@
       "example": "cautilus claim plan-evals --claims /tmp/cautilus-reviewed-claims.json --output /tmp/cautilus-eval-plan.json",
       "notes": [
         "Emits `cautilus.claim_eval_plan.v1` for reviewed `cautilus-eval` claims that are ready to verify.",
-        "Rejects stale claim packets by default before planning eval fixtures.",
+        "Rejects stale claim packets by default before planning eval fixtures; generated claim artifact commits do not make the source inventory stale.",
         "The command plans eval fixtures but does not write host-owned fixtures, prompts, runners, or policy."
       ]
     },

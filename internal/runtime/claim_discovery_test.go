@@ -1162,3 +1162,63 @@ func TestBuildClaimRefreshPlanMarksChangedSources(t *testing.T) {
 		t.Fatalf("expected update_saved_claim_map first next action, got %#v", nextActions)
 	}
 }
+
+func TestBuildClaimRefreshPlanIgnoresCommittedClaimPacketDrift(t *testing.T) {
+	repoRoot := t.TempDir()
+	if err := execGit(repoRoot, "init"); err != nil {
+		t.Fatalf("git init failed: %v", err)
+	}
+	if err := execGit(repoRoot, "config", "user.email", "cautilus@example.com"); err != nil {
+		t.Fatalf("git config failed: %v", err)
+	}
+	if err := execGit(repoRoot, "config", "user.name", "Cautilus Test"); err != nil {
+		t.Fatalf("git config failed: %v", err)
+	}
+	mustWriteFile(t, filepath.Join(repoRoot, "README.md"), "Agents must follow the first workflow behavior.\n")
+	if err := execGit(repoRoot, "add", "README.md"); err != nil {
+		t.Fatalf("git add failed: %v", err)
+	}
+	if err := execGit(repoRoot, "commit", "-m", "initial"); err != nil {
+		t.Fatalf("git commit failed: %v", err)
+	}
+	base, err := execGitOutput(repoRoot, "rev-parse", "HEAD")
+	if err != nil {
+		t.Fatalf("git rev-parse base failed: %v", err)
+	}
+	previous := filepath.Join(repoRoot, ".cautilus", "claims", "latest.json")
+	mustWriteFile(t, previous, fmt.Sprintf(`{
+  "schemaVersion": "cautilus.claim_proof_plan.v1",
+  "gitCommit": %q,
+  "sourceInventory": [{"path": "README.md", "kind": "readme", "status": "read", "depth": 0}],
+  "claimCandidates": [
+    {"claimId": "claim-readme-md-1", "sourceRefs": [{"path": "README.md"}]}
+  ]
+}
+`, base))
+	if err := execGit(repoRoot, "add", previous); err != nil {
+		t.Fatalf("git add claims failed: %v", err)
+	}
+	if err := execGit(repoRoot, "commit", "-m", "commit claim packet"); err != nil {
+		t.Fatalf("git commit claims failed: %v", err)
+	}
+
+	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{
+		RepoRoot:        repoRoot,
+		PreviousPath:    previous,
+		RefreshPlanOnly: true,
+	})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan refresh returned error: %v", err)
+	}
+	if changed := stringArrayOrEmpty(plan["changedSources"]); len(changed) != 0 {
+		t.Fatalf("expected no changed claim sources, got %#v", changed)
+	}
+	refreshSummary := asMap(plan["refreshSummary"])
+	if refreshSummary["status"] != "up-to-date" || refreshSummary["changedSourceCount"] != 0 || refreshSummary["changedClaimCount"] != 0 {
+		t.Fatalf("expected committed packet drift to stay up-to-date, got %#v", refreshSummary)
+	}
+	changedFiles := stringArrayOrEmpty(plan["changedFiles"])
+	if len(changedFiles) != 1 || changedFiles[0] != ".cautilus/claims/latest.json" {
+		t.Fatalf("expected changedFiles to record packet-only drift, got %#v", changedFiles)
+	}
+}
