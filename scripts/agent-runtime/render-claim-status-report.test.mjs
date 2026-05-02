@@ -135,6 +135,28 @@ test("renderStatusReport summarizes status, review results, validation, and eval
 				],
 			},
 		],
+		canonicalMap: {
+			path: ".cautilus/claims/canonical-claim-map.json",
+			coverageSummary: {
+				userRawClaimCount: 2,
+				userMappedToCanonicalCount: 1,
+				userReviewNeededCount: 1,
+				byDisposition: {
+					"mapped-to-user-canonical": 1,
+					"user-review-needed": 1,
+				},
+				reviewNeededClaimIds: ["claim-readme-md-2"],
+			},
+			userCoverage: [
+				{
+					canonicalClaimId: "U1",
+					title: "Cautilus Produces Reviewable Reports",
+					absorbedRawClaimCount: 1,
+					byEvidenceStatus: { unknown: 1 },
+					byReviewStatus: { "agent-reviewed": 1 },
+				},
+			],
+		},
 	};
 
 	const report = renderStatusReport({ claimsPacket, statusPacket, digests, args });
@@ -147,6 +169,9 @@ test("renderStatusReport summarizes status, review results, validation, and eval
 	assert.match(report, /validation-report\.json/);
 	assert.match(report, /Zero eval plans are expected/);
 	assert.match(report, /refresh-plan-claim-status-report\.json/);
+	assert.match(report, /## Canonical Claim Map/);
+	assert.match(report, /User claims mapped to canonical user claims: 1/);
+	assert.match(report, /claim-readme-md-2/);
 	assert.match(report, /Update the saved claim map before review or eval planning/);
 	assert.match(report, /Gitignore policy: respect-repo-gitignore/);
 	assert.doesNotMatch(report, /claim-docs-maintainers-stale-md-1/);

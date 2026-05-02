@@ -65,6 +65,7 @@
     "audit:reviewer-launch-flow-log": "node scripts/agent-runtime/audit-cautilus-reviewer-launch-flow-log.mjs",
     "audit:review-to-eval-flow-log": "node scripts/agent-runtime/audit-cautilus-review-to-eval-flow-log.mjs",
     "claims:apply-review-results": "node scripts/agent-runtime/apply-current-review-results.mjs --claims .cautilus/claims/latest.json --claims-dir .cautilus/claims --output .cautilus/claims/evidenced-typed-runners.json",
+    "claims:canonical-map": "node scripts/agent-runtime/build-canonical-claim-map.mjs --claims .cautilus/claims/evidenced-typed-runners.json --output .cautilus/claims/canonical-claim-map.json",
     "claims:review-worksheet": "node scripts/agent-runtime/render-claim-discovery-review.mjs --claims .cautilus/claims/evidenced-typed-runners.json --status .cautilus/claims/status-summary.json --output .cautilus/claims/discovery-review.md",
     "claims:status-report": "node scripts/agent-runtime/render-claim-status-report.mjs --claims .cautilus/claims/evidenced-typed-runners.json --status .cautilus/claims/status-summary.json --output .cautilus/claims/claim-status-report.md",
     "claims:status-server": "node scripts/agent-runtime/serve-claim-status-review.mjs",

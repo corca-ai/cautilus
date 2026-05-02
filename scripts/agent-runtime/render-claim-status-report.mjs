@@ -5,12 +5,14 @@ import path from "node:path";
 const DEFAULT_CLAIMS_DIR = ".cautilus/claims";
 const DEFAULT_CLAIMS = `${DEFAULT_CLAIMS_DIR}/evidenced-typed-runners.json`;
 const DEFAULT_STATUS = `${DEFAULT_CLAIMS_DIR}/status-summary.json`;
+const DEFAULT_CANONICAL_MAP = `${DEFAULT_CLAIMS_DIR}/canonical-claim-map.json`;
 const DEFAULT_OUTPUT = `${DEFAULT_CLAIMS_DIR}/claim-status-report.md`;
 
 export function parseArgs(argv) {
 	const args = {
 		claims: DEFAULT_CLAIMS,
 		status: DEFAULT_STATUS,
+		canonicalMap: DEFAULT_CANONICAL_MAP,
 		claimsDir: DEFAULT_CLAIMS_DIR,
 		output: DEFAULT_OUTPUT,
 		samplePerBucket: 5,
@@ -22,6 +24,8 @@ export function parseArgs(argv) {
 			args.claims = argv[++index];
 		} else if (arg === "--status") {
 			args.status = argv[++index];
+		} else if (arg === "--canonical-map") {
+			args.canonicalMap = argv[++index];
 		} else if (arg === "--claims-dir") {
 			args.claimsDir = argv[++index];
 		} else if (arg === "--output") {
@@ -349,6 +353,41 @@ function renderScoreboard(lines, claimsPacket, statusPacket) {
 	}
 }
 
+function renderCanonicalMap(lines, canonicalMap) {
+	if (!canonicalMap) {
+		return;
+	}
+	const summary = asObject(canonicalMap.coverageSummary);
+	const userClaims = asArray(canonicalMap?.catalogs?.user?.claims);
+	const userRange =
+		userClaims.length > 0 ? `${userClaims[0].id}-${userClaims[userClaims.length - 1].id}` : "canonical user claims";
+	lines.push("## Canonical Claim Map");
+	lines.push("");
+	lines.push(`- Map packet: ${canonicalMap.path ?? "provided canonical map"}`);
+	lines.push(`- User raw claims: ${summary.userRawClaimCount ?? 0}`);
+	lines.push(`- User claims mapped to ${userRange}: ${summary.userMappedToCanonicalCount ?? 0}`);
+	lines.push(`- User claims needing catalog review: ${summary.userReviewNeededCount ?? 0}`);
+	lines.push(`- All raw claims by disposition: ${formatCounts(summary.byDisposition)}`);
+	lines.push("");
+	const userCoverage = asArray(canonicalMap.userCoverage);
+	if (userCoverage.length > 0) {
+		lines.push(...table(["User claim", "Title", "Raw claims", "Evidence", "Review"], userCoverage.map((item) => [
+			item.canonicalClaimId,
+			item.title,
+			item.absorbedRawClaimCount ?? 0,
+			formatCounts(item.byEvidenceStatus),
+			formatCounts(item.byReviewStatus),
+		])));
+		lines.push("");
+	}
+	const reviewNeededIds = asArray(summary.reviewNeededClaimIds);
+	if (reviewNeededIds.length > 0) {
+		const sample = reviewNeededIds.slice(0, 8).join(", ");
+		lines.push(`Catalog review needed for ${reviewNeededIds.length} raw claim(s): ${sample}${reviewNeededIds.length > 8 ? ", ..." : ""}`);
+		lines.push("");
+	}
+}
+
 function renderActionBuckets(lines, statusPacket, claimsById, sampleLimit) {
 	lines.push("## Action Buckets");
 	lines.push("");
@@ -567,6 +606,7 @@ export function renderStatusReport({ claimsPacket, statusPacket, digests, args }
 	const currentReviewResults = reviewResultsForClaims(digests.reviewResults, claimsById);
 	renderHeader(lines, claimsPacket, statusPacket, args);
 	renderScoreboard(lines, claimsPacket, statusPacket);
+	renderCanonicalMap(lines, digests.canonicalMap);
 	renderNextWork(lines, statusPacket);
 	renderActionBuckets(lines, statusPacket, claimsById, args.samplePerBucket);
 	renderReviewResults(lines, currentReviewResults, claimsById, args.reviewSample);
@@ -581,6 +621,10 @@ export function buildStatusReport(args) {
 	const claimsPacket = readJSON(args.claims);
 	const statusPacket = readOptionalJSON(args.status) ?? {};
 	const digests = collectDigests(args);
+	digests.canonicalMap = readOptionalJSON(args.canonicalMap);
+	if (digests.canonicalMap) {
+		digests.canonicalMap.path = args.canonicalMap;
+	}
 	return renderStatusReport({ claimsPacket, statusPacket, digests, args });
 }
 

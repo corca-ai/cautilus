@@ -123,6 +123,7 @@ In the Cautilus product repo, product-meaning review should start from those cat
 User-facing claims must use plain product language.
 Maintainer-facing claims may use internal terms, but they must stay aligned with the user-facing claim ids and preserve source refs, proof route, evidence status, and next action.
 Review packets and curation artifacts preserve absorbed raw claim ids and fingerprints when available; stable catalog docs may summarize the absorbed raw themes instead of listing volatile line-based ids.
+When those catalogs change in the Cautilus product repo, run `npm run claims:canonical-map` before `npm run claims:status-report` so the report shows how raw user claims compress into U1-U8.
 If `claim show` or `agent status` reports `gitState.isStale=true`, run `claim discover --previous <claims.json> --refresh-plan` before claim review, review-result application, or eval planning.
 Do not launch reviewers, apply review results, plan evals, edit files, or commit artifacts from a stale claim packet unless the user explicitly asks to override stale state.
 If a view is missing, prefer adding a product-owned summary option or review packet over guessing raw JSON keys with ad hoc `jq`.
