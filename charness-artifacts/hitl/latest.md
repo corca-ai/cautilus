@@ -1,13 +1,15 @@
-# HITL Review: claim source boundary
+# HITL Review: canonical claim catalog
 Date: 2026-05-03
 
 ## Target
 
-`.cautilus/claims/claim-status-comments.json` and the refreshed Cautilus claim packets.
+[docs/claims/user-facing.md](../../docs/claims/user-facing.md), [docs/claims/maintainer-facing.md](../../docs/claims/maintainer-facing.md), and the refreshed Cautilus claim packets.
 
 ## Goal
 
-Use maintainer review to separate ordinary public claims from proof sources, maintainer-only evidence, and claims that still need human alignment.
+Use maintainer review to approve the curated product promise map before spending more time on raw sentence candidates.
+Raw `claim discover` output remains the source-ref-backed proof-planning input.
+The human-facing review target is now the canonical user-facing and maintainer-facing claim catalogs.
 
 ## Accepted Rules
 
@@ -19,6 +21,10 @@ Use maintainer review to separate ordinary public claims from proof sources, mai
 - Executable specs should be treated as proof or evidence context for public claims, not as human-confirm prose claims.
 - `docs/maintainers/**` is not user-facing.
 - Maintainer evidence notes should be excluded from user-facing claim review or relabeled as internal evidence.
+- Raw sentence candidates are not the primary human review surface once the decision is product meaning, duplication, audience alignment, or next-action grouping.
+- User-facing canonical claims must use plain product language.
+- Maintainer-facing canonical claims may use internal terms, but each maintainer claim must map back to user-facing claim ids.
+- Catalogs are manually maintained or review-applied source documents, not volatile generated report blocks.
 
 ## Decisions Applied
 
@@ -49,37 +55,41 @@ Use maintainer review to separate ordinary public claims from proof sources, mai
 - Accepted `claim-docs-contracts-claim-discovery-workflow-md-663` as deterministic proof work for review-input budget behavior.
 - Accepted `claim-docs-contracts-runner-readiness-md-198` as deterministic proof work.
   One shared runner-readiness drift test is sufficient if `doctor` and `agent status` use the same assessment logic.
+- Added canonical claim catalogs under `docs/claims/`.
+- Linked the user-facing and maintainer-facing claim catalogs from README quick links.
+- Updated the bundled Cautilus skill contract so raw candidates are treated as high-recall proof-planning inputs and catalog curation happens before broad HITL.
+- Added exact audience hints for the two catalog documents in `.agents/cautilus-adapter.yaml`.
+- Tightened the README wording so the claim catalog is the product promise map and the public spec report is executable proof for selected promises.
+- Moved bundled skill docs from the `user` audience hint to the `developer` audience hint so agent instruction prose does not inflate user-facing claim counts.
+- Added catalog-level evidence status, next action, and absorbed-theme fields to the maintainer-facing catalog.
 
 ## Current Packet Snapshot
 
-- Candidate count: 263.
-- Source count: 23.
+- Packet source commit: 3d192caec75d34edc306a1f95a29dc8eae9adc9e.
+- Candidate count: 304.
+- Source count: 25.
 - `docs/specs/**` source count: 0.
 - `docs/maintainers/**` source count: 0.
 - Candidates sourced from excluded specs or maintainer docs: 0.
-- Agent-reviewed claims carried forward: 79.
-- Human-reviewed claims: 12.
-- Satisfied claims carried forward: 16.
-- User-facing claims: 67.
+- Agent-reviewed claims carried forward: 65.
+- Human-reviewed claims: 7.
+- Satisfied claims carried forward: 15.
+- User-facing claims: 81.
 
 ## Next HITL Queue
 
-Continue with readable cards from `.cautilus/claims/review-input-human-align-action-bucket.json`, `.cautilus/claims/review-input-split-or-defer-action-bucket.json`, and `.cautilus/claims/review-input-human-confirm-action-bucket.json`.
+Review [docs/claims/user-facing.md](../../docs/claims/user-facing.md) first.
+Decide whether U1 through U8 are the right reader-facing promise set, whether the wording is plain enough, and whether any promise is missing or duplicated.
 
-The prior twelve human-reviewed cards have been applied and should not be asked again.
-Start with decisions that change broad proof planning or product boundary interpretation early, not by report row order:
+Then review [docs/claims/maintainer-facing.md](../../docs/claims/maintainer-facing.md).
+Decide whether M1 through M10 map cleanly to the user-facing claims, whether internal terms are acceptable, and whether the listed proof routes make the next agent actions clear.
 
-1. Product and adapter ownership boundaries for consumer-facing docs.
-   Decide whether these are real user-facing claims, whether they should be split, and which parts need deterministic proof:
-   `claim-docs-cli-reference-md-180`, `claim-docs-cli-reference-md-186`, `claim-docs-guides-consumer-adoption-md-29`, and `claim-docs-guides-consumer-adoption-md-106`.
-2. Broad top-level positioning that can otherwise keep generating noisy proof work.
-   Decide whether to keep as positioning, decompose into concrete claims, or drop from proof planning:
-   `claim-readme-md-3`, plus related developer-positioning claims when needed.
-3. Evidence and review semantics that can mostly become deterministic proof work once the wording is accepted:
-   `claim-docs-contracts-claim-discovery-workflow-md-300`, `claim-docs-contracts-claim-discovery-workflow-md-302`, and `claim-docs-contracts-claim-discovery-workflow-md-295`.
+After catalog review, return to action-bucket review only for claims that are not absorbed by the canonical catalogs:
+`.cautilus/claims/review-input-human-align-action-bucket.json`, `.cautilus/claims/review-input-split-or-defer-action-bucket.json`, and `.cautilus/claims/review-input-human-confirm-action-bucket.json`.
 
 ## Open Questions
 
 - Should the claim review browser support per-example comments instead of only decision-card comments?
-- Which remaining contract claims are developer-facing proof work rather than user-facing product claims?
-- Which remaining human-confirm claims are concrete enough for deterministic proof without more maintainer discussion?
+- Should the claim catalogs become executable specdown pages later, or stay ordinary source docs with executable specs linked separately?
+- Which canonical user-facing claims should be promoted first into public executable proof pages?
+- Which remaining raw candidates are not absorbed by U1-U8 or M1-M10 and still need separate review?

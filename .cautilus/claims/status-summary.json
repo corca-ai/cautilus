@@ -3,20 +3,20 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 172
+          "unknown": 232
         },
         "byReviewStatus": {
-          "heuristic": 172
+          "heuristic": 232
         },
-        "count": 172,
+        "count": 232,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
-          "claim-docs-cli-reference-md-32",
-          "claim-docs-cli-reference-md-270",
-          "claim-docs-contracts-adapter-contract-md-3",
-          "claim-docs-contracts-adapter-contract-md-208",
-          "claim-docs-contracts-adapter-contract-md-218"
+          "claim-readme-md-73",
+          "claim-readme-md-99",
+          "claim-readme-md-127",
+          "claim-readme-md-141",
+          "claim-readme-md-152"
         ],
         "summary": "Review heuristic labels before spending proof or eval budget."
       }
@@ -24,12 +24,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 16
+          "satisfied": 15
         },
         "byReviewStatus": {
-          "agent-reviewed": 16
+          "agent-reviewed": 15
         },
-        "count": 16,
+        "count": 15,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -43,14 +43,14 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 101
+          "unknown": 109
         },
         "byReviewStatus": {
-          "agent-reviewed": 32,
-          "heuristic": 61,
-          "human-reviewed": 8
+          "agent-reviewed": 25,
+          "heuristic": 80,
+          "human-reviewed": 4
         },
-        "count": 101,
+        "count": 109,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -64,94 +64,93 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 95
+          "unknown": 109
         },
         "byReviewStatus": {
-          "agent-reviewed": 5,
-          "heuristic": 87,
-          "human-reviewed": 3
+          "agent-reviewed": 2,
+          "heuristic": 105,
+          "human-reviewed": 2
         },
-        "count": 95,
+        "count": 109,
         "id": "agent-plan-cautilus-eval",
         "recommendedActor": "agent",
         "sampleClaimIds": [
           "claim-agents-md-79",
-          "claim-readme-md-123",
-          "claim-readme-md-144",
+          "claim-readme-md-127",
           "claim-readme-md-148",
-          "claim-readme-md-211"
+          "claim-readme-md-152",
+          "claim-readme-md-215"
         ],
         "summary": "Draft or select Cautilus eval scenarios for ready eval claims."
       },
       {
         "byEvidenceStatus": {
-          "unknown": 7
+          "unknown": 8
         },
         "byReviewStatus": {
-          "agent-reviewed": 1,
-          "heuristic": 6
+          "heuristic": 8
         },
-        "count": 7,
+        "count": 8,
         "id": "agent-design-scenario",
         "recommendedActor": "agent",
         "sampleClaimIds": [
-          "claim-readme-md-171",
+          "claim-readme-md-175",
+          "claim-docs-claims-user-facing-md-106",
           "claim-docs-master-plan-md-88",
-          "claim-docs-contracts-claim-discovery-workflow-md-236",
-          "claim-docs-contracts-claim-discovery-workflow-md-658",
-          "claim-docs-contracts-scenario-history-md-3"
+          "claim-docs-contracts-claim-discovery-workflow-md-253",
+          "claim-docs-contracts-claim-discovery-workflow-md-675"
         ],
         "summary": "Decompose the behavior into a concrete scenario before protected eval planning."
+      },
+      {
+        "byEvidenceStatus": {
+          "unknown": 28
+        },
+        "byReviewStatus": {
+          "agent-reviewed": 13,
+          "heuristic": 15
+        },
+        "count": 28,
+        "id": "human-align-surfaces",
+        "recommendedActor": "human",
+        "sampleClaimIds": [
+          "claim-docs-claims-maintainer-facing-md-4",
+          "claim-docs-claims-maintainer-facing-md-38",
+          "claim-docs-claims-maintainer-facing-md-116",
+          "claim-docs-claims-maintainer-facing-md-141",
+          "claim-docs-claims-user-facing-md-9"
+        ],
+        "summary": "Reconcile conflicting docs, code, adapters, or ownership boundaries before proof would be honest."
       },
       {
         "byEvidenceStatus": {
           "unknown": 21
         },
         "byReviewStatus": {
-          "agent-reviewed": 14,
-          "heuristic": 7
-        },
-        "count": 21,
-        "id": "human-align-surfaces",
-        "recommendedActor": "human",
-        "sampleClaimIds": [
-          "claim-docs-cli-reference-md-180",
-          "claim-docs-cli-reference-md-186",
-          "claim-docs-guides-consumer-adoption-md-29",
-          "claim-docs-guides-consumer-adoption-md-83",
-          "claim-docs-guides-consumer-adoption-md-106"
-        ],
-        "summary": "Reconcile conflicting docs, code, adapters, or ownership boundaries before proof would be honest."
-      },
-      {
-        "byEvidenceStatus": {
-          "unknown": 10
-        },
-        "byReviewStatus": {
-          "heuristic": 9,
+          "heuristic": 20,
           "human-reviewed": 1
         },
-        "count": 10,
+        "count": 21,
         "id": "human-confirm-or-decompose",
         "recommendedActor": "human",
         "sampleClaimIds": [
-          "claim-docs-contracts-claim-discovery-workflow-md-295",
-          "claim-docs-contracts-claim-discovery-workflow-md-300",
-          "claim-docs-contracts-claim-discovery-workflow-md-302",
-          "claim-docs-contracts-claim-discovery-workflow-md-525",
-          "claim-docs-contracts-reporting-md-150"
+          "claim-readme-md-73",
+          "claim-docs-claims-maintainer-facing-md-101",
+          "claim-docs-claims-maintainer-facing-md-203",
+          "claim-docs-claims-user-facing-md-22",
+          "claim-docs-claims-user-facing-md-37"
         ],
         "summary": "Confirm, decompose, or accept a human-auditable claim before treating it as proven."
       },
       {
         "byEvidenceStatus": {
-          "unknown": 13
+          "unknown": 14
         },
         "byReviewStatus": {
-          "agent-reviewed": 11,
-          "heuristic": 2
+          "agent-reviewed": 10,
+          "heuristic": 4
         },
-        "count": 13,
+        "count": 14,
         "id": "split-or-defer",
         "recommendedActor": "human",
         "sampleClaimIds": [
@@ -165,7 +164,7 @@
       }
     ]
   },
-  "candidateCount": 263,
+  "candidateCount": 304,
   "claimState": {
     "path": ".cautilus/claims/latest.json",
     "pathSource": "adapter",
@@ -182,43 +181,43 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 196,
-      "user": 67
+      "developer": 223,
+      "user": 81
     },
     "byClaimSemanticGroup": {
-      "Adapter and portability": 47,
-      "Agent and skill workflow": 64,
-      "Claim discovery and review": 20,
-      "Documentation and contracts": 67,
+      "Adapter and portability": 51,
+      "Agent and skill workflow": 74,
+      "Claim discovery and review": 24,
+      "Documentation and contracts": 74,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
-      "Improvement and optimization": 16,
-      "Packets and reporting": 26,
-      "Quality gates": 19,
+      "Improvement and optimization": 18,
+      "Packets and reporting": 33,
+      "Quality gates": 26,
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 16,
-      "unknown": 247
+      "satisfied": 15,
+      "unknown": 289
     },
     "byLifecycle": {
-      "new": 263
+      "new": 304
     },
     "byRecommendedProof": {
-      "cautilus-eval": 103,
-      "deterministic": 116,
-      "human-auditable": 44
+      "cautilus-eval": 117,
+      "deterministic": 124,
+      "human-auditable": 63
     },
     "byReviewStatus": {
-      "agent-reviewed": 79,
-      "heuristic": 172,
-      "human-reviewed": 12
+      "agent-reviewed": 65,
+      "heuristic": 232,
+      "human-reviewed": 7
     },
     "byVerificationReadiness": {
-      "blocked": 13,
-      "needs-alignment": 21,
-      "needs-scenario": 7,
-      "ready-to-verify": 222
+      "blocked": 14,
+      "needs-alignment": 28,
+      "needs-scenario": 8,
+      "ready-to-verify": 254
     }
   },
   "discoveryBoundary": {
@@ -241,6 +240,9 @@
     "audienceHints": {
       "developer": [
         "AGENTS.md",
+        "docs/claims/maintainer-facing.md",
+        "skills/cautilus/**",
+        "plugins/cautilus/skills/cautilus/**",
         "docs/contracts/**",
         "docs/specs/**",
         "docs/internal/**",
@@ -253,10 +255,9 @@
       ],
       "user": [
         "README.md",
+        "docs/claims/user-facing.md",
         "docs/cli-reference.md",
-        "docs/guides/**",
-        "skills/cautilus/**",
-        "plugins/cautilus/skills/cautilus/**"
+        "docs/guides/**"
       ]
     },
     "entries": [
@@ -382,7 +383,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 16,
+    "satisfiedClaimCount": 15,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-78",
@@ -632,25 +633,6 @@
         "summary": "`npm run lint:specs` and `npm run lint:scenario-normalizers` still gate the runtime completeness of the surviving `scenario normalize` helpers; new user-facing copy must reconcile with the surface/preset contract before landing."
       },
       {
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-656",
-        "evidenceRefCount": 1,
-        "evidenceRefs": [
-          {
-            "contentHash": "sha256:a083e375daa35bc85efb66dd436e1c5018bef2dfea3ff66ffbba967fd70584f3",
-            "kind": "cautilus-claim-evidence-bundle",
-            "matchKind": "verified",
-            "path": ".cautilus/claims/evidence-review-to-eval-flow.json",
-            "supportsClaimIds": [
-              "claim-docs-contracts-claim-discovery-workflow-md-656"
-            ]
-          }
-        ],
-        "recommendedEvalSurface": "dev/skill",
-        "recommendedProof": "cautilus-eval",
-        "reviewStatus": "agent-reviewed",
-        "summary": "LLM-backed cluster review should come after the deterministic packet and skill control flow are stable enough to dogfood."
-      },
-      {
         "claimId": "claim-skills-cautilus-skill-md-11",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -690,44 +672,23 @@
       }
     ]
   },
-  "gitCommit": "f3da975eb7803251769e0e32db0ab1a0aa56298e",
+  "gitCommit": "3d192caec75d34edc306a1f95a29dc8eae9adc9e",
   "gitState": {
-    "changedFileCount": 20,
-    "changedFiles": [
-      ".cautilus/claims/claim-status-report.md",
-      ".cautilus/claims/discovery-review.md",
-      ".cautilus/claims/eval-plan-evidenced-typed-runners.json",
-      ".cautilus/claims/evidenced-typed-runners.json",
-      ".cautilus/claims/latest.json",
-      ".cautilus/claims/refresh-plan-after-skill-branch-policy-removal.json",
-      ".cautilus/claims/review-input-human-align-action-bucket.json",
-      ".cautilus/claims/review-input-human-confirm-action-bucket.json",
-      ".cautilus/claims/review-input-split-or-defer-action-bucket.json",
-      ".cautilus/claims/review-input-typed-runners.json",
-      ".cautilus/claims/review-result-hitl-audience-2026-05-02.json",
-      ".cautilus/claims/review-result-hitl-evidence-backed-human-review-2026-05-02.json",
-      ".cautilus/claims/review-result-hitl-priority-reset-2026-05-03.json",
-      ".cautilus/claims/status-summary.json",
-      ".cautilus/claims/validation-evidenced-typed-runners.json",
-      "charness-artifacts/debug/debug-2026-05-03-review-result-line-id-collision.md",
-      "charness-artifacts/debug/latest.md",
-      "charness-artifacts/hitl/latest.md",
-      "scripts/agent-runtime/apply-current-review-results.mjs",
-      "scripts/agent-runtime/apply-current-review-results.test.mjs"
-    ],
+    "changedFileCount": 0,
+    "changedFiles": [],
     "changedSourceCount": 0,
     "changedSources": [],
-    "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "8a7fb229debf5fdb98d5178670a8f581d67d5624",
-    "headDrift": true,
+    "comparisonStatus": "fresh",
+    "currentGitCommit": "3d192caec75d34edc306a1f95a29dc8eae9adc9e",
+    "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "f3da975eb7803251769e0e32db0ab1a0aa56298e",
-    "recommendedAction": "The current HEAD differs from the packet commit, but no recorded claim source changed; review and eval planning may continue.",
+    "packetGitCommit": "3d192caec75d34edc306a1f95a29dc8eae9adc9e",
+    "recommendedAction": "The claim packet commit matches the current checkout.",
     "workingTreePolicy": "excluded"
   },
   "inputPath": ".cautilus/claims/evidenced-typed-runners.json",
   "inputSchemaVersion": "cautilus.claim_proof_plan.v1",
-  "linkedMarkdownSourceCount": 21,
+  "linkedMarkdownSourceCount": 23,
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "recommendedNextActions": [
     {
@@ -744,11 +705,131 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 159,
-    "needsAlignment": 21,
-    "needsScenario": 7
+    "heuristicClaimsReadyForReview": 209,
+    "needsAlignment": 28,
+    "needsScenario": 8
   },
+  "sampleClaims": [
+    {
+      "claimAudience": "developer",
+      "claimId": "claim-agents-md-12",
+      "claimSemanticGroup": "Adapter and portability",
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "deterministic",
+        "repo-instructions"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Decompose into concrete deterministic surfaces or create a policy inventory that maps deterministic behavior claims to code, scripts, adapters, tests, and specs.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "line": 12,
+          "path": "AGENTS.md"
+        }
+      ],
+      "summary": "Deterministic behavior belongs in code, scripts, adapters, tests, and specs.",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "claimAudience": "developer",
+      "claimId": "claim-agents-md-26",
+      "claimSemanticGroup": "Documentation and contracts",
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "dev/repo",
+        "human-auditable",
+        "repo-instructions"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Do not satisfy directly; either leave as positioning or decompose into narrower contract ownership claims.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "line": 26,
+          "path": "AGENTS.md"
+        }
+      ],
+      "summary": "`Cautilus` owns generic intentful behavior evaluation workflow contracts.",
+      "verificationReadiness": "blocked"
+    },
+    {
+      "claimAudience": "developer",
+      "claimId": "claim-agents-md-29",
+      "claimSemanticGroup": "Evaluation surfaces",
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "blocked",
+        "human-auditable",
+        "repo-instructions"
+      ],
+      "lifecycle": "new",
+      "nextAction": "If this should remain a proof target, split it into concrete product claims under the roadmap/spec surface, such as claim/eval/optimize allowing prompt changes only when held-out behavior evidence improves.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "line": 29,
+          "path": "AGENTS.md"
+        }
+      ],
+      "summary": "The long-term direction is intent-first and intentful behavior evaluation: prompts can change if the evaluated behavior gets better.",
+      "verificationReadiness": "blocked"
+    },
+    {
+      "claimAudience": "developer",
+      "claimId": "claim-agents-md-61",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "deterministic",
+        "repo-instructions"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Add a small instruction-surface lint or evidence bundle that checks AGENTS length and verifies detailed routing is discoverable through skill metadata and find-skills artifacts.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "line": 61,
+          "path": "AGENTS.md"
+        }
+      ],
+      "summary": "Keep this block short. Detailed routing belongs in installed skill metadata and `find-skills` output, not in a long checked-in catalog.",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "claimAudience": "developer",
+      "claimId": "claim-agents-md-73",
+      "claimSemanticGroup": "General product behavior",
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "blocked",
+        "human-auditable",
+        "repo-instructions"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep as an operating rule rather than a satisfied product claim, or add a narrower audited-process claim that points to recent debug artifacts and commit discipline.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "line": 73,
+          "path": "AGENTS.md"
+        }
+      ],
+      "summary": "While implementing, any bug, error, regression, or unexpected behavior routes to `charness:debug` before further fixes.",
+      "verificationReadiness": "blocked"
+    }
+  ],
   "schemaVersion": "cautilus.claim_status_summary.v1",
-  "sourceCount": 23,
+  "sourceCount": 25,
   "sourceRoot": "."
 }
