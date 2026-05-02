@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewRun": {
+    "reviewer": "human-maintainer",
+    "backend": "chat-hitl",
+    "mode": "hitl-decision-cards",
+    "reviewInputPath": "charness-artifacts/hitl/latest.md",
+    "reviewPolicy": "Apply maintainer decisions from the binary/skill boundary HITL loop. Keep evidenceStatus unknown unless direct evidence is attached; narrow claim-review ownership so it does not overclaim eval or optimize model execution."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "hitl-binary-skill-boundary",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-603",
+          "reviewStatus": "human-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The maintainer accepted this boundary as directionally right for consumer repos, but it still needs concrete proof that the binary plus bundled skill can work without importing host-specific prompts or adapters.",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "nextAction": "Add or connect deterministic install, command-discovery, and adapter-boundary checks proving the binary plus bundled skill remain generic while host prompts and adapters stay host-owned.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-live-run-invocation-md-58",
+          "reviewStatus": "human-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The maintainer accepted the product-owned persona_prompt boundary, with the understanding that backend/model execution remains behind adapter-owned commands.",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "nextAction": "Add or connect deterministic live-run invocation tests proving the persona_prompt packet, loop boundary, persona shaping, result normalization, and adapter-owned backend command handoff.",
+          "unresolvedQuestions": []
+        }
+      ]
+    },
+    {
+      "clusterId": "hitl-claim-review-llm-boundary",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-561",
+          "reviewStatus": "human-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The maintainer rejected the broader wording and accepted the narrowed claim-discovery boundary: LLM-backed claim review belongs to the bundled skill, while eval and optimize may still orchestrate model-involving behavior through adapter-owned runners.",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/skill",
+          "verificationReadiness": "ready-to-verify",
+          "nextAction": "Add or connect a dev/skill eval fixture proving the bundled skill presents LLM-backed claim review as a separate budgeted branch after deterministic discovery, and does not imply that eval or optimize avoid model-involving runner calls.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-565",
+          "reviewStatus": "human-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The maintainer accepted that claim review needs explicit budget confirmation before LLM-backed reviewer work starts.",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/skill",
+          "verificationReadiness": "ready-to-verify",
+          "nextAction": "Add or connect a dev/skill eval fixture proving the bundled skill states the claim-review budget before launching reviewer lanes.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

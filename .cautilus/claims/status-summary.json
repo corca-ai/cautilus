@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 182
+          "unknown": 177
         },
         "byReviewStatus": {
-          "heuristic": 182
+          "heuristic": 177
         },
-        "count": 182,
+        "count": 177,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -24,12 +24,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 15
+          "satisfied": 16
         },
         "byReviewStatus": {
-          "agent-reviewed": 15
+          "agent-reviewed": 16
         },
-        "count": 15,
+        "count": 16,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -47,8 +47,8 @@
         },
         "byReviewStatus": {
           "agent-reviewed": 32,
-          "heuristic": 63,
-          "human-reviewed": 4
+          "heuristic": 61,
+          "human-reviewed": 6
         },
         "count": 99,
         "id": "agent-add-deterministic-proof",
@@ -64,14 +64,14 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 96
+          "unknown": 98
         },
         "byReviewStatus": {
           "agent-reviewed": 5,
           "heuristic": 90,
-          "human-reviewed": 1
+          "human-reviewed": 3
         },
-        "count": 96,
+        "count": 98,
         "id": "agent-plan-cautilus-eval",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -98,20 +98,20 @@
           "claim-readme-md-171",
           "claim-docs-master-plan-md-88",
           "claim-docs-contracts-claim-discovery-workflow-md-236",
-          "claim-docs-contracts-claim-discovery-workflow-md-657",
+          "claim-docs-contracts-claim-discovery-workflow-md-658",
           "claim-docs-contracts-scenario-history-md-3"
         ],
         "summary": "Decompose the behavior into a concrete scenario before protected eval planning."
       },
       {
         "byEvidenceStatus": {
-          "unknown": 24
+          "unknown": 21
         },
         "byReviewStatus": {
           "agent-reviewed": 13,
-          "heuristic": 11
+          "heuristic": 8
         },
-        "count": 24,
+        "count": 21,
         "id": "human-align-surfaces",
         "recommendedActor": "human",
         "sampleClaimIds": [
@@ -139,7 +139,7 @@
           "claim-docs-contracts-claim-discovery-workflow-md-300",
           "claim-docs-contracts-claim-discovery-workflow-md-302",
           "claim-docs-contracts-claim-discovery-workflow-md-525",
-          "claim-docs-contracts-claim-discovery-workflow-md-662"
+          "claim-docs-contracts-claim-discovery-workflow-md-663"
         ],
         "summary": "Confirm, decompose, or accept a human-auditable claim before treating it as proven."
       },
@@ -187,9 +187,9 @@
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 47,
-      "Agent and skill workflow": 68,
-      "Claim discovery and review": 17,
-      "Documentation and contracts": 68,
+      "Agent and skill workflow": 67,
+      "Claim discovery and review": 19,
+      "Documentation and contracts": 67,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
       "Improvement and optimization": 16,
@@ -198,27 +198,27 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 15,
-      "unknown": 250
+      "satisfied": 16,
+      "unknown": 249
     },
     "byLifecycle": {
       "new": 265
     },
     "byRecommendedProof": {
-      "cautilus-eval": 103,
+      "cautilus-eval": 106,
       "deterministic": 114,
-      "human-auditable": 48
+      "human-auditable": 45
     },
     "byReviewStatus": {
-      "agent-reviewed": 77,
-      "heuristic": 182,
-      "human-reviewed": 6
+      "agent-reviewed": 78,
+      "heuristic": 177,
+      "human-reviewed": 10
     },
     "byVerificationReadiness": {
       "blocked": 13,
-      "needs-alignment": 24,
+      "needs-alignment": 21,
       "needs-scenario": 7,
-      "ready-to-verify": 221
+      "ready-to-verify": 224
     }
   },
   "discoveryBoundary": {
@@ -382,7 +382,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 15,
+    "satisfiedClaimCount": 16,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-78",
@@ -632,6 +632,25 @@
         "summary": "`npm run lint:specs` and `npm run lint:scenario-normalizers` still gate the runtime completeness of the surviving `scenario normalize` helpers; new user-facing copy must reconcile with the surface/preset contract before landing."
       },
       {
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-656",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:a083e375daa35bc85efb66dd436e1c5018bef2dfea3ff66ffbba967fd70584f3",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-review-to-eval-flow.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-claim-discovery-workflow-md-656"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": "dev/skill",
+        "recommendedProof": "cautilus-eval",
+        "reviewStatus": "agent-reviewed",
+        "summary": "LLM-backed cluster review should come after the deterministic packet and skill control flow are stable enough to dogfood."
+      },
+      {
         "claimId": "claim-skills-cautilus-skill-md-11",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -671,32 +690,18 @@
       }
     ]
   },
-  "gitCommit": "4ea8923243e0e342a21d11ae208e16bc3ded4231",
+  "gitCommit": "cc96b61a425f122c933957ceccd2d97b4117a17f",
   "gitState": {
-    "changedFileCount": 13,
-    "changedFiles": [
-      ".cautilus/claims/claim-status-report.md",
-      ".cautilus/claims/discovery-review.md",
-      ".cautilus/claims/eval-plan-evidenced-typed-runners.json",
-      ".cautilus/claims/evidenced-typed-runners.json",
-      ".cautilus/claims/latest.json",
-      ".cautilus/claims/refresh-plan-after-evidence-backed-human-review.json",
-      ".cautilus/claims/review-input-human-align-action-bucket.json",
-      ".cautilus/claims/review-input-human-confirm-action-bucket.json",
-      ".cautilus/claims/review-input-typed-runners.json",
-      ".cautilus/claims/review-result-hitl-evidence-backed-human-review-2026-05-02.json",
-      ".cautilus/claims/status-summary.json",
-      ".cautilus/claims/validation-evidenced-typed-runners.json",
-      "charness-artifacts/hitl/latest.md"
-    ],
+    "changedFileCount": 0,
+    "changedFiles": [],
     "changedSourceCount": 0,
     "changedSources": [],
-    "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "bc089db012bf1820a18674e8560c728007100b61",
-    "headDrift": true,
+    "comparisonStatus": "fresh",
+    "currentGitCommit": "cc96b61a425f122c933957ceccd2d97b4117a17f",
+    "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "4ea8923243e0e342a21d11ae208e16bc3ded4231",
-    "recommendedAction": "The current HEAD differs from the packet commit, but no recorded claim source changed; review and eval planning may continue.",
+    "packetGitCommit": "cc96b61a425f122c933957ceccd2d97b4117a17f",
+    "recommendedAction": "The claim packet commit matches the current checkout.",
     "workingTreePolicy": "excluded"
   },
   "inputPath": ".cautilus/claims/evidenced-typed-runners.json",
@@ -718,8 +723,8 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 165,
-    "needsAlignment": 24,
+    "heuristicClaimsReadyForReview": 163,
+    "needsAlignment": 21,
     "needsScenario": 7
   },
   "schemaVersion": "cautilus.claim_status_summary.v1",

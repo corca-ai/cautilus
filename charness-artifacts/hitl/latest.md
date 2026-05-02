@@ -34,6 +34,12 @@ Use maintainer review to separate ordinary public claims from proof sources, mai
 - Accepted `claim-docs-contracts-claim-discovery-workflow-md-156` as deterministic proof work for selected claim-map behavior.
 - Accepted `claim-docs-contracts-claim-discovery-workflow-md-229` as an overclaim-prevention rule that still needs deterministic supporting proof before satisfaction.
 - Accepted `claim-skills-cautilus-skill-md-74` as a user-facing skill-routing claim that should be proven with a dev/skill eval fixture.
+- Accepted `claim-docs-contracts-claim-discovery-workflow-md-603` as deterministic proof work for the binary/skill boundary, while keeping host prompts and adapters outside the Cautilus product boundary.
+- Accepted `claim-docs-contracts-live-run-invocation-md-58` as deterministic proof work for the `persona_prompt` loop boundary, packet shape, persona prompt shaping, result normalization, and adapter-owned backend command handoff.
+- Rejected the overbroad wording that the bundled skill generally owns LLM review and subagent orchestration.
+  The accepted replacement is scoped to claim discovery: the bundled skill owns LLM-backed claim review, review-budget explanation, and subagent orchestration for the claim discovery workflow.
+  `eval` and `optimize` may still orchestrate model-involving behavior through adapter-owned runners.
+- Accepted `claim-docs-contracts-claim-discovery-workflow-md-565` as dev/skill eval proof work for explicit review-budget confirmation before LLM-backed claim review.
 
 ## Current Packet Snapshot
 
@@ -42,21 +48,21 @@ Use maintainer review to separate ordinary public claims from proof sources, mai
 - `docs/specs/**` source count: 0.
 - `docs/maintainers/**` source count: 0.
 - Candidates sourced from excluded specs or maintainer docs: 0.
-- Agent-reviewed claims carried forward: 77.
-- Human-reviewed claims: 6.
-- Satisfied claims carried forward: 15.
+- Agent-reviewed claims carried forward: 78.
+- Human-reviewed claims: 10.
+- Satisfied claims carried forward: 16.
 - User-facing claims: 69.
 
 ## Next HITL Queue
 
 Continue with readable cards from `.cautilus/claims/review-input-human-confirm-action-bucket.json` and `.cautilus/claims/review-input-human-align-action-bucket.json`.
 
-The prior six cards have been applied and should not be asked again.
-Start with claims that test whether the remaining human-alignment items are true alignment blockers or can become evidence-backed proof work:
+The prior ten human-reviewed cards have been applied and should not be asked again.
+Start with claims that test whether the remaining human-confirm and human-alignment items are true alignment blockers, evidence-backed proof work, or developer-only contract detail:
 
-- `claim-docs-contracts-claim-discovery-workflow-md-602`: binary/skill boundary stays clean enough that consumer repos can use the binary plus bundled skill without Cautilus importing host-specific prompts or adapters.
-- `claim-docs-contracts-live-run-invocation-md-58`: for `persona_prompt`, the product owns the loop boundary, request packet, persona prompt shaping, and result normalization.
-- `claim-docs-contracts-claim-discovery-workflow-md-560`: the bundled skill owns LLM review and subagent orchestration.
+- `claim-docs-contracts-claim-discovery-workflow-md-663`: already satisfied and already reviewed non-stale claims are excluded from review clusters by default so reviewer budget stays focused on unresolved heuristic claims while carried evidence and prior decisions remain auditable under `skippedClaims`.
+- `claim-docs-contracts-runner-readiness-md-198`: if the current git commit differs from `repoCommit` but the adapter and listed runner file hashes still match, `doctor` and `agent status` should expose the drift as assessment provenance without marking the assessment stale.
+- `claim-skills-cautilus-skill-md-66` and `claim-skills-cautilus-skill-md-67`: the Cautilus skill must rerun `agent status` before state-mutating branch execution, with a narrow refresh-plan exception.
 
 ## Open Questions
 
