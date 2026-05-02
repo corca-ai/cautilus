@@ -270,6 +270,10 @@ Line number is a locator, not identity.
 - `developer`
 - `unclear`
 
+Review results may update `claimAudience` when agent or human review finds that the configured source hint was too narrow.
+For example, adapter-author or operator-facing contracts are still user-facing when the Cautilus user is the repo maintainer creating the adapter.
+When `claim review apply-result` applies such an update, `claimAudienceSource` becomes `review-result`.
+
 `claimSemanticGroup` is a deterministic review-batching hint.
 It is not a final taxonomy; the bundled skill or human reviewer may correct it during review.
 

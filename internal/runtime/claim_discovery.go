@@ -2912,6 +2912,9 @@ func validateClaimUpdateFields(update map[string]any, field string) error {
 	if value := stringFromAny(update["lifecycle"]); value != "" && !validClaimLifecycle(value) {
 		return fmt.Errorf("%s.lifecycle %q is unsupported", field, value)
 	}
+	if value := stringFromAny(update["claimAudience"]); value != "" && !validClaimAudience(value) {
+		return fmt.Errorf("%s.claimAudience %q is unsupported", field, value)
+	}
 	if value := stringFromAny(update["recommendedEvalSurface"]); value != "" && !validEvalSurface(value) {
 		return fmt.Errorf("%s.recommendedEvalSurface %q is unsupported", field, value)
 	}
@@ -2930,6 +2933,11 @@ func applyClaimUpdate(candidate map[string]any, update map[string]any) ([]any, e
 			candidate[field] = value
 			applied = append(applied, field)
 		}
+	}
+	if value := stringFromAny(update["claimAudience"]); value != "" {
+		candidate["claimAudience"] = value
+		candidate["claimAudienceSource"] = "review-result"
+		applied = append(applied, "claimAudience", "claimAudienceSource")
 	}
 	if _, exists := update["recommendedEvalSurface"]; exists {
 		if value := stringFromAny(update["recommendedEvalSurface"]); value != "" {

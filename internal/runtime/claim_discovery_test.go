@@ -1150,6 +1150,57 @@ func TestApplyClaimReviewResultCanClearRecommendedEvalSurface(t *testing.T) {
 	}
 }
 
+func TestApplyClaimReviewResultCanUpdateClaimAudience(t *testing.T) {
+	repoRoot := filepath.Join("..", "..", "fixtures", "claim-discovery", "tiny-repo")
+	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan returned error: %v", err)
+	}
+	claimID := "claim-agents-md-3"
+	reviewResult := map[string]any{
+		"schemaVersion": contracts.ClaimReviewResultSchema,
+		"clusterResults": []any{
+			map[string]any{
+				"clusterId": "cluster-fixture",
+				"claimUpdates": []any{
+					map[string]any{
+						"claimId":       claimID,
+						"reviewStatus":  "human-reviewed",
+						"claimAudience": "user",
+						"nextAction":    "Keep as an operator-facing public contract.",
+					},
+				},
+			},
+		},
+	}
+	updated, err := ApplyClaimReviewResult(plan, reviewResult, ClaimReviewApplyOptions{
+		ClaimsPath:       "claims.json",
+		ReviewResultPath: "review-result.json",
+	})
+	if err != nil {
+		t.Fatalf("ApplyClaimReviewResult returned error: %v", err)
+	}
+	var updatedClaim map[string]any
+	for _, raw := range arrayOrEmpty(updated["claimCandidates"]) {
+		candidate := asMap(raw)
+		if stringFromAny(candidate["claimId"]) == claimID {
+			updatedClaim = candidate
+			break
+		}
+	}
+	if updatedClaim == nil {
+		t.Fatalf("missing updated claim in %#v", updated)
+	}
+	if updatedClaim["claimAudience"] != "user" || updatedClaim["claimAudienceSource"] != "review-result" {
+		t.Fatalf("expected review result to update audience, got %#v", updatedClaim)
+	}
+	application := asMap(updated["reviewApplication"])
+	applied := stringArrayOrEmpty(asMap(arrayOrEmpty(application["appliedUpdates"])[0])["appliedFields"])
+	if !containsString(applied, "claimAudience") || !containsString(applied, "claimAudienceSource") {
+		t.Fatalf("expected applied audience fields, got %#v", applied)
+	}
+}
+
 func TestApplyClaimReviewResultCanClearUnresolvedQuestions(t *testing.T) {
 	repoRoot := filepath.Join("..", "..", "fixtures", "claim-discovery", "tiny-repo")
 	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
