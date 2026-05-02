@@ -556,12 +556,13 @@ Valid but defer:
 
 ## Fixed Decisions
 
-- The binary remains deterministic and does not directly call an LLM.
-- The bundled skill owns LLM review and subagent orchestration.
+- The binary does not directly call an LLM provider for claim discovery or claim review.
+  `eval` and `optimize` workflows may still orchestrate model-involving behavior through adapter-owned runners.
+- In the claim discovery workflow, the bundled skill owns LLM-backed claim review, review-budget explanation, and subagent orchestration.
 - First discovery uses entry sources plus linked repo-local Markdown.
 - Default linked Markdown depth is `3`.
 - The skill asks before the first broad scan and explains the effective entries and depth.
-- LLM review needs separate review-budget confirmation after deterministic scan.
+- Claim review that uses an LLM needs separate review-budget confirmation after deterministic scan.
 - Existing state refresh is selected by the skill when prior claim JSON exists, but deterministic refresh-plan output owns the state transition.
 - No separate binary `claim refresh` command is planned for the next slice.
 - The old `proofLayer` label is replaced by proof mechanism, verification readiness, evidence status, review status, and lifecycle fields.
