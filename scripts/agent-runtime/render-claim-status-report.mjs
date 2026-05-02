@@ -73,16 +73,9 @@ function compactText(value) {
 		.trim();
 }
 
-function asArray(value) {
-	return Array.isArray(value) ? value : [];
-}
+const asArray = (value) => (Array.isArray(value) ? value : []);
 
-function asObject(value) {
-	if (!value || Array.isArray(value) || typeof value !== "object") {
-		return {};
-	}
-	return value;
-}
+const asObject = (value) => (!value || Array.isArray(value) || typeof value !== "object" ? {} : value);
 
 function countBy(values, keyFn) {
 	const counts = new Map();
@@ -117,18 +110,12 @@ function claimMap(claimsPacket) {
 }
 
 function claimSummary(candidate) {
-	if (!candidate) {
-		return "claim not found in selected packet";
-	}
-	return compactText(candidate.summary);
+	return candidate ? compactText(candidate.summary) : "claim not found in selected packet";
 }
 
 function sourceLabel(candidate) {
 	const ref = asArray(candidate?.sourceRefs)[0];
-	if (!ref) {
-		return "-";
-	}
-	return `${ref.path}:${ref.line ?? "?"}`;
+	return ref ? `${ref.path}:${ref.line ?? "?"}` : "-";
 }
 
 function bucketSampleRows(bucket, claimsById, limit) {
@@ -166,7 +153,7 @@ function fallbackSummary(claimsPacket) {
 	};
 }
 
-function summaryCounts(claimsPacket, statusPacket, claimSummaryPacket, fallback, key) {
+function summaryCounts(statusPacket, claimSummaryPacket, fallback, key) {
 	return statusPacket?.[key] ?? claimSummaryPacket[key] ?? fallback[key];
 }
 
@@ -178,10 +165,10 @@ function selectedSummary(claimsPacket, statusPacket) {
 	const fallback = fallbackSummary(claimsPacket);
 	const claimSummaryPacket = asObject(claimsPacket?.claimSummary);
 	return {
-		byEvidenceStatus: summaryCounts(claimsPacket, statusPacket, claimSummaryPacket, fallback, "byEvidenceStatus"),
-		byReviewStatus: summaryCounts(claimsPacket, statusPacket, claimSummaryPacket, fallback, "byReviewStatus"),
-		byRecommendedProof: summaryCounts(claimsPacket, statusPacket, claimSummaryPacket, fallback, "byRecommendedProof"),
-		byVerificationReadiness: summaryCounts(claimsPacket, statusPacket, claimSummaryPacket, fallback, "byVerificationReadiness"),
+		byEvidenceStatus: summaryCounts(statusPacket, claimSummaryPacket, fallback, "byEvidenceStatus"),
+		byReviewStatus: summaryCounts(statusPacket, claimSummaryPacket, fallback, "byReviewStatus"),
+		byRecommendedProof: summaryCounts(statusPacket, claimSummaryPacket, fallback, "byRecommendedProof"),
+		byVerificationReadiness: summaryCounts(statusPacket, claimSummaryPacket, fallback, "byVerificationReadiness"),
 		byClaimAudience: candidateCounts(claimsPacket, claimSummaryPacket, "byClaimAudience", (candidate) => candidate.claimAudience ?? "unclear"),
 		byClaimSemanticGroup: candidateCounts(
 			claimsPacket,
@@ -214,6 +201,26 @@ function reviewResultDigest(filePath) {
 		byEvidence: countBy(updates, (update) => update.evidenceStatus ?? "unchanged"),
 		updates,
 	};
+}
+
+function reviewResultsForClaims(reviewResults, claimsById) {
+	const filtered = [];
+	for (const digest of asArray(reviewResults)) {
+		const updates = digest.updates.filter((update) => claimsById.has(update.claimId));
+		if (updates.length === 0) {
+			continue;
+		}
+		filtered.push({
+			...digest,
+			clusterCount: new Set(updates.map((update) => update.clusterId)).size,
+			updateCount: updates.length,
+			byProof: countBy(updates, (update) => update.recommendedProof ?? "unchanged"),
+			byReadiness: countBy(updates, (update) => update.verificationReadiness ?? "unchanged"),
+			byEvidence: countBy(updates, (update) => update.evidenceStatus ?? "unchanged"),
+			updates,
+		});
+	}
+	return filtered;
 }
 
 function validationDigest(filePath) {
@@ -557,11 +564,12 @@ function renderNextWork(lines, statusPacket) {
 export function renderStatusReport({ claimsPacket, statusPacket, digests, args }) {
 	const lines = [];
 	const claimsById = claimMap(claimsPacket);
+	const currentReviewResults = reviewResultsForClaims(digests.reviewResults, claimsById);
 	renderHeader(lines, claimsPacket, statusPacket, args);
 	renderScoreboard(lines, claimsPacket, statusPacket);
 	renderNextWork(lines, statusPacket);
 	renderActionBuckets(lines, statusPacket, claimsById, args.samplePerBucket);
-	renderReviewResults(lines, digests.reviewResults, claimsById, args.reviewSample);
+	renderReviewResults(lines, currentReviewResults, claimsById, args.reviewSample);
 	renderValidation(lines, digests.validationReports);
 	renderEvalPlans(lines, digests.evalPlans);
 	renderRefreshPlans(lines, digests.refreshPlans);

@@ -96,6 +96,13 @@ test("renderStatusReport summarizes status, review results, validation, and eval
 						evidenceStatus: "unknown",
 						nextAction: "Ask the maintainer to confirm the boundary.",
 					},
+					{
+						claimId: "claim-docs-maintainers-stale-md-1",
+						recommendedProof: "human-auditable",
+						verificationReadiness: "needs-alignment",
+						evidenceStatus: "unknown",
+						nextAction: "This old maintainer-only claim should not appear in the current report.",
+					},
 				],
 			},
 		],
@@ -142,4 +149,6 @@ test("renderStatusReport summarizes status, review results, validation, and eval
 	assert.match(report, /refresh-plan-claim-status-report\.json/);
 	assert.match(report, /Update the saved claim map before review or eval planning/);
 	assert.match(report, /Gitignore policy: respect-repo-gitignore/);
+	assert.doesNotMatch(report, /claim-docs-maintainers-stale-md-1/);
+	assert.doesNotMatch(report, /This old maintainer-only claim should not appear/);
 });
