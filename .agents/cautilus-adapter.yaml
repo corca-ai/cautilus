@@ -46,12 +46,14 @@ claim_discovery:
   audience_hints:
     user:
       - README.md
+      - docs/claims/user-facing.md
       - docs/cli-reference.md
       - docs/guides/**
-      - skills/cautilus/**
-      - plugins/cautilus/skills/cautilus/**
     developer:
       - AGENTS.md
+      - docs/claims/maintainer-facing.md
+      - skills/cautilus/**
+      - plugins/cautilus/skills/cautilus/**
       - docs/contracts/**
       - docs/specs/**
       - docs/internal/**

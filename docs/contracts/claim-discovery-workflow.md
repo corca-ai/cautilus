@@ -77,6 +77,23 @@ The bundled skill should own orchestration that depends on an agent:
 
 This keeps the product agent-first without making the binary a host-specific agent runtime.
 
+### Canonical Claim Catalogs
+
+Raw `claim discover` candidates are high-recall proof-planning inputs.
+They are not the primary human review surface once the maintainer is judging product meaning, duplication, audience fit, or next-action grouping.
+
+When raw candidates are too granular to review directly, the bundled skill should curate two canonical catalogs before continuing HITL:
+
+- a user-facing catalog in plain product language that explains what the repo promises to a reader
+- a maintainer-facing catalog that may use internal vocabulary but maps back to the user-facing claim ids
+
+Each canonical claim should preserve source references, intended proof route, evidence status, and the next action needed to prove or repair it.
+Review packets and machine-readable curation artifacts should preserve absorbed raw claim ids and fingerprints when available.
+The catalog is a manually maintained or review-applied source document, not a generated status report block.
+It may be part of the next discovery entry graph through README links, while volatile generated reports and JSON packets remain evidence or state artifacts.
+The binary may validate packet shape, render summaries, and expose command help, but semantic normalization, duplicate merging, and audience-aligned wording remain skill or reviewer work.
+This avoids asking humans to approve hundreds of sentence-level candidates when the real decision is the smaller promise map.
+
 ## Scan Scope
 
 Default discovery starts from entry surfaces and follows only repo-local Markdown links.

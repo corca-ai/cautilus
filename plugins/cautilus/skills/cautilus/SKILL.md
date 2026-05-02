@@ -116,6 +116,13 @@ Use `actionSummary.crossCuttingSignals` for review debt or stale-evidence warnin
 When preparing a focused review queue, pass `--action-bucket <bucket>` to `claim review prepare-input` instead of hand-filtering claim JSON.
 In the Cautilus product repo, when raw claim status or review packets are too large for a maintainer to judge directly, run `npm run claims:status-report` and read `.cautilus/claims/claim-status-report.md` before asking for human decisions.
 If the maintainer is reviewing from a constrained terminal or phone, run `npm run claims:status-server` so they can read the report in a browser and save section comments as `.cautilus/claims/claim-status-comments.json`.
+When raw candidates are too granular for product judgment, curate a canonical claim catalog before continuing HITL.
+Treat raw candidates as high-recall proof-planning inputs, not as the human-facing promise map.
+For Cautilus itself, keep the curated user-facing promises in `docs/claims/user-facing.md` and the maintainer-facing map in `docs/claims/maintainer-facing.md`.
+In the Cautilus product repo, product-meaning review should start from those catalog docs; use the status report for packet audit, debugging, or deciding which remaining raw candidates are not yet absorbed.
+User-facing claims must use plain product language.
+Maintainer-facing claims may use internal terms, but they must stay aligned with the user-facing claim ids and preserve source refs, proof route, evidence status, and next action.
+Review packets and curation artifacts preserve absorbed raw claim ids and fingerprints when available; stable catalog docs may summarize the absorbed raw themes instead of listing volatile line-based ids.
 If `claim show` or `agent status` reports `gitState.isStale=true`, run `claim discover --previous <claims.json> --refresh-plan` before claim review, review-result application, or eval planning.
 Do not launch reviewers, apply review results, plan evals, edit files, or commit artifacts from a stale claim packet unless the user explicitly asks to override stale state.
 If a view is missing, prefer adding a product-owned summary option or review packet over guessing raw JSON keys with ad hoc `jq`.

@@ -63,13 +63,17 @@ If the repo has only named adapters under `.agents/cautilus-adapters/`, follow t
 
 Quick links:
 
+- What Cautilus promises: [docs/claims/user-facing.md](./docs/claims/user-facing.md)
+- Maintainer claim map: [docs/claims/maintainer-facing.md](./docs/claims/maintainer-facing.md)
 - Full command catalog: [docs/cli-reference.md](./docs/cli-reference.md)
 - Fresh consumer bootstrap after the binary is on `PATH`: [docs/guides/consumer-adoption.md](./docs/guides/consumer-adoption.md)
 - Public executable spec report: <https://corca-ai.github.io/cautilus/>
 
+The claim catalog is the curated reader-facing promise map.
+Raw `claim discover` packets remain the source-ref-backed proof-planning input, not the primary document a user should review.
 That report is generated with `specdown` from the repo's cheap public spec suite.
-Each page pairs one bounded product claim with a small executable proof.
-The spec pages are the shipped contract.
+Each spec page pairs one bounded product claim with a small executable proof.
+Read the claim catalog to understand what Cautilus promises, then use the spec report to inspect executable proof for selected promises.
 
 ## One Reviewable Decision Loop
 
