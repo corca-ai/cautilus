@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewRun": {
+    "reviewer": "human-maintainer",
+    "backend": "chat-hitl",
+    "mode": "hitl-decision-cards",
+    "reviewInputPath": "chat:2026-05-03-next-hitl",
+    "reviewPolicy": "Apply maintainer decisions from the next-HITL priority reset. Remove the overfit skill workflow-option policy from the skill body and prioritize early decisions that materially reorder proof work."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "hitl-review-queue-budget-behavior",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-663",
+          "reviewStatus": "human-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The maintainer agreed this is a concrete review-input behavior claim, not a human-only judgment. It should be proven by deterministic review-input tests.",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "nextAction": "Add or connect deterministic claim review prepare-input coverage proving satisfied and reviewed non-stale claims are excluded from clusters while remaining auditable under skippedClaims.",
+          "unresolvedQuestions": []
+        }
+      ]
+    },
+    {
+      "clusterId": "hitl-runner-readiness-drift",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-runner-readiness-md-198",
+          "reviewStatus": "human-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The maintainer agreed deterministic tests are sufficient. If doctor and agent status share the same runner-readiness assessment logic, one shared drift test can cover both surfaces.",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "nextAction": "Add or connect deterministic runner-readiness tests proving commit drift is shown as provenance and does not make the assessment stale when adapter and runner file hashes still match.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

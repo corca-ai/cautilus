@@ -1,5 +1,5 @@
 # HITL Review: claim source boundary
-Date: 2026-05-02
+Date: 2026-05-03
 
 ## Target
 
@@ -26,14 +26,14 @@ Use maintainer review to separate ordinary public claims from proof sources, mai
 - Kept `docs/specs` as an evidence root in contract examples, preserving the proof-source role.
 - Regenerated claim packets after committing the source-boundary change so packet git state points at the source-boundary commit.
 - Filtered existing review results while reapplying them to the new claim map so updates for removed claim ids do not block remaining reviewed evidence.
-- Accepted `claim-skills-cautilus-skill-md-118` as the human-reviewed false-negative boundary for entry-doc and linked-Markdown discovery.
-- Accepted `claim-skills-cautilus-skill-md-124` as a real constrained-terminal browser-review path and reclassified it for deterministic/browser-runtime proof.
+- Accepted `claim-skills-cautilus-skill-md-112` as the human-reviewed false-negative boundary for entry-doc and linked-Markdown discovery.
+- Accepted `claim-skills-cautilus-skill-md-118` as a real constrained-terminal browser-review path and reclassified it for deterministic/browser-runtime proof.
 - Accepted `claim-docs-contracts-adapter-contract-md-424` as user-facing because Cautilus users include adapter authors and repo operators; reclassified it as deterministic proof work and set `claimAudience=user` through a review-result update.
 - Accepted that `human-auditable` must not mean human-only or evidence-free.
   Human judgment may approve framing or proof route, but satisfaction still requires at least one concrete support item, or the claim should be split/deferred.
 - Accepted `claim-docs-contracts-claim-discovery-workflow-md-156` as deterministic proof work for selected claim-map behavior.
 - Accepted `claim-docs-contracts-claim-discovery-workflow-md-229` as an overclaim-prevention rule that still needs deterministic supporting proof before satisfaction.
-- Accepted `claim-skills-cautilus-skill-md-74` as a user-facing skill-routing claim that should be proven with a dev/skill eval fixture.
+- Accepted `claim-skills-cautilus-skill-md-68` as a user-facing skill-routing claim that should be proven with a dev/skill eval fixture.
 - Accepted `claim-docs-contracts-claim-discovery-workflow-md-603` as deterministic proof work for the binary/skill boundary, while keeping host prompts and adapters outside the Cautilus product boundary.
 - Accepted `claim-docs-contracts-live-run-invocation-md-58` as deterministic proof work for the `persona_prompt` loop boundary, packet shape, persona prompt shaping, result normalization, and adapter-owned backend command handoff.
 - Rejected the overbroad wording that the bundled skill generally owns LLM review and subagent orchestration.
@@ -42,29 +42,39 @@ Use maintainer review to separate ordinary public claims from proof sources, mai
 - Accepted `claim-docs-contracts-claim-discovery-workflow-md-565` as dev/skill eval proof work for explicit review-budget confirmation before LLM-backed claim review.
 - Added `npm run claims:apply-review-results` so historical review-result packets are filtered to the current claim IDs before replay.
   This preserves audit history on disk without making stale IDs a trap for the next claim refresh.
+- Removed the overfit no-input `nextBranches` execution policy from the bundled, packaged, and repo-local Cautilus skill bodies.
+  The old HITL card for `claim-skills-cautilus-skill-md-67` and `claim-skills-cautilus-skill-md-68` is no longer a proof target.
+- Accepted `claim-docs-contracts-claim-discovery-workflow-md-663` as deterministic proof work for review-input budget behavior.
+- Accepted `claim-docs-contracts-runner-readiness-md-198` as deterministic proof work.
+  One shared runner-readiness drift test is sufficient if `doctor` and `agent status` use the same assessment logic.
 
 ## Current Packet Snapshot
 
-- Candidate count: 265.
+- Candidate count: 263.
 - Source count: 23.
 - `docs/specs/**` source count: 0.
 - `docs/maintainers/**` source count: 0.
 - Candidates sourced from excluded specs or maintainer docs: 0.
 - Agent-reviewed claims carried forward: 79.
-- Human-reviewed claims: 10.
+- Human-reviewed claims: 12.
 - Satisfied claims carried forward: 16.
-- User-facing claims: 69.
+- User-facing claims: 67.
 
 ## Next HITL Queue
 
-Continue with readable cards from `.cautilus/claims/review-input-human-confirm-action-bucket.json` and `.cautilus/claims/review-input-human-align-action-bucket.json`.
+Continue with readable cards from `.cautilus/claims/review-input-human-align-action-bucket.json`, `.cautilus/claims/review-input-split-or-defer-action-bucket.json`, and `.cautilus/claims/review-input-human-confirm-action-bucket.json`.
 
-The prior ten human-reviewed cards have been applied and should not be asked again.
-Start with claims that test whether the remaining human-confirm and human-alignment items are true alignment blockers, evidence-backed proof work, or developer-only contract detail:
+The prior twelve human-reviewed cards have been applied and should not be asked again.
+Start with decisions that change broad proof planning or product boundary interpretation early, not by report row order:
 
-- `claim-docs-contracts-claim-discovery-workflow-md-663`: already satisfied and already reviewed non-stale claims are excluded from review clusters by default so reviewer budget stays focused on unresolved heuristic claims while carried evidence and prior decisions remain auditable under `skippedClaims`.
-- `claim-docs-contracts-runner-readiness-md-198`: if the current git commit differs from `repoCommit` but the adapter and listed runner file hashes still match, `doctor` and `agent status` should expose the drift as assessment provenance without marking the assessment stale.
-- `claim-skills-cautilus-skill-md-67` and `claim-skills-cautilus-skill-md-68`: the Cautilus skill must rerun `agent status` before state-mutating branch execution, with a narrow refresh-plan exception.
+1. Product and adapter ownership boundaries for consumer-facing docs.
+   Decide whether these are real user-facing claims, whether they should be split, and which parts need deterministic proof:
+   `claim-docs-cli-reference-md-180`, `claim-docs-cli-reference-md-186`, `claim-docs-guides-consumer-adoption-md-29`, and `claim-docs-guides-consumer-adoption-md-106`.
+2. Broad top-level positioning that can otherwise keep generating noisy proof work.
+   Decide whether to keep as positioning, decompose into concrete claims, or drop from proof planning:
+   `claim-readme-md-3`, plus related developer-positioning claims when needed.
+3. Evidence and review semantics that can mostly become deterministic proof work once the wording is accepted:
+   `claim-docs-contracts-claim-discovery-workflow-md-300`, `claim-docs-contracts-claim-discovery-workflow-md-302`, and `claim-docs-contracts-claim-discovery-workflow-md-295`.
 
 ## Open Questions
 

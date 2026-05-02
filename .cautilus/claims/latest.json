@@ -1,5 +1,5 @@
 {
-  "candidateCount": 265,
+  "candidateCount": 263,
   "claimCandidates": [
     {
       "claimAudience": "developer",
@@ -7678,70 +7678,8 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:2cb87f1ead8909f4e2fd9b85116c999a655e651ab1ccaba33e1c6d92a96b5d4b",
-      "claimId": "claim-skills-cautilus-skill-md-67",
-      "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:user",
-        "cautilus-eval",
-        "dev/repo",
-        "linked-from:docs/contracts/scenario-history.md",
-        "skill-doc"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "When the user selects a numbered branch from a previous orientation turn, rerun `\"$CAUTILUS_BIN\" agent status --repo-root . --json` before any branch that writes or overwrites the saved claim map, launches review, plans evals, edits files, or commits.",
-          "line": 67,
-          "path": "skills/cautilus/SKILL.md"
-        }
-      ],
-      "summary": "When the user selects a numbered branch from a previous orientation turn, rerun `\"$CAUTILUS_BIN\" agent status --repo-root . --json` before any branch that writes or overwrites the saved claim map, launches review, plans evals, edits files, or commits.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
-    },
-    {
-      "claimAudience": "user",
-      "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:a0aea21ed8793e539f3db8e8b03efd8ac4f97d08c70bd3c5e110159fae3b0762",
-      "claimId": "claim-skills-cautilus-skill-md-68",
-      "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:user",
-        "cautilus-eval",
-        "dev/repo",
-        "linked-from:docs/contracts/scenario-history.md",
-        "skill-doc"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "For the refresh-plan branch, it is acceptable to proceed from the immediately preceding orientation when the command only writes a separate refresh-plan artifact and the agent does not claim it rechecked status.",
-          "line": 68,
-          "path": "skills/cautilus/SKILL.md"
-        }
-      ],
-      "summary": "For the refresh-plan branch, it is acceptable to proceed from the immediately preceding orientation when the command only writes a separate refresh-plan artifact and the agent does not claim it rechecked status.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
-    },
-    {
-      "claimAudience": "user",
-      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:65cb30158d551471121109baa101be43b1ccbca956f9424cce6149c48a5667b1",
-      "claimId": "claim-skills-cautilus-skill-md-75",
+      "claimId": "claim-skills-cautilus-skill-md-68",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -7759,7 +7697,7 @@
       "sourceRefs": [
         {
           "excerpt": "Use this path when the user asks whether a repo proves what it claims, whether docs and behavior are aligned, or which scenarios still need to be created.",
-          "line": 75,
+          "line": 68,
           "path": "skills/cautilus/SKILL.md"
         }
       ],
@@ -7771,7 +7709,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:a5c82e29ce761e42ed2b18553ae831a189310fe0174962cc79b0705853e8b2fc",
-      "claimId": "claim-skills-cautilus-skill-md-116",
+      "claimId": "claim-skills-cautilus-skill-md-109",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -7790,7 +7728,7 @@
       "sourceRefs": [
         {
           "excerpt": "The coordinator should understand that choosing review means setting a review budget before any reviewer lanes, result application, eval planning, edits, or commits happen.",
-          "line": 116,
+          "line": 109,
           "path": "skills/cautilus/SKILL.md"
         }
       ],
@@ -7802,7 +7740,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:ebff670a7be2ce628a7746f3a30e31c98d21eb103137e70a4ff70fa52b2bfdba",
-      "claimId": "claim-skills-cautilus-skill-md-119",
+      "claimId": "claim-skills-cautilus-skill-md-112",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -7819,7 +7757,7 @@
       "sourceRefs": [
         {
           "excerpt": "If a user-facing feature is missing from the configured entry docs or linked Markdown graph, report it as an entry-surface or narrative gap unless another reviewed artifact proves the binary skipped an in-scope declaration.",
-          "line": 119,
+          "line": 112,
           "path": "skills/cautilus/SKILL.md"
         }
       ],
@@ -7831,7 +7769,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:a950feb4b722b7133b2ffd1104b6fc46f6302a9ba218b408e7bfa851b6dcfcc3",
-      "claimId": "claim-skills-cautilus-skill-md-125",
+      "claimId": "claim-skills-cautilus-skill-md-118",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -7848,7 +7786,7 @@
       "sourceRefs": [
         {
           "excerpt": "If the maintainer is reviewing from a constrained terminal or phone, run `npm run claims:status-server` so they can read the report in a browser and save section comments as `.cautilus/claims/claim-status-comments.json`.",
-          "line": 125,
+          "line": 118,
           "path": "skills/cautilus/SKILL.md"
         }
       ],
@@ -7860,7 +7798,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:c575861c975813835a93a64b3d0ca6aafdb2ee55d71de1ffb6211b433852c558",
-      "claimId": "claim-skills-cautilus-skill-md-149",
+      "claimId": "claim-skills-cautilus-skill-md-142",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -7879,7 +7817,7 @@
       "sourceRefs": [
         {
           "excerpt": "This branch proves reviewer launch, not review-result merge behavior.",
-          "line": 149,
+          "line": 142,
           "path": "skills/cautilus/SKILL.md"
         }
       ],
@@ -7891,7 +7829,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:0430d8a298c4e11b0f53d621d1b7c1c908425d463f7a66dc5efbf4043936efbd",
-      "claimId": "claim-skills-cautilus-skill-md-214",
+      "claimId": "claim-skills-cautilus-skill-md-207",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -7908,7 +7846,7 @@
       "sourceRefs": [
         {
           "excerpt": "Agents should read the packet first, then cite HTML only when a browser view is the deliverable.",
-          "line": 214,
+          "line": 207,
           "path": "skills/cautilus/SKILL.md"
         }
       ],
@@ -7934,11 +7872,11 @@
   "claimSummary": {
     "byClaimAudience": {
       "developer": 197,
-      "user": 68
+      "user": 66
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 47,
-      "Agent and skill workflow": 66,
+      "Agent and skill workflow": 64,
       "Claim discovery and review": 20,
       "Documentation and contracts": 67,
       "Evaluation surfaces": 1,
@@ -7949,24 +7887,24 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "unknown": 265
+      "unknown": 263
     },
     "byLifecycle": {
-      "new": 265
+      "new": 263
     },
     "byRecommendedProof": {
-      "cautilus-eval": 113,
+      "cautilus-eval": 111,
       "deterministic": 93,
       "human-auditable": 59
     },
     "byReviewStatus": {
-      "heuristic": 265
+      "heuristic": 263
     },
     "byVerificationReadiness": {
       "blocked": 12,
       "needs-alignment": 23,
       "needs-scenario": 7,
-      "ready-to-verify": 223
+      "ready-to-verify": 221
     }
   },
   "discoveryMode": "deterministic-source-inventory",
@@ -8116,7 +8054,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "fdfb4d23c1b15bc20d2536d94ea1b5af14ddbd12",
+  "gitCommit": "f3da975eb7803251769e0e32db0ab1a0aa56298e",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "schemaVersion": "cautilus.claim_proof_plan.v1",
@@ -8543,7 +8481,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:41ae97a54808177c702fe7af186f5bc34280f333abb5acfa93a87ddac2ab9f05",
+      "contentHash": "sha256:4eb94d6b7cf9897977ffe122ef53fc35902f6e83caba50769eeb969e598ce2b0",
       "depth": 3,
       "discoveredFrom": "docs/contracts/scenario-history.md",
       "kind": "skill-doc",

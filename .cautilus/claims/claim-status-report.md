@@ -7,29 +7,29 @@ Use the JSON packets as the audit source; use this report to decide what to insp
 
 - Claims packet: .cautilus/claims/evidenced-typed-runners.json
 - Status packet: .cautilus/claims/status-summary.json
-- Candidate count: 265
+- Candidate count: 263
 - Source count: 23
-- Claims git commit: fdfb4d23c1b15bc20d2536d94ea1b5af14ddbd12
-- Git state: fresh-with-head-drift; stale=no
-- Git recommendation: The current HEAD differs from the packet commit, but no recorded claim source changed; review and eval planning may continue.
+- Claims git commit: f3da975eb7803251769e0e32db0ab1a0aa56298e
+- Git state: fresh; stale=no
+- Git recommendation: The claim packet commit matches the current checkout.
 
 ## Scoreboard
 
 | Dimension | Counts |
 | --- | --- |
-| Evidence | satisfied: 16, unknown: 249 |
-| Review | agent-reviewed: 79, heuristic: 176, human-reviewed: 10 |
-| Recommended proof | cautilus-eval: 106, deterministic: 114, human-auditable: 45 |
-| Verification readiness | blocked: 13, needs-alignment: 21, needs-scenario: 7, ready-to-verify: 224 |
-| Audience | developer: 196, user: 69 |
+| Evidence | satisfied: 16, unknown: 247 |
+| Review | agent-reviewed: 79, heuristic: 172, human-reviewed: 12 |
+| Recommended proof | cautilus-eval: 103, deterministic: 116, human-auditable: 44 |
+| Verification readiness | blocked: 13, needs-alignment: 21, needs-scenario: 7, ready-to-verify: 222 |
+| Audience | developer: 196, user: 67 |
 
-Review readiness: heuristicClaimsReadyForReview: 162, needsAlignment: 21, needsScenario: 7.
+Review readiness: heuristicClaimsReadyForReview: 159, needsAlignment: 21, needsScenario: 7.
 
 ## Next Work
 
-- Human review is still meaningful for human-align-surfaces=21, human-confirm-or-decompose=11, split-or-defer=13.
-- Agent next proof work: connect deterministic gates for 99 claim(s), starting with agent-reviewed items before heuristic items.
-- Agent eval work: plan Cautilus eval scenarios for 98 claim(s), after reviewing heuristic labels where needed.
+- Human review is still meaningful for human-align-surfaces=21, human-confirm-or-decompose=10, split-or-defer=13.
+- Agent next proof work: connect deterministic gates for 101 claim(s), starting with agent-reviewed items before heuristic items.
+- Agent eval work: plan Cautilus eval scenarios for 95 claim(s), after reviewing heuristic labels where needed.
 - Scenario design work remains for 7 claim(s).
 
 ## Action Buckets
@@ -37,14 +37,14 @@ Review readiness: heuristicClaimsReadyForReview: 162, needsAlignment: 21, needsS
 | Bucket | Actor | Count | Review | Evidence | Meaning |
 | --- | --- | --- | --- | --- | --- |
 | already-satisfied | none | 16 | agent-reviewed: 16 | satisfied: 16 | Proof is already attached and valid under packet semantics. |
-| agent-add-deterministic-proof | agent | 99 | agent-reviewed: 32, heuristic: 61, human-reviewed: 6 | unknown: 99 | Add or connect unit, lint, build, schema, spec, or CI proof. |
-| agent-plan-cautilus-eval | agent | 98 | agent-reviewed: 6, heuristic: 89, human-reviewed: 3 | unknown: 98 | Draft or select Cautilus eval scenarios for ready eval claims. |
+| agent-add-deterministic-proof | agent | 101 | agent-reviewed: 32, heuristic: 61, human-reviewed: 8 | unknown: 101 | Add or connect unit, lint, build, schema, spec, or CI proof. |
+| agent-plan-cautilus-eval | agent | 95 | agent-reviewed: 5, heuristic: 87, human-reviewed: 3 | unknown: 95 | Draft or select Cautilus eval scenarios for ready eval claims. |
 | agent-design-scenario | agent | 7 | agent-reviewed: 1, heuristic: 6 | unknown: 7 | Decompose the behavior into a concrete scenario before protected eval planning. |
-| human-align-surfaces | human | 21 | agent-reviewed: 13, heuristic: 8 | unknown: 21 | Reconcile conflicting docs, code, adapters, or ownership boundaries before proof would be honest. |
-| human-confirm-or-decompose | human | 11 | heuristic: 10, human-reviewed: 1 | unknown: 11 | Confirm, decompose, or accept a human-auditable claim before treating it as proven. |
+| human-align-surfaces | human | 21 | agent-reviewed: 14, heuristic: 7 | unknown: 21 | Reconcile conflicting docs, code, adapters, or ownership boundaries before proof would be honest. |
+| human-confirm-or-decompose | human | 10 | heuristic: 9, human-reviewed: 1 | unknown: 10 | Confirm, decompose, or accept a human-auditable claim before treating it as proven. |
 | split-or-defer | human | 13 | agent-reviewed: 11, heuristic: 2 | unknown: 13 | Split broad, historical, provider-caveated, policy-like, or otherwise blocked claims before verification. |
 
-Cross-cutting signal: heuristic-review-needed (176) - Review heuristic labels before spending proof or eval budget.
+Cross-cutting signal: heuristic-review-needed (172) - Review heuristic labels before spending proof or eval budget.
 
 ### agent-add-deterministic-proof
 
@@ -104,7 +104,7 @@ Confirm, decompose, or accept a human-auditable claim before treating it as prov
 | claim-docs-contracts-claim-discovery-workflow-md-300 | docs/contracts/claim-discovery-workflow.md:300 | human-auditable | ready-to-verify | heuristic | unknown | Human review can accept a claim's framing or proof route, but it does not by itself satisfy the claim unless a direct or verified evidence ref also supports that claim. |
 | claim-docs-contracts-claim-discovery-workflow-md-302 | docs/contracts/claim-discovery-workflow.md:302 | human-auditable | ready-to-verify | heuristic | unknown | `evidenceRefs[]` should use a minimum inspectable shape: |
 | claim-docs-contracts-claim-discovery-workflow-md-525 | docs/contracts/claim-discovery-workflow.md:525 | human-auditable | ready-to-verify | heuristic | unknown | Depth 3 must be paired with visible source, candidate, cluster, and review-budget bounds. |
-| claim-docs-contracts-claim-discovery-workflow-md-663 | docs/contracts/claim-discovery-workflow.md:663 | human-auditable | ready-to-verify | heuristic | unknown | Already satisfied and already reviewed non-stale claims are excluded from review clusters by default so reviewer budget stays focused on unresolved heuristic claims while carried evidence and prior decisions remain auditable under `skippedClaims`. |
+| claim-docs-contracts-reporting-md-150 | docs/contracts/reporting.md:150 | human-auditable | ready-to-verify | heuristic | unknown | Human-review failures must be reported even when the benchmark score improves. |
 
 ### split-or-defer
 
@@ -122,7 +122,6 @@ Split broad, historical, provider-caveated, policy-like, or otherwise blocked cl
 
 | Packet | Mode | Reviewer | Clusters | Updates | Proof | Readiness |
 | --- | --- | --- | --- | --- | --- | --- |
-| .cautilus/claims/review-result-action-boundary-skill-guidance.json | bounded-single-cluster | codex-current-agent | 1 | 1 | cautilus-eval: 1 | ready-to-verify: 1 |
 | .cautilus/claims/review-result-deterministic-gates-2026-05-01.json | - | - | 1 | 6 | deterministic: 6 | ready-to-verify: 6 |
 | .cautilus/claims/review-result-evidence-claim-eval-plan-2026-05-01.json | - | - | 1 | 1 | cautilus-eval: 1 | ready-to-verify: 1 |
 | .cautilus/claims/review-result-evidence-dev-skill-dogfood.json | - | - | 1 | 1 | cautilus-eval: 1 | ready-to-verify: 1 |
@@ -131,11 +130,12 @@ Split broad, historical, provider-caveated, policy-like, or otherwise blocked cl
 | .cautilus/claims/review-result-hitl-audience-2026-05-02.json | hitl-decision-cards | human-maintainer | 2 | 3 | deterministic: 2, human-auditable: 1 | ready-to-verify: 3 |
 | .cautilus/claims/review-result-hitl-claim-review-boundary-2026-05-02.json | hitl-decision-cards | human-maintainer | 2 | 4 | cautilus-eval: 2, deterministic: 2 | ready-to-verify: 4 |
 | .cautilus/claims/review-result-hitl-evidence-backed-human-review-2026-05-02.json | hitl-decision-cards | human-maintainer | 3 | 3 | cautilus-eval: 1, deterministic: 2 | ready-to-verify: 3 |
+| .cautilus/claims/review-result-hitl-priority-reset-2026-05-03.json | hitl-decision-cards | human-maintainer | 2 | 2 | deterministic: 2 | ready-to-verify: 2 |
 | .cautilus/claims/review-result-human-align-action-bucket.json | action-bucket-focused-review | codex-current-agent | 4 | 8 | deterministic: 3, human-auditable: 5 | needs-alignment: 5, ready-to-verify: 3 |
 | .cautilus/claims/review-result-human-confirm-action-bucket.json | action-bucket-focused-review | codex-current-agent | 3 | 9 | deterministic: 9 | ready-to-verify: 9 |
 | .cautilus/claims/review-result-llm-batch1.json | - | - | 4 | 8 | deterministic: 6, human-auditable: 2 | blocked: 1, needs-scenario: 2, ready-to-verify: 5 |
 | .cautilus/claims/review-result-llm-batch3.json | - | - | 6 | 7 | cautilus-eval: 3, deterministic: 2, human-auditable: 2 | blocked: 2, needs-scenario: 1, ready-to-verify: 4 |
-| .cautilus/claims/review-result-llm-batch4.json | - | - | 5 | 5 | deterministic: 2, human-auditable: 3 | blocked: 2, needs-alignment: 1, ready-to-verify: 2 |
+| .cautilus/claims/review-result-llm-batch4.json | - | - | 6 | 6 | deterministic: 2, human-auditable: 4 | blocked: 2, needs-alignment: 2, ready-to-verify: 2 |
 | .cautilus/claims/review-result-llm-batch5.json | - | - | 7 | 14 | deterministic: 11, human-auditable: 3 | needs-alignment: 3, ready-to-verify: 11 |
 | .cautilus/claims/review-result-llm-batch6.json | - | - | 7 | 17 | deterministic: 8, human-auditable: 9 | blocked: 5, needs-alignment: 4, ready-to-verify: 8 |
 | .cautilus/claims/review-result-loop1-lane-a.json | - | codex | 4 | 7 | cautilus-eval: 1, deterministic: 6 | ready-to-verify: 7 |
@@ -201,7 +201,7 @@ Split broad, historical, provider-caveated, policy-like, or otherwise blocked cl
 
 | Packet | Plans | Skipped | Skipped by reason | Zero-plan reason |
 | --- | --- | --- | --- | --- |
-| .cautilus/claims/eval-plan-evidenced-typed-runners.json | 9 | 256 | already-satisfied: 1, not-cautilus-eval: 159, not-ready-to-verify: 7, not-reviewed: 89 | - |
+| .cautilus/claims/eval-plan-evidenced-typed-runners.json | 8 | 255 | already-satisfied: 1, not-cautilus-eval: 160, not-ready-to-verify: 7, not-reviewed: 87 | - |
 | .cautilus/claims/eval-plan-loop1.json | 2 | 325 | not-cautilus-eval: 85, not-ready-to-verify: 70, not-reviewed: 170 | - |
 | .cautilus/claims/eval-plan-loop2.json | 4 | 304 | not-cautilus-eval: 147, not-ready-to-verify: 6, not-reviewed: 151 | - |
 | .cautilus/claims/eval-plan-reviewed-typed-runners.json | 3 | 321 | not-cautilus-eval: 157, not-ready-to-verify: 6, not-reviewed: 158 | - |
@@ -224,6 +224,7 @@ Latest zero-plan expectation: Zero eval plans can be expected when reviewed eval
 | .cautilus/claims/refresh-plan-after-provider-caveat-heuristics.json | changes-detected | 1 | 65 | 266 |
 | .cautilus/claims/refresh-plan-after-review-input-skip.json | changes-detected | 3 | 94 | 230 |
 | .cautilus/claims/refresh-plan-after-routing-heuristics.json | changes-detected | 2 | 62 | 263 |
+| .cautilus/claims/refresh-plan-after-skill-branch-policy-removal.json | changes-detected | 1 | 11 | 254 |
 | .cautilus/claims/refresh-plan-after-source-boundary.json | up-to-date | 0 | 0 | 264 |
 | .cautilus/claims/refresh-plan-agent-status-selected-state.json | changes-detected | 2 | 77 | 259 |
 | .cautilus/claims/refresh-plan-claim-status-report.json | changes-detected | 1 | 10 | 328 |
@@ -232,9 +233,11 @@ Latest zero-plan expectation: Zero eval plans can be expected when reviewed eval
 | .cautilus/claims/refresh-plan-typed-runners.json | up-to-date | 0 | 0 | 324 |
 | .cautilus/claims/refresh-plan.json | changes-detected | 36 | 132 | 160 |
 
-Latest refresh summary: The saved claim map points at an older commit, but no recorded claim source files changed; no refresh work is needed before review or eval planning.
-- Inspect the saved claim map: Use claim show to decide whether to review claims, add deterministic tests, or plan Cautilus eval scenarios.
-- Stop after confirming the claim map is current: Choose this if no review or eval planning is needed now.
+Latest refresh summary: The saved claim map was made from an older checkout; this plan identifies claims whose source files changed and does not update the saved claim map yet.
+Latest changed claim sources: skills/cautilus/SKILL.md: 11
+- Update the saved claim map before review or eval planning: Run claim discovery to write a fresh claim packet, then use claim show to inspect the updated status.
+- Inspect which files and claims changed: Use this refresh plan to focus review on changed sources before launching any reviewer or eval workflow.
+- Stop after recording the refresh plan: Choose this if the coordinator only wanted to make the stale state explicit for a later session.
 
 ## Discovery Boundary
 

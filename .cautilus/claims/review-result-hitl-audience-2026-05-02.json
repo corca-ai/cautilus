@@ -12,7 +12,7 @@
       "clusterId": "hitl-entry-surface-boundary",
       "claimUpdates": [
         {
-          "claimId": "claim-skills-cautilus-skill-md-119",
+          "claimId": "claim-skills-cautilus-skill-md-112",
           "reviewStatus": "human-reviewed",
           "evidenceStatus": "unknown",
           "evidenceStatusReason": "The maintainer accepted this as the honest false-negative boundary for README/entry-doc driven discovery. It is a product boundary claim, not a direct correctness verdict.",
@@ -22,7 +22,7 @@
           "unresolvedQuestions": []
         },
         {
-          "claimId": "claim-skills-cautilus-skill-md-125",
+          "claimId": "claim-skills-cautilus-skill-md-118",
           "reviewStatus": "human-reviewed",
           "evidenceStatus": "unknown",
           "evidenceStatusReason": "The maintainer accepted the constrained-terminal browser review path after the same session used the status server and Cloudflare tunnel successfully.",

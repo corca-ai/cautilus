@@ -4,50 +4,6 @@
       "candidates": [
         {
           "actionBucket": "human-align-surfaces",
-          "claimFingerprint": "sha256:be5f13dad4eaff72ac28185435f719e39f08da85ce9b73b6854097fa24c6d31a",
-          "claimId": "claim-docs-contracts-runner-readiness-md-198",
-          "currentLabels": {
-            "claimAudience": "developer",
-            "claimSemanticGroup": "Adapter and portability",
-            "evidenceStatus": "unknown",
-            "lifecycle": "new",
-            "recommendedProof": "human-auditable",
-            "reviewStatus": "heuristic",
-            "verificationReadiness": "needs-alignment"
-          },
-          "evidenceRefs": [],
-          "groupHints": [
-            "audience:developer",
-            "contract",
-            "human-auditable",
-            "linked-from:docs/master-plan.md",
-            "needs-alignment"
-          ],
-          "nextAction": "Reconcile the named docs, code, skill, adapter, or CLI surface before treating this as a verification target.",
-          "sourceRefs": [
-            {
-              "excerpt": "If the current git commit differs from `repoCommit` but the adapter and listed runner file hashes still match, `doctor` and `agent status` should expose the drift as assessment provenance without marking the assessment stale.",
-              "line": 198,
-              "path": "docs/contracts/runner-readiness.md"
-            }
-          ],
-          "summary": "If the current git commit differs from `repoCommit` but the adapter and listed runner file hashes still match, `doctor` and `agent status` should expose the drift as assessment provenance without marking the assessment stale."
-        }
-      ],
-      "claimAudience": "developer",
-      "claimCount": 1,
-      "claimSemanticGroup": "Adapter and portability",
-      "clusterId": "cluster-developer-adapter-and-portability-alignment-contract",
-      "groupKey": "developer:Adapter and portability:alignment:contract",
-      "priority": 40,
-      "reason": "Alignment work needs review before proof would be honest.",
-      "recommendedProof": "human-auditable",
-      "verificationReadiness": "needs-alignment"
-    },
-    {
-      "candidates": [
-        {
-          "actionBucket": "human-align-surfaces",
           "claimFingerprint": "sha256:2e68dd94ed732fd3ce2eaaaefacd3d39194dfa1a64351e8faf94aca3fbf29c42",
           "claimId": "claim-docs-contracts-claim-discovery-workflow-md-107",
           "currentLabels": {
@@ -2077,14 +2033,14 @@
       "verificationReadiness": "ready-to-verify"
     },
     {
-      "actionBucket": "human-confirm-or-decompose",
+      "actionBucket": "agent-add-deterministic-proof",
       "claimFingerprint": "sha256:d94d8642a7467878df80b58d110e874368ba1402147ff447dc961b4732eca82b",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-663",
       "evidenceStatus": "unknown",
       "reason": "action-bucket-mismatch",
       "recommendedEvalSurface": "",
-      "recommendedProof": "human-auditable",
-      "reviewStatus": "heuristic",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "human-reviewed",
       "verificationReadiness": "ready-to-verify"
     },
     {
@@ -2459,6 +2415,17 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-add-deterministic-proof",
+      "claimFingerprint": "sha256:be5f13dad4eaff72ac28185435f719e39f08da85ce9b73b6854097fa24c6d31a",
+      "claimId": "claim-docs-contracts-runner-readiness-md-198",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "human-reviewed",
       "verificationReadiness": "ready-to-verify"
     },
     {
@@ -3101,30 +3068,8 @@
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
-      "claimFingerprint": "sha256:2cb87f1ead8909f4e2fd9b85116c999a655e651ab1ccaba33e1c6d92a96b5d4b",
-      "claimId": "claim-skills-cautilus-skill-md-67",
-      "evidenceStatus": "unknown",
-      "reason": "action-bucket-mismatch",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
-    },
-    {
-      "actionBucket": "agent-plan-cautilus-eval",
-      "claimFingerprint": "sha256:a0aea21ed8793e539f3db8e8b03efd8ac4f97d08c70bd3c5e110159fae3b0762",
-      "claimId": "claim-skills-cautilus-skill-md-68",
-      "evidenceStatus": "unknown",
-      "reason": "action-bucket-mismatch",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
-    },
-    {
-      "actionBucket": "agent-plan-cautilus-eval",
       "claimFingerprint": "sha256:65cb30158d551471121109baa101be43b1ccbca956f9424cce6149c48a5667b1",
-      "claimId": "claim-skills-cautilus-skill-md-75",
+      "claimId": "claim-skills-cautilus-skill-md-68",
       "evidenceStatus": "unknown",
       "reason": "action-bucket-mismatch",
       "recommendedEvalSurface": "dev/skill",
@@ -3133,20 +3078,20 @@
       "verificationReadiness": "ready-to-verify"
     },
     {
-      "actionBucket": "agent-plan-cautilus-eval",
+      "actionBucket": "human-align-surfaces",
       "claimFingerprint": "sha256:a5c82e29ce761e42ed2b18553ae831a189310fe0174962cc79b0705853e8b2fc",
-      "claimId": "claim-skills-cautilus-skill-md-116",
+      "claimId": "claim-skills-cautilus-skill-md-109",
       "evidenceStatus": "unknown",
-      "reason": "action-bucket-mismatch",
-      "recommendedEvalSurface": "dev/skill",
-      "recommendedProof": "cautilus-eval",
+      "reason": "already-reviewed",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "needs-alignment"
     },
     {
       "actionBucket": "human-confirm-or-decompose",
       "claimFingerprint": "sha256:ebff670a7be2ce628a7746f3a30e31c98d21eb103137e70a4ff70fa52b2bfdba",
-      "claimId": "claim-skills-cautilus-skill-md-119",
+      "claimId": "claim-skills-cautilus-skill-md-112",
       "evidenceStatus": "unknown",
       "reason": "action-bucket-mismatch",
       "recommendedEvalSurface": "",
@@ -3157,7 +3102,7 @@
     {
       "actionBucket": "agent-add-deterministic-proof",
       "claimFingerprint": "sha256:a950feb4b722b7133b2ffd1104b6fc46f6302a9ba218b408e7bfa851b6dcfcc3",
-      "claimId": "claim-skills-cautilus-skill-md-125",
+      "claimId": "claim-skills-cautilus-skill-md-118",
       "evidenceStatus": "unknown",
       "reason": "action-bucket-mismatch",
       "recommendedEvalSurface": "",
@@ -3168,7 +3113,7 @@
     {
       "actionBucket": "agent-plan-cautilus-eval",
       "claimFingerprint": "sha256:c575861c975813835a93a64b3d0ca6aafdb2ee55d71de1ffb6211b433852c558",
-      "claimId": "claim-skills-cautilus-skill-md-149",
+      "claimId": "claim-skills-cautilus-skill-md-142",
       "evidenceStatus": "unknown",
       "reason": "action-bucket-mismatch",
       "recommendedEvalSurface": "dev/repo",
@@ -3179,7 +3124,7 @@
     {
       "actionBucket": "agent-add-deterministic-proof",
       "claimFingerprint": "sha256:0430d8a298c4e11b0f53d621d1b7c1c908425d463f7a66dc5efbf4043936efbd",
-      "claimId": "claim-skills-cautilus-skill-md-214",
+      "claimId": "claim-skills-cautilus-skill-md-207",
       "evidenceStatus": "unknown",
       "reason": "action-bucket-mismatch",
       "recommendedEvalSurface": "",
@@ -3190,8 +3135,8 @@
   ],
   "skippedClusters": [],
   "sourceClaimPacket": {
-    "candidateCount": 265,
-    "gitCommit": "fdfb4d23c1b15bc20d2536d94ea1b5af14ddbd12",
+    "candidateCount": 263,
+    "gitCommit": "f3da975eb7803251769e0e32db0ab1a0aa56298e",
     "schemaVersion": "cautilus.claim_proof_plan.v1"
   },
   "sourceRoot": "."

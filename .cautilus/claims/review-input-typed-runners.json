@@ -4,86 +4,8 @@
       "candidates": [
         {
           "actionBucket": "agent-plan-cautilus-eval",
-          "claimFingerprint": "sha256:2cb87f1ead8909f4e2fd9b85116c999a655e651ab1ccaba33e1c6d92a96b5d4b",
-          "claimId": "claim-skills-cautilus-skill-md-67",
-          "currentLabels": {
-            "claimAudience": "user",
-            "claimSemanticGroup": "Agent and skill workflow",
-            "evidenceStatus": "unknown",
-            "lifecycle": "new",
-            "recommendedEvalSurface": "dev/repo",
-            "recommendedProof": "cautilus-eval",
-            "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
-          },
-          "evidenceRefs": [],
-          "groupHints": [
-            "audience:user",
-            "cautilus-eval",
-            "dev/repo",
-            "linked-from:docs/contracts/scenario-history.md",
-            "skill-doc"
-          ],
-          "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-          "sourceRefs": [
-            {
-              "excerpt": "When the user selects a numbered branch from a previous orientation turn, rerun `\"$CAUTILUS_BIN\" agent status --repo-root . --json` before any branch that writes or overwrites the saved claim map, launches review, plans evals, edits files, or commits.",
-              "line": 67,
-              "path": "skills/cautilus/SKILL.md"
-            }
-          ],
-          "summary": "When the user selects a numbered branch from a previous orientation turn, rerun `\"$CAUTILUS_BIN\" agent status --repo-root . --json` before any branch that writes or overwrites the saved claim map, launches review, plans evals, edits files, or commits."
-        },
-        {
-          "actionBucket": "agent-plan-cautilus-eval",
-          "claimFingerprint": "sha256:a0aea21ed8793e539f3db8e8b03efd8ac4f97d08c70bd3c5e110159fae3b0762",
-          "claimId": "claim-skills-cautilus-skill-md-68",
-          "currentLabels": {
-            "claimAudience": "user",
-            "claimSemanticGroup": "Agent and skill workflow",
-            "evidenceStatus": "unknown",
-            "lifecycle": "new",
-            "recommendedEvalSurface": "dev/repo",
-            "recommendedProof": "cautilus-eval",
-            "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
-          },
-          "evidenceRefs": [],
-          "groupHints": [
-            "audience:user",
-            "cautilus-eval",
-            "dev/repo",
-            "linked-from:docs/contracts/scenario-history.md",
-            "skill-doc"
-          ],
-          "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-          "sourceRefs": [
-            {
-              "excerpt": "For the refresh-plan branch, it is acceptable to proceed from the immediately preceding orientation when the command only writes a separate refresh-plan artifact and the agent does not claim it rechecked status.",
-              "line": 68,
-              "path": "skills/cautilus/SKILL.md"
-            }
-          ],
-          "summary": "For the refresh-plan branch, it is acceptable to proceed from the immediately preceding orientation when the command only writes a separate refresh-plan artifact and the agent does not claim it rechecked status."
-        }
-      ],
-      "claimAudience": "user",
-      "claimCount": 2,
-      "claimSemanticGroup": "Agent and skill workflow",
-      "clusterId": "cluster-user-agent-and-skill-workflow-cautilus-eval-dev-repo-skill-doc",
-      "groupKey": "user:Agent and skill workflow:cautilus-eval:dev/repo:skill-doc",
-      "priority": 20,
-      "reason": "User-facing claims are reviewed before developer conventions because they are closest to product promises.",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
-      "verificationReadiness": "ready-to-verify"
-    },
-    {
-      "candidates": [
-        {
-          "actionBucket": "agent-plan-cautilus-eval",
           "claimFingerprint": "sha256:c575861c975813835a93a64b3d0ca6aafdb2ee55d71de1ffb6211b433852c558",
-          "claimId": "claim-skills-cautilus-skill-md-149",
+          "claimId": "claim-skills-cautilus-skill-md-142",
           "currentLabels": {
             "claimAudience": "user",
             "claimSemanticGroup": "Claim discovery and review",
@@ -106,7 +28,7 @@
           "sourceRefs": [
             {
               "excerpt": "This branch proves reviewer launch, not review-result merge behavior.",
-              "line": 149,
+              "line": 142,
               "path": "skills/cautilus/SKILL.md"
             }
           ],
@@ -2457,6 +2379,52 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "candidates": [
+        {
+          "actionBucket": "agent-plan-cautilus-eval",
+          "claimFingerprint": "sha256:d1978a38a330c077db7ab68edb6d553016cd4637907ad610d7e822dc7bbcc438",
+          "claimId": "claim-docs-contracts-runner-readiness-md-13",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Quality gates",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedEvalSurface": "app/prompt",
+            "recommendedProof": "cautilus-eval",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "app/prompt",
+            "audience:developer",
+            "cautilus-eval",
+            "contract",
+            "linked-from:docs/master-plan.md"
+          ],
+          "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus eval test.",
+          "sourceRefs": [
+            {
+              "excerpt": "For app repos, a prompt-only fixture can accidentally test a copied prompt instead of the product.",
+              "line": 13,
+              "path": "docs/contracts/runner-readiness.md"
+            }
+          ],
+          "summary": "For app repos, a prompt-only fixture can accidentally test a copied prompt instead of the product."
+        }
+      ],
+      "claimAudience": "developer",
+      "claimCount": 1,
+      "claimSemanticGroup": "Quality gates",
+      "clusterId": "cluster-developer-quality-gates-cautilus-eval-app-prompt-contract",
+      "groupKey": "developer:Quality gates:cautilus-eval:app/prompt:contract",
+      "priority": 30,
+      "reason": "Evaluator-dependent claims need review before scenario drafting.",
+      "recommendedEvalSurface": "app/prompt",
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "ready-to-verify"
     }
   ],
   "evidencePreflight": {
@@ -3758,14 +3726,14 @@
       "verificationReadiness": "needs-alignment"
     },
     {
-      "actionBucket": "human-confirm-or-decompose",
+      "actionBucket": "agent-add-deterministic-proof",
       "claimFingerprint": "sha256:d94d8642a7467878df80b58d110e874368ba1402147ff447dc961b4732eca82b",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-663",
       "evidenceStatus": "unknown",
       "reason": "action-bucket-mismatch",
       "recommendedEvalSurface": "",
-      "recommendedProof": "human-auditable",
-      "reviewStatus": "heuristic",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "human-reviewed",
       "verificationReadiness": "ready-to-verify"
     },
     {
@@ -4000,15 +3968,15 @@
       "verificationReadiness": "ready-to-verify"
     },
     {
-      "actionBucket": "human-align-surfaces",
+      "actionBucket": "agent-add-deterministic-proof",
       "claimFingerprint": "sha256:be5f13dad4eaff72ac28185435f719e39f08da85ce9b73b6854097fa24c6d31a",
       "claimId": "claim-docs-contracts-runner-readiness-md-198",
       "evidenceStatus": "unknown",
       "reason": "action-bucket-mismatch",
       "recommendedEvalSurface": "",
-      "recommendedProof": "human-auditable",
-      "reviewStatus": "heuristic",
-      "verificationReadiness": "needs-alignment"
+      "recommendedProof": "deterministic",
+      "reviewStatus": "human-reviewed",
+      "verificationReadiness": "ready-to-verify"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -4376,7 +4344,7 @@
     {
       "actionBucket": "agent-plan-cautilus-eval",
       "claimFingerprint": "sha256:65cb30158d551471121109baa101be43b1ccbca956f9424cce6149c48a5667b1",
-      "claimId": "claim-skills-cautilus-skill-md-75",
+      "claimId": "claim-skills-cautilus-skill-md-68",
       "evidenceStatus": "unknown",
       "reason": "already-reviewed",
       "recommendedEvalSurface": "dev/skill",
@@ -4385,20 +4353,20 @@
       "verificationReadiness": "ready-to-verify"
     },
     {
-      "actionBucket": "agent-plan-cautilus-eval",
+      "actionBucket": "human-align-surfaces",
       "claimFingerprint": "sha256:a5c82e29ce761e42ed2b18553ae831a189310fe0174962cc79b0705853e8b2fc",
-      "claimId": "claim-skills-cautilus-skill-md-116",
+      "claimId": "claim-skills-cautilus-skill-md-109",
       "evidenceStatus": "unknown",
-      "reason": "already-reviewed",
-      "recommendedEvalSurface": "dev/skill",
-      "recommendedProof": "cautilus-eval",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "needs-alignment"
     },
     {
       "actionBucket": "human-confirm-or-decompose",
       "claimFingerprint": "sha256:ebff670a7be2ce628a7746f3a30e31c98d21eb103137e70a4ff70fa52b2bfdba",
-      "claimId": "claim-skills-cautilus-skill-md-119",
+      "claimId": "claim-skills-cautilus-skill-md-112",
       "evidenceStatus": "unknown",
       "reason": "action-bucket-mismatch",
       "recommendedEvalSurface": "",
@@ -4409,7 +4377,7 @@
     {
       "actionBucket": "agent-add-deterministic-proof",
       "claimFingerprint": "sha256:a950feb4b722b7133b2ffd1104b6fc46f6302a9ba218b408e7bfa851b6dcfcc3",
-      "claimId": "claim-skills-cautilus-skill-md-125",
+      "claimId": "claim-skills-cautilus-skill-md-118",
       "evidenceStatus": "unknown",
       "reason": "action-bucket-mismatch",
       "recommendedEvalSurface": "",
@@ -4420,7 +4388,7 @@
     {
       "actionBucket": "agent-add-deterministic-proof",
       "claimFingerprint": "sha256:0430d8a298c4e11b0f53d621d1b7c1c908425d463f7a66dc5efbf4043936efbd",
-      "claimId": "claim-skills-cautilus-skill-md-214",
+      "claimId": "claim-skills-cautilus-skill-md-207",
       "evidenceStatus": "unknown",
       "reason": "action-bucket-mismatch",
       "recommendedEvalSurface": "",
@@ -4431,12 +4399,6 @@
   ],
   "skippedClusters": [
     {
-      "claimCount": 1,
-      "clusterId": "cluster-developer-quality-gates-cautilus-eval-app-prompt-contract",
-      "groupKey": "developer:Quality gates:cautilus-eval:app/prompt:contract",
-      "reason": "max-clusters-exceeded"
-    },
-    {
       "claimCount": 2,
       "clusterId": "cluster-developer-quality-gates-cautilus-eval-dev-repo-contract",
       "groupKey": "developer:Quality gates:cautilus-eval:dev/repo:contract",
@@ -4444,8 +4406,8 @@
     }
   ],
   "sourceClaimPacket": {
-    "candidateCount": 265,
-    "gitCommit": "fdfb4d23c1b15bc20d2536d94ea1b5af14ddbd12",
+    "candidateCount": 263,
+    "gitCommit": "f3da975eb7803251769e0e32db0ab1a0aa56298e",
     "schemaVersion": "cautilus.claim_proof_plan.v1"
   },
   "sourceRoot": "."

@@ -42,7 +42,7 @@
       "clusterId": "hitl-skill-routing",
       "claimUpdates": [
         {
-          "claimId": "claim-skills-cautilus-skill-md-75",
+          "claimId": "claim-skills-cautilus-skill-md-68",
           "reviewStatus": "human-reviewed",
           "evidenceStatus": "unknown",
           "evidenceStatusReason": "The maintainer accepted this as a user-facing Cautilus skill routing claim that should be proven by behavior evidence rather than left as human-only guidance.",
