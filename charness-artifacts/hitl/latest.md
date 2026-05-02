@@ -40,6 +40,8 @@ Use maintainer review to separate ordinary public claims from proof sources, mai
   The accepted replacement is scoped to claim discovery: the bundled skill owns LLM-backed claim review, review-budget explanation, and subagent orchestration for the claim discovery workflow.
   `eval` and `optimize` may still orchestrate model-involving behavior through adapter-owned runners.
 - Accepted `claim-docs-contracts-claim-discovery-workflow-md-565` as dev/skill eval proof work for explicit review-budget confirmation before LLM-backed claim review.
+- Added `npm run claims:apply-review-results` so historical review-result packets are filtered to the current claim IDs before replay.
+  This preserves audit history on disk without making stale IDs a trap for the next claim refresh.
 
 ## Current Packet Snapshot
 
@@ -48,7 +50,7 @@ Use maintainer review to separate ordinary public claims from proof sources, mai
 - `docs/specs/**` source count: 0.
 - `docs/maintainers/**` source count: 0.
 - Candidates sourced from excluded specs or maintainer docs: 0.
-- Agent-reviewed claims carried forward: 78.
+- Agent-reviewed claims carried forward: 79.
 - Human-reviewed claims: 10.
 - Satisfied claims carried forward: 16.
 - User-facing claims: 69.
@@ -62,7 +64,7 @@ Start with claims that test whether the remaining human-confirm and human-alignm
 
 - `claim-docs-contracts-claim-discovery-workflow-md-663`: already satisfied and already reviewed non-stale claims are excluded from review clusters by default so reviewer budget stays focused on unresolved heuristic claims while carried evidence and prior decisions remain auditable under `skippedClaims`.
 - `claim-docs-contracts-runner-readiness-md-198`: if the current git commit differs from `repoCommit` but the adapter and listed runner file hashes still match, `doctor` and `agent status` should expose the drift as assessment provenance without marking the assessment stale.
-- `claim-skills-cautilus-skill-md-66` and `claim-skills-cautilus-skill-md-67`: the Cautilus skill must rerun `agent status` before state-mutating branch execution, with a narrow refresh-plan exception.
+- `claim-skills-cautilus-skill-md-67` and `claim-skills-cautilus-skill-md-68`: the Cautilus skill must rerun `agent status` before state-mutating branch execution, with a narrow refresh-plan exception.
 
 ## Open Questions
 

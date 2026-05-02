@@ -41,8 +41,11 @@ If all global ownership prose is narrowed to claim review, and the worksheet plu
 
 ## Verification
 
-Pending after repair:
-run node tests for the new helper, rerender claim artifacts, validate the claim packet, then run `npm run verify`, `npm run test:on-demand`, and `npm run hooks:check`.
+- Added `scripts/agent-runtime/apply-current-review-results.test.mjs` for stale review-result filtering.
+- Ran the focused node tests for the new helper and claim status report renderer.
+- Rerendered the claim packet, worksheet, eval plan, review queues, and status report from the committed source revision.
+- `claim validate` reported `valid=true`, `errorCount=0`, and `warningCount=0`.
+- `npm run verify`, `npm run test:on-demand`, and `npm run hooks:check` passed.
 
 ## Root Cause
 

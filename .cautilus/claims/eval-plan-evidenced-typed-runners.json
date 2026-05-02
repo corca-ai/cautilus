@@ -499,7 +499,7 @@
     },
     {
       "claimFingerprint": "sha256:65cb30158d551471121109baa101be43b1ccbca956f9424cce6149c48a5667b1",
-      "claimId": "claim-skills-cautilus-skill-md-74",
+      "claimId": "claim-skills-cautilus-skill-md-75",
       "draftIntent": "Verify that Use this path when the user asks whether a repo proves what it claims, whether docs and behavior are aligned, or which scenarios still need to be created.",
       "evidenceStatus": "unknown",
       "fixtureAuthoringGuidance": {
@@ -541,7 +541,7 @@
         "surface": "dev"
       },
       "nextStep": "Create a host-owned cautilus.evaluation_input.v1 fixture and adapter-owned runner for this plan.",
-      "planId": "eval-plan-claim-skills-cautilus-skill-md-74",
+      "planId": "eval-plan-claim-skills-cautilus-skill-md-75",
       "proofRequirement": {
         "minimumProofClasses": [
           "fixture-smoke",
@@ -563,7 +563,80 @@
       "sourceRefs": [
         {
           "excerpt": "Use this path when the user asks whether a repo proves what it claims, whether docs and behavior are aligned, or which scenarios still need to be created.",
-          "line": 74,
+          "line": 75,
+          "path": "skills/cautilus/SKILL.md"
+        }
+      ],
+      "targetSurface": "dev/skill",
+      "unresolvedQuestions": []
+    },
+    {
+      "claimFingerprint": "sha256:a5c82e29ce761e42ed2b18553ae831a189310fe0174962cc79b0705853e8b2fc",
+      "claimId": "claim-skills-cautilus-skill-md-116",
+      "draftIntent": "Verify that The coordinator should understand that choosing review means setting a review budget before any reviewer lanes, result application, eval planning, edits, or commits happen.",
+      "evidenceStatus": "unknown",
+      "fixtureAuthoringGuidance": {
+        "conditionalCaseFields": {
+          "execution": [
+            "thresholds or turns/auditKind when the evaluated behavior needs them"
+          ],
+          "trigger": [
+            "expectedTrigger"
+          ]
+        },
+        "evaluationInputSchema": "cautilus.evaluation_input.v1",
+        "expectedShape": "trigger cases require expectedTrigger; execution cases use thresholds, turns, or auditKind depending on the skill contract",
+        "fixtureOwner": "host-repo",
+        "minimumCaseFields": [
+          "caseId",
+          "evaluationKind",
+          "prompt"
+        ],
+        "minimumSuiteFields": [
+          "schemaVersion",
+          "surface",
+          "preset",
+          "suiteId",
+          "cases"
+        ],
+        "nonWriterBoundary": "Cautilus plans the fixture contract but does not write host-owned fixtures, prompts, runners, wrappers, or acceptance policy.",
+        "preset": "skill",
+        "requiredObservability": [
+          "trigger",
+          "execution",
+          "loadedInstructionFiles",
+          "runtimeFingerprint"
+        ],
+        "requiredRunnerCapability": "development-skill-eval-runner",
+        "runnerOutputSchema": "cautilus.skill_evaluation_inputs.v1",
+        "runnerOwner": "host-repo-adapter",
+        "schemaVersion": "cautilus.claim_eval_fixture_authoring_guidance.v1",
+        "surface": "dev"
+      },
+      "nextStep": "Create a host-owned cautilus.evaluation_input.v1 fixture and adapter-owned runner for this plan.",
+      "planId": "eval-plan-claim-skills-cautilus-skill-md-116",
+      "proofRequirement": {
+        "minimumProofClasses": [
+          "fixture-smoke",
+          "coding-agent-messaging",
+          "declared-eval-runner"
+        ],
+        "proofMechanism": "cautilus-eval",
+        "recommendedEvalSurface": "dev/skill",
+        "requiredObservability": [
+          "trigger",
+          "execution",
+          "loadedInstructionFiles",
+          "runtimeFingerprint"
+        ],
+        "requiredRunnerCapability": "development-skill-eval-runner",
+        "requiresProductRunnerProof": false
+      },
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "The coordinator should understand that choosing review means setting a review budget before any reviewer lanes, result application, eval planning, edits, or commits happen.",
+          "line": 116,
           "path": "skills/cautilus/SKILL.md"
         }
       ],
@@ -574,14 +647,14 @@
   "inputPath": "/home/hwidong/codes/cautilus/.cautilus/claims/evidenced-typed-runners.json",
   "nonWriterNotice": "This packet plans eval fixtures but does not write host-owned fixtures, prompts, runners, or policy.",
   "planSummary": {
-    "evalPlanCount": 8,
+    "evalPlanCount": 9,
     "skippedByReason": {
       "already-satisfied": 1,
       "not-cautilus-eval": 159,
       "not-ready-to-verify": 7,
-      "not-reviewed": 90
+      "not-reviewed": 89
     },
-    "skippedClaimCount": 257,
+    "skippedClaimCount": 256,
     "zeroPlanExpectation": "Zero eval plans can be expected when reviewed eval-ready claims are already satisfied or when remaining reviewed claims are not Cautilus eval targets.",
     "zeroPlanReason": ""
   },
@@ -1970,7 +2043,7 @@
       "verificationReadiness": "needs-alignment"
     },
     {
-      "claimFingerprint": "sha256:3e06a05ddb6d71228dee3c8278f6b5bd447fcde0331e4d9cd39c1e62f5c4782b",
+      "claimFingerprint": "sha256:8eba8ebef3902c23c9cfe8bf9217ad9946d2146e24b0271fbea8af363c6b5da3",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-547",
       "evidenceStatus": "unknown",
       "reason": "not-reviewed",
@@ -1980,7 +2053,7 @@
       "verificationReadiness": "ready-to-verify"
     },
     {
-      "claimFingerprint": "sha256:81b8b877012bef9579d984e72840ca6e06cf5700742f6d9f16642c41d9f7edaa",
+      "claimFingerprint": "sha256:2f4267a19f2f19ebee6eb0625444b67649c805bb85fa44682e131b2ff2e7b77d",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-548",
       "evidenceStatus": "unknown",
       "reason": "not-cautilus-eval",
@@ -3109,7 +3182,7 @@
       "verificationReadiness": "ready-to-verify"
     },
     {
-      "claimFingerprint": "sha256:a7a61187b446dc650c5b621d649b0f2f1113eee90ae5df3a39016ffa4b116c10",
+      "claimFingerprint": "sha256:64b93b54663bc137a1152f69330be61a56c4d70c7fdd44dd679cf5808966b0b3",
       "claimId": "claim-skills-cautilus-skill-md-21",
       "evidenceStatus": "unknown",
       "reason": "not-cautilus-eval",
@@ -3120,16 +3193,6 @@
     },
     {
       "claimFingerprint": "sha256:2cb87f1ead8909f4e2fd9b85116c999a655e651ab1ccaba33e1c6d92a96b5d4b",
-      "claimId": "claim-skills-cautilus-skill-md-66",
-      "evidenceStatus": "unknown",
-      "reason": "not-reviewed",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
-    },
-    {
-      "claimFingerprint": "sha256:a0aea21ed8793e539f3db8e8b03efd8ac4f97d08c70bd3c5e110159fae3b0762",
       "claimId": "claim-skills-cautilus-skill-md-67",
       "evidenceStatus": "unknown",
       "reason": "not-reviewed",
@@ -3139,8 +3202,8 @@
       "verificationReadiness": "ready-to-verify"
     },
     {
-      "claimFingerprint": "sha256:a5c82e29ce761e42ed2b18553ae831a189310fe0174962cc79b0705853e8b2fc",
-      "claimId": "claim-skills-cautilus-skill-md-115",
+      "claimFingerprint": "sha256:a0aea21ed8793e539f3db8e8b03efd8ac4f97d08c70bd3c5e110159fae3b0762",
+      "claimId": "claim-skills-cautilus-skill-md-68",
       "evidenceStatus": "unknown",
       "reason": "not-reviewed",
       "recommendedEvalSurface": "dev/repo",
@@ -3150,7 +3213,7 @@
     },
     {
       "claimFingerprint": "sha256:ebff670a7be2ce628a7746f3a30e31c98d21eb103137e70a4ff70fa52b2bfdba",
-      "claimId": "claim-skills-cautilus-skill-md-118",
+      "claimId": "claim-skills-cautilus-skill-md-119",
       "evidenceStatus": "unknown",
       "reason": "not-cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
@@ -3160,7 +3223,7 @@
     },
     {
       "claimFingerprint": "sha256:a950feb4b722b7133b2ffd1104b6fc46f6302a9ba218b408e7bfa851b6dcfcc3",
-      "claimId": "claim-skills-cautilus-skill-md-124",
+      "claimId": "claim-skills-cautilus-skill-md-125",
       "evidenceStatus": "unknown",
       "reason": "not-cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
@@ -3170,7 +3233,7 @@
     },
     {
       "claimFingerprint": "sha256:c575861c975813835a93a64b3d0ca6aafdb2ee55d71de1ffb6211b433852c558",
-      "claimId": "claim-skills-cautilus-skill-md-148",
+      "claimId": "claim-skills-cautilus-skill-md-149",
       "evidenceStatus": "unknown",
       "reason": "not-reviewed",
       "recommendedEvalSurface": "dev/repo",
@@ -3180,7 +3243,7 @@
     },
     {
       "claimFingerprint": "sha256:0430d8a298c4e11b0f53d621d1b7c1c908425d463f7a66dc5efbf4043936efbd",
-      "claimId": "claim-skills-cautilus-skill-md-213",
+      "claimId": "claim-skills-cautilus-skill-md-214",
       "evidenceStatus": "unknown",
       "reason": "not-cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
@@ -3191,7 +3254,7 @@
   ],
   "sourceClaimPacket": {
     "candidateCount": 265,
-    "gitCommit": "cc96b61a425f122c933957ceccd2d97b4117a17f",
+    "gitCommit": "fdfb4d23c1b15bc20d2536d94ea1b5af14ddbd12",
     "schemaVersion": "cautilus.claim_proof_plan.v1"
   }
 }

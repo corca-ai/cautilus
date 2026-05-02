@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 177
+          "unknown": 176
         },
         "byReviewStatus": {
-          "heuristic": 177
+          "heuristic": 176
         },
-        "count": 177,
+        "count": 176,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -67,8 +67,8 @@
           "unknown": 98
         },
         "byReviewStatus": {
-          "agent-reviewed": 5,
-          "heuristic": 90,
+          "agent-reviewed": 6,
+          "heuristic": 89,
           "human-reviewed": 3
         },
         "count": 98,
@@ -187,8 +187,8 @@
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 47,
-      "Agent and skill workflow": 67,
-      "Claim discovery and review": 19,
+      "Agent and skill workflow": 66,
+      "Claim discovery and review": 20,
       "Documentation and contracts": 67,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
@@ -210,8 +210,8 @@
       "human-auditable": 45
     },
     "byReviewStatus": {
-      "agent-reviewed": 78,
-      "heuristic": 177,
+      "agent-reviewed": 79,
+      "heuristic": 176,
       "human-reviewed": 10
     },
     "byVerificationReadiness": {
@@ -690,31 +690,18 @@
       }
     ]
   },
-  "gitCommit": "cc96b61a425f122c933957ceccd2d97b4117a17f",
+  "gitCommit": "fdfb4d23c1b15bc20d2536d94ea1b5af14ddbd12",
   "gitState": {
-    "changedFileCount": 12,
-    "changedFiles": [
-      ".cautilus/claims/claim-status-report.md",
-      ".cautilus/claims/discovery-review.md",
-      ".cautilus/claims/eval-plan-evidenced-typed-runners.json",
-      ".cautilus/claims/evidenced-typed-runners.json",
-      ".cautilus/claims/latest.json",
-      ".cautilus/claims/refresh-plan-after-claim-review-boundary.json",
-      ".cautilus/claims/review-input-human-align-action-bucket.json",
-      ".cautilus/claims/review-input-human-confirm-action-bucket.json",
-      ".cautilus/claims/review-input-typed-runners.json",
-      ".cautilus/claims/review-result-hitl-claim-review-boundary-2026-05-02.json",
-      ".cautilus/claims/status-summary.json",
-      "charness-artifacts/hitl/latest.md"
-    ],
+    "changedFileCount": 0,
+    "changedFiles": [],
     "changedSourceCount": 0,
     "changedSources": [],
-    "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "451cda63560b70f6a7cde33b81bb279853e45cd5",
-    "headDrift": true,
+    "comparisonStatus": "fresh",
+    "currentGitCommit": "fdfb4d23c1b15bc20d2536d94ea1b5af14ddbd12",
+    "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "cc96b61a425f122c933957ceccd2d97b4117a17f",
-    "recommendedAction": "The current HEAD differs from the packet commit, but no recorded claim source changed; review and eval planning may continue.",
+    "packetGitCommit": "fdfb4d23c1b15bc20d2536d94ea1b5af14ddbd12",
+    "recommendedAction": "The claim packet commit matches the current checkout.",
     "workingTreePolicy": "excluded"
   },
   "inputPath": ".cautilus/claims/evidenced-typed-runners.json",
@@ -736,7 +723,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 163,
+    "heuristicClaimsReadyForReview": 162,
     "needsAlignment": 21,
     "needsScenario": 7
   },
