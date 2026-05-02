@@ -18,7 +18,8 @@ To materialize this skill in a host repo, run `cautilus install --repo-root .`.
 `Cautilus` is a standalone binary plus this bundled skill.
 Host repos own adapters, fixtures, prompts, wrappers, and policy.
 The binary owns command discovery, packet examples, deterministic scans, validation, and reusable evaluation artifacts.
-The skill owns routing, sequencing, user-facing decision boundaries, and LLM-backed review work.
+The skill owns routing, sequencing, user-facing decision boundaries, and LLM-backed claim review work.
+`eval` and `optimize` may still exercise model-involving behavior through adapter-owned runners.
 
 The three product front doors are:
 

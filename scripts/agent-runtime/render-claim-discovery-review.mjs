@@ -270,7 +270,7 @@ function renderFirstPassPlan(lines, candidates) {
 	lines.push("");
 }
 
-function renderReviewDocument(claimsPacket, statusPacket) {
+function renderReviewDocument(claimsPacket, statusPacket, claimsPath = ".cautilus/claims/latest.json") {
 	const candidates = asArray(claimsPacket.claimCandidates);
 	const grouped = groupCandidates(candidates);
 	const semanticOptions = semanticGroupOptions(candidates, claimsPacket);
@@ -283,7 +283,7 @@ function renderReviewDocument(claimsPacket, statusPacket) {
 	lines.push("");
 	lines.push("## Packet Summary");
 	lines.push("");
-	lines.push(`- Claims packet: ${statusPacket.inputPath || ".cautilus/claims/latest.json"}`);
+	lines.push(`- Claims packet: ${claimsPath}`);
 	lines.push(`- Git commit in packet: ${claimsPacket.gitCommit || "unknown"}`);
 	lines.push(`- Candidate count: ${candidates.length}`);
 	lines.push(`- Source count: ${claimsPacket.sourceCount ?? asArray(claimsPacket.sourceInventory).length}`);
@@ -318,7 +318,7 @@ function main() {
 	const args = parseArgs(process.argv);
 	const claimsPacket = readJSON(args.claims);
 	const statusPacket = readOptionalJSON(args.status);
-	const output = renderReviewDocument(claimsPacket, statusPacket);
+	const output = renderReviewDocument(claimsPacket, statusPacket, args.claims);
 	fs.mkdirSync(path.dirname(args.output), { recursive: true });
 	fs.writeFileSync(args.output, output, "utf8");
 	console.log(`wrote ${args.output}`);

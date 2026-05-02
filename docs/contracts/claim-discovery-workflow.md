@@ -7,7 +7,7 @@ That is useful as a fast inventory, but it is not yet the workflow users expect 
 A real user wants to know which declared behavior claims exist, which ones are already covered by deterministic tests or existing Cautilus evidence, which ones still need evaluator-backed scenarios, and which surfaces must be aligned before verification is honest.
 
 The product should preserve a simple user-facing entry point while keeping the product boundary clean:
-the binary owns deterministic packet production and state transitions, and the bundled skill owns agent orchestration, LLM review, subagent fanout, user confirmation, and next-action conversation.
+for claim discovery and claim review, the binary owns deterministic packet production and state transitions, and the bundled skill owns agent orchestration, LLM-backed claim review, subagent fanout, user confirmation, and next-action conversation.
 
 ## Current Slice
 
@@ -17,7 +17,7 @@ It refines the current `claim discover` direction around four decisions:
 
 - `discover` remains the one high-level user action for initial claim discovery.
 - The binary performs the fast deterministic skeleton pass.
-- The bundled skill performs LLM-backed review, grouping, final labeling, evidence reconciliation, and user-facing status.
+- The bundled skill performs LLM-backed claim review, grouping, final labeling, evidence reconciliation, and user-facing status.
 - Existing claim state refresh is selected by the skill when it detects a prior JSON packet, but the refresh plan and state transition must be recorded in deterministic packets or helper output.
   It does not require a separate binary `claim refresh` command.
 
@@ -544,8 +544,8 @@ Over-worry:
 
 - A public `claim refresh` command is not required for this stage.
   Helper flags under `claim discover` are enough if the skill keeps the user-facing action as discover.
-- LLM extraction should not move into the binary.
-  The binary stays deterministic and provider-neutral.
+- LLM-backed claim extraction or review should not move into the binary.
+  In this workflow, the binary stays deterministic and provider-neutral.
 - HTML or a full report renderer does not block the first workflow value.
 
 Valid but defer:
