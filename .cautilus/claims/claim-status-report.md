@@ -10,8 +10,8 @@ Use the JSON packets as the audit source; use this report to decide what to insp
 - Candidate count: 265
 - Source count: 23
 - Claims git commit: cc96b61a425f122c933957ceccd2d97b4117a17f
-- Git state: fresh; stale=no
-- Git recommendation: The claim packet commit matches the current checkout.
+- Git state: fresh-with-head-drift; stale=no
+- Git recommendation: The current HEAD differs from the packet commit, but no recorded claim source changed; review and eval planning may continue.
 
 ## Scoreboard
 
