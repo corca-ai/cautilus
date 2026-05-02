@@ -1164,10 +1164,11 @@ func TestApplyClaimReviewResultCanUpdateClaimAudience(t *testing.T) {
 				"clusterId": "cluster-fixture",
 				"claimUpdates": []any{
 					map[string]any{
-						"claimId":       claimID,
-						"reviewStatus":  "human-reviewed",
-						"claimAudience": "user",
-						"nextAction":    "Keep as an operator-facing public contract.",
+						"claimId":          claimID,
+						"reviewStatus":     "human-reviewed",
+						"claimAudience":    "user",
+						"recommendedProof": "deterministic",
+						"nextAction":       "Keep as an operator-facing public contract.",
 					},
 				},
 			},
@@ -1194,9 +1195,16 @@ func TestApplyClaimReviewResultCanUpdateClaimAudience(t *testing.T) {
 	if updatedClaim["claimAudience"] != "user" || updatedClaim["claimAudienceSource"] != "review-result" {
 		t.Fatalf("expected review result to update audience, got %#v", updatedClaim)
 	}
+	hints := stringArrayOrEmpty(updatedClaim["groupHints"])
+	if !containsString(hints, "audience:user") || !containsString(hints, "deterministic") {
+		t.Fatalf("expected group hints to follow reviewed audience and proof, got %#v", hints)
+	}
+	if containsString(hints, "audience:developer") || containsString(hints, "human-auditable") || containsString(hints, "cautilus-eval") {
+		t.Fatalf("expected stale derived group hints to be removed, got %#v", hints)
+	}
 	application := asMap(updated["reviewApplication"])
 	applied := stringArrayOrEmpty(asMap(arrayOrEmpty(application["appliedUpdates"])[0])["appliedFields"])
-	if !containsString(applied, "claimAudience") || !containsString(applied, "claimAudienceSource") {
+	if !containsString(applied, "claimAudience") || !containsString(applied, "claimAudienceSource") || !containsString(applied, "groupHints") {
 		t.Fatalf("expected applied audience fields, got %#v", applied)
 	}
 }

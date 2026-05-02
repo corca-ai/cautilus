@@ -2967,6 +2967,9 @@ func applyClaimUpdate(candidate map[string]any, update map[string]any) ([]any, e
 		candidate["evidenceStatusReason"] = reason
 		applied = append(applied, "evidenceStatusReason")
 	}
+	if syncClaimGroupHints(candidate) {
+		applied = append(applied, "groupHints")
+	}
 	if _, exists := update["unresolvedQuestions"]; exists {
 		candidate["unresolvedQuestions"] = arrayOrEmpty(update["unresolvedQuestions"])
 		applied = append(applied, "unresolvedQuestions")
@@ -2975,6 +2978,53 @@ func applyClaimUpdate(candidate map[string]any, update map[string]any) ([]any, e
 		return nil, err
 	}
 	return applied, nil
+}
+
+func syncClaimGroupHints(candidate map[string]any) bool {
+	rawHints := arrayOrEmpty(candidate["groupHints"])
+	if len(rawHints) == 0 {
+		return false
+	}
+	next := []string{}
+	seen := map[string]bool{}
+	for _, raw := range rawHints {
+		hint := stringFromAny(raw)
+		if hint == "" || isDerivedClaimGroupHint(hint) || seen[hint] {
+			continue
+		}
+		seen[hint] = true
+		next = append(next, hint)
+	}
+	for _, hint := range []string{
+		"audience:" + claimAudienceOrUnclear(stringFromAny(candidate["claimAudience"])),
+		stringFromAny(candidate["recommendedProof"]),
+	} {
+		if hint != "" && !seen[hint] {
+			seen[hint] = true
+			next = append(next, hint)
+		}
+	}
+	sort.Strings(next)
+	candidate["groupHints"] = stringSliceToAny(next)
+	return !sameStringSet(rawHints, next)
+}
+
+func isDerivedClaimGroupHint(hint string) bool {
+	return strings.HasPrefix(hint, "audience:") || validRecommendedProof(hint)
+}
+
+func sameStringSet(raw []any, expected []string) bool {
+	if len(raw) != len(expected) {
+		return false
+	}
+	actual := stringArrayOrEmpty(raw)
+	sort.Strings(actual)
+	for index := range expected {
+		if actual[index] != expected[index] {
+			return false
+		}
+	}
+	return true
 }
 
 func appliedFieldContains(fields []any, field string) bool {
