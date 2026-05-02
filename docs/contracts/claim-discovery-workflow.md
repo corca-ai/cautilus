@@ -221,6 +221,10 @@ The current packet splits those concepts:
 - `deterministic`
 - `cautilus-eval`
 
+`human-auditable` does not mean human-only or evidence-free.
+It means an agent should not mark the claim satisfied without human judgment, but the judgment still needs at least one concrete support item such as a source comparison, command output, test, spec, fixture result, eval summary, reviewed transcript, or explicit counterexample search.
+If no concrete evidence could make the judgment more honest, the text is probably philosophy, roadmap, or positioning rather than a proof target and should be split or deferred instead of marked satisfied.
+
 Broad positioning or aggregate product promises should stay `human-auditable` and `verificationReadiness=blocked` until they are decomposed into concrete deterministic checks, scenario candidates, or Cautilus eval claims.
 The claim should remain visible in the packet, but it should not become a fixture plan by default because one passing fixture would overclaim the umbrella promise.
 Product-direction statements and operator-policy rules follow the same boundary.
@@ -293,6 +297,7 @@ The first valid-state rules are:
 - `verificationReadiness=needs-alignment` means at least two truth surfaces must be reconciled before proof would be honest.
 - `lifecycle=changed` describes changed claim source or claim meaning.
 - `evidenceStatus=stale` describes changed evidence anchors, commits, hashes, or validity.
+- Human review can accept a claim's framing or proof route, but it does not by itself satisfy the claim unless a direct or verified evidence ref also supports that claim.
 
 `evidenceRefs[]` should use a minimum inspectable shape:
 

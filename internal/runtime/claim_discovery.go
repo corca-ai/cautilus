@@ -1189,7 +1189,7 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 			recommendedProof:      "human-auditable",
 			verificationReadiness: "ready-to-verify",
 			why:                   "The claim can be checked by reading current source, docs, or generated artifacts.",
-			next:                  "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
+			next:                  "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
 		}, true
 	default:
 		return claimClassification{}, false
