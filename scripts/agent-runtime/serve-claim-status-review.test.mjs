@@ -154,6 +154,42 @@ test("createReviewServer requires token and writes comment packet", async () => 
 	}
 });
 
+test("createReviewServer ignores saved comments from a stale report fingerprint", async () => {
+	const root = mkdtempSync(path.join(tmpdir(), "cautilus-claim-review-"));
+	try {
+		const reportPath = path.join(root, "report.md");
+		const commentsPath = path.join(root, "comments.json");
+		writeFileSync(reportPath, "# Current Report\n\n## Next Work\n\n- Continue\n");
+		writeFileSync(
+			commentsPath,
+			`${JSON.stringify(
+				buildCommentPacket({
+					reportPath: "report.md",
+					commentsPath: "comments.json",
+					markdown: "# Old Report\n",
+					comments: [{ sectionId: "decision-agent-next-work", sectionTitle: "Old", status: "ok", comment: "old approval" }],
+				}),
+				null,
+				2,
+			)}\n`,
+		);
+		const server = createReviewServer({ reportPath, commentsPath, token: "secret" });
+		await listen(server);
+		try {
+			const address = server.address();
+			const base = `http://127.0.0.1:${address.port}`;
+			const state = await requestJSON(`${base}/api/state?token=secret`);
+			assert.equal(state.status, 200);
+			assert.equal(state.body.commentPacketStatus, "stale");
+			assert.deepEqual(state.body.comments, []);
+		} finally {
+			await close(server);
+		}
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
 function listen(server) {
 	return new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
 }

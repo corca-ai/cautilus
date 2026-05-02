@@ -259,6 +259,8 @@ export function buildCommentPacket({ reportPath, commentsPath, markdown, comment
 function loadState(config) {
 	const markdown = readText(config.reportPath);
 	const saved = readOptionalJSON(config.commentsPath, { comments: [] });
+	const reportFingerprint = sha256(markdown);
+	const savedComments = savedCommentsForReport(saved, reportFingerprint);
 	const sections = splitMarkdownSections(markdown).map((section) => ({
 		...section,
 		html: renderMarkdownFragment(section.markdown),
@@ -266,11 +268,32 @@ function loadState(config) {
 	return {
 		reportPath: config.reportPath,
 		commentsPath: config.commentsPath,
-		reportFingerprint: sha256(markdown),
+		reportFingerprint,
+		commentPacketStatus: savedCommentPacketStatus(saved, reportFingerprint),
 		reviewQueue: buildReviewQueue(sections),
 		sections,
-		comments: normalizeComments(saved),
+		comments: savedComments,
 	};
+}
+
+function savedCommentsForReport(saved, reportFingerprint) {
+	if (!saved || !Array.isArray(saved.comments)) {
+		return [];
+	}
+	if (saved.reportFingerprint && saved.reportFingerprint !== reportFingerprint) {
+		return [];
+	}
+	return normalizeComments(saved);
+}
+
+function savedCommentPacketStatus(saved, reportFingerprint) {
+	if (!saved || !Array.isArray(saved.comments)) {
+		return "absent";
+	}
+	if (saved.reportFingerprint && saved.reportFingerprint !== reportFingerprint) {
+		return "stale";
+	}
+	return "current";
 }
 
 export function buildReviewQueue(sections) {
@@ -532,7 +555,7 @@ function render(data){
  const content = document.getElementById("content");
  toc.innerHTML = "";
  content.innerHTML = "";
- renderDecisionQueue(content, data.reviewQueue || []);
+ renderDecisionQueue(content, data);
  const detail = document.createElement("details");
  detail.className = "detail-shell";
  detail.innerHTML = '<summary>Reference report details</summary>';
@@ -559,10 +582,12 @@ function render(data){
  document.querySelectorAll("[data-anchor]").forEach(link => link.addEventListener("click", () => { detail.open = true; }));
  setDirty(false);
 }
-function renderDecisionQueue(content, queue){
+function renderDecisionQueue(content, data){
+ const queue = data.reviewQueue || [];
  const intro = document.createElement("div");
  intro.className = "intro";
- intro.innerHTML = '<strong>What I need from you</strong><p>Answer only the cards below. You do not need to read the full report unless a card asks you to inspect a linked detail.</p><p>Use <b>OK</b> to approve, <b>Needs agent</b> when I should handle it, <b>Needs human</b> when you want to keep it as your decision, and <b>Question</b> when the framing is wrong or unclear.</p><p>This page requires the token in the URL. A bare tunnel URL will return 403.</p>';
+ const staleWarning = data.commentPacketStatus === "stale" ? '<p><b>Saved comments were from an older report and were not loaded.</b></p>' : "";
+ intro.innerHTML = '<strong>What I need from you</strong><p>Answer only the cards below. You do not need to read the full report unless a card asks you to inspect a linked detail.</p><p>Use <b>OK</b> to approve, <b>Needs agent</b> when I should handle it, <b>Needs human</b> when you want to keep it as your decision, and <b>Question</b> when the framing is wrong or unclear.</p>' + staleWarning + '<p>This page requires the token in the URL. A bare tunnel URL will return 403.</p>';
  content.appendChild(intro);
  for (const item of queue) {
   const c = comments.get(item.id) || {sectionId:item.id, sectionTitle:item.title, status:"unreviewed", comment:""};
