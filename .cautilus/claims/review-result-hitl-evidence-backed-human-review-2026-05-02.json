@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewRun": {
+    "reviewer": "human-maintainer",
+    "backend": "chat-hitl",
+    "mode": "hitl-decision-cards",
+    "reviewInputPath": "charness-artifacts/hitl/latest.md",
+    "reviewPolicy": "Apply maintainer decisions that human-auditable claims must still require concrete support evidence. Keep evidenceStatus unknown unless direct evidence is attached."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "hitl-claim-map-selection",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-156",
+          "reviewStatus": "human-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The maintainer accepted this as an important operator-facing claim-map selection rule, but it should be proven by deterministic status and branch-command tests rather than by human judgment alone.",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "nextAction": "Add or connect deterministic agent-status and claim-show tests proving the selected related claim map drives status summaries and inspect/refresh branch commands while state_path remains the first-discovery output path.",
+          "unresolvedQuestions": []
+        }
+      ]
+    },
+    {
+      "clusterId": "hitl-overclaim-policy",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-229",
+          "reviewStatus": "human-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The maintainer accepted the principle, with the added rule that human-auditable principles still need at least one concrete supporting example or test before satisfaction.",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "nextAction": "Add or connect deterministic proof that broad umbrella claims remain visible in the claim packet but are not emitted as eval fixture plans by default.",
+          "unresolvedQuestions": []
+        }
+      ]
+    },
+    {
+      "clusterId": "hitl-skill-routing",
+      "claimUpdates": [
+        {
+          "claimId": "claim-skills-cautilus-skill-md-74",
+          "reviewStatus": "human-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The maintainer accepted this as a user-facing Cautilus skill routing claim that should be proven by behavior evidence rather than left as human-only guidance.",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/skill",
+          "verificationReadiness": "ready-to-verify",
+          "nextAction": "Add or connect a dev/skill eval fixture proving the Cautilus skill routes repo-claim, docs-behavior-alignment, and scenario-needed requests into the claim discovery path.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

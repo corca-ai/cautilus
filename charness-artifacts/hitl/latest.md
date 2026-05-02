@@ -29,29 +29,34 @@ Use maintainer review to separate ordinary public claims from proof sources, mai
 - Accepted `claim-skills-cautilus-skill-md-118` as the human-reviewed false-negative boundary for entry-doc and linked-Markdown discovery.
 - Accepted `claim-skills-cautilus-skill-md-124` as a real constrained-terminal browser-review path and reclassified it for deterministic/browser-runtime proof.
 - Accepted `claim-docs-contracts-adapter-contract-md-424` as user-facing because Cautilus users include adapter authors and repo operators; reclassified it as deterministic proof work and set `claimAudience=user` through a review-result update.
+- Accepted that `human-auditable` must not mean human-only or evidence-free.
+  Human judgment may approve framing or proof route, but satisfaction still requires at least one concrete support item, or the claim should be split/deferred.
+- Accepted `claim-docs-contracts-claim-discovery-workflow-md-156` as deterministic proof work for selected claim-map behavior.
+- Accepted `claim-docs-contracts-claim-discovery-workflow-md-229` as an overclaim-prevention rule that still needs deterministic supporting proof before satisfaction.
+- Accepted `claim-skills-cautilus-skill-md-74` as a user-facing skill-routing claim that should be proven with a dev/skill eval fixture.
 
 ## Current Packet Snapshot
 
-- Candidate count: 264.
+- Candidate count: 265.
 - Source count: 23.
 - `docs/specs/**` source count: 0.
 - `docs/maintainers/**` source count: 0.
 - Candidates sourced from excluded specs or maintainer docs: 0.
 - Agent-reviewed claims carried forward: 77.
-- Human-reviewed claims: 3.
-- Satisfied claims carried forward: 16.
+- Human-reviewed claims: 6.
+- Satisfied claims carried forward: 15.
 - User-facing claims: 69.
 
 ## Next HITL Queue
 
 Continue with readable cards from `.cautilus/claims/review-input-human-confirm-action-bucket.json` and `.cautilus/claims/review-input-human-align-action-bucket.json`.
 
-The prior three cards have been applied and should not be asked again.
-Start with claims that test whether developer-looking contract text is actually operator-facing product contract, ordinary agent proof work, or future-work narrative:
+The prior six cards have been applied and should not be asked again.
+Start with claims that test whether the remaining human-alignment items are true alignment blockers or can become evidence-backed proof work:
 
-- `claim-docs-contracts-claim-discovery-workflow-md-156`: selected related claim map should drive status summaries and inspect/refresh branch commands while `state_path` remains the first-discovery output path.
-- `claim-docs-contracts-claim-discovery-workflow-md-225`: broad claims should stay visible in the packet but should not become fixture plans by default because one passing fixture would overclaim the umbrella promise.
-- `claim-skills-cautilus-skill-md-74`: Cautilus claim discovery applies when the user asks whether a repo proves what it claims, whether docs and behavior are aligned, or which scenarios still need to be created.
+- `claim-docs-contracts-claim-discovery-workflow-md-602`: binary/skill boundary stays clean enough that consumer repos can use the binary plus bundled skill without Cautilus importing host-specific prompts or adapters.
+- `claim-docs-contracts-live-run-invocation-md-58`: for `persona_prompt`, the product owns the loop boundary, request packet, persona prompt shaping, and result normalization.
+- `claim-docs-contracts-claim-discovery-workflow-md-560`: the bundled skill owns LLM review and subagent orchestration.
 
 ## Open Questions
 
