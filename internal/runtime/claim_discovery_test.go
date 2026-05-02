@@ -1756,6 +1756,78 @@ func TestDiscoverClaimProofPlanRespectsGitignore(t *testing.T) {
 	}
 }
 
+func TestDiscoverClaimProofPlanHonorsAdapterExcludesForLinkedMarkdown(t *testing.T) {
+	repoRoot := t.TempDir()
+	mustWriteFile(t, filepath.Join(repoRoot, ".agents", "cautilus-adapter.yaml"), strings.Join([]string{
+		"version: 1",
+		"repo: demo",
+		"claim_discovery:",
+		"  entries:",
+		"    - README.md",
+		"  linked_markdown_depth: 3",
+		"  exclude:",
+		"    - docs/specs/**",
+		"    - docs/maintainers/**",
+		"  evidence_roots:",
+		"    - docs/specs",
+		"",
+	}, "\n"))
+	mustWriteFile(t, filepath.Join(repoRoot, "README.md"), strings.Join([]string{
+		"# Root",
+		"",
+		"[Spec](docs/specs/product.spec.md)",
+		"[Maintainer](docs/maintainers/evidence.md)",
+		"[Guide](docs/guide.md)",
+		"",
+		"Users can inspect the public guide before running claim discovery.",
+		"",
+	}, "\n"))
+	mustWriteFile(t, filepath.Join(repoRoot, "docs", "specs", "product.spec.md"), strings.Join([]string{
+		"# Product Spec",
+		"",
+		"The executable spec proves step fixtures compose in order.",
+		"",
+	}, "\n"))
+	mustWriteFile(t, filepath.Join(repoRoot, "docs", "maintainers", "evidence.md"), strings.Join([]string{
+		"# Evidence",
+		"",
+		"Maintainers can verify private consumer proof in this appendix.",
+		"",
+	}, "\n"))
+	mustWriteFile(t, filepath.Join(repoRoot, "docs", "guide.md"), strings.Join([]string{
+		"# Guide",
+		"",
+		"Users can inspect the linked public guide claim.",
+		"",
+	}, "\n"))
+
+	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan returned error: %v", err)
+	}
+	paths := map[string]bool{}
+	for _, raw := range arrayOrEmpty(plan["sourceInventory"]) {
+		paths[stringFromAny(asMap(raw)["path"])] = true
+	}
+	if !paths["README.md"] || !paths["docs/guide.md"] {
+		t.Fatalf("expected public entry and guide sources, got %#v", plan["sourceInventory"])
+	}
+	if paths["docs/specs/product.spec.md"] || paths["docs/maintainers/evidence.md"] {
+		t.Fatalf("adapter-excluded proof/internal docs must not enter source inventory: %#v", plan["sourceInventory"])
+	}
+	for _, raw := range arrayOrEmpty(plan["claimCandidates"]) {
+		summary := stringFromAny(asMap(raw)["summary"])
+		if strings.Contains(summary, "executable spec proves") || strings.Contains(summary, "private consumer proof") {
+			t.Fatalf("excluded proof/internal doc leaked into candidates: %#v", raw)
+		}
+	}
+	scope := asMap(plan["effectiveScanScope"])
+	excludes := stringArrayOrEmpty(scope["exclude"])
+	if !containsString(excludes, "docs/specs/**") || !containsString(excludes, "docs/maintainers/**") {
+		t.Fatalf("expected adapter excludes in effective scan scope, got %#v", scope)
+	}
+}
+
 func TestDiscoverClaimProofPlanUsesAdapterClaimDiscoveryEntries(t *testing.T) {
 	repoRoot := t.TempDir()
 	mustWriteFile(t, filepath.Join(repoRoot, "README.md"), "README should not be scanned when adapter entries override defaults.\n")

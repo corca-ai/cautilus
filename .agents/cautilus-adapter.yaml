@@ -39,6 +39,8 @@ claim_discovery:
   evidence_roots:
     - .cautilus/claims
   exclude:
+    - docs/specs/**
+    - docs/maintainers/**
     - docs/internal/handoff.md
     - docs/internal/research/**
   audience_hints:

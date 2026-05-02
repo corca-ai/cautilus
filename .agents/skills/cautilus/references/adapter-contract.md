@@ -53,6 +53,8 @@ claim_discovery:
   exclude:
     - artifacts/**
     - node_modules/**
+    - docs/specs/**
+    - docs/maintainers/**
   state_path: .cautilus/claims/latest.json
   evidence_roots:
     - docs/specs

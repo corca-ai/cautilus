@@ -119,6 +119,8 @@ claim_discovery:
   exclude:
     - artifacts/**
     - node_modules/**
+    - docs/specs/**
+    - docs/maintainers/**
     - docs/internal/handoff.md
     - docs/internal/research/**
   state_path: .cautilus/claims/latest.json
@@ -129,6 +131,7 @@ claim_discovery:
       path: .cautilus/claims/evidenced.json
   evidence_roots:
     - .cautilus/claims
+    - docs/specs
   audience_hints:
     user:
       - README.md
@@ -152,6 +155,8 @@ When the adapter omits semantic groups, the binary emits `General product behavi
 `agent status` should use the most advanced non-stale related claim packet as the selected orientation map when it is more useful than the writable baseline.
 That selected map should drive status summaries and inspect/refresh branch commands, while `state_path` remains the default output path for first discovery.
 `evidence_roots` are read-only roots for deterministic possible-evidence preflight; they may add `possibleEvidenceRefs` to review input, but they never mark claims satisfied.
+Repos should use this split to keep executable specs and maintainer appendices out of ordinary prose claim discovery when those files are proof or operator evidence rather than public promises.
+For example, `docs/specs/**` can be excluded from claim sources while `docs/specs` remains an evidence root for spec-backed proof.
 
 Before running a first broad scan, the skill should say which entries and depth it will use.
 It should also show the deterministic bounds that will be applied:

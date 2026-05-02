@@ -64,6 +64,8 @@ claim_discovery:
   exclude:
     - artifacts/**
     - node_modules/**
+    - docs/specs/**
+    - docs/maintainers/**
   state_path: .cautilus/claims/latest.json
   related_state_paths:
     - role: reviewed
