@@ -692,7 +692,7 @@
   },
   "gitCommit": "f3da975eb7803251769e0e32db0ab1a0aa56298e",
   "gitState": {
-    "changedFileCount": 16,
+    "changedFileCount": 20,
     "changedFiles": [
       ".cautilus/claims/claim-status-report.md",
       ".cautilus/claims/discovery-review.md",
@@ -709,12 +709,16 @@
       ".cautilus/claims/review-result-hitl-priority-reset-2026-05-03.json",
       ".cautilus/claims/status-summary.json",
       ".cautilus/claims/validation-evidenced-typed-runners.json",
-      "charness-artifacts/hitl/latest.md"
+      "charness-artifacts/debug/debug-2026-05-03-review-result-line-id-collision.md",
+      "charness-artifacts/debug/latest.md",
+      "charness-artifacts/hitl/latest.md",
+      "scripts/agent-runtime/apply-current-review-results.mjs",
+      "scripts/agent-runtime/apply-current-review-results.test.mjs"
     ],
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "577f4a420849bfd7d2325312af8c9f5f81744d05",
+    "currentGitCommit": "8a7fb229debf5fdb98d5178670a8f581d67d5624",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "f3da975eb7803251769e0e32db0ab1a0aa56298e",
