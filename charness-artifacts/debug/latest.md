@@ -1,60 +1,72 @@
-# Debug Review: review result line id collision
+# Debug Review: canonical claim map ESLint
 Date: 2026-05-03
 
 ## Problem
 
-After removing an overfit Cautilus skill policy block, line-based skill claim IDs shifted.
-Fresh-eye review found that HITL state could read as though an old decision for a removed numbered-branch policy still applied to the new `claim-skills-cautilus-skill-md-68` claim.
+The new canonical claim map implementation failed `npm run verify` during the ESLint phase.
 
 ## Correct Behavior
 
-Given a historical review-result update names a claim ID that still exists after prose insertion or deletion, when that update also declares the expected claim fingerprint, then replay should apply it only if the current claim fingerprint matches.
-Given HITL state references a reused line-based ID, then the state should explain the current claim meaning instead of mixing it with the removed claim's old meaning.
+Given canonical claim map scripts are maintained repo tooling, when `npm run verify` runs, then `npm run lint:eslint` should pass without unused variables or complexity-rule violations.
 
 ## Observed Facts
 
-- `claim-skills-cautilus-skill-md-68` currently refers to the "Use this path when..." skill-routing claim.
-- The removed numbered-branch policy previously occupied nearby line-based IDs.
-- `npm run claims:apply-review-results` filtered by claim ID presence only, so a reused ID could receive a stale historical decision if no stronger guard existed.
-- `charness-artifacts/hitl/latest.md` said current `md-68` was accepted while also saying the old `md-67/md-68` card was no longer a proof target.
+ESLint reported:
+
+```text
+/home/hwidong/codes/cautilus/scripts/agent-runtime/build-canonical-claim-map.mjs
+   58:7   error  'asObject' is assigned a value but never used
+  267:1   error  Function 'mapCandidate' has a complexity of 17. Maximum allowed is 12
+  288:1   error  Function 'mappingFromBest' has a complexity of 20. Maximum allowed is 12
+  353:32  error  'keywords' is defined but never used
+  358:38  error  'keywords' is defined but never used
+
+/home/hwidong/codes/cautilus/scripts/agent-runtime/render-claim-status-report.mjs
+  356:1  error  Function 'renderCanonicalMap' has a complexity of 13. Maximum allowed is 12
+```
+
+After the first repair, ESLint still reported:
+
+```text
+/home/hwidong/codes/cautilus/scripts/agent-runtime/build-canonical-claim-map.mjs
+  309:1  error  Function 'mappingFromBest' has a complexity of 16. Maximum allowed is 12
+```
+
+The focused canonical-map and status-report tests passed before the lint repair, so the failure was static maintainability rather than observed output behavior.
 
 ## Reproduction
 
-1. Remove several lines before an accepted skill claim.
-2. Rediscover claims so a different sentence receives a previously used `claim-skills-cautilus-skill-md-*` ID.
-3. Replay historical review-result packets with `npm run claims:apply-review-results`.
-4. Inspect whether the update was applied based on ID alone.
+```bash
+npm run lint:eslint
+```
 
 ## Candidate Causes
 
-- Claim IDs are line-based and can collide semantically after prose insertions or deletions.
-- Historical review-result packets did not carry expected claim fingerprints.
-- The replay helper intentionally filtered stale IDs but did not detect reused IDs with changed meaning.
-- The HITL latest artifact compressed old and current line IDs in one sentence, making the collision visible to reviewers.
+- The map builder mixed audience routing, confidence checks, and output packet shaping in single functions.
+- The renderer mixed optional canonical-map summary handling with Markdown output in one function.
+- Draft helpers left unused variables after catalog keyword fields were stripped from the public packet.
 
 ## Hypothesis
 
-If review-result replay checks optional `claimFingerprint` fields against the current claim packet, and current skill-line HITL review-result updates carry fingerprints, then reused line IDs with mismatched meaning will be dropped instead of silently applied.
+If audience-specific mapping, confidence checks, source-ref compaction, catalog keyword stripping, and catalog-review rendering are extracted into smaller helpers, then ESLint complexity and unused-variable rules should pass while focused tests keep passing.
 
 ## Verification
 
-- Added replay-helper coverage for reused claim IDs with mismatched fingerprints.
-- Reran `npm run claims:apply-review-results`; it kept the current `claim-skills-cautilus-skill-md-68` update only because the fingerprint matched the current skill-routing claim.
-- Regenerated claim validation, status, eval plan, review queues, worksheet, and status report.
-- `claim validate` reported `valid=true`, `errorCount=0`, and `warningCount=0`.
+- `npm run lint:eslint` passed after extracting the helpers.
+- `node --test --test-reporter=dot --test-reporter-destination=stdout scripts/agent-runtime/build-canonical-claim-map.test.mjs scripts/agent-runtime/render-claim-status-report.test.mjs` passed.
 
 ## Root Cause
 
-The replay helper treated claim ID existence as sufficient continuity.
-That is not safe for line-based IDs when prose edits can assign the same ID to a different sentence.
+The first implementation preserved the right behavior but concentrated too much branching in the new map builder and status-report renderer.
+This repeated the same maintainability failure mode as `debug-2026-05-02-claim-status-report-eslint.md`.
 
 ## Seam Risk
 
-- Interrupt ID: review-result-line-id-collision
+- Interrupt ID: canonical-claim-map-eslint
 - Risk Class: none
-- Seam: historical review-result replay over line-based claim IDs
-- Disproving Observation: replay now drops updates with mismatched `claimFingerprint`, and the current HITL artifact distinguishes the current `md-68` skill-routing claim from the removed numbered-branch policy.
-- What Local Reasoning Cannot Prove: whether all future review-result packets should be required to include source packet fingerprints or claim fingerprints at the schema level.
+- Seam: local maintained Node scripts for claim-map and report generation
+- Disproving Observation: focused tests passed before repair and after repair; ESLint now passes.
+- What Local Reasoning Cannot Prove: whether the automatic U/M mapping is semantically acceptable to the maintainer.
 - Generalization Pressure: monitor
 
 ## Interrupt Decision
@@ -65,4 +77,9 @@ That is not safe for line-based IDs when prose edits can assign the same ID to a
 
 ## Prevention
 
-When review-result packets are meant to survive source edits, include an expected claim fingerprint for any line-based claim ID whose source file is likely to churn.
+Keep claim artifact scripts split into parsing, scoring, packet shaping, and rendering helpers.
+When adding new report sections, run `npm run lint:eslint` before the full verify loop so complexity regressions fail earlier.
+
+## Related Prior Incidents
+
+- `debug-2026-05-02-claim-status-report-eslint.md`: the earlier claim status report renderer had the same pattern of correct behavior with excessive complexity in display helpers.

@@ -7,9 +7,9 @@ Use the JSON packets as the audit source; use this report to decide what to insp
 
 - Claims packet: .cautilus/claims/evidenced-typed-runners.json
 - Status packet: .cautilus/claims/status-summary.json
-- Candidate count: 304
+- Candidate count: 305
 - Source count: 25
-- Claims git commit: 3d192caec75d34edc306a1f95a29dc8eae9adc9e
+- Claims git commit: b21a7fe1bbf802bacb59a1192e5f4ca2d1f9eab6
 - Git state: fresh; stale=no
 - Git recommendation: The claim packet commit matches the current checkout.
 
@@ -17,19 +17,43 @@ Use the JSON packets as the audit source; use this report to decide what to insp
 
 | Dimension | Counts |
 | --- | --- |
-| Evidence | satisfied: 15, unknown: 289 |
-| Review | agent-reviewed: 65, heuristic: 232, human-reviewed: 7 |
-| Recommended proof | cautilus-eval: 117, deterministic: 124, human-auditable: 63 |
-| Verification readiness | blocked: 14, needs-alignment: 28, needs-scenario: 8, ready-to-verify: 254 |
-| Audience | developer: 223, user: 81 |
+| Evidence | satisfied: 15, unknown: 290 |
+| Review | agent-reviewed: 65, heuristic: 233, human-reviewed: 7 |
+| Recommended proof | cautilus-eval: 116, deterministic: 126, human-auditable: 63 |
+| Verification readiness | blocked: 14, needs-alignment: 28, needs-scenario: 8, ready-to-verify: 255 |
+| Audience | developer: 224, user: 81 |
 
-Review readiness: heuristicClaimsReadyForReview: 209, needsAlignment: 28, needsScenario: 8.
+Review readiness: heuristicClaimsReadyForReview: 210, needsAlignment: 28, needsScenario: 8.
+
+## Canonical Claim Map
+
+- Map packet: .cautilus/claims/canonical-claim-map.json
+- Input status: current
+- User raw claims: 81
+- User claims mapped to U1-U8: 81
+- User claims not mapped to U1-U8: 0
+- User mappings recommended for semantic sampling: 49
+- All raw claims by disposition: mapped-to-maintainer-canonical: 224, mapped-to-user-canonical: 81
+- Mapping confidence: high: 103, low: 21, medium: 181
+
+| User claim | Title | Raw claims | Evidence | Review |
+| --- | --- | --- | --- | --- |
+| U1 | Cautilus Finds Declared Behavior Claims | 3 | unknown: 3 | agent-reviewed: 1, heuristic: 2 |
+| U2 | Cautilus Verifies Behavior With Explicit Evaluation Packets | 11 | unknown: 11 | agent-reviewed: 4, heuristic: 7 |
+| U3 | Cautilus Keeps Product And Host Ownership Separate | 34 | satisfied: 8, unknown: 26 | agent-reviewed: 23, heuristic: 10, human-reviewed: 1 |
+| U4 | Cautilus Serves Both CLI Operators And Agents | 8 | unknown: 8 | agent-reviewed: 3, heuristic: 5 |
+| U5 | Cautilus Produces Reviewable Human And Machine Artifacts | 5 | unknown: 5 | heuristic: 5 |
+| U6 | Cautilus Supports Development And App Behavior Surfaces | 12 | satisfied: 1, unknown: 11 | agent-reviewed: 7, heuristic: 5 |
+| U7 | Cautilus Improves Behavior Only After The Proof Surface Is Clear | 3 | unknown: 3 | heuristic: 3 |
+| U8 | Cautilus Makes Proof Debt Visible | 5 | unknown: 5 | heuristic: 5 |
+
+Semantic sampling recommended for 202 raw claim(s): claim-agents-md-12, claim-agents-md-26, claim-agents-md-73, claim-agents-md-78, claim-agents-md-79, claim-agents-md-123, claim-readme-md-3, claim-readme-md-9, ...
 
 ## Next Work
 
 - Human review is still meaningful for human-align-surfaces=28, human-confirm-or-decompose=21, split-or-defer=14.
-- Agent next proof work: connect deterministic gates for 109 claim(s), starting with agent-reviewed items before heuristic items.
-- Agent eval work: plan Cautilus eval scenarios for 109 claim(s), after reviewing heuristic labels where needed.
+- Agent next proof work: connect deterministic gates for 111 claim(s), starting with agent-reviewed items before heuristic items.
+- Agent eval work: plan Cautilus eval scenarios for 108 claim(s), after reviewing heuristic labels where needed.
 - Scenario design work remains for 8 claim(s).
 
 ## Action Buckets
@@ -37,14 +61,14 @@ Review readiness: heuristicClaimsReadyForReview: 209, needsAlignment: 28, needsS
 | Bucket | Actor | Count | Review | Evidence | Meaning |
 | --- | --- | --- | --- | --- | --- |
 | already-satisfied | none | 15 | agent-reviewed: 15 | satisfied: 15 | Proof is already attached and valid under packet semantics. |
-| agent-add-deterministic-proof | agent | 109 | agent-reviewed: 25, heuristic: 80, human-reviewed: 4 | unknown: 109 | Add or connect unit, lint, build, schema, spec, or CI proof. |
-| agent-plan-cautilus-eval | agent | 109 | agent-reviewed: 2, heuristic: 105, human-reviewed: 2 | unknown: 109 | Draft or select Cautilus eval scenarios for ready eval claims. |
+| agent-add-deterministic-proof | agent | 111 | agent-reviewed: 25, heuristic: 82, human-reviewed: 4 | unknown: 111 | Add or connect unit, lint, build, schema, spec, or CI proof. |
+| agent-plan-cautilus-eval | agent | 108 | agent-reviewed: 2, heuristic: 104, human-reviewed: 2 | unknown: 108 | Draft or select Cautilus eval scenarios for ready eval claims. |
 | agent-design-scenario | agent | 8 | heuristic: 8 | unknown: 8 | Decompose the behavior into a concrete scenario before protected eval planning. |
 | human-align-surfaces | human | 28 | agent-reviewed: 13, heuristic: 15 | unknown: 28 | Reconcile conflicting docs, code, adapters, or ownership boundaries before proof would be honest. |
 | human-confirm-or-decompose | human | 21 | heuristic: 20, human-reviewed: 1 | unknown: 21 | Confirm, decompose, or accept a human-auditable claim before treating it as proven. |
 | split-or-defer | human | 14 | agent-reviewed: 10, heuristic: 4 | unknown: 14 | Split broad, historical, provider-caveated, policy-like, or otherwise blocked claims before verification. |
 
-Cross-cutting signal: heuristic-review-needed (232) - Review heuristic labels before spending proof or eval budget.
+Cross-cutting signal: heuristic-review-needed (233) - Review heuristic labels before spending proof or eval budget.
 
 ### agent-add-deterministic-proof
 
@@ -79,8 +103,8 @@ Decompose the behavior into a concrete scenario before protected eval planning.
 | claim-readme-md-175 | README.md:175 | cautilus-eval | needs-scenario | heuristic | unknown | `Cautilus` treats the context-recovery case as a protected scenario kept out of tuning so the signal stays honest. |
 | claim-docs-claims-user-facing-md-106 | docs/claims/user-facing.md:106 | cautilus-eval | needs-scenario | heuristic | unknown | Promise.** `Cautilus` should only help improve behavior after the target claim, budget, and protected checks are clear. |
 | claim-docs-master-plan-md-88 | docs/master-plan.md:88 | cautilus-eval | needs-scenario | heuristic | unknown | Their public command namespace is `eval live`; the `workbench` name is reserved for a possible future GUI where operators can browse and edit claims, scenarios, and evidence. |
-| claim-docs-contracts-claim-discovery-workflow-md-253 | docs/contracts/claim-discovery-workflow.md:253 | cautilus-eval | needs-scenario | heuristic | unknown | Historical observation and provider-caveat statements can inform future scenarios, but they should stay `human-auditable` and `blocked` until promoted into a concrete regression claim. |
-| claim-docs-contracts-claim-discovery-workflow-md-675 | docs/contracts/claim-discovery-workflow.md:675 | cautilus-eval | needs-scenario | heuristic | unknown | `claim show` emits `cautilus.claim_status_summary.v1` and can include bounded `sampleClaims` plus `gitState` for agents that need concrete candidates before choosing the next branch. |
+| claim-docs-contracts-claim-discovery-workflow-md-255 | docs/contracts/claim-discovery-workflow.md:255 | cautilus-eval | needs-scenario | heuristic | unknown | Historical observation and provider-caveat statements can inform future scenarios, but they should stay `human-auditable` and `blocked` until promoted into a concrete regression claim. |
+| claim-docs-contracts-claim-discovery-workflow-md-677 | docs/contracts/claim-discovery-workflow.md:677 | cautilus-eval | needs-scenario | heuristic | unknown | `claim show` emits `cautilus.claim_status_summary.v1` and can include bounded `sampleClaims` plus `gitState` for agents that need concrete candidates before choosing the next branch. |
 
 ### human-align-surfaces
 

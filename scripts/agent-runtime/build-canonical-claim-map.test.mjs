@@ -61,6 +61,7 @@ test("buildCanonicalClaimMap maps raw user and maintainer claims to canonical ca
 			claimCandidates: [
 				{
 					claimId: "claim-readme-md-1",
+					claimFingerprint: "sha256:user",
 					claimAudience: "user",
 					summary: "Cautilus helps a repo list behavior it promises and shows proof debt.",
 					sourceRefs: [{ path: "README.md", line: 1 }],
@@ -89,8 +90,10 @@ test("buildCanonicalClaimMap maps raw user and maintainer claims to canonical ca
 	assert.equal(packet.coverageSummary.byUserCanonicalClaimId.U1, 1);
 	assert.equal(packet.coverageSummary.byMaintainerCanonicalClaimId.M1, 1);
 	assert.equal(packet.mappings[0].canonicalClaimId, "U1");
+	assert.equal(packet.mappings[0].claimFingerprint, "sha256:user");
 	assert.equal(packet.mappings[1].canonicalClaimId, "M1");
 	assert.deepEqual(packet.mappings[1].alignedUserClaimIds, ["U1"]);
+	assert.equal(packet.userCoverage[0].absorbedRawClaims[0].claimFingerprint, "sha256:user");
 });
 
 test("buildCanonicalClaimMap leaves low-confidence claims for review", () => {
@@ -118,7 +121,7 @@ test("buildCanonicalClaimMap leaves low-confidence claims for review", () => {
 	});
 
 	assert.equal(packet.coverageSummary.userMappedToCanonicalCount, 0);
-	assert.equal(packet.coverageSummary.userReviewNeededCount, 1);
+	assert.equal(packet.coverageSummary.userUnmappedCount, 1);
 	assert.equal(packet.mappings[0].disposition, "user-review-needed");
 	assert.deepEqual(packet.coverageSummary.reviewNeededClaimIds, ["claim-unclear-md-1"]);
 });

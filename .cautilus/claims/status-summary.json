@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 232
+          "unknown": 233
         },
         "byReviewStatus": {
-          "heuristic": 232
+          "heuristic": 233
         },
-        "count": 232,
+        "count": 233,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -43,14 +43,14 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 109
+          "unknown": 111
         },
         "byReviewStatus": {
           "agent-reviewed": 25,
-          "heuristic": 80,
+          "heuristic": 82,
           "human-reviewed": 4
         },
-        "count": 109,
+        "count": 111,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -64,14 +64,14 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 109
+          "unknown": 108
         },
         "byReviewStatus": {
           "agent-reviewed": 2,
-          "heuristic": 105,
+          "heuristic": 104,
           "human-reviewed": 2
         },
-        "count": 109,
+        "count": 108,
         "id": "agent-plan-cautilus-eval",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -97,8 +97,8 @@
           "claim-readme-md-175",
           "claim-docs-claims-user-facing-md-106",
           "claim-docs-master-plan-md-88",
-          "claim-docs-contracts-claim-discovery-workflow-md-253",
-          "claim-docs-contracts-claim-discovery-workflow-md-675"
+          "claim-docs-contracts-claim-discovery-workflow-md-255",
+          "claim-docs-contracts-claim-discovery-workflow-md-677"
         ],
         "summary": "Decompose the behavior into a concrete scenario before protected eval planning."
       },
@@ -164,7 +164,7 @@
       }
     ]
   },
-  "candidateCount": 304,
+  "candidateCount": 305,
   "claimState": {
     "path": ".cautilus/claims/latest.json",
     "pathSource": "adapter",
@@ -181,7 +181,7 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 223,
+      "developer": 224,
       "user": 81
     },
     "byClaimSemanticGroup": {
@@ -192,32 +192,32 @@
       "Evaluation surfaces": 1,
       "General product behavior": 1,
       "Improvement and optimization": 18,
-      "Packets and reporting": 33,
+      "Packets and reporting": 34,
       "Quality gates": 26,
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
       "satisfied": 15,
-      "unknown": 289
+      "unknown": 290
     },
     "byLifecycle": {
-      "new": 304
+      "new": 305
     },
     "byRecommendedProof": {
-      "cautilus-eval": 117,
-      "deterministic": 124,
+      "cautilus-eval": 116,
+      "deterministic": 126,
       "human-auditable": 63
     },
     "byReviewStatus": {
       "agent-reviewed": 65,
-      "heuristic": 232,
+      "heuristic": 233,
       "human-reviewed": 7
     },
     "byVerificationReadiness": {
       "blocked": 14,
       "needs-alignment": 28,
       "needs-scenario": 8,
-      "ready-to-verify": 254
+      "ready-to-verify": 255
     }
   },
   "discoveryBoundary": {
@@ -672,17 +672,17 @@
       }
     ]
   },
-  "gitCommit": "3d192caec75d34edc306a1f95a29dc8eae9adc9e",
+  "gitCommit": "b21a7fe1bbf802bacb59a1192e5f4ca2d1f9eab6",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "3d192caec75d34edc306a1f95a29dc8eae9adc9e",
+    "currentGitCommit": "b21a7fe1bbf802bacb59a1192e5f4ca2d1f9eab6",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "3d192caec75d34edc306a1f95a29dc8eae9adc9e",
+    "packetGitCommit": "b21a7fe1bbf802bacb59a1192e5f4ca2d1f9eab6",
     "recommendedAction": "The claim packet commit matches the current checkout.",
     "workingTreePolicy": "excluded"
   },
@@ -705,7 +705,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 209,
+    "heuristicClaimsReadyForReview": 210,
     "needsAlignment": 28,
     "needsScenario": 8
   },

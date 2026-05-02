@@ -140,12 +140,18 @@ test("renderStatusReport summarizes status, review results, validation, and eval
 			coverageSummary: {
 				userRawClaimCount: 2,
 				userMappedToCanonicalCount: 1,
-				userReviewNeededCount: 1,
+				userUnmappedCount: 1,
+				userSemanticReviewRecommendedCount: 1,
 				byDisposition: {
 					"mapped-to-user-canonical": 1,
 					"user-review-needed": 1,
 				},
+				byMappingConfidence: {
+					medium: 1,
+					low: 1,
+				},
 				reviewNeededClaimIds: ["claim-readme-md-2"],
+				semanticReviewRecommendedClaimIds: ["claim-readme-md-1"],
 			},
 			userCoverage: [
 				{
@@ -171,6 +177,8 @@ test("renderStatusReport summarizes status, review results, validation, and eval
 	assert.match(report, /refresh-plan-claim-status-report\.json/);
 	assert.match(report, /## Canonical Claim Map/);
 	assert.match(report, /User claims mapped to canonical user claims: 1/);
+	assert.match(report, /User claims not mapped to canonical user claims: 1/);
+	assert.match(report, /Semantic sampling recommended for 1 raw claim/);
 	assert.match(report, /claim-readme-md-2/);
 	assert.match(report, /Update the saved claim map before review or eval planning/);
 	assert.match(report, /Gitignore policy: respect-repo-gitignore/);

@@ -62,11 +62,13 @@ The human-facing review target is now the canonical user-facing and maintainer-f
 - Tightened the README wording so the claim catalog is the product promise map and the public spec report is executable proof for selected promises.
 - Moved bundled skill docs from the `user` audience hint to the `developer` audience hint so agent instruction prose does not inflate user-facing claim counts.
 - Added catalog-level evidence status, next action, and absorbed-theme fields to the maintainer-facing catalog.
+- Added `.cautilus/claims/canonical-claim-map.json` so the U/M catalog compression is machine-auditable instead of only prose.
+- Updated `.cautilus/claims/claim-status-report.md` to show canonical catalog coverage before raw action buckets.
 
 ## Current Packet Snapshot
 
-- Packet source commit: 3d192caec75d34edc306a1f95a29dc8eae9adc9e.
-- Candidate count: 304.
+- Packet source commit: b21a7fe1bbf802bacb59a1192e5f4ca2d1f9eab6.
+- Candidate count: 305.
 - Source count: 25.
 - `docs/specs/**` source count: 0.
 - `docs/maintainers/**` source count: 0.
@@ -75,11 +77,17 @@ The human-facing review target is now the canonical user-facing and maintainer-f
 - Human-reviewed claims: 7.
 - Satisfied claims carried forward: 15.
 - User-facing claims: 81.
+- User-facing raw claims mapped to U1-U8: 81.
+- User-facing raw claims not mapped to U1-U8: 0.
+- User-facing mappings recommended for semantic sampling: 49.
+- U1-U8 absorption counts: U1=3, U2=11, U3=34, U4=8, U5=5, U6=12, U7=3, U8=5.
 
 ## Next HITL Queue
 
 Review [docs/claims/user-facing.md](../../docs/claims/user-facing.md) first.
 Decide whether U1 through U8 are the right reader-facing promise set, whether the wording is plain enough, and whether any promise is missing or duplicated.
+The canonical map is heuristic and should not be treated as human-approved compression yet.
+Sample the medium/low-confidence mappings called out in `.cautilus/claims/canonical-claim-map.json`, especially U3 and U6, before accepting that all 81 user-facing raw claims are correctly absorbed.
 
 Then review [docs/claims/maintainer-facing.md](../../docs/claims/maintainer-facing.md).
 Decide whether M1 through M10 map cleanly to the user-facing claims, whether internal terms are acceptable, and whether the listed proof routes make the next agent actions clear.

@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import fs from "node:fs";
+import crypto from "node:crypto";
 import path from "node:path";
 
 const DEFAULT_CLAIMS = ".cautilus/claims/evidenced-typed-runners.json";
@@ -55,7 +56,6 @@ const STOPWORDS = new Set([
 ]);
 
 const asArray = (value) => (Array.isArray(value) ? value : []);
-const asObject = (value) => (!value || Array.isArray(value) || typeof value !== "object" ? {} : value);
 
 export function parseArgs(argv) {
 	const args = {
@@ -81,12 +81,19 @@ export function parseArgs(argv) {
 	return args;
 }
 
-function readJSON(filePath) {
-	return JSON.parse(fs.readFileSync(filePath, "utf8"));
-}
-
 function readText(filePath) {
 	return fs.readFileSync(filePath, "utf8");
+}
+
+function sha256Text(value) {
+	return `sha256:${crypto.createHash("sha256").update(value).digest("hex")}`;
+}
+
+function fileInput(pathValue, content) {
+	return {
+		path: pathValue,
+		contentHash: sha256Text(content),
+	};
 }
 
 function compactText(value) {
@@ -241,9 +248,13 @@ function overlapScore(candidateTokens, canonicalKeywords) {
 }
 
 function bestCanonical(candidate, canonicals) {
+	return rankedCanonicals(candidate, canonicals)[0] ?? null;
+}
+
+function rankedCanonicals(candidate, canonicals) {
 	const candidateTokens = tokens(candidateText(candidate));
 	const paths = sourcePaths(candidate);
-	const scored = canonicals
+	return canonicals
 		.map((canonical) => {
 			const anchor = anchorScore(paths, canonical.sourceAnchors);
 			const overlap = overlapScore(candidateTokens, canonical.keywords);
@@ -261,52 +272,127 @@ function bestCanonical(candidate, canonicals) {
 			}
 			return left.canonical.id.localeCompare(right.canonical.id, undefined, { numeric: true });
 		});
-	return scored[0] ?? null;
+}
+
+function bestCanonicalWithRunnerUp(candidate, canonicals) {
+	const ranked = rankedCanonicals(candidate, canonicals);
+	return { best: ranked[0] ?? null, runnerUp: ranked[1] ?? null };
 }
 
 function mapCandidate(candidate, userCatalog, maintainerCatalog) {
 	const audience = candidate.claimAudience ?? "unclear";
 	if (audience === "user") {
-		const best = bestCanonical(candidate, userCatalog);
-		return mappingFromBest(candidate, best, "mapped-to-user-canonical", "user-review-needed");
+		return mapUserCandidate(candidate, userCatalog);
 	}
 	if (audience === "developer") {
-		const best = bestCanonical(candidate, maintainerCatalog);
-		const mapping = mappingFromBest(candidate, best, "mapped-to-maintainer-canonical", "maintainer-review-needed");
-		if (best?.canonical?.alignedUserClaimIds?.length) {
-			mapping.alignedUserClaimIds = best.canonical.alignedUserClaimIds;
-		}
-		return mapping;
+		return mapMaintainerCandidate(candidate, maintainerCatalog);
 	}
-	const userBest = bestCanonical(candidate, userCatalog);
-	const maintainerBest = bestCanonical(candidate, maintainerCatalog);
-	const best = Number(userBest?.score ?? 0) >= Number(maintainerBest?.score ?? 0) ? userBest : maintainerBest;
-	const disposition = best?.canonical?.id?.startsWith("U") ? "mapped-to-user-canonical" : "mapped-to-maintainer-canonical";
+	return mapUnclearAudienceCandidate(candidate, userCatalog, maintainerCatalog);
+}
+
+function mapUserCandidate(candidate, userCatalog) {
+	const { best, runnerUp } = bestCanonicalWithRunnerUp(candidate, userCatalog);
+	return mappingFromBest(candidate, best, "mapped-to-user-canonical", "user-review-needed", runnerUp);
+}
+
+function mapMaintainerCandidate(candidate, maintainerCatalog) {
+	const { best, runnerUp } = bestCanonicalWithRunnerUp(candidate, maintainerCatalog);
+	const mapping = mappingFromBest(candidate, best, "mapped-to-maintainer-canonical", "maintainer-review-needed", runnerUp);
+	addAlignedUserClaims(mapping, best);
+	return mapping;
+}
+
+function mapUnclearAudienceCandidate(candidate, userCatalog, maintainerCatalog) {
+	const best = bestByScore(bestCanonical(candidate, userCatalog), bestCanonical(candidate, maintainerCatalog));
+	const disposition = canonicalDisposition(best);
 	return mappingFromBest(candidate, best, disposition, "audience-review-needed");
 }
 
-function mappingFromBest(candidate, best, mappedDisposition, fallbackDisposition) {
+function bestByScore(left, right) {
+	return Number(left?.score ?? 0) >= Number(right?.score ?? 0) ? left : right;
+}
+
+function canonicalDisposition(best) {
+	return best?.canonical?.id?.startsWith("U") ? "mapped-to-user-canonical" : "mapped-to-maintainer-canonical";
+}
+
+function addAlignedUserClaims(mapping, best) {
+	if (best?.canonical?.alignedUserClaimIds?.length) {
+		mapping.alignedUserClaimIds = best.canonical.alignedUserClaimIds;
+	}
+}
+
+function mappingFromBest(candidate, best, mappedDisposition, fallbackDisposition, runnerUp = null) {
 	const score = Number(best?.score ?? 0);
-	const matchedKeywordCount = Number(best?.matchedKeywords?.length ?? 0);
-	const mapped = best?.canonical && score >= 3 && matchedKeywordCount >= 2;
+	const mapped = isConfidentCanonicalMatch(best, score);
+	const labels = candidateLabels(candidate);
+	const match = mappingMatchFields({ best, runnerUp, mapped, score });
 	return {
 		claimId: candidate.claimId,
-		claimAudience: candidate.claimAudience ?? "unclear",
 		summary: compactText(candidate.summary),
-		sourceRefs: asArray(candidate.sourceRefs).map((ref) => ({
-			path: ref.path,
-			line: ref.line,
-		})),
+		sourceRefs: compactSourceRefs(candidate),
 		disposition: mapped ? mappedDisposition : fallbackDisposition,
+		mappingStatus: mapped ? "heuristic-auto-map" : "needs-catalog-review",
+		...labels,
+		...mappingClaimIdentity(candidate),
+		...match,
+	};
+}
+
+function mappingClaimIdentity(candidate) {
+	return {
+		claimFingerprint: candidate.claimFingerprint ?? null,
+	};
+}
+
+function mappingMatchFields({ best, runnerUp, mapped, score }) {
+	const runnerUpScore = Number(runnerUp?.score ?? 0);
+	const scoreMargin = score - runnerUpScore;
+	const confidence = mappingConfidence(best, score, scoreMargin);
+	return {
 		canonicalClaimId: mapped ? best.canonical.id : null,
 		score,
+		runnerUpCanonicalClaimId: runnerUp?.canonical?.id ?? null,
+		runnerUpScore,
+		scoreMargin,
+		mappingConfidence: confidence,
+		requiresSemanticReview: mapped ? confidence !== "high" : true,
 		matchedAnchors: best?.matchedAnchors ?? [],
 		matchedKeywords: best?.matchedKeywords ?? [],
+	};
+}
+
+function candidateLabels(candidate) {
+	return {
+		claimAudience: candidate.claimAudience ?? "unclear",
 		recommendedProof: candidate.recommendedProof ?? "unknown",
 		verificationReadiness: candidate.verificationReadiness ?? "unknown",
 		evidenceStatus: candidate.evidenceStatus ?? "unknown",
 		reviewStatus: candidate.reviewStatus ?? "heuristic",
 	};
+}
+
+function isConfidentCanonicalMatch(best, score) {
+	return Boolean(best?.canonical) && score >= 3 && Number(best?.matchedKeywords?.length ?? 0) >= 2;
+}
+
+function mappingConfidence(best, score, margin) {
+	const matchedKeywordCount = Number(best?.matchedKeywords?.length ?? 0);
+	if (score >= 12 && margin >= 3 && matchedKeywordCount >= 4) {
+		return "high";
+	}
+	if (score >= 7 && matchedKeywordCount >= 2) {
+		return "medium";
+	}
+	return "low";
+}
+
+function compactSourceRefs(candidate) {
+	return asArray(candidate.sourceRefs).map((ref) => ({
+		path: ref.path,
+		line: ref.line,
+		excerpt: ref.excerpt,
+	}));
 }
 
 function countBy(values, keyFn) {
@@ -326,14 +412,21 @@ function canonicalCoverage(catalog, mappings) {
 			title: canonical.title,
 			absorbedRawClaimCount: absorbed.length,
 			absorbedRawClaimIds: absorbed.map((mapping) => mapping.claimId),
+			absorbedRawClaims: absorbed.map((mapping) => ({
+				claimId: mapping.claimId,
+				claimFingerprint: mapping.claimFingerprint,
+				mappingConfidence: mapping.mappingConfidence,
+				requiresSemanticReview: mapping.requiresSemanticReview,
+			})),
 			byEvidenceStatus: countBy(absorbed, (mapping) => mapping.evidenceStatus),
 			byReviewStatus: countBy(absorbed, (mapping) => mapping.reviewStatus),
 			byRecommendedProof: countBy(absorbed, (mapping) => mapping.recommendedProof),
+			byMappingConfidence: countBy(absorbed, (mapping) => mapping.mappingConfidence),
 		};
 	});
 }
 
-export function buildCanonicalClaimMap({ claimsPacket, userCatalogMarkdown, maintainerCatalogMarkdown, args }) {
+export function buildCanonicalClaimMap({ claimsPacket, userCatalogMarkdown, maintainerCatalogMarkdown, args, inputMetadata = null }) {
 	const userCatalog = parseUserCatalog(userCatalogMarkdown, args.userCatalog);
 	const maintainerCatalog = parseMaintainerCatalog(maintainerCatalogMarkdown, args.maintainerCatalog);
 	const candidates = asArray(claimsPacket.claimCandidates);
@@ -341,8 +434,11 @@ export function buildCanonicalClaimMap({ claimsPacket, userCatalogMarkdown, main
 	const mappedUserClaims = mappings.filter((mapping) => mapping.claimAudience === "user" && mapping.disposition === "mapped-to-user-canonical");
 	const userClaims = mappings.filter((mapping) => mapping.claimAudience === "user");
 	const reviewNeeded = mappings.filter((mapping) => mapping.disposition.endsWith("review-needed"));
+	const semanticReview = mappings.filter((mapping) => mapping.requiresSemanticReview);
 	return {
 		schemaVersion: "cautilus.canonical_claim_map.v1",
+		generatorVersion: 1,
+		inputs: inputMetadata,
 		claimsPacketGitCommit: claimsPacket.gitCommit ?? null,
 		claimsPacketSchemaVersion: claimsPacket.schemaVersion ?? null,
 		claimsPacketCandidateCount: candidates.length,
@@ -350,21 +446,24 @@ export function buildCanonicalClaimMap({ claimsPacket, userCatalogMarkdown, main
 			user: {
 				path: args.userCatalog,
 				claimCount: userCatalog.length,
-				claims: userCatalog.map(({ keywords, ...item }) => item),
+				claims: userCatalog.map(stripKeywords),
 			},
 			maintainer: {
 				path: args.maintainerCatalog,
 				claimCount: maintainerCatalog.length,
-				claims: maintainerCatalog.map(({ keywords, ...item }) => item),
+				claims: maintainerCatalog.map(stripKeywords),
 			},
 		},
 		coverageSummary: {
 			totalRawClaimCount: mappings.length,
 			userRawClaimCount: userClaims.length,
 			userMappedToCanonicalCount: mappedUserClaims.length,
-			userReviewNeededCount: userClaims.length - mappedUserClaims.length,
+			userUnmappedCount: userClaims.length - mappedUserClaims.length,
+			semanticReviewRecommendedCount: semanticReview.length,
+			userSemanticReviewRecommendedCount: userClaims.filter((mapping) => mapping.requiresSemanticReview).length,
 			byDisposition: countBy(mappings, (mapping) => mapping.disposition),
 			byAudience: countBy(mappings, (mapping) => mapping.claimAudience),
+			byMappingConfidence: countBy(mappings, (mapping) => mapping.mappingConfidence),
 			byUserCanonicalClaimId: countBy(
 				mappings.filter((mapping) => mapping.canonicalClaimId?.startsWith("U")),
 				(mapping) => mapping.canonicalClaimId,
@@ -374,6 +473,7 @@ export function buildCanonicalClaimMap({ claimsPacket, userCatalogMarkdown, main
 				(mapping) => mapping.canonicalClaimId,
 			),
 			reviewNeededClaimIds: reviewNeeded.map((mapping) => mapping.claimId),
+			semanticReviewRecommendedClaimIds: semanticReview.map((mapping) => mapping.claimId),
 		},
 		userCoverage: canonicalCoverage(userCatalog, mappings),
 		maintainerCoverage: canonicalCoverage(maintainerCatalog, mappings),
@@ -381,12 +481,26 @@ export function buildCanonicalClaimMap({ claimsPacket, userCatalogMarkdown, main
 	};
 }
 
+function stripKeywords(item) {
+	const copy = { ...item };
+	delete copy.keywords;
+	return copy;
+}
+
 export function buildCanonicalClaimMapFromFiles(args) {
+	const claimsText = readText(args.claims);
+	const userCatalogMarkdown = readText(args.userCatalog);
+	const maintainerCatalogMarkdown = readText(args.maintainerCatalog);
 	return buildCanonicalClaimMap({
-		claimsPacket: readJSON(args.claims),
-		userCatalogMarkdown: readText(args.userCatalog),
-		maintainerCatalogMarkdown: readText(args.maintainerCatalog),
+		claimsPacket: JSON.parse(claimsText),
+		userCatalogMarkdown,
+		maintainerCatalogMarkdown,
 		args,
+		inputMetadata: {
+			claims: fileInput(args.claims, claimsText),
+			userCatalog: fileInput(args.userCatalog, userCatalogMarkdown),
+			maintainerCatalog: fileInput(args.maintainerCatalog, maintainerCatalogMarkdown),
+		},
 	});
 }
 

@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 import fs from "node:fs";
+import crypto from "node:crypto";
 import path from "node:path";
+
+import { renderCanonicalMapSection } from "./render-canonical-claim-map-section.mjs";
 
 const DEFAULT_CLAIMS_DIR = ".cautilus/claims";
 const DEFAULT_CLAIMS = `${DEFAULT_CLAIMS_DIR}/evidenced-typed-runners.json`;
@@ -51,6 +54,13 @@ function parsePositiveInteger(value, flag) {
 
 function readJSON(filePath) {
 	return JSON.parse(fs.readFileSync(filePath, "utf8"));
+}
+
+function fileHash(filePath) {
+	if (!filePath || !fs.existsSync(filePath)) {
+		return null;
+	}
+	return `sha256:${crypto.createHash("sha256").update(fs.readFileSync(filePath)).digest("hex")}`;
 }
 
 function readOptionalJSON(filePath) {
@@ -353,41 +363,6 @@ function renderScoreboard(lines, claimsPacket, statusPacket) {
 	}
 }
 
-function renderCanonicalMap(lines, canonicalMap) {
-	if (!canonicalMap) {
-		return;
-	}
-	const summary = asObject(canonicalMap.coverageSummary);
-	const userClaims = asArray(canonicalMap?.catalogs?.user?.claims);
-	const userRange =
-		userClaims.length > 0 ? `${userClaims[0].id}-${userClaims[userClaims.length - 1].id}` : "canonical user claims";
-	lines.push("## Canonical Claim Map");
-	lines.push("");
-	lines.push(`- Map packet: ${canonicalMap.path ?? "provided canonical map"}`);
-	lines.push(`- User raw claims: ${summary.userRawClaimCount ?? 0}`);
-	lines.push(`- User claims mapped to ${userRange}: ${summary.userMappedToCanonicalCount ?? 0}`);
-	lines.push(`- User claims needing catalog review: ${summary.userReviewNeededCount ?? 0}`);
-	lines.push(`- All raw claims by disposition: ${formatCounts(summary.byDisposition)}`);
-	lines.push("");
-	const userCoverage = asArray(canonicalMap.userCoverage);
-	if (userCoverage.length > 0) {
-		lines.push(...table(["User claim", "Title", "Raw claims", "Evidence", "Review"], userCoverage.map((item) => [
-			item.canonicalClaimId,
-			item.title,
-			item.absorbedRawClaimCount ?? 0,
-			formatCounts(item.byEvidenceStatus),
-			formatCounts(item.byReviewStatus),
-		])));
-		lines.push("");
-	}
-	const reviewNeededIds = asArray(summary.reviewNeededClaimIds);
-	if (reviewNeededIds.length > 0) {
-		const sample = reviewNeededIds.slice(0, 8).join(", ");
-		lines.push(`Catalog review needed for ${reviewNeededIds.length} raw claim(s): ${sample}${reviewNeededIds.length > 8 ? ", ..." : ""}`);
-		lines.push("");
-	}
-}
-
 function renderActionBuckets(lines, statusPacket, claimsById, sampleLimit) {
 	lines.push("## Action Buckets");
 	lines.push("");
@@ -606,7 +581,7 @@ export function renderStatusReport({ claimsPacket, statusPacket, digests, args }
 	const currentReviewResults = reviewResultsForClaims(digests.reviewResults, claimsById);
 	renderHeader(lines, claimsPacket, statusPacket, args);
 	renderScoreboard(lines, claimsPacket, statusPacket);
-	renderCanonicalMap(lines, digests.canonicalMap);
+	lines.push(...renderCanonicalMapSection({ canonicalMap: digests.canonicalMap, formatCounts, table }));
 	renderNextWork(lines, statusPacket);
 	renderActionBuckets(lines, statusPacket, claimsById, args.samplePerBucket);
 	renderReviewResults(lines, currentReviewResults, claimsById, args.reviewSample);
@@ -624,8 +599,17 @@ export function buildStatusReport(args) {
 	digests.canonicalMap = readOptionalJSON(args.canonicalMap);
 	if (digests.canonicalMap) {
 		digests.canonicalMap.path = args.canonicalMap;
+		digests.canonicalMap.inputStatus = canonicalMapInputStatus(digests.canonicalMap, args);
 	}
 	return renderStatusReport({ claimsPacket, statusPacket, digests, args });
+}
+
+function canonicalMapInputStatus(canonicalMap, args) {
+	const claimsHash = canonicalMap?.inputs?.claims?.contentHash;
+	if (!claimsHash) {
+		return "unknown; canonical map does not record input hashes";
+	}
+	return claimsHash === fileHash(args.claims) ? "current" : "stale; claims packet hash differs";
 }
 
 function main() {
