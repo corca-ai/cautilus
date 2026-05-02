@@ -43,6 +43,7 @@
       "claimUpdates": [
         {
           "claimId": "claim-skills-cautilus-skill-md-68",
+          "claimFingerprint": "sha256:65cb30158d551471121109baa101be43b1ccbca956f9424cce6149c48a5667b1",
           "reviewStatus": "human-reviewed",
           "evidenceStatus": "unknown",
           "evidenceStatusReason": "The maintainer accepted this as a user-facing Cautilus skill routing claim that should be proven by behavior evidence rather than left as human-only guidance.",

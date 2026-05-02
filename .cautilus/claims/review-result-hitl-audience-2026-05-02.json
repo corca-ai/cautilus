@@ -13,6 +13,7 @@
       "claimUpdates": [
         {
           "claimId": "claim-skills-cautilus-skill-md-112",
+          "claimFingerprint": "sha256:ebff670a7be2ce628a7746f3a30e31c98d21eb103137e70a4ff70fa52b2bfdba",
           "reviewStatus": "human-reviewed",
           "evidenceStatus": "unknown",
           "evidenceStatusReason": "The maintainer accepted this as the honest false-negative boundary for README/entry-doc driven discovery. It is a product boundary claim, not a direct correctness verdict.",
@@ -23,6 +24,7 @@
         },
         {
           "claimId": "claim-skills-cautilus-skill-md-118",
+          "claimFingerprint": "sha256:a950feb4b722b7133b2ffd1104b6fc46f6302a9ba218b408e7bfa851b6dcfcc3",
           "reviewStatus": "human-reviewed",
           "evidenceStatus": "unknown",
           "evidenceStatusReason": "The maintainer accepted the constrained-terminal browser review path after the same session used the status server and Cloudflare tunnel successfully.",

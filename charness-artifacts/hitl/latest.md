@@ -33,7 +33,8 @@ Use maintainer review to separate ordinary public claims from proof sources, mai
   Human judgment may approve framing or proof route, but satisfaction still requires at least one concrete support item, or the claim should be split/deferred.
 - Accepted `claim-docs-contracts-claim-discovery-workflow-md-156` as deterministic proof work for selected claim-map behavior.
 - Accepted `claim-docs-contracts-claim-discovery-workflow-md-229` as an overclaim-prevention rule that still needs deterministic supporting proof before satisfaction.
-- Accepted `claim-skills-cautilus-skill-md-68` as a user-facing skill-routing claim that should be proven with a dev/skill eval fixture.
+- Accepted the current `claim-skills-cautilus-skill-md-68` as a user-facing skill-routing claim that should be proven with a dev/skill eval fixture.
+  This is the post-removal "Use this path when..." claim, not the removed numbered-branch policy that previously occupied nearby line-based ids.
 - Accepted `claim-docs-contracts-claim-discovery-workflow-md-603` as deterministic proof work for the binary/skill boundary, while keeping host prompts and adapters outside the Cautilus product boundary.
 - Accepted `claim-docs-contracts-live-run-invocation-md-58` as deterministic proof work for the `persona_prompt` loop boundary, packet shape, persona prompt shaping, result normalization, and adapter-owned backend command handoff.
 - Rejected the overbroad wording that the bundled skill generally owns LLM review and subagent orchestration.
@@ -43,7 +44,8 @@ Use maintainer review to separate ordinary public claims from proof sources, mai
 - Added `npm run claims:apply-review-results` so historical review-result packets are filtered to the current claim IDs before replay.
   This preserves audit history on disk without making stale IDs a trap for the next claim refresh.
 - Removed the overfit no-input `nextBranches` execution policy from the bundled, packaged, and repo-local Cautilus skill bodies.
-  The old HITL card for `claim-skills-cautilus-skill-md-67` and `claim-skills-cautilus-skill-md-68` is no longer a proof target.
+  The removed numbered-branch policy is no longer a proof target.
+- Added fingerprint guards to the skill-line HITL review results so historical line-based claim IDs cannot silently apply to a different current claim after prose is inserted or removed.
 - Accepted `claim-docs-contracts-claim-discovery-workflow-md-663` as deterministic proof work for review-input budget behavior.
 - Accepted `claim-docs-contracts-runner-readiness-md-198` as deterministic proof work.
   One shared runner-readiness drift test is sufficient if `doctor` and `agent status` use the same assessment logic.

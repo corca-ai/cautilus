@@ -62,14 +62,28 @@ export function claimIdsForPacket(claimPacket) {
 	return new Set((Array.isArray(claimPacket?.claimCandidates) ? claimPacket.claimCandidates : []).map((claim) => claim.claimId));
 }
 
-export function filterReviewResultForClaimIds(reviewResult, claimIds) {
+export function claimIndexForPacket(claimPacket) {
+	return new Map((Array.isArray(claimPacket?.claimCandidates) ? claimPacket.claimCandidates : []).map((claim) => [claim.claimId, claim]));
+}
+
+function updateMatchesClaim(update, claim) {
+	if (!claim) {
+		return false;
+	}
+	if (update.claimFingerprint && claim.claimFingerprint && update.claimFingerprint !== claim.claimFingerprint) {
+		return false;
+	}
+	return true;
+}
+
+export function filterReviewResultForCurrentClaims(reviewResult, claimIndex) {
 	const clusterResults = [];
 	let keptUpdateCount = 0;
 	let droppedUpdateCount = 0;
 	for (const cluster of Array.isArray(reviewResult?.clusterResults) ? reviewResult.clusterResults : []) {
 		const claimUpdates = [];
 		for (const update of Array.isArray(cluster.claimUpdates) ? cluster.claimUpdates : []) {
-			if (claimIds.has(update.claimId)) {
+			if (updateMatchesClaim(update, claimIndex.get(update.claimId))) {
 				claimUpdates.push(update);
 				keptUpdateCount += 1;
 			} else {
@@ -85,6 +99,11 @@ export function filterReviewResultForClaimIds(reviewResult, claimIds) {
 		keptUpdateCount,
 		droppedUpdateCount,
 	};
+}
+
+export function filterReviewResultForClaimIds(reviewResult, claimIds) {
+	const claimIndex = new Map([...claimIds].map((claimId) => [claimId, { claimId }]));
+	return filterReviewResultForCurrentClaims(reviewResult, claimIndex);
 }
 
 function runApplyResult({ cautilusBin, claims, reviewResult, output }) {
@@ -108,7 +127,7 @@ function runApplyResult({ cautilusBin, claims, reviewResult, output }) {
 
 export function applyCurrentReviewResults(options) {
 	const basePacket = readJSON(options.claims);
-	const currentIds = claimIdsForPacket(basePacket);
+	const currentIndex = claimIndexForPacket(basePacket);
 	const paths = reviewResultPaths(options);
 	const tmpdir = fs.mkdtempSync(path.join(os.tmpdir(), "cautilus-review-results-"));
 	const currentPath = path.join(tmpdir, "current.json");
@@ -121,7 +140,7 @@ export function applyCurrentReviewResults(options) {
 		writeJSON(currentPath, basePacket);
 		for (const reviewResultPath of paths) {
 			const reviewResult = readJSON(reviewResultPath);
-			const filtered = filterReviewResultForClaimIds(reviewResult, currentIds);
+			const filtered = filterReviewResultForCurrentClaims(reviewResult, currentIndex);
 			droppedUpdateCount += filtered.droppedUpdateCount;
 			if (filtered.keptUpdateCount === 0) {
 				skippedResultCount += 1;
