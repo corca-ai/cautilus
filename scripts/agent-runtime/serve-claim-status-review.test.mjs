@@ -8,6 +8,7 @@ import test from "node:test";
 
 import {
 	buildCommentPacket,
+	buildReviewQueue,
 	createReviewServer,
 	parseArgs,
 	renderMarkdownFragment,
@@ -22,6 +23,46 @@ test("parseArgs accepts report server options", () => {
 		port: 18080,
 		token: "abc",
 	});
+});
+
+test("buildReviewQueue presents maintainer decision cards with reference anchors", () => {
+	const sections = [
+		{ id: "packet", title: "Packet", markdown: "- Git state: stale; stale=yes" },
+		{ id: "refresh-plans", title: "Refresh Plans", markdown: "Latest changed claim sources: docs/example.md: 2" },
+		{ id: "human-align-surfaces", title: "human-align-surfaces" },
+		{ id: "human-confirm-or-decompose", title: "human-confirm-or-decompose" },
+		{ id: "next-work", title: "Next Work", markdown: "- Agent next proof work: connect deterministic gates.\n- Scenario design work remains." },
+		{ id: "discovery-boundary", title: "Discovery Boundary" },
+	];
+	const queue = buildReviewQueue(sections);
+	assert.equal(queue.length, 5);
+	assert.deepEqual(
+		queue.map((item) => item.id),
+		[
+			"decision-refresh-stale-claims",
+			"decision-human-align",
+			"decision-human-confirm",
+			"decision-agent-next-work",
+			"decision-missing-claims",
+		],
+	);
+	assert.equal(queue[0].suggestedStatus, "ok");
+	assert.equal(Object.hasOwn(queue[0], "defaultStatus"), false);
+	assert.match(queue[0].why, /docs\/example\.md: 2/);
+	assert.equal(queue[1].anchorLinks.some((link) => link.label === "Inspect alignment examples"), true);
+	assert.match(queue[3].question, /May I continue/);
+	assert.match(queue[3].why, /Agent next proof work/);
+	assert.doesNotMatch(queue[3].why, /Cautilus eval planning, and scenario design/);
+});
+
+test("buildReviewQueue avoids report-specific hardcoded source facts", () => {
+	const queue = buildReviewQueue([
+		{ id: "packet", title: "Packet", markdown: "- Git state: current; stale=no" },
+		{ id: "refresh-plans", title: "Refresh Plans", markdown: "Latest changed claim sources: README.md: 1" },
+	]);
+	assert.match(queue[0].why, /README\.md: 1/);
+	assert.doesNotMatch(queue[0].why, /skills\/cautilus\/SKILL\.md/);
+	assert.equal(queue[0].anchorLinks[0].label, "Inspect refresh plan");
 });
 
 test("splitMarkdownSections groups h1-h3 sections with stable ids", () => {
@@ -64,6 +105,12 @@ test("buildCommentPacket normalizes and fingerprints comments", () => {
 				status: "not-valid",
 				comment: "ignored",
 			},
+			{
+				sectionId: "decision-refresh-stale-claims",
+				sectionTitle: "Default untouched decision",
+				status: "unreviewed",
+				comment: "",
+			},
 		],
 	});
 	assert.equal(packet.schemaVersion, "cautilus.claim_status_comments.v1");
@@ -88,6 +135,8 @@ test("createReviewServer requires token and writes comment packet", async () => 
 			const state = await requestJSON(`${base}/api/state?token=secret`);
 			assert.equal(state.status, 200);
 			assert.equal(state.body.sections.some((section) => section.id === "next-work"), true);
+			assert.equal(state.body.reviewQueue.length, 5);
+			assert.equal(state.body.reviewQueue[0].id, "decision-refresh-stale-claims");
 			const saved = await requestJSON(`${base}/api/comments?token=secret`, {
 				method: "POST",
 				body: JSON.stringify({
