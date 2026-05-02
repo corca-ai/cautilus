@@ -18,7 +18,8 @@ To materialize this skill in a host repo, run `cautilus install --repo-root .`.
 `Cautilus` is a standalone binary plus this bundled skill.
 Host repos own adapters, fixtures, prompts, wrappers, and policy.
 The binary owns command discovery, packet examples, deterministic scans, validation, and reusable evaluation artifacts.
-The skill owns routing, sequencing, user-facing decision boundaries, and LLM-backed review work.
+The skill owns routing, sequencing, user-facing decision boundaries, and LLM-backed claim review work.
+`eval` and `optimize` may still exercise model-involving behavior through adapter-owned runners.
 
 The three product front doors are:
 
@@ -61,13 +62,6 @@ The branch `id` is for stable packet references and should only appear after the
 If `nextBranches` includes `initialize_adapter` and the user delegated setup continuation, run the adapter setup branch and then rerun `agent status`.
 If claim state is missing, present the bounded scan entries and depth before entering claim discovery.
 If claim state exists, read or refresh that packet before planning new proof work.
-Branch execution starts from the selected branch; no-input orientation is a status turn, not an eval, review, optimize, edit, or commit turn.
-Branch execution confirmation is evidence-backed.
-When the user selects a numbered branch from a previous orientation turn, rerun `"$CAUTILUS_BIN" agent status --repo-root . --json` before any branch that writes or overwrites the saved claim map, launches review, plans evals, edits files, or commits.
-For the refresh-plan branch, it is acceptable to proceed from the immediately preceding orientation when the command only writes a separate refresh-plan artifact and the agent does not claim it rechecked status.
-If you say you rechecked status, the command log must show that fresh status command before the branch command.
-This prevents a stale `run_first_claim_scan` or stale review/eval choice from overwriting useful state.
-If the current status no longer matches the selected branch, summarize the new status and ask for the next branch instead of continuing from the stale menu.
 
 ## Declared Claim Discovery
 
