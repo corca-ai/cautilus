@@ -42,8 +42,8 @@
       "evidenceStatusReason": "Reviewed as broad product ownership positioning. It is too broad for a single dev/repo eval and should be decomposed into concrete binary, skill, adapter, and workflow-contract claims.",
       "groupHints": [
         "audience:developer",
-        "cautilus-eval",
         "dev/repo",
+        "human-auditable",
         "repo-instructions"
       ],
       "lifecycle": "new",
@@ -1025,7 +1025,7 @@
       "evidenceStatusReason": "Agent-status next-action claim. It is deterministic readiness packet behavior, not dev/repo eval behavior.",
       "groupHints": [
         "audience:user",
-        "cautilus-eval",
+        "deterministic",
         "dev/repo",
         "docs",
         "linked-from:README.md"
@@ -1129,7 +1129,7 @@
       "evidenceStatusReason": "Claim-review prepare-input packet claim. It is deterministic command behavior and needs command output evidence, not an LLM eval.",
       "groupHints": [
         "audience:user",
-        "cautilus-eval",
+        "deterministic",
         "dev/repo",
         "docs",
         "linked-from:README.md"
@@ -1309,8 +1309,8 @@
       "evidenceStatusReason": "This is a concrete packet-shape claim about `attentionView`; it should be checked deterministically against report/review packet output rather than left for human confirmation.",
       "groupHints": [
         "audience:user",
+        "deterministic",
         "docs",
-        "human-auditable",
         "linked-from:README.md"
       ],
       "lifecycle": "new",
@@ -1341,7 +1341,7 @@
       "groupHints": [
         "app/chat",
         "audience:user",
-        "cautilus-eval",
+        "deterministic",
         "docs",
         "linked-from:README.md"
       ],
@@ -1476,7 +1476,7 @@
       "groupHints": [
         "app/prompt",
         "audience:user",
-        "cautilus-eval",
+        "deterministic",
         "docs",
         "linked-from:README.md"
       ],
@@ -1758,9 +1758,9 @@
       "evidenceStatus": "unknown",
       "evidenceStatusReason": "The maintainer clarified that adapter authors are Cautilus users, so this adapter-output persistence contract is operator-facing and user-facing rather than internal-only.",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "contract",
-        "human-auditable",
+        "deterministic",
         "linked-from:README.md"
       ],
       "lifecycle": "new",
@@ -2071,9 +2071,9 @@
       "evidenceStatusReason": "Generic product-boundary ownership claim. It is not a dev/repo eval target until decomposed into concrete CLI, workflow-contract, and normalization-helper claims.",
       "groupHints": [
         "audience:user",
-        "cautilus-eval",
         "dev/repo",
         "docs",
+        "human-auditable",
         "linked-from:README.md"
       ],
       "lifecycle": "new",
@@ -2204,9 +2204,9 @@
       "evidenceStatusReason": "Default-evaluation guidance claim. It needs adapter-status or doctor evidence that the default evaluation is discoverable without operator sorting.",
       "groupHints": [
         "audience:user",
-        "cautilus-eval",
         "dev/repo",
         "docs",
+        "human-auditable",
         "linked-from:README.md"
       ],
       "lifecycle": "new",
@@ -2236,9 +2236,9 @@
       "evidenceStatusReason": "Vocabulary ownership claim. It should be checked across schema, docs, and adapter surfaces before satisfaction.",
       "groupHints": [
         "audience:user",
-        "cautilus-eval",
         "dev/repo",
         "docs",
+        "human-auditable",
         "linked-from:README.md"
       ],
       "lifecycle": "new",
@@ -2370,7 +2370,7 @@
       "evidenceStatusReason": "Verified by the batch5 CLI/runtime evidence bundle: `scenario normalize skill --example-input` exits 0 and exposes the checked-in skill normalization helper path.",
       "groupHints": [
         "audience:user",
-        "cautilus-eval",
+        "deterministic",
         "dev/repo",
         "docs",
         "linked-from:README.md"
@@ -2922,7 +2922,7 @@
       "groupHints": [
         "audience:developer",
         "contract",
-        "human-auditable",
+        "deterministic",
         "linked-from:docs/master-plan.md",
         "needs-alignment"
       ],
@@ -3374,8 +3374,8 @@
       "evidenceStatusReason": "This is concrete agent-status orientation behavior and should be proven by deterministic tests.",
       "groupHints": [
         "audience:developer",
-        "cautilus-eval",
         "contract",
+        "deterministic",
         "dev/repo",
         "linked-from:docs/master-plan.md"
       ],
@@ -5285,7 +5285,7 @@
       "groupHints": [
         "audience:developer",
         "contract",
-        "human-auditable",
+        "deterministic",
         "linked-from:docs/contracts/adapter-contract.md",
         "needs-alignment"
       ],
@@ -5317,7 +5317,7 @@
       "groupHints": [
         "audience:developer",
         "contract",
-        "human-auditable",
+        "deterministic",
         "linked-from:docs/contracts/adapter-contract.md",
         "needs-alignment"
       ],
@@ -5619,7 +5619,7 @@
       "groupHints": [
         "audience:developer",
         "contract",
-        "human-auditable",
+        "deterministic",
         "linked-from:docs/guides/evaluation-process.md"
       ],
       "lifecycle": "new",
@@ -6016,7 +6016,7 @@
       "groupHints": [
         "audience:developer",
         "contract",
-        "human-auditable",
+        "deterministic",
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
@@ -6078,7 +6078,7 @@
       "groupHints": [
         "audience:developer",
         "contract",
-        "human-auditable",
+        "deterministic",
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
@@ -6621,7 +6621,7 @@
       "groupHints": [
         "audience:developer",
         "contract",
-        "human-auditable",
+        "deterministic",
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
@@ -7013,7 +7013,7 @@
       "groupHints": [
         "audience:developer",
         "contract",
-        "human-auditable",
+        "deterministic",
         "linked-from:docs/contracts/adapter-contract.md"
       ],
       "lifecycle": "new",
@@ -7105,7 +7105,7 @@
       "groupHints": [
         "audience:developer",
         "contract",
-        "human-auditable",
+        "deterministic",
         "linked-from:docs/contracts/adapter-contract.md"
       ],
       "lifecycle": "new",
@@ -7136,7 +7136,7 @@
       "groupHints": [
         "audience:developer",
         "contract",
-        "human-auditable",
+        "deterministic",
         "linked-from:docs/contracts/adapter-contract.md"
       ],
       "lifecycle": "new",
@@ -8245,7 +8245,7 @@
       "evidenceStatusReason": "The maintainer accepted the constrained-terminal browser review path after the same session used the status server and Cloudflare tunnel successfully.",
       "groupHints": [
         "audience:user",
-        "human-auditable",
+        "deterministic",
         "linked-from:docs/contracts/scenario-history.md",
         "skill-doc"
       ],
@@ -8543,15 +8543,16 @@
           "recommendedEvalSurface",
           "nextAction",
           "evidenceStatusReason",
+          "groupHints",
           "unresolvedQuestions"
         ],
         "claimId": "claim-readme-md-3",
         "clusterId": "cluster-user-agent-and-skill-workflow-positioning-readme"
       }
     ],
-    "claimsPath": "/home/hwidong/.cache/tmp/tmp.dYuue0BoBe/current.json",
+    "claimsPath": "/home/hwidong/.cache/tmp/tmp.Bo64RmIosp/current.json",
     "mergeDecisions": [],
-    "reviewResultPath": "/home/hwidong/.cache/tmp/tmp.dYuue0BoBe/review-result-positioning-boundary.json",
+    "reviewResultPath": "/home/hwidong/.cache/tmp/tmp.Bo64RmIosp/review-result-positioning-boundary.json",
     "schemaVersion": "cautilus.claim_review_result.v1",
     "unresolvedQuestions": []
   },
