@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewRun": {
+    "reviewer": "human-maintainer",
+    "backend": "chat-hitl",
+    "mode": "hitl-decision-cards",
+    "reviewInputPath": "charness-artifacts/hitl/latest.md",
+    "reviewPolicy": "Apply maintainer decisions from the claim source-boundary HITL loop. Keep evidenceStatus unknown unless direct evidence is attached; use human-reviewed for accepted human decisions."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "hitl-entry-surface-boundary",
+      "claimUpdates": [
+        {
+          "claimId": "claim-skills-cautilus-skill-md-118",
+          "reviewStatus": "human-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The maintainer accepted this as the honest false-negative boundary for README/entry-doc driven discovery. It is a product boundary claim, not a direct correctness verdict.",
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "ready-to-verify",
+          "nextAction": "Keep as a human-auditable discovery-boundary rule; only add deterministic proof if discovery source-boundary behavior changes.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-skills-cautilus-skill-md-124",
+          "reviewStatus": "human-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The maintainer accepted the constrained-terminal browser review path after the same session used the status server and Cloudflare tunnel successfully.",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "nextAction": "Connect deterministic or browser-runtime proof for claims:status-server rendering, token-gated state loading, and comment packet saving.",
+          "unresolvedQuestions": []
+        }
+      ]
+    },
+    {
+      "clusterId": "hitl-adapter-author-audience",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-adapter-contract-md-424",
+          "reviewStatus": "human-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The maintainer clarified that adapter authors are Cautilus users, so this adapter-output persistence contract is operator-facing and user-facing rather than internal-only.",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "claimAudience": "user",
+          "nextAction": "Add or connect deterministic adapter checks that rich scenario-by-scenario signals are persisted as files for executor variants and human reviewers.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}
