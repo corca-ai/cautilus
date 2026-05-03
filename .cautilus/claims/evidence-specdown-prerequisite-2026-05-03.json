@@ -1,0 +1,84 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-specdown-prerequisite-2026-05-03",
+  "createdForClaimIds": [
+    "claim-docs-specs-user-index-spec-md-24"
+  ],
+  "repoCommit": "06167b07886ebde4cc06a930a9308d48b8737438",
+  "summary": "This bundle records deterministic proof that the public executable claim-doc prerequisite is enforced and visible: doctor reports specdown_available=true, and the specdown-backed spec lint passes.",
+  "evidenceScope": {
+    "targetSurface": "public executable claim documentation prerequisite",
+    "claimBoundary": "Only the claim that Cautilus requires specdown for public executable claim documentation is marked satisfied.",
+    "notClaimed": [
+      "Consumer repos without specdown can run the full Cautilus claim-document workflow",
+      "Every proof-debt claim is satisfied",
+      "Specdown is bundled with Cautilus"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "./bin/cautilus doctor --repo-root .",
+      "exitCode": 0,
+      "observed": {
+        "status": "ready",
+        "ready": true,
+        "check": {
+          "id": "specdown_available",
+          "ok": true,
+          "detail": "specdown is available on PATH for executable claim specs."
+        }
+      }
+    },
+    {
+      "command": "npm run lint:specs",
+      "exitCode": 0,
+      "observed": {
+        "stdoutIncludes": [
+          "spec checks passed (21 specs)",
+          "specdown run -quiet"
+        ]
+      }
+    },
+    {
+      "command": "PATH=<temp-dir-containing-current-go>:/usr/bin:/bin ./bin/cautilus doctor --repo-root .",
+      "exitCode": 1,
+      "observed": {
+        "status": "incomplete_adapter",
+        "ready": false,
+        "check": {
+          "id": "specdown_available",
+          "ok": false,
+          "detail": "specdown is missing from PATH; Cautilus requires specdown for public executable claim docs."
+        }
+      },
+      "reproductionNote": "The temp PATH contained a symlink to the same Go binary used by this clone plus system shell tools, but excluded /home/hwidong/.local/bin/specdown."
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "docs/specs/user/index.spec.md",
+      "kind": "user-facing-spec",
+      "contentHash": "sha256:36c7f76ac3610a6a358fbf6d75b62610b87cfabe597f50ecdf6c47f880d7654d"
+    },
+    {
+      "path": "internal/runtime/adapter.go",
+      "kind": "doctor-readiness-implementation",
+      "contentHash": "sha256:3c1ea7ca8956160057ea252be8f98253e841d664a37ee228395ae723638c8616"
+    },
+    {
+      "path": "scripts/specdown/cautilus-adapter.mjs",
+      "kind": "specdown-cautilus-adapter",
+      "contentHash": "sha256:d99485d14250cf82493942a6a08ef0793c9200bd218d9eb58702ce41e8baeee8"
+    },
+    {
+      "path": "specdown.json",
+      "kind": "specdown-config",
+      "contentHash": "sha256:7295bb3666f4a4e6d5767349c8d3eda4829cdb95b58cbf59906959527f616fa7"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The public spec row now executes doctor against the repo and observes specdown_available through the same readiness check that operators use; the specdown lint gate also passes."
+  }
+}

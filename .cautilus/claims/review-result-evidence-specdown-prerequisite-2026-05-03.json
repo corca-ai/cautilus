@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-03T00:00:00Z",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied when a checked-in evidence bundle records direct or verified proof for the claim boundary."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-user-specdown-prerequisite",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-specs-user-index-spec-md-24",
+          "claimFingerprint": "sha256:709c984aab47e9413a9ad976289e76d65a9a866e45307a5afe0ef15a8624f520",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the checked-in specdown prerequisite evidence bundle: doctor reports specdown_available=true for this repo, the specdown-backed spec lint gate passes, and doctor fails readiness when specdown is removed from PATH.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-specdown-prerequisite-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:77c76d686170c6d7d8930b42b4a0ea195a0567a4d5aeb45fbfed0ae688b9edea",
+              "supportsClaimIds": [
+                "claim-docs-specs-user-index-spec-md-24"
+              ]
+            }
+          ],
+          "nextAction": "Keep this claim covered by rerunning doctor and spec lint when the public spec tree, specdown adapter, specdown config, or doctor readiness contract changes.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

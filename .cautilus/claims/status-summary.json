@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 258
+          "unknown": 257
         },
         "byReviewStatus": {
-          "heuristic": 258
+          "heuristic": 257
         },
-        "count": 258,
+        "count": 257,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -24,12 +24,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 14
+          "satisfied": 15
         },
         "byReviewStatus": {
-          "agent-reviewed": 14
+          "agent-reviewed": 15
         },
-        "count": 14,
+        "count": 15,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -123,20 +123,20 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 24
+          "unknown": 23
         },
         "byReviewStatus": {
-          "heuristic": 24
+          "heuristic": 23
         },
-        "count": 24,
+        "count": 23,
         "id": "human-confirm-or-decompose",
         "recommendedActor": "human",
         "sampleClaimIds": [
           "claim-readme-md-75",
-          "claim-docs-specs-user-index-spec-md-24",
           "claim-docs-specs-user-reviewable-artifacts-spec-md-13",
           "claim-docs-contracts-claim-discovery-workflow-md-92",
-          "claim-docs-contracts-claim-discovery-workflow-md-181"
+          "claim-docs-contracts-claim-discovery-workflow-md-181",
+          "claim-docs-contracts-claim-discovery-workflow-md-254"
         ],
         "summary": "Confirm, decompose, or accept a human-auditable claim before treating it as proven."
       },
@@ -195,20 +195,20 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 14,
-      "unknown": 308
+      "satisfied": 15,
+      "unknown": 307
     },
     "byLifecycle": {
       "new": 322
     },
     "byRecommendedProof": {
       "cautilus-eval": 128,
-      "deterministic": 127,
-      "human-auditable": 67
+      "deterministic": 128,
+      "human-auditable": 66
     },
     "byReviewStatus": {
-      "agent-reviewed": 61,
-      "heuristic": 258,
+      "agent-reviewed": 62,
+      "heuristic": 257,
       "human-reviewed": 3
     },
     "byVerificationReadiness": {
@@ -381,7 +381,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 14,
+    "satisfiedClaimCount": 15,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-78",
@@ -631,6 +631,25 @@
         "summary": "`npm run lint:specs` and `npm run lint:scenario-normalizers` still gate the runtime completeness of the surviving `scenario normalize` helpers; new user-facing copy must reconcile with the surface/preset contract before landing."
       },
       {
+        "claimId": "claim-docs-specs-user-index-spec-md-24",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:77c76d686170c6d7d8930b42b4a0ea195a0567a4d5aeb45fbfed0ae688b9edea",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-specdown-prerequisite-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-specs-user-index-spec-md-24"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Cautilus requires specdown for public executable claim documentation."
+      },
+      {
         "claimId": "claim-skills-cautilus-skill-md-11",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -653,16 +672,24 @@
   },
   "gitCommit": "00f3889efd94da3ecdfd9bd4698fdb491797306f",
   "gitState": {
-    "changedFileCount": 0,
-    "changedFiles": [],
+    "changedFileCount": 7,
+    "changedFiles": [
+      ".cautilus/claims/canonical-claim-map.json",
+      ".cautilus/claims/claim-status-report.md",
+      ".cautilus/claims/discovery-review.md",
+      ".cautilus/claims/evidenced-typed-runners.json",
+      ".cautilus/claims/latest.json",
+      ".cautilus/claims/status-summary.json",
+      ".cautilus/claims/validation-evidenced-typed-runners.json"
+    ],
     "changedSourceCount": 0,
     "changedSources": [],
-    "comparisonStatus": "fresh",
-    "currentGitCommit": "00f3889efd94da3ecdfd9bd4698fdb491797306f",
-    "headDrift": false,
+    "comparisonStatus": "fresh-with-head-drift",
+    "currentGitCommit": "06167b07886ebde4cc06a930a9308d48b8737438",
+    "headDrift": true,
     "isStale": false,
     "packetGitCommit": "00f3889efd94da3ecdfd9bd4698fdb491797306f",
-    "recommendedAction": "The claim packet commit matches the inspected checkout.",
+    "recommendedAction": "The current HEAD differs from the packet commit, but no recorded claim source changed; review and eval planning may continue.",
     "workingTreePolicy": "excluded"
   },
   "gitStateSnapshotNotice": "gitState is computed when this status packet is generated; rerun claim show for live checkout state.",
@@ -685,7 +712,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 231,
+    "heuristicClaimsReadyForReview": 230,
     "needsAlignment": 30,
     "needsScenario": 8
   },

@@ -44,6 +44,37 @@ function writeJSON(filePath, value) {
 	fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`, "utf8");
 }
 
+function slashPath(value) {
+	return value.split(path.sep).join("/");
+}
+
+function stableDisplayPath(filePath, cwd = process.cwd()) {
+	if (!filePath) {
+		return filePath;
+	}
+	const absolutePath = path.resolve(cwd, filePath);
+	const relativePath = path.relative(cwd, absolutePath);
+	if (!relativePath.startsWith("..") && !path.isAbsolute(relativePath)) {
+		return slashPath(relativePath);
+	}
+	return slashPath(path.normalize(filePath));
+}
+
+export function normalizeAggregateReviewApplication(packet, { claims, reviewResultPath, cwd = process.cwd() } = {}) {
+	if (!packet || typeof packet !== "object" || !packet.reviewApplication) {
+		return packet;
+	}
+	return {
+		...packet,
+		reviewApplication: {
+			...packet.reviewApplication,
+			claimsPath: stableDisplayPath(claims, cwd),
+			reviewResultPath: stableDisplayPath(reviewResultPath, cwd),
+			provenanceMode: "aggregate-current-review-results",
+		},
+	};
+}
+
 export function reviewResultPaths({ claimsDir, reviewResults = [] }) {
 	if (reviewResults.length > 0) {
 		return [...reviewResults].sort((left, right) => left.localeCompare(right));
@@ -136,6 +167,7 @@ export function applyCurrentReviewResults(options) {
 	let skippedResultCount = 0;
 	let keptUpdateCount = 0;
 	let droppedUpdateCount = 0;
+	let lastAppliedReviewResultPath = "";
 	try {
 		writeJSON(currentPath, basePacket);
 		for (const reviewResultPath of paths) {
@@ -158,9 +190,17 @@ export function applyCurrentReviewResults(options) {
 			});
 			appliedPacketPath = nextPath;
 			appliedResultCount += 1;
+			lastAppliedReviewResultPath = reviewResultPath;
 		}
 		fs.mkdirSync(path.dirname(options.output), { recursive: true });
 		fs.copyFileSync(appliedPacketPath, options.output);
+		if (lastAppliedReviewResultPath) {
+			const outputPacket = normalizeAggregateReviewApplication(readJSON(options.output), {
+				claims: options.claims,
+				reviewResultPath: lastAppliedReviewResultPath,
+			});
+			writeJSON(options.output, outputPacket);
+		}
 		return {
 			appliedResultCount,
 			skippedResultCount,

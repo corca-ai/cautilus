@@ -6,6 +6,7 @@ import {
 	claimIdsForPacket,
 	filterReviewResultForCurrentClaims,
 	filterReviewResultForClaimIds,
+	normalizeAggregateReviewApplication,
 	reviewResultPaths,
 } from "./apply-current-review-results.mjs";
 
@@ -93,4 +94,30 @@ test("filterReviewResultForCurrentClaims drops reused ids with mismatched finger
 			reviewStatus: "agent-reviewed",
 		},
 	]);
+});
+
+test("normalizeAggregateReviewApplication replaces temporary paths with stable inputs", () => {
+	const packet = normalizeAggregateReviewApplication(
+		{
+			reviewApplication: {
+				schemaVersion: "cautilus.claim_review_result.v1",
+				claimsPath: "/tmp/cautilus-review-results-abc/applied-16.json",
+				reviewResultPath: "/tmp/cautilus-review-results-abc/review-result-final.json",
+				appliedUpdateCount: 1,
+			},
+		},
+		{
+			claims: "/repo/.cautilus/claims/latest.json",
+			reviewResultPath: "/repo/.cautilus/claims/review-result-final.json",
+			cwd: "/repo",
+		},
+	);
+
+	assert.deepEqual(packet.reviewApplication, {
+		schemaVersion: "cautilus.claim_review_result.v1",
+		claimsPath: ".cautilus/claims/latest.json",
+		reviewResultPath: ".cautilus/claims/review-result-final.json",
+		appliedUpdateCount: 1,
+		provenanceMode: "aggregate-current-review-results",
+	});
 });

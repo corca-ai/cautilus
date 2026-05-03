@@ -720,6 +720,22 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/specs/user/proof-debt.spec.md:14
 
+#### Deterministic gate / ready-to-verify / evidence satisfied (1)
+
+##### claim-docs-specs-user-index-spec-md-24
+
+- Summary: Cautilus requires specdown for public executable claim documentation.
+- Current labels: audience=user; proof=deterministic; readiness=ready-to-verify; evidence=satisfied
+- Suggested next action: Keep this claim covered by rerunning doctor and spec lint when the public spec tree, specdown adapter, specdown config, or doctor readiness contract changes.
+- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
+- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
+- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
+- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
+- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
+- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
+- Human notes:
+- Trace: 1 source ref; docs/specs/user/index.spec.md:24
+
 #### Deterministic gate / ready-to-verify / evidence unknown (7)
 
 ##### claim-docs-cli-reference-md-110
@@ -908,21 +924,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/guides/evaluation-process.md:293
 
-#### Human-auditable / ready-to-verify / evidence unknown (2)
-
-##### claim-docs-specs-user-index-spec-md-24
-
-- Summary: Cautilus requires specdown for public executable claim documentation.
-- Current labels: audience=user; proof=human-auditable; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.
-- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
-- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
-- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
-- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
-- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
-- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
-- Human notes:
-- Trace: 1 source ref; docs/specs/user/index.spec.md:24
+#### Human-auditable / ready-to-verify / evidence unknown (1)
 
 ##### claim-docs-specs-user-optimization-spec-md-14
 
