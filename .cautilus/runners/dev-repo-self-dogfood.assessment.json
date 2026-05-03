@@ -4,10 +4,10 @@
   "surface": "dev/repo",
   "proofClass": "coding-agent-messaging",
   "assessedBy": "codex-local-backend-eval",
-  "assessedAt": "2026-05-01T05:59:03Z",
-  "repoCommit": "665cc62e32ca642aec7534f150da3b687550736c",
+  "assessedAt": "2026-05-03T21:37:15+09:00",
+  "repoCommit": "0c9350650addb433943b8a301c9de130b484e3d7",
   "adapterPath": ".agents/cautilus-adapter.yaml",
-  "adapterHash": "sha256:3f2d21dfc851920fa387900b64a36193266849f4727065caef4cc8e31e318585",
+  "adapterHash": "sha256:06a96e2ffc2bcb73fdcf47988ac8644a54b3f08cac1aadb4521b33f5c657d1d5",
   "runnerFiles": [
     {
       "path": "scripts/run-self-dogfood-eval.mjs",
@@ -53,7 +53,13 @@
       "artifacts/self-dogfood/dev-repo-self-dogfood/latest/eval-summary.json",
       "artifacts/self-dogfood/dev-repo-self-dogfood/latest/eval-observed.json",
       "artifacts/self-dogfood/dev-repo-self-dogfood/latest/eval-test/checked-in-agents-routing/result.json"
-    ]
+    ],
+    "latestEvaluation": {
+      "command": "./bin/cautilus eval test --repo-root . --runtime codex --output-dir ./artifacts/self-dogfood/dev-repo-self-dogfood/latest",
+      "recommendation": "accept-now",
+      "summaryPath": "artifacts/self-dogfood/dev-repo-self-dogfood/latest/eval-summary.json",
+      "observedPath": "artifacts/self-dogfood/dev-repo-self-dogfood/latest/eval-observed.json"
+    }
   },
   "knownGaps": [
     "Claude messaging backend was not executed for this assessment.",
