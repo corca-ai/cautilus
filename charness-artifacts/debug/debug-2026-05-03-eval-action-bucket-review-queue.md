@@ -79,7 +79,7 @@ The confusion came from reading a large `agent status` packet where `configuredS
 ## Interrupt Decision
 
 - Premortem Required: no
-- Next Step: impl
+- Next Step: continue autonomous claim/eval workflow
 - Handoff Artifact: none
 
 ## Prevention
