@@ -1549,9 +1549,19 @@
       "claimFingerprint": "sha256:4e71a63710e91c116f1577d1c862f0a10316bb0d32592a8caf8703b79ad2f4ce",
       "claimId": "claim-docs-cli-reference-md-487",
       "claimSemanticGroup": "Claim discovery and review",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "Renderer documentation claim. It needs render-html or renderer test evidence for human-first decision surface behavior.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:fa58758d3ea66920d3af6eb193cf671b5344061322caba247b62edc38fd3263e",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-self-dogfood-html-renderers-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-cli-reference-md-487"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by focused CLI and runtime tests: both self-dogfood renderer families write index.html pages, include Decision Summary and navigation structures, and preserve the JSON bundle as source of truth.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -1559,7 +1569,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Attach static HTML renderer evidence or a render-index/self-dogfood HTML test bundle.",
+      "nextAction": "Keep this claim covered when changing self-dogfood static HTML renderer headings, index output paths, source-bundle footer text, or decision-summary section ordering.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -1572,7 +1582,7 @@
       "summary": "These renderers answer: \"what should a human reviewer open first if they should inspect the same decision surface without parsing raw JSON?\"",
       "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names packet, catalog, or renderer behavior that should be protected by deterministic command, schema, or render tests."
+      "whyThisLayer": "The claim is a deterministic renderer contract: the CLI either writes static HTML indexes with decision-first sections over the JSON bundle or it does not."
     },
     {
       "claimAudience": "user",
@@ -10125,8 +10135,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 31,
-      "unknown": 291
+      "satisfied": 32,
+      "unknown": 290
     },
     "byLifecycle": {
       "new": 322
@@ -10327,6 +10337,12 @@
     "provenanceMode": "aggregate-current-review-results"
   },
   "reviewRuns": [
+    {
+      "clusterCount": 1,
+      "reviewRun": {},
+      "schemaVersion": "cautilus.claim_review_result.v1",
+      "sourceReviewInput": {}
+    },
     {
       "clusterCount": 1,
       "reviewRun": {},

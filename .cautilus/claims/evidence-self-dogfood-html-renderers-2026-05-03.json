@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-self-dogfood-html-renderers-2026-05-03",
+  "createdForClaimIds": [
+    "claim-docs-cli-reference-md-487"
+  ],
+  "repoCommit": "bb87e9102f14336ec63c9eb8e16390ac19548a5d",
+  "summary": "This bundle records deterministic proof that the self-dogfood HTML renderers write reviewer-first static HTML indexes over the JSON source bundles.",
+  "evidenceScope": {
+    "targetSurface": "self-dogfood static HTML rendering",
+    "claimBoundary": "Only the CLI reference claim that the renderers provide the first human-readable decision surface over the same JSON bundle is marked satisfied.",
+    "notClaimed": [
+      "A human reviewer necessarily understands or agrees with the rendered decision",
+      "The HTML replaces summary.json, report.json, or review-summary.json as source of truth",
+      "Browser visual layout quality is proven across devices",
+      "Every report renderer in the product is covered by this self-dogfood claim"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/app -run 'TestCLISelfDogfoodRenderHTMLWritesDecisionFirstIndex|TestCLISelfDogfoodRenderExperimentsHTMLWritesIndexFromLatestBundle' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "notableAssertions": [
+          "cautilus self-dogfood render-html writes artifacts/self-dogfood/latest/index.html",
+          "the rendered self-dogfood HTML starts with Cautilus Self-Dogfood and includes Decision Summary, What happened, What to inspect next, and Inspect review",
+          "the rendered self-dogfood HTML places Decision Summary before the table of contents and detail sections",
+          "the rendered self-dogfood HTML footer states that summary.json, report.json, and review-summary.json remain the generated source bundle",
+          "cautilus self-dogfood render-experiments-html writes artifacts/self-dogfood/experiments/latest/index.html and includes the experiments title plus comparison row",
+          "the rendered experiments HTML places Decision Summary before the table of contents and comparison details"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/runtime -run 'TestRenderSelfDogfoodHTMLIncludesHeadlineFields|TestWriteSelfDogfoodHTMLWritesIndexNextToLatestBundle|TestRenderSelfDogfoodExperimentsHTMLIncludesComparisonRows|TestWriteSelfDogfoodExperimentsHTMLWritesIndexNextToLatestBundle|TestRenderSelfDogfoodHTMLIncludesPageTOC|TestRenderSelfDogfoodExperimentsHTMLIncludesPageTOC' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "notableAssertions": [
+          "self-dogfood renderer includes Decision Summary, What happened, Review recommendation, and headline status fields",
+          "experiments renderer includes Decision Summary, A/B Comparison, and data-compare-row entries",
+          "both renderer families write index.html next to the latest bundle",
+          "both renderer families include table-of-contents anchors for the decision surface sections"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "self-dogfood-renderer-cli-tests",
+      "contentHash": "sha256:d2368828838ec01f202f73f6b6a738e1d4e6bb675959845ca8378d97aaf009c7"
+    },
+    {
+      "path": "internal/runtime/self_dogfood_html.go",
+      "kind": "self-dogfood-renderer-implementation",
+      "contentHash": "sha256:c320dc471bea20b53244ad16016aa9c30cc039db23b3fd4c6f988ec1181d89eb"
+    },
+    {
+      "path": "internal/runtime/self_dogfood_html_test.go",
+      "kind": "self-dogfood-renderer-runtime-tests",
+      "contentHash": "sha256:9628016624d5581a45a4bf11b578c3fd2778af530e3edfbaf9b10b02d97f7102"
+    },
+    {
+      "path": "docs/cli-reference.md",
+      "kind": "operator-facing-renderer-guidance",
+      "contentHash": "sha256:31f70c226b312f2292e3e317a8dd45d6f1e4bd71d2c8f3f555b2174a15303f05"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "Focused CLI and runtime tests verify that both self-dogfood HTML renderers produce static index.html pages with decision-first headings, section navigation, and source-bundle footers over the same JSON artifacts."
+  }
+}

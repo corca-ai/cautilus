@@ -24,12 +24,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 31
+          "satisfied": 32
         },
         "byReviewStatus": {
-          "agent-reviewed": 31
+          "agent-reviewed": 32
         },
-        "count": 31,
+        "count": 32,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -43,22 +43,22 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 95
+          "unknown": 94
         },
         "byReviewStatus": {
-          "agent-reviewed": 12,
+          "agent-reviewed": 11,
           "heuristic": 80,
           "human-reviewed": 3
         },
-        "count": 95,
+        "count": 94,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
-          "claim-docs-cli-reference-md-487",
           "claim-docs-contracts-adapter-contract-md-218",
           "claim-docs-contracts-adapter-contract-md-276",
           "claim-docs-contracts-adapter-contract-md-405",
-          "claim-docs-contracts-adapter-contract-md-424"
+          "claim-docs-contracts-adapter-contract-md-424",
+          "claim-docs-contracts-adapter-contract-md-533"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -195,8 +195,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 31,
-      "unknown": 291
+      "satisfied": 32,
+      "unknown": 290
     },
     "byLifecycle": {
       "new": 322
@@ -381,7 +381,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 31,
+    "satisfiedClaimCount": 32,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-78",
@@ -831,6 +831,25 @@
         "summary": "When `--output-text-key` is present, Cautilus also extracts that JSON narrative span into the rendered prompt so the judge can read the realized output directly."
       },
       {
+        "claimId": "claim-docs-cli-reference-md-487",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:fa58758d3ea66920d3af6eb193cf671b5344061322caba247b62edc38fd3263e",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-self-dogfood-html-renderers-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-cli-reference-md-487"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "These renderers answer: \"what should a human reviewer open first if they should inspect the same decision surface without parsing raw JSON?\""
+      },
+      {
         "claimId": "claim-docs-cli-reference-md-505",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -986,7 +1005,7 @@
   },
   "gitCommit": "00f3889efd94da3ecdfd9bd4698fdb491797306f",
   "gitState": {
-    "changedFileCount": 49,
+    "changedFileCount": 51,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
@@ -999,6 +1018,7 @@
       ".cautilus/claims/evidence-install-channel-policy-2026-05-03.json",
       ".cautilus/claims/evidence-install-packaging-2026-05-03.json",
       ".cautilus/claims/evidence-machine-readable-packets-2026-05-03.json",
+      ".cautilus/claims/evidence-review-variants-status-and-output-text-2026-05-03.json",
       ".cautilus/claims/evidence-scenario-catalog-example-cli-2026-05-03.json",
       ".cautilus/claims/evidence-scenario-review-attention-linkage-2026-05-03.json",
       ".cautilus/claims/evidence-specdown-prerequisite-2026-05-03.json",
@@ -1012,6 +1032,7 @@
       ".cautilus/claims/review-result-evidence-install-channel-policy-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-install-packaging-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-machine-readable-packets-2026-05-03.json",
+      ".cautilus/claims/review-result-evidence-review-variants-status-and-output-text-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-scenario-review-attention-linkage-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-specdown-prerequisite-2026-05-03.json",
@@ -1046,7 +1067,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "85b085b6485db0e9922f895508c9f5df6fbe3de5",
+    "currentGitCommit": "bb87e9102f14336ec63c9eb8e16390ac19548a5d",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "00f3889efd94da3ecdfd9bd4698fdb491797306f",

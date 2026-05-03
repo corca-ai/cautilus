@@ -592,7 +592,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; README.md:155
 
-#### Deterministic gate / ready-to-verify / evidence satisfied (1)
+#### Deterministic gate / ready-to-verify / evidence satisfied (2)
 
 ##### claim-docs-cli-reference-md-115
 
@@ -608,13 +608,11 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/cli-reference.md:115
 
-#### Deterministic gate / ready-to-verify / evidence unknown (2)
-
 ##### claim-docs-cli-reference-md-487
 
 - Summary: These renderers answer: "what should a human reviewer open first if they should inspect the same decision surface without parsing raw JSON?"
-- Current labels: audience=user; proof=deterministic; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Attach static HTML renderer evidence or a render-index/self-dogfood HTML test bundle.
+- Current labels: audience=user; proof=deterministic; readiness=ready-to-verify; evidence=satisfied
+- Suggested next action: Keep this claim covered when changing self-dogfood static HTML renderer headings, index output paths, source-bundle footer text, or decision-summary section ordering.
 - Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
 - Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
 - Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
@@ -623,6 +621,8 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
 - Trace: 1 source ref; docs/cli-reference.md:487
+
+#### Deterministic gate / ready-to-verify / evidence unknown (1)
 
 ##### claim-docs-contracts-adapter-contract-md-424
 

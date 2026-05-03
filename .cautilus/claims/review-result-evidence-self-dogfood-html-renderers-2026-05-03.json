@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-03T00:00:00Z",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied for deterministic static HTML renderer output; do not treat this as proof of human comprehension or browser visual quality."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-cli-reference-self-dogfood-html-renderers",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-cli-reference-md-487",
+          "claimFingerprint": "sha256:4e71a63710e91c116f1577d1c862f0a10316bb0d32592a8caf8703b79ad2f4ce",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "whyThisLayer": "The claim is a deterministic renderer contract: the CLI either writes static HTML indexes with decision-first sections over the JSON bundle or it does not.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by focused CLI and runtime tests: both self-dogfood renderer families write index.html pages, include Decision Summary and navigation structures, and preserve the JSON bundle as source of truth.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-self-dogfood-html-renderers-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:fa58758d3ea66920d3af6eb193cf671b5344061322caba247b62edc38fd3263e",
+              "supportsClaimIds": [
+                "claim-docs-cli-reference-md-487"
+              ]
+            }
+          ],
+          "nextAction": "Keep this claim covered when changing self-dogfood static HTML renderer headings, index output paths, source-bundle footer text, or decision-summary section ordering.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

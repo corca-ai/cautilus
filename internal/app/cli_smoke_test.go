@@ -1666,6 +1666,64 @@ func TestCLIScenarioSummarizeTelemetryAggregatesScenarioCosts(t *testing.T) {
 	}
 }
 
+func TestCLISelfDogfoodRenderHTMLWritesDecisionFirstIndex(t *testing.T) {
+	root := t.TempDir()
+	latestDir := filepath.Join(root, "artifacts", "self-dogfood", "latest")
+	if err := os.MkdirAll(latestDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	writeJSONFile(t, filepath.Join(latestDir, "summary.json"), map[string]any{
+		"generatedAt":          "2026-04-11T01:00:00.000Z",
+		"runId":                "dogfood-2026-04-11T01-00-00",
+		"intent":               "Self-dogfood should publish a reviewer-first decision surface.",
+		"overallStatus":        "pass",
+		"gateRecommendation":   "accept-now",
+		"reportRecommendation": "accept-now",
+	})
+	writeJSONFile(t, filepath.Join(latestDir, "report.json"), map[string]any{
+		"schemaVersion":       contracts.ReportPacketSchema,
+		"intent":              "Self-dogfood should publish a reviewer-first decision surface.",
+		"commandObservations": []any{map[string]any{"name": "verify", "status": "pass"}},
+	})
+	writeJSONFile(t, filepath.Join(latestDir, "review-summary.json"), map[string]any{
+		"schemaVersion": contracts.ReviewSummarySchema,
+		"status":        "passed",
+		"variants":      []any{map[string]any{"id": "agent-review", "status": "passed", "verdict": "pass", "summary": "review passed"}},
+	})
+
+	stdout, stderr, exitCode := runCLI(t, root, "self-dogfood", "render-html")
+	if exitCode != 0 {
+		t.Fatalf("render-html failed: %s", stderr)
+	}
+	outputPath := strings.TrimSpace(stdout)
+	if outputPath != filepath.Join(latestDir, "index.html") {
+		t.Fatalf("unexpected output path: %s", outputPath)
+	}
+	htmlBytes, err := os.ReadFile(outputPath)
+	if err != nil {
+		t.Fatalf("ReadFile returned error: %v", err)
+	}
+	html := string(htmlBytes)
+	for _, pattern := range []string{
+		"Cautilus Self-Dogfood",
+		"Decision Summary",
+		"What happened",
+		"What to inspect next",
+		"Inspect review",
+		"Generated from <code>summary.json</code>, <code>report.json</code>, and <code>review-summary.json</code>",
+	} {
+		if !strings.Contains(html, pattern) {
+			t.Fatalf("expected %q in html", pattern)
+		}
+	}
+	decisionOffset := strings.Index(html, "Decision Summary")
+	tocOffset := strings.Index(html, `class="toc-nav"`)
+	intentOffset := strings.Index(html, `id="intent-heading"`)
+	if decisionOffset < 0 || tocOffset < 0 || intentOffset < 0 || decisionOffset > tocOffset || decisionOffset > intentOffset {
+		t.Fatalf("expected Decision Summary before TOC and detail sections; offsets decision=%d toc=%d intent=%d", decisionOffset, tocOffset, intentOffset)
+	}
+}
+
 func TestCLISelfDogfoodRenderExperimentsHTMLWritesIndexFromLatestBundle(t *testing.T) {
 	root := t.TempDir()
 	latestDir := filepath.Join(root, "artifacts", "self-dogfood", "experiments", "latest")
@@ -1718,6 +1776,12 @@ func TestCLISelfDogfoodRenderExperimentsHTMLWritesIndexFromLatestBundle(t *testi
 	}
 	if !strings.Contains(html, `data-compare-row="exp-a"`) {
 		t.Fatalf("expected experiment comparison row in html")
+	}
+	decisionOffset := strings.Index(html, "Decision Summary")
+	tocOffset := strings.Index(html, `class="toc-nav"`)
+	compareOffset := strings.Index(html, `id="compare-heading"`)
+	if decisionOffset < 0 || tocOffset < 0 || compareOffset < 0 || decisionOffset > tocOffset || decisionOffset > compareOffset {
+		t.Fatalf("expected Decision Summary before TOC and comparison details; offsets decision=%d toc=%d compare=%d", decisionOffset, tocOffset, compareOffset)
 	}
 }
 
