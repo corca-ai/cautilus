@@ -229,14 +229,36 @@ function parseMaintainerSpecIndex(markdown, filePath) {
 		absorbs: title,
 		filePath,
 		sourceAnchors: [filePath],
-		keywords: [...tokens(`${title} ${markdown}`)].sort(),
+		keywords: [...tokens(title)].sort(),
 	}));
+}
+
+function parseMaintainerSpecTree(markdown, filePath) {
+	return specIndexLinks(markdown, filePath).map((linkedPath, index) => {
+		const body = readText(linkedPath);
+		const id = `M${index + 1}`;
+		const title = h1Title(body, path.basename(linkedPath, ".spec.md"));
+		return {
+			id,
+			title,
+			audience: "developer",
+			alignedUserClaimIds: alignedUserIds(body),
+			proofRoute: extractLineField(body, "Proof route"),
+			currentEvidenceStatus: extractLineField(body, "Current evidence status"),
+			nextAction: extractLineField(body, "Next action"),
+			absorbs: extractLineField(body, "Absorbs"),
+			filePath: linkedPath,
+			sourceAnchors: [linkedPath],
+			keywords: [...tokens(`${title} ${body}`)].sort(),
+		};
+	});
 }
 
 export function parseMaintainerCatalog(markdown, filePath = DEFAULT_MAINTAINER_CATALOG) {
 	const sections = sectionBlocks(markdown, "M\\d+");
 	if (sections.length === 0 && filePath.includes("docs/specs/maintainer/")) {
-		return parseMaintainerSpecIndex(markdown, filePath);
+		const linkedClaims = parseMaintainerSpecTree(markdown, filePath);
+		return linkedClaims.length > 0 ? linkedClaims : parseMaintainerSpecIndex(markdown, filePath);
 	}
 	return sections.map((section) => {
 		const absorbs = extractLineField(section.body, "Absorbs");

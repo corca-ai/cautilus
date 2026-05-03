@@ -4,7 +4,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
 
-import { buildCanonicalClaimMap, parseUserCatalog } from "./build-canonical-claim-map.mjs";
+import { buildCanonicalClaimMap, parseMaintainerCatalog, parseUserCatalog } from "./build-canonical-claim-map.mjs";
 
 const userCatalogMarkdown = `# User Claims
 
@@ -160,6 +160,67 @@ test("parseUserCatalog reads only same-directory claim pages from spec index", (
 				["U2", "Evaluation"],
 			],
 		);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("parseMaintainerCatalog keeps bullet-index keywords scoped to each claim area", () => {
+	const catalog = parseMaintainerCatalog(
+		[
+			"# Maintainer Index",
+			"",
+			"## Maintainer Claim Areas",
+			"",
+			"- Claim discovery workflow and raw-claim curation.",
+			"- Eval surfaces, fixtures, and runner readiness.",
+			"",
+		].join("\n"),
+		"docs/specs/maintainer/index.spec.md",
+	);
+
+	assert.equal(catalog.length, 2);
+	assert.deepEqual(catalog[0].keywords, ["curation", "discovery", "raw-claim", "workflow"]);
+	assert.deepEqual(catalog[1].keywords, ["eval", "fixture", "readines", "runner", "surface"]);
+});
+
+test("parseMaintainerCatalog reads same-directory maintainer spec pages", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-maintainer-spec-tree-"));
+	try {
+		const maintainerDir = join(root, "docs", "specs", "maintainer");
+		mkdirSync(maintainerDir, { recursive: true });
+		writeFileSync(
+			join(maintainerDir, "claim-discovery.spec.md"),
+			[
+				"# Claim Discovery Workflow",
+				"",
+				"Aligned user claims: U1, U7.",
+				"Proof route: deterministic.",
+				"Current evidence status: proof-planning.",
+				"Next action: connect discovery fixtures.",
+				"Absorbs: source inventory, review packet, duplicate handling.",
+				"",
+			].join("\n"),
+			"utf-8",
+		);
+		writeFileSync(join(maintainerDir, "index.spec.md"), "# Maintainer\n", "utf-8");
+
+		const catalog = parseMaintainerCatalog(
+			[
+				"# Maintainer Index",
+				"",
+				"- [Claim Discovery Workflow](claim-discovery.spec.md)",
+				"- [User](../user/index.spec.md)",
+				"",
+			].join("\n"),
+			join(maintainerDir, "index.spec.md"),
+		);
+
+		assert.equal(catalog.length, 1);
+		assert.equal(catalog[0].id, "M1");
+		assert.equal(catalog[0].title, "Claim Discovery Workflow");
+		assert.deepEqual(catalog[0].alignedUserClaimIds, ["U1", "U7"]);
+		assert.equal(catalog[0].proofRoute, "deterministic.");
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

@@ -5,15 +5,12 @@ This index maps the user-facing Cautilus promises to maintainer-owned contracts,
 User view: [User-Facing Specs](../user/index.spec.md).
 Full claim-spec report entry: [Cautilus Claim Specs](../index.spec.md).
 
-## Current State
+## Claims
 
-The user-facing spec tree is now the source of truth for the reader-facing product promises.
-The maintainer-facing spec tree will be carved next from the same claims, with internal vocabulary allowed only when it stays aligned to a user-facing promise.
-
-## Maintainer Claim Areas
-
-- Claim discovery workflow and raw-claim curation.
-- Adapter boundaries and host ownership.
-- Eval surfaces, fixtures, and runner readiness.
-- Evidence bundles, status reports, and drift handling.
-- Optimization packets, budgets, checkpoints, and held-out proof.
+- [Claim Discovery Workflow](claim-discovery-workflow.spec.md)
+- [Binary And Skill Boundary](binary-skill-boundary.spec.md)
+- [Adapter And Host Ownership](adapter-host-ownership.spec.md)
+- [Evaluation Surfaces And Runners](evaluation-surfaces-runners.spec.md)
+- [Evidence State And Review Artifacts](evidence-state-artifacts.spec.md)
+- [Optimization Loop](optimization-loop.spec.md)
+- [Readiness And Runtime Status](readiness-runtime-status.spec.md)
