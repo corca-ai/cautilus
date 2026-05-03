@@ -592,6 +592,37 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 	}
 }
 
+func TestDiscoverClaimProofPlanSkipsFutureProofPlaceholders(t *testing.T) {
+	repoRoot := t.TempDir()
+	mustWriteFile(t, filepath.Join(repoRoot, "README.md"), strings.Join([]string{
+		"# Product",
+		"",
+		"Cautilus writes machine-readable packets first and readable views over those packets.",
+		"",
+		"## Evidence",
+		"",
+		"Evidence is pending.",
+		"This page should later link report-rendering specs, status-server proof, and packet freshness checks.",
+		"Future proof should connect concrete optimize packets and held-out eval results.",
+		"Deeper proof should be added by linking a fresh claim packet, a reviewed status summary, and at least one skill-driven review result.",
+		"Per-claim evidence pages should later link concrete fixtures and result packets.",
+		"",
+	}, "\n"))
+
+	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan returned error: %v", err)
+	}
+	candidates := arrayOrEmpty(plan["claimCandidates"])
+	if len(candidates) != 1 {
+		t.Fatalf("expected only the product promise candidate, got %#v", candidates)
+	}
+	summary := stringFromAny(asMap(candidates[0])["summary"])
+	if !strings.Contains(summary, "machine-readable packets") {
+		t.Fatalf("expected packet-first promise to remain, got %#v", candidates[0])
+	}
+}
+
 func TestClaimTextBlocksSkipsYamlFrontmatter(t *testing.T) {
 	blocks := claimTextBlocks(strings.Join([]string{
 		"---",
@@ -2478,6 +2509,90 @@ func TestBuildClaimRefreshPlanRecordsStaleEvidenceReasons(t *testing.T) {
 	}
 }
 
+func TestBuildClaimRefreshPlanDetectsDiscoveryEngineDrift(t *testing.T) {
+	repoRoot := t.TempDir()
+	if err := execGit(repoRoot, "init"); err != nil {
+		t.Fatalf("git init failed: %v", err)
+	}
+	if err := execGit(repoRoot, "config", "user.email", "cautilus@example.com"); err != nil {
+		t.Fatalf("git config failed: %v", err)
+	}
+	if err := execGit(repoRoot, "config", "user.name", "Cautilus Test"); err != nil {
+		t.Fatalf("git config failed: %v", err)
+	}
+	mustWriteFile(t, filepath.Join(repoRoot, "README.md"), "Agents must preserve claim discovery freshness.\n")
+	if err := execGit(repoRoot, "add", "README.md"); err != nil {
+		t.Fatalf("git add failed: %v", err)
+	}
+	if err := execGit(repoRoot, "commit", "-m", "initial"); err != nil {
+		t.Fatalf("git commit failed: %v", err)
+	}
+	base, err := execGitOutput(repoRoot, "rev-parse", "HEAD")
+	if err != nil {
+		t.Fatalf("git rev-parse base failed: %v", err)
+	}
+	previous := filepath.Join(repoRoot, "claims.json")
+	mustWriteFile(t, previous, fmt.Sprintf(`{
+  "schemaVersion": "cautilus.claim_proof_plan.v1",
+  "gitCommit": %q,
+  "sourceInventory": [{"path": "README.md", "kind": "readme", "status": "read", "depth": 0}],
+  "claimCandidates": [
+    {"claimId": "claim-readme-md-1", "sourceRefs": [{"path": "README.md"}]}
+  ]
+}
+`, base))
+
+	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{
+		RepoRoot:        repoRoot,
+		PreviousPath:    previous,
+		RefreshPlanOnly: true,
+	})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan refresh returned error: %v", err)
+	}
+	refreshSummary := asMap(plan["refreshSummary"])
+	if refreshSummary["status"] != "discovery-engine-changed" || refreshSummary["discoveryEngineChanged"] != true {
+		t.Fatalf("expected discovery-engine-changed refresh summary, got %#v", refreshSummary)
+	}
+	previousEngine := asMap(refreshSummary["previousDiscoveryEngine"])
+	if previousEngine["status"] != "missing" {
+		t.Fatalf("expected missing previous discovery engine metadata, got %#v", previousEngine)
+	}
+	currentEngine := asMap(refreshSummary["currentDiscoveryEngine"])
+	if currentEngine["ruleset"] != claimDiscoveryRulesetVersion {
+		t.Fatalf("expected current discovery engine ruleset, got %#v", currentEngine)
+	}
+	nextActions := arrayOrEmpty(refreshSummary["nextActions"])
+	if len(nextActions) == 0 || asMap(nextActions[0])["id"] != "update_saved_claim_map" {
+		t.Fatalf("expected update_saved_claim_map first next action, got %#v", nextActions)
+	}
+}
+
+func TestClaimDiscoveryEngineChangedUsesSemanticRuleset(t *testing.T) {
+	current := map[string]any{
+		"name":               "cautilus.claim_discovery",
+		"ruleset":            claimDiscoveryRulesetVersion,
+		"implementationHash": "sha256:new",
+	}
+	if !claimDiscoveryEngineChanged(map[string]any{}, current) {
+		t.Fatal("expected missing previous discovery engine to require refresh")
+	}
+	if !claimDiscoveryEngineChanged(map[string]any{
+		"name":               "cautilus.claim_discovery",
+		"ruleset":            "claim-discovery-rules.v1",
+		"implementationHash": "sha256:new",
+	}, current) {
+		t.Fatal("expected changed ruleset to require refresh")
+	}
+	if claimDiscoveryEngineChanged(map[string]any{
+		"name":               "cautilus.claim_discovery",
+		"ruleset":            claimDiscoveryRulesetVersion,
+		"implementationHash": "sha256:old",
+	}, current) {
+		t.Fatal("expected implementationHash-only drift to stay informational")
+	}
+}
+
 func TestBuildClaimRefreshPlanIgnoresCommittedClaimPacketDrift(t *testing.T) {
 	repoRoot := t.TempDir()
 	if err := execGit(repoRoot, "init"); err != nil {
@@ -2500,16 +2615,21 @@ func TestBuildClaimRefreshPlanIgnoresCommittedClaimPacketDrift(t *testing.T) {
 	if err != nil {
 		t.Fatalf("git rev-parse base failed: %v", err)
 	}
+	engineJSON, err := json.Marshal(renderClaimDiscoveryEngine(repoRoot))
+	if err != nil {
+		t.Fatalf("marshal discovery engine failed: %v", err)
+	}
 	previous := filepath.Join(repoRoot, ".cautilus", "claims", "latest.json")
 	mustWriteFile(t, previous, fmt.Sprintf(`{
   "schemaVersion": "cautilus.claim_proof_plan.v1",
   "gitCommit": %q,
+  "discoveryEngine": %s,
   "sourceInventory": [{"path": "README.md", "kind": "readme", "status": "read", "depth": 0}],
   "claimCandidates": [
     {"claimId": "claim-readme-md-1", "sourceRefs": [{"path": "README.md"}]}
   ]
 }
-`, base))
+`, base, string(engineJSON)))
 	if err := execGit(repoRoot, "add", previous); err != nil {
 		t.Fatalf("git add claims failed: %v", err)
 	}

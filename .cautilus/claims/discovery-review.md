@@ -7,10 +7,10 @@ Source excerpts are included for local judgment; source refs are trace data, not
 ## Packet Summary
 
 - Claims packet: .cautilus/claims/evidenced-typed-runners.json
-- Git commit in packet: 3819d259fd796dc6fd5777b579f6b013c0dcb508
-- Candidate count: 315
+- Git commit in packet: 4a586aa97e53b0d81c88d490a909aae2f49964ef
+- Candidate count: 312
 - Source count: 44
-- User claims: 82
+- User claims: 79
 - Developer claims: 233
 
 ## How To Review
@@ -28,11 +28,11 @@ Only set an eval surface when the corrected proof is `cautilus-eval`; otherwise 
 ## Recommended First Pass
 
 1. No `Unclear Claims` are present in this packet.
-2. Review `User Claims` next (82 items) because these are closest to product promises.
+2. Review `User Claims` next (79 items) because these are closest to product promises.
 3. Spot-check `Developer Claims` last (233 items) to catch internal conventions that leaked into product promises.
 Do not try to clear every claim in the first pass; mark duplicates, fragments, and obvious audience mistakes first.
 
-## User Claims (82)
+## User Claims (79)
 
 ### Adapter and portability (16)
 
@@ -272,7 +272,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/specs/user/ownership.spec.md:3
 
-### Agent and skill workflow (20)
+### Agent and skill workflow (19)
 
 #### Cautilus eval / dev/repo / ready-to-verify / evidence unknown (1)
 
@@ -308,22 +308,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; README.md:144
 
-#### Cautilus eval / dev/skill / ready-to-verify / evidence unknown (5)
-
-##### claim-docs-specs-user-claim-discovery-spec-md-21
-
-- Summary: Deeper proof should be added by linking a fresh claim packet, a reviewed status summary, and at least one skill-driven review result.
-- Current labels: audience=user; proof=cautilus-eval; eval surface=dev/skill; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Create a host-owned dev/skill fixture and run it through cautilus eval test.
-- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
-- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
-- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
-- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
-- Human corrected eval surface: [ ] keep [ ] dev/repo [ ] dev/skill [ ] app/chat [ ] app/prompt [ ] surface undecided
-- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
-- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
-- Human notes:
-- Trace: 1 source ref; docs/specs/user/claim-discovery.spec.md:21
+#### Cautilus eval / dev/skill / ready-to-verify / evidence unknown (4)
 
 ##### claim-docs-specs-user-doctor-readiness-spec-md-12
 
@@ -942,24 +927,9 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/specs/user/optimization.spec.md:14
 
-### Improvement and optimization (3)
+### Improvement and optimization (2)
 
-#### Cautilus eval / dev/repo / ready-to-verify / evidence unknown (2)
-
-##### claim-docs-specs-user-optimization-spec-md-19
-
-- Summary: Future proof should connect concrete optimize packets and held-out eval results.
-- Current labels: audience=user; proof=cautilus-eval; eval surface=dev/repo; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Create a host-owned dev/repo fixture and run it through cautilus eval test.
-- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
-- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
-- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
-- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
-- Human corrected eval surface: [ ] keep [ ] dev/repo [ ] dev/skill [ ] app/chat [ ] app/prompt [ ] surface undecided
-- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
-- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
-- Human notes:
-- Trace: 1 source ref; docs/specs/user/optimization.spec.md:19
+#### Cautilus eval / dev/repo / ready-to-verify / evidence unknown (1)
 
 ##### claim-docs-specs-user-optimization-spec-md-3
 
@@ -1133,7 +1103,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/specs/user/reviewable-artifacts.spec.md:13
 
-### Quality gates (8)
+### Quality gates (7)
 
 #### Cautilus eval / dev/repo / ready-to-verify / evidence unknown (2)
 
@@ -1228,7 +1198,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/guides/evaluation-process.md:52
 
-#### Deterministic gate / ready-to-verify / evidence unknown (2)
+#### Deterministic gate / ready-to-verify / evidence unknown (1)
 
 ##### claim-docs-specs-user-evaluation-spec-md-7
 
@@ -1243,20 +1213,6 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
 - Trace: 1 source ref; docs/specs/user/evaluation.spec.md:7
-
-##### claim-docs-specs-user-proof-debt-spec-md-19
-
-- Summary: This page should later link claim validation checks and evidence-bundle tests that prove review comments cannot satisfy claims by themselves.
-- Current labels: audience=user; proof=deterministic; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.
-- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
-- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
-- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
-- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
-- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
-- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
-- Human notes:
-- Trace: 1 source ref; docs/specs/user/proof-debt.spec.md:19
 
 ### Release and packaging (2)
 

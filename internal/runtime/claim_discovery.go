@@ -151,6 +151,8 @@ type claimReviewCluster struct {
 	candidates             []map[string]any
 }
 
+const claimDiscoveryRulesetVersion = "claim-discovery-rules.v2"
+
 func DiscoverClaimProofPlan(options ClaimDiscoveryOptions) (map[string]any, error) {
 	repoRoot := strings.TrimSpace(options.RepoRoot)
 	if repoRoot == "" {
@@ -235,6 +237,7 @@ func DiscoverClaimProofPlan(options ClaimDiscoveryOptions) (map[string]any, erro
 	packet := map[string]any{
 		"schemaVersion":      contracts.ClaimProofPlanSchema,
 		"discoveryMode":      "deterministic-source-inventory",
+		"discoveryEngine":    renderClaimDiscoveryEngine(resolvedRoot),
 		"sourceRoot":         ".",
 		"gitCommit":          currentGitCommit(resolvedRoot),
 		"effectiveScanScope": renderClaimScanScope(config),
@@ -258,6 +261,19 @@ func DiscoverClaimProofPlan(options ClaimDiscoveryOptions) (map[string]any, erro
 		}
 	}
 	return packet, nil
+}
+
+func renderClaimDiscoveryEngine(repoRoot string) map[string]any {
+	engine := map[string]any{
+		"name":    "cautilus.claim_discovery",
+		"ruleset": claimDiscoveryRulesetVersion,
+	}
+	sourcePath := filepath.Join(repoRoot, "internal", "runtime", "claim_discovery.go")
+	if hash, err := fileSHA256(sourcePath); err == nil {
+		engine["implementationPath"] = filepath.ToSlash(filepath.Join("internal", "runtime", "claim_discovery.go"))
+		engine["implementationHash"] = hash
+	}
+	return engine
 }
 
 func readClaimPacketFile(repoRoot string, path string) (map[string]any, error) {
@@ -1049,6 +1065,9 @@ func claimLineLooksUseful(line string) bool {
 	if claimLineLooksLikeDefinitionLabel(normalized) {
 		return false
 	}
+	if claimLineLooksLikeFutureProofPlaceholder(normalized) {
+		return false
+	}
 	if len(normalized) < 20 || len(normalized) > 260 {
 		return false
 	}
@@ -1074,6 +1093,18 @@ func claimLineLooksLikeDefinitionLabel(summary string) bool {
 	trimmed = strings.TrimPrefix(trimmed, "- ")
 	trimmed = strings.TrimPrefix(trimmed, "* ")
 	return regexp.MustCompile("^`[^`]+`:\\s+").MatchString(trimmed)
+}
+
+func claimLineLooksLikeFutureProofPlaceholder(summary string) bool {
+	lower := strings.ToLower(strings.TrimSpace(summary))
+	lower = strings.TrimPrefix(lower, "- ")
+	lower = strings.TrimPrefix(lower, "* ")
+	lower = strings.TrimSpace(lower)
+	return strings.HasPrefix(lower, "evidence is pending") ||
+		strings.HasPrefix(lower, "future proof should ") ||
+		strings.HasPrefix(lower, "deeper proof should ") ||
+		strings.HasPrefix(lower, "per-claim evidence pages should later ") ||
+		strings.HasPrefix(lower, "this page should later ")
 }
 
 func claimLineLooksLikeOpenQuestion(summary string) bool {
@@ -3312,6 +3343,9 @@ func BuildClaimRefreshPlan(options ClaimRefreshPlanOptions) (map[string]any, err
 			changedSources = filterClaimSourceChanges(options.RepoRoot, previous, changedFiles)
 		}
 	}
+	currentDiscoveryEngine := renderClaimDiscoveryEngine(options.RepoRoot)
+	previousDiscoveryEngine := asMap(previous["discoveryEngine"])
+	discoveryEngineChanged := claimDiscoveryEngineChanged(previousDiscoveryEngine, currentDiscoveryEngine)
 	previousCandidates := arrayOrEmpty(previous["claimCandidates"])
 	claims := []any{}
 	changedClaimCount := 0
@@ -3360,11 +3394,14 @@ func BuildClaimRefreshPlan(options ClaimRefreshPlanOptions) (map[string]any, err
 			})
 		}
 	}
-	refreshSummary := renderClaimRefreshSummary(baseCommit, targetCommit, changedSources, changedClaimCount, carriedForwardClaimCount, changedClaimSourceCounts)
+	refreshSummary := renderClaimRefreshSummary(baseCommit, targetCommit, changedSources, changedClaimCount, carriedForwardClaimCount, changedClaimSourceCounts, discoveryEngineChanged)
 	refreshSummary["staleEvidenceClaimCount"] = len(staleEvidence)
 	refreshSummary["changedEvidenceRefCount"] = changedEvidenceRefs
 	refreshSummary["missingEvidenceRefCount"] = missingEvidenceRefs
 	refreshSummary["unsupportedEvidenceRefCount"] = unsupportedEvidenceRefs
+	refreshSummary["discoveryEngineChanged"] = discoveryEngineChanged
+	refreshSummary["previousDiscoveryEngine"] = renderPreviousClaimDiscoveryEngine(previousDiscoveryEngine)
+	refreshSummary["currentDiscoveryEngine"] = currentDiscoveryEngine
 	if baseCommit != "" && targetCommit != "" && baseCommit != targetCommit && !changedFilesKnown {
 		refreshSummary["status"] = "unknown"
 		refreshSummary["summary"] = "Cautilus could not compare the saved claim map with the current checkout because git diff information is unavailable."
@@ -3377,6 +3414,7 @@ func BuildClaimRefreshPlan(options ClaimRefreshPlanOptions) (map[string]any, err
 		"targetCommit":       targetCommit,
 		"targetPolicy":       "current-head",
 		"workingTreePolicy":  "excluded",
+		"discoveryEngine":    currentDiscoveryEngine,
 		"changedFiles":       changedFiles,
 		"changedSources":     changedSources,
 		"claimPlan":          claims,
@@ -3387,7 +3425,34 @@ func BuildClaimRefreshPlan(options ClaimRefreshPlanOptions) (map[string]any, err
 	}, nil
 }
 
-func renderClaimRefreshSummary(baseCommit string, targetCommit string, changedSources []string, changedClaimCount int, carriedForwardClaimCount int, changedClaimSourceCounts map[string]int) map[string]any {
+func claimDiscoveryEngineChanged(previous map[string]any, current map[string]any) bool {
+	if len(current) == 0 {
+		return false
+	}
+	if len(previous) == 0 {
+		return true
+	}
+	for _, key := range []string{"name", "ruleset"} {
+		currentValue := strings.TrimSpace(stringOrEmpty(current[key]))
+		previousValue := strings.TrimSpace(stringOrEmpty(previous[key]))
+		if currentValue != "" && previousValue != "" && currentValue != previousValue {
+			return true
+		}
+		if currentValue != "" && previousValue == "" {
+			return true
+		}
+	}
+	return false
+}
+
+func renderPreviousClaimDiscoveryEngine(previous map[string]any) map[string]any {
+	if len(previous) == 0 {
+		return map[string]any{"status": "missing"}
+	}
+	return previous
+}
+
+func renderClaimRefreshSummary(baseCommit string, targetCommit string, changedSources []string, changedClaimCount int, carriedForwardClaimCount int, changedClaimSourceCounts map[string]int, discoveryEngineChanged bool) map[string]any {
 	status := "up-to-date"
 	summary := "The saved claim map already matches the current checkout; no refresh work is needed before review or eval planning."
 	if baseCommit == "" || targetCommit == "" {
@@ -3404,6 +3469,10 @@ func renderClaimRefreshSummary(baseCommit string, targetCommit string, changedSo
 			status = "up-to-date"
 			summary = "The saved claim map points at an older commit, but no recorded claim source files changed; no refresh work is needed before review or eval planning."
 		}
+	}
+	if status == "up-to-date" && discoveryEngineChanged {
+		status = "discovery-engine-changed"
+		summary = "The saved claim map was produced by a different or unknown claim-discovery engine; update the saved claim map before review or eval planning."
 	}
 	nextActions := []any{
 		map[string]any{

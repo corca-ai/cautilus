@@ -1,15 +1,5 @@
 {
-  "candidateCount": 315,
-  "carryForward": {
-    "changedEvidenceRefCount": 0,
-    "evidenceSupportIdRewriteCount": 0,
-    "matchedClaimCount": 315,
-    "missingEvidenceRefCount": 0,
-    "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
-    "staleEvidenceClaimCount": 0,
-    "strategy": "claimFingerprint",
-    "unsupportedEvidenceRefCount": 0
-  },
+  "candidateCount": 312,
   "claimCandidates": [
     {
       "claimAudience": "developer",
@@ -8672,37 +8662,6 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:76345e3dc12cd2efb55037de9429bc6e7f96c1bee032ca387038932328adc6cb",
-      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-21",
-      "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:user",
-        "cautilus-eval",
-        "dev/skill",
-        "linked-from:docs/specs/user/index.spec.md",
-        "spec"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
-      "recommendedEvalSurface": "dev/skill",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "Deeper proof should be added by linking a fresh claim packet, a reviewed status summary, and at least one skill-driven review result.",
-          "line": 21,
-          "path": "docs/specs/user/claim-discovery.spec.md"
-        }
-      ],
-      "summary": "Deeper proof should be added by linking a fresh claim packet, a reviewed status summary, and at least one skill-driven review result.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
-    },
-    {
-      "claimAudience": "user",
-      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:7d2a95136dbffa734309203e9587993060b7614fa9096e426dbf4a689109473f",
       "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-12",
       "claimSemanticGroup": "Agent and skill workflow",
@@ -8824,37 +8783,6 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:ab0640e507edfc6588274f8657b4cdd2fd0462ac324abae17eb1787847f62f42",
-      "claimId": "claim-docs-specs-user-optimization-spec-md-19",
-      "claimSemanticGroup": "Improvement and optimization",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:user",
-        "cautilus-eval",
-        "dev/repo",
-        "linked-from:docs/specs/user/index.spec.md",
-        "spec"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "Future proof should connect concrete optimize packets and held-out eval results.",
-          "line": 19,
-          "path": "docs/specs/user/optimization.spec.md"
-        }
-      ],
-      "summary": "Future proof should connect concrete optimize packets and held-out eval results.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
-    },
-    {
-      "claimAudience": "user",
-      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:87e17b5ea69471a932aa1d7960c64fa1fa6cbd8f8dd0f92c066f274d05615e61",
       "claimId": "claim-docs-specs-user-ownership-spec-md-3",
       "claimSemanticGroup": "Adapter and portability",
@@ -8972,35 +8900,6 @@
       "summary": "Unknown or missing evidence should stay visible in the public claim workflow.",
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
-    },
-    {
-      "claimAudience": "user",
-      "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:12ccc3e2bc1d51afaaa165debd1bfcf6d58cd537b37c72fd2b38e973895dc13e",
-      "claimId": "claim-docs-specs-user-proof-debt-spec-md-19",
-      "claimSemanticGroup": "Quality gates",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:user",
-        "deterministic",
-        "linked-from:docs/specs/user/index.spec.md",
-        "spec"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "This page should later link claim validation checks and evidence-bundle tests that prove review comments cannot satisfy claims by themselves.",
-          "line": 19,
-          "path": "docs/specs/user/proof-debt.spec.md"
-        }
-      ],
-      "summary": "This page should later link claim validation checks and evidence-bundle tests that prove review comments cannot satisfy claims by themselves.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
       "claimAudience": "developer",
@@ -10140,43 +10039,49 @@
   "claimSummary": {
     "byClaimAudience": {
       "developer": 233,
-      "user": 82
+      "user": 79
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 55,
-      "Agent and skill workflow": 73,
+      "Agent and skill workflow": 72,
       "Claim discovery and review": 23,
       "Documentation and contracts": 71,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
-      "Improvement and optimization": 20,
+      "Improvement and optimization": 19,
       "Packets and reporting": 41,
-      "Quality gates": 28,
+      "Quality gates": 27,
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
       "satisfied": 50,
-      "unknown": 265
+      "unknown": 262
     },
     "byLifecycle": {
-      "new": 315
+      "new": 312
     },
     "byRecommendedProof": {
-      "cautilus-eval": 125,
-      "deterministic": 120,
+      "cautilus-eval": 123,
+      "deterministic": 119,
       "human-auditable": 70
     },
     "byReviewStatus": {
       "agent-reviewed": 80,
-      "heuristic": 232,
+      "heuristic": 229,
       "human-reviewed": 3
     },
     "byVerificationReadiness": {
       "blocked": 17,
       "needs-alignment": 31,
       "needs-scenario": 8,
-      "ready-to-verify": 259
+      "ready-to-verify": 256
     }
+  },
+  "discoveryEngine": {
+    "implementationHash": "sha256:ff4f75d6a2af1e63219578e49e4a5866b2b2e820e756aa295ccea266f2201de8",
+    "implementationPath": "internal/runtime/claim_discovery.go",
+    "name": "cautilus.claim_discovery",
+    "ruleset": "claim-discovery-rules.v2"
   },
   "discoveryMode": "deterministic-source-inventory",
   "effectiveScanScope": {
@@ -10327,7 +10232,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "3819d259fd796dc6fd5777b579f6b013c0dcb508",
+  "gitCommit": "4a586aa97e53b0d81c88d490a909aae2f49964ef",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "reviewApplication": {

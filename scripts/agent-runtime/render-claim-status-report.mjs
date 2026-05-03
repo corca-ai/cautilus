@@ -4,6 +4,7 @@ import crypto from "node:crypto";
 import path from "node:path";
 
 import { renderCanonicalMapSection } from "./render-canonical-claim-map-section.mjs";
+import { refreshPlanDigest, renderRefreshPlans } from "./claim-status-refresh-plans.mjs";
 
 const DEFAULT_CLAIMS_DIR = ".cautilus/claims";
 const DEFAULT_CLAIMS = `${DEFAULT_CLAIMS_DIR}/evidenced-typed-runners.json`;
@@ -266,27 +267,6 @@ function evalPlanDigest(filePath) {
 	};
 }
 
-function refreshPlanDigest(filePath) {
-	const packet = readOptionalJSON(filePath);
-	if (!packet) {
-		return null;
-	}
-	const summary = asObject(packet.refreshSummary);
-	return {
-		path: filePath,
-		mtimeMs: fs.statSync(filePath).mtimeMs,
-		status: summary.status ?? "-",
-		changedSourceCount: summary.changedSourceCount ?? 0,
-		changedClaimCount: summary.changedClaimCount ?? 0,
-		carriedForwardClaimCount: summary.carriedForwardClaimCount ?? 0,
-		baseCommit: summary.baseCommit ?? "-",
-		targetCommit: summary.targetCommit ?? "-",
-		changedClaimSources: asArray(summary.changedClaimSources),
-		nextActions: asArray(summary.nextActions),
-		summary: summary.summary ?? "",
-	};
-}
-
 function collectDigests(args) {
 	return {
 		reviewResults: discoverJSONFiles(args.claimsDir, "review-result-").map(reviewResultDigest).filter(Boolean),
@@ -507,56 +487,6 @@ function renderEvalPlans(lines, evalPlans) {
 		lines.push(`Latest zero-plan expectation: ${compactText(latestWithExpectation.zeroPlanExpectation)}`);
 		lines.push("");
 	}
-}
-
-function refreshPlanMatchesCurrentPacket(refreshPlan, claimsPacket, statusPacket) {
-	const packetCommit = claimsPacket?.gitCommit;
-	const statusCommit = statusPacket?.gitCommit;
-	const currentCommit = statusPacket?.gitState?.currentGitCommit;
-	return [packetCommit, statusCommit, currentCommit].filter(Boolean).includes(refreshPlan.targetCommit);
-}
-
-function renderRefreshPlans(lines, refreshPlans, claimsPacket, statusPacket) {
-	lines.push("## Refresh Plans");
-	lines.push("");
-	if (refreshPlans.length === 0) {
-		lines.push("No refresh-plan packets were found.");
-		lines.push("");
-		return;
-	}
-	lines.push(...table(["Packet", "Status", "Changed sources", "Changed claims", "Carried forward"], refreshPlans.map((digest) => [
-		digest.path,
-		digest.status,
-		digest.changedSourceCount,
-		digest.changedClaimCount,
-		digest.carriedForwardClaimCount,
-	])));
-	lines.push("");
-	const latest = latestByMtime(refreshPlans);
-	if (!latest) {
-		return;
-	}
-	lines.push(`Latest refresh summary: ${compactText(latest.summary) || "-"}`);
-	if (!refreshPlanMatchesCurrentPacket(latest, claimsPacket, statusPacket)) {
-		lines.push("Latest refresh plan is historical for this status packet; its next actions are not the current review queue.");
-		lines.push("");
-		return;
-	}
-	if (latest.changedClaimSources.length > 0) {
-		const sources = latest.changedClaimSources
-			.slice(0, 5)
-			.map((source) => `${source.path}: ${source.claimCount}`)
-			.join(", ");
-		lines.push(`Latest changed claim sources: ${sources}${latest.changedClaimSources.length > 5 ? ", ..." : ""}`);
-	}
-	for (const action of latest.nextActions.slice(0, 3)) {
-		lines.push(`- ${action.label ?? action.id}: ${compactText(action.detail)}`);
-	}
-	lines.push("");
-}
-
-function latestByMtime(digests) {
-	return [...digests].sort((left, right) => Number(right.mtimeMs ?? 0) - Number(left.mtimeMs ?? 0))[0];
 }
 
 function nextWorkLines(statusPacket) {

@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:0af67bfa1549029116ad0625d026b9a40c4dce50170a7d075fc0a88110bd3816"
+      "contentHash": "sha256:2876eeec0d4590ee55b36b49d513d06d859bdfe29b94545558ca18e531fe7f0f"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,9 +15,9 @@
       "contentHash": "sha256:882064b19bb1f53a7f5d0bdbe653b53c33f2ff4ca8186e056538ca7e2eff76a8"
     }
   },
-  "claimsPacketGitCommit": "3819d259fd796dc6fd5777b579f6b013c0dcb508",
+  "claimsPacketGitCommit": "4a586aa97e53b0d81c88d490a909aae2f49964ef",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
-  "claimsPacketCandidateCount": 315,
+  "claimsPacketCandidateCount": 312,
   "catalogs": {
     "user": {
       "path": "docs/specs/user/index.spec.md",
@@ -286,33 +286,33 @@
     }
   },
   "coverageSummary": {
-    "totalRawClaimCount": 315,
-    "userRawClaimCount": 82,
-    "userMappedToCanonicalCount": 82,
+    "totalRawClaimCount": 312,
+    "userRawClaimCount": 79,
+    "userMappedToCanonicalCount": 79,
     "userUnmappedCount": 0,
     "semanticReviewRecommendedCount": 253,
     "userSemanticReviewRecommendedCount": 58,
     "byDisposition": {
       "mapped-to-maintainer-canonical": 233,
-      "mapped-to-user-canonical": 82
+      "mapped-to-user-canonical": 79
     },
     "byAudience": {
       "developer": 233,
-      "user": 82
+      "user": 79
     },
     "byMappingConfidence": {
-      "high": 62,
+      "high": 59,
       "low": 57,
       "medium": 196
     },
     "byUserCanonicalClaimId": {
-      "U1": 21,
+      "U1": 20,
       "U2": 31,
-      "U3": 5,
+      "U3": 4,
       "U4": 7,
       "U5": 10,
       "U6": 5,
-      "U7": 3
+      "U7": 2
     },
     "byMaintainerCanonicalClaimId": {
       "M1": 18,
@@ -588,7 +588,7 @@
     {
       "canonicalClaimId": "U1",
       "title": "Claim Discovery",
-      "absorbedRawClaimCount": 21,
+      "absorbedRawClaimCount": 20,
       "absorbedRawClaimIds": [
         "claim-readme-md-7",
         "claim-readme-md-9",
@@ -609,8 +609,7 @@
         "claim-docs-guides-evaluation-process-md-304",
         "claim-docs-guides-evaluation-process-md-317",
         "claim-docs-specs-user-claim-discovery-spec-md-14",
-        "claim-docs-specs-user-claim-discovery-spec-md-16",
-        "claim-docs-specs-user-claim-discovery-spec-md-21"
+        "claim-docs-specs-user-claim-discovery-spec-md-16"
       ],
       "absorbedRawClaims": [
         {
@@ -732,30 +731,23 @@
           "claimFingerprint": "sha256:30ef460039911189d3d6124c72b19d246c5bc002187e7565828234ef1d68793e",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
-        },
-        {
-          "claimId": "claim-docs-specs-user-claim-discovery-spec-md-21",
-          "claimFingerprint": "sha256:76345e3dc12cd2efb55037de9429bc6e7f96c1bee032ca387038932328adc6cb",
-          "mappingConfidence": "high",
-          "requiresSemanticReview": false
         }
       ],
       "byEvidenceStatus": {
         "satisfied": 12,
-        "unknown": 9
+        "unknown": 8
       },
       "byReviewStatus": {
         "agent-reviewed": 16,
-        "heuristic": 4,
+        "heuristic": 3,
         "human-reviewed": 1
       },
       "byRecommendedProof": {
-        "cautilus-eval": 1,
         "deterministic": 14,
         "human-auditable": 6
       },
       "byMappingConfidence": {
-        "high": 3,
+        "high": 2,
         "low": 7,
         "medium": 11
       }
@@ -1007,13 +999,12 @@
     {
       "canonicalClaimId": "U3",
       "title": "Optimization",
-      "absorbedRawClaimCount": 5,
+      "absorbedRawClaimCount": 4,
       "absorbedRawClaimIds": [
         "claim-docs-cli-reference-md-256",
         "claim-docs-specs-user-optimization-spec-md-3",
         "claim-docs-specs-user-optimization-spec-md-7",
-        "claim-docs-specs-user-optimization-spec-md-14",
-        "claim-docs-specs-user-optimization-spec-md-19"
+        "claim-docs-specs-user-optimization-spec-md-14"
       ],
       "absorbedRawClaims": [
         {
@@ -1039,29 +1030,23 @@
           "claimFingerprint": "sha256:5a4c841529140774dd02b5fdcd1a0ba100d8730ac9bf4b148eff717ce52095ff",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
-        },
-        {
-          "claimId": "claim-docs-specs-user-optimization-spec-md-19",
-          "claimFingerprint": "sha256:ab0640e507edfc6588274f8657b4cdd2fd0462ac324abae17eb1787847f62f42",
-          "mappingConfidence": "high",
-          "requiresSemanticReview": false
         }
       ],
       "byEvidenceStatus": {
         "satisfied": 1,
-        "unknown": 4
+        "unknown": 3
       },
       "byReviewStatus": {
         "agent-reviewed": 1,
-        "heuristic": 4
+        "heuristic": 3
       },
       "byRecommendedProof": {
-        "cautilus-eval": 3,
+        "cautilus-eval": 2,
         "deterministic": 1,
         "human-auditable": 1
       },
       "byMappingConfidence": {
-        "high": 4,
+        "high": 3,
         "low": 1
       }
     },
@@ -1301,11 +1286,10 @@
     {
       "canonicalClaimId": "U7",
       "title": "Proof Debt",
-      "absorbedRawClaimCount": 3,
+      "absorbedRawClaimCount": 2,
       "absorbedRawClaimIds": [
         "claim-docs-specs-user-proof-debt-spec-md-7",
-        "claim-docs-specs-user-proof-debt-spec-md-14",
-        "claim-docs-specs-user-proof-debt-spec-md-19"
+        "claim-docs-specs-user-proof-debt-spec-md-14"
       ],
       "absorbedRawClaims": [
         {
@@ -1319,26 +1303,20 @@
           "claimFingerprint": "sha256:a541795d739f3f1195e1a52ac1f6d16a18146c7bd0a2fa85cd1881c6559d4cdb",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
-        },
-        {
-          "claimId": "claim-docs-specs-user-proof-debt-spec-md-19",
-          "claimFingerprint": "sha256:12ccc3e2bc1d51afaaa165debd1bfcf6d58cd537b37c72fd2b38e973895dc13e",
-          "mappingConfidence": "high",
-          "requiresSemanticReview": false
         }
       ],
       "byEvidenceStatus": {
-        "unknown": 3
+        "unknown": 2
       },
       "byReviewStatus": {
-        "heuristic": 3
+        "heuristic": 2
       },
       "byRecommendedProof": {
         "cautilus-eval": 1,
-        "deterministic": 2
+        "deterministic": 1
       },
       "byMappingConfidence": {
-        "high": 3
+        "high": 2
       }
     }
   ],
@@ -14225,49 +14203,6 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-21",
-      "summary": "Deeper proof should be added by linking a fresh claim packet, a reviewed status summary, and at least one skill-driven review result.",
-      "sourceRefs": [
-        {
-          "path": "docs/specs/user/claim-discovery.spec.md",
-          "line": 21,
-          "excerpt": "Deeper proof should be added by linking a fresh claim packet, a reviewed status summary, and at least one skill-driven review result."
-        }
-      ],
-      "disposition": "mapped-to-user-canonical",
-      "mappingStatus": "heuristic-auto-map",
-      "claimAudience": "user",
-      "recommendedProof": "cautilus-eval",
-      "verificationReadiness": "ready-to-verify",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
-      "claimFingerprint": "sha256:76345e3dc12cd2efb55037de9429bc6e7f96c1bee032ca387038932328adc6cb",
-      "canonicalClaimId": "U1",
-      "score": 24,
-      "runnerUpCanonicalClaimId": "U2",
-      "runnerUpScore": 11,
-      "scoreMargin": 13,
-      "mappingConfidence": "high",
-      "requiresSemanticReview": false,
-      "matchedAnchors": [
-        "docs/specs/user/claim-discovery.spec.md"
-      ],
-      "matchedKeywords": [
-        "added",
-        "agent",
-        "cautilu",
-        "deeper",
-        "eval",
-        "fresh",
-        "least",
-        "linking",
-        "one",
-        "packet",
-        "proof",
-        "result"
-      ]
-    },
-    {
       "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-12",
       "summary": "Agent status should share the same readiness facts when an agent is driving the workflow.",
       "sourceRefs": [
@@ -14438,49 +14373,6 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-user-optimization-spec-md-19",
-      "summary": "Future proof should connect concrete optimize packets and held-out eval results.",
-      "sourceRefs": [
-        {
-          "path": "docs/specs/user/optimization.spec.md",
-          "line": 19,
-          "excerpt": "Future proof should connect concrete optimize packets and held-out eval results."
-        }
-      ],
-      "disposition": "mapped-to-user-canonical",
-      "mappingStatus": "heuristic-auto-map",
-      "claimAudience": "user",
-      "recommendedProof": "cautilus-eval",
-      "verificationReadiness": "ready-to-verify",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
-      "claimFingerprint": "sha256:ab0640e507edfc6588274f8657b4cdd2fd0462ac324abae17eb1787847f62f42",
-      "canonicalClaimId": "U3",
-      "score": 19,
-      "runnerUpCanonicalClaimId": "U2",
-      "runnerUpScore": 9,
-      "scoreMargin": 10,
-      "mappingConfidence": "high",
-      "requiresSemanticReview": false,
-      "matchedAnchors": [
-        "docs/specs/user/optimization.spec.md"
-      ],
-      "matchedKeywords": [
-        "cautilu",
-        "concrete",
-        "connect",
-        "eval",
-        "future",
-        "held-out",
-        "improvement",
-        "optimization",
-        "optimize",
-        "packet",
-        "proof",
-        "result"
-      ]
-    },
-    {
       "claimId": "claim-docs-specs-user-ownership-spec-md-3",
       "summary": "Cautilus owns the common evaluation workflow; the host repo owns the behavior being evaluated.",
       "sourceRefs": [
@@ -14647,49 +14539,6 @@
         "unknown",
         "visible",
         "workflow"
-      ]
-    },
-    {
-      "claimId": "claim-docs-specs-user-proof-debt-spec-md-19",
-      "summary": "This page should later link claim validation checks and evidence-bundle tests that prove review comments cannot satisfy claims by themselves.",
-      "sourceRefs": [
-        {
-          "path": "docs/specs/user/proof-debt.spec.md",
-          "line": 19,
-          "excerpt": "This page should later link claim validation checks and evidence-bundle tests that prove review comments cannot satisfy claims by themselves."
-        }
-      ],
-      "disposition": "mapped-to-user-canonical",
-      "mappingStatus": "heuristic-auto-map",
-      "claimAudience": "user",
-      "recommendedProof": "deterministic",
-      "verificationReadiness": "ready-to-verify",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
-      "claimFingerprint": "sha256:12ccc3e2bc1d51afaaa165debd1bfcf6d58cd537b37c72fd2b38e973895dc13e",
-      "canonicalClaimId": "U7",
-      "score": 22,
-      "runnerUpCanonicalClaimId": "U2",
-      "runnerUpScore": 8,
-      "scoreMargin": 14,
-      "mappingConfidence": "high",
-      "requiresSemanticReview": false,
-      "matchedAnchors": [
-        "docs/specs/user/proof-debt.spec.md"
-      ],
-      "matchedKeywords": [
-        "add",
-        "cannot",
-        "check",
-        "comment",
-        "deterministic",
-        "evidence-bundle",
-        "later",
-        "link",
-        "page",
-        "prove",
-        "review",
-        "satisfy"
       ]
     },
     {

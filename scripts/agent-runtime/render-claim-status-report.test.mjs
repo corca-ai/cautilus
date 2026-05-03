@@ -12,6 +12,10 @@ test("renderStatusReport summarizes status, review results, validation, and eval
 	};
 	const claimsPacket = {
 		gitCommit: "abc123",
+		discoveryEngine: {
+			name: "cautilus.claim_discovery",
+			ruleset: "claim-discovery-rules.v2",
+		},
 		candidateCount: 2,
 		sourceCount: 1,
 		effectiveScanScope: {
@@ -126,10 +130,15 @@ test("renderStatusReport summarizes status, review results, validation, and eval
 			{
 				path: ".cautilus/claims/refresh-plan-claim-status-report.json",
 				status: "changes-detected",
+				baseCommit: "abc123",
 				changedSourceCount: 1,
 				changedClaimCount: 2,
 				carriedForwardClaimCount: 0,
 				targetCommit: "abc123",
+				currentDiscoveryEngine: {
+					name: "cautilus.claim_discovery",
+					ruleset: "claim-discovery-rules.v2",
+				},
 				summary: "The saved claim map is stale.",
 				changedClaimSources: [{ path: "skills/cautilus/SKILL.md", claimCount: 2 }],
 				nextActions: [
@@ -225,4 +234,70 @@ test("renderStatusReport summarizes status, review results, validation, and eval
 	assert.match(report, /Gitignore policy: respect-repo-gitignore/);
 	assert.doesNotMatch(report, /claim-docs-maintainers-stale-md-1/);
 	assert.doesNotMatch(report, /This old maintainer-only claim should not appear/);
+});
+
+test("renderStatusReport treats refresh plans against an older base packet as historical", () => {
+	const claimsPacket = {
+		gitCommit: "target123",
+		candidateCount: 1,
+		sourceCount: 1,
+		discoveryEngine: {
+			name: "cautilus.claim_discovery",
+			ruleset: "claim-discovery-rules.v2",
+		},
+		claimCandidates: [],
+	};
+	const statusPacket = {
+		gitCommit: "target123",
+		gitState: {
+			currentGitCommit: "target123",
+			comparisonStatus: "fresh",
+			isStale: false,
+		},
+		actionSummary: { primaryBuckets: [] },
+	};
+	const report = renderStatusReport({
+		claimsPacket,
+		statusPacket,
+		digests: {
+			reviewResults: [],
+			validationReports: [],
+			evalPlans: [],
+			refreshPlans: [
+				{
+					path: ".cautilus/claims/refresh-plan-before-regeneration.json",
+					status: "discovery-engine-changed",
+					baseCommit: "base123",
+					targetCommit: "target123",
+					changedSourceCount: 0,
+					changedClaimCount: 0,
+					carriedForwardClaimCount: 315,
+					currentDiscoveryEngine: {
+						name: "cautilus.claim_discovery",
+						ruleset: "claim-discovery-rules.v2",
+					},
+					summary: "The saved claim map was produced by a different engine.",
+					changedClaimSources: [],
+					nextActions: [
+						{
+							id: "update_saved_claim_map",
+							label: "Update the saved claim map before review or eval planning",
+							detail: "Run claim discovery again.",
+						},
+					],
+					mtimeMs: 1,
+				},
+			],
+			canonicalMap: null,
+		},
+		args: {
+			claims: ".cautilus/claims/evidenced-typed-runners.json",
+			status: ".cautilus/claims/status-summary.json",
+			samplePerBucket: 2,
+			reviewSample: 2,
+		},
+	});
+
+	assert.match(report, /Latest refresh plan is historical for this status packet/);
+	assert.doesNotMatch(report, /Run claim discovery again/);
 });
