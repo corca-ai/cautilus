@@ -11,7 +11,7 @@
       "clusterId": "cluster-runner-readiness-schema-fields",
       "claimUpdates": [
         {
-          "claimId": "claim-docs-contracts-runner-readiness-md-273",
+          "claimId": "claim-docs-contracts-runner-readiness-md-274",
           "claimFingerprint": "sha256:82896bc781c929afea1876b90b1af2208ca7a40401fd5f57319e18617578165b",
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "deterministic",
@@ -24,9 +24,9 @@
               "path": ".cautilus/claims/evidence-runner-readiness-schema-fields-2026-05-03.json",
               "kind": "cautilus-claim-evidence-bundle",
               "matchKind": "verified",
-              "contentHash": "sha256:343348454979fefec3922e43b78b43f1330e190863da1fb86874b91d5c24c583",
+              "contentHash": "sha256:04dc91ae4ea85b54945ad255190f0fbbdbf92aa47c09e74c0f27ef6e41c396c2",
               "supportsClaimIds": [
-                "claim-docs-contracts-runner-readiness-md-273"
+                "claim-docs-contracts-runner-readiness-md-274"
               ]
             }
           ],

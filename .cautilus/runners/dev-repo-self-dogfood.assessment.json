@@ -4,8 +4,8 @@
   "surface": "dev/repo",
   "proofClass": "coding-agent-messaging",
   "assessedBy": "codex-local-backend-eval",
-  "assessedAt": "2026-05-03T21:37:15+09:00",
-  "repoCommit": "0c9350650addb433943b8a301c9de130b484e3d7",
+  "assessedAt": "2026-05-04T04:59:41+09:00",
+  "repoCommit": "0f605d6f678aadaa18cf82f8c44d07cb14119fea",
   "adapterPath": ".agents/cautilus-adapter.yaml",
   "adapterHash": "sha256:06a96e2ffc2bcb73fdcf47988ac8644a54b3f08cac1aadb4521b33f5c657d1d5",
   "runnerFiles": [
@@ -15,7 +15,15 @@
     },
     {
       "path": "scripts/agent-runtime/run-local-eval-test.mjs",
-      "sha256": "sha256:8baccbe165cec155877809a242b0d096b9c3e17e9498f6fa4b66eede3657e9c2"
+      "sha256": "sha256:1e72c2ae6d711ad35ebd3d2363fb326143e9521c0d96505cd5c06becbe575be2"
+    },
+    {
+      "path": "scripts/agent-runtime/instruction-surface-case-suite.mjs",
+      "sha256": "sha256:088a7c518f9786d26eea75f5fa6f8e81e65f49d023356564ab6510ff81bdefbc"
+    },
+    {
+      "path": "fixtures/eval/dev/repo/checked-in-agents-routing.fixture.json",
+      "sha256": "sha256:fb8446a6c723b87ae2c401e2a41479dea09cb90ec454a8c7cd3e6cbbd935a4f6"
     },
     {
       "path": "fixtures/eval/dev/repo/internal-runner-fixture-results.json",
@@ -47,6 +55,8 @@
       "loadedInstructionFiles",
       "loadedSupportingFiles",
       "routingDecision",
+      "allowedFirstToolCalls",
+      "expectationResults.firstToolCall",
       "eval-summary.json"
     ],
     "evidenceRefs": [
@@ -55,8 +65,22 @@
       "artifacts/self-dogfood/dev-repo-self-dogfood/latest/eval-test/checked-in-agents-routing/result.json"
     ],
     "latestEvaluation": {
-      "command": "./bin/cautilus eval test --repo-root . --runtime codex --output-dir ./artifacts/self-dogfood/dev-repo-self-dogfood/latest",
+      "command": "./bin/cautilus eval test --repo-root . --runtime codex --output-dir ./artifacts/self-dogfood/dev-repo-self-dogfood/latest --skip-preflight --quiet",
       "recommendation": "accept-now",
+      "evaluationCounts": {
+        "blocked": 0,
+        "failed": 0,
+        "passed": 1,
+        "total": 1
+      },
+      "firstToolCallExpectation": {
+        "allowed": [
+          "functions.exec_command",
+          "python3 .../find-skills/scripts/list_capabilities.py --repo-root ."
+        ],
+        "observed": "functions.exec_command",
+        "status": "passed"
+      },
       "summaryPath": "artifacts/self-dogfood/dev-repo-self-dogfood/latest/eval-summary.json",
       "observedPath": "artifacts/self-dogfood/dev-repo-self-dogfood/latest/eval-observed.json"
     }

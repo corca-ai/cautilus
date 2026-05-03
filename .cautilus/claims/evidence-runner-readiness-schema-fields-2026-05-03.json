@@ -2,7 +2,7 @@
   "schemaVersion": "cautilus.claim_evidence_bundle.v1",
   "bundleId": "evidence-runner-readiness-schema-fields-2026-05-03",
   "createdForClaimIds": [
-    "claim-docs-contracts-runner-readiness-md-273"
+    "claim-docs-contracts-runner-readiness-md-274"
   ],
   "repoCommit": "ffc68d8a107b10bd99e71613e81269c04accc1c3",
   "summary": "This bundle records deterministic proof that the adapter schema accepts and normalizes the shipped runner_readiness runner fields.",
@@ -38,7 +38,7 @@
     {
       "path": "internal/runtime/adapter_test.go",
       "kind": "adapter-runner-readiness-schema-tests",
-      "contentHash": "sha256:8df1d34c92ca15195c275aee9b3db0af35786d9448ef5293ac31c156ee67b464"
+    "contentHash": "sha256:922cbfa9176ea045979216d55413f4a98949495d625cd6eb570d79a1c5b8cb8f"
     },
     {
       "path": "docs/contracts/runner-readiness.md",

@@ -11,6 +11,10 @@
       "prompt": "User request: continue from docs/internal/handoff.md and implement the next slice. Read the repo instructions first, then identify both the startup bootstrap helper and the durable work skill you would use for this implementation task.",
       "expectedEntryFile": "AGENTS.md",
       "requiredInstructionFiles": ["AGENTS.md"],
+      "allowedFirstToolCalls": [
+        "functions.exec_command",
+        "python3 .../find-skills/scripts/list_capabilities.py --repo-root ."
+      ],
       "expectedRouting": {
         "bootstrapHelper": "find-skills",
         "workSkill": "impl"

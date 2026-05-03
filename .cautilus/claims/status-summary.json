@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 154
+          "unknown": 157
         },
         "byReviewStatus": {
-          "heuristic": 154
+          "heuristic": 157
         },
-        "count": 154,
+        "count": 157,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -16,7 +16,7 @@
           "claim-readme-md-161",
           "claim-readme-md-179",
           "claim-readme-md-200",
-          "claim-docs-contracts-adapter-contract-md-218"
+          "claim-docs-contracts-adapter-contract-md-209"
         ],
         "summary": "Review heuristic labels before spending proof or eval budget."
       }
@@ -43,19 +43,19 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 25
+          "unknown": 26
         },
         "byReviewStatus": {
           "agent-reviewed": 1,
-          "heuristic": 24
+          "heuristic": 25
         },
-        "count": 25,
+        "count": 26,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
-          "claim-docs-contracts-adapter-contract-md-218",
-          "claim-docs-contracts-adapter-contract-md-277",
-          "claim-docs-contracts-adapter-contract-md-316",
+          "claim-docs-contracts-adapter-contract-md-219",
+          "claim-docs-contracts-adapter-contract-md-278",
+          "claim-docs-contracts-adapter-contract-md-317",
           "claim-docs-contracts-claim-discovery-workflow-md-188",
           "claim-docs-contracts-claim-discovery-workflow-md-202"
         ],
@@ -63,20 +63,20 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 74
+          "unknown": 76
         },
         "byReviewStatus": {
-          "heuristic": 74
+          "heuristic": 76
         },
-        "count": 74,
+        "count": 76,
         "id": "agent-plan-cautilus-eval",
         "recommendedActor": "agent",
         "sampleClaimIds": [
-          "claim-docs-contracts-adapter-contract-md-221",
-          "claim-docs-contracts-adapter-contract-md-431",
-          "claim-docs-contracts-adapter-contract-md-477",
-          "claim-docs-contracts-review-packet-md-3",
-          "claim-docs-contracts-active-run-md-59"
+          "claim-docs-contracts-adapter-contract-md-209",
+          "claim-docs-contracts-adapter-contract-md-222",
+          "claim-docs-contracts-adapter-contract-md-432",
+          "claim-docs-contracts-adapter-contract-md-478",
+          "claim-docs-contracts-review-packet-md-3"
         ],
         "summary": "Draft or select Cautilus eval scenarios for ready eval claims."
       },
@@ -96,7 +96,7 @@
           "claim-docs-master-plan-md-88",
           "claim-docs-specs-user-evaluation-spec-md-12",
           "claim-docs-contracts-claim-discovery-workflow-md-262",
-          "claim-docs-contracts-claim-discovery-workflow-md-684"
+          "claim-docs-contracts-claim-discovery-workflow-md-688"
         ],
         "summary": "Decompose the behavior into a concrete scenario before protected eval planning."
       },
@@ -114,7 +114,7 @@
         "sampleClaimIds": [
           "claim-docs-cli-reference-md-180",
           "claim-docs-cli-reference-md-186",
-          "claim-docs-contracts-adapter-contract-md-406",
+          "claim-docs-contracts-adapter-contract-md-407",
           "claim-docs-guides-consumer-adoption-md-29",
           "claim-docs-guides-consumer-adoption-md-83"
         ],
@@ -132,7 +132,7 @@
         "recommendedActor": "human",
         "sampleClaimIds": [
           "claim-readme-md-75",
-          "claim-docs-contracts-adapter-contract-md-425",
+          "claim-docs-contracts-adapter-contract-md-426",
           "claim-docs-contracts-claim-discovery-workflow-md-92",
           "claim-docs-contracts-claim-discovery-workflow-md-182",
           "claim-docs-contracts-claim-discovery-workflow-md-255"
@@ -141,13 +141,13 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 33
+          "unknown": 31
         },
         "byReviewStatus": {
-          "agent-reviewed": 28,
+          "agent-reviewed": 26,
           "heuristic": 5
         },
-        "count": 33,
+        "count": 31,
         "id": "split-or-defer",
         "recommendedActor": "human",
         "sampleClaimIds": [
@@ -161,7 +161,7 @@
       }
     ]
   },
-  "candidateCount": 324,
+  "candidateCount": 325,
   "claimState": {
     "path": ".cautilus/claims/latest.json",
     "pathSource": "adapter",
@@ -178,11 +178,11 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 243,
+      "developer": 244,
       "user": 81
     },
     "byClaimSemanticGroup": {
-      "Adapter and portability": 57,
+      "Adapter and portability": 58,
       "Agent and skill workflow": 73,
       "Claim discovery and review": 22,
       "Documentation and contracts": 73,
@@ -195,25 +195,25 @@
     },
     "byEvidenceStatus": {
       "satisfied": 121,
-      "unknown": 203
+      "unknown": 204
     },
     "byLifecycle": {
-      "new": 324
+      "new": 325
     },
     "byRecommendedProof": {
-      "cautilus-eval": 99,
-      "deterministic": 134,
-      "human-auditable": 91
+      "cautilus-eval": 101,
+      "deterministic": 135,
+      "human-auditable": 89
     },
     "byReviewStatus": {
-      "agent-reviewed": 170,
-      "heuristic": 154
+      "agent-reviewed": 168,
+      "heuristic": 157
     },
     "byVerificationReadiness": {
-      "blocked": 33,
+      "blocked": 31,
       "needs-alignment": 39,
       "needs-scenario": 10,
-      "ready-to-verify": 242
+      "ready-to-verify": 245
     }
   },
   "discoveryBoundary": {
@@ -2014,7 +2014,7 @@
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
-            "contentHash": "sha256:7eca57dd7633871a9a8106a8a0ebd91dbf3ef4ac5fdbf3aa56215374a15bc0f5",
+            "contentHash": "sha256:fbf26c7abbc80d917d7946e979a15648e5499d4f95c9beb92406374d45497bb3",
             "kind": "cautilus-claim-evidence-bundle",
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-remaining-deterministic-claims-2026-05-03.json",
@@ -2052,7 +2052,7 @@
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
-            "contentHash": "sha256:7eca57dd7633871a9a8106a8a0ebd91dbf3ef4ac5fdbf3aa56215374a15bc0f5",
+            "contentHash": "sha256:fbf26c7abbc80d917d7946e979a15648e5499d4f95c9beb92406374d45497bb3",
             "kind": "cautilus-claim-evidence-bundle",
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-remaining-deterministic-claims-2026-05-03.json",
@@ -2067,16 +2067,16 @@
         "summary": "The bundled skill may help fill judgment fields, but operators should not have to author `cautilus.runner_assessment.v1` from prose alone."
       },
       {
-        "claimId": "claim-docs-contracts-runner-readiness-md-273",
+        "claimId": "claim-docs-contracts-runner-readiness-md-274",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
-            "contentHash": "sha256:343348454979fefec3922e43b78b43f1330e190863da1fb86874b91d5c24c583",
+            "contentHash": "sha256:04dc91ae4ea85b54945ad255190f0fbbdbf92aa47c09e74c0f27ef6e41c396c2",
             "kind": "cautilus-claim-evidence-bundle",
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-runner-readiness-schema-fields-2026-05-03.json",
             "supportsClaimIds": [
-              "claim-docs-contracts-runner-readiness-md-273"
+              "claim-docs-contracts-runner-readiness-md-274"
             ]
           }
         ],
@@ -2086,16 +2086,16 @@
         "summary": "The shipped schema uses `id`, `surfaces`, `proof_class`, `command_template`, optional `smoke_command_template`, optional `assessment_path`, and optional `default_runtime`."
       },
       {
-        "claimId": "claim-docs-contracts-runner-readiness-md-282",
+        "claimId": "claim-docs-contracts-runner-readiness-md-283",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
-            "contentHash": "sha256:7eca57dd7633871a9a8106a8a0ebd91dbf3ef4ac5fdbf3aa56215374a15bc0f5",
+            "contentHash": "sha256:fbf26c7abbc80d917d7946e979a15648e5499d4f95c9beb92406374d45497bb3",
             "kind": "cautilus-claim-evidence-bundle",
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-remaining-deterministic-claims-2026-05-03.json",
             "supportsClaimIds": [
-              "claim-docs-contracts-runner-readiness-md-282"
+              "claim-docs-contracts-runner-readiness-md-283"
             ]
           }
         ],
@@ -2105,16 +2105,16 @@
         "summary": "It should not duplicate the command catalog."
       },
       {
-        "claimId": "claim-docs-contracts-runner-readiness-md-349",
+        "claimId": "claim-docs-contracts-runner-readiness-md-350",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
-            "contentHash": "sha256:c02e9e1c45d17968bcb2dd2edd66179d2b280ba63ea5c20a58b4503875f6e94b",
+            "contentHash": "sha256:9d9b9d27c4600c725727b7089f58f6343c539b19d7d9621517f6393cbc0a3c48",
             "kind": "cautilus-claim-evidence-bundle",
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-proof-class-downstream-summary-2026-05-03.json",
             "supportsClaimIds": [
-              "claim-docs-contracts-runner-readiness-md-349"
+              "claim-docs-contracts-runner-readiness-md-350"
             ]
           }
         ],
@@ -2128,7 +2128,7 @@
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
-            "contentHash": "sha256:7eca57dd7633871a9a8106a8a0ebd91dbf3ef4ac5fdbf3aa56215374a15bc0f5",
+            "contentHash": "sha256:fbf26c7abbc80d917d7946e979a15648e5499d4f95c9beb92406374d45497bb3",
             "kind": "cautilus-claim-evidence-bundle",
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-remaining-deterministic-claims-2026-05-03.json",
@@ -2147,7 +2147,7 @@
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
-            "contentHash": "sha256:7eca57dd7633871a9a8106a8a0ebd91dbf3ef4ac5fdbf3aa56215374a15bc0f5",
+            "contentHash": "sha256:fbf26c7abbc80d917d7946e979a15648e5499d4f95c9beb92406374d45497bb3",
             "kind": "cautilus-claim-evidence-bundle",
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-remaining-deterministic-claims-2026-05-03.json",
@@ -2362,7 +2362,7 @@
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
-            "contentHash": "sha256:7eca57dd7633871a9a8106a8a0ebd91dbf3ef4ac5fdbf3aa56215374a15bc0f5",
+            "contentHash": "sha256:fbf26c7abbc80d917d7946e979a15648e5499d4f95c9beb92406374d45497bb3",
             "kind": "cautilus-claim-evidence-bundle",
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-remaining-deterministic-claims-2026-05-03.json",
@@ -2500,7 +2500,7 @@
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
-            "contentHash": "sha256:7eca57dd7633871a9a8106a8a0ebd91dbf3ef4ac5fdbf3aa56215374a15bc0f5",
+            "contentHash": "sha256:fbf26c7abbc80d917d7946e979a15648e5499d4f95c9beb92406374d45497bb3",
             "kind": "cautilus-claim-evidence-bundle",
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-remaining-deterministic-claims-2026-05-03.json",
@@ -2519,7 +2519,7 @@
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
-            "contentHash": "sha256:7eca57dd7633871a9a8106a8a0ebd91dbf3ef4ac5fdbf3aa56215374a15bc0f5",
+            "contentHash": "sha256:fbf26c7abbc80d917d7946e979a15648e5499d4f95c9beb92406374d45497bb3",
             "kind": "cautilus-claim-evidence-bundle",
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-remaining-deterministic-claims-2026-05-03.json",
@@ -2692,7 +2692,7 @@
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
-            "contentHash": "sha256:7eca57dd7633871a9a8106a8a0ebd91dbf3ef4ac5fdbf3aa56215374a15bc0f5",
+            "contentHash": "sha256:fbf26c7abbc80d917d7946e979a15648e5499d4f95c9beb92406374d45497bb3",
             "kind": "cautilus-claim-evidence-bundle",
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-remaining-deterministic-claims-2026-05-03.json",
@@ -2746,7 +2746,7 @@
       }
     ]
   },
-  "gitCommit": "62870ac373022ce91b045918ad93ef7a721216f1",
+  "gitCommit": "0f605d6f678aadaa18cf82f8c44d07cb14119fea",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
@@ -2758,10 +2758,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "62870ac373022ce91b045918ad93ef7a721216f1",
+    "currentGitCommit": "0f605d6f678aadaa18cf82f8c44d07cb14119fea",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "62870ac373022ce91b045918ad93ef7a721216f1",
+    "packetGitCommit": "0f605d6f678aadaa18cf82f8c44d07cb14119fea",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
@@ -2785,7 +2785,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 125,
+    "heuristicClaimsReadyForReview": 128,
     "needsAlignment": 39,
     "needsScenario": 10
   },
@@ -2820,7 +2820,6 @@
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:developer",
-        "dev/repo",
         "human-auditable",
         "repo-instructions"
       ],
@@ -2939,7 +2938,6 @@
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:developer",
-        "dev/repo",
         "human-auditable",
         "repo-instructions"
       ],
@@ -3024,6 +3022,52 @@
         }
       ],
       "summary": "Ships as a standalone binary plus a bundled skill a host repo can install without copying another scaffold first.",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "claimAudience": "user",
+      "claimId": "claim-readme-md-9",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "evidenceStatus": "satisfied",
+      "groupHints": [
+        "audience:user",
+        "deterministic",
+        "readme"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep this claim covered by command packet tests and representative packet smoke when adding or changing agent-resume command surfaces.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "line": 9,
+          "path": "README.md"
+        }
+      ],
+      "summary": "Commands should emit durable packets with enough state for the next agent to resume, not only terminal prose for a human operator.",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "claimAudience": "user",
+      "claimId": "claim-readme-md-10",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "evidenceStatus": "satisfied",
+      "groupHints": [
+        "audience:user",
+        "deterministic",
+        "readme"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep binary-install and repo-local skill-install proof together when changing install.sh, update, or `cautilus install`.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "line": 10,
+          "path": "README.md"
+        }
+      ],
+      "summary": "`Cautilus` installs as a machine-level binary, but its agent-facing surface is intentionally repo-local.",
       "verificationReadiness": "ready-to-verify"
     }
   ],

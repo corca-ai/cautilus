@@ -8,11 +8,11 @@ Source excerpts are included for local judgment; source refs are trace data, not
 ## Packet Summary
 
 - Claims packet: .cautilus/claims/evidenced-typed-runners.json
-- Git commit in packet: 73e60ae97009e7a2f599e7e0dec0707ea76896a1
-- Candidate count: 323
+- Git commit in packet: 0f605d6f678aadaa18cf82f8c44d07cb14119fea
+- Candidate count: 325
 - Source count: 44
 - User claims: 81
-- Developer claims: 242
+- Developer claims: 244
 
 ## How To Review
 
@@ -30,7 +30,7 @@ Only set an eval surface when the corrected proof is `cautilus-eval`; otherwise 
 
 1. No `Unclear Claims` are present in this packet.
 2. Review `User Claims` next (81 items) because these are closest to product promises.
-3. Spot-check `Developer Claims` last (242 items) to catch internal conventions that leaked into product promises.
+3. Spot-check `Developer Claims` last (244 items) to catch internal conventions that leaked into product promises.
 Do not try to clear every claim in the first pass; mark duplicates, fragments, and obvious audience mistakes first.
 
 ## User Claims (81)
@@ -1248,13 +1248,28 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/guides/consumer-adoption.md:107
 
-## Developer Claims (242)
+## Developer Claims (244)
 
-### Adapter and portability (41)
+### Adapter and portability (42)
 
-#### Cautilus eval / dev/repo / ready-to-verify / evidence unknown (2)
+#### Cautilus eval / dev/repo / ready-to-verify / evidence unknown (3)
 
-##### claim-docs-contracts-adapter-contract-md-221
+##### claim-docs-contracts-adapter-contract-md-209
+
+- Summary: When an eval run uses `runtime=product`, the adapter-owned command is expected to exercise a headless product path; the runtime label does not make product proof ready without a current runner assessment.
+- Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/repo; readiness=ready-to-verify; evidence=unknown
+- Suggested next action: Create a host-owned dev/repo fixture and run it through cautilus eval test.
+- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
+- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
+- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
+- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
+- Human corrected eval surface: [ ] keep [ ] dev/repo [ ] dev/skill [ ] app/chat [ ] app/prompt [ ] surface undecided
+- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
+- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
+- Human notes:
+- Trace: 1 source ref; docs/contracts/adapter-contract.md:209
+
+##### claim-docs-contracts-adapter-contract-md-222
 
 - Summary: If omitted, discovery uses the portable fallback group `General product behavior` instead of assuming a product-specific taxonomy.
 - Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/repo; readiness=ready-to-verify; evidence=unknown
@@ -1267,7 +1282,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/adapter-contract.md:221
+- Trace: 1 source ref; docs/contracts/adapter-contract.md:222
 
 ##### claim-docs-contracts-claim-discovery-workflow-md-179
 
@@ -1627,7 +1642,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/specs/maintainer/adapter-host-ownership.spec.md:18
 
-#### Deterministic gate / ready-to-verify / evidence unknown (2)
+#### Deterministic gate / ready-to-verify / evidence unknown (3)
 
 ##### claim-docs-contracts-claim-discovery-workflow-md-259
 
@@ -1643,6 +1658,20 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:259
 
+##### claim-docs-contracts-runner-readiness-md-348
+
+- Summary: The skill may guide runner creation, but reusable deterministic behavior belongs in code, adapters, packets, and tests.
+- Current labels: audience=developer; proof=deterministic; readiness=ready-to-verify; evidence=unknown
+- Suggested next action: Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.
+- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
+- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
+- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
+- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
+- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
+- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
+- Human notes:
+- Trace: 1 source ref; docs/contracts/runner-readiness.md:348
+
 ##### claim-docs-contracts-scenario-proposal-sources-md-152
 
 - Summary: Evidence should preserve where the suggestion came from without forcing one host repo's storage model on the product.
@@ -1657,7 +1686,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/contracts/scenario-proposal-sources.md:152
 
-#### Human-auditable / blocked / evidence unknown (5)
+#### Human-auditable / blocked / evidence unknown (4)
 
 ##### claim-agents-md-12
 
@@ -1686,20 +1715,6 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
 - Trace: 1 source ref; AGENTS.md:79
-
-##### claim-docs-contracts-runner-readiness-md-347
-
-- Summary: The skill may guide runner creation, but reusable deterministic behavior belongs in code, adapters, packets, and tests.
-- Current labels: audience=developer; proof=human-auditable; readiness=blocked; evidence=unknown
-- Suggested next action: Do not satisfy directly; split into narrower checkable subclaims, keep as positioning, or resolve the documented alignment/deferred decision first.
-- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
-- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
-- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
-- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
-- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
-- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
-- Human notes:
-- Trace: 1 source ref; docs/contracts/runner-readiness.md:347
 
 ##### claim-docs-contracts-workbench-instance-discovery-md-100
 
@@ -1731,7 +1746,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 
 #### Human-auditable / needs-alignment / evidence unknown (7)
 
-##### claim-docs-contracts-adapter-contract-md-406
+##### claim-docs-contracts-adapter-contract-md-407
 
 - Summary: This keeps prompt benchmarking, code-quality benchmarking, and workflow smoke tests from collapsing into one overloaded adapter file.
 - Current labels: audience=developer; proof=human-auditable; readiness=needs-alignment; evidence=unknown
@@ -1743,9 +1758,9 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/adapter-contract.md:406
+- Trace: 1 source ref; docs/contracts/adapter-contract.md:407
 
-##### claim-docs-contracts-claim-discovery-workflow-md-629
+##### claim-docs-contracts-claim-discovery-workflow-md-633
 
 - Summary: The binary/skill boundary stays clean enough that consumer repos can use the binary plus bundled skill without Cautilus importing host-specific prompts or adapters.
 - Current labels: audience=developer; proof=human-auditable; readiness=needs-alignment; evidence=unknown
@@ -1757,7 +1772,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:629
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:633
 
 ##### claim-docs-contracts-live-run-invocation-batch-md-28
 
@@ -1847,7 +1862,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 
 ### Agent and skill workflow (53)
 
-#### Cautilus eval / dev/repo / ready-to-verify / evidence unknown (4)
+#### Cautilus eval / dev/repo / ready-to-verify / evidence unknown (5)
 
 ##### claim-docs-contracts-claim-discovery-workflow-md-197
 
@@ -1879,7 +1894,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:311
 
-##### claim-docs-contracts-claim-discovery-workflow-md-462
+##### claim-docs-contracts-claim-discovery-workflow-md-466
 
 - Summary: The refresh-plan packet should include a coordinator-facing summary rather than requiring every agent to reverse-engineer raw JSON fields:
 - Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/repo; readiness=ready-to-verify; evidence=unknown
@@ -1892,9 +1907,9 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:462
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:466
 
-##### claim-docs-contracts-claim-discovery-workflow-md-521
+##### claim-docs-contracts-claim-discovery-workflow-md-525
 
 - Summary: Each action bucket should include `byReviewStatus` and `byEvidenceStatus` counts so a human can tell whether the queue is already reviewed enough to spend time on or still needs agent triage first.
 - Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/repo; readiness=ready-to-verify; evidence=unknown
@@ -1907,7 +1922,22 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:521
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:525
+
+##### claim-docs-contracts-runner-readiness-md-398
+
+- Summary: Treating `agent status` branch labels as a fourth product workflow is over-worry once the branch ordering keeps ownership visible and status remains read-only.
+- Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/repo; readiness=ready-to-verify; evidence=unknown
+- Suggested next action: Create a host-owned dev/repo fixture and run it through cautilus eval test.
+- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
+- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
+- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
+- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
+- Human corrected eval surface: [ ] keep [ ] dev/repo [ ] dev/skill [ ] app/chat [ ] app/prompt [ ] surface undecided
+- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
+- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
+- Human notes:
+- Trace: 1 source ref; docs/contracts/runner-readiness.md:398
 
 #### Cautilus eval / dev/skill / ready-to-verify / evidence satisfied (5)
 
@@ -2033,7 +2063,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:215
 
-##### claim-docs-contracts-claim-discovery-workflow-md-370
+##### claim-docs-contracts-claim-discovery-workflow-md-374
 
 - Summary: The skill review can upgrade them to `satisfied`, `partial`, `stale`, or `missing` only when the packet semantics above are met.
 - Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/skill; readiness=ready-to-verify; evidence=unknown
@@ -2046,9 +2076,9 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:370
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:374
 
-##### claim-docs-contracts-claim-discovery-workflow-md-387
+##### claim-docs-contracts-claim-discovery-workflow-md-391
 
 - Summary: The skill should review clusters in priority order:
 - Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/skill; readiness=ready-to-verify; evidence=unknown
@@ -2061,9 +2091,9 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:387
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:391
 
-##### claim-docs-contracts-claim-discovery-workflow-md-477
+##### claim-docs-contracts-claim-discovery-workflow-md-481
 
 - Summary: After discovery or refresh, the skill should report status in a compact decision-oriented shape:
 - Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/skill; readiness=ready-to-verify; evidence=unknown
@@ -2076,9 +2106,9 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:477
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:481
 
-##### claim-docs-contracts-claim-discovery-workflow-md-501
+##### claim-docs-contracts-claim-discovery-workflow-md-505
 
 - Summary: The skill should then ask the user which branch to take.
 - Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/skill; readiness=ready-to-verify; evidence=unknown
@@ -2091,9 +2121,9 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:501
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:505
 
-##### claim-docs-contracts-claim-discovery-workflow-md-504
+##### claim-docs-contracts-claim-discovery-workflow-md-508
 
 - Summary: The skill should not automatically launch expensive evaluator runs or broad code edits after status unless the user has already delegated that continuation and the recorded budget covers it.
 - Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/skill; readiness=ready-to-verify; evidence=unknown
@@ -2106,9 +2136,9 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:504
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:508
 
-##### claim-docs-contracts-claim-discovery-workflow-md-623
+##### claim-docs-contracts-claim-discovery-workflow-md-627
 
 - Summary: A user can invoke the Cautilus skill without detailed input and get a clear status summary rather than a raw 500-claim dump.
 - Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/skill; readiness=ready-to-verify; evidence=unknown
@@ -2121,9 +2151,9 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:623
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:627
 
-##### claim-docs-contracts-runner-readiness-md-278
+##### claim-docs-contracts-runner-readiness-md-279
 
 - Summary: The bundled `cautilus` skill should keep one progressive surface.
 - Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/skill; readiness=ready-to-verify; evidence=unknown
@@ -2136,9 +2166,9 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/runner-readiness.md:278
+- Trace: 1 source ref; docs/contracts/runner-readiness.md:279
 
-##### claim-docs-contracts-runner-readiness-md-281
+##### claim-docs-contracts-runner-readiness-md-282
 
 - Summary: The skill should use the binary for command discovery and examples.
 - Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/skill; readiness=ready-to-verify; evidence=unknown
@@ -2151,9 +2181,9 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/runner-readiness.md:281
+- Trace: 1 source ref; docs/contracts/runner-readiness.md:282
 
-##### claim-docs-contracts-runner-readiness-md-294
+##### claim-docs-contracts-runner-readiness-md-295
 
 - Summary: For app repos, the skill should prefer creating a headless product runner over extracting prompts into a standalone mock.
 - Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/skill; readiness=ready-to-verify; evidence=unknown
@@ -2166,7 +2196,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/runner-readiness.md:294
+- Trace: 1 source ref; docs/contracts/runner-readiness.md:295
 
 ##### claim-docs-contracts-scenario-history-md-289
 
@@ -2185,7 +2215,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 
 #### Cautilus eval / surface undecided / needs-scenario / evidence unknown (1)
 
-##### claim-docs-contracts-claim-discovery-workflow-md-684
+##### claim-docs-contracts-claim-discovery-workflow-md-688
 
 - Summary: `claim show` emits `cautilus.claim_status_summary.v1` and can include bounded `sampleClaims` plus `gitState` for agents that need concrete candidates before choosing the next branch.
 - Current labels: audience=developer; proof=cautilus-eval; eval surface=surface undecided; readiness=needs-scenario; evidence=unknown
@@ -2198,7 +2228,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:684
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:688
 
 #### Deterministic gate / needs-alignment / evidence unknown (2)
 
@@ -2318,11 +2348,11 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:261
 
-##### claim-docs-contracts-claim-discovery-workflow-md-357
+##### claim-docs-contracts-claim-discovery-workflow-md-361
 
 - Summary: The binary can do cheap deterministic preflight, but the skill owns final interpretation.
 - Current labels: audience=developer; proof=deterministic; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.
+- Suggested next action: Keep or add deterministic readiness, preflight, or command-contract proof for this claim.
 - Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
 - Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
 - Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
@@ -2330,9 +2360,9 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:357
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:361
 
-##### claim-docs-contracts-claim-discovery-workflow-md-398
+##### claim-docs-contracts-claim-discovery-workflow-md-402
 
 - Summary: The parent skill should merge results and keep review provenance in the packet.
 - Current labels: audience=developer; proof=deterministic; readiness=ready-to-verify; evidence=unknown
@@ -2344,9 +2374,9 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:398
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:402
 
-##### claim-docs-contracts-claim-discovery-workflow-md-554
+##### claim-docs-contracts-claim-discovery-workflow-md-558
 
 - Summary: The skill may select refresh, but deterministic refresh-plan output must record baseline commit, target policy, changed sources, carried-forward claims, stale evidence reasons, and dirty-working-tree treatment.
 - Current labels: audience=developer; proof=deterministic; readiness=ready-to-verify; evidence=unknown
@@ -2358,9 +2388,9 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:554
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:558
 
-##### claim-docs-contracts-claim-discovery-workflow-md-579
+##### claim-docs-contracts-claim-discovery-workflow-md-583
 
 - Summary: Perfect subagent batch sizing should wait until the deterministic packet and skill control flow are dogfooded.
 - Current labels: audience=developer; proof=deterministic; readiness=ready-to-verify; evidence=unknown
@@ -2372,9 +2402,9 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:579
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:583
 
-##### claim-docs-contracts-claim-discovery-workflow-md-592
+##### claim-docs-contracts-claim-discovery-workflow-md-596
 
 - Summary: Existing state refresh is selected by the skill when prior claim JSON exists, but deterministic refresh-plan output owns the state transition.
 - Current labels: audience=developer; proof=deterministic; readiness=ready-to-verify; evidence=unknown
@@ -2386,9 +2416,9 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:592
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:596
 
-##### claim-docs-contracts-claim-discovery-workflow-md-682
+##### claim-docs-contracts-claim-discovery-workflow-md-686
 
 - Summary: LLM-backed cluster review should come after the deterministic packet and skill control flow are stable enough to dogfood.
 - Current labels: audience=developer; proof=deterministic; readiness=ready-to-verify; evidence=unknown
@@ -2400,7 +2430,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:682
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:686
 
 ##### claim-skills-cautilus-skill-md-221
 
@@ -2416,7 +2446,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; skills/cautilus/SKILL.md:221
 
-#### Human-auditable / blocked / evidence unknown (7)
+#### Human-auditable / blocked / evidence unknown (6)
 
 ##### claim-agents-md-61
 
@@ -2432,7 +2462,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; AGENTS.md:61
 
-##### claim-docs-contracts-adapter-contract-md-536
+##### claim-docs-contracts-adapter-contract-md-537
 
 - Summary: Past sessions showed `codex exec` can emit skill-load errors on stderr while still returning a successful exit code.
 - Current labels: audience=developer; proof=human-auditable; readiness=blocked; evidence=unknown
@@ -2444,7 +2474,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/adapter-contract.md:536
+- Trace: 1 source ref; docs/contracts/adapter-contract.md:537
 
 ##### claim-docs-contracts-claim-discovery-workflow-md-65
 
@@ -2473,20 +2503,6 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
 - Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:78
-
-##### claim-docs-contracts-runner-readiness-md-397
-
-- Summary: Treating `agent status` branch labels as a fourth product workflow is over-worry once the branch ordering keeps ownership visible and status remains read-only.
-- Current labels: audience=developer; proof=human-auditable; readiness=blocked; evidence=unknown
-- Suggested next action: Exclude from eval planning or rewrite as a concrete acceptance claim about `agent status` branch ordering and read-only behavior.
-- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
-- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
-- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
-- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
-- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
-- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
-- Human notes:
-- Trace: 1 source ref; docs/contracts/runner-readiness.md:397
 
 ##### claim-docs-master-plan-md-31
 
@@ -2698,7 +2714,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:177
 
-##### claim-docs-contracts-claim-discovery-workflow-md-457
+##### claim-docs-contracts-claim-discovery-workflow-md-461
 
 - Summary: When the skill runs `claim discover --previous <packet>` for the actual refreshed proof plan, unchanged claim fingerprints carry forward reviewed labels, evidence refs, unresolved questions, and next-action state.
 - Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/skill; readiness=ready-to-verify; evidence=unknown
@@ -2711,9 +2727,9 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:457
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:461
 
-##### claim-docs-contracts-claim-discovery-workflow-md-572
+##### claim-docs-contracts-claim-discovery-workflow-md-576
 
 - Summary: Helper flags under `claim discover` are enough if the skill keeps the user-facing action as discover.
 - Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/skill; readiness=ready-to-verify; evidence=unknown
@@ -2726,7 +2742,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:572
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:576
 
 #### Deterministic gate / ready-to-verify / evidence satisfied (2)
 
@@ -2760,7 +2776,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 
 #### Deterministic gate / ready-to-verify / evidence unknown (3)
 
-##### claim-docs-contracts-adapter-contract-md-218
+##### claim-docs-contracts-adapter-contract-md-219
 
 - Summary: The binary uses these hints before portable path defaults to label review queues, while the bundled skill or a human reviewer may still correct semantic edge cases.
 - Current labels: audience=developer; proof=deterministic; readiness=ready-to-verify; evidence=unknown
@@ -2772,9 +2788,9 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/adapter-contract.md:218
+- Trace: 1 source ref; docs/contracts/adapter-contract.md:219
 
-##### claim-docs-contracts-claim-discovery-workflow-md-591
+##### claim-docs-contracts-claim-discovery-workflow-md-595
 
 - Summary: Claim review that uses an LLM needs separate review-budget confirmation after deterministic scan.
 - Current labels: audience=developer; proof=deterministic; readiness=ready-to-verify; evidence=unknown
@@ -2786,9 +2802,9 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:591
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:595
 
-##### claim-docs-contracts-claim-discovery-workflow-md-688
+##### claim-docs-contracts-claim-discovery-workflow-md-692
 
 - Summary: `claim review prepare-input` emits `cautilus.claim_review_input.v1` and records bounded clusters, skipped clusters, and skipped claims, but still does not call an LLM or merge review results.
 - Current labels: audience=developer; proof=deterministic; readiness=ready-to-verify; evidence=unknown
@@ -2800,7 +2816,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:688
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:692
 
 #### Human-auditable / needs-alignment / evidence unknown (4)
 
@@ -2818,7 +2834,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:132
 
-##### claim-docs-contracts-claim-discovery-workflow-md-455
+##### claim-docs-contracts-claim-discovery-workflow-md-459
 
 - Summary: The binary may provide helper flags such as `claim discover --previous <packet> --refresh-plan`, but the public user-level workflow remains `discover`.
 - Current labels: audience=developer; proof=human-auditable; readiness=needs-alignment; evidence=unknown
@@ -2830,9 +2846,9 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:455
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:459
 
-##### claim-docs-contracts-claim-discovery-workflow-md-587
+##### claim-docs-contracts-claim-discovery-workflow-md-591
 
 - Summary: In the claim discovery workflow, the bundled skill owns LLM-backed claim review, review-budget explanation, and subagent orchestration.
 - Current labels: audience=developer; proof=human-auditable; readiness=needs-alignment; evidence=unknown
@@ -2844,7 +2860,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:587
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:591
 
 ##### claim-skills-cautilus-skill-md-23
 
@@ -2862,7 +2878,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 
 #### Human-auditable / ready-to-verify / evidence unknown (4)
 
-##### claim-docs-contracts-adapter-contract-md-425
+##### claim-docs-contracts-adapter-contract-md-426
 
 - Summary: A named adapter whose eval-test commands produce rich scenario-by-scenario signals should also persist them as files so executor variants and human reviewers can ground their verdicts on the same numbers.
 - Current labels: audience=developer; proof=human-auditable; readiness=ready-to-verify; evidence=unknown
@@ -2874,9 +2890,9 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/adapter-contract.md:425
+- Trace: 1 source ref; docs/contracts/adapter-contract.md:426
 
-##### claim-docs-contracts-claim-discovery-workflow-md-689
+##### claim-docs-contracts-claim-discovery-workflow-md-693
 
 - Summary: Already satisfied and already reviewed non-stale claims are excluded from review clusters by default so reviewer budget stays focused on unresolved heuristic claims while carried evidence and prior decisions remain auditable under `skippedClaims`.
 - Current labels: audience=developer; proof=human-auditable; readiness=ready-to-verify; evidence=unknown
@@ -2888,7 +2904,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:689
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:693
 
 ##### claim-docs-specs-maintainer-claim-discovery-workflow-spec-md-13
 
@@ -2918,7 +2934,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/specs/maintainer/reporting-review-variants.spec.md:14
 
-### Documentation and contracts (53)
+### Documentation and contracts (54)
 
 #### Cautilus eval / app/prompt / ready-to-verify / evidence unknown (4)
 
@@ -3014,7 +3030,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/contracts/active-run.md:221
 
-##### claim-docs-contracts-adapter-contract-md-431
+##### claim-docs-contracts-adapter-contract-md-432
 
 - Summary: point review prompts at the same path so human and machine review can refer to the same compare output
 - Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/repo; readiness=ready-to-verify; evidence=unknown
@@ -3027,9 +3043,9 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/adapter-contract.md:431
+- Trace: 1 source ref; docs/contracts/adapter-contract.md:432
 
-##### claim-docs-contracts-adapter-contract-md-477
+##### claim-docs-contracts-adapter-contract-md-478
 
 - Summary: Each review prompt should point at human-visible failure:
 - Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/repo; readiness=ready-to-verify; evidence=unknown
@@ -3042,9 +3058,9 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/adapter-contract.md:477
+- Trace: 1 source ref; docs/contracts/adapter-contract.md:478
 
-##### claim-docs-contracts-claim-discovery-workflow-md-373
+##### claim-docs-contracts-claim-discovery-workflow-md-377
 
 - Summary: `unknown` should be used when the workflow did not inspect enough evidence to make an honest statement.
 - Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/repo; readiness=ready-to-verify; evidence=unknown
@@ -3057,9 +3073,9 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:373
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:377
 
-##### claim-docs-contracts-claim-discovery-workflow-md-377
+##### claim-docs-contracts-claim-discovery-workflow-md-381
 
 - Summary: The workflow should not send every raw candidate to an LLM independently.
 - Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/repo; readiness=ready-to-verify; evidence=unknown
@@ -3072,9 +3088,9 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:377
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:381
 
-##### claim-docs-contracts-claim-discovery-workflow-md-525
+##### claim-docs-contracts-claim-discovery-workflow-md-529
 
 - Summary: The workflow should avoid a `claim group` command.
 - Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/repo; readiness=ready-to-verify; evidence=unknown
@@ -3087,9 +3103,9 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:525
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:529
 
-##### claim-docs-contracts-claim-discovery-workflow-md-549
+##### claim-docs-contracts-claim-discovery-workflow-md-553
 
 - Summary: Scan confirmation and LLM review confirmation must be separate.
 - Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/repo; readiness=ready-to-verify; evidence=unknown
@@ -3102,9 +3118,9 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:549
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:553
 
-##### claim-docs-contracts-claim-discovery-workflow-md-573
+##### claim-docs-contracts-claim-discovery-workflow-md-577
 
 - Summary: LLM-backed claim extraction or review should not move into the binary.
 - Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/repo; readiness=ready-to-verify; evidence=unknown
@@ -3117,9 +3133,9 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:573
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:577
 
-##### claim-docs-contracts-claim-discovery-workflow-md-609
+##### claim-docs-contracts-claim-discovery-workflow-md-613
 
 - Summary: Whether model-backed extraction should ever become a binary runner behind an explicit provider contract.
 - Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/repo; readiness=ready-to-verify; evidence=unknown
@@ -3132,7 +3148,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:609
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:613
 
 ##### claim-docs-contracts-claim-discovery-workflow-md-90
 
@@ -3194,7 +3210,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/contracts/runner-readiness.md:156
 
-##### claim-docs-contracts-runner-readiness-md-301
+##### claim-docs-contracts-runner-readiness-md-302
 
 - Summary: They should not become the only runner model.
 - Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/repo; readiness=ready-to-verify; evidence=unknown
@@ -3207,9 +3223,9 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/runner-readiness.md:301
+- Trace: 1 source ref; docs/contracts/runner-readiness.md:302
 
-##### claim-docs-contracts-runner-readiness-md-358
+##### claim-docs-contracts-runner-readiness-md-359
 
 - Summary: A simple app repo can adopt Cautilus with one headless product runner without adopting the full eval-live instance model.
 - Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/repo; readiness=ready-to-verify; evidence=unknown
@@ -3222,7 +3238,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/runner-readiness.md:358
+- Trace: 1 source ref; docs/contracts/runner-readiness.md:359
 
 ##### claim-docs-contracts-runner-readiness-md-43
 
@@ -3346,7 +3362,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/contracts/reporting.md:120
 
-##### claim-docs-contracts-runner-readiness-md-273
+##### claim-docs-contracts-runner-readiness-md-274
 
 - Summary: The shipped schema uses `id`, `surfaces`, `proof_class`, `command_template`, optional `smoke_command_template`, optional `assessment_path`, and optional `default_runtime`.
 - Current labels: audience=developer; proof=deterministic; readiness=ready-to-verify; evidence=satisfied
@@ -3358,9 +3374,9 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/runner-readiness.md:273
+- Trace: 1 source ref; docs/contracts/runner-readiness.md:274
 
-##### claim-docs-contracts-runner-readiness-md-282
+##### claim-docs-contracts-runner-readiness-md-283
 
 - Summary: It should not duplicate the command catalog.
 - Current labels: audience=developer; proof=deterministic; readiness=ready-to-verify; evidence=satisfied
@@ -3372,7 +3388,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/runner-readiness.md:282
+- Trace: 1 source ref; docs/contracts/runner-readiness.md:283
 
 ##### claim-docs-contracts-runner-verification-md-68
 
@@ -3416,9 +3432,9 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/specs/maintainer/scenario-history-normalization.spec.md:18
 
-#### Deterministic gate / ready-to-verify / evidence unknown (6)
+#### Deterministic gate / ready-to-verify / evidence unknown (7)
 
-##### claim-docs-contracts-adapter-contract-md-277
+##### claim-docs-contracts-adapter-contract-md-278
 
 - Summary: `kind: explicit` keeps fixture-backed repos and simple single-instance adopters cheap without forcing a probe script.
 - Current labels: audience=developer; proof=deterministic; readiness=ready-to-verify; evidence=unknown
@@ -3430,7 +3446,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/adapter-contract.md:277
+- Trace: 1 source ref; docs/contracts/adapter-contract.md:278
 
 ##### claim-docs-contracts-claim-discovery-workflow-md-188
 
@@ -3460,7 +3476,21 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:254
 
-##### claim-docs-contracts-claim-discovery-workflow-md-378
+##### claim-docs-contracts-claim-discovery-workflow-md-372
+
+- Summary: The preflight should never assert that a claim is satisfied solely because a filename looks related.
+- Current labels: audience=developer; proof=deterministic; readiness=ready-to-verify; evidence=unknown
+- Suggested next action: Keep or add deterministic readiness, preflight, or command-contract proof for this claim.
+- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
+- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
+- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
+- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
+- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
+- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
+- Human notes:
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:372
+
+##### claim-docs-contracts-claim-discovery-workflow-md-382
 
 - Summary: The deterministic pass should emit grouping hints:
 - Current labels: audience=developer; proof=deterministic; readiness=ready-to-verify; evidence=unknown
@@ -3472,9 +3502,9 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:378
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:382
 
-##### claim-docs-contracts-claim-discovery-workflow-md-574
+##### claim-docs-contracts-claim-discovery-workflow-md-578
 
 - Summary: In this workflow, the binary stays deterministic and provider-neutral.
 - Current labels: audience=developer; proof=deterministic; readiness=ready-to-verify; evidence=unknown
@@ -3486,9 +3516,9 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:574
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:578
 
-##### claim-docs-contracts-claim-discovery-workflow-md-654
+##### claim-docs-contracts-claim-discovery-workflow-md-658
 
 - Summary: The binary should remain deterministic and provider-neutral.
 - Current labels: audience=developer; proof=deterministic; readiness=ready-to-verify; evidence=unknown
@@ -3500,7 +3530,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:654
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:658
 
 #### Human-auditable / blocked / evidence unknown (5)
 
@@ -3518,7 +3548,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; AGENTS.md:26
 
-##### claim-docs-contracts-adapter-contract-md-473
+##### claim-docs-contracts-adapter-contract-md-474
 
 - Summary: If a checked-in wrapper can observe provider cost or token usage, let it emit an optional `telemetry` object in the structured verdict payload instead of hiding that data in stderr text.
 - Current labels: audience=developer; proof=human-auditable; readiness=blocked; evidence=unknown
@@ -3530,9 +3560,9 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/adapter-contract.md:473
+- Trace: 1 source ref; docs/contracts/adapter-contract.md:474
 
-##### claim-docs-contracts-adapter-contract-md-534
+##### claim-docs-contracts-adapter-contract-md-535
 
 - Summary: Past runs showed some CLIs can reject schemas that declare object properties without also listing them in `required`, even when plain JSON Schema would allow them as optional.
 - Current labels: audience=developer; proof=human-auditable; readiness=blocked; evidence=unknown
@@ -3544,7 +3574,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/adapter-contract.md:534
+- Trace: 1 source ref; docs/contracts/adapter-contract.md:535
 
 ##### claim-docs-contracts-claim-discovery-workflow-md-47
 
@@ -3648,7 +3678,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:328
 
-##### claim-docs-contracts-claim-discovery-workflow-md-551
+##### claim-docs-contracts-claim-discovery-workflow-md-555
 
 - Summary: Depth 3 must be paired with visible source, candidate, cluster, and review-budget bounds.
 - Current labels: audience=developer; proof=human-auditable; readiness=ready-to-verify; evidence=unknown
@@ -3660,7 +3690,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:551
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:555
 
 ##### claim-docs-contracts-runner-readiness-md-172
 
@@ -3821,7 +3851,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/contracts/runner-readiness.md:37
 
-##### claim-docs-contracts-runner-readiness-md-409
+##### claim-docs-contracts-runner-readiness-md-410
 
 - Summary: Implementation notes should update this document before changing adapter, doctor, status, claim, eval, or optimize behavior in ways that affect the runner substrate.
 - Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/repo; readiness=ready-to-verify; evidence=unknown
@@ -3834,7 +3864,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/runner-readiness.md:409
+- Trace: 1 source ref; docs/contracts/runner-readiness.md:410
 
 ##### claim-docs-contracts-runner-readiness-md-45
 
@@ -3898,7 +3928,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 
 #### Cautilus eval / dev/skill / ready-to-verify / evidence unknown (1)
 
-##### claim-docs-contracts-runner-readiness-md-279
+##### claim-docs-contracts-runner-readiness-md-280
 
 - Summary: It should not split into separate discover, eval, optimize, and runner skills.
 - Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/skill; readiness=ready-to-verify; evidence=unknown
@@ -3911,7 +3941,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/runner-readiness.md:279
+- Trace: 1 source ref; docs/contracts/runner-readiness.md:280
 
 #### Deterministic gate / ready-to-verify / evidence satisfied (4)
 
@@ -4023,7 +4053,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 
 #### Cautilus eval / app/prompt / ready-to-verify / evidence unknown (2)
 
-##### claim-docs-contracts-claim-discovery-workflow-md-400
+##### claim-docs-contracts-claim-discovery-workflow-md-404
 
 - Summary: The LLM review seam should use versioned packets instead of hidden prompt-only behavior:
 - Current labels: audience=developer; proof=cautilus-eval; eval surface=app/prompt; readiness=ready-to-verify; evidence=unknown
@@ -4036,9 +4066,9 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:400
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:404
 
-##### claim-docs-contracts-claim-discovery-workflow-md-405
+##### claim-docs-contracts-claim-discovery-workflow-md-409
 
 - Summary: Those packets should record cluster IDs, candidate IDs, source refs, prompt/reference hashes, runtime/model identity when available, merge decisions, label changes, evidence-status reasons, unresolved questions, and skipped clusters.
 - Current labels: audience=developer; proof=cautilus-eval; eval surface=app/prompt; readiness=ready-to-verify; evidence=unknown
@@ -4051,7 +4081,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:405
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:409
 
 #### Cautilus eval / dev/repo / ready-to-verify / evidence unknown (10)
 
@@ -4070,7 +4100,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/contracts/active-run.md:59
 
-##### claim-docs-contracts-claim-discovery-workflow-md-507
+##### claim-docs-contracts-claim-discovery-workflow-md-511
 
 - Summary: The status packet should include a `discoveryBoundary` block that says the packet is based on entry documents and linked Markdown, and that undeclared user-facing behavior is an entry-surface gap rather than a discoverable claim.
 - Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/repo; readiness=ready-to-verify; evidence=unknown
@@ -4083,7 +4113,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:507
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:511
 
 ##### claim-docs-contracts-review-packet-md-3
 
@@ -4319,7 +4349,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/contracts/runner-readiness.md:134
 
-##### claim-docs-contracts-runner-readiness-md-349
+##### claim-docs-contracts-runner-readiness-md-350
 
 - Summary: Proof class must remain visible in downstream summaries and reports.
 - Current labels: audience=developer; proof=deterministic; readiness=ready-to-verify; evidence=satisfied
@@ -4331,7 +4361,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/runner-readiness.md:349
+- Trace: 1 source ref; docs/contracts/runner-readiness.md:350
 
 ##### claim-docs-contracts-scenario-proposal-sources-md-28
 
@@ -4377,7 +4407,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 
 #### Deterministic gate / ready-to-verify / evidence unknown (3)
 
-##### claim-docs-contracts-adapter-contract-md-316
+##### claim-docs-contracts-adapter-contract-md-317
 
 - Summary: The command writes one `cautilus.live_run_invocation_result.v1` packet to `output_file`.
 - Current labels: audience=developer; proof=deterministic; readiness=ready-to-verify; evidence=unknown
@@ -4389,9 +4419,9 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/adapter-contract.md:316
+- Trace: 1 source ref; docs/contracts/adapter-contract.md:317
 
-##### claim-docs-contracts-claim-discovery-workflow-md-608
+##### claim-docs-contracts-claim-discovery-workflow-md-612
 
 - Summary: Whether `claim show` should grow Markdown or HTML rendering beyond its JSON summary packet.
 - Current labels: audience=developer; proof=deterministic; readiness=ready-to-verify; evidence=unknown
@@ -4403,7 +4433,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:608
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:612
 
 ##### claim-docs-contracts-optimization-md-27
 
@@ -4451,7 +4481,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 
 #### Human-auditable / needs-alignment / evidence unknown (4)
 
-##### claim-docs-contracts-claim-discovery-workflow-md-687
+##### claim-docs-contracts-claim-discovery-workflow-md-691
 
 - Summary: Commit drift caused only by generated claim artifacts remains visible as head drift without blocking review or eval planning.
 - Current labels: audience=developer; proof=human-auditable; readiness=needs-alignment; evidence=unknown
@@ -4463,7 +4493,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:687
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:691
 
 ##### claim-docs-contracts-runner-verification-md-5
 
@@ -4778,7 +4808,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 
 #### Deterministic gate / ready-to-verify / evidence unknown (1)
 
-##### claim-docs-contracts-claim-discovery-workflow-md-628
+##### claim-docs-contracts-claim-discovery-workflow-md-632
 
 - Summary: The workflow can say which claims already have deterministic or Cautilus evidence, and which still need scenarios, tests, or alignment work.
 - Current labels: audience=developer; proof=deterministic; readiness=ready-to-verify; evidence=unknown
@@ -4790,7 +4820,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:628
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:632
 
 #### Human-auditable / blocked / evidence unknown (1)
 
@@ -4810,7 +4840,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 
 #### Human-auditable / needs-alignment / evidence unknown (2)
 
-##### claim-docs-contracts-claim-discovery-workflow-md-697
+##### claim-docs-contracts-claim-discovery-workflow-md-701
 
 - Summary: It emits `cautilus.claim_eval_plan.v1` from reviewed `cautilus-eval` claims that are ready to verify, while preserving the host boundary by not writing fixtures, prompts, runners, wrappers, or policy.
 - Current labels: audience=developer; proof=human-auditable; readiness=needs-alignment; evidence=unknown
@@ -4822,7 +4852,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:697
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:701
 
 ##### claim-docs-specs-maintainer-readiness-runtime-status-spec-md-20
 

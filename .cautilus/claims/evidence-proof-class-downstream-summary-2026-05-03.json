@@ -2,7 +2,7 @@
   "schemaVersion": "cautilus.claim_evidence_bundle.v1",
   "bundleId": "evidence-proof-class-downstream-summary-2026-05-03",
   "createdForClaimIds": [
-    "claim-docs-contracts-runner-readiness-md-349"
+    "claim-docs-contracts-runner-readiness-md-350"
   ],
   "repoCommit": "815694dd634c343c89fb59f44a6be3fb924e4050",
   "summary": "This bundle records deterministic proof that evaluation proof class remains visible in downstream evaluation summaries and report proof summaries.",
@@ -38,7 +38,7 @@
     {
       "path": "internal/runtime/evaluation_proof_test.go",
       "kind": "evaluation-proof-summary-tests",
-      "contentHash": "sha256:86c03310105cbb0cb93e6ec7ec7f69d2dc9b80e2272b03db45058cf35a1cf674"
+    "contentHash": "sha256:05ba47322101da7ed6a7a9590d9b290c5eb5f3fda5a2b247fdd7111cfcc91d5c"
     },
     {
       "path": "docs/contracts/runner-readiness.md",

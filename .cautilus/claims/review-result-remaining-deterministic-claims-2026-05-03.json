@@ -30,7 +30,7 @@
               "path": ".cautilus/claims/evidence-remaining-deterministic-claims-2026-05-03.json",
               "kind": "cautilus-claim-evidence-bundle",
               "matchKind": "verified",
-              "contentHash": "sha256:7eca57dd7633871a9a8106a8a0ebd91dbf3ef4ac5fdbf3aa56215374a15bc0f5",
+              "contentHash": "sha256:fbf26c7abbc80d917d7946e979a15648e5499d4f95c9beb92406374d45497bb3",
               "supportsClaimIds": [
                 "claim-docs-contracts-claim-discovery-workflow-md-681"
               ]
@@ -66,7 +66,7 @@
               "path": ".cautilus/claims/evidence-remaining-deterministic-claims-2026-05-03.json",
               "kind": "cautilus-claim-evidence-bundle",
               "matchKind": "verified",
-              "contentHash": "sha256:7eca57dd7633871a9a8106a8a0ebd91dbf3ef4ac5fdbf3aa56215374a15bc0f5",
+              "contentHash": "sha256:fbf26c7abbc80d917d7946e979a15648e5499d4f95c9beb92406374d45497bb3",
               "supportsClaimIds": [
                 "claim-docs-contracts-runner-readiness-md-140"
               ]
@@ -88,7 +88,7 @@
               "path": ".cautilus/claims/evidence-remaining-deterministic-claims-2026-05-03.json",
               "kind": "cautilus-claim-evidence-bundle",
               "matchKind": "verified",
-              "contentHash": "sha256:7eca57dd7633871a9a8106a8a0ebd91dbf3ef4ac5fdbf3aa56215374a15bc0f5",
+              "contentHash": "sha256:fbf26c7abbc80d917d7946e979a15648e5499d4f95c9beb92406374d45497bb3",
               "supportsClaimIds": [
                 "claim-docs-contracts-runner-readiness-md-218"
               ]
@@ -110,7 +110,7 @@
               "path": ".cautilus/claims/evidence-remaining-deterministic-claims-2026-05-03.json",
               "kind": "cautilus-claim-evidence-bundle",
               "matchKind": "verified",
-              "contentHash": "sha256:7eca57dd7633871a9a8106a8a0ebd91dbf3ef4ac5fdbf3aa56215374a15bc0f5",
+              "contentHash": "sha256:fbf26c7abbc80d917d7946e979a15648e5499d4f95c9beb92406374d45497bb3",
               "supportsClaimIds": [
                 "claim-docs-contracts-runner-verification-md-12"
               ]
@@ -124,7 +124,7 @@
       "clusterId": "cluster-developer-documentation-and-contracts-deterministic-contract",
       "claimUpdates": [
         {
-          "claimId": "claim-docs-contracts-runner-readiness-md-282",
+          "claimId": "claim-docs-contracts-runner-readiness-md-283",
           "claimFingerprint": "sha256:9fa2368158266b9fff3f7c4e0ee3e56438a32265a1f7261f8c07508734a33d58",
           "reviewStatus": "agent-reviewed",
           "unresolvedQuestions": [],
@@ -137,9 +137,9 @@
               "path": ".cautilus/claims/evidence-remaining-deterministic-claims-2026-05-03.json",
               "kind": "cautilus-claim-evidence-bundle",
               "matchKind": "verified",
-              "contentHash": "sha256:7eca57dd7633871a9a8106a8a0ebd91dbf3ef4ac5fdbf3aa56215374a15bc0f5",
+              "contentHash": "sha256:fbf26c7abbc80d917d7946e979a15648e5499d4f95c9beb92406374d45497bb3",
               "supportsClaimIds": [
-                "claim-docs-contracts-runner-readiness-md-282"
+                "claim-docs-contracts-runner-readiness-md-283"
               ]
             }
           ],
@@ -173,7 +173,7 @@
               "path": ".cautilus/claims/evidence-remaining-deterministic-claims-2026-05-03.json",
               "kind": "cautilus-claim-evidence-bundle",
               "matchKind": "verified",
-              "contentHash": "sha256:7eca57dd7633871a9a8106a8a0ebd91dbf3ef4ac5fdbf3aa56215374a15bc0f5",
+              "contentHash": "sha256:fbf26c7abbc80d917d7946e979a15648e5499d4f95c9beb92406374d45497bb3",
               "supportsClaimIds": [
                 "claim-docs-contracts-runner-verification-md-68"
               ]
@@ -195,7 +195,7 @@
               "path": ".cautilus/claims/evidence-remaining-deterministic-claims-2026-05-03.json",
               "kind": "cautilus-claim-evidence-bundle",
               "matchKind": "verified",
-              "contentHash": "sha256:7eca57dd7633871a9a8106a8a0ebd91dbf3ef4ac5fdbf3aa56215374a15bc0f5",
+              "contentHash": "sha256:fbf26c7abbc80d917d7946e979a15648e5499d4f95c9beb92406374d45497bb3",
               "supportsClaimIds": [
                 "claim-docs-contracts-scenario-proposal-sources-md-235"
               ]
@@ -222,7 +222,7 @@
               "path": ".cautilus/claims/evidence-remaining-deterministic-claims-2026-05-03.json",
               "kind": "cautilus-claim-evidence-bundle",
               "matchKind": "verified",
-              "contentHash": "sha256:7eca57dd7633871a9a8106a8a0ebd91dbf3ef4ac5fdbf3aa56215374a15bc0f5",
+              "contentHash": "sha256:fbf26c7abbc80d917d7946e979a15648e5499d4f95c9beb92406374d45497bb3",
               "supportsClaimIds": [
                 "claim-docs-specs-maintainer-scenario-history-normalization-spec-md-18"
               ]
@@ -249,7 +249,7 @@
               "path": ".cautilus/claims/evidence-remaining-deterministic-claims-2026-05-03.json",
               "kind": "cautilus-claim-evidence-bundle",
               "matchKind": "verified",
-              "contentHash": "sha256:7eca57dd7633871a9a8106a8a0ebd91dbf3ef4ac5fdbf3aa56215374a15bc0f5",
+              "contentHash": "sha256:fbf26c7abbc80d917d7946e979a15648e5499d4f95c9beb92406374d45497bb3",
               "supportsClaimIds": [
                 "claim-docs-contracts-optimization-md-136"
               ]
@@ -285,7 +285,7 @@
               "path": ".cautilus/claims/evidence-remaining-deterministic-claims-2026-05-03.json",
               "kind": "cautilus-claim-evidence-bundle",
               "matchKind": "verified",
-              "contentHash": "sha256:7eca57dd7633871a9a8106a8a0ebd91dbf3ef4ac5fdbf3aa56215374a15bc0f5",
+              "contentHash": "sha256:fbf26c7abbc80d917d7946e979a15648e5499d4f95c9beb92406374d45497bb3",
               "supportsClaimIds": [
                 "claim-docs-contracts-optimization-md-34"
               ]
