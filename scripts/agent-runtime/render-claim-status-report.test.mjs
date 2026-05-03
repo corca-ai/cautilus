@@ -47,6 +47,11 @@ test("renderStatusReport summarizes status, review results, validation, and eval
 		sourceCount: 1,
 		gitState: {
 			comparisonStatus: "fresh",
+			changedFilesBasis: {
+				scope: "committed-diff-between-packet-and-current-head",
+				workingTreePolicy: "excluded",
+			},
+			workingTreePolicy: "excluded",
 			isStale: false,
 		},
 		actionSummary: {
@@ -196,6 +201,7 @@ test("renderStatusReport summarizes status, review results, validation, and eval
 	assert.match(report, /# Cautilus Claim Status Report/);
 	assert.match(report, /Snapshot notice: git state is a generated status snapshot/);
 	assert.match(report, /Git state snapshot: fresh; stale=no/);
+	assert.match(report, /Changed-file scope: committed-diff-between-packet-and-current-head; working tree=excluded/);
 	assert.match(report, /## Scoreboard/);
 	assert.match(report, /agent-add-deterministic-proof/);
 	assert.match(report, /human-align-surfaces/);

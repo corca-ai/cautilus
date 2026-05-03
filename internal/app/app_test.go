@@ -517,6 +517,10 @@ func TestRunClaimShowTreatsNonSourceHeadDriftAsFresh(t *testing.T) {
 	if gitState["headDrift"] != true || gitState["changedSourceCount"] != float64(0) {
 		t.Fatalf("expected head drift with no source impact, got %#v", gitState)
 	}
+	changedFilesBasis := gitState["changedFilesBasis"].(map[string]any)
+	if changedFilesBasis["scope"] != "committed-diff-between-packet-and-current-head" || gitState["workingTreePolicy"] != "excluded" {
+		t.Fatalf("expected committed-diff changed-file basis, got %#v", gitState)
+	}
 }
 
 func TestRunClaimReviewPrepareInputWritesClusters(t *testing.T) {

@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 255
+          "unknown": 254
         },
         "byReviewStatus": {
-          "heuristic": 255
+          "heuristic": 254
         },
-        "count": 255,
+        "count": 254,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -24,12 +24,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 22
+          "satisfied": 23
         },
         "byReviewStatus": {
-          "agent-reviewed": 22
+          "agent-reviewed": 23
         },
-        "count": 22,
+        "count": 23,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -43,22 +43,22 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 107
+          "unknown": 106
         },
         "byReviewStatus": {
           "agent-reviewed": 21,
-          "heuristic": 83,
+          "heuristic": 82,
           "human-reviewed": 3
         },
-        "count": 107,
+        "count": 106,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
           "claim-agents-md-12",
           "claim-agents-md-61",
           "claim-readme-md-101",
-          "claim-readme-md-156",
-          "claim-docs-cli-reference-md-32"
+          "claim-docs-cli-reference-md-32",
+          "claim-docs-cli-reference-md-110"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -195,8 +195,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 22,
-      "unknown": 300
+      "satisfied": 23,
+      "unknown": 299
     },
     "byLifecycle": {
       "new": 322
@@ -207,8 +207,8 @@
       "human-auditable": 66
     },
     "byReviewStatus": {
-      "agent-reviewed": 64,
-      "heuristic": 255,
+      "agent-reviewed": 65,
+      "heuristic": 254,
       "human-reviewed": 3
     },
     "byVerificationReadiness": {
@@ -381,7 +381,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 22,
+    "satisfiedClaimCount": 23,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-78",
@@ -521,6 +521,25 @@
         "recommendedProof": "cautilus-eval",
         "reviewStatus": "agent-reviewed",
         "summary": "CLI: `cautilus scenario normalize chatbot --input logs.json` For agent: \"Run a chatbot regression with these logs and my new system prompt.\" You get reopenable `proposals.json` candidates that can be kept out of tuning as protected checks."
+      },
+      {
+        "claimId": "claim-readme-md-156",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:803b917b46b80551f66ad79c5bb3851eec8937e6df74cdff06ba0f55fa8ce16b",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-fixture-runtime-proof-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-readme-md-156"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "When the goal is only to prove command routing and packet evaluation, `cautilus eval test --runtime fixture` can run the same product path with adapter-owned fixture results instead of launching a nested model eval."
       },
       {
         "claimId": "claim-readme-md-166",
@@ -811,19 +830,21 @@
   },
   "gitCommit": "00f3889efd94da3ecdfd9bd4698fdb491797306f",
   "gitState": {
-    "changedFileCount": 23,
+    "changedFileCount": 25,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
       ".cautilus/claims/discovery-review.md",
       ".cautilus/claims/evidence-durable-packets-2026-05-03.json",
       ".cautilus/claims/evidence-install-packaging-2026-05-03.json",
+      ".cautilus/claims/evidence-machine-readable-packets-2026-05-03.json",
       ".cautilus/claims/evidence-scenario-catalog-example-cli-2026-05-03.json",
       ".cautilus/claims/evidence-specdown-prerequisite-2026-05-03.json",
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
       ".cautilus/claims/review-result-evidence-durable-packets-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-install-packaging-2026-05-03.json",
+      ".cautilus/claims/review-result-evidence-machine-readable-packets-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-specdown-prerequisite-2026-05-03.json",
       ".cautilus/claims/status-summary.json",
@@ -837,10 +858,15 @@
       "scripts/agent-runtime/apply-current-review-results.mjs",
       "scripts/agent-runtime/apply-current-review-results.test.mjs"
     ],
+    "changedFilesBasis": {
+      "meaning": "changedFiles lists files committed between packetGitCommit and currentGitCommit; it does not include unstaged, staged, or untracked working-tree files.",
+      "scope": "committed-diff-between-packet-and-current-head",
+      "workingTreePolicy": "excluded"
+    },
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "78746e5fd79bafb9745d29c32a8224dfc4b9bd20",
+    "currentGitCommit": "c7ae36509e8ad4a98cc82a0ae7aecd572b63da5d",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "00f3889efd94da3ecdfd9bd4698fdb491797306f",
@@ -867,7 +893,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 228,
+    "heuristicClaimsReadyForReview": 227,
     "needsAlignment": 30,
     "needsScenario": 8
   },

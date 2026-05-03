@@ -1,0 +1,85 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-fixture-runtime-proof-2026-05-03",
+  "createdForClaimIds": [
+    "claim-readme-md-156"
+  ],
+  "repoCommit": "c7ae36509e8ad4a98cc82a0ae7aecd572b63da5d",
+  "summary": "This bundle records deterministic proof that `cautilus eval test --runtime fixture` runs the normal eval-test packet path while selecting adapter-owned fixture results instead of a coding-agent backend.",
+  "evidenceScope": {
+    "targetSurface": "README fixture runtime eval-test claim",
+    "claimBoundary": "Only the README claim that the fixture runtime can prove command routing and packet evaluation through the eval-test path without launching a nested model eval is marked satisfied.",
+    "notClaimed": [
+      "Fixture runtime proves live model, app, or product-runner behavior",
+      "Every adapter has a fixture backend configured",
+      "All eval presets have equivalent live-runtime coverage",
+      "Fixture smoke is a replacement for held-out behavior evaluation"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/app -run TestCLIEvalTestAcceptsFixtureRuntime",
+      "exitCode": 0,
+      "reason": "The focused CLI test now passes `--runtime fixture`, requires the adapter command to receive the fixture backend, and asserts that eval-observed proof metadata records runtime=fixture, proofClass=fixture-smoke, and proofClassSource=runtime."
+    },
+    {
+      "command": "./bin/cautilus eval test --repo-root . --adapter-name self-dogfood-eval-skill --runtime fixture --skip-preflight --output-dir /tmp/cautilus-fixture-runtime-proof",
+      "exitCode": 0,
+      "reason": "The checked-in self-dogfood dev/skill adapter ran the eval-test path with `--backend fixture` and `--fixture-results-file fixtures/eval/dev/skill/internal-runner-fixture-results.json`, then emitted accept-now eval packets."
+    }
+  ],
+  "packetEvidence": [
+    {
+      "path": "/tmp/cautilus-fixture-runtime-proof/eval-summary.json",
+      "kind": "eval-summary-packet",
+      "contentHash": "sha256:06f83411f691dc90038c0187f99ece82cf89e3d1659636d8edda708b57507882",
+      "schemaVersion": "cautilus.skill_evaluation_summary.v1",
+      "recommendation": "accept-now",
+      "proof": {
+        "runtime": "fixture",
+        "proofClass": "fixture-smoke",
+        "proofClassSource": "runtime",
+        "targetSurface": "dev/skill"
+      }
+    },
+    {
+      "path": "/tmp/cautilus-fixture-runtime-proof/eval-observed.json",
+      "kind": "eval-observed-packet",
+      "contentHash": "sha256:a5e8b766e6f58f14129058c089de8ebfe94bd6241a72af7d4ee5174a9d1e0e7d",
+      "schemaVersion": "cautilus.skill_evaluation_inputs.v1",
+      "proof": {
+        "runtime": "fixture",
+        "proofClass": "fixture-smoke",
+        "proofClassSource": "runtime",
+        "targetSurface": "dev/skill"
+      }
+    },
+    {
+      "path": "/tmp/cautilus-fixture-runtime-proof/eval-cases.json",
+      "kind": "eval-cases-packet",
+      "contentHash": "sha256:1cdcba7054e6d074aa9c0f32c539de0fcd19eec0b4a19e63dadc5d408289e613"
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "focused-cli-smoke-test",
+      "contentHash": "sha256:63a55959fc9db329c52bc9162d902c9cbf60ec9d86d9a9b8f5cd14b117f2c8cc"
+    },
+    {
+      "path": ".agents/cautilus-adapters/self-dogfood-eval-skill.yaml",
+      "kind": "adapter-owned-runner-template",
+      "contentHash": "sha256:2e9703b492042809ec6e236015c57baf78c43d117bc76ad5b61f9b9aa5dbe77f"
+    },
+    {
+      "path": "fixtures/eval/dev/skill/internal-runner-fixture-results.json",
+      "kind": "adapter-owned-fixture-results",
+      "contentHash": "sha256:76415312a2ef294afe54d3efa17cfb4bfbbdc147c775555a1b5ae2193c6df279"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The focused test and live self-dogfood fixture run both show the normal eval-test path producing eval-cases, eval-observed, and eval-summary packets while routing the adapter-owned runner through the fixture backend."
+  }
+}

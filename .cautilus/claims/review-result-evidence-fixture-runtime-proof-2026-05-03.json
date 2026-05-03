@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-03T00:00:00Z",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied when checked-in tests or a recorded Cautilus run directly prove the claim boundary without expanding it."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-readme-fixture-runtime-proof",
+      "claimUpdates": [
+        {
+          "claimId": "claim-readme-md-156",
+          "claimFingerprint": "sha256:2439661f4452be243c0dab17f3fe5f51d86ae2155ef8e79a8e9ef32ca0d2591c",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the checked-in fixture-runtime evidence bundle: the focused CLI test passes `--runtime fixture`, asserts fixture proof metadata in eval-observed, and a self-dogfood dev/skill adapter run emitted accept-now eval packets while using adapter-owned fixture results.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-fixture-runtime-proof-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:803b917b46b80551f66ad79c5bb3851eec8937e6df74cdff06ba0f55fa8ce16b",
+              "supportsClaimIds": [
+                "claim-readme-md-156"
+              ]
+            }
+          ],
+          "nextAction": "Keep this claim covered when changing `eval test`, runtime selection, adapter runner template rendering, or fixture-result backend plumbing.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

@@ -3498,13 +3498,18 @@ JSON
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
 
-	stdout, stderr, exitCode := runCLI(t, root, "eval", "test", "--repo-root", root, "--output-dir", outputDir)
+	stdout, stderr, exitCode := runCLI(t, root, "eval", "test", "--repo-root", root, "--runtime", "fixture", "--output-dir", outputDir)
 	if exitCode != 0 {
 		t.Fatalf("eval test failed: %s", stderr)
 	}
 	summary := readJSONObjectFile(t, strings.TrimSpace(stdout))
 	if summary["recommendation"] != "accept-now" {
 		t.Fatalf("unexpected eval test summary: %#v", summary)
+	}
+	observed := readJSONObjectFile(t, filepath.Join(outputDir, "eval-observed.json"))
+	proof := observed["proof"].(map[string]any)
+	if proof["runtime"] != "fixture" || proof["proofClass"] != "fixture-smoke" || proof["proofClassSource"] != "runtime" {
+		t.Fatalf("expected fixture runtime proof metadata, got %#v", proof)
 	}
 }
 

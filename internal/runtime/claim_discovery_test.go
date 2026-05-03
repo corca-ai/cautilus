@@ -2330,6 +2330,10 @@ func TestClaimGitStateIgnoresCommittedSourceDriftWhenContentHashMatches(t *testi
 	if gitState["isStale"] == true || gitState["comparisonStatus"] != "fresh-with-head-drift" {
 		t.Fatalf("expected matching content hash to avoid stale state, got %#v", gitState)
 	}
+	changedFilesBasis := gitState["changedFilesBasis"].(map[string]any)
+	if changedFilesBasis["scope"] != "committed-diff-between-packet-and-current-head" || gitState["workingTreePolicy"] != "excluded" {
+		t.Fatalf("expected git state to describe committed-diff basis, got %#v", gitState)
+	}
 	if err := RequireFreshClaimPacket(packet, repoRoot, "claim review prepare-input", false); err != nil {
 		t.Fatalf("expected matching content hash to satisfy freshness: %v", err)
 	}

@@ -305,6 +305,10 @@ function gitStateLines(gitState) {
 		return [];
 	}
 	const lines = [`- Git state snapshot: ${gitState.comparisonStatus ?? "unknown"}; stale=${gitState.isStale === true ? "yes" : "no"}`];
+	const changedFilesBasis = asObject(gitState.changedFilesBasis);
+	if (changedFilesBasis.scope || gitState.workingTreePolicy) {
+		lines.push(`- Changed-file scope: ${changedFilesBasis.scope ?? "unknown"}; working tree=${gitState.workingTreePolicy ?? changedFilesBasis.workingTreePolicy ?? "unknown"}`);
+	}
 	if (gitState.recommendedAction) {
 		lines.push(`- Snapshot recommendation: ${gitState.recommendedAction}`);
 	}

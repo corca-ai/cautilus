@@ -1706,10 +1706,15 @@ func ClaimPacketGitState(packet map[string]any, repoRoot string) map[string]any 
 		isStale = !changedFilesKnown || len(changedSources) > 0
 	}
 	state := map[string]any{
-		"packetGitCommit":   packetCommit,
-		"currentGitCommit":  currentCommit,
-		"headDrift":         headDrift,
-		"isStale":           isStale,
+		"packetGitCommit":  packetCommit,
+		"currentGitCommit": currentCommit,
+		"headDrift":        headDrift,
+		"isStale":          isStale,
+		"changedFilesBasis": map[string]any{
+			"scope":             "committed-diff-between-packet-and-current-head",
+			"workingTreePolicy": "excluded",
+			"meaning":           "changedFiles lists files committed between packetGitCommit and currentGitCommit; it does not include unstaged, staged, or untracked working-tree files.",
+		},
 		"workingTreePolicy": "excluded",
 		"comparisonStatus":  "unchecked",
 		"recommendedAction": "Continue only after checking whether the packet commit still matches the checkout being inspected.",

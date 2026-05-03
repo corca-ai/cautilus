@@ -664,17 +664,28 @@
       "claimFingerprint": "sha256:2439661f4452be243c0dab17f3fe5f51d86ae2155ef8e79a8e9ef32ca0d2591c",
       "claimId": "claim-readme-md-156",
       "claimSemanticGroup": "Adapter and portability",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:803b917b46b80551f66ad79c5bb3851eec8937e6df74cdff06ba0f55fa8ce16b",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-fixture-runtime-proof-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-readme-md-156"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by the checked-in fixture-runtime evidence bundle: the focused CLI test passes `--runtime fixture`, asserts fixture proof metadata in eval-observed, and a self-dogfood dev/skill adapter run emitted accept-now eval packets while using adapter-owned fixture results.",
       "groupHints": [
         "audience:user",
         "deterministic",
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "nextAction": "Keep this claim covered when changing `eval test`, runtime selection, adapter runner template rendering, or fixture-result backend plumbing.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "When the goal is only to prove command routing and packet evaluation, `cautilus eval test --runtime fixture` can run the same product path with adapter-owned fixture results instead of launching a nested model eval.",
@@ -683,6 +694,7 @@
         }
       ],
       "summary": "When the goal is only to prove command routing and packet evaluation, `cautilus eval test --runtime fixture` can run the same product path with adapter-owned fixture results instead of launching a nested model eval.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
@@ -10019,8 +10031,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 22,
-      "unknown": 300
+      "satisfied": 23,
+      "unknown": 299
     },
     "byLifecycle": {
       "new": 322
@@ -10031,8 +10043,8 @@
       "human-auditable": 66
     },
     "byReviewStatus": {
-      "agent-reviewed": 64,
-      "heuristic": 255,
+      "agent-reviewed": 65,
+      "heuristic": 254,
       "human-reviewed": 3
     },
     "byVerificationReadiness": {
@@ -10221,6 +10233,12 @@
     "provenanceMode": "aggregate-current-review-results"
   },
   "reviewRuns": [
+    {
+      "clusterCount": 1,
+      "reviewRun": {},
+      "schemaVersion": "cautilus.claim_review_result.v1",
+      "sourceReviewInput": {}
+    },
     {
       "clusterCount": 1,
       "reviewRun": {},

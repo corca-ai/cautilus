@@ -12,19 +12,20 @@ Use the JSON packets as the audit source; use this report to decide what to insp
 - Packet source commit: 00f3889efd94da3ecdfd9bd4698fdb491797306f
 - Snapshot notice: gitState is computed when this status packet is generated; rerun claim show for live checkout state.
 - Git state snapshot: fresh-with-head-drift; stale=no
+- Changed-file scope: committed-diff-between-packet-and-current-head; working tree=excluded
 - Snapshot recommendation: The current HEAD differs from the packet commit, but no recorded claim source changed; review and eval planning may continue.
 
 ## Scoreboard
 
 | Dimension | Counts |
 | --- | --- |
-| Evidence | satisfied: 22, unknown: 300 |
-| Review | agent-reviewed: 64, heuristic: 255, human-reviewed: 3 |
+| Evidence | satisfied: 23, unknown: 299 |
+| Review | agent-reviewed: 65, heuristic: 254, human-reviewed: 3 |
 | Recommended proof | cautilus-eval: 128, deterministic: 128, human-auditable: 66 |
 | Verification readiness | blocked: 13, needs-alignment: 30, needs-scenario: 8, ready-to-verify: 271 |
 | Audience | developer: 240, user: 82 |
 
-Review readiness: heuristicClaimsReadyForReview: 228, needsAlignment: 30, needsScenario: 8.
+Review readiness: heuristicClaimsReadyForReview: 227, needsAlignment: 30, needsScenario: 8.
 
 ## Canonical Claim Map
 
@@ -44,7 +45,7 @@ Review readiness: heuristicClaimsReadyForReview: 228, needsAlignment: 30, needsS
 | U2 | Evaluation | 29 | satisfied: 5, unknown: 24 | agent-reviewed: 15, heuristic: 14 |
 | U3 | Optimization | 4 | unknown: 4 | heuristic: 4 |
 | U4 | Doctor And Readiness | 8 | satisfied: 3, unknown: 5 | agent-reviewed: 5, heuristic: 3 |
-| U5 | Product And Host Ownership | 8 | satisfied: 2, unknown: 6 | agent-reviewed: 4, heuristic: 4 |
+| U5 | Product And Host Ownership | 8 | satisfied: 3, unknown: 5 | agent-reviewed: 5, heuristic: 3 |
 | U6 | Reviewable Artifacts | 5 | satisfied: 1, unknown: 4 | agent-reviewed: 1, heuristic: 4 |
 | U7 | Proof Debt | 6 | unknown: 6 | agent-reviewed: 1, heuristic: 5 |
 
@@ -83,7 +84,7 @@ Semantic sampling recommended for 260 raw claim(s): claim-agents-md-12, claim-ag
 ## Next Work
 
 - Human review is still meaningful for human-align-surfaces=30, human-confirm-or-decompose=23, split-or-defer=13.
-- Agent next proof work: connect deterministic gates for 107 claim(s), starting with agent-reviewed items before heuristic items.
+- Agent next proof work: connect deterministic gates for 106 claim(s), starting with agent-reviewed items before heuristic items.
 - Agent eval work: plan Cautilus eval scenarios for 119 claim(s), after reviewing heuristic labels where needed.
 - Scenario design work remains for 8 claim(s).
 
@@ -91,15 +92,15 @@ Semantic sampling recommended for 260 raw claim(s): claim-agents-md-12, claim-ag
 
 | Bucket | Actor | Count | Review | Evidence | Meaning |
 | --- | --- | --- | --- | --- | --- |
-| already-satisfied | none | 22 | agent-reviewed: 22 | satisfied: 22 | Proof is already attached and valid under packet semantics. |
-| agent-add-deterministic-proof | agent | 107 | agent-reviewed: 21, heuristic: 83, human-reviewed: 3 | unknown: 107 | Add or connect unit, lint, build, schema, spec, or CI proof. |
+| already-satisfied | none | 23 | agent-reviewed: 23 | satisfied: 23 | Proof is already attached and valid under packet semantics. |
+| agent-add-deterministic-proof | agent | 106 | agent-reviewed: 21, heuristic: 82, human-reviewed: 3 | unknown: 106 | Add or connect unit, lint, build, schema, spec, or CI proof. |
 | agent-plan-cautilus-eval | agent | 119 | agent-reviewed: 1, heuristic: 118 | unknown: 119 | Draft or select Cautilus eval scenarios for ready eval claims. |
 | agent-design-scenario | agent | 8 | heuristic: 8 | unknown: 8 | Decompose the behavior into a concrete scenario before protected eval planning. |
 | human-align-surfaces | human | 30 | agent-reviewed: 11, heuristic: 19 | unknown: 30 | Reconcile conflicting docs, code, adapters, or ownership boundaries before proof would be honest. |
 | human-confirm-or-decompose | human | 23 | heuristic: 23 | unknown: 23 | Confirm, decompose, or accept a human-auditable claim before treating it as proven. |
 | split-or-defer | human | 13 | agent-reviewed: 9, heuristic: 4 | unknown: 13 | Split broad, historical, provider-caveated, policy-like, or otherwise blocked claims before verification. |
 
-Cross-cutting signal: heuristic-review-needed (255) - Review heuristic labels before spending proof or eval budget.
+Cross-cutting signal: heuristic-review-needed (254) - Review heuristic labels before spending proof or eval budget.
 
 ### agent-add-deterministic-proof
 
@@ -110,8 +111,8 @@ Add or connect unit, lint, build, schema, spec, or CI proof.
 | claim-agents-md-12 | AGENTS.md:12 | deterministic | ready-to-verify | agent-reviewed | unknown | Deterministic behavior belongs in code, scripts, adapters, tests, and specs. |
 | claim-agents-md-61 | AGENTS.md:61 | deterministic | ready-to-verify | agent-reviewed | unknown | Keep this block short. Detailed routing belongs in installed skill metadata and `find-skills` output, not in a long checked-in catalog. |
 | claim-readme-md-101 | README.md:101 | deterministic | ready-to-verify | heuristic | unknown | Next step: a human decides whether to promote the scenario into a protected evaluation path, while an agent can reopen the saved result, compare variants, or feed it into the next bounded step. |
-| claim-readme-md-156 | README.md:156 | deterministic | ready-to-verify | heuristic | unknown | When the goal is only to prove command routing and packet evaluation, `cautilus eval test --runtime fixture` can run the same product path with adapter-owned fixture results instead of launching a nested model eval. |
 | claim-docs-cli-reference-md-32 | docs/cli-reference.md:32 | deterministic | ready-to-verify | heuristic | unknown | Legacy Homebrew installs are not a supported update channel anymore; remove them and reinstall through `install.sh` instead of mixing channels. |
+| claim-docs-cli-reference-md-110 | docs/cli-reference.md:110 | deterministic | ready-to-verify | agent-reviewed | unknown | If repo setup is ready but runner proof is not, that next action can point at runner assessment setup before the first bounded eval loop. |
 
 ### agent-plan-cautilus-eval
 
@@ -180,6 +181,7 @@ Split broad, historical, provider-caveated, policy-like, or otherwise blocked cl
 | .cautilus/claims/review-result-deterministic-gates-2026-05-01.json | - | - | 1 | 4 | deterministic: 4 | ready-to-verify: 4 |
 | .cautilus/claims/review-result-evidence-dev-skill-routing-install.json | - | - | 1 | 1 | cautilus-eval: 1 | ready-to-verify: 1 |
 | .cautilus/claims/review-result-evidence-durable-packets-2026-05-03.json | - | - | 1 | 1 | deterministic: 1 | ready-to-verify: 1 |
+| .cautilus/claims/review-result-evidence-fixture-runtime-proof-2026-05-03.json | - | - | 1 | 1 | deterministic: 1 | ready-to-verify: 1 |
 | .cautilus/claims/review-result-evidence-install-packaging-2026-05-03.json | - | - | 1 | 3 | deterministic: 3 | ready-to-verify: 3 |
 | .cautilus/claims/review-result-evidence-machine-readable-packets-2026-05-03.json | - | - | 1 | 1 | deterministic: 1 | ready-to-verify: 1 |
 | .cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-03.json | - | - | 1 | 1 | deterministic: 1 | ready-to-verify: 1 |
