@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-03T00:00:00Z",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied for the deterministic packet boundary; do not treat prepare-input as reviewer launch, LLM review, proof, eval planning, or claim mutation."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-cli-reference-claim-review-prepare-input-boundary",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-cli-reference-md-128",
+          "claimFingerprint": "sha256:ddd6e85737a56116b1eb1766cd75a85b6d2d11e7f7775ff3ce6d9f62d9748829",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "whyThisLayer": "The claim is deterministic packet-boundary behavior: prepare-input either emits review input without mutating or satisfying claims, or it does not.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by checked-in CLI and runtime tests: prepare-input emits `cautilus.claim_review_input.v1`, records a no-LLM/non-satisfaction packet notice, preserves unknown current labels, and leaves the source claims file unchanged.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-claim-review-prepare-input-boundary-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:f11775360f4bee9b7b6e47ee4e7f68e7bb46a4af90fdef52de4e3c32780d2b0e",
+              "supportsClaimIds": [
+                "claim-docs-cli-reference-md-128"
+              ]
+            }
+          ],
+          "nextAction": "Keep this claim covered when changing prepare-input packet shape, reviewer launch boundaries, skipped-claim policy, or evidence satisfaction semantics.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

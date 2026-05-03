@@ -24,12 +24,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 26
+          "satisfied": 27
         },
         "byReviewStatus": {
-          "agent-reviewed": 26
+          "agent-reviewed": 27
         },
-        "count": 26,
+        "count": 27,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -43,22 +43,22 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 100
+          "unknown": 99
         },
         "byReviewStatus": {
-          "agent-reviewed": 17,
+          "agent-reviewed": 16,
           "heuristic": 80,
           "human-reviewed": 3
         },
-        "count": 100,
+        "count": 99,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
-          "claim-docs-cli-reference-md-128",
           "claim-docs-cli-reference-md-256",
           "claim-docs-cli-reference-md-258",
           "claim-docs-cli-reference-md-427",
-          "claim-docs-cli-reference-md-431"
+          "claim-docs-cli-reference-md-431",
+          "claim-docs-cli-reference-md-487"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -195,8 +195,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 26,
-      "unknown": 296
+      "satisfied": 27,
+      "unknown": 295
     },
     "byLifecycle": {
       "new": 322
@@ -381,7 +381,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 26,
+    "satisfiedClaimCount": 27,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-78",
@@ -675,6 +675,25 @@
         "summary": "Use `cautilus claim discover` before writing eval fixtures when you need to inventory declared behavior claims and decide whether each belongs in human review, deterministic CI, Cautilus eval, scenario proposal work, or alignment work."
       },
       {
+        "claimId": "claim-docs-cli-reference-md-128",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:f11775360f4bee9b7b6e47ee4e7f68e7bb46a4af90fdef52de4e3c32780d2b0e",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-claim-review-prepare-input-boundary-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-cli-reference-md-128"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "It emits `cautilus.claim_review_input.v1` and does not call an LLM or mark claims satisfied."
+      },
+      {
         "claimId": "claim-docs-cli-reference-md-173",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -887,11 +906,12 @@
   },
   "gitCommit": "00f3889efd94da3ecdfd9bd4698fdb491797306f",
   "gitState": {
-    "changedFileCount": 39,
+    "changedFileCount": 41,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
       ".cautilus/claims/discovery-review.md",
+      ".cautilus/claims/evidence-claim-discover-proof-routing-2026-05-03.json",
       ".cautilus/claims/evidence-doctor-runner-readiness-next-action-2026-05-03.json",
       ".cautilus/claims/evidence-durable-packets-2026-05-03.json",
       ".cautilus/claims/evidence-fixture-runtime-proof-2026-05-03.json",
@@ -902,6 +922,7 @@
       ".cautilus/claims/evidence-specdown-prerequisite-2026-05-03.json",
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
+      ".cautilus/claims/review-result-evidence-claim-discover-proof-routing-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-doctor-runner-readiness-next-action-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-durable-packets-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-fixture-runtime-proof-2026-05-03.json",
@@ -937,7 +958,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "dc1555025efb3c082321c66de2d09fd7b96410b0",
+    "currentGitCommit": "d838325f2720bda9eedb621b07d8fb7ca8cff0ab",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "00f3889efd94da3ecdfd9bd4698fdb491797306f",

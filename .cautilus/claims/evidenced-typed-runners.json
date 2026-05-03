@@ -1117,9 +1117,19 @@
       "claimFingerprint": "sha256:ddd6e85737a56116b1eb1766cd75a85b6d2d11e7f7775ff3ce6d9f62d9748829",
       "claimId": "claim-docs-cli-reference-md-128",
       "claimSemanticGroup": "Documentation and contracts",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "Claim-review prepare-input packet claim. It is deterministic command behavior and needs command output evidence, not an LLM eval.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:f11775360f4bee9b7b6e47ee4e7f68e7bb46a4af90fdef52de4e3c32780d2b0e",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-claim-review-prepare-input-boundary-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-cli-reference-md-128"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by checked-in CLI and runtime tests: prepare-input emits `cautilus.claim_review_input.v1`, records a no-LLM/non-satisfaction packet notice, preserves unknown current labels, and leaves the source claims file unchanged.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -1128,7 +1138,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Attach a `claim review prepare-input` command evidence bundle showing the schema and non-satisfaction boundary.",
+      "nextAction": "Keep this claim covered when changing prepare-input packet shape, reviewer launch boundaries, skipped-claim policy, or evidence satisfaction semantics.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -1141,7 +1151,7 @@
       "summary": "It emits `cautilus.claim_review_input.v1` and does not call an LLM or mark claims satisfied.",
       "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "whyThisLayer": "The claim is deterministic packet-boundary behavior: prepare-input either emits review input without mutating or satisfying claims, or it does not."
     },
     {
       "claimAudience": "user",
@@ -10071,8 +10081,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 26,
-      "unknown": 296
+      "satisfied": 27,
+      "unknown": 295
     },
     "byLifecycle": {
       "new": 322
@@ -10273,6 +10283,12 @@
     "provenanceMode": "aggregate-current-review-results"
   },
   "reviewRuns": [
+    {
+      "clusterCount": 1,
+      "reviewRun": {},
+      "schemaVersion": "cautilus.claim_review_result.v1",
+      "sourceReviewInput": {}
+    },
     {
       "clusterCount": 1,
       "reviewRun": {},

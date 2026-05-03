@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-claim-review-prepare-input-boundary-2026-05-03",
+  "createdForClaimIds": [
+    "claim-docs-cli-reference-md-128"
+  ],
+  "repoCommit": "d838325f2720bda9eedb621b07d8fb7ca8cff0ab",
+  "summary": "This bundle records deterministic proof that `claim review prepare-input` emits a review-input packet while preserving the no-LLM and non-satisfaction boundary.",
+  "evidenceScope": {
+    "targetSurface": "claim review prepare-input packet boundary",
+    "claimBoundary": "Only the CLI reference claim that prepare-input emits `cautilus.claim_review_input.v1` and does not itself call an LLM or mark claims satisfied is marked satisfied.",
+    "notClaimed": [
+      "A reviewer lane was launched",
+      "A model provider was contacted",
+      "Any claim was proven or marked satisfied by prepare-input",
+      "Review-result application or eval planning happened"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/app -run TestRunClaimReviewPrepareInputWritesClusters -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "notableAssertions": [
+          "claim review prepare-input writes cautilus.claim_review_input.v1",
+          "packetNotice states that the packet does not call an LLM or assert satisfaction",
+          "currentLabels preserve evidenceStatus=unknown and reviewStatus=heuristic",
+          "the source claims file is not mutated"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/runtime -run 'TestBuildClaimReviewInputClustersAndSkipsDeterministically|TestBuildClaimReviewInputSkipsSatisfiedClaims' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "notableAssertions": [
+          "review input clusters are deterministic and preserve current labels",
+          "already satisfied claims are skipped instead of re-reviewed",
+          "skipped satisfied claims retain evidence refs for audit"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "internal/app/app_test.go",
+      "kind": "claim-review-prepare-input-cli-test",
+      "contentHash": "sha256:c16537a224f0a2f64984e9396912a3af50c88acf2f62d6358e9516d9263858d7"
+    },
+    {
+      "path": "internal/runtime/claim_discovery.go",
+      "kind": "claim-review-input-builder",
+      "contentHash": "sha256:8ca60b160ffa5d003ee5ef64b26b3c29ce555cbe9ab6931da8500514c7a5e8f1"
+    },
+    {
+      "path": "internal/runtime/claim_discovery_test.go",
+      "kind": "claim-review-input-runtime-tests",
+      "contentHash": "sha256:1265a23205bf90b2c4ae9fa5f29702b6d1f0289dcb5948ba5f4063f2eed5118b"
+    },
+    {
+      "path": "docs/cli-reference.md",
+      "kind": "operator-facing-claim-review-guidance",
+      "contentHash": "sha256:31f70c226b312f2292e3e317a8dd45d6f1e4bd71d2c8f3f555b2174a15303f05"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The CLI test exercises prepare-input through the public command path and asserts the review-input schema, packet notice, preserved current labels, and unchanged source claim packet."
+  }
+}

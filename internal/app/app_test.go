@@ -527,7 +527,7 @@ func TestRunClaimReviewPrepareInputWritesClusters(t *testing.T) {
 	repoRoot := t.TempDir()
 	claimsPath := filepath.Join(repoRoot, "claims.json")
 	outputPath := filepath.Join(repoRoot, "review-input.json")
-	if err := os.WriteFile(claimsPath, []byte(strings.Join([]string{
+	claimsJSON := strings.Join([]string{
 		`{`,
 		`  "schemaVersion": "cautilus.claim_proof_plan.v1",`,
 		`  "sourceRoot": ".",`,
@@ -549,7 +549,8 @@ func TestRunClaimReviewPrepareInputWritesClusters(t *testing.T) {
 		`    }`,
 		`  ]`,
 		`}`,
-	}, "\n")), 0o644); err != nil {
+	}, "\n")
+	if err := os.WriteFile(claimsPath, []byte(claimsJSON), 0o644); err != nil {
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
 	t.Setenv("CAUTILUS_CALLER_CWD", repoRoot)
@@ -570,8 +571,24 @@ func TestRunClaimReviewPrepareInputWritesClusters(t *testing.T) {
 	if payload["schemaVersion"] != "cautilus.claim_review_input.v1" {
 		t.Fatalf("unexpected schemaVersion: %#v", payload["schemaVersion"])
 	}
+	if !strings.Contains(anyToString(payload["packetNotice"]), "does not call an LLM") || !strings.Contains(anyToString(payload["packetNotice"]), "satisfied") {
+		t.Fatalf("expected packet notice to preserve no-LLM and non-satisfaction boundary, got %#v", payload["packetNotice"])
+	}
 	if clusters := payload["clusters"].([]any); len(clusters) != 1 {
 		t.Fatalf("expected one review cluster, got %#v", payload)
+	}
+	cluster := payload["clusters"].([]any)[0].(map[string]any)
+	candidate := cluster["candidates"].([]any)[0].(map[string]any)
+	labels := candidate["currentLabels"].(map[string]any)
+	if labels["evidenceStatus"] != "unknown" || labels["reviewStatus"] != "heuristic" {
+		t.Fatalf("prepare-input should preserve current labels instead of marking proof satisfied, got %#v", labels)
+	}
+	unchangedClaims, err := os.ReadFile(claimsPath)
+	if err != nil {
+		t.Fatalf("ReadFile returned error: %v", err)
+	}
+	if string(unchangedClaims) != claimsJSON {
+		t.Fatalf("prepare-input should not mutate source claims file")
 	}
 }
 
