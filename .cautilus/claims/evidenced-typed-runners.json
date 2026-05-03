@@ -353,16 +353,26 @@
       "claimFingerprint": "sha256:b207b54490c0db2ab75bded7ba0421b0d2898a095ed7948180593c7e765f40e8",
       "claimId": "claim-readme-md-9",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "Reviewed as a command-output durability and resumability contract; this lane did not verify direct packet contents.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:51ac3d2110942fd7f91c3a60337aa3dfe09cca869520bceb6a4eed2dd18b901e",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-durable-packets-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-readme-md-9"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by the checked-in durable-packets evidence bundle: representative core command surfaces emit schema-versioned packets with next branches, action buckets, git state, validation state, and eval planning state.",
       "groupHints": [
         "audience:user",
         "deterministic",
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Prove with deterministic packet contract tests that command outputs include enough structured state for a later agent to resume.",
+      "nextAction": "Keep this claim covered by command packet tests and representative packet smoke when adding or changing agent-resume command surfaces.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -373,9 +383,7 @@
         }
       ],
       "summary": "Commands should emit durable packets with enough state for the next agent to resume, not only terminal prose for a human operator.",
-      "unresolvedQuestions": [
-        "Which command families must be included before this product-level durability claim is considered proved?"
-      ],
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks."
     },
@@ -459,9 +467,7 @@
         }
       ],
       "summary": "They stay checked into each host repo so evaluation behavior remains reproducible, reviewable, and owned by the repo that declares it.",
-      "unresolvedQuestions": [
-        "Should prompts and instruction-routing surfaces be mandatory in the generic consumer fixture, or should this remain a policy claim checked by human review?"
-      ],
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
     },
@@ -9989,8 +9995,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 19,
-      "unknown": 303
+      "satisfied": 20,
+      "unknown": 302
     },
     "byLifecycle": {
       "new": 322
@@ -10191,6 +10197,12 @@
     "provenanceMode": "aggregate-current-review-results"
   },
   "reviewRuns": [
+    {
+      "clusterCount": 1,
+      "reviewRun": {},
+      "schemaVersion": "cautilus.claim_review_result.v1",
+      "sourceReviewInput": {}
+    },
     {
       "clusterCount": 1,
       "reviewRun": {},

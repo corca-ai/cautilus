@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-03T00:00:00Z",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied when a checked-in evidence bundle records direct or verified proof for the claim boundary."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-readme-durable-packets",
+      "claimUpdates": [
+        {
+          "claimId": "claim-readme-md-9",
+          "claimFingerprint": "sha256:b207b54490c0db2ab75bded7ba0421b0d2898a095ed7948180593c7e765f40e8",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the checked-in durable-packets evidence bundle: representative core command surfaces emit schema-versioned packets with next branches, action buckets, git state, validation state, and eval planning state.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-durable-packets-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:51ac3d2110942fd7f91c3a60337aa3dfe09cca869520bceb6a4eed2dd18b901e",
+              "supportsClaimIds": [
+                "claim-readme-md-9"
+              ]
+            }
+          ],
+          "nextAction": "Keep this claim covered by command packet tests and representative packet smoke when adding or changing agent-resume command surfaces.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

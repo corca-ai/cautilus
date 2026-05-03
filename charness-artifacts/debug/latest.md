@@ -15,7 +15,7 @@ An explicit `stale` update should still be able to invalidate evidence.
 - `.cautilus/claims/review-result-evidence-install-packaging-2026-05-03.json` marked `claim-readme-md-7`, `claim-readme-md-10`, and `claim-readme-md-13` as `satisfied`.
 - After `npm run claims:apply-review-results`, those candidates carried the new verified evidence ref but still had `evidenceStatus=unknown`.
 - Existing older review-result packets for the same claims recorded that their review lane had not run install proof.
-- `applyClaimUpdate` overwrote `evidenceStatus`, `evidenceStatusReason`, and `nextAction` in literal replay order.
+- `applyClaimUpdate` overwrote `evidenceStatus`, `evidenceStatusReason`, `nextAction`, and `unresolvedQuestions` in literal replay order.
 
 ## Reproduction
 
@@ -28,11 +28,11 @@ jq '.claimCandidates[] | select(.claimId=="claim-readme-md-7" or .claimId=="clai
 
 - Review-result replay order is filename based, not semantic recency based.
 - Older review packets used `unknown` to mean "this lane did not inspect evidence", but the merge code treated it as a stronger current assertion.
-- Evidence refs were merged independently from `evidenceStatus`, allowing internally contradictory packets with verified refs and unknown evidence state.
+- Evidence refs were merged independently from `evidenceStatus`, allowing internally contradictory packets with verified refs, unknown evidence state, and stale unresolved questions.
 
 ## Hypothesis
 
-If `applyClaimUpdate` protects already satisfied evidence from later `unknown`, `missing`, or `partial` evidence updates, then verified evidence remains stable while explicit `stale` invalidation remains possible.
+If `applyClaimUpdate` protects already satisfied evidence from later `unknown`, `missing`, or `partial` evidence updates, then verified evidence state and its resolved-question audit state remain stable while explicit `stale` invalidation remains possible.
 
 ## Verification
 
@@ -40,7 +40,7 @@ If `applyClaimUpdate` protects already satisfied evidence from later `unknown`, 
 - `npm run claims:apply-review-results`
 - `./bin/cautilus claim validate --claims .cautilus/claims/evidenced-typed-runners.json --output .cautilus/claims/validation-evidenced-typed-runners.json`
 
-The target install/packaging claims now remain `evidenceStatus=satisfied`, and validation reports zero issues.
+The target install/packaging claims now remain `evidenceStatus=satisfied`, stale unresolved questions are not reintroduced by older non-evidence review lanes, and validation reports zero issues.
 
 ## Root Cause
 
@@ -64,7 +64,7 @@ Older review lanes that merely lacked evidence could overwrite newer verified ev
 
 ## Prevention
 
-Protect `satisfied` evidence from downgrade by later non-invalidating review updates.
+Protect `satisfied` evidence and its resolved unresolved-question state from downgrade by later non-invalidating review updates.
 Use `stale` as the explicit evidence invalidation state when a reviewer or refresh step needs to revoke evidence.
 
 ## Related Prior Incidents

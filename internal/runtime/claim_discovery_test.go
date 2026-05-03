@@ -1081,6 +1081,7 @@ func TestApplyClaimReviewResultDoesNotDowngradeSatisfiedEvidenceWithOlderUnknown
 						"evidenceStatus":       "satisfied",
 						"evidenceStatusReason": "Verified by checked-in evidence.",
 						"nextAction":           "Keep evidence current.",
+						"unresolvedQuestions":  []any{},
 						"evidenceRefs": []any{
 							map[string]any{
 								"kind":             "test",
@@ -1114,6 +1115,7 @@ func TestApplyClaimReviewResultDoesNotDowngradeSatisfiedEvidenceWithOlderUnknown
 						"evidenceStatus":       "unknown",
 						"evidenceStatusReason": "This earlier review did not inspect evidence.",
 						"nextAction":           "Attach evidence later.",
+						"unresolvedQuestions":  []any{"Which command families are enough?"},
 					},
 				},
 			},
@@ -1135,6 +1137,9 @@ func TestApplyClaimReviewResultDoesNotDowngradeSatisfiedEvidenceWithOlderUnknown
 	}
 	if candidate["nextAction"] != "Keep evidence current." {
 		t.Fatalf("expected satisfied next action to survive, got %#v", candidate)
+	}
+	if questions := arrayOrEmpty(candidate["unresolvedQuestions"]); len(questions) != 0 {
+		t.Fatalf("expected satisfied unresolved questions to survive, got %#v", candidate)
 	}
 }
 

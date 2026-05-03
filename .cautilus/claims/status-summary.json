@@ -24,41 +24,41 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 19
+          "satisfied": 20
         },
         "byReviewStatus": {
-          "agent-reviewed": 19
+          "agent-reviewed": 20
         },
-        "count": 19,
+        "count": 20,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
           "claim-agents-md-78",
           "claim-agents-md-123",
           "claim-readme-md-7",
-          "claim-readme-md-10",
-          "claim-readme-md-13"
+          "claim-readme-md-9",
+          "claim-readme-md-10"
         ],
         "summary": "Proof is already attached and valid under packet semantics."
       },
       {
         "byEvidenceStatus": {
-          "unknown": 110
+          "unknown": 109
         },
         "byReviewStatus": {
-          "agent-reviewed": 22,
+          "agent-reviewed": 21,
           "heuristic": 85,
           "human-reviewed": 3
         },
-        "count": 110,
+        "count": 109,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
           "claim-agents-md-12",
           "claim-agents-md-61",
-          "claim-readme-md-9",
           "claim-readme-md-101",
-          "claim-readme-md-156"
+          "claim-readme-md-156",
+          "claim-readme-md-166"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -195,8 +195,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 19,
-      "unknown": 303
+      "satisfied": 20,
+      "unknown": 302
     },
     "byLifecycle": {
       "new": 322
@@ -381,7 +381,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 19,
+    "satisfiedClaimCount": 20,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-78",
@@ -441,6 +441,25 @@
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
         "summary": "Ships as a standalone binary plus a bundled skill a host repo can install without copying another scaffold first."
+      },
+      {
+        "claimId": "claim-readme-md-9",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:51ac3d2110942fd7f91c3a60337aa3dfe09cca869520bceb6a4eed2dd18b901e",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-durable-packets-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-readme-md-9"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Commands should emit durable packets with enough state for the next agent to resume, not only terminal prose for a human operator."
       },
       {
         "claimId": "claim-readme-md-10",
@@ -754,26 +773,31 @@
   },
   "gitCommit": "00f3889efd94da3ecdfd9bd4698fdb491797306f",
   "gitState": {
-    "changedFileCount": 13,
+    "changedFileCount": 18,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
       ".cautilus/claims/discovery-review.md",
+      ".cautilus/claims/evidence-install-packaging-2026-05-03.json",
       ".cautilus/claims/evidence-specdown-prerequisite-2026-05-03.json",
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
+      ".cautilus/claims/review-result-evidence-install-packaging-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-specdown-prerequisite-2026-05-03.json",
       ".cautilus/claims/status-summary.json",
       ".cautilus/claims/validation-evidenced-typed-runners.json",
       "charness-artifacts/debug/debug-2026-05-03-review-application-temp-paths.md",
+      "charness-artifacts/debug/debug-2026-05-03-verified-evidence-downgrade.md",
       "charness-artifacts/debug/latest.md",
+      "internal/runtime/claim_discovery.go",
+      "internal/runtime/claim_discovery_test.go",
       "scripts/agent-runtime/apply-current-review-results.mjs",
       "scripts/agent-runtime/apply-current-review-results.test.mjs"
     ],
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "7819d3f0f4a666470dad1dbd48fb8ab01e917593",
+    "currentGitCommit": "a27fda011e709baa7558b58b1e03eb0400c139cb",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "00f3889efd94da3ecdfd9bd4698fdb491797306f",

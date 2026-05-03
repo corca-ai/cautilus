@@ -1,0 +1,110 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-durable-packets-2026-05-03",
+  "createdForClaimIds": [
+    "claim-readme-md-9"
+  ],
+  "repoCommit": "a27fda011e709baa7558b58b1e03eb0400c139cb",
+  "summary": "This bundle records deterministic proof that the core agent-resume command surfaces emit structured Cautilus packets with schema versions, state summaries, next branches, git state, validation state, and eval planning state.",
+  "evidenceScope": {
+    "targetSurface": "core command packet surfaces used for agent resume",
+    "claimBoundary": "Only the README claim that commands emit durable packets with resumable state is marked satisfied, using representative core command families rather than every CLI subcommand.",
+    "notClaimed": [
+      "Every command writes a file when --output is omitted",
+      "Every CLI subcommand has identical resume semantics",
+      "The packet content proves the underlying repo behavior is correct",
+      "Human prose output is never useful"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/app -run 'TestRunCommandsJSONReturnsRegistry|TestRunClaimShowSummarizesExistingProofPlan|TestRunClaimShowTreatsNonSourceHeadDriftAsFresh|TestRunClaimPlanEvalsWritesIntermediatePlan|TestRunClaimValidateWritesReportAndFailsInvalidEvidence'",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "status": "ok",
+        "protectedSurfaces": [
+          "commands --json emits cautilus.commands.v1",
+          "claim show emits cautilus.claim_status_summary.v1 with sample claims and repo-relative input path",
+          "claim show reports stale and non-source-head-drift git state",
+          "claim plan-evals writes cautilus.claim_eval_plan.v1",
+          "claim validate writes cautilus.claim_validation_report.v1"
+        ]
+      }
+    },
+    {
+      "command": "./bin/cautilus agent status --repo-root . --json",
+      "exitCode": 0,
+      "output": "/tmp/cautilus-durable-packets-proof/agent-status.json",
+      "outputHash": "sha256:7495b5517d03be74a685737cfe9e3d0336934f6745c2b0ad95ef71b1ab1ddccc",
+      "observed": {
+        "schemaVersion": "cautilus.agent_status.v1",
+        "nextBranchCount": 4,
+        "agentSurfaceStatus": "ready"
+      }
+    },
+    {
+      "command": "./bin/cautilus claim show --input .cautilus/claims/evidenced-typed-runners.json --output /tmp/cautilus-durable-packets-proof/claim-status-summary.json --sample-claims 2",
+      "exitCode": 0,
+      "output": "/tmp/cautilus-durable-packets-proof/claim-status-summary.json",
+      "outputHash": "sha256:893ff1ea3ed0164b2712f1beb5ba71636404638962683bc78d7e05dda108ba93",
+      "observed": {
+        "schemaVersion": "cautilus.claim_status_summary.v1",
+        "candidateCount": 322,
+        "actionBucketCount": 7,
+        "gitStateComparisonStatus": "fresh-with-head-drift"
+      }
+    },
+    {
+      "command": "./bin/cautilus claim validate --claims .cautilus/claims/evidenced-typed-runners.json --output /tmp/cautilus-durable-packets-proof/claim-validation.json",
+      "exitCode": 0,
+      "output": "/tmp/cautilus-durable-packets-proof/claim-validation.json",
+      "outputHash": "sha256:f42ca9ba91cf96b3053108d313c9b8d0bb884b7ed89314b5e3bcdd1103777ec7",
+      "observed": {
+        "schemaVersion": "cautilus.claim_validation_report.v1",
+        "valid": true,
+        "issueCount": 0
+      }
+    },
+    {
+      "command": "./bin/cautilus claim plan-evals --claims .cautilus/claims/evidenced-typed-runners.json --output /tmp/cautilus-durable-packets-proof/claim-eval-plan.json",
+      "exitCode": 0,
+      "output": "/tmp/cautilus-durable-packets-proof/claim-eval-plan.json",
+      "outputHash": "sha256:fc073b4a499710cfeafe129c59c39539965be18769b58520db2b1caec1c43c0f",
+      "observed": {
+        "schemaVersion": "cautilus.claim_eval_plan.v1",
+        "evalPlanCount": 1,
+        "skippedClaimCount": 321,
+        "hasSelectionPolicy": true,
+        "hasNonWriterNotice": true
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "internal/app/app_test.go",
+      "kind": "cli-packet-surface-tests",
+      "contentHash": "sha256:200a16e4380769ceb785587a0145f9fac589ec6d68fbca72cbb2f24cd237d507"
+    },
+    {
+      "path": "internal/app/app.go",
+      "kind": "cli-output-wiring",
+      "contentHash": "sha256:dc6289eebc34f1d22a0e9ee6af176c496e52f2fd75eb2c84b167ae8cf62c0f1d"
+    },
+    {
+      "path": "internal/runtime/claim_discovery.go",
+      "kind": "claim-packet-runtime",
+      "contentHash": "sha256:0d106a816c04b0b7fe4ad01a7c25aec35f0841ee5086b11e097dafd7dcf00c1f"
+    },
+    {
+      "path": "internal/cli/command-registry.json",
+      "kind": "command-registry",
+      "contentHash": "sha256:e961746cee2fc4b01abd4a6f70ecc16302a06b0244a8adeb10ce8b790c2eff5d"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "Representative core command surfaces emit structured schema-versioned packets and persisted output files carrying enough state for a later agent to inspect health, action buckets, git freshness, validation issues, and eval-plan selection without relying on terminal prose."
+  }
+}

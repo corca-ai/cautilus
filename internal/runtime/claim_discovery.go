@@ -2978,8 +2978,10 @@ func applyClaimUpdate(candidate map[string]any, update map[string]any) ([]any, e
 		applied = append(applied, "groupHints")
 	}
 	if _, exists := update["unresolvedQuestions"]; exists {
-		candidate["unresolvedQuestions"] = arrayOrEmpty(update["unresolvedQuestions"])
-		applied = append(applied, "unresolvedQuestions")
+		if !protectSatisfiedEvidence {
+			candidate["unresolvedQuestions"] = arrayOrEmpty(update["unresolvedQuestions"])
+			applied = append(applied, "unresolvedQuestions")
+		}
 	}
 	if err := validateClaimEvidenceSatisfaction(candidate); err != nil {
 		return nil, err

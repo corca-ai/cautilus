@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:30a0cdef51a2eaae26f074290d2a6db4ddd36c35677ab779e17997a7804c1b44"
+      "contentHash": "sha256:8a034f3c07cb550540ccb8a33a496cc2ddd788998736c92707b9bf37101557ab"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -306,8 +306,8 @@
       "medium": 203
     },
     "byUserCanonicalClaimId": {
-      "U1": 22,
-      "U2": 30,
+      "U1": 23,
+      "U2": 29,
       "U3": 4,
       "U4": 8,
       "U5": 8,
@@ -595,9 +595,10 @@
     {
       "canonicalClaimId": "U1",
       "title": "Claim Discovery",
-      "absorbedRawClaimCount": 22,
+      "absorbedRawClaimCount": 23,
       "absorbedRawClaimIds": [
         "claim-readme-md-7",
+        "claim-readme-md-9",
         "claim-readme-md-10",
         "claim-readme-md-75",
         "claim-readme-md-101",
@@ -624,6 +625,12 @@
         {
           "claimId": "claim-readme-md-7",
           "claimFingerprint": "sha256:320919049969c4267f56feeb209110e44d822f29703dc1fdd362d2f120d5484a",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-readme-md-9",
+          "claimFingerprint": "sha256:b207b54490c0db2ab75bded7ba0421b0d2898a095ed7948180593c7e765f40e8",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
@@ -755,32 +762,31 @@
         }
       ],
       "byEvidenceStatus": {
-        "satisfied": 4,
+        "satisfied": 5,
         "unknown": 18
       },
       "byReviewStatus": {
-        "agent-reviewed": 12,
+        "agent-reviewed": 13,
         "heuristic": 9,
         "human-reviewed": 1
       },
       "byRecommendedProof": {
         "cautilus-eval": 1,
-        "deterministic": 16,
+        "deterministic": 17,
         "human-auditable": 5
       },
       "byMappingConfidence": {
         "high": 3,
         "low": 8,
-        "medium": 11
+        "medium": 12
       }
     },
     {
       "canonicalClaimId": "U2",
       "title": "Evaluation",
-      "absorbedRawClaimCount": 30,
+      "absorbedRawClaimCount": 29,
       "absorbedRawClaimIds": [
         "claim-readme-md-3",
-        "claim-readme-md-9",
         "claim-readme-md-13",
         "claim-readme-md-129",
         "claim-readme-md-144",
@@ -814,12 +820,6 @@
         {
           "claimId": "claim-readme-md-3",
           "claimFingerprint": "sha256:bf72456c50e1505ba08fddf7e1c028aee5f233a950414edfdf5a3528d3749182",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
-        },
-        {
-          "claimId": "claim-readme-md-9",
-          "claimFingerprint": "sha256:b207b54490c0db2ab75bded7ba0421b0d2898a095ed7948180593c7e765f40e8",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
@@ -994,21 +994,21 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 5,
-        "unknown": 25
+        "unknown": 24
       },
       "byReviewStatus": {
-        "agent-reviewed": 16,
+        "agent-reviewed": 15,
         "heuristic": 14
       },
       "byRecommendedProof": {
         "cautilus-eval": 13,
-        "deterministic": 7,
+        "deterministic": 6,
         "human-auditable": 10
       },
       "byMappingConfidence": {
         "high": 5,
         "low": 6,
-        "medium": 19
+        "medium": 18
       }
     },
     {
@@ -3735,29 +3735,26 @@
       "claimAudience": "user",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-to-verify",
-      "evidenceStatus": "unknown",
+      "evidenceStatus": "satisfied",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:b207b54490c0db2ab75bded7ba0421b0d2898a095ed7948180593c7e765f40e8",
-      "canonicalClaimId": "U2",
-      "score": 11,
-      "runnerUpCanonicalClaimId": "U1",
-      "runnerUpScore": 10,
-      "scoreMargin": 1,
+      "canonicalClaimId": "U1",
+      "score": 8,
+      "runnerUpCanonicalClaimId": "U2",
+      "runnerUpScore": 8,
+      "scoreMargin": 0,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
         "agent",
-        "contract",
+        "command",
         "deterministic",
-        "enough",
-        "include",
-        "later",
-        "output",
+        "next",
+        "only",
         "packet",
         "skill",
-        "test",
-        "workflow"
+        "surface"
       ]
     },
     {
