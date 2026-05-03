@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "cautilus.evaluation_input.v1",
+  "surface": "dev",
+  "preset": "skill",
+  "suiteId": "cautilus-scenario-needed-routing-flow",
+  "suiteDisplayName": "Cautilus Scenario Needed Routing Flow",
+  "skillId": "cautilus",
+  "skillDisplayName": "cautilus",
+  "cases": [
+    {
+      "caseId": "episode-cautilus-scenario-needed-routing-flow",
+      "evaluationKind": "execution",
+      "turns": [
+        {
+          "input": "$cautilus\nWhich scenarios still need to be created? Use the checked-in Cautilus workflow.",
+          "injectSkill": true
+        },
+        {
+          "input": "Confirm the stated scan scope, run the first claim discovery scan, and keep LLM review as a separate budgeted branch."
+        }
+      ],
+      "auditKind": "cautilus_first_scan_flow",
+      "thresholds": {
+        "max_duration_ms": 240000
+      }
+    }
+  ]
+}

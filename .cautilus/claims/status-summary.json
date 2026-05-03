@@ -43,20 +43,21 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 4
+          "unknown": 5
         },
         "byReviewStatus": {
           "agent-reviewed": 2,
-          "heuristic": 2
+          "heuristic": 3
         },
-        "count": 4,
+        "count": 5,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
           "claim-docs-contracts-claim-discovery-workflow-md-397",
           "claim-docs-contracts-claim-discovery-workflow-md-687",
           "claim-docs-contracts-optimization-md-27",
-          "claim-docs-contracts-scenario-proposal-sources-md-152"
+          "claim-docs-contracts-scenario-proposal-sources-md-152",
+          "claim-skills-cautilus-skill-md-221"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -101,13 +102,13 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 41
+          "unknown": 40
         },
         "byReviewStatus": {
           "agent-reviewed": 21,
-          "heuristic": 20
+          "heuristic": 19
         },
-        "count": 41,
+        "count": 40,
         "id": "human-align-surfaces",
         "recommendedActor": "human",
         "sampleClaimIds": [
@@ -201,8 +202,8 @@
     },
     "byRecommendedProof": {
       "cautilus-eval": 96,
-      "deterministic": 128,
-      "human-auditable": 99
+      "deterministic": 129,
+      "human-auditable": 98
     },
     "byReviewStatus": {
       "agent-reviewed": 202,
@@ -210,9 +211,9 @@
     },
     "byVerificationReadiness": {
       "blocked": 43,
-      "needs-alignment": 41,
+      "needs-alignment": 40,
       "needs-scenario": 10,
-      "ready-to-verify": 229
+      "ready-to-verify": 230
     }
   },
   "discoveryBoundary": {
@@ -3108,40 +3109,30 @@
         "summary": "In the Cautilus product repo itself, prefer the checked-in source launcher `./bin/cautilus` over `cautilus` on `PATH`, because the installed machine binary can lag the current checkout."
       },
       {
-        "claimId": "claim-skills-cautilus-skill-md-223",
+        "claimId": "claim-skills-cautilus-skill-md-68",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
-            "contentHash": "sha256:2c23039f3eb065c3d112236d45a01638347efb452fcb2a8632354d0b40c473e9",
+            "contentHash": "sha256:9e929e70f1826d3656a588db17b7b65c75aada2e7be292fbb37610337177ddd1",
             "kind": "cautilus-claim-evidence-bundle",
             "matchKind": "verified",
-            "path": ".cautilus/claims/evidence-packet-first-skill-flow-2026-05-03.json",
+            "path": ".cautilus/claims/evidence-claim-discovery-routing-flow-2026-05-04.json",
             "supportsClaimIds": [
-              "claim-skills-cautilus-skill-md-223"
+              "claim-skills-cautilus-skill-md-68"
             ]
           }
         ],
         "recommendedEvalSurface": "dev/skill",
         "recommendedProof": "cautilus-eval",
         "reviewStatus": "agent-reviewed",
-        "summary": "Agents should read the packet first, then cite HTML only when a browser view is the deliverable."
+        "summary": "Use this path when the user asks whether a repo proves what it claims, whether docs and behavior are aligned, or which scenarios still need to be created."
       }
     ]
   },
-  "gitCommit": "5e3af420080749a0c0fabb1c014e5fc2b6938ccd",
+  "gitCommit": "407c95e07efbc6091c888830f9d91b8a3ba05560",
   "gitState": {
-    "changedFileCount": 9,
-    "changedFiles": [
-      ".cautilus/claims/canonical-claim-map.json",
-      ".cautilus/claims/claim-status-report.md",
-      ".cautilus/claims/discovery-review.md",
-      ".cautilus/claims/eval-plan-agent-reviewed-eval-2026-05-04.json",
-      ".cautilus/claims/evidence-packet-first-skill-flow-2026-05-03.json",
-      ".cautilus/claims/evidenced-typed-runners.json",
-      ".cautilus/claims/latest.json",
-      ".cautilus/claims/review-result-packet-first-skill-flow-2026-05-03.json",
-      ".cautilus/claims/status-summary.json"
-    ],
+    "changedFileCount": 0,
+    "changedFiles": [],
     "changedFilesBasis": {
       "meaning": "changedFiles lists files committed between packetGitCommit and currentGitCommit; it does not include unstaged, staged, or untracked working-tree files.",
       "scope": "committed-diff-between-packet-and-current-head",
@@ -3149,12 +3140,12 @@
     },
     "changedSourceCount": 0,
     "changedSources": [],
-    "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "b920b1ed1783eeba1ac6c86bd67ae68948a32da3",
-    "headDrift": true,
+    "comparisonStatus": "fresh",
+    "currentGitCommit": "407c95e07efbc6091c888830f9d91b8a3ba05560",
+    "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "5e3af420080749a0c0fabb1c014e5fc2b6938ccd",
-    "recommendedAction": "The current HEAD differs from the packet commit, but no recorded claim source changed; review and eval planning may continue.",
+    "packetGitCommit": "407c95e07efbc6091c888830f9d91b8a3ba05560",
+    "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
   "gitStateSnapshotNotice": "gitState is computed when this status packet is generated; rerun claim show for live checkout state.",
@@ -3177,8 +3168,8 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 93,
-    "needsAlignment": 41,
+    "heuristicClaimsReadyForReview": 94,
+    "needsAlignment": 40,
     "needsScenario": 10
   },
   "sampleClaims": [

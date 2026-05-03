@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewRun": {
+    "reviewer": "codex-dev-skill-routing-dogfood-proof",
+    "mode": "evidence-application",
+    "createdAt": "2026-05-04",
+    "summary": "Apply verified Codex dev/skill dogfood evidence for Cautilus claim-discovery routing from repo-proof, docs-behavior-alignment, and scenario-needed questions."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-dev-skill-claim-discovery-routing",
+      "claimUpdates": [
+        {
+          "claimId": "claim-skills-cautilus-skill-md-68",
+          "claimFingerprint": "sha256:65cb30158d551471121109baa101be43b1ccbca956f9424cce6149c48a5667b1",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/skill",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by focused Codex dev/skill routing dogfood flows: transcripts route repo-proof, docs-behavior-alignment, and scenario-needed questions into claim discovery, state the first scan scope, wait for user confirmation, run first discovery, summarize with claim show, and pass the first-scan audit.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-claim-discovery-routing-flow-2026-05-04.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:9e929e70f1826d3656a588db17b7b65c75aada2e7be292fbb37610337177ddd1",
+              "supportsClaimIds": [
+                "claim-skills-cautilus-skill-md-68"
+              ]
+            }
+          ],
+          "nextAction": "Keep the focused claim-discovery routing dogfood fixtures current when changing Cautilus skill routing for repo-proof, docs-behavior-alignment, or scenario-needed requests.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

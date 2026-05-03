@@ -13,6 +13,7 @@ import {
 	normalizeAggregateReviewApplication,
 	reviewResultPaths,
 	reviewResultTimestamp,
+	writeAggregateReviewApplication,
 } from "./apply-current-review-results.mjs";
 
 test("filterReviewResultForClaimIds drops stale updates before replay", () => {
@@ -163,6 +164,54 @@ test("normalizeAggregateReviewApplication replaces temporary paths with stable i
 		claimsPath: ".cautilus/claims/latest.json",
 		reviewResultPath: ".cautilus/claims/review-result-final.json",
 		appliedUpdateCount: 1,
+		provenanceMode: "aggregate-current-review-results",
+	});
+});
+
+test("writeAggregateReviewApplication records all applied review-result paths", () => {
+	const packet = writeAggregateReviewApplication(
+		{
+			reviewApplication: {
+				schemaVersion: "cautilus.claim_review_result.v1",
+				reviewResultPath: ".cautilus/claims/review-result-last.json",
+				appliedUpdateCount: 1,
+			},
+		},
+		{
+			claims: "/repo/.cautilus/claims/latest.json",
+			output: "/repo/.cautilus/claims/evidenced.json",
+			appliedReviewResultPaths: [
+				"/repo/.cautilus/claims/review-result-one.json",
+				"/repo/.cautilus/claims/review-result-two.json",
+			],
+			skippedReviewResultPaths: [
+				"/repo/.cautilus/claims/review-result-stale.json",
+			],
+			appliedResultCount: 2,
+			skippedResultCount: 1,
+			keptUpdateCount: 3,
+			droppedUpdateCount: 4,
+			cwd: "/repo",
+		},
+	);
+
+	assert.deepEqual(packet.reviewApplication, {
+		schemaVersion: "cautilus.claim_review_result.v1",
+		reviewResultPath: ".cautilus/claims/review-result-last.json",
+		appliedUpdateCount: 1,
+		claimsPath: ".cautilus/claims/latest.json",
+		outputPath: ".cautilus/claims/evidenced.json",
+		aggregateReviewResultPaths: [
+			".cautilus/claims/review-result-one.json",
+			".cautilus/claims/review-result-two.json",
+		],
+		skippedReviewResultPaths: [
+			".cautilus/claims/review-result-stale.json",
+		],
+		appliedResultCount: 2,
+		skippedResultCount: 1,
+		keptUpdateCount: 3,
+		droppedUpdateCount: 4,
 		provenanceMode: "aggregate-current-review-results",
 	});
 });

@@ -1,0 +1,166 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-claim-discovery-routing-flow-2026-05-04",
+  "createdForClaimIds": [
+    "claim-skills-cautilus-skill-md-68"
+  ],
+  "repoCommit": "407c95e07efbc6091c888830f9d91b8a3ba05560",
+  "workingTreeContext": "Focused dev/skill routing fixtures, audit support, and adapter wiring were added after the current commit to prove the Cautilus skill routes repo-proof, docs-behavior-alignment, and scenario-needed questions into the claim discovery path while preserving the first-scan confirmation boundary.",
+  "summary": "Codex dev/skill dogfood proves that repo-proof, docs-behavior-alignment, and scenario-needed questions invoke the bundled Cautilus skill, read agent status, state the first scan scope, wait for user confirmation before first discovery, run claim discover after confirmation, summarize with claim show, and stop before LLM review or eval planning.",
+  "evidenceScope": {
+    "targetSurface": "Cautilus bundled skill claim-discovery routing under the Codex dev/skill runtime",
+    "claimBoundary": "This bundle proves the checked-in Cautilus skill and self-dogfood fixtures route the three trigger classes named in the source claim into declared claim discovery with the first-scan confirmation boundary. It does not prove arbitrary consumer prompts, arbitrary host adapters, app/product runners, or every future model backend.",
+    "notClaimed": [
+      "Every model provider will phrase the scope summary identically",
+      "Every consumer adapter will expose the same scan entries",
+      "The discovered claim packet proves that the claims are true",
+      "LLM-backed claim review or eval planning ran in these routing fixtures",
+      "Claude dogfood was rerun for these focused routing proofs"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "./bin/cautilus eval test --repo-root . --adapter-name self-dogfood-claim-discovery-routing-flow --fixture fixtures/eval/dev/skill/cautilus-claim-discovery-routing-flow.fixture.json --runtime codex --output-dir ./artifacts/self-dogfood/cautilus-claim-discovery-routing-flow-eval-codex/latest",
+      "exitCode": 0,
+      "observed": {
+        "recommendation": "accept-now",
+        "artifact": "artifacts/self-dogfood/cautilus-claim-discovery-routing-flow-eval-codex/latest/eval-summary.json",
+        "audit": "artifacts/self-dogfood/cautilus-claim-discovery-routing-flow-eval-codex/latest/claim-discovery-routing-flow/episode-cautilus-repo-proof-routing-flow/audit.json",
+        "protectedBehaviors": [
+          "the skill routes a direct repo-proof question into the declared claim discovery workflow",
+          "the transcript reads agent status before first discovery",
+          "the transcript states entry files and linked Markdown depth before first discovery",
+          "the transcript asks for scan-scope confirmation or adjustment and waits for a user turn before first discovery",
+          "the transcript runs first claim discover only after confirmation",
+          "the transcript runs claim show with a bounded sample after discovery",
+          "the transcript keeps LLM claim review and eval planning out of the first-scan branch"
+        ]
+      }
+    },
+    {
+      "command": "./bin/cautilus eval test --repo-root . --adapter-name self-dogfood-claim-discovery-routing-flow --fixture fixtures/eval/dev/skill/cautilus-docs-behavior-routing-flow.fixture.json --runtime codex --output-dir ./artifacts/self-dogfood/cautilus-docs-behavior-routing-flow-eval-codex/latest",
+      "exitCode": 0,
+      "observed": {
+        "recommendation": "accept-now",
+        "artifact": "artifacts/self-dogfood/cautilus-docs-behavior-routing-flow-eval-codex/latest/eval-summary.json",
+        "audit": "artifacts/self-dogfood/cautilus-docs-behavior-routing-flow-eval-codex/latest/claim-discovery-routing-flow/episode-cautilus-docs-behavior-routing-flow/audit.json",
+        "protectedBehaviors": [
+          "the skill routes a docs-behavior-alignment question into the declared claim discovery workflow",
+          "the transcript reads agent status before first discovery",
+          "the transcript states entry files and linked Markdown depth before first discovery",
+          "the transcript waits for scan-scope confirmation before first discovery",
+          "the transcript runs claim show after discovery",
+          "the transcript keeps LLM claim review and eval planning out of the first-scan branch"
+        ]
+      }
+    },
+    {
+      "command": "./bin/cautilus eval test --repo-root . --adapter-name self-dogfood-claim-discovery-routing-flow --fixture fixtures/eval/dev/skill/cautilus-scenario-needed-routing-flow.fixture.json --runtime codex --output-dir ./artifacts/self-dogfood/cautilus-scenario-needed-routing-flow-eval-codex/latest",
+      "exitCode": 0,
+      "observed": {
+        "recommendation": "accept-now",
+        "artifact": "artifacts/self-dogfood/cautilus-scenario-needed-routing-flow-eval-codex/latest/eval-summary.json",
+        "audit": "artifacts/self-dogfood/cautilus-scenario-needed-routing-flow-eval-codex/latest/claim-discovery-routing-flow/episode-cautilus-scenario-needed-routing-flow/audit.json",
+        "protectedBehaviors": [
+          "the skill routes a scenario-needed question into the declared claim discovery workflow",
+          "the transcript reads agent status before first discovery",
+          "the transcript states entry files and linked Markdown depth before first discovery",
+          "the transcript waits for scan-scope confirmation before first discovery",
+          "the transcript runs claim show after discovery",
+          "the transcript keeps LLM claim review as a separate budgeted branch"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "skills/cautilus/SKILL.md",
+      "kind": "bundled-skill-routing-contract",
+      "contentHash": "sha256:9d295f8442dd393e810b18aae22ec6d5011afafe4330d814bdb9e78f8b8e174f"
+    },
+    {
+      "path": "fixtures/eval/dev/skill/cautilus-claim-discovery-routing-flow.fixture.json",
+      "kind": "dev-skill-fixture",
+      "contentHash": "sha256:a0dd686fbf4029c8a6e80c1fe6808d6b5b6de8f27aefe464d64be63ba4a9d4c4"
+    },
+    {
+      "path": "fixtures/eval/dev/skill/cautilus-docs-behavior-routing-flow.fixture.json",
+      "kind": "dev-skill-fixture",
+      "contentHash": "sha256:df8c118814103e9872166c73a059006fd4460756b68bcba17c01f937a597ceb0"
+    },
+    {
+      "path": "fixtures/eval/dev/skill/cautilus-scenario-needed-routing-flow.fixture.json",
+      "kind": "dev-skill-fixture",
+      "contentHash": "sha256:bcff7c7ec3d23f01a4007ef31b0d23b43cf5b1ca01a4cf0684f39aa56f50a5fb"
+    },
+    {
+      "path": ".agents/cautilus-adapters/self-dogfood-claim-discovery-routing-flow.yaml",
+      "kind": "self-dogfood-adapter",
+      "contentHash": "sha256:d80016cf8b9289f82aebb971ff6e0f8f0d32e3f26e60674b07dc7bd846eeed42"
+    },
+    {
+      "path": "scripts/run-self-dogfood-skill-refresh-flow-eval.mjs",
+      "kind": "self-dogfood-runner",
+      "contentHash": "sha256:ef52afcb2112cccd61057b117a0232a8bdabd2b132db13bbd6f1f4e07e47518e"
+    },
+    {
+      "path": "scripts/agent-runtime/run-local-skill-test.mjs",
+      "kind": "skill-test-runtime",
+      "contentHash": "sha256:7e585c433ec00522e19410c230ffc398a1fa5170d3f333eff9df7762f9a5db5d"
+    },
+    {
+      "path": "scripts/agent-runtime/audit-cautilus-first-scan-flow-log.mjs",
+      "kind": "dev-skill-audit",
+      "contentHash": "sha256:4207443101f27091ed596f30c27501258c9f814413080ddaf0deab3449b7f0d4"
+    }
+  ],
+  "runArtifacts": [
+    {
+      "path": "artifacts/self-dogfood/cautilus-claim-discovery-routing-flow-eval-codex/latest/eval-summary.json",
+      "kind": "ignored-dev-skill-eval-summary",
+      "contentHash": "sha256:f6e053b1b705f83fd09245b627bb1f5bc47c73ccaba43e7359f201fff02f4698",
+      "retentionNote": "Ignored self-dogfood runtime artifact; rerun the command evidence to rematerialize it in another clone."
+    },
+    {
+      "path": "artifacts/self-dogfood/cautilus-docs-behavior-routing-flow-eval-codex/latest/eval-summary.json",
+      "kind": "ignored-dev-skill-eval-summary",
+      "contentHash": "sha256:71ee893294a61cc5d8bc8d6db4fdc8d69ef3f2092f8124855f7de3318b2b83b7",
+      "retentionNote": "Ignored self-dogfood runtime artifact; rerun the command evidence to rematerialize it in another clone."
+    },
+    {
+      "path": "artifacts/self-dogfood/cautilus-scenario-needed-routing-flow-eval-codex/latest/eval-summary.json",
+      "kind": "ignored-dev-skill-eval-summary",
+      "contentHash": "sha256:f2738273dd6aeaef7467cd68594ef5b0ca21c87840230226ed11a9cc9c1bb6e2",
+      "retentionNote": "Ignored self-dogfood runtime artifact; rerun the command evidence to rematerialize it in another clone."
+    },
+    {
+      "path": "artifacts/self-dogfood/cautilus-claim-discovery-routing-flow-eval-codex/latest/claim-discovery-routing-flow/episode-cautilus-repo-proof-routing-flow/audit.json",
+      "kind": "ignored-dev-skill-audit",
+      "contentHash": "sha256:b34272793b1da4c4f87eba4631baf7115269c4c18b3bf81c3dfa1cec46487aaa",
+      "retentionNote": "Ignored self-dogfood runtime artifact; rerun the command evidence to rematerialize it in another clone."
+    },
+    {
+      "path": "artifacts/self-dogfood/cautilus-docs-behavior-routing-flow-eval-codex/latest/claim-discovery-routing-flow/episode-cautilus-docs-behavior-routing-flow/audit.json",
+      "kind": "ignored-dev-skill-audit",
+      "contentHash": "sha256:e776add741a606433d07bc621b2d90a0eb02a67660a909d8e9f2331273abef5b",
+      "retentionNote": "Ignored self-dogfood runtime artifact; rerun the command evidence to rematerialize it in another clone."
+    },
+    {
+      "path": "artifacts/self-dogfood/cautilus-scenario-needed-routing-flow-eval-codex/latest/claim-discovery-routing-flow/episode-cautilus-scenario-needed-routing-flow/audit.json",
+      "kind": "ignored-dev-skill-audit",
+      "contentHash": "sha256:72f7c1d055797d7ff4d9200324431aeaf8d0f3d15d629841402e0fa1d1c65580",
+      "retentionNote": "Ignored self-dogfood runtime artifact; rerun the command evidence to rematerialize it in another clone."
+    }
+  ],
+  "claimSupport": [
+    {
+      "claimId": "claim-skills-cautilus-skill-md-68",
+      "reason": "The focused routing dogfood transcripts and first-scan audits prove the skill uses the declared claim discovery path for repo-proof, docs-behavior-alignment, and scenario-needed questions while preserving scan-scope confirmation before discovery."
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The Codex dev/skill fixtures pass for the three trigger classes named in the source claim with audits that require agent status, pre-discovery entries/depth, pre-discovery scope confirmation, first claim discover after confirmation, claim show after discovery, and no review/eval overrun."
+  }
+}

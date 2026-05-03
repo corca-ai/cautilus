@@ -75,6 +75,48 @@ export function normalizeAggregateReviewApplication(packet, { claims, reviewResu
 	};
 }
 
+function reviewApplicationOrEmpty(packet) {
+	if (packet.reviewApplication && typeof packet.reviewApplication === "object") {
+		return packet.reviewApplication;
+	}
+	return {};
+}
+
+function stableDisplayPaths(paths, cwd) {
+	return paths.map((filePath) => stableDisplayPath(filePath, cwd));
+}
+
+export function writeAggregateReviewApplication(packet, {
+	claims,
+	output,
+	appliedReviewResultPaths = [],
+	skippedReviewResultPaths = [],
+	appliedResultCount = 0,
+	skippedResultCount = 0,
+	keptUpdateCount = 0,
+	droppedUpdateCount = 0,
+	cwd = process.cwd(),
+} = {}) {
+	if (!packet || typeof packet !== "object") {
+		return packet;
+	}
+	return {
+		...packet,
+		reviewApplication: {
+			...reviewApplicationOrEmpty(packet),
+			claimsPath: stableDisplayPath(claims, cwd),
+			outputPath: stableDisplayPath(output, cwd),
+			aggregateReviewResultPaths: stableDisplayPaths(appliedReviewResultPaths, cwd),
+			skippedReviewResultPaths: stableDisplayPaths(skippedReviewResultPaths, cwd),
+			appliedResultCount,
+			skippedResultCount,
+			keptUpdateCount,
+			droppedUpdateCount,
+			provenanceMode: "aggregate-current-review-results",
+		},
+	};
+}
+
 export function reviewResultPaths({ claimsDir, reviewResults = [] }) {
 	const sortPaths = (paths) => [...paths].sort(compareReviewResultPaths);
 	if (reviewResults.length > 0) {
@@ -237,6 +279,8 @@ export function applyCurrentReviewResults(options) {
 	let keptUpdateCount = 0;
 	let droppedUpdateCount = 0;
 	let lastAppliedReviewResultPath = "";
+	const appliedReviewResultPaths = [];
+	const skippedReviewResultPaths = [];
 	try {
 		writeJSON(currentPath, basePacket);
 		for (const reviewResultPath of paths) {
@@ -245,6 +289,7 @@ export function applyCurrentReviewResults(options) {
 			droppedUpdateCount += filtered.droppedUpdateCount;
 			if (filtered.keptUpdateCount === 0) {
 				skippedResultCount += 1;
+				skippedReviewResultPaths.push(reviewResultPath);
 				continue;
 			}
 			keptUpdateCount += filtered.keptUpdateCount;
@@ -260,13 +305,24 @@ export function applyCurrentReviewResults(options) {
 			appliedPacketPath = nextPath;
 			appliedResultCount += 1;
 			lastAppliedReviewResultPath = reviewResultPath;
+			appliedReviewResultPaths.push(reviewResultPath);
 		}
 		fs.mkdirSync(path.dirname(options.output), { recursive: true });
 		fs.copyFileSync(appliedPacketPath, options.output);
 		if (lastAppliedReviewResultPath) {
-			const outputPacket = normalizeAggregateReviewApplication(readJSON(options.output), {
+			const normalizedPacket = normalizeAggregateReviewApplication(readJSON(options.output), {
 				claims: options.claims,
 				reviewResultPath: lastAppliedReviewResultPath,
+			});
+			const outputPacket = writeAggregateReviewApplication(normalizedPacket, {
+				claims: options.claims,
+				output: options.output,
+				appliedReviewResultPaths,
+				skippedReviewResultPaths,
+				appliedResultCount,
+				skippedResultCount,
+				keptUpdateCount,
+				droppedUpdateCount,
 			});
 			writeJSON(options.output, outputPacket);
 		}

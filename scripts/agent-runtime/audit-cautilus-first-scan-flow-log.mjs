@@ -13,6 +13,11 @@ const CAUTILUS_COMMAND_PATTERN = /(?:\b(?:\.\/bin\/)?cautilus\b|\$CAUTILUS_BIN)/
 const AGENT_STATUS_PATTERN = new RegExp(`${CAUTILUS_COMMAND_PATTERN.source}[\\s\\S]*\\bagent\\s+status\\b`);
 const FIRST_DISCOVER_PATTERN = new RegExp(`${CAUTILUS_COMMAND_PATTERN.source}[\\s\\S]*\\bclaim\\s+discover\\b(?=[\\s\\S]*--repo-root\\b)(?![\\s\\S]*--previous\\b)(?![\\s\\S]*--refresh-plan\\b)`);
 const CLAIM_SHOW_PATTERN = new RegExp(`${CAUTILUS_COMMAND_PATTERN.source}[\\s\\S]*\\bclaim\\s+show\\b(?=[\\s\\S]*--sample-claims\\b)`);
+const POSITION_PATTERNS = {
+	agentStatus: /(?:\b(?:\.\/bin\/)?cautilus\b|\$CAUTILUS_BIN)[^;&|\n]*\bagent\s+status\b/g,
+	firstDiscover: /(?:\b(?:\.\/bin\/)?cautilus\b|\$CAUTILUS_BIN)[^;&|\n]*\bclaim\s+discover\b(?=[^;&|\n]*--repo-root\b)(?![^;&|\n]*--previous\b)(?![^;&|\n]*--refresh-plan\b)/g,
+	claimShow: /(?:\b(?:\.\/bin\/)?cautilus\b|\$CAUTILUS_BIN)[^;&|\n]*\bclaim\s+show\b(?=[^;&|\n]*--sample-claims\b)/g,
+};
 
 const FORBIDDEN_COMMAND_PATTERNS = [
 	["claim_review_prepare", /\bclaim\s+review\s+prepare-input\b/],
@@ -65,13 +70,13 @@ function requiredCommandFindings(commands) {
 }
 
 function commandOrderFindings(commands) {
-	const statusIndex = commands.findIndex((command) => AGENT_STATUS_PATTERN.test(command));
-	const discoverIndex = commands.findIndex((command) => FIRST_DISCOVER_PATTERN.test(command));
-	const showIndex = commands.findIndex((command) => CLAIM_SHOW_PATTERN.test(command));
-	if (statusIndex < 0 || discoverIndex < 0 || showIndex < 0) {
+	const statusPosition = firstCommandPosition(commands, POSITION_PATTERNS.agentStatus);
+	const discoverPosition = firstCommandPosition(commands, POSITION_PATTERNS.firstDiscover);
+	const showPosition = firstCommandPosition(commands, POSITION_PATTERNS.claimShow);
+	if (!statusPosition || !discoverPosition || !showPosition) {
 		return [];
 	}
-	if (statusIndex < discoverIndex && discoverIndex < showIndex) {
+	if (compareCommandPositions(statusPosition, discoverPosition) < 0 && compareCommandPositions(discoverPosition, showPosition) < 0) {
 		return [];
 	}
 	return [{
@@ -79,6 +84,24 @@ function commandOrderFindings(commands) {
 		id: "wrong_command_order",
 		message: "Expected agent status before first claim discover, and claim show after discovery.",
 	}];
+}
+
+function firstCommandPosition(commands, pattern) {
+	for (const [commandIndex, command] of commands.entries()) {
+		pattern.lastIndex = 0;
+		const match = pattern.exec(command);
+		if (match) {
+			return { commandIndex, charIndex: match.index };
+		}
+	}
+	return null;
+}
+
+function compareCommandPositions(left, right) {
+	if (left.commandIndex !== right.commandIndex) {
+		return left.commandIndex - right.commandIndex;
+	}
+	return left.charIndex - right.charIndex;
 }
 
 function forbiddenCommandFindings(commands) {
@@ -162,7 +185,7 @@ function messageFindings(messageRecords, messages, firstDiscoverIndex) {
 			message: "Before first claim discover, the skill should ask the user to confirm or adjust the scan scope.",
 		});
 	}
-	if (!/review budget|LLM review|리뷰 예산|LLM 리뷰|리뷰를 .*하지|리뷰.*별도/i.test(joined)) {
+	if (!/review budget|LLM(?:-backed)?(?:\s+\w+){0,3}\s+review|bounded\s+LLM|budgeted\s+(?:claim\s+)?review|리뷰 예산|LLM 리뷰|리뷰를 .*하지|리뷰.*별도/i.test(joined)) {
 		findings.push({
 			severity: "error",
 			id: "missing_review_budget_boundary",

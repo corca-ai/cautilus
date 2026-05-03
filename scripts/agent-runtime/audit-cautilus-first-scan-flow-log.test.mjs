@@ -97,6 +97,35 @@ test("passes loose command execution transcript shape with pre-discover confirma
 	assert.deepEqual(audit.findings, []);
 });
 
+test("passes when claim discover and claim show are chained in one shell command", () => {
+	const audit = auditFirstScanFlowLogText(jsonl([
+		commandExecution("pwd && ./bin/cautilus agent status --repo-root . --json"),
+		{
+			type: "item.completed",
+			item: {
+				type: "agent_message",
+				text: "Scan scope: entries are README.md, AGENTS.md, and CLAUDE.md, with linked Markdown depth 3. Confirm this scan scope or adjust it before I run discovery.",
+			},
+		},
+		commandExecution("./bin/cautilus claim discover --repo-root . --output .cautilus/claims/latest.json && ./bin/cautilus claim show --input .cautilus/claims/latest.json --sample-claims 10"),
+		assistant("Next safe branch: prepare bounded LLM claim review with a separate budget."),
+	]));
+	assert.equal(audit.status, "passed");
+	assert.deepEqual(audit.findings, []);
+});
+
+test("passes budgeted LLM claim review wording as review boundary", () => {
+	const audit = auditFirstScanFlowLogText(jsonl([
+		toolCall("./bin/cautilus agent status --repo-root . --json"),
+		assistant("The scan scope is README.md, AGENTS.md, CLAUDE.md with linked Markdown depth 3. Confirm this scan scope or adjust it before I run discovery."),
+		toolCall("./bin/cautilus claim discover --repo-root . --output .cautilus/claims/latest.json"),
+		toolCall("./bin/cautilus claim show --input .cautilus/claims/latest.json --sample-claims 10"),
+		assistant("The next branch is budgeted claim review; do not launch it from this first scan."),
+	]));
+	assert.equal(audit.status, "passed");
+	assert.deepEqual(audit.findings, []);
+});
+
 test("fails when first scan overruns into review or eval planning", () => {
 	const audit = auditFirstScanFlowLogText(jsonl([
 		toolCall("./bin/cautilus agent status --repo-root . --json"),

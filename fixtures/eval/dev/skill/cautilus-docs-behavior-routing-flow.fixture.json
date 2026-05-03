@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "cautilus.evaluation_input.v1",
+  "surface": "dev",
+  "preset": "skill",
+  "suiteId": "cautilus-docs-behavior-routing-flow",
+  "suiteDisplayName": "Cautilus Docs Behavior Routing Flow",
+  "skillId": "cautilus",
+  "skillDisplayName": "cautilus",
+  "cases": [
+    {
+      "caseId": "episode-cautilus-docs-behavior-routing-flow",
+      "evaluationKind": "execution",
+      "turns": [
+        {
+          "input": "$cautilus\nAre the docs and behavior aligned? Use the checked-in Cautilus workflow.",
+          "injectSkill": true
+        },
+        {
+          "input": "Confirm the stated scan scope and run the first claim discovery scan."
+        }
+      ],
+      "auditKind": "cautilus_first_scan_flow",
+      "thresholds": {
+        "max_duration_ms": 240000
+      }
+    }
+  ]
+}

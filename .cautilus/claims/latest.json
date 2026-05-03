@@ -9382,7 +9382,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:65cb30158d551471121109baa101be43b1ccbca956f9424cce6149c48a5667b1",
-      "claimId": "claim-skills-cautilus-skill-md-69",
+      "claimId": "claim-skills-cautilus-skill-md-68",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9400,7 +9400,7 @@
       "sourceRefs": [
         {
           "excerpt": "Use this path when the user asks whether a repo proves what it claims, whether docs and behavior are aligned, or which scenarios still need to be created.",
-          "line": 69,
+          "line": 68,
           "path": "skills/cautilus/SKILL.md"
         }
       ],
@@ -9560,7 +9560,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:c575861c975813835a93a64b3d0ca6aafdb2ee55d71de1ffb6211b433852c558",
-      "claimId": "claim-skills-cautilus-skill-md-158",
+      "claimId": "claim-skills-cautilus-skill-md-159",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9579,7 +9579,7 @@
       "sourceRefs": [
         {
           "excerpt": "This branch proves reviewer launch, not review-result merge behavior.",
-          "line": 158,
+          "line": 159,
           "path": "skills/cautilus/SKILL.md"
         }
       ],
@@ -9591,7 +9591,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:0430d8a298c4e11b0f53d621d1b7c1c908425d463f7a66dc5efbf4043936efbd",
-      "claimId": "claim-skills-cautilus-skill-md-223",
+      "claimId": "claim-skills-cautilus-skill-md-221",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9608,7 +9608,7 @@
       "sourceRefs": [
         {
           "excerpt": "Agents should read the packet first, then cite HTML only when a browser view is the deliverable.",
-          "line": 223,
+          "line": 221,
           "path": "skills/cautilus/SKILL.md"
         }
       ],
@@ -9825,7 +9825,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "5e3af420080749a0c0fabb1c014e5fc2b6938ccd",
+  "gitCommit": "407c95e07efbc6091c888830f9d91b8a3ba05560",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "schemaVersion": "cautilus.claim_proof_plan.v1",
@@ -10666,7 +10666,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:aa874ffaa01dcb37043f6df3d78acd2fc13cc5890b7333616420a737455d3595",
+      "contentHash": "sha256:9d295f8442dd393e810b18aae22ec6d5011afafe4330d814bdb9e78f8b8e174f",
       "depth": 3,
       "discoveredFrom": "docs/contracts/scenario-history.md",
       "kind": "skill-doc",

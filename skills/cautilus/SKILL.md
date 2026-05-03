@@ -66,6 +66,7 @@ If claim state exists, read or refresh that packet before planning new proof wor
 ## Declared Claim Discovery
 
 Use this path when the user asks whether a repo proves what it claims, whether docs and behavior are aligned, or which scenarios still need to be created.
+For these direct questions, do not run `claim discover` until scan entries/depth are stated and the user confirms or adjusts the scope; keep LLM review as a separate budgeted branch.
 Do not hard-code the search to README.
 By default, the binary starts from adapter-owned `claim_discovery.entries` or README.md/AGENTS.md/CLAUDE.md and follows repo-local Markdown links to depth 3.
 Use repeated `--source` arguments only when the user or adapter has selected an explicit truth-surface inventory.

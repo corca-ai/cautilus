@@ -11344,30 +11344,43 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:65cb30158d551471121109baa101be43b1ccbca956f9424cce6149c48a5667b1",
-      "claimId": "claim-skills-cautilus-skill-md-69",
+      "claimId": "claim-skills-cautilus-skill-md-68",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:9e929e70f1826d3656a588db17b7b65c75aada2e7be292fbb37610337177ddd1",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-claim-discovery-routing-flow-2026-05-04.json",
+          "supportsClaimIds": [
+            "claim-skills-cautilus-skill-md-68"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by focused Codex dev/skill routing dogfood flows: transcripts route repo-proof, docs-behavior-alignment, and scenario-needed questions into claim discovery, state the first scan scope, wait for user confirmation, run first discovery, summarize with claim show, and pass the first-scan audit.",
       "groupHints": [
         "audience:developer",
-        "human-auditable",
+        "cautilus-eval",
         "linked-from:docs/contracts/scenario-history.md",
         "needs-alignment",
         "skill-doc"
       ],
       "lifecycle": "new",
-      "nextAction": "Reconcile the named docs, code, skill, adapter, or CLI surface before treating this as a verification target.",
-      "recommendedProof": "human-auditable",
-      "reviewStatus": "heuristic",
+      "nextAction": "Keep the focused claim-discovery routing dogfood fixtures current when changing Cautilus skill routing for repo-proof, docs-behavior-alignment, or scenario-needed requests.",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Use this path when the user asks whether a repo proves what it claims, whether docs and behavior are aligned, or which scenarios still need to be created.",
-          "line": 69,
+          "line": 68,
           "path": "skills/cautilus/SKILL.md"
         }
       ],
       "summary": "Use this path when the user asks whether a repo proves what it claims, whether docs and behavior are aligned, or which scenarios still need to be created.",
-      "verificationReadiness": "needs-alignment",
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim says surfaces should agree, so proof is not honest until the mismatched surfaces are reconciled."
     },
     {
@@ -11522,7 +11535,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:c575861c975813835a93a64b3d0ca6aafdb2ee55d71de1ffb6211b433852c558",
-      "claimId": "claim-skills-cautilus-skill-md-158",
+      "claimId": "claim-skills-cautilus-skill-md-159",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -11541,7 +11554,7 @@
       "sourceRefs": [
         {
           "excerpt": "This branch proves reviewer launch, not review-result merge behavior.",
-          "line": 158,
+          "line": 159,
           "path": "skills/cautilus/SKILL.md"
         }
       ],
@@ -11553,41 +11566,28 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:0430d8a298c4e11b0f53d621d1b7c1c908425d463f7a66dc5efbf4043936efbd",
-      "claimId": "claim-skills-cautilus-skill-md-223",
+      "claimId": "claim-skills-cautilus-skill-md-221",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [
-        {
-          "contentHash": "sha256:2c23039f3eb065c3d112236d45a01638347efb452fcb2a8632354d0b40c473e9",
-          "kind": "cautilus-claim-evidence-bundle",
-          "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-packet-first-skill-flow-2026-05-03.json",
-          "supportsClaimIds": [
-            "claim-skills-cautilus-skill-md-223"
-          ]
-        }
-      ],
-      "evidenceStatus": "satisfied",
-      "evidenceStatusReason": "Verified by current packet-first dev/skill dogfood: the agent ran `agent status --json` and `claim show` against the evidenced claim packet, and the audit confirmed no HTML or browser citation for an agent-oriented deliverable.",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
       "groupHints": [
         "audience:developer",
-        "cautilus-eval",
+        "deterministic",
         "linked-from:docs/contracts/scenario-history.md",
         "skill-doc"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep the packet-first flow covered whenever the skill packet-reading guidance, HTML/report guidance, or episode audit wiring changes.",
-      "recommendedEvalSurface": "dev/skill",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "agent-reviewed",
+      "nextAction": "Keep or add deterministic packet, catalog, schema, or renderer proof for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "Agents should read the packet first, then cite HTML only when a browser view is the deliverable.",
-          "line": 223,
+          "line": 221,
           "path": "skills/cautilus/SKILL.md"
         }
       ],
       "summary": "Agents should read the packet first, then cite HTML only when a browser view is the deliverable.",
-      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names packet, catalog, or renderer behavior that should be protected by deterministic command, schema, or render tests."
     }
@@ -11632,8 +11632,8 @@
     },
     "byRecommendedProof": {
       "cautilus-eval": 96,
-      "deterministic": 128,
-      "human-auditable": 99
+      "deterministic": 129,
+      "human-auditable": 98
     },
     "byReviewStatus": {
       "agent-reviewed": 202,
@@ -11641,9 +11641,9 @@
     },
     "byVerificationReadiness": {
       "blocked": 43,
-      "needs-alignment": 41,
+      "needs-alignment": 40,
       "needs-scenario": 10,
-      "ready-to-verify": 229
+      "ready-to-verify": 230
     }
   },
   "discoveryEngine": {
@@ -11802,7 +11802,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "5e3af420080749a0c0fabb1c014e5fc2b6938ccd",
+  "gitCommit": "407c95e07efbc6091c888830f9d91b8a3ba05560",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "reviewApplication": {
@@ -11874,7 +11874,90 @@
     "reviewResultPath": ".cautilus/claims/review-result-dev-skill-branch-proof-2026-05-04.json",
     "schemaVersion": "cautilus.claim_review_result.v1",
     "unresolvedQuestions": [],
-    "provenanceMode": "aggregate-current-review-results"
+    "provenanceMode": "aggregate-current-review-results",
+    "outputPath": ".cautilus/claims/evidenced-typed-runners.json",
+    "aggregateReviewResultPaths": [
+      ".cautilus/claims/review-result-loop1-lane-a.json",
+      ".cautilus/claims/review-result-loop2-lane-a.json",
+      ".cautilus/claims/review-result-loop2-lane-b.json",
+      ".cautilus/claims/review-result-deterministic-gates-2026-05-01.json",
+      ".cautilus/claims/review-result-evidence-dev-skill-routing-install.json",
+      ".cautilus/claims/review-result-llm-batch1.json",
+      ".cautilus/claims/review-result-llm-batch3.json",
+      ".cautilus/claims/review-result-positioning-boundary.json",
+      ".cautilus/claims/review-result-llm-batch4.json",
+      ".cautilus/claims/review-result-llm-batch5.json",
+      ".cautilus/claims/review-result-llm-batch6.json",
+      ".cautilus/claims/review-result-human-align-action-bucket.json",
+      ".cautilus/claims/review-result-human-confirm-action-bucket.json",
+      ".cautilus/claims/review-result-hitl-audience-2026-05-02.json",
+      ".cautilus/claims/review-result-hitl-claim-review-boundary-2026-05-02.json",
+      ".cautilus/claims/review-result-hitl-evidence-backed-human-review-2026-05-02.json",
+      ".cautilus/claims/review-result-hitl-priority-reset-2026-05-03.json",
+      ".cautilus/claims/review-result-agent-status-safe-branch-catalog-2026-05-03.json",
+      ".cautilus/claims/review-result-current-dev-skill-dogfood-2026-05-03.json",
+      ".cautilus/claims/review-result-deterministic-ready-heuristic-2026-05-03.json",
+      ".cautilus/claims/review-result-evidence-active-run-and-claim-discover-2026-05-03.json",
+      ".cautilus/claims/review-result-evidence-adapter-discovery-contracts-2026-05-03.json",
+      ".cautilus/claims/review-result-evidence-claim-discover-proof-routing-2026-05-03.json",
+      ".cautilus/claims/review-result-evidence-claim-review-prepare-input-boundary-2026-05-03.json",
+      ".cautilus/claims/review-result-evidence-consumer-doctor-onboarding-2026-05-03.json",
+      ".cautilus/claims/review-result-evidence-consumer-surface-alias-2026-05-03.json",
+      ".cautilus/claims/review-result-evidence-doctor-runner-readiness-next-action-2026-05-03.json",
+      ".cautilus/claims/review-result-evidence-durable-packets-2026-05-03.json",
+      ".cautilus/claims/review-result-evidence-evaluation-process-artifacts-2026-05-03.json",
+      ".cautilus/claims/review-result-evidence-fixture-runtime-proof-2026-05-03.json",
+      ".cautilus/claims/review-result-evidence-gepa-sparse-evidence-block-2026-05-03.json",
+      ".cautilus/claims/review-result-evidence-install-channel-policy-2026-05-03.json",
+      ".cautilus/claims/review-result-evidence-install-packaging-2026-05-03.json",
+      ".cautilus/claims/review-result-evidence-live-run-workspace-boundary-2026-05-03.json",
+      ".cautilus/claims/review-result-evidence-machine-readable-packets-2026-05-03.json",
+      ".cautilus/claims/review-result-evidence-review-summary-telemetry-2026-05-03.json",
+      ".cautilus/claims/review-result-evidence-review-variants-status-and-output-text-2026-05-03.json",
+      ".cautilus/claims/review-result-evidence-reviewable-proof-debt-reports-2026-05-03.json",
+      ".cautilus/claims/review-result-evidence-runner-readiness-branch-shape-2026-05-03.json",
+      ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-03.json",
+      ".cautilus/claims/review-result-evidence-scenario-review-attention-linkage-2026-05-03.json",
+      ".cautilus/claims/review-result-evidence-self-dogfood-html-renderers-2026-05-03.json",
+      ".cautilus/claims/review-result-evidence-specdown-prerequisite-2026-05-03.json",
+      ".cautilus/claims/review-result-final-deterministic-proof-debt-2026-05-03.json",
+      ".cautilus/claims/review-result-policy-claim-reclassification-2026-05-03.json",
+      ".cautilus/claims/review-result-readme-scenario-next-step-reclassification-2026-05-03.json",
+      ".cautilus/claims/review-result-remaining-deterministic-claims-2026-05-03.json",
+      ".cautilus/claims/review-result-reviewable-artifacts-proof-gap-2026-05-03.json",
+      ".cautilus/claims/review-result-workbench-instance-catalog-contract-2026-05-03.json",
+      ".cautilus/claims/review-result-evidence-proof-class-downstream-summary-2026-05-03.json",
+      ".cautilus/claims/review-result-evidence-refresh-plan-state-transition-2026-05-03.json",
+      ".cautilus/claims/review-result-evidence-runner-readiness-schema-fields-2026-05-03.json",
+      ".cautilus/claims/review-result-eval-bucket-user-a-2026-05-03.json",
+      ".cautilus/claims/review-result-eval-bucket-user-b-2026-05-03.json",
+      ".cautilus/claims/review-result-eval-bucket-user-c-2026-05-03.json",
+      ".cautilus/claims/review-result-current-eval-surfaces-2026-05-03.json",
+      ".cautilus/claims/review-result-adapter-gate-split-2026-05-03.json",
+      ".cautilus/claims/review-result-claim-packet-next-work-grouping-2026-05-03.json",
+      ".cautilus/claims/review-result-optimize-held-out-route-2026-05-03.json",
+      ".cautilus/claims/review-result-canonical-spec-curation-flow-2026-05-03.json",
+      ".cautilus/claims/review-result-eval-heuristic-batch-2026-05-03.json",
+      ".cautilus/claims/review-result-deterministic-proof-batch-2026-05-04.json",
+      ".cautilus/claims/review-result-remaining-deterministic-proof-2026-05-04.json",
+      ".cautilus/claims/review-result-agent-plan-cautilus-eval-2026-05-04.json",
+      ".cautilus/claims/review-result-current-deterministic-proof-batch-2026-05-03.json",
+      ".cautilus/claims/review-result-claim-discovery-routing-flow-2026-05-04.json",
+      ".cautilus/claims/review-result-dev-skill-branch-proof-2026-05-04.json"
+    ],
+    "skippedReviewResultPaths": [
+      ".cautilus/claims/review-result-loop1-lane-b.json",
+      ".cautilus/claims/review-result-evidence-claim-eval-plan-2026-05-01.json",
+      ".cautilus/claims/review-result-evidence-dev-skill-dogfood.json",
+      ".cautilus/claims/review-result-evidence-review-to-eval-flow.json",
+      ".cautilus/claims/review-result-action-boundary-skill-guidance.json",
+      ".cautilus/claims/review-result-skill-packet-first-reclass-2026-05-03.json",
+      ".cautilus/claims/review-result-packet-first-skill-flow-2026-05-03.json"
+    ],
+    "appliedResultCount": 67,
+    "skippedResultCount": 7,
+    "keptUpdateCount": 278,
+    "droppedUpdateCount": 76
   },
   "reviewRuns": [
     {
@@ -11973,6 +12056,17 @@
       "reviewRun": {
         "backend": "chat-hitl",
         "mode": "hitl-decision-cards",
+        "reviewInputPath": "charness-artifacts/hitl/latest.md",
+        "reviewPolicy": "Apply maintainer decisions that human-auditable claims must still require concrete support evidence. Keep evidenceStatus unknown unless direct evidence is attached.",
+        "reviewer": "human-maintainer"
+      },
+      "schemaVersion": "cautilus.claim_review_result.v1"
+    },
+    {
+      "clusterCount": 1,
+      "reviewRun": {
+        "backend": "chat-hitl",
+        "mode": "hitl-decision-cards",
         "reviewInputPath": "chat:2026-05-03-next-hitl",
         "reviewPolicy": "Apply maintainer decisions from the next-HITL priority reset. Remove the overfit skill workflow-option policy from the skill body and prioritize early decisions that materially reorder proof work.",
         "reviewer": "human-maintainer"
@@ -11997,6 +12091,16 @@
         "path": ".cautilus/claims/review-input-agent-plan-cautilus-eval-2026-05-04.json",
         "reviewedCandidateCount": 12
       }
+    },
+    {
+      "clusterCount": 1,
+      "reviewRun": {
+        "createdAt": "2026-05-04",
+        "mode": "evidence-application",
+        "reviewer": "codex-dev-skill-routing-dogfood-proof",
+        "summary": "Apply verified Codex dev/skill dogfood evidence for Cautilus claim-discovery routing from repo-proof, docs-behavior-alignment, and scenario-needed questions."
+      },
+      "schemaVersion": "cautilus.claim_review_result.v1"
     },
     {
       "clusterCount": 1,
@@ -12847,7 +12951,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:aa874ffaa01dcb37043f6df3d78acd2fc13cc5890b7333616420a737455d3595",
+      "contentHash": "sha256:9d295f8442dd393e810b18aae22ec6d5011afafe4330d814bdb9e78f8b8e174f",
       "depth": 3,
       "discoveredFrom": "docs/contracts/scenario-history.md",
       "kind": "skill-doc",
