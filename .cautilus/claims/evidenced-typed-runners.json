@@ -6998,8 +6998,19 @@
       "claimFingerprint": "sha256:82896bc781c929afea1876b90b1af2208ca7a40401fd5f57319e18617578165b",
       "claimId": "claim-docs-contracts-runner-readiness-md-273",
       "claimSemanticGroup": "Documentation and contracts",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:343348454979fefec3922e43b78b43f1330e190863da1fb86874b91d5c24c583",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-runner-readiness-schema-fields-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-runner-readiness-md-273"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by focused adapter tests: typed runner metadata preserves id, surfaces, proof_class, command_template, smoke_command_template, assessment_path, and default_runtime, while invalid proof classes and surfaces are rejected.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -7007,9 +7018,9 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "nextAction": "Keep typed runner schema tests current when changing runner_readiness adapter fields.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "The shipped schema uses `id`, `surfaces`, `proof_class`, `command_template`, optional `smoke_command_template`, optional `assessment_path`, and optional `default_runtime`.",
@@ -7018,8 +7029,9 @@
         }
       ],
       "summary": "The shipped schema uses `id`, `surfaces`, `proof_class`, `command_template`, optional `smoke_command_template`, optional `assessment_path`, and optional `default_runtime`.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim names adapter schema fields, which are deterministic parser and validator behavior."
     },
     {
       "claimAudience": "developer",
@@ -10143,8 +10155,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 49,
-      "unknown": 266
+      "satisfied": 50,
+      "unknown": 265
     },
     "byLifecycle": {
       "new": 315
@@ -10155,8 +10167,8 @@
       "human-auditable": 70
     },
     "byReviewStatus": {
-      "agent-reviewed": 79,
-      "heuristic": 233,
+      "agent-reviewed": 80,
+      "heuristic": 232,
       "human-reviewed": 3
     },
     "byVerificationReadiness": {

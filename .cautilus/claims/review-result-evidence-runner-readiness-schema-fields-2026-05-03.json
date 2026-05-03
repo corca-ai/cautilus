@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-03T09:20:13Z",
+    "evidencePolicy": "Only mark the typed adapter runner schema field list satisfied; keep runner honesty and eval selection claims separate."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-runner-readiness-schema-fields",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-runner-readiness-md-273",
+          "claimFingerprint": "sha256:82896bc781c929afea1876b90b1af2208ca7a40401fd5f57319e18617578165b",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "whyThisLayer": "The claim names adapter schema fields, which are deterministic parser and validator behavior.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by focused adapter tests: typed runner metadata preserves id, surfaces, proof_class, command_template, smoke_command_template, assessment_path, and default_runtime, while invalid proof classes and surfaces are rejected.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-runner-readiness-schema-fields-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:343348454979fefec3922e43b78b43f1330e190863da1fb86874b91d5c24c583",
+              "supportsClaimIds": [
+                "claim-docs-contracts-runner-readiness-md-273"
+              ]
+            }
+          ],
+          "nextAction": "Keep typed runner schema tests current when changing runner_readiness adapter fields.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

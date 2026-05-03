@@ -170,7 +170,14 @@ func TestValidateAdapterDataAcceptsTypedRunnerReadiness(t *testing.T) {
 		t.Fatalf("expected two typed runners, got %#v", runners)
 	}
 	first := asMap(runners[0])
-	if first["id"] != "app-chat-live" || first["proof_class"] != "live-product-runner" || first["default_runtime"] != "fixture" {
+	surfaces := stringArrayOrEmpty(first["surfaces"])
+	if first["id"] != "app-chat-live" ||
+		len(surfaces) != 1 || surfaces[0] != "app/chat" ||
+		first["proof_class"] != "live-product-runner" ||
+		!strings.Contains(first["command_template"].(string), "{eval_observed_file}") ||
+		first["smoke_command_template"] != "node scripts/eval/run-live-chat.mjs --smoke" ||
+		first["assessment_path"] != ".cautilus/runners/app-chat-live.assessment.json" ||
+		first["default_runtime"] != "fixture" {
 		t.Fatalf("unexpected normalized runner: %#v", first)
 	}
 }

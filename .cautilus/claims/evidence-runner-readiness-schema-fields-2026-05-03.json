@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-runner-readiness-schema-fields-2026-05-03",
+  "createdForClaimIds": [
+    "claim-docs-contracts-runner-readiness-md-273"
+  ],
+  "repoCommit": "ffc68d8a107b10bd99e71613e81269c04accc1c3",
+  "summary": "This bundle records deterministic proof that the adapter schema accepts and normalizes the shipped runner_readiness runner fields.",
+  "evidenceScope": {
+    "targetSurface": "adapter runner_readiness.runners schema normalization",
+    "claimBoundary": "Only the listed adapter runner fields and validation errors are marked satisfied. This does not prove runner assessment honesty or eval runtime behavior.",
+    "notClaimed": [
+      "A declared proof class is enough for app product proof",
+      "Runner assessment packets are semantically correct",
+      "Every eval test run selects the intended runner"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/runtime -run 'TestValidateAdapterDataAcceptsTypedRunnerReadiness|TestValidateAdapterDataRejectsInvalidTypedRunnerReadiness' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "notableAssertions": [
+          "valid runner_readiness.runners entries preserve id, surfaces, proof_class, command_template, smoke_command_template, assessment_path, and default_runtime",
+          "invalid runner ids, proof classes, and surfaces produce specific validation errors",
+          "default_runtime accepts fixture for typed runner metadata"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "internal/runtime/adapter.go",
+      "kind": "adapter-runner-readiness-schema-runtime",
+      "contentHash": "sha256:3c1ea7ca8956160057ea252be8f98253e841d664a37ee228395ae723638c8616"
+    },
+    {
+      "path": "internal/runtime/adapter_test.go",
+      "kind": "adapter-runner-readiness-schema-tests",
+      "contentHash": "sha256:8df1d34c92ca15195c275aee9b3db0af35786d9448ef5293ac31c156ee67b464"
+    },
+    {
+      "path": "docs/contracts/runner-readiness.md",
+      "kind": "runner-readiness-claim-source",
+      "contentHash": "sha256:91cb9010a1f8dc6d385602192aae430ae7027f645a6b6c124f445ca034ade1bc"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The focused adapter tests prove the shipped typed runner schema accepts and preserves the listed required and optional fields, while invalid proof classes and surfaces are rejected."
+  }
+}
