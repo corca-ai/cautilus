@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 152
+          "unknown": 151
         },
         "byReviewStatus": {
-          "heuristic": 152
+          "heuristic": 151
         },
-        "count": 152,
+        "count": 151,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -43,28 +43,13 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 1
+          "unknown": 105
         },
         "byReviewStatus": {
-          "heuristic": 1
-        },
-        "count": 1,
-        "id": "agent-add-deterministic-proof",
-        "recommendedActor": "agent",
-        "sampleClaimIds": [
-          "claim-skills-cautilus-skill-md-227"
-        ],
-        "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
-      },
-      {
-        "byEvidenceStatus": {
-          "unknown": 104
-        },
-        "byReviewStatus": {
-          "agent-reviewed": 6,
+          "agent-reviewed": 7,
           "heuristic": 98
         },
-        "count": 104,
+        "count": 105,
         "id": "agent-plan-cautilus-eval",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -198,13 +183,13 @@
       "new": 322
     },
     "byRecommendedProof": {
-      "cautilus-eval": 123,
-      "deterministic": 107,
+      "cautilus-eval": 124,
+      "deterministic": 106,
       "human-auditable": 92
     },
     "byReviewStatus": {
-      "agent-reviewed": 170,
-      "heuristic": 152
+      "agent-reviewed": 171,
+      "heuristic": 151
     },
     "byVerificationReadiness": {
       "blocked": 37,
@@ -2556,8 +2541,17 @@
   },
   "gitCommit": "bb992ae4fb9c2e9fb8a872c2db2e0ccae0a04451",
   "gitState": {
-    "changedFileCount": 0,
-    "changedFiles": [],
+    "changedFileCount": 8,
+    "changedFiles": [
+      ".cautilus/claims/canonical-claim-map.json",
+      ".cautilus/claims/claim-status-report.md",
+      ".cautilus/claims/eval-plan-reviewed-eval-claims-2026-05-03.json",
+      ".cautilus/claims/evidence-current-dev-skill-dogfood-2026-05-03.json",
+      ".cautilus/claims/evidenced-typed-runners.json",
+      ".cautilus/claims/latest.json",
+      ".cautilus/claims/review-result-current-dev-skill-dogfood-2026-05-03.json",
+      ".cautilus/claims/status-summary.json"
+    ],
     "changedFilesBasis": {
       "meaning": "changedFiles lists files committed between packetGitCommit and currentGitCommit; it does not include unstaged, staged, or untracked working-tree files.",
       "scope": "committed-diff-between-packet-and-current-head",
@@ -2565,12 +2559,12 @@
     },
     "changedSourceCount": 0,
     "changedSources": [],
-    "comparisonStatus": "fresh",
-    "currentGitCommit": "bb992ae4fb9c2e9fb8a872c2db2e0ccae0a04451",
-    "headDrift": false,
+    "comparisonStatus": "fresh-with-head-drift",
+    "currentGitCommit": "b979a89ab7d5c58655f1fc9e8375ea694d8ab688",
+    "headDrift": true,
     "isStale": false,
     "packetGitCommit": "bb992ae4fb9c2e9fb8a872c2db2e0ccae0a04451",
-    "recommendedAction": "The claim packet commit matches the inspected checkout.",
+    "recommendedAction": "The current HEAD differs from the packet commit, but no recorded claim source changed; review and eval planning may continue.",
     "workingTreePolicy": "excluded"
   },
   "gitStateSnapshotNotice": "gitState is computed when this status packet is generated; rerun claim show for live checkout state.",
@@ -2593,7 +2587,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 125,
+    "heuristicClaimsReadyForReview": 124,
     "needsAlignment": 34,
     "needsScenario": 11
   },

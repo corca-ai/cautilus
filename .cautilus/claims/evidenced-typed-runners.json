@@ -11152,16 +11152,18 @@
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "This is agent skill-orchestration behavior, not deterministic code behavior. It needs a skill-flow fixture or audit log proving packet-first reading and HTML citation only for browser-facing deliverables.",
       "groupHints": [
         "audience:developer",
-        "deterministic",
+        "cautilus-eval",
         "linked-from:docs/contracts/scenario-history.md",
         "skill-doc"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic packet, catalog, schema, or renderer proof for this claim.",
-      "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "nextAction": "Use a skill-flow fixture or audit log to prove agents read the packet first and cite HTML only when a browser-facing deliverable is requested.",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Agents should read the packet first, then cite HTML only when a browser view is the deliverable.",
@@ -11170,6 +11172,7 @@
         }
       ],
       "summary": "Agents should read the packet first, then cite HTML only when a browser view is the deliverable.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names packet, catalog, or renderer behavior that should be protected by deterministic command, schema, or render tests."
     }
@@ -11213,13 +11216,13 @@
       "new": 322
     },
     "byRecommendedProof": {
-      "cautilus-eval": 123,
-      "deterministic": 107,
+      "cautilus-eval": 124,
+      "deterministic": 106,
       "human-auditable": 92
     },
     "byReviewStatus": {
-      "agent-reviewed": 170,
-      "heuristic": 152
+      "agent-reviewed": 171,
+      "heuristic": 151
     },
     "byVerificationReadiness": {
       "blocked": 37,

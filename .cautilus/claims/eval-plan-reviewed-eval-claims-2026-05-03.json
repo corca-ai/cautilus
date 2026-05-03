@@ -397,19 +397,92 @@
       "unresolvedQuestions": [
         "Which existing self-dogfood optimize fixture, if any, is intended to be the canonical proof for the user-facing optimize promise?"
       ]
+    },
+    {
+      "claimFingerprint": "sha256:0430d8a298c4e11b0f53d621d1b7c1c908425d463f7a66dc5efbf4043936efbd",
+      "claimId": "claim-skills-cautilus-skill-md-227",
+      "draftIntent": "Verify that Agents should read the packet first, then cite HTML only when a browser view is the deliverable.",
+      "evidenceStatus": "unknown",
+      "fixtureAuthoringGuidance": {
+        "conditionalCaseFields": {
+          "execution": [
+            "thresholds or turns/auditKind when the evaluated behavior needs them"
+          ],
+          "trigger": [
+            "expectedTrigger"
+          ]
+        },
+        "evaluationInputSchema": "cautilus.evaluation_input.v1",
+        "expectedShape": "trigger cases require expectedTrigger; execution cases use thresholds, turns, or auditKind depending on the skill contract",
+        "fixtureOwner": "host-repo",
+        "minimumCaseFields": [
+          "caseId",
+          "evaluationKind",
+          "prompt"
+        ],
+        "minimumSuiteFields": [
+          "schemaVersion",
+          "surface",
+          "preset",
+          "suiteId",
+          "cases"
+        ],
+        "nonWriterBoundary": "Cautilus plans the fixture contract but does not write host-owned fixtures, prompts, runners, wrappers, or acceptance policy.",
+        "preset": "skill",
+        "requiredObservability": [
+          "trigger",
+          "execution",
+          "loadedInstructionFiles",
+          "runtimeFingerprint"
+        ],
+        "requiredRunnerCapability": "development-skill-eval-runner",
+        "runnerOutputSchema": "cautilus.skill_evaluation_inputs.v1",
+        "runnerOwner": "host-repo-adapter",
+        "schemaVersion": "cautilus.claim_eval_fixture_authoring_guidance.v1",
+        "surface": "dev"
+      },
+      "nextStep": "Create a host-owned cautilus.evaluation_input.v1 fixture and adapter-owned runner for this plan.",
+      "planId": "eval-plan-claim-skills-cautilus-skill-md-227",
+      "proofRequirement": {
+        "minimumProofClasses": [
+          "fixture-smoke",
+          "coding-agent-messaging",
+          "declared-eval-runner"
+        ],
+        "proofMechanism": "cautilus-eval",
+        "recommendedEvalSurface": "dev/skill",
+        "requiredObservability": [
+          "trigger",
+          "execution",
+          "loadedInstructionFiles",
+          "runtimeFingerprint"
+        ],
+        "requiredRunnerCapability": "development-skill-eval-runner",
+        "requiresProductRunnerProof": false
+      },
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "Agents should read the packet first, then cite HTML only when a browser view is the deliverable.",
+          "line": 227,
+          "path": "skills/cautilus/SKILL.md"
+        }
+      ],
+      "targetSurface": "dev/skill",
+      "unresolvedQuestions": []
     }
   ],
   "inputPath": "/home/hwidong/codes/cautilus/.cautilus/claims/evidenced-typed-runners.json",
   "nonWriterNotice": "This packet plans eval fixtures but does not write host-owned fixtures, prompts, runners, or policy.",
   "planSummary": {
-    "evalPlanCount": 6,
+    "evalPlanCount": 7,
     "skippedByReason": {
       "already-satisfied": 8,
-      "not-cautilus-eval": 199,
+      "not-cautilus-eval": 198,
       "not-ready-to-verify": 11,
       "not-reviewed": 98
     },
-    "skippedClaimCount": 316,
+    "skippedClaimCount": 315,
     "zeroPlanExpectation": "Zero eval plans can be expected when reviewed eval-ready claims are already satisfied or when remaining reviewed claims are not Cautilus eval targets.",
     "zeroPlanReason": ""
   },
@@ -3726,16 +3799,6 @@
       "reason": "not-reviewed",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
-    },
-    {
-      "claimFingerprint": "sha256:0430d8a298c4e11b0f53d621d1b7c1c908425d463f7a66dc5efbf4043936efbd",
-      "claimId": "claim-skills-cautilus-skill-md-227",
-      "evidenceStatus": "unknown",
-      "reason": "not-cautilus-eval",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "verificationReadiness": "ready-to-verify"
     }
