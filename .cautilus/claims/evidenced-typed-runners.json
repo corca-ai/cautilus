@@ -2,7 +2,7 @@
   "candidateCount": 312,
   "carryForward": {
     "changedEvidenceRefCount": 0,
-    "evidenceSupportIdRewriteCount": 0,
+    "evidenceSupportIdRewriteCount": 3,
     "matchedClaimCount": 312,
     "missingEvidenceRefCount": 0,
     "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
@@ -10844,7 +10844,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "384671a8979867f6446fa9ad1ac8708250be7e8c",
+  "gitCommit": "ef6ce1fef6aaaa31c61d4da0cf58a8f1b99ad3f9",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "reviewApplication": {
@@ -11609,7 +11609,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:e477166c450caf2d6f8bf8e420b02beb5377e04146438e62a5a5e7add9fed890",
+      "contentHash": "sha256:5de7123034ac9836c888d356301782be38abbdcb6302c2542f3a40f7cfcf2e10",
       "depth": 2,
       "discoveredFrom": "docs/master-plan.md",
       "kind": "contract",
