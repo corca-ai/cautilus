@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-03T00:00:00Z",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied for deterministic adapter discovery behavior; do not treat audience hints as final semantic truth or explicit discovery as runner honesty proof."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-adapter-discovery-contracts",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-adapter-contract-md-218",
+          "claimFingerprint": "sha256:eaa15d7f6fcd6d1d871b2c4d32f4de26596f3fb9ecc6e1f869c75af7ea4452c5",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "whyThisLayer": "The claim is a deterministic claim-discovery contract: adapter audience hints either label generated review queues, and review results can correct those labels, or they do not.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by focused runtime tests: adapter audience_hints set user/developer claimAudience labels during discovery, and later review-result application can update claimAudience plus derived group hints.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-adapter-discovery-contracts-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:78e4d2cd0285d1ba4d1a78f4213cfc7c2c19b586988ceca2b2ab1964bb0def64",
+              "supportsClaimIds": [
+                "claim-docs-contracts-adapter-contract-md-218",
+                "claim-docs-contracts-adapter-contract-md-276"
+              ]
+            }
+          ],
+          "nextAction": "Keep this claim covered when changing claim_discovery audience_hints normalization, claimAudience derivation, review-result application, or review-cluster labeling.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-adapter-contract-md-276",
+          "claimFingerprint": "sha256:a4cb7622c26b143238198eb59a666e408efaec3b04eaa0f7681f3a2fac020c30",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "whyThisLayer": "The claim is a deterministic adapter live-discovery contract: kind: explicit either validates and normalizes without a probe script, or it does not.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by focused runtime and CLI tests: explicit instance_discovery validates, and eval live discover emits a normalized catalog from adapter-declared instances without executing a command-backed probe.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-adapter-discovery-contracts-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:78e4d2cd0285d1ba4d1a78f4213cfc7c2c19b586988ceca2b2ab1964bb0def64",
+              "supportsClaimIds": [
+                "claim-docs-contracts-adapter-contract-md-218",
+                "claim-docs-contracts-adapter-contract-md-276"
+              ]
+            }
+          ],
+          "nextAction": "Keep this claim covered when changing instance_discovery.kind explicit validation, live-discover normalization, or workbench instance catalog fields.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

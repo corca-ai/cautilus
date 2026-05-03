@@ -1693,8 +1693,20 @@
       "claimFingerprint": "sha256:eaa15d7f6fcd6d1d871b2c4d32f4de26596f3fb9ecc6e1f869c75af7ea4452c5",
       "claimId": "claim-docs-contracts-adapter-contract-md-218",
       "claimSemanticGroup": "Claim discovery and review",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:78e4d2cd0285d1ba4d1a78f4213cfc7c2c19b586988ceca2b2ab1964bb0def64",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-adapter-discovery-contracts-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-adapter-contract-md-218",
+            "claim-docs-contracts-adapter-contract-md-276"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by focused runtime tests: adapter audience_hints set user/developer claimAudience labels during discovery, and later review-result application can update claimAudience plus derived group hints.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -1702,9 +1714,9 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
+      "nextAction": "Keep this claim covered when changing claim_discovery audience_hints normalization, claimAudience derivation, review-result application, or review-cluster labeling.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "The binary uses these hints to label review queues, while the bundled skill or a human reviewer may still correct semantic edge cases.",
@@ -1713,8 +1725,9 @@
         }
       ],
       "summary": "The binary uses these hints to label review queues, while the bundled skill or a human reviewer may still correct semantic edge cases.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
+      "whyThisLayer": "The claim is a deterministic claim-discovery contract: adapter audience hints either label generated review queues, and review results can correct those labels, or they do not."
     },
     {
       "claimAudience": "developer",
@@ -1753,8 +1766,20 @@
       "claimFingerprint": "sha256:a4cb7622c26b143238198eb59a666e408efaec3b04eaa0f7681f3a2fac020c30",
       "claimId": "claim-docs-contracts-adapter-contract-md-276",
       "claimSemanticGroup": "Documentation and contracts",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:78e4d2cd0285d1ba4d1a78f4213cfc7c2c19b586988ceca2b2ab1964bb0def64",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-adapter-discovery-contracts-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-adapter-contract-md-218",
+            "claim-docs-contracts-adapter-contract-md-276"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by focused runtime and CLI tests: explicit instance_discovery validates, and eval live discover emits a normalized catalog from adapter-declared instances without executing a command-backed probe.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -1762,9 +1787,9 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "nextAction": "Keep this claim covered when changing instance_discovery.kind explicit validation, live-discover normalization, or workbench instance catalog fields.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "`kind: explicit` keeps fixture-backed repos and simple single-instance adopters cheap without forcing a probe script.",
@@ -1773,8 +1798,9 @@
         }
       ],
       "summary": "`kind: explicit` keeps fixture-backed repos and simple single-instance adopters cheap without forcing a probe script.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim is a deterministic adapter live-discovery contract: kind: explicit either validates and normalizes without a probe script, or it does not."
     },
     {
       "claimAudience": "developer",
@@ -10135,8 +10161,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 32,
-      "unknown": 290
+      "satisfied": 34,
+      "unknown": 288
     },
     "byLifecycle": {
       "new": 322
@@ -10147,8 +10173,8 @@
       "human-auditable": 69
     },
     "byReviewStatus": {
-      "agent-reviewed": 67,
-      "heuristic": 252,
+      "agent-reviewed": 69,
+      "heuristic": 250,
       "human-reviewed": 3
     },
     "byVerificationReadiness": {
@@ -10337,6 +10363,12 @@
     "provenanceMode": "aggregate-current-review-results"
   },
   "reviewRuns": [
+    {
+      "clusterCount": 1,
+      "reviewRun": {},
+      "schemaVersion": "cautilus.claim_review_result.v1",
+      "sourceReviewInput": {}
+    },
     {
       "clusterCount": 1,
       "reviewRun": {},

@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-adapter-discovery-contracts-2026-05-03",
+  "createdForClaimIds": [
+    "claim-docs-contracts-adapter-contract-md-218",
+    "claim-docs-contracts-adapter-contract-md-276"
+  ],
+  "repoCommit": "497f19e8822db1fb6a321702a492df674fe7e6f0",
+  "summary": "This bundle records deterministic proof for adapter-owned claim audience hints and explicit live instance discovery.",
+  "evidenceScope": {
+    "targetSurface": "adapter discovery contracts",
+    "claimBoundary": "Only the adapter-contract claims about audience hint labeling with review correction, and explicit instance discovery without a probe script, are marked satisfied.",
+    "notClaimed": [
+      "Audience hints are always semantically correct without agent or human review",
+      "Every repo should prefer explicit instance discovery",
+      "Explicit instance discovery proves live runner honesty or product-proof readiness",
+      "Named adapter split criteria are enforced by the binary"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/runtime -run 'TestDiscoverClaimProofPlanUsesAdapterClaimDiscoveryEntries|TestApplyClaimReviewResultCanUpdateClaimAudience|TestValidateAdapterDataAcceptsExplicitInstanceDiscovery|TestBuildClaimReviewInputSeparatesAudienceAndSemanticGroup' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "notableAssertions": [
+          "adapter claim_discovery entries override default README scanning for the proof plan",
+          "adapter audience_hints label discovered claims as user or developer audience",
+          "claim review input clusters preserve audience and semantic group labels for review queues",
+          "review result application can correct claimAudience and refresh derived group hints",
+          "explicit instance_discovery validates with a stable id, display_label, data_root, and typed paths"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/app -run TestCLIEvalLiveDiscoverNormalizesExplicitInstances -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "notableAssertions": [
+          "cautilus eval live discover resolves adapter kind: explicit without executing a probe command",
+          "the explicit instance is normalized into cautilus.workbench_instance_catalog.v1",
+          "display_label becomes displayLabel and typed paths become canonical camelCase keys"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "internal/runtime/claim_discovery_test.go",
+      "kind": "adapter-claim-discovery-runtime-tests",
+      "contentHash": "sha256:1265a23205bf90b2c4ae9fa5f29702b6d1f0289dcb5948ba5f4063f2eed5118b"
+    },
+    {
+      "path": "internal/runtime/adapter_test.go",
+      "kind": "adapter-validation-runtime-tests",
+      "contentHash": "sha256:922cbfa9176ea045979216d55413f4a98949495d625cd6eb570d79a1c5b8cb8f"
+    },
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "explicit-instance-discovery-cli-test",
+      "contentHash": "sha256:d2368828838ec01f202f73f6b6a738e1d4e6bb675959845ca8378d97aaf009c7"
+    },
+    {
+      "path": "docs/contracts/adapter-contract.md",
+      "kind": "adapter-contract-documentation",
+      "contentHash": "sha256:1a0ad92e5743b904f57ecbbd047e4cc33e484f128b1d755f9204abbb45063da6"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "Focused runtime and CLI tests verify that adapter audience hints label claim review queues while review results can correct them, and that explicit instance discovery validates and normalizes into the live instance catalog without a consumer probe command."
+  }
+}

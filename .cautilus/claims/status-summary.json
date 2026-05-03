@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 252
+          "unknown": 250
         },
         "byReviewStatus": {
-          "heuristic": 252
+          "heuristic": 250
         },
-        "count": 252,
+        "count": 250,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -24,12 +24,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 32
+          "satisfied": 34
         },
         "byReviewStatus": {
-          "agent-reviewed": 32
+          "agent-reviewed": 34
         },
-        "count": 32,
+        "count": 34,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -43,22 +43,22 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 94
+          "unknown": 92
         },
         "byReviewStatus": {
           "agent-reviewed": 11,
-          "heuristic": 80,
+          "heuristic": 78,
           "human-reviewed": 3
         },
-        "count": 94,
+        "count": 92,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
-          "claim-docs-contracts-adapter-contract-md-218",
-          "claim-docs-contracts-adapter-contract-md-276",
           "claim-docs-contracts-adapter-contract-md-405",
           "claim-docs-contracts-adapter-contract-md-424",
-          "claim-docs-contracts-adapter-contract-md-533"
+          "claim-docs-contracts-adapter-contract-md-533",
+          "claim-docs-gepa-md-15",
+          "claim-docs-guides-consumer-adoption-md-20"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -195,8 +195,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 32,
-      "unknown": 290
+      "satisfied": 34,
+      "unknown": 288
     },
     "byLifecycle": {
       "new": 322
@@ -207,8 +207,8 @@
       "human-auditable": 69
     },
     "byReviewStatus": {
-      "agent-reviewed": 67,
-      "heuristic": 252,
+      "agent-reviewed": 69,
+      "heuristic": 250,
       "human-reviewed": 3
     },
     "byVerificationReadiness": {
@@ -381,7 +381,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 32,
+    "satisfiedClaimCount": 34,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-78",
@@ -869,6 +869,46 @@
         "summary": "Shipped runtime entrypoints such as `cautilus eval live discover` and `cautilus eval live run` are Go-owned now and should be called through the CLI instead of direct `node scripts/agent-runtime/...` paths."
       },
       {
+        "claimId": "claim-docs-contracts-adapter-contract-md-218",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:78e4d2cd0285d1ba4d1a78f4213cfc7c2c19b586988ceca2b2ab1964bb0def64",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-adapter-discovery-contracts-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-adapter-contract-md-218",
+              "claim-docs-contracts-adapter-contract-md-276"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The binary uses these hints to label review queues, while the bundled skill or a human reviewer may still correct semantic edge cases."
+      },
+      {
+        "claimId": "claim-docs-contracts-adapter-contract-md-276",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:78e4d2cd0285d1ba4d1a78f4213cfc7c2c19b586988ceca2b2ab1964bb0def64",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-adapter-discovery-contracts-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-adapter-contract-md-218",
+              "claim-docs-contracts-adapter-contract-md-276"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "`kind: explicit` keeps fixture-backed repos and simple single-instance adopters cheap without forcing a probe script."
+      },
+      {
         "claimId": "claim-docs-guides-consumer-adoption-md-25",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -1005,7 +1045,7 @@
   },
   "gitCommit": "00f3889efd94da3ecdfd9bd4698fdb491797306f",
   "gitState": {
-    "changedFileCount": 51,
+    "changedFileCount": 53,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
@@ -1021,6 +1061,7 @@
       ".cautilus/claims/evidence-review-variants-status-and-output-text-2026-05-03.json",
       ".cautilus/claims/evidence-scenario-catalog-example-cli-2026-05-03.json",
       ".cautilus/claims/evidence-scenario-review-attention-linkage-2026-05-03.json",
+      ".cautilus/claims/evidence-self-dogfood-html-renderers-2026-05-03.json",
       ".cautilus/claims/evidence-specdown-prerequisite-2026-05-03.json",
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
@@ -1035,6 +1076,7 @@
       ".cautilus/claims/review-result-evidence-review-variants-status-and-output-text-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-scenario-review-attention-linkage-2026-05-03.json",
+      ".cautilus/claims/review-result-evidence-self-dogfood-html-renderers-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-specdown-prerequisite-2026-05-03.json",
       ".cautilus/claims/review-result-policy-claim-reclassification-2026-05-03.json",
       ".cautilus/claims/review-result-readme-scenario-next-step-reclassification-2026-05-03.json",
@@ -1067,7 +1109,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "bb87e9102f14336ec63c9eb8e16390ac19548a5d",
+    "currentGitCommit": "497f19e8822db1fb6a321702a492df674fe7e6f0",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "00f3889efd94da3ecdfd9bd4698fdb491797306f",
@@ -1094,7 +1136,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 225,
+    "heuristicClaimsReadyForReview": 223,
     "needsAlignment": 30,
     "needsScenario": 8
   },
