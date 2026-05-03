@@ -31,3 +31,4 @@ Without specdown, a repo can still contain raw Cautilus packets, but it is not f
 | ["commands","--json"] | eval |
 | ["commands","--json"] | optimize |
 | ["doctor","--help"] | Usage: |
+| ["doctor","--repo-root","."] | specdown_available |

@@ -304,9 +304,9 @@ function gitStateLines(gitState) {
 	if (Object.keys(gitState).length === 0) {
 		return [];
 	}
-	const lines = [`- Git state: ${gitState.comparisonStatus ?? "unknown"}; stale=${gitState.isStale === true ? "yes" : "no"}`];
+	const lines = [`- Git state snapshot: ${gitState.comparisonStatus ?? "unknown"}; stale=${gitState.isStale === true ? "yes" : "no"}`];
 	if (gitState.recommendedAction) {
-		lines.push(`- Git recommendation: ${gitState.recommendedAction}`);
+		lines.push(`- Snapshot recommendation: ${gitState.recommendedAction}`);
 	}
 	return lines;
 }
@@ -325,7 +325,12 @@ function renderHeader(lines, claimsPacket, statusPacket, args) {
 	lines.push(`- Status packet: ${args.status}`);
 	lines.push(`- Candidate count: ${packetCount(statusPacket, claimsPacket, "candidateCount", candidates.length)}`);
 	lines.push(`- Source count: ${packetCount(statusPacket, claimsPacket, "sourceCount", asArray(claimsPacket?.sourceInventory).length)}`);
-	lines.push(`- Claims git commit: ${claimsPacket?.gitCommit ?? "unknown"}`);
+	lines.push(`- Packet source commit: ${claimsPacket?.gitCommit ?? "unknown"}`);
+	if (statusPacket?.gitStateSnapshotNotice) {
+		lines.push(`- Snapshot notice: ${compactText(statusPacket.gitStateSnapshotNotice)}`);
+	} else {
+		lines.push("- Snapshot notice: git state is a generated status snapshot; rerun `cautilus claim show` for live checkout state.");
+	}
 	lines.push(...gitStateLines(gitState));
 	lines.push("");
 }
@@ -500,7 +505,14 @@ function renderEvalPlans(lines, evalPlans) {
 	}
 }
 
-function renderRefreshPlans(lines, refreshPlans) {
+function refreshPlanMatchesCurrentPacket(refreshPlan, claimsPacket, statusPacket) {
+	const packetCommit = claimsPacket?.gitCommit;
+	const statusCommit = statusPacket?.gitCommit;
+	const currentCommit = statusPacket?.gitState?.currentGitCommit;
+	return [packetCommit, statusCommit, currentCommit].filter(Boolean).includes(refreshPlan.targetCommit);
+}
+
+function renderRefreshPlans(lines, refreshPlans, claimsPacket, statusPacket) {
 	lines.push("## Refresh Plans");
 	lines.push("");
 	if (refreshPlans.length === 0) {
@@ -521,6 +533,11 @@ function renderRefreshPlans(lines, refreshPlans) {
 		return;
 	}
 	lines.push(`Latest refresh summary: ${compactText(latest.summary) || "-"}`);
+	if (!refreshPlanMatchesCurrentPacket(latest, claimsPacket, statusPacket)) {
+		lines.push("Latest refresh plan is historical for this status packet; its next actions are not the current review queue.");
+		lines.push("");
+		return;
+	}
 	if (latest.changedClaimSources.length > 0) {
 		const sources = latest.changedClaimSources
 			.slice(0, 5)
@@ -587,7 +604,7 @@ export function renderStatusReport({ claimsPacket, statusPacket, digests, args }
 	renderReviewResults(lines, currentReviewResults, claimsById, args.reviewSample);
 	renderValidation(lines, digests.validationReports);
 	renderEvalPlans(lines, digests.evalPlans);
-	renderRefreshPlans(lines, digests.refreshPlans);
+	renderRefreshPlans(lines, digests.refreshPlans, claimsPacket, statusPacket);
 	renderDiscoveryBoundary(lines, claimsPacket);
 	return `${lines.join("\n").replace(/\n{3,}/g, "\n\n")}\n`;
 }

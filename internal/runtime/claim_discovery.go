@@ -1657,6 +1657,7 @@ func BuildClaimStatusSummaryWithOptions(packet map[string]any, options ClaimStat
 	}
 	if strings.TrimSpace(options.RepoRoot) != "" {
 		status["gitState"] = ClaimPacketGitState(packet, options.RepoRoot)
+		status["gitStateSnapshotNotice"] = "gitState is computed when this status packet is generated; rerun claim show for live checkout state."
 	}
 	if options.SampleClaims > 0 {
 		status["sampleClaims"] = claimStatusSampleClaims(candidates, options.SampleClaims)
@@ -1711,7 +1712,7 @@ func ClaimPacketGitState(packet map[string]any, repoRoot string) map[string]any 
 		"isStale":           isStale,
 		"workingTreePolicy": "excluded",
 		"comparisonStatus":  "unchecked",
-		"recommendedAction": "Continue only after checking whether the packet commit still matches the current checkout.",
+		"recommendedAction": "Continue only after checking whether the packet commit still matches the checkout being inspected.",
 	}
 	switch {
 	case packetCommit == "":
@@ -1745,7 +1746,7 @@ func ClaimPacketGitState(packet map[string]any, repoRoot string) map[string]any 
 		state["changedFiles"] = []string{}
 		state["changedSourceCount"] = 0
 		state["changedSources"] = []string{}
-		state["recommendedAction"] = "The claim packet commit matches the current checkout."
+		state["recommendedAction"] = "The claim packet commit matches the inspected checkout."
 	}
 	return state
 }

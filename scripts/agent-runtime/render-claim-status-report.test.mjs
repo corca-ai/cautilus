@@ -124,6 +124,7 @@ test("renderStatusReport summarizes status, review results, validation, and eval
 				changedSourceCount: 1,
 				changedClaimCount: 2,
 				carriedForwardClaimCount: 0,
+				targetCommit: "abc123",
 				summary: "The saved claim map is stale.",
 				changedClaimSources: [{ path: "skills/cautilus/SKILL.md", claimCount: 2 }],
 				nextActions: [
@@ -146,6 +147,9 @@ test("renderStatusReport summarizes status, review results, validation, and eval
 					"mapped-to-user-canonical": 1,
 					"user-review-needed": 1,
 				},
+				byMaintainerCanonicalClaimId: {
+					M1: 1,
+				},
 				byMappingConfidence: {
 					medium: 1,
 					low: 1,
@@ -162,12 +166,36 @@ test("renderStatusReport summarizes status, review results, validation, and eval
 					byReviewStatus: { "agent-reviewed": 1 },
 				},
 			],
+			maintainerCoverage: [
+				{
+					canonicalClaimId: "M1",
+					title: "Evidence State",
+					absorbedRawClaimCount: 1,
+					byRecommendedProof: { deterministic: 1 },
+					byEvidenceStatus: { unknown: 1 },
+					byReviewStatus: { heuristic: 1 },
+					absorbedRawClaims: [
+						{
+							claimId: "claim-readme-md-1",
+							mappingConfidence: "medium",
+							requiresSemanticReview: true,
+						},
+					],
+				},
+			],
+			catalogs: {
+				maintainer: {
+					claims: [{ id: "M1" }],
+				},
+			},
 		},
 	};
 
 	const report = renderStatusReport({ claimsPacket, statusPacket, digests, args });
 
 	assert.match(report, /# Cautilus Claim Status Report/);
+	assert.match(report, /Snapshot notice: git state is a generated status snapshot/);
+	assert.match(report, /Git state snapshot: fresh; stale=no/);
 	assert.match(report, /## Scoreboard/);
 	assert.match(report, /agent-add-deterministic-proof/);
 	assert.match(report, /human-align-surfaces/);
@@ -178,6 +206,11 @@ test("renderStatusReport summarizes status, review results, validation, and eval
 	assert.match(report, /## Canonical Claim Map/);
 	assert.match(report, /User claims mapped to canonical user claims: 1/);
 	assert.match(report, /User claims not mapped to canonical user claims: 1/);
+	assert.match(report, /Maintainer claims mapped to M1-M1: M1: 1/);
+	assert.match(report, /Maintainer claim/);
+	assert.match(report, /Evidence State/);
+	assert.match(report, /Maintainer semantic sampling queue/);
+	assert.match(report, /claim-readme-md-1 \(medium\)/);
 	assert.match(report, /Semantic sampling recommended for 1 raw claim/);
 	assert.match(report, /claim-readme-md-2/);
 	assert.match(report, /Update the saved claim map before review or eval planning/);
