@@ -5,13 +5,13 @@
     "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
     "claim-docs-specs-user-reviewable-artifacts-spec-md-12"
   ],
-  "repoCommit": "c182785bc2fa75bb25f21382feb914df833bde44",
-  "summary": "This bundle records deterministic supporting evidence that representative Cautilus readable views are generated from machine-readable packets and preserve packet-first truth boundaries.",
+  "repoCommit": "d4f9844f7bc50b6ab84e7023284cf9ad9c8a3b42",
+  "summary": "This bundle records deterministic proof that the shipped Cautilus-owned readable artifact families listed in the projection matrix are generated from machine-readable packets or source artifacts and preserve packet-first truth boundaries.",
   "evidenceScope": {
-    "targetSurface": "representative report, review, compare, scenario, evidence-bundle, run-index, claim-status Markdown, and claim-status browser review surfaces",
-    "claimBoundary": "The tested surfaces cover representative shipped packet-backed renderer families and claim-status readable surfaces. JSON packets remain the audit source for these surfaces; Markdown and HTML are readable projections or review shells over those packets. This bundle is not sufficient by itself to satisfy the broad reviewable-artifacts user-facing claims.",
+    "targetSurface": "shipped Cautilus-owned readable views listed in docs/contracts/reviewable-artifact-projections.json",
+    "claimBoundary": "The satisfied claims cover shipped Cautilus-owned readable views listed in docs/contracts/reviewable-artifact-projections.json. JSON packets or declared source artifacts remain the audit source for these surfaces; Markdown and HTML are readable projections or review shells over those sources.",
     "notClaimed": [
-      "Every future Cautilus renderer family is covered automatically",
+      "Every future Cautilus renderer family is covered automatically without being added to the projection matrix",
       "Readable views prove behavior by themselves",
       "Human comments are behavior proof",
       "HTML views are the source of truth",
@@ -21,7 +21,35 @@
   },
   "commandEvidence": [
     {
-      "command": "go test ./internal/runtime -run 'TestRender(CompareArtifact|ScenarioProposals|ScenarioConversationReview|EvidenceBundle|Report|ReviewPacket|ReviewSummary|RunIndex)HTML|TestWrite(CompareArtifact|ScenarioProposals|ScenarioConversationReview|Report|ReviewPacket|ReviewSummary|RunIndex)HTML|TestDiscoverRunIndexEntries|TestRenderReportHTMLFromFileRejectsLegacySchema|TestRenderReviewPacketHTMLFromFileRejectsWrongSchema|TestRenderReviewSummaryHTMLFromFileRejectsWrongSchema' -count=1",
+      "command": "node --test --test-reporter=spec --test-reporter-destination=stdout scripts/agent-runtime/reviewable-artifact-projections.test.mjs scripts/agent-runtime/render-claim-discovery-review.test.mjs scripts/agent-runtime/review-prompt-flow.test.mjs scripts/agent-runtime/render-claim-status-report.test.mjs scripts/agent-runtime/serve-claim-status-review.test.mjs",
+      "exitCode": 0,
+      "observed": {
+        "tests": 18,
+        "pass": 18,
+        "protectedBehaviors": [
+          "projection matrix lists every shipped Cautilus-owned readable artifact family covered by this claim",
+          "each matrix row names source artifacts, source schemas, renderer path, command, tests, and proof markers",
+          "projection matrix is checked against the CLI command registry so shipped CLI readable renderers cannot silently disappear from the inventory",
+          "proof markers point at executable renderer tests and source-of-truth notices",
+          "claim discovery review Markdown is generated from claim/status packets and states that JSON remains the audit source",
+          "review prompt Markdown is generated from review prompt input packets by the portable prompt renderer tests",
+          "claim status Markdown and browser review preserve JSON packet audit-source and separate comment-packet boundaries"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/app -run TestCLIReviewBuildPromptInputAndRenderPromptCloseMetaPromptSeam -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "protectedBehaviors": [
+          "review render-prompt converts a prepared review prompt input packet into review.prompt.md through the CLI",
+          "review prompt output keeps the meta-prompt seam explicit instead of treating Markdown as source state"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/runtime -run 'TestRender(CompareArtifact|ScenarioProposals|ScenarioConversationReview|EvidenceBundle|Report|ReviewPacket|ReviewSummary|RunIndex|SelfDogfood)HTML|TestWrite(CompareArtifact|ScenarioProposals|ScenarioConversationReview|Report|ReviewPacket|ReviewSummary|RunIndex|SelfDogfood)HTML|TestDiscoverRunIndexEntries|TestRenderReportHTMLFromFileRejectsLegacySchema|TestRenderReviewPacketHTMLFromFileRejectsWrongSchema|TestRenderReviewSummaryHTMLFromFileRejectsWrongSchema|TestWriteSelfDogfoodExperimentsHTMLWritesIndexNextToLatestBundle' -count=1",
       "exitCode": 0,
       "observed": {
         "package": "github.com/corca-ai/cautilus/internal/runtime",
@@ -50,6 +78,41 @@
     }
   ],
   "checkedInEvidence": [
+    {
+      "path": "docs/contracts/reviewable-artifact-projections.json",
+      "kind": "reviewable-artifact-projection-matrix",
+      "contentHash": "sha256:af2ce09e6e672b78cf96d1b32fc559b1986a2f83e45dca61b041b6e0a181abec"
+    },
+    {
+      "path": "scripts/agent-runtime/reviewable-artifact-projections.test.mjs",
+      "kind": "reviewable-artifact-projection-matrix-tests",
+      "contentHash": "sha256:551eacf3331fc5c4dcc581a67ede7669a42d51803be5b77238406f012cf0fe3d"
+    },
+    {
+      "path": "internal/runtime/review.go",
+      "kind": "review-prompt-markdown-renderer",
+      "contentHash": "sha256:2d4d7b2b01dc1af33783e8acee34a8083832af2163ad7138b91049adbdf4f61a"
+    },
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "review-prompt-cli-tests",
+      "contentHash": "sha256:c064a9f22ee194ef5438dde712d8b4fb5bdf10f7d40713268f7df04a39320ec6"
+    },
+    {
+      "path": "scripts/agent-runtime/review-prompt-flow.test.mjs",
+      "kind": "review-prompt-flow-tests",
+      "contentHash": "sha256:d4bd8df8cb961250890b5de285e2974ac91327f3e600a3489b31f5bf1c8acfb5"
+    },
+    {
+      "path": "scripts/agent-runtime/render-claim-discovery-review.mjs",
+      "kind": "claim-discovery-review-markdown-renderer",
+      "contentHash": "sha256:12132c6bdba4bf0e048570eb05c0fec68a008544673e737559a66911668b4c0f"
+    },
+    {
+      "path": "scripts/agent-runtime/render-claim-discovery-review.test.mjs",
+      "kind": "claim-discovery-review-markdown-tests",
+      "contentHash": "sha256:6a153c340dc1db07b4851a86b24bbca9a9fe9fc9844c0039ef2ca64018116eaa"
+    },
     {
       "path": "internal/runtime/artifact_html.go",
       "kind": "artifact-html-renderers",
@@ -117,8 +180,8 @@
     }
   ],
   "decision": {
-    "evidenceStatus": "partial",
-    "matchKind": "possible",
-    "reason": "Focused Go and Node tests prove projection behavior for representative readable views, but broad reviewable-artifacts claims still need an aggregate invariant or decomposition by artifact family before they can be marked satisfied."
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The projection matrix defines the shipped Cautilus-owned readable artifact family scope, and focused Go and Node tests verify that listed views are generated from declared packet/source artifacts with JSON packets or source artifacts preserved as the audit source."
   }
 }

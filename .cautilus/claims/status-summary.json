@@ -24,12 +24,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 53
+          "satisfied": 55
         },
         "byReviewStatus": {
-          "agent-reviewed": 53
+          "agent-reviewed": 55
         },
-        "count": 53,
+        "count": 55,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -43,22 +43,22 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 69
+          "unknown": 67
         },
         "byReviewStatus": {
-          "agent-reviewed": 6,
+          "agent-reviewed": 4,
           "heuristic": 60,
           "human-reviewed": 3
         },
-        "count": 69,
+        "count": 67,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
           "claim-docs-contracts-adapter-contract-md-424",
           "claim-docs-specs-user-evaluation-spec-md-7",
-          "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
-          "claim-docs-specs-user-reviewable-artifacts-spec-md-12",
-          "claim-docs-contracts-claim-discovery-workflow-md-21"
+          "claim-docs-contracts-claim-discovery-workflow-md-21",
+          "claim-docs-contracts-claim-discovery-workflow-md-39",
+          "claim-docs-contracts-claim-discovery-workflow-md-47"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -195,8 +195,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 53,
-      "unknown": 259
+      "satisfied": 55,
+      "unknown": 257
     },
     "byLifecycle": {
       "new": 312
@@ -381,7 +381,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 53,
+    "satisfiedClaimCount": 55,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-78",
@@ -1158,6 +1158,46 @@
         "summary": "Cautilus requires specdown for public executable claim documentation."
       },
       {
+        "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:ecb1ebd83b487400f378d1fc7348d910e3548e34ad76aacc74676dededcdea9b",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-reviewable-artifact-projections-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
+              "claim-docs-specs-user-reviewable-artifacts-spec-md-12"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Cautilus writes machine-readable packets first and readable views over those packets."
+      },
+      {
+        "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-12",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:ecb1ebd83b487400f378d1fc7348d910e3548e34ad76aacc74676dededcdea9b",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-reviewable-artifact-projections-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
+              "claim-docs-specs-user-reviewable-artifacts-spec-md-12"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Markdown and HTML views should explain the same state without becoming a separate truth source."
+      },
+      {
         "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-13",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -1416,20 +1456,23 @@
   },
   "gitCommit": "4a586aa97e53b0d81c88d490a909aae2f49964ef",
   "gitState": {
-    "changedFileCount": 19,
+    "changedFileCount": 22,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
       ".cautilus/claims/discovery-review.md",
+      ".cautilus/claims/evidence-reviewable-artifact-projections-2026-05-03.json",
       ".cautilus/claims/evidence-reviewable-proof-debt-reports-2026-05-03.json",
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
       ".cautilus/claims/refresh-plan-after-future-proof-placeholder-filter.json",
       ".cautilus/claims/review-result-evidence-reviewable-proof-debt-reports-2026-05-03.json",
+      ".cautilus/claims/review-result-reviewable-artifacts-proof-gap-2026-05-03.json",
       ".cautilus/claims/status-summary.json",
       ".cautilus/claims/validation-evidenced-typed-runners.json",
       "charness-artifacts/debug/debug-2026-05-03-claim-discovery-engine-freshness.md",
       "charness-artifacts/debug/debug-2026-05-03-status-report-max-lines.md",
+      "charness-artifacts/debug/debug-2026-05-03-status-report-superseded-review-results.md",
       "charness-artifacts/debug/latest.md",
       "internal/runtime/claim_discovery.go",
       "internal/runtime/claim_discovery_test.go",
@@ -1446,7 +1489,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "c182785bc2fa75bb25f21382feb914df833bde44",
+    "currentGitCommit": "d4f9844f7bc50b6ab84e7023284cf9ad9c8a3b42",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "4a586aa97e53b0d81c88d490a909aae2f49964ef",

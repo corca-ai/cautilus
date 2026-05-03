@@ -278,6 +278,7 @@ function renderReviewDocument(claimsPacket, statusPacket, claimsPath = ".cautilu
 	lines.push("# Claim Discovery Review Worksheet");
 	lines.push("");
 	lines.push("This worksheet is for human review of the deterministic Cautilus claim-discovery packet.");
+	lines.push("The JSON packet is the audit source; this Markdown is a readable projection for review and does not update claim state by itself.");
 	lines.push("It is grouped by intended audience, semantic area, and verification shape instead of by source file.");
 	lines.push("Source excerpts are included for local judgment; source refs are trace data, not the primary grouping axis.");
 	lines.push("");

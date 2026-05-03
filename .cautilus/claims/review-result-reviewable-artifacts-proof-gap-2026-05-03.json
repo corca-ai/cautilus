@@ -4,7 +4,7 @@
     "id": "same-agent-proof-gap-review",
     "type": "agent",
     "reviewedAt": "2026-05-03T00:00:00Z",
-    "evidencePolicy": "Do not mark broad reviewable-artifact claims satisfied from representative renderer tests alone."
+    "evidencePolicy": "Mark reviewable-artifact claims satisfied only when the shipped readable-view scope is defined by a projection matrix and backed by executable renderer tests."
   },
   "clusterResults": [
     {
@@ -17,24 +17,22 @@
           "recommendedProof": "deterministic",
           "verificationReadiness": "ready-to-verify",
           "whyThisLayer": "The claim names a cross-workflow packet-first artifact contract that should be protected by deterministic renderer and packet-generation tests.",
-          "evidenceStatus": "unknown",
-          "evidenceStatusReason": "Representative renderer tests now cover several packet-backed readable views, but this broad user-facing claim still needs an aggregate invariant or decomposition across the readable artifact surfaces before it can be marked satisfied.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the reviewable artifact projection matrix and renderer tests: shipped Cautilus-owned readable views are generated from declared packet or source artifacts, with the machine-readable source kept as the audit source.",
           "evidenceRefs": [
             {
               "path": ".cautilus/claims/evidence-reviewable-artifact-projections-2026-05-03.json",
               "kind": "cautilus-claim-evidence-bundle",
-              "matchKind": "possible",
-              "contentHash": "sha256:9a6b872b67a266d271c614cd0bc52bb524116268e08779f8342dbf70dd4f02d2",
+              "matchKind": "verified",
+              "contentHash": "sha256:ecb1ebd83b487400f378d1fc7348d910e3548e34ad76aacc74676dededcdea9b",
               "supportsClaimIds": [
                 "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
                 "claim-docs-specs-user-reviewable-artifacts-spec-md-12"
               ]
             }
           ],
-          "nextAction": "Add an aggregate reviewable-artifacts invariant, or split this spec claim into narrower packet-first claims for claim status, report HTML, self-dogfood HTML, review packets, evidence bundles, and scenario review artifacts.",
-          "unresolvedQuestions": [
-            "Should the user-facing spec remain a broad product promise, or should it be decomposed into surface-specific spec pages?"
-          ]
+          "nextAction": "Keep the projection matrix and renderer tests current when adding a new Cautilus-owned readable artifact family.",
+          "unresolvedQuestions": []
         },
         {
           "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-12",
@@ -43,24 +41,22 @@
           "recommendedProof": "deterministic",
           "verificationReadiness": "ready-to-verify",
           "whyThisLayer": "The claim names view truth-source boundaries that should be protected by deterministic renderer and server tests rather than human interpretation.",
-          "evidenceStatus": "unknown",
-          "evidenceStatusReason": "Representative renderer tests assert packet-backed HTML and claim-status Markdown/source boundaries, but there is not yet a parity invariant across all Markdown and HTML views.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the projection matrix plus status-report, browser-review, and HTML renderer tests: listed Markdown and HTML views derive from declared packet/source artifacts and do not become a separate truth source.",
           "evidenceRefs": [
             {
               "path": ".cautilus/claims/evidence-reviewable-artifact-projections-2026-05-03.json",
               "kind": "cautilus-claim-evidence-bundle",
-              "matchKind": "possible",
-              "contentHash": "sha256:9a6b872b67a266d271c614cd0bc52bb524116268e08779f8342dbf70dd4f02d2",
+              "matchKind": "verified",
+              "contentHash": "sha256:ecb1ebd83b487400f378d1fc7348d910e3548e34ad76aacc74676dededcdea9b",
               "supportsClaimIds": [
                 "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
                 "claim-docs-specs-user-reviewable-artifacts-spec-md-12"
               ]
             }
           ],
-          "nextAction": "Add a renderer parity matrix proving each Markdown or HTML view declares or derives from its packet source and cannot mutate that packet, or decompose the claim by artifact family.",
-          "unresolvedQuestions": [
-            "Which readable views must be included in the first parity matrix for this broad user-facing claim?"
-          ]
+          "nextAction": "Keep the projection matrix and readable-view source-boundary tests current when adding Markdown or HTML projections.",
+          "unresolvedQuestions": []
         }
       ]
     }
