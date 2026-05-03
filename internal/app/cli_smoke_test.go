@@ -268,6 +268,13 @@ func TestCLIDoctorReportsReadyWithExecutionSurface(t *testing.T) {
 	if !strings.Contains(anyToString(payload["next_prompt"]), "runner assessment") {
 		t.Fatalf("expected next_prompt to mention runner assessment, got %#v", payload["next_prompt"])
 	}
+	nextActionStdout, nextActionStderr, nextActionExitCode := runCLI(t, root, "doctor", "--repo-root", root, "--next-action")
+	if nextActionExitCode != 0 {
+		t.Fatalf("doctor --next-action returned exit code %d, stderr=%s", nextActionExitCode, nextActionStderr)
+	}
+	if !strings.Contains(nextActionStdout, "runner assessment") {
+		t.Fatalf("expected doctor --next-action to mention runner assessment, got %q", nextActionStdout)
+	}
 	if payload["adapter_path"] != filepath.Join(root, ".agents", "cautilus-adapter.yaml") {
 		t.Fatalf("unexpected adapter path: %#v", payload["adapter_path"])
 	}

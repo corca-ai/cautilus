@@ -19,7 +19,7 @@ Use the JSON packets as the audit source; use this report to decide what to insp
 
 | Dimension | Counts |
 | --- | --- |
-| Evidence | satisfied: 24, unknown: 298 |
+| Evidence | satisfied: 25, unknown: 297 |
 | Review | agent-reviewed: 67, heuristic: 252, human-reviewed: 3 |
 | Recommended proof | cautilus-eval: 128, deterministic: 125, human-auditable: 69 |
 | Verification readiness | blocked: 16, needs-alignment: 30, needs-scenario: 8, ready-to-verify: 268 |
@@ -44,7 +44,7 @@ Review readiness: heuristicClaimsReadyForReview: 225, needsAlignment: 30, needsS
 | U1 | Claim Discovery | 22 | satisfied: 6, unknown: 16 | agent-reviewed: 15, heuristic: 6, human-reviewed: 1 |
 | U2 | Evaluation | 29 | satisfied: 5, unknown: 24 | agent-reviewed: 15, heuristic: 14 |
 | U3 | Optimization | 4 | unknown: 4 | heuristic: 4 |
-| U4 | Doctor And Readiness | 7 | satisfied: 3, unknown: 4 | agent-reviewed: 5, heuristic: 2 |
+| U4 | Doctor And Readiness | 7 | satisfied: 4, unknown: 3 | agent-reviewed: 5, heuristic: 2 |
 | U5 | Product And Host Ownership | 9 | satisfied: 4, unknown: 5 | agent-reviewed: 6, heuristic: 3 |
 | U6 | Reviewable Artifacts | 5 | satisfied: 1, unknown: 4 | agent-reviewed: 1, heuristic: 4 |
 | U7 | Proof Debt | 6 | unknown: 6 | agent-reviewed: 1, heuristic: 5 |
@@ -84,7 +84,7 @@ Semantic sampling recommended for 260 raw claim(s): claim-agents-md-12, claim-ag
 ## Next Work
 
 - Human review is still meaningful for human-align-surfaces=30, human-confirm-or-decompose=23, split-or-defer=16.
-- Agent next proof work: connect deterministic gates for 102 claim(s), starting with agent-reviewed items before heuristic items.
+- Agent next proof work: connect deterministic gates for 101 claim(s), starting with agent-reviewed items before heuristic items.
 - Agent eval work: plan Cautilus eval scenarios for 119 claim(s), after reviewing heuristic labels where needed.
 - Scenario design work remains for 8 claim(s).
 
@@ -92,8 +92,8 @@ Semantic sampling recommended for 260 raw claim(s): claim-agents-md-12, claim-ag
 
 | Bucket | Actor | Count | Review | Evidence | Meaning |
 | --- | --- | --- | --- | --- | --- |
-| already-satisfied | none | 24 | agent-reviewed: 24 | satisfied: 24 | Proof is already attached and valid under packet semantics. |
-| agent-add-deterministic-proof | agent | 102 | agent-reviewed: 19, heuristic: 80, human-reviewed: 3 | unknown: 102 | Add or connect unit, lint, build, schema, spec, or CI proof. |
+| already-satisfied | none | 25 | agent-reviewed: 25 | satisfied: 25 | Proof is already attached and valid under packet semantics. |
+| agent-add-deterministic-proof | agent | 101 | agent-reviewed: 18, heuristic: 80, human-reviewed: 3 | unknown: 101 | Add or connect unit, lint, build, schema, spec, or CI proof. |
 | agent-plan-cautilus-eval | agent | 119 | agent-reviewed: 1, heuristic: 118 | unknown: 119 | Draft or select Cautilus eval scenarios for ready eval claims. |
 | agent-design-scenario | agent | 8 | heuristic: 8 | unknown: 8 | Decompose the behavior into a concrete scenario before protected eval planning. |
 | human-align-surfaces | human | 30 | agent-reviewed: 11, heuristic: 19 | unknown: 30 | Reconcile conflicting docs, code, adapters, or ownership boundaries before proof would be honest. |
@@ -108,11 +108,11 @@ Add or connect unit, lint, build, schema, spec, or CI proof.
 
 | Claim | Source | Proof | Readiness | Review | Evidence | Summary |
 | --- | --- | --- | --- | --- | --- | --- |
-| claim-docs-cli-reference-md-110 | docs/cli-reference.md:110 | deterministic | ready-to-verify | agent-reviewed | unknown | If repo setup is ready but runner proof is not, that next action can point at runner assessment setup before the first bounded eval loop. |
 | claim-docs-cli-reference-md-115 | docs/cli-reference.md:115 | deterministic | ready-to-verify | agent-reviewed | unknown | Use `cautilus claim discover` before writing eval fixtures when you need to inventory declared behavior claims and decide whether each belongs in human review, deterministic CI, Cautilus eval, scenario proposal work, or alignment work. |
 | claim-docs-cli-reference-md-128 | docs/cli-reference.md:128 | deterministic | ready-to-verify | agent-reviewed | unknown | It emits `cautilus.claim_review_input.v1` and does not call an LLM or mark claims satisfied. |
 | claim-docs-cli-reference-md-256 | docs/cli-reference.md:256 | deterministic | ready-to-verify | agent-reviewed | unknown | The same packet also emits an `attentionView`, which is a bounded human-facing shortlist derived from the full ranked set. |
 | claim-docs-cli-reference-md-258 | docs/cli-reference.md:258 | deterministic | ready-to-verify | agent-reviewed | unknown | It links normalized chatbot threads to scenario proposals and coverage hints so an operator can review behavior-eval evidence without browsing every live operator turn. |
+| claim-docs-cli-reference-md-427 | docs/cli-reference.md:427 | deterministic | ready-to-verify | agent-reviewed | unknown | A variant can finish as `passed`, `blocked`, or `failed`; blocked runs carry machine-readable reason codes instead of prose-only abort text. |
 
 ### agent-plan-cautilus-eval
 
@@ -180,6 +180,7 @@ Split broad, historical, provider-caveated, policy-like, or otherwise blocked cl
 | --- | --- | --- | --- | --- | --- | --- |
 | .cautilus/claims/review-result-deterministic-gates-2026-05-01.json | - | - | 1 | 4 | deterministic: 4 | ready-to-verify: 4 |
 | .cautilus/claims/review-result-evidence-dev-skill-routing-install.json | - | - | 1 | 1 | cautilus-eval: 1 | ready-to-verify: 1 |
+| .cautilus/claims/review-result-evidence-doctor-runner-readiness-next-action-2026-05-03.json | - | - | 1 | 1 | deterministic: 1 | ready-to-verify: 1 |
 | .cautilus/claims/review-result-evidence-durable-packets-2026-05-03.json | - | - | 1 | 1 | deterministic: 1 | ready-to-verify: 1 |
 | .cautilus/claims/review-result-evidence-fixture-runtime-proof-2026-05-03.json | - | - | 1 | 1 | deterministic: 1 | ready-to-verify: 1 |
 | .cautilus/claims/review-result-evidence-install-channel-policy-2026-05-03.json | - | - | 1 | 1 | deterministic: 1 | ready-to-verify: 1 |

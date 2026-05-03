@@ -993,9 +993,19 @@
       "claimFingerprint": "sha256:005c3b9342e1ac04e79a401f42a143ac17f820945d363db8f38004ec518975e1",
       "claimId": "claim-docs-cli-reference-md-110",
       "claimSemanticGroup": "Documentation and contracts",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "Agent-status next-action claim. It is deterministic readiness packet behavior, not dev/repo eval behavior.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:2e59fda8709d059221c47b5ed2efde27af52bc604880d0a172cb548bdcd74133",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-doctor-runner-readiness-next-action-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-cli-reference-md-110"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by the checked-in doctor CLI smoke test, which asserts the ready payload can include a runner_readiness next action pointing at create_runner_assessment before first_bounded_run guidance.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -1004,7 +1014,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Attach agent-status runner-readiness evidence for setup-before-eval next action behavior.",
+      "nextAction": "Keep this claim covered when changing doctor guidance, runner-readiness next actions, or first_bounded_run payload shape.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -1017,7 +1027,7 @@
       "summary": "If repo setup is ready but runner proof is not, that next action can point at runner assessment setup before the first bounded eval loop.",
       "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "whyThisLayer": "The claim is deterministic doctor packet behavior: the CLI either emits the runner-readiness next action or it does not."
     },
     {
       "claimAudience": "user",
@@ -10051,8 +10061,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 24,
-      "unknown": 298
+      "satisfied": 25,
+      "unknown": 297
     },
     "byLifecycle": {
       "new": 322
@@ -10253,6 +10263,12 @@
     "provenanceMode": "aggregate-current-review-results"
   },
   "reviewRuns": [
+    {
+      "clusterCount": 1,
+      "reviewRun": {},
+      "schemaVersion": "cautilus.claim_review_result.v1",
+      "sourceReviewInput": {}
+    },
     {
       "clusterCount": 1,
       "reviewRun": {},

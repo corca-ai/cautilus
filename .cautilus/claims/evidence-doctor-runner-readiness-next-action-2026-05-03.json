@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-doctor-runner-readiness-next-action-2026-05-03",
+  "createdForClaimIds": [
+    "claim-docs-cli-reference-md-110"
+  ],
+  "repoCommit": "f778a40f6d20145e333d57b864889e03bc169db9",
+  "summary": "This bundle records deterministic proof that repo-scope doctor output can point at runner assessment setup before the first bounded eval loop when the repo adapter is otherwise ready.",
+  "evidenceScope": {
+    "targetSurface": "doctor readiness next-action guidance",
+    "claimBoundary": "Only the CLI reference claim that ready repo setup can still point at runner assessment setup before the first bounded run is marked satisfied.",
+    "notClaimed": [
+      "Every adapter always needs a runner assessment before eval",
+      "The runner assessment itself has already been created for the tested temp repo",
+      "A live model or product runner was executed"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/app -run TestCLIDoctorReportsReadyWithExecutionSurface",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "notableAssertions": [
+          "doctor returns a ready repo payload for an adapter with an execution surface",
+          "next_action.kind is runner_readiness",
+          "next_action.branchId is create_runner_assessment",
+          "next_prompt mentions runner assessment",
+          "doctor --next-action text mode mentions runner assessment",
+          "first_bounded_run is present and starts from the scenario catalog before the eval test loop"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "doctor-next-action-test",
+      "contentHash": "sha256:eab8bb03665311e59ef0066c6d160a6fd9b332f36fc3f4fc4335b7ae6fbaab34"
+    },
+    {
+      "path": "internal/runtime/adapter.go",
+      "kind": "doctor-readiness-implementation",
+      "contentHash": "sha256:3c1ea7ca8956160057ea252be8f98253e841d664a37ee228395ae723638c8616"
+    },
+    {
+      "path": "docs/cli-reference.md",
+      "kind": "operator-facing-doctor-guidance",
+      "contentHash": "sha256:31f70c226b312f2292e3e317a8dd45d6f1e4bd71d2c8f3f555b2174a15303f05"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The focused CLI smoke test runs the doctor command through the public CLI path and verifies the runner-readiness next action plus first bounded run guide in the same payload."
+  }
+}

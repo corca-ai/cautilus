@@ -720,7 +720,21 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/specs/user/proof-debt.spec.md:14
 
-#### Deterministic gate / ready-to-verify / evidence satisfied (1)
+#### Deterministic gate / ready-to-verify / evidence satisfied (2)
+
+##### claim-docs-cli-reference-md-110
+
+- Summary: If repo setup is ready but runner proof is not, that next action can point at runner assessment setup before the first bounded eval loop.
+- Current labels: audience=user; proof=deterministic; readiness=ready-to-verify; evidence=satisfied
+- Suggested next action: Keep this claim covered when changing doctor guidance, runner-readiness next actions, or first_bounded_run payload shape.
+- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
+- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
+- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
+- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
+- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
+- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
+- Human notes:
+- Trace: 1 source ref; docs/cli-reference.md:110
 
 ##### claim-docs-specs-user-index-spec-md-24
 
@@ -736,21 +750,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/specs/user/index.spec.md:24
 
-#### Deterministic gate / ready-to-verify / evidence unknown (7)
-
-##### claim-docs-cli-reference-md-110
-
-- Summary: If repo setup is ready but runner proof is not, that next action can point at runner assessment setup before the first bounded eval loop.
-- Current labels: audience=user; proof=deterministic; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Attach agent-status runner-readiness evidence for setup-before-eval next action behavior.
-- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
-- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
-- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
-- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
-- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
-- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
-- Human notes:
-- Trace: 1 source ref; docs/cli-reference.md:110
+#### Deterministic gate / ready-to-verify / evidence unknown (6)
 
 ##### claim-docs-cli-reference-md-128
 

@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:40add4616254307620c6c929b80d50174f3819666e5a5c1cea3cfac63331b71a"
+      "contentHash": "sha256:e8ff7992e17a51007272366980ec9d4701ffa5aa78f63a9842de47c9d6a2fbce"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -1112,8 +1112,8 @@
         }
       ],
       "byEvidenceStatus": {
-        "satisfied": 3,
-        "unknown": 4
+        "satisfied": 4,
+        "unknown": 3
       },
       "byReviewStatus": {
         "agent-reviewed": 5,
@@ -4406,30 +4406,30 @@
       "claimAudience": "user",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-to-verify",
-      "evidenceStatus": "unknown",
+      "evidenceStatus": "satisfied",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:005c3b9342e1ac04e79a401f42a143ac17f820945d363db8f38004ec518975e1",
       "canonicalClaimId": "U4",
-      "score": 12,
-      "runnerUpCanonicalClaimId": "U1",
-      "runnerUpScore": 8,
-      "scoreMargin": 4,
+      "score": 13,
+      "runnerUpCanonicalClaimId": "U5",
+      "runnerUpScore": 7,
+      "scoreMargin": 6,
       "mappingConfidence": "high",
       "requiresSemanticReview": false,
       "matchedAnchors": [],
       "matchedKeywords": [
         "action",
         "assessment",
-        "behavior",
         "bounded",
-        "evidence",
+        "doctor",
         "next",
+        "payload",
         "proof",
         "ready",
         "repo",
+        "run",
         "runner",
-        "runner-readines",
-        "setup"
+        "runner-readines"
       ]
     },
     {
