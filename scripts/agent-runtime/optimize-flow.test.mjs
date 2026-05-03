@@ -195,6 +195,12 @@ test("generateOptimizeProposal turns explicit evidence into one bounded revision
 		assert.equal(proposal.prioritizedEvidence[0].source, "report.regressed");
 		assert.equal(proposal.suggestedChanges[0].changeKind, "prompt_revision");
 		assert.match(proposal.revisionBrief, /Operator guidance should stay legible under recovery pressure/);
+		assert.equal(typeof proposal.revisionBrief, "string");
+		assert.equal(proposal.stopConditions[0], "Stop after one bounded revision.");
+		assert.match(proposal.stopConditions.join("\n"), /Do not weaken held-out, comparison, or structured review gates/);
+		assert.equal(proposal.compileLoop, undefined);
+		assert.equal(proposal.iterations, undefined);
+		assert.equal(proposal.targetPatch, undefined);
 		assert.equal(proposal.trialTelemetry.suggestedChangeCount, 2);
 	} finally {
 		rmSync(root, { recursive: true, force: true });

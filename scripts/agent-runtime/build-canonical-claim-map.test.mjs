@@ -229,3 +229,90 @@ test("parseMaintainerCatalog reads same-directory maintainer spec pages", () => 
 		rmSync(root, { recursive: true, force: true });
 	}
 });
+
+test("buildCanonicalClaimMap absorbs scenario history, proposal source, and normalizer claims together", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-scenario-coverage-"));
+	try {
+		const maintainerDir = join(root, "docs", "specs", "maintainer");
+		mkdirSync(maintainerDir, { recursive: true });
+		writeFileSync(
+			join(maintainerDir, "scenario-history-normalization.spec.md"),
+			[
+				"# Scenario History And Proposal Normalization",
+				"",
+				"Aligned user claims: U2, U3, U7.",
+				"Proof route: deterministic plus held-out eval.",
+				"Current evidence status: proof-planning.",
+				"Next action: connect scenario proposal sources, scenario history cadence, normalizer coverage, and held-out selection to eval and optimize packets.",
+				"Absorbs: scenario proposal, scenario history, protected check, held-out, iterate cadence, train cadence, normalizer, proposal packet, context recovery, skill failure episode.",
+				"",
+			].join("\n"),
+			"utf-8",
+		);
+		const maintainerIndexPath = join(maintainerDir, "index.spec.md");
+		const maintainerIndexMarkdown = [
+			"# Maintainer Index",
+			"",
+			"- [Scenario History And Proposal Normalization](scenario-history-normalization.spec.md)",
+			"",
+		].join("\n");
+		const packet = buildCanonicalClaimMap({
+			args: {
+				userCatalog: "docs/specs/user/index.spec.md",
+				maintainerCatalog: maintainerIndexPath,
+			},
+			userCatalogMarkdown: "# User Index\n",
+			maintainerCatalogMarkdown: maintainerIndexMarkdown,
+			claimsPacket: {
+				claimCandidates: [
+					{
+						claimId: "claim-scenario-history",
+						claimFingerprint: "sha256:history",
+						claimAudience: "developer",
+						summary: "Scenario history preserves protected checks and train cadence for later held-out selection.",
+						sourceRefs: [{ path: "docs/contracts/scenario-history.md", line: 1 }],
+						recommendedProof: "deterministic",
+						verificationReadiness: "ready-to-verify",
+						evidenceStatus: "unknown",
+						reviewStatus: "heuristic",
+					},
+					{
+						claimId: "claim-scenario-proposal-sources",
+						claimFingerprint: "sha256:proposal-sources",
+						claimAudience: "developer",
+						summary: "Scenario proposal source normalization emits proposal packets from source ports.",
+						sourceRefs: [{ path: "docs/contracts/scenario-proposal-sources.md", line: 1 }],
+						recommendedProof: "deterministic",
+						verificationReadiness: "ready-to-verify",
+						evidenceStatus: "unknown",
+						reviewStatus: "heuristic",
+					},
+					{
+						claimId: "claim-scenario-normalizer",
+						claimFingerprint: "sha256:normalizer",
+						claimAudience: "developer",
+						summary: "Normalizers should produce inspectable proposal packets rather than hidden one-off shapers.",
+						sourceRefs: [{ path: "docs/specs/maintainer/scenario-history-normalization.spec.md", line: 14 }],
+						recommendedProof: "deterministic",
+						verificationReadiness: "ready-to-verify",
+						evidenceStatus: "unknown",
+						reviewStatus: "heuristic",
+					},
+				],
+			},
+		});
+		const coverage = packet.maintainerCoverage[0];
+		assert.equal(coverage.canonicalClaimId, "M1");
+		assert.deepEqual(coverage.absorbedRawClaimIds, [
+			"claim-scenario-history",
+			"claim-scenario-proposal-sources",
+			"claim-scenario-normalizer",
+		]);
+		assert.deepEqual(
+			coverage.absorbedRawClaims.map((claim) => claim.claimFingerprint),
+			["sha256:history", "sha256:proposal-sources", "sha256:normalizer"],
+		);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
