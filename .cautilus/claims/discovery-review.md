@@ -2046,7 +2046,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/specs/maintainer/claim-discovery-workflow.spec.md:14
 
-#### Cautilus eval / dev/skill / ready-to-verify / evidence satisfied (5)
+#### Cautilus eval / dev/skill / ready-to-verify / evidence satisfied (6)
 
 ##### claim-docs-contracts-claim-discovery-workflow-md-201
 
@@ -2108,6 +2108,21 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:591
 
+##### claim-docs-contracts-claim-discovery-workflow-md-85
+
+- Summary: When raw candidates are too granular to review directly, the bundled skill should curate two canonical specdown indexes before continuing HITL:
+- Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/skill; readiness=ready-to-verify; evidence=satisfied
+- Suggested next action: Keep this proof scoped to the existing Cautilus spec tree. Add a separate initial-creation fixture before claiming that the skill can create canonical spec indexes from scratch in a repo with no spec tree.
+- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
+- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
+- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
+- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
+- Human corrected eval surface: [ ] keep [ ] dev/repo [ ] dev/skill [ ] app/chat [ ] app/prompt [ ] surface undecided
+- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
+- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
+- Human notes:
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:85
+
 ##### claim-skills-cautilus-skill-md-227
 
 - Summary: Agents should read the packet first, then cite HTML only when a browser view is the deliverable.
@@ -2123,7 +2138,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; skills/cautilus/SKILL.md:227
 
-#### Cautilus eval / dev/skill / ready-to-verify / evidence unknown (17)
+#### Cautilus eval / dev/skill / ready-to-verify / evidence unknown (16)
 
 ##### claim-docs-contracts-claim-discovery-workflow-md-186
 
@@ -2289,21 +2304,6 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
 - Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:622
-
-##### claim-docs-contracts-claim-discovery-workflow-md-85
-
-- Summary: When raw candidates are too granular to review directly, the bundled skill should curate two canonical specdown indexes before continuing HITL:
-- Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/skill; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Author a dev/skill scenario proving that the bundled skill curates canonical specdown indexes before continuing HITL when raw candidates are too granular.
-- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
-- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
-- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
-- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
-- Human corrected eval surface: [ ] keep [ ] dev/repo [ ] dev/skill [ ] app/chat [ ] app/prompt [ ] surface undecided
-- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
-- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
-- Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:85
 
 ##### claim-docs-contracts-runner-readiness-md-278
 

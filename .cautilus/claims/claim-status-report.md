@@ -19,7 +19,7 @@ Use the JSON packets as the audit source; use this report to decide what to insp
 
 | Dimension | Counts |
 | --- | --- |
-| Evidence | satisfied: 121, unknown: 201 |
+| Evidence | satisfied: 122, unknown: 200 |
 | Review | agent-reviewed: 172, heuristic: 150 |
 | Recommended proof | cautilus-eval: 123, deterministic: 106, human-auditable: 93 |
 | Verification readiness | blocked: 38, needs-alignment: 34, needs-scenario: 10, ready-to-verify: 240 |
@@ -51,7 +51,7 @@ Review readiness: heuristicClaimsReadyForReview: 123, needsAlignment: 34, needsS
 
 | Maintainer claim | Title | Raw claims | Proof | Evidence | Review |
 | --- | --- | --- | --- | --- | --- |
-| M1 | Claim Discovery Workflow | 21 | cautilus-eval: 5, deterministic: 6, human-auditable: 10 | satisfied: 7, unknown: 14 | agent-reviewed: 9, heuristic: 12 |
+| M1 | Claim Discovery Workflow | 21 | cautilus-eval: 5, deterministic: 6, human-auditable: 10 | satisfied: 8, unknown: 13 | agent-reviewed: 9, heuristic: 12 |
 | M2 | Binary And Skill Boundary | 58 | cautilus-eval: 31, deterministic: 8, human-auditable: 19 | satisfied: 10, unknown: 48 | agent-reviewed: 23, heuristic: 35 |
 | M3 | Adapter And Host Ownership | 49 | cautilus-eval: 27, deterministic: 5, human-auditable: 17 | satisfied: 5, unknown: 44 | agent-reviewed: 10, heuristic: 39 |
 | M4 | Evaluation Surfaces And Runners | 14 | cautilus-eval: 9, deterministic: 4, human-auditable: 1 | satisfied: 4, unknown: 10 | agent-reviewed: 5, heuristic: 9 |
@@ -84,15 +84,15 @@ Semantic sampling recommended for 263 raw claim(s): claim-agents-md-12, claim-ag
 ## Next Work
 
 - Human review is still meaningful for human-align-surfaces=34, human-confirm-or-decompose=21, split-or-defer=38.
-- Agent eval work: plan Cautilus eval scenarios for 98 claim(s), after reviewing heuristic labels where needed.
+- Agent eval work: plan Cautilus eval scenarios for 97 claim(s), after reviewing heuristic labels where needed.
 - Scenario design work remains for 10 claim(s).
 
 ## Action Buckets
 
 | Bucket | Actor | Count | Review | Evidence | Meaning |
 | --- | --- | --- | --- | --- | --- |
-| already-satisfied | none | 121 | agent-reviewed: 121 | satisfied: 121 | Proof is already attached and valid under packet semantics. |
-| agent-plan-cautilus-eval | agent | 98 | agent-reviewed: 1, heuristic: 97 | unknown: 98 | Draft or select Cautilus eval scenarios for ready eval claims. |
+| already-satisfied | none | 122 | agent-reviewed: 122 | satisfied: 122 | Proof is already attached and valid under packet semantics. |
+| agent-plan-cautilus-eval | agent | 97 | heuristic: 97 | unknown: 97 | Draft or select Cautilus eval scenarios for ready eval claims. |
 | agent-design-scenario | agent | 10 | agent-reviewed: 2, heuristic: 8 | unknown: 10 | Decompose the behavior into a concrete scenario before protected eval planning. |
 | human-align-surfaces | human | 34 | agent-reviewed: 15, heuristic: 19 | unknown: 34 | Reconcile conflicting docs, code, adapters, or ownership boundaries before proof would be honest. |
 | human-confirm-or-decompose | human | 21 | heuristic: 21 | unknown: 21 | Confirm, decompose, or accept a human-auditable claim before treating it as proven. |
@@ -168,6 +168,7 @@ Active updates still match the current claim packet; superseded updates are hist
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | .cautilus/claims/review-result-adapter-gate-split-2026-05-03.json | - | - | 1 | 1 | 0 | human-auditable: 1 | blocked: 1 |
 | .cautilus/claims/review-result-agent-status-safe-branch-catalog-2026-05-03.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-to-verify: 1 |
+| .cautilus/claims/review-result-canonical-spec-curation-flow-2026-05-03.json | - | - | 1 | 1 | 0 | cautilus-eval: 1 | ready-to-verify: 1 |
 | .cautilus/claims/review-result-claim-packet-next-work-grouping-2026-05-03.json | - | - | 1 | 1 | 0 | cautilus-eval: 1 | ready-to-verify: 1 |
 | .cautilus/claims/review-result-current-deterministic-proof-batch-2026-05-03.json | - | - | 1 | 18 | 0 | deterministic: 15, human-auditable: 3 | blocked: 3, needs-alignment: 1, ready-to-verify: 14 |
 | .cautilus/claims/review-result-current-dev-skill-dogfood-2026-05-03.json | - | - | 1 | 7 | 0 | cautilus-eval: 7 | ready-to-verify: 7 |
@@ -223,7 +224,7 @@ Active updates still match the current claim packet; superseded updates are hist
 | .cautilus/claims/review-result-policy-claim-reclassification-2026-05-03.json | - | - | 1 | 2 | 0 | human-auditable: 2 | blocked: 2 |
 | .cautilus/claims/review-result-positioning-boundary.json | - | - | 1 | 1 | 0 | human-auditable: 1 | blocked: 1 |
 | .cautilus/claims/review-result-readme-scenario-next-step-reclassification-2026-05-03.json | - | - | 1 | 1 | 0 | human-auditable: 1 | blocked: 1 |
-| .cautilus/claims/review-result-remaining-deterministic-claims-2026-05-03.json | - | - | 4 | 13 | 0 | cautilus-eval: 1, deterministic: 10, human-auditable: 2 | blocked: 1, needs-alignment: 1, ready-to-verify: 11 |
+| .cautilus/claims/review-result-remaining-deterministic-claims-2026-05-03.json | - | - | 4 | 12 | 1 | deterministic: 10, human-auditable: 2 | blocked: 1, needs-alignment: 1, ready-to-verify: 10 |
 | .cautilus/claims/review-result-reviewable-artifacts-proof-gap-2026-05-03.json | - | - | 1 | 2 | 0 | deterministic: 2 | ready-to-verify: 2 |
 | .cautilus/claims/review-result-skill-packet-first-reclass-2026-05-03.json | - | - | 0 | 0 | 1 | - | - |
 | .cautilus/claims/review-result-workbench-instance-catalog-contract-2026-05-03.json | - | - | 1 | 2 | 1 | deterministic: 2 | ready-to-verify: 2 |
@@ -275,7 +276,7 @@ Active updates still match the current claim packet; superseded updates are hist
 | .cautilus/claims/eval-plan-evidenced-typed-runners.json | 8 | 255 | already-satisfied: 1, not-cautilus-eval: 160, not-ready-to-verify: 7, not-reviewed: 87 | - |
 | .cautilus/claims/eval-plan-loop1.json | 2 | 325 | not-cautilus-eval: 85, not-ready-to-verify: 70, not-reviewed: 170 | - |
 | .cautilus/claims/eval-plan-loop2.json | 4 | 304 | not-cautilus-eval: 147, not-ready-to-verify: 6, not-reviewed: 151 | - |
-| .cautilus/claims/eval-plan-reviewed-eval-claims-2026-05-03.json | 1 | 321 | already-satisfied: 15, not-cautilus-eval: 199, not-ready-to-verify: 10, not-reviewed: 97 | - |
+| .cautilus/claims/eval-plan-reviewed-eval-claims-2026-05-03.json | 0 | 322 | already-satisfied: 16, not-cautilus-eval: 199, not-ready-to-verify: 10, not-reviewed: 97 | all-reviewed-eval-targets-satisfied-and-remaining-reviewed-claims-not-eval-targets |
 | .cautilus/claims/eval-plan-reviewed-typed-runners.json | 3 | 321 | not-cautilus-eval: 157, not-ready-to-verify: 6, not-reviewed: 158 | - |
 | .cautilus/claims/eval-plan-typed-runners.json | 3 | 319 | not-cautilus-eval: 155, not-ready-to-verify: 6, not-reviewed: 158 | - |
 

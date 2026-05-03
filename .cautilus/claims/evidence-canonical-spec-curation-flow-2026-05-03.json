@@ -1,0 +1,130 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-canonical-spec-curation-flow-2026-05-03",
+  "createdForClaimIds": [
+    "claim-docs-contracts-claim-discovery-workflow-md-85"
+  ],
+  "repoCommit": "f8b22ea1dcb1902baa6c4d379954c4b1bac1adbb",
+  "summary": "Current dev/skill dogfood proves the bundled Cautilus skill can inspect the claim packet plus canonical user-facing and maintainer-facing specdown indexes before continuing HITL when raw claim candidates are too granular for product judgment.",
+  "evidenceScope": {
+    "targetSurface": "bundled Cautilus skill canonical spec curation boundary before HITL",
+    "claimBoundary": "This bundle supports the current Cautilus repo path where canonical user and maintainer spec indexes already exist and the skill verifies those indexes before HITL. It does not prove initial spec generation in a repo with no spec tree.",
+    "notClaimed": [
+      "The skill can create perfect canonical specs from scratch in every repo",
+      "Every raw claim has been manually accepted by a maintainer",
+      "The canonical map's automated grouping is semantically optimal",
+      "The flow launched HITL, reviewer lanes, claim review prepare-input, or eval planning",
+      "Fixture runtime is valid proof for this live skill episode without fixture results",
+      "Claude parity for this canonical spec curation episode"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "npm run dogfood:cautilus-canonical-spec-curation-flow:eval:codex",
+      "exitCode": 0,
+      "observed": {
+        "schemaVersion": "cautilus.skill_evaluation_summary.v1",
+        "recommendation": "accept-now",
+        "evaluationId": "episode-cautilus-canonical-spec-curation-flow",
+        "status": "passed",
+        "summary": "Execution consensus reached passed in 1/1 run(s). Audit passed: 0 finding(s).",
+        "audit": {
+          "schemaVersion": "cautilus.canonical_spec_curation_flow_audit.v1",
+          "status": "passed",
+          "commandCount": 5,
+          "messageCount": 6,
+          "findings": []
+        }
+      }
+    },
+    {
+      "command": "node --test scripts/agent-runtime/audit-cautilus-canonical-spec-curation-flow-log.test.mjs scripts/agent-runtime/run-local-skill-test.test.mjs",
+      "exitCode": 0,
+      "observed": {
+        "tests": 18,
+        "pass": 18,
+        "protectedBehaviors": [
+          "audit passes only when a claim packet and both canonical spec indexes are inspected before HITL",
+          "audit fails when the maintainer-facing index is skipped",
+          "audit fails when claim review prepare-input is launched in the curation boundary",
+          "skill case suite normalization accepts the canonical spec curation audit kind"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/runtime -run 'TestNormalizeEvaluationInputAcceptsDevSkillEpisodeTurns|TestNormalizeEvaluationInputAcceptsPacketFirstAuditKind|TestNormalizeEvaluationInputAcceptsCanonicalSpecCurationAuditKind' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "protectedBehaviors": [
+          "dev/skill episode turns round-trip through evaluation input normalization",
+          "packet-first and canonical-spec-curation audit kinds are accepted by the Go-side normalizer"
+        ]
+      }
+    }
+  ],
+  "packetEvidence": [
+    {
+      "path": "artifacts/self-dogfood/cautilus-canonical-spec-curation-flow-eval-codex/latest/eval-summary.json",
+      "kind": "dev-skill-eval-summary",
+      "contentHash": "sha256:d6d9b1542a1582cf1a9d656a210585cf1b27cd5f29231eb40ce45e38701fd334",
+      "schemaVersion": "cautilus.skill_evaluation_summary.v1",
+      "recommendation": "accept-now"
+    },
+    {
+      "path": "artifacts/self-dogfood/cautilus-canonical-spec-curation-flow-eval-codex/latest/eval-observed.json",
+      "kind": "dev-skill-eval-observed",
+      "contentHash": "sha256:b83f0aafe7f67a9df880f3f7c0f265c706d0a7299c5aa9635d24d801862d9bfe",
+      "schemaVersion": "cautilus.skill_evaluation_inputs.v1"
+    },
+    {
+      "path": "artifacts/self-dogfood/cautilus-canonical-spec-curation-flow-eval-codex/latest/canonical-spec-curation-flow/episode-cautilus-canonical-spec-curation-flow/audit.json",
+      "kind": "canonical-spec-curation-audit",
+      "contentHash": "sha256:8af21f6cdefc1c2ea7f5b18afb9cd05cfaaa16368ea8d58509609a738a9dc62f",
+      "schemaVersion": "cautilus.canonical_spec_curation_flow_audit.v1",
+      "status": "passed"
+    },
+    {
+      "path": "artifacts/self-dogfood/cautilus-canonical-spec-curation-flow-eval-codex/latest/canonical-spec-curation-flow/episode-cautilus-canonical-spec-curation-flow/aggregate.json",
+      "kind": "canonical-spec-curation-aggregate",
+      "contentHash": "sha256:3c7f805d32bb45173a820d72081da862bc8fae3c77ef7145a7b8cdb8e97a2b56"
+    },
+    {
+      "path": "artifacts/self-dogfood/cautilus-canonical-spec-curation-flow-eval-codex/latest/canonical-spec-curation-flow/episode-cautilus-canonical-spec-curation-flow/combined.jsonl",
+      "kind": "canonical-spec-curation-transcript",
+      "contentHash": "sha256:e445dd58fc1d7b0ea2e10009e2252555fda106b31031eee93c5624a067571680"
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": ".agents/cautilus-adapters/self-dogfood-canonical-spec-curation-flow.yaml",
+      "kind": "dev-skill-dogfood-adapter",
+      "contentHash": "sha256:628121623588b5140b7b9cae3aad6a664f0647348d2e124bff829895f77004db"
+    },
+    {
+      "path": "fixtures/eval/dev/skill/cautilus-canonical-spec-curation-flow.fixture.json",
+      "kind": "dev-skill-episode-fixture",
+      "contentHash": "sha256:04aedee8b94aeda96d6cf101439468f7ed75037027a265a65ce6e09b45f8ced8"
+    },
+    {
+      "path": "scripts/agent-runtime/audit-cautilus-canonical-spec-curation-flow-log.mjs",
+      "kind": "dev-skill-episode-audit",
+      "contentHash": "sha256:c8d5133d7355740bda3eb0cf64155b612aaddc574a0f5a1317a5f559cff067ff"
+    },
+    {
+      "path": "docs/specs/user/index.spec.md",
+      "kind": "canonical-user-spec-index",
+      "contentHash": "sha256:36c7f76ac3610a6a358fbf6d75b62610b87cfabe597f50ecdf6c47f880d7654d"
+    },
+    {
+      "path": "docs/specs/maintainer/index.spec.md",
+      "kind": "canonical-maintainer-spec-index",
+      "contentHash": "sha256:882064b19bb1f53a7f5d0bdbe653b53c33f2ff4ca8186e056538ca7e2eff76a8"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The current Codex-backed dev/skill episode read agent status, both canonical spec indexes, and the evidenced claim packet, then passed an audit that forbids skipping the maintainer index or launching claim review before the curation boundary."
+  }
+}

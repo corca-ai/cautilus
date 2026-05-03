@@ -24,12 +24,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 121
+          "satisfied": 122
         },
         "byReviewStatus": {
-          "agent-reviewed": 121
+          "agent-reviewed": 122
         },
-        "count": 121,
+        "count": 122,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -43,13 +43,12 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 98
+          "unknown": 97
         },
         "byReviewStatus": {
-          "agent-reviewed": 1,
           "heuristic": 97
         },
-        "count": 98,
+        "count": 97,
         "id": "agent-plan-cautilus-eval",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -175,8 +174,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 121,
-      "unknown": 201
+      "satisfied": 122,
+      "unknown": 200
     },
     "byLifecycle": {
       "new": 322
@@ -361,7 +360,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 121,
+    "satisfiedClaimCount": 122,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-78",
@@ -1520,6 +1519,25 @@
         "recommendedProof": "cautilus-eval",
         "reviewStatus": "agent-reviewed",
         "summary": "If prior claim state exists, step 5 becomes a diff-aware refresh selected by the skill: the skill uses the previous packet, the previous commit recorded in that packet, and a deterministic refresh plan to decide which sources need rescanning or re-review."
+      },
+      {
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-85",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:99fc54622eea06129c8c58d31b1743dc7451a43c8b1e2897484d227dfb610b15",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-canonical-spec-curation-flow-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-claim-discovery-workflow-md-85"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": "dev/skill",
+        "recommendedProof": "cautilus-eval",
+        "reviewStatus": "agent-reviewed",
+        "summary": "When raw candidates are too granular to review directly, the bundled skill should curate two canonical specdown indexes before continuing HITL:"
       },
       {
         "claimId": "claim-docs-contracts-claim-discovery-workflow-md-96",
@@ -2694,8 +2712,9 @@
   },
   "gitCommit": "bb992ae4fb9c2e9fb8a872c2db2e0ccae0a04451",
   "gitState": {
-    "changedFileCount": 30,
+    "changedFileCount": 37,
     "changedFiles": [
+      ".agents/cautilus-adapters/self-dogfood-canonical-spec-curation-flow.yaml",
       ".agents/cautilus-adapters/self-dogfood-packet-first-flow.yaml",
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
@@ -2704,6 +2723,7 @@
       ".cautilus/claims/evidence-claim-packet-next-work-grouping-2026-05-03.json",
       ".cautilus/claims/evidence-current-dev-skill-dogfood-2026-05-03.json",
       ".cautilus/claims/evidence-current-eval-surfaces-2026-05-03.json",
+      ".cautilus/claims/evidence-optimize-held-out-route-2026-05-03.json",
       ".cautilus/claims/evidence-packet-first-skill-flow-2026-05-03.json",
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
@@ -2711,15 +2731,20 @@
       ".cautilus/claims/review-result-claim-packet-next-work-grouping-2026-05-03.json",
       ".cautilus/claims/review-result-current-dev-skill-dogfood-2026-05-03.json",
       ".cautilus/claims/review-result-current-eval-surfaces-2026-05-03.json",
+      ".cautilus/claims/review-result-optimize-held-out-route-2026-05-03.json",
       ".cautilus/claims/review-result-packet-first-skill-flow-2026-05-03.json",
       ".cautilus/claims/review-result-skill-packet-first-reclass-2026-05-03.json",
       ".cautilus/claims/status-summary.json",
+      "charness-artifacts/debug/debug-2026-05-03-canonical-spec-curation-fixture-runtime.md",
       "charness-artifacts/debug/debug-2026-05-03-eval-surface-related-evidence-ref.md",
       "charness-artifacts/debug/latest.md",
+      "fixtures/eval/dev/skill/cautilus-canonical-spec-curation-flow.fixture.json",
       "fixtures/eval/dev/skill/cautilus-packet-first-flow.fixture.json",
       "internal/runtime/evaluation_input_test.go",
       "internal/runtime/skill_test_cases.go",
       "package.json",
+      "scripts/agent-runtime/audit-cautilus-canonical-spec-curation-flow-log.mjs",
+      "scripts/agent-runtime/audit-cautilus-canonical-spec-curation-flow-log.test.mjs",
       "scripts/agent-runtime/audit-cautilus-packet-first-flow-log.mjs",
       "scripts/agent-runtime/audit-cautilus-packet-first-flow-log.test.mjs",
       "scripts/agent-runtime/run-local-skill-test.test.mjs",
@@ -2735,7 +2760,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "a7aab532d93501512f43f4a5c15b3aa0925b2868",
+    "currentGitCommit": "f8b22ea1dcb1902baa6c4d379954c4b1bac1adbb",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "bb992ae4fb9c2e9fb8a872c2db2e0ccae0a04451",

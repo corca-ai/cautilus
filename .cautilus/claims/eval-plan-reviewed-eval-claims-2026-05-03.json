@@ -1,92 +1,18 @@
 {
-  "evalPlans": [
-    {
-      "claimFingerprint": "sha256:61a9c5048a4a9198d4182a1cfe5d0f91adb31bed9e08cfcf0b37f54508602df4",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-85",
-      "draftIntent": "Verify that When raw candidates are too granular to review directly, the bundled skill should curate two canonical specdown indexes before continuing HITL:.",
-      "evidenceStatus": "unknown",
-      "fixtureAuthoringGuidance": {
-        "conditionalCaseFields": {
-          "execution": [
-            "thresholds or turns/auditKind when the evaluated behavior needs them"
-          ],
-          "trigger": [
-            "expectedTrigger"
-          ]
-        },
-        "evaluationInputSchema": "cautilus.evaluation_input.v1",
-        "expectedShape": "trigger cases require expectedTrigger; execution cases use thresholds, turns, or auditKind depending on the skill contract",
-        "fixtureOwner": "host-repo",
-        "minimumCaseFields": [
-          "caseId",
-          "evaluationKind",
-          "prompt"
-        ],
-        "minimumSuiteFields": [
-          "schemaVersion",
-          "surface",
-          "preset",
-          "suiteId",
-          "cases"
-        ],
-        "nonWriterBoundary": "Cautilus plans the fixture contract but does not write host-owned fixtures, prompts, runners, wrappers, or acceptance policy.",
-        "preset": "skill",
-        "requiredObservability": [
-          "trigger",
-          "execution",
-          "loadedInstructionFiles",
-          "runtimeFingerprint"
-        ],
-        "requiredRunnerCapability": "development-skill-eval-runner",
-        "runnerOutputSchema": "cautilus.skill_evaluation_inputs.v1",
-        "runnerOwner": "host-repo-adapter",
-        "schemaVersion": "cautilus.claim_eval_fixture_authoring_guidance.v1",
-        "surface": "dev"
-      },
-      "nextStep": "Create a host-owned cautilus.evaluation_input.v1 fixture and adapter-owned runner for this plan.",
-      "planId": "eval-plan-claim-docs-contracts-claim-discovery-workflow-md-85",
-      "proofRequirement": {
-        "minimumProofClasses": [
-          "fixture-smoke",
-          "coding-agent-messaging",
-          "declared-eval-runner"
-        ],
-        "proofMechanism": "cautilus-eval",
-        "recommendedEvalSurface": "dev/skill",
-        "requiredObservability": [
-          "trigger",
-          "execution",
-          "loadedInstructionFiles",
-          "runtimeFingerprint"
-        ],
-        "requiredRunnerCapability": "development-skill-eval-runner",
-        "requiresProductRunnerProof": false
-      },
-      "reviewStatus": "agent-reviewed",
-      "sourceRefs": [
-        {
-          "excerpt": "When raw candidates are too granular to review directly, the bundled skill should curate two canonical specdown indexes before continuing HITL:",
-          "line": 85,
-          "path": "docs/contracts/claim-discovery-workflow.md"
-        }
-      ],
-      "targetSurface": "dev/skill",
-      "unresolvedQuestions": []
-    }
-  ],
+  "evalPlans": [],
   "inputPath": "/home/hwidong/codes/cautilus/.cautilus/claims/evidenced-typed-runners.json",
   "nonWriterNotice": "This packet plans eval fixtures but does not write host-owned fixtures, prompts, runners, or policy.",
   "planSummary": {
-    "evalPlanCount": 1,
+    "evalPlanCount": 0,
     "skippedByReason": {
-      "already-satisfied": 15,
+      "already-satisfied": 16,
       "not-cautilus-eval": 199,
       "not-ready-to-verify": 10,
       "not-reviewed": 97
     },
-    "skippedClaimCount": 321,
+    "skippedClaimCount": 322,
     "zeroPlanExpectation": "Zero eval plans can be expected when reviewed eval-ready claims are already satisfied or when remaining reviewed claims are not Cautilus eval targets.",
-    "zeroPlanReason": ""
+    "zeroPlanReason": "all-reviewed-eval-targets-satisfied-and-remaining-reviewed-claims-not-eval-targets"
   },
   "schemaVersion": "cautilus.claim_eval_plan.v1",
   "selectionPolicy": {
@@ -1362,6 +1288,35 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "claimFingerprint": "sha256:61a9c5048a4a9198d4182a1cfe5d0f91adb31bed9e08cfcf0b37f54508602df4",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-85",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:99fc54622eea06129c8c58d31b1743dc7451a43c8b1e2897484d227dfb610b15",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-canonical-spec-curation-flow-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-claim-discovery-workflow-md-85"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "reason": "already-satisfied",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "When raw candidates are too granular to review directly, the bundled skill should curate two canonical specdown indexes before continuing HITL:",
+          "line": 85,
+          "path": "docs/contracts/claim-discovery-workflow.md"
+        }
+      ],
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify"
     },
     {

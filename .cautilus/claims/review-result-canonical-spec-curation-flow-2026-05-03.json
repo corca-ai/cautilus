@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-canonical-spec-curation-flow-evidence",
+    "type": "agent",
+    "reviewedAt": "2026-05-03T23:52:04+09:00",
+    "evidencePolicy": "Mark the canonical spec curation claim satisfied only for the current Cautilus repo path where the user-facing and maintainer-facing spec indexes already exist and the bundled skill verifies those indexes before continuing HITL."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-canonical-spec-curation-flow-2026-05-03",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-85",
+          "claimFingerprint": "sha256:61a9c5048a4a9198d4182a1cfe5d0f91adb31bed9e08cfcf0b37f54508602df4",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/skill",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by current Codex-backed dev/skill dogfood: the bundled skill read agent status, the canonical user-facing index, the canonical maintainer-facing index, and the evidenced claim packet before answering the HITL boundary. The audit passed with zero findings and forbids skipping the maintainer index or launching claim review prepare-input during this boundary.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-canonical-spec-curation-flow-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:99fc54622eea06129c8c58d31b1743dc7451a43c8b1e2897484d227dfb610b15",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-85"
+              ]
+            }
+          ],
+          "nextAction": "Keep this proof scoped to the existing Cautilus spec tree. Add a separate initial-creation fixture before claiming that the skill can create canonical spec indexes from scratch in a repo with no spec tree.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}
