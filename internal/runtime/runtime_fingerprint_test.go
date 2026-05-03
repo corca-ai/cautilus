@@ -60,6 +60,39 @@ func TestBuildReportPacketNotesPriorEvidenceWithoutRuntimeIdentity(t *testing.T)
 	}
 }
 
+func TestBuildReportPacketOnlyCarriesExplicitCostTelemetry(t *testing.T) {
+	input := minimalReportInput(map[string]any{}, nil)
+	input["commandObservations"] = []any{
+		map[string]any{
+			"stage":      "held_out",
+			"status":     "completed",
+			"command":    "node run.js",
+			"stderrFile": "held-out.stderr",
+			"cost_usd":   12.34,
+		},
+	}
+	report, err := BuildReportPacket(input, time.Date(2026, 4, 24, 0, 0, 0, 0, time.UTC))
+	if err != nil {
+		t.Fatalf("BuildReportPacket returned error: %v", err)
+	}
+	if _, ok := asMap(report["telemetry"])["cost_usd"]; ok {
+		t.Fatalf("cost_usd must not be inferred from command observations, got %#v", report["telemetry"])
+	}
+
+	input = minimalReportInput(map[string]any{
+		"telemetry": map[string]any{
+			"cost_usd": 0.42,
+		},
+	}, nil)
+	report, err = BuildReportPacket(input, time.Date(2026, 4, 24, 0, 0, 0, 0, time.UTC))
+	if err != nil {
+		t.Fatalf("BuildReportPacket returned error: %v", err)
+	}
+	if asMap(report["telemetry"])["cost_usd"] != float64(0.42) {
+		t.Fatalf("cost_usd must come from explicit mode telemetry, got %#v", report["telemetry"])
+	}
+}
+
 func TestBuildSkillEvaluationSummaryPreservesPassingRecommendationWithRuntimeChange(t *testing.T) {
 	summary, err := BuildSkillEvaluationSummary(map[string]any{
 		"schemaVersion": contracts.SkillEvaluationInputsSchema,

@@ -183,6 +183,40 @@ func TestAgentStatusIncludesRunnerReadinessBranchBeforeClaimBranches(t *testing.
 	}
 }
 
+func TestDoctorAndAgentStatusShareRunnerReadinessFacts(t *testing.T) {
+	repoRoot := setupRunnerReadinessRepo(t)
+	adapter, err := LoadAdapter(repoRoot, nil, nil)
+	if err != nil {
+		t.Fatalf("LoadAdapter returned error: %v", err)
+	}
+	writeRunnerAssessment(t, repoRoot, adapter, "ready-for-selected-surface", "in-process-product-runner")
+
+	doctor, doctorExit, err := DoctorRepo(repoRoot, nil, nil)
+	if err != nil {
+		t.Fatalf("DoctorRepo returned error: %v", err)
+	}
+	if doctorExit != 0 {
+		t.Fatalf("DoctorRepo returned exit=%d payload=%#v", doctorExit, doctor)
+	}
+	status, statusExit, err := BuildAgentStatus(repoRoot, AgentStatusOptions{})
+	if err != nil {
+		t.Fatalf("BuildAgentStatus returned error: %v", err)
+	}
+	if statusExit != 0 {
+		t.Fatalf("BuildAgentStatus returned exit=%d payload=%#v", statusExit, status)
+	}
+	doctorReadiness := asMap(doctor["runnerReadiness"])
+	statusReadiness := asMap(status["runnerReadiness"])
+	for _, field := range []string{"state", "reason", "recommendation", "runnerId", "proofClass", "assessmentPath"} {
+		if doctorReadiness[field] != statusReadiness[field] {
+			t.Fatalf("expected shared readiness field %s, doctor=%#v agent=%#v", field, doctorReadiness[field], statusReadiness[field])
+		}
+	}
+	if asMap(doctorReadiness["nextBranch"])["id"] != asMap(statusReadiness["nextBranch"])["id"] {
+		t.Fatalf("expected shared nextBranch id, doctor=%#v agent=%#v", doctorReadiness["nextBranch"], statusReadiness["nextBranch"])
+	}
+}
+
 func TestRunnerReadinessBranchesExposeStableActionShape(t *testing.T) {
 	bindRepoRoot := setupRunnerReadinessRepo(t)
 	if err := os.WriteFile(filepath.Join(bindRepoRoot, ".agents", "cautilus-adapter.yaml"), []byte(strings.Join([]string{

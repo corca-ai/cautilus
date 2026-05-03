@@ -3954,6 +3954,59 @@ func TestCLIEvalEvaluateAcceptsSkillObservedPacket(t *testing.T) {
 	}
 }
 
+func TestCLIEvalEvaluateDoesNotLaunchAdapterRunner(t *testing.T) {
+	root := t.TempDir()
+	adapterDir := filepath.Join(root, ".agents")
+	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	sentinelPath := filepath.Join(root, "runner-launched")
+	if err := os.WriteFile(filepath.Join(adapterDir, "cautilus-adapter.yaml"), []byte(strings.Join([]string{
+		"version: 1",
+		"repo: temp",
+		"evaluation_surfaces:",
+		"  - app chat behavior",
+		"baseline_options:",
+		"  - fixture baseline",
+		"eval_test_command_templates:",
+		"  - sh -c 'echo launched > " + sentinelPath + "; exit 99'",
+		"",
+	}, "\n")), 0o644); err != nil {
+		t.Fatalf("WriteFile adapter returned error: %v", err)
+	}
+	inputPath := filepath.Join(root, "app-chat-observed.json")
+	writeJSONFile(t, inputPath, map[string]any{
+		"schemaVersion": contracts.AppChatEvaluationInputsSchema,
+		"suiteId":       "already-observed",
+		"evaluations": []map[string]any{
+			{
+				"caseId":     "say-hello",
+				"provider":   "fixture",
+				"model":      "fixture",
+				"harness":    "checked-packet",
+				"mode":       "messaging",
+				"durationMs": 1,
+				"observed": map[string]any{
+					"messages": []map[string]any{
+						{"role": "user", "content": "Say hello."},
+						{"role": "assistant", "content": "Hello."},
+					},
+					"finalText": "Hello.",
+				},
+				"expected": map[string]any{"finalText": "Hello"},
+			},
+		},
+	})
+
+	stdout, stderr, exitCode := runCLI(t, root, "eval", "evaluate", "--input", inputPath)
+	if exitCode != 0 {
+		t.Fatalf("eval evaluate failed: stdout=%s stderr=%s", stdout, stderr)
+	}
+	if _, err := os.Stat(sentinelPath); !os.IsNotExist(err) {
+		t.Fatalf("eval evaluate must not launch adapter runner, sentinel err=%v", err)
+	}
+}
+
 func TestCLIEvalTestRunsAppChatFixture(t *testing.T) {
 	root := t.TempDir()
 	adapterDir := filepath.Join(root, ".agents")

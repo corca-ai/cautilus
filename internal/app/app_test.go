@@ -105,6 +105,73 @@ func TestRunDoctorDoesNotRequireToolRootForNativeCommands(t *testing.T) {
 	}
 }
 
+func TestRunDoctorBlocksClaimDocsWhenSpecdownMissingButPacketsValidate(t *testing.T) {
+	repoRoot := t.TempDir()
+	initGitRepo(t, repoRoot)
+	agentsDir := filepath.Join(repoRoot, ".agents")
+	claimsDir := filepath.Join(repoRoot, ".cautilus", "claims")
+	if err := os.MkdirAll(agentsDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.MkdirAll(claimsDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll claims returned error: %v", err)
+	}
+	adapter := strings.Join([]string{
+		"version: 1",
+		"repo: temp",
+		"evaluation_surfaces:",
+		"  - smoke",
+		"baseline_options:",
+		"  - baseline",
+		"eval_test_command_templates:",
+		"  - npm run check",
+		"",
+	}, "\n")
+	if err := os.WriteFile(filepath.Join(agentsDir, "cautilus-adapter.yaml"), []byte(adapter), 0o644); err != nil {
+		t.Fatalf("WriteFile adapter returned error: %v", err)
+	}
+	packetPath := filepath.Join(claimsDir, "raw-packet.json")
+	writeJSONFile(t, packetPath, map[string]any{
+		"schemaVersion":   contracts.ClaimProofPlanSchema,
+		"sourceRoot":      ".",
+		"sourceCount":     0,
+		"candidateCount":  0,
+		"claimCandidates": []any{},
+	})
+	t.Setenv("CAUTILUS_CALLER_CWD", repoRoot)
+	t.Setenv("CAUTILUS_TOOL_ROOT", "")
+	t.Setenv("CAUTILUS_VERSION", "")
+	t.Setenv("PATH", "/usr/bin:/bin")
+
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	exitCode := Run([]string{"doctor", "--repo-root", "."}, &stdout, &stderr)
+	if exitCode == 0 {
+		t.Fatalf("expected doctor to fail without specdown, stdout=%s stderr=%s", stdout.String(), stderr.String())
+	}
+	var doctor map[string]any
+	if err := json.Unmarshal(stdout.Bytes(), &doctor); err != nil {
+		t.Fatalf("Unmarshal doctor returned error: %v\nstdout=%s", err, stdout.String())
+	}
+	if doctor["ready"] != false || doctorCheckOK(doctor, "specdown_available") {
+		t.Fatalf("expected specdown readiness to block claim-doc workflow, got %#v", doctor)
+	}
+
+	stdout.Reset()
+	stderr.Reset()
+	exitCode = Run([]string{"claim", "validate", "--input", packetPath}, &stdout, &stderr)
+	if exitCode != 0 {
+		t.Fatalf("raw claim packets should remain readable without specdown, stdout=%s stderr=%s", stdout.String(), stderr.String())
+	}
+	var validation map[string]any
+	if err := json.Unmarshal(stdout.Bytes(), &validation); err != nil {
+		t.Fatalf("Unmarshal validation returned error: %v\nstdout=%s", err, stdout.String())
+	}
+	if validation["valid"] != true {
+		t.Fatalf("expected raw claim packet validation to pass, got %#v", validation)
+	}
+}
+
 func TestRunDoctorHelpReturnsZeroAndUsage(t *testing.T) {
 	t.Setenv("CAUTILUS_CALLER_CWD", t.TempDir())
 	t.Setenv("CAUTILUS_TOOL_ROOT", "")
