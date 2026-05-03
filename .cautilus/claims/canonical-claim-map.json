@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:e92c302e00c66c95a5104ca256881f0e7eb58df3019f8170551be6552ac56210"
+      "contentHash": "sha256:dd556900aeadbec1746e6407d6d056e09bfa2a23e44f6c0eb66f82dea7d39625"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -290,7 +290,7 @@
     "userRawClaimCount": 82,
     "userMappedToCanonicalCount": 82,
     "userUnmappedCount": 0,
-    "semanticReviewRecommendedCount": 254,
+    "semanticReviewRecommendedCount": 253,
     "userSemanticReviewRecommendedCount": 58,
     "byDisposition": {
       "mapped-to-maintainer-canonical": 233,
@@ -301,9 +301,9 @@
       "user": 82
     },
     "byMappingConfidence": {
-      "high": 61,
+      "high": 62,
       "low": 57,
-      "medium": 197
+      "medium": 196
     },
     "byUserCanonicalClaimId": {
       "U1": 21,
@@ -502,7 +502,6 @@
       "claim-docs-contracts-reporting-md-111",
       "claim-docs-contracts-reporting-md-112",
       "claim-docs-contracts-reporting-md-120",
-      "claim-docs-contracts-reporting-md-124",
       "claim-docs-contracts-reporting-md-150",
       "claim-docs-contracts-runner-readiness-md-13",
       "claim-docs-contracts-runner-readiness-md-29",
@@ -3093,8 +3092,8 @@
         {
           "claimId": "claim-docs-contracts-reporting-md-124",
           "claimFingerprint": "sha256:3582edd02790772fc9db230205f4008b31765a33786dd8da19ab123e0b82398d",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
+          "mappingConfidence": "high",
+          "requiresSemanticReview": false
         },
         {
           "claimId": "claim-docs-contracts-reporting-md-129",
@@ -3140,8 +3139,8 @@
         }
       ],
       "byEvidenceStatus": {
-        "satisfied": 1,
-        "unknown": 16
+        "satisfied": 2,
+        "unknown": 15
       },
       "byReviewStatus": {
         "agent-reviewed": 2,
@@ -3153,9 +3152,9 @@
         "human-auditable": 4
       },
       "byMappingConfidence": {
-        "high": 5,
+        "high": 6,
         "low": 1,
-        "medium": 11
+        "medium": 10
       }
     },
     {
@@ -10850,24 +10849,25 @@
       "claimAudience": "developer",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-to-verify",
-      "evidenceStatus": "unknown",
+      "evidenceStatus": "satisfied",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:3582edd02790772fc9db230205f4008b31765a33786dd8da19ab123e0b82398d",
       "canonicalClaimId": "M10",
-      "score": 11,
-      "runnerUpCanonicalClaimId": "M3",
-      "runnerUpScore": 6,
-      "scoreMargin": 5,
-      "mappingConfidence": "medium",
-      "requiresSemanticReview": true,
+      "score": 12,
+      "runnerUpCanonicalClaimId": "M4",
+      "runnerUpScore": 8,
+      "scoreMargin": 4,
+      "mappingConfidence": "high",
+      "requiresSemanticReview": false,
       "matchedAnchors": [],
       "matchedKeywords": [
-        "connect",
         "deterministic",
         "docs/contracts/reporting.md",
+        "keep",
         "numeric",
         "packet",
         "reporting",
+        "review",
         "summary",
         "telemetry",
         "variant",

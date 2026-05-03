@@ -24,12 +24,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 46
+          "satisfied": 47
         },
         "byReviewStatus": {
-          "agent-reviewed": 46
+          "agent-reviewed": 47
         },
-        "count": 46,
+        "count": 47,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -43,14 +43,14 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 75
+          "unknown": 74
         },
         "byReviewStatus": {
-          "agent-reviewed": 8,
+          "agent-reviewed": 7,
           "heuristic": 64,
           "human-reviewed": 3
         },
-        "count": 75,
+        "count": 74,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -195,8 +195,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 46,
-      "unknown": 269
+      "satisfied": 47,
+      "unknown": 268
     },
     "byLifecycle": {
       "new": 315
@@ -381,7 +381,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 46,
+    "satisfiedClaimCount": 47,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-78",
@@ -1236,6 +1236,25 @@
         "summary": "Product-owned workspace lifecycle stays off the public packet shape and instead flows through adapter template placeholders."
       },
       {
+        "claimId": "claim-docs-contracts-reporting-md-124",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:f1109ad387b1c9ae7089238f556d4c139e99cb1db7f898400ee2875ff125a2f6",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-review-summary-telemetry-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-reporting-md-124"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The summary packet should also aggregate any explicit numeric telemetry across variants so operators can inspect one top-level view without scraping each verdict file separately."
+      },
+      {
         "claimId": "claim-docs-contracts-runner-readiness-md-134",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -1277,7 +1296,7 @@
   },
   "gitCommit": "3819d259fd796dc6fd5777b579f6b013c0dcb508",
   "gitState": {
-    "changedFileCount": 26,
+    "changedFileCount": 30,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
@@ -1287,6 +1306,7 @@
       ".cautilus/claims/evidence-evaluation-process-artifacts-2026-05-03.json",
       ".cautilus/claims/evidence-gepa-sparse-evidence-block-2026-05-03.json",
       ".cautilus/claims/evidence-live-run-workspace-boundary-2026-05-03.json",
+      ".cautilus/claims/evidence-runner-readiness-branch-shape-2026-05-03.json",
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
       ".cautilus/claims/review-result-evidence-active-run-and-claim-discover-2026-05-03.json",
@@ -1294,6 +1314,7 @@
       ".cautilus/claims/review-result-evidence-evaluation-process-artifacts-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-gepa-sparse-evidence-block-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-live-run-workspace-boundary-2026-05-03.json",
+      ".cautilus/claims/review-result-evidence-runner-readiness-branch-shape-2026-05-03.json",
       ".cautilus/claims/review-result-reviewable-artifacts-proof-gap-2026-05-03.json",
       ".cautilus/claims/status-summary.json",
       ".cautilus/claims/validation-evidenced-typed-runners.json",
@@ -1303,6 +1324,8 @@
       "internal/runtime/claim_discovery.go",
       "internal/runtime/claim_discovery_test.go",
       "internal/runtime/proposals_test.go",
+      "internal/runtime/runner_readiness.go",
+      "internal/runtime/runner_readiness_test.go",
       "scripts/agent-runtime/render-claim-status-report.test.mjs",
       "scripts/agent-runtime/serve-claim-status-review.test.mjs"
     ],
@@ -1314,7 +1337,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "f666f3bffc98c3f6ae9ed08f8c763975b65f175d",
+    "currentGitCommit": "a92c1e57fb66f1512a8a1bc65acc1aa0bc9affa7",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "3819d259fd796dc6fd5777b579f6b013c0dcb508",

@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-review-summary-telemetry-2026-05-03",
+  "createdForClaimIds": [
+    "claim-docs-contracts-reporting-md-124"
+  ],
+  "repoCommit": "a92c1e57fb66f1512a8a1bc65acc1aa0bc9affa7",
+  "summary": "This bundle records deterministic proof that review summary packets aggregate explicit numeric telemetry from variant result packets.",
+  "evidenceScope": {
+    "targetSurface": "review variants summary telemetry aggregation",
+    "claimBoundary": "Only review-variant summary telemetry aggregation is marked satisfied.",
+    "notClaimed": [
+      "Scenario-level telemetry summaries",
+      "Held-out or full-gate report telemetry aggregation",
+      "Telemetry inferred from raw logs or stderr"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/app -run 'TestCLIReviewVariantsAggregatesExplicitTelemetry' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "notableAssertions": [
+          "two review variant result packets emit explicit telemetry",
+          "review-summary telemetry aggregates variantCount and passedVariantCount",
+          "review-summary telemetry sums prompt_tokens, completion_tokens, total_tokens, and cost_usd",
+          "review-summary telemetry exposes unique provider and model lists"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "review-summary-telemetry-cli-smoke-test",
+      "contentHash": "sha256:c064a9f22ee194ef5438dde712d8b4fb5bdf10f7d40713268f7df04a39320ec6"
+    },
+    {
+      "path": "internal/app/remaining_commands.go",
+      "kind": "review-summary-telemetry-implementation",
+      "contentHash": "sha256:1f7185d41743f903f072ac1f567fb663244a9de0599b9242e6b645a427c324e5"
+    },
+    {
+      "path": "docs/contracts/reporting.md",
+      "kind": "reporting-claim-source",
+      "contentHash": "sha256:bf309380f38e3bc836e2864fa836c48f57a169d57c5d832f533a1f3f9b58acde"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The cited CLI smoke test proves explicit per-variant telemetry is lifted into the top-level review summary packet without scraping each verdict file after the fact."
+  }
+}

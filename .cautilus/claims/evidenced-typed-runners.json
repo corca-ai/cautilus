@@ -6264,9 +6264,19 @@
       "claimFingerprint": "sha256:3582edd02790772fc9db230205f4008b31765a33786dd8da19ab123e0b82398d",
       "claimId": "claim-docs-contracts-reporting-md-124",
       "claimSemanticGroup": "Packets and reporting",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "This is a concrete summary-packet aggregation behavior and should be tested deterministically.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:f1109ad387b1c9ae7089238f556d4c139e99cb1db7f898400ee2875ff125a2f6",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-review-summary-telemetry-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-reporting-md-124"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by a review variants CLI smoke test that writes two variant result packets with explicit telemetry and confirms the top-level review summary aggregates counts, token totals, cost, provider, and model.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -6274,7 +6284,7 @@
         "linked-from:docs/guides/evaluation-process.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Add or connect deterministic report-summary tests for aggregating numeric telemetry across variants.",
+      "nextAction": "Keep review-summary telemetry aggregation tests current when changing review variant result normalization or summary packet shape.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -6287,7 +6297,7 @@
       "summary": "The summary packet should also aggregate any explicit numeric telemetry across variants so operators can inspect one top-level view without scraping each verdict file separately.",
       "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+      "whyThisLayer": "The claim names summary packet aggregation of explicit telemetry, which is deterministic CLI packet behavior."
     },
     {
       "claimAudience": "developer",
@@ -10111,8 +10121,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 46,
-      "unknown": 269
+      "satisfied": 47,
+      "unknown": 268
     },
     "byLifecycle": {
       "new": 315

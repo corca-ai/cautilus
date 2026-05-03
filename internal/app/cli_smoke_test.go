@@ -917,6 +917,103 @@ exit 1
 	}
 }
 
+func TestCLIReviewVariantsAggregatesExplicitTelemetry(t *testing.T) {
+	root := t.TempDir()
+	if err := os.MkdirAll(filepath.Join(root, "fixtures"), 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(root, "fixtures", "review.prompt.md"), []byte("review\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(root, "fixtures", "review.schema.json"), []byte("{\"type\":\"object\"}\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	writeExecutableFile(t, root, "variant-a.sh", `#!/bin/sh
+output_file="$1"
+cat > "$output_file" <<'EOF'
+{
+  "status": "completed",
+  "verdict": "pass",
+  "summary": "variant a passed",
+  "findings": [],
+  "telemetry": {
+    "provider": "openai",
+    "model": "gpt-test",
+    "prompt_tokens": 100,
+    "completion_tokens": 40,
+    "total_tokens": 140,
+    "cost_usd": 0.01
+  }
+}
+EOF
+`)
+	writeExecutableFile(t, root, "variant-b.sh", `#!/bin/sh
+output_file="$1"
+cat > "$output_file" <<'EOF'
+{
+  "status": "completed",
+  "verdict": "pass",
+  "summary": "variant b passed",
+  "findings": [],
+  "telemetry": {
+    "provider": "openai",
+    "model": "gpt-test",
+    "prompt_tokens": 80,
+    "completion_tokens": 30,
+    "total_tokens": 110,
+    "cost_usd": 0.02
+  }
+}
+EOF
+`)
+	adapterText := strings.Join([]string{
+		"version: 1",
+		"repo: temp",
+		"evaluation_surfaces:",
+		"  - smoke",
+		"baseline_options:",
+		"  - baseline git ref via {baseline_ref}",
+		"default_prompt_file: fixtures/review.prompt.md",
+		"default_schema_file: fixtures/review.schema.json",
+		"executor_variants:",
+		"  - id: variant-a",
+		"    tool: command",
+		"    command_template: sh {candidate_repo}/variant-a.sh {output_file}",
+		"  - id: variant-b",
+		"    tool: command",
+		"    command_template: sh {candidate_repo}/variant-b.sh {output_file}",
+		"",
+	}, "\n")
+	if err := os.MkdirAll(filepath.Join(root, ".agents"), 0o755); err != nil {
+		t.Fatalf("MkdirAll .agents returned error: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(root, ".agents", "cautilus-adapter.yaml"), []byte(adapterText), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+
+	outputDir := filepath.Join(root, "outputs")
+	stdout, stderr, exitCode := runCLI(t, root, "review", "variants", "--repo-root", root, "--workspace", root, "--output-dir", outputDir)
+	if exitCode != 0 {
+		t.Fatalf("review variants failed: %s", stderr)
+	}
+	summary := readJSONObjectFile(t, strings.TrimSpace(stdout))
+	telemetry := summary["telemetry"].(map[string]any)
+	if telemetry["variantCount"] != float64(2) || telemetry["passedVariantCount"] != float64(2) {
+		t.Fatalf("unexpected variant telemetry counts: %#v", telemetry)
+	}
+	if telemetry["prompt_tokens"] != float64(180) || telemetry["completion_tokens"] != float64(70) || telemetry["total_tokens"] != float64(250) {
+		t.Fatalf("unexpected token telemetry totals: %#v", telemetry)
+	}
+	if telemetry["cost_usd"] != float64(0.03) {
+		t.Fatalf("unexpected cost telemetry total: %#v", telemetry)
+	}
+	providers := telemetry["providers"].([]any)
+	models := telemetry["models"].([]any)
+	if len(providers) != 1 || providers[0] != "openai" || len(models) != 1 || models[0] != "gpt-test" {
+		t.Fatalf("unexpected telemetry provider/model aggregates: %#v", telemetry)
+	}
+}
+
 func TestCLIReviewVariantsSupportsOutputUnderTest(t *testing.T) {
 	root := t.TempDir()
 	if err := os.MkdirAll(filepath.Join(root, "fixtures"), 0o755); err != nil {
