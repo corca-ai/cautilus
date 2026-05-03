@@ -4760,12 +4760,13 @@
       "groupHints": [
         "audience:developer",
         "contract",
-        "deterministic",
-        "linked-from:docs/master-plan.md"
+        "human-auditable",
+        "linked-from:docs/master-plan.md",
+        "needs-alignment"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "recommendedProof": "deterministic",
+      "nextAction": "Keep this as routing policy or split it into narrower classifier, command, packet, runner, and readiness checks before attaching proof.",
+      "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
@@ -4775,8 +4776,8 @@
         }
       ],
       "summary": "Command, packet, runner, and readiness statements should prefer deterministic proof unless they explicitly depend on model or agent behavior.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "verificationReadiness": "needs-alignment",
+      "whyThisLayer": "The claim is proof-routing policy rather than one concrete command, packet, runner, or readiness contract."
     },
     {
       "claimAudience": "developer",
@@ -5702,12 +5703,13 @@
       "groupHints": [
         "audience:developer",
         "contract",
-        "deterministic",
-        "linked-from:docs/master-plan.md"
+        "human-auditable",
+        "linked-from:docs/master-plan.md",
+        "needs-alignment"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "recommendedProof": "deterministic",
+      "nextAction": "Reconcile or cite the binary, skill, adapter, and command surfaces that keep provider selection outside the binary.",
+      "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
@@ -5717,8 +5719,8 @@
         }
       ],
       "summary": "In this workflow, the binary stays deterministic and provider-neutral.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "verificationReadiness": "needs-alignment",
+      "whyThisLayer": "The claim states a binary/provider boundary; proof needs aligned CLI, skill, adapter, and code surfaces rather than a single deterministic token match."
     },
     {
       "claimAudience": "developer",
@@ -5790,13 +5792,15 @@
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:developer",
+        "cautilus-eval",
         "contract",
-        "deterministic",
+        "dev/skill",
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "recommendedProof": "deterministic",
+      "nextAction": "Create or use a dev/skill fixture that proves the skill separates deterministic scan confirmation from LLM review budget confirmation.",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
@@ -5807,7 +5811,7 @@
       ],
       "summary": "Claim review that uses an LLM needs separate review-budget confirmation after deterministic scan.",
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim says LLM-backed review waits for a separate review-budget confirmation, which is observable skill or agent workflow behavior."
     },
     {
       "claimAudience": "developer",
@@ -5940,12 +5944,13 @@
       "groupHints": [
         "audience:developer",
         "contract",
-        "deterministic",
-        "linked-from:docs/master-plan.md"
+        "human-auditable",
+        "linked-from:docs/master-plan.md",
+        "needs-alignment"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "recommendedProof": "deterministic",
+      "nextAction": "Reconcile or cite the binary, skill, adapter, and command surfaces that keep provider selection outside the binary.",
+      "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
@@ -5955,8 +5960,8 @@
         }
       ],
       "summary": "The binary should remain deterministic and provider-neutral.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "verificationReadiness": "needs-alignment",
+      "whyThisLayer": "The claim states a binary/provider boundary; proof needs aligned CLI, skill, adapter, and code surfaces rather than a single deterministic token match."
     },
     {
       "claimAudience": "developer",
@@ -5968,13 +5973,14 @@
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:developer",
+        "blocked",
         "contract",
-        "deterministic",
+        "human-auditable",
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "recommendedProof": "deterministic",
+      "nextAction": "Keep this as review-process context or promote a concrete skill behavior scenario before proof planning.",
+      "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
@@ -5984,8 +5990,8 @@
         }
       ],
       "summary": "LLM-backed cluster review should come after the deterministic packet and skill control flow are stable enough to dogfood.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "verificationReadiness": "blocked",
+      "whyThisLayer": "The claim is sequencing guidance for future review tuning, not a current deterministic product contract."
     },
     {
       "claimAudience": "developer",
@@ -6053,8 +6059,19 @@
       "claimFingerprint": "sha256:5710c92253395bbda0e82175a3f1696b96f8f17275875d7b96f48b951e4ebd09",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-692",
       "claimSemanticGroup": "Claim discovery and review",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:fff2188e8592233b04a735375b89971957bd8cca2ceccccf2e829488443ed1e7",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-claim-review-prepare-input-contract-2026-05-04.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-claim-discovery-workflow-md-692"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by checked-in CLI and runtime tests: prepare-input emits `cautilus.claim_review_input.v1`, records bounded clusters and skipped claims, preserves current labels, leaves the source claim packet unchanged, and does not call an LLM or merge review results.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -6062,9 +6079,9 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
+      "nextAction": "Keep these tests aligned when changing prepare-input packet shape, skipped-claim policy, stale-packet behavior, reviewer launch boundaries, or review-result merge behavior.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "`claim review prepare-input` emits `cautilus.claim_review_input.v1` and records bounded clusters, skipped clusters, and skipped claims, but still does not call an LLM or merge review results.",
@@ -11224,30 +11241,30 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 122,
-      "unknown": 201
+      "satisfied": 123,
+      "unknown": 200
     },
     "byLifecycle": {
       "new": 323
     },
     "byRecommendedProof": {
-      "cautilus-eval": 117,
-      "deterministic": 107,
-      "human-auditable": 99
+      "cautilus-eval": 118,
+      "deterministic": 102,
+      "human-auditable": 103
     },
     "byReviewStatus": {
-      "agent-reviewed": 168,
-      "heuristic": 155
+      "agent-reviewed": 169,
+      "heuristic": 154
     },
     "byVerificationReadiness": {
-      "blocked": 18,
-      "needs-alignment": 50,
+      "blocked": 19,
+      "needs-alignment": 53,
       "needs-scenario": 10,
-      "ready-to-verify": 245
+      "ready-to-verify": 241
     }
   },
   "discoveryEngine": {
-    "implementationHash": "sha256:066fc82bad08193d27a849c0a2ce9658799d42ea8ca78765d12b9cd94934348e",
+    "implementationHash": "sha256:c96e75de3d232b1c8134c6c8ea8f10dc9161354675504dc98575b7cf0c23b5d1",
     "implementationPath": "internal/runtime/claim_discovery.go",
     "name": "cautilus.claim_discovery",
     "ruleset": "claim-discovery-rules.v4"
@@ -11402,7 +11419,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "3292128bd0d5302422173f2ae05f0523652f7900",
+  "gitCommit": "836a53fbf326a8fe9747d51ba37f74e0bade3c81",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "reviewApplication": {
@@ -11471,9 +11488,10 @@
       ".cautilus/claims/review-result-scenario-proposal-portable-provenance-2026-05-04.json",
       ".cautilus/claims/review-result-current-deterministic-proof-batch-2026-05-03.json",
       ".cautilus/claims/review-result-claim-discovery-routing-flow-2026-05-04.json",
-      ".cautilus/claims/review-result-dev-skill-branch-proof-2026-05-04.json"
+      ".cautilus/claims/review-result-dev-skill-branch-proof-2026-05-04.json",
+      ".cautilus/claims/review-result-evidence-claim-review-prepare-input-contract-2026-05-04.json"
     ],
-    "appliedResultCount": 65,
+    "appliedResultCount": 66,
     "appliedUpdateCount": 1,
     "appliedUpdates": [
       {
@@ -11482,23 +11500,23 @@
           "verificationReadiness",
           "evidenceStatus",
           "reviewStatus",
-          "recommendedEvalSurface",
+          "whyThisLayer",
           "evidenceRefs",
           "nextAction",
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-20",
-        "clusterId": "cluster-dev-skill-first-scan-and-review-budget"
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-692",
+        "clusterId": "cluster-claim-discovery-workflow-prepare-input-contract"
       }
     ],
     "claimsPath": ".cautilus/claims/latest.json",
     "droppedUpdateCount": 123,
-    "keptUpdateCount": 232,
+    "keptUpdateCount": 233,
     "mergeDecisions": [],
     "outputPath": ".cautilus/claims/evidenced-typed-runners.json",
     "provenanceMode": "aggregate-current-review-results",
-    "reviewResultPath": ".cautilus/claims/review-result-dev-skill-branch-proof-2026-05-04.json",
+    "reviewResultPath": ".cautilus/claims/review-result-evidence-claim-review-prepare-input-contract-2026-05-04.json",
     "schemaVersion": "cautilus.claim_review_result.v1",
     "skippedResultCount": 10,
     "skippedReviewResultPaths": [

@@ -43,12 +43,12 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 13
+          "unknown": 8
         },
         "byReviewStatus": {
-          "heuristic": 13
+          "heuristic": 8
         },
-        "count": 13,
+        "count": 8,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -56,18 +56,18 @@
           "claim-docs-contracts-adapter-contract-md-278",
           "claim-docs-contracts-adapter-contract-md-317",
           "claim-docs-contracts-claim-discovery-workflow-md-188",
-          "claim-docs-contracts-claim-discovery-workflow-md-261"
+          "claim-docs-contracts-claim-discovery-workflow-md-372"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
       {
         "byEvidenceStatus": {
-          "unknown": 78
+          "unknown": 79
         },
         "byReviewStatus": {
-          "heuristic": 78
+          "heuristic": 79
         },
-        "count": 78,
+        "count": 79,
         "id": "agent-plan-cautilus-eval",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -101,13 +101,13 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 44
+          "unknown": 47
         },
         "byReviewStatus": {
           "agent-reviewed": 18,
-          "heuristic": 26
+          "heuristic": 29
         },
-        "count": 44,
+        "count": 47,
         "id": "human-align-surfaces",
         "recommendedActor": "human",
         "sampleClaimIds": [
@@ -140,13 +140,13 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 35
+          "unknown": 36
         },
         "byReviewStatus": {
           "agent-reviewed": 26,
-          "heuristic": 9
+          "heuristic": 10
         },
-        "count": 35,
+        "count": 36,
         "id": "split-or-defer",
         "recommendedActor": "human",
         "sampleClaimIds": [
@@ -200,19 +200,19 @@
       "new": 323
     },
     "byRecommendedProof": {
-      "cautilus-eval": 102,
-      "deterministic": 124,
-      "human-auditable": 97
+      "cautilus-eval": 103,
+      "deterministic": 119,
+      "human-auditable": 101
     },
     "byReviewStatus": {
       "agent-reviewed": 169,
       "heuristic": 154
     },
     "byVerificationReadiness": {
-      "blocked": 35,
-      "needs-alignment": 44,
+      "blocked": 36,
+      "needs-alignment": 47,
       "needs-scenario": 9,
-      "ready-to-verify": 235
+      "ready-to-verify": 231
     }
   },
   "discoveryBoundary": {
@@ -2783,21 +2783,10 @@
       }
     ]
   },
-  "gitCommit": "3292128bd0d5302422173f2ae05f0523652f7900",
+  "gitCommit": "836a53fbf326a8fe9747d51ba37f74e0bade3c81",
   "gitState": {
-    "changedFileCount": 10,
-    "changedFiles": [
-      ".cautilus/claims/canonical-claim-map.json",
-      ".cautilus/claims/claim-status-report.md",
-      ".cautilus/claims/discovery-review.md",
-      ".cautilus/claims/evidenced-typed-runners.json",
-      ".cautilus/claims/latest.json",
-      ".cautilus/claims/status-summary.json",
-      "charness-artifacts/debug/debug-2026-05-04-skill-behavior-operator-policy-overlap.md",
-      "charness-artifacts/debug/latest.md",
-      "internal/runtime/claim_discovery.go",
-      "internal/runtime/claim_discovery_test.go"
-    ],
+    "changedFileCount": 0,
+    "changedFiles": [],
     "changedFilesBasis": {
       "meaning": "changedFiles lists files committed between packetGitCommit and currentGitCommit; it does not include unstaged, staged, or untracked working-tree files.",
       "scope": "committed-diff-between-packet-and-current-head",
@@ -2805,12 +2794,12 @@
     },
     "changedSourceCount": 0,
     "changedSources": [],
-    "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "1385985cd5d6b8e4789dad5bf38dd6066b6acefd",
-    "headDrift": true,
+    "comparisonStatus": "fresh",
+    "currentGitCommit": "836a53fbf326a8fe9747d51ba37f74e0bade3c81",
+    "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "3292128bd0d5302422173f2ae05f0523652f7900",
-    "recommendedAction": "The current HEAD differs from the packet commit, but no recorded claim source changed; review and eval planning may continue.",
+    "packetGitCommit": "836a53fbf326a8fe9747d51ba37f74e0bade3c81",
+    "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
   "gitStateSnapshotNotice": "gitState is computed when this status packet is generated; rerun claim show for live checkout state.",
@@ -2833,8 +2822,8 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 121,
-    "needsAlignment": 44,
+    "heuristicClaimsReadyForReview": 118,
+    "needsAlignment": 47,
     "needsScenario": 9
   },
   "sampleClaims": [

@@ -606,6 +606,22 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 		"",
 		"The binary must not own LLM provider selection, subagent scheduling, model prompts, review policy, or human conversation.",
 		"",
+		"Command, packet, runner, and readiness statements should prefer deterministic proof unless they explicitly depend on model or agent behavior.",
+		"",
+		"Claim review that uses an LLM needs separate review-budget confirmation after deterministic scan.",
+		"",
+		"In this workflow, the binary stays deterministic and provider-neutral.",
+		"",
+		"The binary should remain deterministic and provider-neutral.",
+		"",
+		"LLM-backed cluster review should come after the deterministic packet and skill control flow are stable enough to dogfood.",
+		"",
+		"The command emits a packet that records separate review-budget confirmation before launching reviewers.",
+		"",
+		"The workflow emits a deterministic provider-neutral packet for audit.",
+		"",
+		"The skill control flow should come after the deterministic packet.",
+		"",
 		"## Deferred Decisions",
 		"",
 		"- Whether `claim show` should grow Markdown or HTML rendering beyond its JSON summary packet.",
@@ -928,6 +944,38 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 	binaryProviderOwnership := bySummary["The binary must not own LLM provider selection, subagent scheduling, model prompts, review policy, or human conversation."]
 	if binaryProviderOwnership == nil || binaryProviderOwnership["recommendedProof"] != "human-auditable" || binaryProviderOwnership["verificationReadiness"] != "needs-alignment" {
 		t.Fatalf("expected binary negative-ownership claim to need alignment, got %#v", binaryProviderOwnership)
+	}
+	proofRoutingPolicy := bySummary["Command, packet, runner, and readiness statements should prefer deterministic proof unless they explicitly depend on model or agent behavior."]
+	if proofRoutingPolicy == nil || proofRoutingPolicy["recommendedProof"] != "human-auditable" || proofRoutingPolicy["verificationReadiness"] != "needs-alignment" {
+		t.Fatalf("expected proof-routing policy to need alignment, got %#v", proofRoutingPolicy)
+	}
+	reviewBudget := bySummary["Claim review that uses an LLM needs separate review-budget confirmation after deterministic scan."]
+	if reviewBudget == nil || reviewBudget["recommendedProof"] != "cautilus-eval" || reviewBudget["recommendedEvalSurface"] != "dev/skill" {
+		t.Fatalf("expected review-budget confirmation behavior to route to dev/skill eval, got %#v", reviewBudget)
+	}
+	providerNeutral := bySummary["In this workflow, the binary stays deterministic and provider-neutral."]
+	if providerNeutral == nil || providerNeutral["recommendedProof"] != "human-auditable" || providerNeutral["verificationReadiness"] != "needs-alignment" {
+		t.Fatalf("expected provider-neutral boundary to need alignment, got %#v", providerNeutral)
+	}
+	providerNeutralShould := bySummary["The binary should remain deterministic and provider-neutral."]
+	if providerNeutralShould == nil || providerNeutralShould["recommendedProof"] != "human-auditable" || providerNeutralShould["verificationReadiness"] != "needs-alignment" {
+		t.Fatalf("expected provider-neutral should-remain boundary to need alignment, got %#v", providerNeutralShould)
+	}
+	clusterReviewTuning := bySummary["LLM-backed cluster review should come after the deterministic packet and skill control flow are stable enough to dogfood."]
+	if clusterReviewTuning == nil || clusterReviewTuning["recommendedProof"] != "human-auditable" || clusterReviewTuning["verificationReadiness"] != "blocked" {
+		t.Fatalf("expected premature cluster-review tuning claim to stay blocked, got %#v", clusterReviewTuning)
+	}
+	reviewBudgetPacket := bySummary["The command emits a packet that records separate review-budget confirmation before launching reviewers."]
+	if reviewBudgetPacket == nil || reviewBudgetPacket["recommendedProof"] != "deterministic" || reviewBudgetPacket["verificationReadiness"] != "ready-to-verify" {
+		t.Fatalf("expected review-budget packet contract to stay deterministic, got %#v", reviewBudgetPacket)
+	}
+	providerNeutralPacket := bySummary["The workflow emits a deterministic provider-neutral packet for audit."]
+	if providerNeutralPacket == nil || providerNeutralPacket["recommendedProof"] != "deterministic" || providerNeutralPacket["verificationReadiness"] != "ready-to-verify" {
+		t.Fatalf("expected provider-neutral packet contract to stay deterministic, got %#v", providerNeutralPacket)
+	}
+	skillSequencing := bySummary["The skill control flow should come after the deterministic packet."]
+	if skillSequencing == nil || skillSequencing["recommendedProof"] != "cautilus-eval" || skillSequencing["recommendedEvalSurface"] != "dev/skill" {
+		t.Fatalf("expected ordinary skill sequencing claim to remain dev/skill eval, got %#v", skillSequencing)
 	}
 	skillBranch := bySummary["The remaining proof gap is behavior-level: a maintained dev/skill fixture should show the skill choosing the claim-review branch without treating raw discovery as a finished answer."]
 	if skillBranch == nil || skillBranch["recommendedProof"] != "cautilus-eval" || skillBranch["recommendedEvalSurface"] != "dev/skill" {

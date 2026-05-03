@@ -1228,6 +1228,28 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 			why:                   "The claim is sequencing guidance for future review tuning, not a current deterministic product contract.",
 			next:                  "Keep this as review-process context or promote a concrete skill behavior scenario before proof planning.",
 		}, true
+	case proofRoutingPolicyClaim(lower):
+		return claimClassification{
+			recommendedProof:      "human-auditable",
+			verificationReadiness: "needs-alignment",
+			why:                   "The claim is proof-routing policy rather than one concrete command, packet, runner, or readiness contract.",
+			next:                  "Keep this as routing policy or split it into narrower classifier, command, packet, runner, and readiness checks before attaching proof.",
+		}, true
+	case reviewBudgetConfirmationClaim(lower):
+		return claimClassification{
+			recommendedProof:       "cautilus-eval",
+			verificationReadiness:  "ready-to-verify",
+			recommendedEvalSurface: "dev/skill",
+			why:                    "The claim says LLM-backed review waits for a separate review-budget confirmation, which is observable skill or agent workflow behavior.",
+			next:                   "Create or use a dev/skill fixture that proves the skill separates deterministic scan confirmation from LLM review budget confirmation.",
+		}, true
+	case providerNeutralBoundaryClaim(lower):
+		return claimClassification{
+			recommendedProof:      "human-auditable",
+			verificationReadiness: "needs-alignment",
+			why:                   "The claim states a binary/provider boundary; proof needs aligned CLI, skill, adapter, and code surfaces rather than a single deterministic token match.",
+			next:                  "Reconcile or cite the binary, skill, adapter, and command surfaces that keep provider selection outside the binary.",
+		}, true
 	case deterministicReadinessOrPreflightContract(lower):
 		return claimClassification{
 			recommendedProof:      "deterministic",
@@ -1442,8 +1464,37 @@ func explicitHumanAuditableReadinessDirective(lower string) bool {
 }
 
 func prematureReviewTuningClaim(lower string) bool {
-	return containsAny(lower, []string{"perfect subagent batch sizing", "should wait until"}) &&
-		containsAny(lower, []string{"dogfooded", "deterministic packet", "skill control flow", "review tuning", "batch sizing"})
+	if containsAny(lower, []string{"perfect subagent batch sizing"}) &&
+		containsAny(lower, []string{"dogfooded", "deterministic packet", "skill control flow", "review tuning", "batch sizing"}) {
+		return true
+	}
+	return containsAny(lower, []string{"should wait until", "should come after"}) &&
+		containsAny(lower, []string{"llm-backed cluster review", "llm-backed review", "cluster review", "review tuning", "batch sizing"})
+}
+
+func proofRoutingPolicyClaim(lower string) bool {
+	return containsAny(lower, []string{" should prefer deterministic proof", " prefer deterministic proof "}) &&
+		containsAny(lower, []string{" command", " packet", " runner", " readiness", " model", " agent behavior"})
+}
+
+func reviewBudgetConfirmationClaim(lower string) bool {
+	if containsAny(lower, []string{" tests proving ", " audit ", " auditor "}) {
+		return false
+	}
+	if containsAny(lower, []string{" packet ", " packets ", " command ", " cli ", " emit", " emits", " records ", " output ", " outputs ", " payload", " schema"}) &&
+		containsAny(lower, []string{" review-budget confirmation", " review budget confirmation", " review-budget ", " review budget "}) {
+		return false
+	}
+	return containsAny(lower, []string{" review-budget confirmation", " review budget confirmation", " review-budget ", " review budget "}) &&
+		containsAny(lower, []string{" llm", " model-backed", " model backed", " reviewer", " review "}) &&
+		containsAny(lower, []string{" after deterministic scan", " after the deterministic scan", " separate ", " before llm", " before launching"})
+}
+
+func providerNeutralBoundaryClaim(lower string) bool {
+	return containsAny(lower, []string{" binary stays deterministic and provider-neutral", " binary should remain deterministic and provider-neutral", " binary remains deterministic and provider-neutral"}) ||
+		(containsAny(lower, []string{" provider-neutral", " provider neutral "}) &&
+			containsAny(lower, []string{" binary "}) &&
+			containsAny(lower, []string{" stays ", " remain ", " remains ", " deterministic "}))
 }
 
 func skillOrAgentBehaviorClaim(lower string) bool {
@@ -1455,7 +1506,7 @@ func skillOrAgentBehaviorClaim(lower string) bool {
 	}
 	return containsAny(lower, []string{" skill ", " parent skill ", " bundled skill ", " agent ", " agents ", " subagent ", " subagents "}) &&
 		containsAny(lower, []string{" should ", " may ", " must ", " can "}) &&
-		containsAny(lower, []string{" show ", " say ", " ask ", " confirm ", " launch ", " merge ", " select ", " read ", " cite ", " choose ", " proceed ", " sequence "})
+		containsAny(lower, []string{" show ", " say ", " ask ", " confirm ", " launch ", " merge ", " select ", " read ", " cite ", " choose ", " proceed ", " sequence ", " come after "})
 }
 
 func ownershipBoundaryClaim(lower string) bool {
