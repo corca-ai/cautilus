@@ -59,6 +59,30 @@ test("passes review prepare flow through deterministic packet creation only", ()
 	assert.deepEqual(audit.findings, []);
 });
 
+test("passes when discover and show run in one ordered shell command", () => {
+	const audit = auditReviewPrepareFlowLogText(jsonl([
+		toolCall("./bin/cautilus agent status --repo-root . --json"),
+		toolCall("./bin/cautilus claim discover --repo-root . --output .cautilus/claims/latest.json && ./bin/cautilus claim show --input .cautilus/claims/latest.json --sample-claims 10"),
+		assistant("Review budget uses command defaults before LLM review."),
+		toolCall("./bin/cautilus claim review prepare-input --claims .cautilus/claims/latest.json --output .cautilus/claims/review-input.json"),
+		assistant("I did not launch any reviewer lane, apply review results, plan eval fixtures, or edit files."),
+	]));
+	assert.equal(audit.status, "passed");
+	assert.deepEqual(audit.findings, []);
+});
+
+test("fails combined discover and show command without fail-fast separator", () => {
+	const audit = auditReviewPrepareFlowLogText(jsonl([
+		toolCall("./bin/cautilus agent status --repo-root . --json"),
+		toolCall("./bin/cautilus claim discover --repo-root . --output .cautilus/claims/latest.json; ./bin/cautilus claim show --input .cautilus/claims/latest.json --sample-claims 10"),
+		assistant("Review budget uses command defaults before LLM review."),
+		toolCall("./bin/cautilus claim review prepare-input --claims .cautilus/claims/latest.json --output .cautilus/claims/review-input.json"),
+		assistant("I did not launch any reviewer lane, apply review results, plan eval fixtures, or edit files."),
+	]));
+	assert.equal(audit.status, "failed");
+	assert(audit.findings.some((finding) => finding.id === "wrong_command_order"));
+});
+
 test("passes Claude command shapes for review prepare flow", () => {
 	const audit = auditReviewPrepareFlowLogText(jsonl([
 		claudeBash("CAUTILUS_BIN=./bin/cautilus\n\"$CAUTILUS_BIN\" agent status --repo-root . --json"),

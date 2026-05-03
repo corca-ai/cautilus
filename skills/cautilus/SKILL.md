@@ -60,6 +60,8 @@ Present branch labels and reasons in coordinator-facing language first.
 Keep internal branch ids as secondary references, not the option title.
 Treat each `nextBranches[].label` as the human choice name.
 The branch `id` is for stable packet references and should only appear after the label when it helps auditability.
+If the user answers with a number or short label after you present branch choices, resolve that answer against the branch labels you just showed and execute that selected branch.
+Do not reinterpret a numbered branch selection as a request for another status summary.
 
 If `nextBranches` includes `initialize_adapter` and the user delegated setup continuation, run the adapter setup branch and then rerun `agent status`.
 If claim state is missing, present the bounded scan entries and depth before entering claim discovery.
@@ -85,6 +87,8 @@ Refresh from existing state:
 "$CAUTILUS_BIN" claim discover --previous <claims.json> --refresh-plan --output <refresh-plan.json>
 ```
 
+When the selected branch is "compare the saved claim map with recent repo changes", "refresh existing claim state", or an equivalent `refresh_claims_from_diff` branch, run the refresh-plan command above and read `refreshSummary`.
+Do not satisfy that branch by running only `claim show`; `claim show` belongs to the separate "inspect the saved claim map" branch.
 Read `refreshSummary` first.
 Explain it as a saved claim map catching up to current repo changes, not as a completed claim refresh.
 Say what was recorded, what was not changed yet, and which next choice is safest.

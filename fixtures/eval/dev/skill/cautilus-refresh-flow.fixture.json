@@ -16,7 +16,7 @@
           "injectSkill": true
         },
         {
-          "input": "1"
+          "input": "Compare the saved claim map with recent repo changes."
         }
       ],
       "auditKind": "cautilus_refresh_flow",

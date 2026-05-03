@@ -14,6 +14,10 @@ const AGENT_STATUS_PATTERN = new RegExp(`${CAUTILUS_COMMAND_PATTERN.source}[\\s\
 const FIRST_DISCOVER_PATTERN = new RegExp(`${CAUTILUS_COMMAND_PATTERN.source}[\\s\\S]*\\bclaim\\s+discover\\b(?=[\\s\\S]*--repo-root\\b)(?![\\s\\S]*--previous\\b)(?![\\s\\S]*--refresh-plan\\b)`);
 const CLAIM_SHOW_PATTERN = new RegExp(`${CAUTILUS_COMMAND_PATTERN.source}[\\s\\S]*\\bclaim\\s+show\\b(?=[\\s\\S]*--sample-claims\\b)`);
 const REVIEW_PREPARE_PATTERN = new RegExp(`${CAUTILUS_COMMAND_PATTERN.source}[\\s\\S]*\\bclaim\\s+review\\s+prepare-input\\b(?=[\\s\\S]*--claims\\b)`);
+const AGENT_STATUS_TOKEN_PATTERN = /\bagent\s+status\b/;
+const FIRST_DISCOVER_TOKEN_PATTERN = /\bclaim\s+discover\b/;
+const CLAIM_SHOW_TOKEN_PATTERN = /\bclaim\s+show\b/;
+const REVIEW_PREPARE_TOKEN_PATTERN = /\bclaim\s+review\s+prepare-input\b/;
 
 const FORBIDDEN_COMMAND_PATTERNS = [
 	["claim_review_apply", /\bclaim\s+review\s+apply-result\b/],
@@ -65,14 +69,19 @@ function requiredCommandFindings(commands) {
 }
 
 function commandOrderFindings(commands) {
-	const statusIndex = commands.findIndex((command) => AGENT_STATUS_PATTERN.test(command));
-	const discoverIndex = commands.findIndex((command) => FIRST_DISCOVER_PATTERN.test(command));
-	const showIndex = commands.findIndex((command) => CLAIM_SHOW_PATTERN.test(command));
-	const prepareIndex = commands.findIndex((command) => REVIEW_PREPARE_PATTERN.test(command));
-	if (statusIndex < 0 || discoverIndex < 0 || showIndex < 0 || prepareIndex < 0) {
+	const statusPosition = findCommandPosition(commands, AGENT_STATUS_TOKEN_PATTERN);
+	const discoverPosition = findCommandPosition(commands, FIRST_DISCOVER_TOKEN_PATTERN);
+	const showPosition = findCommandPosition(commands, CLAIM_SHOW_TOKEN_PATTERN);
+	const preparePosition = findCommandPosition(commands, REVIEW_PREPARE_TOKEN_PATTERN);
+	if (!statusPosition || !discoverPosition || !showPosition || !preparePosition) {
 		return [];
 	}
-	if (statusIndex < discoverIndex && discoverIndex < showIndex && showIndex < prepareIndex) {
+	if (
+		positionBefore(statusPosition, discoverPosition) &&
+		positionBefore(discoverPosition, showPosition) &&
+		positionBefore(showPosition, preparePosition) &&
+		sameCommandDiscoverShowIsFailFast(commands, discoverPosition, showPosition)
+	) {
 		return [];
 	}
 	return [{
@@ -80,6 +89,32 @@ function commandOrderFindings(commands) {
 		id: "wrong_command_order",
 		message: "Expected agent status, first claim discover, claim show, then claim review prepare-input.",
 	}];
+}
+
+function sameCommandDiscoverShowIsFailFast(commands, discoverPosition, showPosition) {
+	if (discoverPosition.commandIndex !== showPosition.commandIndex) {
+		return true;
+	}
+	const command = commands[discoverPosition.commandIndex];
+	const between = command.slice(discoverPosition.matchIndex, showPosition.matchIndex);
+	return /&&/.test(between);
+}
+
+function findCommandPosition(commands, pattern) {
+	for (const [commandIndex, command] of commands.entries()) {
+		const matchIndex = command.search(pattern);
+		if (matchIndex >= 0) {
+			return { commandIndex, matchIndex };
+		}
+	}
+	return null;
+}
+
+function positionBefore(left, right) {
+	if (left.commandIndex !== right.commandIndex) {
+		return left.commandIndex < right.commandIndex;
+	}
+	return left.matchIndex < right.matchIndex;
 }
 
 function forbiddenCommandFindings(commands) {
@@ -102,7 +137,7 @@ function messageFindings(messages) {
 			message: "The review-prepare flow should state the review budget boundary before preparing review input.",
 		});
 	}
-	if (!/does not call an LLM|did not call an LLM|did not launch reviewers?|reviewer launch.*(?:stop|boundary|정지|별도)|reviewer lanes?.*(?:not|separate)|리뷰어.*(?:실행하지|별도)|LLM.*(?:실행하지|호출하지|호출 없음|별도)|LLM 호출 없음/i.test(joined)) {
+	if (!/does not call an LLM|did not call an LLM|did not launch (?:any )?reviewer (?:lane|lanes?)|did not launch reviewers?|reviewer launch.*(?:stop|boundary|정지|별도)|reviewer lanes?.*(?:not|separate)|리뷰어.*(?:실행하지|별도)|LLM.*(?:실행하지|호출하지|호출 없음|별도)|LLM 호출 없음/i.test(joined)) {
 		findings.push({
 			severity: "error",
 			id: "missing_no_reviewer_launch_boundary",
