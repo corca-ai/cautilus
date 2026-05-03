@@ -251,9 +251,10 @@ Rules:
 - `surfaces` entries use the canonical eval surface keys: `dev/repo`, `dev/skill`, `app/chat`, and `app/prompt`.
 - `cautilus eval test` selects the typed runner whose `surfaces` contains the fixture's surface key.
 - `{runner_id}` is available as a command-template placeholder alongside `{candidate_repo}`, `{output_dir}`, `{eval_cases_file}`, `{eval_observed_file}`, and `{backend}`.
-- `default_runtime` may be `codex`, `claude`, or `fixture` and is used only when the operator does not pass `--runtime`.
+- `default_runtime` may be `codex`, `claude`, `fixture`, or `product` and is used only when the operator does not pass `--runtime`.
 - `proof_class` may describe the declared proof class, but it is not enough to make app product proof ready.
 - A run that actually uses `runtime=fixture` records observed `proofClass=fixture-smoke` and preserves the adapter-declared class as metadata.
+- A run that uses `runtime=product` means the adapter-owned command directly exercised a headless product path; product-proof readiness still comes from the current runner assessment, not from the runtime label alone.
 - For `dev/repo` and `dev/skill`, a non-fixture coding-agent runtime may report adapter-declared `coding-agent-messaging` as observed proof while preserving any smoke-only assessment as assessment metadata, but only when the observed packet reports matching runtime telemetry such as `codex_exec` or `claude_code`.
 - `assessment_path` defaults to `.cautilus/runners/<runner-id>.assessment.json`.
 

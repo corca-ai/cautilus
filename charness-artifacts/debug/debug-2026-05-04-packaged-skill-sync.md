@@ -11,7 +11,7 @@ Given a change under `skills/cautilus/`, the packaged tree under `plugins/cautil
 
 ## Observed Facts
 
-The exact failure was:
+The exact failing test was:
 
 ```text
 packaged cautilus skill stays in sync with the repo-bundled skill source

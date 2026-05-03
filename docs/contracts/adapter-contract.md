@@ -198,7 +198,7 @@ default_schema_file: fixtures/review/review-verdict.schema.json
   `mode: pinned` requires declared runtime fields to match observed `telemetry.runtimeFingerprint` fields and should block with `model_runtime_pinned_mismatch` when they do not.
 - `evaluation_input_default`: optional checked-in `cautilus.evaluation_input.v1` path used by `cautilus eval test` when the operator does not pass `--fixture`.
 - `eval_test_command_templates`: commands that turn the validated fixture's translated case suite into an observed `cautilus.evaluation_observed.v1` packet.
-- `default_runtime`: optional runtime choice (`codex`, `claude`, or `fixture`), defaults to `codex`. Overridden by `cautilus eval test --runtime`.
+- `default_runtime`: optional runtime choice (`codex`, `claude`, `fixture`, or `product`), defaults to `codex`. Overridden by `cautilus eval test --runtime`.
 - `runner_readiness`: optional typed runner declarations used by `doctor`, `agent status`, and `eval test`.
   When present, `runner_readiness.runners[]` is the preferred command source for `eval test`; the runner whose `surfaces` contains the fixture's surface/preset is selected.
   Each runner needs `id`, `surfaces`, and `command_template`.
@@ -206,6 +206,7 @@ default_schema_file: fixtures/review/review-verdict.schema.json
   `proof_class` must be one of `fixture-smoke`, `coding-agent-messaging`, `in-process-product-runner`, or `live-product-runner`.
   Adapter-declared proof class is metadata, not product-proof readiness; app product-proof readiness still requires a current `cautilus.runner_assessment.v1` packet.
   When an eval run uses `runtime=fixture`, observed proof is downgraded to `fixture-smoke` and the adapter-declared class is preserved only as declared metadata.
+  When an eval run uses `runtime=product`, the adapter-owned command is expected to exercise a headless product path; the runtime label does not make product proof ready without a current runner assessment.
   For dev surfaces, a non-fixture coding-agent runtime may use adapter-declared `coding-agent-messaging` as observed proof while preserving assessment proof separately, but only when the observed packet reports matching runtime telemetry.
 - `claim_discovery`: optional bounded truth-surface configuration for `cautilus claim discover`.
   `entries` replaces the product default entry set (`README.md`, `AGENTS.md`, and `CLAUDE.md` when present).

@@ -151,7 +151,7 @@ func TestValidateAdapterDataAcceptsTypedRunnerReadiness(t *testing.T) {
 					"command_template":       "node scripts/eval/run-live-chat.mjs --cases-file {eval_cases_file} --output-file {eval_observed_file}",
 					"smoke_command_template": "node scripts/eval/run-live-chat.mjs --smoke",
 					"assessment_path":        ".cautilus/runners/app-chat-live.assessment.json",
-					"default_runtime":        "fixture",
+					"default_runtime":        "product",
 				},
 				map[string]any{
 					"id":               "dev-skill",
@@ -177,7 +177,7 @@ func TestValidateAdapterDataAcceptsTypedRunnerReadiness(t *testing.T) {
 		!strings.Contains(first["command_template"].(string), "{eval_observed_file}") ||
 		first["smoke_command_template"] != "node scripts/eval/run-live-chat.mjs --smoke" ||
 		first["assessment_path"] != ".cautilus/runners/app-chat-live.assessment.json" ||
-		first["default_runtime"] != "fixture" {
+		first["default_runtime"] != "product" {
 		t.Fatalf("unexpected normalized runner: %#v", first)
 	}
 }

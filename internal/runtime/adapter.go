@@ -554,8 +554,8 @@ func validateAdapterRunnerReadiness(value any) (map[string]any, []string) {
 			text, err := normalizeNonEmptyString(defaultRuntime, field+".default_runtime")
 			if err != nil {
 				errors = append(errors, field+".default_runtime must be a non-empty string")
-			} else if text != "codex" && text != "claude" && text != "fixture" {
-				errors = append(errors, field+".default_runtime must be one of: codex, claude, fixture")
+			} else if text != "codex" && text != "claude" && text != "fixture" && text != "product" {
+				errors = append(errors, field+".default_runtime must be one of: codex, claude, fixture, product")
 			} else {
 				entry["default_runtime"] = text
 			}

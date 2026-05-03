@@ -75,6 +75,23 @@ func TestEvaluationProofDowngradesFixtureRuntimeProofClass(t *testing.T) {
 	}
 }
 
+func TestEvaluationProofPreservesAssessedProductRuntimeProofClass(t *testing.T) {
+	proof := BuildEvaluationProofFromRunnerReadiness(map[string]any{
+		"state":                          "assessed",
+		"proofClass":                     "in-process-product-runner",
+		"proofClassSource":               "assessment",
+		"recommendation":                 "ready-for-selected-surface",
+		"runnerAssessmentRecommendation": "ready-for-selected-surface",
+		"runnerVerification":             map[string]any{"capabilityState": "ready"},
+	}, "app/prompt", "product")
+	if proof["proofClass"] != "in-process-product-runner" || proof["proofClassSource"] != "assessment" {
+		t.Fatalf("expected product runtime to preserve assessed product proof class, got %#v", proof)
+	}
+	if proof["runtime"] != "product" || proof["productProofReady"] != true {
+		t.Fatalf("expected product runtime proof to be ready, got %#v", proof)
+	}
+}
+
 func TestEvaluationProofPromotesCodexDevRunnerDeclaredProof(t *testing.T) {
 	proof := BuildEvaluationProofFromRunnerReadinessWithObserved(map[string]any{
 		"state":                    "smoke-only",

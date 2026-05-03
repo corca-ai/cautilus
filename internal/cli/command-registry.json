@@ -108,7 +108,7 @@
       "notes": [
         "Runs one checked-in evaluation fixture through an adapter-owned runner, then evaluates the observed packet.",
         "The four first-class presets are `dev/repo`, `dev/skill`, `app/chat`, and `app/prompt`.",
-        "`--runtime codex|claude|fixture` selects the runner backend placeholder; use `fixture` for cheap command-routing smoke tests, not model-quality proof."
+        "`--runtime codex|claude|fixture|product` selects the runner backend placeholder; use `fixture` for cheap command-routing smoke tests, and `product` for headless product-path runners."
       ]
     },
     {
