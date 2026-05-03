@@ -17,7 +17,7 @@ executor_variants:
     safety_notes:
       - focus on completion and evidence quality, not broader product roadmap questions
 artifact_paths:
-  - docs/specs/self-dogfood.spec.md
+  - docs/specs/old/self-dogfood.spec.md
   - scripts/run-self-dogfood.mjs
   - scripts/agent-runtime/run-review-variant.sh
 comparison_questions:

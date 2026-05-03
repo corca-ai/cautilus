@@ -1253,6 +1253,7 @@ func DoctorRepo(repoRoot string, adapterPath *string, adapterName *string) (map[
 		return AttachDoctorGuidance(result, repoRoot, "repo", adapterName), 1, nil
 	}
 	checks = append(checks, map[string]any{"id": "adapter_valid", "ok": true, "detail": "Adapter passed schema validation."})
+	appendSpecdownCheck(&checks, &suggestions)
 	data := payload.Data
 	appendFieldCheck(&checks, &suggestions, "repo_name", strings.TrimSpace(stringOrEmpty(data["repo"])) != "", "Adapter declares repo.", "Adapter is missing a repo name.", "Set adapter.repo to the host repo name.")
 	appendFieldCheck(&checks, &suggestions, "evaluation_surfaces", len(stringArrayOrEmpty(data["evaluation_surfaces"])) > 0, "Adapter declares evaluation surfaces.", "Adapter is missing evaluation_surfaces.", "Add at least one evaluation_surfaces entry that states what the adapter judges.")
@@ -1315,6 +1316,7 @@ func DoctorAgentSurface(repoRoot string) (map[string]any, int, error) {
 	checks := []any{}
 	suggestions := []any{}
 	artifactPaths := map[string]any{}
+	appendSpecdownCheck(&checks, &suggestions)
 	for _, definition := range checkDefinitions {
 		_, err := os.Lstat(definition.path)
 		ok := err == nil
@@ -1353,6 +1355,19 @@ func DoctorAgentSurface(repoRoot string) (map[string]any, int, error) {
 	result["ready"] = false
 	result["summary"] = "Local agent-consumable skill surface is not materialized yet."
 	return AttachDoctorGuidance(result, repoRoot, "agent-surface", nil), 1, nil
+}
+
+func appendSpecdownCheck(checks *[]any, suggestions *[]any) {
+	_, err := exec.LookPath("specdown")
+	appendFieldCheck(
+		checks,
+		suggestions,
+		"specdown_available",
+		err == nil,
+		"specdown is available on PATH for executable claim specs.",
+		"specdown is missing from PATH; Cautilus requires specdown for public executable claim docs.",
+		"Install specdown and rerun `cautilus doctor`.",
+	)
 }
 
 func appendFieldCheck(checks *[]any, suggestions *[]any, id string, ok bool, okDetail string, missingDetail string, suggestion string) {

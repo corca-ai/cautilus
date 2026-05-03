@@ -12,7 +12,7 @@ eval_test_command_templates:
 artifact_paths:
   - AGENTS.md
   - docs/internal/handoff.md
-  - docs/specs/evaluation-surfaces.spec.md
+  - docs/specs/user/evaluation.spec.md
   - fixtures/eval/dev/repo/checked-in-agents-routing.fixture.json
   - scripts/agent-runtime/run-local-eval-test.mjs
   - scripts/run-self-dogfood-eval.mjs

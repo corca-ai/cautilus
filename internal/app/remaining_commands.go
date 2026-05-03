@@ -155,6 +155,7 @@ func handleInstall(repoRoot string, cwd string, args []string, stdout io.Writer,
 		"nextSteps": []string{
 			fmt.Sprintf("cautilus doctor --repo-root %s --next-action", targetRepo),
 			fmt.Sprintf("cautilus doctor --repo-root %s", targetRepo),
+			"install specdown if doctor reports specdown_available=false",
 		},
 	}
 	if options.json {
@@ -169,6 +170,7 @@ func handleInstall(repoRoot string, cwd string, args []string, stdout io.Writer,
 	fmt.Fprintf(stdout, "Current CLI: v%s (%s)\n", state.Current.Version, state.Current.InstallKind)
 	fmt.Fprintf(stdout, "Next: cautilus doctor --repo-root %s --next-action\n", targetRepo)
 	fmt.Fprintf(stdout, "Inspect: cautilus doctor --repo-root %s\n", targetRepo)
+	fmt.Fprintf(stdout, "Prerequisite: install specdown if doctor reports specdown_available=false\n")
 	return 0
 }
 

@@ -18,7 +18,7 @@ executor_variants:
       - focus on the checked-in skill surfaces, not unrelated repo docs
 artifact_paths:
   - README.md
-  - docs/specs/self-dogfood.spec.md
+  - docs/specs/old/self-dogfood.spec.md
   - skills/cautilus/SKILL.md
   - plugins/cautilus/skills/cautilus/SKILL.md
 comparison_questions:

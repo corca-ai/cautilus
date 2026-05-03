@@ -58,7 +58,7 @@ Useful narrower paths:
 ```bash
 npm run docs:preview:changed
 npm run docs:preview:specs
-npm run docs:preview -- docs/guides docs/specs/index.spec.md
+npm run docs:preview -- docs/guides docs/specs/user/index.spec.md
 ```
 
 `docs:preview:changed` only renders matching markdown files currently shown by `git status`.
@@ -75,7 +75,8 @@ brew install glow
 
 Keep each layer honest so the same claim is not restated three times.
 
-- `docs/specs/*.spec.md` owns cheap public executable proofs for reader-facing product claims.
+- `docs/specs/user/**/*.spec.md` and `docs/specs/maintainer/**/*.spec.md` own the active claim specs.
+- `docs/specs/old/*.spec.md` keeps archived proof specs until they are absorbed or removed.
 - `internal/app/app_test.go` owns single-command native command behavior and JSON payload shape.
 - `internal/app/cli_smoke_test.go` owns multi-command integration flows that mutate repos, install surfaces, or write artifact trees.
 - `scripts/on-demand/*.test.mjs` owns heavier end-to-end consumer and self-dogfood flows that are valuable but too expensive for the standing gate.

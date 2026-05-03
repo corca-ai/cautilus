@@ -1,15 +1,15 @@
-# HITL Review: canonical claim catalog
+# HITL Review: executable claim spec tree
 Date: 2026-05-03
 
 ## Target
 
-[docs/claims/user-facing.md](../../docs/claims/user-facing.md), [docs/claims/maintainer-facing.md](../../docs/claims/maintainer-facing.md), and the refreshed Cautilus claim packets.
+[docs/specs/user/index.spec.md](../../docs/specs/user/index.spec.md), [docs/specs/maintainer/index.spec.md](../../docs/specs/maintainer/index.spec.md), the per-claim spec pages under `docs/specs/user/`, and the refreshed Cautilus claim packets.
 
 ## Goal
 
-Use maintainer review to approve the curated product promise map before spending more time on raw sentence candidates.
+Use maintainer review to approve the executable claim spec tree before spending more time on raw sentence candidates.
 Raw `claim discover` output remains the source-ref-backed proof-planning input.
-The human-facing review target is now the canonical user-facing and maintainer-facing claim catalogs.
+The human-facing review target is now the user-facing and maintainer-facing spec indexes plus per-claim spec pages.
 
 ## Accepted Rules
 
@@ -24,7 +24,12 @@ The human-facing review target is now the canonical user-facing and maintainer-f
 - Raw sentence candidates are not the primary human review surface once the decision is product meaning, duplication, audience alignment, or next-action grouping.
 - User-facing canonical claims must use plain product language.
 - Maintainer-facing canonical claims may use internal terms, but each maintainer claim must map back to user-facing claim ids.
-- Catalogs are manually maintained or review-applied source documents, not volatile generated report blocks.
+- The active spec tree is manually maintained or review-applied source, not a volatile generated report block.
+- `docs/specs/user/index.spec.md` is the user-facing SOT; `docs/specs/maintainer/index.spec.md` is the maintainer-facing SOT.
+- `docs/specs/index.spec.md` is the executable report entry that links both indexes.
+- `docs/specs/old/**` is archival implementation-spec material and should not be reviewed as active claim source.
+- `docs/claims/user-facing.md` and `docs/claims/maintainer-facing.md` are superseded by the spec tree and should be treated as historical planning context until a later cleanup slice removes or absorbs them.
+- `specdown` is a hard prerequisite for the public Cautilus claim-document workflow, not a nice-to-have peer dependency.
 
 ## Decisions Applied
 
@@ -71,6 +76,13 @@ The human-facing review target is now the canonical user-facing and maintainer-f
 - Clarified that `doctor` readiness means the selected Cautilus surface can run; it does not prove repo behavior claims by itself.
 - Updated the skill and workflow contract so this order is Cautilus-specific.
   Consumer repos should derive their own top user jobs from adapter `semantic_groups`, source-doc headings, declared product surfaces, and README or guide structure instead of copying Cautilus command names.
+- Promoted the curated promise map into executable specdown pages:
+  [docs/specs/user/index.spec.md](../../docs/specs/user/index.spec.md), per-claim pages under `docs/specs/user/`, [docs/specs/maintainer/index.spec.md](../../docs/specs/maintainer/index.spec.md), and [docs/specs/index.spec.md](../../docs/specs/index.spec.md).
+- Moved previous implementation specs to `docs/specs/old/**`.
+- Changed `specdown.json` so the executable report entry is [docs/specs/index.spec.md](../../docs/specs/index.spec.md).
+- Added a repo-local specdown adapter at `scripts/specdown/cautilus-adapter.mjs` for executable `check:cautilus-command` evidence.
+- Added `specdown_available` readiness checks to repo and agent-surface doctor output.
+- Updated the bundled Cautilus skill so it treats the spec tree as the active SOT for curated claim docs.
 
 ## Current Packet Snapshot
 
@@ -91,15 +103,16 @@ The human-facing review target is now the canonical user-facing and maintainer-f
 
 ## Next HITL Queue
 
-Review [docs/claims/user-facing.md](../../docs/claims/user-facing.md) first.
-Decide whether U1 through U9 now read in the right product order for a new user:
-claim discovery first, then evaluation, then optimization, then doctor/readiness, then the supporting portability, agent, artifact, surface, and proof-debt promises.
-Check especially whether U4 explains readiness without implying behavior proof, and whether U5/U7 stay supporting promises rather than competing with the three main product jobs.
-The canonical map is heuristic and should not be treated as human-approved compression yet.
-Sample the medium/low-confidence mappings called out in `.cautilus/claims/canonical-claim-map.json`, especially the larger U4, U5, and U8 buckets, before accepting that all 84 user-facing raw claims are correctly absorbed.
+Review [docs/specs/user/index.spec.md](../../docs/specs/user/index.spec.md) first, then the per-claim pages under `docs/specs/user/`.
+Decide whether the first-reader order is right:
+claim discovery, evaluation, optimization, doctor/readiness, then supporting ownership, artifact, and proof-debt promises.
+Check that each page is readable as user-facing product language while still leaving honest proof debt visible.
 
-Then review [docs/claims/maintainer-facing.md](../../docs/claims/maintainer-facing.md).
-Decide whether M1 through M10 map cleanly to the user-facing claims, whether internal terms are acceptable, and whether the listed proof routes make the next agent actions clear.
+Then review [docs/specs/maintainer/index.spec.md](../../docs/specs/maintainer/index.spec.md).
+Decide whether it is enough as an index for the next slice, or whether the maintainer tree needs one page per internal claim area before raw claim review resumes.
+
+The canonical map is heuristic and should not be treated as human-approved compression yet.
+After the next fresh `claim discover`, sample the medium/low-confidence mappings called out in `.cautilus/claims/canonical-claim-map.json`, especially the larger claim, eval, and ownership buckets.
 
 After catalog review, return to action-bucket review only for claims that are not absorbed by the canonical catalogs:
 `.cautilus/claims/review-input-human-align-action-bucket.json`, `.cautilus/claims/review-input-split-or-defer-action-bucket.json`, and `.cautilus/claims/review-input-human-confirm-action-bucket.json`.
@@ -107,6 +120,6 @@ After catalog review, return to action-bucket review only for claims that are no
 ## Open Questions
 
 - Should the claim review browser support per-example comments instead of only decision-card comments?
-- Should the claim catalogs become executable specdown pages later, or stay ordinary source docs with executable specs linked separately?
-- Which canonical user-facing claims should be promoted first into public executable proof pages?
+- Should the historical `docs/claims/*` pages be deleted after their useful content is absorbed into the spec tree, or kept as archived planning context?
+- Which user-facing spec pages should receive real executable proof first beyond command-surface smoke checks?
 - Which remaining raw candidates are not absorbed by U1-U9 or M1-M10 and still need separate review?

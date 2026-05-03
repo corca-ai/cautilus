@@ -1,5 +1,17 @@
 {
   "entry": "docs/specs/index.spec.md",
+  "adapters": [
+    {
+      "name": "cautilus",
+      "command": [
+        "node",
+        "scripts/specdown/cautilus-adapter.mjs"
+      ],
+      "checks": [
+        "cautilus-command"
+      ]
+    }
+  ],
   "reporters": [
     {
       "builtin": "html",

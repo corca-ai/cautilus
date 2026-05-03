@@ -19,7 +19,7 @@ executor_variants:
 artifact_paths:
   - .agents/cautilus-adapter.yaml
   - README.md
-  - docs/specs/self-dogfood.spec.md
+  - docs/specs/old/self-dogfood.spec.md
 comparison_questions:
   - Does the current deterministic self-consumer gate stay within a narrow, evidence-proportional standing-gate claim?
 human_review_prompts:

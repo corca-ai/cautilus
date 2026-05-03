@@ -1,5 +1,9 @@
 # Cautilus User-Facing Claims
 
+Deprecated planning context.
+The active user-facing source of truth is [docs/specs/user/index.spec.md](../specs/user/index.spec.md) and its linked per-claim spec pages.
+This page is kept temporarily until useful content is absorbed or deleted in a later cleanup slice.
+
 This page is the reader-facing claim catalog for `Cautilus`.
 It is not a raw `claim discover` dump.
 It groups repeated source sentences into a small set of product promises a user can understand before reading implementation contracts or proof packets.
@@ -41,7 +45,7 @@ The result should not live only in a terminal scrollback or in someone's memory.
 Executable specs, CLI tests, and evaluation fixtures should prove that these saved files are written and can be read later.
 
 **Source anchors.**
-README.md, docs/specs/evaluation-surfaces.spec.md, docs/guides/evaluation-process.md.
+README.md, docs/specs/user/evaluation.spec.md, docs/guides/evaluation-process.md.
 
 ## U3. Optimize: Improve Only After The Proof Surface Is Clear
 
@@ -103,7 +107,7 @@ The bundled skill helps an agent choose the right next step, explain the decisio
 Install checks, command-discovery checks, skill-disclosure checks, and skill evaluation fixtures should prove that the binary and bundled skill stay consistent.
 
 **Source anchors.**
-README.md, skills/cautilus/SKILL.md, docs/specs/standalone-surface.spec.md, docs/specs/command-surfaces.spec.md.
+README.md, skills/cautilus/SKILL.md, docs/specs/old/standalone-surface.spec.md, docs/specs/user/index.spec.md.
 
 ## U7. Cautilus Produces Reviewable Human And Machine Artifacts
 
@@ -119,7 +123,7 @@ This supports the main feature jobs; it is not a separate claim that every view 
 Report, HTML, and status-server tests should prove that human views mirror the current packet and do not silently show stale or unrelated state.
 
 **Source anchors.**
-README.md, docs/contracts/reporting.md, docs/specs/html-report.spec.md.
+README.md, docs/contracts/reporting.md, docs/specs/user/reviewable-artifacts.spec.md.
 
 ## U8. Cautilus Supports Development And App Behavior Surfaces
 
@@ -135,7 +139,7 @@ The same command family can handle both, as long as the fixture declares which s
 Executable specs and fixture tests should prove the shipped `dev` and `app` presets without asking users to learn older category names.
 
 **Source anchors.**
-README.md, docs/specs/evaluation-surfaces.spec.md, docs/guides/evaluation-process.md.
+README.md, docs/specs/user/evaluation.spec.md, docs/guides/evaluation-process.md.
 
 ## U9. Cautilus Makes Proof Debt Visible
 

@@ -6,7 +6,7 @@ Copy this directory into your consumer repo, then gradually replace the smoke pl
 ## What this Normalization Family Covers
 
 A single skill or agent invocation: does it trigger on the right prompts, execute the intended task cleanly, and keep declared validation surfaces passing.
-The `scenario normalize skill` proposal-input lineage owns the input shape; see [skill-normalization.md](../../../docs/contracts/skill-normalization.md) and the surface contract in [evaluation-surfaces.spec.md](../../../docs/specs/evaluation-surfaces.spec.md).
+The `scenario normalize skill` proposal-input lineage owns the input shape; see [skill-normalization.md](../../../docs/contracts/skill-normalization.md) and the evaluation claim in [evaluation.spec.md](../../../docs/specs/user/evaluation.spec.md).
 
 ## Setup
 

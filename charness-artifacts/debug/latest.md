@@ -1,72 +1,63 @@
-# Debug Review: canonical claim map ESLint
+# Debug Review
 Date: 2026-05-03
 
 ## Problem
 
-The new canonical claim map implementation failed `npm run verify` during the ESLint phase.
+`npm run lint:specs` failed after adding the new specdown-backed user-facing claim specs.
 
 ## Correct Behavior
 
-Given canonical claim map scripts are maintained repo tooling, when `npm run verify` runs, then `npm run lint:eslint` should pass without unused variables or complexity-rule violations.
+Given the new `docs/specs/user/index.spec.md` entry and Cautilus specdown adapter, when `npm run lint:specs` runs, then `check-specs` and `specdown run -quiet` should both pass.
 
 ## Observed Facts
 
-ESLint reported:
-
-```text
-/home/hwidong/codes/cautilus/scripts/agent-runtime/build-canonical-claim-map.mjs
-   58:7   error  'asObject' is assigned a value but never used
-  267:1   error  Function 'mapCandidate' has a complexity of 17. Maximum allowed is 12
-  288:1   error  Function 'mappingFromBest' has a complexity of 20. Maximum allowed is 12
-  353:32  error  'keywords' is defined but never used
-  358:38  error  'keywords' is defined but never used
-
-/home/hwidong/codes/cautilus/scripts/agent-runtime/render-claim-status-report.mjs
-  356:1  error  Function 'renderCanonicalMap' has a complexity of 13. Maximum allowed is 12
-```
-
-After the first repair, ESLint still reported:
-
-```text
-/home/hwidong/codes/cautilus/scripts/agent-runtime/build-canonical-claim-map.mjs
-  309:1  error  Function 'mappingFromBest' has a complexity of 16. Maximum allowed is 12
-```
-
-The focused canonical-map and status-report tests passed before the lint repair, so the failure was static maintainability rather than observed output behavior.
+- `node scripts/check-specs.mjs` passed with `spec checks passed (9 specs)`.
+- `specdown run -quiet` failed.
+- The focused reproduction was `specdown run -filter "Claim Discovery"`.
+- The failing case was row 2 in `docs/specs/user/claim-discovery.spec.md`.
+- The exact error was `Unexpected exit code`, expected `0`, actual `1`.
+- The direct command printed `--sample-claims must be a positive integer` for `--sample-claims 0`.
+- After that fix, `npm run lint:eslint` failed because `scripts/check-specs.mjs` kept an unused `validateIndexCoverage` helper and `scripts/specdown/cautilus-adapter.mjs` put too many branches in `handleCommand`.
 
 ## Reproduction
 
 ```bash
-npm run lint:eslint
+specdown run -filter "Claim Discovery"
+./bin/cautilus claim show --input .cautilus/claims/evidenced-typed-runners.json --sample-claims 0
 ```
 
 ## Candidate Causes
 
-- The map builder mixed audience routing, confidence checks, and output packet shaping in single functions.
-- The renderer mixed optional canonical-map summary handling with Markdown output in one function.
-- Draft helpers left unused variables after catalog keyword fields were stripped from the public packet.
+- The new spec used an invalid `claim show --sample-claims 0` argument.
+- The Cautilus specdown adapter might be passing table cells incorrectly.
+- The checked-in claim packet might be missing or invalid.
+- The new active-spec graph check left behind an obsolete helper.
+- The adapter was written as one broad function instead of small validation helpers.
 
 ## Hypothesis
 
-If audience-specific mapping, confidence checks, source-ref compaction, catalog keyword stripping, and catalog-review rendering are extracted into smaller helpers, then ESLint complexity and unused-variable rules should pass while focused tests keep passing.
+The spec used an invalid argument.
+`claim show` requires a positive integer for `--sample-claims`, so changing the spec row to `--sample-claims 1` should make the focused spec pass without adapter changes.
 
 ## Verification
 
-- `npm run lint:eslint` passed after extracting the helpers.
-- `node --test --test-reporter=dot --test-reporter-destination=stdout scripts/agent-runtime/build-canonical-claim-map.test.mjs scripts/agent-runtime/render-claim-status-report.test.mjs` passed.
+The direct command failed before any adapter-specific behavior mattered.
+The spec row now uses `--sample-claims 1`; the next verification step is rerunning `npm run lint:specs`.
+The lint failure is locally deterministic and should disappear after deleting the obsolete helper and extracting adapter result checks.
 
 ## Root Cause
 
-The first implementation preserved the right behavior but concentrated too much branching in the new map builder and status-report renderer.
-This repeated the same maintainability failure mode as `debug-2026-05-02-claim-status-report-eslint.md`.
+The new user-facing claim discovery spec tried to request zero sample claims, but the CLI contract only accepts positive integers.
+The follow-up lint failure came from implementation shape, not product behavior:
+one old helper no longer had a caller, and the specdown adapter's command assertion path needed smaller functions.
 
 ## Seam Risk
 
-- Interrupt ID: canonical-claim-map-eslint
+- Interrupt ID: specdown-claim-show-sample-count
 - Risk Class: none
-- Seam: local maintained Node scripts for claim-map and report generation
-- Disproving Observation: focused tests passed before repair and after repair; ESLint now passes.
-- What Local Reasoning Cannot Prove: whether the automatic U/M mapping is semantically acceptable to the maintainer.
+- Seam: specdown adapter invoking Cautilus CLI
+- Disproving Observation: direct `./bin/cautilus claim show ... --sample-claims 0` fails with the same argument validation message
+- What Local Reasoning Cannot Prove: none
 - Generalization Pressure: monitor
 
 ## Interrupt Decision
@@ -77,9 +68,5 @@ This repeated the same maintainability failure mode as `debug-2026-05-02-claim-s
 
 ## Prevention
 
-Keep claim artifact scripts split into parsing, scoring, packet shaping, and rendering helpers.
-When adding new report sections, run `npm run lint:eslint` before the full verify loop so complexity regressions fail earlier.
-
-## Related Prior Incidents
-
-- `debug-2026-05-02-claim-status-report-eslint.md`: the earlier claim status report renderer had the same pattern of correct behavior with excessive complexity in display helpers.
+Prefer the smallest valid public command examples in specdown rows.
+When a row is only proving command availability or packet shape, use documented positive sample counts instead of sentinel values unless the CLI explicitly supports them.

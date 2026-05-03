@@ -100,6 +100,9 @@ func TestRunDoctorDoesNotRequireToolRootForNativeCommands(t *testing.T) {
 	if ready, ok := payload["ready"].(bool); !ok || !ready {
 		t.Fatalf("expected ready doctor payload, got %#v", payload)
 	}
+	if !doctorCheckOK(payload, "specdown_available") {
+		t.Fatalf("expected doctor to require specdown readiness, got %#v", payload["checks"])
+	}
 }
 
 func TestRunDoctorHelpReturnsZeroAndUsage(t *testing.T) {
@@ -118,6 +121,17 @@ func TestRunDoctorHelpReturnsZeroAndUsage(t *testing.T) {
 	if stderr.Len() != 0 {
 		t.Fatalf("unexpected stderr: %q", stderr.String())
 	}
+}
+
+func doctorCheckOK(payload map[string]any, id string) bool {
+	for _, raw := range arrayOrEmpty(payload["checks"]) {
+		check := raw.(map[string]any)
+		if check["id"] == id {
+			ok, _ := check["ok"].(bool)
+			return ok
+		}
+	}
+	return false
 }
 
 func TestRunCommandsJSONReturnsRegistry(t *testing.T) {

@@ -254,7 +254,7 @@ Tier 3이 "CLI가 돌아가는가"라면 이 tier는 "리드미의 각 문장이
 리드미는 *"static HTML views of the same artifacts so a human reviewer can judge them in a browser without an agent in the loop"*을 약속한다.
 이 약속이 참인지는 사람이 브라우저에서 실제로 열어봐야 판정 가능하다.
 
-**상세 스펙 + 현재 구현 격차 + 다음 세션 확장 순서는** [html-report.spec.md](../specs/html-report.spec.md) **가 source of truth.** 아래 행은 인간 판단 체크리스트로만 사용한다.
+**상세 claim SOT는** [reviewable-artifacts.spec.md](../specs/user/reviewable-artifacts.spec.md) **이고, 이전 HTML proof page는** [old/html-report.spec.md](../specs/old/html-report.spec.md) **에 보관되어 있다.** 아래 행은 인간 판단 체크리스트로만 사용한다.
 
 | # | 대상 | 확인 방법 | 인간 판단 기준 |
 |---|---|---|---|

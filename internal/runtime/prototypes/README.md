@@ -3,7 +3,7 @@
 Code in this directory is intentionally **not** a shipped surface. It
 exists so a candidate evaluation shape can be explored without inflating
 the live
-[evaluation-surfaces spec](../../../docs/specs/evaluation-surfaces.spec.md)
+[evaluation spec](../../../docs/specs/user/evaluation.spec.md)
 contract before its surface is understood.
 
 Quick rules:

@@ -53,7 +53,7 @@
 - Cautilus `v0.13.0` 게시 상태 그대로 ([release](https://github.com/corca-ai/cautilus/releases/tag/v0.13.0)).
   release-artifacts / verify-public-release / install-sh smoke 모두 green.
   세부 기록은 [charness-artifacts/release/latest.md](../../charness-artifacts/release/latest.md).
-- `evaluation-surfaces` 재설계의 네 preset은 모두 shipped 상태다 — [docs/specs/evaluation-surfaces.spec.md](../specs/evaluation-surfaces.spec.md).
+- `evaluation-surfaces` 재설계의 네 preset은 모두 shipped 상태다 — 새 reader-facing SOT는 [docs/specs/user/evaluation.spec.md](../specs/user/evaluation.spec.md), 이전 구현 스펙은 [docs/specs/old/evaluation-surfaces.spec.md](../specs/old/evaluation-surfaces.spec.md).
   `dev/repo`, `dev/skill`, `app/chat`, `app/prompt` 모두 `cautilus eval test --fixture ...` / `cautilus eval evaluate --input ...` 경로가 있다.
   `app/prompt`는 2026-04-26에 추가됐고 `cautilus.app_prompt_test_cases.v1` / `cautilus.app_prompt_evaluation_inputs.v1` / `cautilus.app_prompt_evaluation_summary.v1`를 쓴다.
   evaluator는 app-surface 공통 runtime 필드(provider, model, harness, mode=`messaging`, durationMs, observed.messages, observed.finalText)에 더해 `app/prompt`에서 `observed.input`을 요구한다.
@@ -70,7 +70,7 @@
   (3) bounded improvement / optimization.
   README proof는 (1)의 예시일 뿐이며 Cautilus 표면은 README에 강결합하지 않는다.
   세 축은 장기적으로 각각 first-class binary command surface가 있어야 한다.
-- 세 핵심 기능의 command-family 설계와 첫 `claim` 구현은 [docs/specs/command-surfaces.spec.md](../specs/command-surfaces.spec.md)에 정착됐다.
+- 세 핵심 기능의 command-family 설계와 첫 `claim` 구현은 새 [docs/specs/user/index.spec.md](../specs/user/index.spec.md)와 archived [docs/specs/old/command-surfaces.spec.md](../specs/old/command-surfaces.spec.md)에 걸쳐 있다.
   canonical front doors는 `cautilus claim ...`, `cautilus eval ...`, `cautilus optimize ...`이며, `cautilus claim discover --repo-root . --output <claims.json>`는 repo-owned truth surface에서 `cautilus.claim_proof_plan.v1`을 만든다.
   이 packet은 verdict가 아니라 proof plan이며, 발견된 backlog를 정직하게 보존한다.
   selection이나 prioritization이 필요하면 future explicit command option, adapter-owned policy, 또는 다음 agent step으로 드러내야 한다.
@@ -217,7 +217,7 @@
 ## References
 
 - [docs/master-plan.md](../master-plan.md)
-- [docs/specs/evaluation-surfaces.spec.md](../specs/evaluation-surfaces.spec.md)
+- [docs/specs/user/evaluation.spec.md](../specs/user/evaluation.spec.md)
 - [docs/contracts/runtime-fingerprint-optimization.md](../contracts/runtime-fingerprint-optimization.md)
 - [docs/contracts/scenario-history.md](../contracts/scenario-history.md)
 - [corca-ai/charness#66](https://github.com/corca-ai/charness/issues/66) — ideation/spec의 enum-axis consistency 점검 제안 (여전히 열려 있음)

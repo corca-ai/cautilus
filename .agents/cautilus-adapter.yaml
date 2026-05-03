@@ -8,6 +8,7 @@ baseline_options:
 required_prerequisites:
   - install local dependencies with npm install before running evaluation
   - install the checked-in git hooks with npm run hooks:install before relying on maintainer-local checks
+  - install specdown before treating Cautilus claim docs as ready
 review_timeout_ms: 30000
 preflight_commands:
   - npm run hooks:check
@@ -39,23 +40,23 @@ claim_discovery:
   evidence_roots:
     - .cautilus/claims
   exclude:
-    - docs/specs/**
+    - docs/specs/old/**
     - docs/maintainers/**
     - docs/internal/handoff.md
     - docs/internal/research/**
   audience_hints:
     user:
       - README.md
-      - docs/claims/user-facing.md
+      - docs/specs/user/**
       - docs/cli-reference.md
       - docs/guides/**
     developer:
       - AGENTS.md
-      - docs/claims/maintainer-facing.md
+      - docs/specs/maintainer/**
       - skills/cautilus/**
       - plugins/cautilus/skills/cautilus/**
       - docs/contracts/**
-      - docs/specs/**
+      - docs/specs/old/**
       - docs/internal/**
       - docs/maintainers/**
       - docs/master-plan.md
@@ -143,8 +144,8 @@ executor_variants:
       - do not treat named self-dogfood adapters as proof for the root standing gate
 artifact_paths:
   - README.md
-  - docs/evaluation-process.md
-  - docs/specs/self-dogfood.spec.md
+  - docs/guides/evaluation-process.md
+  - docs/specs/user/index.spec.md
   - skills/cautilus/SKILL.md
 comparison_questions:
   - Does the current deterministic self-consumer gate stay honest about what it actually proves for the product repo?

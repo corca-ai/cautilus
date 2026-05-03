@@ -1,7 +1,10 @@
 import assert from "node:assert/strict";
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import test from "node:test";
 
-import { buildCanonicalClaimMap } from "./build-canonical-claim-map.mjs";
+import { buildCanonicalClaimMap, parseUserCatalog } from "./build-canonical-claim-map.mjs";
 
 const userCatalogMarkdown = `# User Claims
 
@@ -124,4 +127,40 @@ test("buildCanonicalClaimMap leaves low-confidence claims for review", () => {
 	assert.equal(packet.coverageSummary.userUnmappedCount, 1);
 	assert.equal(packet.mappings[0].disposition, "user-review-needed");
 	assert.deepEqual(packet.coverageSummary.reviewNeededClaimIds, ["claim-unclear-md-1"]);
+});
+
+test("parseUserCatalog reads only same-directory claim pages from spec index", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-canonical-spec-tree-"));
+	try {
+		const userDir = join(root, "docs", "specs", "user");
+		const maintainerDir = join(root, "docs", "specs", "maintainer");
+		mkdirSync(userDir, { recursive: true });
+		mkdirSync(maintainerDir, { recursive: true });
+		writeFileSync(join(root, "docs", "specs", "index.spec.md"), "# Root Report\n", "utf-8");
+		writeFileSync(join(maintainerDir, "index.spec.md"), "# Maintainer Index\n", "utf-8");
+		writeFileSync(join(userDir, "claim-discovery.spec.md"), "# Claim Discovery\n", "utf-8");
+		writeFileSync(join(userDir, "evaluation.spec.md"), "# Evaluation\n", "utf-8");
+		const indexPath = join(userDir, "index.spec.md");
+		const indexMarkdown = [
+			"# User Index",
+			"",
+			"- [Claim Discovery](claim-discovery.spec.md)",
+			"- [Evaluation](evaluation.spec.md)",
+			"- [Maintainer](../maintainer/index.spec.md)",
+			"- [Root](../index.spec.md)",
+			"",
+		].join("\n");
+
+		const catalog = parseUserCatalog(indexMarkdown, indexPath);
+
+		assert.deepEqual(
+			catalog.map((claim) => [claim.id, claim.title]),
+			[
+				["U1", "Claim Discovery"],
+				["U2", "Evaluation"],
+			],
+		);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
 });

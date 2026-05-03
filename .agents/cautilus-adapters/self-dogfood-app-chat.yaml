@@ -11,7 +11,7 @@ eval_test_command_templates:
 artifact_paths:
   - fixtures/eval/app/chat/cautilus-onboarding-greeting.fixture.json
   - scripts/agent-runtime/run-app-eval.mjs
-  - docs/specs/evaluation-surfaces.spec.md
+  - docs/specs/user/evaluation.spec.md
 comparison_questions:
   - Does the app/chat fixture still translate and evaluate through the public eval seam under fixture, live Codex, and live Claude runtimes?
 human_review_prompts:

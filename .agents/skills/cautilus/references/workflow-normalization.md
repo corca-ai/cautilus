@@ -1,9 +1,9 @@
 # Workflow Scenario Normalization Contract
 
-`Cautilus` supports a first-class `workflow` normalization helper that turns
+`Cautilus` supports a `workflow` normalization helper that turns
 summaries of stateful automation runs into scenario proposal candidates.
 
-The workflow archetype is about **durable automation that persists across
+The workflow normalization family is about **durable automation that persists across
 invocations**: CLI workflows, long-running agent sessions, replay seeds,
 pipelines. What matters is that the automation has discrete steps, a
 persistable state, and can be blocked mid-progression. The helper exists so
@@ -98,7 +98,7 @@ dimensions `workflow_recovery` plus `recovery_next_step`.
 - The helper consumes normalized workflow summaries, not repo-local scans
   of `runs/`, `scenario.yaml` files, or CI logs.
 - Skill-shaped `targetKind` values (`public_skill`, `profile`,
-  `integration`) are rejected and handled by the skill archetype.
+  `integration`) are rejected and handled by the skill normalization family.
 
 ## Non-Goals
 
@@ -121,7 +121,7 @@ dimensions `workflow_recovery` plus `recovery_next_step`.
   summaries into reusable proposal candidates without giving `Cautilus`
   runtime ownership of its automation surfaces.
 - the helper rejects skill-shaped inputs with a clear pointer to the skill
-  archetype.
+  normalization family.
 
 ## Acceptance Checks
 
@@ -130,7 +130,7 @@ dimensions `workflow_recovery` plus `recovery_next_step`.
 - fixture: helper output feeds directly into `scenario prepare-input` or
   `scenario propose` without extra mapping.
 - skill-shaped input returns a non-zero exit with stderr mentioning the
-  workflow archetype vocabulary.
+  workflow normalization family vocabulary.
 
 ## Canonical Artifact
 

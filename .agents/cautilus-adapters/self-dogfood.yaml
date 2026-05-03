@@ -20,8 +20,8 @@ executor_variants:
       - keep the review loop bounded to the generated self-dogfood prompt and report packet
 artifact_paths:
   - README.md
-  - docs/evaluation-process.md
-  - docs/specs/self-dogfood.spec.md
+  - docs/guides/evaluation-process.md
+  - docs/specs/old/self-dogfood.spec.md
   - scripts/run-self-dogfood.mjs
   - skills/cautilus/SKILL.md
   - plugins/cautilus/skills/cautilus/SKILL.md

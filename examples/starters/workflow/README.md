@@ -6,7 +6,7 @@ Copy this directory into your consumer repo, then gradually replace the smoke pl
 ## What this Normalization Family Covers
 
 Stateful automation that persists across multiple invocations and must recover when it hits a known blocker: CLI workflows, long-running agent sessions, pipelines that keep getting stuck on the same step.
-The `scenario normalize workflow` proposal-input lineage owns the input shape; see [workflow-normalization.md](../../../docs/contracts/workflow-normalization.md) and the surface contract in [evaluation-surfaces.spec.md](../../../docs/specs/evaluation-surfaces.spec.md).
+The `scenario normalize workflow` proposal-input lineage owns the input shape; see [workflow-normalization.md](../../../docs/contracts/workflow-normalization.md) and the evaluation claim in [evaluation.spec.md](../../../docs/specs/user/evaluation.spec.md).
 
 ## Setup
 

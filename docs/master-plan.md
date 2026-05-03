@@ -60,7 +60,7 @@ Current `product-owned helper surface`:
 - `eval test` with the `dev/skill` preset wraps adapter-owned local skill runners, including consensus-based repeated tests and output-review warning surfacing
 - `eval evaluate` packet summarizer dispatches to `cautilus.skill_evaluation_summary.v1` for trigger and execution behavior when the observed packet's schema is `cautilus.skill_evaluation_inputs.v1`
 - `eval live` commands expose the live app runner seam; it is not a fourth product job
-- `chatbot`, `skill`, and `workflow` `scenario normalize` helpers feeding the proposal-input pipeline; their archetype-shaped framing in evaluation no longer applies (see [evaluation-surfaces.spec.md](./specs/evaluation-surfaces.spec.md))
+- `chatbot`, `skill`, and `workflow` `scenario normalize` helpers feeding the proposal-input pipeline; their archetype-shaped framing in evaluation no longer applies (see [evaluation.spec.md](./specs/user/evaluation.spec.md))
 - scenario proposal packet assembly and proposal generation
 - scenario-adjacent conversation review packet and HTML surface over normalized chatbot threads plus proposal candidates
 - scenario-level telemetry summaries for cost and token transparency
@@ -72,12 +72,12 @@ Current `product-owned helper surface`:
 Dogfood and migration evidence now lives separately from the product concept.
 Use [consumer-readiness.md](./maintainers/consumer-readiness.md) for checked-in host evidence instead of treating any one consumer repo as the product definition.
 
-The three command-family contract lives in [specs/command-surfaces.spec.md](./specs/command-surfaces.spec.md): `claim` for declared-claim discovery and proof planning, `eval` for verification, and `optimize` for bounded improvement.
+The three command-family promise map lives in [specs/user/index.spec.md](./specs/user/index.spec.md): `claim` for declared-claim discovery and proof planning, `eval` for verification, and `optimize` for bounded improvement.
 The first `claim` slice ships as deterministic `cautilus claim discover`, which emits a source-ref-backed proof plan rather than a verdict.
 The next claim-discovery workflow contract lives in [claim-discovery-workflow.md](./contracts/claim-discovery-workflow.md): the binary owns deterministic skeletons, scan scope, state paths, refresh plans, and packet semantics; the bundled skill owns user confirmation, LLM review, grouping, evidence interpretation, and next-action conversation.
 The deterministic binary slice, first bundled-skill control-flow slice, deterministic review-input helper slice, possible-evidence preflight, guarded review-result application slice, review-to-eval branch proof, eval planning, fixture-authoring guidance, and first carried-evidence reconciliation slice are now implemented.
 The next claim-discovery hardening seam should come from fresh dogfood evidence rather than the old review-result application / evidence reconciliation backlog.
-The current evaluation contract lives in [specs/evaluation-surfaces.spec.md](./specs/evaluation-surfaces.spec.md): two surfaces (`dev`, `app`), four presets (`repo`, `skill`, `chat`, `prompt`), and four fixture composition primitives.
+The current reader-facing evaluation claim lives in [specs/user/evaluation.spec.md](./specs/user/evaluation.spec.md); the archived implementation-surface spec lives in [specs/old/evaluation-surfaces.spec.md](./specs/old/evaluation-surfaces.spec.md).
 The earlier first-class archetype boundary (chatbot / skill / workflow) was retired with that redesign.
 `npm run lint:specs` and `npm run lint:scenario-normalizers` still gate the runtime completeness of the surviving `scenario normalize` helpers; new user-facing copy must reconcile with the surface/preset contract before landing.
 The runner readiness contract lives in [runner-readiness.md](./contracts/runner-readiness.md).

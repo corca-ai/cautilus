@@ -19,7 +19,7 @@ executor_variants:
 artifact_paths:
   - README.md
   - docs/maintainers/consumer-readiness.md
-  - docs/specs/self-dogfood.spec.md
+  - docs/specs/old/self-dogfood.spec.md
   - bin/cautilus
   - bin/cautilus.test.mjs
   - scripts/run-self-dogfood.mjs

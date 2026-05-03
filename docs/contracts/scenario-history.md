@@ -269,7 +269,7 @@ Must fix in the same slice:
 
 - Bump `cautilus.scenario_baseline_cache.v1` to `v2` (or add a `cacheKeyVersion` field) when the key structure changes.
   Update both [contract-versions.mjs](../../scripts/agent-runtime/contract-versions.mjs) and [internal/contracts/constants.go](../../internal/contracts/constants.go) in the same commit.
-- Rewrite the narrow-scope lines in [docs/specs/current-product.spec.md](../specs/current-product.spec.md) ("checked-in scenario profile를 쓰는 comparison run에서 baseline-cache seed와 cache key를 materialize" and "baseline cache는 reusable result store까지는 아직 아니다") to describe the new scope, or explicitly defer one more step.
+- Rewrite the narrow-scope lines in archived [docs/specs/old/current-product.spec.md](../specs/old/current-product.spec.md) ("checked-in scenario profile를 쓰는 comparison run에서 baseline-cache seed와 cache key를 materialize" and "baseline cache는 reusable result store까지는 아직 아니다") to describe the new scope, or explicitly defer one more step.
 - Document the three entry points in README, SKILL.md, `--help` text (registry usage strings), and this contract in one slice.
   The user-facing requirement is that usage lands in all four surfaces together.
 - Keep `profile` optional for the non-profile entry points.

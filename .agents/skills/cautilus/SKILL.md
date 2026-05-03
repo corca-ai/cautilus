@@ -11,6 +11,8 @@ The installed skill assumes a Cautilus binary is available.
 In the Cautilus product repo itself, prefer the checked-in source launcher `./bin/cautilus` over `cautilus` on `PATH`, because the installed machine binary can lag the current checkout.
 In consumer repos, use `cautilus` on `PATH`.
 If no binary is available, install the CLI first and verify with `cautilus --version`.
+Specdown is a hard prerequisite for the public executable claim-doc workflow.
+If `cautilus doctor` reports `specdown_available=false`, install specdown before treating the repo as ready for Cautilus-managed claim docs.
 To materialize this skill in a host repo, run `cautilus install --repo-root .`.
 
 ## Product Shape
@@ -116,17 +118,18 @@ Use `actionSummary.crossCuttingSignals` for review debt or stale-evidence warnin
 When preparing a focused review queue, pass `--action-bucket <bucket>` to `claim review prepare-input` instead of hand-filtering claim JSON.
 In the Cautilus product repo, when raw claim status or review packets are too large for a maintainer to judge directly, run `npm run claims:status-report` and read `.cautilus/claims/claim-status-report.md` before asking for human decisions.
 If the maintainer is reviewing from a constrained terminal or phone, run `npm run claims:status-server` so they can read the report in a browser and save section comments as `.cautilus/claims/claim-status-comments.json`.
-When raw candidates are too granular for product judgment, curate a canonical claim catalog before continuing HITL.
+When raw candidates are too granular for product judgment, curate a canonical specdown claim tree before continuing HITL.
 Treat raw candidates as high-recall proof-planning inputs, not as the human-facing promise map.
-For Cautilus itself, keep the curated user-facing promises in `docs/claims/user-facing.md` and the maintainer-facing map in `docs/claims/maintainer-facing.md`.
-In the Cautilus product repo, product-meaning review should start from those catalog docs; use the status report for packet audit, debugging, or deciding which remaining raw candidates are not yet absorbed.
+For Cautilus itself, keep the curated user-facing promises in `docs/specs/user/index.spec.md` and per-claim pages under `docs/specs/user/`.
+Keep the maintainer-facing index in `docs/specs/maintainer/index.spec.md`.
+In the Cautilus product repo, product-meaning review should start from those spec docs; use the status report for packet audit, debugging, or deciding which remaining raw candidates are not yet absorbed.
 User-facing claims must use plain product language.
-Order user-facing catalogs by the user's feature mental model before cross-cutting implementation promises.
+Order user-facing spec indexes by the user's feature mental model before cross-cutting implementation promises.
 For Cautilus itself, lead with `claim`, `eval`, `optimize`, then `doctor` or readiness, then supporting promises such as portability, packet/reporting surfaces, and proof-debt visibility.
 For other repos, infer the equivalent top user jobs from the adapter, README, and source docs instead of copying Cautilus-specific command names.
 Use adapter `semantic_groups`, source-doc headings, declared product surfaces, and README or guide structure as the portable signal for those top user jobs.
-An unnumbered catalog introduction may orient the reader, but proof-bearing promises should appear in numbered claims.
-Maintainer-facing claims may use internal terms, but they must stay aligned with the user-facing claim ids and preserve source refs, proof route, evidence status, and next action.
+Keep each index short; put subclaims and evidence placeholders in the per-claim spec pages.
+Maintainer-facing claims may use internal terms, but they must stay aligned with the user-facing claim specs and preserve source refs, proof route, evidence status, and next action.
 Review packets and curation artifacts preserve absorbed raw claim ids and fingerprints when available; stable catalog docs may summarize the absorbed raw themes instead of listing volatile line-based ids.
 When those catalogs change in the Cautilus product repo, run `npm run claims:canonical-map` before `npm run claims:status-report` so the report shows how raw user claims compress into the current U-claim catalog.
 If `claim show` or `agent status` reports `gitState.isStale=true`, run `claim discover --previous <claims.json> --refresh-plan` before claim review, review-result application, or eval planning.

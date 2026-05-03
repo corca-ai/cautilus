@@ -1,5 +1,5 @@
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
-import { resolve } from "node:path";
+import { dirname, resolve } from "node:path";
 import process from "node:process";
 
 function fail(message) {
@@ -7,16 +7,56 @@ function fail(message) {
 	return error;
 }
 
-function listSpecFiles(repoRoot) {
-	const specsDir = resolve(repoRoot, "docs", "specs");
-	if (!existsSync(specsDir) || !statSync(specsDir).isDirectory()) {
-		throw fail("Missing required directory: docs/specs");
+function readSpecdownConfig(repoRoot) {
+	const configPath = resolve(repoRoot, "specdown.json");
+	if (!existsSync(configPath)) {
+		throw fail("Missing required file: specdown.json");
 	}
+	const config = JSON.parse(readFileSync(configPath, "utf-8"));
+	if (!config.entry) {
+		throw fail("specdown.json must declare an entry file");
+	}
+	return config;
+}
 
-	return readdirSync(specsDir)
-		.filter((entry) => entry.endsWith(".spec.md"))
-		.sort()
-		.map((entry) => resolve(specsDir, entry));
+function listSpecFiles(rootDir) {
+	if (!existsSync(rootDir) || !statSync(rootDir).isDirectory()) {
+		throw fail(`Missing required directory: ${rootDir}`);
+	}
+	const result = [];
+	for (const entry of readdirSync(rootDir)) {
+		const fullPath = resolve(rootDir, entry);
+		if (entry === "old") {
+			continue;
+		}
+		if (statSync(fullPath).isDirectory()) {
+			result.push(...listSpecFiles(fullPath));
+		} else if (entry.endsWith(".spec.md")) {
+			result.push(fullPath);
+		}
+	}
+	return result.sort();
+}
+
+function discoverLinkedSpecs(entryPath, seen = new Set()) {
+	if (seen.has(entryPath)) {
+		return seen;
+	}
+	seen.add(entryPath);
+	const content = readFileSync(entryPath, "utf-8");
+	for (const target of parseMarkdownLinks(content)) {
+		if (target.startsWith("http://") || target.startsWith("https://") || target.startsWith("/")) {
+			continue;
+		}
+		if (!target.endsWith(".spec.md")) {
+			continue;
+		}
+		const linked = resolve(dirname(entryPath), target);
+		if (existsSync(linked)) {
+			discoverLinkedSpecs(linked, seen);
+		}
+	}
+	return seen;
 }
 
 function parseMarkdownLinks(content) {
@@ -35,35 +75,25 @@ function validateRelativeLinks(repoRoot, specPath, content) {
 	}
 }
 
-function validateIndexCoverage(repoRoot, specFiles, indexPath, indexContent) {
-	const linkedSpecPaths = new Set(
-		parseMarkdownLinks(indexContent)
-			.filter((target) => target.endsWith(".spec.md"))
-			.map((target) => resolve(indexPath, "..", target)),
-	);
-
-	for (const specPath of specFiles) {
-		if (specPath === indexPath) {
-			continue;
-		}
-		if (!linkedSpecPaths.has(specPath)) {
-			throw fail(`Spec index does not link ${specPath.slice(repoRoot.length + 1)}`);
-		}
-	}
-}
-
 function main() {
 	const repoRoot = process.cwd();
 	try {
-		const specFiles = listSpecFiles(repoRoot);
 		const specsDir = resolve(repoRoot, "docs", "specs");
-		const indexPath = resolve(specsDir, "index.spec.md");
+		const config = readSpecdownConfig(repoRoot);
+		const indexPath = resolve(repoRoot, config.entry);
+		if (!existsSync(indexPath)) {
+			throw fail(`Specdown entry does not exist: ${config.entry}`);
+		}
+		const specFiles = listSpecFiles(specsDir);
+		const linkedSpecPaths = discoverLinkedSpecs(indexPath);
 
 		for (const specPath of specFiles) {
 			const content = readFileSync(specPath, "utf-8");
 			validateRelativeLinks(repoRoot, specPath, content);
-			if (specPath === indexPath) {
-				validateIndexCoverage(repoRoot, specFiles, indexPath, content);
+		}
+		for (const specPath of specFiles) {
+			if (!linkedSpecPaths.has(specPath)) {
+				throw fail(`Specdown entry does not link ${specPath.slice(repoRoot.length + 1)}`);
 			}
 		}
 

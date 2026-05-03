@@ -29,6 +29,7 @@ Prerequisites:
 - native macOS or native Linux
 - a target host repo you can edit locally
 - `git` available on `PATH`
+- `specdown` available on `PATH`
 
 ```bash
 curl -fsSL \
@@ -63,17 +64,18 @@ If the repo has only named adapters under `.agents/cautilus-adapters/`, follow t
 
 Quick links:
 
-- What Cautilus promises: [docs/claims/user-facing.md](./docs/claims/user-facing.md)
-- Maintainer claim map: [docs/claims/maintainer-facing.md](./docs/claims/maintainer-facing.md)
+- What Cautilus promises: [docs/specs/user/index.spec.md](./docs/specs/user/index.spec.md)
+- Maintainer claim map: [docs/specs/maintainer/index.spec.md](./docs/specs/maintainer/index.spec.md)
+- Claim spec report entry: [docs/specs/index.spec.md](./docs/specs/index.spec.md)
 - Full command catalog: [docs/cli-reference.md](./docs/cli-reference.md)
 - Fresh consumer bootstrap after the binary is on `PATH`: [docs/guides/consumer-adoption.md](./docs/guides/consumer-adoption.md)
 - Public executable spec report: <https://corca-ai.github.io/cautilus/>
 
-The claim catalog is the curated reader-facing promise map.
+The user and maintainer spec indexes are the curated claim source of truth, and [docs/specs/index.spec.md](./docs/specs/index.spec.md) is the executable report entry that includes both views.
 Raw `claim discover` packets remain the source-ref-backed proof-planning input, not the primary document a user should review.
-That report is generated with `specdown` from the repo's cheap public spec suite.
-Each spec page pairs one bounded product claim with a small executable proof.
-Read the claim catalog to understand what Cautilus promises, then use the spec report to inspect executable proof for selected promises.
+That report is generated with `specdown` from the claim spec tree.
+Each claim page pairs a bounded product promise with executable evidence or an explicit proof-debt placeholder.
+Read the user spec index to understand what Cautilus promises, then use the maintainer index to inspect proof routes, adapters, fixtures, and known gaps.
 
 ## One Reviewable Decision Loop
 
@@ -98,7 +100,7 @@ cautilus scenario render-proposals-html \
 You get back `proposals.json` as the machine-readable truth surface and `proposals.html` as the human review view.
 Next step: a human decides whether to promote the scenario into a protected evaluation path, while an agent can reopen the saved result, compare variants, or feed it into the next bounded step.
 
-The same small loop anchors the public spec report in `docs/specs/index.spec.md`.
+The same small loop anchors the public spec report in `docs/specs/user/index.spec.md`.
 It is the shortest honest example of the product claim: `Cautilus` turns behavior evidence into a reviewable decision surface.
 
 ## Scenarios
@@ -131,7 +133,8 @@ Cautilus exposes two top-level evaluation surfaces (`dev` and `app`) with four p
 Use `dev` for AI-assisted development work such as repo contracts, tools, and skills.
 Use `app` for AI-powered product behavior such as chat, prompt, and service responses.
 The legacy first-class archetype boundary (chatbot / skill / workflow) is retired.
-For the live contract, read [docs/specs/evaluation-surfaces.spec.md](./docs/specs/evaluation-surfaces.spec.md).
+For the live reader-facing contract, read [docs/specs/user/evaluation.spec.md](./docs/specs/user/evaluation.spec.md).
+The previous implementation-surface spec is temporarily archived at [docs/specs/old/evaluation-surfaces.spec.md](./docs/specs/old/evaluation-surfaces.spec.md) while the new claim spec tree absorbs the old proof pages.
 The `chatbot`, `skill`, and `workflow` `scenario normalize` helpers below still ship; they feed the proposal-input pipeline rather than the evaluation surface.
 
 ### 1. Chatbot conversation regression
@@ -217,7 +220,7 @@ The `cautilus install` step also lands a bundled skill at `.agents/skills/cautil
 "Run a chatbot regression with these logs" feeds into the exact same adapter.
 Use `cautilus doctor --scope agent-surface` when you want to verify only this bundled skill surface.
 If the repo treats `AGENTS.md`, `CLAUDE.md`, or linked instruction files as part of the behavior contract, verify that separately with the `cautilus eval` seam (preset `dev / repo`) rather than assuming install-time discoverability already proves routing fidelity.
-For the product repo itself, this is also a first-class on-demand self-dogfood surface through `npm run dogfood:self`; see [docs/specs/evaluation-surfaces.spec.md](./docs/specs/evaluation-surfaces.spec.md) for the evaluation-surfaces design.
+For the product repo itself, this is also a first-class on-demand self-dogfood surface through `npm run dogfood:self`; see [docs/specs/user/evaluation.spec.md](./docs/specs/user/evaluation.spec.md) for the reader-facing evaluation claim and [docs/specs/old/evaluation-surfaces.spec.md](./docs/specs/old/evaluation-surfaces.spec.md) for the archived implementation-surface design.
 
 Minimal host-repo layout:
 
@@ -234,7 +237,7 @@ What the operator gets back is not just a pass/fail bit:
 - a repo-local adapter that declares the evaluation surface explicitly
 - machine-readable eval, report, review, evidence, and optimization packets that agents can consume directly
 - static HTML views of the same artifacts so a human reviewer can judge them in a browser without an agent in the loop
-See `docs/specs/html-report.spec.md` for the rendered contract.
+See [docs/specs/user/reviewable-artifacts.spec.md](./docs/specs/user/reviewable-artifacts.spec.md) for the rendered-artifact claim and [docs/specs/old/html-report.spec.md](./docs/specs/old/html-report.spec.md) for the archived proof page.
 - bounded compare and review surfaces reopenable from files
 - a path from observed runtime evidence back to new scenario proposals and bounded revisions
 
@@ -251,7 +254,7 @@ Verification gates:
 docs/
 ├── guides/                        # operator and consumer guides
 ├── contracts/                     # adapter, reports, review, scenarios
-├── specs/                         # active product surface
+├── specs/                         # active claim specs and archived proof specs
 ├── maintainers/                   # maintainer-only operations and release docs
 ├── master-plan.md                 # durable direction
 ├── cli-reference.md               # full CLI command catalog
@@ -263,7 +266,8 @@ Top picks:
 - <https://corca-ai.github.io/cautilus/> — standing executable spec report
 - [docs/guides/consumer-adoption.md](./docs/guides/consumer-adoption.md) — canonical fresh-consumer bootstrap path after the binary is on `PATH`
 - [docs/guides/evaluation-process.md](./docs/guides/evaluation-process.md) — canonical evaluation loop
-- [docs/specs/evaluation-surfaces.spec.md](./docs/specs/evaluation-surfaces.spec.md) — surface/preset/composition contract for `cautilus eval test`/`evaluate`
+- [docs/specs/user/index.spec.md](./docs/specs/user/index.spec.md) — user-facing claim spec index
+- [docs/specs/maintainer/index.spec.md](./docs/specs/maintainer/index.spec.md) — maintainer-facing claim spec index
 - [docs/contracts/adapter-contract.md](./docs/contracts/adapter-contract.md) — adapter schema
 - [docs/contracts/review-packet.md](./docs/contracts/review-packet.md) — review packet boundary
 - [docs/cli-reference.md](./docs/cli-reference.md) — full CLI reference

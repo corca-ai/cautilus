@@ -4,8 +4,8 @@ import crypto from "node:crypto";
 import path from "node:path";
 
 const DEFAULT_CLAIMS = ".cautilus/claims/evidenced-typed-runners.json";
-const DEFAULT_USER_CATALOG = "docs/claims/user-facing.md";
-const DEFAULT_MAINTAINER_CATALOG = "docs/claims/maintainer-facing.md";
+const DEFAULT_USER_CATALOG = "docs/specs/user/index.spec.md";
+const DEFAULT_MAINTAINER_CATALOG = "docs/specs/maintainer/index.spec.md";
 const DEFAULT_OUTPUT = ".cautilus/claims/canonical-claim-map.json";
 
 const STOPWORDS = new Set([
@@ -161,8 +161,44 @@ function splitList(value) {
 		.filter(Boolean);
 }
 
+function markdownLinks(markdown) {
+	return [...String(markdown ?? "").matchAll(/\[[^\]]+\]\(([^)]+)\)/g)].map((match) => match[1]);
+}
+
+function h1Title(markdown, fallback) {
+	const match = String(markdown ?? "").match(/^#\s+(.+)$/m);
+	return compactText(match?.[1] ?? fallback);
+}
+
+function specIndexLinks(markdown, indexPath) {
+	const indexDir = path.dirname(indexPath);
+	return markdownLinks(markdown)
+		.map((target) => path.normalize(path.join(indexDir, target)))
+		.filter((target) => target.endsWith(".spec.md") && path.dirname(target) === indexDir);
+}
+
+function parseUserSpecTree(markdown, filePath) {
+	return specIndexLinks(markdown, filePath).map((linkedPath, index) => {
+		const body = readText(linkedPath);
+		const id = `U${index + 1}`;
+		const title = h1Title(body, path.basename(linkedPath, ".spec.md"));
+		return {
+			id,
+			title,
+			audience: "user",
+			filePath: linkedPath,
+			sourceAnchors: [linkedPath],
+			keywords: [...tokens(`${title} ${body}`)].sort(),
+		};
+	});
+}
+
 export function parseUserCatalog(markdown, filePath = DEFAULT_USER_CATALOG) {
-	return sectionBlocks(markdown, "U\\d+").map((section) => {
+	const sections = sectionBlocks(markdown, "U\\d+");
+	if (sections.length === 0 && filePath.includes("docs/specs/user/")) {
+		return parseUserSpecTree(markdown, filePath);
+	}
+	return sections.map((section) => {
 		const sourceAnchors = splitList(extractParagraphAfterHeading(section.body, "Source anchors"));
 		return {
 			id: section.id,
@@ -180,8 +216,29 @@ function alignedUserIds(body) {
 	return [...line.matchAll(/\bU\d+\b/g)].map((match) => match[0]);
 }
 
+function parseMaintainerSpecIndex(markdown, filePath) {
+	const bullets = [...String(markdown ?? "").matchAll(/^- (.+)\.$/gm)].map((match) => compactText(match[1]));
+	return bullets.map((title, index) => ({
+		id: `M${index + 1}`,
+		title,
+		audience: "developer",
+		alignedUserClaimIds: [],
+		proofRoute: "",
+		currentEvidenceStatus: "proof-planning",
+		nextAction: "Expand this maintainer claim into a dedicated spec page aligned to the user-facing claim tree.",
+		absorbs: title,
+		filePath,
+		sourceAnchors: [filePath],
+		keywords: [...tokens(`${title} ${markdown}`)].sort(),
+	}));
+}
+
 export function parseMaintainerCatalog(markdown, filePath = DEFAULT_MAINTAINER_CATALOG) {
-	return sectionBlocks(markdown, "M\\d+").map((section) => {
+	const sections = sectionBlocks(markdown, "M\\d+");
+	if (sections.length === 0 && filePath.includes("docs/specs/maintainer/")) {
+		return parseMaintainerSpecIndex(markdown, filePath);
+	}
+	return sections.map((section) => {
 		const absorbs = extractLineField(section.body, "Absorbs");
 		const sourceAnchors = splitList(extractLineField(section.body, "Source anchors"));
 		return {

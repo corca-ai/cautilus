@@ -77,26 +77,28 @@ The bundled skill should own orchestration that depends on an agent:
 
 This keeps the product agent-first without making the binary a host-specific agent runtime.
 
-### Canonical Claim Catalogs
+### Canonical Claim Specs
 
 Raw `claim discover` candidates are high-recall proof-planning inputs.
 They are not the primary human review surface once the maintainer is judging product meaning, duplication, audience fit, or next-action grouping.
 
-When raw candidates are too granular to review directly, the bundled skill should curate two canonical catalogs before continuing HITL:
+When raw candidates are too granular to review directly, the bundled skill should curate two canonical specdown indexes before continuing HITL:
 
-- a user-facing catalog in plain product language that explains what the repo promises to a reader
-- a maintainer-facing catalog that may use internal vocabulary but maps back to the user-facing claim ids
+- a user-facing spec index in plain product language that explains what the repo promises to a reader
+- a maintainer-facing spec index that may use internal vocabulary but maps back to the user-facing claims
 
-For a product with clear top-level jobs, the user-facing catalog should order claims by the user's feature mental model before cross-cutting implementation promises.
-In this repo's Cautilus catalog, that means `claim`, `eval`, `optimize`, then `doctor` or readiness, followed by supporting promises such as portability, packet/reporting surfaces, and proof-debt visibility.
+For a product with clear top-level jobs, the user-facing spec index should order claims by the user's feature mental model before cross-cutting implementation promises.
+In this repo's Cautilus spec tree, that means `claim`, `eval`, `optimize`, then `doctor` or readiness, followed by supporting promises such as portability, packet/reporting surfaces, and proof-debt visibility.
 In other repos, the same rule should be driven by the repo's adapter, README, and source docs rather than by Cautilus-specific command names.
-An unnumbered catalog introduction may orient the reader, but it should not carry proof-bearing promises that are absent from the numbered canonical claims.
-Each canonical claim should preserve source references, intended proof route, evidence status, and the next action needed to prove or repair it.
+The user-facing index should stay short and link to one spec page per major claim.
+Each claim spec page should keep subclaims, source references, intended proof route, evidence status, and the next action needed to prove or repair the claim.
+Specdown is a hard prerequisite for this public executable claim-document workflow.
+If specdown is missing, `doctor` should report the repo as not ready for the Cautilus claim-doc workflow.
 Review packets and machine-readable curation artifacts should preserve absorbed raw claim ids and fingerprints when available.
-The catalog is a manually maintained or review-applied source document, not a generated status report block.
+The spec tree is a manually maintained or review-applied source document, not a generated status report block.
 It may be part of the next discovery entry graph through README links, while volatile generated reports and JSON packets remain evidence or state artifacts.
 When a repo maintains canonical catalogs, it should also keep a machine-readable mapping artifact that projects raw claim ids onto canonical user-facing or maintainer-facing claim ids.
-That artifact is audit evidence for compression quality: it should show how many raw user claims were absorbed by the user-facing catalog, which canonical claim absorbed each raw claim, and which raw claims still need catalog review.
+That artifact is audit evidence for compression quality: it should show how many raw user claims were absorbed by the user-facing spec tree, which canonical claim absorbed each raw claim, and which raw claims still need catalog review.
 The binary may validate packet shape, render summaries, and expose command help, but semantic normalization, duplicate merging, and audience-aligned wording remain skill or reviewer work.
 This avoids asking humans to approve hundreds of sentence-level candidates when the real decision is the smaller promise map.
 
@@ -104,7 +106,7 @@ This avoids asking humans to approve hundreds of sentence-level candidates when 
 
 Default discovery starts from entry surfaces and follows only repo-local Markdown links.
 This is the next workflow default and intentionally narrows the older broad source-inventory language in the current command-surface spec.
-Until this contract is implemented, [command-surfaces.spec.md](../specs/command-surfaces.spec.md) remains the shipped `claim discover` contract.
+Until this contract is fully absorbed into the new claim spec tree, the archived [command-surfaces.spec.md](../specs/old/command-surfaces.spec.md) records the earlier shipped `claim discover` contract.
 The default entry set is:
 
 - `README.md`
@@ -142,7 +144,7 @@ claim_discovery:
   exclude:
     - artifacts/**
     - node_modules/**
-    - docs/specs/**
+    - docs/specs/old/**
     - docs/maintainers/**
     - docs/internal/handoff.md
     - docs/internal/research/**
@@ -179,7 +181,7 @@ When the adapter omits semantic groups, the binary emits `General product behavi
 That selected map should drive status summaries and inspect/refresh branch commands, while `state_path` remains the default output path for first discovery.
 `evidence_roots` are read-only roots for deterministic possible-evidence preflight; they may add `possibleEvidenceRefs` to review input, but they never mark claims satisfied.
 Repos should use this split to keep executable specs and maintainer appendices out of ordinary prose claim discovery when those files are proof or operator evidence rather than public promises.
-For example, `docs/specs/**` can be excluded from claim sources while `docs/specs` remains an evidence root for spec-backed proof.
+For example, `docs/specs/old/**` can be excluded from claim sources while the active claim spec tree remains linked from README and old proof specs remain evidence or archive material.
 
 Before running a first broad scan, the skill should say which entries and depth it will use.
 It should also show the deterministic bounds that will be applied:
@@ -328,7 +330,7 @@ The first valid-state rules are:
 {
   "refId": "evidence-spec-command-surfaces-1",
   "kind": "spec | test | fixture | eval-summary | report | human-note",
-  "path": "docs/specs/command-surfaces.spec.md",
+  "path": "docs/specs/user/claim-discovery.spec.md",
   "line": 36,
   "artifactSchemaVersion": "cautilus.evaluation_summary.v1",
   "commit": "abc123",

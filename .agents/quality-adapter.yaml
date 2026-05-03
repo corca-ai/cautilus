@@ -50,7 +50,7 @@ cli_skill_surface_command_docs:
   - README.md
   - docs/cli-reference.md
   - docs/guides/consumer-adoption.md
-  - docs/specs/evaluation-surfaces.spec.md
+  - docs/specs/user/evaluation.spec.md
 cli_skill_surface_skill_paths:
   - skills/cautilus/SKILL.md
   - plugins/cautilus/skills/cautilus/SKILL.md
@@ -64,7 +64,7 @@ cli_skill_surface_change_globs:
   - "plugins/cautilus/**"
   - "docs/cli-reference.md"
   - "docs/guides/consumer-adoption.md"
-  - "docs/specs/evaluation-surfaces.spec.md"
+  - "docs/specs/user/evaluation.spec.md"
 runtime_budgets:
 startup_probes:
   - label: cautilus-version
@@ -119,7 +119,7 @@ concept_paths:
   - docs/guides/evaluation-process.md
   - docs/maintainers/consumer-readiness.md
   - docs/maintainers/releasing.md
-  - docs/specs/self-dogfood.spec.md
+  - docs/specs/old/self-dogfood.spec.md
   - docs/internal/handoff.md
   - skills/cautilus/SKILL.md
   - plugins/cautilus/skills/cautilus/SKILL.md

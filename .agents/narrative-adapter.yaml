@@ -7,8 +7,8 @@ customized_from: portable-defaults
 source_documents:
 - README.md
 - docs/master-plan.md
-- docs/specs/index.spec.md
-- docs/specs/current-product.spec.md
+- docs/specs/user/index.spec.md
+- docs/specs/old/current-product.spec.md
 - docs/specs/archetype-boundary.spec.md
 - docs/maintainers/consumer-readiness.md
 - docs/guides/consumer-adoption.md

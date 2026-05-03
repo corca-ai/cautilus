@@ -1,5 +1,9 @@
 # Cautilus Maintainer-Facing Claims
 
+Deprecated planning context.
+The active maintainer-facing source of truth is [docs/specs/maintainer/index.spec.md](../specs/maintainer/index.spec.md), aligned to [docs/specs/user/index.spec.md](../specs/user/index.spec.md).
+This page is kept temporarily until useful content is absorbed or deleted in a later cleanup slice.
+
 This page maps the user-facing claim catalog to maintainer-owned contracts, proof routes, and known implementation boundaries.
 It is allowed to use internal vocabulary, but each claim must stay aligned with a user-facing promise.
 
@@ -49,7 +53,7 @@ Required evidence:
 - skill disclosure checks for progressive disclosure between the binary and skill
 - dev/skill eval proving the skill routes claim-review work through a budgeted branch instead of treating raw discovery as a finished answer
 
-Source anchors: README.md, skills/cautilus/SKILL.md, docs/specs/standalone-surface.spec.md.
+Source anchors: README.md, skills/cautilus/SKILL.md, docs/specs/old/standalone-surface.spec.md.
 
 ## M3. Host Repos Own Runtime-Specific Behavior
 
@@ -90,7 +94,7 @@ Required evidence:
 - executable public specs for evaluation surfaces
 - checked-in fixtures for each shipped preset
 
-Source anchors: docs/specs/evaluation-surfaces.spec.md, fixtures/eval/.
+Source anchors: docs/specs/user/evaluation.spec.md, fixtures/eval/.
 
 ## M5. Review And Evidence Are Separate State Transitions
 
@@ -172,7 +176,7 @@ Required evidence:
 - status server tests for token-gated state and comment persistence
 - HTML report specs for packet-backed reader views
 
-Source anchors: docs/contracts/reporting.md, docs/specs/html-report.spec.md, scripts/agent-runtime/.
+Source anchors: docs/contracts/reporting.md, docs/specs/user/reviewable-artifacts.spec.md, scripts/agent-runtime/.
 
 ## M9. Optimization Requires An Honest Proof Surface
 

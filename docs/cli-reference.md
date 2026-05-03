@@ -259,7 +259,7 @@ It links normalized chatbot threads to scenario proposals and coverage hints so 
 
 ## Evaluation surfaces
 
-The shipped surface is `cautilus eval` (see [docs/specs/evaluation-surfaces.spec.md](./specs/evaluation-surfaces.spec.md)).
+The shipped surface is `cautilus eval` (see [docs/specs/user/evaluation.spec.md](./specs/user/evaluation.spec.md)).
 The first preset, `dev / repo`, replaces the prior `cautilus instruction-surface` commands.
 Cautilus exposes two top-level surfaces and four presets:
 `dev / repo` for repo work contracts, `dev / skill` for checked-in or portable development skills, `app / chat` for multi-turn product conversation behavior, and `app / prompt` for single product input/output behavior.
