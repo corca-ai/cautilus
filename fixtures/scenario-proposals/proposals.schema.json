@@ -158,7 +158,13 @@
               ],
               "properties": {
                 "sourceKind": {
-                  "type": "string"
+                  "type": "string",
+                  "enum": [
+                    "human_conversation",
+                    "agent_run",
+                    "skill_evaluation",
+                    "workflow_run"
+                  ]
                 },
                 "title": {
                   "type": "string"

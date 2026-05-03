@@ -7,6 +7,12 @@ import { buildScenarioProposalInput } from "./build-scenario-proposal-input.mjs"
 import { buildScenarioProposalPacket } from "./generate-scenario-proposals.mjs";
 
 const FIXTURE_ROOT = join(process.cwd(), "fixtures", "scenario-proposals");
+const PORTABLE_EVIDENCE_SOURCE_KINDS = [
+	"human_conversation",
+	"agent_run",
+	"skill_evaluation",
+	"workflow_run",
+];
 
 function readJson(name) {
 	return JSON.parse(readFileSync(join(FIXTURE_ROOT, name), "utf-8"));
@@ -97,4 +103,18 @@ test("scenario proposal output schema matches the generated proposal packet", ()
 	validateAgainstSchema(inputSchema, packet);
 	const proposalPacket = buildScenarioProposalPacket(packet);
 	validateAgainstSchema(outputSchema, proposalPacket);
+});
+
+test("scenario proposal evidence schema preserves portable provenance without host storage fields", () => {
+	const inputSchema = readJson("input.schema.json");
+	const outputSchema = readJson("proposals.schema.json");
+	const inputEvidence = inputSchema.properties.proposalCandidates.items.properties.evidence.items;
+	const outputEvidence = outputSchema.properties.proposals.items.properties.evidence.items;
+	for (const [label, schema] of Object.entries({ inputEvidence, outputEvidence })) {
+		assert.deepEqual(schema.required, ["sourceKind", "title", "observedAt"], `${label} should require only portable provenance keys`);
+		assert.deepEqual(schema.properties.sourceKind.enum, PORTABLE_EVIDENCE_SOURCE_KINDS, `${label} should bound sourceKind to portable source ports`);
+		for (const hostField of ["path", "filePath", "storagePath", "sourcePath", "logPath", "repoPath"]) {
+			assert.equal(schema.required.includes(hostField), false, `${label} must not require host-specific ${hostField}`);
+		}
+	}
 });
