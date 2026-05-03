@@ -75,6 +75,7 @@ test("buildCanonicalClaimMap maps raw user and maintainer claims to canonical ca
 				},
 				{
 					claimId: "claim-contract-md-1",
+					claimFingerprint: "sha256:developer",
 					claimAudience: "developer",
 					summary: "Discovery should preserve source inventory and duplicate handling.",
 					sourceRefs: [{ path: "docs/contracts/claim-discovery-workflow.md", line: 10 }],
@@ -96,7 +97,10 @@ test("buildCanonicalClaimMap maps raw user and maintainer claims to canonical ca
 	assert.equal(packet.mappings[0].claimFingerprint, "sha256:user");
 	assert.equal(packet.mappings[1].canonicalClaimId, "M1");
 	assert.deepEqual(packet.mappings[1].alignedUserClaimIds, ["U1"]);
+	assert.deepEqual(packet.userCoverage[0].absorbedRawClaimIds, ["claim-readme-md-1"]);
 	assert.equal(packet.userCoverage[0].absorbedRawClaims[0].claimFingerprint, "sha256:user");
+	assert.deepEqual(packet.maintainerCoverage[0].absorbedRawClaimIds, ["claim-contract-md-1"]);
+	assert.equal(packet.maintainerCoverage[0].absorbedRawClaims[0].claimFingerprint, "sha256:developer");
 });
 
 test("buildCanonicalClaimMap leaves low-confidence claims for review", () => {

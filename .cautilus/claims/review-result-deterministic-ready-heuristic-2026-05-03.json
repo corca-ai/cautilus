@@ -1,0 +1,883 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "deterministic-ready-subagent-synthesis",
+    "type": "agent",
+    "reviewedAt": "2026-05-03T00:00:00Z",
+    "evidencePolicy": "Only narrow deterministic claims with a checked-in evidence bundle are marked satisfied; broad boundary, future, and skill-orchestration claims are reclassified instead of overclaimed.",
+    "sourceReviewers": [
+      "Boole",
+      "Volta",
+      "Russell",
+      "same-agent-synthesis"
+    ]
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-user-adapter-and-portability-deterministic-spec",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-specs-user-claim-discovery-spec-md-14",
+          "claimFingerprint": "sha256:93b8c3284cda9f97c3bba18688a2a6e8be0942582eb8e07799244fccce78a67a",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [],
+          "recommendedProof": "cautilus-eval",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Fresh-eye review found that deterministic packet tests prove grouping data, but not that the bundled skill consumes the packet to group next work.",
+          "evidenceRefs": [],
+          "nextAction": "Use a bundled-skill eval or audit-backed fixture to prove the skill reads the claim packet and groups review, deterministic proof, Cautilus eval, alignment, and deferred work.",
+          "recommendedEvalSurface": "dev/skill",
+          "whyThisLayer": "The claim names bundled-skill behavior over a deterministic claim packet; prove it with a dev/skill eval or audit-backed skill-flow fixture rather than packet shape alone."
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-developer-adapter-and-portability-deterministic-contract",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-live-run-invocation-md-193",
+          "claimFingerprint": "sha256:f0d50e4564f095f7476352a6e0adf638af1fcaba8e950f2b062197739e5bd334",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [],
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the deterministic-ready batch evidence bundle after subagent review and focused repair of missing tests.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+              "supportsClaimIds": [
+                "claim-docs-contracts-live-run-invocation-md-193"
+              ]
+            }
+          ],
+          "nextAction": "Keep this claim covered by the focused deterministic-ready batch checks when changing the corresponding binary, packet, adapter, runner, report, or skill-disclosure surface."
+        },
+        {
+          "claimId": "claim-docs-contracts-live-run-invocation-md-59",
+          "claimFingerprint": "sha256:6059ec1e2738f23b3c184046049c654f0fa32b494859a6906da65b1a8a6fdfbc",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [],
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the deterministic-ready batch evidence bundle after subagent review and focused repair of missing tests.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+              "supportsClaimIds": [
+                "claim-docs-contracts-live-run-invocation-md-59"
+              ]
+            }
+          ],
+          "nextAction": "Keep this claim covered by the focused deterministic-ready batch checks when changing the corresponding binary, packet, adapter, runner, report, or skill-disclosure surface."
+        },
+        {
+          "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-34",
+          "claimFingerprint": "sha256:57cfb40c24ad1142b4c035e714fd8a92e9b4962c1f54cc3745fc4149a10aa4dd",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [],
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the deterministic-ready batch evidence bundle after subagent review and focused repair of missing tests.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+              "supportsClaimIds": [
+                "claim-docs-contracts-runtime-fingerprint-optimization-md-34"
+              ]
+            }
+          ],
+          "nextAction": "Keep this claim covered by the focused deterministic-ready batch checks when changing the corresponding binary, packet, adapter, runner, report, or skill-disclosure surface."
+        },
+        {
+          "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-42",
+          "claimFingerprint": "sha256:59d8c133631e0b643a8528326ed3986dcb879eb6b39d42ca435dd9de4df24895",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [],
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the deterministic-ready batch evidence bundle after subagent review and focused repair of missing tests.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+              "supportsClaimIds": [
+                "claim-docs-contracts-runtime-fingerprint-optimization-md-42"
+              ]
+            }
+          ],
+          "nextAction": "Keep this claim covered by the focused deterministic-ready batch checks when changing the corresponding binary, packet, adapter, runner, report, or skill-disclosure surface."
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-258",
+          "claimFingerprint": "sha256:48f5766e7befdc0b2f0b0224cbc45ab1e20490741062c24f849126ad7ae5281a",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [
+            "Should this source sentence remain as broad positioning, or should it be decomposed into concrete proof obligations?"
+          ],
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "blocked",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "This is an ownership-boundary alignment claim; keep it human-auditable until docs, code, adapters, and tests are reconciled.",
+          "evidenceRefs": [],
+          "nextAction": "Do not satisfy directly; split into narrower checkable subclaims, keep as positioning, or resolve the documented alignment/deferred decision first."
+        },
+        {
+          "claimId": "claim-docs-contracts-runner-readiness-md-347",
+          "claimFingerprint": "sha256:46696fb00546a2f028dbe9f036a7e1de33ba8a47dcdd7074b4c7280cdf2c6762",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [
+            "Should this source sentence remain as broad positioning, or should it be decomposed into concrete proof obligations?"
+          ],
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "blocked",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "This is a broad policy about where deterministic behavior belongs, not one directly checkable behavior.",
+          "evidenceRefs": [],
+          "nextAction": "Do not satisfy directly; split into narrower checkable subclaims, keep as positioning, or resolve the documented alignment/deferred decision first."
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-developer-adapter-and-portability-deterministic-spec",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-specs-maintainer-adapter-host-ownership-spec-md-18",
+          "claimFingerprint": "sha256:eab70df10c32fbe7e680094571f91627ab7f2902de723b8083a4eb842507780e",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [],
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the deterministic-ready batch evidence bundle after subagent review and focused repair of missing tests.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+              "supportsClaimIds": [
+                "claim-docs-specs-maintainer-adapter-host-ownership-spec-md-18"
+              ]
+            }
+          ],
+          "nextAction": "Keep this claim covered by the focused deterministic-ready batch checks when changing the corresponding binary, packet, adapter, runner, report, or skill-disclosure surface."
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-developer-documentation-and-contracts-deterministic-contract",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-377",
+          "claimFingerprint": "sha256:4ebcb6776a40613cddaea25e17e6a777434b73564b371822ff93a88182a6b1e9",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [],
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the deterministic-ready batch evidence bundle after subagent review and focused repair of missing tests.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-377"
+              ]
+            }
+          ],
+          "nextAction": "Keep this claim covered by the focused deterministic-ready batch checks when changing the corresponding binary, packet, adapter, runner, report, or skill-disclosure surface."
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-187",
+          "claimFingerprint": "sha256:130735bbdf1969bf169ca06abc7358686ccfa2146461b0bdae476cafcbb6761d",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [
+            "Should this source sentence remain as broad positioning, or should it be decomposed into concrete proof obligations?"
+          ],
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "blocked",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The sentence asks the review flow to show deterministic bounds, but no narrow assertion yet defines the exact packet fields that count.",
+          "evidenceRefs": [],
+          "nextAction": "Do not satisfy directly; split into narrower checkable subclaims, keep as positioning, or resolve the documented alignment/deferred decision first."
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-253",
+          "claimFingerprint": "sha256:8ca72db113d324be35c266102e9b03f89f0798792273549ac3040280249aac80",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [
+            "Should this source sentence remain as broad positioning, or should it be decomposed into concrete proof obligations?"
+          ],
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "blocked",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "This explicitly describes broad positioning and product promises as blocked until decomposed; do not mark it satisfied as a product behavior.",
+          "evidenceRefs": [],
+          "nextAction": "Do not satisfy directly; split into narrower checkable subclaims, keep as positioning, or resolve the documented alignment/deferred decision first."
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-47",
+          "claimFingerprint": "sha256:45b653427563292b6418370c4faf5171a5c0bca05f568f9fc6df60bb5358c2f0",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [
+            "Should this source sentence remain as broad positioning, or should it be decomposed into concrete proof obligations?"
+          ],
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "blocked",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "This is a broad binary ownership principle; leave it as an audited boundary or split it into command-level deterministic claims.",
+          "evidenceRefs": [],
+          "nextAction": "Do not satisfy directly; split into narrower checkable subclaims, keep as positioning, or resolve the documented alignment/deferred decision first."
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-573",
+          "claimFingerprint": "sha256:2f4267a19f2f19ebee6eb0625444b67649c805bb85fa44682e131b2ff2e7b77d",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [
+            "Should this source sentence remain as broad positioning, or should it be decomposed into concrete proof obligations?"
+          ],
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "blocked",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "This is a broad provider-neutrality principle; deterministic subclaims can be proven, but the umbrella statement should not be overclaimed.",
+          "evidenceRefs": [],
+          "nextAction": "Do not satisfy directly; split into narrower checkable subclaims, keep as positioning, or resolve the documented alignment/deferred decision first."
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-653",
+          "claimFingerprint": "sha256:b2338ca8431457f9797b38b147840619b01ad7549557616dd7b394b5972ef6b0",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [
+            "Should this source sentence remain as broad positioning, or should it be decomposed into concrete proof obligations?"
+          ],
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "blocked",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "This repeats the provider-neutral binary boundary at a broad level and should be decomposed or kept human-auditable.",
+          "evidenceRefs": [],
+          "nextAction": "Do not satisfy directly; split into narrower checkable subclaims, keep as positioning, or resolve the documented alignment/deferred decision first."
+        },
+        {
+          "claimId": "claim-docs-contracts-live-run-invocation-batch-md-5",
+          "claimFingerprint": "sha256:e2469fb550996d42bbb4d13821a6dfa85e120989cc550a7fb44b60b9adc2317f",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [
+            "Should this source sentence remain as broad positioning, or should it be decomposed into concrete proof obligations?"
+          ],
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "blocked",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "This is adoption rationale about avoiding duplicate schedulers, not a shipped behavior assertion by itself.",
+          "evidenceRefs": [],
+          "nextAction": "Do not satisfy directly; split into narrower checkable subclaims, keep as positioning, or resolve the documented alignment/deferred decision first."
+        },
+        {
+          "claimId": "claim-docs-contracts-reporting-md-120",
+          "claimFingerprint": "sha256:3d9b56890a284b8382d97381cd68e2da53890933235ecf3a0508c44af42cd3a8",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [],
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as plausibly deterministic, but no direct checked evidence bundle currently proves the full claim boundary.",
+          "evidenceRefs": [],
+          "nextAction": "Add or link a focused report-packet test proving blocked states carry both machine-readable reason codes and concrete human-readable reasons."
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-developer-packets-and-reporting-deterministic-contract",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-100",
+          "claimFingerprint": "sha256:1428eec288b0dab0aa084911be814bf9b87c1d68f00e38164dbbba01e4331af3",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [],
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the deterministic-ready batch evidence bundle after subagent review and focused repair of missing tests.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-100"
+              ]
+            }
+          ],
+          "nextAction": "Keep this claim covered by the focused deterministic-ready batch checks when changing the corresponding binary, packet, adapter, runner, report, or skill-disclosure surface."
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-97",
+          "claimFingerprint": "sha256:7d3319b0e7a1f160a74b9d107b204e7be679e30bf1ed3c65c38bb71be9be3d14",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [],
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the deterministic-ready batch evidence bundle after subagent review and focused repair of missing tests.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-97"
+              ]
+            }
+          ],
+          "nextAction": "Keep this claim covered by the focused deterministic-ready batch checks when changing the corresponding binary, packet, adapter, runner, report, or skill-disclosure surface."
+        },
+        {
+          "claimId": "claim-docs-contracts-live-run-invocation-batch-md-77",
+          "claimFingerprint": "sha256:57c666ca6aca677b5b250c22b235e4a0d037aaaa07bb1c66151ad9947217cabf",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [],
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the deterministic-ready batch evidence bundle after subagent review and focused repair of missing tests.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+              "supportsClaimIds": [
+                "claim-docs-contracts-live-run-invocation-batch-md-77"
+              ]
+            }
+          ],
+          "nextAction": "Keep this claim covered by the focused deterministic-ready batch checks when changing the corresponding binary, packet, adapter, runner, report, or skill-disclosure surface."
+        },
+        {
+          "claimId": "claim-docs-contracts-reporting-md-129",
+          "claimFingerprint": "sha256:f837e4e0934106ad104956fd9d7e47ae5f9fa801b51a2ef9d30f008ea7e2158f",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [],
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the deterministic-ready batch evidence bundle after subagent review and focused repair of missing tests.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+              "supportsClaimIds": [
+                "claim-docs-contracts-reporting-md-129"
+              ]
+            }
+          ],
+          "nextAction": "Keep this claim covered by the focused deterministic-ready batch checks when changing the corresponding binary, packet, adapter, runner, report, or skill-disclosure surface."
+        },
+        {
+          "claimId": "claim-docs-contracts-reporting-md-48",
+          "claimFingerprint": "sha256:a28fba1074645afd60275da2aa5b322795c05b91ab75f8330802d59f8e14d28e",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [],
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the deterministic-ready batch evidence bundle after subagent review and focused repair of missing tests.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+              "supportsClaimIds": [
+                "claim-docs-contracts-reporting-md-48"
+              ]
+            }
+          ],
+          "nextAction": "Keep this claim covered by the focused deterministic-ready batch checks when changing the corresponding binary, packet, adapter, runner, report, or skill-disclosure surface."
+        },
+        {
+          "claimId": "claim-docs-contracts-scenario-proposal-sources-md-28",
+          "claimFingerprint": "sha256:77a8da5194b241cb6d76b536a1d670c2edb7bce6d432ce4e2acffde0831356fd",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [],
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the deterministic-ready batch evidence bundle after subagent review and focused repair of missing tests.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+              "supportsClaimIds": [
+                "claim-docs-contracts-scenario-proposal-sources-md-28"
+              ]
+            }
+          ],
+          "nextAction": "Keep this claim covered by the focused deterministic-ready batch checks when changing the corresponding binary, packet, adapter, runner, report, or skill-disclosure surface."
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-607",
+          "claimFingerprint": "sha256:c0c7d0f38d477c81974441fe12254d670a3a1fc6fb362622769dc305a89dcb8f",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [
+            "Should this source sentence remain as broad positioning, or should it be decomposed into concrete proof obligations?"
+          ],
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "blocked",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "This is an explicit future/deferred question about Markdown or HTML claim rendering beyond current JSON summary output.",
+          "evidenceRefs": [],
+          "nextAction": "Do not satisfy directly; split into narrower checkable subclaims, keep as positioning, or resolve the documented alignment/deferred decision first."
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-developer-packets-and-reporting-deterministic-spec",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-specs-maintainer-reporting-review-variants-spec-md-13",
+          "claimFingerprint": "sha256:fd93495633465840b803ea3172f89cd85ec3c4496c65c6ecb63437c2e223d2f7",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [],
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the deterministic-ready batch evidence bundle after subagent review and focused repair of missing tests.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+              "supportsClaimIds": [
+                "claim-docs-specs-maintainer-reporting-review-variants-spec-md-13"
+              ]
+            }
+          ],
+          "nextAction": "Keep this claim covered by the focused deterministic-ready batch checks when changing the corresponding binary, packet, adapter, runner, report, or skill-disclosure surface."
+        },
+        {
+          "claimId": "claim-docs-specs-maintainer-scenario-history-normalization-spec-md-14",
+          "claimFingerprint": "sha256:05018c4fe296c0f5384de58b41f266797904d84a5021a3a4445413a2a3343068",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [],
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the deterministic-ready batch evidence bundle after subagent review and focused repair of missing tests.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+              "supportsClaimIds": [
+                "claim-docs-specs-maintainer-scenario-history-normalization-spec-md-14"
+              ]
+            }
+          ],
+          "nextAction": "Keep this claim covered by the focused deterministic-ready batch checks when changing the corresponding binary, packet, adapter, runner, report, or skill-disclosure surface."
+        },
+        {
+          "claimId": "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-13",
+          "claimFingerprint": "sha256:cd34e15bce32d678405ca65cb21575ec727061d9441c24e20b972a34f6aa8148",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [
+            "Should this source sentence remain as broad positioning, or should it be decomposed into concrete proof obligations?"
+          ],
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "blocked",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Deterministic tests prove parts of the boundary, but the umbrella ownership sentence should be audited across spec, CLI, schema, and skill surfaces.",
+          "evidenceRefs": [],
+          "nextAction": "Do not satisfy directly; split into narrower checkable subclaims, keep as positioning, or resolve the documented alignment/deferred decision first."
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-developer-quality-gates-deterministic-contract",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-627",
+          "claimFingerprint": "sha256:2f006cdc0b2c26694835121869f8eb2d65ff4327e293477d439a86c4f58f58a7",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [],
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the deterministic-ready batch evidence bundle after subagent review and focused repair of missing tests.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-627"
+              ]
+            }
+          ],
+          "nextAction": "Keep this claim covered by the focused deterministic-ready batch checks when changing the corresponding binary, packet, adapter, runner, report, or skill-disclosure surface."
+        },
+        {
+          "claimId": "claim-docs-contracts-runner-readiness-md-29",
+          "claimFingerprint": "sha256:9ac5a58afee765f6920438778b4c83fabd0615aa52ffd68044c02f24255280ba",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [],
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the deterministic-ready batch evidence bundle after subagent review and focused repair of missing tests.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+              "supportsClaimIds": [
+                "claim-docs-contracts-runner-readiness-md-29"
+              ]
+            }
+          ],
+          "nextAction": "Keep this claim covered by the focused deterministic-ready batch checks when changing the corresponding binary, packet, adapter, runner, report, or skill-disclosure surface."
+        },
+        {
+          "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-154",
+          "claimFingerprint": "sha256:cf22224c908691a76efd6ffc47cac4d7dcd50a298b34a655fc05fd00d31af065",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [],
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the deterministic-ready batch evidence bundle after subagent review and focused repair of missing tests.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+              "supportsClaimIds": [
+                "claim-docs-contracts-runtime-fingerprint-optimization-md-154"
+              ]
+            }
+          ],
+          "nextAction": "Keep this claim covered by the focused deterministic-ready batch checks when changing the corresponding binary, packet, adapter, runner, report, or skill-disclosure surface."
+        },
+        {
+          "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-188",
+          "claimFingerprint": "sha256:fcfea5f504bd3665d363e93c6a62e485a89bf34e26feaf25970b1acbeaa448a2",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [],
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the deterministic-ready batch evidence bundle after subagent review and focused repair of missing tests.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+              "supportsClaimIds": [
+                "claim-docs-contracts-runtime-fingerprint-optimization-md-188"
+              ]
+            }
+          ],
+          "nextAction": "Keep this claim covered by the focused deterministic-ready batch checks when changing the corresponding binary, packet, adapter, runner, report, or skill-disclosure surface."
+        },
+        {
+          "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-8",
+          "claimFingerprint": "sha256:08d93168049eadacc2c094b7a88b6d03a8526e9d1369ea055058ed10603f962d",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [],
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the deterministic-ready batch evidence bundle after subagent review and focused repair of missing tests.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+              "supportsClaimIds": [
+                "claim-docs-contracts-runtime-fingerprint-optimization-md-8"
+              ]
+            }
+          ],
+          "nextAction": "Keep this claim covered by the focused deterministic-ready batch checks when changing the corresponding binary, packet, adapter, runner, report, or skill-disclosure surface."
+        },
+        {
+          "claimId": "claim-docs-contracts-scenario-history-md-238",
+          "claimFingerprint": "sha256:76f03f289a1708b2223351eb5b59634e454be62460ecff9d205f5bb8c4903436",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [
+            "Should this source sentence remain as broad positioning, or should it be decomposed into concrete proof obligations?"
+          ],
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "blocked",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "This is recorded as deferred compare/history expansion with no current call site or requester.",
+          "evidenceRefs": [],
+          "nextAction": "Do not satisfy directly; split into narrower checkable subclaims, keep as positioning, or resolve the documented alignment/deferred decision first."
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-developer-quality-gates-deterministic-spec",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-19",
+          "claimFingerprint": "sha256:266f0654c93bf588ccb621ac04d8a9b5766ce5f01c70a971634f158bc546388d",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [],
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the deterministic-ready batch evidence bundle after subagent review and focused repair of missing tests.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+              "supportsClaimIds": [
+                "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-19"
+              ]
+            }
+          ],
+          "nextAction": "Keep this claim covered by the focused deterministic-ready batch checks when changing the corresponding binary, packet, adapter, runner, report, or skill-disclosure surface."
+        },
+        {
+          "claimId": "claim-docs-specs-maintainer-optimization-loop-spec-md-19",
+          "claimFingerprint": "sha256:152363b9e592e16a6b64063fc5b1b8685dd1397614fbd0ce7371681619737698",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [],
+          "recommendedProof": "cautilus-eval",
+          "verificationReadiness": "ready-to-verify",
+          "recommendedEvalSurface": "dev/repo",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as behavior or skill-orchestration proof that should be checked through a Cautilus eval/audit route rather than deterministic code inspection alone.",
+          "evidenceRefs": [],
+          "nextAction": "Attach packet-level tests plus a reopenable before/after held-out eval route before marking the optimization loop proof satisfied."
+        },
+        {
+          "claimId": "claim-docs-specs-maintainer-claim-discovery-workflow-spec-md-19",
+          "claimFingerprint": "sha256:a49a3b3c4d8507f3da03484afe56c55e4c3fe358fa57eaf55b0fc52d8a794f4e",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [],
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as plausibly deterministic, but no direct checked evidence bundle currently proves the full claim boundary.",
+          "evidenceRefs": [],
+          "nextAction": "Attach the current active spec-tree observation to a deterministic test or evidence bundle before marking this proof note satisfied."
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-user-quality-gates-deterministic-spec",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-specs-user-evaluation-spec-md-7",
+          "claimFingerprint": "sha256:acdb5102c491f925e41c367a64de268d5f6e70d89eeac7d7ece7289ba3dddd58",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [],
+          "recommendedProof": "cautilus-eval",
+          "verificationReadiness": "ready-to-verify",
+          "recommendedEvalSurface": "dev/repo",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as behavior or skill-orchestration proof that should be checked through a Cautilus eval/audit route rather than deterministic code inspection alone.",
+          "evidenceRefs": [],
+          "nextAction": "Create or attach a checked Cautilus eval route that demonstrates behavior ordinary deterministic tests cannot fully explain while the repo controls the runner."
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-developer-agent-and-skill-workflow-deterministic-contract",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-201",
+          "claimFingerprint": "sha256:217060ae33b576f27c9e488235a7b291e4fa3b3061da405ef153f4a209e51c43",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [],
+          "recommendedProof": "cautilus-eval",
+          "verificationReadiness": "ready-to-verify",
+          "recommendedEvalSurface": "dev/skill",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as behavior or skill-orchestration proof that should be checked through a Cautilus eval/audit route rather than deterministic code inspection alone.",
+          "evidenceRefs": [],
+          "nextAction": "Prove the bundled skill shows a separate review plan after deterministic claim discovery instead of folding review into the scan step."
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-21",
+          "claimFingerprint": "sha256:fde6d2140934f920952b573f759955309b9ef147087ffcf646eed715be8668ac",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [],
+          "recommendedProof": "cautilus-eval",
+          "verificationReadiness": "ready-to-verify",
+          "recommendedEvalSurface": "dev/skill",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as behavior or skill-orchestration proof that should be checked through a Cautilus eval/audit route rather than deterministic code inspection alone.",
+          "evidenceRefs": [],
+          "nextAction": "Use a skill-flow fixture or audit log to prove the skill selects refresh from prior claim JSON and then reads the deterministic refresh plan."
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-39",
+          "claimFingerprint": "sha256:1cce79c5204f1bf8cd1feb6735fd63b25a41f3de67a2b5c3861a1825f869052c",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [],
+          "recommendedProof": "cautilus-eval",
+          "verificationReadiness": "ready-to-verify",
+          "recommendedEvalSurface": "dev/skill",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as behavior or skill-orchestration proof that should be checked through a Cautilus eval/audit route rather than deterministic code inspection alone.",
+          "evidenceRefs": [],
+          "nextAction": "Use a skill-flow fixture or audit log to prove prior state leads to diff-aware refresh selection before review."
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-591",
+          "claimFingerprint": "sha256:e69d60f7c92a20a2320993d00a9b6841701ba2806fa758b2c19f69acfd54279d",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [],
+          "recommendedProof": "cautilus-eval",
+          "verificationReadiness": "ready-to-verify",
+          "recommendedEvalSurface": "dev/skill",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as behavior or skill-orchestration proof that should be checked through a Cautilus eval/audit route rather than deterministic code inspection alone.",
+          "evidenceRefs": [],
+          "nextAction": "Use a skill-flow fixture or audit log to prove existing claim state selects the refresh path while the binary owns the refresh-plan packet."
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-260",
+          "claimFingerprint": "sha256:3647c769bd0d7e394a06b1fd8ed656afe9f215d21539caad402d082349200012",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [
+            "Should this source sentence remain as broad positioning, or should it be decomposed into concrete proof obligations?"
+          ],
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "blocked",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "This is a proof-routing policy; split it into concrete command, packet, runner, readiness, and model-backed subclaims before satisfaction.",
+          "evidenceRefs": [],
+          "nextAction": "Do not satisfy directly; split into narrower checkable subclaims, keep as positioning, or resolve the documented alignment/deferred decision first."
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-356",
+          "claimFingerprint": "sha256:1844fc5f59ff44a652520ea491bcacebf795a1dcb4a536a5f38d913f351d74d5",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [
+            "Should this source sentence remain as broad positioning, or should it be decomposed into concrete proof obligations?"
+          ],
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "blocked",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "This is a binary-versus-skill architecture boundary; audit it across surfaces instead of satisfying it with one deterministic check.",
+          "evidenceRefs": [],
+          "nextAction": "Do not satisfy directly; split into narrower checkable subclaims, keep as positioning, or resolve the documented alignment/deferred decision first."
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-65",
+          "claimFingerprint": "sha256:2446875e223e9944dcb79a11ca4c42634a425e726f3c0771a9075aac69678436",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [
+            "Should this source sentence remain as broad positioning, or should it be decomposed into concrete proof obligations?"
+          ],
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "blocked",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "This is a broad skill orchestration boundary and depends on agent behavior outside deterministic binary proof.",
+          "evidenceRefs": [],
+          "nextAction": "Do not satisfy directly; split into narrower checkable subclaims, keep as positioning, or resolve the documented alignment/deferred decision first."
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-578",
+          "claimFingerprint": "sha256:7de8c9a43753e5fa399bc925d09b5cd194092042ee884a565b09c916ec9d60f8",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [
+            "Should this source sentence remain as broad positioning, or should it be decomposed into concrete proof obligations?"
+          ],
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "blocked",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "This is explicitly future dogfood guidance about subagent batch sizing, not a current behavior proof target.",
+          "evidenceRefs": [],
+          "nextAction": "Do not satisfy directly; split into narrower checkable subclaims, keep as positioning, or resolve the documented alignment/deferred decision first."
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-developer-agent-and-skill-workflow-deterministic-skill-doc",
+      "claimUpdates": [
+        {
+          "claimId": "claim-skills-cautilus-skill-md-223",
+          "claimFingerprint": "sha256:0430d8a298c4e11b0f53d621d1b7c1c908425d463f7a66dc5efbf4043936efbd",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [],
+          "recommendedProof": "cautilus-eval",
+          "verificationReadiness": "ready-to-verify",
+          "recommendedEvalSurface": "dev/skill",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as behavior or skill-orchestration proof that should be checked through a Cautilus eval/audit route rather than deterministic code inspection alone.",
+          "evidenceRefs": [],
+          "nextAction": "Use a skill-flow fixture or audit log to prove agents read the packet first and cite HTML only when a browser-facing deliverable is requested."
+        },
+        {
+          "claimId": "claim-skills-cautilus-skill-md-22",
+          "claimFingerprint": "sha256:8f8b1ba060f857e8ce89ec62f94e7e3d1bb3bb8e370321ad7bdb03be3ae3292a",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [
+            "Should this source sentence remain as broad positioning, or should it be decomposed into concrete proof obligations?"
+          ],
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "blocked",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "This is a binary-versus-skill ownership boundary. Pieces are linted, but the broad ownership statement should stay human-auditable.",
+          "evidenceRefs": [],
+          "nextAction": "Do not satisfy directly; split into narrower checkable subclaims, keep as positioning, or resolve the documented alignment/deferred decision first."
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-developer-claim-discovery-and-review-deterministic-contract",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-590",
+          "claimFingerprint": "sha256:4320ef933b3041cf1a4934f75f1650b36ac597e6e9a88d17216ebf2251c20800",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [],
+          "recommendedProof": "cautilus-eval",
+          "verificationReadiness": "ready-to-verify",
+          "recommendedEvalSurface": "dev/skill",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Reviewed as behavior or skill-orchestration proof that should be checked through a Cautilus eval/audit route rather than deterministic code inspection alone.",
+          "evidenceRefs": [],
+          "nextAction": "Prove LLM claim review asks for a separate review-budget confirmation after deterministic scan instead of silently launching review."
+        }
+      ]
+    }
+  ]
+}

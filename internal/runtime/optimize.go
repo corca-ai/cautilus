@@ -187,7 +187,7 @@ func GenerateOptimizeProposal(packet map[string]any, inputFile *string, now time
 			"Do not weaken held-out, comparison, or structured review gates to make the candidate pass.",
 			"If the cited evidence still regresses after the next bounded revision, defer instead of retrying indefinitely.",
 		},
-		"followUpChecks": buildFollowUpChecks(decision),
+		"followUpChecks": buildFollowUpChecks(decision, suggestedChanges),
 	}
 	if inputFile != nil {
 		proposal["inputFile"] = *inputFile
@@ -750,8 +750,8 @@ func buildProposalRationale(decision string, optimizer map[string]any, evidence 
 	return fmt.Sprintf("The next revision is bounded by %d high-signal issue(s) selected under the %s budget plan.", countHighSignalEvidence(evidence), stringOrEmpty(optimizer["budget"]))
 }
 
-func buildFollowUpChecks(decision string) []string {
-	if decision == "hold" {
+func buildFollowUpChecks(decision string, suggestedChanges []any) []string {
+	if decision == "hold" && len(suggestedChanges) == 0 {
 		return []string{"Preserve the current candidate as the next baseline."}
 	}
 	return []string{

@@ -1,0 +1,282 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-deterministic-ready-batch-2026-05-03",
+  "createdForClaimIds": [
+    "claim-docs-contracts-live-run-invocation-md-193",
+    "claim-docs-contracts-live-run-invocation-md-59",
+    "claim-docs-contracts-runtime-fingerprint-optimization-md-34",
+    "claim-docs-contracts-runtime-fingerprint-optimization-md-42",
+    "claim-docs-specs-maintainer-adapter-host-ownership-spec-md-18",
+    "claim-docs-contracts-claim-discovery-workflow-md-377",
+    "claim-docs-contracts-claim-discovery-workflow-md-100",
+    "claim-docs-contracts-claim-discovery-workflow-md-97",
+    "claim-docs-contracts-live-run-invocation-batch-md-77",
+    "claim-docs-contracts-reporting-md-129",
+    "claim-docs-contracts-reporting-md-48",
+    "claim-docs-contracts-scenario-proposal-sources-md-28",
+    "claim-docs-specs-maintainer-reporting-review-variants-spec-md-13",
+    "claim-docs-specs-maintainer-scenario-history-normalization-spec-md-14",
+    "claim-docs-contracts-claim-discovery-workflow-md-627",
+    "claim-docs-contracts-runner-readiness-md-29",
+    "claim-docs-contracts-runtime-fingerprint-optimization-md-154",
+    "claim-docs-contracts-runtime-fingerprint-optimization-md-188",
+    "claim-docs-contracts-runtime-fingerprint-optimization-md-8",
+    "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-19"
+  ],
+  "repoCommit": "8271c0dd752cda36873db5b5a60f2597b1f1960c",
+  "summary": "This bundle records deterministic proof for the first deterministic-ready heuristic batch after subagent review. It covers claim packet grouping, live-run adapter packets, canonical claim mapping, report packets, scenario proposal normalization, runner readiness visibility, runtime-fingerprint optimize gates, skill disclosure linting, and external consumer onboarding smoke.",
+  "evidenceScope": {
+    "targetSurface": "deterministic Cautilus binary, packet, adapter, report, runner-readiness, canonical-claim, and skill-disclosure surfaces",
+    "claimBoundary": "Only the listed narrow deterministic behavior claims are marked satisfied. Broad ownership, policy, skill-orchestration, future-work, and eval-behavior claims from the same review input remain reclassified or unresolved.",
+    "notClaimed": [
+      "The bundled skill always chooses the right branch in every host runtime",
+      "Human-facing product philosophy claims are fully proven by deterministic tests",
+      "Held-out behavior evals pass for every user-facing evaluation claim",
+      "Future Markdown or HTML claim-show rendering exists",
+      "Every possible consumer adapter shape has been dogfooded",
+      "The bundled skill consumes the claim packet to group next work"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/runtime -run 'TestBuildClaimStatusSummaryIncludesSatisfiedEvidence|TestBuildClaimReviewInputCanFocusActionBucket|TestBuildClaimReviewInputClustersAndSkipsDeterministically|TestBuildClaimReviewInputSeparatesAudienceAndSemanticGroup|TestBuildReportPacketNormalizesAndComparesRuntimeFingerprint|TestBuildReportPacketNotesPriorEvidenceWithoutRuntimeIdentity|TestGenerateOptimizeProposalAddsPassingSimplificationForRuntimeChange|TestGenerateOptimizeProposalKeepsBaselineFollowUpForHoldWithoutSuggestedChanges|TestRunnerReadinessReportsAssessedSmokeOnlyAndStaleStates|TestAgentStatusIncludesRunnerReadinessBranchBeforeClaimBranches|TestDoctorRunnerReadinessKeepsAdapterReadyWithMissingAssessment|TestValidateAdapterDataAcceptsLiveRunInvocation|TestBuildScenarioProposalsNormalizesConversationContinuity|TestBuildScenarioProposalsPreservesWorkflowSurface' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "protectedBehaviors": [
+          "claim status and review input expose evidence, action buckets, semantic grouping, and audience separation",
+          "runtime fingerprints are normalized and compared without treating model changes as behavior regressions",
+          "passing simplification proposals preserve held-out, comparison, and review gate follow-up checks",
+          "runner readiness and agent status expose read-only readiness branches",
+          "adapter live-run invocation shape is accepted",
+          "scenario proposal helpers preserve normalized behavior surfaces",
+          "hold proposals without suggested changes keep baseline-only follow-up guidance"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/app -run 'TestCLILiveEvalRunScenariosExecutesExplicitRequestBatch|TestCLILiveEvalPrepareRequestBatchAcceptsCatalogCandidates|TestCLIScenarioNormalizeChatbotProducesCandidatesThatChainIntoPrepareAndPropose|TestFixtureExamplesValidateAgainstPublishedSchemas' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "protectedBehaviors": [
+          "live eval request-batch preparation expands catalog candidates and samples into deterministic request packets",
+          "live eval batch execution returns machine-readable result packets",
+          "chatbot scenario normalization chains into proposal packet generation",
+          "published fixtures validate against schemas"
+        ]
+      }
+    },
+    {
+      "command": "node --test scripts/agent-runtime/build-canonical-claim-map.test.mjs scripts/agent-runtime/build-report-packet.test.mjs scripts/agent-runtime/scenario-proposal-schemas.test.mjs scripts/agent-runtime/reviewable-artifact-projections.test.mjs scripts/on-demand/smoke-external-consumer.test.mjs",
+      "exitCode": 0,
+      "observed": {
+        "tests": 19,
+        "pass": 19,
+        "protectedBehaviors": [
+          "canonical claim maps preserve absorbed raw claim ids and fingerprints",
+          "report packets aggregate scenario telemetry and validate report shape",
+          "scenario proposal schemas and generated packets stay aligned",
+          "readable artifact projections stay tied to machine-readable packet renderers",
+          "external consumer onboarding smoke completes the first bounded run"
+        ]
+      }
+    },
+    {
+      "command": "node scripts/check-cautilus-skill-disclosure.mjs",
+      "exitCode": 0,
+      "observed": {
+        "status": "ok",
+        "sourceSkill": "skills/cautilus/SKILL.md",
+        "packagedSkill": "plugins/cautilus/skills/cautilus/SKILL.md",
+        "sourceNonemptyLines": 180,
+        "packagedNonemptyLines": 180,
+        "requiredFragments": 15,
+        "forbiddenFragments": 9,
+        "globalForbiddenFragments": 7
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "internal/runtime/claim_discovery.go",
+      "kind": "claim-discovery-runtime",
+      "contentHash": "sha256:ff4f75d6a2af1e63219578e49e4a5866b2b2e820e756aa295ccea266f2201de8"
+    },
+    {
+      "path": "internal/runtime/claim_discovery_test.go",
+      "kind": "claim-discovery-tests",
+      "contentHash": "sha256:8bd4689d1c9ce45719d566ab183b48591392a0ba91783c36a5943f7cc31e1e57"
+    },
+    {
+      "path": "internal/runtime/adapter_test.go",
+      "kind": "adapter-tests",
+      "contentHash": "sha256:8df1d34c92ca15195c275aee9b3db0af35786d9448ef5293ac31c156ee67b464"
+    },
+    {
+      "path": "internal/runtime/runtime_fingerprint.go",
+      "kind": "runtime-fingerprint-runtime",
+      "contentHash": "sha256:552a6473c71592bec9636f1cb6cd265efc8348bafe6ce9a22ee7a26b896710c0"
+    },
+    {
+      "path": "internal/runtime/runtime_fingerprint_test.go",
+      "kind": "runtime-fingerprint-tests",
+      "contentHash": "sha256:8b4c61d12ff74bdcccc2a645d824003603f323181322eca14b371aff3eb57002"
+    },
+    {
+      "path": "internal/runtime/runner_readiness_test.go",
+      "kind": "runner-readiness-tests",
+      "contentHash": "sha256:4d09a568814f3c792cd9ee9a4f944e0ff407f8586cdb0114a4d8b7220dab9784"
+    },
+    {
+      "path": "internal/runtime/report.go",
+      "kind": "report-runtime",
+      "contentHash": "sha256:bee4b85e28ec9bb4a3d2868469155cd3a7dd226ad51c2513707d14322f3abf4b"
+    },
+    {
+      "path": "internal/runtime/proposals.go",
+      "kind": "scenario-proposal-runtime",
+      "contentHash": "sha256:52ac423061937b57132a9ac8ed0c6861f68e515fea9fc055a3f552ad0d44df0d"
+    },
+    {
+      "path": "internal/runtime/proposals_test.go",
+      "kind": "scenario-proposal-tests",
+      "contentHash": "sha256:b49b373dc1fb10b910fda036051bd376552514eb80ff943d3bd575a5faa3d66e"
+    },
+    {
+      "path": "internal/runtime/optimize.go",
+      "kind": "optimize-runtime",
+      "contentHash": "sha256:6a2351146fc22c958e46984cb596b02dc4883b78f377b644d4734d44e8a3e485"
+    },
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "cli-smoke-tests",
+      "contentHash": "sha256:c064a9f22ee194ef5438dde712d8b4fb5bdf10f7d40713268f7df04a39320ec6"
+    },
+    {
+      "path": "internal/app/examples_schema_test.go",
+      "kind": "schema-fixture-tests",
+      "contentHash": "sha256:19bc0846340538f0871ea7b919f55a5a25f899c797da957b8b6c055ff47ad823"
+    },
+    {
+      "path": "scripts/agent-runtime/build-canonical-claim-map.mjs",
+      "kind": "canonical-claim-map-runtime",
+      "contentHash": "sha256:f91212074ea58875ff6f3ab47f3f1cf10c1e7181da3fd8b2d40619158ac6871e"
+    },
+    {
+      "path": "scripts/agent-runtime/build-canonical-claim-map.test.mjs",
+      "kind": "canonical-claim-map-tests",
+      "contentHash": "sha256:0b6fffc258910c4ada3bfa2c12dc495ff87fe6e89996b17555ca4d0aa8142f1d"
+    },
+    {
+      "path": "scripts/agent-runtime/build-report-packet.mjs",
+      "kind": "report-packet-runtime",
+      "contentHash": "sha256:eda1c909395f9b63462914e0624b07e19877dd3eb49b4b1c1286c81860ce3e9c"
+    },
+    {
+      "path": "scripts/agent-runtime/build-report-packet.test.mjs",
+      "kind": "report-packet-tests",
+      "contentHash": "sha256:4502bce244d1ce7b51c16fcd6a801db258f6f2d633050fff7ea3677218d1b5a1"
+    },
+    {
+      "path": "scripts/agent-runtime/scenario-proposal-schemas.test.mjs",
+      "kind": "scenario-proposal-schema-tests",
+      "contentHash": "sha256:129b0d27d0df1f216e1cdfa1f501440a48e56f812b3efd996dab202fd4fc064f"
+    },
+    {
+      "path": "scripts/agent-runtime/reviewable-artifact-projections.test.mjs",
+      "kind": "reviewable-artifact-tests",
+      "contentHash": "sha256:551eacf3331fc5c4dcc581a67ede7669a42d51803be5b77238406f012cf0fe3d"
+    },
+    {
+      "path": "scripts/check-cautilus-skill-disclosure.mjs",
+      "kind": "skill-disclosure-lint",
+      "contentHash": "sha256:aa3cf232ef8bee1dcc74de9a85c494e75e7d95af13cb9f0c5332dcab78e2e2d2"
+    },
+    {
+      "path": "scripts/on-demand/smoke-external-consumer.test.mjs",
+      "kind": "external-consumer-smoke",
+      "contentHash": "sha256:c246166e8b608dfad02df3d9badddf689a07896b31ca17dd61fb2ef2d2099a05"
+    },
+    {
+      "path": "skills/cautilus/SKILL.md",
+      "kind": "bundled-skill-source",
+      "contentHash": "sha256:15231ae6dc060dfcfb25e32a5e5a45b4940426a902718491003aec2b5aa71989"
+    },
+    {
+      "path": "docs/contracts/reviewable-artifact-projections.json",
+      "kind": "reviewable-artifact-contract",
+      "contentHash": "sha256:af2ce09e6e672b78cf96d1b32fc559b1986a2f83e45dca61b041b6e0a181abec"
+    },
+    {
+      "path": "docs/contracts/runtime-fingerprint-optimization.md",
+      "kind": "runtime-fingerprint-contract",
+      "contentHash": "sha256:811fbe58b96aa02bde246cd104abef42c9d17cd4281095269dcc932cf5634250"
+    },
+    {
+      "path": "docs/contracts/claim-discovery-workflow.md",
+      "kind": "claim-discovery-contract",
+      "contentHash": "sha256:e477166c450caf2d6f8bf8e420b02beb5377e04146438e62a5a5e7add9fed890"
+    },
+    {
+      "path": "docs/contracts/live-run-invocation.md",
+      "kind": "live-run-contract",
+      "contentHash": "sha256:e5e6de878b5b5958edd68768c3013b0d5e04aabda0b19acd5367e875ba73382c"
+    },
+    {
+      "path": "docs/contracts/live-run-invocation-batch.md",
+      "kind": "live-run-batch-contract",
+      "contentHash": "sha256:2e8c42c42bfbb252cf175af9c73f74aa5ec8b4ec17e6cae7c8a3356c0666e279"
+    },
+    {
+      "path": "docs/contracts/reporting.md",
+      "kind": "reporting-contract",
+      "contentHash": "sha256:bf309380f38e3bc836e2864fa836c48f57a169d57c5d832f533a1f3f9b58acde"
+    },
+    {
+      "path": "docs/contracts/scenario-proposal-sources.md",
+      "kind": "scenario-proposal-contract",
+      "contentHash": "sha256:aff101594f0be331937456bec3db1ef28d418e5bcdc5344fa1bb0055e35e11ca"
+    },
+    {
+      "path": "docs/contracts/runner-readiness.md",
+      "kind": "runner-readiness-contract",
+      "contentHash": "sha256:1c8021012227c88ff153e36ece38a20fa2bce4f5d3e388ea32a3ff9277b15359"
+    },
+    {
+      "path": "docs/specs/maintainer/reporting-review-variants.spec.md",
+      "kind": "maintainer-spec",
+      "contentHash": "sha256:7622f5b6abc41037ec192e64583e99fedacfc5c08e48ca44d8499af3e81dd0a6"
+    },
+    {
+      "path": "docs/specs/maintainer/scenario-history-normalization.spec.md",
+      "kind": "maintainer-spec",
+      "contentHash": "sha256:9d55c70725e76dd4d64268fa0f2e89c70ae4940be68bd6ed446ba6968781e996"
+    },
+    {
+      "path": "docs/specs/maintainer/binary-skill-boundary.spec.md",
+      "kind": "maintainer-spec",
+      "contentHash": "sha256:5cff25acb56dc8c6c27239ef8ecc463516fa4c89f0abfec408998b3cc7f7ce67"
+    },
+    {
+      "path": "docs/specs/maintainer/adapter-host-ownership.spec.md",
+      "kind": "maintainer-spec",
+      "contentHash": "sha256:9725d89e68240ef231b321a5c181a4d41f9bc393911c5620485fa4623438c42f"
+    },
+    {
+      "path": "docs/specs/user/claim-discovery.spec.md",
+      "kind": "user-spec",
+      "contentHash": "sha256:db961dcd96fa1c0ff99ac84d4eaa783c3df4c83c52f23543272d985d7b54d4ac"
+    },
+    {
+      "path": ".agents/cautilus-adapter.yaml",
+      "kind": "repo-cautilus-adapter",
+      "contentHash": "sha256:6be0e0ca5b9351e39fa31455931d032225604057ae53d73fa7fd8af203605b52"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "Focused deterministic Go, Node, disclosure-lint, and external-consumer smoke checks passed after tightening the two missing tests identified by subagent review."
+  }
+}

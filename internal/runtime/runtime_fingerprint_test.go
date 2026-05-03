@@ -196,6 +196,63 @@ func TestGenerateOptimizeProposalAddsPassingSimplificationForRuntimeChange(t *te
 	if firstChange["id"] != "passing-simplification" || firstChange["optional"] != true {
 		t.Fatalf("expected optional simplification change, got %#v", proposal["suggestedChanges"])
 	}
+	stopConditions := stringSliceValue(proposal["stopConditions"])
+	if !containsString(stopConditions, "Do not weaken held-out, comparison, or structured review gates to make the candidate pass.") {
+		t.Fatalf("expected stop conditions to preserve review gates, got %#v", proposal["stopConditions"])
+	}
+	followUpChecks := stringSliceValue(proposal["followUpChecks"])
+	if !containsString(followUpChecks, "Rerun held-out before accepting the revision.") ||
+		!containsString(followUpChecks, "Rerun comparison and review variants when those surfaces exist for the target repo.") {
+		t.Fatalf("expected follow-up checks to require held-out, comparison, and review gates, got %#v", proposal["followUpChecks"])
+	}
+}
+
+func TestGenerateOptimizeProposalKeepsBaselineFollowUpForHoldWithoutSuggestedChanges(t *testing.T) {
+	report := map[string]any{
+		"schemaVersion": contracts.ReportPacketSchema,
+		"generatedAt":   "2026-04-24T00:00:00Z",
+		"candidate":     "candidate",
+		"baseline":      "baseline",
+		"intent":        "Keep the skill behavior stable.",
+		"intentProfile": map[string]any{
+			"schemaVersion":   contracts.BehaviorIntentSchema,
+			"summary":         "Keep the skill behavior stable.",
+			"behaviorSurface": BehaviorSurfaces["OPERATOR_BEHAVIOR"],
+		},
+		"commands":            []any{},
+		"commandObservations": []any{},
+		"modesRun":            []any{"held_out"},
+		"modeSummaries":       []any{map[string]any{"mode": "held_out", "status": "completed"}},
+		"telemetry":           map[string]any{},
+		"improved":            []any{"stable-case"},
+		"regressed":           []any{},
+		"unchanged":           []any{},
+		"noisy":               []any{},
+		"humanReviewFindings": []any{},
+		"recommendation":      "accept-now",
+	}
+	packet := map[string]any{
+		"schemaVersion":      contracts.OptimizeInputsSchema,
+		"generatedAt":        "2026-04-24T00:00:00Z",
+		"repoRoot":           ".",
+		"optimizationTarget": "prompt",
+		"intentProfile":      report["intentProfile"],
+		"optimizer":          buildOptimizerPlan("medium"),
+		"reportFile":         "report.json",
+		"report":             report,
+		"objective":          map[string]any{"constraints": []any{}},
+	}
+	proposal, err := GenerateOptimizeProposal(packet, nil, time.Date(2026, 4, 24, 0, 0, 0, 0, time.UTC))
+	if err != nil {
+		t.Fatalf("GenerateOptimizeProposal returned error: %v", err)
+	}
+	if proposal["decision"] != "hold" || len(arrayOrEmpty(proposal["suggestedChanges"])) != 0 {
+		t.Fatalf("expected hold without suggested changes, got decision=%#v changes=%#v", proposal["decision"], proposal["suggestedChanges"])
+	}
+	followUpChecks := stringSliceValue(proposal["followUpChecks"])
+	if len(followUpChecks) != 1 || followUpChecks[0] != "Preserve the current candidate as the next baseline." {
+		t.Fatalf("expected baseline-only follow-up for hold without changes, got %#v", proposal["followUpChecks"])
+	}
 }
 
 func TestOptimizeSearchRankCandidateIDsPrefersShorterTargetAfterBehaviorTie(t *testing.T) {

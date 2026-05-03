@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 226
+          "unknown": 179
         },
         "byReviewStatus": {
-          "heuristic": 226
+          "heuristic": 179
         },
-        "count": 226,
+        "count": 179,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -24,12 +24,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 58
+          "satisfied": 78
         },
         "byReviewStatus": {
-          "agent-reviewed": 58
+          "agent-reviewed": 78
         },
-        "count": 58,
+        "count": 78,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -43,33 +43,34 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 63
+          "unknown": 18
         },
         "byReviewStatus": {
-          "heuristic": 60,
+          "agent-reviewed": 2,
+          "heuristic": 13,
           "human-reviewed": 3
         },
-        "count": 63,
+        "count": 18,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
           "claim-docs-contracts-adapter-contract-md-424",
-          "claim-docs-specs-user-evaluation-spec-md-7",
-          "claim-docs-contracts-claim-discovery-workflow-md-21",
-          "claim-docs-contracts-claim-discovery-workflow-md-39",
-          "claim-docs-contracts-claim-discovery-workflow-md-47"
+          "claim-docs-contracts-claim-discovery-workflow-md-85",
+          "claim-docs-contracts-claim-discovery-workflow-md-681",
+          "claim-docs-contracts-live-run-invocation-md-58",
+          "claim-docs-contracts-reporting-md-120"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
       {
         "byEvidenceStatus": {
-          "unknown": 113
+          "unknown": 122
         },
         "byReviewStatus": {
-          "agent-reviewed": 1,
+          "agent-reviewed": 10,
           "heuristic": 112
         },
-        "count": 113,
+        "count": 122,
         "id": "agent-plan-cautilus-eval",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -141,13 +142,13 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 18
+          "unknown": 34
         },
         "byReviewStatus": {
-          "agent-reviewed": 13,
+          "agent-reviewed": 29,
           "heuristic": 5
         },
-        "count": 18,
+        "count": 34,
         "id": "split-or-defer",
         "recommendedActor": "human",
         "sampleClaimIds": [
@@ -194,27 +195,27 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 58,
-      "unknown": 254
+      "satisfied": 78,
+      "unknown": 234
     },
     "byLifecycle": {
       "new": 312
     },
     "byRecommendedProof": {
-      "cautilus-eval": 122,
-      "deterministic": 121,
-      "human-auditable": 69
+      "cautilus-eval": 131,
+      "deterministic": 96,
+      "human-auditable": 85
     },
     "byReviewStatus": {
-      "agent-reviewed": 83,
-      "heuristic": 226,
+      "agent-reviewed": 130,
+      "heuristic": 179,
       "human-reviewed": 3
     },
     "byVerificationReadiness": {
-      "blocked": 18,
+      "blocked": 34,
       "needs-alignment": 31,
       "needs-scenario": 8,
-      "ready-to-verify": 255
+      "ready-to-verify": 239
     }
   },
   "discoveryBoundary": {
@@ -380,7 +381,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 58,
+    "satisfiedClaimCount": 78,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-78",
@@ -1256,6 +1257,63 @@
         "summary": "`cautilus claim discover` currently emits a deterministic, source-ref-backed proof-plan skeleton."
       },
       {
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-97",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-claim-discovery-workflow-md-97"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Review packets and machine-readable curation artifacts should preserve absorbed raw claim ids and fingerprints when available."
+      },
+      {
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-100",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-claim-discovery-workflow-md-100"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "When a repo maintains canonical catalogs, it should also keep a machine-readable mapping artifact that projects raw claim ids onto canonical user-facing or maintainer-facing claim ids."
+      },
+      {
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-377",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-claim-discovery-workflow-md-377"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The deterministic pass should emit grouping hints:"
+      },
+      {
         "claimId": "claim-docs-contracts-claim-discovery-workflow-md-553",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -1273,6 +1331,44 @@
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
         "summary": "The skill may select refresh, but deterministic refresh-plan output must record baseline commit, target policy, changed sources, carried-forward claims, stale evidence reasons, and dirty-working-tree treatment."
+      },
+      {
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-627",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-claim-discovery-workflow-md-627"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The workflow can say which claims already have deterministic or Cautilus evidence, and which still need scenarios, tests, or alignment work."
+      },
+      {
+        "claimId": "claim-docs-contracts-live-run-invocation-batch-md-77",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-live-run-invocation-batch-md-77"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "For each kept scenario, the command expands `samplesPerScenario` into deterministic request ids and emits the canonical batch request packet."
       },
       {
         "claimId": "claim-docs-contracts-live-run-invocation-md-12",
@@ -1315,6 +1411,63 @@
         "summary": "Product-owned workspace lifecycle stays off the public packet shape and instead flows through adapter template placeholders."
       },
       {
+        "claimId": "claim-docs-contracts-live-run-invocation-md-59",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-live-run-invocation-md-59"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The adapter still owns backend selection and provider-specific flags through the simulator command template."
+      },
+      {
+        "claimId": "claim-docs-contracts-live-run-invocation-md-193",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-live-run-invocation-md-193"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The consumer can return a machine-readable result without exposing its route layout."
+      },
+      {
+        "claimId": "claim-docs-contracts-reporting-md-48",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-reporting-md-48"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "This keeps report assembly deterministic."
+      },
+      {
         "claimId": "claim-docs-contracts-reporting-md-124",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -1332,6 +1485,44 @@
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
         "summary": "The summary packet should also aggregate any explicit numeric telemetry across variants so operators can inspect one top-level view without scraping each verdict file separately."
+      },
+      {
+        "claimId": "claim-docs-contracts-reporting-md-129",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-reporting-md-129"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "For held-out and full-gate reporting, mode runs should preserve that same scenario-level telemetry and lift it into a machine-readable report packet."
+      },
+      {
+        "claimId": "claim-docs-contracts-runner-readiness-md-29",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-runner-readiness-md-29"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The first implementation slice should be read-only readiness visibility through `doctor` and `agent status`, plus a minimal runner assessment schema and example."
       },
       {
         "claimId": "claim-docs-contracts-runner-readiness-md-118",
@@ -1450,6 +1641,82 @@
         "summary": "The product can read scenario-adjacent paths from typed packet fields instead of hardcoded route templates."
       },
       {
+        "claimId": "claim-docs-specs-maintainer-adapter-host-ownership-spec-md-18",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-specs-maintainer-adapter-host-ownership-spec-md-18"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "This boundary should be proven with adapter contract tests and consumer dogfood rather than by prose alone."
+      },
+      {
+        "claimId": "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-19",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-19"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "`npm run lint:skill-disclosure` proves the bundled and packaged skill stay within the progressive-disclosure contract."
+      },
+      {
+        "claimId": "claim-docs-specs-maintainer-reporting-review-variants-spec-md-13",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-specs-maintainer-reporting-review-variants-spec-md-13"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Cautilus should write machine-readable review packets first and render readable projections over the same data."
+      },
+      {
+        "claimId": "claim-docs-specs-maintainer-scenario-history-normalization-spec-md-14",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-specs-maintainer-scenario-history-normalization-spec-md-14"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Normalizers should produce inspectable proposal packets rather than hidden one-off shapers."
+      },
+      {
         "claimId": "claim-docs-specs-user-proof-debt-spec-md-7",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -1492,6 +1759,120 @@
         "summary": "Unknown or missing evidence should stay visible in the public claim workflow."
       },
       {
+        "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-8",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-runtime-fingerprint-optimization-md-8"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "By default, those tests should not force a model choice just to make evaluation evidence easier to compare."
+      },
+      {
+        "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-34",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-runtime-fingerprint-optimization-md-34"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Adapter command templates may still pin a model when the evaluated product explicitly requires one."
+      },
+      {
+        "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-42",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-runtime-fingerprint-optimization-md-42"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Runtime identity must come from explicit machine-readable runner output, adapter-provided metadata, or a checked-in wrapper."
+      },
+      {
+        "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-154",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-runtime-fingerprint-optimization-md-154"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "It should generate a candidate or revision brief, then require the same tests and review gates before the candidate is trusted."
+      },
+      {
+        "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-188",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-runtime-fingerprint-optimization-md-188"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "A skill or eval test can pass while still reporting that the observed runtime changed from the comparison evidence."
+      },
+      {
+        "claimId": "claim-docs-contracts-scenario-proposal-sources-md-28",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-scenario-proposal-sources-md-28"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Those helpers should sit between source-port ingestion and proposal packet generation."
+      },
+      {
         "claimId": "claim-skills-cautilus-skill-md-11",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -1514,17 +1895,19 @@
   },
   "gitCommit": "c7d70e1bddf2c3d2b29a9cb435fd2a6143cfd7ce",
   "gitState": {
-    "changedFileCount": 16,
+    "changedFileCount": 18,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
       ".cautilus/claims/discovery-review.md",
       ".cautilus/claims/evidence-agent-status-safe-branch-catalog-2026-05-03.json",
       ".cautilus/claims/evidence-runner-readiness-branch-shape-2026-05-03.json",
+      ".cautilus/claims/evidence-workbench-instance-catalog-contract-2026-05-03.json",
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
       ".cautilus/claims/review-result-agent-status-safe-branch-catalog-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-runner-readiness-branch-shape-2026-05-03.json",
+      ".cautilus/claims/review-result-workbench-instance-catalog-contract-2026-05-03.json",
       ".cautilus/claims/status-summary.json",
       "charness-artifacts/debug/debug-2026-05-03-agent-status-branch-catalog-claim.md",
       "charness-artifacts/debug/latest.md",
@@ -1541,7 +1924,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "9de4af0c2ab1a1815f084b5a6e5e23d9153b3c11",
+    "currentGitCommit": "8271c0dd752cda36873db5b5a60f2597b1f1960c",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "c7d70e1bddf2c3d2b29a9cb435fd2a6143cfd7ce",
@@ -1568,248 +1951,10 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 198,
+    "heuristicClaimsReadyForReview": 151,
     "needsAlignment": 31,
     "needsScenario": 8
   },
-  "sampleClaims": [
-    {
-      "claimAudience": "developer",
-      "claimId": "claim-agents-md-12",
-      "claimSemanticGroup": "Adapter and portability",
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "human-auditable",
-        "repo-instructions"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Split this principle into concrete checkable subclaims, such as specific CLI behavior covered by tests, adapter schema rules, specdown assertions, or script-owned validation gates.",
-      "recommendedProof": "human-auditable",
-      "reviewStatus": "agent-reviewed",
-      "sourceRefs": [
-        {
-          "line": 12,
-          "path": "AGENTS.md"
-        }
-      ],
-      "summary": "Deterministic behavior belongs in code, scripts, adapters, tests, and specs.",
-      "verificationReadiness": "blocked"
-    },
-    {
-      "claimAudience": "developer",
-      "claimId": "claim-agents-md-26",
-      "claimSemanticGroup": "Documentation and contracts",
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "dev/repo",
-        "human-auditable",
-        "repo-instructions"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Do not satisfy directly; either leave as positioning or decompose into narrower contract ownership claims.",
-      "recommendedProof": "human-auditable",
-      "reviewStatus": "agent-reviewed",
-      "sourceRefs": [
-        {
-          "line": 26,
-          "path": "AGENTS.md"
-        }
-      ],
-      "summary": "`Cautilus` owns generic intentful behavior evaluation workflow contracts.",
-      "verificationReadiness": "blocked"
-    },
-    {
-      "claimAudience": "developer",
-      "claimId": "claim-agents-md-29",
-      "claimSemanticGroup": "Evaluation surfaces",
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "blocked",
-        "human-auditable",
-        "repo-instructions"
-      ],
-      "lifecycle": "new",
-      "nextAction": "If this should remain a proof target, split it into concrete product claims under the roadmap/spec surface, such as claim/eval/optimize allowing prompt changes only when held-out behavior evidence improves.",
-      "recommendedProof": "human-auditable",
-      "reviewStatus": "agent-reviewed",
-      "sourceRefs": [
-        {
-          "line": 29,
-          "path": "AGENTS.md"
-        }
-      ],
-      "summary": "The long-term direction is intent-first and intentful behavior evaluation: prompts can change if the evaluated behavior gets better.",
-      "verificationReadiness": "blocked"
-    },
-    {
-      "claimAudience": "developer",
-      "claimId": "claim-agents-md-61",
-      "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "human-auditable",
-        "repo-instructions"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Either keep this as a maintainer operating principle or split it into concrete checks: AGENTS skill-routing section length, skill metadata availability, and find-skills inventory coverage.",
-      "recommendedProof": "human-auditable",
-      "reviewStatus": "agent-reviewed",
-      "sourceRefs": [
-        {
-          "line": 61,
-          "path": "AGENTS.md"
-        }
-      ],
-      "summary": "Keep this block short. Detailed routing belongs in installed skill metadata and `find-skills` output, not in a long checked-in catalog.",
-      "verificationReadiness": "blocked"
-    },
-    {
-      "claimAudience": "developer",
-      "claimId": "claim-agents-md-73",
-      "claimSemanticGroup": "General product behavior",
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "blocked",
-        "human-auditable",
-        "repo-instructions"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Keep as an operating rule rather than a satisfied product claim, or add a narrower audited-process claim that points to recent debug artifacts and commit discipline.",
-      "recommendedProof": "human-auditable",
-      "reviewStatus": "agent-reviewed",
-      "sourceRefs": [
-        {
-          "line": 73,
-          "path": "AGENTS.md"
-        }
-      ],
-      "summary": "While implementing, any bug, error, regression, or unexpected behavior routes to `charness:debug` before further fixes.",
-      "verificationReadiness": "blocked"
-    },
-    {
-      "claimAudience": "developer",
-      "claimId": "claim-agents-md-78",
-      "claimSemanticGroup": "Quality gates",
-      "evidenceStatus": "satisfied",
-      "groupHints": [
-        "audience:developer",
-        "deterministic",
-        "repo-instructions"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Keep covered by `npm run lint:skill-disclosure` whenever the bundled skill, packaged skill, CLI registry, examples, or command docs change.",
-      "recommendedProof": "deterministic",
-      "reviewStatus": "agent-reviewed",
-      "sourceRefs": [
-        {
-          "line": 78,
-          "path": "AGENTS.md"
-        }
-      ],
-      "summary": "The skill should own routing, sequencing, guardrails, and decision boundaries; the binary should own broad command discovery, help text, scenario catalogs, packet examples, install smoke, and doctor/readiness details.",
-      "verificationReadiness": "ready-to-verify"
-    },
-    {
-      "claimAudience": "developer",
-      "claimId": "claim-agents-md-79",
-      "claimSemanticGroup": "Adapter and portability",
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "cautilus-eval",
-        "dev/repo",
-        "repo-instructions"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Attach adapter capability proof from doctor, agent-surface doctor, review variants, or the concrete evaluator command required by the selected gate.",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "agent-reviewed",
-      "sourceRefs": [
-        {
-          "line": 79,
-          "path": "AGENTS.md"
-        }
-      ],
-      "summary": "When a quality or release review asks for evaluator, review, CLI-discovery, or agent-surface proof, verify that the selected adapter can actually run that surface before treating the gate as available.",
-      "verificationReadiness": "ready-to-verify"
-    },
-    {
-      "claimAudience": "developer",
-      "claimId": "claim-agents-md-123",
-      "claimSemanticGroup": "Quality gates",
-      "evidenceStatus": "satisfied",
-      "groupHints": [
-        "audience:developer",
-        "deterministic",
-        "repo-instructions"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Keep covered by `npm run test:on-demand` and maintainer check-layering docs when on-demand workflow ownership changes.",
-      "recommendedProof": "deterministic",
-      "reviewStatus": "agent-reviewed",
-      "sourceRefs": [
-        {
-          "line": 123,
-          "path": "AGENTS.md"
-        }
-      ],
-      "summary": "`npm run test:on-demand` currently owns the heavier self-dogfood workflow script tests.",
-      "verificationReadiness": "ready-to-verify"
-    },
-    {
-      "claimAudience": "user",
-      "claimId": "claim-readme-md-3",
-      "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:user",
-        "blocked",
-        "human-auditable",
-        "readme"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Keep the claim visible as positioning, or decompose it into concrete deterministic, dev/skill, and packet-surface claims before proof planning.",
-      "recommendedProof": "human-auditable",
-      "reviewStatus": "agent-reviewed",
-      "sourceRefs": [
-        {
-          "line": 3,
-          "path": "README.md"
-        }
-      ],
-      "summary": "`Cautilus` keeps agent and workflow behavior honest while prompts keep changing.",
-      "verificationReadiness": "blocked"
-    },
-    {
-      "claimAudience": "user",
-      "claimId": "claim-readme-md-7",
-      "claimSemanticGroup": "Adapter and portability",
-      "evidenceStatus": "satisfied",
-      "groupHints": [
-        "audience:user",
-        "deterministic",
-        "readme"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Keep this claim covered by distribution-surface tests plus install command smoke whenever install.sh, packaged plugins, or bundled skill materialization changes.",
-      "recommendedProof": "deterministic",
-      "reviewStatus": "agent-reviewed",
-      "sourceRefs": [
-        {
-          "line": 7,
-          "path": "README.md"
-        }
-      ],
-      "summary": "Ships as a standalone binary plus a bundled skill a host repo can install without copying another scaffold first.",
-      "verificationReadiness": "ready-to-verify"
-    }
-  ],
   "schemaVersion": "cautilus.claim_status_summary.v1",
   "sourceCount": 44,
   "sourceRoot": "."

@@ -1,0 +1,4398 @@
+{
+  "clusters": [
+    {
+      "candidates": [
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:93b8c3284cda9f97c3bba18688a2a6e8be0942582eb8e07799244fccce78a67a",
+          "claimId": "claim-docs-specs-user-claim-discovery-spec-md-14",
+          "currentLabels": {
+            "claimAudience": "user",
+            "claimSemanticGroup": "Adapter and portability",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:user",
+            "deterministic",
+            "linked-from:docs/specs/user/index.spec.md",
+            "spec"
+          ],
+          "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "The bundled skill can use the claim packet to group next work: review wording, add deterministic proof, plan Cautilus evals, align docs and adapters, or defer broad claims.",
+              "line": 14,
+              "path": "docs/specs/user/claim-discovery.spec.md"
+            }
+          ],
+          "summary": "The bundled skill can use the claim packet to group next work: review wording, add deterministic proof, plan Cautilus evals, align docs and adapters, or defer broad claims."
+        }
+      ],
+      "claimAudience": "user",
+      "claimCount": 1,
+      "claimSemanticGroup": "Adapter and portability",
+      "clusterId": "cluster-user-adapter-and-portability-deterministic-spec",
+      "groupKey": "user:Adapter and portability:deterministic:spec",
+      "priority": 20,
+      "reason": "User-facing claims are reviewed before developer conventions because they are closest to product promises.",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "candidates": [
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:acdb5102c491f925e41c367a64de268d5f6e70d89eeac7d7ece7289ba3dddd58",
+          "claimId": "claim-docs-specs-user-evaluation-spec-md-7",
+          "currentLabels": {
+            "claimAudience": "user",
+            "claimSemanticGroup": "Quality gates",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:user",
+            "deterministic",
+            "linked-from:README.md",
+            "spec"
+          ],
+          "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "Cautilus evaluates behavior that ordinary deterministic tests cannot fully explain, while keeping the repo in control of the runtime that produces behavior.",
+              "line": 7,
+              "path": "docs/specs/user/evaluation.spec.md"
+            }
+          ],
+          "summary": "Cautilus evaluates behavior that ordinary deterministic tests cannot fully explain, while keeping the repo in control of the runtime that produces behavior."
+        }
+      ],
+      "claimAudience": "user",
+      "claimCount": 1,
+      "claimSemanticGroup": "Quality gates",
+      "clusterId": "cluster-user-quality-gates-deterministic-spec",
+      "groupKey": "user:Quality gates:deterministic:spec",
+      "priority": 20,
+      "reason": "User-facing claims are reviewed before developer conventions because they are closest to product promises.",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "candidates": [
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:48f5766e7befdc0b2f0b0224cbc45ab1e20490741062c24f849126ad7ae5281a",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-258",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Adapter and portability",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "contract",
+            "deterministic",
+            "linked-from:docs/master-plan.md"
+          ],
+          "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "Ownership-boundary explanations, such as product-owned versus adapter-owned responsibilities, should stay `human-auditable` and `needs-alignment` until the matching docs, code, adapters, and tests are reconciled.",
+              "line": 258,
+              "path": "docs/contracts/claim-discovery-workflow.md"
+            }
+          ],
+          "summary": "Ownership-boundary explanations, such as product-owned versus adapter-owned responsibilities, should stay `human-auditable` and `needs-alignment` until the matching docs, code, adapters, and tests are reconciled."
+        },
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:f0d50e4564f095f7476352a6e0adf638af1fcaba8e950f2b062197739e5bd334",
+          "claimId": "claim-docs-contracts-live-run-invocation-md-193",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Adapter and portability",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "contract",
+            "deterministic",
+            "linked-from:docs/contracts/adapter-contract.md"
+          ],
+          "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "The consumer can return a machine-readable result without exposing its route layout.",
+              "line": 193,
+              "path": "docs/contracts/live-run-invocation.md"
+            }
+          ],
+          "summary": "The consumer can return a machine-readable result without exposing its route layout."
+        },
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:6059ec1e2738f23b3c184046049c654f0fa32b494859a6906da65b1a8a6fdfbc",
+          "claimId": "claim-docs-contracts-live-run-invocation-md-59",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Adapter and portability",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "contract",
+            "deterministic",
+            "linked-from:docs/contracts/adapter-contract.md"
+          ],
+          "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "The adapter still owns backend selection and provider-specific flags through the simulator command template.",
+              "line": 59,
+              "path": "docs/contracts/live-run-invocation.md"
+            }
+          ],
+          "summary": "The adapter still owns backend selection and provider-specific flags through the simulator command template."
+        },
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:46696fb00546a2f028dbe9f036a7e1de33ba8a47dcdd7074b4c7280cdf2c6762",
+          "claimId": "claim-docs-contracts-runner-readiness-md-347",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Adapter and portability",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "contract",
+            "deterministic",
+            "linked-from:docs/master-plan.md"
+          ],
+          "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "The skill may guide runner creation, but reusable deterministic behavior belongs in code, adapters, packets, and tests.",
+              "line": 347,
+              "path": "docs/contracts/runner-readiness.md"
+            }
+          ],
+          "summary": "The skill may guide runner creation, but reusable deterministic behavior belongs in code, adapters, packets, and tests."
+        },
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:57cfb40c24ad1142b4c035e714fd8a92e9b4962c1f54cc3745fc4149a10aa4dd",
+          "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-34",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Adapter and portability",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "contract",
+            "deterministic",
+            "linked-from:docs/contracts/reporting.md"
+          ],
+          "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "Adapter command templates may still pin a model when the evaluated product explicitly requires one.",
+              "line": 34,
+              "path": "docs/contracts/runtime-fingerprint-optimization.md"
+            }
+          ],
+          "summary": "Adapter command templates may still pin a model when the evaluated product explicitly requires one."
+        },
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:59d8c133631e0b643a8528326ed3986dcb879eb6b39d42ca435dd9de4df24895",
+          "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-42",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Adapter and portability",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "contract",
+            "deterministic",
+            "linked-from:docs/contracts/reporting.md"
+          ],
+          "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "Runtime identity must come from explicit machine-readable runner output, adapter-provided metadata, or a checked-in wrapper.",
+              "line": 42,
+              "path": "docs/contracts/runtime-fingerprint-optimization.md"
+            }
+          ],
+          "summary": "Runtime identity must come from explicit machine-readable runner output, adapter-provided metadata, or a checked-in wrapper."
+        }
+      ],
+      "claimAudience": "developer",
+      "claimCount": 6,
+      "claimSemanticGroup": "Adapter and portability",
+      "clusterId": "cluster-developer-adapter-and-portability-deterministic-contract",
+      "groupKey": "developer:Adapter and portability:deterministic:contract",
+      "priority": 50,
+      "reason": "Claims touching commands, skills, adapters, or release surfaces are high-impact.",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "candidates": [
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:eab70df10c32fbe7e680094571f91627ab7f2902de723b8083a4eb842507780e",
+          "claimId": "claim-docs-specs-maintainer-adapter-host-ownership-spec-md-18",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Adapter and portability",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "deterministic",
+            "linked-from:docs/specs/maintainer/index.spec.md",
+            "spec"
+          ],
+          "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "This boundary should be proven with adapter contract tests and consumer dogfood rather than by prose alone.",
+              "line": 18,
+              "path": "docs/specs/maintainer/adapter-host-ownership.spec.md"
+            }
+          ],
+          "summary": "This boundary should be proven with adapter contract tests and consumer dogfood rather than by prose alone."
+        }
+      ],
+      "claimAudience": "developer",
+      "claimCount": 1,
+      "claimSemanticGroup": "Adapter and portability",
+      "clusterId": "cluster-developer-adapter-and-portability-deterministic-spec",
+      "groupKey": "developer:Adapter and portability:deterministic:spec",
+      "priority": 50,
+      "reason": "Claims touching commands, skills, adapters, or release surfaces are high-impact.",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "candidates": [
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:217060ae33b576f27c9e488235a7b291e4fa3b3061da405ef153f4a209e51c43",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-201",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Agent and skill workflow",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "contract",
+            "deterministic",
+            "linked-from:docs/master-plan.md"
+          ],
+          "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "After the deterministic pass, the skill should show a separate review plan:",
+              "line": 201,
+              "path": "docs/contracts/claim-discovery-workflow.md"
+            }
+          ],
+          "summary": "After the deterministic pass, the skill should show a separate review plan:"
+        },
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:fde6d2140934f920952b573f759955309b9ef147087ffcf646eed715be8668ac",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-21",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Agent and skill workflow",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "contract",
+            "deterministic",
+            "linked-from:docs/master-plan.md"
+          ],
+          "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "Existing claim state refresh is selected by the skill when it detects a prior JSON packet, but the refresh plan and state transition must be recorded in deterministic packets or helper output.",
+              "line": 21,
+              "path": "docs/contracts/claim-discovery-workflow.md"
+            }
+          ],
+          "summary": "Existing claim state refresh is selected by the skill when it detects a prior JSON packet, but the refresh plan and state transition must be recorded in deterministic packets or helper output."
+        },
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:3647c769bd0d7e394a06b1fd8ed656afe9f215d21539caad402d082349200012",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-260",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Agent and skill workflow",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "contract",
+            "deterministic",
+            "linked-from:docs/master-plan.md"
+          ],
+          "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "Command, packet, runner, and readiness statements should prefer deterministic proof unless they explicitly depend on model or agent behavior.",
+              "line": 260,
+              "path": "docs/contracts/claim-discovery-workflow.md"
+            }
+          ],
+          "summary": "Command, packet, runner, and readiness statements should prefer deterministic proof unless they explicitly depend on model or agent behavior."
+        },
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:1844fc5f59ff44a652520ea491bcacebf795a1dcb4a536a5f38d913f351d74d5",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-356",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Agent and skill workflow",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "contract",
+            "deterministic",
+            "linked-from:docs/master-plan.md"
+          ],
+          "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "The binary can do cheap deterministic preflight, but the skill owns final interpretation.",
+              "line": 356,
+              "path": "docs/contracts/claim-discovery-workflow.md"
+            }
+          ],
+          "summary": "The binary can do cheap deterministic preflight, but the skill owns final interpretation."
+        },
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:1cce79c5204f1bf8cd1feb6735fd63b25a41f3de67a2b5c3861a1825f869052c",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-39",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Agent and skill workflow",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "contract",
+            "deterministic",
+            "linked-from:docs/master-plan.md"
+          ],
+          "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "If prior claim state exists, step 5 becomes a diff-aware refresh selected by the skill: the skill uses the previous packet, the previous commit recorded in that packet, and a deterministic refresh plan to decide which sources need rescanning or re-review.",
+              "line": 39,
+              "path": "docs/contracts/claim-discovery-workflow.md"
+            }
+          ],
+          "summary": "If prior claim state exists, step 5 becomes a diff-aware refresh selected by the skill: the skill uses the previous packet, the previous commit recorded in that packet, and a deterministic refresh plan to decide which sources need rescanning or re-review."
+        },
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:7de8c9a43753e5fa399bc925d09b5cd194092042ee884a565b09c916ec9d60f8",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-578",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Agent and skill workflow",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "contract",
+            "deterministic",
+            "linked-from:docs/master-plan.md"
+          ],
+          "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "Perfect subagent batch sizing should wait until the deterministic packet and skill control flow are dogfooded.",
+              "line": 578,
+              "path": "docs/contracts/claim-discovery-workflow.md"
+            }
+          ],
+          "summary": "Perfect subagent batch sizing should wait until the deterministic packet and skill control flow are dogfooded."
+        },
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:e69d60f7c92a20a2320993d00a9b6841701ba2806fa758b2c19f69acfd54279d",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-591",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Agent and skill workflow",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "contract",
+            "deterministic",
+            "linked-from:docs/master-plan.md"
+          ],
+          "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "Existing state refresh is selected by the skill when prior claim JSON exists, but deterministic refresh-plan output owns the state transition.",
+              "line": 591,
+              "path": "docs/contracts/claim-discovery-workflow.md"
+            }
+          ],
+          "summary": "Existing state refresh is selected by the skill when prior claim JSON exists, but deterministic refresh-plan output owns the state transition."
+        },
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:2446875e223e9944dcb79a11ca4c42634a425e726f3c0771a9075aac69678436",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-65",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Agent and skill workflow",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "contract",
+            "deterministic",
+            "linked-from:docs/master-plan.md"
+          ],
+          "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "The bundled skill should own orchestration that depends on an agent:",
+              "line": 65,
+              "path": "docs/contracts/claim-discovery-workflow.md"
+            }
+          ],
+          "summary": "The bundled skill should own orchestration that depends on an agent:"
+        }
+      ],
+      "claimAudience": "developer",
+      "claimCount": 13,
+      "claimSemanticGroup": "Agent and skill workflow",
+      "clusterId": "cluster-developer-agent-and-skill-workflow-deterministic-contract",
+      "groupKey": "developer:Agent and skill workflow:deterministic:contract",
+      "priority": 50,
+      "reason": "Claims touching commands, skills, adapters, or release surfaces are high-impact.",
+      "recommendedProof": "deterministic",
+      "truncatedClaimCount": 5,
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "candidates": [
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:8f8b1ba060f857e8ce89ec62f94e7e3d1bb3bb8e370321ad7bdb03be3ae3292a",
+          "claimId": "claim-skills-cautilus-skill-md-22",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Agent and skill workflow",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "deterministic",
+            "linked-from:docs/contracts/scenario-history.md",
+            "skill-doc"
+          ],
+          "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "The binary owns command discovery, packet examples, deterministic scans, validation, and reusable evaluation artifacts.",
+              "line": 22,
+              "path": "skills/cautilus/SKILL.md"
+            }
+          ],
+          "summary": "The binary owns command discovery, packet examples, deterministic scans, validation, and reusable evaluation artifacts."
+        },
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:0430d8a298c4e11b0f53d621d1b7c1c908425d463f7a66dc5efbf4043936efbd",
+          "claimId": "claim-skills-cautilus-skill-md-223",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Agent and skill workflow",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "deterministic",
+            "linked-from:docs/contracts/scenario-history.md",
+            "skill-doc"
+          ],
+          "nextAction": "Keep or add deterministic packet, catalog, schema, or renderer proof for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "Agents should read the packet first, then cite HTML only when a browser view is the deliverable.",
+              "line": 223,
+              "path": "skills/cautilus/SKILL.md"
+            }
+          ],
+          "summary": "Agents should read the packet first, then cite HTML only when a browser view is the deliverable."
+        }
+      ],
+      "claimAudience": "developer",
+      "claimCount": 2,
+      "claimSemanticGroup": "Agent and skill workflow",
+      "clusterId": "cluster-developer-agent-and-skill-workflow-deterministic-skill-doc",
+      "groupKey": "developer:Agent and skill workflow:deterministic:skill-doc",
+      "priority": 50,
+      "reason": "Claims touching commands, skills, adapters, or release surfaces are high-impact.",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "candidates": [
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:130735bbdf1969bf169ca06abc7358686ccfa2146461b0bdae476cafcbb6761d",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-187",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Documentation and contracts",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "contract",
+            "deterministic",
+            "linked-from:docs/master-plan.md"
+          ],
+          "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "It should also show the deterministic bounds that will be applied:",
+              "line": 187,
+              "path": "docs/contracts/claim-discovery-workflow.md"
+            }
+          ],
+          "summary": "It should also show the deterministic bounds that will be applied:"
+        },
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:8ca72db113d324be35c266102e9b03f89f0798792273549ac3040280249aac80",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-253",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Documentation and contracts",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "contract",
+            "deterministic",
+            "linked-from:docs/master-plan.md"
+          ],
+          "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "Broad positioning or aggregate product promises should stay `human-auditable` and `verificationReadiness=blocked` until they are decomposed into concrete deterministic checks, scenario candidates, or Cautilus eval claims.",
+              "line": 253,
+              "path": "docs/contracts/claim-discovery-workflow.md"
+            }
+          ],
+          "summary": "Broad positioning or aggregate product promises should stay `human-auditable` and `verificationReadiness=blocked` until they are decomposed into concrete deterministic checks, scenario candidates, or Cautilus eval claims."
+        },
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:4ebcb6776a40613cddaea25e17e6a777434b73564b371822ff93a88182a6b1e9",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-377",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Documentation and contracts",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "contract",
+            "deterministic",
+            "linked-from:docs/master-plan.md"
+          ],
+          "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "The deterministic pass should emit grouping hints:",
+              "line": 377,
+              "path": "docs/contracts/claim-discovery-workflow.md"
+            }
+          ],
+          "summary": "The deterministic pass should emit grouping hints:"
+        },
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:45b653427563292b6418370c4faf5171a5c0bca05f568f9fc6df60bb5358c2f0",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-47",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Documentation and contracts",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "contract",
+            "deterministic",
+            "linked-from:docs/master-plan.md"
+          ],
+          "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "The binary should own deterministic behavior that can be rerun without model access:",
+              "line": 47,
+              "path": "docs/contracts/claim-discovery-workflow.md"
+            }
+          ],
+          "summary": "The binary should own deterministic behavior that can be rerun without model access:"
+        },
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:2f4267a19f2f19ebee6eb0625444b67649c805bb85fa44682e131b2ff2e7b77d",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-573",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Documentation and contracts",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "contract",
+            "deterministic",
+            "linked-from:docs/master-plan.md"
+          ],
+          "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "In this workflow, the binary stays deterministic and provider-neutral.",
+              "line": 573,
+              "path": "docs/contracts/claim-discovery-workflow.md"
+            }
+          ],
+          "summary": "In this workflow, the binary stays deterministic and provider-neutral."
+        },
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:b2338ca8431457f9797b38b147840619b01ad7549557616dd7b394b5972ef6b0",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-653",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Documentation and contracts",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "contract",
+            "deterministic",
+            "linked-from:docs/master-plan.md"
+          ],
+          "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "The binary should remain deterministic and provider-neutral.",
+              "line": 653,
+              "path": "docs/contracts/claim-discovery-workflow.md"
+            }
+          ],
+          "summary": "The binary should remain deterministic and provider-neutral."
+        },
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:e2469fb550996d42bbb4d13821a6dfa85e120989cc550a7fb44b60b9adc2317f",
+          "claimId": "claim-docs-contracts-live-run-invocation-batch-md-5",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Documentation and contracts",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "contract",
+            "deterministic",
+            "linked-from:docs/master-plan.md"
+          ],
+          "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "This slice exists to stop adopters from re-implementing the per-scenario scheduler once `cautilus eval live run` already owns the single-request runtime semantics.",
+              "line": 5,
+              "path": "docs/contracts/live-run-invocation-batch.md"
+            }
+          ],
+          "summary": "This slice exists to stop adopters from re-implementing the per-scenario scheduler once `cautilus eval live run` already owns the single-request runtime semantics."
+        },
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:3d9b56890a284b8382d97381cd68e2da53890933235ecf3a0508c44af42cd3a8",
+          "claimId": "claim-docs-contracts-reporting-md-120",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Documentation and contracts",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "contract",
+            "deterministic",
+            "linked-from:docs/guides/evaluation-process.md"
+          ],
+          "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "`blocked` should carry machine-readable reason codes and a concrete reason instead of free-form prose-only failure",
+              "line": 120,
+              "path": "docs/contracts/reporting.md"
+            }
+          ],
+          "summary": "`blocked` should carry machine-readable reason codes and a concrete reason instead of free-form prose-only failure"
+        }
+      ],
+      "claimAudience": "developer",
+      "claimCount": 12,
+      "claimSemanticGroup": "Documentation and contracts",
+      "clusterId": "cluster-developer-documentation-and-contracts-deterministic-contract",
+      "groupKey": "developer:Documentation and contracts:deterministic:contract",
+      "priority": 50,
+      "reason": "Claims touching commands, skills, adapters, or release surfaces are high-impact.",
+      "recommendedProof": "deterministic",
+      "truncatedClaimCount": 4,
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "candidates": [
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:1428eec288b0dab0aa084911be814bf9b87c1d68f00e38164dbbba01e4331af3",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-100",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Packets and reporting",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "contract",
+            "deterministic",
+            "linked-from:docs/master-plan.md"
+          ],
+          "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "When a repo maintains canonical catalogs, it should also keep a machine-readable mapping artifact that projects raw claim ids onto canonical user-facing or maintainer-facing claim ids.",
+              "line": 100,
+              "path": "docs/contracts/claim-discovery-workflow.md"
+            }
+          ],
+          "summary": "When a repo maintains canonical catalogs, it should also keep a machine-readable mapping artifact that projects raw claim ids onto canonical user-facing or maintainer-facing claim ids."
+        },
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:c0c7d0f38d477c81974441fe12254d670a3a1fc6fb362622769dc305a89dcb8f",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-607",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Packets and reporting",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "contract",
+            "deterministic",
+            "linked-from:docs/master-plan.md"
+          ],
+          "nextAction": "Keep or add deterministic packet, catalog, schema, or renderer proof for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "Whether `claim show` should grow Markdown or HTML rendering beyond its JSON summary packet.",
+              "line": 607,
+              "path": "docs/contracts/claim-discovery-workflow.md"
+            }
+          ],
+          "summary": "Whether `claim show` should grow Markdown or HTML rendering beyond its JSON summary packet."
+        },
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:7d3319b0e7a1f160a74b9d107b204e7be679e30bf1ed3c65c38bb71be9be3d14",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-97",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Packets and reporting",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "contract",
+            "deterministic",
+            "linked-from:docs/master-plan.md"
+          ],
+          "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "Review packets and machine-readable curation artifacts should preserve absorbed raw claim ids and fingerprints when available.",
+              "line": 97,
+              "path": "docs/contracts/claim-discovery-workflow.md"
+            }
+          ],
+          "summary": "Review packets and machine-readable curation artifacts should preserve absorbed raw claim ids and fingerprints when available."
+        },
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:57c666ca6aca677b5b250c22b235e4a0d037aaaa07bb1c66151ad9947217cabf",
+          "claimId": "claim-docs-contracts-live-run-invocation-batch-md-77",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Packets and reporting",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "contract",
+            "deterministic",
+            "linked-from:docs/master-plan.md"
+          ],
+          "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "For each kept scenario, the command expands `samplesPerScenario` into deterministic request ids and emits the canonical batch request packet.",
+              "line": 77,
+              "path": "docs/contracts/live-run-invocation-batch.md"
+            }
+          ],
+          "summary": "For each kept scenario, the command expands `samplesPerScenario` into deterministic request ids and emits the canonical batch request packet."
+        },
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:f837e4e0934106ad104956fd9d7e47ae5f9fa801b51a2ef9d30f008ea7e2158f",
+          "claimId": "claim-docs-contracts-reporting-md-129",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Packets and reporting",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "contract",
+            "deterministic",
+            "linked-from:docs/guides/evaluation-process.md"
+          ],
+          "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "For held-out and full-gate reporting, mode runs should preserve that same scenario-level telemetry and lift it into a machine-readable report packet.",
+              "line": 129,
+              "path": "docs/contracts/reporting.md"
+            }
+          ],
+          "summary": "For held-out and full-gate reporting, mode runs should preserve that same scenario-level telemetry and lift it into a machine-readable report packet."
+        },
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:a28fba1074645afd60275da2aa5b322795c05b91ab75f8330802d59f8e14d28e",
+          "claimId": "claim-docs-contracts-reporting-md-48",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Packets and reporting",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "contract",
+            "deterministic",
+            "linked-from:docs/guides/evaluation-process.md"
+          ],
+          "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "This keeps report assembly deterministic.",
+              "line": 48,
+              "path": "docs/contracts/reporting.md"
+            }
+          ],
+          "summary": "This keeps report assembly deterministic."
+        },
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:77a8da5194b241cb6d76b536a1d670c2edb7bce6d432ce4e2acffde0831356fd",
+          "claimId": "claim-docs-contracts-scenario-proposal-sources-md-28",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Packets and reporting",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "contract",
+            "deterministic",
+            "linked-from:docs/contracts/scenario-history.md"
+          ],
+          "nextAction": "Keep or add deterministic scenario command, packet, or render proof for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "Those helpers should sit between source-port ingestion and proposal packet generation.",
+              "line": 28,
+              "path": "docs/contracts/scenario-proposal-sources.md"
+            }
+          ],
+          "summary": "Those helpers should sit between source-port ingestion and proposal packet generation."
+        }
+      ],
+      "claimAudience": "developer",
+      "claimCount": 7,
+      "claimSemanticGroup": "Packets and reporting",
+      "clusterId": "cluster-developer-packets-and-reporting-deterministic-contract",
+      "groupKey": "developer:Packets and reporting:deterministic:contract",
+      "priority": 50,
+      "reason": "Claims touching commands, skills, adapters, or release surfaces are high-impact.",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "candidates": [
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:cd34e15bce32d678405ca65cb21575ec727061d9441c24e20b972a34f6aa8148",
+          "claimId": "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-13",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Packets and reporting",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "deterministic",
+            "linked-from:docs/specs/maintainer/index.spec.md",
+            "spec"
+          ],
+          "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "The binary owns deterministic command execution, packet schemas, help text, and reusable artifacts.",
+              "line": 13,
+              "path": "docs/specs/maintainer/binary-skill-boundary.spec.md"
+            }
+          ],
+          "summary": "The binary owns deterministic command execution, packet schemas, help text, and reusable artifacts."
+        },
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:fd93495633465840b803ea3172f89cd85ec3c4496c65c6ecb63437c2e223d2f7",
+          "claimId": "claim-docs-specs-maintainer-reporting-review-variants-spec-md-13",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Packets and reporting",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "deterministic",
+            "linked-from:docs/specs/maintainer/index.spec.md",
+            "spec"
+          ],
+          "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "Cautilus should write machine-readable review packets first and render readable projections over the same data.",
+              "line": 13,
+              "path": "docs/specs/maintainer/reporting-review-variants.spec.md"
+            }
+          ],
+          "summary": "Cautilus should write machine-readable review packets first and render readable projections over the same data."
+        },
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:05018c4fe296c0f5384de58b41f266797904d84a5021a3a4445413a2a3343068",
+          "claimId": "claim-docs-specs-maintainer-scenario-history-normalization-spec-md-14",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Packets and reporting",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "deterministic",
+            "linked-from:docs/specs/maintainer/index.spec.md",
+            "spec"
+          ],
+          "nextAction": "Keep or add deterministic scenario command, packet, or render proof for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "Normalizers should produce inspectable proposal packets rather than hidden one-off shapers.",
+              "line": 14,
+              "path": "docs/specs/maintainer/scenario-history-normalization.spec.md"
+            }
+          ],
+          "summary": "Normalizers should produce inspectable proposal packets rather than hidden one-off shapers."
+        }
+      ],
+      "claimAudience": "developer",
+      "claimCount": 3,
+      "claimSemanticGroup": "Packets and reporting",
+      "clusterId": "cluster-developer-packets-and-reporting-deterministic-spec",
+      "groupKey": "developer:Packets and reporting:deterministic:spec",
+      "priority": 50,
+      "reason": "Claims touching commands, skills, adapters, or release surfaces are high-impact.",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "candidates": [
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:2f006cdc0b2c26694835121869f8eb2d65ff4327e293477d439a86c4f58f58a7",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-627",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Quality gates",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "contract",
+            "deterministic",
+            "linked-from:docs/master-plan.md"
+          ],
+          "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "The workflow can say which claims already have deterministic or Cautilus evidence, and which still need scenarios, tests, or alignment work.",
+              "line": 627,
+              "path": "docs/contracts/claim-discovery-workflow.md"
+            }
+          ],
+          "summary": "The workflow can say which claims already have deterministic or Cautilus evidence, and which still need scenarios, tests, or alignment work."
+        },
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:9ac5a58afee765f6920438778b4c83fabd0615aa52ffd68044c02f24255280ba",
+          "claimId": "claim-docs-contracts-runner-readiness-md-29",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Quality gates",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "contract",
+            "deterministic",
+            "linked-from:docs/master-plan.md"
+          ],
+          "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "The first implementation slice should be read-only readiness visibility through `doctor` and `agent status`, plus a minimal runner assessment schema and example.",
+              "line": 29,
+              "path": "docs/contracts/runner-readiness.md"
+            }
+          ],
+          "summary": "The first implementation slice should be read-only readiness visibility through `doctor` and `agent status`, plus a minimal runner assessment schema and example."
+        },
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:cf22224c908691a76efd6ffc47cac4d7dcd50a298b34a655fc05fd00d31af065",
+          "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-154",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Quality gates",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "contract",
+            "deterministic",
+            "linked-from:docs/contracts/reporting.md"
+          ],
+          "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "It should generate a candidate or revision brief, then require the same tests and review gates before the candidate is trusted.",
+              "line": 154,
+              "path": "docs/contracts/runtime-fingerprint-optimization.md"
+            }
+          ],
+          "summary": "It should generate a candidate or revision brief, then require the same tests and review gates before the candidate is trusted."
+        },
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:fcfea5f504bd3665d363e93c6a62e485a89bf34e26feaf25970b1acbeaa448a2",
+          "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-188",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Quality gates",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "contract",
+            "deterministic",
+            "linked-from:docs/contracts/reporting.md"
+          ],
+          "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "A skill or eval test can pass while still reporting that the observed runtime changed from the comparison evidence.",
+              "line": 188,
+              "path": "docs/contracts/runtime-fingerprint-optimization.md"
+            }
+          ],
+          "summary": "A skill or eval test can pass while still reporting that the observed runtime changed from the comparison evidence."
+        },
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:08d93168049eadacc2c094b7a88b6d03a8526e9d1369ea055058ed10603f962d",
+          "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-8",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Quality gates",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "contract",
+            "deterministic",
+            "linked-from:docs/contracts/reporting.md"
+          ],
+          "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "By default, those tests should not force a model choice just to make evaluation evidence easier to compare.",
+              "line": 8,
+              "path": "docs/contracts/runtime-fingerprint-optimization.md"
+            }
+          ],
+          "summary": "By default, those tests should not force a model choice just to make evaluation evidence easier to compare."
+        },
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:76f03f289a1708b2223351eb5b59634e454be62460ecff9d205f5bb8c4903436",
+          "claimId": "claim-docs-contracts-scenario-history-md-238",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Quality gates",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "contract",
+            "deterministic",
+            "linked-from:docs/master-plan.md"
+          ],
+          "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "**Part 2 — broader compare ownership.** Extend history / compare hooks beyond the single profile-backed eval path so `review variants`, profile-less eval test runs, and skill evaluation can also update history and materialize compare artifacts.",
+              "line": 238,
+              "path": "docs/contracts/scenario-history.md"
+            }
+          ],
+          "summary": "**Part 2 — broader compare ownership.** Extend history / compare hooks beyond the single profile-backed eval path so `review variants`, profile-less eval test runs, and skill evaluation can also update history and materialize compare artifacts."
+        }
+      ],
+      "claimAudience": "developer",
+      "claimCount": 6,
+      "claimSemanticGroup": "Quality gates",
+      "clusterId": "cluster-developer-quality-gates-deterministic-contract",
+      "groupKey": "developer:Quality gates:deterministic:contract",
+      "priority": 50,
+      "reason": "Claims touching commands, skills, adapters, or release surfaces are high-impact.",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "candidates": [
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:266f0654c93bf588ccb621ac04d8a9b5766ce5f01c70a971634f158bc546388d",
+          "claimId": "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-19",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Quality gates",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "deterministic",
+            "linked-from:docs/specs/maintainer/index.spec.md",
+            "spec"
+          ],
+          "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "`npm run lint:skill-disclosure` proves the bundled and packaged skill stay within the progressive-disclosure contract.",
+              "line": 19,
+              "path": "docs/specs/maintainer/binary-skill-boundary.spec.md"
+            }
+          ],
+          "summary": "`npm run lint:skill-disclosure` proves the bundled and packaged skill stay within the progressive-disclosure contract."
+        },
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:a49a3b3c4d8507f3da03484afe56c55e4c3fe358fa57eaf55b0fc52d8a794f4e",
+          "claimId": "claim-docs-specs-maintainer-claim-discovery-workflow-spec-md-19",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Quality gates",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "deterministic",
+            "linked-from:docs/specs/maintainer/index.spec.md",
+            "spec"
+          ],
+          "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "The next proof should attach this behavior to deterministic tests or an evidence bundle instead of leaving it as a one-session observation.",
+              "line": 19,
+              "path": "docs/specs/maintainer/claim-discovery-workflow.spec.md"
+            }
+          ],
+          "summary": "The next proof should attach this behavior to deterministic tests or an evidence bundle instead of leaving it as a one-session observation."
+        },
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:152363b9e592e16a6b64063fc5b1b8685dd1397614fbd0ce7371681619737698",
+          "claimId": "claim-docs-specs-maintainer-optimization-loop-spec-md-19",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Quality gates",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "deterministic",
+            "linked-from:docs/specs/maintainer/index.spec.md",
+            "spec"
+          ],
+          "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "The product needs packet-level tests and at least one held-out eval route that can reopen the before and after evidence.",
+              "line": 19,
+              "path": "docs/specs/maintainer/optimization-loop.spec.md"
+            }
+          ],
+          "summary": "The product needs packet-level tests and at least one held-out eval route that can reopen the before and after evidence."
+        }
+      ],
+      "claimAudience": "developer",
+      "claimCount": 3,
+      "claimSemanticGroup": "Quality gates",
+      "clusterId": "cluster-developer-quality-gates-deterministic-spec",
+      "groupKey": "developer:Quality gates:deterministic:spec",
+      "priority": 50,
+      "reason": "Claims touching commands, skills, adapters, or release surfaces are high-impact.",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "candidates": [
+        {
+          "actionBucket": "agent-add-deterministic-proof",
+          "claimFingerprint": "sha256:4320ef933b3041cf1a4934f75f1650b36ac597e6e9a88d17216ebf2251c20800",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-590",
+          "currentLabels": {
+            "claimAudience": "developer",
+            "claimSemanticGroup": "Claim discovery and review",
+            "evidenceStatus": "unknown",
+            "lifecycle": "new",
+            "recommendedProof": "deterministic",
+            "reviewStatus": "heuristic",
+            "verificationReadiness": "ready-to-verify"
+          },
+          "evidenceRefs": [],
+          "groupHints": [
+            "audience:developer",
+            "contract",
+            "deterministic",
+            "linked-from:docs/master-plan.md"
+          ],
+          "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+          "sourceRefs": [
+            {
+              "excerpt": "Claim review that uses an LLM needs separate review-budget confirmation after deterministic scan.",
+              "line": 590,
+              "path": "docs/contracts/claim-discovery-workflow.md"
+            }
+          ],
+          "summary": "Claim review that uses an LLM needs separate review-budget confirmation after deterministic scan."
+        }
+      ],
+      "claimAudience": "developer",
+      "claimCount": 1,
+      "claimSemanticGroup": "Claim discovery and review",
+      "clusterId": "cluster-developer-claim-discovery-and-review-deterministic-contract",
+      "groupKey": "developer:Claim discovery and review:deterministic:contract",
+      "priority": 60,
+      "reason": "Claims with weak or missing evidence refs should be reviewed before next action selection.",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-to-verify"
+    }
+  ],
+  "evidencePreflight": {
+    "evidenceRoots": [
+      ".cautilus/claims"
+    ],
+    "matchedRefCount": 60,
+    "policy": "possible evidence refs are hints only and cannot satisfy claims without review.",
+    "scannedFileCount": 37,
+    "status": "completed",
+    "walkErrorCount": 0
+  },
+  "inputPath": "/home/hwidong/codes/cautilus/.cautilus/claims/evidenced-typed-runners.json",
+  "packetNotice": "This packet prepares deterministic claim review input. It does not call an LLM or assert that any claim is satisfied.",
+  "reviewBudget": {
+    "actionBucket": "agent-add-deterministic-proof",
+    "budgetSource": "cli-or-default",
+    "clusterPolicy": "default",
+    "excerptChars": 1200,
+    "maxClaimsPerCluster": 8,
+    "maxClusters": 12
+  },
+  "schemaVersion": "cautilus.claim_review_input.v1",
+  "selectionPolicy": {
+    "actionBucket": "agent-add-deterministic-proof",
+    "excludesEvidenceStatus": [
+      "satisfied"
+    ],
+    "excludesReviewStatus": [
+      "agent-reviewed",
+      "human-reviewed"
+    ],
+    "reason": "already-satisfied and already-reviewed non-stale claims do not need LLM review by default; inspect `skippedClaims` to audit carried evidence and prior decisions."
+  },
+  "skippedClaims": [
+    {
+      "actionBucket": "split-or-defer",
+      "claimFingerprint": "sha256:0bae4dba5995735432a7ab4cf307999b1c1a2dda82841939daff988c016548a5",
+      "claimId": "claim-agents-md-12",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "blocked"
+    },
+    {
+      "actionBucket": "split-or-defer",
+      "claimFingerprint": "sha256:367f95519e0813c875bfa7e39244a69fa73e6cad1dc133bc6338767ce229d3fa",
+      "claimId": "claim-agents-md-26",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "blocked"
+    },
+    {
+      "actionBucket": "split-or-defer",
+      "claimFingerprint": "sha256:23a867598176c24e844968b2700a44f31228da6e0f368e8194124a5ee0df47c9",
+      "claimId": "claim-agents-md-29",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "blocked"
+    },
+    {
+      "actionBucket": "split-or-defer",
+      "claimFingerprint": "sha256:15e5fbc575df9af76ba40b6ba314c6fe604ab6b50f792524416b12e01e871e42",
+      "claimId": "claim-agents-md-61",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "blocked"
+    },
+    {
+      "actionBucket": "split-or-defer",
+      "claimFingerprint": "sha256:96b7f51516ba4c8a8d89e4e5a77652f179a81105dc574ab340fab051182ee0a8",
+      "claimId": "claim-agents-md-73",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "blocked"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:a1b09b95c632460ea8aa2c6e7db22945815a35d0b753f235e7103923c4c9f29c",
+      "claimId": "claim-agents-md-78",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:460f483e43d6c0fbf170e58f385550bae84a4940a4f8f9a2818affbccec87cf1",
+      "claimId": "claim-agents-md-79",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:ea6f3cae604c3d4b5379b19b8017420cc345e82362bf13c51c4424a44856efde",
+      "claimId": "claim-agents-md-123",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "split-or-defer",
+      "claimFingerprint": "sha256:bf72456c50e1505ba08fddf7e1c028aee5f233a950414edfdf5a3528d3749182",
+      "claimId": "claim-readme-md-3",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "blocked"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:320919049969c4267f56feeb209110e44d822f29703dc1fdd362d2f120d5484a",
+      "claimId": "claim-readme-md-7",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:b207b54490c0db2ab75bded7ba0421b0d2898a095ed7948180593c7e765f40e8",
+      "claimId": "claim-readme-md-9",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:424580d0b53e416034e88a9299a9c47f1645659c1e4e36cb016a17053b65c8b0",
+      "claimId": "claim-readme-md-10",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:84176dd7bded68a60234d7d79401c854d97c89ed2a87e54ace984ac70db490a4",
+      "claimId": "claim-readme-md-13",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "human-confirm-or-decompose",
+      "claimFingerprint": "sha256:b32b7d8a7c03981231258c118fb4c012c5d2c8d0603ff287c6820cb70f37cfb4",
+      "claimId": "claim-readme-md-75",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "split-or-defer",
+      "claimFingerprint": "sha256:c6ac22b52078515a66470c72cc5fb595fb1e06f9a762f720b6c9a0f058d2aa50",
+      "claimId": "claim-readme-md-101",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "blocked"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:df4aa9115fa3cb65ef65be956336be165bc67437d0f039e64c13baf95891493d",
+      "claimId": "claim-readme-md-129",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "app/prompt",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:278d2b24e86fda13b675714aeb0c57ae685fd07d2c02ed6320572f06d476cdb7",
+      "claimId": "claim-readme-md-144",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:cca48e23143767450d964a26876792773f2f92ca2d3588c21e022181f0c06a2e",
+      "claimId": "claim-readme-md-151",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:16b357f816005aa1da9b6ff24f4188e6e6057e0e73d8f39e58c8cb4b153d8c05",
+      "claimId": "claim-readme-md-155",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:2439661f4452be243c0dab17f3fe5f51d86ae2155ef8e79a8e9ef32ca0d2591c",
+      "claimId": "claim-readme-md-156",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "split-or-defer",
+      "claimFingerprint": "sha256:9bada1ab213276f56664107bebda9322010ab42d914bbc27bd0c1e1937c171b3",
+      "claimId": "claim-readme-md-160",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "blocked"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:cb717dd9c88c18787242dd04a0d050f2d64914b8a1b7c17ce68f7ed09436899c",
+      "claimId": "claim-readme-md-166",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-design-scenario",
+      "claimFingerprint": "sha256:0e3e74a4c062fc12acdce7ccc934dac0e4b36fc30fe6bd96ae0ceaf413d96302",
+      "claimId": "claim-readme-md-178",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "app/chat",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "needs-scenario"
+    },
+    {
+      "actionBucket": "split-or-defer",
+      "claimFingerprint": "sha256:26fb3d242b29d1859c5171dda55376329d47dc400c8136fb67df8562a6160c5a",
+      "claimId": "claim-readme-md-199",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "blocked"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:0326670200c2a6f36720afd68b0bf4dded8a6d931270b22ff70f68d3fe459927",
+      "claimId": "claim-readme-md-218",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:3022b028802b2727ebdc3d4e058efe037c29d529aa9580f5229aa3ac00dd2027",
+      "claimId": "claim-readme-md-238",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:671bbb74f00daae3b1fc95c03a26ee69ad1317df7b6b0210ed589f6cfe159d66",
+      "claimId": "claim-docs-cli-reference-md-32",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:027d54c6a13e15d151b75ec2d5c4acd54f3cb49571cd36e66deece32a54cff2c",
+      "claimId": "claim-docs-cli-reference-md-108",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:005c3b9342e1ac04e79a401f42a143ac17f820945d363db8f38004ec518975e1",
+      "claimId": "claim-docs-cli-reference-md-110",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:05cfeb55eaea8684b0ead0e9d6949afc8e31e32d5d2fa6bf2c36d978b6c248e9",
+      "claimId": "claim-docs-cli-reference-md-114",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:677531528b5130a8cb2c449a6df5177abb7ee7d925262299b9123f87c1e7e60c",
+      "claimId": "claim-docs-cli-reference-md-115",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:ddd6e85737a56116b1eb1766cd75a85b6d2d11e7f7775ff3ce6d9f62d9748829",
+      "claimId": "claim-docs-cli-reference-md-128",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:10dc5fd8f817011f748f06bba796f3567abb6cfd596947ecff3ff1f6fdf00e95",
+      "claimId": "claim-docs-cli-reference-md-173",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "human-align-surfaces",
+      "claimFingerprint": "sha256:5f23376739756b6461dbac74ecc14110789ff32f95ca2f3f13d85448d5e5bfdb",
+      "claimId": "claim-docs-cli-reference-md-180",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "needs-alignment"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:d3e7739baffe7430517819e439f1f2430e91a74ff7123b0de3241b8c17aceef8",
+      "claimId": "claim-docs-cli-reference-md-185",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "human-align-surfaces",
+      "claimFingerprint": "sha256:0fb7d2b87e1402f9d2997f30c4fe48f61e05ea9654c80981f5c80b85574f2e1d",
+      "claimId": "claim-docs-cli-reference-md-186",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "needs-alignment"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:313275317465567a22c5d4992ec031f8aa811338e2281d6c84520f52f8f7b556",
+      "claimId": "claim-docs-cli-reference-md-256",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:c92e1512edd768678bfa8a2047aed48205fdc5b1b4eac23b5affe38b4f8a68c3",
+      "claimId": "claim-docs-cli-reference-md-258",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:3abe64a979d238c9760ba219c69eccf79d874dd45f4d7c8bf954e9ad207a2e33",
+      "claimId": "claim-docs-cli-reference-md-266",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:1e30b87e2f299951a03c64f4f891326883f447714f997c5b496c8f5a130c8219",
+      "claimId": "claim-docs-cli-reference-md-270",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:83c81805880b9762061d7ae0e99d4469f41a78b6e801d6b775db03151fe12d8d",
+      "claimId": "claim-docs-cli-reference-md-427",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:84f315418d5b081d4b95da8d83048ba5c06db7fc31de2ab8b4105677a087e315",
+      "claimId": "claim-docs-cli-reference-md-431",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:4e71a63710e91c116f1577d1c862f0a10316bb0d32592a8caf8703b79ad2f4ce",
+      "claimId": "claim-docs-cli-reference-md-487",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:0d2d0ae18ce22c8340114c00a1c819ca126769c3214c11aeeb592815afda81e2",
+      "claimId": "claim-docs-cli-reference-md-505",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:91bf63bed1f252b0849096cb1ec6ab5b1453c2f60329227a39b11d7c92cdd08b",
+      "claimId": "claim-docs-contracts-adapter-contract-md-3",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:99c684dbda2accf4db9b5a114cb2259804c721b6a3d4e59f3720af41a6964b31",
+      "claimId": "claim-docs-contracts-adapter-contract-md-208",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:eaa15d7f6fcd6d1d871b2c4d32f4de26596f3fb9ecc6e1f869c75af7ea4452c5",
+      "claimId": "claim-docs-contracts-adapter-contract-md-218",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:e072f1310848f030f869ee7e1ccd5ee2da5b858d9bf1278729f22c0e47cc1b0b",
+      "claimId": "claim-docs-contracts-adapter-contract-md-220",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:a4cb7622c26b143238198eb59a666e408efaec3b04eaa0f7681f3a2fac020c30",
+      "claimId": "claim-docs-contracts-adapter-contract-md-276",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "human-align-surfaces",
+      "claimFingerprint": "sha256:06f26f14f677359b619ed7597b5c5a9f47190a0bd56e7dca43992c9c0f2c33b1",
+      "claimId": "claim-docs-contracts-adapter-contract-md-405",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "needs-alignment"
+    },
+    {
+      "actionBucket": "agent-add-deterministic-proof",
+      "claimFingerprint": "sha256:a062995eb812d2cbdb2124001081cdbc1d3f13b11d0341b66c21a5eee78cb673",
+      "claimId": "claim-docs-contracts-adapter-contract-md-424",
+      "evidenceStatus": "unknown",
+      "reason": "already-reviewed",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "human-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:f8a7b8b6077d204569c0fb22707b27e01368f625cf2f02abaa05ba5aa0b44a0d",
+      "claimId": "claim-docs-contracts-adapter-contract-md-430",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "split-or-defer",
+      "claimFingerprint": "sha256:30809430ddd6084516693e4e61aa78edcd386bf19c693df0ca749489c2df3106",
+      "claimId": "claim-docs-contracts-adapter-contract-md-472",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "blocked"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:b286a640322877c0e8e2aa64af228aaf01155e349464dd1cc83d21a79b51083d",
+      "claimId": "claim-docs-contracts-adapter-contract-md-476",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "split-or-defer",
+      "claimFingerprint": "sha256:ec839463e3299779977eb2918b2a34ca128e4ce9bfd2443fcc88c2e9be3193bb",
+      "claimId": "claim-docs-contracts-adapter-contract-md-533",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "blocked"
+    },
+    {
+      "actionBucket": "split-or-defer",
+      "claimFingerprint": "sha256:a2a0d02f2d28d7dc59c680f97ca9862c67e7738e064b25d1e3f7116d946b2a42",
+      "claimId": "claim-docs-contracts-adapter-contract-md-535",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "blocked"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:7a256a68b3b5b117e42c73484d7f2bdaf782ad72ab06a420d4a44f65e120af4f",
+      "claimId": "claim-docs-contracts-review-packet-md-3",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:707379c574740cd365d23854282c59e67b7ae584bfdea36fd8c035e3e318be90",
+      "claimId": "claim-docs-gepa-md-15",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:aae5fa6c0eeb4ee6edb98897c455b1e005bcbe79b4489e2545b5835fbe02cee5",
+      "claimId": "claim-docs-guides-consumer-adoption-md-20",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:11114aa5e9af2aea6b1f3d5cac375deb4a0df1029464551ae23e800346cec247",
+      "claimId": "claim-docs-guides-consumer-adoption-md-25",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "human-align-surfaces",
+      "claimFingerprint": "sha256:696d0ed10d3b67a18729fca9b33c15fcac98a62f3f9aa7e7a3602a7dffde132b",
+      "claimId": "claim-docs-guides-consumer-adoption-md-29",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "needs-alignment"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:235f566172db781f7228ff54e5c782c4469aaf0f0c1d64315906048b7547f672",
+      "claimId": "claim-docs-guides-consumer-adoption-md-48",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:40340b4a5e0545c5ef338ab3868e84af46ec09b140f83496a30ba8434ff7e7f7",
+      "claimId": "claim-docs-guides-consumer-adoption-md-49",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:8aac208866396b84c450be1369558a4a9accf00000d8711dc7e1a69c5467915d",
+      "claimId": "claim-docs-guides-consumer-adoption-md-67",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "human-align-surfaces",
+      "claimFingerprint": "sha256:23d83d6f72cc9755461377ad2ac8e6f2dafbf01128bd117a8efa793b71aeb95e",
+      "claimId": "claim-docs-guides-consumer-adoption-md-83",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "needs-alignment"
+    },
+    {
+      "actionBucket": "human-align-surfaces",
+      "claimFingerprint": "sha256:8edfa3ce4d6f43ef4031008bcdc6e4fa5fb4afb54762da4eb2a4ef061fd3d9fc",
+      "claimId": "claim-docs-guides-consumer-adoption-md-106",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "needs-alignment"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:7fccb1b11ea6b2c9ccff7fa0f28cde48c29e17d866287b3b45f8a50628896265",
+      "claimId": "claim-docs-guides-consumer-adoption-md-107",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "human-align-surfaces",
+      "claimFingerprint": "sha256:5c3061a13544c3262868dcf8badb89865d72baf4fa92d20e8ace297f22d0cda5",
+      "claimId": "claim-docs-guides-evaluation-process-md-10",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "needs-alignment"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:2e44beec35c85dd627fae37b0b475d42f08d844df9e71ad828bfc0d581aa36e4",
+      "claimId": "claim-docs-guides-evaluation-process-md-52",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:bd1727a2c94b086b9544d09769750e9a036855429b04810a8fa455b4a0238470",
+      "claimId": "claim-docs-guides-evaluation-process-md-253",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:6b5f627200b50a7707f96c32d7a64e3244f7b3701dcfb153006454b68e1ad489",
+      "claimId": "claim-docs-guides-evaluation-process-md-269",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "human-align-surfaces",
+      "claimFingerprint": "sha256:c6d2e597888ecc5376d7b9be45b7628fe5a1387bf6afa041f72f7ac936335653",
+      "claimId": "claim-docs-guides-evaluation-process-md-270",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "needs-alignment"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:ac0749ddbadbea1b37adc45edffbb9643b37e248147a2fe5097cf8abbf9577ee",
+      "claimId": "claim-docs-guides-evaluation-process-md-289",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "human-align-surfaces",
+      "claimFingerprint": "sha256:bbd0cc15974f28949118cb1f8125d27772e524aa4827d8ff92875cd374b45fd3",
+      "claimId": "claim-docs-guides-evaluation-process-md-293",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "needs-alignment"
+    },
+    {
+      "actionBucket": "split-or-defer",
+      "claimFingerprint": "sha256:75425af6738960680c6834184aff7b0a51e0ec1a5f15d5e50c7294c9bc1a6f7a",
+      "claimId": "claim-docs-guides-evaluation-process-md-304",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "blocked"
+    },
+    {
+      "actionBucket": "split-or-defer",
+      "claimFingerprint": "sha256:110056e8daa87af1db216ef9c088ab42d65d6caf968d1efb562245897672a32d",
+      "claimId": "claim-docs-guides-evaluation-process-md-308",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "blocked"
+    },
+    {
+      "actionBucket": "split-or-defer",
+      "claimFingerprint": "sha256:d4428f292edd6c32c49d1ac46d8672782f2c86a946bc2346c4af8e5d0f1d539e",
+      "claimId": "claim-docs-guides-evaluation-process-md-317",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "blocked"
+    },
+    {
+      "actionBucket": "split-or-defer",
+      "claimFingerprint": "sha256:0d27645b25db70340d8acaf99b749b91ab7c833cb6b38b829595a6f41acd4597",
+      "claimId": "claim-docs-guides-evaluation-process-md-320",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "blocked"
+    },
+    {
+      "actionBucket": "split-or-defer",
+      "claimFingerprint": "sha256:01efa71af70f470930f55ded6c3516c1fa56135e9665dadfad33590e0cdb3d32",
+      "claimId": "claim-docs-guides-evaluation-process-md-322",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "blocked"
+    },
+    {
+      "actionBucket": "human-align-surfaces",
+      "claimFingerprint": "sha256:a01061d109ce6e1f5226e6792dfe6de94ef6ec2bfc632d1e81d63963591d4814",
+      "claimId": "claim-docs-master-plan-md-29",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "needs-alignment"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:27088f34eb9c48b3c5789e94cd05c086c20c6358c95cee2977a7a0a965e54655",
+      "claimId": "claim-docs-master-plan-md-31",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:43afeafb11ef51bf56fcffc35f717e1f2f116bc2e6c4660fd9333f19cde6f59b",
+      "claimId": "claim-docs-master-plan-md-56",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:69aa5ae1ce7aca764e9f8198ae964b6ec8da23ff55f59f7f2df2a66910e697bc",
+      "claimId": "claim-docs-master-plan-md-76",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:6523f7c5fcd4585bdecf8007f4d0e451f467a90452d544e69ccbd7e292b45a47",
+      "claimId": "claim-docs-master-plan-md-82",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-design-scenario",
+      "claimFingerprint": "sha256:815dd0a63f977133f71cba4abf88a635f27ae1e6db6eee7884fc85f9acab52d4",
+      "claimId": "claim-docs-master-plan-md-88",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "needs-scenario"
+    },
+    {
+      "actionBucket": "human-align-surfaces",
+      "claimFingerprint": "sha256:8c15df06769d6900be11672ff1c723937ad20bc3eb3212c84d2d740feb54edfb",
+      "claimId": "claim-docs-master-plan-md-179",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "needs-alignment"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:637979c650b8f0f05b67e9dd815c274545862bfcbc4db451db6ee3f61ee0153c",
+      "claimId": "claim-docs-specs-user-evaluation-spec-md-11",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:f5b9a1cb237c687e9197418b496d41d005a5658e89ec8018042642e97883df2f",
+      "claimId": "claim-docs-specs-user-evaluation-spec-md-12",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "app/prompt",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:286c9ec9683a6a69e04c559a78286af88588719200056db06583b3f2d475e06e",
+      "claimId": "claim-docs-specs-user-evaluation-spec-md-13",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:db8d7c50e24066f8e6a1b7e2c3c536e3e09c4a6d2fe18e870b75b4bead176005",
+      "claimId": "claim-docs-specs-user-evaluation-spec-md-14",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "app/prompt",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:709c984aab47e9413a9ad976289e76d65a9a866e45307a5afe0ef15a8624f520",
+      "claimId": "claim-docs-specs-user-index-spec-md-24",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:9c02e459e8d9dde0c5546555cd6fd972af45d441ba5ed550d74a7fe99efa9744",
+      "claimId": "claim-docs-specs-user-index-spec-md-25",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:e3899b096e94f29ab48e81c4c735843e228abbbd14b836134054a60e75f126f5",
+      "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:b98e04ab7130e78226594061169d44a5f521c7a43859a633e3892871f24544fc",
+      "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-7",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:7bb0e7d89091719d433f466125d09d4fa00ba6bacc3e1381eebe23e09915a499",
+      "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-12",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:0e02ed9d14628673771e5a239e29ab5700fdb3d69a30870125e9d81f77f86590",
+      "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-13",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:a3e9d1b41016a93c606e82451a6da80d88f8a02bd0e06446782f080a7974a31c",
+      "claimId": "claim-docs-contracts-active-run-md-3",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:630444eba3130d0faa2c059a3f9e553e6e44566a1c386797f762ef96d9cfe403",
+      "claimId": "claim-docs-contracts-active-run-md-59",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:60b597b534327feb3e42ee75d7df606921d85af5e75ace3d4953430704dc817c",
+      "claimId": "claim-docs-contracts-active-run-md-186",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:3d2a20d102796beaf896d44e99f5b0cc2118f72769b881aa505b083b4f4a168c",
+      "claimId": "claim-docs-contracts-active-run-md-221",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:8832bba3db8e251f9ff546cb2c4d5944134a46bd9c709b1dd13736c8630cca8e",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-5",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:42108608e1cf924bd44556729ee33c68d1819d7b6828b8ada5bc68efeabb4ad7",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-60",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "app/prompt",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:4755325a9090d9e679305b3a06a1b7a3f122c44037faed7396ff609ac753d572",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-78",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:74518a9a34a9bf98a5c45e23baabd1bd3883b6f9254ee0a0df84b55d049bbbe4",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-90",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "human-confirm-or-decompose",
+      "claimFingerprint": "sha256:496c841b68f5a55aed3144f3c38780213a70b876c7139adb652f187d0ebc768e",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-92",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:fb78eaa26fd5a64b6d6dbf8db46f3409a7251db89887479dc2d40f723db68799",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-96",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "human-align-surfaces",
+      "claimFingerprint": "sha256:2e68dd94ed732fd3ce2eaaaefacd3d39194dfa1a64351e8faf94aca3fbf29c42",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-132",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "needs-alignment"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:e68e561b1d78adfab37ef338a0da9363a45e871a4d0523abdca848bf36274479",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-176",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:931bf4f719385b85ea297bcc3cdd8b56c29eb2d9ca43e3d57acbe2a3c85a9734",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-178",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "human-confirm-or-decompose",
+      "claimFingerprint": "sha256:a6845a133b65a004148aab93666ff7c1a55d3abd582acf53177bf94928629dfa",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-181",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:d35816a75e6865197594fed5e07f0ab9ca34213226bdea6bcac3620240cd6330",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-186",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:d1e36092a7a2f49d069d387a9965ad234f5e185c2568f77a928b0ca28ed0ab32",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-195",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:c8771569879ff2560b316b4ba714639e8cbf8c21156e0729a47ed22979780a64",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-196",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:b88434bd074af349646232a96a54afd3040eb9d98e7278fd8a039af74a0c910e",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-214",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:06f00ea486c952a6c1c1a739c6f893e13de474f5c166a0050ce25c829ec549c1",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-215",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "human-confirm-or-decompose",
+      "claimFingerprint": "sha256:da572ed3286b0f1ef82c84812bf748fbf889422e9874b45fcd7cd5197eb0faa7",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-254",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-design-scenario",
+      "claimFingerprint": "sha256:12366ae1b1010607eff115267924c54661536c62df6052d080c79608e4d3e1b3",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-261",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "needs-scenario"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:4a7ed1cd52c43528fd327f34e1db3925267ec53e1ebd68c70726c5310947dd20",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-310",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "human-confirm-or-decompose",
+      "claimFingerprint": "sha256:3f1f7361e7d218ea05d47457857af1633664e2b8e28cfd571dc5dc2d4bbe5e74",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-320",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "human-align-surfaces",
+      "claimFingerprint": "sha256:3ae052d2e69bce5fd477651716c93abdc26b8279663de5c98b4c7f3922bbea72",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-322",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "needs-alignment"
+    },
+    {
+      "actionBucket": "human-confirm-or-decompose",
+      "claimFingerprint": "sha256:bf7e15e70a50bc05958c792c5bf0b689d55b960ac5e3c166d6d0e1934b2b0cef",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-325",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "human-confirm-or-decompose",
+      "claimFingerprint": "sha256:cd6b3240fca5d92670e322831630b4d7532d9189f8a6f4af5654af0103b65116",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-327",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:fbfa1b74f0f2eb0484273b680e070c94e65cfeb6add53a630bf2ca8f48be4d61",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-369",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:9f1f52d5759d9b763f4e181c99e9e5d6da380819a69f14de78a12c4e396eb1eb",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-372",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:9bf39257967e8679266bbb31122162ae4714240eecfa9117e32c6e84bd1247a5",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-376",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:d63aff27f89631ee4ca274aa5a66ef8fc03be36cbee5d5a836f9de494185539d",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-386",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:07cfb886e14a82742a41cf1e255357dce81dade3f1bdbd0dbe812e448368e426",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-397",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:8c74d01a69910bc7763524d8dd19949d087bc30b23b07492608fe975eaf3e434",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-399",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "app/prompt",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:6760bf2ea6521a5f35690ef7eed832fa059cf7870a1bf5149fd68c7174212fa4",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-404",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "app/prompt",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:9524a84a0b9b0a11aca4d95485397b220bf0a53a254096663f7b1dcfcf69c4fd",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-454",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:1b7a0d8e3ea117dc4b5a85ee5ce84ed38f4f79639b00e197d24db1c999fabae5",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-456",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:d04d8eb163d803e2a529f013956a4a4cb5102b5eaf3da8c9dc592c131c78228f",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-461",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:36fbc258e71c31485963d2c661bc4b76eaf69a54332b8acae73686a83b9f5be6",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-476",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:af4bc0b6d9aeeaf585750b151f5b17c18bf8063b1c1331a19d4a3495e85c4bf4",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-500",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:857f37f990a98b3ae0dd80c3ce484046c16bc3e2304b0b79702d4a04081034b4",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-503",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:fa2646bb26d51c392c653ad13387938ba7984e9a497a2c0dcb71b2a69de2e925",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-506",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:a9943885f769ffe5d334af18d6d6402ccc92d0e356e348f91cc3428c920f80ff",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-520",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:cf9b996efe054da8c1c4215651aad9eb3dadee70df68452d653c2761fd1b720b",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-524",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:a193435e176f49736db5b80cce7b172a5c37c50552974e6415814b8109df52c5",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-548",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "human-confirm-or-decompose",
+      "claimFingerprint": "sha256:cce31c9469a568f2944264556e5aa5b7b3f7d4d4c960d15d51184c3218bd4b0b",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-550",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:ec44ab256f9a1f76a634ff4891760069518ff698390dc48dbf9b082c91fa88dd",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-553",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:c46a1bfd5efa1342b0731e4254060a988a3f8dc71245a4fe13f96d0d1a6f3f87",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-571",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:8eba8ebef3902c23c9cfe8bf9217ad9946d2146e24b0271fbea8af363c6b5da3",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-572",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "human-align-surfaces",
+      "claimFingerprint": "sha256:8f03ccafa90afade7b2150dbc716d4d777d35e84a61b36f736d65f1acd3b3795",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-586",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "needs-alignment"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:6fd233d3ffafd0f2392f61109f17dd94ba308f158d01a415610d25adf4e7c2cd",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-608",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:f3946d4b74ff6c434c6b8b7a693c7f5bfc4bbaa3fd6f16d89f21e5243b5ccfd3",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-622",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "human-align-surfaces",
+      "claimFingerprint": "sha256:f55435ef267dad864cbd1d818ce3a0dc1651c0feabb49fecc5b72c8bbb9a361b",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-628",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "needs-alignment"
+    },
+    {
+      "actionBucket": "agent-design-scenario",
+      "claimFingerprint": "sha256:201b64a8ff613496c0ab6030dc9f00e7c7e7a39a86c6d739cf68f67a43b3ed44",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-683",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "needs-scenario"
+    },
+    {
+      "actionBucket": "human-align-surfaces",
+      "claimFingerprint": "sha256:21c53f5ec4d397e49c7affa5c7be9dd23e9709e1649e3989c5fbaad619211e98",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-686",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "needs-alignment"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:5710c92253395bbda0e82175a3f1696b96f8f17275875d7b96f48b951e4ebd09",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-687",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "human-confirm-or-decompose",
+      "claimFingerprint": "sha256:d94d8642a7467878df80b58d110e874368ba1402147ff447dc961b4732eca82b",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-688",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "human-align-surfaces",
+      "claimFingerprint": "sha256:e1f238b94302fc34437333c1a961bf8ea0289588ea97402ae9be1b6b733217c9",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-696",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "needs-alignment"
+    },
+    {
+      "actionBucket": "human-align-surfaces",
+      "claimFingerprint": "sha256:4e4c2d39b8037d64292ca34764e255cd27f400e91cd41f2ea7c3c6a61f609dfd",
+      "claimId": "claim-docs-contracts-live-run-invocation-batch-md-28",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "needs-alignment"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:ae0122e9a32cdc900075bb4a92bef7f3ed1984464ccba320f1a5824446ee45d2",
+      "claimId": "claim-docs-contracts-live-run-invocation-md-12",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:47034d0a3d9bd406d1f4ba72ec4165eaa08af324e5bd9c65bb7460a32e496aef",
+      "claimId": "claim-docs-contracts-live-run-invocation-md-24",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-add-deterministic-proof",
+      "claimFingerprint": "sha256:22dbd2b45769d7449806d56519b0926c85aa82e0359074dcab9be9f4143debe2",
+      "claimId": "claim-docs-contracts-live-run-invocation-md-58",
+      "evidenceStatus": "unknown",
+      "reason": "already-reviewed",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "human-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "human-align-surfaces",
+      "claimFingerprint": "sha256:49ccbb01966c7e93a6257de58f1a4cdec18a010f5b9d1b489fe6480a24216206",
+      "claimId": "claim-docs-contracts-live-run-invocation-md-160",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "needs-alignment"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:7b138d09302205c97e8b0336bf52789afe8266689277237506bcfc4dafc0c089",
+      "claimId": "claim-docs-contracts-reporting-md-39",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:6a5975f5be8ff5f08f378525aa1963dc684e6d1d50395f4326e2788cdb47521f",
+      "claimId": "claim-docs-contracts-reporting-md-111",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "human-align-surfaces",
+      "claimFingerprint": "sha256:c40280e0f0251c4fe6717805add31109eb82cf41e62faba97ebfb5d41cec0fde",
+      "claimId": "claim-docs-contracts-reporting-md-112",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "needs-alignment"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:3582edd02790772fc9db230205f4008b31765a33786dd8da19ab123e0b82398d",
+      "claimId": "claim-docs-contracts-reporting-md-124",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "human-confirm-or-decompose",
+      "claimFingerprint": "sha256:4c026c323498f2e3bdb8f8e9ae07bd3be82d64e0f8167b9899e5e0fc717f5db3",
+      "claimId": "claim-docs-contracts-reporting-md-150",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:d1978a38a330c077db7ab68edb6d553016cd4637907ad610d7e822dc7bbcc438",
+      "claimId": "claim-docs-contracts-runner-readiness-md-13",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "app/prompt",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:312e3f48e81a962743a5b4dc1bfcba5a160c7ce803b1dee2825abb359f686558",
+      "claimId": "claim-docs-contracts-runner-readiness-md-37",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:eb47c06c34125c3243fb30e32a975319a8c7574eee035757c05368ca269306a0",
+      "claimId": "claim-docs-contracts-runner-readiness-md-43",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:f10d9bd6fab59f1aab0554881c0e39bd41cdaf669e8abe2056655c4f31009d92",
+      "claimId": "claim-docs-contracts-runner-readiness-md-44",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:b7b5f4b83ffbcf062b9fded05c027372d39e83dc72625e20b232142149b5a590",
+      "claimId": "claim-docs-contracts-runner-readiness-md-45",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:74e8c764740a2aec079425237e845ea094128cfaf0ee963f34a8d61557532e49",
+      "claimId": "claim-docs-contracts-runner-readiness-md-61",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "app/prompt",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:38098b5d31afd6620eedf297d7cb511d98a5bc1d97777e1d1c6000ec4bddf099",
+      "claimId": "claim-docs-contracts-runner-readiness-md-111",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:8fe51f062991ce657831e0fad6218ae8064d3f2b64317e2b7727b4e305a59a21",
+      "claimId": "claim-docs-contracts-runner-readiness-md-117",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:091b32f4a97da9bdda7a28b88cb71efe23fb840cf6780c3e44d8b710e36f77ab",
+      "claimId": "claim-docs-contracts-runner-readiness-md-118",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:3f2fb74325cdd41345733f7859ac52b8675a9e21f540d219f2cc1080b787d1f9",
+      "claimId": "claim-docs-contracts-runner-readiness-md-121",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "app/prompt",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:9a1c2d9bc6d27fcaeeda00e4907d101b6e4dacbf5286223d4687ad82e9e272a5",
+      "claimId": "claim-docs-contracts-runner-readiness-md-134",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:d0eef80fecd2569ebed96e8f6dc6a8176036efc49d6177b3c0c2e0b51686833f",
+      "claimId": "claim-docs-contracts-runner-readiness-md-147",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:c0889b10ccba68bae6cd77b826bf8302060b036d6b4b6c8057588de1a99a1e41",
+      "claimId": "claim-docs-contracts-runner-readiness-md-150",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:c2fd8b6ddee5b4a4d0498113549a4e1b1aaaf6d9165acccc4b151967620531d3",
+      "claimId": "claim-docs-contracts-runner-readiness-md-156",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "human-confirm-or-decompose",
+      "claimFingerprint": "sha256:66ef0b0e57a3ad1a8f22a8bcb5be04003c58813bf95d954e3d708586d92b25ec",
+      "claimId": "claim-docs-contracts-runner-readiness-md-172",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-add-deterministic-proof",
+      "claimFingerprint": "sha256:be5f13dad4eaff72ac28185435f719e39f08da85ce9b73b6854097fa24c6d31a",
+      "claimId": "claim-docs-contracts-runner-readiness-md-198",
+      "evidenceStatus": "unknown",
+      "reason": "already-reviewed",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "human-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:03ad2ed43f747e59c1f4871cb7ca29f1bfbfaa803bbab2a061b950119e6c1da7",
+      "claimId": "claim-docs-contracts-runner-readiness-md-208",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "app/prompt",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:82896bc781c929afea1876b90b1af2208ca7a40401fd5f57319e18617578165b",
+      "claimId": "claim-docs-contracts-runner-readiness-md-273",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:6967e3f85b15d337045129fe73d149300c1be2b29e0b7cff814a281b507d0eab",
+      "claimId": "claim-docs-contracts-runner-readiness-md-278",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:05bfb58e38644674085a8f642e0e4d0cb82ae81f0a1f56aeaf52170e9c2bfa4e",
+      "claimId": "claim-docs-contracts-runner-readiness-md-279",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:d18cda09c7af4c6f9c0f928f93eea59ad01ee60408f6f904c159096850a1a37c",
+      "claimId": "claim-docs-contracts-runner-readiness-md-281",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:a3b19b998b05905440cd8a18f6c445f0e540b0e193a936aa8cb917bfc60c7a3f",
+      "claimId": "claim-docs-contracts-runner-readiness-md-294",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:e5b4cc3fb78135f7afda966fe50a60d719a8501ca84993e9bfed43fbef455f3f",
+      "claimId": "claim-docs-contracts-runner-readiness-md-301",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:7b016906f7b4a987bed48fb072f9e7938a2045041b4ce989e1d00c4c4b59a310",
+      "claimId": "claim-docs-contracts-runner-readiness-md-349",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:2f7e93422daa0414fa5d11958a69e48e55e76e1b0a7d6d6c6f498693e370a6c4",
+      "claimId": "claim-docs-contracts-runner-readiness-md-358",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:8fa0494ebce3835b7746dfe891883393d5f4537e803da2d1fcdddd080a1304f5",
+      "claimId": "claim-docs-contracts-runner-readiness-md-397",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:fd82dbe3bc56f13869053a18884f479aaa93d3c7096a89dd0bdcb71641ac9127",
+      "claimId": "claim-docs-contracts-runner-readiness-md-409",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "human-align-surfaces",
+      "claimFingerprint": "sha256:7ce309943f6ad2f1d8a580b71809279d5e9370481906e32619ba94c591b4f25e",
+      "claimId": "claim-docs-contracts-runner-verification-md-5",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "needs-alignment"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:fe5da0003f98ff1b779a89050e4f0c2b16e3b4a353fe3b26bcbb0e2fa8c02c46",
+      "claimId": "claim-docs-contracts-runner-verification-md-26",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-design-scenario",
+      "claimFingerprint": "sha256:fde2dba8906af77ca6a87865b51b67bfe1cdbe6055e706960f1164061dc20d4a",
+      "claimId": "claim-docs-contracts-scenario-history-md-3",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "needs-scenario"
+    },
+    {
+      "actionBucket": "agent-design-scenario",
+      "claimFingerprint": "sha256:011098fa8f0fb74f38fea92d734fd20899794fa138b4bd51484b07c3dd9a2f5b",
+      "claimId": "claim-docs-contracts-scenario-history-md-175",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "needs-scenario"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:343a5d623c6429fb07ad8c6010324ec777d2c214046990a27723be95b35285e3",
+      "claimId": "claim-docs-contracts-scenario-history-md-289",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:9aa67d9d960873c3babfef7757cc09598c422c34c2ee669d1b412995289b98ca",
+      "claimId": "claim-docs-contracts-workbench-instance-discovery-md-25",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-design-scenario",
+      "claimFingerprint": "sha256:1d69d79140e7241bd365131d6dbac7a81739a91c58a9914a8a48980c64e44686",
+      "claimId": "claim-docs-contracts-workbench-instance-discovery-md-87",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "needs-scenario"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:e1fbfb97b35f7b11b40f8460ec5ff20cf1b4b440f96dab535b1eeac095ba45da",
+      "claimId": "claim-docs-contracts-workbench-instance-discovery-md-99",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "split-or-defer",
+      "claimFingerprint": "sha256:54a51cdc72f76d3d9714c0f3b87a4d83f8b95d55bc9fd0d34b5d5030c2f45389",
+      "claimId": "claim-docs-contracts-workbench-instance-discovery-md-100",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "blocked"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:9c1f075135cb7ca08c49b052194f720c714186b4f3df03aeb9bc3b399aa47e34",
+      "claimId": "claim-docs-contracts-workbench-instance-discovery-md-101",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:543403c171f9e7b3ddfa9eba3d18f6552237e853c8b0d96792e24e5904eca4f7",
+      "claimId": "claim-docs-specs-maintainer-active-run-workspace-spec-md-3",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:ab43cf6f8278e9091813e352f7290b635adabed605d9b91cd7ecf8a2c7dc4d63",
+      "claimId": "claim-docs-specs-maintainer-active-run-workspace-spec-md-13",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:5cebde607842447489b21603fed3a73eaf769f6caf9ed821ccb9e6761a33ee14",
+      "claimId": "claim-docs-specs-maintainer-active-run-workspace-spec-md-19",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "human-align-surfaces",
+      "claimFingerprint": "sha256:05872058783c2b8112d2b150d673924593528fc22c3a0670d82f01f98a9d26c5",
+      "claimId": "claim-docs-specs-maintainer-adapter-host-ownership-spec-md-13",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "needs-alignment"
+    },
+    {
+      "actionBucket": "human-align-surfaces",
+      "claimFingerprint": "sha256:b7d60f4625e822fc353d29c153147e3bd4874477f1445ca0abe07d14827350db",
+      "claimId": "claim-docs-specs-maintainer-adapter-host-ownership-spec-md-14",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "needs-alignment"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:cd19dcd50f48defb627cd4240219b47848b9e552bf3ca377393f51a0b0ea85a0",
+      "claimId": "claim-docs-specs-maintainer-adapter-host-ownership-spec-md-19",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "human-align-surfaces",
+      "claimFingerprint": "sha256:fa390b20b9e4d60d81a4880ba2b3e0ac402e4c3f22a40b440f38d8e946cdd452",
+      "claimId": "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-14",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "needs-alignment"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:12ead2e61b0200f0544d409e36e2ab80fef3669dce6ea0bb43565a2bb3256177",
+      "claimId": "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-15",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:c2d13b106d686bfc800b45aee200b2477c8695d5d6de2940585b98c6c087a5f8",
+      "claimId": "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-20",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "human-confirm-or-decompose",
+      "claimFingerprint": "sha256:474e935d12c1aced7aa55987868b07b6f0f0d374781cce43b789d4d2274e7408",
+      "claimId": "claim-docs-specs-maintainer-claim-discovery-workflow-spec-md-13",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:a828b5ee0bab8ff9914d305f6a6d1216a39214eceac4b5832882b8e25956814c",
+      "claimId": "claim-docs-specs-maintainer-claim-discovery-workflow-spec-md-14",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:a6571bb1abd2ccc3776be056d0c1942a503f8c7ed90196e049667c930eb86084",
+      "claimId": "claim-docs-specs-maintainer-evaluation-surfaces-runners-spec-md-15",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "human-confirm-or-decompose",
+      "claimFingerprint": "sha256:8c351ccbb59b2dbc619374a6dc10030b4b369238f67124071d83468c0e48e5dd",
+      "claimId": "claim-docs-specs-maintainer-evidence-state-artifacts-spec-md-20",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "human-align-surfaces",
+      "claimFingerprint": "sha256:5804a40ebbbdbeab88bc7f9cc104650d349270a7b425d95646f186050e070323",
+      "claimId": "claim-docs-specs-maintainer-live-invocation-runtime-spec-md-13",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "needs-alignment"
+    },
+    {
+      "actionBucket": "human-align-surfaces",
+      "claimFingerprint": "sha256:ba82feedff3ca61e1a85ad5306240d7ad37fee03b2366e35d4537de49984661a",
+      "claimId": "claim-docs-specs-maintainer-live-invocation-runtime-spec-md-14",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "needs-alignment"
+    },
+    {
+      "actionBucket": "human-align-surfaces",
+      "claimFingerprint": "sha256:fc2a2f494f8d3e24e9ff2dfacaab24351ea8515847e8d50fff3d417c3f999b00",
+      "claimId": "claim-docs-specs-maintainer-readiness-runtime-status-spec-md-20",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "needs-alignment"
+    },
+    {
+      "actionBucket": "human-confirm-or-decompose",
+      "claimFingerprint": "sha256:b5b3ec89571fddc50cd9b2250d6943417b8a34d8acf13809d02efae2c00a66f9",
+      "claimId": "claim-docs-specs-maintainer-reporting-review-variants-spec-md-14",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:06f0a17ea40009f4c5c37662ecec3cc99aaf314119474f0956f302b668b0c0ba",
+      "claimId": "claim-docs-specs-maintainer-reporting-review-variants-spec-md-19",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:be74efa96a832b58f44b5351149b65c3d43cb4d5c7a165a0802b1cb91f978272",
+      "claimId": "claim-docs-specs-maintainer-scenario-history-normalization-spec-md-19",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "human-confirm-or-decompose",
+      "claimFingerprint": "sha256:30ef460039911189d3d6124c72b19d246c5bc002187e7565828234ef1d68793e",
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-16",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:7d2a95136dbffa734309203e9587993060b7614fa9096e426dbf4a689109473f",
+      "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-12",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:83fa3e6e882c6c28e2b6cf839c4ff47f4f272cf38f986edf1089322ad45215bf",
+      "claimId": "claim-docs-specs-user-optimization-spec-md-3",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-design-scenario",
+      "claimFingerprint": "sha256:ffcfb8eacb3317109fb5558b5c50a97dcc29eaa65d4a82e592f6bbeb0d545e9c",
+      "claimId": "claim-docs-specs-user-optimization-spec-md-7",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "needs-scenario"
+    },
+    {
+      "actionBucket": "human-confirm-or-decompose",
+      "claimFingerprint": "sha256:5a4c841529140774dd02b5fdcd1a0ba100d8730ac9bf4b148eff717ce52095ff",
+      "claimId": "claim-docs-specs-user-optimization-spec-md-14",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "human-align-surfaces",
+      "claimFingerprint": "sha256:87e17b5ea69471a932aa1d7960c64fa1fa6cbd8f8dd0f92c066f274d05615e61",
+      "claimId": "claim-docs-specs-user-ownership-spec-md-3",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "needs-alignment"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:a6b411a0ca847e34dbb6b4bb7fc94233691487617d4cf9dae4f5af7ae7ac9a7e",
+      "claimId": "claim-docs-specs-user-ownership-spec-md-14",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:16155d7a86d2048fb6bca84210717dc0ca9c5396495dbad3a301c83c5f749273",
+      "claimId": "claim-docs-specs-user-proof-debt-spec-md-7",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:a541795d739f3f1195e1a52ac1f6d16a18146c7bd0a2fa85cd1881c6559d4cdb",
+      "claimId": "claim-docs-specs-user-proof-debt-spec-md-14",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:977717b940351fe1391783f91ae96d0524160fd94797bda216a8ab7e178660b2",
+      "claimId": "claim-docs-contracts-optimization-md-37",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:8267c797749dc3d46b681a63b6457b53c5c5238a263eda2c602f3240c758fce7",
+      "claimId": "claim-docs-contracts-optimization-md-38",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "app/prompt",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:301ece068251c30068c87897290df68a55b44e9ca80d563b48a14aa568215435",
+      "claimId": "claim-docs-contracts-optimization-md-132",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "app/prompt",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:9439758a64f49e80cb32475f05284116cb316d201c022b012b81deb8e0d582ab",
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-3",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:81bdce0a1a2f1a8f7a9340da04360ac8a8d0635bb4040f387076e82a21968b8c",
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-36",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:65c37a743b4d55157f8794db1a2987d7fa756266493234ed05ac0093c2955853",
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-41",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:f7a245a3ea62f8af7464f6c411c40a9367f4156a06f104325af836664ef874ff",
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-47",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:5b4aa826a977bd6abed0596d72f0a3bba779e7c5d880765a0bd1e59d1439d44d",
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-50",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:88135551ab27a00915b4ef2441bc41ba5de58ea3f13b85eadbac2506cf431f9d",
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-100",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:31d64ec42dc92ae1ed314aaec386b8f5ed1310ab6551f92a702941813f74472a",
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-161",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:67576f222383159761b9ea092fb7c44d591d2f1036800696b57a27efa7132625",
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-190",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:a38f781ccbff0d0118f18d4cba2545434af8ae7f86a844df7311099fc4ef5953",
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-261",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "app/prompt",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "human-confirm-or-decompose",
+      "claimFingerprint": "sha256:f857ecc444a26190ac7995cdc15710ecdaee2d3feaf2534b4d815ead614920e7",
+      "claimId": "claim-docs-contracts-scenario-proposal-sources-md-40",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:16f88f4564c52531f8082d5bf96244f70ef8c7f96002ca5f2affbfddacea06ea",
+      "claimId": "claim-docs-contracts-scenario-proposal-sources-md-152",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "human-confirm-or-decompose",
+      "claimFingerprint": "sha256:ed69f1c31fe54fb67614a2f39b18a38ebe425fa0672cdb81c3e41510d2ba7594",
+      "claimId": "claim-docs-contracts-scenario-proposal-sources-md-216",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:81c2f41f61c908940a6f17d086646de7edd84a7804d9db95d3c115425177c78d",
+      "claimId": "claim-docs-contracts-scenario-proposal-sources-md-236",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "already-satisfied",
+      "claimFingerprint": "sha256:472e59de361f21a5a5e3e1d85308f65a4e14d34e4c524f59b3cabd292719d42d",
+      "claimId": "claim-skills-cautilus-skill-md-11",
+      "evidenceStatus": "satisfied",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "human-align-surfaces",
+      "claimFingerprint": "sha256:64b93b54663bc137a1152f69330be61a56c4d70c7fdd44dd679cf5808966b0b3",
+      "claimId": "claim-skills-cautilus-skill-md-23",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "needs-alignment"
+    },
+    {
+      "actionBucket": "human-align-surfaces",
+      "claimFingerprint": "sha256:65cb30158d551471121109baa101be43b1ccbca956f9424cce6149c48a5667b1",
+      "claimId": "claim-skills-cautilus-skill-md-70",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "needs-alignment"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:a5c82e29ce761e42ed2b18553ae831a189310fe0174962cc79b0705853e8b2fc",
+      "claimId": "claim-skills-cautilus-skill-md-111",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "human-confirm-or-decompose",
+      "claimFingerprint": "sha256:ebff670a7be2ce628a7746f3a30e31c98d21eb103137e70a4ff70fa52b2bfdba",
+      "claimId": "claim-skills-cautilus-skill-md-114",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "human-confirm-or-decompose",
+      "claimFingerprint": "sha256:a950feb4b722b7133b2ffd1104b6fc46f6302a9ba218b408e7bfa851b6dcfcc3",
+      "claimId": "claim-skills-cautilus-skill-md-120",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "human-confirm-or-decompose",
+      "claimFingerprint": "sha256:81df3b1030acb0d476e7b567186862db55f2189eccf9f8b1338b371db7cfd3e6",
+      "claimId": "claim-skills-cautilus-skill-md-125",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "actionBucket": "human-align-surfaces",
+      "claimFingerprint": "sha256:ad87c31fd958bda23449318cee9819910cee320e357b5d89828021f8fdc3007a",
+      "claimId": "claim-skills-cautilus-skill-md-132",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "needs-alignment"
+    },
+    {
+      "actionBucket": "agent-plan-cautilus-eval",
+      "claimFingerprint": "sha256:c575861c975813835a93a64b3d0ca6aafdb2ee55d71de1ffb6211b433852c558",
+      "claimId": "claim-skills-cautilus-skill-md-158",
+      "evidenceStatus": "unknown",
+      "reason": "action-bucket-mismatch",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    }
+  ],
+  "skippedClusters": [
+    {
+      "claimCount": 1,
+      "clusterId": "cluster-developer-documentation-and-contracts-deterministic-spec",
+      "groupKey": "developer:Documentation and contracts:deterministic:spec",
+      "reason": "max-clusters-exceeded"
+    },
+    {
+      "claimCount": 3,
+      "clusterId": "cluster-developer-improvement-and-optimization-deterministic-contract",
+      "groupKey": "developer:Improvement and optimization:deterministic:contract",
+      "reason": "max-clusters-exceeded"
+    }
+  ],
+  "sourceClaimPacket": {
+    "candidateCount": 312,
+    "gitCommit": "c7d70e1bddf2c3d2b29a9cb435fd2a6143cfd7ce",
+    "schemaVersion": "cautilus.claim_proof_plan.v1"
+  },
+  "sourceRoot": "."
+}
