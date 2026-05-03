@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:ab769c8c34a713ff3f48314800ede03f40e0f30b3fa4d1aa225e345bd57fe7b7"
+      "contentHash": "sha256:f512d98aecd8850c6b3d372e482ad269f7b08acdeb4cf67c7766596171404f8c"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,9 +15,9 @@
       "contentHash": "sha256:882064b19bb1f53a7f5d0bdbe653b53c33f2ff4ca8186e056538ca7e2eff76a8"
     }
   },
-  "claimsPacketGitCommit": "ad0eddc13490c72dcd5bf7ee6b3630a435a2e12a",
+  "claimsPacketGitCommit": "3819d259fd796dc6fd5777b579f6b013c0dcb508",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
-  "claimsPacketCandidateCount": 322,
+  "claimsPacketCandidateCount": 315,
   "catalogs": {
     "user": {
       "path": "docs/specs/user/index.spec.md",
@@ -286,24 +286,24 @@
     }
   },
   "coverageSummary": {
-    "totalRawClaimCount": 322,
+    "totalRawClaimCount": 315,
     "userRawClaimCount": 82,
     "userMappedToCanonicalCount": 82,
     "userUnmappedCount": 0,
-    "semanticReviewRecommendedCount": 260,
+    "semanticReviewRecommendedCount": 253,
     "userSemanticReviewRecommendedCount": 58,
     "byDisposition": {
-      "mapped-to-maintainer-canonical": 240,
+      "mapped-to-maintainer-canonical": 233,
       "mapped-to-user-canonical": 82
     },
     "byAudience": {
-      "developer": 240,
+      "developer": 233,
       "user": 82
     },
     "byMappingConfidence": {
       "high": 62,
-      "low": 58,
-      "medium": 202
+      "low": 56,
+      "medium": 197
     },
     "byUserCanonicalClaimId": {
       "U1": 21,
@@ -316,10 +316,10 @@
     },
     "byMaintainerCanonicalClaimId": {
       "M1": 18,
-      "M10": 17,
+      "M10": 16,
       "M11": 13,
-      "M2": 72,
-      "M3": 55,
+      "M2": 68,
+      "M3": 53,
       "M4": 11,
       "M5": 5,
       "M6": 7,
@@ -415,8 +415,6 @@
       "claim-docs-contracts-active-run-md-3",
       "claim-docs-contracts-active-run-md-59",
       "claim-docs-contracts-active-run-md-186",
-      "claim-docs-contracts-active-run-md-212",
-      "claim-docs-contracts-active-run-md-218",
       "claim-docs-contracts-active-run-md-221",
       "claim-docs-contracts-claim-discovery-workflow-md-5",
       "claim-docs-contracts-claim-discovery-workflow-md-21",
@@ -480,8 +478,6 @@
       "claim-docs-contracts-claim-discovery-workflow-md-586",
       "claim-docs-contracts-claim-discovery-workflow-md-590",
       "claim-docs-contracts-claim-discovery-workflow-md-591",
-      "claim-docs-contracts-claim-discovery-workflow-md-599",
-      "claim-docs-contracts-claim-discovery-workflow-md-602",
       "claim-docs-contracts-claim-discovery-workflow-md-607",
       "claim-docs-contracts-claim-discovery-workflow-md-608",
       "claim-docs-contracts-claim-discovery-workflow-md-622",
@@ -508,7 +504,6 @@
       "claim-docs-contracts-reporting-md-124",
       "claim-docs-contracts-reporting-md-150",
       "claim-docs-contracts-runner-readiness-md-13",
-      "claim-docs-contracts-runner-readiness-md-19",
       "claim-docs-contracts-runner-readiness-md-29",
       "claim-docs-contracts-runner-readiness-md-37",
       "claim-docs-contracts-runner-readiness-md-43",
@@ -533,7 +528,6 @@
       "claim-docs-contracts-runner-readiness-md-282",
       "claim-docs-contracts-runner-readiness-md-294",
       "claim-docs-contracts-runner-readiness-md-301",
-      "claim-docs-contracts-runner-readiness-md-310",
       "claim-docs-contracts-runner-readiness-md-347",
       "claim-docs-contracts-runner-readiness-md-349",
       "claim-docs-contracts-runner-readiness-md-358",
@@ -578,7 +572,6 @@
       "claim-docs-contracts-scenario-proposal-sources-md-216",
       "claim-docs-contracts-scenario-proposal-sources-md-235",
       "claim-docs-contracts-scenario-proposal-sources-md-236",
-      "claim-docs-contracts-scenario-proposal-sources-md-254",
       "claim-skills-cautilus-skill-md-11",
       "claim-skills-cautilus-skill-md-23",
       "claim-skills-cautilus-skill-md-70",
@@ -1487,12 +1480,12 @@
         }
       ],
       "byEvidenceStatus": {
-        "satisfied": 1,
-        "unknown": 17
+        "satisfied": 3,
+        "unknown": 15
       },
       "byReviewStatus": {
-        "agent-reviewed": 1,
-        "heuristic": 17
+        "agent-reviewed": 3,
+        "heuristic": 15
       },
       "byRecommendedProof": {
         "cautilus-eval": 3,
@@ -1508,14 +1501,13 @@
     {
       "canonicalClaimId": "M2",
       "title": "Binary And Skill Boundary",
-      "absorbedRawClaimCount": 72,
+      "absorbedRawClaimCount": 68,
       "absorbedRawClaimIds": [
         "claim-agents-md-78",
         "claim-docs-contracts-adapter-contract-md-533",
         "claim-docs-master-plan-md-56",
         "claim-docs-master-plan-md-82",
         "claim-docs-contracts-active-run-md-186",
-        "claim-docs-contracts-active-run-md-218",
         "claim-docs-contracts-claim-discovery-workflow-md-21",
         "claim-docs-contracts-claim-discovery-workflow-md-47",
         "claim-docs-contracts-claim-discovery-workflow-md-60",
@@ -1548,8 +1540,6 @@
         "claim-docs-contracts-claim-discovery-workflow-md-586",
         "claim-docs-contracts-claim-discovery-workflow-md-590",
         "claim-docs-contracts-claim-discovery-workflow-md-591",
-        "claim-docs-contracts-claim-discovery-workflow-md-599",
-        "claim-docs-contracts-claim-discovery-workflow-md-602",
         "claim-docs-contracts-claim-discovery-workflow-md-608",
         "claim-docs-contracts-claim-discovery-workflow-md-627",
         "claim-docs-contracts-claim-discovery-workflow-md-653",
@@ -1564,7 +1554,6 @@
         "claim-docs-contracts-runner-readiness-md-278",
         "claim-docs-contracts-runner-readiness-md-281",
         "claim-docs-contracts-runner-readiness-md-282",
-        "claim-docs-contracts-runner-readiness-md-310",
         "claim-docs-contracts-runner-readiness-md-347",
         "claim-docs-contracts-runner-readiness-md-397",
         "claim-docs-contracts-runner-verification-md-12",
@@ -1611,12 +1600,6 @@
         {
           "claimId": "claim-docs-contracts-active-run-md-186",
           "claimFingerprint": "sha256:60b597b534327feb3e42ee75d7df606921d85af5e75ace3d4953430704dc817c",
-          "mappingConfidence": "low",
-          "requiresSemanticReview": true
-        },
-        {
-          "claimId": "claim-docs-contracts-active-run-md-218",
-          "claimFingerprint": "sha256:7e2fda152bd147f4bc99609fc44066648c6cbeb10f071b61de7124f8624faa83",
           "mappingConfidence": "low",
           "requiresSemanticReview": true
         },
@@ -1813,18 +1796,6 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-599",
-          "claimFingerprint": "sha256:3442f8c32e392c6d5294ed9ee2c304cc4590f31c897d84fef79e06692fe75284",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
-        },
-        {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-602",
-          "claimFingerprint": "sha256:982d0c8daed16595e6ca14ff184eb842dd1f73c0ee708c5e9fa0b7231f00b785",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
-        },
-        {
           "claimId": "claim-docs-contracts-claim-discovery-workflow-md-608",
           "claimFingerprint": "sha256:6fd233d3ffafd0f2392f61109f17dd94ba308f158d01a415610d25adf4e7c2cd",
           "mappingConfidence": "low",
@@ -1905,12 +1876,6 @@
         {
           "claimId": "claim-docs-contracts-runner-readiness-md-282",
           "claimFingerprint": "sha256:9fa2368158266b9fff3f7c4e0ee3e56438a32265a1f7261f8c07508734a33d58",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
-        },
-        {
-          "claimId": "claim-docs-contracts-runner-readiness-md-310",
-          "claimFingerprint": "sha256:1d4d35e6aaf27ff8242c131d85e1ddec64937f63245561cbca40b9bde6f90067",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
@@ -2019,27 +1984,27 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 3,
-        "unknown": 69
+        "unknown": 65
       },
       "byReviewStatus": {
         "agent-reviewed": 4,
-        "heuristic": 68
+        "heuristic": 64
       },
       "byRecommendedProof": {
-        "cautilus-eval": 31,
-        "deterministic": 34,
+        "cautilus-eval": 29,
+        "deterministic": 32,
         "human-auditable": 7
       },
       "byMappingConfidence": {
         "high": 7,
-        "low": 10,
-        "medium": 55
+        "low": 9,
+        "medium": 52
       }
     },
     {
       "canonicalClaimId": "M3",
       "title": "Adapter And Host Ownership",
-      "absorbedRawClaimCount": 55,
+      "absorbedRawClaimCount": 53,
       "absorbedRawClaimIds": [
         "claim-agents-md-12",
         "claim-agents-md-26",
@@ -2066,7 +2031,6 @@
         "claim-docs-contracts-live-run-invocation-md-24",
         "claim-docs-contracts-live-run-invocation-md-193",
         "claim-docs-contracts-runner-readiness-md-13",
-        "claim-docs-contracts-runner-readiness-md-19",
         "claim-docs-contracts-runner-readiness-md-43",
         "claim-docs-contracts-runner-readiness-md-44",
         "claim-docs-contracts-runner-readiness-md-61",
@@ -2094,8 +2058,7 @@
         "claim-docs-contracts-runtime-fingerprint-optimization-md-190",
         "claim-docs-contracts-scenario-proposal-sources-md-40",
         "claim-docs-contracts-scenario-proposal-sources-md-152",
-        "claim-docs-contracts-scenario-proposal-sources-md-216",
-        "claim-docs-contracts-scenario-proposal-sources-md-254"
+        "claim-docs-contracts-scenario-proposal-sources-md-216"
       ],
       "absorbedRawClaims": [
         {
@@ -2245,12 +2208,6 @@
         {
           "claimId": "claim-docs-contracts-runner-readiness-md-13",
           "claimFingerprint": "sha256:d1978a38a330c077db7ab68edb6d553016cd4637907ad610d7e822dc7bbcc438",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
-        },
-        {
-          "claimId": "claim-docs-contracts-runner-readiness-md-19",
-          "claimFingerprint": "sha256:8bd68e3f77fa8c5c744896e759c6217631d0111ba15b4afdbaef53e5e37ce40a",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
@@ -2421,30 +2378,24 @@
           "claimFingerprint": "sha256:ed69f1c31fe54fb67614a2f39b18a38ebe425fa0672cdb81c3e41510d2ba7594",
           "mappingConfidence": "low",
           "requiresSemanticReview": true
-        },
-        {
-          "claimId": "claim-docs-contracts-scenario-proposal-sources-md-254",
-          "claimFingerprint": "sha256:7152a4465bb805543d6e722c04b3b03cca4945cac228bb7ead99d03e476a9714",
-          "mappingConfidence": "low",
-          "requiresSemanticReview": true
         }
       ],
       "byEvidenceStatus": {
-        "unknown": 55
+        "unknown": 53
       },
       "byReviewStatus": {
         "agent-reviewed": 8,
-        "heuristic": 47
+        "heuristic": 45
       },
       "byRecommendedProof": {
-        "cautilus-eval": 28,
+        "cautilus-eval": 27,
         "deterministic": 11,
-        "human-auditable": 16
+        "human-auditable": 15
       },
       "byMappingConfidence": {
         "high": 8,
-        "low": 12,
-        "medium": 35
+        "low": 11,
+        "medium": 34
       }
     },
     {
@@ -2868,8 +2819,8 @@
         }
       ],
       "byEvidenceStatus": {
-        "satisfied": 1,
-        "unknown": 10
+        "satisfied": 2,
+        "unknown": 9
       },
       "byReviewStatus": {
         "agent-reviewed": 4,
@@ -3062,12 +3013,11 @@
     {
       "canonicalClaimId": "M10",
       "title": "Reporting And Review Variants",
-      "absorbedRawClaimCount": 17,
+      "absorbedRawClaimCount": 16,
       "absorbedRawClaimIds": [
         "claim-docs-contracts-adapter-contract-md-430",
         "claim-docs-contracts-review-packet-md-3",
         "claim-docs-master-plan-md-179",
-        "claim-docs-contracts-active-run-md-212",
         "claim-docs-contracts-claim-discovery-workflow-md-97",
         "claim-docs-contracts-claim-discovery-workflow-md-100",
         "claim-docs-contracts-claim-discovery-workflow-md-181",
@@ -3098,12 +3048,6 @@
         {
           "claimId": "claim-docs-master-plan-md-179",
           "claimFingerprint": "sha256:8c15df06769d6900be11672ff1c723937ad20bc3eb3212c84d2d740feb54edfb",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
-        },
-        {
-          "claimId": "claim-docs-contracts-active-run-md-212",
-          "claimFingerprint": "sha256:d742bdbfb8a6dba61aca677a65bdefd9bedf92abc3e54c94b69376c3e6153c78",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
@@ -3187,21 +3131,21 @@
         }
       ],
       "byEvidenceStatus": {
-        "unknown": 17
+        "unknown": 16
       },
       "byReviewStatus": {
         "agent-reviewed": 1,
-        "heuristic": 16
+        "heuristic": 15
       },
       "byRecommendedProof": {
         "cautilus-eval": 3,
-        "deterministic": 10,
+        "deterministic": 9,
         "human-auditable": 4
       },
       "byMappingConfidence": {
         "high": 5,
         "low": 1,
-        "medium": 11
+        "medium": 10
       }
     },
     {
@@ -6445,14 +6389,14 @@
       "claimAudience": "developer",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-to-verify",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
+      "evidenceStatus": "satisfied",
+      "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:69aa5ae1ce7aca764e9f8198ae964b6ec8da23ff55f59f7f2df2a66910e697bc",
       "canonicalClaimId": "M1",
-      "score": 10,
+      "score": 11,
       "runnerUpCanonicalClaimId": "M10",
-      "runnerUpScore": 10,
-      "scoreMargin": 0,
+      "runnerUpScore": 9,
+      "scoreMargin": 2,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
@@ -6462,6 +6406,7 @@
         "discovery",
         "emit",
         "keep",
+        "packet",
         "proof",
         "review",
         "source-ref-backed",
@@ -7065,19 +7010,20 @@
       "claimAudience": "developer",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-to-verify",
-      "evidenceStatus": "unknown",
+      "evidenceStatus": "satisfied",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:a3e9d1b41016a93c606e82451a6da80d88f8a02bd0e06446782f080a7974a31c",
       "canonicalClaimId": "M8",
-      "score": 11,
+      "score": 12,
       "runnerUpCanonicalClaimId": "M3",
-      "runnerUpScore": 9,
+      "runnerUpScore": 10,
       "scoreMargin": 2,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
         "active-run",
+        "aligned",
         "cautilu",
         "command",
         "deterministic",
@@ -7180,89 +7126,6 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-active-run-md-212",
-      "summary": "Should `run.json` carry workflow metadata (mode, baseline ref, adapter name) so the pruner and HTML views can present richer summaries?",
-      "sourceRefs": [
-        {
-          "path": "docs/contracts/active-run.md",
-          "line": 212,
-          "excerpt": "Should `run.json` carry workflow metadata (mode, baseline ref, adapter name) so the pruner and HTML views can present richer summaries?"
-        }
-      ],
-      "disposition": "mapped-to-maintainer-canonical",
-      "mappingStatus": "heuristic-auto-map",
-      "claimAudience": "developer",
-      "recommendedProof": "deterministic",
-      "verificationReadiness": "ready-to-verify",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
-      "claimFingerprint": "sha256:d742bdbfb8a6dba61aca677a65bdefd9bedf92abc3e54c94b69376c3e6153c78",
-      "canonicalClaimId": "M10",
-      "score": 10,
-      "runnerUpCanonicalClaimId": "M8",
-      "runnerUpScore": 9,
-      "scoreMargin": 1,
-      "mappingConfidence": "medium",
-      "requiresSemanticReview": true,
-      "matchedAnchors": [],
-      "matchedKeywords": [
-        "adapter",
-        "deterministic",
-        "html",
-        "keep",
-        "packet",
-        "proof",
-        "schema",
-        "summary",
-        "thi",
-        "view"
-      ],
-      "alignedUserClaimIds": [
-        "U6",
-        "U7"
-      ]
-    },
-    {
-      "claimId": "claim-docs-contracts-active-run-md-218",
-      "summary": "Is `review variants` a workflow-creating command that mints runDirs (and therefore uses `resolveRunDir`), or is it a consume-only command that only reads an existing active run (and therefore uses `readActiveRunDir`)?",
-      "sourceRefs": [
-        {
-          "path": "docs/contracts/active-run.md",
-          "line": 218,
-          "excerpt": "Is `review variants` a workflow-creating command that mints runDirs (and therefore uses `resolveRunDir`), or is it a consume-only command that only reads an existing active run (and therefore uses `readActiveRunDir`)?"
-        }
-      ],
-      "disposition": "mapped-to-maintainer-canonical",
-      "mappingStatus": "heuristic-auto-map",
-      "claimAudience": "developer",
-      "recommendedProof": "cautilus-eval",
-      "verificationReadiness": "ready-to-verify",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
-      "claimFingerprint": "sha256:7e2fda152bd147f4bc99609fc44066648c6cbeb10f071b61de7124f8624faa83",
-      "canonicalClaimId": "M2",
-      "score": 6,
-      "runnerUpCanonicalClaimId": "M3",
-      "runnerUpScore": 6,
-      "scoreMargin": 0,
-      "mappingConfidence": "low",
-      "requiresSemanticReview": true,
-      "matchedAnchors": [],
-      "matchedKeywords": [
-        "command",
-        "contract",
-        "eval",
-        "fixture",
-        "review",
-        "run"
-      ],
-      "alignedUserClaimIds": [
-        "U1",
-        "U4",
-        "U7"
-      ]
-    },
-    {
       "claimId": "claim-docs-contracts-active-run-md-221",
       "summary": "The command therefore follows the same precedence chain as other workflow-creating helpers (explicit `--output-dir` > `CAUTILUS_RUN_DIR` > auto-materialize under `./.cautilus/runs/`) and emits `Active run: <abs path>` once only when it auto-materializes.",
       "sourceRefs": [
@@ -7319,26 +7182,29 @@
       "claimAudience": "developer",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-to-verify",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
+      "evidenceStatus": "satisfied",
+      "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:8832bba3db8e251f9ff546cb2c4d5944134a46bd9c709b1dd13736c8630cca8e",
       "canonicalClaimId": "M1",
-      "score": 8,
-      "runnerUpCanonicalClaimId": "M2",
-      "runnerUpScore": 7,
-      "scoreMargin": 1,
+      "score": 11,
+      "runnerUpCanonicalClaimId": "M8",
+      "runnerUpScore": 8,
+      "scoreMargin": 3,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
+        "candidate",
         "deterministic",
         "discover",
         "discovery",
         "emit",
         "keep",
+        "packet",
+        "proof",
         "review",
         "source-ref-backed",
-        "thi"
+        "test"
       ],
       "alignedUserClaimIds": [
         "U1",
@@ -9881,89 +9747,6 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-599",
-      "summary": "How much deterministic evidence preflight should the binary do before it risks false satisfaction?",
-      "sourceRefs": [
-        {
-          "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 599,
-          "excerpt": "How much deterministic evidence preflight should the binary do before it risks false satisfaction?"
-        }
-      ],
-      "disposition": "mapped-to-maintainer-canonical",
-      "mappingStatus": "heuristic-auto-map",
-      "claimAudience": "developer",
-      "recommendedProof": "deterministic",
-      "verificationReadiness": "ready-to-verify",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
-      "claimFingerprint": "sha256:3442f8c32e392c6d5294ed9ee2c304cc4590f31c897d84fef79e06692fe75284",
-      "canonicalClaimId": "M2",
-      "score": 8,
-      "runnerUpCanonicalClaimId": "M10",
-      "runnerUpScore": 6,
-      "scoreMargin": 2,
-      "mappingConfidence": "medium",
-      "requiresSemanticReview": true,
-      "matchedAnchors": [],
-      "matchedKeywords": [
-        "binary",
-        "check",
-        "contract",
-        "deterministic",
-        "evidence",
-        "keep",
-        "lint",
-        "schema"
-      ],
-      "alignedUserClaimIds": [
-        "U1",
-        "U4",
-        "U7"
-      ]
-    },
-    {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-602",
-      "summary": "How much of the refresh-plan helper should ship in the first binary slice versus the first skill slice?",
-      "sourceRefs": [
-        {
-          "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 602,
-          "excerpt": "How much of the refresh-plan helper should ship in the first binary slice versus the first skill slice?"
-        }
-      ],
-      "disposition": "mapped-to-maintainer-canonical",
-      "mappingStatus": "heuristic-auto-map",
-      "claimAudience": "developer",
-      "recommendedProof": "cautilus-eval",
-      "verificationReadiness": "ready-to-verify",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
-      "claimFingerprint": "sha256:982d0c8daed16595e6ca14ff184eb842dd1f73c0ee708c5e9fa0b7231f00b785",
-      "canonicalClaimId": "M2",
-      "score": 7,
-      "runnerUpCanonicalClaimId": "M3",
-      "runnerUpScore": 6,
-      "scoreMargin": 1,
-      "mappingConfidence": "medium",
-      "requiresSemanticReview": true,
-      "matchedAnchors": [],
-      "matchedKeywords": [
-        "binary",
-        "dev/skill",
-        "eval",
-        "fixture",
-        "run",
-        "skill",
-        "workflow"
-      ],
-      "alignedUserClaimIds": [
-        "U1",
-        "U4",
-        "U7"
-      ]
-    },
-    {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-607",
       "summary": "Whether `claim show` should grow Markdown or HTML rendering beyond its JSON summary packet.",
       "sourceRefs": [
@@ -11222,51 +11005,6 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-runner-readiness-md-19",
-      "summary": "Does this repo have a headless runner that can execute the selected behavior surface without a GUI while staying close enough to the real product path to support the intended proof?",
-      "sourceRefs": [
-        {
-          "path": "docs/contracts/runner-readiness.md",
-          "line": 19,
-          "excerpt": "Does this repo have a headless runner that can execute the selected behavior surface without a GUI while staying close enough to the real product path to support the intended proof?"
-        }
-      ],
-      "disposition": "mapped-to-maintainer-canonical",
-      "mappingStatus": "heuristic-auto-map",
-      "claimAudience": "developer",
-      "recommendedProof": "cautilus-eval",
-      "verificationReadiness": "ready-to-verify",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
-      "claimFingerprint": "sha256:8bd68e3f77fa8c5c744896e759c6217631d0111ba15b4afdbaef53e5e37ce40a",
-      "canonicalClaimId": "M3",
-      "score": 12,
-      "runnerUpCanonicalClaimId": "M7",
-      "runnerUpScore": 10,
-      "scoreMargin": 2,
-      "mappingConfidence": "medium",
-      "requiresSemanticReview": true,
-      "matchedAnchors": [],
-      "matchedKeywords": [
-        "behavior",
-        "cautilu",
-        "contract",
-        "fixture",
-        "host-owned",
-        "product",
-        "proof",
-        "repo",
-        "runner",
-        "test",
-        "thi",
-        "without"
-      ],
-      "alignedUserClaimIds": [
-        "U2",
-        "U5"
-      ]
-    },
-    {
       "claimId": "claim-docs-contracts-runner-readiness-md-29",
       "summary": "The first implementation slice should be read-only readiness visibility through `doctor` and `agent status`, plus a minimal runner assessment schema and example.",
       "sourceRefs": [
@@ -12344,48 +12082,6 @@
       "alignedUserClaimIds": [
         "U2",
         "U5"
-      ]
-    },
-    {
-      "claimId": "claim-docs-contracts-runner-readiness-md-310",
-      "summary": "How much of `cautilus.runner_assessment.v1` should be written by a binary helper versus by the bundled skill?",
-      "sourceRefs": [
-        {
-          "path": "docs/contracts/runner-readiness.md",
-          "line": 310,
-          "excerpt": "How much of `cautilus.runner_assessment.v1` should be written by a binary helper versus by the bundled skill?"
-        }
-      ],
-      "disposition": "mapped-to-maintainer-canonical",
-      "mappingStatus": "heuristic-auto-map",
-      "claimAudience": "developer",
-      "recommendedProof": "deterministic",
-      "verificationReadiness": "ready-to-verify",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
-      "claimFingerprint": "sha256:1d4d35e6aaf27ff8242c131d85e1ddec64937f63245561cbca40b9bde6f90067",
-      "canonicalClaimId": "M2",
-      "score": 8,
-      "runnerUpCanonicalClaimId": "M7",
-      "runnerUpScore": 8,
-      "scoreMargin": 0,
-      "mappingConfidence": "medium",
-      "requiresSemanticReview": true,
-      "matchedAnchors": [],
-      "matchedKeywords": [
-        "binary",
-        "bundled",
-        "deterministic",
-        "install",
-        "keep",
-        "proof",
-        "skill",
-        "workflow"
-      ],
-      "alignedUserClaimIds": [
-        "U1",
-        "U4",
-        "U7"
       ]
     },
     {
@@ -16053,43 +15749,6 @@
         "result",
         "skill",
         "test"
-      ],
-      "alignedUserClaimIds": [
-        "U2",
-        "U5"
-      ]
-    },
-    {
-      "claimId": "claim-docs-contracts-scenario-proposal-sources-md-254",
-      "summary": "Should blocked-run proposals and human-conversation proposals share one ranking queue, or should they be ranked per source kind first?",
-      "sourceRefs": [
-        {
-          "path": "docs/contracts/scenario-proposal-sources.md",
-          "line": 254,
-          "excerpt": "Should blocked-run proposals and human-conversation proposals share one ranking queue, or should they be ranked per source kind first?"
-        }
-      ],
-      "disposition": "mapped-to-maintainer-canonical",
-      "mappingStatus": "heuristic-auto-map",
-      "claimAudience": "developer",
-      "recommendedProof": "human-auditable",
-      "verificationReadiness": "ready-to-verify",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
-      "claimFingerprint": "sha256:7152a4465bb805543d6e722c04b3b03cca4945cac228bb7ead99d03e476a9714",
-      "canonicalClaimId": "M3",
-      "score": 4,
-      "runnerUpCanonicalClaimId": "M6",
-      "runnerUpScore": 4,
-      "scoreMargin": 0,
-      "mappingConfidence": "low",
-      "requiresSemanticReview": true,
-      "matchedAnchors": [],
-      "matchedKeywords": [
-        "contract",
-        "evidence",
-        "least",
-        "one"
       ],
       "alignedUserClaimIds": [
         "U2",

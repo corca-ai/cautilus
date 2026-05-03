@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 248
+          "unknown": 239
         },
         "byReviewStatus": {
-          "heuristic": 248
+          "heuristic": 239
         },
-        "count": 248,
+        "count": 239,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -24,12 +24,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 36
+          "satisfied": 39
         },
         "byReviewStatus": {
-          "agent-reviewed": 36
+          "agent-reviewed": 39
         },
-        "count": 36,
+        "count": 39,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -43,14 +43,14 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 88
+          "unknown": 82
         },
         "byReviewStatus": {
-          "agent-reviewed": 11,
-          "heuristic": 74,
+          "agent-reviewed": 10,
+          "heuristic": 69,
           "human-reviewed": 3
         },
-        "count": 88,
+        "count": 82,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -64,13 +64,13 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 119
+          "unknown": 116
         },
         "byReviewStatus": {
           "agent-reviewed": 1,
-          "heuristic": 118
+          "heuristic": 115
         },
-        "count": 119,
+        "count": 116,
         "id": "agent-plan-cautilus-eval",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -123,12 +123,12 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 23
+          "unknown": 22
         },
         "byReviewStatus": {
-          "heuristic": 23
+          "heuristic": 22
         },
-        "count": 23,
+        "count": 22,
         "id": "human-confirm-or-decompose",
         "recommendedActor": "human",
         "sampleClaimIds": [
@@ -162,7 +162,7 @@
       }
     ]
   },
-  "candidateCount": 322,
+  "candidateCount": 315,
   "claimState": {
     "path": ".cautilus/claims/latest.json",
     "pathSource": "adapter",
@@ -179,14 +179,14 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 240,
+      "developer": 233,
       "user": 82
     },
     "byClaimSemanticGroup": {
-      "Adapter and portability": 56,
-      "Agent and skill workflow": 75,
+      "Adapter and portability": 55,
+      "Agent and skill workflow": 73,
       "Claim discovery and review": 23,
-      "Documentation and contracts": 75,
+      "Documentation and contracts": 71,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
       "Improvement and optimization": 20,
@@ -195,27 +195,27 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 36,
-      "unknown": 286
+      "satisfied": 39,
+      "unknown": 276
     },
     "byLifecycle": {
-      "new": 322
+      "new": 315
     },
     "byRecommendedProof": {
-      "cautilus-eval": 128,
-      "deterministic": 123,
-      "human-auditable": 71
+      "cautilus-eval": 125,
+      "deterministic": 120,
+      "human-auditable": 70
     },
     "byReviewStatus": {
-      "agent-reviewed": 71,
-      "heuristic": 248,
+      "agent-reviewed": 73,
+      "heuristic": 239,
       "human-reviewed": 3
     },
     "byVerificationReadiness": {
       "blocked": 17,
       "needs-alignment": 31,
       "needs-scenario": 8,
-      "ready-to-verify": 266
+      "ready-to-verify": 259
     }
   },
   "discoveryBoundary": {
@@ -381,7 +381,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 36,
+    "satisfiedClaimCount": 39,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-78",
@@ -1025,6 +1025,25 @@
         "summary": "checked-in local gates, GitHub workflows that run `verify`, and an external consumer onboarding smoke (`consumer:onboard:smoke`) that proves install → adapter init → minimal wiring → adapter resolve → doctor ready → one bounded `eval test`"
       },
       {
+        "claimId": "claim-docs-master-plan-md-76",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:b6e47471edb374b6100551bd79b317bde779d3102efd88dd02d046fbdad24524",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-active-run-and-claim-discover-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-master-plan-md-76"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The first `claim` slice ships as deterministic `cautilus claim discover`, which emits a source-ref-backed proof plan rather than a verdict."
+      },
+      {
         "claimId": "claim-docs-master-plan-md-82",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -1063,6 +1082,44 @@
         "summary": "Cautilus requires specdown for public executable claim documentation."
       },
       {
+        "claimId": "claim-docs-contracts-active-run-md-3",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:b6e47471edb374b6100551bd79b317bde779d3102efd88dd02d046fbdad24524",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-active-run-and-claim-discover-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-active-run-md-3"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "`Cautilus` pins one product-owned per-run workspace root per workflow and keeps the reference sticky across consumer command invocations with a shell environment variable."
+      },
+      {
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-5",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:b6e47471edb374b6100551bd79b317bde779d3102efd88dd02d046fbdad24524",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-active-run-and-claim-discover-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-claim-discovery-workflow-md-5"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "`cautilus claim discover` currently emits a deterministic, source-ref-backed proof-plan skeleton."
+      },
+      {
         "claimId": "claim-skills-cautilus-skill-md-11",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -1083,22 +1140,10 @@
       }
     ]
   },
-  "gitCommit": "ad0eddc13490c72dcd5bf7ee6b3630a435a2e12a",
+  "gitCommit": "3819d259fd796dc6fd5777b579f6b013c0dcb508",
   "gitState": {
-    "changedFileCount": 11,
-    "changedFiles": [
-      ".cautilus/claims/canonical-claim-map.json",
-      ".cautilus/claims/claim-status-report.md",
-      ".cautilus/claims/discovery-review.md",
-      ".cautilus/claims/evidenced-typed-runners.json",
-      ".cautilus/claims/latest.json",
-      ".cautilus/claims/status-summary.json",
-      "charness-artifacts/debug/debug-2026-05-03-heuristic-next-action-carry-forward.md",
-      "charness-artifacts/debug/debug-2026-05-03-review-runs-empty-accumulation.md",
-      "charness-artifacts/debug/latest.md",
-      "internal/runtime/claim_discovery.go",
-      "internal/runtime/claim_discovery_test.go"
-    ],
+    "changedFileCount": 0,
+    "changedFiles": [],
     "changedFilesBasis": {
       "meaning": "changedFiles lists files committed between packetGitCommit and currentGitCommit; it does not include unstaged, staged, or untracked working-tree files.",
       "scope": "committed-diff-between-packet-and-current-head",
@@ -1106,12 +1151,12 @@
     },
     "changedSourceCount": 0,
     "changedSources": [],
-    "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "91a10054b1f0832be5edef7957e4869b1ad74414",
-    "headDrift": true,
+    "comparisonStatus": "fresh",
+    "currentGitCommit": "3819d259fd796dc6fd5777b579f6b013c0dcb508",
+    "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "ad0eddc13490c72dcd5bf7ee6b3630a435a2e12a",
-    "recommendedAction": "The current HEAD differs from the packet commit, but no recorded claim source changed; review and eval planning may continue.",
+    "packetGitCommit": "3819d259fd796dc6fd5777b579f6b013c0dcb508",
+    "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
   "gitStateSnapshotNotice": "gitState is computed when this status packet is generated; rerun claim show for live checkout state.",
@@ -1134,7 +1179,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 220,
+    "heuristicClaimsReadyForReview": 211,
     "needsAlignment": 31,
     "needsScenario": 8
   },

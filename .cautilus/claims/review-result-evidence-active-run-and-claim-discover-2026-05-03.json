@@ -1,0 +1,85 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-03T00:00:00Z",
+    "evidencePolicy": "Only mark the active-run reuse and deterministic proof-plan packet boundaries satisfied; leave broader workflow, reviewer, and fixture-authoring claims for separate evidence."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-active-run-and-claim-discover-proof",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-active-run-md-3",
+          "claimFingerprint": "sha256:a3e9d1b41016a93c606e82451a6da80d88f8a02bd0e06446782f080a7974a31c",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "whyThisLayer": "The claim names active-run workspace allocation and env-var reuse behavior that is deterministic runtime behavior.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by active-run helper and prepare-compare tests: explicit output directories win, CAUTILUS_RUN_DIR is reused, missing active runs fail loudly, and workflow-creating helpers materialize only when no active run is pinned.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-active-run-and-claim-discover-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:b6e47471edb374b6100551bd79b317bde779d3102efd88dd02d046fbdad24524",
+              "supportsClaimIds": [
+                "claim-docs-contracts-active-run-md-3"
+              ]
+            }
+          ],
+          "nextAction": "Keep active-run helper and consumer tests aligned when adding new runDir-aware commands.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-master-plan-md-76",
+          "claimFingerprint": "sha256:69aa5ae1ce7aca764e9f8198ae964b6ec8da23ff55f59f7f2df2a66910e697bc",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "whyThisLayer": "The claim names shipped deterministic claim-discovery packet behavior rather than model-backed review.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by runtime and CLI tests: claim discovery writes `cautilus.claim_proof_plan.v1`, keeps source refs, keeps proof routes distinct, and does not mark the packet as a verdict.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-active-run-and-claim-discover-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:b6e47471edb374b6100551bd79b317bde779d3102efd88dd02d046fbdad24524",
+              "supportsClaimIds": [
+                "claim-docs-master-plan-md-76"
+              ]
+            }
+          ],
+          "nextAction": "Keep this proof attached when changing claim-discovery packet shape or the master-plan wording for the first claim slice.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-5",
+          "claimFingerprint": "sha256:8832bba3db8e251f9ff546cb2c4d5944134a46bd9c709b1dd13736c8630cca8e",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "whyThisLayer": "The claim names the deterministic claim-discovery proof-plan skeleton, which is protected by runtime and CLI tests.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by runtime and CLI tests: `claim discover` emits source-ref-backed `claimCandidates` in a `cautilus.claim_proof_plan.v1` packet and excludes open probe questions from the proof-plan candidate set.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-active-run-and-claim-discover-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:b6e47471edb374b6100551bd79b317bde779d3102efd88dd02d046fbdad24524",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-5"
+              ]
+            }
+          ],
+          "nextAction": "Keep deterministic discovery tests current when changing candidate extraction, proof routing, or non-verdict packet semantics.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

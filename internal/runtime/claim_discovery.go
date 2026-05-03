@@ -1043,6 +1043,9 @@ func claimLineLooksUseful(line string) bool {
 	if claimLineLooksLikePromptExample(normalized) {
 		return false
 	}
+	if claimLineLooksLikeOpenQuestion(normalized) {
+		return false
+	}
 	if claimLineLooksLikeDefinitionLabel(normalized) {
 		return false
 	}
@@ -1071,6 +1074,34 @@ func claimLineLooksLikeDefinitionLabel(summary string) bool {
 	trimmed = strings.TrimPrefix(trimmed, "- ")
 	trimmed = strings.TrimPrefix(trimmed, "* ")
 	return regexp.MustCompile("^`[^`]+`:\\s+").MatchString(trimmed)
+}
+
+func claimLineLooksLikeOpenQuestion(summary string) bool {
+	trimmed := strings.TrimSpace(summary)
+	trimmed = strings.TrimPrefix(trimmed, ">")
+	trimmed = strings.TrimSpace(trimmed)
+	if !strings.HasSuffix(trimmed, "?") {
+		return false
+	}
+	lower := strings.ToLower(trimmed)
+	return containsAnyPrefix(lower, []string{
+		"should ",
+		"is ",
+		"are ",
+		"do ",
+		"does ",
+		"did ",
+		"can ",
+		"could ",
+		"would ",
+		"will ",
+		"what ",
+		"when ",
+		"where ",
+		"why ",
+		"how ",
+		"which ",
+	})
 }
 
 func classifyClaimLine(line string) (claimClassification, bool) {
@@ -3535,6 +3566,15 @@ func claimStringListContains(values []string, value string) bool {
 func containsAny(value string, needles []string) bool {
 	for _, needle := range needles {
 		if strings.Contains(value, needle) {
+			return true
+		}
+	}
+	return false
+}
+
+func containsAnyPrefix(value string, prefixes []string) bool {
+	for _, prefix := range prefixes {
+		if strings.HasPrefix(value, prefix) {
 			return true
 		}
 	}

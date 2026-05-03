@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-active-run-and-claim-discover-2026-05-03",
+  "createdForClaimIds": [
+    "claim-docs-contracts-active-run-md-3",
+    "claim-docs-master-plan-md-76",
+    "claim-docs-contracts-claim-discovery-workflow-md-5"
+  ],
+  "repoCommit": "3819d259fd796dc6fd5777b579f6b013c0dcb508",
+  "summary": "This bundle records deterministic proof for active-run workspace pinning and for `claim discover` emitting source-ref-backed proof-plan packets rather than verdicts.",
+  "evidenceScope": {
+    "targetSurface": "active-run workspace routing and declared-claim proof planning",
+    "claimBoundary": "Only the shared active-run precedence/reuse behavior and the proof-plan packet shape are marked satisfied.",
+    "notClaimed": [
+      "Every active-run-aware command is exhaustively covered by this bundle",
+      "Every discovered claim is true",
+      "LLM-backed claim review, eval planning, or fixture authoring happened during claim discovery"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/runtime -run 'TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "notableAssertions": [
+          "claim discovery excludes prompt examples, label definitions, and open probe questions",
+          "claim discovery keeps deterministic, human-auditable, and Cautilus-eval routing distinct",
+          "claim discovery emits source-ref-backed claim candidates from declared docs"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/app -run 'TestRunClaimDiscoverWritesProofPlan|TestRunClaimDiscoverRefreshPlanRefusesSavedClaimStateOutput' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "notableAssertions": [
+          "claim discover writes cautilus.claim_proof_plan.v1",
+          "the proof-plan packet includes multiple recommendedProof routes",
+          "refresh-plan output cannot overwrite saved claim-state proof-plan paths"
+        ]
+      }
+    },
+    {
+      "command": "node --test scripts/agent-runtime/active-run.test.mjs scripts/agent-runtime/prepare-compare-worktrees.test.mjs",
+      "exitCode": 0,
+      "observed": {
+        "testCount": 21,
+        "notableAssertions": [
+          "explicit outputDir wins over CAUTILUS_RUN_DIR",
+          "CAUTILUS_RUN_DIR is reused when no explicit outputDir is provided",
+          "missing or file-valued CAUTILUS_RUN_DIR fails loudly",
+          "workflow-creating helpers auto-materialize a runDir only when no explicit or active run exists",
+          "prepare-compare reuses the active runDir and rewires worktrees on retry"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "internal/runtime/claim_discovery_test.go",
+      "kind": "claim-discovery-routing-test",
+      "contentHash": "sha256:f7af3effd965875dfb0ad9d08501cba61eb110d494df4c8cda282322a3dd5fbb"
+    },
+    {
+      "path": "internal/app/app_test.go",
+      "kind": "claim-discover-cli-test",
+      "contentHash": "sha256:c16537a224f0a2f64984e9396912a3af50c88acf2f62d6358e9516d9263858d7"
+    },
+    {
+      "path": "scripts/agent-runtime/active-run.test.mjs",
+      "kind": "active-run-helper-test",
+      "contentHash": "sha256:582d3301fbaa1c9645f2903e4f189589b4152cba49a8426acee3969c8cef6ef4"
+    },
+    {
+      "path": "scripts/agent-runtime/prepare-compare-worktrees.test.mjs",
+      "kind": "active-run-consumer-test",
+      "contentHash": "sha256:ffe5966fe7240dab4c6bd5560d040b77cb9db3f9bf6032103ccd54eea7487f1c"
+    },
+    {
+      "path": "scripts/agent-runtime/active-run.mjs",
+      "kind": "active-run-helper-implementation",
+      "contentHash": "sha256:b95d7b5d604f76144975187ff8e4965ca718173d6fd8fa0db69745ce75e45c00"
+    },
+    {
+      "path": "internal/runtime/claim_discovery.go",
+      "kind": "claim-discovery-implementation",
+      "contentHash": "sha256:902c6a5402489df1a0cbc1766f4adf42983fecaa08dab71965912bbf7f292163"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The targeted runtime and CLI tests prove the stated active-run reuse behavior and the deterministic proof-plan packet boundary for claim discovery."
+  }
+}

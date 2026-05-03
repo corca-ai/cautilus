@@ -460,6 +460,12 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 		"",
 		"Past runs showed some CLIs can reject schemas that declare object properties without also listing them in `required`, even when plain JSON Schema would allow them as optional.",
 		"",
+		"## Probe Questions",
+		"",
+		"- Should `run.json` carry workflow metadata so HTML views can present richer summaries?",
+		"- Is `review variants` a workflow-creating command that mints runDirs?",
+		"> Does this repo have a headless runner for selected behavior?",
+		"",
 	}, "\n"))
 
 	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
@@ -474,6 +480,15 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 	for summary := range bySummary {
 		if strings.Contains(summary, "Input (For Agent)") {
 			t.Fatalf("expected prompt examples to be excluded from claims, got %#v", bySummary[summary])
+		}
+	}
+	for _, question := range []string{
+		"Should `run.json` carry workflow metadata so HTML views can present richer summaries?",
+		"Is `review variants` a workflow-creating command that mints runDirs?",
+		"Does this repo have a headless runner for selected behavior?",
+	} {
+		if bySummary[question] != nil {
+			t.Fatalf("expected open question to be excluded from claims, got %#v", bySummary[question])
 		}
 	}
 	scenarioCommand := bySummary["The `cautilus scenario normalize chatbot` command emits reopenable proposal packets for review."]
