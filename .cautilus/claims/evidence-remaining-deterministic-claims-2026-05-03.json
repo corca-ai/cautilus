@@ -1,0 +1,170 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-remaining-deterministic-claims-2026-05-03",
+  "createdForClaimIds": [
+    "claim-docs-contracts-claim-discovery-workflow-md-681",
+    "claim-docs-contracts-runner-readiness-md-140",
+    "claim-docs-contracts-runner-readiness-md-218",
+    "claim-docs-contracts-runner-verification-md-12",
+    "claim-docs-contracts-runner-readiness-md-282",
+    "claim-docs-contracts-runner-verification-md-68",
+    "claim-docs-contracts-scenario-proposal-sources-md-235",
+    "claim-docs-specs-maintainer-scenario-history-normalization-spec-md-18",
+    "claim-docs-contracts-optimization-md-136",
+    "claim-docs-contracts-optimization-md-34"
+  ],
+  "repoCommit": "f51749956997b942eeb09b68fc74929ee6cc7ebf",
+  "summary": "This bundle records deterministic proof for the remaining deterministic-ready claim batch after split subagent review. It covers stable claim-review dogfood packets, runner-readiness proof-class distinctions, runner assessment packet scaffolding and schemas, skill disclosure against the command catalog, scenario proposal output preservation, scenario-history canonical absorption, and bounded optimize artifact/proposal behavior.",
+  "evidenceScope": {
+    "targetSurface": "deterministic Cautilus binary, packet, schema, test, audit, canonical-claim, optimize, scenario proposal, runner readiness, and skill-disclosure surfaces",
+    "claimBoundary": "Only the listed narrow deterministic behavior claims are marked satisfied. Skill curation behavior, host semantic honesty for external substitution, and future implementation-slice wording are reclassified instead of being satisfied by nearby tests.",
+    "notClaimed": [
+      "The bundled skill always curates canonical specdown indexes before every HITL run",
+      "Every host-owned external substitution is semantically honest at the exact product boundary",
+      "Implementation todo wording in the optimization contract is a shipped behavior claim",
+      "LLM-backed review quality is proven by deterministic packet tests alone",
+      "Every future runner type has product-path proof"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/runtime -run 'TestEvaluationSummaryPreservesRunnerProof|TestEvaluationProofIgnoresSelfCertifiedProductProofReady|TestEvaluationProofDowngradesFixtureRuntimeProofClass|TestEvaluationProofPromotesCodexDevRunnerDeclaredProof|TestEvaluationProofDoesNotPromoteDevRunnerWithoutObservedRuntime|TestEvaluationProofDoesNotPromoteAppProductRunnerFromSmokeAssessment|TestEvaluationProofRequiresReadyAssessmentRecommendation|TestEvaluationProofBlocksAssessmentSurfaceMismatch|TestEvaluationProofPreservesBlockersThroughSummary|TestReportPacketSummarizesBlockedProductRunnerProof|TestDoctorRunnerReadinessKeepsAdapterReadyWithMissingAssessment|TestRunnerReadinessReportsAssessedSmokeOnlyAndStaleStates|TestRunnerReadinessBlocksProductProofWithoutVerificationCapabilities|TestRunnerReadinessBranchesExposeStableActionShape|TestRunnerReadinessSupportsTypedMultiRunnerAdapters' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "protectedBehaviors": [
+          "evaluation proof packets distinguish fixture-backed smoke, coding-agent messaging, in-process product runner, live/server product runner, and blocked missing product proof",
+          "runner readiness reports assessed, smoke-only, stale, blocked, and stable action-shape branches",
+          "runner readiness blocks product proof when verification capabilities are missing"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/app -run 'TestCLIOptimizePrepareInputProposeAndBuildArtifact|TestCLIOptimizeProposePrioritizesResidualReportHotspotsBeforeImprovedFallback|TestCLIScenarioProposePreservesFullRankedOutputAndDerivesAttentionView|TestFixtureExamplesValidateAgainstPublishedSchemas' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "protectedBehaviors": [
+          "optimize prepare/propose/build-artifact creates one durable revision artifact from deterministic inputs",
+          "optimize propose prioritizes residual report hotspots before generic fallback",
+          "scenario propose preserves the full ranked proposal list and derives a bounded attention view",
+          "published fixture examples validate against schemas"
+        ]
+      }
+    },
+    {
+      "command": "node --test scripts/agent-runtime/audit-cautilus-review-prepare-flow-log.test.mjs scripts/agent-runtime/audit-cautilus-reviewer-launch-flow-log.test.mjs scripts/agent-runtime/audit-cautilus-review-to-eval-flow-log.test.mjs scripts/agent-runtime/build-canonical-claim-map.test.mjs scripts/agent-runtime/optimize-flow.test.mjs scripts/agent-runtime/optimization-contract-schemas.test.mjs scripts/agent-runtime/scenario-proposals.test.mjs scripts/agent-runtime/scenario-proposal-schemas.test.mjs",
+      "exitCode": 0,
+      "observed": {
+        "tests": 37,
+        "pass": 37,
+        "protectedBehaviors": [
+          "review prepare, reviewer launch, and review-to-eval dogfood audits keep packet boundaries explicit before broader LLM review",
+          "canonical claim maps absorb scenario history, proposal source, and normalizer claims into one maintainer-facing claim while preserving raw fingerprints",
+          "optimize proposal and revision artifact tests keep one bounded next-revision brief instead of an implicit compile loop",
+          "scenario proposal runtime and schemas preserve full ranked output"
+        ]
+      }
+    },
+    {
+      "command": "node scripts/check-cautilus-skill-disclosure.mjs",
+      "exitCode": 0,
+      "observed": {
+        "status": "ok",
+        "sourceSkill": "skills/cautilus/SKILL.md",
+        "packagedSkill": "plugins/cautilus/skills/cautilus/SKILL.md",
+        "protectedBehaviors": [
+          "the bundled skill routes operators to binary command discovery instead of duplicating the command catalog",
+          "source and packaged skills satisfy required disclosure fragments and avoid forbidden stale command fragments"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": ".cautilus/claims/evidence-dev-skill-dogfood.json",
+      "kind": "dev-skill-dogfood-evidence",
+      "contentHash": "sha256:bdc972a2b15d5207596491d2e4048af7af6ce725c928ae05ddf988508c9303ba"
+    },
+    {
+      "path": "scripts/agent-runtime/audit-cautilus-review-prepare-flow-log.test.mjs",
+      "kind": "review-prepare-audit-tests",
+      "contentHash": "sha256:127d66fc0dc47f8e0be186f0ef461857c1bae6faf7f9aa346c8e7e61dd10ff33"
+    },
+    {
+      "path": "scripts/agent-runtime/audit-cautilus-reviewer-launch-flow-log.test.mjs",
+      "kind": "reviewer-launch-audit-tests",
+      "contentHash": "sha256:7f6f4053643722641ea8b832e4643dc969dc9b35206dedce3bd579d1bc80f142"
+    },
+    {
+      "path": "scripts/agent-runtime/audit-cautilus-review-to-eval-flow-log.test.mjs",
+      "kind": "review-to-eval-audit-tests",
+      "contentHash": "sha256:062a5f02299ba5921adbb218ff3855a608792cc3d8ac8d3f8d2e4ea7b4d8921e"
+    },
+    {
+      "path": "internal/runtime/evaluation_proof_test.go",
+      "kind": "evaluation-proof-tests",
+      "contentHash": "sha256:86c03310105cbb0cb93e6ec7ec7f69d2dc9b80e2272b03db45058cf35a1cf674"
+    },
+    {
+      "path": "internal/runtime/runner_readiness.go",
+      "kind": "runner-readiness-runtime",
+      "contentHash": "sha256:4097f310c3fc47addc2a1c78f0774cf9f737ae227b6dc0e9508cdfc4306efb1c"
+    },
+    {
+      "path": "internal/runtime/runner_readiness_test.go",
+      "kind": "runner-readiness-tests",
+      "contentHash": "sha256:4d09a568814f3c792cd9ee9a4f944e0ff407f8586cdb0114a4d8b7220dab9784"
+    },
+    {
+      "path": "fixtures/runner-readiness/assessment.schema.json",
+      "kind": "runner-assessment-schema",
+      "contentHash": "sha256:2c8ad4cff5a188606762ff3b58511bab74f261dd4f2bcfdb2369947f3a82662b"
+    },
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "cli-smoke-tests",
+      "contentHash": "sha256:c064a9f22ee194ef5438dde712d8b4fb5bdf10f7d40713268f7df04a39320ec6"
+    },
+    {
+      "path": "internal/app/examples_schema_test.go",
+      "kind": "schema-fixture-tests",
+      "contentHash": "sha256:19bc0846340538f0871ea7b919f55a5a25f899c797da957b8b6c055ff47ad823"
+    },
+    {
+      "path": "scripts/check-cautilus-skill-disclosure.mjs",
+      "kind": "skill-disclosure-lint",
+      "contentHash": "sha256:aa3cf232ef8bee1dcc74de9a85c494e75e7d95af13cb9f0c5332dcab78e2e2d2"
+    },
+    {
+      "path": "scripts/agent-runtime/build-canonical-claim-map.test.mjs",
+      "kind": "canonical-claim-map-tests",
+      "contentHash": "sha256:ea67e34d577144c32cbc51d131006003c682b5a8fdac5a2837d0aafad5058fd0"
+    },
+    {
+      "path": "scripts/agent-runtime/optimize-flow.test.mjs",
+      "kind": "optimize-flow-tests",
+      "contentHash": "sha256:1decc6f98b7de8ea2b782f4aad00492d61c5e264e29da4a86fdcb5774b3db71f"
+    },
+    {
+      "path": "scripts/agent-runtime/optimization-contract-schemas.test.mjs",
+      "kind": "optimization-schema-tests",
+      "contentHash": "sha256:5fe81a9bb4c2a5e3c9085ed5571d186104d9f11e42d9dcb0e4ebb667f9ef12c9"
+    },
+    {
+      "path": "scripts/agent-runtime/scenario-proposals.test.mjs",
+      "kind": "scenario-proposal-tests",
+      "contentHash": "sha256:2afbc33d96ba7c4f5f81b4c697f8634168a8aad4d756ec8b74c3e814b5486317"
+    },
+    {
+      "path": "scripts/agent-runtime/scenario-proposal-schemas.test.mjs",
+      "kind": "scenario-proposal-schema-tests",
+      "contentHash": "sha256:129b0d27d0df1f216e1cdfa1f501440a48e56f812b3efd996dab202fd4fc064f"
+    },
+    {
+      "path": "fixtures/optimize/revision-artifact.schema.json",
+      "kind": "revision-artifact-schema",
+      "contentHash": "sha256:3b9d522e43fcceed4efeb10a1f07ce57f4c26b4038d0e9deae12512bfa65c524"
+    }
+  ]
+}

@@ -1,0 +1,299 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "remaining-deterministic-subagent-synthesis",
+    "type": "agent",
+    "reviewedAt": "2026-05-03T00:00:00Z",
+    "evidencePolicy": "Only narrow deterministic claims with a checked-in evidence bundle are marked satisfied; skill-orchestration, host-semantic, and future implementation-slice claims are reclassified instead of overclaimed.",
+    "sourceReviewers": [
+      "Peirce",
+      "Franklin",
+      "Darwin",
+      "same-agent-synthesis"
+    ]
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-developer-agent-and-skill-workflow-deterministic-contract",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-681",
+          "claimFingerprint": "sha256:97777d7b82dc5cce5cb38b19082240250c0408eb628dc1f44dec30706a5c5a47",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [],
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the remaining deterministic evidence bundle: dogfood audit tests show the deterministic packet and skill control-flow boundaries are stable before broader LLM-backed cluster review.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-remaining-deterministic-claims-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:7eca57dd7633871a9a8106a8a0ebd91dbf3ef4ac5fdbf3aa56215374a15bc0f5",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-681"
+              ]
+            }
+          ],
+          "nextAction": "Keep the review prepare, reviewer launch, and review-to-eval audit tests aligned with this claim when changing the skill or review packet workflow."
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-85",
+          "claimFingerprint": "sha256:61a9c5048a4a9198d4182a1cfe5d0f91adb31bed9e08cfcf0b37f54508602df4",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [],
+          "recommendedProof": "cautilus-eval",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "This names bundled-skill curation behavior before HITL, not merely deterministic packet shape. It needs a dev/skill eval or audit-backed skill-flow fixture.",
+          "evidenceRefs": [],
+          "nextAction": "Author a dev/skill scenario proving that the bundled skill curates canonical specdown indexes before continuing HITL when raw candidates are too granular.",
+          "recommendedEvalSurface": "dev/skill",
+          "whyThisLayer": "The claim is about agent skill sequencing and judgment over raw candidates, so deterministic helper tests are necessary but not sufficient."
+        },
+        {
+          "claimId": "claim-docs-contracts-runner-readiness-md-140",
+          "claimFingerprint": "sha256:32c473c093c26b67803e0239c85988a23a2fdd8abc4a1d944735253a2fdbc138",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [],
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by evaluation proof tests that distinguish fixture-backed smoke, coding-agent messaging, in-process product runner, and live/server product runner proof classes.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-remaining-deterministic-claims-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:7eca57dd7633871a9a8106a8a0ebd91dbf3ef4ac5fdbf3aa56215374a15bc0f5",
+              "supportsClaimIds": [
+                "claim-docs-contracts-runner-readiness-md-140"
+              ]
+            }
+          ],
+          "nextAction": "Keep evaluation proof tests updated when runner proof classes change."
+        },
+        {
+          "claimId": "claim-docs-contracts-runner-readiness-md-218",
+          "claimFingerprint": "sha256:72e1d6502bc136657c2b8b900091df1d80d01daee253b5605b74071a482f0dd2",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [],
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by runner readiness branch-shape tests and schema fixture validation; operators get scaffolded packet actions instead of prose-only assessment authoring.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-remaining-deterministic-claims-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:7eca57dd7633871a9a8106a8a0ebd91dbf3ef4ac5fdbf3aa56215374a15bc0f5",
+              "supportsClaimIds": [
+                "claim-docs-contracts-runner-readiness-md-218"
+              ]
+            }
+          ],
+          "nextAction": "Keep runner readiness action packets and example assessment schema validation in sync."
+        },
+        {
+          "claimId": "claim-docs-contracts-runner-verification-md-12",
+          "claimFingerprint": "sha256:41e8ff555bda644efcb3c14e9924f517d56eddb15004f28cb7db6defec0ab9da",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [],
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the runner assessment schema, fixture example schema tests, and runner readiness tests that durable truth lands in a runner assessment packet.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-remaining-deterministic-claims-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:7eca57dd7633871a9a8106a8a0ebd91dbf3ef4ac5fdbf3aa56215374a15bc0f5",
+              "supportsClaimIds": [
+                "claim-docs-contracts-runner-verification-md-12"
+              ]
+            }
+          ],
+          "nextAction": "Keep assessment packet schema and examples versioned with runner verification contract changes."
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-developer-documentation-and-contracts-deterministic-contract",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-runner-readiness-md-282",
+          "claimFingerprint": "sha256:9fa2368158266b9fff3f7c4e0ee3e56438a32265a1f7261f8c07508734a33d58",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [],
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the skill disclosure lint: the bundled skill uses binary command discovery and avoids duplicating the command catalog.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-remaining-deterministic-claims-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:7eca57dd7633871a9a8106a8a0ebd91dbf3ef4ac5fdbf3aa56215374a15bc0f5",
+              "supportsClaimIds": [
+                "claim-docs-contracts-runner-readiness-md-282"
+              ]
+            }
+          ],
+          "nextAction": "Keep skill disclosure lint required and forbidden fragments aligned with command discovery changes."
+        },
+        {
+          "claimId": "claim-docs-contracts-runner-verification-md-24",
+          "claimFingerprint": "sha256:314666ba59ccf0d491a3cf1af85b27d812ee82600fad678e1a1b1d98812f6a56",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [
+            "Which host-owned adapters have actually demonstrated same-boundary external substitution?"
+          ],
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "needs-alignment",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The deterministic schema can require an external substitution field, but whether a substitute sits at the same boundary the product uses is host semantic judgment.",
+          "evidenceRefs": [],
+          "nextAction": "Keep this as a host-alignment claim until a concrete adapter assessment demonstrates same-boundary external substitution honestly."
+        },
+        {
+          "claimId": "claim-docs-contracts-runner-verification-md-68",
+          "claimFingerprint": "sha256:87d0d0c027b0497551be24a3e0756bacb16eab6cacae48c6244a6e4f98eedec9",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [],
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by evaluation proof and runner readiness tests: smoke and declared proof classes can support setup confidence without being promoted to app product-path proof.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-remaining-deterministic-claims-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:7eca57dd7633871a9a8106a8a0ebd91dbf3ef4ac5fdbf3aa56215374a15bc0f5",
+              "supportsClaimIds": [
+                "claim-docs-contracts-runner-verification-md-68"
+              ]
+            }
+          ],
+          "nextAction": "Keep product-path proof promotion explicit in evaluation proof tests."
+        },
+        {
+          "claimId": "claim-docs-contracts-scenario-proposal-sources-md-235",
+          "claimFingerprint": "sha256:f7e8c40841a9218e0671478c7e2ff6a948e90e42cfca3f8198a63485e854ab96",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [],
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by CLI smoke, runtime, and schema tests that scenario proposal packets preserve the full ranked proposal list while deriving a bounded attention view.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-remaining-deterministic-claims-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:7eca57dd7633871a9a8106a8a0ebd91dbf3ef4ac5fdbf3aa56215374a15bc0f5",
+              "supportsClaimIds": [
+                "claim-docs-contracts-scenario-proposal-sources-md-235"
+              ]
+            }
+          ],
+          "nextAction": "Keep full proposal list preservation tested when changing scenario proposal output."
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-developer-documentation-and-contracts-deterministic-spec",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-specs-maintainer-scenario-history-normalization-spec-md-18",
+          "claimFingerprint": "sha256:0ce6bc7d7060f90d3be104ecf2788fc1f2b999ba4170c95ed28fa1577f6f84a9",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [],
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the canonical claim map test that scenario history, scenario proposal source, and normalizer raw claims are absorbed into one maintainer-facing claim while preserving fingerprints.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-remaining-deterministic-claims-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:7eca57dd7633871a9a8106a8a0ebd91dbf3ef4ac5fdbf3aa56215374a15bc0f5",
+              "supportsClaimIds": [
+                "claim-docs-specs-maintainer-scenario-history-normalization-spec-md-18"
+              ]
+            }
+          ],
+          "nextAction": "Keep canonical-map absorption tests updated with scenario-history and scenario-proposal contract renames."
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-developer-improvement-and-optimization-deterministic-contract",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-optimization-md-136",
+          "claimFingerprint": "sha256:cbd66b75bb6dd424a98dddb7ece09c891e0b3652de0d60378af3fc2a45c23784",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [],
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by optimize CLI smoke and agent-runtime tests that build-artifact emits one durable revision packet reopenable without rediscovering optimize inputs by hand.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-remaining-deterministic-claims-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:7eca57dd7633871a9a8106a8a0ebd91dbf3ef4ac5fdbf3aa56215374a15bc0f5",
+              "supportsClaimIds": [
+                "claim-docs-contracts-optimization-md-136"
+              ]
+            }
+          ],
+          "nextAction": "Keep optimize build-artifact smoke and revision artifact schema tests aligned."
+        },
+        {
+          "claimId": "claim-docs-contracts-optimization-md-151",
+          "claimFingerprint": "sha256:963e37e737b81f9b5b39cd5ccf092692084566cc8f87c3153ea80161649abfb1",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [
+            "Should this implementation-slice sentence be removed, rewritten as shipped behavior, or left as historical planning text?"
+          ],
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "blocked",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "This is todo-style implementation-slice wording, not a stable shipped behavior claim to satisfy directly.",
+          "evidenceRefs": [],
+          "nextAction": "Do not satisfy directly; rewrite or move this sentence out of the active contract claim surface if it should not remain a proof obligation."
+        },
+        {
+          "claimId": "claim-docs-contracts-optimization-md-34",
+          "claimFingerprint": "sha256:29d176b2ee0cb2a3c8e8d93596af9f0498bd0ba1d5845be7c5c8867ae6b90b51",
+          "reviewStatus": "agent-reviewed",
+          "unresolvedQuestions": [],
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by optimize-flow tests that generated optimize proposals include one revision brief, bounded stop conditions, and no compile loop, iteration plan, or target patch.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-remaining-deterministic-claims-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:7eca57dd7633871a9a8106a8a0ebd91dbf3ef4ac5fdbf3aa56215374a15bc0f5",
+              "supportsClaimIds": [
+                "claim-docs-contracts-optimization-md-34"
+              ]
+            }
+          ],
+          "nextAction": "Keep optimize proposal tests strict about bounded revision semantics."
+        }
+      ]
+    }
+  ]
+}

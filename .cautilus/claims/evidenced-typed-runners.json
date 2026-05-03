@@ -1061,12 +1061,12 @@
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
-          "excerpt": "When a repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, run `cautilus doctor --repo-root /path/to/repo --adapter-name <name>` for repo-scope validation instead of expecting plain `doctor` to guess which named adapter you mean.",
+          "excerpt": "When a repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, run `cautilus doctor --repo-root /path/to/repo --adapter-name \u003cname\u003e` for repo-scope validation instead of expecting plain `doctor` to guess which named adapter you mean.",
           "line": 114,
           "path": "docs/cli-reference.md"
         }
       ],
-      "summary": "When a repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, run `cautilus doctor --repo-root /path/to/repo --adapter-name <name>` for repo-scope validation instead of expecting plain `doctor` to guess which named adapter you mean.",
+      "summary": "When a repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, run `cautilus doctor --repo-root /path/to/repo --adapter-name \u003cname\u003e` for repo-scope validation instead of expecting plain `doctor` to guess which named adapter you mean.",
       "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
@@ -2225,12 +2225,12 @@
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "The ready payload now includes `first_bounded_run`, which adds a starter `eval test -> eval evaluate` packet loop and keeps the `cautilus scenarios --json` catalog nearby only for proposal-input examples.",
+          "excerpt": "The ready payload now includes `first_bounded_run`, which adds a starter `eval test -\u003e eval evaluate` packet loop and keeps the `cautilus scenarios --json` catalog nearby only for proposal-input examples.",
           "line": 48,
           "path": "docs/guides/consumer-adoption.md"
         }
       ],
-      "summary": "The ready payload now includes `first_bounded_run`, which adds a starter `eval test -> eval evaluate` packet loop and keeps the `cautilus scenarios --json` catalog nearby only for proposal-input examples.",
+      "summary": "The ready payload now includes `first_bounded_run`, which adds a starter `eval test -\u003e eval evaluate` packet loop and keeps the `cautilus scenarios --json` catalog nearby only for proposal-input examples.",
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
@@ -2265,12 +2265,12 @@
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
-          "excerpt": "If the repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, use `cautilus doctor --adapter-name <name>` for repo-scope validation.",
+          "excerpt": "If the repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, use `cautilus doctor --adapter-name \u003cname\u003e` for repo-scope validation.",
           "line": 49,
           "path": "docs/guides/consumer-adoption.md"
         }
       ],
-      "summary": "If the repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, use `cautilus doctor --adapter-name <name>` for repo-scope validation.",
+      "summary": "If the repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, use `cautilus doctor --adapter-name \u003cname\u003e` for repo-scope validation.",
       "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
@@ -3592,12 +3592,12 @@
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "The command therefore follows the same precedence chain as other workflow-creating helpers (explicit `--output-dir` > `CAUTILUS_RUN_DIR` > auto-materialize under `./.cautilus/runs/`) and emits `Active run: <abs path>` once only when it auto-materializes.",
+          "excerpt": "The command therefore follows the same precedence chain as other workflow-creating helpers (explicit `--output-dir` \u003e `CAUTILUS_RUN_DIR` \u003e auto-materialize under `./.cautilus/runs/`) and emits `Active run: \u003cabs path\u003e` once only when it auto-materializes.",
           "line": 221,
           "path": "docs/contracts/active-run.md"
         }
       ],
-      "summary": "The command therefore follows the same precedence chain as other workflow-creating helpers (explicit `--output-dir` > `CAUTILUS_RUN_DIR` > auto-materialize under `./.cautilus/runs/`) and emits `Active run: <abs path>` once only when it auto-materializes.",
+      "summary": "The command therefore follows the same precedence chain as other workflow-creating helpers (explicit `--output-dir` \u003e `CAUTILUS_RUN_DIR` \u003e auto-materialize under `./.cautilus/runs/`) and emits `Active run: \u003cabs path\u003e` once only when it auto-materializes.",
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
@@ -3842,16 +3842,18 @@
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "This names bundled-skill curation behavior before HITL, not merely deterministic packet shape. It needs a dev/skill eval or audit-backed skill-flow fixture.",
       "groupHints": [
         "audience:developer",
+        "cautilus-eval",
         "contract",
-        "deterministic",
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
-      "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "nextAction": "Author a dev/skill scenario proving that the bundled skill curates canonical specdown indexes before continuing HITL when raw candidates are too granular.",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "When raw candidates are too granular to review directly, the bundled skill should curate two canonical specdown indexes before continuing HITL:",
@@ -3860,8 +3862,9 @@
         }
       ],
       "summary": "When raw candidates are too granular to review directly, the bundled skill should curate two canonical specdown indexes before continuing HITL:",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
+      "whyThisLayer": "The claim is about agent skill sequencing and judgment over raw candidates, so deterministic helper tests are necessary but not sufficient."
     },
     {
       "claimAudience": "developer",
@@ -4996,12 +4999,12 @@
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "The binary may provide helper flags such as `claim discover --previous <packet> --refresh-plan`, but the public user-level workflow remains `discover`.",
+          "excerpt": "The binary may provide helper flags such as `claim discover --previous \u003cpacket\u003e --refresh-plan`, but the public user-level workflow remains `discover`.",
           "line": 454,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
-      "summary": "The binary may provide helper flags such as `claim discover --previous <packet> --refresh-plan`, but the public user-level workflow remains `discover`.",
+      "summary": "The binary may provide helper flags such as `claim discover --previous \u003cpacket\u003e --refresh-plan`, but the public user-level workflow remains `discover`.",
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
@@ -5027,12 +5030,12 @@
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "When the skill runs `claim discover --previous <packet>` for the actual refreshed proof plan, unchanged claim fingerprints carry forward reviewed labels, evidence refs, unresolved questions, and next-action state.",
+          "excerpt": "When the skill runs `claim discover --previous \u003cpacket\u003e` for the actual refreshed proof plan, unchanged claim fingerprints carry forward reviewed labels, evidence refs, unresolved questions, and next-action state.",
           "line": 456,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
-      "summary": "When the skill runs `claim discover --previous <packet>` for the actual refreshed proof plan, unchanged claim fingerprints carry forward reviewed labels, evidence refs, unresolved questions, and next-action state.",
+      "summary": "When the skill runs `claim discover --previous \u003cpacket\u003e` for the actual refreshed proof plan, unchanged claim fingerprints carry forward reviewed labels, evidence refs, unresolved questions, and next-action state.",
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
@@ -5781,8 +5784,19 @@
       "claimFingerprint": "sha256:97777d7b82dc5cce5cb38b19082240250c0408eb628dc1f44dec30706a5c5a47",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-681",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:7eca57dd7633871a9a8106a8a0ebd91dbf3ef4ac5fdbf3aa56215374a15bc0f5",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-remaining-deterministic-claims-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-claim-discovery-workflow-md-681"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by the remaining deterministic evidence bundle: dogfood audit tests show the deterministic packet and skill control-flow boundaries are stable before broader LLM-backed cluster review.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -5790,9 +5804,9 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "nextAction": "Keep the review prepare, reviewer launch, and review-to-eval audit tests aligned with this claim when changing the skill or review packet workflow.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "LLM-backed cluster review should come after the deterministic packet and skill control flow are stable enough to dogfood.",
@@ -5801,6 +5815,7 @@
         }
       ],
       "summary": "LLM-backed cluster review should come after the deterministic packet and skill control flow are stable enough to dogfood.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
@@ -6079,7 +6094,7 @@
         }
       ],
       "evidenceStatus": "satisfied",
-      "evidenceStatusReason": "Verified by CLI smoke tests: the product-owned scripted loop creates <output_file>.d/workspace, runs the prepare hook once before turns, and reuses that same workspace for each turn.",
+      "evidenceStatusReason": "Verified by CLI smoke tests: the product-owned scripted loop creates \u003coutput_file\u003e.d/workspace, runs the prepare hook once before turns, and reuses that same workspace for each turn.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -6093,12 +6108,12 @@
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
-          "excerpt": "When the product-owned loop is active, `Cautilus` also owns one stable per-request workspace directory under `<output_file>.d/workspace/` and may run one optional prepare hook before the first turn.",
+          "excerpt": "When the product-owned loop is active, `Cautilus` also owns one stable per-request workspace directory under `\u003coutput_file\u003e.d/workspace/` and may run one optional prepare hook before the first turn.",
           "line": 12,
           "path": "docs/contracts/live-run-invocation.md"
         }
       ],
-      "summary": "When the product-owned loop is active, `Cautilus` also owns one stable per-request workspace directory under `<output_file>.d/workspace/` and may run one optional prepare hook before the first turn.",
+      "summary": "When the product-owned loop is active, `Cautilus` also owns one stable per-request workspace directory under `\u003coutput_file\u003e.d/workspace/` and may run one optional prepare hook before the first turn.",
       "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names live-run workspace allocation and prepare-hook timing, which are deterministic CLI/runtime behavior."
@@ -6976,8 +6991,19 @@
       "claimFingerprint": "sha256:32c473c093c26b67803e0239c85988a23a2fdd8abc4a1d944735253a2fdbc138",
       "claimId": "claim-docs-contracts-runner-readiness-md-140",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:7eca57dd7633871a9a8106a8a0ebd91dbf3ef4ac5fdbf3aa56215374a15bc0f5",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-remaining-deterministic-claims-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-runner-readiness-md-140"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by evaluation proof tests that distinguish fixture-backed smoke, coding-agent messaging, in-process product runner, and live/server product runner proof classes.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -6985,9 +7011,9 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "nextAction": "Keep evaluation proof tests updated when runner proof classes change.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "The observed packet should distinguish fixture-backed smoke, coding-agent messaging, in-process product runner, and live/server product runner.",
@@ -6996,6 +7022,7 @@
         }
       ],
       "summary": "The observed packet should distinguish fixture-backed smoke, coding-agent messaging, in-process product runner, and live/server product runner.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
@@ -7190,8 +7217,19 @@
       "claimFingerprint": "sha256:72e1d6502bc136657c2b8b900091df1d80d01daee253b5605b74071a482f0dd2",
       "claimId": "claim-docs-contracts-runner-readiness-md-218",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:7eca57dd7633871a9a8106a8a0ebd91dbf3ef4ac5fdbf3aa56215374a15bc0f5",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-remaining-deterministic-claims-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-runner-readiness-md-218"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by runner readiness branch-shape tests and schema fixture validation; operators get scaffolded packet actions instead of prose-only assessment authoring.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -7199,9 +7237,9 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
+      "nextAction": "Keep runner readiness action packets and example assessment schema validation in sync.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "The bundled skill may help fill judgment fields, but operators should not have to author `cautilus.runner_assessment.v1` from prose alone.",
@@ -7210,6 +7248,7 @@
         }
       ],
       "summary": "The bundled skill may help fill judgment fields, but operators should not have to author `cautilus.runner_assessment.v1` from prose alone.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
     },
@@ -7353,8 +7392,19 @@
       "claimFingerprint": "sha256:9fa2368158266b9fff3f7c4e0ee3e56438a32265a1f7261f8c07508734a33d58",
       "claimId": "claim-docs-contracts-runner-readiness-md-282",
       "claimSemanticGroup": "Documentation and contracts",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:7eca57dd7633871a9a8106a8a0ebd91dbf3ef4ac5fdbf3aa56215374a15bc0f5",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-remaining-deterministic-claims-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-runner-readiness-md-282"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by the skill disclosure lint: the bundled skill uses binary command discovery and avoids duplicating the command catalog.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -7362,9 +7412,9 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic packet, catalog, schema, or renderer proof for this claim.",
+      "nextAction": "Keep skill disclosure lint required and forbidden fragments aligned with command discovery changes.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "It should not duplicate the command catalog.",
@@ -7373,6 +7423,7 @@
         }
       ],
       "summary": "It should not duplicate the command catalog.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names packet, catalog, or renderer behavior that should be protected by deterministic command, schema, or render tests."
     },
@@ -7641,8 +7692,19 @@
       "claimFingerprint": "sha256:41e8ff555bda644efcb3c14e9924f517d56eddb15004f28cb7db6defec0ab9da",
       "claimId": "claim-docs-contracts-runner-verification-md-12",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:7eca57dd7633871a9a8106a8a0ebd91dbf3ef4ac5fdbf3aa56215374a15bc0f5",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-remaining-deterministic-claims-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-runner-verification-md-12"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by the runner assessment schema, fixture example schema tests, and runner readiness tests that durable truth lands in a runner assessment packet.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -7650,9 +7712,9 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
+      "nextAction": "Keep assessment packet schema and examples versioned with runner verification contract changes.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "The bundled skill may help create or review the assessment, but durable truth must land in a `cautilus.runner_assessment.v1` packet.",
@@ -7661,6 +7723,7 @@
         }
       ],
       "summary": "The bundled skill may help create or review the assessment, but durable truth must land in a `cautilus.runner_assessment.v1` packet.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
     },
@@ -7672,16 +7735,17 @@
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "The deterministic schema can require an external substitution field, but whether a substitute sits at the same boundary the product uses is host semantic judgment.",
       "groupHints": [
         "audience:developer",
         "contract",
-        "deterministic",
+        "human-auditable",
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "nextAction": "Keep this as a host-alignment claim until a concrete adapter assessment demonstrates same-boundary external substitution honestly.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "external substitution: nondeterministic or costly external dependencies can be replaced with deterministic substitutes at the same boundary the product uses",
@@ -7690,7 +7754,10 @@
         }
       ],
       "summary": "external substitution: nondeterministic or costly external dependencies can be replaced with deterministic substitutes at the same boundary the product uses",
-      "verificationReadiness": "ready-to-verify",
+      "unresolvedQuestions": [
+        "Which host-owned adapters have actually demonstrated same-boundary external substitution?"
+      ],
+      "verificationReadiness": "needs-alignment",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -7730,8 +7797,19 @@
       "claimFingerprint": "sha256:87d0d0c027b0497551be24a3e0756bacb16eab6cacae48c6244a6e4f98eedec9",
       "claimId": "claim-docs-contracts-runner-verification-md-68",
       "claimSemanticGroup": "Documentation and contracts",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:7eca57dd7633871a9a8106a8a0ebd91dbf3ef4ac5fdbf3aa56215374a15bc0f5",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-remaining-deterministic-claims-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-runner-verification-md-68"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by evaluation proof and runner readiness tests: smoke and declared proof classes can support setup confidence without being promoted to app product-path proof.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -7739,9 +7817,9 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "nextAction": "Keep product-path proof promotion explicit in evaluation proof tests.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Those proof classes can support setup checks, fixture shaping, and deterministic smoke confidence without claiming app product-path proof.",
@@ -7750,6 +7828,7 @@
         }
       ],
       "summary": "Those proof classes can support setup checks, fixture shaping, and deterministic smoke confidence without claiming app product-path proof.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
@@ -8867,8 +8946,19 @@
       "claimFingerprint": "sha256:0ce6bc7d7060f90d3be104ecf2788fc1f2b999ba4170c95ed28fa1577f6f84a9",
       "claimId": "claim-docs-specs-maintainer-scenario-history-normalization-spec-md-18",
       "claimSemanticGroup": "Documentation and contracts",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:7eca57dd7633871a9a8106a8a0ebd91dbf3ef4ac5fdbf3aa56215374a15bc0f5",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-remaining-deterministic-claims-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-specs-maintainer-scenario-history-normalization-spec-md-18"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by the canonical claim map test that scenario history, scenario proposal source, and normalizer raw claims are absorbed into one maintainer-facing claim while preserving fingerprints.",
       "groupHints": [
         "audience:developer",
         "deterministic",
@@ -8876,9 +8966,9 @@
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic scenario command, packet, or render proof for this claim.",
+      "nextAction": "Keep canonical-map absorption tests updated with scenario-history and scenario-proposal contract renames.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "This area should absorb `docs/contracts/scenario-history.md`, `docs/contracts/scenario-proposal-sources.md`, and scenario normalizer claims.",
@@ -8887,6 +8977,7 @@
         }
       ],
       "summary": "This area should absorb `docs/contracts/scenario-history.md`, `docs/contracts/scenario-proposal-sources.md`, and scenario normalizer claims.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim documents scenario command or proposal-packet behavior rather than asking for a new behavior scenario."
     },
@@ -8938,6 +9029,7 @@
       ],
       "lifecycle": "new",
       "nextAction": "Use a bundled-skill eval or audit-backed fixture to prove the skill reads the claim packet and groups review, deterministic proof, Cautilus eval, alignment, and deferred work.",
+      "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -8950,8 +9042,7 @@
       "summary": "The bundled skill can use the claim packet to group next work: review wording, add deterministic proof, plan Cautilus evals, align docs and adapters, or defer broad claims.",
       "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names bundled-skill behavior over a deterministic claim packet; prove it with a dev/skill eval or audit-backed skill-flow fixture rather than packet shape alone.",
-      "recommendedEvalSurface": "dev/skill"
+      "whyThisLayer": "The claim names bundled-skill behavior over a deterministic claim packet; prove it with a dev/skill eval or audit-backed skill-flow fixture rather than packet shape alone."
     },
     {
       "claimAudience": "user",
@@ -9257,8 +9348,19 @@
       "claimFingerprint": "sha256:29d176b2ee0cb2a3c8e8d93596af9f0498bd0ba1d5845be7c5c8867ae6b90b51",
       "claimId": "claim-docs-contracts-optimization-md-34",
       "claimSemanticGroup": "Improvement and optimization",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:7eca57dd7633871a9a8106a8a0ebd91dbf3ef4ac5fdbf3aa56215374a15bc0f5",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-remaining-deterministic-claims-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-optimization-md-34"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by optimize-flow tests that generated optimize proposals include one revision brief, bounded stop conditions, and no compile loop, iteration plan, or target patch.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -9266,9 +9368,9 @@
         "linked-from:docs/contracts/active-run.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "nextAction": "Keep optimize proposal tests strict about bounded revision semantics.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "The optimizer still emits one bounded next-revision brief, not a compile loop.",
@@ -9277,6 +9379,7 @@
         }
       ],
       "summary": "The optimizer still emits one bounded next-revision brief, not a compile loop.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
@@ -9379,8 +9482,19 @@
       "claimFingerprint": "sha256:cbd66b75bb6dd424a98dddb7ece09c891e0b3652de0d60378af3fc2a45c23784",
       "claimId": "claim-docs-contracts-optimization-md-136",
       "claimSemanticGroup": "Improvement and optimization",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:7eca57dd7633871a9a8106a8a0ebd91dbf3ef4ac5fdbf3aa56215374a15bc0f5",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-remaining-deterministic-claims-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-optimization-md-136"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by optimize CLI smoke and agent-runtime tests that build-artifact emits one durable revision packet reopenable without rediscovering optimize inputs by hand.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -9388,9 +9502,9 @@
         "linked-from:docs/contracts/active-run.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
+      "nextAction": "Keep optimize build-artifact smoke and revision artifact schema tests aligned.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "`optimize build-artifact` emits one durable packet that can be reopened without rediscovering optimize inputs by hand.",
@@ -9399,6 +9513,7 @@
         }
       ],
       "summary": "`optimize build-artifact` emits one durable packet that can be reopened without rediscovering optimize inputs by hand.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks."
     },
@@ -9410,16 +9525,17 @@
       "claimSemanticGroup": "Improvement and optimization",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "This is todo-style implementation-slice wording, not a stable shipped behavior claim to satisfy directly.",
       "groupHints": [
         "audience:developer",
         "contract",
-        "deterministic",
+        "human-auditable",
         "linked-from:docs/contracts/active-run.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "nextAction": "Do not satisfy directly; rewrite or move this sentence out of the active contract claim surface if it should not remain a proof obligation.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Update the optimize input builder, optimize proposal generator, revision artifact builder, schemas, fixtures, and flow tests so the optimize seam keeps one durable packet for the next bounded revision.",
@@ -9428,7 +9544,10 @@
         }
       ],
       "summary": "Update the optimize input builder, optimize proposal generator, revision artifact builder, schemas, fixtures, and flow tests so the optimize seam keeps one durable packet for the next bounded revision.",
-      "verificationReadiness": "ready-to-verify",
+      "unresolvedQuestions": [
+        "Should this implementation-slice sentence be removed, rewritten as shipped behavior, or left as historical planning text?"
+      ],
+      "verificationReadiness": "blocked",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -10051,8 +10170,19 @@
       "claimFingerprint": "sha256:f7e8c40841a9218e0671478c7e2ff6a948e90e42cfca3f8198a63485e854ab96",
       "claimId": "claim-docs-contracts-scenario-proposal-sources-md-235",
       "claimSemanticGroup": "Documentation and contracts",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:7eca57dd7633871a9a8106a8a0ebd91dbf3ef4ac5fdbf3aa56215374a15bc0f5",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-remaining-deterministic-claims-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-scenario-proposal-sources-md-235"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by CLI smoke, runtime, and schema tests that scenario proposal packets preserve the full ranked proposal list while deriving a bounded attention view.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -10060,9 +10190,9 @@
         "linked-from:docs/contracts/scenario-history.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
+      "nextAction": "Keep full proposal list preservation tested when changing scenario proposal output.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "The canonical machine-readable output should preserve the full ranked proposal list.",
@@ -10071,6 +10201,7 @@
         }
       ],
       "summary": "The canonical machine-readable output should preserve the full ranked proposal list.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks."
     },
@@ -10483,27 +10614,27 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 78,
-      "unknown": 234
+      "satisfied": 88,
+      "unknown": 224
     },
     "byLifecycle": {
       "new": 312
     },
     "byRecommendedProof": {
-      "cautilus-eval": 131,
-      "deterministic": 96,
-      "human-auditable": 85
+      "cautilus-eval": 132,
+      "deterministic": 93,
+      "human-auditable": 87
     },
     "byReviewStatus": {
-      "agent-reviewed": 130,
-      "heuristic": 179,
+      "agent-reviewed": 143,
+      "heuristic": 166,
       "human-reviewed": 3
     },
     "byVerificationReadiness": {
-      "blocked": 34,
-      "needs-alignment": 31,
+      "blocked": 35,
+      "needs-alignment": 32,
       "needs-scenario": 8,
-      "ready-to-verify": 239
+      "ready-to-verify": 237
     }
   },
   "discoveryEngine": {
@@ -10665,7 +10796,7 @@
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "reviewApplication": {
-    "appliedUpdateCount": 47,
+    "appliedUpdateCount": 13,
     "appliedUpdates": [
       {
         "appliedFields": [
@@ -10678,8 +10809,23 @@
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-docs-specs-user-claim-discovery-spec-md-14",
-        "clusterId": "cluster-user-adapter-and-portability-deterministic-spec"
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-681",
+        "clusterId": "cluster-developer-agent-and-skill-workflow-deterministic-contract"
+      },
+      {
+        "appliedFields": [
+          "recommendedProof",
+          "verificationReadiness",
+          "evidenceStatus",
+          "reviewStatus",
+          "whyThisLayer",
+          "recommendedEvalSurface",
+          "nextAction",
+          "evidenceStatusReason",
+          "unresolvedQuestions"
+        ],
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-85",
+        "clusterId": "cluster-developer-agent-and-skill-workflow-deterministic-contract"
       },
       {
         "appliedFields": [
@@ -10692,8 +10838,8 @@
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-docs-contracts-live-run-invocation-md-193",
-        "clusterId": "cluster-developer-adapter-and-portability-deterministic-contract"
+        "claimId": "claim-docs-contracts-runner-readiness-md-140",
+        "clusterId": "cluster-developer-agent-and-skill-workflow-deterministic-contract"
       },
       {
         "appliedFields": [
@@ -10706,8 +10852,8 @@
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-docs-contracts-live-run-invocation-md-59",
-        "clusterId": "cluster-developer-adapter-and-portability-deterministic-contract"
+        "claimId": "claim-docs-contracts-runner-readiness-md-218",
+        "clusterId": "cluster-developer-agent-and-skill-workflow-deterministic-contract"
       },
       {
         "appliedFields": [
@@ -10720,8 +10866,8 @@
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-34",
-        "clusterId": "cluster-developer-adapter-and-portability-deterministic-contract"
+        "claimId": "claim-docs-contracts-runner-verification-md-12",
+        "clusterId": "cluster-developer-agent-and-skill-workflow-deterministic-contract"
       },
       {
         "appliedFields": [
@@ -10734,147 +10880,7 @@
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-42",
-        "clusterId": "cluster-developer-adapter-and-portability-deterministic-contract"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "nextAction",
-          "evidenceStatusReason",
-          "groupHints",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-258",
-        "clusterId": "cluster-developer-adapter-and-portability-deterministic-contract"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "nextAction",
-          "evidenceStatusReason",
-          "groupHints",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-runner-readiness-md-347",
-        "clusterId": "cluster-developer-adapter-and-portability-deterministic-contract"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-specs-maintainer-adapter-host-ownership-spec-md-18",
-        "clusterId": "cluster-developer-adapter-and-portability-deterministic-spec"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-377",
-        "clusterId": "cluster-developer-documentation-and-contracts-deterministic-contract"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "nextAction",
-          "evidenceStatusReason",
-          "groupHints",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-187",
-        "clusterId": "cluster-developer-documentation-and-contracts-deterministic-contract"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "nextAction",
-          "evidenceStatusReason",
-          "groupHints",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-253",
-        "clusterId": "cluster-developer-documentation-and-contracts-deterministic-contract"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "nextAction",
-          "evidenceStatusReason",
-          "groupHints",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-47",
-        "clusterId": "cluster-developer-documentation-and-contracts-deterministic-contract"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "nextAction",
-          "evidenceStatusReason",
-          "groupHints",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-573",
-        "clusterId": "cluster-developer-documentation-and-contracts-deterministic-contract"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "nextAction",
-          "evidenceStatusReason",
-          "groupHints",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-653",
-        "clusterId": "cluster-developer-documentation-and-contracts-deterministic-contract"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "nextAction",
-          "evidenceStatusReason",
-          "groupHints",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-live-run-invocation-batch-md-5",
+        "claimId": "claim-docs-contracts-runner-readiness-md-282",
         "clusterId": "cluster-developer-documentation-and-contracts-deterministic-contract"
       },
       {
@@ -10887,7 +10893,7 @@
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-docs-contracts-reporting-md-120",
+        "claimId": "claim-docs-contracts-runner-verification-md-24",
         "clusterId": "cluster-developer-documentation-and-contracts-deterministic-contract"
       },
       {
@@ -10901,8 +10907,8 @@
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-100",
-        "clusterId": "cluster-developer-packets-and-reporting-deterministic-contract"
+        "claimId": "claim-docs-contracts-runner-verification-md-68",
+        "clusterId": "cluster-developer-documentation-and-contracts-deterministic-contract"
       },
       {
         "appliedFields": [
@@ -10915,8 +10921,8 @@
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-97",
-        "clusterId": "cluster-developer-packets-and-reporting-deterministic-contract"
+        "claimId": "claim-docs-contracts-scenario-proposal-sources-md-235",
+        "clusterId": "cluster-developer-documentation-and-contracts-deterministic-contract"
       },
       {
         "appliedFields": [
@@ -10929,8 +10935,8 @@
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-docs-contracts-live-run-invocation-batch-md-77",
-        "clusterId": "cluster-developer-packets-and-reporting-deterministic-contract"
+        "claimId": "claim-docs-specs-maintainer-scenario-history-normalization-spec-md-18",
+        "clusterId": "cluster-developer-documentation-and-contracts-deterministic-spec"
       },
       {
         "appliedFields": [
@@ -10943,8 +10949,21 @@
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-docs-contracts-reporting-md-129",
-        "clusterId": "cluster-developer-packets-and-reporting-deterministic-contract"
+        "claimId": "claim-docs-contracts-optimization-md-136",
+        "clusterId": "cluster-developer-improvement-and-optimization-deterministic-contract"
+      },
+      {
+        "appliedFields": [
+          "recommendedProof",
+          "verificationReadiness",
+          "evidenceStatus",
+          "reviewStatus",
+          "nextAction",
+          "evidenceStatusReason",
+          "unresolvedQuestions"
+        ],
+        "claimId": "claim-docs-contracts-optimization-md-151",
+        "clusterId": "cluster-developer-improvement-and-optimization-deterministic-contract"
       },
       {
         "appliedFields": [
@@ -10957,384 +10976,13 @@
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-docs-contracts-reporting-md-48",
-        "clusterId": "cluster-developer-packets-and-reporting-deterministic-contract"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-scenario-proposal-sources-md-28",
-        "clusterId": "cluster-developer-packets-and-reporting-deterministic-contract"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "nextAction",
-          "evidenceStatusReason",
-          "groupHints",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-607",
-        "clusterId": "cluster-developer-packets-and-reporting-deterministic-contract"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-specs-maintainer-reporting-review-variants-spec-md-13",
-        "clusterId": "cluster-developer-packets-and-reporting-deterministic-spec"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-specs-maintainer-scenario-history-normalization-spec-md-14",
-        "clusterId": "cluster-developer-packets-and-reporting-deterministic-spec"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "nextAction",
-          "evidenceStatusReason",
-          "groupHints",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-13",
-        "clusterId": "cluster-developer-packets-and-reporting-deterministic-spec"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-627",
-        "clusterId": "cluster-developer-quality-gates-deterministic-contract"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-runner-readiness-md-29",
-        "clusterId": "cluster-developer-quality-gates-deterministic-contract"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-154",
-        "clusterId": "cluster-developer-quality-gates-deterministic-contract"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-188",
-        "clusterId": "cluster-developer-quality-gates-deterministic-contract"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-8",
-        "clusterId": "cluster-developer-quality-gates-deterministic-contract"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "nextAction",
-          "evidenceStatusReason",
-          "groupHints",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-scenario-history-md-238",
-        "clusterId": "cluster-developer-quality-gates-deterministic-contract"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-19",
-        "clusterId": "cluster-developer-quality-gates-deterministic-spec"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "recommendedEvalSurface",
-          "nextAction",
-          "evidenceStatusReason",
-          "groupHints",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-specs-maintainer-optimization-loop-spec-md-19",
-        "clusterId": "cluster-developer-quality-gates-deterministic-spec"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-specs-maintainer-claim-discovery-workflow-spec-md-19",
-        "clusterId": "cluster-developer-quality-gates-deterministic-spec"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "recommendedEvalSurface",
-          "nextAction",
-          "evidenceStatusReason",
-          "groupHints",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-specs-user-evaluation-spec-md-7",
-        "clusterId": "cluster-user-quality-gates-deterministic-spec"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "recommendedEvalSurface",
-          "nextAction",
-          "evidenceStatusReason",
-          "groupHints",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-201",
-        "clusterId": "cluster-developer-agent-and-skill-workflow-deterministic-contract"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "recommendedEvalSurface",
-          "nextAction",
-          "evidenceStatusReason",
-          "groupHints",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-21",
-        "clusterId": "cluster-developer-agent-and-skill-workflow-deterministic-contract"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "recommendedEvalSurface",
-          "nextAction",
-          "evidenceStatusReason",
-          "groupHints",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-39",
-        "clusterId": "cluster-developer-agent-and-skill-workflow-deterministic-contract"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "recommendedEvalSurface",
-          "nextAction",
-          "evidenceStatusReason",
-          "groupHints",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-591",
-        "clusterId": "cluster-developer-agent-and-skill-workflow-deterministic-contract"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "nextAction",
-          "evidenceStatusReason",
-          "groupHints",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-260",
-        "clusterId": "cluster-developer-agent-and-skill-workflow-deterministic-contract"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "nextAction",
-          "evidenceStatusReason",
-          "groupHints",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-356",
-        "clusterId": "cluster-developer-agent-and-skill-workflow-deterministic-contract"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "nextAction",
-          "evidenceStatusReason",
-          "groupHints",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-65",
-        "clusterId": "cluster-developer-agent-and-skill-workflow-deterministic-contract"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "nextAction",
-          "evidenceStatusReason",
-          "groupHints",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-578",
-        "clusterId": "cluster-developer-agent-and-skill-workflow-deterministic-contract"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "recommendedEvalSurface",
-          "nextAction",
-          "evidenceStatusReason",
-          "groupHints",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-skills-cautilus-skill-md-223",
-        "clusterId": "cluster-developer-agent-and-skill-workflow-deterministic-skill-doc"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "nextAction",
-          "evidenceStatusReason",
-          "groupHints",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-skills-cautilus-skill-md-22",
-        "clusterId": "cluster-developer-agent-and-skill-workflow-deterministic-skill-doc"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "recommendedEvalSurface",
-          "nextAction",
-          "evidenceStatusReason",
-          "groupHints",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-590",
-        "clusterId": "cluster-developer-claim-discovery-and-review-deterministic-contract"
+        "claimId": "claim-docs-contracts-optimization-md-34",
+        "clusterId": "cluster-developer-improvement-and-optimization-deterministic-contract"
       }
     ],
     "claimsPath": "/home/hwidong/codes/cautilus/.cautilus/claims/evidenced-typed-runners.json",
     "mergeDecisions": [],
-    "reviewResultPath": "/home/hwidong/codes/cautilus/.cautilus/claims/review-result-deterministic-ready-heuristic-2026-05-03.json",
+    "reviewResultPath": "/home/hwidong/codes/cautilus/.cautilus/claims/review-result-remaining-deterministic-claims-2026-05-03.json",
     "schemaVersion": "cautilus.claim_review_result.v1",
     "unresolvedQuestions": []
   },
