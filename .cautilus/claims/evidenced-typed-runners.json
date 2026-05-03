@@ -1,5 +1,5 @@
 {
-  "candidateCount": 311,
+  "candidateCount": 322,
   "claimCandidates": [
     {
       "claimAudience": "developer",
@@ -7582,6 +7582,99 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:543403c171f9e7b3ddfa9eba3d18f6552237e853c8b0d96792e24e5904eca4f7",
+      "claimId": "claim-docs-specs-maintainer-active-run-workspace-spec-md-3",
+      "claimSemanticGroup": "Documentation and contracts",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "cautilus-eval",
+        "dev/repo",
+        "linked-from:docs/specs/maintainer/index.spec.md",
+        "spec"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "Active runs keep multi-command workflows resumable without hiding workspace ownership.",
+          "line": 3,
+          "path": "docs/specs/maintainer/active-run-workspace.spec.md"
+        }
+      ],
+      "summary": "Active runs keep multi-command workflows resumable without hiding workspace ownership.",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:ab43cf6f8278e9091813e352f7290b635adabed605d9b91cd7ecf8a2c7dc4d63",
+      "claimId": "claim-docs-specs-maintainer-active-run-workspace-spec-md-13",
+      "claimSemanticGroup": "Packets and reporting",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "cautilus-eval",
+        "dev/repo",
+        "linked-from:docs/specs/maintainer/index.spec.md",
+        "spec"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "Cautilus can allocate and remember a per-run workspace for a workflow, but command artifacts own workflow metadata.",
+          "line": 13,
+          "path": "docs/specs/maintainer/active-run-workspace.spec.md"
+        }
+      ],
+      "summary": "Cautilus can allocate and remember a per-run workspace for a workflow, but command artifacts own workflow metadata.",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:5cebde607842447489b21603fed3a73eaf769f6caf9ed821ccb9e6761a33ee14",
+      "claimId": "claim-docs-specs-maintainer-active-run-workspace-spec-md-19",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "cautilus-eval",
+        "dev/repo",
+        "linked-from:docs/specs/maintainer/index.spec.md",
+        "spec"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "It should not be folded into binary/skill responsibility unless the claim is specifically about agent routing.",
+          "line": 19,
+          "path": "docs/specs/maintainer/active-run-workspace.spec.md"
+        }
+      ],
+      "summary": "It should not be folded into binary/skill responsibility unless the claim is specifically about agent routing.",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:05872058783c2b8112d2b150d673924593528fc22c3a0670d82f01f98a9d26c5",
       "claimId": "claim-docs-specs-maintainer-adapter-host-ownership-spec-md-13",
       "claimSemanticGroup": "Packets and reporting",
@@ -8001,6 +8094,66 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:5804a40ebbbdbeab88bc7f9cc104650d349270a7b425d95646f186050e070323",
+      "claimId": "claim-docs-specs-maintainer-live-invocation-runtime-spec-md-13",
+      "claimSemanticGroup": "Packets and reporting",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "human-auditable",
+        "linked-from:docs/specs/maintainer/index.spec.md",
+        "needs-alignment",
+        "spec"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Reconcile or cite the matching adapter, CLI, docs, and test surfaces before treating this as satisfied.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "Cautilus owns the generic request/result packet and loop boundary.",
+          "line": 13,
+          "path": "docs/specs/maintainer/live-invocation-runtime.spec.md"
+        }
+      ],
+      "summary": "Cautilus owns the generic request/result packet and loop boundary.",
+      "verificationReadiness": "needs-alignment",
+      "whyThisLayer": "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:ba82feedff3ca61e1a85ad5306240d7ad37fee03b2366e35d4537de49984661a",
+      "claimId": "claim-docs-specs-maintainer-live-invocation-runtime-spec-md-14",
+      "claimSemanticGroup": "Adapter and portability",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "human-auditable",
+        "linked-from:docs/specs/maintainer/index.spec.md",
+        "needs-alignment",
+        "spec"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Reconcile or cite the matching adapter, CLI, docs, and test surfaces before treating this as satisfied.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "The host-owned adapter still owns provider calls, backend flags, route layout, model choice, credentials, and product-specific response semantics.",
+          "line": 14,
+          "path": "docs/specs/maintainer/live-invocation-runtime.spec.md"
+        }
+      ],
+      "summary": "The host-owned adapter still owns provider calls, backend flags, route layout, model choice, credentials, and product-specific response semantics.",
+      "verificationReadiness": "needs-alignment",
+      "whyThisLayer": "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:152363b9e592e16a6b64063fc5b1b8685dd1397614fbd0ce7371681619737698",
       "claimId": "claim-docs-specs-maintainer-optimization-loop-spec-md-19",
       "claimSemanticGroup": "Quality gates",
@@ -8056,6 +8209,184 @@
       "summary": "The next proof should make sure `doctor` and `agent status` share runner-readiness drift logic rather than duplicating decisions.",
       "verificationReadiness": "needs-alignment",
       "whyThisLayer": "The claim says surfaces should agree, so proof is not honest until the mismatched surfaces are reconciled."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:fd93495633465840b803ea3172f89cd85ec3c4496c65c6ecb63437c2e223d2f7",
+      "claimId": "claim-docs-specs-maintainer-reporting-review-variants-spec-md-13",
+      "claimSemanticGroup": "Packets and reporting",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "deterministic",
+        "linked-from:docs/specs/maintainer/index.spec.md",
+        "spec"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "Cautilus should write machine-readable review packets first and render readable projections over the same data.",
+          "line": 13,
+          "path": "docs/specs/maintainer/reporting-review-variants.spec.md"
+        }
+      ],
+      "summary": "Cautilus should write machine-readable review packets first and render readable projections over the same data.",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:b5b3ec89571fddc50cd9b2250d6943417b8a34d8acf13809d02efae2c00a66f9",
+      "claimId": "claim-docs-specs-maintainer-reporting-review-variants-spec-md-14",
+      "claimSemanticGroup": "Claim discovery and review",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "human-auditable",
+        "linked-from:docs/specs/maintainer/index.spec.md",
+        "spec"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "Variant review should point both human and machine reviewers at the same durable artifacts.",
+          "line": 14,
+          "path": "docs/specs/maintainer/reporting-review-variants.spec.md"
+        }
+      ],
+      "summary": "Variant review should point both human and machine reviewers at the same durable artifacts.",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:06f0a17ea40009f4c5c37662ecec3cc99aaf314119474f0956f302b668b0c0ba",
+      "claimId": "claim-docs-specs-maintainer-reporting-review-variants-spec-md-19",
+      "claimSemanticGroup": "Packets and reporting",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "cautilus-eval",
+        "dev/repo",
+        "linked-from:docs/specs/maintainer/index.spec.md",
+        "spec"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "It should not claim behavior proof by itself; reports are views over evidence.",
+          "line": 19,
+          "path": "docs/specs/maintainer/reporting-review-variants.spec.md"
+        }
+      ],
+      "summary": "It should not claim behavior proof by itself; reports are views over evidence.",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:05018c4fe296c0f5384de58b41f266797904d84a5021a3a4445413a2a3343068",
+      "claimId": "claim-docs-specs-maintainer-scenario-history-normalization-spec-md-14",
+      "claimSemanticGroup": "Packets and reporting",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "deterministic",
+        "linked-from:docs/specs/maintainer/index.spec.md",
+        "spec"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add deterministic scenario command, packet, or render proof for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "Normalizers should produce inspectable proposal packets rather than hidden one-off shapers.",
+          "line": 14,
+          "path": "docs/specs/maintainer/scenario-history-normalization.spec.md"
+        }
+      ],
+      "summary": "Normalizers should produce inspectable proposal packets rather than hidden one-off shapers.",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim documents scenario command or proposal-packet behavior rather than asking for a new behavior scenario."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:0ce6bc7d7060f90d3be104ecf2788fc1f2b999ba4170c95ed28fa1577f6f84a9",
+      "claimId": "claim-docs-specs-maintainer-scenario-history-normalization-spec-md-18",
+      "claimSemanticGroup": "Documentation and contracts",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "deterministic",
+        "linked-from:docs/specs/maintainer/index.spec.md",
+        "spec"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add deterministic scenario command, packet, or render proof for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "This area should absorb `docs/contracts/scenario-history.md`, `docs/contracts/scenario-proposal-sources.md`, and scenario normalizer claims.",
+          "line": 18,
+          "path": "docs/specs/maintainer/scenario-history-normalization.spec.md"
+        }
+      ],
+      "summary": "This area should absorb `docs/contracts/scenario-history.md`, `docs/contracts/scenario-proposal-sources.md`, and scenario normalizer claims.",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim documents scenario command or proposal-packet behavior rather than asking for a new behavior scenario."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:be74efa96a832b58f44b5351149b65c3d43cb4d5c7a165a0802b1cb91f978272",
+      "claimId": "claim-docs-specs-maintainer-scenario-history-normalization-spec-md-19",
+      "claimSemanticGroup": "Improvement and optimization",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "cautilus-eval",
+        "dev/repo",
+        "linked-from:docs/specs/maintainer/index.spec.md",
+        "spec"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "It should stay separate from optimization unless the claim is specifically about budgeted behavior improvement.",
+          "line": 19,
+          "path": "docs/specs/maintainer/scenario-history-normalization.spec.md"
+        }
+      ],
+      "summary": "It should stay separate from optimization unless the claim is specifically about budgeted behavior improvement.",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
       "claimAudience": "user",
@@ -9614,43 +9945,43 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 229,
+      "developer": 240,
       "user": 82
     },
     "byClaimSemanticGroup": {
-      "Adapter and portability": 55,
-      "Agent and skill workflow": 74,
-      "Claim discovery and review": 22,
-      "Documentation and contracts": 73,
+      "Adapter and portability": 56,
+      "Agent and skill workflow": 75,
+      "Claim discovery and review": 23,
+      "Documentation and contracts": 75,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
-      "Improvement and optimization": 19,
-      "Packets and reporting": 36,
+      "Improvement and optimization": 20,
+      "Packets and reporting": 41,
       "Quality gates": 28,
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
       "satisfied": 14,
-      "unknown": 297
+      "unknown": 308
     },
     "byLifecycle": {
-      "new": 311
+      "new": 322
     },
     "byRecommendedProof": {
-      "cautilus-eval": 123,
-      "deterministic": 124,
-      "human-auditable": 64
+      "cautilus-eval": 128,
+      "deterministic": 127,
+      "human-auditable": 67
     },
     "byReviewStatus": {
       "agent-reviewed": 61,
-      "heuristic": 247,
+      "heuristic": 258,
       "human-reviewed": 3
     },
     "byVerificationReadiness": {
       "blocked": 13,
-      "needs-alignment": 28,
+      "needs-alignment": 30,
       "needs-scenario": 8,
-      "ready-to-verify": 262
+      "ready-to-verify": 271
     }
   },
   "discoveryMode": "deterministic-source-inventory",
@@ -9802,7 +10133,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "74b40f9016dfc9926d85fbd9d05a816c45be2dd5",
+  "gitCommit": "00f3889efd94da3ecdfd9bd4698fdb491797306f",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "reviewApplication": {
@@ -9824,9 +10155,9 @@
         "clusterId": "cluster-user-agent-and-skill-workflow-positioning-readme"
       }
     ],
-    "claimsPath": "/home/hwidong/.cache/tmp/cautilus-review-results-rQyDwj/applied-15.json",
+    "claimsPath": "/home/hwidong/.cache/tmp/cautilus-review-results-41fkCD/applied-15.json",
     "mergeDecisions": [],
-    "reviewResultPath": "/home/hwidong/.cache/tmp/cautilus-review-results-rQyDwj/review-result-positioning-boundary.json",
+    "reviewResultPath": "/home/hwidong/.cache/tmp/cautilus-review-results-41fkCD/review-result-positioning-boundary.json",
     "schemaVersion": "cautilus.claim_review_result.v1",
     "unresolvedQuestions": []
   },
@@ -9986,7 +10317,7 @@
     }
   ],
   "schemaVersion": "cautilus.claim_proof_plan.v1",
-  "sourceCount": 40,
+  "sourceCount": 44,
   "sourceGraph": [
     {
       "depth": 1,
@@ -10220,6 +10551,12 @@
       "depth": 2,
       "from": "docs/specs/maintainer/index.spec.md",
       "kind": "markdown-link",
+      "to": "docs/specs/maintainer/active-run-workspace.spec.md"
+    },
+    {
+      "depth": 2,
+      "from": "docs/specs/maintainer/index.spec.md",
+      "kind": "markdown-link",
       "to": "docs/specs/maintainer/adapter-host-ownership.spec.md"
     },
     {
@@ -10250,6 +10587,12 @@
       "depth": 2,
       "from": "docs/specs/maintainer/index.spec.md",
       "kind": "markdown-link",
+      "to": "docs/specs/maintainer/live-invocation-runtime.spec.md"
+    },
+    {
+      "depth": 2,
+      "from": "docs/specs/maintainer/index.spec.md",
+      "kind": "markdown-link",
       "to": "docs/specs/maintainer/optimization-loop.spec.md"
     },
     {
@@ -10257,6 +10600,18 @@
       "from": "docs/specs/maintainer/index.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/maintainer/readiness-runtime-status.spec.md"
+    },
+    {
+      "depth": 2,
+      "from": "docs/specs/maintainer/index.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/maintainer/reporting-review-variants.spec.md"
+    },
+    {
+      "depth": 2,
+      "from": "docs/specs/maintainer/index.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/maintainer/scenario-history-normalization.spec.md"
     },
     {
       "depth": 2,
@@ -10479,7 +10834,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:416ee503004ca7432821dd67866e056ef73253051b1b5698a0ae1886d89f3be9",
+      "contentHash": "sha256:882064b19bb1f53a7f5d0bdbe653b53c33f2ff4ca8186e056538ca7e2eff76a8",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "spec",
@@ -10609,6 +10964,16 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
+      "contentHash": "sha256:0b0345032c75bc47fa6941768283921230c487d97e83bf83f9d1d662821106fb",
+      "depth": 2,
+      "discoveredFrom": "docs/specs/maintainer/index.spec.md",
+      "kind": "spec",
+      "path": "docs/specs/maintainer/active-run-workspace.spec.md",
+      "status": "read"
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
       "contentHash": "sha256:9725d89e68240ef231b321a5c181a4d41f9bc393911c5620485fa4623438c42f",
       "depth": 2,
       "discoveredFrom": "docs/specs/maintainer/index.spec.md",
@@ -10659,6 +11024,16 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
+      "contentHash": "sha256:fa74f5a2c05ffc9a4b5bd884b2d85d6b28dac620a8d863944d3791159cab133f",
+      "depth": 2,
+      "discoveredFrom": "docs/specs/maintainer/index.spec.md",
+      "kind": "spec",
+      "path": "docs/specs/maintainer/live-invocation-runtime.spec.md",
+      "status": "read"
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
       "contentHash": "sha256:27a3f64efb4bf9a1801fbcd0f83ede708844714363ea50f393ee35dfa3da4598",
       "depth": 2,
       "discoveredFrom": "docs/specs/maintainer/index.spec.md",
@@ -10674,6 +11049,26 @@
       "discoveredFrom": "docs/specs/maintainer/index.spec.md",
       "kind": "spec",
       "path": "docs/specs/maintainer/readiness-runtime-status.spec.md",
+      "status": "read"
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "contentHash": "sha256:7622f5b6abc41037ec192e64583e99fedacfc5c08e48ca44d8499af3e81dd0a6",
+      "depth": 2,
+      "discoveredFrom": "docs/specs/maintainer/index.spec.md",
+      "kind": "spec",
+      "path": "docs/specs/maintainer/reporting-review-variants.spec.md",
+      "status": "read"
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "contentHash": "sha256:9d55c70725e76dd4d64268fa0f2e89c70ae4940be68bd6ed446ba6968781e996",
+      "depth": 2,
+      "discoveredFrom": "docs/specs/maintainer/index.spec.md",
+      "kind": "spec",
+      "path": "docs/specs/maintainer/scenario-history-normalization.spec.md",
       "status": "read"
     },
     {

@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 247
+          "unknown": 258
         },
         "byReviewStatus": {
-          "heuristic": 247
+          "heuristic": 258
         },
-        "count": 247,
+        "count": 258,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -43,14 +43,14 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 110
+          "unknown": 113
         },
         "byReviewStatus": {
           "agent-reviewed": 25,
-          "heuristic": 82,
+          "heuristic": 85,
           "human-reviewed": 3
         },
-        "count": 110,
+        "count": 113,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -64,13 +64,13 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 115
+          "unknown": 120
         },
         "byReviewStatus": {
           "agent-reviewed": 2,
-          "heuristic": 113
+          "heuristic": 118
         },
-        "count": 115,
+        "count": 120,
         "id": "agent-plan-cautilus-eval",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -103,13 +103,13 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 28
+          "unknown": 30
         },
         "byReviewStatus": {
           "agent-reviewed": 11,
-          "heuristic": 17
+          "heuristic": 19
         },
-        "count": 28,
+        "count": 30,
         "id": "human-align-surfaces",
         "recommendedActor": "human",
         "sampleClaimIds": [
@@ -123,12 +123,12 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 23
+          "unknown": 24
         },
         "byReviewStatus": {
-          "heuristic": 23
+          "heuristic": 24
         },
-        "count": 23,
+        "count": 24,
         "id": "human-confirm-or-decompose",
         "recommendedActor": "human",
         "sampleClaimIds": [
@@ -162,7 +162,7 @@
       }
     ]
   },
-  "candidateCount": 311,
+  "candidateCount": 322,
   "claimState": {
     "path": ".cautilus/claims/latest.json",
     "pathSource": "adapter",
@@ -179,43 +179,43 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 229,
+      "developer": 240,
       "user": 82
     },
     "byClaimSemanticGroup": {
-      "Adapter and portability": 55,
-      "Agent and skill workflow": 74,
-      "Claim discovery and review": 22,
-      "Documentation and contracts": 73,
+      "Adapter and portability": 56,
+      "Agent and skill workflow": 75,
+      "Claim discovery and review": 23,
+      "Documentation and contracts": 75,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
-      "Improvement and optimization": 19,
-      "Packets and reporting": 36,
+      "Improvement and optimization": 20,
+      "Packets and reporting": 41,
       "Quality gates": 28,
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
       "satisfied": 14,
-      "unknown": 297
+      "unknown": 308
     },
     "byLifecycle": {
-      "new": 311
+      "new": 322
     },
     "byRecommendedProof": {
-      "cautilus-eval": 123,
-      "deterministic": 124,
-      "human-auditable": 64
+      "cautilus-eval": 128,
+      "deterministic": 127,
+      "human-auditable": 67
     },
     "byReviewStatus": {
       "agent-reviewed": 61,
-      "heuristic": 247,
+      "heuristic": 258,
       "human-reviewed": 3
     },
     "byVerificationReadiness": {
       "blocked": 13,
-      "needs-alignment": 28,
+      "needs-alignment": 30,
       "needs-scenario": 8,
-      "ready-to-verify": 262
+      "ready-to-verify": 271
     }
   },
   "discoveryBoundary": {
@@ -651,24 +651,24 @@
       }
     ]
   },
-  "gitCommit": "74b40f9016dfc9926d85fbd9d05a816c45be2dd5",
+  "gitCommit": "00f3889efd94da3ecdfd9bd4698fdb491797306f",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "74b40f9016dfc9926d85fbd9d05a816c45be2dd5",
+    "currentGitCommit": "00f3889efd94da3ecdfd9bd4698fdb491797306f",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "74b40f9016dfc9926d85fbd9d05a816c45be2dd5",
+    "packetGitCommit": "00f3889efd94da3ecdfd9bd4698fdb491797306f",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
   "gitStateSnapshotNotice": "gitState is computed when this status packet is generated; rerun claim show for live checkout state.",
   "inputPath": ".cautilus/claims/evidenced-typed-runners.json",
   "inputSchemaVersion": "cautilus.claim_proof_plan.v1",
-  "linkedMarkdownSourceCount": 38,
+  "linkedMarkdownSourceCount": 42,
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "recommendedNextActions": [
     {
@@ -685,8 +685,8 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 222,
-    "needsAlignment": 28,
+    "heuristicClaimsReadyForReview": 231,
+    "needsAlignment": 30,
     "needsScenario": 8
   },
   "sampleClaims": [
@@ -810,6 +810,6 @@
     }
   ],
   "schemaVersion": "cautilus.claim_status_summary.v1",
-  "sourceCount": 40,
+  "sourceCount": 44,
   "sourceRoot": "."
 }
