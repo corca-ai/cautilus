@@ -651,20 +651,21 @@
       }
     ]
   },
-  "gitCommit": "3c025128aff5f189330ecc2d5e08d30cba7c08d2",
+  "gitCommit": "74b40f9016dfc9926d85fbd9d05a816c45be2dd5",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "3c025128aff5f189330ecc2d5e08d30cba7c08d2",
+    "currentGitCommit": "74b40f9016dfc9926d85fbd9d05a816c45be2dd5",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "3c025128aff5f189330ecc2d5e08d30cba7c08d2",
-    "recommendedAction": "The claim packet commit matches the current checkout.",
+    "packetGitCommit": "74b40f9016dfc9926d85fbd9d05a816c45be2dd5",
+    "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
+  "gitStateSnapshotNotice": "gitState is computed when this status packet is generated; rerun claim show for live checkout state.",
   "inputPath": ".cautilus/claims/evidenced-typed-runners.json",
   "inputSchemaVersion": "cautilus.claim_proof_plan.v1",
   "linkedMarkdownSourceCount": 38,

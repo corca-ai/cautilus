@@ -9,9 +9,10 @@ Use the JSON packets as the audit source; use this report to decide what to insp
 - Status packet: .cautilus/claims/status-summary.json
 - Candidate count: 311
 - Source count: 40
-- Claims git commit: 3c025128aff5f189330ecc2d5e08d30cba7c08d2
-- Git state: fresh; stale=no
-- Git recommendation: The claim packet commit matches the current checkout.
+- Packet source commit: 74b40f9016dfc9926d85fbd9d05a816c45be2dd5
+- Snapshot notice: gitState is computed when this status packet is generated; rerun claim show for live checkout state.
+- Git state snapshot: fresh; stale=no
+- Snapshot recommendation: The claim packet commit matches the inspected checkout.
 
 ## Scoreboard
 
@@ -33,6 +34,7 @@ Review readiness: heuristicClaimsReadyForReview: 222, needsAlignment: 28, needsS
 - User claims mapped to U1-U7: 82
 - User claims not mapped to U1-U7: 0
 - User mappings recommended for semantic sampling: 58
+- Maintainer claims mapped to M1-M7: M1: 29, M2: 89, M3: 72, M4: 12, M5: 7, M6: 9, M7: 11
 - All raw claims by disposition: mapped-to-maintainer-canonical: 229, mapped-to-user-canonical: 82
 - Mapping confidence: high: 48, low: 73, medium: 190
 
@@ -45,6 +47,28 @@ Review readiness: heuristicClaimsReadyForReview: 222, needsAlignment: 28, needsS
 | U5 | Product And Host Ownership | 8 | satisfied: 2, unknown: 6 | agent-reviewed: 4, heuristic: 4 |
 | U6 | Reviewable Artifacts | 4 | unknown: 4 | heuristic: 4 |
 | U7 | Proof Debt | 6 | unknown: 6 | agent-reviewed: 1, heuristic: 5 |
+
+| Maintainer claim | Title | Raw claims | Proof | Evidence | Review |
+| --- | --- | --- | --- | --- | --- |
+| M1 | Claim Discovery Workflow | 29 | cautilus-eval: 3, deterministic: 15, human-auditable: 11 | satisfied: 1, unknown: 28 | agent-reviewed: 1, heuristic: 28 |
+| M2 | Binary And Skill Boundary | 89 | cautilus-eval: 41, deterministic: 42, human-auditable: 6 | satisfied: 4, unknown: 85 | agent-reviewed: 6, heuristic: 83 |
+| M3 | Adapter And Host Ownership | 72 | cautilus-eval: 40, deterministic: 17, human-auditable: 15 | unknown: 72 | agent-reviewed: 10, heuristic: 61, human-reviewed: 1 |
+| M4 | Evaluation Surfaces And Runners | 12 | cautilus-eval: 10, deterministic: 1, human-auditable: 1 | unknown: 12 | agent-reviewed: 2, heuristic: 10 |
+| M5 | Evidence State And Review Artifacts | 7 | deterministic: 3, human-auditable: 4 | unknown: 7 | agent-reviewed: 2, heuristic: 5 |
+| M6 | Optimization Loop | 9 | cautilus-eval: 5, deterministic: 3, human-auditable: 1 | unknown: 9 | heuristic: 9 |
+| M7 | Readiness And Runtime Status | 11 | cautilus-eval: 2, deterministic: 5, human-auditable: 4 | unknown: 11 | agent-reviewed: 3, heuristic: 7, human-reviewed: 1 |
+
+Maintainer semantic sampling queue:
+
+| Maintainer claim | Title | Sample raw claims |
+| --- | --- | --- |
+| M1 | Claim Discovery Workflow | claim-docs-contracts-adapter-contract-md-472 (low), claim-docs-contracts-adapter-contract-md-535 (low), claim-docs-gepa-md-15 (medium), claim-docs-master-plan-md-76 (medium) |
+| M2 | Binary And Skill Boundary | claim-agents-md-61 (medium), claim-agents-md-123 (low), claim-docs-contracts-adapter-contract-md-218 (medium), claim-docs-contracts-adapter-contract-md-276 (medium) |
+| M3 | Adapter And Host Ownership | claim-agents-md-26 (low), claim-docs-contracts-adapter-contract-md-3 (medium), claim-docs-contracts-adapter-contract-md-208 (medium), claim-docs-contracts-adapter-contract-md-220 (medium) |
+| M4 | Evaluation Surfaces And Runners | claim-agents-md-12 (low), claim-agents-md-29 (medium), claim-docs-contracts-claim-discovery-workflow-md-520 (medium), claim-docs-contracts-runner-readiness-md-45 (medium) |
+| M5 | Evidence State And Review Artifacts | claim-agents-md-73 (low), claim-docs-contracts-active-run-md-212 (medium), claim-docs-contracts-claim-discovery-workflow-md-181 (medium), claim-docs-contracts-claim-discovery-workflow-md-325 (medium) |
+| M6 | Optimization Loop | claim-docs-contracts-reporting-md-150 (low), claim-docs-contracts-runner-readiness-md-37 (medium), claim-docs-contracts-runner-readiness-md-147 (medium), claim-docs-contracts-scenario-history-md-3 (low) |
+| M7 | Readiness And Runtime Status | claim-agents-md-79 (medium), claim-docs-contracts-claim-discovery-workflow-md-96 (medium), claim-docs-contracts-claim-discovery-workflow-md-320 (medium), claim-docs-contracts-live-run-invocation-md-12 (medium) |
 
 Semantic sampling recommended for 263 raw claim(s): claim-agents-md-12, claim-agents-md-26, claim-agents-md-29, claim-agents-md-61, claim-agents-md-73, claim-agents-md-79, claim-agents-md-123, claim-readme-md-3, ...
 
@@ -249,10 +273,7 @@ Latest zero-plan expectation: Zero eval plans can be expected when reviewed eval
 | .cautilus/claims/refresh-plan.json | changes-detected | 36 | 132 | 160 |
 
 Latest refresh summary: The saved claim map was made from an older checkout; this plan identifies claims whose source files changed and does not update the saved claim map yet.
-Latest changed claim sources: skills/cautilus/SKILL.md: 11
-- Update the saved claim map before review or eval planning: Run claim discovery to write a fresh claim packet, then use claim show to inspect the updated status.
-- Inspect which files and claims changed: Use this refresh plan to focus review on changed sources before launching any reviewer or eval workflow.
-- Stop after recording the refresh plan: Choose this if the coordinator only wanted to make the stale state explicit for a later session.
+Latest refresh plan is historical for this status packet; its next actions are not the current review queue.
 
 ## Discovery Boundary
 

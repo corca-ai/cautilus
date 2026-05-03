@@ -7,7 +7,7 @@ Source excerpts are included for local judgment; source refs are trace data, not
 ## Packet Summary
 
 - Claims packet: .cautilus/claims/evidenced-typed-runners.json
-- Git commit in packet: 3c025128aff5f189330ecc2d5e08d30cba7c08d2
+- Git commit in packet: 74b40f9016dfc9926d85fbd9d05a816c45be2dd5
 - Candidate count: 311
 - Source count: 40
 - User claims: 82

@@ -9802,7 +9802,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "3c025128aff5f189330ecc2d5e08d30cba7c08d2",
+  "gitCommit": "74b40f9016dfc9926d85fbd9d05a816c45be2dd5",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "reviewApplication": {
@@ -9824,9 +9824,9 @@
         "clusterId": "cluster-user-agent-and-skill-workflow-positioning-readme"
       }
     ],
-    "claimsPath": "/home/hwidong/.cache/tmp/cautilus-review-results-r722bO/applied-15.json",
+    "claimsPath": "/home/hwidong/.cache/tmp/cautilus-review-results-rQyDwj/applied-15.json",
     "mergeDecisions": [],
-    "reviewResultPath": "/home/hwidong/.cache/tmp/cautilus-review-results-r722bO/review-result-positioning-boundary.json",
+    "reviewResultPath": "/home/hwidong/.cache/tmp/cautilus-review-results-rQyDwj/review-result-positioning-boundary.json",
     "schemaVersion": "cautilus.claim_review_result.v1",
     "unresolvedQuestions": []
   },
@@ -10499,7 +10499,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:f2185c5bb2120af77f7aa591c54566adb30c83c9ec4f55412b47331ef729f56c",
+      "contentHash": "sha256:36c7f76ac3610a6a358fbf6d75b62610b87cfabe597f50ecdf6c47f880d7654d",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "spec",
