@@ -1,0 +1,108 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-current-eval-surface-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-03T23:15:51+09:00",
+    "evidencePolicy": "Only mark user-facing evaluation spec claims satisfied when current checked-in eval fixtures, host-owned adapters, runner wrappers, and eval packets directly prove the bounded Cautilus eval surface. Do not treat this as proof of every consumer adapter, arbitrary service behavior, Claude parity, or model quality."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-current-eval-surfaces-2026-05-03",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-specs-user-evaluation-spec-md-7",
+          "claimFingerprint": "sha256:acdb5102c491f925e41c367a64de268d5f6e70d89eeac7d7ece7289ba3dddd58",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/repo",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by current dev/repo, dev/skill, app/chat, and app/prompt eval dogfood evidence: the product evaluated behavior through explicit fixtures and repo-owned adapter runners, including live Codex runs where deterministic checks alone would not explain the agent or app response.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-current-eval-surfaces-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:65f0402fd5d3b383211bfca5a87fc644b211b917c834875a76e10a3061608e22",
+              "supportsClaimIds": [
+                "claim-docs-specs-user-evaluation-spec-md-7"
+              ]
+            }
+          ],
+          "nextAction": "Keep this covered by current eval-surface dogfood when eval presets, adapter ownership, proof-class metadata, or app/dev fixture translation changes.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-specs-user-evaluation-spec-md-11",
+          "claimFingerprint": "sha256:637979c650b8f0f05b67e9dd815c274545862bfcbc4db451db6ee3f61ee0153c",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/skill",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the current dev/repo instruction-surface dogfood plus the existing current dev/skill dogfood bundle. Together they cover development-facing agent workflows, repo contracts, tools, and skill execution at the checked-in Cautilus product surface.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-current-eval-surfaces-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:65f0402fd5d3b383211bfca5a87fc644b211b917c834875a76e10a3061608e22",
+              "supportsClaimIds": [
+                "claim-docs-specs-user-evaluation-spec-md-11"
+              ]
+            }
+          ],
+          "nextAction": "Keep dev/repo and dev/skill dogfood separate so one surface does not overclaim the other.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-specs-user-evaluation-spec-md-13",
+          "claimFingerprint": "sha256:286c9ec9683a6a69e04c559a78286af88588719200056db06583b3f2d475e06e",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/repo",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the checked-in dev/repo, app/chat, and app/prompt fixtures plus their eval packets. Each fixture declares a surface and preset, and the resulting packets preserve the target surface/proof metadata.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-current-eval-surfaces-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:65f0402fd5d3b383211bfca5a87fc644b211b917c834875a76e10a3061608e22",
+              "supportsClaimIds": [
+                "claim-docs-specs-user-evaluation-spec-md-13"
+              ]
+            }
+          ],
+          "nextAction": "Keep fixture schema and proof metadata checks aligned when new eval presets are added.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-specs-user-evaluation-spec-md-14",
+          "claimFingerprint": "sha256:db8d7c50e24066f8e6a1b7e2c3c536e3e09c4a6d2fe18e870b75b4bead176005",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "human-auditable",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified at the checked-in product boundary by adapter-owned YAML files, fixtures, and runner wrappers: Cautilus invokes the adapter-provided command templates while the host repo owns prompt fixtures, backend selection, runner wrapper, and acceptance policy.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-current-eval-surfaces-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:65f0402fd5d3b383211bfca5a87fc644b211b917c834875a76e10a3061608e22",
+              "supportsClaimIds": [
+                "claim-docs-specs-user-evaluation-spec-md-14"
+              ]
+            }
+          ],
+          "nextAction": "When adding consumer adapters, keep runner, prompt, credential, and acceptance ownership in adapter-owned files rather than embedding it in the Cautilus binary.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

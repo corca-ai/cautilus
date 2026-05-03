@@ -3265,9 +3265,19 @@
       "claimFingerprint": "sha256:acdb5102c491f925e41c367a64de268d5f6e70d89eeac7d7ece7289ba3dddd58",
       "claimId": "claim-docs-specs-user-evaluation-spec-md-7",
       "claimSemanticGroup": "Quality gates",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "Reviewed as behavior or skill-orchestration proof that should be checked through a Cautilus eval/audit route rather than deterministic code inspection alone.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:65f0402fd5d3b383211bfca5a87fc644b211b917c834875a76e10a3061608e22",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-current-eval-surfaces-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-specs-user-evaluation-spec-md-7"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by current dev/repo, dev/skill, app/chat, and app/prompt eval dogfood evidence: the product evaluated behavior through explicit fixtures and repo-owned adapter runners, including live Codex runs where deterministic checks alone would not explain the agent or app response.",
       "groupHints": [
         "audience:user",
         "cautilus-eval",
@@ -3275,7 +3285,7 @@
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Create or attach a checked Cautilus eval route that demonstrates behavior ordinary deterministic tests cannot fully explain while the repo controls the runner.",
+      "nextAction": "Keep this covered by current eval-surface dogfood when eval presets, adapter ownership, proof-class metadata, or app/dev fixture translation changes.",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
@@ -3297,9 +3307,19 @@
       "claimFingerprint": "sha256:637979c650b8f0f05b67e9dd815c274545862bfcbc4db451db6ee3f61ee0153c",
       "claimId": "claim-docs-specs-user-evaluation-spec-md-11",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "The review input includes no verified evidence refs. The source page has a help-text check for advertised presets, but no direct verified evidence for concrete development-facing behavior.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:65f0402fd5d3b383211bfca5a87fc644b211b917c834875a76e10a3061608e22",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-current-eval-surfaces-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-specs-user-evaluation-spec-md-11"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by the current dev/repo instruction-surface dogfood plus the existing current dev/skill dogfood bundle. Together they cover development-facing agent workflows, repo contracts, tools, and skill execution at the checked-in Cautilus product surface.",
       "groupHints": [
         "audience:user",
         "cautilus-eval",
@@ -3308,7 +3328,7 @@
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Split the development-facing support promise into concrete dev/repo and dev/skill scenarios, then create fixtures that show Cautilus can evaluate an agent workflow or skill behavior through a repo-owned runner.",
+      "nextAction": "Keep dev/repo and dev/skill dogfood separate so one surface does not overclaim the other.",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
@@ -3320,11 +3340,8 @@
         }
       ],
       "summary": "Cautilus supports development-facing behavior, such as agent workflows, repo contracts, tools, and skills.",
-      "unresolvedQuestions": [
-        "Should the user-facing promise require both dev/repo and dev/skill fixture evidence, or is one representative development-facing scenario enough?",
-        "Which development-facing example should be canonical for users: repo contract obedience, tool behavior, or skill-trigger behavior?"
-      ],
-      "verificationReadiness": "needs-scenario",
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names development-facing behavior that can include agent workflows, repo contracts, tools, and skills. Cautilus eval is the right product layer, but the current sentence is too broad to be ready as one dev/skill fixture."
     },
     {
@@ -3369,8 +3386,19 @@
       "claimFingerprint": "sha256:286c9ec9683a6a69e04c559a78286af88588719200056db06583b3f2d475e06e",
       "claimId": "claim-docs-specs-user-evaluation-spec-md-13",
       "claimSemanticGroup": "Quality gates",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:65f0402fd5d3b383211bfca5a87fc644b211b917c834875a76e10a3061608e22",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-current-eval-surfaces-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-specs-user-evaluation-spec-md-13"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by the checked-in dev/repo, app/chat, and app/prompt fixtures plus their eval packets. Each fixture declares a surface and preset, and the resulting packets preserve the target surface/proof metadata.",
       "groupHints": [
         "audience:user",
         "cautilus-eval",
@@ -3379,10 +3407,10 @@
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
+      "nextAction": "Keep fixture schema and proof metadata checks aligned when new eval presets are added.",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "A fixture declares the evaluated surface and preset so the reader can tell what kind of behavior is under test.",
@@ -3391,6 +3419,7 @@
         }
       ],
       "summary": "A fixture declares the evaluated surface and preset so the reader can tell what kind of behavior is under test.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
@@ -3400,9 +3429,19 @@
       "claimFingerprint": "sha256:db8d7c50e24066f8e6a1b7e2c3c536e3e09c4a6d2fe18e870b75b4bead176005",
       "claimId": "claim-docs-specs-user-evaluation-spec-md-14",
       "claimSemanticGroup": "Adapter and portability",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "The review input includes only the user-facing spec excerpt and no direct contract audit, command-surface evidence, or non-ownership proof for prompts, credentials, runners, and policy.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:65f0402fd5d3b383211bfca5a87fc644b211b917c834875a76e10a3061608e22",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-current-eval-surfaces-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-specs-user-evaluation-spec-md-14"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified at the checked-in product boundary by adapter-owned YAML files, fixtures, and runner wrappers: Cautilus invokes the adapter-provided command templates while the host repo owns prompt fixtures, backend selection, runner wrapper, and acceptance policy.",
       "groupHints": [
         "app/prompt",
         "audience:user",
@@ -3411,7 +3450,7 @@
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Perform a human-auditable boundary review of the adapter contract, eval docs, and install/eval command behavior, then attach deterministic supporting refs for any CLI paths that prove Cautilus only invokes host-owned runners rather than owning prompts, credentials, or policy.",
+      "nextAction": "When adding consumer adapters, keep runner, prompt, credential, and acceptance ownership in adapter-owned files rather than embedding it in the Cautilus binary.",
       "recommendedProof": "human-auditable",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -3422,10 +3461,7 @@
         }
       ],
       "summary": "The host repo owns prompts, models, credentials, runners, and acceptance policy.",
-      "unresolvedQuestions": [
-        "Which contract document is the source of truth for the host-owned prompt, credential, runner, and policy boundary?",
-        "Should a deterministic non-ownership smoke test be added as supporting evidence after the human-auditable contract review?"
-      ],
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim is a product-boundary and ownership promise: the host repo, not Cautilus, owns prompts, models, credentials, runners, and acceptance policy. It should be verified by reading the adapter contract, docs, and command behavior boundaries, with deterministic tests as supporting evidence where available."
     },
@@ -11209,8 +11245,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 113,
-      "unknown": 209
+      "satisfied": 117,
+      "unknown": 205
     },
     "byLifecycle": {
       "new": 322
@@ -11221,14 +11257,14 @@
       "human-auditable": 92
     },
     "byReviewStatus": {
-      "agent-reviewed": 171,
-      "heuristic": 151
+      "agent-reviewed": 172,
+      "heuristic": 150
     },
     "byVerificationReadiness": {
       "blocked": 37,
       "needs-alignment": 34,
-      "needs-scenario": 11,
-      "ready-to-verify": 240
+      "needs-scenario": 10,
+      "ready-to-verify": 241
     }
   },
   "discoveryEngine": {

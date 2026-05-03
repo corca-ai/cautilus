@@ -1,0 +1,184 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-current-eval-surfaces-2026-05-03",
+  "createdForClaimIds": [
+    "claim-docs-specs-user-evaluation-spec-md-7",
+    "claim-docs-specs-user-evaluation-spec-md-11",
+    "claim-docs-specs-user-evaluation-spec-md-13",
+    "claim-docs-specs-user-evaluation-spec-md-14"
+  ],
+  "repoCommit": "3e4cea8eaebd53ea813c3424e2bb6834b53cb16c",
+  "summary": "Current eval-surface dogfood passed through the public eval-test product path for dev/repo, app/chat, and app/prompt. Together with the already recorded dev/skill dogfood bundle, this supports only the bounded user-facing evaluation claims that are directly covered by dev/repo, dev/skill, app/chat, and app/prompt proof. It does not satisfy the broader service-response subclaim.",
+  "evidenceScope": {
+    "targetSurface": "Cautilus eval user-facing development and app evaluation surfaces",
+    "claimBoundary": "Only the current user-facing evaluation spec claims whose wording is directly covered by checked-in dev/repo, dev/skill, app/chat, and app/prompt eval evidence are marked satisfied.",
+    "notClaimed": [
+      "Every consumer repo has honest app or product-runner proof configured",
+      "Every possible service-response integration is covered beyond the checked-in app/chat and app/prompt fixtures",
+      "Fixture smoke is equivalent to live product behavior proof",
+      "Claude conversational parity for the current app/chat and app/prompt runs",
+      "Model output quality beyond the bounded fixture expectations",
+      "Optimization or before/after improvement behavior"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "./bin/cautilus eval test --repo-root . --adapter-name self-dogfood-eval --runtime codex --output-dir ./artifacts/self-dogfood/eval-codex-current/latest",
+      "exitCode": 0,
+      "reason": "The checked-in dev/repo adapter ran the instruction-surface fixture through the public eval-test path with a live Codex backend and returned accept-now."
+    },
+    {
+      "command": "./bin/cautilus eval test --repo-root . --adapter-name self-dogfood-app-chat --runtime fixture --output-dir ./artifacts/self-dogfood/app-chat-fixture-current/latest",
+      "exitCode": 0,
+      "reason": "The checked-in app/chat adapter ran the onboarding greeting fixture through the public eval-test path with adapter-owned fixture results and returned accept-now."
+    },
+    {
+      "command": "./bin/cautilus eval test --repo-root . --adapter-name self-dogfood-app-chat --runtime codex --output-dir ./artifacts/self-dogfood/app-chat-codex-current/latest",
+      "exitCode": 0,
+      "reason": "The checked-in app/chat adapter ran the same fixture through the public eval-test path with a live Codex backend and returned accept-now."
+    },
+    {
+      "command": "./bin/cautilus eval test --repo-root . --adapter-name self-dogfood-app-prompt --runtime fixture --output-dir ./artifacts/self-dogfood/app-prompt-fixture-current/latest",
+      "exitCode": 0,
+      "reason": "The checked-in app/prompt adapter ran the tagline fixture through the public eval-test path with adapter-owned fixture results and returned accept-now."
+    },
+    {
+      "command": "./bin/cautilus eval test --repo-root . --adapter-name self-dogfood-app-prompt --runtime codex --output-dir ./artifacts/self-dogfood/app-prompt-codex-current/latest",
+      "exitCode": 0,
+      "reason": "The checked-in app/prompt adapter ran the same fixture through the public eval-test path with a live Codex backend and returned accept-now."
+    }
+  ],
+  "packetEvidence": [
+    {
+      "path": "artifacts/self-dogfood/eval-codex-current/latest/eval-summary.json",
+      "kind": "dev-repo-eval-summary",
+      "contentHash": "sha256:1544f1e946fc196803353809ead7b1f7e5ecbca46c5fb2b034f29b5d562a87c8",
+      "schemaVersion": "cautilus.evaluation_summary.v1",
+      "recommendation": "accept-now",
+      "proof": {
+        "runtime": "codex",
+        "proofClass": "declared-eval-runner",
+        "targetSurface": "dev/repo"
+      }
+    },
+    {
+      "path": "artifacts/self-dogfood/eval-codex-current/latest/eval-observed.json",
+      "kind": "dev-repo-eval-observed",
+      "contentHash": "sha256:c57dd0a2735db6c7bcec1a06a763fb0dddf3e3bae4c3bac9ccb24528ff5bc851",
+      "schemaVersion": "cautilus.evaluation_observed.v1",
+      "proof": {
+        "runtime": "codex",
+        "proofClass": "declared-eval-runner",
+        "targetSurface": "dev/repo"
+      }
+    },
+    {
+      "path": "artifacts/self-dogfood/app-chat-fixture-current/latest/eval-summary.json",
+      "kind": "app-chat-fixture-eval-summary",
+      "contentHash": "sha256:13dd6d83cf8c6e3d9fb1e2fb13607c407f1d8f0ff7f86b81412455f1a1b1c2bf",
+      "schemaVersion": "cautilus.app_chat_evaluation_summary.v1",
+      "recommendation": "accept-now",
+      "proof": {
+        "runtime": "fixture",
+        "proofClass": "fixture-smoke",
+        "targetSurface": "app/chat"
+      }
+    },
+    {
+      "path": "artifacts/self-dogfood/app-chat-codex-current/latest/eval-summary.json",
+      "kind": "app-chat-codex-eval-summary",
+      "contentHash": "sha256:731df23c4b1a3acb6c43d07f8b7e3edcaa4fd6d2c30a4f45021915841e0d9e72",
+      "schemaVersion": "cautilus.app_chat_evaluation_summary.v1",
+      "recommendation": "accept-now",
+      "proof": {
+        "runtime": "codex",
+        "proofClass": "declared-eval-runner",
+        "targetSurface": "app/chat"
+      }
+    },
+    {
+      "path": "artifacts/self-dogfood/app-prompt-fixture-current/latest/eval-summary.json",
+      "kind": "app-prompt-fixture-eval-summary",
+      "contentHash": "sha256:5e6399fb5a99be6da3686427357ad77fd2fb5f5ed293d0cbde37da4c742791de",
+      "schemaVersion": "cautilus.app_prompt_evaluation_summary.v1",
+      "recommendation": "accept-now",
+      "proof": {
+        "runtime": "fixture",
+        "proofClass": "fixture-smoke",
+        "targetSurface": "app/prompt"
+      }
+    },
+    {
+      "path": "artifacts/self-dogfood/app-prompt-codex-current/latest/eval-summary.json",
+      "kind": "app-prompt-codex-eval-summary",
+      "contentHash": "sha256:58971e4d0624005c75875756ec067db934218a1aac7665e8fd56216c3362b19b",
+      "schemaVersion": "cautilus.app_prompt_evaluation_summary.v1",
+      "recommendation": "accept-now",
+      "proof": {
+        "runtime": "codex",
+        "proofClass": "declared-eval-runner",
+        "targetSurface": "app/prompt"
+      }
+    }
+  ],
+  "relatedEvidence": [
+    {
+      "path": ".cautilus/claims/evidence-current-dev-skill-dogfood-2026-05-03.json",
+      "kind": "dev-skill-evidence-bundle",
+      "contentHash": "sha256:47723ade9559d1b59e8b69afe363de5488bccf59cb1a306cbce99cda245b587e",
+      "reason": "Provides the current dev/skill half of the development-facing evaluation surface."
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "docs/specs/user/evaluation.spec.md",
+      "kind": "user-facing-evaluation-spec",
+      "contentHash": "sha256:3dd549979b6b0313cf3dfee0f314cd67e67fba122de0295aac248d2e69629df0"
+    },
+    {
+      "path": "fixtures/eval/dev/repo/checked-in-agents-routing.fixture.json",
+      "kind": "dev-repo-eval-fixture",
+      "contentHash": "sha256:d36d8b8a5c910a5164fd2bd2b8a794b48f4520c469d3bc1e4a3318e041f50371"
+    },
+    {
+      "path": "fixtures/eval/app/chat/cautilus-onboarding-greeting.fixture.json",
+      "kind": "app-chat-eval-fixture",
+      "contentHash": "sha256:29b58bc3177170750ab36dbda7483c757c181fd7dc138a3ae8ad69983c25416b"
+    },
+    {
+      "path": "fixtures/eval/app/prompt/cautilus-tagline.fixture.json",
+      "kind": "app-prompt-eval-fixture",
+      "contentHash": "sha256:820b24ca08962673d8bcf761ff34306b6868dc565929938872d1631add1c6fc2"
+    },
+    {
+      "path": ".agents/cautilus-adapters/self-dogfood-eval.yaml",
+      "kind": "host-owned-dev-repo-adapter",
+      "contentHash": "sha256:d37a356f6f3475cf7daf96c95b7f1b1908d3e38b3389aaf3433b77cd5851f5a6"
+    },
+    {
+      "path": ".agents/cautilus-adapters/self-dogfood-app-chat.yaml",
+      "kind": "host-owned-app-chat-adapter",
+      "contentHash": "sha256:137dc0dfc0f19c23b68475e79ad7911caae37aab39f1a7d1e89999777861ffa5"
+    },
+    {
+      "path": ".agents/cautilus-adapters/self-dogfood-app-prompt.yaml",
+      "kind": "host-owned-app-prompt-adapter",
+      "contentHash": "sha256:e8c15cedfe8786bd3a37dc81abe8b19355ab0ebaf49e27a8146aa659c32e14c9"
+    },
+    {
+      "path": "scripts/run-self-dogfood-eval.mjs",
+      "kind": "dev-repo-runner-wrapper",
+      "contentHash": "sha256:7aa44e0f494d06e4c685d0a6f57b2699f998ddd95f277fe9d081974fec168368"
+    },
+    {
+      "path": "scripts/agent-runtime/run-app-eval.mjs",
+      "kind": "app-runner-wrapper",
+      "contentHash": "sha256:1fb2aea64050afa7f0e55f966e8515e1ab6f9d57c8e22c57ac32e50c37ca807c"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The current checked-in adapters, fixtures, runner wrappers, and eval packets show that Cautilus eval handles repo-controlled dev/repo, dev/skill, app/chat, and app/prompt behavior surfaces through explicit fixtures and reopenable packets."
+  }
+}

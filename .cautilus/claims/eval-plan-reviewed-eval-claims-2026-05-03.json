@@ -65,68 +65,6 @@
       ]
     },
     {
-      "claimFingerprint": "sha256:acdb5102c491f925e41c367a64de268d5f6e70d89eeac7d7ece7289ba3dddd58",
-      "claimId": "claim-docs-specs-user-evaluation-spec-md-7",
-      "draftIntent": "Verify that Cautilus evaluates behavior that ordinary deterministic tests cannot fully explain, while keeping the repo in control of the runtime that produces behavior.",
-      "evidenceStatus": "unknown",
-      "fixtureAuthoringGuidance": {
-        "evaluationInputSchema": "cautilus.evaluation_input.v1",
-        "expectedShape": "case-level expected files, commands, or routing evidence owned by the repo runner",
-        "fixtureOwner": "host-repo",
-        "minimumCaseFields": [
-          "caseId",
-          "prompt"
-        ],
-        "minimumSuiteFields": [
-          "schemaVersion",
-          "surface",
-          "preset",
-          "suiteId",
-          "cases"
-        ],
-        "nonWriterBoundary": "Cautilus plans the fixture contract but does not write host-owned fixtures, prompts, runners, wrappers, or acceptance policy.",
-        "preset": "repo",
-        "requiredObservability": [
-          "loadedInstructionFiles",
-          "routingDecision",
-          "runtimeFingerprint"
-        ],
-        "requiredRunnerCapability": "development-repo-eval-runner",
-        "runnerOutputSchema": "cautilus.evaluation_observed.v1",
-        "runnerOwner": "host-repo-adapter",
-        "schemaVersion": "cautilus.claim_eval_fixture_authoring_guidance.v1",
-        "surface": "dev"
-      },
-      "nextStep": "Create a host-owned cautilus.evaluation_input.v1 fixture and adapter-owned runner for this plan.",
-      "planId": "eval-plan-claim-docs-specs-user-evaluation-spec-md-7",
-      "proofRequirement": {
-        "minimumProofClasses": [
-          "fixture-smoke",
-          "coding-agent-messaging",
-          "declared-eval-runner"
-        ],
-        "proofMechanism": "cautilus-eval",
-        "recommendedEvalSurface": "dev/repo",
-        "requiredObservability": [
-          "loadedInstructionFiles",
-          "routingDecision",
-          "runtimeFingerprint"
-        ],
-        "requiredRunnerCapability": "development-repo-eval-runner",
-        "requiresProductRunnerProof": false
-      },
-      "reviewStatus": "agent-reviewed",
-      "sourceRefs": [
-        {
-          "excerpt": "Cautilus evaluates behavior that ordinary deterministic tests cannot fully explain, while keeping the repo in control of the runtime that produces behavior.",
-          "line": 7,
-          "path": "docs/specs/user/evaluation.spec.md"
-        }
-      ],
-      "targetSurface": "dev/repo",
-      "unresolvedQuestions": []
-    },
-    {
       "claimFingerprint": "sha256:61a9c5048a4a9198d4182a1cfe5d0f91adb31bed9e08cfcf0b37f54508602df4",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-85",
       "draftIntent": "Verify that When raw candidates are too granular to review directly, the bundled skill should curate two canonical specdown indexes before continuing HITL:.",
@@ -475,14 +413,14 @@
   "inputPath": "/home/hwidong/codes/cautilus/.cautilus/claims/evidenced-typed-runners.json",
   "nonWriterNotice": "This packet plans eval fixtures but does not write host-owned fixtures, prompts, runners, or policy.",
   "planSummary": {
-    "evalPlanCount": 7,
+    "evalPlanCount": 6,
     "skippedByReason": {
-      "already-satisfied": 8,
+      "already-satisfied": 11,
       "not-cautilus-eval": 198,
-      "not-ready-to-verify": 11,
-      "not-reviewed": 98
+      "not-ready-to-verify": 10,
+      "not-reviewed": 97
     },
-    "skippedClaimCount": 315,
+    "skippedClaimCount": 316,
     "zeroPlanExpectation": "Zero eval plans can be expected when reviewed eval-ready claims are already satisfied or when remaining reviewed claims are not Cautilus eval targets.",
     "zeroPlanReason": ""
   },
@@ -1438,14 +1376,62 @@
       "verificationReadiness": "needs-alignment"
     },
     {
+      "claimFingerprint": "sha256:acdb5102c491f925e41c367a64de268d5f6e70d89eeac7d7ece7289ba3dddd58",
+      "claimId": "claim-docs-specs-user-evaluation-spec-md-7",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:65f0402fd5d3b383211bfca5a87fc644b211b917c834875a76e10a3061608e22",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-current-eval-surfaces-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-specs-user-evaluation-spec-md-7"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "reason": "already-satisfied",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "Cautilus evaluates behavior that ordinary deterministic tests cannot fully explain, while keeping the repo in control of the runtime that produces behavior.",
+          "line": 7,
+          "path": "docs/specs/user/evaluation.spec.md"
+        }
+      ],
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
       "claimFingerprint": "sha256:637979c650b8f0f05b67e9dd815c274545862bfcbc4db451db6ee3f61ee0153c",
       "claimId": "claim-docs-specs-user-evaluation-spec-md-11",
-      "evidenceStatus": "unknown",
-      "reason": "not-ready-to-verify",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:65f0402fd5d3b383211bfca5a87fc644b211b917c834875a76e10a3061608e22",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-current-eval-surfaces-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-specs-user-evaluation-spec-md-11"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "reason": "already-satisfied",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "needs-scenario"
+      "sourceRefs": [
+        {
+          "excerpt": "Cautilus supports development-facing behavior, such as agent workflows, repo contracts, tools, and skills.",
+          "line": 11,
+          "path": "docs/specs/user/evaluation.spec.md"
+        }
+      ],
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-to-verify"
     },
     {
       "claimFingerprint": "sha256:f5b9a1cb237c687e9197418b496d41d005a5658e89ec8018042642e97883df2f",
@@ -1460,17 +1446,36 @@
     {
       "claimFingerprint": "sha256:286c9ec9683a6a69e04c559a78286af88588719200056db06583b3f2d475e06e",
       "claimId": "claim-docs-specs-user-evaluation-spec-md-13",
-      "evidenceStatus": "unknown",
-      "reason": "not-reviewed",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:65f0402fd5d3b383211bfca5a87fc644b211b917c834875a76e10a3061608e22",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-current-eval-surfaces-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-specs-user-evaluation-spec-md-13"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "reason": "already-satisfied",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "A fixture declares the evaluated surface and preset so the reader can tell what kind of behavior is under test.",
+          "line": 13,
+          "path": "docs/specs/user/evaluation.spec.md"
+        }
+      ],
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify"
     },
     {
       "claimFingerprint": "sha256:db8d7c50e24066f8e6a1b7e2c3c536e3e09c4a6d2fe18e870b75b4bead176005",
       "claimId": "claim-docs-specs-user-evaluation-spec-md-14",
-      "evidenceStatus": "unknown",
+      "evidenceStatus": "satisfied",
       "reason": "not-cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "human-auditable",
