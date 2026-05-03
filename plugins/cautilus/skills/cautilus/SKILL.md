@@ -55,16 +55,13 @@ Read `cautilus.agent_status.v1` as the current product map.
 Summarize binary health, agent-surface readiness, adapter state, selected claim-state availability, scan entries, linked Markdown depth, and `nextBranches`.
 When `claimState.orientationState` is present, treat it as the selected claim map for status and branch commands.
 Keep `claimState.configuredState` as the writable discovery baseline, not necessarily the most useful review packet.
-Then help the user pick the next branch or stop.
-Present branch labels and reasons in coordinator-facing language first.
-Keep internal branch ids as secondary references, not the option title.
-Treat each `nextBranches[].label` as the human choice name.
-The branch `id` is for stable packet references and should only appear after the label when it helps auditability.
+Then help the user pick the next branch or stop, presenting branch labels and reasons in coordinator-facing language first.
+Treat each `nextBranches[].label` as the human choice name; branch `id` is a secondary stable packet reference only when it helps auditability.
 If the user answers with a number or short label after you present branch choices, resolve that answer against the branch labels you just showed and execute that selected branch.
 Do not reinterpret a numbered branch selection as a request for another status summary.
 
 If `nextBranches` includes `initialize_adapter` and the user delegated setup continuation, run the adapter setup branch and then rerun `agent status`.
-If claim state is missing, present the bounded scan entries and depth before entering claim discovery.
+If claim state is missing, present the bounded scan entries and depth, explicitly ask the user to "confirm this scan scope or adjust it", state that LLM review needs a separate review budget, and only then enter claim discovery.
 If claim state exists, read or refresh that packet before planning new proof work.
 
 ## Declared Claim Discovery
@@ -148,8 +145,7 @@ When reporting a refresh-plan result to a coordinator, use this shape:
 - What I did not do: did not update the saved claim map, review claims, plan evals, or edit product files unless the user selected that branch.
 - Recommended next choice: use the first safe `refreshSummary.nextActions` item in plain language.
 
-LLM-backed claim review is a separate branch.
-Before launching it, state the review budget: maximum clusters, parallel lanes, clusters per reviewer, excerpt budget, retry policy, and skipped-cluster policy.
+LLM-backed claim review is a separate branch; before launching it, state the review budget: maximum clusters, parallel lanes, clusters per reviewer, excerpt budget, retry policy, and skipped-cluster policy, then ask the user to confirm or adjust that budget.
 If the user selects the review branch without naming a budget, use the command defaults as a conservative deterministic prepare-input budget and say so before running `claim review prepare-input`.
 After a fresh first discovery for any review branch, run `claim show --input <claims.json> --sample-claims <n>` before `claim review prepare-input`; this is the product-owned review queue summary, not optional narration.
 After `claim review prepare-input`, stop at the packet boundary unless the user has explicitly delegated reviewer launch.

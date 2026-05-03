@@ -181,6 +181,10 @@ func TestAgentStatusIncludesRunnerReadinessBranchBeforeClaimBranches(t *testing.
 	if asMap(branches[1])["id"] != "run_first_claim_scan" {
 		t.Fatalf("expected claim branch after runner readiness branch, got %#v", branches)
 	}
+	claimBranch := asMap(branches[1])
+	if !strings.Contains(stringOrEmpty(claimBranch["label"]), "Confirm the current scan scope") || !strings.Contains(stringOrEmpty(claimBranch["reason"]), "review budget") {
+		t.Fatalf("expected claim branch to expose scope confirmation and review budget boundary, got %#v", claimBranch)
+	}
 }
 
 func TestDoctorAndAgentStatusShareRunnerReadinessFacts(t *testing.T) {

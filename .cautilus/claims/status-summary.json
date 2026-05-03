@@ -24,12 +24,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 135
+          "satisfied": 138
         },
         "byReviewStatus": {
-          "agent-reviewed": 135
+          "agent-reviewed": 138
         },
-        "count": 135,
+        "count": 138,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -62,13 +62,13 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 69
+          "unknown": 66
         },
         "byReviewStatus": {
-          "agent-reviewed": 4,
+          "agent-reviewed": 1,
           "heuristic": 65
         },
-        "count": 69,
+        "count": 66,
         "id": "agent-plan-cautilus-eval",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -194,8 +194,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 135,
-      "unknown": 188
+      "satisfied": 138,
+      "unknown": 185
     },
     "byLifecycle": {
       "new": 323
@@ -380,7 +380,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 135,
+    "satisfiedClaimCount": 138,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-78",
@@ -1761,6 +1761,48 @@
         "summary": "When the adapter omits semantic groups, the binary emits `General product behavior` instead of using a Cautilus-specific taxonomy."
       },
       {
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-186",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:ff9c50422450d839186610441883579359986d748f622376afa0bb4bce1894e9",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-dev-skill-branch-proof-2026-05-04.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-claim-discovery-workflow-md-186",
+              "claim-docs-contracts-claim-discovery-workflow-md-195",
+              "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-20"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": "dev/skill",
+        "recommendedProof": "cautilus-eval",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Before running a first broad scan, the skill should say which entries and depth it will use."
+      },
+      {
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-195",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:ff9c50422450d839186610441883579359986d748f622376afa0bb4bce1894e9",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-dev-skill-branch-proof-2026-05-04.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-claim-discovery-workflow-md-186",
+              "claim-docs-contracts-claim-discovery-workflow-md-195",
+              "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-20"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": "dev/skill",
+        "recommendedProof": "cautilus-eval",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The skill should ask the user to confirm or adjust that scope."
+      },
+      {
         "claimId": "claim-docs-contracts-claim-discovery-workflow-md-196",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -2576,6 +2618,27 @@
         "summary": "`npm run lint:skill-disclosure` proves the bundled and packaged skill stay within the progressive-disclosure contract."
       },
       {
+        "claimId": "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-20",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:ff9c50422450d839186610441883579359986d748f622376afa0bb4bce1894e9",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-dev-skill-branch-proof-2026-05-04.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-claim-discovery-workflow-md-186",
+              "claim-docs-contracts-claim-discovery-workflow-md-195",
+              "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-20"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": "dev/skill",
+        "recommendedProof": "cautilus-eval",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The remaining proof gap is behavior-level: a maintained dev/skill fixture should show the skill choosing the claim-review branch without treating raw discovery as a finished answer."
+      },
+      {
         "claimId": "claim-docs-specs-maintainer-claim-discovery-workflow-spec-md-19",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -3043,8 +3106,25 @@
   },
   "gitCommit": "7c447d5cddc679c56180d3dff55bdd88c2237092",
   "gitState": {
-    "changedFileCount": 0,
-    "changedFiles": [],
+    "changedFileCount": 16,
+    "changedFiles": [
+      ".cautilus/claims/canonical-claim-map.json",
+      ".cautilus/claims/claim-status-report.md",
+      ".cautilus/claims/discovery-review.md",
+      ".cautilus/claims/eval-plan-agent-reviewed-eval-2026-05-04.json",
+      ".cautilus/claims/evidenced-typed-runners.json",
+      ".cautilus/claims/latest.json",
+      ".cautilus/claims/review-input-agent-plan-cautilus-eval-2026-05-04.json",
+      ".cautilus/claims/review-result-agent-plan-cautilus-eval-2026-05-04.json",
+      ".cautilus/claims/status-summary.json",
+      ".cautilus/claims/validation-report.json",
+      "charness-artifacts/debug/debug-2026-05-04-claim-review-prepare-pattern.md",
+      "charness-artifacts/debug/debug-2026-05-04-eval-plan-jq-shape-misread.md",
+      "charness-artifacts/debug/debug-2026-05-04-review-input-jq-shape-misread.md",
+      "charness-artifacts/debug/latest.md",
+      "internal/runtime/claim_discovery.go",
+      "internal/runtime/claim_discovery_test.go"
+    ],
     "changedFilesBasis": {
       "meaning": "changedFiles lists files committed between packetGitCommit and currentGitCommit; it does not include unstaged, staged, or untracked working-tree files.",
       "scope": "committed-diff-between-packet-and-current-head",
@@ -3052,12 +3132,12 @@
     },
     "changedSourceCount": 0,
     "changedSources": [],
-    "comparisonStatus": "fresh",
-    "currentGitCommit": "7c447d5cddc679c56180d3dff55bdd88c2237092",
-    "headDrift": false,
+    "comparisonStatus": "fresh-with-head-drift",
+    "currentGitCommit": "efec710865aa6d87d3dff06891200c434a506e91",
+    "headDrift": true,
     "isStale": false,
     "packetGitCommit": "7c447d5cddc679c56180d3dff55bdd88c2237092",
-    "recommendedAction": "The claim packet commit matches the inspected checkout.",
+    "recommendedAction": "The current HEAD differs from the packet commit, but no recorded claim source changed; review and eval planning may continue.",
     "workingTreePolicy": "excluded"
   },
   "gitStateSnapshotNotice": "gitState is computed when this status packet is generated; rerun claim show for live checkout state.",
@@ -3271,6 +3351,53 @@
         }
       ],
       "summary": "`npm run test:on-demand` currently owns the heavier self-dogfood workflow script tests.",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "claimAudience": "user",
+      "claimId": "claim-readme-md-3",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "blocked",
+        "human-auditable",
+        "readme"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep the claim visible as positioning, or decompose it into concrete deterministic, dev/skill, and packet-surface claims before proof planning.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "line": 3,
+          "path": "README.md"
+        }
+      ],
+      "summary": "`Cautilus` keeps agent and workflow behavior honest while prompts keep changing.",
+      "verificationReadiness": "blocked"
+    },
+    {
+      "claimAudience": "user",
+      "claimId": "claim-readme-md-7",
+      "claimSemanticGroup": "Adapter and portability",
+      "evidenceStatus": "satisfied",
+      "groupHints": [
+        "audience:user",
+        "deterministic",
+        "readme"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep this claim covered by distribution-surface tests plus install command smoke whenever install.sh, packaged plugins, or bundled skill materialization changes.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "line": 7,
+          "path": "README.md"
+        }
+      ],
+      "summary": "Ships as a standalone binary plus a bundled skill a host repo can install without copying another scaffold first.",
       "verificationReadiness": "ready-to-verify"
     }
   ],

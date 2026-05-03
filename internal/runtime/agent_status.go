@@ -293,9 +293,9 @@ func claimOrientationBranches(claimState map[string]any, config claimDiscoveryCo
 		return []any{
 			map[string]any{
 				"id":      "run_first_claim_scan",
-				"label":   "Run the first bounded claim scan",
+				"label":   "Confirm the current scan scope and run the first bounded claim scan",
 				"command": "cautilus claim discover --repo-root " + quotedRepoRoot + " --output " + quotedStatePath,
-				"reason":  "No repo-local claim packet exists yet; discovery starts from the reported entry files and link depth.",
+				"reason":  "No repo-local claim packet exists yet; confirm the reported entry files and link depth, or adjust the scan scope before discovery. LLM claim review is a separate branch with its own review budget.",
 			},
 		}
 	default:

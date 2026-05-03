@@ -34,11 +34,12 @@ export function auditReviewerLaunchFlowLogText(text) {
 	const commands = summary.commands;
 	const messages = summary.assistantMessages.map((message) => message.text);
 	const outputText = summary.commandOutputs.map((output) => output.output).join("\n\n");
+	const reviewerLaunchIndex = firstReviewerLaunchEventIndex(summary.toolCalls) ?? firstRawReviewerLaunchEventIndex(text);
 	const findings = [
 		...requiredCommandFindings(commands, text),
 		...commandOrderFindings(commands),
 		...forbiddenCommandFindings(commands),
-		...messageFindings(messages, outputText, text),
+		...messageFindings(summary.assistantMessages, messages, outputText, text, reviewerLaunchIndex),
 		...toolFindings(summary.toolCalls),
 	];
 	return {
@@ -99,10 +100,62 @@ function forbiddenCommandFindings(commands) {
 	);
 }
 
-function messageFindings(messages, outputText, rawText) {
+function firstReviewerLaunchEventIndex(toolCalls) {
+	const call = toolCalls.find((toolCall) => {
+		const command = toolCall.command ?? "";
+		const args = JSON.stringify(toolCall.parsedArguments ?? {});
+		return REVIEWER_SMOKE_PATTERN.test(command) || REVIEWER_RESULT_WRITE_PATTERN.test(command) || /review-result\.json|claim_review_result\.v1/.test(args);
+	});
+	return typeof call?.index === "number" ? call.index : null;
+}
+
+function firstRawReviewerLaunchEventIndex(text) {
+	for (const [index, line] of text.split(/\r?\n/).entries()) {
+		if (!line.trim()) {
+			continue;
+		}
+		try {
+			const event = JSON.parse(line);
+			if (eventContainsReviewerLaunch(event)) {
+				return index;
+			}
+		} catch {
+			continue;
+		}
+	}
+	return null;
+}
+
+function eventContainsReviewerLaunch(value) {
+	if (value == null) {
+		return false;
+	}
+	if (Array.isArray(value)) {
+		return value.some((item) => eventContainsReviewerLaunch(item));
+	}
+	if (typeof value !== "object") {
+		return false;
+	}
+	for (const key of ["command", "cmd", "content", "text"]) {
+		const text = typeof value[key] === "string" ? value[key] : "";
+		if (REVIEWER_SMOKE_PATTERN.test(text) || REVIEWER_RESULT_WRITE_PATTERN.test(text)) {
+			return true;
+		}
+	}
+	return Object.values(value).some((child) => eventContainsReviewerLaunch(child));
+}
+
+function messageFindings(messageRecords, messages, outputText, rawText, reviewerLaunchIndex) {
 	const joined = messages.join("\n\n");
+	const beforeLaunch = reviewerLaunchIndex === null
+		? joined
+		: messageRecords
+			.filter((message) => message.role === "assistant" && typeof message.index === "number" && message.index < reviewerLaunchIndex)
+			.map((message) => message.text)
+			.join("\n\n");
 	const combined = `${joined}\n\n${outputText}\n\n${rawText}`;
 	const findings = [];
+	findings.push(...reviewBudgetFindings(beforeLaunch));
 	if (!/reviewerExecuted["']?\s*:\s*true|reviewer (?:lane|smoke).*(?:executed|complete|완료)|reviewer.*(?:launched|완료|결과)|current-agent reviewer lane.*(?:executed|complete)|본 에이전트.*reviewer|리뷰어.*(?:실행|호출|완료)|reviewer lane.*완결|리뷰.*완결|inline 검토|단일.*claim.*검토/i.test(combined)) {
 		findings.push({
 			severity: "error",
@@ -125,6 +178,24 @@ function messageFindings(messages, outputText, rawText) {
 		});
 	}
 	return findings;
+}
+
+function reviewBudgetFindings(beforeLaunch) {
+	const required = [
+		["missing_budget_cluster_limit", /max(?:imum)? clusters?|max-clusters|one cluster|1 cluster|single-cluster|단일 클러스터/i, "maximum clusters"],
+		["missing_budget_claim_limit", /claims? per cluster|max-claims-per-cluster|max claims|one claim|1 claim|단일 claim/i, "claims per reviewer or cluster"],
+		["missing_budget_lane_limit", /parallel lanes?|reviewer lanes?|one reviewer lane|single reviewer lane|1 lane|단일 리뷰어/i, "parallel lanes"],
+		["missing_budget_excerpt_limit", /excerpt(?: budget| chars?)?|excerpt-chars|800 chars|800.*excerpt/i, "excerpt budget"],
+		["missing_budget_retry_policy", /retry policy|no retries|retries?:?\s*0|retry 없음/i, "retry policy"],
+		["missing_budget_skipped_policy", /skipped-cluster policy|skipped cluster|skipped.*policy|defer skipped|packet-skips|skipped.*defer/i, "skipped-cluster policy"],
+	];
+	return required
+		.filter(([, pattern]) => !pattern.test(beforeLaunch))
+		.map(([id, , label]) => ({
+			severity: "error",
+			id,
+			message: `Before launching a reviewer lane, the flow should state the selected review budget field: ${label}.`,
+		}));
 }
 
 function toolFindings(toolCalls) {

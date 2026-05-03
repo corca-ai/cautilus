@@ -369,6 +369,7 @@ type claimReviewApplyResultArgs struct {
 
 type claimPlanEvalsArgs struct {
 	claims           string
+	displayClaims    string
 	output           *string
 	maxClaims        int
 	allowStaleClaims bool
@@ -971,10 +972,11 @@ func handleClaimPlanEvals(repoRoot string, cwd string, args []string, stdout io.
 		return 1
 	}
 	plan, err := runtime.BuildClaimEvalPlan(claimPacket, runtime.ClaimEvalPlanOptions{
-		ClaimsPath:       options.claims,
-		MaxClaims:        options.maxClaims,
-		RepoRoot:         cwd,
-		AllowStaleClaims: options.allowStaleClaims,
+		ClaimsPath:        options.claims,
+		DisplayClaimsPath: options.displayClaims,
+		MaxClaims:         options.maxClaims,
+		RepoRoot:          cwd,
+		AllowStaleClaims:  options.allowStaleClaims,
 	})
 	if err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
@@ -2347,6 +2349,7 @@ func parseClaimPlanEvalsArgs(args []string, cwd string) (*claimPlanEvalsArgs, er
 			}
 			index = next
 			options.claims = resolvePath(cwd, value)
+			options.displayClaims = displayPathForCWD(cwd, value, options.claims)
 		case "--output":
 			value, next, err := requiredValue(args, index, arg)
 			if err != nil {

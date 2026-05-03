@@ -379,6 +379,9 @@ func TestRunAgentStatusJSONReturnsNoInputOrientation(t *testing.T) {
 	if !strings.Contains(body, "run_first_claim_scan") {
 		t.Fatalf("expected first claim scan branch, got %s", body)
 	}
+	if !strings.Contains(body, "Confirm the current scan scope") || !strings.Contains(body, "LLM claim review is a separate branch") {
+		t.Fatalf("expected first scan branch to expose scope confirmation and review budget boundary, got %s", body)
+	}
 	if !strings.Contains(body, "cautilus claim discover --repo-root '"+repoRoot+"' --output '"+filepath.Join(repoRoot, "state dir", "latest claims.json")+"'") {
 		t.Fatalf("expected claim branch to keep the requested repo root and quote paths, got %s", body)
 	}
@@ -856,6 +859,9 @@ func TestRunClaimPlanEvalsWritesIntermediatePlan(t *testing.T) {
 	payload := readJSONObjectFile(t, outputPath)
 	if payload["schemaVersion"] != "cautilus.claim_eval_plan.v1" {
 		t.Fatalf("unexpected schemaVersion: %#v", payload["schemaVersion"])
+	}
+	if payload["inputPath"] != "reviewed-claims.json" {
+		t.Fatalf("expected repo-relative inputPath, got %#v", payload["inputPath"])
 	}
 	plans := payload["evalPlans"].([]any)
 	if len(plans) != 1 {

@@ -1,0 +1,106 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewRun": {
+    "reviewer": "codex-dev-skill-dogfood-proof",
+    "mode": "evidence-application",
+    "createdAt": "2026-05-04",
+    "summary": "Apply verified Codex dev/skill dogfood evidence for first-scan scope confirmation and raw-discovery-to-review/eval branch behavior. Leave review-budget user-confirmation as an unresolved proof target."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-dev-skill-first-scan-and-review-budget",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-186",
+          "claimFingerprint": "sha256:d35816a75e6865197594fed5e07f0ab9ca34213226bdea6bcac3620240cd6330",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/skill",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the Codex first-scan dev/skill dogfood flow: the transcript states the entry files and linked Markdown depth before running claim discover, and the stricter audit passes.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-dev-skill-branch-proof-2026-05-04.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:ff9c50422450d839186610441883579359986d748f622376afa0bb4bce1894e9",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-186",
+                "claim-docs-contracts-claim-discovery-workflow-md-195",
+                "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-20"
+              ]
+            }
+          ],
+          "nextAction": "Keep first-scan dev/skill dogfood and audit fixtures updated when changing no-input orientation or claim discovery branch wording.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-195",
+          "claimFingerprint": "sha256:d1e36092a7a2f49d069d387a9965ad234f5e185c2568f77a928b0ca28ed0ab32",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/skill",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the Codex first-scan dev/skill dogfood flow: the first-scan branch now asks the coordinator to confirm the scan scope or adjust it before discovery, and the stricter audit rejects transcripts that skip that boundary.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-dev-skill-branch-proof-2026-05-04.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:ff9c50422450d839186610441883579359986d748f622376afa0bb4bce1894e9",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-186",
+                "claim-docs-contracts-claim-discovery-workflow-md-195",
+                "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-20"
+              ]
+            }
+          ],
+          "nextAction": "Keep binary branch copy and skill no-input orientation aligned so branch selection continues to mean scan-scope confirmation, not blind execution.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-214",
+          "claimFingerprint": "sha256:b88434bd074af349646232a96a54afd3040eb9d98e7278fd8a039af74a0c910e",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/skill",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The current dogfood evidence proves the review budget is stated before reviewer launch, but it does not directly prove the user confirmed or adjusted that budget before launch.",
+          "evidenceRefs": [],
+          "nextAction": "Extend the dev/skill fixture and audit to capture an explicit user review-budget confirmation or rewrite the claim to match the product-owned budget-statement boundary.",
+          "unresolvedQuestions": [
+            "Should the maintained fixture record explicit user confirmation for the review budget before reviewer launch, or should the contract be narrowed to a product-owned budget statement?"
+          ]
+        },
+        {
+          "claimId": "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-20",
+          "claimFingerprint": "sha256:c2d13b106d686bfc800b45aee200b2477c8695d5d6de2940585b98c6c087a5f8",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/skill",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the Codex reviewer-launch and review-to-eval dev/skill dogfood flows: after raw discovery and claim show, the skill prepares review input, launches or writes a bounded review result, applies and validates it in the later branch, and plans evals without treating raw discovery as final proof.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-dev-skill-branch-proof-2026-05-04.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:ff9c50422450d839186610441883579359986d748f622376afa0bb4bce1894e9",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-186",
+                "claim-docs-contracts-claim-discovery-workflow-md-195",
+                "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-20"
+              ]
+            }
+          ],
+          "nextAction": "Keep review-to-eval dogfood as the maintained proof that raw discovery is an input to review/eval planning, not a finished answer.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

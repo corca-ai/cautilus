@@ -1,154 +1,6 @@
 {
   "evalPlans": [
     {
-      "claimFingerprint": "sha256:d35816a75e6865197594fed5e07f0ab9ca34213226bdea6bcac3620240cd6330",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-186",
-      "draftIntent": "Verify that Before running a first broad scan, the skill should say which entries and depth it will use.",
-      "evidenceStatus": "unknown",
-      "fixtureAuthoringGuidance": {
-        "conditionalCaseFields": {
-          "execution": [
-            "thresholds or turns/auditKind when the evaluated behavior needs them"
-          ],
-          "trigger": [
-            "expectedTrigger"
-          ]
-        },
-        "evaluationInputSchema": "cautilus.evaluation_input.v1",
-        "expectedShape": "trigger cases require expectedTrigger; execution cases use thresholds, turns, or auditKind depending on the skill contract",
-        "fixtureOwner": "host-repo",
-        "minimumCaseFields": [
-          "caseId",
-          "evaluationKind",
-          "prompt"
-        ],
-        "minimumSuiteFields": [
-          "schemaVersion",
-          "surface",
-          "preset",
-          "suiteId",
-          "cases"
-        ],
-        "nonWriterBoundary": "Cautilus plans the fixture contract but does not write host-owned fixtures, prompts, runners, wrappers, or acceptance policy.",
-        "preset": "skill",
-        "requiredObservability": [
-          "trigger",
-          "execution",
-          "loadedInstructionFiles",
-          "runtimeFingerprint"
-        ],
-        "requiredRunnerCapability": "development-skill-eval-runner",
-        "runnerOutputSchema": "cautilus.skill_evaluation_inputs.v1",
-        "runnerOwner": "host-repo-adapter",
-        "schemaVersion": "cautilus.claim_eval_fixture_authoring_guidance.v1",
-        "surface": "dev"
-      },
-      "nextStep": "Create a host-owned cautilus.evaluation_input.v1 fixture and adapter-owned runner for this plan.",
-      "planId": "eval-plan-claim-docs-contracts-claim-discovery-workflow-md-186",
-      "proofRequirement": {
-        "minimumProofClasses": [
-          "fixture-smoke",
-          "coding-agent-messaging",
-          "declared-eval-runner"
-        ],
-        "proofMechanism": "cautilus-eval",
-        "recommendedEvalSurface": "dev/skill",
-        "requiredObservability": [
-          "trigger",
-          "execution",
-          "loadedInstructionFiles",
-          "runtimeFingerprint"
-        ],
-        "requiredRunnerCapability": "development-skill-eval-runner",
-        "requiresProductRunnerProof": false
-      },
-      "reviewStatus": "agent-reviewed",
-      "sourceRefs": [
-        {
-          "excerpt": "Before running a first broad scan, the skill should say which entries and depth it will use.",
-          "line": 186,
-          "path": "docs/contracts/claim-discovery-workflow.md"
-        }
-      ],
-      "targetSurface": "dev/skill",
-      "unresolvedQuestions": [
-        "What exact interaction counts as a first broad scan?"
-      ]
-    },
-    {
-      "claimFingerprint": "sha256:d1e36092a7a2f49d069d387a9965ad234f5e185c2568f77a928b0ca28ed0ab32",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-195",
-      "draftIntent": "Verify that The skill should ask the user to confirm or adjust that scope.",
-      "evidenceStatus": "unknown",
-      "fixtureAuthoringGuidance": {
-        "conditionalCaseFields": {
-          "execution": [
-            "thresholds or turns/auditKind when the evaluated behavior needs them"
-          ],
-          "trigger": [
-            "expectedTrigger"
-          ]
-        },
-        "evaluationInputSchema": "cautilus.evaluation_input.v1",
-        "expectedShape": "trigger cases require expectedTrigger; execution cases use thresholds, turns, or auditKind depending on the skill contract",
-        "fixtureOwner": "host-repo",
-        "minimumCaseFields": [
-          "caseId",
-          "evaluationKind",
-          "prompt"
-        ],
-        "minimumSuiteFields": [
-          "schemaVersion",
-          "surface",
-          "preset",
-          "suiteId",
-          "cases"
-        ],
-        "nonWriterBoundary": "Cautilus plans the fixture contract but does not write host-owned fixtures, prompts, runners, wrappers, or acceptance policy.",
-        "preset": "skill",
-        "requiredObservability": [
-          "trigger",
-          "execution",
-          "loadedInstructionFiles",
-          "runtimeFingerprint"
-        ],
-        "requiredRunnerCapability": "development-skill-eval-runner",
-        "runnerOutputSchema": "cautilus.skill_evaluation_inputs.v1",
-        "runnerOwner": "host-repo-adapter",
-        "schemaVersion": "cautilus.claim_eval_fixture_authoring_guidance.v1",
-        "surface": "dev"
-      },
-      "nextStep": "Create a host-owned cautilus.evaluation_input.v1 fixture and adapter-owned runner for this plan.",
-      "planId": "eval-plan-claim-docs-contracts-claim-discovery-workflow-md-195",
-      "proofRequirement": {
-        "minimumProofClasses": [
-          "fixture-smoke",
-          "coding-agent-messaging",
-          "declared-eval-runner"
-        ],
-        "proofMechanism": "cautilus-eval",
-        "recommendedEvalSurface": "dev/skill",
-        "requiredObservability": [
-          "trigger",
-          "execution",
-          "loadedInstructionFiles",
-          "runtimeFingerprint"
-        ],
-        "requiredRunnerCapability": "development-skill-eval-runner",
-        "requiresProductRunnerProof": false
-      },
-      "reviewStatus": "agent-reviewed",
-      "sourceRefs": [
-        {
-          "excerpt": "The skill should ask the user to confirm or adjust that scope.",
-          "line": 195,
-          "path": "docs/contracts/claim-discovery-workflow.md"
-        }
-      ],
-      "targetSurface": "dev/skill",
-      "unresolvedQuestions": []
-    },
-    {
       "claimFingerprint": "sha256:b88434bd074af349646232a96a54afd3040eb9d98e7278fd8a039af74a0c910e",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-214",
       "draftIntent": "Verify that The user should confirm or adjust that review budget before the skill launches subagents or other LLM-backed review.",
@@ -220,94 +72,21 @@
       ],
       "targetSurface": "dev/skill",
       "unresolvedQuestions": [
-        "Which observable event should the fixture treat as reviewer launch?"
+        "Should the maintained fixture record explicit user confirmation for the review budget before reviewer launch, or should the contract be narrowed to a product-owned budget statement?"
       ]
-    },
-    {
-      "claimFingerprint": "sha256:c2d13b106d686bfc800b45aee200b2477c8695d5d6de2940585b98c6c087a5f8",
-      "claimId": "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-20",
-      "draftIntent": "Verify that The remaining proof gap is behavior-level: a maintained dev/skill fixture should show the skill choosing the claim-review branch without treating raw discovery as a finished answer.",
-      "evidenceStatus": "unknown",
-      "fixtureAuthoringGuidance": {
-        "conditionalCaseFields": {
-          "execution": [
-            "thresholds or turns/auditKind when the evaluated behavior needs them"
-          ],
-          "trigger": [
-            "expectedTrigger"
-          ]
-        },
-        "evaluationInputSchema": "cautilus.evaluation_input.v1",
-        "expectedShape": "trigger cases require expectedTrigger; execution cases use thresholds, turns, or auditKind depending on the skill contract",
-        "fixtureOwner": "host-repo",
-        "minimumCaseFields": [
-          "caseId",
-          "evaluationKind",
-          "prompt"
-        ],
-        "minimumSuiteFields": [
-          "schemaVersion",
-          "surface",
-          "preset",
-          "suiteId",
-          "cases"
-        ],
-        "nonWriterBoundary": "Cautilus plans the fixture contract but does not write host-owned fixtures, prompts, runners, wrappers, or acceptance policy.",
-        "preset": "skill",
-        "requiredObservability": [
-          "trigger",
-          "execution",
-          "loadedInstructionFiles",
-          "runtimeFingerprint"
-        ],
-        "requiredRunnerCapability": "development-skill-eval-runner",
-        "runnerOutputSchema": "cautilus.skill_evaluation_inputs.v1",
-        "runnerOwner": "host-repo-adapter",
-        "schemaVersion": "cautilus.claim_eval_fixture_authoring_guidance.v1",
-        "surface": "dev"
-      },
-      "nextStep": "Create a host-owned cautilus.evaluation_input.v1 fixture and adapter-owned runner for this plan.",
-      "planId": "eval-plan-claim-docs-specs-maintainer-binary-skill-boundary-spec-md-20",
-      "proofRequirement": {
-        "minimumProofClasses": [
-          "fixture-smoke",
-          "coding-agent-messaging",
-          "declared-eval-runner"
-        ],
-        "proofMechanism": "cautilus-eval",
-        "recommendedEvalSurface": "dev/skill",
-        "requiredObservability": [
-          "trigger",
-          "execution",
-          "loadedInstructionFiles",
-          "runtimeFingerprint"
-        ],
-        "requiredRunnerCapability": "development-skill-eval-runner",
-        "requiresProductRunnerProof": false
-      },
-      "reviewStatus": "agent-reviewed",
-      "sourceRefs": [
-        {
-          "excerpt": "The remaining proof gap is behavior-level: a maintained dev/skill fixture should show the skill choosing the claim-review branch without treating raw discovery as a finished answer.",
-          "line": 20,
-          "path": "docs/specs/maintainer/binary-skill-boundary.spec.md"
-        }
-      ],
-      "targetSurface": "dev/skill",
-      "unresolvedQuestions": []
     }
   ],
-  "inputPath": "/home/hwidong/codes/cautilus/.cautilus/claims/evidenced-typed-runners.json",
+  "inputPath": ".cautilus/claims/evidenced-typed-runners.json",
   "nonWriterNotice": "This packet plans eval fixtures but does not write host-owned fixtures, prompts, runners, or policy.",
   "planSummary": {
-    "evalPlanCount": 4,
+    "evalPlanCount": 1,
     "skippedByReason": {
-      "already-satisfied": 17,
+      "already-satisfied": 20,
       "not-cautilus-eval": 227,
       "not-ready-to-verify": 10,
       "not-reviewed": 65
     },
-    "skippedClaimCount": 319,
+    "skippedClaimCount": 322,
     "zeroPlanExpectation": "Zero eval plans can be expected when reviewed eval-ready claims are already satisfied or when remaining reviewed claims are not Cautilus eval targets.",
     "zeroPlanReason": ""
   },
@@ -2814,6 +2593,37 @@
       "verificationReadiness": "ready-to-verify"
     },
     {
+      "claimFingerprint": "sha256:d35816a75e6865197594fed5e07f0ab9ca34213226bdea6bcac3620240cd6330",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-186",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:ff9c50422450d839186610441883579359986d748f622376afa0bb4bce1894e9",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-dev-skill-branch-proof-2026-05-04.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-claim-discovery-workflow-md-186",
+            "claim-docs-contracts-claim-discovery-workflow-md-195",
+            "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-20"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "reason": "already-satisfied",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "Before running a first broad scan, the skill should say which entries and depth it will use.",
+          "line": 186,
+          "path": "docs/contracts/claim-discovery-workflow.md"
+        }
+      ],
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
       "claimFingerprint": "sha256:130735bbdf1969bf169ca06abc7358686ccfa2146461b0bdae476cafcbb6761d",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-187",
       "evidenceStatus": "unknown",
@@ -2821,6 +2631,37 @@
       "recommendedProof": "human-auditable",
       "reviewStatus": "agent-reviewed",
       "verificationReadiness": "blocked"
+    },
+    {
+      "claimFingerprint": "sha256:d1e36092a7a2f49d069d387a9965ad234f5e185c2568f77a928b0ca28ed0ab32",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-195",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:ff9c50422450d839186610441883579359986d748f622376afa0bb4bce1894e9",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-dev-skill-branch-proof-2026-05-04.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-claim-discovery-workflow-md-186",
+            "claim-docs-contracts-claim-discovery-workflow-md-195",
+            "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-20"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "reason": "already-satisfied",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "The skill should ask the user to confirm or adjust that scope.",
+          "line": 195,
+          "path": "docs/contracts/claim-discovery-workflow.md"
+        }
+      ],
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-to-verify"
     },
     {
       "claimFingerprint": "sha256:c8771569879ff2560b316b4ba714639e8cbf8c21156e0729a47ed22979780a64",
@@ -4868,6 +4709,37 @@
         {
           "excerpt": "`npm run lint:skill-disclosure` proves the bundled and packaged skill stay within the progressive-disclosure contract.",
           "line": 19,
+          "path": "docs/specs/maintainer/binary-skill-boundary.spec.md"
+        }
+      ],
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "claimFingerprint": "sha256:c2d13b106d686bfc800b45aee200b2477c8695d5d6de2940585b98c6c087a5f8",
+      "claimId": "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-20",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:ff9c50422450d839186610441883579359986d748f622376afa0bb4bce1894e9",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-dev-skill-branch-proof-2026-05-04.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-claim-discovery-workflow-md-186",
+            "claim-docs-contracts-claim-discovery-workflow-md-195",
+            "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-20"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "reason": "already-satisfied",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "The remaining proof gap is behavior-level: a maintained dev/skill fixture should show the skill choosing the claim-review branch without treating raw discovery as a finished answer.",
+          "line": 20,
           "path": "docs/specs/maintainer/binary-skill-boundary.spec.md"
         }
       ],

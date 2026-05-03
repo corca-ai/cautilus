@@ -33,11 +33,12 @@ export function auditFirstScanFlowLogText(text) {
 	const summary = summarizeCodexSessionLogText(text);
 	const commands = summary.commands;
 	const messages = summary.assistantMessages.map((message) => message.text);
+	const firstDiscoverIndex = firstCommandEventIndex(summary.toolCalls, FIRST_DISCOVER_PATTERN) ?? firstRawCommandEventIndex(text, FIRST_DISCOVER_PATTERN);
 	const findings = [
 		...requiredCommandFindings(commands),
 		...commandOrderFindings(commands),
 		...forbiddenCommandFindings(commands),
-		...messageFindings(messages),
+		...messageFindings(summary.assistantMessages, messages, firstDiscoverIndex),
 		...toolFindings(summary.toolCalls),
 	];
 	return {
@@ -90,14 +91,75 @@ function forbiddenCommandFindings(commands) {
 	);
 }
 
-function messageFindings(messages) {
+function firstCommandEventIndex(toolCalls, pattern) {
+	const call = toolCalls.find((toolCall) => pattern.test(toolCall.command ?? ""));
+	return typeof call?.index === "number" ? call.index : null;
+}
+
+function firstRawCommandEventIndex(text, pattern) {
+	for (const [index, line] of text.split(/\r?\n/).entries()) {
+		if (!line.trim()) {
+			continue;
+		}
+		try {
+			const event = JSON.parse(line);
+			if (eventContainsCommand(event, pattern)) {
+				return index;
+			}
+		} catch {
+			continue;
+		}
+	}
+	return null;
+}
+
+function eventContainsCommand(value, pattern) {
+	if (value == null) {
+		return false;
+	}
+	if (Array.isArray(value)) {
+		return value.some((item) => eventContainsCommand(item, pattern));
+	}
+	if (typeof value !== "object") {
+		return false;
+	}
+	if (typeof value.command === "string" && pattern.test(value.command)) {
+		return true;
+	}
+	if (typeof value.cmd === "string" && pattern.test(value.cmd)) {
+		return true;
+	}
+	return Object.values(value).some((child) => eventContainsCommand(child, pattern));
+}
+
+function messageFindings(messageRecords, messages, firstDiscoverIndex) {
 	const joined = messages.join("\n\n");
+	const beforeDiscover = firstDiscoverIndex === null
+		? ""
+		: messageRecords
+			.filter((message) => message.role === "assistant" && typeof message.index === "number" && message.index < firstDiscoverIndex)
+			.map((message) => message.text)
+			.join("\n\n");
 	const findings = [];
 	if (!/scan (?:entries|scope)|스캔 (?:범위|엔트리)|README\.md|AGENTS\.md|CLAUDE\.md/i.test(joined)) {
 		findings.push({
 			severity: "error",
 			id: "missing_scan_scope_language",
-			message: "The first-scan flow should explain the bounded scan scope before or after discovery.",
+			message: "The first-scan flow should explain the bounded scan scope.",
+		});
+	}
+	if (!/scan (?:entries|scope)|스캔 (?:범위|엔트리)|README\.md|AGENTS\.md|CLAUDE\.md/i.test(beforeDiscover) || !/(?:linked Markdown )?depth|깊이/i.test(beforeDiscover)) {
+		findings.push({
+			severity: "error",
+			id: "missing_pre_discover_entries_and_depth",
+			message: "Before first claim discover, the skill should state the scan entries and linked Markdown depth.",
+		});
+	}
+	if (!/(?:confirm|확인).*(?:scope|범위)|(?:adjust|조정).*(?:scope|범위)|(?:scope|범위).*(?:confirm|확인|adjust|조정)|narrower explicit source set|명시.*소스/i.test(beforeDiscover)) {
+		findings.push({
+			severity: "error",
+			id: "missing_pre_discover_scope_confirmation",
+			message: "Before first claim discover, the skill should ask the user to confirm or adjust the scan scope.",
 		});
 	}
 	if (!/review budget|LLM review|리뷰 예산|LLM 리뷰|리뷰를 .*하지|리뷰.*별도/i.test(joined)) {

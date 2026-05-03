@@ -44,10 +44,11 @@ type ClaimReviewApplyOptions struct {
 }
 
 type ClaimEvalPlanOptions struct {
-	ClaimsPath       string
-	MaxClaims        int
-	RepoRoot         string
-	AllowStaleClaims bool
+	ClaimsPath        string
+	DisplayClaimsPath string
+	MaxClaims         int
+	RepoRoot          string
+	AllowStaleClaims  bool
 }
 
 type ClaimValidationOptions struct {
@@ -2864,9 +2865,13 @@ func BuildClaimEvalPlan(packet map[string]any, options ClaimEvalPlanOptions) (ma
 			"nextStep":                 "Create a host-owned cautilus.evaluation_input.v1 fixture and adapter-owned runner for this plan.",
 		})
 	}
+	inputPath := strings.TrimSpace(options.DisplayClaimsPath)
+	if inputPath == "" {
+		inputPath = options.ClaimsPath
+	}
 	return map[string]any{
 		"schemaVersion": contracts.ClaimEvalPlanSchema,
-		"inputPath":     filepath.ToSlash(filepath.Clean(options.ClaimsPath)),
+		"inputPath":     filepath.ToSlash(filepath.Clean(inputPath)),
 		"sourceClaimPacket": map[string]any{
 			"schemaVersion":  packet["schemaVersion"],
 			"gitCommit":      packet["gitCommit"],

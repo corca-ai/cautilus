@@ -4553,9 +4553,21 @@
       "claimFingerprint": "sha256:d35816a75e6865197594fed5e07f0ab9ca34213226bdea6bcac3620240cd6330",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-186",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "The packet provides the contract excerpt but no direct run evidence that the skill says entries and depth before a broad scan.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:ff9c50422450d839186610441883579359986d748f622376afa0bb4bce1894e9",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-dev-skill-branch-proof-2026-05-04.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-claim-discovery-workflow-md-186",
+            "claim-docs-contracts-claim-discovery-workflow-md-195",
+            "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-20"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by the Codex first-scan dev/skill dogfood flow: the transcript states the entry files and linked Markdown depth before running claim discover, and the stricter audit passes.",
       "groupHints": [
         "audience:developer",
         "cautilus-eval",
@@ -4564,7 +4576,7 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a dev/skill fixture for a first broad scan branch and assert that the skill announces entries and depth before running discovery.",
+      "nextAction": "Keep first-scan dev/skill dogfood and audit fixtures updated when changing no-input orientation or claim discovery branch wording.",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
@@ -4576,9 +4588,7 @@
         }
       ],
       "summary": "Before running a first broad scan, the skill should say which entries and depth it will use.",
-      "unresolvedQuestions": [
-        "What exact interaction counts as a first broad scan?"
-      ],
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
@@ -4621,9 +4631,21 @@
       "claimFingerprint": "sha256:d1e36092a7a2f49d069d387a9965ad234f5e185c2568f77a928b0ca28ed0ab32",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-195",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "No direct verified evidence is attached showing the skill asks for scope confirmation.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:ff9c50422450d839186610441883579359986d748f622376afa0bb4bce1894e9",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-dev-skill-branch-proof-2026-05-04.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-claim-discovery-workflow-md-186",
+            "claim-docs-contracts-claim-discovery-workflow-md-195",
+            "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-20"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by the Codex first-scan dev/skill dogfood flow: the first-scan branch now asks the coordinator to confirm the scan scope or adjust it before discovery, and the stricter audit rejects transcripts that skip that boundary.",
       "groupHints": [
         "audience:developer",
         "cautilus-eval",
@@ -4632,7 +4654,7 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a dev/skill fixture that reaches scan-scope presentation and expects a confirm-or-adjust prompt before the scan proceeds.",
+      "nextAction": "Keep binary branch copy and skill no-input orientation aligned so branch selection continues to mean scan-scope confirmation, not blind execution.",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
@@ -4742,7 +4764,7 @@
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
-      "evidenceStatusReason": "The packet has no evidenceRefs proving review-budget confirmation occurs before LLM-backed review launch.",
+      "evidenceStatusReason": "The current dogfood evidence proves the review budget is stated before reviewer launch, but it does not directly prove the user confirmed or adjusted that budget before launch.",
       "groupHints": [
         "audience:developer",
         "cautilus-eval",
@@ -4751,7 +4773,7 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a dev/skill fixture for the review branch and assert that budget confirmation is requested before any subagent or LLM-backed reviewer launch.",
+      "nextAction": "Extend the dev/skill fixture and audit to capture an explicit user review-budget confirmation or rewrite the claim to match the product-owned budget-statement boundary.",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
@@ -4764,7 +4786,7 @@
       ],
       "summary": "The user should confirm or adjust that review budget before the skill launches subagents or other LLM-backed review.",
       "unresolvedQuestions": [
-        "Which observable event should the fixture treat as reviewer launch?"
+        "Should the maintained fixture record explicit user confirmation for the review budget before reviewer launch, or should the contract be narrowed to a product-owned budget statement?"
       ],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
@@ -9261,9 +9283,21 @@
       "claimFingerprint": "sha256:c2d13b106d686bfc800b45aee200b2477c8695d5d6de2940585b98c6c087a5f8",
       "claimId": "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-20",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "The packet includes no direct verified evidence; the claim explicitly needs behavior evidence that the bundled skill chooses the claim-review branch correctly.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:ff9c50422450d839186610441883579359986d748f622376afa0bb4bce1894e9",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-dev-skill-branch-proof-2026-05-04.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-claim-discovery-workflow-md-186",
+            "claim-docs-contracts-claim-discovery-workflow-md-195",
+            "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-20"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by the Codex reviewer-launch and review-to-eval dev/skill dogfood flows: after raw discovery and claim show, the skill prepares review input, launches or writes a bounded review result, applies and validates it in the later branch, and plans evals without treating raw discovery as final proof.",
       "groupHints": [
         "audience:developer",
         "cautilus-eval",
@@ -9272,7 +9306,7 @@
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Create and run a maintained dev/skill fixture that exercises claim-review branch selection and verifies raw discovery is not treated as the finished answer.",
+      "nextAction": "Keep review-to-eval dogfood as the maintained proof that raw discovery is an input to review/eval planning, not a finished answer.",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
@@ -11578,8 +11612,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 135,
-      "unknown": 188
+      "satisfied": 138,
+      "unknown": 185
     },
     "byLifecycle": {
       "new": 323
@@ -11760,7 +11794,7 @@
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "reviewApplication": {
-    "appliedUpdateCount": 18,
+    "appliedUpdateCount": 4,
     "appliedUpdates": [
       {
         "appliedFields": [
@@ -11768,13 +11802,14 @@
           "verificationReadiness",
           "evidenceStatus",
           "reviewStatus",
+          "recommendedEvalSurface",
           "evidenceRefs",
           "nextAction",
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-readme-md-129",
-        "clusterId": "cluster-current-deterministic-proof-batch"
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-186",
+        "clusterId": "cluster-dev-skill-first-scan-and-review-budget"
       },
       {
         "appliedFields": [
@@ -11782,13 +11817,14 @@
           "verificationReadiness",
           "evidenceStatus",
           "reviewStatus",
+          "recommendedEvalSurface",
           "evidenceRefs",
           "nextAction",
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-docs-cli-reference-md-120",
-        "clusterId": "cluster-current-deterministic-proof-batch"
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-195",
+        "clusterId": "cluster-dev-skill-first-scan-and-review-budget"
       },
       {
         "appliedFields": [
@@ -11796,227 +11832,33 @@
           "verificationReadiness",
           "evidenceStatus",
           "reviewStatus",
+          "recommendedEvalSurface",
+          "nextAction",
+          "evidenceStatusReason",
+          "unresolvedQuestions"
+        ],
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-214",
+        "clusterId": "cluster-dev-skill-first-scan-and-review-budget"
+      },
+      {
+        "appliedFields": [
+          "recommendedProof",
+          "verificationReadiness",
+          "evidenceStatus",
+          "reviewStatus",
+          "recommendedEvalSurface",
           "evidenceRefs",
           "nextAction",
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-docs-cli-reference-md-270",
-        "clusterId": "cluster-current-deterministic-proof-batch"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-cli-reference-md-451",
-        "clusterId": "cluster-current-deterministic-proof-batch"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-adapter-contract-md-315",
-        "clusterId": "cluster-current-deterministic-proof-batch"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-guides-consumer-adoption-md-48",
-        "clusterId": "cluster-current-deterministic-proof-batch"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-specs-user-index-spec-md-25",
-        "clusterId": "cluster-current-deterministic-proof-batch"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "nextAction",
-          "evidenceStatusReason",
-          "groupHints",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-7",
-        "clusterId": "cluster-current-deterministic-proof-batch"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-96",
-        "clusterId": "cluster-current-deterministic-proof-batch"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-live-run-invocation-batch-md-166",
-        "clusterId": "cluster-current-deterministic-proof-batch"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-reporting-md-50",
-        "clusterId": "cluster-current-deterministic-proof-batch"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-reporting-md-108",
-        "clusterId": "cluster-current-deterministic-proof-batch"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "nextAction",
-          "evidenceStatusReason",
-          "groupHints",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-runner-readiness-md-55",
-        "clusterId": "cluster-current-deterministic-proof-batch"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-workbench-instance-discovery-md-72",
-        "clusterId": "cluster-current-deterministic-proof-batch"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "nextAction",
-          "evidenceStatusReason",
-          "groupHints",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-workbench-instance-discovery-md-100",
-        "clusterId": "cluster-current-deterministic-proof-batch"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-11",
-        "clusterId": "cluster-current-deterministic-proof-batch"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-12",
-        "clusterId": "cluster-current-deterministic-proof-batch"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-184",
-        "clusterId": "cluster-current-deterministic-proof-batch"
+        "claimId": "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-20",
+        "clusterId": "cluster-dev-skill-first-scan-and-review-budget"
       }
     ],
     "claimsPath": ".cautilus/claims/latest.json",
     "mergeDecisions": [],
-    "reviewResultPath": ".cautilus/claims/review-result-current-deterministic-proof-batch-2026-05-03.json",
+    "reviewResultPath": ".cautilus/claims/review-result-dev-skill-branch-proof-2026-05-04.json",
     "schemaVersion": "cautilus.claim_review_result.v1",
     "unresolvedQuestions": [],
     "provenanceMode": "aggregate-current-review-results"
@@ -12142,6 +11984,16 @@
         "path": ".cautilus/claims/review-input-agent-plan-cautilus-eval-2026-05-04.json",
         "reviewedCandidateCount": 12
       }
+    },
+    {
+      "clusterCount": 1,
+      "reviewRun": {
+        "createdAt": "2026-05-04",
+        "mode": "evidence-application",
+        "reviewer": "codex-dev-skill-dogfood-proof",
+        "summary": "Apply verified Codex dev/skill dogfood evidence for first-scan scope confirmation and raw-discovery-to-review/eval branch behavior. Leave review-budget user-confirmation as an unresolved proof target."
+      },
+      "schemaVersion": "cautilus.claim_review_result.v1"
     }
   ],
   "schemaVersion": "cautilus.claim_proof_plan.v1",
