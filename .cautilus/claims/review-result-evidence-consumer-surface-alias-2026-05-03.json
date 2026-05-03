@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-03T00:00:00Z",
+    "evidencePolicy": "Only mark the documented behavior-surface alias claim satisfied; do not infer broader compatibility for unnamed deprecated surfaces."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-consumer-surface-alias",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-guides-consumer-adoption-md-107",
+          "claimFingerprint": "sha256:7fccb1b11ea6b2c9ccff7fa0f28cde48c29e17d866287b3b45f8a50628896265",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "whyThisLayer": "The claim names behavior-intent schema vocabulary and input alias normalization, which are deterministic runtime contract behavior.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by a focused runtime unit test that accepts workflow_conversation input and returns the canonical conversation_continuity behavior surface while the schema remains cautilus.behavior_intent.v1.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-consumer-surface-alias-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:a384f4836ed5c83ccde63a9a9943904bf970f7f6c45f3e2e33cd4cacd1ad271e",
+              "supportsClaimIds": [
+                "claim-docs-guides-consumer-adoption-md-107"
+              ]
+            }
+          ],
+          "nextAction": "Keep the alias-normalization test current when changing behavior-intent surface vocabulary or the v1 schema contract.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

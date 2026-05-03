@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 237
+          "unknown": 236
         },
         "byReviewStatus": {
-          "heuristic": 237
+          "heuristic": 236
         },
-        "count": 237,
+        "count": 236,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -24,12 +24,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 42
+          "satisfied": 43
         },
         "byReviewStatus": {
-          "agent-reviewed": 42
+          "agent-reviewed": 43
         },
-        "count": 42,
+        "count": 43,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -43,22 +43,22 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 79
+          "unknown": 78
         },
         "byReviewStatus": {
           "agent-reviewed": 9,
-          "heuristic": 67,
+          "heuristic": 66,
           "human-reviewed": 3
         },
-        "count": 79,
+        "count": 78,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
           "claim-docs-contracts-adapter-contract-md-424",
-          "claim-docs-guides-consumer-adoption-md-107",
           "claim-docs-specs-user-evaluation-spec-md-7",
           "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
-          "claim-docs-specs-user-reviewable-artifacts-spec-md-12"
+          "claim-docs-specs-user-reviewable-artifacts-spec-md-12",
+          "claim-docs-contracts-claim-discovery-workflow-md-21"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -195,8 +195,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 42,
-      "unknown": 273
+      "satisfied": 43,
+      "unknown": 272
     },
     "byLifecycle": {
       "new": 315
@@ -207,8 +207,8 @@
       "human-auditable": 70
     },
     "byReviewStatus": {
-      "agent-reviewed": 75,
-      "heuristic": 237,
+      "agent-reviewed": 76,
+      "heuristic": 236,
       "human-reviewed": 3
     },
     "byVerificationReadiness": {
@@ -381,7 +381,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 42,
+    "satisfiedClaimCount": 43,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-78",
@@ -1006,6 +1006,25 @@
         "summary": "`cautilus doctor --scope repo` requires the target directory to be a git repository with at least one commit."
       },
       {
+        "claimId": "claim-docs-guides-consumer-adoption-md-107",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:a384f4836ed5c83ccde63a9a9943904bf970f7f6c45f3e2e33cd4cacd1ad271e",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-consumer-surface-alias-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-guides-consumer-adoption-md-107"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The schema version stays at `v1`, but some surface strings have been renamed for legacy vocabulary hygiene."
+      },
+      {
         "claimId": "claim-docs-guides-evaluation-process-md-52",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -1199,17 +1218,19 @@
   },
   "gitCommit": "3819d259fd796dc6fd5777b579f6b013c0dcb508",
   "gitState": {
-    "changedFileCount": 16,
+    "changedFileCount": 18,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
       ".cautilus/claims/discovery-review.md",
       ".cautilus/claims/evidence-active-run-and-claim-discover-2026-05-03.json",
       ".cautilus/claims/evidence-evaluation-process-artifacts-2026-05-03.json",
+      ".cautilus/claims/evidence-gepa-sparse-evidence-block-2026-05-03.json",
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
       ".cautilus/claims/review-result-evidence-active-run-and-claim-discover-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-evaluation-process-artifacts-2026-05-03.json",
+      ".cautilus/claims/review-result-evidence-gepa-sparse-evidence-block-2026-05-03.json",
       ".cautilus/claims/status-summary.json",
       ".cautilus/claims/validation-evidenced-typed-runners.json",
       "charness-artifacts/debug/debug-2026-05-03-evaluation-process-concern-proof.md",
@@ -1226,7 +1247,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "88bcf2efd1d47ea485f102a7c4286b1cfc1d2f23",
+    "currentGitCommit": "a815639a974b38549ef5afd360d9d4f8e8288c7f",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "3819d259fd796dc6fd5777b579f6b013c0dcb508",
@@ -1253,7 +1274,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 209,
+    "heuristicClaimsReadyForReview": 208,
     "needsAlignment": 31,
     "needsScenario": 8
   },

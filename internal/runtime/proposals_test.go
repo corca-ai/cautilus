@@ -3,6 +3,8 @@ package runtime
 import (
 	"strings"
 	"testing"
+
+	"github.com/corca-ai/cautilus/internal/contracts"
 )
 
 // TestNormalizeChatbotProposalCandidatesRespectsWordBoundary asserts that the
@@ -313,5 +315,11 @@ func TestBuildBehaviorIntentProfileNormalizesDeprecatedSurfaceAlias(t *testing.T
 	}
 	if profile.BehaviorSurface != "conversation_continuity" {
 		t.Fatalf("expected behaviorSurface to normalize to conversation_continuity, got %q", profile.BehaviorSurface)
+	}
+	if contracts.BehaviorIntentSchema != "cautilus.behavior_intent.v1" {
+		t.Fatalf("expected behavior intent schema contract to stay v1, got %q", contracts.BehaviorIntentSchema)
+	}
+	if profile.SchemaVersion != contracts.BehaviorIntentSchema {
+		t.Fatalf("expected profile schema to use behavior intent contract %q, got %q", contracts.BehaviorIntentSchema, profile.SchemaVersion)
 	}
 }

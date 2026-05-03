@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-consumer-surface-alias-2026-05-03",
+  "createdForClaimIds": [
+    "claim-docs-guides-consumer-adoption-md-107"
+  ],
+  "repoCommit": "a815639a974b38549ef5afd360d9d4f8e8288c7f",
+  "summary": "This bundle records deterministic proof that the behavior-intent schema remains v1 while a deprecated behavior surface name is accepted and normalized to its canonical replacement.",
+  "evidenceScope": {
+    "targetSurface": "behavior intent deprecated surface alias normalization",
+    "claimBoundary": "Only the documented workflow_conversation to conversation_continuity alias is marked satisfied.",
+    "notClaimed": [
+      "Every historical behavior surface name has a compatibility alias",
+      "New emitters are mechanically prevented from writing deprecated names",
+      "The public docs enumerate every future alias that may be introduced"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/runtime -run 'TestBuildBehaviorIntentProfileNormalizesDeprecatedSurfaceAlias' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "notableAssertions": [
+          "an input intent profile may use the deprecated workflow_conversation behaviorSurface",
+          "BuildBehaviorIntentProfile accepts that deprecated input name",
+          "the returned profile uses the canonical conversation_continuity behaviorSurface",
+          "the behavior-intent schema constant remains cautilus.behavior_intent.v1"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "internal/contracts/constants.go",
+      "kind": "behavior-intent-schema-version-constant",
+      "contentHash": "sha256:a18d2a606e4abc28f0c428bc79331768c48c8d26b851582cad3c253beac8ed96"
+    },
+    {
+      "path": "internal/runtime/intent.go",
+      "kind": "behavior-intent-surface-catalog-and-alias-map",
+      "contentHash": "sha256:ca9b806c5739f04df3330994021866a90f05b9ba36f2c9e3479e186cb045dc71"
+    },
+    {
+      "path": "internal/runtime/proposals_test.go",
+      "kind": "deprecated-surface-alias-normalization-test",
+      "contentHash": "sha256:b49b373dc1fb10b910fda036051bd376552514eb80ff943d3bd575a5faa3d66e"
+    },
+    {
+      "path": "docs/guides/consumer-adoption.md",
+      "kind": "consumer-facing-claim-source",
+      "contentHash": "sha256:061b87bab1dec62dfdc702ed6443b9a62468e22f476dfe750b0a933014fd8733"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The runtime catalog keeps the behavior-intent schema at v1, maps workflow_conversation to conversation_continuity, and the focused unit test proves the deprecated input alias is silently normalized."
+  }
+}

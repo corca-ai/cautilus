@@ -2397,8 +2397,19 @@
       "claimFingerprint": "sha256:7fccb1b11ea6b2c9ccff7fa0f28cde48c29e17d866287b3b45f8a50628896265",
       "claimId": "claim-docs-guides-consumer-adoption-md-107",
       "claimSemanticGroup": "Release and packaging",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:a384f4836ed5c83ccde63a9a9943904bf970f7f6c45f3e2e33cd4cacd1ad271e",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-consumer-surface-alias-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-guides-consumer-adoption-md-107"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by a focused runtime unit test that accepts workflow_conversation input and returns the canonical conversation_continuity behavior surface while the schema remains cautilus.behavior_intent.v1.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -2406,9 +2417,9 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "nextAction": "Keep the alias-normalization test current when changing behavior-intent surface vocabulary or the v1 schema contract.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "The schema version stays at `v1`, but some surface strings have been renamed for legacy vocabulary hygiene.",
@@ -2417,8 +2428,9 @@
         }
       ],
       "summary": "The schema version stays at `v1`, but some surface strings have been renamed for legacy vocabulary hygiene.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim names behavior-intent schema vocabulary and input alias normalization, which are deterministic runtime contract behavior."
     },
     {
       "claimAudience": "user",
@@ -10059,8 +10071,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 42,
-      "unknown": 273
+      "satisfied": 43,
+      "unknown": 272
     },
     "byLifecycle": {
       "new": 315
@@ -10071,8 +10083,8 @@
       "human-auditable": 70
     },
     "byReviewStatus": {
-      "agent-reviewed": 75,
-      "heuristic": 237,
+      "agent-reviewed": 76,
+      "heuristic": 236,
       "human-reviewed": 3
     },
     "byVerificationReadiness": {

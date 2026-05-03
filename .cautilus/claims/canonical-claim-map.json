@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:da3f07e7481d71cc72049dd7dc93b6989e55626bf586b1fa030cc1f3def108f5"
+      "contentHash": "sha256:a141ae100ab9d0b228ffaad94e37a03e4b3090915bfc5a936ab13b26768f4db1"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -307,12 +307,12 @@
     },
     "byUserCanonicalClaimId": {
       "U1": 21,
-      "U2": 30,
+      "U2": 31,
       "U3": 5,
       "U4": 7,
       "U5": 10,
       "U6": 5,
-      "U7": 4
+      "U7": 3
     },
     "byMaintainerCanonicalClaimId": {
       "M1": 18,
@@ -763,7 +763,7 @@
     {
       "canonicalClaimId": "U2",
       "title": "Evaluation",
-      "absorbedRawClaimCount": 30,
+      "absorbedRawClaimCount": 31,
       "absorbedRawClaimIds": [
         "claim-readme-md-3",
         "claim-readme-md-13",
@@ -780,6 +780,7 @@
         "claim-docs-cli-reference-md-505",
         "claim-docs-guides-consumer-adoption-md-29",
         "claim-docs-guides-consumer-adoption-md-48",
+        "claim-docs-guides-consumer-adoption-md-107",
         "claim-docs-guides-evaluation-process-md-10",
         "claim-docs-guides-evaluation-process-md-253",
         "claim-docs-guides-evaluation-process-md-269",
@@ -888,6 +889,12 @@
           "requiresSemanticReview": true
         },
         {
+          "claimId": "claim-docs-guides-consumer-adoption-md-107",
+          "claimFingerprint": "sha256:7fccb1b11ea6b2c9ccff7fa0f28cde48c29e17d866287b3b45f8a50628896265",
+          "mappingConfidence": "low",
+          "requiresSemanticReview": true
+        },
+        {
           "claimId": "claim-docs-guides-evaluation-process-md-10",
           "claimFingerprint": "sha256:5c3061a13544c3262868dcf8badb89865d72baf4fa92d20e8ace297f22d0cda5",
           "mappingConfidence": "medium",
@@ -979,21 +986,21 @@
         }
       ],
       "byEvidenceStatus": {
-        "satisfied": 7,
+        "satisfied": 8,
         "unknown": 23
       },
       "byReviewStatus": {
-        "agent-reviewed": 16,
+        "agent-reviewed": 17,
         "heuristic": 14
       },
       "byRecommendedProof": {
         "cautilus-eval": 13,
-        "deterministic": 7,
+        "deterministic": 8,
         "human-auditable": 10
       },
       "byMappingConfidence": {
         "high": 5,
-        "low": 8,
+        "low": 9,
         "medium": 17
       }
     },
@@ -1294,20 +1301,13 @@
     {
       "canonicalClaimId": "U7",
       "title": "Proof Debt",
-      "absorbedRawClaimCount": 4,
+      "absorbedRawClaimCount": 3,
       "absorbedRawClaimIds": [
-        "claim-docs-guides-consumer-adoption-md-107",
         "claim-docs-specs-user-proof-debt-spec-md-7",
         "claim-docs-specs-user-proof-debt-spec-md-14",
         "claim-docs-specs-user-proof-debt-spec-md-19"
       ],
       "absorbedRawClaims": [
-        {
-          "claimId": "claim-docs-guides-consumer-adoption-md-107",
-          "claimFingerprint": "sha256:7fccb1b11ea6b2c9ccff7fa0f28cde48c29e17d866287b3b45f8a50628896265",
-          "mappingConfidence": "low",
-          "requiresSemanticReview": true
-        },
         {
           "claimId": "claim-docs-specs-user-proof-debt-spec-md-7",
           "claimFingerprint": "sha256:16155d7a86d2048fb6bca84210717dc0ca9c5396495dbad3a301c83c5f749273",
@@ -1328,18 +1328,17 @@
         }
       ],
       "byEvidenceStatus": {
-        "unknown": 4
+        "unknown": 3
       },
       "byReviewStatus": {
-        "heuristic": 4
+        "heuristic": 3
       },
       "byRecommendedProof": {
         "cautilus-eval": 1,
-        "deterministic": 3
+        "deterministic": 2
       },
       "byMappingConfidence": {
-        "high": 3,
-        "low": 1
+        "high": 3
       }
     }
   ],
@@ -5797,24 +5796,22 @@
       "claimAudience": "user",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-to-verify",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
+      "evidenceStatus": "satisfied",
+      "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:7fccb1b11ea6b2c9ccff7fa0f28cde48c29e17d866287b3b45f8a50628896265",
-      "canonicalClaimId": "U7",
-      "score": 6,
-      "runnerUpCanonicalClaimId": "U1",
+      "canonicalClaimId": "U2",
+      "score": 4,
+      "runnerUpCanonicalClaimId": "U7",
       "runnerUpScore": 4,
-      "scoreMargin": 2,
+      "scoreMargin": 0,
       "mappingConfidence": "low",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
-        "add",
-        "but",
-        "check",
+        "contract",
         "deterministic",
-        "stay",
-        "thi"
+        "surface",
+        "test"
       ]
     },
     {
