@@ -890,7 +890,7 @@ func TestRunScenariosJSONReturnsThreeNormalizationFamilies(t *testing.T) {
 		}
 		name, _ := obj["family"].(string)
 		seen[name] = true
-		for _, field := range []string{"summary", "exampleInput", "nextStepCli", "contractDoc", "inputSchema", "behaviorFocus"} {
+		for _, field := range []string{"summary", "exampleInput", "exampleInputCli", "nextStepCli", "contractDoc", "inputSchema", "behaviorFocus"} {
 			if value, _ := obj[field].(string); strings.TrimSpace(value) == "" {
 				t.Fatalf("normalization family %q missing %s: %#v", name, field, obj)
 			}

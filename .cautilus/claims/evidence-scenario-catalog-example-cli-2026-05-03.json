@@ -1,0 +1,85 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-scenario-catalog-example-cli-2026-05-03",
+  "createdForClaimIds": [
+    "claim-readme-md-166"
+  ],
+  "repoCommit": "bc80621e48ee92e233432f4bbd78c3ebd5f46051",
+  "summary": "This bundle records deterministic proof that every scenario-normalization catalog entry exposes `exampleInputCli`, letting operators or wrappers inspect minimal packet shapes without opening fixture files first.",
+  "evidenceScope": {
+    "targetSurface": "scenario normalization catalog",
+    "claimBoundary": "Only the README claim that each catalog entry includes `exampleInputCli` is marked satisfied.",
+    "notClaimed": [
+      "Every scenario proposal command is fully documented by the catalog",
+      "The example input CLI proves scenario quality",
+      "Every future catalog family will remain covered without the test suite"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "./bin/cautilus scenarios --json",
+      "exitCode": 0,
+      "output": "/tmp/cautilus-scenarios-catalog.json",
+      "outputHash": "sha256:e2a4c111f37a68921179b55e8bbc59bee812287ebd9bd6be64df5821b385f2bc",
+      "observed": {
+        "schemaVersion": "cautilus.scenario_normalization_catalog.v1",
+        "normalizationFamilyCount": 3,
+        "missingExampleInputCli": [],
+        "families": [
+          {
+            "family": "chatbot",
+            "exampleInputCli": "cautilus scenario normalize chatbot --example-input"
+          },
+          {
+            "family": "skill",
+            "exampleInputCli": "cautilus scenario normalize skill --example-input"
+          },
+          {
+            "family": "workflow",
+            "exampleInputCli": "cautilus scenario normalize workflow --example-input"
+          }
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/app -run 'TestRunScenariosJSONReturnsThreeNormalizationFamilies|TestCLIScenariosExposeExampleInputCLI'",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "status": "ok"
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "internal/app/app_test.go",
+      "kind": "scenario-catalog-cli-tests",
+      "contentHash": "sha256:519e041bc5bec5e74933db93d0a8809b63666c7745759229bfec5a4e5c9f1524"
+    },
+    {
+      "path": "internal/app/remaining_commands.go",
+      "kind": "scenario-catalog-command-implementation",
+      "contentHash": "sha256:1f7185d41743f903f072ac1f567fb663244a9de0599b9242e6b645a427c324e5"
+    },
+    {
+      "path": "fixtures/scenario-proposals/chatbot-input.json",
+      "kind": "chatbot-example-input",
+      "contentHash": "sha256:06d9eb767740b8599b4c560bfe299b85e9f28fd3f41f7085140bc2a4befade13"
+    },
+    {
+      "path": "fixtures/scenario-proposals/skill-input.json",
+      "kind": "skill-example-input",
+      "contentHash": "sha256:e0ffc730e814268e007cca995d8c4d03bbf5fe16a5f2a9eca94d6685281df80e"
+    },
+    {
+      "path": "fixtures/scenario-proposals/workflow-input.json",
+      "kind": "workflow-example-input",
+      "contentHash": "sha256:8f1ab8ace4f932191059e10da8220f47a8a4358f278e6e52ffff949185b73d3a"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The live catalog has three entries and each entry includes a non-empty `exampleInputCli`; focused CLI tests protect the catalog shape."
+  }
+}

@@ -721,17 +721,28 @@
       "claimFingerprint": "sha256:cb717dd9c88c18787242dd04a0d050f2d64914b8a1b7c17ce68f7ed09436899c",
       "claimId": "claim-readme-md-166",
       "claimSemanticGroup": "Packets and reporting",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:4fb0bbb4e58ed6170a9326d6b34b42b865250117b7e27dae0b697c6202b581dd",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-scenario-catalog-example-cli-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-readme-md-166"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by the checked-in scenario-catalog evidence bundle: `cautilus scenarios --json` returns three normalization families and each has a non-empty `exampleInputCli`; focused CLI tests require that field on every catalog family.",
       "groupHints": [
         "audience:user",
         "deterministic",
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic packet, catalog, schema, or renderer proof for this claim.",
+      "nextAction": "Keep this claim covered by scenario catalog CLI tests when adding or changing normalization families.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Each catalog entry now also includes `exampleInputCli`, so an operator or wrapper can inspect a minimal valid packet shape without opening a fixture path first.",
@@ -740,6 +751,7 @@
         }
       ],
       "summary": "Each catalog entry now also includes `exampleInputCli`, so an operator or wrapper can inspect a minimal valid packet shape without opening a fixture path first.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names packet, catalog, or renderer behavior that should be protected by deterministic command, schema, or render tests."
     },
@@ -9995,8 +10007,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 20,
-      "unknown": 302
+      "satisfied": 21,
+      "unknown": 301
     },
     "byLifecycle": {
       "new": 322
@@ -10007,8 +10019,8 @@
       "human-auditable": 66
     },
     "byReviewStatus": {
-      "agent-reviewed": 62,
-      "heuristic": 257,
+      "agent-reviewed": 63,
+      "heuristic": 256,
       "human-reviewed": 3
     },
     "byVerificationReadiness": {
@@ -10197,6 +10209,12 @@
     "provenanceMode": "aggregate-current-review-results"
   },
   "reviewRuns": [
+    {
+      "clusterCount": 1,
+      "reviewRun": {},
+      "schemaVersion": "cautilus.claim_review_result.v1",
+      "sourceReviewInput": {}
+    },
     {
       "clusterCount": 1,
       "reviewRun": {},

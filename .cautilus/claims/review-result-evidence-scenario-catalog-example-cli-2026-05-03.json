@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-03T00:00:00Z",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied when a checked-in evidence bundle records direct or verified proof for the claim boundary."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-readme-scenario-catalog-example-cli",
+      "claimUpdates": [
+        {
+          "claimId": "claim-readme-md-166",
+          "claimFingerprint": "sha256:cb717dd9c88c18787242dd04a0d050f2d64914b8a1b7c17ce68f7ed09436899c",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the checked-in scenario-catalog evidence bundle: `cautilus scenarios --json` returns three normalization families and each has a non-empty `exampleInputCli`; focused CLI tests require that field on every catalog family.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-scenario-catalog-example-cli-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:4fb0bbb4e58ed6170a9326d6b34b42b865250117b7e27dae0b697c6202b581dd",
+              "supportsClaimIds": [
+                "claim-readme-md-166"
+              ]
+            }
+          ],
+          "nextAction": "Keep this claim covered by scenario catalog CLI tests when adding or changing normalization families.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}
