@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-refresh-plan-state-transition-2026-05-03",
+  "createdForClaimIds": [
+    "claim-docs-contracts-claim-discovery-workflow-md-553"
+  ],
+  "repoCommit": "08c15db6c241eca1407db151b2ba94c14898669c",
+  "summary": "This bundle records deterministic proof that refresh-plan output records the state-transition facts needed before an agent refreshes or reviews prior claim state.",
+  "evidenceScope": {
+    "targetSurface": "claim discover --previous --refresh-plan packet shape",
+    "claimBoundary": "Only the deterministic refresh-plan packet fields named by the contract are marked satisfied. This does not prove the live bundled skill always selects the refresh branch correctly.",
+    "notClaimed": [
+      "LLM-backed claim review budget selection",
+      "Every future skill host selects refresh from prior JSON without human error",
+      "The refresh plan mutates the saved claim map"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/runtime -run 'TestBuildClaimRefreshPlanMarksChangedSources|TestBuildClaimRefreshPlanRecordsStaleEvidenceReasons|TestBuildClaimRefreshPlanIgnoresCommittedClaimPacketDrift|TestDiscoverClaimProofPlanMarksChangedCarriedEvidenceStale|TestDiscoverClaimProofPlanMarksEvidenceBundleClaimMismatchStale' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "notableAssertions": [
+          "refresh-plan packets expose baseCommit, targetCommit, targetPolicy, workingTreePolicy, changedSources, claimPlan, refreshSummary, claimState, and effectiveScanScope",
+          "changed claim sources become changed lifecycle entries while unchanged claims are counted as carried forward",
+          "refreshSummary records changed source, changed claim, carried-forward claim, and stale evidence counts",
+          "staleEvidence records claim ids and concrete stale evidence reasons such as changed contentHash",
+          "committed claim-packet drift is recorded without marking source claims changed"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "internal/runtime/claim_discovery.go",
+      "kind": "refresh-plan-runtime",
+      "contentHash": "sha256:f4bd131602fe5a15d6cc00137ff96fabc509d231659642a976542d90d33ca2bc"
+    },
+    {
+      "path": "internal/runtime/claim_discovery_test.go",
+      "kind": "refresh-plan-tests",
+      "contentHash": "sha256:91f086183b016d6b5cc6a80c44bdf381c2e9d697122699c3ce3636e920f6ff5b"
+    },
+    {
+      "path": "docs/contracts/claim-discovery-workflow.md",
+      "kind": "claim-discovery-workflow-claim-source",
+      "contentHash": "sha256:e477166c450caf2d6f8bf8e420b02beb5377e04146438e62a5a5e7add9fed890"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The focused runtime tests prove the refresh-plan packet records baseline and target commits, target policy, changed-source and carried-forward state, dirty working tree policy, and stale evidence reasons without mutating saved claim state."
+  }
+}

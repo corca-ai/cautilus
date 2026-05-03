@@ -2416,6 +2416,68 @@ func TestBuildClaimRefreshPlanMarksChangedSources(t *testing.T) {
 	}
 }
 
+func TestBuildClaimRefreshPlanRecordsStaleEvidenceReasons(t *testing.T) {
+	repoRoot := t.TempDir()
+	mustWriteFile(t, filepath.Join(repoRoot, "README.md"), "Agents must preserve claim evidence state.\n")
+	evidencePath := filepath.Join(repoRoot, ".cautilus", "claims", "evidence.json")
+	mustWriteFile(t, evidencePath, `{"schemaVersion":"cautilus.claim_evidence_bundle.v1","createdForClaimIds":["claim-readme-md-1"],"decision":{"evidenceStatus":"satisfied"}}`)
+	oldHash, err := fileSHA256(evidencePath)
+	if err != nil {
+		t.Fatalf("fileSHA256 returned error: %v", err)
+	}
+	mustWriteFile(t, evidencePath, `{"schemaVersion":"cautilus.claim_evidence_bundle.v1","createdForClaimIds":["claim-readme-md-1"],"decision":{"evidenceStatus":"satisfied"},"changed":true}`)
+	previous := filepath.Join(repoRoot, "claims.json")
+	mustWriteFile(t, previous, fmt.Sprintf(`{
+  "schemaVersion": "cautilus.claim_proof_plan.v1",
+  "gitCommit": "abc123",
+  "claimCandidates": [
+    {
+      "claimId": "claim-readme-md-1",
+      "evidenceStatus": "satisfied",
+      "evidenceRefs": [
+        {
+          "kind": "cautilus-claim-evidence-bundle",
+          "path": ".cautilus/claims/evidence.json",
+          "matchKind": "verified",
+          "contentHash": %q,
+          "supportsClaimIds": ["claim-readme-md-1"]
+        }
+      ],
+      "sourceRefs": [{"path": "README.md"}]
+    }
+  ]
+}
+`, oldHash))
+
+	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{
+		RepoRoot:        repoRoot,
+		PreviousPath:    previous,
+		RefreshPlanOnly: true,
+	})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan refresh returned error: %v", err)
+	}
+	staleEvidence := arrayOrEmpty(plan["staleEvidence"])
+	if len(staleEvidence) != 1 {
+		t.Fatalf("expected one stale evidence record, got %#v", staleEvidence)
+	}
+	staleRecord := asMap(staleEvidence[0])
+	reasons := stringArrayOrEmpty(staleRecord["reasons"])
+	if staleRecord["claimId"] != "claim-readme-md-1" || len(reasons) != 1 || !strings.Contains(reasons[0], "contentHash changed") {
+		t.Fatalf("expected stale evidence reason to record changed contentHash, got %#v", staleRecord)
+	}
+	refreshSummary := asMap(plan["refreshSummary"])
+	if refreshSummary["staleEvidenceClaimCount"] != 1 || refreshSummary["changedEvidenceRefCount"] != 1 {
+		t.Fatalf("expected refresh summary to count stale evidence refs, got %#v", refreshSummary)
+	}
+	if plan["targetPolicy"] != "current-head" {
+		t.Fatalf("expected refresh plan to record target policy, got %#v", plan["targetPolicy"])
+	}
+	if plan["workingTreePolicy"] != "excluded" || refreshSummary["workingTreePolicy"] != "excluded" {
+		t.Fatalf("expected refresh plan to record dirty working tree treatment, got plan=%#v summary=%#v", plan["workingTreePolicy"], refreshSummary["workingTreePolicy"])
+	}
+}
+
 func TestBuildClaimRefreshPlanIgnoresCommittedClaimPacketDrift(t *testing.T) {
 	repoRoot := t.TempDir()
 	if err := execGit(repoRoot, "init"); err != nil {

@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-03T09:10:47Z",
+    "evidencePolicy": "Only mark the deterministic refresh-plan packet field contract satisfied; do not infer skill-host branch selection proof."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-refresh-plan-state-transition",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-553",
+          "claimFingerprint": "sha256:ec44ab256f9a1f76a634ff4891760069518ff698390dc48dbf9b082c91fa88dd",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "whyThisLayer": "The claim names deterministic refresh-plan output fields and state-transition facts, which should be covered by runtime packet tests.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by focused runtime tests: refresh-plan output records baseline and target commits, target policy, working-tree policy, changed source and carried-forward counts, stale evidence reasons, and does not update the saved claim map.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-refresh-plan-state-transition-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:64760f3e89d05ec098a9d8f92fb2047ef847ee002e53698431bb39d62e30e17f",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-553"
+              ]
+            }
+          ],
+          "nextAction": "Keep refresh-plan packet tests current when changing prior-claim-state, stale-evidence, or working-tree policy fields.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

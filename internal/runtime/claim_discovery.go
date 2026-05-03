@@ -3317,6 +3317,10 @@ func BuildClaimRefreshPlan(options ClaimRefreshPlanOptions) (map[string]any, err
 	changedClaimCount := 0
 	carriedForwardClaimCount := 0
 	changedClaimSourceCounts := map[string]int{}
+	staleEvidence := []any{}
+	changedEvidenceRefs := 0
+	missingEvidenceRefs := 0
+	unsupportedEvidenceRefs := 0
 	for _, raw := range previousCandidates {
 		entry := asMap(raw)
 		claimID := stringOrEmpty(entry["claimId"])
@@ -3345,8 +3349,22 @@ func BuildClaimRefreshPlan(options ClaimRefreshPlanOptions) (map[string]any, err
 			"claimId":   claimID,
 			"lifecycle": lifecycle,
 		})
+		reconciliation := reconcileCarriedEvidenceRefs(options.RepoRoot, cloneMap(entry))
+		if reconciliation.staleClaim {
+			changedEvidenceRefs += reconciliation.changedRefs
+			missingEvidenceRefs += reconciliation.missingRefs
+			unsupportedEvidenceRefs += reconciliation.unsupportedRefs
+			staleEvidence = append(staleEvidence, map[string]any{
+				"claimId": claimID,
+				"reasons": stringSliceToAny(reconciliation.reasons),
+			})
+		}
 	}
 	refreshSummary := renderClaimRefreshSummary(baseCommit, targetCommit, changedSources, changedClaimCount, carriedForwardClaimCount, changedClaimSourceCounts)
+	refreshSummary["staleEvidenceClaimCount"] = len(staleEvidence)
+	refreshSummary["changedEvidenceRefCount"] = changedEvidenceRefs
+	refreshSummary["missingEvidenceRefCount"] = missingEvidenceRefs
+	refreshSummary["unsupportedEvidenceRefCount"] = unsupportedEvidenceRefs
 	if baseCommit != "" && targetCommit != "" && baseCommit != targetCommit && !changedFilesKnown {
 		refreshSummary["status"] = "unknown"
 		refreshSummary["summary"] = "Cautilus could not compare the saved claim map with the current checkout because git diff information is unavailable."
@@ -3357,10 +3375,12 @@ func BuildClaimRefreshPlan(options ClaimRefreshPlanOptions) (map[string]any, err
 		"previousPath":       filepath.ToSlash(filepath.Clean(options.PreviousPath)),
 		"baseCommit":         baseCommit,
 		"targetCommit":       targetCommit,
+		"targetPolicy":       "current-head",
 		"workingTreePolicy":  "excluded",
 		"changedFiles":       changedFiles,
 		"changedSources":     changedSources,
 		"claimPlan":          claims,
+		"staleEvidence":      staleEvidence,
 		"refreshSummary":     refreshSummary,
 		"claimState":         renderClaimState(options.Config),
 		"effectiveScanScope": renderClaimScanScope(options.Config),

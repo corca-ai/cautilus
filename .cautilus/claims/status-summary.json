@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 234
+          "unknown": 233
         },
         "byReviewStatus": {
-          "heuristic": 234
+          "heuristic": 233
         },
-        "count": 234,
+        "count": 233,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -24,12 +24,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 48
+          "satisfied": 49
         },
         "byReviewStatus": {
-          "agent-reviewed": 48
+          "agent-reviewed": 49
         },
-        "count": 48,
+        "count": 49,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -43,14 +43,14 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 73
+          "unknown": 72
         },
         "byReviewStatus": {
           "agent-reviewed": 6,
-          "heuristic": 64,
+          "heuristic": 63,
           "human-reviewed": 3
         },
-        "count": 73,
+        "count": 72,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -195,8 +195,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 48,
-      "unknown": 267
+      "satisfied": 49,
+      "unknown": 266
     },
     "byLifecycle": {
       "new": 315
@@ -207,8 +207,8 @@
       "human-auditable": 70
     },
     "byReviewStatus": {
-      "agent-reviewed": 78,
-      "heuristic": 234,
+      "agent-reviewed": 79,
+      "heuristic": 233,
       "human-reviewed": 3
     },
     "byVerificationReadiness": {
@@ -381,7 +381,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 48,
+    "satisfiedClaimCount": 49,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-78",
@@ -1196,6 +1196,25 @@
         "summary": "`cautilus claim discover` currently emits a deterministic, source-ref-backed proof-plan skeleton."
       },
       {
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-553",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:64760f3e89d05ec098a9d8f92fb2047ef847ee002e53698431bb39d62e30e17f",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-refresh-plan-state-transition-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-claim-discovery-workflow-md-553"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The skill may select refresh, but deterministic refresh-plan output must record baseline commit, target policy, changed sources, carried-forward claims, stale evidence reasons, and dirty-working-tree treatment."
+      },
+      {
         "claimId": "claim-docs-contracts-live-run-invocation-md-12",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -1315,7 +1334,7 @@
   },
   "gitCommit": "3819d259fd796dc6fd5777b579f6b013c0dcb508",
   "gitState": {
-    "changedFileCount": 32,
+    "changedFileCount": 36,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
@@ -1325,6 +1344,7 @@
       ".cautilus/claims/evidence-evaluation-process-artifacts-2026-05-03.json",
       ".cautilus/claims/evidence-gepa-sparse-evidence-block-2026-05-03.json",
       ".cautilus/claims/evidence-live-run-workspace-boundary-2026-05-03.json",
+      ".cautilus/claims/evidence-proof-class-downstream-summary-2026-05-03.json",
       ".cautilus/claims/evidence-review-summary-telemetry-2026-05-03.json",
       ".cautilus/claims/evidence-runner-readiness-branch-shape-2026-05-03.json",
       ".cautilus/claims/evidenced-typed-runners.json",
@@ -1334,16 +1354,19 @@
       ".cautilus/claims/review-result-evidence-evaluation-process-artifacts-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-gepa-sparse-evidence-block-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-live-run-workspace-boundary-2026-05-03.json",
+      ".cautilus/claims/review-result-evidence-proof-class-downstream-summary-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-review-summary-telemetry-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-runner-readiness-branch-shape-2026-05-03.json",
       ".cautilus/claims/review-result-reviewable-artifacts-proof-gap-2026-05-03.json",
       ".cautilus/claims/status-summary.json",
       ".cautilus/claims/validation-evidenced-typed-runners.json",
       "charness-artifacts/debug/debug-2026-05-03-evaluation-process-concern-proof.md",
+      "charness-artifacts/debug/debug-2026-05-03-parallel-output-boundary-false-alarm.md",
       "charness-artifacts/debug/latest.md",
       "internal/app/cli_smoke_test.go",
       "internal/runtime/claim_discovery.go",
       "internal/runtime/claim_discovery_test.go",
+      "internal/runtime/evaluation_proof_test.go",
       "internal/runtime/proposals_test.go",
       "internal/runtime/runner_readiness.go",
       "internal/runtime/runner_readiness_test.go",
@@ -1358,7 +1381,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "815694dd634c343c89fb59f44a6be3fb924e4050",
+    "currentGitCommit": "08c15db6c241eca1407db151b2ba94c14898669c",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "3819d259fd796dc6fd5777b579f6b013c0dcb508",
@@ -1385,7 +1408,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 206,
+    "heuristicClaimsReadyForReview": 205,
     "needsAlignment": 31,
     "needsScenario": 8
   },

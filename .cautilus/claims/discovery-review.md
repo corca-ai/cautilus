@@ -2299,7 +2299,21 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:683
 
-#### Deterministic gate / ready-to-verify / evidence satisfied (1)
+#### Deterministic gate / ready-to-verify / evidence satisfied (2)
+
+##### claim-docs-contracts-claim-discovery-workflow-md-553
+
+- Summary: The skill may select refresh, but deterministic refresh-plan output must record baseline commit, target policy, changed sources, carried-forward claims, stale evidence reasons, and dirty-working-tree treatment.
+- Current labels: audience=developer; proof=deterministic; readiness=ready-to-verify; evidence=satisfied
+- Suggested next action: Keep refresh-plan packet tests current when changing prior-claim-state, stale-evidence, or working-tree policy fields.
+- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
+- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
+- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
+- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
+- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
+- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
+- Human notes:
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:553
 
 ##### claim-skills-cautilus-skill-md-11
 
@@ -2315,7 +2329,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; skills/cautilus/SKILL.md:11
 
-#### Deterministic gate / ready-to-verify / evidence unknown (16)
+#### Deterministic gate / ready-to-verify / evidence unknown (15)
 
 ##### claim-docs-contracts-claim-discovery-workflow-md-201
 
@@ -2386,20 +2400,6 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
 - Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:39
-
-##### claim-docs-contracts-claim-discovery-workflow-md-553
-
-- Summary: The skill may select refresh, but deterministic refresh-plan output must record baseline commit, target policy, changed sources, carried-forward claims, stale evidence reasons, and dirty-working-tree treatment.
-- Current labels: audience=developer; proof=deterministic; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.
-- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
-- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
-- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
-- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
-- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
-- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
-- Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:553
 
 ##### claim-docs-contracts-claim-discovery-workflow-md-578
 

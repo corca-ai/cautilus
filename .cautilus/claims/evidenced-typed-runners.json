@@ -5221,8 +5221,19 @@
       "claimFingerprint": "sha256:ec44ab256f9a1f76a634ff4891760069518ff698390dc48dbf9b082c91fa88dd",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-553",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:64760f3e89d05ec098a9d8f92fb2047ef847ee002e53698431bb39d62e30e17f",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-refresh-plan-state-transition-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-claim-discovery-workflow-md-553"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by focused runtime tests: refresh-plan output records baseline and target commits, target policy, working-tree policy, changed source and carried-forward counts, stale evidence reasons, and does not update the saved claim map.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -5230,9 +5241,9 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "nextAction": "Keep refresh-plan packet tests current when changing prior-claim-state, stale-evidence, or working-tree policy fields.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "The skill may select refresh, but deterministic refresh-plan output must record baseline commit, target policy, changed sources, carried-forward claims, stale evidence reasons, and dirty-working-tree treatment.",
@@ -5241,8 +5252,9 @@
         }
       ],
       "summary": "The skill may select refresh, but deterministic refresh-plan output must record baseline commit, target policy, changed sources, carried-forward claims, stale evidence reasons, and dirty-working-tree treatment.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim names deterministic refresh-plan output fields and state-transition facts, which should be covered by runtime packet tests."
     },
     {
       "claimAudience": "developer",
@@ -10131,8 +10143,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 48,
-      "unknown": 267
+      "satisfied": 49,
+      "unknown": 266
     },
     "byLifecycle": {
       "new": 315
@@ -10143,8 +10155,8 @@
       "human-auditable": 70
     },
     "byReviewStatus": {
-      "agent-reviewed": 78,
-      "heuristic": 234,
+      "agent-reviewed": 79,
+      "heuristic": 233,
       "human-reviewed": 3
     },
     "byVerificationReadiness": {
