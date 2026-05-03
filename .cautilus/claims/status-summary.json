@@ -1416,14 +1416,16 @@
   },
   "gitCommit": "4a586aa97e53b0d81c88d490a909aae2f49964ef",
   "gitState": {
-    "changedFileCount": 17,
+    "changedFileCount": 19,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
       ".cautilus/claims/discovery-review.md",
+      ".cautilus/claims/evidence-reviewable-proof-debt-reports-2026-05-03.json",
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
       ".cautilus/claims/refresh-plan-after-future-proof-placeholder-filter.json",
+      ".cautilus/claims/review-result-evidence-reviewable-proof-debt-reports-2026-05-03.json",
       ".cautilus/claims/status-summary.json",
       ".cautilus/claims/validation-evidenced-typed-runners.json",
       "charness-artifacts/debug/debug-2026-05-03-claim-discovery-engine-freshness.md",
@@ -1444,7 +1446,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "20217811435ce1e7b0cf29bb9f815f14afc40ff0",
+    "currentGitCommit": "c182785bc2fa75bb25f21382feb914df833bde44",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "4a586aa97e53b0d81c88d490a909aae2f49964ef",
@@ -1593,6 +1595,124 @@
       ],
       "summary": "While implementing, any bug, error, regression, or unexpected behavior routes to `charness:debug` before further fixes.",
       "verificationReadiness": "blocked"
+    },
+    {
+      "claimAudience": "developer",
+      "claimId": "claim-agents-md-78",
+      "claimSemanticGroup": "Quality gates",
+      "evidenceStatus": "satisfied",
+      "groupHints": [
+        "audience:developer",
+        "deterministic",
+        "repo-instructions"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep covered by `npm run lint:skill-disclosure` whenever the bundled skill, packaged skill, CLI registry, examples, or command docs change.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "line": 78,
+          "path": "AGENTS.md"
+        }
+      ],
+      "summary": "The skill should own routing, sequencing, guardrails, and decision boundaries; the binary should own broad command discovery, help text, scenario catalogs, packet examples, install smoke, and doctor/readiness details.",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "claimAudience": "developer",
+      "claimId": "claim-agents-md-79",
+      "claimSemanticGroup": "Adapter and portability",
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "cautilus-eval",
+        "dev/repo",
+        "repo-instructions"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Attach adapter capability proof from doctor, agent-surface doctor, review variants, or the concrete evaluator command required by the selected gate.",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "line": 79,
+          "path": "AGENTS.md"
+        }
+      ],
+      "summary": "When a quality or release review asks for evaluator, review, CLI-discovery, or agent-surface proof, verify that the selected adapter can actually run that surface before treating the gate as available.",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "claimAudience": "developer",
+      "claimId": "claim-agents-md-123",
+      "claimSemanticGroup": "Quality gates",
+      "evidenceStatus": "satisfied",
+      "groupHints": [
+        "audience:developer",
+        "deterministic",
+        "repo-instructions"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep covered by `npm run test:on-demand` and maintainer check-layering docs when on-demand workflow ownership changes.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "line": 123,
+          "path": "AGENTS.md"
+        }
+      ],
+      "summary": "`npm run test:on-demand` currently owns the heavier self-dogfood workflow script tests.",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "claimAudience": "user",
+      "claimId": "claim-readme-md-3",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "blocked",
+        "human-auditable",
+        "readme"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep the claim visible as positioning, or decompose it into concrete deterministic, dev/skill, and packet-surface claims before proof planning.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "line": 3,
+          "path": "README.md"
+        }
+      ],
+      "summary": "`Cautilus` keeps agent and workflow behavior honest while prompts keep changing.",
+      "verificationReadiness": "blocked"
+    },
+    {
+      "claimAudience": "user",
+      "claimId": "claim-readme-md-7",
+      "claimSemanticGroup": "Adapter and portability",
+      "evidenceStatus": "satisfied",
+      "groupHints": [
+        "audience:user",
+        "deterministic",
+        "readme"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep this claim covered by distribution-surface tests plus install command smoke whenever install.sh, packaged plugins, or bundled skill materialization changes.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "line": 7,
+          "path": "README.md"
+        }
+      ],
+      "summary": "Ships as a standalone binary plus a bundled skill a host repo can install without copying another scaffold first.",
+      "verificationReadiness": "ready-to-verify"
     }
   ],
   "schemaVersion": "cautilus.claim_status_summary.v1",

@@ -106,6 +106,13 @@ test("renderStatusReport summarizes status, review results, validation, and eval
 						nextAction: "Ask the maintainer to confirm the boundary.",
 					},
 					{
+						claimId: "claim-readme-md-1",
+						recommendedProof: "deterministic",
+						verificationReadiness: "ready-to-verify",
+						evidenceStatus: "unknown",
+						nextAction: "Old proof gap should not appear as current work.",
+					},
+					{
 						claimId: "claim-docs-maintainers-stale-md-1",
 						recommendedProof: "human-auditable",
 						verificationReadiness: "needs-alignment",
@@ -217,6 +224,8 @@ test("renderStatusReport summarizes status, review results, validation, and eval
 	assert.match(report, /agent-add-deterministic-proof/);
 	assert.match(report, /human-align-surfaces/);
 	assert.match(report, /review-result-human-align-action-bucket\.json/);
+	assert.match(report, /Active updates still match the current claim packet/);
+	assert.match(report, /Superseded/);
 	assert.match(report, /validation-report\.json/);
 	assert.match(report, /Zero eval plans are expected/);
 	assert.match(report, /refresh-plan-claim-status-report\.json/);
@@ -232,6 +241,7 @@ test("renderStatusReport summarizes status, review results, validation, and eval
 	assert.match(report, /claim-readme-md-2/);
 	assert.match(report, /Update the saved claim map before review or eval planning/);
 	assert.match(report, /Gitignore policy: respect-repo-gitignore/);
+	assert.doesNotMatch(report, /Old proof gap should not appear as current work/);
 	assert.doesNotMatch(report, /claim-docs-maintainers-stale-md-1/);
 	assert.doesNotMatch(report, /This old maintainer-only claim should not appear/);
 });

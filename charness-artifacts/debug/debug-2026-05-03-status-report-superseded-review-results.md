@@ -47,11 +47,11 @@ It did not handle the next stale shape, where the claim ID and coarse labels sti
 ## Seam Risk
 
 - Interrupt ID: status-report-superseded-review-results
-- Risk Class: none
+- Risk Class: local-report-projection
 - Seam: claim status report projection over historical review-result packets
 - Disproving Observation: current claim packet can carry newer rendered work fields while an older review-result detail table still carries obsolete next actions for the same claim ID
 - What Local Reasoning Cannot Prove: whether all historical review-result packets should eventually carry source packet fingerprints and explicit supersession metadata
-- Generalization Pressure: monitor
+- Generalization Pressure: medium; the renderer should derive enough currentness to keep review reports readable without rewriting all historical packets
 
 ## Interrupt Decision
 

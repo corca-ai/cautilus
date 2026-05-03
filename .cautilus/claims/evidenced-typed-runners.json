@@ -3311,9 +3311,20 @@
       "claimFingerprint": "sha256:e3899b096e94f29ab48e81c4c735843e228abbbd14b836134054a60e75f126f5",
       "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
       "claimSemanticGroup": "Packets and reporting",
-      "evidenceRefs": [],
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:9a6b872b67a266d271c614cd0bc52bb524116268e08779f8342dbf70dd4f02d2",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "possible",
+          "path": ".cautilus/claims/evidence-reviewable-artifact-projections-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
+            "claim-docs-specs-user-reviewable-artifacts-spec-md-12"
+          ]
+        }
+      ],
       "evidenceStatus": "unknown",
-      "evidenceStatusReason": "Focused tests now cover claim-status Markdown and browser-review projection behavior, but this broad user-facing claim still needs an aggregate invariant or decomposition across the readable artifact surfaces before it can be marked satisfied.",
+      "evidenceStatusReason": "Representative renderer tests now cover several packet-backed readable views, but this broad user-facing claim still needs an aggregate invariant or decomposition across the readable artifact surfaces before it can be marked satisfied.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -3375,9 +3386,20 @@
       "claimFingerprint": "sha256:7bb0e7d89091719d433f466125d09d4fa00ba6bacc3e1381eebe23e09915a499",
       "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-12",
       "claimSemanticGroup": "Packets and reporting",
-      "evidenceRefs": [],
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:9a6b872b67a266d271c614cd0bc52bb524116268e08779f8342dbf70dd4f02d2",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "possible",
+          "path": ".cautilus/claims/evidence-reviewable-artifact-projections-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
+            "claim-docs-specs-user-reviewable-artifacts-spec-md-12"
+          ]
+        }
+      ],
       "evidenceStatus": "unknown",
-      "evidenceStatusReason": "Claim-status report and browser-review tests now assert JSON/Markdown source boundaries and comment-packet separation, but there is not yet a parity invariant across all Markdown and HTML views.",
+      "evidenceStatusReason": "Representative renderer tests assert packet-backed HTML and claim-status Markdown/source boundaries, but there is not yet a parity invariant across all Markdown and HTML views.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -10286,6 +10308,7 @@
           "evidenceStatus",
           "reviewStatus",
           "whyThisLayer",
+          "evidenceRefs",
           "nextAction",
           "evidenceStatusReason",
           "unresolvedQuestions"
@@ -10300,6 +10323,7 @@
           "evidenceStatus",
           "reviewStatus",
           "whyThisLayer",
+          "evidenceRefs",
           "nextAction",
           "evidenceStatusReason",
           "unresolvedQuestions"

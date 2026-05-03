@@ -221,14 +221,16 @@ function reviewResultDigest(filePath) {
 function reviewResultsForClaims(reviewResults, claimsById) {
 	const filtered = [];
 	for (const digest of asArray(reviewResults)) {
-		const updates = digest.updates.filter((update) => claimsById.has(update.claimId));
-		if (updates.length === 0) {
+		const currentUpdates = digest.updates.filter((update) => claimsById.has(update.claimId));
+		if (currentUpdates.length === 0) {
 			continue;
 		}
+		const updates = currentUpdates.filter((update) => reviewUpdateMatchesCurrentClaim(update, claimsById.get(update.claimId)));
 		filtered.push({
 			...digest,
 			clusterCount: new Set(updates.map((update) => update.clusterId)).size,
 			updateCount: updates.length,
+			supersededUpdateCount: currentUpdates.length - updates.length,
 			byProof: countBy(updates, (update) => update.recommendedProof ?? "unchanged"),
 			byReadiness: countBy(updates, (update) => update.verificationReadiness ?? "unchanged"),
 			byEvidence: countBy(updates, (update) => update.evidenceStatus ?? "unchanged"),
@@ -236,6 +238,47 @@ function reviewResultsForClaims(reviewResults, claimsById) {
 		});
 	}
 	return filtered;
+}
+
+function reviewUpdateMatchesCurrentClaim(update, candidate) {
+	if (!candidate) {
+		return false;
+	}
+	return stringUpdateFieldsMatch(update, candidate) && evalSurfaceUpdateMatches(update, candidate) && arrayUpdateFieldsMatch(update, candidate);
+}
+
+function stringUpdateFieldsMatch(update, candidate) {
+	return appliedReviewStringFields().every((field) => stringUpdateFieldMatches(update, candidate, field)) && stringUpdateFieldMatches(update, candidate, "claimAudience");
+}
+
+function stringUpdateFieldMatches(update, candidate, field) {
+	return !Object.hasOwn(update, field) || !compactText(update[field]) || compactText(update[field]) === compactText(candidate[field]);
+}
+
+function evalSurfaceUpdateMatches(update, candidate) {
+	return !Object.hasOwn(update, "recommendedEvalSurface") || compactText(update.recommendedEvalSurface) === compactText(candidate.recommendedEvalSurface);
+}
+
+function arrayUpdateFieldsMatch(update, candidate) {
+	return ["evidenceRefs", "unresolvedQuestions"].every((field) => !Object.hasOwn(update, field) || sameCanonicalValue(asArray(update[field]), asArray(candidate[field])));
+}
+
+function appliedReviewStringFields() {
+	return ["recommendedProof", "verificationReadiness", "evidenceStatus", "reviewStatus", "lifecycle", "whyThisLayer", "nextAction", "evidenceStatusReason"];
+}
+
+function sameCanonicalValue(left, right) {
+	return JSON.stringify(canonicalValue(left)) === JSON.stringify(canonicalValue(right));
+}
+
+function canonicalValue(value) {
+	if (Array.isArray(value)) {
+		return value.map(canonicalValue);
+	}
+	if (!value || typeof value !== "object") {
+		return value;
+	}
+	return Object.fromEntries(Object.entries(value).sort(([left], [right]) => left.localeCompare(right)).map(([key, child]) => [key, canonicalValue(child)]));
 }
 
 function validationDigest(filePath) {
@@ -392,16 +435,19 @@ function renderReviewResults(lines, digests, claimsById, sampleLimit) {
 		lines.push("");
 		return;
 	}
+	lines.push("Active updates still match the current claim packet; superseded updates are historical and omitted from the detail tables below.");
+	lines.push("");
 	const rows = digests.map((digest) => [
 		digest.path,
 		digest.reviewRun.mode ?? digest.reviewRun.scope ?? "-",
 		digest.reviewRun.reviewer ?? "-",
 		digest.clusterCount,
 		digest.updateCount,
+		digest.supersededUpdateCount ?? 0,
 		formatCounts(digest.byProof),
 		formatCounts(digest.byReadiness),
 	]);
-	lines.push(...table(["Packet", "Mode", "Reviewer", "Clusters", "Updates", "Proof", "Readiness"], rows));
+	lines.push(...table(["Packet", "Mode", "Reviewer", "Clusters", "Active", "Superseded", "Proof", "Readiness"], rows));
 	lines.push("");
 	for (const digest of prioritizedReviewDetails(digests).slice(0, 4)) {
 		lines.push(`### ${digest.path}`);

@@ -1,0 +1,124 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-reviewable-artifact-projections-2026-05-03",
+  "createdForClaimIds": [
+    "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
+    "claim-docs-specs-user-reviewable-artifacts-spec-md-12"
+  ],
+  "repoCommit": "c182785bc2fa75bb25f21382feb914df833bde44",
+  "summary": "This bundle records deterministic supporting evidence that representative Cautilus readable views are generated from machine-readable packets and preserve packet-first truth boundaries.",
+  "evidenceScope": {
+    "targetSurface": "representative report, review, compare, scenario, evidence-bundle, run-index, claim-status Markdown, and claim-status browser review surfaces",
+    "claimBoundary": "The tested surfaces cover representative shipped packet-backed renderer families and claim-status readable surfaces. JSON packets remain the audit source for these surfaces; Markdown and HTML are readable projections or review shells over those packets. This bundle is not sufficient by itself to satisfy the broad reviewable-artifacts user-facing claims.",
+    "notClaimed": [
+      "Every future Cautilus renderer family is covered automatically",
+      "Readable views prove behavior by themselves",
+      "Human comments are behavior proof",
+      "HTML views are the source of truth",
+      "Every possible packet field is shown in every readable view",
+      "Consumer-owned custom report views follow this contract without their own tests"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/runtime -run 'TestRender(CompareArtifact|ScenarioProposals|ScenarioConversationReview|EvidenceBundle|Report|ReviewPacket|ReviewSummary|RunIndex)HTML|TestWrite(CompareArtifact|ScenarioProposals|ScenarioConversationReview|Report|ReviewPacket|ReviewSummary|RunIndex)HTML|TestDiscoverRunIndexEntries|TestRenderReportHTMLFromFileRejectsLegacySchema|TestRenderReviewPacketHTMLFromFileRejectsWrongSchema|TestRenderReviewSummaryHTMLFromFileRejectsWrongSchema' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "protectedBehaviors": [
+          "report, review, review-summary, compare, scenario proposal, conversation review, evidence bundle, and run-index HTML renderers read JSON packets and reject wrong schema versions where applicable",
+          "HTML write helpers render next to the JSON input instead of replacing the packet",
+          "artifact links rewrite JSON or spec markdown references to adjacent HTML views while retaining source labels",
+          "run-index discovery recognizes known packet files and flags whether an HTML projection exists"
+        ]
+      }
+    },
+    {
+      "command": "node --test --test-reporter=spec --test-reporter-destination=stdout scripts/agent-runtime/render-claim-status-report.test.mjs scripts/agent-runtime/serve-claim-status-review.test.mjs",
+      "exitCode": 0,
+      "observed": {
+        "tests": 10,
+        "pass": 10,
+        "protectedBehaviors": [
+          "claim status Markdown is a human-readable projection over the selected claim packet, status summary, review results, validation reports, eval plans, refresh plans, and canonical map",
+          "the status report tells readers to use JSON packets as the audit source",
+          "browser review renders the Markdown report for human decisions without mutating the source report",
+          "browser comments are saved as a separate JSON packet with a report fingerprint",
+          "stale saved comments are ignored when the report fingerprint changes"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "internal/runtime/artifact_html.go",
+      "kind": "artifact-html-renderers",
+      "contentHash": "sha256:510805b8ea60cb8f2e0d7b0a5159c583dc67a84509604e51aa1317845ec745f0"
+    },
+    {
+      "path": "internal/runtime/artifact_html_test.go",
+      "kind": "artifact-html-renderer-tests",
+      "contentHash": "sha256:3da79c03113cb24f64090345df1a60bb238b1c1277bae5f1771f34f841a63dc0"
+    },
+    {
+      "path": "internal/runtime/report_html.go",
+      "kind": "report-html-renderer",
+      "contentHash": "sha256:d2b77000935f57a0aa33c9cc02958fd93c3e160d89cffed9cc022df4bfebcb5c"
+    },
+    {
+      "path": "internal/runtime/report_html_test.go",
+      "kind": "report-html-renderer-tests",
+      "contentHash": "sha256:73e4ddbff88e917882a7b65bc87827599fa86bb99b474b13bee563a8441d35de"
+    },
+    {
+      "path": "internal/runtime/review_html.go",
+      "kind": "review-html-renderers",
+      "contentHash": "sha256:dc76584e21ac6229a07955253fbc1bca527c90820aed6d42b3b541f2b0a3d5f4"
+    },
+    {
+      "path": "internal/runtime/review_html_test.go",
+      "kind": "review-html-renderer-tests",
+      "contentHash": "sha256:24caec3a099d73178c89281afc50173f1ab1f034b151b050016f928a5c9fb13b"
+    },
+    {
+      "path": "internal/runtime/run_index_html.go",
+      "kind": "run-index-html-renderer",
+      "contentHash": "sha256:e9fefbb72ea2679cf0eacacaa7df18c38a1c16e88d94dce254cb24ed0f73f2bf"
+    },
+    {
+      "path": "internal/runtime/run_index_html_test.go",
+      "kind": "run-index-html-renderer-tests",
+      "contentHash": "sha256:941562e39242c9dd507a9283f1dc896f9a2f2da4c066130cf0f9a6f7e6b122d7"
+    },
+    {
+      "path": "scripts/agent-runtime/render-claim-status-report.mjs",
+      "kind": "claim-status-markdown-renderer",
+      "contentHash": "sha256:225a465b0cf4623a9bc8be668d3990de8c9109932500e951f9287bfc71ef2df8"
+    },
+    {
+      "path": "scripts/agent-runtime/render-claim-status-report.test.mjs",
+      "kind": "claim-status-markdown-renderer-tests",
+      "contentHash": "sha256:bae6063006c20f57b06edf3768d2f5f6acbed1198abd051fa2a3ff59fd6ddc20"
+    },
+    {
+      "path": "scripts/agent-runtime/serve-claim-status-review.mjs",
+      "kind": "claim-status-browser-review-server",
+      "contentHash": "sha256:dc1f97602b86eb147b8069ec3c07d1ec3925e2de95d8fce7e6a874f7bbe18739"
+    },
+    {
+      "path": "scripts/agent-runtime/serve-claim-status-review.test.mjs",
+      "kind": "claim-status-browser-review-tests",
+      "contentHash": "sha256:1f367cab721891ed5079b6ad6c1580674e8ebf900fa9505788a8d0fb66ac807a"
+    },
+    {
+      "path": "scripts/agent-runtime/claim-status-review-page.mjs",
+      "kind": "claim-status-browser-review-page",
+      "contentHash": "sha256:8fb8b14e14dc1117e48f6183bf922d9c03cfbbdd70043f639bfa005fbf3e219e"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "partial",
+    "matchKind": "possible",
+    "reason": "Focused Go and Node tests prove projection behavior for representative readable views, but broad reviewable-artifacts claims still need an aggregate invariant or decomposition by artifact family before they can be marked satisfied."
+  }
+}
