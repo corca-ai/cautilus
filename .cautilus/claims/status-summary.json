@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 238
+          "unknown": 237
         },
         "byReviewStatus": {
-          "heuristic": 238
+          "heuristic": 237
         },
-        "count": 238,
+        "count": 237,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -24,12 +24,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 41
+          "satisfied": 42
         },
         "byReviewStatus": {
-          "agent-reviewed": 41
+          "agent-reviewed": 42
         },
-        "count": 41,
+        "count": 42,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -43,22 +43,22 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 80
+          "unknown": 79
         },
         "byReviewStatus": {
           "agent-reviewed": 9,
-          "heuristic": 68,
+          "heuristic": 67,
           "human-reviewed": 3
         },
-        "count": 80,
+        "count": 79,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
           "claim-docs-contracts-adapter-contract-md-424",
-          "claim-docs-gepa-md-15",
           "claim-docs-guides-consumer-adoption-md-107",
           "claim-docs-specs-user-evaluation-spec-md-7",
-          "claim-docs-specs-user-reviewable-artifacts-spec-md-3"
+          "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
+          "claim-docs-specs-user-reviewable-artifacts-spec-md-12"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -195,8 +195,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 41,
-      "unknown": 274
+      "satisfied": 42,
+      "unknown": 273
     },
     "byLifecycle": {
       "new": 315
@@ -207,8 +207,8 @@
       "human-auditable": 70
     },
     "byReviewStatus": {
-      "agent-reviewed": 74,
-      "heuristic": 238,
+      "agent-reviewed": 75,
+      "heuristic": 237,
       "human-reviewed": 3
     },
     "byVerificationReadiness": {
@@ -381,7 +381,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 41,
+    "satisfiedClaimCount": 42,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-78",
@@ -909,6 +909,25 @@
         "summary": "`kind: explicit` keeps fixture-backed repos and simple single-instance adopters cheap without forcing a probe script."
       },
       {
+        "claimId": "claim-docs-gepa-md-15",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:024df0535649cf55a0cf0e8802ea6ea8fbea2e9f8924a29fedb55866baa282f9",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-gepa-sparse-evidence-block-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-gepa-md-15"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Sparse evidence blocks search early with machine-readable JSON so an agent or operator can discuss what is missing before generating candidates."
+      },
+      {
         "claimId": "claim-docs-guides-consumer-adoption-md-20",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -1180,17 +1199,22 @@
   },
   "gitCommit": "3819d259fd796dc6fd5777b579f6b013c0dcb508",
   "gitState": {
-    "changedFileCount": 11,
+    "changedFileCount": 16,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
       ".cautilus/claims/discovery-review.md",
       ".cautilus/claims/evidence-active-run-and-claim-discover-2026-05-03.json",
+      ".cautilus/claims/evidence-evaluation-process-artifacts-2026-05-03.json",
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
       ".cautilus/claims/review-result-evidence-active-run-and-claim-discover-2026-05-03.json",
+      ".cautilus/claims/review-result-evidence-evaluation-process-artifacts-2026-05-03.json",
       ".cautilus/claims/status-summary.json",
       ".cautilus/claims/validation-evidenced-typed-runners.json",
+      "charness-artifacts/debug/debug-2026-05-03-evaluation-process-concern-proof.md",
+      "charness-artifacts/debug/latest.md",
+      "internal/app/cli_smoke_test.go",
       "internal/runtime/claim_discovery.go",
       "internal/runtime/claim_discovery_test.go"
     ],
@@ -1202,7 +1226,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "780188316516182763751f431049853adb019ca9",
+    "currentGitCommit": "88bcf2efd1d47ea485f102a7c4286b1cfc1d2f23",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "3819d259fd796dc6fd5777b579f6b013c0dcb508",
@@ -1229,7 +1253,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 210,
+    "heuristicClaimsReadyForReview": 209,
     "needsAlignment": 31,
     "needsScenario": 8
   },

@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-gepa-sparse-evidence-block-2026-05-03",
+  "createdForClaimIds": [
+    "claim-docs-gepa-md-15"
+  ],
+  "repoCommit": "88bcf2efd1d47ea485f102a7c4286b1cfc1d2f23",
+  "summary": "This bundle records deterministic proof that optimize search blocks sparse evidence before candidate generation and returns machine-readable JSON.",
+  "evidenceScope": {
+    "targetSurface": "GEPA-style optimize search readiness blocking",
+    "claimBoundary": "Only the sparse-evidence blocked JSON path is marked satisfied.",
+    "notClaimed": [
+      "The search always finds a better candidate when evidence is sufficient",
+      "Every missing-evidence reason is ideal for human discussion",
+      "The LLM mutation backend was invoked in the sparse-evidence path"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/app -run 'TestCLIOptimizeSearchPrepareInputJSONAndBlockedRunReturnMachineReadablePayload' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "notableAssertions": [
+          "optimize search prepare-input accepts direct JSON and writes a canonical input file",
+          "optimize search run exits non-zero with status=blocked when required evidence is sparse",
+          "the blocked result is emitted as JSON on stdout",
+          "the blocked result includes multiple machine-readable reasonCodes",
+          "the blocked result has an empty candidateRegistry and generationSummaries",
+          "the blocked telemetry records candidateCount=0, mutationInvocationCount=0, and stopReason=blocked"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "optimize-search-blocked-json-cli-test",
+      "contentHash": "sha256:fdf09adc7ddd3b2eafe472608ead5af32ca6079ff3d72372d384cc43992d6e4f"
+    },
+    {
+      "path": "docs/gepa.md",
+      "kind": "operator-guide-claim-source",
+      "contentHash": "sha256:d51c7872a4ed7fa29a91363368bf0e6e4673fd6f27d71d736c9db9b9122a0ec8"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The cited CLI smoke test proves sparse search evidence returns a blocked machine-readable JSON payload with reason codes before candidate generation can proceed."
+  }
+}

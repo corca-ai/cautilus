@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:c7bdc668daee352ec42e0b5ab20d66091db2a962f7ebe4d6f045e495e8d9fab7"
+      "contentHash": "sha256:da3f07e7481d71cc72049dd7dc93b6989e55626bf586b1fa030cc1f3def108f5"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -317,12 +317,12 @@
     "byMaintainerCanonicalClaimId": {
       "M1": 18,
       "M10": 16,
-      "M11": 13,
+      "M11": 12,
       "M2": 68,
       "M3": 53,
       "M4": 11,
       "M5": 5,
-      "M6": 7,
+      "M6": 8,
       "M7": 10,
       "M8": 11,
       "M9": 21
@@ -2565,8 +2565,9 @@
     {
       "canonicalClaimId": "M6",
       "title": "Optimization Loop",
-      "absorbedRawClaimCount": 7,
+      "absorbedRawClaimCount": 8,
       "absorbedRawClaimIds": [
+        "claim-docs-gepa-md-15",
         "claim-docs-contracts-reporting-md-150",
         "claim-docs-contracts-runner-readiness-md-37",
         "claim-docs-contracts-runner-readiness-md-147",
@@ -2576,6 +2577,12 @@
         "claim-docs-contracts-runtime-fingerprint-optimization-md-47"
       ],
       "absorbedRawClaims": [
+        {
+          "claimId": "claim-docs-gepa-md-15",
+          "claimFingerprint": "sha256:707379c574740cd365d23854282c59e67b7ae584bfdea36fd8c035e3e318be90",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
         {
           "claimId": "claim-docs-contracts-reporting-md-150",
           "claimFingerprint": "sha256:4c026c323498f2e3bdb8f8e9ae07bd3be82d64e0f8167b9899e5e0fc717f5db3",
@@ -2620,20 +2627,22 @@
         }
       ],
       "byEvidenceStatus": {
+        "satisfied": 1,
         "unknown": 7
       },
       "byReviewStatus": {
+        "agent-reviewed": 1,
         "heuristic": 7
       },
       "byRecommendedProof": {
         "cautilus-eval": 3,
-        "deterministic": 3,
+        "deterministic": 4,
         "human-auditable": 1
       },
       "byMappingConfidence": {
         "high": 1,
         "low": 1,
-        "medium": 5
+        "medium": 6
       }
     },
     {
@@ -3150,9 +3159,8 @@
     {
       "canonicalClaimId": "M11",
       "title": "Scenario History And Proposal Normalization",
-      "absorbedRawClaimCount": 13,
+      "absorbedRawClaimCount": 12,
       "absorbedRawClaimIds": [
-        "claim-docs-gepa-md-15",
         "claim-docs-contracts-claim-discovery-workflow-md-253",
         "claim-docs-contracts-claim-discovery-workflow-md-261",
         "claim-docs-contracts-runner-readiness-md-279",
@@ -3167,12 +3175,6 @@
         "claim-docs-contracts-scenario-proposal-sources-md-235"
       ],
       "absorbedRawClaims": [
-        {
-          "claimId": "claim-docs-gepa-md-15",
-          "claimFingerprint": "sha256:707379c574740cd365d23854282c59e67b7ae584bfdea36fd8c035e3e318be90",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
-        },
         {
           "claimId": "claim-docs-contracts-claim-discovery-workflow-md-253",
           "claimFingerprint": "sha256:8ca72db113d324be35c266102e9b03f89f0798792273549ac3040280249aac80",
@@ -3247,19 +3249,19 @@
         }
       ],
       "byEvidenceStatus": {
-        "unknown": 13
+        "unknown": 12
       },
       "byReviewStatus": {
-        "heuristic": 13
+        "heuristic": 12
       },
       "byRecommendedProof": {
         "cautilus-eval": 6,
-        "deterministic": 7
+        "deterministic": 6
       },
       "byMappingConfidence": {
         "high": 3,
         "low": 3,
-        "medium": 7
+        "medium": 6
       }
     }
   ],
@@ -5465,30 +5467,31 @@
       "claimAudience": "developer",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-to-verify",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
+      "evidenceStatus": "satisfied",
+      "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:707379c574740cd365d23854282c59e67b7ae584bfdea36fd8c035e3e318be90",
-      "canonicalClaimId": "M11",
-      "score": 9,
-      "runnerUpCanonicalClaimId": "M1",
-      "runnerUpScore": 8,
+      "canonicalClaimId": "M6",
+      "score": 11,
+      "runnerUpCanonicalClaimId": "M7",
+      "runnerUpScore": 10,
       "scoreMargin": 1,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
-        "candidate",
+        "blocked",
+        "check",
         "deterministic",
         "evidence",
         "improvement",
-        "keep",
         "optimization",
-        "packet",
-        "proof",
-        "thi"
+        "readines",
+        "result",
+        "search",
+        "test",
+        "what"
       ],
       "alignedUserClaimIds": [
-        "U2",
         "U3",
         "U7"
       ]

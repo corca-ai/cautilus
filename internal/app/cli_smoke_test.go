@@ -3028,6 +3028,16 @@ func TestCLIOptimizeSearchPrepareInputJSONAndBlockedRunReturnMachineReadablePayl
 	if !ok || len(reasonCodes) < 2 {
 		t.Fatalf("unexpected reason codes: %#v", blocked["reasonCodes"])
 	}
+	if registry := blocked["candidateRegistry"].([]any); len(registry) != 0 {
+		t.Fatalf("sparse evidence should block before candidate generation, got registry %#v", registry)
+	}
+	if generations := blocked["generationSummaries"].([]any); len(generations) != 0 {
+		t.Fatalf("sparse evidence should not generate summaries, got %#v", generations)
+	}
+	telemetry := blocked["searchTelemetry"].(map[string]any)
+	if telemetry["candidateCount"] != float64(0) || telemetry["mutationInvocationCount"] != float64(0) || telemetry["stopReason"] != "blocked" {
+		t.Fatalf("unexpected sparse-evidence telemetry: %#v", telemetry)
+	}
 }
 
 func TestCLIOptimizeSearchRunUsesEvalTestForHeldOutAndFullGate(t *testing.T) {

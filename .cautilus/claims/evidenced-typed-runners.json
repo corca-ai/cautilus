@@ -2063,8 +2063,19 @@
       "claimFingerprint": "sha256:707379c574740cd365d23854282c59e67b7ae584bfdea36fd8c035e3e318be90",
       "claimId": "claim-docs-gepa-md-15",
       "claimSemanticGroup": "Improvement and optimization",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:024df0535649cf55a0cf0e8802ea6ea8fbea2e9f8924a29fedb55866baa282f9",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-gepa-sparse-evidence-block-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-gepa-md-15"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by an optimize-search CLI smoke test: sparse evidence makes `optimize search run --json` return a blocked JSON payload with machine-readable reason codes before candidate generation proceeds.",
       "groupHints": [
         "audience:developer",
         "deterministic",
@@ -2072,9 +2083,9 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
+      "nextAction": "Keep sparse-evidence blocked-output tests current when changing optimize-search readiness checks or blocked result shape.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Sparse evidence blocks search early with machine-readable JSON so an agent or operator can discuss what is missing before generating candidates.",
@@ -2083,8 +2094,9 @@
         }
       ],
       "summary": "Sparse evidence blocks search early with machine-readable JSON so an agent or operator can discuss what is missing before generating candidates.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks."
+      "whyThisLayer": "The claim names optimize-search readiness blocking and machine-readable output, which is deterministic CLI packet behavior."
     },
     {
       "claimAudience": "user",
@@ -10047,8 +10059,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 41,
-      "unknown": 274
+      "satisfied": 42,
+      "unknown": 273
     },
     "byLifecycle": {
       "new": 315
@@ -10059,8 +10071,8 @@
       "human-auditable": 70
     },
     "byReviewStatus": {
-      "agent-reviewed": 74,
-      "heuristic": 238,
+      "agent-reviewed": 75,
+      "heuristic": 237,
       "human-reviewed": 3
     },
     "byVerificationReadiness": {

@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-03T00:00:00Z",
+    "evidencePolicy": "Only mark the sparse-evidence blocked JSON behavior satisfied; do not infer successful prompt-search candidate generation."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-gepa-sparse-evidence-block",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-gepa-md-15",
+          "claimFingerprint": "sha256:707379c574740cd365d23854282c59e67b7ae584bfdea36fd8c035e3e318be90",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "whyThisLayer": "The claim names optimize-search readiness blocking and machine-readable output, which is deterministic CLI packet behavior.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by an optimize-search CLI smoke test: sparse evidence makes `optimize search run --json` return a blocked JSON payload with machine-readable reason codes before candidate generation proceeds.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-gepa-sparse-evidence-block-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:024df0535649cf55a0cf0e8802ea6ea8fbea2e9f8924a29fedb55866baa282f9",
+              "supportsClaimIds": [
+                "claim-docs-gepa-md-15"
+              ]
+            }
+          ],
+          "nextAction": "Keep sparse-evidence blocked-output tests current when changing optimize-search readiness checks or blocked result shape.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}
