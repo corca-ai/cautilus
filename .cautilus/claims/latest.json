@@ -1,5 +1,5 @@
 {
-  "candidateCount": 312,
+  "candidateCount": 322,
   "claimCandidates": [
     {
       "claimAudience": "developer",
@@ -159,7 +159,7 @@
         "repo-instructions"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
+      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -171,7 +171,7 @@
       ],
       "summary": "The skill should own routing, sequencing, guardrails, and decision boundaries; the binary should own broad command discovery, help text, scenario catalogs, packet examples, install smoke, and doctor/readiness details.",
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
+      "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
     },
     {
       "claimAudience": "developer",
@@ -438,15 +438,13 @@
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
-        "app/prompt",
         "audience:user",
-        "cautilus-eval",
+        "deterministic",
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus eval test.",
-      "recommendedEvalSurface": "app/prompt",
-      "recommendedProof": "cautilus-eval",
+      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
+      "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
@@ -457,7 +455,7 @@
       ],
       "summary": "For reviewed `cautilus-eval` claims, `claim plan-evals` emits `cautilus.claim_eval_plan.v1`: an intermediate plan for host-owned eval fixtures, not a writer for prompts, runners, fixtures, or policy.",
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
     },
     {
       "claimAudience": "user",
@@ -520,9 +518,9 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:16b357f816005aa1da9b6ff24f4188e6e6057e0e73d8f39e58c8cb4b153d8c05",
+      "claimFingerprint": "sha256:afaff338e3a44ec8eeb8b39d25319e27d26e908ac17a00c2f46c5af9979e5e1f",
       "claimId": "claim-readme-md-155",
-      "claimSemanticGroup": "Claim discovery and review",
+      "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
@@ -538,12 +536,12 @@
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "The same preset can evaluate a multi-turn agent episode when the fixture provides `turns`; Cautilus's own first-scan, refresh-flow, review-prepare, reviewer-launch, and review-to-eval dogfood fixtures derive their results from audit packets.",
+          "excerpt": "The same preset can evaluate a multi-turn agent episode when the fixture provides `turns`.",
           "line": 155,
           "path": "README.md"
         }
       ],
-      "summary": "The same preset can evaluate a multi-turn agent episode when the fixture provides `turns`; Cautilus's own first-scan, refresh-flow, review-prepare, reviewer-launch, and review-to-eval dogfood fixtures derive their results from audit packets.",
+      "summary": "The same preset can evaluate a multi-turn agent episode when the fixture provides `turns`.",
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
@@ -551,7 +549,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:2439661f4452be243c0dab17f3fe5f51d86ae2155ef8e79a8e9ef32ca0d2591c",
-      "claimId": "claim-readme-md-156",
+      "claimId": "claim-readme-md-157",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -567,7 +565,7 @@
       "sourceRefs": [
         {
           "excerpt": "When the goal is only to prove command routing and packet evaluation, `cautilus eval test --runtime fixture` can run the same product path with adapter-owned fixture results instead of launching a nested model eval.",
-          "line": 156,
+          "line": 157,
           "path": "README.md"
         }
       ],
@@ -579,7 +577,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:9bada1ab213276f56664107bebda9322010ab42d914bbc27bd0c1e1937c171b3",
-      "claimId": "claim-readme-md-160",
+      "claimId": "claim-readme-md-161",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -596,7 +594,7 @@
       "sourceRefs": [
         {
           "excerpt": "Use when a stateful automation — a CLI workflow, long-running agent session, or pipeline that persists state across invocations — keeps stalling on the same step.",
-          "line": 160,
+          "line": 161,
           "path": "README.md"
         }
       ],
@@ -608,7 +606,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:cb717dd9c88c18787242dd04a0d050f2d64914b8a1b7c17ce68f7ed09436899c",
-      "claimId": "claim-readme-md-166",
+      "claimId": "claim-readme-md-167",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -624,7 +622,7 @@
       "sourceRefs": [
         {
           "excerpt": "Each catalog entry now also includes `exampleInputCli`, so an operator or wrapper can inspect a minimal valid packet shape without opening a fixture path first.",
-          "line": 166,
+          "line": 167,
           "path": "README.md"
         }
       ],
@@ -636,7 +634,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:0e3e74a4c062fc12acdce7ccc934dac0e4b36fc30fe6bd96ae0ceaf413d96302",
-      "claimId": "claim-readme-md-178",
+      "claimId": "claim-readme-md-179",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -655,7 +653,7 @@
       "sourceRefs": [
         {
           "excerpt": "`Cautilus` treats the context-recovery case as a protected scenario kept out of tuning so the signal stays honest.",
-          "line": 178,
+          "line": 179,
           "path": "README.md"
         }
       ],
@@ -667,7 +665,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:26fb3d242b29d1859c5171dda55376329d47dc400c8136fb67df8562a6160c5a",
-      "claimId": "claim-readme-md-199",
+      "claimId": "claim-readme-md-200",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -684,7 +682,7 @@
       "sourceRefs": [
         {
           "excerpt": "The longer-term direction is close to the workflow philosophy behind DSPy: prompts can change as long as the evaluated behavior survives.",
-          "line": 199,
+          "line": 200,
           "path": "README.md"
         }
       ],
@@ -696,7 +694,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:0326670200c2a6f36720afd68b0bf4dded8a6d931270b22ff70f68d3fe459927",
-      "claimId": "claim-readme-md-218",
+      "claimId": "claim-readme-md-219",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -714,7 +712,7 @@
       "sourceRefs": [
         {
           "excerpt": "Agent track — Claude / Codex plugin.** The `cautilus install` step also lands a bundled skill at `.agents/skills/cautilus/` with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally.",
-          "line": 218,
+          "line": 219,
           "path": "README.md"
         }
       ],
@@ -726,7 +724,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:3022b028802b2727ebdc3d4e058efe037c29d529aa9580f5229aa3ac00dd2027",
-      "claimId": "claim-readme-md-238",
+      "claimId": "claim-readme-md-239",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -742,7 +740,7 @@
       "sourceRefs": [
         {
           "excerpt": "machine-readable eval, report, review, evidence, and optimization packets that agents can consume directly",
-          "line": 238,
+          "line": 239,
           "path": "README.md"
         }
       ],
@@ -896,6 +894,35 @@
       "summary": "Use `cautilus claim discover` before writing eval fixtures when you need to inventory declared behavior claims and decide whether each belongs in human review, deterministic CI, Cautilus eval, scenario proposal work, or alignment work.",
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:a42ab6736d2ebe2beeb0ba10487b85347c0d81a5444e77f1d95d0f8fc7292e95",
+      "claimId": "claim-docs-cli-reference-md-120",
+      "claimSemanticGroup": "Packets and reporting",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "deterministic",
+        "docs",
+        "linked-from:README.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "The CLI rejects that overwrite because refresh-plan packets use `cautilus.claim_refresh_plan.v1`, while saved claim maps must remain `cautilus.claim_proof_plan.v1`.",
+          "line": 120,
+          "path": "docs/cli-reference.md"
+        }
+      ],
+      "summary": "The CLI rejects that overwrite because refresh-plan packets use `cautilus.claim_refresh_plan.v1`, while saved claim maps must remain `cautilus.claim_proof_plan.v1`.",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
     },
     {
       "claimAudience": "user",
@@ -1145,15 +1172,13 @@
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:user",
-        "cautilus-eval",
-        "dev/repo",
+        "deterministic",
         "docs",
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
+      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
+      "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
@@ -1164,7 +1189,7 @@
       ],
       "summary": "`cautilus eval evaluate` evaluates an already-observed packet without launching the runner again.",
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
     },
     {
       "claimAudience": "user",
@@ -1225,6 +1250,35 @@
       "summary": "When `--output-text-key` is present, Cautilus also extracts that JSON narrative span into the rendered prompt so the judge can read the realized output directly.",
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:003038663b54c623858fe0d30f37af8e7554c1f8f79b8750306cdff272f893a5",
+      "claimId": "claim-docs-cli-reference-md-451",
+      "claimSemanticGroup": "Packets and reporting",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "deterministic",
+        "docs",
+        "linked-from:README.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "This command answers: \"what single packet should I hand to the next decision step when report, scenario, audit, and history evidence all matter together?\"",
+          "line": 451,
+          "path": "docs/cli-reference.md"
+        }
+      ],
+      "summary": "This command answers: \"what single packet should I hand to the next decision step when report, scenario, audit, and history evidence all matter together?\"",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
     },
     {
       "claimAudience": "user",
@@ -1434,6 +1488,35 @@
       "summary": "`kind: explicit` keeps fixture-backed repos and simple single-instance adopters cheap without forcing a probe script.",
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:1470cdcbbe6feea4e845e3ac199d21c8e236a3363741f8ab2aa22919279ee094",
+      "claimId": "claim-docs-contracts-adapter-contract-md-315",
+      "claimSemanticGroup": "Packets and reporting",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "deterministic",
+        "linked-from:README.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "The command writes one `cautilus.live_run_invocation_result.v1` packet to `output_file`.",
+          "line": 315,
+          "path": "docs/contracts/adapter-contract.md"
+        }
+      ],
+      "summary": "The command writes one `cautilus.live_run_invocation_result.v1` packet to `output_file`.",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
     },
     {
       "claimAudience": "developer",
@@ -1805,15 +1888,13 @@
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:user",
-        "cautilus-eval",
-        "dev/repo",
+        "deterministic",
         "docs",
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
+      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
+      "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
@@ -1824,7 +1905,7 @@
       ],
       "summary": "The ready payload now includes `first_bounded_run`, which adds a starter `eval test -\u003e eval evaluate` packet loop and keeps the `cautilus scenarios --json` catalog nearby only for proposal-input examples.",
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
     },
     {
       "claimAudience": "user",
@@ -2582,13 +2663,12 @@
       "groupHints": [
         "audience:user",
         "cautilus-eval",
-        "dev/skill",
         "linked-from:README.md",
+        "needs-scenario",
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
-      "recommendedEvalSurface": "dev/skill",
+      "nextAction": "Decompose this broad behavior promise into one or more concrete scenario candidates before planning a protected eval.",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -2599,8 +2679,8 @@
         }
       ],
       "summary": "Cautilus supports development-facing behavior, such as agent workflows, repo contracts, tools, and skills.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "verificationReadiness": "needs-scenario",
+      "whyThisLayer": "The claim names a broad behavior surface or reusable workflow; it needs a concrete scenario before an eval fixture can honestly prove it."
     },
     {
       "claimAudience": "user",
@@ -2611,15 +2691,14 @@
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
-        "app/prompt",
         "audience:user",
         "cautilus-eval",
         "linked-from:README.md",
+        "needs-scenario",
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus eval test.",
-      "recommendedEvalSurface": "app/prompt",
+      "nextAction": "Decompose this broad behavior promise into one or more concrete scenario candidates before planning a protected eval.",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -2630,8 +2709,8 @@
         }
       ],
       "summary": "Cautilus supports app-facing behavior, such as prompt, chat, and service-response behavior.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "verificationReadiness": "needs-scenario",
+      "whyThisLayer": "The claim names a broad behavior surface or reusable workflow; it needs a concrete scenario before an eval fixture can honestly prove it."
     },
     {
       "claimAudience": "user",
@@ -2734,15 +2813,13 @@
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:user",
-        "cautilus-eval",
-        "dev/repo",
+        "deterministic",
         "linked-from:README.md",
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
+      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
+      "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
@@ -2753,7 +2830,7 @@
       ],
       "summary": "Without specdown, a repo can still contain raw Cautilus packets, but it is not fully set up for the Cautilus claim-document workflow.",
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
     },
     {
       "claimAudience": "user",
@@ -2794,15 +2871,13 @@
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:user",
-        "cautilus-eval",
-        "dev/repo",
+        "deterministic",
         "linked-from:README.md",
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
+      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
+      "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
@@ -2813,7 +2888,7 @@
       ],
       "summary": "Cautilus leaves evidence that another person or agent can reopen instead of relying on terminal scrollback or memory.",
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
     },
     {
       "claimAudience": "user",
@@ -3302,15 +3377,13 @@
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:developer",
-        "cautilus-eval",
         "contract",
-        "dev/repo",
+        "deterministic",
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
+      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
+      "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
@@ -3321,7 +3394,7 @@
       ],
       "summary": "If specdown is missing, `doctor` should report the repo as not ready for the Cautilus claim-doc workflow.",
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
     },
     {
       "claimAudience": "developer",
@@ -5309,6 +5382,35 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:e9e25a9d964bcf82acf21be2ed2a48acb9df0d426087c8e8714b03b75155ee76",
+      "claimId": "claim-docs-contracts-live-run-invocation-batch-md-166",
+      "claimSemanticGroup": "Packets and reporting",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "deterministic",
+        "linked-from:docs/master-plan.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "The command writes the aggregated batch packet to `--output-file`.",
+          "line": 166,
+          "path": "docs/contracts/live-run-invocation-batch.md"
+        }
+      ],
+      "summary": "The command writes the aggregated batch packet to `--output-file`.",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:ae0122e9a32cdc900075bb4a92bef7f3ed1984464ccba320f1a5824446ee45d2",
       "claimId": "claim-docs-contracts-live-run-invocation-md-12",
       "claimSemanticGroup": "Adapter and portability",
@@ -5543,6 +5645,64 @@
       "summary": "This keeps report assembly deterministic.",
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:73fb8c10d3361b316a7113e31f0b8d4652101dc2cf2fc639a9ad58d1237205d9",
+      "claimId": "claim-docs-contracts-reporting-md-50",
+      "claimSemanticGroup": "Adapter and portability",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "deterministic",
+        "linked-from:docs/guides/evaluation-process.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "When `Cautilus` itself executes adapter-defined mode commands, it should write those command observations into the report input so the final packet preserves how the evidence was gathered.",
+          "line": 50,
+          "path": "docs/contracts/reporting.md"
+        }
+      ],
+      "summary": "When `Cautilus` itself executes adapter-defined mode commands, it should write those command observations into the report input so the final packet preserves how the evidence was gathered.",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:84e20fceee7b13f03574081e031d1ebd73a26ab909f01a9ef7f75d864fe70b82",
+      "claimId": "claim-docs-contracts-reporting-md-108",
+      "claimSemanticGroup": "Documentation and contracts",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "deterministic",
+        "linked-from:docs/guides/evaluation-process.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "The key rule is that cost telemetry must come from an explicit checked-in wrapper or output payload.",
+          "line": 108,
+          "path": "docs/contracts/reporting.md"
+        }
+      ],
+      "summary": "The key rule is that cost telemetry must come from an explicit checked-in wrapper or output payload.",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
     },
     {
       "claimAudience": "developer",
@@ -5904,6 +6064,35 @@
       "summary": "`optimize` improves behavior only after the proof surface is honest.",
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:60ae1ebcaf288176c291f3920581f54867c13dbce63bace0631a0b3113ebcee0",
+      "claimId": "claim-docs-contracts-runner-readiness-md-55",
+      "claimSemanticGroup": "Packets and reporting",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "deterministic",
+        "linked-from:docs/master-plan.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "A runner is a bounded headless command that takes product-readable input and writes a Cautilus-readable observed packet.",
+          "line": 55,
+          "path": "docs/contracts/runner-readiness.md"
+        }
+      ],
+      "summary": "A runner is a bounded headless command that takes product-readable input and writes a Cautilus-readable observed packet.",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
     },
     {
       "claimAudience": "developer",
@@ -6994,6 +7183,35 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:45c8b516a2ba7c7bfc964136382d65a37d72da0ae53e01df28ca875ed8fe813f",
+      "claimId": "claim-docs-contracts-workbench-instance-discovery-md-72",
+      "claimSemanticGroup": "Adapter and portability",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "deterministic",
+        "linked-from:docs/contracts/adapter-contract.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "The command should print only `cautilus.workbench_instance_catalog.v1` JSON to stdout.",
+          "line": 72,
+          "path": "docs/contracts/workbench-instance-discovery.md"
+        }
+      ],
+      "summary": "The command should print only `cautilus.workbench_instance_catalog.v1` JSON to stdout.",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:1d69d79140e7241bd365131d6dbac7a81739a91c58a9914a8a48980c64e44686",
       "claimId": "claim-docs-contracts-workbench-instance-discovery-md-87",
       "claimSemanticGroup": "Adapter and portability",
@@ -7980,6 +8198,35 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:9a02111a264073ae2dc0ec0673b9efd8ab90089058bdb8f11215d995b8f114ca",
+      "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-11",
+      "claimSemanticGroup": "Quality gates",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "deterministic",
+        "linked-from:docs/specs/user/index.spec.md",
+        "spec"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "Doctor output should explain what is ready, what is blocked, and what the next action is.",
+          "line": 11,
+          "path": "docs/specs/user/doctor-readiness.spec.md"
+        }
+      ],
+      "summary": "Doctor output should explain what is ready, what is blocked, and what the next action is.",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:7d2a95136dbffa734309203e9587993060b7614fa9096e426dbf4a689109473f",
       "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-12",
       "claimSemanticGroup": "Agent and skill workflow",
@@ -7987,15 +8234,13 @@
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:user",
-        "cautilus-eval",
-        "dev/skill",
+        "deterministic",
         "linked-from:docs/specs/user/index.spec.md",
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
-      "recommendedEvalSurface": "dev/skill",
-      "recommendedProof": "cautilus-eval",
+      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
+      "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
@@ -8006,7 +8251,7 @@
       ],
       "summary": "Agent status should share the same readiness facts when an agent is driving the workflow.",
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
     },
     {
       "claimAudience": "user",
@@ -8139,13 +8384,12 @@
       "groupHints": [
         "audience:user",
         "cautilus-eval",
-        "dev/repo",
         "linked-from:docs/specs/user/index.spec.md",
+        "needs-scenario",
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "recommendedEvalSurface": "dev/repo",
+      "nextAction": "Decompose this broad behavior promise into one or more concrete scenario candidates before planning a protected eval.",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -8156,8 +8400,8 @@
         }
       ],
       "summary": "The same product workflow can be reused across repos because repo-specific behavior lives in adapters and fixtures.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "verificationReadiness": "needs-scenario",
+      "whyThisLayer": "The claim names a broad behavior surface or reusable workflow; it needs a concrete scenario before an eval fixture can honestly prove it."
     },
     {
       "claimAudience": "user",
@@ -8735,6 +8979,35 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:96edf0260ccb63c7009cf56b622eb4b843855b73c969515d0a6996ac3162b662",
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-184",
+      "claimSemanticGroup": "Improvement and optimization",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "deterministic",
+        "linked-from:docs/contracts/reporting.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "Keep active-run artifacts reopenable so a later optimize pass can explain which runtime change triggered a simplification opportunity.",
+          "line": 184,
+          "path": "docs/contracts/runtime-fingerprint-optimization.md"
+        }
+      ],
+      "summary": "Keep active-run artifacts reopenable so a later optimize pass can explain which runtime change triggered a simplification opportunity.",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:fcfea5f504bd3665d363e93c6a62e485a89bf34e26feaf25970b1acbeaa448a2",
       "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-188",
       "claimSemanticGroup": "Quality gates",
@@ -9093,7 +9366,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:65cb30158d551471121109baa101be43b1ccbca956f9424cce6149c48a5667b1",
-      "claimId": "claim-skills-cautilus-skill-md-70",
+      "claimId": "claim-skills-cautilus-skill-md-72",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9111,7 +9384,7 @@
       "sourceRefs": [
         {
           "excerpt": "Use this path when the user asks whether a repo proves what it claims, whether docs and behavior are aligned, or which scenarios still need to be created.",
-          "line": 70,
+          "line": 72,
           "path": "skills/cautilus/SKILL.md"
         }
       ],
@@ -9123,7 +9396,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:a5c82e29ce761e42ed2b18553ae831a189310fe0174962cc79b0705853e8b2fc",
-      "claimId": "claim-skills-cautilus-skill-md-111",
+      "claimId": "claim-skills-cautilus-skill-md-115",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9142,7 +9415,7 @@
       "sourceRefs": [
         {
           "excerpt": "The coordinator should understand that choosing review means setting a review budget before any reviewer lanes, result application, eval planning, edits, or commits happen.",
-          "line": 111,
+          "line": 115,
           "path": "skills/cautilus/SKILL.md"
         }
       ],
@@ -9154,7 +9427,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:ebff670a7be2ce628a7746f3a30e31c98d21eb103137e70a4ff70fa52b2bfdba",
-      "claimId": "claim-skills-cautilus-skill-md-114",
+      "claimId": "claim-skills-cautilus-skill-md-118",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9171,7 +9444,7 @@
       "sourceRefs": [
         {
           "excerpt": "If a user-facing feature is missing from the configured entry docs or linked Markdown graph, report it as an entry-surface or narrative gap unless another reviewed artifact proves the binary skipped an in-scope declaration.",
-          "line": 114,
+          "line": 118,
           "path": "skills/cautilus/SKILL.md"
         }
       ],
@@ -9183,7 +9456,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:a950feb4b722b7133b2ffd1104b6fc46f6302a9ba218b408e7bfa851b6dcfcc3",
-      "claimId": "claim-skills-cautilus-skill-md-120",
+      "claimId": "claim-skills-cautilus-skill-md-124",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9200,7 +9473,7 @@
       "sourceRefs": [
         {
           "excerpt": "If the maintainer is reviewing from a constrained terminal or phone, run `npm run claims:status-server` so they can read the report in a browser and save section comments as `.cautilus/claims/claim-status-comments.json`.",
-          "line": 120,
+          "line": 124,
           "path": "skills/cautilus/SKILL.md"
         }
       ],
@@ -9212,7 +9485,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:81df3b1030acb0d476e7b567186862db55f2189eccf9f8b1338b371db7cfd3e6",
-      "claimId": "claim-skills-cautilus-skill-md-125",
+      "claimId": "claim-skills-cautilus-skill-md-129",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9229,7 +9502,7 @@
       "sourceRefs": [
         {
           "excerpt": "In the Cautilus product repo, product-meaning review should start from those spec docs; use the status report for packet audit, debugging, or deciding which remaining raw candidates are not yet absorbed.",
-          "line": 125,
+          "line": 129,
           "path": "skills/cautilus/SKILL.md"
         }
       ],
@@ -9241,7 +9514,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:ad87c31fd958bda23449318cee9819910cee320e357b5d89828021f8fdc3007a",
-      "claimId": "claim-skills-cautilus-skill-md-132",
+      "claimId": "claim-skills-cautilus-skill-md-136",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9259,7 +9532,7 @@
       "sourceRefs": [
         {
           "excerpt": "Maintainer-facing claims may use internal terms, but they must stay aligned with the user-facing claim specs and preserve source refs, proof route, evidence status, and next action.",
-          "line": 132,
+          "line": 136,
           "path": "skills/cautilus/SKILL.md"
         }
       ],
@@ -9271,7 +9544,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:c575861c975813835a93a64b3d0ca6aafdb2ee55d71de1ffb6211b433852c558",
-      "claimId": "claim-skills-cautilus-skill-md-158",
+      "claimId": "claim-skills-cautilus-skill-md-162",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9290,7 +9563,7 @@
       "sourceRefs": [
         {
           "excerpt": "This branch proves reviewer launch, not review-result merge behavior.",
-          "line": 158,
+          "line": 162,
           "path": "skills/cautilus/SKILL.md"
         }
       ],
@@ -9302,7 +9575,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:0430d8a298c4e11b0f53d621d1b7c1c908425d463f7a66dc5efbf4043936efbd",
-      "claimId": "claim-skills-cautilus-skill-md-223",
+      "claimId": "claim-skills-cautilus-skill-md-227",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9319,7 +9592,7 @@
       "sourceRefs": [
         {
           "excerpt": "Agents should read the packet first, then cite HTML only when a browser view is the deliverable.",
-          "line": 223,
+          "line": 227,
           "path": "skills/cautilus/SKILL.md"
         }
       ],
@@ -9344,44 +9617,44 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 234,
-      "user": 78
+      "developer": 241,
+      "user": 81
     },
     "byClaimSemanticGroup": {
-      "Adapter and portability": 55,
-      "Agent and skill workflow": 72,
-      "Claim discovery and review": 23,
-      "Documentation and contracts": 71,
+      "Adapter and portability": 57,
+      "Agent and skill workflow": 73,
+      "Claim discovery and review": 22,
+      "Documentation and contracts": 72,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
-      "Improvement and optimization": 19,
-      "Packets and reporting": 41,
-      "Quality gates": 27,
+      "Improvement and optimization": 20,
+      "Packets and reporting": 46,
+      "Quality gates": 28,
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "unknown": 312
+      "unknown": 322
     },
     "byLifecycle": {
-      "new": 312
+      "new": 322
     },
     "byRecommendedProof": {
-      "cautilus-eval": 132,
-      "deterministic": 102,
+      "cautilus-eval": 125,
+      "deterministic": 119,
       "human-auditable": 78
     },
     "byReviewStatus": {
-      "heuristic": 312
+      "heuristic": 322
     },
     "byVerificationReadiness": {
       "blocked": 14,
       "needs-alignment": 32,
-      "needs-scenario": 8,
-      "ready-to-verify": 258
+      "needs-scenario": 11,
+      "ready-to-verify": 265
     }
   },
   "discoveryEngine": {
-    "implementationHash": "sha256:ff4f75d6a2af1e63219578e49e4a5866b2b2e820e756aa295ccea266f2201de8",
+    "implementationHash": "sha256:8cd80d0e251f35784556e3c9a89fa92b8af0e1a5f0b1fe74d9eb24913ca02fa9",
     "implementationPath": "internal/runtime/claim_discovery.go",
     "name": "cautilus.claim_discovery",
     "ruleset": "claim-discovery-rules.v2"
@@ -9429,6 +9702,7 @@
       "artifacts/**",
       "charness-artifacts/**",
       "docs/specs/old/**",
+      "docs/claims/**",
       "docs/maintainers/**",
       "docs/internal/handoff.md",
       "docs/internal/research/**"
@@ -9535,7 +9809,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "c7d70e1bddf2c3d2b29a9cb435fd2a6143cfd7ce",
+  "gitCommit": "bb992ae4fb9c2e9fb8a872c2db2e0ccae0a04451",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "schemaVersion": "cautilus.claim_proof_plan.v1",
@@ -9957,7 +10231,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:a3c6490dae9ee0bc691e3e8b4543eb8a202229f91c1560ae13c727fdb2e9194a",
+      "contentHash": "sha256:ea1fea4f6a83e0ef1d8bfd8cc2cf75eebb1af79be43cb89610fe16de4a444c90",
       "depth": 0,
       "kind": "readme",
       "path": "README.md",
@@ -10106,7 +10380,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:e477166c450caf2d6f8bf8e420b02beb5377e04146438e62a5a5e7add9fed890",
+      "contentHash": "sha256:5de7123034ac9836c888d356301782be38abbdcb6302c2542f3a40f7cfcf2e10",
       "depth": 2,
       "discoveredFrom": "docs/master-plan.md",
       "kind": "contract",
@@ -10376,7 +10650,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:15231ae6dc060dfcfb25e32a5e5a45b4940426a902718491003aec2b5aa71989",
+      "contentHash": "sha256:b945d2543891dd8eaba10325f7a4c322c53c99887fc891d73f32d23ac15cdfce",
       "depth": 3,
       "discoveredFrom": "docs/contracts/scenario-history.md",
       "kind": "skill-doc",

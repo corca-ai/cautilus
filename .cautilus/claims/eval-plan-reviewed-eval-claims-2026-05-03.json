@@ -65,158 +65,6 @@
       ]
     },
     {
-      "claimFingerprint": "sha256:cca48e23143767450d964a26876792773f2f92ca2d3588c21e022181f0c06a2e",
-      "claimId": "claim-readme-md-151",
-      "draftIntent": "Verify that Use when you change a skill or agent and want to know whether it still triggers on the right prompts, executes cleanly, and keeps its static validation passing.",
-      "evidenceStatus": "unknown",
-      "fixtureAuthoringGuidance": {
-        "conditionalCaseFields": {
-          "execution": [
-            "thresholds or turns/auditKind when the evaluated behavior needs them"
-          ],
-          "trigger": [
-            "expectedTrigger"
-          ]
-        },
-        "evaluationInputSchema": "cautilus.evaluation_input.v1",
-        "expectedShape": "trigger cases require expectedTrigger; execution cases use thresholds, turns, or auditKind depending on the skill contract",
-        "fixtureOwner": "host-repo",
-        "minimumCaseFields": [
-          "caseId",
-          "evaluationKind",
-          "prompt"
-        ],
-        "minimumSuiteFields": [
-          "schemaVersion",
-          "surface",
-          "preset",
-          "suiteId",
-          "cases"
-        ],
-        "nonWriterBoundary": "Cautilus plans the fixture contract but does not write host-owned fixtures, prompts, runners, wrappers, or acceptance policy.",
-        "preset": "skill",
-        "requiredObservability": [
-          "trigger",
-          "execution",
-          "loadedInstructionFiles",
-          "runtimeFingerprint"
-        ],
-        "requiredRunnerCapability": "development-skill-eval-runner",
-        "runnerOutputSchema": "cautilus.skill_evaluation_inputs.v1",
-        "runnerOwner": "host-repo-adapter",
-        "schemaVersion": "cautilus.claim_eval_fixture_authoring_guidance.v1",
-        "surface": "dev"
-      },
-      "nextStep": "Create a host-owned cautilus.evaluation_input.v1 fixture and adapter-owned runner for this plan.",
-      "planId": "eval-plan-claim-readme-md-151",
-      "proofRequirement": {
-        "minimumProofClasses": [
-          "fixture-smoke",
-          "coding-agent-messaging",
-          "declared-eval-runner"
-        ],
-        "proofMechanism": "cautilus-eval",
-        "recommendedEvalSurface": "dev/skill",
-        "requiredObservability": [
-          "trigger",
-          "execution",
-          "loadedInstructionFiles",
-          "runtimeFingerprint"
-        ],
-        "requiredRunnerCapability": "development-skill-eval-runner",
-        "requiresProductRunnerProof": false
-      },
-      "reviewStatus": "agent-reviewed",
-      "sourceRefs": [
-        {
-          "excerpt": "Use when you change a skill or agent and want to know whether it still triggers on the right prompts, executes cleanly, and keeps its static validation passing.",
-          "line": 151,
-          "path": "README.md"
-        }
-      ],
-      "targetSurface": "dev/skill",
-      "unresolvedQuestions": [
-        "Which checked-in skill or agent workflow should be the portable representative for this user-facing promise?",
-        "Should static validation passing be asserted inside the eval runner result, or linked as a deterministic prerequisite evidence ref?"
-      ]
-    },
-    {
-      "claimFingerprint": "sha256:0326670200c2a6f36720afd68b0bf4dded8a6d931270b22ff70f68d3fe459927",
-      "claimId": "claim-readme-md-219",
-      "draftIntent": "Verify that Agent track — Claude / Codex plugin.** The `cautilus install` step also lands a bundled skill at `.agents/skills/cautilus/` with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally.",
-      "evidenceStatus": "unknown",
-      "fixtureAuthoringGuidance": {
-        "conditionalCaseFields": {
-          "execution": [
-            "thresholds or turns/auditKind when the evaluated behavior needs them"
-          ],
-          "trigger": [
-            "expectedTrigger"
-          ]
-        },
-        "evaluationInputSchema": "cautilus.evaluation_input.v1",
-        "expectedShape": "trigger cases require expectedTrigger; execution cases use thresholds, turns, or auditKind depending on the skill contract",
-        "fixtureOwner": "host-repo",
-        "minimumCaseFields": [
-          "caseId",
-          "evaluationKind",
-          "prompt"
-        ],
-        "minimumSuiteFields": [
-          "schemaVersion",
-          "surface",
-          "preset",
-          "suiteId",
-          "cases"
-        ],
-        "nonWriterBoundary": "Cautilus plans the fixture contract but does not write host-owned fixtures, prompts, runners, wrappers, or acceptance policy.",
-        "preset": "skill",
-        "requiredObservability": [
-          "trigger",
-          "execution",
-          "loadedInstructionFiles",
-          "runtimeFingerprint"
-        ],
-        "requiredRunnerCapability": "development-skill-eval-runner",
-        "runnerOutputSchema": "cautilus.skill_evaluation_inputs.v1",
-        "runnerOwner": "host-repo-adapter",
-        "schemaVersion": "cautilus.claim_eval_fixture_authoring_guidance.v1",
-        "surface": "dev"
-      },
-      "nextStep": "Create a host-owned cautilus.evaluation_input.v1 fixture and adapter-owned runner for this plan.",
-      "planId": "eval-plan-claim-readme-md-219",
-      "proofRequirement": {
-        "minimumProofClasses": [
-          "fixture-smoke",
-          "coding-agent-messaging",
-          "declared-eval-runner"
-        ],
-        "proofMechanism": "cautilus-eval",
-        "recommendedEvalSurface": "dev/skill",
-        "requiredObservability": [
-          "trigger",
-          "execution",
-          "loadedInstructionFiles",
-          "runtimeFingerprint"
-        ],
-        "requiredRunnerCapability": "development-skill-eval-runner",
-        "requiresProductRunnerProof": false
-      },
-      "reviewStatus": "agent-reviewed",
-      "sourceRefs": [
-        {
-          "excerpt": "Agent track — Claude / Codex plugin.** The `cautilus install` step also lands a bundled skill at `.agents/skills/cautilus/` with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally.",
-          "line": 219,
-          "path": "README.md"
-        }
-      ],
-      "targetSurface": "dev/skill",
-      "unresolvedQuestions": [
-        "Should this source sentence be split into a deterministic install-manifest claim and a separate dev/skill conversational-driving claim?",
-        "Which host agent surface, Claude plugin or Codex plugin, is the minimum portable proof target?"
-      ]
-    },
-    {
       "claimFingerprint": "sha256:acdb5102c491f925e41c367a64de268d5f6e70d89eeac7d7ece7289ba3dddd58",
       "claimId": "claim-docs-specs-user-evaluation-spec-md-7",
       "draftIntent": "Verify that Cautilus evaluates behavior that ordinary deterministic tests cannot fully explain, while keeping the repo in control of the runtime that produces behavior.",
@@ -276,152 +124,6 @@
         }
       ],
       "targetSurface": "dev/repo",
-      "unresolvedQuestions": []
-    },
-    {
-      "claimFingerprint": "sha256:fde6d2140934f920952b573f759955309b9ef147087ffcf646eed715be8668ac",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-21",
-      "draftIntent": "Verify that Existing claim state refresh is selected by the skill when it detects a prior JSON packet, but the refresh plan and state transition must be recorded in deterministic packets or helper output.",
-      "evidenceStatus": "unknown",
-      "fixtureAuthoringGuidance": {
-        "conditionalCaseFields": {
-          "execution": [
-            "thresholds or turns/auditKind when the evaluated behavior needs them"
-          ],
-          "trigger": [
-            "expectedTrigger"
-          ]
-        },
-        "evaluationInputSchema": "cautilus.evaluation_input.v1",
-        "expectedShape": "trigger cases require expectedTrigger; execution cases use thresholds, turns, or auditKind depending on the skill contract",
-        "fixtureOwner": "host-repo",
-        "minimumCaseFields": [
-          "caseId",
-          "evaluationKind",
-          "prompt"
-        ],
-        "minimumSuiteFields": [
-          "schemaVersion",
-          "surface",
-          "preset",
-          "suiteId",
-          "cases"
-        ],
-        "nonWriterBoundary": "Cautilus plans the fixture contract but does not write host-owned fixtures, prompts, runners, wrappers, or acceptance policy.",
-        "preset": "skill",
-        "requiredObservability": [
-          "trigger",
-          "execution",
-          "loadedInstructionFiles",
-          "runtimeFingerprint"
-        ],
-        "requiredRunnerCapability": "development-skill-eval-runner",
-        "runnerOutputSchema": "cautilus.skill_evaluation_inputs.v1",
-        "runnerOwner": "host-repo-adapter",
-        "schemaVersion": "cautilus.claim_eval_fixture_authoring_guidance.v1",
-        "surface": "dev"
-      },
-      "nextStep": "Create a host-owned cautilus.evaluation_input.v1 fixture and adapter-owned runner for this plan.",
-      "planId": "eval-plan-claim-docs-contracts-claim-discovery-workflow-md-21",
-      "proofRequirement": {
-        "minimumProofClasses": [
-          "fixture-smoke",
-          "coding-agent-messaging",
-          "declared-eval-runner"
-        ],
-        "proofMechanism": "cautilus-eval",
-        "recommendedEvalSurface": "dev/skill",
-        "requiredObservability": [
-          "trigger",
-          "execution",
-          "loadedInstructionFiles",
-          "runtimeFingerprint"
-        ],
-        "requiredRunnerCapability": "development-skill-eval-runner",
-        "requiresProductRunnerProof": false
-      },
-      "reviewStatus": "agent-reviewed",
-      "sourceRefs": [
-        {
-          "excerpt": "Existing claim state refresh is selected by the skill when it detects a prior JSON packet, but the refresh plan and state transition must be recorded in deterministic packets or helper output.",
-          "line": 21,
-          "path": "docs/contracts/claim-discovery-workflow.md"
-        }
-      ],
-      "targetSurface": "dev/skill",
-      "unresolvedQuestions": []
-    },
-    {
-      "claimFingerprint": "sha256:1cce79c5204f1bf8cd1feb6735fd63b25a41f3de67a2b5c3861a1825f869052c",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-39",
-      "draftIntent": "Verify that If prior claim state exists, step 5 becomes a diff-aware refresh selected by the skill: the skill uses the previous packet, the previous commit recorded in that packet, and a deterministic refresh plan to decide which sources need rescanning or re-review.",
-      "evidenceStatus": "unknown",
-      "fixtureAuthoringGuidance": {
-        "conditionalCaseFields": {
-          "execution": [
-            "thresholds or turns/auditKind when the evaluated behavior needs them"
-          ],
-          "trigger": [
-            "expectedTrigger"
-          ]
-        },
-        "evaluationInputSchema": "cautilus.evaluation_input.v1",
-        "expectedShape": "trigger cases require expectedTrigger; execution cases use thresholds, turns, or auditKind depending on the skill contract",
-        "fixtureOwner": "host-repo",
-        "minimumCaseFields": [
-          "caseId",
-          "evaluationKind",
-          "prompt"
-        ],
-        "minimumSuiteFields": [
-          "schemaVersion",
-          "surface",
-          "preset",
-          "suiteId",
-          "cases"
-        ],
-        "nonWriterBoundary": "Cautilus plans the fixture contract but does not write host-owned fixtures, prompts, runners, wrappers, or acceptance policy.",
-        "preset": "skill",
-        "requiredObservability": [
-          "trigger",
-          "execution",
-          "loadedInstructionFiles",
-          "runtimeFingerprint"
-        ],
-        "requiredRunnerCapability": "development-skill-eval-runner",
-        "runnerOutputSchema": "cautilus.skill_evaluation_inputs.v1",
-        "runnerOwner": "host-repo-adapter",
-        "schemaVersion": "cautilus.claim_eval_fixture_authoring_guidance.v1",
-        "surface": "dev"
-      },
-      "nextStep": "Create a host-owned cautilus.evaluation_input.v1 fixture and adapter-owned runner for this plan.",
-      "planId": "eval-plan-claim-docs-contracts-claim-discovery-workflow-md-39",
-      "proofRequirement": {
-        "minimumProofClasses": [
-          "fixture-smoke",
-          "coding-agent-messaging",
-          "declared-eval-runner"
-        ],
-        "proofMechanism": "cautilus-eval",
-        "recommendedEvalSurface": "dev/skill",
-        "requiredObservability": [
-          "trigger",
-          "execution",
-          "loadedInstructionFiles",
-          "runtimeFingerprint"
-        ],
-        "requiredRunnerCapability": "development-skill-eval-runner",
-        "requiresProductRunnerProof": false
-      },
-      "reviewStatus": "agent-reviewed",
-      "sourceRefs": [
-        {
-          "excerpt": "If prior claim state exists, step 5 becomes a diff-aware refresh selected by the skill: the skill uses the previous packet, the previous commit recorded in that packet, and a deterministic refresh plan to decide which sources need rescanning or re-review.",
-          "line": 39,
-          "path": "docs/contracts/claim-discovery-workflow.md"
-        }
-      ],
-      "targetSurface": "dev/skill",
       "unresolvedQuestions": []
     },
     {
@@ -491,225 +193,6 @@
         {
           "excerpt": "When raw candidates are too granular to review directly, the bundled skill should curate two canonical specdown indexes before continuing HITL:",
           "line": 85,
-          "path": "docs/contracts/claim-discovery-workflow.md"
-        }
-      ],
-      "targetSurface": "dev/skill",
-      "unresolvedQuestions": []
-    },
-    {
-      "claimFingerprint": "sha256:217060ae33b576f27c9e488235a7b291e4fa3b3061da405ef153f4a209e51c43",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-201",
-      "draftIntent": "Verify that After the deterministic pass, the skill should show a separate review plan:.",
-      "evidenceStatus": "unknown",
-      "fixtureAuthoringGuidance": {
-        "conditionalCaseFields": {
-          "execution": [
-            "thresholds or turns/auditKind when the evaluated behavior needs them"
-          ],
-          "trigger": [
-            "expectedTrigger"
-          ]
-        },
-        "evaluationInputSchema": "cautilus.evaluation_input.v1",
-        "expectedShape": "trigger cases require expectedTrigger; execution cases use thresholds, turns, or auditKind depending on the skill contract",
-        "fixtureOwner": "host-repo",
-        "minimumCaseFields": [
-          "caseId",
-          "evaluationKind",
-          "prompt"
-        ],
-        "minimumSuiteFields": [
-          "schemaVersion",
-          "surface",
-          "preset",
-          "suiteId",
-          "cases"
-        ],
-        "nonWriterBoundary": "Cautilus plans the fixture contract but does not write host-owned fixtures, prompts, runners, wrappers, or acceptance policy.",
-        "preset": "skill",
-        "requiredObservability": [
-          "trigger",
-          "execution",
-          "loadedInstructionFiles",
-          "runtimeFingerprint"
-        ],
-        "requiredRunnerCapability": "development-skill-eval-runner",
-        "runnerOutputSchema": "cautilus.skill_evaluation_inputs.v1",
-        "runnerOwner": "host-repo-adapter",
-        "schemaVersion": "cautilus.claim_eval_fixture_authoring_guidance.v1",
-        "surface": "dev"
-      },
-      "nextStep": "Create a host-owned cautilus.evaluation_input.v1 fixture and adapter-owned runner for this plan.",
-      "planId": "eval-plan-claim-docs-contracts-claim-discovery-workflow-md-201",
-      "proofRequirement": {
-        "minimumProofClasses": [
-          "fixture-smoke",
-          "coding-agent-messaging",
-          "declared-eval-runner"
-        ],
-        "proofMechanism": "cautilus-eval",
-        "recommendedEvalSurface": "dev/skill",
-        "requiredObservability": [
-          "trigger",
-          "execution",
-          "loadedInstructionFiles",
-          "runtimeFingerprint"
-        ],
-        "requiredRunnerCapability": "development-skill-eval-runner",
-        "requiresProductRunnerProof": false
-      },
-      "reviewStatus": "agent-reviewed",
-      "sourceRefs": [
-        {
-          "excerpt": "After the deterministic pass, the skill should show a separate review plan:",
-          "line": 201,
-          "path": "docs/contracts/claim-discovery-workflow.md"
-        }
-      ],
-      "targetSurface": "dev/skill",
-      "unresolvedQuestions": []
-    },
-    {
-      "claimFingerprint": "sha256:4320ef933b3041cf1a4934f75f1650b36ac597e6e9a88d17216ebf2251c20800",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-590",
-      "draftIntent": "Verify that Claim review that uses an LLM needs separate review-budget confirmation after deterministic scan.",
-      "evidenceStatus": "unknown",
-      "fixtureAuthoringGuidance": {
-        "conditionalCaseFields": {
-          "execution": [
-            "thresholds or turns/auditKind when the evaluated behavior needs them"
-          ],
-          "trigger": [
-            "expectedTrigger"
-          ]
-        },
-        "evaluationInputSchema": "cautilus.evaluation_input.v1",
-        "expectedShape": "trigger cases require expectedTrigger; execution cases use thresholds, turns, or auditKind depending on the skill contract",
-        "fixtureOwner": "host-repo",
-        "minimumCaseFields": [
-          "caseId",
-          "evaluationKind",
-          "prompt"
-        ],
-        "minimumSuiteFields": [
-          "schemaVersion",
-          "surface",
-          "preset",
-          "suiteId",
-          "cases"
-        ],
-        "nonWriterBoundary": "Cautilus plans the fixture contract but does not write host-owned fixtures, prompts, runners, wrappers, or acceptance policy.",
-        "preset": "skill",
-        "requiredObservability": [
-          "trigger",
-          "execution",
-          "loadedInstructionFiles",
-          "runtimeFingerprint"
-        ],
-        "requiredRunnerCapability": "development-skill-eval-runner",
-        "runnerOutputSchema": "cautilus.skill_evaluation_inputs.v1",
-        "runnerOwner": "host-repo-adapter",
-        "schemaVersion": "cautilus.claim_eval_fixture_authoring_guidance.v1",
-        "surface": "dev"
-      },
-      "nextStep": "Create a host-owned cautilus.evaluation_input.v1 fixture and adapter-owned runner for this plan.",
-      "planId": "eval-plan-claim-docs-contracts-claim-discovery-workflow-md-590",
-      "proofRequirement": {
-        "minimumProofClasses": [
-          "fixture-smoke",
-          "coding-agent-messaging",
-          "declared-eval-runner"
-        ],
-        "proofMechanism": "cautilus-eval",
-        "recommendedEvalSurface": "dev/skill",
-        "requiredObservability": [
-          "trigger",
-          "execution",
-          "loadedInstructionFiles",
-          "runtimeFingerprint"
-        ],
-        "requiredRunnerCapability": "development-skill-eval-runner",
-        "requiresProductRunnerProof": false
-      },
-      "reviewStatus": "agent-reviewed",
-      "sourceRefs": [
-        {
-          "excerpt": "Claim review that uses an LLM needs separate review-budget confirmation after deterministic scan.",
-          "line": 590,
-          "path": "docs/contracts/claim-discovery-workflow.md"
-        }
-      ],
-      "targetSurface": "dev/skill",
-      "unresolvedQuestions": []
-    },
-    {
-      "claimFingerprint": "sha256:e69d60f7c92a20a2320993d00a9b6841701ba2806fa758b2c19f69acfd54279d",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-591",
-      "draftIntent": "Verify that Existing state refresh is selected by the skill when prior claim JSON exists, but deterministic refresh-plan output owns the state transition.",
-      "evidenceStatus": "unknown",
-      "fixtureAuthoringGuidance": {
-        "conditionalCaseFields": {
-          "execution": [
-            "thresholds or turns/auditKind when the evaluated behavior needs them"
-          ],
-          "trigger": [
-            "expectedTrigger"
-          ]
-        },
-        "evaluationInputSchema": "cautilus.evaluation_input.v1",
-        "expectedShape": "trigger cases require expectedTrigger; execution cases use thresholds, turns, or auditKind depending on the skill contract",
-        "fixtureOwner": "host-repo",
-        "minimumCaseFields": [
-          "caseId",
-          "evaluationKind",
-          "prompt"
-        ],
-        "minimumSuiteFields": [
-          "schemaVersion",
-          "surface",
-          "preset",
-          "suiteId",
-          "cases"
-        ],
-        "nonWriterBoundary": "Cautilus plans the fixture contract but does not write host-owned fixtures, prompts, runners, wrappers, or acceptance policy.",
-        "preset": "skill",
-        "requiredObservability": [
-          "trigger",
-          "execution",
-          "loadedInstructionFiles",
-          "runtimeFingerprint"
-        ],
-        "requiredRunnerCapability": "development-skill-eval-runner",
-        "runnerOutputSchema": "cautilus.skill_evaluation_inputs.v1",
-        "runnerOwner": "host-repo-adapter",
-        "schemaVersion": "cautilus.claim_eval_fixture_authoring_guidance.v1",
-        "surface": "dev"
-      },
-      "nextStep": "Create a host-owned cautilus.evaluation_input.v1 fixture and adapter-owned runner for this plan.",
-      "planId": "eval-plan-claim-docs-contracts-claim-discovery-workflow-md-591",
-      "proofRequirement": {
-        "minimumProofClasses": [
-          "fixture-smoke",
-          "coding-agent-messaging",
-          "declared-eval-runner"
-        ],
-        "proofMechanism": "cautilus-eval",
-        "recommendedEvalSurface": "dev/skill",
-        "requiredObservability": [
-          "trigger",
-          "execution",
-          "loadedInstructionFiles",
-          "runtimeFingerprint"
-        ],
-        "requiredRunnerCapability": "development-skill-eval-runner",
-        "requiresProductRunnerProof": false
-      },
-      "reviewStatus": "agent-reviewed",
-      "sourceRefs": [
-        {
-          "excerpt": "Existing state refresh is selected by the skill when prior claim JSON exists, but deterministic refresh-plan output owns the state transition.",
-          "line": 591,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -914,92 +397,19 @@
       "unresolvedQuestions": [
         "Which existing self-dogfood optimize fixture, if any, is intended to be the canonical proof for the user-facing optimize promise?"
       ]
-    },
-    {
-      "claimFingerprint": "sha256:0430d8a298c4e11b0f53d621d1b7c1c908425d463f7a66dc5efbf4043936efbd",
-      "claimId": "claim-skills-cautilus-skill-md-223",
-      "draftIntent": "Verify that Agents should read the packet first, then cite HTML only when a browser view is the deliverable.",
-      "evidenceStatus": "unknown",
-      "fixtureAuthoringGuidance": {
-        "conditionalCaseFields": {
-          "execution": [
-            "thresholds or turns/auditKind when the evaluated behavior needs them"
-          ],
-          "trigger": [
-            "expectedTrigger"
-          ]
-        },
-        "evaluationInputSchema": "cautilus.evaluation_input.v1",
-        "expectedShape": "trigger cases require expectedTrigger; execution cases use thresholds, turns, or auditKind depending on the skill contract",
-        "fixtureOwner": "host-repo",
-        "minimumCaseFields": [
-          "caseId",
-          "evaluationKind",
-          "prompt"
-        ],
-        "minimumSuiteFields": [
-          "schemaVersion",
-          "surface",
-          "preset",
-          "suiteId",
-          "cases"
-        ],
-        "nonWriterBoundary": "Cautilus plans the fixture contract but does not write host-owned fixtures, prompts, runners, wrappers, or acceptance policy.",
-        "preset": "skill",
-        "requiredObservability": [
-          "trigger",
-          "execution",
-          "loadedInstructionFiles",
-          "runtimeFingerprint"
-        ],
-        "requiredRunnerCapability": "development-skill-eval-runner",
-        "runnerOutputSchema": "cautilus.skill_evaluation_inputs.v1",
-        "runnerOwner": "host-repo-adapter",
-        "schemaVersion": "cautilus.claim_eval_fixture_authoring_guidance.v1",
-        "surface": "dev"
-      },
-      "nextStep": "Create a host-owned cautilus.evaluation_input.v1 fixture and adapter-owned runner for this plan.",
-      "planId": "eval-plan-claim-skills-cautilus-skill-md-223",
-      "proofRequirement": {
-        "minimumProofClasses": [
-          "fixture-smoke",
-          "coding-agent-messaging",
-          "declared-eval-runner"
-        ],
-        "proofMechanism": "cautilus-eval",
-        "recommendedEvalSurface": "dev/skill",
-        "requiredObservability": [
-          "trigger",
-          "execution",
-          "loadedInstructionFiles",
-          "runtimeFingerprint"
-        ],
-        "requiredRunnerCapability": "development-skill-eval-runner",
-        "requiresProductRunnerProof": false
-      },
-      "reviewStatus": "agent-reviewed",
-      "sourceRefs": [
-        {
-          "excerpt": "Agents should read the packet first, then cite HTML only when a browser view is the deliverable.",
-          "line": 223,
-          "path": "skills/cautilus/SKILL.md"
-        }
-      ],
-      "targetSurface": "dev/skill",
-      "unresolvedQuestions": []
     }
   ],
   "inputPath": "/home/hwidong/codes/cautilus/.cautilus/claims/evidenced-typed-runners.json",
   "nonWriterNotice": "This packet plans eval fixtures but does not write host-owned fixtures, prompts, runners, or policy.",
   "planSummary": {
-    "evalPlanCount": 14,
+    "evalPlanCount": 6,
     "skippedByReason": {
-      "already-satisfied": 1,
-      "not-cautilus-eval": 198,
+      "already-satisfied": 8,
+      "not-cautilus-eval": 199,
       "not-ready-to-verify": 11,
       "not-reviewed": 98
     },
-    "skippedClaimCount": 308,
+    "skippedClaimCount": 316,
     "zeroPlanExpectation": "Zero eval plans can be expected when reviewed eval-ready claims are already satisfied or when remaining reviewed claims are not Cautilus eval targets.",
     "zeroPlanReason": ""
   },
@@ -1008,7 +418,7 @@
     "excludesEvidenceStatus": [
       "satisfied"
     ],
-    "maxClaims": 200,
+    "maxClaims": 20,
     "requiresRecommendedProof": "cautilus-eval",
     "requiresReviewStatus": [
       "agent-reviewed",
@@ -1197,6 +607,35 @@
       "verificationReadiness": "ready-to-verify"
     },
     {
+      "claimFingerprint": "sha256:cca48e23143767450d964a26876792773f2f92ca2d3588c21e022181f0c06a2e",
+      "claimId": "claim-readme-md-151",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:47723ade9559d1b59e8b69afe363de5488bccf59cb1a306cbce99cda245b587e",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-current-dev-skill-dogfood-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-readme-md-151"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "reason": "already-satisfied",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "Use when you change a skill or agent and want to know whether it still triggers on the right prompts, executes cleanly, and keeps its static validation passing.",
+          "line": 151,
+          "path": "README.md"
+        }
+      ],
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
       "claimFingerprint": "sha256:afaff338e3a44ec8eeb8b39d25319e27d26e908ac17a00c2f46c5af9979e5e1f",
       "claimId": "claim-readme-md-155",
       "evidenceStatus": "unknown",
@@ -1255,6 +694,35 @@
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "verificationReadiness": "blocked"
+    },
+    {
+      "claimFingerprint": "sha256:0326670200c2a6f36720afd68b0bf4dded8a6d931270b22ff70f68d3fe459927",
+      "claimId": "claim-readme-md-219",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:47723ade9559d1b59e8b69afe363de5488bccf59cb1a306cbce99cda245b587e",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-current-dev-skill-dogfood-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-readme-md-219"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "reason": "already-satisfied",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "Agent track — Claude / Codex plugin.** The `cautilus install` step also lands a bundled skill at `.agents/skills/cautilus/` with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally.",
+          "line": 219,
+          "path": "README.md"
+        }
+      ],
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-to-verify"
     },
     {
       "claimFingerprint": "sha256:3022b028802b2727ebdc3d4e058efe037c29d529aa9580f5229aa3ac00dd2027",
@@ -2047,6 +1515,64 @@
       "verificationReadiness": "ready-to-verify"
     },
     {
+      "claimFingerprint": "sha256:fde6d2140934f920952b573f759955309b9ef147087ffcf646eed715be8668ac",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-21",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:47723ade9559d1b59e8b69afe363de5488bccf59cb1a306cbce99cda245b587e",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-current-dev-skill-dogfood-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-claim-discovery-workflow-md-21"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "reason": "already-satisfied",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "Existing claim state refresh is selected by the skill when it detects a prior JSON packet, but the refresh plan and state transition must be recorded in deterministic packets or helper output.",
+          "line": 21,
+          "path": "docs/contracts/claim-discovery-workflow.md"
+        }
+      ],
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "claimFingerprint": "sha256:1cce79c5204f1bf8cd1feb6735fd63b25a41f3de67a2b5c3861a1825f869052c",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-39",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:47723ade9559d1b59e8b69afe363de5488bccf59cb1a306cbce99cda245b587e",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-current-dev-skill-dogfood-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-claim-discovery-workflow-md-39"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "reason": "already-satisfied",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "If prior claim state exists, step 5 becomes a diff-aware refresh selected by the skill: the skill uses the previous packet, the previous commit recorded in that packet, and a deterministic refresh plan to decide which sources need rescanning or re-review.",
+          "line": 39,
+          "path": "docs/contracts/claim-discovery-workflow.md"
+        }
+      ],
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
       "claimFingerprint": "sha256:45b653427563292b6418370c4faf5171a5c0bca05f568f9fc6df60bb5358c2f0",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-47",
       "evidenceStatus": "unknown",
@@ -2214,6 +1740,35 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "claimFingerprint": "sha256:217060ae33b576f27c9e488235a7b291e4fa3b3061da405ef153f4a209e51c43",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-201",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:47723ade9559d1b59e8b69afe363de5488bccf59cb1a306cbce99cda245b587e",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-current-dev-skill-dogfood-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-claim-discovery-workflow-md-201"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "reason": "already-satisfied",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "After the deterministic pass, the skill should show a separate review plan:",
+          "line": 201,
+          "path": "docs/contracts/claim-discovery-workflow.md"
+        }
+      ],
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify"
     },
     {
@@ -2595,6 +2150,64 @@
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "verificationReadiness": "needs-alignment"
+    },
+    {
+      "claimFingerprint": "sha256:4320ef933b3041cf1a4934f75f1650b36ac597e6e9a88d17216ebf2251c20800",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-590",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:47723ade9559d1b59e8b69afe363de5488bccf59cb1a306cbce99cda245b587e",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-current-dev-skill-dogfood-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-claim-discovery-workflow-md-590"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "reason": "already-satisfied",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "Claim review that uses an LLM needs separate review-budget confirmation after deterministic scan.",
+          "line": 590,
+          "path": "docs/contracts/claim-discovery-workflow.md"
+        }
+      ],
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "claimFingerprint": "sha256:e69d60f7c92a20a2320993d00a9b6841701ba2806fa758b2c19f69acfd54279d",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-591",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:47723ade9559d1b59e8b69afe363de5488bccf59cb1a306cbce99cda245b587e",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-current-dev-skill-dogfood-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-claim-discovery-workflow-md-591"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "reason": "already-satisfied",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "Existing state refresh is selected by the skill when prior claim JSON exists, but deterministic refresh-plan output owns the state transition.",
+          "line": 591,
+          "path": "docs/contracts/claim-discovery-workflow.md"
+        }
+      ],
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-to-verify"
     },
     {
       "claimFingerprint": "sha256:c0c7d0f38d477c81974441fe12254d670a3a1fc6fb362622769dc305a89dcb8f",
@@ -4048,17 +3661,17 @@
     },
     {
       "claimFingerprint": "sha256:65cb30158d551471121109baa101be43b1ccbca956f9424cce6149c48a5667b1",
-      "claimId": "claim-skills-cautilus-skill-md-70",
+      "claimId": "claim-skills-cautilus-skill-md-72",
       "evidenceStatus": "unknown",
       "reason": "not-cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "human-auditable",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "verificationReadiness": "needs-alignment"
     },
     {
       "claimFingerprint": "sha256:a5c82e29ce761e42ed2b18553ae831a189310fe0174962cc79b0705853e8b2fc",
-      "claimId": "claim-skills-cautilus-skill-md-111",
+      "claimId": "claim-skills-cautilus-skill-md-115",
       "evidenceStatus": "unknown",
       "reason": "not-reviewed",
       "recommendedEvalSurface": "dev/repo",
@@ -4068,7 +3681,7 @@
     },
     {
       "claimFingerprint": "sha256:ebff670a7be2ce628a7746f3a30e31c98d21eb103137e70a4ff70fa52b2bfdba",
-      "claimId": "claim-skills-cautilus-skill-md-114",
+      "claimId": "claim-skills-cautilus-skill-md-118",
       "evidenceStatus": "unknown",
       "reason": "not-cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
@@ -4078,7 +3691,7 @@
     },
     {
       "claimFingerprint": "sha256:a950feb4b722b7133b2ffd1104b6fc46f6302a9ba218b408e7bfa851b6dcfcc3",
-      "claimId": "claim-skills-cautilus-skill-md-120",
+      "claimId": "claim-skills-cautilus-skill-md-124",
       "evidenceStatus": "unknown",
       "reason": "not-cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
@@ -4088,7 +3701,7 @@
     },
     {
       "claimFingerprint": "sha256:81df3b1030acb0d476e7b567186862db55f2189eccf9f8b1338b371db7cfd3e6",
-      "claimId": "claim-skills-cautilus-skill-md-125",
+      "claimId": "claim-skills-cautilus-skill-md-129",
       "evidenceStatus": "unknown",
       "reason": "not-cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
@@ -4098,7 +3711,7 @@
     },
     {
       "claimFingerprint": "sha256:ad87c31fd958bda23449318cee9819910cee320e357b5d89828021f8fdc3007a",
-      "claimId": "claim-skills-cautilus-skill-md-132",
+      "claimId": "claim-skills-cautilus-skill-md-136",
       "evidenceStatus": "unknown",
       "reason": "not-cautilus-eval",
       "recommendedEvalSurface": "dev/repo",
@@ -4108,18 +3721,28 @@
     },
     {
       "claimFingerprint": "sha256:c575861c975813835a93a64b3d0ca6aafdb2ee55d71de1ffb6211b433852c558",
-      "claimId": "claim-skills-cautilus-skill-md-158",
+      "claimId": "claim-skills-cautilus-skill-md-162",
       "evidenceStatus": "unknown",
       "reason": "not-reviewed",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "claimFingerprint": "sha256:0430d8a298c4e11b0f53d621d1b7c1c908425d463f7a66dc5efbf4043936efbd",
+      "claimId": "claim-skills-cautilus-skill-md-227",
+      "evidenceStatus": "unknown",
+      "reason": "not-cautilus-eval",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
     }
   ],
   "sourceClaimPacket": {
     "candidateCount": 322,
-    "gitCommit": "80740906a3e6ac5cc9bc263b7041d6709e70479b",
+    "gitCommit": "bb992ae4fb9c2e9fb8a872c2db2e0ccae0a04451",
     "schemaVersion": "cautilus.claim_proof_plan.v1"
   }
 }

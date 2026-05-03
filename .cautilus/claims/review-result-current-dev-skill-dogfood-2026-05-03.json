@@ -1,0 +1,177 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-current-dev-skill-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-03T00:00:00Z",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied when current Codex dev/skill dogfood evidence directly proves the claim boundary. Do not use this bundle for broad optimization, app behavior, GUI/workbench, Claude conversational parity, numeric branch stability, or semantic runner honesty claims."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-current-dev-skill-dogfood-2026-05-03",
+      "claimUpdates": [
+        {
+          "claimId": "claim-readme-md-151",
+          "claimFingerprint": "sha256:cca48e23143767450d964a26876792773f2f92ca2d3588c21e022181f0c06a2e",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/skill",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the current dev/skill routing dogfood: the bundled Cautilus skill triggered under Codex, ran a checked-in dev/skill eval fixture, completed cleanly, and kept the agent-surface preflight ready. This does not prove every possible skill prompt.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-current-dev-skill-dogfood-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:47723ade9559d1b59e8b69afe363de5488bccf59cb1a306cbce99cda245b587e",
+              "supportsClaimIds": [
+                "claim-readme-md-151"
+              ]
+            }
+          ],
+          "nextAction": "Keep covered by current self-dogfood-eval-skill when bundled skill routing, fixture execution, or static agent-surface readiness changes.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-readme-md-219",
+          "claimFingerprint": "sha256:0326670200c2a6f36720afd68b0bf4dded8a6d931270b22ff70f68d3fe459927",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/skill",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by current install/doctor preflight, installed bundled skill and Claude/Codex plugin manifests, and Codex conversational dogfood that drove Cautilus status and eval contracts. This does not claim full Claude conversational runtime parity.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-current-dev-skill-dogfood-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:47723ade9559d1b59e8b69afe363de5488bccf59cb1a306cbce99cda245b587e",
+              "supportsClaimIds": [
+                "claim-readme-md-219"
+              ]
+            }
+          ],
+          "nextAction": "Keep install and agent-surface proof aligned with self-dogfood-eval-skill and manifest smoke when packaging changes.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-21",
+          "claimFingerprint": "sha256:fde6d2140934f920952b573f759955309b9ef147087ffcf646eed715be8668ac",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/skill",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the current refresh-flow dogfood: the skill selected the saved-claim-map refresh branch from an explicit branch request, ran `claim discover --previous ... --refresh-plan`, read `refreshSummary`, and left state transition ownership in deterministic packet output.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-current-dev-skill-dogfood-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:47723ade9559d1b59e8b69afe363de5488bccf59cb1a306cbce99cda245b587e",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-21"
+              ]
+            }
+          ],
+          "nextAction": "Keep refresh-flow dogfood focused on saved-claim-map refresh-plan creation, not review or eval planning.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-39",
+          "claimFingerprint": "sha256:1cce79c5204f1bf8cd1feb6735fd63b25a41f3de67a2b5c3861a1825f869052c",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/skill",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the current refresh-flow dogfood and audit: prior claim state led to a diff-aware refresh-plan command and `refreshSummary` read. The evidence proves packet transition behavior, not semantic optimality of every rescan decision.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-current-dev-skill-dogfood-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:47723ade9559d1b59e8b69afe363de5488bccf59cb1a306cbce99cda245b587e",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-39"
+              ]
+            }
+          ],
+          "nextAction": "Keep refresh-plan packet assertions aligned with claim-state freshness logic.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-201",
+          "claimFingerprint": "sha256:217060ae33b576f27c9e488235a7b291e4fa3b3061da405ef153f4a209e51c43",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/skill",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by current review-prepare dogfood: after a deterministic first scan and `claim show`, the skill stated the review budget boundary and produced a deterministic `claim review prepare-input` packet.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-current-dev-skill-dogfood-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:47723ade9559d1b59e8b69afe363de5488bccf59cb1a306cbce99cda245b587e",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-201"
+              ]
+            }
+          ],
+          "nextAction": "Keep review-prepare dogfood strict about stopping at packet creation before reviewer launch.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-590",
+          "claimFingerprint": "sha256:4320ef933b3041cf1a4934f75f1650b36ac597e6e9a88d17216ebf2251c20800",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/skill",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by current review-prepare dogfood and audit: the agent described the review budget before LLM review and did not launch reviewer lanes, apply results, or plan eval fixtures.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-current-dev-skill-dogfood-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:47723ade9559d1b59e8b69afe363de5488bccf59cb1a306cbce99cda245b587e",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-590"
+              ]
+            }
+          ],
+          "nextAction": "Keep audit wording broad enough for equivalent no-reviewer-launch language while preserving the budget boundary.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-591",
+          "claimFingerprint": "sha256:e69d60f7c92a20a2320993d00a9b6841701ba2806fa758b2c19f69acfd54279d",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/skill",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by current refresh-flow dogfood: existing claim state selected the refresh-plan path while the binary-owned refresh-plan packet, not the skill prose, owned the state transition.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-current-dev-skill-dogfood-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:47723ade9559d1b59e8b69afe363de5488bccf59cb1a306cbce99cda245b587e",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-591"
+              ]
+            }
+          ],
+          "nextAction": "Keep existing-state refresh proof separate from saved-claim-map mutation or review-result application proof.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

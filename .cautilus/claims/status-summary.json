@@ -24,12 +24,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 106
+          "satisfied": 113
         },
         "byReviewStatus": {
-          "agent-reviewed": 106
+          "agent-reviewed": 113
         },
-        "count": 106,
+        "count": 113,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -43,21 +43,36 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 112
+          "unknown": 1
         },
         "byReviewStatus": {
-          "agent-reviewed": 14,
+          "heuristic": 1
+        },
+        "count": 1,
+        "id": "agent-add-deterministic-proof",
+        "recommendedActor": "agent",
+        "sampleClaimIds": [
+          "claim-skills-cautilus-skill-md-227"
+        ],
+        "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
+      },
+      {
+        "byEvidenceStatus": {
+          "unknown": 104
+        },
+        "byReviewStatus": {
+          "agent-reviewed": 6,
           "heuristic": 98
         },
-        "count": 112,
+        "count": 104,
         "id": "agent-plan-cautilus-eval",
         "recommendedActor": "agent",
         "sampleClaimIds": [
           "claim-agents-md-79",
-          "claim-readme-md-151",
           "claim-readme-md-155",
-          "claim-readme-md-219",
-          "claim-docs-contracts-adapter-contract-md-3"
+          "claim-docs-contracts-adapter-contract-md-3",
+          "claim-docs-contracts-adapter-contract-md-208",
+          "claim-docs-contracts-adapter-contract-md-220"
         ],
         "summary": "Draft or select Cautilus eval scenarios for ready eval claims."
       },
@@ -86,8 +101,8 @@
           "unknown": 34
         },
         "byReviewStatus": {
-          "agent-reviewed": 14,
-          "heuristic": 20
+          "agent-reviewed": 15,
+          "heuristic": 19
         },
         "count": 34,
         "id": "human-align-surfaces",
@@ -176,15 +191,15 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 106,
-      "unknown": 216
+      "satisfied": 113,
+      "unknown": 209
     },
     "byLifecycle": {
       "new": 322
     },
     "byRecommendedProof": {
-      "cautilus-eval": 124,
-      "deterministic": 106,
+      "cautilus-eval": 123,
+      "deterministic": 107,
       "human-auditable": 92
     },
     "byReviewStatus": {
@@ -362,7 +377,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 106,
+    "satisfiedClaimCount": 113,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-78",
@@ -523,6 +538,25 @@
         "summary": "CLI: `cautilus scenario normalize chatbot --input logs.json` For agent: \"Run a chatbot regression with these logs and my new system prompt.\" You get reopenable `proposals.json` candidates that can be kept out of tuning as protected checks."
       },
       {
+        "claimId": "claim-readme-md-151",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:47723ade9559d1b59e8b69afe363de5488bccf59cb1a306cbce99cda245b587e",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-current-dev-skill-dogfood-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-readme-md-151"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": "dev/skill",
+        "recommendedProof": "cautilus-eval",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Use when you change a skill or agent and want to know whether it still triggers on the right prompts, executes cleanly, and keeps its static validation passing."
+      },
+      {
         "claimId": "claim-readme-md-157",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -559,6 +593,25 @@
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
         "summary": "Each catalog entry now also includes `exampleInputCli`, so an operator or wrapper can inspect a minimal valid packet shape without opening a fixture path first."
+      },
+      {
+        "claimId": "claim-readme-md-219",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:47723ade9559d1b59e8b69afe363de5488bccf59cb1a306cbce99cda245b587e",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-current-dev-skill-dogfood-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-readme-md-219"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": "dev/skill",
+        "recommendedProof": "cautilus-eval",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Agent track — Claude / Codex plugin.** The `cautilus install` step also lands a bundled skill at `.agents/skills/cautilus/` with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally."
       },
       {
         "claimId": "claim-readme-md-239",
@@ -1371,6 +1424,44 @@
         "summary": "`cautilus claim discover` currently emits a deterministic, source-ref-backed proof-plan skeleton."
       },
       {
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-21",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:47723ade9559d1b59e8b69afe363de5488bccf59cb1a306cbce99cda245b587e",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-current-dev-skill-dogfood-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-claim-discovery-workflow-md-21"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": "dev/skill",
+        "recommendedProof": "cautilus-eval",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Existing claim state refresh is selected by the skill when it detects a prior JSON packet, but the refresh plan and state transition must be recorded in deterministic packets or helper output."
+      },
+      {
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-39",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:47723ade9559d1b59e8b69afe363de5488bccf59cb1a306cbce99cda245b587e",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-current-dev-skill-dogfood-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-claim-discovery-workflow-md-39"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": "dev/skill",
+        "recommendedProof": "cautilus-eval",
+        "reviewStatus": "agent-reviewed",
+        "summary": "If prior claim state exists, step 5 becomes a diff-aware refresh selected by the skill: the skill uses the previous packet, the previous commit recorded in that packet, and a deterministic refresh plan to decide which sources need rescanning or re-review."
+      },
+      {
         "claimId": "claim-docs-contracts-claim-discovery-workflow-md-96",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -1428,6 +1519,25 @@
         "summary": "When a repo maintains canonical catalogs, it should also keep a machine-readable mapping artifact that projects raw claim ids onto canonical user-facing or maintainer-facing claim ids."
       },
       {
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-201",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:47723ade9559d1b59e8b69afe363de5488bccf59cb1a306cbce99cda245b587e",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-current-dev-skill-dogfood-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-claim-discovery-workflow-md-201"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": "dev/skill",
+        "recommendedProof": "cautilus-eval",
+        "reviewStatus": "agent-reviewed",
+        "summary": "After the deterministic pass, the skill should show a separate review plan:"
+      },
+      {
         "claimId": "claim-docs-contracts-claim-discovery-workflow-md-377",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -1464,6 +1574,44 @@
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
         "summary": "The skill may select refresh, but deterministic refresh-plan output must record baseline commit, target policy, changed sources, carried-forward claims, stale evidence reasons, and dirty-working-tree treatment."
+      },
+      {
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-590",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:47723ade9559d1b59e8b69afe363de5488bccf59cb1a306cbce99cda245b587e",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-current-dev-skill-dogfood-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-claim-discovery-workflow-md-590"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": "dev/skill",
+        "recommendedProof": "cautilus-eval",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Claim review that uses an LLM needs separate review-budget confirmation after deterministic scan."
+      },
+      {
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-591",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:47723ade9559d1b59e8b69afe363de5488bccf59cb1a306cbce99cda245b587e",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-current-dev-skill-dogfood-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-claim-discovery-workflow-md-591"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": "dev/skill",
+        "recommendedProof": "cautilus-eval",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Existing state refresh is selected by the skill when prior claim JSON exists, but deterministic refresh-plan output owns the state transition."
       },
       {
         "claimId": "claim-docs-contracts-claim-discovery-workflow-md-627",
@@ -2406,33 +2554,10 @@
       }
     ]
   },
-  "gitCommit": "80740906a3e6ac5cc9bc263b7041d6709e70479b",
+  "gitCommit": "bb992ae4fb9c2e9fb8a872c2db2e0ccae0a04451",
   "gitState": {
-    "changedFileCount": 22,
-    "changedFiles": [
-      ".cautilus/claims/canonical-claim-map.json",
-      ".cautilus/claims/claim-status-report.md",
-      ".cautilus/claims/eval-plan-reviewed-eval-claims-2026-05-03.json",
-      ".cautilus/claims/evidence-fixture-runtime-proof-2026-05-03.json",
-      ".cautilus/claims/evidence-machine-readable-packets-2026-05-03.json",
-      ".cautilus/claims/evidence-scenario-catalog-example-cli-2026-05-03.json",
-      ".cautilus/claims/evidenced-typed-runners.json",
-      ".cautilus/claims/review-input-eval-bucket-2026-05-03.json",
-      ".cautilus/claims/review-result-eval-bucket-user-a-2026-05-03.json",
-      ".cautilus/claims/review-result-eval-bucket-user-b-2026-05-03.json",
-      ".cautilus/claims/review-result-eval-bucket-user-c-2026-05-03.json",
-      ".cautilus/claims/review-result-evidence-fixture-runtime-proof-2026-05-03.json",
-      ".cautilus/claims/review-result-evidence-machine-readable-packets-2026-05-03.json",
-      ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-03.json",
-      ".cautilus/claims/status-summary.json",
-      "README.md",
-      "internal/app/app_test.go",
-      "internal/app/cli_smoke_test.go",
-      "internal/runtime/claim_discovery.go",
-      "internal/runtime/claim_discovery_test.go",
-      "internal/runtime/runner_readiness_test.go",
-      "internal/runtime/runtime_fingerprint_test.go"
-    ],
+    "changedFileCount": 0,
+    "changedFiles": [],
     "changedFilesBasis": {
       "meaning": "changedFiles lists files committed between packetGitCommit and currentGitCommit; it does not include unstaged, staged, or untracked working-tree files.",
       "scope": "committed-diff-between-packet-and-current-head",
@@ -2440,12 +2565,12 @@
     },
     "changedSourceCount": 0,
     "changedSources": [],
-    "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "ed2b69618b81ea91247eafd54da7671c9315d093",
-    "headDrift": true,
+    "comparisonStatus": "fresh",
+    "currentGitCommit": "bb992ae4fb9c2e9fb8a872c2db2e0ccae0a04451",
+    "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "80740906a3e6ac5cc9bc263b7041d6709e70479b",
-    "recommendedAction": "The current HEAD differs from the packet commit, but no recorded claim source changed; review and eval planning may continue.",
+    "packetGitCommit": "bb992ae4fb9c2e9fb8a872c2db2e0ccae0a04451",
+    "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
   "gitStateSnapshotNotice": "gitState is computed when this status packet is generated; rerun claim show for live checkout state.",
@@ -2468,7 +2593,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 124,
+    "heuristicClaimsReadyForReview": 125,
     "needsAlignment": 34,
     "needsScenario": 11
   },

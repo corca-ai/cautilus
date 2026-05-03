@@ -1,0 +1,224 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-current-dev-skill-dogfood-2026-05-03",
+  "createdForClaimIds": [
+    "claim-readme-md-151",
+    "claim-readme-md-219",
+    "claim-docs-contracts-claim-discovery-workflow-md-21",
+    "claim-docs-contracts-claim-discovery-workflow-md-39",
+    "claim-docs-contracts-claim-discovery-workflow-md-201",
+    "claim-docs-contracts-claim-discovery-workflow-md-590",
+    "claim-docs-contracts-claim-discovery-workflow-md-591"
+  ],
+  "repoCommit": "bb992ae4fb9c2e9fb8a872c2db2e0ccae0a04451",
+  "summary": "Current Codex dev/skill dogfood passed for bundled skill routing/install, saved-claim-map refresh branch, and deterministic review-input preparation. This bundle supports only those bounded skill workflow claims and does not prove broad optimization, app behavior, GUI workbench, Claude conversational parity, or numeric branch stability.",
+  "evidenceScope": {
+    "targetSurface": "dev/skill Cautilus bundled skill workflows",
+    "claimBoundary": "Only current claim ids whose wording is directly covered by the three current Codex dev/skill dogfood runs are marked satisfied.",
+    "notClaimed": [
+      "Claude conversational parity for every installed skill contract",
+      "Numeric branch selection stability when menu order changes",
+      "Broad evaluation philosophy or app product behavior",
+      "Optimization loops or held-out improvement proof",
+      "GUI/workbench review and editing behavior",
+      "Semantic honesty of every host adapter runner"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "./bin/cautilus install --repo-root . --overwrite",
+      "exitCode": 0,
+      "reason": "Materialized the local bundled skill before dev/skill dogfood."
+    },
+    {
+      "command": "./bin/cautilus doctor --repo-root . --scope agent-surface",
+      "exitCode": 0,
+      "reason": "Confirmed specdown, bundled skill, and Claude skills link readiness for the agent-consumable surface."
+    },
+    {
+      "command": "./bin/cautilus eval test --repo-root . --adapter-name self-dogfood-eval-skill --runtime codex --output-dir ./artifacts/self-dogfood/eval-skill-codex/latest",
+      "exitCode": 0,
+      "reason": "Current Codex dev/skill routing suite returned accept-now with one trigger case and two execution cases passed."
+    },
+    {
+      "command": "./bin/cautilus eval test --repo-root . --adapter-name self-dogfood-refresh-flow --runtime codex --output-dir ./artifacts/self-dogfood/cautilus-refresh-flow-eval-codex/latest",
+      "exitCode": 0,
+      "reason": "Current Codex refresh-flow suite returned accept-now and its audit passed with only the acceptable missing_branch_recheck warning."
+    },
+    {
+      "command": "./bin/cautilus eval test --repo-root . --adapter-name self-dogfood-review-prepare-flow --runtime codex --output-dir ./artifacts/self-dogfood/cautilus-review-prepare-flow-eval-codex/latest",
+      "exitCode": 0,
+      "reason": "Current Codex review-prepare suite returned accept-now and its audit passed with no findings."
+    }
+  ],
+  "installSurfaceEvidence": [
+    {
+      "path": ".agents/skills/cautilus/SKILL.md",
+      "kind": "installed-bundled-skill",
+      "contentHash": "sha256:b945d2543891dd8eaba10325f7a4c322c53c99887fc891d73f32d23ac15cdfce"
+    },
+    {
+      "path": ".agents/plugins/marketplace.json",
+      "kind": "codex-plugin-marketplace",
+      "contentHash": "sha256:243da35cfff71dbc3fc55fee6e4b19984a45e35a3f444b557a33923a888abdc7"
+    },
+    {
+      "path": ".claude-plugin/marketplace.json",
+      "kind": "claude-plugin-marketplace",
+      "contentHash": "sha256:1232c3f0fc5aacf65b102cf9bb8778107d554c19f19c50bfd73e3930f92c0537"
+    },
+    {
+      "path": "plugins/cautilus/.codex-plugin/plugin.json",
+      "kind": "codex-plugin-manifest",
+      "contentHash": "sha256:397ee8e6f2c4965789fcfe0ad2e18ac937fbe5e675b9bb4161bef5ab25de6a78"
+    },
+    {
+      "path": "plugins/cautilus/.claude-plugin/plugin.json",
+      "kind": "claude-plugin-manifest",
+      "contentHash": "sha256:213cd699b12694468e8f761467346931e906c1897c7d353497e28e1e3d41bdc2"
+    }
+  ],
+  "dogfoodEvidence": [
+    {
+      "id": "eval-skill-codex",
+      "path": "artifacts/self-dogfood/eval-skill-codex/latest/eval-summary.json",
+      "kind": "skill-evaluation-summary",
+      "contentHash": "sha256:f67da7785abd3b2f5ea4996eb7eb20f5972b4c4cce446cd56efd1d30e820e230",
+      "recommendation": "accept-now",
+      "passed": 3,
+      "failed": 0,
+      "supportsClaimIds": [
+        "claim-readme-md-151",
+        "claim-readme-md-219"
+      ]
+    },
+    {
+      "id": "eval-skill-observed",
+      "path": "artifacts/self-dogfood/eval-skill-codex/latest/eval-observed.json",
+      "kind": "skill-evaluation-observed",
+      "contentHash": "sha256:63f6554bd00e1e9586cac3e1e45cde20b79335221bbe491e9e15b4a51bb68098",
+      "supportsClaimIds": [
+        "claim-readme-md-151",
+        "claim-readme-md-219"
+      ]
+    },
+    {
+      "id": "trigger-cautilus-test-request",
+      "path": "artifacts/self-dogfood/eval-skill-codex/latest/local-skill-test/trigger-cautilus-test-request/aggregate.json",
+      "kind": "skill-trigger-aggregate",
+      "contentHash": "sha256:ffb5a8b657f15457d43c323e8c5210a23ead2793c26202d5095d2ff83d90a214",
+      "supportsClaimIds": [
+        "claim-readme-md-151"
+      ]
+    },
+    {
+      "id": "execution-cautilus-test-request",
+      "path": "artifacts/self-dogfood/eval-skill-codex/latest/local-skill-test/execution-cautilus-test-request/aggregate.json",
+      "kind": "skill-execution-aggregate",
+      "contentHash": "sha256:616d185d77a4289a0aa8cae6717fbf655a046beebf8b57f333b439aff95887f8",
+      "supportsClaimIds": [
+        "claim-readme-md-151"
+      ]
+    },
+    {
+      "id": "execution-cautilus-no-input-claim-discovery-status",
+      "path": "artifacts/self-dogfood/eval-skill-codex/latest/local-skill-test/execution-cautilus-no-input-claim-discovery-status/aggregate.json",
+      "kind": "skill-orientation-aggregate",
+      "contentHash": "sha256:e08a8b40e79bfd5db72e5338fc66615514b53efcf2cd7d0f6e56cb11b64c01ae",
+      "supportsClaimIds": [
+        "claim-readme-md-219"
+      ]
+    },
+    {
+      "id": "refresh-flow-codex",
+      "path": "artifacts/self-dogfood/cautilus-refresh-flow-eval-codex/latest/eval-summary.json",
+      "kind": "skill-evaluation-summary",
+      "contentHash": "sha256:264743cffde004f19041b4635cd52f94810f28848b08f2f987e515838af61e94",
+      "recommendation": "accept-now",
+      "passed": 1,
+      "failed": 0,
+      "supportsClaimIds": [
+        "claim-docs-contracts-claim-discovery-workflow-md-21",
+        "claim-docs-contracts-claim-discovery-workflow-md-39",
+        "claim-docs-contracts-claim-discovery-workflow-md-591"
+      ]
+    },
+    {
+      "id": "refresh-flow-audit",
+      "path": "artifacts/self-dogfood/cautilus-refresh-flow-eval-codex/latest/refresh-flow/episode-cautilus-refresh-flow/audit.json",
+      "kind": "refresh-flow-audit",
+      "contentHash": "sha256:d546c341f5fe0ea11d5029695eda50f617cb8f1f31549bc14b9e41c3a1881669",
+      "auditStatus": "passed",
+      "findingIds": [
+        "missing_branch_recheck"
+      ],
+      "supportsClaimIds": [
+        "claim-docs-contracts-claim-discovery-workflow-md-21",
+        "claim-docs-contracts-claim-discovery-workflow-md-39",
+        "claim-docs-contracts-claim-discovery-workflow-md-591"
+      ]
+    },
+    {
+      "id": "review-prepare-flow-codex",
+      "path": "artifacts/self-dogfood/cautilus-review-prepare-flow-eval-codex/latest/eval-summary.json",
+      "kind": "skill-evaluation-summary",
+      "contentHash": "sha256:1a987b8d1c9525557467cdefd72b949f7bbc6eaf53f1908ce5ba135e834fe368",
+      "recommendation": "accept-now",
+      "passed": 1,
+      "failed": 0,
+      "supportsClaimIds": [
+        "claim-docs-contracts-claim-discovery-workflow-md-201",
+        "claim-docs-contracts-claim-discovery-workflow-md-590"
+      ]
+    },
+    {
+      "id": "review-prepare-flow-audit",
+      "path": "artifacts/self-dogfood/cautilus-review-prepare-flow-eval-codex/latest/review-prepare-flow/episode-cautilus-review-prepare-flow/audit.json",
+      "kind": "review-prepare-flow-audit",
+      "contentHash": "sha256:1bde2504f4f756b42307350e06309b574e581b0b6d7c1859f512da56dd44ec05",
+      "auditStatus": "passed",
+      "findingIds": [],
+      "supportsClaimIds": [
+        "claim-docs-contracts-claim-discovery-workflow-md-201",
+        "claim-docs-contracts-claim-discovery-workflow-md-590"
+      ]
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "skills/cautilus/SKILL.md",
+      "kind": "bundled-skill-source",
+      "contentHash": "sha256:b945d2543891dd8eaba10325f7a4c322c53c99887fc891d73f32d23ac15cdfce"
+    },
+    {
+      "path": "fixtures/eval/dev/skill/cautilus-skill-routing.fixture.json",
+      "kind": "dev-skill-fixture",
+      "contentHash": "sha256:eb9407ed17126960e74c765495c921ee564b80537c7b62a5447af6f1636e8dd9"
+    },
+    {
+      "path": "fixtures/eval/dev/skill/cautilus-refresh-flow.fixture.json",
+      "kind": "dev-skill-fixture",
+      "contentHash": "sha256:10400b7ab69bddfd5de59324c979b923c9e90aa55f9564b60da5bb4601e51a89"
+    },
+    {
+      "path": "fixtures/eval/dev/skill/cautilus-review-prepare-flow.fixture.json",
+      "kind": "dev-skill-fixture",
+      "contentHash": "sha256:9402897871827250e498c1aa52808c3032c3d5d1931f9252a88d2a242806577b"
+    },
+    {
+      "path": "scripts/agent-runtime/audit-cautilus-refresh-flow-log.mjs",
+      "kind": "audit-script",
+      "contentHash": "sha256:dfa4feab402fa46dee0053306363321c9b721ab482e884ccc68e0fd0543a0b1a"
+    },
+    {
+      "path": "scripts/agent-runtime/audit-cautilus-review-prepare-flow-log.mjs",
+      "kind": "audit-script",
+      "contentHash": "sha256:dfbfe8720b7abca1ba08a2c4009c3a2d9fa626cadbe1d0dbdae9105f0f927f6d"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The current checked-in skill, fixtures, audit scripts, and Codex dev/skill dogfood packets directly cover the listed bounded skill workflow claims."
+  }
+}
