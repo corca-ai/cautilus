@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-03T00:00:00Z",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied for deterministic review packet and prompt rendering behavior; do not treat this as external judge-provider proof."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-cli-reference-review-variants-status-and-output-text",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-cli-reference-md-427",
+          "claimFingerprint": "sha256:83c81805880b9762061d7ae0e99d4469f41a78b6e801d6b775db03151fe12d8d",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "whyThisLayer": "The claim is deterministic review packet status behavior: variants either report passed, blocked, and failed status with machine-readable reason codes or they do not.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by focused CLI tests: review variants produce passed, blocked, and failed status packets, preserve blocked reason codes, and classify unavailable executors as blocked rather than negative review verdicts.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-review-variants-status-and-output-text-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:c09d813fd1e7a32f1f11fb893d631255bc5df9fb338b821f68bf24546630e930",
+              "supportsClaimIds": [
+                "claim-docs-cli-reference-md-427",
+                "claim-docs-cli-reference-md-431"
+              ]
+            }
+          ],
+          "nextAction": "Keep this claim covered when changing review variant status normalization, blocked/failed reason codes, or review-summary aggregation.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-cli-reference-md-431",
+          "claimFingerprint": "sha256:84f315418d5b081d4b95da8d83048ba5c06db7fc31de2ab8b4105677a087e315",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "whyThisLayer": "The claim is deterministic prompt-rendering behavior over a JSON artifact selected by `--output-text-key`.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by focused CLI tests: output-under-test mode records the requested JSON key and renders the extracted narrative span under Output Under Test Text in the review prompt.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-review-variants-status-and-output-text-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:c09d813fd1e7a32f1f11fb893d631255bc5df9fb338b821f68bf24546630e930",
+              "supportsClaimIds": [
+                "claim-docs-cli-reference-md-427",
+                "claim-docs-cli-reference-md-431"
+              ]
+            }
+          ],
+          "nextAction": "Keep this claim covered when changing output-under-test prompt rendering or JSON text extraction semantics.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

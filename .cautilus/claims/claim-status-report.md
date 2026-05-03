@@ -19,7 +19,7 @@ Use the JSON packets as the audit source; use this report to decide what to insp
 
 | Dimension | Counts |
 | --- | --- |
-| Evidence | satisfied: 29, unknown: 293 |
+| Evidence | satisfied: 31, unknown: 291 |
 | Review | agent-reviewed: 67, heuristic: 252, human-reviewed: 3 |
 | Recommended proof | cautilus-eval: 128, deterministic: 125, human-auditable: 69 |
 | Verification readiness | blocked: 16, needs-alignment: 30, needs-scenario: 8, ready-to-verify: 268 |
@@ -37,14 +37,14 @@ Review readiness: heuristicClaimsReadyForReview: 225, needsAlignment: 30, needsS
 - User mappings recommended for semantic sampling: 58
 - Maintainer claims mapped to M1-M11: M1: 18, M10: 17, M11: 13, M2: 74, M3: 55, M4: 10, M5: 4, M6: 7, M7: 10, M8: 11, M9: 21
 - All raw claims by disposition: mapped-to-maintainer-canonical: 240, mapped-to-user-canonical: 82
-- Mapping confidence: high: 62, low: 56, medium: 204
+- Mapping confidence: high: 62, low: 57, medium: 203
 
 | User claim | Title | Raw claims | Evidence | Review |
 | --- | --- | --- | --- | --- |
-| U1 | Claim Discovery | 21 | satisfied: 8, unknown: 13 | agent-reviewed: 14, heuristic: 6, human-reviewed: 1 |
-| U2 | Evaluation | 29 | satisfied: 5, unknown: 24 | agent-reviewed: 15, heuristic: 14 |
+| U1 | Claim Discovery | 22 | satisfied: 9, unknown: 13 | agent-reviewed: 15, heuristic: 6, human-reviewed: 1 |
+| U2 | Evaluation | 29 | satisfied: 6, unknown: 23 | agent-reviewed: 15, heuristic: 14 |
 | U3 | Optimization | 5 | satisfied: 1, unknown: 4 | agent-reviewed: 1, heuristic: 4 |
-| U4 | Doctor And Readiness | 7 | satisfied: 4, unknown: 3 | agent-reviewed: 5, heuristic: 2 |
+| U4 | Doctor And Readiness | 6 | satisfied: 4, unknown: 2 | agent-reviewed: 4, heuristic: 2 |
 | U5 | Product And Host Ownership | 10 | satisfied: 5, unknown: 5 | agent-reviewed: 7, heuristic: 3 |
 | U6 | Reviewable Artifacts | 5 | satisfied: 1, unknown: 4 | agent-reviewed: 1, heuristic: 4 |
 | U7 | Proof Debt | 5 | unknown: 5 | heuristic: 5 |
@@ -84,7 +84,7 @@ Semantic sampling recommended for 260 raw claim(s): claim-agents-md-12, claim-ag
 ## Next Work
 
 - Human review is still meaningful for human-align-surfaces=30, human-confirm-or-decompose=23, split-or-defer=16.
-- Agent next proof work: connect deterministic gates for 97 claim(s), starting with agent-reviewed items before heuristic items.
+- Agent next proof work: connect deterministic gates for 95 claim(s), starting with agent-reviewed items before heuristic items.
 - Agent eval work: plan Cautilus eval scenarios for 119 claim(s), after reviewing heuristic labels where needed.
 - Scenario design work remains for 8 claim(s).
 
@@ -92,8 +92,8 @@ Semantic sampling recommended for 260 raw claim(s): claim-agents-md-12, claim-ag
 
 | Bucket | Actor | Count | Review | Evidence | Meaning |
 | --- | --- | --- | --- | --- | --- |
-| already-satisfied | none | 29 | agent-reviewed: 29 | satisfied: 29 | Proof is already attached and valid under packet semantics. |
-| agent-add-deterministic-proof | agent | 97 | agent-reviewed: 14, heuristic: 80, human-reviewed: 3 | unknown: 97 | Add or connect unit, lint, build, schema, spec, or CI proof. |
+| already-satisfied | none | 31 | agent-reviewed: 31 | satisfied: 31 | Proof is already attached and valid under packet semantics. |
+| agent-add-deterministic-proof | agent | 95 | agent-reviewed: 12, heuristic: 80, human-reviewed: 3 | unknown: 95 | Add or connect unit, lint, build, schema, spec, or CI proof. |
 | agent-plan-cautilus-eval | agent | 119 | agent-reviewed: 1, heuristic: 118 | unknown: 119 | Draft or select Cautilus eval scenarios for ready eval claims. |
 | agent-design-scenario | agent | 8 | heuristic: 8 | unknown: 8 | Decompose the behavior into a concrete scenario before protected eval planning. |
 | human-align-surfaces | human | 30 | agent-reviewed: 11, heuristic: 19 | unknown: 30 | Reconcile conflicting docs, code, adapters, or ownership boundaries before proof would be honest. |
@@ -108,11 +108,11 @@ Add or connect unit, lint, build, schema, spec, or CI proof.
 
 | Claim | Source | Proof | Readiness | Review | Evidence | Summary |
 | --- | --- | --- | --- | --- | --- | --- |
-| claim-docs-cli-reference-md-427 | docs/cli-reference.md:427 | deterministic | ready-to-verify | agent-reviewed | unknown | A variant can finish as `passed`, `blocked`, or `failed`; blocked runs carry machine-readable reason codes instead of prose-only abort text. |
-| claim-docs-cli-reference-md-431 | docs/cli-reference.md:431 | deterministic | ready-to-verify | agent-reviewed | unknown | When `--output-text-key` is present, Cautilus also extracts that JSON narrative span into the rendered prompt so the judge can read the realized output directly. |
 | claim-docs-cli-reference-md-487 | docs/cli-reference.md:487 | deterministic | ready-to-verify | agent-reviewed | unknown | These renderers answer: "what should a human reviewer open first if they should inspect the same decision surface without parsing raw JSON?" |
 | claim-docs-contracts-adapter-contract-md-218 | docs/contracts/adapter-contract.md:218 | deterministic | ready-to-verify | heuristic | unknown | The binary uses these hints to label review queues, while the bundled skill or a human reviewer may still correct semantic edge cases. |
 | claim-docs-contracts-adapter-contract-md-276 | docs/contracts/adapter-contract.md:276 | deterministic | ready-to-verify | heuristic | unknown | `kind: explicit` keeps fixture-backed repos and simple single-instance adopters cheap without forcing a probe script. |
+| claim-docs-contracts-adapter-contract-md-405 | docs/contracts/adapter-contract.md:405 | deterministic | ready-to-verify | heuristic | unknown | This keeps prompt benchmarking, code-quality benchmarking, and workflow smoke tests from collapsing into one overloaded adapter file. |
+| claim-docs-contracts-adapter-contract-md-424 | docs/contracts/adapter-contract.md:424 | deterministic | ready-to-verify | human-reviewed | unknown | A named adapter whose eval-test commands produce rich scenario-by-scenario signals should also persist them as files so executor variants and human reviewers can ground their verdicts on the same numbers. |
 
 ### agent-plan-cautilus-eval
 
@@ -188,6 +188,7 @@ Split broad, historical, provider-caveated, policy-like, or otherwise blocked cl
 | .cautilus/claims/review-result-evidence-install-channel-policy-2026-05-03.json | - | - | 1 | 1 | deterministic: 1 | ready-to-verify: 1 |
 | .cautilus/claims/review-result-evidence-install-packaging-2026-05-03.json | - | - | 1 | 3 | deterministic: 3 | ready-to-verify: 3 |
 | .cautilus/claims/review-result-evidence-machine-readable-packets-2026-05-03.json | - | - | 1 | 1 | deterministic: 1 | ready-to-verify: 1 |
+| .cautilus/claims/review-result-evidence-review-variants-status-and-output-text-2026-05-03.json | - | - | 1 | 2 | deterministic: 2 | ready-to-verify: 2 |
 | .cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-03.json | - | - | 1 | 1 | deterministic: 1 | ready-to-verify: 1 |
 | .cautilus/claims/review-result-evidence-scenario-review-attention-linkage-2026-05-03.json | - | - | 1 | 2 | deterministic: 2 | ready-to-verify: 2 |
 | .cautilus/claims/review-result-evidence-specdown-prerequisite-2026-05-03.json | - | - | 1 | 1 | deterministic: 1 | ready-to-verify: 1 |

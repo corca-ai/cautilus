@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-review-variants-status-and-output-text-2026-05-03",
+  "createdForClaimIds": [
+    "claim-docs-cli-reference-md-427",
+    "claim-docs-cli-reference-md-431"
+  ],
+  "repoCommit": "85b085b6485db0e9922f895508c9f5df6fbe3de5",
+  "summary": "This bundle records deterministic proof for review-variant status packets and output-under-test text extraction.",
+  "evidenceScope": {
+    "targetSurface": "review variants status and prompt rendering",
+    "claimBoundary": "Only the CLI reference claims about review variant passed/blocked/failed packet status, machine-readable blocked reason codes, and `--output-text-key` prompt extraction are marked satisfied.",
+    "notClaimed": [
+      "A real external judge provider was invoked",
+      "Every possible blocked or failed reason code is enumerated",
+      "The extracted narrative text is judged correct by a model",
+      "Review variants are sufficient proof for every behavior claim"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/app -run 'TestCLIReviewVariantsRunsInsideFreshRepoWithoutHostSpecificPaths|TestCLIReviewVariantsReturnsBlockedSummaryWhenVariantEmitsBlockedPayload|TestCLIReviewVariantsReturnsFailedSummaryWhenVariantEmitsFailedPayload|TestCLIReviewVariantsClassifiesUnavailableExecutorAsBlockedPartialSuccess|TestCLIReviewVariantsSupportsOutputUnderTest|TestCLIReviewBuildPromptInputAndRenderPromptCloseMetaPromptSeam' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "notableAssertions": [
+          "passing variant output produces passed review-summary and variant status",
+          "blocked variant output produces blocked review-summary status and machine-readable reason codes",
+          "failed variant output produces failed review-summary and variant status",
+          "executor auth failure is classified as blocked unavailable_executor with partialSuccess when another variant passes",
+          "output-under-test mode renders the referenced artifact and extracted JSON text into the review prompt"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/app -run TestCLIReviewBuildPromptInputAndRenderPromptCloseMetaPromptSeam -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "notableAssertions": [
+          "review build-prompt-input enters output_under_test mode",
+          "outputUnderTestText records the requested key",
+          "the rendered prompt includes Output Under Test Text and the realized output span"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "review-variants-cli-tests",
+      "contentHash": "sha256:94aa6ed45a780392ce2c9781dd92e163a6bac6f621665b853e35f7670323d87b"
+    },
+    {
+      "path": "internal/app/remaining_commands.go",
+      "kind": "review-variants-implementation",
+      "contentHash": "sha256:1f7185d41743f903f072ac1f567fb663244a9de0599b9242e6b645a427c324e5"
+    },
+    {
+      "path": "docs/cli-reference.md",
+      "kind": "operator-facing-review-variants-guidance",
+      "contentHash": "sha256:31f70c226b312f2292e3e317a8dd45d6f1e4bd71d2c8f3f555b2174a15303f05"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "Focused CLI tests exercise the public review variants and review prompt input paths for passed/blocked/failed status handling, reason-code preservation, unavailable executor classification, and output-text extraction."
+  }
+}

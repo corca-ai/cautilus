@@ -1464,9 +1464,20 @@
       "claimFingerprint": "sha256:83c81805880b9762061d7ae0e99d4469f41a78b6e801d6b775db03151fe12d8d",
       "claimId": "claim-docs-cli-reference-md-427",
       "claimSemanticGroup": "Documentation and contracts",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "Review-variant status-shape claim. It needs deterministic review variant packet/schema evidence.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:c09d813fd1e7a32f1f11fb893d631255bc5df9fb338b821f68bf24546630e930",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-review-variants-status-and-output-text-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-cli-reference-md-427",
+            "claim-docs-cli-reference-md-431"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by focused CLI tests: review variants produce passed, blocked, and failed status packets, preserve blocked reason codes, and classify unavailable executors as blocked rather than negative review verdicts.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -1474,7 +1485,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Attach review-variant command or schema test evidence for passed/blocked/failed status and machine-readable reason codes.",
+      "nextAction": "Keep this claim covered when changing review variant status normalization, blocked/failed reason codes, or review-summary aggregation.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -1487,7 +1498,7 @@
       "summary": "A variant can finish as `passed`, `blocked`, or `failed`; blocked runs carry machine-readable reason codes instead of prose-only abort text.",
       "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks."
+      "whyThisLayer": "The claim is deterministic review packet status behavior: variants either report passed, blocked, and failed status with machine-readable reason codes or they do not."
     },
     {
       "claimAudience": "user",
@@ -1495,9 +1506,20 @@
       "claimFingerprint": "sha256:84f315418d5b081d4b95da8d83048ba5c06db7fc31de2ab8b4105677a087e315",
       "claimId": "claim-docs-cli-reference-md-431",
       "claimSemanticGroup": "Documentation and contracts",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "Review-prompt rendering claim. It is deterministic JSON extraction/rendering behavior rather than app/prompt model behavior.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:c09d813fd1e7a32f1f11fb893d631255bc5df9fb338b821f68bf24546630e930",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-review-variants-status-and-output-text-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-cli-reference-md-427",
+            "claim-docs-cli-reference-md-431"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by focused CLI tests: output-under-test mode records the requested JSON key and renders the extracted narrative span under Output Under Test Text in the review prompt.",
       "groupHints": [
         "app/prompt",
         "audience:user",
@@ -1506,7 +1528,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Attach review-prompt rendering test evidence for `--output-text-key` extraction.",
+      "nextAction": "Keep this claim covered when changing output-under-test prompt rendering or JSON text extraction semantics.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -1519,7 +1541,7 @@
       "summary": "When `--output-text-key` is present, Cautilus also extracts that JSON narrative span into the rendered prompt so the judge can read the realized output directly.",
       "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "whyThisLayer": "The claim is deterministic prompt-rendering behavior over a JSON artifact selected by `--output-text-key`."
     },
     {
       "claimAudience": "user",
@@ -10103,8 +10125,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 29,
-      "unknown": 293
+      "satisfied": 31,
+      "unknown": 291
     },
     "byLifecycle": {
       "new": 322
@@ -10305,6 +10327,12 @@
     "provenanceMode": "aggregate-current-review-results"
   },
   "reviewRuns": [
+    {
+      "clusterCount": 1,
+      "reviewRun": {},
+      "schemaVersion": "cautilus.claim_review_result.v1",
+      "sourceReviewInput": {}
+    },
     {
       "clusterCount": 1,
       "reviewRun": {},
